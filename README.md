@@ -45,4 +45,19 @@ python3 generar-html-drive.py      # regenera drive/*.html
 python3 generar-atlas.py           # regenera atlas-casos-de-uso.html
 ```
 
+## Con qué está hecha
+
+| | |
+|---|---|
+| **Proceso Unificado** | La metodología que exige la cátedra |
+| **Markdown** | Los seis documentos, versionados como texto plano |
+| **Mermaid** | Los 221 diagramas de secuencia, interacción, flujo y estados |
+| **PlantUML** | Los 19 diagramas de casos de uso en notación UML clásica |
+| **Python** | Verificación de conformidad y generación de los entregables |
+| **Git** | Historia completa de cada cambio |
+| **Netlify** | Publicación del atlas |
+
+Los diagramas se escriben como código junto al texto que documentan, así que se versionan
+igual que el resto y no hay que redibujarlos a mano cuando algo cambia.
+
 El detalle completo del repositorio está en `material-de-trabajo/DETALLE-DEL-REPOSITORIO.md`.

@@ -154,6 +154,15 @@ button.ghost{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing
   border-radius:99px;border:1px solid var(--primary);background:transparent;color:var(--primary);cursor:pointer}
 button.ghost:hover{background:var(--primary);color:var(--on-accent)}
 button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+footer.pie{border-top:1px solid var(--outline);margin-top:56px;padding:22px 0 8px;
+  font-size:12.5px;color:var(--muted);line-height:1.75}
+footer.pie h5{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;margin:0 0 10px;font-weight:500;color:var(--muted)}
+footer.pie dl{display:grid;grid-template-columns:auto 1fr;gap:5px 18px;margin:0}
+footer.pie dt{color:var(--content);font-weight:500;white-space:nowrap}
+footer.pie dd{margin:0}
+footer.pie .cierre{margin-top:16px;padding-top:14px;border-top:1px solid var(--outline);
+  display:flex;flex-wrap:wrap;gap:5px 20px;font-family:"IBM Plex Mono",monospace;font-size:11px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -186,7 +195,25 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     </div>
     <div class="list" id="lista"></div>
   </aside>
-  <main id="main"><div class="pad" id="detalle"></div></main>
+  <main id="main"><div class="pad" id="detalle"></div><div class="pad">
+  <footer class="pie">
+    <h5>Con qué está hecha esta documentación</h5>
+    <dl>
+      <dt>Proceso Unificado</dt><dd>La metodología que exige la cátedra: casos de uso de alto nivel, expandidos, diagramas de secuencia del sistema y de interacción de diseño.</dd>
+      <dt>Markdown</dt><dd>Los seis documentos, versionados como texto plano.</dd>
+      <dt>Mermaid</dt><dd>Los 221 diagramas de secuencia, interacción, flujo y estados. Se escriben como código y se dibujan solos.</dd>
+      <dt>PlantUML</dt><dd>Los 19 diagramas de casos de uso en notación UML clásica, que Mermaid no cubre.</dd>
+      <dt>Python</dt><dd>Los scripts que verifican la conformidad con las plantillas y generan esta página y los documentos de entrega.</dd>
+      <dt>Git</dt><dd>Historia completa de cada cambio sobre la documentación.</dd>
+      <dt>Netlify</dt><dd>Publicación de esta página.</dd>
+    </dl>
+    <div class="cierre">
+      <span>SPLG · Sistema de Pedidos y Logística de Garrafas de Gas</span>
+      <span>FCEQyN — UNaM</span>
+      <span>Nahuel Wagner</span>
+    </div>
+  </footer>
+</div></main>
 </div>
 
 <script id="datos" type="application/json">__DATOS__</script>
