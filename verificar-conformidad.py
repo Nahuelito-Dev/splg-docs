@@ -82,7 +82,9 @@ resid = []
 for f in ["0-Plan_Del_Proyecto.md","0.1-Planificacion_Iteraciones.md","1-Requisitos.md",
           "2-Analisis.md","3-Diseño.md","Casos-de-Uso.md"]:
     for i,x in enumerate(leer(f),1):
-        if re.search(r'HS256|JwtAuthGuard|OwnershipGuard|JwtService|JWT propio', x):
+        if re.search(r'HS256|JwtAuthGuard|OwnershipGuard|JwtService|JWT propio|JWT custom'
+                     r'|SIN_COBERTURA|validated === true|hasta 15 km|cada minuto|45 CU'
+                     r'|ACT-01 a ACT-04', x):
             resid.append(f"{f}:{i}")
 if resid: FALLAS.append("afirmaciones contradictorias con el código")
 print(f"[{'OK' if not resid else 'FALLA':5}] Sin afirmaciones refutadas por la auditoría"
