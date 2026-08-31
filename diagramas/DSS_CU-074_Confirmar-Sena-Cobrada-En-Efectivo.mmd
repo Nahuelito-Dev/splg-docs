@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: confirmarSenia(pedidoId)
+    activate SIS
+    alt el pedido es una reserva pendiente
+        SIS-->>ADM: seña confirmada (la reserva queda lista para activarse sola)
+    else el pedido no es una reserva pendiente
+        SIS-->>ADM: error de solicitud (el pedido no es una reserva pendiente)
+    else la reserva no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

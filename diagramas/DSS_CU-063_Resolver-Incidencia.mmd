@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: resolverIncidencia(incidenciaId, notaDeResolucion)
+    activate SIS
+    alt la incidencia existe en la distribuidora
+        SIS-->>ADM: incidencia resuelta (estado y nota registrados)
+    else la incidencia no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

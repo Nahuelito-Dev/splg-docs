@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO->>SIS: registrarIncidencia(pedidoId, tipo, descripcion, foto)
+    activate SIS
+    alt el pedido existe
+        SIS-->>CHO: incidencia registrada (incidenciaId, estado ABIERTA)
+    else el pedido no existe
+        SIS-->>CHO: recurso no encontrado
+    end
+    deactivate SIS

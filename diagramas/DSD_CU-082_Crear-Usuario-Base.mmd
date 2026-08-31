@@ -1,0 +1,35 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UsersController
+    participant SRV as UsersService
+    participant REP as RepositoryUser
+    participant HLP as UserRegistrationHelper
+    participant FB as FirebaseAuthPort
+
+    CTRL->>SRV: create(createUserDto)
+    SRV->>REP: create(createUserDto)
+    REP-->>SRV: User no persistido
+    SRV->>REP: save(user)
+    alt Violacion de unicidad, codigo 23505
+        REP-->>SRV: QueryFailedError
+        SRV->>SRV: handleDBExceptions(error)
+        SRV-->>CTRL: BadRequestException Duplicate entry
+    else Guardado correcto
+        REP-->>SRV: User persistido
+        SRV-->>CTRL: User
+    end
+
+    opt Camino de los helpers de registro
+        HLP->>SRV: checkUserExists(dto.email, dto.phone_number) desde validateUniqueness
+        SRV-->>HLP: exists, email, phoneNumber
+        alt Email o telefono ya en uso
+            HLP-->>HLP: HttpException CONFLICT Email o telefono ya en uso
+        else Libres
+            HLP->>SRV: createFirebaseUser(dto) desde createUserInFirebase
+            SRV->>FB: createUserSafe(createUserDto)
+            FB-->>SRV: UserRecord
+            SRV-->>HLP: UserRecord
+            HLP->>SRV: create(createUserDto con firebase_uid) desde createUserInDatabase
+            SRV-->>HLP: User
+        end
+    end

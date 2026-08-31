@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as UsersController
+    participant SRV as UsersService
+    participant REP as RepositoryUser
+
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        CTRL->>SRV: toggleBlockUser(id, body.block)
+        SRV->>REP: findOne(user_id)
+        alt Usuario inexistente
+            REP-->>SRV: null
+            SRV-->>CTRL: NotFoundException Usuario no encontrado
+        else Usuario encontrado
+            REP-->>SRV: User
+            SRV->>SRV: user.blocked igual a shouldBlock
+            SRV->>REP: save(user)
+            REP-->>SRV: User
+            SRV-->>CTRL: id, email, isBlocked y mensaje
+        end
+    end

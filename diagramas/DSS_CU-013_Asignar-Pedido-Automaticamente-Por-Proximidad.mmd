@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CHO as Chofer
+
+    SAU->>SIS: ofrecerAlSiguienteChofer(pedido)
+    activate SIS
+    Note over SIS: Recorre los radios 5, 10, 15 y 20 km<br/>y descarta los choferes ya contactados<br/>y los de otra distribuidora
+    alt Hay un candidato disponible
+        SIS-->>CHO: oferta del pedido (detalle, vence en 30 s)
+        SIS-->>SAU: oferta registrada
+    else No quedan candidatos nuevos
+        SIS-->>SAU: sin candidatos, el pedido queda a la espera
+    end
+    deactivate SIS

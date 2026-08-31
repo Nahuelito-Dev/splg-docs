@@ -1,0 +1,32 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant ORD as OrderRepositoryPort
+    participant RT as RealtimeDispatchPort
+    participant CGW as CustomersGateway
+
+    RG->>RG: canActivate(ctx) contra Roles DELIVERY, ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        CTRL->>SRV: notifyDriverArrived(id)
+        SRV->>SRV: findOne(orderId)
+        SRV->>ORD: findByIdFull(orderId)
+        alt Pedido inexistente
+            ORD-->>SRV: null
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Pedido encontrado
+            ORD-->>SRV: Order con delivery y user
+            alt El pedido no esta ON_THE_WAY
+                SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
+            else Pedido en camino
+                SRV->>RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                RT->>CGW: notifyCustomer(customerId, event, payload)
+                CGW-->>SRV: emit en la sala customer_ del cliente
+                SRV-->>CTRL: message Cliente notificado
+            end
+        end
+    end

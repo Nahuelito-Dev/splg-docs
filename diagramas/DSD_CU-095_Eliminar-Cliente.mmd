@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
+    participant CREP as RepositoryCustomer
+
+    ADM->>CTRL: DELETE /customers/:id
+    CTRL->>CTRL: HttpCode 200, Roles ADMIN SUPER_ADMIN
+    CTRL->>SRV: remove(id)
+    SRV->>SRV: findOne(id), sin ownership porque es staff
+    SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    CREP-->>SRV: Customer o null
+    alt No existe
+        SRV-->>CTRL: NotFoundException
+    else Existe
+        SRV->>CREP: softDelete(where customer_id)
+        CREP-->>SRV: deletedAt seteado, la fila permanece
+        SRV-->>CTRL: message Customer deleted successfully
+        CTRL-->>ADM: 200 message
+    end

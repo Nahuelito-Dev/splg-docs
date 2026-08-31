@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
+    activate SIS
+    alt el número de serie está libre en la distribuidora
+        SIS-->>ADM: envase creado (envaseId, estado EN_DEPOSITO)
+    else el número de serie ya existe en la distribuidora
+        SIS-->>ADM: conflicto (serie duplicada)
+    end
+    deactivate SIS

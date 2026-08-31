@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
+    participant CREP as RepositoryCustomer
+
+    alt Validar, PATCH /customers/:id/validate
+        ADM->>CTRL: validateCustomer(id)
+        CTRL->>SRV: validateCustomer(id)
+        SRV->>SRV: findOne(id), sin requesterUserId, es admin
+        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        CREP-->>SRV: Customer o null
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+        else Existe
+            SRV->>SRV: customer.validated igual a true
+            SRV->>CREP: save(customer)
+            CREP-->>SRV: Customer actualizado
+            SRV-->>CTRL: Customer
+        end
+    else Invalidar, PATCH /customers/:id/invalidate
+        ADM->>CTRL: invalidateCustomer(id)
+        CTRL->>SRV: invalidateCustomer(id)
+        SRV->>SRV: findOne(id)
+        SRV->>CREP: findOne(where customer_id)
+        CREP-->>SRV: Customer o null
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+        else Existe
+            SRV->>SRV: customer.validated igual a false
+            SRV->>CREP: save(customer)
+            CREP-->>SRV: Customer actualizado
+            SRV-->>CTRL: Customer
+        end
+    end
+    CTRL-->>ADM: 200 Customer

@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP->>SIS: darDeBajaDistribuidora(distribuidoraId)
+    activate SIS
+    alt la distribuidora existe
+        SIS-->>SUP: distribuidora dada de baja (baja lógica, se conserva su histórico)
+    else la distribuidora no existe
+        SIS-->>SUP: recurso no encontrado
+    end
+    deactivate SIS

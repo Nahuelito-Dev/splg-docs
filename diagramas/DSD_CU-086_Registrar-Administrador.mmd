@@ -1,0 +1,48 @@
+sequenceDiagram
+    autonumber
+    participant ACT as SuperAdmin o Admin de empresa
+    participant CTRL as AdminController
+    participant SRV as AdminService
+    participant RREP as RepositoryRole
+    participant HLP as AdminRegistrationHelper
+    participant USR as UsersService
+    participant AREP as RepositoryAdmin
+
+    ACT->>CTRL: POST /admin/register con RegisterAdminDto
+    alt El solicitante es SUPER_ADMIN
+        CTRL->>SRV: registerAdmin(dto con distributorId del body o del contexto)
+    else El solicitante es ADMIN de empresa
+        alt El admin no tiene distribuidora asociada
+            CTRL-->>ACT: ForbiddenException, tu usuario no tiene una distribuidora asociada
+        else Tiene tenant
+            CTRL->>SRV: isSuperAdminRole(dto.role_id)
+            SRV->>RREP: findOne(where role_id)
+            RREP-->>SRV: Role o null
+            SRV-->>CTRL: boolean
+            alt El rol pedido es super_admin
+                CTRL-->>ACT: ForbiddenException, no podes crear un super administrador
+            else Rol permitido
+                CTRL->>SRV: registerAdmin(dto con distributorId forzado al del contexto)
+            end
+        end
+    end
+
+    SRV->>HLP: validateUniqueness(dto, usersService)
+    HLP->>USR: findOneByEmail(dto.email)
+    HLP->>USR: findOneByPhone(dto.phone_number)
+    alt Email o telefono ya en uso
+        HLP-->>ACT: HttpException 409, email o telefono ya en uso
+    else Datos libres
+        SRV->>HLP: createUserInFirebase(dto, usersService)
+        HLP->>USR: createFirebaseUser(dto)
+        USR-->>HLP: firebaseUser con uid
+        SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
+        HLP->>USR: create(dto mas firebase_uid)
+        USR-->>HLP: User local
+        SRV->>SRV: arma CreateAdminDto con user_id, role_id y distributor_id
+        SRV->>AREP: create(adminData)
+        SRV->>AREP: save(admin)
+        AREP-->>SRV: Admin persistido
+        SRV-->>CTRL: message, admin, user
+        CTRL-->>ACT: 201 Admin registrado
+    end

@@ -1,0 +1,1697 @@
+[
+ {
+  "archivo": "DSS_CU-001_cu-001-iniciar-sesión.mmd",
+  "tipo": "DSS",
+  "titulo": "Crítico DSS — CU-001: Iniciar Sesión",
+  "cus": [
+   1
+  ]
+ },
+ {
+  "archivo": "DSS_CU-005_cu-005-crear-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "Crítico DSS — CU-005: Crear Pedido",
+  "cus": [
+   5
+  ]
+ },
+ {
+  "archivo": "DSS_CU-013_cu-013-ofrecer-el-pedido-al-chofer-más-cercano.mmd",
+  "tipo": "DSS",
+  "titulo": "Crítico · automático DSS — CU-013: Ofrecer el Pedido al Chofer Más Cercano",
+  "cus": [
+   13
+  ]
+ },
+ {
+  "archivo": "DSS_CU-014_cu-014-vencer-la-oferta-y-ofrecer-al-siguiente-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "Crítico · automático DSS — CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer",
+  "cus": [
+   14
+  ]
+ },
+ {
+  "archivo": "DSS_CU-015_cu-015-aceptar-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "Crítico DSS — CU-015: Aceptar Pedido",
+  "cus": [
+   15
+  ]
+ },
+ {
+  "archivo": "DSS_CU-017_cu-017-actualizar-ubicación-gps-del-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "Crítico · automático DSS — CU-017: Actualizar Ubicación GPS del Chofer",
+  "cus": [
+   17
+  ]
+ },
+ {
+  "archivo": "DSS_CU-020_cu-020-confirmar-entrega.mmd",
+  "tipo": "DSS",
+  "titulo": "Crítico DSS — CU-020: Confirmar Entrega",
+  "cus": [
+   20
+  ]
+ },
+ {
+  "archivo": "DSS_CU-023_cu-023-registrar-reclamo.mmd",
+  "tipo": "DSS",
+  "titulo": "Importante DSS — CU-023: Registrar Reclamo",
+  "cus": [
+   23
+  ]
+ },
+ {
+  "archivo": "DSS_CU-002_cu-002-registrarse-como-cliente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-002: Registrarse como Cliente",
+  "cus": [
+   2
+  ]
+ },
+ {
+  "archivo": "DSS_CU-003_cu-003-registrarse-como-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-003: Registrarse como Chofer",
+  "cus": [
+   3
+  ]
+ },
+ {
+  "archivo": "DSS_CU-004_cu-004-gestionar-perfil-de-usuario.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-004: Gestionar Perfil de Usuario",
+  "cus": [
+   4
+  ]
+ },
+ {
+  "archivo": "DSS_CU-047_cu-047-recuperar-contraseña.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-047: Recuperar Contraseña",
+  "cus": [
+   47
+  ]
+ },
+ {
+  "archivo": "DSS_CU-050_cu-050-bloquear-desbloquear-usuario.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-050: Bloquear / Desbloquear Usuario",
+  "cus": [
+   50
+  ]
+ },
+ {
+  "archivo": "DSS_CU-082_cu-082-crear-usuario-base.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-082: Crear Usuario Base",
+  "cus": [
+   82
+  ]
+ },
+ {
+  "archivo": "DSS_CU-083_cu-083-buscar-listar-usuarios.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-083: Buscar / Listar Usuarios",
+  "cus": [
+   83
+  ]
+ },
+ {
+  "archivo": "DSS_CU-084_cu-084-verificar-existencia-de-usuario-pre-registro.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-084: Verificar Existencia de Usuario (pre-registro)",
+  "cus": [
+   84
+  ]
+ },
+ {
+  "archivo": "DSS_CU-085_cu-085-eliminar-usuario-baja-lógica.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-085: Eliminar Usuario (baja lógica)",
+  "cus": [
+   85
+  ]
+ },
+ {
+  "archivo": "DSS_CU-091_cu-091-validar-vigencia-del-token-de-sesión.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-091: Validar Vigencia del Token de Sesión",
+  "cus": [
+   91
+  ]
+ },
+ {
+  "archivo": "DSS_CU-006_cu-006-consultar-detalle-de-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-006: Consultar Detalle de Pedido",
+  "cus": [
+   6
+  ]
+ },
+ {
+  "archivo": "DSS_CU-007_cu-007-consultar-historial-de-pedidos.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-007: Consultar Historial de Pedidos",
+  "cus": [
+   7
+  ]
+ },
+ {
+  "archivo": "DSS_CU-008_cu-008-cancelar-pedido-cliente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-008: Cancelar Pedido (Cliente)",
+  "cus": [
+   8
+  ]
+ },
+ {
+  "archivo": "DSS_CU-009_cu-009-cancelar-pedido-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-009: Cancelar Pedido (Chofer)",
+  "cus": [
+   9
+  ]
+ },
+ {
+  "archivo": "DSS_CU-010_cu-010-cancelar-pedido-administrador.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-010: Cancelar Pedido (Administrador)",
+  "cus": [
+   10
+  ]
+ },
+ {
+  "archivo": "DSS_CU-011_cu-011-listar-todos-los-pedidos.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-011: Listar Todos los Pedidos",
+  "cus": [
+   11
+  ]
+ },
+ {
+  "archivo": "DSS_CU-012_cu-012-asignar-chofer-manualmente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-012: Asignar Chofer Manualmente",
+  "cus": [
+   12
+  ]
+ },
+ {
+  "archivo": "DSS_CU-046_cu-046-gestionar-direcciones-de-entrega.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-046: Gestionar Direcciones de Entrega",
+  "cus": [
+   46
+  ]
+ },
+ {
+  "archivo": "DSS_CU-080_cu-080-consultar-el-pool-de-pedidos-disponibles.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-080: Consultar el Pool de Pedidos Disponibles",
+  "cus": [
+   80
+  ]
+ },
+ {
+  "archivo": "DSS_CU-081_cu-081-consultar-los-pedidos-asignados-al-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-081: Consultar los Pedidos Asignados al Chofer",
+  "cus": [
+   81
+  ]
+ },
+ {
+  "archivo": "DSS_CU-016_cu-016-rechazar-ignorar-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-016: Rechazar / Ignorar Pedido",
+  "cus": [
+   16
+  ]
+ },
+ {
+  "archivo": "DSS_CU-018_cu-018-marcar-pedido-en-camino.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-018: Marcar Pedido \"En Camino\"",
+  "cus": [
+   18
+  ]
+ },
+ {
+  "archivo": "DSS_CU-019_cu-019-avisar-llegada-al-cliente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-019: Avisar Llegada al Cliente",
+  "cus": [
+   19
+  ]
+ },
+ {
+  "archivo": "DSS_CU-021_cu-021-recibir-notificaciones-en-tiempo-real.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-021: Recibir Notificaciones en Tiempo Real",
+  "cus": [
+   21
+  ]
+ },
+ {
+  "archivo": "DSS_CU-022_cu-022-activar-desactivar-disponibilidad.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-022: Activar / Desactivar Disponibilidad",
+  "cus": [
+   22
+  ]
+ },
+ {
+  "archivo": "DSS_CU-078_cu-078-obtener-el-código-de-entrega-qr-del-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-078: Obtener el Código de Entrega (QR del chofer)",
+  "cus": [
+   78
+  ]
+ },
+ {
+  "archivo": "DSS_CU-079_cu-079-confirmar-entrega-escaneando-el-qr-cliente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-079: Confirmar Entrega Escaneando el QR (cliente)",
+  "cus": [
+   79
+  ]
+ },
+ {
+  "archivo": "DSS_CU-024_cu-024-listar-reclamos.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-024: Listar Reclamos",
+  "cus": [
+   24
+  ]
+ },
+ {
+  "archivo": "DSS_CU-025_cu-025-resolver-reclamo.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-025: Resolver Reclamo",
+  "cus": [
+   25
+  ]
+ },
+ {
+  "archivo": "DSS_CU-026_cu-026-ver-dashboard-general.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-026: Ver Dashboard General",
+  "cus": [
+   26
+  ]
+ },
+ {
+  "archivo": "DSS_CU-027_cu-027-ver-reporte-de-ventas-por-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-027: Ver Reporte de Ventas por Chofer",
+  "cus": [
+   27
+  ]
+ },
+ {
+  "archivo": "DSS_CU-028_cu-028-ver-reporte-de-ventas-por-producto.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-028: Ver Reporte de Ventas por Producto",
+  "cus": [
+   28
+  ]
+ },
+ {
+  "archivo": "DSS_CU-029_cu-029-ver-reporte-por-método-de-pago.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-029: Ver Reporte por Método de Pago",
+  "cus": [
+   29
+  ]
+ },
+ {
+  "archivo": "DSS_CU-030_cu-030-ver-gráfico-de-evolución-de-ventas.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-030: Ver Gráfico de Evolución de Ventas",
+  "cus": [
+   30
+  ]
+ },
+ {
+  "archivo": "DSS_CU-031_cu-031-registrar-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-031: Registrar Chofer",
+  "cus": [
+   31
+  ]
+ },
+ {
+  "archivo": "DSS_CU-032_cu-032-validar-invalidar-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-032: Validar / Invalidar Chofer",
+  "cus": [
+   32
+  ]
+ },
+ {
+  "archivo": "DSS_CU-033_cu-033-activar-desactivar-chofer-administrador.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-033: Activar / Desactivar Chofer (Administrador)",
+  "cus": [
+   33
+  ]
+ },
+ {
+  "archivo": "DSS_CU-034_cu-034-registrar-vehículo-del-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-034: Registrar Vehículo del Chofer",
+  "cus": [
+   34
+  ]
+ },
+ {
+  "archivo": "DSS_CU-035_cu-035-consultar-listado-de-choferes.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-035: Consultar Listado de Choferes",
+  "cus": [
+   35
+  ]
+ },
+ {
+  "archivo": "DSS_CU-049_cu-049-consultar-balance-ganancias-del-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-049: Consultar Balance / Ganancias del Chofer",
+  "cus": [
+   49
+  ]
+ },
+ {
+  "archivo": "DSS_CU-051_cu-051-gestionar-vehículos.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-051: Gestionar Vehículos",
+  "cus": [
+   51
+  ]
+ },
+ {
+  "archivo": "DSS_CU-096_cu-096-actualizar-perfil-del-chofer.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-096: Actualizar Perfil del Chofer",
+  "cus": [
+   96
+  ]
+ },
+ {
+  "archivo": "DSS_CU-097_cu-097-eliminar-chofer-baja-lógica.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-097: Eliminar Chofer (baja lógica)",
+  "cus": [
+   97
+  ]
+ },
+ {
+  "archivo": "DSS_CU-036_cu-036-crear-producto-garrafa.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-036: Crear Producto (Garrafa)",
+  "cus": [
+   36
+  ]
+ },
+ {
+  "archivo": "DSS_CU-037_cu-037-actualizar-precio-de-producto.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-037: Actualizar Precio de Producto",
+  "cus": [
+   37
+  ]
+ },
+ {
+  "archivo": "DSS_CU-038_cu-038-actualizar-stock-de-producto.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-038: Actualizar Stock de Producto",
+  "cus": [
+   38
+  ]
+ },
+ {
+  "archivo": "DSS_CU-039_cu-039-configurar-promociones-por-cantidad.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-039: Configurar Promociones por Cantidad",
+  "cus": [
+   39
+  ]
+ },
+ {
+  "archivo": "DSS_CU-040_cu-040-activar-desactivar-producto.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-040: Activar / Desactivar Producto",
+  "cus": [
+   40
+  ]
+ },
+ {
+  "archivo": "DSS_CU-041_cu-041-consultar-catálogo-de-productos.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-041: Consultar Catálogo de Productos",
+  "cus": [
+   41
+  ]
+ },
+ {
+  "archivo": "DSS_CU-042_cu-042-crear-franja-horaria.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-042: Crear Franja Horaria",
+  "cus": [
+   42
+  ]
+ },
+ {
+  "archivo": "DSS_CU-044_cu-044-seleccionar-franja-horaria-al-crear-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-044: Seleccionar Franja Horaria al Crear Pedido",
+  "cus": [
+   44
+  ]
+ },
+ {
+  "archivo": "DSS_CU-045_cu-045-consultar-franjas-horarias-disponibles.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-045: Consultar Franjas Horarias Disponibles",
+  "cus": [
+   45
+  ]
+ },
+ {
+  "archivo": "DSS_CU-103_cu-103-eliminar-franja-horaria.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-103: Eliminar Franja Horaria",
+  "cus": [
+   103
+  ]
+ },
+ {
+  "archivo": "DSS_CU-052_cu-052-registrar-distribuidora.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-052: Registrar Distribuidora",
+  "cus": [
+   52
+  ]
+ },
+ {
+  "archivo": "DSS_CU-053_cu-053-consultar-distribuidoras.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-053: Consultar Distribuidoras",
+  "cus": [
+   53
+  ]
+ },
+ {
+  "archivo": "DSS_CU-054_cu-054-modificar-datos-de-la-distribuidora.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-054: Modificar Datos de la Distribuidora",
+  "cus": [
+   54
+  ]
+ },
+ {
+  "archivo": "DSS_CU-055_cu-055-dar-de-baja-una-distribuidora.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-055: Dar de Baja una Distribuidora",
+  "cus": [
+   55
+  ]
+ },
+ {
+  "archivo": "DSS_CU-056_cu-056-definir-zona-de-cobertura.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-056: Definir Zona de Cobertura",
+  "cus": [
+   56
+  ]
+ },
+ {
+  "archivo": "DSS_CU-057_cu-057-consultar-zonas-de-cobertura.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-057: Consultar Zonas de Cobertura",
+  "cus": [
+   57
+  ]
+ },
+ {
+  "archivo": "DSS_CU-058_cu-058-validar-cobertura-de-una-dirección.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-058: Validar Cobertura de una Dirección",
+  "cus": [
+   58
+  ]
+ },
+ {
+  "archivo": "DSS_CU-059_cu-059-eliminar-zona-de-cobertura.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-059: Eliminar Zona de Cobertura",
+  "cus": [
+   59
+  ]
+ },
+ {
+  "archivo": "DSS_CU-060_cu-060-registrar-incidencia-de-entrega.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-060: Registrar Incidencia de Entrega",
+  "cus": [
+   60
+  ]
+ },
+ {
+  "archivo": "DSS_CU-061_cu-061-listar-incidencias.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-061: Listar Incidencias",
+  "cus": [
+   61
+  ]
+ },
+ {
+  "archivo": "DSS_CU-062_cu-062-consultar-incidencias-de-un-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-062: Consultar Incidencias de un Pedido",
+  "cus": [
+   62
+  ]
+ },
+ {
+  "archivo": "DSS_CU-063_cu-063-resolver-incidencia.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-063: Resolver Incidencia",
+  "cus": [
+   63
+  ]
+ },
+ {
+  "archivo": "DSS_CU-064_cu-064-calificar-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-064: Calificar Pedido",
+  "cus": [
+   64
+  ]
+ },
+ {
+  "archivo": "DSS_CU-065_cu-065-consultar-promedio-de-calificaciones-de-un-usuario.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-065: Consultar Promedio de Calificaciones de un Usuario",
+  "cus": [
+   65
+  ]
+ },
+ {
+  "archivo": "DSS_CU-066_cu-066-consultar-historial-de-calificaciones-recibidas.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-066: Consultar Historial de Calificaciones Recibidas",
+  "cus": [
+   66
+  ]
+ },
+ {
+  "archivo": "DSS_CU-067_cu-067-dar-de-alta-un-envase-físico.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-067: Dar de Alta un Envase Físico",
+  "cus": [
+   67
+  ]
+ },
+ {
+  "archivo": "DSS_CU-068_cu-068-asignar-envases-a-un-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-068: Asignar Envases a un Pedido",
+  "cus": [
+   68
+  ]
+ },
+ {
+  "archivo": "DSS_CU-069_cu-069-consultar-el-parque-de-envases.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-069: Consultar el Parque de Envases",
+  "cus": [
+   69
+  ]
+ },
+ {
+  "archivo": "DSS_CU-070_cu-070-registrar-movimiento-de-envase.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-070: Registrar Movimiento de Envase",
+  "cus": [
+   70
+  ]
+ },
+ {
+  "archivo": "DSS_CU-071_cu-071-consultar-historial-de-movimientos-de-un-envase.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-071: Consultar Historial de Movimientos de un Envase",
+  "cus": [
+   71
+  ]
+ },
+ {
+  "archivo": "DSS_CU-048_cu-048-procesar-pago-con-mercadopago.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-048: Procesar Pago con MercadoPago",
+  "cus": [
+   48
+  ]
+ },
+ {
+  "archivo": "DSS_CU-072_cu-072-crear-reserva-programada-con-seña.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-072: Crear Reserva Programada con Seña",
+  "cus": [
+   72
+  ]
+ },
+ {
+  "archivo": "DSS_CU-073_cu-073-listar-reservas-y-estado-de-la-seña.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-073: Listar Reservas y Estado de la Seña",
+  "cus": [
+   73
+  ]
+ },
+ {
+  "archivo": "DSS_CU-074_cu-074-confirmar-seña-cobrada-en-efectivo.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-074: Confirmar Seña Cobrada en Efectivo",
+  "cus": [
+   74
+  ]
+ },
+ {
+  "archivo": "DSS_CU-075_cu-075-activar-reservas-vencidas-automáticamente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-075: Activar Reservas Vencidas Automáticamente",
+  "cus": [
+   75
+  ]
+ },
+ {
+  "archivo": "DSS_CU-076_cu-076-expirar-reservas-sin-seña-pagada.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-076: Expirar Reservas sin Seña Pagada",
+  "cus": [
+   76
+  ]
+ },
+ {
+  "archivo": "DSS_CU-077_cu-077-expirar-pedidos-de-mercadopago-sin-pagar.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-077: Expirar Pedidos de MercadoPago sin Pagar",
+  "cus": [
+   77
+  ]
+ },
+ {
+  "archivo": "DSS_CU-086_cu-086-registrar-administrador.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-086: Registrar Administrador",
+  "cus": [
+   86
+  ]
+ },
+ {
+  "archivo": "DSS_CU-087_cu-087-crear-el-primer-super-administrador.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-087: Crear el Primer Super Administrador",
+  "cus": [
+   87
+  ]
+ },
+ {
+  "archivo": "DSS_CU-088_cu-088-consultar-administradores.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-088: Consultar Administradores",
+  "cus": [
+   88
+  ]
+ },
+ {
+  "archivo": "DSS_CU-089_cu-089-gestionar-roles-del-sistema.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-089: Gestionar Roles del Sistema",
+  "cus": [
+   89
+  ]
+ },
+ {
+  "archivo": "DSS_CU-090_cu-090-sembrar-los-roles-iniciales.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-090: Sembrar los Roles Iniciales",
+  "cus": [
+   90
+  ]
+ },
+ {
+  "archivo": "DSS_CU-092_cu-092-consultar-listado-de-clientes.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-092: Consultar Listado de Clientes",
+  "cus": [
+   92
+  ]
+ },
+ {
+  "archivo": "DSS_CU-093_cu-093-validar-invalidar-cliente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-093: Validar / Invalidar Cliente",
+  "cus": [
+   93
+  ]
+ },
+ {
+  "archivo": "DSS_CU-094_cu-094-actualizar-ubicación-del-cliente.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-094: Actualizar Ubicación del Cliente",
+  "cus": [
+   94
+  ]
+ },
+ {
+  "archivo": "DSS_CU-095_cu-095-eliminar-cliente-baja-lógica.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-095: Eliminar Cliente (baja lógica)",
+  "cus": [
+   95
+  ]
+ },
+ {
+  "archivo": "DSS_CU-098_cu-098-registrar-el-token-de-notificaciones-del-dispositivo.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-098: Registrar el Token de Notificaciones del Dispositivo",
+  "cus": [
+   98
+  ]
+ },
+ {
+  "archivo": "DSS_CU-099_cu-099-consultar-los-tokens-de-un-usuario.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-099: Consultar los Tokens de un Usuario",
+  "cus": [
+   99
+  ]
+ },
+ {
+  "archivo": "DSS_CU-100_cu-100-enviar-notificación-de-prueba.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-100: Enviar Notificación de Prueba",
+  "cus": [
+   100
+  ]
+ },
+ {
+  "archivo": "DSS_CU-101_cu-101-reenviar-notificación-de-confirmación-de-pedido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-101: Reenviar Notificación de Confirmación de Pedido",
+  "cus": [
+   101
+  ]
+ },
+ {
+  "archivo": "DSS_CU-102_cu-102-probar-el-servicio-de-correo.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-102: Probar el Servicio de Correo",
+  "cus": [
+   102
+  ]
+ },
+ {
+  "archivo": "DSS_CU-104_cu-104-verificar-la-salud-del-sistema.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-104: Verificar la Salud del Sistema",
+  "cus": [
+   104
+  ]
+ },
+ {
+  "archivo": "DSS_CU-105_cu-105-planificar-el-mantenimiento-y-las-habilitaciones-de-l.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-105: Planificar el mantenimiento y las habilitaciones de la flota",
+  "cus": [
+   105
+  ]
+ },
+ {
+  "archivo": "DSS_CU-106_cu-106-anticipar-la-recompra-por-consumo-estimado.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-106: Anticipar la recompra por consumo estimado",
+  "cus": [
+   106
+  ]
+ },
+ {
+  "archivo": "DSS_CU-107_cu-107-agrupar-pedidos-por-recorrido.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-107: Agrupar pedidos por recorrido",
+  "cus": [
+   107
+  ]
+ },
+ {
+  "archivo": "DSS_CU-108_cu-108-recuperar-envases-no-devueltos.mmd",
+  "tipo": "DSS",
+  "titulo": "DSS — CU-108: Recuperar envases no devueltos",
+  "cus": [
+   108
+  ]
+ },
+ {
+  "archivo": "DSS_CU-043_pendiente-de-construcción-dss-cu-043-modificar-capacidad-de-.mmd",
+  "tipo": "DSS",
+  "titulo": "Especificado — pendiente de construcción · DSS — CU-043: Modificar Capacidad de Franja Horaria",
+  "cus": [
+   43
+  ]
+ },
+ {
+  "archivo": "DSD_CU-005_cu-005-crear-pedido-con-despacho-automático.mmd",
+  "tipo": "DSD",
+  "titulo": "4.1 Crítico DSD — CU-005: Crear pedido con despacho automático",
+  "cus": [
+   5
+  ]
+ },
+ {
+  "archivo": "DSD_CU-013_cu-013-despacho-por-proximidad-vista-general.mmd",
+  "tipo": "DSD",
+  "titulo": "4.2 Crítico · automático DSD — CU-013: Despacho por proximidad (vista general)",
+  "cus": [
+   13
+  ]
+ },
+ {
+  "archivo": "DSD_CU-017_cu-017-actualización-de-la-ubicación-del-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "4.3 Crítico · automático DSD — CU-017: Actualización de la ubicación del chofer",
+  "cus": [
+   17
+  ]
+ },
+ {
+  "archivo": "DSD_CU-013_cu-013-ofrecer-el-pedido-al-chofer-más-cercano-m1.mmd",
+  "tipo": "DSD",
+  "titulo": "4.4 Crítico · automático DSD — CU-013: Ofrecer el pedido al chofer más cercano (M1)",
+  "cus": [
+   13
+  ]
+ },
+ {
+  "archivo": "DSD_CU-014_cu-014-vencimiento-de-la-oferta-y-re-oferta-al-siguiente-m1-.mmd",
+  "tipo": "DSD",
+  "titulo": "4.5 Crítico · automático DSD — CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal)",
+  "cus": [
+   14
+  ]
+ },
+ {
+  "archivo": "DSD_CU-015_016_cu-015-cu-016-respuesta-del-chofer-a-la-oferta-aceptar-o-rec.mmd",
+  "tipo": "DSD",
+  "titulo": "4.6 Crítico DSD — CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar)",
+  "cus": [
+   15,
+   16
+  ]
+ },
+ {
+  "archivo": "DSD_CU-072_cu-072-crear-reserva-programada-con-seña.mmd",
+  "tipo": "DSD",
+  "titulo": "4.7 Crítico DSD — CU-072: Crear reserva programada con seña",
+  "cus": [
+   72
+  ]
+ },
+ {
+  "archivo": "DSD_CU-075_076_077_cu-075-cu-076-cu-077-los-tres-crons-de-reservas-y-pagos-pend.mmd",
+  "tipo": "DSD",
+  "titulo": "4.8 Crítico · automático DSD — CU-075 / CU-076 / CU-077: Los tres crons de reservas y pagos pendientes",
+  "cus": [
+   75,
+   76,
+   77
+  ]
+ },
+ {
+  "archivo": "DSD_CU-078_079_cu-078-cu-079-entrega-verificada-por-qr-prueba-anti-fraude.mmd",
+  "tipo": "DSD",
+  "titulo": "4.9 Crítico DSD — CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude)",
+  "cus": [
+   78,
+   79
+  ]
+ },
+ {
+  "archivo": "DSD_CU-068_070_cu-068-cu-070-ciclo-de-vida-del-envase-físico.mmd",
+  "tipo": "DSD",
+  "titulo": "4.10 Importante DSD — CU-068 / CU-070: Ciclo de vida del envase físico",
+  "cus": [
+   68,
+   70
+  ]
+ },
+ {
+  "archivo": "DSD_CU-048_cu-048-pago-con-pasarela-y-confirmación-por-webhook.mmd",
+  "tipo": "DSD",
+  "titulo": "4.11 Crítico DSD — CU-048: Pago con pasarela y confirmación por webhook",
+  "cus": [
+   48
+  ]
+ },
+ {
+  "archivo": "DSD_CU-058_005_cu-058-cu-005-validación-de-zona-de-cobertura-al-crear-un-pe.mmd",
+  "tipo": "DSD",
+  "titulo": "4.12 Crítico DSD — CU-058 / CU-005: Validación de zona de cobertura al crear un pedido",
+  "cus": [
+   58,
+   5
+  ]
+ },
+ {
+  "archivo": "DSD_CU-064_065_cu-064-cu-065-calificación-bidireccional-y-recálculo-del-pro.mmd",
+  "tipo": "DSD",
+  "titulo": "4.13 Importante DSD — CU-064 / CU-065: Calificación bidireccional y recálculo del promedio",
+  "cus": [
+   64,
+   65
+  ]
+ },
+ {
+  "archivo": "DSD_CU-001_cu-001-iniciar-sesión.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-001: Iniciar Sesión",
+  "cus": [
+   1
+  ]
+ },
+ {
+  "archivo": "DSD_CU-002_cu-002-registrarse-como-cliente.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-002: Registrarse como Cliente",
+  "cus": [
+   2
+  ]
+ },
+ {
+  "archivo": "DSD_CU-003_cu-003-registrar-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-003: Registrar Chofer",
+  "cus": [
+   3
+  ]
+ },
+ {
+  "archivo": "DSD_CU-004_cu-004-gestionar-perfil-de-usuario.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-004: Gestionar Perfil de Usuario",
+  "cus": [
+   4
+  ]
+ },
+ {
+  "archivo": "DSD_CU-047_cu-047-recuperar-contraseña.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-047: Recuperar Contraseña",
+  "cus": [
+   47
+  ]
+ },
+ {
+  "archivo": "DSD_CU-050_cu-050-bloquear-desbloquear-usuario.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-050: Bloquear / Desbloquear Usuario",
+  "cus": [
+   50
+  ]
+ },
+ {
+  "archivo": "DSD_CU-082_cu-082-crear-usuario-base.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-082: Crear Usuario Base",
+  "cus": [
+   82
+  ]
+ },
+ {
+  "archivo": "DSD_CU-083_cu-083-buscar-listar-usuarios.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-083: Buscar / Listar Usuarios",
+  "cus": [
+   83
+  ]
+ },
+ {
+  "archivo": "DSD_CU-084_cu-084-verificar-existencia-de-usuario-pre-registro.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-084: Verificar Existencia de Usuario (pre-registro)",
+  "cus": [
+   84
+  ]
+ },
+ {
+  "archivo": "DSD_CU-085_cu-085-eliminar-usuario-baja-lógica.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-085: Eliminar Usuario (baja lógica)",
+  "cus": [
+   85
+  ]
+ },
+ {
+  "archivo": "DSD_CU-091_cu-091-validar-vigencia-del-token-de-sesión.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-091: Validar Vigencia del Token de Sesión",
+  "cus": [
+   91
+  ]
+ },
+ {
+  "archivo": "DSD_CU-006_cu-006-consultar-detalle-de-pedido.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-006: Consultar Detalle de Pedido",
+  "cus": [
+   6
+  ]
+ },
+ {
+  "archivo": "DSD_CU-007_cu-007-consultar-historial-de-pedidos.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-007: Consultar Historial de Pedidos",
+  "cus": [
+   7
+  ]
+ },
+ {
+  "archivo": "DSD_CU-008_cu-008-cancelar-pedido-cliente.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-008: Cancelar Pedido (Cliente)",
+  "cus": [
+   8
+  ]
+ },
+ {
+  "archivo": "DSD_CU-009_cu-009-cancelar-pedido-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-009: Cancelar Pedido (Chofer)",
+  "cus": [
+   9
+  ]
+ },
+ {
+  "archivo": "DSD_CU-010_cu-010-cancelar-pedido-administrador.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-010: Cancelar Pedido (Administrador)",
+  "cus": [
+   10
+  ]
+ },
+ {
+  "archivo": "DSD_CU-011_cu-011-listar-todos-los-pedidos.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-011: Listar Todos los Pedidos",
+  "cus": [
+   11
+  ]
+ },
+ {
+  "archivo": "DSD_CU-046_cu-046-gestionar-direcciones-de-entrega.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-046: Gestionar Direcciones de Entrega",
+  "cus": [
+   46
+  ]
+ },
+ {
+  "archivo": "DSD_CU-080_cu-080-consultar-el-pool-de-pedidos-disponibles.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-080: Consultar el Pool de Pedidos Disponibles",
+  "cus": [
+   80
+  ]
+ },
+ {
+  "archivo": "DSD_CU-081_cu-081-consultar-los-pedidos-asignados-al-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-081: Consultar los Pedidos Asignados al Chofer",
+  "cus": [
+   81
+  ]
+ },
+ {
+  "archivo": "DSD_CU-012_cu-012-asignar-chofer-manualmente.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-012: Asignar Chofer Manualmente",
+  "cus": [
+   12
+  ]
+ },
+ {
+  "archivo": "DSD_CU-018_cu-018-marcar-pedido-en-camino.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-018: Marcar Pedido \"En Camino\"",
+  "cus": [
+   18
+  ]
+ },
+ {
+  "archivo": "DSD_CU-019_cu-019-avisar-llegada-al-cliente.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-019: Avisar Llegada al Cliente",
+  "cus": [
+   19
+  ]
+ },
+ {
+  "archivo": "DSD_CU-021_cu-021-recibir-notificaciones-en-tiempo-real.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-021: Recibir Notificaciones en Tiempo Real",
+  "cus": [
+   21
+  ]
+ },
+ {
+  "archivo": "DSD_CU-022_cu-022-activar-desactivar-disponibilidad.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-022: Activar / Desactivar Disponibilidad",
+  "cus": [
+   22
+  ]
+ },
+ {
+  "archivo": "DSD_CU-023_cu-023-registrar-reclamo.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-023: Registrar Reclamo",
+  "cus": [
+   23
+  ]
+ },
+ {
+  "archivo": "DSD_CU-024_cu-024-listar-reclamos.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-024: Listar Reclamos",
+  "cus": [
+   24
+  ]
+ },
+ {
+  "archivo": "DSD_CU-025_cu-025-resolver-reclamo.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-025: Resolver Reclamo",
+  "cus": [
+   25
+  ]
+ },
+ {
+  "archivo": "DSD_CU-026_cu-026-ver-dashboard-general.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-026: Ver Dashboard General",
+  "cus": [
+   26
+  ]
+ },
+ {
+  "archivo": "DSD_CU-027_cu-027-ver-reporte-de-ventas-por-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-027: Ver Reporte de Ventas por Chofer",
+  "cus": [
+   27
+  ]
+ },
+ {
+  "archivo": "DSD_CU-028_cu-028-ver-reporte-de-ventas-por-producto.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-028: Ver Reporte de Ventas por Producto",
+  "cus": [
+   28
+  ]
+ },
+ {
+  "archivo": "DSD_CU-029_cu-029-ver-reporte-por-método-de-pago.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-029: Ver Reporte por Método de Pago",
+  "cus": [
+   29
+  ]
+ },
+ {
+  "archivo": "DSD_CU-030_cu-030-ver-gráfico-de-ventas.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-030: Ver Gráfico de Ventas",
+  "cus": [
+   30
+  ]
+ },
+ {
+  "archivo": "DSD_CU-031_cu-031-registrar-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-031: Registrar Chofer",
+  "cus": [
+   31
+  ]
+ },
+ {
+  "archivo": "DSD_CU-032_cu-032-validar-invalidar-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-032: Validar / Invalidar Chofer",
+  "cus": [
+   32
+  ]
+ },
+ {
+  "archivo": "DSD_CU-033_cu-033-activar-desactivar-chofer-admin.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-033: Activar / Desactivar Chofer (Admin)",
+  "cus": [
+   33
+  ]
+ },
+ {
+  "archivo": "DSD_CU-034_cu-034-registrar-vehículo-del-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-034: Registrar Vehículo del Chofer",
+  "cus": [
+   34
+  ]
+ },
+ {
+  "archivo": "DSD_CU-035_cu-035-consultar-listado-de-choferes.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-035: Consultar Listado de Choferes",
+  "cus": [
+   35
+  ]
+ },
+ {
+  "archivo": "DSD_CU-049_cu-049-consultar-balance-ganancias-del-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-049: Consultar Balance / Ganancias del Chofer",
+  "cus": [
+   49
+  ]
+ },
+ {
+  "archivo": "DSD_CU-051_cu-051-gestionar-vehículos-consultar-editar-eliminar.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-051: Gestionar Vehículos (consultar, editar, eliminar)",
+  "cus": [
+   51
+  ]
+ },
+ {
+  "archivo": "DSD_CU-096_cu-096-actualizar-perfil-del-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-096: Actualizar Perfil del Chofer",
+  "cus": [
+   96
+  ]
+ },
+ {
+  "archivo": "DSD_CU-097_cu-097-eliminar-chofer-baja-lógica.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-097: Eliminar Chofer (baja lógica)",
+  "cus": [
+   97
+  ]
+ },
+ {
+  "archivo": "DSD_CU-036_cu-036-crear-producto-garrafa.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-036: Crear Producto (Garrafa)",
+  "cus": [
+   36
+  ]
+ },
+ {
+  "archivo": "DSD_CU-037_cu-037-actualizar-precio-de-producto.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-037: Actualizar Precio de Producto",
+  "cus": [
+   37
+  ]
+ },
+ {
+  "archivo": "DSD_CU-038_cu-038-actualizar-stock-de-producto.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-038: Actualizar Stock de Producto",
+  "cus": [
+   38
+  ]
+ },
+ {
+  "archivo": "DSD_CU-039_cu-039-configurar-promociones-por-cantidad.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-039: Configurar Promociones por Cantidad",
+  "cus": [
+   39
+  ]
+ },
+ {
+  "archivo": "DSD_CU-040_cu-040-activar-desactivar-producto.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-040: Activar / Desactivar Producto",
+  "cus": [
+   40
+  ]
+ },
+ {
+  "archivo": "DSD_CU-041_cu-041-consultar-catálogo-de-productos.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-041: Consultar Catálogo de Productos",
+  "cus": [
+   41
+  ]
+ },
+ {
+  "archivo": "DSD_CU-042_cu-042-crear-franja-horaria.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-042: Crear Franja Horaria",
+  "cus": [
+   42
+  ]
+ },
+ {
+  "archivo": "DSD_CU-044_cu-044-seleccionar-franja-horaria-al-crear-pedido.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-044: Seleccionar Franja Horaria al Crear Pedido",
+  "cus": [
+   44
+  ]
+ },
+ {
+  "archivo": "DSD_CU-045_cu-045-consultar-franjas-horarias-disponibles.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-045: Consultar Franjas Horarias Disponibles",
+  "cus": [
+   45
+  ]
+ },
+ {
+  "archivo": "DSD_CU-103_cu-103-eliminar-franja-horaria.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-103: Eliminar Franja Horaria",
+  "cus": [
+   103
+  ]
+ },
+ {
+  "archivo": "DSD_CU-052_cu-052-registrar-distribuidora.mmd",
+  "tipo": "DSD",
+  "titulo": "C.1 DSD — CU-052: Registrar Distribuidora",
+  "cus": [
+   52
+  ]
+ },
+ {
+  "archivo": "DSD_CU-053_cu-053-consultar-distribuidoras.mmd",
+  "tipo": "DSD",
+  "titulo": "C.2 DSD — CU-053: Consultar Distribuidoras",
+  "cus": [
+   53
+  ]
+ },
+ {
+  "archivo": "DSD_CU-054_cu-054-modificar-datos-de-la-distribuidora.mmd",
+  "tipo": "DSD",
+  "titulo": "C.3 DSD — CU-054: Modificar Datos de la Distribuidora",
+  "cus": [
+   54
+  ]
+ },
+ {
+  "archivo": "DSD_CU-055_cu-055-dar-de-baja-una-distribuidora.mmd",
+  "tipo": "DSD",
+  "titulo": "C.4 DSD — CU-055: Dar de Baja una Distribuidora",
+  "cus": [
+   55
+  ]
+ },
+ {
+  "archivo": "DSD_CU-056_cu-056-definir-zona-de-cobertura.mmd",
+  "tipo": "DSD",
+  "titulo": "C.5 DSD — CU-056: Definir Zona de Cobertura",
+  "cus": [
+   56
+  ]
+ },
+ {
+  "archivo": "DSD_CU-057_cu-057-consultar-zonas-de-cobertura.mmd",
+  "tipo": "DSD",
+  "titulo": "C.6 DSD — CU-057: Consultar Zonas de Cobertura",
+  "cus": [
+   57
+  ]
+ },
+ {
+  "archivo": "DSD_CU-059_cu-059-eliminar-zona-de-cobertura.mmd",
+  "tipo": "DSD",
+  "titulo": "C.7 DSD — CU-059: Eliminar Zona de Cobertura",
+  "cus": [
+   59
+  ]
+ },
+ {
+  "archivo": "DSD_CU-060_cu-060-registrar-incidencia-de-entrega.mmd",
+  "tipo": "DSD",
+  "titulo": "C.8 DSD — CU-060: Registrar Incidencia de Entrega",
+  "cus": [
+   60
+  ]
+ },
+ {
+  "archivo": "DSD_CU-061_cu-061-listar-incidencias.mmd",
+  "tipo": "DSD",
+  "titulo": "C.9 DSD — CU-061: Listar Incidencias",
+  "cus": [
+   61
+  ]
+ },
+ {
+  "archivo": "DSD_CU-062_cu-062-consultar-incidencias-de-un-pedido.mmd",
+  "tipo": "DSD",
+  "titulo": "C.10 DSD — CU-062: Consultar Incidencias de un Pedido",
+  "cus": [
+   62
+  ]
+ },
+ {
+  "archivo": "DSD_CU-063_cu-063-resolver-incidencia.mmd",
+  "tipo": "DSD",
+  "titulo": "C.11 DSD — CU-063: Resolver Incidencia",
+  "cus": [
+   63
+  ]
+ },
+ {
+  "archivo": "DSD_CU-066_cu-066-consultar-historial-de-calificaciones-recibidas.mmd",
+  "tipo": "DSD",
+  "titulo": "C.12 DSD — CU-066: Consultar Historial de Calificaciones Recibidas",
+  "cus": [
+   66
+  ]
+ },
+ {
+  "archivo": "DSD_CU-067_cu-067-dar-de-alta-un-envase-físico.mmd",
+  "tipo": "DSD",
+  "titulo": "C.13 DSD — CU-067: Dar de Alta un Envase Físico",
+  "cus": [
+   67
+  ]
+ },
+ {
+  "archivo": "DSD_CU-069_cu-069-consultar-el-parque-de-envases.mmd",
+  "tipo": "DSD",
+  "titulo": "C.14 DSD — CU-069: Consultar el Parque de Envases",
+  "cus": [
+   69
+  ]
+ },
+ {
+  "archivo": "DSD_CU-071_cu-071-consultar-historial-de-movimientos-de-un-envase.mmd",
+  "tipo": "DSD",
+  "titulo": "C.15 DSD — CU-071: Consultar Historial de Movimientos de un Envase",
+  "cus": [
+   71
+  ]
+ },
+ {
+  "archivo": "DSD_CU-073_cu-073-listar-reservas-y-estado-de-la-seña.mmd",
+  "tipo": "DSD",
+  "titulo": "C.16 DSD — CU-073: Listar Reservas y Estado de la Seña",
+  "cus": [
+   73
+  ]
+ },
+ {
+  "archivo": "DSD_CU-074_cu-074-confirmar-seña-cobrada-en-efectivo.mmd",
+  "tipo": "DSD",
+  "titulo": "C.17 DSD — CU-074: Confirmar Seña Cobrada en Efectivo",
+  "cus": [
+   74
+  ]
+ },
+ {
+  "archivo": "DSD_CU-086_cu-086-registrar-administrador.mmd",
+  "tipo": "DSD",
+  "titulo": "C.18 DSD — CU-086: Registrar Administrador",
+  "cus": [
+   86
+  ]
+ },
+ {
+  "archivo": "DSD_CU-087_cu-087-crear-el-primer-super-administrador-bootstrap.mmd",
+  "tipo": "DSD",
+  "titulo": "C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)",
+  "cus": [
+   87
+  ]
+ },
+ {
+  "archivo": "DSD_CU-088_cu-088-consultar-administradores.mmd",
+  "tipo": "DSD",
+  "titulo": "C.20 DSD — CU-088: Consultar Administradores",
+  "cus": [
+   88
+  ]
+ },
+ {
+  "archivo": "DSD_CU-089_cu-089-gestionar-roles-del-sistema.mmd",
+  "tipo": "DSD",
+  "titulo": "C.21 DSD — CU-089: Gestionar Roles del Sistema",
+  "cus": [
+   89
+  ]
+ },
+ {
+  "archivo": "DSD_CU-090_cu-090-sembrar-los-roles-iniciales.mmd",
+  "tipo": "DSD",
+  "titulo": "C.22 DSD — CU-090: Sembrar los Roles Iniciales",
+  "cus": [
+   90
+  ]
+ },
+ {
+  "archivo": "DSD_CU-092_cu-092-consultar-listado-de-clientes.mmd",
+  "tipo": "DSD",
+  "titulo": "C.23 DSD — CU-092: Consultar Listado de Clientes",
+  "cus": [
+   92
+  ]
+ },
+ {
+  "archivo": "DSD_CU-093_cu-093-validar-invalidar-cliente.mmd",
+  "tipo": "DSD",
+  "titulo": "C.24 DSD — CU-093: Validar / Invalidar Cliente",
+  "cus": [
+   93
+  ]
+ },
+ {
+  "archivo": "DSD_CU-094_cu-094-actualizar-ubicación-del-cliente.mmd",
+  "tipo": "DSD",
+  "titulo": "C.25 DSD — CU-094: Actualizar Ubicación del Cliente",
+  "cus": [
+   94
+  ]
+ },
+ {
+  "archivo": "DSD_CU-095_cu-095-eliminar-cliente-baja-lógica.mmd",
+  "tipo": "DSD",
+  "titulo": "C.26 DSD — CU-095: Eliminar Cliente (baja lógica)",
+  "cus": [
+   95
+  ]
+ },
+ {
+  "archivo": "DSD_CU-098_cu-098-registrar-el-token-de-notificaciones-del-dispositivo.mmd",
+  "tipo": "DSD",
+  "titulo": "C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo",
+  "cus": [
+   98
+  ]
+ },
+ {
+  "archivo": "DSD_CU-099_cu-099-consultar-los-tokens-de-un-usuario.mmd",
+  "tipo": "DSD",
+  "titulo": "C.28 DSD — CU-099: Consultar los Tokens de un Usuario",
+  "cus": [
+   99
+  ]
+ },
+ {
+  "archivo": "DSD_CU-100_cu-100-enviar-notificación-de-prueba.mmd",
+  "tipo": "DSD",
+  "titulo": "C.29 DSD — CU-100: Enviar Notificación de Prueba",
+  "cus": [
+   100
+  ]
+ },
+ {
+  "archivo": "DSD_CU-101_cu-101-reenviar-notificación-de-confirmación-de-pedido.mmd",
+  "tipo": "DSD",
+  "titulo": "C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido",
+  "cus": [
+   101
+  ]
+ },
+ {
+  "archivo": "DSD_CU-102_cu-102-probar-el-servicio-de-correo.mmd",
+  "tipo": "DSD",
+  "titulo": "C.31 DSD — CU-102: Probar el Servicio de Correo",
+  "cus": [
+   102
+  ]
+ },
+ {
+  "archivo": "DSD_CU-104_cu-104-verificar-la-salud-del-sistema-liveness-readiness.mmd",
+  "tipo": "DSD",
+  "titulo": "C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)",
+  "cus": [
+   104
+  ]
+ },
+ {
+  "archivo": "DSD_CU-105_cu-105-planificar-el-mantenimiento-y-las-habilitaciones-de-l.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-105: Planificar el mantenimiento y las habilitaciones de la flota",
+  "cus": [
+   105
+  ]
+ },
+ {
+  "archivo": "DSD_CU-106_cu-106-anticipar-la-recompra-por-consumo-estimado.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-106: Anticipar la recompra por consumo estimado",
+  "cus": [
+   106
+  ]
+ },
+ {
+  "archivo": "DSD_CU-107_cu-107-agrupar-pedidos-por-recorrido.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-107: Agrupar pedidos por recorrido",
+  "cus": [
+   107
+  ]
+ },
+ {
+  "archivo": "DSD_CU-108_cu-108-recuperar-envases-no-devueltos.mmd",
+  "tipo": "DSD",
+  "titulo": "DSD — CU-108: Recuperar envases no devueltos",
+  "cus": [
+   108
+  ]
+ },
+ {
+  "archivo": "DSD_CU-043_pendiente-de-construcción-dsd-cu-043-modificar-capacidad-de-.mmd",
+  "tipo": "DSD",
+  "titulo": "Especificado — pendiente de construcción · DSD — CU-043: Modificar Capacidad de Franja Horaria",
+  "cus": [
+   43
+  ]
+ },
+ {
+  "archivo": "DSD_CU-020_cu-020-confirmar-entrega-declaración-del-chofer.mmd",
+  "tipo": "DSD",
+  "titulo": "4.14 Crítico DSD — CU-020: Confirmar entrega (declaración del chofer)",
+  "cus": [
+   20
+  ]
+ }
+]

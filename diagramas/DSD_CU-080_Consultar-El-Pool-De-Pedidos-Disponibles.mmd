@@ -1,0 +1,31 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as OrderController
+    participant CRON as DispatchService
+    participant SRV as OrderService
+    participant ORD as OrderRepositoryPort
+    participant REP as RepositoryOrder
+    participant MAP as OrderMapper
+
+    alt Consulta del chofer, GET /orders/available
+        RG->>RG: canActivate(ctx) contra Roles DELIVERY, ADMIN y SUPER_ADMIN
+        alt Rol insuficiente
+            RG-->>CTRL: ForbiddenException Acceso denegado
+        else Autorizado
+            RG-->>CTRL: true
+            CTRL->>SRV: findAvailableOrders(paginationDto, distributorId)
+        end
+    else Bootstrap del cron de despacho
+        CRON->>SRV: findAvailableOrders(limit 50, offset 0)
+    end
+    SRV->>ORD: findAvailable(limit, offset, distributorId)
+    ORD->>ORD: scoped(status PENDING y delivery_id IsNull, distributorId)
+    ORD->>REP: findAndCount(where, take, skip, relations, order createdAt ASC)
+    REP-->>ORD: orders y total
+    ORD-->>SRV: orders, total, limit y offset
+    SRV-->>CTRL: PaginatedOrders
+    loop Por cada pedido del pool
+        CTRL->>MAP: toDto(order)
+        MAP-->>CTRL: OrderResponseDto
+    end

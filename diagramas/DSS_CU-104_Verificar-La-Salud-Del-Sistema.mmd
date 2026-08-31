@@ -1,0 +1,27 @@
+sequenceDiagram
+    autonumber
+    actor OPS as Plataforma de Operacion
+    participant SIS as Sistema
+
+    Note over OPS: Sondeo periodico durante toda la vida de la instancia
+
+    OPS->>SIS: verificarVida()
+    activate SIS
+    SIS-->>OPS: la instancia esta viva
+    deactivate SIS
+
+    OPS->>SIS: verificarDisponibilidad()
+    activate SIS
+    alt Las dependencias responden
+        SIS-->>OPS: lista para recibir trafico
+    else Alguna dependencia no responde
+        SIS-->>OPS: no disponible (se le retira el trafico a la instancia)
+    end
+    deactivate SIS
+
+    opt Diagnostico ampliado
+        OPS->>SIS: verificarSalud()
+        activate SIS
+        SIS-->>OPS: estado de cada verificacion (base de datos, memoria cache, memoria en uso, espacio en disco)
+        deactivate SIS
+    end

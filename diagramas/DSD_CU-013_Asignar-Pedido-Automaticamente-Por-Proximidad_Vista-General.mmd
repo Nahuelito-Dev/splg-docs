@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    participant ORQ as DispatchOrchestratorService
+    participant OFERTAS as DispatchOfferRepositoryPort
+    participant RT as RealtimeDispatchPort
+    participant REDIS as RedisService
+    participant DEL as RepositoryDelivery
+    participant DGW as DriversGateway
+
+    ORQ->>OFERTAS: findOfferedDriverIds(order.order_id)
+    OFERTAS-->>ORQ: choferes ya contactados
+    loop findNearestAvailable, radiusKm en 5, 10, 15, 20
+        ORQ->>RT: findNearbyDrivers(lat, lng, radiusKm)
+        RT->>REDIS: getNearbyDrivers(lat, lng, radiusKm)
+        REDIS-->>RT: GEORADIUS sobre drivers:locations, orden ASC
+        RT-->>ORQ: driverIds por cercania
+        ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        DEL-->>ORQ: choferes de la misma distribuidora
+    end
+    alt Hay un candidato aun no contactado
+        ORQ->>OFERTAS: create(orderId, candidate, expiresAt, distributorId)
+        OFERTAS-->>ORQ: DispatchOffer en estado OFFERED
+        ORQ->>RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        RT->>DGW: notifyNewOrder(candidate, payload)
+        DGW-->>ORQ: emit server:new-order-request en la room del chofer
+    else Sin candidatos nuevos en ningun radio
+        ORQ->>ORQ: logger.debug y devuelve null
+    end

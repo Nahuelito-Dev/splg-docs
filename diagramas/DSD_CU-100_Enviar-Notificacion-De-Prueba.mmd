@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant CTRL as NotificationsController
+    participant SRV as NotificationsService
+    participant FCM as FcmPort
+
+    ADM->>CTRL: POST /notifications/send-test con token title y body
+    CTRL->>CTRL: Roles ADMIN SUPER_ADMIN verificados por RolesGuard
+    CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
+    SRV->>SRV: arma message con notification y data type TEST mas timestamp
+    SRV->>FCM: sendToToken(token, message)
+    alt El envio falla
+        FCM-->>SRV: Error
+        SRV->>SRV: logger.error error sending test notification
+        SRV-->>CTRL: success false, error
+    else Envio exitoso
+        FCM-->>SRV: messageId
+        SRV->>SRV: logger.log test notification sent
+        SRV-->>CTRL: success true, messageId
+    end
+    CTRL-->>ADM: 200 resultado

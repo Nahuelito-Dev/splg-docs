@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    alt Consulta, el chofer abre su perfil, GET /delivery/user/:userId
+        CTRL->>SRV: findOneByUserId(userId)
+        SRV->>DREP: findOne(where user_id, relations user y user.role)
+        DREP-->>SRV: Delivery con el campo balance
+        SRV-->>CTRL: Delivery, el balance viaja dentro de la entidad
+    else Ajuste por el admin, PATCH /delivery/:id/balance
+        CTRL->>SRV: updateBalance(id, body.amount)
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        DREP-->>SRV: Delivery o null
+        alt Chofer inexistente
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+        else Chofer encontrado
+            SRV->>SRV: delivery.balance igual balance actual mas amount
+            SRV->>DREP: save(delivery)
+            DREP-->>SRV: Delivery actualizado
+            SRV-->>CTRL: Delivery
+        end
+    end

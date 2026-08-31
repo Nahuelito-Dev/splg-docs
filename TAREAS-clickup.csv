@@ -1,0 +1,103 @@
+﻿Task Name,Description,Status,Priority,Tags,List
+Subir los seis documentos a Drive,"Los .doc de Análisis y Diseño en Drive siguen vacíos desde 2023. Subir cada HTML de docs/drive/ y abrirlo con Documentos de Google.
+
+Referencia: docs/drive/*.html",to do,1,Entrega documentación,Tesis Jeny Gas
+Insertar los diagramas de casos de uso en los documentos 0 y 1,"19 diagramas en notación UML: uno de contexto y uno por subsistema.
+
+Referencia: docs/diagramas/uml/",to do,2,Entrega documentación,Tesis Jeny Gas
+Insertar los diagramas de secuencia del sistema en el documento 2,"108 diagramas, uno por caso de uso. Sección 2.1.
+
+Referencia: docs/diagramas/png/DSS_*",to do,2,Entrega documentación,Tesis Jeny Gas
+Insertar los diagramas de interacción en el documento 3,"103 diagramas de diseño. Sección 4. Ver docs/diagramas/INDICE.md.
+
+Referencia: docs/diagramas/png/DSD_*",to do,3,Entrega documentación,Tesis Jeny Gas
+Corregir los detalles de la Propuesta en Drive,"Módulo de Pagos duplicado, palabra cortada, fechas invertidas, facturación incluida y excluida a la vez.
+
+Referencia: Propuesta Proyecto de Software",to do,3,Entrega documentación,Tesis Jeny Gas
+Corregir el formato del Estudio de mercado,"6.1 a 6.4 con formato de título, falta la tabla 6.5, tres apariciones de Delivery-gas.
+
+Referencia: Estudio de mercado",to do,4,Entrega documentación,Tesis Jeny Gas
+Restringir la modificación de choferes por rol,"PATCH /delivery/:id sin @Roles y el DTO admite validated, isActive y distributorId. Cualquier autenticado puede autovalidarse o cambiarse de distribuidora.
+
+Referencia: delivery.controller.ts:77",to do,1,Seguridad,Tesis Jeny Gas
+Verificar que el chofer sea el asignado antes de operar el pedido,"Ningún endpoint compara el usuario con order.delivery_id. Cualquier chofer entrega y cobra el pedido de otro.
+
+Referencia: update-order-status.use-case.ts",to do,1,Seguridad,Tesis Jeny Gas
+Impedir que un segundo chofer se reasigne un pedido ya aceptado,"No se comprueba que delivery_id esté vacío y canTransition acepta from===to. Regenera el código de entrega e invalida el QR del primero.
+
+Referencia: update-order-status.use-case.ts:118",to do,1,Seguridad,Tesis Jeny Gas
+Cerrar la consulta de usuario por correo,"GET /users/email/:email es público: expone datos sin credenciales.
+
+Referencia: users.controller.ts:54",to do,1,Seguridad,Tesis Jeny Gas
+Quitar el punto de prueba de correo,"POST /email/test es público y dispara envíos. El código lo marca como temporal.
+
+Referencia: email.controller.ts:50",to do,2,Seguridad,Tesis Jeny Gas
+Hacer efectivo el bloqueo de usuario,"user.blocked se escribe pero no se lee. Un bloqueado opera con normalidad.
+
+Referencia: users.service.ts:266",to do,2,Seguridad,Tesis Jeny Gas
+Hacer que la habilitación del chofer gobierne el despacho,"validated solo se lee en un contador del panel; el orquestador no lo consulta.
+
+Referencia: dispatch-orchestrator.service.ts",to do,2,Seguridad,Tesis Jeny Gas
+Acotar por distribuidora la asignación de envases,"Recibe distributorId pero busca el pedido sin filtrarlo.
+
+Referencia: cylinder.service.ts:156",to do,2,Seguridad,Tesis Jeny Gas
+Acotar por distribuidora el registro de incidencias,"La incidencia queda asentada bajo la distribuidora ajena.
+
+Referencia: incident.service.ts:27",to do,2,Seguridad,Tesis Jeny Gas
+Definir si la actualización de stock fija o incrementa,"Hace stock += quantity. La documentación decía valor absoluto; seguirla corrompía el inventario.
+
+Referencia: gascylinder.service.ts:146",to do,1,Integridad de datos,Tesis Jeny Gas
+Dejar que los errores de dominio lleguen al filtro global,"La falta de stock devuelve 500 en vez de 400: el catch se los come antes del filtro.
+
+Referencia: create-order.use-case.ts:321",to do,1,Integridad de datos,Tesis Jeny Gas
+Hacer atómica la cancelación de pedido,"Restitución de stock y guardado en transacciones separadas.
+
+Referencia: cancel-order.use-case.ts",to do,2,Integridad de datos,Tesis Jeny Gas
+Hacer atómica la asignación de envases,"El bucle guarda uno por uno sin transacción.
+
+Referencia: cylinder.service.ts:164",to do,2,Integridad de datos,Tesis Jeny Gas
+Validar el contenido de las promociones,"Un descuento mayor a 100 deja el subtotal en negativo.
+
+Referencia: order-pricing.service.ts:40",to do,2,Integridad de datos,Tesis Jeny Gas
+Definir si la baja de usuario es lógica o física,"El servicio hace borrado físico, también en el proveedor de identidad.
+
+Referencia: users.service.ts:183",to do,3,Integridad de datos,Tesis Jeny Gas
+Construir la modificación de franja horaria,"No existe operación de actualización. Diagrama de la solución ya especificado.
+
+Referencia: CU-043",to do,2,Funcionalidad faltante,Tesis Jeny Gas
+Construir la reactivación de producto,"Solo existe la desactivación; isActive no es escribible.
+
+Referencia: CU-040",to do,2,Funcionalidad faltante,Tesis Jeny Gas
+Definir el estado de llegada al domicilio,"ARRIVED y arrivedAt no existen en el modelo.
+
+Referencia: CU-019",to do,3,Funcionalidad faltante,Tesis Jeny Gas
+Diferenciar el aviso al cliente según el estado,"El texto es siempre el de confirmación; el método correcto es código muerto.
+
+Referencia: CU-021",to do,3,Funcionalidad faltante,Tesis Jeny Gas
+Manejar el pago rechazado o cancelado,"Sin implementar: no libera stock ni cancela. Lo resuelve un cron media hora después.
+
+Referencia: CU-048",to do,2,Funcionalidad faltante,Tesis Jeny Gas
+Construir el módulo de flota predictiva,"Proyecta vencimientos por kilometraje y fecha, negocia ventanas de taller.
+
+Referencia: CU-105 / M2",to do,3,Módulo inteligente,Tesis Jeny Gas
+Construir el módulo de anticipación de recompra,"Estima el ritmo de consumo e invita a reponer. El único orientado a ingresos.
+
+Referencia: CU-106 / M3",to do,3,Módulo inteligente,Tesis Jeny Gas
+Construir el módulo de agrupación por recorrido,"Agrupa pedidos compatibles y ofrece el recorrido como lote.
+
+Referencia: CU-107 / M4",to do,4,Módulo inteligente,Tesis Jeny Gas
+Construir el módulo de recuperación de envases,"Secuencia escalonada de gestión sobre envases retenidos.
+
+Referencia: CU-108 / M5",to do,3,Módulo inteligente,Tesis Jeny Gas
+Llevar los parámetros del despacho a configuración,"Radios y ventana de aceptación son constantes. La cátedra exige parametrización.
+
+Referencia: dispatch-orchestrator.service.ts:27",to do,2,Módulo inteligente,Tesis Jeny Gas
+Rotar los secretos y limpiar la historia del repositorio,"20 variables en la historia, entre ellas la clave privada de Firebase y el token de MercadoPago.
+
+Referencia: commit cef1471",to do,1,Higiene del repositorio,Tesis Jeny Gas
+Integrar la rama de trabajo a la principal,"Los cuatro repositorios siguen en feat/f1-features sin integrar.
+
+Referencia: feat/f1-features",to do,3,Higiene del repositorio,Tesis Jeny Gas
+Reconstruir el archivo de configuración local,"El backend no arranca: no hay .env.
+
+Referencia: .env",to do,3,Higiene del repositorio,Tesis Jeny Gas

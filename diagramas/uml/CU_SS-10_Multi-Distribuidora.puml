@@ -1,0 +1,39 @@
+@startuml
+title SS-10 — Multi-Distribuidora
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Administrador General" as A5
+
+rectangle "SS-10 Multi-Distribuidora" {
+  usecase "CU-052\nRegistrar Distribuidora" as U52
+  usecase "CU-053\nConsultar Distribuidoras" as U53
+  usecase "CU-054\nModificar Datos de la Distribuidora" as U54
+  usecase "CU-055\nDar de Baja una Distribuidora" as U55
+}
+
+A5 --> U52
+A5 --> U53
+A5 --> U54
+A5 --> U55
+@enduml

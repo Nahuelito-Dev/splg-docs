@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)
+    activate SIS
+    alt es super administrador
+        SIS-->>ADM: administrador creado en la distribuidora indicada
+    else es administrador de empresa y el alta es en su propia distribuidora
+        SIS-->>ADM: administrador creado en su distribuidora
+    else intenta crear en otra distribuidora o con rol de super administrador
+        SIS-->>ADM: acceso denegado
+    end
+    deactivate SIS

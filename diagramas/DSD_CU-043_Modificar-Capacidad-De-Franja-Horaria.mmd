@@ -1,0 +1,31 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as TimeSlotController
+    participant DTO as UpdateTimeSlotDto
+    participant SRV as TimeSlotService
+    participant REPO as RepositoryTimeSlot
+    participant ORD as RepositoryOrder
+
+    CTRL->>DTO: validar(payload)
+    alt Datos inválidos
+        DTO-->>CTRL: BadRequestException
+    else Datos válidos
+        CTRL->>SRV: update(id, dto, distributorId)
+        SRV->>REPO: findOne(time_slot_id, distributor_id)
+        alt La franja no existe en la distribuidora
+            REPO-->>SRV: null
+            SRV-->>CTRL: NotFoundException
+        else La franja existe
+            REPO-->>SRV: TimeSlot
+            SRV->>SRV: validar que endTime sea posterior a startTime
+            SRV->>ORD: count(pedidos programados en la franja)
+            ORD-->>SRV: cantidad comprometida
+            alt La capacidad nueva es menor que lo comprometido
+                SRV-->>CTRL: BadRequestException
+            else La capacidad es suficiente
+                SRV->>REPO: save(TimeSlot actualizado)
+                REPO-->>SRV: TimeSlot
+                SRV-->>CTRL: franja actualizada
+            end
+        end
+    end

@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as ClaimsController
+    participant SRV as ClaimsService
+    participant CREP as RepositoryClaim
+
+    CTRL->>SRV: resolve(id, body.resolution, body.status, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>CREP: findOne(where claim_id y distributor_id)
+    CREP-->>SRV: Claim o null
+    alt Reclamo inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Reclamo no encontrado
+    else Reclamo del tenant
+        CREP-->>SRV: Claim
+        SRV->>SRV: claim.resolutionNote igual resolution
+        SRV->>SRV: claim.status igual status
+        SRV->>CREP: save(claim)
+        CREP-->>SRV: Claim actualizado
+        SRV-->>CTRL: Claim
+    end

@@ -1,0 +1,27 @@
+sequenceDiagram
+    autonumber
+    participant CLI as Cliente o Admin
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
+    participant CREP as RepositoryCustomer
+
+    CLI->>CTRL: PATCH /customers/:id/location con latLng
+    CTRL->>CTRL: scope(user), admin devuelve undefined, cliente devuelve user.user_id
+    CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+    SRV->>SRV: findOne(id, requesterUserId)
+    SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    CREP-->>SRV: Customer o null
+    alt No existe
+        SRV-->>CTRL: NotFoundException
+    else Existe
+        SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
+        alt Es un cliente y el customer es de otro usuario
+            SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
+        else Autorizado, dueno o admin
+            SRV->>SRV: customer.lat_lang igual a latLng
+            SRV->>CREP: save(customer)
+            CREP-->>SRV: Customer actualizado
+            SRV-->>CTRL: Customer
+            CTRL-->>CLI: 200 Customer
+        end
+    end

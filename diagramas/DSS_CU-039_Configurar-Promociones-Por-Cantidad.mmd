@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: actualizarProducto(productoId, promociones)
+    activate SIS
+    alt la tabla de promociones es válida
+        SIS-->>ADM: promociones vigentes (cantidad mínima y porcentaje de descuento)
+    else la tabla de promociones es inválida
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

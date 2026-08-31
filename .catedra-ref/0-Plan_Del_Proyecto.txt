@@ -1,0 +1,81 @@
+Plan del Proyecto
+En esta sección se presenta la organización en fases e iteraciones y el calendario del proyecto.
+Plan de las Fases
+El desarrollo se llevará a cabo en base a fases con una o más iteraciones en cada una de ellas. La siguiente tabla muestra una la distribución de tiempos y el número de iteraciones de cada fase (para las fases de Construcción y Transición es sólo una aproximación muy preliminar)
+Fase
+Nro. 
+Iteraciones
+Duración
+Fase de Inicio
+0
+
+Fase de Elaboración
+1
+1 Semana
+Fase de Construcción
+1
+3 Semana
+Fase de Transición
+1
+2 Semana
+Los hitos que marcan el final de cada fase se describen en la siguiente tabla.
+Descripción
+Hito
+Fase de Inicio
+Se presentará el plan de proyecto junto con la planificación de la primer iteración
+Se identificará a los casos de usos principales del sistema realizando una breve descripción del mismo.
+Se realizará un estudio para hallar firmadores digitales que puedan ser utilizados en una aplicación web
+Fase de Elaboración
+En esta fase se analizan los requisitos y se desarrolla un prototipo de arquitectura (incluyendo las partes más relevantes y / o críticas del sistema). Al final de esta fase, todos los casos de uso correspondientes a requisitos que serán implementados en la primera release de la fase de Construcción deben estar analizados y diseñados (en el Modelo de Análisis / Diseño). La revisión y aceptación del prototipo de la arquitectura del sistema marca el final de esta fase. En nuestro caso particular, por no incluirse las fases siguientes, la revisión y entrega de todos los artefactos hasta este punto de desarrollo también se incluye como hito. La primera iteración tendrá como objetivo la identificación y especificación de los principales casos de uso, así como su realización preliminar en el Modelo de Análisis / Diseño, también permitirá hacer una revisión general del estado de los artefactos hasta este punto y ajustar si es necesario la planificación para asegurar el cumplimiento de los objetivos. Ambas iteraciones tendrán una duración de una semana.
+Fase de Construcción
+Durante la fase de construcción se terminan de analizar y diseñar todos los casos de uso, refinando el Modelo de Análisis / Diseño. El producto se construye en base a 2 iteraciones, cada una produciendo una release a la cual se le aplican las pruebas y se valida con el cliente / usuario. Se comienza la elaboración de material de apoyo al usuario. El hito que marca el fin de esta fase es la versión de la release 2.0, con la capacidad operacional parcial del producto que se haya considerado como crítica, lista para ser entregada a los usuarios para pruebas beta.
+Fase de Transición
+En esta fase se prepararán dos releases para distribución, asegurando una implantación y cambio del sistema previo de manera adecuada, incluyendo el entrenamiento de los usuarios. El hito que marca el fin de esta fase incluye, la entrega de toda la documentación del proyecto con los manuales de instalación y todo el material de apoyo al usuario, la finalización del entrenamiento de los usuarios y el empaquetamiento del producto.
+
+Calendario del Proyecto
+A continuación se presenta un calendario de las principales tareas del proyecto incluyendo sólo las fases de Inicio y Elaboración. Como se ha comentado, el proceso iterativo e incremental de RUP está caracterizado por la realización en paralelo de todas las disciplinas de desarrollo a lo largo del proyecto, con lo cual la mayoría de los artefactos son generados muy tempranamente en el proyecto pero van desarrollándose en mayor o menor grado de acuerdo a la fase e iteración del proyecto. La siguiente figura ilustra este enfoque, en ella lo ensombrecido marca el énfasis de cada disciplina (workflow) en un momento determinado del desarrollo.
+
+CRONOGRAMA (DIAGRAMA DE GANTT)
+ 
+ 
+Casos de Usos y Actores 
+Actores
+A continuación se presenta la lista de actores que se ha identificado en las primeras entrevistas.
+Actor
+Descripción
+
+
+
+Diagrama de Caso de Uso
+Se presenta un diagrama de caso de uso del sistema para definir los límites del sistema.
+
+
+Casos de Usos de Alto Nivel
+Se deben realizar una descripción de alto nivel de los Casos de usos identificados.
+
+Código: CU-001
+Caso de Uso : Nombre del CU
+Actor/es:
+Descripción: Descripción del caso de uso en uno o dos párrafos
+Calificación de los Casos de usos
+Se establece una lista de los casos de usos al cual se le califica de acuerdo a la importancia y los casos de usos críticos
+
+Caso de Uso
+Calificación
+
+
+
+
+
+
+
+
+
+
+
+Proyecto [Nombre del Proyecto]
+Plan de Iteración [Codificación de la Iteración]
+Equipo de Desarrollo
+
+
+

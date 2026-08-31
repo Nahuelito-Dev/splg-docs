@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as GasCylinderController
+    participant SRV as GasCylinderService
+    participant GREP as RepositoryGasCylinder
+
+    CTRL->>SRV: remove(id, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    GREP-->>SRV: GasCylinder o null
+    alt Producto inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+    else Producto del tenant
+        SRV->>SRV: gasCylinder.isActive igual false
+        SRV->>GREP: save(gasCylinder)
+        GREP-->>SRV: GasCylinder desactivado
+        SRV-->>CTRL: mensaje Gas cylinder deactivated successfully y gasCylinderId
+    end

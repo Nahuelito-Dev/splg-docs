@@ -1,0 +1,42 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CreateOrderUseCase
+    participant DIS as DistributorService
+    participant AREP as RepositoryUserAddress
+    participant CZ as CoverageZoneService
+    participant ZREP as RepositoryCoverageZone
+    participant STK as StockReservationService
+    participant PRC as OrderPricingService
+
+    CTRL->>SRV: create(dto, distributorId del header X-Distributor)
+    SRV->>UC: execute(dto, distributorId)
+    alt Sin distributorId explicito
+        UC->>DIS: getDefault()
+        DIS-->>UC: distribuidora por defecto
+    end
+    UC->>AREP: findOne(address_id, user_id)
+    AREP-->>UC: UserAddress con latitude y longitude
+    alt Direccion inexistente o de otro usuario
+        UC-->>CTRL: NotFoundException, direccion no encontrada
+    else Direccion valida
+        UC->>CZ: checkCoverage(distributorId, lat, lng)
+        CZ->>ZREP: count(distributor_id, isActive true)
+        ZREP-->>CZ: total de zonas activas
+        alt La distribuidora no definio zonas
+            CZ-->>UC: covered true, surcharge 0, no-op
+        else Hay zonas definidas
+            CZ->>ZREP: query ST_Contains ordenada por surcharge ASC limit 1
+            ZREP-->>CZ: zona contenedora o vacio
+            alt Ninguna zona contiene el punto
+                CZ-->>UC: covered false, surcharge 0
+                UC-->>CTRL: BadRequestException, direccion fuera de la zona de cobertura
+            else Zona encontrada
+                CZ-->>UC: covered true, zoneId, zoneName, surcharge
+            end
+        end
+        UC->>STK: reserve(manager, gasCylinderId, quantity)
+        UC->>PRC: priceItem y applyPaymentSurcharge sobre el total mas el recargo de zona
+        PRC-->>UC: totalAmount final
+    end

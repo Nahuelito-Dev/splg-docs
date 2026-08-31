@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant ORD as OrderRepositoryPort
+    participant REP as RepositoryOrder
+    participant MAP as OrderMapper
+
+    alt Es CUSTOMER y pide el historial de otro
+        CTRL-->>CTRL: ForbiddenException No autorizado a ver pedidos de otro cliente
+    else Autorizado
+        CTRL->>CTRL: scope null si es CUSTOMER, distributorId si es staff
+        CTRL->>SRV: findByCustomer(customerId, paginationDto, scope)
+        SRV->>ORD: findByCustomer(customerId, limit, offset, distributorId)
+        ORD->>ORD: scoped(where customer_id, distributorId)
+        ORD->>REP: findAndCount(where, take, skip, relations, order createdAt DESC)
+        REP-->>ORD: orders y total
+        ORD-->>SRV: orders, total, limit y offset
+        SRV-->>CTRL: PaginatedOrders
+        loop Por cada pedido de la pagina
+            CTRL->>MAP: toDto(order)
+            MAP-->>CTRL: OrderResponseDto
+        end
+    end

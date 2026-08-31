@@ -1,0 +1,39 @@
+sequenceDiagram
+    autonumber
+    participant UC as CreateOrderUseCase
+    participant ORQ as DispatchOrchestratorService
+    participant OFERTAS as DispatchOfferRepositoryPort
+    participant RT as RealtimeDispatchPort
+    participant REDIS as RedisService
+    participant DEL as RepositoryDelivery
+    participant DGW as DriversGateway
+    participant NOT as NotificationsService
+    participant FCM as FcmPort
+
+    UC->>ORQ: offerToNextDriver(order)
+    ORQ->>OFERTAS: findOfferedDriverIds(order.order_id)
+    OFERTAS-->>ORQ: string[] choferes ya contactados
+
+    loop findNearestAvailable, radiusKm en 5, 10, 15, 20
+        ORQ->>RT: findNearbyDrivers(lat, lng, radiusKm)
+        RT->>REDIS: getNearbyDrivers(lat, lng, radiusKm)
+        REDIS-->>RT: driverIds ordenados por cercania ASC
+        RT-->>ORQ: driverIds
+        ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        DEL-->>ORQ: choferes de la misma distribuidora
+        ORQ->>ORQ: filterByDistributor + descartar contactados
+    end
+
+    alt Hay un candidato nuevo
+        ORQ->>OFERTAS: create(orderId, candidate, expiresAt, distributorId)
+        OFERTAS-->>ORQ: DispatchOffer con status OFFERED
+        ORQ->>RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        RT->>DGW: notifyNewOrder(candidate, payload)
+        DGW-->>ORQ: emit server:new-order-request en room driver_id
+        ORQ->>NOT: sendOfferPushToDriver(candidate, orderId)
+        NOT->>FCM: sendToToken(token, data event NEW_ORDER)
+        ORQ-->>UC: candidate driverId
+    else Sin choferes nuevos en ningun radio
+        ORQ->>ORQ: logger.debug sin candidatos
+        ORQ-->>UC: null
+    end

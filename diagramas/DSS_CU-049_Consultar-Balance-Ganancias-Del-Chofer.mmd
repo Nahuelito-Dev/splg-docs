@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor ADM as Administrador
+
+    CHO->>SIS: consultarPerfilDelChofer(usuarioId)
+    activate SIS
+    SIS-->>CHO: perfil con el saldo acumulado
+    deactivate SIS
+
+    opt liquidación o corrección
+        ADM->>SIS: ajustarSaldoDelChofer(choferId, monto)
+        activate SIS
+        SIS-->>ADM: saldo actualizado
+        deactivate SIS
+    end

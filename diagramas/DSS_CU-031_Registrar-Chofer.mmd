@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
+    activate SIS
+    alt el administrador puede dar de alta en esa distribuidora
+        SIS-->>ADM: chofer registrado (pendiente de validación)
+    else el administrador no pertenece a esa distribuidora
+        SIS-->>ADM: acceso denegado
+    end
+    deactivate SIS

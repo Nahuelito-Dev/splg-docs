@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: registrarTokenDeNotificaciones(usuarioId, token, plataforma)
+    activate SIS
+    alt registra el token de su propio dispositivo o es administrador
+        SIS-->>CLI: token registrado (el dispositivo empieza a recibir avisos)
+    else intenta registrar un token a nombre de otro usuario
+        SIS-->>CLI: acceso denegado
+    end
+    deactivate SIS

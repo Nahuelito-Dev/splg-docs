@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant SA as SuperAdmin
+    participant GRD as RolesGuard
+    participant CTRL as DistributorController
+    participant SRV as DistributorService
+    participant REPO as RepositoryDistributor
+
+    SA->>GRD: PATCH /distributor/:id con UpdateDistributorDto
+    GRD->>CTRL: rol super_admin verificado
+    CTRL->>SRV: update(id, dto)
+    SRV->>SRV: findOne(id)
+    SRV->>REPO: findOne(where distributor_id igual a id)
+    REPO-->>SRV: Distributor o null
+    alt No existe
+        SRV-->>CTRL: NotFoundException
+    else Existe
+        SRV->>SRV: Object.assign(distributor, dto)
+        SRV->>REPO: save(distributor)
+        REPO-->>SRV: Distributor actualizado
+        SRV-->>CTRL: Distributor
+        CTRL-->>SA: 200 Distributor
+    end

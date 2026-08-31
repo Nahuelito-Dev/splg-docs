@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)
+    activate SIS
+    alt datos válidos
+        SIS-->>CLI: usuario creado (usuarioId, rol asignado)
+    else datos inválidos o correo duplicado
+        SIS-->>CLI: error de validación
+    end
+    deactivate SIS

@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Usuario
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarPerfil(usuarioId)
+    activate SIS
+    SIS-->>CLI: datos de la cuenta (nombre, correo, teléfono, rol)
+    deactivate SIS
+
+    opt el perfil tiene datos de cliente
+        CLI->>SIS: consultarPerfilCliente(usuarioId)
+        activate SIS
+        SIS-->>CLI: datos del cliente (documento, ubicación, validación)
+        deactivate SIS
+    end
+
+    CLI->>SIS: actualizarPerfil(usuarioId, datos)
+    activate SIS
+    alt es su propio perfil o es administrador
+        SIS-->>CLI: perfil actualizado
+    else intenta modificar el perfil de otro usuario
+        SIS-->>CLI: acceso denegado
+    end
+    deactivate SIS

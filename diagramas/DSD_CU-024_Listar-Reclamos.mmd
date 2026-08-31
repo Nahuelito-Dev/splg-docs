@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as ClaimsController
+    participant SRV as ClaimsService
+    participant CREP as RepositoryClaim
+
+    CTRL->>SRV: findAll(distributorId)
+    SRV->>SRV: armar where vacio
+    alt Hay distributorId, admin de distribuidora
+        SRV->>SRV: where.distributor_id igual distributorId
+    end
+    SRV->>CREP: find(where, order createdAt DESC, relations order y customer)
+    CREP-->>SRV: Claim[]
+    SRV-->>CTRL: Claim[]

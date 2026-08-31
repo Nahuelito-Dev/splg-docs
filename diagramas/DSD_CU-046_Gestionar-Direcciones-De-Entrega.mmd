@@ -1,0 +1,77 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddresController
+    participant SRV as UserAddresService
+    participant AREP as RepositoryUserAddress
+    participant UREP as RepositoryUser
+
+    CTRL->>CTRL: scope(user) devuelve user_id si no es admin
+
+    alt Alta, POST /user-address
+        CTRL->>SRV: create(createUserAddressDto, scope)
+        opt No es admin
+            SRV->>SRV: forzar user_id al del solicitante, ignorando el body
+        end
+        SRV->>UREP: findOne(user_id)
+        alt El usuario no existe
+            UREP-->>SRV: null
+            SRV-->>CTRL: NotFoundException User with ID not found
+        else Usuario valido
+            UREP-->>SRV: User
+            opt isDefault true
+                SRV->>SRV: removeDefaultFromOtherAddresses(user_id)
+                SRV->>AREP: find(user_id, isDefault true)
+                loop Por cada direccion predeterminada previa
+                    SRV->>AREP: save(address con isDefault false)
+                end
+            end
+            SRV->>AREP: create(createUserAddressDto)
+            SRV->>AREP: save(address)
+            AREP-->>SRV: UserAddress
+            SRV-->>CTRL: UserAddress
+        end
+    else Consulta por usuario, GET /user-address/user/:userId
+        CTRL->>SRV: findByUserId(userId, scope)
+        SRV->>SRV: assertOwnership(userId, requesterUserId)
+        alt El solicitante no es el dueno
+            SRV-->>CTRL: ForbiddenException No autorizado a acceder a direcciones de otro usuario
+        else Autorizado
+            SRV->>AREP: find(user_id, order isDefault DESC y createdAt DESC)
+            AREP-->>SRV: UserAddress[]
+            SRV-->>CTRL: UserAddress[]
+        end
+    else Predeterminada, GET /user-address/user/:userId/default
+        CTRL->>SRV: findDefaultByUserId(userId, scope)
+        SRV->>SRV: assertOwnership(userId, requesterUserId)
+        SRV->>AREP: findOne(user_id, isDefault true)
+        alt No hay ninguna marcada
+            AREP-->>SRV: null
+            SRV->>SRV: findByUserId(userId)
+            alt Tiene al menos una direccion
+                SRV-->>CTRL: la primera de la lista
+            else No tiene ninguna
+                SRV-->>CTRL: NotFoundException No addresses found for user
+            end
+        else Hay predeterminada
+            AREP-->>SRV: UserAddress
+            SRV-->>CTRL: UserAddress
+        end
+    else Marcar predeterminada, PATCH /user-address/:id/set-default
+        CTRL->>SRV: setAsDefault(id, scope)
+        SRV->>SRV: findOne(id, requesterUserId)
+        SRV->>SRV: removeDefaultFromOtherAddresses(user_id, id)
+        SRV->>AREP: find(user_id, isDefault true, address_id Not id)
+        SRV->>AREP: save(address con isDefault true)
+        SRV-->>CTRL: UserAddress
+    else Baja, DELETE /user-address/:id
+        CTRL->>SRV: remove(id, scope)
+        SRV->>SRV: findOne(id, requesterUserId)
+        opt La direccion borrada era la predeterminada
+            SRV->>AREP: find(user_id, address_id Not id, order createdAt DESC)
+            opt Quedan otras direcciones
+                SRV->>AREP: save(la mas reciente con isDefault true)
+            end
+        end
+        SRV->>AREP: remove(address)
+        SRV-->>CTRL: message Address deleted successfully y addressId
+    end

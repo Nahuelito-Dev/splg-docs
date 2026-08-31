@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: resolverReclamo(reclamoId, resolucion, estadoFinal)
+    activate SIS
+    alt el reclamo existe
+        SIS-->>ADM: reclamo resuelto (estado y resolución registrados)
+    else el reclamo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

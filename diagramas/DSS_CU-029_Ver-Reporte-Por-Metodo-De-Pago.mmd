@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)
+    activate SIS
+    SIS-->>ADM: distribución entre efectivo y pasarela (cantidad, monto)
+    deactivate SIS

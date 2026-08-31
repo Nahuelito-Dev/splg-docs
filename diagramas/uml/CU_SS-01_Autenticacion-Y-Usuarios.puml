@@ -1,0 +1,71 @@
+@startuml
+title SS-01 — Autenticación y Usuarios
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+actor "Administrador General" as A5
+
+rectangle "SS-01 Autenticación y Usuarios" {
+  usecase "CU-001\nIniciar Sesión" as U1
+  usecase "CU-002\nRegistrarse como Cliente" as U2
+  usecase "CU-003\nRegistrar Chofer" as U3
+  usecase "CU-004\nGestionar Perfil de Usuario" as U4
+  usecase "CU-047\nRecuperar Contraseña" as U47
+  usecase "CU-050\nBloquear / Desbloquear Usuario" as U50
+  usecase "CU-082\nCrear Usuario Base" as U82
+  usecase "CU-083\nBuscar / Listar Usuarios" as U83
+  usecase "CU-084\nVerificar Existencia de Usuario (pre-registro)" as U84
+  usecase "CU-085\nEliminar Usuario (baja lógica)" as U85
+  usecase "CU-091\nValidar Vigencia del Token de Sesión" as U91
+}
+
+A1 --> U1
+A2 --> U1
+A3 --> U1
+A1 --> U2
+A3 --> U3
+A1 --> U4
+A2 --> U4
+A1 --> U47
+A2 --> U47
+A3 --> U47
+A3 --> U50
+A1 --> U82
+A2 --> U82
+A3 --> U82
+A4 --> U82
+A3 --> U83
+A1 --> U84
+A2 --> U84
+A3 --> U84
+A4 --> U84
+A3 --> U85
+A1 --> U91
+A2 --> U91
+A3 --> U91
+A5 --> U91
+@enduml

@@ -1,0 +1,56 @@
+sequenceDiagram
+    autonumber
+    participant LB as Load balancer u orquestador
+    participant CTRL as HealthController
+    participant HCS as HealthCheckService
+    participant DB as TypeOrmHealthIndicator
+    participant RH as RedisHealthIndicator
+    participant REDIS as RedisService
+    participant MEM as MemoryHealthIndicator
+    participant DISK as DiskHealthIndicator
+
+    alt Chequeo completo, GET /health
+        LB->>CTRL: GET /health, Public y SkipThrottle
+        CTRL->>HCS: check con los cuatro indicadores
+        HCS->>DB: pingCheck(postgres)
+        DB-->>HCS: estado de PostgreSQL
+        HCS->>RH: isHealthy(redis)
+        RH->>REDIS: ping()
+        REDIS-->>RH: true si respondio PONG
+        alt Redis no responde
+            RH-->>HCS: HealthCheckError Redis check failed
+        else Redis sano
+            RH-->>HCS: HealthIndicatorResult up
+        end
+        HCS->>MEM: checkRSS(memory_rss, 300 MB)
+        MEM-->>HCS: heap RSS por debajo del umbral
+        HCS->>DISK: checkStorage(storage, path raiz, thresholdPercent 0.9)
+        DISK-->>HCS: uso de disco por debajo del 90 por ciento
+        alt Todos los indicadores sanos
+            HCS-->>CTRL: status ok
+            CTRL-->>LB: 200 status ok
+        else Alguno falla
+            HCS-->>CTRL: detalle por componente
+            CTRL-->>LB: 503 con el componente caido
+        end
+    else Liveness, GET /health/live
+        LB->>CTRL: GET /health/live
+        CTRL->>CTRL: no consulta ninguna dependencia
+        CTRL-->>LB: 200 status ok mas timestamp
+    else Readiness, GET /health/ready
+        LB->>CTRL: GET /health/ready
+        CTRL->>HCS: check con los dos indicadores criticos
+        HCS->>DB: pingCheck(postgres)
+        DB-->>HCS: estado de PostgreSQL
+        HCS->>RH: isHealthy(redis)
+        RH->>REDIS: ping()
+        REDIS-->>RH: booleano
+        RH-->>HCS: resultado
+        alt DB y Redis sanos
+            HCS-->>CTRL: status ok
+            CTRL-->>LB: 200 listo para recibir trafico
+        else Alguna dependencia critica caida
+            HCS-->>CTRL: detalle
+            CTRL-->>LB: 503 no listo
+        end
+    end

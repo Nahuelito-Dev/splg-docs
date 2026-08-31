@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: actualizarProducto(productoId, precio)
+    activate SIS
+    alt el producto pertenece a la distribuidora
+        SIS-->>ADM: producto actualizado (precio vigente para los pedidos nuevos)
+    else el producto no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

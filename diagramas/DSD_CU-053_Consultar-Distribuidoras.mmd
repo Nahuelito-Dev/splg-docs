@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    participant SA as SuperAdmin
+    participant GRD as RolesGuard
+    participant CTRL as DistributorController
+    participant SRV as DistributorService
+    participant REPO as RepositoryDistributor
+
+    SA->>GRD: GET /distributor o GET /distributor/:id
+    GRD->>CTRL: rol super_admin verificado
+    alt Listado completo, GET /distributor
+        CTRL->>SRV: findAll()
+        SRV->>REPO: find(order createdAt ASC)
+        REPO-->>SRV: Distributor[]
+        SRV-->>CTRL: Distributor[]
+        CTRL-->>SA: 200 Distributor[]
+    else Detalle, GET /distributor/:id
+        CTRL->>CTRL: ParseUUIDPipe valida el id
+        CTRL->>SRV: findOne(id)
+        SRV->>REPO: findOne(where distributor_id igual a id)
+        REPO-->>SRV: Distributor o null
+        alt No existe
+            SRV-->>CTRL: NotFoundException, distribuidora no encontrada
+        else Existe
+            SRV-->>CTRL: Distributor
+            CTRL-->>SA: 200 Distributor
+        end
+    end

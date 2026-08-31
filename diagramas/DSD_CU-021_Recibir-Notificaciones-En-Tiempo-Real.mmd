@@ -1,0 +1,61 @@
+sequenceDiagram
+    autonumber
+    participant NCTRL as NotificationsController
+    participant NSRV as NotificationsService
+    participant CREP as RepositoryCustomer
+    participant DREP as RepositoryDelivery
+    participant CGW as CustomersGateway
+    participant ASRV as AuthService
+    participant RT as RealtimeDispatchPort
+    participant NOT as NotificationPort
+    participant FCM as FcmPort
+
+    NCTRL->>NCTRL: si no es admin, forzar userId al del token
+    NCTRL->>NSRV: saveNotificationToken(userId, body.token, body.platform)
+    NSRV->>CREP: findOne(user_id)
+    alt Es un cliente
+        CREP-->>NSRV: Customer
+        NSRV->>CREP: save(customer con notification_token)
+        NSRV-->>NCTRL: success true
+    else No es cliente
+        CREP-->>NSRV: null
+        NSRV->>DREP: findOne(user_id)
+        alt Es un chofer
+            DREP-->>NSRV: Delivery
+            NSRV->>DREP: save(delivery con notification_token)
+            NSRV-->>NCTRL: success true
+        else No existe el perfil
+            DREP-->>NSRV: null
+            NSRV-->>NCTRL: success false, error User not found
+        end
+    end
+
+    CGW->>CGW: handleConnection(client)
+    alt Handshake sin token
+        CGW->>CGW: client.disconnect()
+    else Con token
+        CGW->>ASRV: decodeToken(token)
+        alt Token invalido
+            ASRV-->>CGW: UnauthorizedException
+            CGW->>CGW: client.disconnect()
+        else Token valido
+            ASRV-->>CGW: email, user y sub
+            CGW->>CGW: handleCustomerJoin(data, client)
+            CGW->>CGW: client.join(sala customer_)
+            CGW->>CGW: client.emit(server ack)
+        end
+    end
+
+    opt Cambio de estado del pedido, ver CU-018
+        RT->>CGW: notifyCustomer(customerId, event, payload)
+        CGW->>CGW: server.to(roomName).emit(event, payload)
+        NOT->>NSRV: sendOrderConfirmation(customerId, orderId, token)
+        NSRV->>CREP: findOne(user_id, relations user)
+        alt Sin cliente o sin token registrado
+            NSRV-->>NOT: success false, error No notification token
+        else Token disponible
+            NSRV->>FCM: sendToToken(notificationToken, message)
+            FCM-->>NSRV: messageId
+            NSRV-->>NOT: success true y messageId
+        end
+    end

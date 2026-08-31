@@ -1,0 +1,48 @@
+sequenceDiagram
+    autonumber
+    participant CRON as CylinderRecoveryService
+    participant LIF as CylinderLifecyclePort
+    participant CASE as RecoveryCaseRepositoryPort
+    participant ORD as OrderRepositoryPort
+    participant NOT as NotificationsService
+    participant FCM as FcmPort
+    participant DEP as DepositLedgerService
+
+    CRON->>LIF: findHeldByCustomer(distributorId, plazo de tolerancia)
+    LIF-->>CRON: envases retenidos con su ultimo movimiento
+
+    loop Por cada envase retenido
+        CRON->>CASE: findOrCreate(cylinderId, customerId, deposito)
+        CASE-->>CRON: caso de recupero con su escalon actual
+
+        loop Por cada escalon pendiente
+            CRON->>LIF: findLastMovement(cylinderId)
+            LIF-->>CRON: ultimo movimiento registrado
+            alt El envase ya fue devuelto
+                CRON->>CASE: close(caseId, motivo DEVUELTO)
+                CRON->>DEP: releaseDeposit(caseId)
+            else El envase sigue retenido
+                CRON->>NOT: sendRecoveryStep(caseId, escalon)
+                NOT->>FCM: sendToToken(token, data event CYLINDER_RECOVERY)
+                CRON->>ORD: findNextScheduledDelivery(customerId)
+                ORD-->>CRON: entrega programada o null
+                alt Hay una entrega programada
+                    CRON->>CASE: createPickupOffer(caseId, orderId, expiresAt)
+                    CRON->>CASE: awaitAnswer(offerId)
+                    CASE-->>CRON: ACCEPTED, REJECTED o EXPIRED
+                else No hay entrega programada
+                    CRON->>CRON: saltear la oferta de retiro
+                end
+                CRON->>CASE: advanceStep(caseId)
+            end
+        end
+
+        alt Escalones agotados e importe sobre el umbral
+            CRON->>CASE: buildDossier(caseId)
+            CASE-->>CRON: legajo con historial, avisos e importe
+            CRON->>NOT: escalateToAdmin(legajo)
+            Note over DEP: El cobro del deposito y la baja del envase<br/>los ejecuta el administrador, nunca el proceso
+        else Caso cerrado o importe bajo el umbral
+            CRON->>CASE: close(caseId, motivo correspondiente)
+        end
+    end

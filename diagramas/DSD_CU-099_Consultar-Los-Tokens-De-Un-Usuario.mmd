@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant USR as Usuario autenticado
+    participant CTRL as NotificationsController
+    participant SRV as NotificationsService
+    participant CREP as RepositoryCustomer
+
+    USR->>CTRL: GET /notifications/user/:userId
+    CTRL->>CTRL: isAdmin(user)
+    alt No es admin y el userId no es el suyo
+        CTRL-->>USR: ForbiddenException, no autorizado a ver tokens de otro usuario
+    else Es admin o consulta su propio userId
+        CTRL->>SRV: getUserNotificationTokens(userId)
+        SRV->>CREP: findOne(where user_id)
+        CREP-->>SRV: Customer o null
+        alt No hay perfil de cliente
+            SRV-->>CTRL: tokens vacio
+        else Hay cliente
+            SRV->>SRV: arma el arreglo con notification_token si existe
+            SRV-->>CTRL: tokens
+        end
+        CTRL-->>USR: 200 tokens
+    end

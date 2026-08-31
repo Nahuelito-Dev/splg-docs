@@ -1,0 +1,46 @@
+@startuml
+title SS-11 — Cobertura Geográfica
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Administrador" as A3
+actor "Administrador General" as A5
+
+rectangle "SS-11 Cobertura Geográfica" {
+  usecase "CU-056\nDefinir Zona de Cobertura" as U56
+  usecase "CU-057\nConsultar Zonas de Cobertura" as U57
+  usecase "CU-058\nValidar Cobertura de una Dirección" as U58
+  usecase "CU-059\nEliminar Zona de Cobertura" as U59
+}
+
+A3 --> U56
+A5 --> U56
+A3 --> U57
+A5 --> U57
+A1 --> U58
+A3 --> U58
+A5 --> U58
+A3 --> U59
+A5 --> U59
+@enduml

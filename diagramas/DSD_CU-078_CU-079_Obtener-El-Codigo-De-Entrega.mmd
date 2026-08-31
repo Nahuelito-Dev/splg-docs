@@ -1,0 +1,57 @@
+sequenceDiagram
+    autonumber
+    participant CHO as App Chofer
+    participant CLI as App Cliente
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UCD as ConfirmDeliveryUseCase
+    participant COD as DeliveryCodeUtil
+    participant UCS as UpdateOrderStatusUseCase
+    participant ORD as OrderRepositoryPort
+    participant CYL as CylinderLifecyclePort
+    participant RT as RealtimeDispatchPort
+
+    Note over CHO,CTRL: CU-078, el chofer obtiene el codigo y lo muestra como QR
+    CHO->>CTRL: GET /orders/:id/delivery-code
+    CTRL->>SRV: getDeliveryCode(orderId, userId, role)
+    SRV->>ORD: findByIdFull(orderId)
+    ORD-->>SRV: Order
+    alt role DELIVERY y el pedido no es suyo
+        SRV-->>CHO: ForbiddenException, pedido no asignado a tu usuario
+    else Sin deliveryCode, pedido aun no aceptado
+        SRV-->>CHO: BadRequestException, todavia no tiene codigo
+    else Autorizado
+        SRV-->>CHO: orderId, deliveryCode
+        CHO->>CLI: muestra el QR en pantalla
+    end
+
+    Note over CLI,CTRL: CU-079, el cliente escanea el QR y confirma
+    CLI->>CTRL: POST /orders/:id/confirm-delivery con code e Idempotency-Key
+    CTRL->>SRV: confirmDelivery(id, code, userId, role)
+    SRV->>UCD: execute(orderId, code, userId, role)
+    UCD->>ORD: findByIdFull(orderId)
+    ORD-->>UCD: Order
+    alt role CUSTOMER y customer_id distinto de userId
+        UCD-->>CLI: ForbiddenException
+    else Ya esta DELIVERED
+        UCD-->>CLI: Order sin reprocesar, idempotente
+    else No esta ON_THE_WAY
+        UCD-->>CLI: BadRequestException, el pedido no esta en camino
+    else Estado valido
+        UCD->>COD: compareDeliveryCode(order.deliveryCode, code)
+        COD-->>UCD: boolean con timingSafeEqual
+        alt Codigo invalido
+            UCD-->>CLI: BadRequestException, codigo de entrega invalido
+        else Codigo correcto
+            UCD->>UCS: execute(order_id, DELIVERED)
+            UCS->>UCS: deliveredAt, si CASH entonces paymentStatus PAID
+            UCS->>RT: stopTracking(driverUserId)
+            UCS->>CYL: onOrderDelivered(order_id, distributor_id)
+            CYL-->>UCS: cantidad de envases avanzados
+            UCS->>ORD: save(order)
+            UCS->>RT: notifyCustomer(customer_id, order:delivered, payload)
+            UCS->>RT: notifyAdmins(order:delivered, payload)
+            UCS-->>UCD: Order DELIVERED
+            UCD-->>CLI: OrderMapper.toDto(order)
+        end
+    end

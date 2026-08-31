@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+    participant RCTRL as ReportsController
+    participant RSRV as ReportsService
+    participant OCTRL as OrderController
+    participant OSRV as OrderService
+    participant OREP as RepositoryOrder
+    participant QB as SelectQueryBuilderOrder
+
+    alt Camino A, reporte parametrizable GET /reports/sales-evolution
+        RCTRL->>RCTRL: parseDates(from, to)
+        RCTRL->>RCTRL: gran igual month si granularity es month, si no day
+        RCTRL->>RSRV: getSalesEvolution(startDate, endDate, gran, distributorId)
+        RSRV->>OREP: createQueryBuilder(order)
+        OREP-->>RSRV: SelectQueryBuilder
+        RSRV->>QB: select date_trunc del periodo sobre order.deliveredAt
+        RSRV->>QB: addSelect COUNT y SUM
+        RSRV->>QB: where status DELIVERED y deliveredAt BETWEEN start AND end
+        RSRV->>QB: groupBy(period) y orderBy(period ASC)
+        RSRV->>QB: getRawMany()
+        QB-->>RSRV: filas por periodo
+        RSRV->>RSRV: mapear a period, totalOrders y totalSales
+        RSRV-->>RCTRL: serie temporal de ventas
+    else Camino B, grafico fijo del dashboard GET /orders/stats/chart
+        OCTRL->>OSRV: getSalesChartData(distributorId)
+        OSRV->>OSRV: start igual hoy menos 6 dias a las 00:00, end igual hoy 23:59
+        OSRV->>OREP: createQueryBuilder(order)
+        OREP-->>OSRV: SelectQueryBuilder
+        OSRV->>QB: select date_trunc day sobre order.deliveredAt y SUM totalAmount
+        OSRV->>QB: where status DELIVERED y deliveredAt BETWEEN start AND end
+        OSRV->>QB: groupBy(day) y getRawMany()
+        QB-->>OSRV: filas de los dias con ventas
+        OSRV->>OSRV: byDay, mapa fecha ISO hacia total
+        loop i de 6 hasta 0
+            OSRV->>OSRV: push name dia abreviado, date y sales con 0 si no hubo ventas
+        end
+        OSRV-->>OCTRL: chartData de 7 puntos
+    end

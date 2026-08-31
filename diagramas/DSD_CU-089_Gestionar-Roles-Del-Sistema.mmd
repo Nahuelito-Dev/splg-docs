@@ -1,0 +1,50 @@
+sequenceDiagram
+    autonumber
+    participant SA as SuperAdmin
+    participant GRD as RolesGuard
+    participant CTRL as RoleController
+    participant SRV as RoleService
+    participant RREP as RepositoryRole
+
+    SA->>GRD: peticion sobre /role
+    GRD->>GRD: canActivate, Roles SUPER_ADMIN declarado en la clase
+    GRD->>CTRL: rol verificado
+
+    alt Crear, POST /role
+        CTRL->>SRV: create(createRoleDto)
+        SRV->>RREP: create(createRoleDto) y save(role)
+        RREP-->>SRV: Role persistido
+        SRV-->>CTRL: Role
+    else Listar, GET /role
+        CTRL->>SRV: findAll()
+        SRV->>RREP: find()
+        RREP-->>SRV: Role[]
+        SRV-->>CTRL: Role[]
+    else Detalle, GET /role/:id
+        CTRL->>SRV: findOne(id)
+        SRV->>RREP: findOne(where role_id)
+        RREP-->>SRV: Role o null
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+        else Existe
+            SRV-->>CTRL: Role
+        end
+    else Actualizar, PATCH /role/:id
+        CTRL->>SRV: update(id, updateRoleDto)
+        SRV->>RREP: preload(role_id mas updateRoleDto)
+        RREP-->>SRV: Role fusionado o undefined
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+        else Existe
+            SRV->>RREP: save(role)
+            RREP-->>SRV: Role actualizado
+            SRV-->>CTRL: Role
+        end
+    else Eliminar, DELETE /role/:id
+        CTRL->>SRV: remove(id)
+        SRV->>SRV: findOne(id)
+        SRV->>RREP: remove(role)
+        RREP-->>SRV: fila eliminada
+        SRV-->>CTRL: message Role deleted successfully
+    end
+    CTRL-->>SA: respuesta segun la operacion

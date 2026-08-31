@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UsersController
+    participant SRV as UsersService
+    participant REP as RepositoryUser
+
+    CTRL->>SRV: checkUserExists(body.email, body.phoneNumber)
+    SRV->>SRV: armar conditions con email y phone_number
+    alt No vino ni email ni telefono
+        SRV-->>CTRL: exists false
+    else Al menos una condicion
+        SRV->>REP: findOne(where conditions en OR)
+        alt Sin coincidencias
+            REP-->>SRV: null
+            SRV-->>CTRL: exists false, email false, phoneNumber false
+        else Hay coincidencia
+            REP-->>SRV: User
+            SRV-->>CTRL: exists true con los flags por campo consultado
+        end
+    end

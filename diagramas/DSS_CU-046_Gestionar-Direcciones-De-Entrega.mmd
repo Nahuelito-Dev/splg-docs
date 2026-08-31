@@ -1,0 +1,39 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
+    activate SIS
+    SIS-->>CLI: dirección creada (direccionId)
+    deactivate SIS
+
+    CLI->>SIS: listarDireccionesDelUsuario(usuarioId)
+    activate SIS
+    SIS-->>CLI: listado de direcciones
+    deactivate SIS
+
+    opt el cliente cambia su dirección habitual
+        CLI->>SIS: marcarDireccionPredeterminada(direccionId)
+        activate SIS
+        SIS-->>CLI: dirección predeterminada actualizada (las demás dejan de serlo)
+        deactivate SIS
+    end
+
+    opt corrección de datos
+        CLI->>SIS: actualizarDireccion(direccionId, datos)
+        activate SIS
+        SIS-->>CLI: dirección actualizada
+        deactivate SIS
+    end
+
+    opt baja de una dirección
+        CLI->>SIS: eliminarDireccion(direccionId)
+        activate SIS
+        alt la dirección existe y es del cliente
+            SIS-->>CLI: dirección eliminada
+        else la dirección no existe
+            SIS-->>CLI: recurso no encontrado
+        end
+        deactivate SIS
+    end

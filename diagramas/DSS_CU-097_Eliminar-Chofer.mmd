@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: eliminarChofer(choferId)
+    activate SIS
+    alt el chofer existe
+        SIS-->>ADM: chofer dado de baja (se conserva el histórico de entregas)
+    else el chofer no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

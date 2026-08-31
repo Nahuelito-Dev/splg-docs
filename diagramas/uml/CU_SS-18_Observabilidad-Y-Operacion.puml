@@ -1,0 +1,31 @@
+@startuml
+title SS-18 — Observabilidad
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+
+rectangle "SS-18 Observabilidad" {
+  usecase "CU-104\nVerificar la Salud del Sistema (liveness / readiness)" as U104
+}
+
+@enduml

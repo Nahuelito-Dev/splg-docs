@@ -1,0 +1,56 @@
+sequenceDiagram
+    autonumber
+    participant UCTRL as UsersController
+    participant USRV as UsersService
+    participant UREP as RepositoryUser
+    participant QR as QueryRunner
+    participant CCTRL as CustomersController
+    participant CSRV as CustomersService
+    participant CREP as RepositoryCustomer
+
+    alt Lectura del perfil base
+        UCTRL->>USRV: findOne(id)
+        USRV->>UREP: findOne(user_id, relations role customer delivery cars addresses)
+        alt No existe
+            UREP-->>USRV: null
+            USRV-->>UCTRL: NotFoundException User with ID not found
+        else Existe
+            UREP-->>USRV: User
+            USRV-->>UCTRL: User
+        end
+    else Edicion del perfil base
+        UCTRL->>UCTRL: evaluar isAdmin sobre user.role
+        alt No es admin y el id no es el propio
+            UCTRL-->>UCTRL: ForbiddenException No podes modificar a otro usuario
+        else Autorizado
+            opt No es admin
+                UCTRL->>UCTRL: pickSelfEditableFields(updateUserDto)
+            end
+            UCTRL->>USRV: update(id, payload)
+            USRV->>UREP: preload(user_id, payload)
+            alt preload devuelve undefined
+                UREP-->>USRV: undefined
+                USRV-->>UCTRL: NotFoundException User with ID not found
+            else Entidad precargada
+                UREP-->>USRV: User
+                USRV->>QR: connect() y startTransaction()
+                USRV->>QR: manager.save(user)
+                USRV->>QR: commitTransaction() y release()
+                USRV-->>UCTRL: User actualizado
+            end
+        end
+    end
+
+    alt Datos de cliente
+        CCTRL->>CCTRL: scope(user)
+        CCTRL->>CSRV: findOneByUserId(userId, scope)
+        CSRV->>CSRV: assertOwnership(userId, requesterUserId)
+        CSRV->>CREP: findOne(user_id, relations user role addresses)
+        CREP-->>CSRV: Customer
+        CSRV-->>CCTRL: Customer
+        CCTRL->>CSRV: update(id, updateCustomerDto, scope)
+        CSRV->>CSRV: findOne(id, requesterUserId)
+        CSRV->>CREP: preload(customer_id, updateCustomerDto)
+        CSRV->>CREP: save(customer)
+        CSRV-->>CCTRL: Customer actualizado
+    end

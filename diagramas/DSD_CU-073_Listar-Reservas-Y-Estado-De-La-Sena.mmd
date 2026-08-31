@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as OrderController
+    participant RES as ReservationService
+    participant OREP as RepositoryOrder
+
+    ADM->>DEC: GET /orders/reservations
+    DEC->>CTRL: findReservations(distributorId)
+    CTRL->>RES: findReservations(distributorId)
+    RES->>OREP: find(status RESERVED mas distributor_id si hay tenant, relations customer items items.gasCylinder)
+    OREP-->>RES: Order[] ordenados por scheduled_date ASC y createdAt DESC
+    loop Por cada reserva
+        RES->>RES: depositAmount igual a Number(order.deposit_amount)
+        RES->>RES: remainingBalance igual a total menos la sena si deposit_paid
+        RES->>RES: proyecta customerName customerPhone scheduledDate items
+    end
+    RES-->>CTRL: vista de reservas
+    CTRL-->>ADM: 200 listado de reservas

@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarDisponibilidadDeFranjas(fecha, distribuidora)
+    activate SIS
+    SIS-->>CLI: franjas con capacidad, reservados y cupos libres
+    deactivate SIS
+
+    CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+    activate SIS
+    alt la franja está activa y tiene cupo para esa fecha
+        SIS-->>CLI: pedido creado con la franja reservada (numero, total, estado)
+    else la franja ya está completa
+        SIS-->>CLI: error de solicitud (la franja del día está completa)
+    else la fecha agendada es anterior a hoy
+        SIS-->>CLI: error de solicitud (no se puede agendar en una fecha pasada)
+    else la franja no existe o está inactiva
+        SIS-->>CLI: error de solicitud (franja inválida o inactiva)
+    end
+    deactivate SIS

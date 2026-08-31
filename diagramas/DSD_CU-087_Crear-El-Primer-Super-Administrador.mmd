@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+    participant OPE as Operador de instalacion
+    participant AUTH as AuthGuard
+    participant GRD as RolesGuard
+    participant CTRL as AdminController
+    participant SRV as AdminService
+    participant AREP as RepositoryAdmin
+    participant HLP as AdminRegistrationHelper
+    participant USR as UsersService
+
+    OPE->>AUTH: POST /admin/first-superadmin con RegisterAdminDto, sin token
+    AUTH->>AUTH: reflector.get isPublic sobre el handler
+    AUTH-->>GRD: isPublic true, devuelve true sin validar token
+    GRD->>GRD: canActivate, isPublic true, no exige rol
+    GRD->>CTRL: createFirstSuperAdmin(registerAdminDto)
+
+    Note over CTRL: Condicion de arranque, la unica autorizacion de esta ruta
+    CTRL->>SRV: findAll()
+    SRV->>AREP: find(where vacio, relations user role distributor)
+    AREP-->>SRV: Admin[]
+    SRV-->>CTRL: Admin[]
+    alt Ya existe al menos un administrador
+        CTRL-->>OPE: ForbiddenException 403, ya existen administradores en el sistema
+    else Sistema virgen, cero admins
+        CTRL->>SRV: registerAdmin(registerAdminDto)
+        SRV->>HLP: validateUniqueness(dto, usersService)
+        SRV->>HLP: createUserInFirebase(dto, usersService)
+        HLP->>USR: createFirebaseUser(dto)
+        USR-->>HLP: firebaseUser con uid
+        SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
+        HLP->>USR: create(dto mas firebase_uid)
+        USR-->>HLP: User local
+        SRV->>AREP: create(adminData) y save(admin)
+        AREP-->>SRV: Admin persistido
+        SRV-->>CTRL: message, admin, user
+        CTRL-->>OPE: 201 primer super administrador creado
+    end

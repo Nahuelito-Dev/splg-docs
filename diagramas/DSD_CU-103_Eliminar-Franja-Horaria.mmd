@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as TimeSlotController
+    participant SRV as TimeSlotService
+    participant TREP as RepositoryTimeSlot
+
+    CTRL->>SRV: remove(id, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>TREP: findOne(where time_slot_id y distributor_id)
+    TREP-->>SRV: TimeSlot o null
+    alt Franja inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Time slot not found
+    else Franja del tenant
+        SRV->>SRV: timeSlot.isActive igual false
+        SRV->>TREP: save(timeSlot)
+        TREP-->>SRV: TimeSlot desactivado
+        SRV-->>CTRL: TimeSlot
+    end

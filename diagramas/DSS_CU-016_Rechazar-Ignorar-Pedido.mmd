@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CH2 as Siguiente Chofer
+
+    CHO->>SIS: rechazarOferta(pedidoId)
+    activate SIS
+    alt El pedido existe
+        SIS-->>CHO: rechazo registrado (se cierra la oferta si estaba activa)
+        opt El pedido sigue pendiente y sin chofer asignado
+            SIS-)CH2: nueva oferta de pedido (pedidoId, total, items, vence en 30 s)
+        end
+    else El pedido no existe
+        SIS-->>CHO: sin efecto (rechazo no registrado)
+    end
+    deactivate SIS

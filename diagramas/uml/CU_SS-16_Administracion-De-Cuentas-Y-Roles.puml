@@ -1,0 +1,56 @@
+@startuml
+title SS-16 — Cuentas y Roles
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+actor "Administrador General" as A5
+
+rectangle "SS-16 Cuentas y Roles" {
+  usecase "CU-086\nRegistrar Administrador" as U86
+  usecase "CU-087\nCrear el Primer Super Administrador (bootstrap)" as U87
+  usecase "CU-088\nConsultar Administradores" as U88
+  usecase "CU-089\nGestionar Roles del Sistema" as U89
+  usecase "CU-090\nSembrar los Roles Iniciales" as U90
+  usecase "CU-092\nConsultar Listado de Clientes" as U92
+  usecase "CU-093\nValidar / Invalidar Cliente" as U93
+  usecase "CU-094\nActualizar Ubicación del Cliente" as U94
+  usecase "CU-095\nEliminar Cliente (baja lógica)" as U95
+}
+
+A3 --> U86
+A1 --> U87
+A2 --> U87
+A3 --> U87
+A4 --> U87
+A3 --> U88
+A5 --> U89
+A5 --> U90
+A3 --> U92
+A3 --> U93
+A3 --> U94
+A3 --> U95
+@enduml

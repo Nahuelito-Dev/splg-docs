@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: bloquearUsuario(usuarioId, bloquear)
+    activate SIS
+    alt el usuario existe
+        SIS-->>ADM: usuario actualizado (estado de bloqueo vigente)
+    else el usuario no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

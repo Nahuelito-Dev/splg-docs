@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: eliminarUsuario(usuarioId)
+    activate SIS
+    alt el usuario existe
+        SIS-->>ADM: usuario dado de baja (baja lógica, el histórico se conserva)
+    else el usuario no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

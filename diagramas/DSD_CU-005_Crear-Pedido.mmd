@@ -1,0 +1,52 @@
+sequenceDiagram
+    autonumber
+    actor CLI as App Cliente
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CreateOrderUseCase
+    participant DIS as DistributorService
+    participant QR as QueryRunner
+    participant CZ as CoverageZoneService
+    participant TS as TimeSlotService
+    participant STK as StockReservationService
+    participant PRC as OrderPricingService
+    participant ORQ as DispatchOrchestratorService
+    participant NOT as NotificationPort
+    participant RT as RealtimeDispatchPort
+    participant ORD as OrderRepositoryPort
+
+    CLI->>CTRL: POST /orders con el dto del pedido
+    CTRL->>SRV: create(dto, distributorId del header X-Distributor)
+    SRV->>UC: execute(dto, distributorId)
+    opt Sin distributorId explicito
+        UC->>DIS: getDefault()
+        DIS-->>UC: distribuidora por defecto
+    end
+    UC->>QR: connect y startTransaction()
+    UC->>CZ: checkCoverage(distributorId, lat, lng)
+    CZ-->>UC: covered y surcharge de zona
+    opt Vienen scheduledDate y timeSlotId
+        UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
+        TS-->>UC: cupo disponible con lock pesimista
+    end
+    loop Por cada item del pedido
+        UC->>STK: reserve(manager, gasCylinderId, quantity)
+        STK-->>UC: GasCylinder bloqueado y descontado
+        UC->>PRC: priceItem(price, promotions, quantity)
+        PRC-->>UC: unitPrice y subtotal
+    end
+    UC->>PRC: applyPaymentSurcharge(total mas recargo de zona, paymentMethod)
+    PRC-->>UC: totalAmount final
+    UC->>QR: save(Order con items) y commitTransaction()
+    alt paymentMethod MERCADOPAGO
+        UC->>UC: createMercadoPagoCheckout(savedOrder, items, customer)
+        Note over UC: NO se despacha: espera el webhook, ver DSD 4.11
+    else Efectivo o transferencia
+        UC->>ORQ: offerToNextDriver(savedOrder), ver DSD 4.4
+    end
+    UC->>NOT: sendOrderConfirmation(customerId, orderId, token)
+    UC->>RT: notifyAdmins(order:created, payload)
+    UC->>ORD: findByIdFull(order_id)
+    ORD-->>UC: Order con relaciones
+    UC-->>CTRL: order y paymentUrl
+    CTRL-->>CLI: OrderResponseDto

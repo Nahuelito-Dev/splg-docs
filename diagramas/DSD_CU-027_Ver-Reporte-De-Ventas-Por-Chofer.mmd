@@ -1,0 +1,27 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as ReportsController
+    participant SRV as ReportsService
+    participant OREP as RepositoryOrder
+    participant DEC as Decimal
+
+    CTRL->>CTRL: parseDates(from, to)
+    alt Fecha invalida
+        CTRL-->>CTRL: BadRequestException Invalid date format
+    else Rango valido
+        CTRL->>SRV: getSalesByDriver(startDate, endDate, distributorId)
+        SRV->>OREP: find(status DELIVERED, deliveredAt Between, distributor_id opcional, relations delivery y delivery.user)
+        OREP-->>SRV: Order[]
+        loop Por cada pedido entregado
+            alt El pedido no tiene delivery o delivery.user
+                SRV->>SRV: continue, se descarta
+            else Pedido con chofer asignado
+                SRV->>SRV: acumular totalOrders del driverId
+                SRV->>DEC: plus(order.totalAmount)
+                DEC-->>SRV: totalSales acumulado
+            end
+        end
+        SRV->>DEC: toNumber() por cada entrada del reporte
+        DEC-->>SRV: totales serializables a JSON
+        SRV-->>CTRL: arreglo de driverId, driverName, totalOrders y totalSales
+    end

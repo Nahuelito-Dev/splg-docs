@@ -1,0 +1,55 @@
+sequenceDiagram
+    autonumber
+    participant IDEM as IdempotencyInterceptor
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CancelOrderUseCase
+    participant ORD as OrderRepositoryPort
+    participant FSM as OrderStatusMachine
+    participant STK as StockReservationService
+    participant QR as QueryRunner
+    participant RT as RealtimeDispatchPort
+
+    IDEM->>IDEM: intercept con header Idempotency-Key
+    alt Ya hay respuesta cacheada para esa key
+        IDEM-->>CTRL: respuesta cacheada, no se re-ejecuta
+    else Primera ejecucion
+        IDEM-->>CTRL: next.handle()
+        CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
+        CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+        SRV->>UC: execute(orderId, userId, customer, reason)
+        UC->>ORD: findByIdFull(orderId)
+        alt Pedido inexistente
+            ORD-->>UC: null
+            UC-->>CTRL: NotFoundException Order with ID not found
+        else Pedido encontrado
+            ORD-->>UC: Order
+            alt Ya esta DELIVERED o CANCELLED
+                UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
+            else Cancelable
+                UC->>UC: applyCancellationPolicy(order, userId, customer)
+                alt El pedido ya esta ON_THE_WAY
+                    UC-->>CTRL: BadRequestException El pedido ya esta en camino, contacte al soporte
+                else Aun no salio
+                    alt order.customer_id distinto del userId autenticado
+                        UC-->>CTRL: BadRequestException No autorizado
+                    else Es el dueno del pedido
+                        UC->>FSM: transitionOrder(order, CANCELLED)
+                        UC->>UC: setear cancellationReason
+                        UC->>UC: restoreStock(order)
+                        UC->>QR: connect() y startTransaction()
+                        UC->>STK: restore(queryRunner.manager, order.items)
+                        UC->>QR: commitTransaction() y release()
+                        UC->>ORD: save(order)
+                        UC->>UC: notify(order, customer, previousDriverId)
+                        UC->>RT: notifyCustomer(customer_id, order cancelled, payload)
+                        opt El pedido ya tenia chofer asignado
+                            UC->>RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                        end
+                        UC->>RT: notifyAdmins(order cancelled, payload)
+                        UC-->>CTRL: Order en estado CANCELLED
+                    end
+                end
+            end
+        end
+    end

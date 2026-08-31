@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    ADM->>SIS: reenviarConfirmacionDePedido(usuarioId, pedidoId)
+    activate SIS
+    alt el cliente tiene dispositivos registrados
+        SIS-)CLI: confirmación del pedido
+        SIS-->>ADM: notificación reenviada
+    else el cliente no tiene dispositivos registrados
+        SIS-->>ADM: no se pudo enviar
+    end
+    deactivate SIS

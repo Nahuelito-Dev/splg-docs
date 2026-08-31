@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)
+    activate SIS
+    alt granularidad diaria
+        SIS-->>ADM: serie por día del rango solicitado
+    else granularidad mensual
+        SIS-->>ADM: serie por mes del rango solicitado
+    end
+    deactivate SIS

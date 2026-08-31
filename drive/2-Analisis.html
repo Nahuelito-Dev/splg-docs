@@ -1,0 +1,2495 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Documento de Analisis - SPLG</title><style>
+body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.4}
+h1{font-size:20pt}h2{font-size:16pt}h3{font-size:13pt}h4{font-size:12pt}h5,h6{font-size:11pt}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #999;padding:4px 6px;vertical-align:top;font-size:10pt}
+th{background:#eee;text-align:left}
+pre{background:#f5f5f5;border:1px solid #ddd;padding:8px;font-size:9pt;white-space:pre-wrap}
+code{font-family:Consolas,monospace;font-size:10pt}
+blockquote{border-left:3px solid #ccc;margin-left:0;padding-left:12px;color:#444}
+</style></head><body>
+<h1>Documento de Análisis — Fase II</h1>
+<p><strong>Proyecto:</strong> SPLG – Sistema de Pedidos y Logística de Garrafas de Gas<br><strong>Versión:</strong> 1.1<br><strong>Fecha:</strong> 2026-08-30<br><strong>Realizado por:</strong> Nahuel Wagner</p>
+<hr>
+<h2>Lista de Cambios</h2>
+<table><tr><th>Nro</th><th>Fecha</th><th>Descripción</th><th>Autor</th></tr><tr><td>0</td><td>2026-04-17</td><td>Versión inicial</td><td>Nahuel Wagner</td></tr></table>
+<hr>
+<h2>Leyenda</h2>
+<table><tr><th>Indicador</th><th>Significado</th></tr><tr><td>🔴</td><td>Concepto / operación crítica</td></tr><tr><td>🟡</td><td>Concepto / operación importante</td></tr><tr><td>🤖</td><td>Proceso automático sin intervención humana</td></tr><tr><td>1</td><td>2026-08-30</td><td>Verificación de la documentación contra el código. Contratos de operación completados con los campos Notas y Salida que exige la plantilla.</td><td>Nahuel Wagner</td></tr></table>
+<hr>
+<h2>1. Modelo Conceptual</h2>
+<h3>1.1 Lista de Conceptos Candidatos</h3>
+<table><tr><th>Categoría</th><th>Ejemplos identificados</th></tr><tr><td>Personas / Roles</td><td>Usuario, Cliente, Chofer, Administrador</td></tr><tr><td>Objetos físicos</td><td>Garrafa, Vehículo</td></tr><tr><td>Transacciones / Eventos</td><td>Pedido, ItemPedido, Reclamo, Entrega</td></tr><tr><td>Contenedores de información</td><td>Catálogo, Stock, Reporte</td></tr><tr><td>Configuración</td><td>FranjaHoraria, Promocion</td></tr><tr><td>Ubicaciones</td><td>DireccionEntrega, UbicacionGPS</td></tr></table>
+<hr>
+<h3>1.2 Lista de Conceptos Idóneos</h3>
+<p>El sistema opera bajo un modelo <strong>multi-distribuidora</strong>: una única instancia atiende a<br>varias empresas comercializadoras manteniendo sus datos aislados entre sí. Por eso el<br>concepto <strong>Distribuidora</strong> encabeza el modelo y actúa como unidad de aislamiento de la<br>mayoría de los demás conceptos.</p>
+<table><tr><th>#</th><th>Concepto</th><th>Símbolo</th><th>Intención</th><th>Extensión</th></tr><tr><td>1</td><td><strong>Distribuidora</strong></td><td>Distribuidora</td><td>Empresa comercializadora de garrafas que opera dentro del sistema. Unidad de aislamiento de los datos.</td><td>Cada empresa dada de alta en la plataforma.</td></tr><tr><td>2</td><td><strong>Usuario</strong></td><td>Usuario</td><td>Persona registrada en el sistema con un rol asignado.</td><td>Todos los clientes, choferes y administradores.</td></tr><tr><td>3</td><td><strong>Rol</strong></td><td>Rol</td><td>Conjunto de permisos que determina qué puede hacer un usuario.</td><td>Cliente, chofer, administrador y administrador general.</td></tr><tr><td>4</td><td><strong>Cliente</strong></td><td>Cliente</td><td>Perfil extendido de un Usuario que realiza pedidos.</td><td>Toda persona que se registra en la App Cliente.</td></tr><tr><td>5</td><td><strong>Chofer</strong></td><td>Chofer</td><td>Perfil extendido de un Usuario que ejecuta las entregas.</td><td>Repartidores habilitados por una distribuidora.</td></tr><tr><td>6</td><td><strong>Administrador</strong></td><td>Admin</td><td>Perfil extendido de un Usuario que gestiona la operación.</td><td>Operadores internos con acceso al Panel Web.</td></tr><tr><td>7</td><td><strong>Pedido</strong></td><td>Pedido</td><td>Solicitud formal de compra realizada por un cliente. Tiene un ciclo de vida de estados.</td><td>Cada transacción de compra registrada.</td></tr><tr><td>8</td><td><strong>ItemPedido</strong></td><td>ItemPedido</td><td>Línea individual dentro de un pedido: un producto y su cantidad.</td><td>Cada garrafa solicitada dentro de un pedido.</td></tr><tr><td>9</td><td><strong>Producto</strong></td><td>Producto</td><td>Tipo de garrafa comercializado, con precio, stock y promociones.</td><td>Los formatos ofrecidos: 10 kg, 15 kg, 45 kg.</td></tr><tr><td>10</td><td><strong>Envase</strong></td><td>Envase</td><td>Garrafa <strong>física</strong> individual, identificable y rastreable por su número de serie.</td><td>Cada botellón que la distribuidora posee o tiene en la calle.</td></tr><tr><td>11</td><td><strong>MovimientoEnvase</strong></td><td>MovimientoEnvase</td><td>Registro inmutable de cada cambio de estado de un envase físico.</td><td>La traza completa del ciclo de vida de cada envase.</td></tr><tr><td>12</td><td><strong>DireccionEntrega</strong></td><td>Direccion</td><td>Domicilio del cliente guardado para futuras entregas, con coordenadas.</td><td>Cada dirección registrada por un cliente.</td></tr><tr><td>13</td><td><strong>ZonaCobertura</strong></td><td>ZonaCobertura</td><td>Área geográfica dentro de la cual una distribuidora acepta pedidos.</td><td>Los polígonos de cobertura definidos por cada distribuidora.</td></tr><tr><td>14</td><td><strong>FranjaHoraria</strong></td><td>FranjaHoraria</td><td>Rango de horas del día habilitado para entregas, con capacidad máxima.</td><td>Franjas configuradas por cada distribuidora.</td></tr><tr><td>15</td><td><strong>OfertaDespacho</strong></td><td>OfertaDespacho</td><td>Propuesta de un pedido a un chofer determinado, con vigencia limitada.</td><td>Cada intento de asignación del proceso de negociación.</td></tr><tr><td>16</td><td><strong>Vehiculo</strong></td><td>Vehiculo</td><td>Medio de transporte asignado a un chofer, con su mantenimiento y habilitaciones.</td><td>Cada unidad de la flota de una distribuidora.</td></tr><tr><td>17</td><td><strong>UbicacionGPS</strong></td><td>UbicacionGPS</td><td>Coordenadas del chofer en un momento dado. Se mantiene en memoria, no se persiste.</td><td>La posición actual de cada chofer activo.</td></tr><tr><td>18</td><td><strong>Pago</strong></td><td>Pago</td><td>Transacción económica asociada a un pedido, ejecutada por una pasarela.</td><td>Cada cobro intentado o concretado.</td></tr><tr><td>19</td><td><strong>Reclamo</strong></td><td>Reclamo</td><td>Queja formal del cliente sobre un pedido entregado, con evidencia opcional.</td><td>Cada reclamo registrado.</td></tr><tr><td>20</td><td><strong>Incidencia</strong></td><td>Incidencia</td><td>Evento que interrumpe o altera el curso normal de una entrega.</td><td>Cada contratiempo reportado durante el reparto.</td></tr><tr><td>21</td><td><strong>Calificacion</strong></td><td>Calificacion</td><td>Valoración que un cliente asigna al servicio recibido en un pedido.</td><td>Cada puntuación emitida tras una entrega.</td></tr><tr><td>22</td><td><strong>Promocion</strong></td><td>Promocion</td><td>Descuento por volumen aplicable a un producto al superar una cantidad mínima.</td><td>Cada regla de descuento configurada.</td></tr></table>
+<hr>
+<h3>1.3 Relaciones entre Conceptos</h3>
+<table><tr><th>Relación</th><th>Concepto A</th><th>Concepto B</th><th>Tipo</th><th>Multiplicidad</th></tr><tr><td>Opera dentro de</td><td>Chofer</td><td>Distribuidora</td><td>Asociación</td><td>N a 1</td></tr><tr><td>Opera dentro de</td><td>Administrador</td><td>Distribuidora</td><td>Asociación</td><td>N a 1</td></tr><tr><td>Comercializa</td><td>Distribuidora</td><td>Producto</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Posee</td><td>Distribuidora</td><td>Envase</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Define</td><td>Distribuidora</td><td>ZonaCobertura</td><td>Composición</td><td>1 a N</td></tr><tr><td>Define</td><td>Distribuidora</td><td>FranjaHoraria</td><td>Composición</td><td>1 a N</td></tr><tr><td>Gestiona</td><td>Distribuidora</td><td>Pedido</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Tiene asignado</td><td>Usuario</td><td>Rol</td><td>Asociación</td><td>N a 1</td></tr><tr><td>Es un tipo de</td><td>Cliente</td><td>Usuario</td><td>Especialización</td><td>1 a 1</td></tr><tr><td>Es un tipo de</td><td>Chofer</td><td>Usuario</td><td>Especialización</td><td>1 a 1</td></tr><tr><td>Es un tipo de</td><td>Administrador</td><td>Usuario</td><td>Especialización</td><td>1 a 1</td></tr><tr><td>Realiza</td><td>Cliente</td><td>Pedido</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Registra</td><td>Cliente</td><td>DireccionEntrega</td><td>Composición</td><td>1 a N</td></tr><tr><td>Contiene</td><td>Pedido</td><td>ItemPedido</td><td>Composición</td><td>1 a N</td></tr><tr><td>Referencia</td><td>ItemPedido</td><td>Producto</td><td>Asociación</td><td>N a 1</td></tr><tr><td>Se entrega en</td><td>Pedido</td><td>DireccionEntrega</td><td>Asociación</td><td>N a 1</td></tr><tr><td>Se programa en</td><td>Pedido</td><td>FranjaHoraria</td><td>Asociación</td><td>N a 0..1</td></tr><tr><td>Es asignado a</td><td>Pedido</td><td>Chofer</td><td>Asociación</td><td>N a 0..1</td></tr><tr><td>Se ofrece mediante</td><td>Pedido</td><td>OfertaDespacho</td><td>Composición</td><td>1 a N</td></tr><tr><td>Se dirige a</td><td>OfertaDespacho</td><td>Chofer</td><td>Asociación</td><td>N a 1</td></tr><tr><td>Se salda con</td><td>Pedido</td><td>Pago</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Origina</td><td>Pedido</td><td>Reclamo</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Origina</td><td>Pedido</td><td>Incidencia</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Recibe</td><td>Pedido</td><td>Calificacion</td><td>Asociación</td><td>1 a 0..1</td></tr><tr><td>Conduce</td><td>Chofer</td><td>Vehiculo</td><td>Asociación</td><td>1 a N</td></tr><tr><td>Se ubica en</td><td>Chofer</td><td>UbicacionGPS</td><td>Asociación temporal</td><td>1 a 1</td></tr><tr><td>Opera dentro de</td><td>Chofer</td><td>ZonaCobertura</td><td>Asociación</td><td>N a N</td></tr><tr><td>Ofrece</td><td>Producto</td><td>Promocion</td><td>Composición</td><td>1 a N</td></tr><tr><td>Materializa</td><td>Envase</td><td>Producto</td><td>Asociación</td><td>N a 1</td></tr><tr><td>Registra</td><td>Envase</td><td>MovimientoEnvase</td><td>Composición</td><td>1 a N</td></tr><tr><td>Se origina en</td><td>MovimientoEnvase</td><td>Pedido</td><td>Asociación</td><td>N a 0..1</td></tr><tr><td>Es ejecutado por</td><td>MovimientoEnvase</td><td>Usuario</td><td>Asociación</td><td>N a 0..1</td></tr></table>
+<p><strong>Nota sobre Producto y Envase.</strong> El modelo distingue deliberadamente dos conceptos que<br>en el lenguaje corriente se confunden. <strong>Producto</strong> es el <em>tipo</em> de garrafa que se<br>comercializa —&quot;garrafa de 10 kg&quot;, con su precio y su stock agregado—; <strong>Envase</strong> es el<br><em>botellón físico</em> individual, con número de serie, que la distribuidora entrega y espera<br>recuperar. El cliente compra un Producto pero recibe un Envase, y es ese envase concreto<br>—no el tipo— el que hay que rastrear y recuperar.</p>
+<hr>
+<h3>1.4 Descripción de Atributos</h3>
+<table><tr><th>Concepto</th><th>Atributo</th><th>Descripción</th></tr><tr><td><strong>Distribuidora</strong></td><td>razon_social</td><td>Nombre legal de la empresa comercializadora.</td></tr><tr><td><strong>Distribuidora</strong></td><td>cuit</td><td>Clave única de identificación tributaria.</td></tr><tr><td><strong>Distribuidora</strong></td><td>activa</td><td>Indica si la distribuidora puede operar en la plataforma.</td></tr><tr><td><strong>Usuario</strong></td><td>full_name</td><td>Nombre completo.</td></tr><tr><td><strong>Usuario</strong></td><td>email</td><td>Correo único. Identifica al usuario en la autenticación.</td></tr><tr><td><strong>Usuario</strong></td><td>phone_number</td><td>Teléfono de contacto.</td></tr><tr><td><strong>Rol</strong></td><td>nombre</td><td>Denominación del rol: cliente, chofer, administrador, administrador general.</td></tr><tr><td><strong>Cliente</strong></td><td>notification_token</td><td>Token del dispositivo para recibir avisos push.</td></tr><tr><td><strong>Chofer</strong></td><td>validated</td><td>Indica si el administrador habilitó al chofer para operar. Habilitación permanente.</td></tr><tr><td><strong>Chofer</strong></td><td>isActive</td><td>Indica si el chofer está disponible para recibir ofertas en este momento. Estado operativo.</td></tr><tr><td><strong>Chofer</strong></td><td>calification</td><td>Calificación promedio surgida de las valoraciones de los clientes.</td></tr><tr><td><strong>Chofer</strong></td><td>balance</td><td>Saldo acumulado a rendir.</td></tr><tr><td><strong>Pedido</strong></td><td>status</td><td>Estado del ciclo de vida: pendiente, aceptado, en camino, entregado, cancelado.</td></tr><tr><td><strong>Pedido</strong></td><td>totalAmount</td><td>Monto total, ya calculadas las promociones y los recargos.</td></tr><tr><td><strong>Pedido</strong></td><td>paymentMethod</td><td>Medio de pago elegido: efectivo, MercadoPago o transferencia.</td></tr><tr><td><strong>Pedido</strong></td><td>paymentStatus</td><td>Situación del cobro: pendiente, pagado o fallido.</td></tr><tr><td><strong>Pedido</strong></td><td>scheduled_date</td><td>Fecha para la que el cliente programó la entrega.</td></tr><tr><td><strong>Pedido</strong></td><td>deposit_amount</td><td>Importe del depósito en garantía por los envases entregados.</td></tr><tr><td><strong>Pedido</strong></td><td>deposit_paid</td><td>Indica si el depósito fue efectivamente cobrado.</td></tr><tr><td><strong>Pedido</strong></td><td>deliveryCode</td><td>Código que el cliente exhibe para confirmar la recepción.</td></tr><tr><td><strong>Pedido</strong></td><td>cancellationReason</td><td>Motivo de la cancelación, si la hubo.</td></tr><tr><td><strong>ItemPedido</strong></td><td>quantity</td><td>Cantidad de unidades solicitadas.</td></tr><tr><td><strong>ItemPedido</strong></td><td>unitPrice</td><td>Precio unitario vigente al momento de la compra.</td></tr><tr><td><strong>ItemPedido</strong></td><td>subtotal</td><td>Producto de la cantidad por el precio unitario.</td></tr><tr><td><strong>Producto</strong></td><td>type</td><td>Formato comercializado: 10 kg, 15 kg o 45 kg.</td></tr><tr><td><strong>Producto</strong></td><td>price</td><td>Precio de venta vigente.</td></tr><tr><td><strong>Producto</strong></td><td>stock</td><td>Unidades disponibles en el depósito.</td></tr><tr><td><strong>Producto</strong></td><td>promotions</td><td>Reglas de descuento por volumen configuradas.</td></tr><tr><td><strong>Envase</strong></td><td>serial_number</td><td>Número de serie grabado en el botellón. Lo identifica unívocamente.</td></tr><tr><td><strong>Envase</strong></td><td>state</td><td>Situación actual: en depósito, en tránsito, en poder del cliente, en mantenimiento o dado de baja.</td></tr><tr><td><strong>Envase</strong></td><td>deposit_value</td><td>Importe en garantía que representa el envase.</td></tr><tr><td><strong>MovimientoEnvase</strong></td><td>from_state / to_state</td><td>Situación anterior y posterior del envase.</td></tr><tr><td><strong>MovimientoEnvase</strong></td><td>fecha</td><td>Momento en que se produjo el movimiento.</td></tr><tr><td><strong>DireccionEntrega</strong></td><td>formatted_address</td><td>Domicilio completo tal como se muestra al usuario.</td></tr><tr><td><strong>DireccionEntrega</strong></td><td>latitude / longitude</td><td>Coordenadas geográficas del domicilio.</td></tr><tr><td><strong>DireccionEntrega</strong></td><td>additional_instructions</td><td>Indicaciones del cliente para encontrar el domicilio.</td></tr><tr><td><strong>ZonaCobertura</strong></td><td>nombre</td><td>Denominación de la zona.</td></tr><tr><td><strong>ZonaCobertura</strong></td><td>poligono</td><td>Vértices que delimitan el área de cobertura.</td></tr><tr><td><strong>ZonaCobertura</strong></td><td>recargo</td><td>Importe adicional que se aplica a las entregas dentro de la zona.</td></tr><tr><td><strong>FranjaHoraria</strong></td><td>startTime / endTime</td><td>Rango horario que abarca la franja.</td></tr><tr><td><strong>FranjaHoraria</strong></td><td>capacity</td><td>Máximo de pedidos que la franja acepta por día.</td></tr><tr><td><strong>OfertaDespacho</strong></td><td>expiresAt</td><td>Momento en que la oferta pierde vigencia.</td></tr><tr><td><strong>OfertaDespacho</strong></td><td>status</td><td>Situación de la oferta: ofrecida, aceptada, rechazada o vencida.</td></tr><tr><td><strong>Vehiculo</strong></td><td>patente</td><td>Dominio del vehículo.</td></tr><tr><td><strong>Vehiculo</strong></td><td>kilometraje</td><td>Kilómetros acumulados. Base de la proyección de mantenimiento.</td></tr><tr><td><strong>Vehiculo</strong></td><td>vencimiento_rto</td><td>Fecha de vencimiento de la Revisión Técnica Obligatoria.</td></tr><tr><td><strong>UbicacionGPS</strong></td><td>lat / lng</td><td>Coordenadas actuales del chofer. Se mantienen en memoria y no se persisten.</td></tr><tr><td><strong>Pago</strong></td><td>gateway</td><td>Pasarela que procesa la transacción.</td></tr><tr><td><strong>Pago</strong></td><td>amount</td><td>Importe de la transacción.</td></tr><tr><td><strong>Pago</strong></td><td>status</td><td>Situación del cobro ante la pasarela.</td></tr><tr><td><strong>Pago</strong></td><td>is_deposit</td><td>Distingue el cobro del depósito de envase del cobro de la mercadería.</td></tr><tr><td><strong>Reclamo</strong></td><td>reason</td><td>Motivo del reclamo.</td></tr><tr><td><strong>Reclamo</strong></td><td>photoUrl</td><td>Fotografía de respaldo, si el cliente la adjuntó.</td></tr><tr><td><strong>Reclamo</strong></td><td>status</td><td>Situación del trámite: pendiente, en proceso, resuelto o rechazado.</td></tr><tr><td><strong>Incidencia</strong></td><td>tipo</td><td>Naturaleza del contratiempo ocurrido durante la entrega.</td></tr><tr><td><strong>Incidencia</strong></td><td>descripcion</td><td>Relato de lo sucedido.</td></tr><tr><td><strong>Calificacion</strong></td><td>puntaje</td><td>Valoración numérica asignada al servicio.</td></tr><tr><td><strong>Calificacion</strong></td><td>comentario</td><td>Observación escrita del cliente, si la dejó.</td></tr><tr><td><strong>Promocion</strong></td><td>quantity</td><td>Cantidad mínima a partir de la cual se aplica el descuento.</td></tr><tr><td><strong>Promocion</strong></td><td>discountPercentage</td><td>Porcentaje que se descuenta al alcanzar esa cantidad.</td></tr></table>
+<hr>
+<h3>1.5 Diagrama Conceptual</h3>
+<p>El siguiente código produce el diagrama conceptual. Es un <strong>modelo del dominio</strong>: los<br>conceptos llevan atributos pero <strong>no métodos</strong>, y no se representan claves foráneas ni<br>detalles de implementación —eso corresponde al modelo de datos del Doc 3 y al DER.</p>
+<p><em>[mermaid]</em></p><pre>classDiagram
+    direction TB
+
+    class Distribuidora {
+        razon_social
+        cuit
+        activa
+    }
+    class Usuario {
+        full_name
+        email
+        phone_number
+    }
+    class Rol {
+        nombre
+    }
+    class Cliente {
+        notification_token
+    }
+    class Chofer {
+        validated
+        isActive
+        calification
+        balance
+    }
+    class Administrador
+    class Pedido {
+        status
+        totalAmount
+        paymentMethod
+        paymentStatus
+        scheduled_date
+        deposit_amount
+        deposit_paid
+        deliveryCode
+        cancellationReason
+    }
+    class ItemPedido {
+        quantity
+        unitPrice
+        subtotal
+    }
+    class Producto {
+        type
+        price
+        stock
+    }
+    class Promocion {
+        quantity
+        discountPercentage
+    }
+    class Envase {
+        serial_number
+        state
+        deposit_value
+    }
+    class MovimientoEnvase {
+        from_state
+        to_state
+        fecha
+    }
+    class DireccionEntrega {
+        formatted_address
+        latitude
+        longitude
+        additional_instructions
+    }
+    class ZonaCobertura {
+        nombre
+        poligono
+        recargo
+    }
+    class FranjaHoraria {
+        startTime
+        endTime
+        capacity
+    }
+    class OfertaDespacho {
+        expiresAt
+        status
+    }
+    class Vehiculo {
+        patente
+        kilometraje
+        vencimiento_rto
+    }
+    class UbicacionGPS {
+        lat
+        lng
+    }
+    class Pago {
+        gateway
+        amount
+        status
+        is_deposit
+    }
+    class Reclamo {
+        reason
+        photoUrl
+        status
+    }
+    class Incidencia {
+        tipo
+        descripcion
+    }
+    class Calificacion {
+        puntaje
+        comentario
+    }
+
+    Usuario &lt;|-- Cliente : es un
+    Usuario &lt;|-- Chofer : es un
+    Usuario &lt;|-- Administrador : es un
+    Usuario &quot;N&quot; --&gt; &quot;1&quot; Rol : tiene asignado
+
+    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Chofer : emplea
+    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Administrador : emplea
+    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Producto : comercializa
+    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Envase : posee
+    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Pedido : gestiona
+    Distribuidora &quot;1&quot; *-- &quot;N&quot; ZonaCobertura : define
+    Distribuidora &quot;1&quot; *-- &quot;N&quot; FranjaHoraria : define
+
+    Cliente &quot;1&quot; --&gt; &quot;N&quot; Pedido : realiza
+    Cliente &quot;1&quot; *-- &quot;N&quot; DireccionEntrega : registra
+
+    Pedido &quot;1&quot; *-- &quot;N&quot; ItemPedido : contiene
+    ItemPedido &quot;N&quot; --&gt; &quot;1&quot; Producto : referencia
+    Pedido &quot;N&quot; --&gt; &quot;1&quot; DireccionEntrega : se entrega en
+    Pedido &quot;N&quot; --&gt; &quot;0..1&quot; FranjaHoraria : se programa en
+    Pedido &quot;N&quot; --&gt; &quot;0..1&quot; Chofer : es asignado a
+    Pedido &quot;1&quot; *-- &quot;N&quot; OfertaDespacho : se ofrece mediante
+    OfertaDespacho &quot;N&quot; --&gt; &quot;1&quot; Chofer : se dirige a
+    Pedido &quot;1&quot; --&gt; &quot;N&quot; Pago : se salda con
+    Pedido &quot;1&quot; --&gt; &quot;N&quot; Reclamo : origina
+    Pedido &quot;1&quot; --&gt; &quot;N&quot; Incidencia : origina
+    Pedido &quot;1&quot; --&gt; &quot;0..1&quot; Calificacion : recibe
+
+    Chofer &quot;1&quot; --&gt; &quot;N&quot; Vehiculo : conduce
+    Chofer &quot;1&quot; --&gt; &quot;1&quot; UbicacionGPS : se ubica en
+    Chofer &quot;N&quot; --&gt; &quot;N&quot; ZonaCobertura : opera en
+
+    Producto &quot;1&quot; *-- &quot;N&quot; Promocion : ofrece
+    Envase &quot;N&quot; --&gt; &quot;1&quot; Producto : materializa
+    Envase &quot;1&quot; *-- &quot;N&quot; MovimientoEnvase : registra
+    MovimientoEnvase &quot;N&quot; --&gt; &quot;0..1&quot; Pedido : se origina en
+    MovimientoEnvase &quot;N&quot; --&gt; &quot;0..1&quot; Usuario : es ejecutado por</pre>
+<p><strong>Para llevarlo a draw.io o Lucidchart.</strong> Ambas herramientas importan Mermaid<br>directamente: en draw.io, <em>Extras → Editar diagrama</em> y pegar el bloque; en Lucidchart,<br><em>Importar datos → Mermaid</em>. Si se prefiere dibujarlo a mano, conviene agrupar<br>visualmente en cuatro áreas: la de usuarios y roles, la del pedido y sus líneas, la de<br>la flota y el despacho, y la del ciclo de envase.</p>
+<hr>
+<h2>2. Comportamiento del Sistema</h2>
+<h3>2.1 Diagramas de Secuencia a Nivel de Sistema</h3>
+<p>Los diagramas de secuencia muestran la interacción entre el <strong>actor</strong> y el <strong>sistema tratado como caja negra</strong>. Solo se muestran los mensajes de entrada y salida, sin detallar la implementación interna.</p>
+<hr>
+<h4>Crítico DSS — CU-001: Iniciar Sesión</h4>
+<p><strong>Actor:</strong> Cliente, Chofer o Administrador<br><strong>Operaciones del sistema:</strong> <code>iniciarSesion(correo, contrasenia)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor USR as Usuario
+    participant SIS as Sistema
+
+    USR-&gt;&gt;SIS: iniciarSesion(correo, contrasenia)
+    activate SIS
+    alt Credenciales validas
+        SIS--&gt;&gt;USR: sesion iniciada (credencial con token de acceso)
+    else Credenciales incorrectas
+        SIS--&gt;&gt;USR: error de solicitud (credenciales invalidas)
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>Crítico DSS — CU-005: Crear Pedido</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>crearPedido(items, direccion, franjaHoraria, metodoPago)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: crearPedido(items, direccion, franjaHoraria, metodoPago)
+    activate SIS
+    alt Hay stock y la dirección está cubierta
+        SIS--&gt;&gt;CLI: pedido creado (número, total, estado pendiente)
+        Note over SIS: El total incluye promociones por volumen,&lt;br/&gt;recargo por medio de pago y recargo de zona
+        SIS--&gt;&gt;CLI: aviso de confirmación del pedido
+    else Sin stock suficiente
+        SIS--&gt;&gt;CLI: rechazo (stock insuficiente para un ítem)
+    else Dirección fuera de la zona de cobertura
+        SIS--&gt;&gt;CLI: rechazo (domicilio no cubierto)
+    else Franja horaria sin cupo
+        SIS--&gt;&gt;CLI: rechazo (franja completa para esa fecha)
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>Crítico · automático DSS — CU-013: Ofrecer el Pedido al Chofer Más Cercano</h4>
+<p><strong>Actor:</strong> Sistema Automático (se dispara al crearse el pedido)<br><strong>Operaciones del sistema:</strong> <code>ofrecerAlSiguienteChofer(pedido)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CHO as Chofer
+
+    SAU-&gt;&gt;SIS: ofrecerAlSiguienteChofer(pedido)
+    activate SIS
+    Note over SIS: Recorre los radios 5, 10, 15 y 20 km&lt;br/&gt;y descarta los choferes ya contactados&lt;br/&gt;y los de otra distribuidora
+    alt Hay un candidato disponible
+        SIS--&gt;&gt;CHO: oferta del pedido (detalle, vence en 30 s)
+        SIS--&gt;&gt;SAU: oferta registrada
+    else No quedan candidatos nuevos
+        SIS--&gt;&gt;SAU: sin candidatos, el pedido queda a la espera
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>Crítico · automático DSS — CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer</h4>
+<p><strong>Actor:</strong> Sistema Automático (proceso temporal, cada 15 segundos)<br><strong>Operaciones del sistema:</strong> <code>vencerOfertasExpiradas()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+
+    Note over SAU: Se ejecuta cada 15 segundos
+    SAU-&gt;&gt;SIS: vencerOfertasExpiradas()
+    activate SIS
+    loop Por cada oferta cuya vigencia expiró
+        SIS-&gt;&gt;SIS: marcar la oferta como vencida
+        alt El pedido sigue pendiente y sin chofer
+            SIS-&gt;&gt;SIS: ofrecerAlSiguienteChofer(pedido)
+        else El pedido ya fue aceptado o cancelado
+            SIS-&gt;&gt;SIS: no re-ofrecer
+        end
+    end
+    SIS--&gt;&gt;SAU: ofertas procesadas
+    deactivate SIS</pre>
+<hr>
+<h4>Crítico DSS — CU-015: Aceptar Pedido</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>aceptarPedido(pedido)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    CHO-&gt;&gt;SIS: aceptarPedido(pedido)
+    activate SIS
+    alt La transicion de estado es valida y el chofer esta activo
+        SIS--&gt;&gt;CHO: pedido asignado (datos de entrega y codigo de entrega)
+        SIS-)CLI: aviso de que un chofer tomo el pedido
+    else El pedido ya esta entregado o cancelado
+        SIS--&gt;&gt;CHO: error de solicitud (transicion no permitida)
+    else El chofer no existe o esta dado de baja
+        SIS--&gt;&gt;CHO: error de solicitud (repartidor no encontrado o inactivo)
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>Crítico · automático DSS — CU-017: Actualizar Ubicación GPS del Chofer</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>actualizarUbicacion(latitud, longitud)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+    actor ADM as Administrador
+
+    loop Mientras el chofer esta conectado
+        CHO-&gt;&gt;SIS: actualizarUbicacion(usuarioId, latitud, longitud)
+        activate SIS
+        alt Los datos de posicion son validos
+            opt El chofer tiene un pedido en curso
+                SIS-)CLI: nueva posicion del chofer en el mapa
+                SIS-)ADM: nueva posicion del chofer en el panel
+            end
+        else Faltan el usuario o las coordenadas
+            SIS-&gt;&gt;SIS: se descarta el envio, no se registra la posicion
+        end
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>Crítico DSS — CU-020: Confirmar Entrega</h4>
+<p><strong>Actor:</strong> Chofer (secuencia normal) · Cliente (secuencia alternativa por código)<br><strong>Operaciones del sistema:</strong> <code>confirmarEntrega(pedido)</code>, <code>confirmarEntregaConCodigo(pedido, codigo)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    alt El chofer declara la entrega
+        CHO-&gt;&gt;SIS: confirmarEntrega(pedido)
+    else El cliente la constata leyendo el código
+        CHO-&gt;&gt;SIS: obtenerCodigoDeEntrega(pedido)
+        SIS--&gt;&gt;CHO: código para mostrar como QR
+        CLI-&gt;&gt;SIS: confirmarEntregaConCodigo(pedido, codigo)
+    end
+    activate SIS
+    alt El pedido está en camino y los datos son correctos
+        SIS--&gt;&gt;CLI: pedido entregado
+        Note over SIS: Si el pago es en efectivo,&lt;br/&gt;queda saldado
+        SIS--&gt;&gt;CHO: entrega registrada
+    else El código no coincide o el pedido no está en camino
+        SIS--&gt;&gt;CLI: rechazo (no se puede confirmar la entrega)
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>Crítico · automático DSS — Reserva y Restitución de Stock (proceso interno)</h4>
+<p><strong>Actor:</strong> Sistema Automático (se dispara al confirmarse o cancelarse un pedido)<br><strong>Operaciones del sistema:</strong> <code>reservarStock(items)</code>, <code>restituirStock(pedido)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+
+    SAU-&gt;&gt;SIS: reservarStock(items)
+    activate SIS
+    alt Hay disponibilidad para todos los ítems
+        SIS--&gt;&gt;SAU: stock reservado
+    else Algún ítem no tiene stock suficiente
+        SIS--&gt;&gt;SAU: reserva rechazada, ninguna unidad queda comprometida
+    end
+    deactivate SIS
+
+    opt El pedido se cancela más tarde
+        SAU-&gt;&gt;SIS: restituirStock(pedido)
+        activate SIS
+        SIS--&gt;&gt;SAU: unidades devueltas al inventario
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>Importante DSS — CU-023: Registrar Reclamo</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>registrarReclamo(pedido, motivo, evidencia)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+    actor ADM as Administrador
+
+    CLI-&gt;&gt;SIS: registrarReclamo(pedido, motivo, evidencia)
+    activate SIS
+    alt El pedido fue entregado y es del cliente
+        SIS--&gt;&gt;CLI: reclamo registrado (número, estado pendiente)
+        SIS--&gt;&gt;ADM: nuevo reclamo para gestionar
+    else El pedido no está entregado o no le pertenece
+        SIS--&gt;&gt;CLI: rechazo (no se puede reclamar este pedido)
+    end
+    deactivate SIS</pre>
+<hr>
+<hr>
+<h4>Ampliación — DSS de los casos de uso incorporados</h4>
+<p>Los 95 diagramas que siguen completan la cobertura del comportamiento del sistema.<br>Se agrupan por subsistema y respetan la misma convención de caja negra: solo intervienen<br>el actor y el sistema, sin detalle interno.</p>
+<h4>DSS — CU-002: Registrarse como Cliente</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
+    activate SIS
+    alt datos válidos y correo/teléfono libres
+        SIS--&gt;&gt;CLI: cuenta creada (usuarioId, clienteId, rol CLIENTE)
+    else correo o teléfono ya registrados
+        SIS--&gt;&gt;CLI: error de solicitud (el usuario ya existe)
+    else datos incompletos o inválidos
+        SIS--&gt;&gt;CLI: error de validación
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-003: Registrarse como Chofer</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
+    activate SIS
+    alt registro exitoso
+        SIS--&gt;&gt;ADM: chofer creado (usuarioId, choferId, validado en falso)
+    else el administrador no tiene distribuidora asociada
+        SIS--&gt;&gt;ADM: acceso denegado
+    else datos inválidos o correo duplicado
+        SIS--&gt;&gt;ADM: error de validación
+    end
+    deactivate SIS</pre>
+<blockquote>El chofer nace <strong>no validado</strong>: para poder operar necesita CU-032.</blockquote>
+<hr>
+<h4>DSS — CU-004: Gestionar Perfil de Usuario</h4>
+<p><strong>Actor:</strong> Usuario autenticado (Cliente, Chofer o Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarPerfil(usuarioId)</code>, <code>actualizarPerfil(usuarioId, datos)</code>, <code>consultarPerfilCliente(usuarioId)</code>, <code>actualizarPerfilCliente(clienteId, datos)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Usuario
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarPerfil(usuarioId)
+    activate SIS
+    SIS--&gt;&gt;CLI: datos de la cuenta (nombre, correo, teléfono, rol)
+    deactivate SIS
+
+    opt el perfil tiene datos de cliente
+        CLI-&gt;&gt;SIS: consultarPerfilCliente(usuarioId)
+        activate SIS
+        SIS--&gt;&gt;CLI: datos del cliente (documento, ubicación, validación)
+        deactivate SIS
+    end
+
+    CLI-&gt;&gt;SIS: actualizarPerfil(usuarioId, datos)
+    activate SIS
+    alt es su propio perfil o es administrador
+        SIS--&gt;&gt;CLI: perfil actualizado
+    else intenta modificar el perfil de otro usuario
+        SIS--&gt;&gt;CLI: acceso denegado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-047: Recuperar Contraseña</h4>
+<p><strong>Actor:</strong> Usuario<br><strong>Operaciones del sistema:</strong> <code>solicitarRecuperacionDeClave(correo)</code>, <code>cambiarCorreo(correoActual, correoNuevo)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Usuario
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: solicitarRecuperacionDeClave(correo)
+    activate SIS
+    alt el correo corresponde a una cuenta
+        SIS--&gt;&gt;CLI: solicitud aceptada (se envió el enlace de restablecimiento)
+    else el correo no existe
+        SIS--&gt;&gt;CLI: solicitud aceptada (respuesta indistinguible por seguridad)
+    end
+    deactivate SIS
+
+    opt el usuario autenticado quiere cambiar su correo
+        CLI-&gt;&gt;SIS: cambiarCorreo(correoActual, correoNuevo)
+        activate SIS
+        SIS--&gt;&gt;CLI: correo actualizado (se envió la verificación al nuevo)
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-050: Bloquear / Desbloquear Usuario</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>bloquearUsuario(usuarioId, bloquear)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: bloquearUsuario(usuarioId, bloquear)
+    activate SIS
+    alt el usuario existe
+        SIS--&gt;&gt;ADM: usuario actualizado (estado de bloqueo vigente)
+    else el usuario no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote>Es un interruptor bidireccional: el mismo mensaje bloquea y desbloquea según el parámetro <code>bloquear</code>.</blockquote>
+<hr>
+<h4>DSS — CU-082: Crear Usuario Base</h4>
+<p><strong>Actor:</strong> Cliente (aplicación, sin sesión iniciada)<br><strong>Operaciones del sistema:</strong> <code>crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)
+    activate SIS
+    alt datos válidos
+        SIS--&gt;&gt;CLI: usuario creado (usuarioId, rol asignado)
+    else datos inválidos o correo duplicado
+        SIS--&gt;&gt;CLI: error de validación
+    end
+    deactivate SIS</pre>
+<blockquote>Es el alta &quot;cruda&quot; de la cuenta, sin perfil asociado. El alta completa del cliente es CU-002.</blockquote>
+<hr>
+<h4>DSS — CU-083: Buscar / Listar Usuarios</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarUsuarios(pagina, limite, textoDeBusqueda)</code>, <code>buscarUsuarioPorCorreo(correo)</code>, <code>buscarUsuarioPorTelefono(telefono)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarUsuarios(pagina, limite, textoDeBusqueda)
+    activate SIS
+    SIS--&gt;&gt;ADM: página de usuarios (total, cantidad, listado)
+    deactivate SIS
+
+    opt búsqueda puntual
+        ADM-&gt;&gt;SIS: buscarUsuarioPorCorreo(correo)
+        activate SIS
+        alt existe
+            SIS--&gt;&gt;ADM: usuario encontrado
+        else no existe
+            SIS--&gt;&gt;ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt búsqueda por teléfono
+        ADM-&gt;&gt;SIS: buscarUsuarioPorTelefono(telefono)
+        activate SIS
+        SIS--&gt;&gt;ADM: usuario encontrado
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-084: Verificar Existencia de Usuario (pre-registro)</h4>
+<p><strong>Actor:</strong> Cliente (aplicación, sin sesión iniciada)<br><strong>Operaciones del sistema:</strong> <code>verificarExistenciaDeUsuario(correo, telefono)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: verificarExistenciaDeUsuario(correo, telefono)
+    activate SIS
+    SIS--&gt;&gt;CLI: resultado (existeCorreo, existeTelefono)
+    deactivate SIS</pre>
+<blockquote>Se invoca <strong>antes</strong> de CU-002 para que la aplicación avise el conflicto sin llegar a intentar el alta.</blockquote>
+<hr>
+<h4>DSS — CU-085: Eliminar Usuario (baja lógica)</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarUsuario(usuarioId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: eliminarUsuario(usuarioId)
+    activate SIS
+    alt el usuario existe
+        SIS--&gt;&gt;ADM: usuario dado de baja
+    else el usuario no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-091: Validar Vigencia del Token de Sesión</h4>
+<p><strong>Actor:</strong> Usuario autenticado<br><strong>Operaciones del sistema:</strong> <code>validarSesion()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Usuario
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: validarSesion()
+    activate SIS
+    alt La sesion esta vigente
+        SIS--&gt;&gt;CLI: sesion valida
+    else La sesion vencio o el token es invalido
+        SIS--&gt;&gt;CLI: no autorizado
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>SS-02 — Gestión de Pedidos</h3>
+<h4>DSS — CU-006: Consultar Detalle de Pedido</h4>
+<p><strong>Actor:</strong> Cliente (también Chofer y Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarPedido(pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarPedido(pedidoId)
+    activate SIS
+    alt el pedido existe y le pertenece al solicitante
+        SIS--&gt;&gt;CLI: detalle del pedido (ítems, total, estado, dirección, chofer)
+    else el pedido es de otro cliente
+        SIS--&gt;&gt;CLI: acceso denegado
+    else el pedido no existe
+        SIS--&gt;&gt;CLI: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-007: Consultar Historial de Pedidos</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>consultarHistorialDePedidos(clienteId, pagina, limite)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarHistorialDePedidos(clienteId, pagina, limite)
+    activate SIS
+    alt consulta su propio historial
+        SIS--&gt;&gt;CLI: página de pedidos (total, cantidad, listado)
+    else consulta el historial de otro cliente
+        SIS--&gt;&gt;CLI: acceso denegado
+    end
+    deactivate SIS</pre>
+<blockquote>El cliente ve <strong>todo</strong> su historial aunque haya comprado a varias distribuidoras; el personal solo ve los pedidos de la suya.</blockquote>
+<hr>
+<h4>DSS — CU-008: Cancelar Pedido (Cliente)</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>cancelarPedido(pedidoId, motivo)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+    actor CHO as Chofer
+    actor ADM as Administrador
+
+    CLI-&gt;&gt;SIS: cancelarPedido(pedidoId, motivo)
+    activate SIS
+    alt El pedido es del cliente y todavia no salio en camino
+        SIS--&gt;&gt;CLI: pedido cancelado (estado CANCELADO, stock restituido)
+        opt El pedido ya tenia chofer asignado
+            SIS-)CHO: aviso de pedido cancelado por el cliente
+        end
+        SIS-)ADM: aviso de cancelacion en el panel
+    else El pedido ya esta entregado o cancelado
+        SIS--&gt;&gt;CLI: error de solicitud (no se puede cancelar un pedido finalizado)
+    else El pedido ya esta en camino
+        SIS--&gt;&gt;CLI: error de solicitud (contactar al soporte)
+    else El pedido es de otro cliente
+        SIS--&gt;&gt;CLI: error de solicitud (no autorizado)
+    end
+    deactivate SIS</pre>
+<blockquote>La identidad y el rol del cancelador salen <strong>siempre</strong> de la sesión, nunca del cuerpo del mensaje.</blockquote>
+<hr>
+<h4>DSS — CU-009: Cancelar Pedido (Chofer)</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>cancelarPedido(pedidoId, motivo)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    CHO-&gt;&gt;SIS: liberarPedido(pedidoId, motivo)
+    activate SIS
+    alt El pedido no esta finalizado
+        SIS--&gt;&gt;CHO: pedido liberado (vuelve a PENDIENTE y queda sin chofer)
+        SIS-)CLI: aviso de que se esta buscando otro chofer
+    else El pedido ya esta entregado o cancelado
+        SIS--&gt;&gt;CHO: error de solicitud (no se puede cancelar un pedido finalizado)
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-010: Cancelar Pedido (Administrador)</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>cancelarPedido(pedidoId, motivo)</code>, <code>cancelarPedidoForzado(pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    alt cancelación ordinaria
+        ADM-&gt;&gt;SIS: cancelarPedido(pedidoId, motivo)
+        activate SIS
+        SIS--&gt;&gt;ADM: pedido cancelado (motivo registrado, stock restituido)
+        deactivate SIS
+    else cancelación forzada
+        ADM-&gt;&gt;SIS: cancelarPedidoForzado(pedidoId)
+        activate SIS
+        SIS--&gt;&gt;ADM: pedido cancelado por decisión administrativa
+        deactivate SIS
+    end</pre>
+<blockquote>El sistema ofrece <strong>dos</strong> vías para el administrador. La documentación previa describía una sola.</blockquote>
+<hr>
+<h4>DSS — CU-011: Listar Todos los Pedidos</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarPedidos(pagina, limite)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarPedidos(pagina, limite)
+    activate SIS
+    alt es administrador de una distribuidora
+        SIS--&gt;&gt;ADM: página de pedidos de su distribuidora
+    else es super administrador sin distribuidora seleccionada
+        SIS--&gt;&gt;ADM: página de pedidos de todas las distribuidoras
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-012: Asignar Chofer Manualmente</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>asignarChoferAPedido(pedidoId, choferId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: asignarChoferAPedido(pedidoId, choferId)
+    activate SIS
+    alt el pedido y el chofer existen y son compatibles
+        SIS--&gt;&gt;ADM: pedido asignado (estado ACEPTADO, chofer vinculado)
+    else el pedido o el chofer no existen
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-046: Gestionar Direcciones de Entrega</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)</code>, <code>listarDireccionesDelUsuario(usuarioId)</code>, <code>consultarDireccion(direccionId)</code>, <code>consultarDireccionPredeterminada(usuarioId)</code>, <code>actualizarDireccion(direccionId, datos)</code>, <code>marcarDireccionPredeterminada(direccionId)</code>, <code>eliminarDireccion(direccionId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
+    activate SIS
+    SIS--&gt;&gt;CLI: dirección creada (direccionId)
+    deactivate SIS
+
+    CLI-&gt;&gt;SIS: listarDireccionesDelUsuario(usuarioId)
+    activate SIS
+    SIS--&gt;&gt;CLI: listado de direcciones
+    deactivate SIS
+
+    opt el cliente cambia su dirección habitual
+        CLI-&gt;&gt;SIS: marcarDireccionPredeterminada(direccionId)
+        activate SIS
+        SIS--&gt;&gt;CLI: dirección predeterminada actualizada (las demás dejan de serlo)
+        deactivate SIS
+    end
+
+    opt corrección de datos
+        CLI-&gt;&gt;SIS: actualizarDireccion(direccionId, datos)
+        activate SIS
+        SIS--&gt;&gt;CLI: dirección actualizada
+        deactivate SIS
+    end
+
+    opt baja de una dirección
+        CLI-&gt;&gt;SIS: eliminarDireccion(direccionId)
+        activate SIS
+        alt la dirección existe y es del cliente
+            SIS--&gt;&gt;CLI: dirección eliminada
+        else la dirección no existe
+            SIS--&gt;&gt;CLI: recurso no encontrado
+        end
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-080: Consultar el Pool de Pedidos Disponibles</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>consultarPedidosDisponibles(pagina, limite)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: consultarPedidosDisponibles(pagina, limite)
+    activate SIS
+    SIS--&gt;&gt;CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    deactivate SIS</pre>
+<blockquote>Es la vista de respaldo del despacho automático (CU-013): si la oferta por proximidad no llega, el chofer puede consultar el pool.</blockquote>
+<hr>
+<h4>DSS — CU-081: Consultar los Pedidos Asignados al Chofer</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>consultarPedidosAsignados(choferId, pagina, limite)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: consultarPedidosAsignados(choferId, pagina, limite)
+    activate SIS
+    SIS--&gt;&gt;CHO: página de pedidos asignados (estado, cliente, dirección, total)
+    deactivate SIS</pre>
+<hr>
+<h3>SS-03 — Despacho y Asignación</h3>
+<h4>DSS — CU-016: Rechazar / Ignorar Pedido</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>rechazarOferta(pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CH2 as Siguiente Chofer
+
+    CHO-&gt;&gt;SIS: rechazarOferta(pedidoId)
+    activate SIS
+    alt El pedido existe
+        SIS--&gt;&gt;CHO: rechazo registrado (se cierra la oferta si estaba activa)
+        opt El pedido sigue pendiente y sin chofer asignado
+            SIS-)CH2: nueva oferta de pedido (pedidoId, total, items, vence en 30 s)
+        end
+    else El pedido no existe
+        SIS--&gt;&gt;CHO: sin efecto (rechazo no registrado)
+    end
+    deactivate SIS</pre>
+<blockquote>El rechazo <strong>no</strong> espera el vencimiento de la ventana de 30 segundos: re-ofrece de inmediato al siguiente chofer más cercano.</blockquote>
+<hr>
+<h3>SS-04 — Seguimiento en Tiempo Real</h3>
+<h4>DSS — CU-018: Marcar Pedido &quot;En Camino&quot;</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>actualizarEstadoDePedido(pedidoId, EN_CAMINO)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    CHO-&gt;&gt;SIS: actualizarEstadoDePedido(pedidoId, EN_CAMINO)
+    activate SIS
+    alt la transición es válida desde el estado actual
+        SIS--&gt;&gt;CHO: pedido en camino (estado EN_CAMINO)
+        SIS-)CLI: aviso de pedido en camino
+    else la transición no está permitida
+        SIS--&gt;&gt;CHO: error de solicitud (transición inválida)
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-019: Avisar Llegada al Cliente</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>avisarLlegada(pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    CHO-&gt;&gt;SIS: avisarLlegada(pedidoId)
+    activate SIS
+    alt el pedido está en camino
+        SIS-)CLI: aviso de que el repartidor llegó al domicilio
+        SIS--&gt;&gt;CHO: cliente notificado
+    else el pedido no está en camino
+        SIS--&gt;&gt;CHO: error de solicitud (el pedido no está en camino)
+    end
+    deactivate SIS</pre>
+<blockquote>Este caso de uso <strong>no</strong> cambia el estado del pedido: solo notifica.</blockquote>
+<hr>
+<h4>DSS — CU-021: Recibir Notificaciones en Tiempo Real</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>suscribirseAlSeguimiento(clienteId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: suscribirseAlSeguimiento(clienteId)
+    activate SIS
+    SIS--&gt;&gt;CLI: suscripción confirmada
+    deactivate SIS
+
+    loop mientras el pedido esté en curso
+        SIS-)CLI: cambio de estado del pedido (aceptado, en camino, entregado, cancelado)
+        SIS-)CLI: posición actual del chofer (latitud, longitud)
+    end</pre>
+<blockquote>El canal se cierra cuando el cliente cierra la aplicación o el pedido alcanza un estado terminal.</blockquote>
+<hr>
+<h4>DSS — CU-022: Activar / Desactivar Disponibilidad</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>cambiarDisponibilidad(usuarioId, disponible)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: cambiarDisponibilidad(usuarioId, disponible)
+    activate SIS
+    alt se pone disponible
+        SIS--&gt;&gt;CHO: disponible (empieza a recibir ofertas de pedidos)
+    else se pone no disponible
+        SIS--&gt;&gt;CHO: no disponible (deja de recibir ofertas)
+    end
+    deactivate SIS</pre>
+<blockquote><strong>Observación de análisis:</strong> el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que hoy &quot;fuera de turno&quot; y &quot;dado de baja&quot; son indistinguibles.</blockquote>
+<hr>
+<h4>DSS — CU-078: Obtener el Código de Entrega (QR del chofer)</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>obtenerCodigoDeEntrega(pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: obtenerCodigoDeEntrega(pedidoId)
+    activate SIS
+    alt el pedido está asignado a este chofer y ya fue aceptado
+        SIS--&gt;&gt;CHO: código de entrega (para mostrarlo como QR al cliente)
+    else el pedido no está asignado a este chofer
+        SIS--&gt;&gt;CHO: acceso denegado
+    else el pedido todavía no fue aceptado
+        SIS--&gt;&gt;CHO: error de solicitud (el pedido aún no tiene código)
+    else el pedido no existe
+        SIS--&gt;&gt;CHO: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-079: Confirmar Entrega Escaneando el QR (cliente)</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>confirmarEntregaConCodigo(pedidoId, codigoLeido)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: confirmarEntregaConCodigo(pedidoId, codigoLeido)
+    activate SIS
+    alt el código coincide y el pedido está en camino
+        SIS--&gt;&gt;CLI: entrega confirmada (estado ENTREGADO)
+    else el código no coincide
+        SIS--&gt;&gt;CLI: error de solicitud (código inválido)
+    else el pedido no está en camino
+        SIS--&gt;&gt;CLI: error de solicitud (el pedido no está en camino)
+    else el pedido es de otro cliente
+        SIS--&gt;&gt;CLI: acceso denegado
+    end
+    deactivate SIS</pre>
+<blockquote>Es el camino <strong>anti-fraude</strong> que invierte el actor de CU-020: confirma quien recibe, no quien entrega. Es idempotente frente a reintentos de red.</blockquote>
+<hr>
+<h3>SS-05 — Reclamos</h3>
+<h4>DSS — CU-024: Listar Reclamos</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarReclamos()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarReclamos()
+    activate SIS
+    SIS--&gt;&gt;ADM: reclamos de su distribuidora (pedido, cliente, motivo, estado)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-025: Resolver Reclamo</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>resolverReclamo(reclamoId, resolucion, estadoFinal)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: resolverReclamo(reclamoId, resolucion, estadoFinal)
+    activate SIS
+    alt el reclamo existe
+        SIS--&gt;&gt;ADM: reclamo resuelto (estado y resolución registrados)
+    else el reclamo no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>SS-06 — Reportes y Dashboard</h3>
+<h4>DSS — CU-026: Ver Dashboard General</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarResumenDePedidos()</code>, <code>consultarGraficoDeVentas()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: consultarResumenDePedidos()
+    activate SIS
+    SIS--&gt;&gt;ADM: totales del día, la semana y el mes (pedidos, facturación, estados)
+    deactivate SIS
+
+    ADM-&gt;&gt;SIS: consultarGraficoDeVentas()
+    activate SIS
+    SIS--&gt;&gt;ADM: serie de ventas de los últimos siete días
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-027: Ver Reporte de Ventas por Chofer</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarVentasPorChofer(fechaDesde, fechaHasta)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: consultarVentasPorChofer(fechaDesde, fechaHasta)
+    activate SIS
+    SIS--&gt;&gt;ADM: ranking por chofer (pedidos entregados, monto facturado)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-028: Ver Reporte de Ventas por Producto</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarVentasPorProducto(fechaDesde, fechaHasta)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: consultarVentasPorProducto(fechaDesde, fechaHasta)
+    activate SIS
+    SIS--&gt;&gt;ADM: ventas por tipo de garrafa (unidades, monto)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-029: Ver Reporte por Método de Pago</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)
+    activate SIS
+    SIS--&gt;&gt;ADM: distribución entre efectivo y pasarela (cantidad, monto)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-030: Ver Gráfico de Evolución de Ventas</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)
+    activate SIS
+    alt granularidad diaria
+        SIS--&gt;&gt;ADM: serie por día del rango solicitado
+    else granularidad mensual
+        SIS--&gt;&gt;ADM: serie por mes del rango solicitado
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>SS-07 — Gestión de Choferes y Vehículos</h3>
+<h4>DSS — CU-031: Registrar Chofer</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
+    activate SIS
+    alt el administrador puede dar de alta en esa distribuidora
+        SIS--&gt;&gt;ADM: chofer registrado (pendiente de validación)
+    else el administrador no pertenece a esa distribuidora
+        SIS--&gt;&gt;ADM: acceso denegado
+    end
+    deactivate SIS</pre>
+<blockquote>Realiza la misma operación del sistema que CU-003, vista desde el subsistema de gestión de flota.</blockquote>
+<hr>
+<h4>DSS — CU-032: Validar / Invalidar Chofer</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>validarChofer(choferId)</code>, <code>invalidarChofer(choferId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    alt aprobación de la documentación
+        ADM-&gt;&gt;SIS: validarChofer(choferId)
+        activate SIS
+        SIS--&gt;&gt;ADM: chofer validado (habilitado para recibir pedidos)
+        deactivate SIS
+    else rechazo o revocación
+        ADM-&gt;&gt;SIS: invalidarChofer(choferId)
+        activate SIS
+        SIS--&gt;&gt;ADM: chofer invalidado (deja de recibir ofertas)
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-033: Activar / Desactivar Chofer (Administrador)</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>cambiarEstadoDelChofer(choferId, activo)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: cambiarEstadoDelChofer(choferId, activo)
+    activate SIS
+    alt el chofer existe
+        SIS--&gt;&gt;ADM: estado del chofer actualizado
+    else el chofer no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-034: Registrar Vehículo del Chofer</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)
+    activate SIS
+    alt datos válidos
+        SIS--&gt;&gt;ADM: vehículo registrado (vehiculoId)
+    else datos inválidos
+        SIS--&gt;&gt;ADM: error de validación
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-035: Consultar Listado de Choferes</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarChoferes(pagina, limite)</code>, <code>listarChoferesActivos(pagina, limite)</code>, <code>consultarChofer(choferId)</code>, <code>consultarChoferPorUsuario(usuarioId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarChoferes(pagina, limite)
+    activate SIS
+    SIS--&gt;&gt;ADM: página de choferes de su distribuidora
+    deactivate SIS
+
+    opt vista operativa del día
+        ADM-&gt;&gt;SIS: listarChoferesActivos(pagina, limite)
+        activate SIS
+        SIS--&gt;&gt;ADM: choferes activos
+        deactivate SIS
+    end
+
+    opt ficha individual
+        ADM-&gt;&gt;SIS: consultarChofer(choferId)
+        activate SIS
+        alt el chofer existe
+            SIS--&gt;&gt;ADM: ficha del chofer (validación, calificación, saldo, vehículo)
+        else el chofer no existe
+            SIS--&gt;&gt;ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-049: Consultar Balance / Ganancias del Chofer</h4>
+<p><strong>Actor:</strong> Chofer (consulta) y Administrador (ajuste)<br><strong>Operaciones del sistema:</strong> <code>consultarPerfilDelChofer(usuarioId)</code>, <code>ajustarSaldoDelChofer(choferId, monto)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor ADM as Administrador
+
+    CHO-&gt;&gt;SIS: consultarPerfilDelChofer(usuarioId)
+    activate SIS
+    SIS--&gt;&gt;CHO: perfil con el saldo acumulado
+    deactivate SIS
+
+    opt liquidación o corrección
+        ADM-&gt;&gt;SIS: ajustarSaldoDelChofer(choferId, monto)
+        activate SIS
+        SIS--&gt;&gt;ADM: saldo actualizado
+        deactivate SIS
+    end</pre>
+<blockquote><strong>Observación de análisis:</strong> no existe una operación dedicada de consulta de saldo; el chofer lo lee dentro de su propio perfil.</blockquote>
+<hr>
+<h4>DSS — CU-051: Gestionar Vehículos</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarVehiculos()</code>, <code>consultarVehiculo(vehiculoId)</code>, <code>consultarVehiculosDelUsuario(usuarioId)</code>, <code>consultarVehiculoPorPatente(patente)</code>, <code>actualizarVehiculo(vehiculoId, datos)</code>, <code>eliminarVehiculo(vehiculoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarVehiculos()
+    activate SIS
+    SIS--&gt;&gt;ADM: vehículos de la distribuidora
+    deactivate SIS
+
+    opt búsqueda por patente
+        ADM-&gt;&gt;SIS: consultarVehiculoPorPatente(patente)
+        activate SIS
+        alt existe
+            SIS--&gt;&gt;ADM: vehículo encontrado
+        else no existe
+            SIS--&gt;&gt;ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt modificación
+        ADM-&gt;&gt;SIS: actualizarVehiculo(vehiculoId, datos)
+        activate SIS
+        SIS--&gt;&gt;ADM: vehículo actualizado
+        deactivate SIS
+    end
+
+    opt baja
+        ADM-&gt;&gt;SIS: eliminarVehiculo(vehiculoId)
+        activate SIS
+        SIS--&gt;&gt;ADM: vehículo eliminado
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-096: Actualizar Perfil del Chofer</h4>
+<p><strong>Actor:</strong> Administrador (también el propio Chofer)<br><strong>Operaciones del sistema:</strong> <code>actualizarPerfilDelChofer(choferId, datos)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: actualizarPerfilDelChofer(choferId, datos)
+    activate SIS
+    alt el chofer existe
+        SIS--&gt;&gt;ADM: perfil del chofer actualizado
+    else el chofer no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-097: Eliminar Chofer (baja lógica)</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarChofer(choferId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: eliminarChofer(choferId)
+    activate SIS
+    alt el chofer existe
+        SIS--&gt;&gt;ADM: chofer dado de baja (se conserva el histórico de entregas)
+    else el chofer no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>SS-08 — Gestión de Productos (Catálogo)</h3>
+<h4>DSS — CU-036: Crear Producto (Garrafa)</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)
+    activate SIS
+    alt datos válidos
+        SIS--&gt;&gt;ADM: producto creado (productoId, activo)
+    else datos inválidos
+        SIS--&gt;&gt;ADM: error de validación
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-037: Actualizar Precio de Producto</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>actualizarProducto(productoId, datos)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: actualizarProducto(productoId, precio)
+    activate SIS
+    alt el producto pertenece a la distribuidora
+        SIS--&gt;&gt;ADM: producto actualizado (precio vigente para los pedidos nuevos)
+    else el producto no existe en la distribuidora
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote><strong>Observación de análisis:</strong> no existe una operación exclusiva de precio; el precio se modifica con la actualización general del producto.</blockquote>
+<hr>
+<h4>DSS — CU-038: Actualizar Stock de Producto</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>actualizarStock(productoId, variacion)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: actualizarStock(productoId, variacion)
+    activate SIS
+    alt el stock resultante es mayor o igual a cero
+        SIS--&gt;&gt;ADM: stock actualizado (nuevo stock disponible)
+    else el stock resultante sería negativo
+        SIS--&gt;&gt;ADM: error de solicitud (stock insuficiente)
+    else el producto no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote>El parámetro es una <strong>variación</strong> (positiva o negativa), no un valor absoluto: ingresa mercadería con signo más y la ajusta con signo menos.</blockquote>
+<hr>
+<h4>DSS — CU-039: Configurar Promociones por Cantidad</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>actualizarProducto(productoId, promociones)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: actualizarProducto(productoId, promociones)
+    activate SIS
+    alt la tabla de promociones es válida
+        SIS--&gt;&gt;ADM: promociones vigentes (cantidad mínima y porcentaje de descuento)
+    else la tabla de promociones es inválida
+        SIS--&gt;&gt;ADM: error de validación
+    end
+    deactivate SIS</pre>
+<blockquote>Al armar un pedido, cuando varias promociones aplican a la misma cantidad, el sistema toma <strong>la más conveniente para el cliente</strong>.</blockquote>
+<hr>
+<h4>DSS — CU-040: Activar / Desactivar Producto</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>desactivarProducto(productoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: desactivarProducto(productoId)
+    activate SIS
+    alt el producto existe en la distribuidora
+        SIS--&gt;&gt;ADM: producto desactivado (deja de aparecer en el catálogo)
+    else el producto no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote><strong>Realización parcial:</strong> el sistema no ofrece hoy la operación inversa <code>reactivarProducto(productoId)</code>. El caso de uso pide un interruptor bidireccional; el sistema solo implementa la desactivación.</blockquote>
+<hr>
+<h4>DSS — CU-041: Consultar Catálogo de Productos</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>consultarCatalogo(pagina, limite, distribuidora)</code>, <code>consultarProducto(productoId)</code>, <code>consultarProductosPorTipo(tipo)</code>, <code>consultarProductosDisponibles(distribuidora)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarCatalogo(pagina, limite, distribuidora)
+    activate SIS
+    SIS--&gt;&gt;CLI: productos activos (tipo, peso, precio, stock, promociones)
+    deactivate SIS
+
+    opt vista de compra rápida
+        CLI-&gt;&gt;SIS: consultarProductosDisponibles(distribuidora)
+        activate SIS
+        SIS--&gt;&gt;CLI: productos activos con stock disponible
+        deactivate SIS
+    end
+
+    opt detalle de un producto
+        CLI-&gt;&gt;SIS: consultarProducto(productoId)
+        activate SIS
+        alt el producto existe
+            SIS--&gt;&gt;CLI: detalle del producto
+        else el producto no existe
+            SIS--&gt;&gt;CLI: recurso no encontrado
+        end
+        deactivate SIS
+    end</pre>
+<hr>
+<h3>SS-09 — Franjas Horarias</h3>
+<h4>DSS — CU-042: Crear Franja Horaria</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)
+    activate SIS
+    alt el formato horario y la capacidad son válidos
+        SIS--&gt;&gt;ADM: franja creada (franjaId, activa)
+    else el formato horario es inválido
+        SIS--&gt;&gt;ADM: error de validación
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-044: Seleccionar Franja Horaria al Crear Pedido</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>consultarDisponibilidadDeFranjas(fecha, distribuidora)</code>, <code>crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarDisponibilidadDeFranjas(fecha, distribuidora)
+    activate SIS
+    SIS--&gt;&gt;CLI: franjas con capacidad, reservados y cupos libres
+    deactivate SIS
+
+    CLI-&gt;&gt;SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+    activate SIS
+    alt la franja está activa y tiene cupo para esa fecha
+        SIS--&gt;&gt;CLI: pedido creado con la franja reservada (numero, total, estado)
+    else la franja ya está completa
+        SIS--&gt;&gt;CLI: error de solicitud (la franja del día está completa)
+    else la fecha agendada es anterior a hoy
+        SIS--&gt;&gt;CLI: error de solicitud (no se puede agendar en una fecha pasada)
+    else la franja no existe o está inactiva
+        SIS--&gt;&gt;CLI: error de solicitud (franja inválida o inactiva)
+    end
+    deactivate SIS</pre>
+<blockquote>El cupo se toma dentro de la misma transacción que crea el pedido, de modo que dos clientes que eligen la última plaza de la misma franja no la obtienen los dos.</blockquote>
+<hr>
+<h4>DSS — CU-045: Consultar Franjas Horarias Disponibles</h4>
+<p><strong>Actor:</strong> Cliente (y Administrador para la vista de configuración)<br><strong>Operaciones del sistema:</strong> <code>consultarDisponibilidadDeFranjas(fecha, distribuidora)</code>, <code>listarFranjas(distribuidora)</code>, <code>consultarFranja(franjaId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarDisponibilidadDeFranjas(fecha, distribuidora)
+    activate SIS
+    alt la fecha es válida
+        SIS--&gt;&gt;CLI: por cada franja activa (nombre, horario, capacidad, reservados, cupos libres)
+    else la fecha es inválida
+        SIS--&gt;&gt;CLI: error de validación
+    end
+    deactivate SIS
+
+    opt vista administrativa
+        CLI-&gt;&gt;SIS: listarFranjas(distribuidora)
+        activate SIS
+        SIS--&gt;&gt;CLI: franjas activas de la distribuidora
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-103: Eliminar Franja Horaria</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarFranjaHoraria(franjaId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: eliminarFranjaHoraria(franjaId)
+    activate SIS
+    alt la franja pertenece a la distribuidora
+        SIS--&gt;&gt;ADM: franja desactivada (deja de ofrecerse para agendar)
+    else la franja no existe en la distribuidora
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote><strong>Asimetría detectada:</strong> el sistema permite dar de baja una franja pero <strong>no</strong> modificar su capacidad (CU-043, no implementado). Para cambiar la capacidad hay que eliminar y volver a crear.</blockquote>
+<hr>
+<h3>SS-10 — Multi-Distribuidora (Multi-Tenancy)</h3>
+<h4>DSS — CU-052: Registrar Distribuidora</h4>
+<p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP-&gt;&gt;SIS: registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)
+    activate SIS
+    alt el identificador corto está libre
+        SIS--&gt;&gt;SUP: distribuidora creada (distribuidoraId, estado inicial)
+    else el identificador corto ya está en uso
+        SIS--&gt;&gt;SUP: conflicto (identificador duplicado)
+    else datos inválidos
+        SIS--&gt;&gt;SUP: error de validación
+    end
+    deactivate SIS</pre>
+<blockquote>Solo el Super Administrador opera este caso de uso: es una acción de <strong>plataforma</strong>, no de una empresa.</blockquote>
+<hr>
+<h4>DSS — CU-053: Consultar Distribuidoras</h4>
+<p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>listarDistribuidoras()</code>, <code>consultarDistribuidora(distribuidoraId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP-&gt;&gt;SIS: listarDistribuidoras()
+    activate SIS
+    SIS--&gt;&gt;SUP: listado de distribuidoras (nombre, identificador, estado, plan)
+    deactivate SIS
+
+    opt ficha de una distribuidora
+        SUP-&gt;&gt;SIS: consultarDistribuidora(distribuidoraId)
+        activate SIS
+        alt la distribuidora existe
+            SIS--&gt;&gt;SUP: datos de la distribuidora
+        else la distribuidora no existe
+            SIS--&gt;&gt;SUP: recurso no encontrado
+        end
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-054: Modificar Datos de la Distribuidora</h4>
+<p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>modificarDistribuidora(distribuidoraId, datos)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP-&gt;&gt;SIS: modificarDistribuidora(distribuidoraId, datos)
+    activate SIS
+    alt la distribuidora existe
+        SIS--&gt;&gt;SUP: distribuidora actualizada
+    else la distribuidora no existe
+        SIS--&gt;&gt;SUP: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-055: Dar de Baja una Distribuidora</h4>
+<p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>darDeBajaDistribuidora(distribuidoraId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP-&gt;&gt;SIS: darDeBajaDistribuidora(distribuidoraId)
+    activate SIS
+    alt la distribuidora existe
+        SIS--&gt;&gt;SUP: distribuidora dada de baja (baja lógica, se conserva su histórico)
+    else la distribuidora no existe
+        SIS--&gt;&gt;SUP: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>SS-11 — Cobertura Geográfica</h3>
+<h4>DSS — CU-056: Definir Zona de Cobertura</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>definirZonaDeCobertura(nombre, poligono, recargo, activa)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: definirZonaDeCobertura(nombre, poligono, recargo, activa)
+    activate SIS
+    alt el polígono y el recargo son válidos
+        SIS--&gt;&gt;ADM: zona creada (zonaId, recargo asociado)
+    else el polígono es inválido
+        SIS--&gt;&gt;ADM: error de validación
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-057: Consultar Zonas de Cobertura</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarZonasDeCobertura()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarZonasDeCobertura()
+    activate SIS
+    SIS--&gt;&gt;ADM: zonas de la distribuidora (nombre, polígono, recargo, estado)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-058: Validar Cobertura de una Dirección</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>validarCobertura(latitud, longitud)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: validarCobertura(latitud, longitud)
+    activate SIS
+    alt el punto cae dentro de una zona activa
+        SIS--&gt;&gt;CLI: cubierta (zonaId, nombre de la zona, recargo aplicable)
+    else la distribuidora no tiene zonas cargadas
+        SIS--&gt;&gt;CLI: cubierta sin recargo (cobertura irrestricta por omisión)
+    else el punto está fuera de toda zona
+        SIS--&gt;&gt;CLI: fuera de cobertura
+    end
+    deactivate SIS</pre>
+<blockquote>Es la <strong>precondición</strong> de CU-005: la aplicación la invoca antes de dejar confirmar el pedido, y de acá sale el recargo por zona que se suma al total.</blockquote>
+<hr>
+<h4>DSS — CU-059: Eliminar Zona de Cobertura</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarZonaDeCobertura(zonaId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: eliminarZonaDeCobertura(zonaId)
+    activate SIS
+    alt la zona pertenece a la distribuidora
+        SIS--&gt;&gt;ADM: zona eliminada
+    else la zona no existe en la distribuidora
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>SS-12 — Incidencias y Calidad de Servicio</h3>
+<h4>DSS — CU-060: Registrar Incidencia de Entrega</h4>
+<p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>registrarIncidencia(pedidoId, tipo, descripcion, foto)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: registrarIncidencia(pedidoId, tipo, descripcion, foto)
+    activate SIS
+    alt el pedido existe
+        SIS--&gt;&gt;CHO: incidencia registrada (incidenciaId, estado ABIERTA)
+    else el pedido no existe
+        SIS--&gt;&gt;CHO: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote>Circuito <strong>distinto</strong> al de reclamos (SS-05): el reclamo lo abre el cliente después de la entrega, la incidencia la abre el chofer durante el reparto.</blockquote>
+<hr>
+<h4>DSS — CU-061: Listar Incidencias</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarIncidencias()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarIncidencias()
+    activate SIS
+    SIS--&gt;&gt;ADM: incidencias de su distribuidora (pedido, tipo, estado, chofer que la reportó)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-062: Consultar Incidencias de un Pedido</h4>
+<p><strong>Actor:</strong> Chofer (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarIncidenciasDelPedido(pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: consultarIncidenciasDelPedido(pedidoId)
+    activate SIS
+    SIS--&gt;&gt;CHO: incidencias del pedido (tipo, descripción, estado, resolución)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-063: Resolver Incidencia</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>resolverIncidencia(incidenciaId, notaDeResolucion)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: resolverIncidencia(incidenciaId, notaDeResolucion)
+    activate SIS
+    alt la incidencia existe en la distribuidora
+        SIS--&gt;&gt;ADM: incidencia resuelta (estado y nota registrados)
+    else la incidencia no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-064: Calificar Pedido</h4>
+<p><strong>Actor:</strong> Cliente o Chofer<br><strong>Operaciones del sistema:</strong> <code>calificarPedido(pedidoId, estrellas, comentario)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: calificarPedido(pedidoId, estrellas, comentario)
+    activate SIS
+    alt el pedido está entregado y el emisor participó de él
+        SIS--&gt;&gt;CLI: calificación registrada (se recalcula el promedio del calificado)
+    else el emisor ya calificó ese pedido
+        SIS--&gt;&gt;CLI: conflicto (ya calificaste este pedido)
+    else el pedido no está entregado o no tiene chofer
+        SIS--&gt;&gt;CLI: error de solicitud (solo se califican pedidos entregados)
+    else el pedido es de otro cliente o lo entregó otro chofer
+        SIS--&gt;&gt;CLI: acceso denegado
+    end
+    deactivate SIS</pre>
+<blockquote>La calificación es <strong>bidireccional</strong>: el mismo mensaje lo emite el cliente hacia el chofer o el chofer hacia el cliente. El emisor sale de la sesión y el calificado se deriva del pedido, de modo que hay a lo sumo una calificación por pedido y por lado.</blockquote>
+<hr>
+<h4>DSS — CU-065: Consultar Promedio de Calificaciones de un Usuario</h4>
+<p><strong>Actor:</strong> Cliente (también Chofer y Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarResumenDeCalificaciones(usuarioId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarResumenDeCalificaciones(usuarioId)
+    activate SIS
+    SIS--&gt;&gt;CLI: promedio de estrellas y cantidad de calificaciones recibidas
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-066: Consultar Historial de Calificaciones Recibidas</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarHistorialDeCalificaciones(usuarioId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: consultarHistorialDeCalificaciones(usuarioId)
+    activate SIS
+    SIS--&gt;&gt;ADM: calificaciones recibidas (pedido, estrellas, comentario, fecha)
+    deactivate SIS</pre>
+<hr>
+<h3>SS-13 — Trazabilidad de Envases</h3>
+<h4>DSS — CU-067: Dar de Alta un Envase Físico</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
+    activate SIS
+    alt el número de serie está libre en la distribuidora
+        SIS--&gt;&gt;ADM: envase creado (envaseId, estado EN_DEPOSITO)
+    else el número de serie ya existe en la distribuidora
+        SIS--&gt;&gt;ADM: conflicto (serie duplicada)
+    end
+    deactivate SIS</pre>
+<blockquote>El número de serie es único <strong>por distribuidora</strong>, no globalmente: dos empresas pueden tener garrafas con la misma numeración de fábrica.</blockquote>
+<hr>
+<h4>DSS — CU-068: Asignar Envases a un Pedido</h4>
+<p><strong>Actor:</strong> Chofer (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>asignarEnvasesAPedido(pedidoId, numerosDeSerie)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
+    activate SIS
+    alt el pedido existe y todos los envases están llenos
+        loop por cada número de serie recibido
+            SIS--&gt;&gt;CHO: envase despachado (serie, estado DESPACHADO)
+        end
+        SIS--&gt;&gt;CHO: asignación completa (cantidad de envases despachados)
+    else algún envase no está en estado LLENO
+        SIS--&gt;&gt;CHO: error de solicitud (no se puede despachar un envase sin llenar)
+    else el pedido o algún envase no existe
+        SIS--&gt;&gt;CHO: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-069: Consultar el Parque de Envases</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarEnvases(estado)</code>, <code>consultarEnvase(envaseId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarEnvases(estado)
+    activate SIS
+    SIS--&gt;&gt;ADM: envases de la distribuidora (serie, estado, pedido y cliente actuales)
+    deactivate SIS
+
+    opt ficha de un envase
+        ADM-&gt;&gt;SIS: consultarEnvase(envaseId)
+        activate SIS
+        alt el envase existe
+            SIS--&gt;&gt;ADM: ficha del envase
+        else el envase no existe
+            SIS--&gt;&gt;ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-070: Registrar Movimiento de Envase</h4>
+<p><strong>Actor:</strong> Chofer (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO-&gt;&gt;SIS: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
+    activate SIS
+    alt la transición es válida desde el estado actual
+        SIS--&gt;&gt;CHO: envase en el nuevo estado (movimiento asentado en su historial)
+    else la transición no está permitida
+        SIS--&gt;&gt;CHO: error de solicitud (transición inválida)
+    else el envase no existe en la distribuidora
+        SIS--&gt;&gt;CHO: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote>Ciclo de vida del envase: EN_DEPOSITO → LLENO → DESPACHADO → CON_EL_CLIENTE → VACIO_DEVUELTO. Al confirmarse la entrega del pedido (CU-020 / CU-079) el sistema avanza solo los envases despachados a CON_EL_CLIENTE.</blockquote>
+<hr>
+<h4>DSS — CU-071: Consultar Historial de Movimientos de un Envase</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarHistorialDelEnvase(envaseId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: consultarHistorialDelEnvase(envaseId)
+    activate SIS
+    SIS--&gt;&gt;ADM: movimientos en orden cronológico (estado origen, estado destino, pedido, responsable, fecha)
+    deactivate SIS</pre>
+<blockquote>El historial es de <strong>solo agregado</strong>: los movimientos no se corrigen ni se borran, y por eso sirve como evidencia de trazabilidad.</blockquote>
+<hr>
+<h3>SS-14 — Pagos y Conciliación</h3>
+<h4>DSS — CU-048: Procesar Pago con MercadoPago</h4>
+<p><strong>Actor:</strong> Pasarela de Pago (actor externo). Receptores: Cliente y Chofer<br><strong>Operaciones del sistema:</strong> <code>notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor MP as Pasarela de Pago
+    participant SIS as Sistema
+    actor CHO as Chofer
+
+    MP-&gt;&gt;SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
+    activate SIS
+    alt La firma no es valida
+        SIS--&gt;&gt;MP: notificacion recibida (se descarta sin procesar)
+    else Pago aprobado de un pedido pendiente
+        SIS--&gt;&gt;MP: notificacion recibida
+        SIS-)CHO: oferta del pedido ya pagado
+    else Pago aprobado de la sena de una reserva
+        SIS--&gt;&gt;MP: notificacion recibida (la sena queda paga, la reserva no se despacha)
+    else Pago aprobado de un pedido ya cancelado o entregado
+        SIS--&gt;&gt;MP: notificacion recibida (se registra el pago, sin reactivar el pedido)
+    else Pago rechazado o cancelado
+        SIS--&gt;&gt;MP: notificacion recibida (el pedido queda a la espera)
+    end
+    deactivate SIS</pre>
+<blockquote>El sistema responde <strong>siempre</strong> con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido.</blockquote>
+<hr>
+<h3>SS-15 — Reservas Programadas</h3>
+<h4>DSS — CU-072: Crear Reserva Programada con Seña</h4>
+<p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
+    activate SIS
+    alt hay stock y la franja tiene cupo para esa fecha
+        SIS--&gt;&gt;CLI: reserva creada (numero, total, seña, estado RESERVADO)
+        opt la seña se paga con la pasarela
+            SIS--&gt;&gt;CLI: enlace de pago de la seña
+        end
+    else no hay stock suficiente
+        SIS--&gt;&gt;CLI: error de solicitud (stock insuficiente)
+    else la franja está completa o la fecha es pasada
+        SIS--&gt;&gt;CLI: error de solicitud (no se puede agendar en esa franja)
+    end
+    deactivate SIS</pre>
+<blockquote>La reserva nace en estado <strong>RESERVADO</strong>: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075).</blockquote>
+<hr>
+<h4>DSS — CU-073: Listar Reservas y Estado de la Seña</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarReservas()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarReservas()
+    activate SIS
+    SIS--&gt;&gt;ADM: reservas ordenadas por fecha agendada (cliente, total, seña, si está paga, saldo)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-074: Confirmar Seña Cobrada en Efectivo</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>confirmarSenia(pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: confirmarSenia(pedidoId)
+    activate SIS
+    alt el pedido es una reserva pendiente
+        SIS--&gt;&gt;ADM: seña confirmada (la reserva queda lista para activarse sola)
+    else el pedido no es una reserva pendiente
+        SIS--&gt;&gt;ADM: error de solicitud (el pedido no es una reserva pendiente)
+    else la reserva no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<blockquote>Es la <strong>única acción humana</strong> del ciclo de reservas: la seña pagada por la pasarela se confirma sola (CU-048).</blockquote>
+<hr>
+<h4>DSS — CU-075: Activar Reservas Vencidas Automáticamente</h4>
+<p><strong>Actor:</strong> Sistema Automático<br><strong>Operaciones del sistema:</strong> <code>activarReservasDelDia()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor AUT as Sistema Automático
+    participant SIS as Sistema
+    actor CHO as Chofer
+
+    Note over AUT: Proceso periódico. Frecuencia real cada 5 minutos
+    AUT-&gt;&gt;SIS: activarReservasDelDia()
+    activate SIS
+    alt hay reservas con la seña paga y el día cumplido
+        loop por cada reserva vencida (hasta 50 por corrida)
+            SIS-)CHO: oferta del pedido activado (pedidoId, total, ítems, distancia)
+        end
+        SIS--&gt;&gt;AUT: reservas activadas y enviadas a despacho
+    else no hay reservas para activar
+        SIS--&gt;&gt;AUT: sin trabajo por hacer
+    end
+    deactivate SIS</pre>
+<blockquote>Solo se activan las reservas con la seña <strong>efectivamente paga</strong>. Una reserva cuya activación falla se registra y se reintenta en la corrida siguiente.</blockquote>
+<hr>
+<h4>DSS — CU-076: Expirar Reservas sin Seña Pagada</h4>
+<p><strong>Actor:</strong> Sistema Automático<br><strong>Operaciones del sistema:</strong> <code>expirarReservasSinSenia()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor AUT as Sistema Automático
+    participant SIS as Sistema
+
+    Note over AUT: Proceso periódico. Frecuencia real cada 1 hora
+    AUT-&gt;&gt;SIS: expirarReservasSinSenia()
+    activate SIS
+    alt hay reservas sin seña más viejas que el plazo configurado
+        loop por cada reserva vencida (hasta 50 por corrida)
+            SIS--&gt;&gt;AUT: reserva cancelada y stock liberado
+        end
+    else no hay reservas vencidas
+        SIS--&gt;&gt;AUT: sin trabajo por hacer
+    end
+    deactivate SIS</pre>
+<blockquote>El plazo de espera de la seña es un parámetro de configuración (valor por omisión, 48 horas). Cada expiración es atómica: si falla, la reserva queda intacta para la corrida siguiente.</blockquote>
+<hr>
+<h4>DSS — CU-077: Expirar Pedidos de MercadoPago sin Pagar</h4>
+<p><strong>Actor:</strong> Sistema Automático<br><strong>Operaciones del sistema:</strong> <code>expirarPedidosSinPagar()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor AUT as Sistema Automático
+    participant SIS as Sistema
+
+    Note over AUT: Proceso periódico. Frecuencia real cada 30 minutos
+    AUT-&gt;&gt;SIS: expirarPedidosSinPagar()
+    activate SIS
+    alt hay pedidos pendientes con pasarela más viejos que el plazo
+        loop por cada pedido vencido (hasta 50 por corrida)
+            alt el pago no llegó a acreditarse
+                SIS--&gt;&gt;AUT: pedido cancelado por falta de pago y stock liberado
+            else el pago se acreditó justo antes de la revisión
+                SIS--&gt;&gt;AUT: pedido intacto (gana el pago, no la expiración)
+            end
+        end
+    else no hay pedidos vencidos
+        SIS--&gt;&gt;AUT: sin trabajo por hacer
+    end
+    deactivate SIS</pre>
+<blockquote>Sin este proceso, el stock que se reserva al crear el pedido —antes de que el cliente pague— quedaría bloqueado para siempre si abandona el pago. El plazo por omisión es de 60 minutos.</blockquote>
+<hr>
+<h3>SS-16 — Administración de Cuentas y Roles</h3>
+<h4>DSS — CU-086: Registrar Administrador</h4>
+<p><strong>Actor:</strong> Administrador (y Super Administrador)<br><strong>Operaciones del sistema:</strong> <code>registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)</code>, <code>crearAdministradorSobreUsuarioExistente(usuarioId, rolId, distribuidoraId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)
+    activate SIS
+    alt es super administrador
+        SIS--&gt;&gt;ADM: administrador creado en la distribuidora indicada
+    else es administrador de empresa y el alta es en su propia distribuidora
+        SIS--&gt;&gt;ADM: administrador creado en su distribuidora
+    else intenta crear en otra distribuidora o con rol de super administrador
+        SIS--&gt;&gt;ADM: acceso denegado
+    end
+    deactivate SIS</pre>
+<blockquote>Regla de negocio multi-empresa: un administrador de empresa <strong>nunca</strong> puede crear administradores de otra distribuidora ni escalar a super administrador.</blockquote>
+<hr>
+<h4>DSS — CU-087: Crear el Primer Super Administrador</h4>
+<p><strong>Actor:</strong> Administrador (puesta en marcha del sistema, sin sesión iniciada)<br><strong>Operaciones del sistema:</strong> <code>crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
+    activate SIS
+    alt no existe ningún administrador en el sistema
+        SIS--&gt;&gt;ADM: super administrador creado (queda habilitado el acceso al panel)
+    else ya existen administradores
+        SIS--&gt;&gt;ADM: acceso denegado (la operación de arranque ya fue consumida)
+    end
+    deactivate SIS</pre>
+<blockquote>Es una operación de <strong>una sola vez</strong>: se autodeshabilita apenas existe el primer administrador.</blockquote>
+<hr>
+<h4>DSS — CU-088: Consultar Administradores</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarAdministradores()</code>, <code>buscarAdministrador(termino)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarAdministradores()
+    activate SIS
+    SIS--&gt;&gt;ADM: administradores de su distribuidora (nombre, correo, rol)
+    deactivate SIS
+
+    opt búsqueda puntual
+        ADM-&gt;&gt;SIS: buscarAdministrador(termino)
+        activate SIS
+        alt hay coincidencias
+            SIS--&gt;&gt;ADM: administrador encontrado
+        else no hay coincidencias
+            SIS--&gt;&gt;ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-089: Gestionar Roles del Sistema</h4>
+<p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>crearRol(nombre, descripcion)</code>, <code>listarRoles()</code>, <code>consultarRol(rolId)</code>, <code>actualizarRol(rolId, datos)</code>, <code>eliminarRol(rolId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP-&gt;&gt;SIS: listarRoles()
+    activate SIS
+    SIS--&gt;&gt;SUP: roles definidos en el sistema
+    deactivate SIS
+
+    opt alta de un rol
+        SUP-&gt;&gt;SIS: crearRol(nombre, descripcion)
+        activate SIS
+        SIS--&gt;&gt;SUP: rol creado (rolId)
+        deactivate SIS
+    end
+
+    opt modificación
+        SUP-&gt;&gt;SIS: actualizarRol(rolId, datos)
+        activate SIS
+        alt el rol existe
+            SIS--&gt;&gt;SUP: rol actualizado
+        else el rol no existe
+            SIS--&gt;&gt;SUP: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt baja
+        SUP-&gt;&gt;SIS: eliminarRol(rolId)
+        activate SIS
+        SIS--&gt;&gt;SUP: rol eliminado
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-090: Sembrar los Roles Iniciales</h4>
+<p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>sembrarRolesIniciales()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP-&gt;&gt;SIS: sembrarRolesIniciales()
+    activate SIS
+    SIS--&gt;&gt;SUP: roles base disponibles (cliente, chofer, administrador, super administrador)
+    deactivate SIS</pre>
+<blockquote>Operación de puesta en marcha, idempotente: volver a ejecutarla no duplica los roles ya existentes.</blockquote>
+<hr>
+<h4>DSS — CU-092: Consultar Listado de Clientes</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarClientes(pagina, limite)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: listarClientes(pagina, limite)
+    activate SIS
+    SIS--&gt;&gt;ADM: página de clientes (nombre, contacto, validación, ubicación)
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-093: Validar / Invalidar Cliente</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>validarCliente(clienteId)</code>, <code>invalidarCliente(clienteId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    alt aprobación del cliente
+        ADM-&gt;&gt;SIS: validarCliente(clienteId)
+        activate SIS
+        SIS--&gt;&gt;ADM: cliente validado
+        deactivate SIS
+    else revocación
+        ADM-&gt;&gt;SIS: invalidarCliente(clienteId)
+        activate SIS
+        SIS--&gt;&gt;ADM: cliente invalidado
+        deactivate SIS
+    end</pre>
+<hr>
+<h4>DSS — CU-094: Actualizar Ubicación del Cliente</h4>
+<p><strong>Actor:</strong> Cliente (también Administrador desde el panel)<br><strong>Operaciones del sistema:</strong> <code>actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)
+    activate SIS
+    alt el cliente existe
+        SIS--&gt;&gt;CLI: ubicación actualizada
+    else el cliente no existe
+        SIS--&gt;&gt;CLI: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-095: Eliminar Cliente (baja lógica)</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarCliente(clienteId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: eliminarCliente(clienteId)
+    activate SIS
+    alt el cliente existe
+        SIS--&gt;&gt;ADM: cliente dado de baja (se conserva su histórico de pedidos)
+    else el cliente no existe
+        SIS--&gt;&gt;ADM: recurso no encontrado
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>SS-17 — Notificaciones y Mensajería</h3>
+<h4>DSS — CU-098: Registrar el Token de Notificaciones del Dispositivo</h4>
+<p><strong>Actor:</strong> Cliente (también Chofer)<br><strong>Operaciones del sistema:</strong> <code>registrarTokenDeNotificaciones(usuarioId, token, plataforma)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: registrarTokenDeNotificaciones(usuarioId, token, plataforma)
+    activate SIS
+    alt registra el token de su propio dispositivo o es administrador
+        SIS--&gt;&gt;CLI: token registrado (el dispositivo empieza a recibir avisos)
+    else intenta registrar un token a nombre de otro usuario
+        SIS--&gt;&gt;CLI: acceso denegado
+    end
+    deactivate SIS</pre>
+<blockquote>Es la <strong>precondición técnica de CU-021</strong>: sin token registrado no hay avisos al dispositivo.</blockquote>
+<hr>
+<h4>DSS — CU-099: Consultar los Tokens de un Usuario</h4>
+<p><strong>Actor:</strong> Cliente (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarTokensDelUsuario(usuarioId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI-&gt;&gt;SIS: consultarTokensDelUsuario(usuarioId)
+    activate SIS
+    alt consulta sus propios dispositivos o es administrador
+        SIS--&gt;&gt;CLI: dispositivos registrados (plataforma, fecha de alta)
+    else consulta los dispositivos de otro usuario
+        SIS--&gt;&gt;CLI: acceso denegado
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-100: Enviar Notificación de Prueba</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>enviarNotificacionDePrueba(usuarioId, titulo, mensaje)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+    actor CLI as Usuario Destinatario
+
+    ADM-&gt;&gt;SIS: enviarNotificacionDePrueba(usuarioId, titulo, mensaje)
+    activate SIS
+    alt el usuario tiene al menos un dispositivo registrado
+        SIS-)CLI: notificación de prueba
+        SIS--&gt;&gt;ADM: notificación enviada
+    else el usuario no tiene dispositivos registrados
+        SIS--&gt;&gt;ADM: no se pudo enviar (sin dispositivos registrados)
+    end
+    deactivate SIS</pre>
+<hr>
+<h4>DSS — CU-101: Reenviar Notificación de Confirmación de Pedido</h4>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>reenviarConfirmacionDePedido(usuarioId, pedidoId)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    ADM-&gt;&gt;SIS: reenviarConfirmacionDePedido(usuarioId, pedidoId)
+    activate SIS
+    alt el cliente tiene dispositivos registrados
+        SIS-)CLI: confirmación del pedido
+        SIS--&gt;&gt;ADM: notificación reenviada
+    else el cliente no tiene dispositivos registrados
+        SIS--&gt;&gt;ADM: no se pudo enviar
+    end
+    deactivate SIS</pre>
+<blockquote>Se usa como acción de soporte cuando el cliente dice no haber recibido el aviso original.</blockquote>
+<hr>
+<h4>DSS — CU-102: Probar el Servicio de Correo</h4>
+<p><strong>Actor:</strong> Administrador (verificación operativa)<br><strong>Operaciones del sistema:</strong> <code>probarServicioDeCorreo(destinatario)</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: probarServicioDeCorreo(destinatario)
+    activate SIS
+    alt el servicio de correo responde
+        SIS--&gt;&gt;ADM: correo de prueba enviado
+    else el servicio de correo falla
+        SIS--&gt;&gt;ADM: error del servicio de correo
+    end
+    deactivate SIS</pre>
+<blockquote>El propio código marca esta operación como <strong>temporal</strong> y hoy es accesible sin sesión: es una observación a resolver antes de producción, no una funcionalidad del producto.</blockquote>
+<hr>
+<h3>SS-18 — Observabilidad y Operación</h3>
+<h4>DSS — CU-104: Verificar la Salud del Sistema</h4>
+<p><strong>Actor:</strong> Plataforma de Operación (actor externo: orquestador o balanceador de carga)<br><strong>Operaciones del sistema:</strong> <code>verificarSalud()</code>, <code>verificarVida()</code>, <code>verificarDisponibilidad()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor OPS as Plataforma de Operacion
+    participant SIS as Sistema
+
+    Note over OPS: Sondeo periodico durante toda la vida de la instancia
+
+    OPS-&gt;&gt;SIS: verificarVida()
+    activate SIS
+    SIS--&gt;&gt;OPS: la instancia esta viva
+    deactivate SIS
+
+    OPS-&gt;&gt;SIS: verificarDisponibilidad()
+    activate SIS
+    alt Las dependencias responden
+        SIS--&gt;&gt;OPS: lista para recibir trafico
+    else Alguna dependencia no responde
+        SIS--&gt;&gt;OPS: no disponible (se le retira el trafico a la instancia)
+    end
+    deactivate SIS
+
+    opt Diagnostico ampliado
+        OPS-&gt;&gt;SIS: verificarSalud()
+        activate SIS
+        SIS--&gt;&gt;OPS: estado de cada verificacion (base de datos, memoria cache, memoria en uso, espacio en disco)
+        deactivate SIS
+    end</pre>
+<blockquote>Es el caso de uso que da soporte a los requisitos no funcionales de <strong>disponibilidad</strong> y <strong>escalabilidad</strong>, hoy sin ningún caso de uso asociado en la matriz de rastreabilidad.</blockquote>
+<hr>
+<h3>CU no modelados y por qué</h3>
+<table><tr><th>CU</th><th>Nombre</th><th>Motivo</th></tr><tr><td>CU-001</td><td>Iniciar Sesión</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1.</td></tr><tr><td>CU-005</td><td>Crear Pedido</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1.</td></tr><tr><td>CU-013</td><td>Asignar Pedido Automáticamente por Proximidad</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1.</td></tr><tr><td>CU-014</td><td>Reintentar Asignación con Radio Expandido (Cron)</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1.</td></tr><tr><td>CU-015</td><td>Aceptar Pedido</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1.</td></tr><tr><td>CU-017</td><td>Actualizar Ubicación GPS del Chofer</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1.</td></tr><tr><td>CU-020</td><td>Confirmar Entrega</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1. El camino alternativo por código de entrega sí se modela acá (CU-078 y CU-079).</td></tr><tr><td>CU-023</td><td>Registrar Reclamo</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1.</td></tr><tr><td>—</td><td>Reserva y restitución de stock</td><td>Ya modelado en <code>docs/2-Analisis.md</code> §2.1 como diagrama interno. No es un DSS en sentido estricto: no tiene actor externo.</td></tr><tr><td>CU-043</td><td>Modificar Capacidad de Franja Horaria</td><td><strong>Sin implementación.</strong> El sistema no expone ninguna operación de modificación de franjas: solo alta, consulta y baja. No hay comportamiento observable que modelar sin inventarlo. Ver <code>docs/TRAZABILIDAD-CU-CODIGO.md</code> §4.</td></tr></table>
+<p><strong>Observaciones sobre casos de uso modelados con salvedades:</strong></p>
+<ol><li><strong>CU-040 (Activar / Desactivar Producto)</strong> se modela solo en su mitad implementada: la desactivación. El sistema no ofrece la operación de reactivación, y así queda anotado en el diagrama.</li><li><strong>CU-049 (Consultar Balance del Chofer)</strong> no tiene una operación de consulta propia: se modela tal como ocurre, como una lectura del perfil del chofer.</li><li><strong>Conciliación de pagos:</strong> el registro contable de pagos existe en el sistema pero no tiene una operación del sistema que lo exponga a ningún actor, de modo que no admite un DSS. Se recomienda darle un caso de uso propio en una iteración posterior, tal como sugiere <code>docs/TRAZABILIDAD-CU-CODIGO.md</code> §3.16.</li></ol>
+<hr>
+<p><em>Documento generado a partir del código vigente. Ningún archivo del sistema fue modificado.</em></p>
+<hr>
+<h4>Módulos inteligentes en diseño (CU-105 a CU-108)</h4>
+<p>Diagramas de los procesos automáticos todavía no construidos.</p>
+<h5>DSS — CU-105: Planificar el mantenimiento y las habilitaciones de la flota</h5>
+<p><strong>Actor:</strong> Sistema Automático (proceso temporal diario), con escalamiento al Administrador<br><strong>Operaciones del sistema:</strong> <code>planificarMantenimientoDeFlota()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CHO as Chofer
+    actor ADM as Administrador
+
+    Note over SAU: Se ejecuta una vez por dia,&lt;br/&gt;a la hora configurada
+    SAU-&gt;&gt;SIS: planificarMantenimientoDeFlota()
+    activate SIS
+    Note over SIS: Estima el consumo diario de cada vehiculo,&lt;br/&gt;proyecta los vencimientos y arma las ventanas&lt;br/&gt;que no dejan la zona bajo el minimo
+
+    loop Por cada tarea dentro de la ventana de anticipacion
+        loop Por cada ventana alternativa, de mejor a peor
+            SIS--&gt;&gt;CHO: propuesta de ventana de taller (vigencia limitada)
+            alt El chofer acepta
+                CHO-&gt;&gt;SIS: aceptar la ventana propuesta
+                SIS--&gt;&gt;CHO: ventana confirmada y agenda bloqueada
+            else Rechaza o vence la vigencia
+                SIS-&gt;&gt;SIS: cerrar la propuesta y pasar a la siguiente ventana
+            end
+        end
+
+        alt Se agotaron las ventanas sin acuerdo
+            SIS--&gt;&gt;ADM: cuadro de opciones evaluadas y motivo de cada descarte
+            ADM-&gt;&gt;SIS: confirmar la ventana y el gasto del taller
+            SIS--&gt;&gt;ADM: tarea programada
+        else La ventana quedo acordada con el chofer
+            SIS-&gt;&gt;SIS: registrar la tarea como programada
+        end
+    end
+
+    alt Hay una habilitacion bloqueante vencida
+        SIS-&gt;&gt;SIS: dejar el vehiculo fuera de servicio
+        SIS--&gt;&gt;ADM: aviso de vehiculo inhabilitado
+    end
+    SIS--&gt;&gt;SAU: planificacion resuelta
+    deactivate SIS</pre>
+<hr>
+<h5>DSS — CU-106: Anticipar la recompra por consumo estimado</h5>
+<p><strong>Actor:</strong> Sistema Automático (proceso temporal diario), con el Cliente como destinatario<br><strong>Operaciones del sistema:</strong> <code>anticiparRecompras()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    Note over SAU: Se ejecuta una vez por dia
+    SAU-&gt;&gt;SIS: anticiparRecompras()
+    activate SIS
+    Note over SIS: Estima el ritmo de consumo de cada cliente&lt;br/&gt;ponderado por kilaje y corregido por estacionalidad,&lt;br/&gt;y proyecta la fecha de agotamiento
+
+    loop Por cada cliente dentro de la ventana de anticipacion
+        alt El cliente no tiene pedido activo ni invitacion reciente
+            SIS--&gt;&gt;CLI: invitacion a reponer con el pedido precargado (vigencia limitada)
+            alt El cliente acepta dentro de la vigencia
+                CLI-&gt;&gt;SIS: aceptar la invitacion
+                SIS--&gt;&gt;CLI: pedido creado y en busqueda de chofer
+            else Rechaza o vence la vigencia
+                SIS-&gt;&gt;SIS: cerrar la invitacion y registrar la fecha del intervalo minimo
+            end
+        else El cliente esta excluido
+            SIS-&gt;&gt;SIS: no emitir invitacion
+        end
+    end
+    SIS--&gt;&gt;SAU: invitaciones emitidas y caducadas procesadas
+    deactivate SIS</pre>
+<hr>
+<h5>DSS — CU-107: Agrupar pedidos por recorrido</h5>
+<p><strong>Actor:</strong> Sistema Automático (proceso temporal periódico), con el Chofer como destinatario<br><strong>Operaciones del sistema:</strong> <code>agruparPedidosPorRecorrido()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CHO as Chofer
+
+    Note over SAU: Se ejecuta con la periodicidad configurada
+    SAU-&gt;&gt;SIS: agruparPedidosPorRecorrido()
+    activate SIS
+    Note over SIS: Agrupa por zona, proximidad, franja horaria&lt;br/&gt;y capacidad de carga, y ordena las paradas&lt;br/&gt;por secuencia de entrega
+
+    loop Por cada lote armado
+        loop Por cada chofer candidato no contactado
+            SIS--&gt;&gt;CHO: oferta del recorrido completo (paradas, peso, vigencia)
+            alt El chofer acepta dentro de la vigencia
+                CHO-&gt;&gt;SIS: aceptar el recorrido
+                SIS--&gt;&gt;CHO: pedidos asignados en el orden establecido
+            else Rechaza o vence la vigencia
+                SIS-&gt;&gt;SIS: cerrar la oferta y pasar al candidato siguiente
+            end
+        end
+
+        alt Ningun chofer tomo el lote
+            SIS-&gt;&gt;SIS: deshacer el lote y devolver los pedidos al circuito individual
+        else El lote quedo asignado
+            SIS-&gt;&gt;SIS: registrar el recorrido asignado
+        end
+    end
+    SIS--&gt;&gt;SAU: lotes procesados
+    deactivate SIS</pre>
+<hr>
+<h5>DSS — CU-108: Recuperar envases no devueltos</h5>
+<p><strong>Actor:</strong> Sistema Automático (proceso temporal periódico), con escalamiento al Administrador<br><strong>Operaciones del sistema:</strong> <code>gestionarEnvasesNoDevueltos()</code></p>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CLI as Cliente
+    actor ADM as Administrador
+
+    Note over SAU: Se ejecuta con la periodicidad configurada
+    SAU-&gt;&gt;SIS: gestionarEnvasesNoDevueltos()
+    activate SIS
+    Note over SIS: Detecta los envases retenidos por encima&lt;br/&gt;del plazo de tolerancia configurado
+
+    loop Por cada envase retenido
+        loop Por cada escalon de la secuencia
+            alt El envase ya volvio
+                SIS-&gt;&gt;SIS: cerrar el caso y liberar el deposito
+            else El envase sigue retenido
+                SIS--&gt;&gt;CLI: aviso del escalon (recordatorio, deposito comprometido)
+                alt Hay una entrega programada al mismo cliente
+                    SIS--&gt;&gt;CLI: oferta de devolver el envase en ese viaje (vigencia limitada)
+                    CLI-&gt;&gt;SIS: aceptar o no responder
+                else No hay entrega programada
+                    SIS-&gt;&gt;SIS: saltear la oferta de retiro
+                end
+            end
+        end
+
+        alt Se agotaron los escalones y el importe supera el umbral
+            SIS--&gt;&gt;ADM: legajo del caso (cliente, historial del envase, importe)
+            ADM-&gt;&gt;SIS: cobrar el deposito, dar de baja el envase o cerrar sin cargo
+            SIS--&gt;&gt;ADM: resolucion registrada
+        else El envase volvio o el importe no llega al umbral
+            SIS-&gt;&gt;SIS: cerrar el caso segun corresponda
+        end
+    end
+    SIS--&gt;&gt;SAU: casos de recupero procesados
+    deactivate SIS</pre>
+<hr>
+<h5>Especificado — pendiente de construcción · DSS — CU-043: Modificar Capacidad de Franja Horaria</h5>
+<p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>modificarFranjaHoraria(franja, nombre, horaInicio, horaFin, capacidad)</code></p>
+<blockquote>El sistema <strong>todavía no realiza este caso de uso</strong>: no existe operación de modificación sobre una franja horaria. El diagrama especifica el comportamiento esperado para cuando se construya.</blockquote>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM-&gt;&gt;SIS: modificarFranjaHoraria(franja, nombre, horaInicio, horaFin, capacidad)
+    activate SIS
+    alt Los datos son válidos y la franja pertenece a la distribuidora
+        SIS--&gt;&gt;ADM: franja actualizada (nombre, rango horario, capacidad)
+    else La hora de fin no es posterior a la de inicio
+        SIS--&gt;&gt;ADM: rechazo (rango horario inválido)
+    else La capacidad nueva es menor que los pedidos ya programados
+        SIS--&gt;&gt;ADM: rechazo (hay pedidos comprometidos por encima de la capacidad)
+    else La franja pertenece a otra distribuidora
+        SIS--&gt;&gt;ADM: rechazo (franja no encontrada)
+    end
+    deactivate SIS</pre>
+<hr>
+<h3>2.2 Contratos de Operaciones del Sistema</h3>
+<hr>
+<h4>Crítico Contrato: <code>iniciarSesion()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>iniciarSesion(email, password)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Verificar la identidad del usuario contra Firebase Authentication y devolver a la aplicación el token de identidad que Firebase emite. El sistema no emite una credencial propia.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-001, OBJ-01, OBJ-05</td></tr><tr><td><strong>Notas</strong></td><td>El informe de hallazgos señala dos limitaciones vigentes: el sistema no gestiona una credencial propia sino que delega la verificación en Firebase Authentication y usa el firebaseUid como nexo con el usuario local, y el atributo de bloqueo del usuario se escribe pero no se lee en este punto de entrada, por lo que un usuario bloqueado puede iniciar sesión con normalidad.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El usuario tiene una cuenta registrada en el sistema. El email y la contraseña son strings no vacíos. Firebase Authentication está disponible.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Si las credenciales son válidas: la aplicación recibió el token de identidad emitido por Firebase. No se generó ninguna credencial propia del sistema ni se guardó sesión del lado del servidor: cada solicitud posterior se valida de nuevo contra Firebase y el rol se resuelve contra la base. En el ingreso al Panel Web el token queda además en una cookie httpOnly de una hora.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si Firebase rechaza las credenciales → error 401 &quot;Credenciales inválidas&quot;. Si el <code>User</code> no existe en BD pese a tener <code>firebaseUid</code> → error 403 &quot;Usuario no autorizado&quot;. Si el rol del usuario no corresponde a la aplicación desde la que ingresa, o falta el encabezado que la identifica → error 401. El estado de habilitación del chofer no se consulta en el ingreso.</td></tr><tr><td><strong>Salida</strong></td><td>El token de identidad de Firebase junto con los datos del usuario y su perfil.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>crearPedido()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>crearPedido(customerId, addressId, timeSlotId, items[], paymentMethod, notificationToken?)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Crear un pedido reservando el stock de forma atómica, calcular el total con promociones y disparar el despacho automático.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-005, OBJ-01, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>Según el informe de hallazgos, la excepción de stock insuficiente no llega mapeada a una respuesta de solicitud incorrecta: el caso de uso la deja pasar como error interno porque el filtro global no alcanza a traducirla; además el motor de promociones no valida que el descuento configurado no supere el 100%, lo que puede producir un subtotal negativo.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El cliente existe y está autenticado. Cada gasCylinderId referenciado en items[] existe y tiene stock &gt;= cantidad solicitada. La dirección pertenece al cliente. La franja horaria existe y está activa.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se creó una instancia de <code>Order</code> con estado PENDING. Se decrementó <code>GasCylinder.stock</code> por la cantidad de cada ítem. Se crearon instancias de <code>OrderItem</code> asociadas al pedido. Se ofreció el pedido al chofer disponible más cercano, de a uno por vez. Se envió FCM push al cliente.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el stock es insuficiente → la operación se revierte por completo; la respuesta todavía no llega traducida a una solicitud incorrecta y se devuelve como error interno. Si el cliente no existe → error 404. Si la dirección no pertenece al cliente → error 404.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de Order creada junto con sus OrderItem, y opcionalmente paymentUrl cuando el método de pago es MercadoPago y se generó el checkout.</td></tr></table>
+<hr>
+<h4>Crítico · automático Contrato: <code>asignarPorProximidad()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>asignarPorProximidad(lat, lng, radiusKm)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Consultar en Redis los choferes disponibles dentro del radio indicado y notificarlos por WebSocket del nuevo pedido disponible.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-013, CU-014, OBJ-02</td></tr><tr><td><strong>Notas</strong></td><td>Esta operación describe el mecanismo conceptual de CU-013/CU-014 tal como fue especificado originalmente; la implementación real, con radios crecientes [5, 10, 15, 20] km y ventana de ofertas, está detallada en ofrecerAlSiguienteChofer() y vencerOfertasExpiradas(), que reemplazaron el modelo de difusión a todos los choferes. El informe de hallazgos señala además que la disponibilidad del chofer (isActive) no se consulta al elegir candidatos: solo se lee en un contador del panel de administración.</td></tr><tr><td><strong>Precondiciones</strong></td><td>Existen choferes con ubicación registrada en Redis (GEOADD). El pedido tiene estado PENDING.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Cada chofer dentro del radio recibió el evento <code>server:new-order-request</code> con los datos del pedido. El estado del pedido no cambia (permanece PENDING hasta que algún chofer acepte).</td></tr><tr><td><strong>Excepciones</strong></td><td>Si Redis no devuelve choferes → no se emiten eventos. El cron reintentará con radio 15km en la próxima ejecución.</td></tr><tr><td><strong>Salida</strong></td><td>Ninguna: es un proceso interno del despacho automático, no retorna valor a un invocante ni responde a una petición HTTP.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>aceptarPedido()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>aceptarPedido(orderId, deliveryId)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Asignar el chofer al pedido, cambiar el estado a ACCEPTED y notificar al cliente.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-015, OBJ-02, OBJ-03</td></tr><tr><td><strong>Notas</strong></td><td>El informe de hallazgos registra que esta operación no comprueba que el pedido siga sin chofer asignado antes de aceptarlo: un segundo chofer puede desplazar al primero y regenerar el código de entrega, invalidando el QR que ya estaba en poder del cliente.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El pedido existe y tiene estado PENDING. El chofer existe, tiene <code>isActive = true</code> y <code>validated = true</code>.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se actualizó <code>Order.delivery_id</code> con el ID del chofer. Se actualizó <code>Order.status</code> a ACCEPTED. Se registró <code>Order.acceptedAt</code>. Se emitió el evento <code>order:accepted</code> al cliente por WebSocket. Se envió FCM push al cliente.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el chofer no está activo o no está validado → error 400. Si el pedido no existe → error 404.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de Order actualizada, con status ACCEPTED y el chofer ya asignado, devuelta al chofer que efectuó la aceptación.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>actualizarUbicacion()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>actualizarUbicacion(userId, lat, lng)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Guardar la posición GPS actual del chofer en Redis para que esté disponible en el radar de asignación y en el mapa del cliente.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-017, OBJ-02, OBJ-03</td></tr><tr><td><strong>Notas</strong></td><td>Es una escritura pura sobre el índice geoespacial de Redis: no persiste histórico de posiciones en la base relacional, y la frecuencia con la que llega actualizada depende del cliente móvil, no del backend.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El chofer está autenticado y conectado al WebSocket. Los valores de lat y lng son válidos.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se ejecutó <code>GEOADD drivers:locations lng lat userId</code> en Redis. La posición del chofer está actualizada y disponible para consultas de proximidad.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si lat o lng son inválidos → el evento se descarta sin error visible al usuario.</td></tr><tr><td><strong>Salida</strong></td><td>Ninguna: es un evento de WebSocket sin acuse de recibo hacia el chofer que lo emite.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>confirmarEntrega()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>confirmarEntrega(orderId)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Cerrar el ciclo del pedido marcándolo como entregado, actualizar el estado de pago si corresponde y notificar al cliente.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-020, OBJ-03, OBJ-04</td></tr><tr><td><strong>Notas</strong></td><td>El informe de hallazgos verificó que ningún punto de entrada comprueba que el chofer que confirma sea el asignado al pedido, por lo que cualquier chofer autenticado puede marcar como entregado y como cobrado el pedido de otro.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El pedido existe y tiene estado ON_THE_WAY. El chofer es el asignado al pedido.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se actualizó <code>Order.status</code> a DELIVERED. Se registró <code>Order.deliveredAt</code>. Si <code>paymentMethod = CASH</code> → se actualizó <code>Order.paymentStatus</code> a PAID. Se emitió el evento <code>order:delivered</code> al cliente por WebSocket. Se envió FCM push al cliente.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido ya está DELIVERED o CANCELLED → error 400 &quot;El pedido ya está finalizado&quot;.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de Order actualizada, con status DELIVERED, devuelta al chofer que confirmó la entrega.</td></tr></table>
+<hr>
+<h4>Crítico · automático Contrato: <code>restituirStock()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>restituirStock(orderId)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Devolver al stock de cada garrafa las unidades reservadas al momento de la creación del pedido cancelado.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático al cancelar)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-008, CU-010, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>El informe de hallazgos advierte que esta restitución no es atómica con la cancelación del pedido: la actualización de stock y el guardado del pedido cancelado corren en transacciones separadas, a diferencia de expirarReservasSinSenia(), que sí las une en una única transacción.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El pedido tiene estado PENDING o ACCEPTED (no DELIVERED ni CANCELLED). El rol que cancela es Cliente o Administrador.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Por cada <code>OrderItem</code> del pedido: la cantidad reservada volvió al stock disponible del producto. El pedido tiene estado CANCELLED y <code>cancellationReason</code> registrado. Se emitió el evento <code>order:cancelled</code> al cliente por WebSocket.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si la transacción de restitución falla → rollback, el pedido no se cancela.</td></tr><tr><td><strong>Salida</strong></td><td>Ninguna: es un efecto secundario automático de la cancelación del pedido (CU-008/CU-010), no devuelve un valor propio al invocante.</td></tr></table>
+<hr>
+<h4>Importante Contrato: <code>crearReclamo()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>crearReclamo(orderId, customerId, reason, description, photoUrl?)</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Registrar un reclamo del cliente sobre un pedido, validando que el pedido le pertenece.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-023, OBJ-04</td></tr><tr><td><strong>Notas</strong></td><td>No aplica ninguna validación de contenido sobre reason o description más allá de la pertenencia del pedido al cliente; la operación no dispara ninguna notificación automática a la distribuidora ni al chofer, y la resolución del reclamo queda a cargo de una operación distinta (CU-025).</td></tr><tr><td><strong>Precondiciones</strong></td><td>El cliente está autenticado. El pedido existe. <code>Order.customer_id == customerId</code>.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se creó una instancia de <code>Claim</code> con estado PENDING asociada al pedido y al cliente.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido no pertenece al cliente → error 400 &quot;No autorizado&quot;. Si el pedido no existe → error 404.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de Claim creada, con su id y estado inicial PENDING.</td></tr></table>
+<hr>
+<hr>
+<h4>Ampliación — Contratos de las operaciones incorporadas</h4>
+<p>Los 18 contratos que siguen corresponden a las operaciones de sistema que la<br>especificación original no había registrado.</p>
+<h4>Crítico · automático Contrato: <code>ofrecerAlSiguienteChofer()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td>`ofrecerAlSiguienteChofer(order: Order): Promise&lt;string \</td><td>null&gt;<code> — </code>DispatchOrchestratorService.offerToNextDriver`</td></tr><tr><td><strong>Responsabilidades</strong></td><td>Ofrecer el pedido al chofer más cercano de la misma distribuidora que aún no fue contactado, creando una oferta con ventana de aceptación de 30 segundos y notificándolo por WebSocket y push.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-013, CU-014, CU-016, CU-075, CU-048, OBJ-02</td></tr><tr><td><strong>Notas</strong></td><td>Reemplaza el modelo de difusión a todos los choferes que tenía la especificación original de CU-013/CU-014 (uno de los diagramas corregidos) por un algoritmo de radios crecientes [5, 10, 15, 20] km que ofrece de a un chofer por vez. El informe de hallazgos señala que la disponibilidad del chofer (isActive) no forma parte del filtro de candidatos: un chofer que se desactivó igual puede recibir la oferta.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si no hay ningún chofer nuevo en ninguno de los radios <code>[5, 10, 15, 20]</code> km → no se lanza excepción: se registra en el log y se devuelve <code>null</code>; el proceso temporal reintentará. Si falla el push FCM → se ignora (best-effort, no bloquea el despacho).</td></tr><tr><td><strong>Salida</strong></td><td>El <code>driver_id</code> (igual al <code>user_id</code>) del chofer al que se ofreció, o <code>null</code> si no hubo candidato.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El pedido existe, tiene estado <code>PENDING</code> y <code>delivery_id</code> nulo. El pedido tiene <code>deliveryLatitude</code> y <code>deliveryLongitude</code>. Existe al menos un chofer con posición registrada en el índice geoespacial de Redis.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se creó una instancia de <code>DispatchOffer</code> con estado <code>OFFERED</code>. Se asoció la oferta al pedido (<code>order_id</code>) y al chofer (<code>driver_id</code>). Se asoció la oferta a la distribuidora del pedido (<code>distributor_id</code>). Se modificó <code>DispatchOffer.expiresAt</code> con el instante actual más 30 segundos. El chofer recibió el evento <code>server:new-order-request</code> en su room de WebSocket. El chofer recibió un push FCM con <code>event: NEW_ORDER</code>. El estado del pedido <strong>no</strong> cambió: sigue en <code>PENDING</code>.</td></tr></table>
+<hr>
+<h4>Crítico · automático Contrato: <code>vencerOfertasExpiradas()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>vencerOfertasExpiradas(): Promise&lt;void&gt;</code> — <code>DispatchOrchestratorService.handleExpiredOffers</code>, disparado por <code>DispatchService.tick</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Cerrar las ofertas cuya ventana de 30 segundos venció y re-ofrecer cada pedido todavía pendiente al siguiente chofer más cercano, sin intervención humana.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático, cron cada 15 segundos)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-014, CU-013, OBJ-02</td></tr><tr><td><strong>Notas</strong></td><td>Usa un lock distribuido en Redis (dispatch:tick, TTL 12 s) para que, en un despliegue con más de una instancia del backend, un solo proceso ejecute el tick por vez y no se dupliquen las ofertas; es el mecanismo que sostiene la escalabilidad horizontal del despacho automático.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si otra instancia ya tiene el lock <code>dispatch:tick</code> en Redis → el tick se saltea completo (evita despacho duplicado en multi-instancia). Si el pedido de una oferta vencida ya no existe o dejó de ser re-ofertable → se marca la oferta <code>EXPIRED</code> igual, pero no se re-ofrece. Si el tick falla → se registra el error y el lock se libera igual.</td></tr><tr><td><strong>Salida</strong></td><td>Ninguna (proceso interno sin actor receptor).</td></tr><tr><td><strong>Precondiciones</strong></td><td>Existe al menos una <code>DispatchOffer</code> en estado <code>OFFERED</code> con <code>expiresAt</code> anterior al instante actual. La instancia obtuvo el lock distribuido <code>dispatch:tick</code> (TTL 12 s).</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Cada oferta vencida se modificó a estado <code>EXPIRED</code>. Por cada pedido que sigue en <code>PENDING</code> y sin <code>delivery_id</code>, se creó una nueva instancia de <code>DispatchOffer</code> <code>OFFERED</code> para un chofer distinto de todos los ya contactados. Los pedidos <code>PENDING</code> sin oferta activa y con más de 60 segundos de antigüedad recibieron una oferta nueva (<code>ensureOffered</code>). El lock <code>dispatch:tick</code> quedó liberado.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>rechazarOferta()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>rechazarOferta(orderId: string, driverId: string)</code> — <code>OrderService.rejectOffer</code> → <code>DispatchOrchestratorService.onDriverRejected</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Cerrar la oferta activa del chofer que rechaza y re-ofrecer el pedido de inmediato al siguiente chofer más cercano, sin esperar el vencimiento de la ventana.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-016, CU-013, OBJ-02</td></tr><tr><td><strong>Notas</strong></td><td>Ante una condición de carrera —el pedido ya fue tomado por otro chofer o se canceló mientras llegaba el rechazo— la operación cierra la oferta igual mediante un no-op silencioso, sin devolver error al chofer que rechazó tarde.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido no existe → no se lanza excepción: se devuelve <code>{ rejected: false }</code>. Si el pedido ya no es re-ofertable (lo tomó otro chofer o fue cancelado) → la oferta se cierra igual, pero no se re-ofrece (no-op silencioso).</td></tr><tr><td><strong>Salida</strong></td><td><code>{ rejected: boolean }</code></td></tr><tr><td><strong>Precondiciones</strong></td><td>El chofer está autenticado con rol <code>DELIVERY</code>. Existe una <code>DispatchOffer</code> en estado <code>OFFERED</code> para ese pedido y ese chofer.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se modificó el estado de la oferta activa del chofer a <code>REJECTED</code>. Si el pedido sigue <code>PENDING</code> y sin <code>delivery_id</code>, se creó una nueva instancia de <code>DispatchOffer</code> <code>OFFERED</code> asociada al siguiente chofer más cercano no contactado. El chofer que rechazó queda registrado como ya contactado y no volverá a recibir este pedido.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>crearReservaProgramada()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>crearReservaProgramada(customerId, addressId, items[], paymentMethod, scheduledDate, depositAmount, timeSlotId?)</code> — <code>CreateOrderUseCase.execute</code> con <code>isReservation = true</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Crear un pedido agendado para una fecha futura, reservando el stock de forma atómica, registrando el monto de la seña y generando el checkout de la seña si el pago es online.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-072, CU-005, CU-058, CU-074, OBJ-01, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>Comparte el motor de cálculo de precios de crearPedido(), por lo que hereda la misma limitación señalada en el informe de hallazgos: el descuento configurado en una promoción por volumen no se valida contra un tope de 100%, lo que puede producir un subtotal negativo. El checkout de la seña es best-effort: si la pasarela falla al crearlo, la reserva queda creada igual, sin paymentUrl.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si <code>isReservation</code> viene sin <code>scheduledDate</code> → error 400 &quot;Una reserva requiere scheduledDate&quot;. Si la dirección cae fuera de la zona de cobertura → error 400. Si la franja horaria no tiene cupo para esa fecha → error 400 (validado con lock pesimista dentro de la transacción). Si el stock es insuficiente → <code>InsufficientStockError</code> mapeado a 400 y <strong>rollback total</strong>. Si alguna garrafa no pertenece a la distribuidora → error 400. Si falla la pasarela al crear el checkout de la seña → la reserva queda creada igual, sin <code>paymentUrl</code> (best-effort).</td></tr><tr><td><strong>Salida</strong></td><td><code>{ order: Order, paymentUrl?: string }</code></td></tr><tr><td><strong>Precondiciones</strong></td><td>El cliente existe y está autenticado. La dirección pertenece al cliente. <code>scheduledDate</code> es una fecha futura. Cada garrafa referenciada existe, pertenece a la distribuidora y tiene stock suficiente.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se creó una instancia de <code>Order</code> con estado <code>RESERVED</code> y <code>paymentStatus</code> <code>PENDING</code>. Se crearon instancias de <code>OrderItem</code> asociadas al pedido, con <code>unitPrice</code> y <code>subtotal</code> calculados con el precio de servidor y las promociones por volumen. Se decrementó <code>GasCylinder.stock</code> por la cantidad de cada ítem. Se registró <code>Order.deposit_amount</code> y <code>Order.deposit_paid = false</code>. Se registró <code>Order.scheduled_date</code>. Si el pago es MercadoPago con seña mayor a cero, se creó una instancia de <code>Payment</code> con <code>is_deposit = true</code>, estado <code>PENDING</code> y <code>payment_url</code>. El pedido <strong>no</strong> se ofreció a ningún chofer. Los administradores recibieron el evento <code>order:created</code>.</td></tr></table>
+<hr>
+<h4>Importante Contrato: <code>confirmarSenia()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td>`confirmarSenia(orderId: string, distributorId?: string \</td><td>null): Promise&lt;Order&gt;<code> — </code>ReservationService.confirmDeposit`</td></tr><tr><td><strong>Responsabilidades</strong></td><td>Registrar que el administrador cobró en efectivo la seña de una reserva, habilitando su activación automática el día agendado. Es la <strong>única acción humana</strong> del ciclo de reservas.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-074, CU-072, CU-075, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>Es una operación puramente declarativa: no verifica ante ninguna pasarela ni comprobante que el efectivo se haya cobrado realmente, confía en el registro que hace el administrador de la distribuidora.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si la reserva no existe o pertenece a otra distribuidora → error 404 &quot;Reserva no encontrada&quot;. Si el pedido no está en estado <code>RESERVED</code> → error 400 &quot;El pedido no es una reserva pendiente&quot;.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de <code>Order</code> actualizada.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El administrador está autenticado y la reserva pertenece a su distribuidora. El pedido tiene estado <code>RESERVED</code> y <code>deposit_paid = false</code>.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se modificó <code>Order.deposit_paid</code> a <code>true</code>. El estado del pedido <strong>no</strong> cambió: sigue en <code>RESERVED</code> hasta que el proceso automático lo active. La reserva deja de ser candidata a expiración por seña impaga.</td></tr></table>
+<hr>
+<h4>Crítico · automático Contrato: <code>activarReservasVencidas()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>activarReservasVencidas(): Promise&lt;void&gt;</code> — <code>ReservationService.activateDueReservations</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Detectar las reservas cuyo día agendado llegó y cuya seña está paga, pasarlas a pedido activo y lanzar su despacho automático, sin intervención humana.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático, cron cada 5 minutos)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-075, CU-072, CU-013, OBJ-02, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>Procesa como máximo 50 reservas por ejecución para evitar transacciones largas en el cron, un límite de lote consistente con los criterios de escalabilidad del sistema; si el despacho automático de una reserva activada falla, la activación en sí no se revierte.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si la transición <code>RESERVED → PENDING</code> es inválida para alguna reserva → se registra el error y se continúa con las siguientes (el fallo de una no arrastra al lote). Si falla el despacho → se ignora (<code>catch</code>): la reserva queda <code>PENDING</code> y el proceso temporal de despacho la levantará.</td></tr><tr><td><strong>Salida</strong></td><td>Ninguna (proceso interno).</td></tr><tr><td><strong>Precondiciones</strong></td><td>Existen pedidos con estado <code>RESERVED</code>, <code>deposit_paid = true</code> y <code>scheduled_date</code> menor o igual a la fecha de hoy.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Por cada reserva vencida se modificó <code>Order.status</code> de <code>RESERVED</code> a <code>PENDING</code>. Se creó una instancia de <code>DispatchOffer</code> <code>OFFERED</code> por cada pedido activado que encontró un chofer cercano. El stock ya reservado al crear la reserva <strong>no</strong> se modifica. Se procesan como máximo 50 reservas por ejecución.</td></tr></table>
+<hr>
+<h4>Crítico · automático Contrato: <code>expirarReservasSinSenia()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>expirarReservasSinSenia(): Promise&lt;void&gt;</code> — <code>ReservationService.expireUnpaidReservations</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Cancelar las reservas cuya seña no se pagó dentro del plazo configurado y liberar el stock que tenían comprometido.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático, cron cada hora)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-076, CU-072, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>A diferencia de restituirStock(), aquí el cambio de estado del pedido y la restitución de stock sí corren en una misma transacción atómica, con lock pesimista por garrafa; también procesa como máximo 50 reservas por ejecución.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si falla la cancelación o la restitución de stock de una reserva → <strong>rollback</strong> de esa transacción; la reserva queda intacta y se registra el error; el lote continúa con las demás.</td></tr><tr><td><strong>Salida</strong></td><td>Ninguna (proceso interno).</td></tr><tr><td><strong>Precondiciones</strong></td><td>Existen pedidos con estado <code>RESERVED</code>, <code>deposit_paid = false</code> y <code>createdAt</code> anterior al corte (<code>RESERVATION_DEPOSIT_TTL_HOURS</code>, 48 h por defecto).</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Por cada reserva expirada se modificó <code>Order.status</code> a <code>CANCELLED</code>. Se incrementó <code>GasCylinder.stock</code> por la cantidad de cada <code>OrderItem</code> de la reserva, con lock pesimista por garrafa. Los cambios de estado y de stock quedaron en la <strong>misma transacción</strong>: o se aplican los dos, o ninguno. Se procesan como máximo 50 reservas por ejecución.</td></tr></table>
+<hr>
+<h4>Crítico · automático Contrato: <code>expirarPedidosDePasarelaSinPagar()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>expirarPedidosDePasarelaSinPagar(): Promise&lt;void&gt;</code> — <code>ReservationService.expireUnpaidMercadoPagoOrders</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Cancelar los pedidos normales con pago online cuyo checkout el cliente nunca completó, liberando el stock que la creación del pedido había reservado por anticipado.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático, cron cada 30 minutos)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-077, CU-005, CU-048, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>El informe de hallazgos señala que el manejo explícito de un pago rechazado no está implementado (CU-048); en la práctica, esta operación es la que resuelve esos casos por descarte, cancelando el pedido cuando se cumple el plazo sin que haya llegado una confirmación de pago, en lugar de reaccionar a un evento de rechazo.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si al releer el pedido con lock pesimista ya no está <code>PENDING</code> o ya tiene <code>gatewayPaymentId</code> (el webhook confirmó el pago un instante antes) → se hace commit <strong>sin tocar el pedido</strong> (resuelve la carrera pago-vs-expiración). Si falla la transacción → rollback y se continúa con los siguientes.</td></tr><tr><td><strong>Salida</strong></td><td>Ninguna (proceso interno).</td></tr><tr><td><strong>Precondiciones</strong></td><td>Existen pedidos con estado <code>PENDING</code>, <code>paymentMethod = mercadopago</code>, <code>gatewayPaymentId</code> nulo y <code>createdAt</code> anterior al corte (<code>ORDER_MERCADOPAGO_PENDING_TTL_MINUTES</code>, 60 min por defecto).</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Por cada pedido expirado se modificó <code>Order.status</code> a <code>CANCELLED</code>. Se registró <code>Order.cancellationReason</code> con el motivo &quot;Pago con MercadoPago no completado dentro del plazo&quot;. Se incrementó <code>GasCylinder.stock</code> por la cantidad de cada <code>OrderItem</code>. Un pago aprobado que llegue <strong>después</strong> de esta cancelación no reactiva ni despacha el pedido: <code>ConfirmPaymentUseCase</code> lo ve en estado terminal y lo ignora.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>obtenerCodigoDeEntrega()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>obtenerCodigoDeEntrega(orderId: string, userId: string, role: RoleType)</code> — <code>OrderService.getDeliveryCode</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Devolver al chofer asignado el código secreto del pedido, que su app renderiza como QR y muestra al cliente en la puerta.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-078, CU-079, CU-015, OBJ-03</td></tr><tr><td><strong>Notas</strong></td><td>Es una operación de solo lectura sin efectos secundarios sobre el sistema; existe como paso previo obligatorio para que la app del chofer pueda renderizar el QR que exige confirmarEntregaConQR().</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido no existe → error 404. Si el rol es <code>DELIVERY</code> y el pedido no está asignado a ese chofer → error 403 &quot;Este pedido no está asignado a tu usuario&quot;. Si el pedido todavía no tiene código (no fue aceptado) → error 400.</td></tr><tr><td><strong>Salida</strong></td><td><code>{ orderId: string, deliveryCode: string }</code></td></tr><tr><td><strong>Precondiciones</strong></td><td>El usuario está autenticado con rol <code>DELIVERY</code>, <code>ADMIN</code> o <code>SUPER_ADMIN</code>. El pedido fue aceptado, por lo que <code>Order.deliveryCode</code> ya fue generado.</td></tr><tr><td><strong>Postcondiciones</strong></td><td><strong>Ninguna.</strong> Es una operación de consulta pura: no modifica el estado del sistema. Se incluye como contrato porque es la precondición operativa de CU-079.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>confirmarEntregaConQR()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>confirmarEntregaConQR(orderId: string, code: string, userId: string, role: RoleType): Promise&lt;Order&gt;</code> — <code>ConfirmDeliveryUseCase.execute</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Validar que el código escaneado por el cliente coincida con el del pedido —prueba de que el chofer estuvo presente— y disparar el cierre del pedido reutilizando la transición a <code>DELIVERED</code>.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-079, CU-078, CU-020, CU-068, OBJ-03, OBJ-04</td></tr><tr><td><strong>Notas</strong></td><td>La comparación entre el código escaneado y el código del pedido se hace en tiempo constante para mitigar ataques de temporización, y la operación es idempotente: una segunda confirmación sobre un pedido ya DELIVERED no reprocesa nada y devuelve el pedido tal cual está.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido no existe → error 404. Si el rol es <code>CUSTOMER</code> y el pedido es de otro cliente → error 403. Si el pedido no está <code>ON_THE_WAY</code> → error 400 &quot;El pedido no está en camino&quot;. Si el código no coincide → error 400 &quot;Código de entrega inválido&quot;. Si el pedido ya está <code>DELIVERED</code> → <strong>no es error</strong>: se devuelve el pedido sin reprocesar (idempotencia).</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de <code>Order</code> en estado <code>DELIVERED</code>, mapeada a DTO por <code>OrderMapper.toDto</code>.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El cliente está autenticado y el pedido le pertenece (o el actor es administrador). El pedido tiene estado <code>ON_THE_WAY</code>. <code>Order.deliveryCode</code> no es nulo. El código provisto coincide en comparación de tiempo constante.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se modificó <code>Order.status</code> a <code>DELIVERED</code>. Se registró <code>Order.deliveredAt</code>. Si <code>paymentMethod = CASH</code>, se modificó <code>Order.paymentStatus</code> a <code>PAID</code>. Se dejó de reenviar el GPS del chofer al cliente (<code>stopTracking</code>). Cada <code>Cylinder</code> en estado <code>DISPATCHED</code> asociado a este pedido se modificó a <code>WITH_CUSTOMER</code> y quedó asociado al cliente. Se creó una instancia de <code>CylinderMovement</code> por cada envase avanzado. El cliente recibió el evento <code>order:delivered</code> y un push de confirmación. Los administradores recibieron el evento <code>order:delivered</code>.</td></tr></table>
+<hr>
+<h4>Importante Contrato: <code>darDeAltaEnvase()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>darDeAltaEnvase(serial, gasCylinderId, deposit?, distributorId): Promise&lt;Cylinder&gt;</code> — <code>CylinderService.create</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Incorporar una unidad física de envase al parque de la distribuidora, en estado inicial de depósito, abriendo su bitácora de movimientos.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-067, CU-068, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>El índice único del serial está acotado por distribuidora, de modo que dos distribuidoras distintas pueden tener envases con el mismo número de serie sin que se produzca conflicto entre ellas.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si ya existe un envase con ese serial en la misma distribuidora (violación del índice único compuesto, código PostgreSQL <code>23505</code>) → error 409 &quot;El serial ya existe en tu distribuidora&quot;.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de <code>Cylinder</code> creada.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El actor está autenticado con rol <code>ADMIN</code> o <code>SUPER_ADMIN</code> y tiene una distribuidora asignada. El <code>gasCylinderId</code> referencia un tipo de garrafa existente.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se creó una instancia de <code>Cylinder</code> con estado <code>IN_DEPOT</code>. Se asoció el envase a la distribuidora y al tipo de garrafa. Se creó una instancia de <code>CylinderMovement</code> con <code>from_state = null</code> y <code>to_state = IN_DEPOT</code>, que inaugura la trazabilidad del envase.</td></tr></table>
+<hr>
+<h4>Importante Contrato: <code>asignarEnvasesAPedido()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>asignarEnvasesAPedido(orderId: string, serials: string[], distributorId: string, actorUserId?: string): Promise&lt;Cylinder[]&gt;</code> — <code>CylinderService.assignToOrder</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Vincular los envases físicos que salen a repartir con el pedido y despacharlos, dejando el rastro para que la confirmación de entrega los avance sola.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-068, CU-070, CU-020, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>El informe de hallazgos verificó dos limitaciones: el pedido se busca sin acotar por distribuidora, por lo que se pueden asignar envases propios a un pedido de otra distribuidora, y la asignación no es atómica, por lo que si falla a mitad de la lista de seriales, los envases ya procesados quedan despachados con su movimiento registrado.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido no existe → error 404 &quot;Pedido no encontrado&quot;. Si algún serial no existe en la distribuidora → error 404 &quot;Envase no encontrado&quot;. Si algún envase no está en estado <code>FILLED</code> → <code>InvalidCylinderTransitionError</code> mapeado a 400 (hay que llenarlo antes de despacharlo).</td></tr><tr><td><strong>Salida</strong></td><td>El arreglo de instancias de <code>Cylinder</code> despachadas.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El actor está autenticado con rol <code>ADMIN</code>, <code>SUPER_ADMIN</code> o <code>DELIVERY</code>. El pedido existe. Cada envase referenciado por serial pertenece a la distribuidora y está en estado <code>FILLED</code>.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Por cada serial: se modificó <code>Cylinder.state</code> de <code>FILLED</code> a <code>DISPATCHED</code>; se asoció el envase al pedido mediante <code>Cylinder.current_order_id</code>; se creó una instancia de <code>CylinderMovement</code> con <code>from_state = FILLED</code>, <code>to_state = DISPATCHED</code>, el <code>order_id</code>, el actor y una nota de asignación.</td></tr></table>
+<hr>
+<h4>Importante Contrato: <code>transicionarEnvase()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>transicionarEnvase(id: string, toState: CylinderState, orderId?, note?, distributorId, actorUserId?): Promise&lt;Cylinder&gt;</code> — <code>CylinderService.transition</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Ejecutar una transición legal del ciclo de vida físico del envase, actualizar a quién lo tiene y registrar el movimiento en la bitácora.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-070, CU-071, CU-067, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>Las transiciones válidas están centralizadas en la tabla CYLINDER_TRANSITIONS; cualquier combinación origen-destino que no figure ahí se rechaza de manera uniforme con InvalidCylinderTransitionError, sin excepciones por rol o por distribuidora.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el envase no existe o pertenece a otra distribuidora → error 404 &quot;Envase no encontrado&quot;. Si la transición no está permitida por la máquina de estados → <code>InvalidCylinderTransitionError</code> mapeado a 400.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de <code>Cylinder</code> con el nuevo estado.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El actor está autenticado con rol <code>ADMIN</code>, <code>SUPER_ADMIN</code> o <code>DELIVERY</code>, y el envase pertenece a su distribuidora. La transición <code>from → to</code> figura en <code>CYLINDER_TRANSITIONS</code>.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se modificó <code>Cylinder.state</code> al estado destino. Si el destino es <code>WITH_CUSTOMER</code> y se indicó un pedido, se asoció el envase al cliente de ese pedido (<code>current_customer_id</code>). Si el destino es <code>EMPTY_RETURNED</code> o <code>IN_DEPOT</code>, se desasoció el envase de su cliente (<code>current_customer_id = null</code>). Se creó una instancia de <code>CylinderMovement</code> con el estado de origen, el de destino, el pedido, el actor y la nota.</td></tr></table>
+<hr>
+<h4>Importante · automático Contrato: <code>avanzarEnvasesAlEntregar()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td>`avanzarEnvasesAlEntregar(orderId: string, distributorId?: string \</td><td>null): Promise&lt;number&gt;<code> — </code>CylinderService.onOrderDelivered<code>, invocado vía </code>CylinderLifecyclePort`</td></tr><tr><td><strong>Responsabilidades</strong></td><td>Al confirmarse la entrega de un pedido, pasar automáticamente todos sus envases despachados a manos del cliente, sin que nadie los transicione a mano.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático al entregar)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-020, CU-079, CU-068, CU-070, OBJ-06</td></tr><tr><td><strong>Notas</strong></td><td>Es un efecto secundario best-effort de la confirmación de entrega: si falla, no revierte ni bloquea la transición del pedido a DELIVERED, y el error queda solo en el log de UpdateOrderStatusUseCase.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido no tiene envases asignados → <strong>no-op</strong>, devuelve <code>0</code> (caso de las distribuidoras que no usan el módulo de envases). Si falla el avance de los envases → el error se captura en <code>UpdateOrderStatusUseCase</code> y <strong>no rompe la entrega</strong> del pedido, solo se registra en el log.</td></tr><tr><td><strong>Salida</strong></td><td>La cantidad de envases avanzados (<code>number</code>).</td></tr><tr><td><strong>Precondiciones</strong></td><td>El pedido acaba de transicionar a <code>DELIVERED</code>. Existen envases con <code>current_order_id = orderId</code> y estado <code>DISPATCHED</code>.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Cada envase despachado en el pedido se modificó de <code>DISPATCHED</code> a <code>WITH_CUSTOMER</code>. Se asoció cada envase al cliente del pedido (<code>current_customer_id</code>). Se creó una instancia de <code>CylinderMovement</code> por cada envase, con la nota de avance automático. La operación es idempotente: una segunda ejecución no encuentra envases <code>DISPATCHED</code> y devuelve <code>0</code>.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>crearCheckoutDePago()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>crearCheckoutDePago(orderId, distributorId, amount, isDeposit, items[], payerEmail): Promise&lt;CreateCheckoutResult&gt;</code> — <code>PaymentsService.createCheckout</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Registrar el intento de cobro en el ledger propio del sistema y delegar en la pasarela la creación de la preferencia de pago, devolviendo la URL a la que se redirige al cliente.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-048, CU-005, CU-072, OBJ-01</td></tr><tr><td><strong>Notas</strong></td><td>Sigue un patrón ledger-first: el registro del intento de cobro se persiste en la base propia antes de conocer la respuesta de la pasarela, de modo que un fallo de la pasarela deja igual un rastro auditable en estado PENDING sin payment_url.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si la pasarela no devuelve <code>init_point</code> o <code>id</code> de preferencia → se lanza error de infraestructura; el registro de ledger queda en <code>PENDING</code> <strong>sin <code>payment_url</code></strong>, como rastro auditable del intento fallido. El caso de uso llamador lo captura y deja el pedido creado igual, sin URL de pago.</td></tr><tr><td><strong>Salida</strong></td><td><code>{ initPoint: string, preferenceId: string }</code></td></tr><tr><td><strong>Precondiciones</strong></td><td>El pedido ya está persistido (el <code>orderId</code> se usa como <code>external_reference</code>). El monto a cobrar es mayor a cero. La pasarela está configurada con un access token válido.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se creó una instancia de <code>Payment</code> (ledger) con estado <code>PENDING</code>, <code>gateway = mercadopago</code>, <code>integration = checkout_pro</code>, <code>external_reference = orderId</code>, el monto real de este intento y la marca <code>is_deposit</code>. Se asoció el pago al pedido y a la distribuidora. Se modificó <code>Payment.payment_url</code> con la URL de checkout y <code>Payment.metadata</code> con el <code>preferenceId</code>. El estado del pedido <strong>no</strong> cambió.</td></tr></table>
+<hr>
+<h4>Crítico · automático Contrato: <code>confirmarPagoDesdeWebhook()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>confirmarPagoDesdeWebhook(type?: string, dataId?: string, xSignature?: string, xRequestId?: string): Promise&lt;void&gt;</code> — <code>MercadoPagoWebhookController.handle</code> → <code>ConfirmPaymentUseCase.execute</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Recibir la notificación de la pasarela, validar su firma, consultar el estado real del pago, actualizar el ledger y aplicar los efectos de negocio sobre el pedido: marcarlo pagado y despacharlo, o marcar la seña de una reserva.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema (automático, disparado por la pasarela)</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-048, CU-005, CU-072, CU-013, CU-077, OBJ-01, OBJ-02</td></tr><tr><td><strong>Notas</strong></td><td>Ante un pago que la pasarela resuelve como rechazado, esta operación solo actualiza el estado del Payment en el ledger; no cancela el pedido ni libera stock en el momento, esa limpieza queda a cargo de expirarPedidosDePasarelaSinPagar() una vez vencido el plazo, ya que —según el informe de hallazgos— el manejo explícito del rechazo no está implementado.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si la firma HMAC es inválida → se responde 200 sin procesar y se registra el intento (no se revela si el pedido existe). Si el tipo de notificación no es <code>payment</code> o falta <code>data.id</code> → se ignora. Si la consulta del pago a la pasarela falla o el pago no trae <code>external_reference</code> → se ignora. Si el pedido referenciado no existe → se registra la advertencia y se corta. Si el pedido está en estado terminal (<code>CANCELLED</code> / <code>DELIVERED</code>) → <strong>no-op idempotente</strong>: no se marca pagado ni se despacha. Ante cualquier error interno se responde 200 igual, para que la pasarela no reintente en bucle con 5xx.</td></tr><tr><td><strong>Salida</strong></td><td><code>{ received: true }</code> hacia la pasarela (siempre, con o sin procesamiento).</td></tr><tr><td><strong>Precondiciones</strong></td><td>La notificación proviene de la pasarela con firma <code>x-signature</code> válida. Existe un <code>Payment</code> de ledger cuyo <code>external_reference</code> coincide con el pedido.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se modificó el <code>Payment</code> de ledger: se registró <code>gateway_payment_id</code> y se modificó <code>status</code> al equivalente del estado de la pasarela (<code>APPROVED</code> / <code>REJECTED</code> / <code>CANCELLED</code> / <code>REFUNDED</code> / <code>PENDING</code>). Si el pago fue aprobado y el pedido estaba <code>RESERVED</code>: se modificó <code>Order.deposit_paid</code> a <code>true</code> y se registró <code>Order.gatewayPaymentId</code>; el pedido <strong>no</strong> se despachó. Si el pago fue aprobado y el pedido era normal: se modificó <code>Order.paymentStatus</code> a <code>PAID</code>, se registró <code>Order.gatewayPaymentId</code> y se creó una instancia de <code>DispatchOffer</code> <code>OFFERED</code> para el chofer más cercano. Una segunda notificación del mismo pago no produce ningún cambio de estado adicional.</td></tr></table>
+<hr>
+<h4>Crítico Contrato: <code>validarCobertura()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>validarCobertura(distributorId: string, lat: number, lng: number): Promise&lt;CoverageResult&gt;</code> — <code>CoverageZoneService.checkCoverage</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Determinar si una dirección cae dentro de alguna zona de reparto activa de la distribuidora y devolver el recargo por lejanía correspondiente.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-058, CU-005, CU-072, CU-056, OBJ-01</td></tr><tr><td><strong>Notas</strong></td><td>Usa una columna geoespacial de PostGIS para resolver la contención del punto dentro de los polígonos de cobertura; cuando la distribuidora todavía no cargó ninguna zona activa, la operación prioriza no bloquear la venta y devuelve cobertura total sin recargo.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si ninguna zona activa contiene el punto → se devuelve <code>covered: false</code>; el caso de uso llamador lo traduce en error 400 &quot;La dirección está fuera de la zona de cobertura de la distribuidora&quot;. Si la distribuidora <strong>no</strong> tiene zonas activas definidas → se devuelve <code>covered: true, surcharge: 0</code> (no bloquea a las empresas que aún no cargaron su mapa).</td></tr><tr><td><strong>Salida</strong></td><td><code>{ covered: boolean, zoneId?: string, zoneName?: string, surcharge: number }</code></td></tr><tr><td><strong>Precondiciones</strong></td><td>La distribuidora existe. Las coordenadas son numéricas y válidas. Las zonas están almacenadas como polígonos GeoJSON cerrados en una columna geoespacial de PostGIS.</td></tr><tr><td><strong>Postcondiciones</strong></td><td><strong>Ninguna sobre el sistema</strong>: es una consulta pura. Su efecto observable ocurre en el pedido que la invoca — cuando la dirección está cubierta, el <code>surcharge</code> de la zona de <strong>menor recargo</strong> que contiene el punto queda incorporado a <code>Order.totalAmount</code> antes de aplicar el recargo por método de pago; cuando no lo está, no se crea ninguna instancia de <code>Order</code> ni se reserva stock.</td></tr></table>
+<hr>
+<h4>Importante Contrato: <code>calificarPedido()</code></h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Nombre</strong></td><td><code>calificarPedido(orderId: string, stars: number, comment?: string, fromUserId: string, role: RoleType): Promise&lt;Rating&gt;</code> — <code>RatingService.create</code></td></tr><tr><td><strong>Responsabilidades</strong></td><td>Registrar la calificación de un lado del pedido, derivando del propio pedido a quién se califica, y recalcular el promedio del chofer cuando lo califica el cliente.</td></tr><tr><td><strong>Tipo</strong></td><td>Sistema</td></tr><tr><td><strong>Referencias cruzadas</strong></td><td>CU-064, CU-065, CU-066, CU-020, OBJ-04</td></tr><tr><td><strong>Notas</strong></td><td>El promedio recalculado solo existe del lado del chofer (Delivery.calification); no hay un campo equivalente que promedie las calificaciones recibidas por el cliente, aunque CU-066 permita consultar su historial completo.</td></tr><tr><td><strong>Excepciones</strong></td><td>Si el pedido no existe → error 404. Si el pedido no está <code>DELIVERED</code> → error 400 &quot;Solo se puede calificar un pedido entregado&quot;. Si el rol es <code>CUSTOMER</code> y el pedido es de otro cliente → error 403. Si el rol es <code>DELIVERY</code> y no entregó ese pedido → error 403. Si el rol no es <code>CUSTOMER</code> ni <code>DELIVERY</code> → error 403. Si el cliente califica un pedido sin chofer asignado → error 400. Si ya existe una calificación de ese lado (violación del índice único <code>(order_id, from_role)</code>, código <code>23505</code>) → error 409 &quot;Ya calificaste este pedido&quot;.</td></tr><tr><td><strong>Salida</strong></td><td>La instancia de <code>Rating</code> creada.</td></tr><tr><td><strong>Precondiciones</strong></td><td>El actor está autenticado. El pedido tiene estado <code>DELIVERED</code>. El actor es una de las dos partes del pedido. No existe todavía una calificación de ese lado.</td></tr><tr><td><strong>Postcondiciones</strong></td><td>Se creó una instancia de <code>Rating</code> con <code>stars</code>, <code>comment</code>, <code>from_role</code> (<code>CUSTOMER</code> o <code>DELIVERY</code>) y <code>to_user_id</code> derivado del pedido. Se asoció la calificación al pedido, al emisor, al calificado y a la distribuidora. Si el emisor fue el cliente: se recalculó el promedio de estrellas recibidas por el chofer y se modificó <code>Delivery.calification</code> con ese valor redondeado a dos decimales. El estado del pedido <strong>no</strong> cambió.</td></tr></table>
+<hr>
+<hr>
+<h2>3. Módulos Inteligentes del Sistema 🤖</h2>
+<p>Se denomina <strong>módulo inteligente</strong> al proceso que el sistema dispara y ejecuta por<br>iniciativa propia, sin que ningún empleado de la distribuidora lo solicite, y que<br>agrega valor económico al negocio —genera ingresos o reduce costos— más allá de lo<br>que el producto mínimo viable necesita para funcionar.</p>
+<p>El criterio de selección excluye deliberadamente dos categorías: los automatismos<br>que son parte intrínseca del funcionamiento del sistema (descontar stock, emitir una<br>notificación, aplicar un descuento configurado) y los que se resuelven con una única<br>consulta a la base de datos. Ninguno de los dos constituye inteligencia: el primero<br>es una obligación funcional y el segundo, una sentencia <code>SELECT</code>.</p>
+<h3>3.1 Los cinco procesos automatizados</h3>
+<table><tr><th>#</th><th>Denominación</th><th>Disparador</th><th>Naturaleza del proceso</th><th>Aporte</th></tr><tr><td><strong>M1</strong></td><td><strong>Negociación secuencial de asignación de pedidos</strong></td><td>Alta de un pedido, y proceso temporal de revisión periódica</td><td>Ofrece el pedido a un chofer por vez con vigencia acotada; ante rechazo o vencimiento pasa al siguiente candidato y amplía el radio de búsqueda de forma progresiva.</td><td>Opera el presente</td></tr><tr><td><strong>M2</strong></td><td><strong>Planificación predictiva de mantenimiento y habilitaciones de flota</strong></td><td>Proceso temporal diario sobre el recorrido GPS acumulado</td><td>Estima el consumo diario de kilómetros por vehículo, proyecta vencimientos por kilometraje y por fecha, y negocia secuencialmente las ventanas de taller de menor impacto operativo.</td><td>Protege el activo vehículo — <strong>costos</strong></td></tr><tr><td><strong>M3</strong></td><td><strong>Anticipación de recompra por consumo estimado</strong></td><td>Proceso temporal diario sobre el historial de compras</td><td>Estima el ritmo de consumo de cada cliente, proyecta la fecha de agotamiento del gas y emite una invitación a reponer con el pedido precargado y vigencia limitada.</td><td>Genera demanda — <strong>ingresos</strong></td></tr><tr><td><strong>M4</strong></td><td><strong>Agrupación inteligente de pedidos por recorrido</strong></td><td>Proceso temporal sobre los pedidos pendientes y programados</td><td>Arma lotes de pedidos compatibles por zona, franja horaria y capacidad de carga, y los ofrece al chofer como un recorrido único ordenado por secuencia de entrega.</td><td>Reduce el costo por entrega — <strong>costos</strong></td></tr><tr><td><strong>M5</strong></td><td><strong>Recuperación de envases no devueltos</strong></td><td>Proceso temporal sobre el ciclo de vida del envase</td><td>Detecta envases retenidos más allá del plazo previsto y ejecuta una secuencia escalonada de gestión, escalando al administrador el caso que no se resuelve.</td><td>Protege el activo envase — <strong>costos</strong></td></tr></table>
+<p>Un módulo orientado a ingresos, tres a la reducción de costos y uno a la operación<br>del presente.</p>
+<h3>3.2 Correspondencia con los casos de uso</h3>
+<p>Cada proceso automatizado está especificado como caso de uso, con sus cuatro artefactos:<br>descripción de alto nivel, especificación expandida, diagrama de secuencia del sistema y<br>diagrama de interacción de diseño.</p>
+<table><tr><th>Módulo</th><th>Casos de uso</th><th>Estado</th></tr><tr><td><strong>M1</strong></td><td>CU-013, CU-014, CU-015, CU-016</td><td>Implementado</td></tr><tr><td><strong>M2</strong></td><td>CU-105</td><td>Especificado, sin construir</td></tr><tr><td><strong>M3</strong></td><td>CU-106</td><td>Especificado, sin construir</td></tr><tr><td><strong>M4</strong></td><td>CU-107</td><td>Especificado, sin construir</td></tr><tr><td><strong>M5</strong></td><td>CU-108</td><td>Especificado, sin construir</td></tr></table>
+<h3>3.3 Intervención humana</h3>
+<p>Los cinco procesos se disparan y se ejecutan sin intervención de ningún empleado.<br>Donde aparece una persona es únicamente en las decisiones que comprometen dinero,<br>que el sistema prepara pero no ejecuta por sí mismo.</p>
+<table><tr><th>Módulo</th><th>Ejecución</th><th>Decisión reservada a una persona</th></tr><tr><td>M1 — Negociación de asignación</td><td>Autónoma</td><td>Ninguna de gestión; el chofer es el destinatario de la oferta</td></tr><tr><td>M2 — Flota predictiva</td><td>Autónoma</td><td>El administrador confirma el gasto del taller</td></tr><tr><td>M3 — Recompra</td><td>Autónoma</td><td>Ninguna de gestión; el cliente es el destinatario</td></tr><tr><td>M4 — Agrupación por recorrido</td><td>Autónoma</td><td>Ninguna de gestión; el chofer acepta o rechaza el lote</td></tr><tr><td>M5 — Recuperación de envases</td><td>Autónoma</td><td>El administrador decide el cobro del depósito o la baja del envase</td></tr></table>
+<h3>3.4 Parámetros de configuración</h3>
+<p>Cada módulo es parametrizable por distribuidora. Como mínimo se configura la<br>frecuencia de ejecución del proceso y la vigencia de las ofertas que emite.</p>
+<table><tr><th>Módulo</th><th>Parámetros configurables</th></tr><tr><td>M1</td><td>Pasos de radio de búsqueda, duración de la ventana de aceptación, frecuencia de revisión de ofertas vencidas</td></tr><tr><td>M2</td><td>Anticipación por tipo de mantenimiento y de habilitación, mínimo de vehículos activos por zona, vigencia de la propuesta de taller</td></tr><tr><td>M3</td><td>Anticipación sobre la fecha proyectada de agotamiento, vigencia de la invitación, intervalo mínimo entre invitaciones a un mismo cliente</td></tr><tr><td>M4</td><td>Tamaño máximo de lote, radio de agrupación, tolerancia de franja horaria, frecuencia de evaluación</td></tr><tr><td>M5</td><td>Plazo de tolerancia de devolución, plazos de cada escalón de la secuencia, umbral de importe para escalar al administrador</td></tr></table>
+<h3>3.5 Estado de implementación</h3>
+<table><tr><th>Módulo</th><th>Estado</th><th>Ubicación en el código</th></tr><tr><td>M1</td><td><strong>Implementado</strong></td><td><code>src/order/application/dispatch-orchestrator.service.ts</code>, <code>src/order/dispatch.service.ts</code></td></tr><tr><td>M2</td><td>Especificado — Análisis y Diseño</td><td>Documento 3 §6.2</td></tr><tr><td>M3</td><td>Especificado — Análisis y Diseño</td><td>—</td></tr><tr><td>M4</td><td>Especificado — Análisis y Diseño</td><td>—</td></tr><tr><td>M5</td><td>Especificado — Análisis y Diseño</td><td>—</td></tr></table>
+<h3>3.6 Valores vigentes del módulo M1</h3>
+<p>Los siguientes valores son los que el sistema aplica hoy. Se registran aquí porque<br>los diagramas de secuencia de la sección 2 y los contratos de operación los<br>referencian.</p>
+<table><tr><th>Parámetro</th><th>Valor vigente</th><th>Constante en el código</th></tr><tr><td>Pasos de radio de búsqueda</td><td>5, 10, 15 y 20 km</td><td><code>DispatchOrchestratorService.RADIUS_STEPS_KM</code></td></tr><tr><td>Vigencia de la oferta al chofer</td><td>30 segundos</td><td><code>DispatchOrchestratorService.OFFER_TTL_SECONDS</code></td></tr><tr><td>Frecuencia de revisión de ofertas vencidas</td><td>cada 15 segundos</td><td><code>@Cron(&#x27;<em>/15 </em> <em> </em> <em> </em>&#x27;)</code> en <code>dispatch.service.ts</code></td></tr><tr><td>Revisión de reservas de stock</td><td>cada 5 minutos, cada 30 minutos y cada hora</td><td><code>@Cron</code> en <code>reservation.service.ts</code></td></tr></table>
+<blockquote>⚠️ Los dos primeros parámetros son hoy constantes de clase. Llevarlos a configuración por distribuidora es un pendiente de implementación registrado en el Doc 3 — Diseño, sección 10.</blockquote>
+<blockquote>Esta sección se desarrolla con mayor detalle en el <strong>Doc 3 — Diseño</strong>, donde cada módulo inteligente tiene su especificación, su diagrama de interacción y su diagrama de clases asociado.</blockquote>
+<hr>
+<h2>4. Glosario</h2>
+<table><tr><th>Término</th><th>Categoría</th><th>Definición</th></tr><tr><td><strong>SPLG</strong></td><td>Acrónimo</td><td>Sistema de Pedidos y Logística de Garrafas de Gas. Nombre formal del proyecto.</td></tr><tr><td><strong>UP</strong></td><td>Metodología</td><td>Unified Process. Proceso de desarrollo iterativo e incremental adoptado por la cátedra.</td></tr><tr><td><strong>CU</strong></td><td>Artefacto UML</td><td>Caso de Uso. Descripción de una secuencia de interacciones entre un actor y el sistema para alcanzar un objetivo.</td></tr><tr><td><strong>Actor</strong></td><td>Concepto UML</td><td>Entidad externa al sistema (humano o automático) que interactúa con él para cumplir un objetivo.</td></tr><tr><td><strong>DSS</strong></td><td>Artefacto UML</td><td>Diagrama de Secuencia a nivel de Sistema. Modelo del sistema como caja negra que muestra solo los mensajes entre actor y sistema.</td></tr><tr><td><strong>Contrato de Operación</strong></td><td>Artefacto UP</td><td>Especificación formal de una operación del sistema con responsabilidades, precondiciones, postcondiciones y excepciones.</td></tr><tr><td><strong>Modelo Conceptual</strong></td><td>Artefacto UML</td><td>Diagrama de clases del dominio del problema, sin métodos, que muestra los conceptos relevantes y sus relaciones.</td></tr><tr><td><strong>Concepto Idóneo</strong></td><td>Concepto UP</td><td>Concepto del dominio que se incluye finalmente en el Modelo Conceptual por ser relevante para los CUs.</td></tr><tr><td><strong>Token de identidad</strong></td><td>Tecnología</td><td>Credencial que emite Firebase Authentication al verificar al usuario. Es la única credencial de sesión del sistema: el backend la valida contra Firebase en cada solicitud y resuelve el rol contra la base.</td></tr></table>
+<p>| <strong>GEORADIUS</strong> | Tecnología | Comando de Redis que retorna miembros de un Sorted Set GEO ordenados por distancia desde un punto. |</p>
+<p>| <strong>GEOADD</strong> | Tecnología | Comando de Redis que agrega un miembro con sus coordenadas geográficas a un Sorted Set GEO. |</p>
+<p>| <strong>WebSocket</strong> | Tecnología | Protocolo bidireccional de comunicación en tiempo real entre cliente y servidor sobre TCP. |</p>
+<p>| <strong>Socket.IO</strong> | Tecnología | Librería sobre WebSocket que agrega reconexión automática, salas y fallback HTTP polling. |</p>
+<p>| <strong>FCM</strong> | Tecnología | Firebase Cloud Messaging. Servicio de Google para envío de push notifications a dispositivos Android, iOS y Web. |</p>
+<p>| <strong>QueryRunner</strong> | Tecnología | API de TypeORM para ejecutar transacciones manuales sobre PostgreSQL. |</p>
+<p>| <strong>SELECT FOR UPDATE</strong> | Tecnología | Sentencia SQL que adquiere un lock pesimista sobre las filas seleccionadas hasta que termina la transacción. |</p>
+<p>| <strong>Stock fantasma</strong> | Concepto | Stock comprometido en una transacción no finalizada que bloquea la disponibilidad real para otros pedidos. Se previene con rollback automático. |</p>
+<p>| <strong>Cron</strong> | Concepto | Tarea programada que se ejecuta a intervalos regulares. En el sistema se usan cuatro: revisión de ofertas vencidas cada 15 segundos (<code>@Cron(&#x27;<em>/15 </em> <em> </em> <em> </em>&#x27;)</code>) y revisión de reservas de stock cada 5 minutos, cada 30 minutos y cada hora. |</p>
+<p>| <strong>JSONB</strong> | Tecnología | Tipo de columna PostgreSQL para almacenar JSON binario indexable. Usado para <code>GasCylinder.promotions</code>. |</p>
+<p>| <strong>Soft-delete</strong> | Concepto | Eliminación lógica que marca un registro como inactivo (<code>deletedAt</code>) sin borrarlo físicamente. |</p>
+<p>| <strong>Geohash</strong> | Concepto | Codificación geográfica de coordenadas en strings cortos. Redis lo usa internamente para indexar posiciones. |</p>
+<p>| <strong>Pedido PENDING</strong> | Estado | Pedido recién creado, sin chofer asignado. Esperando despacho automático o manual. |</p>
+<p>| <strong>Pedido ACCEPTED</strong> | Estado | Pedido tomado por un chofer pero aún no en camino. |</p>
+<p>| <strong>Pedido ON_THE_WAY</strong> | Estado | Pedido en tránsito. El chofer marca el inicio del envío. |</p>
+<p>| <strong>Pedido DELIVERED</strong> | Estado | Pedido entregado. Cierra el ciclo de la transacción. |</p>
+<p>| <strong>Pedido CANCELLED</strong> | Estado | Pedido cancelado por cliente, chofer o administrador. Restituye stock si correspondía. |</p>
+<p>| <strong>MVP</strong> | Concepto | Minimum Viable Product. Versión mínima del sistema con las funcionalidades críticas del negocio. |</p>
+<p>| <strong>MVVM</strong> | Patrón | Model-View-ViewModel. Arquitectura usada en las apps Flutter (Stacked) y Panel React. |</p>
+<p>| <strong>Stacked</strong> | Tecnología | Framework MVVM para Flutter usado en las dos apps móviles del proyecto. |</p>
+<p>| <strong>NestJS</strong> | Tecnología | Framework Node.js para construir APIs REST y WebSocket con TypeScript. Backend del sistema. |</p>
+<p>| <strong>TypeORM</strong> | Tecnología | ORM de TypeScript usado para mapear las entities del dominio a tablas PostgreSQL. |</p>
+<p>| <strong>Despacho automático</strong> | Concepto | Proceso por el cual el sistema ofrece un pedido a un chofer por vez, con vigencia acotada, usando GEORADIUS para ordenar los candidatos por cercanía. Corresponde al módulo inteligente M1. |</p>
+<p>| <strong>Radio expandido</strong> | Concepto | Estrategia del proceso de negociación que amplía progresivamente el radio de búsqueda de choferes (5 → 10 → 15 → 20 km) a medida que se agotan los candidatos de cada paso. |</p>
+<p>| <strong>Promoción por volumen</strong> | Concepto | Descuento aplicado automáticamente cuando la cantidad de un producto en el carrito alcanza un mínimo. |</p>
+<p>| <strong>Recargo por transferencia</strong> | Concepto | Aumento del 10% al total cuando el método de pago es TRANSFER, aplicado automáticamente al calcular el pedido. |</p>
+<p>| <strong>Validación de chofer</strong> | Concepto | Habilitación permanente de un chofer por parte del administrador (<code>Delivery.validated = true</code>). Distinta de la disponibilidad operativa (<code>isActive</code>). |</p>
+<p>| <strong>Ventana de aceptación</strong> | Concepto | Lapso durante el cual una oferta de pedido permanece vigente para el chofer al que se le ofreció. Vencida sin respuesta, el pedido pasa al siguiente candidato. |</p>
+<p>| <strong>Oferta de despacho</strong> | Concepto | Propuesta de un pedido a un chofer determinado, con vigencia limitada. Se materializa en la entidad <code>DispatchOffer</code>. |</p>
+<p>| <strong>Distribuidora</strong> | Concepto | Empresa comercializadora de garrafas que opera dentro del sistema. Es la unidad de aislamiento multi-tenant: cada distribuidora ve y gestiona únicamente sus propios datos. |</p>
+<p>| <strong>Multi-tenant</strong> | Concepto | Arquitectura en la que una única instancia del sistema atiende a varias distribuidoras manteniendo sus datos aislados entre sí. |</p>
+<p>| <strong>Zona de cobertura</strong> | Concepto | Área geográfica dentro de la cual una distribuidora acepta pedidos y planifica sus recorridos. |</p>
+<p>| <strong>Ciclo de envase</strong> | Concepto | Recorrido de una garrafa física entre la distribuidora y los clientes: entrega, permanencia en poder del cliente y devolución. Se registra en <code>CylinderMovement</code>. |</p>
+<p>| <strong>Depósito de envase</strong> | Concepto | Importe que el cliente deja en garantía por el envase que recibe y que se le restituye al devolverlo. |</p>
+<p>| <strong>Módulo inteligente</strong> | Concepto UP | Proceso que el sistema dispara y ejecuta por iniciativa propia, con valor económico para el negocio, que excede lo que el producto mínimo viable necesita para funcionar y no se resuelve con una única consulta a la base de datos. |</p>
+<p>| <strong>RTO</strong> | Normativa | Revisión Técnica Obligatoria. Verificación periódica de la aptitud de los vehículos exigida en la provincia de Misiones. |</p>
+<p>| <strong>FCEQyN – UNaM</strong> | Institución | Facultad de Ciencias Exactas, Químicas y Naturales — Universidad Nacional de Misiones. Institución académica del proyecto. |</p>
+</body></html>

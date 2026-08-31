@@ -1,0 +1,50 @@
+sequenceDiagram
+    autonumber
+    participant CRON as FleetMaintenancePlannerService
+    participant USG as VehicleUsageRepositoryPort
+    participant TSK as MaintenanceTaskRepositoryPort
+    participant DEM as DemandForecastService
+    participant COV as FleetCoverageService
+    participant PRP as MaintenanceWindowProposalRepositoryPort
+    participant NOT as NotificationsService
+    participant FIT as FleetAvailabilityPort
+
+    CRON->>USG: findRecentUsage(carId, dias)
+    USG-->>CRON: historial de km por dia
+    CRON->>CRON: estimateDailyKm(carId) con ponderacion y ajuste estacional
+    CRON->>TSK: findForecastTasks(carId)
+    TSK-->>CRON: tareas de mantenimiento y habilitacion
+
+    loop Por cada tarea dentro de la ventana de anticipacion
+        CRON->>CRON: projectDueDate(task, car)
+        CRON->>DEM: forecastDemand(coverageZone, ventanas candidatas)
+        DEM-->>CRON: demanda proyectada por ventana
+        CRON->>COV: remainingActiveVehicles(coverageZone, ventana)
+        COV-->>CRON: unidades activas restantes
+        CRON->>CRON: descartar las ventanas que violan el minimo y ordenar por demanda
+
+        loop Por cada ventana alternativa
+            CRON->>PRP: create(taskId, ventana, driverId, expiresAt)
+            PRP-->>CRON: propuesta en estado PROPOSED
+            CRON->>NOT: sendWindowProposal(propuesta)
+            CRON->>PRP: awaitAnswer(proposalId)
+            PRP-->>CRON: ACCEPTED, REJECTED o EXPIRED
+            alt La propuesta fue aceptada
+                CRON->>TSK: schedule(taskId, ventana)
+                CRON->>FIT: blockVehicleWindow(carId, ventana)
+            else Rechazada o vencida
+                CRON->>CRON: continuar con la ventana siguiente
+            end
+        end
+
+        alt Se agotaron las ventanas
+            CRON->>NOT: escalateToAdmin(task, ventanas evaluadas)
+        else La tarea quedo programada
+            CRON->>CRON: registrar el resultado de la negociacion
+        end
+    end
+
+    alt Habilitacion bloqueante vencida
+        CRON->>FIT: groundVehicle(carId)
+        Note over FIT: DispatchOrchestratorService consulta<br/>isVehicleFit antes de ofrecer un pedido
+    end

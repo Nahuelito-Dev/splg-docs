@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: update(id, updateDeliveryDto)
+    SRV->>DREP: preload(delivery_id mas campos del dto)
+    DREP-->>SRV: Delivery fusionado o undefined
+    alt preload no encontro el chofer
+        SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Chofer cargado
+        SRV->>DREP: save(delivery)
+        DREP-->>SRV: Delivery actualizado
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        DREP-->>SRV: Delivery con user y role
+        SRV-->>CTRL: Delivery completo
+    end

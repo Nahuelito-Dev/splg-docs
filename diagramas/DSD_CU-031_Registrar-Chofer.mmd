@@ -1,0 +1,49 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UsersController
+    participant SRV as DeliveryService
+    participant DS as DataSource
+    participant QR as QueryRunner
+    participant FB as FirebaseAuthPort
+    participant UREP as RepositoryUser
+    participant RREP as RepositoryRole
+    participant DREP as RepositoryDelivery
+
+    CTRL->>CTRL: resolver targetDistributor segun rol del actor
+    alt No es SUPER_ADMIN y no tiene distribuidora
+        CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
+    else Distribuidora resuelta
+        CTRL->>SRV: registerWithUser(dto con distributorId)
+        SRV->>DS: createQueryRunner()
+        DS-->>SRV: QueryRunner
+        SRV->>QR: connect() y startTransaction()
+        SRV->>UREP: findOne(where email)
+        UREP-->>SRV: User existente o null
+        alt Ya existe un usuario con ese email
+            SRV->>QR: rollbackTransaction()
+            SRV-->>CTRL: BadRequestException User with this email already exists
+        else Email libre
+            SRV->>FB: createUserSafe(email, password, full_name, phone_number)
+            FB-->>SRV: firebaseUser con uid
+            SRV->>RREP: findOne(where type delivery)
+            RREP-->>SRV: Role o null
+            alt No existe el rol delivery
+                SRV->>QR: rollbackTransaction()
+                SRV->>FB: deleteUserByEmailSafe(email, logger)
+                SRV-->>CTRL: InternalServerErrorException Delivery role not found
+            else Rol encontrado
+                SRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id, selfie)
+                UREP-->>SRV: User en memoria
+                SRV->>QR: manager.save(user)
+                QR-->>SRV: savedUser con user_id
+                SRV->>DREP: create(user_id, distributor_id, calification, latLng, actual_location, validated, isActive, balance 0)
+                DREP-->>SRV: Delivery en memoria
+                SRV->>QR: manager.save(delivery)
+                SRV->>QR: commitTransaction()
+                SRV->>UREP: findOne(user_id, relations delivery y role)
+                UREP-->>SRV: User completo
+                SRV-->>CTRL: User con su perfil de chofer
+            end
+        end
+        SRV->>QR: release()
+    end

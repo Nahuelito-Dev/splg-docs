@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Usuario
+    participant SIS as Sistema
+
+    CLI->>SIS: validarSesion()
+    activate SIS
+    alt La sesion esta vigente
+        SIS-->>CLI: sesion valida
+    else La sesion vencio o el token es invalido
+        SIS-->>CLI: no autorizado
+    end
+    deactivate SIS

@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarPedidos(pagina, limite)
+    activate SIS
+    alt es administrador de una distribuidora
+        SIS-->>ADM: página de pedidos de su distribuidora
+    else es super administrador sin distribuidora seleccionada
+        SIS-->>ADM: página de pedidos de todas las distribuidoras
+    end
+    deactivate SIS

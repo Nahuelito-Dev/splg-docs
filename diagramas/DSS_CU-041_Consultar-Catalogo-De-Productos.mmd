@@ -1,0 +1,27 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarCatalogo(pagina, limite, distribuidora)
+    activate SIS
+    SIS-->>CLI: productos activos (tipo, peso, precio, stock, promociones)
+    deactivate SIS
+
+    opt vista de compra rápida
+        CLI->>SIS: consultarProductosDisponibles(distribuidora)
+        activate SIS
+        SIS-->>CLI: productos activos con stock disponible
+        deactivate SIS
+    end
+
+    opt detalle de un producto
+        CLI->>SIS: consultarProducto(productoId)
+        activate SIS
+        alt el producto existe
+            SIS-->>CLI: detalle del producto
+        else el producto no existe
+            SIS-->>CLI: recurso no encontrado
+        end
+        deactivate SIS
+    end

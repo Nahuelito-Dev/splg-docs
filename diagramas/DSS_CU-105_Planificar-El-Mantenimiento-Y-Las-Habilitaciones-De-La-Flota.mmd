@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CHO as Chofer
+    actor ADM as Administrador
+
+    Note over SAU: Se ejecuta una vez por dia,<br/>a la hora configurada
+    SAU->>SIS: planificarMantenimientoDeFlota()
+    activate SIS
+    Note over SIS: Estima el consumo diario de cada vehiculo,<br/>proyecta los vencimientos y arma las ventanas<br/>que no dejan la zona bajo el minimo
+
+    loop Por cada tarea dentro de la ventana de anticipacion
+        loop Por cada ventana alternativa, de mejor a peor
+            SIS-->>CHO: propuesta de ventana de taller (vigencia limitada)
+            alt El chofer acepta
+                CHO->>SIS: aceptar la ventana propuesta
+                SIS-->>CHO: ventana confirmada y agenda bloqueada
+            else Rechaza o vence la vigencia
+                SIS->>SIS: cerrar la propuesta y pasar a la siguiente ventana
+            end
+        end
+
+        alt Se agotaron las ventanas sin acuerdo
+            SIS-->>ADM: cuadro de opciones evaluadas y motivo de cada descarte
+            ADM->>SIS: confirmar la ventana y el gasto del taller
+            SIS-->>ADM: tarea programada
+        else La ventana quedo acordada con el chofer
+            SIS->>SIS: registrar la tarea como programada
+        end
+    end
+
+    alt Hay una habilitacion bloqueante vencida
+        SIS->>SIS: dejar el vehiculo fuera de servicio
+        SIS-->>ADM: aviso de vehiculo inhabilitado
+    end
+    SIS-->>SAU: planificacion resuelta
+    deactivate SIS

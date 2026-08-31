@@ -1,0 +1,44 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UCS as UpdateOrderStatusUseCase
+    participant ORQ as DispatchOrchestratorService
+    participant OFERTAS as DispatchOfferRepositoryPort
+    participant ORD as OrderRepositoryPort
+    participant DEL as RepositoryDelivery
+    participant SM as OrderStatusMachine
+    participant RT as RealtimeDispatchPort
+    participant NOT as NotificationPort
+
+    alt El chofer ACEPTA, PATCH /orders/:id/status ACCEPTED
+        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
+        SRV->>UCS: execute(id, ACCEPTED, deliveryId)
+        UCS->>ORD: findByIdFull(id)
+        ORD-->>UCS: Order
+        UCS->>SM: transitionOrder(order, ACCEPTED)
+        SM-->>UCS: transicion valida
+        UCS->>DEL: findOne(delivery_id o user_id)
+        DEL-->>UCS: Delivery con user
+        UCS->>UCS: order.delivery_id, order.acceptedAt
+        UCS->>UCS: order.deliveryCode = generateDeliveryCode()
+        UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
+        ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
+        OFERTAS-->>ORQ: true
+        UCS->>ORD: save(order)
+        UCS->>RT: notifyCustomer(customer_id, order:accepted, payload)
+        UCS->>RT: notifyAdmins(order:accepted, payload)
+        UCS->>NOT: sendOrderConfirmation(customer_id, order_id, token)
+        UCS-->>CTRL: Order actualizado
+    else El chofer RECHAZA, POST /orders/:id/reject
+        CTRL->>SRV: rejectOffer(id, user.user_id)
+        SRV->>ORD: findByIdFull(id)
+        ORD-->>SRV: Order
+        SRV->>ORQ: onDriverRejected(order, driverId)
+        ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, REJECTED)
+        OFERTAS-->>ORQ: true
+        alt isReofferable
+            ORQ->>ORQ: offerToNextDriver(order), re-oferta inmediata
+        end
+        SRV-->>CTRL: rejected true
+    end

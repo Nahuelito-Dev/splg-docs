@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    CHO->>SIS: liberarPedido(pedidoId, motivo)
+    activate SIS
+    alt El pedido no esta finalizado
+        SIS-->>CHO: pedido liberado (vuelve a PENDIENTE y queda sin chofer)
+        SIS-)CLI: aviso de que se esta buscando otro chofer
+    else El pedido ya esta entregado o cancelado
+        SIS-->>CHO: error de solicitud (no se puede cancelar un pedido finalizado)
+    end
+    deactivate SIS

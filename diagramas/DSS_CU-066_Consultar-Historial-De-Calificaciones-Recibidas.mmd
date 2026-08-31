@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarHistorialDeCalificaciones(usuarioId)
+    activate SIS
+    SIS-->>ADM: calificaciones recibidas (pedido, estrellas, comentario, fecha)
+    deactivate SIS

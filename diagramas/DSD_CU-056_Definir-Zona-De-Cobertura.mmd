@@ -1,0 +1,32 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as CoverageZoneController
+    participant SRV as CoverageZoneService
+    participant REPO as RepositoryCoverageZone
+
+    ADM->>AUTH: POST /coverage-zones con CreateCoverageZoneDto
+    AUTH->>AUTH: resolveDistributor(user, request)
+    AUTH->>AUTH: rol ADMIN, se deriva del perfil, se ignora X-Distributor
+    AUTH-->>DEC: request.distributorId asignado
+    DEC->>DEC: opts.required true, hay tenant en contexto
+    alt Sin tenant en contexto
+        DEC-->>ADM: BadRequestException, falta el header X-Distributor
+    else Tenant resuelto
+        DEC->>CTRL: create(dto, distributorId)
+        CTRL->>SRV: create(dto, distributorId)
+        SRV->>SRV: toGeoJsonPolygon(dto.polygon)
+        alt Algun vertice no es un par lng lat numerico
+            SRV-->>CTRL: BadRequestException, vertice invalido
+        else Anillo valido
+            SRV->>SRV: cierra el anillo si el primer punto difiere del ultimo
+            SRV->>REPO: create(name, distributor_id, area Polygon, surcharge, isActive)
+            REPO-->>SRV: CoverageZone en memoria
+            SRV->>REPO: save(zone)
+            REPO-->>SRV: CoverageZone persistida
+            SRV-->>CTRL: CoverageZone
+            CTRL-->>ADM: 201 CoverageZone
+        end
+    end

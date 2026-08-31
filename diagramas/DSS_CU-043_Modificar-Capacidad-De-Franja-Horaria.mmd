@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: modificarFranjaHoraria(franja, nombre, horaInicio, horaFin, capacidad)
+    activate SIS
+    alt Los datos son válidos y la franja pertenece a la distribuidora
+        SIS-->>ADM: franja actualizada (nombre, rango horario, capacidad)
+    else La hora de fin no es posterior a la de inicio
+        SIS-->>ADM: rechazo (rango horario inválido)
+    else La capacidad nueva es menor que los pedidos ya programados
+        SIS-->>ADM: rechazo (hay pedidos comprometidos por encima de la capacidad)
+    else La franja pertenece a otra distribuidora
+        SIS-->>ADM: rechazo (franja no encontrada)
+    end
+    deactivate SIS

@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    participant CHO as Chofer
+    participant CTRL as IncidentController
+    participant SRV as IncidentService
+    participant OREP as RepositoryOrder
+    participant IREP as RepositoryIncident
+
+    CHO->>CTRL: POST /incidents con CreateIncidentDto
+    CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
+    CTRL->>SRV: create(dto, user.user_id)
+    SRV->>OREP: findOne(where order_id igual a dto.orderId)
+    OREP-->>SRV: Order o null
+    alt El pedido no existe
+        SRV-->>CTRL: NotFoundException, pedido no encontrado
+    else Pedido encontrado
+        SRV->>SRV: distributor_id se denormaliza de order.distributor_id
+        SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
+        IREP-->>SRV: Incident en memoria
+        SRV->>IREP: save(incident)
+        IREP-->>SRV: Incident persistida
+        SRV-->>CTRL: Incident
+        CTRL-->>CHO: 201 Incident
+    end

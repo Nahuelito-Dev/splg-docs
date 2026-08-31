@@ -1,0 +1,54 @@
+sequenceDiagram
+    autonumber
+    participant ACT as Cliente o Chofer
+    participant CTRL as RatingController
+    participant RS as RatingService
+    participant OREP as RepositoryOrder
+    participant RREP as RepositoryRating
+    participant DREP as RepositoryDelivery
+
+    ACT->>CTRL: POST /ratings con orderId, stars, comment
+    CTRL->>RS: create(dto, user.user_id, user.role)
+    RS->>OREP: findOne(order_id, relations delivery)
+    OREP-->>RS: Order con delivery
+    alt Pedido inexistente
+        RS-->>ACT: NotFoundException, pedido no encontrado
+    else status distinto de DELIVERED
+        RS-->>ACT: BadRequestException, solo se califica un pedido entregado
+    else role CUSTOMER
+        alt order.customer_id distinto de fromUserId
+            RS-->>ACT: ForbiddenException, pedido de otro cliente
+        else Sin chofer asignado
+            RS-->>ACT: BadRequestException, el pedido no tiene chofer
+        else Autorizado
+            RS->>RS: fromRole CUSTOMER, toUserId delivery.user_id
+        end
+    else role DELIVERY
+        alt delivery.user_id distinto de fromUserId
+            RS-->>ACT: ForbiddenException, no entregaste ese pedido
+        else Autorizado
+            RS->>RS: fromRole DELIVERY, toUserId order.customer_id
+        end
+    end
+
+    RS->>RREP: save(Rating con order_id, from_role, to_user_id, stars)
+    alt Violacion de unique order_id mas from_role, codigo 23505
+        RREP-->>RS: error de clave duplicada
+        RS-->>ACT: ConflictException, ya calificaste este pedido
+    else Persistido
+        RREP-->>RS: Rating
+        alt fromRole CUSTOMER, el cliente califico al chofer
+            RS->>RS: refreshDeliveryAverage(toUserId)
+            RS->>RREP: getSummaryForUser con AVG stars y COUNT
+            RREP-->>RS: average redondeado a dos decimales
+            RS->>DREP: update(user_id, calification average)
+        end
+        RS-->>CTRL: Rating
+    end
+
+    Note over ACT,RREP: CU-065, lectura del promedio
+    ACT->>CTRL: GET /ratings/user/:userId/summary
+    CTRL->>RS: getSummaryForUser(userId, distributorId)
+    RS->>RREP: queryBuilder AVG stars y COUNT where to_user_id
+    RREP-->>RS: average, count
+    RS-->>ACT: average, count

@@ -1,0 +1,55 @@
+@startuml
+title SS-07 — Choferes y Vehículos
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+
+rectangle "SS-07 Choferes y Vehículos" {
+  usecase "CU-031\nRegistrar Chofer" as U31
+  usecase "CU-032\nValidar / Invalidar Chofer" as U32
+  usecase "CU-033\nActivar / Desactivar Chofer (Admin)" as U33
+  usecase "CU-034\nRegistrar Vehículo del Chofer" as U34
+  usecase "CU-035\nConsultar Listado de Choferes" as U35
+  usecase "CU-049\nConsultar Balance / Ganancias del Chofer" as U49
+  usecase "CU-051\nGestionar Vehículos (editar / eliminar / consultar)" as U51
+  usecase "CU-096\nActualizar Perfil del Chofer" as U96
+  usecase "CU-097\nEliminar Chofer (baja lógica)" as U97
+  usecase "CU-105\nPlanificar el mantenimiento y las habilitaciones de la flota" as U105 <<pendiente>>
+}
+
+A3 --> U31
+A3 --> U32
+A3 --> U33
+A3 --> U34
+A3 --> U35
+A2 --> U49
+A3 --> U49
+A3 --> U51
+A3 --> U96
+A3 --> U97
+A3 --> U105
+A4 --> U105
+@enduml

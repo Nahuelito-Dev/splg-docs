@@ -1,0 +1,51 @@
+@startuml
+title SS-15 — Reservas Programadas
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+actor "Administrador General" as A5
+
+rectangle "SS-15 Reservas Programadas" {
+  usecase "CU-072\nCrear Reserva Programada con Seña" as U72
+  usecase "CU-073\nListar Reservas y Estado de la Seña" as U73
+  usecase "CU-074\nConfirmar Seña Cobrada en Efectivo" as U74
+  usecase "CU-075\nActivar Reservas Vencidas Automaticamente (Cron)" as U75
+  usecase "CU-076\nExpirar Reservas sin Seña Pagada (Cron)" as U76
+  usecase "CU-077\nExpirar Pedidos de MercadoPago sin Pagar (Cron)" as U77
+}
+
+A1 --> U72
+A2 --> U72
+A3 --> U72
+A3 --> U73
+A5 --> U73
+A3 --> U74
+A5 --> U74
+A4 --> U75
+A4 --> U76
+A4 --> U77
+@enduml

@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP->>SIS: sembrarRolesIniciales()
+    activate SIS
+    SIS-->>SUP: roles base disponibles (cliente, chofer, administrador, super administrador)
+    deactivate SIS

@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as CoverageZoneController
+    participant SRV as CoverageZoneService
+    participant REPO as RepositoryCoverageZone
+
+    ADM->>DEC: GET /coverage-zones
+    DEC->>DEC: lee request.distributorId, required true
+    DEC->>CTRL: findAll(distributorId)
+    CTRL->>SRV: findAll(distributorId)
+    SRV->>REPO: find(where distributor_id, order createdAt ASC)
+    REPO-->>SRV: CoverageZone[] del tenant
+    SRV-->>CTRL: CoverageZone[]
+    CTRL-->>ADM: 200 CoverageZone[]

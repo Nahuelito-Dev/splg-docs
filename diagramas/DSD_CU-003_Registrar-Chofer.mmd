@@ -1,0 +1,53 @@
+sequenceDiagram
+    autonumber
+    participant GUARD as AuthGuard
+    participant RG as RolesGuard
+    participant CTRL as UsersController
+    participant DSRV as DeliveryService
+    participant QR as QueryRunner
+    participant UREP as RepositoryUser
+    participant RREP as RepositoryRole
+    participant DREP as RepositoryDelivery
+    participant FB as FirebaseAuthPort
+
+    GUARD->>GUARD: canActivate(context)
+    GUARD->>GUARD: resolveDistributor(local_user, request)
+    GUARD-->>RG: request.user con role y distributor_id
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol no permitido
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Rol permitido
+        RG-->>CTRL: true
+        CTRL->>CTRL: resolver targetDistributor segun rol
+        alt No es super_admin y no tiene distribuidora
+            CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
+        else Tenant resuelto
+            CTRL->>DSRV: registerWithUser(createDeliveryDto con distributorId)
+            DSRV->>QR: connect() y startTransaction()
+            DSRV->>UREP: findOne(email)
+            alt Email ya usado
+                UREP-->>DSRV: User
+                DSRV-->>CTRL: BadRequestException User with this email already exists
+            else Email libre
+                UREP-->>DSRV: null
+                DSRV->>FB: createUserSafe(email, password, full_name, phone_number)
+                FB-->>DSRV: UserRecord con uid
+                DSRV->>RREP: findOne(type delivery)
+                RREP-->>DSRV: Role
+                DSRV->>UREP: create(email, full_name, firebase_uid, role_id, selfie)
+                DSRV->>QR: manager.save(user)
+                DSRV->>DREP: create(user_id, distributor_id, latLng, validated, isActive, balance 0)
+                DSRV->>QR: manager.save(delivery)
+                DSRV->>QR: commitTransaction()
+                DSRV->>UREP: findOne(user_id, relations delivery y role)
+                UREP-->>DSRV: User completo
+                DSRV-->>CTRL: User con Delivery y Role
+            end
+            opt Error en cualquier paso
+                DSRV->>QR: rollbackTransaction()
+                DSRV->>FB: deleteUserByEmailSafe(email, logger)
+                DSRV->>DSRV: handleDBExceptions(error)
+            end
+            DSRV->>QR: release()
+        end
+    end

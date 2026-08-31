@@ -1,0 +1,48 @@
+sequenceDiagram
+    autonumber
+    participant GUARD as AuthGuard
+    participant CTRL as AuthController
+    participant SRV as AuthService
+    participant USR as UsersService
+    participant SDK as FirebaseAuthClientSDK
+    participant FB as FirebaseAuthPort
+    participant ADM as AdminService
+
+    GUARD->>GUARD: extractRequestSourceFromHeader(request)
+    alt Falta o es invalido x-client-source
+        GUARD-->>CTRL: UnauthorizedException
+    else Header valido y ruta de login sin token
+        GUARD->>USR: findOneByEmail(body.email)
+        USR-->>GUARD: User con role
+        GUARD->>GUARD: validateUserRoleForApp(user, requestSource)
+        alt El rol no corresponde a esta app
+            GUARD-->>CTRL: UnauthorizedException
+        else Rol valido
+            GUARD-->>CTRL: true
+        end
+    end
+
+    alt Login de las apps, POST /auth/login
+        CTRL->>SRV: login(dto)
+        SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
+        SDK-->>SRV: UserCredential
+        SRV-->>CTRL: UserCredential
+    else Login del panel, POST /auth/login/dashboard
+        CTRL->>SRV: login(dto, requestSource)
+        SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
+        SDK-->>SRV: UserCredential
+        SRV-->>CTRL: UserCredential con stsTokenManager
+        CTRL->>SRV: loginDashboard(accessToken)
+        SRV->>SRV: decodeToken(token)
+        SRV->>FB: verifyIdToken(token)
+        FB-->>SRV: DecodedIdToken
+        SRV->>ADM: findOneByEmail(user.email)
+        alt No existe un Admin con ese email
+            ADM-->>SRV: null
+            SRV-->>CTRL: UnauthorizedException Admin not found
+        else Es admin
+            ADM-->>SRV: Admin
+            SRV-->>CTRL: void
+            CTRL->>CTRL: res.cookie token httpOnly secure sameSite strict
+        end
+    end

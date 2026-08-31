@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+    participant CRON as RepurchaseForecastService
+    participant EST as ConsumptionEstimatorService
+    participant ORD as OrderRepositoryPort
+    participant INV as RepurchaseInvitationRepositoryPort
+    participant NOT as NotificationsService
+    participant FCM as FcmPort
+    participant UC as CreateOrderUseCase
+    participant ORQ as DispatchOrchestratorService
+
+    CRON->>ORD: findDeliveredHistory(customerId, minimoConfigurado)
+    ORD-->>CRON: serie de pedidos con fecha y kilaje
+
+    loop Por cada cliente con historial suficiente
+        CRON->>EST: estimateRefillDate(serie, mes en curso)
+        EST-->>CRON: fecha proyectada de agotamiento
+        CRON->>ORD: hasActiveOrder(customerId)
+        ORD-->>CRON: boolean
+        CRON->>INV: findLastInvitation(customerId)
+        INV-->>CRON: fecha de la ultima invitacion
+
+        alt Entra en la ventana y no esta excluido
+            CRON->>INV: create(customerId, pedido precargado, expiresAt)
+            INV-->>CRON: invitacion en estado OFFERED
+            CRON->>NOT: sendRepurchaseInvitation(invitacion)
+            NOT->>FCM: sendToToken(token, data event REPURCHASE_INVITATION)
+        else Excluido por pedido activo, entrega reciente o enfriamiento
+            CRON->>CRON: omitir al cliente en esta corrida
+        end
+    end
+
+    alt El cliente acepta la invitacion
+        INV->>UC: execute(pedido precargado del cliente)
+        UC->>ORQ: offerToNextDriver(order)
+        Note over ORQ: El pedido entra al circuito de M1 (CU-013)
+    else Vence la vigencia sin respuesta
+        CRON->>INV: expire(invitationId)
+        Note over INV: La fecha de caducidad gobierna<br/>el intervalo minimo de reiteracion
+    end

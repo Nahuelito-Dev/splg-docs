@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: eliminarCliente(clienteId)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: cliente dado de baja (se conserva su histórico de pedidos)
+    else el cliente no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

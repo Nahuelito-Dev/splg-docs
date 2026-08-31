@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
+    activate SIS
+    alt se pone disponible
+        SIS-->>CHO: disponible (empieza a recibir ofertas de pedidos)
+    else se pone no disponible
+        SIS-->>CHO: no disponible (deja de recibir ofertas)
+    end
+    deactivate SIS

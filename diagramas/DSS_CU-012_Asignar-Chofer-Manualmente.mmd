@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: asignarChoferAPedido(pedidoId, choferId)
+    activate SIS
+    alt el pedido y el chofer existen y son compatibles
+        SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado)
+    else el pedido o el chofer no existen
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

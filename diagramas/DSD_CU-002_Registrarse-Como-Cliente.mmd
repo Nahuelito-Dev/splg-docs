@@ -1,0 +1,48 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UsersController
+    participant CSRV as CustomersService
+    participant QR as QueryRunner
+    participant UREP as RepositoryUser
+    participant RREP as RepositoryRole
+    participant CREP as RepositoryCustomer
+    participant FB as FirebaseAuthPort
+    participant MAIL as EmailService
+
+    CTRL->>CSRV: registerWithUser(completeRegistrationDto)
+    CSRV->>QR: connect() y startTransaction()
+    CSRV->>UREP: findOne(email)
+    alt Ya existe un usuario con ese email
+        UREP-->>CSRV: User
+        CSRV->>QR: rollbackTransaction()
+        CSRV-->>CTRL: BadRequestException User with this email already exists
+    else Email libre
+        UREP-->>CSRV: null
+        CSRV->>FB: createUserSafe(email, password, full_name, phone_number)
+        FB->>FB: createUser(props)
+        FB-->>CSRV: UserRecord con uid
+        CSRV->>RREP: findOne(type customer)
+        alt No existe el rol customer
+            RREP-->>CSRV: null
+            CSRV-->>CTRL: InternalServerErrorException Customer role not found
+        else Rol encontrado
+            RREP-->>CSRV: Role
+            CSRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id)
+            CSRV->>QR: manager.save(user)
+            CSRV->>CREP: create(user_id, notification_token, lat_lang, validated false)
+            CSRV->>QR: manager.save(customer)
+            CSRV->>QR: commitTransaction()
+            CSRV->>MAIL: sendWelcomeEmail(dto.email)
+            CSRV->>UREP: findOne(user_id, relations customer y role)
+            UREP-->>CSRV: User completo
+            CSRV-->>CTRL: User con Customer y Role
+        end
+    end
+
+    opt Cualquier error despues de crear el usuario de Firebase
+        CSRV->>QR: rollbackTransaction()
+        CSRV->>FB: deleteUserByEmailSafe(dto.email, logger)
+        FB->>FB: getUserByEmail(email) y deleteUser(uid)
+        CSRV->>CSRV: handleDBExceptions(error)
+    end
+    CSRV->>QR: release()

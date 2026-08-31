@@ -1,0 +1,12 @@
+# Credenciales — nunca
+*firebase-adminsdk*.json
+*service-account*.json
+.env
+.env.*
+*.pem
+*.key
+
+# Sistema
+.DS_Store
+__pycache__/
+*.pyc

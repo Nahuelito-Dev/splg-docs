@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP->>SIS: listarDistribuidoras()
+    activate SIS
+    SIS-->>SUP: listado de distribuidoras (nombre, identificador, estado, plan)
+    deactivate SIS
+
+    opt ficha de una distribuidora
+        SUP->>SIS: consultarDistribuidora(distribuidoraId)
+        activate SIS
+        alt la distribuidora existe
+            SIS-->>SUP: datos de la distribuidora
+        else la distribuidora no existe
+            SIS-->>SUP: recurso no encontrado
+        end
+        deactivate SIS
+    end

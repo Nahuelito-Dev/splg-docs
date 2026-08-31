@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)
+    activate SIS
+    alt datos válidos
+        SIS-->>ADM: producto creado (productoId, activo)
+    else datos inválidos
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

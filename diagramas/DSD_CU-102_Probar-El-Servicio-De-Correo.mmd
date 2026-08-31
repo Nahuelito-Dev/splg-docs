@@ -1,0 +1,43 @@
+sequenceDiagram
+    autonumber
+    participant ANY as Cualquiera, ruta publica
+    participant AUTH as AuthGuard
+    participant CTRL as EmailController
+    participant SRV as EmailService
+    participant REDIS as RedisService
+    participant FBA as FirebaseAuthPort
+    participant TPL as EmailTemplateProvider
+    participant SND as EmailSenderPort
+
+    ANY->>AUTH: POST /email/test con TestEmailDto, sin token
+    AUTH->>AUTH: reflector.get isPublic sobre el handler
+    AUTH-->>CTRL: isPublic true, no se valida token ni rol
+    CTRL->>SRV: testEmailService(body.email)
+
+    Note over SRV,REDIS: Primera generacion, deberia poblar la cache
+    SRV->>SRV: generatePasswordResetLink(email)
+    SRV->>REDIS: get(email link-cache reset email)
+    REDIS-->>SRV: null, cache fria
+    SRV->>FBA: generatePasswordResetLink(email, opciones)
+    FBA-->>SRV: link
+    SRV->>REDIS: setex(cacheKey, CACHE_TTL_SEC, link)
+
+    Note over SRV,REDIS: Segunda generacion, deberia pegarle a la cache
+    SRV->>SRV: generatePasswordResetLink(email)
+    SRV->>REDIS: get(cacheKey)
+    REDIS-->>SRV: link cacheado
+    SRV->>SRV: resetLinksEqual igual a comparar link1 con link2
+
+    SRV->>SRV: sendEmail(to, subject Test Email, template email-verification)
+    SRV->>TPL: render(email-verification, displayName Test User)
+    TPL-->>SRV: html
+    SRV->>SND: send(to, subject, html)
+    alt El envio falla
+        SND-->>SRV: Error capturado por sendEmail, best effort
+        SRV->>SRV: resendStatus failed mas el mensaje
+    else Envio exitoso
+        SND-->>SRV: void
+        SRV->>SRV: emailSent true, resendStatus sent
+    end
+    SRV-->>CTRL: success, message, emailSent, resendStatus, cacheStats
+    CTRL-->>ANY: 200 diagnostico del servicio de correo

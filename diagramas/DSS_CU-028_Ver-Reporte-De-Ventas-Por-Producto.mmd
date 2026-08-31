@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVentasPorProducto(fechaDesde, fechaHasta)
+    activate SIS
+    SIS-->>ADM: ventas por tipo de garrafa (unidades, monto)
+    deactivate SIS

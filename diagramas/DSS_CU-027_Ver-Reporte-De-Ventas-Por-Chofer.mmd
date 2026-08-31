@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVentasPorChofer(fechaDesde, fechaHasta)
+    activate SIS
+    SIS-->>ADM: ranking por chofer (pedidos entregados, monto facturado)
+    deactivate SIS

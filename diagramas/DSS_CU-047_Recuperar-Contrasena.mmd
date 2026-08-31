@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Usuario
+    participant SIS as Sistema
+
+    CLI->>SIS: solicitarRecuperacionDeClave(correo)
+    activate SIS
+    alt el correo corresponde a una cuenta
+        SIS-->>CLI: solicitud aceptada (se envió el enlace de restablecimiento)
+    else el correo no existe
+        SIS-->>CLI: solicitud aceptada (respuesta indistinguible por seguridad)
+    end
+    deactivate SIS
+
+    opt el usuario autenticado quiere cambiar su correo
+        CLI->>SIS: cambiarCorreo(correoActual, correoNuevo)
+        activate SIS
+        SIS-->>CLI: correo actualizado (se envió la verificación al nuevo)
+        deactivate SIS
+    end

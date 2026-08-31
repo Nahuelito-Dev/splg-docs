@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant SA as SuperAdmin
+    participant GRD as RolesGuard
+    participant CTRL as RoleController
+    participant SRV as RoleService
+    participant RREP as RepositoryRole
+
+    SA->>GRD: POST /role/seed
+    GRD->>CTRL: rol super_admin verificado
+    CTRL->>SRV: seedRoles()
+    SRV->>SRV: roles igual a customer delivery admin super_admin
+    loop Por cada roleType de la lista
+        SRV->>SRV: findByType(roleType)
+        SRV->>RREP: findOne(where type)
+        RREP-->>SRV: Role o null
+        alt El rol ya existe
+            SRV->>SRV: no hace nada, se saltea
+        else El rol falta
+            SRV->>SRV: create(type roleType)
+            SRV->>RREP: create y save
+            RREP-->>SRV: Role creado
+        end
+    end
+    SRV-->>CTRL: message Roles seeded successfully
+    CTRL-->>SA: 201 Roles seeded successfully

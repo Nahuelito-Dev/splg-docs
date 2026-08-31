@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as UsersController
+    participant SRV as UsersService
+    participant REP as RepositoryUser
+    participant FB as FirebaseAuthPort
+
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        CTRL->>SRV: remove(id)
+        SRV->>SRV: findOne(id)
+        SRV->>REP: findOne(user_id, relations)
+        alt No existe
+            REP-->>SRV: null
+            SRV-->>CTRL: NotFoundException User with ID not found
+        else Existe
+            REP-->>SRV: User
+            SRV->>REP: delete(user_id)
+            alt Violacion de FK, codigo 23503
+                REP-->>SRV: QueryFailedError
+                SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
+            else Borrado en base
+                REP-->>SRV: DeleteResult
+                opt El usuario tiene email
+                    SRV->>SRV: cleanupFirebaseUser(user.email)
+                    SRV->>FB: deleteUserByEmailSafe(email, logger)
+                    FB->>FB: getUserByEmail(email)
+                    FB->>FB: deleteUser(uid)
+                end
+                SRV-->>CTRL: message Usuario eliminado permanentemente de DB y Firebase
+            end
+        end
+    end

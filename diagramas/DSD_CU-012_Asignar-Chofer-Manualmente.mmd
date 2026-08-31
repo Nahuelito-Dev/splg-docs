@@ -1,0 +1,50 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant ORD as OrderRepositoryPort
+    participant DREP as RepositoryDelivery
+    participant FSM as OrderStatusMachine
+    participant OREP as RepositoryOrder
+    participant MAP as OrderMapper
+
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        CTRL->>SRV: assignDelivery(id, deliveryId)
+        SRV->>SRV: findOne(orderId)
+        SRV->>ORD: findByIdFull(orderId)
+        alt Pedido inexistente
+            ORD-->>SRV: null
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Pedido encontrado
+            ORD-->>SRV: Order
+            SRV->>DREP: findOne(delivery_id)
+            alt Chofer inexistente
+                DREP-->>SRV: null
+                SRV-->>CTRL: NotFoundException Repartidor no encontrado
+            else Chofer encontrado
+                DREP-->>SRV: Delivery
+                alt El chofer no esta activo
+                    SRV-->>CTRL: BadRequestException El repartidor no esta activo
+                else Chofer activo
+                    SRV->>SRV: order.delivery_id igual a deliveryId
+                    SRV->>FSM: transitionOrder(order, ACCEPTED)
+                    alt Transicion ilegal desde el estado actual
+                        FSM-->>SRV: InvalidOrderTransitionError
+                        SRV-->>CTRL: error 400 via GlobalExceptionFilter
+                    else Transicion valida
+                        SRV->>SRV: order.acceptedAt igual a new Date
+                        SRV->>OREP: save(order)
+                        OREP-->>SRV: Order
+                        SRV-->>CTRL: Order en estado ACCEPTED
+                        CTRL->>MAP: toDto(order)
+                        MAP-->>CTRL: OrderResponseDto
+                    end
+                end
+            end
+        end
+    end

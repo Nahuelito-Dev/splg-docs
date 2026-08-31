@@ -1,0 +1,56 @@
+sequenceDiagram
+    autonumber
+    participant IDEM as IdempotencyInterceptor
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as UpdateOrderStatusUseCase
+    participant ORD as OrderRepositoryPort
+    participant FSM as OrderStatusMachine
+    participant DREP as RepositoryDelivery
+    participant RT as RealtimeDispatchPort
+    participant REDIS as RedisService
+    participant CGW as CustomersGateway
+    participant AGW as AdminGateway
+    participant NOT as NotificationPort
+
+    IDEM->>IDEM: intercept con header Idempotency-Key
+    alt Reintento con la misma key
+        IDEM-->>CTRL: respuesta cacheada, no se re-procesa
+    else Primera ejecucion
+        IDEM-->>CTRL: next.handle()
+        CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
+        CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
+        SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
+        UC->>ORD: findByIdFull(id)
+        alt Pedido inexistente
+            ORD-->>UC: null
+            UC-->>CTRL: NotFoundException Order with ID not found
+        else Pedido encontrado
+            ORD-->>UC: Order
+            UC->>FSM: transitionOrder(order, ON_THE_WAY)
+            alt El pedido no estaba ACCEPTED
+                FSM-->>UC: InvalidOrderTransitionError
+                UC-->>CTRL: error 400 via GlobalExceptionFilter
+            else Transicion valida
+                UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
+                UC->>UC: order.onTheWayAt igual a new Date
+                alt El pedido no tiene chofer asignado
+                    UC->>UC: devuelve null sin activar tracking
+                else Tiene chofer
+                    UC->>DREP: findOne(delivery_id, relations user)
+                    DREP-->>UC: Delivery con User
+                    UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
+                    RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
+                end
+                UC->>ORD: save(order)
+                UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
+                UC->>RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
+                RT->>CGW: notifyCustomer(customerId, event, payload)
+                UC->>RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
+                RT->>AGW: notifyAdmins(event, payload)
+                UC->>UC: notifyCustomer(order)
+                UC->>NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                UC-->>CTRL: Order en estado ON_THE_WAY
+            end
+        end
+    end

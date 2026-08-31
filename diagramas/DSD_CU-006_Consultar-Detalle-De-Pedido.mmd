@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant ORD as OrderRepositoryPort
+    participant MAP as OrderMapper
+
+    CTRL->>CTRL: derivar customerScope segun user.role
+    CTRL->>SRV: getOne(id, distributorId, customerScope)
+    SRV->>SRV: findOne(id)
+    SRV->>ORD: findByIdFull(id)
+    alt No existe el pedido
+        ORD-->>SRV: null
+        SRV-->>CTRL: NotFoundException Order with ID not found
+    else Pedido encontrado
+        ORD-->>SRV: Order con relaciones completas
+        alt El pedido es de otra distribuidora
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Tenant correcto
+            alt El solicitante es CUSTOMER y no es el dueno del pedido
+                SRV-->>CTRL: NotFoundException Order with ID not found
+            else Ownership correcto
+                SRV->>MAP: toDto(order)
+                MAP-->>SRV: OrderResponseDto
+                SRV-->>CTRL: OrderResponseDto
+            end
+        end
+    end

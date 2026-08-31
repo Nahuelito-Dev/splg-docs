@@ -1,0 +1,46 @@
+@startuml
+title SS-03 — Despacho y Asignación
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+
+rectangle "SS-03 Despacho y Asignación" {
+  usecase "CU-012\nAsignar Chofer Manualmente" as U12
+  usecase "CU-013\nAsignar Pedido Automáticamente por Proximidad" as U13
+  usecase "CU-014\nReintentar Asignación con Radio Expandido (Cron)" as U14
+  usecase "CU-015\nAceptar Pedido" as U15
+  usecase "CU-016\nRechazar / Ignorar Pedido" as U16
+  usecase "CU-107\nAgrupar pedidos por recorrido" as U107 <<pendiente>>
+}
+
+A3 --> U12
+A4 --> U13
+A4 --> U14
+A2 --> U15
+A2 --> U16
+A2 --> U107
+A4 --> U107
+@enduml

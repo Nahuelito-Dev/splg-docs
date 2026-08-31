@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
+    activate SIS
+    alt no existe ningún administrador en el sistema
+        SIS-->>ADM: super administrador creado (queda habilitado el acceso al panel)
+    else ya existen administradores
+        SIS-->>ADM: acceso denegado (la operación de arranque ya fue consumida)
+    end
+    deactivate SIS

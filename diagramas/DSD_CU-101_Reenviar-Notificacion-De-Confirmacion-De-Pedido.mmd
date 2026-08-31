@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant CTRL as NotificationsController
+    participant SRV as NotificationsService
+    participant CREP as RepositoryCustomer
+    participant FCM as FcmPort
+
+    ADM->>CTRL: POST /notifications/order-confirmation con customerId orderId y token opcional
+    CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
+    SRV->>CREP: findOne(where user_id igual a customerId, relations user)
+    CREP-->>SRV: Customer o null
+    alt Cliente no encontrado
+        SRV->>SRV: logger.warn customer not found
+        SRV-->>CTRL: success false, error Customer not found
+    else Cliente encontrado
+        SRV->>SRV: notificationToken igual al token del body o customer.notification_token
+        alt El cliente no tiene token registrado
+            SRV->>SRV: logger.warn no notification token
+            SRV-->>CTRL: success false, error No notification token
+        else Hay token
+            SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
+            SRV->>FCM: sendToToken(notificationToken, message)
+            alt Falla el envio
+                FCM-->>SRV: Error
+                SRV-->>CTRL: success false, error
+            else Envio exitoso
+                FCM-->>SRV: messageId
+                SRV-->>CTRL: success true, messageId
+            end
+        end
+    end
+    CTRL-->>ADM: 200 resultado

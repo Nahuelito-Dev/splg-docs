@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as GasCylinderController
+    participant SRV as GasCylinderService
+    participant GREP as RepositoryGasCylinder
+
+    CTRL->>SRV: create(createGasCylinderDto, distributorId)
+    SRV->>GREP: findOne(where type y distributor_id)
+    GREP-->>SRV: GasCylinder existente o null
+    alt Ya existe ese tipo en la distribuidora
+        SRV-->>CTRL: BadRequestException Ya existe una garrafa con este tipo en tu distribuidora
+    else Tipo libre en el tenant
+        SRV->>GREP: create(datos del dto mas distributor_id)
+        GREP-->>SRV: GasCylinder en memoria
+        SRV->>GREP: save(gasCylinder)
+        alt Error de base
+            SRV->>SRV: handleDBExceptions(error)
+            SRV-->>CTRL: BadRequestException Duplicate entry o InternalServerErrorException
+        else Persistido
+            GREP-->>SRV: GasCylinder persistido
+            SRV-->>CTRL: GasCylinder
+        end
+    end

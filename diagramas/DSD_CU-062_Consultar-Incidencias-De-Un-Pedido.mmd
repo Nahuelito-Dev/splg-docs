@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant USR as Chofer o Admin
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as IncidentController
+    participant SRV as IncidentService
+    participant IREP as RepositoryIncident
+
+    USR->>DEC: GET /incidents/order/:orderId
+    DEC->>CTRL: findByOrder(orderId, distributorId)
+    CTRL->>CTRL: ParseUUIDPipe valida el orderId
+    CTRL->>SRV: findByOrder(orderId, distributorId)
+    SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
+    IREP-->>SRV: Incident[] del pedido
+    SRV-->>CTRL: Incident[]
+    CTRL-->>USR: 200 Incident[]

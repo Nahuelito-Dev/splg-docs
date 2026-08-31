@@ -1,0 +1,44 @@
+@startuml
+title SS-09 — Franjas Horarias
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Administrador" as A3
+actor "Administrador General" as A5
+
+rectangle "SS-09 Franjas Horarias" {
+  usecase "CU-042\nCrear Franja Horaria" as U42
+  usecase "CU-043\nModificar Capacidad de Franja Horaria" as U43 <<pendiente>>
+  usecase "CU-044\nSeleccionar Franja Horaria al Crear Pedido" as U44
+  usecase "CU-045\nConsultar Franjas Horarias Disponibles" as U45
+  usecase "CU-103\nEliminar Franja Horaria" as U103
+}
+
+A3 --> U42
+A3 --> U43
+A1 --> U44
+A1 --> U45
+A3 --> U103
+A5 --> U103
+@enduml

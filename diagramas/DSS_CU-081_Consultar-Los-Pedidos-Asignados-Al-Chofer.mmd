@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO->>SIS: consultarPedidosAsignados(choferId, pagina, limite)
+    activate SIS
+    SIS-->>CHO: página de pedidos asignados (estado, cliente, dirección, total)
+    deactivate SIS

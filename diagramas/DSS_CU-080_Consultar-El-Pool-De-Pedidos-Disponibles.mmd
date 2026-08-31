@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO->>SIS: consultarPedidosDisponibles(pagina, limite)
+    activate SIS
+    SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    deactivate SIS

@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
+    activate SIS
+    alt registro exitoso
+        SIS-->>ADM: chofer creado (usuarioId, choferId, validado en falso)
+    else el administrador no tiene distribuidora asociada
+        SIS-->>ADM: acceso denegado
+    else datos inválidos o correo duplicado
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

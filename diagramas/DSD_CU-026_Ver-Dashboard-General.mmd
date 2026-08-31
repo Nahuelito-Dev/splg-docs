@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: getOrderStats(distributorId)
+    SRV->>SRV: calcular today, tomorrow, weekStart, weekEnd, monthStart, monthEnd
+    SRV->>SRV: delivered(from, to), helper de filtro status DELIVERED mas Between
+    SRV->>OREP: sum(totalAmount, delivered hoy)
+    OREP-->>SRV: todaySales
+    SRV->>OREP: sum(totalAmount, delivered semana)
+    OREP-->>SRV: weekSales
+    SRV->>OREP: sum(totalAmount, delivered mes)
+    OREP-->>SRV: monthSales
+    SRV->>OREP: sum(totalAmount, status DELIVERED historico)
+    OREP-->>SRV: totalSales
+    SRV->>OREP: count(where delivered hoy)
+    OREP-->>SRV: deliveredToday
+    SRV->>OREP: count(where status PENDING)
+    OREP-->>SRV: pending
+    SRV->>OREP: count(where status ACCEPTED)
+    OREP-->>SRV: accepted
+    SRV->>OREP: count(where status ON_THE_WAY)
+    OREP-->>SRV: onTheWay
+    SRV->>DREP: count(where isActive true y validated true)
+    DREP-->>SRV: activeDeliveries
+    SRV->>OREP: count(where DELIVERED y paymentMethod CASH del mes)
+    OREP-->>SRV: cash
+    SRV->>OREP: count(where DELIVERED y paymentMethod MERCADOPAGO del mes)
+    OREP-->>SRV: mercadopago
+    SRV->>SRV: armar ordersSummary, sales, performance y paymentMethods
+    SRV-->>CTRL: objeto de KPIs del dashboard

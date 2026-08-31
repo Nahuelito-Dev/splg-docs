@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: definirZonaDeCobertura(nombre, poligono, recargo, activa)
+    activate SIS
+    alt el polígono y el recargo son válidos
+        SIS-->>ADM: zona creada (zonaId, recargo asociado)
+    else el polígono es inválido
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

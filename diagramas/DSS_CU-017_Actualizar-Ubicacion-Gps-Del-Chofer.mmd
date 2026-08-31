@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+    actor ADM as Administrador
+
+    loop Mientras el chofer esta conectado
+        CHO->>SIS: actualizarUbicacion(usuarioId, latitud, longitud)
+        activate SIS
+        alt Los datos de posicion son validos
+            opt El chofer tiene un pedido en curso
+                SIS-)CLI: nueva posicion del chofer en el mapa
+                SIS-)ADM: nueva posicion del chofer en el panel
+            end
+        else Faltan el usuario o las coordenadas
+            SIS->>SIS: se descarta el envio, no se registra la posicion
+        end
+        deactivate SIS
+    end

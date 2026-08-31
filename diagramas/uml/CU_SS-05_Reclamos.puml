@@ -1,0 +1,38 @@
+@startuml
+title SS-05 — Reclamos
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Administrador" as A3
+
+rectangle "SS-05 Reclamos" {
+  usecase "CU-023\nRegistrar Reclamo" as U23
+  usecase "CU-024\nListar Reclamos" as U24
+  usecase "CU-025\nResolver Reclamo" as U25
+}
+
+A1 --> U23
+A3 --> U24
+A3 --> U25
+@enduml

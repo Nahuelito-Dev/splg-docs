@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+
+    CHO->>SIS: obtenerCodigoDeEntrega(pedidoId)
+    activate SIS
+    alt el pedido está asignado a este chofer y ya fue aceptado
+        SIS-->>CHO: código de entrega (para mostrarlo como QR al cliente)
+    else el pedido no está asignado a este chofer
+        SIS-->>CHO: acceso denegado
+    else el pedido todavía no fue aceptado
+        SIS-->>CHO: error de solicitud (el pedido aún no tiene código)
+    else el pedido no existe
+        SIS-->>CHO: recurso no encontrado
+    end
+    deactivate SIS

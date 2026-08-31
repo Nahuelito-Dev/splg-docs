@@ -1,0 +1,41 @@
+@startuml
+title SS-06 — Reportes y Dashboard
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Administrador" as A3
+
+rectangle "SS-06 Reportes y Dashboard" {
+  usecase "CU-026\nVer Dashboard General" as U26
+  usecase "CU-027\nVer Reporte de Ventas por Chofer" as U27
+  usecase "CU-028\nVer Reporte de Ventas por Producto" as U28
+  usecase "CU-029\nVer Reporte por Método de Pago" as U29
+  usecase "CU-030\nVer Gráfico de Ventas (últimos 7 días)" as U30
+}
+
+A3 --> U26
+A3 --> U27
+A3 --> U28
+A3 --> U29
+A3 --> U30
+@enduml

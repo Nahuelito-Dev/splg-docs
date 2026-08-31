@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as CoverageZoneController
+    participant SRV as CoverageZoneService
+    participant REPO as RepositoryCoverageZone
+
+    ADM->>DEC: DELETE /coverage-zones/:id
+    DEC->>CTRL: remove(id, distributorId)
+    CTRL->>SRV: remove(id, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>REPO: findOne(where coverage_zone_id y distributor_id)
+    REPO-->>SRV: CoverageZone o null
+    alt No existe o pertenece a otra distribuidora
+        SRV-->>CTRL: NotFoundException, zona no encontrada
+    else Zona del tenant
+        SRV->>REPO: remove(zone)
+        REPO-->>SRV: fila eliminada
+        SRV-->>CTRL: void
+        CTRL-->>ADM: 200 sin cuerpo
+    end

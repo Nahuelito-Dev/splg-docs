@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as TimeSlotController
+    participant SRV as TimeSlotService
+    participant TREP as RepositoryTimeSlot
+
+    CTRL->>SRV: create(createTimeSlotDto, distributorId)
+    SRV->>TREP: create(datos del dto mas distributor_id)
+    TREP-->>SRV: TimeSlot en memoria
+    SRV->>TREP: save(timeSlot)
+    TREP-->>SRV: TimeSlot persistido
+    SRV-->>CTRL: TimeSlot

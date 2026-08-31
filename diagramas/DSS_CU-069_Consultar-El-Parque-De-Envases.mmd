@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarEnvases(estado)
+    activate SIS
+    SIS-->>ADM: envases de la distribuidora (serie, estado, pedido y cliente actuales)
+    deactivate SIS
+
+    opt ficha de un envase
+        ADM->>SIS: consultarEnvase(envaseId)
+        activate SIS
+        alt el envase existe
+            SIS-->>ADM: ficha del envase
+        else el envase no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end

@@ -1,0 +1,39 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as GasCylinderController
+    participant SRV as GasCylinderService
+    participant GREP as RepositoryGasCylinder
+    participant UC as CreateOrderUseCase
+    participant PRC as OrderPricingService
+    participant DEC as Decimal
+
+    CTRL->>SRV: update(id, dto con promotions, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    GREP-->>SRV: GasCylinder o null
+    alt Producto inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+    else Producto del tenant
+        SRV->>GREP: preload(gas_cylinder_id mas promotions)
+        GREP-->>SRV: GasCylinder fusionado
+        SRV->>GREP: save(gasCylinder)
+        GREP-->>SRV: GasCylinder con el JSONB de promociones
+        SRV-->>CTRL: GasCylinder
+    end
+
+    UC->>PRC: priceItem(gasCylinder.price, gasCylinder.promotions, quantity)
+    PRC->>PRC: bestApplicablePromotion(promotions, quantity)
+    alt No hay promociones cargadas
+        PRC->>PRC: devolver null, sin descuento
+    else Hay promociones
+        PRC->>PRC: ordenar por quantity DESC y tomar la primera que quantity alcanza
+    end
+    alt Se encontro una promocion aplicable
+        PRC->>DEC: discountFactor igual 1 menos discountPercentage sobre 100
+        DEC-->>PRC: factor de descuento
+        PRC->>DEC: unitPrice.times(discountFactor)
+        DEC-->>PRC: unitPrice con descuento
+    end
+    PRC->>DEC: unitPrice.times(quantity)
+    DEC-->>PRC: subtotal
+    PRC-->>UC: ItemPricing con unitPrice y subtotal

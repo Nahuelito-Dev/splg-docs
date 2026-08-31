@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    alt El chofer declara la entrega
+        CHO->>SIS: confirmarEntrega(pedido)
+    else El cliente la constata leyendo el código
+        CHO->>SIS: obtenerCodigoDeEntrega(pedido)
+        SIS-->>CHO: código para mostrar como QR
+        CLI->>SIS: confirmarEntregaConCodigo(pedido, codigo)
+    end
+    activate SIS
+    alt El pedido está en camino y los datos son correctos
+        SIS-->>CLI: pedido entregado
+        Note over SIS: Si el pago es en efectivo,<br/>queda saldado
+        SIS-->>CHO: entrega registrada
+    else El código no coincide o el pedido no está en camino
+        SIS-->>CLI: rechazo (no se puede confirmar la entrega)
+    end
+    deactivate SIS

@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    actor MP as Pasarela de Pago
+    participant SIS as Sistema
+    actor CHO as Chofer
+
+    MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
+    activate SIS
+    alt La firma no es valida
+        SIS-->>MP: notificacion recibida (se descarta sin procesar)
+    else Pago aprobado de un pedido pendiente
+        SIS-->>MP: notificacion recibida
+        SIS-)CHO: oferta del pedido ya pagado
+    else Pago aprobado de la sena de una reserva
+        SIS-->>MP: notificacion recibida (la sena queda paga, la reserva no se despacha)
+    else Pago aprobado de un pedido ya cancelado o entregado
+        SIS-->>MP: notificacion recibida (se registra el pago, sin reactivar el pedido)
+    else Pago rechazado o cancelado
+        SIS-->>MP: notificacion recibida (el pedido queda a la espera)
+    end
+    deactivate SIS

@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as IncidentController
+    participant SRV as IncidentService
+    participant IREP as RepositoryIncident
+
+    ADM->>DEC: PATCH /incidents/:id/resolve con ResolveIncidentDto
+    DEC->>DEC: required true, exige tenant en contexto
+    DEC->>CTRL: resolve(id, dto, distributorId)
+    CTRL->>SRV: resolve(id, dto, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>IREP: findOne(where incident_id y distributor_id)
+    IREP-->>SRV: Incident o null
+    alt No existe o es de otra distribuidora
+        SRV-->>CTRL: NotFoundException, incidencia no encontrada
+    else Incidencia del tenant
+        SRV->>SRV: status RESOLVED, resolution_note, resolvedAt igual a new Date
+        SRV->>IREP: save(incident)
+        IREP-->>SRV: Incident actualizada
+        SRV-->>CTRL: Incident
+        CTRL-->>ADM: 200 Incident
+    end

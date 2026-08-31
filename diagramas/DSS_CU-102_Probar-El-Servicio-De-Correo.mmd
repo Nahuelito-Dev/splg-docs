@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: probarServicioDeCorreo(destinatario)
+    activate SIS
+    alt el servicio de correo responde
+        SIS-->>ADM: correo de prueba enviado
+    else el servicio de correo falla
+        SIS-->>ADM: error del servicio de correo
+    end
+    deactivate SIS

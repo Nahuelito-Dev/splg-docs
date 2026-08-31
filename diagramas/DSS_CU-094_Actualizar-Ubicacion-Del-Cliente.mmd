@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)
+    activate SIS
+    alt el cliente existe
+        SIS-->>CLI: ubicación actualizada
+    else el cliente no existe
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS

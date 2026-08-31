@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: suscribirseAlSeguimiento(clienteId)
+    activate SIS
+    SIS-->>CLI: suscripción confirmada
+    deactivate SIS
+
+    loop mientras el pedido esté en curso
+        SIS-)CLI: cambio de estado del pedido (aceptado, en camino, entregado, cancelado)
+        SIS-)CLI: posición actual del chofer (latitud, longitud)
+    end

@@ -1,0 +1,277 @@
+Proyecto
+Nombre del Proyecto
+Documento de Requisitos del Sistema
+Versión  ##.##
+Fecha: dd/mm/aaaa
+Realizado por: equipo de desarrollo
+Realizado para: Cliente
+
+Lista de Cambios
+Nro
+Fecha
+Descripción
+Autor
+0
+Dd/mm/aaaa
+Version ##,##
+Autor
+1
+Dd/mm/aaaa
+Descripción Cambio
+Autor
+
+Índice TOC \o Especificación de Requerimientos	 PAGEREF _Toc168557829 \h 4
+Presentación General	 PAGEREF _Toc168557830 \h 5
+Cliente	 PAGEREF _Toc168557831 \h ¡Error! Marcador no definido.
+Metas	 PAGEREF _Toc168557832 \h ¡Error! Marcador no definido.
+Funciones de Sistema	 PAGEREF _Toc168557833 \h 5
+Función Grupo	 PAGEREF _Toc168557834 \h 5
+Atributos del Sistema	 PAGEREF _Toc168557835 \h 5
+Casos de Usos	 PAGEREF _Toc168557836 \h 6
+Fronteras del Sistema	 PAGEREF _Toc168557837 \h 6
+Actores	 PAGEREF _Toc168557838 \h 6
+Casos de Usos	 PAGEREF _Toc168557839 \h 7
+Actor	 PAGEREF _Toc168557840 \h 7
+Diagrama de Casos de Usos	 PAGEREF _Toc168557841 \h 7
+Casos de Usos de Alto Nivel	 PAGEREF _Toc168557842 \h 7
+Casos de Usos Expandidos	 PAGEREF _Toc168557843 \h 8
+Índice de FigurasPresentación General
+Descripción breve de las principales características del sistema de software que se va a desarrollar, la situación actual que generar la necesidad de un nuevo desarrollo, la problemática que se acomete, y cualquier otra consideración que sitúe al posible lector en el contexto oportuno para comprender el resto del documento
+Participantes del Proyecto
+Debe contener una lista con todos los participantes en el proyecto:
+Desarrolladores
+Clientes
+Objetivos del sistema
+Se debe hacer una lista con los objetivos que se esperan alcanzar con el software a desarrollar.
+
+
+OBJ–01 
+Objetivo 
+Descripción 
+Descripción del objetivo.
+Estabilidad 
+Alta/baja 
+Comentarios 
+ninguno 
+
+Diagrama de Caso de Uso del Sistema
+ 
+Figura # - Diagrama Caso Usos Sistema
+
+Casos de Usos 
+Lista de casos de usos y su importancia dentro del sistema para determinar cuáles son los casos de usos de incluir en cada una de las iteraciones
+
+Subsistemas del Proyecto
+Diagrama de los Subsistemas
+
+Figura # - Diagrama de Subsistemas
+
+Descripción de  subsistema
+Proyecto
+Nombre del Proyecto
+Documento de Requisitos del Sistema
+Versión  ##.##
+Fecha: dd/mm/aaaa
+Realizado por: equipo de desarrollo
+Realizado para: Cliente
+
+Objetivos de la Iteración
+Se debe hacer una lista con los objetivos que se esperan alcanzar con el software a desarrollar.
+
+
+OBJ–01 
+Objetivo 
+Descripción 
+Descripción del objetivo.
+Estabilidad 
+Alta/baja 
+Comentarios 
+ninguno 
+
+Requisitos del Sistema
+Requisitos de Información
+Debe tener una lista de requisitos de almacenamientos y de restricciones de información que se haya identificado. 
+
+IRQ–01 
+Información sobre películas 
+Objetivos asociados 
+OBJ–01 Gestionar las películas y cintas 
+Requisitos asociados 
+UC–04 Alta de película 
+UC–05 Alta de cinta de vídeo 
+UC–08 Baja de cinta de vídeo 
+UC–10 Consulta de película 
+UC–13 Consulta de películas alquiladas un día determinado 
+Descripción 
+El sistema deberá almacenar la información correspondiente 
+a las películas del vídeo–club. En concreto: 
+Datos específicos 
+Título de la película 
+Cintas de la película alquiladas en cada momento 
+Cintas de la película disponibles para ser alquiladas en cada 
+momento 
+Tipo de la película: infantil, acción, ciencia-ficción o adultos 
+Duración de la película, en horas y minutos 
+Actores principales de la película 
+Director de la película 
+Productora de la película 
+Año de producción de la película 
+
+Estabilidad 
+alta 
+
+Comentarios 
+En este requisito se han mezclado deliberadamente dos con-
+ceptos, el de película y el de cinta de vídeo que contiene una 
+película. En el documento de la metodología de análisis se 
+continúa este ejemplo, se descubre el conflicto y se propone 
+su separación en dos requisitos distintos. 
+
+Requisitos de Funcionales
+Debe tener una lista de los requisitos funcionales, expresado en forma tradicional o mediante casos de usos 
+Diagrama de Casos de Usos
+
+Figura 2 : Diagrama de Caso de Uso del Subsistema Gestión de Socios
+Definición de Actores
+
+ACT–01 
+Socio 
+Descripción 
+Este actor representa a los socios del vídeo–club 
+Comentarios 
+Ninguno
+ 
+
+Caso de Usos del Sistema
+
+UC–02 
+Baja de socio 
+Objetivos 
+asociados 
+OBJ–02 Gestionar las socios 
+Requisitos 
+asociados 
+IRQ–02 Información sobre socios 
+Descripción 
+El sistema deberá comportarse tal como se describe en el siguiente 
+caso de uso cuando un socio solicite su baja 
+Precondición 
+El solicitante es un socio del vídeo–club, no tiene ningún pago pen-
+diente y tiene su documentación disponible 
+Secuencia 
+Paso 
+Acción 
+normal 
+1 
+El empleado del vídeo–club solicita al sistema comenzar el 
+
+
+proceso de baja de un socio 
+
+2 
+Se realiza el caso de uso UC–15 (Identificación de socio) 
+
+3 
+El empleado del vídeo–club solicita al sistema que elimine la información correspondiente al socio
+
+4 
+El sistema elimina los datos correspondientes al socio 
+
+5 
+El sistema informa al empleado del vídeo–club que el proceso 
+
+
+ha terminado con éxito 
+
+6 
+El empleado del vídeo–club inhabilita el carnet al socio que  se acaba de dar de baja
+Postcondición 
+El solicitante no es socio del vídeo–club 
+Excepciones 
+Paso 
+Acción 
+
+3 
+Si el socio tiene pagos pendientes, el sistema comunica la si-
+tuación al empleado del vídeo–club, a continuación este caso 
+de uso queda sin efecto 
+
+
+Rendimiento 
+Paso 
+Cota de tiempo 
+
+4 
+1 segundo 
+Frecuencia 
+1 vez/mes 
+Estabilidad 
+alta 
+Comentarios 
+Si el socio que desea darse de baja tiene un pago pendiente, puede 
+hacer un ingreso por su importe y repetir el proceso de darse de baja 
+
+Requisitos No funcionales
+
+NFR–01 
+Copias de seguridad 
+Objetivos asociados 
+– 
+Requisitos asociados 
+– 
+Descripción 
+El sistema deberá incorporar algún mecanismo que permita 
+realizar copias de seguridad de los datos almacenados 
+
+Comentarios 
+ninguno 
+
+Matriz de Rastreabilidad Objetivo/Requisitos
+
+OBJ-01
+
+OBJ-N
+RI-01
+
+
+
+RF-01
+
+
+
+RNF
+
+
+
+…
+
+
+
+
+Glosario de Términos
+Término
+Categoría
+Comentarios
+
+
+
+
+
+
+
+
+
+
+
+
+[Proyecto]
+Iteración – [Codificación]
+Equipo
+Versión: ##.##
+
+
+ PAGE   \* MERGEFORMAT 12
+
+
+
+

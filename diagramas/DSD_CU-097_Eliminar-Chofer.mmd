@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: remove(id)
+    SRV->>SRV: findOne(id)
+    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    DREP-->>SRV: Delivery o null
+    alt Chofer inexistente
+        SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Chofer encontrado
+        SRV->>DREP: softDelete(where delivery_id)
+        DREP-->>SRV: UpdateResult, se sella deletedAt
+        SRV-->>CTRL: mensaje Delivery deleted successfully
+    end

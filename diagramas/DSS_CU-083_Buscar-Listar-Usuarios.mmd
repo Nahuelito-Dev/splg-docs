@@ -1,0 +1,27 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarUsuarios(pagina, limite, textoDeBusqueda)
+    activate SIS
+    SIS-->>ADM: página de usuarios (total, cantidad, listado)
+    deactivate SIS
+
+    opt búsqueda puntual
+        ADM->>SIS: buscarUsuarioPorCorreo(correo)
+        activate SIS
+        alt existe
+            SIS-->>ADM: usuario encontrado
+        else no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt búsqueda por teléfono
+        ADM->>SIS: buscarUsuarioPorTelefono(telefono)
+        activate SIS
+        SIS-->>ADM: usuario encontrado
+        deactivate SIS
+    end

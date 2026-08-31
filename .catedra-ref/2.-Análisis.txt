@@ -1,0 +1,84 @@
+Fase II Análisis
+ TOC \o "1-3" Modelo Conceptual	 PAGEREF _Toc170877994 \h 2
+Lista de Concepto	 PAGEREF _Toc170877995 \h 2
+Lista de conceptos idóneos	 PAGEREF _Toc170877996 \h 2
+Relaciones entre los conceptos	 PAGEREF _Toc170877997 \h 2
+Descripción de los Atributos	 PAGEREF _Toc170877998 \h 2
+Diagrama Conceptual	 PAGEREF _Toc170877999 \h 2
+Comportamiento del Sistema	 PAGEREF _Toc170878000 \h 3
+Diagrama de Secuencias a Nivel de  Sistema	 PAGEREF _Toc170878001 \h 3
+Diagrama de Sistema Para el caso de Uso extraer:	 PAGEREF _Toc170878002 \h 3
+Contratos	 PAGEREF _Toc170878003 \h 3
+Glosario	 PAGEREF _Toc170878004 \h 4
+Modelo Conceptual
+Lista de Concepto Candidatos (Este punto es Opcional)
+Categoría del Concepto
+Ejemplos
+Lugares
+Hotel
+
+Lista de conceptos idóneos
+Es la lista de conceptos obtenidos de la lista de categoría de conceptos adecuados para incluirlos en la aplicación, la misma esta sujeta a la restricción de los requerimientos.
+
+Descripción del Concepto
+Símbolo
+
+Intención
+
+Extensión
+
+
+Relaciones entre los conceptos
+
+Concepto
+Ejemplos
+A es una parte física de B
+Habitación  - Hotel 
+
+Descripción de los Atributos
+Concepto
+Atributo – Descripcion
+Cuenta
+saldo: indica el saldo disponible de la cuenta.
+
+Diagrama Conceptual
+ SHAPE  \* MERGEFORMAT 
+Comportamiento del Sistema
+Diagrama de Secuencias a Nivel de  Sistema
+ SHAPE  \* MERGEFORMAT 
+           Diagrama de Sistema Para el caso de Uso extraer:
+
+Contratos
+Nombre	extraer(unMonto moneda, unaNroCuenta cadena)
+Responsabilidades	Realizar un extracción, actualizando el saldo y la disponibilidad del cajero
+Tipo	Sistema
+Referencias cruzadas	 Caso de uso extraer. Funciones ….
+Notas	
+Excepciones	En caso de no tener disponibilidad el cajero, indicar que se los valores posibles para la operación.
+En el caso de que el banco no confirme la operación, indicar el error 
+Salida	Desplegar los mensajes provocados por las excepciones
+Precondiciones	El sistema conoce la tarjeta
+Postcondiciones	
+Se crea una operación.
+Se decremento Cuenta.saldo en unMonto.
+Se creo una instancia de Movimiento
+Se asocio el movimiento a la cuenta.
+…
+
+
+
+
+
+
+
+
+[Proyecto]
+Plan de Iteración – [Codificación]
+Equipo
+
+
+
+
+
+
+

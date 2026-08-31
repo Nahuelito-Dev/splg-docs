@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor USR as Usuario
+    participant SIS as Sistema
+
+    USR->>SIS: iniciarSesion(correo, contrasenia)
+    activate SIS
+    alt Credenciales validas
+        SIS-->>USR: sesion iniciada (credencial con token de acceso)
+    else Credenciales incorrectas
+        SIS-->>USR: error de solicitud (credenciales invalidas)
+    end
+    deactivate SIS

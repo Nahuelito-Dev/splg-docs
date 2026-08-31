@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
+    participant CREP as RepositoryCustomer
+
+    ADM->>DEC: GET /customers con PaginationDto
+    DEC->>CTRL: findAll(paginationDto, distributorId)
+    CTRL->>SRV: findAll(paginationDto, distributorId)
+    SRV->>CREP: createQueryBuilder customer
+    SRV->>CREP: leftJoinAndSelect customer.user, user.role, user.addresses
+    SRV->>CREP: take(limit) y skip(offset)
+    alt Hay tenant en contexto
+        SRV->>CREP: andWhere EXISTS subquery sobre Order por customer_id y distributor_id
+    else super_admin cross tenant
+        SRV->>SRV: sin filtro, devuelve todos los clientes
+    end
+    SRV->>CREP: getMany()
+    CREP-->>SRV: Customer[] con user role y addresses
+    SRV-->>CTRL: Customer[]
+    CTRL-->>ADM: 200 Customer[]

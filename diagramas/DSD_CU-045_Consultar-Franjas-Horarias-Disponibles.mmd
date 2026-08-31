@@ -1,0 +1,47 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as TimeSlotController
+    participant SRV as TimeSlotService
+    participant DIS as DistributorService
+    participant TREP as RepositoryTimeSlot
+    participant OREP as RepositoryOrder
+
+    alt Disponibilidad por fecha, GET /time-slot/availability
+        CTRL->>SRV: getAvailability(date, distributor)
+        SRV->>SRV: resolveDistributor(slugOrId)
+        alt Se paso un uuid
+            SRV->>DIS: assertActive(uuid)
+            DIS-->>SRV: Distributor activo
+        else Se paso un slug
+            SRV->>DIS: findBySlug(slug)
+            DIS-->>SRV: Distributor
+        end
+        SRV->>TREP: find(where isActive true y distributor_id, order startTime ASC)
+        TREP-->>SRV: TimeSlot[]
+        loop Por cada franja activa
+            SRV->>SRV: countBooked(time_slot_id, date, distributorId)
+            SRV->>OREP: count(where time_slot_id, scheduled_date y status distinto de CANCELLED)
+            OREP-->>SRV: booked
+            SRV->>SRV: remaining igual maximo entre 0 y capacity menos booked
+        end
+        SRV-->>CTRL: SlotAvailability[] con capacity, booked y remaining
+    else Listado de franjas activas, GET /time-slot
+        CTRL->>SRV: findAll(distributor, distributorId)
+        alt Vino el slug por query
+            SRV->>SRV: resolveDistributor(distributorSlug)
+        else Se usa el tenant del admin autenticado
+            SRV->>SRV: effective igual distributorId
+        end
+        SRV->>TREP: find(where isActive true y distributor_id, order startTime ASC)
+        TREP-->>SRV: TimeSlot[]
+        SRV-->>CTRL: TimeSlot[]
+    else Detalle de una franja, GET /time-slot/:id
+        CTRL->>SRV: findOne(id, distributorId)
+        SRV->>TREP: findOne(where time_slot_id y distributor_id)
+        TREP-->>SRV: TimeSlot o null
+        alt No encontrada o de otra distribuidora
+            SRV-->>CTRL: NotFoundException Time slot not found
+        else Encontrada
+            SRV-->>CTRL: TimeSlot
+        end
+    end

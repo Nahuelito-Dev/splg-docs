@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+    actor CLI as Usuario Destinatario
+
+    ADM->>SIS: enviarNotificacionDePrueba(usuarioId, titulo, mensaje)
+    activate SIS
+    alt el usuario tiene al menos un dispositivo registrado
+        SIS-)CLI: notificación de prueba
+        SIS-->>ADM: notificación enviada
+    else el usuario no tiene dispositivos registrados
+        SIS-->>ADM: no se pudo enviar (sin dispositivos registrados)
+    end
+    deactivate SIS

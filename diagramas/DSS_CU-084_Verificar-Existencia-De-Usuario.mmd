@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: verificarExistenciaDeUsuario(correo, telefono)
+    activate SIS
+    SIS-->>CLI: resultado (existeCorreo, existeTelefono)
+    deactivate SIS

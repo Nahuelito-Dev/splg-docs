@@ -1,0 +1,49 @@
+@startuml
+title SS-17 — Notificaciones
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Administrador General" as A5
+
+rectangle "SS-17 Notificaciones" {
+  usecase "CU-098\nRegistrar el Token de Notificaciones del Dispositivo" as U98
+  usecase "CU-099\nConsultar los Tokens de un Usuario" as U99
+  usecase "CU-100\nEnviar Notificación de Prueba" as U100
+  usecase "CU-101\nReenviar Notificación de Confirmación de Pedido" as U101
+  usecase "CU-102\nProbar el Servicio de Correo" as U102
+}
+
+A1 --> U98
+A2 --> U98
+A3 --> U98
+A5 --> U98
+A3 --> U99
+A5 --> U99
+A3 --> U100
+A5 --> U100
+A3 --> U101
+A5 --> U101
+@enduml

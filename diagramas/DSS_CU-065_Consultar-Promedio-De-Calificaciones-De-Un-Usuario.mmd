@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarResumenDeCalificaciones(usuarioId)
+    activate SIS
+    SIS-->>CLI: promedio de estrellas y cantidad de calificaciones recibidas
+    deactivate SIS

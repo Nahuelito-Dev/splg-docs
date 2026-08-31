@@ -1,0 +1,52 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CreateOrderUseCase
+    participant QR as QueryRunner
+    participant EM as EntityManager
+    participant TSS as TimeSlotService
+    participant STK as StockReservationService
+    participant PRC as OrderPricingService
+
+    CTRL->>SRV: create(createOrderDto, distributorId)
+    SRV->>UC: execute(createOrderDto, distributorId)
+    alt Es reserva y no trae scheduledDate
+        UC-->>CTRL: BadRequestException Una reserva requiere scheduledDate
+    else Datos coherentes
+        UC->>QR: connect() y startTransaction()
+        UC->>UC: validar cliente, direccion y zona de cobertura
+        alt El dto trae scheduledDate y timeSlotId
+            UC->>TSS: assertSlotAvailableTx(queryRunner.manager, timeSlotId, scheduledDate, distributorId)
+            TSS->>EM: findOne(TimeSlot, where time_slot_id, isActive true y distributor_id, lock pessimistic_write)
+            EM-->>TSS: TimeSlot bloqueado o null
+            alt Franja inexistente o inactiva
+                TSS-->>UC: BadRequestException Franja horaria invalida o inactiva
+            else Franja bloqueada
+                alt La fecha agendada es anterior a hoy
+                    TSS-->>UC: BadRequestException No se puede agendar en una fecha pasada
+                else Fecha valida, se admite same-day
+                    TSS->>EM: count(Order, where time_slot_id, scheduled_date y status distinto de CANCELLED)
+                    EM-->>TSS: booked
+                    alt booked mayor o igual a slot.capacity
+                        TSS-->>UC: BadRequestException La franja esta completa
+                    else Queda cupo
+                        TSS-->>UC: void, se puede agendar
+                    end
+                end
+            end
+        end
+        loop Por cada item del pedido
+            UC->>STK: reserve(queryRunner.manager, gasCylinderId, quantity)
+            STK-->>UC: GasCylinder bloqueado
+            UC->>PRC: priceItem(price, promotions, quantity)
+            PRC-->>UC: unitPrice y subtotal
+        end
+        UC->>PRC: applyPaymentSurcharge(totalAmount, paymentMethod)
+        PRC-->>UC: totalAmount final
+        UC->>QR: manager.save(order con time_slot_id y scheduled_date)
+        QR-->>UC: savedOrder
+        UC->>QR: commitTransaction(), recien aca se libera el lock de la franja
+        UC-->>SRV: CreateOrderResult con order y paymentUrl
+        SRV-->>CTRL: CreateOrderResult
+    end

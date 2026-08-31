@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: validarCobertura(latitud, longitud)
+    activate SIS
+    alt el punto cae dentro de una zona activa
+        SIS-->>CLI: cubierta (zonaId, nombre de la zona, recargo aplicable)
+    else la distribuidora no tiene zonas cargadas
+        SIS-->>CLI: cubierta sin recargo (cobertura irrestricta por omisión)
+    else el punto está fuera de toda zona
+        SIS-->>CLI: fuera de cobertura
+    end
+    deactivate SIS

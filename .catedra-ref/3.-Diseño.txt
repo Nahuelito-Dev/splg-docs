@@ -1,0 +1,112 @@
+ TOC \o "1-3" \h \z \u  HYPERLINK \l "_Toc305402665" Fase III de Diseño	 PAGEREF _Toc305402665 \h 2
+ HYPERLINK \l "_Toc305402666" Casos de Usos Reales	 PAGEREF _Toc305402666 \h 2
+ HYPERLINK \l "_Toc305402667" Diagrama de Interacción	 PAGEREF _Toc305402667 \h 4
+ HYPERLINK \l "_Toc305402668" Operaciones	 PAGEREF _Toc305402668 \h 4
+ HYPERLINK \l "_Toc305402669" Operación: buscarHabitacion(tipo,fecha)	 PAGEREF _Toc305402669 \h 4
+ HYPERLINK \l "_Toc305402670" Diagrama de Clase	 PAGEREF _Toc305402670 \h 5
+Fase III de Diseño
+Casos de Usos Reales
+<Interface Gráfica para el caso de uso>
+
+UC–02 
+Realizar Reserva
+Objetivos 
+asociados 
+OBJ–02 … 
+Requisitos 
+asociados 
+IRQ–02 … 
+Descripción 
+Un Pasajero se acerca a la Recepción del Hotel y solicita al Recepcionista la reserva de una Habitación. El Recepcionista solicita el Tipo de Habitación y la fecha de la reserva, verifica la disponibilidad para la fecha y realiza la reserva.
+Precondición 
+El Pasajero se encuentra registrado y el recepcionista está identificado y autenticado
+Secuencia 
+Paso 
+Acción 
+normal 
+1 
+Este caso de uso comienza cuando un Pasajero llega a la Recepción y solicita una Reserva.
+
+2
+El Recepcionista solicita el tipo de habitación y fecha de la reserva y lo ingresa al sistema.
+
+3 
+Verifica que haya habitaciones disponibles para la fecha solicitada.
+
+4 
+Despliega las habitaciones disponibles para la fecha.
+
+5 
+El Recepcionista informa al Pasajero de la disponibilidad y solicita la confirmación.
+
+6 
+El Pasajero confirma la reserva.
+
+7
+El Recepcionista solicita e ingresa los datos del cliente.
+
+8
+Se asocia el Pasajero a la reserva, e informa el precio de la reserva de acuerdo al tipo de Pasajero
+
+9
+El recepcionista confirma la reserva.
+
+10
+Registra la reserva y genera un número de reserva
+
+11
+El recepcionista informa al Pasajero que se realizo la reserva y el número de reserva.
+
+ 12
+El Pasajero se retira
+Postcondición 
+La Reserva ha sido creada.
+Excepciones 
+Paso 
+Acción 
+
+3
+Si no hay habitaciones disponibles, se solicita un nuevo criterio de búsqueda o cancelar la operación.
+
+6
+Pasajero no confirma la Reserva. Cancelar transacción de Reserva.
+
+8
+El cliente no está registrado. Se informa la situación y se termina el caso de uso.
+
+Rendimiento 
+Paso 
+Cota de tiempo 
+
+4 
+1 segundo 
+Frecuencia 
+1 vez/mes 
+Estabilidad 
+alta 
+Comentarios 
+ 
+
+
+Diagrama de Interacción
+Operaciones
+Operación: buscarHabitacion(tipo,fecha)
+
+
+Diagrama de Clase
+
+
+
+
+
+
+
+
+
+
+[Proyecto]
+Plan de Iteración – [Codificación]
+Equipo
+
+
+

@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    alt cancelación ordinaria
+        ADM->>SIS: cancelarPedido(pedidoId, motivo)
+        activate SIS
+        SIS-->>ADM: pedido cancelado (motivo registrado, stock restituido)
+        deactivate SIS
+    else cancelación forzada
+        ADM->>SIS: cancelarPedidoForzado(pedidoId)
+        activate SIS
+        SIS-->>ADM: pedido cancelado por decisión administrativa
+        deactivate SIS
+    end

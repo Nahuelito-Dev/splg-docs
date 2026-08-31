@@ -1,0 +1,47 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CreateOrderUseCase
+    participant QR as QueryRunner
+    participant TS as TimeSlotService
+    participant STK as StockReservationService
+    participant PRC as OrderPricingService
+    participant PAY as PaymentsService
+    participant GW as PaymentGatewayPort
+    participant ORD as OrderRepositoryPort
+    participant RT as RealtimeDispatchPort
+
+    CTRL->>SRV: create(dto con isReservation, scheduledDate, depositAmount)
+    SRV->>UC: execute(dto, distributorId)
+    alt isReservation sin scheduledDate
+        UC-->>CTRL: BadRequestException, una reserva requiere scheduledDate
+    else Datos completos
+        UC->>QR: startTransaction()
+        UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
+        TS-->>UC: cupo disponible con lock pesimista
+        loop Por cada item del pedido
+            UC->>STK: reserve(manager, gasCylinderId, quantity)
+            STK-->>UC: GasCylinder bloqueado y descontado
+            UC->>PRC: priceItem(price, promotions, quantity)
+            PRC-->>UC: unitPrice, subtotal
+        end
+        UC->>PRC: applyPaymentSurcharge(total, paymentMethod)
+        PRC-->>UC: total con recargo
+        UC->>QR: save(Order con status RESERVED, deposit_amount, deposit_paid false)
+        UC->>QR: commitTransaction()
+
+        alt Sena por MercadoPago
+            UC->>PAY: createCheckout(orderId, amount deposit, isDeposit true, items)
+            PAY->>GW: createCheckout(input)
+            GW-->>PAY: initPoint, preferenceId
+            PAY-->>UC: CreateCheckoutResult
+        else Sena en efectivo
+            UC->>UC: queda deposit_paid false hasta confirmDeposit del admin
+        end
+
+        UC->>RT: notifyAdmins(order:created, payload)
+        UC->>ORD: findByIdFull(order_id)
+        ORD-->>UC: Order con relaciones
+        UC-->>CTRL: order, paymentUrl
+    end

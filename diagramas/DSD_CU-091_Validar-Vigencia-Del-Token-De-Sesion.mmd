@@ -1,0 +1,51 @@
+sequenceDiagram
+    autonumber
+    participant GUARD as AuthGuard
+    participant REFL as Reflector
+    participant SRV as AuthService
+    participant FB as FirebaseAuthPort
+    participant USR as UsersService
+    participant DIST as DistributorService
+    participant CTRL as AuthController
+
+    GUARD->>REFL: get(isPublic, context.getHandler())
+    alt Ruta publica
+        REFL-->>GUARD: true
+        GUARD-->>CTRL: true
+    else Ruta protegida
+        REFL-->>GUARD: undefined
+        GUARD->>GUARD: extractTokenFromHeader(request)
+        GUARD->>GUARD: extractRequestSourceFromHeader(request)
+        alt Falta x-client-source
+            GUARD-->>CTRL: UnauthorizedException Invalid or missing X-Client-Source header
+        else Header presente
+            alt No hay token Bearer
+                GUARD-->>CTRL: UnauthorizedException No token provided
+            else Hay token
+                GUARD->>SRV: decodeToken(token)
+                SRV->>FB: verifyIdToken(token)
+                alt Token vencido, revocado o mal firmado
+                    FB-->>SRV: error
+                    SRV-->>GUARD: UnauthorizedException
+                else Token valido
+                    FB-->>SRV: DecodedIdToken
+                    SRV-->>GUARD: email, user y sub
+                    GUARD->>GUARD: getUser(email, requestSource)
+                    GUARD->>USR: findOneByEmail(user_email)
+                    USR-->>GUARD: User con role, delivery y admins
+                    GUARD->>GUARD: validateUserRoleForApp(user, requestSource)
+                    GUARD->>GUARD: resolveDistributor(local_user, request)
+                    alt Rol DELIVERY o ADMIN
+                        GUARD->>GUARD: tomar distributor_id del perfil, ignorando el header
+                    else Rol CUSTOMER o SUPER_ADMIN con header X-Distributor
+                        GUARD->>DIST: assertActive(header) o findBySlug(header)
+                        DIST-->>GUARD: Distributor
+                    end
+                    GUARD->>GUARD: setear request.user y request.distributorId
+                    GUARD-->>CTRL: true
+                    CTRL->>SRV: checkIfTokenValid()
+                    SRV-->>CTRL: HttpException token valid
+                end
+            end
+        end
+    end

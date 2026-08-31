@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as UsersController
+    participant SRV as UsersService
+    participant REP as RepositoryUser
+    participant QB as SelectQueryBuilderUser
+
+    alt Listado paginado, GET /users
+        RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+        RG-->>CTRL: true
+        CTRL->>SRV: findAll(paginationDto con term)
+        SRV->>REP: createQueryBuilder(user)
+        REP-->>SRV: SelectQueryBuilder
+        SRV->>QB: leftJoinAndSelect role, customer y delivery
+        SRV->>QB: take(limit) y skip(offset)
+        opt Viene term de busqueda
+            SRV->>QB: andWhere(Brackets con email, full_name y phone_number ILIKE)
+        end
+        SRV->>QB: getManyAndCount()
+        QB-->>SRV: users y total
+        SRV-->>CTRL: users y maxUsers
+    else Busqueda por email, GET /users/email/:email
+        CTRL->>SRV: findOneByEmail(email)
+        SRV->>REP: findOne(email, relations role customer delivery cars addresses admins)
+        alt No encontrado
+            REP-->>SRV: null
+            SRV-->>CTRL: NotFoundException User with email not found
+        else Encontrado
+            REP-->>SRV: User
+            SRV-->>CTRL: User
+        end
+    else Busqueda por telefono, GET /users/phone/:phoneNumber
+        CTRL->>SRV: findOneByPhone(phoneNumber)
+        SRV->>REP: findOne(phone_number, relations role customer delivery cars addresses)
+        REP-->>SRV: User o null
+        SRV-->>CTRL: User o null
+    end

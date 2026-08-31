@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    CHO->>SIS: avisarLlegada(pedidoId)
+    activate SIS
+    alt el pedido está en camino
+        SIS-)CLI: aviso de que el repartidor llegó al domicilio
+        SIS-->>CHO: cliente notificado
+    else el pedido no está en camino
+        SIS-->>CHO: error de solicitud (el pedido no está en camino)
+    end
+    deactivate SIS

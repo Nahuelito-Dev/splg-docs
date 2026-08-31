@@ -1,0 +1,64 @@
+@startuml
+title SS-02 — Gestión de Pedidos
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+actor "Administrador General" as A5
+
+rectangle "SS-02 Gestión de Pedidos" {
+  usecase "CU-005\nCrear Pedido" as U5
+  usecase "CU-006\nConsultar Detalle de Pedido" as U6
+  usecase "CU-007\nConsultar Historial de Pedidos" as U7
+  usecase "CU-008\nCancelar Pedido (Cliente)" as U8
+  usecase "CU-009\nCancelar Pedido (Chofer)" as U9
+  usecase "CU-010\nCancelar Pedido (Administrador)" as U10
+  usecase "CU-011\nListar Todos los Pedidos" as U11
+  usecase "CU-046\nGestionar Direcciones de Entrega" as U46
+  usecase "CU-080\nConsultar el Pool de Pedidos Disponibles" as U80
+  usecase "CU-081\nConsultar los Pedidos Asignados al Chofer" as U81
+  usecase "CU-106\nAnticipar la recompra por consumo estimado" as U106 <<pendiente>>
+}
+
+A1 --> U5
+A1 --> U6
+A2 --> U6
+A3 --> U6
+A1 --> U7
+A1 --> U8
+A2 --> U9
+A3 --> U10
+A3 --> U11
+A1 --> U46
+A2 --> U80
+A3 --> U80
+A5 --> U80
+A2 --> U81
+A3 --> U81
+A5 --> U81
+A1 --> U106
+A4 --> U106
+@enduml

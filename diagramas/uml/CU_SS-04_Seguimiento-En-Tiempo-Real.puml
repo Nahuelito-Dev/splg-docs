@@ -1,0 +1,54 @@
+@startuml
+title SS-04 — Seguimiento en Tiempo Real
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Administrador General" as A5
+
+rectangle "SS-04 Seguimiento en Tiempo Real" {
+  usecase "CU-017\nActualizar Ubicación GPS del Chofer" as U17
+  usecase "CU-018\nMarcar Pedido 'En Camino'" as U18
+  usecase "CU-019\nAvisar Llegada al Cliente" as U19
+  usecase "CU-020\nConfirmar Entrega" as U20
+  usecase "CU-021\nRecibir Notificaciones en Tiempo Real" as U21
+  usecase "CU-022\nActivar / Desactivar Disponibilidad (Chofer)" as U22
+  usecase "CU-078\nObtener el Código de Entrega (QR del chofer)" as U78
+  usecase "CU-079\nConfirmar Entrega Escaneando el QR (cliente)" as U79
+}
+
+A2 --> U17
+A2 --> U18
+A2 --> U19
+A2 --> U20
+A1 --> U21
+A2 --> U22
+A2 --> U78
+A3 --> U78
+A5 --> U78
+A1 --> U79
+A3 --> U79
+A5 --> U79
+@enduml

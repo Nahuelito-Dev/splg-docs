@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarVehiculos()
+    activate SIS
+    SIS-->>ADM: vehículos de la distribuidora
+    deactivate SIS
+
+    opt búsqueda por patente
+        ADM->>SIS: consultarVehiculoPorPatente(patente)
+        activate SIS
+        alt existe
+            SIS-->>ADM: vehículo encontrado
+        else no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt modificación
+        ADM->>SIS: actualizarVehiculo(vehiculoId, datos)
+        activate SIS
+        SIS-->>ADM: vehículo actualizado
+        deactivate SIS
+    end
+
+    opt baja
+        ADM->>SIS: eliminarVehiculo(vehiculoId)
+        activate SIS
+        SIS-->>ADM: vehículo eliminado
+        deactivate SIS
+    end

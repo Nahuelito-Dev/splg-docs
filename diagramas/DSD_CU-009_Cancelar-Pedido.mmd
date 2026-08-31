@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CancelOrderUseCase
+    participant ORD as OrderRepositoryPort
+    participant FSM as OrderStatusMachine
+    participant RT as RealtimeDispatchPort
+    participant CGW as CustomersGateway
+
+    CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve driver
+    CTRL->>SRV: cancelOrder(id, user.user_id, driver, body.reason)
+    SRV->>UC: execute(orderId, userId, driver, reason)
+    UC->>ORD: findByIdFull(orderId)
+    alt Pedido inexistente
+        ORD-->>UC: null
+        UC-->>CTRL: NotFoundException Order with ID not found
+    else Pedido encontrado
+        ORD-->>UC: Order con delivery_id
+        alt Ya esta DELIVERED o CANCELLED
+            UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
+        else Cancelable
+            UC->>UC: guardar previousDriverId
+            UC->>UC: applyCancellationPolicy(order, userId, driver)
+            UC->>FSM: transitionOrder(order, PENDING)
+            UC->>UC: delivery_id, acceptedAt y onTheWayAt a null
+            UC->>ORD: save(order)
+            UC->>UC: notify(order, driver, previousDriverId)
+            UC->>RT: notifyCustomer(customer_id, order searching-driver, payload)
+            RT->>CGW: notifyCustomer(customerId, event, payload)
+            UC-->>CTRL: Order de nuevo en PENDING
+        end
+    end

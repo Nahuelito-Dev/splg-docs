@@ -1,0 +1,27 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant UC as UpdateOrderStatusUseCase
+    participant REPO as OrderRepositoryPort
+    participant SM as OrderStatusMachine
+    participant RT as RealtimeDispatchPort
+    participant NOT as NotificationsService
+
+    CTRL->>UC: execute(orderId, DELIVERED, userId)
+    UC->>REPO: findByIdFull(orderId)
+    REPO-->>UC: Order
+    UC->>SM: assertTransition(order.status, DELIVERED)
+    alt Transicion invalida
+        SM-->>UC: InvalidOrderTransitionError
+        UC-->>CTRL: 400 Bad Request
+    else Transicion valida
+        UC->>UC: order.deliveredAt = new Date()
+        opt paymentMethod es CASH
+            UC->>UC: order.paymentStatus = PAID
+        end
+        UC->>REPO: save(order)
+        REPO-->>UC: Order
+        UC->>RT: notifyOrderStatusChanged(order)
+        UC->>NOT: sendOrderPush(customerId, orderId)
+        UC-->>CTRL: Order actualizada
+    end

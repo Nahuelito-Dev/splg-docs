@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    actor AUT as Sistema Automático
+    participant SIS as Sistema
+
+    Note over AUT: Proceso periódico. Frecuencia real cada 1 hora
+    AUT->>SIS: expirarReservasSinSenia()
+    activate SIS
+    alt hay reservas sin seña más viejas que el plazo configurado
+        loop por cada reserva vencida (hasta 50 por corrida)
+            SIS-->>AUT: reserva cancelada y stock liberado
+        end
+    else no hay reservas vencidas
+        SIS-->>AUT: sin trabajo por hacer
+    end
+    deactivate SIS

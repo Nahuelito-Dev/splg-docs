@@ -1,0 +1,54 @@
+@startuml
+title SS-13 — Trazabilidad de Envases
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+actor "Administrador General" as A5
+
+rectangle "SS-13 Trazabilidad de Envases" {
+  usecase "CU-067\nDar de Alta un Envase Físico" as U67
+  usecase "CU-068\nAsignar Envases a un Pedido" as U68
+  usecase "CU-069\nConsultar el Parque de Envases" as U69
+  usecase "CU-070\nRegistrar Movimiento de Envase (cambio de estado)" as U70
+  usecase "CU-071\nConsultar Historial de Movimientos de un Envase" as U71
+  usecase "CU-108\nRecuperar envases no devueltos" as U108 <<pendiente>>
+}
+
+A3 --> U67
+A5 --> U67
+A2 --> U68
+A3 --> U68
+A5 --> U68
+A3 --> U69
+A5 --> U69
+A2 --> U70
+A3 --> U70
+A5 --> U70
+A3 --> U71
+A5 --> U71
+A3 --> U108
+A4 --> U108
+@enduml

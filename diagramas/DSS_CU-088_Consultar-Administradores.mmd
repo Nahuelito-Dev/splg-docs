@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarAdministradores()
+    activate SIS
+    SIS-->>ADM: administradores de su distribuidora (nombre, correo, rol)
+    deactivate SIS
+
+    opt búsqueda puntual
+        ADM->>SIS: buscarAdministrador(termino)
+        activate SIS
+        alt hay coincidencias
+            SIS-->>ADM: administrador encontrado
+        else no hay coincidencias
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end

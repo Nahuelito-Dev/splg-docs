@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant USR as Admin o Chofer
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+
+    alt Listado del parque, GET /cylinders
+        USR->>DEC: GET /cylinders con query state opcional
+        DEC->>CTRL: findAll(distributorId, state)
+        CTRL->>SRV: findAll(distributorId, state)
+        SRV->>SRV: arma el where con distributor_id y state si vienen
+        SRV->>CREP: find(where, order createdAt DESC)
+        CREP-->>SRV: Cylinder[]
+        SRV-->>CTRL: Cylinder[]
+        CTRL-->>USR: 200 Cylinder[]
+    else Detalle de un envase, GET /cylinders/:id
+        USR->>DEC: GET /cylinders/:id
+        DEC->>CTRL: findOne(id, distributorId)
+        CTRL->>SRV: findOne(id, distributorId)
+        SRV->>CREP: findOne(where cylinder_id mas distributor_id si hay tenant)
+        CREP-->>SRV: Cylinder o null
+        alt No existe o es de otra distribuidora
+            SRV-->>CTRL: NotFoundException, envase no encontrado
+        else Encontrado
+            SRV-->>CTRL: Cylinder
+            CTRL-->>USR: 200 Cylinder
+        end
+    end

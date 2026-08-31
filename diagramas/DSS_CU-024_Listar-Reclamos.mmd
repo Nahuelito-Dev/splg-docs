@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarReclamos()
+    activate SIS
+    SIS-->>ADM: reclamos de su distribuidora (pedido, cliente, motivo, estado)
+    deactivate SIS

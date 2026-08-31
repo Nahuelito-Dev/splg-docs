@@ -1,0 +1,41 @@
+sequenceDiagram
+    autonumber
+    participant CRON as DispatchService
+    participant REDIS as RedisService
+    participant ORQ as DispatchOrchestratorService
+    participant OFERTAS as DispatchOfferRepositoryPort
+    participant ORD as OrderRepositoryPort
+    participant OSRV as OrderService
+
+    CRON->>REDIS: acquireLock(dispatch:tick, 12000)
+    alt No se obtuvo el lock, otra instancia esta procesando
+        REDIS-->>CRON: null
+        CRON->>CRON: return sin procesar
+    else Lock adquirido
+        REDIS-->>CRON: Lock
+        CRON->>ORQ: handleExpiredOffers()
+        ORQ->>OFERTAS: findExpired(now)
+        OFERTAS-->>ORQ: DispatchOffer[] vencidas en estado OFFERED
+        loop Por cada oferta vencida
+            ORQ->>OFERTAS: updateStatus(offer_id, EXPIRED)
+            ORQ->>ORD: findByIdFull(offer.order_id)
+            ORD-->>ORQ: Order o null
+            alt isReofferable, status PENDING y sin delivery_id
+                ORQ->>ORQ: offerToNextDriver(order), ver DSD A.1
+            else Pedido ya aceptado o cancelado
+                ORQ->>ORQ: continue, no se re-ofrece
+            end
+        end
+
+        CRON->>OSRV: findAvailableOrders(limit 50, offset 0)
+        OSRV-->>CRON: pedidos PENDING sin chofer
+        loop Por cada pedido con antiguedad mayor a MIN_AGE_MS
+            CRON->>ORQ: ensureOffered(order)
+            ORQ->>OFERTAS: hasActiveOffer(order.order_id)
+            OFERTAS-->>ORQ: boolean
+            alt No tiene oferta activa
+                ORQ->>ORQ: offerToNextDriver(order)
+            end
+        end
+        CRON->>REDIS: lock.release()
+    end

@@ -1,0 +1,108 @@
+@startuml
+title Diagrama de Casos de Uso del Sistema — SPLG
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Sistema Automatico" as A4
+actor "Administrador General" as A5
+
+rectangle "Sistema de Pedidos y Logistica de Garrafas de Gas (SPLG)" {
+  usecase "SS-01\nAutenticación y Usuarios\n(11 casos de uso)" as S1
+  usecase "SS-02\nGestión de Pedidos\n(11 casos de uso)" as S2
+  usecase "SS-03\nDespacho y Asignación\n(6 casos de uso)" as S3
+  usecase "SS-04\nSeguimiento en Tiempo Real\n(8 casos de uso)" as S4
+  usecase "SS-05\nReclamos\n(3 casos de uso)" as S5
+  usecase "SS-06\nReportes y Dashboard\n(5 casos de uso)" as S6
+  usecase "SS-07\nChoferes y Vehículos\n(10 casos de uso)" as S7
+  usecase "SS-08\nCatálogo de Productos\n(6 casos de uso)" as S8
+  usecase "SS-09\nFranjas Horarias\n(5 casos de uso)" as S9
+  usecase "SS-10\nMulti-Distribuidora\n(4 casos de uso)" as S10
+  usecase "SS-11\nCobertura Geográfica\n(4 casos de uso)" as S11
+  usecase "SS-12\nIncidencias y Calidad\n(7 casos de uso)" as S12
+  usecase "SS-13\nTrazabilidad de Envases\n(6 casos de uso)" as S13
+  usecase "SS-14\nPagos y Conciliación\n(1 casos de uso)" as S14
+  usecase "SS-15\nReservas Programadas\n(6 casos de uso)" as S15
+  usecase "SS-16\nCuentas y Roles\n(9 casos de uso)" as S16
+  usecase "SS-17\nNotificaciones\n(5 casos de uso)" as S17
+  usecase "SS-18\nObservabilidad\n(1 casos de uso)" as S18
+}
+
+A1 --> S1
+A1 --> S2
+A1 --> S4
+A1 --> S5
+A1 --> S8
+A1 --> S9
+A1 --> S11
+A1 --> S12
+A1 --> S15
+A1 --> S16
+A1 --> S17
+A2 --> S1
+A2 --> S2
+A2 --> S3
+A2 --> S4
+A2 --> S7
+A2 --> S12
+A2 --> S13
+A2 --> S15
+A2 --> S16
+A2 --> S17
+A3 --> S1
+A3 --> S2
+A3 --> S3
+A3 --> S4
+A3 --> S5
+A3 --> S6
+A3 --> S7
+A3 --> S8
+A3 --> S9
+A3 --> S11
+A3 --> S12
+A3 --> S13
+A3 --> S15
+A3 --> S16
+A3 --> S17
+A4 --> S1
+A4 --> S2
+A4 --> S3
+A4 --> S7
+A4 --> S13
+A4 --> S14
+A4 --> S15
+A4 --> S16
+A5 --> S1
+A5 --> S2
+A5 --> S4
+A5 --> S9
+A5 --> S10
+A5 --> S11
+A5 --> S12
+A5 --> S13
+A5 --> S15
+A5 --> S16
+A5 --> S17
+@enduml

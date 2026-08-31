@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: desactivarProducto(productoId)
+    activate SIS
+    alt el producto existe en la distribuidora
+        SIS-->>ADM: producto desactivado (deja de aparecer en el catálogo)
+    else el producto no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

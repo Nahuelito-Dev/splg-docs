@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarResumenDePedidos()
+    activate SIS
+    SIS-->>ADM: totales del día, la semana y el mes (pedidos, facturación, estados)
+    deactivate SIS
+
+    ADM->>SIS: consultarGraficoDeVentas()
+    activate SIS
+    SIS-->>ADM: serie de ventas de los últimos siete días
+    deactivate SIS

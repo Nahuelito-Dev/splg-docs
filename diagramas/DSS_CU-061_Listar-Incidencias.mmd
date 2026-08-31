@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarIncidencias()
+    activate SIS
+    SIS-->>ADM: incidencias de su distribuidora (pedido, tipo, estado, chofer que la reportó)
+    deactivate SIS

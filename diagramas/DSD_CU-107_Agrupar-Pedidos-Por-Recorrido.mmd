@@ -1,0 +1,46 @@
+sequenceDiagram
+    autonumber
+    participant CRON as RouteBatchPlannerService
+    participant ORD as OrderRepositoryPort
+    participant CAP as FleetCapacityService
+    participant SEQ as RouteSequencerService
+    participant BAT as RouteBatchRepositoryPort
+    participant RT as RealtimeDispatchPort
+    participant NOT as NotificationsService
+    participant ORQ as DispatchOrchestratorService
+
+    CRON->>ORD: findPendingAndScheduled(distributorId, coverageZoneId)
+    ORD-->>CRON: pedidos sin chofer asignado
+    CRON->>CRON: agrupar por proximidad dentro del radio configurado
+    CRON->>CRON: descartar franjas horarias fuera de tolerancia
+
+    loop Por cada lote candidato
+        CRON->>CAP: fitsInVehicle(lote, car)
+        CAP-->>CRON: capacidad de carga disponible
+        CRON->>SEQ: sequenceStops(lote)
+        SEQ-->>CRON: paradas ordenadas por secuencia de entrega
+        CRON->>BAT: create(lote, paradas, distributorId)
+        BAT-->>CRON: RouteBatch en estado DRAFT
+
+        loop Por cada chofer candidato
+            CRON->>RT: findNearbyDrivers(punto de partida, radio)
+            RT-->>CRON: driverIds ordenados por cercania
+            CRON->>BAT: createOffer(batchId, driverId, expiresAt)
+            CRON->>NOT: sendBatchOffer(driverId, recorrido)
+            CRON->>BAT: awaitAnswer(offerId)
+            BAT-->>CRON: ACCEPTED, REJECTED o EXPIRED
+            alt El chofer acepta
+                CRON->>ORD: assignBatch(batchId, driverId, orden de paradas)
+            else Rechaza o vence
+                CRON->>CRON: continuar con el candidato siguiente
+            end
+        end
+
+        alt Se agotaron los candidatos
+            CRON->>BAT: dissolve(batchId)
+            CRON->>ORQ: offerToNextDriver(cada pedido del lote)
+            Note over ORQ: Los pedidos vuelven al circuito de M1 (CU-013)
+        else El lote quedo asignado
+            CRON->>BAT: confirm(batchId)
+        end
+    end

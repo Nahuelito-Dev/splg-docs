@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: eliminarZonaDeCobertura(zonaId)
+    activate SIS
+    alt la zona pertenece a la distribuidora
+        SIS-->>ADM: zona eliminada
+    else la zona no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

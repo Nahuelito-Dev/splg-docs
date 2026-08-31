@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: confirmarEntregaConCodigo(pedidoId, codigoLeido)
+    activate SIS
+    alt el código coincide y el pedido está en camino
+        SIS-->>CLI: entrega confirmada (estado ENTREGADO)
+    else el código no coincide
+        SIS-->>CLI: error de solicitud (código inválido)
+    else el pedido no está en camino
+        SIS-->>CLI: error de solicitud (el pedido no está en camino)
+    else el pedido es de otro cliente
+        SIS-->>CLI: acceso denegado
+    end
+    deactivate SIS

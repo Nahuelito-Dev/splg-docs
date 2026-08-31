@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as IncidentController
+    participant SRV as IncidentService
+    participant IREP as RepositoryIncident
+
+    ADM->>DEC: GET /incidents
+    DEC->>DEC: lee request.distributorId, sin required
+    DEC->>CTRL: findAll(distributorId)
+    CTRL->>SRV: findAll(distributorId)
+    alt Hay tenant en contexto, admin de empresa o super_admin con ver como
+        SRV->>IREP: find(where distributor_id, relations order y order.customer)
+    else super_admin cross tenant, distributorId null
+        SRV->>IREP: find(where vacio, relations order y order.customer)
+    end
+    IREP-->>SRV: Incident[] ordenadas por createdAt DESC
+    SRV-->>CTRL: Incident[]
+    CTRL-->>ADM: 200 Incident[]

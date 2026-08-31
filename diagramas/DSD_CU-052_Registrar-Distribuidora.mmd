@@ -1,0 +1,28 @@
+sequenceDiagram
+    autonumber
+    participant SA as SuperAdmin
+    participant GRD as RolesGuard
+    participant CTRL as DistributorController
+    participant SRV as DistributorService
+    participant REPO as RepositoryDistributor
+
+    SA->>GRD: POST /distributor con CreateDistributorDto
+    GRD->>GRD: canActivate(ctx), requiredRoles de la clase, SUPER_ADMIN
+    alt El rol del token no es super_admin
+        GRD-->>SA: ForbiddenException, acceso denegado
+    else Rol autorizado
+        GRD->>CTRL: create(dto)
+        CTRL->>SRV: create(dto)
+        SRV->>REPO: findOne(where slug igual a dto.slug)
+        REPO-->>SRV: Distributor o null
+        alt Ya existe una distribuidora con ese slug
+            SRV-->>CTRL: ConflictException, slug duplicado
+        else Slug libre
+            SRV->>REPO: create(dto)
+            REPO-->>SRV: Distributor en memoria
+            SRV->>REPO: save(distributor)
+            REPO-->>SRV: Distributor persistido
+            SRV-->>CTRL: Distributor
+            CTRL-->>SA: 201 Distributor
+        end
+    end

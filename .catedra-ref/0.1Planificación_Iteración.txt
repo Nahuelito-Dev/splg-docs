@@ -1,0 +1,137 @@
+Planificación de la Iteración
+
+Proyecto 
+[Nombre del Proyecto al que se refiere este documento] 
+Título 
+Plan de Iteración – [Código de Iteración al Fecha.]
+Generado por 
+Grupo de Ingeniería y Gerencia del Proyecto: [Nombres de los autores: Fulanito de Tal y Menganito de Cual.] 
+Aprobado por 
+[Persona de la Gerencia del Proyecto que da la conformidad con el documento] 
+Alcance de la distribución 
+Documento Interno – alcance a todo el proyecto. 
+Lista de Cambios
+Nro
+Fecha
+Descripción
+Autor
+0
+Dd/mm/aaaa
+Version ##,##
+Autor
+1
+Dd/mm/aaaa
+Descripción Cambio
+Autor
+
+Sobre este Documento 
+El desarrollo de sistemas intensivos en software, esta basado en un proceso iterativo e incremental, el cual consiste en la ejecución de las tareas de Análisis, Diseño, Construcción y Pruebas; en forma sucesiva sobre un número de repeticiones o iteraciones. 
+El presente documento describe el Plan de Iteración previsto para el proyecto [Nombre del Proyecto Asociado], para la iteración [Código de Iteración]. 
+El Plan de Iteración recoge: 
+Estado actual del proyecto – en especial los problemas no resueltos, las fallas descubiertas y los porcentajes de evaluación de los artefactos. 
+Artefactos a ser refinados en la iteración – indicando los porcentajes de evaluación que se han de alcanzar. 
+Requisitos Suplementarios 
+Las pautas de evaluación sobre las que se determinaran los puntajes de cada artefacto. 
+
+Al término de la iteración se realizarán las evaluaciones pertinentes, cuyos resultados serán reseñados en el documento “Cierre de Iteración” con igual código de iteración. 
+Configuración de la Iteración 
+Se entiende por Configuración de la Iteración aquella información que define y da forma a las actividades, metas y características de la misma. 
+Los parámetros que dan forma a la iteración son: código, duración y fase a la que pertenece; objetivos y retos específicos; y estrategia con que se pretende desarrollar las actividades incluidas en el alcance de la iteración. 
+Identificación 
+Código de la Iteración 
+
+Fase a la que pertenece 
+
+Fecha de Inicio 
+
+Fecha de Cierre 
+
+Comentarios 
+
+
+Metas 
+[Indicar los objetivos específicos que se persiguen con la iteración. 
+Ejemplos: refinar los modelos A y B, solucionar los errores C y D, compensar el tiempo perdido o atraso, incorporar la información dada por la actividad X, etc.] 
+
+Requisitos de la Iteración 
+El diccionario define requisito como “circunstancia o condición necesaria para una cosa”. Aquí, se plantean tres puntos de vista para todas las circunstancias que rodean la ejecución de la iteración: 
+Requisitos exigidos por la iteración, condiciones previas necesarias para el correcto inicio de la iteración. Esto es, “las entradas de la iteración”. 
+Requisitos que se espera cumpla la iteración, condiciones que han de verificarse al cumplimiento de esta. En otras palabras “las salidas de la iteración”. 
+Requisitos generales del proyecto que afectan la iteración. Simplemente, las circunstancias en que esta se desarrolla y la forma en que serán atendidas. En una palabra: “el contexto”. 
+
+La información antes señalada se estructura alrededor de los artefactos involucrados. 
+
+Artefactos Nuevos 
+[Es muy útil planificar cuales son los artefactos (documentos, modelos, etc) van a ser iniciados en una iteración.] 
+Los proyectos pequeños suelen ser breves, por lo que el número de artefactos abiertos y actualizados por iteración es grande. No se asuste entonces cuando llene la tabla para un proyecto pequeño y encuentre que esta repitiendo mucha de la información del caso de desarrollo.] 
+
+Artefacto 
+Meta 
+Comentarios 
+[Nombre del Artefacto] 
+[Puntaje meta] 
+[Información a incluir: Reporte de Casos de Uso XYZ, Realización del Modelo ABC, etc.] 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Artefactos Actualizados 
+[Cierto es que RUP/UP no es un proceso centrado en artefactos ni orientado a la documentación; pero no es menos cierto que es posible organizar mucho del trabajo de una iteración si se saben cuales artefactos se espera que se actualicen en las tareas y actividades ejecutadas durante la iteración. 
+Señale aquí cuales son sus artefactos a actualizar.] 
+
+Artefacto 
+Actual 
+Meta 
+Objetivo de la Actualización 
+[Nombre del Artefacto] 
+[Puntaje actual] 
+[Puntaje meta] 
+[Información a incluir: Reporte de Casos de Uso XYZ, Realización del Modelo ABC, etc.] 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Requisitos Suplementarios 
+[Referencia y comentarios sobre los requisitos suplementarios que tocan la iteración que estamos planificando. 
+Por ejemplo, los criterios de calidad pueden ser enunciados aquí a lo largo de todo el proyecto como un “recordatorio” en tanto que los requisitos suplementarios de usabilidad pueden ser repetidos aquí en las iteraciones de la Fase de Inicio, donde se prototipa la interfaz. 
+
+Problemas a Resolver 
+[Notas y comentarios varios sobre los problemas pendientes y lo que se ha discutido sobre ellos; en formato libre.] 
+
+
+
+
+
+
+
+
+
+[Proyecto]
+Plan de Iteración – [Codificación]
+Equipo
+
+
+
+

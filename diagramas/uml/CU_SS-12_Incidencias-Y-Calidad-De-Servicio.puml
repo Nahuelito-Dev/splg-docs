@@ -1,0 +1,59 @@
+@startuml
+title SS-12 — Incidencias y Calidad
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam ArrowColor #2C4257
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente" as A1
+actor "Chofer" as A2
+actor "Administrador" as A3
+actor "Administrador General" as A5
+
+rectangle "SS-12 Incidencias y Calidad" {
+  usecase "CU-060\nRegistrar Incidencia de Entrega" as U60
+  usecase "CU-061\nListar Incidencias" as U61
+  usecase "CU-062\nConsultar Incidencias de un Pedido" as U62
+  usecase "CU-063\nResolver Incidencia" as U63
+  usecase "CU-064\nCalificar Pedido (cliente↔chofer)" as U64
+  usecase "CU-065\nConsultar Promedio de Calificaciones de un Usuario" as U65
+  usecase "CU-066\nConsultar Historial de Calificaciones Recibidas" as U66
+}
+
+A2 --> U60
+A3 --> U60
+A5 --> U60
+A3 --> U61
+A5 --> U61
+A2 --> U62
+A3 --> U62
+A5 --> U62
+A3 --> U63
+A5 --> U63
+A1 --> U64
+A2 --> U64
+A1 --> U65
+A2 --> U65
+A3 --> U65
+A5 --> U65
+A3 --> U66
+A5 --> U66
+@enduml

@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: crearPedido(items, direccion, franjaHoraria, metodoPago)
+    activate SIS
+    alt Hay stock y la dirección está cubierta
+        SIS-->>CLI: pedido creado (número, total, estado pendiente)
+        Note over SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
+        SIS-->>CLI: aviso de confirmación del pedido
+    else Sin stock suficiente
+        SIS-->>CLI: rechazo (stock insuficiente para un ítem)
+    else Dirección fuera de la zona de cobertura
+        SIS-->>CLI: rechazo (domicilio no cubierto)
+    else Franja horaria sin cupo
+        SIS-->>CLI: rechazo (franja completa para esa fecha)
+    end
+    deactivate SIS

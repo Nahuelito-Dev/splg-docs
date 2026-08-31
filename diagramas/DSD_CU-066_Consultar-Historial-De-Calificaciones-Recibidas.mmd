@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as RatingController
+    participant SRV as RatingService
+    participant RREP as RepositoryRating
+
+    ADM->>DEC: GET /ratings/user/:userId
+    DEC->>CTRL: findForUser(userId, distributorId)
+    CTRL->>CTRL: ParseUUIDPipe valida el userId, Roles ADMIN SUPER_ADMIN
+    CTRL->>SRV: findForUser(userId, distributorId)
+    SRV->>RREP: find(where to_user_id mas distributor_id si hay tenant, relations fromUser, order createdAt DESC)
+    RREP-->>SRV: Rating[] recibidas
+    SRV-->>CTRL: Rating[]
+    CTRL-->>ADM: 200 Rating[]

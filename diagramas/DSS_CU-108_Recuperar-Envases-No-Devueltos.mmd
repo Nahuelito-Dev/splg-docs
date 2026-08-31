@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CLI as Cliente
+    actor ADM as Administrador
+
+    Note over SAU: Se ejecuta con la periodicidad configurada
+    SAU->>SIS: gestionarEnvasesNoDevueltos()
+    activate SIS
+    Note over SIS: Detecta los envases retenidos por encima<br/>del plazo de tolerancia configurado
+
+    loop Por cada envase retenido
+        loop Por cada escalon de la secuencia
+            alt El envase ya volvio
+                SIS->>SIS: cerrar el caso y liberar el deposito
+            else El envase sigue retenido
+                SIS-->>CLI: aviso del escalon (recordatorio, deposito comprometido)
+                alt Hay una entrega programada al mismo cliente
+                    SIS-->>CLI: oferta de devolver el envase en ese viaje (vigencia limitada)
+                    CLI->>SIS: aceptar o no responder
+                else No hay entrega programada
+                    SIS->>SIS: saltear la oferta de retiro
+                end
+            end
+        end
+
+        alt Se agotaron los escalones y el importe supera el umbral
+            SIS-->>ADM: legajo del caso (cliente, historial del envase, importe)
+            ADM->>SIS: cobrar el deposito, dar de baja el envase o cerrar sin cargo
+            SIS-->>ADM: resolucion registrada
+        else El envase volvio o el importe no llega al umbral
+            SIS->>SIS: cerrar el caso segun corresponda
+        end
+    end
+    SIS-->>SAU: casos de recupero procesados
+    deactivate SIS

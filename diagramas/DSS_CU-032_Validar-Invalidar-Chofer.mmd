@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    alt aprobación de la documentación
+        ADM->>SIS: validarChofer(choferId)
+        activate SIS
+        SIS-->>ADM: chofer validado (habilitado para recibir pedidos)
+        deactivate SIS
+    else rechazo o revocación
+        ADM->>SIS: invalidarChofer(choferId)
+        activate SIS
+        SIS-->>ADM: chofer invalidado (deja de recibir ofertas)
+        deactivate SIS
+    end

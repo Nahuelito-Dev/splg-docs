@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
+    activate SIS
+    alt datos válidos y correo/teléfono libres
+        SIS-->>CLI: cuenta creada (usuarioId, clienteId, rol CLIENTE)
+    else correo o teléfono ya registrados
+        SIS-->>CLI: error de solicitud (el usuario ya existe)
+    else datos incompletos o inválidos
+        SIS-->>CLI: error de validación
+    end
+    deactivate SIS

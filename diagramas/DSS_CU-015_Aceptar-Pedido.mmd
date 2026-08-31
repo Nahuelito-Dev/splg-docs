@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    actor CHO as Chofer
+    participant SIS as Sistema
+    actor CLI as Cliente
+
+    CHO->>SIS: aceptarPedido(pedido)
+    activate SIS
+    alt La transicion de estado es valida y el chofer esta activo
+        SIS-->>CHO: pedido asignado (datos de entrega y codigo de entrega)
+        SIS-)CLI: aviso de que un chofer tomo el pedido
+    else El pedido ya esta entregado o cancelado
+        SIS-->>CHO: error de solicitud (transicion no permitida)
+    else El chofer no existe o esta dado de baja
+        SIS-->>CHO: error de solicitud (repartidor no encontrado o inactivo)
+    end
+    deactivate SIS

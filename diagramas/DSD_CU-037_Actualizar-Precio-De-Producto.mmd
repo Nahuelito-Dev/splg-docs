@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as GasCylinderController
+    participant SRV as GasCylinderService
+    participant GREP as RepositoryGasCylinder
+
+    CTRL->>SRV: update(id, updateGasCylinderDto con price, distributorId)
+    SRV->>SRV: findOne(id, distributorId), guardia de tenant
+    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    GREP-->>SRV: GasCylinder o null
+    alt Producto inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+    else Producto del tenant
+        SRV->>GREP: preload(gas_cylinder_id mas campos del dto)
+        GREP-->>SRV: GasCylinder fusionado o undefined
+        alt preload no encontro el producto
+            SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        else Producto cargado
+            SRV->>GREP: save(gasCylinder)
+            GREP-->>SRV: GasCylinder con el precio nuevo
+            SRV-->>CTRL: GasCylinder
+        end
+    end

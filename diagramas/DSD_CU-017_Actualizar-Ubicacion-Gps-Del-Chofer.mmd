@@ -1,0 +1,21 @@
+sequenceDiagram
+    autonumber
+    participant APP as App Chofer
+    participant DGW as DriversGateway
+    participant REDIS as RedisService
+    participant CGW as CustomersGateway
+    participant AGW as AdminGateway
+
+    APP->>DGW: emit driver:update-location con userId, lat, lng
+    alt Falta userId o lat o lng
+        DGW->>DGW: logger.error y return sin registrar
+    else Datos validos
+        DGW->>REDIS: updateDriverLocation(userId, lat, lng)
+        REDIS-->>DGW: GEOADD drivers:locations lng lat userId
+        DGW->>REDIS: getDriverActiveOrder(userId)
+        REDIS-->>DGW: orderId y customerId, o null
+        opt El chofer tiene un pedido activo
+            DGW->>CGW: notifyCustomer(customerId, order:driver-location, payload)
+            DGW->>AGW: notifyAdmins(order:driver-location, payload)
+        end
+    end

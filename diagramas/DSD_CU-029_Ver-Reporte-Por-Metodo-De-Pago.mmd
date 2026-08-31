@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as ReportsController
+    participant SRV as ReportsService
+    participant OREP as RepositoryOrder
+    participant QB as SelectQueryBuilderOrder
+
+    CTRL->>CTRL: parseDates(from, to)
+    CTRL->>SRV: getSalesByPaymentMethod(startDate, endDate, distributorId)
+    SRV->>OREP: createQueryBuilder(order)
+    OREP-->>SRV: SelectQueryBuilder
+    SRV->>QB: select(order.paymentMethod as method)
+    SRV->>QB: addSelect(COUNT order.order_id as count)
+    SRV->>QB: addSelect(SUM order.totalAmount as total)
+    SRV->>QB: where(order.status igual DELIVERED)
+    SRV->>QB: andWhere(order.deliveredAt BETWEEN start AND end)
+    alt Hay distributorId
+        SRV->>QB: andWhere(order.distributor_id igual distributorId)
+    end
+    SRV->>QB: groupBy(order.paymentMethod)
+    SRV->>QB: getRawMany()
+    QB-->>SRV: filas por metodo de pago
+    SRV->>SRV: mapear a method, totalOrders y totalSales con Number
+    SRV-->>CTRL: arreglo de ventas por metodo de pago

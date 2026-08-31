@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as GasCylinderController
+    participant SRV as GasCylinderService
+    participant GREP as RepositoryGasCylinder
+
+    CTRL->>SRV: updateStock(id, body.quantity, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    GREP-->>SRV: GasCylinder o null
+    alt Producto inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+    else Producto del tenant
+        SRV->>SRV: gasCylinder.stock igual stock actual mas quantity
+        alt El stock resultante es negativo
+            SRV-->>CTRL: BadRequestException Stock cannot be negative
+        else Stock valido
+            SRV->>GREP: save(gasCylinder)
+            GREP-->>SRV: GasCylinder con el stock nuevo
+            SRV-->>CTRL: GasCylinder
+        end
+    end

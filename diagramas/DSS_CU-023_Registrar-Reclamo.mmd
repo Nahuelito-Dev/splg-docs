@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+    actor ADM as Administrador
+
+    CLI->>SIS: registrarReclamo(pedido, motivo, evidencia)
+    activate SIS
+    alt El pedido fue entregado y es del cliente
+        SIS-->>CLI: reclamo registrado (número, estado pendiente)
+        SIS-->>ADM: nuevo reclamo para gestionar
+    else El pedido no está entregado o no le pertenece
+        SIS-->>CLI: rechazo (no se puede reclamar este pedido)
+    end
+    deactivate SIS

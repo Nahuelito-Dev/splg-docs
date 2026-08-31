@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+    actor CHO as Chofer
+
+    Note over SAU: Se ejecuta con la periodicidad configurada
+    SAU->>SIS: agruparPedidosPorRecorrido()
+    activate SIS
+    Note over SIS: Agrupa por zona, proximidad, franja horaria<br/>y capacidad de carga, y ordena las paradas<br/>por secuencia de entrega
+
+    loop Por cada lote armado
+        loop Por cada chofer candidato no contactado
+            SIS-->>CHO: oferta del recorrido completo (paradas, peso, vigencia)
+            alt El chofer acepta dentro de la vigencia
+                CHO->>SIS: aceptar el recorrido
+                SIS-->>CHO: pedidos asignados en el orden establecido
+            else Rechaza o vence la vigencia
+                SIS->>SIS: cerrar la oferta y pasar al candidato siguiente
+            end
+        end
+
+        alt Ningun chofer tomo el lote
+            SIS->>SIS: deshacer el lote y devolver los pedidos al circuito individual
+        else El lote quedo asignado
+            SIS->>SIS: registrar el recorrido asignado
+        end
+    end
+    SIS-->>SAU: lotes procesados
+    deactivate SIS

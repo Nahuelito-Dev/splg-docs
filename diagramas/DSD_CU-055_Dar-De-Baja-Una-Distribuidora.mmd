@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant SA as SuperAdmin
+    participant GRD as RolesGuard
+    participant CTRL as DistributorController
+    participant SRV as DistributorService
+    participant REPO as RepositoryDistributor
+
+    SA->>GRD: DELETE /distributor/:id
+    GRD->>CTRL: rol super_admin verificado
+    CTRL->>SRV: remove(id)
+    SRV->>SRV: findOne(id)
+    SRV->>REPO: findOne(where distributor_id igual a id)
+    REPO-->>SRV: Distributor o null
+    alt No existe
+        SRV-->>CTRL: NotFoundException
+    else Existe
+        SRV->>REPO: softRemove(distributor)
+        REPO-->>SRV: deletedAt seteado, la fila permanece
+        SRV-->>CTRL: void
+        CTRL-->>SA: 200 sin cuerpo
+    end

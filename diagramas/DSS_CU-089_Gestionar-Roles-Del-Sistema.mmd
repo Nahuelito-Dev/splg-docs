@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    actor SUP as Super Administrador
+    participant SIS as Sistema
+
+    SUP->>SIS: listarRoles()
+    activate SIS
+    SIS-->>SUP: roles definidos en el sistema
+    deactivate SIS
+
+    opt alta de un rol
+        SUP->>SIS: crearRol(nombre, descripcion)
+        activate SIS
+        SIS-->>SUP: rol creado (rolId)
+        deactivate SIS
+    end
+
+    opt modificación
+        SUP->>SIS: actualizarRol(rolId, datos)
+        activate SIS
+        alt el rol existe
+            SIS-->>SUP: rol actualizado
+        else el rol no existe
+            SIS-->>SUP: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt baja
+        SUP->>SIS: eliminarRol(rolId)
+        activate SIS
+        SIS-->>SUP: rol eliminado
+        deactivate SIS
+    end

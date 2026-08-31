@@ -1,0 +1,58 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o Chofer
+    participant CTRL as CylinderController
+    participant CS as CylinderService
+    participant CREP as RepositoryCylinder
+    participant MREP as RepositoryCylinderMovement
+    participant OREP as RepositoryOrder
+    participant SM as CylinderStateMachine
+    participant UCS as UpdateOrderStatusUseCase
+    participant ADP as CylinderLifecycleAdapter
+
+    Note over ADM,CS: CU-068, cargar los envases del pedido en el camion
+    ADM->>CTRL: POST /cylinders/assign con orderId y serials
+    CTRL->>CS: assignToOrder(orderId, serials, distributorId, actorUserId)
+    CS->>OREP: findOne(order_id)
+    OREP-->>CS: Order o null
+    loop Por cada serial
+        CS->>CS: findBySerial(serial, distributorId)
+        CS->>CS: cylinder.current_order_id = orderId
+        CS->>SM: assertTransition(FILLED, DISPATCHED)
+        SM-->>CS: transicion valida o InvalidCylinderTransitionError
+        CS->>CREP: save(cylinder con state DISPATCHED)
+        CS->>MREP: save(CylinderMovement from FILLED to DISPATCHED)
+    end
+    CS-->>CTRL: Cylinder[] despachados
+
+    Note over ADM,CS: CU-070, transicion manual del envase
+    ADM->>CTRL: PATCH /cylinders/:id/transition con toState
+    CTRL->>CS: transition(id, dto, distributorId, actorUserId)
+    CS->>CREP: findOne(cylinder_id, distributor_id)
+    CREP-->>CS: Cylinder
+    alt toState WITH_CUSTOMER y viene orderId
+        CS->>OREP: findOne(order_id)
+        OREP-->>CS: customer_id del pedido
+    end
+    CS->>SM: assertTransition(fromState, toState)
+    CS->>CS: recordTransition aplica current_customer_id
+    CS->>CREP: save(cylinder)
+    CS->>MREP: save(CylinderMovement append-only)
+    CS-->>CTRL: Cylinder
+
+    Note over UCS,CS: Hook automatico al entregar el pedido
+    UCS->>ADP: onOrderDelivered(order_id, distributor_id)
+    ADP->>CS: onOrderDelivered(orderId, distributorId)
+    CS->>CREP: find(current_order_id, state DISPATCHED, distributor_id)
+    CREP-->>CS: Cylinder[] despachados en ese pedido
+    alt No hay envases asignados
+        CS-->>UCS: 0, no-op para distribuidoras sin modulo de envases
+    else Hay envases
+        CS->>OREP: findOne(order_id) para el customer_id
+        loop Por cada envase
+            CS->>SM: assertTransition(DISPATCHED, WITH_CUSTOMER)
+            CS->>CREP: save(cylinder con current_customer_id)
+            CS->>MREP: save(CylinderMovement con nota entregado auto)
+        end
+        CS-->>UCS: cantidad de envases avanzados
+    end

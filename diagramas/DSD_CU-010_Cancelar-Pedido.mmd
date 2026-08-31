@@ -1,0 +1,44 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CancelOrderUseCase
+    participant ORD as OrderRepositoryPort
+    participant FSM as OrderStatusMachine
+    participant STK as StockReservationService
+    participant RT as RealtimeDispatchPort
+    participant DGW as DriversGateway
+    participant AGW as AdminGateway
+
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        alt Cancelacion forzada, DELETE /orders/:id
+            CTRL->>SRV: cancelOrder(id, user.user_id, admin)
+        else Cancelacion con motivo, PATCH /orders/:id/cancel
+            CTRL->>SRV: cancelOrder(id, user.user_id, admin, body.reason)
+        end
+        SRV->>UC: execute(orderId, userId, admin, reason)
+        UC->>ORD: findByIdFull(orderId)
+        alt Pedido inexistente o finalizado
+            UC-->>CTRL: NotFoundException o BadRequestException
+        else Cancelable
+            ORD-->>UC: Order
+            UC->>UC: guardar previousDriverId
+            UC->>FSM: transitionOrder(order, CANCELLED)
+            UC->>UC: cancellationReason igual a reason o Cancelado por admin
+            UC->>STK: restore(queryRunner.manager, order.items)
+            UC->>ORD: save(order)
+            UC->>RT: notifyCustomer(customer_id, order cancelled, payload)
+            opt El pedido tenia chofer asignado
+                UC->>RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                RT->>DGW: notifyOrderCancelled(driverId, payload)
+            end
+            UC->>RT: notifyAdmins(order cancelled, payload)
+            RT->>AGW: notifyAdmins(event, payload)
+            UC-->>CTRL: Order en estado CANCELLED
+        end
+    end

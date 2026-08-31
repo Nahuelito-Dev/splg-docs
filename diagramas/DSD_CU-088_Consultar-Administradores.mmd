@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as AdminController
+    participant SRV as AdminService
+    participant AREP as RepositoryAdmin
+
+    alt Listado, GET /admin
+        ADM->>DEC: GET /admin
+        DEC->>CTRL: findAll(distributorId)
+        CTRL->>SRV: findAll(distributorId)
+        alt Hay tenant en contexto
+            SRV->>AREP: find(where distributor_id, relations user role distributor)
+        else super_admin cross tenant
+            SRV->>AREP: find(where vacio, relations user role distributor)
+        end
+        AREP-->>SRV: Admin[]
+        SRV-->>CTRL: Admin[]
+        CTRL-->>ADM: 200 Admin[]
+    else Busqueda por termino, GET /admin/term/:term
+        ADM->>CTRL: findOneByEmail(term)
+        CTRL->>SRV: findAdminByTerm(term)
+        SRV->>SRV: isUUID(term)
+        alt El termino es un UUID
+            SRV->>AREP: createQueryBuilder where admin.admin_id igual al termino
+        else El termino es un email
+            SRV->>AREP: createQueryBuilder where user.email igual al termino
+        end
+        AREP-->>SRV: Admin o null
+        alt No encontrado
+            SRV-->>CTRL: NotFoundException
+        else Encontrado
+            SRV->>SRV: proyecta admin_id email displayName fullName rol uid
+            SRV-->>CTRL: vista del admin
+            CTRL-->>ADM: 200 vista del admin
+        end
+    end

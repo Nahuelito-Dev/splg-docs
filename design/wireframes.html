@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPLG — Wireframes de UI</title>
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --success: #34a853;
+      --danger: #ea4335;
+      --warning: #f9ab00;
+      --gray-50:  #fafafa;
+      --gray-100: #f5f5f5;
+      --gray-200: #eeeeee;
+      --gray-300: #e0e0e0;
+      --gray-400: #bdbdbd;
+      --gray-500: #9e9e9e;
+      --gray-600: #757575;
+      --gray-700: #616161;
+      --gray-800: #424242;
+      --gray-900: #212121;
+      --white:    #ffffff;
+      --dark:     #1e2327;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #dde1e7;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      color: var(--gray-900);
+      padding: 40px 20px 80px;
+    }
+
+    /* ── Page Header ── */
+    .page-header { text-align: center; margin-bottom: 36px; }
+    .page-header h1 { font-size: 26px; font-weight: 700; color: var(--gray-900); }
+    .page-header p  { font-size: 13px; color: var(--gray-600); margin-top: 6px; }
+
+    .instruction-box {
+      background: #e8f0fe;
+      border: 1px solid #c5d8fd;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #1557b0;
+      max-width: 860px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+    }
+    .instruction-box code {
+      background: rgba(26,115,232,0.12);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+
+    /* ── Section dividers ── */
+    .section-divider {
+      text-align: center;
+      margin: 48px 0 28px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-500);
+    }
+
+    /* ── Wireframe grid ── */
+    .wf-row {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .wf-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .wf-label { text-align: center; }
+    .wf-label strong { display: block; font-size: 13px; font-weight: 700; color: var(--gray-800); }
+    .wf-label span   { font-size: 11px; color: var(--gray-500); }
+
+    /* ── Phone frame ── */
+    .phone {
+      width: 294px;
+      background: var(--white);
+      border-radius: 34px;
+      border: 6px solid #1c1c1e;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.22);
+      overflow: hidden;
+    }
+    .ph-notch {
+      background: #1c1c1e;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ph-notch::after {
+      content: '';
+      width: 66px; height: 9px;
+      background: #0a0a0a;
+      border-radius: 5px;
+    }
+    .ph-status {
+      background: var(--white);
+      padding: 4px 14px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+    .ph-home {
+      background: #1c1c1e;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ph-home::after {
+      content: '';
+      width: 80px; height: 3px;
+      background: var(--gray-600);
+      border-radius: 2px;
+    }
+
+    /* ── Common app components ── */
+    .app-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back  { font-size: 20px; color: var(--primary); line-height: 1; }
+    .nav-t { font-size: 15px; font-weight: 700; color: var(--gray-900); }
+
+    .search-bar {
+      margin: 9px 10px;
+      background: var(--gray-100);
+      border-radius: 10px;
+      padding: 8px 11px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--gray-500);
+      font-size: 12px;
+    }
+
+    .addr-banner {
+      background: #e8f0fe;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--gray-700);
+    }
+    .addr-banner .chg { margin-left: auto; font-size: 10px; color: var(--primary); font-weight: 700; }
+
+    .sec-hdr {
+      padding: 6px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-500);
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      background: var(--gray-50);
+    }
+
+    /* ── Product card ── */
+    .pcard {
+      padding: 9px 10px;
+      display: flex;
+      gap: 9px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .pthumb {
+      width: 50px; height: 50px;
+      background: var(--gray-200);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .pdet  { flex: 1; }
+    .pname { font-size: 12px; font-weight: 600; color: var(--gray-900); }
+    .pstk  { font-size: 10px; color: var(--gray-500); margin: 1px 0; }
+    .pprc  { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+    .qrow  { display: flex; align-items: center; gap: 7px; margin-top: 3px; }
+    .qbtn  {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gray-400);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: var(--gray-600); line-height: 1;
+    }
+    .qbtn.active { border-color: var(--success); color: var(--success); }
+    .qval  { font-size: 13px; font-weight: 600; min-width: 14px; text-align: center; }
+
+    .fab {
+      margin: 10px;
+      background: var(--success);
+      color: white;
+      border-radius: 11px;
+      padding: 12px 14px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* ── Form ── */
+    .fsect { border-bottom: 1px solid var(--gray-200); }
+    .frow  { padding: 9px 10px; }
+    .flbl  { font-size: 10px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+    .ffield {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      border-radius: 7px;
+      padding: 8px 9px;
+      font-size: 12px;
+      color: var(--gray-700);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+    .ffield:last-child { margin-bottom: 0; }
+
+    .srow { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; color: var(--gray-700); }
+    .srow.tot { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-top: 4px; padding-top: 5px; border-top: 1px solid var(--gray-300); }
+    .disc { color: var(--success); }
+
+    .radio {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 10px;
+      font-size: 12px; color: var(--gray-700);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .rcircle {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-400);
+      flex-shrink: 0;
+    }
+    .rcircle.on { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 2.5px var(--white); }
+
+    /* ── Buttons ── */
+    .btn-p  { background: var(--primary); color: white; border-radius: 9px; padding: 12px 14px; text-align: center; font-weight: 700; font-size: 13px; margin: 9px 10px; }
+    .btn-s  { background: var(--success); color: white; border-radius: 9px; padding: 12px 14px; text-align: center; font-weight: 700; font-size: 13px; margin: 5px 10px; }
+    .btn-d  { background: var(--danger);  color: white; border-radius: 9px; padding: 12px 14px; text-align: center; font-weight: 700; font-size: 13px; margin: 5px 10px; }
+    .btn-o  { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); border-radius: 9px; padding: 10px 14px; text-align: center; font-weight: 600; font-size: 12px; margin: 5px 10px; }
+    .btn-od { background: transparent; color: var(--danger); border: 1.5px solid var(--danger); border-radius: 9px; padding: 10px 14px; text-align: center; font-weight: 600; font-size: 12px; margin: 5px 10px; }
+
+    /* ── Map placeholder ── */
+    .mapp {
+      background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px; font-size: 12px; color: var(--gray-700);
+      position: relative;
+    }
+    .mlbl {
+      background: rgba(255,255,255,.85);
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-weight: 600; font-size: 10px;
+    }
+
+    /* ── Stepper ── */
+    .stepper { display: flex; align-items: flex-start; padding: 10px 6px; background: var(--white); }
+    .step  { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .sdot  {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 2px solid var(--gray-300); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; z-index: 1;
+    }
+    .sdot.done   { background: var(--success); border-color: var(--success); color: white; }
+    .sdot.active { background: var(--primary); border-color: var(--primary); color: white; }
+    .slbl  { font-size: 8px; color: var(--gray-500); margin-top: 3px; text-align: center; max-width: 46px; }
+    .slbl.active { color: var(--primary); font-weight: 700; }
+    .sconn { flex: 1; height: 2px; background: var(--gray-300); margin-top: 11px; }
+    .sconn.done { background: var(--success); }
+
+    /* ── Driver card ── */
+    .dcard {
+      background: var(--white);
+      margin: 7px 9px;
+      border-radius: 11px;
+      padding: 9px 11px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    .drow { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--gray-700); padding: 2px 0; }
+
+    .arow { display: flex; gap: 0; padding: 7px 10px; }
+
+    /* ── Toggle ── */
+    .toggle-wrap  { margin: 10px; background: var(--gray-100); border-radius: 12px; padding: 12px; }
+    .toggle-title { font-size: 10px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .toggle-track { background: var(--success); border-radius: 28px; padding: 3px 5px 3px 10px; display: flex; align-items: center; justify-content: space-between; }
+    .toggle-text  { font-size: 13px; font-weight: 700; color: white; }
+    .toggle-thumb { width: 26px; height: 26px; background: white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,.22); }
+
+    /* ── Mini stats ── */
+    .mini-stat { display: flex; justify-content: space-around; padding: 10px; background: var(--gray-50); }
+    .sval { font-size: 16px; font-weight: 700; color: var(--gray-900); text-align: center; }
+    .slb  { font-size: 9px; color: var(--gray-500); text-align: center; }
+
+    /* ── Greeting bar ── */
+    .greet { background: var(--primary); padding: 12px 12px 9px; color: white; }
+    .greet-name { font-size: 15px; font-weight: 700; }
+    .greet-sub  { font-size: 11px; opacity: .8; }
+
+    /* ── Bottom sheet ── */
+    .bsheet { background: var(--white); border-radius: 16px 16px 0 0; padding: 14px 12px 10px; box-shadow: 0 -4px 20px rgba(0,0,0,.12); }
+    .bhandle { width: 34px; height: 3px; background: var(--gray-300); border-radius: 2px; margin: 0 auto 12px; }
+    .btitle  { font-size: 14px; font-weight: 700; color: var(--gray-900); display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
+    .brow    { display: flex; align-items: center; gap: 7px; padding: 5px 0; font-size: 11px; color: var(--gray-700); border-bottom: 1px solid var(--gray-100); }
+
+    .countdown { text-align: center; font-size: 20px; font-weight: 800; color: var(--warning); padding: 5px 0; }
+    .countdown-lbl { text-align: center; font-size: 9px; color: var(--gray-500); margin-top: -3px; margin-bottom: 5px; }
+
+    /* ── Login ── */
+    .login-logo { text-align: center; padding: 26px 10px 18px; }
+    .login-icon  { font-size: 46px; display: block; margin-bottom: 6px; }
+    .login-brand { font-size: 20px; font-weight: 800; color: var(--gray-900); }
+    .login-sub   { font-size: 11px; color: var(--gray-500); }
+    .login-link  { text-align: center; padding: 10px; font-size: 11px; color: var(--gray-500); }
+
+    /* ── Desktop frame ── */
+    .dt-frame {
+      width: 100%; max-width: 880px;
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--gray-300);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    }
+    .browser-bar {
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-300);
+      padding: 6px 12px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .wdots { display: flex; gap: 5px; }
+    .wd    { width: 10px; height: 10px; border-radius: 50%; }
+    .url   { flex: 1; background: var(--white); border: 1px solid var(--gray-300); border-radius: 4px; padding: 2px 9px; font-size: 10px; color: var(--gray-600); margin: 0 9px; }
+
+    .app-shell { display: flex; min-height: 520px; }
+
+    .sidebar    { width: 168px; background: var(--dark); flex-shrink: 0; }
+    .sb-logo    { padding: 12px 12px 10px; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 14px; font-weight: 800; color: white; }
+    .sb-item    { padding: 9px 12px; font-size: 11px; color: rgba(255,255,255,.55); display: flex; align-items: center; gap: 7px; }
+    .sb-item.on { background: rgba(26,115,232,.2); color: #8ab4f8; }
+
+    .main { flex: 1; background: #f5f7fa; padding: 16px; overflow: auto; }
+    .pg-hd { font-size: 17px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; }
+
+    .kgrid { display: grid; grid-template-columns: repeat(5,1fr); gap: 9px; margin-bottom: 12px; }
+    .kcard { background: var(--white); border-radius: 8px; padding: 11px 12px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .kico  { font-size: 16px; margin-bottom: 5px; }
+    .kval  { font-size: 20px; font-weight: 800; color: var(--gray-900); }
+    .klbl  { font-size: 9px; color: var(--gray-500); margin-top: 2px; }
+
+    .chart-card { background: var(--white); border-radius: 8px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .chart-hdr  { font-size: 12px; font-weight: 700; color: var(--gray-700); margin-bottom: 10px; }
+    .barchart   { display: flex; align-items: flex-end; gap: 5px; height: 72px; }
+    .bgrp       { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 3px; }
+    .bar        { background: var(--primary); border-radius: 3px 3px 0 0; width: 100%; opacity: .75; }
+    .blbl       { font-size: 9px; color: var(--gray-500); }
+
+    .twrap { background: var(--white); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
+    .toolbar { display: flex; align-items: center; gap: 7px; padding: 9px 12px; border-bottom: 1px solid var(--gray-200); }
+    .fchip  { background: var(--gray-100); border: 1px solid var(--gray-300); border-radius: 4px; padding: 4px 9px; font-size: 10px; color: var(--gray-700); }
+    .schip  { margin-left: auto; background: var(--gray-100); border: 1px solid var(--gray-300); border-radius: 4px; padding: 4px 9px; font-size: 10px; color: var(--gray-500); }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th { background: var(--gray-50); padding: 7px 10px; text-align: left; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--gray-600); border-bottom: 1px solid var(--gray-200); }
+    tbody td { padding: 9px 10px; font-size: 11px; color: var(--gray-700); border-bottom: 1px solid var(--gray-100); }
+
+    .sbadge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 16px; font-size: 9px; font-weight: 700; }
+    .s-blue   { background: #e8f0fe; color: #1a73e8; }
+    .s-green  { background: #e6f4ea; color: #137333; }
+    .s-yellow { background: #fef7e0; color: #b06000; }
+    .s-red    { background: #fce8e6; color: #c5221f; }
+    .s-gray   { background: var(--gray-200); color: var(--gray-600); }
+    .alink { color: var(--primary); font-size: 14px; cursor: pointer; }
+
+    .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; padding: 9px; font-size: 10px; color: var(--gray-600); }
+    .pbtn { background: var(--white); border: 1px solid var(--gray-300); border-radius: 4px; padding: 3px 9px; font-size: 10px; color: var(--primary); }
+
+    .wf-wide { width: 100%; max-width: 920px; }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>SPLG — Wireframes de Interfaz de Usuario</h1>
+  <p>Sistema de Pedidos y Logística de Garrafas de Gas &nbsp;·&nbsp; Doc 3 §7 — Interfaces de Usuario</p>
+</div>
+
+<div class="instruction-box">
+  <strong>📸 Cómo capturar cada wireframe como PNG (macOS):</strong><br>
+  <strong>Opción 1 (más fácil) — Cmd + Shift + 4:</strong> presioná la combinación de teclas → el cursor se convierte en una cruz → arrastrá para seleccionar el área del wireframe → se guarda como PNG en el Escritorio.<br>
+  <strong>Opción 2 — Chrome DevTools:</strong> F12 → en el panel Elements, hacé clic derecho sobre el <code>&lt;div class="phone"&gt;</code> o <code>&lt;div class="dt-frame"&gt;</code> → "Capture node screenshot" → se descarga automáticamente.<br>
+  Guardar cada PNG en <code>docs/design/</code> con el nombre que aparece debajo de cada wireframe.
+</div>
+
+<!-- ═══════════════════════════ APP CLIENTE ═══════════════════════════ -->
+<div class="section-divider">📱 App Cliente — 5 pantallas</div>
+
+<div class="wf-row">
+
+  <!-- D-16 Catálogo -->
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-16 — Catálogo de Productos</strong>
+      <span>CU-041 &nbsp;·&nbsp; ui-cliente-catalogo.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+
+      <div class="search-bar">🔍&nbsp; Buscar garrafas...</div>
+      <div class="addr-banner">
+        📍 Av. San Martín 1234
+        <span class="chg">Cambiar</span>
+      </div>
+      <div class="sec-hdr">Garrafas disponibles</div>
+
+      <div class="pcard">
+        <div class="pthumb">🔵</div>
+        <div class="pdet">
+          <div class="pname">Garrafa 10 kg</div>
+          <div class="pstk">Stock: 25 unidades</div>
+          <div class="pprc">$4.500</div>
+          <div class="qrow">
+            <div class="qbtn">−</div>
+            <div class="qval">2</div>
+            <div class="qbtn active">+</div>
+          </div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="pthumb">🟣</div>
+        <div class="pdet">
+          <div class="pname">Garrafa 15 kg</div>
+          <div class="pstk">Stock: 12 unidades</div>
+          <div class="pprc">$6.200</div>
+          <div class="qrow">
+            <div class="qbtn">−</div>
+            <div class="qval">0</div>
+            <div class="qbtn">+</div>
+          </div>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="pthumb">🟡</div>
+        <div class="pdet">
+          <div class="pname">Garrafa 45 kg</div>
+          <div class="pstk">Stock: 5 unidades</div>
+          <div class="pprc">$15.000</div>
+          <div class="qrow">
+            <div class="qbtn">−</div>
+            <div class="qval">0</div>
+            <div class="qbtn">+</div>
+          </div>
+        </div>
+      </div>
+      <div class="fab">🛒 &nbsp; Ver pedido — $9.000</div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+  <!-- D-17 Checkout -->
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-17 — Checkout</strong>
+      <span>CU-005 &nbsp;·&nbsp; ui-cliente-checkout.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="app-nav"><span class="back">‹</span><span class="nav-t">Confirmar pedido</span></div>
+
+      <div class="fsect">
+        <div class="frow">
+          <div class="flbl">Resumen del pedido</div>
+          <div class="srow"><span>Garrafa 10 kg × 2</span><span>$9.000</span></div>
+          <div class="srow disc"><span>Descuento (5%)</span><span>−$450</span></div>
+          <div class="srow tot"><span>Subtotal</span><span>$8.550</span></div>
+        </div>
+      </div>
+
+      <div class="fsect">
+        <div class="frow">
+          <div class="flbl">Dirección de entrega</div>
+          <div class="ffield">📍&nbsp; Seleccionar en mapa</div>
+          <div class="ffield">📋&nbsp; Mis direcciones guardadas</div>
+        </div>
+      </div>
+
+      <div class="fsect">
+        <div class="frow"><div class="flbl">Franja horaria</div></div>
+        <div class="radio">
+          <div class="rcircle"></div>
+          Mañana &nbsp;<span style="font-size:10px;color:#9e9e9e">09:00 – 13:00</span>
+        </div>
+        <div class="radio">
+          <div class="rcircle on"></div>
+          Tarde &nbsp;<span style="font-size:10px;color:#9e9e9e">17:00 – 21:00</span>
+        </div>
+      </div>
+
+      <div class="fsect">
+        <div class="frow"><div class="flbl">Método de pago</div></div>
+        <div class="radio"><div class="rcircle on"></div> Efectivo</div>
+        <div class="radio"><div class="rcircle"></div> MercadoPago</div>
+        <div class="radio">
+          <div class="rcircle"></div>
+          Transferencia &nbsp;<span style="font-size:9px;background:#e8f0fe;color:#1a73e8;padding:1px 4px;border-radius:3px">+10%</span>
+        </div>
+      </div>
+
+      <div class="btn-p">CONFIRMAR PEDIDO — $8.550</div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+  <!-- D-18 Seguimiento -->
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-18 — Seguimiento en Tiempo Real</strong>
+      <span>CU-017/021 &nbsp;·&nbsp; ui-cliente-tracking.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="app-nav"><span class="back">‹</span><span class="nav-t">Tu pedido #1234</span></div>
+
+      <div class="mapp" style="height:196px">
+        <span style="font-size:26px;position:absolute;top:22px;left:50%;transform:translateX(-50%)">🏠</span>
+        <div style="width:3px;height:70px;background:#1a73e8;opacity:.6;border-radius:2px"></div>
+        <span style="font-size:22px;position:absolute;bottom:24px;left:50%;transform:translateX(-50%)">🚗</span>
+        <span class="mlbl" style="position:absolute;top:8px;right:8px">Google Maps</span>
+        <span style="font-size:10px;background:rgba(255,255,255,.85);padding:2px 8px;border-radius:10px;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);white-space:nowrap">Juan G. · ~15 min</span>
+      </div>
+
+      <div class="stepper">
+        <div class="step"><div class="sdot done">✓</div><div class="slbl">Pendiente</div></div>
+        <div class="sconn done"></div>
+        <div class="step"><div class="sdot done">✓</div><div class="slbl">Aceptado</div></div>
+        <div class="sconn done"></div>
+        <div class="step"><div class="sdot active">●</div><div class="slbl active">En camino</div></div>
+        <div class="sconn"></div>
+        <div class="step"><div class="sdot">○</div><div class="slbl">Entregado</div></div>
+      </div>
+
+      <div class="dcard">
+        <div class="drow">🧑&nbsp; <strong>Juan García</strong></div>
+        <div class="drow">🚗&nbsp; Renault Kangoo · ABC 123</div>
+        <div class="drow">⏱&nbsp; ETA: ~15 minutos</div>
+      </div>
+
+      <div class="arow" style="gap:8px">
+        <div class="btn-o" style="flex:1;margin:0;text-align:center;padding:9px 0;font-size:11px">📞 Llamar</div>
+        <div class="btn-od" style="flex:1;margin:0;text-align:center;padding:9px 0;font-size:11px">Cancelar</div>
+      </div>
+      <div style="height:8px"></div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- D-19 Login + Registro -->
+<div class="wf-row" style="margin-top:-20px">
+
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-19a — Login</strong>
+      <span>CU-001 &nbsp;·&nbsp; ui-login.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="login-logo">
+        <span class="login-icon">🔥</span>
+        <div class="login-brand">SPLG Gas</div>
+        <div class="login-sub">Pedidos de garrafas a domicilio</div>
+      </div>
+      <div style="padding:0 10px">
+        <div class="frow" style="padding:6px 0">
+          <div class="flbl">Email</div>
+          <div class="ffield">usuario@mail.com</div>
+        </div>
+        <div class="frow" style="padding:6px 0">
+          <div class="flbl">Contraseña</div>
+          <div class="ffield">●●●●●●●● <span style="margin-left:auto;font-size:13px">👁</span></div>
+        </div>
+      </div>
+      <div class="btn-p">INGRESAR</div>
+      <div class="login-link">¿No tenés cuenta?</div>
+      <div class="btn-o">REGISTRARSE</div>
+      <div style="height:12px"></div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-19b — Registro de Cliente</strong>
+      <span>CU-002 &nbsp;·&nbsp; ui-registro.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="app-nav"><span class="back">‹</span><span class="nav-t">Crear cuenta</span></div>
+      <div style="padding:0 10px">
+        <div class="frow" style="padding:7px 0">
+          <div class="flbl">Nombre completo</div>
+          <div class="ffield">Nombre Apellido</div>
+        </div>
+        <div class="frow" style="padding:7px 0">
+          <div class="flbl">Email</div>
+          <div class="ffield">usuario@mail.com</div>
+        </div>
+        <div class="frow" style="padding:7px 0">
+          <div class="flbl">Teléfono</div>
+          <div class="ffield">+54 9 376 XXX XXXX</div>
+        </div>
+        <div class="frow" style="padding:7px 0">
+          <div class="flbl">Contraseña</div>
+          <div class="ffield">Mín. 6 caracteres</div>
+        </div>
+      </div>
+      <div class="btn-p">CREAR CUENTA</div>
+      <div style="font-size:9px;color:#9e9e9e;text-align:center;padding:6px 12px">Al registrarte aceptás los Términos y Condiciones</div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ APP CHOFER ═══════════════════════════ -->
+<div class="section-divider">🚗 App Chofer — 3 pantallas</div>
+
+<div class="wf-row">
+
+  <!-- D-20 Home del Chofer -->
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-20 — Home del Chofer</strong>
+      <span>CU-022 &nbsp;·&nbsp; ui-chofer-home.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="greet">
+        <div class="greet-name">👋 Hola, Juan García</div>
+        <div class="greet-sub">3 pedidos entregados hoy</div>
+      </div>
+      <div class="mapp" style="height:196px">
+        <span style="font-size:30px">📍</span>
+        <span class="mlbl">Mi ubicación actual</span>
+      </div>
+      <div class="toggle-wrap">
+        <div class="toggle-title">Disponibilidad</div>
+        <div class="toggle-track">
+          <span class="toggle-text">🟢 &nbsp; ACTIVO</span>
+          <div class="toggle-thumb"></div>
+        </div>
+      </div>
+      <div class="mini-stat">
+        <div><div class="sval">3</div><div class="slb">Entregas hoy</div></div>
+        <div><div class="sval">$13.500</div><div class="slb">Ganancia</div></div>
+        <div><div class="sval">4.9 ⭐</div><div class="slb">Calificación</div></div>
+      </div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+  <!-- D-21 Pedido Entrante -->
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-21 — Pedido Entrante</strong>
+      <span>CU-015 &nbsp;·&nbsp; ui-chofer-pedido-entrante.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="mapp" style="height:216px">
+        <span style="font-size:28px">📍</span>
+        <span class="mlbl">Tu ubicación</span>
+      </div>
+      <div class="bsheet">
+        <div class="bhandle"></div>
+        <div class="btitle">🔔 &nbsp; NUEVO PEDIDO</div>
+        <div class="brow">📍 &nbsp; Av. San Martín 1234, Posadas</div>
+        <div class="brow">🔵 &nbsp; Garrafa 10 kg × 2 unidades</div>
+        <div class="brow">💰 &nbsp; Total: $9.000</div>
+        <div class="brow">📏 &nbsp; Distancia: 2.3 km</div>
+        <div class="countdown">0:28</div>
+        <div class="countdown-lbl">Tiempo para aceptar</div>
+        <div class="btn-s" style="margin:4px 0">✅ &nbsp; ACEPTAR PEDIDO</div>
+        <div class="btn-d" style="margin:4px 0">❌ &nbsp; RECHAZAR</div>
+      </div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+  <!-- D-22 En Ruta -->
+  <div class="wf-item">
+    <div class="wf-label">
+      <strong>D-22 — En Ruta</strong>
+      <span>CU-018/020 &nbsp;·&nbsp; ui-chofer-en-ruta.png</span>
+    </div>
+    <div class="phone">
+      <div class="ph-notch"></div>
+      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="app-nav"><span class="back">‹</span><span class="nav-t">Entrega en curso</span></div>
+      <div class="mapp" style="height:210px;position:relative">
+        <span style="font-size:22px;position:absolute;top:22px;left:50%;transform:translateX(-50%)">🏠</span>
+        <div style="width:3px;height:80px;background:#1a73e8;opacity:.65;border-radius:2px"></div>
+        <span style="font-size:22px;position:absolute;bottom:22px;left:50%;transform:translateX(-50%)">🚗</span>
+        <span class="mlbl" style="position:absolute;top:8px;right:8px">Ruta activa</span>
+      </div>
+      <div class="dcard">
+        <div class="drow">👤 &nbsp; <strong>María González</strong></div>
+        <div class="drow">📍 &nbsp; Av. Corrientes 456</div>
+        <div class="drow">📏 &nbsp; 1.8 km restantes</div>
+      </div>
+      <div class="btn-o">📣 &nbsp; AVISAR LLEGADA</div>
+      <div class="btn-s">✅ &nbsp; CONFIRMAR ENTREGA</div>
+      <div class="ph-home"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ PANEL ADMIN ═══════════════════════════ -->
+<div class="section-divider">💻 Panel Administrador — 2 pantallas</div>
+
+<!-- D-23 Dashboard -->
+<div class="wf-row">
+  <div class="wf-item wf-wide">
+    <div class="wf-label">
+      <strong>D-23 — Dashboard Administrador</strong>
+      <span>CU-026 &nbsp;·&nbsp; ui-admin-dashboard.png</span>
+    </div>
+    <div class="dt-frame">
+      <div class="browser-bar">
+        <div class="wdots">
+          <div class="wd" style="background:#ff5f57"></div>
+          <div class="wd" style="background:#febc2e"></div>
+          <div class="wd" style="background:#28c840"></div>
+        </div>
+        <div class="url">localhost:3000/admin/dashboard</div>
+      </div>
+      <div class="app-shell">
+        <div class="sidebar">
+          <div class="sb-logo">🔥 SPLG Admin</div>
+          <div class="sb-item on">📊 Dashboard</div>
+          <div class="sb-item">📦 Pedidos</div>
+          <div class="sb-item">🚗 Choferes</div>
+          <div class="sb-item">🛢 Productos</div>
+          <div class="sb-item">📋 Reclamos</div>
+          <div class="sb-item">⚙️ Configuración</div>
+        </div>
+        <div class="main">
+          <div class="pg-hd">Dashboard — 03/05/2026</div>
+          <div class="kgrid">
+            <div class="kcard"><div class="kico">📦</div><div class="kval">12</div><div class="klbl">Pedidos hoy</div></div>
+            <div class="kcard"><div class="kico">✅</div><div class="kval">7</div><div class="klbl">Entregados</div></div>
+            <div class="kcard"><div class="kico">🚗</div><div class="kval">3</div><div class="klbl">Choferes activos</div></div>
+            <div class="kcard"><div class="kico">💰</div><div class="kval">$84.500</div><div class="klbl">Ventas hoy</div></div>
+            <div class="kcard"><div class="kico">⚠️</div><div class="kval">1</div><div class="klbl">Reclamos pend.</div></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-hdr">Ventas — Últimos 7 días</div>
+            <div class="barchart">
+              <div class="bgrp"><div class="bar" style="height:42px"></div><div class="blbl">Lun</div></div>
+              <div class="bgrp"><div class="bar" style="height:58px"></div><div class="blbl">Mar</div></div>
+              <div class="bgrp"><div class="bar" style="height:36px"></div><div class="blbl">Mié</div></div>
+              <div class="bgrp"><div class="bar" style="height:68px"></div><div class="blbl">Jue</div></div>
+              <div class="bgrp"><div class="bar" style="height:52px"></div><div class="blbl">Vie</div></div>
+              <div class="bgrp"><div class="bar" style="height:72px"></div><div class="blbl">Sáb</div></div>
+              <div class="bgrp"><div class="bar" style="height:62px;opacity:.45"></div><div class="blbl">Dom</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- D-24 Listado Pedidos -->
+<div class="wf-row">
+  <div class="wf-item wf-wide">
+    <div class="wf-label">
+      <strong>D-24 — Listado de Pedidos</strong>
+      <span>CU-011 &nbsp;·&nbsp; ui-admin-pedidos.png</span>
+    </div>
+    <div class="dt-frame">
+      <div class="browser-bar">
+        <div class="wdots">
+          <div class="wd" style="background:#ff5f57"></div>
+          <div class="wd" style="background:#febc2e"></div>
+          <div class="wd" style="background:#28c840"></div>
+        </div>
+        <div class="url">localhost:3000/admin/pedidos</div>
+      </div>
+      <div class="app-shell">
+        <div class="sidebar">
+          <div class="sb-logo">🔥 SPLG Admin</div>
+          <div class="sb-item">📊 Dashboard</div>
+          <div class="sb-item on">📦 Pedidos</div>
+          <div class="sb-item">🚗 Choferes</div>
+          <div class="sb-item">🛢 Productos</div>
+          <div class="sb-item">📋 Reclamos</div>
+          <div class="sb-item">⚙️ Configuración</div>
+        </div>
+        <div class="main">
+          <div class="pg-hd">Pedidos</div>
+          <div class="twrap">
+            <div class="toolbar">
+              <div class="fchip">Estado ▾</div>
+              <div class="fchip">Fecha ▾</div>
+              <div class="fchip">Chofer ▾</div>
+              <div class="schip">🔍 Buscar cliente...</div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Productos</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#1234</td>
+                  <td>María González</td>
+                  <td>Garrafa 10 kg ×2</td>
+                  <td>$9.000</td>
+                  <td><span class="sbadge s-blue">● En camino</span></td>
+                  <td>03/05 10:23</td>
+                  <td><span class="alink">👁</span></td>
+                </tr>
+                <tr>
+                  <td>#1233</td>
+                  <td>Carlos Pérez</td>
+                  <td>Garrafa 10 kg ×1</td>
+                  <td>$4.500</td>
+                  <td><span class="sbadge s-green">✓ Entregado</span></td>
+                  <td>03/05 09:15</td>
+                  <td><span class="alink">👁</span></td>
+                </tr>
+                <tr>
+                  <td>#1232</td>
+                  <td>Ana Rodríguez</td>
+                  <td>Garrafa 15 kg ×1, 10 kg ×1</td>
+                  <td>$10.700</td>
+                  <td><span class="sbadge s-yellow">● Aceptado</span></td>
+                  <td>03/05 09:02</td>
+                  <td><span class="alink">👁</span></td>
+                </tr>
+                <tr>
+                  <td>#1231</td>
+                  <td>Luis Martínez</td>
+                  <td>Garrafa 15 kg ×1</td>
+                  <td>$6.200</td>
+                  <td><span class="sbadge s-gray">⏳ Pendiente</span></td>
+                  <td>03/05 08:47</td>
+                  <td><span class="alink">👁</span></td>
+                </tr>
+                <tr>
+                  <td>#1230</td>
+                  <td>Julia Sosa</td>
+                  <td>Garrafa 10 kg ×1</td>
+                  <td>$4.500</td>
+                  <td><span class="sbadge s-red">✕ Cancelado</span></td>
+                  <td>03/05 08:30</td>
+                  <td><span class="alink">👁</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <div class="pbtn">← Anterior</div>
+              <span>Página 1 de 12 &nbsp;(112 pedidos)</span>
+              <div class="pbtn">Siguiente →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

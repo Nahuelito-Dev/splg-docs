@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    actor SAU as Sistema Automatico
+    participant SIS as Sistema
+
+    Note over SAU: Se ejecuta cada 15 segundos
+    SAU->>SIS: vencerOfertasExpiradas()
+    activate SIS
+    loop Por cada oferta cuya vigencia expiró
+        SIS->>SIS: marcar la oferta como vencida
+        alt El pedido sigue pendiente y sin chofer
+            SIS->>SIS: ofrecerAlSiguienteChofer(pedido)
+        else El pedido ya fue aceptado o cancelado
+            SIS->>SIS: no re-ofrecer
+        end
+    end
+    SIS-->>SAU: ofertas procesadas
+    deactivate SIS

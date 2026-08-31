@@ -1,0 +1,9 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: listarZonasDeCobertura()
+    activate SIS
+    SIS-->>ADM: zonas de la distribuidora (nombre, polígono, recargo, estado)
+    deactivate SIS

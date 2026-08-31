@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant RG as RolesGuard
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant ORD as OrderRepositoryPort
+    participant REP as RepositoryOrder
+    participant MAP as OrderMapper
+
+    RG->>RG: canActivate(ctx) contra Roles DELIVERY, ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        CTRL->>SRV: findByDelivery(deliveryId, paginationDto, distributorId)
+        SRV->>ORD: findByDelivery(deliveryId, limit, offset, distributorId)
+        ORD->>ORD: scoped(where delivery_id, distributorId)
+        ORD->>REP: findAndCount(where, take, skip, relations customer e items, order createdAt DESC)
+        REP-->>ORD: orders y total
+        ORD-->>SRV: orders, total, limit y offset
+        SRV-->>CTRL: PaginatedOrders
+        loop Por cada pedido asignado
+            CTRL->>MAP: toDto(order)
+            MAP-->>CTRL: OrderResponseDto
+        end
+    end

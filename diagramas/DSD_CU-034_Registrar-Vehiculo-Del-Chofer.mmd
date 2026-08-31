@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant UREP as RepositoryUser
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: create(createCarDto, distributorId)
+    SRV->>UREP: findOne(where user_id del dto)
+    UREP-->>SRV: User o null
+    alt Usuario inexistente
+        SRV-->>CTRL: NotFoundException User with ID not found
+    else Usuario encontrado
+        alt El dto trae car_patent
+            SRV->>CREP: findOne(where car_patent)
+            CREP-->>SRV: Car existente o null
+            alt La patente ya esta registrada
+                SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
+            end
+        end
+        SRV->>CREP: create(datos del dto, user_id, distributor_id)
+        CREP-->>SRV: Car en memoria
+        SRV->>CREP: save(car)
+        CREP-->>SRV: Car persistido
+        SRV-->>CTRL: Car
+    end
