@@ -7,6 +7,55 @@ Este repositorio contiene la documentación del proyecto, separada del código d
 
 ---
 
+## Cómo está organizado
+
+En la raíz hay **seis documentos y nada más**: los cinco que exige la cátedra y el que
+reúne todos los casos de uso. Todo lo demás está en carpetas.
+
+```
+splg-docs/
+├── 0-Plan_Del_Proyecto.md          ← entrega
+├── 0.1-Planificacion_Iteraciones.md ← entrega
+├── 1-Requisitos.md                 ← entrega
+├── 2-Analisis.md                   ← entrega
+├── 3-Diseño.md                     ← entrega
+├── Casos-de-Uso.md                 ← LOS 108 CASOS, COMPLETOS
+│
+├── diagramas/                      imágenes y fuentes de los diagramas
+├── design/                         wireframes y capturas de pantalla
+├── drive/                          los seis documentos en HTML, para subir
+├── .catedra-ref/                   las plantillas originales de la cátedra
+├── material-de-trabajo/            auditorías, guías, trazabilidad, notas
+└── old/                            versiones anteriores a la revisión (no se entrega)
+```
+
+## El documento único: `Casos-de-Uso.md`
+
+Es el que se abre cuando hay que mostrar un caso puntual. Tiene **los 108 casos, del
+CU-001 al CU-108**, cada uno con sus cuatro artefactos:
+
+| Sección | Contenido | Cobertura |
+|---------|-----------|-----------|
+| §1 | Actores del sistema | — |
+| §2 | Diagrama de casos de uso del sistema | — |
+| §3 | Catálogo y calificación | 108 |
+| §4 | **CUA** — Casos de uso de alto nivel | 108 |
+| §5 | **CUE** — Casos de uso expandidos | 108 |
+| §6 | **DSS** — Diagramas de secuencia del sistema | 108 |
+| §7 | **DSD** — Diagramas de interacción de diseño | 108 |
+
+711 KB, 213 diagramas.
+
+### Por qué los casos también aparecen en los otros documentos
+
+No es duplicación por descuido: **las plantillas de la cátedra lo exigen**. Cada artefacto
+tiene que figurar en el documento que le toca —los de alto nivel en el Plan del Proyecto,
+los expandidos en Requisitos, los de secuencia en Análisis y los de interacción en Diseño—
+porque cada documento se entrega y se corrige por separado. `Casos-de-Uso.md` los reúne
+para poder consultarlos sin saltar entre cuatro archivos.
+
+---
+
 ## Los documentos de la cátedra
 
 | # | Documento | Contiene |
