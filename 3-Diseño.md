@@ -7790,32 +7790,17 @@ Una vez renderizados y exportados, insertar cada imagen en los documentos con el
 > *Figura X — Descripción — CU-XXX*
 ```
 
-| Archivo PNG | Insertar en | Reemplaza |
-|-------------|-------------|-----------|
-| `diagrama-cu-sistema.png` | Doc 0 §6 y Doc 1 §3 | `[ INSERTAR IMAGEN: diagrama-cu-sistema.png ]` |
-| `diagrama-subsistemas.png` | Doc 1 §4 | `[ INSERTAR IMAGEN: diagrama-subsistemas.png ]` |
-| `diagrama-conceptual.png` | Doc 2 §1.5 | `[ INSERTAR IMAGEN: diagrama-conceptual.png ]` |
-| `dss-cu005-crear-pedido.png` | Doc 2 §2.1 | `[ INSERTAR IMAGEN: dss-cu005-crear-pedido.png ]` |
-| `dss-cu013-despacho.png` | Doc 2 §2.1 | `[ INSERTAR IMAGEN: dss-cu013-despacho-automatico.png ]` |
-| `dss-cu014-cron.png` | Doc 2 §2.1 | `[ INSERTAR IMAGEN: dss-cu014-cron-reintento.png ]` |
-| `dss-cu015-aceptar.png` | Doc 2 §2.1 | `[ INSERTAR IMAGEN: dss-cu015-aceptar-pedido.png ]` |
-| `dss-cu017-gps.png` | Doc 2 §2.1 | `[ INSERTAR IMAGEN: dss-cu017-actualizar-gps.png ]` |
-| `dss-cu020-entrega.png` | Doc 2 §2.1 | `[ INSERTAR IMAGEN: dss-cu020-confirmar-entrega.png ]` |
-| `dss-stock.png` | Doc 2 §2.1 | `[ INSERTAR IMAGEN: dss-stock-transaccional.png ]` |
-| `arquitectura.png` | Doc 3 §2.1 | Diagrama ASCII de arquitectura |
-| `clases-diseno.png` | Doc 3 §5 | Especificaciones textuales de clases |
-| `seq-cu005-diseno.png` | Doc 3 §4.1 | Representación textual de secuencia |
-| `seq-cu013-diseno.png` | Doc 3 §4.2 | Representación textual de secuencia |
-| `seq-cu017-diseno.png` | Doc 3 §4.3 | Representación textual de secuencia |
-| `design/ui-cliente-catalogo.png` | Doc 3 §3.1 | Pantalla 1 flujo CU-005 |
-| `design/ui-cliente-checkout.png` | Doc 3 §3.1 | Pantalla 2 flujo CU-005 |
-| `design/ui-cliente-tracking.png` | Doc 3 §3.5 | Pantalla CU-017 |
-| `design/ui-login.png` | Doc 3 (Login) | Pantalla CU-001/002 |
-| `design/ui-chofer-home.png` | Doc 3 §3.2 | Pantalla Home Chofer |
-| `design/ui-chofer-pedido-entrante.png` | Doc 3 §3.4 | Pantalla CU-015 |
-| `design/ui-chofer-en-ruta.png` | Doc 3 §3.6 | Pantalla CU-018/020 |
-| `design/ui-admin-dashboard.png` | Doc 3 §7 | Dashboard admin |
-| `design/ui-admin-pedidos.png` | Doc 3 §7 | Listado pedidos admin |
+| Diagrama | Archivo | Insertar en |
+|---|---|---|
+| Casos de uso del sistema | `diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png` | Doc 0 §6 · Doc 1 §3 |
+| Casos de uso por subsistema | `diagramas/uml/CU_SS-NN_*.png` (18) | Doc 1 §4.3 |
+| Secuencia del sistema | `diagramas/png/DSS_CU-NNN_*.png` (108) | Doc 2 §2.1 |
+| Interacción de diseño | `diagramas/png/DSD_CU-NNN_*.png` (103) | Doc 3 §4 |
+
+Cada archivo lleva el código y el nombre del caso de uso, de modo que se ubica sin
+abrirlo. El detalle caso por caso está en `INDICE-IMAGENES.md`. En los documentos HTML
+de `drive/`, cada diagrama figura como un recuadro con el nombre exacto del archivo que
+hay que insertar en ese lugar.
 
 ---
 
