@@ -376,6 +376,43 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | ACT-04 | Sistema Automático | Automático | Procesos que el backend ejecuta por iniciativa propia, sin que ningún usuario los solicite. Comprende cuatro procesos temporales: la revisión de ofertas de despacho vencidas (cada 15 segundos), la activación de reservas programadas (cada 5 minutos), la expiración de pedidos de MercadoPago impagos (cada 30 minutos) y la expiración de reservas sin seña (cada hora). |
 | ACT-05 | Administrador General | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras y designa a sus administradores. Es el único actor cuyo alcance no está limitado a una distribuidora. |
 
+**Figura — Actores del sistema y el canal por el que operan**
+
+```mermaid
+flowchart LR
+    CLI([Cliente<br/>ACT-01])
+    CHO([Chofer<br/>ACT-02])
+    ADM([Administrador<br/>ACT-03])
+    GRL([Administrador General<br/>ACT-05])
+    AUT([Sistema Automatico<br/>ACT-04])
+
+    APPC[App Cliente]
+    APPD[App Chofer]
+    PANEL[Panel Web]
+    PROC[Procesos programados]
+
+    CLI --> APPC
+    CHO --> APPD
+    ADM -- alcance: su distribuidora --> PANEL
+    GRL -- alcance: todas las distribuidoras --> PANEL
+    AUT --> PROC
+
+    subgraph SPLG[Sistema de Pedidos y Logistica de Garrafas]
+        BACK[Backend]
+    end
+
+    APPC --> BACK
+    APPD --> BACK
+    PANEL --> BACK
+    PROC --> BACK
+```
+
+> Los cuatro actores humanos operan siempre a traves de una aplicacion; ninguno accede
+> directamente al backend. El Sistema Automatico no tiene interfaz: son los procesos que
+> el backend dispara por si mismo, y es el actor principal de los casos de uso que la
+> documentacion marca como automaticos.
+
+
 ---
 
 ### 7.2 Casos de Uso Expandidos — Críticos

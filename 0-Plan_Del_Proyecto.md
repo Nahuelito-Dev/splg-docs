@@ -164,6 +164,43 @@ El cronograma se divide en **31 semanas** (S1 a S31), desde el **07/04/2026** ha
 | ACT-04 | **Sistema Automático** | Sistema | Procesos que el backend ejecuta por iniciativa propia, sin intervención humana y sin interfaz de usuario. Comprende la negociación secuencial de asignación de pedidos (CU-013), el vencimiento y re-oferta de las propuestas a los choferes (CU-014), la activación y expiración de las reservas programadas (CU-075 a CU-077), la reserva y restitución de stock, y los avisos automáticos. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras, designa a sus administradores y administra los roles del sistema. Es el único actor cuyo alcance no está acotado a una distribuidora: los demás operan siempre dentro de la suya. |
 
+**Figura — Actores del sistema y el canal por el que operan**
+
+```mermaid
+flowchart LR
+    CLI([Cliente<br/>ACT-01])
+    CHO([Chofer<br/>ACT-02])
+    ADM([Administrador<br/>ACT-03])
+    GRL([Administrador General<br/>ACT-05])
+    AUT([Sistema Automatico<br/>ACT-04])
+
+    APPC[App Cliente]
+    APPD[App Chofer]
+    PANEL[Panel Web]
+    PROC[Procesos programados]
+
+    CLI --> APPC
+    CHO --> APPD
+    ADM -- alcance: su distribuidora --> PANEL
+    GRL -- alcance: todas las distribuidoras --> PANEL
+    AUT --> PROC
+
+    subgraph SPLG[Sistema de Pedidos y Logistica de Garrafas]
+        BACK[Backend]
+    end
+
+    APPC --> BACK
+    APPD --> BACK
+    PANEL --> BACK
+    PROC --> BACK
+```
+
+> Los cuatro actores humanos operan siempre a traves de una aplicacion; ninguno accede
+> directamente al backend. El Sistema Automatico no tiene interfaz: son los procesos que
+> el backend dispara por si mismo, y es el actor principal de los casos de uso que la
+> documentacion marca como automaticos.
+
+
 ### Descripción Ampliada de Actores
 
 **ACT-01 — Cliente:**

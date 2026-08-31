@@ -41,7 +41,12 @@ body{margin:0;background:var(--bg);color:var(--content);
 /* ---------- panel ---------- */
 aside{background:var(--surface);border-right:1px solid var(--outline);display:flex;flex-direction:column;min-height:0}
 @media(max-width:880px){aside{border-right:none;border-bottom:1px solid var(--outline);max-height:58vh}}
-.brand{padding:16px 20px 14px;border-bottom:1px solid var(--outline);display:flex;gap:13px;align-items:center}
+.brand{padding:16px 20px 14px;border-bottom:1px solid var(--outline);display:flex;gap:13px;
+  align-items:center;width:100%;background:transparent;border-left:none;border-right:none;
+  border-top:none;color:var(--content);font:inherit;text-align:left;cursor:pointer}
+.brand:hover .marca{transform:scale(1.06)}
+.brand .marca{transition:transform .15s ease}
+.brand:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
 .brand .marca{width:38px;height:38px;flex:none;display:block}
 .brand .rotulo{min-width:0}
 .brand h1{font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:1.28rem;margin:0;
@@ -154,7 +159,7 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
 <div class="app">
   <aside>
-    <button class="brand" id="alInicio" style="border:none;cursor:pointer;font:inherit;text-align:left;width:100%">
+    <button class="brand" id="alInicio" >
       <svg class="marca" viewBox="0 0 40 40" role="img" aria-label="SPLG">
         <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--primary)"/>
         <path d="M12.5 21.5 C12.5 18 16 16.5 16 15.5 L24 15.5 C24 16.5 27.5 18 27.5 21.5
