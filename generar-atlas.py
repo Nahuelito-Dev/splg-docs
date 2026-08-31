@@ -162,6 +162,29 @@ for _n,(_i,_m) in enumerate(_ix6):
                              nombre=_m.group(3).strip(), sec="§6."+_m.group(1))
 
 
+
+# ---------- vista de sistema: actores, contexto, subsistemas, catalogo ----------
+def _seccion(archivo, ini, fin):
+    ls = open(D+archivo, encoding="utf-8").read().split("\n")
+    a = next(i for i,x in enumerate(ls) if re.match(ini, x))
+    b = next(i for i,x in enumerate(ls) if re.match(fin, x))
+    return "\n".join(ls[a+1:b]).strip()
+
+sistema = {
+  "actores":  dict(md2html(_seccion("Casos-de-Uso.md", r'^## 1\. Actores', r'^## 2\. ')),
+                   titulo="Actores del sistema", sec="Doc 1 · §7.1"),
+  "contexto": dict(md2html(_seccion("Casos-de-Uso.md", r'^## 2\. Diagrama', r'^## 3\. ')),
+                   titulo="Diagrama de casos de uso del sistema", sec="Doc 0 · §6 · Doc 1 · §3"),
+  "catalogo": dict(md2html(_seccion("Casos-de-Uso.md", r'^## 3\. Catálogo', r'^## 4\. ')),
+                   titulo="Catálogo y calificación de los 108 casos", sec="Doc 0 · §8"),
+}
+# el diagrama de subsistemas vive en el documento 1
+_d1 = open(D+"1-Requisitos.md", encoding="utf-8").read().split("\n")
+_a = next(i for i,x in enumerate(_d1) if x.startswith("## 4. Subsistemas"))
+_b = next(i for i,x in enumerate(_d1) if x.startswith("## 5. "))
+sistema["subsistemas"] = dict(md2html("\n".join(_d1[_a+1:_b])),
+                              titulo="Subsistemas del proyecto", sec="Doc 1 · §4")
+
 # ---------- respaldo documental ----------
 proc = {}
 def add(cod, doc, sec, que):
@@ -213,7 +236,7 @@ for mo,cs in MOD.items():
         add(c, "3 — Diseño", "§6 Módulos Inteligentes", f"Especificación de {mo}")
 
 # ---------- armado ----------
-datos = {"cu":{}, "subsistemas":ss, "contexto":contexto, "modulos":mods}
+datos = {"cu":{}, "subsistemas":ss, "contexto":contexto, "modulos":mods, "sistema":sistema}
 for c in sorted(set(cua) | set(cue)):
     datos["cu"][c] = {"cua":cua.get(c,{}), "cue":cue.get(c,{}), "dss":dss.get(c,[]),
                       "dsd":dsd.get(c,[]), "respaldo":proc.get(c,[]), "modulo":modulo.get(c),

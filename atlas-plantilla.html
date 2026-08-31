@@ -167,7 +167,7 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         <button data-f="Crítico" aria-pressed="false">CRÍTICOS</button>
         <button data-f="cur" aria-pressed="false">CU REALES</button>
         <button data-f="mod" aria-pressed="false">MÓDULOS</button>
-        <button data-f="uml" aria-pressed="false">UML</button>
+        <button data-f="sis" aria-pressed="false">SISTEMA</button>
       </div>
     </div>
     <div class="list" id="lista"></div>
@@ -180,7 +180,7 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 (function(){
   "use strict";
   var D = JSON.parse(document.getElementById("datos").textContent);
-  var CU = D.cu, SS = D.subsistemas, MODS = D.modulos || {};
+  var CU = D.cu, SS = D.subsistemas, MODS = D.modulos || {}, SIS = D.sistema || {};
   var codigos = Object.keys(CU).sort(), filtro = "todos", sel = null, seq = 0;
 
   function oscuro(){
@@ -243,9 +243,17 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   }
   function pintar(){
     var cont = document.getElementById("lista");
-    if (filtro === "uml"){
-      cont.innerHTML = '<div class="grp">Diagramas en notación UML</div>' +
-        '<button class="item" data-uml="contexto"><span class="cod">SIS</span><span class="nm">Diagrama del sistema</span></button>' +
+    if (filtro === "sis"){
+      var gen = [["actores","ACT","Actores del sistema"],
+                 ["contexto","DIA","Diagrama de casos de uso del sistema"],
+                 ["subsistemas","SUB","Subsistemas del proyecto"],
+                 ["catalogo","CAT","Catálogo de los 108 casos"]];
+      cont.innerHTML = '<div class="grp">Vista general</div>' +
+        gen.filter(function(g){ return SIS[g[0]]; }).map(function(g){
+          return '<button class="item" data-sis="'+g[0]+'"><span class="cod">'+g[1]+'</span><span class="nm">'+g[2]+"</span></button>";
+        }).join("") +
+        '<div class="grp">Casos de uso por subsistema · notación UML</div>' +
+        '<button class="item" data-uml="contexto"><span class="cod">SIS</span><span class="nm">Diagrama de contexto</span></button>' +
         Object.keys(SS).sort().filter(function(k){return SS[k].uml;}).map(function(k){
           return '<button class="item" data-uml="'+k+'"><span class="cod">'+k+'</span><span class="nm">'+esc(SS[k].nombre)+"</span></button>";
         }).join("");
@@ -280,6 +288,7 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     c.querySelectorAll("[data-cu]").forEach(function(b){ b.onclick=function(){ abrir(b.dataset.cu); }; });
     c.querySelectorAll("[data-uml]").forEach(function(b){ b.onclick=function(){ verUml(b.dataset.uml); }; });
     c.querySelectorAll("[data-mod]").forEach(function(b){ b.onclick=function(){ verMod(b.dataset.mod); }; });
+    c.querySelectorAll("[data-sis]").forEach(function(b){ b.onclick=function(){ verSis(b.dataset.sis); }; });
   }
 
   function abrir(c){
@@ -338,7 +347,7 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   }
 
   function verMod(k){
-    sel = null;
+    sel = null; location.hash = "mod-"+k;
     var m = MODS[k]; if (!m) return;
     var cs = codigos.filter(function(c){ return CU[c].modulo && CU[c].modulo.codigo === k; });
     document.getElementById("detalle").innerHTML =
@@ -351,8 +360,19 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       var n = document.querySelectorAll('.k-mod [data-mer="'+i+'"]')[0]; if (n) dibujar(n, src); });
     pintar();
   }
+  function verSis(k){
+    sel = null; location.hash = "sis-"+k;
+    var s = SIS[k]; if (!s) return;
+    document.getElementById("detalle").innerHTML =
+      '<div class="head"><div class="over"><span>VISTA GENERAL</span></div><h2>'+esc(s.titulo)+"</h2></div>" +
+      card("k-doc","SIS",esc(s.titulo),s.sec,s.html);
+    document.getElementById("main").scrollTop = 0;
+    (s.mermaid||[]).forEach(function(src,i){
+      var n = document.querySelectorAll('.k-doc [data-mer="'+i+'"]')[0]; if (n) dibujar(n, src); });
+    pintar();
+  }
   function verUml(k){
-    sel = null;
+    sel = null; location.hash = "uml-"+k;
     var img = k === "contexto" ? D.contexto : (SS[k] && SS[k].uml);
     var nom = k === "contexto" ? "Diagrama de Casos de Uso del Sistema" : (SS[k] ? SS[k].nombre : k);
     var sub = k === "contexto" ? "Define el límite del sistema y sus actores" : (SS[k] ? SS[k].descripcion : "");
@@ -361,8 +381,23 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       '<span class="chip">NOTACIÓN UML</span></div><h2>'+esc(nom)+"</h2>" +
       (sub ? '<div class="meta"><span>'+esc(sub)+"</span></div>" : "") + "</div>" +
       card("k-doc","UML","Diagrama de casos de uso","Doc 1 · §3 y §4.3",
-        img ? '<img class="umlimg" alt="'+esc(nom)+'" src="'+img+'">' : '<p class="note">Diagrama no disponible.</p>');
+        img ? '<img class="umlimg" alt="'+esc(nom)+'" src="'+img+'">' : '<p class="note">Diagrama no disponible.</p>') +
+      (k === "contexto" ? "" : (function(){
+        var cs = codigos.filter(function(c){ return (CU[c].cua.subsistema||"").indexOf(k) === 0; });
+        if (!cs.length) return "";
+        return card("k-cua","CU","Casos de uso de este subsistema", cs.length+" casos",
+          '<div class="scroller"><table><thead><tr><th>Código</th><th>Caso de uso</th><th>Calificación</th></tr></thead><tbody>' +
+          cs.map(function(c){ return '<tr><td class="p"><a href="#'+c+'" data-ir="'+c+'">'+c+"</a></td><td>" +
+            esc(CU[c].cua.nombre||"")+"</td><td>"+esc(CU[c].cua.calificacion||"")+"</td></tr>"; }).join("") +
+          "</tbody></table></div>");
+      })());
     document.getElementById("main").scrollTop = 0;
+    document.querySelectorAll("[data-ir]").forEach(function(a){
+      a.onclick = function(ev){ ev.preventDefault(); filtro="todos";
+        document.querySelectorAll("#filtros button").forEach(function(x){
+          x.setAttribute("aria-pressed", String(x.dataset.f==="todos")); });
+        abrir(a.dataset.ir); };
+    });
     pintar();
   }
   function inicio(){
@@ -377,11 +412,14 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   }
 
   document.getElementById("q").addEventListener("input", pintar);
+  function ponerFiltro(f){
+    filtro = f;
+    document.querySelectorAll("#filtros button").forEach(function(x){
+      x.setAttribute("aria-pressed", String(x.dataset.f === f)); });
+  }
   document.getElementById("filtros").addEventListener("click", function(ev){
     var b = ev.target.closest("button"); if (!b) return;
-    filtro = b.dataset.f;
-    this.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", String(x===b)); });
-    pintar();
+    ponerFiltro(b.dataset.f); pintar();
   });
   document.addEventListener("keydown", function(ev){
     var q = document.getElementById("q");
@@ -395,15 +433,19 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       var el = document.querySelector('[data-cu="'+vis[i]+'"]'); if (el) el.scrollIntoView({block:"nearest"});
     }
   });
-  window.addEventListener("hashchange", function(){
-    var h = (location.hash||"").replace("#","");
-    if (CU[h] && h !== sel) abrir(h);
-  });
+  function irA(h){
+    if (!h) return false;
+    if (CU[h]){ if (h !== sel) abrir(h); return true; }
+    if (h.indexOf("sis-") === 0 && SIS[h.slice(4)]){ ponerFiltro("sis"); verSis(h.slice(4)); return true; }
+    if (h.indexOf("mod-") === 0 && MODS[h.slice(4)]){ ponerFiltro("mod"); verMod(h.slice(4)); return true; }
+    if (h.indexOf("uml-") === 0){ ponerFiltro("sis"); verUml(h.slice(4)); return true; }
+    return false;
+  }
+  window.addEventListener("hashchange", function(){ irA((location.hash||"").replace("#","")); });
   var mq = window.matchMedia("(prefers-color-scheme: light)");
   if (mq.addEventListener) mq.addEventListener("change", function(){ initM(); if (sel) abrir(sel); });
 
   pintar();
-  var hsh = (location.hash||"").replace("#","");
-  if (CU[hsh]) abrir(hsh); else inicio();
+  if (!irA((location.hash||"").replace("#",""))) inicio();
 })();
 </script>
