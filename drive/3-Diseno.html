@@ -51,7 +51,7 @@ blockquote{border-left:3px solid #ccc;margin-left:0;padding-left:12px;color:#444
 <table><tr><th>Módulo</th><th>Responsabilidad Principal</th></tr><tr><td><code>AuthModule</code></td><td>JWT, Firebase Auth, guardias de roles</td></tr><tr><td><code>OrderModule</code></td><td>CRUD pedidos, máquina de estados, despacho</td></tr><tr><td><code>DispatchModule</code></td><td>Cron de reintentos, asignación por proximidad</td></tr><tr><td><code>DeliveryModule</code></td><td>Gestión de choferes, disponibilidad</td></tr><tr><td><code>GasCylinderModule</code></td><td>Catálogo, stock, promociones</td></tr><tr><td><code>TimeSlotModule</code></td><td>Franjas horarias y capacidades</td></tr><tr><td><code>GatewaysModule</code></td><td>WebSocket <code>/drivers</code> y <code>/customers</code></td></tr><tr><td><code>RedisModule</code></td><td>GEOADD, GEORADIUS, operaciones geo</td></tr><tr><td><code>NotificationsModule</code></td><td>FCM push notifications</td></tr><tr><td><code>ClaimsModule</code></td><td>Reclamos y resolución</td></tr><tr><td><code>ReportsModule</code></td><td>Estadísticas y dashboard</td></tr></table>
 <hr>
 <h2>3. Casos de Uso Reales (CU Real)</h2>
-<blockquote>Esta sección presenta los <strong>Casos de Uso Reales</strong> según la plantilla UP de la cátedra. Cada CU priorizado se acompaña de:  1. <strong>Interfaz Gráfica</strong> — referencia al wireframe de la pantalla real en <code>design/wireframes.html</code> 2. <strong>Especificación del CU Real</strong> — tabla formal con todos los campos requeridos (Código, Objetivos asociados, Requisitos asociados, Descripción, Precondición, Secuencia, Postcondición, Excepciones, Rendimiento, Frecuencia, Estabilidad) 3. <strong>Diagrama de Interacción</strong> — flujo UI → ViewModel → Servicio → Backend 4. <strong>Clases de Diseño Participantes</strong>  Los <strong>5 CUs priorizados para Elaboración</strong> según la cátedra son: <strong>CU-001, CU-005, CU-013, CU-017, CU-020</strong>. Adicionalmente se documentan CU-014 (cron de reintentos) y CU-015 (aceptar pedido) por su criticidad arquitectónica.</blockquote>
+<blockquote>Esta sección presenta los <strong>Casos de Uso Reales</strong> según la plantilla UP de la cátedra. Cada CU priorizado se acompaña de:  1. <strong>Interfaz Gráfica</strong> — referencia al wireframe de la pantalla real en <code>design/wireframes.html</code> 2. <strong>Especificación del CU Real</strong> — tabla formal con todos los campos requeridos (Código, Objetivos asociados, Requisitos asociados, Descripción, Precondición, Secuencia, Postcondición, Excepciones, Rendimiento, Frecuencia, Estabilidad) 3. <strong>Diagrama de Interacción</strong> — flujo UI → ViewModel → Servicio → Backend 4. <strong>Clases de Diseño Participantes</strong>  <strong>Criterio de selección.</strong> Se desarrollan como Casos de Uso Reales los <strong>diez casos que recorren el circuito completo del sistema</strong>, de punta a punta: alta del usuario, creación del pedido, despacho automático, aceptación por parte del chofer, seguimiento, entrega verificada, cobro y cancelación. Los diez tienen pantalla efectivamente construida, de modo que la especificación describe una interfaz real y no una propuesta.  Son <strong>CU-001, CU-005, CU-008, CU-013, CU-014, CU-015, CU-017, CU-020, CU-048 y CU-079</strong>. Cuatro de ellos —CU-013, CU-014, CU-017 y CU-005— son procesos que el sistema ejecuta por iniciativa propia, sin actor humano.</blockquote>
 <hr>
 <h3>3.1 CU-001 Crítico — Iniciar Sesión</h3>
 <p><strong>Actor:</strong> Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)<br><strong>Pantalla:</strong> LoginView (App Cliente / App Chofer / Panel Admin)</p>
@@ -260,6 +260,188 @@ OrderService.updateStatus(orderId, DELIVERED)
   │  [3] customersGateway: emit &#x27;order:delivered&#x27;
   │  [4] redisService: GEOADD → chofer sigue disponible para próxima orden
   └─▶ return { status: DELIVERED }</pre>
+<hr>
+<h3>3.8 CU-048 Crítico — Pago con pasarela y confirmación por webhook</h3>
+<p><strong>Actor:</strong> Sistema (ACT-04)<br><strong>Pantalla:</strong> Sin pantalla propia dentro del sistema — confirmación server-to-server</p>
+<h4>Interfaz Gráfica</h4>
+<blockquote>CU sin pantalla propia (proceso automático del Sistema, disparado por la notificación webhook de MercadoPago). La pantalla visible asociada es la selección del método de pago dentro del checkout — ver wireframe <strong>D-17 — Checkout</strong> en <a href="design/wireframes.html"><code>design/wireframes.html</code></a>, opción &quot;MercadoPago&quot; del selector de método de pago (parte de CU-005). El pago en sí se completa en el Checkout Pro de MercadoPago, fuera de las aplicaciones del sistema: ninguna pantalla de la App Cliente, la App Chofer ni el Panel Admin interviene en la confirmación que describe este CU.</blockquote>
+<h4>Especificación del CU Real</h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Código</strong></td><td>CU-048</td></tr><tr><td><strong>Caso de Uso</strong></td><td>Procesar Pago con MercadoPago</td></tr><tr><td><strong>Actor Principal</strong></td><td>ACT-04 (Sistema)</td></tr><tr><td><strong>Objetivos asociados</strong></td><td>OBJ-02, OBJ-07</td></tr><tr><td><strong>Requisitos asociados</strong></td><td>IRQ-02, IRQ-08</td></tr><tr><td><strong>Descripción</strong></td><td>Cuando un pedido se paga con MercadoPago, la pasarela notifica al backend mediante un webhook contra <code>MercadoPagoWebhookController</code>. El sistema valida la firma HMAC de la notificación, consulta el estado real del pago contra la API de MercadoPago sin confiar nunca en el contenido recibido, actualiza el registro <code>Payment</code>, marca el pedido como pagado dentro de una transacción con bloqueo pesimista sobre el <code>Order</code>, y recién entonces dispara el despacho automático al siguiente chofer candidato.</td></tr><tr><td><strong>Precondición</strong></td><td>Existe un <code>Order</code> con <code>paymentMethod = MERCADOPAGO</code> y un <code>Payment</code> en estado PENDING cuya <code>external_reference</code> es el <code>orderId</code>. La clave secreta del webhook y la URL de notificación están configuradas en <code>MercadoPagoAdapter</code> y apuntan al endpoint del backend.</td></tr></table>
+<p><strong>Secuencia normal</strong></p>
+<table><tr><th>Paso</th><th>Acción</th></tr><tr><td>1</td><td>MercadoPago envía <code>POST /webhook/mercadopago</code> con <code>type</code>, <code>data.id</code> y las cabeceras <code>x-signature</code> / <code>x-request-id</code> a <code>MercadoPagoWebhookController</code>. El endpoint está exento del límite global de peticiones.</td></tr><tr><td>2</td><td>El controlador tolera los dos formatos que usa MercadoPago para nombrar los parámetros, normaliza <code>type</code> y <code>dataId</code>, y llama <code>PaymentsService.verifyWebhookSignature(xSignature, xRequestId, dataId)</code>.</td></tr><tr><td>3</td><td><code>PaymentsService</code> delega en <code>PaymentGatewayPort.verifyWebhookSignature()</code> (implementado por <code>MercadoPagoAdapter</code>), que valida el HMAC con la clave secreta configurada.</td></tr><tr><td>4</td><td>Con la firma válida, <code>MercadoPagoWebhookController</code> invoca <code>ConfirmPaymentUseCase.execute(type, dataId)</code>.</td></tr><tr><td>5</td><td><code>ConfirmPaymentUseCase</code> llama <code>PaymentsService.confirmFromGateway(type, dataId)</code>, que descarta la notificación si el <code>type</code> no es de pago o no trae <code>dataId</code>.</td></tr><tr><td>6</td><td><code>PaymentsService</code> consulta el pago real vía <code>PaymentGatewayPort.getPayment(dataId)</code> (<code>MercadoPago.Payment.get()</code>), con un tiempo máximo de espera de 5 segundos.</td></tr><tr><td>7</td><td><code>PaymentsService</code> actualiza el <code>Repository&lt;Payment&gt;</code> — busca por <code>gateway_payment_id</code> o, en la primera notificación, toma el intento PENDING más reciente de esa <code>external_reference</code> sin identificador aún — y traduce el estado crudo de la pasarela a aprobado, rechazado, cancelado, reintegrado o pendiente.</td></tr><tr><td>8</td><td><code>ConfirmPaymentUseCase</code> recupera el <code>Order</code> vía <code>OrderRepositoryPort.findByIdFull(externalReference)</code>.</td></tr><tr><td>9</td><td>Si el pago está aprobado, abre <code>DataSource.createQueryRunner()</code> y <code>QueryRunner.startTransaction()</code>, y vuelve a leer el <code>Order</code> con lock pesimista (<code>pessimistic_write</code>) para serializar notificaciones concurrentes del mismo pago.</td></tr><tr><td>10</td><td>Evalúa <code>isTerminal(locked.status)</code> y si el pedido ya tiene <code>gatewayPaymentId</code> asignado; en cualquiera de los dos casos hace <code>commit</code> sin modificar nada (idempotencia ante reintentos del webhook).</td></tr><tr><td>11</td><td>Si <code>locked.status = RESERVED</code>, marca <code>deposit_paid = true</code>, graba el <code>gatewayPaymentId</code> y hace <code>commit</code> sin disparar despacho: la reserva la activa el proceso programado el día agendado (CU-075).</td></tr><tr><td>12</td><td>En el caso general, marca <code>paymentStatus = PAID</code>, graba el <code>gatewayPaymentId</code> y hace <code>commitTransaction()</code>.</td></tr><tr><td>13</td><td>Ya fuera de la transacción, invoca <code>DispatchOrchestratorService.offerToNextDriver(order)</code> en modo best-effort, equivalente al despacho de CU-013.</td></tr><tr><td>14</td><td><code>MercadoPagoWebhookController</code> responde <code>200 { received: true }</code> a MercadoPago.</td></tr></table>
+<p><strong>Postcondición:</strong> El <code>Payment</code> refleja el estado real informado por la pasarela. Si el pago fue aprobado, el <code>Order</code> quedó con <code>paymentStatus = PAID</code> y el <code>gatewayPaymentId</code> grabado —o con la seña marcada como pagada, si era una reserva— y el despacho se disparó exactamente una vez. Repetir la misma notificación no vuelve a marcar el pedido ni a despacharlo.</p>
+<p><strong>Excepciones</strong></p>
+<table><tr><th>Paso</th><th>Acción</th></tr><tr><td>3</td><td>Si la firma es inválida, falta, o la clave secreta no está configurada → <code>MercadoPagoWebhookController</code> no procesa la notificación y responde 200 igual, para no revelar si el pago o el pedido existen.</td></tr><tr><td>6</td><td>Si la consulta a MercadoPago falla o supera el tiempo de espera → se registra el error y se aborta sin tocar el <code>Order</code>.</td></tr><tr><td>8</td><td>Si <code>external_reference</code> no corresponde a ningún <code>Order</code> → se registra la advertencia y se aborta.</td></tr><tr><td>9</td><td>Si el <code>Order</code> desaparece entre la lectura inicial y la toma del lock → <code>QueryRunner.commit()</code> sin efectos y se registra la advertencia.</td></tr><tr><td>9–12</td><td>Ante cualquier error dentro de la transacción → <code>QueryRunner.rollbackTransaction()</code> y propagación del error; el controlador lo captura y responde 200 igual, para que MercadoPago no reintente en bucle contra un 5xx.</td></tr><tr><td>13</td><td>Si el despacho falla → se registra el error; el pedido queda pagado a la espera del reintento de despacho, el pago no se revierte.</td></tr><tr><td>12</td><td>Si el pago llega <code>rejected</code> o <code>cancelled</code> → el sistema únicamente lo registra en el log; no hay transición de estado sobre el <code>Order</code> (ver Comentarios).</td></tr></table>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Rendimiento</strong></td><td>El procesamiento completo de una notificación se resuelve en menos de 3 segundos; la consulta a MercadoPago está acotada a 5 segundos de espera máxima.</td></tr><tr><td><strong>Frecuencia</strong></td><td>Una o más notificaciones por cada pedido pagado con MercadoPago; la pasarela reintenta la misma notificación ante cualquier respuesta que no sea exitosa, y a veces incluso cuando lo es.</td></tr><tr><td><strong>Estabilidad</strong></td><td>Alta.</td></tr></table>
+<h4>Diagrama de Interacción</h4>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    participant MP as MercadoPago
+    participant WCTRL as MercadoPagoWebhookController
+    participant PAY as PaymentsService
+    participant GW as PaymentGatewayPort
+    participant UCP as ConfirmPaymentUseCase
+    participant ORD as OrderRepositoryPort
+    participant QR as QueryRunner
+    participant ORQ as DispatchOrchestratorService
+
+    MP-&gt;&gt;WCTRL: POST /webhook/mercadopago (type, data.id, x-signature)
+    WCTRL-&gt;&gt;PAY: verifyWebhookSignature(xSignature, xRequestId, dataId)
+    PAY-&gt;&gt;GW: verifyWebhookSignature(input)
+    GW--&gt;&gt;PAY: boolean con HMAC
+    alt Firma invalida
+        WCTRL--&gt;&gt;MP: 200 received true, sin procesar
+    else Firma valida
+        WCTRL-&gt;&gt;UCP: execute(type, dataId)
+        UCP-&gt;&gt;PAY: confirmFromGateway(type, dataId)
+        PAY-&gt;&gt;GW: getPayment(dataId)
+        GW--&gt;&gt;PAY: estado real y external_reference
+        PAY--&gt;&gt;UCP: gatewayPaymentId, status, isDeposit
+        UCP-&gt;&gt;ORD: findByIdFull(externalReference)
+        ORD--&gt;&gt;UCP: Order
+        alt status approved
+            UCP-&gt;&gt;QR: startTransaction() y lock pesimista sobre Order
+            alt isTerminal(status) o ya tiene gatewayPaymentId
+                UCP-&gt;&gt;QR: commit sin efectos, idempotente
+            else status RESERVED
+                UCP-&gt;&gt;QR: save(deposit_paid true) y commit, no se despacha
+            else pedido normal
+                UCP-&gt;&gt;QR: save(paymentStatus PAID) y commitTransaction()
+                UCP-&gt;&gt;ORQ: offerToNextDriver(order)
+            end
+        else rejected o cancelled
+            UCP-&gt;&gt;UCP: logger.log sin accion, TODO del use-case
+        end
+        WCTRL--&gt;&gt;MP: 200 received true
+    end</pre>
+<blockquote>El diagrama de secuencia técnico completo, con la creación previa del checkout y la triple guarda de idempotencia, está documentado en §4.11.</blockquote>
+<h4>Clases de Diseño Participantes</h4>
+<table><tr><th>Clase</th><th>Capa</th><th>Responsabilidad</th></tr><tr><td><code>MercadoPagoWebhookController</code></td><td>Backend Controller</td><td>Endpoint <code>POST /webhook/mercadopago</code>, exento del rate-limit global</td></tr><tr><td><code>PaymentsService</code></td><td>Backend Service</td><td>Orquesta verificación de firma, consulta a la pasarela y actualización del ledger</td></tr><tr><td><code>PaymentGatewayPort</code> (impl. <code>MercadoPagoAdapter</code>)</td><td>Infrastructure</td><td>Único punto que toca el SDK de MercadoPago; sumar otra pasarela es agregar un adapter</td></tr><tr><td><code>ConfirmPaymentUseCase</code></td><td>Backend Use Case</td><td>Aplica el resultado normalizado del pago sobre el <code>Order</code>, con lock pesimista</td></tr><tr><td><code>OrderRepositoryPort</code></td><td>Infrastructure</td><td>Persistencia del <code>Order</code></td></tr><tr><td><code>Repository&lt;Payment&gt;</code></td><td>Infrastructure</td><td>Ledger de pagos, con índice único parcial sobre <code>gateway_payment_id</code></td></tr><tr><td><code>DispatchOrchestratorService</code></td><td>Backend Service</td><td>Dispara el despacho al siguiente chofer candidato una vez pagado el pedido</td></tr><tr><td><strong>Comentarios</strong></td><td>La verificación contra el código confirmó que la idempotencia descansa en tres mecanismos encadenados: el índice único parcial sobre <code>gateway_payment_id</code> en el ledger de pagos, un índice análogo en el <code>Order</code>, y el lock pesimista dentro de la transacción de <code>ConfirmPaymentUseCase</code>. <strong>Limitación conocida (INFORME-HALLAZGOS — &quot;Manejo del pago rechazado&quot;):</strong> el camino <code>rejected</code> / <code>cancelled</code> no está implementado — figura como <code>TODO</code> explícito en <code>confirm-payment.use-case.ts:74-77</code> — y el sistema se limita a registrarlo en el log, sin liberar el stock reservado ni cancelar el pedido. Quien resuelve esa situación es el proceso temporal de CU-077, que cada 30 minutos cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado y recién ahí restituye el stock. Tampoco se contempla el reembolso ni el contracargo: el ledger sabe traducir esos estados, pero el <code>Order</code> no reacciona a ellos.</td></tr></table>
+<hr>
+<hr>
+<h3>3.9 CU-079 Crítico — Confirmar Entrega Escaneando el QR</h3>
+<p><strong>Actor:</strong> Cliente (ACT-01)<br><strong>Pantalla:</strong> OrderTrackingView (App Cliente) — lector de código QR</p>
+<h4>Interfaz Gráfica</h4>
+<blockquote>No hay wireframe relevado específicamente para la vista de escaneo del QR: el inventario de pantallas de <code>design/wireframes.html</code> no incluye una cámara lectora. Funcionalmente, la acción se dispara desde <code>OrderTrackingView</code> (wireframe <strong>D-18 — Seguimiento en Tiempo Real</strong>) mientras el stepper del pedido marca &quot;En camino&quot;: el cliente abre el lector de cámara para leer el QR que el chofer le muestra en su pantalla (obtenido en CU-078), y la app extrae del contenido leído el código de diez caracteres.</blockquote>
+<h4>Especificación del CU Real</h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Código</strong></td><td>CU-079</td></tr><tr><td><strong>Caso de Uso</strong></td><td>Confirmar Entrega Escaneando el QR</td></tr><tr><td><strong>Actor Principal</strong></td><td>ACT-01 (Cliente)</td></tr><tr><td><strong>Objetivos asociados</strong></td><td>OBJ-03, OBJ-04, OBJ-07</td></tr><tr><td><strong>Requisitos asociados</strong></td><td>IRQ-02, IRQ-08</td></tr><tr><td><strong>Descripción</strong></td><td>El cliente escanea desde <code>OrderTrackingView</code> el QR que le muestra el chofer al llegar al domicilio y envía el código leído. Si coincide con el <code>deliveryCode</code> guardado en el pedido, el sistema delega en el mismo caso de uso de cambio de estado que usa CU-020 y da la entrega por realizada. Invierte el actor de CU-020: acá confirma quien recibe, no quien entrega, y esa inversión es la prueba anti-fraude de que el chofer estuvo presente.</td></tr><tr><td><strong>Precondición</strong></td><td>El cliente está autenticado y es el titular del pedido. El pedido está en estado ON_THE_WAY y tiene <code>deliveryCode</code> generado desde su aceptación (CU-078). El chofer está en el domicilio mostrando el QR.</td></tr></table>
+<p><strong>Secuencia normal</strong></p>
+<table><tr><th>Paso</th><th>Acción</th></tr><tr><td>1</td><td>El chofer muestra en su pantalla el QR obtenido en CU-078.</td></tr><tr><td>2</td><td>El cliente abre el lector de cámara desde <code>OrderTrackingView</code> y escanea el QR; la app extrae el código de diez caracteres del contenido leído.</td></tr><tr><td>3</td><td><code>OrderTrackingViewModel</code> llama <code>historyService.confirmDelivery(orderId, code)</code> → <code>POST /orders/:id/confirm-delivery</code> con <code>{ code }</code> y la cabecera <code>Idempotency-Key</code>.</td></tr><tr><td>4</td><td><code>OrderController.confirmDelivery()</code> invoca <code>OrderService.confirmDelivery(id, code, userId, role)</code>, que delega en <code>ConfirmDeliveryUseCase.execute(orderId, code, userId, role)</code>.</td></tr><tr><td>5</td><td><code>ConfirmDeliveryUseCase</code> recupera el pedido con <code>OrderRepositoryPort.findByIdFull(orderId)</code> y valida que, si el rol es CUSTOMER, <code>order.customer_id</code> sea el usuario autenticado.</td></tr><tr><td>6</td><td>Verifica que el pedido esté en estado ON_THE_WAY.</td></tr><tr><td>7</td><td>Compara el código recibido contra <code>order.deliveryCode</code> con <code>compareDeliveryCode()</code> (<code>DeliveryCodeUtil</code>), que usa <code>timingSafeEqual</code> para no filtrar el secreto por timing.</td></tr><tr><td>8</td><td>Con el código válido, delega en <code>UpdateOrderStatusUseCase.execute(order_id, DELIVERED)</code> — el mismo caso de uso que usa <code>PATCH /orders/:id/status</code> en CU-020.</td></tr><tr><td>9</td><td><code>UpdateOrderStatusUseCase</code> registra <code>deliveredAt = now()</code> y, si <code>paymentMethod = CASH</code>, marca <code>paymentStatus = PAID</code>.</td></tr><tr><td>10</td><td>Llama <code>RealtimeDispatchPort.stopTracking(driverUserId)</code> para cortar el seguimiento GPS en vivo del chofer.</td></tr><tr><td>11</td><td>Llama <code>CylinderLifecyclePort.onOrderDelivered(order_id, distributor_id)</code>, que avanza a <code>CON_EL_CLIENTE</code> los envases despachados en el pedido, en modo best-effort: si falla, la entrega igual se completa.</td></tr><tr><td>12</td><td>Persiste el <code>Order</code> vía <code>OrderRepositoryPort.save(order)</code> y emite <code>RealtimeDispatchPort.notifyCustomer()</code> / <code>notifyAdmins()</code> con <code>order:delivered</code>, además de la notificación push, todo best-effort.</td></tr><tr><td>13</td><td><code>ConfirmDeliveryUseCase</code> devuelve <code>OrderMapper.toDto(order)</code>; <code>OrderTrackingView</code> recibe la respuesta y actualiza el stepper a &quot;Entregado&quot;.</td></tr></table>
+<p><strong>Postcondición:</strong> El pedido queda en estado DELIVERED con <code>deliveredAt</code> registrado y evidencia de que el cliente validó la entrega con el código. Si el pago era en efectivo, queda <code>paymentStatus = PAID</code>. El chofer sale del seguimiento en vivo y los envases del pedido figuran <code>CON_EL_CLIENTE</code>.</p>
+<p><strong>Excepciones</strong></p>
+<table><tr><th>Paso</th><th>Acción</th></tr><tr><td>3</td><td>Si el cuerpo no trae <code>code</code> o viene vacío → 400 por validación del DTO.</td></tr><tr><td>5</td><td>Si el pedido no existe → 404 &quot;Order with ID: … not found&quot;.</td></tr><tr><td>5</td><td>Si el pedido pertenece a otro cliente → 403 &quot;No autorizado a confirmar la entrega de otro cliente&quot;.</td></tr><tr><td>6</td><td>Si el pedido ya está DELIVERED → no se trata como error: se devuelve el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red.</td></tr><tr><td>6</td><td>Si el pedido está en cualquier otro estado que no sea ON_THE_WAY → 400 &quot;El pedido no está en camino, no se puede confirmar la entrega&quot;.</td></tr><tr><td>7</td><td>Si el código no coincide, o el pedido no tiene código cargado, o los largos difieren → 400 &quot;Código de entrega inválido&quot;.</td></tr></table>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Rendimiento</strong></td><td>La validación del código es local y de costo despreciable; el peso está en la transición de estado y sus efectos, ya cubiertos por CU-020. Los efectos de tiempo real y notificación son best-effort y no bloquean la respuesta.</td></tr><tr><td><strong>Frecuencia</strong></td><td>Una vez por pedido entregado, con pico en la franja horaria de entrega.</td></tr><tr><td><strong>Estabilidad</strong></td><td>Alta.</td></tr></table>
+<h4>Diagrama de Interacción</h4>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    participant CLI as App Cliente
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UCD as ConfirmDeliveryUseCase
+    participant COD as DeliveryCodeUtil
+    participant UCS as UpdateOrderStatusUseCase
+    participant ORD as OrderRepositoryPort
+    participant CYL as CylinderLifecyclePort
+    participant RT as RealtimeDispatchPort
+
+    CLI-&gt;&gt;CTRL: POST /orders/:id/confirm-delivery con code e Idempotency-Key
+    CTRL-&gt;&gt;SRV: confirmDelivery(id, code, userId, role)
+    SRV-&gt;&gt;UCD: execute(orderId, code, userId, role)
+    UCD-&gt;&gt;ORD: findByIdFull(orderId)
+    ORD--&gt;&gt;UCD: Order
+    alt role CUSTOMER y customer_id distinto de userId
+        UCD--&gt;&gt;CLI: ForbiddenException
+    else Ya esta DELIVERED
+        UCD--&gt;&gt;CLI: Order sin reprocesar, idempotente
+    else No esta ON_THE_WAY
+        UCD--&gt;&gt;CLI: BadRequestException, el pedido no esta en camino
+    else Estado valido
+        UCD-&gt;&gt;COD: compareDeliveryCode(order.deliveryCode, code)
+        COD--&gt;&gt;UCD: boolean con timingSafeEqual
+        alt Codigo invalido
+            UCD--&gt;&gt;CLI: BadRequestException, codigo de entrega invalido
+        else Codigo correcto
+            UCD-&gt;&gt;UCS: execute(order_id, DELIVERED)
+            UCS-&gt;&gt;UCS: deliveredAt, si CASH entonces paymentStatus PAID
+            UCS-&gt;&gt;RT: stopTracking(driverUserId)
+            UCS-&gt;&gt;CYL: onOrderDelivered(order_id, distributor_id)
+            UCS-&gt;&gt;ORD: save(order)
+            UCS-&gt;&gt;RT: notifyCustomer(customer_id, order:delivered)
+            UCS-&gt;&gt;RT: notifyAdmins(order:delivered)
+            UCS--&gt;&gt;UCD: Order DELIVERED
+            UCD--&gt;&gt;CLI: OrderMapper.toDto(order)
+        end
+    end</pre>
+<blockquote>El diagrama de secuencia técnico completo, junto con CU-078 (obtención del código por el chofer), está documentado en §4.9.</blockquote>
+<h4>Clases de Diseño Participantes</h4>
+<table><tr><th>Clase</th><th>Capa</th><th>Responsabilidad</th></tr><tr><td><code>OrderTrackingView</code></td><td>Presentation (Flutter)</td><td>Muestra el stepper del pedido y aloja el lector de QR mientras el pedido está ON_THE_WAY</td></tr><tr><td><code>OrderTrackingViewModel</code></td><td>Presentation</td><td>Orquesta el escaneo, llama al servicio y actualiza el estado local</td></tr><tr><td><code>HistoryService</code></td><td>Service (Flutter)</td><td>HTTP al backend, la misma clase que persiste el historial en CU-005</td></tr><tr><td><code>OrderController</code></td><td>Backend Controller</td><td>Endpoint <code>POST /orders/:id/confirm-delivery</code></td></tr><tr><td><code>OrderService</code></td><td>Backend Service</td><td>Delega en el caso de uso de confirmación</td></tr><tr><td><code>ConfirmDeliveryUseCase</code></td><td>Backend Use Case</td><td>Valida pertenencia, estado y código; concentra la lógica anti-fraude</td></tr><tr><td><code>DeliveryCodeUtil</code> (<code>compareDeliveryCode</code>)</td><td>Domain (función pura)</td><td>Comparación de tiempo constante del código de entrega</td></tr><tr><td><code>UpdateOrderStatusUseCase</code></td><td>Backend Use Case</td><td>Aplica la transición a DELIVERED y sus efectos; compartido con CU-020</td></tr><tr><td><code>OrderRepositoryPort</code></td><td>Infrastructure</td><td>Persistencia del <code>Order</code></td></tr><tr><td><code>CylinderLifecyclePort</code></td><td>Infrastructure</td><td>Avanza los envases despachados a <code>CON_EL_CLIENTE</code></td></tr><tr><td><code>RealtimeDispatchPort</code></td><td>Infrastructure</td><td>Notifica por WebSocket y FCM, y corta el tracking del chofer</td></tr><tr><td><strong>Comentarios</strong></td><td>La validación vive en <code>ConfirmDeliveryUseCase</code>; los efectos de pasar a DELIVERED se delegan en <code>UpdateOrderStatusUseCase</code>, el mismo que usa <code>PATCH /orders/:id/status</code>: cero duplicación de lógica con CU-020. La doble idempotencia (cabecera <code>Idempotency-Key</code> más el chequeo de <code>status === DELIVERED</code> dentro del caso de uso) tolera el reintento de red y el doble escaneo. El espacio del código es de 16^10 combinaciones, por lo que adivinarlo a fuerza bruta es inviable; los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte. Queda como advertencia cruzada que la garantía completa de este mecanismo depende de que el pedido conserve un único chofer asignado: la verificación contra el código detectó que aceptar un pedido no comprueba que no tenga ya un chofer (hallazgo de CU-015), de modo que un segundo chofer puede regenerar el <code>deliveryCode</code> e invalidar el QR que el primero ya le había mostrado al cliente.</td></tr></table>
+<hr>
+<hr>
+<h3>3.10 CU-008 Importante — Cancelar Pedido (Cliente)</h3>
+<p><strong>Actor:</strong> Cliente (ACT-01)<br><strong>Pantalla:</strong> OrderTrackingView (App Cliente) — botón &quot;Cancelar&quot;</p>
+<h4>Interfaz Gráfica</h4>
+<blockquote>Ver wireframe <strong>D-18 — Seguimiento en Tiempo Real</strong> en <a href="design/wireframes.html"><code>design/wireframes.html</code></a>. El botón &quot;Cancelar&quot; está en la fila de acciones junto a &quot;Llamar&quot;, debajo de la tarjeta del chofer, y queda disponible mientras el pedido no salió hacia el domicilio.</blockquote>
+<h4>Especificación del CU Real</h4>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Código</strong></td><td>CU-008</td></tr><tr><td><strong>Caso de Uso</strong></td><td>Cancelar Pedido (Cliente)</td></tr><tr><td><strong>Actor Principal</strong></td><td>ACT-01 (Cliente)</td></tr><tr><td><strong>Objetivos asociados</strong></td><td>OBJ-01, OBJ-06</td></tr><tr><td><strong>Requisitos asociados</strong></td><td>IRQ-02, IRQ-04</td></tr><tr><td><strong>Descripción</strong></td><td>El cliente cancela desde <code>OrderTrackingView</code> un pedido propio que todavía no salió hacia su domicilio. El sistema valida la transición de estado, marca el pedido como CANCELLED y restituye el stock de todos sus ítems al inventario en una transacción separada del guardado del pedido.</td></tr><tr><td><strong>Precondición</strong></td><td>El cliente está autenticado y es el titular del pedido. El pedido está en estado RESERVED, PENDING o ACCEPTED.</td></tr></table>
+<p><strong>Secuencia normal</strong></p>
+<table><tr><th>Paso</th><th>Acción</th></tr><tr><td>1</td><td>El cliente presiona &quot;Cancelar&quot; en <code>OrderTrackingView</code>, con la opción de ingresar un motivo en un cuadro de texto.</td></tr><tr><td>2</td><td><code>OrderTrackingViewModel</code> llama <code>historyService.cancelOrder(orderId, reason)</code> → <code>PATCH /orders/:id/cancel</code> con <code>{ reason }</code> y la cabecera <code>Idempotency-Key</code>.</td></tr><tr><td>3</td><td><code>IdempotencyInterceptor.intercept()</code> revisa si ya hay una respuesta cacheada para esa clave; si la hay, la devuelve sin reprocesar. En la primera ejecución, deja pasar la solicitud.</td></tr><tr><td>4</td><td><code>OrderController</code> resuelve el actor desde el rol del token (<code>mapRoleToCancelActor(user.role)</code> → <code>customer</code>) e invoca <code>OrderService.cancelOrder(id, user.user_id, customer, body.reason)</code>.</td></tr><tr><td>5</td><td><code>OrderService</code> delega en <code>CancelOrderUseCase.execute(orderId, userId, customer, reason)</code>.</td></tr><tr><td>6</td><td><code>CancelOrderUseCase</code> recupera el pedido con <code>OrderRepositoryPort.findByIdFull(orderId)</code> y aplica <code>applyCancellationPolicy(order, userId, customer)</code>, que verifica en este orden: que no esté ya DELIVERED ni CANCELLED, que no esté ON_THE_WAY y, recién entonces, que <code>order.customer_id</code> sea el usuario autenticado.</td></tr><tr><td>7</td><td>Con la política aprobada, invoca la máquina de estados de dominio (<code>transitionOrder(order, CANCELLED)</code>) y setea <code>cancellationReason</code>.</td></tr><tr><td>8</td><td>Abre un <code>QueryRunner.connect()</code> + <code>startTransaction()</code> propio y llama <code>StockReservationService.restore(queryRunner.manager, order.items)</code>, que bloquea cada <code>GasCylinder</code> y devuelve la cantidad de cada ítem al inventario; hace <code>commitTransaction()</code> y <code>release()</code>.</td></tr><tr><td>9</td><td>Persiste el pedido cancelado con <code>OrderRepositoryPort.save(order)</code>, en una operación separada de la restitución de stock del paso anterior.</td></tr><tr><td>10</td><td>Llama <code>notify(order, customer, previousDriverId)</code>: emite <code>RealtimeDispatchPort.notifyCustomer(customer_id, order:cancelled)</code>, <code>notifyAdmins(order:cancelled)</code> y, si el pedido ya tenía chofer asignado, <code>notifyDriverOrderCancelled(previousDriverId)</code>.</td></tr><tr><td>11</td><td><code>OrderController</code> mapea la respuesta con <code>OrderMapper.toDto(order)</code>; <code>OrderTrackingView</code> actualiza el stepper mostrando el pedido como cancelado.</td></tr></table>
+<p><strong>Postcondición:</strong> El pedido tiene estado CANCELLED con su motivo. El stock de todos los ítems fue restituido al inventario con bloqueo sobre cada <code>GasCylinder</code>. La consistencia entre ambos efectos no está protegida por una transacción única (ver Comentarios).</p>
+<p><strong>Excepciones</strong></p>
+<table><tr><th>Paso</th><th>Acción</th></tr><tr><td>6</td><td>Si el pedido no existe → <code>NotFoundException</code>, &quot;Order with ID: … not found&quot;.</td></tr><tr><td>6</td><td>Si el pedido ya está DELIVERED o CANCELLED → <code>BadRequestException</code>, &quot;No se puede cancelar un pedido finalizado&quot;.</td></tr><tr><td>6</td><td>Si el pedido ya está ON_THE_WAY → <code>BadRequestException</code>, &quot;El pedido ya está en camino, contacte al soporte&quot;. Esta comprobación corre antes que la de propiedad, de modo que un cliente que intente cancelar un pedido ajeno que ya salió recibe este mensaje y no el de falta de autorización.</td></tr><tr><td>6</td><td>Si el pedido no pertenece al cliente autenticado → <code>BadRequestException</code>, &quot;No autorizado&quot; (código de solicitud incorrecta, no de acceso denegado).</td></tr><tr><td>2</td><td>Si la clave de idempotencia ya fue usada para esa solicitud → <code>IdempotencyInterceptor</code> devuelve la respuesta cacheada sin volver a ejecutar <code>CancelOrderUseCase</code>.</td></tr></table>
+<table><tr><th>Campo</th><th>Detalle</th></tr><tr><td><strong>Rendimiento</strong></td><td>La cancelación, con su transacción de restitución de stock, se completa en menos de 3 segundos.</td></tr><tr><td><strong>Frecuencia</strong></td><td>Baja: se estima menos de una cancelación cada varios pedidos por cliente.</td></tr><tr><td><strong>Estabilidad</strong></td><td>Alta.</td></tr></table>
+<h4>Diagrama de Interacción</h4>
+<p><em>[mermaid]</em></p><pre>sequenceDiagram
+    participant IDEM as IdempotencyInterceptor
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant UC as CancelOrderUseCase
+    participant ORD as OrderRepositoryPort
+    participant FSM as transitionOrder (dominio)
+    participant STK as StockReservationService
+    participant QR as QueryRunner
+    participant RT as RealtimeDispatchPort
+
+    IDEM-&gt;&gt;IDEM: intercept con header Idempotency-Key
+    alt Ya hay respuesta cacheada para esa key
+        IDEM--&gt;&gt;CTRL: respuesta cacheada, no se re-ejecuta
+    else Primera ejecucion
+        IDEM--&gt;&gt;CTRL: next.handle()
+        CTRL-&gt;&gt;CTRL: mapRoleToCancelActor(user.role) devuelve customer
+        CTRL-&gt;&gt;SRV: cancelOrder(id, user.user_id, customer, body.reason)
+        SRV-&gt;&gt;UC: execute(orderId, userId, customer, reason)
+        UC-&gt;&gt;ORD: findByIdFull(orderId)
+        alt Pedido inexistente
+            ORD--&gt;&gt;UC: null
+            UC--&gt;&gt;CTRL: NotFoundException
+        else Pedido encontrado
+            ORD--&gt;&gt;UC: Order
+            alt Ya esta DELIVERED o CANCELLED
+                UC--&gt;&gt;CTRL: BadRequestException, pedido finalizado
+            else Cancelable
+                UC-&gt;&gt;UC: applyCancellationPolicy(order, userId, customer)
+                alt El pedido ya esta ON_THE_WAY
+                    UC--&gt;&gt;CTRL: BadRequestException, contacte al soporte
+                else Aun no salio
+                    alt customer_id distinto del userId autenticado
+                        UC--&gt;&gt;CTRL: BadRequestException, no autorizado
+                    else Es el dueno del pedido
+                        UC-&gt;&gt;FSM: transitionOrder(order, CANCELLED)
+                        UC-&gt;&gt;QR: connect() y startTransaction()
+                        UC-&gt;&gt;STK: restore(queryRunner.manager, order.items)
+                        UC-&gt;&gt;QR: commitTransaction() y release()
+                        UC-&gt;&gt;ORD: save(order)
+                        UC-&gt;&gt;RT: notifyCustomer(customer_id, order:cancelled)
+                        opt Tenia chofer asignado
+                            UC-&gt;&gt;RT: notifyDriverOrderCancelled(previousDriverId)
+                        end
+                        UC-&gt;&gt;RT: notifyAdmins(order:cancelled)
+                        UC--&gt;&gt;CTRL: Order en estado CANCELLED
+                    end
+                end
+            end
+        end
+    end</pre>
+<blockquote>El diagrama de secuencia técnico completo, junto con las variantes de chofer (CU-009) y administrador (CU-010) sobre el mismo endpoint, está documentado en <code>Casos-de-Uso.md</code>, sección &quot;DSD — CU-008: Cancelar Pedido (Cliente)&quot;.</blockquote>
+<h4>Clases de Diseño Participantes</h4>
+<table><tr><th>Clase</th><th>Capa</th><th>Responsabilidad</th></tr><tr><td><code>OrderTrackingView</code></td><td>Presentation (Flutter)</td><td>Muestra el stepper del pedido y el botón &quot;Cancelar&quot;</td></tr><tr><td><code>OrderTrackingViewModel</code></td><td>Presentation</td><td>Orquesta la acción de cancelar y actualiza el estado local</td></tr><tr><td><code>HistoryService</code></td><td>Service (Flutter)</td><td>HTTP al backend, la misma clase que persiste el historial en CU-005</td></tr><tr><td><code>IdempotencyInterceptor</code></td><td>Backend Interceptor</td><td>Evita reprocesar la cancelación ante un reintento con la misma clave</td></tr><tr><td><code>OrderController</code></td><td>Backend Controller</td><td>Endpoint <code>PATCH /orders/:id/cancel</code>, resuelve el actor desde el rol del token</td></tr><tr><td><code>OrderService</code></td><td>Backend Service</td><td>Delega en el caso de uso de cancelación</td></tr><tr><td><code>CancelOrderUseCase</code></td><td>Backend Use Case</td><td>Aplica la política de cancelación y orquesta la transición</td></tr><tr><td><code>transitionOrder</code> (máquina de estados de dominio)</td><td>Domain</td><td>Valida la transición de estado hacia CANCELLED</td></tr><tr><td><code>StockReservationService</code></td><td>Backend Service</td><td>Restituye el stock reservado, con bloqueo por <code>GasCylinder</code></td></tr><tr><td><code>OrderRepositoryPort</code></td><td>Infrastructure</td><td>Persistencia del <code>Order</code></td></tr><tr><td><code>RealtimeDispatchPort</code> (impl. <code>RealtimeDispatchAdapter</code>)</td><td>Infrastructure</td><td>Notifica a cliente, panel y chofer por WebSocket</td></tr><tr><td><strong>Comentarios</strong></td><td>La verificación contra el código determinó que la restitución de stock (<code>StockReservationService.restore</code>) y el guardado del pedido cancelado (<code>OrderRepositoryPort.save</code>) corren en transacciones separadas, no en una única transacción: si el guardado falla después de restituir, el stock vuelve al inventario y el pedido sigue activo, quedando contado dos veces. Es el hallazgo #12 del informe de hallazgos contra el código y está pendiente de corrección. El sistema tampoco envía notificación push al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un chofer o un cliente con la app cerrada no se entera hasta reabrirla.</td></tr></table>
 <hr>
 <h2>4. Diagramas de Interacción (Nivel de Diseño)</h2>
 <h3>4.1 Crítico DSD — CU-005: Crear pedido con despacho automático</h3>
