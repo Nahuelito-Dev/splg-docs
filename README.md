@@ -59,6 +59,14 @@ python3 generar-atlas.py             # -> atlas-casos-de-uso.html
 Cada imagen lleva el código y el nombre del caso de uso en el nombre del archivo.
 `INDICE-IMAGENES.md` dice dónde va cada una dentro de los documentos.
 
+## Pantallas
+
+| Ruta | Contenido |
+|------|-----------|
+| `design/wireframes.html` | Los nueve wireframes renderizados, listos para capturar |
+| `design/diagrams-png/` | Diagramas exportados como imagen |
+| `design/*.png` | Capturas de las aplicaciones en el simulador |
+
 ## Verificación contra el código
 
 La documentación se contrastó contra el sistema construido. El resultado está en
