@@ -39,33 +39,7 @@ blockquote{border-left:3px solid #ccc;margin-left:0;padding-left:12px;color:#444
 <table><tr><th>Código</th><th>Subsistema</th><th>Descripción</th></tr><tr><td><strong>SS-10</strong></td><td><strong>Multi-Distribuidora</strong></td><td>Alta y administración de las empresas comercializadoras, y aislamiento de los datos de cada una. Es la dimensión transversal a la que quedan acotados los subsistemas de negocio.</td></tr><tr><td><strong>SS-16</strong></td><td><strong>Administración de Cuentas y Roles</strong></td><td>Designación de administradores, definición de los roles del sistema y gestión del padrón de clientes por parte del administrador.</td></tr><tr><td><strong>SS-17</strong></td><td><strong>Notificaciones y Mensajería</strong></td><td>Registro de los dispositivos de cada usuario y envío de los avisos, tanto al dispositivo como por correo.</td></tr><tr><td><strong>SS-18</strong></td><td><strong>Observabilidad y Operación</strong></td><td>Verificación del estado de los componentes de los que depende el sistema. Es el subsistema que realiza los requisitos no funcionales de disponibilidad y escalabilidad.</td></tr></table>
 <blockquote><strong>Sobre SS-08 y SS-13.</strong> El sistema distingue dos conceptos que el lenguaje corriente confunde. SS-08 administra el <strong>producto</strong>: el tipo de garrafa que se vende, con su precio y su stock agregado. SS-13 administra el <strong>envase</strong>: el botellón físico individual, identificado por su número de serie, que se entrega y se espera recuperar. El cliente compra un producto pero recibe un envase, y es ese envase concreto el que hay que rastrear.</blockquote>
 <p><strong>Figura 2 — Diagrama de Subsistemas</strong></p>
-<p><em>[mermaid]</em></p><pre>flowchart TB
-  subgraph TRANS[&quot;SS-10 Multi-Distribuidora — restriccion transversal&quot;]
-    direction TB
-    subgraph NEG[&quot;Subsistemas de negocio&quot;]
-      direction LR
-      SS_01[&quot;SS-01&lt;br/&gt;Autenticación y Usuarios&quot;]
-      SS_02[&quot;SS-02&lt;br/&gt;Gestión de Pedidos&quot;]
-      SS_03[&quot;SS-03&lt;br/&gt;Despacho y Asignación&quot;]
-      SS_04[&quot;SS-04&lt;br/&gt;Seguimiento en Tiempo Real&quot;]
-      SS_05[&quot;SS-05&lt;br/&gt;Reclamos&quot;]
-      SS_06[&quot;SS-06&lt;br/&gt;Reportes y Dashboard&quot;]
-      SS_07[&quot;SS-07&lt;br/&gt;Gestión de Choferes y Vehículos&quot;]
-      SS_08[&quot;SS-08&lt;br/&gt;Gestión de Productos (Catálogo)&quot;]
-      SS_09[&quot;SS-09&lt;br/&gt;Franjas Horarias&quot;]
-      SS_11[&quot;SS-11&lt;br/&gt;Cobertura Geográfica&quot;]
-      SS_12[&quot;SS-12&lt;br/&gt;Incidencias y Calidad de Servicio&quot;]
-      SS_13[&quot;SS-13&lt;br/&gt;Trazabilidad de Envases&quot;]
-      SS_14[&quot;SS-14&lt;br/&gt;Pagos y Conciliación&quot;]
-      SS_15[&quot;SS-15&lt;br/&gt;Reservas Programadas&quot;]
-    end
-    subgraph SOP[&quot;Subsistemas de soporte&quot;]
-      direction LR
-      SS_16[&quot;SS-16&lt;br/&gt;Administración de Cuentas y Roles&quot;]
-      SS_17[&quot;SS-17&lt;br/&gt;Notificaciones y Mensajería&quot;]
-      SS_18[&quot;SS-18&lt;br/&gt;Observabilidad y Operación&quot;]
-    end
-  end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: ver diagramas/png/ ]</strong></p>
 <blockquote>Todo subsistema de negocio opera acotado a la distribuidora del usuario que lo invoca: SS-10 no es un subsistema más sino la restricción que los envuelve a todos.</blockquote>
 <h3>4.3 Diagramas de Casos de Uso por Subsistema</h3>
 <p>La plantilla pide un diagrama de casos de uso por subsistema. Cada uno está generado en<br>notación UML y disponible en PNG y en SVG, con su fuente PlantUML al lado.</p>

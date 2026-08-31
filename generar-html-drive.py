@@ -22,6 +22,18 @@ pre{background:#f5f5f5;border:1px solid #ddd;padding:8px;font-size:9pt;white-spa
 code{font-family:Consolas,monospace;font-size:10pt}
 blockquote{border-left:3px solid #ccc;margin-left:0;padding-left:12px;color:#444}"""
 
+
+import glob as _glob
+_PNG = [os.path.basename(x) for x in _glob.glob(D+"diagramas/png/*.png")]
+def _imagen_de(codigos, tipo):
+    """Busca el PNG que corresponde a ese caso de uso y tipo de diagrama."""
+    for f in _PNG:
+        if f.startswith(tipo+"_") and all(c in f for c in codigos): return f
+    for c in codigos:
+        for f in _PNG:
+            if f.startswith(tipo+"_") and c in f: return f
+    return None
+
 def inline(t):
     t = html.escape(t)
     t = re.sub(r'`([^`]+)`', r'<code>\1</code>', t)
@@ -32,6 +44,7 @@ def inline(t):
 
 def convertir(md):
     out, i, lineas = [], 0, md.split("\n")
+    ctx = {"cods": [], "tipo": _DEFECTO}
     while i < len(lineas):
         l = lineas[i]
         if l.strip().startswith("```"):                      # bloque de código / mermaid
@@ -40,6 +53,13 @@ def convertir(md):
             while i < len(lineas) and not lineas[i].strip().startswith("```"):
                 buf.append(lineas[i]); i += 1
             i += 1
+            if leng == "mermaid":
+                cods, tipo = ctx["cods"], ctx["tipo"]
+                img = _imagen_de(cods, tipo) if (cods and tipo) else None
+                out.append('<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px">'
+                           '<strong>[ INSERTAR IMAGEN: %s ]</strong></p>'
+                           % (img or "ver diagramas/png/"))
+                continue
             rot = f"<p><em>[{leng}]</em></p>" if leng else ""
             out.append(rot + "<pre>" + html.escape("\n".join(buf)) + "</pre>"); continue
         if re.match(r'^\|', l) and i+1 < len(lineas) and re.match(r'^\|[\s:\-|]+\|\s*$', lineas[i+1]):
@@ -53,7 +73,13 @@ def convertir(md):
             out.append("".join(t + ["</table>"])); continue
         m = re.match(r'^(#{1,6})\s+(.*)$', l)
         if m:
-            n = len(m.group(1)); out.append(f"<h{n}>{inline(m.group(2))}</h{n}>"); i += 1; continue
+            titulo = m.group(2)
+            cods = sorted(set(re.findall(r'CU-\d+', titulo)))
+            if cods:
+                ctx["cods"] = cods
+                if "DSD" in titulo: ctx["tipo"] = "DSD"
+                elif "DSS" in titulo: ctx["tipo"] = "DSS"
+            n = len(m.group(1)); out.append(f"<h{n}>{inline(titulo)}</h{n}>"); i += 1; continue
         if re.match(r'^---+\s*$', l): out.append("<hr>"); i += 1; continue
         if l.strip().startswith(">"):
             buf = []
@@ -77,6 +103,7 @@ def convertir(md):
 
 os.makedirs(OUT, exist_ok=True)
 for src, dst, titulo in DOCS:
+    _DEFECTO = "DSD" if src.startswith("3-") else "DSS"
     cuerpo = convertir(open(D+src, encoding="utf-8").read())
     open(OUT+dst, "w", encoding="utf-8").write(
         f'<!DOCTYPE html><html><head><meta charset="utf-8"><title>{titulo}</title>'

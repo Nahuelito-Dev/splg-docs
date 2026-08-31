@@ -34,153 +34,7 @@ blockquote{border-left:3px solid #ccc;margin-left:0;padding-left:12px;color:#444
 <hr>
 <h3>1.5 Diagrama Conceptual</h3>
 <p>El siguiente código produce el diagrama conceptual. Es un <strong>modelo del dominio</strong>: los<br>conceptos llevan atributos pero <strong>no métodos</strong>, y no se representan claves foráneas ni<br>detalles de implementación —eso corresponde al modelo de datos del Doc 3 y al DER.</p>
-<p><em>[mermaid]</em></p><pre>classDiagram
-    direction TB
-
-    class Distribuidora {
-        razon_social
-        cuit
-        activa
-    }
-    class Usuario {
-        full_name
-        email
-        phone_number
-    }
-    class Rol {
-        nombre
-    }
-    class Cliente {
-        notification_token
-    }
-    class Chofer {
-        validated
-        isActive
-        calification
-        balance
-    }
-    class Administrador
-    class Pedido {
-        status
-        totalAmount
-        paymentMethod
-        paymentStatus
-        scheduled_date
-        deposit_amount
-        deposit_paid
-        deliveryCode
-        cancellationReason
-    }
-    class ItemPedido {
-        quantity
-        unitPrice
-        subtotal
-    }
-    class Producto {
-        type
-        price
-        stock
-    }
-    class Promocion {
-        quantity
-        discountPercentage
-    }
-    class Envase {
-        serial_number
-        state
-        deposit_value
-    }
-    class MovimientoEnvase {
-        from_state
-        to_state
-        fecha
-    }
-    class DireccionEntrega {
-        formatted_address
-        latitude
-        longitude
-        additional_instructions
-    }
-    class ZonaCobertura {
-        nombre
-        poligono
-        recargo
-    }
-    class FranjaHoraria {
-        startTime
-        endTime
-        capacity
-    }
-    class OfertaDespacho {
-        expiresAt
-        status
-    }
-    class Vehiculo {
-        patente
-        kilometraje
-        vencimiento_rto
-    }
-    class UbicacionGPS {
-        lat
-        lng
-    }
-    class Pago {
-        gateway
-        amount
-        status
-        is_deposit
-    }
-    class Reclamo {
-        reason
-        photoUrl
-        status
-    }
-    class Incidencia {
-        tipo
-        descripcion
-    }
-    class Calificacion {
-        puntaje
-        comentario
-    }
-
-    Usuario &lt;|-- Cliente : es un
-    Usuario &lt;|-- Chofer : es un
-    Usuario &lt;|-- Administrador : es un
-    Usuario &quot;N&quot; --&gt; &quot;1&quot; Rol : tiene asignado
-
-    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Chofer : emplea
-    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Administrador : emplea
-    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Producto : comercializa
-    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Envase : posee
-    Distribuidora &quot;1&quot; --&gt; &quot;N&quot; Pedido : gestiona
-    Distribuidora &quot;1&quot; *-- &quot;N&quot; ZonaCobertura : define
-    Distribuidora &quot;1&quot; *-- &quot;N&quot; FranjaHoraria : define
-
-    Cliente &quot;1&quot; --&gt; &quot;N&quot; Pedido : realiza
-    Cliente &quot;1&quot; *-- &quot;N&quot; DireccionEntrega : registra
-
-    Pedido &quot;1&quot; *-- &quot;N&quot; ItemPedido : contiene
-    ItemPedido &quot;N&quot; --&gt; &quot;1&quot; Producto : referencia
-    Pedido &quot;N&quot; --&gt; &quot;1&quot; DireccionEntrega : se entrega en
-    Pedido &quot;N&quot; --&gt; &quot;0..1&quot; FranjaHoraria : se programa en
-    Pedido &quot;N&quot; --&gt; &quot;0..1&quot; Chofer : es asignado a
-    Pedido &quot;1&quot; *-- &quot;N&quot; OfertaDespacho : se ofrece mediante
-    OfertaDespacho &quot;N&quot; --&gt; &quot;1&quot; Chofer : se dirige a
-    Pedido &quot;1&quot; --&gt; &quot;N&quot; Pago : se salda con
-    Pedido &quot;1&quot; --&gt; &quot;N&quot; Reclamo : origina
-    Pedido &quot;1&quot; --&gt; &quot;N&quot; Incidencia : origina
-    Pedido &quot;1&quot; --&gt; &quot;0..1&quot; Calificacion : recibe
-
-    Chofer &quot;1&quot; --&gt; &quot;N&quot; Vehiculo : conduce
-    Chofer &quot;1&quot; --&gt; &quot;1&quot; UbicacionGPS : se ubica en
-    Chofer &quot;N&quot; --&gt; &quot;N&quot; ZonaCobertura : opera en
-
-    Producto &quot;1&quot; *-- &quot;N&quot; Promocion : ofrece
-    Envase &quot;N&quot; --&gt; &quot;1&quot; Producto : materializa
-    Envase &quot;1&quot; *-- &quot;N&quot; MovimientoEnvase : registra
-    MovimientoEnvase &quot;N&quot; --&gt; &quot;0..1&quot; Pedido : se origina en
-    MovimientoEnvase &quot;N&quot; --&gt; &quot;0..1&quot; Usuario : es ejecutado por</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: ver diagramas/png/ ]</strong></p>
 <p><strong>Para llevarlo a draw.io o Lucidchart.</strong> Ambas herramientas importan Mermaid<br>directamente: en draw.io, <em>Extras → Editar diagrama</em> y pegar el bloque; en Lucidchart,<br><em>Importar datos → Mermaid</em>. Si se prefiere dibujarlo a mano, conviene agrupar<br>visualmente en cuatro áreas: la de usuarios y roles, la del pedido y sus líneas, la de<br>la flota y el despacho, y la del ciclo de envase.</p>
 <hr>
 <h2>2. Comportamiento del Sistema</h2>
@@ -189,1988 +43,479 @@ blockquote{border-left:3px solid #ccc;margin-left:0;padding-left:12px;color:#444
 <hr>
 <h4>Crítico DSS — CU-001: Iniciar Sesión</h4>
 <p><strong>Actor:</strong> Cliente, Chofer o Administrador<br><strong>Operaciones del sistema:</strong> <code>iniciarSesion(correo, contrasenia)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor USR as Usuario
-    participant SIS as Sistema
-
-    USR-&gt;&gt;SIS: iniciarSesion(correo, contrasenia)
-    activate SIS
-    alt Credenciales validas
-        SIS--&gt;&gt;USR: sesion iniciada (credencial con token de acceso)
-    else Credenciales incorrectas
-        SIS--&gt;&gt;USR: error de solicitud (credenciales invalidas)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-001_Iniciar-Sesion.png ]</strong></p>
 <hr>
 <h4>Crítico DSS — CU-005: Crear Pedido</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>crearPedido(items, direccion, franjaHoraria, metodoPago)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: crearPedido(items, direccion, franjaHoraria, metodoPago)
-    activate SIS
-    alt Hay stock y la dirección está cubierta
-        SIS--&gt;&gt;CLI: pedido creado (número, total, estado pendiente)
-        Note over SIS: El total incluye promociones por volumen,&lt;br/&gt;recargo por medio de pago y recargo de zona
-        SIS--&gt;&gt;CLI: aviso de confirmación del pedido
-    else Sin stock suficiente
-        SIS--&gt;&gt;CLI: rechazo (stock insuficiente para un ítem)
-    else Dirección fuera de la zona de cobertura
-        SIS--&gt;&gt;CLI: rechazo (domicilio no cubierto)
-    else Franja horaria sin cupo
-        SIS--&gt;&gt;CLI: rechazo (franja completa para esa fecha)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-005_Crear-Pedido.png ]</strong></p>
 <hr>
 <h4>Crítico · automático DSS — CU-013: Ofrecer el Pedido al Chofer Más Cercano</h4>
 <p><strong>Actor:</strong> Sistema Automático (se dispara al crearse el pedido)<br><strong>Operaciones del sistema:</strong> <code>ofrecerAlSiguienteChofer(pedido)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CHO as Chofer
-
-    SAU-&gt;&gt;SIS: ofrecerAlSiguienteChofer(pedido)
-    activate SIS
-    Note over SIS: Recorre los radios 5, 10, 15 y 20 km&lt;br/&gt;y descarta los choferes ya contactados&lt;br/&gt;y los de otra distribuidora
-    alt Hay un candidato disponible
-        SIS--&gt;&gt;CHO: oferta del pedido (detalle, vence en 30 s)
-        SIS--&gt;&gt;SAU: oferta registrada
-    else No quedan candidatos nuevos
-        SIS--&gt;&gt;SAU: sin candidatos, el pedido queda a la espera
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-013_Asignar-Pedido-Automaticamente-Por-Proximidad.png ]</strong></p>
 <hr>
 <h4>Crítico · automático DSS — CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer</h4>
 <p><strong>Actor:</strong> Sistema Automático (proceso temporal, cada 15 segundos)<br><strong>Operaciones del sistema:</strong> <code>vencerOfertasExpiradas()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-
-    Note over SAU: Se ejecuta cada 15 segundos
-    SAU-&gt;&gt;SIS: vencerOfertasExpiradas()
-    activate SIS
-    loop Por cada oferta cuya vigencia expiró
-        SIS-&gt;&gt;SIS: marcar la oferta como vencida
-        alt El pedido sigue pendiente y sin chofer
-            SIS-&gt;&gt;SIS: ofrecerAlSiguienteChofer(pedido)
-        else El pedido ya fue aceptado o cancelado
-            SIS-&gt;&gt;SIS: no re-ofrecer
-        end
-    end
-    SIS--&gt;&gt;SAU: ofertas procesadas
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-014_Reintentar-Asignacion-Con-Radio-Expandido.png ]</strong></p>
 <hr>
 <h4>Crítico DSS — CU-015: Aceptar Pedido</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>aceptarPedido(pedido)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CLI as Cliente
-
-    CHO-&gt;&gt;SIS: aceptarPedido(pedido)
-    activate SIS
-    alt La transicion de estado es valida y el chofer esta activo
-        SIS--&gt;&gt;CHO: pedido asignado (datos de entrega y codigo de entrega)
-        SIS-)CLI: aviso de que un chofer tomo el pedido
-    else El pedido ya esta entregado o cancelado
-        SIS--&gt;&gt;CHO: error de solicitud (transicion no permitida)
-    else El chofer no existe o esta dado de baja
-        SIS--&gt;&gt;CHO: error de solicitud (repartidor no encontrado o inactivo)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-015_Aceptar-Pedido.png ]</strong></p>
 <hr>
 <h4>Crítico · automático DSS — CU-017: Actualizar Ubicación GPS del Chofer</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>actualizarUbicacion(latitud, longitud)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CLI as Cliente
-    actor ADM as Administrador
-
-    loop Mientras el chofer esta conectado
-        CHO-&gt;&gt;SIS: actualizarUbicacion(usuarioId, latitud, longitud)
-        activate SIS
-        alt Los datos de posicion son validos
-            opt El chofer tiene un pedido en curso
-                SIS-)CLI: nueva posicion del chofer en el mapa
-                SIS-)ADM: nueva posicion del chofer en el panel
-            end
-        else Faltan el usuario o las coordenadas
-            SIS-&gt;&gt;SIS: se descarta el envio, no se registra la posicion
-        end
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-017_Actualizar-Ubicacion-Gps-Del-Chofer.png ]</strong></p>
 <hr>
 <h4>Crítico DSS — CU-020: Confirmar Entrega</h4>
 <p><strong>Actor:</strong> Chofer (secuencia normal) · Cliente (secuencia alternativa por código)<br><strong>Operaciones del sistema:</strong> <code>confirmarEntrega(pedido)</code>, <code>confirmarEntregaConCodigo(pedido, codigo)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CLI as Cliente
-
-    alt El chofer declara la entrega
-        CHO-&gt;&gt;SIS: confirmarEntrega(pedido)
-    else El cliente la constata leyendo el código
-        CHO-&gt;&gt;SIS: obtenerCodigoDeEntrega(pedido)
-        SIS--&gt;&gt;CHO: código para mostrar como QR
-        CLI-&gt;&gt;SIS: confirmarEntregaConCodigo(pedido, codigo)
-    end
-    activate SIS
-    alt El pedido está en camino y los datos son correctos
-        SIS--&gt;&gt;CLI: pedido entregado
-        Note over SIS: Si el pago es en efectivo,&lt;br/&gt;queda saldado
-        SIS--&gt;&gt;CHO: entrega registrada
-    else El código no coincide o el pedido no está en camino
-        SIS--&gt;&gt;CLI: rechazo (no se puede confirmar la entrega)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-020_Confirmar-Entrega.png ]</strong></p>
 <hr>
 <h4>Crítico · automático DSS — Reserva y Restitución de Stock (proceso interno)</h4>
 <p><strong>Actor:</strong> Sistema Automático (se dispara al confirmarse o cancelarse un pedido)<br><strong>Operaciones del sistema:</strong> <code>reservarStock(items)</code>, <code>restituirStock(pedido)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-
-    SAU-&gt;&gt;SIS: reservarStock(items)
-    activate SIS
-    alt Hay disponibilidad para todos los ítems
-        SIS--&gt;&gt;SAU: stock reservado
-    else Algún ítem no tiene stock suficiente
-        SIS--&gt;&gt;SAU: reserva rechazada, ninguna unidad queda comprometida
-    end
-    deactivate SIS
-
-    opt El pedido se cancela más tarde
-        SAU-&gt;&gt;SIS: restituirStock(pedido)
-        activate SIS
-        SIS--&gt;&gt;SAU: unidades devueltas al inventario
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-020_Confirmar-Entrega.png ]</strong></p>
 <hr>
 <h4>Importante DSS — CU-023: Registrar Reclamo</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>registrarReclamo(pedido, motivo, evidencia)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-    actor ADM as Administrador
-
-    CLI-&gt;&gt;SIS: registrarReclamo(pedido, motivo, evidencia)
-    activate SIS
-    alt El pedido fue entregado y es del cliente
-        SIS--&gt;&gt;CLI: reclamo registrado (número, estado pendiente)
-        SIS--&gt;&gt;ADM: nuevo reclamo para gestionar
-    else El pedido no está entregado o no le pertenece
-        SIS--&gt;&gt;CLI: rechazo (no se puede reclamar este pedido)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-023_Registrar-Reclamo.png ]</strong></p>
 <hr>
 <hr>
 <h4>Ampliación — DSS de los casos de uso incorporados</h4>
 <p>Los 95 diagramas que siguen completan la cobertura del comportamiento del sistema.<br>Se agrupan por subsistema y respetan la misma convención de caja negra: solo intervienen<br>el actor y el sistema, sin detalle interno.</p>
 <h4>DSS — CU-002: Registrarse como Cliente</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
-    activate SIS
-    alt datos válidos y correo/teléfono libres
-        SIS--&gt;&gt;CLI: cuenta creada (usuarioId, clienteId, rol CLIENTE)
-    else correo o teléfono ya registrados
-        SIS--&gt;&gt;CLI: error de solicitud (el usuario ya existe)
-    else datos incompletos o inválidos
-        SIS--&gt;&gt;CLI: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-002_Registrarse-Como-Cliente.png ]</strong></p>
 <hr>
 <h4>DSS — CU-003: Registrarse como Chofer</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
-    activate SIS
-    alt registro exitoso
-        SIS--&gt;&gt;ADM: chofer creado (usuarioId, choferId, validado en falso)
-    else el administrador no tiene distribuidora asociada
-        SIS--&gt;&gt;ADM: acceso denegado
-    else datos inválidos o correo duplicado
-        SIS--&gt;&gt;ADM: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-003_Registrar-Chofer.png ]</strong></p>
 <blockquote>El chofer nace <strong>no validado</strong>: para poder operar necesita CU-032.</blockquote>
 <hr>
 <h4>DSS — CU-004: Gestionar Perfil de Usuario</h4>
 <p><strong>Actor:</strong> Usuario autenticado (Cliente, Chofer o Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarPerfil(usuarioId)</code>, <code>actualizarPerfil(usuarioId, datos)</code>, <code>consultarPerfilCliente(usuarioId)</code>, <code>actualizarPerfilCliente(clienteId, datos)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Usuario
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarPerfil(usuarioId)
-    activate SIS
-    SIS--&gt;&gt;CLI: datos de la cuenta (nombre, correo, teléfono, rol)
-    deactivate SIS
-
-    opt el perfil tiene datos de cliente
-        CLI-&gt;&gt;SIS: consultarPerfilCliente(usuarioId)
-        activate SIS
-        SIS--&gt;&gt;CLI: datos del cliente (documento, ubicación, validación)
-        deactivate SIS
-    end
-
-    CLI-&gt;&gt;SIS: actualizarPerfil(usuarioId, datos)
-    activate SIS
-    alt es su propio perfil o es administrador
-        SIS--&gt;&gt;CLI: perfil actualizado
-    else intenta modificar el perfil de otro usuario
-        SIS--&gt;&gt;CLI: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-004_Gestionar-Perfil-De-Usuario.png ]</strong></p>
 <hr>
 <h4>DSS — CU-047: Recuperar Contraseña</h4>
 <p><strong>Actor:</strong> Usuario<br><strong>Operaciones del sistema:</strong> <code>solicitarRecuperacionDeClave(correo)</code>, <code>cambiarCorreo(correoActual, correoNuevo)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Usuario
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: solicitarRecuperacionDeClave(correo)
-    activate SIS
-    alt el correo corresponde a una cuenta
-        SIS--&gt;&gt;CLI: solicitud aceptada (se envió el enlace de restablecimiento)
-    else el correo no existe
-        SIS--&gt;&gt;CLI: solicitud aceptada (respuesta indistinguible por seguridad)
-    end
-    deactivate SIS
-
-    opt el usuario autenticado quiere cambiar su correo
-        CLI-&gt;&gt;SIS: cambiarCorreo(correoActual, correoNuevo)
-        activate SIS
-        SIS--&gt;&gt;CLI: correo actualizado (se envió la verificación al nuevo)
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-047_Recuperar-Contrasena.png ]</strong></p>
 <hr>
 <h4>DSS — CU-050: Bloquear / Desbloquear Usuario</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>bloquearUsuario(usuarioId, bloquear)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: bloquearUsuario(usuarioId, bloquear)
-    activate SIS
-    alt el usuario existe
-        SIS--&gt;&gt;ADM: usuario actualizado (estado de bloqueo vigente)
-    else el usuario no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-050_Bloquear-Desbloquear-Usuario.png ]</strong></p>
 <blockquote>Es un interruptor bidireccional: el mismo mensaje bloquea y desbloquea según el parámetro <code>bloquear</code>.</blockquote>
 <hr>
 <h4>DSS — CU-082: Crear Usuario Base</h4>
 <p><strong>Actor:</strong> Cliente (aplicación, sin sesión iniciada)<br><strong>Operaciones del sistema:</strong> <code>crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)
-    activate SIS
-    alt datos válidos
-        SIS--&gt;&gt;CLI: usuario creado (usuarioId, rol asignado)
-    else datos inválidos o correo duplicado
-        SIS--&gt;&gt;CLI: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-082_Crear-Usuario-Base.png ]</strong></p>
 <blockquote>Es el alta &quot;cruda&quot; de la cuenta, sin perfil asociado. El alta completa del cliente es CU-002.</blockquote>
 <hr>
 <h4>DSS — CU-083: Buscar / Listar Usuarios</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarUsuarios(pagina, limite, textoDeBusqueda)</code>, <code>buscarUsuarioPorCorreo(correo)</code>, <code>buscarUsuarioPorTelefono(telefono)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarUsuarios(pagina, limite, textoDeBusqueda)
-    activate SIS
-    SIS--&gt;&gt;ADM: página de usuarios (total, cantidad, listado)
-    deactivate SIS
-
-    opt búsqueda puntual
-        ADM-&gt;&gt;SIS: buscarUsuarioPorCorreo(correo)
-        activate SIS
-        alt existe
-            SIS--&gt;&gt;ADM: usuario encontrado
-        else no existe
-            SIS--&gt;&gt;ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
-
-    opt búsqueda por teléfono
-        ADM-&gt;&gt;SIS: buscarUsuarioPorTelefono(telefono)
-        activate SIS
-        SIS--&gt;&gt;ADM: usuario encontrado
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-083_Buscar-Listar-Usuarios.png ]</strong></p>
 <hr>
 <h4>DSS — CU-084: Verificar Existencia de Usuario (pre-registro)</h4>
 <p><strong>Actor:</strong> Cliente (aplicación, sin sesión iniciada)<br><strong>Operaciones del sistema:</strong> <code>verificarExistenciaDeUsuario(correo, telefono)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: verificarExistenciaDeUsuario(correo, telefono)
-    activate SIS
-    SIS--&gt;&gt;CLI: resultado (existeCorreo, existeTelefono)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-084_Verificar-Existencia-De-Usuario.png ]</strong></p>
 <blockquote>Se invoca <strong>antes</strong> de CU-002 para que la aplicación avise el conflicto sin llegar a intentar el alta.</blockquote>
 <hr>
 <h4>DSS — CU-085: Eliminar Usuario (baja lógica)</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarUsuario(usuarioId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: eliminarUsuario(usuarioId)
-    activate SIS
-    alt el usuario existe
-        SIS--&gt;&gt;ADM: usuario dado de baja
-    else el usuario no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-085_Eliminar-Usuario.png ]</strong></p>
 <hr>
 <h4>DSS — CU-091: Validar Vigencia del Token de Sesión</h4>
 <p><strong>Actor:</strong> Usuario autenticado<br><strong>Operaciones del sistema:</strong> <code>validarSesion()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Usuario
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: validarSesion()
-    activate SIS
-    alt La sesion esta vigente
-        SIS--&gt;&gt;CLI: sesion valida
-    else La sesion vencio o el token es invalido
-        SIS--&gt;&gt;CLI: no autorizado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-091_Validar-Vigencia-Del-Token-De-Sesion.png ]</strong></p>
 <hr>
 <h3>SS-02 — Gestión de Pedidos</h3>
 <h4>DSS — CU-006: Consultar Detalle de Pedido</h4>
 <p><strong>Actor:</strong> Cliente (también Chofer y Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarPedido(pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarPedido(pedidoId)
-    activate SIS
-    alt el pedido existe y le pertenece al solicitante
-        SIS--&gt;&gt;CLI: detalle del pedido (ítems, total, estado, dirección, chofer)
-    else el pedido es de otro cliente
-        SIS--&gt;&gt;CLI: acceso denegado
-    else el pedido no existe
-        SIS--&gt;&gt;CLI: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-006_Consultar-Detalle-De-Pedido.png ]</strong></p>
 <hr>
 <h4>DSS — CU-007: Consultar Historial de Pedidos</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>consultarHistorialDePedidos(clienteId, pagina, limite)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarHistorialDePedidos(clienteId, pagina, limite)
-    activate SIS
-    alt consulta su propio historial
-        SIS--&gt;&gt;CLI: página de pedidos (total, cantidad, listado)
-    else consulta el historial de otro cliente
-        SIS--&gt;&gt;CLI: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-007_Consultar-Historial-De-Pedidos.png ]</strong></p>
 <blockquote>El cliente ve <strong>todo</strong> su historial aunque haya comprado a varias distribuidoras; el personal solo ve los pedidos de la suya.</blockquote>
 <hr>
 <h4>DSS — CU-008: Cancelar Pedido (Cliente)</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>cancelarPedido(pedidoId, motivo)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-    actor CHO as Chofer
-    actor ADM as Administrador
-
-    CLI-&gt;&gt;SIS: cancelarPedido(pedidoId, motivo)
-    activate SIS
-    alt El pedido es del cliente y todavia no salio en camino
-        SIS--&gt;&gt;CLI: pedido cancelado (estado CANCELADO, stock restituido)
-        opt El pedido ya tenia chofer asignado
-            SIS-)CHO: aviso de pedido cancelado por el cliente
-        end
-        SIS-)ADM: aviso de cancelacion en el panel
-    else El pedido ya esta entregado o cancelado
-        SIS--&gt;&gt;CLI: error de solicitud (no se puede cancelar un pedido finalizado)
-    else El pedido ya esta en camino
-        SIS--&gt;&gt;CLI: error de solicitud (contactar al soporte)
-    else El pedido es de otro cliente
-        SIS--&gt;&gt;CLI: error de solicitud (no autorizado)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-008_Cancelar-Pedido.png ]</strong></p>
 <blockquote>La identidad y el rol del cancelador salen <strong>siempre</strong> de la sesión, nunca del cuerpo del mensaje.</blockquote>
 <hr>
 <h4>DSS — CU-009: Cancelar Pedido (Chofer)</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>cancelarPedido(pedidoId, motivo)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CLI as Cliente
-
-    CHO-&gt;&gt;SIS: liberarPedido(pedidoId, motivo)
-    activate SIS
-    alt El pedido no esta finalizado
-        SIS--&gt;&gt;CHO: pedido liberado (vuelve a PENDIENTE y queda sin chofer)
-        SIS-)CLI: aviso de que se esta buscando otro chofer
-    else El pedido ya esta entregado o cancelado
-        SIS--&gt;&gt;CHO: error de solicitud (no se puede cancelar un pedido finalizado)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-009_Cancelar-Pedido.png ]</strong></p>
 <hr>
 <h4>DSS — CU-010: Cancelar Pedido (Administrador)</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>cancelarPedido(pedidoId, motivo)</code>, <code>cancelarPedidoForzado(pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    alt cancelación ordinaria
-        ADM-&gt;&gt;SIS: cancelarPedido(pedidoId, motivo)
-        activate SIS
-        SIS--&gt;&gt;ADM: pedido cancelado (motivo registrado, stock restituido)
-        deactivate SIS
-    else cancelación forzada
-        ADM-&gt;&gt;SIS: cancelarPedidoForzado(pedidoId)
-        activate SIS
-        SIS--&gt;&gt;ADM: pedido cancelado por decisión administrativa
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-010_Cancelar-Pedido.png ]</strong></p>
 <blockquote>El sistema ofrece <strong>dos</strong> vías para el administrador. La documentación previa describía una sola.</blockquote>
 <hr>
 <h4>DSS — CU-011: Listar Todos los Pedidos</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarPedidos(pagina, limite)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarPedidos(pagina, limite)
-    activate SIS
-    alt es administrador de una distribuidora
-        SIS--&gt;&gt;ADM: página de pedidos de su distribuidora
-    else es super administrador sin distribuidora seleccionada
-        SIS--&gt;&gt;ADM: página de pedidos de todas las distribuidoras
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-011_Listar-Todos-Los-Pedidos.png ]</strong></p>
 <hr>
 <h4>DSS — CU-012: Asignar Chofer Manualmente</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>asignarChoferAPedido(pedidoId, choferId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: asignarChoferAPedido(pedidoId, choferId)
-    activate SIS
-    alt el pedido y el chofer existen y son compatibles
-        SIS--&gt;&gt;ADM: pedido asignado (estado ACEPTADO, chofer vinculado)
-    else el pedido o el chofer no existen
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-012_Asignar-Chofer-Manualmente.png ]</strong></p>
 <hr>
 <h4>DSS — CU-046: Gestionar Direcciones de Entrega</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)</code>, <code>listarDireccionesDelUsuario(usuarioId)</code>, <code>consultarDireccion(direccionId)</code>, <code>consultarDireccionPredeterminada(usuarioId)</code>, <code>actualizarDireccion(direccionId, datos)</code>, <code>marcarDireccionPredeterminada(direccionId)</code>, <code>eliminarDireccion(direccionId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
-    activate SIS
-    SIS--&gt;&gt;CLI: dirección creada (direccionId)
-    deactivate SIS
-
-    CLI-&gt;&gt;SIS: listarDireccionesDelUsuario(usuarioId)
-    activate SIS
-    SIS--&gt;&gt;CLI: listado de direcciones
-    deactivate SIS
-
-    opt el cliente cambia su dirección habitual
-        CLI-&gt;&gt;SIS: marcarDireccionPredeterminada(direccionId)
-        activate SIS
-        SIS--&gt;&gt;CLI: dirección predeterminada actualizada (las demás dejan de serlo)
-        deactivate SIS
-    end
-
-    opt corrección de datos
-        CLI-&gt;&gt;SIS: actualizarDireccion(direccionId, datos)
-        activate SIS
-        SIS--&gt;&gt;CLI: dirección actualizada
-        deactivate SIS
-    end
-
-    opt baja de una dirección
-        CLI-&gt;&gt;SIS: eliminarDireccion(direccionId)
-        activate SIS
-        alt la dirección existe y es del cliente
-            SIS--&gt;&gt;CLI: dirección eliminada
-        else la dirección no existe
-            SIS--&gt;&gt;CLI: recurso no encontrado
-        end
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-046_Gestionar-Direcciones-De-Entrega.png ]</strong></p>
 <hr>
 <h4>DSS — CU-080: Consultar el Pool de Pedidos Disponibles</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>consultarPedidosDisponibles(pagina, limite)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: consultarPedidosDisponibles(pagina, limite)
-    activate SIS
-    SIS--&gt;&gt;CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-080_Consultar-El-Pool-De-Pedidos-Disponibles.png ]</strong></p>
 <blockquote>Es la vista de respaldo del despacho automático (CU-013): si la oferta por proximidad no llega, el chofer puede consultar el pool.</blockquote>
 <hr>
 <h4>DSS — CU-081: Consultar los Pedidos Asignados al Chofer</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>consultarPedidosAsignados(choferId, pagina, limite)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: consultarPedidosAsignados(choferId, pagina, limite)
-    activate SIS
-    SIS--&gt;&gt;CHO: página de pedidos asignados (estado, cliente, dirección, total)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-081_Consultar-Los-Pedidos-Asignados-Al-Chofer.png ]</strong></p>
 <hr>
 <h3>SS-03 — Despacho y Asignación</h3>
 <h4>DSS — CU-016: Rechazar / Ignorar Pedido</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>rechazarOferta(pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CH2 as Siguiente Chofer
-
-    CHO-&gt;&gt;SIS: rechazarOferta(pedidoId)
-    activate SIS
-    alt El pedido existe
-        SIS--&gt;&gt;CHO: rechazo registrado (se cierra la oferta si estaba activa)
-        opt El pedido sigue pendiente y sin chofer asignado
-            SIS-)CH2: nueva oferta de pedido (pedidoId, total, items, vence en 30 s)
-        end
-    else El pedido no existe
-        SIS--&gt;&gt;CHO: sin efecto (rechazo no registrado)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-016_Rechazar-Ignorar-Pedido.png ]</strong></p>
 <blockquote>El rechazo <strong>no</strong> espera el vencimiento de la ventana de 30 segundos: re-ofrece de inmediato al siguiente chofer más cercano.</blockquote>
 <hr>
 <h3>SS-04 — Seguimiento en Tiempo Real</h3>
 <h4>DSS — CU-018: Marcar Pedido &quot;En Camino&quot;</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>actualizarEstadoDePedido(pedidoId, EN_CAMINO)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CLI as Cliente
-
-    CHO-&gt;&gt;SIS: actualizarEstadoDePedido(pedidoId, EN_CAMINO)
-    activate SIS
-    alt la transición es válida desde el estado actual
-        SIS--&gt;&gt;CHO: pedido en camino (estado EN_CAMINO)
-        SIS-)CLI: aviso de pedido en camino
-    else la transición no está permitida
-        SIS--&gt;&gt;CHO: error de solicitud (transición inválida)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-018_Marcar-Pedido-En-Camino.png ]</strong></p>
 <hr>
 <h4>DSS — CU-019: Avisar Llegada al Cliente</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>avisarLlegada(pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CLI as Cliente
-
-    CHO-&gt;&gt;SIS: avisarLlegada(pedidoId)
-    activate SIS
-    alt el pedido está en camino
-        SIS-)CLI: aviso de que el repartidor llegó al domicilio
-        SIS--&gt;&gt;CHO: cliente notificado
-    else el pedido no está en camino
-        SIS--&gt;&gt;CHO: error de solicitud (el pedido no está en camino)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-019_Avisar-Llegada-Al-Cliente.png ]</strong></p>
 <blockquote>Este caso de uso <strong>no</strong> cambia el estado del pedido: solo notifica.</blockquote>
 <hr>
 <h4>DSS — CU-021: Recibir Notificaciones en Tiempo Real</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>suscribirseAlSeguimiento(clienteId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: suscribirseAlSeguimiento(clienteId)
-    activate SIS
-    SIS--&gt;&gt;CLI: suscripción confirmada
-    deactivate SIS
-
-    loop mientras el pedido esté en curso
-        SIS-)CLI: cambio de estado del pedido (aceptado, en camino, entregado, cancelado)
-        SIS-)CLI: posición actual del chofer (latitud, longitud)
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-021_Recibir-Notificaciones-En-Tiempo-Real.png ]</strong></p>
 <blockquote>El canal se cierra cuando el cliente cierra la aplicación o el pedido alcanza un estado terminal.</blockquote>
 <hr>
 <h4>DSS — CU-022: Activar / Desactivar Disponibilidad</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>cambiarDisponibilidad(usuarioId, disponible)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: cambiarDisponibilidad(usuarioId, disponible)
-    activate SIS
-    alt se pone disponible
-        SIS--&gt;&gt;CHO: disponible (empieza a recibir ofertas de pedidos)
-    else se pone no disponible
-        SIS--&gt;&gt;CHO: no disponible (deja de recibir ofertas)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-022_Activar-Desactivar-Disponibilidad.png ]</strong></p>
 <blockquote><strong>Observación de análisis:</strong> el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que hoy &quot;fuera de turno&quot; y &quot;dado de baja&quot; son indistinguibles.</blockquote>
 <hr>
 <h4>DSS — CU-078: Obtener el Código de Entrega (QR del chofer)</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>obtenerCodigoDeEntrega(pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: obtenerCodigoDeEntrega(pedidoId)
-    activate SIS
-    alt el pedido está asignado a este chofer y ya fue aceptado
-        SIS--&gt;&gt;CHO: código de entrega (para mostrarlo como QR al cliente)
-    else el pedido no está asignado a este chofer
-        SIS--&gt;&gt;CHO: acceso denegado
-    else el pedido todavía no fue aceptado
-        SIS--&gt;&gt;CHO: error de solicitud (el pedido aún no tiene código)
-    else el pedido no existe
-        SIS--&gt;&gt;CHO: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-078_Obtener-El-Codigo-De-Entrega.png ]</strong></p>
 <hr>
 <h4>DSS — CU-079: Confirmar Entrega Escaneando el QR (cliente)</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>confirmarEntregaConCodigo(pedidoId, codigoLeido)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: confirmarEntregaConCodigo(pedidoId, codigoLeido)
-    activate SIS
-    alt el código coincide y el pedido está en camino
-        SIS--&gt;&gt;CLI: entrega confirmada (estado ENTREGADO)
-    else el código no coincide
-        SIS--&gt;&gt;CLI: error de solicitud (código inválido)
-    else el pedido no está en camino
-        SIS--&gt;&gt;CLI: error de solicitud (el pedido no está en camino)
-    else el pedido es de otro cliente
-        SIS--&gt;&gt;CLI: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-079_Confirmar-Entrega-Escaneando-El-Qr.png ]</strong></p>
 <blockquote>Es el camino <strong>anti-fraude</strong> que invierte el actor de CU-020: confirma quien recibe, no quien entrega. Es idempotente frente a reintentos de red.</blockquote>
 <hr>
 <h3>SS-05 — Reclamos</h3>
 <h4>DSS — CU-024: Listar Reclamos</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarReclamos()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarReclamos()
-    activate SIS
-    SIS--&gt;&gt;ADM: reclamos de su distribuidora (pedido, cliente, motivo, estado)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-024_Listar-Reclamos.png ]</strong></p>
 <hr>
 <h4>DSS — CU-025: Resolver Reclamo</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>resolverReclamo(reclamoId, resolucion, estadoFinal)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: resolverReclamo(reclamoId, resolucion, estadoFinal)
-    activate SIS
-    alt el reclamo existe
-        SIS--&gt;&gt;ADM: reclamo resuelto (estado y resolución registrados)
-    else el reclamo no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-025_Resolver-Reclamo.png ]</strong></p>
 <hr>
 <h3>SS-06 — Reportes y Dashboard</h3>
 <h4>DSS — CU-026: Ver Dashboard General</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarResumenDePedidos()</code>, <code>consultarGraficoDeVentas()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: consultarResumenDePedidos()
-    activate SIS
-    SIS--&gt;&gt;ADM: totales del día, la semana y el mes (pedidos, facturación, estados)
-    deactivate SIS
-
-    ADM-&gt;&gt;SIS: consultarGraficoDeVentas()
-    activate SIS
-    SIS--&gt;&gt;ADM: serie de ventas de los últimos siete días
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-026_Ver-Dashboard-General.png ]</strong></p>
 <hr>
 <h4>DSS — CU-027: Ver Reporte de Ventas por Chofer</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarVentasPorChofer(fechaDesde, fechaHasta)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: consultarVentasPorChofer(fechaDesde, fechaHasta)
-    activate SIS
-    SIS--&gt;&gt;ADM: ranking por chofer (pedidos entregados, monto facturado)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-027_Ver-Reporte-De-Ventas-Por-Chofer.png ]</strong></p>
 <hr>
 <h4>DSS — CU-028: Ver Reporte de Ventas por Producto</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarVentasPorProducto(fechaDesde, fechaHasta)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: consultarVentasPorProducto(fechaDesde, fechaHasta)
-    activate SIS
-    SIS--&gt;&gt;ADM: ventas por tipo de garrafa (unidades, monto)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-028_Ver-Reporte-De-Ventas-Por-Producto.png ]</strong></p>
 <hr>
 <h4>DSS — CU-029: Ver Reporte por Método de Pago</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)
-    activate SIS
-    SIS--&gt;&gt;ADM: distribución entre efectivo y pasarela (cantidad, monto)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-029_Ver-Reporte-Por-Metodo-De-Pago.png ]</strong></p>
 <hr>
 <h4>DSS — CU-030: Ver Gráfico de Evolución de Ventas</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)
-    activate SIS
-    alt granularidad diaria
-        SIS--&gt;&gt;ADM: serie por día del rango solicitado
-    else granularidad mensual
-        SIS--&gt;&gt;ADM: serie por mes del rango solicitado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-030_Ver-Grafico-De-Ventas.png ]</strong></p>
 <hr>
 <h3>SS-07 — Gestión de Choferes y Vehículos</h3>
 <h4>DSS — CU-031: Registrar Chofer</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
-    activate SIS
-    alt el administrador puede dar de alta en esa distribuidora
-        SIS--&gt;&gt;ADM: chofer registrado (pendiente de validación)
-    else el administrador no pertenece a esa distribuidora
-        SIS--&gt;&gt;ADM: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-031_Registrar-Chofer.png ]</strong></p>
 <blockquote>Realiza la misma operación del sistema que CU-003, vista desde el subsistema de gestión de flota.</blockquote>
 <hr>
 <h4>DSS — CU-032: Validar / Invalidar Chofer</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>validarChofer(choferId)</code>, <code>invalidarChofer(choferId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    alt aprobación de la documentación
-        ADM-&gt;&gt;SIS: validarChofer(choferId)
-        activate SIS
-        SIS--&gt;&gt;ADM: chofer validado (habilitado para recibir pedidos)
-        deactivate SIS
-    else rechazo o revocación
-        ADM-&gt;&gt;SIS: invalidarChofer(choferId)
-        activate SIS
-        SIS--&gt;&gt;ADM: chofer invalidado (deja de recibir ofertas)
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-032_Validar-Invalidar-Chofer.png ]</strong></p>
 <hr>
 <h4>DSS — CU-033: Activar / Desactivar Chofer (Administrador)</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>cambiarEstadoDelChofer(choferId, activo)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: cambiarEstadoDelChofer(choferId, activo)
-    activate SIS
-    alt el chofer existe
-        SIS--&gt;&gt;ADM: estado del chofer actualizado
-    else el chofer no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-033_Activar-Desactivar-Chofer.png ]</strong></p>
 <hr>
 <h4>DSS — CU-034: Registrar Vehículo del Chofer</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)
-    activate SIS
-    alt datos válidos
-        SIS--&gt;&gt;ADM: vehículo registrado (vehiculoId)
-    else datos inválidos
-        SIS--&gt;&gt;ADM: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-034_Registrar-Vehiculo-Del-Chofer.png ]</strong></p>
 <hr>
 <h4>DSS — CU-035: Consultar Listado de Choferes</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarChoferes(pagina, limite)</code>, <code>listarChoferesActivos(pagina, limite)</code>, <code>consultarChofer(choferId)</code>, <code>consultarChoferPorUsuario(usuarioId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarChoferes(pagina, limite)
-    activate SIS
-    SIS--&gt;&gt;ADM: página de choferes de su distribuidora
-    deactivate SIS
-
-    opt vista operativa del día
-        ADM-&gt;&gt;SIS: listarChoferesActivos(pagina, limite)
-        activate SIS
-        SIS--&gt;&gt;ADM: choferes activos
-        deactivate SIS
-    end
-
-    opt ficha individual
-        ADM-&gt;&gt;SIS: consultarChofer(choferId)
-        activate SIS
-        alt el chofer existe
-            SIS--&gt;&gt;ADM: ficha del chofer (validación, calificación, saldo, vehículo)
-        else el chofer no existe
-            SIS--&gt;&gt;ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-035_Consultar-Listado-De-Choferes.png ]</strong></p>
 <hr>
 <h4>DSS — CU-049: Consultar Balance / Ganancias del Chofer</h4>
 <p><strong>Actor:</strong> Chofer (consulta) y Administrador (ajuste)<br><strong>Operaciones del sistema:</strong> <code>consultarPerfilDelChofer(usuarioId)</code>, <code>ajustarSaldoDelChofer(choferId, monto)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor ADM as Administrador
-
-    CHO-&gt;&gt;SIS: consultarPerfilDelChofer(usuarioId)
-    activate SIS
-    SIS--&gt;&gt;CHO: perfil con el saldo acumulado
-    deactivate SIS
-
-    opt liquidación o corrección
-        ADM-&gt;&gt;SIS: ajustarSaldoDelChofer(choferId, monto)
-        activate SIS
-        SIS--&gt;&gt;ADM: saldo actualizado
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-049_Consultar-Balance-Ganancias-Del-Chofer.png ]</strong></p>
 <blockquote><strong>Observación de análisis:</strong> no existe una operación dedicada de consulta de saldo; el chofer lo lee dentro de su propio perfil.</blockquote>
 <hr>
 <h4>DSS — CU-051: Gestionar Vehículos</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarVehiculos()</code>, <code>consultarVehiculo(vehiculoId)</code>, <code>consultarVehiculosDelUsuario(usuarioId)</code>, <code>consultarVehiculoPorPatente(patente)</code>, <code>actualizarVehiculo(vehiculoId, datos)</code>, <code>eliminarVehiculo(vehiculoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarVehiculos()
-    activate SIS
-    SIS--&gt;&gt;ADM: vehículos de la distribuidora
-    deactivate SIS
-
-    opt búsqueda por patente
-        ADM-&gt;&gt;SIS: consultarVehiculoPorPatente(patente)
-        activate SIS
-        alt existe
-            SIS--&gt;&gt;ADM: vehículo encontrado
-        else no existe
-            SIS--&gt;&gt;ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
-
-    opt modificación
-        ADM-&gt;&gt;SIS: actualizarVehiculo(vehiculoId, datos)
-        activate SIS
-        SIS--&gt;&gt;ADM: vehículo actualizado
-        deactivate SIS
-    end
-
-    opt baja
-        ADM-&gt;&gt;SIS: eliminarVehiculo(vehiculoId)
-        activate SIS
-        SIS--&gt;&gt;ADM: vehículo eliminado
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-051_Gestionar-Vehiculos.png ]</strong></p>
 <hr>
 <h4>DSS — CU-096: Actualizar Perfil del Chofer</h4>
 <p><strong>Actor:</strong> Administrador (también el propio Chofer)<br><strong>Operaciones del sistema:</strong> <code>actualizarPerfilDelChofer(choferId, datos)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: actualizarPerfilDelChofer(choferId, datos)
-    activate SIS
-    alt el chofer existe
-        SIS--&gt;&gt;ADM: perfil del chofer actualizado
-    else el chofer no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-096_Actualizar-Perfil-Del-Chofer.png ]</strong></p>
 <hr>
 <h4>DSS — CU-097: Eliminar Chofer (baja lógica)</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarChofer(choferId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: eliminarChofer(choferId)
-    activate SIS
-    alt el chofer existe
-        SIS--&gt;&gt;ADM: chofer dado de baja (se conserva el histórico de entregas)
-    else el chofer no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-097_Eliminar-Chofer.png ]</strong></p>
 <hr>
 <h3>SS-08 — Gestión de Productos (Catálogo)</h3>
 <h4>DSS — CU-036: Crear Producto (Garrafa)</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)
-    activate SIS
-    alt datos válidos
-        SIS--&gt;&gt;ADM: producto creado (productoId, activo)
-    else datos inválidos
-        SIS--&gt;&gt;ADM: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-036_Crear-Producto.png ]</strong></p>
 <hr>
 <h4>DSS — CU-037: Actualizar Precio de Producto</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>actualizarProducto(productoId, datos)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: actualizarProducto(productoId, precio)
-    activate SIS
-    alt el producto pertenece a la distribuidora
-        SIS--&gt;&gt;ADM: producto actualizado (precio vigente para los pedidos nuevos)
-    else el producto no existe en la distribuidora
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-037_Actualizar-Precio-De-Producto.png ]</strong></p>
 <blockquote><strong>Observación de análisis:</strong> no existe una operación exclusiva de precio; el precio se modifica con la actualización general del producto.</blockquote>
 <hr>
 <h4>DSS — CU-038: Actualizar Stock de Producto</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>actualizarStock(productoId, variacion)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: actualizarStock(productoId, variacion)
-    activate SIS
-    alt el stock resultante es mayor o igual a cero
-        SIS--&gt;&gt;ADM: stock actualizado (nuevo stock disponible)
-    else el stock resultante sería negativo
-        SIS--&gt;&gt;ADM: error de solicitud (stock insuficiente)
-    else el producto no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-038_Actualizar-Stock-De-Producto.png ]</strong></p>
 <blockquote>El parámetro es una <strong>variación</strong> (positiva o negativa), no un valor absoluto: ingresa mercadería con signo más y la ajusta con signo menos.</blockquote>
 <hr>
 <h4>DSS — CU-039: Configurar Promociones por Cantidad</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>actualizarProducto(productoId, promociones)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: actualizarProducto(productoId, promociones)
-    activate SIS
-    alt la tabla de promociones es válida
-        SIS--&gt;&gt;ADM: promociones vigentes (cantidad mínima y porcentaje de descuento)
-    else la tabla de promociones es inválida
-        SIS--&gt;&gt;ADM: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-039_Configurar-Promociones-Por-Cantidad.png ]</strong></p>
 <blockquote>Al armar un pedido, cuando varias promociones aplican a la misma cantidad, el sistema toma <strong>la más conveniente para el cliente</strong>.</blockquote>
 <hr>
 <h4>DSS — CU-040: Activar / Desactivar Producto</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>desactivarProducto(productoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: desactivarProducto(productoId)
-    activate SIS
-    alt el producto existe en la distribuidora
-        SIS--&gt;&gt;ADM: producto desactivado (deja de aparecer en el catálogo)
-    else el producto no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-040_Activar-Desactivar-Producto.png ]</strong></p>
 <blockquote><strong>Realización parcial:</strong> el sistema no ofrece hoy la operación inversa <code>reactivarProducto(productoId)</code>. El caso de uso pide un interruptor bidireccional; el sistema solo implementa la desactivación.</blockquote>
 <hr>
 <h4>DSS — CU-041: Consultar Catálogo de Productos</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>consultarCatalogo(pagina, limite, distribuidora)</code>, <code>consultarProducto(productoId)</code>, <code>consultarProductosPorTipo(tipo)</code>, <code>consultarProductosDisponibles(distribuidora)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarCatalogo(pagina, limite, distribuidora)
-    activate SIS
-    SIS--&gt;&gt;CLI: productos activos (tipo, peso, precio, stock, promociones)
-    deactivate SIS
-
-    opt vista de compra rápida
-        CLI-&gt;&gt;SIS: consultarProductosDisponibles(distribuidora)
-        activate SIS
-        SIS--&gt;&gt;CLI: productos activos con stock disponible
-        deactivate SIS
-    end
-
-    opt detalle de un producto
-        CLI-&gt;&gt;SIS: consultarProducto(productoId)
-        activate SIS
-        alt el producto existe
-            SIS--&gt;&gt;CLI: detalle del producto
-        else el producto no existe
-            SIS--&gt;&gt;CLI: recurso no encontrado
-        end
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-041_Consultar-Catalogo-De-Productos.png ]</strong></p>
 <hr>
 <h3>SS-09 — Franjas Horarias</h3>
 <h4>DSS — CU-042: Crear Franja Horaria</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)
-    activate SIS
-    alt el formato horario y la capacidad son válidos
-        SIS--&gt;&gt;ADM: franja creada (franjaId, activa)
-    else el formato horario es inválido
-        SIS--&gt;&gt;ADM: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-042_Crear-Franja-Horaria.png ]</strong></p>
 <hr>
 <h4>DSS — CU-044: Seleccionar Franja Horaria al Crear Pedido</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>consultarDisponibilidadDeFranjas(fecha, distribuidora)</code>, <code>crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarDisponibilidadDeFranjas(fecha, distribuidora)
-    activate SIS
-    SIS--&gt;&gt;CLI: franjas con capacidad, reservados y cupos libres
-    deactivate SIS
-
-    CLI-&gt;&gt;SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
-    activate SIS
-    alt la franja está activa y tiene cupo para esa fecha
-        SIS--&gt;&gt;CLI: pedido creado con la franja reservada (numero, total, estado)
-    else la franja ya está completa
-        SIS--&gt;&gt;CLI: error de solicitud (la franja del día está completa)
-    else la fecha agendada es anterior a hoy
-        SIS--&gt;&gt;CLI: error de solicitud (no se puede agendar en una fecha pasada)
-    else la franja no existe o está inactiva
-        SIS--&gt;&gt;CLI: error de solicitud (franja inválida o inactiva)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-044_Seleccionar-Franja-Horaria-Al-Crear-Pedido.png ]</strong></p>
 <blockquote>El cupo se toma dentro de la misma transacción que crea el pedido, de modo que dos clientes que eligen la última plaza de la misma franja no la obtienen los dos.</blockquote>
 <hr>
 <h4>DSS — CU-045: Consultar Franjas Horarias Disponibles</h4>
 <p><strong>Actor:</strong> Cliente (y Administrador para la vista de configuración)<br><strong>Operaciones del sistema:</strong> <code>consultarDisponibilidadDeFranjas(fecha, distribuidora)</code>, <code>listarFranjas(distribuidora)</code>, <code>consultarFranja(franjaId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarDisponibilidadDeFranjas(fecha, distribuidora)
-    activate SIS
-    alt la fecha es válida
-        SIS--&gt;&gt;CLI: por cada franja activa (nombre, horario, capacidad, reservados, cupos libres)
-    else la fecha es inválida
-        SIS--&gt;&gt;CLI: error de validación
-    end
-    deactivate SIS
-
-    opt vista administrativa
-        CLI-&gt;&gt;SIS: listarFranjas(distribuidora)
-        activate SIS
-        SIS--&gt;&gt;CLI: franjas activas de la distribuidora
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-045_Consultar-Franjas-Horarias-Disponibles.png ]</strong></p>
 <hr>
 <h4>DSS — CU-103: Eliminar Franja Horaria</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarFranjaHoraria(franjaId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: eliminarFranjaHoraria(franjaId)
-    activate SIS
-    alt la franja pertenece a la distribuidora
-        SIS--&gt;&gt;ADM: franja desactivada (deja de ofrecerse para agendar)
-    else la franja no existe en la distribuidora
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-103_Eliminar-Franja-Horaria.png ]</strong></p>
 <blockquote><strong>Asimetría detectada:</strong> el sistema permite dar de baja una franja pero <strong>no</strong> modificar su capacidad (CU-043, no implementado). Para cambiar la capacidad hay que eliminar y volver a crear.</blockquote>
 <hr>
 <h3>SS-10 — Multi-Distribuidora (Multi-Tenancy)</h3>
 <h4>DSS — CU-052: Registrar Distribuidora</h4>
 <p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SUP as Super Administrador
-    participant SIS as Sistema
-
-    SUP-&gt;&gt;SIS: registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)
-    activate SIS
-    alt el identificador corto está libre
-        SIS--&gt;&gt;SUP: distribuidora creada (distribuidoraId, estado inicial)
-    else el identificador corto ya está en uso
-        SIS--&gt;&gt;SUP: conflicto (identificador duplicado)
-    else datos inválidos
-        SIS--&gt;&gt;SUP: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-052_Registrar-Distribuidora.png ]</strong></p>
 <blockquote>Solo el Super Administrador opera este caso de uso: es una acción de <strong>plataforma</strong>, no de una empresa.</blockquote>
 <hr>
 <h4>DSS — CU-053: Consultar Distribuidoras</h4>
 <p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>listarDistribuidoras()</code>, <code>consultarDistribuidora(distribuidoraId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SUP as Super Administrador
-    participant SIS as Sistema
-
-    SUP-&gt;&gt;SIS: listarDistribuidoras()
-    activate SIS
-    SIS--&gt;&gt;SUP: listado de distribuidoras (nombre, identificador, estado, plan)
-    deactivate SIS
-
-    opt ficha de una distribuidora
-        SUP-&gt;&gt;SIS: consultarDistribuidora(distribuidoraId)
-        activate SIS
-        alt la distribuidora existe
-            SIS--&gt;&gt;SUP: datos de la distribuidora
-        else la distribuidora no existe
-            SIS--&gt;&gt;SUP: recurso no encontrado
-        end
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-053_Consultar-Distribuidoras.png ]</strong></p>
 <hr>
 <h4>DSS — CU-054: Modificar Datos de la Distribuidora</h4>
 <p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>modificarDistribuidora(distribuidoraId, datos)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SUP as Super Administrador
-    participant SIS as Sistema
-
-    SUP-&gt;&gt;SIS: modificarDistribuidora(distribuidoraId, datos)
-    activate SIS
-    alt la distribuidora existe
-        SIS--&gt;&gt;SUP: distribuidora actualizada
-    else la distribuidora no existe
-        SIS--&gt;&gt;SUP: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-054_Modificar-Datos-De-La-Distribuidora.png ]</strong></p>
 <hr>
 <h4>DSS — CU-055: Dar de Baja una Distribuidora</h4>
 <p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>darDeBajaDistribuidora(distribuidoraId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SUP as Super Administrador
-    participant SIS as Sistema
-
-    SUP-&gt;&gt;SIS: darDeBajaDistribuidora(distribuidoraId)
-    activate SIS
-    alt la distribuidora existe
-        SIS--&gt;&gt;SUP: distribuidora dada de baja (baja lógica, se conserva su histórico)
-    else la distribuidora no existe
-        SIS--&gt;&gt;SUP: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-055_Dar-De-Baja-Una-Distribuidora.png ]</strong></p>
 <hr>
 <h3>SS-11 — Cobertura Geográfica</h3>
 <h4>DSS — CU-056: Definir Zona de Cobertura</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>definirZonaDeCobertura(nombre, poligono, recargo, activa)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: definirZonaDeCobertura(nombre, poligono, recargo, activa)
-    activate SIS
-    alt el polígono y el recargo son válidos
-        SIS--&gt;&gt;ADM: zona creada (zonaId, recargo asociado)
-    else el polígono es inválido
-        SIS--&gt;&gt;ADM: error de validación
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-056_Definir-Zona-De-Cobertura.png ]</strong></p>
 <hr>
 <h4>DSS — CU-057: Consultar Zonas de Cobertura</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarZonasDeCobertura()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarZonasDeCobertura()
-    activate SIS
-    SIS--&gt;&gt;ADM: zonas de la distribuidora (nombre, polígono, recargo, estado)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-057_Consultar-Zonas-De-Cobertura.png ]</strong></p>
 <hr>
 <h4>DSS — CU-058: Validar Cobertura de una Dirección</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>validarCobertura(latitud, longitud)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: validarCobertura(latitud, longitud)
-    activate SIS
-    alt el punto cae dentro de una zona activa
-        SIS--&gt;&gt;CLI: cubierta (zonaId, nombre de la zona, recargo aplicable)
-    else la distribuidora no tiene zonas cargadas
-        SIS--&gt;&gt;CLI: cubierta sin recargo (cobertura irrestricta por omisión)
-    else el punto está fuera de toda zona
-        SIS--&gt;&gt;CLI: fuera de cobertura
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-058_Validar-Cobertura-De-Una-Direccion.png ]</strong></p>
 <blockquote>Es la <strong>precondición</strong> de CU-005: la aplicación la invoca antes de dejar confirmar el pedido, y de acá sale el recargo por zona que se suma al total.</blockquote>
 <hr>
 <h4>DSS — CU-059: Eliminar Zona de Cobertura</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarZonaDeCobertura(zonaId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: eliminarZonaDeCobertura(zonaId)
-    activate SIS
-    alt la zona pertenece a la distribuidora
-        SIS--&gt;&gt;ADM: zona eliminada
-    else la zona no existe en la distribuidora
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-059_Eliminar-Zona-De-Cobertura.png ]</strong></p>
 <hr>
 <h3>SS-12 — Incidencias y Calidad de Servicio</h3>
 <h4>DSS — CU-060: Registrar Incidencia de Entrega</h4>
 <p><strong>Actor:</strong> Chofer<br><strong>Operaciones del sistema:</strong> <code>registrarIncidencia(pedidoId, tipo, descripcion, foto)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: registrarIncidencia(pedidoId, tipo, descripcion, foto)
-    activate SIS
-    alt el pedido existe
-        SIS--&gt;&gt;CHO: incidencia registrada (incidenciaId, estado ABIERTA)
-    else el pedido no existe
-        SIS--&gt;&gt;CHO: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-060_Registrar-Incidencia-De-Entrega.png ]</strong></p>
 <blockquote>Circuito <strong>distinto</strong> al de reclamos (SS-05): el reclamo lo abre el cliente después de la entrega, la incidencia la abre el chofer durante el reparto.</blockquote>
 <hr>
 <h4>DSS — CU-061: Listar Incidencias</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarIncidencias()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarIncidencias()
-    activate SIS
-    SIS--&gt;&gt;ADM: incidencias de su distribuidora (pedido, tipo, estado, chofer que la reportó)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-061_Listar-Incidencias.png ]</strong></p>
 <hr>
 <h4>DSS — CU-062: Consultar Incidencias de un Pedido</h4>
 <p><strong>Actor:</strong> Chofer (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarIncidenciasDelPedido(pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: consultarIncidenciasDelPedido(pedidoId)
-    activate SIS
-    SIS--&gt;&gt;CHO: incidencias del pedido (tipo, descripción, estado, resolución)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-062_Consultar-Incidencias-De-Un-Pedido.png ]</strong></p>
 <hr>
 <h4>DSS — CU-063: Resolver Incidencia</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>resolverIncidencia(incidenciaId, notaDeResolucion)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: resolverIncidencia(incidenciaId, notaDeResolucion)
-    activate SIS
-    alt la incidencia existe en la distribuidora
-        SIS--&gt;&gt;ADM: incidencia resuelta (estado y nota registrados)
-    else la incidencia no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-063_Resolver-Incidencia.png ]</strong></p>
 <hr>
 <h4>DSS — CU-064: Calificar Pedido</h4>
 <p><strong>Actor:</strong> Cliente o Chofer<br><strong>Operaciones del sistema:</strong> <code>calificarPedido(pedidoId, estrellas, comentario)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: calificarPedido(pedidoId, estrellas, comentario)
-    activate SIS
-    alt el pedido está entregado y el emisor participó de él
-        SIS--&gt;&gt;CLI: calificación registrada (se recalcula el promedio del calificado)
-    else el emisor ya calificó ese pedido
-        SIS--&gt;&gt;CLI: conflicto (ya calificaste este pedido)
-    else el pedido no está entregado o no tiene chofer
-        SIS--&gt;&gt;CLI: error de solicitud (solo se califican pedidos entregados)
-    else el pedido es de otro cliente o lo entregó otro chofer
-        SIS--&gt;&gt;CLI: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-064_Calificar-Pedido.png ]</strong></p>
 <blockquote>La calificación es <strong>bidireccional</strong>: el mismo mensaje lo emite el cliente hacia el chofer o el chofer hacia el cliente. El emisor sale de la sesión y el calificado se deriva del pedido, de modo que hay a lo sumo una calificación por pedido y por lado.</blockquote>
 <hr>
 <h4>DSS — CU-065: Consultar Promedio de Calificaciones de un Usuario</h4>
 <p><strong>Actor:</strong> Cliente (también Chofer y Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarResumenDeCalificaciones(usuarioId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarResumenDeCalificaciones(usuarioId)
-    activate SIS
-    SIS--&gt;&gt;CLI: promedio de estrellas y cantidad de calificaciones recibidas
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-065_Consultar-Promedio-De-Calificaciones-De-Un-Usuario.png ]</strong></p>
 <hr>
 <h4>DSS — CU-066: Consultar Historial de Calificaciones Recibidas</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarHistorialDeCalificaciones(usuarioId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: consultarHistorialDeCalificaciones(usuarioId)
-    activate SIS
-    SIS--&gt;&gt;ADM: calificaciones recibidas (pedido, estrellas, comentario, fecha)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-066_Consultar-Historial-De-Calificaciones-Recibidas.png ]</strong></p>
 <hr>
 <h3>SS-13 — Trazabilidad de Envases</h3>
 <h4>DSS — CU-067: Dar de Alta un Envase Físico</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
-    activate SIS
-    alt el número de serie está libre en la distribuidora
-        SIS--&gt;&gt;ADM: envase creado (envaseId, estado EN_DEPOSITO)
-    else el número de serie ya existe en la distribuidora
-        SIS--&gt;&gt;ADM: conflicto (serie duplicada)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-067_Dar-De-Alta-Un-Envase-Fisico.png ]</strong></p>
 <blockquote>El número de serie es único <strong>por distribuidora</strong>, no globalmente: dos empresas pueden tener garrafas con la misma numeración de fábrica.</blockquote>
 <hr>
 <h4>DSS — CU-068: Asignar Envases a un Pedido</h4>
 <p><strong>Actor:</strong> Chofer (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>asignarEnvasesAPedido(pedidoId, numerosDeSerie)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
-    activate SIS
-    alt el pedido existe y todos los envases están llenos
-        loop por cada número de serie recibido
-            SIS--&gt;&gt;CHO: envase despachado (serie, estado DESPACHADO)
-        end
-        SIS--&gt;&gt;CHO: asignación completa (cantidad de envases despachados)
-    else algún envase no está en estado LLENO
-        SIS--&gt;&gt;CHO: error de solicitud (no se puede despachar un envase sin llenar)
-    else el pedido o algún envase no existe
-        SIS--&gt;&gt;CHO: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-068_Asignar-Envases-A-Un-Pedido.png ]</strong></p>
 <hr>
 <h4>DSS — CU-069: Consultar el Parque de Envases</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarEnvases(estado)</code>, <code>consultarEnvase(envaseId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarEnvases(estado)
-    activate SIS
-    SIS--&gt;&gt;ADM: envases de la distribuidora (serie, estado, pedido y cliente actuales)
-    deactivate SIS
-
-    opt ficha de un envase
-        ADM-&gt;&gt;SIS: consultarEnvase(envaseId)
-        activate SIS
-        alt el envase existe
-            SIS--&gt;&gt;ADM: ficha del envase
-        else el envase no existe
-            SIS--&gt;&gt;ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-069_Consultar-El-Parque-De-Envases.png ]</strong></p>
 <hr>
 <h4>DSS — CU-070: Registrar Movimiento de Envase</h4>
 <p><strong>Actor:</strong> Chofer (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-
-    CHO-&gt;&gt;SIS: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
-    activate SIS
-    alt la transición es válida desde el estado actual
-        SIS--&gt;&gt;CHO: envase en el nuevo estado (movimiento asentado en su historial)
-    else la transición no está permitida
-        SIS--&gt;&gt;CHO: error de solicitud (transición inválida)
-    else el envase no existe en la distribuidora
-        SIS--&gt;&gt;CHO: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-070_Registrar-Movimiento-De-Envase.png ]</strong></p>
 <blockquote>Ciclo de vida del envase: EN_DEPOSITO → LLENO → DESPACHADO → CON_EL_CLIENTE → VACIO_DEVUELTO. Al confirmarse la entrega del pedido (CU-020 / CU-079) el sistema avanza solo los envases despachados a CON_EL_CLIENTE.</blockquote>
 <hr>
 <h4>DSS — CU-071: Consultar Historial de Movimientos de un Envase</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>consultarHistorialDelEnvase(envaseId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: consultarHistorialDelEnvase(envaseId)
-    activate SIS
-    SIS--&gt;&gt;ADM: movimientos en orden cronológico (estado origen, estado destino, pedido, responsable, fecha)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-071_Consultar-Historial-De-Movimientos-De-Un-Envase.png ]</strong></p>
 <blockquote>El historial es de <strong>solo agregado</strong>: los movimientos no se corrigen ni se borran, y por eso sirve como evidencia de trazabilidad.</blockquote>
 <hr>
 <h3>SS-14 — Pagos y Conciliación</h3>
 <h4>DSS — CU-048: Procesar Pago con MercadoPago</h4>
 <p><strong>Actor:</strong> Pasarela de Pago (actor externo). Receptores: Cliente y Chofer<br><strong>Operaciones del sistema:</strong> <code>notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor MP as Pasarela de Pago
-    participant SIS as Sistema
-    actor CHO as Chofer
-
-    MP-&gt;&gt;SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
-    activate SIS
-    alt La firma no es valida
-        SIS--&gt;&gt;MP: notificacion recibida (se descarta sin procesar)
-    else Pago aprobado de un pedido pendiente
-        SIS--&gt;&gt;MP: notificacion recibida
-        SIS-)CHO: oferta del pedido ya pagado
-    else Pago aprobado de la sena de una reserva
-        SIS--&gt;&gt;MP: notificacion recibida (la sena queda paga, la reserva no se despacha)
-    else Pago aprobado de un pedido ya cancelado o entregado
-        SIS--&gt;&gt;MP: notificacion recibida (se registra el pago, sin reactivar el pedido)
-    else Pago rechazado o cancelado
-        SIS--&gt;&gt;MP: notificacion recibida (el pedido queda a la espera)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-048_Procesar-Pago-Con-Mercadopago.png ]</strong></p>
 <blockquote>El sistema responde <strong>siempre</strong> con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido.</blockquote>
 <hr>
 <h3>SS-15 — Reservas Programadas</h3>
 <h4>DSS — CU-072: Crear Reserva Programada con Seña</h4>
 <p><strong>Actor:</strong> Cliente<br><strong>Operaciones del sistema:</strong> <code>crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
-    activate SIS
-    alt hay stock y la franja tiene cupo para esa fecha
-        SIS--&gt;&gt;CLI: reserva creada (numero, total, seña, estado RESERVADO)
-        opt la seña se paga con la pasarela
-            SIS--&gt;&gt;CLI: enlace de pago de la seña
-        end
-    else no hay stock suficiente
-        SIS--&gt;&gt;CLI: error de solicitud (stock insuficiente)
-    else la franja está completa o la fecha es pasada
-        SIS--&gt;&gt;CLI: error de solicitud (no se puede agendar en esa franja)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-072_Crear-Reserva-Programada-Con-Sena.png ]</strong></p>
 <blockquote>La reserva nace en estado <strong>RESERVADO</strong>: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075).</blockquote>
 <hr>
 <h4>DSS — CU-073: Listar Reservas y Estado de la Seña</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarReservas()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarReservas()
-    activate SIS
-    SIS--&gt;&gt;ADM: reservas ordenadas por fecha agendada (cliente, total, seña, si está paga, saldo)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-073_Listar-Reservas-Y-Estado-De-La-Sena.png ]</strong></p>
 <hr>
 <h4>DSS — CU-074: Confirmar Seña Cobrada en Efectivo</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>confirmarSenia(pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: confirmarSenia(pedidoId)
-    activate SIS
-    alt el pedido es una reserva pendiente
-        SIS--&gt;&gt;ADM: seña confirmada (la reserva queda lista para activarse sola)
-    else el pedido no es una reserva pendiente
-        SIS--&gt;&gt;ADM: error de solicitud (el pedido no es una reserva pendiente)
-    else la reserva no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-074_Confirmar-Sena-Cobrada-En-Efectivo.png ]</strong></p>
 <blockquote>Es la <strong>única acción humana</strong> del ciclo de reservas: la seña pagada por la pasarela se confirma sola (CU-048).</blockquote>
 <hr>
 <h4>DSS — CU-075: Activar Reservas Vencidas Automáticamente</h4>
 <p><strong>Actor:</strong> Sistema Automático<br><strong>Operaciones del sistema:</strong> <code>activarReservasDelDia()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor AUT as Sistema Automático
-    participant SIS as Sistema
-    actor CHO as Chofer
-
-    Note over AUT: Proceso periódico. Frecuencia real cada 5 minutos
-    AUT-&gt;&gt;SIS: activarReservasDelDia()
-    activate SIS
-    alt hay reservas con la seña paga y el día cumplido
-        loop por cada reserva vencida (hasta 50 por corrida)
-            SIS-)CHO: oferta del pedido activado (pedidoId, total, ítems, distancia)
-        end
-        SIS--&gt;&gt;AUT: reservas activadas y enviadas a despacho
-    else no hay reservas para activar
-        SIS--&gt;&gt;AUT: sin trabajo por hacer
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-075_Activar-Reservas-Vencidas-Automaticamente.png ]</strong></p>
 <blockquote>Solo se activan las reservas con la seña <strong>efectivamente paga</strong>. Una reserva cuya activación falla se registra y se reintenta en la corrida siguiente.</blockquote>
 <hr>
 <h4>DSS — CU-076: Expirar Reservas sin Seña Pagada</h4>
 <p><strong>Actor:</strong> Sistema Automático<br><strong>Operaciones del sistema:</strong> <code>expirarReservasSinSenia()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor AUT as Sistema Automático
-    participant SIS as Sistema
-
-    Note over AUT: Proceso periódico. Frecuencia real cada 1 hora
-    AUT-&gt;&gt;SIS: expirarReservasSinSenia()
-    activate SIS
-    alt hay reservas sin seña más viejas que el plazo configurado
-        loop por cada reserva vencida (hasta 50 por corrida)
-            SIS--&gt;&gt;AUT: reserva cancelada y stock liberado
-        end
-    else no hay reservas vencidas
-        SIS--&gt;&gt;AUT: sin trabajo por hacer
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-076_Expirar-Reservas-Sin-Sena-Pagada.png ]</strong></p>
 <blockquote>El plazo de espera de la seña es un parámetro de configuración (valor por omisión, 48 horas). Cada expiración es atómica: si falla, la reserva queda intacta para la corrida siguiente.</blockquote>
 <hr>
 <h4>DSS — CU-077: Expirar Pedidos de MercadoPago sin Pagar</h4>
 <p><strong>Actor:</strong> Sistema Automático<br><strong>Operaciones del sistema:</strong> <code>expirarPedidosSinPagar()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor AUT as Sistema Automático
-    participant SIS as Sistema
-
-    Note over AUT: Proceso periódico. Frecuencia real cada 30 minutos
-    AUT-&gt;&gt;SIS: expirarPedidosSinPagar()
-    activate SIS
-    alt hay pedidos pendientes con pasarela más viejos que el plazo
-        loop por cada pedido vencido (hasta 50 por corrida)
-            alt el pago no llegó a acreditarse
-                SIS--&gt;&gt;AUT: pedido cancelado por falta de pago y stock liberado
-            else el pago se acreditó justo antes de la revisión
-                SIS--&gt;&gt;AUT: pedido intacto (gana el pago, no la expiración)
-            end
-        end
-    else no hay pedidos vencidos
-        SIS--&gt;&gt;AUT: sin trabajo por hacer
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-077_Expirar-Pedidos-De-Mercadopago-Sin-Pagar.png ]</strong></p>
 <blockquote>Sin este proceso, el stock que se reserva al crear el pedido —antes de que el cliente pague— quedaría bloqueado para siempre si abandona el pago. El plazo por omisión es de 60 minutos.</blockquote>
 <hr>
 <h3>SS-16 — Administración de Cuentas y Roles</h3>
 <h4>DSS — CU-086: Registrar Administrador</h4>
 <p><strong>Actor:</strong> Administrador (y Super Administrador)<br><strong>Operaciones del sistema:</strong> <code>registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)</code>, <code>crearAdministradorSobreUsuarioExistente(usuarioId, rolId, distribuidoraId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)
-    activate SIS
-    alt es super administrador
-        SIS--&gt;&gt;ADM: administrador creado en la distribuidora indicada
-    else es administrador de empresa y el alta es en su propia distribuidora
-        SIS--&gt;&gt;ADM: administrador creado en su distribuidora
-    else intenta crear en otra distribuidora o con rol de super administrador
-        SIS--&gt;&gt;ADM: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-086_Registrar-Administrador.png ]</strong></p>
 <blockquote>Regla de negocio multi-empresa: un administrador de empresa <strong>nunca</strong> puede crear administradores de otra distribuidora ni escalar a super administrador.</blockquote>
 <hr>
 <h4>DSS — CU-087: Crear el Primer Super Administrador</h4>
 <p><strong>Actor:</strong> Administrador (puesta en marcha del sistema, sin sesión iniciada)<br><strong>Operaciones del sistema:</strong> <code>crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
-    activate SIS
-    alt no existe ningún administrador en el sistema
-        SIS--&gt;&gt;ADM: super administrador creado (queda habilitado el acceso al panel)
-    else ya existen administradores
-        SIS--&gt;&gt;ADM: acceso denegado (la operación de arranque ya fue consumida)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-087_Crear-El-Primer-Super-Administrador.png ]</strong></p>
 <blockquote>Es una operación de <strong>una sola vez</strong>: se autodeshabilita apenas existe el primer administrador.</blockquote>
 <hr>
 <h4>DSS — CU-088: Consultar Administradores</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarAdministradores()</code>, <code>buscarAdministrador(termino)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarAdministradores()
-    activate SIS
-    SIS--&gt;&gt;ADM: administradores de su distribuidora (nombre, correo, rol)
-    deactivate SIS
-
-    opt búsqueda puntual
-        ADM-&gt;&gt;SIS: buscarAdministrador(termino)
-        activate SIS
-        alt hay coincidencias
-            SIS--&gt;&gt;ADM: administrador encontrado
-        else no hay coincidencias
-            SIS--&gt;&gt;ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-088_Consultar-Administradores.png ]</strong></p>
 <hr>
 <h4>DSS — CU-089: Gestionar Roles del Sistema</h4>
 <p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>crearRol(nombre, descripcion)</code>, <code>listarRoles()</code>, <code>consultarRol(rolId)</code>, <code>actualizarRol(rolId, datos)</code>, <code>eliminarRol(rolId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SUP as Super Administrador
-    participant SIS as Sistema
-
-    SUP-&gt;&gt;SIS: listarRoles()
-    activate SIS
-    SIS--&gt;&gt;SUP: roles definidos en el sistema
-    deactivate SIS
-
-    opt alta de un rol
-        SUP-&gt;&gt;SIS: crearRol(nombre, descripcion)
-        activate SIS
-        SIS--&gt;&gt;SUP: rol creado (rolId)
-        deactivate SIS
-    end
-
-    opt modificación
-        SUP-&gt;&gt;SIS: actualizarRol(rolId, datos)
-        activate SIS
-        alt el rol existe
-            SIS--&gt;&gt;SUP: rol actualizado
-        else el rol no existe
-            SIS--&gt;&gt;SUP: recurso no encontrado
-        end
-        deactivate SIS
-    end
-
-    opt baja
-        SUP-&gt;&gt;SIS: eliminarRol(rolId)
-        activate SIS
-        SIS--&gt;&gt;SUP: rol eliminado
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-089_Gestionar-Roles-Del-Sistema.png ]</strong></p>
 <hr>
 <h4>DSS — CU-090: Sembrar los Roles Iniciales</h4>
 <p><strong>Actor:</strong> Super Administrador<br><strong>Operaciones del sistema:</strong> <code>sembrarRolesIniciales()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SUP as Super Administrador
-    participant SIS as Sistema
-
-    SUP-&gt;&gt;SIS: sembrarRolesIniciales()
-    activate SIS
-    SIS--&gt;&gt;SUP: roles base disponibles (cliente, chofer, administrador, super administrador)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-090_Sembrar-Los-Roles-Iniciales.png ]</strong></p>
 <blockquote>Operación de puesta en marcha, idempotente: volver a ejecutarla no duplica los roles ya existentes.</blockquote>
 <hr>
 <h4>DSS — CU-092: Consultar Listado de Clientes</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>listarClientes(pagina, limite)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: listarClientes(pagina, limite)
-    activate SIS
-    SIS--&gt;&gt;ADM: página de clientes (nombre, contacto, validación, ubicación)
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-092_Consultar-Listado-De-Clientes.png ]</strong></p>
 <hr>
 <h4>DSS — CU-093: Validar / Invalidar Cliente</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>validarCliente(clienteId)</code>, <code>invalidarCliente(clienteId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    alt aprobación del cliente
-        ADM-&gt;&gt;SIS: validarCliente(clienteId)
-        activate SIS
-        SIS--&gt;&gt;ADM: cliente validado
-        deactivate SIS
-    else revocación
-        ADM-&gt;&gt;SIS: invalidarCliente(clienteId)
-        activate SIS
-        SIS--&gt;&gt;ADM: cliente invalidado
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-093_Validar-Invalidar-Cliente.png ]</strong></p>
 <hr>
 <h4>DSS — CU-094: Actualizar Ubicación del Cliente</h4>
 <p><strong>Actor:</strong> Cliente (también Administrador desde el panel)<br><strong>Operaciones del sistema:</strong> <code>actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)
-    activate SIS
-    alt el cliente existe
-        SIS--&gt;&gt;CLI: ubicación actualizada
-    else el cliente no existe
-        SIS--&gt;&gt;CLI: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-094_Actualizar-Ubicacion-Del-Cliente.png ]</strong></p>
 <hr>
 <h4>DSS — CU-095: Eliminar Cliente (baja lógica)</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>eliminarCliente(clienteId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: eliminarCliente(clienteId)
-    activate SIS
-    alt el cliente existe
-        SIS--&gt;&gt;ADM: cliente dado de baja (se conserva su histórico de pedidos)
-    else el cliente no existe
-        SIS--&gt;&gt;ADM: recurso no encontrado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-095_Eliminar-Cliente.png ]</strong></p>
 <hr>
 <h3>SS-17 — Notificaciones y Mensajería</h3>
 <h4>DSS — CU-098: Registrar el Token de Notificaciones del Dispositivo</h4>
 <p><strong>Actor:</strong> Cliente (también Chofer)<br><strong>Operaciones del sistema:</strong> <code>registrarTokenDeNotificaciones(usuarioId, token, plataforma)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: registrarTokenDeNotificaciones(usuarioId, token, plataforma)
-    activate SIS
-    alt registra el token de su propio dispositivo o es administrador
-        SIS--&gt;&gt;CLI: token registrado (el dispositivo empieza a recibir avisos)
-    else intenta registrar un token a nombre de otro usuario
-        SIS--&gt;&gt;CLI: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-098_Registrar-El-Token-De-Notificaciones-Del-Dispositivo.png ]</strong></p>
 <blockquote>Es la <strong>precondición técnica de CU-021</strong>: sin token registrado no hay avisos al dispositivo.</blockquote>
 <hr>
 <h4>DSS — CU-099: Consultar los Tokens de un Usuario</h4>
 <p><strong>Actor:</strong> Cliente (también Administrador)<br><strong>Operaciones del sistema:</strong> <code>consultarTokensDelUsuario(usuarioId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-
-    CLI-&gt;&gt;SIS: consultarTokensDelUsuario(usuarioId)
-    activate SIS
-    alt consulta sus propios dispositivos o es administrador
-        SIS--&gt;&gt;CLI: dispositivos registrados (plataforma, fecha de alta)
-    else consulta los dispositivos de otro usuario
-        SIS--&gt;&gt;CLI: acceso denegado
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-099_Consultar-Los-Tokens-De-Un-Usuario.png ]</strong></p>
 <hr>
 <h4>DSS — CU-100: Enviar Notificación de Prueba</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>enviarNotificacionDePrueba(usuarioId, titulo, mensaje)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-    actor CLI as Usuario Destinatario
-
-    ADM-&gt;&gt;SIS: enviarNotificacionDePrueba(usuarioId, titulo, mensaje)
-    activate SIS
-    alt el usuario tiene al menos un dispositivo registrado
-        SIS-)CLI: notificación de prueba
-        SIS--&gt;&gt;ADM: notificación enviada
-    else el usuario no tiene dispositivos registrados
-        SIS--&gt;&gt;ADM: no se pudo enviar (sin dispositivos registrados)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-100_Enviar-Notificacion-De-Prueba.png ]</strong></p>
 <hr>
 <h4>DSS — CU-101: Reenviar Notificación de Confirmación de Pedido</h4>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>reenviarConfirmacionDePedido(usuarioId, pedidoId)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-    actor CLI as Cliente
-
-    ADM-&gt;&gt;SIS: reenviarConfirmacionDePedido(usuarioId, pedidoId)
-    activate SIS
-    alt el cliente tiene dispositivos registrados
-        SIS-)CLI: confirmación del pedido
-        SIS--&gt;&gt;ADM: notificación reenviada
-    else el cliente no tiene dispositivos registrados
-        SIS--&gt;&gt;ADM: no se pudo enviar
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-101_Reenviar-Notificacion-De-Confirmacion-De-Pedido.png ]</strong></p>
 <blockquote>Se usa como acción de soporte cuando el cliente dice no haber recibido el aviso original.</blockquote>
 <hr>
 <h4>DSS — CU-102: Probar el Servicio de Correo</h4>
 <p><strong>Actor:</strong> Administrador (verificación operativa)<br><strong>Operaciones del sistema:</strong> <code>probarServicioDeCorreo(destinatario)</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: probarServicioDeCorreo(destinatario)
-    activate SIS
-    alt el servicio de correo responde
-        SIS--&gt;&gt;ADM: correo de prueba enviado
-    else el servicio de correo falla
-        SIS--&gt;&gt;ADM: error del servicio de correo
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-102_Probar-El-Servicio-De-Correo.png ]</strong></p>
 <blockquote>El propio código marca esta operación como <strong>temporal</strong> y hoy es accesible sin sesión: es una observación a resolver antes de producción, no una funcionalidad del producto.</blockquote>
 <hr>
 <h3>SS-18 — Observabilidad y Operación</h3>
 <h4>DSS — CU-104: Verificar la Salud del Sistema</h4>
 <p><strong>Actor:</strong> Plataforma de Operación (actor externo: orquestador o balanceador de carga)<br><strong>Operaciones del sistema:</strong> <code>verificarSalud()</code>, <code>verificarVida()</code>, <code>verificarDisponibilidad()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor OPS as Plataforma de Operacion
-    participant SIS as Sistema
-
-    Note over OPS: Sondeo periodico durante toda la vida de la instancia
-
-    OPS-&gt;&gt;SIS: verificarVida()
-    activate SIS
-    SIS--&gt;&gt;OPS: la instancia esta viva
-    deactivate SIS
-
-    OPS-&gt;&gt;SIS: verificarDisponibilidad()
-    activate SIS
-    alt Las dependencias responden
-        SIS--&gt;&gt;OPS: lista para recibir trafico
-    else Alguna dependencia no responde
-        SIS--&gt;&gt;OPS: no disponible (se le retira el trafico a la instancia)
-    end
-    deactivate SIS
-
-    opt Diagnostico ampliado
-        OPS-&gt;&gt;SIS: verificarSalud()
-        activate SIS
-        SIS--&gt;&gt;OPS: estado de cada verificacion (base de datos, memoria cache, memoria en uso, espacio en disco)
-        deactivate SIS
-    end</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-104_Verificar-La-Salud-Del-Sistema.png ]</strong></p>
 <blockquote>Es el caso de uso que da soporte a los requisitos no funcionales de <strong>disponibilidad</strong> y <strong>escalabilidad</strong>, hoy sin ningún caso de uso asociado en la matriz de rastreabilidad.</blockquote>
 <hr>
 <h3>CU no modelados y por qué</h3>
@@ -2184,167 +529,24 @@ blockquote{border-left:3px solid #ccc;margin-left:0;padding-left:12px;color:#444
 <p>Diagramas de los procesos automáticos todavía no construidos.</p>
 <h5>DSS — CU-105: Planificar el mantenimiento y las habilitaciones de la flota</h5>
 <p><strong>Actor:</strong> Sistema Automático (proceso temporal diario), con escalamiento al Administrador<br><strong>Operaciones del sistema:</strong> <code>planificarMantenimientoDeFlota()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CHO as Chofer
-    actor ADM as Administrador
-
-    Note over SAU: Se ejecuta una vez por dia,&lt;br/&gt;a la hora configurada
-    SAU-&gt;&gt;SIS: planificarMantenimientoDeFlota()
-    activate SIS
-    Note over SIS: Estima el consumo diario de cada vehiculo,&lt;br/&gt;proyecta los vencimientos y arma las ventanas&lt;br/&gt;que no dejan la zona bajo el minimo
-
-    loop Por cada tarea dentro de la ventana de anticipacion
-        loop Por cada ventana alternativa, de mejor a peor
-            SIS--&gt;&gt;CHO: propuesta de ventana de taller (vigencia limitada)
-            alt El chofer acepta
-                CHO-&gt;&gt;SIS: aceptar la ventana propuesta
-                SIS--&gt;&gt;CHO: ventana confirmada y agenda bloqueada
-            else Rechaza o vence la vigencia
-                SIS-&gt;&gt;SIS: cerrar la propuesta y pasar a la siguiente ventana
-            end
-        end
-
-        alt Se agotaron las ventanas sin acuerdo
-            SIS--&gt;&gt;ADM: cuadro de opciones evaluadas y motivo de cada descarte
-            ADM-&gt;&gt;SIS: confirmar la ventana y el gasto del taller
-            SIS--&gt;&gt;ADM: tarea programada
-        else La ventana quedo acordada con el chofer
-            SIS-&gt;&gt;SIS: registrar la tarea como programada
-        end
-    end
-
-    alt Hay una habilitacion bloqueante vencida
-        SIS-&gt;&gt;SIS: dejar el vehiculo fuera de servicio
-        SIS--&gt;&gt;ADM: aviso de vehiculo inhabilitado
-    end
-    SIS--&gt;&gt;SAU: planificacion resuelta
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-105_Planificar-El-Mantenimiento-Y-Las-Habilitaciones-De-La-Flota.png ]</strong></p>
 <hr>
 <h5>DSS — CU-106: Anticipar la recompra por consumo estimado</h5>
 <p><strong>Actor:</strong> Sistema Automático (proceso temporal diario), con el Cliente como destinatario<br><strong>Operaciones del sistema:</strong> <code>anticiparRecompras()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CLI as Cliente
-
-    Note over SAU: Se ejecuta una vez por dia
-    SAU-&gt;&gt;SIS: anticiparRecompras()
-    activate SIS
-    Note over SIS: Estima el ritmo de consumo de cada cliente&lt;br/&gt;ponderado por kilaje y corregido por estacionalidad,&lt;br/&gt;y proyecta la fecha de agotamiento
-
-    loop Por cada cliente dentro de la ventana de anticipacion
-        alt El cliente no tiene pedido activo ni invitacion reciente
-            SIS--&gt;&gt;CLI: invitacion a reponer con el pedido precargado (vigencia limitada)
-            alt El cliente acepta dentro de la vigencia
-                CLI-&gt;&gt;SIS: aceptar la invitacion
-                SIS--&gt;&gt;CLI: pedido creado y en busqueda de chofer
-            else Rechaza o vence la vigencia
-                SIS-&gt;&gt;SIS: cerrar la invitacion y registrar la fecha del intervalo minimo
-            end
-        else El cliente esta excluido
-            SIS-&gt;&gt;SIS: no emitir invitacion
-        end
-    end
-    SIS--&gt;&gt;SAU: invitaciones emitidas y caducadas procesadas
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-106_Anticipar-La-Recompra-Por-Consumo-Estimado.png ]</strong></p>
 <hr>
 <h5>DSS — CU-107: Agrupar pedidos por recorrido</h5>
 <p><strong>Actor:</strong> Sistema Automático (proceso temporal periódico), con el Chofer como destinatario<br><strong>Operaciones del sistema:</strong> <code>agruparPedidosPorRecorrido()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CHO as Chofer
-
-    Note over SAU: Se ejecuta con la periodicidad configurada
-    SAU-&gt;&gt;SIS: agruparPedidosPorRecorrido()
-    activate SIS
-    Note over SIS: Agrupa por zona, proximidad, franja horaria&lt;br/&gt;y capacidad de carga, y ordena las paradas&lt;br/&gt;por secuencia de entrega
-
-    loop Por cada lote armado
-        loop Por cada chofer candidato no contactado
-            SIS--&gt;&gt;CHO: oferta del recorrido completo (paradas, peso, vigencia)
-            alt El chofer acepta dentro de la vigencia
-                CHO-&gt;&gt;SIS: aceptar el recorrido
-                SIS--&gt;&gt;CHO: pedidos asignados en el orden establecido
-            else Rechaza o vence la vigencia
-                SIS-&gt;&gt;SIS: cerrar la oferta y pasar al candidato siguiente
-            end
-        end
-
-        alt Ningun chofer tomo el lote
-            SIS-&gt;&gt;SIS: deshacer el lote y devolver los pedidos al circuito individual
-        else El lote quedo asignado
-            SIS-&gt;&gt;SIS: registrar el recorrido asignado
-        end
-    end
-    SIS--&gt;&gt;SAU: lotes procesados
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-107_Agrupar-Pedidos-Por-Recorrido.png ]</strong></p>
 <hr>
 <h5>DSS — CU-108: Recuperar envases no devueltos</h5>
 <p><strong>Actor:</strong> Sistema Automático (proceso temporal periódico), con escalamiento al Administrador<br><strong>Operaciones del sistema:</strong> <code>gestionarEnvasesNoDevueltos()</code></p>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CLI as Cliente
-    actor ADM as Administrador
-
-    Note over SAU: Se ejecuta con la periodicidad configurada
-    SAU-&gt;&gt;SIS: gestionarEnvasesNoDevueltos()
-    activate SIS
-    Note over SIS: Detecta los envases retenidos por encima&lt;br/&gt;del plazo de tolerancia configurado
-
-    loop Por cada envase retenido
-        loop Por cada escalon de la secuencia
-            alt El envase ya volvio
-                SIS-&gt;&gt;SIS: cerrar el caso y liberar el deposito
-            else El envase sigue retenido
-                SIS--&gt;&gt;CLI: aviso del escalon (recordatorio, deposito comprometido)
-                alt Hay una entrega programada al mismo cliente
-                    SIS--&gt;&gt;CLI: oferta de devolver el envase en ese viaje (vigencia limitada)
-                    CLI-&gt;&gt;SIS: aceptar o no responder
-                else No hay entrega programada
-                    SIS-&gt;&gt;SIS: saltear la oferta de retiro
-                end
-            end
-        end
-
-        alt Se agotaron los escalones y el importe supera el umbral
-            SIS--&gt;&gt;ADM: legajo del caso (cliente, historial del envase, importe)
-            ADM-&gt;&gt;SIS: cobrar el deposito, dar de baja el envase o cerrar sin cargo
-            SIS--&gt;&gt;ADM: resolucion registrada
-        else El envase volvio o el importe no llega al umbral
-            SIS-&gt;&gt;SIS: cerrar el caso segun corresponda
-        end
-    end
-    SIS--&gt;&gt;SAU: casos de recupero procesados
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-108_Recuperar-Envases-No-Devueltos.png ]</strong></p>
 <hr>
 <h5>Especificado — pendiente de construcción · DSS — CU-043: Modificar Capacidad de Franja Horaria</h5>
 <p><strong>Actor:</strong> Administrador<br><strong>Operaciones del sistema:</strong> <code>modificarFranjaHoraria(franja, nombre, horaInicio, horaFin, capacidad)</code></p>
 <blockquote>El sistema <strong>todavía no realiza este caso de uso</strong>: no existe operación de modificación sobre una franja horaria. El diagrama especifica el comportamiento esperado para cuando se construya.</blockquote>
-<p><em>[mermaid]</em></p><pre>sequenceDiagram
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    ADM-&gt;&gt;SIS: modificarFranjaHoraria(franja, nombre, horaInicio, horaFin, capacidad)
-    activate SIS
-    alt Los datos son válidos y la franja pertenece a la distribuidora
-        SIS--&gt;&gt;ADM: franja actualizada (nombre, rango horario, capacidad)
-    else La hora de fin no es posterior a la de inicio
-        SIS--&gt;&gt;ADM: rechazo (rango horario inválido)
-    else La capacidad nueva es menor que los pedidos ya programados
-        SIS--&gt;&gt;ADM: rechazo (hay pedidos comprometidos por encima de la capacidad)
-    else La franja pertenece a otra distribuidora
-        SIS--&gt;&gt;ADM: rechazo (franja no encontrada)
-    end
-    deactivate SIS</pre>
+<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px"><strong>[ INSERTAR IMAGEN: DSS_CU-043_Modificar-Capacidad-De-Franja-Horaria.png ]</strong></p>
 <hr>
 <h3>2.2 Contratos de Operaciones del Sistema</h3>
 <hr>
