@@ -132,6 +132,15 @@ ul,ol{padding-left:20px;margin:10px 0} li{margin-bottom:5px}
 table.prov td:first-child{font-family:"IBM Plex Mono",monospace;font-size:12px;white-space:nowrap;color:var(--content)}
 table.prov td:nth-child(2){font-size:13px;color:var(--muted);white-space:nowrap}
 table.prov td:last-child{font-size:13px}
+.grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:9px;margin-bottom:8px}
+.tarjeta{display:flex;gap:10px;align-items:center;text-align:left;padding:11px 13px;cursor:pointer;
+  background:var(--surface);border:1px solid var(--outline);border-radius:6px;color:var(--content);
+  font:inherit;font-size:13.5px;box-shadow:var(--shadow)}
+.tarjeta:hover{border-color:var(--primary)}
+.tarjeta:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.t-tag{font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;letter-spacing:.05em;
+  padding:2px 7px;border-radius:4px;color:var(--on-accent);flex:none}
+.t-nom{flex:1;min-width:0;line-height:1.3}
 .empty{padding:70px 30px;text-align:center;color:var(--muted);max-width:470px;margin:0 auto}
 .empty h2{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:1.5rem;color:var(--content);margin:0 0 10px}
 .kb{font-family:"IBM Plex Mono",monospace;font-size:11px;border:1px solid var(--outline);
@@ -145,7 +154,7 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
 <div class="app">
   <aside>
-    <div class="brand">
+    <button class="brand" id="alInicio" style="border:none;cursor:pointer;font:inherit;text-align:left;width:100%">
       <svg class="marca" viewBox="0 0 40 40" role="img" aria-label="SPLG">
         <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--primary)"/>
         <path d="M12.5 21.5 C12.5 18 16 16.5 16 15.5 L24 15.5 C24 16.5 27.5 18 27.5 21.5
@@ -159,7 +168,7 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         <h1>SPLG</h1>
         <p>ATLAS DE CASOS DE USO</p>
       </div>
-    </div>
+    </button>
     <div class="tools">
       <input type="search" id="q" placeholder="Buscar: login, pedido, CU-005…" autocomplete="off" aria-label="Buscar caso de uso">
       <div class="filters" id="filtros">
@@ -401,16 +410,47 @@ button.ghost:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     pintar();
   }
   function inicio(){
-    document.getElementById("detalle").innerHTML =
-      '<div class="empty"><h2>Elegí un caso de uso</h2>' +
-      "<p>Cada uno muestra todo lo que tiene: alto nivel, expandido, caso de uso real cuando lo hay, " +
-      "diagrama de secuencia, diagrama de interacción, el módulo inteligente al que pertenece, " +
-      "y en qué documento y sección está respaldado.</p>" +
-      '<p style="margin-top:16px"><span class="kb">/</span> para buscar · <span class="kb">↑</span> <span class="kb">↓</span> para recorrer</p>' +
-      '<p style="margin-top:20px"><button class="ghost" id="ir1">Abrir CU-001 · Iniciar sesión</button></p></div>';
-    var b = document.getElementById("ir1"); if (b) b.onclick = function(){ abrir("CU-001"); };
+    sel = null;
+    function grilla(titulo, items){
+      return '<h4 class="sub">'+titulo+'</h4><div class="grilla">' + items.map(function(it){
+        return '<button class="tarjeta" data-ir2="'+it[0]+'">' +
+          '<span class="t-tag" style="background:'+it[3]+'">'+it[1]+'</span>' +
+          '<span class="t-nom">'+esc(it[2])+'</span></button>';
+      }).join("") + "</div>";
+    }
+    var h = '<div class="head"><div class="over"><span>SPLG</span>' +
+      '<span class="chip">108 CASOS DE USO</span></div>' +
+      '<h2>Toda la documentación del sistema, en un solo lugar</h2>' +
+      '<div class="meta"><span>Cada caso de uso con sus cuatro artefactos, los diez casos reales, ' +
+      'los cinco módulos inteligentes y la vista general del sistema.</span></div></div>';
+
+    h += grilla("Vista general del sistema", [
+      ["sis-actores","ACT","Actores del sistema","var(--cua)"],
+      ["sis-contexto","DIA","Diagrama de casos de uso del sistema","var(--cua)"],
+      ["sis-subsistemas","SUB","Subsistemas del proyecto","var(--cua)"],
+      ["sis-catalogo","CAT","Catálogo de los 108 casos","var(--cua)"],
+      ["uml-contexto","UML","Diagrama de contexto en notación UML","var(--dsd)"]
+    ]);
+    h += grilla("Los cinco módulos inteligentes", Object.keys(MODS).sort().map(function(k){
+      return ["mod-"+k, k, MODS[k].nombre, "var(--mod)"]; }));
+    var reales = codigos.filter(function(c){ return CU[c].cur; });
+    h += grilla("Los diez casos de uso reales", reales.map(function(c){
+      return [c, c.replace("CU-",""), CU[c].cua.nombre||c, "var(--cur)"]; }));
+    h += grilla("Casos de uso por subsistema · notación UML",
+      Object.keys(SS).sort().filter(function(k){ return SS[k].uml; }).map(function(k){
+        return ["uml-"+k, k.replace("SS-",""), SS[k].nombre, "var(--dsd)"]; }));
+
+    h += '<div class="note" style="margin-top:26px">Para cualquier otro caso de uso, buscalo en el ' +
+      'panel de la izquierda o apretá <span class="kb">/</span>. Los 108 están ahí, agrupados por subsistema.</div>';
+    document.getElementById("detalle").innerHTML = h;
+    document.getElementById("main").scrollTop = 0;
+    document.querySelectorAll("[data-ir2]").forEach(function(b){
+      b.onclick = function(){ irA(b.dataset.ir2); };
+    });
   }
 
+  document.getElementById("alInicio").onclick = function(){
+    location.hash = ""; ponerFiltro("todos"); pintar(); inicio(); };
   document.getElementById("q").addEventListener("input", pintar);
   function ponerFiltro(f){
     filtro = f;
