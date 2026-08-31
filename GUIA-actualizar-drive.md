@@ -73,12 +73,14 @@ Cada uno te dice exactamente qué archivo va ahí. Están en `diagramas/png/` y 
 
 En Google Docs: *Insertar → Imagen → Subir desde la computadora*, y borrás el recuadro.
 
-| Documento | Cuántas imágenes |
-|---|---|
-| 0 — Plan del Proyecto | 1 (el diagrama de casos de uso del sistema) |
-| 1 — Requisitos | 20 (el del sistema, el de subsistemas y los 18 por subsistema) |
-| 2 — Análisis | 110 (los diagramas de secuencia del sistema) |
-| 3 — Diseño | 119 (los diagramas de interacción) |
+| Documento | Marcadores | Además |
+|---|:--:|---|
+| 0 — Plan del Proyecto | 2 | — |
+| 1 — Requisitos | 3 | La sección 4.3 lista los **18 diagramas por subsistema** en una tabla, con el nombre de cada archivo |
+| 2 — Análisis | 110 | Los diagramas de secuencia del sistema |
+| 3 — Diseño | 110 | Los diagramas de interacción de diseño |
+
+Son **225 imágenes** en total entre los cuatro documentos.
 
 `INDICE-IMAGENES.md` tiene la correspondencia completa, caso por caso.
 

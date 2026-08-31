@@ -39,6 +39,9 @@ def inline(t):
     t = re.sub(r'`([^`]+)`', r'<code>\1</code>', t)
     t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
     t = re.sub(r'(?<!\*)\*([^*\n]+)\*(?!\*)', r'<em>\1</em>', t)
+    t = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)',
+               lambda m: ('<strong>[ INSERTAR IMAGEN: %s ]</strong>' % os.path.basename(m.group(2))),
+               t)
     t = re.sub(r'\[(.+?)\]\((.+?)\)', r'<a href="\2">\1</a>', t)
     return t
 
