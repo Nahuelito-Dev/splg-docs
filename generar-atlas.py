@@ -85,6 +85,83 @@ for c,v in ss.items():
 g = glob.glob(D+"diagramas/uml/CU_Sistema_*.png")
 contexto = b64(g[0]) if g else ""
 
+# ---------- markdown -> html, para los bloques que se muestran tal cual ----------
+import html as _html
+def md2html(md):
+    """Convierte un bloque de markdown a HTML y separa los diagramas mermaid."""
+    diagramas = []
+    def inline(s):
+        s = _html.escape(s)
+        s = re.sub(r'`([^`]+)`', r'<code>\1</code>', s)
+        s = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
+        s = re.sub(r'(?<!\*)\*([^*\n]+)\*(?!\*)', r'<em>\1</em>', s)
+        return s
+    out, i, L = [], 0, md.split("\n")
+    while i < len(L):
+        l = L[i]
+        if l.strip().startswith("```"):
+            leng = l.strip().strip("`"); i += 1; buf = []
+            while i < len(L) and not L[i].strip().startswith("```"): buf.append(L[i]); i += 1
+            i += 1
+            if leng == "mermaid":
+                out.append('<div class="diagram" data-mer="%d"></div>' % len(diagramas))
+                diagramas.append("\n".join(buf))
+            else:
+                out.append("<pre>" + _html.escape("\n".join(buf)) + "</pre>")
+            continue
+        if re.match(r'^\|', l) and i+1 < len(L) and re.match(r'^\|[\s:\-|]+\|\s*$', L[i+1]):
+            cab = [c.strip() for c in l.strip().strip("|").split("|")]
+            i += 2; filas = []
+            while i < len(L) and L[i].strip().startswith("|"):
+                filas.append([c.strip() for c in L[i].strip().strip("|").split("|")]); i += 1
+            th = "".join("<th>%s</th>" % inline(c) for c in cab)
+            tb = "".join("<tr>" + "".join("<td>%s</td>" % inline(c) for c in f) + "</tr>" for f in filas)
+            out.append('<div class="scroller"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (th, tb))
+            continue
+        m = re.match(r'^(#{1,6})\s+(.*)$', l)
+        if m:
+            out.append('<h4 class="sub">%s</h4>' % inline(m.group(2))); i += 1; continue
+        if re.match(r'^---+\s*$', l): i += 1; continue
+        if l.strip().startswith(">"):
+            buf = []
+            while i < len(L) and L[i].strip().startswith(">"):
+                buf.append(L[i].strip().lstrip(">").strip()); i += 1
+            out.append('<div class="note">' + inline(" ".join(buf)) + "</div>"); continue
+        if re.match(r'^\s*[-*]\s+', l) or re.match(r'^\s*\d+\.\s+', l):
+            tag = "ol" if re.match(r'^\s*\d+\.\s+', l) else "ul"; buf = []
+            while i < len(L) and (re.match(r'^\s*[-*]\s+', L[i]) or re.match(r'^\s*\d+\.\s+', L[i])):
+                buf.append(re.sub(r'^\s*(?:[-*]|\d+\.)\s+', '', L[i])); i += 1
+            out.append("<%s>%s</%s>" % (tag, "".join("<li>%s</li>" % inline(x) for x in buf), tag)); continue
+        if l.strip():
+            buf = []
+            while i < len(L) and L[i].strip() and not re.match(r'^(#{1,6}\s|\||>|```|---+\s*$|\s*[-*]\s|\s*\d+\.\s)', L[i]):
+                buf.append(L[i].rstrip()); i += 1
+            if not buf: buf = [L[i].rstrip()]; i += 1
+            out.append("<p>" + inline(" ".join(buf)) + "</p>"); continue
+        i += 1
+    return {"html": "".join(out), "mermaid": diagramas}
+
+# ---------- casos de uso reales (documento 3, seccion 3) ----------
+_l3 = open(D+"3-Diseño.md", encoding="utf-8").read().split("\n")
+_s = next(i for i,x in enumerate(_l3) if re.match(r'^## 3\. Casos de Uso Reales', x))
+_e = next(i for i,x in enumerate(_l3) if re.match(r'^## 4\. ', x))
+_ix = [(i,m) for i in range(_s,_e) if (m:=re.match(r'^### 3\.(\d+) (CU-\d+)', _l3[i]))]
+cur = {}
+for _n,(_i,_m) in enumerate(_ix):
+    _f = _ix[_n+1][0] if _n+1 < len(_ix) else _e
+    cur[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])), sec="§3."+_m.group(1))
+
+# ---------- modulos inteligentes (documento 3, seccion 6) ----------
+_s6 = next(i for i,x in enumerate(_l3) if re.match(r'^## 6\. Módulos', x))
+_e6 = next(i for i,x in enumerate(_l3) if re.match(r'^## 7\. ', x))
+_ix6 = [(i,m) for i in range(_s6,_e6) if (m:=re.match(r'^### 6\.(\d+) Módulo (M\d) — (.+)$', _l3[i]))]
+mods = {}
+for _n,(_i,_m) in enumerate(_ix6):
+    _f = _ix6[_n+1][0] if _n+1 < len(_ix6) else _e6
+    mods[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])),
+                             nombre=_m.group(3).strip(), sec="§6."+_m.group(1))
+
+
 # ---------- respaldo documental ----------
 proc = {}
 def add(cod, doc, sec, que):
@@ -136,10 +213,11 @@ for mo,cs in MOD.items():
         add(c, "3 — Diseño", "§6 Módulos Inteligentes", f"Especificación de {mo}")
 
 # ---------- armado ----------
-datos = {"cu":{}, "subsistemas":ss, "contexto":contexto}
+datos = {"cu":{}, "subsistemas":ss, "contexto":contexto, "modulos":mods}
 for c in sorted(set(cua) | set(cue)):
     datos["cu"][c] = {"cua":cua.get(c,{}), "cue":cue.get(c,{}), "dss":dss.get(c,[]),
-                      "dsd":dsd.get(c,[]), "respaldo":proc.get(c,[]), "modulo":modulo.get(c)}
+                      "dsd":dsd.get(c,[]), "respaldo":proc.get(c,[]), "modulo":modulo.get(c),
+                      "cur":cur.get(c)}
 
 faltan = {k:[a for a in ("cua","cue","dss","dsd") if not v[a]] for k,v in datos["cu"].items()}
 faltan = {k:v for k,v in faltan.items() if v}
@@ -150,6 +228,6 @@ payload = json.dumps(datos, ensure_ascii=False, separators=(",",":")).replace("<
 html = open(D+"atlas-plantilla.html", encoding="utf-8").read().replace("__DATOS__", payload)
 open(D+"atlas-casos-de-uso.html", "w", encoding="utf-8").write(html)
 
-print(f"casos: {len(datos['cu'])} | subsistemas con UML: {sum(1 for v in ss.values() if 'uml' in v)}")
+print(f"casos: {len(datos['cu'])} | CU reales: {len(cur)} | modulos: {len(mods)} | subsistemas con UML: {sum(1 for v in ss.values() if 'uml' in v)}")
 print(f"diagramas embebidos: {sum(len(v['dss'])+len(v['dsd']) for v in datos['cu'].values())}")
 print(f"atlas-casos-de-uso.html: {os.path.getsize(D+'atlas-casos-de-uso.html')/1048576:.2f} MB")
