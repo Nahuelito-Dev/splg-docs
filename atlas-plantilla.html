@@ -57,6 +57,12 @@ input[type=search]{width:100%;padding:9px 11px;border:1px solid var(--outline);b
   background:var(--variant);color:var(--content);font:inherit;font-size:14px}
 input[type=search]::placeholder{color:var(--muted)}
 input[type=search]:focus{outline:2px solid var(--primary);outline-offset:1px}
+.enlace-conv{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;
+  color:var(--primary);text-decoration:none;border:1px solid var(--outline);
+  border-radius:7px;padding:8px 10px}
+.enlace-conv:hover{border-color:var(--primary);background:var(--tint)}
+.enlace-conv span:last-child{color:var(--muted)}
 .filters{display:flex;gap:5px;flex-wrap:wrap}
 .filters button{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
   padding:3px 9px;border-radius:99px;border:1px solid var(--outline);background:transparent;
@@ -192,6 +198,12 @@ footer.pie .cierre{margin-top:16px;padding-top:14px;border-top:1px solid var(--o
         <button data-f="mod" aria-pressed="false">MÓDULOS</button>
         <button data-f="sis" aria-pressed="false">SISTEMA</button>
       </div>
+      <a class="enlace-conv" href="branching.html">
+        <span>RAMAS Y COMMITS</span><span>→</span>
+      </a>
+      <a class="enlace-conv" href="versionado.html">
+        <span>VERSIONADO AUTOMÁTICO</span><span>→</span>
+      </a>
     </div>
     <div class="list" id="lista"></div>
   </aside>

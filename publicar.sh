@@ -16,7 +16,7 @@ node --check /tmp/_atlas_check.js
 
 echo "→ armando la carpeta"
 rm -rf publicar && mkdir -p publicar
-cp atlas-casos-de-uso.html index.html publicar/
+cp atlas-casos-de-uso.html index.html branching.html versionado.html paginas.css publicar/
 cat > publicar/netlify.toml <<'TOML'
 [build]
   publish = "."

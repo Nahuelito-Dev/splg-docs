@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ramas y commits SPLG</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="paginas.css">
+</head>
+<body>
+
+<div class="hoja">
+
+  <div class="top">
+    <svg class="marca" viewBox="0 0 40 40" role="img" aria-label="SPLG">
+      <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--primary)"/>
+      <path d="M12.5 21.5 C12.5 18 16 16.5 16 15.5 L24 15.5 C24 16.5 27.5 18 27.5 21.5
+               L27.5 29 A3.2 3.2 0 0 1 24.3 32.2 L15.7 32.2 A3.2 3.2 0 0 1 12.5 29 Z"
+            fill="var(--on-accent)"/>
+      <rect x="18" y="10.5" width="4" height="5.5" rx="1.2" fill="var(--on-accent)"/>
+      <path d="M15.2 12.2 A5.5 4.2 0 0 1 24.8 12.2" fill="none"
+            stroke="var(--on-accent)" stroke-width="2.1" stroke-linecap="round"/>
+    </svg>
+    <div class="rotulo">
+      <h1>SPLG</h1>
+      <p>RAMAS Y COMMITS</p>
+    </div>
+    <nav class="navs">
+      <a class="nav-link" href="atlas-casos-de-uso.html">← ATLAS</a>
+      <a class="nav-link" href="branching.html" aria-current="page">RAMAS</a>
+      <a class="nav-link" href="versionado.html">VERSIONADO</a>
+    </nav>
+  </div>
+
+  <div class="intro">
+    <h2>Cómo se organiza el trabajo</h2>
+    <p>Los seis repositorios siguen las mismas reglas de ramas, commits y merges. No son burocracia: de acá sale, sin intervención de nadie, el número de la próxima versión.</p>
+  </div>
+
+  <section>
+    <h3>El flujo de ramas</h3>
+    <p>Hay dos ramas permanentes. <code>develop</code> es donde se integra el trabajo del día a día. <code>main</code> guarda solo versiones liberadas, y todo lo que llega ahí produce un tag.</p>
+
+    <figure>
+      <div class="lienzo">
+        <svg viewBox="0 0 900 340" role="img" aria-label="Diagrama del flujo de ramas: una rama de trabajo sale de develop, recibe tres commits y vuelve a develop con un merge squash; develop se mergea a main con merge sin fast-forward; ese push a main dispara el versionado automático.">
+          <defs>
+            <marker id="p-trabajo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--syncing)"/>
+            </marker>
+            <marker id="p-develop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--success)"/>
+            </marker>
+            <marker id="p-main" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--primary)"/>
+            </marker>
+          </defs>
+
+          <text class="t-carril" x="163" y="76"  text-anchor="end">feat/alertas-demora</text>
+          <text class="t-carril" x="163" y="181" text-anchor="end">develop</text>
+          <text class="t-carril" x="163" y="276" text-anchor="end">main</text>
+
+          <line class="carril" x1="177" y1="72"  x2="375" y2="72"/>
+          <line class="carril" x1="177" y1="177" x2="415" y2="177"/>
+          <line class="carril" x1="177" y1="272" x2="600" y2="272"/>
+
+          <path class="a-trabajo" d="M 205 177 C 223 177, 229 100, 248 74" marker-end="url(#p-trabajo)"/>
+          <path class="a-develop" d="M 361 72 C 381 72, 381 155, 395 175" marker-end="url(#p-develop)"/>
+          <path class="a-main"    d="M 397 177 C 433 177, 467 248, 494 269" marker-end="url(#p-main)"/>
+          <line class="a-main" x1="513" y1="272" x2="612" y2="272" marker-end="url(#p-main)"/>
+
+          <circle class="nodo n-trabajo" cx="250" cy="72"  r="6"/>
+          <circle class="nodo n-trabajo" cx="305" cy="72"  r="6"/>
+          <circle class="nodo n-trabajo" cx="360" cy="72"  r="6"/>
+          <circle class="nodo n-develop" cx="205" cy="177" r="6"/>
+          <circle class="nodo n-develop" cx="397" cy="177" r="6"/>
+          <circle class="nodo n-main"    cx="205" cy="272" r="6"/>
+          <circle class="nodo n-main"    cx="497" cy="272" r="6"/>
+
+          <text class="t-tag"  x="205" y="299" text-anchor="middle">v1.0.0</text>
+          <text class="t-arco" x="412" y="116" text-anchor="start">merge squash</text>
+          <text class="t-arco" x="509" y="212" text-anchor="start">merge --no-ff</text>
+          <text class="t-arco" x="562" y="261" text-anchor="middle">push</text>
+
+          <rect class="caja" x="622" y="240" width="248" height="64" rx="10"/>
+          <text class="t-caja" x="746" y="266" text-anchor="middle">Versionado automático</text>
+          <text class="t-sub"  x="746" y="288" text-anchor="middle">tag · changelog · Release</text>
+        </svg>
+      </div>
+      <figcaption>La rama de trabajo sale siempre de <code>develop</code> y vuelve ahí. Solo <code>develop</code> entra a <code>main</code>. Desde el push a <code>main</code> ya no interviene nadie: lo que pasa dentro de esa caja está en <a href="versionado.html">Versionado</a>.</figcaption>
+    </figure>
+
+    <div class="aviso">
+      <strong>¿Y la rama release?</strong> En este flujo no existe, porque el número de versión ya no se elige de antemano: lo calcula la automatización al mergear. Una rama <code>release/x.y.z</code> sirve solo para un caso puntual, congelar una versión y seguir trabajando en paralelo. Es lo que se hizo con la <code>v1.0.0</code> al cerrar la etapa previa a la cursada. Cuando haga falta otra vez, sale de <code>develop</code>, recibe únicamente correcciones, se mergea a <code>main</code> y después de vuelta a <code>develop</code>.
+    </div>
+  </section>
+
+  <section>
+    <h3>Nombres de rama</h3>
+    <p>El prefijo es el mismo vocabulario que usan los commits, así que la rama ya anticipa qué tipo de cambio trae.</p>
+    <div class="marco">
+      <table>
+        <thead>
+          <tr><th>Patrón</th><th>Para qué</th><th>Ejemplo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">feat/&lt;tema&gt;</td><td>Funcionalidad nueva</td><td class="mono muted">feat/alertas-demora</td></tr>
+          <tr><td class="mono">fix/&lt;tema&gt;</td><td>Corrección de un defecto</td><td class="mono muted">fix/stock-negativo</td></tr>
+          <tr><td class="mono">refactor/&lt;tema&gt;</td><td>Reescritura sin cambio de conducta</td><td class="mono muted">refactor/despacho-georadius</td></tr>
+          <tr><td class="mono">docs/&lt;tema&gt;</td><td>Documentación</td><td class="mono muted">docs/casos-de-uso-fase2</td></tr>
+          <tr><td class="mono">chore/&lt;tema&gt;</td><td>Mantenimiento, dependencias, configuración</td><td class="mono muted">chore/actualizar-flutter</td></tr>
+          <tr><td class="mono">release/&lt;x.y.z&gt;</td><td>Congelar una versión (excepcional)</td><td class="mono muted">release/1.0.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="reglas">
+      <li>Todo en minúscula, palabras separadas por guiones, sin acentos ni eñes.</li>
+      <li>El tema describe el problema, no la solución técnica ni el número de la tarea.</li>
+      <li>La rama sale de <code>develop</code> y se borra apenas se mergea.</li>
+      <li>Una rama, un tema. Si estás tocando dos cosas sin relación, son dos ramas.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Mensajes de commit</h3>
+    <p>Se usa Conventional Commits. El tipo no es decorativo: decide cuánto sube la versión en el próximo merge a <code>main</code>, cosa que se explica en <a href="versionado.html">Versionado</a>.</p>
+
+    <h4>Forma</h4>
+    <div class="marco">
+      <table>
+        <thead><tr><th colspan="2">tipo(alcance): descripción en imperativo</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">tipo</td><td>Uno de los de abajo. Obligatorio.</td></tr>
+          <tr><td class="mono">(alcance)</td><td>El módulo tocado: <code>seed</code>, <code>firebase</code>, <code>orders</code>, <code>theme</code>. Opcional pero recomendado, porque agrupa el changelog.</td></tr>
+          <tr><td class="mono">descripción</td><td>Minúscula, imperativo, sin punto final, hasta unos 70 caracteres. Dice qué hace el commit, no qué archivos toca.</td></tr>
+          <tr><td class="mono">cuerpo</td><td>Opcional, separado por una línea en blanco. Explica el porqué, que es lo que el código no cuenta.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Vocabulario de tipos</h4>
+    <div class="marco">
+      <table>
+        <thead><tr><th>Tipo</th><th>Cuándo se usa</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">feat</td><td>Funcionalidad nueva visible para alguien</td></tr>
+          <tr><td class="mono">fix</td><td>Corrección de un defecto</td></tr>
+          <tr><td class="mono">perf</td><td>Mejora de rendimiento</td></tr>
+          <tr><td class="mono">refactor</td><td>Reescritura sin cambiar la conducta observable</td></tr>
+          <tr><td class="mono">docs</td><td>Solo documentación</td></tr>
+          <tr><td class="mono">test</td><td>Pruebas</td></tr>
+          <tr><td class="mono">build</td><td>Compilación y dependencias</td></tr>
+          <tr><td class="mono">ci</td><td>Automatización y workflows</td></tr>
+          <tr><td class="mono">chore</td><td>Todo lo demás</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Para un cambio que rompe compatibilidad se agrega <code>!</code> antes de los dos puntos, como en <code>refactor(api)!:</code>, o la frase <code>BREAKING CHANGE:</code> en el cuerpo. Las dos formas hacen lo mismo.</p>
+
+    <div class="pares">
+      <div class="par si">
+        <h4>Así sí</h4>
+        <ul>
+          <li>feat(despacho): ofertar al chofer más cercano por GEORADIUS</li>
+          <li>fix(seed): crear la distribuidora antes que los usuarios</li>
+          <li>refactor(auth)!: el token ahora viaja en el header</li>
+        </ul>
+        <p class="por">Se lee como una orden, dice el efecto y nombra el módulo.</p>
+      </div>
+      <div class="par no">
+        <h4>Así no</h4>
+        <ul>
+          <li>cambios</li>
+          <li>update seed.ts</li>
+          <li>Arreglé el bug del stock.</li>
+        </ul>
+        <p class="por">El primero no dice nada, el segundo nombra el archivo en vez del efecto, el tercero está en pasado, con mayúscula y punto, y sin tipo no cuenta para la versión.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Cómo se mergea</h3>
+    <p>El método cambia según el tramo, y no es un capricho: define qué commits sobreviven, y de esos commits sale el changelog.</p>
+    <div class="marco">
+      <table>
+        <thead><tr><th>Tramo</th><th>Método</th><th>Por qué</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="mono">rama → develop</td>
+            <td class="mono">squash</td>
+            <td>Los diez commits de ida y vuelta de una rama no le interesan a nadie. Quedan como uno solo, cuyo mensaje tiene que respetar la convención, porque es el que va a aparecer en el changelog.</td>
+          </tr>
+          <tr>
+            <td class="mono">develop → main</td>
+            <td class="mono">merge --no-ff</td>
+            <td>Acá no se aplasta nada: cada commit de <code>develop</code> es una línea del changelog. Un squash los convertiría en una sola entrada y perderías el detalle de la versión.</td>
+          </tr>
+          <tr>
+            <td class="mono">release → main</td>
+            <td class="mono">merge --no-ff</td>
+            <td>Mismo motivo. Después se mergea también de vuelta a <code>develop</code>, para no perder las correcciones.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Los commits de merge no cuentan para la versión: la automatización los descarta y mira solo los commits reales.</p>
+  </section>
+
+  <section>
+    <h3>Las reglas que no se negocian</h3>
+    <ul class="reglas">
+      <li>Nadie commitea directo sobre <code>main</code> ni sobre <code>develop</code>. Siempre desde una rama.</li>
+      <li><code>main</code> solo recibe merges de <code>develop</code> o de una rama <code>release</code>. De ningún otro lado.</li>
+      <li>Un commit sin tipo válido cuenta como parche y desaparece de las notas de la versión.</li>
+      <li>Los tags no se escriben a mano. Los crea la automatización al mergear a <code>main</code>.</li>
+      <li>El número de versión tampoco se edita a mano en <code>package.json</code> ni en <code>pubspec.yaml</code>. Lo escribe la automatización.</li>
+      <li>La rama se borra después del merge. Las ramas viejas que quedan dando vueltas confunden más de lo que documentan.</li>
+    </ul>
+  </section>
+
+  <div class="pie">
+    <span>SPLG · Sistema de Pedidos y Logística de Garrafas de Gas</span>
+    <span>FCEQyN — UNaM</span>
+    <span>Nahuel Wagner</span>
+  </div>
+
+</div>
+</body>
+</html>

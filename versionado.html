@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Versionado automático SPLG</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="paginas.css">
+</head>
+<body>
+
+<div class="hoja">
+
+  <div class="top">
+    <svg class="marca" viewBox="0 0 40 40" role="img" aria-label="SPLG">
+      <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--primary)"/>
+      <path d="M12.5 21.5 C12.5 18 16 16.5 16 15.5 L24 15.5 C24 16.5 27.5 18 27.5 21.5
+               L27.5 29 A3.2 3.2 0 0 1 24.3 32.2 L15.7 32.2 A3.2 3.2 0 0 1 12.5 29 Z"
+            fill="var(--on-accent)"/>
+      <rect x="18" y="10.5" width="4" height="5.5" rx="1.2" fill="var(--on-accent)"/>
+      <path d="M15.2 12.2 A5.5 4.2 0 0 1 24.8 12.2" fill="none"
+            stroke="var(--on-accent)" stroke-width="2.1" stroke-linecap="round"/>
+    </svg>
+    <div class="rotulo">
+      <h1>SPLG</h1>
+      <p>VERSIONADO AUTOMÁTICO</p>
+    </div>
+    <nav class="navs">
+      <a class="nav-link" href="atlas-casos-de-uso.html">← ATLAS</a>
+      <a class="nav-link" href="branching.html">RAMAS</a>
+      <a class="nav-link" href="versionado.html" aria-current="page">VERSIONADO</a>
+    </nav>
+  </div>
+
+  <div class="intro">
+    <h2>De los commits al número</h2>
+    <p>Cada merge a <code>main</code> publica una versión nueva. Nadie elige el número: sale de los commits que trae ese merge.</p>
+  </div>
+
+  <section>
+    <h3>Cómo se calcula</h3>
+    <p>Se leen todos los commits desde el último tag y gana el más fuerte. Alcanza un solo commit incompatible entre veinte arreglos para que suba la versión mayor.</p>
+
+    <figure>
+      <div class="lienzo">
+        <svg viewBox="0 0 900 380" role="img" aria-label="Diagrama: de los cuatro commits acumulados desde el tag v1.0.0, el commit feat es el más fuerte y por eso la versión pasa de 1.0.0 a 1.1.0, produciendo el tag, el changelog y la Release. El commit que deja la propia automatización vuelve a la lista pero lleva la marca skip ci y queda excluido del cálculo.">
+          <defs>
+            <marker id="p-calc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--primary)"/>
+            </marker>
+          </defs>
+
+          <rect class="panel-svg" x="30" y="40" width="390" height="200" rx="10"/>
+          <text class="t-carril" x="52" y="68">commits desde v1.0.0</text>
+
+          <circle cx="60" cy="100" r="4.5" fill="var(--muted)"/>
+          <text class="t-commit" x="76" y="104">fix(seed): crear la distribuidora</text>
+
+          <circle cx="60" cy="134" r="4.5" fill="var(--success)"/>
+          <text class="t-commit" x="76" y="138">feat(firebase): migrar a splg-gas</text>
+
+          <circle cx="60" cy="168" r="4.5" fill="var(--muted)"/>
+          <text class="t-commit" x="76" y="172">docs: guia de despliegue</text>
+
+          <circle cx="60" cy="202" r="4.5" fill="var(--danger)"/>
+          <text class="t-commit apagado" x="76" y="206">chore(release): 1.1.0 [skip ci]</text>
+
+          <text class="t-arco" x="473" y="124" text-anchor="middle">gana el más fuerte</text>
+          <line class="a-main" x1="438" y1="140" x2="508" y2="140" marker-end="url(#p-calc)"/>
+
+          <rect class="panel-svg" x="525" y="40" width="345" height="200" rx="10"/>
+
+          <text class="t-ver"       x="600" y="100" text-anchor="middle">1.0.0</text>
+          <text class="t-ver"       x="676" y="100" text-anchor="middle">→</text>
+          <text class="t-ver-nueva" x="775" y="100" text-anchor="middle">1.<tspan>1</tspan>.0</text>
+
+          <circle cx="558" cy="146" r="3.5" fill="var(--primary)"/>
+          <text class="t-salida" x="574" y="150">tag v1.1.0</text>
+
+          <circle cx="558" cy="178" r="3.5" fill="var(--primary)"/>
+          <text class="t-salida" x="574" y="182">CHANGELOG.md actualizado</text>
+
+          <circle cx="558" cy="210" r="3.5" fill="var(--primary)"/>
+          <text class="t-salida" x="574" y="214">Release con el APK</text>
+
+          <path class="a-vuelta" d="M 700 250 C 620 330, 380 330, 258 224" marker-end="url(#p-calc)"/>
+          <text class="t-arco" x="480" y="350" text-anchor="middle">el commit que deja el bot vuelve acá, pero lleva [skip ci] y queda afuera del cálculo</text>
+        </svg>
+      </div>
+      <figcaption>De los cuatro commits acumulados, el <code>feat</code> es el que manda: por eso sube la cifra del medio. La flecha punteada es lo que evita que el proceso se dispare a sí mismo para siempre.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h3>La regla del salto</h3>
+    <div class="marco">
+      <table>
+        <thead><tr><th>Si aparece un commit así</th><th>Salto</th><th>Desde 1.0.0</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="mono">refactor(api)<strong>!</strong>: cambia la firma de Address</td>
+            <td>Mayor</td>
+            <td class="mono"><strong>2</strong>.0.0</td>
+          </tr>
+          <tr>
+            <td class="mono">feat(firebase): migrar la app a splg-gas</td>
+            <td>Menor</td>
+            <td class="mono">1.<strong>1</strong>.0</td>
+          </tr>
+          <tr>
+            <td class="mono">fix(seed): crear la distribuidora primero</td>
+            <td>Parche</td>
+            <td class="mono">1.0.<strong>1</strong></td>
+          </tr>
+          <tr>
+            <td class="mono muted">chore(release): version 1.1.0 [skip ci]</td>
+            <td class="muted">Se ignora</td>
+            <td class="mono muted">sin cambio</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>El signo <code>!</code> antes de los dos puntos y la frase <code>BREAKING CHANGE:</code> en el cuerpo hacen lo mismo. Cualquier commit que no sea <code>feat</code> ni traiga esas marcas cuenta como parche, incluidos <code>docs</code>, <code>chore</code>, <code>refactor</code> y <code>ci</code>. El vocabulario completo está en <a href="branching.html">Ramas y commits</a>.</p>
+  </section>
+
+  <section>
+    <h3>Los seis pasos del workflow</h3>
+    <ol class="pasos">
+      <li>Lee los commits desde el último tag y descarta los que llevan <code>[skip ci]</code>.</li>
+      <li>Decide el salto y calcula el número nuevo a partir del tag anterior.</li>
+      <li>Escribe esa versión en el archivo que le corresponde al proyecto.</li>
+      <li>Arma las notas agrupadas por tipo y las acumula arriba del <code>CHANGELOG.md</code>.</li>
+      <li>Commitea, crea el tag anotado con las notas adentro y empuja las dos cosas.</li>
+      <li>Compila el APK, en las dos apps, y publica la Release con las notas y el instalable.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h3>Por qué no se rompe</h3>
+    <ul class="reglas">
+      <li><strong>Sin commits nuevos.</strong> Si el merge no agrega commits desde el último tag, el workflow termina sin publicar nada.</li>
+      <li><strong>Tag ya existente.</strong> Antes de escribir nada comprueba que el tag calculado no exista. Si existe, se detiene.</li>
+      <li><strong>Sin retroalimentación.</strong> El commit que la automatización deja en <code>main</code> volvería a disparar el workflow. Lleva <code>[skip ci]</code> y queda fuera del cálculo, así que la segunda vuelta no encuentra nada que hacer.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Dónde vive la versión de cada repositorio</h3>
+    <div class="marco">
+      <table>
+        <thead><tr><th>Proyecto</th><th>Archivo</th><th>Repositorio</th></tr></thead>
+        <tbody>
+          <tr><td>Backend</td><td class="mono">package.json</td><td class="mono muted">splg-back</td></tr>
+          <tr><td>Panel administrativo</td><td class="mono">package.json</td><td class="mono muted">splg-front-web</td></tr>
+          <tr><td>App cliente</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-mobile-customer</td></tr>
+          <tr><td>App chofer</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-mobile-driver</td></tr>
+          <tr><td>Librería compartida</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-deliver-mobile-lib</td></tr>
+          <tr><td>Documentación</td><td class="mono">VERSION</td><td class="mono muted">splg-docs</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="aviso">
+      En las dos apps la versión lleva además un número de compilación, <code>1.1.0+2</code>, que sube en cada release. Android lo exige para aceptar una instalación encima de la anterior, y se maneja solo.
+    </div>
+  </section>
+
+  <section>
+    <h3>Ver qué va a pasar antes de mergear</h3>
+    <p>La lógica vive en dos scripts dentro de cada repositorio, no dentro del workflow, justamente para poder correrla antes.</p>
+    <div class="marco">
+      <table>
+        <thead><tr><th>Comando</th><th>Qué devuelve</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">./scripts/version.sh actual</td><td>La versión declarada hoy</td></tr>
+          <tr><td class="mono">./scripts/version.sh siguiente</td><td>La que saldría en el próximo merge, o vacío si no hay nada nuevo</td></tr>
+          <tr><td class="mono">VERSION=1.1.0 ./scripts/release-notes.sh</td><td>El changelog tal cual va a quedar</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="pie">
+    <span>SPLG · Sistema de Pedidos y Logística de Garrafas de Gas</span>
+    <span>FCEQyN — UNaM</span>
+    <span>Nahuel Wagner</span>
+  </div>
+
+</div>
+</body>
+</html>
