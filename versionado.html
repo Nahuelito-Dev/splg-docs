@@ -124,15 +124,112 @@
   </section>
 
   <section>
-    <h3>Los seis pasos del workflow</h3>
-    <ol class="pasos">
-      <li>Lee los commits desde el último tag y descarta los que llevan <code>[skip ci]</code>.</li>
-      <li>Decide el salto y calcula el número nuevo a partir del tag anterior.</li>
-      <li>Escribe esa versión en el archivo que le corresponde al proyecto.</li>
-      <li>Arma las notas agrupadas por tipo y las acumula arriba del <code>CHANGELOG.md</code>.</li>
-      <li>Commitea, crea el tag anotado con las notas adentro y empuja las dos cosas.</li>
-      <li>Compila el APK, en las dos apps, y publica la Release con las notas y el instalable.</li>
-    </ol>
+    <h3>El proceso completo, paso a paso</h3>
+    <p>Nueve etapas entre el merge y la Release publicada. A la derecha de cada una está lo que ocurre en un caso real: el merge que llevó la app chofer de <code>1.0.0</code> a <code>1.1.0</code>.</p>
+
+    <figure>
+      <div class="lienzo">
+        <svg viewBox="0 0 980 920" role="img" aria-label="Diagrama del proceso de versionado en nueve etapas: merge de develop a main, leer los commits desde el último tag, descartar merges y los marcados skip ci, comprobar que quede alguno, decidir el salto, calcular el número nuevo, escribirlo en el proyecto, armar el changelog, commitear con tag y push, y compilar el APK para publicar la Release. Si no queda ningún commit el proceso termina sin publicar. El commit que genera el propio proceso vuelve a dispararlo, pero se filtra en la etapa de descarte.">
+          <defs>
+            <marker id="p-flujo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--primary)"/>
+            </marker>
+            <marker id="p-alto" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--secondary)"/>
+            </marker>
+          </defs>
+
+          <!-- etapa 1 -->
+          <rect class="paso-caja disparador" x="110" y="30" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="60">01</text>
+          <text class="t-paso"     x="158" y="60">Merge de develop a main</text>
+          <line class="conector" x1="450" y1="55" x2="496" y2="55"/>
+          <text class="t-nota-mono" x="506" y="59">develop trae 4 commits nuevos</text>
+          <line class="a-main" x1="280" y1="80" x2="280" y2="110" marker-end="url(#p-flujo)"/>
+
+          <!-- etapa 2 -->
+          <rect class="paso-caja" x="110" y="116" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="146">02</text>
+          <text class="t-paso"     x="158" y="146">Leer los commits desde el último tag</text>
+          <line class="conector" x1="450" y1="141" x2="496" y2="141"/>
+          <text class="t-nota-mono" x="506" y="145">rango v1.0.0..HEAD</text>
+          <line class="a-main" x1="280" y1="166" x2="280" y2="196" marker-end="url(#p-flujo)"/>
+
+          <!-- etapa 3 -->
+          <rect class="paso-caja" x="110" y="202" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="232">03</text>
+          <text class="t-paso"     x="158" y="232">Descartar los merges y los [skip ci]</text>
+          <line class="conector" x1="450" y1="227" x2="496" y2="227"/>
+          <text class="t-nota-mono" x="506" y="231">quedan 3 commits reales</text>
+          <line class="a-main" x1="280" y1="252" x2="280" y2="282" marker-end="url(#p-flujo)"/>
+
+          <!-- decision -->
+          <rect class="paso-caja decision" x="110" y="288" width="340" height="50" rx="8"/>
+          <text class="t-paso" x="158" y="318">¿Queda algún commit para publicar?</text>
+          <line class="a-vuelta" x1="450" y1="313" x2="516" y2="313" marker-end="url(#p-alto)" style="opacity:1;stroke:var(--secondary)"/>
+          <text class="t-nota" x="483" y="305" text-anchor="middle">no</text>
+          <rect class="paso-caja salida" x="526" y="291" width="260" height="44" rx="8"/>
+          <text class="t-nota" x="656" y="318" text-anchor="middle">termina sin publicar nada</text>
+          <line class="a-main" x1="280" y1="338" x2="280" y2="374" marker-end="url(#p-flujo)"/>
+          <text class="t-nota" x="292" y="360">sí</text>
+
+          <!-- etapa 4 -->
+          <rect class="paso-caja" x="110" y="380" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="410">04</text>
+          <text class="t-paso"     x="158" y="410">Decidir el salto</text>
+          <line class="conector" x1="450" y1="405" x2="496" y2="405"/>
+          <text class="t-nota-mono" x="506" y="409">hay un feat, entonces salto menor</text>
+          <line class="a-main" x1="280" y1="430" x2="280" y2="460" marker-end="url(#p-flujo)"/>
+
+          <!-- etapa 5 -->
+          <rect class="paso-caja" x="110" y="466" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="496">05</text>
+          <text class="t-paso"     x="158" y="496">Calcular el número nuevo</text>
+          <line class="conector" x1="450" y1="491" x2="496" y2="491"/>
+          <text class="t-nota-mono" x="506" y="495">1.0.0 → 1.1.0</text>
+          <line class="a-main" x1="280" y1="516" x2="280" y2="546" marker-end="url(#p-flujo)"/>
+
+          <!-- etapa 6 -->
+          <rect class="paso-caja" x="110" y="552" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="582">06</text>
+          <text class="t-paso"     x="158" y="582">Escribirlo en el archivo del proyecto</text>
+          <line class="conector" x1="450" y1="577" x2="496" y2="577"/>
+          <text class="t-nota-mono" x="506" y="577">pubspec.yaml</text>
+          <text class="t-nota" x="506" y="593">version: 1.1.0+2, con el build number al día</text>
+          <line class="a-main" x1="280" y1="602" x2="280" y2="632" marker-end="url(#p-flujo)"/>
+
+          <!-- etapa 7 -->
+          <rect class="paso-caja" x="110" y="638" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="668">07</text>
+          <text class="t-paso"     x="158" y="668">Armar y acumular el changelog</text>
+          <line class="conector" x1="450" y1="663" x2="496" y2="663"/>
+          <text class="t-nota-mono" x="506" y="663">CHANGELOG.md</text>
+          <text class="t-nota" x="506" y="679">3 entradas agrupadas por tipo, arriba de las viejas</text>
+          <line class="a-main" x1="280" y1="688" x2="280" y2="718" marker-end="url(#p-flujo)"/>
+
+          <!-- etapa 8 -->
+          <rect class="paso-caja" x="110" y="724" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="754">08</text>
+          <text class="t-paso"     x="158" y="754">Commit, tag anotado y push</text>
+          <line class="conector" x1="450" y1="749" x2="496" y2="749"/>
+          <text class="t-nota-mono" x="506" y="749">tag v1.1.0</text>
+          <text class="t-nota" x="506" y="765">más el commit de versión, marcado [skip ci]</text>
+          <line class="a-main" x1="280" y1="774" x2="280" y2="804" marker-end="url(#p-flujo)"/>
+
+          <!-- etapa 9 -->
+          <rect class="paso-caja disparador" x="110" y="810" width="340" height="50" rx="8"/>
+          <text class="t-paso-num" x="128" y="840">09</text>
+          <text class="t-paso"     x="158" y="840">Compilar el APK y publicar la Release</text>
+          <line class="conector" x1="450" y1="835" x2="496" y2="835"/>
+          <text class="t-nota-mono" x="506" y="839">splg-chofer-1.1.0.apk adjunto</text>
+
+          <!-- realimentacion cortada -->
+          <path class="a-vuelta" d="M 110 749 C 62 749, 62 141, 106 141" marker-end="url(#p-flujo)"/>
+          <text class="t-nota" transform="translate(40,445) rotate(-90)" text-anchor="middle">el commit del paso 08 vuelve a disparar el proceso, pero se filtra en el 03</text>
+        </svg>
+      </div>
+      <figcaption>Las dos cajas con borde claro son el principio y el final visibles: el merge que hace una persona y la Release que queda publicada. Todo lo del medio ocurre sin intervención. La salida lateral en la comprobación es lo que hace que mergear sin commits nuevos no genere nada, y la flecha punteada de la izquierda es el ciclo que se corta solo.</figcaption>
+    </figure>
   </section>
 
   <section>
