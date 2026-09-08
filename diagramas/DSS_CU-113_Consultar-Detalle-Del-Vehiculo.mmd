@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo existe
+        SIS-->>ADM: ficha del vehículo con su chofer
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

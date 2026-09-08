@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant MREP as RepositoryFleetMaintenance
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarRealizado(mantenimientoId, datos, distribuidora)
+    SRV->>MREP: findOne(where maintenance_id y distributor_id)
+    MREP-->>SRV: FleetMaintenance o null
+    SRV->>MREP: findOne(último realizado del vehículo)
+    MREP-->>SRV: FleetMaintenance anterior o null
+    SRV->>MREP: save(mantenimiento en estado realizado)
+    SRV->>VREP: save(vehículo con el kilometraje nuevo)
+    VREP-->>SRV: Car actualizado
+    alt los datos son coherentes
+        SRV-->>CTRL: FleetMaintenance cerrado
+    else el kilometraje retrocede
+        SRV-->>CTRL: operación rechazada
+    end

@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: update(id, updateCarDto, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>CREP: preload(car_id mas campos del dto)
+    CREP-->>SRV: Car fusionado o undefined
+    alt la patente cambio y ya existe
+        SRV-->>CTRL: ConflictException patente repetida
+    else Patente libre
+        SRV-->>CTRL: Car actualizado
+    end

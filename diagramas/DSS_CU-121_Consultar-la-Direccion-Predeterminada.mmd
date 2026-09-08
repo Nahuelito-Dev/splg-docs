@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarDireccionPredeterminada(usuarioId)
+    activate SIS
+    alt el cliente tiene una dirección predeterminada
+        SIS-->>CLI: datos de la dirección
+    else el cliente no tiene ninguna
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS

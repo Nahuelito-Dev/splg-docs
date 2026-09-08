@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **108 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **149 casos de uso**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -44,39 +44,12 @@ registrado.
 | ACT-01 | Cliente | Humano | Usuario final que realiza pedidos de garrafas mediante la App Cliente (Flutter). |
 | ACT-02 | Chofer | Humano | Repartidor que gestiona entregas mediante la App Chofer (Flutter). |
 | ACT-03 | Administrador | Humano | Operador del distribuidor que accede al Panel Web (React/Vite). |
-| ACT-04 | Sistema Automático | Automático | Procesos que el backend ejecuta por iniciativa propia, sin que ningún usuario los solicite. Comprende cuatro procesos temporales: la revisión de ofertas de despacho vencidas (cada 15 segundos), la activación de reservas programadas (cada 5 minutos), la expiración de pedidos de MercadoPago impagos (cada 30 minutos) y la expiración de reservas sin seña (cada hora). |
+| ACT-04 | Sistema Automático | Automático | Procesos que el backend ejecuta por iniciativa propia, sin que ningún usuario los solicite y sin interfaz. Es el actor de los cinco procesos automatizados del sistema: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Las tareas de mantenimiento del propio sistema —vencer una oferta, activar una reserva que llegó a su fecha, liberar el stock de un pedido caducado— no son procesos automatizados: son la ejecución programada de esos circuitos. |
 | ACT-05 | Administrador General | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras y designa a sus administradores. Es el único actor cuyo alcance no está limitado a una distribuidora. |
 
 **Figura — Actores del sistema y el canal por el que operan**
 
-```mermaid
-flowchart LR
-    CLI([Cliente<br/>ACT-01])
-    CHO([Chofer<br/>ACT-02])
-    ADM([Administrador<br/>ACT-03])
-    GRL([Administrador General<br/>ACT-05])
-    AUT([Sistema Automatico<br/>ACT-04])
-
-    APPC[App Cliente]
-    APPD[App Chofer]
-    PANEL[Panel Web]
-    PROC[Procesos programados]
-
-    CLI --> APPC
-    CHO --> APPD
-    ADM -- alcance: su distribuidora --> PANEL
-    GRL -- alcance: todas las distribuidoras --> PANEL
-    AUT --> PROC
-
-    subgraph SPLG[Sistema de Pedidos y Logistica de Garrafas]
-        BACK[Backend]
-    end
-
-    APPC --> BACK
-    APPD --> BACK
-    PANEL --> BACK
-    PROC --> BACK
-```
+![Actores del sistema y el canal por el que operan](diagramas/uml/CU_Sistema_Actores.png)
 
 > Los cuatro actores humanos operan siempre a traves de una aplicacion; ninguno accede
 > directamente al backend. El Sistema Automatico no tiene interfaz: son los procesos que
@@ -88,90 +61,28 @@ flowchart LR
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-El sistema comprende 104 casos de uso agrupados en 18 subsistemas. Un único diagrama con
-todos ellos resulta ilegible, de modo que se presenta primero el **diagrama de contexto**
-—actores contra subsistemas, que delimita el sistema— y luego, en el catálogo de la
-sección 3, la pertenencia de cada caso a su subsistema.
+El sistema comprende 149 casos de uso agrupados en 18 subsistemas. Se presentan dos
+vistas complementarias, ambas en notación UML: el **diagrama de contexto**, que delimita
+el sistema y muestra qué actor interviene en qué subsistema, y el **diagrama completo**,
+que abre los 149 casos uno por uno dentro de su subsistema.
 
-```mermaid
-flowchart LR
-    CLI([Cliente<br/>ACT-01])
-    CHO([Chofer<br/>ACT-02])
-    ADM([Administrador<br/>ACT-03])
-    SIS([Sistema Automatico<br/>ACT-04])
-    GRL([Administrador General<br/>ACT-05])
+**Figura — Diagrama de contexto: actores contra subsistemas**
 
-    subgraph SPLG[Sistema de Pedidos y Logistica de Garrafas]
-        direction TB
-        S01[SS-01 Autenticacion y Usuarios]
-        S02[SS-02 Gestion de Pedidos]
-        S03[SS-03 Despacho y Asignacion]
-        S04[SS-04 Seguimiento en Tiempo Real]
-        S05[SS-05 Reclamos]
-        S06[SS-06 Reportes y Dashboard]
-        S07[SS-07 Choferes y Vehiculos]
-        S08[SS-08 Catalogo de Productos]
-        S09[SS-09 Franjas Horarias]
-        S10[SS-10 Multi-Distribuidora]
-        S11[SS-11 Cobertura Geografica]
-        S12[SS-12 Incidencias y Calidad]
-        S13[SS-13 Trazabilidad de Envases]
-        S14[SS-14 Pagos y Conciliacion]
-        S15[SS-15 Reservas Programadas]
-        S16[SS-16 Cuentas y Roles]
-        S17[SS-17 Notificaciones]
-        S18[SS-18 Observabilidad]
-    end
+![Diagrama de contexto del sistema](diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png)
 
-    CLI --- S01
-    CLI --- S02
-    CLI --- S04
-    CLI --- S05
-    CLI --- S08
-    CLI --- S09
-    CLI --- S11
-    CLI --- S12
-    CLI --- S14
-    CLI --- S15
-    CLI --- S17
+**Figura — Diagrama completo: los 149 casos de uso**
 
-    CHO --- S01
-    CHO --- S03
-    CHO --- S04
-    CHO --- S07
-    CHO --- S12
-    CHO --- S13
-    CHO --- S17
+![Diagrama completo de casos de uso](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-    ADM --- S01
-    ADM --- S02
-    ADM --- S05
-    ADM --- S06
-    ADM --- S07
-    ADM --- S08
-    ADM --- S09
-    ADM --- S11
-    ADM --- S12
-    ADM --- S13
-    ADM --- S15
-    ADM --- S16
-    ADM --- S17
+> El diagrama completo dibuja cada actor una vez por subsistema. UML admite que un mismo
+> clasificador se represente con más de un símbolo en el mismo diagrama, y con 149 casos
+> es la diferencia entre una lámina legible y una maraña: con un único juego de actores a
+> la izquierda, las más de doscientas asociaciones cruzan el lienzo entero. Son los mismos
+> cinco actores de la sección 1. El color de la línea identifica al actor; el color de
+> fondo, al subsistema.
 
-    SIS --- S03
-    SIS --- S14
-    SIS --- S15
-    SIS --- S18
-
-    GRL --- S10
-    GRL --- S16
-```
-
-> **Para llevarlo a draw.io o Lucidchart.** En draw.io: *Extras → Editar diagrama* y pegar
-> el bloque. En Lucidchart: *Importar datos → Mermaid*. Para el diagrama UML clásico
-> —con óvalos dentro del rectángulo del sistema— la guía paso a paso está en
-> `GUIA-diagramas-cu-plantuml.md`.
-
----
+Los diagramas por subsistema, con las relaciones `<<include>>` y `<<extend>>` entre casos,
+están en el documento 1 — Requisitos, §4.3.
 
 ## 3. Catálogo y Calificación de los Casos de Uso
 
@@ -184,11 +95,18 @@ flowchart LR
 | CU-005 Crear Pedido | SS-02 | ACT-01 | Crítico |
 | CU-006 Consultar Detalle de Pedido | SS-02 | ACT-01, ACT-02, ACT-03 | Crítico |
 | CU-007 Consultar Historial de Pedidos | SS-02 | ACT-01 | Importante |
+| CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | ACT-01 | Importante |
+| CU-144 Actualizar el Consumo Promedio Declarado | SS-02 | ACT-01 | Importante |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor |
+| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante |
+| CU-147 Realizar una Compra Express | SS-02 | ACT-01 | Crítico |
+| CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | ACT-01 | Importante |
 | CU-008 Cancelar Pedido (Cliente) | SS-02 | ACT-01 | Importante |
 | CU-009 Cancelar Pedido (Chofer) | SS-02 | ACT-02 | Importante |
 | CU-010 Cancelar Pedido (Administrador) | SS-02 | ACT-03 | Importante |
 | CU-011 Listar Todos los Pedidos | SS-02 | ACT-03 | Importante |
 | CU-012 Asignar Chofer Manualmente | SS-03 | ACT-03 | Secundario |
+| CU-149 Despachar un Pedido Express a un Chofer en Moto | SS-03 | ACT-04 | Crítico |
 | CU-013 Asignar Pedido Automáticamente por Proximidad | SS-03 | ACT-04 | Crítico |
 | CU-014 Reintentar Asignación con Radio Expandido (Cron) | SS-03 | ACT-04 | Crítico |
 | CU-015 Aceptar Pedido | SS-03 | ACT-02 | Crítico |
@@ -222,12 +140,25 @@ flowchart LR
 | CU-043 Modificar Capacidad de Franja Horaria | SS-09 | ACT-03 | Importante |
 | CU-044 Seleccionar Franja Horaria al Crear Pedido | SS-09 | ACT-01 | Importante |
 | CU-045 Consultar Franjas Horarias Disponibles | SS-09 | ACT-01 | Importante |
-| CU-046 Gestionar Direcciones de Entrega | SS-02 | ACT-01 | Importante |
+| CU-046 Consultar Direcciones de Entrega del Cliente | SS-02 | ACT-01 | Importante |
+| CU-116 Registrar Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-117 Consultar Detalle de una Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-118 Editar Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-119 Eliminar Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-120 Marcar una Dirección como Predeterminada | SS-02 | ACT-01 | Importante |
+| CU-121 Consultar la Dirección Predeterminada | SS-02 | ACT-01 | Importante |
+| CU-122 Agregar Ítem al Carrito | SS-02 | ACT-01 | Importante |
+| CU-123 Modificar la Cantidad de un Ítem del Carrito | SS-02 | ACT-01 | Importante |
+| CU-124 Quitar Ítem del Carrito | SS-02 | ACT-01 | Importante |
+| CU-125 Consultar el Carrito | SS-02 | ACT-01 | Importante |
+| CU-126 Vaciar el Carrito | SS-02 | ACT-01 | Menor |
+| CU-127 Cambiar la Dirección de Entrega del Pedido | SS-02 | ACT-01 | Importante |
+| CU-128 Indicar Quién Recibe el Pedido | SS-02 | ACT-01 | Importante |
 | CU-047 Recuperar Contraseña | SS-01 | ACT-01, ACT-02, ACT-03 | Importante |
 | CU-048 Procesar Pago con MercadoPago | SS-14 | ACT-04 | Crítico |
 | CU-049 Consultar Balance / Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante |
 | CU-050 Bloquear / Desbloquear Usuario | SS-01 | ACT-03 | Secundario |
-| CU-051 Gestionar Vehículos (editar / eliminar / consultar) | SS-07 | ACT-03 | Importante |
+| CU-051 Consultar Listado de Vehículos | SS-07 | ACT-03 | Importante |
 | CU-052 Registrar Distribuidora | SS-10 | ACT-05 | Crítico |
 | CU-053 Consultar Distribuidoras | SS-10 | ACT-05 | Crítico |
 | CU-054 Modificar Datos de la Distribuidora | SS-10 | ACT-05 | Crítico |
@@ -248,6 +179,10 @@ flowchart LR
 | CU-069 Consultar el Parque de Envases | SS-13 | ACT-03, ACT-05 | Importante |
 | CU-070 Registrar Movimiento de Envase (cambio de estado) | SS-13 | ACT-02, ACT-03, ACT-05 | Crítico |
 | CU-071 Consultar Historial de Movimientos de un Envase | SS-13 | ACT-03, ACT-05 | Importante |
+| CU-132 Registrar la Revisión Periódica de un Envase | SS-13 | ACT-03 | Crítico |
+| CU-133 Consultar la Vigencia de un Envase | SS-13 | ACT-03 | Importante |
+| CU-134 Consultar los Envases Próximos a Vencer | SS-13 | ACT-03 | Importante |
+| CU-135 Bloquear el Despacho de un Envase Vencido | SS-13 | ACT-04 | Crítico |
 | CU-072 Crear Reserva Programada con Seña | SS-15 | ACT-01, ACT-02, ACT-03 | Crítico |
 | CU-073 Listar Reservas y Estado de la Seña | SS-15 | ACT-03, ACT-05 | Importante |
 | CU-074 Confirmar Seña Cobrada en Efectivo | SS-15 | ACT-03, ACT-05 | Crítico |
@@ -272,8 +207,25 @@ flowchart LR
 | CU-093 Validar / Invalidar Cliente | SS-16 | ACT-03 | Importante |
 | CU-094 Actualizar Ubicación del Cliente | SS-16 | ACT-03 | Secundario |
 | CU-095 Eliminar Cliente (baja lógica) | SS-16 | ACT-03 | Importante |
+| CU-129 Consultar Detalle del Cliente | SS-16 | ACT-03 | Importante |
+| CU-130 Buscar Cliente por Usuario | SS-16 | ACT-03 | Importante |
+| CU-131 Editar Datos del Cliente | SS-16 | ACT-03 | Importante |
 | CU-096 Actualizar Perfil del Chofer | SS-07 | ACT-03 | Importante |
 | CU-097 Eliminar Chofer (baja lógica) | SS-07 | ACT-03 | Importante |
+| CU-109 Consultar Detalle del Chofer | SS-07 | ACT-03 | Importante |
+| CU-110 Buscar Chofer por Usuario | SS-07 | ACT-03 | Importante |
+| CU-111 Editar Vehículo | SS-07 | ACT-03 | Importante |
+| CU-112 Eliminar Vehículo | SS-07 | ACT-03 | Importante |
+| CU-113 Consultar Detalle del Vehículo | SS-07 | ACT-03 | Importante |
+| CU-114 Buscar Vehículo por Patente | SS-07 | ACT-03 | Importante |
+| CU-115 Consultar Vehículos de un Chofer | SS-07 | ACT-03, ACT-02 | Importante |
+| CU-136 Registrar el Seguro del Vehículo | SS-07 | ACT-03 | Crítico |
+| CU-137 Registrar la Verificación Técnica Vehicular | SS-07 | ACT-03 | Crítico |
+| CU-138 Registrar la Licencia de Conducir del Chofer | SS-07 | ACT-03 | Crítico |
+| CU-139 Consultar los Vencimientos de la Flota | SS-07 | ACT-03 | Importante |
+| CU-140 Programar un Mantenimiento de Vehículo | SS-07 | ACT-03 | Importante |
+| CU-141 Registrar un Mantenimiento Realizado | SS-07 | ACT-03 | Importante |
+| CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante |
 | CU-098 Registrar el Token de Notificaciones del Dispositivo | SS-17 | ACT-01, ACT-02, ACT-03, ACT-05 | Crítico |
 | CU-099 Consultar los Tokens de un Usuario | SS-17 | ACT-03, ACT-05 | Secundario |
 | CU-100 Enviar Notificación de Prueba | SS-17 | ACT-03, ACT-05 | Secundario |
@@ -368,6 +320,54 @@ flowchart LR
 
 ---
 
+**Código:** CU-143 | **Caso de Uso:** Declarar el Consumo Promedio al Registrarse  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** Al crear su cuenta, el cliente declara cuántos kilos de gas consume por mes y qué tipo de garrafa usa habitualmente. Con ese dato el sistema puede estimar cuándo se le va a acabar y avisarle antes, sin esperar a tener historial de compras.
+
+---
+
+**Código:** CU-144 | **Caso de Uso:** Actualizar el Consumo Promedio Declarado  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente corrige cuánto gas consume por mes cuando su situación cambia: se mudó, sumó gente en la casa o cambió de estufa. El sistema recalcula la fecha estimada de la próxima recompra con el valor nuevo.
+
+---
+
+**Código:** CU-145 | **Caso de Uso:** Configurar los Días de Aviso Previo a la Recompra  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Menor  
+**Descripción:** El cliente elige con cuántos días de anticipación quiere que le avisen que se le está por acabar la garrafa, o desactiva el aviso. Sin esto, la anticipación sería la misma para todos y el aviso terminaría siendo ruido.
+
+---
+
+**Código:** CU-146 | **Caso de Uso:** Consultar la Fecha Estimada de Recompra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El administrador ve qué clientes están por quedarse sin gas dentro de una ventana de tiempo, con su consumo declarado y su última compra. Es lo que le permite anticipar la demanda de la semana y, si quiere, salir a ofrecer antes de que el cliente pida.
+
+---
+
+**Código:** CU-147 | **Caso de Uso:** Realizar una Compra Express  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Crítico  
+**Descripción:** El cliente que necesita una garrafa ya compra en un solo paso: una garrafa, su dirección predeterminada y listo, sin elegir franja horaria. El pedido sale a un chofer en moto y se entrega dentro de la hora. Es el segundo flujo de compra, en paralelo al que arma un pedido con franja (CU-005).
+
+---
+
+**Código:** CU-148 | **Caso de Uso:** Elegir la Modalidad de Entrega del Pedido  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** Antes de confirmar, el cliente elige cómo quiere recibir el pedido: programado, eligiendo una franja horaria, o express, dentro de la hora y con recargo. El sistema le muestra las dos con su precio y su tiempo estimado, y sólo ofrece la express si hay cobertura, horario y chofer.
+
+---
+
 
 **Código:** CU-008 | **Caso de Uso:** Cancelar Pedido (Cliente)  
 **Actor/es:** Cliente (ACT-01)  
@@ -413,6 +413,14 @@ flowchart LR
 **Subsistema:** SS-03 Despacho y Asignación  
 **Calificación:** Secundario  
 **Descripción:** Cuando el despacho automático agota los candidatos disponibles y el pedido queda pendiente sin que ningún chofer lo tome, el administrador puede intervenir desde el panel web y asignar manualmente un chofer activo al pedido.
+
+---
+
+**Código:** CU-149 | **Caso de Uso:** Despachar un Pedido Express a un Chofer en Moto  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-03 Despacho y Asignación  
+**Calificación:** Crítico  
+**Descripción:** El sistema ofrece el pedido express al chofer en moto más cercano y le da menos tiempo para aceptarlo que en el despacho normal, porque la promesa de entrega es dentro de la hora. Si nadie acepta, no expande el radio como en CU-014: cancela la modalidad express y pasa el pedido al flujo programado.
 
 ---
 
@@ -735,11 +743,115 @@ flowchart LR
 ### SS-02 — Gestión de Pedidos
 
 
-**Código:** CU-046 | **Caso de Uso:** Gestionar Direcciones de Entrega  
+**Código:** CU-046 | **Caso de Uso:** Consultar Direcciones de Entrega del Cliente  
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente administra sus direcciones de entrega desde la app: crea nuevas direcciones (con coordenadas seleccionadas en el mapa), edita o elimina las existentes, consulta su listado y marca una como predeterminada. La dirección predeterminada se precarga al crear un pedido (CU-005).
+**Descripción:** El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`.
+
+---
+
+**Código:** CU-116 | **Caso de Uso:** Registrar Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`.
+
+---
+
+**Código:** CU-117 | **Caso de Uso:** Consultar Detalle de una Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente abre una dirección puntual y ve todos sus datos. Es la lectura de la que dependen la edición, la baja y la marca de predeterminada, y la que aplica el control de pertenencia. Endpoint: `GET /user-addres/:id`.
+
+---
+
+**Código:** CU-118 | **Caso de Uso:** Editar Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente corrige los datos de una dirección ya registrada: la calle, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`.
+
+---
+
+**Código:** CU-119 | **Caso de Uso:** Eliminar Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente da de baja una dirección que ya no usa. Si la que borra era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`.
+
+---
+
+**Código:** CU-120 | **Caso de Uso:** Marcar una Dirección como Predeterminada  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-addres/:id/set-default`.
+
+---
+
+**Código:** CU-121 | **Caso de Uso:** Consultar la Dirección Predeterminada  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** La aplicación recupera la dirección que el cliente dejó marcada, para proponerla sola cuando arranca un pedido. Es la lectura que evita que el cliente tenga que elegir dirección en cada compra. Endpoint: `GET /user-addres/user/:userId/default`.
+
+---
+
+**Código:** CU-122 | **Caso de Uso:** Agregar Ítem al Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente elige un tipo de garrafa del catálogo y lo suma a su carrito con una cantidad. El carrito sobrevive al cierre de la aplicación y al cambio de dispositivo, de modo que el cliente puede armar la compra en varios momentos. Es el primer paso del proceso de compra que termina en CU-005 Crear Pedido.
+
+---
+
+**Código:** CU-123 | **Caso de Uso:** Modificar la Cantidad de un Ítem del Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente cambia cuántas garrafas de un tipo quiere, sin tener que sacar el ítem y volver a agregarlo. Es la modificación dentro del proceso de compra.
+
+---
+
+**Código:** CU-124 | **Caso de Uso:** Quitar Ítem del Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente saca del carrito un tipo de garrafa que había agregado. Es la baja dentro del proceso de compra, la contracara de CU-122.
+
+---
+
+**Código:** CU-125 | **Caso de Uso:** Consultar el Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente ve lo que lleva armado: los tipos de garrafa, las cantidades, el precio unitario de cada uno y el total. Es la lectura que incluye CU-005 Crear Pedido para saber qué se está comprando.
+
+---
+
+**Código:** CU-126 | **Caso de Uso:** Vaciar el Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Menor  
+**Descripción:** El cliente descarta de una vez todo lo que había armado, en lugar de quitar los ítems de a uno. El sistema también vacía el carrito por su cuenta cuando la compra se confirma, para que el cliente no arranque la próxima con lo que ya compró.
+
+---
+
+**Código:** CU-127 | **Caso de Uso:** Cambiar la Dirección de Entrega del Pedido  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente cambia a dónde quiere que le lleven un pedido ya confirmado, mientras todavía no salió el repartidor. El sistema comprueba que la dirección nueva sea suya y esté dentro de la zona de cobertura, y guarda el cambio con su motivo para que el chofer y el administrador vean qué pasó.
+
+---
+
+**Código:** CU-128 | **Caso de Uso:** Indicar Quién Recibe el Pedido  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente aclara que la garrafa la va a recibir otra persona: un familiar, el encargado del edificio o un vecino. Registra su nombre, su documento y qué relación tiene con él, para que el chofer sepa a quién puede entregarle y quede asentado quién recibió.
 
 ---
 
@@ -795,7 +907,7 @@ flowchart LR
 ### SS-07 — Gestión de Choferes y Vehículos
 
 
-**Código:** CU-051 | **Caso de Uso:** Gestionar Vehículos (editar / eliminar / consultar)  
+**Código:** CU-051 | **Caso de Uso:** Consultar Listado de Vehículos  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
@@ -992,6 +1104,38 @@ flowchart LR
 **Subsistema:** SS-13 Trazabilidad de Envases  
 **Calificación:** Importante  
 **Descripción:** El sistema expone el historial de transferencias y estados por los cuales paso un determinado envase.
+
+---
+
+**Código:** CU-132 | **Caso de Uso:** Registrar la Revisión Periódica de un Envase  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Crítico  
+**Descripción:** El administrador asienta la prueba hidráulica de un envase: la fecha en que se hizo, el resultado y cuándo vence. Las garrafas de gas licuado tienen una vida útil regulada y no se pueden llenar ni despachar una vez vencida la revisión, así que el sistema necesita saber la fecha de cada una.
+
+---
+
+**Código:** CU-133 | **Caso de Uso:** Consultar la Vigencia de un Envase  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta hasta cuándo puede circular un envase y cuándo fue su última revisión. Es la lectura que necesita antes de llenarlo, de despacharlo o de decidir si lo manda al taller.
+
+---
+
+**Código:** CU-134 | **Caso de Uso:** Consultar los Envases Próximos a Vencer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Importante  
+**Descripción:** El administrador ve qué envases de su parque vencen dentro de una ventana de tiempo, para mandarlos a revisar antes de que queden fuera de circulación. Es la vista que convierte el dato de vencimiento en una acción de mantenimiento.
+
+---
+
+**Código:** CU-135 | **Caso de Uso:** Bloquear el Despacho de un Envase Vencido  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Crítico  
+**Descripción:** El sistema impide que un envase con la revisión vencida se asigne a un pedido. Es el control que le da sentido a registrar las fechas: sin él, el dato existe pero no evita que salga a la calle un envase fuera de norma.
 
 ---
 
@@ -1232,6 +1376,30 @@ flowchart LR
 
 ---
 
+**Código:** CU-129 | **Caso de Uso:** Consultar Detalle del Cliente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customer/:id`.
+
+---
+
+**Código:** CU-130 | **Caso de Uso:** Buscar Cliente por Usuario  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customer/user/:userId`.
+
+---
+
+**Código:** CU-131 | **Caso de Uso:** Editar Datos del Cliente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customer/:id`.
+
+---
+
 
 ### SS-07 — Gestión de Choferes y Vehículos
 
@@ -1250,6 +1418,118 @@ flowchart LR
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
 **Descripción:** El sistema descarta un perfil delivery aplicando eliminación lógica para prevenir fallos referenciales.
+
+---
+
+**Código:** CU-109 | **Caso de Uso:** Consultar Detalle del Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la ficha de un chofer y ve sus datos personales, su vehículo, su marca de validación, su estado de actividad y su calificación. Es la lectura puntual que el listado (CU-035) no cubre, y de la que dependen la edición y la baja. Endpoint: `GET /delivery/:id` (`src/delivery/delivery.controller.ts:59`).
+
+---
+
+**Código:** CU-110 | **Caso de Uso:** Buscar Chofer por Usuario  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador ubica el perfil de chofer a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel —un pedido, un reclamo, una calificación—. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /delivery/user/:userId` (`src/delivery/delivery.controller.ts:68`).
+
+---
+
+**Código:** CU-111 | **Caso de Uso:** Editar Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige los datos del vehículo de un chofer: tipo, patente, marca, modelo, año, color o capacidad de carga. Sale de CU-051, que agrupaba editar, eliminar y consultar en un solo caso. Endpoint: `PATCH /car/:id` (`src/car/car.controller.ts:85`).
+
+---
+
+**Código:** CU-112 | **Caso de Uso:** Eliminar Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador da de baja el vehículo de un chofer. Sale de CU-051. A diferencia del chofer y del producto, **la baja del vehículo es física**: la fila se borra. Endpoint: `DELETE /car/:id` (`src/car/car.controller.ts:97`).
+
+---
+
+**Código:** CU-113 | **Caso de Uso:** Consultar Detalle del Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la ficha de un vehículo y ve su tipo, patente, marca, modelo, año, color, capacidad de carga y el chofer al que pertenece. Sale de CU-051. Endpoint: `GET /car/:id` (`src/car/car.controller.ts:51`).
+
+---
+
+**Código:** CU-114 | **Caso de Uso:** Buscar Vehículo por Patente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador ubica un vehículo por su patente, que es el dato con el que se lo nombra en la operación diaria. Es la búsqueda que incluyen la edición y la baja. Endpoint: `GET /car/patent/:patent` (`src/car/car.controller.ts:74`).
+
+---
+
+**Código:** CU-115 | **Caso de Uso:** Consultar Vehículos de un Chofer  
+**Actor/es:** Administrador (ACT-03), Chofer (ACT-02)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** Se listan los vehículos registrados a nombre de un chofer. El administrador lo usa desde la ficha del chofer; el propio chofer, para ver los suyos. Sale de CU-051. Endpoint: `GET /car/user/:userId` (`src/car/car.controller.ts:63`).
+
+---
+
+**Código:** CU-136 | **Caso de Uso:** Registrar el Seguro del Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador carga la compañía, el número de póliza y la fecha de vencimiento del seguro de un vehículo de la flota. Un vehículo sin seguro vigente no puede salir a repartir, así que el dato es una condición de habilitación, no un adjunto.
+
+---
+
+**Código:** CU-137 | **Caso de Uso:** Registrar la Verificación Técnica Vehicular  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador carga la fecha hasta la que vale la verificación técnica de un vehículo. Es obligatoria para circular y, en el transporte de gas licuado, es lo que habilita al vehículo a llevar la carga.
+
+---
+
+**Código:** CU-138 | **Caso de Uso:** Registrar la Licencia de Conducir del Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador carga el número, la categoría y el vencimiento de la licencia de conducir de un chofer. La categoría importa: no es la misma la que habilita una moto que la que habilita un camión de reparto.
+
+---
+
+**Código:** CU-139 | **Caso de Uso:** Consultar los Vencimientos de la Flota  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador ve en una sola pantalla qué seguros, verificaciones técnicas y licencias vencen dentro de una ventana de tiempo, y cuáles ya vencieron. Es la vista de control de la flota, la contracara de CU-134 para los envases.
+
+---
+
+**Código:** CU-140 | **Caso de Uso:** Programar un Mantenimiento de Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador agenda un service, un cambio de cubiertas o una reparación para un vehículo, con la fecha prevista y el tipo de trabajo. El vehículo queda anotado como comprometido para ese día, para que el despacho no cuente con él.
+
+---
+
+**Código:** CU-141 | **Caso de Uso:** Registrar un Mantenimiento Realizado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador cierra un mantenimiento: anota cuándo se hizo, con cuántos kilómetros, cuánto costó y qué se hizo. Es lo que construye el historial del vehículo, del que sale el costo de mantenimiento por unidad y el intervalo real entre services.
+
+---
+
+**Código:** CU-142 | **Caso de Uso:** Avisar los Vencimientos Próximos de la Flota  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El sistema revisa todos los días qué habilitaciones de la flota están por vencer y avisa al administrador con la anticipación que cada distribuidora haya configurado. Es lo que convierte el tablero de CU-139 en algo que no depende de que alguien se acuerde de mirarlo.
 
 ---
 
@@ -1660,6 +1940,235 @@ flowchart LR
 
 ---
 
+#### Importante CU-143 — Declarar el Consumo Promedio al Registrarse
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | Al crear su cuenta, el cliente declara cuántos kilos de gas consume por mes y qué tipo de garrafa usa habitualmente. Con ese dato el sistema puede estimar cuándo se le va a acabar y avisarle antes, sin esperar a tener historial de compras. |
+| **Precondición** | El cliente está completando su registro (CU-002). |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Durante el registro, el cliente elige su tipo de garrafa habitual y declara cuántas consume por mes. |
+| 2 | El sistema convierte la declaración a kilos por mes usando el peso del tipo de garrafa elegido. |
+| 3 | El sistema comprueba que el valor esté dentro de un rango razonable. |
+| 4 | El sistema guarda el consumo declarado y el tipo de garrafa habitual en la ficha del cliente. |
+| 5 | El sistema calcula la fecha estimada de la primera recompra y la guarda. |
+
+**Postcondición:** La ficha del cliente tiene su consumo declarado y una fecha estimada de recompra.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el cliente prefiere no declararlo, el sistema continúa el registro y deja el campo vacío: el aviso de recompra queda inactivo hasta que haya historial. |
+| 3 | Si el valor declarado está fuera de rango, el sistema lo rechaza y pide confirmación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una escritura, dentro de la transacción del registro. |
+| **Frecuencia** | Una vez por cliente. |
+| **Estabilidad** | Media |
+| **Comentarios** | La cátedra pidió que el consumo promedio se declare en el registro para poder avisar la recompra. El módulo inteligente M3 (CU-106) ya anticipa la recompra, pero lo hace sobre el historial de pedidos: hasta la tercera o cuarta compra no tiene con qué estimar. El dato declarado cubre justamente esa ventana inicial. |
+
+---
+
+#### Importante CU-144 — Actualizar el Consumo Promedio Declarado
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente corrige cuánto gas consume por mes cuando su situación cambia: se mudó, sumó gente en la casa o cambió de estufa. El sistema recalcula la fecha estimada de la próxima recompra con el valor nuevo. |
+| **Precondición** | El cliente está autenticado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente abre su perfil y edita su consumo declarado. |
+| 2 | El sistema comprueba que el valor esté dentro de un rango razonable. |
+| 3 | El sistema guarda el consumo nuevo. |
+| 4 | El sistema recalcula la fecha estimada de la próxima recompra a partir de la última compra y del consumo nuevo. |
+
+**Postcondición:** El cliente tiene su consumo actualizado y la estimación de recompra recalculada.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el valor está fuera de rango, el sistema lo rechaza y pide confirmación. |
+| 4 | Si el cliente nunca compró, el sistema estima desde la fecha de la declaración. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. |
+| **Frecuencia** | Baja: se cambia cuando el cliente lo nota. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Se separa del alta porque son dos momentos distintos: uno es parte del registro y el otro es una corrección posterior, que además obliga a recalcular la estimación. |
+
+---
+
+#### Menor CU-145 — Configurar los Días de Aviso Previo a la Recompra
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente elige con cuántos días de anticipación quiere que le avisen que se le está por acabar la garrafa, o desactiva el aviso. Sin esto, la anticipación sería la misma para todos y el aviso terminaría siendo ruido. |
+| **Precondición** | El cliente está autenticado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente abre sus preferencias de aviso. |
+| 2 | El cliente elige los días de anticipación, o desactiva el aviso. |
+| 3 | El sistema comprueba que el valor esté entre uno y treinta días. |
+| 4 | El sistema guarda la preferencia. |
+
+**Postcondición:** El cliente recibe el aviso de recompra con la anticipación que eligió, o no lo recibe.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el valor está fuera del rango permitido, el sistema lo rechaza. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una escritura. |
+| **Frecuencia** | Muy baja. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El valor por omisión son tres días, que es el tiempo que tarda una entrega en el peor caso más un margen. Desactivar el aviso no borra la estimación: el administrador sigue viéndola en sus reportes. |
+
+---
+
+#### Importante CU-146 — Consultar la Fecha Estimada de Recompra
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04 |
+| **Requisitos asociados** | IRQ-06 |
+| **Descripción** | El administrador ve qué clientes están por quedarse sin gas dentro de una ventana de tiempo, con su consumo declarado y su última compra. Es lo que le permite anticipar la demanda de la semana y, si quiere, salir a ofrecer antes de que el cliente pida. |
+| **Precondición** | El administrador está autenticado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el listado de recompras estimadas y elige una ventana de días. |
+| 2 | El sistema busca los clientes de su distribuidora cuya fecha estimada cae en esa ventana. |
+| 3 | El sistema arma el listado con el consumo declarado, la última compra y la estimación. |
+| 4 | El sistema devuelve el listado ordenado por fecha estimada. |
+
+**Postcondición:** El administrador sabe qué demanda esperar y a qué clientes conviene contactar.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Los clientes sin consumo declarado y sin historial suficiente no aparecen: no hay con qué estimarlos. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por rango sobre la fecha estimada. |
+| **Frecuencia** | Media: semanal. |
+| **Estabilidad** | Media |
+| **Comentarios** | Es la cara operativa del módulo inteligente M3 (CU-106), que hoy sólo avisa al cliente. La cátedra pidió que el consumo promedio sirva para notificar la recompra; este caso es el que lo pone también del lado del negocio. |
+
+---
+
+#### Crítico CU-147 — Realizar una Compra Express
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente que necesita una garrafa ya compra en un solo paso: una garrafa, su dirección predeterminada y listo, sin elegir franja horaria. El pedido sale a un chofer en moto y se entrega dentro de la hora. Es el segundo flujo de compra, en paralelo al que arma un pedido con franja (CU-005). |
+| **Precondición** | El cliente está autenticado y tiene una dirección predeterminada dentro de la zona de cobertura. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente elige la compra express desde la pantalla principal. |
+| 2 | El sistema recupera su dirección predeterminada (CU-121) y su tipo de garrafa habitual. |
+| 3 | El sistema comprueba que haya cobertura express en esa dirección y que sea horario de servicio. |
+| 4 | El sistema comprueba que haya al menos un chofer en moto disponible y con habilitación vigente. |
+| 5 | El sistema muestra el precio final, incluido el recargo express, y pide confirmación. |
+| 6 | El cliente confirma y elige el medio de pago. |
+| 7 | El sistema crea el pedido con modalidad express y sin franja horaria. |
+| 8 | El sistema despacha el pedido al chofer en moto más cercano (CU-149). |
+
+**Postcondición:** El pedido queda creado en modalidad express y en camino a un chofer en moto.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el cliente no tiene dirección predeterminada, el sistema lo lleva a elegir una. |
+| 3 | Si no hay cobertura express o está fuera de horario, el sistema ofrece el flujo con franja horaria. |
+| 4 | Si no hay ningún chofer en moto disponible, el sistema ofrece el flujo con franja horaria. |
+| 5 | Si el cliente no confirma, no se crea ningún pedido. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Cuatro lecturas antes de mostrar el precio; el cliente espera esa respuesta. |
+| **Frecuencia** | Media, con picos en los días de frío. |
+| **Estabilidad** | Media |
+| **Comentarios** | La cátedra pidió un segundo flujo de compra, directo y por moto. Se documenta como caso aparte y no como una variante de CU-005 porque cambian los pasos, los controles y el actor que lo atiende. Requiere la modalidad de entrega en el pedido y el recargo express en la configuración de la distribuidora. |
+
+---
+
+#### Importante CU-148 — Elegir la Modalidad de Entrega del Pedido
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | Antes de confirmar, el cliente elige cómo quiere recibir el pedido: programado, eligiendo una franja horaria, o express, dentro de la hora y con recargo. El sistema le muestra las dos con su precio y su tiempo estimado, y sólo ofrece la express si hay cobertura, horario y chofer. |
+| **Precondición** | El cliente está armando un pedido y tiene una dirección elegida. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente llega al paso de elegir cómo recibir el pedido. |
+| 2 | El sistema evalúa si la dirección tiene cobertura express y si es horario de servicio. |
+| 3 | El sistema evalúa si hay choferes en moto disponibles. |
+| 4 | El sistema muestra la modalidad programada siempre, y la express sólo si las dos condiciones se cumplen. |
+| 5 | El sistema muestra el precio y el tiempo estimado de cada una. |
+| 6 | El cliente elige una y el sistema la guarda en el pedido. |
+
+**Postcondición:** El pedido queda con su modalidad de entrega definida y con el precio que corresponde.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si no se cumple alguna condición, el sistema muestra sólo la modalidad programada y explica por qué. |
+| 6 | Si el cliente cambia de dirección después de elegir, el sistema vuelve a evaluar las condiciones. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos lecturas, dentro del armado del pedido. |
+| **Frecuencia** | Alta: se ejecuta en cada compra. |
+| **Estabilidad** | Media |
+| **Comentarios** | Es el punto donde los dos flujos de compra se encuentran. Documentarlo aparte evita que la modalidad quede escondida como una bandera dentro del alta del pedido, que es justamente lo que la cátedra objetó en los casos que agrupaban varias operaciones. |
+
+---
+
 
 #### Importante CU-008 — Cancelar Pedido (Cliente)
 
@@ -1864,6 +2373,46 @@ flowchart LR
 | **Frecuencia** | Baja: es la vía de excepción cuando el despacho automático no encontró candidatos. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El sistema todavía no avisa a nadie de la asignación manual: ni el chofer recibe el pedido en su app ni el cliente se entera de que ya tiene repartidor, con lo que la asignación depende de que alguien se lo comunique por fuera del sistema. El sistema todavía no genera el código secreto de entrega en la asignación manual —solo lo genera cuando el chofer acepta por su cuenta—, de modo que un pedido asignado así no puede cerrarse por la vía del código QR de CU-020. El sistema todavía no comprueba, al asignar, que el chofer esté habilitado por el administrador. |
+
+---
+
+#### Crítico CU-149 — Despachar un Pedido Express a un Chofer en Moto
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-03 |
+| **Requisitos asociados** | IRQ-02 |
+| **Descripción** | El sistema ofrece el pedido express al chofer en moto más cercano y le da menos tiempo para aceptarlo que en el despacho normal, porque la promesa de entrega es dentro de la hora. Si nadie acepta, no expande el radio como en CU-014: cancela la modalidad express y pasa el pedido al flujo programado. |
+| **Precondición** | Existe un pedido en modalidad express sin chofer asignado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El sistema toma el pedido express recién creado. |
+| 2 | El sistema busca los choferes en moto disponibles, habilitados y dentro del radio express. |
+| 3 | El sistema los ordena por distancia a la dirección de entrega. |
+| 4 | El sistema le ofrece el pedido al más cercano, con una ventana de aceptación más corta que la del despacho normal. |
+| 5 | Si acepta, el sistema le asigna el pedido y avisa al cliente. |
+| 6 | Si rechaza o se vence la ventana, el sistema le ofrece al siguiente. |
+| 7 | Si se agota la lista, el sistema cancela la modalidad express, devuelve el recargo y pasa el pedido al flujo programado. |
+
+**Postcondición:** El pedido express queda asignado a un chofer en moto, o convertido en un pedido programado con el recargo devuelto.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si ningún chofer en moto tiene la licencia vigente, el sistema no ofrece el pedido y va directo al paso 7. |
+| 7 | Si el cliente ya pagó en línea, la devolución del recargo sigue el circuito de reintegros de SS-14. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una consulta espacial por ciclo de oferta, con la ventana más corta que el despacho normal. |
+| **Frecuencia** | Alta durante el horario express. |
+| **Estabilidad** | Media |
+| **Comentarios** | Se separa de CU-013 porque la política es distinta: el despacho normal expande el radio y reintenta (CU-014), y acá expandir el radio rompería la promesa de la hora. Lo que corresponde no es buscar más lejos sino bajar la promesa. |
 
 ---
 
@@ -3296,51 +3845,544 @@ respaldado por la lectura del código en poder del cliente.
 ### SS-02 — Gestión de Pedidos
 
 
-#### Importante CU-046 — Gestionar Direcciones de Entrega
+#### Importante CU-046 — Consultar Direcciones de Entrega del Cliente
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01, IRQ-07 |
-| **Descripción** | El cliente administra su libreta de direcciones de entrega desde la app: crea direcciones con coordenadas tomadas del mapa, las edita, las elimina, consulta su listado y marca una como predeterminada. La dirección predeterminada es la que la app precarga al crear un pedido (CU-005). El sistema garantiza que un cliente solo opere sobre sus propias direcciones. |
-| **Precondición** | El cliente está autenticado. Para editar, eliminar o marcar como predeterminada, la dirección existe y le pertenece. |
+| **Descripción** | El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`. El sistema acota la consulta a las direcciones del propio cliente: si quien pide no es administrador ni Administrador General, el identificador de usuario que venga en la petición se ignora y se usa el de la sesión. |
+| **Precondición** | El cliente está autenticado. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente accede a la sección de direcciones en la App Cliente. |
-| 2 | El sistema determina el alcance de la consulta: si el rol no es administrador ni Administrador General, fuerza el filtro por el identificador del usuario autenticado e ignora cualquier usuario recibido. |
-| 3 | El sistema devuelve las direcciones del usuario ordenadas con la predeterminada primero y luego por fecha de creación descendente. |
-| 4 | Para agregar una dirección, el cliente ingresa calle, ciudad, código postal opcional, instrucciones adicionales opcionales, y ubica el punto en el mapa; la app envía la latitud, la longitud y la dirección formateada. |
-| 5 | El sistema reescribe el usuario del cuerpo con el del usuario autenticado y verifica que ese usuario exista. |
-| 6 | Si la nueva dirección viene marcada como predeterminada, el sistema desmarca las demás direcciones predeterminadas de ese usuario. |
-| 7 | El sistema persiste la dirección y la devuelve. |
-| 8 | Para modificar una dirección, el cliente edita los campos y el sistema valida primero la pertenencia, precarga la entidad con los valores nuevos, desmarca las otras predeterminadas si corresponde, y guarda. |
-| 9 | Para cambiar la dirección predeterminada, el cliente la selecciona; el sistema desmarca las demás y marca la elegida. |
-| 10 | Para eliminar una dirección, el sistema valida la pertenencia y, si la dirección borrada era la predeterminada, promueve a predeterminada la más reciente de las restantes antes de eliminarla. |
-| 11 | Al crear un pedido, el sistema consulta la dirección predeterminada del cliente; si ninguna está marcada, devuelve la primera del listado ordenado. |
+| 1 | El cliente abre la sección de direcciones en la aplicación. |
+| 2 | La aplicación envía `GET /user-addres/user/:userId`. |
+| 3 | El sistema valida el formato del identificador de usuario. |
+| 4 | El sistema determina el alcance: si quien pide no es administrador, fuerza el filtro al usuario de la sesión e ignora el que venga en la petición. |
+| 5 | El sistema recupera las direcciones de ese usuario, ordenadas con la predeterminada primero y luego por fecha de alta descendente. |
+| 6 | El sistema devuelve el listado. |
 
-**Postcondición:** La libreta de direcciones del cliente refleja el alta, la modificación o la baja realizada. Como máximo una dirección del usuario queda marcada como predeterminada. **El sistema no garantiza que siempre haya una:** si el cliente nunca marcó ninguna, ninguna queda marcada. Lo que sí garantiza es la lectura: la consulta de dirección predeterminada devuelve la más reciente cuando ninguna está marcada explícitamente.
+**Postcondición:** El cliente tiene a la vista todas sus direcciones y sabe cuál es la predeterminada.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el identificador recibido no es un identificador único válido, el sistema responde 400 antes de llegar al servicio. |
-| 3 | Si un usuario que no es administrador consulta las direcciones de otro usuario, el sistema responde 403 con el mensaje "No autorizado a acceder a direcciones de otro usuario". |
-| 5 | Si el usuario indicado no corresponde a ningún usuario registrado —caso que solo se da cuando un administrador crea la dirección en nombre de un tercero—, el sistema responde 404. |
-| 8 | Si la dirección indicada no existe, el sistema responde 404. |
-| 8 | Si la dirección existe pero pertenece a otro usuario y el solicitante no es administrador, el sistema responde 403. |
-| 11 | Si el cliente no tiene ninguna dirección registrada, el sistema responde 404 con el mensaje `No addresses found for user`. |
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 antes de llegar al servicio. |
+| 4 | Si un cliente pide las direcciones de otro usuario, el sistema devuelve las suyas, no las del otro. |
+| 5 | Si el cliente no tiene ninguna dirección, el sistema devuelve un listado vacío, no un error. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Cada operación es un acceso directo a la tabla de direcciones filtrado por usuario; se resuelve en menos de un segundo. |
-| **Frecuencia** | Baja. El cliente carga una o dos direcciones al registrarse y las modifica de forma esporádica. |
+| **Rendimiento** | Una lectura por índice sobre el identificador de usuario. |
+| **Frecuencia** | Muy alta: se ejecuta cada vez que el cliente arma un pedido y cada vez que abre su libreta. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El aislamiento entre clientes se resuelve en el propio controlador, que decide el alcance según el rol antes de invocar al servicio; los administradores quedan exentos de ese filtro. El listado global de direcciones está reservado al Administrador General y es una herramienta de soporte, no parte del flujo del cliente. Limitaciones registradas. El sistema todavía no asegura el invariante de una dirección predeterminada por usuario: el marcado solo ocurre cuando el alta o la edición lo piden explícitamente, así que un cliente que carga todas sus direcciones sin marcar ninguna se queda sin predeterminada, y lo que sostiene el flujo es el respaldo de lectura del paso 11, no una garantía de escritura. La baja de una dirección es física, no lógica, de modo que se pierde el registro histórico; los pedidos ya creados conservan las coordenadas en el propio pedido, así que el historial de pedidos no se ve afectado. El desmarcado de las direcciones predeterminadas anteriores se hace registro por registro fuera de una transacción, por lo que una falla intermedia puede dejar momentáneamente al usuario sin ninguna predeterminada. La entidad no tiene el campo de alias ("Casa", "Trabajo") que menciona IRQ-07: lo más parecido son la dirección formateada y las instrucciones adicionales. **Atención: verificar** si conviene corregir IRQ-07 o agregar el campo. |
+| **Comentarios** | Este caso agrupaba siete operaciones distintas sobre la libreta de direcciones. La cátedra pidió que cada operación de un ABM figure como caso de uso propio, de modo que quedó acotado a la consulta del listado y las otras seis pasaron a ser CU-116, CU-117, CU-118, CU-119, CU-120 y CU-121. Es la misma corrección que se hizo en CU-051 con el listado de vehículos. |
+
+---
+
+#### Importante CU-116 — Registrar Dirección de Entrega
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
+| **Precondición** | El cliente está autenticado. La cuenta de usuario existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente completa el formulario de dirección en la aplicación. |
+| 2 | La aplicación envía `POST /user-addres` con los datos de la dirección. |
+| 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. |
+| 4 | El sistema comprueba que la cuenta de usuario exista. |
+| 5 | Si la dirección viene marcada como predeterminada, el sistema quita esa marca de las demás direcciones del cliente. |
+| 6 | El sistema guarda la dirección y la devuelve con su identificador. |
+
+**Postcondición:** El cliente tiene una dirección más disponible para elegir al armar un pedido.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si la cuenta de usuario no existe, el sistema retorna error 404 "User with ID: … not found". |
+| 6 | Si la base rechaza el registro por duplicado o por integridad referencial, el sistema retorna error 400. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada. |
+| **Frecuencia** | Media: una o dos por cliente, y alguna más cuando se muda o pide para un tercero. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. Un administrador, en cambio, puede indicar el titular. |
+
+---
+
+#### Importante CU-117 — Consultar Detalle de una Dirección de Entrega
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente abre una dirección puntual y ve todos sus datos. Es la lectura de la que dependen la edición, la baja y la marca de predeterminada, y la que aplica el control de pertenencia. Endpoint: `GET /user-addres/:id`. |
+| **Precondición** | El cliente está autenticado. La dirección existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente elige una dirección de su listado. |
+| 2 | La aplicación envía `GET /user-addres/:id`. |
+| 3 | El sistema valida el formato del identificador. |
+| 4 | El sistema recupera la dirección junto con su titular. |
+| 5 | El sistema comprueba que la dirección pertenezca a quien la pide. |
+| 6 | El sistema devuelve la dirección completa. |
+
+**Postcondición:** El cliente tiene a la vista los datos de la dirección.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si la dirección no existe, el sistema retorna error 404 "Address with ID: … not found". |
+| 5 | Si la dirección es de otro cliente, el sistema rechaza la operación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura con una relación. |
+| **Frecuencia** | Alta: es el paso previo de las otras tres operaciones. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Este caso estaba implícito dentro de CU-046. Es además el punto donde vive el control que impide leer la dirección de otro cliente. |
+
+---
+
+#### Importante CU-118 — Editar Dirección de Entrega
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente edita los campos que quiere cambiar. |
+| 2 | La aplicación envía `PATCH /user-addres/:id` con los campos modificados. |
+| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. |
+| 5 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
+| 6 | El sistema guarda los cambios y devuelve la dirección actualizada. |
+
+**Postcondición:** La dirección queda con los datos corregidos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
+| 4 | Si la dirección desapareció entre la lectura y la escritura, el sistema retorna error 404. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura, más una actualización si cambia la predeterminada. |
+| **Frecuencia** | Baja: se edita cuando el cliente detecta un error o cambia una indicación. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El caso incluye a CU-117 porque necesita saber de qué dirección se habla y de quién es antes de escribir. |
+
+---
+
+#### Importante CU-119 — Eliminar Dirección de Entrega
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente da de baja una dirección que ya no usa. Si la que borra era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente pide borrar una dirección. |
+| 2 | La aplicación envía `DELETE /user-addres/:id`. |
+| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 4 | Si la dirección era la predeterminada, el sistema busca las demás direcciones del cliente y marca como predeterminada a la más reciente. |
+| 5 | El sistema borra la dirección. |
+| 6 | El sistema confirma la baja. |
+
+**Postcondición:** La dirección deja de existir y el cliente conserva una dirección predeterminada si tenía otras.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
+| 5 | Si algún pedido referencia la dirección, la base rechaza el borrado por integridad referencial. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura, un borrado y, en el peor caso, una consulta y una escritura más. |
+| **Frecuencia** | Baja. |
+| **Estabilidad** | Media |
+| **Comentarios** | La baja es física, a diferencia de la del chofer (CU-097) y la del cliente (CU-095), que son lógicas. Un pedido viejo que apuntaba a esa dirección pierde el dato de dónde se entregó. |
+
+---
+
+#### Importante CU-120 — Marcar una Dirección como Predeterminada
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-addres/:id/set-default`. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente elige una dirección de su listado y la marca como predeterminada. |
+| 2 | La aplicación envía `PATCH /user-addres/:id/set-default`. |
+| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 4 | El sistema quita la marca de predeterminada de las demás direcciones del cliente. |
+| 5 | El sistema marca la dirección elegida y la devuelve. |
+
+**Postcondición:** El cliente tiene una única dirección predeterminada, la que eligió.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y dos escrituras. |
+| **Frecuencia** | Baja: se cambia cuando el cliente se muda o cambia su dirección habitual. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Esta operación estaba dentro de CU-046 y no se distinguía de la edición, aunque no cambia ningún dato de la dirección sino su papel entre las demás. |
+
+---
+
+#### Importante CU-121 — Consultar la Dirección Predeterminada
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | La aplicación recupera la dirección que el cliente dejó marcada, para proponerla sola cuando arranca un pedido. Es la lectura que evita que el cliente tenga que elegir dirección en cada compra. Endpoint: `GET /user-addres/user/:userId/default`. |
+| **Precondición** | El cliente está autenticado. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente abre la pantalla de armado del pedido. |
+| 2 | La aplicación envía `GET /user-addres/user/:userId/default`. |
+| 3 | El sistema valida el formato del identificador de usuario. |
+| 4 | El sistema busca la dirección del cliente que tenga la marca de predeterminada. |
+| 5 | El sistema devuelve la dirección encontrada. |
+
+**Postcondición:** La aplicación tiene la dirección con la que va a proponer la entrega.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si el cliente no tiene ninguna dirección, el sistema retorna error 404 "No addresses found for user: …". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por índice. |
+| **Frecuencia** | Muy alta: se ejecuta al inicio de cada compra. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El mensaje de error no distingue entre un cliente sin direcciones y uno que tiene direcciones pero ninguna marcada; en los dos casos dice que no encontró direcciones. |
+
+---
+
+#### Importante CU-122 — Agregar Ítem al Carrito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente elige un tipo de garrafa del catálogo y lo suma a su carrito con una cantidad. El carrito sobrevive al cierre de la aplicación y al cambio de dispositivo, de modo que el cliente puede armar la compra en varios momentos. Es el primer paso del proceso de compra que termina en CU-005 Crear Pedido. |
+| **Precondición** | El cliente está autenticado. El tipo de garrafa existe, está activo y pertenece a la distribuidora. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente elige un tipo de garrafa del catálogo y una cantidad. |
+| 2 | La aplicación envía la petición de alta del ítem. |
+| 3 | El sistema recupera el carrito abierto del cliente o crea uno vacío si no lo tiene. |
+| 4 | El sistema comprueba que el tipo de garrafa exista, esté activo y sea de la distribuidora del carrito. |
+| 5 | Si el tipo de garrafa ya está en el carrito, el sistema suma la cantidad al ítem existente; si no, agrega un ítem nuevo. |
+| 6 | El sistema guarda el precio unitario vigente en el ítem. |
+| 7 | El sistema devuelve el carrito con su total recalculado. |
+
+**Postcondición:** El carrito del cliente contiene el tipo de garrafa con la cantidad pedida y el total actualizado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el tipo de garrafa no existe o está dado de baja, el sistema rechaza la operación. |
+| 4 | Si el tipo de garrafa es de otra distribuidora, el sistema rechaza la operación. |
+| 5 | Si la cantidad pedida no es un entero positivo, el sistema rechaza la operación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura del carrito y una escritura del ítem. |
+| **Frecuencia** | Muy alta: es la operación más repetida del proceso de compra. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Hoy el carrito vive en memoria de la aplicación del cliente y no se guarda en ningún lado: si el cliente cierra la aplicación, pierde lo que había armado. La cátedra pidió que agregar y quitar ítems figuren como casos de uso del proceso de compra, y eso supone persistirlo. Requiere las tablas `cart` y `cart_item`. |
+
+---
+
+#### Importante CU-123 — Modificar la Cantidad de un Ítem del Carrito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente cambia cuántas garrafas de un tipo quiere, sin tener que sacar el ítem y volver a agregarlo. Es la modificación dentro del proceso de compra. |
+| **Precondición** | El cliente está autenticado y el ítem está en su carrito. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente cambia la cantidad de un ítem del carrito. |
+| 2 | La aplicación envía la petición de modificación. |
+| 3 | El sistema recupera el carrito del cliente y comprueba que el ítem le pertenezca. |
+| 4 | El sistema valida que la cantidad nueva sea un entero positivo. |
+| 5 | El sistema guarda la cantidad y devuelve el carrito con el total recalculado. |
+
+**Postcondición:** El ítem queda con la cantidad pedida y el total del carrito refleja el cambio.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el ítem no está en el carrito del cliente, el sistema rechaza la operación. |
+| 4 | Si la cantidad es cero o negativa, el sistema rechaza la operación e indica que para dejarlo en cero hay que quitar el ítem (CU-124). |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. |
+| **Frecuencia** | Alta. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Se separa de la baja a propósito: poner la cantidad en cero y quitar el ítem son dos intenciones distintas del cliente y conviene que el sistema no las confunda. |
+
+---
+
+#### Importante CU-124 — Quitar Ítem del Carrito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente saca del carrito un tipo de garrafa que había agregado. Es la baja dentro del proceso de compra, la contracara de CU-122. |
+| **Precondición** | El cliente está autenticado y el ítem está en su carrito. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente pide quitar un ítem del carrito. |
+| 2 | La aplicación envía la petición de baja del ítem. |
+| 3 | El sistema recupera el carrito del cliente y comprueba que el ítem le pertenezca. |
+| 4 | El sistema borra el ítem. |
+| 5 | El sistema devuelve el carrito con el total recalculado. |
+
+**Postcondición:** El ítem ya no está en el carrito y el total refleja la baja.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el ítem no está en el carrito del cliente, el sistema rechaza la operación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y un borrado. |
+| **Frecuencia** | Media. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El ítem se borra físicamente: un carrito no es un documento contable y no hay nada que auditar en lo que el cliente descartó antes de comprar. |
+
+---
+
+#### Importante CU-125 — Consultar el Carrito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente ve lo que lleva armado: los tipos de garrafa, las cantidades, el precio unitario de cada uno y el total. Es la lectura que incluye CU-005 Crear Pedido para saber qué se está comprando. |
+| **Precondición** | El cliente está autenticado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente abre el carrito. |
+| 2 | La aplicación pide el carrito abierto del cliente. |
+| 3 | El sistema recupera el carrito con sus ítems y el tipo de garrafa de cada uno. |
+| 4 | El sistema recalcula el total sobre los precios guardados en los ítems. |
+| 5 | El sistema devuelve el carrito. |
+
+**Postcondición:** El cliente tiene a la vista el detalle y el total de lo que va a comprar.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el cliente no tiene carrito, el sistema devuelve un carrito vacío en vez de un error. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura con dos relaciones. |
+| **Frecuencia** | Muy alta. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Devolver un carrito vacío y no un error simplifica la aplicación del cliente, que no tiene que distinguir entre no tener carrito y tenerlo sin ítems. |
+
+---
+
+#### Menor CU-126 — Vaciar el Carrito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente descarta de una vez todo lo que había armado, en lugar de quitar los ítems de a uno. El sistema también vacía el carrito por su cuenta cuando la compra se confirma, para que el cliente no arranque la próxima con lo que ya compró. |
+| **Precondición** | El cliente está autenticado y tiene un carrito con ítems. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente pide vaciar el carrito. |
+| 2 | La aplicación envía la petición. |
+| 3 | El sistema recupera el carrito del cliente. |
+| 4 | El sistema borra todos sus ítems. |
+| 5 | El sistema devuelve el carrito vacío. |
+
+**Postcondición:** El carrito del cliente queda sin ítems y con total en cero.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el cliente no tiene carrito, el sistema devuelve un carrito vacío sin hacer nada. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un borrado por lote. |
+| **Frecuencia** | Baja como acción del cliente; alta como paso final de cada compra confirmada. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El actor principal es el cliente, pero el caso también lo dispara CU-005 Crear Pedido una vez que el pedido quedó registrado. |
+
+---
+
+#### Importante CU-127 — Cambiar la Dirección de Entrega del Pedido
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente cambia a dónde quiere que le lleven un pedido ya confirmado, mientras todavía no salió el repartidor. El sistema comprueba que la dirección nueva sea suya y esté dentro de la zona de cobertura, y guarda el cambio con su motivo para que el chofer y el administrador vean qué pasó. |
+| **Precondición** | El cliente está autenticado, el pedido es suyo y está en estado pendiente o aceptado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente abre un pedido en curso y pide cambiar la dirección de entrega. |
+| 2 | El cliente elige otra de sus direcciones registradas. |
+| 3 | El sistema comprueba que el pedido sea del cliente y esté en un estado que admita el cambio. |
+| 4 | El sistema comprueba que la dirección nueva sea del cliente. |
+| 5 | El sistema comprueba que la dirección nueva caiga dentro de una zona de cobertura de la distribuidora del pedido. |
+| 6 | El sistema guarda la dirección nueva en el pedido y registra el cambio con la dirección anterior, quién lo hizo y el motivo. |
+| 7 | El sistema avisa al chofer asignado, si ya lo hay. |
+
+**Postcondición:** El pedido queda con la dirección nueva y con el cambio asentado en su historial.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el pedido ya está en camino o entregado, el sistema rechaza el cambio. |
+| 4 | Si la dirección es de otro cliente, el sistema rechaza la operación. |
+| 5 | Si la dirección queda fuera de la zona de cobertura, el sistema rechaza el cambio e indica el motivo. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Tres lecturas y dos escrituras. |
+| **Frecuencia** | Baja, pero de mucho impacto operativo cuando ocurre. |
+| **Estabilidad** | Media |
+| **Comentarios** | Hoy la dirección se fija al crear el pedido y no hay ninguna operación que la cambie: el cliente tiene que cancelar y volver a pedir. El caso se documenta a pedido de la cátedra como parte del flujo del proceso de compra. Requiere la tabla `order_address_change`. |
+
+---
+
+#### Importante CU-128 — Indicar Quién Recibe el Pedido
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El cliente aclara que la garrafa la va a recibir otra persona: un familiar, el encargado del edificio o un vecino. Registra su nombre, su documento y qué relación tiene con él, para que el chofer sepa a quién puede entregarle y quede asentado quién recibió. |
+| **Precondición** | El cliente está autenticado, el pedido es suyo y todavía no fue entregado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente indica, al armar el pedido o después, que lo va a recibir otra persona. |
+| 2 | El cliente carga el nombre, el documento y la relación de quien recibe. |
+| 3 | El sistema comprueba que el pedido sea del cliente y no esté entregado. |
+| 4 | El sistema guarda los datos de quien recibe en el pedido. |
+| 5 | El sistema muestra esos datos al chofer en la pantalla del pedido. |
+
+**Postcondición:** El pedido dice quién está autorizado a recibirlo y el chofer lo tiene a la vista.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el pedido ya fue entregado, el sistema rechaza la operación. |
+| 4 | Si el documento no tiene un formato válido, el sistema rechaza la operación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. |
+| **Frecuencia** | Media: es frecuente en horario laboral, cuando el titular no está en su casa. |
+| **Estabilidad** | Media |
+| **Comentarios** | La entrega se confirma hoy escaneando un código que el chofer muestra (CU-020). Ese control asegura que la entrega ocurrió, pero no dice quién la recibió. Este caso completa esa información y responde al pedido de la cátedra. |
 
 ---
 
@@ -3555,14 +4597,14 @@ respaldado por la lectura del código en poder del cliente.
 ### SS-07 — Gestión de Choferes y Vehículos
 
 
-#### Importante CU-051 — Gestionar Vehículos
+#### Importante CU-051 — Consultar Listado de Vehículos
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | Complementa a CU-034 (Registrar Vehículo). El administrador edita los datos de un vehículo de la flota, lo elimina, consulta el listado completo, el detalle de una unidad, los vehículos de un chofer determinado o busca por patente. Todas las operaciones quedan acotadas a la distribuidora del administrador y el sistema mantiene la relación entre el vehículo y su chofer. |
-| **Precondición** | El administrador está autenticado con rol ADMIN o SUPER_ADMIN. Para editar o eliminar, tiene una distribuidora en contexto y el vehículo pertenece a esa distribuidora. |
+| **Descripción** | El administrador consulta el listado de vehículos de su distribuidora, con el tipo, la patente y el chofer al que pertenece cada uno. Endpoint: `GET /car` (`src/car/car.controller.ts:44`). Este caso agrupaba antes seis operaciones distintas; a pedido de la cátedra cada una quedó como caso propio: el detalle en CU-113, la edición en CU-111, la baja en CU-112, la búsqueda por patente en CU-114 y los vehículos de un chofer en CU-115. |
+| **Precondición** | El administrador está autenticado y tiene una distribuidora en contexto. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -4402,6 +5444,159 @@ respaldado por la lectura del código en poder del cliente.
 | **Frecuencia** | Media. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El historial de movimientos solo admite altas y nunca se corrige ni se borra, por lo que crece de forma indefinida con la vida útil del envase; el listado tampoco pagina ni filtra por rango de fechas. |
+
+---
+
+#### Crítico CU-132 — Registrar la Revisión Periódica de un Envase
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-06 |
+| **Requisitos asociados** | IRQ-05 |
+| **Descripción** | El administrador asienta la prueba hidráulica de un envase: la fecha en que se hizo, el resultado y cuándo vence. Las garrafas de gas licuado tienen una vida útil regulada y no se pueden llenar ni despachar una vez vencida la revisión, así que el sistema necesita saber la fecha de cada una. |
+| **Precondición** | El administrador está autenticado. El envase existe y es de su distribuidora. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la ficha del envase y registra una revisión. |
+| 2 | El administrador carga la fecha de la revisión, el resultado y la fecha del próximo vencimiento. |
+| 3 | El sistema comprueba que el envase exista y sea de la distribuidora del administrador. |
+| 4 | El sistema comprueba que la fecha de la revisión no sea futura y que el vencimiento sea posterior a ella. |
+| 5 | El sistema guarda la revisión en el historial del envase. |
+| 6 | El sistema copia la fecha de la última revisión y la del vencimiento en la ficha del envase. |
+| 7 | Si el resultado es de rechazo, el sistema deja el envase fuera de circulación. |
+
+**Postcondición:** El envase queda con su revisión asentada y con la fecha hasta la que puede circular.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el envase no existe o es de otra distribuidora, el sistema rechaza la operación. |
+| 4 | Si la fecha de revisión es futura o el vencimiento es anterior a ella, el sistema rechaza la operación. |
+| 7 | Si el envase está en poder de un cliente al momento del rechazo, el sistema lo marca para retirarlo y no lo saca de circulación hasta que vuelva. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y dos escrituras. |
+| **Frecuencia** | Baja por envase: la revisión es periódica y se hace por lote en el taller. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La cátedra pidió que el sistema conozca las fechas de vencimiento de las garrafas. Hoy la tabla de envases guarda el número de serie, el estado y el depósito, pero ninguna fecha. Requiere la tabla `cylinder_inspection` y tres columnas nuevas en `cylinder`. |
+
+---
+
+#### Importante CU-133 — Consultar la Vigencia de un Envase
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-06 |
+| **Requisitos asociados** | IRQ-05 |
+| **Descripción** | El administrador consulta hasta cuándo puede circular un envase y cuándo fue su última revisión. Es la lectura que necesita antes de llenarlo, de despacharlo o de decidir si lo manda al taller. |
+| **Precondición** | El administrador está autenticado. El envase existe. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador escanea o busca el envase por su número de serie. |
+| 2 | El sistema recupera el envase con su fecha de fabricación, su última revisión y su vencimiento. |
+| 3 | El sistema calcula cuántos días faltan para el vencimiento. |
+| 4 | El sistema devuelve la vigencia junto con el historial de revisiones. |
+
+**Postcondición:** El administrador sabe si el envase está en condiciones de circular y por cuánto tiempo más.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el envase no existe, el sistema retorna error 404. |
+| 2 | Si el envase no tiene ninguna revisión registrada, el sistema lo informa como sin vigencia acreditada. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura con una relación. |
+| **Frecuencia** | Alta: se consulta en cada llenado y en cada despacho. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El envase sin revisión registrada no es lo mismo que el envase vencido: el primero puede estar en regla y sin cargar el dato. El sistema los distingue para no bloquear el parque entero el día que se implemente. |
+
+---
+
+#### Importante CU-134 — Consultar los Envases Próximos a Vencer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-06 |
+| **Requisitos asociados** | IRQ-05 |
+| **Descripción** | El administrador ve qué envases de su parque vencen dentro de una ventana de tiempo, para mandarlos a revisar antes de que queden fuera de circulación. Es la vista que convierte el dato de vencimiento en una acción de mantenimiento. |
+| **Precondición** | El administrador está autenticado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el listado de vencimientos y elige una ventana de días. |
+| 2 | El sistema busca los envases de su distribuidora cuyo vencimiento cae dentro de esa ventana. |
+| 3 | El sistema separa los ya vencidos de los que están por vencer. |
+| 4 | El sistema devuelve el listado ordenado por fecha de vencimiento, del más urgente al menos. |
+
+**Postcondición:** El administrador tiene la lista de envases a revisar, ordenada por urgencia.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si ningún envase cae en la ventana, el sistema devuelve un listado vacío. |
+| 2 | Los envases sin revisión registrada se listan aparte, porque no tienen fecha con la cual comparar. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por rango sobre la fecha de vencimiento, que conviene indexar. |
+| **Frecuencia** | Media: semanal, como parte de la rutina de mantenimiento del parque. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La ventana la elige el administrador y no está fija en el código, para que cada distribuidora se maneje con la anticipación que le sirve. |
+
+---
+
+#### Crítico CU-135 — Bloquear el Despacho de un Envase Vencido
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-06 |
+| **Requisitos asociados** | IRQ-05 |
+| **Descripción** | El sistema impide que un envase con la revisión vencida se asigne a un pedido. Es el control que le da sentido a registrar las fechas: sin él, el dato existe pero no evita que salga a la calle un envase fuera de norma. |
+| **Precondición** | Hay un pedido al que se le están asignando envases. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El sistema va a asignar un envase a un pedido (CU-068). |
+| 2 | El sistema consulta la vigencia del envase (CU-133). |
+| 3 | Si el vencimiento ya pasó, el sistema descarta ese envase y busca otro del mismo tipo. |
+| 4 | Si no hay ningún envase vigente de ese tipo, el sistema avisa al administrador y deja el pedido sin envases asignados. |
+| 5 | Si el envase está vigente, el sistema lo asigna y sigue el flujo normal. |
+
+**Postcondición:** Ningún pedido sale con un envase cuya revisión está vencida.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el envase no tiene revisión registrada, el sistema lo deja pasar y lo anota, para no bloquear la operación cuando el dato todavía no está cargado. |
+| 4 | Si no hay envases vigentes, el pedido no se cancela: queda a la espera de que el administrador resuelva. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura más por envase candidato. |
+| **Frecuencia** | Muy alta: se ejecuta en cada asignación de envases. |
+| **Estabilidad** | Media |
+| **Comentarios** | La excepción del paso 3 es deliberada. Si el control bloqueara también los envases sin fecha cargada, el día que se implemente quedaría todo el parque frenado hasta terminar de cargar las revisiones. |
 
 ---
 
@@ -5450,6 +6645,122 @@ respaldado por la lectura del código en poder del cliente.
 
 ---
 
+#### Importante CU-129 — Consultar Detalle del Cliente
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customer/:id`. |
+| **Precondición** | El solicitante está autenticado. El cliente existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige un cliente del listado. |
+| 2 | El panel envía `GET /customer/:id`. |
+| 3 | El sistema valida el formato del identificador. |
+| 4 | El sistema recupera el cliente con su cuenta de usuario. |
+| 5 | El sistema comprueba que quien pide tenga alcance sobre ese cliente. |
+| 6 | El sistema devuelve la ficha completa. |
+
+**Postcondición:** El administrador tiene a la vista los datos del cliente.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura con una relación. |
+| **Frecuencia** | Alta: es la puerta de entrada a validar, editar y dar de baja. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Este caso estaba implícito dentro de la gestión del cliente. La cátedra pidió que cada operación del ABM figure por separado, y ésta es la lectura puntual, la contracara de CU-109 para el chofer. |
+
+---
+
+#### Importante CU-130 — Buscar Cliente por Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customer/user/:userId`. |
+| **Precondición** | El solicitante está autenticado. La cuenta de usuario existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador llega con el identificador de usuario desde otra pantalla. |
+| 2 | El panel envía `GET /customer/user/:userId`. |
+| 3 | El sistema valida el formato del identificador. |
+| 4 | El sistema busca la ficha de cliente asociada a esa cuenta. |
+| 5 | El sistema devuelve la ficha encontrada. |
+
+**Postcondición:** El administrador tiene la ficha de cliente que corresponde a esa cuenta.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si la cuenta no tiene ficha de cliente, el sistema retorna error 404 "Customer for user ID: … not found". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por índice. |
+| **Frecuencia** | Alta: es el salto habitual desde un pedido o un reclamo a la ficha del cliente. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es la búsqueda del ABM de clientes: la que la cátedra pidió que apareciera como caso propio y que las demás operaciones incluyan con `«include»`. |
+
+---
+
+#### Importante CU-131 — Editar Datos del Cliente
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customer/:id`. |
+| **Precondición** | El solicitante está autenticado. El cliente existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador edita los campos de la ficha. |
+| 2 | El panel envía `PATCH /customer/:id` con los campos modificados. |
+| 3 | El sistema valida el formato del identificador y de los campos. |
+| 4 | El sistema arma la ficha con los campos nuevos sobre los existentes. |
+| 5 | El sistema guarda los cambios y devuelve la ficha actualizada. |
+
+**Postcondición:** La ficha del cliente queda con los datos corregidos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
+| 5 | Si la validación de entrada encuentra un campo no declarado, el sistema retorna error 400. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de fusión y una escritura. |
+| **Frecuencia** | Baja: se edita cuando el cliente informa un cambio o se detecta un error de carga. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La edición usa `preload`, que trae la ficha y le superpone los cambios en un solo paso: si el cliente no existe, devuelve vacío y de ahí sale el error 404. |
+
+---
+
 
 #### SS-07 — Gestión de Choferes y Vehículos
 
@@ -5537,6 +6848,537 @@ respaldado por la lectura del código en poder del cliente.
 | **Frecuencia** | Baja: es una operación excepcional de mantenimiento de la flota. |
 | **Estabilidad** | Alta |
 | **Comentarios** | La baja lógica no desactiva al chofer ni lo retira del radar de posiciones: un chofer dado de baja mientras estaba con su disponibilidad encendida puede seguir figurando como candidato del despacho hasta que se desconecte o alguien lo desactive explícitamente. |
+
+---
+
+#### Importante CU-109 — Consultar Detalle del Chofer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador abre la ficha de un chofer y ve sus datos personales, su vehículo, su marca de validación, su estado de actividad y su calificación. Es la lectura puntual que el listado (CU-035) no cubre, y de la que dependen la edición y la baja. Endpoint: `GET /delivery/:id` (`src/delivery/delivery.controller.ts:59`). |
+| **Precondición** | El solicitante está autenticado. El chofer existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige un chofer del listado. |
+| 2 | El panel envía `GET /delivery/:id`. |
+| 3 | El sistema valida el formato UUID del identificador. |
+| 4 | El sistema recupera el chofer con sus relaciones `user` y `user.role`. |
+| 5 | El sistema devuelve la ficha completa del chofer. |
+
+**Postcondición:** El administrador tiene a la vista los datos del chofer.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 4 | Si el chofer no existe, el sistema retorna error 404 "Delivery with ID: … not found". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura con dos relaciones. |
+| **Frecuencia** | Alta: es la puerta de entrada a editar y a dar de baja. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Este caso estaba implícito dentro de la gestión del chofer. La cátedra pidió que cada operación del ABM figure por separado, y ésta es la lectura puntual. |
+
+---
+
+#### Importante CU-110 — Buscar Chofer por Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador ubica el perfil de chofer a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel —un pedido, un reclamo, una calificación—. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /delivery/user/:userId` (`src/delivery/delivery.controller.ts:68`). |
+| **Precondición** | El solicitante está autenticado. La cuenta de usuario existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador llega con el identificador de usuario desde otra pantalla. |
+| 2 | El panel envía `GET /delivery/user/:userId`. |
+| 3 | El sistema valida el formato UUID del identificador. |
+| 4 | El sistema busca el perfil de chofer asociado a esa cuenta. |
+| 5 | El sistema devuelve el perfil encontrado. |
+
+**Postcondición:** El administrador tiene el perfil de chofer que corresponde a esa cuenta.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 4 | Si la cuenta no tiene perfil de chofer, el sistema retorna error 404. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por clave foránea. |
+| **Frecuencia** | Alta: la usan las pantallas que parten del usuario. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el caso incluido por editar, eliminar, validar y activar: todas necesitan primero resolver de qué chofer se está hablando. |
+
+---
+
+#### Importante CU-111 — Editar Vehículo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador corrige los datos del vehículo de un chofer: tipo, patente, marca, modelo, año, color o capacidad de carga. Sale de CU-051, que agrupaba editar, eliminar y consultar en un solo caso. Endpoint: `PATCH /car/:id` (`src/car/car.controller.ts:85`). |
+| **Precondición** | El solicitante está autenticado y opera sobre una distribuidora. El vehículo existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la ficha del vehículo y edita los campos. |
+| 2 | El panel envía `PATCH /car/:id` con los campos a cambiar. |
+| 3 | El sistema comprueba que el vehículo exista y pertenezca a la distribuidora (`src/car/car.service.ts:100`). |
+| 4 | El sistema precarga la entidad con los cambios recibidos. |
+| 5 | Si cambió la patente, el sistema comprueba que no esté usada por otro vehículo (`src/car/car.service.ts:111-113`). |
+| 6 | El sistema guarda el vehículo y lo devuelve. |
+
+**Postcondición:** El vehículo refleja los cambios enviados y su patente sigue siendo única.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si el vehículo no existe o es de otra distribuidora, el sistema retorna error 404 "Car with ID: … not found". |
+| 5 | Si la patente nueva ya pertenece a otro vehículo, el sistema rechaza el cambio. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de control, una precarga y una escritura. |
+| **Frecuencia** | Baja: corrección puntual de los datos del vehículo. |
+| **Estabilidad** | Media |
+| **Comentarios** | La comprobación de patente repetida es la misma que hace el alta (CU-034): la patente identifica al vehículo y no puede duplicarse dentro de la distribuidora. |
+
+---
+
+#### Importante CU-112 — Eliminar Vehículo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador da de baja el vehículo de un chofer. Sale de CU-051. A diferencia del chofer y del producto, **la baja del vehículo es física**: la fila se borra. Endpoint: `DELETE /car/:id` (`src/car/car.controller.ts:97`). |
+| **Precondición** | El solicitante está autenticado y opera sobre una distribuidora. El vehículo existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige eliminar un vehículo. |
+| 2 | El panel envía `DELETE /car/:id`. |
+| 3 | El sistema comprueba que el vehículo exista y pertenezca a la distribuidora. |
+| 4 | El sistema borra la fila (`src/car/car.service.ts:126-128`). |
+| 5 | El sistema confirma la baja. |
+
+**Postcondición:** El vehículo deja de existir en la base.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si el vehículo no existe o es de otra distribuidora, el sistema retorna error 404. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de control y un borrado. |
+| **Frecuencia** | Baja. |
+| **Estabilidad** | Media |
+| **Comentarios** | **⚠️ verificar**: el borrado es físico (`carRepository.remove`), mientras que el chofer usa baja lógica (CU-097) y el producto una marca de inactivo (CU-040). Es una asimetría de política de borrado dentro del mismo subsistema, ya señalada en el Doc 3. |
+
+---
+
+#### Importante CU-113 — Consultar Detalle del Vehículo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador abre la ficha de un vehículo y ve su tipo, patente, marca, modelo, año, color, capacidad de carga y el chofer al que pertenece. Sale de CU-051. Endpoint: `GET /car/:id` (`src/car/car.controller.ts:51`). |
+| **Precondición** | El solicitante está autenticado. El vehículo existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige un vehículo del listado. |
+| 2 | El panel envía `GET /car/:id`. |
+| 3 | El sistema valida el formato UUID y acota la lectura a la distribuidora. |
+| 4 | El sistema devuelve el vehículo con su usuario asociado. |
+
+**Postcondición:** El administrador tiene a la vista los datos del vehículo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 4 | Si el vehículo no existe o es de otra distribuidora, el sistema retorna error 404 "Car with ID: … not found". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura con una relación. |
+| **Frecuencia** | Media. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es la lectura que la edición y la baja hacen primero para acotar la escritura a la distribuidora. |
+
+---
+
+#### Importante CU-114 — Buscar Vehículo por Patente
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador ubica un vehículo por su patente, que es el dato con el que se lo nombra en la operación diaria. Es la búsqueda que incluyen la edición y la baja. Endpoint: `GET /car/patent/:patent` (`src/car/car.controller.ts:74`). |
+| **Precondición** | El solicitante está autenticado. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador escribe la patente. |
+| 2 | El panel envía `GET /car/patent/:patent`. |
+| 3 | El sistema busca el vehículo por patente dentro de la distribuidora (`src/car/car.service.ts:136-140`). |
+| 4 | El sistema devuelve el vehículo encontrado. |
+
+**Postcondición:** El administrador tiene el vehículo que corresponde a esa patente.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si ninguna patente coincide dentro de la distribuidora, el sistema retorna error 404. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por columna indexada. |
+| **Frecuencia** | Alta: es la forma natural de nombrar un vehículo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La patente es única dentro de la distribuidora, y esa unicidad la sostienen el alta (CU-034) y la edición (CU-111). |
+
+---
+
+#### Importante CU-115 — Consultar Vehículos de un Chofer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | Se listan los vehículos registrados a nombre de un chofer. El administrador lo usa desde la ficha del chofer; el propio chofer, para ver los suyos. Sale de CU-051. Endpoint: `GET /car/user/:userId` (`src/car/car.controller.ts:63`). |
+| **Precondición** | El solicitante está autenticado. La cuenta de usuario existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Se abre la ficha del chofer, o el chofer entra a sus vehículos. |
+| 2 | La aplicación envía `GET /car/user/:userId`. |
+| 3 | El sistema valida el formato UUID y acota la consulta a la distribuidora. |
+| 4 | El sistema devuelve los vehículos de esa cuenta. |
+
+**Postcondición:** Quien consulta tiene la lista de vehículos del chofer.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 4 | Si la cuenta no tiene vehículos, el sistema devuelve una lista vacía, no un error. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por clave foránea. |
+| **Frecuencia** | Media. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Un chofer puede tener más de un vehículo, como ya lo declara el alta (CU-034); por eso esta consulta devuelve una lista y no una ficha. |
+
+---
+
+#### Crítico CU-136 — Registrar el Seguro del Vehículo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador carga la compañía, el número de póliza y la fecha de vencimiento del seguro de un vehículo de la flota. Un vehículo sin seguro vigente no puede salir a repartir, así que el dato es una condición de habilitación, no un adjunto. |
+| **Precondición** | El administrador está autenticado. El vehículo existe y es de su distribuidora. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la ficha del vehículo y carga los datos del seguro. |
+| 2 | El sistema comprueba que el vehículo exista y sea de su distribuidora (CU-113). |
+| 3 | El sistema comprueba que la fecha de vencimiento sea posterior a hoy. |
+| 4 | El sistema guarda la compañía, la póliza y el vencimiento en la ficha del vehículo. |
+| 5 | El sistema recalcula si el vehículo queda habilitado para repartir. |
+
+**Postcondición:** El vehículo tiene su seguro asentado y el sistema sabe hasta cuándo está cubierto.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el vehículo no existe o es de otra distribuidora, el sistema rechaza la operación. |
+| 3 | Si el vencimiento ya pasó, el sistema acepta el dato pero deja el vehículo como no habilitado y lo informa. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. |
+| **Frecuencia** | Baja: una vez por año por vehículo, más las renovaciones. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La cátedra pidió llevar el mantenimiento de la flota con patente, seguro, verificación técnica y licencia del chofer. La patente ya existe en la ficha del vehículo; el resto son campos nuevos. Se aceptan pólizas vencidas a propósito, porque el administrador tiene que poder cargar el histórico. |
+
+---
+
+#### Crítico CU-137 — Registrar la Verificación Técnica Vehicular
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador carga la fecha hasta la que vale la verificación técnica de un vehículo. Es obligatoria para circular y, en el transporte de gas licuado, es lo que habilita al vehículo a llevar la carga. |
+| **Precondición** | El administrador está autenticado. El vehículo existe y es de su distribuidora. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la ficha del vehículo y carga la fecha de vencimiento de la verificación. |
+| 2 | El sistema comprueba que el vehículo exista y sea de su distribuidora (CU-113). |
+| 3 | El sistema guarda la fecha en la ficha del vehículo. |
+| 4 | El sistema recalcula si el vehículo queda habilitado para repartir. |
+
+**Postcondición:** El vehículo tiene su verificación técnica asentada.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el vehículo no existe o es de otra distribuidora, el sistema rechaza la operación. |
+| 3 | Si la fecha ya pasó, el sistema la guarda y deja el vehículo como no habilitado. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. |
+| **Frecuencia** | Baja: una vez por año por vehículo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Se separa del seguro porque son dos habilitaciones distintas, con organismos y vencimientos distintos, y porque el administrador las carga en momentos diferentes. |
+
+---
+
+#### Crítico CU-138 — Registrar la Licencia de Conducir del Chofer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador carga el número, la categoría y el vencimiento de la licencia de conducir de un chofer. La categoría importa: no es la misma la que habilita una moto que la que habilita un camión de reparto. |
+| **Precondición** | El administrador está autenticado. El chofer existe y es de su distribuidora. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la ficha del chofer y carga los datos de la licencia. |
+| 2 | El sistema comprueba que el chofer exista y sea de su distribuidora (CU-109). |
+| 3 | El sistema guarda el número, la categoría y el vencimiento. |
+| 4 | El sistema comprueba que la categoría alcance para el tipo de vehículo asignado al chofer. |
+| 5 | El sistema recalcula si el chofer queda habilitado para repartir. |
+
+**Postcondición:** El chofer tiene su licencia asentada y el sistema sabe hasta cuándo puede conducir.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el chofer no existe o es de otra distribuidora, el sistema rechaza la operación. |
+| 4 | Si la categoría no alcanza para el vehículo asignado, el sistema guarda el dato y lo informa como incompatibilidad. |
+| 5 | Si la licencia está vencida, el sistema deja el chofer como no habilitado. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos lecturas y una escritura. |
+| **Frecuencia** | Baja: cada cinco años por chofer, más las renovaciones. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El paso 4 es lo que conecta este caso con el segundo flujo de compra: un chofer con licencia de moto no puede tomar un pedido asignado a un camión, y al revés tampoco tiene sentido mandar un camión a una entrega express. |
+
+---
+
+#### Importante CU-139 — Consultar los Vencimientos de la Flota
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador ve en una sola pantalla qué seguros, verificaciones técnicas y licencias vencen dentro de una ventana de tiempo, y cuáles ya vencieron. Es la vista de control de la flota, la contracara de CU-134 para los envases. |
+| **Precondición** | El administrador está autenticado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el tablero de la flota y elige una ventana de días. |
+| 2 | El sistema busca los vehículos de su distribuidora con seguro o verificación que venzan en esa ventana. |
+| 3 | El sistema busca los choferes de su distribuidora con licencia que venza en esa ventana. |
+| 4 | El sistema arma un único listado, separando lo vencido de lo por vencer. |
+| 5 | El sistema devuelve el listado ordenado por fecha, del más urgente al menos. |
+
+**Postcondición:** El administrador sabe qué habilitaciones tiene que renovar y con cuánta urgencia.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Los vehículos y choferes sin el dato cargado se listan aparte, porque no tienen fecha con la cual comparar. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos lecturas por rango de fecha. |
+| **Frecuencia** | Media: semanal. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Junta en una vista datos de dos tablas distintas porque el administrador piensa en términos de flota, no de vehículos por un lado y choferes por el otro. |
+
+---
+
+#### Importante CU-140 — Programar un Mantenimiento de Vehículo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador agenda un service, un cambio de cubiertas o una reparación para un vehículo, con la fecha prevista y el tipo de trabajo. El vehículo queda anotado como comprometido para ese día, para que el despacho no cuente con él. |
+| **Precondición** | El administrador está autenticado. El vehículo existe y es de su distribuidora. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige un vehículo y agenda un mantenimiento. |
+| 2 | El administrador indica el tipo de trabajo, la fecha prevista y una observación. |
+| 3 | El sistema comprueba que el vehículo exista y sea de su distribuidora (CU-113). |
+| 4 | El sistema comprueba que la fecha prevista no sea anterior a hoy. |
+| 5 | El sistema guarda el mantenimiento en estado agendado. |
+| 6 | El sistema avisa al chofer asignado a ese vehículo. |
+
+**Postcondición:** El mantenimiento queda agendado y el chofer sabe que ese día no dispone del vehículo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el vehículo no existe o es de otra distribuidora, el sistema rechaza la operación. |
+| 4 | Si la fecha es anterior a hoy, el sistema indica que un trabajo ya hecho se registra con CU-141. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura, más una notificación. |
+| **Frecuencia** | Media: mensual por vehículo. |
+| **Estabilidad** | Media |
+| **Comentarios** | Programar y registrar son dos casos distintos porque responden a momentos distintos: uno mira hacia adelante y compromete al vehículo, el otro cierra un trabajo hecho y actualiza el kilometraje. |
+
+---
+
+#### Importante CU-141 — Registrar un Mantenimiento Realizado
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador cierra un mantenimiento: anota cuándo se hizo, con cuántos kilómetros, cuánto costó y qué se hizo. Es lo que construye el historial del vehículo, del que sale el costo de mantenimiento por unidad y el intervalo real entre services. |
+| **Precondición** | El administrador está autenticado. El mantenimiento existe y está agendado, o se registra uno nuevo ya realizado. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre un mantenimiento agendado, o registra uno nuevo ya hecho. |
+| 2 | El administrador carga la fecha de realización, el kilometraje, el costo y las observaciones. |
+| 3 | El sistema comprueba que el kilometraje no sea menor al del último mantenimiento del vehículo. |
+| 4 | El sistema pasa el mantenimiento a estado realizado. |
+| 5 | El sistema actualiza el kilometraje del vehículo. |
+
+**Postcondición:** El mantenimiento queda cerrado y el historial del vehículo refleja el trabajo y su costo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el kilometraje es menor al del último mantenimiento, el sistema rechaza la operación e indica el último valor registrado. |
+| 4 | Si el mantenimiento ya estaba cerrado, el sistema rechaza la operación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos lecturas y dos escrituras. |
+| **Frecuencia** | Media: mensual por vehículo. |
+| **Estabilidad** | Media |
+| **Comentarios** | El control de kilometraje del paso 3 es lo que evita que el historial quede inconsistente por un error de tipeo, que es el error más común al cargar estos datos. |
+
+---
+
+#### Importante CU-142 — Avisar los Vencimientos Próximos de la Flota
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El sistema revisa todos los días qué habilitaciones de la flota están por vencer y avisa al administrador con la anticipación que cada distribuidora haya configurado. Es lo que convierte el tablero de CU-139 en algo que no depende de que alguien se acuerde de mirarlo. |
+| **Precondición** | Ninguna: el proceso corre por iniciativa del sistema. |
+| **Estado** | No implementado. El caso de uso está especificado pero el sistema todavía no lo realiza. Registrado en el Documento 3, sección 10. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El proceso temporal se dispara una vez por día. |
+| 2 | Para cada distribuidora, el sistema lee su ventana de anticipación configurada. |
+| 3 | El sistema busca los seguros, verificaciones y licencias que vencen dentro de esa ventana. |
+| 4 | El sistema descarta los que ya fueron avisados en el mismo ciclo. |
+| 5 | El sistema envía un aviso al administrador de cada distribuidora con lo que le corresponde. |
+| 6 | El sistema deja registrado el aviso para no repetirlo al día siguiente. |
+
+**Postcondición:** Cada administrador recibe una vez el aviso de cada habilitación por vencer.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 5 | Si el envío del aviso falla, el sistema no marca la habilitación como avisada y reintenta en el ciclo siguiente. |
+| 3 | Si una distribuidora no tiene ventana configurada, el sistema usa treinta días. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una consulta por distribuidora, una vez al día, fuera del horario de mayor uso. |
+| **Frecuencia** | Diaria. |
+| **Estabilidad** | Media |
+| **Comentarios** | El paso 4 es lo que evita que el administrador reciba el mismo aviso todos los días durante un mes y termine ignorándolos. Sigue el mismo criterio que el resto de las tareas programadas del sistema. |
 
 ---
 
@@ -6068,7 +7910,7 @@ lifeline `Sistema`. No aparecen controladores, servicios ni base de datos, porqu
 pertenece al diseño y no al análisis. Los mensajes son las **operaciones del sistema**, con
 sus parámetros.
 
-Se incluyen 108 diagramas. El único caso sin diagrama es **CU-043 (Modificar
+Se incluyen 149 diagramas, uno por caso de uso. **CU-043 (Modificar
 Capacidad de Franja Horaria)**, que no está implementado y por lo tanto no tiene
 comportamiento observable que modelar.
 
@@ -6274,6 +8116,148 @@ sequenceDiagram
 
 ---
 
+#### DSS — CU-143: Declarar el Consumo Promedio al Registrarse
+
+**Actor:** Cliente
+**Operaciones del sistema:** `declararConsumoPromedio(tipoGarrafa, cantidadPorMes)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: declararConsumoPromedio(tipoGarrafa, cantidadPorMes)
+    activate SIS
+    alt el valor es razonable
+        SIS-->>CLI: consumo declarado y recompra estimada
+    else el cliente no lo declara
+        SIS-->>CLI: registro sin consumo declarado
+    else el valor está fuera de rango
+        SIS-->>CLI: se pide confirmación
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-144: Actualizar el Consumo Promedio Declarado
+
+**Actor:** Cliente
+**Operaciones del sistema:** `actualizarConsumoPromedio(cantidadPorMes)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: actualizarConsumoPromedio(cantidadPorMes)
+    activate SIS
+    alt el valor es razonable
+        SIS-->>CLI: consumo actualizado y recompra recalculada
+    else el valor está fuera de rango
+        SIS-->>CLI: se pide confirmación
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-145: Configurar los Días de Aviso Previo a la Recompra
+
+**Actor:** Cliente
+**Operaciones del sistema:** `configurarDiasDeAviso(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: configurarDiasDeAviso(dias)
+    activate SIS
+    alt el valor está dentro del rango
+        SIS-->>CLI: preferencia guardada
+    else el valor está fuera del rango
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-146: Consultar la Fecha Estimada de Recompra
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarRecomprasEstimadas(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarRecomprasEstimadas(dias)
+    activate SIS
+    alt hay clientes en la ventana
+        SIS-->>ADM: listado ordenado por fecha estimada
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-147: Realizar una Compra Express
+
+**Actor:** Cliente
+**Operaciones del sistema:** `realizarCompraExpress(tipoGarrafa, medioDePago)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: realizarCompraExpress(tipoGarrafa, medioDePago)
+    activate SIS
+    alt hay cobertura, horario y chofer
+        SIS-->>CLI: pedido express creado y despachado
+    else no hay cobertura express o está fuera de horario
+        SIS-->>CLI: se ofrece el flujo con franja horaria
+    else no hay chofer en moto disponible
+        SIS-->>CLI: se ofrece el flujo con franja horaria
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-148: Elegir la Modalidad de Entrega del Pedido
+
+**Actor:** Cliente
+**Operaciones del sistema:** `elegirModalidadDeEntrega(pedidoId, modalidad)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: elegirModalidadDeEntrega(pedidoId, modalidad)
+    activate SIS
+    alt las dos modalidades están disponibles
+        SIS-->>CLI: opciones con precio y tiempo estimado
+    else sólo la programada está disponible
+        SIS-->>CLI: opción programada con el motivo
+    end
+    deactivate SIS
+```
+
+---
+
 
 #### DSS — CU-008: Cancelar Pedido (Cliente)
 
@@ -6410,6 +8394,29 @@ sequenceDiagram
         SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado)
     else el pedido o el chofer no existen
         SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-149: Despachar un Pedido Express a un Chofer en Moto
+
+**Actor:** Sistema Automático
+**Operaciones del sistema:** `despacharPedidoExpress(pedidoId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: despacharPedidoExpress(pedidoId)
+    activate SIS
+    alt un chofer en moto acepta
+        SIS-->>SIS: pedido asignado y cliente avisado
+    else ninguno acepta
+        SIS-->>SIS: modalidad express cancelada y recargo devuelto
     end
     deactivate SIS
 ```
@@ -7388,10 +9395,10 @@ sequenceDiagram
 ### SS-02 — Gestión de Pedidos
 
 
-#### DSS — CU-046: Gestionar Direcciones de Entrega
+#### DSS — CU-046: Consultar Direcciones de Entrega del Cliente
 
 **Actor:** Cliente
-**Operaciones del sistema:** `crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)`, `listarDireccionesDelUsuario(usuarioId)`, `consultarDireccion(direccionId)`, `consultarDireccionPredeterminada(usuarioId)`, `actualizarDireccion(direccionId, datos)`, `marcarDireccionPredeterminada(direccionId)`, `eliminarDireccion(direccionId)`
+**Operaciones del sistema:** `consultarDireccionesDeEntrega(usuarioId)`
 
 ```mermaid
 sequenceDiagram
@@ -7399,40 +9406,317 @@ sequenceDiagram
     actor CLI as Cliente
     participant SIS as Sistema
 
-    CLI->>SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
+    CLI->>SIS: consultarDireccionesDeEntrega(usuarioId)
     activate SIS
-    SIS-->>CLI: dirección creada (direccionId)
-    deactivate SIS
-
-    CLI->>SIS: listarDireccionesDelUsuario(usuarioId)
-    activate SIS
-    SIS-->>CLI: listado de direcciones
-    deactivate SIS
-
-    opt el cliente cambia su dirección habitual
-        CLI->>SIS: marcarDireccionPredeterminada(direccionId)
-        activate SIS
-        SIS-->>CLI: dirección predeterminada actualizada (las demás dejan de serlo)
-        deactivate SIS
+    alt el cliente tiene direcciones
+        SIS-->>CLI: listado con la predeterminada primero
+    else el cliente no tiene ninguna
+        SIS-->>CLI: listado vacío
     end
+    deactivate SIS
+```
 
-    opt corrección de datos
-        CLI->>SIS: actualizarDireccion(direccionId, datos)
-        activate SIS
+---
+
+#### DSS — CU-116: Registrar Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `registrarDireccionDeEntrega(datos)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: registrarDireccionDeEntrega(datos)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>CLI: dirección registrada
+    else la cuenta de usuario no existe
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-117: Consultar Detalle de una Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `consultarDireccionDeEntrega(direccionId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarDireccionDeEntrega(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: datos de la dirección
+    else la dirección no existe
+        SIS-->>CLI: recurso no encontrado
+    else la dirección es de otro cliente
+        SIS-->>CLI: acceso denegado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-118: Editar Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `editarDireccionDeEntrega(direccionId, cambios)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: editarDireccionDeEntrega(direccionId, cambios)
+    activate SIS
+    alt la dirección existe y es del cliente
         SIS-->>CLI: dirección actualizada
-        deactivate SIS
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
     end
+    deactivate SIS
+```
 
-    opt baja de una dirección
-        CLI->>SIS: eliminarDireccion(direccionId)
-        activate SIS
-        alt la dirección existe y es del cliente
-            SIS-->>CLI: dirección eliminada
-        else la dirección no existe
-            SIS-->>CLI: recurso no encontrado
-        end
-        deactivate SIS
+---
+
+#### DSS — CU-119: Eliminar Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `eliminarDireccionDeEntrega(direccionId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: eliminarDireccionDeEntrega(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: baja confirmada
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
     end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-120: Marcar una Dirección como Predeterminada
+
+**Actor:** Cliente
+**Operaciones del sistema:** `marcarDireccionPredeterminada(direccionId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: marcarDireccionPredeterminada(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: dirección marcada como predeterminada
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-121: Consultar la Dirección Predeterminada
+
+**Actor:** Cliente
+**Operaciones del sistema:** `consultarDireccionPredeterminada(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarDireccionPredeterminada(usuarioId)
+    activate SIS
+    alt el cliente tiene una dirección predeterminada
+        SIS-->>CLI: datos de la dirección
+    else el cliente no tiene ninguna
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-122: Agregar Ítem al Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `agregarItemAlCarrito(garrafaId, cantidad)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: agregarItemAlCarrito(garrafaId, cantidad)
+    activate SIS
+    alt el tipo de garrafa es válido
+        SIS-->>CLI: carrito con el ítem agregado y el total
+    else el tipo de garrafa no existe o está de baja
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-123: Modificar la Cantidad de un Ítem del Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `modificarCantidadDelItem(itemId, cantidad)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: modificarCantidadDelItem(itemId, cantidad)
+    activate SIS
+    alt el ítem es del carrito del cliente
+        SIS-->>CLI: carrito con la cantidad actualizada
+    else el ítem no es del carrito del cliente
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-124: Quitar Ítem del Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `quitarItemDelCarrito(itemId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: quitarItemDelCarrito(itemId)
+    activate SIS
+    alt el ítem es del carrito del cliente
+        SIS-->>CLI: carrito sin el ítem
+    else el ítem no es del carrito del cliente
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-125: Consultar el Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `consultarCarrito()`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarCarrito()
+    activate SIS
+    alt el cliente tiene carrito
+        SIS-->>CLI: detalle del carrito y total
+    else el cliente no tiene carrito
+        SIS-->>CLI: carrito vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-126: Vaciar el Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `vaciarCarrito()`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: vaciarCarrito()
+    activate SIS
+    alt el cliente tiene carrito
+        SIS-->>CLI: carrito vacío
+    else el cliente no tiene carrito
+        SIS-->>CLI: carrito vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-127: Cambiar la Dirección de Entrega del Pedido
+
+**Actor:** Cliente
+**Operaciones del sistema:** `cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)
+    activate SIS
+    alt el pedido admite el cambio y la dirección es válida
+        SIS-->>CLI: pedido actualizado
+    else el pedido ya salió
+        SIS-->>CLI: cambio rechazado
+    else la dirección está fuera de la zona de cobertura
+        SIS-->>CLI: cambio rechazado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-128: Indicar Quién Recibe el Pedido
+
+**Actor:** Cliente
+**Operaciones del sistema:** `indicarQuienRecibe(pedidoId, nombre, documento, relacion)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: indicarQuienRecibe(pedidoId, nombre, documento, relacion)
+    activate SIS
+    alt el pedido admite el dato
+        SIS-->>CLI: pedido actualizado con quién recibe
+    else el pedido ya fue entregado
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
 ```
 
 ---
@@ -7578,7 +9862,7 @@ sequenceDiagram
 ### SS-07 — Gestión de Choferes y Vehículos
 
 
-#### DSS — CU-051: Gestionar Vehículos
+#### DSS — CU-051: Consultar Listado de Vehículos
 
 **Actor:** Administrador
 **Operaciones del sistema:** `listarVehiculos()`, `consultarVehiculo(vehiculoId)`, `consultarVehiculosDelUsuario(usuarioId)`, `consultarVehiculoPorPatente(patente)`, `actualizarVehiculo(vehiculoId, datos)`, `eliminarVehiculo(vehiculoId)`
@@ -8142,6 +10426,104 @@ sequenceDiagram
 ```
 
 > El historial es de **solo agregado**: los movimientos no se corrigen ni se borran, y por eso sirve como evidencia de trazabilidad.
+
+---
+
+#### DSS — CU-132: Registrar la Revisión Periódica de un Envase
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: revisión registrada y envase actualizado
+    else el resultado es de rechazo
+        SIS-->>ADM: envase fuera de circulación
+    else las fechas no son coherentes
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-133: Consultar la Vigencia de un Envase
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarVigenciaDelEnvase(envaseId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVigenciaDelEnvase(envaseId)
+    activate SIS
+    alt el envase tiene revisiones
+        SIS-->>ADM: vigencia y historial
+    else el envase no tiene revisiones
+        SIS-->>ADM: vigencia no acreditada
+    else el envase no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-134: Consultar los Envases Próximos a Vencer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarEnvasesProximosAVencer(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarEnvasesProximosAVencer(dias)
+    activate SIS
+    alt hay envases en la ventana
+        SIS-->>ADM: listado ordenado por vencimiento
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-135: Bloquear el Despacho de un Envase Vencido
+
+**Actor:** Sistema Automático
+**Operaciones del sistema:** `verificarVigenciaAlAsignar(pedidoId, envaseId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: verificarVigenciaAlAsignar(pedidoId, envaseId)
+    activate SIS
+    alt el envase está vigente
+        SIS-->>SIS: envase asignado
+    else el envase está vencido
+        SIS-->>SIS: se descarta y se busca otro
+    else no hay envases vigentes
+        SIS-->>SIS: aviso al administrador
+    end
+    deactivate SIS
+```
 
 ---
 
@@ -8839,6 +11221,75 @@ sequenceDiagram
 
 ---
 
+#### DSS — CU-129: Consultar Detalle del Cliente
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarDetalleDelCliente(clienteId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelCliente(clienteId)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: ficha del cliente
+    else el cliente no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-130: Buscar Cliente por Usuario
+
+**Actor:** Administrador
+**Operaciones del sistema:** `buscarClientePorUsuario(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarClientePorUsuario(usuarioId)
+    activate SIS
+    alt la cuenta tiene ficha de cliente
+        SIS-->>ADM: ficha del cliente
+    else la cuenta no tiene ficha de cliente
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-131: Editar Datos del Cliente
+
+**Actor:** Administrador
+**Operaciones del sistema:** `editarDatosDelCliente(clienteId, cambios)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: editarDatosDelCliente(clienteId, cambios)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: ficha actualizada
+    else el cliente no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
 ### SS-17 — Notificaciones y Mensajería
 
 ---
@@ -8888,6 +11339,340 @@ sequenceDiagram
         SIS-->>ADM: chofer dado de baja (se conserva el histórico de entregas)
     else el chofer no existe
         SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-109: Consultar Detalle del Chofer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarDetalleDelChofer(choferId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelChofer(choferId)
+    activate SIS
+    alt el chofer existe
+        SIS-->>ADM: ficha del chofer con vehículo y estado
+    else el chofer no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-110: Buscar Chofer por Usuario
+
+**Actor:** Administrador
+**Operaciones del sistema:** `buscarChoferPorUsuario(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarChoferPorUsuario(usuarioId)
+    activate SIS
+    alt la cuenta tiene perfil de chofer
+        SIS-->>ADM: perfil del chofer
+    else la cuenta no tiene perfil
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-111: Editar Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `editarVehiculo(vehiculoId, datos)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: editarVehiculo(vehiculoId, datos)
+    activate SIS
+    alt el vehículo existe y la patente queda libre
+        SIS-->>ADM: vehículo actualizado
+    else la patente ya pertenece a otro vehículo
+        SIS-->>ADM: patente repetida
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-112: Eliminar Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `eliminarVehiculo(vehiculoId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: eliminarVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo existe
+        SIS-->>ADM: vehículo eliminado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-113: Consultar Detalle del Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarDetalleDelVehiculo(vehiculoId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo existe
+        SIS-->>ADM: ficha del vehículo con su chofer
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-114: Buscar Vehículo por Patente
+
+**Actor:** Administrador
+**Operaciones del sistema:** `buscarVehiculoPorPatente(patente)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarVehiculoPorPatente(patente)
+    activate SIS
+    alt hay un vehículo con esa patente
+        SIS-->>ADM: ficha del vehículo
+    else ninguno coincide
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-115: Consultar Vehículos de un Chofer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarVehiculosDelChofer(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVehiculosDelChofer(usuarioId)
+    activate SIS
+    alt la cuenta tiene vehículos
+        SIS-->>ADM: lista de vehículos
+    else la cuenta no tiene ninguno
+        SIS-->>ADM: lista vacía
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-136: Registrar el Seguro del Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)
+    activate SIS
+    alt el seguro está vigente
+        SIS-->>ADM: vehículo habilitado
+    else el seguro está vencido
+        SIS-->>ADM: dato guardado y vehículo no habilitado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-137: Registrar la Verificación Técnica Vehicular
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarVerificacionTecnica(vehiculoId, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarVerificacionTecnica(vehiculoId, vencimiento)
+    activate SIS
+    alt la verificación está vigente
+        SIS-->>ADM: vehículo habilitado
+    else la verificación está vencida
+        SIS-->>ADM: dato guardado y vehículo no habilitado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-138: Registrar la Licencia de Conducir del Chofer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)
+    activate SIS
+    alt la licencia es válida y alcanza para el vehículo
+        SIS-->>ADM: chofer habilitado
+    else la categoría no alcanza
+        SIS-->>ADM: dato guardado con aviso de incompatibilidad
+    else la licencia está vencida
+        SIS-->>ADM: chofer no habilitado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-139: Consultar los Vencimientos de la Flota
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarVencimientosDeLaFlota(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVencimientosDeLaFlota(dias)
+    activate SIS
+    alt hay vencimientos en la ventana
+        SIS-->>ADM: listado ordenado por fecha
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-140: Programar un Mantenimiento de Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: mantenimiento agendado
+    else la fecha es anterior a hoy
+        SIS-->>ADM: operación rechazada
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-141: Registrar un Mantenimiento Realizado
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)
+    activate SIS
+    alt los datos son coherentes
+        SIS-->>ADM: mantenimiento cerrado
+    else el kilometraje retrocede
+        SIS-->>ADM: operación rechazada
+    else el mantenimiento ya estaba cerrado
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-142: Avisar los Vencimientos Próximos de la Flota
+
+**Actor:** Sistema Automático
+**Operaciones del sistema:** `revisarVencimientosDeLaFlota()`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: revisarVencimientosDeLaFlota()
+    activate SIS
+    alt hay habilitaciones por vencer sin avisar
+        SIS-->>SIS: avisos enviados
+    else no hay ninguna
+        SIS-->>SIS: el ciclo termina sin avisos
     end
     deactivate SIS
 ```
@@ -10907,6 +13692,195 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-143: Declarar el Consumo Promedio al Registrarse
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: declararConsumo(usuarioDeLaSesion, tipoGarrafa, cantidad)
+    SRV->>SRV: aKilosPorMes(cantidad, peso del tipo de garrafa)
+    SRV->>CREP: save(cliente con consumo y garrafa habitual)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es razonable
+        SRV-->>CTRL: Customer con consumo declarado
+    else el valor no es razonable
+        SRV-->>CTRL: se pide confirmación
+    end
+```
+
+**Observaciones de diseño**
+
+- El dato se guarda en kilos y no en cantidad de garrafas, para que siga sirviendo si el cliente cambia de tipo.
+- El consumo declarado es una estimación del cliente: el módulo M3 lo usa como valor inicial y lo va corrigiendo con las compras reales.
+
+---
+
+#### DSD — CU-144: Actualizar el Consumo Promedio Declarado
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant OREP as RepositoryOrder
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: actualizarConsumo(usuarioDeLaSesion, cantidad)
+    SRV->>OREP: findOne(último pedido entregado del cliente)
+    OREP-->>SRV: Order o null
+    SRV->>SRV: estimarProximaRecompra(última compra, consumo)
+    SRV->>CREP: save(cliente con consumo y estimación)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es razonable
+        SRV-->>CTRL: Customer con la estimación nueva
+    else el valor no es razonable
+        SRV-->>CTRL: se pide confirmación
+    end
+```
+
+**Observaciones de diseño**
+
+- La estimación se guarda y no se calcula en cada consulta, porque el proceso que avisa la recompra la necesita para filtrar por rango de fecha sin recorrer todos los clientes.
+- Cada compra nueva vuelve a correr la estimación: el campo se mantiene al día desde dos lugares.
+
+---
+
+#### DSD — CU-145: Configurar los Días de Aviso Previo a la Recompra
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: configurarAviso(usuarioDeLaSesion, dias)
+    SRV->>CREP: save(cliente con los días de aviso)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es válido
+        SRV-->>CTRL: Customer con la preferencia
+    else el valor no es válido
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- La preferencia va en la ficha del cliente y no en una tabla de configuración aparte: es un solo número y no justifica una entidad.
+- Desactivar el aviso se representa con el valor en cero, para no sumar una bandera más.
+
+---
+
+#### DSD — CU-146: Consultar la Fecha Estimada de Recompra
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: recomprasEstimadas(dias, distribuidora)
+    SRV->>CREP: find(where distributor_id y estimación en la ventana)
+    CREP-->>SRV: lista de Customer
+    SRV->>OREP: find(última compra de cada cliente)
+    OREP-->>SRV: últimos pedidos
+    alt hay clientes
+        SRV-->>CTRL: listado con consumo y última compra
+    else no hay
+        SRV-->>CTRL: listado vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El listado es información comercial sobre personas: conviene que sólo lo vea el administrador de la distribuidora del cliente, no el Administrador General.
+- La fecha estimada tiene que estar indexada, o la consulta recorre la tabla de clientes entera.
+
+---
+
+#### DSD — CU-147: Realizar una Compra Express
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, entidad `Order`. Los campos de modalidad de entrega todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant DREP as RepositoryDelivery
+    participant GREP as RepositoryGasCylinder
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: compraExpress(usuarioDeLaSesion, tipoGarrafa, medioDePago)
+    SRV->>SRV: direccionPredeterminada(cliente)
+    SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
+    SRV->>DREP: find(choferes en moto disponibles y habilitados)
+    DREP-->>SRV: lista de Delivery
+    SRV->>GREP: findOne(tipo de garrafa con precio y stock)
+    GREP-->>SRV: GasCylinder
+    SRV->>OREP: save(pedido con modalidad express y sin franja)
+    OREP-->>SRV: Order creada
+    alt hay cobertura y chofer
+        SRV-->>CTRL: Order express creada
+    else no hay
+        SRV-->>CTRL: se ofrece el flujo con franja horaria
+    end
+```
+
+**Observaciones de diseño**
+
+- El pedido express no lleva franja horaria: el campo queda vacío, y todo lo que hoy lo asume tiene que contemplar ese caso.
+- La comprobación de chofer disponible se hace antes de cobrar, no después: cobrar y después no tener quién lo lleve es el peor resultado posible.
+- La cobertura express puede ser más chica que la de reparto normal, porque la moto tiene otro radio; son dos zonas distintas sobre la misma tabla.
+
+---
+
+#### DSD — CU-148: Elegir la Modalidad de Entrega del Pedido
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, entidad `Order`. Los campos de modalidad de entrega todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant DREP as RepositoryDelivery
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: modalidadesDisponibles(direccion, distribuidora)
+    SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
+    SRV->>DREP: find(choferes en moto disponibles)
+    DREP-->>SRV: lista de Delivery
+    SRV->>OREP: save(pedido con la modalidad elegida)
+    OREP-->>SRV: Order actualizada
+    alt hay express disponible
+        SRV-->>CTRL: las dos modalidades con precio
+    else no hay express
+        SRV-->>CTRL: sólo la programada con el motivo
+    end
+```
+
+**Observaciones de diseño**
+
+- La disponibilidad de la express se evalúa en el momento de mostrar las opciones y otra vez al confirmar: entre una cosa y la otra el último chofer se pudo ocupar.
+- El recargo express se toma de la configuración de la distribuidora, no de una constante del programa.
+
+---
+
 #### DSD — CU-008: Cancelar Pedido (Cliente)
 
 Los tres CU de cancelación (008/009/010) comparten un único endpoint; lo que cambia es el
@@ -11142,100 +14116,431 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-046: Gestionar Direcciones de Entrega
+#### DSD — CU-046: Consultar Direcciones de Entrega del Cliente
 
-Ocho endpoints bajo un solo CU. Todos pasan por `scope(user)`, que fuerza el `user_id`
-propio a los no-admin; el service lo aplica con `assertOwnership`. La regla de negocio
-propia del caso es el invariante **"una sola dirección predeterminada por usuario"**.
-
-**Clases participantes:** `UserAddresController`, `UserAddresService`, `Repository<UserAddress>`, `Repository<User>`, entidades `UserAddress`, `User`.
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant CTRL as UserAddresController
-    participant SRV as UserAddresService
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: findByUserId(userId, usuarioDeLaSesion)
+    SRV->>SRV: alcance(usuarioDeLaSesion) sobre el userId recibido
+    SRV->>AREP: find(where user_id, order isDefault DESC y createdAt DESC)
+    AREP-->>SRV: lista de UserAddress
+    SRV-->>CTRL: listado ordenado
+```
+
+**Observaciones de diseño**
+
+- El orden lo pone la consulta, no el cliente: la dirección predeterminada sale siempre primera, así la aplicación la puede precargar sin recorrer el listado.
+- El filtro por usuario de la sesión es lo que impide leer la libreta de otro cliente, y vive en el servicio, no en el controlador.
+- CU-005 Crear Pedido consume la dirección predeterminada por CU-121, que es una lectura más directa que recorrer este listado.
+
+---
+
+#### DSD — CU-116: Registrar Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
     participant UREP as RepositoryUser
+    participant AREP as RepositoryUserAddress
 
-    CTRL->>CTRL: scope(user) devuelve user_id si no es admin
-
-    alt Alta, POST /user-address
-        CTRL->>SRV: create(createUserAddressDto, scope)
-        opt No es admin
-            SRV->>SRV: forzar user_id al del solicitante, ignorando el body
-        end
-        SRV->>UREP: findOne(user_id)
-        alt El usuario no existe
-            UREP-->>SRV: null
-            SRV-->>CTRL: NotFoundException User with ID not found
-        else Usuario valido
-            UREP-->>SRV: User
-            opt isDefault true
-                SRV->>SRV: removeDefaultFromOtherAddresses(user_id)
-                SRV->>AREP: find(user_id, isDefault true)
-                loop Por cada direccion predeterminada previa
-                    SRV->>AREP: save(address con isDefault false)
-                end
-            end
-            SRV->>AREP: create(createUserAddressDto)
-            SRV->>AREP: save(address)
-            AREP-->>SRV: UserAddress
-            SRV-->>CTRL: UserAddress
-        end
-    else Consulta por usuario, GET /user-address/user/:userId
-        CTRL->>SRV: findByUserId(userId, scope)
-        SRV->>SRV: assertOwnership(userId, requesterUserId)
-        alt El solicitante no es el dueno
-            SRV-->>CTRL: ForbiddenException No autorizado a acceder a direcciones de otro usuario
-        else Autorizado
-            SRV->>AREP: find(user_id, order isDefault DESC y createdAt DESC)
-            AREP-->>SRV: UserAddress[]
-            SRV-->>CTRL: UserAddress[]
-        end
-    else Predeterminada, GET /user-address/user/:userId/default
-        CTRL->>SRV: findDefaultByUserId(userId, scope)
-        SRV->>SRV: assertOwnership(userId, requesterUserId)
-        SRV->>AREP: findOne(user_id, isDefault true)
-        alt No hay ninguna marcada
-            AREP-->>SRV: null
-            SRV->>SRV: findByUserId(userId)
-            alt Tiene al menos una direccion
-                SRV-->>CTRL: la primera de la lista
-            else No tiene ninguna
-                SRV-->>CTRL: NotFoundException No addresses found for user
-            end
-        else Hay predeterminada
-            AREP-->>SRV: UserAddress
-            SRV-->>CTRL: UserAddress
-        end
-    else Marcar predeterminada, PATCH /user-address/:id/set-default
-        CTRL->>SRV: setAsDefault(id, scope)
-        SRV->>SRV: findOne(id, requesterUserId)
-        SRV->>SRV: removeDefaultFromOtherAddresses(user_id, id)
-        SRV->>AREP: find(user_id, isDefault true, address_id Not id)
-        SRV->>AREP: save(address con isDefault true)
-        SRV-->>CTRL: UserAddress
-    else Baja, DELETE /user-address/:id
-        CTRL->>SRV: remove(id, scope)
-        SRV->>SRV: findOne(id, requesterUserId)
-        opt La direccion borrada era la predeterminada
-            SRV->>AREP: find(user_id, address_id Not id, order createdAt DESC)
-            opt Quedan otras direcciones
-                SRV->>AREP: save(la mas reciente con isDefault true)
-            end
-        end
-        SRV->>AREP: remove(address)
-        SRV-->>CTRL: message Address deleted successfully y addressId
+    CTRL->>SRV: create(dto, usuarioDeLaSesion)
+    SRV->>UREP: findOne(where user_id)
+    UREP-->>SRV: User o null
+    SRV->>AREP: update(isDefault false en las demás)
+    SRV->>AREP: save(direccion)
+    AREP-->>SRV: UserAddress guardada
+    alt el usuario existe
+        SRV-->>CTRL: UserAddress creada
+    else el usuario no existe
+        SRV-->>CTRL: NotFoundException User with ID not found
     end
 ```
 
 **Observaciones de diseño**
 
-- Borrar la dirección predeterminada **promueve** la más reciente: el usuario nunca queda
-  sin default si le queda alguna dirección.
-- `GET /user-address` (listado global) exige `super_admin`: es una herramienta de soporte,
-  no parte del flujo del cliente.
+- El servicio pisa el titular con el usuario de la sesión antes de tocar la base: la validación de pertenencia no depende del cliente.
+- La marca de predeterminada se resuelve en dos escrituras sin transacción explícita; si la segunda falla, el cliente queda sin ninguna dirección predeterminada.
+
+---
+
+#### DSD — CU-117: Consultar Detalle de una Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: findOne(where address_id, relations user)
+    AREP-->>SRV: UserAddress o null
+    SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
+    alt la dirección existe y es del cliente
+        SRV-->>CTRL: UserAddress
+    else no existe o es de otro
+        SRV-->>CTRL: NotFoundException o acceso denegado
+    end
+```
+
+**Observaciones de diseño**
+
+- La comprobación de pertenencia se saltea cuando quien pide es administrador: el servicio recibe el usuario de la sesión en nulo.
+- Las tres operaciones de escritura reutilizan esta lectura, así que el control de pertenencia se aplica una sola vez y en un solo lugar.
+
+---
+
+#### DSD — CU-118: Editar Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: preload(address_id + cambios)
+    AREP-->>SRV: UserAddress fusionada o null
+    SRV->>AREP: save(direccion)
+    AREP-->>SRV: UserAddress actualizada
+    alt la dirección existe
+        SRV-->>CTRL: UserAddress actualizada
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- La dirección se lee dos veces: una para el control de pertenencia y otra para fusionar los cambios. Es una lectura de más por cada edición.
+- La validación de entrada rechaza todo campo no declarado, así que no se puede cambiar el titular de la dirección por esta vía.
+
+---
+
+#### DSD — CU-119: Eliminar Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: remove(id, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: find(otras direcciones del titular)
+    AREP-->>SRV: lista de UserAddress
+    SRV->>AREP: save(nueva predeterminada)
+    SRV->>AREP: remove(direccion)
+    AREP-->>SRV: confirmación de baja
+    alt la dirección existe
+        SRV-->>CTRL: mensaje de baja con el identificador
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- El borrado es físico: el repositorio usa `remove`, no una marca de baja. Es la asimetría que conviene tener presente en la defensa, porque el resto del sistema da de baja lógicamente.
+- La promoción de la nueva predeterminada elige por fecha de alta descendente, sin preguntarle al cliente.
+
+---
+
+#### DSD — CU-120: Marcar una Dirección como Predeterminada
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: update(isDefault false en las demás del titular)
+    SRV->>AREP: save(direccion con isDefault true)
+    AREP-->>SRV: UserAddress actualizada
+    alt la dirección existe
+        SRV-->>CTRL: UserAddress predeterminada
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- Las dos escrituras no van en una transacción: entre desmarcar las otras y marcar ésta hay una ventana en la que el cliente no tiene ninguna predeterminada.
+- No hay ninguna restricción en la base que garantice una sola dirección predeterminada por cliente; la invariante la sostiene solamente el servicio.
+
+---
+
+#### DSD — CU-121: Consultar la Dirección Predeterminada
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
+    SRV->>AREP: findOne(where user_id e isDefault true)
+    AREP-->>SRV: UserAddress o null
+    alt hay dirección predeterminada
+        SRV-->>CTRL: UserAddress
+    else no hay ninguna
+        SRV-->>CTRL: NotFoundException No addresses found for user
+    end
+```
+
+**Observaciones de diseño**
+
+- Como la invariante de una sola predeterminada no está en la base, esta lectura devuelve la primera que encuentre si por algún camino quedaran dos marcadas.
+- El caso lo consume CU-005 Crear Pedido para precargar la dirección.
+
+---
+
+#### DSD — CU-122: Agregar Ítem al Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+    participant GREP as RepositoryGasCylinder
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: agregarItem(usuarioDeLaSesion, garrafaId, cantidad)
+    SRV->>CREP: findOrCreate(carrito abierto del cliente)
+    CREP-->>SRV: Cart
+    SRV->>GREP: findOne(where gas_cylinder_id, isActive y distribuidora)
+    GREP-->>SRV: GasCylinder o null
+    SRV->>IREP: upsert(item con cantidad y precio unitario)
+    IREP-->>SRV: CartItem guardado
+    alt el tipo de garrafa es válido
+        SRV-->>CTRL: Cart con sus ítems y el total
+    else el tipo de garrafa no es válido
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El precio unitario se copia al ítem en el momento de agregarlo, igual que hace hoy `order_item`: si el precio del catálogo cambia, el carrito conserva el que vio el cliente.
+- La suma de cantidades cuando el tipo de garrafa ya está en el carrito evita ítems repetidos, que es lo que obligaría a resolver el desglose en el momento de crear el pedido.
+
+---
+
+#### DSD — CU-123: Modificar la Cantidad de un Ítem del Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: modificarCantidad(usuarioDeLaSesion, itemId, cantidad)
+    SRV->>IREP: findOne(where cart_item_id, relations cart)
+    IREP-->>SRV: CartItem o null
+    SRV->>IREP: save(item con la cantidad nueva)
+    IREP-->>SRV: CartItem actualizado
+    alt el ítem existe y es del cliente
+        SRV-->>CTRL: Cart con el total recalculado
+    else el ítem no es del cliente
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El total del carrito se recalcula al vuelo sobre los ítems, no se guarda: así no puede quedar desfasado del detalle.
+- La comprobación de pertenencia va contra el carrito del ítem, no contra el identificador que mande la aplicación.
+
+---
+
+#### DSD — CU-124: Quitar Ítem del Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: quitarItem(usuarioDeLaSesion, itemId)
+    SRV->>IREP: findOne(where cart_item_id, relations cart)
+    IREP-->>SRV: CartItem o null
+    SRV->>IREP: remove(item)
+    IREP-->>SRV: confirmación de baja
+    alt el ítem existe y es del cliente
+        SRV-->>CTRL: Cart sin el ítem
+    else el ítem no es del cliente
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- Quitar el último ítem deja el carrito vacío, no lo borra: el cliente conserva el mismo carrito para seguir comprando.
+- A diferencia de la baja de una dirección (CU-119), acá el borrado físico no pierde información de negocio.
+
+---
+
+#### DSD — CU-125: Consultar el Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+
+    CTRL->>SRV: consultar(usuarioDeLaSesion)
+    SRV->>CREP: findOne(carrito abierto, relations items y items.gasCylinder)
+    CREP-->>SRV: Cart con ítems o null
+    alt el cliente tiene carrito
+        SRV-->>CTRL: Cart con ítems y total
+    else el cliente no tiene carrito
+        SRV-->>CTRL: Cart vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El total no se guarda en la tabla: se calcula en cada lectura sumando cantidad por precio unitario de cada ítem.
+- CU-005 Crear Pedido incluye este caso: los ítems del pedido salen de acá, no de lo que mande la aplicación.
+
+---
+
+#### DSD — CU-126: Vaciar el Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: vaciar(usuarioDeLaSesion)
+    SRV->>CREP: findOne(carrito abierto del cliente)
+    CREP-->>SRV: Cart o null
+    SRV->>IREP: delete(where cart_id)
+    IREP-->>SRV: confirmación de baja
+    alt el cliente tiene carrito
+        SRV-->>CTRL: Cart vacío
+    else el cliente no tiene carrito
+        SRV-->>CTRL: Cart vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El vaciado por confirmación de compra tiene que ir en la misma transacción que el alta del pedido: si el pedido se registra y el carrito no se vacía, el cliente vuelve a comprar lo mismo.
+- Se borran los ítems y no el carrito, para no cambiar el identificador que la aplicación tiene en mano.
+
+---
+
+#### DSD — CU-127: Cambiar la Dirección de Entrega del Pedido
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, `Repository<UserAddress>`, entidad `Order`. La entidad `OrderAddressChange` y los campos de quién recibe todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+    participant AREP as RepositoryUserAddress
+    participant HREP as RepositoryOrderAddressChange
+
+    CTRL->>SRV: cambiarDireccion(pedidoId, direccionId, motivo, usuarioDeLaSesion)
+    SRV->>OREP: findOne(where order_id, relations customer y delivery)
+    OREP-->>SRV: Order o null
+    SRV->>AREP: findOne(where address_id y user_id)
+    AREP-->>SRV: UserAddress o null
+    SRV->>SRV: verificarCobertura(coordenadas, distribuidora)
+    SRV->>HREP: save(cambio de dirección)
+    SRV->>OREP: save(pedido con la dirección nueva)
+    OREP-->>SRV: Order actualizada
+    alt el cambio es admisible
+        SRV-->>CTRL: Order con la dirección nueva
+    else el cambio no es admisible
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- La verificación de cobertura reutiliza la consulta espacial que ya usa el alta del pedido contra `coverage_zone`.
+- El aviso al chofer sale por el mismo canal en tiempo real que el resto de los cambios de estado del pedido.
+- El historial de cambios es lo que permite defender ante un reclamo por qué se entregó en una dirección distinta de la original.
+
+---
+
+#### DSD — CU-128: Indicar Quién Recibe el Pedido
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, `Repository<UserAddress>`, entidad `Order`. La entidad `OrderAddressChange` y los campos de quién recibe todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: indicarQuienRecibe(pedidoId, datos, usuarioDeLaSesion)
+    SRV->>OREP: findOne(where order_id, relations customer)
+    OREP-->>SRV: Order o null
+    SRV->>OREP: save(pedido con los datos de quien recibe)
+    OREP-->>SRV: Order actualizada
+    alt el pedido no está entregado
+        SRV-->>CTRL: Order con quién recibe
+    else el pedido ya fue entregado
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- Los datos de quien recibe son datos personales de un tercero: conviene guardarlos sólo hasta el cierre del pedido y no arrastrarlos al historial de compras.
+- El chofer los ve en la misma pantalla donde escanea el código de entrega, para que el control de identidad y el de entrega ocurran juntos.
 
 ---
 
@@ -11405,6 +14710,40 @@ sequenceDiagram
   (CU-078/CU-079) y con una `DispatchOffer` posiblemente viva.
 - Valida `isActive`, que es el mismo bit que el chofer usa para ponerse offline (CU-022):
   un admin no puede asignarle un pedido a un chofer desconectado.
+
+---
+
+#### DSD — CU-149: Despachar un Pedido Express a un Chofer en Moto
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, entidad `Order`. Los campos de modalidad de entrega todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+    participant DREP as RepositoryDelivery
+    participant NOT as NotificationService
+
+    SRV->>OREP: findOne(pedido express sin chofer)
+    OREP-->>SRV: Order
+    SRV->>DREP: find(choferes en moto disponibles dentro del radio, por distancia)
+    DREP-->>SRV: lista de Delivery ordenada
+    SRV->>NOT: ofrecer(pedido, chofer más cercano, ventana corta)
+    SRV->>OREP: save(pedido asignado o degradado a programado)
+    OREP-->>SRV: Order actualizada
+    alt un chofer acepta
+        SRV-->>CTRL: Order asignada al chofer en moto
+    else ninguno acepta
+        SRV-->>CTRL: Order degradada a modalidad programada
+    end
+```
+
+**Observaciones de diseño**
+
+- Reutiliza la consulta espacial y el mecanismo de ofertas de CU-013 y CU-014, con otra ventana y otra política de agotamiento.
+- La degradación a pedido programado tiene que avisarle al cliente en el momento: descubrirlo cuando la garrafa no llegó en una hora es peor que no haber ofrecido la express.
+- La ventana de aceptación y el radio express son parámetros por distribuidora, no constantes del programa: es lo mismo que el documento 3 sección 10 pide para el despacho normal.
 
 ---
 
@@ -12332,7 +15671,7 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-051: Gestionar Vehículos (consultar, editar, eliminar)
+#### DSD — CU-051: Consultar Listado de Vehículos
 
 **Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, DTO `UpdateCarDto`, entidad `Car`.
 
@@ -12468,6 +15807,423 @@ sequenceDiagram
 - Es **baja lógica** (`softDelete`): TypeORM sella la columna de borrado y excluye la fila de todas las consultas siguientes, sin romper las claves foráneas de los pedidos históricos entregados por ese chofer. Es la razón por la que los reportes de CU-027 siguen resolviendo `delivery.user`.
 - El `findOne(id)` previo existe **sólo para producir el 404**: `softDelete` sobre un id inexistente sería un no-op silencioso.
 - El `User` asociado y su usuario de Firebase **no se tocan**: la baja es del perfil de chofer, no de la identidad.
+
+---
+
+#### DSD — CU-109: Consultar Detalle del Chofer
+
+**Clases participantes:** `DeliveryController`, `DeliveryService`, `Repository<Delivery>`, entidad `Delivery`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: findOne(id)
+    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    DREP-->>SRV: Delivery con user y role o null
+    alt no se encontro el chofer
+        SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Chofer encontrado
+        SRV-->>CTRL: Delivery completo
+    end
+```
+
+**Observaciones de diseño**
+
+- La misma lectura la reutilizan la edición (CU-096) y la baja (CU-097) antes de escribir.
+- El endpoint no declara `@Roles`: cualquier usuario autenticado puede leer la ficha de cualquier chofer.
+
+---
+
+#### DSD — CU-110: Buscar Chofer por Usuario
+
+**Clases participantes:** `DeliveryController`, `DeliveryService`, `Repository<Delivery>`, entidad `Delivery`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: findOneByUserId(userId)
+    SRV->>DREP: findOne(where user user_id, relations user y user.role)
+    DREP-->>SRV: Delivery o null
+    alt no hay perfil para esa cuenta
+        SRV-->>CTRL: NotFoundException
+    else Perfil encontrado
+        SRV-->>CTRL: Delivery completo
+    end
+```
+
+**Observaciones de diseño**
+
+- Es la relación uno a uno entre la cuenta de usuario y el perfil operativo del chofer.
+- La incluyen el resto de las operaciones del ABM del chofer, que parten del usuario y no del perfil.
+
+---
+
+#### DSD — CU-111: Editar Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, DTO `UpdateCarDto`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: update(id, updateCarDto, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>CREP: preload(car_id mas campos del dto)
+    CREP-->>SRV: Car fusionado o undefined
+    alt la patente cambio y ya existe
+        SRV-->>CTRL: ConflictException patente repetida
+    else Patente libre
+        SRV-->>CTRL: Car actualizado
+    end
+```
+
+**Observaciones de diseño**
+
+- El `findOne` previo no es redundante: es el que acota la escritura a la distribuidora del panel.
+- El `preload` fusiona: los campos que el DTO no trae conservan su valor en base, igual que en el chofer (CU-096).
+
+---
+
+#### DSD — CU-112: Eliminar Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: remove(id, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>CREP: remove(car)
+    CREP-->>SRV: Car borrado
+    alt el vehiculo no existe
+        SRV-->>CTRL: NotFoundException Car with ID not found
+    else Vehiculo encontrado
+        SRV-->>CTRL: confirmacion de baja
+    end
+```
+
+**Observaciones de diseño**
+
+- El borrado es físico: no hay `@DeleteDateColumn` en `Car`, así que la fila desaparece.
+- Si el vehículo tuvo entregas asociadas, esa historia pierde la referencia. Es lo que hace que la asimetría con el chofer importe.
+
+---
+
+#### DSD — CU-113: Consultar Detalle del Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findOne(id, distributorId)
+    SRV->>CREP: findOne(where car_id y distribuidora, relations user)
+    CREP-->>SRV: Car con user o null
+    alt no se encontro el vehiculo
+        SRV-->>CTRL: NotFoundException Car with ID not found
+    else Vehiculo encontrado
+        SRV-->>CTRL: Car completo
+    end
+```
+
+**Observaciones de diseño**
+
+- La condición de distribuidora viaja en el `where`: un vehículo de otra distribuidora responde igual que uno inexistente.
+- La reutilizan `update` y `remove` antes de escribir.
+
+---
+
+#### DSD — CU-114: Buscar Vehículo por Patente
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findByPatent(patent, distributorId)
+    SRV->>CREP: findOne(where car_patent y distribuidora, relations user)
+    CREP-->>SRV: Car con user o null
+    alt ninguna patente coincide
+        SRV-->>CTRL: NotFoundException
+    else Patente encontrada
+        SRV-->>CTRL: Car completo
+    end
+```
+
+**Observaciones de diseño**
+
+- Busca por igualdad exacta de patente, no por coincidencia parcial.
+- Es el caso que incluyen la edición y la baja del vehículo cuando el operador parte de la patente y no del identificador.
+
+---
+
+#### DSD — CU-115: Consultar Vehículos de un Chofer
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findByUserId(userId, distributorId)
+    SRV->>CREP: find(where user user_id y distribuidora, relations user)
+    CREP-->>SRV: lista de Car
+    SRV-->>CTRL: resultado
+```
+
+**Observaciones de diseño**
+
+- Devuelve lista, posiblemente vacía: no tener vehículo cargado es un estado válido del chofer.
+- Es la consulta que alimenta la ficha del chofer del panel.
+
+---
+
+#### DSD — CU-136: Registrar el Seguro del Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarSeguro(vehiculoId, datos, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>VREP: save(vehículo con los datos del seguro)
+    VREP-->>SRV: Car actualizado
+    SRV->>SRV: evaluarHabilitacion(seguro, verificación, licencia del chofer)
+    alt el vehículo existe
+        SRV-->>CTRL: Car con el seguro cargado
+    else el vehículo no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- La habilitación no se guarda como campo: se deriva de las tres fechas cada vez que se consulta, para que no quede desactualizada cuando una vence sola.
+- La póliza es un dato sensible de un tercero: conviene guardar el número y no el documento escaneado.
+
+---
+
+#### DSD — CU-137: Registrar la Verificación Técnica Vehicular
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarVerificacion(vehiculoId, vencimiento, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>VREP: save(vehículo con el vencimiento)
+    VREP-->>SRV: Car actualizado
+    alt el vehículo existe
+        SRV-->>CTRL: Car con la verificación cargada
+    else el vehículo no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- Es una sola fecha y no una entidad aparte: a diferencia de la revisión del envase, acá no hay historial que probar ante una inspección, alcanza con la vigente.
+- Comparte la evaluación de habilitación con el seguro (CU-136) y la licencia del chofer (CU-138).
+
+---
+
+#### DSD — CU-138: Registrar la Licencia de Conducir del Chofer
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant DREP as RepositoryDelivery
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarLicencia(choferId, datos, distribuidora)
+    SRV->>DREP: findOne(where delivery_id y distributor_id)
+    DREP-->>SRV: Delivery o null
+    SRV->>VREP: find(where user_id del chofer)
+    VREP-->>SRV: vehículos del chofer
+    SRV->>DREP: save(chofer con los datos de la licencia)
+    DREP-->>SRV: Delivery actualizado
+    alt el chofer existe
+        SRV-->>CTRL: Delivery con la licencia cargada
+    else el chofer no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- La licencia va en la ficha del chofer y no en la del vehículo: es del conductor y lo sigue si cambia de unidad.
+- La compatibilidad entre categoría de licencia y tipo de vehículo se evalúa contra una tabla de equivalencias que hay que definir; no está en el alcance de este caso.
+
+---
+
+#### DSD — CU-139: Consultar los Vencimientos de la Flota
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: vencimientosDeLaFlota(dias, distribuidora)
+    SRV->>VREP: find(where distributor_id y vencimientos en la ventana)
+    VREP-->>SRV: lista de Car
+    SRV->>DREP: find(where distributor_id y licencia en la ventana)
+    DREP-->>SRV: lista de Delivery
+    alt hay vencimientos
+        SRV-->>CTRL: listado unificado y ordenado
+    else no hay
+        SRV-->>CTRL: listado vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El listado alimenta el módulo inteligente M2 (CU-105), que planifica el mantenimiento y las habilitaciones.
+- Las tres fechas conviene indexarlas: la consulta filtra por rango sobre cada una.
+
+---
+
+#### DSD — CU-140: Programar un Mantenimiento de Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant MREP as RepositoryFleetMaintenance
+    participant NOT as NotificationService
+
+    CTRL->>SRV: programarMantenimiento(vehiculoId, datos, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>MREP: save(mantenimiento en estado agendado)
+    MREP-->>SRV: FleetMaintenance guardado
+    SRV->>NOT: avisar(chofer del vehículo, mantenimiento agendado)
+    alt el vehículo existe y la fecha es válida
+        SRV-->>CTRL: FleetMaintenance agendado
+    else los datos no son válidos
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El compromiso del vehículo lo tiene que leer el despacho antes de ofrecer un pedido; ese enlace no está en el alcance de este caso y hay que preverlo.
+- El aviso al chofer sale por el mismo canal de notificaciones de SS-17.
+
+---
+
+#### DSD — CU-141: Registrar un Mantenimiento Realizado
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant MREP as RepositoryFleetMaintenance
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarRealizado(mantenimientoId, datos, distribuidora)
+    SRV->>MREP: findOne(where maintenance_id y distributor_id)
+    MREP-->>SRV: FleetMaintenance o null
+    SRV->>MREP: findOne(último realizado del vehículo)
+    MREP-->>SRV: FleetMaintenance anterior o null
+    SRV->>MREP: save(mantenimiento en estado realizado)
+    SRV->>VREP: save(vehículo con el kilometraje nuevo)
+    VREP-->>SRV: Car actualizado
+    alt los datos son coherentes
+        SRV-->>CTRL: FleetMaintenance cerrado
+    else el kilometraje retrocede
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El kilometraje se guarda en el vehículo además de en el mantenimiento, para no tener que recorrer el historial cada vez que se lo necesita.
+- El costo acumulado por vehículo sale de sumar el historial; no se guarda un total, que se desactualizaría con cada corrección.
+
+---
+
+#### DSD — CU-142: Avisar los Vencimientos Próximos de la Flota
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant DREP as RepositoryDelivery
+    participant NOT as NotificationService
+
+    SRV->>VREP: find(vencimientos de vehículos en la ventana)
+    VREP-->>SRV: lista de Car
+    SRV->>DREP: find(licencias en la ventana)
+    DREP-->>SRV: lista de Delivery
+    SRV->>NOT: avisar(administrador, habilitaciones por vencer)
+    alt hay habilitaciones por vencer
+        SRV-->>CTRL: avisos enviados y marcados
+    else no hay
+        SRV-->>CTRL: ciclo sin avisos
+    end
+```
+
+**Observaciones de diseño**
+
+- Es una tarea programada más, no un proceso automatizado: no decide, sólo avisa. Como las que ya existen, su frecuencia queda fija en el código, y el documento 3 sección 10 pide que sea configurable.
+- El registro de lo avisado tiene que sobrevivir al reinicio del proceso, así que va en la base y no en memoria.
 
 ---
 
@@ -13560,6 +17316,129 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-132: Registrar la Revisión Periódica de un Envase
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+    participant IREP as RepositoryCylinderInspection
+
+    CTRL->>SRV: registrarRevision(envaseId, datos, distribuidora)
+    SRV->>CREP: findOne(where cylinder_id y distributor_id)
+    CREP-->>SRV: Cylinder o null
+    SRV->>IREP: save(revisión)
+    IREP-->>SRV: CylinderInspection guardada
+    SRV->>CREP: save(envase con última revisión y vencimiento)
+    CREP-->>SRV: Cylinder actualizado
+    alt el envase existe y las fechas son coherentes
+        SRV-->>CTRL: Cylinder con su vigencia
+    else el envase no existe o las fechas no cierran
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- Las dos fechas se copian del historial a la ficha del envase a propósito: el despacho las consulta en cada pedido y no puede pagar el costo de recorrer el historial.
+- El historial se conserva completo aunque la ficha guarde sólo la última revisión: es lo que permite probar ante una inspección que el envase estuvo siempre en regla.
+- Las dos escrituras tienen que ir en una transacción, o la ficha puede quedar diciendo una vigencia que el historial no respalda.
+
+---
+
+#### DSD — CU-133: Consultar la Vigencia de un Envase
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+
+    CTRL->>SRV: consultarVigencia(envaseId)
+    SRV->>CREP: findOne(where cylinder_id, relations inspections)
+    CREP-->>SRV: Cylinder con revisiones o null
+    SRV->>SRV: diasHastaElVencimiento(vencimiento)
+    alt el envase existe
+        SRV-->>CTRL: vigencia con días restantes
+    else el envase no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- El cálculo de días restantes se hace en el servicio y no se guarda: guardarlo obligaría a recalcularlo todos los días.
+- La consulta por número de serie usa el índice único de serie por distribuidora, que ya existe en la base.
+
+---
+
+#### DSD — CU-134: Consultar los Envases Próximos a Vencer
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+
+    CTRL->>SRV: proximosAVencer(dias, distribuidora)
+    SRV->>CREP: find(where distributor_id y expires_at entre hoy y hoy más dias)
+    CREP-->>SRV: lista de Cylinder
+    SRV->>CREP: find(where expires_at null)
+    CREP-->>SRV: lista de Cylinder sin vigencia
+    alt hay envases
+        SRV-->>CTRL: listado separado en vencidos, por vencer y sin dato
+    else no hay
+        SRV-->>CTRL: listados vacíos
+    end
+```
+
+**Observaciones de diseño**
+
+- Sin un índice sobre la fecha de vencimiento la consulta recorre el parque entero; con 190 envases hoy no se nota, con varios miles sí.
+- El listado alimenta el módulo inteligente M2, que planifica el mantenimiento de la flota y las habilitaciones (CU-105).
+
+---
+
+#### DSD — CU-135: Bloquear el Despacho de un Envase Vencido
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+    participant MREP as RepositoryCylinderMovement
+
+    SRV->>CREP: find(envases disponibles del tipo pedido)
+    CREP-->>SRV: lista de Cylinder
+    SRV->>SRV: filtrar(expires_at nulo o posterior a hoy)
+    SRV->>MREP: save(movimiento de asignación)
+    MREP-->>SRV: CylinderMovement guardado
+    alt hay envases vigentes
+        SRV-->>CTRL: envases asignados al pedido
+    else no hay envases vigentes
+        SRV-->>CTRL: aviso al administrador y pedido sin envases
+    end
+```
+
+**Observaciones de diseño**
+
+- El filtro se aplica en la consulta y no en memoria, para no traer el parque entero.
+- El aviso al administrador reutiliza el canal de notificaciones de SS-17, con la misma prioridad que el faltante de stock.
+
+---
+
 ### SS-15 — Reservas Programadas
 
 #### C.16 DSD — CU-073: Listar Reservas y Estado de la Seña
@@ -14084,6 +17963,92 @@ sequenceDiagram
 - `softDelete` y no `delete`: los pedidos históricos referencian al cliente por `customer_id` y las calificaciones por `to_user_id`. Un borrado físico rompería la trazabilidad y las FKs.
 - Se valida la existencia con `findOne` **antes** de borrar aunque `softDelete` sea idempotente: garantiza el 404 en lugar de un 200 silencioso sobre un id inexistente.
 - La entidad `User` asociada **no** se borra ni se desactiva: la baja es del perfil `Customer`, no de la identidad. Un mismo `User` podría conservar otros perfiles.
+
+---
+
+#### DSD — CU-129: Consultar Detalle del Cliente
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>CREP: findOne(where customer_id, relations user)
+    CREP-->>SRV: Customer o null
+    alt el cliente existe
+        SRV-->>CTRL: Customer con su usuario
+    else el cliente no existe
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- La lectura la reutilizan la edición (CU-131), la validación (CU-093) y la baja (CU-095) antes de escribir.
+- El registro dado de baja lógicamente no aparece: el repositorio filtra por la marca de borrado.
+
+---
+
+#### DSD — CU-130: Buscar Cliente por Usuario
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+    SRV->>CREP: findOne(where user_id, relations user)
+    CREP-->>SRV: Customer o null
+    alt la cuenta tiene ficha
+        SRV-->>CTRL: Customer
+    else la cuenta no tiene ficha
+        SRV-->>CTRL: NotFoundException Customer for user ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- Una cuenta de usuario puede existir sin ficha de cliente: es el caso de los choferes y los administradores.
+- El identificador de usuario es el que viaja en el token de sesión, así que la aplicación del cliente resuelve su propia ficha por esta misma vía.
+
+---
+
+#### DSD — CU-131: Editar Datos del Cliente
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    SRV->>CREP: preload(customer_id + cambios)
+    CREP-->>SRV: Customer fusionado o null
+    SRV->>CREP: save(cliente)
+    CREP-->>SRV: Customer actualizado
+    alt el cliente existe
+        SRV-->>CTRL: Customer actualizado
+    else el cliente no existe
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- `preload` no trae las relaciones: la ficha que se guarda queda sin el usuario asociado, y el panel tiene que volver a leerla si necesita mostrarlo.
+- La marca de validación y la ubicación tienen sus propios endpoints y no se pueden tocar por esta vía, que es lo que mantiene separadas las tres operaciones.
 
 ---
 

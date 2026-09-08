@@ -1,0 +1,20 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+    participant GREP as RepositoryGasCylinder
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: agregarItem(usuarioDeLaSesion, garrafaId, cantidad)
+    SRV->>CREP: findOrCreate(carrito abierto del cliente)
+    CREP-->>SRV: Cart
+    SRV->>GREP: findOne(where gas_cylinder_id, isActive y distribuidora)
+    GREP-->>SRV: GasCylinder o null
+    SRV->>IREP: upsert(item con cantidad y precio unitario)
+    IREP-->>SRV: CartItem guardado
+    alt el tipo de garrafa es válido
+        SRV-->>CTRL: Cart con sus ítems y el total
+    else el tipo de garrafa no es válido
+        SRV-->>CTRL: operación rechazada
+    end

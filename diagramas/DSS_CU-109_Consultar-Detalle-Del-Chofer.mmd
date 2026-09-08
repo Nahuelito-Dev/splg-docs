@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelChofer(choferId)
+    activate SIS
+    alt el chofer existe
+        SIS-->>ADM: ficha del chofer con vehículo y estado
+    else el chofer no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: registrarDireccionDeEntrega(datos)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>CLI: dirección registrada
+    else la cuenta de usuario no existe
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS

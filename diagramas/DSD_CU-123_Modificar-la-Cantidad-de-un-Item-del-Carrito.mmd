@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: modificarCantidad(usuarioDeLaSesion, itemId, cantidad)
+    SRV->>IREP: findOne(where cart_item_id, relations cart)
+    IREP-->>SRV: CartItem o null
+    SRV->>IREP: save(item con la cantidad nueva)
+    IREP-->>SRV: CartItem actualizado
+    alt el ítem existe y es del cliente
+        SRV-->>CTRL: Cart con el total recalculado
+    else el ítem no es del cliente
+        SRV-->>CTRL: operación rechazada
+    end

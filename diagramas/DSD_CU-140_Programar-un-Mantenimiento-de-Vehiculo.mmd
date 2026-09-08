@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant MREP as RepositoryFleetMaintenance
+    participant NOT as NotificationService
+
+    CTRL->>SRV: programarMantenimiento(vehiculoId, datos, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>MREP: save(mantenimiento en estado agendado)
+    MREP-->>SRV: FleetMaintenance guardado
+    SRV->>NOT: avisar(chofer del vehículo, mantenimiento agendado)
+    alt el vehículo existe y la fecha es válida
+        SRV-->>CTRL: FleetMaintenance agendado
+    else los datos no son válidos
+        SRV-->>CTRL: operación rechazada
+    end

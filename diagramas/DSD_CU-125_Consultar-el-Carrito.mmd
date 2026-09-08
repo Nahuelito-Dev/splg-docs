@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+
+    CTRL->>SRV: consultar(usuarioDeLaSesion)
+    SRV->>CREP: findOne(carrito abierto, relations items y items.gasCylinder)
+    CREP-->>SRV: Cart con ítems o null
+    alt el cliente tiene carrito
+        SRV-->>CTRL: Cart con ítems y total
+    else el cliente no tiene carrito
+        SRV-->>CTRL: Cart vacío
+    end

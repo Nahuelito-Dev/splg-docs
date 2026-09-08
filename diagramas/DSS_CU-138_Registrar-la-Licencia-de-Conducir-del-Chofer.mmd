@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)
+    activate SIS
+    alt la licencia es válida y alcanza para el vehículo
+        SIS-->>ADM: chofer habilitado
+    else la categoría no alcanza
+        SIS-->>ADM: dato guardado con aviso de incompatibilidad
+    else la licencia está vencida
+        SIS-->>ADM: chofer no habilitado
+    end
+    deactivate SIS

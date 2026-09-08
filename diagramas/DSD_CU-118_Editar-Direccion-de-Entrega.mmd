@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: preload(address_id + cambios)
+    AREP-->>SRV: UserAddress fusionada o null
+    SRV->>AREP: save(direccion)
+    AREP-->>SRV: UserAddress actualizada
+    alt la dirección existe
+        SRV-->>CTRL: UserAddress actualizada
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end

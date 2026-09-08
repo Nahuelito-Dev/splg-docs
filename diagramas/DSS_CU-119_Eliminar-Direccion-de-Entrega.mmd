@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: eliminarDireccionDeEntrega(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: baja confirmada
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

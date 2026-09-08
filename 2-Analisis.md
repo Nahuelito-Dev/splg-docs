@@ -941,6 +941,148 @@ sequenceDiagram
 
 ---
 
+#### DSS — CU-143: Declarar el Consumo Promedio al Registrarse
+
+**Actor:** Cliente
+**Operaciones del sistema:** `declararConsumoPromedio(tipoGarrafa, cantidadPorMes)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: declararConsumoPromedio(tipoGarrafa, cantidadPorMes)
+    activate SIS
+    alt el valor es razonable
+        SIS-->>CLI: consumo declarado y recompra estimada
+    else el cliente no lo declara
+        SIS-->>CLI: registro sin consumo declarado
+    else el valor está fuera de rango
+        SIS-->>CLI: se pide confirmación
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-144: Actualizar el Consumo Promedio Declarado
+
+**Actor:** Cliente
+**Operaciones del sistema:** `actualizarConsumoPromedio(cantidadPorMes)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: actualizarConsumoPromedio(cantidadPorMes)
+    activate SIS
+    alt el valor es razonable
+        SIS-->>CLI: consumo actualizado y recompra recalculada
+    else el valor está fuera de rango
+        SIS-->>CLI: se pide confirmación
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-145: Configurar los Días de Aviso Previo a la Recompra
+
+**Actor:** Cliente
+**Operaciones del sistema:** `configurarDiasDeAviso(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: configurarDiasDeAviso(dias)
+    activate SIS
+    alt el valor está dentro del rango
+        SIS-->>CLI: preferencia guardada
+    else el valor está fuera del rango
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-146: Consultar la Fecha Estimada de Recompra
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarRecomprasEstimadas(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarRecomprasEstimadas(dias)
+    activate SIS
+    alt hay clientes en la ventana
+        SIS-->>ADM: listado ordenado por fecha estimada
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-147: Realizar una Compra Express
+
+**Actor:** Cliente
+**Operaciones del sistema:** `realizarCompraExpress(tipoGarrafa, medioDePago)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: realizarCompraExpress(tipoGarrafa, medioDePago)
+    activate SIS
+    alt hay cobertura, horario y chofer
+        SIS-->>CLI: pedido express creado y despachado
+    else no hay cobertura express o está fuera de horario
+        SIS-->>CLI: se ofrece el flujo con franja horaria
+    else no hay chofer en moto disponible
+        SIS-->>CLI: se ofrece el flujo con franja horaria
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-148: Elegir la Modalidad de Entrega del Pedido
+
+**Actor:** Cliente
+**Operaciones del sistema:** `elegirModalidadDeEntrega(pedidoId, modalidad)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: elegirModalidadDeEntrega(pedidoId, modalidad)
+    activate SIS
+    alt las dos modalidades están disponibles
+        SIS-->>CLI: opciones con precio y tiempo estimado
+    else sólo la programada está disponible
+        SIS-->>CLI: opción programada con el motivo
+    end
+    deactivate SIS
+```
+
+---
+
 #### DSS — CU-008: Cancelar Pedido (Cliente)
 
 **Actor:** Cliente
@@ -1075,10 +1217,33 @@ sequenceDiagram
 
 ---
 
-#### DSS — CU-046: Gestionar Direcciones de Entrega
+#### DSS — CU-149: Despachar un Pedido Express a un Chofer en Moto
+
+**Actor:** Sistema Automático
+**Operaciones del sistema:** `despacharPedidoExpress(pedidoId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: despacharPedidoExpress(pedidoId)
+    activate SIS
+    alt un chofer en moto acepta
+        SIS-->>SIS: pedido asignado y cliente avisado
+    else ninguno acepta
+        SIS-->>SIS: modalidad express cancelada y recargo devuelto
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-046: Consultar Direcciones de Entrega del Cliente
 
 **Actor:** Cliente
-**Operaciones del sistema:** `crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)`, `listarDireccionesDelUsuario(usuarioId)`, `consultarDireccion(direccionId)`, `consultarDireccionPredeterminada(usuarioId)`, `actualizarDireccion(direccionId, datos)`, `marcarDireccionPredeterminada(direccionId)`, `eliminarDireccion(direccionId)`
+**Operaciones del sistema:** `consultarDireccionesDeEntrega(usuarioId)`
 
 ```mermaid
 sequenceDiagram
@@ -1086,40 +1251,317 @@ sequenceDiagram
     actor CLI as Cliente
     participant SIS as Sistema
 
-    CLI->>SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
+    CLI->>SIS: consultarDireccionesDeEntrega(usuarioId)
     activate SIS
-    SIS-->>CLI: dirección creada (direccionId)
-    deactivate SIS
-
-    CLI->>SIS: listarDireccionesDelUsuario(usuarioId)
-    activate SIS
-    SIS-->>CLI: listado de direcciones
-    deactivate SIS
-
-    opt el cliente cambia su dirección habitual
-        CLI->>SIS: marcarDireccionPredeterminada(direccionId)
-        activate SIS
-        SIS-->>CLI: dirección predeterminada actualizada (las demás dejan de serlo)
-        deactivate SIS
+    alt el cliente tiene direcciones
+        SIS-->>CLI: listado con la predeterminada primero
+    else el cliente no tiene ninguna
+        SIS-->>CLI: listado vacío
     end
+    deactivate SIS
+```
 
-    opt corrección de datos
-        CLI->>SIS: actualizarDireccion(direccionId, datos)
-        activate SIS
+---
+
+#### DSS — CU-116: Registrar Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `registrarDireccionDeEntrega(datos)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: registrarDireccionDeEntrega(datos)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>CLI: dirección registrada
+    else la cuenta de usuario no existe
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-117: Consultar Detalle de una Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `consultarDireccionDeEntrega(direccionId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarDireccionDeEntrega(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: datos de la dirección
+    else la dirección no existe
+        SIS-->>CLI: recurso no encontrado
+    else la dirección es de otro cliente
+        SIS-->>CLI: acceso denegado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-118: Editar Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `editarDireccionDeEntrega(direccionId, cambios)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: editarDireccionDeEntrega(direccionId, cambios)
+    activate SIS
+    alt la dirección existe y es del cliente
         SIS-->>CLI: dirección actualizada
-        deactivate SIS
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
     end
+    deactivate SIS
+```
 
-    opt baja de una dirección
-        CLI->>SIS: eliminarDireccion(direccionId)
-        activate SIS
-        alt la dirección existe y es del cliente
-            SIS-->>CLI: dirección eliminada
-        else la dirección no existe
-            SIS-->>CLI: recurso no encontrado
-        end
-        deactivate SIS
+---
+
+#### DSS — CU-119: Eliminar Dirección de Entrega
+
+**Actor:** Cliente
+**Operaciones del sistema:** `eliminarDireccionDeEntrega(direccionId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: eliminarDireccionDeEntrega(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: baja confirmada
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
     end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-120: Marcar una Dirección como Predeterminada
+
+**Actor:** Cliente
+**Operaciones del sistema:** `marcarDireccionPredeterminada(direccionId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: marcarDireccionPredeterminada(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: dirección marcada como predeterminada
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-121: Consultar la Dirección Predeterminada
+
+**Actor:** Cliente
+**Operaciones del sistema:** `consultarDireccionPredeterminada(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarDireccionPredeterminada(usuarioId)
+    activate SIS
+    alt el cliente tiene una dirección predeterminada
+        SIS-->>CLI: datos de la dirección
+    else el cliente no tiene ninguna
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-122: Agregar Ítem al Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `agregarItemAlCarrito(garrafaId, cantidad)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: agregarItemAlCarrito(garrafaId, cantidad)
+    activate SIS
+    alt el tipo de garrafa es válido
+        SIS-->>CLI: carrito con el ítem agregado y el total
+    else el tipo de garrafa no existe o está de baja
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-123: Modificar la Cantidad de un Ítem del Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `modificarCantidadDelItem(itemId, cantidad)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: modificarCantidadDelItem(itemId, cantidad)
+    activate SIS
+    alt el ítem es del carrito del cliente
+        SIS-->>CLI: carrito con la cantidad actualizada
+    else el ítem no es del carrito del cliente
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-124: Quitar Ítem del Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `quitarItemDelCarrito(itemId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: quitarItemDelCarrito(itemId)
+    activate SIS
+    alt el ítem es del carrito del cliente
+        SIS-->>CLI: carrito sin el ítem
+    else el ítem no es del carrito del cliente
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-125: Consultar el Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `consultarCarrito()`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarCarrito()
+    activate SIS
+    alt el cliente tiene carrito
+        SIS-->>CLI: detalle del carrito y total
+    else el cliente no tiene carrito
+        SIS-->>CLI: carrito vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-126: Vaciar el Carrito
+
+**Actor:** Cliente
+**Operaciones del sistema:** `vaciarCarrito()`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: vaciarCarrito()
+    activate SIS
+    alt el cliente tiene carrito
+        SIS-->>CLI: carrito vacío
+    else el cliente no tiene carrito
+        SIS-->>CLI: carrito vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-127: Cambiar la Dirección de Entrega del Pedido
+
+**Actor:** Cliente
+**Operaciones del sistema:** `cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)
+    activate SIS
+    alt el pedido admite el cambio y la dirección es válida
+        SIS-->>CLI: pedido actualizado
+    else el pedido ya salió
+        SIS-->>CLI: cambio rechazado
+    else la dirección está fuera de la zona de cobertura
+        SIS-->>CLI: cambio rechazado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-128: Indicar Quién Recibe el Pedido
+
+**Actor:** Cliente
+**Operaciones del sistema:** `indicarQuienRecibe(pedidoId, nombre, documento, relacion)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: indicarQuienRecibe(pedidoId, nombre, documento, relacion)
+    activate SIS
+    alt el pedido admite el dato
+        SIS-->>CLI: pedido actualizado con quién recibe
+    else el pedido ya fue entregado
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS
 ```
 
 ---
@@ -1671,7 +2113,7 @@ sequenceDiagram
 
 ---
 
-#### DSS — CU-051: Gestionar Vehículos
+#### DSS — CU-051: Consultar Listado de Vehículos
 
 **Actor:** Administrador
 **Operaciones del sistema:** `listarVehiculos()`, `consultarVehiculo(vehiculoId)`, `consultarVehiculosDelUsuario(usuarioId)`, `consultarVehiculoPorPatente(patente)`, `actualizarVehiculo(vehiculoId, datos)`, `eliminarVehiculo(vehiculoId)`
@@ -1755,6 +2197,340 @@ sequenceDiagram
         SIS-->>ADM: chofer dado de baja (se conserva el histórico de entregas)
     else el chofer no existe
         SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-109: Consultar Detalle del Chofer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarDetalleDelChofer(choferId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelChofer(choferId)
+    activate SIS
+    alt el chofer existe
+        SIS-->>ADM: ficha del chofer con vehículo y estado
+    else el chofer no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-110: Buscar Chofer por Usuario
+
+**Actor:** Administrador
+**Operaciones del sistema:** `buscarChoferPorUsuario(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarChoferPorUsuario(usuarioId)
+    activate SIS
+    alt la cuenta tiene perfil de chofer
+        SIS-->>ADM: perfil del chofer
+    else la cuenta no tiene perfil
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-111: Editar Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `editarVehiculo(vehiculoId, datos)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: editarVehiculo(vehiculoId, datos)
+    activate SIS
+    alt el vehículo existe y la patente queda libre
+        SIS-->>ADM: vehículo actualizado
+    else la patente ya pertenece a otro vehículo
+        SIS-->>ADM: patente repetida
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-112: Eliminar Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `eliminarVehiculo(vehiculoId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: eliminarVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo existe
+        SIS-->>ADM: vehículo eliminado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-113: Consultar Detalle del Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarDetalleDelVehiculo(vehiculoId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo existe
+        SIS-->>ADM: ficha del vehículo con su chofer
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-114: Buscar Vehículo por Patente
+
+**Actor:** Administrador
+**Operaciones del sistema:** `buscarVehiculoPorPatente(patente)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarVehiculoPorPatente(patente)
+    activate SIS
+    alt hay un vehículo con esa patente
+        SIS-->>ADM: ficha del vehículo
+    else ninguno coincide
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-115: Consultar Vehículos de un Chofer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarVehiculosDelChofer(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVehiculosDelChofer(usuarioId)
+    activate SIS
+    alt la cuenta tiene vehículos
+        SIS-->>ADM: lista de vehículos
+    else la cuenta no tiene ninguno
+        SIS-->>ADM: lista vacía
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-136: Registrar el Seguro del Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)
+    activate SIS
+    alt el seguro está vigente
+        SIS-->>ADM: vehículo habilitado
+    else el seguro está vencido
+        SIS-->>ADM: dato guardado y vehículo no habilitado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-137: Registrar la Verificación Técnica Vehicular
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarVerificacionTecnica(vehiculoId, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarVerificacionTecnica(vehiculoId, vencimiento)
+    activate SIS
+    alt la verificación está vigente
+        SIS-->>ADM: vehículo habilitado
+    else la verificación está vencida
+        SIS-->>ADM: dato guardado y vehículo no habilitado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-138: Registrar la Licencia de Conducir del Chofer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)
+    activate SIS
+    alt la licencia es válida y alcanza para el vehículo
+        SIS-->>ADM: chofer habilitado
+    else la categoría no alcanza
+        SIS-->>ADM: dato guardado con aviso de incompatibilidad
+    else la licencia está vencida
+        SIS-->>ADM: chofer no habilitado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-139: Consultar los Vencimientos de la Flota
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarVencimientosDeLaFlota(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVencimientosDeLaFlota(dias)
+    activate SIS
+    alt hay vencimientos en la ventana
+        SIS-->>ADM: listado ordenado por fecha
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-140: Programar un Mantenimiento de Vehículo
+
+**Actor:** Administrador
+**Operaciones del sistema:** `programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: mantenimiento agendado
+    else la fecha es anterior a hoy
+        SIS-->>ADM: operación rechazada
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-141: Registrar un Mantenimiento Realizado
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)
+    activate SIS
+    alt los datos son coherentes
+        SIS-->>ADM: mantenimiento cerrado
+    else el kilometraje retrocede
+        SIS-->>ADM: operación rechazada
+    else el mantenimiento ya estaba cerrado
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-142: Avisar los Vencimientos Próximos de la Flota
+
+**Actor:** Sistema Automático
+**Operaciones del sistema:** `revisarVencimientosDeLaFlota()`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: revisarVencimientosDeLaFlota()
+    activate SIS
+    alt hay habilitaciones por vencer sin avisar
+        SIS-->>SIS: avisos enviados
+    else no hay ninguna
+        SIS-->>SIS: el ciclo termina sin avisos
     end
     deactivate SIS
 ```
@@ -2526,6 +3302,104 @@ sequenceDiagram
 
 ---
 
+#### DSS — CU-132: Registrar la Revisión Periódica de un Envase
+
+**Actor:** Administrador
+**Operaciones del sistema:** `registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: revisión registrada y envase actualizado
+    else el resultado es de rechazo
+        SIS-->>ADM: envase fuera de circulación
+    else las fechas no son coherentes
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-133: Consultar la Vigencia de un Envase
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarVigenciaDelEnvase(envaseId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVigenciaDelEnvase(envaseId)
+    activate SIS
+    alt el envase tiene revisiones
+        SIS-->>ADM: vigencia y historial
+    else el envase no tiene revisiones
+        SIS-->>ADM: vigencia no acreditada
+    else el envase no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-134: Consultar los Envases Próximos a Vencer
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarEnvasesProximosAVencer(dias)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarEnvasesProximosAVencer(dias)
+    activate SIS
+    alt hay envases en la ventana
+        SIS-->>ADM: listado ordenado por vencimiento
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-135: Bloquear el Despacho de un Envase Vencido
+
+**Actor:** Sistema Automático
+**Operaciones del sistema:** `verificarVigenciaAlAsignar(pedidoId, envaseId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: verificarVigenciaAlAsignar(pedidoId, envaseId)
+    activate SIS
+    alt el envase está vigente
+        SIS-->>SIS: envase asignado
+    else el envase está vencido
+        SIS-->>SIS: se descarta y se busca otro
+    else no hay envases vigentes
+        SIS-->>SIS: aviso al administrador
+    end
+    deactivate SIS
+```
+
+---
+
 ### SS-14 — Pagos y Conciliación
 
 #### DSS — CU-048: Procesar Pago con MercadoPago
@@ -2961,6 +3835,75 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: cliente dado de baja (se conserva su histórico de pedidos)
+    else el cliente no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-129: Consultar Detalle del Cliente
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarDetalleDelCliente(clienteId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarDetalleDelCliente(clienteId)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: ficha del cliente
+    else el cliente no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-130: Buscar Cliente por Usuario
+
+**Actor:** Administrador
+**Operaciones del sistema:** `buscarClientePorUsuario(usuarioId)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarClientePorUsuario(usuarioId)
+    activate SIS
+    alt la cuenta tiene ficha de cliente
+        SIS-->>ADM: ficha del cliente
+    else la cuenta no tiene ficha de cliente
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-131: Editar Datos del Cliente
+
+**Actor:** Administrador
+**Operaciones del sistema:** `editarDatosDelCliente(clienteId, cambios)`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: editarDatosDelCliente(clienteId, cambios)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: ficha actualizada
     else el cliente no existe
         SIS-->>ADM: recurso no encontrado
     end

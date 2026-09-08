@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: mantenimiento agendado
+    else la fecha es anterior a hoy
+        SIS-->>ADM: operación rechazada
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

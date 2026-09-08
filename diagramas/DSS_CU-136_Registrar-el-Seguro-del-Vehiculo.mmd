@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)
+    activate SIS
+    alt el seguro está vigente
+        SIS-->>ADM: vehículo habilitado
+    else el seguro está vencido
+        SIS-->>ADM: dato guardado y vehículo no habilitado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

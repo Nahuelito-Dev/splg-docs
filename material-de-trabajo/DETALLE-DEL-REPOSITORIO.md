@@ -89,12 +89,12 @@ Los 108 casos tienen los cuatro.
 |--------|----------|
 | `verificar-conformidad.py` | Chequea los artefactos contra las plantillas de la cátedra. Devuelve error si algo no cumple. |
 | `generar-html-drive.py` | Regenera los seis documentos en HTML, listos para abrir con Documentos de Google. Salida en `drive/`. |
-| `generar-atlas.py` | Genera el Atlas: una página con los cuatro artefactos de cada caso y su respaldo documental. |
+| `generar-sitio.py` | Genera el Atlas: una página con los cuatro artefactos de cada caso y su respaldo documental. |
 
 ```bash
 python3 verificar-conformidad.py     # 11 verificaciones
 python3 generar-html-drive.py        # -> drive/*.html
-python3 generar-atlas.py             # -> atlas-casos-de-uso.html
+python3 generar-sitio.py             # -> splg-documentacion.html
 ```
 
 ## Diagramas

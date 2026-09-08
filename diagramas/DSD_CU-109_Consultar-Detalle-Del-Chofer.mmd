@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: findOne(id)
+    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    DREP-->>SRV: Delivery con user y role o null
+    alt no se encontro el chofer
+        SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Chofer encontrado
+        SRV-->>CTRL: Delivery completo
+    end

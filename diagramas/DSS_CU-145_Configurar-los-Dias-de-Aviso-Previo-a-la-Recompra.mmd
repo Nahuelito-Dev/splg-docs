@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: configurarDiasDeAviso(dias)
+    activate SIS
+    alt el valor está dentro del rango
+        SIS-->>CLI: preferencia guardada
+    else el valor está fuera del rango
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

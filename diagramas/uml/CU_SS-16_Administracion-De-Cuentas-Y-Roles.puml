@@ -1,21 +1,23 @@
 @startuml
-title SS-16 — Cuentas y Roles
+title SS-16 — Administración de Cuentas y Roles (12 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,34 +25,55 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Cliente" as A1
-actor "Chofer" as A2
-actor "Administrador" as A3
-actor "Sistema Automatico" as A4
-actor "Administrador General" as A5
-
-rectangle "SS-16 Cuentas y Roles" {
-  usecase "CU-086\nRegistrar Administrador" as U86
-  usecase "CU-087\nCrear el Primer Super Administrador (bootstrap)" as U87
-  usecase "CU-088\nConsultar Administradores" as U88
-  usecase "CU-089\nGestionar Roles del Sistema" as U89
-  usecase "CU-090\nSembrar los Roles Iniciales" as U90
-  usecase "CU-092\nConsultar Listado de Clientes" as U92
-  usecase "CU-093\nValidar / Invalidar Cliente" as U93
-  usecase "CU-094\nActualizar Ubicación del Cliente" as U94
-  usecase "CU-095\nEliminar Cliente (baja lógica)" as U95
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A3 --> U86
-A1 --> U87
-A2 --> U87
-A3 --> U87
-A4 --> U87
-A3 --> U88
-A5 --> U89
-A5 --> U90
-A3 --> U92
-A3 --> U93
-A3 --> U94
-A3 --> U95
+actor "Cliente\n(ACT-01)" as A01
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-16 Administración de Cuentas y Roles" {
+  usecase "CU-086\nRegistrar Administrador" as U086 #back:FFFFFF;line:4B7560
+  usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)" as U087 #back:FFFFFF;line:4B7560
+  usecase "CU-088\nConsultar Administradores" as U088 #back:FFFFFF;line:4B7560
+  usecase "CU-089\nGestionar Roles del Sistema" as U089 #back:FFFFFF;line:4B7560
+  usecase "CU-090\nSembrar los Roles Iniciales" as U090 #back:FFFFFF;line:4B7560
+  usecase "CU-092\nConsultar Listado de Clientes" as U092 #back:FFFFFF;line:4B7560
+  usecase "CU-093\nValidar / Invalidar Cliente" as U093 #back:FFFFFF;line:4B7560
+  usecase "CU-094\nActualizar Ubicación del\nCliente" as U094 #back:FFFFFF;line:4B7560
+  usecase "CU-095\nEliminar Cliente (baja lógica)" as U095 #back:FFFFFF;line:4B7560
+  usecase "CU-129\nConsultar Detalle del Cliente" as U129 #back:FFFFFF;line:4B7560
+  usecase "CU-130\nBuscar Cliente por Usuario" as U130 #back:FFFFFF;line:4B7560
+  usecase "CU-131\nEditar Datos del Cliente" as U131 #back:FFFFFF;line:4B7560
+}
+
+A01 -[#1F6F8B]-> U087
+A02 -[#2E7D46]-> U087
+A03 -[#8C4A9E]-> U086
+A03 -[#8C4A9E]-> U087
+A03 -[#8C4A9E]-> U088
+A03 -[#8C4A9E]-> U092
+A03 -[#8C4A9E]-> U093
+A03 -[#8C4A9E]-> U094
+A03 -[#8C4A9E]-> U095
+A03 -[#8C4A9E]-> U129
+A03 -[#8C4A9E]-> U130
+A03 -[#8C4A9E]-> U131
+A04 -[#8A6D1F]-> U087
+A05 -[#B4432B]-> U089
+A05 -[#B4432B]-> U090
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U093 ..> U129 : <<include>>
+U094 ..> U129 : <<include>>
+U095 ..> U129 : <<include>>
+U131 ..> U129 : <<include>>
+U129 ..> U130 : <<include>>
+
 @enduml

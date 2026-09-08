@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: revisión registrada y envase actualizado
+    else el resultado es de rechazo
+        SIS-->>ADM: envase fuera de circulación
+    else las fechas no son coherentes
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

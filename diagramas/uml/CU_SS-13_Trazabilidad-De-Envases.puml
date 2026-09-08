@@ -1,21 +1,23 @@
 @startuml
-title SS-13 — Trazabilidad de Envases
+title SS-13 — Trazabilidad de Envases (10 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,32 +25,54 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Chofer" as A2
-actor "Administrador" as A3
-actor "Sistema Automatico" as A4
-actor "Administrador General" as A5
-
-rectangle "SS-13 Trazabilidad de Envases" {
-  usecase "CU-067\nDar de Alta un Envase Físico" as U67
-  usecase "CU-068\nAsignar Envases a un Pedido" as U68
-  usecase "CU-069\nConsultar el Parque de Envases" as U69
-  usecase "CU-070\nRegistrar Movimiento de Envase (cambio de estado)" as U70
-  usecase "CU-071\nConsultar Historial de Movimientos de un Envase" as U71
-  usecase "CU-108\nRecuperar envases no devueltos" as U108 <<pendiente>>
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A3 --> U67
-A5 --> U67
-A2 --> U68
-A3 --> U68
-A5 --> U68
-A3 --> U69
-A5 --> U69
-A2 --> U70
-A3 --> U70
-A5 --> U70
-A3 --> U71
-A5 --> U71
-A3 --> U108
-A4 --> U108
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-13 Trazabilidad de Envases" {
+  usecase "CU-067\nDar de Alta un Envase Físico" as U067 #back:FFFFFF;line:7A7340
+  usecase "CU-068\nAsignar Envases a un Pedido" as U068 #back:FFFFFF;line:7A7340
+  usecase "CU-069\nConsultar el Parque de Envases" as U069 #back:FFFFFF;line:7A7340
+  usecase "CU-070\nRegistrar Movimiento de Envase\n(cambio de estado)" as U070 #back:FFFFFF;line:7A7340
+  usecase "CU-071\nConsultar Historial de\nMovimientos de un Envase" as U071 #back:FFFFFF;line:7A7340
+  usecase "CU-108\nRecuperar envases no devueltos" as U108 #back:FFFFFF;line:7A7340
+  usecase "CU-132\nRegistrar la Revisión\nPeriódica de un Envase" as U132 <<pendiente>> #back:FFFFFF;line:7A7340
+  usecase "CU-133\nConsultar la Vigencia de un\nEnvase" as U133 <<pendiente>> #back:FFFFFF;line:7A7340
+  usecase "CU-134\nConsultar los Envases Próximos\na Vencer" as U134 <<pendiente>> #back:FFFFFF;line:7A7340
+  usecase "CU-135\nBloquear el Despacho de un\nEnvase Vencido" as U135 <<pendiente>> #back:FFFFFF;line:7A7340
+}
+
+A02 -[#2E7D46]-> U068
+A02 -[#2E7D46]-> U070
+A03 -[#8C4A9E]-> U067
+A03 -[#8C4A9E]-> U068
+A03 -[#8C4A9E]-> U069
+A03 -[#8C4A9E]-> U070
+A03 -[#8C4A9E]-> U071
+A03 -[#8C4A9E]-> U108
+A03 -[#8C4A9E]-> U132
+A03 -[#8C4A9E]-> U133
+A03 -[#8C4A9E]-> U134
+A04 -[#8A6D1F]-> U108
+A04 -[#8A6D1F]-> U135
+A05 -[#B4432B]-> U067
+A05 -[#B4432B]-> U068
+A05 -[#B4432B]-> U069
+A05 -[#B4432B]-> U070
+A05 -[#B4432B]-> U071
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U135 ..> U133 : <<include>>
+U068 ..> U135 : <<include>>
+U134 ..> U133 : <<include>>
+U108 ..> U071 : <<include>>
+
 @enduml

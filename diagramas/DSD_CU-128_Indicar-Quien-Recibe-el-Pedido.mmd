@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: indicarQuienRecibe(pedidoId, datos, usuarioDeLaSesion)
+    SRV->>OREP: findOne(where order_id, relations customer)
+    OREP-->>SRV: Order o null
+    SRV->>OREP: save(pedido con los datos de quien recibe)
+    OREP-->>SRV: Order actualizada
+    alt el pedido no está entregado
+        SRV-->>CTRL: Order con quién recibe
+    else el pedido ya fue entregado
+        SRV-->>CTRL: operación rechazada
+    end

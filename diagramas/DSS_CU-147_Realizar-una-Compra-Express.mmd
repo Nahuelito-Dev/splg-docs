@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: realizarCompraExpress(tipoGarrafa, medioDePago)
+    activate SIS
+    alt hay cobertura, horario y chofer
+        SIS-->>CLI: pedido express creado y despachado
+    else no hay cobertura express o está fuera de horario
+        SIS-->>CLI: se ofrece el flujo con franja horaria
+    else no hay chofer en moto disponible
+        SIS-->>CLI: se ofrece el flujo con franja horaria
+    end
+    deactivate SIS

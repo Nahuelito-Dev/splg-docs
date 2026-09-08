@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: vencimientosDeLaFlota(dias, distribuidora)
+    SRV->>VREP: find(where distributor_id y vencimientos en la ventana)
+    VREP-->>SRV: lista de Car
+    SRV->>DREP: find(where distributor_id y licencia en la ventana)
+    DREP-->>SRV: lista de Delivery
+    alt hay vencimientos
+        SRV-->>CTRL: listado unificado y ordenado
+    else no hay
+        SRV-->>CTRL: listado vacío
+    end

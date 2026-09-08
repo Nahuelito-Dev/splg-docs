@@ -1,21 +1,23 @@
 @startuml
-title SS-07 — Choferes y Vehículos
+title SS-07 — Gestión de Choferes y Vehículos (24 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,33 +25,87 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Chofer" as A2
-actor "Administrador" as A3
-actor "Sistema Automatico" as A4
-
-rectangle "SS-07 Choferes y Vehículos" {
-  usecase "CU-031\nRegistrar Chofer" as U31
-  usecase "CU-032\nValidar / Invalidar Chofer" as U32
-  usecase "CU-033\nActivar / Desactivar Chofer (Admin)" as U33
-  usecase "CU-034\nRegistrar Vehículo del Chofer" as U34
-  usecase "CU-035\nConsultar Listado de Choferes" as U35
-  usecase "CU-049\nConsultar Balance / Ganancias del Chofer" as U49
-  usecase "CU-051\nGestionar Vehículos (editar / eliminar / consultar)" as U51
-  usecase "CU-096\nActualizar Perfil del Chofer" as U96
-  usecase "CU-097\nEliminar Chofer (baja lógica)" as U97
-  usecase "CU-105\nPlanificar el mantenimiento y las habilitaciones de la flota" as U105 <<pendiente>>
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A3 --> U31
-A3 --> U32
-A3 --> U33
-A3 --> U34
-A3 --> U35
-A2 --> U49
-A3 --> U49
-A3 --> U51
-A3 --> U96
-A3 --> U97
-A3 --> U105
-A4 --> U105
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+
+rectangle "SS-07 Gestión de Choferes y Vehículos" {
+  usecase "CU-031\nRegistrar Chofer" as U031 #back:FFFFFF;line:5A5896
+  usecase "CU-032\nValidar / Invalidar Chofer" as U032 #back:FFFFFF;line:5A5896
+  usecase "CU-033\nActivar / Desactivar Chofer\n(Admin)" as U033 #back:FFFFFF;line:5A5896
+  usecase "CU-034\nRegistrar Vehículo del Chofer" as U034 #back:FFFFFF;line:5A5896
+  usecase "CU-035\nConsultar Listado de Choferes" as U035 #back:FFFFFF;line:5A5896
+  usecase "CU-049\nConsultar Balance / Ganancias\ndel Chofer" as U049 #back:FFFFFF;line:5A5896
+  usecase "CU-051\nConsultar Listado de Vehículos" as U051 #back:FFFFFF;line:5A5896
+  usecase "CU-096\nActualizar Perfil del Chofer" as U096 #back:FFFFFF;line:5A5896
+  usecase "CU-097\nEliminar Chofer (baja lógica)" as U097 #back:FFFFFF;line:5A5896
+  usecase "CU-105\nPlanificar el mantenimiento y\nlas habilitaciones de la flota" as U105 #back:FFFFFF;line:5A5896
+  usecase "CU-109\nConsultar Detalle del Chofer" as U109 #back:FFFFFF;line:5A5896
+  usecase "CU-110\nBuscar Chofer por Usuario" as U110 #back:FFFFFF;line:5A5896
+  usecase "CU-111\nEditar Vehículo" as U111 #back:FFFFFF;line:5A5896
+  usecase "CU-112\nEliminar Vehículo" as U112 #back:FFFFFF;line:5A5896
+  usecase "CU-113\nConsultar Detalle del Vehículo" as U113 #back:FFFFFF;line:5A5896
+  usecase "CU-114\nBuscar Vehículo por Patente" as U114 #back:FFFFFF;line:5A5896
+  usecase "CU-115\nConsultar Vehículos de un\nChofer" as U115 #back:FFFFFF;line:5A5896
+  usecase "CU-136\nRegistrar el Seguro del\nVehículo" as U136 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-137\nRegistrar la Verificación\nTécnica Vehicular" as U137 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-138\nRegistrar la Licencia de\nConducir del Chofer" as U138 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-139\nConsultar los Vencimientos de\nla Flota" as U139 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-140\nProgramar un Mantenimiento de\nVehículo" as U140 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-141\nRegistrar un Mantenimiento\nRealizado" as U141 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-142\nAvisar los Vencimientos\nPróximos de la Flota" as U142 <<pendiente>> #back:FFFFFF;line:5A5896
+}
+
+A02 -[#2E7D46]-> U049
+A02 -[#2E7D46]-> U115
+A03 -[#8C4A9E]-> U031
+A03 -[#8C4A9E]-> U032
+A03 -[#8C4A9E]-> U033
+A03 -[#8C4A9E]-> U034
+A03 -[#8C4A9E]-> U035
+A03 -[#8C4A9E]-> U049
+A03 -[#8C4A9E]-> U051
+A03 -[#8C4A9E]-> U096
+A03 -[#8C4A9E]-> U097
+A03 -[#8C4A9E]-> U105
+A03 -[#8C4A9E]-> U109
+A03 -[#8C4A9E]-> U110
+A03 -[#8C4A9E]-> U111
+A03 -[#8C4A9E]-> U112
+A03 -[#8C4A9E]-> U113
+A03 -[#8C4A9E]-> U114
+A03 -[#8C4A9E]-> U115
+A03 -[#8C4A9E]-> U136
+A03 -[#8C4A9E]-> U137
+A03 -[#8C4A9E]-> U138
+A03 -[#8C4A9E]-> U139
+A03 -[#8C4A9E]-> U140
+A03 -[#8C4A9E]-> U141
+A04 -[#8A6D1F]-> U105
+A04 -[#8A6D1F]-> U142
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U136 ..> U113 : <<include>>
+U137 ..> U113 : <<include>>
+U140 ..> U113 : <<include>>
+U138 ..> U109 : <<include>>
+U105 ..> U139 : <<include>>
+U142 ..> U139 : <<include>>
+U096 ..> U110 : <<include>>
+U097 ..> U110 : <<include>>
+U109 ..> U110 : <<include>>
+U032 ..> U110 : <<include>>
+U033 ..> U110 : <<include>>
+U034 ..> U110 : <<include>>
+U111 ..> U113 : <<include>>
+U112 ..> U113 : <<include>>
+U105 ..> U051 : <<include>>
+
 @enduml

@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarRecomprasEstimadas(dias)
+    activate SIS
+    alt hay clientes en la ventana
+        SIS-->>ADM: listado ordenado por fecha estimada
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS

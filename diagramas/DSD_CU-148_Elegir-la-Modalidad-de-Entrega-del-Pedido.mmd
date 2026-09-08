@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant DREP as RepositoryDelivery
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: modalidadesDisponibles(direccion, distribuidora)
+    SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
+    SRV->>DREP: find(choferes en moto disponibles)
+    DREP-->>SRV: lista de Delivery
+    SRV->>OREP: save(pedido con la modalidad elegida)
+    OREP-->>SRV: Order actualizada
+    alt hay express disponible
+        SRV-->>CTRL: las dos modalidades con precio
+    else no hay express
+        SRV-->>CTRL: sólo la programada con el motivo
+    end

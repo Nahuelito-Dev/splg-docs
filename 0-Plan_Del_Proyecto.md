@@ -166,34 +166,7 @@ El cronograma se divide en **31 semanas** (S1 a S31), desde el **07/04/2026** ha
 
 **Figura — Actores del sistema y el canal por el que operan**
 
-```mermaid
-flowchart LR
-    CLI([Cliente<br/>ACT-01])
-    CHO([Chofer<br/>ACT-02])
-    ADM([Administrador<br/>ACT-03])
-    GRL([Administrador General<br/>ACT-05])
-    AUT([Sistema Automatico<br/>ACT-04])
-
-    APPC[App Cliente]
-    APPD[App Chofer]
-    PANEL[Panel Web]
-    PROC[Procesos programados]
-
-    CLI --> APPC
-    CHO --> APPD
-    ADM -- alcance: su distribuidora --> PANEL
-    GRL -- alcance: todas las distribuidoras --> PANEL
-    AUT --> PROC
-
-    subgraph SPLG[Sistema de Pedidos y Logistica de Garrafas]
-        BACK[Backend]
-    end
-
-    APPC --> BACK
-    APPD --> BACK
-    PANEL --> BACK
-    PROC --> BACK
-```
+![Actores del sistema y el canal por el que operan](diagramas/uml/CU_Sistema_Actores.png)
 
 > Los cuatro actores humanos operan siempre a traves de una aplicacion; ninguno accede
 > directamente al backend. El Sistema Automatico no tiene interfaz: son los procesos que
@@ -213,7 +186,9 @@ Empleado del distribuidor que ejecuta las entregas físicas. Trabaja principalme
 Operador de oficina de una distribuidora. Su alcance está acotado a la empresa a la que pertenece: no ve ni gestiona datos de otras distribuidoras. Puede ser una o más personas. Accede al Panel Web desde una PC o notebook con conexión a internet. Sus principales necesidades son: visibilidad completa del estado operativo, control de inventario y reportes de ventas para la toma de decisiones.
 
 **ACT-04 — Sistema Automático:**
-No es un actor humano sino el conjunto de procesos internos del backend que se ejecutan solos, ante determinados eventos o a intervalos programados. Son cuatro los procesos temporales en funcionamiento: la revisión de ofertas de despacho vencidas, cada 15 segundos; la activación de las reservas programadas que llegaron a su fecha, cada 5 minutos; la expiración de los pedidos con pago por pasarela que nunca se abonaron, cada 30 minutos; y la expiración de las reservas cuya seña no se cobró, cada hora. A ellos se suman el despacho disparado por el alta de un pedido, la transacción de stock, las conexiones en tiempo real y el envío de avisos al dispositivo.
+No es un actor humano sino el conjunto de procesos que el backend ejecuta por iniciativa propia, sin intervención de nadie y sin interfaz. Son cinco los **procesos automatizados** del sistema, y este actor es el que los lleva adelante: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Su especificación completa está en el Documento 3, sección 6.
+
+No hay que confundirlos con las tareas de mantenimiento del propio sistema, que también corren solas pero no deciden nada: vencer una oferta de despacho y devolver el pedido al circuito, activar una reserva que llegó a su fecha, liberar el stock de un pedido que caducó sin pagarse. Son la ejecución programada de los circuitos que los procesos automatizados gobiernan, no procesos en sí mismos. Los tres módulos que deciden por su cuenta —M2, M3 y M5— siempre proponen y nunca ejecutan: la contratación de un taller, el cobro de un depósito y la baja de un envase los confirma una persona.
 
 **ACT-05 — Administrador General:**
 Responsable de la plataforma, distinto del administrador de cada empresa. Da de alta las distribuidoras que operan en el sistema, designa a sus administradores y define los roles disponibles. Es el único actor que ve datos de más de una distribuidora; todos los demás quedan confinados a la suya. Accede por el mismo Panel Web, con un alcance ampliado.
@@ -298,6 +273,54 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
+**Código:** CU-143 | **Caso de Uso:** Declarar el Consumo Promedio al Registrarse  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** Al crear su cuenta, el cliente declara cuántos kilos de gas consume por mes y qué tipo de garrafa usa habitualmente. Con ese dato el sistema puede estimar cuándo se le va a acabar y avisarle antes, sin esperar a tener historial de compras.
+
+---
+
+**Código:** CU-144 | **Caso de Uso:** Actualizar el Consumo Promedio Declarado  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente corrige cuánto gas consume por mes cuando su situación cambia: se mudó, sumó gente en la casa o cambió de estufa. El sistema recalcula la fecha estimada de la próxima recompra con el valor nuevo.
+
+---
+
+**Código:** CU-145 | **Caso de Uso:** Configurar los Días de Aviso Previo a la Recompra  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Menor  
+**Descripción:** El cliente elige con cuántos días de anticipación quiere que le avisen que se le está por acabar la garrafa, o desactiva el aviso. Sin esto, la anticipación sería la misma para todos y el aviso terminaría siendo ruido.
+
+---
+
+**Código:** CU-146 | **Caso de Uso:** Consultar la Fecha Estimada de Recompra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El administrador ve qué clientes están por quedarse sin gas dentro de una ventana de tiempo, con su consumo declarado y su última compra. Es lo que le permite anticipar la demanda de la semana y, si quiere, salir a ofrecer antes de que el cliente pida.
+
+---
+
+**Código:** CU-147 | **Caso de Uso:** Realizar una Compra Express  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Crítico  
+**Descripción:** El cliente que necesita una garrafa ya compra en un solo paso: una garrafa, su dirección predeterminada y listo, sin elegir franja horaria. El pedido sale a un chofer en moto y se entrega dentro de la hora. Es el segundo flujo de compra, en paralelo al que arma un pedido con franja (CU-005).
+
+---
+
+**Código:** CU-148 | **Caso de Uso:** Elegir la Modalidad de Entrega del Pedido  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** Antes de confirmar, el cliente elige cómo quiere recibir el pedido: programado, eligiendo una franja horaria, o express, dentro de la hora y con recargo. El sistema le muestra las dos con su precio y su tiempo estimado, y sólo ofrece la express si hay cobertura, horario y chofer.
+
+---
+
 **Código:** CU-008 | **Caso de Uso:** Cancelar Pedido (Cliente)  
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
@@ -335,6 +358,14 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Subsistema:** SS-03 Despacho y Asignación  
 **Calificación:** Secundario  
 **Descripción:** Cuando el despacho automático agota los candidatos disponibles y el pedido queda pendiente sin que ningún chofer lo tome, el administrador puede intervenir desde el panel web y asignar manualmente un chofer activo al pedido.
+
+---
+
+**Código:** CU-149 | **Caso de Uso:** Despachar un Pedido Express a un Chofer en Moto  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-03 Despacho y Asignación  
+**Calificación:** Crítico  
+**Descripción:** El sistema ofrece el pedido express al chofer en moto más cercano y le da menos tiempo para aceptarlo que en el despacho normal, porque la promesa de entrega es dentro de la hora. Si nadie acepta, no expande el radio como en CU-014: cancela la modalidad express y pasa el pedido al flujo programado.
 
 ---
 
@@ -602,11 +633,115 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
-**Código:** CU-046 | **Caso de Uso:** Gestionar Direcciones de Entrega  
+**Código:** CU-046 | **Caso de Uso:** Consultar Direcciones de Entrega del Cliente  
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente administra sus direcciones de entrega desde la app: crea nuevas direcciones (con coordenadas seleccionadas en el mapa), edita o elimina las existentes, consulta su listado y marca una como predeterminada. La dirección predeterminada se precarga al crear un pedido (CU-005).
+**Descripción:** El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`.
+
+---
+
+**Código:** CU-116 | **Caso de Uso:** Registrar Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`.
+
+---
+
+**Código:** CU-117 | **Caso de Uso:** Consultar Detalle de una Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente abre una dirección puntual y ve todos sus datos. Es la lectura de la que dependen la edición, la baja y la marca de predeterminada, y la que aplica el control de pertenencia. Endpoint: `GET /user-addres/:id`.
+
+---
+
+**Código:** CU-118 | **Caso de Uso:** Editar Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente corrige los datos de una dirección ya registrada: la calle, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`.
+
+---
+
+**Código:** CU-119 | **Caso de Uso:** Eliminar Dirección de Entrega  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente da de baja una dirección que ya no usa. Si la que borra era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`.
+
+---
+
+**Código:** CU-120 | **Caso de Uso:** Marcar una Dirección como Predeterminada  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-addres/:id/set-default`.
+
+---
+
+**Código:** CU-121 | **Caso de Uso:** Consultar la Dirección Predeterminada  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** La aplicación recupera la dirección que el cliente dejó marcada, para proponerla sola cuando arranca un pedido. Es la lectura que evita que el cliente tenga que elegir dirección en cada compra. Endpoint: `GET /user-addres/user/:userId/default`.
+
+---
+
+**Código:** CU-122 | **Caso de Uso:** Agregar Ítem al Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente elige un tipo de garrafa del catálogo y lo suma a su carrito con una cantidad. El carrito sobrevive al cierre de la aplicación y al cambio de dispositivo, de modo que el cliente puede armar la compra en varios momentos. Es el primer paso del proceso de compra que termina en CU-005 Crear Pedido.
+
+---
+
+**Código:** CU-123 | **Caso de Uso:** Modificar la Cantidad de un Ítem del Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente cambia cuántas garrafas de un tipo quiere, sin tener que sacar el ítem y volver a agregarlo. Es la modificación dentro del proceso de compra.
+
+---
+
+**Código:** CU-124 | **Caso de Uso:** Quitar Ítem del Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente saca del carrito un tipo de garrafa que había agregado. Es la baja dentro del proceso de compra, la contracara de CU-122.
+
+---
+
+**Código:** CU-125 | **Caso de Uso:** Consultar el Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente ve lo que lleva armado: los tipos de garrafa, las cantidades, el precio unitario de cada uno y el total. Es la lectura que incluye CU-005 Crear Pedido para saber qué se está comprando.
+
+---
+
+**Código:** CU-126 | **Caso de Uso:** Vaciar el Carrito  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Menor  
+**Descripción:** El cliente descarta de una vez todo lo que había armado, en lugar de quitar los ítems de a uno. El sistema también vacía el carrito por su cuenta cuando la compra se confirma, para que el cliente no arranque la próxima con lo que ya compró.
+
+---
+
+**Código:** CU-127 | **Caso de Uso:** Cambiar la Dirección de Entrega del Pedido  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente cambia a dónde quiere que le lleven un pedido ya confirmado, mientras todavía no salió el repartidor. El sistema comprueba que la dirección nueva sea suya y esté dentro de la zona de cobertura, y guarda el cambio con su motivo para que el chofer y el administrador vean qué pasó.
+
+---
+
+**Código:** CU-128 | **Caso de Uso:** Indicar Quién Recibe el Pedido  
+**Actor/es:** Cliente (ACT-01)  
+**Subsistema:** SS-02 Gestión de Pedidos  
+**Calificación:** Importante  
+**Descripción:** El cliente aclara que la garrafa la va a recibir otra persona: un familiar, el encargado del edificio o un vecino. Registra su nombre, su documento y qué relación tiene con él, para que el chofer sepa a quién puede entregarle y quede asentado quién recibió.
 
 ---
 
@@ -642,7 +777,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
-**Código:** CU-051 | **Caso de Uso:** Gestionar Vehículos (editar / eliminar / consultar)  
+**Código:** CU-051 | **Caso de Uso:** Consultar Listado de Vehículos  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
@@ -807,6 +942,38 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Subsistema:** SS-13 Trazabilidad de Envases  
 **Calificación:** Importante  
 **Descripción:** El sistema expone el historial de transferencias y estados por los cuales paso un determinado envase.
+
+---
+
+**Código:** CU-132 | **Caso de Uso:** Registrar la Revisión Periódica de un Envase  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Crítico  
+**Descripción:** El administrador asienta la prueba hidráulica de un envase: la fecha en que se hizo, el resultado y cuándo vence. Las garrafas de gas licuado tienen una vida útil regulada y no se pueden llenar ni despachar una vez vencida la revisión, así que el sistema necesita saber la fecha de cada una.
+
+---
+
+**Código:** CU-133 | **Caso de Uso:** Consultar la Vigencia de un Envase  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta hasta cuándo puede circular un envase y cuándo fue su última revisión. Es la lectura que necesita antes de llenarlo, de despacharlo o de decidir si lo manda al taller.
+
+---
+
+**Código:** CU-134 | **Caso de Uso:** Consultar los Envases Próximos a Vencer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Importante  
+**Descripción:** El administrador ve qué envases de su parque vencen dentro de una ventana de tiempo, para mandarlos a revisar antes de que queden fuera de circulación. Es la vista que convierte el dato de vencimiento en una acción de mantenimiento.
+
+---
+
+**Código:** CU-135 | **Caso de Uso:** Bloquear el Despacho de un Envase Vencido  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-13 Trazabilidad de Envases  
+**Calificación:** Crítico  
+**Descripción:** El sistema impide que un envase con la revisión vencida se asigne a un pedido. Es el control que le da sentido a registrar las fechas: sin él, el dato existe pero no evita que salga a la calle un envase fuera de norma.
 
 ---
 
@@ -1002,6 +1169,30 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
+**Código:** CU-129 | **Caso de Uso:** Consultar Detalle del Cliente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customer/:id`.
+
+---
+
+**Código:** CU-130 | **Caso de Uso:** Buscar Cliente por Usuario  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customer/user/:userId`.
+
+---
+
+**Código:** CU-131 | **Caso de Uso:** Editar Datos del Cliente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customer/:id`.
+
+---
+
 **Código:** CU-096 | **Caso de Uso:** Actualizar Perfil del Chofer  
 **Actor/es:** ACT-03 Administrador  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
@@ -1015,6 +1206,118 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
 **Descripción:** El sistema descarta un perfil delivery aplicando eliminación lógica para prevenir fallos referenciales.
+
+---
+
+**Código:** CU-109 | **Caso de Uso:** Consultar Detalle del Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la ficha de un chofer y ve sus datos personales, su vehículo, su marca de validación, su estado de actividad y su calificación. Es la lectura puntual que el listado (CU-035) no cubre, y de la que dependen la edición y la baja. Endpoint: `GET /delivery/:id` (`src/delivery/delivery.controller.ts:59`).
+
+---
+
+**Código:** CU-110 | **Caso de Uso:** Buscar Chofer por Usuario  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador ubica el perfil de chofer a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel —un pedido, un reclamo, una calificación—. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /delivery/user/:userId` (`src/delivery/delivery.controller.ts:68`).
+
+---
+
+**Código:** CU-111 | **Caso de Uso:** Editar Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige los datos del vehículo de un chofer: tipo, patente, marca, modelo, año, color o capacidad de carga. Sale de CU-051, que agrupaba editar, eliminar y consultar en un solo caso. Endpoint: `PATCH /car/:id` (`src/car/car.controller.ts:85`).
+
+---
+
+**Código:** CU-112 | **Caso de Uso:** Eliminar Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador da de baja el vehículo de un chofer. Sale de CU-051. A diferencia del chofer y del producto, **la baja del vehículo es física**: la fila se borra. Endpoint: `DELETE /car/:id` (`src/car/car.controller.ts:97`).
+
+---
+
+**Código:** CU-113 | **Caso de Uso:** Consultar Detalle del Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la ficha de un vehículo y ve su tipo, patente, marca, modelo, año, color, capacidad de carga y el chofer al que pertenece. Sale de CU-051. Endpoint: `GET /car/:id` (`src/car/car.controller.ts:51`).
+
+---
+
+**Código:** CU-114 | **Caso de Uso:** Buscar Vehículo por Patente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador ubica un vehículo por su patente, que es el dato con el que se lo nombra en la operación diaria. Es la búsqueda que incluyen la edición y la baja. Endpoint: `GET /car/patent/:patent` (`src/car/car.controller.ts:74`).
+
+---
+
+**Código:** CU-115 | **Caso de Uso:** Consultar Vehículos de un Chofer  
+**Actor/es:** Administrador (ACT-03), Chofer (ACT-02)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** Se listan los vehículos registrados a nombre de un chofer. El administrador lo usa desde la ficha del chofer; el propio chofer, para ver los suyos. Sale de CU-051. Endpoint: `GET /car/user/:userId` (`src/car/car.controller.ts:63`).
+
+---
+
+**Código:** CU-136 | **Caso de Uso:** Registrar el Seguro del Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador carga la compañía, el número de póliza y la fecha de vencimiento del seguro de un vehículo de la flota. Un vehículo sin seguro vigente no puede salir a repartir, así que el dato es una condición de habilitación, no un adjunto.
+
+---
+
+**Código:** CU-137 | **Caso de Uso:** Registrar la Verificación Técnica Vehicular  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador carga la fecha hasta la que vale la verificación técnica de un vehículo. Es obligatoria para circular y, en el transporte de gas licuado, es lo que habilita al vehículo a llevar la carga.
+
+---
+
+**Código:** CU-138 | **Caso de Uso:** Registrar la Licencia de Conducir del Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador carga el número, la categoría y el vencimiento de la licencia de conducir de un chofer. La categoría importa: no es la misma la que habilita una moto que la que habilita un camión de reparto.
+
+---
+
+**Código:** CU-139 | **Caso de Uso:** Consultar los Vencimientos de la Flota  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador ve en una sola pantalla qué seguros, verificaciones técnicas y licencias vencen dentro de una ventana de tiempo, y cuáles ya vencieron. Es la vista de control de la flota, la contracara de CU-134 para los envases.
+
+---
+
+**Código:** CU-140 | **Caso de Uso:** Programar un Mantenimiento de Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador agenda un service, un cambio de cubiertas o una reparación para un vehículo, con la fecha prevista y el tipo de trabajo. El vehículo queda anotado como comprometido para ese día, para que el despacho no cuente con él.
+
+---
+
+**Código:** CU-141 | **Caso de Uso:** Registrar un Mantenimiento Realizado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador cierra un mantenimiento: anota cuándo se hizo, con cuántos kilómetros, cuánto costó y qué se hizo. Es lo que construye el historial del vehículo, del que sale el costo de mantenimiento por unidad y el intervalo real entre services.
+
+---
+
+**Código:** CU-142 | **Caso de Uso:** Avisar los Vencimientos Próximos de la Flota  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El sistema revisa todos los días qué habilitaciones de la flota están por vencer y avisa al administrador con la anticipación que cada distribuidora haya configurado. Es lo que convierte el tablero de CU-139 en algo que no depende de que alguien se acuerde de mirarlo.
 
 ---
 
@@ -1117,11 +1420,18 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-005 Crear Pedido | SS-02 | ACT-01 | Crítico |
 | CU-006 Consultar Detalle de Pedido | SS-02 | ACT-01, ACT-02, ACT-03 | Crítico |
 | CU-007 Consultar Historial de Pedidos | SS-02 | ACT-01 | Importante |
+| CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | ACT-01 | Importante |
+| CU-144 Actualizar el Consumo Promedio Declarado | SS-02 | ACT-01 | Importante |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor |
+| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante |
+| CU-147 Realizar una Compra Express | SS-02 | ACT-01 | Crítico |
+| CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | ACT-01 | Importante |
 | CU-008 Cancelar Pedido (Cliente) | SS-02 | ACT-01 | Importante |
 | CU-009 Cancelar Pedido (Chofer) | SS-02 | ACT-02 | Importante |
 | CU-010 Cancelar Pedido (Administrador) | SS-02 | ACT-03 | Importante |
 | CU-011 Listar Todos los Pedidos | SS-02 | ACT-03 | Importante |
 | CU-012 Asignar Chofer Manualmente | SS-03 | ACT-03 | Secundario |
+| CU-149 Despachar un Pedido Express a un Chofer en Moto | SS-03 | ACT-04 | Crítico |
 | CU-013 Asignar Pedido Automáticamente por Proximidad | SS-03 | ACT-04 | Crítico |
 | CU-014 Reintentar Asignación con Radio Expandido (Cron) | SS-03 | ACT-04 | Crítico |
 | CU-015 Aceptar Pedido | SS-03 | ACT-02 | Crítico |
@@ -1155,12 +1465,25 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-043 Modificar Capacidad de Franja Horaria | SS-09 | ACT-03 | Importante |
 | CU-044 Seleccionar Franja Horaria al Crear Pedido | SS-09 | ACT-01 | Importante |
 | CU-045 Consultar Franjas Horarias Disponibles | SS-09 | ACT-01 | Importante |
-| CU-046 Gestionar Direcciones de Entrega | SS-02 | ACT-01 | Importante |
+| CU-046 Consultar Direcciones de Entrega del Cliente | SS-02 | ACT-01 | Importante |
+| CU-116 Registrar Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-117 Consultar Detalle de una Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-118 Editar Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-119 Eliminar Dirección de Entrega | SS-02 | ACT-01 | Importante |
+| CU-120 Marcar una Dirección como Predeterminada | SS-02 | ACT-01 | Importante |
+| CU-121 Consultar la Dirección Predeterminada | SS-02 | ACT-01 | Importante |
+| CU-122 Agregar Ítem al Carrito | SS-02 | ACT-01 | Importante |
+| CU-123 Modificar la Cantidad de un Ítem del Carrito | SS-02 | ACT-01 | Importante |
+| CU-124 Quitar Ítem del Carrito | SS-02 | ACT-01 | Importante |
+| CU-125 Consultar el Carrito | SS-02 | ACT-01 | Importante |
+| CU-126 Vaciar el Carrito | SS-02 | ACT-01 | Menor |
+| CU-127 Cambiar la Dirección de Entrega del Pedido | SS-02 | ACT-01 | Importante |
+| CU-128 Indicar Quién Recibe el Pedido | SS-02 | ACT-01 | Importante |
 | CU-047 Recuperar Contraseña | SS-01 | ACT-01, ACT-02, ACT-03 | Importante |
 | CU-048 Procesar Pago con MercadoPago | SS-14 | ACT-04 | Crítico |
 | CU-049 Consultar Balance / Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante |
 | CU-050 Bloquear / Desbloquear Usuario | SS-01 | ACT-03 | Secundario |
-| CU-051 Gestionar Vehículos (editar / eliminar / consultar) | SS-07 | ACT-03 | Importante |
+| CU-051 Consultar Listado de Vehículos | SS-07 | ACT-03 | Importante |
 | CU-052 Registrar Distribuidora | SS-10 | ACT-05 | Crítico |
 | CU-053 Consultar Distribuidoras | SS-10 | ACT-05 | Crítico |
 | CU-054 Modificar Datos de la Distribuidora | SS-10 | ACT-05 | Crítico |
@@ -1181,6 +1504,10 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-069 Consultar el Parque de Envases | SS-13 | ACT-03, ACT-05 | Importante |
 | CU-070 Registrar Movimiento de Envase (cambio de estado) | SS-13 | ACT-02, ACT-03, ACT-05 | Crítico |
 | CU-071 Consultar Historial de Movimientos de un Envase | SS-13 | ACT-03, ACT-05 | Importante |
+| CU-132 Registrar la Revisión Periódica de un Envase | SS-13 | ACT-03 | Crítico |
+| CU-133 Consultar la Vigencia de un Envase | SS-13 | ACT-03 | Importante |
+| CU-134 Consultar los Envases Próximos a Vencer | SS-13 | ACT-03 | Importante |
+| CU-135 Bloquear el Despacho de un Envase Vencido | SS-13 | ACT-04 | Crítico |
 | CU-072 Crear Reserva Programada con Seña | SS-15 | ACT-01, ACT-02, ACT-03 | Crítico |
 | CU-073 Listar Reservas y Estado de la Seña | SS-15 | ACT-03, ACT-05 | Importante |
 | CU-074 Confirmar Seña Cobrada en Efectivo | SS-15 | ACT-03, ACT-05 | Crítico |
@@ -1205,8 +1532,25 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-093 Validar / Invalidar Cliente | SS-16 | ACT-03 | Importante |
 | CU-094 Actualizar Ubicación del Cliente | SS-16 | ACT-03 | Secundario |
 | CU-095 Eliminar Cliente (baja lógica) | SS-16 | ACT-03 | Importante |
+| CU-129 Consultar Detalle del Cliente | SS-16 | ACT-03 | Importante |
+| CU-130 Buscar Cliente por Usuario | SS-16 | ACT-03 | Importante |
+| CU-131 Editar Datos del Cliente | SS-16 | ACT-03 | Importante |
 | CU-096 Actualizar Perfil del Chofer | SS-07 | ACT-03 | Importante |
 | CU-097 Eliminar Chofer (baja lógica) | SS-07 | ACT-03 | Importante |
+| CU-109 Consultar Detalle del Chofer | SS-07 | ACT-03 | Importante |
+| CU-110 Buscar Chofer por Usuario | SS-07 | ACT-03 | Importante |
+| CU-111 Editar Vehículo | SS-07 | ACT-03 | Importante |
+| CU-112 Eliminar Vehículo | SS-07 | ACT-03 | Importante |
+| CU-113 Consultar Detalle del Vehículo | SS-07 | ACT-03 | Importante |
+| CU-114 Buscar Vehículo por Patente | SS-07 | ACT-03 | Importante |
+| CU-115 Consultar Vehículos de un Chofer | SS-07 | ACT-03, ACT-02 | Importante |
+| CU-136 Registrar el Seguro del Vehículo | SS-07 | ACT-03 | Crítico |
+| CU-137 Registrar la Verificación Técnica Vehicular | SS-07 | ACT-03 | Crítico |
+| CU-138 Registrar la Licencia de Conducir del Chofer | SS-07 | ACT-03 | Crítico |
+| CU-139 Consultar los Vencimientos de la Flota | SS-07 | ACT-03 | Importante |
+| CU-140 Programar un Mantenimiento de Vehículo | SS-07 | ACT-03 | Importante |
+| CU-141 Registrar un Mantenimiento Realizado | SS-07 | ACT-03 | Importante |
+| CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante |
 | CU-098 Registrar el Token de Notificaciones del Dispositivo | SS-17 | ACT-01, ACT-02, ACT-03, ACT-05 | Crítico |
 | CU-099 Consultar los Tokens de un Usuario | SS-17 | ACT-03, ACT-05 | Secundario |
 | CU-100 Enviar Notificación de Prueba | SS-17 | ACT-03, ACT-05 | Secundario |

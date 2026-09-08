@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: quitarItem(usuarioDeLaSesion, itemId)
+    SRV->>IREP: findOne(where cart_item_id, relations cart)
+    IREP-->>SRV: CartItem o null
+    SRV->>IREP: remove(item)
+    IREP-->>SRV: confirmación de baja
+    alt el ítem existe y es del cliente
+        SRV-->>CTRL: Cart sin el ítem
+    else el ítem no es del cliente
+        SRV-->>CTRL: operación rechazada
+    end

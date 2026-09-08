@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarDireccionDeEntrega(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: datos de la dirección
+    else la dirección no existe
+        SIS-->>CLI: recurso no encontrado
+    else la dirección es de otro cliente
+        SIS-->>CLI: acceso denegado
+    end
+    deactivate SIS

@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+    participant IREP as RepositoryCylinderInspection
+
+    CTRL->>SRV: registrarRevision(envaseId, datos, distribuidora)
+    SRV->>CREP: findOne(where cylinder_id y distributor_id)
+    CREP-->>SRV: Cylinder o null
+    SRV->>IREP: save(revisión)
+    IREP-->>SRV: CylinderInspection guardada
+    SRV->>CREP: save(envase con última revisión y vencimiento)
+    CREP-->>SRV: Cylinder actualizado
+    alt el envase existe y las fechas son coherentes
+        SRV-->>CTRL: Cylinder con su vigencia
+    else el envase no existe o las fechas no cierran
+        SRV-->>CTRL: operación rechazada
+    end

@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarEnvasesProximosAVencer(dias)
+    activate SIS
+    alt hay envases en la ventana
+        SIS-->>ADM: listado ordenado por vencimiento
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS

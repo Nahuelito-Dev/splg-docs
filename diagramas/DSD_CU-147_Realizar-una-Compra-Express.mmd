@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant DREP as RepositoryDelivery
+    participant GREP as RepositoryGasCylinder
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: compraExpress(usuarioDeLaSesion, tipoGarrafa, medioDePago)
+    SRV->>SRV: direccionPredeterminada(cliente)
+    SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
+    SRV->>DREP: find(choferes en moto disponibles y habilitados)
+    DREP-->>SRV: lista de Delivery
+    SRV->>GREP: findOne(tipo de garrafa con precio y stock)
+    GREP-->>SRV: GasCylinder
+    SRV->>OREP: save(pedido con modalidad express y sin franja)
+    OREP-->>SRV: Order creada
+    alt hay cobertura y chofer
+        SRV-->>CTRL: Order express creada
+    else no hay
+        SRV-->>CTRL: se ofrece el flujo con franja horaria
+    end

@@ -1,21 +1,23 @@
 @startuml
-title SS-14 — Pagos y Conciliación
+title SS-14 — Pagos y Conciliación (1 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,11 +25,19 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Sistema Automatico" as A4
-
-rectangle "SS-14 Pagos y Conciliación" {
-  usecase "CU-048\nProcesar Pago con MercadoPago" as U48
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A4 --> U48
+actor "Sistema Automático\n(ACT-04)" as A04
+
+rectangle "SS-14 Pagos y Conciliación" {
+  usecase "CU-048\nProcesar Pago con MercadoPago" as U048 #back:FFFFFF;line:4E6B4A
+}
+
+A04 -[#8A6D1F]-> U048
+
 @enduml

@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+    participant MREP as RepositoryCylinderMovement
+
+    SRV->>CREP: find(envases disponibles del tipo pedido)
+    CREP-->>SRV: lista de Cylinder
+    SRV->>SRV: filtrar(expires_at nulo o posterior a hoy)
+    SRV->>MREP: save(movimiento de asignación)
+    MREP-->>SRV: CylinderMovement guardado
+    alt hay envases vigentes
+        SRV-->>CTRL: envases asignados al pedido
+    else no hay envases vigentes
+        SRV-->>CTRL: aviso al administrador y pedido sin envases
+    end

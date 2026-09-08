@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: modificarCantidadDelItem(itemId, cantidad)
+    activate SIS
+    alt el ítem es del carrito del cliente
+        SIS-->>CLI: carrito con la cantidad actualizada
+    else el ítem no es del carrito del cliente
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

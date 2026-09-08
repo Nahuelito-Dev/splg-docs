@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findOne(id, distributorId)
+    SRV->>CREP: findOne(where car_id y distribuidora, relations user)
+    CREP-->>SRV: Car con user o null
+    alt no se encontro el vehiculo
+        SRV-->>CTRL: NotFoundException Car with ID not found
+    else Vehiculo encontrado
+        SRV-->>CTRL: Car completo
+    end

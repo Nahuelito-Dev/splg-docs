@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: recomprasEstimadas(dias, distribuidora)
+    SRV->>CREP: find(where distributor_id y estimación en la ventana)
+    CREP-->>SRV: lista de Customer
+    SRV->>OREP: find(última compra de cada cliente)
+    OREP-->>SRV: últimos pedidos
+    alt hay clientes
+        SRV-->>CTRL: listado con consumo y última compra
+    else no hay
+        SRV-->>CTRL: listado vacío
+    end

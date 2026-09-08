@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: findOne(where address_id, relations user)
+    AREP-->>SRV: UserAddress o null
+    SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
+    alt la dirección existe y es del cliente
+        SRV-->>CTRL: UserAddress
+    else no existe o es de otro
+        SRV-->>CTRL: NotFoundException o acceso denegado
+    end

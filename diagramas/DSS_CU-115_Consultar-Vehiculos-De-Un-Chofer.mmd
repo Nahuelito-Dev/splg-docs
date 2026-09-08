@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVehiculosDelChofer(usuarioId)
+    activate SIS
+    alt la cuenta tiene vehículos
+        SIS-->>ADM: lista de vehículos
+    else la cuenta no tiene ninguno
+        SIS-->>ADM: lista vacía
+    end
+    deactivate SIS

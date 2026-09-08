@@ -1,0 +1,79 @@
+@startuml
+title Subsistemas del Proyecto — SPLG (18 subsistemas · 149 casos de uso)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+skinparam nodesep 25
+skinparam ranksep 55
+skinparam packageStyle rectangle
+
+left to right direction
+
+rectangle "SS-10 Multi-Distribuidora — restricción transversal:\ntodo subsistema de negocio opera acotado a la distribuidora del usuario" as R10 #back:F3F1E4;line:7A7340 {
+  rectangle "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
+    rectangle "**SS-01**\nAutenticación y Usuarios\n(11 casos)" as MSS01 #back:E7F0F6;line:3C6E8F
+    rectangle "**SS-02**\nGestión de Pedidos\n(30 casos)" as MSS02 #back:E9F4EA;line:3F7A50
+    rectangle "**SS-03**\nDespacho y Asignación\n(7 casos)" as MSS03 #back:F5ECF7;line:7B4B8A
+    rectangle "**SS-04**\nSeguimiento en Tiempo Real\n(8 casos)" as MSS04 #back:FBF2DE;line:8A7326
+    rectangle "**SS-05**\nReclamos\n(3 casos)" as MSS05 #back:FAE8E3;line:9C5A46
+    rectangle "**SS-06**\nReportes y Dashboard\n(5 casos)" as MSS06 #back:E4F2F1;line:3E7C79
+    rectangle "**SS-07**\nGestión de Choferes y Vehículos\n(24 casos)" as MSS07 #back:F0EEF9;line:5A5896
+    rectangle "**SS-08**\nGestión de Productos e Inventario\n(6 casos)" as MSS08 #back:EFF6E2;line:5E7A3A
+    rectangle "**SS-09**\nFranjas Horarias\n(5 casos)" as MSS09 #back:FDEFE6;line:A26A45
+    rectangle "**SS-11**\nCobertura Geográfica\n(4 casos)" as MSS11 #back:F7ECEF;line:8E5566
+    rectangle "**SS-12**\nIncidencias y Calidad de Servicio\n(7 casos)" as MSS12 #back:EDF5F9;line:4A7488
+    rectangle "**SS-13**\nTrazabilidad de Envases\n(10 casos)" as MSS13 #back:F3F1E4;line:7A7340
+    rectangle "**SS-14**\nPagos y Conciliación\n(1 caso)" as MSS14 #back:E9EFE6;line:4E6B4A
+    rectangle "**SS-15**\nReservas Programadas\n(6 casos)" as MSS15 #back:F8EDF3;line:8A5674
+  }
+  rectangle "Subsistemas de soporte" as GSOP #back:FFFFFF;line:5A5896 {
+    rectangle "**SS-16**\nAdministración de Cuentas y Roles\n(12 casos)" as MSS16 #back:E8F1EC;line:4B7560
+    rectangle "**SS-17**\nNotificaciones y Mensajería\n(5 casos)" as MSS17 #back:F5F0E8;line:7C6B4C
+    rectangle "**SS-18**\nObservabilidad y Operación\n(1 caso)" as MSS18 #back:ECEDF6;line:5B5F87
+  }
+}
+
+MSS02 ..> MSS01 : el pedido es de un cliente
+MSS02 ..> MSS08 : toma precio y stock
+MSS02 ..> MSS09 : reserva cupo de franja
+MSS02 ..> MSS11 : valida cobertura
+MSS02 ..> MSS14 : cobra
+MSS03 ..> MSS02 : despacha pedidos
+MSS03 ..> MSS07 : ofrece a los choferes
+MSS04 ..> MSS03 : sigue al chofer asignado
+MSS04 ..> MSS17 : avisa cada cambio
+MSS05 ..> MSS02 : reclama sobre un pedido
+MSS06 ..> MSS02 : mide ventas
+MSS06 ..> MSS14 : concilia cobros
+MSS12 ..> MSS02 : registra sobre la entrega
+MSS12 ..> MSS07 : califica al chofer
+MSS13 ..> MSS02 : asigna envases al pedido
+MSS13 ..> MSS08 : el envase es de un tipo
+MSS15 ..> MSS02 : la reserva se convierte en pedido
+MSS15 ..> MSS14 : toma la seña
+MSS16 ..> MSS01 : administra las cuentas
+MSS17 ..> MSS01 : avisa a los usuarios
+MSS18 ..> R10 : vigila la instancia
+
+@enduml

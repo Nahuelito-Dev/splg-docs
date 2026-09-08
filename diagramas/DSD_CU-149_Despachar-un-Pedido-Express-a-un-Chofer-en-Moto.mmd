@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+    participant DREP as RepositoryDelivery
+    participant NOT as NotificationService
+
+    SRV->>OREP: findOne(pedido express sin chofer)
+    OREP-->>SRV: Order
+    SRV->>DREP: find(choferes en moto disponibles dentro del radio, por distancia)
+    DREP-->>SRV: lista de Delivery ordenada
+    SRV->>NOT: ofrecer(pedido, chofer más cercano, ventana corta)
+    SRV->>OREP: save(pedido asignado o degradado a programado)
+    OREP-->>SRV: Order actualizada
+    alt un chofer acepta
+        SRV-->>CTRL: Order asignada al chofer en moto
+    else ninguno acepta
+        SRV-->>CTRL: Order degradada a modalidad programada
+    end

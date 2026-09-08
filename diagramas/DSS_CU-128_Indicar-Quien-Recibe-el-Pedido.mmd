@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: indicarQuienRecibe(pedidoId, nombre, documento, relacion)
+    activate SIS
+    alt el pedido admite el dato
+        SIS-->>CLI: pedido actualizado con quién recibe
+    else el pedido ya fue entregado
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

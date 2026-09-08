@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)
+    activate SIS
+    alt el pedido admite el cambio y la dirección es válida
+        SIS-->>CLI: pedido actualizado
+    else el pedido ya salió
+        SIS-->>CLI: cambio rechazado
+    else la dirección está fuera de la zona de cobertura
+        SIS-->>CLI: cambio rechazado
+    end
+    deactivate SIS

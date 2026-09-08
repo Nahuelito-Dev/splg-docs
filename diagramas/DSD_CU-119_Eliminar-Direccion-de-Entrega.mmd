@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: remove(id, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: find(otras direcciones del titular)
+    AREP-->>SRV: lista de UserAddress
+    SRV->>AREP: save(nueva predeterminada)
+    SRV->>AREP: remove(direccion)
+    AREP-->>SRV: confirmación de baja
+    alt la dirección existe
+        SRV-->>CTRL: mensaje de baja con el identificador
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end

@@ -19,7 +19,7 @@ Esta guía es el procedimiento para pasarlos.
 | `3.-Diseño.doc` | Plantilla vacía de 2023 | Convertir y completar |
 
 > Los tres primeros describen **45 casos de uso y cuatro actores**. Los nuestros tienen
-> **108 casos y cinco actores**. No es una actualización de detalles: es otro contenido.
+> **149 casos y cinco actores**. No es una actualización de detalles: es otro contenido.
 
 ## Antes de empezar
 

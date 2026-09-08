@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant DREP as RepositoryDelivery
+    participant NOT as NotificationService
+
+    SRV->>VREP: find(vencimientos de vehículos en la ventana)
+    VREP-->>SRV: lista de Car
+    SRV->>DREP: find(licencias en la ventana)
+    DREP-->>SRV: lista de Delivery
+    SRV->>NOT: avisar(administrador, habilitaciones por vencer)
+    alt hay habilitaciones por vencer
+        SRV-->>CTRL: avisos enviados y marcados
+    else no hay
+        SRV-->>CTRL: ciclo sin avisos
+    end

@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarVerificacionTecnica(vehiculoId, vencimiento)
+    activate SIS
+    alt la verificación está vigente
+        SIS-->>ADM: vehículo habilitado
+    else la verificación está vencida
+        SIS-->>ADM: dato guardado y vehículo no habilitado
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

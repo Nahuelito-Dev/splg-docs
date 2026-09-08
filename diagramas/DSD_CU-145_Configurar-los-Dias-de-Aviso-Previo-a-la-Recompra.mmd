@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: configurarAviso(usuarioDeLaSesion, dias)
+    SRV->>CREP: save(cliente con los días de aviso)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es válido
+        SRV-->>CTRL: Customer con la preferencia
+    else el valor no es válido
+        SRV-->>CTRL: operación rechazada
+    end

@@ -1,0 +1,53 @@
+@startuml
+title Actores del Sistema — SPLG
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+actor "Cliente\n(ACT-01)" as A01
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
+  rectangle "App Cliente\n(Flutter)" as APPC
+  rectangle "App Chofer\n(Flutter)" as APPD
+  rectangle "Panel Web\n(React / Vite)" as PANEL
+  rectangle "Procesos programados\n(sin interfaz)" as PROC
+  rectangle "Backend\n(NestJS + PostgreSQL/PostGIS)" as BACK
+}
+
+A01 -[#1F6F8B]-> APPC
+A02 -[#2E7D46]-> APPD
+A03 -[#8C4A9E]-> PANEL : alcance: su distribuidora
+A05 -[#B4432B]-> PANEL : alcance: todas las distribuidoras
+A04 -[#8A6D1F]-> PROC : sin intervención humana
+
+APPC --> BACK
+APPD --> BACK
+PANEL --> BACK
+PROC --> BACK
+
+@enduml

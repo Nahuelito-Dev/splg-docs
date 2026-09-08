@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarClientePorUsuario(usuarioId)
+    activate SIS
+    alt la cuenta tiene ficha de cliente
+        SIS-->>ADM: ficha del cliente
+    else la cuenta no tiene ficha de cliente
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

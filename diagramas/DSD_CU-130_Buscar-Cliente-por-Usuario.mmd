@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+    SRV->>CREP: findOne(where user_id, relations user)
+    CREP-->>SRV: Customer o null
+    alt la cuenta tiene ficha
+        SRV-->>CTRL: Customer
+    else la cuenta no tiene ficha
+        SRV-->>CTRL: NotFoundException Customer for user ID not found
+    end

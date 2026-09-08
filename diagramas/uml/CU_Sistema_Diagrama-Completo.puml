@@ -1,0 +1,525 @@
+@startuml
+title Diagrama Completo de Casos de Uso — SPLG (149 casos de uso)
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+skinparam nodesep 14
+skinparam ranksep 60
+
+rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
+  rectangle "SS-01 — Autenticación y Usuarios" as RSS01 #back:E7F0F6;line:3C6E8F {
+    actor "Cliente\n(ACT-01)" as A01SS01
+    actor "Chofer\n(ACT-02)" as A02SS01
+    actor "Administrador\n(ACT-03)" as A03SS01
+    actor "Sistema Automático\n(ACT-04)" as A04SS01
+    actor "Administrador General\n(ACT-05)" as A05SS01
+    usecase "CU-001\nIniciar Sesión" as U001 #back:FFFFFF;line:3C6E8F
+    usecase "CU-002\nRegistrarse como Cliente" as U002 #back:FFFFFF;line:3C6E8F
+    usecase "CU-003\nRegistrar Chofer" as U003 #back:FFFFFF;line:3C6E8F
+    usecase "CU-004\nGestionar Perfil de\nUsuario" as U004 #back:FFFFFF;line:3C6E8F
+    usecase "CU-047\nRecuperar Contraseña" as U047 #back:FFFFFF;line:3C6E8F
+    usecase "CU-050\nBloquear / Desbloquear\nUsuario" as U050 #back:FFFFFF;line:3C6E8F
+    usecase "CU-082\nCrear Usuario Base" as U082 #back:FFFFFF;line:3C6E8F
+    usecase "CU-083\nBuscar / Listar Usuarios" as U083 #back:FFFFFF;line:3C6E8F
+    usecase "CU-084\nVerificar Existencia de\nUsuario (pre-registro)" as U084 #back:FFFFFF;line:3C6E8F
+    usecase "CU-085\nEliminar Usuario (baja\nlógica)" as U085 #back:FFFFFF;line:3C6E8F
+    usecase "CU-091\nValidar Vigencia del Token\nde Sesión" as U091 #back:FFFFFF;line:3C6E8F
+  }
+  rectangle "SS-02 — Gestión de Pedidos" as RSS02 #back:E9F4EA;line:3F7A50 {
+    actor "Cliente\n(ACT-01)" as A01SS02
+    actor "Chofer\n(ACT-02)" as A02SS02
+    actor "Administrador\n(ACT-03)" as A03SS02
+    actor "Sistema Automático\n(ACT-04)" as A04SS02
+    actor "Administrador General\n(ACT-05)" as A05SS02
+    usecase "CU-005\nCrear Pedido" as U005 #back:FFFFFF;line:3F7A50
+    usecase "CU-006\nConsultar Detalle de\nPedido" as U006 #back:FFFFFF;line:3F7A50
+    usecase "CU-007\nConsultar Historial de\nPedidos" as U007 #back:FFFFFF;line:3F7A50
+    usecase "CU-008\nCancelar Pedido (Cliente)" as U008 #back:FFFFFF;line:3F7A50
+    usecase "CU-009\nCancelar Pedido (Chofer)" as U009 #back:FFFFFF;line:3F7A50
+    usecase "CU-010\nCancelar Pedido\n(Administrador)" as U010 #back:FFFFFF;line:3F7A50
+    usecase "CU-011\nListar Todos los Pedidos" as U011 #back:FFFFFF;line:3F7A50
+    usecase "CU-046\nConsultar Direcciones de\nEntrega del Cliente" as U046 #back:FFFFFF;line:3F7A50
+    usecase "CU-080\nConsultar el Pool de\nPedidos Disponibles" as U080 #back:FFFFFF;line:3F7A50
+    usecase "CU-081\nConsultar los Pedidos\nAsignados al Chofer" as U081 #back:FFFFFF;line:3F7A50
+    usecase "CU-106\nAnticipar la recompra por\nconsumo estimado" as U106 #back:FFFFFF;line:3F7A50
+    usecase "CU-116\nRegistrar Dirección de\nEntrega" as U116 #back:FFFFFF;line:3F7A50
+    usecase "CU-117\nConsultar Detalle de una\nDirección de Entrega" as U117 #back:FFFFFF;line:3F7A50
+    usecase "CU-118\nEditar Dirección de\nEntrega" as U118 #back:FFFFFF;line:3F7A50
+    usecase "CU-119\nEliminar Dirección de\nEntrega" as U119 #back:FFFFFF;line:3F7A50
+    usecase "CU-120\nMarcar una Dirección como\nPredeterminada" as U120 #back:FFFFFF;line:3F7A50
+    usecase "CU-121\nConsultar la Dirección\nPredeterminada" as U121 #back:FFFFFF;line:3F7A50
+    usecase "CU-122\nAgregar Ítem al Carrito" as U122 #back:FFFFFF;line:3F7A50
+    usecase "CU-123\nModificar la Cantidad de\nun Ítem del Carrito" as U123 #back:FFFFFF;line:3F7A50
+    usecase "CU-124\nQuitar Ítem del Carrito" as U124 #back:FFFFFF;line:3F7A50
+    usecase "CU-125\nConsultar el Carrito" as U125 #back:FFFFFF;line:3F7A50
+    usecase "CU-126\nVaciar el Carrito" as U126 #back:FFFFFF;line:3F7A50
+    usecase "CU-127\nCambiar la Dirección de\nEntrega del Pedido" as U127 #back:FFFFFF;line:3F7A50
+    usecase "CU-128\nIndicar Quién Recibe el\nPedido" as U128 #back:FFFFFF;line:3F7A50
+    usecase "CU-143\nDeclarar el Consumo\nPromedio al Registrarse" as U143 #back:FFFFFF;line:3F7A50
+    usecase "CU-144\nActualizar el Consumo\nPromedio Declarado" as U144 #back:FFFFFF;line:3F7A50
+    usecase "CU-145\nConfigurar los Días de\nAviso Previo a la Recompra" as U145 #back:FFFFFF;line:3F7A50
+    usecase "CU-146\nConsultar la Fecha\nEstimada de Recompra" as U146 #back:FFFFFF;line:3F7A50
+    usecase "CU-147\nRealizar una Compra\nExpress" as U147 #back:FFFFFF;line:3F7A50
+    usecase "CU-148\nElegir la Modalidad de\nEntrega del Pedido" as U148 #back:FFFFFF;line:3F7A50
+  }
+  rectangle "SS-03 — Despacho y Asignación" as RSS03 #back:F5ECF7;line:7B4B8A {
+    actor "Chofer\n(ACT-02)" as A02SS03
+    actor "Administrador\n(ACT-03)" as A03SS03
+    actor "Sistema Automático\n(ACT-04)" as A04SS03
+    usecase "CU-012\nAsignar Chofer Manualmente" as U012 #back:FFFFFF;line:7B4B8A
+    usecase "CU-013\nAsignar Pedido\nAutomáticamente por\nProximidad" as U013 #back:FFFFFF;line:7B4B8A
+    usecase "CU-014\nReintentar Asignación con\nRadio Expandido (Cron)" as U014 #back:FFFFFF;line:7B4B8A
+    usecase "CU-015\nAceptar Pedido" as U015 #back:FFFFFF;line:7B4B8A
+    usecase "CU-016\nRechazar / Ignorar Pedido" as U016 #back:FFFFFF;line:7B4B8A
+    usecase "CU-107\nAgrupar pedidos por\nrecorrido" as U107 #back:FFFFFF;line:7B4B8A
+    usecase "CU-149\nDespachar un Pedido\nExpress a un Chofer en\nMoto" as U149 #back:FFFFFF;line:7B4B8A
+  }
+  rectangle "SS-04 — Seguimiento en Tiempo Real" as RSS04 #back:FBF2DE;line:8A7326 {
+    actor "Cliente\n(ACT-01)" as A01SS04
+    actor "Chofer\n(ACT-02)" as A02SS04
+    actor "Administrador\n(ACT-03)" as A03SS04
+    actor "Administrador General\n(ACT-05)" as A05SS04
+    usecase "CU-017\nActualizar Ubicación GPS\ndel Chofer" as U017 #back:FFFFFF;line:8A7326
+    usecase "CU-018\nMarcar Pedido "En Camino"" as U018 #back:FFFFFF;line:8A7326
+    usecase "CU-019\nAvisar Llegada al Cliente" as U019 #back:FFFFFF;line:8A7326
+    usecase "CU-020\nConfirmar Entrega" as U020 #back:FFFFFF;line:8A7326
+    usecase "CU-021\nRecibir Notificaciones en\nTiempo Real" as U021 #back:FFFFFF;line:8A7326
+    usecase "CU-022\nActivar / Desactivar\nDisponibilidad (Chofer)" as U022 #back:FFFFFF;line:8A7326
+    usecase "CU-078\nObtener el Código de\nEntrega (QR del chofer)" as U078 #back:FFFFFF;line:8A7326
+    usecase "CU-079\nConfirmar Entrega\nEscaneando el QR (cliente)" as U079 #back:FFFFFF;line:8A7326
+  }
+  rectangle "SS-05 — Reclamos" as RSS05 #back:FAE8E3;line:9C5A46 {
+    actor "Cliente\n(ACT-01)" as A01SS05
+    actor "Administrador\n(ACT-03)" as A03SS05
+    usecase "CU-023\nRegistrar Reclamo" as U023 #back:FFFFFF;line:9C5A46
+    usecase "CU-024\nListar Reclamos" as U024 #back:FFFFFF;line:9C5A46
+    usecase "CU-025\nResolver Reclamo" as U025 #back:FFFFFF;line:9C5A46
+  }
+  rectangle "SS-06 — Reportes y Dashboard" as RSS06 #back:E4F2F1;line:3E7C79 {
+    actor "Administrador\n(ACT-03)" as A03SS06
+    usecase "CU-026\nVer Dashboard General" as U026 #back:FFFFFF;line:3E7C79
+    usecase "CU-027\nVer Reporte de Ventas por\nChofer" as U027 #back:FFFFFF;line:3E7C79
+    usecase "CU-028\nVer Reporte de Ventas por\nProducto" as U028 #back:FFFFFF;line:3E7C79
+    usecase "CU-029\nVer Reporte por Método de\nPago" as U029 #back:FFFFFF;line:3E7C79
+    usecase "CU-030\nVer Gráfico de Ventas\n(últimos 7 días)" as U030 #back:FFFFFF;line:3E7C79
+  }
+  rectangle "SS-07 — Gestión de Choferes y Vehículos" as RSS07 #back:F0EEF9;line:5A5896 {
+    actor "Chofer\n(ACT-02)" as A02SS07
+    actor "Administrador\n(ACT-03)" as A03SS07
+    actor "Sistema Automático\n(ACT-04)" as A04SS07
+    usecase "CU-031\nRegistrar Chofer" as U031 #back:FFFFFF;line:5A5896
+    usecase "CU-032\nValidar / Invalidar Chofer" as U032 #back:FFFFFF;line:5A5896
+    usecase "CU-033\nActivar / Desactivar\nChofer (Admin)" as U033 #back:FFFFFF;line:5A5896
+    usecase "CU-034\nRegistrar Vehículo del\nChofer" as U034 #back:FFFFFF;line:5A5896
+    usecase "CU-035\nConsultar Listado de\nChoferes" as U035 #back:FFFFFF;line:5A5896
+    usecase "CU-049\nConsultar Balance /\nGanancias del Chofer" as U049 #back:FFFFFF;line:5A5896
+    usecase "CU-051\nConsultar Listado de\nVehículos" as U051 #back:FFFFFF;line:5A5896
+    usecase "CU-096\nActualizar Perfil del\nChofer" as U096 #back:FFFFFF;line:5A5896
+    usecase "CU-097\nEliminar Chofer (baja\nlógica)" as U097 #back:FFFFFF;line:5A5896
+    usecase "CU-105\nPlanificar el\nmantenimiento y las\nhabilitaciones de la flota" as U105 #back:FFFFFF;line:5A5896
+    usecase "CU-109\nConsultar Detalle del\nChofer" as U109 #back:FFFFFF;line:5A5896
+    usecase "CU-110\nBuscar Chofer por Usuario" as U110 #back:FFFFFF;line:5A5896
+    usecase "CU-111\nEditar Vehículo" as U111 #back:FFFFFF;line:5A5896
+    usecase "CU-112\nEliminar Vehículo" as U112 #back:FFFFFF;line:5A5896
+    usecase "CU-113\nConsultar Detalle del\nVehículo" as U113 #back:FFFFFF;line:5A5896
+    usecase "CU-114\nBuscar Vehículo por\nPatente" as U114 #back:FFFFFF;line:5A5896
+    usecase "CU-115\nConsultar Vehículos de un\nChofer" as U115 #back:FFFFFF;line:5A5896
+    usecase "CU-136\nRegistrar el Seguro del\nVehículo" as U136 #back:FFFFFF;line:5A5896
+    usecase "CU-137\nRegistrar la Verificación\nTécnica Vehicular" as U137 #back:FFFFFF;line:5A5896
+    usecase "CU-138\nRegistrar la Licencia de\nConducir del Chofer" as U138 #back:FFFFFF;line:5A5896
+    usecase "CU-139\nConsultar los Vencimientos\nde la Flota" as U139 #back:FFFFFF;line:5A5896
+    usecase "CU-140\nProgramar un Mantenimiento\nde Vehículo" as U140 #back:FFFFFF;line:5A5896
+    usecase "CU-141\nRegistrar un Mantenimiento\nRealizado" as U141 #back:FFFFFF;line:5A5896
+    usecase "CU-142\nAvisar los Vencimientos\nPróximos de la Flota" as U142 #back:FFFFFF;line:5A5896
+  }
+  rectangle "SS-08 — Gestión de Productos e Inventario" as RSS08 #back:EFF6E2;line:5E7A3A {
+    actor "Cliente\n(ACT-01)" as A01SS08
+    actor "Administrador\n(ACT-03)" as A03SS08
+    usecase "CU-036\nCrear Producto (Garrafa)" as U036 #back:FFFFFF;line:5E7A3A
+    usecase "CU-037\nActualizar Precio de\nProducto" as U037 #back:FFFFFF;line:5E7A3A
+    usecase "CU-038\nActualizar Stock de\nProducto" as U038 #back:FFFFFF;line:5E7A3A
+    usecase "CU-039\nConfigurar Promociones por\nCantidad" as U039 #back:FFFFFF;line:5E7A3A
+    usecase "CU-040\nActivar / Desactivar\nProducto" as U040 #back:FFFFFF;line:5E7A3A
+    usecase "CU-041\nConsultar Catálogo de\nProductos" as U041 #back:FFFFFF;line:5E7A3A
+  }
+  rectangle "SS-09 — Franjas Horarias" as RSS09 #back:FDEFE6;line:A26A45 {
+    actor "Cliente\n(ACT-01)" as A01SS09
+    actor "Administrador\n(ACT-03)" as A03SS09
+    actor "Administrador General\n(ACT-05)" as A05SS09
+    usecase "CU-042\nCrear Franja Horaria" as U042 #back:FFFFFF;line:A26A45
+    usecase "CU-043\nModificar Capacidad de\nFranja Horaria" as U043 #back:FFFFFF;line:A26A45
+    usecase "CU-044\nSeleccionar Franja Horaria\nal Crear Pedido" as U044 #back:FFFFFF;line:A26A45
+    usecase "CU-045\nConsultar Franjas Horarias\nDisponibles" as U045 #back:FFFFFF;line:A26A45
+    usecase "CU-103\nEliminar Franja Horaria" as U103 #back:FFFFFF;line:A26A45
+  }
+  rectangle "SS-10 — Multi-Distribuidora" as RSS10 #back:E6EEF7;line:44608B {
+    actor "Administrador General\n(ACT-05)" as A05SS10
+    usecase "CU-052\nRegistrar Distribuidora" as U052 #back:FFFFFF;line:44608B
+    usecase "CU-053\nConsultar Distribuidoras" as U053 #back:FFFFFF;line:44608B
+    usecase "CU-054\nModificar Datos de la\nDistribuidora" as U054 #back:FFFFFF;line:44608B
+    usecase "CU-055\nDar de Baja una\nDistribuidora" as U055 #back:FFFFFF;line:44608B
+  }
+  rectangle "SS-11 — Cobertura Geográfica" as RSS11 #back:F7ECEF;line:8E5566 {
+    actor "Cliente\n(ACT-01)" as A01SS11
+    actor "Administrador\n(ACT-03)" as A03SS11
+    actor "Administrador General\n(ACT-05)" as A05SS11
+    usecase "CU-056\nDefinir Zona de Cobertura" as U056 #back:FFFFFF;line:8E5566
+    usecase "CU-057\nConsultar Zonas de\nCobertura" as U057 #back:FFFFFF;line:8E5566
+    usecase "CU-058\nValidar Cobertura de una\nDirección" as U058 #back:FFFFFF;line:8E5566
+    usecase "CU-059\nEliminar Zona de Cobertura" as U059 #back:FFFFFF;line:8E5566
+  }
+  rectangle "SS-12 — Incidencias y Calidad de Servicio" as RSS12 #back:EDF5F9;line:4A7488 {
+    actor "Cliente\n(ACT-01)" as A01SS12
+    actor "Chofer\n(ACT-02)" as A02SS12
+    actor "Administrador\n(ACT-03)" as A03SS12
+    actor "Administrador General\n(ACT-05)" as A05SS12
+    usecase "CU-060\nRegistrar Incidencia de\nEntrega" as U060 #back:FFFFFF;line:4A7488
+    usecase "CU-061\nListar Incidencias" as U061 #back:FFFFFF;line:4A7488
+    usecase "CU-062\nConsultar Incidencias de\nun Pedido" as U062 #back:FFFFFF;line:4A7488
+    usecase "CU-063\nResolver Incidencia" as U063 #back:FFFFFF;line:4A7488
+    usecase "CU-064\nCalificar Pedido\n(cliente↔chofer)" as U064 #back:FFFFFF;line:4A7488
+    usecase "CU-065\nConsultar Promedio de\nCalificaciones de un\nUsuario" as U065 #back:FFFFFF;line:4A7488
+    usecase "CU-066\nConsultar Historial de\nCalificaciones Recibidas" as U066 #back:FFFFFF;line:4A7488
+  }
+  rectangle "SS-13 — Trazabilidad de Envases" as RSS13 #back:F3F1E4;line:7A7340 {
+    actor "Chofer\n(ACT-02)" as A02SS13
+    actor "Administrador\n(ACT-03)" as A03SS13
+    actor "Sistema Automático\n(ACT-04)" as A04SS13
+    actor "Administrador General\n(ACT-05)" as A05SS13
+    usecase "CU-067\nDar de Alta un Envase\nFísico" as U067 #back:FFFFFF;line:7A7340
+    usecase "CU-068\nAsignar Envases a un\nPedido" as U068 #back:FFFFFF;line:7A7340
+    usecase "CU-069\nConsultar el Parque de\nEnvases" as U069 #back:FFFFFF;line:7A7340
+    usecase "CU-070\nRegistrar Movimiento de\nEnvase (cambio de estado)" as U070 #back:FFFFFF;line:7A7340
+    usecase "CU-071\nConsultar Historial de\nMovimientos de un Envase" as U071 #back:FFFFFF;line:7A7340
+    usecase "CU-108\nRecuperar envases no\ndevueltos" as U108 #back:FFFFFF;line:7A7340
+    usecase "CU-132\nRegistrar la Revisión\nPeriódica de un Envase" as U132 #back:FFFFFF;line:7A7340
+    usecase "CU-133\nConsultar la Vigencia de\nun Envase" as U133 #back:FFFFFF;line:7A7340
+    usecase "CU-134\nConsultar los Envases\nPróximos a Vencer" as U134 #back:FFFFFF;line:7A7340
+    usecase "CU-135\nBloquear el Despacho de un\nEnvase Vencido" as U135 #back:FFFFFF;line:7A7340
+  }
+  rectangle "SS-14 — Pagos y Conciliación" as RSS14 #back:E9EFE6;line:4E6B4A {
+    actor "Sistema Automático\n(ACT-04)" as A04SS14
+    usecase "CU-048\nProcesar Pago con\nMercadoPago" as U048 #back:FFFFFF;line:4E6B4A
+  }
+  rectangle "SS-15 — Reservas Programadas" as RSS15 #back:F8EDF3;line:8A5674 {
+    actor "Cliente\n(ACT-01)" as A01SS15
+    actor "Chofer\n(ACT-02)" as A02SS15
+    actor "Administrador\n(ACT-03)" as A03SS15
+    actor "Sistema Automático\n(ACT-04)" as A04SS15
+    actor "Administrador General\n(ACT-05)" as A05SS15
+    usecase "CU-072\nCrear Reserva Programada\ncon Seña" as U072 #back:FFFFFF;line:8A5674
+    usecase "CU-073\nListar Reservas y Estado\nde la Seña" as U073 #back:FFFFFF;line:8A5674
+    usecase "CU-074\nConfirmar Seña Cobrada en\nEfectivo" as U074 #back:FFFFFF;line:8A5674
+    usecase "CU-075\nActivar Reservas Vencidas\nAutomaticamente (Cron)" as U075 #back:FFFFFF;line:8A5674
+    usecase "CU-076\nExpirar Reservas sin Seña\nPagada (Cron)" as U076 #back:FFFFFF;line:8A5674
+    usecase "CU-077\nExpirar Pedidos de\nMercadoPago sin Pagar\n(Cron)" as U077 #back:FFFFFF;line:8A5674
+  }
+  rectangle "SS-16 — Administración de Cuentas y Roles" as RSS16 #back:E8F1EC;line:4B7560 {
+    actor "Cliente\n(ACT-01)" as A01SS16
+    actor "Chofer\n(ACT-02)" as A02SS16
+    actor "Administrador\n(ACT-03)" as A03SS16
+    actor "Sistema Automático\n(ACT-04)" as A04SS16
+    actor "Administrador General\n(ACT-05)" as A05SS16
+    usecase "CU-086\nRegistrar Administrador" as U086 #back:FFFFFF;line:4B7560
+    usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)" as U087 #back:FFFFFF;line:4B7560
+    usecase "CU-088\nConsultar Administradores" as U088 #back:FFFFFF;line:4B7560
+    usecase "CU-089\nGestionar Roles del\nSistema" as U089 #back:FFFFFF;line:4B7560
+    usecase "CU-090\nSembrar los Roles\nIniciales" as U090 #back:FFFFFF;line:4B7560
+    usecase "CU-092\nConsultar Listado de\nClientes" as U092 #back:FFFFFF;line:4B7560
+    usecase "CU-093\nValidar / Invalidar\nCliente" as U093 #back:FFFFFF;line:4B7560
+    usecase "CU-094\nActualizar Ubicación del\nCliente" as U094 #back:FFFFFF;line:4B7560
+    usecase "CU-095\nEliminar Cliente (baja\nlógica)" as U095 #back:FFFFFF;line:4B7560
+    usecase "CU-129\nConsultar Detalle del\nCliente" as U129 #back:FFFFFF;line:4B7560
+    usecase "CU-130\nBuscar Cliente por Usuario" as U130 #back:FFFFFF;line:4B7560
+    usecase "CU-131\nEditar Datos del Cliente" as U131 #back:FFFFFF;line:4B7560
+  }
+  rectangle "SS-17 — Notificaciones y Mensajería" as RSS17 #back:F5F0E8;line:7C6B4C {
+    actor "Cliente\n(ACT-01)" as A01SS17
+    actor "Chofer\n(ACT-02)" as A02SS17
+    actor "Administrador\n(ACT-03)" as A03SS17
+    actor "Sistema Automático\n(ACT-04)" as A04SS17
+    actor "Administrador General\n(ACT-05)" as A05SS17
+    usecase "CU-098\nRegistrar el Token de\nNotificaciones del\nDispositivo" as U098 #back:FFFFFF;line:7C6B4C
+    usecase "CU-099\nConsultar los Tokens de un\nUsuario" as U099 #back:FFFFFF;line:7C6B4C
+    usecase "CU-100\nEnviar Notificación de\nPrueba" as U100 #back:FFFFFF;line:7C6B4C
+    usecase "CU-101\nReenviar Notificación de\nConfirmación de Pedido" as U101 #back:FFFFFF;line:7C6B4C
+    usecase "CU-102\nProbar el Servicio de\nCorreo" as U102 #back:FFFFFF;line:7C6B4C
+  }
+  rectangle "SS-18 — Observabilidad y Operación" as RSS18 #back:ECEDF6;line:5B5F87 {
+    actor "Cliente\n(ACT-01)" as A01SS18
+    actor "Chofer\n(ACT-02)" as A02SS18
+    actor "Administrador\n(ACT-03)" as A03SS18
+    actor "Sistema Automático\n(ACT-04)" as A04SS18
+    usecase "CU-104\nVerificar la Salud del\nSistema (liveness /\nreadiness)" as U104 #back:FFFFFF;line:5B5F87
+  }
+}
+
+A01SS01 -[#1F6F8B]-> U001
+A02SS01 -[#2E7D46]-> U001
+A03SS01 -[#8C4A9E]-> U001
+A01SS01 -[#1F6F8B]-> U002
+A03SS01 -[#8C4A9E]-> U003
+A01SS01 -[#1F6F8B]-> U004
+A02SS01 -[#2E7D46]-> U004
+A01SS01 -[#1F6F8B]-> U047
+A02SS01 -[#2E7D46]-> U047
+A03SS01 -[#8C4A9E]-> U047
+A03SS01 -[#8C4A9E]-> U050
+A01SS01 -[#1F6F8B]-> U082
+A02SS01 -[#2E7D46]-> U082
+A03SS01 -[#8C4A9E]-> U082
+A04SS01 -[#8A6D1F]-> U082
+A03SS01 -[#8C4A9E]-> U083
+A01SS01 -[#1F6F8B]-> U084
+A02SS01 -[#2E7D46]-> U084
+A03SS01 -[#8C4A9E]-> U084
+A04SS01 -[#8A6D1F]-> U084
+A03SS01 -[#8C4A9E]-> U085
+A01SS01 -[#1F6F8B]-> U091
+A02SS01 -[#2E7D46]-> U091
+A03SS01 -[#8C4A9E]-> U091
+A05SS01 -[#B4432B]-> U091
+A01SS02 -[#1F6F8B]-> U005
+A01SS02 -[#1F6F8B]-> U006
+A02SS02 -[#2E7D46]-> U006
+A03SS02 -[#8C4A9E]-> U006
+A01SS02 -[#1F6F8B]-> U007
+A01SS02 -[#1F6F8B]-> U008
+A02SS02 -[#2E7D46]-> U009
+A03SS02 -[#8C4A9E]-> U010
+A03SS02 -[#8C4A9E]-> U011
+A01SS02 -[#1F6F8B]-> U046
+A02SS02 -[#2E7D46]-> U080
+A03SS02 -[#8C4A9E]-> U080
+A05SS02 -[#B4432B]-> U080
+A02SS02 -[#2E7D46]-> U081
+A03SS02 -[#8C4A9E]-> U081
+A05SS02 -[#B4432B]-> U081
+A01SS02 -[#1F6F8B]-> U106
+A04SS02 -[#8A6D1F]-> U106
+A01SS02 -[#1F6F8B]-> U116
+A01SS02 -[#1F6F8B]-> U117
+A01SS02 -[#1F6F8B]-> U118
+A01SS02 -[#1F6F8B]-> U119
+A01SS02 -[#1F6F8B]-> U120
+A01SS02 -[#1F6F8B]-> U121
+A01SS02 -[#1F6F8B]-> U122
+A01SS02 -[#1F6F8B]-> U123
+A01SS02 -[#1F6F8B]-> U124
+A01SS02 -[#1F6F8B]-> U125
+A01SS02 -[#1F6F8B]-> U126
+A01SS02 -[#1F6F8B]-> U127
+A01SS02 -[#1F6F8B]-> U128
+A01SS02 -[#1F6F8B]-> U143
+A01SS02 -[#1F6F8B]-> U144
+A01SS02 -[#1F6F8B]-> U145
+A03SS02 -[#8C4A9E]-> U146
+A01SS02 -[#1F6F8B]-> U147
+A01SS02 -[#1F6F8B]-> U148
+A03SS03 -[#8C4A9E]-> U012
+A04SS03 -[#8A6D1F]-> U013
+A04SS03 -[#8A6D1F]-> U014
+A02SS03 -[#2E7D46]-> U015
+A02SS03 -[#2E7D46]-> U016
+A02SS03 -[#2E7D46]-> U107
+A04SS03 -[#8A6D1F]-> U107
+A04SS03 -[#8A6D1F]-> U149
+A02SS04 -[#2E7D46]-> U017
+A02SS04 -[#2E7D46]-> U018
+A02SS04 -[#2E7D46]-> U019
+A02SS04 -[#2E7D46]-> U020
+A01SS04 -[#1F6F8B]-> U021
+A02SS04 -[#2E7D46]-> U022
+A02SS04 -[#2E7D46]-> U078
+A03SS04 -[#8C4A9E]-> U078
+A05SS04 -[#B4432B]-> U078
+A01SS04 -[#1F6F8B]-> U079
+A03SS04 -[#8C4A9E]-> U079
+A05SS04 -[#B4432B]-> U079
+A01SS05 -[#1F6F8B]-> U023
+A03SS05 -[#8C4A9E]-> U024
+A03SS05 -[#8C4A9E]-> U025
+A03SS06 -[#8C4A9E]-> U026
+A03SS06 -[#8C4A9E]-> U027
+A03SS06 -[#8C4A9E]-> U028
+A03SS06 -[#8C4A9E]-> U029
+A03SS06 -[#8C4A9E]-> U030
+A03SS07 -[#8C4A9E]-> U031
+A03SS07 -[#8C4A9E]-> U032
+A03SS07 -[#8C4A9E]-> U033
+A03SS07 -[#8C4A9E]-> U034
+A03SS07 -[#8C4A9E]-> U035
+A02SS07 -[#2E7D46]-> U049
+A03SS07 -[#8C4A9E]-> U049
+A03SS07 -[#8C4A9E]-> U051
+A03SS07 -[#8C4A9E]-> U096
+A03SS07 -[#8C4A9E]-> U097
+A03SS07 -[#8C4A9E]-> U105
+A04SS07 -[#8A6D1F]-> U105
+A03SS07 -[#8C4A9E]-> U109
+A03SS07 -[#8C4A9E]-> U110
+A03SS07 -[#8C4A9E]-> U111
+A03SS07 -[#8C4A9E]-> U112
+A03SS07 -[#8C4A9E]-> U113
+A03SS07 -[#8C4A9E]-> U114
+A02SS07 -[#2E7D46]-> U115
+A03SS07 -[#8C4A9E]-> U115
+A03SS07 -[#8C4A9E]-> U136
+A03SS07 -[#8C4A9E]-> U137
+A03SS07 -[#8C4A9E]-> U138
+A03SS07 -[#8C4A9E]-> U139
+A03SS07 -[#8C4A9E]-> U140
+A03SS07 -[#8C4A9E]-> U141
+A04SS07 -[#8A6D1F]-> U142
+A03SS08 -[#8C4A9E]-> U036
+A03SS08 -[#8C4A9E]-> U037
+A03SS08 -[#8C4A9E]-> U038
+A03SS08 -[#8C4A9E]-> U039
+A03SS08 -[#8C4A9E]-> U040
+A01SS08 -[#1F6F8B]-> U041
+A03SS08 -[#8C4A9E]-> U041
+A03SS09 -[#8C4A9E]-> U042
+A03SS09 -[#8C4A9E]-> U043
+A01SS09 -[#1F6F8B]-> U044
+A01SS09 -[#1F6F8B]-> U045
+A03SS09 -[#8C4A9E]-> U103
+A05SS09 -[#B4432B]-> U103
+A05SS10 -[#B4432B]-> U052
+A05SS10 -[#B4432B]-> U053
+A05SS10 -[#B4432B]-> U054
+A05SS10 -[#B4432B]-> U055
+A03SS11 -[#8C4A9E]-> U056
+A05SS11 -[#B4432B]-> U056
+A03SS11 -[#8C4A9E]-> U057
+A05SS11 -[#B4432B]-> U057
+A01SS11 -[#1F6F8B]-> U058
+A03SS11 -[#8C4A9E]-> U058
+A05SS11 -[#B4432B]-> U058
+A03SS11 -[#8C4A9E]-> U059
+A05SS11 -[#B4432B]-> U059
+A02SS12 -[#2E7D46]-> U060
+A03SS12 -[#8C4A9E]-> U060
+A05SS12 -[#B4432B]-> U060
+A03SS12 -[#8C4A9E]-> U061
+A05SS12 -[#B4432B]-> U061
+A02SS12 -[#2E7D46]-> U062
+A03SS12 -[#8C4A9E]-> U062
+A05SS12 -[#B4432B]-> U062
+A03SS12 -[#8C4A9E]-> U063
+A05SS12 -[#B4432B]-> U063
+A01SS12 -[#1F6F8B]-> U064
+A02SS12 -[#2E7D46]-> U064
+A01SS12 -[#1F6F8B]-> U065
+A02SS12 -[#2E7D46]-> U065
+A03SS12 -[#8C4A9E]-> U065
+A05SS12 -[#B4432B]-> U065
+A03SS12 -[#8C4A9E]-> U066
+A05SS12 -[#B4432B]-> U066
+A03SS13 -[#8C4A9E]-> U067
+A05SS13 -[#B4432B]-> U067
+A02SS13 -[#2E7D46]-> U068
+A03SS13 -[#8C4A9E]-> U068
+A05SS13 -[#B4432B]-> U068
+A03SS13 -[#8C4A9E]-> U069
+A05SS13 -[#B4432B]-> U069
+A02SS13 -[#2E7D46]-> U070
+A03SS13 -[#8C4A9E]-> U070
+A05SS13 -[#B4432B]-> U070
+A03SS13 -[#8C4A9E]-> U071
+A05SS13 -[#B4432B]-> U071
+A03SS13 -[#8C4A9E]-> U108
+A04SS13 -[#8A6D1F]-> U108
+A03SS13 -[#8C4A9E]-> U132
+A03SS13 -[#8C4A9E]-> U133
+A03SS13 -[#8C4A9E]-> U134
+A04SS13 -[#8A6D1F]-> U135
+A04SS14 -[#8A6D1F]-> U048
+A01SS15 -[#1F6F8B]-> U072
+A02SS15 -[#2E7D46]-> U072
+A03SS15 -[#8C4A9E]-> U072
+A03SS15 -[#8C4A9E]-> U073
+A05SS15 -[#B4432B]-> U073
+A03SS15 -[#8C4A9E]-> U074
+A05SS15 -[#B4432B]-> U074
+A04SS15 -[#8A6D1F]-> U075
+A04SS15 -[#8A6D1F]-> U076
+A04SS15 -[#8A6D1F]-> U077
+A03SS16 -[#8C4A9E]-> U086
+A01SS16 -[#1F6F8B]-> U087
+A02SS16 -[#2E7D46]-> U087
+A03SS16 -[#8C4A9E]-> U087
+A04SS16 -[#8A6D1F]-> U087
+A03SS16 -[#8C4A9E]-> U088
+A05SS16 -[#B4432B]-> U089
+A05SS16 -[#B4432B]-> U090
+A03SS16 -[#8C4A9E]-> U092
+A03SS16 -[#8C4A9E]-> U093
+A03SS16 -[#8C4A9E]-> U094
+A03SS16 -[#8C4A9E]-> U095
+A03SS16 -[#8C4A9E]-> U129
+A03SS16 -[#8C4A9E]-> U130
+A03SS16 -[#8C4A9E]-> U131
+A01SS17 -[#1F6F8B]-> U098
+A02SS17 -[#2E7D46]-> U098
+A03SS17 -[#8C4A9E]-> U098
+A05SS17 -[#B4432B]-> U098
+A03SS17 -[#8C4A9E]-> U099
+A05SS17 -[#B4432B]-> U099
+A03SS17 -[#8C4A9E]-> U100
+A05SS17 -[#B4432B]-> U100
+A03SS17 -[#8C4A9E]-> U101
+A05SS17 -[#B4432B]-> U101
+A01SS17 -[#1F6F8B]-> U102
+A02SS17 -[#2E7D46]-> U102
+A03SS17 -[#8C4A9E]-> U102
+A04SS17 -[#8A6D1F]-> U102
+A01SS18 -[#1F6F8B]-> U104
+A02SS18 -[#2E7D46]-> U104
+A03SS18 -[#8C4A9E]-> U104
+A04SS18 -[#8A6D1F]-> U104
+
+' sin esta cadena invisible graphviz apila los 18 subsistemas en una sola tira
+U001 -[hidden]-> U023
+U005 -[hidden]-> U026
+U012 -[hidden]-> U031
+U017 -[hidden]-> U036
+U023 -[hidden]-> U042
+U026 -[hidden]-> U052
+U031 -[hidden]-> U056
+U036 -[hidden]-> U060
+U042 -[hidden]-> U067
+U052 -[hidden]-> U048
+U056 -[hidden]-> U072
+U060 -[hidden]-> U086
+U067 -[hidden]-> U098
+U048 -[hidden]-> U104
+
+legend right
+  Un color de linea por actor:
+  <color:#1F6F8B>■</color> Cliente (ACT-01)  <color:#2E7D46>■</color> Chofer (ACT-02)  <color:#8C4A9E>■</color> Administrador (ACT-03)  <color:#8A6D1F>■</color> Sistema Automático (ACT-04)  <color:#B4432B>■</color> Administrador General (ACT-05)
+  Cada actor se dibuja una vez por subsistema; son los mismos cinco actores.
+endlegend
+
+@enduml

@@ -1,0 +1,403 @@
+@startuml
+title Modelo Físico de Datos — SPLG\n20 tablas y 30 claves foráneas implementadas · 13 relaciones sin declarar · 5 tablas y 22 columnas propuestas
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam linetype ortho
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+
+entity "distributor" as e_distributor {
+  {field} **distributor_id** : uuid * <<PK>>
+  {field} name : varchar(120) * 
+  {field} slug : varchar(60) * 
+  {field} legal_name : varchar(160) 
+  {field} tax_id : varchar(20) 
+  {field} email : varchar 
+  {field} phone : varchar 
+  {field} logo_url : varchar 
+  {field} status : distributor_status_enum * 
+  {field} plan : varchar 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+  {field} deletedAt : timestamptz 
+}
+entity "role" as e_role {
+  {field} **role_id** : uuid * <<PK>>
+  {field} type : text * 
+  {field} createdAt : timestamptz 
+  {field} updatedAt : timestamptz 
+}
+entity "coverage_zone" as e_coverage_zone {
+  {field} **coverage_zone_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(120) * 
+  {field} area : geometry * 
+  {field} surcharge : numeric(10,2) * 
+  {field} isActive : boolean * 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+}
+entity "gas_cylinder" as e_gas_cylinder {
+  {field} **gas_cylinder_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} type : varchar(50) * 
+  {field} weight : numeric(10,2) * 
+  {field} price : numeric(10,2) * 
+  {field} stock : integer * 
+  {field} description : text 
+  {field} isActive : boolean * 
+  {field} promotions : jsonb 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+}
+entity "time_slot" as e_time_slot {
+  {field} **time_slot_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(50) * 
+  {field} startTime : time * 
+  {field} endTime : time * 
+  {field} capacity : integer * 
+  {field} isActive : boolean * 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+}
+entity "user" as e_user {
+  {field} **user_id** : uuid * <<PK>>
+  {field} //role_id// : uuid <<FK>>
+  {field} firebase_uid : varchar 
+  {field} full_name : varchar 
+  {field} selfie : varchar 
+  {field} email : varchar 
+  {field} phone_number : varchar 
+  {field} phone_verified : boolean * 
+  {field} email_verified : boolean * 
+  {field} blocked : boolean * 
+  {field} createdAt : timestamptz * 
+  {field} deletedAt : timestamptz 
+}
+entity "admin" as e_admin {
+  {field} **admin_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} //role_id// : uuid * <<FK>>
+  {field} createdAt : timestamptz * 
+}
+entity "car" as e_car {
+  {field} **car_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} type_car : varchar(50) 
+  {field} car_capacity : integer 
+  {field} car_patent : varchar(20) 
+  {field} car_brand : varchar(50) 
+  {field} car_model : varchar(50) 
+  {field} car_year : integer 
+  {field} car_color : varchar(50) 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+  {field} <color:#1F5E8C>tare_weight_kg : numeric(10,2)  <<propuesto>></color>
+  {field} <color:#1F5E8C>max_load_kg : numeric(10,2)  <<propuesto>></color>
+  {field} <color:#1F5E8C>insurance_company : varchar(120)  <<propuesto>></color>
+  {field} <color:#1F5E8C>insurance_policy : varchar(60)  <<propuesto>></color>
+  {field} <color:#1F5E8C>insurance_expires_at : timestamptz  <<propuesto>></color>
+  {field} <color:#1F5E8C>vtv_expires_at : timestamptz  <<propuesto>></color>
+}
+entity "cart" as e_cart <<propuesto>> {
+  {field} **cart_id** : uuid * <<PK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} updatedAt : timestamptz * 
+}
+entity "customer" as e_customer {
+  {field} **customer_id** : uuid * <<PK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} notification_token : text 
+  {field} lat_lang : text 
+  {field} validated : text 
+  {field} createdAt : timestamptz 
+  {field} deletedAt : timestamptz 
+  {field} <color:#1F5E8C>avg_monthly_consumption_kg : numeric(10,2)  <<propuesto>></color>
+  {field} <color:#1F5E8C>//declared_cylinder_type_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>repurchase_notice_days : integer  <<propuesto>></color>
+  {field} <color:#1F5E8C>next_repurchase_estimate_at : timestamptz  <<propuesto>></color>
+}
+entity "delivery" as e_delivery {
+  {field} **delivery_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} calification : double precision 
+  {field} latLng : text 
+  {field} actual_location : text 
+  {field} cancelledCharge : real 
+  {field} validated : boolean * 
+  {field} isActive : boolean * 
+  {field} notification_token : text 
+  {field} isTraveling : text 
+  {field} balance : double precision * 
+  {field} createdAt : timestamptz 
+  {field} deletedAt : timestamptz 
+  {field} <color:#1F5E8C>license_number : varchar(30)  <<propuesto>></color>
+  {field} <color:#1F5E8C>license_category : varchar(10)  <<propuesto>></color>
+  {field} <color:#1F5E8C>license_expires_at : timestamptz  <<propuesto>></color>
+}
+entity "user_address" as e_user_address {
+  {field} **address_id** : uuid * <<PK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} street : varchar(255) * 
+  {field} city : varchar(100) * 
+  {field} postalCode : varchar(20) 
+  {field} latitude : varchar(50) 
+  {field} longitude : varchar(50) 
+  {field} formattedAddress : text 
+  {field} isDefault : boolean * 
+  {field} additionalInstructions : text 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+}
+entity "cart_item" as e_cart_item <<propuesto>> {
+  {field} **cart_item_id** : uuid * <<PK>>
+  {field} //cart_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} quantity : integer * 
+  {field} unit_price : numeric(10,2) * 
+}
+entity "fleet_maintenance" as e_fleet_maintenance <<propuesto>> {
+  {field} **maintenance_id** : uuid * <<PK>>
+  {field} //car_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} type : fleet_maintenance_type_enum * 
+  {field} scheduled_at : timestamptz * 
+  {field} performed_at : timestamptz 
+  {field} odometer_km : integer 
+  {field} cost : numeric(10,2) 
+  {field} notes : text 
+  {field} status : fleet_maintenance_status_enum * 
+}
+entity "order" as e_order {
+  {field} **order_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //customer_id// : uuid * <<FK>>
+  {field} //time_slot_id// : uuid <<FK>>
+  {field} scheduled_date : date 
+  {field} deposit_amount : numeric(10,2) * 
+  {field} deposit_paid : boolean * 
+  {field} //delivery_id// : uuid <<FK>>
+  {field} //address_id// : uuid * <<FK>>
+  {field} status : order_status_enum * 
+  {field} paymentMethod : order_paymentmethod_enum * 
+  {field} paymentType : order_paymenttype_enum * 
+  {field} paymentStatus : order_paymentstatus_enum * 
+  {field} totalAmount : numeric(10,2) * 
+  {field} notes : text 
+  {field} deliveryInstructions : text 
+  {field} deliveryLatitude : varchar(50) 
+  {field} deliveryLongitude : varchar(50) 
+  {field} acceptedAt : timestamp 
+  {field} onTheWayAt : timestamp 
+  {field} deliveredAt : timestamp 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+  {field} cancellationReason : text 
+  {field} gatewayPaymentId : varchar(100) 
+  {field} deliveryCode : varchar(12) 
+  {field} <color:#1F5E8C>receiver_name : varchar(120)  <<propuesto>></color>
+  {field} <color:#1F5E8C>receiver_document : varchar(20)  <<propuesto>></color>
+  {field} <color:#1F5E8C>receiver_relationship : varchar(40)  <<propuesto>></color>
+  {field} <color:#1F5E8C>delivery_mode : order_delivery_mode_enum *  <<propuesto>></color>
+  {field} <color:#1F5E8C>is_express : boolean *  <<propuesto>></color>
+}
+entity "claims" as e_claims {
+  {field} **claim_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //customer_id// : uuid * <<FK>>
+  {field} reason : varchar * 
+  {field} description : text * 
+  {field} photoUrl : varchar 
+  {field} status : claims_status_enum * 
+  {field} resolutionNote : text 
+  {field} createdAt : timestamp * 
+}
+entity "cylinder" as e_cylinder {
+  {field} **cylinder_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} serial : varchar * 
+  {field} //gas_cylinder_id// : uuid <<ref>>
+  {field} state : cylinder_state_enum * 
+  {field} //current_customer_id// : uuid <<ref>>
+  {field} //current_order_id// : uuid <<ref>>
+  {field} deposit : numeric(10,2) * 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+  {field} <color:#1F5E8C>manufactured_at : timestamptz  <<propuesto>></color>
+  {field} <color:#1F5E8C>last_inspection_at : timestamptz  <<propuesto>></color>
+  {field} <color:#1F5E8C>expires_at : timestamptz  <<propuesto>></color>
+}
+entity "incident" as e_incident {
+  {field} **incident_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //reported_by// : uuid * <<ref>>
+  {field} type : incident_type_enum * 
+  {field} description : text * 
+  {field} photo_url : varchar 
+  {field} status : incident_status_enum * 
+  {field} resolution_note : text 
+  {field} createdAt : timestamptz * 
+  {field} resolvedAt : timestamptz 
+  {field} <color:#1F5E8C>moment : incident_moment_enum  <<propuesto>></color>
+}
+entity "order_address_change" as e_order_address_change <<propuesto>> {
+  {field} **change_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //from_address_id// : uuid * <<FK>>
+  {field} //to_address_id// : uuid * <<FK>>
+  {field} //changed_by_user_id// : uuid * <<FK>>
+  {field} changed_at : timestamptz * 
+  {field} reason : text 
+}
+entity "order_dispatch_offer" as e_order_dispatch_offer {
+  {field} **offer_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<ref>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //driver_id// : uuid * <<ref>>
+  {field} status : order_dispatch_offer_status_enum * 
+  {field} expiresAt : timestamptz * 
+  {field} offeredAt : timestamptz * 
+}
+entity "order_item" as e_order_item {
+  {field} **order_item_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} quantity : integer * 
+  {field} unitPrice : numeric(10,2) * 
+  {field} subtotal : numeric(10,2) * 
+}
+entity "payment" as e_payment {
+  {field} **payment_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<ref>>
+  {field} //distributor_id// : uuid <<ref>>
+  {field} gateway : payment_gateway_enum * 
+  {field} integration : payment_integration_enum * 
+  {field} method : varchar(50) 
+  {field} gateway_payment_id : varchar(100) 
+  {field} external_reference : varchar 
+  {field} amount : numeric(10,2) * 
+  {field} currency : varchar(10) * 
+  {field} status : payment_status_enum * 
+  {field} payment_url : text 
+  {field} is_deposit : boolean * 
+  {field} metadata : jsonb 
+  {field} createdAt : timestamptz * 
+  {field} updatedAt : timestamptz * 
+}
+entity "rating" as e_rating {
+  {field} **rating_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //from_user_id// : uuid * <<FK>>
+  {field} //to_user_id// : uuid * <<ref>>
+  {field} from_role : rating_from_role_enum * 
+  {field} stars : integer * 
+  {field} comment : text 
+  {field} createdAt : timestamptz * 
+}
+entity "cylinder_inspection" as e_cylinder_inspection <<propuesto>> {
+  {field} **inspection_id** : uuid * <<PK>>
+  {field} //cylinder_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} inspected_at : timestamptz * 
+  {field} result : cylinder_inspection_result_enum * 
+  {field} next_due_at : timestamptz 
+  {field} notes : text 
+}
+entity "cylinder_movement" as e_cylinder_movement {
+  {field} **movement_id** : uuid * <<PK>>
+  {field} //cylinder_id// : uuid * <<ref>>
+  {field} //distributor_id// : uuid * <<ref>>
+  {field} from_state : cylinder_movement_from_state_enum 
+  {field} to_state : cylinder_movement_to_state_enum * 
+  {field} //order_id// : uuid <<ref>>
+  {field} //actor_user_id// : uuid <<ref>>
+  {field} note : text 
+  {field} createdAt : timestamptz * 
+}
+
+e_distributor ||--o{ e_coverage_zone : distributor_id
+e_distributor ||--o{ e_gas_cylinder : distributor_id
+e_distributor ||--o{ e_time_slot : distributor_id
+e_role ||--o{ e_user : role_id
+e_distributor ||--o{ e_admin : distributor_id
+e_role ||--o{ e_admin : role_id
+e_user ||--o{ e_admin : user_id
+e_distributor ||--o{ e_car : distributor_id
+e_user ||--o{ e_car : user_id
+e_user ||--o{ e_cart #line:1F5E8C;text:1F5E8C : user_id
+e_distributor ||--o{ e_cart #line:1F5E8C;text:1F5E8C : distributor_id
+e_user ||--|| e_customer : user_id
+e_gas_cylinder ||--o{ e_customer #line:1F5E8C;text:1F5E8C : declared_cylinder_type_id
+e_distributor ||--o{ e_delivery : distributor_id
+e_user ||--|| e_delivery : user_id
+e_user ||--o{ e_user_address : user_id
+e_cart ||--o{ e_cart_item #line:1F5E8C;text:1F5E8C : cart_id
+e_gas_cylinder ||--o{ e_cart_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_car ||--o{ e_fleet_maintenance #line:1F5E8C;text:1F5E8C : car_id
+e_distributor ||--o{ e_fleet_maintenance #line:1F5E8C;text:1F5E8C : distributor_id
+e_user_address ||--o{ e_order : address_id
+e_user ||--o{ e_order : customer_id
+e_delivery ||--o{ e_order : delivery_id
+e_distributor ||--o{ e_order : distributor_id
+e_time_slot ||--o{ e_order : time_slot_id
+e_user ||--o{ e_claims : customer_id
+e_distributor ||--o{ e_claims : distributor_id
+e_order ||--o{ e_claims : order_id
+e_distributor ||--o{ e_cylinder : distributor_id
+e_gas_cylinder ||..o{ e_cylinder : gas_cylinder_id (sin FK)
+e_user ||..o{ e_cylinder : current_customer_id (sin FK)
+e_order ||..o{ e_cylinder : current_order_id (sin FK)
+e_distributor ||--o{ e_incident : distributor_id
+e_order ||--o{ e_incident : order_id
+e_user ||..o{ e_incident : reported_by (sin FK)
+e_order ||--o{ e_order_address_change #line:1F5E8C;text:1F5E8C : order_id
+e_user_address ||--o{ e_order_address_change #line:1F5E8C;text:1F5E8C : from_address_id
+e_user_address ||--o{ e_order_address_change #line:1F5E8C;text:1F5E8C : to_address_id
+e_user ||--o{ e_order_address_change #line:1F5E8C;text:1F5E8C : changed_by_user_id
+e_order ||--o{ e_order_dispatch_offer : order_id
+e_distributor ||..o{ e_order_dispatch_offer : distributor_id (sin FK)
+e_user ||..o{ e_order_dispatch_offer : driver_id (sin FK)
+e_gas_cylinder ||--o{ e_order_item : gas_cylinder_id
+e_order ||--o{ e_order_item : order_id
+e_order ||..o{ e_payment : order_id (sin FK)
+e_distributor ||..o{ e_payment : distributor_id (sin FK)
+e_distributor ||--o{ e_rating : distributor_id
+e_user ||--o{ e_rating : from_user_id
+e_order ||--o{ e_rating : order_id
+e_user ||..o{ e_rating : to_user_id (sin FK)
+e_cylinder ||--o{ e_cylinder_inspection #line:1F5E8C;text:1F5E8C : cylinder_id
+e_distributor ||--o{ e_cylinder_inspection #line:1F5E8C;text:1F5E8C : distributor_id
+e_cylinder ||..o{ e_cylinder_movement : cylinder_id (sin FK)
+e_distributor ||..o{ e_cylinder_movement : distributor_id (sin FK)
+e_order ||..o{ e_cylinder_movement : order_id (sin FK)
+e_user ||..o{ e_cylinder_movement : actor_user_id (sin FK)
+
+legend bottom
+|<#FFFFFF> **implementado** | tabla o atributo que ya existe en la base |
+|<#E4EDF4> **propuesto** | agregado pedido por la cátedra, todavía sin implementar |
+|<#FFFFFF> **línea punteada · «ref»** | la relación existe en el dominio pero la base no la declara como clave foránea |
+endlegend
+@enduml

@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findByPatent(patent, distributorId)
+    SRV->>CREP: findOne(where car_patent y distribuidora, relations user)
+    CREP-->>SRV: Car con user o null
+    alt ninguna patente coincide
+        SRV-->>CTRL: NotFoundException
+    else Patente encontrada
+        SRV-->>CTRL: Car completo
+    end

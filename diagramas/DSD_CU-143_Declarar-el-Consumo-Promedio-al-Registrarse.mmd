@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: declararConsumo(usuarioDeLaSesion, tipoGarrafa, cantidad)
+    SRV->>SRV: aKilosPorMes(cantidad, peso del tipo de garrafa)
+    SRV->>CREP: save(cliente con consumo y garrafa habitual)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es razonable
+        SRV-->>CTRL: Customer con consumo declarado
+    else el valor no es razonable
+        SRV-->>CTRL: se pide confirmación
+    end

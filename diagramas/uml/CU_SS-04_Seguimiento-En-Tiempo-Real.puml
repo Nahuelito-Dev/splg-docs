@@ -1,21 +1,23 @@
 @startuml
-title SS-04 — Seguimiento en Tiempo Real
+title SS-04 — Seguimiento en Tiempo Real (8 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,32 +25,40 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Cliente" as A1
-actor "Chofer" as A2
-actor "Administrador" as A3
-actor "Administrador General" as A5
-
-rectangle "SS-04 Seguimiento en Tiempo Real" {
-  usecase "CU-017\nActualizar Ubicación GPS del Chofer" as U17
-  usecase "CU-018\nMarcar Pedido 'En Camino'" as U18
-  usecase "CU-019\nAvisar Llegada al Cliente" as U19
-  usecase "CU-020\nConfirmar Entrega" as U20
-  usecase "CU-021\nRecibir Notificaciones en Tiempo Real" as U21
-  usecase "CU-022\nActivar / Desactivar Disponibilidad (Chofer)" as U22
-  usecase "CU-078\nObtener el Código de Entrega (QR del chofer)" as U78
-  usecase "CU-079\nConfirmar Entrega Escaneando el QR (cliente)" as U79
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A2 --> U17
-A2 --> U18
-A2 --> U19
-A2 --> U20
-A1 --> U21
-A2 --> U22
-A2 --> U78
-A3 --> U78
-A5 --> U78
-A1 --> U79
-A3 --> U79
-A5 --> U79
+actor "Cliente\n(ACT-01)" as A01
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-04 Seguimiento en Tiempo Real" {
+  usecase "CU-017\nActualizar Ubicación GPS del\nChofer" as U017 #back:FFFFFF;line:8A7326
+  usecase "CU-018\nMarcar Pedido "En Camino"" as U018 #back:FFFFFF;line:8A7326
+  usecase "CU-019\nAvisar Llegada al Cliente" as U019 #back:FFFFFF;line:8A7326
+  usecase "CU-020\nConfirmar Entrega" as U020 #back:FFFFFF;line:8A7326
+  usecase "CU-021\nRecibir Notificaciones en\nTiempo Real" as U021 #back:FFFFFF;line:8A7326
+  usecase "CU-022\nActivar / Desactivar\nDisponibilidad (Chofer)" as U022 #back:FFFFFF;line:8A7326
+  usecase "CU-078\nObtener el Código de Entrega\n(QR del chofer)" as U078 #back:FFFFFF;line:8A7326
+  usecase "CU-079\nConfirmar Entrega Escaneando\nel QR (cliente)" as U079 #back:FFFFFF;line:8A7326
+}
+
+A01 -[#1F6F8B]-> U021
+A01 -[#1F6F8B]-> U079
+A02 -[#2E7D46]-> U017
+A02 -[#2E7D46]-> U018
+A02 -[#2E7D46]-> U019
+A02 -[#2E7D46]-> U020
+A02 -[#2E7D46]-> U022
+A02 -[#2E7D46]-> U078
+A03 -[#8C4A9E]-> U078
+A03 -[#8C4A9E]-> U079
+A05 -[#B4432B]-> U078
+A05 -[#B4432B]-> U079
+
 @enduml

@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: remove(id, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>CREP: remove(car)
+    CREP-->>SRV: Car borrado
+    alt el vehiculo no existe
+        SRV-->>CTRL: NotFoundException Car with ID not found
+    else Vehiculo encontrado
+        SRV-->>CTRL: confirmacion de baja
+    end

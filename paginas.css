@@ -1,29 +1,13 @@
 /* Estilos de las paginas del sitio que no genera generar-atlas.py.
-   Misma paleta Orix Dusk y misma tipografia que el Atlas. */
+   Misma paleta de lectura y misma tipografia que la pagina principal. */
 
 :root{
-  --bg:#312C51; --surface:#48426D; --variant:#565081; --outline:#574F86;
-  --content:#F5F3FB; --muted:#B9B3D6;
-  --primary:#F0C38E; --pressed:#E3A86E; --secondary:#F1AA9B; --on-accent:#2A2547;
-  --success:#34D399; --danger:#F87171; --warn:#FBBF24; --syncing:#56C6F5;
-  --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 32px -22px rgba(0,0,0,.9);
-  --tint:rgba(245,243,251,.06);
-}
-@media (prefers-color-scheme:light){ :root:not([data-theme="dark"]){
-  --bg:#F3EFE9; --surface:#FFFFFF; --variant:#EDE7F2; --outline:#DDD6E8;
-  --content:#2A2547; --muted:#6B6577;
-  --primary:#B57A2E; --pressed:#96601D; --secondary:#C4634C; --on-accent:#FFFFFF;
-  --success:#0F7A55; --danger:#B33A3A; --warn:#8A6100; --syncing:#0B6C93;
-  --shadow:0 1px 2px rgba(42,37,71,.07),0 12px 32px -24px rgba(42,37,71,.4);
-  --tint:rgba(42,37,71,.045);
-}}
-:root[data-theme="light"]{
-  --bg:#F3EFE9; --surface:#FFFFFF; --variant:#EDE7F2; --outline:#DDD6E8;
-  --content:#2A2547; --muted:#6B6577;
-  --primary:#B57A2E; --pressed:#96601D; --secondary:#C4634C; --on-accent:#FFFFFF;
-  --success:#0F7A55; --danger:#B33A3A; --warn:#8A6100; --syncing:#0B6C93;
-  --shadow:0 1px 2px rgba(42,37,71,.07),0 12px 32px -24px rgba(42,37,71,.4);
-  --tint:rgba(42,37,71,.045);
+  --bg:#FAF4E6; --surface:#FFFDF7; --variant:#F2EAD6; --outline:#DED4BC;
+  --content:#1C1A17; --muted:#5C574E;
+  --primary:#1F5E8C; --pressed:#164667; --secondary:#A8452C; --on-accent:#FFFFFF;
+  --success:#136B45; --danger:#A32B2B; --warn:#8A5A00; --syncing:#1F5E8C;
+  --shadow:0 1px 2px rgba(28,26,23,.06),0 10px 28px -22px rgba(28,26,23,.45);
+  --tint:rgba(28,26,23,.045);
 }
 
 *{box-sizing:border-box}
@@ -68,7 +52,8 @@ a{color:var(--primary)}
 /* ---------- diagramas ---------- */
 figure{margin:0;display:flex;flex-direction:column;gap:.85rem}
 .lienzo{background:var(--surface);border:1px solid var(--outline);border-radius:12px;
-  padding:1.4rem 1rem;box-shadow:var(--shadow);overflow-x:auto}
+  padding:1.4rem 1rem;box-shadow:var(--shadow);overflow-x:auto;cursor:zoom-in}
+.lienzo:hover{border-color:var(--primary)}
 .lienzo svg{display:block;width:100%;min-width:640px;height:auto}
 figcaption{color:var(--muted);font-size:.95rem;max-width:68ch}
 
@@ -158,3 +143,31 @@ ol.pasos li::before{content:counter(paso,decimal-leading-zero);position:absolute
 .t-nota{font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;fill:var(--muted)}
 .t-nota-mono{font-family:"IBM Plex Mono",monospace;font-size:11.5px;fill:var(--content)}
 .conector{stroke:var(--outline);stroke-width:1;stroke-dasharray:3 3}
+
+/* ---------- impresión ---------- */
+@media print{
+  @page{margin:14mm}
+  body{background:#fff;color:#000;font-size:11pt}
+  .navs,.visor,.figura .ampliar{display:none!important}
+  .hoja{max-width:none;padding:0;gap:2rem}
+  .lienzo{border:1px solid #999;box-shadow:none;break-inside:avoid;page-break-inside:avoid}
+  section,figure{break-inside:avoid;page-break-inside:avoid}
+  a{color:#000;text-decoration:none}
+}
+
+/* ---------- insignias de los asistentes ----------
+   Una placa con la inicial para cada asistente y un icono para cada rol de
+   agente. No son logotipos de marca: son senias propias, para poder recorrer
+   la tabla con la vista en vez de leer palabra por palabra. */
+.con-placa,.con-icono{display:flex;align-items:center;gap:9px;white-space:nowrap}
+.placa{display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:7px;flex:none;
+  background:var(--placa);color:#FFFDF7;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;line-height:1}
+.icono{width:22px;height:22px;flex:none;fill:none;stroke:var(--primary);
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.placa-marca{background:var(--surface);border:1px solid var(--outline)}
+.placa-marca svg{width:15px;height:15px;display:block}
+.paso-icono{fill:none;stroke:var(--primary);stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.paso-icono-lleno{fill:var(--content);stroke:none;opacity:.8}

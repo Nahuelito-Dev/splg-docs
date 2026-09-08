@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant UREP as RepositoryUser
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: create(dto, usuarioDeLaSesion)
+    SRV->>UREP: findOne(where user_id)
+    UREP-->>SRV: User o null
+    SRV->>AREP: update(isDefault false en las demás)
+    SRV->>AREP: save(direccion)
+    AREP-->>SRV: UserAddress guardada
+    alt el usuario existe
+        SRV-->>CTRL: UserAddress creada
+    else el usuario no existe
+        SRV-->>CTRL: NotFoundException User with ID not found
+    end

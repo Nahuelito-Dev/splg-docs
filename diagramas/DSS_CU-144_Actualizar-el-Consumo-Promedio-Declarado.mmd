@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: actualizarConsumoPromedio(cantidadPorMes)
+    activate SIS
+    alt el valor es razonable
+        SIS-->>CLI: consumo actualizado y recompra recalculada
+    else el valor está fuera de rango
+        SIS-->>CLI: se pide confirmación
+    end
+    deactivate SIS

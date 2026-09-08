@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: declararConsumoPromedio(tipoGarrafa, cantidadPorMes)
+    activate SIS
+    alt el valor es razonable
+        SIS-->>CLI: consumo declarado y recompra estimada
+    else el cliente no lo declara
+        SIS-->>CLI: registro sin consumo declarado
+    else el valor está fuera de rango
+        SIS-->>CLI: se pide confirmación
+    end
+    deactivate SIS

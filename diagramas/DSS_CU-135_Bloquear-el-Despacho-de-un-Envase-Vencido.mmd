@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: verificarVigenciaAlAsignar(pedidoId, envaseId)
+    activate SIS
+    alt el envase está vigente
+        SIS-->>SIS: envase asignado
+    else el envase está vencido
+        SIS-->>SIS: se descarta y se busca otro
+    else no hay envases vigentes
+        SIS-->>SIS: aviso al administrador
+    end
+    deactivate SIS

@@ -110,8 +110,12 @@ if faltan_mod: FALLAS.append("módulos inteligentes")
 print(f"[{'OK' if not faltan_mod else 'FALLA':5}] Módulos inteligentes: {len(mods)} artefactos"
       + (f" | {faltan_mod}" if faltan_mod else ""))
 
-# --- Cobertura de los cuatro artefactos para los 108 CU ---
-TODOS = {f"CU-{n:03d}" for n in range(1,109)}
+# --- Cobertura de los cuatro artefactos ---
+# El total sale del catalogo y no de un numero escrito aca: al pasar de 108 a 149
+# casos hubo que tocar este archivo a mano y los documentos siguieron diciendo 108.
+_cat = open(D+"Casos-de-Uso.md", encoding="utf-8").read()
+_a = _cat.index("\n## 4. "); _b = _cat.index("\n## 5. ")
+TODOS = set(re.findall(r'\*\*Código:\*\*\s*(CU-\d+)', _cat[_a:_b]))
 def codigos(f, ini, fin, pat):
     ls = leer(f)
     s = next(i for i,x in enumerate(ls) if re.match(ini,x)); e = next(i for i,x in enumerate(ls) if re.match(fin,x))
@@ -127,8 +131,27 @@ cobertura = {
 }
 inc = {k: sorted(TODOS-v) for k,v in cobertura.items() if v != TODOS}
 if inc: FALLAS.append("cobertura de artefactos por caso de uso")
-print(f"[{'OK' if not inc else 'FALLA':5}] Los 4 artefactos para los 108 casos de uso"
+print(f"[{'OK' if not inc else 'FALLA':5}] Los 4 artefactos para los {len(TODOS)} casos de uso"
       + (f" | {inc}" if inc else ""))
+
+# --- Los conteos que los documentos dicen de si mismos ---
+# Cada vez que se suman casos hay frases que quedan diciendo el numero viejo.
+_n = str(len(TODOS))
+# Se buscan los totales que el catalogo dejo atras, no cualquier numero: hay frases
+# legitimas que cuentan una parte ("25 casos de uso reales", "45 casos" del relevamiento
+# inicial), y marcarlas seria ruido.
+SUPERADOS = {"104", "108", "115", "131"}
+_viejos = set()
+for _f in ("README.md", "Casos-de-Uso.md", "0-Plan_Del_Proyecto.md", "1-Requisitos.md",
+           "2-Analisis.md", "3-Diseño.md", "GUIA-actualizar-drive.md", "INDICE-IMAGENES.md"):
+    if not os.path.exists(D+_f): continue
+    _t = open(D+_f, encoding="utf-8").read()
+    for _m in re.finditer(r'(?<![\d:.-])(\d{2,4})\s+(?:casos de uso|casos\b|diagramas)', _t):
+        if _m.group(1) in SUPERADOS and _m.group(1) != _n:
+            _viejos.add(f'{_f}: "{_m.group(0)}"')
+if _viejos: FALLAS.append("conteos desactualizados en el texto")
+print(f"[{'OK' if not _viejos else 'FALLA':5}] Los documentos dicen {_n} casos de uso"
+      + (f" | {sorted(_viejos)}" if _viejos else ""))
 
 print()
 if FALLAS:

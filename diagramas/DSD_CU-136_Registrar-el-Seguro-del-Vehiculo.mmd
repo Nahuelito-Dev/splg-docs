@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarSeguro(vehiculoId, datos, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>VREP: save(vehículo con los datos del seguro)
+    VREP-->>SRV: Car actualizado
+    SRV->>SRV: evaluarHabilitacion(seguro, verificación, licencia del chofer)
+    alt el vehículo existe
+        SRV-->>CTRL: Car con el seguro cargado
+    else el vehículo no existe
+        SRV-->>CTRL: NotFoundException
+    end

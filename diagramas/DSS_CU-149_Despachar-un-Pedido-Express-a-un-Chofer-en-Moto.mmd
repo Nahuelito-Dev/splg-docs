@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor SIS as Sistema Automático
+    participant SIS as Sistema
+
+    SIS->>SIS: despacharPedidoExpress(pedidoId)
+    activate SIS
+    alt un chofer en moto acepta
+        SIS-->>SIS: pedido asignado y cliente avisado
+    else ninguno acepta
+        SIS-->>SIS: modalidad express cancelada y recargo devuelto
+    end
+    deactivate SIS

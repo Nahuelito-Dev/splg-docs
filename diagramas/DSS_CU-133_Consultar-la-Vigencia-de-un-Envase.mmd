@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarVigenciaDelEnvase(envaseId)
+    activate SIS
+    alt el envase tiene revisiones
+        SIS-->>ADM: vigencia y historial
+    else el envase no tiene revisiones
+        SIS-->>ADM: vigencia no acreditada
+    else el envase no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

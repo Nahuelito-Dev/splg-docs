@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+
+    CTRL->>SRV: proximosAVencer(dias, distribuidora)
+    SRV->>CREP: find(where distributor_id y expires_at entre hoy y hoy más dias)
+    CREP-->>SRV: lista de Cylinder
+    SRV->>CREP: find(where expires_at null)
+    CREP-->>SRV: lista de Cylinder sin vigencia
+    alt hay envases
+        SRV-->>CTRL: listado separado en vencidos, por vencer y sin dato
+    else no hay
+        SRV-->>CTRL: listados vacíos
+    end

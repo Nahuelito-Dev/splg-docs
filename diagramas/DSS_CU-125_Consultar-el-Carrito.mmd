@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: consultarCarrito()
+    activate SIS
+    alt el cliente tiene carrito
+        SIS-->>CLI: detalle del carrito y total
+    else el cliente no tiene carrito
+        SIS-->>CLI: carrito vacío
+    end
+    deactivate SIS

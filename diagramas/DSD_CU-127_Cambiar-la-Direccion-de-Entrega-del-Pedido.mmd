@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+    participant AREP as RepositoryUserAddress
+    participant HREP as RepositoryOrderAddressChange
+
+    CTRL->>SRV: cambiarDireccion(pedidoId, direccionId, motivo, usuarioDeLaSesion)
+    SRV->>OREP: findOne(where order_id, relations customer y delivery)
+    OREP-->>SRV: Order o null
+    SRV->>AREP: findOne(where address_id y user_id)
+    AREP-->>SRV: UserAddress o null
+    SRV->>SRV: verificarCobertura(coordenadas, distribuidora)
+    SRV->>HREP: save(cambio de dirección)
+    SRV->>OREP: save(pedido con la dirección nueva)
+    OREP-->>SRV: Order actualizada
+    alt el cambio es admisible
+        SRV-->>CTRL: Order con la dirección nueva
+    else el cambio no es admisible
+        SRV-->>CTRL: operación rechazada
+    end

@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: buscarChoferPorUsuario(usuarioId)
+    activate SIS
+    alt la cuenta tiene perfil de chofer
+        SIS-->>ADM: perfil del chofer
+    else la cuenta no tiene perfil
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

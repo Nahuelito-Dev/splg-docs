@@ -1,21 +1,23 @@
 @startuml
-title SS-10 — Multi-Distribuidora
+title SS-10 — Multi-Distribuidora (4 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,17 +25,25 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Administrador General" as A5
-
-rectangle "SS-10 Multi-Distribuidora" {
-  usecase "CU-052\nRegistrar Distribuidora" as U52
-  usecase "CU-053\nConsultar Distribuidoras" as U53
-  usecase "CU-054\nModificar Datos de la Distribuidora" as U54
-  usecase "CU-055\nDar de Baja una Distribuidora" as U55
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A5 --> U52
-A5 --> U53
-A5 --> U54
-A5 --> U55
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-10 Multi-Distribuidora" {
+  usecase "CU-052\nRegistrar Distribuidora" as U052 #back:FFFFFF;line:44608B
+  usecase "CU-053\nConsultar Distribuidoras" as U053 #back:FFFFFF;line:44608B
+  usecase "CU-054\nModificar Datos de la\nDistribuidora" as U054 #back:FFFFFF;line:44608B
+  usecase "CU-055\nDar de Baja una Distribuidora" as U055 #back:FFFFFF;line:44608B
+}
+
+A05 -[#B4432B]-> U052
+A05 -[#B4432B]-> U053
+A05 -[#B4432B]-> U054
+A05 -[#B4432B]-> U055
+
 @enduml

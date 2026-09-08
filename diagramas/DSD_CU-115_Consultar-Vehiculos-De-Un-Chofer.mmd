@@ -1,0 +1,10 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findByUserId(userId, distributorId)
+    SRV->>CREP: find(where user user_id y distribuidora, relations user)
+    CREP-->>SRV: lista de Car
+    SRV-->>CTRL: resultado

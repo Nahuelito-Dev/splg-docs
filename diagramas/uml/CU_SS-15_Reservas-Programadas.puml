@@ -1,21 +1,23 @@
 @startuml
-title SS-15 — Reservas Programadas
+title SS-15 — Reservas Programadas (6 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,29 +25,37 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Cliente" as A1
-actor "Chofer" as A2
-actor "Administrador" as A3
-actor "Sistema Automatico" as A4
-actor "Administrador General" as A5
-
-rectangle "SS-15 Reservas Programadas" {
-  usecase "CU-072\nCrear Reserva Programada con Seña" as U72
-  usecase "CU-073\nListar Reservas y Estado de la Seña" as U73
-  usecase "CU-074\nConfirmar Seña Cobrada en Efectivo" as U74
-  usecase "CU-075\nActivar Reservas Vencidas Automaticamente (Cron)" as U75
-  usecase "CU-076\nExpirar Reservas sin Seña Pagada (Cron)" as U76
-  usecase "CU-077\nExpirar Pedidos de MercadoPago sin Pagar (Cron)" as U77
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A1 --> U72
-A2 --> U72
-A3 --> U72
-A3 --> U73
-A5 --> U73
-A3 --> U74
-A5 --> U74
-A4 --> U75
-A4 --> U76
-A4 --> U77
+actor "Cliente\n(ACT-01)" as A01
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-15 Reservas Programadas" {
+  usecase "CU-072\nCrear Reserva Programada con\nSeña" as U072 #back:FFFFFF;line:8A5674
+  usecase "CU-073\nListar Reservas y Estado de la\nSeña" as U073 #back:FFFFFF;line:8A5674
+  usecase "CU-074\nConfirmar Seña Cobrada en\nEfectivo" as U074 #back:FFFFFF;line:8A5674
+  usecase "CU-075\nActivar Reservas Vencidas\nAutomaticamente (Cron)" as U075 #back:FFFFFF;line:8A5674
+  usecase "CU-076\nExpirar Reservas sin Seña\nPagada (Cron)" as U076 #back:FFFFFF;line:8A5674
+  usecase "CU-077\nExpirar Pedidos de MercadoPago\nsin Pagar (Cron)" as U077 #back:FFFFFF;line:8A5674
+}
+
+A01 -[#1F6F8B]-> U072
+A02 -[#2E7D46]-> U072
+A03 -[#8C4A9E]-> U072
+A03 -[#8C4A9E]-> U073
+A03 -[#8C4A9E]-> U074
+A04 -[#8A6D1F]-> U075
+A04 -[#8A6D1F]-> U076
+A04 -[#8A6D1F]-> U077
+A05 -[#B4432B]-> U073
+A05 -[#B4432B]-> U074
+
 @enduml

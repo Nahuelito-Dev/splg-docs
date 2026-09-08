@@ -101,6 +101,105 @@ El diseño cubre la **Fase 1** del sistema:
 
 ---
 
+**Figura — Despliegue y entornos**
+
+![Arquitectura y despliegue](diagramas/uml/SPLG_Arquitectura.svg)
+
+> Sale de la configuración real: los archivos de composición de contenedores y los flujos de
+> trabajo de GitHub Actions de los seis repositorios. Las líneas punteadas del despliegue se
+> mueven en la versión en pantalla, para que el sentido del recorrido se lea sin buscar la
+> etiqueta. La documentación es la única pieza que todavía se publica a mano.
+
+---
+
+### 2.3 Criterios de Diseño de la API REST
+
+El backend expone una interfaz HTTP bajo el prefijo `api`, consumida por las dos aplicaciones
+Flutter y por el Panel Web. Esta sección revisa esa interfaz contra las prácticas de diseño
+que se consideran estándar, y deja asentado dónde el sistema las cumple y dónde no.
+
+Conviene distinguir dos cosas que suelen confundirse. Una **API REST** usa HTTP con sus
+métodos; una **API RESTful** además respeta los principios del estilo: recursos identificados
+por su dirección, verbos HTTP con su semántica, ausencia de estado entre peticiones y uso
+correcto de los códigos de respuesta. La diferencia se ve en la dirección: `GET /obtenerUsuarios`
+es lo primero, `GET /users` es lo segundo.
+
+| Criterio | Estado | Cómo está resuelto |
+|---|:---:|---|
+| Nomenclatura de recursos | Parcial | Los recursos se nombran por sustantivo y las operaciones por método HTTP. Quedan tres inconsistencias, detalladas más abajo. |
+| Idempotencia | Cumple | Cabecera `Idempotency-Key` en las cinco operaciones del pedido que no son naturalmente idempotentes, resuelta por un interceptor propio. |
+| Paginación | Parcial | Por desplazamiento, con `limit` y `offset`. Sirve al panel y se degrada con el volumen. |
+| Orden y filtrado | Parcial | Hay filtro por término en usuarios; el orden está fijo en el código en la mayoría de las consultas. |
+| Referencias entre recursos | Cumple | Se usa el camino anidado —`GET /customer/user/:userId`— y no parámetros de consulta. |
+| Límite de tasa | Cumple | Cien peticiones por minuto por dirección, configurable, con el contador compartido en Redis. |
+| Versionado | **No cumple** | El prefijo es `api`, sin número de versión. |
+| Seguridad | Parcial | Token de sesión propio en la cabecera de autorización, control por rol y aislamiento por distribuidora. Dos operaciones quedaron sin control de acceso, señaladas en §10.4. |
+
+#### Nomenclatura: las tres inconsistencias
+
+La primera es de **número**: la mayoría de los recursos está en singular —`/order`, `/customer`,
+`/delivery`, `/car`— y uno en plural, `/claims`. La convención pide plural, porque la dirección
+nombra la colección y no un elemento.
+
+La segunda es de **separador**: conviven `/time-slot`, `/coverage-zone` y `/user-addres`, que usan
+guion, con `/gascylinder`, que no. Además `/user-addres` está mal escrito: le falta una `s` y
+debería ser `/user-addresses`.
+
+La tercera, y la que más se aleja del estilo, son los **verbos en el camino**: `PATCH /:id/validate`,
+`PATCH /:id/invalidate`, `PATCH /:id/set-default`, `PATCH /:id/cancel`, `PATCH /:id/resolve`,
+`PATCH /:id/block`. Son transiciones de estado escritas como acciones. La forma que respeta el
+estilo es modificar el atributo que cambia —`PATCH /customers/:id` con el campo de validación—,
+o modelar la transición como un sub-recurso.
+
+Ninguna de las tres se corrige en el alcance actual: las direcciones publicadas ya están en dos
+aplicaciones distribuidas y en el panel, y cambiarlas sin versionado rompe a los clientes
+instalados. Es justamente lo que el versionado resuelve, y es la razón por la que la ausencia de
+versionado se marca como incumplimiento y no como un detalle.
+
+#### Idempotencia
+
+Los métodos `GET`, `PUT` y `DELETE` son idempotentes por definición: repetirlos deja el sistema
+en el mismo estado. `POST` y `PATCH` no lo son, y en este sistema eso importa: un corte de red
+al confirmar un pedido, seguido de un reintento de la aplicación, generaría dos pedidos y dos
+cobros. El backend resuelve el problema con una cabecera `Idempotency-Key` que la aplicación
+manda en cada intento; el interceptor guarda la respuesta de la primera ejecución y devuelve esa
+misma respuesta ante cualquier repetición de la clave.
+
+Está aplicada en el alta del pedido, el cambio de estado, el rechazo de la oferta, la
+confirmación de entrega y la cancelación. **No** está aplicada en el módulo de pagos, donde la
+idempotencia se resuelve de otra forma: el webhook de la pasarela consulta el estado real del
+pago antes de actuar y no reprocesa un pedido en estado terminal.
+
+#### Paginación
+
+La paginación es por desplazamiento: `limit` con diez elementos por omisión y `offset` desde cero.
+Es la forma más simple y la que le sirve al panel, que necesita saltar a una página concreta.
+
+Tiene dos límites conocidos. El primero es de rendimiento: la base descarta las filas salteadas
+antes de devolver las pedidas, de modo que el costo crece con el número de página. El segundo es
+de consistencia: si entran filas nuevas mientras alguien pagina, un mismo registro puede
+aparecer dos veces o no aparecer nunca. Para el historial de movimientos de envases y para el
+listado de pedidos, que crecen sin techo y se ordenan por fecha, conviene la paginación por
+cursor, que toma como referencia el último registro leído en lugar de una posición.
+
+#### Límite de tasa
+
+El límite está puesto por dirección de origen, con una ventana configurable por variable de
+entorno y cien peticiones por minuto por omisión. El contador vive en Redis y no en memoria del
+proceso: con más de una instancia corriendo, un contador por proceso daría un límite efectivo de
+N veces el configurado. El webhook de la pasarela y las sondas de estado quedan excluidos, porque
+no son tráfico de usuario final y un límite ahí produciría reintentos en cascada.
+
+#### Versionado
+
+Es el único criterio que el sistema no cumple de ninguna forma. El prefijo global es `api`, sin
+número de versión, de modo que cualquier cambio incompatible en una respuesta rompe a las
+aplicaciones ya instaladas, que no se actualizan solas. La corrección es de bajo costo mientras el
+sistema no esté en producción con usuarios reales: pasar el prefijo a `api/v1` y publicar los
+cambios incompatibles bajo `api/v2`. Después de la puesta en producción, el costo es otro.
+
+---
+
 ## 3. Casos de Uso Reales (CU Real)
 
 > Esta sección presenta los **Casos de Uso Reales** según la plantilla UP de la cátedra. Cada CU priorizado se acompaña de:
@@ -2609,6 +2708,195 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-143: Declarar el Consumo Promedio al Registrarse
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: declararConsumo(usuarioDeLaSesion, tipoGarrafa, cantidad)
+    SRV->>SRV: aKilosPorMes(cantidad, peso del tipo de garrafa)
+    SRV->>CREP: save(cliente con consumo y garrafa habitual)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es razonable
+        SRV-->>CTRL: Customer con consumo declarado
+    else el valor no es razonable
+        SRV-->>CTRL: se pide confirmación
+    end
+```
+
+**Observaciones de diseño**
+
+- El dato se guarda en kilos y no en cantidad de garrafas, para que siga sirviendo si el cliente cambia de tipo.
+- El consumo declarado es una estimación del cliente: el módulo M3 lo usa como valor inicial y lo va corrigiendo con las compras reales.
+
+---
+
+#### DSD — CU-144: Actualizar el Consumo Promedio Declarado
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant OREP as RepositoryOrder
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: actualizarConsumo(usuarioDeLaSesion, cantidad)
+    SRV->>OREP: findOne(último pedido entregado del cliente)
+    OREP-->>SRV: Order o null
+    SRV->>SRV: estimarProximaRecompra(última compra, consumo)
+    SRV->>CREP: save(cliente con consumo y estimación)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es razonable
+        SRV-->>CTRL: Customer con la estimación nueva
+    else el valor no es razonable
+        SRV-->>CTRL: se pide confirmación
+    end
+```
+
+**Observaciones de diseño**
+
+- La estimación se guarda y no se calcula en cada consulta, porque el proceso que avisa la recompra la necesita para filtrar por rango de fecha sin recorrer todos los clientes.
+- Cada compra nueva vuelve a correr la estimación: el campo se mantiene al día desde dos lugares.
+
+---
+
+#### DSD — CU-145: Configurar los Días de Aviso Previo a la Recompra
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: configurarAviso(usuarioDeLaSesion, dias)
+    SRV->>CREP: save(cliente con los días de aviso)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es válido
+        SRV-->>CTRL: Customer con la preferencia
+    else el valor no es válido
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- La preferencia va en la ficha del cliente y no en una tabla de configuración aparte: es un solo número y no justifica una entidad.
+- Desactivar el aviso se representa con el valor en cero, para no sumar una bandera más.
+
+---
+
+#### DSD — CU-146: Consultar la Fecha Estimada de Recompra
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`. Los campos de consumo promedio declarado, garrafa habitual, días de aviso y próxima recompra estimada todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: recomprasEstimadas(dias, distribuidora)
+    SRV->>CREP: find(where distributor_id y estimación en la ventana)
+    CREP-->>SRV: lista de Customer
+    SRV->>OREP: find(última compra de cada cliente)
+    OREP-->>SRV: últimos pedidos
+    alt hay clientes
+        SRV-->>CTRL: listado con consumo y última compra
+    else no hay
+        SRV-->>CTRL: listado vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El listado es información comercial sobre personas: conviene que sólo lo vea el administrador de la distribuidora del cliente, no el Administrador General.
+- La fecha estimada tiene que estar indexada, o la consulta recorre la tabla de clientes entera.
+
+---
+
+#### DSD — CU-147: Realizar una Compra Express
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, entidad `Order`. Los campos de modalidad de entrega todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant DREP as RepositoryDelivery
+    participant GREP as RepositoryGasCylinder
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: compraExpress(usuarioDeLaSesion, tipoGarrafa, medioDePago)
+    SRV->>SRV: direccionPredeterminada(cliente)
+    SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
+    SRV->>DREP: find(choferes en moto disponibles y habilitados)
+    DREP-->>SRV: lista de Delivery
+    SRV->>GREP: findOne(tipo de garrafa con precio y stock)
+    GREP-->>SRV: GasCylinder
+    SRV->>OREP: save(pedido con modalidad express y sin franja)
+    OREP-->>SRV: Order creada
+    alt hay cobertura y chofer
+        SRV-->>CTRL: Order express creada
+    else no hay
+        SRV-->>CTRL: se ofrece el flujo con franja horaria
+    end
+```
+
+**Observaciones de diseño**
+
+- El pedido express no lleva franja horaria: el campo queda vacío, y todo lo que hoy lo asume tiene que contemplar ese caso.
+- La comprobación de chofer disponible se hace antes de cobrar, no después: cobrar y después no tener quién lo lleve es el peor resultado posible.
+- La cobertura express puede ser más chica que la de reparto normal, porque la moto tiene otro radio; son dos zonas distintas sobre la misma tabla.
+
+---
+
+#### DSD — CU-148: Elegir la Modalidad de Entrega del Pedido
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, entidad `Order`. Los campos de modalidad de entrega todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant DREP as RepositoryDelivery
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: modalidadesDisponibles(direccion, distribuidora)
+    SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
+    SRV->>DREP: find(choferes en moto disponibles)
+    DREP-->>SRV: lista de Delivery
+    SRV->>OREP: save(pedido con la modalidad elegida)
+    OREP-->>SRV: Order actualizada
+    alt hay express disponible
+        SRV-->>CTRL: las dos modalidades con precio
+    else no hay express
+        SRV-->>CTRL: sólo la programada con el motivo
+    end
+```
+
+**Observaciones de diseño**
+
+- La disponibilidad de la express se evalúa en el momento de mostrar las opciones y otra vez al confirmar: entre una cosa y la otra el último chofer se pudo ocupar.
+- El recargo express se toma de la configuración de la distribuidora, no de una constante del programa.
+
+---
+
 #### DSD — CU-008: Cancelar Pedido (Cliente)
 
 Los tres CU de cancelación (008/009/010) comparten un único endpoint; lo que cambia es el
@@ -2844,100 +3132,431 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-046: Gestionar Direcciones de Entrega
+#### DSD — CU-046: Consultar Direcciones de Entrega del Cliente
 
-Ocho endpoints bajo un solo CU. Todos pasan por `scope(user)`, que fuerza el `user_id`
-propio a los no-admin; el service lo aplica con `assertOwnership`. La regla de negocio
-propia del caso es el invariante **"una sola dirección predeterminada por usuario"**.
-
-**Clases participantes:** `UserAddresController`, `UserAddresService`, `Repository<UserAddress>`, `Repository<User>`, entidades `UserAddress`, `User`.
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant CTRL as UserAddresController
-    participant SRV as UserAddresService
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: findByUserId(userId, usuarioDeLaSesion)
+    SRV->>SRV: alcance(usuarioDeLaSesion) sobre el userId recibido
+    SRV->>AREP: find(where user_id, order isDefault DESC y createdAt DESC)
+    AREP-->>SRV: lista de UserAddress
+    SRV-->>CTRL: listado ordenado
+```
+
+**Observaciones de diseño**
+
+- El orden lo pone la consulta, no el cliente: la dirección predeterminada sale siempre primera, así la aplicación la puede precargar sin recorrer el listado.
+- El filtro por usuario de la sesión es lo que impide leer la libreta de otro cliente, y vive en el servicio, no en el controlador.
+- CU-005 Crear Pedido consume la dirección predeterminada por CU-121, que es una lectura más directa que recorrer este listado.
+
+---
+
+#### DSD — CU-116: Registrar Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
     participant UREP as RepositoryUser
+    participant AREP as RepositoryUserAddress
 
-    CTRL->>CTRL: scope(user) devuelve user_id si no es admin
-
-    alt Alta, POST /user-address
-        CTRL->>SRV: create(createUserAddressDto, scope)
-        opt No es admin
-            SRV->>SRV: forzar user_id al del solicitante, ignorando el body
-        end
-        SRV->>UREP: findOne(user_id)
-        alt El usuario no existe
-            UREP-->>SRV: null
-            SRV-->>CTRL: NotFoundException User with ID not found
-        else Usuario valido
-            UREP-->>SRV: User
-            opt isDefault true
-                SRV->>SRV: removeDefaultFromOtherAddresses(user_id)
-                SRV->>AREP: find(user_id, isDefault true)
-                loop Por cada direccion predeterminada previa
-                    SRV->>AREP: save(address con isDefault false)
-                end
-            end
-            SRV->>AREP: create(createUserAddressDto)
-            SRV->>AREP: save(address)
-            AREP-->>SRV: UserAddress
-            SRV-->>CTRL: UserAddress
-        end
-    else Consulta por usuario, GET /user-address/user/:userId
-        CTRL->>SRV: findByUserId(userId, scope)
-        SRV->>SRV: assertOwnership(userId, requesterUserId)
-        alt El solicitante no es el dueno
-            SRV-->>CTRL: ForbiddenException No autorizado a acceder a direcciones de otro usuario
-        else Autorizado
-            SRV->>AREP: find(user_id, order isDefault DESC y createdAt DESC)
-            AREP-->>SRV: UserAddress[]
-            SRV-->>CTRL: UserAddress[]
-        end
-    else Predeterminada, GET /user-address/user/:userId/default
-        CTRL->>SRV: findDefaultByUserId(userId, scope)
-        SRV->>SRV: assertOwnership(userId, requesterUserId)
-        SRV->>AREP: findOne(user_id, isDefault true)
-        alt No hay ninguna marcada
-            AREP-->>SRV: null
-            SRV->>SRV: findByUserId(userId)
-            alt Tiene al menos una direccion
-                SRV-->>CTRL: la primera de la lista
-            else No tiene ninguna
-                SRV-->>CTRL: NotFoundException No addresses found for user
-            end
-        else Hay predeterminada
-            AREP-->>SRV: UserAddress
-            SRV-->>CTRL: UserAddress
-        end
-    else Marcar predeterminada, PATCH /user-address/:id/set-default
-        CTRL->>SRV: setAsDefault(id, scope)
-        SRV->>SRV: findOne(id, requesterUserId)
-        SRV->>SRV: removeDefaultFromOtherAddresses(user_id, id)
-        SRV->>AREP: find(user_id, isDefault true, address_id Not id)
-        SRV->>AREP: save(address con isDefault true)
-        SRV-->>CTRL: UserAddress
-    else Baja, DELETE /user-address/:id
-        CTRL->>SRV: remove(id, scope)
-        SRV->>SRV: findOne(id, requesterUserId)
-        opt La direccion borrada era la predeterminada
-            SRV->>AREP: find(user_id, address_id Not id, order createdAt DESC)
-            opt Quedan otras direcciones
-                SRV->>AREP: save(la mas reciente con isDefault true)
-            end
-        end
-        SRV->>AREP: remove(address)
-        SRV-->>CTRL: message Address deleted successfully y addressId
+    CTRL->>SRV: create(dto, usuarioDeLaSesion)
+    SRV->>UREP: findOne(where user_id)
+    UREP-->>SRV: User o null
+    SRV->>AREP: update(isDefault false en las demás)
+    SRV->>AREP: save(direccion)
+    AREP-->>SRV: UserAddress guardada
+    alt el usuario existe
+        SRV-->>CTRL: UserAddress creada
+    else el usuario no existe
+        SRV-->>CTRL: NotFoundException User with ID not found
     end
 ```
 
 **Observaciones de diseño**
 
-- Borrar la dirección predeterminada **promueve** la más reciente: el usuario nunca queda
-  sin default si le queda alguna dirección.
-- `GET /user-address` (listado global) exige `super_admin`: es una herramienta de soporte,
-  no parte del flujo del cliente.
+- El servicio pisa el titular con el usuario de la sesión antes de tocar la base: la validación de pertenencia no depende del cliente.
+- La marca de predeterminada se resuelve en dos escrituras sin transacción explícita; si la segunda falla, el cliente queda sin ninguna dirección predeterminada.
+
+---
+
+#### DSD — CU-117: Consultar Detalle de una Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: findOne(where address_id, relations user)
+    AREP-->>SRV: UserAddress o null
+    SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
+    alt la dirección existe y es del cliente
+        SRV-->>CTRL: UserAddress
+    else no existe o es de otro
+        SRV-->>CTRL: NotFoundException o acceso denegado
+    end
+```
+
+**Observaciones de diseño**
+
+- La comprobación de pertenencia se saltea cuando quien pide es administrador: el servicio recibe el usuario de la sesión en nulo.
+- Las tres operaciones de escritura reutilizan esta lectura, así que el control de pertenencia se aplica una sola vez y en un solo lugar.
+
+---
+
+#### DSD — CU-118: Editar Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: preload(address_id + cambios)
+    AREP-->>SRV: UserAddress fusionada o null
+    SRV->>AREP: save(direccion)
+    AREP-->>SRV: UserAddress actualizada
+    alt la dirección existe
+        SRV-->>CTRL: UserAddress actualizada
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- La dirección se lee dos veces: una para el control de pertenencia y otra para fusionar los cambios. Es una lectura de más por cada edición.
+- La validación de entrada rechaza todo campo no declarado, así que no se puede cambiar el titular de la dirección por esta vía.
+
+---
+
+#### DSD — CU-119: Eliminar Dirección de Entrega
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: remove(id, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: find(otras direcciones del titular)
+    AREP-->>SRV: lista de UserAddress
+    SRV->>AREP: save(nueva predeterminada)
+    SRV->>AREP: remove(direccion)
+    AREP-->>SRV: confirmación de baja
+    alt la dirección existe
+        SRV-->>CTRL: mensaje de baja con el identificador
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- El borrado es físico: el repositorio usa `remove`, no una marca de baja. Es la asimetría que conviene tener presente en la defensa, porque el resto del sistema da de baja lógicamente.
+- La promoción de la nueva predeterminada elige por fecha de alta descendente, sin preguntarle al cliente.
+
+---
+
+#### DSD — CU-120: Marcar una Dirección como Predeterminada
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
+    SRV->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>AREP: update(isDefault false en las demás del titular)
+    SRV->>AREP: save(direccion con isDefault true)
+    AREP-->>SRV: UserAddress actualizada
+    alt la dirección existe
+        SRV-->>CTRL: UserAddress predeterminada
+    else la dirección no existe
+        SRV-->>CTRL: NotFoundException Address with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- Las dos escrituras no van en una transacción: entre desmarcar las otras y marcar ésta hay una ventana en la que el cliente no tiene ninguna predeterminada.
+- No hay ninguna restricción en la base que garantice una sola dirección predeterminada por cliente; la invariante la sostiene solamente el servicio.
+
+---
+
+#### DSD — CU-121: Consultar la Dirección Predeterminada
+
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
+    participant AREP as RepositoryUserAddress
+
+    CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
+    SRV->>AREP: findOne(where user_id e isDefault true)
+    AREP-->>SRV: UserAddress o null
+    alt hay dirección predeterminada
+        SRV-->>CTRL: UserAddress
+    else no hay ninguna
+        SRV-->>CTRL: NotFoundException No addresses found for user
+    end
+```
+
+**Observaciones de diseño**
+
+- Como la invariante de una sola predeterminada no está en la base, esta lectura devuelve la primera que encuentre si por algún camino quedaran dos marcadas.
+- El caso lo consume CU-005 Crear Pedido para precargar la dirección.
+
+---
+
+#### DSD — CU-122: Agregar Ítem al Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+    participant GREP as RepositoryGasCylinder
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: agregarItem(usuarioDeLaSesion, garrafaId, cantidad)
+    SRV->>CREP: findOrCreate(carrito abierto del cliente)
+    CREP-->>SRV: Cart
+    SRV->>GREP: findOne(where gas_cylinder_id, isActive y distribuidora)
+    GREP-->>SRV: GasCylinder o null
+    SRV->>IREP: upsert(item con cantidad y precio unitario)
+    IREP-->>SRV: CartItem guardado
+    alt el tipo de garrafa es válido
+        SRV-->>CTRL: Cart con sus ítems y el total
+    else el tipo de garrafa no es válido
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El precio unitario se copia al ítem en el momento de agregarlo, igual que hace hoy `order_item`: si el precio del catálogo cambia, el carrito conserva el que vio el cliente.
+- La suma de cantidades cuando el tipo de garrafa ya está en el carrito evita ítems repetidos, que es lo que obligaría a resolver el desglose en el momento de crear el pedido.
+
+---
+
+#### DSD — CU-123: Modificar la Cantidad de un Ítem del Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: modificarCantidad(usuarioDeLaSesion, itemId, cantidad)
+    SRV->>IREP: findOne(where cart_item_id, relations cart)
+    IREP-->>SRV: CartItem o null
+    SRV->>IREP: save(item con la cantidad nueva)
+    IREP-->>SRV: CartItem actualizado
+    alt el ítem existe y es del cliente
+        SRV-->>CTRL: Cart con el total recalculado
+    else el ítem no es del cliente
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El total del carrito se recalcula al vuelo sobre los ítems, no se guarda: así no puede quedar desfasado del detalle.
+- La comprobación de pertenencia va contra el carrito del ítem, no contra el identificador que mande la aplicación.
+
+---
+
+#### DSD — CU-124: Quitar Ítem del Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: quitarItem(usuarioDeLaSesion, itemId)
+    SRV->>IREP: findOne(where cart_item_id, relations cart)
+    IREP-->>SRV: CartItem o null
+    SRV->>IREP: remove(item)
+    IREP-->>SRV: confirmación de baja
+    alt el ítem existe y es del cliente
+        SRV-->>CTRL: Cart sin el ítem
+    else el ítem no es del cliente
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- Quitar el último ítem deja el carrito vacío, no lo borra: el cliente conserva el mismo carrito para seguir comprando.
+- A diferencia de la baja de una dirección (CU-119), acá el borrado físico no pierde información de negocio.
+
+---
+
+#### DSD — CU-125: Consultar el Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+
+    CTRL->>SRV: consultar(usuarioDeLaSesion)
+    SRV->>CREP: findOne(carrito abierto, relations items y items.gasCylinder)
+    CREP-->>SRV: Cart con ítems o null
+    alt el cliente tiene carrito
+        SRV-->>CTRL: Cart con ítems y total
+    else el cliente no tiene carrito
+        SRV-->>CTRL: Cart vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El total no se guarda en la tabla: se calcula en cada lectura sumando cantidad por precio unitario de cada ítem.
+- CU-005 Crear Pedido incluye este caso: los ítems del pedido salen de acá, no de lo que mande la aplicación.
+
+---
+
+#### DSD — CU-126: Vaciar el Carrito
+
+**Clases participantes:** `CartController`, `CartService`, `Repository<Cart>`, `Repository<CartItem>`, entidades `Cart` y `CartItem`. Ninguna existe todavía: son las clases que el caso exige.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CartController
+    participant SRV as CartService
+    participant CREP as RepositoryCart
+    participant IREP as RepositoryCartItem
+
+    CTRL->>SRV: vaciar(usuarioDeLaSesion)
+    SRV->>CREP: findOne(carrito abierto del cliente)
+    CREP-->>SRV: Cart o null
+    SRV->>IREP: delete(where cart_id)
+    IREP-->>SRV: confirmación de baja
+    alt el cliente tiene carrito
+        SRV-->>CTRL: Cart vacío
+    else el cliente no tiene carrito
+        SRV-->>CTRL: Cart vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El vaciado por confirmación de compra tiene que ir en la misma transacción que el alta del pedido: si el pedido se registra y el carrito no se vacía, el cliente vuelve a comprar lo mismo.
+- Se borran los ítems y no el carrito, para no cambiar el identificador que la aplicación tiene en mano.
+
+---
+
+#### DSD — CU-127: Cambiar la Dirección de Entrega del Pedido
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, `Repository<UserAddress>`, entidad `Order`. La entidad `OrderAddressChange` y los campos de quién recibe todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+    participant AREP as RepositoryUserAddress
+    participant HREP as RepositoryOrderAddressChange
+
+    CTRL->>SRV: cambiarDireccion(pedidoId, direccionId, motivo, usuarioDeLaSesion)
+    SRV->>OREP: findOne(where order_id, relations customer y delivery)
+    OREP-->>SRV: Order o null
+    SRV->>AREP: findOne(where address_id y user_id)
+    AREP-->>SRV: UserAddress o null
+    SRV->>SRV: verificarCobertura(coordenadas, distribuidora)
+    SRV->>HREP: save(cambio de dirección)
+    SRV->>OREP: save(pedido con la dirección nueva)
+    OREP-->>SRV: Order actualizada
+    alt el cambio es admisible
+        SRV-->>CTRL: Order con la dirección nueva
+    else el cambio no es admisible
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- La verificación de cobertura reutiliza la consulta espacial que ya usa el alta del pedido contra `coverage_zone`.
+- El aviso al chofer sale por el mismo canal en tiempo real que el resto de los cambios de estado del pedido.
+- El historial de cambios es lo que permite defender ante un reclamo por qué se entregó en una dirección distinta de la original.
+
+---
+
+#### DSD — CU-128: Indicar Quién Recibe el Pedido
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, `Repository<UserAddress>`, entidad `Order`. La entidad `OrderAddressChange` y los campos de quién recibe todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as OrderController
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+
+    CTRL->>SRV: indicarQuienRecibe(pedidoId, datos, usuarioDeLaSesion)
+    SRV->>OREP: findOne(where order_id, relations customer)
+    OREP-->>SRV: Order o null
+    SRV->>OREP: save(pedido con los datos de quien recibe)
+    OREP-->>SRV: Order actualizada
+    alt el pedido no está entregado
+        SRV-->>CTRL: Order con quién recibe
+    else el pedido ya fue entregado
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- Los datos de quien recibe son datos personales de un tercero: conviene guardarlos sólo hasta el cierre del pedido y no arrastrarlos al historial de compras.
+- El chofer los ve en la misma pantalla donde escanea el código de entrega, para que el control de identidad y el de entrega ocurran juntos.
 
 ---
 
@@ -3107,6 +3726,40 @@ sequenceDiagram
   (CU-078/CU-079) y con una `DispatchOffer` posiblemente viva.
 - Valida `isActive`, que es el mismo bit que el chofer usa para ponerse offline (CU-022):
   un admin no puede asignarle un pedido a un chofer desconectado.
+
+---
+
+#### DSD — CU-149: Despachar un Pedido Express a un Chofer en Moto
+
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, entidad `Order`. Los campos de modalidad de entrega todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant SRV as OrderService
+    participant OREP as RepositoryOrder
+    participant DREP as RepositoryDelivery
+    participant NOT as NotificationService
+
+    SRV->>OREP: findOne(pedido express sin chofer)
+    OREP-->>SRV: Order
+    SRV->>DREP: find(choferes en moto disponibles dentro del radio, por distancia)
+    DREP-->>SRV: lista de Delivery ordenada
+    SRV->>NOT: ofrecer(pedido, chofer más cercano, ventana corta)
+    SRV->>OREP: save(pedido asignado o degradado a programado)
+    OREP-->>SRV: Order actualizada
+    alt un chofer acepta
+        SRV-->>CTRL: Order asignada al chofer en moto
+    else ninguno acepta
+        SRV-->>CTRL: Order degradada a modalidad programada
+    end
+```
+
+**Observaciones de diseño**
+
+- Reutiliza la consulta espacial y el mecanismo de ofertas de CU-013 y CU-014, con otra ventana y otra política de agotamiento.
+- La degradación a pedido programado tiene que avisarle al cliente en el momento: descubrirlo cuando la garrafa no llegó en una hora es peor que no haber ofrecido la express.
+- La ventana de aceptación y el radio express son parámetros por distribuidora, no constantes del programa: es lo mismo que el documento 3 sección 10 pide para el despacho normal.
 
 ---
 
@@ -4034,7 +4687,7 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-051: Gestionar Vehículos (consultar, editar, eliminar)
+#### DSD — CU-051: Consultar Listado de Vehículos
 
 **Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, DTO `UpdateCarDto`, entidad `Car`.
 
@@ -4170,6 +4823,423 @@ sequenceDiagram
 - Es **baja lógica** (`softDelete`): TypeORM sella la columna de borrado y excluye la fila de todas las consultas siguientes, sin romper las claves foráneas de los pedidos históricos entregados por ese chofer. Es la razón por la que los reportes de CU-027 siguen resolviendo `delivery.user`.
 - El `findOne(id)` previo existe **sólo para producir el 404**: `softDelete` sobre un id inexistente sería un no-op silencioso.
 - El `User` asociado y su usuario de Firebase **no se tocan**: la baja es del perfil de chofer, no de la identidad.
+
+---
+
+#### DSD — CU-109: Consultar Detalle del Chofer
+
+**Clases participantes:** `DeliveryController`, `DeliveryService`, `Repository<Delivery>`, entidad `Delivery`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: findOne(id)
+    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    DREP-->>SRV: Delivery con user y role o null
+    alt no se encontro el chofer
+        SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Chofer encontrado
+        SRV-->>CTRL: Delivery completo
+    end
+```
+
+**Observaciones de diseño**
+
+- La misma lectura la reutilizan la edición (CU-096) y la baja (CU-097) antes de escribir.
+- El endpoint no declara `@Roles`: cualquier usuario autenticado puede leer la ficha de cualquier chofer.
+
+---
+
+#### DSD — CU-110: Buscar Chofer por Usuario
+
+**Clases participantes:** `DeliveryController`, `DeliveryService`, `Repository<Delivery>`, entidad `Delivery`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as DeliveryController
+    participant SRV as DeliveryService
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: findOneByUserId(userId)
+    SRV->>DREP: findOne(where user user_id, relations user y user.role)
+    DREP-->>SRV: Delivery o null
+    alt no hay perfil para esa cuenta
+        SRV-->>CTRL: NotFoundException
+    else Perfil encontrado
+        SRV-->>CTRL: Delivery completo
+    end
+```
+
+**Observaciones de diseño**
+
+- Es la relación uno a uno entre la cuenta de usuario y el perfil operativo del chofer.
+- La incluyen el resto de las operaciones del ABM del chofer, que parten del usuario y no del perfil.
+
+---
+
+#### DSD — CU-111: Editar Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, DTO `UpdateCarDto`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: update(id, updateCarDto, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>CREP: preload(car_id mas campos del dto)
+    CREP-->>SRV: Car fusionado o undefined
+    alt la patente cambio y ya existe
+        SRV-->>CTRL: ConflictException patente repetida
+    else Patente libre
+        SRV-->>CTRL: Car actualizado
+    end
+```
+
+**Observaciones de diseño**
+
+- El `findOne` previo no es redundante: es el que acota la escritura a la distribuidora del panel.
+- El `preload` fusiona: los campos que el DTO no trae conservan su valor en base, igual que en el chofer (CU-096).
+
+---
+
+#### DSD — CU-112: Eliminar Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: remove(id, distributorId)
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>CREP: remove(car)
+    CREP-->>SRV: Car borrado
+    alt el vehiculo no existe
+        SRV-->>CTRL: NotFoundException Car with ID not found
+    else Vehiculo encontrado
+        SRV-->>CTRL: confirmacion de baja
+    end
+```
+
+**Observaciones de diseño**
+
+- El borrado es físico: no hay `@DeleteDateColumn` en `Car`, así que la fila desaparece.
+- Si el vehículo tuvo entregas asociadas, esa historia pierde la referencia. Es lo que hace que la asimetría con el chofer importe.
+
+---
+
+#### DSD — CU-113: Consultar Detalle del Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findOne(id, distributorId)
+    SRV->>CREP: findOne(where car_id y distribuidora, relations user)
+    CREP-->>SRV: Car con user o null
+    alt no se encontro el vehiculo
+        SRV-->>CTRL: NotFoundException Car with ID not found
+    else Vehiculo encontrado
+        SRV-->>CTRL: Car completo
+    end
+```
+
+**Observaciones de diseño**
+
+- La condición de distribuidora viaja en el `where`: un vehículo de otra distribuidora responde igual que uno inexistente.
+- La reutilizan `update` y `remove` antes de escribir.
+
+---
+
+#### DSD — CU-114: Buscar Vehículo por Patente
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findByPatent(patent, distributorId)
+    SRV->>CREP: findOne(where car_patent y distribuidora, relations user)
+    CREP-->>SRV: Car con user o null
+    alt ninguna patente coincide
+        SRV-->>CTRL: NotFoundException
+    else Patente encontrada
+        SRV-->>CTRL: Car completo
+    end
+```
+
+**Observaciones de diseño**
+
+- Busca por igualdad exacta de patente, no por coincidencia parcial.
+- Es el caso que incluyen la edición y la baja del vehículo cuando el operador parte de la patente y no del identificador.
+
+---
+
+#### DSD — CU-115: Consultar Vehículos de un Chofer
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant CREP as RepositoryCar
+
+    CTRL->>SRV: findByUserId(userId, distributorId)
+    SRV->>CREP: find(where user user_id y distribuidora, relations user)
+    CREP-->>SRV: lista de Car
+    SRV-->>CTRL: resultado
+```
+
+**Observaciones de diseño**
+
+- Devuelve lista, posiblemente vacía: no tener vehículo cargado es un estado válido del chofer.
+- Es la consulta que alimenta la ficha del chofer del panel.
+
+---
+
+#### DSD — CU-136: Registrar el Seguro del Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarSeguro(vehiculoId, datos, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>VREP: save(vehículo con los datos del seguro)
+    VREP-->>SRV: Car actualizado
+    SRV->>SRV: evaluarHabilitacion(seguro, verificación, licencia del chofer)
+    alt el vehículo existe
+        SRV-->>CTRL: Car con el seguro cargado
+    else el vehículo no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- La habilitación no se guarda como campo: se deriva de las tres fechas cada vez que se consulta, para que no quede desactualizada cuando una vence sola.
+- La póliza es un dato sensible de un tercero: conviene guardar el número y no el documento escaneado.
+
+---
+
+#### DSD — CU-137: Registrar la Verificación Técnica Vehicular
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarVerificacion(vehiculoId, vencimiento, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>VREP: save(vehículo con el vencimiento)
+    VREP-->>SRV: Car actualizado
+    alt el vehículo existe
+        SRV-->>CTRL: Car con la verificación cargada
+    else el vehículo no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- Es una sola fecha y no una entidad aparte: a diferencia de la revisión del envase, acá no hay historial que probar ante una inspección, alcanza con la vigente.
+- Comparte la evaluación de habilitación con el seguro (CU-136) y la licencia del chofer (CU-138).
+
+---
+
+#### DSD — CU-138: Registrar la Licencia de Conducir del Chofer
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant DREP as RepositoryDelivery
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarLicencia(choferId, datos, distribuidora)
+    SRV->>DREP: findOne(where delivery_id y distributor_id)
+    DREP-->>SRV: Delivery o null
+    SRV->>VREP: find(where user_id del chofer)
+    VREP-->>SRV: vehículos del chofer
+    SRV->>DREP: save(chofer con los datos de la licencia)
+    DREP-->>SRV: Delivery actualizado
+    alt el chofer existe
+        SRV-->>CTRL: Delivery con la licencia cargada
+    else el chofer no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- La licencia va en la ficha del chofer y no en la del vehículo: es del conductor y lo sigue si cambia de unidad.
+- La compatibilidad entre categoría de licencia y tipo de vehículo se evalúa contra una tabla de equivalencias que hay que definir; no está en el alcance de este caso.
+
+---
+
+#### DSD — CU-139: Consultar los Vencimientos de la Flota
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant DREP as RepositoryDelivery
+
+    CTRL->>SRV: vencimientosDeLaFlota(dias, distribuidora)
+    SRV->>VREP: find(where distributor_id y vencimientos en la ventana)
+    VREP-->>SRV: lista de Car
+    SRV->>DREP: find(where distributor_id y licencia en la ventana)
+    DREP-->>SRV: lista de Delivery
+    alt hay vencimientos
+        SRV-->>CTRL: listado unificado y ordenado
+    else no hay
+        SRV-->>CTRL: listado vacío
+    end
+```
+
+**Observaciones de diseño**
+
+- El listado alimenta el módulo inteligente M2 (CU-105), que planifica el mantenimiento y las habilitaciones.
+- Las tres fechas conviene indexarlas: la consulta filtra por rango sobre cada una.
+
+---
+
+#### DSD — CU-140: Programar un Mantenimiento de Vehículo
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant MREP as RepositoryFleetMaintenance
+    participant NOT as NotificationService
+
+    CTRL->>SRV: programarMantenimiento(vehiculoId, datos, distribuidora)
+    SRV->>VREP: findOne(where car_id y distributor_id)
+    VREP-->>SRV: Car o null
+    SRV->>MREP: save(mantenimiento en estado agendado)
+    MREP-->>SRV: FleetMaintenance guardado
+    SRV->>NOT: avisar(chofer del vehículo, mantenimiento agendado)
+    alt el vehículo existe y la fecha es válida
+        SRV-->>CTRL: FleetMaintenance agendado
+    else los datos no son válidos
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El compromiso del vehículo lo tiene que leer el despacho antes de ofrecer un pedido; ese enlace no está en el alcance de este caso y hay que preverlo.
+- El aviso al chofer sale por el mismo canal de notificaciones de SS-17.
+
+---
+
+#### DSD — CU-141: Registrar un Mantenimiento Realizado
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant MREP as RepositoryFleetMaintenance
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarRealizado(mantenimientoId, datos, distribuidora)
+    SRV->>MREP: findOne(where maintenance_id y distributor_id)
+    MREP-->>SRV: FleetMaintenance o null
+    SRV->>MREP: findOne(último realizado del vehículo)
+    MREP-->>SRV: FleetMaintenance anterior o null
+    SRV->>MREP: save(mantenimiento en estado realizado)
+    SRV->>VREP: save(vehículo con el kilometraje nuevo)
+    VREP-->>SRV: Car actualizado
+    alt los datos son coherentes
+        SRV-->>CTRL: FleetMaintenance cerrado
+    else el kilometraje retrocede
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- El kilometraje se guarda en el vehículo además de en el mantenimiento, para no tener que recorrer el historial cada vez que se lo necesita.
+- El costo acumulado por vehículo sale de sumar el historial; no se guarda un total, que se desactualizaría con cada corrección.
+
+---
+
+#### DSD — CU-142: Avisar los Vencimientos Próximos de la Flota
+
+**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant SRV as CarService
+    participant VREP as RepositoryCar
+    participant DREP as RepositoryDelivery
+    participant NOT as NotificationService
+
+    SRV->>VREP: find(vencimientos de vehículos en la ventana)
+    VREP-->>SRV: lista de Car
+    SRV->>DREP: find(licencias en la ventana)
+    DREP-->>SRV: lista de Delivery
+    SRV->>NOT: avisar(administrador, habilitaciones por vencer)
+    alt hay habilitaciones por vencer
+        SRV-->>CTRL: avisos enviados y marcados
+    else no hay
+        SRV-->>CTRL: ciclo sin avisos
+    end
+```
+
+**Observaciones de diseño**
+
+- Es una tarea programada más, no un proceso automatizado: no decide, sólo avisa. Como las que ya existen, su frecuencia queda fija en el código, y el documento 3 sección 10 pide que sea configurable.
+- El registro de lo avisado tiene que sobrevivir al reinicio del proceso, así que va en la base y no en memoria.
 
 ---
 
@@ -5262,6 +6332,129 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-132: Registrar la Revisión Periódica de un Envase
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+    participant IREP as RepositoryCylinderInspection
+
+    CTRL->>SRV: registrarRevision(envaseId, datos, distribuidora)
+    SRV->>CREP: findOne(where cylinder_id y distributor_id)
+    CREP-->>SRV: Cylinder o null
+    SRV->>IREP: save(revisión)
+    IREP-->>SRV: CylinderInspection guardada
+    SRV->>CREP: save(envase con última revisión y vencimiento)
+    CREP-->>SRV: Cylinder actualizado
+    alt el envase existe y las fechas son coherentes
+        SRV-->>CTRL: Cylinder con su vigencia
+    else el envase no existe o las fechas no cierran
+        SRV-->>CTRL: operación rechazada
+    end
+```
+
+**Observaciones de diseño**
+
+- Las dos fechas se copian del historial a la ficha del envase a propósito: el despacho las consulta en cada pedido y no puede pagar el costo de recorrer el historial.
+- El historial se conserva completo aunque la ficha guarde sólo la última revisión: es lo que permite probar ante una inspección que el envase estuvo siempre en regla.
+- Las dos escrituras tienen que ir en una transacción, o la ficha puede quedar diciendo una vigencia que el historial no respalda.
+
+---
+
+#### DSD — CU-133: Consultar la Vigencia de un Envase
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+
+    CTRL->>SRV: consultarVigencia(envaseId)
+    SRV->>CREP: findOne(where cylinder_id, relations inspections)
+    CREP-->>SRV: Cylinder con revisiones o null
+    SRV->>SRV: diasHastaElVencimiento(vencimiento)
+    alt el envase existe
+        SRV-->>CTRL: vigencia con días restantes
+    else el envase no existe
+        SRV-->>CTRL: NotFoundException
+    end
+```
+
+**Observaciones de diseño**
+
+- El cálculo de días restantes se hace en el servicio y no se guarda: guardarlo obligaría a recalcularlo todos los días.
+- La consulta por número de serie usa el índice único de serie por distribuidora, que ya existe en la base.
+
+---
+
+#### DSD — CU-134: Consultar los Envases Próximos a Vencer
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+
+    CTRL->>SRV: proximosAVencer(dias, distribuidora)
+    SRV->>CREP: find(where distributor_id y expires_at entre hoy y hoy más dias)
+    CREP-->>SRV: lista de Cylinder
+    SRV->>CREP: find(where expires_at null)
+    CREP-->>SRV: lista de Cylinder sin vigencia
+    alt hay envases
+        SRV-->>CTRL: listado separado en vencidos, por vencer y sin dato
+    else no hay
+        SRV-->>CTRL: listados vacíos
+    end
+```
+
+**Observaciones de diseño**
+
+- Sin un índice sobre la fecha de vencimiento la consulta recorre el parque entero; con 190 envases hoy no se nota, con varios miles sí.
+- El listado alimenta el módulo inteligente M2, que planifica el mantenimiento de la flota y las habilitaciones (CU-105).
+
+---
+
+#### DSD — CU-135: Bloquear el Despacho de un Envase Vencido
+
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, entidad `Cylinder`. La entidad `CylinderInspection` y las fechas de fabricación, última revisión y vencimiento todavía no existen.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+    participant MREP as RepositoryCylinderMovement
+
+    SRV->>CREP: find(envases disponibles del tipo pedido)
+    CREP-->>SRV: lista de Cylinder
+    SRV->>SRV: filtrar(expires_at nulo o posterior a hoy)
+    SRV->>MREP: save(movimiento de asignación)
+    MREP-->>SRV: CylinderMovement guardado
+    alt hay envases vigentes
+        SRV-->>CTRL: envases asignados al pedido
+    else no hay envases vigentes
+        SRV-->>CTRL: aviso al administrador y pedido sin envases
+    end
+```
+
+**Observaciones de diseño**
+
+- El filtro se aplica en la consulta y no en memoria, para no traer el parque entero.
+- El aviso al administrador reutiliza el canal de notificaciones de SS-17, con la misma prioridad que el faltante de stock.
+
+---
+
 ### SS-15 — Reservas Programadas
 
 #### C.16 DSD — CU-073: Listar Reservas y Estado de la Seña
@@ -5786,6 +6979,92 @@ sequenceDiagram
 - `softDelete` y no `delete`: los pedidos históricos referencian al cliente por `customer_id` y las calificaciones por `to_user_id`. Un borrado físico rompería la trazabilidad y las FKs.
 - Se valida la existencia con `findOne` **antes** de borrar aunque `softDelete` sea idempotente: garantiza el 404 en lugar de un 200 silencioso sobre un id inexistente.
 - La entidad `User` asociada **no** se borra ni se desactiva: la baja es del perfil `Customer`, no de la identidad. Un mismo `User` podría conservar otros perfiles.
+
+---
+
+#### DSD — CU-129: Consultar Detalle del Cliente
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    SRV->>CREP: findOne(where customer_id, relations user)
+    CREP-->>SRV: Customer o null
+    alt el cliente existe
+        SRV-->>CTRL: Customer con su usuario
+    else el cliente no existe
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- La lectura la reutilizan la edición (CU-131), la validación (CU-093) y la baja (CU-095) antes de escribir.
+- El registro dado de baja lógicamente no aparece: el repositorio filtra por la marca de borrado.
+
+---
+
+#### DSD — CU-130: Buscar Cliente por Usuario
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+    SRV->>CREP: findOne(where user_id, relations user)
+    CREP-->>SRV: Customer o null
+    alt la cuenta tiene ficha
+        SRV-->>CTRL: Customer
+    else la cuenta no tiene ficha
+        SRV-->>CTRL: NotFoundException Customer for user ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- Una cuenta de usuario puede existir sin ficha de cliente: es el caso de los choferes y los administradores.
+- El identificador de usuario es el que viaja en el token de sesión, así que la aplicación del cliente resuelve su propia ficha por esta misma vía.
+
+---
+
+#### DSD — CU-131: Editar Datos del Cliente
+
+**Clases participantes:** `CustomerController`, `CustomerService`, `Repository<Customer>`, entidad `Customer`.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    SRV->>CREP: preload(customer_id + cambios)
+    CREP-->>SRV: Customer fusionado o null
+    SRV->>CREP: save(cliente)
+    CREP-->>SRV: Customer actualizado
+    alt el cliente existe
+        SRV-->>CTRL: Customer actualizado
+    else el cliente no existe
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    end
+```
+
+**Observaciones de diseño**
+
+- `preload` no trae las relaciones: la ficha que se guarda queda sin el usuario asociado, y el panel tiene que volver a leerla si necesita mostrarlo.
+- La marca de validación y la ubicación tienen sus propios endpoints y no se pueden tocar por esta vía, que es lo que mantiene separadas las tres operaciones.
 
 ---
 
@@ -6742,7 +8021,17 @@ compromete dinero.**
 ---
 
 ### 6.1 Módulo M1 — Negociación secuencial de asignación de pedidos
-**Casos de uso:** CU-013, CU-014, CU-015, CU-016
+**Casos de uso propios:** CU-013, CU-014, CU-015, CU-016
+
+**Casos de uso que intervienen:**
+
+| Relación | Casos de uso |
+|---|---|
+| Lo dispara | CU-005 Crear Pedido |
+| Se alimenta de | CU-058 Validar Cobertura de una Dirección, CU-035 Consultar Listado de Choferes, CU-109 Consultar Detalle del Chofer |
+| Alternativa manual | CU-012 Asignar Chofer Manualmente |
+| Desemboca en | CU-081 Consultar los Pedidos Asignados al Chofer, CU-017 Actualizar Ubicación GPS del Chofer, CU-018 Marcar Pedido "En Camino" |
+| Comparte mecánica con | CU-149 Despachar un Pedido Express a un Chofer en Moto |
 
 **Archivos:** `src/order/application/dispatch-orchestrator.service.ts` (orquestador),
 `src/order/dispatch.service.ts` (proceso temporal), entidad `DispatchOffer`.
@@ -6900,7 +8189,17 @@ sequenceDiagram
 ### 6.2 Módulo M2 — Planificación predictiva de mantenimiento y habilitaciones de flota
 
 **Entidades:** `Car`, `Delivery`, `Order`, `CoverageZone`
-**Casos de uso:** CU-105
+**Casos de uso propios:** CU-105
+
+**Casos de uso que intervienen:**
+
+| Relación | Casos de uso |
+|---|---|
+| Se alimenta de | CU-136 Registrar el Seguro del Vehículo, CU-137 Registrar la Verificación Técnica Vehicular, CU-138 Registrar la Licencia de Conducir del Chofer, CU-141 Registrar un Mantenimiento Realizado, CU-051 Consultar Listado de Vehículos, CU-113 Consultar Detalle del Vehículo |
+| Consulta | CU-139 Consultar los Vencimientos de la Flota |
+| Desemboca en | CU-140 Programar un Mantenimiento de Vehículo |
+| Condiciona | CU-013 Asignar Pedido Automáticamente por Proximidad |
+| Convive con | CU-142 Avisar los Vencimientos Próximos de la Flota |
 
 #### Descripción
 
@@ -7178,7 +8477,16 @@ Diagrama de interaccion de diseno: **DSD — CU-105**, seccion 4 de este documen
 ### 6.3 Módulo M3 — Anticipación de recompra por consumo estimado
 
 **Entidades:** `Customer`, `Order`, `OrderItem`, `GasCylinder`, `Notification`
-**Casos de uso:** CU-106
+**Casos de uso propios:** CU-106
+
+**Casos de uso que intervienen:**
+
+| Relación | Casos de uso |
+|---|---|
+| Se alimenta de | CU-143 Declarar el Consumo Promedio al Registrarse, CU-144 Actualizar el Consumo Promedio Declarado, CU-007 Consultar Historial de Pedidos, CU-041 Consultar Catálogo de Productos |
+| Respeta | CU-145 Configurar los Días de Aviso Previo a la Recompra |
+| Se consulta por | CU-146 Consultar la Fecha Estimada de Recompra |
+| Desemboca en | CU-005 Crear Pedido |
 
 #### Descripción
 
@@ -7273,7 +8581,15 @@ Diagrama de interaccion de diseno: **DSD — CU-106**, seccion 4 de este documen
 ### 6.4 Módulo M4 — Agrupación inteligente de pedidos por recorrido
 
 **Entidades:** `Order`, `Delivery`, `Car`, `CoverageZone`, `TimeSlot`
-**Casos de uso:** CU-107
+**Casos de uso propios:** CU-107
+
+**Casos de uso que intervienen:**
+
+| Relación | Casos de uso |
+|---|---|
+| Se alimenta de | CU-011 Listar Todos los Pedidos, CU-045 Consultar Franjas Horarias Disponibles, CU-057 Consultar Zonas de Cobertura, CU-051 Consultar Listado de Vehículos, CU-113 Consultar Detalle del Vehículo |
+| Comparte mecánica con | CU-015 Aceptar Pedido, CU-016 Rechazar / Ignorar Pedido |
+| Devuelve a | CU-013 Asignar Pedido Automáticamente por Proximidad |
 
 #### Descripción
 
@@ -7356,7 +8672,15 @@ Diagrama de interaccion de diseno: **DSD — CU-107**, seccion 4 de este documen
 ### 6.5 Módulo M5 — Recuperación de envases no devueltos
 
 **Entidades:** `Cylinder`, `CylinderMovement`, `Customer`, `Order`, `Notification`
-**Casos de uso:** CU-108
+**Casos de uso propios:** CU-108
+
+**Casos de uso que intervienen:**
+
+| Relación | Casos de uso |
+|---|---|
+| Se alimenta de | CU-067 Dar de Alta un Envase Físico, CU-068 Asignar Envases a un Pedido, CU-070 Registrar Movimiento de Envase (cambio de estado), CU-071 Consultar Historial de Movimientos de un Envase, CU-069 Consultar el Parque de Envases |
+| Ofrece la devolución en | CU-081 Consultar los Pedidos Asignados al Chofer |
+| Escala a | CU-011 Listar Todos los Pedidos |
 
 #### Descripción
 
@@ -7794,7 +9118,7 @@ Una vez renderizados y exportados, insertar cada imagen en los documentos con el
 |---|---|---|
 | Casos de uso del sistema | `diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png` | Doc 0 §6 · Doc 1 §3 |
 | Casos de uso por subsistema | `diagramas/uml/CU_SS-NN_*.png` (18) | Doc 1 §4.3 |
-| Secuencia del sistema | `diagramas/png/DSS_CU-NNN_*.png` (108) | Doc 2 §2.1 |
+| Secuencia del sistema | `diagramas/png/DSS_CU-NNN_*.png` (149) | Doc 2 §2.1 |
 | Interacción de diseño | `diagramas/png/DSD_CU-NNN_*.png` (103) | Doc 3 §4 |
 
 Cada archivo lleva el código y el nombre del caso de uso, de modo que se ubica sin
@@ -8616,7 +9940,7 @@ diferencia y a qué caso de uso afecta.
 | Gap | Descripción | Módulo afectado | Prioridad |
 |-----|-------------|-----------------|-----------|
 | Parámetros del despacho | Los pasos de radio de búsqueda y la ventana de aceptación de la oferta son constantes del programa. El módulo inteligente M1 exige que sean configurables por distribuidora. | M1 | 🔴 Crítico |
-| Frecuencia de los procesos temporales | Las cuatro frecuencias están fijas en el código. | M1, SS-15 | 🟡 Importante |
+| Frecuencia de las tareas programadas | Las cuatro frecuencias están fijas en el código. Son tareas de mantenimiento del sistema, no procesos automatizados. | M1, SS-15 | 🟡 Importante |
 
 ### 10.3 Integridad y consistencia del modelo
 
@@ -8635,3 +9959,29 @@ diferencia y a qué caso de uso afecta.
 | Operación de prueba de correo sin autenticación | La operación que dispara el envío de un correo de prueba está expuesta sin control de acceso. El propio código la señala como temporal. | 🔴 Crítico |
 
 ---
+
+### 10.5 Alcance especificado y no construido
+
+Los casos de uso que siguen están documentados con sus cuatro artefactos y todavía no
+tienen contraparte en el código. No son omisiones del relevamiento: son el alcance que la
+cátedra pidió incorporar y que se especifica ahora para que la construcción posterior
+tenga contra qué hacerse. Cada grupo indica qué hace falta en la base de datos, según el
+modelo propuesto de `diagramas/base-de-datos/`.
+
+| Grupo | Casos de uso | Qué falta en el modelo de datos |
+|-------|--------------|----------------------------------|
+| Carrito de compra | CU-122, CU-123, CU-124, CU-125, CU-126 | Tablas `cart` y `cart_item`. El carrito vive hoy en memoria de la App Cliente y se pierde al cerrarla. |
+| Dirección y receptor del pedido | CU-127, CU-128 | Tabla `order_address_change` y los campos de quién recibe en `order`. |
+| Vencimiento de envases | CU-132, CU-133, CU-134, CU-135 | Tabla `cylinder_inspection` y las fechas de fabricación, última revisión y vencimiento en `cylinder`. |
+| Habilitaciones y mantenimiento de flota | CU-136, CU-137, CU-138, CU-139, CU-140, CU-141, CU-142 | Tabla `fleet_maintenance`, los campos de seguro y verificación técnica en `car` y los de licencia en `delivery`. |
+| Consumo declarado y recompra | CU-143, CU-144, CU-145, CU-146 | Consumo promedio, garrafa habitual, días de aviso y próxima recompra estimada en `customer`. |
+| Compra express en moto | CU-147, CU-148, CU-149 | Modalidad de entrega en `order`, el recargo express y el radio express por distribuidora. |
+
+Dos aclaraciones para la defensa. La primera: CU-043, que ya figuraba en §10.1, es de otra
+naturaleza. Es una función que la documentación daba por hecha y el código no tenía; las de
+esta sección nunca se afirmaron construidas. La segunda: el aviso de vencimientos de la flota
+(CU-142) es una tarea programada más y no un proceso automatizado —avisa, no decide—, y le cabe la
+misma observación de §10.2 que a las otras cuatro, que tienen su frecuencia fija en el código.
+
+---
+

@@ -1,21 +1,23 @@
 @startuml
-title SS-02 — Gestión de Pedidos
+title SS-02 — Gestión de Pedidos (30 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 13
+skinparam dpi 150
 skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
 skinparam actor {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
 }
 skinparam usecase {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
   FontSize 12
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
 }
 skinparam rectangle {
   BorderColor #6B7683
@@ -23,42 +25,108 @@ skinparam rectangle {
   FontStyle bold
 }
 
-actor "Cliente" as A1
-actor "Chofer" as A2
-actor "Administrador" as A3
-actor "Sistema Automatico" as A4
-actor "Administrador General" as A5
-
-rectangle "SS-02 Gestión de Pedidos" {
-  usecase "CU-005\nCrear Pedido" as U5
-  usecase "CU-006\nConsultar Detalle de Pedido" as U6
-  usecase "CU-007\nConsultar Historial de Pedidos" as U7
-  usecase "CU-008\nCancelar Pedido (Cliente)" as U8
-  usecase "CU-009\nCancelar Pedido (Chofer)" as U9
-  usecase "CU-010\nCancelar Pedido (Administrador)" as U10
-  usecase "CU-011\nListar Todos los Pedidos" as U11
-  usecase "CU-046\nGestionar Direcciones de Entrega" as U46
-  usecase "CU-080\nConsultar el Pool de Pedidos Disponibles" as U80
-  usecase "CU-081\nConsultar los Pedidos Asignados al Chofer" as U81
-  usecase "CU-106\nAnticipar la recompra por consumo estimado" as U106 <<pendiente>>
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<pendiente>> #9C4436
+  BackgroundColor<<pendiente>> #F6E4E1
 }
 
-A1 --> U5
-A1 --> U6
-A2 --> U6
-A3 --> U6
-A1 --> U7
-A1 --> U8
-A2 --> U9
-A3 --> U10
-A3 --> U11
-A1 --> U46
-A2 --> U80
-A3 --> U80
-A5 --> U80
-A2 --> U81
-A3 --> U81
-A5 --> U81
-A1 --> U106
-A4 --> U106
+actor "Cliente\n(ACT-01)" as A01
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-02 Gestión de Pedidos" {
+  usecase "CU-005\nCrear Pedido" as U005 #back:FFFFFF;line:3F7A50
+  usecase "CU-006\nConsultar Detalle de Pedido" as U006 #back:FFFFFF;line:3F7A50
+  usecase "CU-007\nConsultar Historial de Pedidos" as U007 #back:FFFFFF;line:3F7A50
+  usecase "CU-008\nCancelar Pedido (Cliente)" as U008 #back:FFFFFF;line:3F7A50
+  usecase "CU-009\nCancelar Pedido (Chofer)" as U009 #back:FFFFFF;line:3F7A50
+  usecase "CU-010\nCancelar Pedido\n(Administrador)" as U010 #back:FFFFFF;line:3F7A50
+  usecase "CU-011\nListar Todos los Pedidos" as U011 #back:FFFFFF;line:3F7A50
+  usecase "CU-046\nConsultar Direcciones de\nEntrega del Cliente" as U046 #back:FFFFFF;line:3F7A50
+  usecase "CU-080\nConsultar el Pool de Pedidos\nDisponibles" as U080 #back:FFFFFF;line:3F7A50
+  usecase "CU-081\nConsultar los Pedidos\nAsignados al Chofer" as U081 #back:FFFFFF;line:3F7A50
+  usecase "CU-106\nAnticipar la recompra por\nconsumo estimado" as U106 #back:FFFFFF;line:3F7A50
+  usecase "CU-116\nRegistrar Dirección de Entrega" as U116 #back:FFFFFF;line:3F7A50
+  usecase "CU-117\nConsultar Detalle de una\nDirección de Entrega" as U117 #back:FFFFFF;line:3F7A50
+  usecase "CU-118\nEditar Dirección de Entrega" as U118 #back:FFFFFF;line:3F7A50
+  usecase "CU-119\nEliminar Dirección de Entrega" as U119 #back:FFFFFF;line:3F7A50
+  usecase "CU-120\nMarcar una Dirección como\nPredeterminada" as U120 #back:FFFFFF;line:3F7A50
+  usecase "CU-121\nConsultar la Dirección\nPredeterminada" as U121 #back:FFFFFF;line:3F7A50
+  usecase "CU-122\nAgregar Ítem al Carrito" as U122 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-123\nModificar la Cantidad de un\nÍtem del Carrito" as U123 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-124\nQuitar Ítem del Carrito" as U124 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-125\nConsultar el Carrito" as U125 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-126\nVaciar el Carrito" as U126 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-127\nCambiar la Dirección de\nEntrega del Pedido" as U127 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-128\nIndicar Quién Recibe el Pedido" as U128 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-143\nDeclarar el Consumo Promedio\nal Registrarse" as U143 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-144\nActualizar el Consumo Promedio\nDeclarado" as U144 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-145\nConfigurar los Días de Aviso\nPrevio a la Recompra" as U145 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-146\nConsultar la Fecha Estimada de\nRecompra" as U146 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-147\nRealizar una Compra Express" as U147 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-148\nElegir la Modalidad de Entrega\ndel Pedido" as U148 <<pendiente>> #back:FFFFFF;line:3F7A50
+}
+
+A01 -[#1F6F8B]-> U005
+A01 -[#1F6F8B]-> U006
+A01 -[#1F6F8B]-> U007
+A01 -[#1F6F8B]-> U008
+A01 -[#1F6F8B]-> U046
+A01 -[#1F6F8B]-> U106
+A01 -[#1F6F8B]-> U116
+A01 -[#1F6F8B]-> U117
+A01 -[#1F6F8B]-> U118
+A01 -[#1F6F8B]-> U119
+A01 -[#1F6F8B]-> U120
+A01 -[#1F6F8B]-> U121
+A01 -[#1F6F8B]-> U122
+A01 -[#1F6F8B]-> U123
+A01 -[#1F6F8B]-> U124
+A01 -[#1F6F8B]-> U125
+A01 -[#1F6F8B]-> U126
+A01 -[#1F6F8B]-> U127
+A01 -[#1F6F8B]-> U128
+A01 -[#1F6F8B]-> U143
+A01 -[#1F6F8B]-> U144
+A01 -[#1F6F8B]-> U145
+A01 -[#1F6F8B]-> U147
+A01 -[#1F6F8B]-> U148
+A02 -[#2E7D46]-> U006
+A02 -[#2E7D46]-> U009
+A02 -[#2E7D46]-> U080
+A02 -[#2E7D46]-> U081
+A03 -[#8C4A9E]-> U006
+A03 -[#8C4A9E]-> U010
+A03 -[#8C4A9E]-> U011
+A03 -[#8C4A9E]-> U080
+A03 -[#8C4A9E]-> U081
+A03 -[#8C4A9E]-> U146
+A04 -[#8A6D1F]-> U106
+A05 -[#B4432B]-> U080
+A05 -[#B4432B]-> U081
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U005 ..> U125 : <<include>>
+U005 ..> U121 : <<include>>
+U005 ..> U148 : <<include>>
+U147 ..> U121 : <<include>>
+U147 ..> U148 : <<include>>
+U144 ..> U146 : <<include>>
+U008 ..> U006 : <<include>>
+U009 ..> U006 : <<include>>
+U010 ..> U006 : <<include>>
+U118 ..> U117 : <<include>>
+U119 ..> U117 : <<include>>
+U120 ..> U117 : <<include>>
+U123 ..> U125 : <<include>>
+U124 ..> U125 : <<include>>
+U126 ..> U125 : <<include>>
+U127 ..> U046 : <<include>>
+U127 ..> U006 : <<include>>
+U128 ..> U006 : <<include>>
+
 @enduml

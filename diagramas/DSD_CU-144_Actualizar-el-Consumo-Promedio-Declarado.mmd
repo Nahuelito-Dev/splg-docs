@@ -1,0 +1,18 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CustomerController
+    participant SRV as CustomerService
+    participant OREP as RepositoryOrder
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: actualizarConsumo(usuarioDeLaSesion, cantidad)
+    SRV->>OREP: findOne(último pedido entregado del cliente)
+    OREP-->>SRV: Order o null
+    SRV->>SRV: estimarProximaRecompra(última compra, consumo)
+    SRV->>CREP: save(cliente con consumo y estimación)
+    CREP-->>SRV: Customer actualizado
+    alt el valor es razonable
+        SRV-->>CTRL: Customer con la estimación nueva
+    else el valor no es razonable
+        SRV-->>CTRL: se pide confirmación
+    end

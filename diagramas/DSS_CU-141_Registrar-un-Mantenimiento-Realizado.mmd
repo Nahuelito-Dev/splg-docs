@@ -1,0 +1,15 @@
+sequenceDiagram
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)
+    activate SIS
+    alt los datos son coherentes
+        SIS-->>ADM: mantenimiento cerrado
+    else el kilometraje retrocede
+        SIS-->>ADM: operación rechazada
+    else el mantenimiento ya estaba cerrado
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

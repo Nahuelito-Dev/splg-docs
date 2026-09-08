@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    participant CTRL as CarController
+    participant SRV as CarService
+    participant DREP as RepositoryDelivery
+    participant VREP as RepositoryCar
+
+    CTRL->>SRV: registrarLicencia(choferId, datos, distribuidora)
+    SRV->>DREP: findOne(where delivery_id y distributor_id)
+    DREP-->>SRV: Delivery o null
+    SRV->>VREP: find(where user_id del chofer)
+    VREP-->>SRV: vehículos del chofer
+    SRV->>DREP: save(chofer con los datos de la licencia)
+    DREP-->>SRV: Delivery actualizado
+    alt el chofer existe
+        SRV-->>CTRL: Delivery con la licencia cargada
+    else el chofer no existe
+        SRV-->>CTRL: NotFoundException
+    end

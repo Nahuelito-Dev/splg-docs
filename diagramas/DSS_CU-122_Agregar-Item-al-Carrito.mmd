@@ -1,0 +1,13 @@
+sequenceDiagram
+    autonumber
+    actor CLI as Cliente
+    participant SIS as Sistema
+
+    CLI->>SIS: agregarItemAlCarrito(garrafaId, cantidad)
+    activate SIS
+    alt el tipo de garrafa es válido
+        SIS-->>CLI: carrito con el ítem agregado y el total
+    else el tipo de garrafa no existe o está de baja
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

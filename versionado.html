@@ -6,8 +6,32 @@
 <title>Versionado automático SPLG</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="paginas.css">
+<link rel="stylesheet" href="visor.css">
+<script src="visor.js" defer></script>
 </head>
 <body>
+
+
+<svg class="sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <!-- Señas de cada proyecto y de cada comando. Dibujos propios, no
+         logotipos de marca. -->
+    <g id="i-servidor"><rect x="3.5" y="4" width="17" height="6.4" rx="1.8"/><rect x="3.5" y="13.6" width="17" height="6.4" rx="1.8"/><path d="M7 7.2h.01M7 16.8h.01"/></g>
+    <g id="i-web"><rect x="2.6" y="4.5" width="18.8" height="12.4" rx="2"/><path d="M2.6 8.4h18.8M8 20.4h8M12 16.9v3.5"/></g>
+    <g id="i-telefono"><rect x="6.6" y="2.8" width="10.8" height="18.4" rx="2.6"/><path d="M10.6 5.4h2.8M12 18.2h.01"/></g>
+    <g id="i-volante"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="3"/><path d="M12 3.4v5.6M4.2 15.6l5.3-2M19.8 15.6l-5.3-2"/></g>
+    <g id="i-libreria"><path d="M4.4 5.2h5.2v13.6H4.4zM11.2 5.2h4.2v13.6h-4.2z"/><path d="M17.2 6.1l3 13.2"/></g>
+    <g id="i-doc"><path d="M6 3.4h7.4L18.4 8v12.6H6z"/><path d="M13.4 3.4V8h5M9 12.6h6M9 16.2h6"/></g>
+    <g id="i-consola"><rect x="2.8" y="4.4" width="18.4" height="15.2" rx="2.2"/><path d="M6.6 9.6l3 2.6-3 2.6M12.4 14.8h5"/></g>
+    <g id="i-etiqueta"><path d="M11.6 3.4H20v8.4l-8.8 8.8a2 2 0 0 1-2.8 0l-5.6-5.6a2 2 0 0 1 0-2.8z"/><circle cx="16.4" cy="7.6" r="1.5"/></g>
+    <g id="i-laptop"><rect x="3.6" y="5" width="16.8" height="11" rx="1.8"/><path d="M2 19h20"/></g>
+    <g id="i-filtro"><path d="M3.6 4.6h16.8l-6.6 7.8v6.4l-3.6 1.8v-8.2z"/></g>
+    <g id="i-salto"><path d="M12 20V5"/><path d="M6.6 10.4 12 4.8l5.4 5.6"/></g>
+    <g id="i-calculo"><rect x="4.6" y="3.2" width="14.8" height="17.6" rx="2"/><path d="M8 7.6h8M8.4 12h.01M12 12h.01M15.6 12h.01M8.4 16h.01M12 16h.01M15.6 16h.01"/></g>
+    <g id="i-paquete"><path d="M12 2.9 20.4 7v10L12 21.1 3.6 17V7z"/><path d="M3.6 7 12 11.2 20.4 7M12 11.2v9.9"/></g>
+    <g id="m-github"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></g>
+  </defs>
+</svg>
 
 <div class="hoja">
 
@@ -26,9 +50,10 @@
       <p>VERSIONADO AUTOMÁTICO</p>
     </div>
     <nav class="navs">
-      <a class="nav-link" href="atlas-casos-de-uso.html">← ATLAS</a>
-      <a class="nav-link" href="branching.html">RAMAS</a>
+      <a class="nav-link" href="splg-documentacion.html">← VOLVER AL SITIO</a>
+      <a class="nav-link" href="splg-documentacion.html#ramas">RAMAS</a>
       <a class="nav-link" href="versionado.html" aria-current="page">VERSIONADO</a>
+      <a class="nav-link" href="splg-documentacion.html#agentes">AGENTES IA</a>
     </nav>
   </div>
 
@@ -141,6 +166,7 @@
 
           <!-- etapa 1 -->
           <rect class="paso-caja disparador" x="110" y="30" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-laptop" x="410" y="43" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="60">01</text>
           <text class="t-paso"     x="158" y="60">Merge de develop a main</text>
           <line class="conector" x1="450" y1="55" x2="496" y2="55"/>
@@ -149,6 +175,7 @@
 
           <!-- etapa 2 -->
           <rect class="paso-caja" x="110" y="116" width="340" height="50" rx="8"/>
+          <use class="paso-icono-lleno" href="#m-github" x="410" y="129" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="146">02</text>
           <text class="t-paso"     x="158" y="146">Leer los commits desde el último tag</text>
           <line class="conector" x1="450" y1="141" x2="496" y2="141"/>
@@ -157,6 +184,7 @@
 
           <!-- etapa 3 -->
           <rect class="paso-caja" x="110" y="202" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-filtro" x="410" y="215" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="232">03</text>
           <text class="t-paso"     x="158" y="232">Descartar los merges y los [skip ci]</text>
           <line class="conector" x1="450" y1="227" x2="496" y2="227"/>
@@ -175,6 +203,7 @@
 
           <!-- etapa 4 -->
           <rect class="paso-caja" x="110" y="380" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-salto" x="410" y="393" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="410">04</text>
           <text class="t-paso"     x="158" y="410">Decidir el salto</text>
           <line class="conector" x1="450" y1="405" x2="496" y2="405"/>
@@ -183,6 +212,7 @@
 
           <!-- etapa 5 -->
           <rect class="paso-caja" x="110" y="466" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-calculo" x="410" y="479" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="496">05</text>
           <text class="t-paso"     x="158" y="496">Calcular el número nuevo</text>
           <line class="conector" x1="450" y1="491" x2="496" y2="491"/>
@@ -191,6 +221,7 @@
 
           <!-- etapa 6 -->
           <rect class="paso-caja" x="110" y="552" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-doc" x="410" y="565" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="582">06</text>
           <text class="t-paso"     x="158" y="582">Escribirlo en el archivo del proyecto</text>
           <line class="conector" x1="450" y1="577" x2="496" y2="577"/>
@@ -200,6 +231,7 @@
 
           <!-- etapa 7 -->
           <rect class="paso-caja" x="110" y="638" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-doc" x="410" y="651" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="668">07</text>
           <text class="t-paso"     x="158" y="668">Armar y acumular el changelog</text>
           <line class="conector" x1="450" y1="663" x2="496" y2="663"/>
@@ -209,6 +241,7 @@
 
           <!-- etapa 8 -->
           <rect class="paso-caja" x="110" y="724" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-etiqueta" x="410" y="737" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="754">08</text>
           <text class="t-paso"     x="158" y="754">Commit, tag anotado y push</text>
           <line class="conector" x1="450" y1="749" x2="496" y2="749"/>
@@ -218,6 +251,7 @@
 
           <!-- etapa 9 -->
           <rect class="paso-caja disparador" x="110" y="810" width="340" height="50" rx="8"/>
+          <use class="paso-icono" href="#i-paquete" x="410" y="823" width="24" height="24"/>
           <text class="t-paso-num" x="128" y="840">09</text>
           <text class="t-paso"     x="158" y="840">Compilar el APK y publicar la Release</text>
           <line class="conector" x1="450" y1="835" x2="496" y2="835"/>
@@ -247,12 +281,12 @@
       <table>
         <thead><tr><th>Proyecto</th><th>Archivo</th><th>Repositorio</th></tr></thead>
         <tbody>
-          <tr><td>Backend</td><td class="mono">package.json</td><td class="mono muted">splg-back</td></tr>
-          <tr><td>Panel administrativo</td><td class="mono">package.json</td><td class="mono muted">splg-front-web</td></tr>
-          <tr><td>App cliente</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-mobile-customer</td></tr>
-          <tr><td>App chofer</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-mobile-driver</td></tr>
-          <tr><td>Librería compartida</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-deliver-mobile-lib</td></tr>
-          <tr><td>Documentación</td><td class="mono">VERSION</td><td class="mono muted">splg-docs</td></tr>
+          <tr><td class="con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-servidor"/></svg>Backend</td><td class="mono">package.json</td><td class="mono muted">splg-back</td></tr>
+          <tr><td class="con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-web"/></svg>Panel administrativo</td><td class="mono">package.json</td><td class="mono muted">splg-front-web</td></tr>
+          <tr><td class="con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-telefono"/></svg>App cliente</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-mobile-customer</td></tr>
+          <tr><td class="con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-volante"/></svg>App chofer</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-mobile-driver</td></tr>
+          <tr><td class="con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-libreria"/></svg>Librería compartida</td><td class="mono">pubspec.yaml</td><td class="mono muted">splg-deliver-mobile-lib</td></tr>
+          <tr><td class="con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-doc"/></svg>Documentación</td><td class="mono">VERSION</td><td class="mono muted">splg-docs</td></tr>
         </tbody>
       </table>
     </div>
@@ -268,9 +302,9 @@
       <table>
         <thead><tr><th>Comando</th><th>Qué devuelve</th></tr></thead>
         <tbody>
-          <tr><td class="mono">./scripts/version.sh actual</td><td>La versión declarada hoy</td></tr>
-          <tr><td class="mono">./scripts/version.sh siguiente</td><td>La que saldría en el próximo merge, o vacío si no hay nada nuevo</td></tr>
-          <tr><td class="mono">VERSION=1.1.0 ./scripts/release-notes.sh</td><td>El changelog tal cual va a quedar</td></tr>
+          <tr><td class="mono con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-consola"/></svg>./scripts/version.sh actual</td><td>La versión declarada hoy</td></tr>
+          <tr><td class="mono con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-consola"/></svg>./scripts/version.sh siguiente</td><td>La que saldría en el próximo merge, o vacío si no hay nada nuevo</td></tr>
+          <tr><td class="mono con-icono"><svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-consola"/></svg>VERSION=1.1.0 ./scripts/release-notes.sh</td><td>El changelog tal cual va a quedar</td></tr>
         </tbody>
       </table>
     </div>

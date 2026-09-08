@@ -1,11 +1,39 @@
 #!/usr/bin/env python3
-"""Genera el Atlas de Casos de Uso: una pagina con los cuatro artefactos de cada caso
+"""Genera el sitio de documentación: una pagina con los cuatro artefactos de cada caso
 (alto nivel, expandido, secuencia del sistema, interaccion de diseño) y el documento
 y seccion donde cada uno esta respaldado.
 
-Uso:  python3 generar-atlas.py     ->  atlas-casos-de-uso.html
+Uso:  python3 generar-sitio.py     ->  splg-documentacion.html
 """
-import re, json, os, glob, base64, sys
+import re, json, os, glob, base64, hashlib, sys
+from paleta import css_subsistemas
+
+# Los casos de uso que intervienen en cada modulo sin pertenecerle. Salen de las
+# entradas y salidas de la especificacion del documento 3, seccion 6. La catedra
+# revisa esta trazabilidad, y el catalogo por si solo no la tiene.
+USA = {
+ "M1": [("Lo dispara", ["CU-005"]),
+        ("Se alimenta de", ["CU-058", "CU-035", "CU-109"]),
+        ("Alternativa manual", ["CU-012"]),
+        ("Desemboca en", ["CU-081", "CU-017", "CU-018"]),
+        ("Comparte mecánica con", ["CU-149"])],
+ "M2": [("Se alimenta de", ["CU-136", "CU-137", "CU-138", "CU-141", "CU-051", "CU-113"]),
+        ("Consulta", ["CU-139"]),
+        ("Desemboca en", ["CU-140"]),
+        ("Condiciona", ["CU-013"]),
+        ("Convive con", ["CU-142"])],
+ "M3": [("Se alimenta de", ["CU-143", "CU-144", "CU-007", "CU-041"]),
+        ("Respeta", ["CU-145"]),
+        ("Se consulta por", ["CU-146"]),
+        ("Desemboca en", ["CU-005"])],
+ "M4": [("Se alimenta de", ["CU-011", "CU-045", "CU-057", "CU-051", "CU-113"]),
+        ("Comparte mecánica con", ["CU-015", "CU-016"]),
+        ("Devuelve a", ["CU-013"])],
+ "M5": [("Se alimenta de", ["CU-067", "CU-068", "CU-070", "CU-071", "CU-069"]),
+        ("Ofrece la devolución en", ["CU-081"]),
+        ("Escala a", ["CU-011"])],
+}
+
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/"
 lin = open(D+"Casos-de-Uso.md", encoding="utf-8").read().split("\n")
@@ -79,14 +107,57 @@ for m in re.finditer(r'^\|\s*\*?\*?(SS-\d+)\*?\*?\s*\|\s*\*?\*?([^|*]+?)\*?\*?\s
     ss.setdefault(m.group(1), {"nombre":m.group(2).strip(), "descripcion":m.group(3).strip()})
 def b64(p):
     return "data:image/png;base64," + base64.b64encode(open(p,"rb").read()).decode() if os.path.exists(p) else ""
+def imagen(p):
+    """El .svg del mismo diagrama, si existe: pesa una fraccion del png y no se
+    pixela al ampliarlo. El diagrama completo son 4 MB en png contra 200 KB en svg."""
+    s = p if p.endswith(".svg") else re.sub(r'\.png$', '.svg', p)
+    if os.path.exists(s):
+        return "data:image/svg+xml;base64," + base64.b64encode(open(s,"rb").read()).decode()
+    return b64(p)
 for c,v in ss.items():
     g = glob.glob(D+f"diagramas/uml/CU_{c}_*.png")
-    if g: v["uml"] = b64(g[0])
-g = glob.glob(D+"diagramas/uml/CU_Sistema_*.png")
-contexto = b64(g[0]) if g else ""
+    if g: v["uml"] = imagen(g[0])
+
+# diagramas de nivel sistema. Antes esto era un glob de CU_Sistema_*.png del que se
+# tomaba el primero; al sumar el de actores y el completo, cual salia dependia del
+# orden del directorio.
+UMLSIS = {
+  "contexto": ("CU_Sistema_Diagrama-De-Contexto",
+               "Diagrama de contexto",
+               "Actores contra subsistemas: define el límite del sistema"),
+  "completo": ("CU_Sistema_Diagrama-Completo",
+               "Diagrama completo de casos de uso",
+               "Los %d casos de uso, uno por uno, dentro de su subsistema"),
+  "subsistemas": ("CU_Sistema_Subsistemas",
+               "Subsistemas del proyecto",
+               "Los 18 subsistemas, su agrupamiento y de quién depende cada uno"),
+  "despliegue": ("SPLG_Arquitectura",
+               "Despliegue y entornos",
+               "Dónde corre cada pieza y cómo llega el código a producción"),
+  "actores":  ("CU_Sistema_Actores",
+               "Actores del sistema",
+               "Los cinco actores y el canal por el que operan"),
+}
+umlsis = {}
+for _k,(_f,_n,_d) in UMLSIS.items():
+    _p = D+"diagramas/uml/"+_f+(".svg" if os.path.exists(D+"diagramas/uml/"+_f+".svg")
+                                and not os.path.exists(D+"diagramas/uml/"+_f+".png") else ".png")
+    if os.path.exists(_p): umlsis[_k] = {"img":imagen(_p), "nombre":_n, "descripcion":_d}
+contexto = umlsis.get("contexto",{}).get("img","")
 
 # ---------- markdown -> html, para los bloques que se muestran tal cual ----------
 import html as _html
+
+# Los codigos que aparecen en el texto se marcan con su color: el subsistema con
+# el mismo tinte que su caja en los diagramas, el caso de uso y el actor con su
+# propia marca. Con 149 casos y 18 subsistemas, encontrar uno en una tabla de
+# texto plano era leer renglon por renglon.
+def marcar(s):
+    s = re.sub(r'\b(SS-\d\d)\b', r'<span class="marca-ss" data-ss="\1">\1</span>', s)
+    s = re.sub(r'\b(CU-\d{3})\b', r'<span class="marca-cu">\1</span>', s)
+    s = re.sub(r'\b(ACT-0\d)\b', r'<span class="marca-act" data-act="\1">\1</span>', s)
+    return s
+
 def md2html(md):
     """Convierte un bloque de markdown a HTML y separa los diagramas mermaid."""
     diagramas = []
@@ -95,7 +166,7 @@ def md2html(md):
         s = re.sub(r'`([^`]+)`', r'<code>\1</code>', s)
         s = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
         s = re.sub(r'(?<!\*)\*([^*\n]+)\*(?!\*)', r'<em>\1</em>', s)
-        return s
+        return marcar(s)
     out, i, L = [], 0, md.split("\n")
     while i < len(L):
         l = L[i]
@@ -109,6 +180,14 @@ def md2html(md):
             else:
                 out.append("<pre>" + _html.escape("\n".join(buf)) + "</pre>")
             continue
+        m = re.match(r'^!\[(.*?)\]\(([^)]+)\)\s*$', l.strip())
+        if m:
+            # las figuras del markdown se embeben; sin esto salian como texto
+            src = imagen(D + m.group(2))
+            out.append('<div class="figura"><img class="umlimg" alt="%s" src="%s">'
+                       '<span class="ampliar">CLIC PARA AMPLIAR</span></div>'
+                       % (_html.escape(m.group(1)), src) if src else "")
+            i += 1; continue
         if re.match(r'^\|', l) and i+1 < len(L) and re.match(r'^\|[\s:\-|]+\|\s*$', L[i+1]):
             cab = [c.strip() for c in l.strip().strip("|").split("|")]
             i += 2; filas = []
@@ -159,7 +238,8 @@ mods = {}
 for _n,(_i,_m) in enumerate(_ix6):
     _f = _ix6[_n+1][0] if _n+1 < len(_ix6) else _e6
     mods[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])),
-                             nombre=_m.group(3).strip(), sec="§6."+_m.group(1))
+                             nombre=_m.group(3).strip(), sec="§6."+_m.group(1),
+                             usa=USA.get(_m.group(2), []))
 
 
 
@@ -176,7 +256,7 @@ sistema = {
   "contexto": dict(md2html(_seccion("Casos-de-Uso.md", r'^## 2\. Diagrama', r'^## 3\. ')),
                    titulo="Diagrama de casos de uso del sistema", sec="Doc 0 · §6 · Doc 1 · §3"),
   "catalogo": dict(md2html(_seccion("Casos-de-Uso.md", r'^## 3\. Catálogo', r'^## 4\. ')),
-                   titulo="Catálogo y calificación de los 108 casos", sec="Doc 0 · §8"),
+                   titulo="Catálogo y calificación de los casos", sec="Doc 0 · §8"),
 }
 # el diagrama de subsistemas vive en el documento 1
 _d1 = open(D+"1-Requisitos.md", encoding="utf-8").read().split("\n")
@@ -236,21 +316,83 @@ for mo,cs in MOD.items():
         add(c, "3 — Diseño", "§6 Módulos Inteligentes", f"Especificación de {mo}")
 
 # ---------- armado ----------
-datos = {"cu":{}, "subsistemas":ss, "contexto":contexto, "modulos":mods, "sistema":sistema}
+datos = {"cu":{}, "subsistemas":ss, "contexto":contexto, "umlsis":umlsis,
+         "modulos":mods, "sistema":sistema}
 for c in sorted(set(cua) | set(cue)):
     datos["cu"][c] = {"cua":cua.get(c,{}), "cue":cue.get(c,{}), "dss":dss.get(c,[]),
                       "dsd":dsd.get(c,[]), "respaldo":proc.get(c,[]), "modulo":modulo.get(c),
                       "cur":cur.get(c)}
+
+if "completo" in umlsis:
+    umlsis["completo"]["descripcion"] = umlsis["completo"]["descripcion"] % len(datos["cu"])
 
 faltan = {k:[a for a in ("cua","cue","dss","dsd") if not v[a]] for k,v in datos["cu"].items()}
 faltan = {k:v for k,v in faltan.items() if v}
 if faltan:
     print("ATENCION, casos con artefactos faltantes:", faltan, file=sys.stderr)
 
+# ---------- version de los archivos compartidos ----------
+# El visor vive en visor.js y visor.css. Sin una marca en el enlace, el
+# navegador se queda con la copia vieja despues de publicar y la pagina queda a
+# medias. La marca sale del contenido: cambia sola cuando el archivo cambia.
+def marca_de(archivo):
+    return hashlib.sha1(open(D + archivo, "rb").read()).hexdigest()[:8]
+
+# ---------- las paginas hermanas, embebidas ----------
+# Ramas, versionado y agentes son secciones del mismo sitio, no destinos
+# aparte: el menu las muestra en la misma vista. Se toma el cuerpo de cada
+# archivo —de la introduccion hasta el pie— y se guarda con los datos, asi la
+# pagina sigue existiendo por separado para enlazarla directo.
+def cuerpo_de(archivo):
+    txt = open(D + archivo, encoding="utf-8").read()
+    desde = txt.index('<div class="intro">')
+    hasta = txt.rindex('<div class="pie">')
+    cuerpo = txt[desde:hasta].strip()
+    # La pagina de asistentes define sus iconos en un <svg> con <defs> antes del
+    # contenido: sin el, los <use> de la version embebida no dibujan nada.
+    if '<svg class="sprite"' in txt:
+        i = txt.index('<svg class="sprite"')
+        cuerpo = txt[i:txt.index("</svg>", i) + 6] + "\n" + cuerpo
+    return cuerpo
+
+# La arquitectura y el despliegue vivían sólo en el documento de Diseño: el sitio no
+# mostraba la sección 2 en ningún lado, así que el diagrama de entornos y los criterios
+# de la API no se veían. Entra como sección propia del menú.
+_arq = _seccion("3-Diseño.md", r'^## 2\. Arquitectura', r'^## 3\. ')
+_arq_html = md2html(_arq)["html"]
+
+datos["paginas"] = {
+    "arquitectura": {"titulo": "Arquitectura y despliegue",
+                     "html": '<div class="intro"><h1>Arquitectura y despliegue</h1>'
+                             '<p>Cómo está armado el sistema, dónde corre cada pieza y con qué '
+                             'criterios está diseñada su interfaz HTTP. Documento 3 · §2.</p></div>'
+                             + _arq_html},
+    "ramas":      {"titulo": "Ramas y commits",     "html": cuerpo_de("branching.html")},
+    "versionado": {"titulo": "Versionado automatico", "html": cuerpo_de("versionado.html")},
+    "agentes":    {"titulo": "Asistentes de IA",    "html": cuerpo_de("asistentes.html")},
+}
+
+marcas = {a: marca_de(a) for a in ("visor.js", "visor.css")}
+
 payload = json.dumps(datos, ensure_ascii=False, separators=(",",":")).replace("</", "<\\/")
-html = open(D+"atlas-plantilla.html", encoding="utf-8").read().replace("__DATOS__", payload)
-open(D+"atlas-casos-de-uso.html", "w", encoding="utf-8").write(html)
+
+# Los numeros que la pagina dice de si misma salen de los datos, no escritos a
+# mano: el pie decia 221 diagramas de mermaid cuando ya eran 223.
+n_mermaid = sum(len(v["dss"]) + len(v["dsd"]) +
+                len((v["cur"] or {}).get("mermaid", [])) for v in datos["cu"].values())
+n_mermaid += sum(len(m.get("mermaid", [])) for m in mods.values())
+n_uml = sum(1 for v in ss.values() if "uml" in v) + len(umlsis)
+
+html = (open(D+"splg-plantilla.html", encoding="utf-8").read()
+        .replace("__DATOS__", payload)
+        .replace("__N_MERMAID__", str(n_mermaid))
+        .replace("__N_UML__", str(n_uml))
+        .replace("__N_CASOS__", str(len(datos["cu"])))
+        .replace("__COLORES_SS__", css_subsistemas(ss.keys()))
+        .replace('href="visor.css"', f'href="visor.css?v={marcas["visor.css"]}"')
+        .replace('src="visor.js"', f'src="visor.js?v={marcas["visor.js"]}"'))
+open(D+"splg-documentacion.html", "w", encoding="utf-8").write(html)
 
 print(f"casos: {len(datos['cu'])} | CU reales: {len(cur)} | modulos: {len(mods)} | subsistemas con UML: {sum(1 for v in ss.values() if 'uml' in v)}")
 print(f"diagramas embebidos: {sum(len(v['dss'])+len(v['dsd']) for v in datos['cu'].values())}")
-print(f"atlas-casos-de-uso.html: {os.path.getsize(D+'atlas-casos-de-uso.html')/1048576:.2f} MB")
+print(f"splg-documentacion.html: {os.path.getsize(D+'splg-documentacion.html')/1048576:.2f} MB")
