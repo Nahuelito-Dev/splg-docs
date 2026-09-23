@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Administrador General\n(ACT-05)" as A05
@@ -41,9 +43,9 @@ rectangle "SS-10 Multi-Distribuidora" {
   usecase "CU-055\nDar de Baja una Distribuidora" as U055 #back:FFFFFF;line:44608B
 }
 
-A05 -[#B4432B]-> U052
-A05 -[#B4432B]-> U053
-A05 -[#B4432B]-> U054
-A05 -[#B4432B]-> U055
+A05 -[#B4432B]- U052
+A05 -[#B4432B]- U053
+A05 -[#B4432B]- U054
+A05 -[#B4432B]- U055
 
 @enduml

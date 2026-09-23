@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -44,12 +46,12 @@ rectangle "SS-08 Gestión de Productos e Inventario" {
   usecase "CU-041\nConsultar Catálogo de\nProductos" as U041 #back:FFFFFF;line:5E7A3A
 }
 
-A01 -[#1F6F8B]-> U041
-A03 -[#8C4A9E]-> U036
-A03 -[#8C4A9E]-> U037
-A03 -[#8C4A9E]-> U038
-A03 -[#8C4A9E]-> U039
-A03 -[#8C4A9E]-> U040
-A03 -[#8C4A9E]-> U041
+A01 -[#1F6F8B]- U041
+A03 -[#8C4A9E]- U036
+A03 -[#8C4A9E]- U037
+A03 -[#8C4A9E]- U038
+A03 -[#8C4A9E]- U039
+A03 -[#8C4A9E]- U040
+A03 -[#8C4A9E]- U041
 
 @enduml

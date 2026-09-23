@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Administrador\n(ACT-03)" as A03
@@ -42,10 +44,10 @@ rectangle "SS-06 Reportes y Dashboard" {
   usecase "CU-030\nVer Gráfico de Ventas (últimos\n7 días)" as U030 #back:FFFFFF;line:3E7C79
 }
 
-A03 -[#8C4A9E]-> U026
-A03 -[#8C4A9E]-> U027
-A03 -[#8C4A9E]-> U028
-A03 -[#8C4A9E]-> U029
-A03 -[#8C4A9E]-> U030
+A03 -[#8C4A9E]- U026
+A03 -[#8C4A9E]- U027
+A03 -[#8C4A9E]- U028
+A03 -[#8C4A9E]- U029
+A03 -[#8C4A9E]- U030
 
 @enduml

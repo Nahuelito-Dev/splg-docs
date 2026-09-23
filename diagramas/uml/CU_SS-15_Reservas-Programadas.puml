@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -47,15 +49,15 @@ rectangle "SS-15 Reservas Programadas" {
   usecase "CU-077\nExpirar Pedidos de MercadoPago\nsin Pagar (Cron)" as U077 #back:FFFFFF;line:8A5674
 }
 
-A01 -[#1F6F8B]-> U072
-A02 -[#2E7D46]-> U072
-A03 -[#8C4A9E]-> U072
-A03 -[#8C4A9E]-> U073
-A03 -[#8C4A9E]-> U074
-A04 -[#8A6D1F]-> U075
-A04 -[#8A6D1F]-> U076
-A04 -[#8A6D1F]-> U077
-A05 -[#B4432B]-> U073
-A05 -[#B4432B]-> U074
+A01 -[#1F6F8B]- U072
+A02 -[#2E7D46]- U072
+A03 -[#8C4A9E]- U072
+A03 -[#8C4A9E]- U073
+A03 -[#8C4A9E]- U074
+A04 -[#8A6D1F]- U075
+A04 -[#8A6D1F]- U076
+A04 -[#8A6D1F]- U077
+A05 -[#B4432B]- U073
+A05 -[#B4432B]- U074
 
 @enduml

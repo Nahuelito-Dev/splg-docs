@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -39,10 +41,17 @@ rectangle "SS-05 Reclamos" {
   usecase "CU-023\nRegistrar Reclamo" as U023 #back:FFFFFF;line:9C5A46
   usecase "CU-024\nListar Reclamos" as U024 #back:FFFFFF;line:9C5A46
   usecase "CU-025\nResolver Reclamo" as U025 #back:FFFFFF;line:9C5A46
+  usecase "Adjuntar Foto" as F_FOTO <<factorizado>> #back:FFFFFF;line:9C5A46
 }
 
-A01 -[#1F6F8B]-> U023
-A03 -[#8C4A9E]-> U024
-A03 -[#8C4A9E]-> U025
+A01 -[#1F6F8B]- U023
+A03 -[#8C4A9E]- U024
+A03 -[#8C4A9E]- U025
+
+' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
+F_FOTO ..> U023 : <<extend>>
+note on link
+  Punto de extension: el cliente adjunta evidencia fotografica
+end note
 
 @enduml

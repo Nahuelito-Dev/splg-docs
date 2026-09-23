@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Chofer\n(ACT-02)" as A02
@@ -43,31 +45,31 @@ rectangle "SS-13 Trazabilidad de Envases" {
   usecase "CU-069\nConsultar el Parque de Envases" as U069 #back:FFFFFF;line:7A7340
   usecase "CU-070\nRegistrar Movimiento de Envase\n(cambio de estado)" as U070 #back:FFFFFF;line:7A7340
   usecase "CU-071\nConsultar Historial de\nMovimientos de un Envase" as U071 #back:FFFFFF;line:7A7340
-  usecase "CU-108\nRecuperar envases no devueltos" as U108 #back:FFFFFF;line:7A7340
+  usecase "CU-108\nRecuperar envases no devueltos" as U108 <<pendiente>> #back:FFFFFF;line:7A7340
   usecase "CU-132\nRegistrar la Revisión\nPeriódica de un Envase" as U132 <<pendiente>> #back:FFFFFF;line:7A7340
   usecase "CU-133\nConsultar la Vigencia de un\nEnvase" as U133 <<pendiente>> #back:FFFFFF;line:7A7340
   usecase "CU-134\nConsultar los Envases Próximos\na Vencer" as U134 <<pendiente>> #back:FFFFFF;line:7A7340
   usecase "CU-135\nBloquear el Despacho de un\nEnvase Vencido" as U135 <<pendiente>> #back:FFFFFF;line:7A7340
 }
 
-A02 -[#2E7D46]-> U068
-A02 -[#2E7D46]-> U070
-A03 -[#8C4A9E]-> U067
-A03 -[#8C4A9E]-> U068
-A03 -[#8C4A9E]-> U069
-A03 -[#8C4A9E]-> U070
-A03 -[#8C4A9E]-> U071
-A03 -[#8C4A9E]-> U108
-A03 -[#8C4A9E]-> U132
-A03 -[#8C4A9E]-> U133
-A03 -[#8C4A9E]-> U134
-A04 -[#8A6D1F]-> U108
-A04 -[#8A6D1F]-> U135
-A05 -[#B4432B]-> U067
-A05 -[#B4432B]-> U068
-A05 -[#B4432B]-> U069
-A05 -[#B4432B]-> U070
-A05 -[#B4432B]-> U071
+A02 -[#2E7D46]- U068
+A02 -[#2E7D46]- U070
+A03 -[#8C4A9E]- U067
+A03 -[#8C4A9E]- U068
+A03 -[#8C4A9E]- U069
+A03 -[#8C4A9E]- U070
+A03 -[#8C4A9E]- U071
+A03 -[#8C4A9E]- U108
+A03 -[#8C4A9E]- U132
+A03 -[#8C4A9E]- U133
+A03 -[#8C4A9E]- U134
+A04 -[#8A6D1F]- U108
+A04 -[#8A6D1F]- U135
+A05 -[#B4432B]- U067
+A05 -[#B4432B]- U068
+A05 -[#B4432B]- U069
+A05 -[#B4432B]- U070
+A05 -[#B4432B]- U071
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U135 ..> U133 : <<include>>

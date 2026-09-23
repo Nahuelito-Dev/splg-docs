@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -41,9 +43,9 @@ rectangle "SS-18 Observabilidad y Operación" {
   usecase "CU-104\nVerificar la Salud del Sistema\n(liveness / readiness)" as U104 #back:FFFFFF;line:5B5F87
 }
 
-A01 -[#1F6F8B]-> U104
-A02 -[#2E7D46]-> U104
-A03 -[#8C4A9E]-> U104
-A04 -[#8A6D1F]-> U104
+A01 -[#1F6F8B]- U104
+A02 -[#2E7D46]- U104
+A03 -[#8C4A9E]- U104
+A04 -[#8A6D1F]- U104
 
 @enduml

@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -49,7 +51,7 @@ rectangle "SS-02 Gestión de Pedidos" {
   usecase "CU-046\nConsultar Direcciones de\nEntrega del Cliente" as U046 #back:FFFFFF;line:3F7A50
   usecase "CU-080\nConsultar el Pool de Pedidos\nDisponibles" as U080 #back:FFFFFF;line:3F7A50
   usecase "CU-081\nConsultar los Pedidos\nAsignados al Chofer" as U081 #back:FFFFFF;line:3F7A50
-  usecase "CU-106\nAnticipar la recompra por\nconsumo estimado" as U106 #back:FFFFFF;line:3F7A50
+  usecase "CU-106\nAnticipar la recompra por\nconsumo estimado" as U106 <<pendiente>> #back:FFFFFF;line:3F7A50
   usecase "CU-116\nRegistrar Dirección de Entrega" as U116 #back:FFFFFF;line:3F7A50
   usecase "CU-117\nConsultar Detalle de una\nDirección de Entrega" as U117 #back:FFFFFF;line:3F7A50
   usecase "CU-118\nEditar Dirección de Entrega" as U118 #back:FFFFFF;line:3F7A50
@@ -69,45 +71,48 @@ rectangle "SS-02 Gestión de Pedidos" {
   usecase "CU-146\nConsultar la Fecha Estimada de\nRecompra" as U146 <<pendiente>> #back:FFFFFF;line:3F7A50
   usecase "CU-147\nRealizar una Compra Express" as U147 <<pendiente>> #back:FFFFFF;line:3F7A50
   usecase "CU-148\nElegir la Modalidad de Entrega\ndel Pedido" as U148 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "Aplicar Promocion" as F_PROMO <<factorizado>> #back:FFFFFF;line:3F7A50
+  usecase "Recargo por Transferencia" as F_RECAR <<factorizado>> #back:FFFFFF;line:3F7A50
+  usecase "Reservar Stock" as F_STOCK <<factorizado>> #back:FFFFFF;line:3F7A50
 }
 
-A01 -[#1F6F8B]-> U005
-A01 -[#1F6F8B]-> U006
-A01 -[#1F6F8B]-> U007
-A01 -[#1F6F8B]-> U008
-A01 -[#1F6F8B]-> U046
-A01 -[#1F6F8B]-> U106
-A01 -[#1F6F8B]-> U116
-A01 -[#1F6F8B]-> U117
-A01 -[#1F6F8B]-> U118
-A01 -[#1F6F8B]-> U119
-A01 -[#1F6F8B]-> U120
-A01 -[#1F6F8B]-> U121
-A01 -[#1F6F8B]-> U122
-A01 -[#1F6F8B]-> U123
-A01 -[#1F6F8B]-> U124
-A01 -[#1F6F8B]-> U125
-A01 -[#1F6F8B]-> U126
-A01 -[#1F6F8B]-> U127
-A01 -[#1F6F8B]-> U128
-A01 -[#1F6F8B]-> U143
-A01 -[#1F6F8B]-> U144
-A01 -[#1F6F8B]-> U145
-A01 -[#1F6F8B]-> U147
-A01 -[#1F6F8B]-> U148
-A02 -[#2E7D46]-> U006
-A02 -[#2E7D46]-> U009
-A02 -[#2E7D46]-> U080
-A02 -[#2E7D46]-> U081
-A03 -[#8C4A9E]-> U006
-A03 -[#8C4A9E]-> U010
-A03 -[#8C4A9E]-> U011
-A03 -[#8C4A9E]-> U080
-A03 -[#8C4A9E]-> U081
-A03 -[#8C4A9E]-> U146
-A04 -[#8A6D1F]-> U106
-A05 -[#B4432B]-> U080
-A05 -[#B4432B]-> U081
+A01 -[#1F6F8B]- U005
+A01 -[#1F6F8B]- U006
+A01 -[#1F6F8B]- U007
+A01 -[#1F6F8B]- U008
+A01 -[#1F6F8B]- U046
+A01 -[#1F6F8B]- U106
+A01 -[#1F6F8B]- U116
+A01 -[#1F6F8B]- U117
+A01 -[#1F6F8B]- U118
+A01 -[#1F6F8B]- U119
+A01 -[#1F6F8B]- U120
+A01 -[#1F6F8B]- U121
+A01 -[#1F6F8B]- U122
+A01 -[#1F6F8B]- U123
+A01 -[#1F6F8B]- U124
+A01 -[#1F6F8B]- U125
+A01 -[#1F6F8B]- U126
+A01 -[#1F6F8B]- U127
+A01 -[#1F6F8B]- U128
+A01 -[#1F6F8B]- U143
+A01 -[#1F6F8B]- U144
+A01 -[#1F6F8B]- U145
+A01 -[#1F6F8B]- U147
+A01 -[#1F6F8B]- U148
+A02 -[#2E7D46]- U006
+A02 -[#2E7D46]- U009
+A02 -[#2E7D46]- U080
+A02 -[#2E7D46]- U081
+A03 -[#8C4A9E]- U006
+A03 -[#8C4A9E]- U010
+A03 -[#8C4A9E]- U011
+A03 -[#8C4A9E]- U080
+A03 -[#8C4A9E]- U081
+A03 -[#8C4A9E]- U146
+A04 -[#8A6D1F]- U106
+A05 -[#B4432B]- U080
+A05 -[#B4432B]- U081
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U005 ..> U125 : <<include>>
@@ -128,5 +133,16 @@ U126 ..> U125 : <<include>>
 U127 ..> U046 : <<include>>
 U127 ..> U006 : <<include>>
 U128 ..> U006 : <<include>>
+U005 ..> F_STOCK : <<include>>
+
+' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
+F_PROMO ..> U005 : <<extend>>
+note on link
+  Punto de extension: la cantidad de un item alcanza el umbral de promocion por volumen
+end note
+F_RECAR ..> U005 : <<extend>>
+note on link
+  Punto de extension: el medio de pago elegido es Transferencia
+end note
 
 @enduml

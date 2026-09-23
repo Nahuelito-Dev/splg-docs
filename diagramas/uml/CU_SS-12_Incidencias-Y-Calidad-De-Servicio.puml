@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -47,23 +49,23 @@ rectangle "SS-12 Incidencias y Calidad de Servicio" {
   usecase "CU-066\nConsultar Historial de\nCalificaciones Recibidas" as U066 #back:FFFFFF;line:4A7488
 }
 
-A01 -[#1F6F8B]-> U064
-A01 -[#1F6F8B]-> U065
-A02 -[#2E7D46]-> U060
-A02 -[#2E7D46]-> U062
-A02 -[#2E7D46]-> U064
-A02 -[#2E7D46]-> U065
-A03 -[#8C4A9E]-> U060
-A03 -[#8C4A9E]-> U061
-A03 -[#8C4A9E]-> U062
-A03 -[#8C4A9E]-> U063
-A03 -[#8C4A9E]-> U065
-A03 -[#8C4A9E]-> U066
-A05 -[#B4432B]-> U060
-A05 -[#B4432B]-> U061
-A05 -[#B4432B]-> U062
-A05 -[#B4432B]-> U063
-A05 -[#B4432B]-> U065
-A05 -[#B4432B]-> U066
+A01 -[#1F6F8B]- U064
+A01 -[#1F6F8B]- U065
+A02 -[#2E7D46]- U060
+A02 -[#2E7D46]- U062
+A02 -[#2E7D46]- U064
+A02 -[#2E7D46]- U065
+A03 -[#8C4A9E]- U060
+A03 -[#8C4A9E]- U061
+A03 -[#8C4A9E]- U062
+A03 -[#8C4A9E]- U063
+A03 -[#8C4A9E]- U065
+A03 -[#8C4A9E]- U066
+A05 -[#B4432B]- U060
+A05 -[#B4432B]- U061
+A05 -[#B4432B]- U062
+A05 -[#B4432B]- U063
+A05 -[#B4432B]- U065
+A05 -[#B4432B]- U066
 
 @enduml

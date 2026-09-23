@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -43,14 +45,14 @@ rectangle "SS-11 Cobertura Geográfica" {
   usecase "CU-059\nEliminar Zona de Cobertura" as U059 #back:FFFFFF;line:8E5566
 }
 
-A01 -[#1F6F8B]-> U058
-A03 -[#8C4A9E]-> U056
-A03 -[#8C4A9E]-> U057
-A03 -[#8C4A9E]-> U058
-A03 -[#8C4A9E]-> U059
-A05 -[#B4432B]-> U056
-A05 -[#B4432B]-> U057
-A05 -[#B4432B]-> U058
-A05 -[#B4432B]-> U059
+A01 -[#1F6F8B]- U058
+A03 -[#8C4A9E]- U056
+A03 -[#8C4A9E]- U057
+A03 -[#8C4A9E]- U058
+A03 -[#8C4A9E]- U059
+A05 -[#B4432B]- U056
+A05 -[#B4432B]- U057
+A05 -[#B4432B]- U058
+A05 -[#B4432B]- U059
 
 @enduml

@@ -53,7 +53,10 @@ for m in re.finditer(r'\*\*Código:\*\*\s*(CU-\d+)\s*\|\s*\*\*Caso de Uso:\*\*\s
 a2 = next(i for i, x in enumerate(lin) if re.match(r'^## 5\. ', x))
 b2 = next(i for i, x in enumerate(lin) if re.match(r'^## 6\. ', x))
 blk2 = "\n".join(lin[a2:b2])
-for m in re.finditer(r'^####\s+\S+\s+(CU-\d+)\s+—.*?\|\s*\*\*Estado\*\*\s*\|\s*([^|]+)\|', blk2, re.S | re.M):
+# El encabezado puede traer uno o dos marcadores antes del codigo
+# ("Importante · automático CU-105"): con \S+ se salteaban esos casos y los
+# cuatro modulos inteligentes salian dibujados como si estuvieran construidos.
+for m in re.finditer(r'^####\s+.*?(CU-\d+)\s+—.*?\|\s*\*\*Estado\*\*\s*\|\s*([^|]+)\|', blk2, re.S | re.M):
     if m.group(1) in casos:
         casos[m.group(1)]["pendiente"] = not m.group(2).strip().lower().startswith("implementado")
 
@@ -85,6 +88,37 @@ INCLUYE = {
   "SS-13": [("CU-135","CU-133"), ("CU-068","CU-135"), ("CU-134","CU-133"),
             ("CU-108","CU-071")],
   "SS-03": [("CU-149","CU-015")],
+  "SS-09": [("CU-044","CU-045")],
+}
+
+# Casos de uso factorizados: comportamiento comun que otros casos reutilizan
+# (<<include>>) o que se agrega solo si se cumple una condicion (<<extend>>).
+# No llevan codigo CU-XXX porque no son algo que el actor pida por separado:
+# son parte de otro caso. Se dibujan igual porque la tabla 7.7 del Doc 1 los
+# declara y la catedra pide ver la relacion en el diagrama.
+FACTORIZADO = {
+  "F-STOCK": "Reservar Stock",
+  "F-AVISO": "Notificar Cliente",
+  "F-PROMO": "Aplicar Promocion",
+  "F-RECAR": "Recargo por Transferencia",
+  "F-FOTO":  "Adjuntar Foto",
+}
+
+# base -> incluido factorizado
+INCLUYE_FACTOR = {
+  "SS-02": [("CU-005","F-STOCK")],
+  "SS-03": [("CU-015","F-AVISO")],
+  "SS-04": [("CU-018","F-AVISO"), ("CU-020","F-AVISO")],
+}
+
+# extension -> base, con su punto de extension. La flecha de <<extend>> va
+# SIEMPRE desde el caso opcional hacia el caso base, al reves que <<include>>.
+EXTIENDE = {
+  "SS-02": [("F-PROMO","CU-005","la cantidad de un item alcanza el umbral de promocion por volumen"),
+            ("F-RECAR","CU-005","el medio de pago elegido es Transferencia")],
+  "SS-03": [("CU-014","CU-013","no hay choferes disponibles en el radio")],
+  "SS-04": [("CU-019","CU-018","el chofer se encuentra cerca del destino")],
+  "SS-05": [("F-FOTO","CU-023","el cliente adjunta evidencia fotografica")],
 }
 
 CABECERA = """skinparam backgroundColor #FFFFFF
@@ -137,22 +171,37 @@ canal = [("01", "APPC", ""), ("02", "APPD", ""),
          ("04", "PROC", "sin intervención humana")]
 for k, destino, etiqueta in canal:
     et = f" : {etiqueta}" if etiqueta else ""
-    act.append(f'A{k} -[{COLOR_ACT[k]}]-> {destino}{et}')
+    act.append(f'A{k} -[{COLOR_ACT[k]}]- {destino}{et}')
 act += ["", "APPC --> BACK", "APPD --> BACK", "PANEL --> BACK", "PROC --> BACK",
         "", "@enduml"]
 escribir("CU_Sistema_Actores", "\n".join(act))
 
 # ---------- 2. contexto ----------
+# Un subsistema NO es un caso de uso: la elipse esta reservada para el caso de
+# uso. Un subsistema se dibuja como paquete. Y un diagrama de contexto muestra
+# ademas con que sistemas externos habla el nuestro, que es lo que faltaba.
 cnt = collections.Counter(v["ss"] for v in casos.values())
-ctx = ["@startuml", "title Diagrama de Casos de Uso del Sistema — SPLG",
-       "left to right direction", CABECERA]
+ctx = ["@startuml", "title Diagrama de Contexto del Sistema — SPLG",
+       "left to right direction", CABECERA,
+       "skinparam nodesep 14", "skinparam ranksep 45",
+       "skinparam package {", "  BorderColor #2C4257", "  FontSize 12", "}", ""]
 for k in sorted(ACTOR):
     ctx.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
-ctx += ["", 'rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {']
+ctx += ["", 'rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" as LIMITE {']
 for i, s in enumerate(subs):
     n = cnt[s]
-    ctx.append(f'  usecase "{s}\\n{SS[s]}\\n({n} caso{"s" if n != 1 else ""} de uso)" as {s.replace("-","")} '
-               f"#back:{TINTE[i % len(TINTE)][1:]};line:{BORDE[i % len(BORDE)][1:]}")
+    ctx.append(f'  package "{s}\\n{SS[s]}\\n({n} caso{"s" if n != 1 else ""} de uso)" as {s.replace("-","")} '
+               f'<<subsystem>> #back:{TINTE[i % len(TINTE)][1:]};line:{BORDE[i % len(BORDE)][1:]}')
+# Los 18 paquetes en una sola tira dan una lamina de 5400 px de ancho o de
+# 4000 de alto, segun la direccion. La cadena invisible los reparte en columnas
+# y deja el diagrama en una proporcion que entra en una hoja. Es el mismo
+# recurso que usa el diagrama completo.
+PORCOL = 6
+ids = [s.replace("-", "") for s in subs]
+for c in range(0, len(ids), PORCOL):
+    col = ids[c:c + PORCOL]
+    for a, b in zip(col, col[1:]):
+        ctx.append(f'  {a} -[hidden]- {b}')
 ctx += ["}", ""]
 por_ss = collections.defaultdict(set)
 for v in casos.values():
@@ -160,12 +209,20 @@ for v in casos.values():
         por_ss[k].add(v["ss"])
 for k in sorted(ACTOR):
     for s in sorted(por_ss[k]):
-        ctx.append(f'A{k} -[{COLOR_ACT[k]}]-> {s.replace("-","")}')
+        ctx.append(f'A{k} -[{COLOR_ACT[k]}]- {s.replace("-","")}')
+# Los servicios de terceros son parte del contexto: el sistema depende de ellos
+# y estan fuera de su limite.
+ctx += ["", 'actor "Firebase\\nidentidad y avisos" as XFB <<external>>',
+        'actor "MercadoPago\\npasarela de cobro" as XMP <<external>>',
+        'actor "Servicio de correo" as XML <<external>>', "",
+        "LIMITE ..> XFB : autentica y notifica",
+        "LIMITE ..> XMP : cobra y concilia",
+        "LIMITE ..> XML : envía comprobantes"]
 ctx += ["", "@enduml"]
 escribir("CU_Sistema_Diagrama-De-Contexto", "\n".join(ctx))
 
 # ---------- 3. completo ----------
-def eid(c): return "U" + c.replace("CU-", "")
+def eid(c): return c.replace("-", "_") if c.startswith("F-") else "U" + c.replace("CU-", "")
 def parte(txt, ancho=26):
     """Corta el nombre en lineas para que la elipse no salga apaisada."""
     out, l = [], ""
@@ -197,7 +254,7 @@ for i, s in enumerate(subs):
     for c in cs:
         com.append(f'    usecase "{c}\\n{parte(casos[c]["nombre"])}" as {eid(c)} #back:FFFFFF;line:{borde}')
         for k in casos[c]["actores"]:
-            flechas.append(f'A{k}{s.replace("-","")} -[{COLOR_ACT[k]}]-> {eid(c)}')
+            flechas.append(f'A{k}{s.replace("-","")} -[{COLOR_ACT[k]}]- {eid(c)}')
     com.append("  }")
 com += ["}", ""] + flechas
 com += ["", "' sin esta cadena invisible graphviz apila los 18 subsistemas en una sola tira"]
@@ -232,19 +289,20 @@ DEPENDE = [
 ]
 mapa = ["@startuml", f"title Subsistemas del Proyecto — SPLG ({len(subs)} subsistemas · {len(casos)} casos de uso)",
         CABECERA, "skinparam nodesep 25", "skinparam ranksep 55",
-        "skinparam packageStyle rectangle", "", "left to right direction", "",
+        "skinparam package {", "  BorderColor #2C4257", "  FontSize 12", "}",
+        "", "left to right direction", "",
         'rectangle "SS-10 Multi-Distribuidora — restricción transversal:'
         '\\ntodo subsistema de negocio opera acotado a la distribuidora del usuario" as R10 '
         '#back:F3F1E4;line:7A7340 {']
 for alias, grupo, titulo, borde in (("GNEG", NEGOCIO, "Subsistemas de negocio", "3C6E8F"),
                                     ("GSOP", [s for s in subs if s not in NEGOCIO and s != "SS-10"],
                                      "Subsistemas de soporte", "5A5896")):
-    mapa.append(f'  rectangle "{titulo}" as {alias} #back:FFFFFF;line:{borde} ' + "{")
+    mapa.append(f'  package "{titulo}" as {alias} #back:FFFFFF;line:{borde} ' + "{")
     for s in grupo:
         i = subs.index(s)
         n = cnt[s]
-        mapa.append(f'    rectangle "**{s}**\\n{SS[s]}\\n({n} caso{"s" if n != 1 else ""})" as M{s.replace("-","")} '
-                    f'#back:{TINTE[i % len(TINTE)][1:]};line:{BORDE[i % len(BORDE)][1:]}')
+        mapa.append(f'    package "**{s}**\\n{SS[s]}\\n({n} caso{"s" if n != 1 else ""})" as M{s.replace("-","")} '
+                    f'<<subsystem>> #back:{TINTE[i % len(TINTE)][1:]};line:{BORDE[i % len(BORDE)][1:]}')
     mapa.append("  }")
 mapa += ["}", ""]
 def nodo(s):
@@ -315,7 +373,9 @@ for i, s in enumerate(subs):
     d = ["@startuml", f"title {s} — {SS[s]} ({len(cs)} casos de uso)",
          "left to right direction", CABECERA, "skinparam nodesep 18", "skinparam ranksep 70",
          "skinparam usecase {", "  BorderColor<<pendiente>> #9C4436",
-         "  BackgroundColor<<pendiente>> #F6E4E1", "}", ""]
+         "  BackgroundColor<<pendiente>> #F6E4E1",
+         "  BorderColor<<factorizado>> #6B7683",
+         "  BackgroundColor<<factorizado>> #F2F4F6", "}", ""]
     for k in quienes:
         d.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
     d.append("")
@@ -325,18 +385,38 @@ for i, s in enumerate(subs):
         # el estereotipo va antes del color; al reves plantuml no lo toma
         d.append(f'  usecase "{c}\\n{parte(casos[c]["nombre"], 30)}" as {eid(c)}{est}'
                  f' #back:FFFFFF;line:{borde}')
+    # los factorizados que participen de alguna relacion de este subsistema
+    usados = sorted({x for a, b in INCLUYE_FACTOR.get(s, []) for x in (a, b)
+                     if x.startswith("F-")}
+                  | {a for a, b, _ in EXTIENDE.get(s, []) if a.startswith("F-")})
+    for fc in usados:
+        d.append(f'  usecase "{parte(FACTORIZADO[fc], 30)}" as {eid(fc)} <<factorizado>>'
+                 f' #back:FFFFFF;line:{borde}')
     d += ["}", ""]
+    # La asociacion actor-caso de uso es una asociacion, no una dependencia:
+    # en UML va sin punta de flecha. La flecha significaria navegabilidad, que
+    # es una decision de diseno y no corresponde a un diagrama de requisitos.
     for k in quienes:
         for c in cs:
             if k in casos[c]["actores"]:
-                d.append(f'A{k} -[{COLOR_ACT[k]}]-> {eid(c)}')
+                d.append(f'A{k} -[{COLOR_ACT[k]}]- {eid(c)}')
     rel = [(a, b) for a, b in INCLUYE.get(s, [])
            if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] == s]
+    rel += [(a, b) for a, b in INCLUYE_FACTOR.get(s, [])]
     if rel:
         d.append("")
         d.append("' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>")
         for a, b in rel:
             d.append(f'{eid(a)} ..> {eid(b)} : <<include>>')
+    ext = EXTIENDE.get(s, [])
+    if ext:
+        d.append("")
+        d.append("' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.")
+        for a, b, punto in ext:
+            d.append(f'{eid(a)} ..> {eid(b)} : <<extend>>')
+            d.append("note on link")
+            d.append(f'  Punto de extension: {punto}')
+            d.append("end note")
     d += ["", "@enduml"]
     nombre = os.path.basename(g[0])[:-5]
     escribir(nombre, "\n".join(d))

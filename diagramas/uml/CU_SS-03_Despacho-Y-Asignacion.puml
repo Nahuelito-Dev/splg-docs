@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Chofer\n(ACT-02)" as A02
@@ -42,20 +44,28 @@ rectangle "SS-03 Despacho y Asignación" {
   usecase "CU-014\nReintentar Asignación con\nRadio Expandido (Cron)" as U014 #back:FFFFFF;line:7B4B8A
   usecase "CU-015\nAceptar Pedido" as U015 #back:FFFFFF;line:7B4B8A
   usecase "CU-016\nRechazar / Ignorar Pedido" as U016 #back:FFFFFF;line:7B4B8A
-  usecase "CU-107\nAgrupar pedidos por recorrido" as U107 #back:FFFFFF;line:7B4B8A
+  usecase "CU-107\nAgrupar pedidos por recorrido" as U107 <<pendiente>> #back:FFFFFF;line:7B4B8A
   usecase "CU-149\nDespachar un Pedido Express a\nun Chofer en Moto" as U149 <<pendiente>> #back:FFFFFF;line:7B4B8A
+  usecase "Notificar Cliente" as F_AVISO <<factorizado>> #back:FFFFFF;line:7B4B8A
 }
 
-A02 -[#2E7D46]-> U015
-A02 -[#2E7D46]-> U016
-A02 -[#2E7D46]-> U107
-A03 -[#8C4A9E]-> U012
-A04 -[#8A6D1F]-> U013
-A04 -[#8A6D1F]-> U014
-A04 -[#8A6D1F]-> U107
-A04 -[#8A6D1F]-> U149
+A02 -[#2E7D46]- U015
+A02 -[#2E7D46]- U016
+A02 -[#2E7D46]- U107
+A03 -[#8C4A9E]- U012
+A04 -[#8A6D1F]- U013
+A04 -[#8A6D1F]- U014
+A04 -[#8A6D1F]- U107
+A04 -[#8A6D1F]- U149
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U149 ..> U015 : <<include>>
+U015 ..> F_AVISO : <<include>>
+
+' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
+U014 ..> U013 : <<extend>>
+note on link
+  Punto de extension: no hay choferes disponibles en el radio
+end note
 
 @enduml

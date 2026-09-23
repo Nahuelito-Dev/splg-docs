@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de Casos de Uso del Sistema — SPLG
+title Diagrama de Contexto del Sistema — SPLG
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -25,92 +25,122 @@ skinparam rectangle {
   FontStyle bold
 }
 
+skinparam nodesep 14
+skinparam ranksep 45
+skinparam package {
+  BorderColor #2C4257
+  FontSize 12
+}
+
 actor "Cliente\n(ACT-01)" as A01
 actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
 
-rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
-  usecase "SS-01\nAutenticación y Usuarios\n(11 casos de uso)" as SS01 #back:E7F0F6;line:3C6E8F
-  usecase "SS-02\nGestión de Pedidos\n(30 casos de uso)" as SS02 #back:E9F4EA;line:3F7A50
-  usecase "SS-03\nDespacho y Asignación\n(7 casos de uso)" as SS03 #back:F5ECF7;line:7B4B8A
-  usecase "SS-04\nSeguimiento en Tiempo Real\n(8 casos de uso)" as SS04 #back:FBF2DE;line:8A7326
-  usecase "SS-05\nReclamos\n(3 casos de uso)" as SS05 #back:FAE8E3;line:9C5A46
-  usecase "SS-06\nReportes y Dashboard\n(5 casos de uso)" as SS06 #back:E4F2F1;line:3E7C79
-  usecase "SS-07\nGestión de Choferes y Vehículos\n(24 casos de uso)" as SS07 #back:F0EEF9;line:5A5896
-  usecase "SS-08\nGestión de Productos e Inventario\n(6 casos de uso)" as SS08 #back:EFF6E2;line:5E7A3A
-  usecase "SS-09\nFranjas Horarias\n(5 casos de uso)" as SS09 #back:FDEFE6;line:A26A45
-  usecase "SS-10\nMulti-Distribuidora\n(4 casos de uso)" as SS10 #back:E6EEF7;line:44608B
-  usecase "SS-11\nCobertura Geográfica\n(4 casos de uso)" as SS11 #back:F7ECEF;line:8E5566
-  usecase "SS-12\nIncidencias y Calidad de Servicio\n(7 casos de uso)" as SS12 #back:EDF5F9;line:4A7488
-  usecase "SS-13\nTrazabilidad de Envases\n(10 casos de uso)" as SS13 #back:F3F1E4;line:7A7340
-  usecase "SS-14\nPagos y Conciliación\n(1 caso de uso)" as SS14 #back:E9EFE6;line:4E6B4A
-  usecase "SS-15\nReservas Programadas\n(6 casos de uso)" as SS15 #back:F8EDF3;line:8A5674
-  usecase "SS-16\nAdministración de Cuentas y Roles\n(12 casos de uso)" as SS16 #back:E8F1EC;line:4B7560
-  usecase "SS-17\nNotificaciones y Mensajería\n(5 casos de uso)" as SS17 #back:F5F0E8;line:7C6B4C
-  usecase "SS-18\nObservabilidad y Operación\n(1 caso de uso)" as SS18 #back:ECEDF6;line:5B5F87
+rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" as LIMITE {
+  package "SS-01\nAutenticación y Usuarios\n(11 casos de uso)" as SS01 <<subsystem>> #back:E7F0F6;line:3C6E8F
+  package "SS-02\nGestión de Pedidos\n(30 casos de uso)" as SS02 <<subsystem>> #back:E9F4EA;line:3F7A50
+  package "SS-03\nDespacho y Asignación\n(7 casos de uso)" as SS03 <<subsystem>> #back:F5ECF7;line:7B4B8A
+  package "SS-04\nSeguimiento en Tiempo Real\n(8 casos de uso)" as SS04 <<subsystem>> #back:FBF2DE;line:8A7326
+  package "SS-05\nReclamos\n(3 casos de uso)" as SS05 <<subsystem>> #back:FAE8E3;line:9C5A46
+  package "SS-06\nReportes y Dashboard\n(5 casos de uso)" as SS06 <<subsystem>> #back:E4F2F1;line:3E7C79
+  package "SS-07\nGestión de Choferes y Vehículos\n(24 casos de uso)" as SS07 <<subsystem>> #back:F0EEF9;line:5A5896
+  package "SS-08\nGestión de Productos e Inventario\n(6 casos de uso)" as SS08 <<subsystem>> #back:EFF6E2;line:5E7A3A
+  package "SS-09\nFranjas Horarias\n(5 casos de uso)" as SS09 <<subsystem>> #back:FDEFE6;line:A26A45
+  package "SS-10\nMulti-Distribuidora\n(4 casos de uso)" as SS10 <<subsystem>> #back:E6EEF7;line:44608B
+  package "SS-11\nCobertura Geográfica\n(4 casos de uso)" as SS11 <<subsystem>> #back:F7ECEF;line:8E5566
+  package "SS-12\nIncidencias y Calidad de Servicio\n(7 casos de uso)" as SS12 <<subsystem>> #back:EDF5F9;line:4A7488
+  package "SS-13\nTrazabilidad de Envases\n(10 casos de uso)" as SS13 <<subsystem>> #back:F3F1E4;line:7A7340
+  package "SS-14\nPagos y Conciliación\n(1 caso de uso)" as SS14 <<subsystem>> #back:E9EFE6;line:4E6B4A
+  package "SS-15\nReservas Programadas\n(6 casos de uso)" as SS15 <<subsystem>> #back:F8EDF3;line:8A5674
+  package "SS-16\nAdministración de Cuentas y Roles\n(12 casos de uso)" as SS16 <<subsystem>> #back:E8F1EC;line:4B7560
+  package "SS-17\nNotificaciones y Mensajería\n(5 casos de uso)" as SS17 <<subsystem>> #back:F5F0E8;line:7C6B4C
+  package "SS-18\nObservabilidad y Operación\n(1 caso de uso)" as SS18 <<subsystem>> #back:ECEDF6;line:5B5F87
+  SS01 -[hidden]- SS02
+  SS02 -[hidden]- SS03
+  SS03 -[hidden]- SS04
+  SS04 -[hidden]- SS05
+  SS05 -[hidden]- SS06
+  SS07 -[hidden]- SS08
+  SS08 -[hidden]- SS09
+  SS09 -[hidden]- SS10
+  SS10 -[hidden]- SS11
+  SS11 -[hidden]- SS12
+  SS13 -[hidden]- SS14
+  SS14 -[hidden]- SS15
+  SS15 -[hidden]- SS16
+  SS16 -[hidden]- SS17
+  SS17 -[hidden]- SS18
 }
 
-A01 -[#1F6F8B]-> SS01
-A01 -[#1F6F8B]-> SS02
-A01 -[#1F6F8B]-> SS04
-A01 -[#1F6F8B]-> SS05
-A01 -[#1F6F8B]-> SS08
-A01 -[#1F6F8B]-> SS09
-A01 -[#1F6F8B]-> SS11
-A01 -[#1F6F8B]-> SS12
-A01 -[#1F6F8B]-> SS15
-A01 -[#1F6F8B]-> SS16
-A01 -[#1F6F8B]-> SS17
-A01 -[#1F6F8B]-> SS18
-A02 -[#2E7D46]-> SS01
-A02 -[#2E7D46]-> SS02
-A02 -[#2E7D46]-> SS03
-A02 -[#2E7D46]-> SS04
-A02 -[#2E7D46]-> SS07
-A02 -[#2E7D46]-> SS12
-A02 -[#2E7D46]-> SS13
-A02 -[#2E7D46]-> SS15
-A02 -[#2E7D46]-> SS16
-A02 -[#2E7D46]-> SS17
-A02 -[#2E7D46]-> SS18
-A03 -[#8C4A9E]-> SS01
-A03 -[#8C4A9E]-> SS02
-A03 -[#8C4A9E]-> SS03
-A03 -[#8C4A9E]-> SS04
-A03 -[#8C4A9E]-> SS05
-A03 -[#8C4A9E]-> SS06
-A03 -[#8C4A9E]-> SS07
-A03 -[#8C4A9E]-> SS08
-A03 -[#8C4A9E]-> SS09
-A03 -[#8C4A9E]-> SS11
-A03 -[#8C4A9E]-> SS12
-A03 -[#8C4A9E]-> SS13
-A03 -[#8C4A9E]-> SS15
-A03 -[#8C4A9E]-> SS16
-A03 -[#8C4A9E]-> SS17
-A03 -[#8C4A9E]-> SS18
-A04 -[#8A6D1F]-> SS01
-A04 -[#8A6D1F]-> SS02
-A04 -[#8A6D1F]-> SS03
-A04 -[#8A6D1F]-> SS07
-A04 -[#8A6D1F]-> SS13
-A04 -[#8A6D1F]-> SS14
-A04 -[#8A6D1F]-> SS15
-A04 -[#8A6D1F]-> SS16
-A04 -[#8A6D1F]-> SS17
-A04 -[#8A6D1F]-> SS18
-A05 -[#B4432B]-> SS01
-A05 -[#B4432B]-> SS02
-A05 -[#B4432B]-> SS04
-A05 -[#B4432B]-> SS09
-A05 -[#B4432B]-> SS10
-A05 -[#B4432B]-> SS11
-A05 -[#B4432B]-> SS12
-A05 -[#B4432B]-> SS13
-A05 -[#B4432B]-> SS15
-A05 -[#B4432B]-> SS16
-A05 -[#B4432B]-> SS17
+A01 -[#1F6F8B]- SS01
+A01 -[#1F6F8B]- SS02
+A01 -[#1F6F8B]- SS04
+A01 -[#1F6F8B]- SS05
+A01 -[#1F6F8B]- SS08
+A01 -[#1F6F8B]- SS09
+A01 -[#1F6F8B]- SS11
+A01 -[#1F6F8B]- SS12
+A01 -[#1F6F8B]- SS15
+A01 -[#1F6F8B]- SS16
+A01 -[#1F6F8B]- SS17
+A01 -[#1F6F8B]- SS18
+A02 -[#2E7D46]- SS01
+A02 -[#2E7D46]- SS02
+A02 -[#2E7D46]- SS03
+A02 -[#2E7D46]- SS04
+A02 -[#2E7D46]- SS07
+A02 -[#2E7D46]- SS12
+A02 -[#2E7D46]- SS13
+A02 -[#2E7D46]- SS15
+A02 -[#2E7D46]- SS16
+A02 -[#2E7D46]- SS17
+A02 -[#2E7D46]- SS18
+A03 -[#8C4A9E]- SS01
+A03 -[#8C4A9E]- SS02
+A03 -[#8C4A9E]- SS03
+A03 -[#8C4A9E]- SS04
+A03 -[#8C4A9E]- SS05
+A03 -[#8C4A9E]- SS06
+A03 -[#8C4A9E]- SS07
+A03 -[#8C4A9E]- SS08
+A03 -[#8C4A9E]- SS09
+A03 -[#8C4A9E]- SS11
+A03 -[#8C4A9E]- SS12
+A03 -[#8C4A9E]- SS13
+A03 -[#8C4A9E]- SS15
+A03 -[#8C4A9E]- SS16
+A03 -[#8C4A9E]- SS17
+A03 -[#8C4A9E]- SS18
+A04 -[#8A6D1F]- SS01
+A04 -[#8A6D1F]- SS02
+A04 -[#8A6D1F]- SS03
+A04 -[#8A6D1F]- SS07
+A04 -[#8A6D1F]- SS13
+A04 -[#8A6D1F]- SS14
+A04 -[#8A6D1F]- SS15
+A04 -[#8A6D1F]- SS16
+A04 -[#8A6D1F]- SS17
+A04 -[#8A6D1F]- SS18
+A05 -[#B4432B]- SS01
+A05 -[#B4432B]- SS02
+A05 -[#B4432B]- SS04
+A05 -[#B4432B]- SS09
+A05 -[#B4432B]- SS10
+A05 -[#B4432B]- SS11
+A05 -[#B4432B]- SS12
+A05 -[#B4432B]- SS13
+A05 -[#B4432B]- SS15
+A05 -[#B4432B]- SS16
+A05 -[#B4432B]- SS17
+
+actor "Firebase\nidentidad y avisos" as XFB <<external>>
+actor "MercadoPago\npasarela de cobro" as XMP <<external>>
+actor "Servicio de correo" as XML <<external>>
+
+LIMITE ..> XFB : autentica y notifica
+LIMITE ..> XMP : cobra y concilia
+LIMITE ..> XML : envía comprobantes
 
 @enduml

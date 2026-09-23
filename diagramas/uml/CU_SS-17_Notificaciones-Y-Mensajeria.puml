@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
@@ -46,19 +48,19 @@ rectangle "SS-17 Notificaciones y Mensajería" {
   usecase "CU-102\nProbar el Servicio de Correo" as U102 #back:FFFFFF;line:7C6B4C
 }
 
-A01 -[#1F6F8B]-> U098
-A01 -[#1F6F8B]-> U102
-A02 -[#2E7D46]-> U098
-A02 -[#2E7D46]-> U102
-A03 -[#8C4A9E]-> U098
-A03 -[#8C4A9E]-> U099
-A03 -[#8C4A9E]-> U100
-A03 -[#8C4A9E]-> U101
-A03 -[#8C4A9E]-> U102
-A04 -[#8A6D1F]-> U102
-A05 -[#B4432B]-> U098
-A05 -[#B4432B]-> U099
-A05 -[#B4432B]-> U100
-A05 -[#B4432B]-> U101
+A01 -[#1F6F8B]- U098
+A01 -[#1F6F8B]- U102
+A02 -[#2E7D46]- U098
+A02 -[#2E7D46]- U102
+A03 -[#8C4A9E]- U098
+A03 -[#8C4A9E]- U099
+A03 -[#8C4A9E]- U100
+A03 -[#8C4A9E]- U101
+A03 -[#8C4A9E]- U102
+A04 -[#8A6D1F]- U102
+A05 -[#B4432B]- U098
+A05 -[#B4432B]- U099
+A05 -[#B4432B]- U100
+A05 -[#B4432B]- U101
 
 @enduml

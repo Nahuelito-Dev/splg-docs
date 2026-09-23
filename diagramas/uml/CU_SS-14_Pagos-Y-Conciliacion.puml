@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Sistema Automático\n(ACT-04)" as A04
@@ -38,6 +40,6 @@ rectangle "SS-14 Pagos y Conciliación" {
   usecase "CU-048\nProcesar Pago con MercadoPago" as U048 #back:FFFFFF;line:4E6B4A
 }
 
-A04 -[#8A6D1F]-> U048
+A04 -[#8A6D1F]- U048
 
 @enduml

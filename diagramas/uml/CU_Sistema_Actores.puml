@@ -39,11 +39,11 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
   rectangle "Backend\n(NestJS + PostgreSQL/PostGIS)" as BACK
 }
 
-A01 -[#1F6F8B]-> APPC
-A02 -[#2E7D46]-> APPD
-A03 -[#8C4A9E]-> PANEL : alcance: su distribuidora
-A05 -[#B4432B]-> PANEL : alcance: todas las distribuidoras
-A04 -[#8A6D1F]-> PROC : sin intervención humana
+A01 -[#1F6F8B]- APPC
+A02 -[#2E7D46]- APPD
+A03 -[#8C4A9E]- PANEL : alcance: su distribuidora
+A05 -[#B4432B]- PANEL : alcance: todas las distribuidoras
+A04 -[#8A6D1F]- PROC : sin intervención humana
 
 APPC --> BACK
 APPD --> BACK

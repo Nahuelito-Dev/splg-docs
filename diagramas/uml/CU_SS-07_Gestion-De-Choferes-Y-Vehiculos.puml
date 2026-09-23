@@ -30,6 +30,8 @@ skinparam ranksep 70
 skinparam usecase {
   BorderColor<<pendiente>> #9C4436
   BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Chofer\n(ACT-02)" as A02
@@ -46,7 +48,7 @@ rectangle "SS-07 Gestión de Choferes y Vehículos" {
   usecase "CU-051\nConsultar Listado de Vehículos" as U051 #back:FFFFFF;line:5A5896
   usecase "CU-096\nActualizar Perfil del Chofer" as U096 #back:FFFFFF;line:5A5896
   usecase "CU-097\nEliminar Chofer (baja lógica)" as U097 #back:FFFFFF;line:5A5896
-  usecase "CU-105\nPlanificar el mantenimiento y\nlas habilitaciones de la flota" as U105 #back:FFFFFF;line:5A5896
+  usecase "CU-105\nPlanificar el mantenimiento y\nlas habilitaciones de la flota" as U105 <<pendiente>> #back:FFFFFF;line:5A5896
   usecase "CU-109\nConsultar Detalle del Chofer" as U109 #back:FFFFFF;line:5A5896
   usecase "CU-110\nBuscar Chofer por Usuario" as U110 #back:FFFFFF;line:5A5896
   usecase "CU-111\nEditar Vehículo" as U111 #back:FFFFFF;line:5A5896
@@ -63,33 +65,33 @@ rectangle "SS-07 Gestión de Choferes y Vehículos" {
   usecase "CU-142\nAvisar los Vencimientos\nPróximos de la Flota" as U142 <<pendiente>> #back:FFFFFF;line:5A5896
 }
 
-A02 -[#2E7D46]-> U049
-A02 -[#2E7D46]-> U115
-A03 -[#8C4A9E]-> U031
-A03 -[#8C4A9E]-> U032
-A03 -[#8C4A9E]-> U033
-A03 -[#8C4A9E]-> U034
-A03 -[#8C4A9E]-> U035
-A03 -[#8C4A9E]-> U049
-A03 -[#8C4A9E]-> U051
-A03 -[#8C4A9E]-> U096
-A03 -[#8C4A9E]-> U097
-A03 -[#8C4A9E]-> U105
-A03 -[#8C4A9E]-> U109
-A03 -[#8C4A9E]-> U110
-A03 -[#8C4A9E]-> U111
-A03 -[#8C4A9E]-> U112
-A03 -[#8C4A9E]-> U113
-A03 -[#8C4A9E]-> U114
-A03 -[#8C4A9E]-> U115
-A03 -[#8C4A9E]-> U136
-A03 -[#8C4A9E]-> U137
-A03 -[#8C4A9E]-> U138
-A03 -[#8C4A9E]-> U139
-A03 -[#8C4A9E]-> U140
-A03 -[#8C4A9E]-> U141
-A04 -[#8A6D1F]-> U105
-A04 -[#8A6D1F]-> U142
+A02 -[#2E7D46]- U049
+A02 -[#2E7D46]- U115
+A03 -[#8C4A9E]- U031
+A03 -[#8C4A9E]- U032
+A03 -[#8C4A9E]- U033
+A03 -[#8C4A9E]- U034
+A03 -[#8C4A9E]- U035
+A03 -[#8C4A9E]- U049
+A03 -[#8C4A9E]- U051
+A03 -[#8C4A9E]- U096
+A03 -[#8C4A9E]- U097
+A03 -[#8C4A9E]- U105
+A03 -[#8C4A9E]- U109
+A03 -[#8C4A9E]- U110
+A03 -[#8C4A9E]- U111
+A03 -[#8C4A9E]- U112
+A03 -[#8C4A9E]- U113
+A03 -[#8C4A9E]- U114
+A03 -[#8C4A9E]- U115
+A03 -[#8C4A9E]- U136
+A03 -[#8C4A9E]- U137
+A03 -[#8C4A9E]- U138
+A03 -[#8C4A9E]- U139
+A03 -[#8C4A9E]- U140
+A03 -[#8C4A9E]- U141
+A04 -[#8A6D1F]- U105
+A04 -[#8A6D1F]- U142
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U136 ..> U113 : <<include>>
