@@ -445,7 +445,27 @@ Arreglo: separarlo en `POST /orders/{id}/release` (o `/reject`, que ya existe),
 dejar `/cancel` para cancelar de verdad, y no escribir `cancellationReason`
 cuando el pedido sigue vivo.
 
-### H-34 · `POST /coverage-zones` no valida el orden de las coordenadas — **defecto, medio**
+### H-34 · `POST /coverage-zones` no validaba el contenido del polígono — **defecto, medio · CORREGIDO Y REENCUADRADO**
+
+> **Corrección del 2026-09-23.** El encuadre original de este hallazgo estaba
+> mal. Decía que el endpoint permitía crear zonas inservibles por invertir las
+> coordenadas, y que eso pasaba en la práctica. **No es así:** el panel convierte
+> correctamente de `[lat, lng]` (Leaflet) a `[lng, lat]` (GeoJSON) en
+> `CoverageZones.tsx:117`, con el comentario que lo explica. Las zonas invertidas
+> que aparecieron en la base **las creó el script de pruebas, no la aplicación**.
+>
+> Lo que sí era cierto, y se corrigió: el DTO declaraba el polígono sólo con
+> `@IsArray()` y `@ArrayMinSize(3)`, sin mirar el contenido. Un punto con un
+> solo valor, o una latitud de -999, pasaban de largo hasta PostGIS.
+>
+> Además hay un límite que conviene tener presente: **invertir las coordenadas
+> no se puede detectar por rango** cuando los dos valores son plausibles.
+> `[-27.36, -55.90]` leído como `[lng, lat]` es un punto válido en el Atlántico
+> Sur. La validación atrapa lo imposible, no lo improbable. Si en algún momento
+> se quiere que el error sea irrepresentable, hay que cambiar el contrato a
+> puntos con nombre: `{"lat": -27.36, "lng": -55.90}`.
+
+#### Texto original del hallazgo
 El DTO declara `polygon` sólo con `@IsArray()`. Pasando los puntos como
 `[lat, lng]` en vez de `[lng, lat]`, el endpoint responde **201** y guarda una
 zona cuyo centro queda en `lat=-55.88, lng=-27.36` — o sea, en medio del
