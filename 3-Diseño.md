@@ -9,6 +9,165 @@
 
 ---
 
+
+## Índice de Figuras
+
+- Figura 1 — Despliegue y entornos
+- Figura 2 — CU-001 Iniciar Sesión — Diagrama de Interacción
+- Figura 3 — CU-048 Pago con pasarela y confirmación por webhook — Diagrama de Interacción
+- Figura 4 — CU-079 Confirmar Entrega Escaneando el QR — Diagrama de Interacción
+- Figura 5 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción
+- Figura 6 — DSD CU-005: Crear pedido con despacho automático
+- Figura 7 — DSD CU-013: Despacho por proximidad (vista general)
+- Figura 8 — DSD CU-017: Actualización de la ubicación del chofer
+- Figura 9 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1)
+- Figura 10 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal)
+- Figura 11 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar)
+- Figura 12 — DSD CU-072: Crear reserva programada con seña
+- Figura 13 — DSD CU-075 / CU-076 / CU-077: Los tres crons de reservas y pagos pendientes
+- Figura 14 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude)
+- Figura 15 — DSD CU-068 / CU-070: Ciclo de vida del envase físico
+- Figura 16 — DSD CU-048: Pago con pasarela y confirmación por webhook
+- Figura 17 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido
+- Figura 18 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio
+- Figura 19 — DSD CU-001: Iniciar Sesión
+- Figura 20 — DSD CU-002: Registrarse como Cliente
+- Figura 21 — DSD CU-003: Registrar Chofer
+- Figura 22 — DSD CU-004: Gestionar Perfil de Usuario
+- Figura 23 — DSD CU-047: Recuperar Contraseña
+- Figura 24 — DSD CU-050: Bloquear / Desbloquear Usuario
+- Figura 25 — DSD CU-082: Crear Usuario Base
+- Figura 26 — DSD CU-083: Buscar / Listar Usuarios
+- Figura 27 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)
+- Figura 28 — DSD CU-085: Eliminar Usuario (baja lógica)
+- Figura 29 — DSD CU-091: Validar Vigencia del Token de Sesión
+- Figura 30 — DSD CU-006: Consultar Detalle de Pedido
+- Figura 31 — DSD CU-007: Consultar Historial de Pedidos
+- Figura 32 — DSD CU-143: Declarar el Consumo Promedio al Registrarse
+- Figura 33 — DSD CU-144: Actualizar el Consumo Promedio Declarado
+- Figura 34 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra
+- Figura 35 — DSD CU-146: Consultar la Fecha Estimada de Recompra
+- Figura 36 — DSD CU-147: Realizar una Compra Express
+- Figura 37 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido
+- Figura 38 — DSD CU-008: Cancelar Pedido (Cliente)
+- Figura 39 — DSD CU-009: Cancelar Pedido (Chofer)
+- Figura 40 — DSD CU-010: Cancelar Pedido (Administrador)
+- Figura 41 — DSD CU-011: Listar Todos los Pedidos
+- Figura 42 — DSD CU-046: Consultar Direcciones de Entrega del Cliente
+- Figura 43 — DSD CU-116: Registrar Dirección de Entrega
+- Figura 44 — DSD CU-117: Consultar Detalle de una Dirección de Entrega
+- Figura 45 — DSD CU-118: Editar Dirección de Entrega
+- Figura 46 — DSD CU-119: Eliminar Dirección de Entrega
+- Figura 47 — DSD CU-120: Marcar una Dirección como Predeterminada
+- Figura 48 — DSD CU-121: Consultar la Dirección Predeterminada
+- Figura 49 — DSD CU-122: Agregar Ítem al Carrito
+- Figura 50 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito
+- Figura 51 — DSD CU-124: Quitar Ítem del Carrito
+- Figura 52 — DSD CU-125: Consultar el Carrito
+- Figura 53 — DSD CU-126: Vaciar el Carrito
+- Figura 54 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido
+- Figura 55 — DSD CU-128: Indicar Quién Recibe el Pedido
+- Figura 56 — DSD CU-080: Consultar el Pool de Pedidos Disponibles
+- Figura 57 — DSD CU-081: Consultar los Pedidos Asignados al Chofer
+- Figura 58 — DSD CU-012: Asignar Chofer Manualmente
+- Figura 59 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto
+- Figura 60 — DSD CU-018: Marcar Pedido "En Camino"
+- Figura 61 — DSD CU-019: Avisar Llegada al Cliente
+- Figura 62 — DSD CU-021: Recibir Notificaciones en Tiempo Real
+- Figura 63 — DSD CU-022: Activar / Desactivar Disponibilidad
+- Figura 64 — DSD CU-023: Registrar Reclamo
+- Figura 65 — DSD CU-024: Listar Reclamos
+- Figura 66 — DSD CU-025: Resolver Reclamo
+- Figura 67 — DSD CU-026: Ver Dashboard General
+- Figura 68 — DSD CU-027: Ver Reporte de Ventas por Chofer
+- Figura 69 — DSD CU-028: Ver Reporte de Ventas por Producto
+- Figura 70 — DSD CU-029: Ver Reporte por Método de Pago
+- Figura 71 — DSD CU-030: Ver Gráfico de Ventas
+- Figura 72 — DSD CU-031: Registrar Chofer
+- Figura 73 — DSD CU-032: Validar / Invalidar Chofer
+- Figura 74 — DSD CU-033: Activar / Desactivar Chofer (Admin)
+- Figura 75 — DSD CU-034: Registrar Vehículo del Chofer
+- Figura 76 — DSD CU-035: Consultar Listado de Choferes
+- Figura 77 — DSD CU-049: Consultar Balance / Ganancias del Chofer
+- Figura 78 — DSD CU-051: Consultar Listado de Vehículos
+- Figura 79 — DSD CU-096: Actualizar Perfil del Chofer
+- Figura 80 — DSD CU-097: Eliminar Chofer (baja lógica)
+- Figura 81 — DSD CU-109: Consultar Detalle del Chofer
+- Figura 82 — DSD CU-110: Buscar Chofer por Usuario
+- Figura 83 — DSD CU-111: Editar Vehículo
+- Figura 84 — DSD CU-112: Eliminar Vehículo
+- Figura 85 — DSD CU-113: Consultar Detalle del Vehículo
+- Figura 86 — DSD CU-114: Buscar Vehículo por Patente
+- Figura 87 — DSD CU-115: Consultar Vehículos de un Chofer
+- Figura 88 — DSD CU-136: Registrar el Seguro del Vehículo
+- Figura 89 — DSD CU-137: Registrar la Verificación Técnica Vehicular
+- Figura 90 — DSD CU-138: Registrar la Licencia de Conducir del Chofer
+- Figura 91 — DSD CU-139: Consultar los Vencimientos de la Flota
+- Figura 92 — DSD CU-140: Programar un Mantenimiento de Vehículo
+- Figura 93 — DSD CU-141: Registrar un Mantenimiento Realizado
+- Figura 94 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota
+- Figura 95 — DSD CU-036: Crear Producto (Garrafa)
+- Figura 96 — DSD CU-037: Actualizar Precio de Producto
+- Figura 97 — DSD CU-038: Actualizar Stock de Producto
+- Figura 98 — DSD CU-039: Configurar Promociones por Cantidad
+- Figura 99 — DSD CU-040: Activar / Desactivar Producto
+- Figura 100 — DSD CU-041: Consultar Catálogo de Productos
+- Figura 101 — DSD CU-042: Crear Franja Horaria
+- Figura 102 — DSD CU-044: Seleccionar Franja Horaria al Crear Pedido
+- Figura 103 — DSD CU-045: Consultar Franjas Horarias Disponibles
+- Figura 104 — DSD CU-103: Eliminar Franja Horaria
+- Figura 105 — C.1 DSD — CU-052: Registrar Distribuidora
+- Figura 106 — C.2 DSD — CU-053: Consultar Distribuidoras
+- Figura 107 — C.3 DSD — CU-054: Modificar Datos de la Distribuidora
+- Figura 108 — C.4 DSD — CU-055: Dar de Baja una Distribuidora
+- Figura 109 — C.5 DSD — CU-056: Definir Zona de Cobertura
+- Figura 110 — C.6 DSD — CU-057: Consultar Zonas de Cobertura
+- Figura 111 — C.7 DSD — CU-059: Eliminar Zona de Cobertura
+- Figura 112 — C.8 DSD — CU-060: Registrar Incidencia de Entrega
+- Figura 113 — C.9 DSD — CU-061: Listar Incidencias
+- Figura 114 — C.10 DSD — CU-062: Consultar Incidencias de un Pedido
+- Figura 115 — C.11 DSD — CU-063: Resolver Incidencia
+- Figura 116 — C.12 DSD — CU-066: Consultar Historial de Calificaciones Recibidas
+- Figura 117 — C.13 DSD — CU-067: Dar de Alta un Envase Físico
+- Figura 118 — C.14 DSD — CU-069: Consultar el Parque de Envases
+- Figura 119 — C.15 DSD — CU-071: Consultar Historial de Movimientos de un Envase
+- Figura 120 — DSD CU-132: Registrar la Revisión Periódica de un Envase
+- Figura 121 — DSD CU-133: Consultar la Vigencia de un Envase
+- Figura 122 — DSD CU-134: Consultar los Envases Próximos a Vencer
+- Figura 123 — DSD CU-135: Bloquear el Despacho de un Envase Vencido
+- Figura 124 — C.16 DSD — CU-073: Listar Reservas y Estado de la Seña
+- Figura 125 — C.17 DSD — CU-074: Confirmar Seña Cobrada en Efectivo
+- Figura 126 — C.18 DSD — CU-086: Registrar Administrador
+- Figura 127 — C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
+- Figura 128 — C.20 DSD — CU-088: Consultar Administradores
+- Figura 129 — C.21 DSD — CU-089: Gestionar Roles del Sistema
+- Figura 130 — C.22 DSD — CU-090: Sembrar los Roles Iniciales
+- Figura 131 — C.23 DSD — CU-092: Consultar Listado de Clientes
+- Figura 132 — C.24 DSD — CU-093: Validar / Invalidar Cliente
+- Figura 133 — C.25 DSD — CU-094: Actualizar Ubicación del Cliente
+- Figura 134 — C.26 DSD — CU-095: Eliminar Cliente (baja lógica)
+- Figura 135 — DSD CU-129: Consultar Detalle del Cliente
+- Figura 136 — DSD CU-130: Buscar Cliente por Usuario
+- Figura 137 — DSD CU-131: Editar Datos del Cliente
+- Figura 138 — C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 139 — C.28 DSD — CU-099: Consultar los Tokens de un Usuario
+- Figura 140 — C.29 DSD — CU-100: Enviar Notificación de Prueba
+- Figura 141 — C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 142 — C.31 DSD — CU-102: Probar el Servicio de Correo
+- Figura 143 — C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+- Figura 144 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 145 — DSD CU-106: Anticipar la recompra por consumo estimado
+- Figura 146 — DSD CU-107: Agrupar pedidos por recorrido
+- Figura 147 — DSD CU-108: Recuperar envases no devueltos
+- Figura 148 — DSD CU-043: Modificar Capacidad de Franja Horaria
+- Figura 149 — DSD CU-020: Confirmar entrega (declaración del chofer)
+- Figura 150 — Clases del Dominio de Pedidos
+- Figura 151 — Clases de Servicio (Backend — Capa de Aplicación)
+- Figura 152 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
+- Figura 153 — Diagrama Entidad-Relación (Mermaid)
+
+---
+
 ## Lista de Cambios
 
 | Nro | Fecha | Descripción | Autor |
@@ -101,9 +260,10 @@ El diseño cubre la **Fase 1** del sistema:
 
 ---
 
-**Figura — Despliegue y entornos**
 
 ![Arquitectura y despliegue](diagramas/uml/SPLG_Arquitectura.svg)
+
+**Figura 1 — Despliegue y entornos**
 
 > Sale de la configuración real: los archivos de composición de contenedores y los flujos de
 > trabajo de GitHub Actions de los seis repositorios. Las líneas punteadas del despliegue se
@@ -297,6 +457,8 @@ sequenceDiagram
     API-->>VM: 200 OK
     VM->>V: navigateToHome(role)
 ```
+
+**Figura 2 — CU-001 Iniciar Sesión — Diagrama de Interacción**
 
 #### Clases de Diseño Participantes
 
@@ -860,6 +1022,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 3 — CU-048 Pago con pasarela y confirmación por webhook — Diagrama de Interacción**
+
 > El diagrama de secuencia técnico completo, con la creación previa del checkout y la triple guarda de idempotencia, está documentado en §4.11.
 
 #### Clases de Diseño Participantes
@@ -982,6 +1146,8 @@ sequenceDiagram
         end
     end
 ```
+
+**Figura 4 — CU-079 Confirmar Entrega Escaneando el QR — Diagrama de Interacción**
 
 > El diagrama de secuencia técnico completo, junto con CU-078 (obtención del código por el chofer), está documentado en §4.9.
 
@@ -1119,6 +1285,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 5 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción**
+
 > El diagrama de secuencia técnico completo, junto con las variantes de chofer (CU-009) y administrador (CU-010) sobre el mismo endpoint, está documentado en `Casos-de-Uso.md`, sección "DSD — CU-008: Cancelar Pedido (Cliente)".
 
 #### Clases de Diseño Participantes
@@ -1148,6 +1316,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-005 Crear Pedido
     autonumber
     actor CLI as App Cliente
     participant CTRL as OrderController
@@ -1165,46 +1334,77 @@ sequenceDiagram
     participant ORD as OrderRepositoryPort
 
     CLI->>CTRL: POST /orders con el dto del pedido
+    activate CTRL
     CTRL->>SRV: create(dto, distributorId del header X-Distributor)
+    activate SRV
     SRV->>UC: execute(dto, distributorId)
+    activate UC
     opt Sin distributorId explicito
         UC->>DIS: getDefault()
+        activate DIS
         DIS-->>UC: distribuidora por defecto
+        deactivate DIS
     end
     UC->>QR: connect y startTransaction()
+    activate QR
     UC->>CZ: checkCoverage(distributorId, lat, lng)
+    activate CZ
     CZ-->>UC: covered y surcharge de zona
+    deactivate CZ
     opt Vienen scheduledDate y timeSlotId
         UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
+        activate TS
         TS-->>UC: cupo disponible con lock pesimista
+        deactivate TS
     end
     loop Por cada item del pedido
         UC->>STK: reserve(manager, gasCylinderId, quantity)
+        activate STK
         STK-->>UC: GasCylinder bloqueado y descontado
+        deactivate STK
         UC->>PRC: priceItem(price, promotions, quantity)
+        activate PRC
         PRC-->>UC: unitPrice y subtotal
+        deactivate PRC
     end
     UC->>PRC: applyPaymentSurcharge(total mas recargo de zona, paymentMethod)
+    activate PRC
     PRC-->>UC: totalAmount final
+    deactivate PRC
     UC->>QR: save(Order con items) y commitTransaction()
     alt paymentMethod MERCADOPAGO
         UC->>UC: createMercadoPagoCheckout(savedOrder, items, customer)
         Note over UC: NO se despacha: espera el webhook, ver DSD 4.11
     else Efectivo o transferencia
         UC->>ORQ: offerToNextDriver(savedOrder), ver DSD 4.4
+        activate ORQ
     end
-    UC->>NOT: sendOrderConfirmation(customerId, orderId, token)
-    UC->>RT: notifyAdmins(order:created, payload)
+    UC-)NOT: sendOrderConfirmation(customerId, orderId, token)
+    activate NOT
+    UC-)RT: notifyAdmins(order:created, payload)
+    activate RT
     UC->>ORD: findByIdFull(order_id)
+    activate ORD
     ORD-->>UC: Order con relaciones
+    deactivate ORD
     UC-->>CTRL: order y paymentUrl
+    deactivate UC
     CTRL-->>CLI: OrderResponseDto
+    deactivate CTRL
+    deactivate RT
+    deactivate NOT
+    deactivate ORQ
+    deactivate QR
+    deactivate SRV
 ```
+
+**Figura 6 — DSD CU-005: Crear pedido con despacho automático**
 
 ### 4.2 Crítico · automático DSD — CU-013: Despacho por proximidad (vista general)
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-013 Asignar Pedido Automaticamente Por Proximidad Vista General
     autonumber
     participant ORQ as DispatchOrchestratorService
     participant OFERTAS as DispatchOfferRepositoryPort
@@ -1214,30 +1414,47 @@ sequenceDiagram
     participant DGW as DriversGateway
 
     ORQ->>OFERTAS: findOfferedDriverIds(order.order_id)
+    activate OFERTAS
     OFERTAS-->>ORQ: choferes ya contactados
+    deactivate OFERTAS
     loop findNearestAvailable, radiusKm en 5, 10, 15, 20
         ORQ->>RT: findNearbyDrivers(lat, lng, radiusKm)
+        activate RT
         RT->>REDIS: getNearbyDrivers(lat, lng, radiusKm)
+        activate REDIS
         REDIS-->>RT: GEORADIUS sobre drivers:locations, orden ASC
+        deactivate REDIS
         RT-->>ORQ: driverIds por cercania
+        deactivate RT
         ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        activate DEL
         DEL-->>ORQ: choferes de la misma distribuidora
+        deactivate DEL
     end
     alt Hay un candidato aun no contactado
         ORQ->>OFERTAS: create(orderId, candidate, expiresAt, distributorId)
+        activate OFERTAS
         OFERTAS-->>ORQ: DispatchOffer en estado OFFERED
-        ORQ->>RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        deactivate OFERTAS
+        ORQ-)RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        activate RT
         RT->>DGW: notifyNewOrder(candidate, payload)
+        activate DGW
         DGW-->>ORQ: emit server:new-order-request en la room del chofer
+        deactivate DGW
     else Sin candidatos nuevos en ningun radio
         ORQ->>ORQ: logger.debug y devuelve null
     end
+    deactivate RT
 ```
+
+**Figura 7 — DSD CU-013: Despacho por proximidad (vista general)**
 
 ### 4.3 Crítico · automático DSD — CU-017: Actualización de la ubicación del chofer
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-017 Actualizar Ubicacion Gps Del Chofer
     autonumber
     participant APP as App Chofer
     participant DGW as DriversGateway
@@ -1246,19 +1463,31 @@ sequenceDiagram
     participant AGW as AdminGateway
 
     APP->>DGW: emit driver:update-location con userId, lat, lng
+    activate DGW
     alt Falta userId o lat o lng
         DGW->>DGW: logger.error y return sin registrar
     else Datos validos
         DGW->>REDIS: updateDriverLocation(userId, lat, lng)
+        activate REDIS
         REDIS-->>DGW: GEOADD drivers:locations lng lat userId
+        deactivate REDIS
         DGW->>REDIS: getDriverActiveOrder(userId)
+        activate REDIS
         REDIS-->>DGW: orderId y customerId, o null
+        deactivate REDIS
         opt El chofer tiene un pedido activo
-            DGW->>CGW: notifyCustomer(customerId, order:driver-location, payload)
-            DGW->>AGW: notifyAdmins(order:driver-location, payload)
+            DGW-)CGW: notifyCustomer(customerId, order:driver-location, payload)
+            activate CGW
+            DGW-)AGW: notifyAdmins(order:driver-location, payload)
+            activate AGW
         end
     end
+    deactivate AGW
+    deactivate CGW
+    deactivate DGW
 ```
+
+**Figura 8 — DSD CU-017: Actualización de la ubicación del chofer**
 
 ---
 
@@ -1281,6 +1510,7 @@ Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asign
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-013 Asignar Pedido Automaticamente Por Proximidad Oferta Al Mas Cercano
     autonumber
     participant UC as CreateOrderUseCase
     participant ORQ as DispatchOrchestratorService
@@ -1293,33 +1523,55 @@ sequenceDiagram
     participant FCM as FcmPort
 
     UC->>ORQ: offerToNextDriver(order)
+    activate ORQ
     ORQ->>OFERTAS: findOfferedDriverIds(order.order_id)
+    activate OFERTAS
     OFERTAS-->>ORQ: string[] choferes ya contactados
+    deactivate OFERTAS
 
     loop findNearestAvailable, radiusKm en 5, 10, 15, 20
         ORQ->>RT: findNearbyDrivers(lat, lng, radiusKm)
+        activate RT
         RT->>REDIS: getNearbyDrivers(lat, lng, radiusKm)
+        activate REDIS
         REDIS-->>RT: driverIds ordenados por cercania ASC
+        deactivate REDIS
         RT-->>ORQ: driverIds
+        deactivate RT
         ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        activate DEL
         DEL-->>ORQ: choferes de la misma distribuidora
+        deactivate DEL
         ORQ->>ORQ: filterByDistributor + descartar contactados
     end
 
     alt Hay un candidato nuevo
         ORQ->>OFERTAS: create(orderId, candidate, expiresAt, distributorId)
+        activate OFERTAS
         OFERTAS-->>ORQ: DispatchOffer con status OFFERED
-        ORQ->>RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        deactivate OFERTAS
+        ORQ-)RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        activate RT
         RT->>DGW: notifyNewOrder(candidate, payload)
+        activate DGW
         DGW-->>ORQ: emit server:new-order-request en room driver_id
-        ORQ->>NOT: sendOfferPushToDriver(candidate, orderId)
+        deactivate DGW
+        ORQ-)NOT: sendOfferPushToDriver(candidate, orderId)
+        activate NOT
         NOT->>FCM: sendToToken(token, data event NEW_ORDER)
+        activate FCM
         ORQ-->>UC: candidate driverId
+        deactivate ORQ
     else Sin choferes nuevos en ningun radio
         ORQ->>ORQ: logger.debug sin candidatos
         ORQ-->>UC: null
     end
+    deactivate FCM
+    deactivate NOT
+    deactivate RT
 ```
+
+**Figura 9 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1)**
 
 **Observaciones de diseño**
 
@@ -1336,6 +1588,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-014 Reintentar Asignacion Con Radio Expandido
     autonumber
     participant CRON as DispatchService
     participant REDIS as RedisService
@@ -1345,18 +1598,26 @@ sequenceDiagram
     participant OSRV as OrderService
 
     CRON->>REDIS: acquireLock(dispatch:tick, 12000)
+    activate REDIS
     alt No se obtuvo el lock, otra instancia esta procesando
         REDIS-->>CRON: null
+        deactivate REDIS
         CRON->>CRON: return sin procesar
     else Lock adquirido
         REDIS-->>CRON: Lock
         CRON->>ORQ: handleExpiredOffers()
+        activate ORQ
         ORQ->>OFERTAS: findExpired(now)
+        activate OFERTAS
         OFERTAS-->>ORQ: DispatchOffer[] vencidas en estado OFFERED
+        deactivate OFERTAS
         loop Por cada oferta vencida
             ORQ->>OFERTAS: updateStatus(offer_id, EXPIRED)
+            activate OFERTAS
             ORQ->>ORD: findByIdFull(offer.order_id)
+            activate ORD
             ORD-->>ORQ: Order o null
+            deactivate ORD
             alt isReofferable, status PENDING y sin delivery_id
                 ORQ->>ORQ: offerToNextDriver(order), ver DSD A.1
             else Pedido ya aceptado o cancelado
@@ -1365,18 +1626,26 @@ sequenceDiagram
         end
 
         CRON->>OSRV: findAvailableOrders(limit 50, offset 0)
+        activate OSRV
         OSRV-->>CRON: pedidos PENDING sin chofer
+        deactivate OSRV
         loop Por cada pedido con antiguedad mayor a MIN_AGE_MS
             CRON->>ORQ: ensureOffered(order)
             ORQ->>OFERTAS: hasActiveOffer(order.order_id)
             OFERTAS-->>ORQ: boolean
+            deactivate OFERTAS
             alt No tiene oferta activa
                 ORQ->>ORQ: offerToNextDriver(order)
             end
         end
         CRON->>REDIS: lock.release()
+        activate REDIS
     end
+    deactivate ORQ
+    deactivate REDIS
 ```
+
+**Figura 10 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal)**
 
 **Observaciones de diseño**
 
@@ -1392,6 +1661,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-015 / CU-016 Aceptar Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -1406,36 +1676,60 @@ sequenceDiagram
 
     alt El chofer ACEPTA, PATCH /orders/:id/status ACCEPTED
         CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
+        activate SRV
         SRV->>UCS: execute(id, ACCEPTED, deliveryId)
+        activate UCS
         UCS->>ORD: findByIdFull(id)
+        activate ORD
         ORD-->>UCS: Order
+        deactivate ORD
         UCS->>SM: transitionOrder(order, ACCEPTED)
+        activate SM
         SM-->>UCS: transicion valida
+        deactivate SM
         UCS->>DEL: findOne(delivery_id o user_id)
+        activate DEL
         DEL-->>UCS: Delivery con user
+        deactivate DEL
         UCS->>UCS: order.delivery_id, order.acceptedAt
         UCS->>UCS: order.deliveryCode = generateDeliveryCode()
         UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
+        activate ORQ
         ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
+        activate OFERTAS
         OFERTAS-->>ORQ: true
+        deactivate OFERTAS
         UCS->>ORD: save(order)
-        UCS->>RT: notifyCustomer(customer_id, order:accepted, payload)
-        UCS->>RT: notifyAdmins(order:accepted, payload)
-        UCS->>NOT: sendOrderConfirmation(customer_id, order_id, token)
+        activate ORD
+        UCS-)RT: notifyCustomer(customer_id, order:accepted, payload)
+        activate RT
+        UCS-)RT: notifyAdmins(order:accepted, payload)
+        UCS-)NOT: sendOrderConfirmation(customer_id, order_id, token)
+        activate NOT
         UCS-->>CTRL: Order actualizado
+        deactivate UCS
     else El chofer RECHAZA, POST /orders/:id/reject
         CTRL->>SRV: rejectOffer(id, user.user_id)
         SRV->>ORD: findByIdFull(id)
         ORD-->>SRV: Order
+        deactivate ORD
         SRV->>ORQ: onDriverRejected(order, driverId)
         ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, REJECTED)
+        activate OFERTAS
         OFERTAS-->>ORQ: true
+        deactivate OFERTAS
         alt isReofferable
             ORQ->>ORQ: offerToNextDriver(order), re-oferta inmediata
         end
         SRV-->>CTRL: rejected true
+        deactivate SRV
     end
+    deactivate NOT
+    deactivate RT
+    deactivate ORQ
 ```
+
+**Figura 11 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar)**
 
 **Observaciones de diseño**
 
@@ -1451,6 +1745,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-072 Crear Reserva Programada Con Sena
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -1465,39 +1760,63 @@ sequenceDiagram
     participant RT as RealtimeDispatchPort
 
     CTRL->>SRV: create(dto con isReservation, scheduledDate, depositAmount)
+    activate SRV
     SRV->>UC: execute(dto, distributorId)
+    activate UC
     alt isReservation sin scheduledDate
         UC-->>CTRL: BadRequestException, una reserva requiere scheduledDate
+        deactivate UC
     else Datos completos
         UC->>QR: startTransaction()
+        activate QR
         UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
+        activate TS
         TS-->>UC: cupo disponible con lock pesimista
+        deactivate TS
         loop Por cada item del pedido
             UC->>STK: reserve(manager, gasCylinderId, quantity)
+            activate STK
             STK-->>UC: GasCylinder bloqueado y descontado
+            deactivate STK
             UC->>PRC: priceItem(price, promotions, quantity)
+            activate PRC
             PRC-->>UC: unitPrice, subtotal
+            deactivate PRC
         end
         UC->>PRC: applyPaymentSurcharge(total, paymentMethod)
+        activate PRC
         PRC-->>UC: total con recargo
+        deactivate PRC
         UC->>QR: save(Order con status RESERVED, deposit_amount, deposit_paid false)
         UC->>QR: commitTransaction()
 
         alt Sena por MercadoPago
             UC->>PAY: createCheckout(orderId, amount deposit, isDeposit true, items)
+            activate PAY
             PAY->>GW: createCheckout(input)
+            activate GW
             GW-->>PAY: initPoint, preferenceId
+            deactivate GW
             PAY-->>UC: CreateCheckoutResult
+            deactivate PAY
         else Sena en efectivo
             UC->>UC: queda deposit_paid false hasta confirmDeposit del admin
         end
 
-        UC->>RT: notifyAdmins(order:created, payload)
+        UC-)RT: notifyAdmins(order:created, payload)
+        activate RT
         UC->>ORD: findByIdFull(order_id)
+        activate ORD
         ORD-->>UC: Order con relaciones
+        deactivate ORD
         UC-->>CTRL: order, paymentUrl
     end
+    deactivate RT
+    deactivate QR
+    deactivate SRV
 ```
+
+**Figura 12 — DSD CU-072: Crear reserva programada con seña**
 
 **Observaciones de diseño**
 
@@ -1513,6 +1832,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-075 / CU-076 / CU-077 Activar Reservas Vencidas Automaticamente
     autonumber
     participant RES as ReservationService
     participant OREP as RepositoryOrder
@@ -1524,44 +1844,66 @@ sequenceDiagram
 
     Note over RES: activateDueReservations, cron cada 5 minutos, CU-075
     RES->>OREP: find(status RESERVED, deposit_paid true, scheduled_date menor o igual a hoy)
+    activate OREP
     OREP-->>RES: reservas con dia cumplido
+    deactivate OREP
     loop Por cada reserva vencida
         RES->>SM: transitionOrder(order, PENDING)
+        activate SM
         RES->>OREP: save(order)
+        activate OREP
         RES->>ORD: findByIdFull(order_id)
+        activate ORD
         ORD-->>RES: Order completo con coordenadas e items
+        deactivate ORD
         RES->>ORQ: offerToNextDriver(full), ver DSD A.1
+        activate ORQ
     end
 
     Note over RES: expireUnpaidReservations, cron cada hora, CU-076
     RES->>OREP: find(status RESERVED, deposit_paid false, createdAt menor a cutoff)
     OREP-->>RES: reservas con sena impaga
+    deactivate OREP
     loop Por cada reserva impaga
         RES->>QR: startTransaction()
+        activate QR
         RES->>SM: transitionOrder(order, CANCELLED)
         RES->>QR: save(order)
         RES->>STK: restore(manager, items)
+        activate STK
         STK-->>RES: stock devuelto con lock pesimista
+        deactivate STK
         RES->>QR: commitTransaction()
     end
 
     Note over RES: expireUnpaidMercadoPagoOrders, cron cada 30 minutos, CU-077
     RES->>OREP: find(PENDING, mercadopago, gatewayPaymentId null, createdAt menor a cutoff)
+    activate OREP
     OREP-->>RES: pedidos con checkout abandonado
+    deactivate OREP
     loop Por cada pedido abandonado
         RES->>QR: startTransaction()
         RES->>QR: createQueryBuilder Order setLock pessimistic_write
         QR-->>RES: locked
+        deactivate QR
         alt Sigue PENDING y sin gatewayPaymentId
             RES->>SM: transitionOrder(locked, CANCELLED)
             RES->>QR: save(locked con cancellationReason)
+            activate QR
             RES->>STK: restore(manager, items)
+            activate STK
             RES->>QR: commitTransaction()
         else El webhook confirmo el pago un instante antes
             RES->>QR: commitTransaction sin tocar el pedido
         end
     end
+    deactivate STK
+    deactivate QR
+    deactivate ORQ
+    deactivate SM
 ```
+
+**Figura 13 — DSD CU-075 / CU-076 / CU-077: Los tres crons de reservas y pagos pendientes**
 
 **Observaciones de diseño**
 
@@ -1577,6 +1919,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-078 / CU-079 Obtener El Codigo De Entrega
     autonumber
     participant CHO as App Chofer
     participant CLI as App Cliente
@@ -1591,49 +1934,75 @@ sequenceDiagram
 
     Note over CHO,CTRL: CU-078, el chofer obtiene el codigo y lo muestra como QR
     CHO->>CTRL: GET /orders/:id/delivery-code
+    activate CTRL
     CTRL->>SRV: getDeliveryCode(orderId, userId, role)
+    activate SRV
     SRV->>ORD: findByIdFull(orderId)
+    activate ORD
     ORD-->>SRV: Order
+    deactivate ORD
     alt role DELIVERY y el pedido no es suyo
         SRV-->>CHO: ForbiddenException, pedido no asignado a tu usuario
+        deactivate SRV
     else Sin deliveryCode, pedido aun no aceptado
         SRV-->>CHO: BadRequestException, todavia no tiene codigo
     else Autorizado
         SRV-->>CHO: orderId, deliveryCode
         CHO->>CLI: muestra el QR en pantalla
+        activate CLI
     end
 
     Note over CLI,CTRL: CU-079, el cliente escanea el QR y confirma
     CLI->>CTRL: POST /orders/:id/confirm-delivery con code e Idempotency-Key
     CTRL->>SRV: confirmDelivery(id, code, userId, role)
+    activate SRV
     SRV->>UCD: execute(orderId, code, userId, role)
+    activate UCD
     UCD->>ORD: findByIdFull(orderId)
+    activate ORD
     ORD-->>UCD: Order
+    deactivate ORD
     alt role CUSTOMER y customer_id distinto de userId
         UCD-->>CLI: ForbiddenException
+        deactivate UCD
     else Ya esta DELIVERED
         UCD-->>CLI: Order sin reprocesar, idempotente
     else No esta ON_THE_WAY
         UCD-->>CLI: BadRequestException, el pedido no esta en camino
     else Estado valido
         UCD->>COD: compareDeliveryCode(order.deliveryCode, code)
+        activate COD
         COD-->>UCD: boolean con timingSafeEqual
+        deactivate COD
         alt Codigo invalido
             UCD-->>CLI: BadRequestException, codigo de entrega invalido
         else Codigo correcto
             UCD->>UCS: execute(order_id, DELIVERED)
+            activate UCS
             UCS->>UCS: deliveredAt, si CASH entonces paymentStatus PAID
             UCS->>RT: stopTracking(driverUserId)
+            activate RT
             UCS->>CYL: onOrderDelivered(order_id, distributor_id)
+            activate CYL
             CYL-->>UCS: cantidad de envases avanzados
+            deactivate CYL
             UCS->>ORD: save(order)
-            UCS->>RT: notifyCustomer(customer_id, order:delivered, payload)
-            UCS->>RT: notifyAdmins(order:delivered, payload)
+            activate ORD
+            UCS-)RT: notifyCustomer(customer_id, order:delivered, payload)
+            UCS-)RT: notifyAdmins(order:delivered, payload)
             UCS-->>UCD: Order DELIVERED
+            deactivate UCS
             UCD-->>CLI: OrderMapper.toDto(order)
         end
     end
+    deactivate RT
+    deactivate CLI
+    deactivate ORD
+    deactivate SRV
+    deactivate CTRL
 ```
+
+**Figura 14 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude)**
 
 **Observaciones de diseño**
 
@@ -1650,6 +2019,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-068 / CU-070 Asignar Envases A Un Pedido
     autonumber
     participant ADM as Admin o Chofer
     participant CTRL as CylinderController
@@ -1663,51 +2033,81 @@ sequenceDiagram
 
     Note over ADM,CS: CU-068, cargar los envases del pedido en el camion
     ADM->>CTRL: POST /cylinders/assign con orderId y serials
+    activate CTRL
     CTRL->>CS: assignToOrder(orderId, serials, distributorId, actorUserId)
+    activate CS
     CS->>OREP: findOne(order_id)
+    activate OREP
     OREP-->>CS: Order o null
+    deactivate OREP
     loop Por cada serial
         CS->>CS: findBySerial(serial, distributorId)
         CS->>CS: cylinder.current_order_id = orderId
         CS->>SM: assertTransition(FILLED, DISPATCHED)
+        activate SM
         SM-->>CS: transicion valida o InvalidCylinderTransitionError
+        deactivate SM
         CS->>CREP: save(cylinder con state DISPATCHED)
+        activate CREP
         CS->>MREP: save(CylinderMovement from FILLED to DISPATCHED)
+        activate MREP
     end
     CS-->>CTRL: Cylinder[] despachados
+    deactivate CS
 
     Note over ADM,CS: CU-070, transicion manual del envase
     ADM->>CTRL: PATCH /cylinders/:id/transition con toState
     CTRL->>CS: transition(id, dto, distributorId, actorUserId)
+    activate CS
     CS->>CREP: findOne(cylinder_id, distributor_id)
     CREP-->>CS: Cylinder
+    deactivate CREP
     alt toState WITH_CUSTOMER y viene orderId
         CS->>OREP: findOne(order_id)
+        activate OREP
         OREP-->>CS: customer_id del pedido
+        deactivate OREP
     end
     CS->>SM: assertTransition(fromState, toState)
+    activate SM
     CS->>CS: recordTransition aplica current_customer_id
     CS->>CREP: save(cylinder)
+    activate CREP
     CS->>MREP: save(CylinderMovement append-only)
     CS-->>CTRL: Cylinder
+    deactivate CS
 
     Note over UCS,CS: Hook automatico al entregar el pedido
     UCS->>ADP: onOrderDelivered(order_id, distributor_id)
+    activate ADP
     ADP->>CS: onOrderDelivered(orderId, distributorId)
+    activate CS
     CS->>CREP: find(current_order_id, state DISPATCHED, distributor_id)
     CREP-->>CS: Cylinder[] despachados en ese pedido
+    deactivate CREP
     alt No hay envases asignados
         CS-->>UCS: 0, no-op para distribuidoras sin modulo de envases
+        deactivate CS
     else Hay envases
         CS->>OREP: findOne(order_id) para el customer_id
+        activate OREP
         loop Por cada envase
             CS->>SM: assertTransition(DISPATCHED, WITH_CUSTOMER)
             CS->>CREP: save(cylinder con current_customer_id)
+            activate CREP
             CS->>MREP: save(CylinderMovement con nota entregado auto)
         end
         CS-->>UCS: cantidad de envases avanzados
     end
+    deactivate ADP
+    deactivate MREP
+    deactivate CREP
+    deactivate SM
+    deactivate OREP
+    deactivate CTRL
 ```
+
+**Figura 15 — DSD CU-068 / CU-070: Ciclo de vida del envase físico**
 
 **Observaciones de diseño**
 
@@ -1724,6 +2124,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-048 Procesar Pago Con Mercadopago
     autonumber
     participant UC as CreateOrderUseCase
     participant PAY as PaymentsService
@@ -1738,44 +2139,70 @@ sequenceDiagram
 
     Note over UC,MP: Creacion del checkout, el pedido NO se despacha todavia
     UC->>PAY: createCheckout(orderId, amount, isDeposit, items, payerEmail)
+    activate PAY
     PAY->>PREP: save(Payment con status PENDING, external_reference orderId)
+    activate PREP
     PREP-->>PAY: Payment de ledger
+    deactivate PREP
     PAY->>GW: createCheckout(orderId, items, payerEmail)
+    activate GW
     GW->>MP: Preference.create con external_reference y notification_url
+    activate MP
     MP-->>GW: init_point, preference id
+    deactivate MP
     GW-->>PAY: initPoint, preferenceId
+    deactivate GW
     PAY->>PREP: save(Payment con payment_url y metadata preferenceId)
+    activate PREP
     PAY-->>UC: CreateCheckoutResult
+    deactivate PAY
     UC-->>UC: devuelve paymentUrl al cliente
 
     Note over MP,ORQ: Notificacion de la pasarela
     MP->>WCTRL: POST /webhook/mercadopago con type, data.id, x-signature
+    activate WCTRL
     WCTRL->>PAY: verifyWebhookSignature(xSignature, xRequestId, dataId)
+    activate PAY
     PAY->>GW: verifyWebhookSignature(input)
+    activate GW
     GW-->>PAY: boolean con HMAC
+    deactivate GW
     alt Firma invalida
         WCTRL-->>MP: 200 received true sin procesar
+        deactivate WCTRL
     else Firma valida
         WCTRL->>UCP: execute(type, dataId)
+        activate UCP
         UCP->>PAY: confirmFromGateway(type, dataId)
         alt type distinto de payment o sin dataId
             PAY-->>UCP: null
+            deactivate PAY
         else Notificacion procesable
             PAY->>GW: getPayment(dataId)
+            activate GW
             GW->>MP: Payment.get(id)
+            activate MP
             MP-->>GW: status y external_reference reales
+            deactivate MP
             GW-->>PAY: GatewayPayment normalizado
+            deactivate GW
             PAY->>PREP: updateLedger, match por gateway_payment_id o external_reference
             PREP-->>PAY: is_deposit del registro
+            deactivate PREP
             PAY-->>UCP: externalReference, gatewayPaymentId, status, isDeposit
         end
         UCP->>ORD: findByIdFull(externalReference)
+        activate ORD
         ORD-->>UCP: Order o null
+        deactivate ORD
         alt status approved
             UCP->>QR: startTransaction y setLock pessimistic_write sobre Order
+            activate QR
             QR-->>UCP: locked
+            deactivate QR
             alt isTerminal(locked.status)
                 UCP->>QR: commit sin efectos, pago tardio ignorado
+                activate QR
             else Ya tiene gatewayPaymentId
                 UCP->>QR: commit sin efectos, reintento del webhook
             else locked.status RESERVED
@@ -1785,13 +2212,19 @@ sequenceDiagram
                 UCP->>QR: save(locked con paymentStatus PAID y gatewayPaymentId)
                 UCP->>QR: commitTransaction()
                 UCP->>ORQ: offerToNextDriver(order), ver DSD A.1
+                activate ORQ
             end
         else status rejected o cancelled
             UCP->>UCP: logger.log sin accion, ver TODO del use-case
         end
         WCTRL-->>MP: 200 received true
     end
+    deactivate ORQ
+    deactivate QR
+    deactivate UCP
 ```
+
+**Figura 16 — DSD CU-048: Pago con pasarela y confirmación por webhook**
 
 **Observaciones de diseño**
 
@@ -1809,6 +2242,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-058 / CU-005 Validar Cobertura De Una Direccion
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -1821,24 +2255,37 @@ sequenceDiagram
     participant PRC as OrderPricingService
 
     CTRL->>SRV: create(dto, distributorId del header X-Distributor)
+    activate SRV
     SRV->>UC: execute(dto, distributorId)
+    activate UC
     alt Sin distributorId explicito
         UC->>DIS: getDefault()
+        activate DIS
         DIS-->>UC: distribuidora por defecto
+        deactivate DIS
     end
     UC->>AREP: findOne(address_id, user_id)
+    activate AREP
     AREP-->>UC: UserAddress con latitude y longitude
+    deactivate AREP
     alt Direccion inexistente o de otro usuario
         UC-->>CTRL: NotFoundException, direccion no encontrada
+        deactivate UC
     else Direccion valida
         UC->>CZ: checkCoverage(distributorId, lat, lng)
+        activate CZ
         CZ->>ZREP: count(distributor_id, isActive true)
+        activate ZREP
         ZREP-->>CZ: total de zonas activas
+        deactivate ZREP
         alt La distribuidora no definio zonas
             CZ-->>UC: covered true, surcharge 0, no-op
+            deactivate CZ
         else Hay zonas definidas
             CZ->>ZREP: query ST_Contains ordenada por surcharge ASC limit 1
+            activate ZREP
             ZREP-->>CZ: zona contenedora o vacio
+            deactivate ZREP
             alt Ninguna zona contiene el punto
                 CZ-->>UC: covered false, surcharge 0
                 UC-->>CTRL: BadRequestException, direccion fuera de la zona de cobertura
@@ -1847,10 +2294,17 @@ sequenceDiagram
             end
         end
         UC->>STK: reserve(manager, gasCylinderId, quantity)
+        activate STK
         UC->>PRC: priceItem y applyPaymentSurcharge sobre el total mas el recargo de zona
+        activate PRC
         PRC-->>UC: totalAmount final
+        deactivate PRC
     end
+    deactivate STK
+    deactivate SRV
 ```
+
+**Figura 17 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido**
 
 **Observaciones de diseño**
 
@@ -1867,6 +2321,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-064 / CU-065 Calificar Pedido
     autonumber
     participant ACT as Cliente o Chofer
     participant CTRL as RatingController
@@ -1876,11 +2331,16 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     ACT->>CTRL: POST /ratings con orderId, stars, comment
+    activate CTRL
     CTRL->>RS: create(dto, user.user_id, user.role)
+    activate RS
     RS->>OREP: findOne(order_id, relations delivery)
+    activate OREP
     OREP-->>RS: Order con delivery
+    deactivate OREP
     alt Pedido inexistente
         RS-->>ACT: NotFoundException, pedido no encontrado
+        deactivate RS
     else status distinto de DELIVERED
         RS-->>ACT: BadRequestException, solo se califica un pedido entregado
     else role CUSTOMER
@@ -1900,16 +2360,21 @@ sequenceDiagram
     end
 
     RS->>RREP: save(Rating con order_id, from_role, to_user_id, stars)
+    activate RREP
     alt Violacion de unique order_id mas from_role, codigo 23505
         RREP-->>RS: error de clave duplicada
+        deactivate RREP
         RS-->>ACT: ConflictException, ya calificaste este pedido
     else Persistido
         RREP-->>RS: Rating
         alt fromRole CUSTOMER, el cliente califico al chofer
             RS->>RS: refreshDeliveryAverage(toUserId)
             RS->>RREP: getSummaryForUser con AVG stars y COUNT
+            activate RREP
             RREP-->>RS: average redondeado a dos decimales
+            deactivate RREP
             RS->>DREP: update(user_id, calification average)
+            activate DREP
         end
         RS-->>CTRL: Rating
     end
@@ -1917,10 +2382,18 @@ sequenceDiagram
     Note over ACT,RREP: CU-065, lectura del promedio
     ACT->>CTRL: GET /ratings/user/:userId/summary
     CTRL->>RS: getSummaryForUser(userId, distributorId)
+    activate RS
     RS->>RREP: queryBuilder AVG stars y COUNT where to_user_id
+    activate RREP
     RREP-->>RS: average, count
+    deactivate RREP
     RS-->>ACT: average, count
+    deactivate RS
+    deactivate DREP
+    deactivate CTRL
 ```
+
+**Figura 18 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio**
 
 **Observaciones de diseño**
 
@@ -1961,6 +2434,7 @@ la app que pide (un cliente no puede loguearse por la app del chofer).
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-001 Iniciar Sesion
     autonumber
     participant GUARD as AuthGuard
     participant CTRL as AuthController
@@ -1975,7 +2449,9 @@ sequenceDiagram
         GUARD-->>CTRL: UnauthorizedException
     else Header valido y ruta de login sin token
         GUARD->>USR: findOneByEmail(body.email)
+        activate USR
         USR-->>GUARD: User con role
+        deactivate USR
         GUARD->>GUARD: validateUserRoleForApp(user, requestSource)
         alt El rol no corresponde a esta app
             GUARD-->>CTRL: UnauthorizedException
@@ -1986,22 +2462,36 @@ sequenceDiagram
 
     alt Login de las apps, POST /auth/login
         CTRL->>SRV: login(dto)
+        activate SRV
         SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
+        activate SDK
         SDK-->>SRV: UserCredential
+        deactivate SDK
         SRV-->>CTRL: UserCredential
+        deactivate SRV
     else Login del panel, POST /auth/login/dashboard
         CTRL->>SRV: login(dto, requestSource)
+        activate SRV
         SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
+        activate SDK
         SDK-->>SRV: UserCredential
+        deactivate SDK
         SRV-->>CTRL: UserCredential con stsTokenManager
+        deactivate SRV
         CTRL->>SRV: loginDashboard(accessToken)
+        activate SRV
         SRV->>SRV: decodeToken(token)
         SRV->>FB: verifyIdToken(token)
+        activate FB
         FB-->>SRV: DecodedIdToken
+        deactivate FB
         SRV->>ADM: findOneByEmail(user.email)
+        activate ADM
         alt No existe un Admin con ese email
             ADM-->>SRV: null
+            deactivate ADM
             SRV-->>CTRL: UnauthorizedException Admin not found
+            deactivate SRV
         else Es admin
             ADM-->>SRV: Admin
             SRV-->>CTRL: void
@@ -2009,6 +2499,8 @@ sequenceDiagram
         end
     end
 ```
+
+**Figura 19 — DSD CU-001: Iniciar Sesión**
 
 **Observaciones de diseño**
 
@@ -2029,6 +2521,7 @@ Firebase (que vive fuera de la base y no participa del rollback).
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-002 Registrarse Como Cliente
     autonumber
     participant CTRL as UsersController
     participant CSRV as CustomersService
@@ -2040,31 +2533,44 @@ sequenceDiagram
     participant MAIL as EmailService
 
     CTRL->>CSRV: registerWithUser(completeRegistrationDto)
+    activate CSRV
     CSRV->>QR: connect() y startTransaction()
+    activate QR
     CSRV->>UREP: findOne(email)
+    activate UREP
     alt Ya existe un usuario con ese email
         UREP-->>CSRV: User
+        deactivate UREP
         CSRV->>QR: rollbackTransaction()
         CSRV-->>CTRL: BadRequestException User with this email already exists
+        deactivate CSRV
     else Email libre
         UREP-->>CSRV: null
         CSRV->>FB: createUserSafe(email, password, full_name, phone_number)
+        activate FB
         FB->>FB: createUser(props)
         FB-->>CSRV: UserRecord con uid
+        deactivate FB
         CSRV->>RREP: findOne(type customer)
+        activate RREP
         alt No existe el rol customer
             RREP-->>CSRV: null
+            deactivate RREP
             CSRV-->>CTRL: InternalServerErrorException Customer role not found
         else Rol encontrado
             RREP-->>CSRV: Role
             CSRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id)
+            activate UREP
             CSRV->>QR: manager.save(user)
             CSRV->>CREP: create(user_id, notification_token, lat_lang, validated false)
+            activate CREP
             CSRV->>QR: manager.save(customer)
             CSRV->>QR: commitTransaction()
             CSRV->>MAIL: sendWelcomeEmail(dto.email)
+            activate MAIL
             CSRV->>UREP: findOne(user_id, relations customer y role)
             UREP-->>CSRV: User completo
+            deactivate UREP
             CSRV-->>CTRL: User con Customer y Role
         end
     end
@@ -2072,11 +2578,18 @@ sequenceDiagram
     opt Cualquier error despues de crear el usuario de Firebase
         CSRV->>QR: rollbackTransaction()
         CSRV->>FB: deleteUserByEmailSafe(dto.email, logger)
+        activate FB
         FB->>FB: getUserByEmail(email) y deleteUser(uid)
         CSRV->>CSRV: handleDBExceptions(error)
     end
     CSRV->>QR: release()
+    deactivate MAIL
+    deactivate CREP
+    deactivate FB
+    deactivate QR
 ```
+
+**Figura 20 — DSD CU-002: Registrarse como Cliente**
 
 **Observaciones de diseño**
 
@@ -2099,6 +2612,7 @@ usa vive en el controller, no en el service.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-003 Registrar Chofer
     autonumber
     participant GUARD as AuthGuard
     participant RG as RolesGuard
@@ -2123,35 +2637,53 @@ sequenceDiagram
             CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
         else Tenant resuelto
             CTRL->>DSRV: registerWithUser(createDeliveryDto con distributorId)
+            activate DSRV
             DSRV->>QR: connect() y startTransaction()
+            activate QR
             DSRV->>UREP: findOne(email)
+            activate UREP
             alt Email ya usado
                 UREP-->>DSRV: User
+                deactivate UREP
                 DSRV-->>CTRL: BadRequestException User with this email already exists
+                deactivate DSRV
             else Email libre
                 UREP-->>DSRV: null
                 DSRV->>FB: createUserSafe(email, password, full_name, phone_number)
+                activate FB
                 FB-->>DSRV: UserRecord con uid
+                deactivate FB
                 DSRV->>RREP: findOne(type delivery)
+                activate RREP
                 RREP-->>DSRV: Role
+                deactivate RREP
                 DSRV->>UREP: create(email, full_name, firebase_uid, role_id, selfie)
+                activate UREP
                 DSRV->>QR: manager.save(user)
                 DSRV->>DREP: create(user_id, distributor_id, latLng, validated, isActive, balance 0)
+                activate DREP
                 DSRV->>QR: manager.save(delivery)
                 DSRV->>QR: commitTransaction()
                 DSRV->>UREP: findOne(user_id, relations delivery y role)
                 UREP-->>DSRV: User completo
+                deactivate UREP
                 DSRV-->>CTRL: User con Delivery y Role
             end
             opt Error en cualquier paso
                 DSRV->>QR: rollbackTransaction()
                 DSRV->>FB: deleteUserByEmailSafe(email, logger)
+                activate FB
                 DSRV->>DSRV: handleDBExceptions(error)
             end
             DSRV->>QR: release()
         end
     end
+    deactivate DREP
+    deactivate FB
+    deactivate QR
 ```
+
+**Figura 21 — DSD CU-003: Registrar Chofer**
 
 **Observaciones de diseño**
 
@@ -2172,6 +2704,7 @@ no-admin solo lee y escribe lo suyo, y además solo un subconjunto de campos.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-004 Gestionar Perfil De Usuario
     autonumber
     participant UCTRL as UsersController
     participant USRV as UsersService
@@ -2183,10 +2716,14 @@ sequenceDiagram
 
     alt Lectura del perfil base
         UCTRL->>USRV: findOne(id)
+        activate USRV
         USRV->>UREP: findOne(user_id, relations role customer delivery cars addresses)
+        activate UREP
         alt No existe
             UREP-->>USRV: null
+            deactivate UREP
             USRV-->>UCTRL: NotFoundException User with ID not found
+            deactivate USRV
         else Existe
             UREP-->>USRV: User
             USRV-->>UCTRL: User
@@ -2200,13 +2737,18 @@ sequenceDiagram
                 UCTRL->>UCTRL: pickSelfEditableFields(updateUserDto)
             end
             UCTRL->>USRV: update(id, payload)
+            activate USRV
             USRV->>UREP: preload(user_id, payload)
+            activate UREP
             alt preload devuelve undefined
                 UREP-->>USRV: undefined
+                deactivate UREP
                 USRV-->>UCTRL: NotFoundException User with ID not found
+                deactivate USRV
             else Entidad precargada
                 UREP-->>USRV: User
                 USRV->>QR: connect() y startTransaction()
+                activate QR
                 USRV->>QR: manager.save(user)
                 USRV->>QR: commitTransaction() y release()
                 USRV-->>UCTRL: User actualizado
@@ -2217,17 +2759,28 @@ sequenceDiagram
     alt Datos de cliente
         CCTRL->>CCTRL: scope(user)
         CCTRL->>CSRV: findOneByUserId(userId, scope)
+        activate CSRV
         CSRV->>CSRV: assertOwnership(userId, requesterUserId)
         CSRV->>CREP: findOne(user_id, relations user role addresses)
+        activate CREP
         CREP-->>CSRV: Customer
+        deactivate CREP
         CSRV-->>CCTRL: Customer
+        deactivate CSRV
         CCTRL->>CSRV: update(id, updateCustomerDto, scope)
+        activate CSRV
         CSRV->>CSRV: findOne(id, requesterUserId)
         CSRV->>CREP: preload(customer_id, updateCustomerDto)
+        activate CREP
         CSRV->>CREP: save(customer)
         CSRV-->>CCTRL: Customer actualizado
+        deactivate CSRV
     end
+    deactivate CREP
+    deactivate QR
 ```
+
+**Figura 22 — DSD CU-004: Gestionar Perfil de Usuario**
 
 **Observaciones de diseño**
 
@@ -2249,6 +2802,7 @@ que el límite sea real con varias instancias corriendo.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-047 Recuperar Contrasena
     autonumber
     participant CTRL as EmailController
     participant SRV as EmailService
@@ -2259,36 +2813,54 @@ sequenceDiagram
     participant SEND as EmailSenderPort
 
     CTRL->>SRV: sendPasswordResetEmail(body.email)
+    activate SRV
     SRV->>SRV: checkRateLimit(email, password_reset)
     SRV->>REDIS: incrWithExpire(key, TRACKING_WINDOW_SEC)
+    activate REDIS
     REDIS-->>SRV: count
+    deactivate REDIS
     alt count mayor a MAX_REQUESTS_PER_WINDOW
         SRV-->>CTRL: BadRequestException Too many attempts
+        deactivate SRV
     else Dentro del limite
         SRV->>USR: findOneByEmail(email)
+        activate USR
         alt El usuario no existe, error 404
             USR-->>SRV: NotFoundException
+            deactivate USR
             SRV-->>CTRL: message If the email exists a password reset link has been sent
         else Usuario existente
             USR-->>SRV: User
             SRV->>SRV: generatePasswordResetLink(email)
             SRV->>REDIS: get(linkCacheKey)
+            activate REDIS
             alt Link cacheado
                 REDIS-->>SRV: link
+                deactivate REDIS
             else Sin cache
                 REDIS-->>SRV: null
                 SRV->>FB: generatePasswordResetLink(email, actionCodeSettings)
+                activate FB
                 FB-->>SRV: link firmado
+                deactivate FB
                 SRV->>REDIS: setex(cacheKey, CACHE_TTL_SEC, link)
+                activate REDIS
             end
             SRV->>SRV: sendEmail(to, subject, template password-reset, data)
             SRV->>TPL: render(template, data)
+            activate TPL
             TPL-->>SRV: html
+            deactivate TPL
             SRV->>SEND: send(to, subject, html)
+            activate SEND
             SRV-->>CTRL: message Password reset email sent successfully
         end
     end
+    deactivate SEND
+    deactivate REDIS
 ```
+
+**Figura 23 — DSD CU-047: Recuperar Contraseña**
 
 **Observaciones de diseño**
 
@@ -2310,6 +2882,7 @@ Toggle bidireccional real: el mismo endpoint bloquea y desbloquea según el bool
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-050 Bloquear Desbloquear Usuario
     autonumber
     participant RG as RolesGuard
     participant CTRL as UsersController
@@ -2322,19 +2895,27 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: toggleBlockUser(id, body.block)
+        activate SRV
         SRV->>REP: findOne(user_id)
+        activate REP
         alt Usuario inexistente
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: NotFoundException Usuario no encontrado
+            deactivate SRV
         else Usuario encontrado
             REP-->>SRV: User
             SRV->>SRV: user.blocked igual a shouldBlock
             SRV->>REP: save(user)
+            activate REP
             REP-->>SRV: User
+            deactivate REP
             SRV-->>CTRL: id, email, isBlocked y mensaje
         end
     end
 ```
+
+**Figura 24 — DSD CU-050: Bloquear / Desbloquear Usuario**
 
 **Observaciones de diseño**
 
@@ -2352,6 +2933,7 @@ Firebase). Es la puerta de bajo nivel que usan los helpers de registro.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-082 Crear Usuario Base
     autonumber
     participant CTRL as UsersController
     participant SRV as UsersService
@@ -2360,13 +2942,19 @@ sequenceDiagram
     participant FB as FirebaseAuthPort
 
     CTRL->>SRV: create(createUserDto)
+    activate SRV
     SRV->>REP: create(createUserDto)
+    activate REP
     REP-->>SRV: User no persistido
+    deactivate REP
     SRV->>REP: save(user)
+    activate REP
     alt Violacion de unicidad, codigo 23505
         REP-->>SRV: QueryFailedError
+        deactivate REP
         SRV->>SRV: handleDBExceptions(error)
         SRV-->>CTRL: BadRequestException Duplicate entry
+        deactivate SRV
     else Guardado correcto
         REP-->>SRV: User persistido
         SRV-->>CTRL: User
@@ -2374,19 +2962,29 @@ sequenceDiagram
 
     opt Camino de los helpers de registro
         HLP->>SRV: checkUserExists(dto.email, dto.phone_number) desde validateUniqueness
+        activate SRV
         SRV-->>HLP: exists, email, phoneNumber
+        deactivate SRV
         alt Email o telefono ya en uso
             HLP-->>HLP: HttpException CONFLICT Email o telefono ya en uso
         else Libres
             HLP->>SRV: createFirebaseUser(dto) desde createUserInFirebase
+            activate SRV
             SRV->>FB: createUserSafe(createUserDto)
+            activate FB
             FB-->>SRV: UserRecord
+            deactivate FB
             SRV-->>HLP: UserRecord
+            deactivate SRV
             HLP->>SRV: create(createUserDto con firebase_uid) desde createUserInDatabase
+            activate SRV
             SRV-->>HLP: User
+            deactivate SRV
         end
     end
 ```
+
+**Figura 25 — DSD CU-082: Crear Usuario Base**
 
 **Observaciones de diseño**
 
@@ -2404,6 +3002,7 @@ libre (solo admin), y las dos búsquedas puntuales por email y por teléfono.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-083 Buscar Listar Usuarios
     autonumber
     participant RG as RolesGuard
     participant CTRL as UsersController
@@ -2415,33 +3014,49 @@ sequenceDiagram
         RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
         RG-->>CTRL: true
         CTRL->>SRV: findAll(paginationDto con term)
+        activate SRV
         SRV->>REP: createQueryBuilder(user)
+        activate REP
         REP-->>SRV: SelectQueryBuilder
+        deactivate REP
         SRV->>QB: leftJoinAndSelect role, customer y delivery
+        activate QB
         SRV->>QB: take(limit) y skip(offset)
         opt Viene term de busqueda
             SRV->>QB: andWhere(Brackets con email, full_name y phone_number ILIKE)
         end
         SRV->>QB: getManyAndCount()
         QB-->>SRV: users y total
+        deactivate QB
         SRV-->>CTRL: users y maxUsers
+        deactivate SRV
     else Busqueda por email, GET /users/email/:email
         CTRL->>SRV: findOneByEmail(email)
+        activate SRV
         SRV->>REP: findOne(email, relations role customer delivery cars addresses admins)
+        activate REP
         alt No encontrado
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: NotFoundException User with email not found
+            deactivate SRV
         else Encontrado
             REP-->>SRV: User
             SRV-->>CTRL: User
         end
     else Busqueda por telefono, GET /users/phone/:phoneNumber
         CTRL->>SRV: findOneByPhone(phoneNumber)
+        activate SRV
         SRV->>REP: findOne(phone_number, relations role customer delivery cars addresses)
+        activate REP
         REP-->>SRV: User o null
+        deactivate REP
         SRV-->>CTRL: User o null
+        deactivate SRV
     end
 ```
+
+**Figura 26 — DSD CU-083: Buscar / Listar Usuarios**
 
 **Observaciones de diseño**
 
@@ -2460,19 +3075,24 @@ el formulario completo. Construye un `where` con OR entre las condiciones presen
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-084 Verificar Existencia De Usuario
     autonumber
     participant CTRL as UsersController
     participant SRV as UsersService
     participant REP as RepositoryUser
 
     CTRL->>SRV: checkUserExists(body.email, body.phoneNumber)
+    activate SRV
     SRV->>SRV: armar conditions con email y phone_number
     alt No vino ni email ni telefono
         SRV-->>CTRL: exists false
+        deactivate SRV
     else Al menos una condicion
         SRV->>REP: findOne(where conditions en OR)
+        activate REP
         alt Sin coincidencias
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: exists false, email false, phoneNumber false
         else Hay coincidencia
             REP-->>SRV: User
@@ -2480,6 +3100,8 @@ sequenceDiagram
         end
     end
 ```
+
+**Figura 27 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)**
 
 **Observaciones de diseño**
 
@@ -2499,6 +3121,7 @@ DELETE y no se toca Firebase, evitando dejar el usuario huérfano allá.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-085 Eliminar Usuario
     autonumber
     participant RG as RolesGuard
     participant CTRL as UsersController
@@ -2512,22 +3135,29 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: remove(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>REP: findOne(user_id, relations)
+        activate REP
         alt No existe
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: NotFoundException User with ID not found
+            deactivate SRV
         else Existe
             REP-->>SRV: User
             SRV->>REP: delete(user_id)
+            activate REP
             alt Violacion de FK, codigo 23503
                 REP-->>SRV: QueryFailedError
+                deactivate REP
                 SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
             else Borrado en base
                 REP-->>SRV: DeleteResult
                 opt El usuario tiene email
                     SRV->>SRV: cleanupFirebaseUser(user.email)
                     SRV->>FB: deleteUserByEmailSafe(email, logger)
+                    activate FB
                     FB->>FB: getUserByEmail(email)
                     FB->>FB: deleteUser(uid)
                 end
@@ -2535,7 +3165,10 @@ sequenceDiagram
             end
         end
     end
+    deactivate FB
 ```
+
+**Figura 28 — DSD CU-085: Eliminar Usuario (baja lógica)**
 
 **Observaciones de diseño**
 
@@ -2557,6 +3190,7 @@ pasar, el token es válido.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-091 Validar Vigencia Del Token De Sesion
     autonumber
     participant GUARD as AuthGuard
     participant REFL as Reflector
@@ -2567,8 +3201,10 @@ sequenceDiagram
     participant CTRL as AuthController
 
     GUARD->>REFL: get(isPublic, context.getHandler())
+    activate REFL
     alt Ruta publica
         REFL-->>GUARD: true
+        deactivate REFL
         GUARD-->>CTRL: true
     else Ruta protegida
         REFL-->>GUARD: undefined
@@ -2581,33 +3217,45 @@ sequenceDiagram
                 GUARD-->>CTRL: UnauthorizedException No token provided
             else Hay token
                 GUARD->>SRV: decodeToken(token)
+                activate SRV
                 SRV->>FB: verifyIdToken(token)
+                activate FB
                 alt Token vencido, revocado o mal firmado
                     FB-->>SRV: error
+                    deactivate FB
                     SRV-->>GUARD: UnauthorizedException
+                    deactivate SRV
                 else Token valido
                     FB-->>SRV: DecodedIdToken
                     SRV-->>GUARD: email, user y sub
                     GUARD->>GUARD: getUser(email, requestSource)
                     GUARD->>USR: findOneByEmail(user_email)
+                    activate USR
                     USR-->>GUARD: User con role, delivery y admins
+                    deactivate USR
                     GUARD->>GUARD: validateUserRoleForApp(user, requestSource)
                     GUARD->>GUARD: resolveDistributor(local_user, request)
                     alt Rol DELIVERY o ADMIN
                         GUARD->>GUARD: tomar distributor_id del perfil, ignorando el header
                     else Rol CUSTOMER o SUPER_ADMIN con header X-Distributor
                         GUARD->>DIST: assertActive(header) o findBySlug(header)
+                        activate DIST
                         DIST-->>GUARD: Distributor
+                        deactivate DIST
                     end
                     GUARD->>GUARD: setear request.user y request.distributorId
                     GUARD-->>CTRL: true
                     CTRL->>SRV: checkIfTokenValid()
+                    activate SRV
                     SRV-->>CTRL: HttpException token valid
+                    deactivate SRV
                 end
             end
         end
     end
 ```
+
+**Figura 29 — DSD CU-091: Validar Vigencia del Token de Sesión**
 
 **Observaciones de diseño**
 
@@ -2629,6 +3277,7 @@ ownership del cliente. Los dos responden **404** (no 403) para no revelar que el
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-006 Consultar Detalle De Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -2637,11 +3286,15 @@ sequenceDiagram
 
     CTRL->>CTRL: derivar customerScope segun user.role
     CTRL->>SRV: getOne(id, distributorId, customerScope)
+    activate SRV
     SRV->>SRV: findOne(id)
     SRV->>ORD: findByIdFull(id)
+    activate ORD
     alt No existe el pedido
         ORD-->>SRV: null
+        deactivate ORD
         SRV-->>CTRL: NotFoundException Order with ID not found
+        deactivate SRV
     else Pedido encontrado
         ORD-->>SRV: Order con relaciones completas
         alt El pedido es de otra distribuidora
@@ -2651,12 +3304,16 @@ sequenceDiagram
                 SRV-->>CTRL: NotFoundException Order with ID not found
             else Ownership correcto
                 SRV->>MAP: toDto(order)
+                activate MAP
                 MAP-->>SRV: OrderResponseDto
+                deactivate MAP
                 SRV-->>CTRL: OrderResponseDto
             end
         end
     end
 ```
+
+**Figura 30 — DSD CU-006: Consultar Detalle de Pedido**
 
 **Observaciones de diseño**
 
@@ -2676,6 +3333,7 @@ solo ve lo de su tenant. Esa asimetría se decide en el controller.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-007 Consultar Historial De Pedidos
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -2688,18 +3346,28 @@ sequenceDiagram
     else Autorizado
         CTRL->>CTRL: scope null si es CUSTOMER, distributorId si es staff
         CTRL->>SRV: findByCustomer(customerId, paginationDto, scope)
+        activate SRV
         SRV->>ORD: findByCustomer(customerId, limit, offset, distributorId)
+        activate ORD
         ORD->>ORD: scoped(where customer_id, distributorId)
         ORD->>REP: findAndCount(where, take, skip, relations, order createdAt DESC)
+        activate REP
         REP-->>ORD: orders y total
+        deactivate REP
         ORD-->>SRV: orders, total, limit y offset
+        deactivate ORD
         SRV-->>CTRL: PaginatedOrders
+        deactivate SRV
         loop Por cada pedido de la pagina
             CTRL->>MAP: toDto(order)
+            activate MAP
             MAP-->>CTRL: OrderResponseDto
+            deactivate MAP
         end
     end
 ```
+
+**Figura 31 — DSD CU-007: Consultar Historial de Pedidos**
 
 **Observaciones de diseño**
 
@@ -2714,21 +3382,28 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-143 Declarar el Consumo Promedio al Registrarse
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: declararConsumo(usuarioDeLaSesion, tipoGarrafa, cantidad)
+    activate SRV
     SRV->>SRV: aKilosPorMes(cantidad, peso del tipo de garrafa)
     SRV->>CREP: save(cliente con consumo y garrafa habitual)
+    activate CREP
     CREP-->>SRV: Customer actualizado
+    deactivate CREP
     alt el valor es razonable
         SRV-->>CTRL: Customer con consumo declarado
+        deactivate SRV
     else el valor no es razonable
         SRV-->>CTRL: se pide confirmación
     end
 ```
+
+**Figura 32 — DSD CU-143: Declarar el Consumo Promedio al Registrarse**
 
 **Observaciones de diseño**
 
@@ -2743,6 +3418,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-144 Actualizar el Consumo Promedio Declarado
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
@@ -2750,17 +3426,25 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: actualizarConsumo(usuarioDeLaSesion, cantidad)
+    activate SRV
     SRV->>OREP: findOne(último pedido entregado del cliente)
+    activate OREP
     OREP-->>SRV: Order o null
+    deactivate OREP
     SRV->>SRV: estimarProximaRecompra(última compra, consumo)
     SRV->>CREP: save(cliente con consumo y estimación)
+    activate CREP
     CREP-->>SRV: Customer actualizado
+    deactivate CREP
     alt el valor es razonable
         SRV-->>CTRL: Customer con la estimación nueva
+        deactivate SRV
     else el valor no es razonable
         SRV-->>CTRL: se pide confirmación
     end
 ```
+
+**Figura 33 — DSD CU-144: Actualizar el Consumo Promedio Declarado**
 
 **Observaciones de diseño**
 
@@ -2775,20 +3459,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-145 Configurar los Dias de Aviso Previo a la Recompra
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: configurarAviso(usuarioDeLaSesion, dias)
+    activate SRV
     SRV->>CREP: save(cliente con los días de aviso)
+    activate CREP
     CREP-->>SRV: Customer actualizado
+    deactivate CREP
     alt el valor es válido
         SRV-->>CTRL: Customer con la preferencia
+        deactivate SRV
     else el valor no es válido
         SRV-->>CTRL: operación rechazada
     end
 ```
+
+**Figura 34 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra**
 
 **Observaciones de diseño**
 
@@ -2803,6 +3494,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-146 Consultar la Fecha Estimada de Recompra
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
@@ -2810,16 +3502,24 @@ sequenceDiagram
     participant OREP as RepositoryOrder
 
     CTRL->>SRV: recomprasEstimadas(dias, distribuidora)
+    activate SRV
     SRV->>CREP: find(where distributor_id y estimación en la ventana)
+    activate CREP
     CREP-->>SRV: lista de Customer
+    deactivate CREP
     SRV->>OREP: find(última compra de cada cliente)
+    activate OREP
     OREP-->>SRV: últimos pedidos
+    deactivate OREP
     alt hay clientes
         SRV-->>CTRL: listado con consumo y última compra
+        deactivate SRV
     else no hay
         SRV-->>CTRL: listado vacío
     end
 ```
+
+**Figura 35 — DSD CU-146: Consultar la Fecha Estimada de Recompra**
 
 **Observaciones de diseño**
 
@@ -2834,6 +3534,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-147 Realizar una Compra Express
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -2842,20 +3543,30 @@ sequenceDiagram
     participant OREP as RepositoryOrder
 
     CTRL->>SRV: compraExpress(usuarioDeLaSesion, tipoGarrafa, medioDePago)
+    activate SRV
     SRV->>SRV: direccionPredeterminada(cliente)
     SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
     SRV->>DREP: find(choferes en moto disponibles y habilitados)
+    activate DREP
     DREP-->>SRV: lista de Delivery
+    deactivate DREP
     SRV->>GREP: findOne(tipo de garrafa con precio y stock)
+    activate GREP
     GREP-->>SRV: GasCylinder
+    deactivate GREP
     SRV->>OREP: save(pedido con modalidad express y sin franja)
+    activate OREP
     OREP-->>SRV: Order creada
+    deactivate OREP
     alt hay cobertura y chofer
         SRV-->>CTRL: Order express creada
+        deactivate SRV
     else no hay
         SRV-->>CTRL: se ofrece el flujo con franja horaria
     end
 ```
+
+**Figura 36 — DSD CU-147: Realizar una Compra Express**
 
 **Observaciones de diseño**
 
@@ -2871,6 +3582,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-148 Elegir la Modalidad de Entrega del Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -2878,17 +3590,25 @@ sequenceDiagram
     participant OREP as RepositoryOrder
 
     CTRL->>SRV: modalidadesDisponibles(direccion, distribuidora)
+    activate SRV
     SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
     SRV->>DREP: find(choferes en moto disponibles)
+    activate DREP
     DREP-->>SRV: lista de Delivery
+    deactivate DREP
     SRV->>OREP: save(pedido con la modalidad elegida)
+    activate OREP
     OREP-->>SRV: Order actualizada
+    deactivate OREP
     alt hay express disponible
         SRV-->>CTRL: las dos modalidades con precio
+        deactivate SRV
     else no hay express
         SRV-->>CTRL: sólo la programada con el motivo
     end
 ```
+
+**Figura 37 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido**
 
 **Observaciones de diseño**
 
@@ -2907,6 +3627,7 @@ cancelar de verdad y devolver el stock.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-008 Cancelar Pedido
     autonumber
     participant IDEM as IdempotencyInterceptor
     participant CTRL as OrderController
@@ -2925,11 +3646,16 @@ sequenceDiagram
         IDEM-->>CTRL: next.handle()
         CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
         CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+        activate SRV
         SRV->>UC: execute(orderId, userId, customer, reason)
+        activate UC
         UC->>ORD: findByIdFull(orderId)
+        activate ORD
         alt Pedido inexistente
             ORD-->>UC: null
+            deactivate ORD
             UC-->>CTRL: NotFoundException Order with ID not found
+            deactivate UC
         else Pedido encontrado
             ORD-->>UC: Order
             alt Ya esta DELIVERED o CANCELLED
@@ -2943,25 +3669,38 @@ sequenceDiagram
                         UC-->>CTRL: BadRequestException No autorizado
                     else Es el dueno del pedido
                         UC->>FSM: transitionOrder(order, CANCELLED)
+                        activate FSM
                         UC->>UC: setear cancellationReason
                         UC->>UC: restoreStock(order)
                         UC->>QR: connect() y startTransaction()
+                        activate QR
                         UC->>STK: restore(queryRunner.manager, order.items)
+                        activate STK
                         UC->>QR: commitTransaction() y release()
                         UC->>ORD: save(order)
+                        activate ORD
                         UC->>UC: notify(order, customer, previousDriverId)
-                        UC->>RT: notifyCustomer(customer_id, order cancelled, payload)
+                        UC-)RT: notifyCustomer(customer_id, order cancelled, payload)
+                        activate RT
                         opt El pedido ya tenia chofer asignado
-                            UC->>RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                            UC-)RT: notifyDriverOrderCancelled(previousDriverId, payload)
                         end
-                        UC->>RT: notifyAdmins(order cancelled, payload)
+                        UC-)RT: notifyAdmins(order cancelled, payload)
                         UC-->>CTRL: Order en estado CANCELLED
                     end
                 end
             end
         end
     end
+    deactivate RT
+    deactivate STK
+    deactivate QR
+    deactivate FSM
+    deactivate ORD
+    deactivate SRV
 ```
+
+**Figura 38 — DSD CU-008: Cancelar Pedido (Cliente)**
 
 **Observaciones de diseño**
 
@@ -2982,6 +3721,7 @@ despacho lo vuelve a ofrecer.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-009 Cancelar Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -2993,11 +3733,16 @@ sequenceDiagram
 
     CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve driver
     CTRL->>SRV: cancelOrder(id, user.user_id, driver, body.reason)
+    activate SRV
     SRV->>UC: execute(orderId, userId, driver, reason)
+    activate UC
     UC->>ORD: findByIdFull(orderId)
+    activate ORD
     alt Pedido inexistente
         ORD-->>UC: null
+        deactivate ORD
         UC-->>CTRL: NotFoundException Order with ID not found
+        deactivate UC
     else Pedido encontrado
         ORD-->>UC: Order con delivery_id
         alt Ya esta DELIVERED o CANCELLED
@@ -3006,15 +3751,26 @@ sequenceDiagram
             UC->>UC: guardar previousDriverId
             UC->>UC: applyCancellationPolicy(order, userId, driver)
             UC->>FSM: transitionOrder(order, PENDING)
+            activate FSM
             UC->>UC: delivery_id, acceptedAt y onTheWayAt a null
             UC->>ORD: save(order)
+            activate ORD
             UC->>UC: notify(order, driver, previousDriverId)
-            UC->>RT: notifyCustomer(customer_id, order searching-driver, payload)
-            RT->>CGW: notifyCustomer(customerId, event, payload)
+            UC-)RT: notifyCustomer(customer_id, order searching-driver, payload)
+            activate RT
+            RT-)CGW: notifyCustomer(customerId, event, payload)
+            activate CGW
             UC-->>CTRL: Order de nuevo en PENDING
         end
     end
+    deactivate CGW
+    deactivate RT
+    deactivate FSM
+    deactivate ORD
+    deactivate SRV
 ```
+
+**Figura 39 — DSD CU-009: Cancelar Pedido (Chofer)**
 
 **Observaciones de diseño**
 
@@ -3034,6 +3790,7 @@ mismo use-case con actor `admin`, que sí devuelve stock y sí avisa al chofer p
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-010 Cancelar Pedido
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -3053,31 +3810,51 @@ sequenceDiagram
         RG-->>CTRL: true
         alt Cancelacion forzada, DELETE /orders/:id
             CTRL->>SRV: cancelOrder(id, user.user_id, admin)
+            activate SRV
         else Cancelacion con motivo, PATCH /orders/:id/cancel
             CTRL->>SRV: cancelOrder(id, user.user_id, admin, body.reason)
         end
         SRV->>UC: execute(orderId, userId, admin, reason)
+        activate UC
         UC->>ORD: findByIdFull(orderId)
+        activate ORD
         alt Pedido inexistente o finalizado
             UC-->>CTRL: NotFoundException o BadRequestException
+            deactivate UC
         else Cancelable
             ORD-->>UC: Order
+            deactivate ORD
             UC->>UC: guardar previousDriverId
             UC->>FSM: transitionOrder(order, CANCELLED)
+            activate FSM
             UC->>UC: cancellationReason igual a reason o Cancelado por admin
             UC->>STK: restore(queryRunner.manager, order.items)
+            activate STK
             UC->>ORD: save(order)
-            UC->>RT: notifyCustomer(customer_id, order cancelled, payload)
+            activate ORD
+            UC-)RT: notifyCustomer(customer_id, order cancelled, payload)
+            activate RT
             opt El pedido tenia chofer asignado
-                UC->>RT: notifyDriverOrderCancelled(previousDriverId, payload)
-                RT->>DGW: notifyOrderCancelled(driverId, payload)
+                UC-)RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                RT-)DGW: notifyOrderCancelled(driverId, payload)
+                activate DGW
             end
-            UC->>RT: notifyAdmins(order cancelled, payload)
-            RT->>AGW: notifyAdmins(event, payload)
+            UC-)RT: notifyAdmins(order cancelled, payload)
+            RT-)AGW: notifyAdmins(event, payload)
+            activate AGW
             UC-->>CTRL: Order en estado CANCELLED
         end
     end
+    deactivate AGW
+    deactivate DGW
+    deactivate RT
+    deactivate STK
+    deactivate FSM
+    deactivate ORD
+    deactivate SRV
 ```
+
+**Figura 40 — DSD CU-010: Cancelar Pedido (Administrador)**
 
 **Observaciones de diseño**
 
@@ -3098,6 +3875,7 @@ distribuidora**: un admin de empresa solo ve lo suyo; el `super_admin` sin heade
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-011 Listar Todos Los Pedidos
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -3112,18 +3890,28 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: findAll(paginationDto, distributorId)
+        activate SRV
         SRV->>ORD: findAllPaginated(limit, offset, distributorId)
+        activate ORD
         ORD->>ORD: scoped(where vacio, distributorId)
         ORD->>REP: findAndCount(where, take, skip, FULL_RELATIONS, order createdAt DESC)
+        activate REP
         REP-->>ORD: orders y total
+        deactivate REP
         ORD-->>SRV: orders, total, limit y offset
+        deactivate ORD
         SRV-->>CTRL: PaginatedOrders
+        deactivate SRV
         loop Por cada pedido de la pagina
             CTRL->>MAP: toDto(order)
+            activate MAP
             MAP-->>CTRL: OrderResponseDto
+            deactivate MAP
         end
     end
 ```
+
+**Figura 41 — DSD CU-011: Listar Todos los Pedidos**
 
 **Observaciones de diseño**
 
@@ -3138,17 +3926,106 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-046 Consultar Direcciones De Entrega Del Cliente
     autonumber
-    participant CTRL as UserAddressController
-    participant SRV as UserAddressService
+    participant CTRL as UserAddresController
+    participant SRV as UserAddresService
     participant AREP as RepositoryUserAddress
+    participant UREP as RepositoryUser
 
-    CTRL->>SRV: findByUserId(userId, usuarioDeLaSesion)
-    SRV->>SRV: alcance(usuarioDeLaSesion) sobre el userId recibido
-    SRV->>AREP: find(where user_id, order isDefault DESC y createdAt DESC)
-    AREP-->>SRV: lista de UserAddress
-    SRV-->>CTRL: listado ordenado
+    CTRL->>CTRL: scope(user) devuelve user_id si no es admin
+
+    alt Alta, POST /user-address
+        CTRL->>SRV: create(createUserAddressDto, scope)
+        activate SRV
+        opt No es admin
+            SRV->>SRV: forzar user_id al del solicitante, ignorando el body
+        end
+        SRV->>UREP: findOne(user_id)
+        activate UREP
+        alt El usuario no existe
+            UREP-->>SRV: null
+            deactivate UREP
+            SRV-->>CTRL: NotFoundException User with ID not found
+            deactivate SRV
+        else Usuario valido
+            UREP-->>SRV: User
+            opt isDefault true
+                SRV->>SRV: removeDefaultFromOtherAddresses(user_id)
+                SRV->>AREP: find(user_id, isDefault true)
+                activate AREP
+                loop Por cada direccion predeterminada previa
+                    SRV->>AREP: save(address con isDefault false)
+                end
+            end
+            SRV->>AREP: create(createUserAddressDto)
+            SRV->>AREP: save(address)
+            AREP-->>SRV: UserAddress
+            deactivate AREP
+            SRV-->>CTRL: UserAddress
+        end
+    else Consulta por usuario, GET /user-address/user/:userId
+        CTRL->>SRV: findByUserId(userId, scope)
+        activate SRV
+        SRV->>SRV: assertOwnership(userId, requesterUserId)
+        alt El solicitante no es el dueno
+            SRV-->>CTRL: ForbiddenException No autorizado a acceder a direcciones de otro usuario
+            deactivate SRV
+        else Autorizado
+            SRV->>AREP: find(user_id, order isDefault DESC y createdAt DESC)
+            activate AREP
+            AREP-->>SRV: UserAddress[]
+            deactivate AREP
+            SRV-->>CTRL: UserAddress[]
+        end
+    else Predeterminada, GET /user-address/user/:userId/default
+        CTRL->>SRV: findDefaultByUserId(userId, scope)
+        activate SRV
+        SRV->>SRV: assertOwnership(userId, requesterUserId)
+        SRV->>AREP: findOne(user_id, isDefault true)
+        activate AREP
+        alt No hay ninguna marcada
+            AREP-->>SRV: null
+            deactivate AREP
+            SRV->>SRV: findByUserId(userId)
+            alt Tiene al menos una direccion
+                SRV-->>CTRL: la primera de la lista
+                deactivate SRV
+            else No tiene ninguna
+                SRV-->>CTRL: NotFoundException No addresses found for user
+            end
+        else Hay predeterminada
+            AREP-->>SRV: UserAddress
+            SRV-->>CTRL: UserAddress
+        end
+    else Marcar predeterminada, PATCH /user-address/:id/set-default
+        CTRL->>SRV: setAsDefault(id, scope)
+        activate SRV
+        SRV->>SRV: findOne(id, requesterUserId)
+        SRV->>SRV: removeDefaultFromOtherAddresses(user_id, id)
+        SRV->>AREP: find(user_id, isDefault true, address_id Not id)
+        activate AREP
+        SRV->>AREP: save(address con isDefault true)
+        SRV-->>CTRL: UserAddress
+        deactivate SRV
+    else Baja, DELETE /user-address/:id
+        CTRL->>SRV: remove(id, scope)
+        activate SRV
+        SRV->>SRV: findOne(id, requesterUserId)
+        opt La direccion borrada era la predeterminada
+            SRV->>AREP: find(user_id, address_id Not id, order createdAt DESC)
+            opt Quedan otras direcciones
+                SRV->>AREP: save(la mas reciente con isDefault true)
+            end
+        end
+        SRV->>AREP: remove(address)
+        SRV-->>CTRL: message Address deleted successfully y addressId
+        deactivate SRV
+    end
+    deactivate AREP
 ```
+
+**Figura 42 — DSD CU-046: Consultar Direcciones de Entrega del Cliente**
 
 **Observaciones de diseño**
 
@@ -3164,6 +4041,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-116 Registrar Direccion de Entrega
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
@@ -3171,17 +4049,25 @@ sequenceDiagram
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: create(dto, usuarioDeLaSesion)
+    activate SRV
     SRV->>UREP: findOne(where user_id)
+    activate UREP
     UREP-->>SRV: User o null
+    deactivate UREP
     SRV->>AREP: update(isDefault false en las demás)
+    activate AREP
     SRV->>AREP: save(direccion)
     AREP-->>SRV: UserAddress guardada
+    deactivate AREP
     alt el usuario existe
         SRV-->>CTRL: UserAddress creada
+        deactivate SRV
     else el usuario no existe
         SRV-->>CTRL: NotFoundException User with ID not found
     end
 ```
+
+**Figura 43 — DSD CU-116: Registrar Dirección de Entrega**
 
 **Observaciones de diseño**
 
@@ -3196,21 +4082,28 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-117 Consultar Detalle de una Direccion de Entrega
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    activate SRV
     SRV->>AREP: findOne(where address_id, relations user)
+    activate AREP
     AREP-->>SRV: UserAddress o null
+    deactivate AREP
     SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
     alt la dirección existe y es del cliente
         SRV-->>CTRL: UserAddress
+        deactivate SRV
     else no existe o es de otro
         SRV-->>CTRL: NotFoundException o acceso denegado
     end
 ```
+
+**Figura 44 — DSD CU-117: Consultar Detalle de una Dirección de Entrega**
 
 **Observaciones de diseño**
 
@@ -3225,23 +4118,32 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-118 Editar Direccion de Entrega
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    activate SRV
     SRV->>SRV: findOne(id, usuarioDeLaSesion)
     SRV->>AREP: preload(address_id + cambios)
+    activate AREP
     AREP-->>SRV: UserAddress fusionada o null
+    deactivate AREP
     SRV->>AREP: save(direccion)
+    activate AREP
     AREP-->>SRV: UserAddress actualizada
+    deactivate AREP
     alt la dirección existe
         SRV-->>CTRL: UserAddress actualizada
+        deactivate SRV
     else la dirección no existe
         SRV-->>CTRL: NotFoundException Address with ID not found
     end
 ```
+
+**Figura 45 — DSD CU-118: Editar Dirección de Entrega**
 
 **Observaciones de diseño**
 
@@ -3256,24 +4158,33 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-119 Eliminar Direccion de Entrega
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: remove(id, usuarioDeLaSesion)
+    activate SRV
     SRV->>SRV: findOne(id, usuarioDeLaSesion)
     SRV->>AREP: find(otras direcciones del titular)
+    activate AREP
     AREP-->>SRV: lista de UserAddress
+    deactivate AREP
     SRV->>AREP: save(nueva predeterminada)
+    activate AREP
     SRV->>AREP: remove(direccion)
     AREP-->>SRV: confirmación de baja
+    deactivate AREP
     alt la dirección existe
         SRV-->>CTRL: mensaje de baja con el identificador
+        deactivate SRV
     else la dirección no existe
         SRV-->>CTRL: NotFoundException Address with ID not found
     end
 ```
+
+**Figura 46 — DSD CU-119: Eliminar Dirección de Entrega**
 
 **Observaciones de diseño**
 
@@ -3288,22 +4199,29 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-120 Marcar una Direccion como Predeterminada
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
+    activate SRV
     SRV->>SRV: findOne(id, usuarioDeLaSesion)
     SRV->>AREP: update(isDefault false en las demás del titular)
+    activate AREP
     SRV->>AREP: save(direccion con isDefault true)
     AREP-->>SRV: UserAddress actualizada
+    deactivate AREP
     alt la dirección existe
         SRV-->>CTRL: UserAddress predeterminada
+        deactivate SRV
     else la dirección no existe
         SRV-->>CTRL: NotFoundException Address with ID not found
     end
 ```
+
+**Figura 47 — DSD CU-120: Marcar una Dirección como Predeterminada**
 
 **Observaciones de diseño**
 
@@ -3318,20 +4236,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-121 Consultar la Direccion Predeterminada
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
+    activate SRV
     SRV->>AREP: findOne(where user_id e isDefault true)
+    activate AREP
     AREP-->>SRV: UserAddress o null
+    deactivate AREP
     alt hay dirección predeterminada
         SRV-->>CTRL: UserAddress
+        deactivate SRV
     else no hay ninguna
         SRV-->>CTRL: NotFoundException No addresses found for user
     end
 ```
+
+**Figura 48 — DSD CU-121: Consultar la Dirección Predeterminada**
 
 **Observaciones de diseño**
 
@@ -3346,6 +4271,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-122 Agregar Item al Carrito
     autonumber
     participant CTRL as CartController
     participant SRV as CartService
@@ -3354,18 +4280,28 @@ sequenceDiagram
     participant IREP as RepositoryCartItem
 
     CTRL->>SRV: agregarItem(usuarioDeLaSesion, garrafaId, cantidad)
+    activate SRV
     SRV->>CREP: findOrCreate(carrito abierto del cliente)
+    activate CREP
     CREP-->>SRV: Cart
+    deactivate CREP
     SRV->>GREP: findOne(where gas_cylinder_id, isActive y distribuidora)
+    activate GREP
     GREP-->>SRV: GasCylinder o null
+    deactivate GREP
     SRV->>IREP: upsert(item con cantidad y precio unitario)
+    activate IREP
     IREP-->>SRV: CartItem guardado
+    deactivate IREP
     alt el tipo de garrafa es válido
         SRV-->>CTRL: Cart con sus ítems y el total
+        deactivate SRV
     else el tipo de garrafa no es válido
         SRV-->>CTRL: operación rechazada
     end
 ```
+
+**Figura 49 — DSD CU-122: Agregar Ítem al Carrito**
 
 **Observaciones de diseño**
 
@@ -3380,22 +4316,31 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-123 Modificar la Cantidad de un Item del Carrito
     autonumber
     participant CTRL as CartController
     participant SRV as CartService
     participant IREP as RepositoryCartItem
 
     CTRL->>SRV: modificarCantidad(usuarioDeLaSesion, itemId, cantidad)
+    activate SRV
     SRV->>IREP: findOne(where cart_item_id, relations cart)
+    activate IREP
     IREP-->>SRV: CartItem o null
+    deactivate IREP
     SRV->>IREP: save(item con la cantidad nueva)
+    activate IREP
     IREP-->>SRV: CartItem actualizado
+    deactivate IREP
     alt el ítem existe y es del cliente
         SRV-->>CTRL: Cart con el total recalculado
+        deactivate SRV
     else el ítem no es del cliente
         SRV-->>CTRL: operación rechazada
     end
 ```
+
+**Figura 50 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito**
 
 **Observaciones de diseño**
 
@@ -3410,22 +4355,31 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-124 Quitar Item del Carrito
     autonumber
     participant CTRL as CartController
     participant SRV as CartService
     participant IREP as RepositoryCartItem
 
     CTRL->>SRV: quitarItem(usuarioDeLaSesion, itemId)
+    activate SRV
     SRV->>IREP: findOne(where cart_item_id, relations cart)
+    activate IREP
     IREP-->>SRV: CartItem o null
+    deactivate IREP
     SRV->>IREP: remove(item)
+    activate IREP
     IREP-->>SRV: confirmación de baja
+    deactivate IREP
     alt el ítem existe y es del cliente
         SRV-->>CTRL: Cart sin el ítem
+        deactivate SRV
     else el ítem no es del cliente
         SRV-->>CTRL: operación rechazada
     end
 ```
+
+**Figura 51 — DSD CU-124: Quitar Ítem del Carrito**
 
 **Observaciones de diseño**
 
@@ -3440,20 +4394,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-125 Consultar el Carrito
     autonumber
     participant CTRL as CartController
     participant SRV as CartService
     participant CREP as RepositoryCart
 
     CTRL->>SRV: consultar(usuarioDeLaSesion)
+    activate SRV
     SRV->>CREP: findOne(carrito abierto, relations items y items.gasCylinder)
+    activate CREP
     CREP-->>SRV: Cart con ítems o null
+    deactivate CREP
     alt el cliente tiene carrito
         SRV-->>CTRL: Cart con ítems y total
+        deactivate SRV
     else el cliente no tiene carrito
         SRV-->>CTRL: Cart vacío
     end
 ```
+
+**Figura 52 — DSD CU-125: Consultar el Carrito**
 
 **Observaciones de diseño**
 
@@ -3468,6 +4429,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-126 Vaciar el Carrito
     autonumber
     participant CTRL as CartController
     participant SRV as CartService
@@ -3475,16 +4437,24 @@ sequenceDiagram
     participant IREP as RepositoryCartItem
 
     CTRL->>SRV: vaciar(usuarioDeLaSesion)
+    activate SRV
     SRV->>CREP: findOne(carrito abierto del cliente)
+    activate CREP
     CREP-->>SRV: Cart o null
+    deactivate CREP
     SRV->>IREP: delete(where cart_id)
+    activate IREP
     IREP-->>SRV: confirmación de baja
+    deactivate IREP
     alt el cliente tiene carrito
         SRV-->>CTRL: Cart vacío
+        deactivate SRV
     else el cliente no tiene carrito
         SRV-->>CTRL: Cart vacío
     end
 ```
+
+**Figura 53 — DSD CU-126: Vaciar el Carrito**
 
 **Observaciones de diseño**
 
@@ -3499,6 +4469,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-127 Cambiar la Direccion de Entrega del Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -3507,20 +4478,32 @@ sequenceDiagram
     participant HREP as RepositoryOrderAddressChange
 
     CTRL->>SRV: cambiarDireccion(pedidoId, direccionId, motivo, usuarioDeLaSesion)
+    activate SRV
     SRV->>OREP: findOne(where order_id, relations customer y delivery)
+    activate OREP
     OREP-->>SRV: Order o null
+    deactivate OREP
     SRV->>AREP: findOne(where address_id y user_id)
+    activate AREP
     AREP-->>SRV: UserAddress o null
+    deactivate AREP
     SRV->>SRV: verificarCobertura(coordenadas, distribuidora)
     SRV->>HREP: save(cambio de dirección)
+    activate HREP
     SRV->>OREP: save(pedido con la dirección nueva)
+    activate OREP
     OREP-->>SRV: Order actualizada
+    deactivate OREP
     alt el cambio es admisible
         SRV-->>CTRL: Order con la dirección nueva
+        deactivate SRV
     else el cambio no es admisible
         SRV-->>CTRL: operación rechazada
     end
+    deactivate HREP
 ```
+
+**Figura 54 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido**
 
 **Observaciones de diseño**
 
@@ -3536,22 +4519,31 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-128 Indicar Quien Recibe el Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
     participant OREP as RepositoryOrder
 
     CTRL->>SRV: indicarQuienRecibe(pedidoId, datos, usuarioDeLaSesion)
+    activate SRV
     SRV->>OREP: findOne(where order_id, relations customer)
+    activate OREP
     OREP-->>SRV: Order o null
+    deactivate OREP
     SRV->>OREP: save(pedido con los datos de quien recibe)
+    activate OREP
     OREP-->>SRV: Order actualizada
+    deactivate OREP
     alt el pedido no está entregado
         SRV-->>CTRL: Order con quién recibe
+        deactivate SRV
     else el pedido ya fue entregado
         SRV-->>CTRL: operación rechazada
     end
 ```
+
+**Figura 55 — DSD CU-128: Indicar Quién Recibe el Pedido**
 
 **Observaciones de diseño**
 
@@ -3570,6 +4562,7 @@ la fuente del bootstrap del cron de despacho.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-080 Consultar El Pool De Pedidos Disponibles
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -3586,21 +4579,31 @@ sequenceDiagram
         else Autorizado
             RG-->>CTRL: true
             CTRL->>SRV: findAvailableOrders(paginationDto, distributorId)
+            activate SRV
         end
     else Bootstrap del cron de despacho
         CRON->>SRV: findAvailableOrders(limit 50, offset 0)
     end
     SRV->>ORD: findAvailable(limit, offset, distributorId)
+    activate ORD
     ORD->>ORD: scoped(status PENDING y delivery_id IsNull, distributorId)
     ORD->>REP: findAndCount(where, take, skip, relations, order createdAt ASC)
+    activate REP
     REP-->>ORD: orders y total
+    deactivate REP
     ORD-->>SRV: orders, total, limit y offset
+    deactivate ORD
     SRV-->>CTRL: PaginatedOrders
+    deactivate SRV
     loop Por cada pedido del pool
         CTRL->>MAP: toDto(order)
+        activate MAP
         MAP-->>CTRL: OrderResponseDto
+        deactivate MAP
     end
 ```
+
+**Figura 56 — DSD CU-080: Consultar el Pool de Pedidos Disponibles**
 
 **Observaciones de diseño**
 
@@ -3616,6 +4619,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-081 Consultar Los Pedidos Asignados Al Chofer
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -3630,18 +4634,28 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: findByDelivery(deliveryId, paginationDto, distributorId)
+        activate SRV
         SRV->>ORD: findByDelivery(deliveryId, limit, offset, distributorId)
+        activate ORD
         ORD->>ORD: scoped(where delivery_id, distributorId)
         ORD->>REP: findAndCount(where, take, skip, relations customer e items, order createdAt DESC)
+        activate REP
         REP-->>ORD: orders y total
+        deactivate REP
         ORD-->>SRV: orders, total, limit y offset
+        deactivate ORD
         SRV-->>CTRL: PaginatedOrders
+        deactivate SRV
         loop Por cada pedido asignado
             CTRL->>MAP: toDto(order)
+            activate MAP
             MAP-->>CTRL: OrderResponseDto
+            deactivate MAP
         end
     end
 ```
+
+**Figura 57 — DSD CU-081: Consultar los Pedidos Asignados al Chofer**
 
 **Observaciones de diseño**
 
@@ -3666,6 +4680,7 @@ transiciona directo a `ACCEPTED`.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-012 Asignar Chofer Manualmente
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -3682,16 +4697,22 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: assignDelivery(id, deliveryId)
+        activate SRV
         SRV->>SRV: findOne(orderId)
         SRV->>ORD: findByIdFull(orderId)
+        activate ORD
         alt Pedido inexistente
             ORD-->>SRV: null
+            deactivate ORD
             SRV-->>CTRL: NotFoundException Order with ID not found
+            deactivate SRV
         else Pedido encontrado
             ORD-->>SRV: Order
             SRV->>DREP: findOne(delivery_id)
+            activate DREP
             alt Chofer inexistente
                 DREP-->>SRV: null
+                deactivate DREP
                 SRV-->>CTRL: NotFoundException Repartidor no encontrado
             else Chofer encontrado
                 DREP-->>SRV: Delivery
@@ -3700,22 +4721,30 @@ sequenceDiagram
                 else Chofer activo
                     SRV->>SRV: order.delivery_id igual a deliveryId
                     SRV->>FSM: transitionOrder(order, ACCEPTED)
+                    activate FSM
                     alt Transicion ilegal desde el estado actual
                         FSM-->>SRV: InvalidOrderTransitionError
+                        deactivate FSM
                         SRV-->>CTRL: error 400 via GlobalExceptionFilter
                     else Transicion valida
                         SRV->>SRV: order.acceptedAt igual a new Date
                         SRV->>OREP: save(order)
+                        activate OREP
                         OREP-->>SRV: Order
+                        deactivate OREP
                         SRV-->>CTRL: Order en estado ACCEPTED
                         CTRL->>MAP: toDto(order)
+                        activate MAP
                         MAP-->>CTRL: OrderResponseDto
+                        deactivate MAP
                     end
                 end
             end
         end
     end
 ```
+
+**Figura 58 — DSD CU-012: Asignar Chofer Manualmente**
 
 **Observaciones de diseño**
 
@@ -3735,6 +4764,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-149 Despachar un Pedido Express a un Chofer en Moto
     autonumber
     participant SRV as OrderService
     participant OREP as RepositoryOrder
@@ -3742,18 +4772,28 @@ sequenceDiagram
     participant NOT as NotificationService
 
     SRV->>OREP: findOne(pedido express sin chofer)
+    activate OREP
     OREP-->>SRV: Order
+    deactivate OREP
     SRV->>DREP: find(choferes en moto disponibles dentro del radio, por distancia)
+    activate DREP
     DREP-->>SRV: lista de Delivery ordenada
+    deactivate DREP
     SRV->>NOT: ofrecer(pedido, chofer más cercano, ventana corta)
+    activate NOT
     SRV->>OREP: save(pedido asignado o degradado a programado)
+    activate OREP
     OREP-->>SRV: Order actualizada
+    deactivate OREP
     alt un chofer acepta
         SRV-->>CTRL: Order asignada al chofer en moto
     else ninguno acepta
         SRV-->>CTRL: Order degradada a modalidad programada
     end
+    deactivate NOT
 ```
+
+**Figura 59 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto**
 
 **Observaciones de diseño**
 
@@ -3776,6 +4816,7 @@ posición GPS al cliente correcto (CU-017).
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-018 Marcar Pedido En Camino
     autonumber
     participant IDEM as IdempotencyInterceptor
     participant CTRL as OrderController
@@ -3797,41 +4838,65 @@ sequenceDiagram
         IDEM-->>CTRL: next.handle()
         CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
         CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
+        activate SRV
         SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
+        activate UC
         UC->>ORD: findByIdFull(id)
+        activate ORD
         alt Pedido inexistente
             ORD-->>UC: null
+            deactivate ORD
             UC-->>CTRL: NotFoundException Order with ID not found
+            deactivate UC
         else Pedido encontrado
             ORD-->>UC: Order
             UC->>FSM: transitionOrder(order, ON_THE_WAY)
+            activate FSM
             alt El pedido no estaba ACCEPTED
                 FSM-->>UC: InvalidOrderTransitionError
+                deactivate FSM
                 UC-->>CTRL: error 400 via GlobalExceptionFilter
             else Transicion valida
                 UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
                 UC->>UC: order.onTheWayAt igual a new Date
                 alt El pedido no tiene chofer asignado
-                    UC->>UC: devuelve null sin activar tracking
+                    UC-->>UC: devuelve null sin activar tracking
                 else Tiene chofer
                     UC->>DREP: findOne(delivery_id, relations user)
+                    activate DREP
                     DREP-->>UC: Delivery con User
+                    deactivate DREP
                     UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
+                    activate RT
                     RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
+                    activate REDIS
                 end
                 UC->>ORD: save(order)
+                activate ORD
                 UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
-                UC->>RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
-                RT->>CGW: notifyCustomer(customerId, event, payload)
-                UC->>RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
-                RT->>AGW: notifyAdmins(event, payload)
+                UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
+                RT-)CGW: notifyCustomer(customerId, event, payload)
+                activate CGW
+                UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
+                RT-)AGW: notifyAdmins(event, payload)
+                activate AGW
                 UC->>UC: notifyCustomer(order)
-                UC->>NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                activate NOT
                 UC-->>CTRL: Order en estado ON_THE_WAY
             end
         end
     end
+    deactivate NOT
+    deactivate AGW
+    deactivate CGW
+    deactivate REDIS
+    deactivate RT
+    deactivate ORD
+    deactivate SRV
 ```
+
+**Figura 60 — DSD CU-018: Marcar Pedido "En Camino"**
 
 **Observaciones de diseño**
 
@@ -3854,6 +4919,7 @@ no pasa por la máquina de estados ni por el use-case de transición.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-019 Avisar Llegada Al Cliente
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -3868,24 +4934,34 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: notifyDriverArrived(id)
+        activate SRV
         SRV->>SRV: findOne(orderId)
         SRV->>ORD: findByIdFull(orderId)
+        activate ORD
         alt Pedido inexistente
             ORD-->>SRV: null
+            deactivate ORD
             SRV-->>CTRL: NotFoundException Order with ID not found
+            deactivate SRV
         else Pedido encontrado
             ORD-->>SRV: Order con delivery y user
             alt El pedido no esta ON_THE_WAY
                 SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
             else Pedido en camino
-                SRV->>RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                activate RT
                 RT->>CGW: notifyCustomer(customerId, event, payload)
+                activate CGW
                 CGW-->>SRV: emit en la sala customer_ del cliente
+                deactivate CGW
                 SRV-->>CTRL: message Cliente notificado
             end
         end
     end
+    deactivate RT
 ```
+
+**Figura 61 — DSD CU-019: Avisar Llegada al Cliente**
 
 **Observaciones de diseño**
 
@@ -3907,6 +4983,7 @@ registrado antes (`POST /notifications/token`).
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-021 Recibir Notificaciones En Tiempo Real
     autonumber
     participant NCTRL as NotificationsController
     participant NSRV as NotificationsService
@@ -3920,20 +4997,30 @@ sequenceDiagram
 
     NCTRL->>NCTRL: si no es admin, forzar userId al del token
     NCTRL->>NSRV: saveNotificationToken(userId, body.token, body.platform)
+    activate NSRV
     NSRV->>CREP: findOne(user_id)
+    activate CREP
     alt Es un cliente
         CREP-->>NSRV: Customer
+        deactivate CREP
         NSRV->>CREP: save(customer con notification_token)
+        activate CREP
         NSRV-->>NCTRL: success true
+        deactivate NSRV
     else No es cliente
         CREP-->>NSRV: null
+        deactivate CREP
         NSRV->>DREP: findOne(user_id)
+        activate DREP
         alt Es un chofer
             DREP-->>NSRV: Delivery
+            deactivate DREP
             NSRV->>DREP: save(delivery con notification_token)
+            activate DREP
             NSRV-->>NCTRL: success true
         else No existe el perfil
             DREP-->>NSRV: null
+            deactivate DREP
             NSRV-->>NCTRL: success false, error User not found
         end
     end
@@ -3943,8 +5030,10 @@ sequenceDiagram
         CGW->>CGW: client.disconnect()
     else Con token
         CGW->>ASRV: decodeToken(token)
+        activate ASRV
         alt Token invalido
             ASRV-->>CGW: UnauthorizedException
+            deactivate ASRV
             CGW->>CGW: client.disconnect()
         else Token valido
             ASRV-->>CGW: email, user y sub
@@ -3955,19 +5044,29 @@ sequenceDiagram
     end
 
     opt Cambio de estado del pedido, ver CU-018
-        RT->>CGW: notifyCustomer(customerId, event, payload)
+        RT-)CGW: notifyCustomer(customerId, event, payload)
+        activate CGW
         CGW->>CGW: server.to(roomName).emit(event, payload)
         NOT->>NSRV: sendOrderConfirmation(customerId, orderId, token)
+        activate NSRV
         NSRV->>CREP: findOne(user_id, relations user)
+        activate CREP
         alt Sin cliente o sin token registrado
             NSRV-->>NOT: success false, error No notification token
+            deactivate NSRV
         else Token disponible
             NSRV->>FCM: sendToToken(notificationToken, message)
+            activate FCM
             FCM-->>NSRV: messageId
+            deactivate FCM
             NSRV-->>NOT: success true y messageId
         end
     end
+    deactivate CGW
+    deactivate CREP
 ```
+
+**Figura 62 — DSD CU-021: Recibir Notificaciones en Tiempo Real**
 
 **Observaciones de diseño**
 
@@ -3992,6 +5091,7 @@ seguiría recibiendo ofertas del despacho.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-022 Activar Desactivar Disponibilidad
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
@@ -4000,17 +5100,24 @@ sequenceDiagram
     participant DGW as DriversGateway
 
     CTRL->>SRV: toggleAvailability(userId, body.available)
+    activate SRV
     SRV->>REP: findOne(user_id)
+    activate REP
     alt No existe perfil de chofer para ese usuario
         REP-->>SRV: null
+        deactivate REP
         SRV-->>CTRL: NotFoundException Perfil de repartidor no encontrado para este usuario
+        deactivate SRV
     else Perfil encontrado
         REP-->>SRV: Delivery
         SRV->>SRV: delivery.isActive igual a isAvailable
         SRV->>REP: save(delivery)
+        activate REP
         alt Se pone offline
             SRV->>REDIS: removeDriver(userId)
+            activate REDIS
             REDIS-->>SRV: sacado del radar drivers:locations
+            deactivate REDIS
             SRV-->>CTRL: userId, deliveryId, isAvailable false y mensaje Estas desconectado
         else Se pone online
             SRV-->>CTRL: userId, deliveryId, isAvailable true y mensaje Estas en linea
@@ -4020,9 +5127,14 @@ sequenceDiagram
     opt Caida de la conexion en vez de apagado explicito
         DGW->>DGW: handleDisconnect(client)
         DGW->>REDIS: removeDriver(id)
+        activate REDIS
         REDIS-->>DGW: chofer fuera del radar
+        deactivate REDIS
     end
+    deactivate REP
 ```
+
+**Figura 63 — DSD CU-022: Activar / Desactivar Disponibilidad**
 
 **Observaciones de diseño**
 
@@ -4076,6 +5188,7 @@ El controller **fuerza la identidad del reclamante** cuando quien llama es un cl
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-023 Registrar Reclamo
     autonumber
     participant CTRL as ClaimsController
     participant SRV as ClaimsService
@@ -4090,25 +5203,37 @@ sequenceDiagram
         CTRL->>CTRL: usar el createClaimDto tal cual llego
     end
     CTRL->>SRV: create(dto)
+    activate SRV
     SRV->>OSRV: findOne(dto.orderId)
+    activate OSRV
     OSRV->>OREP: findByIdFull(id)
+    activate OREP
     OREP-->>OSRV: Order o null
+    deactivate OREP
     alt Orden inexistente
         OSRV-->>SRV: NotFoundException
+        deactivate OSRV
         SRV-->>CTRL: NotFoundException Orden no encontrada
+        deactivate SRV
     else Orden existente
         OSRV-->>SRV: Order
         alt order.customer_id distinto de dto.customerId
             SRV-->>CTRL: BadRequestException Esta orden no pertenece al cliente indicado
         else El pedido es del cliente
             SRV->>CREP: create(order_id, customer_id, distributor_id de la orden, reason, description, photoUrl)
+            activate CREP
             CREP-->>SRV: Claim con status PENDING por defecto
+            deactivate CREP
             SRV->>CREP: save(claim)
+            activate CREP
             CREP-->>SRV: Claim persistido
+            deactivate CREP
             SRV-->>CTRL: Claim
         end
     end
 ```
+
+**Figura 64 — DSD CU-023: Registrar Reclamo**
 
 **Observaciones de diseño**
 
@@ -4124,20 +5249,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-024 Listar Reclamos
     autonumber
     participant CTRL as ClaimsController
     participant SRV as ClaimsService
     participant CREP as RepositoryClaim
 
     CTRL->>SRV: findAll(distributorId)
+    activate SRV
     SRV->>SRV: armar where vacio
     alt Hay distributorId, admin de distribuidora
         SRV->>SRV: where.distributor_id igual distributorId
     end
     SRV->>CREP: find(where, order createdAt DESC, relations order y customer)
+    activate CREP
     CREP-->>SRV: Claim[]
+    deactivate CREP
     SRV-->>CTRL: Claim[]
+    deactivate SRV
 ```
+
+**Figura 65 — DSD CU-024: Listar Reclamos**
 
 **Observaciones de diseño**
 
@@ -4152,26 +5284,35 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-025 Resolver Reclamo
     autonumber
     participant CTRL as ClaimsController
     participant SRV as ClaimsService
     participant CREP as RepositoryClaim
 
     CTRL->>SRV: resolve(id, body.resolution, body.status, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>CREP: findOne(where claim_id y distributor_id)
+    activate CREP
     CREP-->>SRV: Claim o null
+    deactivate CREP
     alt Reclamo inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Reclamo no encontrado
+        deactivate SRV
     else Reclamo del tenant
         CREP-->>SRV: Claim
         SRV->>SRV: claim.resolutionNote igual resolution
         SRV->>SRV: claim.status igual status
         SRV->>CREP: save(claim)
+        activate CREP
         CREP-->>SRV: Claim actualizado
+        deactivate CREP
         SRV-->>CTRL: Claim
     end
 ```
+
+**Figura 66 — DSD CU-025: Resolver Reclamo**
 
 **Observaciones de diseño**
 
@@ -4190,6 +5331,7 @@ Los KPIs se resuelven con **agregados SQL** (`SUM`/`COUNT`), no cargando pedidos
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-026 Ver Dashboard General
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -4197,33 +5339,59 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: getOrderStats(distributorId)
+    activate SRV
     SRV->>SRV: calcular today, tomorrow, weekStart, weekEnd, monthStart, monthEnd
     SRV->>SRV: delivered(from, to), helper de filtro status DELIVERED mas Between
     SRV->>OREP: sum(totalAmount, delivered hoy)
+    activate OREP
     OREP-->>SRV: todaySales
+    deactivate OREP
     SRV->>OREP: sum(totalAmount, delivered semana)
+    activate OREP
     OREP-->>SRV: weekSales
+    deactivate OREP
     SRV->>OREP: sum(totalAmount, delivered mes)
+    activate OREP
     OREP-->>SRV: monthSales
+    deactivate OREP
     SRV->>OREP: sum(totalAmount, status DELIVERED historico)
+    activate OREP
     OREP-->>SRV: totalSales
+    deactivate OREP
     SRV->>OREP: count(where delivered hoy)
+    activate OREP
     OREP-->>SRV: deliveredToday
+    deactivate OREP
     SRV->>OREP: count(where status PENDING)
+    activate OREP
     OREP-->>SRV: pending
+    deactivate OREP
     SRV->>OREP: count(where status ACCEPTED)
+    activate OREP
     OREP-->>SRV: accepted
+    deactivate OREP
     SRV->>OREP: count(where status ON_THE_WAY)
+    activate OREP
     OREP-->>SRV: onTheWay
+    deactivate OREP
     SRV->>DREP: count(where isActive true y validated true)
+    activate DREP
     DREP-->>SRV: activeDeliveries
+    deactivate DREP
     SRV->>OREP: count(where DELIVERED y paymentMethod CASH del mes)
+    activate OREP
     OREP-->>SRV: cash
+    deactivate OREP
     SRV->>OREP: count(where DELIVERED y paymentMethod MERCADOPAGO del mes)
+    activate OREP
     OREP-->>SRV: mercadopago
+    deactivate OREP
     SRV->>SRV: armar ordersSummary, sales, performance y paymentMethods
     SRV-->>CTRL: objeto de KPIs del dashboard
+    deactivate SRV
 ```
+
+**Figura 67 — DSD CU-026: Ver Dashboard General**
 
 **Observaciones de diseño**
 
@@ -4240,6 +5408,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-027 Ver Reporte De Ventas Por Chofer
     autonumber
     participant CTRL as ReportsController
     participant SRV as ReportsService
@@ -4251,22 +5420,32 @@ sequenceDiagram
         CTRL-->>CTRL: BadRequestException Invalid date format
     else Rango valido
         CTRL->>SRV: getSalesByDriver(startDate, endDate, distributorId)
+        activate SRV
         SRV->>OREP: find(status DELIVERED, deliveredAt Between, distributor_id opcional, relations delivery y delivery.user)
+        activate OREP
         OREP-->>SRV: Order[]
+        deactivate OREP
         loop Por cada pedido entregado
             alt El pedido no tiene delivery o delivery.user
                 SRV->>SRV: continue, se descarta
             else Pedido con chofer asignado
                 SRV->>SRV: acumular totalOrders del driverId
                 SRV->>DEC: plus(order.totalAmount)
+                activate DEC
                 DEC-->>SRV: totalSales acumulado
+                deactivate DEC
             end
         end
         SRV->>DEC: toNumber() por cada entrada del reporte
+        activate DEC
         DEC-->>SRV: totales serializables a JSON
+        deactivate DEC
         SRV-->>CTRL: arreglo de driverId, driverName, totalOrders y totalSales
+        deactivate SRV
     end
 ```
+
+**Figura 68 — DSD CU-027: Ver Reporte de Ventas por Chofer**
 
 **Observaciones de diseño**
 
@@ -4282,6 +5461,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-028 Ver Reporte De Ventas Por Producto
     autonumber
     participant CTRL as ReportsController
     participant SRV as ReportsService
@@ -4290,9 +5470,13 @@ sequenceDiagram
 
     CTRL->>CTRL: parseDates(from, to)
     CTRL->>SRV: getSalesByProduct(startDate, endDate, distributorId)
+    activate SRV
     SRV->>OREP: createQueryBuilder(order)
+    activate OREP
     OREP-->>SRV: SelectQueryBuilder
+    deactivate OREP
     SRV->>QB: innerJoinAndSelect(order.items, item)
+    activate QB
     SRV->>QB: innerJoinAndSelect(item.gasCylinder, product)
     SRV->>QB: where(order.status igual DELIVERED)
     SRV->>QB: andWhere(order.deliveredAt BETWEEN start AND end)
@@ -4303,9 +5487,13 @@ sequenceDiagram
     SRV->>QB: groupBy(product.type) y addGroupBy(product.description)
     SRV->>QB: getRawMany()
     QB-->>SRV: filas crudas
+    deactivate QB
     SRV->>SRV: mapear a productType, description, totalQuantity y totalSales con Number
     SRV-->>CTRL: arreglo de ventas por producto
+    deactivate SRV
 ```
+
+**Figura 69 — DSD CU-028: Ver Reporte de Ventas por Producto**
 
 **Observaciones de diseño**
 
@@ -4321,6 +5509,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-029 Ver Reporte Por Metodo De Pago
     autonumber
     participant CTRL as ReportsController
     participant SRV as ReportsService
@@ -4329,9 +5518,13 @@ sequenceDiagram
 
     CTRL->>CTRL: parseDates(from, to)
     CTRL->>SRV: getSalesByPaymentMethod(startDate, endDate, distributorId)
+    activate SRV
     SRV->>OREP: createQueryBuilder(order)
+    activate OREP
     OREP-->>SRV: SelectQueryBuilder
+    deactivate OREP
     SRV->>QB: select(order.paymentMethod as method)
+    activate QB
     SRV->>QB: addSelect(COUNT order.order_id as count)
     SRV->>QB: addSelect(SUM order.totalAmount as total)
     SRV->>QB: where(order.status igual DELIVERED)
@@ -4342,9 +5535,13 @@ sequenceDiagram
     SRV->>QB: groupBy(order.paymentMethod)
     SRV->>QB: getRawMany()
     QB-->>SRV: filas por metodo de pago
+    deactivate QB
     SRV->>SRV: mapear a method, totalOrders y totalSales con Number
     SRV-->>CTRL: arreglo de ventas por metodo de pago
+    deactivate SRV
 ```
+
+**Figura 70 — DSD CU-029: Ver Reporte por Método de Pago**
 
 **Observaciones de diseño**
 
@@ -4361,6 +5558,7 @@ Este caso de uso está implementado **dos veces**, por dos caminos distintos: el
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-030 Ver Grafico De Ventas
     autonumber
     participant RCTRL as ReportsController
     participant RSRV as ReportsService
@@ -4373,32 +5571,46 @@ sequenceDiagram
         RCTRL->>RCTRL: parseDates(from, to)
         RCTRL->>RCTRL: gran igual month si granularity es month, si no day
         RCTRL->>RSRV: getSalesEvolution(startDate, endDate, gran, distributorId)
+        activate RSRV
         RSRV->>OREP: createQueryBuilder(order)
+        activate OREP
         OREP-->>RSRV: SelectQueryBuilder
+        deactivate OREP
         RSRV->>QB: select date_trunc del periodo sobre order.deliveredAt
+        activate QB
         RSRV->>QB: addSelect COUNT y SUM
         RSRV->>QB: where status DELIVERED y deliveredAt BETWEEN start AND end
         RSRV->>QB: groupBy(period) y orderBy(period ASC)
         RSRV->>QB: getRawMany()
         QB-->>RSRV: filas por periodo
+        deactivate QB
         RSRV->>RSRV: mapear a period, totalOrders y totalSales
         RSRV-->>RCTRL: serie temporal de ventas
+        deactivate RSRV
     else Camino B, grafico fijo del dashboard GET /orders/stats/chart
         OCTRL->>OSRV: getSalesChartData(distributorId)
+        activate OSRV
         OSRV->>OSRV: start igual hoy menos 6 dias a las 00:00, end igual hoy 23:59
         OSRV->>OREP: createQueryBuilder(order)
+        activate OREP
         OREP-->>OSRV: SelectQueryBuilder
+        deactivate OREP
         OSRV->>QB: select date_trunc day sobre order.deliveredAt y SUM totalAmount
+        activate QB
         OSRV->>QB: where status DELIVERED y deliveredAt BETWEEN start AND end
         OSRV->>QB: groupBy(day) y getRawMany()
         QB-->>OSRV: filas de los dias con ventas
+        deactivate QB
         OSRV->>OSRV: byDay, mapa fecha ISO hacia total
         loop i de 6 hasta 0
             OSRV->>OSRV: push name dia abreviado, date y sales con 0 si no hubo ventas
         end
         OSRV-->>OCTRL: chartData de 7 puntos
+        deactivate OSRV
     end
 ```
+
+**Figura 71 — DSD CU-030: Ver Gráfico de Ventas**
 
 **Observaciones de diseño**
 
@@ -4418,6 +5630,7 @@ Registro **transaccional a través de dos sistemas**: la base propia (User + Del
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-031 Registrar Chofer
     autonumber
     participant CTRL as UsersController
     participant SRV as DeliveryService
@@ -4433,40 +5646,64 @@ sequenceDiagram
         CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
     else Distribuidora resuelta
         CTRL->>SRV: registerWithUser(dto con distributorId)
+        activate SRV
         SRV->>DS: createQueryRunner()
+        activate DS
         DS-->>SRV: QueryRunner
+        deactivate DS
         SRV->>QR: connect() y startTransaction()
+        activate QR
         SRV->>UREP: findOne(where email)
+        activate UREP
         UREP-->>SRV: User existente o null
+        deactivate UREP
         alt Ya existe un usuario con ese email
             SRV->>QR: rollbackTransaction()
             SRV-->>CTRL: BadRequestException User with this email already exists
+            deactivate SRV
         else Email libre
             SRV->>FB: createUserSafe(email, password, full_name, phone_number)
+            activate FB
             FB-->>SRV: firebaseUser con uid
+            deactivate FB
             SRV->>RREP: findOne(where type delivery)
+            activate RREP
             RREP-->>SRV: Role o null
+            deactivate RREP
             alt No existe el rol delivery
                 SRV->>QR: rollbackTransaction()
                 SRV->>FB: deleteUserByEmailSafe(email, logger)
+                activate FB
                 SRV-->>CTRL: InternalServerErrorException Delivery role not found
             else Rol encontrado
                 SRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id, selfie)
+                activate UREP
                 UREP-->>SRV: User en memoria
+                deactivate UREP
                 SRV->>QR: manager.save(user)
                 QR-->>SRV: savedUser con user_id
+                deactivate QR
                 SRV->>DREP: create(user_id, distributor_id, calification, latLng, actual_location, validated, isActive, balance 0)
+                activate DREP
                 DREP-->>SRV: Delivery en memoria
+                deactivate DREP
                 SRV->>QR: manager.save(delivery)
+                activate QR
                 SRV->>QR: commitTransaction()
                 SRV->>UREP: findOne(user_id, relations delivery y role)
+                activate UREP
                 UREP-->>SRV: User completo
+                deactivate UREP
                 SRV-->>CTRL: User con su perfil de chofer
             end
         end
         SRV->>QR: release()
     end
+    deactivate FB
+    deactivate QR
 ```
+
+**Figura 72 — DSD CU-031: Registrar Chofer**
 
 **Observaciones de diseño**
 
@@ -4484,6 +5721,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-032 Validar Invalidar Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
@@ -4491,28 +5729,42 @@ sequenceDiagram
 
     alt Validar, PATCH /delivery/:id/validate
         CTRL->>SRV: validateDelivery(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt Chofer inexistente
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
         else Chofer encontrado
             SRV->>SRV: delivery.validated igual true
             SRV->>DREP: save(delivery)
+            activate DREP
             DREP-->>SRV: Delivery actualizado
+            deactivate DREP
             SRV-->>CTRL: Delivery
         end
     else Invalidar, PATCH /delivery/:id/invalidate
         CTRL->>SRV: invalidateDelivery(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery
+        deactivate DREP
         SRV->>SRV: delivery.validated igual false
         SRV->>DREP: save(delivery)
+        activate DREP
         DREP-->>SRV: Delivery actualizado
+        deactivate DREP
         SRV-->>CTRL: Delivery
+        deactivate SRV
     end
 ```
+
+**Figura 73 — DSD CU-032: Validar / Invalidar Chofer**
 
 **Observaciones de diseño**
 
@@ -4527,24 +5779,33 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-033 Activar Desactivar Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+    activate SRV
     SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    activate DREP
     DREP-->>SRV: Delivery o null
+    deactivate DREP
     alt Chofer inexistente
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
     else Chofer encontrado
         SRV->>SRV: delivery.isActive igual isActive
         SRV->>DREP: save(delivery)
+        activate DREP
         DREP-->>SRV: Delivery actualizado
+        deactivate DREP
         SRV-->>CTRL: Delivery
     end
 ```
+
+**Figura 74 — DSD CU-033: Activar / Desactivar Chofer (Admin)**
 
 **Observaciones de diseño**
 
@@ -4559,6 +5820,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-034 Registrar Vehiculo Del Chofer
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -4566,25 +5828,37 @@ sequenceDiagram
     participant CREP as RepositoryCar
 
     CTRL->>SRV: create(createCarDto, distributorId)
+    activate SRV
     SRV->>UREP: findOne(where user_id del dto)
+    activate UREP
     UREP-->>SRV: User o null
+    deactivate UREP
     alt Usuario inexistente
         SRV-->>CTRL: NotFoundException User with ID not found
+        deactivate SRV
     else Usuario encontrado
         alt El dto trae car_patent
             SRV->>CREP: findOne(where car_patent)
+            activate CREP
             CREP-->>SRV: Car existente o null
+            deactivate CREP
             alt La patente ya esta registrada
                 SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
             end
         end
         SRV->>CREP: create(datos del dto, user_id, distributor_id)
+        activate CREP
         CREP-->>SRV: Car en memoria
+        deactivate CREP
         SRV->>CREP: save(car)
+        activate CREP
         CREP-->>SRV: Car persistido
+        deactivate CREP
         SRV-->>CTRL: Car
     end
 ```
+
+**Figura 75 — DSD CU-034: Registrar Vehículo del Chofer**
 
 **Observaciones de diseño**
 
@@ -4601,6 +5875,7 @@ Cuatro vistas distintas del mismo agregado, resueltas por el mismo servicio.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-035 Consultar Listado De Choferes
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
@@ -4608,35 +5883,53 @@ sequenceDiagram
 
     alt Listado paginado, GET /delivery
         CTRL->>SRV: findAll(paginationDto, distributorId)
+        activate SRV
         SRV->>SRV: desestructurar limit 10 y offset 0 por defecto
         SRV->>DREP: find(where distributor_id si vino, take, skip, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery[]
+        deactivate DREP
         SRV-->>CTRL: Delivery[]
+        deactivate SRV
     else Solo activos, GET /delivery/active
         CTRL->>SRV: findActiveDeliveries(paginationDto)
+        activate SRV
         SRV->>DREP: find(where isActive true, take, skip, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery[]
+        deactivate DREP
         SRV-->>CTRL: Delivery[]
+        deactivate SRV
     else Por delivery_id, GET /delivery/:id
         CTRL->>SRV: findOne(id)
+        activate SRV
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt No encontrado
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: Delivery
         end
     else Por user_id, GET /delivery/user/:userId
         CTRL->>SRV: findOneByUserId(userId)
+        activate SRV
         SRV->>DREP: findOne(where user_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt No encontrado
             SRV-->>CTRL: NotFoundException Delivery for user ID not found
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: Delivery
         end
     end
 ```
+
+**Figura 76 — DSD CU-035: Consultar Listado de Choferes**
 
 **Observaciones de diseño**
 
@@ -4653,6 +5946,7 @@ No existe un endpoint dedicado de **consulta** de balance: el chofer lo lee dent
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-049 Consultar Balance Ganancias Del Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
@@ -4660,24 +5954,36 @@ sequenceDiagram
 
     alt Consulta, el chofer abre su perfil, GET /delivery/user/:userId
         CTRL->>SRV: findOneByUserId(userId)
+        activate SRV
         SRV->>DREP: findOne(where user_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery con el campo balance
+        deactivate DREP
         SRV-->>CTRL: Delivery, el balance viaja dentro de la entidad
+        deactivate SRV
     else Ajuste por el admin, PATCH /delivery/:id/balance
         CTRL->>SRV: updateBalance(id, body.amount)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt Chofer inexistente
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
         else Chofer encontrado
             SRV->>SRV: delivery.balance igual balance actual mas amount
             SRV->>DREP: save(delivery)
+            activate DREP
             DREP-->>SRV: Delivery actualizado
+            deactivate DREP
             SRV-->>CTRL: Delivery
         end
     end
 ```
+
+**Figura 77 — DSD CU-049: Consultar Balance / Ganancias del Chofer**
 
 **Observaciones de diseño**
 
@@ -4693,6 +5999,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-051 Gestionar Vehiculos
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -4701,56 +6008,86 @@ sequenceDiagram
     alt Consultas del parque, GET /car, /car/:id, /car/user/:userId, /car/patent/:patent
         alt Listado completo
             CTRL->>SRV: findAll(distributorId)
+            activate SRV
             SRV->>CREP: find(where distributor_id si vino, relations user y user.delivery)
+            activate CREP
             CREP-->>SRV: Car[]
+            deactivate CREP
             SRV-->>CTRL: Car[]
+            deactivate SRV
         else Por car_id
             CTRL->>SRV: findOne(id, distributorId)
+            activate SRV
             SRV->>CREP: findOne(where car_id y distributor_id, relations user y user.delivery)
+            activate CREP
             CREP-->>SRV: Car o null
+            deactivate CREP
             alt No encontrado o de otro tenant
                 SRV-->>CTRL: NotFoundException Car with ID not found
+                deactivate SRV
             else Encontrado
                 SRV-->>CTRL: Car
             end
         else Por user_id
             CTRL->>SRV: findByUserId(userId, distributorId)
+            activate SRV
             SRV->>CREP: find(where user_id y distributor_id, relations user)
+            activate CREP
             CREP-->>SRV: Car[]
+            deactivate CREP
             SRV-->>CTRL: Car[]
+            deactivate SRV
         else Por patente
             CTRL->>SRV: findByPatent(patent, distributorId)
+            activate SRV
             SRV->>CREP: findOne(where car_patent y distributor_id, relations user y user.delivery)
+            activate CREP
             CREP-->>SRV: Car o null
+            deactivate CREP
             SRV-->>CTRL: Car o null sin excepcion
+            deactivate SRV
         end
     else Edicion, PATCH /car/:id
         CTRL->>SRV: update(id, updateCarDto, distributorId)
+        activate SRV
         SRV->>SRV: findOne(id, distributorId), guardia de tenant
         SRV->>CREP: preload(car_id mas campos del dto)
+        activate CREP
         CREP-->>SRV: Car fusionado o undefined
+        deactivate CREP
         alt preload no encontro el vehiculo
             SRV-->>CTRL: NotFoundException Car with ID not found
+            deactivate SRV
         else Vehiculo cargado
             alt El dto cambia la patente
                 SRV->>CREP: findOne(where car_patent nueva)
+                activate CREP
                 CREP-->>SRV: Car existente o null
+                deactivate CREP
                 alt La patente pertenece a otro vehiculo
                     SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
                 end
             end
             SRV->>CREP: save(car)
+            activate CREP
             CREP-->>SRV: Car actualizado
+            deactivate CREP
             SRV-->>CTRL: Car
         end
     else Baja, DELETE /car/:id
         CTRL->>SRV: remove(id, distributorId)
+        activate SRV
         SRV->>SRV: findOne(id, distributorId), guardia de tenant
         SRV->>CREP: remove(car)
+        activate CREP
         CREP-->>SRV: entidad eliminada
+        deactivate CREP
         SRV-->>CTRL: mensaje Car deleted successfully y carId
+        deactivate SRV
     end
 ```
+
+**Figura 78 — DSD CU-051: Consultar Listado de Vehículos**
 
 **Observaciones de diseño**
 
@@ -4766,25 +6103,36 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-096 Actualizar Perfil Del Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: update(id, updateDeliveryDto)
+    activate SRV
     SRV->>DREP: preload(delivery_id mas campos del dto)
+    activate DREP
     DREP-->>SRV: Delivery fusionado o undefined
+    deactivate DREP
     alt preload no encontro el chofer
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
     else Chofer cargado
         SRV->>DREP: save(delivery)
+        activate DREP
         DREP-->>SRV: Delivery actualizado
+        deactivate DREP
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery con user y role
+        deactivate DREP
         SRV-->>CTRL: Delivery completo
     end
 ```
+
+**Figura 79 — DSD CU-096: Actualizar Perfil del Chofer**
 
 **Observaciones de diseño**
 
@@ -4800,23 +6148,32 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-097 Eliminar Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: remove(id)
+    activate SRV
     SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    activate DREP
     DREP-->>SRV: Delivery o null
+    deactivate DREP
     alt Chofer inexistente
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
     else Chofer encontrado
         SRV->>DREP: softDelete(where delivery_id)
+        activate DREP
         DREP-->>SRV: UpdateResult, se sella deletedAt
+        deactivate DREP
         SRV-->>CTRL: mensaje Delivery deleted successfully
     end
 ```
+
+**Figura 80 — DSD CU-097: Eliminar Chofer (baja lógica)**
 
 **Observaciones de diseño**
 
@@ -4832,20 +6189,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-109 Consultar Detalle Del Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: findOne(id)
+    activate SRV
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    activate DREP
     DREP-->>SRV: Delivery con user y role o null
+    deactivate DREP
     alt no se encontro el chofer
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
     else Chofer encontrado
         SRV-->>CTRL: Delivery completo
     end
 ```
+
+**Figura 81 — DSD CU-109: Consultar Detalle del Chofer**
 
 **Observaciones de diseño**
 
@@ -4860,20 +6224,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-110 Buscar Chofer Por Usuario
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: findOneByUserId(userId)
+    activate SRV
     SRV->>DREP: findOne(where user user_id, relations user y user.role)
+    activate DREP
     DREP-->>SRV: Delivery o null
+    deactivate DREP
     alt no hay perfil para esa cuenta
         SRV-->>CTRL: NotFoundException
+        deactivate SRV
     else Perfil encontrado
         SRV-->>CTRL: Delivery completo
     end
 ```
+
+**Figura 82 — DSD CU-110: Buscar Chofer por Usuario**
 
 **Observaciones de diseño**
 
@@ -4888,21 +6259,28 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-111 Editar Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: update(id, updateCarDto, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>CREP: preload(car_id mas campos del dto)
+    activate CREP
     CREP-->>SRV: Car fusionado o undefined
+    deactivate CREP
     alt la patente cambio y ya existe
         SRV-->>CTRL: ConflictException patente repetida
+        deactivate SRV
     else Patente libre
         SRV-->>CTRL: Car actualizado
     end
 ```
+
+**Figura 83 — DSD CU-111: Editar Vehículo**
 
 **Observaciones de diseño**
 
@@ -4917,21 +6295,28 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-112 Eliminar Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: remove(id, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>CREP: remove(car)
+    activate CREP
     CREP-->>SRV: Car borrado
+    deactivate CREP
     alt el vehiculo no existe
         SRV-->>CTRL: NotFoundException Car with ID not found
+        deactivate SRV
     else Vehiculo encontrado
         SRV-->>CTRL: confirmacion de baja
     end
 ```
+
+**Figura 84 — DSD CU-112: Eliminar Vehículo**
 
 **Observaciones de diseño**
 
@@ -4946,20 +6331,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-113 Consultar Detalle Del Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: findOne(id, distributorId)
+    activate SRV
     SRV->>CREP: findOne(where car_id y distribuidora, relations user)
+    activate CREP
     CREP-->>SRV: Car con user o null
+    deactivate CREP
     alt no se encontro el vehiculo
         SRV-->>CTRL: NotFoundException Car with ID not found
+        deactivate SRV
     else Vehiculo encontrado
         SRV-->>CTRL: Car completo
     end
 ```
+
+**Figura 85 — DSD CU-113: Consultar Detalle del Vehículo**
 
 **Observaciones de diseño**
 
@@ -4974,20 +6366,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-114 Buscar Vehiculo Por Patente
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: findByPatent(patent, distributorId)
+    activate SRV
     SRV->>CREP: findOne(where car_patent y distribuidora, relations user)
+    activate CREP
     CREP-->>SRV: Car con user o null
+    deactivate CREP
     alt ninguna patente coincide
         SRV-->>CTRL: NotFoundException
+        deactivate SRV
     else Patente encontrada
         SRV-->>CTRL: Car completo
     end
 ```
+
+**Figura 86 — DSD CU-114: Buscar Vehículo por Patente**
 
 **Observaciones de diseño**
 
@@ -5002,16 +6401,23 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-115 Consultar Vehiculos De Un Chofer
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: findByUserId(userId, distributorId)
+    activate SRV
     SRV->>CREP: find(where user user_id y distribuidora, relations user)
+    activate CREP
     CREP-->>SRV: lista de Car
+    deactivate CREP
     SRV-->>CTRL: resultado
+    deactivate SRV
 ```
+
+**Figura 87 — DSD CU-115: Consultar Vehículos de un Chofer**
 
 **Observaciones de diseño**
 
@@ -5026,23 +6432,32 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-136 Registrar el Seguro del Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant VREP as RepositoryCar
 
     CTRL->>SRV: registrarSeguro(vehiculoId, datos, distribuidora)
+    activate SRV
     SRV->>VREP: findOne(where car_id y distributor_id)
+    activate VREP
     VREP-->>SRV: Car o null
+    deactivate VREP
     SRV->>VREP: save(vehículo con los datos del seguro)
+    activate VREP
     VREP-->>SRV: Car actualizado
+    deactivate VREP
     SRV->>SRV: evaluarHabilitacion(seguro, verificación, licencia del chofer)
     alt el vehículo existe
         SRV-->>CTRL: Car con el seguro cargado
+        deactivate SRV
     else el vehículo no existe
         SRV-->>CTRL: NotFoundException
     end
 ```
+
+**Figura 88 — DSD CU-136: Registrar el Seguro del Vehículo**
 
 **Observaciones de diseño**
 
@@ -5057,22 +6472,31 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-137 Registrar la Verificacion Tecnica Vehicular
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant VREP as RepositoryCar
 
     CTRL->>SRV: registrarVerificacion(vehiculoId, vencimiento, distribuidora)
+    activate SRV
     SRV->>VREP: findOne(where car_id y distributor_id)
+    activate VREP
     VREP-->>SRV: Car o null
+    deactivate VREP
     SRV->>VREP: save(vehículo con el vencimiento)
+    activate VREP
     VREP-->>SRV: Car actualizado
+    deactivate VREP
     alt el vehículo existe
         SRV-->>CTRL: Car con la verificación cargada
+        deactivate SRV
     else el vehículo no existe
         SRV-->>CTRL: NotFoundException
     end
 ```
+
+**Figura 89 — DSD CU-137: Registrar la Verificación Técnica Vehicular**
 
 **Observaciones de diseño**
 
@@ -5087,6 +6511,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-138 Registrar la Licencia de Conducir del Chofer
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -5094,18 +6519,28 @@ sequenceDiagram
     participant VREP as RepositoryCar
 
     CTRL->>SRV: registrarLicencia(choferId, datos, distribuidora)
+    activate SRV
     SRV->>DREP: findOne(where delivery_id y distributor_id)
+    activate DREP
     DREP-->>SRV: Delivery o null
+    deactivate DREP
     SRV->>VREP: find(where user_id del chofer)
+    activate VREP
     VREP-->>SRV: vehículos del chofer
+    deactivate VREP
     SRV->>DREP: save(chofer con los datos de la licencia)
+    activate DREP
     DREP-->>SRV: Delivery actualizado
+    deactivate DREP
     alt el chofer existe
         SRV-->>CTRL: Delivery con la licencia cargada
+        deactivate SRV
     else el chofer no existe
         SRV-->>CTRL: NotFoundException
     end
 ```
+
+**Figura 90 — DSD CU-138: Registrar la Licencia de Conducir del Chofer**
 
 **Observaciones de diseño**
 
@@ -5120,6 +6555,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-139 Consultar los Vencimientos de la Flota
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -5127,16 +6563,24 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: vencimientosDeLaFlota(dias, distribuidora)
+    activate SRV
     SRV->>VREP: find(where distributor_id y vencimientos en la ventana)
+    activate VREP
     VREP-->>SRV: lista de Car
+    deactivate VREP
     SRV->>DREP: find(where distributor_id y licencia en la ventana)
+    activate DREP
     DREP-->>SRV: lista de Delivery
+    deactivate DREP
     alt hay vencimientos
         SRV-->>CTRL: listado unificado y ordenado
+        deactivate SRV
     else no hay
         SRV-->>CTRL: listado vacío
     end
 ```
+
+**Figura 91 — DSD CU-139: Consultar los Vencimientos de la Flota**
 
 **Observaciones de diseño**
 
@@ -5151,6 +6595,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-140 Programar un Mantenimiento de Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -5159,17 +6604,27 @@ sequenceDiagram
     participant NOT as NotificationService
 
     CTRL->>SRV: programarMantenimiento(vehiculoId, datos, distribuidora)
+    activate SRV
     SRV->>VREP: findOne(where car_id y distributor_id)
+    activate VREP
     VREP-->>SRV: Car o null
+    deactivate VREP
     SRV->>MREP: save(mantenimiento en estado agendado)
+    activate MREP
     MREP-->>SRV: FleetMaintenance guardado
+    deactivate MREP
     SRV->>NOT: avisar(chofer del vehículo, mantenimiento agendado)
+    activate NOT
     alt el vehículo existe y la fecha es válida
         SRV-->>CTRL: FleetMaintenance agendado
+        deactivate SRV
     else los datos no son válidos
         SRV-->>CTRL: operación rechazada
     end
+    deactivate NOT
 ```
+
+**Figura 92 — DSD CU-140: Programar un Mantenimiento de Vehículo**
 
 **Observaciones de diseño**
 
@@ -5184,6 +6639,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-141 Registrar un Mantenimiento Realizado
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -5191,19 +6647,31 @@ sequenceDiagram
     participant VREP as RepositoryCar
 
     CTRL->>SRV: registrarRealizado(mantenimientoId, datos, distribuidora)
+    activate SRV
     SRV->>MREP: findOne(where maintenance_id y distributor_id)
+    activate MREP
     MREP-->>SRV: FleetMaintenance o null
+    deactivate MREP
     SRV->>MREP: findOne(último realizado del vehículo)
+    activate MREP
     MREP-->>SRV: FleetMaintenance anterior o null
+    deactivate MREP
     SRV->>MREP: save(mantenimiento en estado realizado)
+    activate MREP
     SRV->>VREP: save(vehículo con el kilometraje nuevo)
+    activate VREP
     VREP-->>SRV: Car actualizado
+    deactivate VREP
     alt los datos son coherentes
         SRV-->>CTRL: FleetMaintenance cerrado
+        deactivate SRV
     else el kilometraje retrocede
         SRV-->>CTRL: operación rechazada
     end
+    deactivate MREP
 ```
+
+**Figura 93 — DSD CU-141: Registrar un Mantenimiento Realizado**
 
 **Observaciones de diseño**
 
@@ -5218,6 +6686,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-142 Avisar los Vencimientos Proximos de la Flota
     autonumber
     participant SRV as CarService
     participant VREP as RepositoryCar
@@ -5225,16 +6694,24 @@ sequenceDiagram
     participant NOT as NotificationService
 
     SRV->>VREP: find(vencimientos de vehículos en la ventana)
+    activate VREP
     VREP-->>SRV: lista de Car
+    deactivate VREP
     SRV->>DREP: find(licencias en la ventana)
+    activate DREP
     DREP-->>SRV: lista de Delivery
+    deactivate DREP
     SRV->>NOT: avisar(administrador, habilitaciones por vencer)
+    activate NOT
     alt hay habilitaciones por vencer
         SRV-->>CTRL: avisos enviados y marcados
     else no hay
         SRV-->>CTRL: ciclo sin avisos
     end
+    deactivate NOT
 ```
+
+**Figura 94 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota**
 
 **Observaciones de diseño**
 
@@ -5251,29 +6728,40 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-036 Crear Producto
     autonumber
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
     participant GREP as RepositoryGasCylinder
 
     CTRL->>SRV: create(createGasCylinderDto, distributorId)
+    activate SRV
     SRV->>GREP: findOne(where type y distributor_id)
+    activate GREP
     GREP-->>SRV: GasCylinder existente o null
+    deactivate GREP
     alt Ya existe ese tipo en la distribuidora
         SRV-->>CTRL: BadRequestException Ya existe una garrafa con este tipo en tu distribuidora
+        deactivate SRV
     else Tipo libre en el tenant
         SRV->>GREP: create(datos del dto mas distributor_id)
+        activate GREP
         GREP-->>SRV: GasCylinder en memoria
+        deactivate GREP
         SRV->>GREP: save(gasCylinder)
+        activate GREP
         alt Error de base
             SRV->>SRV: handleDBExceptions(error)
             SRV-->>CTRL: BadRequestException Duplicate entry o InternalServerErrorException
         else Persistido
             GREP-->>SRV: GasCylinder persistido
+            deactivate GREP
             SRV-->>CTRL: GasCylinder
         end
     end
 ```
+
+**Figura 95 — DSD CU-036: Crear Producto (Garrafa)**
 
 **Observaciones de diseño**
 
@@ -5291,29 +6779,40 @@ No existe un endpoint dedicado al precio: se usa el `PATCH` general del producto
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-037 Actualizar Precio De Producto
     autonumber
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
     participant GREP as RepositoryGasCylinder
 
     CTRL->>SRV: update(id, updateGasCylinderDto con price, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId), guardia de tenant
     SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    activate GREP
     GREP-->>SRV: GasCylinder o null
+    deactivate GREP
     alt Producto inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        deactivate SRV
     else Producto del tenant
         SRV->>GREP: preload(gas_cylinder_id mas campos del dto)
+        activate GREP
         GREP-->>SRV: GasCylinder fusionado o undefined
+        deactivate GREP
         alt preload no encontro el producto
             SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
         else Producto cargado
             SRV->>GREP: save(gasCylinder)
+            activate GREP
             GREP-->>SRV: GasCylinder con el precio nuevo
+            deactivate GREP
             SRV-->>CTRL: GasCylinder
         end
     end
 ```
+
+**Figura 96 — DSD CU-037: Actualizar Precio de Producto**
 
 **Observaciones de diseño**
 
@@ -5328,28 +6827,37 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-038 Actualizar Stock De Producto
     autonumber
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
     participant GREP as RepositoryGasCylinder
 
     CTRL->>SRV: updateStock(id, body.quantity, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    activate GREP
     GREP-->>SRV: GasCylinder o null
+    deactivate GREP
     alt Producto inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        deactivate SRV
     else Producto del tenant
         SRV->>SRV: gasCylinder.stock igual stock actual mas quantity
         alt El stock resultante es negativo
             SRV-->>CTRL: BadRequestException Stock cannot be negative
         else Stock valido
             SRV->>GREP: save(gasCylinder)
+            activate GREP
             GREP-->>SRV: GasCylinder con el stock nuevo
+            deactivate GREP
             SRV-->>CTRL: GasCylinder
         end
     end
 ```
+
+**Figura 97 — DSD CU-038: Actualizar Stock de Producto**
 
 **Observaciones de diseño**
 
@@ -5367,6 +6875,7 @@ Dos momentos distintos: la **configuración** (el admin guarda el JSONB) y la **
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-039 Configurar Promociones Por Cantidad
     autonumber
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
@@ -5376,20 +6885,29 @@ sequenceDiagram
     participant DEC as Decimal
 
     CTRL->>SRV: update(id, dto con promotions, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    activate GREP
     GREP-->>SRV: GasCylinder o null
+    deactivate GREP
     alt Producto inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        deactivate SRV
     else Producto del tenant
         SRV->>GREP: preload(gas_cylinder_id mas promotions)
+        activate GREP
         GREP-->>SRV: GasCylinder fusionado
+        deactivate GREP
         SRV->>GREP: save(gasCylinder)
+        activate GREP
         GREP-->>SRV: GasCylinder con el JSONB de promociones
+        deactivate GREP
         SRV-->>CTRL: GasCylinder
     end
 
     UC->>PRC: priceItem(gasCylinder.price, gasCylinder.promotions, quantity)
+    activate PRC
     PRC->>PRC: bestApplicablePromotion(promotions, quantity)
     alt No hay promociones cargadas
         PRC->>PRC: devolver null, sin descuento
@@ -5398,14 +6916,23 @@ sequenceDiagram
     end
     alt Se encontro una promocion aplicable
         PRC->>DEC: discountFactor igual 1 menos discountPercentage sobre 100
+        activate DEC
         DEC-->>PRC: factor de descuento
+        deactivate DEC
         PRC->>DEC: unitPrice.times(discountFactor)
+        activate DEC
         DEC-->>PRC: unitPrice con descuento
+        deactivate DEC
     end
     PRC->>DEC: unitPrice.times(quantity)
+    activate DEC
     DEC-->>PRC: subtotal
+    deactivate DEC
     PRC-->>UC: ItemPricing con unitPrice y subtotal
+    deactivate PRC
 ```
+
+**Figura 98 — DSD CU-039: Configurar Promociones por Cantidad**
 
 **Observaciones de diseño**
 
@@ -5424,24 +6951,33 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-040 Activar Desactivar Producto
     autonumber
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
     participant GREP as RepositoryGasCylinder
 
     CTRL->>SRV: remove(id, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    activate GREP
     GREP-->>SRV: GasCylinder o null
+    deactivate GREP
     alt Producto inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        deactivate SRV
     else Producto del tenant
         SRV->>SRV: gasCylinder.isActive igual false
         SRV->>GREP: save(gasCylinder)
+        activate GREP
         GREP-->>SRV: GasCylinder desactivado
+        deactivate GREP
         SRV-->>CTRL: mensaje Gas cylinder deactivated successfully y gasCylinderId
     end
 ```
+
+**Figura 99 — DSD CU-040: Activar / Desactivar Producto**
 
 **Observaciones de diseño**
 
@@ -5459,6 +6995,7 @@ Cuatro vistas del catálogo. Las públicas resuelven el tenant desde el query `?
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-041 Consultar Catalogo De Productos
     autonumber
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
@@ -5467,47 +7004,71 @@ sequenceDiagram
 
     alt Listado paginado publico, GET /gascylinder
         CTRL->>SRV: findAll(query, query.distributor)
+        activate SRV
         SRV->>SRV: resolveDistributor(slugOrId)
         alt No se paso distribuidora
             SRV->>DIS: getDefault()
+            activate DIS
             DIS-->>SRV: Distributor por defecto o null
+            deactivate DIS
         else Se paso un uuid
             SRV->>DIS: assertActive(uuid)
+            activate DIS
             DIS-->>SRV: Distributor activo
+            deactivate DIS
         else Se paso un slug
             SRV->>DIS: findBySlug(slug)
+            activate DIS
             DIS-->>SRV: Distributor
+            deactivate DIS
         end
         SRV->>GREP: findAndCount(where isActive true y distributor_id, take, skip, order type ASC)
+        activate GREP
         GREP-->>SRV: GasCylinder[] y total
+        deactivate GREP
         SRV-->>CTRL: gasCylinders, total, limit y offset
+        deactivate SRV
     else Por id, GET /gascylinder/:id
         CTRL->>SRV: findOne(id)
+        activate SRV
         SRV->>GREP: findOne(where gas_cylinder_id)
+        activate GREP
         GREP-->>SRV: GasCylinder o null
+        deactivate GREP
         alt No encontrado
             SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: GasCylinder
         end
     else Por tipo, GET /gascylinder/type/:type
         CTRL->>SRV: findByType(type, distributorId)
+        activate SRV
         SRV->>SRV: resolveDistributor(slugOrId)
         SRV->>GREP: findOne(where type, isActive true y distributor_id)
+        activate GREP
         GREP-->>SRV: GasCylinder o null
+        deactivate GREP
         alt No encontrado
             SRV-->>CTRL: NotFoundException Gas cylinder type not found
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: GasCylinder
         end
     else Disponibles con stock, GET /gascylinder/available/list
         CTRL->>SRV: getAvailableCylinders(distributor)
+        activate SRV
         SRV->>SRV: resolveDistributor(slugOrId)
         SRV->>GREP: find(where isActive true y stock MoreThan 0 y distributor_id, order type ASC)
+        activate GREP
         GREP-->>SRV: GasCylinder[]
+        deactivate GREP
         SRV-->>CTRL: products y paymentMethods con sus recargos
+        deactivate SRV
     end
 ```
+
+**Figura 100 — DSD CU-041: Consultar Catálogo de Productos**
 
 **Observaciones de diseño**
 
@@ -5525,18 +7086,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-042 Crear Franja Horaria
     autonumber
     participant CTRL as TimeSlotController
     participant SRV as TimeSlotService
     participant TREP as RepositoryTimeSlot
 
     CTRL->>SRV: create(createTimeSlotDto, distributorId)
+    activate SRV
     SRV->>TREP: create(datos del dto mas distributor_id)
+    activate TREP
     TREP-->>SRV: TimeSlot en memoria
+    deactivate TREP
     SRV->>TREP: save(timeSlot)
+    activate TREP
     TREP-->>SRV: TimeSlot persistido
+    deactivate TREP
     SRV-->>CTRL: TimeSlot
+    deactivate SRV
 ```
+
+**Figura 101 — DSD CU-042: Crear Franja Horaria**
 
 **Observaciones de diseño**
 
@@ -5554,6 +7124,7 @@ La validación de cupo corre **dentro de la transacción del pedido y con lock p
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-044 Seleccionar Franja Horaria Al Crear Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -5565,24 +7136,34 @@ sequenceDiagram
     participant PRC as OrderPricingService
 
     CTRL->>SRV: create(createOrderDto, distributorId)
+    activate SRV
     SRV->>UC: execute(createOrderDto, distributorId)
+    activate UC
     alt Es reserva y no trae scheduledDate
         UC-->>CTRL: BadRequestException Una reserva requiere scheduledDate
+        deactivate UC
     else Datos coherentes
         UC->>QR: connect() y startTransaction()
+        activate QR
         UC->>UC: validar cliente, direccion y zona de cobertura
         alt El dto trae scheduledDate y timeSlotId
             UC->>TSS: assertSlotAvailableTx(queryRunner.manager, timeSlotId, scheduledDate, distributorId)
+            activate TSS
             TSS->>EM: findOne(TimeSlot, where time_slot_id, isActive true y distributor_id, lock pessimistic_write)
+            activate EM
             EM-->>TSS: TimeSlot bloqueado o null
+            deactivate EM
             alt Franja inexistente o inactiva
                 TSS-->>UC: BadRequestException Franja horaria invalida o inactiva
+                deactivate TSS
             else Franja bloqueada
                 alt La fecha agendada es anterior a hoy
                     TSS-->>UC: BadRequestException No se puede agendar en una fecha pasada
                 else Fecha valida, se admite same-day
                     TSS->>EM: count(Order, where time_slot_id, scheduled_date y status distinto de CANCELLED)
+                    activate EM
                     EM-->>TSS: booked
+                    deactivate EM
                     alt booked mayor o igual a slot.capacity
                         TSS-->>UC: BadRequestException La franja esta completa
                     else Queda cupo
@@ -5593,19 +7174,31 @@ sequenceDiagram
         end
         loop Por cada item del pedido
             UC->>STK: reserve(queryRunner.manager, gasCylinderId, quantity)
+            activate STK
             STK-->>UC: GasCylinder bloqueado
+            deactivate STK
             UC->>PRC: priceItem(price, promotions, quantity)
+            activate PRC
             PRC-->>UC: unitPrice y subtotal
+            deactivate PRC
         end
         UC->>PRC: applyPaymentSurcharge(totalAmount, paymentMethod)
+        activate PRC
         PRC-->>UC: totalAmount final
+        deactivate PRC
         UC->>QR: manager.save(order con time_slot_id y scheduled_date)
         QR-->>UC: savedOrder
+        deactivate QR
         UC->>QR: commitTransaction(), recien aca se libera el lock de la franja
+        activate QR
         UC-->>SRV: CreateOrderResult con order y paymentUrl
         SRV-->>CTRL: CreateOrderResult
+        deactivate SRV
     end
+    deactivate QR
 ```
+
+**Figura 102 — DSD CU-044: Seleccionar Franja Horaria al Crear Pedido**
 
 **Observaciones de diseño**
 
@@ -5623,6 +7216,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-045 Consultar Franjas Horarias Disponibles
     autonumber
     participant CTRL as TimeSlotController
     participant SRV as TimeSlotService
@@ -5632,44 +7226,64 @@ sequenceDiagram
 
     alt Disponibilidad por fecha, GET /time-slot/availability
         CTRL->>SRV: getAvailability(date, distributor)
+        activate SRV
         SRV->>SRV: resolveDistributor(slugOrId)
         alt Se paso un uuid
             SRV->>DIS: assertActive(uuid)
+            activate DIS
             DIS-->>SRV: Distributor activo
+            deactivate DIS
         else Se paso un slug
             SRV->>DIS: findBySlug(slug)
+            activate DIS
             DIS-->>SRV: Distributor
+            deactivate DIS
         end
         SRV->>TREP: find(where isActive true y distributor_id, order startTime ASC)
+        activate TREP
         TREP-->>SRV: TimeSlot[]
+        deactivate TREP
         loop Por cada franja activa
             SRV->>SRV: countBooked(time_slot_id, date, distributorId)
             SRV->>OREP: count(where time_slot_id, scheduled_date y status distinto de CANCELLED)
+            activate OREP
             OREP-->>SRV: booked
+            deactivate OREP
             SRV->>SRV: remaining igual maximo entre 0 y capacity menos booked
         end
         SRV-->>CTRL: SlotAvailability[] con capacity, booked y remaining
+        deactivate SRV
     else Listado de franjas activas, GET /time-slot
         CTRL->>SRV: findAll(distributor, distributorId)
+        activate SRV
         alt Vino el slug por query
             SRV->>SRV: resolveDistributor(distributorSlug)
         else Se usa el tenant del admin autenticado
             SRV->>SRV: effective igual distributorId
         end
         SRV->>TREP: find(where isActive true y distributor_id, order startTime ASC)
+        activate TREP
         TREP-->>SRV: TimeSlot[]
+        deactivate TREP
         SRV-->>CTRL: TimeSlot[]
+        deactivate SRV
     else Detalle de una franja, GET /time-slot/:id
         CTRL->>SRV: findOne(id, distributorId)
+        activate SRV
         SRV->>TREP: findOne(where time_slot_id y distributor_id)
+        activate TREP
         TREP-->>SRV: TimeSlot o null
+        deactivate TREP
         alt No encontrada o de otra distribuidora
             SRV-->>CTRL: NotFoundException Time slot not found
+            deactivate SRV
         else Encontrada
             SRV-->>CTRL: TimeSlot
         end
     end
 ```
+
+**Figura 103 — DSD CU-045: Consultar Franjas Horarias Disponibles**
 
 **Observaciones de diseño**
 
@@ -5686,24 +7300,33 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-103 Eliminar Franja Horaria
     autonumber
     participant CTRL as TimeSlotController
     participant SRV as TimeSlotService
     participant TREP as RepositoryTimeSlot
 
     CTRL->>SRV: remove(id, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>TREP: findOne(where time_slot_id y distributor_id)
+    activate TREP
     TREP-->>SRV: TimeSlot o null
+    deactivate TREP
     alt Franja inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Time slot not found
+        deactivate SRV
     else Franja del tenant
         SRV->>SRV: timeSlot.isActive igual false
         SRV->>TREP: save(timeSlot)
+        activate TREP
         TREP-->>SRV: TimeSlot desactivado
+        deactivate TREP
         SRV-->>CTRL: TimeSlot
     end
 ```
+
+**Figura 104 — DSD CU-103: Eliminar Franja Horaria**
 
 **Observaciones de diseño**
 
@@ -5765,6 +7388,7 @@ resuelve leyendo la metadata de la clase con `getAllAndOverride`.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-052 Registrar Distribuidora
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -5773,26 +7397,40 @@ sequenceDiagram
     participant REPO as RepositoryDistributor
 
     SA->>GRD: POST /distributor con CreateDistributorDto
+    activate GRD
     GRD->>GRD: canActivate(ctx), requiredRoles de la clase, SUPER_ADMIN
     alt El rol del token no es super_admin
         GRD-->>SA: ForbiddenException, acceso denegado
+        deactivate GRD
     else Rol autorizado
         GRD->>CTRL: create(dto)
+        activate CTRL
         CTRL->>SRV: create(dto)
+        activate SRV
         SRV->>REPO: findOne(where slug igual a dto.slug)
+        activate REPO
         REPO-->>SRV: Distributor o null
+        deactivate REPO
         alt Ya existe una distribuidora con ese slug
             SRV-->>CTRL: ConflictException, slug duplicado
+            deactivate SRV
         else Slug libre
             SRV->>REPO: create(dto)
+            activate REPO
             REPO-->>SRV: Distributor en memoria
+            deactivate REPO
             SRV->>REPO: save(distributor)
+            activate REPO
             REPO-->>SRV: Distributor persistido
+            deactivate REPO
             SRV-->>CTRL: Distributor
             CTRL-->>SA: 201 Distributor
+            deactivate CTRL
         end
     end
 ```
+
+**Figura 105 — C.1 DSD — CU-052: Registrar Distribuidora**
 
 **Observaciones de diseño**
 
@@ -5807,6 +7445,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-053 Consultar Distribuidoras
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -5815,26 +7454,40 @@ sequenceDiagram
     participant REPO as RepositoryDistributor
 
     SA->>GRD: GET /distributor o GET /distributor/:id
+    activate GRD
     GRD->>CTRL: rol super_admin verificado
+    activate CTRL
     alt Listado completo, GET /distributor
         CTRL->>SRV: findAll()
+        activate SRV
         SRV->>REPO: find(order createdAt ASC)
+        activate REPO
         REPO-->>SRV: Distributor[]
+        deactivate REPO
         SRV-->>CTRL: Distributor[]
+        deactivate SRV
         CTRL-->>SA: 200 Distributor[]
+        deactivate CTRL
     else Detalle, GET /distributor/:id
         CTRL->>CTRL: ParseUUIDPipe valida el id
         CTRL->>SRV: findOne(id)
+        activate SRV
         SRV->>REPO: findOne(where distributor_id igual a id)
+        activate REPO
         REPO-->>SRV: Distributor o null
+        deactivate REPO
         alt No existe
             SRV-->>CTRL: NotFoundException, distribuidora no encontrada
+            deactivate SRV
         else Existe
             SRV-->>CTRL: Distributor
             CTRL-->>SA: 200 Distributor
         end
     end
+    deactivate GRD
 ```
+
+**Figura 106 — C.2 DSD — CU-053: Consultar Distribuidoras**
 
 **Observaciones de diseño**
 
@@ -5849,6 +7502,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-054 Modificar Datos De La Distribuidora
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -5857,21 +7511,33 @@ sequenceDiagram
     participant REPO as RepositoryDistributor
 
     SA->>GRD: PATCH /distributor/:id con UpdateDistributorDto
+    activate GRD
     GRD->>CTRL: rol super_admin verificado
+    activate CTRL
     CTRL->>SRV: update(id, dto)
+    activate SRV
     SRV->>SRV: findOne(id)
     SRV->>REPO: findOne(where distributor_id igual a id)
+    activate REPO
     REPO-->>SRV: Distributor o null
+    deactivate REPO
     alt No existe
         SRV-->>CTRL: NotFoundException
+        deactivate SRV
     else Existe
         SRV->>SRV: Object.assign(distributor, dto)
         SRV->>REPO: save(distributor)
+        activate REPO
         REPO-->>SRV: Distributor actualizado
+        deactivate REPO
         SRV-->>CTRL: Distributor
         CTRL-->>SA: 200 Distributor
+        deactivate CTRL
     end
+    deactivate GRD
 ```
+
+**Figura 107 — C.3 DSD — CU-054: Modificar Datos de la Distribuidora**
 
 **Observaciones de diseño**
 
@@ -5886,6 +7552,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-055 Dar De Baja Una Distribuidora
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -5894,20 +7561,32 @@ sequenceDiagram
     participant REPO as RepositoryDistributor
 
     SA->>GRD: DELETE /distributor/:id
+    activate GRD
     GRD->>CTRL: rol super_admin verificado
+    activate CTRL
     CTRL->>SRV: remove(id)
+    activate SRV
     SRV->>SRV: findOne(id)
     SRV->>REPO: findOne(where distributor_id igual a id)
+    activate REPO
     REPO-->>SRV: Distributor o null
+    deactivate REPO
     alt No existe
         SRV-->>CTRL: NotFoundException
+        deactivate SRV
     else Existe
         SRV->>REPO: softRemove(distributor)
+        activate REPO
         REPO-->>SRV: deletedAt seteado, la fila permanece
+        deactivate REPO
         SRV-->>CTRL: void
         CTRL-->>SA: 200 sin cuerpo
+        deactivate CTRL
     end
+    deactivate GRD
 ```
+
+**Figura 108 — C.4 DSD — CU-055: Dar de Baja una Distribuidora**
 
 **Observaciones de diseño**
 
@@ -5924,6 +7603,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-056 Definir Zona De Cobertura
     autonumber
     participant ADM as Admin de la distribuidora
     participant AUTH as AuthGuard
@@ -5933,29 +7613,41 @@ sequenceDiagram
     participant REPO as RepositoryCoverageZone
 
     ADM->>AUTH: POST /coverage-zones con CreateCoverageZoneDto
+    activate AUTH
     AUTH->>AUTH: resolveDistributor(user, request)
     AUTH->>AUTH: rol ADMIN, se deriva del perfil, se ignora X-Distributor
     AUTH-->>DEC: request.distributorId asignado
+    deactivate AUTH
     DEC->>DEC: opts.required true, hay tenant en contexto
     alt Sin tenant en contexto
         DEC-->>ADM: BadRequestException, falta el header X-Distributor
     else Tenant resuelto
         DEC->>CTRL: create(dto, distributorId)
+        activate CTRL
         CTRL->>SRV: create(dto, distributorId)
+        activate SRV
         SRV->>SRV: toGeoJsonPolygon(dto.polygon)
         alt Algun vertice no es un par lng lat numerico
             SRV-->>CTRL: BadRequestException, vertice invalido
+            deactivate SRV
         else Anillo valido
             SRV->>SRV: cierra el anillo si el primer punto difiere del ultimo
             SRV->>REPO: create(name, distributor_id, area Polygon, surcharge, isActive)
+            activate REPO
             REPO-->>SRV: CoverageZone en memoria
+            deactivate REPO
             SRV->>REPO: save(zone)
+            activate REPO
             REPO-->>SRV: CoverageZone persistida
+            deactivate REPO
             SRV-->>CTRL: CoverageZone
             CTRL-->>ADM: 201 CoverageZone
+            deactivate CTRL
         end
     end
 ```
+
+**Figura 109 — C.5 DSD — CU-056: Definir Zona de Cobertura**
 
 **Observaciones de diseño**
 
@@ -5970,6 +7662,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-057 Consultar Zonas De Cobertura
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -5978,14 +7671,24 @@ sequenceDiagram
     participant REPO as RepositoryCoverageZone
 
     ADM->>DEC: GET /coverage-zones
+    activate DEC
     DEC->>DEC: lee request.distributorId, required true
     DEC->>CTRL: findAll(distributorId)
+    activate CTRL
     CTRL->>SRV: findAll(distributorId)
+    activate SRV
     SRV->>REPO: find(where distributor_id, order createdAt ASC)
+    activate REPO
     REPO-->>SRV: CoverageZone[] del tenant
+    deactivate REPO
     SRV-->>CTRL: CoverageZone[]
+    deactivate SRV
     CTRL-->>ADM: 200 CoverageZone[]
+    deactivate CTRL
+    deactivate DEC
 ```
+
+**Figura 110 — C.6 DSD — CU-057: Consultar Zonas de Cobertura**
 
 **Observaciones de diseño**
 
@@ -6000,6 +7703,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-059 Eliminar Zona De Cobertura
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -6008,20 +7712,32 @@ sequenceDiagram
     participant REPO as RepositoryCoverageZone
 
     ADM->>DEC: DELETE /coverage-zones/:id
+    activate DEC
     DEC->>CTRL: remove(id, distributorId)
+    activate CTRL
     CTRL->>SRV: remove(id, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>REPO: findOne(where coverage_zone_id y distributor_id)
+    activate REPO
     REPO-->>SRV: CoverageZone o null
+    deactivate REPO
     alt No existe o pertenece a otra distribuidora
         SRV-->>CTRL: NotFoundException, zona no encontrada
+        deactivate SRV
     else Zona del tenant
         SRV->>REPO: remove(zone)
+        activate REPO
         REPO-->>SRV: fila eliminada
+        deactivate REPO
         SRV-->>CTRL: void
         CTRL-->>ADM: 200 sin cuerpo
+        deactivate CTRL
     end
+    deactivate DEC
 ```
+
+**Figura 111 — C.7 DSD — CU-059: Eliminar Zona de Cobertura**
 
 **Observaciones de diseño**
 
@@ -6038,6 +7754,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-060 Registrar Incidencia De Entrega
     autonumber
     participant CHO as Chofer
     participant CTRL as IncidentController
@@ -6046,22 +7763,34 @@ sequenceDiagram
     participant IREP as RepositoryIncident
 
     CHO->>CTRL: POST /incidents con CreateIncidentDto
+    activate CTRL
     CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
     CTRL->>SRV: create(dto, user.user_id)
+    activate SRV
     SRV->>OREP: findOne(where order_id igual a dto.orderId)
+    activate OREP
     OREP-->>SRV: Order o null
+    deactivate OREP
     alt El pedido no existe
         SRV-->>CTRL: NotFoundException, pedido no encontrado
+        deactivate SRV
     else Pedido encontrado
         SRV->>SRV: distributor_id se denormaliza de order.distributor_id
         SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
+        activate IREP
         IREP-->>SRV: Incident en memoria
+        deactivate IREP
         SRV->>IREP: save(incident)
+        activate IREP
         IREP-->>SRV: Incident persistida
+        deactivate IREP
         SRV-->>CTRL: Incident
         CTRL-->>CHO: 201 Incident
+        deactivate CTRL
     end
 ```
+
+**Figura 112 — C.8 DSD — CU-060: Registrar Incidencia de Entrega**
 
 **Observaciones de diseño**
 
@@ -6077,6 +7806,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-061 Listar Incidencias
     autonumber
     participant ADM as Admin o SuperAdmin
     participant DEC as CurrentDistributorDecorator
@@ -6085,18 +7815,28 @@ sequenceDiagram
     participant IREP as RepositoryIncident
 
     ADM->>DEC: GET /incidents
+    activate DEC
     DEC->>DEC: lee request.distributorId, sin required
     DEC->>CTRL: findAll(distributorId)
+    activate CTRL
     CTRL->>SRV: findAll(distributorId)
+    activate SRV
     alt Hay tenant en contexto, admin de empresa o super_admin con ver como
         SRV->>IREP: find(where distributor_id, relations order y order.customer)
+        activate IREP
     else super_admin cross tenant, distributorId null
         SRV->>IREP: find(where vacio, relations order y order.customer)
     end
     IREP-->>SRV: Incident[] ordenadas por createdAt DESC
+    deactivate IREP
     SRV-->>CTRL: Incident[]
+    deactivate SRV
     CTRL-->>ADM: 200 Incident[]
+    deactivate CTRL
+    deactivate DEC
 ```
+
+**Figura 113 — C.9 DSD — CU-061: Listar Incidencias**
 
 **Observaciones de diseño**
 
@@ -6111,6 +7851,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-062 Consultar Incidencias De Un Pedido
     autonumber
     participant USR as Chofer o Admin
     participant DEC as CurrentDistributorDecorator
@@ -6119,14 +7860,24 @@ sequenceDiagram
     participant IREP as RepositoryIncident
 
     USR->>DEC: GET /incidents/order/:orderId
+    activate DEC
     DEC->>CTRL: findByOrder(orderId, distributorId)
+    activate CTRL
     CTRL->>CTRL: ParseUUIDPipe valida el orderId
     CTRL->>SRV: findByOrder(orderId, distributorId)
+    activate SRV
     SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
+    activate IREP
     IREP-->>SRV: Incident[] del pedido
+    deactivate IREP
     SRV-->>CTRL: Incident[]
+    deactivate SRV
     CTRL-->>USR: 200 Incident[]
+    deactivate CTRL
+    deactivate DEC
 ```
+
+**Figura 114 — C.10 DSD — CU-062: Consultar Incidencias de un Pedido**
 
 **Observaciones de diseño**
 
@@ -6141,6 +7892,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-063 Resolver Incidencia
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -6149,22 +7901,34 @@ sequenceDiagram
     participant IREP as RepositoryIncident
 
     ADM->>DEC: PATCH /incidents/:id/resolve con ResolveIncidentDto
+    activate DEC
     DEC->>DEC: required true, exige tenant en contexto
     DEC->>CTRL: resolve(id, dto, distributorId)
+    activate CTRL
     CTRL->>SRV: resolve(id, dto, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>IREP: findOne(where incident_id y distributor_id)
+    activate IREP
     IREP-->>SRV: Incident o null
+    deactivate IREP
     alt No existe o es de otra distribuidora
         SRV-->>CTRL: NotFoundException, incidencia no encontrada
+        deactivate SRV
     else Incidencia del tenant
         SRV->>SRV: status RESOLVED, resolution_note, resolvedAt igual a new Date
         SRV->>IREP: save(incident)
+        activate IREP
         IREP-->>SRV: Incident actualizada
+        deactivate IREP
         SRV-->>CTRL: Incident
         CTRL-->>ADM: 200 Incident
+        deactivate CTRL
     end
+    deactivate DEC
 ```
+
+**Figura 115 — C.11 DSD — CU-063: Resolver Incidencia**
 
 **Observaciones de diseño**
 
@@ -6179,6 +7943,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-066 Consultar Historial De Calificaciones Recibidas
     autonumber
     participant ADM as Admin o SuperAdmin
     participant DEC as CurrentDistributorDecorator
@@ -6187,14 +7952,24 @@ sequenceDiagram
     participant RREP as RepositoryRating
 
     ADM->>DEC: GET /ratings/user/:userId
+    activate DEC
     DEC->>CTRL: findForUser(userId, distributorId)
+    activate CTRL
     CTRL->>CTRL: ParseUUIDPipe valida el userId, Roles ADMIN SUPER_ADMIN
     CTRL->>SRV: findForUser(userId, distributorId)
+    activate SRV
     SRV->>RREP: find(where to_user_id mas distributor_id si hay tenant, relations fromUser, order createdAt DESC)
+    activate RREP
     RREP-->>SRV: Rating[] recibidas
+    deactivate RREP
     SRV-->>CTRL: Rating[]
+    deactivate SRV
     CTRL-->>ADM: 200 Rating[]
+    deactivate CTRL
+    deactivate DEC
 ```
+
+**Figura 116 — C.12 DSD — CU-066: Consultar Historial de Calificaciones Recibidas**
 
 **Observaciones de diseño**
 
@@ -6212,6 +7987,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-067 Dar De Alta Un Envase Fisico
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -6221,25 +7997,41 @@ sequenceDiagram
     participant MREP as RepositoryCylinderMovement
 
     ADM->>DEC: POST /cylinders con CreateCylinderDto
+    activate DEC
     DEC->>DEC: required true, exige tenant
     DEC->>CTRL: create(dto, distributorId)
+    activate CTRL
     CTRL->>SRV: create(dto, distributorId)
+    activate SRV
     SRV->>CREP: create(distributor_id, serial, gas_cylinder_id, deposit, state IN_DEPOT)
+    activate CREP
     CREP-->>SRV: Cylinder en memoria
+    deactivate CREP
     SRV->>CREP: save(cylinder)
+    activate CREP
     alt Violacion de unicidad, codigo 23505
         CREP-->>SRV: QueryFailedError
+        deactivate CREP
         SRV-->>CTRL: ConflictException, el serial ya existe en tu distribuidora
+        deactivate SRV
     else Alta exitosa
         CREP-->>SRV: Cylinder persistido
         SRV->>MREP: create(cylinder_id, distributor_id, from_state null, to_state IN_DEPOT)
+        activate MREP
         MREP-->>SRV: CylinderMovement en memoria
+        deactivate MREP
         SRV->>MREP: save(movement)
+        activate MREP
         MREP-->>SRV: movimiento de alta registrado
+        deactivate MREP
         SRV-->>CTRL: Cylinder
         CTRL-->>ADM: 201 Cylinder
+        deactivate CTRL
     end
+    deactivate DEC
 ```
+
+**Figura 117 — C.13 DSD — CU-067: Dar de Alta un Envase Físico**
 
 **Observaciones de diseño**
 
@@ -6255,6 +8047,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-069 Consultar El Parque De Envases
     autonumber
     participant USR as Admin o Chofer
     participant DEC as CurrentDistributorDecorator
@@ -6264,27 +8057,43 @@ sequenceDiagram
 
     alt Listado del parque, GET /cylinders
         USR->>DEC: GET /cylinders con query state opcional
+        activate DEC
         DEC->>CTRL: findAll(distributorId, state)
+        activate CTRL
         CTRL->>SRV: findAll(distributorId, state)
+        activate SRV
         SRV->>SRV: arma el where con distributor_id y state si vienen
         SRV->>CREP: find(where, order createdAt DESC)
+        activate CREP
         CREP-->>SRV: Cylinder[]
+        deactivate CREP
         SRV-->>CTRL: Cylinder[]
+        deactivate SRV
         CTRL-->>USR: 200 Cylinder[]
+        deactivate CTRL
     else Detalle de un envase, GET /cylinders/:id
         USR->>DEC: GET /cylinders/:id
         DEC->>CTRL: findOne(id, distributorId)
+        activate CTRL
         CTRL->>SRV: findOne(id, distributorId)
+        activate SRV
         SRV->>CREP: findOne(where cylinder_id mas distributor_id si hay tenant)
+        activate CREP
         CREP-->>SRV: Cylinder o null
+        deactivate CREP
         alt No existe o es de otra distribuidora
             SRV-->>CTRL: NotFoundException, envase no encontrado
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: Cylinder
             CTRL-->>USR: 200 Cylinder
+            deactivate CTRL
         end
     end
+    deactivate DEC
 ```
+
+**Figura 118 — C.14 DSD — CU-069: Consultar el Parque de Envases**
 
 **Observaciones de diseño**
 
@@ -6300,6 +8109,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-071 Consultar Historial De Movimientos De Un Envase
     autonumber
     participant ADM as Admin o SuperAdmin
     participant DEC as CurrentDistributorDecorator
@@ -6309,20 +8119,32 @@ sequenceDiagram
     participant MREP as RepositoryCylinderMovement
 
     ADM->>DEC: GET /cylinders/:id/history
+    activate DEC
     DEC->>CTRL: getHistory(id, distributorId)
+    activate CTRL
     CTRL->>SRV: getHistory(id, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId), valida existencia y tenant
     SRV->>CREP: findOne(where cylinder_id mas distributor_id si hay tenant)
+    activate CREP
     CREP-->>SRV: Cylinder o null
+    deactivate CREP
     alt No existe o es de otra distribuidora
         SRV-->>CTRL: NotFoundException, envase no encontrado
+        deactivate SRV
     else Envase valido
         SRV->>MREP: find(where cylinder_id, order createdAt ASC)
+        activate MREP
         MREP-->>SRV: CylinderMovement[] append only
+        deactivate MREP
         SRV-->>CTRL: CylinderMovement[]
         CTRL-->>ADM: 200 CylinderMovement[]
+        deactivate CTRL
     end
+    deactivate DEC
 ```
+
+**Figura 119 — C.15 DSD — CU-071: Consultar Historial de Movimientos de un Envase**
 
 **Observaciones de diseño**
 
@@ -6338,6 +8160,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-132 Registrar la Revision Periodica de un Envase
     autonumber
     participant CTRL as CylinderController
     participant SRV as CylinderService
@@ -6345,18 +8168,28 @@ sequenceDiagram
     participant IREP as RepositoryCylinderInspection
 
     CTRL->>SRV: registrarRevision(envaseId, datos, distribuidora)
+    activate SRV
     SRV->>CREP: findOne(where cylinder_id y distributor_id)
+    activate CREP
     CREP-->>SRV: Cylinder o null
+    deactivate CREP
     SRV->>IREP: save(revisión)
+    activate IREP
     IREP-->>SRV: CylinderInspection guardada
+    deactivate IREP
     SRV->>CREP: save(envase con última revisión y vencimiento)
+    activate CREP
     CREP-->>SRV: Cylinder actualizado
+    deactivate CREP
     alt el envase existe y las fechas son coherentes
         SRV-->>CTRL: Cylinder con su vigencia
+        deactivate SRV
     else el envase no existe o las fechas no cierran
         SRV-->>CTRL: operación rechazada
     end
 ```
+
+**Figura 120 — DSD CU-132: Registrar la Revisión Periódica de un Envase**
 
 **Observaciones de diseño**
 
@@ -6372,21 +8205,28 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-133 Consultar la Vigencia de un Envase
     autonumber
     participant CTRL as CylinderController
     participant SRV as CylinderService
     participant CREP as RepositoryCylinder
 
     CTRL->>SRV: consultarVigencia(envaseId)
+    activate SRV
     SRV->>CREP: findOne(where cylinder_id, relations inspections)
+    activate CREP
     CREP-->>SRV: Cylinder con revisiones o null
+    deactivate CREP
     SRV->>SRV: diasHastaElVencimiento(vencimiento)
     alt el envase existe
         SRV-->>CTRL: vigencia con días restantes
+        deactivate SRV
     else el envase no existe
         SRV-->>CTRL: NotFoundException
     end
 ```
+
+**Figura 121 — DSD CU-133: Consultar la Vigencia de un Envase**
 
 **Observaciones de diseño**
 
@@ -6401,22 +8241,31 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-134 Consultar los Envases Proximos a Vencer
     autonumber
     participant CTRL as CylinderController
     participant SRV as CylinderService
     participant CREP as RepositoryCylinder
 
     CTRL->>SRV: proximosAVencer(dias, distribuidora)
+    activate SRV
     SRV->>CREP: find(where distributor_id y expires_at entre hoy y hoy más dias)
+    activate CREP
     CREP-->>SRV: lista de Cylinder
+    deactivate CREP
     SRV->>CREP: find(where expires_at null)
+    activate CREP
     CREP-->>SRV: lista de Cylinder sin vigencia
+    deactivate CREP
     alt hay envases
         SRV-->>CTRL: listado separado en vencidos, por vencer y sin dato
+        deactivate SRV
     else no hay
         SRV-->>CTRL: listados vacíos
     end
 ```
+
+**Figura 122 — DSD CU-134: Consultar los Envases Próximos a Vencer**
 
 **Observaciones de diseño**
 
@@ -6431,22 +8280,29 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-135 Bloquear el Despacho de un Envase Vencido
     autonumber
     participant SRV as CylinderService
     participant CREP as RepositoryCylinder
     participant MREP as RepositoryCylinderMovement
 
     SRV->>CREP: find(envases disponibles del tipo pedido)
+    activate CREP
     CREP-->>SRV: lista de Cylinder
+    deactivate CREP
     SRV->>SRV: filtrar(expires_at nulo o posterior a hoy)
     SRV->>MREP: save(movimiento de asignación)
+    activate MREP
     MREP-->>SRV: CylinderMovement guardado
+    deactivate MREP
     alt hay envases vigentes
         SRV-->>CTRL: envases asignados al pedido
     else no hay envases vigentes
         SRV-->>CTRL: aviso al administrador y pedido sin envases
     end
 ```
+
+**Figura 123 — DSD CU-135: Bloquear el Despacho de un Envase Vencido**
 
 **Observaciones de diseño**
 
@@ -6463,6 +8319,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-073 Listar Reservas Y Estado De La Sena
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -6471,18 +8328,28 @@ sequenceDiagram
     participant OREP as RepositoryOrder
 
     ADM->>DEC: GET /orders/reservations
+    activate DEC
     DEC->>CTRL: findReservations(distributorId)
+    activate CTRL
     CTRL->>RES: findReservations(distributorId)
+    activate RES
     RES->>OREP: find(status RESERVED mas distributor_id si hay tenant, relations customer items items.gasCylinder)
+    activate OREP
     OREP-->>RES: Order[] ordenados por scheduled_date ASC y createdAt DESC
+    deactivate OREP
     loop Por cada reserva
         RES->>RES: depositAmount igual a Number(order.deposit_amount)
         RES->>RES: remainingBalance igual a total menos la sena si deposit_paid
         RES->>RES: proyecta customerName customerPhone scheduledDate items
     end
     RES-->>CTRL: vista de reservas
+    deactivate RES
     CTRL-->>ADM: 200 listado de reservas
+    deactivate CTRL
+    deactivate DEC
 ```
+
+**Figura 124 — C.16 DSD — CU-073: Listar Reservas y Estado de la Seña**
 
 **Observaciones de diseño**
 
@@ -6498,6 +8365,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-074 Confirmar Sena Cobrada En Efectivo
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -6507,25 +8375,39 @@ sequenceDiagram
     participant MAP as OrderMapper
 
     ADM->>DEC: PATCH /orders/:id/confirm-deposit
+    activate DEC
     DEC->>CTRL: confirmDeposit(id, distributorId)
+    activate CTRL
     CTRL->>RES: confirmDeposit(id, distributorId)
+    activate RES
     RES->>OREP: findOne(where order_id mas distributor_id si hay tenant)
+    activate OREP
     OREP-->>RES: Order o null
+    deactivate OREP
     alt No existe o es de otra distribuidora
         RES-->>CTRL: NotFoundException, reserva no encontrada
+        deactivate RES
     else El pedido no esta en RESERVED
         RES-->>CTRL: BadRequestException, el pedido no es una reserva pendiente
     else Reserva valida
         RES->>RES: order.deposit_paid igual a true
         RES->>OREP: save(order)
+        activate OREP
         OREP-->>RES: Order actualizado
+        deactivate OREP
         RES-->>CTRL: Order
         CTRL->>MAP: toDto(order)
+        activate MAP
         MAP-->>CTRL: OrderDto
+        deactivate MAP
         CTRL-->>ADM: 200 OrderDto
+        deactivate CTRL
     end
     Note over RES: A partir de aca la reserva es elegible para activateDueReservations, cron cada 5 minutos
+    deactivate DEC
 ```
+
+**Figura 125 — C.17 DSD — CU-074: Confirmar Seña Cobrada en Efectivo**
 
 **Observaciones de diseño**
 
@@ -6543,6 +8425,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-086 Registrar Administrador
     autonumber
     participant ACT as SuperAdmin o Admin de empresa
     participant CTRL as AdminController
@@ -6553,44 +8436,64 @@ sequenceDiagram
     participant AREP as RepositoryAdmin
 
     ACT->>CTRL: POST /admin/register con RegisterAdminDto
+    activate CTRL
     alt El solicitante es SUPER_ADMIN
         CTRL->>SRV: registerAdmin(dto con distributorId del body o del contexto)
+        activate SRV
     else El solicitante es ADMIN de empresa
         alt El admin no tiene distribuidora asociada
             CTRL-->>ACT: ForbiddenException, tu usuario no tiene una distribuidora asociada
+            deactivate CTRL
         else Tiene tenant
             CTRL->>SRV: isSuperAdminRole(dto.role_id)
             SRV->>RREP: findOne(where role_id)
+            activate RREP
             RREP-->>SRV: Role o null
+            deactivate RREP
             SRV-->>CTRL: boolean
+            deactivate SRV
             alt El rol pedido es super_admin
                 CTRL-->>ACT: ForbiddenException, no podes crear un super administrador
             else Rol permitido
                 CTRL->>SRV: registerAdmin(dto con distributorId forzado al del contexto)
+                activate SRV
             end
         end
     end
 
     SRV->>HLP: validateUniqueness(dto, usersService)
+    activate HLP
     HLP->>USR: findOneByEmail(dto.email)
+    activate USR
     HLP->>USR: findOneByPhone(dto.phone_number)
     alt Email o telefono ya en uso
         HLP-->>ACT: HttpException 409, email o telefono ya en uso
+        deactivate HLP
     else Datos libres
         SRV->>HLP: createUserInFirebase(dto, usersService)
+        activate HLP
         HLP->>USR: createFirebaseUser(dto)
         USR-->>HLP: firebaseUser con uid
+        deactivate USR
         SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
         HLP->>USR: create(dto mas firebase_uid)
+        activate USR
         USR-->>HLP: User local
+        deactivate USR
         SRV->>SRV: arma CreateAdminDto con user_id, role_id y distributor_id
         SRV->>AREP: create(adminData)
+        activate AREP
         SRV->>AREP: save(admin)
         AREP-->>SRV: Admin persistido
+        deactivate AREP
         SRV-->>CTRL: message, admin, user
+        deactivate SRV
         CTRL-->>ACT: 201 Admin registrado
     end
+    deactivate HLP
 ```
+
+**Figura 126 — C.18 DSD — CU-086: Registrar Administrador**
 
 **Observaciones de diseño**
 
@@ -6607,6 +8510,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-087 Crear El Primer Super Administrador
     autonumber
     participant OPE as Operador de instalacion
     participant AUTH as AuthGuard
@@ -6618,33 +8522,53 @@ sequenceDiagram
     participant USR as UsersService
 
     OPE->>AUTH: POST /admin/first-superadmin con RegisterAdminDto, sin token
+    activate AUTH
     AUTH->>AUTH: reflector.get isPublic sobre el handler
     AUTH-->>GRD: isPublic true, devuelve true sin validar token
+    deactivate AUTH
     GRD->>GRD: canActivate, isPublic true, no exige rol
     GRD->>CTRL: createFirstSuperAdmin(registerAdminDto)
+    activate CTRL
 
     Note over CTRL: Condicion de arranque, la unica autorizacion de esta ruta
     CTRL->>SRV: findAll()
+    activate SRV
     SRV->>AREP: find(where vacio, relations user role distributor)
+    activate AREP
     AREP-->>SRV: Admin[]
+    deactivate AREP
     SRV-->>CTRL: Admin[]
+    deactivate SRV
     alt Ya existe al menos un administrador
         CTRL-->>OPE: ForbiddenException 403, ya existen administradores en el sistema
+        deactivate CTRL
     else Sistema virgen, cero admins
         CTRL->>SRV: registerAdmin(registerAdminDto)
+        activate SRV
         SRV->>HLP: validateUniqueness(dto, usersService)
+        activate HLP
         SRV->>HLP: createUserInFirebase(dto, usersService)
         HLP->>USR: createFirebaseUser(dto)
+        activate USR
         USR-->>HLP: firebaseUser con uid
+        deactivate USR
         SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
         HLP->>USR: create(dto mas firebase_uid)
+        activate USR
         USR-->>HLP: User local
+        deactivate USR
         SRV->>AREP: create(adminData) y save(admin)
+        activate AREP
         AREP-->>SRV: Admin persistido
+        deactivate AREP
         SRV-->>CTRL: message, admin, user
+        deactivate SRV
         CTRL-->>OPE: 201 primer super administrador creado
     end
+    deactivate HLP
 ```
+
+**Figura 127 — C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)**
 
 **Observaciones de diseño**
 
@@ -6661,6 +8585,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-088 Consultar Administradores
     autonumber
     participant ADM as Admin o SuperAdmin
     participant DEC as CurrentDistributorDecorator
@@ -6670,35 +8595,51 @@ sequenceDiagram
 
     alt Listado, GET /admin
         ADM->>DEC: GET /admin
+        activate DEC
         DEC->>CTRL: findAll(distributorId)
+        activate CTRL
         CTRL->>SRV: findAll(distributorId)
+        activate SRV
         alt Hay tenant en contexto
             SRV->>AREP: find(where distributor_id, relations user role distributor)
+            activate AREP
         else super_admin cross tenant
             SRV->>AREP: find(where vacio, relations user role distributor)
         end
         AREP-->>SRV: Admin[]
+        deactivate AREP
         SRV-->>CTRL: Admin[]
+        deactivate SRV
         CTRL-->>ADM: 200 Admin[]
+        deactivate CTRL
     else Busqueda por termino, GET /admin/term/:term
         ADM->>CTRL: findOneByEmail(term)
+        activate CTRL
         CTRL->>SRV: findAdminByTerm(term)
+        activate SRV
         SRV->>SRV: isUUID(term)
         alt El termino es un UUID
             SRV->>AREP: createQueryBuilder where admin.admin_id igual al termino
+            activate AREP
         else El termino es un email
             SRV->>AREP: createQueryBuilder where user.email igual al termino
         end
         AREP-->>SRV: Admin o null
+        deactivate AREP
         alt No encontrado
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Encontrado
             SRV->>SRV: proyecta admin_id email displayName fullName rol uid
             SRV-->>CTRL: vista del admin
             CTRL-->>ADM: 200 vista del admin
+            deactivate CTRL
         end
     end
+    deactivate DEC
 ```
+
+**Figura 128 — C.20 DSD — CU-088: Consultar Administradores**
 
 **Observaciones de diseño**
 
@@ -6714,6 +8655,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-089 Gestionar Roles Del Sistema
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -6722,48 +8664,76 @@ sequenceDiagram
     participant RREP as RepositoryRole
 
     SA->>GRD: peticion sobre /role
+    activate GRD
     GRD->>GRD: canActivate, Roles SUPER_ADMIN declarado en la clase
     GRD->>CTRL: rol verificado
+    activate CTRL
 
     alt Crear, POST /role
         CTRL->>SRV: create(createRoleDto)
+        activate SRV
         SRV->>RREP: create(createRoleDto) y save(role)
+        activate RREP
         RREP-->>SRV: Role persistido
+        deactivate RREP
         SRV-->>CTRL: Role
+        deactivate SRV
     else Listar, GET /role
         CTRL->>SRV: findAll()
+        activate SRV
         SRV->>RREP: find()
+        activate RREP
         RREP-->>SRV: Role[]
+        deactivate RREP
         SRV-->>CTRL: Role[]
+        deactivate SRV
     else Detalle, GET /role/:id
         CTRL->>SRV: findOne(id)
+        activate SRV
         SRV->>RREP: findOne(where role_id)
+        activate RREP
         RREP-->>SRV: Role o null
+        deactivate RREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV-->>CTRL: Role
         end
     else Actualizar, PATCH /role/:id
         CTRL->>SRV: update(id, updateRoleDto)
+        activate SRV
         SRV->>RREP: preload(role_id mas updateRoleDto)
+        activate RREP
         RREP-->>SRV: Role fusionado o undefined
+        deactivate RREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV->>RREP: save(role)
+            activate RREP
             RREP-->>SRV: Role actualizado
+            deactivate RREP
             SRV-->>CTRL: Role
         end
     else Eliminar, DELETE /role/:id
         CTRL->>SRV: remove(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>RREP: remove(role)
+        activate RREP
         RREP-->>SRV: fila eliminada
+        deactivate RREP
         SRV-->>CTRL: message Role deleted successfully
+        deactivate SRV
     end
     CTRL-->>SA: respuesta segun la operacion
+    deactivate CTRL
+    deactivate GRD
 ```
+
+**Figura 129 — C.21 DSD — CU-089: Gestionar Roles del Sistema**
 
 **Observaciones de diseño**
 
@@ -6779,6 +8749,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-090 Sembrar Los Roles Iniciales
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -6787,24 +8758,36 @@ sequenceDiagram
     participant RREP as RepositoryRole
 
     SA->>GRD: POST /role/seed
+    activate GRD
     GRD->>CTRL: rol super_admin verificado
+    activate CTRL
     CTRL->>SRV: seedRoles()
+    activate SRV
     SRV->>SRV: roles igual a customer delivery admin super_admin
     loop Por cada roleType de la lista
         SRV->>SRV: findByType(roleType)
         SRV->>RREP: findOne(where type)
+        activate RREP
         RREP-->>SRV: Role o null
+        deactivate RREP
         alt El rol ya existe
             SRV->>SRV: no hace nada, se saltea
         else El rol falta
             SRV->>SRV: create(type roleType)
             SRV->>RREP: create y save
+            activate RREP
             RREP-->>SRV: Role creado
+            deactivate RREP
         end
     end
     SRV-->>CTRL: message Roles seeded successfully
+    deactivate SRV
     CTRL-->>SA: 201 Roles seeded successfully
+    deactivate CTRL
+    deactivate GRD
 ```
+
+**Figura 130 — C.22 DSD — CU-090: Sembrar los Roles Iniciales**
 
 **Observaciones de diseño**
 
@@ -6820,6 +8803,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-092 Consultar Listado De Clientes
     autonumber
     participant ADM as Admin o SuperAdmin
     participant DEC as CurrentDistributorDecorator
@@ -6828,9 +8812,13 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     ADM->>DEC: GET /customers con PaginationDto
+    activate DEC
     DEC->>CTRL: findAll(paginationDto, distributorId)
+    activate CTRL
     CTRL->>SRV: findAll(paginationDto, distributorId)
+    activate SRV
     SRV->>CREP: createQueryBuilder customer
+    activate CREP
     SRV->>CREP: leftJoinAndSelect customer.user, user.role, user.addresses
     SRV->>CREP: take(limit) y skip(offset)
     alt Hay tenant en contexto
@@ -6840,9 +8828,15 @@ sequenceDiagram
     end
     SRV->>CREP: getMany()
     CREP-->>SRV: Customer[] con user role y addresses
+    deactivate CREP
     SRV-->>CTRL: Customer[]
+    deactivate SRV
     CTRL-->>ADM: 200 Customer[]
+    deactivate CTRL
+    deactivate DEC
 ```
+
+**Figura 131 — C.23 DSD — CU-092: Consultar Listado de Clientes**
 
 **Observaciones de diseño**
 
@@ -6858,6 +8852,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-093 Validar Invalidar Cliente
     autonumber
     participant ADM as Admin o SuperAdmin
     participant CTRL as CustomersController
@@ -6866,35 +8861,51 @@ sequenceDiagram
 
     alt Validar, PATCH /customers/:id/validate
         ADM->>CTRL: validateCustomer(id)
+        activate CTRL
         CTRL->>SRV: validateCustomer(id)
+        activate SRV
         SRV->>SRV: findOne(id), sin requesterUserId, es admin
         SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        activate CREP
         CREP-->>SRV: Customer o null
+        deactivate CREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV->>SRV: customer.validated igual a true
             SRV->>CREP: save(customer)
+            activate CREP
             CREP-->>SRV: Customer actualizado
+            deactivate CREP
             SRV-->>CTRL: Customer
         end
     else Invalidar, PATCH /customers/:id/invalidate
         ADM->>CTRL: invalidateCustomer(id)
         CTRL->>SRV: invalidateCustomer(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>CREP: findOne(where customer_id)
+        activate CREP
         CREP-->>SRV: Customer o null
+        deactivate CREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV->>SRV: customer.validated igual a false
             SRV->>CREP: save(customer)
+            activate CREP
             CREP-->>SRV: Customer actualizado
+            deactivate CREP
             SRV-->>CTRL: Customer
         end
     end
     CTRL-->>ADM: 200 Customer
+    deactivate CTRL
 ```
+
+**Figura 132 — C.24 DSD — CU-093: Validar / Invalidar Cliente**
 
 **Observaciones de diseño**
 
@@ -6910,6 +8921,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-094 Actualizar Ubicacion Del Cliente
     autonumber
     participant CLI as Cliente o Admin
     participant CTRL as CustomersController
@@ -6917,13 +8929,18 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     CLI->>CTRL: PATCH /customers/:id/location con latLng
+    activate CTRL
     CTRL->>CTRL: scope(user), admin devuelve undefined, cliente devuelve user.user_id
     CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+    activate SRV
     SRV->>SRV: findOne(id, requesterUserId)
     SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt No existe
         SRV-->>CTRL: NotFoundException
+        deactivate SRV
     else Existe
         SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
         alt Es un cliente y el customer es de otro usuario
@@ -6931,12 +8948,17 @@ sequenceDiagram
         else Autorizado, dueno o admin
             SRV->>SRV: customer.lat_lang igual a latLng
             SRV->>CREP: save(customer)
+            activate CREP
             CREP-->>SRV: Customer actualizado
+            deactivate CREP
             SRV-->>CTRL: Customer
             CTRL-->>CLI: 200 Customer
+            deactivate CTRL
         end
     end
 ```
+
+**Figura 133 — C.25 DSD — CU-094: Actualizar Ubicación del Cliente**
 
 **Observaciones de diseño**
 
@@ -6952,6 +8974,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-095 Eliminar Cliente
     autonumber
     participant ADM as Admin o SuperAdmin
     participant CTRL as CustomersController
@@ -6959,20 +8982,30 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     ADM->>CTRL: DELETE /customers/:id
+    activate CTRL
     CTRL->>CTRL: HttpCode 200, Roles ADMIN SUPER_ADMIN
     CTRL->>SRV: remove(id)
+    activate SRV
     SRV->>SRV: findOne(id), sin ownership porque es staff
     SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt No existe
         SRV-->>CTRL: NotFoundException
+        deactivate SRV
     else Existe
         SRV->>CREP: softDelete(where customer_id)
+        activate CREP
         CREP-->>SRV: deletedAt seteado, la fila permanece
+        deactivate CREP
         SRV-->>CTRL: message Customer deleted successfully
         CTRL-->>ADM: 200 message
+        deactivate CTRL
     end
 ```
+
+**Figura 134 — C.26 DSD — CU-095: Eliminar Cliente (baja lógica)**
 
 **Observaciones de diseño**
 
@@ -6988,20 +9021,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-129 Consultar Detalle del Cliente
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    activate SRV
     SRV->>CREP: findOne(where customer_id, relations user)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt el cliente existe
         SRV-->>CTRL: Customer con su usuario
+        deactivate SRV
     else el cliente no existe
         SRV-->>CTRL: NotFoundException Customer with ID not found
     end
 ```
+
+**Figura 135 — DSD CU-129: Consultar Detalle del Cliente**
 
 **Observaciones de diseño**
 
@@ -7016,20 +9056,27 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-130 Buscar Cliente por Usuario
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+    activate SRV
     SRV->>CREP: findOne(where user_id, relations user)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt la cuenta tiene ficha
         SRV-->>CTRL: Customer
+        deactivate SRV
     else la cuenta no tiene ficha
         SRV-->>CTRL: NotFoundException Customer for user ID not found
     end
 ```
+
+**Figura 136 — DSD CU-130: Buscar Cliente por Usuario**
 
 **Observaciones de diseño**
 
@@ -7044,22 +9091,31 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-131 Editar Datos del Cliente
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    activate SRV
     SRV->>CREP: preload(customer_id + cambios)
+    activate CREP
     CREP-->>SRV: Customer fusionado o null
+    deactivate CREP
     SRV->>CREP: save(cliente)
+    activate CREP
     CREP-->>SRV: Customer actualizado
+    deactivate CREP
     alt el cliente existe
         SRV-->>CTRL: Customer actualizado
+        deactivate SRV
     else el cliente no existe
         SRV-->>CTRL: NotFoundException Customer with ID not found
     end
 ```
+
+**Figura 137 — DSD CU-131: Editar Datos del Cliente**
 
 **Observaciones de diseño**
 
@@ -7076,6 +9132,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-098 Registrar El Token De Notificaciones Del Dispositivo
     autonumber
     participant APP as App Cliente o App Chofer
     participant CTRL as NotificationsController
@@ -7084,6 +9141,7 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     APP->>CTRL: POST /notifications/token con userId token y platform
+    activate CTRL
     CTRL->>CTRL: isAdmin(user)
     alt El solicitante es admin
         CTRL->>CTRL: userId igual a body.userId, puede registrar el de otro
@@ -7091,18 +9149,26 @@ sequenceDiagram
         CTRL->>CTRL: userId igual a user.user_id, se ignora el del body
     end
     CTRL->>SRV: saveNotificationToken(userId, body.token, body.platform)
+    activate SRV
     SRV->>CREP: findOne(where user_id)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt Es un cliente
         SRV->>SRV: customer.notification_token igual a token
         SRV->>CREP: save(customer)
+        activate CREP
         SRV-->>CTRL: success true
+        deactivate SRV
     else No es cliente, se prueba como chofer
         SRV->>DREP: findOne(where user_id)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt Es un chofer
             SRV->>SRV: delivery.notification_token igual a token
             SRV->>DREP: save(delivery)
+            activate DREP
             SRV-->>CTRL: success true
         else No existe en ninguno de los dos perfiles
             SRV->>SRV: logger.warn usuario no encontrado para token FCM
@@ -7110,7 +9176,12 @@ sequenceDiagram
         end
     end
     CTRL-->>APP: 200 resultado
+    deactivate CTRL
+    deactivate DREP
+    deactivate CREP
 ```
+
+**Figura 138 — C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo**
 
 **Observaciones de diseño**
 
@@ -7127,6 +9198,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-099 Consultar Los Tokens De Un Usuario
     autonumber
     participant USR as Usuario autenticado
     participant CTRL as NotificationsController
@@ -7134,15 +9206,21 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     USR->>CTRL: GET /notifications/user/:userId
+    activate CTRL
     CTRL->>CTRL: isAdmin(user)
     alt No es admin y el userId no es el suyo
         CTRL-->>USR: ForbiddenException, no autorizado a ver tokens de otro usuario
+        deactivate CTRL
     else Es admin o consulta su propio userId
         CTRL->>SRV: getUserNotificationTokens(userId)
+        activate SRV
         SRV->>CREP: findOne(where user_id)
+        activate CREP
         CREP-->>SRV: Customer o null
+        deactivate CREP
         alt No hay perfil de cliente
             SRV-->>CTRL: tokens vacio
+            deactivate SRV
         else Hay cliente
             SRV->>SRV: arma el arreglo con notification_token si existe
             SRV-->>CTRL: tokens
@@ -7150,6 +9228,8 @@ sequenceDiagram
         CTRL-->>USR: 200 tokens
     end
 ```
+
+**Figura 139 — C.28 DSD — CU-099: Consultar los Tokens de un Usuario**
 
 **Observaciones de diseño**
 
@@ -7165,6 +9245,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-100 Enviar Notificacion De Prueba
     autonumber
     participant ADM as Admin o SuperAdmin
     participant CTRL as NotificationsController
@@ -7172,21 +9253,29 @@ sequenceDiagram
     participant FCM as FcmPort
 
     ADM->>CTRL: POST /notifications/send-test con token title y body
+    activate CTRL
     CTRL->>CTRL: Roles ADMIN SUPER_ADMIN verificados por RolesGuard
     CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
+    activate SRV
     SRV->>SRV: arma message con notification y data type TEST mas timestamp
     SRV->>FCM: sendToToken(token, message)
+    activate FCM
     alt El envio falla
         FCM-->>SRV: Error
+        deactivate FCM
         SRV->>SRV: logger.error error sending test notification
         SRV-->>CTRL: success false, error
+        deactivate SRV
     else Envio exitoso
         FCM-->>SRV: messageId
         SRV->>SRV: logger.log test notification sent
         SRV-->>CTRL: success true, messageId
     end
     CTRL-->>ADM: 200 resultado
+    deactivate CTRL
 ```
+
+**Figura 140 — C.29 DSD — CU-100: Enviar Notificación de Prueba**
 
 **Observaciones de diseño**
 
@@ -7202,6 +9291,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-101 Reenviar Notificacion De Confirmacion De Pedido
     autonumber
     participant ADM as Admin o SuperAdmin
     participant CTRL as NotificationsController
@@ -7210,12 +9300,17 @@ sequenceDiagram
     participant FCM as FcmPort
 
     ADM->>CTRL: POST /notifications/order-confirmation con customerId orderId y token opcional
+    activate CTRL
     CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
+    activate SRV
     SRV->>CREP: findOne(where user_id igual a customerId, relations user)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt Cliente no encontrado
         SRV->>SRV: logger.warn customer not found
         SRV-->>CTRL: success false, error Customer not found
+        deactivate SRV
     else Cliente encontrado
         SRV->>SRV: notificationToken igual al token del body o customer.notification_token
         alt El cliente no tiene token registrado
@@ -7224,8 +9319,10 @@ sequenceDiagram
         else Hay token
             SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
             SRV->>FCM: sendToToken(notificationToken, message)
+            activate FCM
             alt Falla el envio
                 FCM-->>SRV: Error
+                deactivate FCM
                 SRV-->>CTRL: success false, error
             else Envio exitoso
                 FCM-->>SRV: messageId
@@ -7234,7 +9331,10 @@ sequenceDiagram
         end
     end
     CTRL-->>ADM: 200 resultado
+    deactivate CTRL
 ```
+
+**Figura 141 — C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 **Observaciones de diseño**
 
@@ -7253,6 +9353,7 @@ Endpoint marcado **TEMPORAL** en el propio código (`src/email/email.controller.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-102 Probar El Servicio De Correo
     autonumber
     participant ANY as Cualquiera, ruta publica
     participant AUTH as AuthGuard
@@ -7264,38 +9365,54 @@ sequenceDiagram
     participant SND as EmailSenderPort
 
     ANY->>AUTH: POST /email/test con TestEmailDto, sin token
+    activate AUTH
     AUTH->>AUTH: reflector.get isPublic sobre el handler
     AUTH-->>CTRL: isPublic true, no se valida token ni rol
+    deactivate AUTH
     CTRL->>SRV: testEmailService(body.email)
+    activate SRV
 
     Note over SRV,REDIS: Primera generacion, deberia poblar la cache
     SRV->>SRV: generatePasswordResetLink(email)
     SRV->>REDIS: get(email link-cache reset email)
+    activate REDIS
     REDIS-->>SRV: null, cache fria
+    deactivate REDIS
     SRV->>FBA: generatePasswordResetLink(email, opciones)
+    activate FBA
     FBA-->>SRV: link
+    deactivate FBA
     SRV->>REDIS: setex(cacheKey, CACHE_TTL_SEC, link)
+    activate REDIS
 
     Note over SRV,REDIS: Segunda generacion, deberia pegarle a la cache
     SRV->>SRV: generatePasswordResetLink(email)
     SRV->>REDIS: get(cacheKey)
     REDIS-->>SRV: link cacheado
+    deactivate REDIS
     SRV->>SRV: resetLinksEqual igual a comparar link1 con link2
 
     SRV->>SRV: sendEmail(to, subject Test Email, template email-verification)
     SRV->>TPL: render(email-verification, displayName Test User)
+    activate TPL
     TPL-->>SRV: html
+    deactivate TPL
     SRV->>SND: send(to, subject, html)
+    activate SND
     alt El envio falla
         SND-->>SRV: Error capturado por sendEmail, best effort
+        deactivate SND
         SRV->>SRV: resendStatus failed mas el mensaje
     else Envio exitoso
         SND-->>SRV: void
         SRV->>SRV: emailSent true, resendStatus sent
     end
     SRV-->>CTRL: success, message, emailSent, resendStatus, cacheStats
+    deactivate SRV
     CTRL-->>ANY: 200 diagnostico del servicio de correo
 ```
+
+**Figura 142 — C.31 DSD — CU-102: Probar el Servicio de Correo**
 
 **Observaciones de diseño**
 
@@ -7314,6 +9431,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-104 Verificar La Salud Del Sistema
     autonumber
     participant LB as Load balancer u orquestador
     participant CTRL as HealthController
@@ -7326,50 +9444,78 @@ sequenceDiagram
 
     alt Chequeo completo, GET /health
         LB->>CTRL: GET /health, Public y SkipThrottle
+        activate CTRL
         CTRL->>HCS: check con los cuatro indicadores
+        activate HCS
         HCS->>DB: pingCheck(postgres)
+        activate DB
         DB-->>HCS: estado de PostgreSQL
+        deactivate DB
         HCS->>RH: isHealthy(redis)
+        activate RH
         RH->>REDIS: ping()
+        activate REDIS
         REDIS-->>RH: true si respondio PONG
+        deactivate REDIS
         alt Redis no responde
             RH-->>HCS: HealthCheckError Redis check failed
+            deactivate RH
         else Redis sano
             RH-->>HCS: HealthIndicatorResult up
         end
         HCS->>MEM: checkRSS(memory_rss, 300 MB)
+        activate MEM
         MEM-->>HCS: heap RSS por debajo del umbral
+        deactivate MEM
         HCS->>DISK: checkStorage(storage, path raiz, thresholdPercent 0.9)
+        activate DISK
         DISK-->>HCS: uso de disco por debajo del 90 por ciento
+        deactivate DISK
         alt Todos los indicadores sanos
             HCS-->>CTRL: status ok
+            deactivate HCS
             CTRL-->>LB: 200 status ok
+            deactivate CTRL
         else Alguno falla
             HCS-->>CTRL: detalle por componente
             CTRL-->>LB: 503 con el componente caido
         end
     else Liveness, GET /health/live
         LB->>CTRL: GET /health/live
+        activate CTRL
         CTRL->>CTRL: no consulta ninguna dependencia
         CTRL-->>LB: 200 status ok mas timestamp
+        deactivate CTRL
     else Readiness, GET /health/ready
         LB->>CTRL: GET /health/ready
+        activate CTRL
         CTRL->>HCS: check con los dos indicadores criticos
+        activate HCS
         HCS->>DB: pingCheck(postgres)
+        activate DB
         DB-->>HCS: estado de PostgreSQL
+        deactivate DB
         HCS->>RH: isHealthy(redis)
+        activate RH
         RH->>REDIS: ping()
+        activate REDIS
         REDIS-->>RH: booleano
+        deactivate REDIS
         RH-->>HCS: resultado
+        deactivate RH
         alt DB y Redis sanos
             HCS-->>CTRL: status ok
+            deactivate HCS
             CTRL-->>LB: 200 listo para recibir trafico
+            deactivate CTRL
         else Alguna dependencia critica caida
             HCS-->>CTRL: detalle
             CTRL-->>LB: 503 no listo
         end
     end
 ```
+
+**Figura 143 — C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
 
 **Observaciones de diseño**
 
@@ -7443,6 +9589,7 @@ como propuestas no existen aún en el código.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-105 Planificar El Mantenimiento Y Las Habilitaciones De La Flota
     autonumber
     participant CRON as FleetMaintenancePlannerService
     participant USG as VehicleUsageRepositoryPort
@@ -7454,28 +9601,43 @@ sequenceDiagram
     participant FIT as FleetAvailabilityPort
 
     CRON->>USG: findRecentUsage(carId, dias)
+    activate USG
     USG-->>CRON: historial de km por dia
+    deactivate USG
     CRON->>CRON: estimateDailyKm(carId) con ponderacion y ajuste estacional
     CRON->>TSK: findForecastTasks(carId)
+    activate TSK
     TSK-->>CRON: tareas de mantenimiento y habilitacion
+    deactivate TSK
 
     loop Por cada tarea dentro de la ventana de anticipacion
         CRON->>CRON: projectDueDate(task, car)
         CRON->>DEM: forecastDemand(coverageZone, ventanas candidatas)
+        activate DEM
         DEM-->>CRON: demanda proyectada por ventana
+        deactivate DEM
         CRON->>COV: remainingActiveVehicles(coverageZone, ventana)
+        activate COV
         COV-->>CRON: unidades activas restantes
+        deactivate COV
         CRON->>CRON: descartar las ventanas que violan el minimo y ordenar por demanda
 
         loop Por cada ventana alternativa
             CRON->>PRP: create(taskId, ventana, driverId, expiresAt)
+            activate PRP
             PRP-->>CRON: propuesta en estado PROPOSED
+            deactivate PRP
             CRON->>NOT: sendWindowProposal(propuesta)
+            activate NOT
             CRON->>PRP: awaitAnswer(proposalId)
+            activate PRP
             PRP-->>CRON: ACCEPTED, REJECTED o EXPIRED
+            deactivate PRP
             alt La propuesta fue aceptada
                 CRON->>TSK: schedule(taskId, ventana)
+                activate TSK
                 CRON->>FIT: blockVehicleWindow(carId, ventana)
+                activate FIT
             else Rechazada o vencida
                 CRON->>CRON: continuar con la ventana siguiente
             end
@@ -7492,7 +9654,12 @@ sequenceDiagram
         CRON->>FIT: groundVehicle(carId)
         Note over FIT: DispatchOrchestratorService consulta<br/>isVehicleFit antes de ofrecer un pedido
     end
+    deactivate FIT
+    deactivate NOT
+    deactivate TSK
 ```
+
+**Figura 144 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 > **Nota sobre este diagrama.** Ninguna de las clases de servicio, puerto o
 > repositorio que aparecen existe hoy en el código: `FleetMaintenancePlannerService`,
@@ -7517,6 +9684,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-106 Anticipar La Recompra Por Consumo Estimado
     autonumber
     participant CRON as RepurchaseForecastService
     participant EST as ConsumptionEstimatorService
@@ -7528,21 +9696,33 @@ sequenceDiagram
     participant ORQ as DispatchOrchestratorService
 
     CRON->>ORD: findDeliveredHistory(customerId, minimoConfigurado)
+    activate ORD
     ORD-->>CRON: serie de pedidos con fecha y kilaje
+    deactivate ORD
 
     loop Por cada cliente con historial suficiente
         CRON->>EST: estimateRefillDate(serie, mes en curso)
+        activate EST
         EST-->>CRON: fecha proyectada de agotamiento
+        deactivate EST
         CRON->>ORD: hasActiveOrder(customerId)
+        activate ORD
         ORD-->>CRON: boolean
+        deactivate ORD
         CRON->>INV: findLastInvitation(customerId)
+        activate INV
         INV-->>CRON: fecha de la ultima invitacion
+        deactivate INV
 
         alt Entra en la ventana y no esta excluido
             CRON->>INV: create(customerId, pedido precargado, expiresAt)
+            activate INV
             INV-->>CRON: invitacion en estado OFFERED
+            deactivate INV
             CRON->>NOT: sendRepurchaseInvitation(invitacion)
+            activate NOT
             NOT->>FCM: sendToToken(token, data event REPURCHASE_INVITATION)
+            activate FCM
         else Excluido por pedido activo, entrega reciente o enfriamiento
             CRON->>CRON: omitir al cliente en esta corrida
         end
@@ -7550,13 +9730,23 @@ sequenceDiagram
 
     alt El cliente acepta la invitacion
         INV->>UC: execute(pedido precargado del cliente)
+        activate UC
         UC->>ORQ: offerToNextDriver(order)
+        activate ORQ
         Note over ORQ: El pedido entra al circuito de M1 (CU-013)
     else Vence la vigencia sin respuesta
         CRON->>INV: expire(invitationId)
+        activate INV
         Note over INV: La fecha de caducidad gobierna<br/>el intervalo minimo de reiteracion
     end
+    deactivate ORQ
+    deactivate UC
+    deactivate FCM
+    deactivate NOT
+    deactivate INV
 ```
+
+**Figura 145 — DSD CU-106: Anticipar la recompra por consumo estimado**
 
 > **Nota sobre este diagrama.** `RepurchaseForecastService`,
 > `ConsumptionEstimatorService` y `RepurchaseInvitationRepositoryPort` son
@@ -7578,6 +9768,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos Por Recorrido
     autonumber
     participant CRON as RouteBatchPlannerService
     participant ORD as OrderRepositoryPort
@@ -7589,27 +9780,41 @@ sequenceDiagram
     participant ORQ as DispatchOrchestratorService
 
     CRON->>ORD: findPendingAndScheduled(distributorId, coverageZoneId)
+    activate ORD
     ORD-->>CRON: pedidos sin chofer asignado
+    deactivate ORD
     CRON->>CRON: agrupar por proximidad dentro del radio configurado
     CRON->>CRON: descartar franjas horarias fuera de tolerancia
 
     loop Por cada lote candidato
         CRON->>CAP: fitsInVehicle(lote, car)
+        activate CAP
         CAP-->>CRON: capacidad de carga disponible
+        deactivate CAP
         CRON->>SEQ: sequenceStops(lote)
+        activate SEQ
         SEQ-->>CRON: paradas ordenadas por secuencia de entrega
+        deactivate SEQ
         CRON->>BAT: create(lote, paradas, distributorId)
+        activate BAT
         BAT-->>CRON: RouteBatch en estado DRAFT
+        deactivate BAT
 
         loop Por cada chofer candidato
             CRON->>RT: findNearbyDrivers(punto de partida, radio)
+            activate RT
             RT-->>CRON: driverIds ordenados por cercania
+            deactivate RT
             CRON->>BAT: createOffer(batchId, driverId, expiresAt)
-            CRON->>NOT: sendBatchOffer(driverId, recorrido)
+            activate BAT
+            CRON-)NOT: sendBatchOffer(driverId, recorrido)
+            activate NOT
             CRON->>BAT: awaitAnswer(offerId)
             BAT-->>CRON: ACCEPTED, REJECTED o EXPIRED
+            deactivate BAT
             alt El chofer acepta
                 CRON->>ORD: assignBatch(batchId, driverId, orden de paradas)
+                activate ORD
             else Rechaza o vence
                 CRON->>CRON: continuar con el candidato siguiente
             end
@@ -7617,13 +9822,21 @@ sequenceDiagram
 
         alt Se agotaron los candidatos
             CRON->>BAT: dissolve(batchId)
+            activate BAT
             CRON->>ORQ: offerToNextDriver(cada pedido del lote)
+            activate ORQ
             Note over ORQ: Los pedidos vuelven al circuito de M1 (CU-013)
         else El lote quedo asignado
             CRON->>BAT: confirm(batchId)
         end
     end
+    deactivate ORQ
+    deactivate NOT
+    deactivate BAT
+    deactivate ORD
 ```
+
+**Figura 146 — DSD CU-107: Agrupar pedidos por recorrido**
 
 > **Nota sobre este diagrama.** `RouteBatchPlannerService`,
 > `RouteBatchRepositoryPort`, `RouteSequencerService` y `FleetCapacityService`
@@ -7645,6 +9858,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-108 Recuperar Envases No Devueltos
     autonumber
     participant CRON as CylinderRecoveryService
     participant LIF as CylinderLifecyclePort
@@ -7655,44 +9869,66 @@ sequenceDiagram
     participant DEP as DepositLedgerService
 
     CRON->>LIF: findHeldByCustomer(distributorId, plazo de tolerancia)
+    activate LIF
     LIF-->>CRON: envases retenidos con su ultimo movimiento
+    deactivate LIF
 
     loop Por cada envase retenido
         CRON->>CASE: findOrCreate(cylinderId, customerId, deposito)
+        activate CASE
         CASE-->>CRON: caso de recupero con su escalon actual
+        deactivate CASE
 
         loop Por cada escalon pendiente
             CRON->>LIF: findLastMovement(cylinderId)
+            activate LIF
             LIF-->>CRON: ultimo movimiento registrado
+            deactivate LIF
             alt El envase ya fue devuelto
                 CRON->>CASE: close(caseId, motivo DEVUELTO)
+                activate CASE
                 CRON->>DEP: releaseDeposit(caseId)
+                activate DEP
             else El envase sigue retenido
                 CRON->>NOT: sendRecoveryStep(caseId, escalon)
+                activate NOT
                 NOT->>FCM: sendToToken(token, data event CYLINDER_RECOVERY)
+                activate FCM
                 CRON->>ORD: findNextScheduledDelivery(customerId)
+                activate ORD
                 ORD-->>CRON: entrega programada o null
+                deactivate ORD
                 alt Hay una entrega programada
                     CRON->>CASE: createPickupOffer(caseId, orderId, expiresAt)
                     CRON->>CASE: awaitAnswer(offerId)
                     CASE-->>CRON: ACCEPTED, REJECTED o EXPIRED
+                    deactivate CASE
                 else No hay entrega programada
                     CRON->>CRON: saltear la oferta de retiro
                 end
                 CRON->>CASE: advanceStep(caseId)
+                activate CASE
             end
         end
 
         alt Escalones agotados e importe sobre el umbral
             CRON->>CASE: buildDossier(caseId)
             CASE-->>CRON: legajo con historial, avisos e importe
+            deactivate CASE
             CRON->>NOT: escalateToAdmin(legajo)
             Note over DEP: El cobro del deposito y la baja del envase<br/>los ejecuta el administrador, nunca el proceso
         else Caso cerrado o importe bajo el umbral
             CRON->>CASE: close(caseId, motivo correspondiente)
+            activate CASE
         end
     end
+    deactivate FCM
+    deactivate NOT
+    deactivate DEP
+    deactivate CASE
 ```
+
+**Figura 147 — DSD CU-108: Recuperar envases no devueltos**
 
 > **Nota sobre este diagrama.** `CylinderRecoveryService`,
 > `RecoveryCaseRepositoryPort` y `DepositLedgerService` son **nombres
@@ -7735,6 +9971,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-043 Modificar Capacidad De Franja Horaria
     autonumber
     participant CTRL as TimeSlotController
     participant DTO as UpdateTimeSlotDto
@@ -7743,29 +9980,41 @@ sequenceDiagram
     participant ORD as RepositoryOrder
 
     CTRL->>DTO: validar(payload)
+    activate DTO
     alt Datos inválidos
         DTO-->>CTRL: BadRequestException
+        deactivate DTO
     else Datos válidos
         CTRL->>SRV: update(id, dto, distributorId)
+        activate SRV
         SRV->>REPO: findOne(time_slot_id, distributor_id)
+        activate REPO
         alt La franja no existe en la distribuidora
             REPO-->>SRV: null
+            deactivate REPO
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else La franja existe
             REPO-->>SRV: TimeSlot
             SRV->>SRV: validar que endTime sea posterior a startTime
             SRV->>ORD: count(pedidos programados en la franja)
+            activate ORD
             ORD-->>SRV: cantidad comprometida
+            deactivate ORD
             alt La capacidad nueva es menor que lo comprometido
                 SRV-->>CTRL: BadRequestException
             else La capacidad es suficiente
                 SRV->>REPO: save(TimeSlot actualizado)
+                activate REPO
                 REPO-->>SRV: TimeSlot
+                deactivate REPO
                 SRV-->>CTRL: franja actualizada
             end
         end
     end
 ```
+
+**Figura 148 — DSD CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -7779,6 +10028,7 @@ QR, en la que confirma el cliente, está en el diagrama 4.9.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-020 Confirmar Entrega
     autonumber
     participant CTRL as OrderController
     participant UC as UpdateOrderStatusUseCase
@@ -7788,24 +10038,38 @@ sequenceDiagram
     participant NOT as NotificationsService
 
     CTRL->>UC: execute(orderId, DELIVERED, userId)
+    activate UC
     UC->>REPO: findByIdFull(orderId)
+    activate REPO
     REPO-->>UC: Order
+    deactivate REPO
     UC->>SM: assertTransition(order.status, DELIVERED)
+    activate SM
     alt Transicion invalida
         SM-->>UC: InvalidOrderTransitionError
+        deactivate SM
         UC-->>CTRL: 400 Bad Request
+        deactivate UC
     else Transicion valida
         UC->>UC: order.deliveredAt = new Date()
         opt paymentMethod es CASH
             UC->>UC: order.paymentStatus = PAID
         end
         UC->>REPO: save(order)
+        activate REPO
         REPO-->>UC: Order
-        UC->>RT: notifyOrderStatusChanged(order)
-        UC->>NOT: sendOrderPush(customerId, orderId)
+        deactivate REPO
+        UC-)RT: notifyOrderStatusChanged(order)
+        activate RT
+        UC-)NOT: sendOrderPush(customerId, orderId)
+        activate NOT
         UC-->>CTRL: Order actualizada
     end
+    deactivate NOT
+    deactivate RT
 ```
+
+**Figura 149 — DSD CU-020: Confirmar entrega (declaración del chofer)**
 
 > **Observación de diseño.** El caso de uso **no verifica que el chofer que confirma sea
 > el asignado al pedido**: no hay comparación entre el usuario autenticado y
@@ -7814,128 +10078,507 @@ sequenceDiagram
 
 ---
 
+### 4.15 Operaciones
+
+Cada operación del sistema con su firma. Una operación del sistema es un mensaje que
+un actor le manda al sistema y que aparece como tal en el diagrama de secuencia del
+Documento 2. El contrato de las que lo tienen, con precondiciones y postcondiciones,
+está en el Documento 2 · §2.2; el diagrama de interacción que muestra cómo se resuelve
+por dentro está en §4 de este documento.
+
+Son **177 operaciones**. **177** tienen su diagrama de interacción y
+**16** tienen contrato escrito.
+
+| Operación | Caso de uso | Actor que la invoca | Diagrama de interacción | Contrato |
+|---|---|---|---|---|
+| `aceptarInvitacionDeRecompra(invitacionId)` | CU-106 | Sistema Automático | sí | — |
+| `aceptarRecorrido(recorridoId)` | CU-107 | Sistema Automático | sí | — |
+| `aceptarRetiroEnLaEntrega(ofertaId)` | CU-108 | Sistema Automático | sí | — |
+| `aceptarVentanaDeMantenimiento(propuestaId)` | CU-105 | Sistema Automático | sí | — |
+| `activarReservasDelDia()` | CU-075 | Sistema Automático | sí | sí |
+| `actualizarConsumoPromedio(cantidadPorMes)` | CU-144 | Cliente | sí | — |
+| `actualizarEstadoDePedido(pedidoId, EN_CAMINO)` | CU-018 | Chofer | sí | — |
+| `actualizarPerfil(usuarioId, datos)` | CU-004 | Usuario autenticado | sí | — |
+| `actualizarPerfilCliente(clienteId, datos)` | CU-004 | Usuario autenticado | sí | — |
+| `actualizarPerfilDelChofer(choferId, datos)` | CU-096 | Administrador | sí | — |
+| `actualizarProducto(productoId, datos)` | CU-037 | Administrador | sí | — |
+| `actualizarProducto(productoId, promociones)` | CU-039 | Administrador | sí | — |
+| `actualizarRol(rolId, datos)` | CU-089 | Super Administrador | sí | — |
+| `actualizarStock(productoId, variacion)` | CU-038 | Administrador | sí | — |
+| `actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)` | CU-094 | Cliente | sí | — |
+| `actualizarVehiculo(vehiculoId, datos)` | CU-051 | Administrador | sí | — |
+| `agregarItemAlCarrito(garrafaId, cantidad)` | CU-122 | Cliente | sí | — |
+| `agruparPedidosPorRecorrido()` | CU-107 | Sistema Automático | sí | — |
+| `ajustarSaldoDelChofer(choferId, monto)` | CU-049 | Chofer y Administrador | sí | — |
+| `anticiparRecompras()` | CU-106 | Sistema Automático | sí | — |
+| `asignarChoferAPedido(pedidoId, choferId)` | CU-012 | Administrador | sí | — |
+| `asignarEnvasesAPedido(pedidoId, numerosDeSerie)` | CU-068 | Chofer | sí | sí |
+| `avisarLlegada(pedidoId)` | CU-019 | Chofer | sí | — |
+| `bloquearUsuario(usuarioId, bloquear)` | CU-050 | Administrador | sí | — |
+| `buscarAdministrador(termino)` | CU-088 | Administrador | sí | — |
+| `buscarChoferPorUsuario(usuarioId)` | CU-110 | Administrador | sí | — |
+| `buscarClientePorUsuario(usuarioId)` | CU-130 | Administrador | sí | — |
+| `buscarUsuarioPorCorreo(correo)` | CU-083 | Administrador | sí | — |
+| `buscarUsuarioPorTelefono(telefono)` | CU-083 | Administrador | sí | — |
+| `buscarVehiculoPorPatente(patente)` | CU-114 | Administrador | sí | — |
+| `calificarPedido(pedidoId, estrellas, comentario)` | CU-064 | Cliente o Chofer | sí | sí |
+| `cambiarCorreo(correoActual, correoNuevo)` | CU-047 | Usuario | sí | — |
+| `cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)` | CU-127 | Cliente | sí | — |
+| `cambiarDisponibilidad(usuarioId, disponible)` | CU-022 | Chofer | sí | — |
+| `cambiarEstadoDelChofer(choferId, activo)` | CU-033 | Administrador | sí | — |
+| `cancelarPedido(pedidoId, motivo)` | CU-008 | Cliente | sí | — |
+| `cancelarPedidoForzado(pedidoId)` | CU-010 | Administrador | sí | — |
+| `configurarDiasDeAviso(dias)` | CU-145 | Cliente | sí | — |
+| `confirmarEntregaConCodigo(pedidoId, codigoLeido)` | CU-079 | Cliente | sí | sí |
+| `confirmarSenia(pedidoId)` | CU-074 | Administrador | sí | sí |
+| `confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)` | CU-105 | Sistema Automático | sí | — |
+| `consultarCarrito()` | CU-125 | Cliente | sí | — |
+| `consultarCatalogo(pagina, limite, distribuidora)` | CU-041 | Cliente | sí | — |
+| `consultarChofer(choferId)` | CU-035 | Administrador | sí | — |
+| `consultarChoferPorUsuario(usuarioId)` | CU-035 | Administrador | sí | — |
+| `consultarDetalleDelChofer(choferId)` | CU-109 | Administrador | sí | — |
+| `consultarDetalleDelCliente(clienteId)` | CU-129 | Administrador | sí | — |
+| `consultarDetalleDelVehiculo(vehiculoId)` | CU-113 | Administrador | sí | — |
+| `consultarDireccionDeEntrega(direccionId)` | CU-117 | Cliente | sí | — |
+| `consultarDireccionesDeEntrega(usuarioId)` | CU-046 | Cliente | sí | — |
+| `consultarDireccionPredeterminada(usuarioId)` | CU-121 | Cliente | sí | — |
+| `consultarDisponibilidadDeFranjas(fecha, distribuidora)` | CU-044 | Cliente | sí | — |
+| `consultarDistribuidora(distribuidoraId)` | CU-053 | Super Administrador | sí | — |
+| `consultarEnvase(envaseId)` | CU-069 | Administrador | sí | — |
+| `consultarEnvasesProximosAVencer(dias)` | CU-134 | Administrador | sí | — |
+| `consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)` | CU-030 | Administrador | sí | — |
+| `consultarFranja(franjaId)` | CU-045 | Cliente | sí | — |
+| `consultarGraficoDeVentas()` | CU-026 | Administrador | sí | — |
+| `consultarHistorialDeCalificaciones(usuarioId)` | CU-066 | Administrador | sí | — |
+| `consultarHistorialDelEnvase(envaseId)` | CU-071 | Administrador | sí | — |
+| `consultarHistorialDePedidos(clienteId, pagina, limite)` | CU-007 | Cliente | sí | — |
+| `consultarIncidenciasDelPedido(pedidoId)` | CU-062 | Chofer | sí | — |
+| `consultarPedido(pedidoId)` | CU-006 | Cliente | sí | — |
+| `consultarPedidosAsignados(choferId, pagina, limite)` | CU-081 | Chofer | sí | — |
+| `consultarPedidosDisponibles(pagina, limite)` | CU-080 | Chofer | sí | — |
+| `consultarPerfil(usuarioId)` | CU-004 | Usuario autenticado | sí | — |
+| `consultarPerfilCliente(usuarioId)` | CU-004 | Usuario autenticado | sí | — |
+| `consultarPerfilDelChofer(usuarioId)` | CU-049 | Chofer y Administrador | sí | — |
+| `consultarProducto(productoId)` | CU-041 | Cliente | sí | — |
+| `consultarProductosDisponibles(distribuidora)` | CU-041 | Cliente | sí | — |
+| `consultarProductosPorTipo(tipo)` | CU-041 | Cliente | sí | — |
+| `consultarRecomprasEstimadas(dias)` | CU-146 | Administrador | sí | — |
+| `consultarResumenDeCalificaciones(usuarioId)` | CU-065 | Cliente | sí | — |
+| `consultarResumenDePedidos()` | CU-026 | Administrador | sí | — |
+| `consultarRol(rolId)` | CU-089 | Super Administrador | sí | — |
+| `consultarTokensDelUsuario(usuarioId)` | CU-099 | Cliente | sí | — |
+| `consultarVehiculo(vehiculoId)` | CU-051 | Administrador | sí | — |
+| `consultarVehiculoPorPatente(patente)` | CU-051 | Administrador | sí | — |
+| `consultarVehiculosDelChofer(usuarioId)` | CU-115 | Administrador | sí | — |
+| `consultarVehiculosDelUsuario(usuarioId)` | CU-051 | Administrador | sí | — |
+| `consultarVencimientosDeLaFlota(dias)` | CU-139 | Administrador | sí | — |
+| `consultarVentasPorChofer(fechaDesde, fechaHasta)` | CU-027 | Administrador | sí | — |
+| `consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)` | CU-029 | Administrador | sí | — |
+| `consultarVentasPorProducto(fechaDesde, fechaHasta)` | CU-028 | Administrador | sí | — |
+| `consultarVigenciaDelEnvase(envaseId)` | CU-133 | Administrador | sí | — |
+| `crearAdministradorSobreUsuarioExistente(usuarioId, rolId, distribuidoraId)` | CU-086 | Administrador | sí | — |
+| `crearCheckoutDePago(pedidoId, medioDePago)` | CU-048 | Pasarela de Pago. Receptores: Cliente y Chofer | sí | sí |
+| `crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)` | CU-042 | Administrador | sí | — |
+| `crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)` | CU-044 | Cliente | sí | sí |
+| `crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)` | CU-087 | Administrador | sí | — |
+| `crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)` | CU-036 | Administrador | sí | — |
+| `crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)` | CU-072 | Cliente | sí | sí |
+| `crearRol(nombre, descripcion)` | CU-089 | Super Administrador | sí | — |
+| `crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)` | CU-082 | Cliente | sí | — |
+| `darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)` | CU-067 | Administrador | sí | sí |
+| `darDeBajaDistribuidora(distribuidoraId)` | CU-055 | Super Administrador | sí | — |
+| `declararConsumoPromedio(tipoGarrafa, cantidadPorMes)` | CU-143 | Cliente | sí | — |
+| `definirZonaDeCobertura(nombre, poligono, recargo, activa)` | CU-056 | Administrador | sí | — |
+| `desactivarProducto(productoId)` | CU-040 | Administrador | sí | — |
+| `despacharPedidoExpress(pedidoId)` | CU-149 | Sistema Automático | sí | — |
+| `editarDatosDelCliente(clienteId, cambios)` | CU-131 | Administrador | sí | — |
+| `editarDireccionDeEntrega(direccionId, cambios)` | CU-118 | Cliente | sí | — |
+| `editarVehiculo(vehiculoId, datos)` | CU-111 | Administrador | sí | — |
+| `elegirModalidadDeEntrega(pedidoId, modalidad)` | CU-148 | Cliente | sí | — |
+| `eliminarChofer(choferId)` | CU-097 | Administrador | sí | — |
+| `eliminarCliente(clienteId)` | CU-095 | Administrador | sí | — |
+| `eliminarDireccionDeEntrega(direccionId)` | CU-119 | Cliente | sí | — |
+| `eliminarFranjaHoraria(franjaId)` | CU-103 | Administrador | sí | — |
+| `eliminarRol(rolId)` | CU-089 | Super Administrador | sí | — |
+| `eliminarUsuario(usuarioId)` | CU-085 | Administrador | sí | — |
+| `eliminarVehiculo(vehiculoId)` | CU-051 | Administrador | sí | — |
+| `eliminarZonaDeCobertura(zonaId)` | CU-059 | Administrador | sí | — |
+| `enviarNotificacionDePrueba(usuarioId, titulo, mensaje)` | CU-100 | Administrador | sí | — |
+| `expirarPedidosSinPagar()` | CU-077 | Sistema Automático | sí | sí |
+| `expirarReservasSinSenia()` | CU-076 | Sistema Automático | sí | sí |
+| `gestionarEnvasesNoDevueltos()` | CU-108 | Sistema Automático | sí | — |
+| `indicarQuienRecibe(pedidoId, nombre, documento, relacion)` | CU-128 | Cliente | sí | — |
+| `invalidarChofer(choferId)` | CU-032 | Administrador | sí | — |
+| `invalidarCliente(clienteId)` | CU-093 | Administrador | sí | — |
+| `listarAdministradores()` | CU-088 | Administrador | sí | — |
+| `listarChoferes(pagina, limite)` | CU-035 | Administrador | sí | — |
+| `listarChoferesActivos(pagina, limite)` | CU-035 | Administrador | sí | — |
+| `listarClientes(pagina, limite)` | CU-092 | Administrador | sí | — |
+| `listarDistribuidoras()` | CU-053 | Super Administrador | sí | — |
+| `listarEnvases(estado)` | CU-069 | Administrador | sí | — |
+| `listarFranjas(distribuidora)` | CU-045 | Cliente | sí | — |
+| `listarIncidencias()` | CU-061 | Administrador | sí | — |
+| `listarPedidos(pagina, limite)` | CU-011 | Administrador | sí | — |
+| `listarReclamos()` | CU-024 | Administrador | sí | — |
+| `listarReservas()` | CU-073 | Administrador | sí | — |
+| `listarRoles()` | CU-089 | Super Administrador | sí | — |
+| `listarUsuarios(pagina, limite, textoDeBusqueda)` | CU-083 | Administrador | sí | — |
+| `listarVehiculos()` | CU-051 | Administrador | sí | — |
+| `listarZonasDeCobertura()` | CU-057 | Administrador | sí | — |
+| `marcarDireccionPredeterminada(direccionId)` | CU-120 | Cliente | sí | — |
+| `modificarCantidadDelItem(itemId, cantidad)` | CU-123 | Cliente | sí | — |
+| `modificarDistribuidora(distribuidoraId, datos)` | CU-054 | Super Administrador | sí | — |
+| `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)` | CU-048 | Pasarela de Pago. Receptores: Cliente y Chofer | sí | sí |
+| `obtenerCodigoDeEntrega(pedidoId)` | CU-078 | Chofer | sí | sí |
+| `planificarMantenimientoDeFlota()` | CU-105 | Sistema Automático | sí | — |
+| `probarServicioDeCorreo(destinatario)` | CU-102 | Administrador | sí | — |
+| `programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)` | CU-140 | Administrador | sí | — |
+| `quitarItemDelCarrito(itemId)` | CU-124 | Cliente | sí | — |
+| `realizarCompraExpress(tipoGarrafa, medioDePago)` | CU-147 | Cliente | sí | — |
+| `rechazarOferta(pedidoId)` | CU-016 | Chofer | sí | sí |
+| `reenviarConfirmacionDePedido(usuarioId, pedidoId)` | CU-101 | Administrador | sí | — |
+| `registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)` | CU-086 | Administrador | sí | — |
+| `registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)` | CU-003 | Administrador | sí | — |
+| `registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)` | CU-002 | Cliente | sí | — |
+| `registrarDireccionDeEntrega(datos)` | CU-116 | Cliente | sí | — |
+| `registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)` | CU-052 | Super Administrador | sí | — |
+| `registrarIncidencia(pedidoId, tipo, descripcion, foto)` | CU-060 | Chofer | sí | — |
+| `registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)` | CU-138 | Administrador | sí | — |
+| `registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)` | CU-141 | Administrador | sí | — |
+| `registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)` | CU-070 | Chofer | sí | sí |
+| `registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)` | CU-132 | Administrador | sí | — |
+| `registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)` | CU-136 | Administrador | sí | — |
+| `registrarTokenDeNotificaciones(usuarioId, token, plataforma)` | CU-098 | Cliente | sí | — |
+| `registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)` | CU-034 | Administrador | sí | — |
+| `registrarVerificacionTecnica(vehiculoId, vencimiento)` | CU-137 | Administrador | sí | — |
+| `resolverCasoDeRecupero(casoId, decision)` | CU-108 | Sistema Automático | sí | — |
+| `resolverIncidencia(incidenciaId, notaDeResolucion)` | CU-063 | Administrador | sí | — |
+| `resolverReclamo(reclamoId, resolucion, estadoFinal)` | CU-025 | Administrador | sí | — |
+| `revisarVencimientosDeLaFlota()` | CU-142 | Sistema Automático | sí | — |
+| `sembrarRolesIniciales()` | CU-090 | Super Administrador | sí | — |
+| `solicitarRecuperacionDeClave(correo)` | CU-047 | Usuario | sí | — |
+| `suscribirseAlSeguimiento(clienteId)` | CU-021 | Cliente | sí | — |
+| `vaciarCarrito()` | CU-126 | Cliente | sí | — |
+| `validarChofer(choferId)` | CU-032 | Administrador | sí | — |
+| `validarCliente(clienteId)` | CU-093 | Administrador | sí | — |
+| `validarCobertura(latitud, longitud)` | CU-058 | Cliente | sí | sí |
+| `validarSesion()` | CU-091 | Usuario autenticado | sí | — |
+| `verificarDisponibilidad()` | CU-104 | Plataforma de Operación | sí | — |
+| `verificarExistenciaDeUsuario(correo, telefono)` | CU-084 | Cliente | sí | — |
+| `verificarSalud()` | CU-104 | Plataforma de Operación | sí | — |
+| `verificarVida()` | CU-104 | Plataforma de Operación | sí | — |
+| `verificarVigenciaAlAsignar(pedidoId, envaseId)` | CU-135 | Sistema Automático | sí | — |
+
 ## 5. Diagrama de Clases de Diseño
 
-> Los diagramas de clases completos deben generarse en draw.io. Se incluye la especificación textual.
+Los diagramas de esta sección son diagramas de clases UML. Las clases, los atributos con su
+tipo y las multiplicidades se corresponden con las entidades y los servicios del backend;
+las firmas se tomaron del código y están respaldadas en
+`material-de-trabajo/FIRMAS-REALES-BACKEND.md`, con archivo y línea de cada una.
 
 ### 5.1 Clases del Dominio de Pedidos
 
+```mermaid
+classDiagram
+    direction TB
+
+    class Order {
+        +order_id: UUID
+        +status: OrderStatus
+        +paymentMethod: PaymentMethod
+        +paymentType: PaymentType
+        +paymentStatus: PaymentStatus
+        +totalAmount: Decimal
+        +deposit_amount: Decimal
+        +deposit_paid: boolean
+        +scheduled_date: Date
+        +deliveryLatitude: string
+        +deliveryLongitude: string
+        +deliveryCode: string
+        +gatewayPaymentId: string
+        +cancellationReason: string
+        +acceptedAt: Date
+        +onTheWayAt: Date
+        +deliveredAt: Date
+        +createdAt: Date
+    }
+
+    class OrderItem {
+        +order_item_id: UUID
+        +quantity: int
+        +unitPrice: Decimal
+        +subtotal: Decimal
+    }
+
+    class GasCylinder {
+        +gas_cylinder_id: UUID
+        +type: string
+        +weight: Decimal
+        +price: Decimal
+        +stock: int
+        +isActive: boolean
+        +promotions: Promotion[]
+    }
+
+    class Promotion {
+        +quantity: int
+        +discountPercentage: Decimal
+    }
+
+    class Delivery {
+        +delivery_id: UUID
+        +validated: boolean
+        +isActive: boolean
+        +calification: double
+        +balance: double
+        +latLng: string
+        +actual_location: string
+        +notification_token: string
+    }
+
+    class Claim {
+        +claim_id: UUID
+        +reason: string
+        +description: string
+        +status: ClaimStatus
+        +photoUrl: string
+        +resolutionNote: string
+        +createdAt: Date
+    }
+
+    class Customer {
+        +customer_id: UUID
+        +notification_token: string
+        +lat_lang: string
+        +validated: string
+    }
+
+    class User {
+        +user_id: UUID
+        +firebase_uid: string
+        +full_name: string
+        +email: string
+        +phone_number: string
+        +phone_verified: boolean
+        +email_verified: boolean
+        +blocked: boolean
+    }
+
+    class Distributor {
+        +distributor_id: UUID
+    }
+    class TimeSlot {
+        +time_slot_id: UUID
+    }
+    class UserAddress {
+        +address_id: UUID
+    }
+    class Role {
+        +role_id: UUID
+    }
+
+    class OrderStatus {
+        <<enumeration>>
+        PENDING
+        ACCEPTED
+        ON_THE_WAY
+        DELIVERED
+        CANCELLED
+        RESERVED
+    }
+    class PaymentMethod {
+        <<enumeration>>
+        CASH
+        MERCADOPAGO
+        TRANSFER
+    }
+    class ClaimStatus {
+        <<enumeration>>
+        PENDING
+        IN_PROCESS
+        RESOLVED
+        REJECTED
+    }
+
+    Order "0..*" --> "1" Distributor : pertenece a
+    Order "0..*" --> "1" User : lo pide
+    Order "0..*" --> "0..1" Delivery : lo lleva
+    Order "0..*" --> "0..1" TimeSlot : se programa en
+    Order "0..*" --> "1" UserAddress : se entrega en
+    Order "1" *-- "1..*" OrderItem : compone
+
+    OrderItem "0..*" --> "1" GasCylinder : refiere a
+    GasCylinder "0..*" --> "1" Distributor : pertenece a
+    GasCylinder "1" *-- "0..*" Promotion : define
+
+    Delivery "0..*" --> "1" Distributor : pertenece a
+    Delivery "1" --> "1" User : es un
+
+    Claim "0..*" --> "1" Distributor : pertenece a
+    Claim "0..*" --> "1" Order : reclama sobre
+    Claim "0..*" --> "1" User : lo presenta
+
+    Customer "1" --> "1" User : es un
+    User "0..*" --> "0..1" Role : tiene
+    User "1" --> "0..*" UserAddress : registra
+
+    Order ..> OrderStatus : usa
+    Order ..> PaymentMethod : usa
+    Claim ..> ClaimStatus : usa
+
+    %% Lo que sigue está especificado en la documentación pero todavía no
+    %% implementado. Va marcado para no confundir el diseño con lo construido.
+    class Cart {
+        <<propuesto>>
+        +cart_id: UUID
+        +updatedAt: Date
+    }
+    class CartItem {
+        <<propuesto>>
+        +cart_item_id: UUID
+        +quantity: int
+        +unit_price: Decimal
+    }
+    class CylinderInspection {
+        <<propuesto>>
+        +inspection_id: UUID
+        +inspected_at: Date
+        +result: InspectionResult
+        +next_due_at: Date
+        +notes: string
+    }
+    class FleetMaintenance {
+        <<propuesto>>
+        +maintenance_id: UUID
+        +type: MaintenanceType
+        +scheduled_at: Date
+        +performed_at: Date
+        +odometer_km: int
+        +cost: Decimal
+    }
+    class OrderAddressChange {
+        <<propuesto>>
+        +change_id: UUID
+        +changed_at: Date
+        +reason: string
+    }
+    class Cylinder {
+        +cylinder_id: UUID
+        +serial_number: string
+    }
+    class Car {
+        +car_id: UUID
+        +patente: string
+    }
+
+    Cart "1" --> "1" User : pertenece a
+    Cart "0..*" --> "1" Distributor : pertenece a
+    Cart "1" *-- "0..*" CartItem : compone
+    CartItem "0..*" --> "1" GasCylinder : refiere a
+    CylinderInspection "0..*" --> "1" Cylinder : revisa
+    CylinderInspection "0..*" --> "1" Distributor : pertenece a
+    FleetMaintenance "0..*" --> "1" Car : se hace sobre
+    FleetMaintenance "0..*" --> "1" Distributor : pertenece a
+    Car "0..*" --> "1" User : es conducido por
+    OrderAddressChange "0..*" --> "1" Order : cambia el destino de
+    OrderAddressChange "0..*" --> "2" UserAddress : de una dirección a otra
+    OrderAddressChange "0..*" --> "1" User : lo pide
 ```
-┌──────────────────────────────────────┐
-│              Order                    │
-├──────────────────────────────────────┤
-│ id: string (UUID)                    │
-│ status: OrderStatus                  │
-│   PENDING | ACCEPTED | ON_THE_WAY   │
-│   DELIVERED | CANCELLED             │
-│ paymentMethod: PaymentMethod         │
-│   CASH | MERCADOPAGO | TRANSFER     │
-│ total: number (decimal.js)           │
-│ createdAt: Date                      │
-│ acceptedAt?: Date                    │
-│ deliveredAt?: Date                   │
-│ deliveryWindowStart?: string         │
-│ deliveryWindowEnd?: string           │
-│ requestedDeliveryDate?: Date         │
-│ dispatchAttempts: number             │
-├──────────────────────────────────────┤
-│ customer: Customer (ManyToOne)       │
-│ driver?: Delivery (ManyToOne)        │
-│ items: OrderItem[] (OneToMany)       │
-│ claim?: Claim (OneToOne)             │
-└──────────────────────────────────────┘
-         │ items
-         ▼
-┌──────────────────────────────────────┐
-│              OrderItem               │
-├──────────────────────────────────────┤
-│ id: string                           │
-│ quantity: number                     │
-│ unitPrice: number                    │
-│ subtotal: number                     │
-│ appliedDiscountPct?: number          │
-├──────────────────────────────────────┤
-│ gasCylinder: GasCylinder (ManyToOne)│
-└──────────────────────────────────────┘
 
-┌──────────────────────────────────────┐
-│            GasCylinder               │
-├──────────────────────────────────────┤
-│ id: string                           │
-│ type: string                         │
-│ price: number                        │
-│ stock: number                        │
-│ isActive: boolean                    │
-│ promotions: Promotion[] (JSONB)      │
-└──────────────────────────────────────┘
-
-Promotion {
-  quantity: number
-  discountPercentage: number
-}
-
-┌──────────────────────────────────────┐
-│              Delivery (Chofer)        │
-├──────────────────────────────────────┤
-│ id: string                           │
-│ isActive: boolean                    │
-│ validated: boolean                   │
-│ calification?: number                │
-│ balance: number                      │
-│ latLng?: string                      │
-├──────────────────────────────────────┤
-│ user: User (OneToOne)                │
-│ car?: Car (ManyToOne)                │
-└──────────────────────────────────────┘
-
-┌──────────────────────────────────────┐
-│              Claim                   │
-├──────────────────────────────────────┤
-│ id: string                           │
-│ description: string                  │
-│ status: ClaimStatus                  │
-│   PENDING | IN_PROCESS | RESOLVED   │
-│   REJECTED                          │
-│ photoUrl?: string                    │
-│ resolutionNote?: string              │
-├──────────────────────────────────────┤
-│ order: Order (OneToOne)              │
-│ customer: Customer (ManyToOne)       │
-└──────────────────────────────────────┘
-```
+**Figura 150 — Clases del Dominio de Pedidos**
 
 ### 5.2 Clases de Servicio (Backend — Capa de Aplicación)
 
+```mermaid
+classDiagram
+    direction LR
+
+    class OrderService {
+        +create(dto, distributorId) Promise~Order~
+        +findAll(pagination, distributorId) Promise~Order[]~
+        +findOne(id) Promise~Order~
+        +findAvailableOrders(filtro) Promise~Order[]~
+        +findByCustomer(customerId) Promise~Order[]~
+        +findByDelivery(deliveryId) Promise~Order[]~
+        +updateStatus(id, status, deliveryId) Promise~Order~
+        +assignDelivery(orderId, deliveryId) Promise~Order~
+        +rejectOffer(orderId, driverId) Promise~void~
+        +getDeliveryCode(orderId, userId, role) Promise~string~
+        +confirmDelivery(orderId, codigo) Promise~Order~
+        +updateLocation(id, lat, lng) Promise~void~
+        +notifyDriverArrived(orderId) Promise~void~
+        +cancelOrder(id, role, userId) Promise~Order~
+        +getOrderStats(distributorId) Promise~StatsDto~
+        +getSalesChartData(distributorId) Promise~ChartData[]~
+    }
+
+    class CreateOrderUseCase {
+        +execute(dto, distributorId) Promise~Order~
+    }
+    class UpdateOrderStatusUseCase {
+        +execute(id, status, deliveryId) Promise~Order~
+    }
+    class ConfirmDeliveryUseCase {
+        +execute(orderId, codigo, userId) Promise~Order~
+    }
+    class CancelOrderUseCase {
+        +execute(id, role, userId) Promise~Order~
+    }
+
+    class DispatchService {
+        <<cron>>
+        +tick() Promise~void~
+    }
+
+    class DispatchOrchestratorService {
+        +offerToNextDriver(order) Promise~void~
+        +ensureOffered(order) Promise~void~
+        +handleExpiredOffers() Promise~void~
+        +onDriverAccepted(order, driverId) Promise~void~
+        +onDriverRejected(order, driverId) Promise~void~
+    }
+
+    class RedisService {
+        +updateDriverLocation(driverId, lat, lng) Promise~void~
+        +getNearbyDrivers(lat, lng, radio) Promise~string[]~
+        +setDriverActiveOrder(driverId, orderId) Promise~void~
+        +getDriverActiveOrder(driverId) Promise~string~
+        +clearDriverActiveOrder(driverId) Promise~void~
+        +removeDriver(driverId) Promise~void~
+    }
+
+    class DriversGateway {
+        <<WebSocket /drivers>>
+        +handleConnection(socket) void
+        +handleDisconnect(socket) void
+        +handleDriverJoin(socket, data) void
+        +handleDriverLocation(socket, data) void
+        +notifyNewOrder(driverId, order) void
+        +notifyOrderCancelled(driverId, orderId) void
+    }
+
+    class CustomersGateway {
+        <<WebSocket /customers>>
+        +handleConnection(socket) void
+        +handleDisconnect(socket) void
+        +handleCustomerJoin(socket, data) void
+        +notifyCustomer(customerId, evento, payload) void
+    }
+
+    OrderService ..> CreateOrderUseCase : delega
+    OrderService ..> UpdateOrderStatusUseCase : delega
+    OrderService ..> ConfirmDeliveryUseCase : delega
+    OrderService ..> CancelOrderUseCase : delega
+    OrderService ..> CustomersGateway : avisa al cliente
+
+    DispatchService ..> DispatchOrchestratorService : delega
+    DispatchOrchestratorService ..> RedisService : consulta cercanía
+    DispatchOrchestratorService ..> DriversGateway : ofrece al chofer
+    CreateOrderUseCase ..> DispatchOrchestratorService : dispara el despacho
+    DriversGateway ..> RedisService : registra ubicación
 ```
-OrderService
-  + createOrder(dto, userId): Promise<Order>        🤖 llama triggerDispatch
-  + updateStatus(id, status, driverId?): Promise<Order>
-  + cancelOrder(id, role, userId): Promise<Order>   🤖 restituye stock
-  + getOrderStats(): Promise<StatsDto>
-  + getSalesChartData(days): Promise<ChartData[]>
 
-DispatchService
-  + dispatchOrder(order): Promise<void>             🤖 GEORADIUS 5km
-  + handlePendingOrders(): Promise<void>            🤖 Cron cada 1 min
-
-RedisService
-  + geoAdd(key, lng, lat, member): Promise<void>
-  + geoRadius(key, lng, lat, radius): Promise<string[]>
-  + zRem(key, member): Promise<void>
-
-DriversGateway  [WebSocket /drivers]
-  + handleConnection(socket): void                  JWT auth
-  + handleJoin(socket, data): void                  registra socket
-  + handleUpdateLocation(socket, data): void        🤖 GEOADD
-  + notifyNewOrder(driverId, order): void
-  + notifyOrderCancelled(driverId, orderId): void
-
-CustomersGateway  [WebSocket /customers]
-  + handleConnection(socket): void
-  + notifyOrderAccepted(customerId, driver): void
-  + notifyDriverLocation(customerId, location): void
-  + notifyOrderDelivered(customerId): void
-```
+**Figura 151 — Clases de Servicio (Backend — Capa de Aplicación)**
 
 ### 5.3 Clases de Presentación — App Cliente (Flutter, MVVM)
 
@@ -8183,6 +10826,8 @@ sequenceDiagram
         ORQ->>ORQ: offerToNextDriver(pedido)
     end
 ```
+
+**Figura 152 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
 
 ---
 
@@ -9506,6 +12151,8 @@ erDiagram
         timestamptz updatedAt
     }
 ```
+
+**Figura 153 — Diagrama Entidad-Relación (Mermaid)**
 
 ---
 

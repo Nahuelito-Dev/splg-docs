@@ -9,6 +9,14 @@
 
 ---
 
+
+## Índice de Figuras
+
+- Figura 1 — Actores del sistema y el canal por el que operan
+- Figura 2 — Diagrama de Casos de Uso del Sistema
+
+---
+
 ## Lista de Cambios
 
 | Nro | Fecha | Descripción | Autor |
@@ -164,9 +172,10 @@ El cronograma se divide en **31 semanas** (S1 a S31), desde el **07/04/2026** ha
 | ACT-04 | **Sistema Automático** | Sistema | Procesos que el backend ejecuta por iniciativa propia, sin intervención humana y sin interfaz de usuario. Comprende la negociación secuencial de asignación de pedidos (CU-013), el vencimiento y re-oferta de las propuestas a los choferes (CU-014), la activación y expiración de las reservas programadas (CU-075 a CU-077), la reserva y restitución de stock, y los avisos automáticos. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras, designa a sus administradores y administra los roles del sistema. Es el único actor cuyo alcance no está acotado a una distribuidora: los demás operan siempre dentro de la suya. |
 
-**Figura — Actores del sistema y el canal por el que operan**
 
 ![Actores del sistema y el canal por el que operan](diagramas/uml/CU_Sistema_Actores.png)
+
+**Figura 1 — Actores del sistema y el canal por el que operan**
 
 > Los cuatro actores humanos operan siempre a traves de una aplicacion; ninguno accede
 > directamente al backend. El Sistema Automatico no tiene interfaz: son los procesos que
@@ -197,13 +206,13 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ## 6. Diagrama de Casos de Uso del Sistema
 
-**Figura 1 — Diagrama de Casos de Uso del Sistema**
+**Figura 2 — Diagrama de Casos de Uso del Sistema**
 
-![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_contexto.png)
+![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
 > Notación UML: actores fuera del límite del sistema y casos de uso dentro, con las
 > relaciones `«include»` y `«extend»`. El código fuente está en
-> `diagramas/uml/CU_contexto.puml` y la versión vectorial en `CU_contexto.svg`.
+> `diagramas/uml/CU_Sistema_Diagrama-Completo.puml` y la versión vectorial en `CU_Sistema_Diagrama-Completo.svg`.
 
 ---
 

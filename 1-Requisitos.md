@@ -9,6 +9,15 @@
 
 ---
 
+
+## Índice de Figuras
+
+- Figura 1 — Diagrama de Casos de Uso del Sistema
+- Figura 2 — Diagrama de Subsistemas
+- Figura 3 — Actores del sistema y el canal por el que operan
+
+---
+
 ## Leyenda de Prioridad
 
 | Indicador | Prioridad | Significado |
@@ -73,11 +82,45 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 
 **Figura 1 — Diagrama de Casos de Uso del Sistema**
 
-![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_contexto.png)
+![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
 > Notación UML: actores fuera del límite del sistema y casos de uso dentro, con las
 > relaciones `«include»` y `«extend»`. El código fuente está en
-> `diagramas/uml/CU_contexto.puml` y la versión vectorial en `CU_contexto.svg`.
+> `diagramas/uml/CU_Sistema_Diagrama-Completo.puml` y la versión vectorial en `CU_Sistema_Diagrama-Completo.svg`.
+
+
+
+### 3.1 Fronteras del Sistema
+
+El rectángulo del diagrama es el **límite del sistema**: lo que queda adentro es
+responsabilidad de SPLG y lo que queda afuera no. Los actores se dibujan fuera de ese
+límite porque interactúan con el sistema sin formar parte de él.
+
+**Queda dentro del límite**
+
+| Pieza | Qué resuelve |
+|---|---|
+| App Cliente | El pedido, el seguimiento y el reclamo, desde el teléfono del cliente |
+| App Chofer | La aceptación del pedido, la posición en el mapa y la confirmación de entrega |
+| Panel de administración | La gestión de la distribuidora: catálogo, flota, franjas, reportes |
+| Backend | Las reglas del negocio, la base de datos y los procesos programados |
+| Procesos automáticos | El despacho por proximidad, las reservas y los avisos, sin intervención humana |
+
+Los 18 subsistemas de la §4 son la división interna de ese límite.
+
+**Queda fuera del límite**
+
+| Fuera | Por qué |
+|---|---|
+| Firebase | Servicio de terceros: valida la identidad y entrega los avisos al dispositivo |
+| MercadoPago | Servicio de terceros: procesa el cobro y avisa el resultado por webhook |
+| Servicio de correo | Servicio de terceros: entrega los comprobantes |
+| El traslado físico de la garrafa | Lo hace el chofer; el sistema lo registra, no lo ejecuta |
+| La facturación fiscal | No está en el alcance de esta fase |
+| La contabilidad de la distribuidora | Sistema aparte, sin integración prevista |
+
+El sistema **no decide** por el chofer ni por el cliente: propone, registra y avisa. Toda
+acción sobre el mundo físico queda del lado de las personas.
 
 
 ---
@@ -342,6 +385,13 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 
 ## 7. Requisitos Funcionales — Casos de Uso
 
+La plantilla pide los casos de uso en dos niveles de detalle. La **descripción de
+alto nivel** de los 149 casos está en el Documento 0 · §7, que es donde la plantilla
+del Plan del Proyecto la ubica; acá van los **casos de uso expandidos**, con la
+secuencia normal, las excepciones y el resto de los campos. Los cuatro artefactos de
+cada caso —alto nivel, expandido, diagrama de secuencia del sistema y diagrama de
+interacción— están reunidos en `Casos-de-Uso.md`.
+
 ### 7.1 Definición de Actores
 
 | Código | Actor | Tipo | Descripción |
@@ -352,9 +402,10 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | ACT-04 | Sistema Automático | Automático | Procesos que el backend ejecuta por iniciativa propia, sin que ningún usuario los solicite y sin interfaz. Es el actor de los cinco procesos automatizados del sistema: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Las tareas de mantenimiento del propio sistema —vencer una oferta, activar una reserva que llegó a su fecha, liberar el stock de un pedido caducado— no son procesos automatizados: son la ejecución programada de esos circuitos. |
 | ACT-05 | Administrador General | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras y designa a sus administradores. Es el único actor cuyo alcance no está limitado a una distribuidora. |
 
-**Figura — Actores del sistema y el canal por el que operan**
 
 ![Actores del sistema y el canal por el que operan](diagramas/uml/CU_Sistema_Actores.png)
+
+**Figura 3 — Actores del sistema y el canal por el que operan**
 
 > Los cuatro actores humanos operan siempre a traves de una aplicacion; ninguno accede
 > directamente al backend. El Sistema Automatico no tiene interfaz: son los procesos que

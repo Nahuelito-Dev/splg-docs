@@ -6,6 +6,163 @@
 
 ---
 
+
+## Índice de Figuras
+
+- Figura 1 — Diagrama Conceptual
+- Figura 2 — DSS CU-001: Iniciar Sesión
+- Figura 3 — DSS CU-005: Crear Pedido
+- Figura 4 — DSS CU-013: Ofrecer el Pedido al Chofer Más Cercano
+- Figura 5 — DSS CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer
+- Figura 6 — DSS CU-015: Aceptar Pedido
+- Figura 7 — DSS CU-017: Actualizar Ubicación GPS del Chofer
+- Figura 8 — DSS CU-020: Confirmar Entrega
+- Figura 9 — DSS CU-020: Confirmar Entrega — DSS Reserva y Restitución de Stock (proceso interno)
+- Figura 10 — DSS CU-023: Registrar Reclamo
+- Figura 11 — DSS CU-002: Registrarse como Cliente
+- Figura 12 — DSS CU-003: Registrarse como Chofer
+- Figura 13 — DSS CU-004: Gestionar Perfil de Usuario
+- Figura 14 — DSS CU-047: Recuperar Contraseña
+- Figura 15 — DSS CU-050: Bloquear / Desbloquear Usuario
+- Figura 16 — DSS CU-082: Crear Usuario Base
+- Figura 17 — DSS CU-083: Buscar / Listar Usuarios
+- Figura 18 — DSS CU-084: Verificar Existencia de Usuario (pre-registro)
+- Figura 19 — DSS CU-085: Eliminar Usuario (baja lógica)
+- Figura 20 — DSS CU-091: Validar Vigencia del Token de Sesión
+- Figura 21 — DSS CU-006: Consultar Detalle de Pedido
+- Figura 22 — DSS CU-007: Consultar Historial de Pedidos
+- Figura 23 — DSS CU-143: Declarar el Consumo Promedio al Registrarse
+- Figura 24 — DSS CU-144: Actualizar el Consumo Promedio Declarado
+- Figura 25 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra
+- Figura 26 — DSS CU-146: Consultar la Fecha Estimada de Recompra
+- Figura 27 — DSS CU-147: Realizar una Compra Express
+- Figura 28 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido
+- Figura 29 — DSS CU-008: Cancelar Pedido (Cliente)
+- Figura 30 — DSS CU-009: Cancelar Pedido (Chofer)
+- Figura 31 — DSS CU-010: Cancelar Pedido (Administrador)
+- Figura 32 — DSS CU-011: Listar Todos los Pedidos
+- Figura 33 — DSS CU-012: Asignar Chofer Manualmente
+- Figura 34 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto
+- Figura 35 — DSS CU-046: Consultar Direcciones de Entrega del Cliente
+- Figura 36 — DSS CU-116: Registrar Dirección de Entrega
+- Figura 37 — DSS CU-117: Consultar Detalle de una Dirección de Entrega
+- Figura 38 — DSS CU-118: Editar Dirección de Entrega
+- Figura 39 — DSS CU-119: Eliminar Dirección de Entrega
+- Figura 40 — DSS CU-120: Marcar una Dirección como Predeterminada
+- Figura 41 — DSS CU-121: Consultar la Dirección Predeterminada
+- Figura 42 — DSS CU-122: Agregar Ítem al Carrito
+- Figura 43 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito
+- Figura 44 — DSS CU-124: Quitar Ítem del Carrito
+- Figura 45 — DSS CU-125: Consultar el Carrito
+- Figura 46 — DSS CU-126: Vaciar el Carrito
+- Figura 47 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido
+- Figura 48 — DSS CU-128: Indicar Quién Recibe el Pedido
+- Figura 49 — DSS CU-080: Consultar el Pool de Pedidos Disponibles
+- Figura 50 — DSS CU-081: Consultar los Pedidos Asignados al Chofer
+- Figura 51 — DSS CU-016: Rechazar / Ignorar Pedido
+- Figura 52 — DSS CU-018: Marcar Pedido "En Camino"
+- Figura 53 — DSS CU-019: Avisar Llegada al Cliente
+- Figura 54 — DSS CU-021: Recibir Notificaciones en Tiempo Real
+- Figura 55 — DSS CU-022: Activar / Desactivar Disponibilidad
+- Figura 56 — DSS CU-078: Obtener el Código de Entrega (QR del chofer)
+- Figura 57 — DSS CU-079: Confirmar Entrega Escaneando el QR (cliente)
+- Figura 58 — DSS CU-024: Listar Reclamos
+- Figura 59 — DSS CU-025: Resolver Reclamo
+- Figura 60 — DSS CU-026: Ver Dashboard General
+- Figura 61 — DSS CU-027: Ver Reporte de Ventas por Chofer
+- Figura 62 — DSS CU-028: Ver Reporte de Ventas por Producto
+- Figura 63 — DSS CU-029: Ver Reporte por Método de Pago
+- Figura 64 — DSS CU-030: Ver Gráfico de Evolución de Ventas
+- Figura 65 — DSS CU-031: Registrar Chofer
+- Figura 66 — DSS CU-032: Validar / Invalidar Chofer
+- Figura 67 — DSS CU-033: Activar / Desactivar Chofer (Administrador)
+- Figura 68 — DSS CU-034: Registrar Vehículo del Chofer
+- Figura 69 — DSS CU-035: Consultar Listado de Choferes
+- Figura 70 — DSS CU-049: Consultar Balance / Ganancias del Chofer
+- Figura 71 — DSS CU-051: Consultar Listado de Vehículos
+- Figura 72 — DSS CU-096: Actualizar Perfil del Chofer
+- Figura 73 — DSS CU-097: Eliminar Chofer (baja lógica)
+- Figura 74 — DSS CU-109: Consultar Detalle del Chofer
+- Figura 75 — DSS CU-110: Buscar Chofer por Usuario
+- Figura 76 — DSS CU-111: Editar Vehículo
+- Figura 77 — DSS CU-112: Eliminar Vehículo
+- Figura 78 — DSS CU-113: Consultar Detalle del Vehículo
+- Figura 79 — DSS CU-114: Buscar Vehículo por Patente
+- Figura 80 — DSS CU-115: Consultar Vehículos de un Chofer
+- Figura 81 — DSS CU-136: Registrar el Seguro del Vehículo
+- Figura 82 — DSS CU-137: Registrar la Verificación Técnica Vehicular
+- Figura 83 — DSS CU-138: Registrar la Licencia de Conducir del Chofer
+- Figura 84 — DSS CU-139: Consultar los Vencimientos de la Flota
+- Figura 85 — DSS CU-140: Programar un Mantenimiento de Vehículo
+- Figura 86 — DSS CU-141: Registrar un Mantenimiento Realizado
+- Figura 87 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota
+- Figura 88 — DSS CU-036: Crear Producto (Garrafa)
+- Figura 89 — DSS CU-037: Actualizar Precio de Producto
+- Figura 90 — DSS CU-038: Actualizar Stock de Producto
+- Figura 91 — DSS CU-039: Configurar Promociones por Cantidad
+- Figura 92 — DSS CU-040: Activar / Desactivar Producto
+- Figura 93 — DSS CU-041: Consultar Catálogo de Productos
+- Figura 94 — DSS CU-042: Crear Franja Horaria
+- Figura 95 — DSS CU-044: Seleccionar Franja Horaria al Crear Pedido
+- Figura 96 — DSS CU-045: Consultar Franjas Horarias Disponibles
+- Figura 97 — DSS CU-103: Eliminar Franja Horaria
+- Figura 98 — DSS CU-052: Registrar Distribuidora
+- Figura 99 — DSS CU-053: Consultar Distribuidoras
+- Figura 100 — DSS CU-054: Modificar Datos de la Distribuidora
+- Figura 101 — DSS CU-055: Dar de Baja una Distribuidora
+- Figura 102 — DSS CU-056: Definir Zona de Cobertura
+- Figura 103 — DSS CU-057: Consultar Zonas de Cobertura
+- Figura 104 — DSS CU-058: Validar Cobertura de una Dirección
+- Figura 105 — DSS CU-059: Eliminar Zona de Cobertura
+- Figura 106 — DSS CU-060: Registrar Incidencia de Entrega
+- Figura 107 — DSS CU-061: Listar Incidencias
+- Figura 108 — DSS CU-062: Consultar Incidencias de un Pedido
+- Figura 109 — DSS CU-063: Resolver Incidencia
+- Figura 110 — DSS CU-064: Calificar Pedido
+- Figura 111 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario
+- Figura 112 — DSS CU-066: Consultar Historial de Calificaciones Recibidas
+- Figura 113 — DSS CU-067: Dar de Alta un Envase Físico
+- Figura 114 — DSS CU-068: Asignar Envases a un Pedido
+- Figura 115 — DSS CU-069: Consultar el Parque de Envases
+- Figura 116 — DSS CU-070: Registrar Movimiento de Envase
+- Figura 117 — DSS CU-071: Consultar Historial de Movimientos de un Envase
+- Figura 118 — DSS CU-132: Registrar la Revisión Periódica de un Envase
+- Figura 119 — DSS CU-133: Consultar la Vigencia de un Envase
+- Figura 120 — DSS CU-134: Consultar los Envases Próximos a Vencer
+- Figura 121 — DSS CU-135: Bloquear el Despacho de un Envase Vencido
+- Figura 122 — DSS CU-048: Procesar Pago con MercadoPago
+- Figura 123 — DSS CU-072: Crear Reserva Programada con Seña
+- Figura 124 — DSS CU-073: Listar Reservas y Estado de la Seña
+- Figura 125 — DSS CU-074: Confirmar Seña Cobrada en Efectivo
+- Figura 126 — DSS CU-075: Activar Reservas Vencidas Automáticamente
+- Figura 127 — DSS CU-076: Expirar Reservas sin Seña Pagada
+- Figura 128 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar
+- Figura 129 — DSS CU-086: Registrar Administrador
+- Figura 130 — DSS CU-087: Crear el Primer Super Administrador
+- Figura 131 — DSS CU-088: Consultar Administradores
+- Figura 132 — DSS CU-089: Gestionar Roles del Sistema
+- Figura 133 — DSS CU-090: Sembrar los Roles Iniciales
+- Figura 134 — DSS CU-092: Consultar Listado de Clientes
+- Figura 135 — DSS CU-093: Validar / Invalidar Cliente
+- Figura 136 — DSS CU-094: Actualizar Ubicación del Cliente
+- Figura 137 — DSS CU-095: Eliminar Cliente (baja lógica)
+- Figura 138 — DSS CU-129: Consultar Detalle del Cliente
+- Figura 139 — DSS CU-130: Buscar Cliente por Usuario
+- Figura 140 — DSS CU-131: Editar Datos del Cliente
+- Figura 141 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 142 — DSS CU-099: Consultar los Tokens de un Usuario
+- Figura 143 — DSS CU-100: Enviar Notificación de Prueba
+- Figura 144 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 145 — DSS CU-102: Probar el Servicio de Correo
+- Figura 146 — DSS CU-104: Verificar la Salud del Sistema
+- Figura 147 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 148 — DSS CU-106: Anticipar la recompra por consumo estimado
+- Figura 149 — DSS CU-107: Agrupar pedidos por recorrido
+- Figura 150 — DSS CU-108: Recuperar envases no devueltos
+- Figura 151 — DSS CU-043: Modificar Capacidad de Franja Horaria
+
+---
+
 ## Lista de Cambios
 
 | Nro | Fecha | Descripción | Autor |
@@ -307,41 +464,43 @@ classDiagram
     Usuario <|-- Cliente : es un
     Usuario <|-- Chofer : es un
     Usuario <|-- Administrador : es un
-    Usuario "N" --> "1" Rol : tiene asignado
+    Usuario "N" -- "1" Rol : tiene asignado
 
-    Distribuidora "1" --> "N" Chofer : emplea
-    Distribuidora "1" --> "N" Administrador : emplea
-    Distribuidora "1" --> "N" Producto : comercializa
-    Distribuidora "1" --> "N" Envase : posee
-    Distribuidora "1" --> "N" Pedido : gestiona
+    Distribuidora "1" -- "N" Chofer : emplea
+    Distribuidora "1" -- "N" Administrador : emplea
+    Distribuidora "1" -- "N" Producto : comercializa
+    Distribuidora "1" -- "N" Envase : posee
+    Distribuidora "1" -- "N" Pedido : gestiona
     Distribuidora "1" *-- "N" ZonaCobertura : define
     Distribuidora "1" *-- "N" FranjaHoraria : define
 
-    Cliente "1" --> "N" Pedido : realiza
+    Cliente "1" -- "N" Pedido : realiza
     Cliente "1" *-- "N" DireccionEntrega : registra
 
     Pedido "1" *-- "N" ItemPedido : contiene
-    ItemPedido "N" --> "1" Producto : referencia
-    Pedido "N" --> "1" DireccionEntrega : se entrega en
-    Pedido "N" --> "0..1" FranjaHoraria : se programa en
-    Pedido "N" --> "0..1" Chofer : es asignado a
+    ItemPedido "N" -- "1" Producto : referencia
+    Pedido "N" -- "1" DireccionEntrega : se entrega en
+    Pedido "N" -- "0..1" FranjaHoraria : se programa en
+    Pedido "N" -- "0..1" Chofer : es asignado a
     Pedido "1" *-- "N" OfertaDespacho : se ofrece mediante
-    OfertaDespacho "N" --> "1" Chofer : se dirige a
-    Pedido "1" --> "N" Pago : se salda con
-    Pedido "1" --> "N" Reclamo : origina
-    Pedido "1" --> "N" Incidencia : origina
-    Pedido "1" --> "0..1" Calificacion : recibe
+    OfertaDespacho "N" -- "1" Chofer : se dirige a
+    Pedido "1" -- "N" Pago : se salda con
+    Pedido "1" -- "N" Reclamo : origina
+    Pedido "1" -- "N" Incidencia : origina
+    Pedido "1" -- "0..1" Calificacion : recibe
 
-    Chofer "1" --> "N" Vehiculo : conduce
-    Chofer "1" --> "1" UbicacionGPS : se ubica en
-    Chofer "N" --> "N" ZonaCobertura : opera en
+    Chofer "1" -- "N" Vehiculo : conduce
+    Chofer "1" -- "1" UbicacionGPS : se ubica en
+    Chofer "N" -- "N" ZonaCobertura : opera en
 
     Producto "1" *-- "N" Promocion : ofrece
-    Envase "N" --> "1" Producto : materializa
+    Envase "N" -- "1" Producto : materializa
     Envase "1" *-- "N" MovimientoEnvase : registra
-    MovimientoEnvase "N" --> "0..1" Pedido : se origina en
-    MovimientoEnvase "N" --> "0..1" Usuario : es ejecutado por
+    MovimientoEnvase "N" -- "0..1" Pedido : se origina en
+    MovimientoEnvase "N" -- "0..1" Usuario : es ejecutado por
 ```
+
+**Figura 1 — Diagrama Conceptual**
 
 **Para llevarlo a draw.io o Lucidchart.** Ambas herramientas importan Mermaid
 directamente: en draw.io, *Extras → Editar diagrama* y pegar el bloque; en Lucidchart,
@@ -366,6 +525,7 @@ Los diagramas de secuencia muestran la interacción entre el **actor** y el **si
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-001 Iniciar Sesion
     autonumber
     actor USR as Usuario
     participant SIS as Sistema
@@ -380,6 +540,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 2 — DSS CU-001: Iniciar Sesión**
+
 ---
 
 #### Crítico DSS — CU-005: Crear Pedido
@@ -389,6 +551,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-005 Crear Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -409,6 +572,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 3 — DSS CU-005: Crear Pedido**
+
 ---
 
 #### Crítico · automático DSS — CU-013: Ofrecer el Pedido al Chofer Más Cercano
@@ -418,6 +583,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-013 Asignar Pedido Automaticamente Por Proximidad
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -435,6 +601,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 4 — DSS CU-013: Ofrecer el Pedido al Chofer Más Cercano**
+
 ---
 
 #### Crítico · automático DSS — CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer
@@ -444,6 +612,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-014 Reintentar Asignacion Con Radio Expandido
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -463,6 +632,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 5 — DSS CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer**
+
 ---
 
 #### Crítico DSS — CU-015: Aceptar Pedido
@@ -472,6 +643,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-015 Aceptar Pedido
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -490,6 +662,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 6 — DSS CU-015: Aceptar Pedido**
+
 ---
 
 #### Crítico · automático DSS — CU-017: Actualizar Ubicación GPS del Chofer
@@ -499,6 +673,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-017 Actualizar Ubicacion Gps Del Chofer
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -520,6 +695,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 7 — DSS CU-017: Actualizar Ubicación GPS del Chofer**
+
 ---
 
 #### Crítico DSS — CU-020: Confirmar Entrega
@@ -529,6 +706,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-020 Confirmar Entrega
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -551,6 +729,8 @@ sequenceDiagram
     end
     deactivate SIS
 ```
+
+**Figura 8 — DSS CU-020: Confirmar Entrega**
 
 ---
 
@@ -582,6 +762,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 9 — DSS CU-020: Confirmar Entrega — DSS Reserva y Restitución de Stock (proceso interno)**
+
 ---
 
 #### Importante DSS — CU-023: Registrar Reclamo
@@ -591,6 +773,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-023 Registrar Reclamo
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -606,6 +789,8 @@ sequenceDiagram
     end
     deactivate SIS
 ```
+
+**Figura 10 — DSS CU-023: Registrar Reclamo**
 
 ---
 
@@ -625,6 +810,7 @@ el actor y el sistema, sin detalle interno.
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-002 Registrarse Como Cliente
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -641,6 +827,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 11 — DSS CU-002: Registrarse como Cliente**
+
 ---
 
 #### DSS — CU-003: Registrarse como Chofer
@@ -650,6 +838,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-003 Registrar Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -666,6 +855,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 12 — DSS CU-003: Registrarse como Chofer**
+
 > El chofer nace **no validado**: para poder operar necesita CU-032.
 
 ---
@@ -677,6 +868,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-004 Gestionar Perfil De Usuario
     autonumber
     actor CLI as Usuario
     participant SIS as Sistema
@@ -703,6 +895,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 13 — DSS CU-004: Gestionar Perfil de Usuario**
+
 ---
 
 #### DSS — CU-047: Recuperar Contraseña
@@ -712,6 +906,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-047 Recuperar Contrasena
     autonumber
     actor CLI as Usuario
     participant SIS as Sistema
@@ -733,6 +928,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 14 — DSS CU-047: Recuperar Contraseña**
+
 ---
 
 #### DSS — CU-050: Bloquear / Desbloquear Usuario
@@ -742,6 +939,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-050 Bloquear Desbloquear Usuario
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -756,6 +954,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 15 — DSS CU-050: Bloquear / Desbloquear Usuario**
+
 > Es un interruptor bidireccional: el mismo mensaje bloquea y desbloquea según el parámetro `bloquear`.
 
 ---
@@ -767,6 +967,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-082 Crear Usuario Base
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -781,6 +982,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 16 — DSS CU-082: Crear Usuario Base**
+
 > Es el alta "cruda" de la cuenta, sin perfil asociado. El alta completa del cliente es CU-002.
 
 ---
@@ -792,6 +995,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-083 Buscar Listar Usuarios
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -820,6 +1024,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 17 — DSS CU-083: Buscar / Listar Usuarios**
+
 ---
 
 #### DSS — CU-084: Verificar Existencia de Usuario (pre-registro)
@@ -829,6 +1035,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-084 Verificar Existencia De Usuario
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -838,6 +1045,8 @@ sequenceDiagram
     SIS-->>CLI: resultado (existeCorreo, existeTelefono)
     deactivate SIS
 ```
+
+**Figura 18 — DSS CU-084: Verificar Existencia de Usuario (pre-registro)**
 
 > Se invoca **antes** de CU-002 para que la aplicación avise el conflicto sin llegar a intentar el alta.
 
@@ -850,6 +1059,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-085 Eliminar Usuario
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -857,12 +1067,14 @@ sequenceDiagram
     ADM->>SIS: eliminarUsuario(usuarioId)
     activate SIS
     alt el usuario existe
-        SIS-->>ADM: usuario dado de baja
+        SIS-->>ADM: usuario dado de baja (baja lógica, el histórico se conserva)
     else el usuario no existe
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
 ```
+
+**Figura 19 — DSS CU-085: Eliminar Usuario (baja lógica)**
 
 ---
 
@@ -873,6 +1085,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-091 Validar Vigencia Del Token De Sesion
     autonumber
     actor CLI as Usuario
     participant SIS as Sistema
@@ -887,6 +1100,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 20 — DSS CU-091: Validar Vigencia del Token de Sesión**
+
 ---
 
 ### SS-02 — Gestión de Pedidos
@@ -898,6 +1113,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-006 Consultar Detalle De Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -914,6 +1130,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 21 — DSS CU-006: Consultar Detalle de Pedido**
+
 ---
 
 #### DSS — CU-007: Consultar Historial de Pedidos
@@ -923,6 +1141,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-007 Consultar Historial De Pedidos
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -937,6 +1156,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 22 — DSS CU-007: Consultar Historial de Pedidos**
+
 > El cliente ve **todo** su historial aunque haya comprado a varias distribuidoras; el personal solo ve los pedidos de la suya.
 
 ---
@@ -948,6 +1169,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-143 Declarar el Consumo Promedio al Registrarse
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -964,6 +1186,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 23 — DSS CU-143: Declarar el Consumo Promedio al Registrarse**
+
 ---
 
 #### DSS — CU-144: Actualizar el Consumo Promedio Declarado
@@ -973,6 +1197,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-144 Actualizar el Consumo Promedio Declarado
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -987,6 +1212,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 24 — DSS CU-144: Actualizar el Consumo Promedio Declarado**
+
 ---
 
 #### DSS — CU-145: Configurar los Días de Aviso Previo a la Recompra
@@ -996,6 +1223,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-145 Configurar los Dias de Aviso Previo a la Recompra
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1010,6 +1238,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 25 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra**
+
 ---
 
 #### DSS — CU-146: Consultar la Fecha Estimada de Recompra
@@ -1019,6 +1249,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-146 Consultar la Fecha Estimada de Recompra
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1033,6 +1264,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 26 — DSS CU-146: Consultar la Fecha Estimada de Recompra**
+
 ---
 
 #### DSS — CU-147: Realizar una Compra Express
@@ -1042,6 +1275,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-147 Realizar una Compra Express
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1058,6 +1292,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 27 — DSS CU-147: Realizar una Compra Express**
+
 ---
 
 #### DSS — CU-148: Elegir la Modalidad de Entrega del Pedido
@@ -1067,6 +1303,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-148 Elegir la Modalidad de Entrega del Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1081,6 +1318,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 28 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido**
+
 ---
 
 #### DSS — CU-008: Cancelar Pedido (Cliente)
@@ -1090,6 +1329,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-008 Cancelar Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1114,6 +1354,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 29 — DSS CU-008: Cancelar Pedido (Cliente)**
+
 > La identidad y el rol del cancelador salen **siempre** de la sesión, nunca del cuerpo del mensaje.
 
 ---
@@ -1125,6 +1367,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-009 Cancelar Pedido
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1141,6 +1384,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 30 — DSS CU-009: Cancelar Pedido (Chofer)**
+
 ---
 
 #### DSS — CU-010: Cancelar Pedido (Administrador)
@@ -1150,6 +1395,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-010 Cancelar Pedido
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1167,6 +1413,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 31 — DSS CU-010: Cancelar Pedido (Administrador)**
+
 > El sistema ofrece **dos** vías para el administrador. La documentación previa describía una sola.
 
 ---
@@ -1178,6 +1426,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-011 Listar Todos Los Pedidos
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1192,6 +1441,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 32 — DSS CU-011: Listar Todos los Pedidos**
+
 ---
 
 #### DSS — CU-012: Asignar Chofer Manualmente
@@ -1201,6 +1452,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-012 Asignar Chofer Manualmente
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1215,6 +1467,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 33 — DSS CU-012: Asignar Chofer Manualmente**
+
 ---
 
 #### DSS — CU-149: Despachar un Pedido Express a un Chofer en Moto
@@ -1224,6 +1478,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-149 Despachar un Pedido Express a un Chofer en Moto
     autonumber
     actor SIS as Sistema Automático
     participant SIS as Sistema
@@ -1238,6 +1493,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 34 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto**
+
 ---
 
 #### DSS — CU-046: Consultar Direcciones de Entrega del Cliente
@@ -1247,19 +1504,48 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-046 Consultar Direcciones De Entrega Del Cliente
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
 
-    CLI->>SIS: consultarDireccionesDeEntrega(usuarioId)
+    CLI->>SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
     activate SIS
-    alt el cliente tiene direcciones
-        SIS-->>CLI: listado con la predeterminada primero
-    else el cliente no tiene ninguna
-        SIS-->>CLI: listado vacío
-    end
+    SIS-->>CLI: dirección creada (direccionId)
     deactivate SIS
+
+    CLI->>SIS: listarDireccionesDelUsuario(usuarioId)
+    activate SIS
+    SIS-->>CLI: listado de direcciones
+    deactivate SIS
+
+    opt el cliente cambia su dirección habitual
+        CLI->>SIS: marcarDireccionPredeterminada(direccionId)
+        activate SIS
+        SIS-->>CLI: dirección predeterminada actualizada (las demás dejan de serlo)
+        deactivate SIS
+    end
+
+    opt corrección de datos
+        CLI->>SIS: actualizarDireccion(direccionId, datos)
+        activate SIS
+        SIS-->>CLI: dirección actualizada
+        deactivate SIS
+    end
+
+    opt baja de una dirección
+        CLI->>SIS: eliminarDireccion(direccionId)
+        activate SIS
+        alt la dirección existe y es del cliente
+            SIS-->>CLI: dirección eliminada
+        else la dirección no existe
+            SIS-->>CLI: recurso no encontrado
+        end
+        deactivate SIS
+    end
 ```
+
+**Figura 35 — DSS CU-046: Consultar Direcciones de Entrega del Cliente**
 
 ---
 
@@ -1270,6 +1556,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-116 Registrar Direccion de Entrega
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1284,6 +1571,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 36 — DSS CU-116: Registrar Dirección de Entrega**
+
 ---
 
 #### DSS — CU-117: Consultar Detalle de una Dirección de Entrega
@@ -1293,6 +1582,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-117 Consultar Detalle de una Direccion de Entrega
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1309,6 +1599,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 37 — DSS CU-117: Consultar Detalle de una Dirección de Entrega**
+
 ---
 
 #### DSS — CU-118: Editar Dirección de Entrega
@@ -1318,6 +1610,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-118 Editar Direccion de Entrega
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1332,6 +1625,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 38 — DSS CU-118: Editar Dirección de Entrega**
+
 ---
 
 #### DSS — CU-119: Eliminar Dirección de Entrega
@@ -1341,6 +1636,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-119 Eliminar Direccion de Entrega
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1355,6 +1651,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 39 — DSS CU-119: Eliminar Dirección de Entrega**
+
 ---
 
 #### DSS — CU-120: Marcar una Dirección como Predeterminada
@@ -1364,6 +1662,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-120 Marcar una Direccion como Predeterminada
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1378,6 +1677,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 40 — DSS CU-120: Marcar una Dirección como Predeterminada**
+
 ---
 
 #### DSS — CU-121: Consultar la Dirección Predeterminada
@@ -1387,6 +1688,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-121 Consultar la Direccion Predeterminada
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1401,6 +1703,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 41 — DSS CU-121: Consultar la Dirección Predeterminada**
+
 ---
 
 #### DSS — CU-122: Agregar Ítem al Carrito
@@ -1410,6 +1714,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-122 Agregar Item al Carrito
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1424,6 +1729,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 42 — DSS CU-122: Agregar Ítem al Carrito**
+
 ---
 
 #### DSS — CU-123: Modificar la Cantidad de un Ítem del Carrito
@@ -1433,6 +1740,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-123 Modificar la Cantidad de un Item del Carrito
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1447,6 +1755,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 43 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito**
+
 ---
 
 #### DSS — CU-124: Quitar Ítem del Carrito
@@ -1456,6 +1766,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-124 Quitar Item del Carrito
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1470,6 +1781,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 44 — DSS CU-124: Quitar Ítem del Carrito**
+
 ---
 
 #### DSS — CU-125: Consultar el Carrito
@@ -1479,6 +1792,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-125 Consultar el Carrito
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1493,6 +1807,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 45 — DSS CU-125: Consultar el Carrito**
+
 ---
 
 #### DSS — CU-126: Vaciar el Carrito
@@ -1502,6 +1818,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-126 Vaciar el Carrito
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1516,6 +1833,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 46 — DSS CU-126: Vaciar el Carrito**
+
 ---
 
 #### DSS — CU-127: Cambiar la Dirección de Entrega del Pedido
@@ -1525,6 +1844,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-127 Cambiar la Direccion de Entrega del Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1541,6 +1861,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 47 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido**
+
 ---
 
 #### DSS — CU-128: Indicar Quién Recibe el Pedido
@@ -1550,6 +1872,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-128 Indicar Quien Recibe el Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1564,6 +1887,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 48 — DSS CU-128: Indicar Quién Recibe el Pedido**
+
 ---
 
 #### DSS — CU-080: Consultar el Pool de Pedidos Disponibles
@@ -1573,6 +1898,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-080 Consultar El Pool De Pedidos Disponibles
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1582,6 +1908,8 @@ sequenceDiagram
     SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
     deactivate SIS
 ```
+
+**Figura 49 — DSS CU-080: Consultar el Pool de Pedidos Disponibles**
 
 > Es la vista de respaldo del despacho automático (CU-013): si la oferta por proximidad no llega, el chofer puede consultar el pool.
 
@@ -1594,6 +1922,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-081 Consultar Los Pedidos Asignados Al Chofer
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1603,6 +1932,8 @@ sequenceDiagram
     SIS-->>CHO: página de pedidos asignados (estado, cliente, dirección, total)
     deactivate SIS
 ```
+
+**Figura 50 — DSS CU-081: Consultar los Pedidos Asignados al Chofer**
 
 ---
 
@@ -1615,6 +1946,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-016 Rechazar Ignorar Pedido
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1633,6 +1965,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 51 — DSS CU-016: Rechazar / Ignorar Pedido**
+
 > El rechazo **no** espera el vencimiento de la ventana de 30 segundos: re-ofrece de inmediato al siguiente chofer más cercano.
 
 ---
@@ -1646,6 +1980,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-018 Marcar Pedido En Camino
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1662,6 +1997,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 52 — DSS CU-018: Marcar Pedido "En Camino"**
+
 ---
 
 #### DSS — CU-019: Avisar Llegada al Cliente
@@ -1671,6 +2008,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-019 Avisar Llegada Al Cliente
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1687,6 +2025,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 53 — DSS CU-019: Avisar Llegada al Cliente**
+
 > Este caso de uso **no** cambia el estado del pedido: solo notifica.
 
 ---
@@ -1698,6 +2038,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-021 Recibir Notificaciones En Tiempo Real
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1713,6 +2054,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 54 — DSS CU-021: Recibir Notificaciones en Tiempo Real**
+
 > El canal se cierra cuando el cliente cierra la aplicación o el pedido alcanza un estado terminal.
 
 ---
@@ -1724,6 +2067,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-022 Activar Desactivar Disponibilidad
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1738,6 +2082,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 55 — DSS CU-022: Activar / Desactivar Disponibilidad**
+
 > **Observación de análisis:** el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que hoy "fuera de turno" y "dado de baja" son indistinguibles.
 
 ---
@@ -1749,6 +2095,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-078 Obtener El Codigo De Entrega
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -1767,6 +2114,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 56 — DSS CU-078: Obtener el Código de Entrega (QR del chofer)**
+
 ---
 
 #### DSS — CU-079: Confirmar Entrega Escaneando el QR (cliente)
@@ -1776,6 +2125,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-079 Confirmar Entrega Escaneando El Qr
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -1794,6 +2144,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 57 — DSS CU-079: Confirmar Entrega Escaneando el QR (cliente)**
+
 > Es el camino **anti-fraude** que invierte el actor de CU-020: confirma quien recibe, no quien entrega. Es idempotente frente a reintentos de red.
 
 ---
@@ -1807,6 +2159,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-024 Listar Reclamos
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1817,6 +2170,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 58 — DSS CU-024: Listar Reclamos**
+
 ---
 
 #### DSS — CU-025: Resolver Reclamo
@@ -1826,6 +2181,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-025 Resolver Reclamo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1840,6 +2196,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 59 — DSS CU-025: Resolver Reclamo**
+
 ---
 
 ### SS-06 — Reportes y Dashboard
@@ -1851,6 +2209,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-026 Ver Dashboard General
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1866,6 +2225,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 60 — DSS CU-026: Ver Dashboard General**
+
 ---
 
 #### DSS — CU-027: Ver Reporte de Ventas por Chofer
@@ -1875,6 +2236,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-027 Ver Reporte De Ventas Por Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1885,6 +2247,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 61 — DSS CU-027: Ver Reporte de Ventas por Chofer**
+
 ---
 
 #### DSS — CU-028: Ver Reporte de Ventas por Producto
@@ -1894,6 +2258,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-028 Ver Reporte De Ventas Por Producto
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1904,6 +2269,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 62 — DSS CU-028: Ver Reporte de Ventas por Producto**
+
 ---
 
 #### DSS — CU-029: Ver Reporte por Método de Pago
@@ -1913,6 +2280,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-029 Ver Reporte Por Metodo De Pago
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1923,6 +2291,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 63 — DSS CU-029: Ver Reporte por Método de Pago**
+
 ---
 
 #### DSS — CU-030: Ver Gráfico de Evolución de Ventas
@@ -1932,6 +2302,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-030 Ver Grafico De Ventas
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1946,6 +2317,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 64 — DSS CU-030: Ver Gráfico de Evolución de Ventas**
+
 ---
 
 ### SS-07 — Gestión de Choferes y Vehículos
@@ -1957,6 +2330,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-031 Registrar Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1971,6 +2345,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 65 — DSS CU-031: Registrar Chofer**
+
 > Realiza la misma operación del sistema que CU-003, vista desde el subsistema de gestión de flota.
 
 ---
@@ -1982,6 +2358,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-032 Validar Invalidar Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -1999,6 +2376,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 66 — DSS CU-032: Validar / Invalidar Chofer**
+
 ---
 
 #### DSS — CU-033: Activar / Desactivar Chofer (Administrador)
@@ -2008,6 +2387,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-033 Activar Desactivar Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2022,6 +2402,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 67 — DSS CU-033: Activar / Desactivar Chofer (Administrador)**
+
 ---
 
 #### DSS — CU-034: Registrar Vehículo del Chofer
@@ -2031,6 +2413,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-034 Registrar Vehiculo Del Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2045,6 +2428,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 68 — DSS CU-034: Registrar Vehículo del Chofer**
+
 ---
 
 #### DSS — CU-035: Consultar Listado de Choferes
@@ -2054,6 +2439,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-035 Consultar Listado De Choferes
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2082,6 +2468,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 69 — DSS CU-035: Consultar Listado de Choferes**
+
 ---
 
 #### DSS — CU-049: Consultar Balance / Ganancias del Chofer
@@ -2091,6 +2479,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-049 Consultar Balance Ganancias Del Chofer
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -2109,6 +2498,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 70 — DSS CU-049: Consultar Balance / Ganancias del Chofer**
+
 > **Observación de análisis:** no existe una operación dedicada de consulta de saldo; el chofer lo lee dentro de su propio perfil.
 
 ---
@@ -2120,6 +2511,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-051 Gestionar Vehiculos
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2155,6 +2547,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 71 — DSS CU-051: Consultar Listado de Vehículos**
+
 ---
 
 #### DSS — CU-096: Actualizar Perfil del Chofer
@@ -2164,6 +2558,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-096 Actualizar Perfil Del Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2178,6 +2573,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 72 — DSS CU-096: Actualizar Perfil del Chofer**
+
 ---
 
 #### DSS — CU-097: Eliminar Chofer (baja lógica)
@@ -2187,6 +2584,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-097 Eliminar Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2201,6 +2599,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 73 — DSS CU-097: Eliminar Chofer (baja lógica)**
+
 ---
 
 #### DSS — CU-109: Consultar Detalle del Chofer
@@ -2210,6 +2610,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-109 Consultar Detalle Del Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2224,6 +2625,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 74 — DSS CU-109: Consultar Detalle del Chofer**
+
 ---
 
 #### DSS — CU-110: Buscar Chofer por Usuario
@@ -2233,6 +2636,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-110 Buscar Chofer Por Usuario
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2247,6 +2651,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 75 — DSS CU-110: Buscar Chofer por Usuario**
+
 ---
 
 #### DSS — CU-111: Editar Vehículo
@@ -2256,6 +2662,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-111 Editar Vehiculo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2272,6 +2679,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 76 — DSS CU-111: Editar Vehículo**
+
 ---
 
 #### DSS — CU-112: Eliminar Vehículo
@@ -2281,6 +2690,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-112 Eliminar Vehiculo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2295,6 +2705,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 77 — DSS CU-112: Eliminar Vehículo**
+
 ---
 
 #### DSS — CU-113: Consultar Detalle del Vehículo
@@ -2304,6 +2716,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-113 Consultar Detalle Del Vehiculo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2318,6 +2731,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 78 — DSS CU-113: Consultar Detalle del Vehículo**
+
 ---
 
 #### DSS — CU-114: Buscar Vehículo por Patente
@@ -2327,6 +2742,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-114 Buscar Vehiculo Por Patente
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2341,6 +2757,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 79 — DSS CU-114: Buscar Vehículo por Patente**
+
 ---
 
 #### DSS — CU-115: Consultar Vehículos de un Chofer
@@ -2350,6 +2768,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-115 Consultar Vehiculos De Un Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2364,6 +2783,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 80 — DSS CU-115: Consultar Vehículos de un Chofer**
+
 ---
 
 #### DSS — CU-136: Registrar el Seguro del Vehículo
@@ -2373,6 +2794,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-136 Registrar el Seguro del Vehiculo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2389,6 +2811,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 81 — DSS CU-136: Registrar el Seguro del Vehículo**
+
 ---
 
 #### DSS — CU-137: Registrar la Verificación Técnica Vehicular
@@ -2398,6 +2822,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-137 Registrar la Verificacion Tecnica Vehicular
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2414,6 +2839,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 82 — DSS CU-137: Registrar la Verificación Técnica Vehicular**
+
 ---
 
 #### DSS — CU-138: Registrar la Licencia de Conducir del Chofer
@@ -2423,6 +2850,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-138 Registrar la Licencia de Conducir del Chofer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2439,6 +2867,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 83 — DSS CU-138: Registrar la Licencia de Conducir del Chofer**
+
 ---
 
 #### DSS — CU-139: Consultar los Vencimientos de la Flota
@@ -2448,6 +2878,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-139 Consultar los Vencimientos de la Flota
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2462,6 +2893,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 84 — DSS CU-139: Consultar los Vencimientos de la Flota**
+
 ---
 
 #### DSS — CU-140: Programar un Mantenimiento de Vehículo
@@ -2471,6 +2904,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-140 Programar un Mantenimiento de Vehiculo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2487,6 +2921,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 85 — DSS CU-140: Programar un Mantenimiento de Vehículo**
+
 ---
 
 #### DSS — CU-141: Registrar un Mantenimiento Realizado
@@ -2496,6 +2932,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-141 Registrar un Mantenimiento Realizado
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2512,6 +2949,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 86 — DSS CU-141: Registrar un Mantenimiento Realizado**
+
 ---
 
 #### DSS — CU-142: Avisar los Vencimientos Próximos de la Flota
@@ -2521,6 +2960,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-142 Avisar los Vencimientos Proximos de la Flota
     autonumber
     actor SIS as Sistema Automático
     participant SIS as Sistema
@@ -2535,6 +2975,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 87 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota**
+
 ---
 
 ### SS-08 — Gestión de Productos (Catálogo)
@@ -2546,6 +2988,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-036 Crear Producto
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2560,6 +3003,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 88 — DSS CU-036: Crear Producto (Garrafa)**
+
 ---
 
 #### DSS — CU-037: Actualizar Precio de Producto
@@ -2569,6 +3014,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-037 Actualizar Precio De Producto
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2583,6 +3029,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 89 — DSS CU-037: Actualizar Precio de Producto**
+
 > **Observación de análisis:** no existe una operación exclusiva de precio; el precio se modifica con la actualización general del producto.
 
 ---
@@ -2594,6 +3042,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-038 Actualizar Stock De Producto
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2610,6 +3059,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 90 — DSS CU-038: Actualizar Stock de Producto**
+
 > El parámetro es una **variación** (positiva o negativa), no un valor absoluto: ingresa mercadería con signo más y la ajusta con signo menos.
 
 ---
@@ -2621,6 +3072,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-039 Configurar Promociones Por Cantidad
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2635,6 +3087,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 91 — DSS CU-039: Configurar Promociones por Cantidad**
+
 > Al armar un pedido, cuando varias promociones aplican a la misma cantidad, el sistema toma **la más conveniente para el cliente**.
 
 ---
@@ -2646,6 +3100,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-040 Activar Desactivar Producto
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2660,6 +3115,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 92 — DSS CU-040: Activar / Desactivar Producto**
+
 > **Realización parcial:** el sistema no ofrece hoy la operación inversa `reactivarProducto(productoId)`. El caso de uso pide un interruptor bidireccional; el sistema solo implementa la desactivación.
 
 ---
@@ -2671,6 +3128,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-041 Consultar Catalogo De Productos
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -2699,6 +3157,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 93 — DSS CU-041: Consultar Catálogo de Productos**
+
 ---
 
 ### SS-09 — Franjas Horarias
@@ -2710,6 +3170,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-042 Crear Franja Horaria
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2724,6 +3185,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 94 — DSS CU-042: Crear Franja Horaria**
+
 ---
 
 #### DSS — CU-044: Seleccionar Franja Horaria al Crear Pedido
@@ -2733,6 +3196,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-044 Seleccionar Franja Horaria Al Crear Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -2756,6 +3220,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 95 — DSS CU-044: Seleccionar Franja Horaria al Crear Pedido**
+
 > El cupo se toma dentro de la misma transacción que crea el pedido, de modo que dos clientes que eligen la última plaza de la misma franja no la obtienen los dos.
 
 ---
@@ -2767,6 +3233,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-045 Consultar Franjas Horarias Disponibles
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -2788,6 +3255,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 96 — DSS CU-045: Consultar Franjas Horarias Disponibles**
+
 ---
 
 #### DSS — CU-103: Eliminar Franja Horaria
@@ -2797,6 +3266,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-103 Eliminar Franja Horaria
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2811,6 +3281,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 97 — DSS CU-103: Eliminar Franja Horaria**
+
 > **Asimetría detectada:** el sistema permite dar de baja una franja pero **no** modificar su capacidad (CU-043, no implementado). Para cambiar la capacidad hay que eliminar y volver a crear.
 
 ---
@@ -2824,6 +3296,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-052 Registrar Distribuidora
     autonumber
     actor SUP as Super Administrador
     participant SIS as Sistema
@@ -2840,6 +3313,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 98 — DSS CU-052: Registrar Distribuidora**
+
 > Solo el Super Administrador opera este caso de uso: es una acción de **plataforma**, no de una empresa.
 
 ---
@@ -2851,6 +3326,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-053 Consultar Distribuidoras
     autonumber
     actor SUP as Super Administrador
     participant SIS as Sistema
@@ -2872,6 +3348,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 99 — DSS CU-053: Consultar Distribuidoras**
+
 ---
 
 #### DSS — CU-054: Modificar Datos de la Distribuidora
@@ -2881,6 +3359,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-054 Modificar Datos De La Distribuidora
     autonumber
     actor SUP as Super Administrador
     participant SIS as Sistema
@@ -2895,6 +3374,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 100 — DSS CU-054: Modificar Datos de la Distribuidora**
+
 ---
 
 #### DSS — CU-055: Dar de Baja una Distribuidora
@@ -2904,6 +3385,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-055 Dar De Baja Una Distribuidora
     autonumber
     actor SUP as Super Administrador
     participant SIS as Sistema
@@ -2918,6 +3400,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 101 — DSS CU-055: Dar de Baja una Distribuidora**
+
 ---
 
 ### SS-11 — Cobertura Geográfica
@@ -2929,6 +3413,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-056 Definir Zona De Cobertura
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2943,6 +3428,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 102 — DSS CU-056: Definir Zona de Cobertura**
+
 ---
 
 #### DSS — CU-057: Consultar Zonas de Cobertura
@@ -2952,6 +3439,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-057 Consultar Zonas De Cobertura
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -2962,6 +3450,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 103 — DSS CU-057: Consultar Zonas de Cobertura**
+
 ---
 
 #### DSS — CU-058: Validar Cobertura de una Dirección
@@ -2971,6 +3461,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-058 Validar Cobertura De Una Direccion
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -2987,6 +3478,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 104 — DSS CU-058: Validar Cobertura de una Dirección**
+
 > Es la **precondición** de CU-005: la aplicación la invoca antes de dejar confirmar el pedido, y de acá sale el recargo por zona que se suma al total.
 
 ---
@@ -2998,6 +3491,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-059 Eliminar Zona De Cobertura
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3012,6 +3506,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 105 — DSS CU-059: Eliminar Zona de Cobertura**
+
 ---
 
 ### SS-12 — Incidencias y Calidad de Servicio
@@ -3023,6 +3519,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-060 Registrar Incidencia De Entrega
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -3037,6 +3534,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 106 — DSS CU-060: Registrar Incidencia de Entrega**
+
 > Circuito **distinto** al de reclamos (SS-05): el reclamo lo abre el cliente después de la entrega, la incidencia la abre el chofer durante el reparto.
 
 ---
@@ -3048,6 +3547,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-061 Listar Incidencias
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3058,6 +3558,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 107 — DSS CU-061: Listar Incidencias**
+
 ---
 
 #### DSS — CU-062: Consultar Incidencias de un Pedido
@@ -3067,6 +3569,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-062 Consultar Incidencias De Un Pedido
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -3077,6 +3580,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 108 — DSS CU-062: Consultar Incidencias de un Pedido**
+
 ---
 
 #### DSS — CU-063: Resolver Incidencia
@@ -3086,6 +3591,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-063 Resolver Incidencia
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3100,6 +3606,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 109 — DSS CU-063: Resolver Incidencia**
+
 ---
 
 #### DSS — CU-064: Calificar Pedido
@@ -3109,6 +3617,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-064 Calificar Pedido
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -3127,6 +3636,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 110 — DSS CU-064: Calificar Pedido**
+
 > La calificación es **bidireccional**: el mismo mensaje lo emite el cliente hacia el chofer o el chofer hacia el cliente. El emisor sale de la sesión y el calificado se deriva del pedido, de modo que hay a lo sumo una calificación por pedido y por lado.
 
 ---
@@ -3138,6 +3649,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-065 Consultar Promedio De Calificaciones De Un Usuario
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -3148,6 +3660,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 111 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario**
+
 ---
 
 #### DSS — CU-066: Consultar Historial de Calificaciones Recibidas
@@ -3157,6 +3671,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-066 Consultar Historial De Calificaciones Recibidas
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3166,6 +3681,8 @@ sequenceDiagram
     SIS-->>ADM: calificaciones recibidas (pedido, estrellas, comentario, fecha)
     deactivate SIS
 ```
+
+**Figura 112 — DSS CU-066: Consultar Historial de Calificaciones Recibidas**
 
 ---
 
@@ -3178,6 +3695,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-067 Dar De Alta Un Envase Fisico
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3192,6 +3710,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 113 — DSS CU-067: Dar de Alta un Envase Físico**
+
 > El número de serie es único **por distribuidora**, no globalmente: dos empresas pueden tener garrafas con la misma numeración de fábrica.
 
 ---
@@ -3203,6 +3723,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-068 Asignar Envases A Un Pedido
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -3222,6 +3743,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 114 — DSS CU-068: Asignar Envases a un Pedido**
+
 ---
 
 #### DSS — CU-069: Consultar el Parque de Envases
@@ -3231,6 +3754,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-069 Consultar El Parque De Envases
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3252,6 +3776,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 115 — DSS CU-069: Consultar el Parque de Envases**
+
 ---
 
 #### DSS — CU-070: Registrar Movimiento de Envase
@@ -3261,6 +3787,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-070 Registrar Movimiento De Envase
     autonumber
     actor CHO as Chofer
     participant SIS as Sistema
@@ -3277,6 +3804,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 116 — DSS CU-070: Registrar Movimiento de Envase**
+
 > Ciclo de vida del envase: EN_DEPOSITO → LLENO → DESPACHADO → CON_EL_CLIENTE → VACIO_DEVUELTO. Al confirmarse la entrega del pedido (CU-020 / CU-079) el sistema avanza solo los envases despachados a CON_EL_CLIENTE.
 
 ---
@@ -3288,6 +3817,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-071 Consultar Historial De Movimientos De Un Envase
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3297,6 +3827,8 @@ sequenceDiagram
     SIS-->>ADM: movimientos en orden cronológico (estado origen, estado destino, pedido, responsable, fecha)
     deactivate SIS
 ```
+
+**Figura 117 — DSS CU-071: Consultar Historial de Movimientos de un Envase**
 
 > El historial es de **solo agregado**: los movimientos no se corrigen ni se borran, y por eso sirve como evidencia de trazabilidad.
 
@@ -3309,6 +3841,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-132 Registrar la Revision Periodica de un Envase
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3325,6 +3858,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 118 — DSS CU-132: Registrar la Revisión Periódica de un Envase**
+
 ---
 
 #### DSS — CU-133: Consultar la Vigencia de un Envase
@@ -3334,6 +3869,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-133 Consultar la Vigencia de un Envase
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3350,6 +3886,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 119 — DSS CU-133: Consultar la Vigencia de un Envase**
+
 ---
 
 #### DSS — CU-134: Consultar los Envases Próximos a Vencer
@@ -3359,6 +3897,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-134 Consultar los Envases Proximos a Vencer
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3373,6 +3912,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 120 — DSS CU-134: Consultar los Envases Próximos a Vencer**
+
 ---
 
 #### DSS — CU-135: Bloquear el Despacho de un Envase Vencido
@@ -3382,6 +3923,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-135 Bloquear el Despacho de un Envase Vencido
     autonumber
     actor SIS as Sistema Automático
     participant SIS as Sistema
@@ -3398,6 +3940,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 121 — DSS CU-135: Bloquear el Despacho de un Envase Vencido**
+
 ---
 
 ### SS-14 — Pagos y Conciliación
@@ -3405,14 +3949,27 @@ sequenceDiagram
 #### DSS — CU-048: Procesar Pago con MercadoPago
 
 **Actor:** Pasarela de Pago (actor externo). Receptores: Cliente y Chofer
-**Operaciones del sistema:** `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)`
+**Operaciones del sistema:** `crearCheckoutDePago(pedidoId, medioDePago)`, `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)`
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-048 Procesar Pago Con Mercadopago
     autonumber
-    actor MP as Pasarela de Pago
+    actor CLI as Cliente
     participant SIS as Sistema
+    actor MP as Pasarela de Pago
     actor CHO as Chofer
+
+    CLI->>SIS: crearCheckoutDePago(pedidoId, medioDePago)
+    activate SIS
+    alt El pedido admite el cobro
+        SIS-->>CLI: enlace de pago y plazo de vigencia
+    else El pedido ya esta pago, cancelado o entregado
+        SIS-->>CLI: rechazo (el pedido no admite un nuevo cobro)
+    end
+    deactivate SIS
+
+    Note over CLI,MP: El cliente paga en el sitio de la pasarela,<br/>fuera del limite del sistema
 
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
@@ -3420,6 +3977,7 @@ sequenceDiagram
         SIS-->>MP: notificacion recibida (se descarta sin procesar)
     else Pago aprobado de un pedido pendiente
         SIS-->>MP: notificacion recibida
+        SIS-)CLI: aviso de pago acreditado
         SIS-)CHO: oferta del pedido ya pagado
     else Pago aprobado de la sena de una reserva
         SIS-->>MP: notificacion recibida (la sena queda paga, la reserva no se despacha)
@@ -3430,6 +3988,8 @@ sequenceDiagram
     end
     deactivate SIS
 ```
+
+**Figura 122 — DSS CU-048: Procesar Pago con MercadoPago**
 
 > El sistema responde **siempre** con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido.
 
@@ -3444,6 +4004,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-072 Crear Reserva Programada Con Sena
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -3463,6 +4024,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 123 — DSS CU-072: Crear Reserva Programada con Seña**
+
 > La reserva nace en estado **RESERVADO**: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075).
 
 ---
@@ -3474,6 +4037,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-073 Listar Reservas Y Estado De La Sena
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3484,6 +4048,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 124 — DSS CU-073: Listar Reservas y Estado de la Seña**
+
 ---
 
 #### DSS — CU-074: Confirmar Seña Cobrada en Efectivo
@@ -3493,6 +4059,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-074 Confirmar Sena Cobrada En Efectivo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3509,6 +4076,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 125 — DSS CU-074: Confirmar Seña Cobrada en Efectivo**
+
 > Es la **única acción humana** del ciclo de reservas: la seña pagada por la pasarela se confirma sola (CU-048).
 
 ---
@@ -3520,6 +4089,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-075 Activar Reservas Vencidas Automaticamente
     autonumber
     actor AUT as Sistema Automático
     participant SIS as Sistema
@@ -3539,6 +4109,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 126 — DSS CU-075: Activar Reservas Vencidas Automáticamente**
+
 > Solo se activan las reservas con la seña **efectivamente paga**. Una reserva cuya activación falla se registra y se reintenta en la corrida siguiente.
 
 ---
@@ -3550,6 +4122,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-076 Expirar Reservas Sin Sena Pagada
     autonumber
     actor AUT as Sistema Automático
     participant SIS as Sistema
@@ -3567,6 +4140,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 127 — DSS CU-076: Expirar Reservas sin Seña Pagada**
+
 > El plazo de espera de la seña es un parámetro de configuración (valor por omisión, 48 horas). Cada expiración es atómica: si falla, la reserva queda intacta para la corrida siguiente.
 
 ---
@@ -3578,6 +4153,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-077 Expirar Pedidos De Mercadopago Sin Pagar
     autonumber
     actor AUT as Sistema Automático
     participant SIS as Sistema
@@ -3599,6 +4175,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 128 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar**
+
 > Sin este proceso, el stock que se reserva al crear el pedido —antes de que el cliente pague— quedaría bloqueado para siempre si abandona el pago. El plazo por omisión es de 60 minutos.
 
 ---
@@ -3612,6 +4190,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-086 Registrar Administrador
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3628,6 +4207,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 129 — DSS CU-086: Registrar Administrador**
+
 > Regla de negocio multi-empresa: un administrador de empresa **nunca** puede crear administradores de otra distribuidora ni escalar a super administrador.
 
 ---
@@ -3639,6 +4220,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-087 Crear El Primer Super Administrador
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3653,6 +4235,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 130 — DSS CU-087: Crear el Primer Super Administrador**
+
 > Es una operación de **una sola vez**: se autodeshabilita apenas existe el primer administrador.
 
 ---
@@ -3664,6 +4248,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-088 Consultar Administradores
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3685,6 +4270,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 131 — DSS CU-088: Consultar Administradores**
+
 ---
 
 #### DSS — CU-089: Gestionar Roles del Sistema
@@ -3694,6 +4281,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-089 Gestionar Roles Del Sistema
     autonumber
     actor SUP as Super Administrador
     participant SIS as Sistema
@@ -3729,6 +4317,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 132 — DSS CU-089: Gestionar Roles del Sistema**
+
 ---
 
 #### DSS — CU-090: Sembrar los Roles Iniciales
@@ -3738,6 +4328,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-090 Sembrar Los Roles Iniciales
     autonumber
     actor SUP as Super Administrador
     participant SIS as Sistema
@@ -3747,6 +4338,8 @@ sequenceDiagram
     SIS-->>SUP: roles base disponibles (cliente, chofer, administrador, super administrador)
     deactivate SIS
 ```
+
+**Figura 133 — DSS CU-090: Sembrar los Roles Iniciales**
 
 > Operación de puesta en marcha, idempotente: volver a ejecutarla no duplica los roles ya existentes.
 
@@ -3759,6 +4352,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-092 Consultar Listado De Clientes
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3769,6 +4363,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 134 — DSS CU-092: Consultar Listado de Clientes**
+
 ---
 
 #### DSS — CU-093: Validar / Invalidar Cliente
@@ -3778,6 +4374,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-093 Validar Invalidar Cliente
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3795,6 +4392,8 @@ sequenceDiagram
     end
 ```
 
+**Figura 135 — DSS CU-093: Validar / Invalidar Cliente**
+
 ---
 
 #### DSS — CU-094: Actualizar Ubicación del Cliente
@@ -3804,6 +4403,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-094 Actualizar Ubicacion Del Cliente
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -3818,6 +4418,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 136 — DSS CU-094: Actualizar Ubicación del Cliente**
+
 ---
 
 #### DSS — CU-095: Eliminar Cliente (baja lógica)
@@ -3827,6 +4429,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-095 Eliminar Cliente
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3841,6 +4444,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 137 — DSS CU-095: Eliminar Cliente (baja lógica)**
+
 ---
 
 #### DSS — CU-129: Consultar Detalle del Cliente
@@ -3850,6 +4455,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-129 Consultar Detalle del Cliente
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3864,6 +4470,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 138 — DSS CU-129: Consultar Detalle del Cliente**
+
 ---
 
 #### DSS — CU-130: Buscar Cliente por Usuario
@@ -3873,6 +4481,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-130 Buscar Cliente por Usuario
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3887,6 +4496,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 139 — DSS CU-130: Buscar Cliente por Usuario**
+
 ---
 
 #### DSS — CU-131: Editar Datos del Cliente
@@ -3896,6 +4507,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-131 Editar Datos del Cliente
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3910,6 +4522,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 140 — DSS CU-131: Editar Datos del Cliente**
+
 ---
 
 ### SS-17 — Notificaciones y Mensajería
@@ -3921,6 +4535,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-098 Registrar El Token De Notificaciones Del Dispositivo
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -3935,6 +4550,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 141 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo**
+
 > Es la **precondición técnica de CU-021**: sin token registrado no hay avisos al dispositivo.
 
 ---
@@ -3946,6 +4563,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-099 Consultar Los Tokens De Un Usuario
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
@@ -3960,6 +4578,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 142 — DSS CU-099: Consultar los Tokens de un Usuario**
+
 ---
 
 #### DSS — CU-100: Enviar Notificación de Prueba
@@ -3969,6 +4589,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-100 Enviar Notificacion De Prueba
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -3985,6 +4606,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 143 — DSS CU-100: Enviar Notificación de Prueba**
+
 ---
 
 #### DSS — CU-101: Reenviar Notificación de Confirmación de Pedido
@@ -3994,6 +4617,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-101 Reenviar Notificacion De Confirmacion De Pedido
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -4010,6 +4634,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 144 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido**
+
 > Se usa como acción de soporte cuando el cliente dice no haber recibido el aviso original.
 
 ---
@@ -4021,6 +4647,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-102 Probar El Servicio De Correo
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -4035,6 +4662,8 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 145 — DSS CU-102: Probar el Servicio de Correo**
+
 > El propio código marca esta operación como **temporal** y hoy es accesible sin sesión: es una observación a resolver antes de producción, no una funcionalidad del producto.
 
 ---
@@ -4048,6 +4677,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-104 Verificar La Salud Del Sistema
     autonumber
     actor OPS as Plataforma de Operacion
     participant SIS as Sistema
@@ -4075,6 +4705,8 @@ sequenceDiagram
         deactivate SIS
     end
 ```
+
+**Figura 146 — DSS CU-104: Verificar la Salud del Sistema**
 
 > Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, hoy sin ningún caso de uso asociado en la matriz de rastreabilidad.
 
@@ -4115,10 +4747,11 @@ Diagramas de los procesos automáticos todavía no construidos.
 ##### DSS — CU-105: Planificar el mantenimiento y las habilitaciones de la flota
 
 **Actor:** Sistema Automático (proceso temporal diario), con escalamiento al Administrador
-**Operaciones del sistema:** `planificarMantenimientoDeFlota()`
+**Operaciones del sistema:** `planificarMantenimientoDeFlota()`, `aceptarVentanaDeMantenimiento(propuestaId)`, `confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)`
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-105 Planificar El Mantenimiento Y Las Habilitaciones De La Flota
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -4134,7 +4767,7 @@ sequenceDiagram
         loop Por cada ventana alternativa, de mejor a peor
             SIS-->>CHO: propuesta de ventana de taller (vigencia limitada)
             alt El chofer acepta
-                CHO->>SIS: aceptar la ventana propuesta
+                CHO->>SIS: aceptarVentanaDeMantenimiento(propuestaId)
                 SIS-->>CHO: ventana confirmada y agenda bloqueada
             else Rechaza o vence la vigencia
                 SIS->>SIS: cerrar la propuesta y pasar a la siguiente ventana
@@ -4143,7 +4776,7 @@ sequenceDiagram
 
         alt Se agotaron las ventanas sin acuerdo
             SIS-->>ADM: cuadro de opciones evaluadas y motivo de cada descarte
-            ADM->>SIS: confirmar la ventana y el gasto del taller
+            ADM->>SIS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
             SIS-->>ADM: tarea programada
         else La ventana quedo acordada con el chofer
             SIS->>SIS: registrar la tarea como programada
@@ -4158,15 +4791,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 147 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+
 ---
 
 ##### DSS — CU-106: Anticipar la recompra por consumo estimado
 
 **Actor:** Sistema Automático (proceso temporal diario), con el Cliente como destinatario
-**Operaciones del sistema:** `anticiparRecompras()`
+**Operaciones del sistema:** `anticiparRecompras()`, `aceptarInvitacionDeRecompra(invitacionId)`
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-106 Anticipar La Recompra Por Consumo Estimado
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -4181,7 +4817,7 @@ sequenceDiagram
         alt El cliente no tiene pedido activo ni invitacion reciente
             SIS-->>CLI: invitacion a reponer con el pedido precargado (vigencia limitada)
             alt El cliente acepta dentro de la vigencia
-                CLI->>SIS: aceptar la invitacion
+                CLI->>SIS: aceptarInvitacionDeRecompra(invitacionId)
                 SIS-->>CLI: pedido creado y en busqueda de chofer
             else Rechaza o vence la vigencia
                 SIS->>SIS: cerrar la invitacion y registrar la fecha del intervalo minimo
@@ -4194,15 +4830,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 148 — DSS CU-106: Anticipar la recompra por consumo estimado**
+
 ---
 
 ##### DSS — CU-107: Agrupar pedidos por recorrido
 
 **Actor:** Sistema Automático (proceso temporal periódico), con el Chofer como destinatario
-**Operaciones del sistema:** `agruparPedidosPorRecorrido()`
+**Operaciones del sistema:** `agruparPedidosPorRecorrido()`, `aceptarRecorrido(recorridoId)`
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-107 Agrupar Pedidos Por Recorrido
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -4217,7 +4856,7 @@ sequenceDiagram
         loop Por cada chofer candidato no contactado
             SIS-->>CHO: oferta del recorrido completo (paradas, peso, vigencia)
             alt El chofer acepta dentro de la vigencia
-                CHO->>SIS: aceptar el recorrido
+                CHO->>SIS: aceptarRecorrido(recorridoId)
                 SIS-->>CHO: pedidos asignados en el orden establecido
             else Rechaza o vence la vigencia
                 SIS->>SIS: cerrar la oferta y pasar al candidato siguiente
@@ -4234,15 +4873,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
+**Figura 149 — DSS CU-107: Agrupar pedidos por recorrido**
+
 ---
 
 ##### DSS — CU-108: Recuperar envases no devueltos
 
 **Actor:** Sistema Automático (proceso temporal periódico), con escalamiento al Administrador
-**Operaciones del sistema:** `gestionarEnvasesNoDevueltos()`
+**Operaciones del sistema:** `gestionarEnvasesNoDevueltos()`, `aceptarRetiroEnLaEntrega(ofertaId)`, `resolverCasoDeRecupero(casoId, decision)`
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-108 Recuperar Envases No Devueltos
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -4262,7 +4904,11 @@ sequenceDiagram
                 SIS-->>CLI: aviso del escalon (recordatorio, deposito comprometido)
                 alt Hay una entrega programada al mismo cliente
                     SIS-->>CLI: oferta de devolver el envase en ese viaje (vigencia limitada)
-                    CLI->>SIS: aceptar o no responder
+                    alt El cliente acepta el retiro
+                        CLI->>SIS: aceptarRetiroEnLaEntrega(ofertaId)
+                    else No responde antes de la vigencia
+                        SIS->>SIS: vencer la oferta de retiro
+                    end
                 else No hay entrega programada
                     SIS->>SIS: saltear la oferta de retiro
                 end
@@ -4271,7 +4917,8 @@ sequenceDiagram
 
         alt Se agotaron los escalones y el importe supera el umbral
             SIS-->>ADM: legajo del caso (cliente, historial del envase, importe)
-            ADM->>SIS: cobrar el deposito, dar de baja el envase o cerrar sin cargo
+            ADM->>SIS: resolverCasoDeRecupero(casoId, decision)
+            Note over ADM,SIS: decision: cobrar el deposito, dar de baja el envase<br/>o cerrar el caso sin cargo
             SIS-->>ADM: resolucion registrada
         else El envase volvio o el importe no llega al umbral
             SIS->>SIS: cerrar el caso segun corresponda
@@ -4280,6 +4927,8 @@ sequenceDiagram
     SIS-->>SAU: casos de recupero procesados
     deactivate SIS
 ```
+
+**Figura 150 — DSS CU-108: Recuperar envases no devueltos**
 
 ---
 
@@ -4294,6 +4943,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-043 Modificar Capacidad De Franja Horaria
     autonumber
     actor ADM as Administrador
     participant SIS as Sistema
@@ -4311,6 +4961,8 @@ sequenceDiagram
     end
     deactivate SIS
 ```
+
+**Figura 151 — DSS CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -4350,11 +5002,11 @@ sequenceDiagram
 
 ---
 
-#### Crítico · automático Contrato: `asignarPorProximidad()`
+#### Crítico · automático Contrato: `ofrecerAlSiguienteChofer()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `asignarPorProximidad(lat, lng, radiusKm)` |
+| **Nombre** | `ofrecerAlSiguienteChofer(pedido)` |
 | **Responsabilidades** | Consultar en Redis los choferes disponibles dentro del radio indicado y notificarlos por WebSocket del nuevo pedido disponible. |
 | **Tipo** | Sistema (automático) |
 | **Referencias cruzadas** | CU-013, CU-014, OBJ-02 |
@@ -4430,11 +5082,11 @@ sequenceDiagram
 
 ---
 
-#### Importante Contrato: `crearReclamo()`
+#### Importante Contrato: `registrarReclamo()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `crearReclamo(orderId, customerId, reason, description, photoUrl?)` |
+| **Nombre** | `registrarReclamo(pedido, motivo, evidencia)` |
 | **Responsabilidades** | Registrar un reclamo del cliente sobre un pedido, validando que el pedido le pertenece. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | CU-023, OBJ-04 |
@@ -4502,11 +5154,11 @@ especificación original no había registrado.
 
 ---
 
-#### Crítico Contrato: `crearReservaProgramada()`
+#### Crítico Contrato: `crearReserva()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `crearReservaProgramada(customerId, addressId, items[], paymentMethod, scheduledDate, depositAmount, timeSlotId?)` — `CreateOrderUseCase.execute` con `isReservation = true` |
+| **Nombre** | `crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)` — `CreateOrderUseCase.execute` con `isReservation = true` |
 | **Responsabilidades** | Crear un pedido agendado para una fecha futura, reservando el stock de forma atómica, registrando el monto de la seña y generando el checkout de la seña si el pago es online. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | CU-072, CU-005, CU-058, CU-074, OBJ-01, OBJ-06 |
@@ -4534,11 +5186,11 @@ especificación original no había registrado.
 
 ---
 
-#### Crítico · automático Contrato: `activarReservasVencidas()`
+#### Crítico · automático Contrato: `activarReservasDelDia()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `activarReservasVencidas(): Promise<void>` — `ReservationService.activateDueReservations` |
+| **Nombre** | `activarReservasDelDia()` — `ReservationService.activateDueReservations` |
 | **Responsabilidades** | Detectar las reservas cuyo día agendado llegó y cuya seña está paga, pasarlas a pedido activo y lanzar su despacho automático, sin intervención humana. |
 | **Tipo** | Sistema (automático, cron cada 5 minutos) |
 | **Referencias cruzadas** | CU-075, CU-072, CU-013, OBJ-02, OBJ-06 |
@@ -4566,11 +5218,11 @@ especificación original no había registrado.
 
 ---
 
-#### Crítico · automático Contrato: `expirarPedidosDePasarelaSinPagar()`
+#### Crítico · automático Contrato: `expirarPedidosSinPagar()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `expirarPedidosDePasarelaSinPagar(): Promise<void>` — `ReservationService.expireUnpaidMercadoPagoOrders` |
+| **Nombre** | `expirarPedidosSinPagar()` — `ReservationService.expireUnpaidMercadoPagoOrders` |
 | **Responsabilidades** | Cancelar los pedidos normales con pago online cuyo checkout el cliente nunca completó, liberando el stock que la creación del pedido había reservado por anticipado. |
 | **Tipo** | Sistema (automático, cron cada 30 minutos) |
 | **Referencias cruzadas** | CU-077, CU-005, CU-048, OBJ-06 |
@@ -4598,11 +5250,11 @@ especificación original no había registrado.
 
 ---
 
-#### Crítico Contrato: `confirmarEntregaConQR()`
+#### Crítico Contrato: `confirmarEntregaConCodigo()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `confirmarEntregaConQR(orderId: string, code: string, userId: string, role: RoleType): Promise<Order>` — `ConfirmDeliveryUseCase.execute` |
+| **Nombre** | `confirmarEntregaConCodigo(pedidoId, codigoLeido)` — `ConfirmDeliveryUseCase.execute` |
 | **Responsabilidades** | Validar que el código escaneado por el cliente coincida con el del pedido —prueba de que el chofer estuvo presente— y disparar el cierre del pedido reutilizando la transición a `DELIVERED`. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | CU-079, CU-078, CU-020, CU-068, OBJ-03, OBJ-04 |
@@ -4646,11 +5298,11 @@ especificación original no había registrado.
 
 ---
 
-#### Importante Contrato: `transicionarEnvase()`
+#### Importante Contrato: `registrarMovimientoDeEnvase()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `transicionarEnvase(id: string, toState: CylinderState, orderId?, note?, distributorId, actorUserId?): Promise<Cylinder>` — `CylinderService.transition` |
+| **Nombre** | `registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)` — `CylinderService.transition` |
 | **Responsabilidades** | Ejecutar una transición legal del ciclo de vida físico del envase, actualizar a quién lo tiene y registrar el movimiento en la bitácora. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | CU-070, CU-071, CU-067, OBJ-06 |
@@ -4668,7 +5320,7 @@ especificación original no había registrado.
 |-------|---------|
 | **Nombre** | `avanzarEnvasesAlEntregar(orderId: string, distributorId?: string \| null): Promise<number>` — `CylinderService.onOrderDelivered`, invocado vía `CylinderLifecyclePort` |
 | **Responsabilidades** | Al confirmarse la entrega de un pedido, pasar automáticamente todos sus envases despachados a manos del cliente, sin que nadie los transicione a mano. |
-| **Tipo** | Sistema (automático al entregar) |
+| **Tipo** | Interna. No la invoca un actor: es un efecto de `confirmarEntrega`, y por eso no aparece como mensaje en ningún diagrama de secuencia del sistema. |
 | **Referencias cruzadas** | CU-020, CU-079, CU-068, CU-070, OBJ-06 |
 | **Notas** | Es un efecto secundario best-effort de la confirmación de entrega: si falla, no revierte ni bloquea la transición del pedido a DELIVERED, y el error queda solo en el log de UpdateOrderStatusUseCase. |
 | **Excepciones** | Si el pedido no tiene envases asignados → **no-op**, devuelve `0` (caso de las distribuidoras que no usan el módulo de envases). Si falla el avance de los envases → el error se captura en `UpdateOrderStatusUseCase` y **no rompe la entrega** del pedido, solo se registra en el log. |
@@ -4694,11 +5346,11 @@ especificación original no había registrado.
 
 ---
 
-#### Crítico · automático Contrato: `confirmarPagoDesdeWebhook()`
+#### Crítico · automático Contrato: `notificarResultadoDePago()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `confirmarPagoDesdeWebhook(type?: string, dataId?: string, xSignature?: string, xRequestId?: string): Promise<void>` — `MercadoPagoWebhookController.handle` → `ConfirmPaymentUseCase.execute` |
+| **Nombre** | `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)` — `MercadoPagoWebhookController.handle` → `ConfirmPaymentUseCase.execute` |
 | **Responsabilidades** | Recibir la notificación de la pasarela, validar su firma, consultar el estado real del pago, actualizar el ledger y aplicar los efectos de negocio sobre el pedido: marcarlo pagado y despacharlo, o marcar la seña de una reserva. |
 | **Tipo** | Sistema (automático, disparado por la pasarela) |
 | **Referencias cruzadas** | CU-048, CU-005, CU-072, CU-013, CU-077, OBJ-01, OBJ-02 |
