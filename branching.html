@@ -3,6 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="splg:redirige" content="ramas">
+<!-- Esta página es una sección del sitio, no un destino aparte: quien la abra
+     directo entra por donde corresponde, con el menú y el índice. -->
+<link rel="canonical" href="splg-documentacion.html#ramas">
+<script>
+  // Antes del render, para que no se vea media página y después salte. Se
+  // reemplaza la entrada en el historial: el "atrás" del navegador vuelve a
+  // donde estaba el lector, no a este archivo.
+  if (!location.search.includes("suelta")) {
+    location.replace("splg-documentacion.html#ramas");
+  }
+</script>
 <title>Ramas y commits SPLG</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="paginas.css">
@@ -10,6 +22,11 @@
 <script src="visor.js" defer></script>
 </head>
 <body>
+
+<noscript><p style="margin:16px;font:15px/1.5 system-ui">
+  Esta página es una sección de la documentación.
+  <a href="splg-documentacion.html#ramas">Entrar al sitio</a>.
+</p></noscript>
 
 <div class="hoja">
 
