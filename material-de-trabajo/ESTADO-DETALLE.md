@@ -288,7 +288,7 @@ remite a `HALLAZGOS.md`.
 
 ---
 
-## Parte II — Los 151 casos de uso
+## Parte II — Los 153 casos de uso
 
 Cruce entre el catálogo de casos de uso, el mapeo caso↔endpoint de la auditoría de
 cobertura, y la batería ejecutada contra la API corriendo con los cuatro roles reales
@@ -319,7 +319,7 @@ se verificaron creando esa condición y mirando el efecto en la base.
 | ANDA | 116 |
 | **Total** | **151** |
 
-**116 de los 151 andan y están verificados contra la API corriendo.** 32 hay que programarlos desde cero, de los cuales 4 son los módulos inteligentes de la tesis.
+**116 de los 153 andan y están verificados contra la API corriendo.** 32 hay que programarlos desde cero, de los cuales 4 son los módulos inteligentes de la tesis.
 
 Los dos últimos (CU-150 y CU-151) se especificaron el 23/09 a partir del análisis del backend de Tutu: la vigencia temporal de una zona de cobertura, que hoy hay que apagar a mano. Ver `TUTU-QUE-SIRVE.md`.
 

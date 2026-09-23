@@ -155,16 +155,20 @@
 - Figura 141 — C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
 - Figura 142 — C.31 DSD — CU-102: Probar el Servicio de Correo
 - Figura 143 — C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
-- Figura 144 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 145 — DSD CU-106: Anticipar la recompra por consumo estimado
-- Figura 146 — DSD CU-107: Agrupar pedidos por recorrido
-- Figura 147 — DSD CU-108: Recuperar envases no devueltos
-- Figura 148 — DSD CU-043: Modificar Capacidad de Franja Horaria
-- Figura 149 — DSD CU-020: Confirmar entrega (declaración del chofer)
-- Figura 150 — Clases del Dominio de Pedidos
-- Figura 151 — Clases de Servicio (Backend — Capa de Aplicación)
-- Figura 152 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
-- Figura 153 — Diagrama Entidad-Relación (Mermaid)
+- Figura 144 — C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+- Figura 145 — C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+- Figura 146 — C.35 DSD — CU-152: Consultar el Registro de Auditoría
+- Figura 147 — C.36 DSD — CU-153: Registrar Toda Operación de Escritura
+- Figura 148 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 149 — DSD CU-106: Anticipar la recompra por consumo estimado
+- Figura 150 — DSD CU-107: Agrupar pedidos por recorrido
+- Figura 151 — DSD CU-108: Recuperar envases no devueltos
+- Figura 152 — DSD CU-043: Modificar Capacidad de Franja Horaria
+- Figura 153 — DSD CU-020: Confirmar entrega (declaración del chofer)
+- Figura 154 — Clases del Dominio de Pedidos
+- Figura 155 — Clases de Servicio (Backend — Capa de Aplicación)
+- Figura 156 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
+- Figura 157 — Diagrama Entidad-Relación (Mermaid)
 
 ---
 
@@ -9530,6 +9534,226 @@ sequenceDiagram
 
 ---
 
+#### C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+
+**Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `CoverageZoneController`, `CoverageZoneService`, `ProgramarVigenciaDto`, `Repository<CoverageZone>`, entidad `CoverageZone`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-150 Programar La Vigencia De Una Zona De Cobertura
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as CoverageZoneController
+    participant SRV as CoverageZoneService
+    participant REPO as RepositoryCoverageZone
+
+    ADM->>AUTH: PATCH /coverage-zones/:id/vigencia con ProgramarVigenciaDto
+    activate AUTH
+    AUTH->>AUTH: resolveDistributor(user, request)
+    AUTH-->>DEC: request.distributorId asignado
+    deactivate AUTH
+    DEC->>CTRL: programarVigencia(id, dto, distributorId)
+    activate CTRL
+    CTRL->>CTRL: ParseUUIDPipe sobre el id
+    CTRL->>SRV: programarVigencia(id, dto.vigenteHasta, distributorId)
+    activate SRV
+    SRV->>REPO: findOne(where coverage_zone_id y distributor_id)
+    activate REPO
+    REPO-->>SRV: CoverageZone o null
+    deactivate REPO
+    alt No existe o pertenece a otra distribuidora
+        SRV-->>CTRL: NotFoundException, zona no encontrada
+    else vigenteHasta es una fecha ya pasada
+        SRV-->>CTRL: BadRequestException, la fecha debe ser futura
+    else vigenteHasta es nulo
+        SRV->>REPO: update(id, validUntil null)
+        activate REPO
+        REPO-->>SRV: fila actualizada
+        deactivate REPO
+        SRV-->>CTRL: CoverageZone sin vencimiento
+    else vigenteHasta es una fecha futura
+        SRV->>REPO: update(id, validUntil)
+        activate REPO
+        REPO-->>SRV: fila actualizada
+        deactivate REPO
+        SRV-->>CTRL: CoverageZone con vigencia
+    end
+    deactivate SRV
+    CTRL-->>ADM: 200 CoverageZoneResponseDto
+    deactivate CTRL
+```
+
+**Figura 144 — C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura**
+
+**Observaciones de diseño**
+
+- La condición de tenant viaja **en el `WHERE`**, igual que en CU-059: una zona ajena responde 404 y no revela que existe.
+- La validación de "fecha futura" va en el DTO con un validador propio y **se repite en el servicio**. No es redundancia ociosa: el DTO protege la entrada HTTP, y el servicio protege la regla si mañana la vigencia se programa desde otro lugar —una carga masiva, un proceso interno— que no pasa por el controlador.
+- Quitar la vigencia es el **mismo endpoint** con la fecha en nulo, no uno aparte: es la misma decisión del administrador sobre el mismo atributo, y partirla en dos rutas obligaría al panel a elegir cuál llamar.
+- El endpoint **no desactiva** la zona aunque la fecha ya haya pasado; eso es responsabilidad de CU-151. Mezclarlos haría que un error de tipeo apagara una zona en el acto y sin aviso.
+
+---
+
+#### C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+
+**Clases participantes:** `@Cron` de `@nestjs/schedule`, `CoverageZoneCronService`, `RedisService` (cerrojo distribuido), `Repository<CoverageZone>`, entidad `CoverageZone`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-151 Desactivar Las Zonas De Cobertura Vencidas
+    autonumber
+    participant CRON as ScheduleRegistry
+    participant SRV as CoverageZoneCronService
+    participant LOCK as RedisService
+    participant REPO as RepositoryCoverageZone
+
+    CRON->>SRV: desactivarZonasVencidas()
+    activate SRV
+    SRV->>LOCK: adquirirCerrojo(zonas:vencimiento, ttl)
+    activate LOCK
+    LOCK-->>SRV: tomado o rechazado
+    deactivate LOCK
+    alt Otra instancia tiene el cerrojo
+        SRV-->>CRON: ejecución salteada
+    else Cerrojo tomado
+        SRV->>REPO: update(where isActive true y validUntil menor a ahora, set isActive false)
+        activate REPO
+        REPO-->>SRV: cantidad de filas afectadas
+        deactivate REPO
+        alt Ninguna zona vencida
+            SRV-->>CRON: sin cambios
+        else Se desactivaron zonas
+            SRV->>SRV: registrar en el log cuáles se desactivaron
+            SRV-->>CRON: cantidad desactivada
+        end
+        SRV->>LOCK: liberarCerrojo(zonas:vencimiento)
+    end
+    deactivate SRV
+```
+
+**Figura 145 — C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
+
+**Observaciones de diseño**
+
+- El barrido es **un solo `UPDATE` condicional**, no leer las zonas y guardarlas una por una: la condición de vencimiento se evalúa en la base, dentro de la misma sentencia que escribe, y así no hay ventana entre leer y escribir.
+- El cerrojo se libera en un `finally`, de modo que una ejecución que falle no deje bloqueadas a las siguientes. Su vencimiento es **menor que el intervalo del cron**, por la misma razón que en CU-014: una instancia que caiga sin liberarlo no puede frenar el proceso más de un ciclo.
+- La zona se marca inactiva y **no se borra**, a diferencia de CU-059. Los pedidos que se cobraron con ese recargo tienen que poder explicarse después, y una zona borrada no deja a qué remitirse.
+- El cron **no** notifica al administrador. Si más adelante se decide avisarle, el aviso va acá y no en CU-150, porque el hecho que se comunica es el vencimiento, no la programación.
+
+---
+
+#### C.35 DSD — CU-152: Consultar el Registro de Auditoría
+
+**Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `AuditoriaController`, `ConsultarAuditoriaDto`, `AuditoriaService`, `Repository<AsientoDeAuditoria>`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-152 Consultar El Registro De Auditoria
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant CTRL as AuditoriaController
+    participant DTO as ConsultarAuditoriaDto
+    participant SRV as AuditoriaService
+    participant REPO as RepositoryAsientoDeAuditoria
+
+    ADM->>AUTH: GET /auditoria con filtros
+    activate AUTH
+    AUTH-->>CTRL: request.distributorId y rol resueltos
+    deactivate AUTH
+    CTRL->>DTO: validar(filtros)
+    activate DTO
+    alt desde es posterior a hasta
+        DTO-->>ADM: BadRequestException, periodo invalido
+        deactivate DTO
+    else filtros validos
+        CTRL->>SRV: consultar(filtros, distributorId, rol)
+        activate SRV
+        SRV->>SRV: si el rol no es super_admin, fijar distributor_id en el filtro
+        SRV->>REPO: findAndCount(filtros, orden por fecha descendente, paginado)
+        activate REPO
+        REPO-->>SRV: asientos y total
+        deactivate REPO
+        SRV-->>CTRL: pagina de asientos
+        deactivate SRV
+        CTRL-->>ADM: 200 AuditoriaResponseDto
+    end
+```
+
+**Figura 146 — C.35 DSD — CU-152: Consultar el Registro de Auditoría**
+
+**Observaciones de diseño**
+
+- El controlador expone **sólo lectura**. No hay `@Post`, `@Patch` ni `@Delete`: la ausencia de esas rutas es la garantía de inmutabilidad, no una validación que alguien pueda saltear.
+- La restricción por distribuidora se aplica **en el filtro de la consulta**, igual que en el resto del sistema: un asiento de otra distribuidora no aparece, en vez de aparecer y ser rechazado después.
+- La consulta **no** genera asiento propio: leer no es escribir, y registrarse a sí misma llenaría la tabla de ruido.
+
+---
+
+#### C.36 DSD — CU-153: Registrar Toda Operación de Escritura
+
+**Clases participantes:** `AuditoriaInterceptor` (registrado como `APP_INTERCEPTOR`), `AuditoriaService`, `DepuradorDeCredenciales`, `Repository<AsientoDeAuditoria>`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-153 Registrar Toda Operacion De Escritura
+    autonumber
+    participant USR as Usuario autenticado
+    participant INT as AuditoriaInterceptor
+    participant CTRL as Controlador que corresponda
+    participant DEP as DepuradorDeCredenciales
+    participant SRV as AuditoriaService
+    participant REPO as RepositoryAsientoDeAuditoria
+
+    USR->>INT: POST, PATCH, PUT o DELETE
+    activate INT
+    alt el metodo no modifica datos
+        INT->>CTRL: deja pasar sin registrar
+    else es una operacion de escritura
+        INT->>INT: tomar autor, rol y distribuidora del request
+        INT->>CTRL: ejecutar la operacion
+        activate CTRL
+        alt La operacion respondio bien
+            CTRL-->>INT: resultado
+            deactivate CTRL
+            INT->>DEP: depurar(cuerpo)
+            activate DEP
+            DEP-->>INT: cuerpo sin contrasenias ni tokens
+            deactivate DEP
+            INT-)SRV: registrar(asiento con resultado exitoso)
+        else La operacion fue rechazada
+            INT->>DEP: depurar(cuerpo)
+            activate DEP
+            DEP-->>INT: cuerpo sin contrasenias ni tokens
+            deactivate DEP
+            INT-)SRV: registrar(asiento con el motivo del rechazo)
+            INT-->>USR: propaga el error original
+        end
+        activate SRV
+        SRV->>REPO: insert(asiento)
+        activate REPO
+        REPO-->>SRV: asiento persistido
+        deactivate REPO
+        deactivate SRV
+    end
+    deactivate INT
+```
+
+**Figura 147 — C.36 DSD — CU-153: Registrar Toda Operación de Escritura**
+
+**Observaciones de diseño**
+
+- Va en un **interceptor global** y no en cada servicio: así alcanza a toda escritura, incluidas las que se agreguen mañana. Una lista de operaciones a auditar se desactualiza apenas alguien se olvida de sumar la suya, y el agujero recién se nota cuando hace falta el registro.
+- El autor sale del request ya autenticado, **nunca del cuerpo**: es la misma regla que se aplicó a las salas de tiempo real y a la pertenencia de los pedidos.
+- La escritura del asiento **no bloquea** la respuesta al usuario, y su fallo se registra como advertencia sin interrumpir la operación. Que la auditoría falle no puede impedir que se trabaje.
+- La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. Sin este paso, auditar todo significaría guardar contraseñas en claro, que es exactamente lo contrario de lo que el sistema hace hoy —las valida Firebase y la base no las almacena—.
+- Se excluyen las verificaciones de estado y las notificaciones del proveedor de pagos: son tráfico de máquina y ahogarían el registro.
+
+---
+
+
 ### Resumen del lote
 
 | Subsistema | CU modelados | Diagramas |
@@ -9659,7 +9883,7 @@ sequenceDiagram
     deactivate TSK
 ```
 
-**Figura 144 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 148 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 > **Nota sobre este diagrama.** Ninguna de las clases de servicio, puerto o
 > repositorio que aparecen existe hoy en el código: `FleetMaintenancePlannerService`,
@@ -9746,7 +9970,7 @@ sequenceDiagram
     deactivate INV
 ```
 
-**Figura 145 — DSD CU-106: Anticipar la recompra por consumo estimado**
+**Figura 149 — DSD CU-106: Anticipar la recompra por consumo estimado**
 
 > **Nota sobre este diagrama.** `RepurchaseForecastService`,
 > `ConsumptionEstimatorService` y `RepurchaseInvitationRepositoryPort` son
@@ -9836,7 +10060,7 @@ sequenceDiagram
     deactivate ORD
 ```
 
-**Figura 146 — DSD CU-107: Agrupar pedidos por recorrido**
+**Figura 150 — DSD CU-107: Agrupar pedidos por recorrido**
 
 > **Nota sobre este diagrama.** `RouteBatchPlannerService`,
 > `RouteBatchRepositoryPort`, `RouteSequencerService` y `FleetCapacityService`
@@ -9928,7 +10152,7 @@ sequenceDiagram
     deactivate CASE
 ```
 
-**Figura 147 — DSD CU-108: Recuperar envases no devueltos**
+**Figura 151 — DSD CU-108: Recuperar envases no devueltos**
 
 > **Nota sobre este diagrama.** `CylinderRecoveryService`,
 > `RecoveryCaseRepositoryPort` y `DepositLedgerService` son **nombres
@@ -10014,7 +10238,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 148 — DSD CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 152 — DSD CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -10069,7 +10293,7 @@ sequenceDiagram
     deactivate RT
 ```
 
-**Figura 149 — DSD CU-020: Confirmar entrega (declaración del chofer)**
+**Figura 153 — DSD CU-020: Confirmar entrega (declaración del chofer)**
 
 > **Observación de diseño.** El caso de uso **no verifica que el chofer que confirma sea
 > el asignado al pedido**: no hay comparación entre el usuario autenticado y
@@ -10485,7 +10709,7 @@ classDiagram
     OrderAddressChange "0..*" --> "1" User : lo pide
 ```
 
-**Figura 150 — Clases del Dominio de Pedidos**
+**Figura 154 — Clases del Dominio de Pedidos**
 
 ### 5.2 Clases de Servicio (Backend — Capa de Aplicación)
 
@@ -10578,7 +10802,7 @@ classDiagram
     DriversGateway ..> RedisService : registra ubicación
 ```
 
-**Figura 151 — Clases de Servicio (Backend — Capa de Aplicación)**
+**Figura 155 — Clases de Servicio (Backend — Capa de Aplicación)**
 
 ### 5.3 Clases de Presentación — App Cliente (Flutter, MVVM)
 
@@ -10827,7 +11051,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 152 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
+**Figura 156 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
 
 ---
 
@@ -12152,7 +12376,7 @@ erDiagram
     }
 ```
 
-**Figura 153 — Diagrama Entidad-Relación (Mermaid)**
+**Figura 157 — Diagrama Entidad-Relación (Mermaid)**
 
 ---
 

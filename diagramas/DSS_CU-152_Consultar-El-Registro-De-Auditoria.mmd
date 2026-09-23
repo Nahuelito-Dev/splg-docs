@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-152 Consultar El Registro De Auditoria
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)
+    activate SIS
+    alt el período indicado es inválido
+        SIS-->>ADM: error de validación
+    else hay asientos que coinciden
+        SIS-->>ADM: asientos (autor, operación, recurso, fecha, origen, resultado) y total
+    else ningún asiento coincide
+        SIS-->>ADM: lista vacía
+    end
+    deactivate SIS

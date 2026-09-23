@@ -43,7 +43,7 @@ código de entrega → confirmación → calificación.
 | Cupo de acceso | Independiente por cuenta: bloquear una no deja afuera a las demás |
 | Salas de tiempo real | Un cliente ya no puede escuchar el pedido de otro |
 
-**116 de los 151 casos de uso andan y están verificados.**
+**116 de los 153 casos de uso andan y están verificados.**
 
 ---
 

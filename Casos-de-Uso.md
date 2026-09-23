@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **151 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **153 casos de uso**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -62,21 +62,21 @@ registrado.
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-El sistema comprende 151 casos de uso agrupados en 18 subsistemas. Se presentan dos
+El sistema comprende 153 casos de uso agrupados en 18 subsistemas. Se presentan dos
 vistas complementarias, ambas en notación UML: el **diagrama de contexto**, que delimita
 el sistema y muestra qué actor interviene en qué subsistema, y el **diagrama completo**,
-que abre los 151 casos uno por uno dentro de su subsistema.
+que abre los 153 casos uno por uno dentro de su subsistema.
 
 **Figura — Diagrama de contexto: actores contra subsistemas**
 
 ![Diagrama de contexto del sistema](diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png)
 
-**Figura — Diagrama completo: los 151 casos de uso**
+**Figura — Diagrama completo: los 153 casos de uso**
 
 ![Diagrama completo de casos de uso](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
 > El diagrama completo dibuja cada actor una vez por subsistema. UML admite que un mismo
-> clasificador se represente con más de un símbolo en el mismo diagrama, y con 151 casos
+> clasificador se represente con más de un símbolo en el mismo diagrama, y con 153 casos
 > es la diferencia entre una lámina legible y una maraña: con un único juego de actores a
 > la izquierda, las más de doscientas asociaciones cruzan el lienzo entero. Son los mismos
 > cinco actores de la sección 1. El color de la línea identifica al actor; el color de
@@ -236,6 +236,8 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-102 Probar el Servicio de Correo | SS-17 |  | Secundario |
 | CU-103 Eliminar Franja Horaria | SS-09 | ACT-03, ACT-05 | Importante |
 | CU-104 Verificar la Salud del Sistema (liveness / readiness) | SS-18 |  | Importante |
+| CU-152 Consultar el Registro de Auditoría | SS-18 | ACT-03, ACT-05 | Importante |
+| CU-153 Registrar Toda Operación de Escritura | SS-18 | ACT-04 | Crítico |
 | CU-105 Planificar el mantenimiento y las habilitaciones de la flota | SS-07 | ACT-04, ACT-03 | Importante |
 | CU-106 Anticipar la recompra por consumo estimado | SS-02 | ACT-04, ACT-03 | Importante |
 | CU-107 Agrupar pedidos por recorrido | SS-03 | ACT-04, ACT-03 | Importante |
@@ -245,14 +247,14 @@ están en el documento 1 — Requisitos, §4.3.
 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
-| **Crítico** | 43 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149 |
-| **Importante** | 90 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-093, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151 |
+| **Crítico** | 44 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153 |
+| **Importante** | 91 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-093, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152 |
 | **Secundario** | 16 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **151** | CU-001 a CU-151 |
+| **Total** | **153** | CU-001 a CU-153 |
 
-Los recuentos salen del catálogo de arriba y se verifican contra él: los 151
-códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-151.
+Los recuentos salen del catálogo de arriba y se verifican contra él: los 153
+códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 
 ---
 
@@ -1627,6 +1629,24 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-151.
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Importante  
 **Descripción:** El sistema verifica Redis, bases de datos y memoria, arrojando el informe Liveness/Readiness.
+
+---
+
+
+**Código:** CU-152 | **Caso de Uso:** Consultar el Registro de Auditoría  
+**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
+**Subsistema:** SS-18 Observabilidad y Operación  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo y desde dónde. Puede filtrar por persona, por tipo de recurso, por período y por resultado. Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa?", preguntas que hoy no tienen dónde mirarse.
+
+---
+
+
+**Código:** CU-153 | **Caso de Uso:** Registrar Toda Operación de Escritura  
+**Actor/es:** Sistema (ACT-04)  
+**Subsistema:** SS-18 Observabilidad y Operación  
+**Calificación:** Crítico  
+**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña.
 
 ---
 
@@ -7808,6 +7828,87 @@ respaldado por la lectura del código en poder del cliente.
 ---
 
 
+#### Importante CU-152 — Consultar el Registro de Auditoría
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-05 |
+| **Requisitos asociados** | IRQ-16 |
+| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por período y por resultado, y abrir cada asiento para ver el detalle de lo que cambió. |
+| **Precondición** | El usuario tiene rol Administrador o Administrador General y está autenticado. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el registro de auditoría y, si quiere, indica filtros: quién, qué tipo de recurso, entre qué fechas, y si la operación resultó exitosa o fallida. |
+| 2 | El sistema restringe la consulta a los asientos de la distribuidora del administrador. El Administrador General no lleva esa restricción y ve los de todas. |
+| 3 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, paginados. |
+| 4 | Por cada asiento informa quién lo originó, qué operación fue, sobre qué recurso, cuándo, desde qué aplicación y con qué resultado. |
+| 5 | Al abrir un asiento, el sistema muestra además qué campos cambiaron y con qué valores. |
+
+**Postcondición:** Ninguna: la consulta no modifica nada. La propia consulta **no** genera un asiento, porque leer no es una operación de escritura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el período indicado es inválido —la fecha de inicio posterior a la de fin—, el sistema informa el error. |
+| 3 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía. No es un error. |
+| — | El sistema no expone ninguna operación de modificación ni de borrado sobre el registro, para ningún rol. Ver CU-153. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | La consulta filtrada responde en menos de 3 segundos. Requiere índice por fecha, por autor y por distribuidora: sin eso, la tabla crece hasta volver inusable la consulta. |
+| **Frecuencia** | Baja: se consulta ante una disputa o una sospecha, no a diario. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. La depuración por antigüedad, si llega a hacer falta, es una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
+
+---
+
+
+#### Crítico · automático CU-153 — Registrar Toda Operación de Escritura
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-05 |
+| **Requisitos asociados** | IRQ-16 |
+| **Descripción** | El sistema deja constancia de cada operación que modifica datos, sin que ningún usuario lo solicite y sin que ninguna funcionalidad tenga que acordarse de hacerlo. Es lo que sostiene la trazabilidad: sin este registro, una operación hecha y deshecha no deja rastro. |
+| **Precondición** | Ninguna: el registro es parte del camino de toda petición que modifica datos. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Una petición que modifica datos —alta, modificación o baja— atraviesa el sistema. |
+| 2 | El sistema resuelve quién la origina a partir de su credencial: nunca de lo que venga en el cuerpo del mensaje. |
+| 3 | Deja pasar la operación y espera su resultado. |
+| 4 | Arma el asiento con quién, qué operación, sobre qué recurso, cuándo, desde qué aplicación, desde qué dirección de red, a qué distribuidora corresponde y con qué resultado terminó. |
+| 5 | **Depura el contenido antes de guardarlo**: las contraseñas, los tokens y cualquier credencial se reemplazan por una marca. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
+| 6 | Guarda el asiento. El registro es de sólo escritura: no existe forma de modificarlo ni de borrarlo. |
+
+**Postcondición:** Queda un asiento por cada operación que modificó datos, exitosa o fallida. Las operaciones de sólo lectura no generan asiento.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la operación falla, **igual se registra**, con el motivo del rechazo. Un intento fallido de borrar algo ajeno es justamente lo que interesa ver. |
+| 6 | Si el asiento no se puede guardar, la operación del usuario **no se interrumpe**: el fallo queda en el registro de eventos del sistema. Que la auditoría falle no puede impedir que se trabaje. |
+| — | Quedan fuera del registro las verificaciones de estado del sistema y las notificaciones del proveedor de pagos: son tráfico de máquina, no acciones de una persona, y ahogarían el registro. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | El asiento no debe agregar más de 50 ms a la operación. Se escribe sin bloquear la respuesta al usuario. |
+| **Frecuencia** | Automático, una vez por cada operación de escritura del sistema. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y hay que definir desde el principio cuánto tiempo se conserva. La depuración por antigüedad es un proceso del sistema, nunca una operación disponible para un usuario. |
+
+---
+
+
 ### SS-07 — Gestión de Choferes y Vehículos
 
 
@@ -12220,6 +12321,63 @@ sequenceDiagram
 ```
 
 > Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, hoy sin ningún caso de uso asociado en la matriz de rastreabilidad.
+
+---
+
+
+#### DSS — CU-152: Consultar el Registro de Auditoría
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-152 Consultar El Registro De Auditoria
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)
+    activate SIS
+    alt el período indicado es inválido
+        SIS-->>ADM: error de validación
+    else hay asientos que coinciden
+        SIS-->>ADM: asientos (autor, operación, recurso, fecha, origen, resultado) y total
+    else ningún asiento coincide
+        SIS-->>ADM: lista vacía
+    end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-153: Registrar Toda Operación de Escritura
+
+**Actor:** Sistema (sin actor humano: ocurre en el camino de toda petición que modifica datos)
+**Operaciones del sistema:** `registrarOperacion(autor, operación, recurso, origen, resultado)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-153 Registrar Toda Operacion De Escritura
+    autonumber
+    actor USR as Usuario autenticado
+    participant SIS as Sistema
+
+    USR->>SIS: operación que modifica datos
+    activate SIS
+    SIS->>SIS: resolver el autor desde su credencial
+    SIS->>SIS: ejecutar la operación
+    SIS->>SIS: depurar credenciales del contenido
+    alt la operación fue exitosa
+        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, exitosa)
+        SIS-->>USR: resultado de la operación
+    else la operación fue rechazada
+        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, motivo del rechazo)
+        SIS-->>USR: error de la operación
+    end
+    deactivate SIS
+```
 
 ---
 
@@ -20423,6 +20581,113 @@ sequenceDiagram
 - El cerrojo se libera en un `finally`, de modo que una ejecución que falle no deje bloqueadas a las siguientes. Su vencimiento es **menor que el intervalo del cron**, por la misma razón que en CU-014: una instancia que caiga sin liberarlo no puede frenar el proceso más de un ciclo.
 - La zona se marca inactiva y **no se borra**, a diferencia de CU-059. Los pedidos que se cobraron con ese recargo tienen que poder explicarse después, y una zona borrada no deja a qué remitirse.
 - El cron **no** notifica al administrador. Si más adelante se decide avisarle, el aviso va acá y no en CU-150, porque el hecho que se comunica es el vencimiento, no la programación.
+
+---
+
+
+#### C.35 DSD — CU-152: Consultar el Registro de Auditoría
+
+**Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `AuditoriaController`, `ConsultarAuditoriaDto`, `AuditoriaService`, `Repository<AsientoDeAuditoria>`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-152 Consultar El Registro De Auditoria
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant CTRL as AuditoriaController
+    participant DTO as ConsultarAuditoriaDto
+    participant SRV as AuditoriaService
+    participant REPO as RepositoryAsientoDeAuditoria
+
+    ADM->>AUTH: GET /auditoria con filtros
+    activate AUTH
+    AUTH-->>CTRL: request.distributorId y rol resueltos
+    deactivate AUTH
+    CTRL->>DTO: validar(filtros)
+    activate DTO
+    alt desde es posterior a hasta
+        DTO-->>ADM: BadRequestException, periodo invalido
+        deactivate DTO
+    else filtros validos
+        CTRL->>SRV: consultar(filtros, distributorId, rol)
+        activate SRV
+        SRV->>SRV: si el rol no es super_admin, fijar distributor_id en el filtro
+        SRV->>REPO: findAndCount(filtros, orden por fecha descendente, paginado)
+        activate REPO
+        REPO-->>SRV: asientos y total
+        deactivate REPO
+        SRV-->>CTRL: pagina de asientos
+        deactivate SRV
+        CTRL-->>ADM: 200 AuditoriaResponseDto
+    end
+```
+
+**Observaciones de diseño**
+
+- El controlador expone **sólo lectura**. No hay `@Post`, `@Patch` ni `@Delete`: la ausencia de esas rutas es la garantía de inmutabilidad, no una validación que alguien pueda saltear.
+- La restricción por distribuidora se aplica **en el filtro de la consulta**, igual que en el resto del sistema: un asiento de otra distribuidora no aparece, en vez de aparecer y ser rechazado después.
+- La consulta **no** genera asiento propio: leer no es escribir, y registrarse a sí misma llenaría la tabla de ruido.
+
+---
+
+
+#### C.36 DSD — CU-153: Registrar Toda Operación de Escritura
+
+**Clases participantes:** `AuditoriaInterceptor` (registrado como `APP_INTERCEPTOR`), `AuditoriaService`, `DepuradorDeCredenciales`, `Repository<AsientoDeAuditoria>`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-153 Registrar Toda Operacion De Escritura
+    autonumber
+    participant USR as Usuario autenticado
+    participant INT as AuditoriaInterceptor
+    participant CTRL as Controlador que corresponda
+    participant DEP as DepuradorDeCredenciales
+    participant SRV as AuditoriaService
+    participant REPO as RepositoryAsientoDeAuditoria
+
+    USR->>INT: POST, PATCH, PUT o DELETE
+    activate INT
+    alt el metodo no modifica datos
+        INT->>CTRL: deja pasar sin registrar
+    else es una operacion de escritura
+        INT->>INT: tomar autor, rol y distribuidora del request
+        INT->>CTRL: ejecutar la operacion
+        activate CTRL
+        alt La operacion respondio bien
+            CTRL-->>INT: resultado
+            deactivate CTRL
+            INT->>DEP: depurar(cuerpo)
+            activate DEP
+            DEP-->>INT: cuerpo sin contrasenias ni tokens
+            deactivate DEP
+            INT-)SRV: registrar(asiento con resultado exitoso)
+        else La operacion fue rechazada
+            INT->>DEP: depurar(cuerpo)
+            activate DEP
+            DEP-->>INT: cuerpo sin contrasenias ni tokens
+            deactivate DEP
+            INT-)SRV: registrar(asiento con el motivo del rechazo)
+            INT-->>USR: propaga el error original
+        end
+        activate SRV
+        SRV->>REPO: insert(asiento)
+        activate REPO
+        REPO-->>SRV: asiento persistido
+        deactivate REPO
+        deactivate SRV
+    end
+    deactivate INT
+```
+
+**Observaciones de diseño**
+
+- Va en un **interceptor global** y no en cada servicio: así alcanza a toda escritura, incluidas las que se agreguen mañana. Una lista de operaciones a auditar se desactualiza apenas alguien se olvida de sumar la suya, y el agujero recién se nota cuando hace falta el registro.
+- El autor sale del request ya autenticado, **nunca del cuerpo**: es la misma regla que se aplicó a las salas de tiempo real y a la pertenencia de los pedidos.
+- La escritura del asiento **no bloquea** la respuesta al usuario, y su fallo se registra como advertencia sin interrumpir la operación. Que la auditoría falle no puede impedir que se trabaje.
+- La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. Sin este paso, auditar todo significaría guardar contraseñas en claro, que es exactamente lo contrario de lo que el sistema hace hoy —las valida Firebase y la base no las almacena—.
+- Se excluyen las verificaciones de estado y las notificaciones del proveedor de pagos: son tráfico de máquina y ahogarían el registro.
 
 ---
 

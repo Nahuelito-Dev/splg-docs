@@ -1,0 +1,31 @@
+sequenceDiagram
+    title DSD — CU-152 Consultar El Registro De Auditoria
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant CTRL as AuditoriaController
+    participant DTO as ConsultarAuditoriaDto
+    participant SRV as AuditoriaService
+    participant REPO as RepositoryAsientoDeAuditoria
+
+    ADM->>AUTH: GET /auditoria con filtros
+    activate AUTH
+    AUTH-->>CTRL: request.distributorId y rol resueltos
+    deactivate AUTH
+    CTRL->>DTO: validar(filtros)
+    activate DTO
+    alt desde es posterior a hasta
+        DTO-->>ADM: BadRequestException, periodo invalido
+        deactivate DTO
+    else filtros validos
+        CTRL->>SRV: consultar(filtros, distributorId, rol)
+        activate SRV
+        SRV->>SRV: si el rol no es super_admin, fijar distributor_id en el filtro
+        SRV->>REPO: findAndCount(filtros, orden por fecha descendente, paginado)
+        activate REPO
+        REPO-->>SRV: asientos y total
+        deactivate REPO
+        SRV-->>CTRL: pagina de asientos
+        deactivate SRV
+        CTRL-->>ADM: 200 AuditoriaResponseDto
+    end

@@ -114,52 +114,56 @@
 - Figura 103 — DSS CU-057: Consultar Zonas de Cobertura
 - Figura 104 — DSS CU-058: Validar Cobertura de una Dirección
 - Figura 105 — DSS CU-059: Eliminar Zona de Cobertura
-- Figura 106 — DSS CU-060: Registrar Incidencia de Entrega
-- Figura 107 — DSS CU-061: Listar Incidencias
-- Figura 108 — DSS CU-062: Consultar Incidencias de un Pedido
-- Figura 109 — DSS CU-063: Resolver Incidencia
-- Figura 110 — DSS CU-064: Calificar Pedido
-- Figura 111 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario
-- Figura 112 — DSS CU-066: Consultar Historial de Calificaciones Recibidas
-- Figura 113 — DSS CU-067: Dar de Alta un Envase Físico
-- Figura 114 — DSS CU-068: Asignar Envases a un Pedido
-- Figura 115 — DSS CU-069: Consultar el Parque de Envases
-- Figura 116 — DSS CU-070: Registrar Movimiento de Envase
-- Figura 117 — DSS CU-071: Consultar Historial de Movimientos de un Envase
-- Figura 118 — DSS CU-132: Registrar la Revisión Periódica de un Envase
-- Figura 119 — DSS CU-133: Consultar la Vigencia de un Envase
-- Figura 120 — DSS CU-134: Consultar los Envases Próximos a Vencer
-- Figura 121 — DSS CU-135: Bloquear el Despacho de un Envase Vencido
-- Figura 122 — DSS CU-048: Procesar Pago con MercadoPago
-- Figura 123 — DSS CU-072: Crear Reserva Programada con Seña
-- Figura 124 — DSS CU-073: Listar Reservas y Estado de la Seña
-- Figura 125 — DSS CU-074: Confirmar Seña Cobrada en Efectivo
-- Figura 126 — DSS CU-075: Activar Reservas Vencidas Automáticamente
-- Figura 127 — DSS CU-076: Expirar Reservas sin Seña Pagada
-- Figura 128 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar
-- Figura 129 — DSS CU-086: Registrar Administrador
-- Figura 130 — DSS CU-087: Crear el Primer Super Administrador
-- Figura 131 — DSS CU-088: Consultar Administradores
-- Figura 132 — DSS CU-089: Gestionar Roles del Sistema
-- Figura 133 — DSS CU-090: Sembrar los Roles Iniciales
-- Figura 134 — DSS CU-092: Consultar Listado de Clientes
-- Figura 135 — DSS CU-093: Validar / Invalidar Cliente
-- Figura 136 — DSS CU-094: Actualizar Ubicación del Cliente
-- Figura 137 — DSS CU-095: Eliminar Cliente (baja lógica)
-- Figura 138 — DSS CU-129: Consultar Detalle del Cliente
-- Figura 139 — DSS CU-130: Buscar Cliente por Usuario
-- Figura 140 — DSS CU-131: Editar Datos del Cliente
-- Figura 141 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo
-- Figura 142 — DSS CU-099: Consultar los Tokens de un Usuario
-- Figura 143 — DSS CU-100: Enviar Notificación de Prueba
-- Figura 144 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido
-- Figura 145 — DSS CU-102: Probar el Servicio de Correo
-- Figura 146 — DSS CU-104: Verificar la Salud del Sistema
-- Figura 147 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 148 — DSS CU-106: Anticipar la recompra por consumo estimado
-- Figura 149 — DSS CU-107: Agrupar pedidos por recorrido
-- Figura 150 — DSS CU-108: Recuperar envases no devueltos
-- Figura 151 — DSS CU-043: Modificar Capacidad de Franja Horaria
+- Figura 106 — DSS CU-150: Programar la Vigencia de una Zona de Cobertura
+- Figura 107 — DSS CU-151: Desactivar las Zonas de Cobertura Vencidas
+- Figura 108 — DSS CU-060: Registrar Incidencia de Entrega
+- Figura 109 — DSS CU-061: Listar Incidencias
+- Figura 110 — DSS CU-062: Consultar Incidencias de un Pedido
+- Figura 111 — DSS CU-063: Resolver Incidencia
+- Figura 112 — DSS CU-064: Calificar Pedido
+- Figura 113 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario
+- Figura 114 — DSS CU-066: Consultar Historial de Calificaciones Recibidas
+- Figura 115 — DSS CU-067: Dar de Alta un Envase Físico
+- Figura 116 — DSS CU-068: Asignar Envases a un Pedido
+- Figura 117 — DSS CU-069: Consultar el Parque de Envases
+- Figura 118 — DSS CU-070: Registrar Movimiento de Envase
+- Figura 119 — DSS CU-071: Consultar Historial de Movimientos de un Envase
+- Figura 120 — DSS CU-132: Registrar la Revisión Periódica de un Envase
+- Figura 121 — DSS CU-133: Consultar la Vigencia de un Envase
+- Figura 122 — DSS CU-134: Consultar los Envases Próximos a Vencer
+- Figura 123 — DSS CU-135: Bloquear el Despacho de un Envase Vencido
+- Figura 124 — DSS CU-048: Procesar Pago con MercadoPago
+- Figura 125 — DSS CU-072: Crear Reserva Programada con Seña
+- Figura 126 — DSS CU-073: Listar Reservas y Estado de la Seña
+- Figura 127 — DSS CU-074: Confirmar Seña Cobrada en Efectivo
+- Figura 128 — DSS CU-075: Activar Reservas Vencidas Automáticamente
+- Figura 129 — DSS CU-076: Expirar Reservas sin Seña Pagada
+- Figura 130 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar
+- Figura 131 — DSS CU-086: Registrar Administrador
+- Figura 132 — DSS CU-087: Crear el Primer Super Administrador
+- Figura 133 — DSS CU-088: Consultar Administradores
+- Figura 134 — DSS CU-089: Gestionar Roles del Sistema
+- Figura 135 — DSS CU-090: Sembrar los Roles Iniciales
+- Figura 136 — DSS CU-092: Consultar Listado de Clientes
+- Figura 137 — DSS CU-093: Validar / Invalidar Cliente
+- Figura 138 — DSS CU-094: Actualizar Ubicación del Cliente
+- Figura 139 — DSS CU-095: Eliminar Cliente (baja lógica)
+- Figura 140 — DSS CU-129: Consultar Detalle del Cliente
+- Figura 141 — DSS CU-130: Buscar Cliente por Usuario
+- Figura 142 — DSS CU-131: Editar Datos del Cliente
+- Figura 143 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 144 — DSS CU-099: Consultar los Tokens de un Usuario
+- Figura 145 — DSS CU-100: Enviar Notificación de Prueba
+- Figura 146 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 147 — DSS CU-102: Probar el Servicio de Correo
+- Figura 148 — DSS CU-104: Verificar la Salud del Sistema
+- Figura 149 — DSS CU-152: Consultar el Registro de Auditoría
+- Figura 150 — DSS CU-153: Registrar Toda Operación de Escritura
+- Figura 151 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 152 — DSS CU-106: Anticipar la recompra por consumo estimado
+- Figura 153 — DSS CU-107: Agrupar pedidos por recorrido
+- Figura 154 — DSS CU-108: Recuperar envases no devueltos
+- Figura 155 — DSS CU-043: Modificar Capacidad de Franja Horaria
 
 ---
 
@@ -3510,6 +3514,66 @@ sequenceDiagram
 
 ---
 
+#### DSS — CU-150: Programar la Vigencia de una Zona de Cobertura
+
+**Actor:** Administrador
+**Operaciones del sistema:** `programarVigenciaDeZona(zonaId, vigenteHasta)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-150 Programar La Vigencia De Una Zona De Cobertura
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: programarVigenciaDeZona(zonaId, vigenteHasta)
+    activate SIS
+    alt la zona no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else se indica una fecha ya pasada
+        SIS-->>ADM: error de validación, la fecha debe ser futura
+    else se indica una fecha futura
+        SIS-->>ADM: vigencia programada (zonaId, vigenteHasta)
+    else se indica una fecha vacía
+        SIS-->>ADM: vigencia quitada, la zona rige sin vencimiento
+    end
+    deactivate SIS
+```
+
+**Figura 106 — DSS CU-150: Programar la Vigencia de una Zona de Cobertura**
+
+---
+
+#### DSS — CU-151: Desactivar las Zonas de Cobertura Vencidas
+
+**Actor:** Sistema (proceso temporal, sin actor humano)
+**Operaciones del sistema:** `desactivarZonasVencidas()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-151 Desactivar Las Zonas De Cobertura Vencidas
+    autonumber
+    participant TMP as Proceso temporal
+    participant SIS as Sistema
+
+    TMP->>SIS: desactivarZonasVencidas()
+    activate SIS
+    alt otra instancia ya está ejecutando el barrido
+        SIS-->>TMP: ejecución salteada
+    else hay zonas activas con vigencia vencida
+        SIS->>SIS: marcar cada zona como inactiva
+        SIS-->>TMP: zonas desactivadas (cantidad, identificadores)
+    else no hay zonas vencidas
+        SIS-->>TMP: sin cambios
+    end
+    deactivate SIS
+```
+
+**Figura 107 — DSS CU-151: Desactivar las Zonas de Cobertura Vencidas**
+
+---
+
+
 ### SS-12 — Incidencias y Calidad de Servicio
 
 #### DSS — CU-060: Registrar Incidencia de Entrega
@@ -3534,7 +3598,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 106 — DSS CU-060: Registrar Incidencia de Entrega**
+**Figura 108 — DSS CU-060: Registrar Incidencia de Entrega**
 
 > Circuito **distinto** al de reclamos (SS-05): el reclamo lo abre el cliente después de la entrega, la incidencia la abre el chofer durante el reparto.
 
@@ -3558,7 +3622,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 107 — DSS CU-061: Listar Incidencias**
+**Figura 109 — DSS CU-061: Listar Incidencias**
 
 ---
 
@@ -3580,7 +3644,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 108 — DSS CU-062: Consultar Incidencias de un Pedido**
+**Figura 110 — DSS CU-062: Consultar Incidencias de un Pedido**
 
 ---
 
@@ -3606,7 +3670,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 109 — DSS CU-063: Resolver Incidencia**
+**Figura 111 — DSS CU-063: Resolver Incidencia**
 
 ---
 
@@ -3636,7 +3700,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 110 — DSS CU-064: Calificar Pedido**
+**Figura 112 — DSS CU-064: Calificar Pedido**
 
 > La calificación es **bidireccional**: el mismo mensaje lo emite el cliente hacia el chofer o el chofer hacia el cliente. El emisor sale de la sesión y el calificado se deriva del pedido, de modo que hay a lo sumo una calificación por pedido y por lado.
 
@@ -3660,7 +3724,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 111 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario**
+**Figura 113 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario**
 
 ---
 
@@ -3682,7 +3746,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 112 — DSS CU-066: Consultar Historial de Calificaciones Recibidas**
+**Figura 114 — DSS CU-066: Consultar Historial de Calificaciones Recibidas**
 
 ---
 
@@ -3710,7 +3774,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 113 — DSS CU-067: Dar de Alta un Envase Físico**
+**Figura 115 — DSS CU-067: Dar de Alta un Envase Físico**
 
 > El número de serie es único **por distribuidora**, no globalmente: dos empresas pueden tener garrafas con la misma numeración de fábrica.
 
@@ -3743,7 +3807,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 114 — DSS CU-068: Asignar Envases a un Pedido**
+**Figura 116 — DSS CU-068: Asignar Envases a un Pedido**
 
 ---
 
@@ -3776,7 +3840,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 115 — DSS CU-069: Consultar el Parque de Envases**
+**Figura 117 — DSS CU-069: Consultar el Parque de Envases**
 
 ---
 
@@ -3804,7 +3868,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 116 — DSS CU-070: Registrar Movimiento de Envase**
+**Figura 118 — DSS CU-070: Registrar Movimiento de Envase**
 
 > Ciclo de vida del envase: EN_DEPOSITO → LLENO → DESPACHADO → CON_EL_CLIENTE → VACIO_DEVUELTO. Al confirmarse la entrega del pedido (CU-020 / CU-079) el sistema avanza solo los envases despachados a CON_EL_CLIENTE.
 
@@ -3828,7 +3892,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 117 — DSS CU-071: Consultar Historial de Movimientos de un Envase**
+**Figura 119 — DSS CU-071: Consultar Historial de Movimientos de un Envase**
 
 > El historial es de **solo agregado**: los movimientos no se corrigen ni se borran, y por eso sirve como evidencia de trazabilidad.
 
@@ -3858,7 +3922,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 118 — DSS CU-132: Registrar la Revisión Periódica de un Envase**
+**Figura 120 — DSS CU-132: Registrar la Revisión Periódica de un Envase**
 
 ---
 
@@ -3886,7 +3950,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 119 — DSS CU-133: Consultar la Vigencia de un Envase**
+**Figura 121 — DSS CU-133: Consultar la Vigencia de un Envase**
 
 ---
 
@@ -3912,7 +3976,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 120 — DSS CU-134: Consultar los Envases Próximos a Vencer**
+**Figura 122 — DSS CU-134: Consultar los Envases Próximos a Vencer**
 
 ---
 
@@ -3940,7 +4004,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 121 — DSS CU-135: Bloquear el Despacho de un Envase Vencido**
+**Figura 123 — DSS CU-135: Bloquear el Despacho de un Envase Vencido**
 
 ---
 
@@ -3989,7 +4053,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 122 — DSS CU-048: Procesar Pago con MercadoPago**
+**Figura 124 — DSS CU-048: Procesar Pago con MercadoPago**
 
 > El sistema responde **siempre** con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido.
 
@@ -4024,7 +4088,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 123 — DSS CU-072: Crear Reserva Programada con Seña**
+**Figura 125 — DSS CU-072: Crear Reserva Programada con Seña**
 
 > La reserva nace en estado **RESERVADO**: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075).
 
@@ -4048,7 +4112,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 124 — DSS CU-073: Listar Reservas y Estado de la Seña**
+**Figura 126 — DSS CU-073: Listar Reservas y Estado de la Seña**
 
 ---
 
@@ -4076,7 +4140,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 125 — DSS CU-074: Confirmar Seña Cobrada en Efectivo**
+**Figura 127 — DSS CU-074: Confirmar Seña Cobrada en Efectivo**
 
 > Es la **única acción humana** del ciclo de reservas: la seña pagada por la pasarela se confirma sola (CU-048).
 
@@ -4109,7 +4173,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 126 — DSS CU-075: Activar Reservas Vencidas Automáticamente**
+**Figura 128 — DSS CU-075: Activar Reservas Vencidas Automáticamente**
 
 > Solo se activan las reservas con la seña **efectivamente paga**. Una reserva cuya activación falla se registra y se reintenta en la corrida siguiente.
 
@@ -4140,7 +4204,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 127 — DSS CU-076: Expirar Reservas sin Seña Pagada**
+**Figura 129 — DSS CU-076: Expirar Reservas sin Seña Pagada**
 
 > El plazo de espera de la seña es un parámetro de configuración (valor por omisión, 48 horas). Cada expiración es atómica: si falla, la reserva queda intacta para la corrida siguiente.
 
@@ -4175,7 +4239,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 128 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar**
+**Figura 130 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar**
 
 > Sin este proceso, el stock que se reserva al crear el pedido —antes de que el cliente pague— quedaría bloqueado para siempre si abandona el pago. El plazo por omisión es de 60 minutos.
 
@@ -4207,7 +4271,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 129 — DSS CU-086: Registrar Administrador**
+**Figura 131 — DSS CU-086: Registrar Administrador**
 
 > Regla de negocio multi-empresa: un administrador de empresa **nunca** puede crear administradores de otra distribuidora ni escalar a super administrador.
 
@@ -4235,7 +4299,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 130 — DSS CU-087: Crear el Primer Super Administrador**
+**Figura 132 — DSS CU-087: Crear el Primer Super Administrador**
 
 > Es una operación de **una sola vez**: se autodeshabilita apenas existe el primer administrador.
 
@@ -4270,7 +4334,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 131 — DSS CU-088: Consultar Administradores**
+**Figura 133 — DSS CU-088: Consultar Administradores**
 
 ---
 
@@ -4317,7 +4381,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 132 — DSS CU-089: Gestionar Roles del Sistema**
+**Figura 134 — DSS CU-089: Gestionar Roles del Sistema**
 
 ---
 
@@ -4339,7 +4403,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 133 — DSS CU-090: Sembrar los Roles Iniciales**
+**Figura 135 — DSS CU-090: Sembrar los Roles Iniciales**
 
 > Operación de puesta en marcha, idempotente: volver a ejecutarla no duplica los roles ya existentes.
 
@@ -4363,7 +4427,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 134 — DSS CU-092: Consultar Listado de Clientes**
+**Figura 136 — DSS CU-092: Consultar Listado de Clientes**
 
 ---
 
@@ -4392,7 +4456,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 135 — DSS CU-093: Validar / Invalidar Cliente**
+**Figura 137 — DSS CU-093: Validar / Invalidar Cliente**
 
 ---
 
@@ -4418,7 +4482,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 136 — DSS CU-094: Actualizar Ubicación del Cliente**
+**Figura 138 — DSS CU-094: Actualizar Ubicación del Cliente**
 
 ---
 
@@ -4444,7 +4508,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 137 — DSS CU-095: Eliminar Cliente (baja lógica)**
+**Figura 139 — DSS CU-095: Eliminar Cliente (baja lógica)**
 
 ---
 
@@ -4470,7 +4534,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 138 — DSS CU-129: Consultar Detalle del Cliente**
+**Figura 140 — DSS CU-129: Consultar Detalle del Cliente**
 
 ---
 
@@ -4496,7 +4560,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 139 — DSS CU-130: Buscar Cliente por Usuario**
+**Figura 141 — DSS CU-130: Buscar Cliente por Usuario**
 
 ---
 
@@ -4522,7 +4586,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 140 — DSS CU-131: Editar Datos del Cliente**
+**Figura 142 — DSS CU-131: Editar Datos del Cliente**
 
 ---
 
@@ -4550,7 +4614,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 141 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo**
+**Figura 143 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo**
 
 > Es la **precondición técnica de CU-021**: sin token registrado no hay avisos al dispositivo.
 
@@ -4578,7 +4642,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 142 — DSS CU-099: Consultar los Tokens de un Usuario**
+**Figura 144 — DSS CU-099: Consultar los Tokens de un Usuario**
 
 ---
 
@@ -4606,7 +4670,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 143 — DSS CU-100: Enviar Notificación de Prueba**
+**Figura 145 — DSS CU-100: Enviar Notificación de Prueba**
 
 ---
 
@@ -4634,7 +4698,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 144 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido**
+**Figura 146 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 > Se usa como acción de soporte cuando el cliente dice no haber recibido el aviso original.
 
@@ -4662,7 +4726,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 145 — DSS CU-102: Probar el Servicio de Correo**
+**Figura 147 — DSS CU-102: Probar el Servicio de Correo**
 
 > El propio código marca esta operación como **temporal** y hoy es accesible sin sesión: es una observación a resolver antes de producción, no una funcionalidad del producto.
 
@@ -4706,11 +4770,71 @@ sequenceDiagram
     end
 ```
 
-**Figura 146 — DSS CU-104: Verificar la Salud del Sistema**
+**Figura 148 — DSS CU-104: Verificar la Salud del Sistema**
 
 > Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, hoy sin ningún caso de uso asociado en la matriz de rastreabilidad.
 
 ---
+
+#### DSS — CU-152: Consultar el Registro de Auditoría
+
+**Actor:** Administrador
+**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-152 Consultar El Registro De Auditoria
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)
+    activate SIS
+    alt el período indicado es inválido
+        SIS-->>ADM: error de validación
+    else hay asientos que coinciden
+        SIS-->>ADM: asientos (autor, operación, recurso, fecha, origen, resultado) y total
+    else ningún asiento coincide
+        SIS-->>ADM: lista vacía
+    end
+    deactivate SIS
+```
+
+**Figura 149 — DSS CU-152: Consultar el Registro de Auditoría**
+
+---
+
+#### DSS — CU-153: Registrar Toda Operación de Escritura
+
+**Actor:** Sistema (sin actor humano: ocurre en el camino de toda petición que modifica datos)
+**Operaciones del sistema:** `registrarOperacion(autor, operación, recurso, origen, resultado)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-153 Registrar Toda Operacion De Escritura
+    autonumber
+    actor USR as Usuario autenticado
+    participant SIS as Sistema
+
+    USR->>SIS: operación que modifica datos
+    activate SIS
+    SIS->>SIS: resolver el autor desde su credencial
+    SIS->>SIS: ejecutar la operación
+    SIS->>SIS: depurar credenciales del contenido
+    alt la operación fue exitosa
+        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, exitosa)
+        SIS-->>USR: resultado de la operación
+    else la operación fue rechazada
+        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, motivo del rechazo)
+        SIS-->>USR: error de la operación
+    end
+    deactivate SIS
+```
+
+**Figura 150 — DSS CU-153: Registrar Toda Operación de Escritura**
+
+---
+
 
 ### CU no modelados y por qué
 
@@ -4791,7 +4915,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 147 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 151 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 ---
 
@@ -4830,7 +4954,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 148 — DSS CU-106: Anticipar la recompra por consumo estimado**
+**Figura 152 — DSS CU-106: Anticipar la recompra por consumo estimado**
 
 ---
 
@@ -4873,7 +4997,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 149 — DSS CU-107: Agrupar pedidos por recorrido**
+**Figura 153 — DSS CU-107: Agrupar pedidos por recorrido**
 
 ---
 
@@ -4928,7 +5052,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 150 — DSS CU-108: Recuperar envases no devueltos**
+**Figura 154 — DSS CU-108: Recuperar envases no devueltos**
 
 ---
 
@@ -4962,7 +5086,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 151 — DSS CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 155 — DSS CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 

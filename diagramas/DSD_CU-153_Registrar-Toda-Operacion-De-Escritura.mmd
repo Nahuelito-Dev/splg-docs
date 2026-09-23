@@ -1,0 +1,42 @@
+sequenceDiagram
+    title DSD — CU-153 Registrar Toda Operacion De Escritura
+    autonumber
+    participant USR as Usuario autenticado
+    participant INT as AuditoriaInterceptor
+    participant CTRL as Controlador que corresponda
+    participant DEP as DepuradorDeCredenciales
+    participant SRV as AuditoriaService
+    participant REPO as RepositoryAsientoDeAuditoria
+
+    USR->>INT: POST, PATCH, PUT o DELETE
+    activate INT
+    alt el metodo no modifica datos
+        INT->>CTRL: deja pasar sin registrar
+    else es una operacion de escritura
+        INT->>INT: tomar autor, rol y distribuidora del request
+        INT->>CTRL: ejecutar la operacion
+        activate CTRL
+        alt La operacion respondio bien
+            CTRL-->>INT: resultado
+            deactivate CTRL
+            INT->>DEP: depurar(cuerpo)
+            activate DEP
+            DEP-->>INT: cuerpo sin contrasenias ni tokens
+            deactivate DEP
+            INT-)SRV: registrar(asiento con resultado exitoso)
+        else La operacion fue rechazada
+            INT->>DEP: depurar(cuerpo)
+            activate DEP
+            DEP-->>INT: cuerpo sin contrasenias ni tokens
+            deactivate DEP
+            INT-)SRV: registrar(asiento con el motivo del rechazo)
+            INT-->>USR: propaga el error original
+        end
+        activate SRV
+        SRV->>REPO: insert(asiento)
+        activate REPO
+        REPO-->>SRV: asiento persistido
+        deactivate REPO
+        deactivate SRV
+    end
+    deactivate INT

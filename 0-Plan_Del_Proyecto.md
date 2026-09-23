@@ -858,6 +858,23 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
+**Código:** CU-150 | **Caso de Uso:** Programar la Vigencia de una Zona de Cobertura  
+**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
+**Subsistema:** SS-11 Cobertura Geográfica  
+**Calificación:** Importante  
+**Descripción:** El administrador le pone fecha de fin a una zona de cobertura, para que su recargo valga solo por un tiempo. Sirve para las situaciones que son transitorias por naturaleza: una calle cortada por obra, un barrio anegado después de una tormenta, un fin de semana largo. Sin esto, el administrador tiene que acordarse de volver a entrar al panel para desactivar la zona a mano, y mientras tanto se le sigue cobrando el recargo al cliente.
+
+---
+
+**Código:** CU-151 | **Caso de Uso:** Desactivar las Zonas de Cobertura Vencidas  
+**Actor/es:** Sistema (ACT-04)  
+**Subsistema:** SS-11 Cobertura Geográfica  
+**Calificación:** Importante  
+**Descripción:** Un proceso automático desactiva las zonas cuya fecha de fin ya pasó, de modo que su recargo deje de aplicarse sin que nadie tenga que intervenir. La zona no se borra: queda inactiva y con su historia intacta, porque los pedidos que ya se cobraron con ese recargo tienen que poder explicarse después.
+
+---
+
+
 **Código:** CU-060 | **Caso de Uso:** Registrar Incidencia de Entrega  
 **Actor/es:** ACT-02 Chofer, ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-12 Incidencias y Calidad de Servicio  
@@ -1386,6 +1403,23 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
+**Código:** CU-152 | **Caso de Uso:** Consultar el Registro de Auditoría  
+**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
+**Subsistema:** SS-18 Observabilidad y Operación  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo y desde dónde. Puede filtrar por persona, por tipo de recurso, por período y por resultado. Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa?", preguntas que hoy no tienen dónde mirarse.
+
+---
+
+**Código:** CU-153 | **Caso de Uso:** Registrar Toda Operación de Escritura  
+**Actor/es:** Sistema (ACT-04)  
+**Subsistema:** SS-18 Observabilidad y Operación  
+**Calificación:** Crítico  
+**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña.
+
+---
+
+
 **Código:** CU-105 | **Caso de Uso:** Planificar el mantenimiento y las habilitaciones de la flota  
 **Actor/es:** Sistema Automático (ACT-04), Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
@@ -1501,6 +1535,8 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-057 Consultar Zonas de Cobertura | SS-11 | ACT-03, ACT-05 | Secundario |
 | CU-058 Validar Cobertura de una Dirección | SS-11 | ACT-01, ACT-03, ACT-05 | Crítico |
 | CU-059 Eliminar Zona de Cobertura | SS-11 | ACT-03, ACT-05 | Secundario |
+| CU-150 Programar la Vigencia de una Zona de Cobertura | SS-11 | ACT-03, ACT-05 | Importante |
+| CU-151 Desactivar las Zonas de Cobertura Vencidas | SS-11 | ACT-04 | Importante |
 | CU-060 Registrar Incidencia de Entrega | SS-12 | ACT-02, ACT-03, ACT-05 | Crítico |
 | CU-061 Listar Incidencias | SS-12 | ACT-03, ACT-05 | Importante |
 | CU-062 Consultar Incidencias de un Pedido | SS-12 | ACT-02, ACT-03, ACT-05 | Secundario |
@@ -1567,6 +1603,8 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-102 Probar el Servicio de Correo | SS-17 |  | Secundario |
 | CU-103 Eliminar Franja Horaria | SS-09 | ACT-03, ACT-05 | Importante |
 | CU-104 Verificar la Salud del Sistema (liveness / readiness) | SS-18 |  | Importante |
+| CU-152 Consultar el Registro de Auditoría | SS-18 | ACT-03, ACT-05 | Importante |
+| CU-153 Registrar Toda Operación de Escritura | SS-18 | ACT-04 | Crítico |
 | CU-105 Planificar el mantenimiento y las habilitaciones de la flota | SS-07 | ACT-04, ACT-03 | Importante |
 | CU-106 Anticipar la recompra por consumo estimado | SS-02 | ACT-04, ACT-03 | Importante |
 | CU-107 Agrupar pedidos por recorrido | SS-03 | ACT-04, ACT-03 | Importante |
@@ -1576,10 +1614,11 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
-| **Crítico** | 36 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098 |
-| **Importante** | 52 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-093, CU-095, CU-096, CU-097, CU-103, CU-104 |
+| **Crítico** | 44 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153 |
+| **Importante** | 91 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-093, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152 |
 | **Secundario** | 16 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102 |
-| **Total** | **104** | CU-001 a CU-104 |
+| **Menor** | 2 | CU-126, CU-145 |
+| **Total** | **153** | CU-001 a CU-153 |
 
 Los casos CU-001 a CU-051 provienen del relevamiento inicial. Los casos CU-052 a CU-104 se
 incorporaron al contrastar la documentación contra el sistema construido: son

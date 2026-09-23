@@ -381,12 +381,23 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | **Estabilidad** | Media |
 | **Comentarios** | Estos datos no se persisten: se calculan en el momento de la consulta y solo quedan en el registro de eventos. Es el requisito de información que sostiene a NFR-03 (Disponibilidad) y NFR-04 (Escalabilidad). La prueba del servicio de correo está declarada como temporal en el propio código y hoy es pública: corresponde exigirle rol administrativo antes de producción (CU-102). |
 
+### IRQ-16 — Información sobre el Registro de Auditoría
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-05 |
+| **Requisitos asociados** | CU-152, CU-153 |
+| **Descripción** | El sistema debe dejar constancia de toda operación que modifique datos, de modo que se pueda reconstruir después quién hizo qué, sobre qué y cuándo. Es lo que permite resolver una disputa con evidencia en lugar de con la palabra de cada parte. |
+| **Datos específicos** | Identificador del asiento (UUID); autor — referencia al usuario que originó la operación, con su rol al momento de hacerla, porque el rol puede cambiar después; distribuidora a la que corresponde la operación, que es lo que permite mostrarle a cada administrador lo suyo; operación realizada (alta, modificación, baja) y ruta que la atendió; tipo de recurso afectado e identificador del recurso, para poder buscar todo lo que le pasó a un pedido o a un usuario; marca temporal con zona horaria; aplicación de origen (panel, aplicación del cliente, aplicación del chofer); dirección de red desde la que se originó; resultado — si la operación fue exitosa o rechazada, y en ese caso el motivo; detalle de lo que cambió, **con las credenciales depuradas**: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El registro es de **sólo escritura**: el sistema no expone ninguna operación de modificación ni de baja sobre él, para ningún rol, porque un registro editable no prueba nada. La depuración por antigüedad, si llega a hacer falta por volumen, es una tarea programada del sistema y nunca una operación disponible para un usuario. Este requisito sostiene a OBJ-04 (trazabilidad) más allá de la entrega: OBJ-04 pedía evidencia objetiva de **una entrega** —timestamps, GPS, foto— y esto la extiende a toda operación del sistema. Conviene notar que las contraseñas no forman parte del sistema: las valida Firebase y la base no tiene columna para ellas, de modo que la depuración protege el cuerpo de la petición en tránsito, que es el único lugar donde una credencial aparece. |
+
 ---
 
 ## 7. Requisitos Funcionales — Casos de Uso
 
 La plantilla pide los casos de uso en dos niveles de detalle. La **descripción de
-alto nivel** de los 151 casos está en el Documento 0 · §7, que es donde la plantilla
+alto nivel** de los 153 casos está en el Documento 0 · §7, que es donde la plantilla
 del Plan del Proyecto la ubica; acá van los **casos de uso expandidos**, con la
 secuencia normal, las excepciones y el resto de los campos. Los cuatro artefactos de
 cada caso —alto nivel, expandido, diagrama de secuencia del sistema y diagrama de
@@ -3587,6 +3598,83 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 ---
 
+#### Importante CU-150 — Programar la Vigencia de una Zona de Cobertura
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-10 |
+| **Requisitos asociados** | IRQ-09, IRQ-10 |
+| **Descripción** | El administrador le fija a una zona de cobertura la fecha y hora en que debe dejar de aplicarse. Desde ese momento la zona deja de sumar su recargo, sin que nadie tenga que entrar al panel a desactivarla. Está pensado para los recargos transitorios: una calle cortada por obra, un barrio anegado, un fin de semana largo. |
+| **Precondición** | El usuario tiene rol Administrador o Administrador General y la zona pertenece a su distribuidora. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige una zona de cobertura de su distribuidora e indica hasta cuándo debe regir. |
+| 2 | El sistema comprueba que la zona pertenezca a la distribuidora del administrador. |
+| 3 | El sistema comprueba que la fecha indicada sea posterior al momento actual. |
+| 4 | El sistema guarda la fecha de fin en la zona y confirma la operación. |
+
+**Postcondición:** La zona sigue activa y cobrando su recargo hasta la fecha indicada. A partir de ese momento la desactiva el proceso automático de CU-151.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si la zona no existe o es de otra distribuidora, el sistema informa que no se encontró. |
+| 3 | Si la fecha indicada ya pasó, el sistema rechaza la operación e informa el motivo. No desactiva la zona por esa vía: para eso está la baja explícita, y confundir las dos haría que un error de tipeo apagara una zona sin aviso. |
+| 4 | Si el administrador indica una fecha vacía, la zona vuelve a no tener vencimiento y rige hasta que se la desactive a mano. Es la manera de dar marcha atrás. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Inmediato. |
+| **Frecuencia** | Baja: solo cuando aparece una situación transitoria. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La vigencia no cambia cómo se calcula el recargo, solo hasta cuándo se aplica: mientras la zona esté vigente se comporta igual que cualquier otra. Queda pendiente decidir si el administrador debería poder programar también el **comienzo** de la vigencia, para dejar cargada de antemano una zona que va a regir recién el fin de semana. |
+
+---
+
+#### Importante · automático CU-151 — Desactivar las Zonas de Cobertura Vencidas
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-10 |
+| **Requisitos asociados** | IRQ-09, IRQ-10 |
+| **Descripción** | Un proceso temporal busca las zonas de cobertura cuya fecha de fin ya pasó y las deja inactivas, para que su recargo deje de aplicarse a los pedidos nuevos. |
+| **Precondición** | Existe al menos una zona activa con fecha de fin anterior al momento actual. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El proceso temporal se ejecuta automáticamente cada cinco minutos. |
+| 2 | Toma un cerrojo distribuido antes de empezar; si otra instancia ya lo tiene, esta ejecución se saltea sin hacer nada. |
+| 3 | Obtiene las zonas que siguen activas y cuya fecha de fin ya pasó, de todas las distribuidoras. |
+| 4 | Marca cada una como inactiva, sin borrarla ni tocar su polígono ni su recargo. |
+| 5 | Deja registro de cuáles desactivó. |
+
+**Postcondición:** Ninguna zona vencida sigue activa. Los pedidos que se creen a partir de ese momento no reciben su recargo. Los pedidos ya cobrados no se modifican.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si no hay ninguna zona vencida, la ejecución termina sin hacer nada. Es el caso habitual. |
+| — | Si la ejecución falla, el error se registra y el cerrojo se libera igual, de modo que la ejecución siguiente pueda tomarlo. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Cada ejecución se completa en menos de un segundo: son pocas zonas y la consulta va por índice. |
+| **Frecuencia** | Automático, cada cinco minutos. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El intervalo de cinco minutos es deliberado: una zona que se apaga hasta cinco minutos tarde no perjudica a nadie —a lo sumo un pedido paga un recargo que ya no correspondía—, y revisar más seguido sería consultar la base sin necesidad. La zona se desactiva y **no** se borra, porque los pedidos que se cobraron con ese recargo tienen que poder explicarse después; es la misma razón por la que CU-059 (borrado físico) quedó señalado como un problema de auditoría. El proceso es de mantenimiento del sistema, no uno de los cinco procesos automatizados de la tesis. |
+
+---
+
+
 
 #### SS-12 — Incidencias y Calidad de Servicio
 
@@ -6210,6 +6298,86 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 ---
 
+#### Importante CU-152 — Consultar el Registro de Auditoría
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-05 |
+| **Requisitos asociados** | IRQ-16 |
+| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por período y por resultado, y abrir cada asiento para ver el detalle de lo que cambió. |
+| **Precondición** | El usuario tiene rol Administrador o Administrador General y está autenticado. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el registro de auditoría y, si quiere, indica filtros: quién, qué tipo de recurso, entre qué fechas, y si la operación resultó exitosa o fallida. |
+| 2 | El sistema restringe la consulta a los asientos de la distribuidora del administrador. El Administrador General no lleva esa restricción y ve los de todas. |
+| 3 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, paginados. |
+| 4 | Por cada asiento informa quién lo originó, qué operación fue, sobre qué recurso, cuándo, desde qué aplicación y con qué resultado. |
+| 5 | Al abrir un asiento, el sistema muestra además qué campos cambiaron y con qué valores. |
+
+**Postcondición:** Ninguna: la consulta no modifica nada. La propia consulta **no** genera un asiento, porque leer no es una operación de escritura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el período indicado es inválido —la fecha de inicio posterior a la de fin—, el sistema informa el error. |
+| 3 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía. No es un error. |
+| — | El sistema no expone ninguna operación de modificación ni de borrado sobre el registro, para ningún rol. Ver CU-153. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | La consulta filtrada responde en menos de 3 segundos. Requiere índice por fecha, por autor y por distribuidora: sin eso, la tabla crece hasta volver inusable la consulta. |
+| **Frecuencia** | Baja: se consulta ante una disputa o una sospecha, no a diario. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. La depuración por antigüedad, si llega a hacer falta, es una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
+
+---
+
+#### Crítico · automático CU-153 — Registrar Toda Operación de Escritura
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-05 |
+| **Requisitos asociados** | IRQ-16 |
+| **Descripción** | El sistema deja constancia de cada operación que modifica datos, sin que ningún usuario lo solicite y sin que ninguna funcionalidad tenga que acordarse de hacerlo. Es lo que sostiene la trazabilidad: sin este registro, una operación hecha y deshecha no deja rastro. |
+| **Precondición** | Ninguna: el registro es parte del camino de toda petición que modifica datos. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Una petición que modifica datos —alta, modificación o baja— atraviesa el sistema. |
+| 2 | El sistema resuelve quién la origina a partir de su credencial: nunca de lo que venga en el cuerpo del mensaje. |
+| 3 | Deja pasar la operación y espera su resultado. |
+| 4 | Arma el asiento con quién, qué operación, sobre qué recurso, cuándo, desde qué aplicación, desde qué dirección de red, a qué distribuidora corresponde y con qué resultado terminó. |
+| 5 | **Depura el contenido antes de guardarlo**: las contraseñas, los tokens y cualquier credencial se reemplazan por una marca. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
+| 6 | Guarda el asiento. El registro es de sólo escritura: no existe forma de modificarlo ni de borrarlo. |
+
+**Postcondición:** Queda un asiento por cada operación que modificó datos, exitosa o fallida. Las operaciones de sólo lectura no generan asiento.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la operación falla, **igual se registra**, con el motivo del rechazo. Un intento fallido de borrar algo ajeno es justamente lo que interesa ver. |
+| 6 | Si el asiento no se puede guardar, la operación del usuario **no se interrumpe**: el fallo queda en el registro de eventos del sistema. Que la auditoría falle no puede impedir que se trabaje. |
+| — | Quedan fuera del registro las verificaciones de estado del sistema y las notificaciones del proveedor de pagos: son tráfico de máquina, no acciones de una persona, y ahogarían el registro. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | El asiento no debe agregar más de 50 ms a la operación. Se escribe sin bloquear la respuesta al usuario. |
+| **Frecuencia** | Automático, una vez por cada operación de escritura del sistema. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y hay que definir desde el principio cuánto tiempo se conserva. La depuración por antigüedad es un proceso del sistema, nunca una operación disponible para un usuario. |
+
+---
+
+
 ### 7.6 Casos de Uso Expandidos — Módulos Inteligentes (CU-105 a CU-108)
 
 Los cuatro casos que siguen corresponden a los módulos inteligentes diseñados y
@@ -6537,7 +6705,7 @@ La matriz relaciona cada requisito de información y cada caso de uso con los ob
 sistema que contribuye a alcanzar. Las marcas de los casos de uso se derivan del campo
 **Objetivos asociados** que cada uno declara en la sección 7.
 
-Comprende los 15 requisitos de información, los 8 requisitos no funcionales y los 151 casos de uso
+Comprende los 15 requisitos de información, los 8 requisitos no funcionales y los 153 casos de uso
 que declaran al menos un objetivo. Los casos restantes corresponden a operaciones de
 consulta y de soporte que no realizan un objetivo del sistema por sí mismas.
 
