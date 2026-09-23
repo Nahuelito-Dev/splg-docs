@@ -4,11 +4,12 @@ Los documentos que se usan para **construir** el sistema. No son entregables de
 la cátedra: los cinco documentos del Proceso Unificado están en la raíz del
 repositorio, y el sitio publicado se genera de ahí.
 
-Acá hay ocho, y cada uno responde una pregunta distinta.
+Acá hay nueve, y cada uno responde una pregunta distinta.
 
 | Si querés saber… | Abrí |
 |---|---|
-| **en qué trabajar ahora** | [ESTADO-Y-PRIORIDADES](ESTADO-Y-PRIORIDADES.md) |
+| **en qué quedamos y qué sigue mañana** | [DONDE-QUEDAMOS](DONDE-QUEDAMOS.md) |
+| en qué trabajar, con el panorama completo | [ESTADO-Y-PRIORIDADES](ESTADO-Y-PRIORIDADES.md) |
 | si un endpoint o un caso de uso puntual anda | [ESTADO-DETALLE](ESTADO-DETALLE.md) |
 | qué está mal y falta corregir | [HALLAZGOS](HALLAZGOS.md) |
 | cómo está armado el backend y qué refactorizar | [ARQUITECTURA](ARQUITECTURA.md) |
@@ -17,7 +18,7 @@ Acá hay ocho, y cada uno responde una pregunta distinta.
 | qué son los procesos automáticos de la tesis | [MODULOS-INTELIGENTES](MODULOS-INTELIGENTES.md) |
 | qué hay alrededor: mercado y otros sistemas propios | [REFERENCIAS](REFERENCIAS.md) |
 
-**Empezá por `ESTADO-Y-PRIORIDADES`.** Los demás son el detalle que respalda lo
+**Empezá por `DONDE-QUEDAMOS`.** Los demás son el detalle que respalda lo
 que ese documento afirma.
 
 ## historico/
