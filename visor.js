@@ -96,17 +96,33 @@
     aplicar();
     marco.style.visibility = "";
   }
+  function escalar(factor, cx, cy) {
+    // Amplia dejando quieto el punto (cx, cy) del lienzo. Si no se indica uno,
+    // el que queda quieto es el centro.
+    var antes = escala;
+    escala = Math.min(6, Math.max(0.03, escala * factor));
+    if (escala === antes) return;
+    var disp = lienzo.getBoundingClientRect();
+    if (cx === undefined) { cx = disp.width / 2; cy = disp.height / 2; }
+    desplX = cx - (cx - desplX) / antes * escala;
+    desplY = cy - (cy - desplY) / antes * escala;
+    sujetar();
+    aplicar();
+  }
   function acercar(paso) {
     // Pasos proporcionales: con incrementos fijos de 0,25 el diagrama completo
     // saltaba del 9% al 34% de un tirón.
-    var antes = escala;
-    escala = Math.min(6, Math.max(0.03, escala * Math.pow(1.3, paso)));
-    // El punto que estaba en el centro del lienzo sigue en el centro.
+    escalar(Math.pow(1.3, paso));
+  }
+  function sujetar() {
+    // Sin esto se puede arrastrar el diagrama fuera de la pantalla y queda un
+    // lienzo vacío del que no se vuelve mas que con AJUSTAR. Se deja siempre
+    // una franja visible del ancho de un margen.
     var disp = lienzo.getBoundingClientRect();
-    var cx = disp.width / 2, cy = disp.height / 2;
-    desplX = cx - (cx - desplX) / antes * escala;
-    desplY = cy - (cy - desplY) / antes * escala;
-    aplicar();
+    var w = marco.offsetWidth * escala, h = marco.offsetHeight * escala;
+    var m = 80;
+    desplX = Math.min(disp.width - m, Math.max(m - w, desplX));
+    desplY = Math.min(disp.height - m, Math.max(m - h, desplY));
   }
   function rotulo(fig) {
     if (fig.classList.contains("umlimg")) return fig.getAttribute("alt") || "";
@@ -178,30 +194,55 @@
     lienzo.addEventListener("dblclick", function () { acercar(2); });
     lienzo.addEventListener("wheel", function (ev) {
       ev.preventDefault();
-      acercar(ev.deltaY < 0 ? 1 : -1);
+      var disp = lienzo.getBoundingClientRect();
+      // El trackpad dispara muchas ruedas chicas y el mouse pocas grandes: con
+      // un paso fijo, el trackpad pegaba saltos. El paso sale del gesto.
+      // ctrlKey es el pellizco del trackpad; ahi el navegador manda un delta
+      // mucho mas chico y hay que amplificarlo para que responda igual.
+      var d = ev.deltaY * (ev.deltaMode === 1 ? 16 : 1);
+      var factor = Math.exp(-d * (ev.ctrlKey ? 0.012 : 0.0022));
+      // Un golpe de rueda no puede mas que duplicar o partir al medio.
+      factor = Math.min(2, Math.max(0.5, factor));
+      escalar(factor, ev.clientX - disp.left, ev.clientY - disp.top);
     }, { passive: false });
-    lienzo.addEventListener("mousedown", function (ev) {
+    lienzo.addEventListener("pointerdown", function (ev) {
+      if (ev.button !== 0 && ev.pointerType === "mouse") return;
       arrastrando = true;
+      lienzo.setPointerCapture(ev.pointerId);
       lienzo.classList.add("arrastrando");
       x0 = ev.clientX - desplX;
       y0 = ev.clientY - desplY;
     });
-    window.addEventListener("mousemove", function (ev) {
+    lienzo.addEventListener("pointermove", function (ev) {
       if (!arrastrando) return;
+      ev.preventDefault();
       desplX = ev.clientX - x0;
       desplY = ev.clientY - y0;
+      sujetar();
       aplicar();
     });
-    window.addEventListener("mouseup", function () {
+    function soltar(ev) {
+      if (!arrastrando) return;
       arrastrando = false;
+      if (ev && ev.pointerId !== undefined && lienzo.hasPointerCapture(ev.pointerId)) {
+        lienzo.releasePointerCapture(ev.pointerId);
+      }
       lienzo.classList.remove("arrastrando");
-    });
+    }
+    lienzo.addEventListener("pointerup", soltar);
+    lienzo.addEventListener("pointercancel", soltar);
     window.addEventListener("keydown", function (ev) {
       if (!visor.hasAttribute("open")) return;
       if (ev.key === "Escape") cerrar();
       if (ev.key === "+" || ev.key === "=") acercar(1);
       if (ev.key === "-") acercar(-1);
       if (ev.key === "0") encuadrar();
+      if (ev.key === "1") { escalar(1 / escala); }
+      var salto = ev.shiftKey ? 200 : 60;
+      if (ev.key === "ArrowLeft")  { desplX += salto; sujetar(); aplicar(); }
+      if (ev.key === "ArrowRight") { desplX -= salto; sujetar(); aplicar(); }
+      if (ev.key === "ArrowUp")    { desplY += salto; sujetar(); aplicar(); }
+      if (ev.key === "ArrowDown")  { desplY -= salto; sujetar(); aplicar(); }
     });
   }
 
