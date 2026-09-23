@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-051 Gestionar Vehiculos
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -7,52 +8,80 @@ sequenceDiagram
     alt Consultas del parque, GET /car, /car/:id, /car/user/:userId, /car/patent/:patent
         alt Listado completo
             CTRL->>SRV: findAll(distributorId)
+            activate SRV
             SRV->>CREP: find(where distributor_id si vino, relations user y user.delivery)
+            activate CREP
             CREP-->>SRV: Car[]
+            deactivate CREP
             SRV-->>CTRL: Car[]
+            deactivate SRV
         else Por car_id
             CTRL->>SRV: findOne(id, distributorId)
+            activate SRV
             SRV->>CREP: findOne(where car_id y distributor_id, relations user y user.delivery)
+            activate CREP
             CREP-->>SRV: Car o null
+            deactivate CREP
             alt No encontrado o de otro tenant
                 SRV-->>CTRL: NotFoundException Car with ID not found
+                deactivate SRV
             else Encontrado
                 SRV-->>CTRL: Car
             end
         else Por user_id
             CTRL->>SRV: findByUserId(userId, distributorId)
+            activate SRV
             SRV->>CREP: find(where user_id y distributor_id, relations user)
+            activate CREP
             CREP-->>SRV: Car[]
+            deactivate CREP
             SRV-->>CTRL: Car[]
+            deactivate SRV
         else Por patente
             CTRL->>SRV: findByPatent(patent, distributorId)
+            activate SRV
             SRV->>CREP: findOne(where car_patent y distributor_id, relations user y user.delivery)
+            activate CREP
             CREP-->>SRV: Car o null
+            deactivate CREP
             SRV-->>CTRL: Car o null sin excepcion
+            deactivate SRV
         end
     else Edicion, PATCH /car/:id
         CTRL->>SRV: update(id, updateCarDto, distributorId)
+        activate SRV
         SRV->>SRV: findOne(id, distributorId), guardia de tenant
         SRV->>CREP: preload(car_id mas campos del dto)
+        activate CREP
         CREP-->>SRV: Car fusionado o undefined
+        deactivate CREP
         alt preload no encontro el vehiculo
             SRV-->>CTRL: NotFoundException Car with ID not found
+            deactivate SRV
         else Vehiculo cargado
             alt El dto cambia la patente
                 SRV->>CREP: findOne(where car_patent nueva)
+                activate CREP
                 CREP-->>SRV: Car existente o null
+                deactivate CREP
                 alt La patente pertenece a otro vehiculo
                     SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
                 end
             end
             SRV->>CREP: save(car)
+            activate CREP
             CREP-->>SRV: Car actualizado
+            deactivate CREP
             SRV-->>CTRL: Car
         end
     else Baja, DELETE /car/:id
         CTRL->>SRV: remove(id, distributorId)
+        activate SRV
         SRV->>SRV: findOne(id, distributorId), guardia de tenant
         SRV->>CREP: remove(car)
+        activate CREP
         CREP-->>SRV: entidad eliminada
+        deactivate CREP
         SRV-->>CTRL: mensaje Car deleted successfully y carId
+        deactivate SRV
     end

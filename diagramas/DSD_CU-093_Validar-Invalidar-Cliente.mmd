@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-093 Validar Invalidar Cliente
     autonumber
     participant ADM as Admin o SuperAdmin
     participant CTRL as CustomersController
@@ -7,31 +8,45 @@ sequenceDiagram
 
     alt Validar, PATCH /customers/:id/validate
         ADM->>CTRL: validateCustomer(id)
+        activate CTRL
         CTRL->>SRV: validateCustomer(id)
+        activate SRV
         SRV->>SRV: findOne(id), sin requesterUserId, es admin
         SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        activate CREP
         CREP-->>SRV: Customer o null
+        deactivate CREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV->>SRV: customer.validated igual a true
             SRV->>CREP: save(customer)
+            activate CREP
             CREP-->>SRV: Customer actualizado
+            deactivate CREP
             SRV-->>CTRL: Customer
         end
     else Invalidar, PATCH /customers/:id/invalidate
         ADM->>CTRL: invalidateCustomer(id)
         CTRL->>SRV: invalidateCustomer(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>CREP: findOne(where customer_id)
+        activate CREP
         CREP-->>SRV: Customer o null
+        deactivate CREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV->>SRV: customer.validated igual a false
             SRV->>CREP: save(customer)
+            activate CREP
             CREP-->>SRV: Customer actualizado
+            deactivate CREP
             SRV-->>CTRL: Customer
         end
     end
     CTRL-->>ADM: 200 Customer
+    deactivate CTRL

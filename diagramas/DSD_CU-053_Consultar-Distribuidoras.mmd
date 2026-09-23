@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-053 Consultar Distribuidoras
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -7,22 +8,34 @@ sequenceDiagram
     participant REPO as RepositoryDistributor
 
     SA->>GRD: GET /distributor o GET /distributor/:id
+    activate GRD
     GRD->>CTRL: rol super_admin verificado
+    activate CTRL
     alt Listado completo, GET /distributor
         CTRL->>SRV: findAll()
+        activate SRV
         SRV->>REPO: find(order createdAt ASC)
+        activate REPO
         REPO-->>SRV: Distributor[]
+        deactivate REPO
         SRV-->>CTRL: Distributor[]
+        deactivate SRV
         CTRL-->>SA: 200 Distributor[]
+        deactivate CTRL
     else Detalle, GET /distributor/:id
         CTRL->>CTRL: ParseUUIDPipe valida el id
         CTRL->>SRV: findOne(id)
+        activate SRV
         SRV->>REPO: findOne(where distributor_id igual a id)
+        activate REPO
         REPO-->>SRV: Distributor o null
+        deactivate REPO
         alt No existe
             SRV-->>CTRL: NotFoundException, distribuidora no encontrada
+            deactivate SRV
         else Existe
             SRV-->>CTRL: Distributor
             CTRL-->>SA: 200 Distributor
         end
     end
+    deactivate GRD

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-081 Consultar Los Pedidos Asignados Al Chofer
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -13,14 +14,22 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: findByDelivery(deliveryId, paginationDto, distributorId)
+        activate SRV
         SRV->>ORD: findByDelivery(deliveryId, limit, offset, distributorId)
+        activate ORD
         ORD->>ORD: scoped(where delivery_id, distributorId)
         ORD->>REP: findAndCount(where, take, skip, relations customer e items, order createdAt DESC)
+        activate REP
         REP-->>ORD: orders y total
+        deactivate REP
         ORD-->>SRV: orders, total, limit y offset
+        deactivate ORD
         SRV-->>CTRL: PaginatedOrders
+        deactivate SRV
         loop Por cada pedido asignado
             CTRL->>MAP: toDto(order)
+            activate MAP
             MAP-->>CTRL: OrderResponseDto
+            deactivate MAP
         end
     end

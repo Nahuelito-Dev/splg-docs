@@ -1,16 +1,23 @@
 sequenceDiagram
+    title DSD — CU-137 Registrar la Verificacion Tecnica Vehicular
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant VREP as RepositoryCar
 
     CTRL->>SRV: registrarVerificacion(vehiculoId, vencimiento, distribuidora)
+    activate SRV
     SRV->>VREP: findOne(where car_id y distributor_id)
+    activate VREP
     VREP-->>SRV: Car o null
+    deactivate VREP
     SRV->>VREP: save(vehículo con el vencimiento)
+    activate VREP
     VREP-->>SRV: Car actualizado
+    deactivate VREP
     alt el vehículo existe
         SRV-->>CTRL: Car con la verificación cargada
+        deactivate SRV
     else el vehículo no existe
         SRV-->>CTRL: NotFoundException
     end

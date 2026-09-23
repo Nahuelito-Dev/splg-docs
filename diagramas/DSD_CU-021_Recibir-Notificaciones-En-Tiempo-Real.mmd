@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-021 Recibir Notificaciones En Tiempo Real
     autonumber
     participant NCTRL as NotificationsController
     participant NSRV as NotificationsService
@@ -12,20 +13,30 @@ sequenceDiagram
 
     NCTRL->>NCTRL: si no es admin, forzar userId al del token
     NCTRL->>NSRV: saveNotificationToken(userId, body.token, body.platform)
+    activate NSRV
     NSRV->>CREP: findOne(user_id)
+    activate CREP
     alt Es un cliente
         CREP-->>NSRV: Customer
+        deactivate CREP
         NSRV->>CREP: save(customer con notification_token)
+        activate CREP
         NSRV-->>NCTRL: success true
+        deactivate NSRV
     else No es cliente
         CREP-->>NSRV: null
+        deactivate CREP
         NSRV->>DREP: findOne(user_id)
+        activate DREP
         alt Es un chofer
             DREP-->>NSRV: Delivery
+            deactivate DREP
             NSRV->>DREP: save(delivery con notification_token)
+            activate DREP
             NSRV-->>NCTRL: success true
         else No existe el perfil
             DREP-->>NSRV: null
+            deactivate DREP
             NSRV-->>NCTRL: success false, error User not found
         end
     end
@@ -35,8 +46,10 @@ sequenceDiagram
         CGW->>CGW: client.disconnect()
     else Con token
         CGW->>ASRV: decodeToken(token)
+        activate ASRV
         alt Token invalido
             ASRV-->>CGW: UnauthorizedException
+            deactivate ASRV
             CGW->>CGW: client.disconnect()
         else Token valido
             ASRV-->>CGW: email, user y sub
@@ -47,15 +60,23 @@ sequenceDiagram
     end
 
     opt Cambio de estado del pedido, ver CU-018
-        RT->>CGW: notifyCustomer(customerId, event, payload)
+        RT-)CGW: notifyCustomer(customerId, event, payload)
+        activate CGW
         CGW->>CGW: server.to(roomName).emit(event, payload)
         NOT->>NSRV: sendOrderConfirmation(customerId, orderId, token)
+        activate NSRV
         NSRV->>CREP: findOne(user_id, relations user)
+        activate CREP
         alt Sin cliente o sin token registrado
             NSRV-->>NOT: success false, error No notification token
+            deactivate NSRV
         else Token disponible
             NSRV->>FCM: sendToToken(notificationToken, message)
+            activate FCM
             FCM-->>NSRV: messageId
+            deactivate FCM
             NSRV-->>NOT: success true y messageId
         end
     end
+    deactivate CGW
+    deactivate CREP

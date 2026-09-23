@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-013 Asignar Pedido Automaticamente Por Proximidad Vista General
     autonumber
     participant ORQ as DispatchOrchestratorService
     participant OFERTAS as DispatchOfferRepositoryPort
@@ -8,21 +9,35 @@ sequenceDiagram
     participant DGW as DriversGateway
 
     ORQ->>OFERTAS: findOfferedDriverIds(order.order_id)
+    activate OFERTAS
     OFERTAS-->>ORQ: choferes ya contactados
+    deactivate OFERTAS
     loop findNearestAvailable, radiusKm en 5, 10, 15, 20
         ORQ->>RT: findNearbyDrivers(lat, lng, radiusKm)
+        activate RT
         RT->>REDIS: getNearbyDrivers(lat, lng, radiusKm)
+        activate REDIS
         REDIS-->>RT: GEORADIUS sobre drivers:locations, orden ASC
+        deactivate REDIS
         RT-->>ORQ: driverIds por cercania
+        deactivate RT
         ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        activate DEL
         DEL-->>ORQ: choferes de la misma distribuidora
+        deactivate DEL
     end
     alt Hay un candidato aun no contactado
         ORQ->>OFERTAS: create(orderId, candidate, expiresAt, distributorId)
+        activate OFERTAS
         OFERTAS-->>ORQ: DispatchOffer en estado OFFERED
-        ORQ->>RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        deactivate OFERTAS
+        ORQ-)RT: notifyDriverNewOrder(candidate, payload NEW_ORDER)
+        activate RT
         RT->>DGW: notifyNewOrder(candidate, payload)
+        activate DGW
         DGW-->>ORQ: emit server:new-order-request en la room del chofer
+        deactivate DGW
     else Sin candidatos nuevos en ningun radio
         ORQ->>ORQ: logger.debug y devuelve null
     end
+    deactivate RT

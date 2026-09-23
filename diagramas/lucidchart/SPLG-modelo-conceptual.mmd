@@ -1,0 +1,147 @@
+classDiagram
+    direction TB
+
+    class Distribuidora {
+        razon_social
+        cuit
+        activa
+    }
+    class Usuario {
+        full_name
+        email
+        phone_number
+    }
+    class Rol {
+        nombre
+    }
+    class Cliente {
+        notification_token
+    }
+    class Chofer {
+        validated
+        isActive
+        calification
+        balance
+    }
+    class Administrador
+    class Pedido {
+        status
+        totalAmount
+        paymentMethod
+        paymentStatus
+        scheduled_date
+        deposit_amount
+        deposit_paid
+        deliveryCode
+        cancellationReason
+    }
+    class ItemPedido {
+        quantity
+        unitPrice
+        subtotal
+    }
+    class Producto {
+        type
+        price
+        stock
+    }
+    class Promocion {
+        quantity
+        discountPercentage
+    }
+    class Envase {
+        serial_number
+        state
+        deposit_value
+    }
+    class MovimientoEnvase {
+        from_state
+        to_state
+        fecha
+    }
+    class DireccionEntrega {
+        formatted_address
+        latitude
+        longitude
+        additional_instructions
+    }
+    class ZonaCobertura {
+        nombre
+        poligono
+        recargo
+    }
+    class FranjaHoraria {
+        startTime
+        endTime
+        capacity
+    }
+    class OfertaDespacho {
+        expiresAt
+        status
+    }
+    class Vehiculo {
+        patente
+        kilometraje
+        vencimiento_rto
+    }
+    class UbicacionGPS {
+        lat
+        lng
+    }
+    class Pago {
+        gateway
+        amount
+        status
+        is_deposit
+    }
+    class Reclamo {
+        reason
+        photoUrl
+        status
+    }
+    class Incidencia {
+        tipo
+        descripcion
+    }
+    class Calificacion {
+        puntaje
+        comentario
+    }
+
+    Usuario <|-- Cliente : es un
+    Usuario <|-- Chofer : es un
+    Usuario <|-- Administrador : es un
+    Usuario "N" -- "1" Rol : tiene asignado
+
+    Distribuidora "1" -- "N" Chofer : emplea
+    Distribuidora "1" -- "N" Administrador : emplea
+    Distribuidora "1" -- "N" Producto : comercializa
+    Distribuidora "1" -- "N" Envase : posee
+    Distribuidora "1" -- "N" Pedido : gestiona
+    Distribuidora "1" *-- "N" ZonaCobertura : define
+    Distribuidora "1" *-- "N" FranjaHoraria : define
+
+    Cliente "1" -- "N" Pedido : realiza
+    Cliente "1" *-- "N" DireccionEntrega : registra
+
+    Pedido "1" *-- "N" ItemPedido : contiene
+    ItemPedido "N" -- "1" Producto : referencia
+    Pedido "N" -- "1" DireccionEntrega : se entrega en
+    Pedido "N" -- "0..1" FranjaHoraria : se programa en
+    Pedido "N" -- "0..1" Chofer : es asignado a
+    Pedido "1" *-- "N" OfertaDespacho : se ofrece mediante
+    OfertaDespacho "N" -- "1" Chofer : se dirige a
+    Pedido "1" -- "N" Pago : se salda con
+    Pedido "1" -- "N" Reclamo : origina
+    Pedido "1" -- "N" Incidencia : origina
+    Pedido "1" -- "0..1" Calificacion : recibe
+
+    Chofer "1" -- "N" Vehiculo : conduce
+    Chofer "1" -- "1" UbicacionGPS : se ubica en
+    Chofer "N" -- "N" ZonaCobertura : opera en
+
+    Producto "1" *-- "N" Promocion : ofrece
+    Envase "N" -- "1" Producto : materializa
+    Envase "1" *-- "N" MovimientoEnvase : registra
+    MovimientoEnvase "N" -- "0..1" Pedido : se origina en
+    MovimientoEnvase "N" -- "0..1" Usuario : es ejecutado por

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-007 Consultar Historial De Pedidos
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -11,14 +12,22 @@ sequenceDiagram
     else Autorizado
         CTRL->>CTRL: scope null si es CUSTOMER, distributorId si es staff
         CTRL->>SRV: findByCustomer(customerId, paginationDto, scope)
+        activate SRV
         SRV->>ORD: findByCustomer(customerId, limit, offset, distributorId)
+        activate ORD
         ORD->>ORD: scoped(where customer_id, distributorId)
         ORD->>REP: findAndCount(where, take, skip, relations, order createdAt DESC)
+        activate REP
         REP-->>ORD: orders y total
+        deactivate REP
         ORD-->>SRV: orders, total, limit y offset
+        deactivate ORD
         SRV-->>CTRL: PaginatedOrders
+        deactivate SRV
         loop Por cada pedido de la pagina
             CTRL->>MAP: toDto(order)
+            activate MAP
             MAP-->>CTRL: OrderResponseDto
+            deactivate MAP
         end
     end

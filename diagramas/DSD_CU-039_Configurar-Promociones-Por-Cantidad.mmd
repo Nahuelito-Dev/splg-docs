@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-039 Configurar Promociones Por Cantidad
     autonumber
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
@@ -8,20 +9,29 @@ sequenceDiagram
     participant DEC as Decimal
 
     CTRL->>SRV: update(id, dto con promotions, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    activate GREP
     GREP-->>SRV: GasCylinder o null
+    deactivate GREP
     alt Producto inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        deactivate SRV
     else Producto del tenant
         SRV->>GREP: preload(gas_cylinder_id mas promotions)
+        activate GREP
         GREP-->>SRV: GasCylinder fusionado
+        deactivate GREP
         SRV->>GREP: save(gasCylinder)
+        activate GREP
         GREP-->>SRV: GasCylinder con el JSONB de promociones
+        deactivate GREP
         SRV-->>CTRL: GasCylinder
     end
 
     UC->>PRC: priceItem(gasCylinder.price, gasCylinder.promotions, quantity)
+    activate PRC
     PRC->>PRC: bestApplicablePromotion(promotions, quantity)
     alt No hay promociones cargadas
         PRC->>PRC: devolver null, sin descuento
@@ -30,10 +40,17 @@ sequenceDiagram
     end
     alt Se encontro una promocion aplicable
         PRC->>DEC: discountFactor igual 1 menos discountPercentage sobre 100
+        activate DEC
         DEC-->>PRC: factor de descuento
+        deactivate DEC
         PRC->>DEC: unitPrice.times(discountFactor)
+        activate DEC
         DEC-->>PRC: unitPrice con descuento
+        deactivate DEC
     end
     PRC->>DEC: unitPrice.times(quantity)
+    activate DEC
     DEC-->>PRC: subtotal
+    deactivate DEC
     PRC-->>UC: ItemPricing con unitPrice y subtotal
+    deactivate PRC

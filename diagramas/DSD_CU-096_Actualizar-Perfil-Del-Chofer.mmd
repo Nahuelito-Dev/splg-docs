@@ -1,19 +1,28 @@
 sequenceDiagram
+    title DSD — CU-096 Actualizar Perfil Del Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: update(id, updateDeliveryDto)
+    activate SRV
     SRV->>DREP: preload(delivery_id mas campos del dto)
+    activate DREP
     DREP-->>SRV: Delivery fusionado o undefined
+    deactivate DREP
     alt preload no encontro el chofer
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
     else Chofer cargado
         SRV->>DREP: save(delivery)
+        activate DREP
         DREP-->>SRV: Delivery actualizado
+        deactivate DREP
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery con user y role
+        deactivate DREP
         SRV-->>CTRL: Delivery completo
     end

@@ -1,14 +1,19 @@
 sequenceDiagram
+    title DSD — CU-130 Buscar Cliente por Usuario
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+    activate SRV
     SRV->>CREP: findOne(where user_id, relations user)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt la cuenta tiene ficha
         SRV-->>CTRL: Customer
+        deactivate SRV
     else la cuenta no tiene ficha
         SRV-->>CTRL: NotFoundException Customer for user ID not found
     end

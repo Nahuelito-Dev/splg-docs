@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-027 Ver Reporte De Ventas Por Chofer
     autonumber
     participant CTRL as ReportsController
     participant SRV as ReportsService
@@ -10,18 +11,26 @@ sequenceDiagram
         CTRL-->>CTRL: BadRequestException Invalid date format
     else Rango valido
         CTRL->>SRV: getSalesByDriver(startDate, endDate, distributorId)
+        activate SRV
         SRV->>OREP: find(status DELIVERED, deliveredAt Between, distributor_id opcional, relations delivery y delivery.user)
+        activate OREP
         OREP-->>SRV: Order[]
+        deactivate OREP
         loop Por cada pedido entregado
             alt El pedido no tiene delivery o delivery.user
                 SRV->>SRV: continue, se descarta
             else Pedido con chofer asignado
                 SRV->>SRV: acumular totalOrders del driverId
                 SRV->>DEC: plus(order.totalAmount)
+                activate DEC
                 DEC-->>SRV: totalSales acumulado
+                deactivate DEC
             end
         end
         SRV->>DEC: toNumber() por cada entrada del reporte
+        activate DEC
         DEC-->>SRV: totales serializables a JSON
+        deactivate DEC
         SRV-->>CTRL: arreglo de driverId, driverName, totalOrders y totalSales
+        deactivate SRV
     end

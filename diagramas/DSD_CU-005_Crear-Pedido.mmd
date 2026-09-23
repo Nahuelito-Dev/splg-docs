@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-005 Crear Pedido
     autonumber
     actor CLI as App Cliente
     participant CTRL as OrderController
@@ -16,37 +17,65 @@ sequenceDiagram
     participant ORD as OrderRepositoryPort
 
     CLI->>CTRL: POST /orders con el dto del pedido
+    activate CTRL
     CTRL->>SRV: create(dto, distributorId del header X-Distributor)
+    activate SRV
     SRV->>UC: execute(dto, distributorId)
+    activate UC
     opt Sin distributorId explicito
         UC->>DIS: getDefault()
+        activate DIS
         DIS-->>UC: distribuidora por defecto
+        deactivate DIS
     end
     UC->>QR: connect y startTransaction()
+    activate QR
     UC->>CZ: checkCoverage(distributorId, lat, lng)
+    activate CZ
     CZ-->>UC: covered y surcharge de zona
+    deactivate CZ
     opt Vienen scheduledDate y timeSlotId
         UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
+        activate TS
         TS-->>UC: cupo disponible con lock pesimista
+        deactivate TS
     end
     loop Por cada item del pedido
         UC->>STK: reserve(manager, gasCylinderId, quantity)
+        activate STK
         STK-->>UC: GasCylinder bloqueado y descontado
+        deactivate STK
         UC->>PRC: priceItem(price, promotions, quantity)
+        activate PRC
         PRC-->>UC: unitPrice y subtotal
+        deactivate PRC
     end
     UC->>PRC: applyPaymentSurcharge(total mas recargo de zona, paymentMethod)
+    activate PRC
     PRC-->>UC: totalAmount final
+    deactivate PRC
     UC->>QR: save(Order con items) y commitTransaction()
     alt paymentMethod MERCADOPAGO
         UC->>UC: createMercadoPagoCheckout(savedOrder, items, customer)
         Note over UC: NO se despacha: espera el webhook, ver DSD 4.11
     else Efectivo o transferencia
         UC->>ORQ: offerToNextDriver(savedOrder), ver DSD 4.4
+        activate ORQ
     end
-    UC->>NOT: sendOrderConfirmation(customerId, orderId, token)
-    UC->>RT: notifyAdmins(order:created, payload)
+    UC-)NOT: sendOrderConfirmation(customerId, orderId, token)
+    activate NOT
+    UC-)RT: notifyAdmins(order:created, payload)
+    activate RT
     UC->>ORD: findByIdFull(order_id)
+    activate ORD
     ORD-->>UC: Order con relaciones
+    deactivate ORD
     UC-->>CTRL: order y paymentUrl
+    deactivate UC
     CTRL-->>CLI: OrderResponseDto
+    deactivate CTRL
+    deactivate RT
+    deactivate NOT
+    deactivate ORQ
+    deactivate QR
+    deactivate SRV

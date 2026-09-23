@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-099 Consultar Los Tokens De Un Usuario
     autonumber
     participant USR as Usuario autenticado
     participant CTRL as NotificationsController
@@ -6,15 +7,21 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     USR->>CTRL: GET /notifications/user/:userId
+    activate CTRL
     CTRL->>CTRL: isAdmin(user)
     alt No es admin y el userId no es el suyo
         CTRL-->>USR: ForbiddenException, no autorizado a ver tokens de otro usuario
+        deactivate CTRL
     else Es admin o consulta su propio userId
         CTRL->>SRV: getUserNotificationTokens(userId)
+        activate SRV
         SRV->>CREP: findOne(where user_id)
+        activate CREP
         CREP-->>SRV: Customer o null
+        deactivate CREP
         alt No hay perfil de cliente
             SRV-->>CTRL: tokens vacio
+            deactivate SRV
         else Hay cliente
             SRV->>SRV: arma el arreglo con notification_token si existe
             SRV-->>CTRL: tokens

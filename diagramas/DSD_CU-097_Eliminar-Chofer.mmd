@@ -1,17 +1,24 @@
 sequenceDiagram
+    title DSD — CU-097 Eliminar Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: remove(id)
+    activate SRV
     SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    activate DREP
     DREP-->>SRV: Delivery o null
+    deactivate DREP
     alt Chofer inexistente
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
     else Chofer encontrado
         SRV->>DREP: softDelete(where delivery_id)
+        activate DREP
         DREP-->>SRV: UpdateResult, se sella deletedAt
+        deactivate DREP
         SRV-->>CTRL: mensaje Delivery deleted successfully
     end

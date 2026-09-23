@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-004 Gestionar Perfil De Usuario
     autonumber
     participant UCTRL as UsersController
     participant USRV as UsersService
@@ -10,10 +11,14 @@ sequenceDiagram
 
     alt Lectura del perfil base
         UCTRL->>USRV: findOne(id)
+        activate USRV
         USRV->>UREP: findOne(user_id, relations role customer delivery cars addresses)
+        activate UREP
         alt No existe
             UREP-->>USRV: null
+            deactivate UREP
             USRV-->>UCTRL: NotFoundException User with ID not found
+            deactivate USRV
         else Existe
             UREP-->>USRV: User
             USRV-->>UCTRL: User
@@ -27,13 +32,18 @@ sequenceDiagram
                 UCTRL->>UCTRL: pickSelfEditableFields(updateUserDto)
             end
             UCTRL->>USRV: update(id, payload)
+            activate USRV
             USRV->>UREP: preload(user_id, payload)
+            activate UREP
             alt preload devuelve undefined
                 UREP-->>USRV: undefined
+                deactivate UREP
                 USRV-->>UCTRL: NotFoundException User with ID not found
+                deactivate USRV
             else Entidad precargada
                 UREP-->>USRV: User
                 USRV->>QR: connect() y startTransaction()
+                activate QR
                 USRV->>QR: manager.save(user)
                 USRV->>QR: commitTransaction() y release()
                 USRV-->>UCTRL: User actualizado
@@ -44,13 +54,22 @@ sequenceDiagram
     alt Datos de cliente
         CCTRL->>CCTRL: scope(user)
         CCTRL->>CSRV: findOneByUserId(userId, scope)
+        activate CSRV
         CSRV->>CSRV: assertOwnership(userId, requesterUserId)
         CSRV->>CREP: findOne(user_id, relations user role addresses)
+        activate CREP
         CREP-->>CSRV: Customer
+        deactivate CREP
         CSRV-->>CCTRL: Customer
+        deactivate CSRV
         CCTRL->>CSRV: update(id, updateCustomerDto, scope)
+        activate CSRV
         CSRV->>CSRV: findOne(id, requesterUserId)
         CSRV->>CREP: preload(customer_id, updateCustomerDto)
+        activate CREP
         CSRV->>CREP: save(customer)
         CSRV-->>CCTRL: Customer actualizado
+        deactivate CSRV
     end
+    deactivate CREP
+    deactivate QR

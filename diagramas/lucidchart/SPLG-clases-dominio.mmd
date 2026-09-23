@@ -1,0 +1,204 @@
+classDiagram
+    direction TB
+
+    class Order {
+        +order_id: UUID
+        +status: OrderStatus
+        +paymentMethod: PaymentMethod
+        +paymentType: PaymentType
+        +paymentStatus: PaymentStatus
+        +totalAmount: Decimal
+        +deposit_amount: Decimal
+        +deposit_paid: boolean
+        +scheduled_date: Date
+        +deliveryLatitude: string
+        +deliveryLongitude: string
+        +deliveryCode: string
+        +gatewayPaymentId: string
+        +cancellationReason: string
+        +acceptedAt: Date
+        +onTheWayAt: Date
+        +deliveredAt: Date
+        +createdAt: Date
+    }
+
+    class OrderItem {
+        +order_item_id: UUID
+        +quantity: int
+        +unitPrice: Decimal
+        +subtotal: Decimal
+    }
+
+    class GasCylinder {
+        +gas_cylinder_id: UUID
+        +type: string
+        +weight: Decimal
+        +price: Decimal
+        +stock: int
+        +isActive: boolean
+        +promotions: Promotion[]
+    }
+
+    class Promotion {
+        +quantity: int
+        +discountPercentage: Decimal
+    }
+
+    class Delivery {
+        +delivery_id: UUID
+        +validated: boolean
+        +isActive: boolean
+        +calification: double
+        +balance: double
+        +latLng: string
+        +actual_location: string
+        +notification_token: string
+    }
+
+    class Claim {
+        +claim_id: UUID
+        +reason: string
+        +description: string
+        +status: ClaimStatus
+        +photoUrl: string
+        +resolutionNote: string
+        +createdAt: Date
+    }
+
+    class Customer {
+        +customer_id: UUID
+        +notification_token: string
+        +lat_lang: string
+        +validated: string
+    }
+
+    class User {
+        +user_id: UUID
+        +firebase_uid: string
+        +full_name: string
+        +email: string
+        +phone_number: string
+        +phone_verified: boolean
+        +email_verified: boolean
+        +blocked: boolean
+    }
+
+    class Distributor {
+        +distributor_id: UUID
+    }
+    class TimeSlot {
+        +time_slot_id: UUID
+    }
+    class UserAddress {
+        +address_id: UUID
+    }
+    class Role {
+        +role_id: UUID
+    }
+
+    class OrderStatus {
+        <<enumeration>>
+        PENDING
+        ACCEPTED
+        ON_THE_WAY
+        DELIVERED
+        CANCELLED
+        RESERVED
+    }
+    class PaymentMethod {
+        <<enumeration>>
+        CASH
+        MERCADOPAGO
+        TRANSFER
+    }
+    class ClaimStatus {
+        <<enumeration>>
+        PENDING
+        IN_PROCESS
+        RESOLVED
+        REJECTED
+    }
+
+    Order "0..*" --> "1" Distributor : pertenece a
+    Order "0..*" --> "1" User : lo pide
+    Order "0..*" --> "0..1" Delivery : lo lleva
+    Order "0..*" --> "0..1" TimeSlot : se programa en
+    Order "0..*" --> "1" UserAddress : se entrega en
+    Order "1" *-- "1..*" OrderItem : compone
+
+    OrderItem "0..*" --> "1" GasCylinder : refiere a
+    GasCylinder "0..*" --> "1" Distributor : pertenece a
+    GasCylinder "1" *-- "0..*" Promotion : define
+
+    Delivery "0..*" --> "1" Distributor : pertenece a
+    Delivery "1" --> "1" User : es un
+
+    Claim "0..*" --> "1" Distributor : pertenece a
+    Claim "0..*" --> "1" Order : reclama sobre
+    Claim "0..*" --> "1" User : lo presenta
+
+    Customer "1" --> "1" User : es un
+    User "0..*" --> "0..1" Role : tiene
+    User "1" --> "0..*" UserAddress : registra
+
+    Order ..> OrderStatus : usa
+    Order ..> PaymentMethod : usa
+    Claim ..> ClaimStatus : usa
+
+    %% Lo que sigue está especificado en la documentación pero todavía no
+    %% implementado. Va marcado para no confundir el diseño con lo construido.
+    class Cart {
+        <<propuesto>>
+        +cart_id: UUID
+        +updatedAt: Date
+    }
+    class CartItem {
+        <<propuesto>>
+        +cart_item_id: UUID
+        +quantity: int
+        +unit_price: Decimal
+    }
+    class CylinderInspection {
+        <<propuesto>>
+        +inspection_id: UUID
+        +inspected_at: Date
+        +result: InspectionResult
+        +next_due_at: Date
+        +notes: string
+    }
+    class FleetMaintenance {
+        <<propuesto>>
+        +maintenance_id: UUID
+        +type: MaintenanceType
+        +scheduled_at: Date
+        +performed_at: Date
+        +odometer_km: int
+        +cost: Decimal
+    }
+    class OrderAddressChange {
+        <<propuesto>>
+        +change_id: UUID
+        +changed_at: Date
+        +reason: string
+    }
+    class Cylinder {
+        +cylinder_id: UUID
+        +serial_number: string
+    }
+    class Car {
+        +car_id: UUID
+        +patente: string
+    }
+
+    Cart "1" --> "1" User : pertenece a
+    Cart "0..*" --> "1" Distributor : pertenece a
+    Cart "1" *-- "0..*" CartItem : compone
+    CartItem "0..*" --> "1" GasCylinder : refiere a
+    CylinderInspection "0..*" --> "1" Cylinder : revisa
+    CylinderInspection "0..*" --> "1" Distributor : pertenece a
+    FleetMaintenance "0..*" --> "1" Car : se hace sobre
+    FleetMaintenance "0..*" --> "1" Distributor : pertenece a
+    Car "0..*" --> "1" User : es conducido por
+    OrderAddressChange "0..*" --> "1" Order : cambia el destino de
+    OrderAddressChange "0..*" --> "2" UserAddress : de una dirección a otra
+    OrderAddressChange "0..*" --> "1" User : lo pide

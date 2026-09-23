@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-092 Consultar Listado De Clientes
     autonumber
     participant ADM as Admin o SuperAdmin
     participant DEC as CurrentDistributorDecorator
@@ -7,9 +8,13 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     ADM->>DEC: GET /customers con PaginationDto
+    activate DEC
     DEC->>CTRL: findAll(paginationDto, distributorId)
+    activate CTRL
     CTRL->>SRV: findAll(paginationDto, distributorId)
+    activate SRV
     SRV->>CREP: createQueryBuilder customer
+    activate CREP
     SRV->>CREP: leftJoinAndSelect customer.user, user.role, user.addresses
     SRV->>CREP: take(limit) y skip(offset)
     alt Hay tenant en contexto
@@ -19,5 +24,9 @@ sequenceDiagram
     end
     SRV->>CREP: getMany()
     CREP-->>SRV: Customer[] con user role y addresses
+    deactivate CREP
     SRV-->>CTRL: Customer[]
+    deactivate SRV
     CTRL-->>ADM: 200 Customer[]
+    deactivate CTRL
+    deactivate DEC

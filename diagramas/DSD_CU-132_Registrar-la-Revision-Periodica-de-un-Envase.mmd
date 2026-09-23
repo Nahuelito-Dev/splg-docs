@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-132 Registrar la Revision Periodica de un Envase
     autonumber
     participant CTRL as CylinderController
     participant SRV as CylinderService
@@ -6,14 +7,22 @@ sequenceDiagram
     participant IREP as RepositoryCylinderInspection
 
     CTRL->>SRV: registrarRevision(envaseId, datos, distribuidora)
+    activate SRV
     SRV->>CREP: findOne(where cylinder_id y distributor_id)
+    activate CREP
     CREP-->>SRV: Cylinder o null
+    deactivate CREP
     SRV->>IREP: save(revisión)
+    activate IREP
     IREP-->>SRV: CylinderInspection guardada
+    deactivate IREP
     SRV->>CREP: save(envase con última revisión y vencimiento)
+    activate CREP
     CREP-->>SRV: Cylinder actualizado
+    deactivate CREP
     alt el envase existe y las fechas son coherentes
         SRV-->>CTRL: Cylinder con su vigencia
+        deactivate SRV
     else el envase no existe o las fechas no cierran
         SRV-->>CTRL: operación rechazada
     end

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-072 Crear Reserva Programada Con Sena
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -13,35 +14,57 @@ sequenceDiagram
     participant RT as RealtimeDispatchPort
 
     CTRL->>SRV: create(dto con isReservation, scheduledDate, depositAmount)
+    activate SRV
     SRV->>UC: execute(dto, distributorId)
+    activate UC
     alt isReservation sin scheduledDate
         UC-->>CTRL: BadRequestException, una reserva requiere scheduledDate
+        deactivate UC
     else Datos completos
         UC->>QR: startTransaction()
+        activate QR
         UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
+        activate TS
         TS-->>UC: cupo disponible con lock pesimista
+        deactivate TS
         loop Por cada item del pedido
             UC->>STK: reserve(manager, gasCylinderId, quantity)
+            activate STK
             STK-->>UC: GasCylinder bloqueado y descontado
+            deactivate STK
             UC->>PRC: priceItem(price, promotions, quantity)
+            activate PRC
             PRC-->>UC: unitPrice, subtotal
+            deactivate PRC
         end
         UC->>PRC: applyPaymentSurcharge(total, paymentMethod)
+        activate PRC
         PRC-->>UC: total con recargo
+        deactivate PRC
         UC->>QR: save(Order con status RESERVED, deposit_amount, deposit_paid false)
         UC->>QR: commitTransaction()
 
         alt Sena por MercadoPago
             UC->>PAY: createCheckout(orderId, amount deposit, isDeposit true, items)
+            activate PAY
             PAY->>GW: createCheckout(input)
+            activate GW
             GW-->>PAY: initPoint, preferenceId
+            deactivate GW
             PAY-->>UC: CreateCheckoutResult
+            deactivate PAY
         else Sena en efectivo
             UC->>UC: queda deposit_paid false hasta confirmDeposit del admin
         end
 
-        UC->>RT: notifyAdmins(order:created, payload)
+        UC-)RT: notifyAdmins(order:created, payload)
+        activate RT
         UC->>ORD: findByIdFull(order_id)
+        activate ORD
         ORD-->>UC: Order con relaciones
+        deactivate ORD
         UC-->>CTRL: order, paymentUrl
     end
+    deactivate RT
+    deactivate QR
+    deactivate SRV

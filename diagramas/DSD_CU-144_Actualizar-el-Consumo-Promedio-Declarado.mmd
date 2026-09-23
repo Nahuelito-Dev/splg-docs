@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-144 Actualizar el Consumo Promedio Declarado
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
@@ -6,13 +7,19 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: actualizarConsumo(usuarioDeLaSesion, cantidad)
+    activate SRV
     SRV->>OREP: findOne(último pedido entregado del cliente)
+    activate OREP
     OREP-->>SRV: Order o null
+    deactivate OREP
     SRV->>SRV: estimarProximaRecompra(última compra, consumo)
     SRV->>CREP: save(cliente con consumo y estimación)
+    activate CREP
     CREP-->>SRV: Customer actualizado
+    deactivate CREP
     alt el valor es razonable
         SRV-->>CTRL: Customer con la estimación nueva
+        deactivate SRV
     else el valor no es razonable
         SRV-->>CTRL: se pide confirmación
     end

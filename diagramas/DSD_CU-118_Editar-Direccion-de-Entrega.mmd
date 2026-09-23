@@ -1,17 +1,24 @@
 sequenceDiagram
+    title DSD — CU-118 Editar Direccion de Entrega
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    activate SRV
     SRV->>SRV: findOne(id, usuarioDeLaSesion)
     SRV->>AREP: preload(address_id + cambios)
+    activate AREP
     AREP-->>SRV: UserAddress fusionada o null
+    deactivate AREP
     SRV->>AREP: save(direccion)
+    activate AREP
     AREP-->>SRV: UserAddress actualizada
+    deactivate AREP
     alt la dirección existe
         SRV-->>CTRL: UserAddress actualizada
+        deactivate SRV
     else la dirección no existe
         SRV-->>CTRL: NotFoundException Address with ID not found
     end

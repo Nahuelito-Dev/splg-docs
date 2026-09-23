@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-142 Avisar los Vencimientos Proximos de la Flota
     autonumber
     participant SRV as CarService
     participant VREP as RepositoryCar
@@ -6,12 +7,18 @@ sequenceDiagram
     participant NOT as NotificationService
 
     SRV->>VREP: find(vencimientos de vehículos en la ventana)
+    activate VREP
     VREP-->>SRV: lista de Car
+    deactivate VREP
     SRV->>DREP: find(licencias en la ventana)
+    activate DREP
     DREP-->>SRV: lista de Delivery
+    deactivate DREP
     SRV->>NOT: avisar(administrador, habilitaciones por vencer)
+    activate NOT
     alt hay habilitaciones por vencer
         SRV-->>CTRL: avisos enviados y marcados
     else no hay
         SRV-->>CTRL: ciclo sin avisos
     end
+    deactivate NOT

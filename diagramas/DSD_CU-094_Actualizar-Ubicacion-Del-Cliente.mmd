@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-094 Actualizar Ubicacion Del Cliente
     autonumber
     participant CLI as Cliente o Admin
     participant CTRL as CustomersController
@@ -6,13 +7,18 @@ sequenceDiagram
     participant CREP as RepositoryCustomer
 
     CLI->>CTRL: PATCH /customers/:id/location con latLng
+    activate CTRL
     CTRL->>CTRL: scope(user), admin devuelve undefined, cliente devuelve user.user_id
     CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+    activate SRV
     SRV->>SRV: findOne(id, requesterUserId)
     SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt No existe
         SRV-->>CTRL: NotFoundException
+        deactivate SRV
     else Existe
         SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
         alt Es un cliente y el customer es de otro usuario
@@ -20,8 +26,11 @@ sequenceDiagram
         else Autorizado, dueno o admin
             SRV->>SRV: customer.lat_lang igual a latLng
             SRV->>CREP: save(customer)
+            activate CREP
             CREP-->>SRV: Customer actualizado
+            deactivate CREP
             SRV-->>CTRL: Customer
             CTRL-->>CLI: 200 Customer
+            deactivate CTRL
         end
     end

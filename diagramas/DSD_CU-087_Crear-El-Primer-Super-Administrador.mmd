@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-087 Crear El Primer Super Administrador
     autonumber
     participant OPE as Operador de instalacion
     participant AUTH as AuthGuard
@@ -10,29 +11,47 @@ sequenceDiagram
     participant USR as UsersService
 
     OPE->>AUTH: POST /admin/first-superadmin con RegisterAdminDto, sin token
+    activate AUTH
     AUTH->>AUTH: reflector.get isPublic sobre el handler
     AUTH-->>GRD: isPublic true, devuelve true sin validar token
+    deactivate AUTH
     GRD->>GRD: canActivate, isPublic true, no exige rol
     GRD->>CTRL: createFirstSuperAdmin(registerAdminDto)
+    activate CTRL
 
     Note over CTRL: Condicion de arranque, la unica autorizacion de esta ruta
     CTRL->>SRV: findAll()
+    activate SRV
     SRV->>AREP: find(where vacio, relations user role distributor)
+    activate AREP
     AREP-->>SRV: Admin[]
+    deactivate AREP
     SRV-->>CTRL: Admin[]
+    deactivate SRV
     alt Ya existe al menos un administrador
         CTRL-->>OPE: ForbiddenException 403, ya existen administradores en el sistema
+        deactivate CTRL
     else Sistema virgen, cero admins
         CTRL->>SRV: registerAdmin(registerAdminDto)
+        activate SRV
         SRV->>HLP: validateUniqueness(dto, usersService)
+        activate HLP
         SRV->>HLP: createUserInFirebase(dto, usersService)
         HLP->>USR: createFirebaseUser(dto)
+        activate USR
         USR-->>HLP: firebaseUser con uid
+        deactivate USR
         SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
         HLP->>USR: create(dto mas firebase_uid)
+        activate USR
         USR-->>HLP: User local
+        deactivate USR
         SRV->>AREP: create(adminData) y save(admin)
+        activate AREP
         AREP-->>SRV: Admin persistido
+        deactivate AREP
         SRV-->>CTRL: message, admin, user
+        deactivate SRV
         CTRL-->>OPE: 201 primer super administrador creado
     end
+    deactivate HLP

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-008 Cancelar Pedido
     autonumber
     participant IDEM as IdempotencyInterceptor
     participant CTRL as OrderController
@@ -17,11 +18,16 @@ sequenceDiagram
         IDEM-->>CTRL: next.handle()
         CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
         CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+        activate SRV
         SRV->>UC: execute(orderId, userId, customer, reason)
+        activate UC
         UC->>ORD: findByIdFull(orderId)
+        activate ORD
         alt Pedido inexistente
             ORD-->>UC: null
+            deactivate ORD
             UC-->>CTRL: NotFoundException Order with ID not found
+            deactivate UC
         else Pedido encontrado
             ORD-->>UC: Order
             alt Ya esta DELIVERED o CANCELLED
@@ -35,21 +41,32 @@ sequenceDiagram
                         UC-->>CTRL: BadRequestException No autorizado
                     else Es el dueno del pedido
                         UC->>FSM: transitionOrder(order, CANCELLED)
+                        activate FSM
                         UC->>UC: setear cancellationReason
                         UC->>UC: restoreStock(order)
                         UC->>QR: connect() y startTransaction()
+                        activate QR
                         UC->>STK: restore(queryRunner.manager, order.items)
+                        activate STK
                         UC->>QR: commitTransaction() y release()
                         UC->>ORD: save(order)
+                        activate ORD
                         UC->>UC: notify(order, customer, previousDriverId)
-                        UC->>RT: notifyCustomer(customer_id, order cancelled, payload)
+                        UC-)RT: notifyCustomer(customer_id, order cancelled, payload)
+                        activate RT
                         opt El pedido ya tenia chofer asignado
-                            UC->>RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                            UC-)RT: notifyDriverOrderCancelled(previousDriverId, payload)
                         end
-                        UC->>RT: notifyAdmins(order cancelled, payload)
+                        UC-)RT: notifyAdmins(order cancelled, payload)
                         UC-->>CTRL: Order en estado CANCELLED
                     end
                 end
             end
         end
     end
+    deactivate RT
+    deactivate STK
+    deactivate QR
+    deactivate FSM
+    deactivate ORD
+    deactivate SRV

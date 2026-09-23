@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-057 Consultar Zonas De Cobertura
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -7,10 +8,18 @@ sequenceDiagram
     participant REPO as RepositoryCoverageZone
 
     ADM->>DEC: GET /coverage-zones
+    activate DEC
     DEC->>DEC: lee request.distributorId, required true
     DEC->>CTRL: findAll(distributorId)
+    activate CTRL
     CTRL->>SRV: findAll(distributorId)
+    activate SRV
     SRV->>REPO: find(where distributor_id, order createdAt ASC)
+    activate REPO
     REPO-->>SRV: CoverageZone[] del tenant
+    deactivate REPO
     SRV-->>CTRL: CoverageZone[]
+    deactivate SRV
     CTRL-->>ADM: 200 CoverageZone[]
+    deactivate CTRL
+    deactivate DEC

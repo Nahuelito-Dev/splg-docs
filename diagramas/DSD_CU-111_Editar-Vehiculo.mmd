@@ -1,15 +1,20 @@
 sequenceDiagram
+    title DSD — CU-111 Editar Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: update(id, updateCarDto, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>CREP: preload(car_id mas campos del dto)
+    activate CREP
     CREP-->>SRV: Car fusionado o undefined
+    deactivate CREP
     alt la patente cambio y ya existe
         SRV-->>CTRL: ConflictException patente repetida
+        deactivate SRV
     else Patente libre
         SRV-->>CTRL: Car actualizado
     end

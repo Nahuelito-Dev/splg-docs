@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-003 Registrar Chofer
     autonumber
     participant GUARD as AuthGuard
     participant RG as RolesGuard
@@ -23,31 +24,47 @@ sequenceDiagram
             CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
         else Tenant resuelto
             CTRL->>DSRV: registerWithUser(createDeliveryDto con distributorId)
+            activate DSRV
             DSRV->>QR: connect() y startTransaction()
+            activate QR
             DSRV->>UREP: findOne(email)
+            activate UREP
             alt Email ya usado
                 UREP-->>DSRV: User
+                deactivate UREP
                 DSRV-->>CTRL: BadRequestException User with this email already exists
+                deactivate DSRV
             else Email libre
                 UREP-->>DSRV: null
                 DSRV->>FB: createUserSafe(email, password, full_name, phone_number)
+                activate FB
                 FB-->>DSRV: UserRecord con uid
+                deactivate FB
                 DSRV->>RREP: findOne(type delivery)
+                activate RREP
                 RREP-->>DSRV: Role
+                deactivate RREP
                 DSRV->>UREP: create(email, full_name, firebase_uid, role_id, selfie)
+                activate UREP
                 DSRV->>QR: manager.save(user)
                 DSRV->>DREP: create(user_id, distributor_id, latLng, validated, isActive, balance 0)
+                activate DREP
                 DSRV->>QR: manager.save(delivery)
                 DSRV->>QR: commitTransaction()
                 DSRV->>UREP: findOne(user_id, relations delivery y role)
                 UREP-->>DSRV: User completo
+                deactivate UREP
                 DSRV-->>CTRL: User con Delivery y Role
             end
             opt Error en cualquier paso
                 DSRV->>QR: rollbackTransaction()
                 DSRV->>FB: deleteUserByEmailSafe(email, logger)
+                activate FB
                 DSRV->>DSRV: handleDBExceptions(error)
             end
             DSRV->>QR: release()
         end
     end
+    deactivate DREP
+    deactivate FB
+    deactivate QR

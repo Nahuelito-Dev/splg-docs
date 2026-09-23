@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-089 Gestionar Roles Del Sistema
     autonumber
     participant SA as SuperAdmin
     participant GRD as RolesGuard
@@ -7,44 +8,70 @@ sequenceDiagram
     participant RREP as RepositoryRole
 
     SA->>GRD: peticion sobre /role
+    activate GRD
     GRD->>GRD: canActivate, Roles SUPER_ADMIN declarado en la clase
     GRD->>CTRL: rol verificado
+    activate CTRL
 
     alt Crear, POST /role
         CTRL->>SRV: create(createRoleDto)
+        activate SRV
         SRV->>RREP: create(createRoleDto) y save(role)
+        activate RREP
         RREP-->>SRV: Role persistido
+        deactivate RREP
         SRV-->>CTRL: Role
+        deactivate SRV
     else Listar, GET /role
         CTRL->>SRV: findAll()
+        activate SRV
         SRV->>RREP: find()
+        activate RREP
         RREP-->>SRV: Role[]
+        deactivate RREP
         SRV-->>CTRL: Role[]
+        deactivate SRV
     else Detalle, GET /role/:id
         CTRL->>SRV: findOne(id)
+        activate SRV
         SRV->>RREP: findOne(where role_id)
+        activate RREP
         RREP-->>SRV: Role o null
+        deactivate RREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV-->>CTRL: Role
         end
     else Actualizar, PATCH /role/:id
         CTRL->>SRV: update(id, updateRoleDto)
+        activate SRV
         SRV->>RREP: preload(role_id mas updateRoleDto)
+        activate RREP
         RREP-->>SRV: Role fusionado o undefined
+        deactivate RREP
         alt No existe
             SRV-->>CTRL: NotFoundException
+            deactivate SRV
         else Existe
             SRV->>RREP: save(role)
+            activate RREP
             RREP-->>SRV: Role actualizado
+            deactivate RREP
             SRV-->>CTRL: Role
         end
     else Eliminar, DELETE /role/:id
         CTRL->>SRV: remove(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>RREP: remove(role)
+        activate RREP
         RREP-->>SRV: fila eliminada
+        deactivate RREP
         SRV-->>CTRL: message Role deleted successfully
+        deactivate SRV
     end
     CTRL-->>SA: respuesta segun la operacion
+    deactivate CTRL
+    deactivate GRD

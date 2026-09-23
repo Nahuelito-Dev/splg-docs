@@ -1,12 +1,19 @@
 sequenceDiagram
+    title DSD — CU-042 Crear Franja Horaria
     autonumber
     participant CTRL as TimeSlotController
     participant SRV as TimeSlotService
     participant TREP as RepositoryTimeSlot
 
     CTRL->>SRV: create(createTimeSlotDto, distributorId)
+    activate SRV
     SRV->>TREP: create(datos del dto mas distributor_id)
+    activate TREP
     TREP-->>SRV: TimeSlot en memoria
+    deactivate TREP
     SRV->>TREP: save(timeSlot)
+    activate TREP
     TREP-->>SRV: TimeSlot persistido
+    deactivate TREP
     SRV-->>CTRL: TimeSlot
+    deactivate SRV

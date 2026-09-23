@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-149 Despachar un Pedido Express a un Chofer en Moto
     autonumber
     participant SRV as OrderService
     participant OREP as RepositoryOrder
@@ -6,14 +7,22 @@ sequenceDiagram
     participant NOT as NotificationService
 
     SRV->>OREP: findOne(pedido express sin chofer)
+    activate OREP
     OREP-->>SRV: Order
+    deactivate OREP
     SRV->>DREP: find(choferes en moto disponibles dentro del radio, por distancia)
+    activate DREP
     DREP-->>SRV: lista de Delivery ordenada
+    deactivate DREP
     SRV->>NOT: ofrecer(pedido, chofer más cercano, ventana corta)
+    activate NOT
     SRV->>OREP: save(pedido asignado o degradado a programado)
+    activate OREP
     OREP-->>SRV: Order actualizada
+    deactivate OREP
     alt un chofer acepta
         SRV-->>CTRL: Order asignada al chofer en moto
     else ninguno acepta
         SRV-->>CTRL: Order degradada a modalidad programada
     end
+    deactivate NOT

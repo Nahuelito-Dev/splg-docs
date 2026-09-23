@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-086 Registrar Administrador
     autonumber
     participant ACT as SuperAdmin o Admin de empresa
     participant CTRL as AdminController
@@ -9,40 +10,58 @@ sequenceDiagram
     participant AREP as RepositoryAdmin
 
     ACT->>CTRL: POST /admin/register con RegisterAdminDto
+    activate CTRL
     alt El solicitante es SUPER_ADMIN
         CTRL->>SRV: registerAdmin(dto con distributorId del body o del contexto)
+        activate SRV
     else El solicitante es ADMIN de empresa
         alt El admin no tiene distribuidora asociada
             CTRL-->>ACT: ForbiddenException, tu usuario no tiene una distribuidora asociada
+            deactivate CTRL
         else Tiene tenant
             CTRL->>SRV: isSuperAdminRole(dto.role_id)
             SRV->>RREP: findOne(where role_id)
+            activate RREP
             RREP-->>SRV: Role o null
+            deactivate RREP
             SRV-->>CTRL: boolean
+            deactivate SRV
             alt El rol pedido es super_admin
                 CTRL-->>ACT: ForbiddenException, no podes crear un super administrador
             else Rol permitido
                 CTRL->>SRV: registerAdmin(dto con distributorId forzado al del contexto)
+                activate SRV
             end
         end
     end
 
     SRV->>HLP: validateUniqueness(dto, usersService)
+    activate HLP
     HLP->>USR: findOneByEmail(dto.email)
+    activate USR
     HLP->>USR: findOneByPhone(dto.phone_number)
     alt Email o telefono ya en uso
         HLP-->>ACT: HttpException 409, email o telefono ya en uso
+        deactivate HLP
     else Datos libres
         SRV->>HLP: createUserInFirebase(dto, usersService)
+        activate HLP
         HLP->>USR: createFirebaseUser(dto)
         USR-->>HLP: firebaseUser con uid
+        deactivate USR
         SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
         HLP->>USR: create(dto mas firebase_uid)
+        activate USR
         USR-->>HLP: User local
+        deactivate USR
         SRV->>SRV: arma CreateAdminDto con user_id, role_id y distributor_id
         SRV->>AREP: create(adminData)
+        activate AREP
         SRV->>AREP: save(admin)
         AREP-->>SRV: Admin persistido
+        deactivate AREP
         SRV-->>CTRL: message, admin, user
+        deactivate SRV
         CTRL-->>ACT: 201 Admin registrado
     end
+    deactivate HLP

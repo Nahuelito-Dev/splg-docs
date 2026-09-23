@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-102 Probar El Servicio De Correo
     autonumber
     participant ANY as Cualquiera, ruta publica
     participant AUTH as AuthGuard
@@ -10,34 +11,48 @@ sequenceDiagram
     participant SND as EmailSenderPort
 
     ANY->>AUTH: POST /email/test con TestEmailDto, sin token
+    activate AUTH
     AUTH->>AUTH: reflector.get isPublic sobre el handler
     AUTH-->>CTRL: isPublic true, no se valida token ni rol
+    deactivate AUTH
     CTRL->>SRV: testEmailService(body.email)
+    activate SRV
 
     Note over SRV,REDIS: Primera generacion, deberia poblar la cache
     SRV->>SRV: generatePasswordResetLink(email)
     SRV->>REDIS: get(email link-cache reset email)
+    activate REDIS
     REDIS-->>SRV: null, cache fria
+    deactivate REDIS
     SRV->>FBA: generatePasswordResetLink(email, opciones)
+    activate FBA
     FBA-->>SRV: link
+    deactivate FBA
     SRV->>REDIS: setex(cacheKey, CACHE_TTL_SEC, link)
+    activate REDIS
 
     Note over SRV,REDIS: Segunda generacion, deberia pegarle a la cache
     SRV->>SRV: generatePasswordResetLink(email)
     SRV->>REDIS: get(cacheKey)
     REDIS-->>SRV: link cacheado
+    deactivate REDIS
     SRV->>SRV: resetLinksEqual igual a comparar link1 con link2
 
     SRV->>SRV: sendEmail(to, subject Test Email, template email-verification)
     SRV->>TPL: render(email-verification, displayName Test User)
+    activate TPL
     TPL-->>SRV: html
+    deactivate TPL
     SRV->>SND: send(to, subject, html)
+    activate SND
     alt El envio falla
         SND-->>SRV: Error capturado por sendEmail, best effort
+        deactivate SND
         SRV->>SRV: resendStatus failed mas el mensaje
     else Envio exitoso
         SND-->>SRV: void
         SRV->>SRV: emailSent true, resendStatus sent
     end
     SRV-->>CTRL: success, message, emailSent, resendStatus, cacheStats
+    deactivate SRV
     CTRL-->>ANY: 200 diagnostico del servicio de correo

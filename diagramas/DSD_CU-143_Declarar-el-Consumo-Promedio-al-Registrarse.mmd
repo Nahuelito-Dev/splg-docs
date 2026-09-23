@@ -1,15 +1,20 @@
 sequenceDiagram
+    title DSD — CU-143 Declarar el Consumo Promedio al Registrarse
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
     participant CREP as RepositoryCustomer
 
     CTRL->>SRV: declararConsumo(usuarioDeLaSesion, tipoGarrafa, cantidad)
+    activate SRV
     SRV->>SRV: aKilosPorMes(cantidad, peso del tipo de garrafa)
     SRV->>CREP: save(cliente con consumo y garrafa habitual)
+    activate CREP
     CREP-->>SRV: Customer actualizado
+    deactivate CREP
     alt el valor es razonable
         SRV-->>CTRL: Customer con consumo declarado
+        deactivate SRV
     else el valor no es razonable
         SRV-->>CTRL: se pide confirmación
     end

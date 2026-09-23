@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-035 Consultar Listado De Choferes
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
@@ -6,30 +7,46 @@ sequenceDiagram
 
     alt Listado paginado, GET /delivery
         CTRL->>SRV: findAll(paginationDto, distributorId)
+        activate SRV
         SRV->>SRV: desestructurar limit 10 y offset 0 por defecto
         SRV->>DREP: find(where distributor_id si vino, take, skip, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery[]
+        deactivate DREP
         SRV-->>CTRL: Delivery[]
+        deactivate SRV
     else Solo activos, GET /delivery/active
         CTRL->>SRV: findActiveDeliveries(paginationDto)
+        activate SRV
         SRV->>DREP: find(where isActive true, take, skip, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery[]
+        deactivate DREP
         SRV-->>CTRL: Delivery[]
+        deactivate SRV
     else Por delivery_id, GET /delivery/:id
         CTRL->>SRV: findOne(id)
+        activate SRV
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt No encontrado
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: Delivery
         end
     else Por user_id, GET /delivery/user/:userId
         CTRL->>SRV: findOneByUserId(userId)
+        activate SRV
         SRV->>DREP: findOne(where user_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt No encontrado
             SRV-->>CTRL: NotFoundException Delivery for user ID not found
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: Delivery
         end

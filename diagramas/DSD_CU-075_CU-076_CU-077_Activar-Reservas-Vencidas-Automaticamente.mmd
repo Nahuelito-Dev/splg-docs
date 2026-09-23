@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-075 / CU-076 / CU-077 Activar Reservas Vencidas Automaticamente
     autonumber
     participant RES as ReservationService
     participant OREP as RepositoryOrder
@@ -10,40 +11,60 @@ sequenceDiagram
 
     Note over RES: activateDueReservations, cron cada 5 minutos, CU-075
     RES->>OREP: find(status RESERVED, deposit_paid true, scheduled_date menor o igual a hoy)
+    activate OREP
     OREP-->>RES: reservas con dia cumplido
+    deactivate OREP
     loop Por cada reserva vencida
         RES->>SM: transitionOrder(order, PENDING)
+        activate SM
         RES->>OREP: save(order)
+        activate OREP
         RES->>ORD: findByIdFull(order_id)
+        activate ORD
         ORD-->>RES: Order completo con coordenadas e items
+        deactivate ORD
         RES->>ORQ: offerToNextDriver(full), ver DSD A.1
+        activate ORQ
     end
 
     Note over RES: expireUnpaidReservations, cron cada hora, CU-076
     RES->>OREP: find(status RESERVED, deposit_paid false, createdAt menor a cutoff)
     OREP-->>RES: reservas con sena impaga
+    deactivate OREP
     loop Por cada reserva impaga
         RES->>QR: startTransaction()
+        activate QR
         RES->>SM: transitionOrder(order, CANCELLED)
         RES->>QR: save(order)
         RES->>STK: restore(manager, items)
+        activate STK
         STK-->>RES: stock devuelto con lock pesimista
+        deactivate STK
         RES->>QR: commitTransaction()
     end
 
     Note over RES: expireUnpaidMercadoPagoOrders, cron cada 30 minutos, CU-077
     RES->>OREP: find(PENDING, mercadopago, gatewayPaymentId null, createdAt menor a cutoff)
+    activate OREP
     OREP-->>RES: pedidos con checkout abandonado
+    deactivate OREP
     loop Por cada pedido abandonado
         RES->>QR: startTransaction()
         RES->>QR: createQueryBuilder Order setLock pessimistic_write
         QR-->>RES: locked
+        deactivate QR
         alt Sigue PENDING y sin gatewayPaymentId
             RES->>SM: transitionOrder(locked, CANCELLED)
             RES->>QR: save(locked con cancellationReason)
+            activate QR
             RES->>STK: restore(manager, items)
+            activate STK
             RES->>QR: commitTransaction()
         else El webhook confirmo el pago un instante antes
             RES->>QR: commitTransaction sin tocar el pedido
         end
     end
+    deactivate STK
+    deactivate QR
+    deactivate ORQ
+    deactivate SM

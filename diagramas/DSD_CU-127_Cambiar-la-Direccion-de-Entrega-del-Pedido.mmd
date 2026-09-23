@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-127 Cambiar la Direccion de Entrega del Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -7,16 +8,26 @@ sequenceDiagram
     participant HREP as RepositoryOrderAddressChange
 
     CTRL->>SRV: cambiarDireccion(pedidoId, direccionId, motivo, usuarioDeLaSesion)
+    activate SRV
     SRV->>OREP: findOne(where order_id, relations customer y delivery)
+    activate OREP
     OREP-->>SRV: Order o null
+    deactivate OREP
     SRV->>AREP: findOne(where address_id y user_id)
+    activate AREP
     AREP-->>SRV: UserAddress o null
+    deactivate AREP
     SRV->>SRV: verificarCobertura(coordenadas, distribuidora)
     SRV->>HREP: save(cambio de dirección)
+    activate HREP
     SRV->>OREP: save(pedido con la dirección nueva)
+    activate OREP
     OREP-->>SRV: Order actualizada
+    deactivate OREP
     alt el cambio es admisible
         SRV-->>CTRL: Order con la dirección nueva
+        deactivate SRV
     else el cambio no es admisible
         SRV-->>CTRL: operación rechazada
     end
+    deactivate HREP

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-139 Consultar los Vencimientos de la Flota
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -6,12 +7,18 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: vencimientosDeLaFlota(dias, distribuidora)
+    activate SRV
     SRV->>VREP: find(where distributor_id y vencimientos en la ventana)
+    activate VREP
     VREP-->>SRV: lista de Car
+    deactivate VREP
     SRV->>DREP: find(where distributor_id y licencia en la ventana)
+    activate DREP
     DREP-->>SRV: lista de Delivery
+    deactivate DREP
     alt hay vencimientos
         SRV-->>CTRL: listado unificado y ordenado
+        deactivate SRV
     else no hay
         SRV-->>CTRL: listado vacío
     end

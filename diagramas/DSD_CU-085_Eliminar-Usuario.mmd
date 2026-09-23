@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-085 Eliminar Usuario
     autonumber
     participant RG as RolesGuard
     participant CTRL as UsersController
@@ -12,22 +13,29 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: remove(id)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>REP: findOne(user_id, relations)
+        activate REP
         alt No existe
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: NotFoundException User with ID not found
+            deactivate SRV
         else Existe
             REP-->>SRV: User
             SRV->>REP: delete(user_id)
+            activate REP
             alt Violacion de FK, codigo 23503
                 REP-->>SRV: QueryFailedError
+                deactivate REP
                 SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
             else Borrado en base
                 REP-->>SRV: DeleteResult
                 opt El usuario tiene email
                     SRV->>SRV: cleanupFirebaseUser(user.email)
                     SRV->>FB: deleteUserByEmailSafe(email, logger)
+                    activate FB
                     FB->>FB: getUserByEmail(email)
                     FB->>FB: deleteUser(uid)
                 end
@@ -35,3 +43,4 @@ sequenceDiagram
             end
         end
     end
+    deactivate FB

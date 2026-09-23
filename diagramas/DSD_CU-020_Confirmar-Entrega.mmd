@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-020 Confirmar Entrega
     autonumber
     participant CTRL as OrderController
     participant UC as UpdateOrderStatusUseCase
@@ -8,20 +9,32 @@ sequenceDiagram
     participant NOT as NotificationsService
 
     CTRL->>UC: execute(orderId, DELIVERED, userId)
+    activate UC
     UC->>REPO: findByIdFull(orderId)
+    activate REPO
     REPO-->>UC: Order
+    deactivate REPO
     UC->>SM: assertTransition(order.status, DELIVERED)
+    activate SM
     alt Transicion invalida
         SM-->>UC: InvalidOrderTransitionError
+        deactivate SM
         UC-->>CTRL: 400 Bad Request
+        deactivate UC
     else Transicion valida
         UC->>UC: order.deliveredAt = new Date()
         opt paymentMethod es CASH
             UC->>UC: order.paymentStatus = PAID
         end
         UC->>REPO: save(order)
+        activate REPO
         REPO-->>UC: Order
-        UC->>RT: notifyOrderStatusChanged(order)
-        UC->>NOT: sendOrderPush(customerId, orderId)
+        deactivate REPO
+        UC-)RT: notifyOrderStatusChanged(order)
+        activate RT
+        UC-)NOT: sendOrderPush(customerId, orderId)
+        activate NOT
         UC-->>CTRL: Order actualizada
     end
+    deactivate NOT
+    deactivate RT

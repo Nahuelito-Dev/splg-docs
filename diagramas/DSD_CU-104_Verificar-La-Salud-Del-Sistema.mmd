@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-104 Verificar La Salud Del Sistema
     autonumber
     participant LB as Load balancer u orquestador
     participant CTRL as HealthController
@@ -11,44 +12,70 @@ sequenceDiagram
 
     alt Chequeo completo, GET /health
         LB->>CTRL: GET /health, Public y SkipThrottle
+        activate CTRL
         CTRL->>HCS: check con los cuatro indicadores
+        activate HCS
         HCS->>DB: pingCheck(postgres)
+        activate DB
         DB-->>HCS: estado de PostgreSQL
+        deactivate DB
         HCS->>RH: isHealthy(redis)
+        activate RH
         RH->>REDIS: ping()
+        activate REDIS
         REDIS-->>RH: true si respondio PONG
+        deactivate REDIS
         alt Redis no responde
             RH-->>HCS: HealthCheckError Redis check failed
+            deactivate RH
         else Redis sano
             RH-->>HCS: HealthIndicatorResult up
         end
         HCS->>MEM: checkRSS(memory_rss, 300 MB)
+        activate MEM
         MEM-->>HCS: heap RSS por debajo del umbral
+        deactivate MEM
         HCS->>DISK: checkStorage(storage, path raiz, thresholdPercent 0.9)
+        activate DISK
         DISK-->>HCS: uso de disco por debajo del 90 por ciento
+        deactivate DISK
         alt Todos los indicadores sanos
             HCS-->>CTRL: status ok
+            deactivate HCS
             CTRL-->>LB: 200 status ok
+            deactivate CTRL
         else Alguno falla
             HCS-->>CTRL: detalle por componente
             CTRL-->>LB: 503 con el componente caido
         end
     else Liveness, GET /health/live
         LB->>CTRL: GET /health/live
+        activate CTRL
         CTRL->>CTRL: no consulta ninguna dependencia
         CTRL-->>LB: 200 status ok mas timestamp
+        deactivate CTRL
     else Readiness, GET /health/ready
         LB->>CTRL: GET /health/ready
+        activate CTRL
         CTRL->>HCS: check con los dos indicadores criticos
+        activate HCS
         HCS->>DB: pingCheck(postgres)
+        activate DB
         DB-->>HCS: estado de PostgreSQL
+        deactivate DB
         HCS->>RH: isHealthy(redis)
+        activate RH
         RH->>REDIS: ping()
+        activate REDIS
         REDIS-->>RH: booleano
+        deactivate REDIS
         RH-->>HCS: resultado
+        deactivate RH
         alt DB y Redis sanos
             HCS-->>CTRL: status ok
+            deactivate HCS
             CTRL-->>LB: 200 listo para recibir trafico
+            deactivate CTRL
         else Alguna dependencia critica caida
             HCS-->>CTRL: detalle
             CTRL-->>LB: 503 no listo

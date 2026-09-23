@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-059 Eliminar Zona De Cobertura
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -7,16 +8,26 @@ sequenceDiagram
     participant REPO as RepositoryCoverageZone
 
     ADM->>DEC: DELETE /coverage-zones/:id
+    activate DEC
     DEC->>CTRL: remove(id, distributorId)
+    activate CTRL
     CTRL->>SRV: remove(id, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>REPO: findOne(where coverage_zone_id y distributor_id)
+    activate REPO
     REPO-->>SRV: CoverageZone o null
+    deactivate REPO
     alt No existe o pertenece a otra distribuidora
         SRV-->>CTRL: NotFoundException, zona no encontrada
+        deactivate SRV
     else Zona del tenant
         SRV->>REPO: remove(zone)
+        activate REPO
         REPO-->>SRV: fila eliminada
+        deactivate REPO
         SRV-->>CTRL: void
         CTRL-->>ADM: 200 sin cuerpo
+        deactivate CTRL
     end
+    deactivate DEC

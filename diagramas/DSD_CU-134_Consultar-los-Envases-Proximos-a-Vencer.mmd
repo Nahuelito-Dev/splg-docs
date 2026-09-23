@@ -1,16 +1,23 @@
 sequenceDiagram
+    title DSD — CU-134 Consultar los Envases Proximos a Vencer
     autonumber
     participant CTRL as CylinderController
     participant SRV as CylinderService
     participant CREP as RepositoryCylinder
 
     CTRL->>SRV: proximosAVencer(dias, distribuidora)
+    activate SRV
     SRV->>CREP: find(where distributor_id y expires_at entre hoy y hoy más dias)
+    activate CREP
     CREP-->>SRV: lista de Cylinder
+    deactivate CREP
     SRV->>CREP: find(where expires_at null)
+    activate CREP
     CREP-->>SRV: lista de Cylinder sin vigencia
+    deactivate CREP
     alt hay envases
         SRV-->>CTRL: listado separado en vencidos, por vencer y sin dato
+        deactivate SRV
     else no hay
         SRV-->>CTRL: listados vacíos
     end

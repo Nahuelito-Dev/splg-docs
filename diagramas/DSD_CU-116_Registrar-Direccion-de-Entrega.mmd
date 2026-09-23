@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-116 Registrar Direccion de Entrega
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
@@ -6,13 +7,19 @@ sequenceDiagram
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: create(dto, usuarioDeLaSesion)
+    activate SRV
     SRV->>UREP: findOne(where user_id)
+    activate UREP
     UREP-->>SRV: User o null
+    deactivate UREP
     SRV->>AREP: update(isDefault false en las demás)
+    activate AREP
     SRV->>AREP: save(direccion)
     AREP-->>SRV: UserAddress guardada
+    deactivate AREP
     alt el usuario existe
         SRV-->>CTRL: UserAddress creada
+        deactivate SRV
     else el usuario no existe
         SRV-->>CTRL: NotFoundException User with ID not found
     end

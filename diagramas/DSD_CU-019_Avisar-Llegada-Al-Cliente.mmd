@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-019 Avisar Llegada Al Cliente
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -13,20 +14,28 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: notifyDriverArrived(id)
+        activate SRV
         SRV->>SRV: findOne(orderId)
         SRV->>ORD: findByIdFull(orderId)
+        activate ORD
         alt Pedido inexistente
             ORD-->>SRV: null
+            deactivate ORD
             SRV-->>CTRL: NotFoundException Order with ID not found
+            deactivate SRV
         else Pedido encontrado
             ORD-->>SRV: Order con delivery y user
             alt El pedido no esta ON_THE_WAY
                 SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
             else Pedido en camino
-                SRV->>RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                activate RT
                 RT->>CGW: notifyCustomer(customerId, event, payload)
+                activate CGW
                 CGW-->>SRV: emit en la sala customer_ del cliente
+                deactivate CGW
                 SRV-->>CTRL: message Cliente notificado
             end
         end
     end
+    deactivate RT

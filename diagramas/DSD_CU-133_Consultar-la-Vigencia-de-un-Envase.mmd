@@ -1,15 +1,20 @@
 sequenceDiagram
+    title DSD — CU-133 Consultar la Vigencia de un Envase
     autonumber
     participant CTRL as CylinderController
     participant SRV as CylinderService
     participant CREP as RepositoryCylinder
 
     CTRL->>SRV: consultarVigencia(envaseId)
+    activate SRV
     SRV->>CREP: findOne(where cylinder_id, relations inspections)
+    activate CREP
     CREP-->>SRV: Cylinder con revisiones o null
+    deactivate CREP
     SRV->>SRV: diasHastaElVencimiento(vencimiento)
     alt el envase existe
         SRV-->>CTRL: vigencia con días restantes
+        deactivate SRV
     else el envase no existe
         SRV-->>CTRL: NotFoundException
     end

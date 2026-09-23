@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-049 Consultar Balance Ganancias Del Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
@@ -6,20 +7,30 @@ sequenceDiagram
 
     alt Consulta, el chofer abre su perfil, GET /delivery/user/:userId
         CTRL->>SRV: findOneByUserId(userId)
+        activate SRV
         SRV->>DREP: findOne(where user_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery con el campo balance
+        deactivate DREP
         SRV-->>CTRL: Delivery, el balance viaja dentro de la entidad
+        deactivate SRV
     else Ajuste por el admin, PATCH /delivery/:id/balance
         CTRL->>SRV: updateBalance(id, body.amount)
+        activate SRV
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt Chofer inexistente
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
         else Chofer encontrado
             SRV->>SRV: delivery.balance igual balance actual mas amount
             SRV->>DREP: save(delivery)
+            activate DREP
             DREP-->>SRV: Delivery actualizado
+            deactivate DREP
             SRV-->>CTRL: Delivery
         end
     end

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-122 Agregar Item al Carrito
     autonumber
     participant CTRL as CartController
     participant SRV as CartService
@@ -7,14 +8,22 @@ sequenceDiagram
     participant IREP as RepositoryCartItem
 
     CTRL->>SRV: agregarItem(usuarioDeLaSesion, garrafaId, cantidad)
+    activate SRV
     SRV->>CREP: findOrCreate(carrito abierto del cliente)
+    activate CREP
     CREP-->>SRV: Cart
+    deactivate CREP
     SRV->>GREP: findOne(where gas_cylinder_id, isActive y distribuidora)
+    activate GREP
     GREP-->>SRV: GasCylinder o null
+    deactivate GREP
     SRV->>IREP: upsert(item con cantidad y precio unitario)
+    activate IREP
     IREP-->>SRV: CartItem guardado
+    deactivate IREP
     alt el tipo de garrafa es válido
         SRV-->>CTRL: Cart con sus ítems y el total
+        deactivate SRV
     else el tipo de garrafa no es válido
         SRV-->>CTRL: operación rechazada
     end

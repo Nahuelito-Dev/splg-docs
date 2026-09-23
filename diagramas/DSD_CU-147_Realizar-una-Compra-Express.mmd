@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-147 Realizar una Compra Express
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -7,16 +8,24 @@ sequenceDiagram
     participant OREP as RepositoryOrder
 
     CTRL->>SRV: compraExpress(usuarioDeLaSesion, tipoGarrafa, medioDePago)
+    activate SRV
     SRV->>SRV: direccionPredeterminada(cliente)
     SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
     SRV->>DREP: find(choferes en moto disponibles y habilitados)
+    activate DREP
     DREP-->>SRV: lista de Delivery
+    deactivate DREP
     SRV->>GREP: findOne(tipo de garrafa con precio y stock)
+    activate GREP
     GREP-->>SRV: GasCylinder
+    deactivate GREP
     SRV->>OREP: save(pedido con modalidad express y sin franja)
+    activate OREP
     OREP-->>SRV: Order creada
+    deactivate OREP
     alt hay cobertura y chofer
         SRV-->>CTRL: Order express creada
+        deactivate SRV
     else no hay
         SRV-->>CTRL: se ofrece el flujo con franja horaria
     end

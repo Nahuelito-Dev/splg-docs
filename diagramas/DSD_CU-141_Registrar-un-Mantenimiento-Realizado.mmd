@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-141 Registrar un Mantenimiento Realizado
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -6,15 +7,25 @@ sequenceDiagram
     participant VREP as RepositoryCar
 
     CTRL->>SRV: registrarRealizado(mantenimientoId, datos, distribuidora)
+    activate SRV
     SRV->>MREP: findOne(where maintenance_id y distributor_id)
+    activate MREP
     MREP-->>SRV: FleetMaintenance o null
+    deactivate MREP
     SRV->>MREP: findOne(último realizado del vehículo)
+    activate MREP
     MREP-->>SRV: FleetMaintenance anterior o null
+    deactivate MREP
     SRV->>MREP: save(mantenimiento en estado realizado)
+    activate MREP
     SRV->>VREP: save(vehículo con el kilometraje nuevo)
+    activate VREP
     VREP-->>SRV: Car actualizado
+    deactivate VREP
     alt los datos son coherentes
         SRV-->>CTRL: FleetMaintenance cerrado
+        deactivate SRV
     else el kilometraje retrocede
         SRV-->>CTRL: operación rechazada
     end
+    deactivate MREP

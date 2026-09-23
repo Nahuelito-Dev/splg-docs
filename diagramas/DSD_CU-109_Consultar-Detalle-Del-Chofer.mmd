@@ -1,14 +1,19 @@
 sequenceDiagram
+    title DSD — CU-109 Consultar Detalle Del Chofer
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
     CTRL->>SRV: findOne(id)
+    activate SRV
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    activate DREP
     DREP-->>SRV: Delivery con user y role o null
+    deactivate DREP
     alt no se encontro el chofer
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
     else Chofer encontrado
         SRV-->>CTRL: Delivery completo
     end

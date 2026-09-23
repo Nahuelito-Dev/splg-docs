@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-105 Planificar El Mantenimiento Y Las Habilitaciones De La Flota
     autonumber
     participant CRON as FleetMaintenancePlannerService
     participant USG as VehicleUsageRepositoryPort
@@ -10,28 +11,43 @@ sequenceDiagram
     participant FIT as FleetAvailabilityPort
 
     CRON->>USG: findRecentUsage(carId, dias)
+    activate USG
     USG-->>CRON: historial de km por dia
+    deactivate USG
     CRON->>CRON: estimateDailyKm(carId) con ponderacion y ajuste estacional
     CRON->>TSK: findForecastTasks(carId)
+    activate TSK
     TSK-->>CRON: tareas de mantenimiento y habilitacion
+    deactivate TSK
 
     loop Por cada tarea dentro de la ventana de anticipacion
         CRON->>CRON: projectDueDate(task, car)
         CRON->>DEM: forecastDemand(coverageZone, ventanas candidatas)
+        activate DEM
         DEM-->>CRON: demanda proyectada por ventana
+        deactivate DEM
         CRON->>COV: remainingActiveVehicles(coverageZone, ventana)
+        activate COV
         COV-->>CRON: unidades activas restantes
+        deactivate COV
         CRON->>CRON: descartar las ventanas que violan el minimo y ordenar por demanda
 
         loop Por cada ventana alternativa
             CRON->>PRP: create(taskId, ventana, driverId, expiresAt)
+            activate PRP
             PRP-->>CRON: propuesta en estado PROPOSED
+            deactivate PRP
             CRON->>NOT: sendWindowProposal(propuesta)
+            activate NOT
             CRON->>PRP: awaitAnswer(proposalId)
+            activate PRP
             PRP-->>CRON: ACCEPTED, REJECTED o EXPIRED
+            deactivate PRP
             alt La propuesta fue aceptada
                 CRON->>TSK: schedule(taskId, ventana)
+                activate TSK
                 CRON->>FIT: blockVehicleWindow(carId, ventana)
+                activate FIT
             else Rechazada o vencida
                 CRON->>CRON: continuar con la ventana siguiente
             end
@@ -48,3 +64,6 @@ sequenceDiagram
         CRON->>FIT: groundVehicle(carId)
         Note over FIT: DispatchOrchestratorService consulta<br/>isVehicleFit antes de ofrecer un pedido
     end
+    deactivate FIT
+    deactivate NOT
+    deactivate TSK

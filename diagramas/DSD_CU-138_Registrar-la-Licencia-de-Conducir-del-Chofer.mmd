@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-138 Registrar la Licencia de Conducir del Chofer
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -6,14 +7,22 @@ sequenceDiagram
     participant VREP as RepositoryCar
 
     CTRL->>SRV: registrarLicencia(choferId, datos, distribuidora)
+    activate SRV
     SRV->>DREP: findOne(where delivery_id y distributor_id)
+    activate DREP
     DREP-->>SRV: Delivery o null
+    deactivate DREP
     SRV->>VREP: find(where user_id del chofer)
+    activate VREP
     VREP-->>SRV: vehículos del chofer
+    deactivate VREP
     SRV->>DREP: save(chofer con los datos de la licencia)
+    activate DREP
     DREP-->>SRV: Delivery actualizado
+    deactivate DREP
     alt el chofer existe
         SRV-->>CTRL: Delivery con la licencia cargada
+        deactivate SRV
     else el chofer no existe
         SRV-->>CTRL: NotFoundException
     end

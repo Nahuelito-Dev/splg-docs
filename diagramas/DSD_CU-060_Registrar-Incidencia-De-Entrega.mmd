@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-060 Registrar Incidencia De Entrega
     autonumber
     participant CHO as Chofer
     participant CTRL as IncidentController
@@ -7,18 +8,28 @@ sequenceDiagram
     participant IREP as RepositoryIncident
 
     CHO->>CTRL: POST /incidents con CreateIncidentDto
+    activate CTRL
     CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
     CTRL->>SRV: create(dto, user.user_id)
+    activate SRV
     SRV->>OREP: findOne(where order_id igual a dto.orderId)
+    activate OREP
     OREP-->>SRV: Order o null
+    deactivate OREP
     alt El pedido no existe
         SRV-->>CTRL: NotFoundException, pedido no encontrado
+        deactivate SRV
     else Pedido encontrado
         SRV->>SRV: distributor_id se denormaliza de order.distributor_id
         SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
+        activate IREP
         IREP-->>SRV: Incident en memoria
+        deactivate IREP
         SRV->>IREP: save(incident)
+        activate IREP
         IREP-->>SRV: Incident persistida
+        deactivate IREP
         SRV-->>CTRL: Incident
         CTRL-->>CHO: 201 Incident
+        deactivate CTRL
     end

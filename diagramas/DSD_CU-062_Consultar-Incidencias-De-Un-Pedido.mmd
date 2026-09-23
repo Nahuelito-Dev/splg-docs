@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-062 Consultar Incidencias De Un Pedido
     autonumber
     participant USR as Chofer o Admin
     participant DEC as CurrentDistributorDecorator
@@ -7,10 +8,18 @@ sequenceDiagram
     participant IREP as RepositoryIncident
 
     USR->>DEC: GET /incidents/order/:orderId
+    activate DEC
     DEC->>CTRL: findByOrder(orderId, distributorId)
+    activate CTRL
     CTRL->>CTRL: ParseUUIDPipe valida el orderId
     CTRL->>SRV: findByOrder(orderId, distributorId)
+    activate SRV
     SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
+    activate IREP
     IREP-->>SRV: Incident[] del pedido
+    deactivate IREP
     SRV-->>CTRL: Incident[]
+    deactivate SRV
     CTRL-->>USR: 200 Incident[]
+    deactivate CTRL
+    deactivate DEC

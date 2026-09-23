@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSS — CU-106 Anticipar La Recompra Por Consumo Estimado
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -13,7 +14,7 @@ sequenceDiagram
         alt El cliente no tiene pedido activo ni invitacion reciente
             SIS-->>CLI: invitacion a reponer con el pedido precargado (vigencia limitada)
             alt El cliente acepta dentro de la vigencia
-                CLI->>SIS: aceptar la invitacion
+                CLI->>SIS: aceptarInvitacionDeRecompra(invitacionId)
                 SIS-->>CLI: pedido creado y en busqueda de chofer
             else Rechaza o vence la vigencia
                 SIS->>SIS: cerrar la invitacion y registrar la fecha del intervalo minimo

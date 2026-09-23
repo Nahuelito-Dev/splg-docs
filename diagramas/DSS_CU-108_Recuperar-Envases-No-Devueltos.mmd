@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSS — CU-108 Recuperar Envases No Devueltos
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -18,7 +19,11 @@ sequenceDiagram
                 SIS-->>CLI: aviso del escalon (recordatorio, deposito comprometido)
                 alt Hay una entrega programada al mismo cliente
                     SIS-->>CLI: oferta de devolver el envase en ese viaje (vigencia limitada)
-                    CLI->>SIS: aceptar o no responder
+                    alt El cliente acepta el retiro
+                        CLI->>SIS: aceptarRetiroEnLaEntrega(ofertaId)
+                    else No responde antes de la vigencia
+                        SIS->>SIS: vencer la oferta de retiro
+                    end
                 else No hay entrega programada
                     SIS->>SIS: saltear la oferta de retiro
                 end
@@ -27,7 +32,8 @@ sequenceDiagram
 
         alt Se agotaron los escalones y el importe supera el umbral
             SIS-->>ADM: legajo del caso (cliente, historial del envase, importe)
-            ADM->>SIS: cobrar el deposito, dar de baja el envase o cerrar sin cargo
+            ADM->>SIS: resolverCasoDeRecupero(casoId, decision)
+            Note over ADM,SIS: decision: cobrar el deposito, dar de baja el envase<br/>o cerrar el caso sin cargo
             SIS-->>ADM: resolucion registrada
         else El envase volvio o el importe no llega al umbral
             SIS->>SIS: cerrar el caso segun corresponda

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-067 Dar De Alta Un Envase Fisico
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -8,21 +9,35 @@ sequenceDiagram
     participant MREP as RepositoryCylinderMovement
 
     ADM->>DEC: POST /cylinders con CreateCylinderDto
+    activate DEC
     DEC->>DEC: required true, exige tenant
     DEC->>CTRL: create(dto, distributorId)
+    activate CTRL
     CTRL->>SRV: create(dto, distributorId)
+    activate SRV
     SRV->>CREP: create(distributor_id, serial, gas_cylinder_id, deposit, state IN_DEPOT)
+    activate CREP
     CREP-->>SRV: Cylinder en memoria
+    deactivate CREP
     SRV->>CREP: save(cylinder)
+    activate CREP
     alt Violacion de unicidad, codigo 23505
         CREP-->>SRV: QueryFailedError
+        deactivate CREP
         SRV-->>CTRL: ConflictException, el serial ya existe en tu distribuidora
+        deactivate SRV
     else Alta exitosa
         CREP-->>SRV: Cylinder persistido
         SRV->>MREP: create(cylinder_id, distributor_id, from_state null, to_state IN_DEPOT)
+        activate MREP
         MREP-->>SRV: CylinderMovement en memoria
+        deactivate MREP
         SRV->>MREP: save(movement)
+        activate MREP
         MREP-->>SRV: movimiento de alta registrado
+        deactivate MREP
         SRV-->>CTRL: Cylinder
         CTRL-->>ADM: 201 Cylinder
+        deactivate CTRL
     end
+    deactivate DEC

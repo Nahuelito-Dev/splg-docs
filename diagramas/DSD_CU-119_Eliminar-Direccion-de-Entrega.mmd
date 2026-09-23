@@ -1,18 +1,25 @@
 sequenceDiagram
+    title DSD — CU-119 Eliminar Direccion de Entrega
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: remove(id, usuarioDeLaSesion)
+    activate SRV
     SRV->>SRV: findOne(id, usuarioDeLaSesion)
     SRV->>AREP: find(otras direcciones del titular)
+    activate AREP
     AREP-->>SRV: lista de UserAddress
+    deactivate AREP
     SRV->>AREP: save(nueva predeterminada)
+    activate AREP
     SRV->>AREP: remove(direccion)
     AREP-->>SRV: confirmación de baja
+    deactivate AREP
     alt la dirección existe
         SRV-->>CTRL: mensaje de baja con el identificador
+        deactivate SRV
     else la dirección no existe
         SRV-->>CTRL: NotFoundException Address with ID not found
     end

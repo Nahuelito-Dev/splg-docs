@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-031 Registrar Chofer
     autonumber
     participant CTRL as UsersController
     participant SRV as DeliveryService
@@ -14,36 +15,58 @@ sequenceDiagram
         CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
     else Distribuidora resuelta
         CTRL->>SRV: registerWithUser(dto con distributorId)
+        activate SRV
         SRV->>DS: createQueryRunner()
+        activate DS
         DS-->>SRV: QueryRunner
+        deactivate DS
         SRV->>QR: connect() y startTransaction()
+        activate QR
         SRV->>UREP: findOne(where email)
+        activate UREP
         UREP-->>SRV: User existente o null
+        deactivate UREP
         alt Ya existe un usuario con ese email
             SRV->>QR: rollbackTransaction()
             SRV-->>CTRL: BadRequestException User with this email already exists
+            deactivate SRV
         else Email libre
             SRV->>FB: createUserSafe(email, password, full_name, phone_number)
+            activate FB
             FB-->>SRV: firebaseUser con uid
+            deactivate FB
             SRV->>RREP: findOne(where type delivery)
+            activate RREP
             RREP-->>SRV: Role o null
+            deactivate RREP
             alt No existe el rol delivery
                 SRV->>QR: rollbackTransaction()
                 SRV->>FB: deleteUserByEmailSafe(email, logger)
+                activate FB
                 SRV-->>CTRL: InternalServerErrorException Delivery role not found
             else Rol encontrado
                 SRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id, selfie)
+                activate UREP
                 UREP-->>SRV: User en memoria
+                deactivate UREP
                 SRV->>QR: manager.save(user)
                 QR-->>SRV: savedUser con user_id
+                deactivate QR
                 SRV->>DREP: create(user_id, distributor_id, calification, latLng, actual_location, validated, isActive, balance 0)
+                activate DREP
                 DREP-->>SRV: Delivery en memoria
+                deactivate DREP
                 SRV->>QR: manager.save(delivery)
+                activate QR
                 SRV->>QR: commitTransaction()
                 SRV->>UREP: findOne(user_id, relations delivery y role)
+                activate UREP
                 UREP-->>SRV: User completo
+                deactivate UREP
                 SRV-->>CTRL: User con su perfil de chofer
             end
         end
         SRV->>QR: release()
     end
+    deactivate FB
+    deactivate QR

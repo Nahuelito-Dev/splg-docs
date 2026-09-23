@@ -1,17 +1,22 @@
 sequenceDiagram
+    title DSD — CU-084 Verificar Existencia De Usuario
     autonumber
     participant CTRL as UsersController
     participant SRV as UsersService
     participant REP as RepositoryUser
 
     CTRL->>SRV: checkUserExists(body.email, body.phoneNumber)
+    activate SRV
     SRV->>SRV: armar conditions con email y phone_number
     alt No vino ni email ni telefono
         SRV-->>CTRL: exists false
+        deactivate SRV
     else Al menos una condicion
         SRV->>REP: findOne(where conditions en OR)
+        activate REP
         alt Sin coincidencias
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: exists false, email false, phoneNumber false
         else Hay coincidencia
             REP-->>SRV: User

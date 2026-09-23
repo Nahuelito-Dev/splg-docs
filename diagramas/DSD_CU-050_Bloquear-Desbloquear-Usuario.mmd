@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-050 Bloquear Desbloquear Usuario
     autonumber
     participant RG as RolesGuard
     participant CTRL as UsersController
@@ -11,15 +12,21 @@ sequenceDiagram
     else Autorizado
         RG-->>CTRL: true
         CTRL->>SRV: toggleBlockUser(id, body.block)
+        activate SRV
         SRV->>REP: findOne(user_id)
+        activate REP
         alt Usuario inexistente
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: NotFoundException Usuario no encontrado
+            deactivate SRV
         else Usuario encontrado
             REP-->>SRV: User
             SRV->>SRV: user.blocked igual a shouldBlock
             SRV->>REP: save(user)
+            activate REP
             REP-->>SRV: User
+            deactivate REP
             SRV-->>CTRL: id, email, isBlocked y mensaje
         end
     end

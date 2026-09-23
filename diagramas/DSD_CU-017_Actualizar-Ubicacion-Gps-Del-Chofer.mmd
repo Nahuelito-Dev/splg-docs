@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-017 Actualizar Ubicacion Gps Del Chofer
     autonumber
     participant APP as App Chofer
     participant DGW as DriversGateway
@@ -7,15 +8,25 @@ sequenceDiagram
     participant AGW as AdminGateway
 
     APP->>DGW: emit driver:update-location con userId, lat, lng
+    activate DGW
     alt Falta userId o lat o lng
         DGW->>DGW: logger.error y return sin registrar
     else Datos validos
         DGW->>REDIS: updateDriverLocation(userId, lat, lng)
+        activate REDIS
         REDIS-->>DGW: GEOADD drivers:locations lng lat userId
+        deactivate REDIS
         DGW->>REDIS: getDriverActiveOrder(userId)
+        activate REDIS
         REDIS-->>DGW: orderId y customerId, o null
+        deactivate REDIS
         opt El chofer tiene un pedido activo
-            DGW->>CGW: notifyCustomer(customerId, order:driver-location, payload)
-            DGW->>AGW: notifyAdmins(order:driver-location, payload)
+            DGW-)CGW: notifyCustomer(customerId, order:driver-location, payload)
+            activate CGW
+            DGW-)AGW: notifyAdmins(order:driver-location, payload)
+            activate AGW
         end
     end
+    deactivate AGW
+    deactivate CGW
+    deactivate DGW

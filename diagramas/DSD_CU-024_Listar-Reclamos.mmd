@@ -1,14 +1,19 @@
 sequenceDiagram
+    title DSD — CU-024 Listar Reclamos
     autonumber
     participant CTRL as ClaimsController
     participant SRV as ClaimsService
     participant CREP as RepositoryClaim
 
     CTRL->>SRV: findAll(distributorId)
+    activate SRV
     SRV->>SRV: armar where vacio
     alt Hay distributorId, admin de distribuidora
         SRV->>SRV: where.distributor_id igual distributorId
     end
     SRV->>CREP: find(where, order createdAt DESC, relations order y customer)
+    activate CREP
     CREP-->>SRV: Claim[]
+    deactivate CREP
     SRV-->>CTRL: Claim[]
+    deactivate SRV

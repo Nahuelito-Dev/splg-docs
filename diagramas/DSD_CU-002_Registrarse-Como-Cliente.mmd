@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-002 Registrarse Como Cliente
     autonumber
     participant CTRL as UsersController
     participant CSRV as CustomersService
@@ -10,31 +11,44 @@ sequenceDiagram
     participant MAIL as EmailService
 
     CTRL->>CSRV: registerWithUser(completeRegistrationDto)
+    activate CSRV
     CSRV->>QR: connect() y startTransaction()
+    activate QR
     CSRV->>UREP: findOne(email)
+    activate UREP
     alt Ya existe un usuario con ese email
         UREP-->>CSRV: User
+        deactivate UREP
         CSRV->>QR: rollbackTransaction()
         CSRV-->>CTRL: BadRequestException User with this email already exists
+        deactivate CSRV
     else Email libre
         UREP-->>CSRV: null
         CSRV->>FB: createUserSafe(email, password, full_name, phone_number)
+        activate FB
         FB->>FB: createUser(props)
         FB-->>CSRV: UserRecord con uid
+        deactivate FB
         CSRV->>RREP: findOne(type customer)
+        activate RREP
         alt No existe el rol customer
             RREP-->>CSRV: null
+            deactivate RREP
             CSRV-->>CTRL: InternalServerErrorException Customer role not found
         else Rol encontrado
             RREP-->>CSRV: Role
             CSRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id)
+            activate UREP
             CSRV->>QR: manager.save(user)
             CSRV->>CREP: create(user_id, notification_token, lat_lang, validated false)
+            activate CREP
             CSRV->>QR: manager.save(customer)
             CSRV->>QR: commitTransaction()
             CSRV->>MAIL: sendWelcomeEmail(dto.email)
+            activate MAIL
             CSRV->>UREP: findOne(user_id, relations customer y role)
             UREP-->>CSRV: User completo
+            deactivate UREP
             CSRV-->>CTRL: User con Customer y Role
         end
     end
@@ -42,7 +56,12 @@ sequenceDiagram
     opt Cualquier error despues de crear el usuario de Firebase
         CSRV->>QR: rollbackTransaction()
         CSRV->>FB: deleteUserByEmailSafe(dto.email, logger)
+        activate FB
         FB->>FB: getUserByEmail(email) y deleteUser(uid)
         CSRV->>CSRV: handleDBExceptions(error)
     end
     CSRV->>QR: release()
+    deactivate MAIL
+    deactivate CREP
+    deactivate FB
+    deactivate QR

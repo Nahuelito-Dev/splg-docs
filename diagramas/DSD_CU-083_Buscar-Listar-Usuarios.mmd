@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-083 Buscar Listar Usuarios
     autonumber
     participant RG as RolesGuard
     participant CTRL as UsersController
@@ -10,29 +11,43 @@ sequenceDiagram
         RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
         RG-->>CTRL: true
         CTRL->>SRV: findAll(paginationDto con term)
+        activate SRV
         SRV->>REP: createQueryBuilder(user)
+        activate REP
         REP-->>SRV: SelectQueryBuilder
+        deactivate REP
         SRV->>QB: leftJoinAndSelect role, customer y delivery
+        activate QB
         SRV->>QB: take(limit) y skip(offset)
         opt Viene term de busqueda
             SRV->>QB: andWhere(Brackets con email, full_name y phone_number ILIKE)
         end
         SRV->>QB: getManyAndCount()
         QB-->>SRV: users y total
+        deactivate QB
         SRV-->>CTRL: users y maxUsers
+        deactivate SRV
     else Busqueda por email, GET /users/email/:email
         CTRL->>SRV: findOneByEmail(email)
+        activate SRV
         SRV->>REP: findOne(email, relations role customer delivery cars addresses admins)
+        activate REP
         alt No encontrado
             REP-->>SRV: null
+            deactivate REP
             SRV-->>CTRL: NotFoundException User with email not found
+            deactivate SRV
         else Encontrado
             REP-->>SRV: User
             SRV-->>CTRL: User
         end
     else Busqueda por telefono, GET /users/phone/:phoneNumber
         CTRL->>SRV: findOneByPhone(phoneNumber)
+        activate SRV
         SRV->>REP: findOne(phone_number, relations role customer delivery cars addresses)
+        activate REP
         REP-->>SRV: User o null
+        deactivate REP
         SRV-->>CTRL: User o null
+        deactivate SRV
     end

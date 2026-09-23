@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSS — CU-105 Planificar El Mantenimiento Y Las Habilitaciones De La Flota
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -14,7 +15,7 @@ sequenceDiagram
         loop Por cada ventana alternativa, de mejor a peor
             SIS-->>CHO: propuesta de ventana de taller (vigencia limitada)
             alt El chofer acepta
-                CHO->>SIS: aceptar la ventana propuesta
+                CHO->>SIS: aceptarVentanaDeMantenimiento(propuestaId)
                 SIS-->>CHO: ventana confirmada y agenda bloqueada
             else Rechaza o vence la vigencia
                 SIS->>SIS: cerrar la propuesta y pasar a la siguiente ventana
@@ -23,7 +24,7 @@ sequenceDiagram
 
         alt Se agotaron las ventanas sin acuerdo
             SIS-->>ADM: cuadro de opciones evaluadas y motivo de cada descarte
-            ADM->>SIS: confirmar la ventana y el gasto del taller
+            ADM->>SIS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
             SIS-->>ADM: tarea programada
         else La ventana quedo acordada con el chofer
             SIS->>SIS: registrar la tarea como programada

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-080 Consultar El Pool De Pedidos Disponibles
     autonumber
     participant RG as RolesGuard
     participant CTRL as OrderController
@@ -15,17 +16,25 @@ sequenceDiagram
         else Autorizado
             RG-->>CTRL: true
             CTRL->>SRV: findAvailableOrders(paginationDto, distributorId)
+            activate SRV
         end
     else Bootstrap del cron de despacho
         CRON->>SRV: findAvailableOrders(limit 50, offset 0)
     end
     SRV->>ORD: findAvailable(limit, offset, distributorId)
+    activate ORD
     ORD->>ORD: scoped(status PENDING y delivery_id IsNull, distributorId)
     ORD->>REP: findAndCount(where, take, skip, relations, order createdAt ASC)
+    activate REP
     REP-->>ORD: orders y total
+    deactivate REP
     ORD-->>SRV: orders, total, limit y offset
+    deactivate ORD
     SRV-->>CTRL: PaginatedOrders
+    deactivate SRV
     loop Por cada pedido del pool
         CTRL->>MAP: toDto(order)
+        activate MAP
         MAP-->>CTRL: OrderResponseDto
+        deactivate MAP
     end

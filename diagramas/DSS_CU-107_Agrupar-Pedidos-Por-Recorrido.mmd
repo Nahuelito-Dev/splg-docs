@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSS — CU-107 Agrupar Pedidos Por Recorrido
     autonumber
     actor SAU as Sistema Automatico
     participant SIS as Sistema
@@ -13,7 +14,7 @@ sequenceDiagram
         loop Por cada chofer candidato no contactado
             SIS-->>CHO: oferta del recorrido completo (paradas, peso, vigencia)
             alt El chofer acepta dentro de la vigencia
-                CHO->>SIS: aceptar el recorrido
+                CHO->>SIS: aceptarRecorrido(recorridoId)
                 SIS-->>CHO: pedidos asignados en el orden establecido
             else Rechaza o vence la vigencia
                 SIS->>SIS: cerrar la oferta y pasar al candidato siguiente

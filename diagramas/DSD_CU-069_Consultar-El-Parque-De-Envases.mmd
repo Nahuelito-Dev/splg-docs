@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-069 Consultar El Parque De Envases
     autonumber
     participant USR as Admin o Chofer
     participant DEC as CurrentDistributorDecorator
@@ -8,23 +9,37 @@ sequenceDiagram
 
     alt Listado del parque, GET /cylinders
         USR->>DEC: GET /cylinders con query state opcional
+        activate DEC
         DEC->>CTRL: findAll(distributorId, state)
+        activate CTRL
         CTRL->>SRV: findAll(distributorId, state)
+        activate SRV
         SRV->>SRV: arma el where con distributor_id y state si vienen
         SRV->>CREP: find(where, order createdAt DESC)
+        activate CREP
         CREP-->>SRV: Cylinder[]
+        deactivate CREP
         SRV-->>CTRL: Cylinder[]
+        deactivate SRV
         CTRL-->>USR: 200 Cylinder[]
+        deactivate CTRL
     else Detalle de un envase, GET /cylinders/:id
         USR->>DEC: GET /cylinders/:id
         DEC->>CTRL: findOne(id, distributorId)
+        activate CTRL
         CTRL->>SRV: findOne(id, distributorId)
+        activate SRV
         SRV->>CREP: findOne(where cylinder_id mas distributor_id si hay tenant)
+        activate CREP
         CREP-->>SRV: Cylinder o null
+        deactivate CREP
         alt No existe o es de otra distribuidora
             SRV-->>CTRL: NotFoundException, envase no encontrado
+            deactivate SRV
         else Encontrado
             SRV-->>CTRL: Cylinder
             CTRL-->>USR: 200 Cylinder
+            deactivate CTRL
         end
     end
+    deactivate DEC

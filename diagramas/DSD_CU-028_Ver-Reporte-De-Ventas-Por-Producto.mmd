@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-028 Ver Reporte De Ventas Por Producto
     autonumber
     participant CTRL as ReportsController
     participant SRV as ReportsService
@@ -7,9 +8,13 @@ sequenceDiagram
 
     CTRL->>CTRL: parseDates(from, to)
     CTRL->>SRV: getSalesByProduct(startDate, endDate, distributorId)
+    activate SRV
     SRV->>OREP: createQueryBuilder(order)
+    activate OREP
     OREP-->>SRV: SelectQueryBuilder
+    deactivate OREP
     SRV->>QB: innerJoinAndSelect(order.items, item)
+    activate QB
     SRV->>QB: innerJoinAndSelect(item.gasCylinder, product)
     SRV->>QB: where(order.status igual DELIVERED)
     SRV->>QB: andWhere(order.deliveredAt BETWEEN start AND end)
@@ -20,5 +25,7 @@ sequenceDiagram
     SRV->>QB: groupBy(product.type) y addGroupBy(product.description)
     SRV->>QB: getRawMany()
     QB-->>SRV: filas crudas
+    deactivate QB
     SRV->>SRV: mapear a productType, description, totalQuantity y totalSales con Number
     SRV-->>CTRL: arreglo de ventas por producto
+    deactivate SRV

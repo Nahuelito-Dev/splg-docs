@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-100 Enviar Notificacion De Prueba
     autonumber
     participant ADM as Admin o SuperAdmin
     participant CTRL as NotificationsController
@@ -6,17 +7,23 @@ sequenceDiagram
     participant FCM as FcmPort
 
     ADM->>CTRL: POST /notifications/send-test con token title y body
+    activate CTRL
     CTRL->>CTRL: Roles ADMIN SUPER_ADMIN verificados por RolesGuard
     CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
+    activate SRV
     SRV->>SRV: arma message con notification y data type TEST mas timestamp
     SRV->>FCM: sendToToken(token, message)
+    activate FCM
     alt El envio falla
         FCM-->>SRV: Error
+        deactivate FCM
         SRV->>SRV: logger.error error sending test notification
         SRV-->>CTRL: success false, error
+        deactivate SRV
     else Envio exitoso
         FCM-->>SRV: messageId
         SRV->>SRV: logger.log test notification sent
         SRV-->>CTRL: success true, messageId
     end
     CTRL-->>ADM: 200 resultado
+    deactivate CTRL

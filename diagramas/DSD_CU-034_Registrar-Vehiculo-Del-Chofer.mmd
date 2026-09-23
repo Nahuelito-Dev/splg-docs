@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-034 Registrar Vehiculo Del Chofer
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -6,21 +7,31 @@ sequenceDiagram
     participant CREP as RepositoryCar
 
     CTRL->>SRV: create(createCarDto, distributorId)
+    activate SRV
     SRV->>UREP: findOne(where user_id del dto)
+    activate UREP
     UREP-->>SRV: User o null
+    deactivate UREP
     alt Usuario inexistente
         SRV-->>CTRL: NotFoundException User with ID not found
+        deactivate SRV
     else Usuario encontrado
         alt El dto trae car_patent
             SRV->>CREP: findOne(where car_patent)
+            activate CREP
             CREP-->>SRV: Car existente o null
+            deactivate CREP
             alt La patente ya esta registrada
                 SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
             end
         end
         SRV->>CREP: create(datos del dto, user_id, distributor_id)
+        activate CREP
         CREP-->>SRV: Car en memoria
+        deactivate CREP
         SRV->>CREP: save(car)
+        activate CREP
         CREP-->>SRV: Car persistido
+        deactivate CREP
         SRV-->>CTRL: Car
     end

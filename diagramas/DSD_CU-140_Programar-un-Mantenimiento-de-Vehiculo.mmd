@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-140 Programar un Mantenimiento de Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
@@ -7,13 +8,21 @@ sequenceDiagram
     participant NOT as NotificationService
 
     CTRL->>SRV: programarMantenimiento(vehiculoId, datos, distribuidora)
+    activate SRV
     SRV->>VREP: findOne(where car_id y distributor_id)
+    activate VREP
     VREP-->>SRV: Car o null
+    deactivate VREP
     SRV->>MREP: save(mantenimiento en estado agendado)
+    activate MREP
     MREP-->>SRV: FleetMaintenance guardado
+    deactivate MREP
     SRV->>NOT: avisar(chofer del vehículo, mantenimiento agendado)
+    activate NOT
     alt el vehículo existe y la fecha es válida
         SRV-->>CTRL: FleetMaintenance agendado
+        deactivate SRV
     else los datos no son válidos
         SRV-->>CTRL: operación rechazada
     end
+    deactivate NOT

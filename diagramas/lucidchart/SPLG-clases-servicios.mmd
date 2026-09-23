@@ -1,0 +1,86 @@
+classDiagram
+    direction LR
+
+    class OrderService {
+        +create(dto, distributorId) Promise~Order~
+        +findAll(pagination, distributorId) Promise~Order[]~
+        +findOne(id) Promise~Order~
+        +findAvailableOrders(filtro) Promise~Order[]~
+        +findByCustomer(customerId) Promise~Order[]~
+        +findByDelivery(deliveryId) Promise~Order[]~
+        +updateStatus(id, status, deliveryId) Promise~Order~
+        +assignDelivery(orderId, deliveryId) Promise~Order~
+        +rejectOffer(orderId, driverId) Promise~void~
+        +getDeliveryCode(orderId, userId, role) Promise~string~
+        +confirmDelivery(orderId, codigo) Promise~Order~
+        +updateLocation(id, lat, lng) Promise~void~
+        +notifyDriverArrived(orderId) Promise~void~
+        +cancelOrder(id, role, userId) Promise~Order~
+        +getOrderStats(distributorId) Promise~StatsDto~
+        +getSalesChartData(distributorId) Promise~ChartData[]~
+    }
+
+    class CreateOrderUseCase {
+        +execute(dto, distributorId) Promise~Order~
+    }
+    class UpdateOrderStatusUseCase {
+        +execute(id, status, deliveryId) Promise~Order~
+    }
+    class ConfirmDeliveryUseCase {
+        +execute(orderId, codigo, userId) Promise~Order~
+    }
+    class CancelOrderUseCase {
+        +execute(id, role, userId) Promise~Order~
+    }
+
+    class DispatchService {
+        <<cron>>
+        +tick() Promise~void~
+    }
+
+    class DispatchOrchestratorService {
+        +offerToNextDriver(order) Promise~void~
+        +ensureOffered(order) Promise~void~
+        +handleExpiredOffers() Promise~void~
+        +onDriverAccepted(order, driverId) Promise~void~
+        +onDriverRejected(order, driverId) Promise~void~
+    }
+
+    class RedisService {
+        +updateDriverLocation(driverId, lat, lng) Promise~void~
+        +getNearbyDrivers(lat, lng, radio) Promise~string[]~
+        +setDriverActiveOrder(driverId, orderId) Promise~void~
+        +getDriverActiveOrder(driverId) Promise~string~
+        +clearDriverActiveOrder(driverId) Promise~void~
+        +removeDriver(driverId) Promise~void~
+    }
+
+    class DriversGateway {
+        <<WebSocket /drivers>>
+        +handleConnection(socket) void
+        +handleDisconnect(socket) void
+        +handleDriverJoin(socket, data) void
+        +handleDriverLocation(socket, data) void
+        +notifyNewOrder(driverId, order) void
+        +notifyOrderCancelled(driverId, orderId) void
+    }
+
+    class CustomersGateway {
+        <<WebSocket /customers>>
+        +handleConnection(socket) void
+        +handleDisconnect(socket) void
+        +handleCustomerJoin(socket, data) void
+        +notifyCustomer(customerId, evento, payload) void
+    }
+
+    OrderService ..> CreateOrderUseCase : delega
+    OrderService ..> UpdateOrderStatusUseCase : delega
+    OrderService ..> ConfirmDeliveryUseCase : delega
+    OrderService ..> CancelOrderUseCase : delega
+    OrderService ..> CustomersGateway : avisa al cliente
+
+    DispatchService ..> DispatchOrchestratorService : delega
+    DispatchOrchestratorService ..> RedisService : consulta cercanía
+    DispatchOrchestratorService ..> DriversGateway : ofrece al chofer
+    CreateOrderUseCase ..> DispatchOrchestratorService : dispara el despacho
+    DriversGateway ..> RedisService : registra ubicación

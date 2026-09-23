@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-101 Reenviar Notificacion De Confirmacion De Pedido
     autonumber
     participant ADM as Admin o SuperAdmin
     participant CTRL as NotificationsController
@@ -7,12 +8,17 @@ sequenceDiagram
     participant FCM as FcmPort
 
     ADM->>CTRL: POST /notifications/order-confirmation con customerId orderId y token opcional
+    activate CTRL
     CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
+    activate SRV
     SRV->>CREP: findOne(where user_id igual a customerId, relations user)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt Cliente no encontrado
         SRV->>SRV: logger.warn customer not found
         SRV-->>CTRL: success false, error Customer not found
+        deactivate SRV
     else Cliente encontrado
         SRV->>SRV: notificationToken igual al token del body o customer.notification_token
         alt El cliente no tiene token registrado
@@ -21,8 +27,10 @@ sequenceDiagram
         else Hay token
             SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
             SRV->>FCM: sendToToken(notificationToken, message)
+            activate FCM
             alt Falla el envio
                 FCM-->>SRV: Error
+                deactivate FCM
                 SRV-->>CTRL: success false, error
             else Envio exitoso
                 FCM-->>SRV: messageId
@@ -31,3 +39,4 @@ sequenceDiagram
         end
     end
     CTRL-->>ADM: 200 resultado
+    deactivate CTRL

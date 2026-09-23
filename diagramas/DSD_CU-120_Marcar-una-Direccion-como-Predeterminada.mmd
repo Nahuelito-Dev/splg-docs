@@ -1,16 +1,21 @@
 sequenceDiagram
+    title DSD — CU-120 Marcar una Direccion como Predeterminada
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
+    activate SRV
     SRV->>SRV: findOne(id, usuarioDeLaSesion)
     SRV->>AREP: update(isDefault false en las demás del titular)
+    activate AREP
     SRV->>AREP: save(direccion con isDefault true)
     AREP-->>SRV: UserAddress actualizada
+    deactivate AREP
     alt la dirección existe
         SRV-->>CTRL: UserAddress predeterminada
+        deactivate SRV
     else la dirección no existe
         SRV-->>CTRL: NotFoundException Address with ID not found
     end

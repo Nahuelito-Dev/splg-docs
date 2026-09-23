@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-063 Resolver Incidencia
     autonumber
     participant ADM as Admin de la distribuidora
     participant DEC as CurrentDistributorDecorator
@@ -7,18 +8,28 @@ sequenceDiagram
     participant IREP as RepositoryIncident
 
     ADM->>DEC: PATCH /incidents/:id/resolve con ResolveIncidentDto
+    activate DEC
     DEC->>DEC: required true, exige tenant en contexto
     DEC->>CTRL: resolve(id, dto, distributorId)
+    activate CTRL
     CTRL->>SRV: resolve(id, dto, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>IREP: findOne(where incident_id y distributor_id)
+    activate IREP
     IREP-->>SRV: Incident o null
+    deactivate IREP
     alt No existe o es de otra distribuidora
         SRV-->>CTRL: NotFoundException, incidencia no encontrada
+        deactivate SRV
     else Incidencia del tenant
         SRV->>SRV: status RESOLVED, resolution_note, resolvedAt igual a new Date
         SRV->>IREP: save(incident)
+        activate IREP
         IREP-->>SRV: Incident actualizada
+        deactivate IREP
         SRV-->>CTRL: Incident
         CTRL-->>ADM: 200 Incident
+        deactivate CTRL
     end
+    deactivate DEC

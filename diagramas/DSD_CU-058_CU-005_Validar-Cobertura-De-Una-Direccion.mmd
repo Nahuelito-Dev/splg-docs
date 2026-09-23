@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-058 / CU-005 Validar Cobertura De Una Direccion
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -11,24 +12,37 @@ sequenceDiagram
     participant PRC as OrderPricingService
 
     CTRL->>SRV: create(dto, distributorId del header X-Distributor)
+    activate SRV
     SRV->>UC: execute(dto, distributorId)
+    activate UC
     alt Sin distributorId explicito
         UC->>DIS: getDefault()
+        activate DIS
         DIS-->>UC: distribuidora por defecto
+        deactivate DIS
     end
     UC->>AREP: findOne(address_id, user_id)
+    activate AREP
     AREP-->>UC: UserAddress con latitude y longitude
+    deactivate AREP
     alt Direccion inexistente o de otro usuario
         UC-->>CTRL: NotFoundException, direccion no encontrada
+        deactivate UC
     else Direccion valida
         UC->>CZ: checkCoverage(distributorId, lat, lng)
+        activate CZ
         CZ->>ZREP: count(distributor_id, isActive true)
+        activate ZREP
         ZREP-->>CZ: total de zonas activas
+        deactivate ZREP
         alt La distribuidora no definio zonas
             CZ-->>UC: covered true, surcharge 0, no-op
+            deactivate CZ
         else Hay zonas definidas
             CZ->>ZREP: query ST_Contains ordenada por surcharge ASC limit 1
+            activate ZREP
             ZREP-->>CZ: zona contenedora o vacio
+            deactivate ZREP
             alt Ninguna zona contiene el punto
                 CZ-->>UC: covered false, surcharge 0
                 UC-->>CTRL: BadRequestException, direccion fuera de la zona de cobertura
@@ -37,6 +51,11 @@ sequenceDiagram
             end
         end
         UC->>STK: reserve(manager, gasCylinderId, quantity)
+        activate STK
         UC->>PRC: priceItem y applyPaymentSurcharge sobre el total mas el recargo de zona
+        activate PRC
         PRC-->>UC: totalAmount final
+        deactivate PRC
     end
+    deactivate STK
+    deactivate SRV

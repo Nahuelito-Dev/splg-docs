@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-126 Vaciar el Carrito
     autonumber
     participant CTRL as CartController
     participant SRV as CartService
@@ -6,12 +7,18 @@ sequenceDiagram
     participant IREP as RepositoryCartItem
 
     CTRL->>SRV: vaciar(usuarioDeLaSesion)
+    activate SRV
     SRV->>CREP: findOne(carrito abierto del cliente)
+    activate CREP
     CREP-->>SRV: Cart o null
+    deactivate CREP
     SRV->>IREP: delete(where cart_id)
+    activate IREP
     IREP-->>SRV: confirmación de baja
+    deactivate IREP
     alt el cliente tiene carrito
         SRV-->>CTRL: Cart vacío
+        deactivate SRV
     else el cliente no tiene carrito
         SRV-->>CTRL: Cart vacío
     end

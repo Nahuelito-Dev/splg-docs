@@ -1,8 +1,21 @@
 sequenceDiagram
+    title DSS — CU-048 Procesar Pago Con Mercadopago
     autonumber
-    actor MP as Pasarela de Pago
+    actor CLI as Cliente
     participant SIS as Sistema
+    actor MP as Pasarela de Pago
     actor CHO as Chofer
+
+    CLI->>SIS: crearCheckoutDePago(pedidoId, medioDePago)
+    activate SIS
+    alt El pedido admite el cobro
+        SIS-->>CLI: enlace de pago y plazo de vigencia
+    else El pedido ya esta pago, cancelado o entregado
+        SIS-->>CLI: rechazo (el pedido no admite un nuevo cobro)
+    end
+    deactivate SIS
+
+    Note over CLI,MP: El cliente paga en el sitio de la pasarela,<br/>fuera del limite del sistema
 
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
@@ -10,6 +23,7 @@ sequenceDiagram
         SIS-->>MP: notificacion recibida (se descarta sin procesar)
     else Pago aprobado de un pedido pendiente
         SIS-->>MP: notificacion recibida
+        SIS-)CLI: aviso de pago acreditado
         SIS-)CHO: oferta del pedido ya pagado
     else Pago aprobado de la sena de una reserva
         SIS-->>MP: notificacion recibida (la sena queda paga, la reserva no se despacha)

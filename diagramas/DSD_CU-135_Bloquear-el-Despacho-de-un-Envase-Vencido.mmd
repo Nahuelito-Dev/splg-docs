@@ -1,14 +1,19 @@
 sequenceDiagram
+    title DSD — CU-135 Bloquear el Despacho de un Envase Vencido
     autonumber
     participant SRV as CylinderService
     participant CREP as RepositoryCylinder
     participant MREP as RepositoryCylinderMovement
 
     SRV->>CREP: find(envases disponibles del tipo pedido)
+    activate CREP
     CREP-->>SRV: lista de Cylinder
+    deactivate CREP
     SRV->>SRV: filtrar(expires_at nulo o posterior a hoy)
     SRV->>MREP: save(movimiento de asignación)
+    activate MREP
     MREP-->>SRV: CylinderMovement guardado
+    deactivate MREP
     alt hay envases vigentes
         SRV-->>CTRL: envases asignados al pedido
     else no hay envases vigentes

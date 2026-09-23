@@ -1,15 +1,20 @@
 sequenceDiagram
+    title DSD — CU-112 Eliminar Vehiculo
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: remove(id, distributorId)
+    activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>CREP: remove(car)
+    activate CREP
     CREP-->>SRV: Car borrado
+    deactivate CREP
     alt el vehiculo no existe
         SRV-->>CTRL: NotFoundException Car with ID not found
+        deactivate SRV
     else Vehiculo encontrado
         SRV-->>CTRL: confirmacion de baja
     end

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-045 Consultar Franjas Horarias Disponibles
     autonumber
     participant CTRL as TimeSlotController
     participant SRV as TimeSlotService
@@ -8,39 +9,57 @@ sequenceDiagram
 
     alt Disponibilidad por fecha, GET /time-slot/availability
         CTRL->>SRV: getAvailability(date, distributor)
+        activate SRV
         SRV->>SRV: resolveDistributor(slugOrId)
         alt Se paso un uuid
             SRV->>DIS: assertActive(uuid)
+            activate DIS
             DIS-->>SRV: Distributor activo
+            deactivate DIS
         else Se paso un slug
             SRV->>DIS: findBySlug(slug)
+            activate DIS
             DIS-->>SRV: Distributor
+            deactivate DIS
         end
         SRV->>TREP: find(where isActive true y distributor_id, order startTime ASC)
+        activate TREP
         TREP-->>SRV: TimeSlot[]
+        deactivate TREP
         loop Por cada franja activa
             SRV->>SRV: countBooked(time_slot_id, date, distributorId)
             SRV->>OREP: count(where time_slot_id, scheduled_date y status distinto de CANCELLED)
+            activate OREP
             OREP-->>SRV: booked
+            deactivate OREP
             SRV->>SRV: remaining igual maximo entre 0 y capacity menos booked
         end
         SRV-->>CTRL: SlotAvailability[] con capacity, booked y remaining
+        deactivate SRV
     else Listado de franjas activas, GET /time-slot
         CTRL->>SRV: findAll(distributor, distributorId)
+        activate SRV
         alt Vino el slug por query
             SRV->>SRV: resolveDistributor(distributorSlug)
         else Se usa el tenant del admin autenticado
             SRV->>SRV: effective igual distributorId
         end
         SRV->>TREP: find(where isActive true y distributor_id, order startTime ASC)
+        activate TREP
         TREP-->>SRV: TimeSlot[]
+        deactivate TREP
         SRV-->>CTRL: TimeSlot[]
+        deactivate SRV
     else Detalle de una franja, GET /time-slot/:id
         CTRL->>SRV: findOne(id, distributorId)
+        activate SRV
         SRV->>TREP: findOne(where time_slot_id y distributor_id)
+        activate TREP
         TREP-->>SRV: TimeSlot o null
+        deactivate TREP
         alt No encontrada o de otra distribuidora
             SRV-->>CTRL: NotFoundException Time slot not found
+            deactivate SRV
         else Encontrada
             SRV-->>CTRL: TimeSlot
         end

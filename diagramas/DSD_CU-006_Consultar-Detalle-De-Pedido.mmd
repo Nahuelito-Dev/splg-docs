@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-006 Consultar Detalle De Pedido
     autonumber
     participant CTRL as OrderController
     participant SRV as OrderService
@@ -7,11 +8,15 @@ sequenceDiagram
 
     CTRL->>CTRL: derivar customerScope segun user.role
     CTRL->>SRV: getOne(id, distributorId, customerScope)
+    activate SRV
     SRV->>SRV: findOne(id)
     SRV->>ORD: findByIdFull(id)
+    activate ORD
     alt No existe el pedido
         ORD-->>SRV: null
+        deactivate ORD
         SRV-->>CTRL: NotFoundException Order with ID not found
+        deactivate SRV
     else Pedido encontrado
         ORD-->>SRV: Order con relaciones completas
         alt El pedido es de otra distribuidora
@@ -21,7 +26,9 @@ sequenceDiagram
                 SRV-->>CTRL: NotFoundException Order with ID not found
             else Ownership correcto
                 SRV->>MAP: toDto(order)
+                activate MAP
                 MAP-->>SRV: OrderResponseDto
+                deactivate MAP
                 SRV-->>CTRL: OrderResponseDto
             end
         end

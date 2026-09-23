@@ -1,14 +1,19 @@
 sequenceDiagram
+    title DSD — CU-121 Consultar la Direccion Predeterminada
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
 
     CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
+    activate SRV
     SRV->>AREP: findOne(where user_id e isDefault true)
+    activate AREP
     AREP-->>SRV: UserAddress o null
+    deactivate AREP
     alt hay dirección predeterminada
         SRV-->>CTRL: UserAddress
+        deactivate SRV
     else no hay ninguna
         SRV-->>CTRL: NotFoundException No addresses found for user
     end

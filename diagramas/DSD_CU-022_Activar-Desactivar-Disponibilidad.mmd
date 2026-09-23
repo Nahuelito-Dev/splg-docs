@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-022 Activar Desactivar Disponibilidad
     autonumber
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
@@ -7,17 +8,24 @@ sequenceDiagram
     participant DGW as DriversGateway
 
     CTRL->>SRV: toggleAvailability(userId, body.available)
+    activate SRV
     SRV->>REP: findOne(user_id)
+    activate REP
     alt No existe perfil de chofer para ese usuario
         REP-->>SRV: null
+        deactivate REP
         SRV-->>CTRL: NotFoundException Perfil de repartidor no encontrado para este usuario
+        deactivate SRV
     else Perfil encontrado
         REP-->>SRV: Delivery
         SRV->>SRV: delivery.isActive igual a isAvailable
         SRV->>REP: save(delivery)
+        activate REP
         alt Se pone offline
             SRV->>REDIS: removeDriver(userId)
+            activate REDIS
             REDIS-->>SRV: sacado del radar drivers:locations
+            deactivate REDIS
             SRV-->>CTRL: userId, deliveryId, isAvailable false y mensaje Estas desconectado
         else Se pone online
             SRV-->>CTRL: userId, deliveryId, isAvailable true y mensaje Estas en linea
@@ -27,5 +35,8 @@ sequenceDiagram
     opt Caida de la conexion en vez de apagado explicito
         DGW->>DGW: handleDisconnect(client)
         DGW->>REDIS: removeDriver(id)
+        activate REDIS
         REDIS-->>DGW: chofer fuera del radar
+        deactivate REDIS
     end
+    deactivate REP

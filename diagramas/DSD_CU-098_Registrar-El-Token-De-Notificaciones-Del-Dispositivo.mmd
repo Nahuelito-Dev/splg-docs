@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-098 Registrar El Token De Notificaciones Del Dispositivo
     autonumber
     participant APP as App Cliente o App Chofer
     participant CTRL as NotificationsController
@@ -7,6 +8,7 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     APP->>CTRL: POST /notifications/token con userId token y platform
+    activate CTRL
     CTRL->>CTRL: isAdmin(user)
     alt El solicitante es admin
         CTRL->>CTRL: userId igual a body.userId, puede registrar el de otro
@@ -14,18 +16,26 @@ sequenceDiagram
         CTRL->>CTRL: userId igual a user.user_id, se ignora el del body
     end
     CTRL->>SRV: saveNotificationToken(userId, body.token, body.platform)
+    activate SRV
     SRV->>CREP: findOne(where user_id)
+    activate CREP
     CREP-->>SRV: Customer o null
+    deactivate CREP
     alt Es un cliente
         SRV->>SRV: customer.notification_token igual a token
         SRV->>CREP: save(customer)
+        activate CREP
         SRV-->>CTRL: success true
+        deactivate SRV
     else No es cliente, se prueba como chofer
         SRV->>DREP: findOne(where user_id)
+        activate DREP
         DREP-->>SRV: Delivery o null
+        deactivate DREP
         alt Es un chofer
             SRV->>SRV: delivery.notification_token igual a token
             SRV->>DREP: save(delivery)
+            activate DREP
             SRV-->>CTRL: success true
         else No existe en ninguno de los dos perfiles
             SRV->>SRV: logger.warn usuario no encontrado para token FCM
@@ -33,3 +43,6 @@ sequenceDiagram
         end
     end
     CTRL-->>APP: 200 resultado
+    deactivate CTRL
+    deactivate DREP
+    deactivate CREP

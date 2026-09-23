@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-146 Consultar la Fecha Estimada de Recompra
     autonumber
     participant CTRL as CustomerController
     participant SRV as CustomerService
@@ -6,12 +7,18 @@ sequenceDiagram
     participant OREP as RepositoryOrder
 
     CTRL->>SRV: recomprasEstimadas(dias, distribuidora)
+    activate SRV
     SRV->>CREP: find(where distributor_id y estimación en la ventana)
+    activate CREP
     CREP-->>SRV: lista de Customer
+    deactivate CREP
     SRV->>OREP: find(última compra de cada cliente)
+    activate OREP
     OREP-->>SRV: últimos pedidos
+    deactivate OREP
     alt hay clientes
         SRV-->>CTRL: listado con consumo y última compra
+        deactivate SRV
     else no hay
         SRV-->>CTRL: listado vacío
     end

@@ -1,4 +1,5 @@
 sequenceDiagram
+    title DSD — CU-001 Iniciar Sesion
     autonumber
     participant GUARD as AuthGuard
     participant CTRL as AuthController
@@ -13,7 +14,9 @@ sequenceDiagram
         GUARD-->>CTRL: UnauthorizedException
     else Header valido y ruta de login sin token
         GUARD->>USR: findOneByEmail(body.email)
+        activate USR
         USR-->>GUARD: User con role
+        deactivate USR
         GUARD->>GUARD: validateUserRoleForApp(user, requestSource)
         alt El rol no corresponde a esta app
             GUARD-->>CTRL: UnauthorizedException
@@ -24,22 +27,36 @@ sequenceDiagram
 
     alt Login de las apps, POST /auth/login
         CTRL->>SRV: login(dto)
+        activate SRV
         SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
+        activate SDK
         SDK-->>SRV: UserCredential
+        deactivate SDK
         SRV-->>CTRL: UserCredential
+        deactivate SRV
     else Login del panel, POST /auth/login/dashboard
         CTRL->>SRV: login(dto, requestSource)
+        activate SRV
         SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
+        activate SDK
         SDK-->>SRV: UserCredential
+        deactivate SDK
         SRV-->>CTRL: UserCredential con stsTokenManager
+        deactivate SRV
         CTRL->>SRV: loginDashboard(accessToken)
+        activate SRV
         SRV->>SRV: decodeToken(token)
         SRV->>FB: verifyIdToken(token)
+        activate FB
         FB-->>SRV: DecodedIdToken
+        deactivate FB
         SRV->>ADM: findOneByEmail(user.email)
+        activate ADM
         alt No existe un Admin con ese email
             ADM-->>SRV: null
+            deactivate ADM
             SRV-->>CTRL: UnauthorizedException Admin not found
+            deactivate SRV
         else Es admin
             ADM-->>SRV: Admin
             SRV-->>CTRL: void
