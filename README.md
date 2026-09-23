@@ -22,15 +22,15 @@ Todo lo demás está en `material-de-trabajo/` y no hace falta para entregar.
 
 | | Documento | Qué lleva |
 |---|---|---|
-| **0** | `0-Plan_Del_Proyecto.md` | Fases, hitos, cronograma, actores y los 149 casos de uso de alto nivel |
+| **0** | `0-Plan_Del_Proyecto.md` | Fases, hitos, cronograma, actores y los 151 casos de uso de alto nivel |
 | **0.1** | `0.1-Planificacion_Iteraciones.md` | Qué se hace en cada iteración |
-| **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 149 casos de uso expandidos |
-| **2** | `2-Analisis.md` | Modelo conceptual, los 149 diagramas de secuencia y los contratos |
+| **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 151 casos de uso expandidos |
+| **2** | `2-Analisis.md` | Modelo conceptual, los 151 diagramas de secuencia y los contratos |
 | **3** | `3-Diseño.md` | Arquitectura, casos de uso reales, los diagramas de interacción y los módulos inteligentes |
 
 ## El documento de consulta
 
-**`Casos-de-Uso.md`** tiene los **149 casos, del CU-001 al CU-108**, cada uno con sus
+**`Casos-de-Uso.md`** tiene los **151 casos, del CU-001 al CU-151**, cada uno con sus
 cuatro artefactos: alto nivel (CUA), expandido (CUE), diagrama de secuencia del sistema
 (DSS) y diagrama de interacción de diseño (DSD).
 

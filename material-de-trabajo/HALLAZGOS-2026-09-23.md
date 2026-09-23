@@ -726,3 +726,151 @@ lo incluye, y el panel lo tiene declarado en su tipo
 `reason` es opcional en `CancelOrderDto`. Hay **3 pedidos cancelados con el
 motivo en NULL**. Para una cancelación de admin, el motivo debería ser
 obligatorio.
+
+---
+
+## Camino crítico de la demo — verificado contra la API corriendo
+
+Tres corridas consecutivas de `demo_e2e.py`, **19/19 pasos en verde** en las tres:
+registro de cliente desde la app y de chofer desde el panel, login de ambos, alta
+de garrafa, dirección del cliente, pedido desde el cliente, pool del chofer,
+asignación, aceptación, en camino, tres posiciones de tracking, aviso de llegada,
+código de entrega, confirmación y calificación.
+
+Las dos fallas de la primera corrida **eran del guion de prueba, no del sistema**:
+la dirección caía fuera de la única zona activa, y el assign recibía un `user_id`
+donde espera un `delivery_id`. Quedan anotadas abajo como H-48 y H-49.
+
+### H-48 · El chofer se identifica con dos claves distintas en el mismo módulo — **contrato, medio**
+
+`PATCH /orders/:id/assign/:deliveryId` resuelve al chofer por `delivery_id`, pero
+el gateway de tiempo real lo identifica por `user_id` (sala `driver_<userId>`, y
+Redis GEO indexado por `user_id`). Quien integra contra el módulo de pedidos tiene
+que saber cuál de las dos claves va en cada llamada, y no hay nada en el contrato
+que lo diga: el parámetro se llama `deliveryId` en un lado y `userId` en el otro
+sin que la diferencia esté documentada.
+
+No es un bug — cada endpoint hace lo que dice su código — pero es la clase de
+inconsistencia que hace fallar una integración y cuesta encontrar. Conviene
+unificar o, como mínimo, dejarlo explícito en el Swagger de ambos.
+
+### H-49 · Una sola zona de cobertura activa — **dato, informativo**
+
+La única zona activa es **Itaembé Miní** (centro `-27.41, -55.965`). Cualquier
+dirección fuera de ese polígono hace fallar el alta de pedido con 400 "La
+dirección está fuera de la zona de cobertura". No es un defecto: el control
+funciona como debe. Se anota porque condiciona los datos de la demo — las
+direcciones de prueba tienen que caer adentro.
+
+### H-50 · El DTO de registro de token FCM pide un `userId` que después ignora — **contrato, bajo**
+
+`POST /notifications/token` fuerza el `userId` al del token autenticado cuando
+quien llama no es admin (protección anti-secuestro, correcta). Pero el DTO sigue
+exigiendo `userId` como UUID obligatorio, así que la app cliente tiene que mandar
+un dato que el backend descarta, y si lo omite recibe un 400 confuso
+("userId debe ser un UUID"). Debería ser opcional y documentado como "solo admin".
+
+## CU-011 (aviso de llegada) — dos de los tres pendientes, resueltos
+
+El CU registraba tres limitaciones. Decisión tomada: **no se agrega el estado
+ARRIVED**, el ciclo de vida sigue teniendo cinco estados operativos como dice la
+documentación. El aviso de llegada se mantiene como notificación, no como estado.
+
+Los otros dos sí se resolvieron:
+
+1. **Solo el chofer asignado puede avisar la llegada.** Antes, cualquier chofer
+   autenticado podía disparar el aviso de un pedido ajeno. Ahora se verifica la
+   pertenencia reutilizando el mismo criterio que ya aplicaba el código de
+   entrega, extraído a un helper (`assertPedidoDelChofer`) en vez de duplicarlo.
+   El administrador sigue habilitado, que es lo que el CU describe.
+   Verificado contra la API: chofer ajeno → 403, chofer asignado → 200, admin → 200.
+
+2. **El aviso ahora también sale por push, no solo por socket.** Con la app
+   cerrada el socket no llega y el aviso se perdía, que era justamente el caso
+   que el CU quería cubrir. El push es best-effort detrás del puerto de
+   notificaciones (el service no conoce Firebase) y nunca rompe el flujo: si
+   falla, el aviso en tiempo real ya salió.
+
+---
+
+## Decisiones tomadas el 23/09 — pendientes del lado de los clientes
+
+Las tres están decididas pero **no ejecutadas**: primero se termina el backend.
+
+### D-1 · El panel no da de alta clientes
+
+SS-16 tiene consultar, editar, validar y dar de baja, pero **ningún caso de uso
+de alta de cliente por el administrador**: CU-002 dice que el cliente se registra
+desde la App Cliente. El botón "Nuevo Cliente" del panel llama a
+`/users/customer-registration-admin`, que no existe (404), así que hoy tampoco
+funciona. Se saca el botón, no se construye el endpoint. La propia página ya se
+describe como "clientes registrados desde la App", así que queda coherente.
+
+Toca: `Customers.tsx` (botón y rama de alta de la mutation) y `customers.ts`
+(`createCustomer`).
+
+### D-2 · Un pedido no se modifica: se cancela
+
+No existe caso de uso de modificar un pedido ya hecho. La app cliente tiene una
+pantalla que lo intenta contra `PATCH`/`PUT /orders/{id}`, dos rutas que no
+existen (H-44), así que hoy muestra "No se pudo modificar la orden". Se saca el
+flujo completo, no se construye el endpoint.
+
+Toca en la app cliente: el botón "Modificar" de `history.dart`, `modifyOrder` en
+`history_model.dart`, el estado de edición en `cart_service.dart`, la rama de
+edición de `checkout_viewmodel.dart` y `updateOrder` en `history_service.dart`,
+el repositorio y el datasource.
+
+**Lo que se creía que faltaba, ya está.** El caso real detrás del pedido "editable"
+era otro: poder mandar el pedido a una dirección distinta de la del registro —
+comprarle una garrafa a la madre, por ejemplo. Eso **ya funciona**, verificado
+contra la API: un cliente puede tener varias direcciones, listarlas (CU-046) y
+crear el pedido apuntando a la que quiera; usar la dirección de otra persona
+devuelve 404. La app además ya tiene el selector de direcciones en el checkout.
+
+### D-3 · Cancelar devuelve el 90% — **regla nueva, falta en el CU**
+
+Decisión de negocio del 23/09: cuando el cliente cancela, se le devuelve el
+**90% del costo del pedido** y la distribuidora retiene el 10%.
+
+CU-008 hoy **no dice nada de reembolso**: sólo marca el pedido como cancelado y
+restituye el stock. Hay que incorporar la regla al caso de uso, y al DSS y DSD
+correspondientes.
+
+No se puede implementar todavía: el reembolso necesita la integración de cobro,
+que está fuera del alcance de la demo. Para los pedidos en efectivo no aplica
+(no hubo cobro previo). Queda pendiente de definir qué pasa con una cancelación
+del administrador y si el 10% se retiene igual cuando cancela la distribuidora.
+
+### H-51 · Cualquiera puede escuchar el pedido de otro en vivo — **seguridad, ALTO**
+
+Los dos gateways validan el token al conectar y después **lo ignoran**: la sala
+se arma con el identificador que manda el cliente en el cuerpo del mensaje.
+
+- `drivers.gateway.ts:75-84` — `client.join(\`driver_${data.driverId}\`)`
+- `customers.gateway.ts:55-66` — `client.join(\`customer_${data.customerId}\`)`
+
+**Verificado contra la API corriendo**, no leído: se crearon dos clientes, se
+dejó un pedido de uno en camino, y el otro —autenticado con SU propio token— se
+unió a la sala ajena y recibió el aviso de llegada del pedido que no era suyo:
+
+```
+>>> ESPIO EL PEDIDO AJENO: {"orderId":"567e4b83-...","message":"El repartidor
+    esta afuera!","driverName":"Chofer"}
+```
+
+Con un `user_id` ajeno se sigue en vivo la entrega de cualquier persona: su
+posición, su domicilio y sus avisos. Los `user_id` no son secretos —aparecen en
+respuestas de la API que otros roles sí pueden ver—, así que no hace falta
+adivinarlos.
+
+**Por qué está así y por qué el arreglo no es de una línea:** el token de
+Firebase trae el `uid` y el email, no el `user_id` interno de la base
+(`auth.service.ts:115-129`), que es con lo que se arman las salas. Por eso el
+código lo toma del payload. El arreglo correcto es resolver el usuario interno
+en `handleConnection`, una sola vez por conexión, guardarlo en el socket e
+ignorar lo que mande el cliente. De paso conviene validar el rol: hoy un cliente
+puede conectarse al namespace de choferes.
+
+Es el mismo defecto que tiene Tutu con sus salas nombradas por email. No se
+importó de ahí: los dos lo tienen por separado.

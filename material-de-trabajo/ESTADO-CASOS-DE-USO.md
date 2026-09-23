@@ -1,4 +1,4 @@
-# Estado de los 149 casos de uso
+# Estado de los 151 casos de uso
 
 Cruce entre el catálogo de casos de uso, el mapeo caso↔endpoint de la auditoría de
 cobertura, y la batería ejecutada contra la API corriendo con los cuatro roles reales
@@ -25,11 +25,13 @@ se verificaron creando esa condición y mirando el efecto en la base.
 | NO SE PUEDE PROBAR | 2 |
 | COMPLETAR | 1 |
 | MÓDULO INTELIGENTE PENDIENTE | 4 |
-| PROGRAMAR DESDE CERO | 26 |
+| PROGRAMAR DESDE CERO | 28 |
 | ANDA | 116 |
-| **Total** | **149** |
+| **Total** | **151** |
 
-**116 de los 149 andan y están verificados contra la API corriendo.** 30 hay que programarlos desde cero, de los cuales 4 son los módulos inteligentes de la tesis.
+**116 de los 151 andan y están verificados contra la API corriendo.** 32 hay que programarlos desde cero, de los cuales 4 son los módulos inteligentes de la tesis.
+
+Los dos últimos (CU-150 y CU-151) se especificaron el 23/09 a partir del análisis del backend de Tutu: la vigencia temporal de una zona de cobertura, que hoy hay que apagar a mano. Ver `TUTU-QUE-SIRVE.md`.
 
 ## NO SE PUEDE PROBAR — 2 casos
 
@@ -82,7 +84,9 @@ se verificaron creando esa condición y mirando el efecto en la base.
 | CU-146 | Consultar la Fecha Estimada de Recompra | sin endpoint HTTP asociado |
 | CU-147 | Realizar una Compra Express | sin endpoint HTTP asociado |
 | CU-148 | Elegir la Modalidad de Entrega del Pedido | sin endpoint HTTP asociado |
-| CU-149 | Despachar un Pedido Express a un Chofer en Moto | sin endpoint HTTP asociado |
+| CU-149 | Despachar un Pedido Express a un Chofer en Moto |
+| CU-150 | Programar la Vigencia de una Zona de Cobertura |
+| CU-151 | Desactivar las Zonas de Cobertura Vencidas | sin endpoint HTTP asociado |
 
 ## ANDA — 116 casos
 

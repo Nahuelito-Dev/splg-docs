@@ -386,7 +386,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 ## 7. Requisitos Funcionales — Casos de Uso
 
 La plantilla pide los casos de uso en dos niveles de detalle. La **descripción de
-alto nivel** de los 149 casos está en el Documento 0 · §7, que es donde la plantilla
+alto nivel** de los 151 casos está en el Documento 0 · §7, que es donde la plantilla
 del Plan del Proyecto la ubica; acá van los **casos de uso expandidos**, con la
 secuencia normal, las excepciones y el resto de los campos. Los cuatro artefactos de
 cada caso —alto nivel, expandido, diagrama de secuencia del sistema y diagrama de
@@ -6537,7 +6537,7 @@ La matriz relaciona cada requisito de información y cada caso de uso con los ob
 sistema que contribuye a alcanzar. Las marcas de los casos de uso se derivan del campo
 **Objetivos asociados** que cada uno declara en la sección 7.
 
-Comprende los 15 requisitos de información, los 8 requisitos no funcionales y los 149 casos de uso
+Comprende los 15 requisitos de información, los 8 requisitos no funcionales y los 151 casos de uso
 que declaran al menos un objetivo. Los casos restantes corresponden a operaciones de
 consulta y de soporte que no realizan un objetivo del sistema por sí mismas.
 

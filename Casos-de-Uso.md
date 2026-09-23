@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **149 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **151 casos de uso**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -61,21 +61,21 @@ registrado.
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-El sistema comprende 149 casos de uso agrupados en 18 subsistemas. Se presentan dos
+El sistema comprende 151 casos de uso agrupados en 18 subsistemas. Se presentan dos
 vistas complementarias, ambas en notación UML: el **diagrama de contexto**, que delimita
 el sistema y muestra qué actor interviene en qué subsistema, y el **diagrama completo**,
-que abre los 149 casos uno por uno dentro de su subsistema.
+que abre los 151 casos uno por uno dentro de su subsistema.
 
 **Figura — Diagrama de contexto: actores contra subsistemas**
 
 ![Diagrama de contexto del sistema](diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png)
 
-**Figura — Diagrama completo: los 149 casos de uso**
+**Figura — Diagrama completo: los 151 casos de uso**
 
 ![Diagrama completo de casos de uso](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
 > El diagrama completo dibuja cada actor una vez por subsistema. UML admite que un mismo
-> clasificador se represente con más de un símbolo en el mismo diagrama, y con 149 casos
+> clasificador se represente con más de un símbolo en el mismo diagrama, y con 151 casos
 > es la diferencia entre una lámina legible y una maraña: con un único juego de actores a
 > la izquierda, las más de doscientas asociaciones cruzan el lienzo entero. Son los mismos
 > cinco actores de la sección 1. El color de la línea identifica al actor; el color de
@@ -167,6 +167,8 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-057 Consultar Zonas de Cobertura | SS-11 | ACT-03, ACT-05 | Secundario |
 | CU-058 Validar Cobertura de una Dirección | SS-11 | ACT-01, ACT-03, ACT-05 | Crítico |
 | CU-059 Eliminar Zona de Cobertura | SS-11 | ACT-03, ACT-05 | Secundario |
+| CU-150 Programar la Vigencia de una Zona de Cobertura | SS-11 | ACT-03, ACT-05 | Importante |
+| CU-151 Desactivar las Zonas de Cobertura Vencidas | SS-11 | ACT-04 | Importante |
 | CU-060 Registrar Incidencia de Entrega | SS-12 | ACT-02, ACT-03, ACT-05 | Crítico |
 | CU-061 Listar Incidencias | SS-12 | ACT-03, ACT-05 | Importante |
 | CU-062 Consultar Incidencias de un Pedido | SS-12 | ACT-02, ACT-03, ACT-05 | Secundario |
@@ -990,6 +992,24 @@ están en el documento 1 — Requisitos, §4.3.
 **Subsistema:** SS-11 Cobertura Geográfica  
 **Calificación:** Secundario  
 **Descripción:** El sistema borra definitivamente una zona de cobertura de la distribuidora correspondiente.
+
+---
+
+
+**Código:** CU-150 | **Caso de Uso:** Programar la Vigencia de una Zona de Cobertura  
+**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
+**Subsistema:** SS-11 Cobertura Geográfica  
+**Calificación:** Importante  
+**Descripción:** El administrador le pone fecha de fin a una zona de cobertura, para que su recargo valga solo por un tiempo. Sirve para las situaciones que son transitorias por naturaleza: una calle cortada por obra, un barrio anegado después de una tormenta, un fin de semana largo. Sin esto, el administrador tiene que acordarse de volver a entrar al panel para desactivar la zona a mano, y mientras tanto se le sigue cobrando el recargo al cliente.
+
+---
+
+
+**Código:** CU-151 | **Caso de Uso:** Desactivar las Zonas de Cobertura Vencidas  
+**Actor/es:** Sistema (ACT-04)  
+**Subsistema:** SS-11 Cobertura Geográfica  
+**Calificación:** Importante  
+**Descripción:** Un proceso automático desactiva las zonas cuya fecha de fin ya pasó, de modo que su recargo deje de aplicarse sin que nadie tenga que intervenir. La zona no se borra: queda inactiva y con su historia intacta, porque los pedidos que ya se cobraron con ese recargo tienen que poder explicarse después.
 
 ---
 
@@ -2434,6 +2454,7 @@ están en el documento 1 — Requisitos, §4.3.
 | 1 | El sistema recibe el aviso de que se creó un pedido, una vez confirmada la transacción del alta. |
 | 2 | Recupera el conjunto de choferes a los que ya se le ofreció este pedido, para no volver a contactarlos. |
 | 3 | Busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —5, 10, 15 y 20 km—: en cada paso obtiene los choferes presentes en el radar ordenados por cercanía, los restringe a los de la distribuidora dueña del pedido y descarta los ya contactados. Se queda con el primero que aparece y corta la búsqueda. |
+| 3.a | Entre los candidatos admite tanto a los choferes libres como a los que están por terminar su entrega en curso, pero descarta a los que tienen una entrega en pleno recorrido. Así un chofer que está entregando la última garrafa puede recibir el pedido siguiente sin que quede un hueco muerto entre uno y otro. |
 | 4 | Registra la oferta a nombre de ese chofer, con su momento de vencimiento fijado en la ventana de aceptación configurada. |
 | 5 | Le avisa al chofer por la conexión en tiempo real, con el detalle del pedido y la hora en que la oferta pierde vigencia. |
 | 6 | Le envía además una notificación al dispositivo, para el caso de que tenga la aplicación cerrada. El envío no bloquea el proceso. |
@@ -2453,7 +2474,7 @@ están en el documento 1 — Requisitos, §4.3.
 | **Rendimiento** | La búsqueda del candidato se completa en menos de 500 ms. |
 | **Frecuencia** | Una vez por cada pedido creado, y nuevamente por cada rechazo o vencimiento. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La elegibilidad del chofer se resuelve por dos condiciones y solo dos: estar presente en el radar de posiciones y pertenecer a la distribuidora dueña del pedido. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. El sistema todavía no comprueba, al elegir candidato, si el chofer está habilitado por el administrador ni si tiene su disponibilidad encendida: un chofer no habilitado que emita su posición recibe ofertas de pedidos, con lo que la habilitación que otorga el administrador en CU-032 no tiene efecto sobre el despacho. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. |
+| **Comentarios** | La elegibilidad del chofer se resuelve por dos condiciones y solo dos: estar presente en el radar de posiciones y pertenecer a la distribuidora dueña del pedido. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. El sistema todavía no comprueba, al elegir candidato, si el chofer está habilitado por el administrador ni si tiene su disponibilidad encendida: un chofer no habilitado que emita su posición recibe ofertas de pedidos, con lo que la habilitación que otorga el administrador en CU-032 no tiene efecto sobre el despacho. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. | El estado del chofer se usa además del radar: estar presente en el radar significa tener la aplicación abierta y reportando posición, no estar libre. Un chofer "por terminar" es el que ya avisó su llegada al domicilio y solo le falta la confirmación; considerarlo elegible es deliberado, porque esperar a que confirme deja al pedido siguiente esperando sin motivo.
 
 ---
 
@@ -2608,9 +2629,10 @@ están en el documento 1 — Requisitos, §4.3.
 | 3 | El sistema recibe el mensaje y guarda el identificador del chofer en la conexión, para poder retirarlo del radar cuando se desconecte. |
 | 4 | Escribe la posición en el radar geográfico de choferes, que es la fuente que consulta el despacho (CU-013). |
 | 5 | Consulta si ese chofer tiene un pedido en curso. El vínculo entre chofer y pedido se registra al pasar el pedido a en camino y se borra al confirmarse la entrega. |
-| 6 | Si lo tiene, reenvía la posición al cliente de ese pedido, para que actualice el mapa de seguimiento, y también al panel de administración. |
+| 6 | Si lo tiene, calcula cuánto falta para llegar al domicilio —distancia restante y tiempo estimado— y reenvía la posición junto con ese dato al cliente de ese pedido, para que actualice el mapa de seguimiento, y también al panel de administración. |
+| 7 | El tiempo estimado no se recalcula en cada posición: se reutiliza el último calculado mientras siga vigente, y se rehace sólo cuando pasó un intervalo o el chofer se movió lo suficiente. |
 
-**Postcondición:** La posición del chofer en el radar está actualizada y el despacho puede encontrarlo. Si el chofer está entregando, el cliente y el panel ven la posición nueva.
+**Postcondición:** La posición del chofer en el radar está actualizada y el despacho puede encontrarlo. Si el chofer está entregando, el cliente y el panel ven la posición nueva y cuánto falta para que llegue.
 
 **Excepciones**
 
@@ -2619,13 +2641,14 @@ están en el documento 1 — Requisitos, §4.3.
 | 2 | Si falta el identificador del chofer o alguna de las dos coordenadas es nula, el sistema registra el error y descarta el mensaje. Las coordenadas de valor cero son válidas y no se descartan. |
 | 2 | Si la conexión en tiempo real se interrumpe, la app reintenta la reconexión automáticamente. |
 | 5 | Si el chofer no tiene ningún pedido en curso, la posición se guarda igual en el radar pero no se reenvía a nadie. |
+| 6 | Si el tiempo estimado no se puede calcular, la posición se reenvía igual, sin ese dato: el cliente sigue viendo el mapa moverse. El seguimiento nunca se interrumpe por no poder estimar. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La actualización en el radar se completa en menos de 100 ms. |
 | **Frecuencia** | Cada vez que el GPS detecta un desplazamiento de 10 metros o más mientras el chofer está en línea. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La posición se almacena solo en el almacén en memoria y no en la base relacional, para maximizar la velocidad de la búsqueda por cercanía; como contrapartida, no queda histórico de recorridos. El identificador del chofer viaja dentro del mensaje y el sistema todavía no lo contrasta con la identidad de la conexión autenticada: un chofer conectado puede escribir la posición de otro y falsear el radar. El sistema todavía no valida que las coordenadas estén dentro de rango: una latitud imposible se acepta y se escribe. |
+| **Comentarios** | La posición se almacena solo en el almacén en memoria y no en la base relacional, para maximizar la velocidad de la búsqueda por cercanía; como contrapartida, no queda histórico de recorridos. El identificador del chofer viaja dentro del mensaje y el sistema todavía no lo contrasta con la identidad de la conexión autenticada: un chofer conectado puede escribir la posición de otro y falsear el radar. El sistema todavía no valida que las coordenadas estén dentro de rango: una latitud imposible se acepta y se escribe. | El tiempo estimado se agrega al aviso que ya existía y no es un caso de uso aparte: el cliente no lo pide, lo recibe junto con la posición. Se calcula del lado del servidor y se reutiliza a propósito, porque rehacerlo en cada posición significaría una consulta externa por cada movimiento del GPS y por cada chofer en la calle, que es un costo que crece con la operación y no aporta precisión: entre dos posiciones separadas por diez metros el tiempo estimado es el mismo.
 
 ---
 
@@ -3891,36 +3914,41 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
+| **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, altura, piso y departamento, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. El sistema resuelve la dirección contra el servicio de mapas para quedarse con el mejor punto disponible, sin bloquear el alta. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
 | **Precondición** | El cliente está autenticado. La cuenta de usuario existe. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente el paso de resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente completa el formulario de dirección en la aplicación. |
+| 1 | El cliente completa el formulario de dirección en la aplicación, incluyendo piso y departamento si corresponde. |
 | 2 | La aplicación envía `POST /user-addres` con los datos de la dirección. |
 | 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. |
 | 4 | El sistema comprueba que la cuenta de usuario exista. |
-| 5 | Si la dirección viene marcada como predeterminada, el sistema quita esa marca de las demás direcciones del cliente. |
-| 6 | El sistema guarda la dirección y la devuelve con su identificador. |
+| 5 | El sistema consulta al servicio de mapas la dirección escrita y guarda, junto con el punto, la dirección normalizada que le devuelve y el identificador estable del lugar. |
+| 6 | El sistema registra con qué precisión quedó resuelta: exacta, aproximada a la cuadra, o sin resolver. |
+| 7 | Si la dirección viene marcada como predeterminada, el sistema quita esa marca de las demás direcciones del cliente. |
+| 8 | El sistema guarda la dirección y la devuelve con su identificador y la precisión con que quedó. |
 
-**Postcondición:** El cliente tiene una dirección más disponible para elegir al armar un pedido.
+**Postcondición:** El cliente tiene una dirección más disponible para elegir al armar un pedido, con el mejor punto que se haya podido resolver y con constancia de cuán preciso es.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 4 | Si la cuenta de usuario no existe, el sistema retorna error 404 "User with ID: … not found". |
-| 6 | Si la base rechaza el registro por duplicado o por integridad referencial, el sistema retorna error 400. |
+| 5 | Si el servicio de mapas no responde, o responde con un error, el alta **continúa igual** con las coordenadas que mandó la aplicación, y la dirección queda registrada como sin resolver. El fallo se registra en el log; el cliente no ve ningún error. |
+| 5 | Si el servicio de mapas ubica la calle pero no la altura exacta, el alta **continúa** con el punto aproximado y queda registrada como aproximada. |
+| 6 | En ningún caso el sistema rechaza el alta porque la dirección escrita y el punto no coincidan: guarda lo mejor que tenga y deja constancia. Rechazarla dejaría al cliente sin poder pedir, que es peor que una entrega con una llamada de por medio. |
+| 8 | Si la base rechaza el registro por duplicado o por integridad referencial, el sistema retorna error 400. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada. |
+| **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada, más una consulta al servicio de mapas. Esa consulta tiene un tiempo máximo de espera corto: si se agota, el alta sigue sin resolver. |
 | **Frecuencia** | Media: una o dos por cliente, y alguna más cuando se muda o pide para un tercero. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. Un administrador, en cambio, puede indicar el titular. |
+| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. Un administrador, en cambio, puede indicar el titular. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. |
 
 ---
 
@@ -3970,9 +3998,9 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
+| **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la altura, el piso y departamento, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Si cambia algo que afecta la ubicación, el sistema vuelve a resolverla contra el servicio de mapas. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
 | **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente la re-resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
 
@@ -3982,10 +4010,11 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | La aplicación envía `PATCH /user-addres/:id` con los campos modificados. |
 | 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. |
-| 5 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
-| 6 | El sistema guarda los cambios y devuelve la dirección actualizada. |
+| 5 | Si cambió algún dato que afecta la ubicación —calle, altura, ciudad, código postal o coordenadas—, el sistema la resuelve de nuevo contra el servicio de mapas y actualiza el punto, la dirección normalizada y la precisión. Si sólo cambiaron el piso, el departamento o las indicaciones, no vuelve a consultar. |
+| 6 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
+| 7 | El sistema guarda los cambios y devuelve la dirección actualizada. |
 
-**Postcondición:** La dirección queda con los datos corregidos.
+**Postcondición:** La dirección queda con los datos corregidos y, si cambió su ubicación, con el mejor punto que se haya podido resolver.
 
 **Excepciones**
 
@@ -3993,6 +4022,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 | 4 | Si la dirección desapareció entre la lectura y la escritura, el sistema retorna error 404. |
+| 5 | Si el servicio de mapas no responde o no ubica la dirección nueva, la edición **continúa igual** con las coordenadas que haya, y la precisión pasa a aproximada o sin resolver. La edición nunca se rechaza por esto, por la misma razón que en CU-116. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -4813,15 +4843,15 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-10 |
 | **Requisitos asociados** | IRQ-09, IRQ-10 |
-| **Descripción** | El sistema registra una nueva zona de cobertura delimitada, asociandola al tenant activo en el encabezado de la petición. |
+| **Descripción** | El sistema registra una nueva zona de cobertura delimitada, asociandola al tenant activo en el encabezado de la petición. El recargo de la zona puede expresarse como un monto fijo o como un porcentaje del pedido. |
 | **Precondición** | El usuario tiene rol Administrador o Administrador General. Posee el encabezado con distribuidora actual. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente el recargo porcentual y los datos de presentación |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El usuario remite información para crear una zona (poligono, nombre, recargo). |
+| 1 | El usuario remite información para crear una zona: polígono, nombre, recargo —fijo o porcentual— y, si quiere, una etiqueta y un color para distinguirla en el mapa del panel. |
 | 2 | El sistema intercepta el identificador de la distribuidora en el decorador (@CurrentDistributor). |
 | 3 | El sistema guarda la entidad enlazando la zona a dicha distribuidora. |
 | 4 | El sistema confirma respondiendo con 201. |
@@ -4840,7 +4870,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no valida que el polígono ingresado sea geométricamente correcto -por ejemplo, que no se autointersecte- más allá del formato de sus coordenadas, ni comprueba superposición con zonas ya existentes de la misma distribuidora. |
+| **Comentarios** | El sistema no valida que el polígono ingresado sea geométricamente correcto -por ejemplo, que no se autointersecte- más allá del formato de sus coordenadas, ni comprueba superposición con zonas ya existentes de la misma distribuidora. El recargo admite las dos formas porque un monto fijo se desactualiza con la inflación y obliga a reeditar zona por zona, mientras que un porcentaje acompaña al precio del producto; una zona usa una u otra, nunca las dos a la vez. La etiqueta y el color son datos de presentación: los define quien conoce las zonas y los usa el panel para pintarlas, en vez de que el front invente una paleta que nadie eligió. La fecha de fin de vigencia de la zona se programa aparte, en CU-150. |
 
 ---
 
@@ -4953,6 +4983,84 @@ respaldado por la lectura del código en poder del cliente.
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El borrado es físico y no lógico: una zona eliminada no deja rastro, y si ya se usó para calcular recargos en pedidos pasados, esos pedidos quedan sin ningún registro de zona al que remitirse para su auditoría. |
+
+---
+
+
+#### Importante CU-150 — Programar la Vigencia de una Zona de Cobertura
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-10 |
+| **Requisitos asociados** | IRQ-09, IRQ-10 |
+| **Descripción** | El administrador le fija a una zona de cobertura la fecha y hora en que debe dejar de aplicarse. Desde ese momento la zona deja de sumar su recargo, sin que nadie tenga que entrar al panel a desactivarla. Está pensado para los recargos transitorios: una calle cortada por obra, un barrio anegado, un fin de semana largo. |
+| **Precondición** | El usuario tiene rol Administrador o Administrador General y la zona pertenece a su distribuidora. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige una zona de cobertura de su distribuidora e indica hasta cuándo debe regir. |
+| 2 | El sistema comprueba que la zona pertenezca a la distribuidora del administrador. |
+| 3 | El sistema comprueba que la fecha indicada sea posterior al momento actual. |
+| 4 | El sistema guarda la fecha de fin en la zona y confirma la operación. |
+
+**Postcondición:** La zona sigue activa y cobrando su recargo hasta la fecha indicada. A partir de ese momento la desactiva el proceso automático de CU-151.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si la zona no existe o es de otra distribuidora, el sistema informa que no se encontró. |
+| 3 | Si la fecha indicada ya pasó, el sistema rechaza la operación e informa el motivo. No desactiva la zona por esa vía: para eso está la baja explícita, y confundir las dos haría que un error de tipeo apagara una zona sin aviso. |
+| 4 | Si el administrador indica una fecha vacía, la zona vuelve a no tener vencimiento y rige hasta que se la desactive a mano. Es la manera de dar marcha atrás. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Inmediato. |
+| **Frecuencia** | Baja: solo cuando aparece una situación transitoria. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La vigencia no cambia cómo se calcula el recargo, solo hasta cuándo se aplica: mientras la zona esté vigente se comporta igual que cualquier otra. Queda pendiente decidir si el administrador debería poder programar también el **comienzo** de la vigencia, para dejar cargada de antemano una zona que va a regir recién el fin de semana. |
+
+---
+
+
+#### Importante · automático CU-151 — Desactivar las Zonas de Cobertura Vencidas
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-10 |
+| **Requisitos asociados** | IRQ-09, IRQ-10 |
+| **Descripción** | Un proceso temporal busca las zonas de cobertura cuya fecha de fin ya pasó y las deja inactivas, para que su recargo deje de aplicarse a los pedidos nuevos. |
+| **Precondición** | Existe al menos una zona activa con fecha de fin anterior al momento actual. |
+| **Estado** | Sin implementar |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El proceso temporal se ejecuta automáticamente cada cinco minutos. |
+| 2 | Toma un cerrojo distribuido antes de empezar; si otra instancia ya lo tiene, esta ejecución se saltea sin hacer nada. |
+| 3 | Obtiene las zonas que siguen activas y cuya fecha de fin ya pasó, de todas las distribuidoras. |
+| 4 | Marca cada una como inactiva, sin borrarla ni tocar su polígono ni su recargo. |
+| 5 | Deja registro de cuáles desactivó. |
+
+**Postcondición:** Ninguna zona vencida sigue activa. Los pedidos que se creen a partir de ese momento no reciben su recargo. Los pedidos ya cobrados no se modifican.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si no hay ninguna zona vencida, la ejecución termina sin hacer nada. Es el caso habitual. |
+| — | Si la ejecución falla, el error se registra y el cerrojo se libera igual, de modo que la ejecución siguiente pueda tomarlo. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Cada ejecución se completa en menos de un segundo: son pocas zonas y la consulta va por índice. |
+| **Frecuencia** | Automático, cada cinco minutos. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El intervalo de cinco minutos es deliberado: una zona que se apaga hasta cinco minutos tarde no perjudica a nadie —a lo sumo un pedido paga un recargo que ya no correspondía—, y revisar más seguido sería consultar la base sin necesidad. La zona se desactiva y **no** se borra, porque los pedidos que se cobraron con ese recargo tienen que poder explicarse después; es la misma razón por la que CU-059 (borrado físico) quedó señalado como un problema de auditoría. El proceso es de mantenimiento del sistema, no uno de los cinco procesos automatizados de la tesis. |
 
 ---
 
@@ -10204,6 +10312,63 @@ sequenceDiagram
         SIS-->>ADM: zona eliminada
     else la zona no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-150: Programar la Vigencia de una Zona de Cobertura
+
+**Actor:** Administrador
+**Operaciones del sistema:** `programarVigenciaDeZona(zonaId, vigenteHasta)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-150 Programar La Vigencia De Una Zona De Cobertura
+    autonumber
+    actor ADM as Administrador
+    participant SIS as Sistema
+
+    ADM->>SIS: programarVigenciaDeZona(zonaId, vigenteHasta)
+    activate SIS
+    alt la zona no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else se indica una fecha ya pasada
+        SIS-->>ADM: error de validación, la fecha debe ser futura
+    else se indica una fecha futura
+        SIS-->>ADM: vigencia programada (zonaId, vigenteHasta)
+    else se indica una fecha vacía
+        SIS-->>ADM: vigencia quitada, la zona rige sin vencimiento
+    end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-151: Desactivar las Zonas de Cobertura Vencidas
+
+**Actor:** Sistema (proceso temporal, sin actor humano)
+**Operaciones del sistema:** `desactivarZonasVencidas()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-151 Desactivar Las Zonas De Cobertura Vencidas
+    autonumber
+    participant TMP as Proceso temporal
+    participant SIS as Sistema
+
+    TMP->>SIS: desactivarZonasVencidas()
+    activate SIS
+    alt otra instancia ya está ejecutando el barrido
+        SIS-->>TMP: ejecución salteada
+    else hay zonas activas con vigencia vencida
+        SIS->>SIS: marcar cada zona como inactiva
+        SIS-->>TMP: zonas desactivadas (cantidad, identificadores)
+    else no hay zonas vencidas
+        SIS-->>TMP: sin cambios
     end
     deactivate SIS
 ```
@@ -18429,7 +18594,6 @@ sequenceDiagram
 
 ---
 
-### SS-12 — Incidencias y Calidad de Servicio
 
 #### C.8 DSD — CU-060: Registrar Incidencia de Entrega
 
@@ -20149,12 +20313,124 @@ sequenceDiagram
 
 ---
 
+
+#### C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+
+**Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `CoverageZoneController`, `CoverageZoneService`, `ProgramarVigenciaDto`, `Repository<CoverageZone>`, entidad `CoverageZone`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-150 Programar La Vigencia De Una Zona De Cobertura
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant DEC as CurrentDistributorDecorator
+    participant CTRL as CoverageZoneController
+    participant SRV as CoverageZoneService
+    participant REPO as RepositoryCoverageZone
+
+    ADM->>AUTH: PATCH /coverage-zones/:id/vigencia con ProgramarVigenciaDto
+    activate AUTH
+    AUTH->>AUTH: resolveDistributor(user, request)
+    AUTH-->>DEC: request.distributorId asignado
+    deactivate AUTH
+    DEC->>CTRL: programarVigencia(id, dto, distributorId)
+    activate CTRL
+    CTRL->>CTRL: ParseUUIDPipe sobre el id
+    CTRL->>SRV: programarVigencia(id, dto.vigenteHasta, distributorId)
+    activate SRV
+    SRV->>REPO: findOne(where coverage_zone_id y distributor_id)
+    activate REPO
+    REPO-->>SRV: CoverageZone o null
+    deactivate REPO
+    alt No existe o pertenece a otra distribuidora
+        SRV-->>CTRL: NotFoundException, zona no encontrada
+    else vigenteHasta es una fecha ya pasada
+        SRV-->>CTRL: BadRequestException, la fecha debe ser futura
+    else vigenteHasta es nulo
+        SRV->>REPO: update(id, validUntil null)
+        activate REPO
+        REPO-->>SRV: fila actualizada
+        deactivate REPO
+        SRV-->>CTRL: CoverageZone sin vencimiento
+    else vigenteHasta es una fecha futura
+        SRV->>REPO: update(id, validUntil)
+        activate REPO
+        REPO-->>SRV: fila actualizada
+        deactivate REPO
+        SRV-->>CTRL: CoverageZone con vigencia
+    end
+    deactivate SRV
+    CTRL-->>ADM: 200 CoverageZoneResponseDto
+    deactivate CTRL
+```
+
+**Observaciones de diseño**
+
+- La condición de tenant viaja **en el `WHERE`**, igual que en CU-059: una zona ajena responde 404 y no revela que existe.
+- La validación de "fecha futura" va en el DTO con un validador propio y **se repite en el servicio**. No es redundancia ociosa: el DTO protege la entrada HTTP, y el servicio protege la regla si mañana la vigencia se programa desde otro lugar —una carga masiva, un proceso interno— que no pasa por el controlador.
+- Quitar la vigencia es el **mismo endpoint** con la fecha en nulo, no uno aparte: es la misma decisión del administrador sobre el mismo atributo, y partirla en dos rutas obligaría al panel a elegir cuál llamar.
+- El endpoint **no desactiva** la zona aunque la fecha ya haya pasado; eso es responsabilidad de CU-151. Mezclarlos haría que un error de tipeo apagara una zona en el acto y sin aviso.
+
+---
+
+
+#### C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+
+**Clases participantes:** `@Cron` de `@nestjs/schedule`, `CoverageZoneCronService`, `RedisService` (cerrojo distribuido), `Repository<CoverageZone>`, entidad `CoverageZone`.
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-151 Desactivar Las Zonas De Cobertura Vencidas
+    autonumber
+    participant CRON as ScheduleRegistry
+    participant SRV as CoverageZoneCronService
+    participant LOCK as RedisService
+    participant REPO as RepositoryCoverageZone
+
+    CRON->>SRV: desactivarZonasVencidas()
+    activate SRV
+    SRV->>LOCK: adquirirCerrojo(zonas:vencimiento, ttl)
+    activate LOCK
+    LOCK-->>SRV: tomado o rechazado
+    deactivate LOCK
+    alt Otra instancia tiene el cerrojo
+        SRV-->>CRON: ejecución salteada
+    else Cerrojo tomado
+        SRV->>REPO: update(where isActive true y validUntil menor a ahora, set isActive false)
+        activate REPO
+        REPO-->>SRV: cantidad de filas afectadas
+        deactivate REPO
+        alt Ninguna zona vencida
+            SRV-->>CRON: sin cambios
+        else Se desactivaron zonas
+            SRV->>SRV: registrar en el log cuáles se desactivaron
+            SRV-->>CRON: cantidad desactivada
+        end
+        SRV->>LOCK: liberarCerrojo(zonas:vencimiento)
+    end
+    deactivate SRV
+```
+
+**Observaciones de diseño**
+
+- El barrido es **un solo `UPDATE` condicional**, no leer las zonas y guardarlas una por una: la condición de vencimiento se evalúa en la base, dentro de la misma sentencia que escribe, y así no hay ventana entre leer y escribir.
+- El cerrojo se libera en un `finally`, de modo que una ejecución que falle no deje bloqueadas a las siguientes. Su vencimiento es **menor que el intervalo del cron**, por la misma razón que en CU-014: una instancia que caiga sin liberarlo no puede frenar el proceso más de un ciclo.
+- La zona se marca inactiva y **no se borra**, a diferencia de CU-059. Los pedidos que se cobraron con ese recargo tienen que poder explicarse después, y una zona borrada no deja a qué remitirse.
+- El cron **no** notifica al administrador. Si más adelante se decide avisarle, el aviso va acá y no en CU-150, porque el hecho que se comunica es el vencimiento, no la programación.
+
+---
+
+### SS-12 — Incidencias y Calidad de Servicio
+
+---
+
 ### Resumen del lote
 
 | Subsistema | CU modelados | Diagramas |
 |---|---|---|
 | SS-10 Multi-Distribuidora | CU-052, CU-053, CU-054, CU-055 | C.1 – C.4 |
-| SS-11 Cobertura Geográfica | CU-056, CU-057, CU-059 | C.5 – C.7 |
+| SS-11 Cobertura Geográfica | CU-056, CU-057, CU-059, CU-150, CU-151 | C.5 – C.7, C.33, C.34 |
 | SS-12 Incidencias y Calidad | CU-060, CU-061, CU-062, CU-063, CU-066 | C.8 – C.12 |
 | SS-13 Trazabilidad de Envases | CU-067, CU-069, CU-071 | C.13 – C.15 |
 | SS-15 Reservas Programadas | CU-073, CU-074 | C.16 – C.17 |
