@@ -574,3 +574,48 @@ del paso transversal al módulo de Auth, donde se hacen las dos cosas juntas.
   sólo el de `AppModule`.
 
 Verificado: la colección da los mismos 31 fallos conocidos, ninguno nuevo.
+
+### H-40 · Bloquear un usuario no hacía nada — **seguridad, crítico**
+El panel tiene un botón para bloquear usuarios y `PATCH /users/{id}/block`
+escribía `blocked = true` en la base. **Nadie leía ese campo**: ni el guard, ni
+el login, ni ningún servicio.
+
+Comprobado en vivo antes de arreglarlo, con un cliente bloqueado:
+
+```
+PATCH /users/{id}/block  {"block": true}      -> 200  (blocked = true en la base)
+POST  /auth/login                             -> 200  con token
+GET   /customers/user/{id}                    -> 200
+GET   /user-address/user/{id}                 -> 200
+GET   /orders/customer/{id}                   -> 200
+```
+
+El usuario bloqueado seguía operando con normalidad en todos sus endpoints.
+
+**Arreglado en el guard, no en el login.** Es importante que sea así: el panel y
+las dos apps se autentican con el SDK de Firebase y **nunca pasan por
+`/auth/login`**; el guard es el único punto por el que pasan todas las
+peticiones. Puesto ahí, el bloqueo corta el acceso **en el acto**, incluso para
+un token ya emitido, sin esperar a que expire.
+
+Verificado después del arreglo:
+
+```
+con el token que ya tenía   -> 401 "La cuenta está bloqueada..."
+volviendo a loguearse       -> 401 "La cuenta no está habilitada"
+tras desbloquear            -> 200
+```
+
+### H-41 · Nadie consume los endpoints de acceso — **hallazgo de contexto**
+Ni el panel ni las dos apps llaman a `POST /api/auth/login` ni a
+`/auth/login/dashboard`. Los tres se autentican con el SDK de Firebase
+(`signInWithEmailAndPassword`) y le mandan a la API sólo el token resultante.
+
+Se verificó buscando llamadas HTTP a `/auth` en `splg-app-admin/src` y en
+`lib/` de las dos apps: no hay ninguna.
+
+Esto tiene dos consecuencias:
+1. Corregir la respuesta del login **no rompía a ningún cliente**, así que se
+   pudo hacer directo sin necesidad de versionar ese endpoint.
+2. Toda validación de acceso tiene que vivir en el **guard**, no en el login,
+   porque el login es un camino que en la práctica nadie recorre.
