@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSS — CU-151 Desactivar Las Zonas De Cobertura Vencidas
+    autonumber
+    participant TMP as Proceso temporal
+    participant SIS as Sistema
+
+    TMP->>SIS: desactivarZonasVencidas()
+    activate SIS
+    alt otra instancia ya está ejecutando el barrido
+        SIS-->>TMP: ejecución salteada
+    else hay zonas activas con vigencia vencida
+        SIS->>SIS: marcar cada zona como inactiva
+        SIS-->>TMP: zonas desactivadas (cantidad, identificadores)
+    else no hay zonas vencidas
+        SIS-->>TMP: sin cambios
+    end
+    deactivate SIS
