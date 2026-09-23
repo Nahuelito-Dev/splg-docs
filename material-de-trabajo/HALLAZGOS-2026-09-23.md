@@ -533,3 +533,44 @@ el código de respuesta se rompe.
 
 `check-exists` es el más discutible: no crea nada, es una consulta; devolver 201
 no corresponde.
+
+---
+
+## Novena tanda — al empezar a arreglar
+
+### H-39 · La respuesta del login no se puede ni serializar — **seguridad, crítico**
+Amplía y confirma H-02.
+
+Al registrar `ClassSerializerInterceptor` como interceptor **global** —que es lo
+que Nest propone para no devolver entidades crudas— el login pasó a responder
+**500**:
+
+```
+RangeError: Maximum call stack size exceeded
+  at TransformOperationExecutor.getKeys (class-transformer)
+```
+
+El objeto `UserCredential` que devuelve el SDK de Firebase tiene **referencias
+circulares**, así que `class-transformer` entra en recursión infinita al
+intentar convertirlo.
+
+Lo que esto demuestra: no es que al login "se le escape" un campo de más. Es que
+**devuelve un objeto del proveedor entero, tan crudo que ni siquiera es
+serializable**. Cualquier cosa que quiera procesar esa respuesta —un
+interceptor, un log estructurado, un cliente generado— se rompe.
+
+**Consecuencia para el orden de trabajo:** el `ClassSerializerInterceptor`
+global **no se puede habilitar hasta que el login devuelva un DTO**. Se movió
+del paso transversal al módulo de Auth, donde se hacen las dos cosas juntas.
+
+### Hecho en el paso transversal
+
+- **Versionado por URI con `VERSION_NEUTRAL`** (`main.ts`). Las rutas de hoy
+  siguen respondiendo en `/api/...` sin cambiar nada; cuando haya que corregir
+  el contrato de un endpoint se marca el nuevo con `@Version('2')` y conviven.
+  Es lo que permite arreglar el login sin romper las apps publicadas.
+- **H-06 resuelto:** `TimeoutInterceptor` se registraba dos veces (en `main.ts`
+  con `useGlobalInterceptors` y en `AppModule` como `APP_INTERCEPTOR`). Queda
+  sólo el de `AppModule`.
+
+Verificado: la colección da los mismos 31 fallos conocidos, ninguno nuevo.
