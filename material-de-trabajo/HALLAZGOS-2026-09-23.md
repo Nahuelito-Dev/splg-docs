@@ -438,8 +438,22 @@ El chofer suelta el pedido para que lo tome otro. El problema es que **el
 endpoint, el caso de uso y la documentación lo llaman "cancelar"**, y quien lea
 la respuesta ve un 200 y supone que el pedido se canceló.
 
-Además, al pedido liberado se le graba igual un `cancellationReason`, así que
-queda un pedido vivo en `pending` con un motivo de cancelación escrito.
+> **Corrección del 2026-09-23.** La segunda parte de este hallazgo estaba mal.
+> Decía que al pedido liberado se le grababa igual un `cancellationReason`.
+> **No es así:** el motivo se escribe sólo cuando el pedido realmente se
+> cancela, y el código lo comenta explícitamente
+> (`cancel-order.use-case.ts`: *"driver solo lo libera a PENDING y no lleva
+> motivo de cancelación"*). Verificado contra los datos: **0 pedidos vivos
+> tienen motivo de cancelación**, y el `acceptedAt` se limpia correctamente al
+> liberar.
+>
+> Lo que queda de este hallazgo es **sólo el nombre**: la operación se llama
+> "cancelar" y para el chofer libera. El comportamiento es correcto y
+> deliberado.
+>
+> De paso apareció otra cosa: hay **3 pedidos cancelados sin motivo**
+> (`cancellationReason` en NULL). El motivo es opcional en el DTO, así que se
+> puede cancelar sin decir por qué.
 
 Arreglo: separarlo en `POST /orders/{id}/release` (o `/reject`, que ya existe),
 dejar `/cancel` para cancelar de verdad, y no escribir `cancellationReason`
@@ -639,3 +653,76 @@ Esto tiene dos consecuencias:
    pudo hacer directo sin necesidad de versionar ese endpoint.
 2. Toda validación de acceso tiene que vivir en el **guard**, no en el login,
    porque el login es un camino que en la práctica nadie recorre.
+
+---
+
+## Décima tanda — el front contra la API, llamada por llamada
+
+Se extrajeron todas las rutas que llaman el panel y las dos apps, y se
+compararon contra las que la API realmente expone. Lo que dio sospechoso se
+verificó llamándolo de verdad, porque el extractor tiene falsos positivos.
+
+| Cliente | Rutas distintas | Que no existen |
+|---|---:|---:|
+| Panel | 59 | **2** |
+| App cliente | 20 | **2** |
+| App chofer | 11 | 0 |
+
+### H-42 · El botón de cancelar pedido del panel no funciona — **defecto, alto**
+
+El panel manda en el cuerpo `userId: 'ADMIN_PANEL'` y `role: 'admin'`, además
+del motivo. El `ValidationPipe` global tiene `forbidNonWhitelisted: true`, así
+que responde:
+
+```
+400 {"message":["property userId should not exist","property role should not exist"]}
+```
+
+El backend toma el actor del token —lo dice su propia descripción, *"El actor
+(id + rol) sale SIEMPRE del token autenticado, nunca del body (evita IDOR)"*—,
+así que esos dos campos sobran desde que se hizo ese cambio y nadie actualizó
+el panel.
+
+**Corregido** en `splg-app-admin/src/services/api/orders.ts`. Verificado dos
+veces: el pedido queda `cancelled` y el motivo se guarda.
+
+### H-43 · El botón de crear cliente del panel apunta a un endpoint inexistente — **defecto, alto**
+
+`createCustomer` llama a `POST /users/customer-registration-admin`, que **no
+existe**: responde 404. Está conectado al formulario en
+`Customers.tsx:40`, así que el alta de clientes desde el panel no funciona.
+
+La API sí tiene `POST /users/customer-registration`, pero es público y no
+recibe distribuidora. **No se corrigió acá** porque apuntarlo sin más implica
+decidir qué debe hacer el alta desde el panel: si asigna la distribuidora del
+admin, si exige verificación de correo, si permite fijar la contraseña. Es una
+decisión de producto, no un cambio mecánico. Queda como ítem de desarrollo.
+
+### H-44 · La app cliente llama a dos rutas que no existen — **defecto, medio**
+
+`PATCH /orders/{id}` y `PUT /orders/{id}`, desde
+`order_remote_datasource.dart`. Las dos responden 404: la API no expone
+actualización genérica de un pedido, sólo las transiciones específicas
+(`/status`, `/cancel`, `/arrived`, `/confirm-delivery`).
+
+Falta determinar qué pantalla de la app las dispara y qué esperaba hacer.
+
+### H-45 · El panel llama a `/users/validate`, que no existe — **código muerto**
+
+`checkToken()` apunta a `POST /users/validate` → 404. Pero `checkIfTokenExpired`,
+que es quien lo usa, **no se llama desde ninguna pantalla**. Es código muerto:
+la llamada rota nunca se ejecuta.
+
+Conviene borrarlo o conectarlo, pero no urge.
+
+### H-46 · El motivo de cancelación no vuelve en la respuesta — **contrato, bajo**
+
+El motivo **se guarda bien** en la base, pero el DTO de respuesta del pedido no
+lo incluye, y el panel lo tiene declarado en su tipo
+(`cancellationReason?: string | null`). Siempre lo vería vacío.
+
+### H-47 · Se puede cancelar un pedido sin decir por qué — **datos, bajo**
+
+`reason` es opcional en `CancelOrderDto`. Hay **3 pedidos cancelados con el
+motivo en NULL**. Para una cancelación de admin, el motivo debería ser
+obligatorio.
