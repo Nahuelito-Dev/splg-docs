@@ -1,4 +1,4 @@
-# SPLG — Documentación
+# SPLG — Guía del repositorio de documentación
 
 **Sistema de Pedidos y Logística de Garrafas de Gas**
 Proceso Unificado · FCEQyN – UNaM · Nahuel Wagner

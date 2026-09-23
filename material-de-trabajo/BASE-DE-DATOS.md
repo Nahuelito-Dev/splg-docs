@@ -1,4 +1,11 @@
-# Normalización del esquema — qué cumple y qué no
+# Base de datos
+
+Dos cosas en un solo lugar: **en qué estado está el esquema** frente a las formas
+normales, y **cómo se lo modifica** sin romper nada.
+
+---
+
+## Parte I — Normalización: qué cumple y qué no
 
 Auditoría de las 21 tablas del dominio contra las formas normales. Todo lo que
 dice está verificado **contra los datos reales** de la base, no deducido del
@@ -199,3 +206,60 @@ se pueden mantener como caché mientras se migra.
 | 7 | Historial de estados (punto 9) | Tabla nueva | Trazabilidad |
 
 Los tres primeros son migraciones sin tocar código y se pueden hacer ya.
+
+
+---
+
+## Parte II — Cómo se cambia el esquema
+
+Todo lo que propone la Parte I se ejecuta por acá. Ninguna de esas correcciones
+se aplica a mano sobre la base: cada una es una migración revisada y commiteada
+junto con el cambio de entidad que la motiva.
+
+El esquema se gestiona con **migraciones** — son la fuente de verdad, en todos
+los ambientes. `synchronize` está en **false** por defecto (en dev se puede
+optar por `DB_SYNC=true` para iterar rápido, nunca en prod).
+
+### Comandos
+
+```bash
+# Generar una migración con el diff entre las entidades y la DB actual
+npm run migration:generate -- src/migrations/NombreDescriptivo
+
+# Aplicar las migraciones pendientes
+npm run migration:run
+
+# Revertir la última
+npm run migration:revert
+
+# Ver estado
+npm run migration:show
+```
+
+La config del CLI vive en `src/data-source.ts` (lee el `.env`). En runtime la app
+usa la config de `app.module.ts`.
+
+### Flujo de trabajo
+
+1. Cambiás una entidad (columna, índice, relación).
+2. `npm run migration:generate -- src/migrations/LoQueHiciste`.
+3. **Revisás** el archivo generado (que no tenga DROPs inesperados por drift).
+4. `npm run migration:run` para aplicarla.
+5. Commiteás la migración junto con el cambio de entidad.
+
+### ⚠️ Baseline para una DB NUEVA (primer deploy a prod)
+
+La primera migración del repo (`AddHotIndexes`) **solo agrega índices**: asume que
+el esquema (tablas) ya existe (se creó por `synchronize` en dev). Una base de datos
+**vacía** de prod NO tiene las tablas, así que hay que crearlas primero. Dos opciones:
+
+- **Opción A (recomendada):** generar una migración baseline del esquema completo
+  contra una DB vacía, y commitearla ANTES de `AddHotIndexes`:
+  ```bash
+  # apuntar DB_NAME a una base vacía y:
+  npm run migration:generate -- src/migrations/000_InitialSchema
+  ```
+- **Opción B:** en el primer arranque de prod, correr `synchronize` UNA vez para
+  crear el esquema y después dejarlo en false + `migration:run` para el resto.
+
+Definir esto antes del primer deploy productivo.

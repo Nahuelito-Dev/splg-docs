@@ -1,4 +1,294 @@
-# Estado de los 151 casos de uso
+# Estado detallado del sistema
+
+La evidencia detrás de `ESTADO-Y-PRIORIDADES.md`: **endpoint por endpoint** y
+**caso de uso por caso de uso**, probado contra la API corriendo con los cuatro
+roles reales, la cabecera `X-Distributor` y cincuenta cuerpos de petición
+escritos a mano.
+
+Acá se viene a responder "¿esto anda?" sobre algo puntual. Para decidir en qué
+trabajar, el documento es el otro.
+
+| Estado | Qué significa |
+|---|---|
+| **anda** | Respondió correctamente |
+| **anda (regla)** | Rechazó aplicando una regla de negocio. El endpoint funciona |
+| **pendiente** | No se pudo ejercitar con los datos disponibles |
+| **roto** | Devuelve 500 |
+
+La columna **Código** es el que devolvió de verdad en la corrida. La columna
+**Qué hacer** sale de los hallazgos verificados; el código entre paréntesis
+remite a `HALLAZGOS.md`.
+
+---
+
+## Parte I — Los 131 endpoints
+
+| Módulo | Endpoints | En pie | A arreglar | A refactorizar | Estado |
+|---|---:|---:|---:|---:|---|
+| Admin | 5 | 4 | 0 | 1 | casi completo |
+| Auth | 3 | 3 | 2 | 0 | **completo** |
+| Cars | 7 | 7 | 0 | 0 | **completo** |
+| Claims | 3 | 3 | 0 | 0 | **completo** |
+| Coverage Zones | 4 | 4 | 2 | 0 | **completo** |
+| Customers | 8 | 8 | 1 | 0 | **completo** |
+| Cylinders | 6 | 6 | 0 | 0 | **completo** |
+| Delivery | 12 | 12 | 4 | 0 | **completo** |
+| Distributors | 5 | 4 | 0 | 0 | casi completo |
+| Email | 3 | 3 | 1 | 0 | **completo** |
+| Gas Cylinders | 8 | 8 | 1 | 0 | **completo** |
+| Health | 3 | 3 | 0 | 0 | **completo** |
+| Incidents | 4 | 4 | 0 | 0 | **completo** |
+| Notifications | 4 | 4 | 3 | 0 | **completo** |
+| Orders | 19 | 19 | 0 | 2 | **completo** |
+| Ratings | 3 | 3 | 0 | 0 | **completo** |
+| Reports | 4 | 4 | 0 | 0 | **completo** |
+| Role | 6 | 6 | 2 | 0 | **completo** |
+| Time Slots | 5 | 5 | 0 | 1 | **completo** |
+| User Addresses | 8 | 8 | 0 | 0 | **completo** |
+| Users | 11 | 9 | 4 | 0 | casi completo |
+| **Total** | **131** | **127** | **20** | **4** | |
+
+### Detalle por módulo
+
+### Admin
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/admin` | 201 | anda | — |
+| POST | `/api/admin/first-superadmin` | 403 | anda (regla) | — |
+| POST | `/api/admin/register` | 201 | pendiente | revisar el dato de prueba — {"statusCode":400,"message":"Error creando usuario en Firebase: Invali |
+| GET | `/api/admin` | 200 | anda | — |
+| GET | `/api/admin/term/{term}` | 200 | anda | **REFACTORIZAR** (—) — se llama 'term' pero busca por UUID o email exacto, no por texto |
+
+### Auth
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/auth` | 201 | anda | — |
+| POST | `/api/auth/login` | 200 | anda | **ARREGLAR** (H-02 · H-18) — devuelve el objeto crudo de Firebase (refreshToken, apiKey) y da token a usuarios dados de baja |
+| POST | `/api/auth/login/dashboard` | 200 | anda | **ARREGLAR** (H-02 · H-18) — igual que el anterior |
+
+### Cars
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/car` | 201 | anda | — |
+| GET | `/api/car` | 200 | anda | — |
+| GET | `/api/car/patent/{patent}` | 200 | anda | — |
+| GET | `/api/car/user/{userId}` | 200 | anda | — |
+| GET | `/api/car/{id}` | 200 | anda | — |
+| PATCH | `/api/car/{id}` | 200 | anda | — |
+| DELETE | `/api/car/{id}` | 200 | anda | — |
+
+### Claims
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/claims` | 201 | anda | — |
+| GET | `/api/claims` | 200 | anda | — |
+| PATCH | `/api/claims/{id}/resolve` | 200 | anda | — |
+
+### Coverage Zones
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/coverage-zones` | 201 | anda | **ARREGLAR** (H-34) — no valida el polígono: con lat y lng invertidos guarda una zona inservible y responde 201 |
+| GET | `/api/coverage-zones` | 200 | anda | — |
+| GET | `/api/coverage-zones/check` | 200 | anda | **ARREGLAR** (H-09) — exige lat y lng pero el OpenAPI no los declara |
+| DELETE | `/api/coverage-zones/{id}` | 200 | anda | — |
+
+### Customers
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| GET | `/api/customers` | 200 | anda | — |
+| GET | `/api/customers/user/{userId}` | 200 | anda | — |
+| GET | `/api/customers/{id}` | 200 | anda | — |
+| PATCH | `/api/customers/{id}` | 200 | anda | — |
+| PATCH | `/api/customers/{id}/invalidate` | 200 | anda | — |
+| PATCH | `/api/customers/{id}/location` | 200 | anda | **ARREGLAR** (H-31) — sin DTO: acepta el campo mal escrito y devuelve 200 sin actualizar |
+| PATCH | `/api/customers/{id}/validate` | 200 | anda | — |
+| DELETE | `/api/customers/{id}` | 200 | anda | — |
+
+### Cylinders
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/cylinders` | 201 | anda | — |
+| POST | `/api/cylinders/assign` | 400 | anda (regla) | — |
+| GET | `/api/cylinders` | 200 | anda | — |
+| GET | `/api/cylinders/{id}` | 200 | anda | — |
+| GET | `/api/cylinders/{id}/history` | 200 | anda | — |
+| PATCH | `/api/cylinders/{id}/transition` | 200 | anda | — |
+
+### Delivery
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| GET | `/api/delivery` | 200 | anda | — |
+| GET | `/api/delivery/active` | 200 | anda | — |
+| GET | `/api/delivery/user/{userId}` | 200 | anda | — |
+| GET | `/api/delivery/{id}` | 200 | anda | — |
+| PATCH | `/api/delivery/user/{userId}/availability` | 200 | anda | **ARREGLAR** (H-31) — sin DTO |
+| PATCH | `/api/delivery/{id}` | 200 | anda | — |
+| PATCH | `/api/delivery/{id}/balance` | 200 | anda | **ARREGLAR** (H-31) — sin DTO: mueve dinero sin validar el monto |
+| PATCH | `/api/delivery/{id}/invalidate` | 200 | anda | — |
+| PATCH | `/api/delivery/{id}/location` | 200 | anda | **ARREGLAR** (H-31) — sin DTO |
+| PATCH | `/api/delivery/{id}/status` | 200 | anda | **ARREGLAR** (H-31) — sin DTO |
+| PATCH | `/api/delivery/{id}/validate` | 200 | anda | — |
+| DELETE | `/api/delivery/{id}` | 200 | anda | — |
+
+### Distributors
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/distributor` | 201 | anda | — |
+| GET | `/api/distributor` | 200 | anda | — |
+| GET | `/api/distributor/{id}` | 200 | anda | — |
+| PATCH | `/api/distributor/{id}` | 200 | anda | — |
+| DELETE | `/api/distributor/{id}` | - | no probado | — |
+
+### Email
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/email/change-email` | 400 | anda (regla) | — |
+| POST | `/api/email/password-reset` | 400 | anda (regla) | **ARREGLAR** (H-30) — Firebase rechaza el dominio: falta autorizarlo en el proyecto |
+| POST | `/api/email/test` | 201 | anda | — |
+
+### Gas Cylinders
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/gascylinder` | 201 | anda | — |
+| GET | `/api/gascylinder` | 200 | anda | — |
+| GET | `/api/gascylinder/available/list` | 200 | anda | — |
+| GET | `/api/gascylinder/type/{type}` | 200 | anda | — |
+| GET | `/api/gascylinder/{id}` | 200 | anda | — |
+| PATCH | `/api/gascylinder/{id}` | 200 | anda | — |
+| PATCH | `/api/gascylinder/{id}/stock` | 200 | anda | **ARREGLAR** (H-24 · H-31) — sin DTO: un valor no numerico llega a Postgres y da 500 |
+| DELETE | `/api/gascylinder/{id}` | 200 | anda | — |
+
+### Health
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| GET | `/api/health` | 200 | anda | — |
+| GET | `/api/health/live` | 200 | anda | — |
+| GET | `/api/health/ready` | 200 | anda | — |
+
+### Incidents
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/incidents` | 201 | anda | — |
+| GET | `/api/incidents` | 200 | anda | — |
+| GET | `/api/incidents/order/{orderId}` | 200 | anda | — |
+| PATCH | `/api/incidents/{id}/resolve` | 200 | anda | — |
+
+### Notifications
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/notifications/order-confirmation` | 201 | anda | **ARREGLAR** (H-31) — sin DTO |
+| POST | `/api/notifications/send-test` | 201 | anda | **ARREGLAR** (H-31) — sin DTO |
+| POST | `/api/notifications/token` | 201 | anda | **ARREGLAR** (H-31) — sin DTO |
+| GET | `/api/notifications/user/{userId}` | 200 | anda | — |
+
+### Orders
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/orders` | 201 | anda | **REFACTORIZAR** (H-25) — customerId es en realidad un user_id: la columna lleva el nombre de otra entidad |
+| POST | `/api/orders/{id}/confirm-delivery` | 400 | anda (regla) | — |
+| POST | `/api/orders/{id}/reject` | 201 | anda | — |
+| GET | `/api/orders` | 200 | anda | — |
+| GET | `/api/orders/available` | 200 | anda | — |
+| GET | `/api/orders/customer/{customerId}` | 200 | anda | — |
+| GET | `/api/orders/delivery/{deliveryId}` | 200 | anda | — |
+| GET | `/api/orders/reservations` | 200 | anda | — |
+| GET | `/api/orders/stats/chart` | 200 | anda | — |
+| GET | `/api/orders/stats/summary` | 200 | anda | — |
+| GET | `/api/orders/{id}` | 200 | anda | — |
+| GET | `/api/orders/{id}/delivery-code` | 400 | anda (regla) | — |
+| PATCH | `/api/orders/{id}/arrived` | 400 | anda (regla) | — |
+| PATCH | `/api/orders/{id}/assign/{deliveryId}` | 200 | anda | — |
+| PATCH | `/api/orders/{id}/cancel` | 200 | anda | **REFACTORIZAR** (H-33) — para el chofer no cancela: libera el pedido a pending. El nombre engaña |
+| PATCH | `/api/orders/{id}/confirm-deposit` | 400 | anda (regla) | — |
+| PATCH | `/api/orders/{id}/location` | 200 | anda | — |
+| PATCH | `/api/orders/{id}/status` | 400 | anda (regla) | — |
+| DELETE | `/api/orders/{id}` | 400 | anda (regla) | — |
+
+### Ratings
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/ratings` | 201 | anda (regla) | — |
+| GET | `/api/ratings/user/{userId}` | 200 | anda | — |
+| GET | `/api/ratings/user/{userId}/summary` | 200 | anda | — |
+
+### Reports
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| GET | `/api/reports/sales-by-driver` | 200 | anda | — |
+| GET | `/api/reports/sales-by-payment` | 200 | anda | — |
+| GET | `/api/reports/sales-by-product` | 200 | anda | — |
+| GET | `/api/reports/sales-evolution` | 200 | anda | — |
+
+### Role
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/role` | 201 | anda | — |
+| POST | `/api/role/seed` | 201 | anda | — |
+| GET | `/api/role` | 200 | anda | — |
+| GET | `/api/role/{id}` | 200 | anda | — |
+| PATCH | `/api/role/{id}` | 200 | anda | **ARREGLAR** (H-29) — renombrar un rol del sistema rompe el registro: se buscan por texto |
+| DELETE | `/api/role/{id}` | 200 | anda | **ARREGLAR** (H-17) — 500 al borrar un rol en uso; deberia ser 409 |
+
+### Time Slots
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/time-slot` | 201 | anda | — |
+| GET | `/api/time-slot` | 200 | anda | **REFACTORIZAR** (H-21) — recibe la distribuidora por query y sólo por slug; los otros la piden por cabecera |
+| GET | `/api/time-slot/availability` | 200 | anda | — |
+| GET | `/api/time-slot/{id}` | 200 | anda | — |
+| DELETE | `/api/time-slot/{id}` | 200 | anda | — |
+
+### User Addresses
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/user-address` | 201 | anda | — |
+| GET | `/api/user-address` | 200 | anda | — |
+| GET | `/api/user-address/user/{userId}` | 200 | anda | — |
+| GET | `/api/user-address/user/{userId}/default` | 200 | anda | — |
+| GET | `/api/user-address/{id}` | 200 | anda | — |
+| PATCH | `/api/user-address/{id}` | 200 | anda | — |
+| PATCH | `/api/user-address/{id}/set-default` | 200 | anda | — |
+| DELETE | `/api/user-address/{id}` | 200 | anda | — |
+
+### Users
+
+| Método | Ruta | Código | Estado | Qué hacer |
+|---|---|---:|---|---|
+| POST | `/api/users` | 201 | anda | — |
+| POST | `/api/users/check-exists` | 201 | anda | **ARREGLAR** (H-27 · H-28 · H-31) — publico (permite enumerar cuentas), sin DTO, acepta email numerico |
+| POST | `/api/users/customer-registration` | 201 | pendiente | revisar el dato de prueba — {"message":"Invalid phone number format. Use E.164 format: +1234567890 |
+| POST | `/api/users/delivery-registration` | 201 | pendiente | **ARREGLAR** (H-22) — 500 si falta distributorId, que el DTO marca opcional y la columna exige |
+| GET | `/api/users` | 200 | anda | — |
+| GET | `/api/users/email/{email}` | 200 | anda | **ARREGLAR** (H-26) — PUBLICO: devuelve el usuario completo con firebase_uid sin token |
+| GET | `/api/users/phone/{phoneNumber}` | 200 | anda | — |
+| GET | `/api/users/{id}` | 200 | anda | — |
+| PATCH | `/api/users/{id}` | 200 | anda | — |
+| PATCH | `/api/users/{id}/block` | 200 | anda | **ARREGLAR** (H-31) — sin DTO: 500 si se lo llama sin cuerpo, y Swagger no documenta el cuerpo |
+| DELETE | `/api/users/{id}` | 200 | anda | — |
+
+---
+
+## Parte II — Los 151 casos de uso
 
 Cruce entre el catálogo de casos de uso, el mapeo caso↔endpoint de la auditoría de
 cobertura, y la batería ejecutada contra la API corriendo con los cuatro roles reales
@@ -18,7 +308,7 @@ se verificaron creando esa condición y mirando el efecto en la base.
 | **PROGRAMAR DESDE CERO** | Especificado, sin código | Construir |
 | **MÓDULO INTELIGENTE PENDIENTE** | Los cuatro de la tesis, diseñados y sin construir | Construir |
 
-## Resumen
+### Resumen
 
 | Veredicto | Casos |
 |---|---:|
@@ -33,20 +323,20 @@ se verificaron creando esa condición y mirando el efecto en la base.
 
 Los dos últimos (CU-150 y CU-151) se especificaron el 23/09 a partir del análisis del backend de Tutu: la vigencia temporal de una zona de cobertura, que hoy hay que apagar a mano. Ver `TUTU-QUE-SIRVE.md`.
 
-## NO SE PUEDE PROBAR — 2 casos
+### NO SE PUEDE PROBAR — 2 casos
 
 | CU | Título | Qué se vio |
 |---|---|---|
 | CU-013 | Ofrecer el Pedido al Chofer Más Cercano | `el orquestador busca choferes conectados por WebSocket y no hay ninguno en linea (H-20)` → verificado a mano |
 | CU-047 | Recuperar Contraseña | `responde 400 — {"message":"Too many password_reset attempts. Please try again later.","error":"Bad Reques` → verificado a mano |
 
-## COMPLETAR — 1 casos
+### COMPLETAR — 1 casos
 
 | CU | Título | Qué se vio |
 |---|---|---|
 | CU-040 | Activar / Desactivar Producto | `DELETE /gascylinder/:id` → anda |
 
-## MÓDULO INTELIGENTE PENDIENTE — 4 casos
+### MÓDULO INTELIGENTE PENDIENTE — 4 casos
 
 | CU | Título | Qué se vio |
 |---|---|---|
@@ -55,7 +345,7 @@ Los dos últimos (CU-150 y CU-151) se especificaron el 23/09 a partir del análi
 | CU-107 | Agrupar pedidos por recorrido | sin endpoint HTTP asociado |
 | CU-108 | Recuperar envases no devueltos | sin endpoint HTTP asociado |
 
-## PROGRAMAR DESDE CERO — 26 casos
+### PROGRAMAR DESDE CERO — 26 casos
 
 | CU | Título | Qué se vio |
 |---|---|---|
@@ -88,7 +378,7 @@ Los dos últimos (CU-150 y CU-151) se especificaron el 23/09 a partir del análi
 | CU-150 | Programar la Vigencia de una Zona de Cobertura |
 | CU-151 | Desactivar las Zonas de Cobertura Vencidas | sin endpoint HTTP asociado |
 
-## ANDA — 116 casos
+### ANDA — 116 casos
 
 | CU | Título | Qué se vio |
 |---|---|---|

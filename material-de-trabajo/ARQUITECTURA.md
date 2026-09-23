@@ -301,3 +301,35 @@ Ordenado por lo que rinde contra lo que cuesta:
 Lo que **no** haría: convertir los 24 módulos planos a hexagonal. Es mucho
 trabajo, rompe lo que hoy anda, y no resuelve ninguno de los problemas reales
 que tiene la API.
+
+---
+
+## Lo que viene de la revisión de arquitectura de julio
+
+Aquella revisión (SOLID, DDD y escalabilidad) se resolvió **entera**: los diez
+puntos P0, los seis P1 y todos los P2 salvo un renombre cosmético. Lo que sigue
+valiendo de ella no son los hallazgos —ya cerrados— sino estas tres cosas.
+
+### Lo que NO hay que romper al refactorizar
+
+Es el núcleo transaccional, y es de calidad de producción:
+
+Reserva de stock atómica (`SELECT FOR UPDATE` en la tx del use-case) · webhook MP idempotente (lock + índice único parcial + carrera pago-vs-expiración) · despacho secuencial durable (tabla de ofertas + lock distribuido + radio progresivo) · cupo de franjas con lock transaccional · `StockReservationService` recibiendo el `EntityManager` del caller · state machines puras y testeadas · GEO en Redis · PostGIS con GIST + corto-circuito "sin zonas = cubierto" · precios de servidor en checkout · puertos abstractos como token DI.
+
+Cualquier refactor que toque estas piezas necesita, antes, entender por qué
+están así. La mayoría resuelve una carrera o un problema de concurrencia que no
+se ve leyendo el camino feliz.
+
+### Lo que NO conviene hacer, aunque se vea prolijo
+- Hexagonalizar `car`/`time-slot`/`claims`/`incident`/`rating`/`gascylinder` — es CRUD legítimo.
+- Forzar un `Money` VO en el catálogo (sí vale en `payments`, que ya usa `decimal.js`).
+- Unificar YA los dos modelos de inventario (`GasCylinder.stock` vs unidades `Cylinder`) — para MVP es defendible, documentarlo como decisión.
+- Mover enums de dominio fuera del `.entity.ts` — idiomático NestJS, baja prioridad.
+
+---
+
+### Pendientes menores que quedaron abiertos
+
+**Follow-ups menores pendientes** (no bloqueantes): rename de entidades GasCylinder/Cylinder; `GET /users/email|:id|phone` permiten enumeración básica (se usan en el login de las apps); mapear a 409 finito si algún flujo dependía de hard-delete de usuarios; y los diferidos de prod en `../PENDIENTES-PROD.md` (AFIP, iOS APNs, rename de package a wagnerlabs, hosting de legales, rotar secretos, MP Fase 2).
+
+_El detalle completo de aquella revisión está en `historico/`._
