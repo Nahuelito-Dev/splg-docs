@@ -4,55 +4,120 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SPLG — Documentación del sistema</title>
+<meta name="splg:version" content="__VERSION__">
+<meta name="splg:generado" content="__GENERADO__">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
 <link rel="stylesheet" href="visor.css">
 <script src="visor.js" defer></script>
 <style>
 /* ---- Paleta de lectura ----
-   Documento impreso: tinta oscura sobre papel. La paleta anterior (Orix Dusk,
-   violeta oscuro con acentos durazno) no se leía —ni en pantalla ni
-   proyectada—, así que acá no hay tema oscuro ni conmutador: una sola paleta,
-   la que se lee. Los colores de los artefactos son versiones saturadas y
-   oscuras, con contraste suficiente sobre blanco. */
+   Documento impreso: tinta oscura sobre papel. Los valores salen medidos del
+   centro de ayuda de Claude, que es la referencia que pidió la cátedra para
+   este sitio: fondo crema #FAF9F5, tinta #1A1A1A, gris de apoyo #595959,
+   bordes de 1px muy tenues y nada de sombras. Una sola paleta, sin tema
+   oscuro ni conmutador.
+
+   Los colores de los artefactos (CUA, CUE, DSS, DSD, CUR, MOD) no se tocan:
+   son los mismos que pintan las cajas de los diagramas —los escribe
+   `paleta.py`— y separar el color del menú del de la figura sería peor que
+   cualquier ganancia estética. */
 :root{
-  --bg:#FAF4E6; --surface:#FFFDF7; --variant:#F2EAD6; --outline:#DED4BC;
-  --content:#1C1A17; --muted:#5C574E;
-  --primary:#1F5E8C; --pressed:#164667; --secondary:#A8452C; --on-accent:#FFFFFF;
+  --bg:#FAF9F5; --surface:#FCFBF8; --variant:#F2F0E9; --outline:#E6E3DA;
+  --content:#1A1A1A; --muted:#595959;
+  --primary:#C15F3C; --pressed:#A34E30; --secondary:#1F5E8C; --on-accent:#FFFFFF;
   --success:#136B45; --danger:#A32B2B; --warn:#8A5A00; --syncing:#1F5E8C; --inactive:#7B756B;
   --cua:#1F5E8C; --cue:#136B45; --dss:#8A5A00; --dsd:#A8452C; --cur:#7A3E9D; --mod:#3D5A99;
   --dep:#5A6B4A;
-  --titulo:#E3DECF; --actor:#E4EDF4;
-  --shadow:0 1px 2px rgba(28,26,23,.06),0 10px 28px -22px rgba(28,26,23,.45);
-  --tint:rgba(28,26,23,.045);
+  --titulo:#F2F0E9; --actor:#E4EDF4;
+  /* La referencia no usa sombras: el relieve lo da el borde de 1px. */
+  --shadow:none;
+  --tint:rgba(26,26,26,.04);
+  --radio:8px;
+  --serif:Newsreader,"Iowan Old Style",Georgia,serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  --alto-navbar:57px;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--content);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.6;
+  font-family:var(--sans);font-size:15px;line-height:1.55;
   -webkit-font-smoothing:antialiased}
-.app{display:grid;grid-template-columns:320px 1fr;height:100vh}
+/* Los títulos van en serif y el cuerpo en sans, como la referencia. */
+h1,h2,h3,h4,.head h2,.pagina h2,.pagina h3{font-family:var(--serif);font-weight:600;
+  letter-spacing:-.005em}
+
+/* ---------- barra superior ----------
+   La marca y el acceso al índice viven arriba, fuera de las tres columnas, así
+   la barra izquierda empieza directo en la navegación. */
+.navbar{position:sticky;top:0;z-index:40;height:var(--alto-navbar);
+  display:flex;align-items:center;gap:14px;padding:0 20px;background:var(--bg);
+  border-bottom:1px solid var(--outline)}
+.navbar .marca-nav{display:flex;align-items:center;gap:11px;background:none;border:0;
+  padding:0;cursor:pointer;color:var(--content);font:inherit}
+.navbar .marca-nav svg{width:30px;height:30px;display:block}
+.navbar .marca-nav .txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05}
+.navbar .marca-nav .txt b{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:0}
+.navbar .marca-nav .txt span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.14em}
+.navbar .espacio{flex:1}
+.navbar .accion{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;
+  border:1px solid var(--outline);border-radius:var(--radio);background:var(--surface);
+  color:var(--muted);font:inherit;font-size:13px;cursor:pointer}
+.navbar .accion:hover{color:var(--content);border-color:#D6D2C7}
+.navbar .accion kbd{font-family:var(--mono);font-size:10.5px;border:1px solid var(--outline);
+  border-radius:4px;padding:1px 5px;background:var(--variant)}
+@media(max-width:880px){.navbar .accion .larga{display:none}}
+
+.app{display:grid;grid-template-columns:300px minmax(0,1fr) 248px;
+  height:calc(100vh - var(--alto-navbar))}
+@media(max-width:1180px){.app{grid-template-columns:300px minmax(0,1fr)}}
 @media(max-width:880px){.app{grid-template-columns:1fr;height:auto}}
 
+/* ---------- índice de la página (derecha) ----------
+   El "En esta página" de la referencia: el índice de lo que se está leyendo,
+   pegado arriba, con la sección actual resaltada mientras se scrollea. */
+.toc{border-left:1px solid var(--outline);overflow-y:auto;min-height:0;padding:26px 18px 60px}
+@media(max-width:1180px){.toc{display:none}}
+.toc .toc-t{font-size:12px;font-weight:600;color:var(--content);margin:0 0 12px;
+  font-family:var(--sans);letter-spacing:.01em}
+.toc a{display:block;padding:5px 0 5px 11px;border-left:2px solid var(--outline);
+  color:var(--muted);text-decoration:none;font-size:13px;line-height:1.35}
+.toc a:hover{color:var(--content)}
+.toc a[aria-current=true]{color:var(--content);border-left-color:var(--primary);font-weight:500}
+.toc a.n2{padding-left:22px;font-size:12.5px}
+.toc .vacio{color:var(--muted);font-size:12.5px}
+
+/* ---------- migas ---------- */
+.migas{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0 0 18px;
+  font-size:13px;color:var(--muted)}
+.migas a,.migas button{color:var(--muted);text-decoration:none;background:none;border:0;
+  padding:0;font:inherit;cursor:pointer}
+.migas a:hover,.migas button:hover{color:var(--content);text-decoration:underline}
+.migas .sep{color:#B9B4A8}
+.migas .actual{color:var(--content)}
+
 /* ---------- panel ---------- */
-aside{background:var(--surface);border-right:1px solid var(--outline);display:flex;flex-direction:column;min-height:0}
-@media(max-width:880px){aside{border-right:none;border-bottom:1px solid var(--outline);max-height:58vh}}
-.brand{padding:16px 20px 14px;border-bottom:1px solid var(--outline);display:flex;gap:13px;
-  align-items:center;width:100%;background:transparent;border-left:none;border-right:none;
-  border-top:none;color:var(--content);font:inherit;text-align:left;cursor:pointer}
-.brand:hover .marca{transform:scale(1.06)}
-.brand .marca{transition:transform .15s ease}
-.brand:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
-.brand .marca{width:38px;height:38px;flex:none;display:block}
-.brand .rotulo{min-width:0}
-.brand h1{font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:1.28rem;margin:0;
-  line-height:1.05;letter-spacing:.14em;color:var(--content)}
-.brand p{margin:3px 0 0;font-size:9.5px;color:var(--muted);font-family:"IBM Plex Mono",monospace;letter-spacing:.13em}
-.tools{padding:12px 16px;border-bottom:1px solid var(--outline);display:grid;gap:9px}
-input[type=search]{width:100%;padding:9px 11px;border:1px solid var(--outline);border-radius:5px;
-  background:var(--variant);color:var(--content);font:inherit;font-size:14px}
+/* El panel comparte el fondo de la página, como la referencia: lo que lo separa
+   de la lectura es la línea de 1px, no un color distinto. */
+aside#panel{background:var(--bg);border-right:1px solid var(--outline);display:flex;
+  flex-direction:column;min-height:0}
+@media(max-width:880px){aside#panel{border-right:none;border-bottom:1px solid var(--outline);max-height:58vh}}
+.tools{padding:14px 16px;border-bottom:1px solid var(--outline);display:grid;gap:10px}
+input[type=search]{width:100%;padding:9px 12px;border:1px solid var(--outline);
+  border-radius:var(--radio);background:var(--surface);color:var(--content);font:inherit;font-size:14px}
 input[type=search]::placeholder{color:var(--muted)}
-input[type=search]:focus{outline:2px solid var(--primary);outline-offset:1px}
+input[type=search]:focus{outline:none;border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(193,95,60,.14)}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.filters button{font:inherit;font-size:12px;line-height:1;padding:6px 10px;
+  border:1px solid var(--outline);border-radius:99px;background:var(--surface);
+  color:var(--muted);cursor:pointer}
+.filters button:hover{color:var(--content);border-color:#D6D2C7}
+.filters button[aria-pressed=true]{background:var(--content);border-color:var(--content);
+  color:var(--bg)}
+.filters button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
 /* ---------- menú de secciones ----------
    La barra es el índice del sitio: cuatro secciones. La primera despliega la
    documentación —buscador, filtros y los casos por subsistema—; las otras tres
@@ -60,9 +125,9 @@ input[type=search]:focus{outline:2px solid var(--primary);outline-offset:1px}
    casos, que no dejaba ver que el sitio tuviera otras partes. */
 .secciones{display:flex;flex-direction:column;min-height:0;flex:1;overflow-y:auto}
 .seccion{display:flex;align-items:center;gap:10px;width:100%;
-  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;
+  font-family:var(--sans);font-size:13.5px;font-weight:500;letter-spacing:0;
   color:var(--content);background:transparent;border:none;
-  border-bottom:1px solid var(--outline);padding:15px 18px;cursor:pointer;
+  padding:9px 18px;cursor:pointer;border-radius:0;
   text-align:left;text-decoration:none;flex:none}
 .seccion:hover{background:var(--tint);color:var(--primary)}
 .seccion:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
@@ -72,6 +137,8 @@ input[type=search]:focus{outline:2px solid var(--primary);outline-offset:1px}
 .seccion .ir{color:var(--muted)}
 .seccion .flecha{transition:transform .12s ease;font-size:14px;line-height:1;color:var(--muted)}
 .seccion[aria-expanded=true]{color:var(--primary);background:var(--tint)}
+.seccion[aria-current=true]{background:var(--variant);color:var(--content);font-weight:600;
+  box-shadow:inset 2px 0 0 var(--primary)}
 .seccion[aria-expanded=true] .flecha{transform:rotate(90deg);color:var(--primary)}
 .cuerpo-seccion{display:none;flex-direction:column;min-height:0;
   border-bottom:1px solid var(--outline);background:var(--bg)}
@@ -106,14 +173,28 @@ button.grp .flecha{flex:none;transition:transform .12s ease;font-size:13px;line-
 .item .dot{width:6px;height:6px;border-radius:99px;flex:none}
 .dot.Crítico{background:var(--danger)}.dot.Importante{background:var(--warn)}.dot.Secundario{background:var(--inactive)}
 
+/* Los títulos de las partes de la portada. Van en serif como el resto, pero
+   chicos: ordenan la lectura y le dan índice a la página sin competir con el
+   nombre del sistema. */
+.portada h2.sec{font-size:18px;font-weight:600;margin:38px 0 14px;
+  padding-top:22px;border-top:1px solid var(--outline);color:var(--content)}
+
+.sello{margin:10px 0 0;font-size:13px;color:var(--muted)}
+
+/* Los enlaces dentro del texto van en tinta y subrayados, como la referencia:
+   el color queda para los códigos (CU-013, ACT-01), que sí son etiquetas. */
+.pad a:not([data-cu]):not(.item):not(.ir){color:var(--content);text-decoration:underline;
+  text-underline-offset:2px;text-decoration-color:rgba(26,26,26,.35)}
+.pad a:not([data-cu]):not(.item):not(.ir):hover{text-decoration-color:var(--content)}
+
 /* ---------- detalle ---------- */
 main{overflow-y:auto;min-height:0;padding:0 0 90px}
-.pad{max-width:920px;margin:0 auto;padding:28px 30px 0}
+.pad{max-width:768px;margin:0 auto;padding:34px 32px 0}
 @media(max-width:880px){.pad{padding:20px 16px 0}}
-.head{border-bottom:2px solid var(--primary);padding-bottom:15px;margin-bottom:20px}
+.head{border-bottom:1px solid var(--outline);padding-bottom:20px;margin-bottom:26px}
 .head .over{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
   letter-spacing:.08em;display:flex;gap:11px;flex-wrap:wrap;margin-bottom:9px;align-items:center}
-.head h2{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:clamp(1.55rem,4vw,2.2rem);
+.head h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,3.4vw,2rem);
   margin:0;line-height:1.12;letter-spacing:-.015em;text-wrap:balance}
 .chip{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;padding:2px 8px;
   border-radius:99px;border:1px solid currentColor}
@@ -155,16 +236,17 @@ __COLORES_SS__
 .grupo .grp .punto{width:9px;height:9px;border-radius:50%;flex:none;
   border:1px solid rgba(0,0,0,.18)}
 
-.card{background:var(--surface);border:1px solid var(--outline);border-radius:6px;
-  margin-bottom:18px;box-shadow:var(--shadow);overflow:hidden}
+.card{background:var(--surface);border:1px solid var(--outline);border-radius:var(--radio);
+  margin-bottom:22px;overflow:hidden}
 /* El encabezado de la ficha va sobre un gris claro: separa de un vistazo qué
    artefacto se está leyendo —CUA, CUE, DSS, DSD— del contenido del artefacto. */
-.card>header{display:flex;align-items:center;gap:11px;padding:11px 18px;
+.card>header{display:flex;align-items:center;gap:11px;padding:12px 18px;
   background:var(--titulo);border-bottom:1px solid var(--outline);
-  border-radius:5px 5px 0 0}
+  border-radius:calc(var(--radio) - 1px) calc(var(--radio) - 1px) 0 0}
 .card>header .tag{font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
   letter-spacing:.07em;padding:2px 8px;border-radius:4px;color:var(--on-accent)}
-.card>header h3{margin:0;font-size:14px;font-weight:600;flex:1}
+.card>header h3{margin:0;font-family:var(--serif);font-size:16px;font-weight:600;flex:1;
+  letter-spacing:0}
 .card>header .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);text-align:right}
 .card .body{padding:16px 18px}
 .k-cua{border-top:2px solid var(--cua)} .k-cua .tag{background:var(--cua)}
@@ -244,20 +326,24 @@ footer.pie .cierre{margin-top:16px;padding-top:14px;border-top:1px solid var(--o
   background:currentColor}
 .rayas::before{top:0;box-shadow:0 4.25px 0 currentColor}
 .rayas::after{bottom:0}
-.app.sin-panel{grid-template-columns:1fr}
-.app.sin-panel aside{display:none}
+/* Las reglas del cajón nombran al panel por su id: desde que hay una tercera
+   columna, un `aside` suelto también alcanzaba al índice de la derecha y lo
+   mostraba en el teléfono encima de la lectura. */
+.app.sin-panel{grid-template-columns:1fr minmax(0,248px)}
+@media(max-width:1180px){.app.sin-panel{grid-template-columns:1fr}}
+.app.sin-panel aside#panel{display:none}
 
 /* En pantalla angosta el panel no puede comerse media pantalla: se convierte en
    un cajón que entra por la izquierda sobre el contenido, se abre con el botón
    de la barra y se cierra al elegir un caso, con Escape o tocando afuera. */
 @media(max-width:880px){
   .app,.app.sin-panel{grid-template-columns:1fr;height:auto}
-  aside{position:fixed;top:0;left:0;bottom:0;z-index:60;width:min(86vw,330px);
+  aside#panel{position:fixed;top:0;left:0;bottom:0;z-index:60;width:min(86vw,330px);
     max-height:none;border-right:1px solid var(--outline);border-bottom:none;
     transform:translateX(-100%);transition:transform .18s ease;
-    box-shadow:0 0 40px rgba(28,26,23,.25)}
-  .app:not(.sin-panel) aside{display:flex;transform:translateX(0)}
-  .app.sin-panel aside{display:flex}
+    box-shadow:0 0 40px rgba(26,26,26,.25)}
+  .app:not(.sin-panel) aside#panel{display:flex;transform:translateX(0)}
+  .app.sin-panel aside#panel{display:flex}
   .fondo-cajon{position:fixed;inset:0;z-index:55;background:rgba(28,26,23,.45);
     opacity:0;pointer-events:none;transition:opacity .18s ease}
   .app:not(.sin-panel) .fondo-cajon{opacity:1;pointer-events:auto}
@@ -367,6 +453,18 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 .pagina p{margin:0;max-width:68ch}
 .pagina code{font-family:"IBM Plex Mono",monospace;font-size:.87em; background:var(--tint);padding:.12em .38em;border-radius:4px}
 .pagina a{color:var(--primary)}
+/* La página de Modelos es, sobre todo, cuatro archivos para bajar: el enlace
+   tiene peso de botón y al lado dice por qué puerta entra en Lucidchart. */
+.pagina p.bajar{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;max-width:none}
+.pagina p.bajar a{display:inline-block;padding:.6rem 1rem;border:1px solid var(--outline);
+  border-radius:8px;text-decoration:none;background:var(--surface);
+  font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--primary);box-shadow:var(--shadow)}
+.pagina p.bajar a:hover{border-color:var(--primary)}
+.pagina p.bajar .comollega{font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  letter-spacing:.04em;color:var(--muted)}
+.pagina h2{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:1.75rem;
+  margin:1.4rem 0 0;text-wrap:balance}
 .pagina figure{margin:0;display:flex;flex-direction:column;gap:.85rem}
 .pagina .lienzo{background:var(--surface);border:1px solid var(--outline);border-radius:12px; padding:1.4rem 1rem;box-shadow:var(--shadow);overflow-x:auto;cursor:zoom-in}
 .pagina .lienzo:hover{border-color:var(--primary)}
@@ -468,7 +566,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 @media print{
   @page{margin:14mm}
   .app{display:block;height:auto}
-  aside,.visor,.paso,.figura .ampliar,.barra-doc{display:none!important}
+  aside,.visor,.paso,.figura .ampliar,.barra-doc,.navbar,.migas{display:none!important}
   main{overflow:visible}
   .pad{padding:0}
   body{background:#fff;color:#000;font-size:11pt}
@@ -481,48 +579,61 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 }
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* La barra con el botón del cajón es de pantalla angosta: en escritorio el
+   panel ya está a la vista y esa barra sólo robaba una línea. Va al final de la
+   hoja porque la definición de arriba la pisaba por orden. */
+@media(min-width:881px){.barra-doc{display:none}}
 </style>
 </head>
 
 <body>
+<header class="navbar">
+  <button class="marca-nav" id="alInicio" type="button">
+    <svg viewBox="0 0 40 40" role="img" aria-label="SPLG">
+      <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--primary)"/>
+      <path d="M12.5 21.5 C12.5 18 16 16.5 16 15.5 L24 15.5 C24 16.5 27.5 18 27.5 21.5
+               L27.5 29 A3.2 3.2 0 0 1 24.3 32.2 L15.7 32.2 A3.2 3.2 0 0 1 12.5 29 Z"
+            fill="var(--on-accent)"/>
+      <rect x="18" y="10.5" width="4" height="5.5" rx="1.2" fill="var(--on-accent)"/>
+      <path d="M15.2 12.2 A5.5 4.2 0 0 1 24.8 12.2" fill="none"
+            stroke="var(--on-accent)" stroke-width="2.1" stroke-linecap="round"/>
+    </svg>
+    <span class="txt"><b>SPLG</b><span>DOCUMENTACIÓN DEL SISTEMA</span></span>
+  </button>
+  <div class="espacio"></div>
+  <button class="accion" id="irABuscar" type="button" aria-label="Buscar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+    </svg>
+    <span class="larga">Buscar</span><kbd>/</kbd>
+  </button>
+</header>
 <div class="app">
   <aside id="panel">
-    <button class="brand" id="alInicio" >
-      <svg class="marca" viewBox="0 0 40 40" role="img" aria-label="SPLG">
-        <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--primary)"/>
-        <path d="M12.5 21.5 C12.5 18 16 16.5 16 15.5 L24 15.5 C24 16.5 27.5 18 27.5 21.5
-                 L27.5 29 A3.2 3.2 0 0 1 24.3 32.2 L15.7 32.2 A3.2 3.2 0 0 1 12.5 29 Z"
-              fill="var(--on-accent)"/>
-        <rect x="18" y="10.5" width="4" height="5.5" rx="1.2" fill="var(--on-accent)"/>
-        <path d="M15.2 12.2 A5.5 4.2 0 0 1 24.8 12.2" fill="none"
-              stroke="var(--on-accent)" stroke-width="2.1" stroke-linecap="round"/>
-      </svg>
-      <div class="rotulo">
-        <h1>SPLG</h1>
-        <p>DOCUMENTACIÓN DEL SISTEMA</p>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Buscar en la documentación" autocomplete="off" aria-label="Buscar caso de uso">
+      <div class="filters" id="filtros">
+        <button data-f="todos" aria-pressed="true">Todos</button>
+        <button data-f="Crítico" aria-pressed="false">Críticos</button>
+        <button data-f="cur" aria-pressed="false">CU reales</button>
+        <button data-f="mod" aria-pressed="false">Módulos</button>
+        <button data-f="sis" aria-pressed="false">Sistema</button>
       </div>
-    </button>
+    </div>
     <nav class="secciones">
-      <button type="button" class="seccion" data-pag="arquitectura"><span class="nombre">ARQUITECTURA</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" data-pag="ramas"><span class="nombre">RAMAS</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" data-pag="versionado"><span class="nombre">VERSIONADO</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" data-pag="agentes"><span class="nombre">AGENTES IA</span><span class="ir">→</span></button>
+      <button type="button" class="seccion" data-pag="modelos"><span class="nombre">Modelos</span><span class="ir">→</span></button>
+      <button type="button" class="seccion" data-pag="arquitectura"><span class="nombre">Arquitectura</span><span class="ir">→</span></button>
+      <button type="button" class="seccion" data-pag="ramas"><span class="nombre">Ramas</span><span class="ir">→</span></button>
+      <button type="button" class="seccion" data-pag="versionado"><span class="nombre">Versionado</span><span class="ir">→</span></button>
+      <button type="button" class="seccion" data-pag="agentes"><span class="nombre">Agentes IA</span><span class="ir">→</span></button>
       <button type="button" class="seccion" id="abrirDoc" aria-expanded="false" aria-controls="doc">
         <span class="flecha" aria-hidden="true">›</span>
-        <span class="nombre">DOCUMENTACIÓN</span>
+        <span class="nombre">Documentación</span>
         <span class="cuenta">__N_CASOS__</span>
       </button>
       <div class="cuerpo-seccion" id="doc">
-        <div class="tools">
-          <input type="search" id="q" placeholder="Buscar: login, pedido, CU-005…" autocomplete="off" aria-label="Buscar caso de uso">
-          <div class="filters" id="filtros">
-            <button data-f="todos" aria-pressed="true">TODOS</button>
-            <button data-f="Crítico" aria-pressed="false">CRÍTICOS</button>
-            <button data-f="cur" aria-pressed="false">CU REALES</button>
-            <button data-f="mod" aria-pressed="false">MÓDULOS</button>
-            <button data-f="sis" aria-pressed="false">SISTEMA</button>
-          </div>
-        </div>
         <div class="list" id="lista"></div>
       </div>
     </nav>
@@ -543,6 +654,10 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     </div>
   </footer>
 </div></main>
+<aside class="toc" id="toc" aria-label="En esta página">
+  <p class="toc-t">En esta página</p>
+  <nav id="tocNav"></nav>
+</aside>
 </div>
 
 <script id="datos" type="application/json">__DATOS__</script>
@@ -962,7 +1077,9 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         "<p class=\"bajada\">Un pedido nace en el teléfono del cliente, la distribuidora lo " +
           "toma, se le ofrece al chofer más cercano y termina en la puerta. Todo lo que hace " +
           "el sistema para que ese viaje ocurra está documentado acá, caso por caso.</p>" +
+        '<h2 class="sec">El viaje de un pedido</h2>' +
         viaje() +
+        '<h2 class="sec">La documentación en números</h2>' +
         '<div class="cifras">' +
           cifra(codigos.length, "casos de uso", "todos") +
           cifra(codigos.filter(function(c){ return CU[c].cur; }).length, "casos reales, con pantalla", "cur") +
@@ -970,6 +1087,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
           cifra(Object.keys(SS).length, "subsistemas", "sis") +
           cifra(totalDiagramas, "diagramas") +
         "</div>" +
+        '<h2 class="sec">Por dónde empezar</h2>' +
         '<p class="pista">Elegí <strong>Documentación</strong> en el menú para recorrerlos, ' +
           'o apretá <span class="kb">/</span> para buscar.</p>' +
       "</div>";
@@ -1001,6 +1119,12 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       .replace(/href="versionado\.html"/g, 'href="#versionado" data-pag-en-vista="versionado"')
       .replace(/href="asistentes\.html"/g, 'href="#agentes" data-pag-en-vista="agentes"');
     document.getElementById("detalle").innerHTML = '<div class="pagina">' + html + "</div>";
+    /* Las páginas también pueden traer diagramas propios: la de Modelos son
+       cuatro. Sin esto quedaban como huecos vacíos. */
+    (pag.mermaid || []).forEach(function(src, i){
+      var n = document.querySelector('.pagina [data-mer="' + i + '"]');
+      if (n) dibujar(n, src);
+    });
     if (window.marcarFigurasAmpliables) window.marcarFigurasAmpliables();
     document.querySelectorAll("[data-pag-en-vista]").forEach(function(a){
       a.onclick = function(ev){ ev.preventDefault(); verPagina(a.dataset.pagEnVista); };
@@ -1161,6 +1285,213 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
   pintar();
   if (!irA((location.hash||"").replace("#",""))) inicio();
+})();
+</script>
+
+<script>
+/* ---------- migas e índice de la página ----------
+   Las dos piezas que faltaban para leer como la referencia: arriba, dónde
+   estoy parado; a la derecha, qué tiene esta página y en qué parte voy.
+
+   Vive fuera del cierre que arma las vistas, y se engancha mirando `#detalle`
+   con un observador: así funciona con todas —el caso de uso, las páginas, los
+   módulos, los subsistemas y los diagramas en UML— sin tener que tocar cada
+   función que las pinta ni arriesgar lo que ya anda. */
+(function(){
+  "use strict";
+  var main = document.getElementById("main");
+  var detalle = document.getElementById("detalle");
+  var columna = document.getElementById("toc");
+  var indice = document.getElementById("tocNav");
+  if (!main || !detalle || !indice) return;
+
+  var objetivos = [];   // { el, enlace }
+  var pintando = false; // evita que lo que insertamos vuelva a disparar el observador
+
+  function texto(el){ return (el.textContent || "").replace(/\s+/g, " ").trim(); }
+
+  /* Qué títulos tiene lo que se está leyendo. Un caso de uso son sus fichas
+     —CUA, CUE, CUR, DSS, DSD…—; una página son sus secciones. */
+  function titulos(){
+    var portada = detalle.querySelector(".portada");
+    if (portada){
+      // El título del sistema no va al índice: es el nombre de la página, no
+      // una de sus partes.
+      return [].slice.call(portada.querySelectorAll("h2.sec")).map(function(h){
+        return { el: h, rotulo: texto(h), nivel: 1 };
+      });
+    }
+    var pagina = detalle.querySelector(".pagina");
+    if (pagina){
+      // `h4.sub` es como Arquitectura numera sus secciones (2.1, 2.2, …); sin
+      // eso esa página quedaba sin índice.
+      return [].slice.call(pagina.querySelectorAll("h2, h3, h4.sub")).map(function(h){
+        return { el: h, rotulo: texto(h), nivel: h.tagName === "H2" ? 1 : 2 };
+      });
+    }
+    return [].slice.call(detalle.querySelectorAll(".card > header")).map(function(h){
+      var t = h.querySelector("h3");
+      return { el: h.parentElement, rotulo: t ? texto(t) : texto(h), nivel: 1 };
+    });
+  }
+
+  function armarIndice(){
+    var lista = titulos();
+    objetivos = [];
+    indice.innerHTML = "";
+    if (!lista.length){
+      // La portada no tiene secciones que listar: la columna se calla en vez de
+      // mostrar un índice vacío.
+      indice.innerHTML = '<p class="vacio">—</p>';
+      return;
+    }
+    lista.forEach(function(t, i){
+      if (!t.el.id) t.el.id = "sec-" + (i + 1);
+      var a = document.createElement("a");
+      a.href = "#" + t.el.id;
+      a.textContent = t.rotulo;
+      if (t.nivel === 2) a.className = "n2";
+      a.addEventListener("click", function(ev){
+        ev.preventDefault();
+        main.scrollTo({ top: t.el.offsetTop - 16, behavior: "smooth" });
+      });
+      indice.appendChild(a);
+      objetivos.push({ el: t.el, enlace: a });
+    });
+    marcar();
+  }
+
+  /* La sección actual es la última que ya pasó por la franja de lectura. */
+  function marcar(){
+    if (!objetivos.length) return;
+    var corte = 140, actual = objetivos[0];
+    objetivos.forEach(function(o){
+      if (o.el.getBoundingClientRect().top <= corte) actual = o;
+    });
+    objetivos.forEach(function(o){
+      if (o === actual) o.enlace.setAttribute("aria-current", "true");
+      else o.enlace.removeAttribute("aria-current");
+    });
+  }
+
+  /* Dónde estoy parado. El caso de uso dice su subsistema y su código; las
+     páginas, su nombre en el menú. La portada no lleva migas: es la raíz. */
+  function migas(){
+    var vieja = detalle.querySelector(".migas");
+    if (vieja) vieja.remove();
+    if (detalle.querySelector(".portada")) return;
+
+    var partes = [];
+    var cabeza = detalle.querySelector(".head");
+    if (cabeza){
+      var codigo = cabeza.querySelector(".over span");
+      var subsistema = null;
+      [].slice.call(cabeza.querySelectorAll(".meta span")).forEach(function(sp){
+        var b = sp.querySelector("b");
+        if (b && /Subsistema/i.test(b.textContent)) subsistema = texto(sp).replace(/^Subsistema\s*/i, "");
+      });
+      partes.push({ rotulo: "Documentación", ir: "doc" });
+      if (subsistema && subsistema !== "—") partes.push({ rotulo: subsistema });
+      if (codigo) partes.push({ rotulo: texto(codigo), actual: true });
+    } else {
+      var clave = (location.hash || "").replace("#", "");
+      var boton = document.querySelector('.seccion[data-pag="' + clave + '"] .nombre');
+      partes.push({ rotulo: "SPLG", ir: "inicio" });
+      var titulo = detalle.querySelector(".pagina h1, .pagina h2, .head h2, h2");
+      partes.push({ rotulo: boton ? texto(boton) : (titulo ? texto(titulo) : "Documentación"), actual: true });
+    }
+
+    var nav = document.createElement("nav");
+    nav.className = "migas";
+    nav.setAttribute("aria-label", "Ubicación");
+    partes.forEach(function(parte, i){
+      if (i){
+        var sep = document.createElement("span");
+        sep.className = "sep"; sep.setAttribute("aria-hidden", "true");
+        sep.textContent = "›";
+        nav.appendChild(sep);
+      }
+      if (parte.actual || !parte.ir){
+        var sp = document.createElement("span");
+        sp.className = parte.actual ? "actual" : "";
+        sp.textContent = parte.rotulo;
+        nav.appendChild(sp);
+      } else {
+        var b = document.createElement("button");
+        b.type = "button"; b.textContent = parte.rotulo;
+        b.addEventListener("click", function(){
+          if (parte.ir === "inicio"){ document.getElementById("alInicio").click(); return; }
+          var doc = document.getElementById("abrirDoc");
+          if (doc && doc.getAttribute("aria-expanded") !== "true") doc.click();
+        });
+        nav.appendChild(b);
+      }
+    });
+    detalle.insertBefore(nav, detalle.firstChild);
+  }
+
+  /* La sección abierta, marcada en la barra izquierda. */
+  function marcarSeccion(){
+    var clave = (location.hash || "").replace("#", "");
+    var esCaso = /^(CU-|sis-|mod-|uml-)/.test(clave);
+    [].slice.call(document.querySelectorAll(".seccion[data-pag]")).forEach(function(b){
+      if (!esCaso && b.dataset.pag === clave) b.setAttribute("aria-current", "true");
+      else b.removeAttribute("aria-current");
+    });
+    var doc = document.getElementById("abrirDoc");
+    if (doc){
+      if (esCaso) doc.setAttribute("aria-current", "true");
+      else doc.removeAttribute("aria-current");
+    }
+  }
+
+  /* Versión de la documentación y fecha de generación, debajo del título. */
+  function sello(){
+    var previo = detalle.querySelector(".sello");
+    if (previo) previo.remove();
+    if (detalle.querySelector(".portada")) return;
+    var meta = function(n){
+      var m = document.querySelector('meta[name="splg:' + n + '"]');
+      return m ? m.content : "";
+    };
+    var version = meta("version"), generado = meta("generado");
+    if (!version && !generado) return;
+    var ancla = detalle.querySelector(".head h2, .pagina h1, .pagina h2");
+    if (!ancla) return;
+    var p = document.createElement("p");
+    p.className = "sello";
+    p.textContent = (version ? "Versión " + version : "") +
+      (version && generado ? " · " : "") +
+      (generado ? "actualizada el " + generado : "");
+    ancla.parentNode.insertBefore(p, ancla.nextSibling);
+  }
+
+  function actualizar(){
+    if (pintando) return;
+    pintando = true;
+    try { migas(); sello(); armarIndice(); marcarSeccion(); } finally {
+      // En el mismo tick, para no volver a entrar por lo que acabamos de insertar.
+      setTimeout(function(){ pintando = false; }, 0);
+    }
+  }
+
+  new MutationObserver(function(){ actualizar(); }).observe(detalle, { childList: true });
+
+  var pendiente = false;
+  main.addEventListener("scroll", function(){
+    if (pendiente) return;
+    pendiente = true;
+    requestAnimationFrame(function(){ pendiente = false; marcar(); });
+  }, { passive: true });
+
+  // El botón de la barra hace lo mismo que la tecla `/`, que ya abre la
+  // documentación y pone el foco en el buscador.
+  var buscar = document.getElementById("irABuscar");
+  if (buscar) buscar.addEventListener("click", function(){
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "/", bubbles: true }));
+  });
+
+  actualizar();
 })();
 </script>
 </body>

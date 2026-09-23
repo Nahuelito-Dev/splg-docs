@@ -2,17 +2,17 @@
    Misma paleta de lectura y misma tipografia que la pagina principal. */
 
 :root{
-  --bg:#FAF4E6; --surface:#FFFDF7; --variant:#F2EAD6; --outline:#DED4BC;
-  --content:#1C1A17; --muted:#5C574E;
-  --primary:#1F5E8C; --pressed:#164667; --secondary:#A8452C; --on-accent:#FFFFFF;
+  --bg:#FAF9F5; --surface:#FCFBF8; --variant:#F2F0E9; --outline:#E6E3DA;
+  --content:#1A1A1A; --muted:#595959;
+  --primary:#C15F3C; --pressed:#A34E30; --secondary:#1F5E8C; --on-accent:#FFFFFF;
   --success:#136B45; --danger:#A32B2B; --warn:#8A5A00; --syncing:#1F5E8C;
-  --shadow:0 1px 2px rgba(28,26,23,.06),0 10px 28px -22px rgba(28,26,23,.45);
-  --tint:rgba(28,26,23,.045);
+  --shadow:none;
+  --tint:rgba(26,26,26,.04);
 }
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--content);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.62;
+  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.55;
   -webkit-font-smoothing:antialiased}
 
 .hoja{max-width:62rem;margin:0 auto;padding:2.5rem 1.5rem 5rem;
@@ -171,3 +171,4 @@ ol.pasos li::before{content:counter(paso,decimal-leading-zero);position:absolute
 .paso-icono{fill:none;stroke:var(--primary);stroke-width:1.6;
   stroke-linecap:round;stroke-linejoin:round;opacity:.85}
 .paso-icono-lleno{fill:var(--content);stroke:none;opacity:.8}
+

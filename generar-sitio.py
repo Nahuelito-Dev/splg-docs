@@ -5,7 +5,7 @@ y seccion donde cada uno esta respaldado.
 
 Uso:  python3 generar-sitio.py     ->  splg-documentacion.html
 """
-import re, json, os, glob, base64, hashlib, sys
+import re, json, os, glob, base64, hashlib, sys, datetime
 from paleta import css_subsistemas
 
 # Los casos de uso que intervienen en cada modulo sin pertenecerle. Salen de las
@@ -361,7 +361,64 @@ def cuerpo_de(archivo):
 _arq = _seccion("3-Diseño.md", r'^## 2\. Arquitectura', r'^## 3\. ')
 _arq_html = md2html(_arq)["html"]
 
+# ---------- los archivos para Lucidchart ----------
+# El modelo conceptual, los dos diagramas de clases y el modelo de datos se
+# trabajan en Lucidchart. Los archivos viven en lucidchart/ y se generan con
+# generar-lucidchart.py; acá se muestran dibujados y se dejan para descargar,
+# para no tener que ir al repositorio a buscarlos.
+def _lucid():
+    fuentes = [
+      ("Modelo conceptual", "SPLG-modelo-conceptual.xml",
+       "diagramas/lucidchart/SPLG-modelo-conceptual.mmd",
+       "Los conceptos del dominio con sus asociaciones y multiplicidades. "
+       "Es el modelo de análisis: sin métodos, sin claves foráneas y sin navegabilidad."),
+      ("Diagrama de clases — dominio", "SPLG-diagrama-de-clases-dominio.xml",
+       "diagramas/lucidchart/SPLG-clases-dominio.mmd",
+       "Las clases de entidad con sus atributos tipados, las enumeraciones y las "
+       "multiplicidades reales de cada relación."),
+      ("Diagrama de clases — servicios", "SPLG-diagrama-de-clases-servicios.xml",
+       "diagramas/lucidchart/SPLG-clases-servicios.mmd",
+       "Las clases de la capa de aplicación con sus operaciones. Cada firma está "
+       "tomada del código, no inventada."),
+    ]
+    mer, secc = [], []
+    for titulo, xml, fuente, desc in fuentes:
+        ruta = D + fuente
+        if not os.path.exists(ruta): continue
+        mer.append(open(ruta, encoding="utf-8").read().strip())
+        b64 = base64.b64encode(open(D + "lucidchart/" + xml, "rb").read()).decode()
+        secc.append(
+          f'<h2>{titulo}</h2><p>{desc}</p>'
+          f'<div class="diagram" data-mer="{len(mer)-1}"></div>'
+          f'<p class="bajar"><a download="{xml}" href="data:application/xml;base64,{b64}">'
+          f'DESCARGAR {xml}</a> <span class="comollega">Lucidchart · Archivo · Importar · Draw.io</span></p>')
+
+    sql = D + "lucidchart/SPLG-diagrama-de-base-de-datos.sql"
+    if os.path.exists(sql):
+        crudo = open(sql, encoding="utf-8").read()
+        b64 = base64.b64encode(crudo.encode()).decode()
+        img = ""
+        for cand in ("diagramas/base-de-datos/SPLG-modelo-fisico.svg",
+                     "diagramas/base-de-datos/SPLG-modelo-fisico.png"):
+            if os.path.exists(D + cand): img = f'<img class="umlimg" alt="Diagrama de base de datos" src="{imagen(D + cand)}">'; break
+        secc.append(
+          f'<h2>Diagrama de base de datos</h2>'
+          f'<p>Las {crudo.count("CREATE TABLE")} tablas con sus columnas y sus claves foráneas. '
+          f'Entra por otra puerta que los anteriores: no es un diagrama sino el esquema, '
+          f'y Lucidchart lo arma solo a partir del SQL.</p>{img}'
+          f'<p class="bajar"><a download="SPLG-diagrama-de-base-de-datos.sql" '
+          f'href="data:text/plain;base64,{b64}">DESCARGAR SPLG-diagrama-de-base-de-datos.sql</a> '
+          f'<span class="comollega">Lucidchart · Importar datos · ERD · PostgreSQL</span></p>')
+
+    intro = ('<div class="intro"><h1>Modelos para Lucidchart</h1>'
+             '<p>Los cuatro diagramas que se trabajan en Lucidchart, dibujados acá y '
+             'listos para bajar. Los tres primeros son archivos de draw.io, que es uno de '
+             'los formatos que Lucidchart importa de fábrica; el cuarto es el esquema de '
+             'la base. Se generan con <code>generar-lucidchart.py</code>.</p></div>')
+    return {"titulo": "Modelos para Lucidchart", "html": intro + "".join(secc), "mermaid": mer}
+
 datos["paginas"] = {
+    "modelos": _lucid(),
     "arquitectura": {"titulo": "Arquitectura y despliegue",
                      "html": '<div class="intro"><h1>Arquitectura y despliegue</h1>'
                              '<p>Cómo está armado el sistema, dónde corre cada pieza y con qué '
@@ -383,8 +440,17 @@ n_mermaid = sum(len(v["dss"]) + len(v["dsd"]) +
 n_mermaid += sum(len(m.get("mermaid", [])) for m in mods.values())
 n_uml = sum(1 for v in ss.values() if "uml" in v) + len(umlsis)
 
+version = ""
+try:
+    version = open(D+"VERSION", encoding="utf-8").read().strip()
+except OSError:
+    version = ""
+generado = datetime.date.today().strftime("%d/%m/%Y")
+
 html = (open(D+"splg-plantilla.html", encoding="utf-8").read()
         .replace("__DATOS__", payload)
+        .replace("__VERSION__", version)
+        .replace("__GENERADO__", generado)
         .replace("__N_MERMAID__", str(n_mermaid))
         .replace("__N_UML__", str(n_uml))
         .replace("__N_CASOS__", str(len(datos["cu"])))
