@@ -1,7 +1,7 @@
 -- Modelo completo de SPLG — lo implementado más lo que pidió la cátedra
--- 25 tablas y 56 relaciones.
+-- 37 tablas y 84 relaciones.
 -- Hoy en la base hay 20 tablas y 30 claves foráneas declaradas;
--- este archivo suma 5 tablas nuevas, 22 columnas nuevas y declara además las
+-- este archivo suma 17 tablas nuevas, 26 columnas nuevas y declara además las
 -- 13 relaciones que hoy existen en el dominio pero no están declaradas
 -- como FOREIGN KEY (ver «Relaciones no declaradas» en SPLG-modelo-de-datos.md).
 -- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin defaults ni índices.
@@ -42,6 +42,10 @@ CREATE TABLE "coverage_zone" (
   "isActive" boolean NOT NULL,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
+  "surcharge_type" varchar(32) NOT NULL,
+  "label" varchar(40),
+  "color" varchar(7),
+  "valid_until" timestamptz,
   PRIMARY KEY ("coverage_zone_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
@@ -60,6 +64,23 @@ CREATE TABLE "gas_cylinder" (
   "updatedAt" timestamptz NOT NULL,
   PRIMARY KEY ("gas_cylinder_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id")
+);
+
+-- tabla propuesta
+CREATE TABLE "maintenance_plan" (
+  "plan_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "name" varchar(120) NOT NULL,
+  "subject" varchar(32) NOT NULL,
+  "trigger" varchar(32) NOT NULL,
+  "interval_km" integer,
+  "interval_months" integer,
+  "lead_time_days" integer NOT NULL,
+  "criticality" varchar(32) NOT NULL,
+  "car_type" varchar,
+  "is_active" boolean NOT NULL,
+  PRIMARY KEY ("plan_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "time_slot" (
@@ -107,6 +128,28 @@ CREATE TABLE "admin" (
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
 
+-- tabla propuesta
+CREATE TABLE "audit_log" (
+  "audit_id" uuid NOT NULL,
+  "distributor_id" uuid,
+  "actor_user_id" uuid,
+  "actor_role" varchar(30),
+  "http_method" varchar(10) NOT NULL,
+  "resource" varchar(60) NOT NULL,
+  "resource_id" varchar(64),
+  "path" varchar(255) NOT NULL,
+  "client_source" varchar(30),
+  "ip" varchar(45),
+  "result" varchar(32) NOT NULL,
+  "status_code" integer NOT NULL,
+  "changes" jsonb,
+  "error_message" text,
+  "created_at" timestamptz NOT NULL,
+  PRIMARY KEY ("audit_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE SET NULL,
+  FOREIGN KEY ("actor_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
+);
+
 CREATE TABLE "car" (
   "car_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -122,10 +165,9 @@ CREATE TABLE "car" (
   "updatedAt" timestamptz NOT NULL,
   "tare_weight_kg" numeric(10,2),
   "max_load_kg" numeric(10,2),
-  "insurance_company" varchar(120),
-  "insurance_policy" varchar(60),
-  "insurance_expires_at" timestamptz,
-  "vtv_expires_at" timestamptz,
+  "odometer_km" integer,
+  "fleet_status" varchar(32) NOT NULL,
+  "in_service_since" timestamptz,
   PRIMARY KEY ("car_id"),
   UNIQUE ("car_patent"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
@@ -137,7 +179,7 @@ CREATE TABLE "cart" (
   "cart_id" uuid NOT NULL,
   "user_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
-  "updatedAt" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL,
   PRIMARY KEY ("cart_id"),
   UNIQUE ("user_id", "distributor_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE,
@@ -177,13 +219,24 @@ CREATE TABLE "delivery" (
   "balance" double precision NOT NULL,
   "createdAt" timestamptz,
   "deletedAt" timestamptz,
-  "license_number" varchar(30),
-  "license_category" varchar(10),
-  "license_expires_at" timestamptz,
   PRIMARY KEY ("delivery_id"),
   UNIQUE ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
+);
+
+-- tabla propuesta
+CREATE TABLE "module_config" (
+  "config_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "module" varchar(32) NOT NULL,
+  "params" jsonb NOT NULL,
+  "updated_at" timestamptz NOT NULL,
+  "updated_by_user_id" uuid,
+  PRIMARY KEY ("config_id"),
+  UNIQUE ("distributor_id", "module"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("updated_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
 );
 
 CREATE TABLE "user_address" (
@@ -199,6 +252,11 @@ CREATE TABLE "user_address" (
   "additionalInstructions" text,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
+  "floor" varchar(10),
+  "apartment" varchar(10),
+  "location" varchar(255),
+  "place_id" varchar(255),
+  "geocode_precision" varchar(32) NOT NULL,
   PRIMARY KEY ("address_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
@@ -217,20 +275,29 @@ CREATE TABLE "cart_item" (
 );
 
 -- tabla propuesta
-CREATE TABLE "fleet_maintenance" (
-  "maintenance_id" uuid NOT NULL,
-  "car_id" uuid NOT NULL,
+CREATE TABLE "maintenance_task" (
+  "task_id" uuid NOT NULL,
+  "plan_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
-  "type" varchar(32) NOT NULL,
-  "scheduled_at" timestamptz NOT NULL,
+  "car_id" uuid,
+  "delivery_id" uuid,
+  "status" varchar(32) NOT NULL,
+  "due_at" timestamptz,
+  "due_km" integer,
+  "predicted_due_at" timestamptz,
+  "scheduled_at" timestamptz,
   "performed_at" timestamptz,
   "odometer_km" integer,
   "cost" numeric(10,2),
+  "provider" varchar(120),
+  "reference_number" varchar(60),
+  "category" varchar(10),
   "notes" text,
-  "status" varchar(32) NOT NULL,
-  PRIMARY KEY ("maintenance_id"),
+  PRIMARY KEY ("task_id"),
+  FOREIGN KEY ("plan_id") REFERENCES "maintenance_plan" ("plan_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE CASCADE,
-  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
+  FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "order" (
@@ -264,13 +331,40 @@ CREATE TABLE "order" (
   "receiver_document" varchar(20),
   "receiver_relationship" varchar(40),
   "delivery_mode" varchar(32) NOT NULL,
-  "is_express" boolean NOT NULL,
   PRIMARY KEY ("order_id"),
   FOREIGN KEY ("address_id") REFERENCES "user_address" ("address_id"),
   FOREIGN KEY ("customer_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("time_slot_id") REFERENCES "time_slot" ("time_slot_id")
+);
+
+-- tabla propuesta
+CREATE TABLE "route_batch" (
+  "batch_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "status" varchar(32) NOT NULL,
+  "total_weight_kg" numeric(10,2) NOT NULL,
+  "delivery_id" uuid,
+  "created_at" timestamptz NOT NULL,
+  PRIMARY KEY ("batch_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE SET NULL
+);
+
+-- tabla propuesta
+CREATE TABLE "vehicle_usage_log" (
+  "log_id" uuid NOT NULL,
+  "car_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "day" date NOT NULL,
+  "km" numeric(10,2) NOT NULL,
+  "orders" integer NOT NULL,
+  "route_hours" numeric(6,2) NOT NULL,
+  PRIMARY KEY ("log_id"),
+  UNIQUE ("car_id", "day"),
+  FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE CASCADE,
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "claims" (
@@ -332,6 +426,22 @@ CREATE TABLE "incident" (
 );
 
 -- tabla propuesta
+CREATE TABLE "maintenance_window_proposal" (
+  "proposal_id" uuid NOT NULL,
+  "task_id" uuid NOT NULL,
+  "delivery_id" uuid NOT NULL,
+  "window_start" timestamptz NOT NULL,
+  "window_end" timestamptz NOT NULL,
+  "rank" integer NOT NULL,
+  "status" varchar(32) NOT NULL,
+  "expires_at" timestamptz NOT NULL,
+  "responded_at" timestamptz,
+  PRIMARY KEY ("proposal_id"),
+  FOREIGN KEY ("task_id") REFERENCES "maintenance_task" ("task_id") ON DELETE CASCADE,
+  FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE CASCADE
+);
+
+-- tabla propuesta
 CREATE TABLE "order_address_change" (
   "change_id" uuid NOT NULL,
   "order_id" uuid NOT NULL,
@@ -373,6 +483,20 @@ CREATE TABLE "order_item" (
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE
 );
 
+-- tabla propuesta
+CREATE TABLE "order_status_history" (
+  "history_id" uuid NOT NULL,
+  "order_id" uuid NOT NULL,
+  "from_status" varchar(32),
+  "to_status" varchar(32) NOT NULL,
+  "changed_by_user_id" uuid,
+  "reason" text,
+  "changed_at" timestamptz NOT NULL,
+  PRIMARY KEY ("history_id"),
+  FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE,
+  FOREIGN KEY ("changed_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
+);
+
 CREATE TABLE "payment" (
   "payment_id" uuid NOT NULL,
   "order_id" uuid NOT NULL,
@@ -391,7 +515,7 @@ CREATE TABLE "payment" (
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   PRIMARY KEY ("payment_id"),
-  FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE,
+  FOREIGN KEY ("order_id") REFERENCES "order" ("order_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
@@ -411,6 +535,51 @@ CREATE TABLE "rating" (
   FOREIGN KEY ("from_user_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE,
   FOREIGN KEY ("to_user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
+);
+
+-- tabla propuesta
+CREATE TABLE "repurchase_invitation" (
+  "invitation_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
+  "address_id" uuid,
+  "projected_depletion_at" timestamptz NOT NULL,
+  "suggested_items" jsonb NOT NULL,
+  "status" varchar(32) NOT NULL,
+  "expires_at" timestamptz NOT NULL,
+  "responded_at" timestamptz,
+  "order_id" uuid,
+  "created_at" timestamptz NOT NULL,
+  PRIMARY KEY ("invitation_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE,
+  FOREIGN KEY ("address_id") REFERENCES "user_address" ("address_id") ON DELETE SET NULL,
+  FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE SET NULL
+);
+
+-- tabla propuesta
+CREATE TABLE "route_batch_offer" (
+  "offer_id" uuid NOT NULL,
+  "batch_id" uuid NOT NULL,
+  "delivery_id" uuid NOT NULL,
+  "status" varchar(32) NOT NULL,
+  "expires_at" timestamptz NOT NULL,
+  "responded_at" timestamptz,
+  PRIMARY KEY ("offer_id"),
+  FOREIGN KEY ("batch_id") REFERENCES "route_batch" ("batch_id") ON DELETE CASCADE,
+  FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE CASCADE
+);
+
+-- tabla propuesta
+CREATE TABLE "route_batch_stop" (
+  "stop_id" uuid NOT NULL,
+  "batch_id" uuid NOT NULL,
+  "order_id" uuid NOT NULL,
+  "sequence" integer NOT NULL,
+  PRIMARY KEY ("stop_id"),
+  UNIQUE ("batch_id", "order_id"),
+  FOREIGN KEY ("batch_id") REFERENCES "route_batch" ("batch_id") ON DELETE CASCADE,
+  FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE
 );
 
 -- tabla propuesta
@@ -438,8 +607,42 @@ CREATE TABLE "cylinder_movement" (
   "note" text,
   "createdAt" timestamptz NOT NULL,
   PRIMARY KEY ("movement_id"),
-  FOREIGN KEY ("cylinder_id") REFERENCES "cylinder" ("cylinder_id") ON DELETE CASCADE,
+  FOREIGN KEY ("cylinder_id") REFERENCES "cylinder" ("cylinder_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE SET NULL,
   FOREIGN KEY ("actor_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
+);
+
+-- tabla propuesta
+CREATE TABLE "cylinder_recovery_case" (
+  "case_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "cylinder_id" uuid NOT NULL,
+  "user_id" uuid NOT NULL,
+  "delivered_at" timestamptz NOT NULL,
+  "deposit_amount" numeric(10,2) NOT NULL,
+  "step" integer NOT NULL,
+  "status" varchar(32) NOT NULL,
+  "opened_at" timestamptz NOT NULL,
+  "closed_at" timestamptz,
+  "resolved_by_user_id" uuid,
+  "resolution_note" text,
+  PRIMARY KEY ("case_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("cylinder_id") REFERENCES "cylinder" ("cylinder_id") ON DELETE CASCADE,
+  FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE,
+  FOREIGN KEY ("resolved_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
+);
+
+-- tabla propuesta
+CREATE TABLE "cylinder_recovery_notice" (
+  "notice_id" uuid NOT NULL,
+  "case_id" uuid NOT NULL,
+  "step" integer NOT NULL,
+  "kind" varchar(32) NOT NULL,
+  "status" varchar(32),
+  "sent_at" timestamptz NOT NULL,
+  "expires_at" timestamptz NOT NULL,
+  PRIMARY KEY ("notice_id"),
+  FOREIGN KEY ("case_id") REFERENCES "cylinder_recovery_case" ("case_id") ON DELETE CASCADE
 );

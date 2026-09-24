@@ -116,12 +116,14 @@ enums = {n: v.split(",") for n, v in psql("""
 # propaga al borrar. El destino de cada una se leyo de la entidad de TypeORM
 # correspondiente (los comentarios del backend dicen a que apunta cada columna).
 SIN_FK = [
+  # Un pago o un movimiento de envase son registro contable y de trazabilidad:
+  # no se pierden porque se borre lo que referencian. RESTRICT, no CASCADE.
   {"tabla": "payment", "col": "order_id", "destino": "order", "destcol": "order_id",
-   "borrado": "CASCADE"},
+   "borrado": "RESTRICT"},
   {"tabla": "payment", "col": "distributor_id", "destino": "distributor",
    "destcol": "distributor_id", "borrado": "CASCADE"},
   {"tabla": "cylinder_movement", "col": "cylinder_id", "destino": "cylinder",
-   "destcol": "cylinder_id", "borrado": "CASCADE"},
+   "destcol": "cylinder_id", "borrado": "RESTRICT"},
   {"tabla": "cylinder_movement", "col": "distributor_id", "destino": "distributor",
    "destcol": "distributor_id", "borrado": "CASCADE"},
   {"tabla": "cylinder_movement", "col": "order_id", "destino": "order",
@@ -147,15 +149,39 @@ SIN_FK = [
 ]
 
 # ---------------------------------------------------------------- lo propuesto
-# Lo que la catedra pidio sumar al modelo. Cada agregado dice a que pedido
-# responde, que columnas nuevas lleva cada tabla existente y que tablas nuevas
-# aparecen. "concepto" es la etiqueta en castellano para el modelo conceptual:
-# si esta vacia, el atributo no se muestra ahi (claves y campos tecnicos).
+# El modelo de dominio del 24/09/2026 (material-de-trabajo/MODELO-DE-DOMINIO.md),
+# en tablas. Cada agregado dice a que casos de uso responde, que columnas nuevas
+# lleva cada tabla existente y que tablas nuevas aparecen. "concepto" es la
+# etiqueta en castellano para el modelo conceptual: si esta vacia, el atributo
+# no se muestra ahi (claves y campos tecnicos).
+#
+# Convencion para lo nuevo: columnas en snake_case, fechas en timestamptz, y
+# toda referencia a otra tabla con su clave foranea declarada.
+
+def _id(nombre):
+    return {"nombre": nombre, "tipo": "uuid", "nulo": False,
+            "default": "uuid_generate_v4()", "desc": "Identificador."}
+
+def _ref(nombre, destino, destcol, borrado, desc, nulo=False):
+    return {"nombre": nombre, "tipo": "uuid", "nulo": nulo, "desc": desc,
+            "ref": (destino, destcol, borrado)}
+
+def _dist():
+    return _ref("distributor_id", "distributor", "distributor_id", "CASCADE",
+                "Distribuidora dueña.")
+
+# Estados comunes a toda propuesta con vigencia que se negocia con alguien:
+# la ventana de taller (M1), la invitacion de recompra (M2), la oferta de lote
+# (M3) y el retiro del envase (M4). La oferta de despacho que ya existe usa el
+# mismo ciclo con su propio tipo (order_dispatch_offer_status_enum).
+PROPUESTA_ESTADOS = ["pending", "accepted", "rejected", "expired"]
+
 PROPUESTO = [
   {
     "clave": "vencimiento-envases",
+    "casos": "CU-132 a CU-135",
     "nota": "`cylinder.expires_at` y `cylinder.last_inspection_at` se derivan de la última fila de `cylinder_inspection`. Se guardan desnormalizadas a propósito: el despacho consulta el vencimiento en cada asignación y no conviene recalcularlo por subconsulta.",
-    "titulo": "Vencimiento de garrafas",
+    "titulo": "Vigencia de envases",
     "pedido": "Registrar el vencimiento del envase y las revisiones periódicas que "
               "lo renuevan, para no despachar garrafas fuera de norma.",
     "enums": {"cylinder_inspection_result_enum": ["approved", "conditional", "rejected"]},
@@ -173,12 +199,9 @@ PROPUESTO = [
       {"nombre": "cylinder_inspection", "concepto": "Revisión de envase",
        "desc": "Una fila por revisión técnica del envase.",
        "columnas": [
-         {"nombre": "inspection_id", "tipo": "uuid", "nulo": False, "default": "uuid_generate_v4()",
-          "desc": "Identificador."},
-         {"nombre": "cylinder_id", "tipo": "uuid", "nulo": False, "desc": "Envase revisado.",
-          "ref": ("cylinder", "cylinder_id", "CASCADE")},
-         {"nombre": "distributor_id", "tipo": "uuid", "nulo": False, "desc": "Distribuidora dueña.",
-          "ref": ("distributor", "distributor_id", "CASCADE")},
+         _id("inspection_id"),
+         _ref("cylinder_id", "cylinder", "cylinder_id", "CASCADE", "Envase revisado."),
+         _dist(),
          {"nombre": "inspected_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
           "concepto": "fecha", "desc": "Cuándo se hizo la revisión."},
          {"nombre": "result", "tipo": "cylinder_inspection_result_enum", "nulo": False,
@@ -193,11 +216,12 @@ PROPUESTO = [
   },
   {
     "clave": "consumo-recompra",
-    "nota": "Las columnas van en `customer`, pero conviene saber que el resto del sistema identifica al cliente por `user.user_id` (`order.customer_id` apunta a `user`, no a `customer`). `customer` hoy es una tabla satélite uno a uno con `user`.",
-    "titulo": "Consumo promedio y aviso de recompra",
-    "pedido": "Que el cliente declare al registrarse cuánto consume por mes, para "
-              "estimar cuándo se le acaba la garrafa y avisarle antes.",
-    "enums": {},
+    "casos": "CU-143 a CU-146 y CU-106 (M2)",
+    "nota": "Las columnas van en `customer`, pero el resto del sistema identifica al cliente por `user.user_id` (`order.customer_id` apunta a `user`). Por eso la invitación apunta a `user`. La invitación guarda el pedido sugerido como JSON porque todavía no es un pedido: recién al aceptarla se crean `order` y `order_item`.",
+    "titulo": "Consumo declarado y recompra",
+    "pedido": "Que el cliente declare cuánto consume por mes, estimar cuándo se le "
+              "acaba el gas y ofrecerle la reposición antes, con el pedido armado.",
+    "enums": {"repurchase_invitation_status_enum": PROPUESTA_ESTADOS},
     "columnas": {
       "customer": [
         {"nombre": "avg_monthly_consumption_kg", "tipo": "numeric(10,2)", "nulo": True,
@@ -211,84 +235,162 @@ PROPUESTO = [
          "concepto": "próxima recompra estimada", "desc": "Fecha estimada de la próxima compra."},
       ],
     },
-    "tablas": [],
+    "tablas": [
+      {"nombre": "repurchase_invitation", "concepto": "Invitación de recompra",
+       "desc": "Una oferta de reposición al cliente, con el pedido sugerido y una vigencia.",
+       "columnas": [
+         _id("invitation_id"), _dist(),
+         _ref("user_id", "user", "user_id", "CASCADE", "Cliente invitado."),
+         _ref("address_id", "user_address", "address_id", "SET NULL",
+              "Dirección sugerida para la entrega.", nulo=True),
+         {"nombre": "projected_depletion_at", "tipo": "timestamptz", "nulo": False,
+          "concepto": "agotamiento estimado", "desc": "Cuándo se estima que se le acaba el gas."},
+         {"nombre": "suggested_items", "tipo": "jsonb", "nulo": False,
+          "concepto": "pedido sugerido", "desc": "Productos y cantidades que sugiere el historial."},
+         {"nombre": "status", "tipo": "repurchase_invitation_status_enum", "nulo": False,
+          "default": "'pending'", "concepto": "estado", "desc": "Pendiente, aceptada, rechazada o caducada."},
+         {"nombre": "expires_at", "tipo": "timestamptz", "nulo": False,
+          "concepto": "vence", "desc": "Fin de la vigencia de la invitación."},
+         {"nombre": "responded_at", "tipo": "timestamptz", "nulo": True,
+          "desc": "Cuándo respondió el cliente."},
+         _ref("order_id", "order", "order_id", "SET NULL",
+              "Pedido creado al aceptar.", nulo=True),
+         {"nombre": "created_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "desc": "Cuándo se emitió."},
+       ],
+       "pk": ["invitation_id"], "unicos": []},
+    ],
   },
   {
-    "clave": "vehiculos",
-    "titulo": "Datos de carga del vehículo",
-    "pedido": "Sumar al vehículo la tara y la carga máxima, para saber cuántas "
-              "garrafas puede llevar sin pasarse del peso permitido.",
-    "enums": {},
+    "clave": "flota",
+    "casos": "CU-136 a CU-142 y CU-105 (M1)",
+    "nota": "Seguro, verificación técnica, licencia y mantenimientos son la misma abstracción: un **plan** (la regla: cada cuánto, con qué anticipación, si inhabilita) y sus **tareas** (cada vencimiento concreto). El seguro es un plan de fecha fija que bloquea; el cambio de aceite, uno por kilómetros que no bloquea. La licencia es de la persona y no del vehículo: por eso la tarea apunta a un vehículo **o** a un chofer. Reemplaza la propuesta anterior de columnas sueltas en `car` y `delivery` más una tabla `fleet_maintenance`, que no podía expresar la regla ni alimentar al planificador de M1.",
+    "titulo": "Flota: habilitaciones, mantenimiento y uso",
+    "pedido": "Llevar seguro, verificación técnica, licencia y mantenimientos, y "
+              "planificar el taller antes de que algo venza.",
+    "enums": {
+      "fleet_status_enum": ["active", "in_service", "grounded"],
+      "maintenance_subject_enum": ["vehicle", "driver"],
+      "maintenance_trigger_enum": ["by_km", "by_time", "by_fixed_date"],
+      "maintenance_criticality_enum": ["blocking", "non_blocking"],
+      "maintenance_task_status_enum": ["forecast", "scheduled", "in_progress", "done",
+                                       "overdue", "cancelled"],
+      "proposal_status_enum": PROPUESTA_ESTADOS,
+    },
     "columnas": {
       "car": [
         {"nombre": "tare_weight_kg", "tipo": "numeric(10,2)", "nulo": True,
          "concepto": "tara", "desc": "Peso del vehículo vacío, en kilos."},
         {"nombre": "max_load_kg", "tipo": "numeric(10,2)", "nulo": True,
          "concepto": "carga máxima", "desc": "Carga máxima admitida, en kilos."},
-      ],
-    },
-    "tablas": [],
-  },
-  {
-    "clave": "mantenimiento-flota",
-    "titulo": "Mantenimiento y habilitaciones de la flota",
-    "pedido": "Llevar seguro y VTV del vehículo, licencia del chofer y el "
-              "historial de mantenimientos, para no despachar unidades vencidas.",
-    "enums": {
-      "fleet_maintenance_type_enum": ["preventive", "corrective", "inspection"],
-      "fleet_maintenance_status_enum": ["scheduled", "in_progress", "done", "cancelled"],
-    },
-    "columnas": {
-      "car": [
-        {"nombre": "insurance_company", "tipo": "varchar(120)", "nulo": True,
-         "concepto": "aseguradora", "desc": "Compañía que asegura la unidad."},
-        {"nombre": "insurance_policy", "tipo": "varchar(60)", "nulo": True,
-         "concepto": "póliza", "desc": "Número de póliza."},
-        {"nombre": "insurance_expires_at", "tipo": "timestamptz", "nulo": True,
-         "concepto": "vence el seguro", "desc": "Vencimiento de la póliza."},
-        {"nombre": "vtv_expires_at", "tipo": "timestamptz", "nulo": True,
-         "concepto": "vence la VTV", "desc": "Vencimiento de la verificación técnica."},
-      ],
-      "delivery": [
-        {"nombre": "license_number", "tipo": "varchar(30)", "nulo": True,
-         "concepto": "licencia", "desc": "Número de licencia de conducir."},
-        {"nombre": "license_category", "tipo": "varchar(10)", "nulo": True,
-         "concepto": "categoría", "desc": "Categoría habilitante."},
-        {"nombre": "license_expires_at", "tipo": "timestamptz", "nulo": True,
-         "concepto": "vence la licencia", "desc": "Vencimiento de la licencia."},
+        {"nombre": "odometer_km", "tipo": "integer", "nulo": True,
+         "concepto": "kilometraje", "desc": "Última lectura conocida del odómetro."},
+        {"nombre": "fleet_status", "tipo": "fleet_status_enum", "nulo": False,
+         "default": "'active'", "concepto": "estado en la flota",
+         "desc": "Activo, en taller o inhabilitado. Un vehículo inhabilitado no recibe ofertas."},
+        {"nombre": "in_service_since", "tipo": "timestamptz", "nulo": True,
+         "desc": "Desde cuándo está en taller o inhabilitado."},
       ],
     },
     "tablas": [
-      {"nombre": "fleet_maintenance", "concepto": "Mantenimiento de flota",
-       "desc": "Una fila por service, reparación o revisión de una unidad.",
+      {"nombre": "maintenance_plan", "concepto": "Plan de mantenimiento",
+       "desc": "La regla: qué se controla, cada cuánto, con qué anticipación y si inhabilita.",
        "columnas": [
-         {"nombre": "maintenance_id", "tipo": "uuid", "nulo": False, "default": "uuid_generate_v4()",
-          "desc": "Identificador."},
-         {"nombre": "car_id", "tipo": "uuid", "nulo": False, "desc": "Unidad intervenida.",
-          "ref": ("car", "car_id", "CASCADE")},
-         {"nombre": "distributor_id", "tipo": "uuid", "nulo": False, "desc": "Distribuidora dueña.",
-          "ref": ("distributor", "distributor_id", "CASCADE")},
-         {"nombre": "type", "tipo": "fleet_maintenance_type_enum", "nulo": False,
-          "concepto": "tipo", "desc": "Preventivo, correctivo o revisión."},
-         {"nombre": "scheduled_at", "tipo": "timestamptz", "nulo": False,
-          "concepto": "agendado", "desc": "Fecha para la que se agendó."},
+         _id("plan_id"), _dist(),
+         {"nombre": "name", "tipo": "varchar(120)", "nulo": False,
+          "concepto": "nombre", "desc": "Seguro, VTV, cambio de aceite, licencia..."},
+         {"nombre": "subject", "tipo": "maintenance_subject_enum", "nulo": False,
+          "concepto": "sobre qué", "desc": "Vehículo o chofer."},
+         {"nombre": "trigger", "tipo": "maintenance_trigger_enum", "nulo": False,
+          "concepto": "disparo", "desc": "Por kilómetros, por tiempo o por fecha fija."},
+         {"nombre": "interval_km", "tipo": "integer", "nulo": True,
+          "concepto": "cada cuántos km", "desc": "Intervalo, si el disparo es por kilómetros."},
+         {"nombre": "interval_months", "tipo": "integer", "nulo": True,
+          "concepto": "cada cuántos meses", "desc": "Intervalo, si el disparo es por tiempo."},
+         {"nombre": "lead_time_days", "tipo": "integer", "nulo": False,
+          "concepto": "anticipación", "desc": "Con cuántos días de anticipación se planifica."},
+         {"nombre": "criticality", "tipo": "maintenance_criticality_enum", "nulo": False,
+          "concepto": "criticidad", "desc": "Si al vencer inhabilita o no."},
+         {"nombre": "car_type", "tipo": "varchar", "nulo": True,
+          "desc": "Tipo de vehículo al que aplica; vacío, a todos."},
+         {"nombre": "is_active", "tipo": "boolean", "nulo": False, "default": "true",
+          "desc": "Si el plan está vigente."},
+       ],
+       "pk": ["plan_id"], "unicos": []},
+      {"nombre": "maintenance_task", "concepto": "Tarea de mantenimiento",
+       "desc": "Cada vencimiento concreto de un plan: una póliza, una VTV, un service.",
+       "columnas": [
+         _id("task_id"),
+         _ref("plan_id", "maintenance_plan", "plan_id", "RESTRICT", "Plan del que sale."),
+         _dist(),
+         _ref("car_id", "car", "car_id", "CASCADE", "Vehículo, si el plan es de vehículo.", nulo=True),
+         _ref("delivery_id", "delivery", "delivery_id", "CASCADE",
+              "Chofer, si el plan es de chofer.", nulo=True),
+         {"nombre": "status", "tipo": "maintenance_task_status_enum", "nulo": False,
+          "default": "'forecast'", "concepto": "estado", "desc": "Proyectada, programada, en curso, hecha, vencida o cancelada."},
+         {"nombre": "due_at", "tipo": "timestamptz", "nulo": True,
+          "concepto": "vence", "desc": "Fecha de vencimiento, si es de fecha fija."},
+         {"nombre": "due_km", "tipo": "integer", "nulo": True,
+          "desc": "Kilometraje al que vence, si es por kilómetros."},
+         {"nombre": "predicted_due_at", "tipo": "timestamptz", "nulo": True,
+          "concepto": "vencimiento proyectado", "desc": "Fecha estimada por el planificador."},
+         {"nombre": "scheduled_at", "tipo": "timestamptz", "nulo": True,
+          "concepto": "programada para", "desc": "Ventana de taller acordada."},
          {"nombre": "performed_at", "tipo": "timestamptz", "nulo": True,
-          "concepto": "realizado", "desc": "Fecha en la que efectivamente se hizo."},
+          "concepto": "realizada", "desc": "Cuándo se hizo."},
          {"nombre": "odometer_km", "tipo": "integer", "nulo": True,
-          "concepto": "kilometraje", "desc": "Odómetro al momento del trabajo."},
+          "desc": "Odómetro al hacerla."},
          {"nombre": "cost", "tipo": "numeric(10,2)", "nulo": True,
           "concepto": "costo", "desc": "Importe del trabajo."},
-         {"nombre": "notes", "tipo": "text", "nulo": True,
-          "concepto": "observaciones", "desc": "Detalle del taller."},
-         {"nombre": "status", "tipo": "fleet_maintenance_status_enum", "nulo": False,
-          "default": "'scheduled'", "concepto": "estado", "desc": "Estado del trabajo."},
+         {"nombre": "provider", "tipo": "varchar(120)", "nulo": True,
+          "concepto": "prestador", "desc": "Aseguradora, taller o ente emisor."},
+         {"nombre": "reference_number", "tipo": "varchar(60)", "nulo": True,
+          "concepto": "número", "desc": "Póliza, número de licencia u oblea."},
+         {"nombre": "category", "tipo": "varchar(10)", "nulo": True,
+          "desc": "Categoría habilitante, para la licencia."},
+         {"nombre": "notes", "tipo": "text", "nulo": True, "desc": "Detalle."},
        ],
-       "pk": ["maintenance_id"], "unicos": []},
+       "pk": ["task_id"], "unicos": []},
+      {"nombre": "maintenance_window_proposal", "concepto": "Propuesta de ventana de taller",
+       "desc": "Una ventana ofrecida al chofer, de a una por vez, con vigencia.",
+       "columnas": [
+         _id("proposal_id"),
+         _ref("task_id", "maintenance_task", "task_id", "CASCADE", "Tarea a programar."),
+         _ref("delivery_id", "delivery", "delivery_id", "CASCADE", "Chofer que decide."),
+         {"nombre": "window_start", "tipo": "timestamptz", "nulo": False,
+          "concepto": "desde", "desc": "Comienzo de la ventana."},
+         {"nombre": "window_end", "tipo": "timestamptz", "nulo": False,
+          "concepto": "hasta", "desc": "Fin de la ventana."},
+         {"nombre": "rank", "tipo": "integer", "nulo": False,
+          "desc": "Orden en que se ofrece."},
+         {"nombre": "status", "tipo": "proposal_status_enum", "nulo": False,
+          "default": "'pending'", "concepto": "estado", "desc": "Pendiente, aceptada, rechazada o vencida."},
+         {"nombre": "expires_at", "tipo": "timestamptz", "nulo": False,
+          "concepto": "vence", "desc": "Fin de la vigencia."},
+         {"nombre": "responded_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo respondió."},
+       ],
+       "pk": ["proposal_id"], "unicos": []},
+      {"nombre": "vehicle_usage_log", "concepto": "Registro de uso del vehículo",
+       "desc": "Kilómetros, pedidos y horas en ruta por vehículo y día. Sólo se agrega.",
+       "columnas": [
+         _id("log_id"),
+         _ref("car_id", "car", "car_id", "CASCADE", "Vehículo."),
+         _dist(),
+         {"nombre": "day", "tipo": "date", "nulo": False, "concepto": "día", "desc": "Día registrado."},
+         {"nombre": "km", "tipo": "numeric(10,2)", "nulo": False,
+          "concepto": "kilómetros", "desc": "Kilómetros recorridos ese día."},
+         {"nombre": "orders", "tipo": "integer", "nulo": False, "default": "0",
+          "concepto": "pedidos", "desc": "Pedidos entregados ese día."},
+         {"nombre": "route_hours", "tipo": "numeric(6,2)", "nulo": False, "default": "0",
+          "desc": "Horas en ruta."},
+       ],
+       "pk": ["log_id"], "unicos": [["car_id", "day"]]},
     ],
   },
   {
     "clave": "carrito",
-    "nota": "El carrito es uno solo por cliente y distribuidora (clave única sobre `user_id` + `distributor_id`): al confirmarse se vuelca a `order` y `order_item`, que siguen siendo el registro definitivo. `unit_price` guarda el precio del momento en que se agregó el producto, que puede diferir del precio vigente al confirmar.",
+    "casos": "CU-122 a CU-126",
+    "nota": "El carrito es uno solo por cliente y distribuidora: al confirmarse se vuelca a `order` y `order_item`, que siguen siendo el registro definitivo. `unit_price` guarda el precio del momento en que se agregó el producto, que puede diferir del precio vigente al confirmar.",
     "titulo": "Carrito de compra",
     "pedido": "Que el cliente arme el pedido de a varios productos y lo deje "
               "guardado antes de confirmarlo.",
@@ -298,25 +400,21 @@ PROPUESTO = [
       {"nombre": "cart", "concepto": "Carrito",
        "desc": "Un carrito abierto por cliente y distribuidora.",
        "columnas": [
-         {"nombre": "cart_id", "tipo": "uuid", "nulo": False, "default": "uuid_generate_v4()",
-          "desc": "Identificador."},
-         {"nombre": "user_id", "tipo": "uuid", "nulo": False, "desc": "Cliente dueño del carrito.",
-          "ref": ("user", "user_id", "CASCADE")},
-         {"nombre": "distributor_id", "tipo": "uuid", "nulo": False, "desc": "Distribuidora a la que le compra.",
-          "ref": ("distributor", "distributor_id", "CASCADE")},
-         {"nombre": "updatedAt", "tipo": "timestamptz", "nulo": False, "default": "now()",
+         _id("cart_id"),
+         _ref("user_id", "user", "user_id", "CASCADE", "Cliente dueño del carrito."),
+         _ref("distributor_id", "distributor", "distributor_id", "CASCADE",
+              "Distribuidora a la que le compra."),
+         {"nombre": "updated_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
           "concepto": "última modificación", "desc": "Cuándo se tocó por última vez."},
        ],
        "pk": ["cart_id"], "unicos": [["user_id", "distributor_id"]]},
       {"nombre": "cart_item", "concepto": "Ítem del carrito",
        "desc": "Cada producto cargado en el carrito, con su cantidad.",
        "columnas": [
-         {"nombre": "cart_item_id", "tipo": "uuid", "nulo": False, "default": "uuid_generate_v4()",
-          "desc": "Identificador."},
-         {"nombre": "cart_id", "tipo": "uuid", "nulo": False, "desc": "Carrito al que pertenece.",
-          "ref": ("cart", "cart_id", "CASCADE")},
-         {"nombre": "gas_cylinder_id", "tipo": "uuid", "nulo": False, "desc": "Tipo de garrafa elegido.",
-          "ref": ("gas_cylinder", "gas_cylinder_id", "CASCADE")},
+         _id("cart_item_id"),
+         _ref("cart_id", "cart", "cart_id", "CASCADE", "Carrito al que pertenece."),
+         _ref("gas_cylinder_id", "gas_cylinder", "gas_cylinder_id", "CASCADE",
+              "Tipo de garrafa elegido."),
          {"nombre": "quantity", "tipo": "integer", "nulo": False,
           "concepto": "cantidad", "desc": "Unidades cargadas."},
          {"nombre": "unit_price", "tipo": "numeric(10,2)", "nulo": False,
@@ -327,6 +425,7 @@ PROPUESTO = [
   },
   {
     "clave": "direccion-receptor",
+    "casos": "CU-127 y CU-128",
     "titulo": "Cambio de dirección y quién recibe",
     "pedido": "Poder cambiar la dirección de entrega de un pedido ya hecho y "
               "registrar quién lo recibe si no es el cliente.",
@@ -345,16 +444,11 @@ PROPUESTO = [
       {"nombre": "order_address_change", "concepto": "Cambio de dirección",
        "desc": "Historial de cambios de dirección de entrega sobre un pedido.",
        "columnas": [
-         {"nombre": "change_id", "tipo": "uuid", "nulo": False, "default": "uuid_generate_v4()",
-          "desc": "Identificador."},
-         {"nombre": "order_id", "tipo": "uuid", "nulo": False, "desc": "Pedido afectado.",
-          "ref": ("order", "order_id", "CASCADE")},
-         {"nombre": "from_address_id", "tipo": "uuid", "nulo": False, "desc": "Dirección anterior.",
-          "ref": ("user_address", "address_id", "RESTRICT")},
-         {"nombre": "to_address_id", "tipo": "uuid", "nulo": False, "desc": "Dirección nueva.",
-          "ref": ("user_address", "address_id", "RESTRICT")},
-         {"nombre": "changed_by_user_id", "tipo": "uuid", "nulo": False, "desc": "Quién hizo el cambio.",
-          "ref": ("user", "user_id", "RESTRICT")},
+         _id("change_id"),
+         _ref("order_id", "order", "order_id", "CASCADE", "Pedido afectado."),
+         _ref("from_address_id", "user_address", "address_id", "RESTRICT", "Dirección anterior."),
+         _ref("to_address_id", "user_address", "address_id", "RESTRICT", "Dirección nueva."),
+         _ref("changed_by_user_id", "user", "user_id", "RESTRICT", "Quién hizo el cambio."),
          {"nombre": "changed_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
           "concepto": "fecha", "desc": "Cuándo se cambió."},
          {"nombre": "reason", "tipo": "text", "nulo": True,
@@ -364,7 +458,37 @@ PROPUESTO = [
     ],
   },
   {
+    "clave": "historial-estados",
+    "casos": "CU-018 a CU-020, CU-008 a CU-010 (decidido el 23/09)",
+    "nota": "Hoy el pedido guarda sólo su estado actual y algunas marcas de tiempo sueltas (`acceptedAt`, `onTheWayAt`, `deliveredAt`): no queda quién hizo cada cambio ni por qué. Las marcas de tiempo se conservan porque los listados las leen sin unir tablas.",
+    "titulo": "Historial de estados del pedido",
+    "pedido": "Dejar registro de cada cambio de estado de un pedido: de cuál a "
+              "cuál, quién lo hizo, cuándo y por qué.",
+    "enums": {},
+    "columnas": {},
+    "tablas": [
+      {"nombre": "order_status_history", "concepto": "Cambio de estado del pedido",
+       "desc": "Una fila por transición de estado de un pedido.",
+       "columnas": [
+         _id("history_id"),
+         _ref("order_id", "order", "order_id", "CASCADE", "Pedido."),
+         {"nombre": "from_status", "tipo": "order_status_enum", "nulo": True,
+          "concepto": "desde", "desc": "Estado anterior; vacío en el alta."},
+         {"nombre": "to_status", "tipo": "order_status_enum", "nulo": False,
+          "concepto": "hacia", "desc": "Estado nuevo."},
+         _ref("changed_by_user_id", "user", "user_id", "SET NULL",
+              "Quién lo cambió; vacío si fue un proceso automático.", nulo=True),
+         {"nombre": "reason", "tipo": "text", "nulo": True,
+          "concepto": "motivo", "desc": "Motivo, cuando la transición lo pide."},
+         {"nombre": "changed_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "concepto": "fecha", "desc": "Cuándo."},
+       ],
+       "pk": ["history_id"], "unicos": []},
+    ],
+  },
+  {
     "clave": "momento-incidencia",
+    "casos": "CU de incidencias",
     "titulo": "Momento de la incidencia",
     "pedido": "Distinguir si la incidencia ocurrió antes, durante o después de la "
               "entrega, para saber a quién corresponde resolverla.",
@@ -378,22 +502,241 @@ PROPUESTO = [
     "tablas": [],
   },
   {
-    "clave": "express-moto",
-    "nota": "`is_express` repite lo que ya dice `delivery_mode`. Se deja porque el pedido la nombra por separado y simplifica los filtros, pero es una redundancia consciente: con `delivery_mode` sola alcanza.",
-    "titulo": "Compra directa express en moto",
+    "clave": "express",
+    "casos": "CU-147 a CU-149",
+    "nota": "La propuesta anterior sumaba además `is_express`, que repetía lo que ya dice `delivery_mode`. Se saca: con una sola columna no hay forma de que las dos digan cosas distintas.",
+    "titulo": "Entrega express",
     "pedido": "Ofrecer una modalidad de entrega inmediata en moto, separada del "
               "reparto programado.",
-    "enums": {"order_delivery_mode_enum": ["standard", "express_moto"]},
+    "enums": {"order_delivery_mode_enum": ["standard", "express"]},
     "columnas": {
       "order": [
         {"nombre": "delivery_mode", "tipo": "order_delivery_mode_enum", "nulo": False,
          "default": "'standard'", "concepto": "modalidad de entrega",
-         "desc": "Reparto programado o express en moto."},
-        {"nombre": "is_express", "tipo": "boolean", "nulo": False, "default": "false",
-         "concepto": "express", "desc": "Atajo booleano para filtrar los express."},
+         "desc": "Reparto programado o express."},
       ],
     },
     "tablas": [],
+  },
+  {
+    "clave": "zonas",
+    "casos": "CU-056, CU-150 y CU-151",
+    "nota": "Una zona usa recargo fijo o porcentual, nunca los dos: `surcharge` guarda el valor y `surcharge_type` dice cómo leerlo. La vigencia sólo tiene fin; el comienzo programado quedó como decisión pendiente en CU-150.",
+    "titulo": "Recargo porcentual y vigencia de zonas",
+    "pedido": "Que el recargo de una zona pueda ser un porcentaje, que la zona tenga "
+              "etiqueta y color, y que se pueda programar hasta cuándo rige.",
+    "enums": {"coverage_zone_surcharge_type_enum": ["fixed", "percentage"]},
+    "columnas": {
+      "coverage_zone": [
+        {"nombre": "surcharge_type", "tipo": "coverage_zone_surcharge_type_enum", "nulo": False,
+         "default": "'fixed'", "concepto": "tipo de recargo", "desc": "Monto fijo o porcentaje del pedido."},
+        {"nombre": "label", "tipo": "varchar(40)", "nulo": True,
+         "concepto": "etiqueta", "desc": "Etiqueta corta para el mapa del panel."},
+        {"nombre": "color", "tipo": "varchar(7)", "nulo": True,
+         "concepto": "color", "desc": "Color hexadecimal para el mapa del panel."},
+        {"nombre": "valid_until", "tipo": "timestamptz", "nulo": True,
+         "concepto": "vigente hasta", "desc": "Cuándo deja de aplicarse. Vacío, sin vencimiento."},
+      ],
+    },
+    "tablas": [],
+  },
+  {
+    "clave": "direcciones",
+    "casos": "CU-116 y CU-118",
+    "nota": "`location` reemplaza a `latitude` y `longitude`, que hoy son `varchar` y no se pueden indexar ni consultar por cercanía. Las dos columnas viejas se conservan hasta que los clientes dejen de mandarlas y después se borran.",
+    "titulo": "Dirección resuelta contra el mapa",
+    "pedido": "Piso y departamento, y guardar el punto que devuelve el servicio de "
+              "mapas junto con la precisión con que se resolvió.",
+    "enums": {"address_geocode_precision_enum": ["exact", "approximate", "unresolved"]},
+    "columnas": {
+      "user_address": [
+        {"nombre": "floor", "tipo": "varchar(10)", "nulo": True,
+         "concepto": "piso", "desc": "Piso."},
+        {"nombre": "apartment", "tipo": "varchar(10)", "nulo": True,
+         "concepto": "departamento", "desc": "Departamento."},
+        {"nombre": "location", "tipo": "geography(Point,4326)", "nulo": True,
+         "concepto": "punto", "desc": "Punto resuelto, en PostGIS."},
+        {"nombre": "place_id", "tipo": "varchar(255)", "nulo": True,
+         "desc": "Identificador estable del lugar en el servicio de mapas."},
+        {"nombre": "geocode_precision", "tipo": "address_geocode_precision_enum", "nulo": False,
+         "default": "'unresolved'", "concepto": "precisión", "desc": "Exacta, aproximada o sin resolver."},
+      ],
+    },
+    "tablas": [],
+  },
+  {
+    "clave": "agrupacion",
+    "casos": "CU-107 (M3)",
+    "nota": "El lote no reemplaza al pedido: cada pedido sigue su ciclo de entrega. El lote sólo decide a quién se asignan juntos y en qué orden. Si no se acepta, se deshace y los pedidos vuelven al despacho individual.",
+    "titulo": "Agrupación de pedidos por recorrido",
+    "pedido": "Armar lotes de pedidos que se entregan en un mismo viaje y "
+              "ofrecerlos a los choferes de a uno.",
+    "enums": {"route_batch_status_enum": ["forming", "offered", "assigned", "dissolved", "completed"]},
+    "columnas": {},
+    "tablas": [
+      {"nombre": "route_batch", "concepto": "Lote de recorrido",
+       "desc": "Un grupo de pedidos que se entregan en un mismo viaje.",
+       "columnas": [
+         _id("batch_id"), _dist(),
+         {"nombre": "status", "tipo": "route_batch_status_enum", "nulo": False,
+          "default": "'forming'", "concepto": "estado", "desc": "Ciclo del lote."},
+         {"nombre": "total_weight_kg", "tipo": "numeric(10,2)", "nulo": False,
+          "concepto": "peso total", "desc": "Suma del peso de los pedidos."},
+         _ref("delivery_id", "delivery", "delivery_id", "SET NULL",
+              "Chofer que lo aceptó.", nulo=True),
+         {"nombre": "created_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "desc": "Cuándo se armó."},
+       ],
+       "pk": ["batch_id"], "unicos": []},
+      {"nombre": "route_batch_stop", "concepto": "Parada del lote",
+       "desc": "Cada pedido del lote, en su orden de entrega.",
+       "columnas": [
+         _id("stop_id"),
+         _ref("batch_id", "route_batch", "batch_id", "CASCADE", "Lote."),
+         _ref("order_id", "order", "order_id", "CASCADE", "Pedido."),
+         {"nombre": "sequence", "tipo": "integer", "nulo": False,
+          "concepto": "orden", "desc": "Posición en el recorrido."},
+       ],
+       "pk": ["stop_id"], "unicos": [["batch_id", "order_id"]]},
+      {"nombre": "route_batch_offer", "concepto": "Oferta de lote",
+       "desc": "El lote ofrecido a un chofer, con vigencia.",
+       "columnas": [
+         _id("offer_id"),
+         _ref("batch_id", "route_batch", "batch_id", "CASCADE", "Lote ofrecido."),
+         _ref("delivery_id", "delivery", "delivery_id", "CASCADE", "Chofer."),
+         {"nombre": "status", "tipo": "proposal_status_enum", "nulo": False,
+          "default": "'pending'", "concepto": "estado", "desc": "Pendiente, aceptada, rechazada o vencida."},
+         {"nombre": "expires_at", "tipo": "timestamptz", "nulo": False,
+          "concepto": "vence", "desc": "Fin de la vigencia."},
+         {"nombre": "responded_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo respondió."},
+       ],
+       "pk": ["offer_id"], "unicos": []},
+    ],
+  },
+  {
+    "clave": "recupero",
+    "casos": "CU-108 (M4)",
+    "nota": "El caso se abre sobre un envase que sigue en poder del cliente pasado el plazo, y cada escalón deja su aviso. Ningún depósito se cobra ni ningún envase se da de baja sin una resolución registrada del administrador.",
+    "titulo": "Recupero de envases no devueltos",
+    "pedido": "Gestionar la devolución de los envases retenidos por escalones, y "
+              "escalar al administrador cuando no vuelven.",
+    "enums": {
+      "recovery_case_status_enum": ["open", "returned", "escalated", "deposit_charged",
+                                    "written_off", "closed_no_charge"],
+      "recovery_notice_kind_enum": ["reminder", "pickup_offer", "deposit_warning"],
+    },
+    "columnas": {},
+    "tablas": [
+      {"nombre": "cylinder_recovery_case", "concepto": "Caso de recupero",
+       "desc": "La gestión de un envase retenido por un cliente.",
+       "columnas": [
+         _id("case_id"), _dist(),
+         _ref("cylinder_id", "cylinder", "cylinder_id", "CASCADE", "Envase retenido."),
+         _ref("user_id", "user", "user_id", "CASCADE", "Cliente que lo tiene."),
+         {"nombre": "delivered_at", "tipo": "timestamptz", "nulo": False,
+          "concepto": "entregado el", "desc": "Cuándo se le entregó el envase."},
+         {"nombre": "deposit_amount", "tipo": "numeric(10,2)", "nulo": False,
+          "concepto": "depósito", "desc": "Importe comprometido."},
+         {"nombre": "step", "tipo": "integer", "nulo": False, "default": "1",
+          "concepto": "escalón", "desc": "Escalón en curso."},
+         {"nombre": "status", "tipo": "recovery_case_status_enum", "nulo": False,
+          "default": "'open'", "concepto": "estado", "desc": "Ciclo del caso."},
+         {"nombre": "opened_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "desc": "Cuándo se abrió."},
+         {"nombre": "closed_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo se cerró."},
+         _ref("resolved_by_user_id", "user", "user_id", "SET NULL",
+              "Administrador que resolvió.", nulo=True),
+         {"nombre": "resolution_note", "tipo": "text", "nulo": True,
+          "concepto": "resolución", "desc": "Lo que decidió el administrador."},
+       ],
+       "pk": ["case_id"], "unicos": []},
+      {"nombre": "cylinder_recovery_notice", "concepto": "Aviso de recupero",
+       "desc": "Cada aviso u oferta de retiro enviados dentro de un caso.",
+       "columnas": [
+         _id("notice_id"),
+         _ref("case_id", "cylinder_recovery_case", "case_id", "CASCADE", "Caso."),
+         {"nombre": "step", "tipo": "integer", "nulo": False,
+          "concepto": "escalón", "desc": "Escalón al que pertenece."},
+         {"nombre": "kind", "tipo": "recovery_notice_kind_enum", "nulo": False,
+          "concepto": "tipo", "desc": "Recordatorio, oferta de retiro o aviso de depósito."},
+         {"nombre": "status", "tipo": "proposal_status_enum", "nulo": True,
+          "desc": "Respuesta, sólo para la oferta de retiro."},
+         {"nombre": "sent_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "concepto": "enviado", "desc": "Cuándo se envió."},
+         {"nombre": "expires_at", "tipo": "timestamptz", "nulo": False,
+          "concepto": "vence", "desc": "Plazo del escalón."},
+       ],
+       "pk": ["notice_id"], "unicos": []},
+    ],
+  },
+  {
+    "clave": "configuracion",
+    "casos": "CU-105 a CU-108 y CU-149 (parametrización)",
+    "nota": "La cátedra exige que un proceso automatizado sea configurable desde el sistema. Cada módulo guarda sus parámetros en un JSON validado por su propio DTO: los parámetros de M1 no se parecen a los de M3, y una tabla por módulo sería una tabla de una sola fila.",
+    "titulo": "Configuración de los procesos automáticos",
+    "pedido": "Que el administrador ajuste los parámetros de cada proceso "
+              "automático de su distribuidora.",
+    "enums": {"configurable_process_enum": ["fleet_planner", "repurchase", "route_batching",
+                                            "cylinder_recovery", "express_dispatch"]},
+    "columnas": {},
+    "tablas": [
+      {"nombre": "module_config", "concepto": "Configuración de módulo",
+       "desc": "Los parámetros de un proceso automático para una distribuidora.",
+       "columnas": [
+         _id("config_id"), _dist(),
+         {"nombre": "module", "tipo": "configurable_process_enum", "nulo": False,
+          "concepto": "módulo", "desc": "Qué proceso configura: uno de los módulos inteligentes o el despacho express."},
+         {"nombre": "params", "tipo": "jsonb", "nulo": False,
+          "concepto": "parámetros", "desc": "Parámetros, validados por el DTO del módulo."},
+         {"nombre": "updated_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "desc": "Última modificación."},
+         _ref("updated_by_user_id", "user", "user_id", "SET NULL",
+              "Quién la modificó.", nulo=True),
+       ],
+       "pk": ["config_id"], "unicos": [["distributor_id", "module"]]},
+    ],
+  },
+  {
+    "clave": "auditoria",
+    "casos": "CU-152 y CU-153",
+    "nota": "El registro es de sólo escritura: no hay modificación ni baja para ningún rol. Las referencias al autor y a la distribuidora quedan vacías si esos registros se borran, pero el asiento no se pierde. Necesita índices por fecha, por autor y por distribuidora (CU-152, rendimiento).",
+    "titulo": "Registro de auditoría",
+    "pedido": "Dejar constancia de toda operación que modifica datos: quién, qué, "
+              "sobre qué, cuándo, desde dónde y con qué resultado.",
+    "enums": {"audit_result_enum": ["success", "failure"]},
+    "columnas": {},
+    "tablas": [
+      {"nombre": "audit_log", "concepto": "Asiento de auditoría",
+       "desc": "Una fila por operación de escritura, exitosa o fallida.",
+       "columnas": [
+         _id("audit_id"),
+         _ref("distributor_id", "distributor", "distributor_id", "SET NULL",
+              "Distribuidora de la operación.", nulo=True),
+         _ref("actor_user_id", "user", "user_id", "SET NULL",
+              "Quién la originó, según su credencial.", nulo=True),
+         {"nombre": "actor_role", "tipo": "varchar(30)", "nulo": True,
+          "concepto": "rol", "desc": "Rol con que operó."},
+         {"nombre": "http_method", "tipo": "varchar(10)", "nulo": False,
+          "concepto": "operación", "desc": "POST, PUT, PATCH o DELETE."},
+         {"nombre": "resource", "tipo": "varchar(60)", "nulo": False,
+          "concepto": "recurso", "desc": "Tipo de recurso afectado."},
+         {"nombre": "resource_id", "tipo": "varchar(64)", "nulo": True,
+          "desc": "Identificador del recurso, si lo hay."},
+         {"nombre": "path", "tipo": "varchar(255)", "nulo": False, "desc": "Ruta invocada."},
+         {"nombre": "client_source", "tipo": "varchar(30)", "nulo": True,
+          "concepto": "aplicación", "desc": "Panel, app de cliente o app de chofer."},
+         {"nombre": "ip", "tipo": "varchar(45)", "nulo": True, "desc": "Dirección de red."},
+         {"nombre": "result", "tipo": "audit_result_enum", "nulo": False,
+          "concepto": "resultado", "desc": "Exitosa o fallida."},
+         {"nombre": "status_code", "tipo": "integer", "nulo": False, "desc": "Código HTTP."},
+         {"nombre": "changes", "tipo": "jsonb", "nulo": True,
+          "concepto": "cambios", "desc": "Lo que cambió, con credenciales depuradas."},
+         {"nombre": "error_message", "tipo": "text", "nulo": True, "desc": "Motivo del rechazo."},
+         {"nombre": "created_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "concepto": "fecha", "desc": "Cuándo."},
+       ],
+       "pk": ["audit_id"], "unicos": []},
+    ],
   },
 ]
 
@@ -514,7 +857,7 @@ def portable(tipo):
     """Sin nada propio de PostGIS ni enums: asi lo entiende cualquier
     herramienta que importe SQL."""
     if tipo in enums or tipo in enums_prop: return "varchar(32)"
-    if tipo in ("geography", "geometry"): return "varchar(255)"
+    if tipo.startswith(("geography", "geometry")): return "varchar(255)"
     return tipo
 
 def tipo_portable(c): return portable(tipo_sql(c))
@@ -640,6 +983,14 @@ for t in orden_dependencias(completo):
                     f'FOREIGN KEY ("{f["col"]}") REFERENCES "{f["destino"]}" ("{f["destcol"]}") '
                     f'ON DELETE {f["borrado"]};')
 prop.append("")
+prop.append("-- ---------- relaciones que hoy existen sin clave foránea ----------")
+prop.append("-- Las filas huérfanas harían fallar el ALTER: se limpian antes, en la misma migración.")
+for s in sin_fk:
+    extra = f"  -- {s['huerfanas']} filas huérfanas hoy" if s["huerfanas"] else ""
+    prop.append(f'ALTER TABLE "{s["tabla"]}" ADD CONSTRAINT "FK_{s["tabla"]}_{s["col"]}" '
+                f'FOREIGN KEY ("{s["col"]}") REFERENCES "{s["destino"]}" ("{s["destcol"]}") '
+                f'ON DELETE {s["borrado"]};{extra}')
+prop.append("")
 open(SAL + "SPLG-base-de-datos-propuesta.sql", "w", encoding="utf-8").write("\n".join(prop))
 
 # --------------------------------------- 4. actual + propuesta, SQL portable
@@ -737,10 +1088,38 @@ def nombre_concepto(t):
     if t in CONCEPTO: return CONCEPTO[t][0]
     return CONCEPTO_PROP.get(t, t)
 
+# Contextos del negocio (MODELO-DE-DOMINIO.md): cada entidad pertenece a uno.
+# Si aparece una tabla sin contexto, el script corta: el modelo tiene que decir
+# dónde vive cada cosa.
+CONTEXTOS = [
+  ("Organización y acceso", ["distributor", "role", "user", "admin", "module_config", "audit_log"]),
+  ("Clientes", ["customer", "user_address", "repurchase_invitation"]),
+  ("Catálogo e inventario de envases", ["gas_cylinder", "cylinder", "cylinder_movement",
+                                        "cylinder_inspection", "cylinder_recovery_case",
+                                        "cylinder_recovery_notice"]),
+  ("Venta y pedidos", ["cart", "cart_item", "order", "order_item", "order_status_history",
+                       "order_address_change", "coverage_zone", "time_slot"]),
+  ("Pagos", ["payment"]),
+  ("Despacho y logística", ["order_dispatch_offer", "route_batch", "route_batch_stop",
+                            "route_batch_offer"]),
+  ("Flota y choferes", ["delivery", "car", "maintenance_plan", "maintenance_task",
+                        "maintenance_window_proposal", "vehicle_usage_log"]),
+  ("Posventa", ["claims", "incident", "rating"]),
+]
+_en_contexto = [t for _, ts in CONTEXTOS for t in ts]
+_sin = sorted(set(completo) - set(_en_contexto))
+_sobra = sorted(set(_en_contexto) - set(completo))
+if _sin or _sobra:
+    sys.exit(f"CONTEXTOS: sin contexto {_sin} · inexistentes {_sobra}")
+
 con = ["@startuml",
-       "title Modelo Conceptual — SPLG\\nEntidades del negocio: lo implementado y lo propuesto",
-       CAB, "hide circle", "skinparam linetype polyline", ""]
-for t in orden_dependencias(completo):
+       "title Modelo Conceptual — SPLG\\nEntidades del negocio por contexto: lo implementado y lo propuesto",
+       CAB, "hide circle", "skinparam linetype polyline",
+       "skinparam packageStyle rectangle", f"skinparam package {{\n  BorderColor {TINTA}\n  FontSize 13\n}}", ""]
+_orden = orden_dependencias(completo)
+for ctx, ts in CONTEXTOS:
+  con.append(f'package "{ctx}" {{')
+  for t in [x for x in _orden if x in ts]:
     d = completo[t]
     con.append(f'entity "{nombre_concepto(t)}" as c_{t}'
                + (" <<propuesto>> " if d["prop"] else " ") + "{")
@@ -754,11 +1133,15 @@ for t in orden_dependencias(completo):
         for c in next(x for x in tablas_prop if x["nombre"] == t)["columnas"]:
             if c.get("concepto"): con.append("  {field} " + c["concepto"])
     con.append("}")
+  con.append("}")
 con.append("")
 vistas = set()
 for t in orden_dependencias(completo):
     d = completo[t]
     for f in d["fks"]:
+        # Todo pertenece a una distribuidora: esa relación se declara una vez en
+        # la leyenda en lugar de dibujar una línea desde cada entidad.
+        if f["destino"] == "distributor": continue
         par = (f["destino"], t, f["sinfk"], f["prop"])
         if par in vistas: continue
         vistas.add(par)
@@ -772,7 +1155,9 @@ for t in orden_dependencias(completo):
             con.append(f'c_{f["destino"]} {izq}--{der} c_{t} #line:{AZUL[1:]};text:{AZUL[1:]}')
         else:
             con.append(f'c_{f["destino"]} {izq}--{der} c_{t}')
-con += ["", leyenda(False), "@enduml"]
+con += ["", leyenda(False).replace("endlegend",
+         "|<#FFFFFF> **distribuidora** | toda entidad pertenece a una distribuidora (multi-tenant): "
+         "esas relaciones no se dibujan |\nendlegend"), "@enduml"]
 open(SAL + "SPLG-modelo-conceptual.puml", "w", encoding="utf-8").write("\n".join(con))
 
 # --------------------------------------------------- 7. diccionario de datos

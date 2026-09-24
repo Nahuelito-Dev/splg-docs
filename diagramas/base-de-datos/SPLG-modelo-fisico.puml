@@ -1,5 +1,5 @@
 @startuml
-title Modelo Físico de Datos — SPLG\n20 tablas y 30 claves foráneas implementadas · 13 relaciones sin declarar · 5 tablas y 22 columnas propuestas
+title Modelo Físico de Datos — SPLG\n20 tablas y 30 claves foráneas implementadas · 13 relaciones sin declarar · 17 tablas y 26 columnas propuestas
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
@@ -51,6 +51,10 @@ entity "coverage_zone" as e_coverage_zone {
   {field} isActive : boolean * 
   {field} createdAt : timestamptz * 
   {field} updatedAt : timestamptz * 
+  {field} <color:#1F5E8C>surcharge_type : coverage_zone_surcharge_type_enum *  <<propuesto>></color>
+  {field} <color:#1F5E8C>label : varchar(40)  <<propuesto>></color>
+  {field} <color:#1F5E8C>color : varchar(7)  <<propuesto>></color>
+  {field} <color:#1F5E8C>valid_until : timestamptz  <<propuesto>></color>
 }
 entity "gas_cylinder" as e_gas_cylinder {
   {field} **gas_cylinder_id** : uuid * <<PK>>
@@ -64,6 +68,19 @@ entity "gas_cylinder" as e_gas_cylinder {
   {field} promotions : jsonb 
   {field} createdAt : timestamptz * 
   {field} updatedAt : timestamptz * 
+}
+entity "maintenance_plan" as e_maintenance_plan <<propuesto>> {
+  {field} **plan_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(120) * 
+  {field} subject : maintenance_subject_enum * 
+  {field} trigger : maintenance_trigger_enum * 
+  {field} interval_km : integer 
+  {field} interval_months : integer 
+  {field} lead_time_days : integer * 
+  {field} criticality : maintenance_criticality_enum * 
+  {field} car_type : varchar 
+  {field} is_active : boolean * 
 }
 entity "time_slot" as e_time_slot {
   {field} **time_slot_id** : uuid * <<PK>>
@@ -97,6 +114,23 @@ entity "admin" as e_admin {
   {field} //role_id// : uuid * <<FK>>
   {field} createdAt : timestamptz * 
 }
+entity "audit_log" as e_audit_log <<propuesto>> {
+  {field} **audit_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid <<FK>>
+  {field} //actor_user_id// : uuid <<FK>>
+  {field} actor_role : varchar(30) 
+  {field} http_method : varchar(10) * 
+  {field} resource : varchar(60) * 
+  {field} resource_id : varchar(64) 
+  {field} path : varchar(255) * 
+  {field} client_source : varchar(30) 
+  {field} ip : varchar(45) 
+  {field} result : audit_result_enum * 
+  {field} status_code : integer * 
+  {field} changes : jsonb 
+  {field} error_message : text 
+  {field} created_at : timestamptz * 
+}
 entity "car" as e_car {
   {field} **car_id** : uuid * <<PK>>
   {field} //distributor_id// : uuid * <<FK>>
@@ -112,16 +146,15 @@ entity "car" as e_car {
   {field} updatedAt : timestamptz * 
   {field} <color:#1F5E8C>tare_weight_kg : numeric(10,2)  <<propuesto>></color>
   {field} <color:#1F5E8C>max_load_kg : numeric(10,2)  <<propuesto>></color>
-  {field} <color:#1F5E8C>insurance_company : varchar(120)  <<propuesto>></color>
-  {field} <color:#1F5E8C>insurance_policy : varchar(60)  <<propuesto>></color>
-  {field} <color:#1F5E8C>insurance_expires_at : timestamptz  <<propuesto>></color>
-  {field} <color:#1F5E8C>vtv_expires_at : timestamptz  <<propuesto>></color>
+  {field} <color:#1F5E8C>odometer_km : integer  <<propuesto>></color>
+  {field} <color:#1F5E8C>fleet_status : fleet_status_enum *  <<propuesto>></color>
+  {field} <color:#1F5E8C>in_service_since : timestamptz  <<propuesto>></color>
 }
 entity "cart" as e_cart <<propuesto>> {
   {field} **cart_id** : uuid * <<PK>>
   {field} //user_id// : uuid * <<FK>>
   {field} //distributor_id// : uuid * <<FK>>
-  {field} updatedAt : timestamptz * 
+  {field} updated_at : timestamptz * 
 }
 entity "customer" as e_customer {
   {field} **customer_id** : uuid * <<PK>>
@@ -151,9 +184,14 @@ entity "delivery" as e_delivery {
   {field} balance : double precision * 
   {field} createdAt : timestamptz 
   {field} deletedAt : timestamptz 
-  {field} <color:#1F5E8C>license_number : varchar(30)  <<propuesto>></color>
-  {field} <color:#1F5E8C>license_category : varchar(10)  <<propuesto>></color>
-  {field} <color:#1F5E8C>license_expires_at : timestamptz  <<propuesto>></color>
+}
+entity "module_config" as e_module_config <<propuesto>> {
+  {field} **config_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} module : configurable_process_enum * 
+  {field} params : jsonb * 
+  {field} updated_at : timestamptz * 
+  {field} //updated_by_user_id// : uuid <<FK>>
 }
 entity "user_address" as e_user_address {
   {field} **address_id** : uuid * <<PK>>
@@ -168,6 +206,11 @@ entity "user_address" as e_user_address {
   {field} additionalInstructions : text 
   {field} createdAt : timestamptz * 
   {field} updatedAt : timestamptz * 
+  {field} <color:#1F5E8C>floor : varchar(10)  <<propuesto>></color>
+  {field} <color:#1F5E8C>apartment : varchar(10)  <<propuesto>></color>
+  {field} <color:#1F5E8C>location : geography(Point,4326)  <<propuesto>></color>
+  {field} <color:#1F5E8C>place_id : varchar(255)  <<propuesto>></color>
+  {field} <color:#1F5E8C>geocode_precision : address_geocode_precision_enum *  <<propuesto>></color>
 }
 entity "cart_item" as e_cart_item <<propuesto>> {
   {field} **cart_item_id** : uuid * <<PK>>
@@ -176,17 +219,24 @@ entity "cart_item" as e_cart_item <<propuesto>> {
   {field} quantity : integer * 
   {field} unit_price : numeric(10,2) * 
 }
-entity "fleet_maintenance" as e_fleet_maintenance <<propuesto>> {
-  {field} **maintenance_id** : uuid * <<PK>>
-  {field} //car_id// : uuid * <<FK>>
+entity "maintenance_task" as e_maintenance_task <<propuesto>> {
+  {field} **task_id** : uuid * <<PK>>
+  {field} //plan_id// : uuid * <<FK>>
   {field} //distributor_id// : uuid * <<FK>>
-  {field} type : fleet_maintenance_type_enum * 
-  {field} scheduled_at : timestamptz * 
+  {field} //car_id// : uuid <<FK>>
+  {field} //delivery_id// : uuid <<FK>>
+  {field} status : maintenance_task_status_enum * 
+  {field} due_at : timestamptz 
+  {field} due_km : integer 
+  {field} predicted_due_at : timestamptz 
+  {field} scheduled_at : timestamptz 
   {field} performed_at : timestamptz 
   {field} odometer_km : integer 
   {field} cost : numeric(10,2) 
+  {field} provider : varchar(120) 
+  {field} reference_number : varchar(60) 
+  {field} category : varchar(10) 
   {field} notes : text 
-  {field} status : fleet_maintenance_status_enum * 
 }
 entity "order" as e_order {
   {field} **order_id** : uuid * <<PK>>
@@ -219,7 +269,23 @@ entity "order" as e_order {
   {field} <color:#1F5E8C>receiver_document : varchar(20)  <<propuesto>></color>
   {field} <color:#1F5E8C>receiver_relationship : varchar(40)  <<propuesto>></color>
   {field} <color:#1F5E8C>delivery_mode : order_delivery_mode_enum *  <<propuesto>></color>
-  {field} <color:#1F5E8C>is_express : boolean *  <<propuesto>></color>
+}
+entity "route_batch" as e_route_batch <<propuesto>> {
+  {field} **batch_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} status : route_batch_status_enum * 
+  {field} total_weight_kg : numeric(10,2) * 
+  {field} //delivery_id// : uuid <<FK>>
+  {field} created_at : timestamptz * 
+}
+entity "vehicle_usage_log" as e_vehicle_usage_log <<propuesto>> {
+  {field} **log_id** : uuid * <<PK>>
+  {field} //car_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} day : date * 
+  {field} km : numeric(10,2) * 
+  {field} orders : integer * 
+  {field} route_hours : numeric(6,2) * 
 }
 entity "claims" as e_claims {
   {field} **claim_id** : uuid * <<PK>>
@@ -262,6 +328,17 @@ entity "incident" as e_incident {
   {field} resolvedAt : timestamptz 
   {field} <color:#1F5E8C>moment : incident_moment_enum  <<propuesto>></color>
 }
+entity "maintenance_window_proposal" as e_maintenance_window_proposal <<propuesto>> {
+  {field} **proposal_id** : uuid * <<PK>>
+  {field} //task_id// : uuid * <<FK>>
+  {field} //delivery_id// : uuid * <<FK>>
+  {field} window_start : timestamptz * 
+  {field} window_end : timestamptz * 
+  {field} rank : integer * 
+  {field} status : proposal_status_enum * 
+  {field} expires_at : timestamptz * 
+  {field} responded_at : timestamptz 
+}
 entity "order_address_change" as e_order_address_change <<propuesto>> {
   {field} **change_id** : uuid * <<PK>>
   {field} //order_id// : uuid * <<FK>>
@@ -287,6 +364,15 @@ entity "order_item" as e_order_item {
   {field} quantity : integer * 
   {field} unitPrice : numeric(10,2) * 
   {field} subtotal : numeric(10,2) * 
+}
+entity "order_status_history" as e_order_status_history <<propuesto>> {
+  {field} **history_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} from_status : order_status_enum 
+  {field} to_status : order_status_enum * 
+  {field} //changed_by_user_id// : uuid <<FK>>
+  {field} reason : text 
+  {field} changed_at : timestamptz * 
 }
 entity "payment" as e_payment {
   {field} **payment_id** : uuid * <<PK>>
@@ -317,6 +403,33 @@ entity "rating" as e_rating {
   {field} comment : text 
   {field} createdAt : timestamptz * 
 }
+entity "repurchase_invitation" as e_repurchase_invitation <<propuesto>> {
+  {field} **invitation_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} //address_id// : uuid <<FK>>
+  {field} projected_depletion_at : timestamptz * 
+  {field} suggested_items : jsonb * 
+  {field} status : repurchase_invitation_status_enum * 
+  {field} expires_at : timestamptz * 
+  {field} responded_at : timestamptz 
+  {field} //order_id// : uuid <<FK>>
+  {field} created_at : timestamptz * 
+}
+entity "route_batch_offer" as e_route_batch_offer <<propuesto>> {
+  {field} **offer_id** : uuid * <<PK>>
+  {field} //batch_id// : uuid * <<FK>>
+  {field} //delivery_id// : uuid * <<FK>>
+  {field} status : proposal_status_enum * 
+  {field} expires_at : timestamptz * 
+  {field} responded_at : timestamptz 
+}
+entity "route_batch_stop" as e_route_batch_stop <<propuesto>> {
+  {field} **stop_id** : uuid * <<PK>>
+  {field} //batch_id// : uuid * <<FK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} sequence : integer * 
+}
 entity "cylinder_inspection" as e_cylinder_inspection <<propuesto>> {
   {field} **inspection_id** : uuid * <<PK>>
   {field} //cylinder_id// : uuid * <<FK>>
@@ -337,14 +450,40 @@ entity "cylinder_movement" as e_cylinder_movement {
   {field} note : text 
   {field} createdAt : timestamptz * 
 }
+entity "cylinder_recovery_case" as e_cylinder_recovery_case <<propuesto>> {
+  {field} **case_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //cylinder_id// : uuid * <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} delivered_at : timestamptz * 
+  {field} deposit_amount : numeric(10,2) * 
+  {field} step : integer * 
+  {field} status : recovery_case_status_enum * 
+  {field} opened_at : timestamptz * 
+  {field} closed_at : timestamptz 
+  {field} //resolved_by_user_id// : uuid <<FK>>
+  {field} resolution_note : text 
+}
+entity "cylinder_recovery_notice" as e_cylinder_recovery_notice <<propuesto>> {
+  {field} **notice_id** : uuid * <<PK>>
+  {field} //case_id// : uuid * <<FK>>
+  {field} step : integer * 
+  {field} kind : recovery_notice_kind_enum * 
+  {field} status : proposal_status_enum 
+  {field} sent_at : timestamptz * 
+  {field} expires_at : timestamptz * 
+}
 
 e_distributor ||--o{ e_coverage_zone : distributor_id
 e_distributor ||--o{ e_gas_cylinder : distributor_id
+e_distributor ||--o{ e_maintenance_plan #line:1F5E8C;text:1F5E8C : distributor_id
 e_distributor ||--o{ e_time_slot : distributor_id
 e_role ||--o{ e_user : role_id
 e_distributor ||--o{ e_admin : distributor_id
 e_role ||--o{ e_admin : role_id
 e_user ||--o{ e_admin : user_id
+e_distributor ||--o{ e_audit_log #line:1F5E8C;text:1F5E8C : distributor_id
+e_user ||--o{ e_audit_log #line:1F5E8C;text:1F5E8C : actor_user_id
 e_distributor ||--o{ e_car : distributor_id
 e_user ||--o{ e_car : user_id
 e_user ||--o{ e_cart #line:1F5E8C;text:1F5E8C : user_id
@@ -353,16 +492,24 @@ e_user ||--|| e_customer : user_id
 e_gas_cylinder ||--o{ e_customer #line:1F5E8C;text:1F5E8C : declared_cylinder_type_id
 e_distributor ||--o{ e_delivery : distributor_id
 e_user ||--|| e_delivery : user_id
+e_distributor ||--o{ e_module_config #line:1F5E8C;text:1F5E8C : distributor_id
+e_user ||--o{ e_module_config #line:1F5E8C;text:1F5E8C : updated_by_user_id
 e_user ||--o{ e_user_address : user_id
 e_cart ||--o{ e_cart_item #line:1F5E8C;text:1F5E8C : cart_id
 e_gas_cylinder ||--o{ e_cart_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
-e_car ||--o{ e_fleet_maintenance #line:1F5E8C;text:1F5E8C : car_id
-e_distributor ||--o{ e_fleet_maintenance #line:1F5E8C;text:1F5E8C : distributor_id
+e_maintenance_plan ||--o{ e_maintenance_task #line:1F5E8C;text:1F5E8C : plan_id
+e_distributor ||--o{ e_maintenance_task #line:1F5E8C;text:1F5E8C : distributor_id
+e_car ||--o{ e_maintenance_task #line:1F5E8C;text:1F5E8C : car_id
+e_delivery ||--o{ e_maintenance_task #line:1F5E8C;text:1F5E8C : delivery_id
 e_user_address ||--o{ e_order : address_id
 e_user ||--o{ e_order : customer_id
 e_delivery ||--o{ e_order : delivery_id
 e_distributor ||--o{ e_order : distributor_id
 e_time_slot ||--o{ e_order : time_slot_id
+e_distributor ||--o{ e_route_batch #line:1F5E8C;text:1F5E8C : distributor_id
+e_delivery ||--o{ e_route_batch #line:1F5E8C;text:1F5E8C : delivery_id
+e_car ||--o{ e_vehicle_usage_log #line:1F5E8C;text:1F5E8C : car_id
+e_distributor ||--o{ e_vehicle_usage_log #line:1F5E8C;text:1F5E8C : distributor_id
 e_user ||--o{ e_claims : customer_id
 e_distributor ||--o{ e_claims : distributor_id
 e_order ||--o{ e_claims : order_id
@@ -373,6 +520,8 @@ e_order ||..o{ e_cylinder : current_order_id (sin FK)
 e_distributor ||--o{ e_incident : distributor_id
 e_order ||--o{ e_incident : order_id
 e_user ||..o{ e_incident : reported_by (sin FK)
+e_maintenance_task ||--o{ e_maintenance_window_proposal #line:1F5E8C;text:1F5E8C : task_id
+e_delivery ||--o{ e_maintenance_window_proposal #line:1F5E8C;text:1F5E8C : delivery_id
 e_order ||--o{ e_order_address_change #line:1F5E8C;text:1F5E8C : order_id
 e_user_address ||--o{ e_order_address_change #line:1F5E8C;text:1F5E8C : from_address_id
 e_user_address ||--o{ e_order_address_change #line:1F5E8C;text:1F5E8C : to_address_id
@@ -382,18 +531,33 @@ e_distributor ||..o{ e_order_dispatch_offer : distributor_id (sin FK)
 e_user ||..o{ e_order_dispatch_offer : driver_id (sin FK)
 e_gas_cylinder ||--o{ e_order_item : gas_cylinder_id
 e_order ||--o{ e_order_item : order_id
+e_order ||--o{ e_order_status_history #line:1F5E8C;text:1F5E8C : order_id
+e_user ||--o{ e_order_status_history #line:1F5E8C;text:1F5E8C : changed_by_user_id
 e_order ||..o{ e_payment : order_id (sin FK)
 e_distributor ||..o{ e_payment : distributor_id (sin FK)
 e_distributor ||--o{ e_rating : distributor_id
 e_user ||--o{ e_rating : from_user_id
 e_order ||--o{ e_rating : order_id
 e_user ||..o{ e_rating : to_user_id (sin FK)
+e_distributor ||--o{ e_repurchase_invitation #line:1F5E8C;text:1F5E8C : distributor_id
+e_user ||--o{ e_repurchase_invitation #line:1F5E8C;text:1F5E8C : user_id
+e_user_address ||--o{ e_repurchase_invitation #line:1F5E8C;text:1F5E8C : address_id
+e_order ||--o{ e_repurchase_invitation #line:1F5E8C;text:1F5E8C : order_id
+e_route_batch ||--o{ e_route_batch_offer #line:1F5E8C;text:1F5E8C : batch_id
+e_delivery ||--o{ e_route_batch_offer #line:1F5E8C;text:1F5E8C : delivery_id
+e_route_batch ||--o{ e_route_batch_stop #line:1F5E8C;text:1F5E8C : batch_id
+e_order ||--o{ e_route_batch_stop #line:1F5E8C;text:1F5E8C : order_id
 e_cylinder ||--o{ e_cylinder_inspection #line:1F5E8C;text:1F5E8C : cylinder_id
 e_distributor ||--o{ e_cylinder_inspection #line:1F5E8C;text:1F5E8C : distributor_id
 e_cylinder ||..o{ e_cylinder_movement : cylinder_id (sin FK)
 e_distributor ||..o{ e_cylinder_movement : distributor_id (sin FK)
 e_order ||..o{ e_cylinder_movement : order_id (sin FK)
 e_user ||..o{ e_cylinder_movement : actor_user_id (sin FK)
+e_distributor ||--o{ e_cylinder_recovery_case #line:1F5E8C;text:1F5E8C : distributor_id
+e_cylinder ||--o{ e_cylinder_recovery_case #line:1F5E8C;text:1F5E8C : cylinder_id
+e_user ||--o{ e_cylinder_recovery_case #line:1F5E8C;text:1F5E8C : user_id
+e_user ||--o{ e_cylinder_recovery_case #line:1F5E8C;text:1F5E8C : resolved_by_user_id
+e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice #line:1F5E8C;text:1F5E8C : case_id
 
 legend bottom
 |<#FFFFFF> **implementado** | tabla o atributo que ya existe en la base |

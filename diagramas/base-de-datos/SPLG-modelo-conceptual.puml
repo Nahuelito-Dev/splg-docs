@@ -1,5 +1,5 @@
 @startuml
-title Modelo Conceptual — SPLG\nEntidades del negocio: lo implementado y lo propuesto
+title Modelo Conceptual — SPLG\nEntidades del negocio por contexto: lo implementado y lo propuesto
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
@@ -21,7 +21,13 @@ skinparam legendBorderColor #2C4257
 
 hide circle
 skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2C4257
+  FontSize 13
+}
 
+package "Organización y acceso" {
 entity "Distribuidora" as c_distributor {
   {field} razón social
   {field} CUIT
@@ -30,23 +36,6 @@ entity "Distribuidora" as c_distributor {
 entity "Rol" as c_role {
   {field} tipo
 }
-entity "Zona de cobertura" as c_coverage_zone {
-  {field} nombre
-  {field} área
-  {field} recargo
-}
-entity "Tipo de garrafa" as c_gas_cylinder {
-  {field} tipo
-  {field} peso en kg
-  {field} precio
-  {field} stock
-}
-entity "Franja horaria" as c_time_slot {
-  {field} nombre
-  {field} desde
-  {field} hasta
-  {field} cupo
-}
 entity "Usuario" as c_user {
   {field} nombre
   {field} correo
@@ -54,20 +43,21 @@ entity "Usuario" as c_user {
 }
 entity "Administrador" as c_admin {
 }
-entity "Vehículo" as c_car {
-  {field} patente
-  {field} tipo
-  {field} capacidad
-  {field} <color:#1F5E8C>tara <<propuesto>></color>
-  {field} <color:#1F5E8C>carga máxima <<propuesto>></color>
-  {field} <color:#1F5E8C>aseguradora <<propuesto>></color>
-  {field} <color:#1F5E8C>póliza <<propuesto>></color>
-  {field} <color:#1F5E8C>vence el seguro <<propuesto>></color>
-  {field} <color:#1F5E8C>vence la VTV <<propuesto>></color>
+entity "Asiento de auditoría" as c_audit_log <<propuesto>> {
+  {field} rol
+  {field} operación
+  {field} recurso
+  {field} aplicación
+  {field} resultado
+  {field} cambios
+  {field} fecha
 }
-entity "Carrito" as c_cart <<propuesto>> {
-  {field} última modificación
+entity "Configuración de módulo" as c_module_config <<propuesto>> {
+  {field} módulo
+  {field} parámetros
 }
+}
+package "Clientes" {
 entity "Cliente" as c_customer {
   {field} ubicación
   {field} validado
@@ -76,47 +66,28 @@ entity "Cliente" as c_customer {
   {field} <color:#1F5E8C>días de aviso <<propuesto>></color>
   {field} <color:#1F5E8C>próxima recompra estimada <<propuesto>></color>
 }
-entity "Chofer" as c_delivery {
-  {field} calificación
-  {field} disponible
-  {field} posición
-  {field} saldo
-  {field} <color:#1F5E8C>licencia <<propuesto>></color>
-  {field} <color:#1F5E8C>categoría <<propuesto>></color>
-  {field} <color:#1F5E8C>vence la licencia <<propuesto>></color>
-}
 entity "Dirección de entrega" as c_user_address {
   {field} calle
   {field} ciudad
   {field} predeterminada
+  {field} <color:#1F5E8C>piso <<propuesto>></color>
+  {field} <color:#1F5E8C>departamento <<propuesto>></color>
+  {field} <color:#1F5E8C>punto <<propuesto>></color>
+  {field} <color:#1F5E8C>precisión <<propuesto>></color>
 }
-entity "Ítem del carrito" as c_cart_item <<propuesto>> {
-  {field} cantidad
-  {field} precio unitario
+entity "Invitación de recompra" as c_repurchase_invitation <<propuesto>> {
+  {field} agotamiento estimado
+  {field} pedido sugerido
+  {field} estado
+  {field} vence
 }
-entity "Mantenimiento de flota" as c_fleet_maintenance <<propuesto>> {
+}
+package "Catálogo e inventario de envases" {
+entity "Tipo de garrafa" as c_gas_cylinder {
   {field} tipo
-  {field} agendado
-  {field} realizado
-  {field} kilometraje
-  {field} costo
-  {field} observaciones
-  {field} estado
-}
-entity "Pedido" as c_order {
-  {field} estado
-  {field} total
-  {field} método de pago
-  {field} fecha agendada
-  {field} <color:#1F5E8C>quién recibe <<propuesto>></color>
-  {field} <color:#1F5E8C>documento de quien recibe <<propuesto>></color>
-  {field} <color:#1F5E8C>vínculo <<propuesto>></color>
-  {field} <color:#1F5E8C>modalidad de entrega <<propuesto>></color>
-  {field} <color:#1F5E8C>express <<propuesto>></color>
-}
-entity "Reclamo" as c_claims {
-  {field} motivo
-  {field} estado
+  {field} peso en kg
+  {field} precio
+  {field} stock
 }
 entity "Envase" as c_cylinder {
   {field} número de serie
@@ -125,33 +96,6 @@ entity "Envase" as c_cylinder {
   {field} <color:#1F5E8C>fecha de fabricación <<propuesto>></color>
   {field} <color:#1F5E8C>última revisión <<propuesto>></color>
   {field} <color:#1F5E8C>vencimiento <<propuesto>></color>
-}
-entity "Incidencia" as c_incident {
-  {field} tipo
-  {field} estado
-  {field} <color:#1F5E8C>momento <<propuesto>></color>
-}
-entity "Cambio de dirección" as c_order_address_change <<propuesto>> {
-  {field} fecha
-  {field} motivo
-}
-entity "Oferta de despacho" as c_order_dispatch_offer {
-  {field} estado
-  {field} vence
-}
-entity "Ítem del pedido" as c_order_item {
-  {field} cantidad
-  {field} precio unitario
-  {field} subtotal
-}
-entity "Pago" as c_payment {
-  {field} importe
-  {field} pasarela
-  {field} estado
-}
-entity "Calificación" as c_rating {
-  {field} puntaje
-  {field} comentario
 }
 entity "Revisión de envase" as c_cylinder_inspection <<propuesto>> {
   {field} fecha
@@ -164,66 +108,219 @@ entity "Movimiento de envase" as c_cylinder_movement {
   {field} hacia
   {field} fecha
 }
+entity "Caso de recupero" as c_cylinder_recovery_case <<propuesto>> {
+  {field} entregado el
+  {field} depósito
+  {field} escalón
+  {field} estado
+  {field} resolución
+}
+entity "Aviso de recupero" as c_cylinder_recovery_notice <<propuesto>> {
+  {field} escalón
+  {field} tipo
+  {field} enviado
+  {field} vence
+}
+}
+package "Venta y pedidos" {
+entity "Zona de cobertura" as c_coverage_zone {
+  {field} nombre
+  {field} área
+  {field} recargo
+  {field} <color:#1F5E8C>tipo de recargo <<propuesto>></color>
+  {field} <color:#1F5E8C>etiqueta <<propuesto>></color>
+  {field} <color:#1F5E8C>color <<propuesto>></color>
+  {field} <color:#1F5E8C>vigente hasta <<propuesto>></color>
+}
+entity "Franja horaria" as c_time_slot {
+  {field} nombre
+  {field} desde
+  {field} hasta
+  {field} cupo
+}
+entity "Carrito" as c_cart <<propuesto>> {
+  {field} última modificación
+}
+entity "Ítem del carrito" as c_cart_item <<propuesto>> {
+  {field} cantidad
+  {field} precio unitario
+}
+entity "Pedido" as c_order {
+  {field} estado
+  {field} total
+  {field} método de pago
+  {field} fecha agendada
+  {field} <color:#1F5E8C>quién recibe <<propuesto>></color>
+  {field} <color:#1F5E8C>documento de quien recibe <<propuesto>></color>
+  {field} <color:#1F5E8C>vínculo <<propuesto>></color>
+  {field} <color:#1F5E8C>modalidad de entrega <<propuesto>></color>
+}
+entity "Cambio de dirección" as c_order_address_change <<propuesto>> {
+  {field} fecha
+  {field} motivo
+}
+entity "Ítem del pedido" as c_order_item {
+  {field} cantidad
+  {field} precio unitario
+  {field} subtotal
+}
+entity "Cambio de estado del pedido" as c_order_status_history <<propuesto>> {
+  {field} desde
+  {field} hacia
+  {field} motivo
+  {field} fecha
+}
+}
+package "Pagos" {
+entity "Pago" as c_payment {
+  {field} importe
+  {field} pasarela
+  {field} estado
+}
+}
+package "Despacho y logística" {
+entity "Lote de recorrido" as c_route_batch <<propuesto>> {
+  {field} estado
+  {field} peso total
+}
+entity "Oferta de despacho" as c_order_dispatch_offer {
+  {field} estado
+  {field} vence
+}
+entity "Oferta de lote" as c_route_batch_offer <<propuesto>> {
+  {field} estado
+  {field} vence
+}
+entity "Parada del lote" as c_route_batch_stop <<propuesto>> {
+  {field} orden
+}
+}
+package "Flota y choferes" {
+entity "Plan de mantenimiento" as c_maintenance_plan <<propuesto>> {
+  {field} nombre
+  {field} sobre qué
+  {field} disparo
+  {field} cada cuántos km
+  {field} cada cuántos meses
+  {field} anticipación
+  {field} criticidad
+}
+entity "Vehículo" as c_car {
+  {field} patente
+  {field} tipo
+  {field} capacidad
+  {field} <color:#1F5E8C>tara <<propuesto>></color>
+  {field} <color:#1F5E8C>carga máxima <<propuesto>></color>
+  {field} <color:#1F5E8C>kilometraje <<propuesto>></color>
+  {field} <color:#1F5E8C>estado en la flota <<propuesto>></color>
+}
+entity "Chofer" as c_delivery {
+  {field} calificación
+  {field} disponible
+  {field} posición
+  {field} saldo
+}
+entity "Tarea de mantenimiento" as c_maintenance_task <<propuesto>> {
+  {field} estado
+  {field} vence
+  {field} vencimiento proyectado
+  {field} programada para
+  {field} realizada
+  {field} costo
+  {field} prestador
+  {field} número
+}
+entity "Registro de uso del vehículo" as c_vehicle_usage_log <<propuesto>> {
+  {field} día
+  {field} kilómetros
+  {field} pedidos
+}
+entity "Propuesta de ventana de taller" as c_maintenance_window_proposal <<propuesto>> {
+  {field} desde
+  {field} hasta
+  {field} estado
+  {field} vence
+}
+}
+package "Posventa" {
+entity "Reclamo" as c_claims {
+  {field} motivo
+  {field} estado
+}
+entity "Incidencia" as c_incident {
+  {field} tipo
+  {field} estado
+  {field} <color:#1F5E8C>momento <<propuesto>></color>
+}
+entity "Calificación" as c_rating {
+  {field} puntaje
+  {field} comentario
+}
+}
 
-c_distributor ||--o{ c_coverage_zone
-c_distributor ||--o{ c_gas_cylinder
-c_distributor ||--o{ c_time_slot
 c_role |o--o{ c_user
-c_distributor |o--o{ c_admin
 c_role ||--o{ c_admin
 c_user ||--o{ c_admin
-c_distributor ||--o{ c_car
+c_user |o--o{ c_audit_log #line:1F5E8C;text:1F5E8C
 c_user ||--o{ c_car
 c_user ||--o{ c_cart #line:1F5E8C;text:1F5E8C
-c_distributor ||--o{ c_cart #line:1F5E8C;text:1F5E8C
 c_user ||--|| c_customer
 c_gas_cylinder |o--o{ c_customer #line:1F5E8C;text:1F5E8C
-c_distributor ||--o{ c_delivery
 c_user ||--|| c_delivery
+c_user |o--o{ c_module_config #line:1F5E8C;text:1F5E8C
 c_user ||--o{ c_user_address
 c_cart ||--o{ c_cart_item #line:1F5E8C;text:1F5E8C
 c_gas_cylinder ||--o{ c_cart_item #line:1F5E8C;text:1F5E8C
-c_car ||--o{ c_fleet_maintenance #line:1F5E8C;text:1F5E8C
-c_distributor ||--o{ c_fleet_maintenance #line:1F5E8C;text:1F5E8C
+c_maintenance_plan ||--o{ c_maintenance_task #line:1F5E8C;text:1F5E8C
+c_car |o--o{ c_maintenance_task #line:1F5E8C;text:1F5E8C
+c_delivery |o--o{ c_maintenance_task #line:1F5E8C;text:1F5E8C
 c_user_address ||--o{ c_order
 c_user ||--o{ c_order
 c_delivery |o--o{ c_order
-c_distributor ||--o{ c_order
 c_time_slot |o--o{ c_order
+c_delivery |o--o{ c_route_batch #line:1F5E8C;text:1F5E8C
+c_car ||--o{ c_vehicle_usage_log #line:1F5E8C;text:1F5E8C
 c_user ||--o{ c_claims
-c_distributor ||--o{ c_claims
 c_order ||--o{ c_claims
-c_distributor ||--o{ c_cylinder
 c_gas_cylinder |o..o{ c_cylinder : sin FK
 c_user |o..o{ c_cylinder : sin FK
 c_order |o..o{ c_cylinder : sin FK
-c_distributor ||--o{ c_incident
 c_order ||--o{ c_incident
 c_user ||..o{ c_incident : sin FK
+c_maintenance_task ||--o{ c_maintenance_window_proposal #line:1F5E8C;text:1F5E8C
+c_delivery ||--o{ c_maintenance_window_proposal #line:1F5E8C;text:1F5E8C
 c_order ||--o{ c_order_address_change #line:1F5E8C;text:1F5E8C
 c_user_address ||--o{ c_order_address_change #line:1F5E8C;text:1F5E8C
 c_user ||--o{ c_order_address_change #line:1F5E8C;text:1F5E8C
 c_order ||--o{ c_order_dispatch_offer
-c_distributor ||..o{ c_order_dispatch_offer : sin FK
 c_user ||..o{ c_order_dispatch_offer : sin FK
 c_gas_cylinder ||--o{ c_order_item
 c_order ||--o{ c_order_item
+c_order ||--o{ c_order_status_history #line:1F5E8C;text:1F5E8C
+c_user |o--o{ c_order_status_history #line:1F5E8C;text:1F5E8C
 c_order ||..o{ c_payment : sin FK
-c_distributor |o..o{ c_payment : sin FK
-c_distributor ||--o{ c_rating
 c_user ||--o{ c_rating
 c_order ||--o{ c_rating
 c_user ||..o{ c_rating : sin FK
+c_user ||--o{ c_repurchase_invitation #line:1F5E8C;text:1F5E8C
+c_user_address |o--o{ c_repurchase_invitation #line:1F5E8C;text:1F5E8C
+c_order |o--o{ c_repurchase_invitation #line:1F5E8C;text:1F5E8C
+c_route_batch ||--o{ c_route_batch_offer #line:1F5E8C;text:1F5E8C
+c_delivery ||--o{ c_route_batch_offer #line:1F5E8C;text:1F5E8C
+c_route_batch ||--o{ c_route_batch_stop #line:1F5E8C;text:1F5E8C
+c_order ||--o{ c_route_batch_stop #line:1F5E8C;text:1F5E8C
 c_cylinder ||--o{ c_cylinder_inspection #line:1F5E8C;text:1F5E8C
-c_distributor ||--o{ c_cylinder_inspection #line:1F5E8C;text:1F5E8C
 c_cylinder ||..o{ c_cylinder_movement : sin FK
-c_distributor ||..o{ c_cylinder_movement : sin FK
 c_order |o..o{ c_cylinder_movement : sin FK
 c_user |o..o{ c_cylinder_movement : sin FK
+c_cylinder ||--o{ c_cylinder_recovery_case #line:1F5E8C;text:1F5E8C
+c_user ||--o{ c_cylinder_recovery_case #line:1F5E8C;text:1F5E8C
+c_cylinder_recovery_case ||--o{ c_cylinder_recovery_notice #line:1F5E8C;text:1F5E8C
 
 legend bottom
 |<#FFFFFF> **implementado** | tabla o atributo que ya existe en la base |
 |<#E4EDF4> **propuesto** | agregado pedido por la cátedra, todavía sin implementar |
 |<#FFFFFF> **línea punteada** | la relación existe en el dominio pero la base no la declara como clave foránea |
+|<#FFFFFF> **distribuidora** | toda entidad pertenece a una distribuidora (multi-tenant): esas relaciones no se dibujan |
 endlegend
 @enduml

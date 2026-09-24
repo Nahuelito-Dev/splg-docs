@@ -208,30 +208,59 @@ varias empresas comercializadoras manteniendo sus datos aislados entre sí. Por 
 concepto **Distribuidora** encabeza el modelo y actúa como unidad de aislamiento de la
 mayoría de los demás conceptos.
 
-| # | Concepto | Símbolo | Intención | Extensión |
-|---|----------|---------|-----------|-----------|
-| 1 | **Distribuidora** | Distribuidora | Empresa comercializadora de garrafas que opera dentro del sistema. Unidad de aislamiento de los datos. | Cada empresa dada de alta en la plataforma. |
-| 2 | **Usuario** | Usuario | Persona registrada en el sistema con un rol asignado. | Todos los clientes, choferes y administradores. |
-| 3 | **Rol** | Rol | Conjunto de permisos que determina qué puede hacer un usuario. | Cliente, chofer, administrador y administrador general. |
-| 4 | **Cliente** | Cliente | Perfil extendido de un Usuario que realiza pedidos. | Toda persona que se registra en la App Cliente. |
-| 5 | **Chofer** | Chofer | Perfil extendido de un Usuario que ejecuta las entregas. | Repartidores habilitados por una distribuidora. |
-| 6 | **Administrador** | Admin | Perfil extendido de un Usuario que gestiona la operación. | Operadores internos con acceso al Panel Web. |
-| 7 | **Pedido** | Pedido | Solicitud formal de compra realizada por un cliente. Tiene un ciclo de vida de estados. | Cada transacción de compra registrada. |
-| 8 | **ItemPedido** | ItemPedido | Línea individual dentro de un pedido: un producto y su cantidad. | Cada garrafa solicitada dentro de un pedido. |
-| 9 | **Producto** | Producto | Tipo de garrafa comercializado, con precio, stock y promociones. | Los formatos ofrecidos: 10 kg, 15 kg, 45 kg. |
-| 10 | **Envase** | Envase | Garrafa **física** individual, identificable y rastreable por su número de serie. | Cada botellón que la distribuidora posee o tiene en la calle. |
-| 11 | **MovimientoEnvase** | MovimientoEnvase | Registro inmutable de cada cambio de estado de un envase físico. | La traza completa del ciclo de vida de cada envase. |
-| 12 | **DireccionEntrega** | Direccion | Domicilio del cliente guardado para futuras entregas, con coordenadas. | Cada dirección registrada por un cliente. |
-| 13 | **ZonaCobertura** | ZonaCobertura | Área geográfica dentro de la cual una distribuidora acepta pedidos. | Los polígonos de cobertura definidos por cada distribuidora. |
-| 14 | **FranjaHoraria** | FranjaHoraria | Rango de horas del día habilitado para entregas, con capacidad máxima. | Franjas configuradas por cada distribuidora. |
-| 15 | **OfertaDespacho** | OfertaDespacho | Propuesta de un pedido a un chofer determinado, con vigencia limitada. | Cada intento de asignación del proceso de negociación. |
-| 16 | **Vehiculo** | Vehiculo | Medio de transporte asignado a un chofer, con su mantenimiento y habilitaciones. | Cada unidad de la flota de una distribuidora. |
-| 17 | **UbicacionGPS** | UbicacionGPS | Coordenadas del chofer en un momento dado. Se mantiene en memoria, no se persiste. | La posición actual de cada chofer activo. |
-| 18 | **Pago** | Pago | Transacción económica asociada a un pedido, ejecutada por una pasarela. | Cada cobro intentado o concretado. |
-| 19 | **Reclamo** | Reclamo | Queja formal del cliente sobre un pedido entregado, con evidencia opcional. | Cada reclamo registrado. |
-| 20 | **Incidencia** | Incidencia | Evento que interrumpe o altera el curso normal de una entrega. | Cada contratiempo reportado durante el reparto. |
-| 21 | **Calificacion** | Calificacion | Valoración que un cliente asigna al servicio recibido en un pedido. | Cada puntuación emitida tras una entrega. |
-| 22 | **Promocion** | Promocion | Descuento por volumen aplicable a un producto al superar una cantidad mínima. | Cada regla de descuento configurada. |
+Los conceptos se organizan en **ocho contextos**, que son las áreas del negocio que los
+definen y los modifican. Los marcados con † se incorporaron el 24/09/2026 para que el
+modelo contenga los 153 casos de uso, incluidos los que todavía no están implementados.
+
+| # | Concepto | Símbolo | Intención | Extensión | Contexto |
+|---|----------|---------|-----------|-----------|----------|
+| 1 | **Distribuidora** | Distribuidora | Empresa comercializadora de garrafas que opera dentro del sistema. Unidad de aislamiento de los datos. | Cada empresa dada de alta en la plataforma. | Organización y acceso |
+| 2 | **Usuario** | Usuario | Persona registrada en el sistema con un rol asignado. | Todos los clientes, choferes y administradores. | Organización y acceso |
+| 3 | **Rol** | Rol | Conjunto de permisos que determina qué puede hacer un usuario. | Cliente, chofer, administrador y administrador general. | Organización y acceso |
+| 4 | **Administrador** | Admin | Perfil extendido de un Usuario que gestiona la operación. | Operadores internos con acceso al Panel Web. | Organización y acceso |
+| 5 | **ConfiguracionModulo** † | ConfiguracionModulo | Parámetros con que una distribuidora ajusta un proceso automático. | Una por módulo inteligente y distribuidora. | Organización y acceso |
+| 6 | **AsientoAuditoria** † | AsientoAuditoria | Constancia inmutable de una operación que modificó datos: quién, qué, cuándo, desde dónde y con qué resultado. | Cada alta, modificación o baja, exitosa o fallida. | Organización y acceso |
+| 7 | **Cliente** | Cliente | Perfil extendido de un Usuario que realiza pedidos. | Toda persona que se registra en la App Cliente. | Clientes |
+| 8 | **DireccionEntrega** | Direccion | Domicilio del cliente guardado para futuras entregas, resuelto contra el mapa. | Cada dirección registrada por un cliente. | Clientes |
+| 9 | **InvitacionRecompra** † | InvitacionRecompra | Oferta de reposición que el sistema le hace a un cliente antes de que se le acabe el gas, con el pedido armado. | Cada invitación emitida por el módulo de recompra. | Clientes |
+| 10 | **Producto** | Producto | Tipo de garrafa comercializado, con precio, stock y promociones. | Los formatos ofrecidos: 10 kg, 15 kg, 45 kg. | Catálogo e inventario |
+| 11 | **Promocion** | Promocion | Descuento por volumen aplicable a un producto al superar una cantidad mínima. | Cada regla de descuento configurada. | Catálogo e inventario |
+| 12 | **Envase** | Envase | Garrafa **física** individual, identificable y rastreable por su número de serie. | Cada botellón que la distribuidora posee o tiene en poder de un cliente. | Catálogo e inventario |
+| 13 | **MovimientoEnvase** | MovimientoEnvase | Registro inmutable de cada cambio de estado de un envase físico. | La traza completa del ciclo de vida de cada envase. | Catálogo e inventario |
+| 14 | **RevisionEnvase** † | RevisionEnvase | Prueba técnica periódica que renueva la vigencia de un envase. | Cada revisión asentada. | Catálogo e inventario |
+| 15 | **CasoRecupero** † | CasoRecupero | Gestión escalonada de un envase que un cliente retiene por encima del plazo. | Cada envase retenido en gestión. | Catálogo e inventario |
+| 16 | **AvisoRecupero** † | AvisoRecupero | Recordatorio, oferta de retiro o aviso de depósito enviado dentro de un caso de recupero. | Cada aviso emitido. | Catálogo e inventario |
+| 17 | **Carrito** † | Carrito | Pedido en armado que el cliente deja guardado antes de confirmarlo. | Uno por cliente y distribuidora. | Venta y pedidos |
+| 18 | **ItemCarrito** † | ItemCarrito | Producto cargado en el carrito, con su cantidad. | Cada línea del carrito. | Venta y pedidos |
+| 19 | **Pedido** | Pedido | Solicitud formal de compra realizada por un cliente. Tiene un ciclo de vida de estados. | Cada transacción de compra registrada. | Venta y pedidos |
+| 20 | **ItemPedido** | ItemPedido | Línea individual dentro de un pedido: un producto y su cantidad. | Cada garrafa solicitada dentro de un pedido. | Venta y pedidos |
+| 21 | **CambioEstadoPedido** † | CambioEstadoPedido | Transición del pedido de un estado a otro, con su autor y su motivo. | Cada cambio de estado de cada pedido. | Venta y pedidos |
+| 22 | **CambioDireccion** † | CambioDireccion | Cambio de la dirección de entrega de un pedido ya hecho. | Cada cambio registrado. | Venta y pedidos |
+| 23 | **ZonaCobertura** | ZonaCobertura | Área geográfica dentro de la cual una distribuidora acepta pedidos, con su recargo y su vigencia. | Los polígonos de cobertura definidos por cada distribuidora. | Venta y pedidos |
+| 24 | **FranjaHoraria** | FranjaHoraria | Rango de horas del día habilitado para entregas, con capacidad máxima. | Franjas configuradas por cada distribuidora. | Venta y pedidos |
+| 25 | **Pago** | Pago | Transacción económica asociada a un pedido, ejecutada por una pasarela. | Cada cobro intentado o concretado. | Pagos |
+| 26 | **PropuestaConVigencia** † | PropuestaConVigencia | Algo que el sistema le propone a alguien por un tiempo acotado y que puede ser aceptado, rechazado o vencer. Concepto abstracto. | Se realiza en las cinco propuestas concretas. | Despacho y logística |
+| 27 | **OfertaDespacho** | OfertaDespacho | Propuesta de un pedido a un chofer determinado, con vigencia limitada. | Cada intento de asignación del proceso de despacho. | Despacho y logística |
+| 28 | **LoteRecorrido** † | LoteRecorrido | Grupo de pedidos que se entregan en un mismo viaje. | Cada lote armado por el módulo de agrupación. | Despacho y logística |
+| 29 | **ParadaLote** † | ParadaLote | Pedido dentro de un lote, en su orden de entrega. | Cada parada de cada lote. | Despacho y logística |
+| 30 | **OfertaLote** † | OfertaLote | Propuesta de un lote completo a un chofer. | Cada intento de asignación de un lote. | Despacho y logística |
+| 31 | **Chofer** | Chofer | Perfil extendido de un Usuario que ejecuta las entregas. | Repartidores habilitados por una distribuidora. | Flota y choferes |
+| 32 | **Vehiculo** | Vehiculo | Medio de transporte asignado a un chofer. | Cada unidad de la flota de una distribuidora. | Flota y choferes |
+| 33 | **UbicacionGPS** | UbicacionGPS | Coordenadas del chofer en un momento dado. Se mantiene en memoria, no se persiste. | La posición actual de cada chofer conectado. | Flota y choferes |
+| 34 | **PlanMantenimiento** † | PlanMantenimiento | Regla que dice qué se controla de un vehículo o chofer, cada cuánto y si inhabilita al vencer. | Seguro, verificación técnica, licencia, services. | Flota y choferes |
+| 35 | **TareaMantenimiento** † | TareaMantenimiento | Vencimiento concreto que genera un plan: una póliza, una verificación, un service. | Cada vencimiento proyectado, programado o cumplido. | Flota y choferes |
+| 36 | **PropuestaVentanaTaller** † | PropuestaVentanaTaller | Ventana de taller ofrecida al chofer para cumplir una tarea. | Cada ventana ofrecida. | Flota y choferes |
+| 37 | **RegistroUsoVehiculo** † | RegistroUsoVehiculo | Uso diario de un vehículo: kilómetros, pedidos y horas en ruta. | Un registro por vehículo y día. | Flota y choferes |
+| 38 | **Reclamo** | Reclamo | Queja formal del cliente sobre un pedido entregado, con evidencia opcional. | Cada reclamo registrado. | Posventa |
+| 39 | **Incidencia** | Incidencia | Evento que interrumpe o altera el curso normal de una entrega. | Cada contratiempo reportado durante el reparto. | Posventa |
+| 40 | **Calificacion** | Calificacion | Valoración que un cliente asigna al servicio recibido en un pedido. | Cada puntuación emitida tras una entrega. | Posventa |
+
+**La propuesta con vigencia.** Cinco conceptos comparten un mismo comportamiento: el
+sistema le propone algo a alguien por un tiempo acotado —un pedido, un lote, una ventana
+de taller, una reposición, el retiro de un envase— y espera que lo acepte, lo rechace o lo
+deje vencer; si no prospera, pasa a la alternativa siguiente. Se modelan como
+especializaciones de **PropuestaConVigencia**. Es el mecanismo que el despacho automático
+ya usaba con la OfertaDespacho y sobre el que se construyen los módulos inteligentes.
 
 ---
 
@@ -239,38 +268,67 @@ mayoría de los demás conceptos.
 
 | Relación | Concepto A | Concepto B | Tipo | Multiplicidad |
 |----------|-----------|-----------|------|---------------|
-| Opera dentro de | Chofer | Distribuidora | Asociación | N a 1 |
-| Opera dentro de | Administrador | Distribuidora | Asociación | N a 1 |
+| Es un tipo de | Cliente | Usuario | Especialización | — |
+| Es un tipo de | Chofer | Usuario | Especialización | — |
+| Es un tipo de | Administrador | Usuario | Especialización | — |
+| Tiene asignado | Usuario | Rol | Asociación | N a 1 |
+| Es un tipo de | OfertaDespacho | PropuestaConVigencia | Especialización | — |
+| Es un tipo de | OfertaLote | PropuestaConVigencia | Especialización | — |
+| Es un tipo de | PropuestaVentanaTaller | PropuestaConVigencia | Especialización | — |
+| Es un tipo de | InvitacionRecompra | PropuestaConVigencia | Especialización | — |
+| Es un tipo de | AvisoRecupero | PropuestaConVigencia | Especialización | — |
+| Emplea | Distribuidora | Chofer | Asociación | 1 a N |
+| Emplea | Distribuidora | Administrador | Asociación | 1 a N |
 | Comercializa | Distribuidora | Producto | Asociación | 1 a N |
 | Posee | Distribuidora | Envase | Asociación | 1 a N |
+| Gestiona | Distribuidora | Pedido | Asociación | 1 a N |
 | Define | Distribuidora | ZonaCobertura | Composición | 1 a N |
 | Define | Distribuidora | FranjaHoraria | Composición | 1 a N |
-| Gestiona | Distribuidora | Pedido | Asociación | 1 a N |
-| Tiene asignado | Usuario | Rol | Asociación | N a 1 |
-| Es un tipo de | Cliente | Usuario | Especialización | 1 a 1 |
-| Es un tipo de | Chofer | Usuario | Especialización | 1 a 1 |
-| Es un tipo de | Administrador | Usuario | Especialización | 1 a 1 |
-| Realiza | Cliente | Pedido | Asociación | 1 a N |
+| Parametriza | Distribuidora | ConfiguracionModulo | Composición | 1 a N |
+| Registra la acción de | AsientoAuditoria | Usuario | Asociación | N a 0..1 |
 | Registra | Cliente | DireccionEntrega | Composición | 1 a N |
+| Realiza | Cliente | Pedido | Asociación | 1 a N |
+| Arma | Cliente | Carrito | Composición | 1 a 0..1 |
+| Recibe | Cliente | InvitacionRecompra | Asociación | 1 a N |
+| Usa habitualmente | Cliente | Producto | Asociación | N a 0..1 |
+| Se convierte en | InvitacionRecompra | Pedido | Asociación | 0..1 a 0..1 |
+| Contiene | Carrito | ItemCarrito | Composición | 1 a N |
+| Referencia | ItemCarrito | Producto | Asociación | N a 1 |
 | Contiene | Pedido | ItemPedido | Composición | 1 a N |
 | Referencia | ItemPedido | Producto | Asociación | N a 1 |
 | Se entrega en | Pedido | DireccionEntrega | Asociación | N a 1 |
 | Se programa en | Pedido | FranjaHoraria | Asociación | N a 0..1 |
-| Es asignado a | Pedido | Chofer | Asociación | N a 0..1 |
+| Registra | Pedido | CambioEstadoPedido | Composición | 1 a N |
+| Registra | Pedido | CambioDireccion | Composición | 1 a N |
+| Es entregado por | Pedido | Chofer | Asociación | N a 0..1 |
+| Se salda con | Pedido | Pago | Asociación | 1 a N |
 | Se ofrece mediante | Pedido | OfertaDespacho | Composición | 1 a N |
 | Se dirige a | OfertaDespacho | Chofer | Asociación | N a 1 |
-| Se salda con | Pedido | Pago | Asociación | 1 a N |
-| Origina | Pedido | Reclamo | Asociación | 1 a N |
-| Origina | Pedido | Incidencia | Asociación | 1 a N |
-| Recibe | Pedido | Calificacion | Asociación | 1 a 0..1 |
+| Se compone de | LoteRecorrido | ParadaLote | Composición | 1 a N |
+| Entrega | ParadaLote | Pedido | Asociación | N a 1 |
+| Se ofrece mediante | LoteRecorrido | OfertaLote | Composición | 1 a N |
+| Se dirige a | OfertaLote | Chofer | Asociación | N a 1 |
 | Conduce | Chofer | Vehiculo | Asociación | 1 a N |
-| Se ubica en | Chofer | UbicacionGPS | Asociación temporal | 1 a 1 |
-| Opera dentro de | Chofer | ZonaCobertura | Asociación | N a N |
+| Se ubica en | Chofer | UbicacionGPS | Asociación | 1 a 1 |
+| Opera en | Chofer | ZonaCobertura | Asociación | N a N |
+| Genera | PlanMantenimiento | TareaMantenimiento | Asociación | 1 a N |
+| Habilita | TareaMantenimiento | Vehiculo | Asociación | N a 0..1 |
+| Habilita | TareaMantenimiento | Chofer | Asociación | N a 0..1 |
+| Se negocia mediante | TareaMantenimiento | PropuestaVentanaTaller | Composición | 1 a N |
+| Se dirige a | PropuestaVentanaTaller | Chofer | Asociación | N a 1 |
+| Acumula | Vehiculo | RegistroUsoVehiculo | Composición | 1 a N |
 | Ofrece | Producto | Promocion | Composición | 1 a N |
 | Materializa | Envase | Producto | Asociación | N a 1 |
 | Registra | Envase | MovimientoEnvase | Composición | 1 a N |
+| Se revisa en | Envase | RevisionEnvase | Composición | 1 a N |
 | Se origina en | MovimientoEnvase | Pedido | Asociación | N a 0..1 |
 | Es ejecutado por | MovimientoEnvase | Usuario | Asociación | N a 0..1 |
+| Se reclama en | Envase | CasoRecupero | Asociación | 1 a N |
+| Se abre con | CasoRecupero | Cliente | Asociación | N a 1 |
+| Escala mediante | CasoRecupero | AvisoRecupero | Composición | 1 a N |
+| Origina | Pedido | Reclamo | Asociación | 1 a N |
+| Origina | Pedido | Incidencia | Asociación | 1 a N |
+| Recibe | Pedido | Calificacion | Asociación | 1 a 0..1 |
 
 **Nota sobre Producto y Envase.** El modelo distingue deliberadamente dos conceptos que
 en el lenguaje corriente se confunden. **Producto** es el *tipo* de garrafa que se
@@ -278,6 +336,12 @@ comercializa —"garrafa de 10 kg", con su precio y su stock agregado—; **Enva
 *botellón físico* individual, con número de serie, que la distribuidora entrega y espera
 recuperar. El cliente compra un Producto pero recibe un Envase, y es ese envase concreto
 —no el tipo— el que hay que rastrear y recuperar.
+
+**Nota sobre el mantenimiento de la flota.** El seguro, la verificación técnica, la
+licencia del chofer y los services no son conceptos distintos: son **PlanMantenimiento**
+con distinto disparo y distinta criticidad, y cada vencimiento concreto es una
+**TareaMantenimiento**. La licencia es del chofer y no del vehículo, por eso la tarea se
+asocia a uno o al otro.
 
 ---
 
@@ -287,64 +351,112 @@ recuperar. El cliente compra un Producto pero recibe un Envase, y es ese envase 
 |----------|----------|-------------|
 | **Distribuidora** | razon_social | Nombre legal de la empresa comercializadora. |
 | **Distribuidora** | cuit | Clave única de identificación tributaria. |
-| **Distribuidora** | activa | Indica si la distribuidora puede operar en la plataforma. |
-| **Usuario** | full_name | Nombre completo. |
-| **Usuario** | email | Correo único. Identifica al usuario en la autenticación. |
-| **Usuario** | phone_number | Teléfono de contacto. |
-| **Rol** | nombre | Denominación del rol: cliente, chofer, administrador, administrador general. |
-| **Cliente** | notification_token | Token del dispositivo para recibir avisos push. |
-| **Chofer** | validated | Indica si el administrador habilitó al chofer para operar. Habilitación permanente. |
-| **Chofer** | isActive | Indica si el chofer está disponible para recibir ofertas en este momento. Estado operativo. |
-| **Chofer** | calification | Calificación promedio surgida de las valoraciones de los clientes. |
-| **Chofer** | balance | Saldo acumulado a rendir. |
-| **Pedido** | status | Estado del ciclo de vida: pendiente, aceptado, en camino, entregado, cancelado. |
-| **Pedido** | totalAmount | Monto total, ya calculadas las promociones y los recargos. |
-| **Pedido** | paymentMethod | Medio de pago elegido: efectivo, MercadoPago o transferencia. |
-| **Pedido** | paymentStatus | Situación del cobro: pendiente, pagado o fallido. |
-| **Pedido** | scheduled_date | Fecha para la que el cliente programó la entrega. |
-| **Pedido** | deposit_amount | Importe del depósito en garantía por los envases entregados. |
-| **Pedido** | deposit_paid | Indica si el depósito fue efectivamente cobrado. |
-| **Pedido** | deliveryCode | Código que el cliente exhibe para confirmar la recepción. |
-| **Pedido** | cancellationReason | Motivo de la cancelación, si la hubo. |
-| **ItemPedido** | quantity | Cantidad de unidades solicitadas. |
-| **ItemPedido** | unitPrice | Precio unitario vigente al momento de la compra. |
-| **ItemPedido** | subtotal | Producto de la cantidad por el precio unitario. |
-| **Producto** | type | Formato comercializado: 10 kg, 15 kg o 45 kg. |
-| **Producto** | price | Precio de venta vigente. |
+| **Distribuidora** | estado | Si la distribuidora puede operar en la plataforma o está suspendida. |
+| **Usuario** | nombre | Nombre completo. |
+| **Usuario** | correo | Correo único. Identifica al usuario en la autenticación. |
+| **Usuario** | telefono | Teléfono de contacto. |
+| **Rol** | tipo | Cliente, chofer, administrador o administrador general. |
+| **ConfiguracionModulo** | modulo | Proceso automático al que corresponden los parámetros. |
+| **ConfiguracionModulo** | parametros | Valores con que la distribuidora ajusta el proceso. |
+| **AsientoAuditoria** | operacion | Alta, modificación o baja. |
+| **AsientoAuditoria** | recurso | Sobre qué tipo de dato se operó. |
+| **AsientoAuditoria** | aplicacion | Desde qué aplicación: panel, app de cliente o app de chofer. |
+| **AsientoAuditoria** | resultado | Si la operación fue exitosa o fallida. |
+| **AsientoAuditoria** | cambios | Qué cambió, con las credenciales depuradas. |
+| **AsientoAuditoria** | fecha | Cuándo ocurrió. |
+| **Cliente** | validado | Si el administrador validó al cliente. |
+| **Cliente** | consumo_mensual_declarado | Kilos de gas por mes que el cliente declara consumir. |
+| **Cliente** | dias_de_aviso | Con cuántos días de anticipación quiere que se le avise la recompra. |
+| **DireccionEntrega** | calle_y_altura | Domicilio de entrega. |
+| **DireccionEntrega** | piso_y_departamento | Unidad dentro del edificio, si corresponde. |
+| **DireccionEntrega** | punto | Ubicación geográfica resuelta contra el servicio de mapas. |
+| **DireccionEntrega** | precision | Con qué exactitud quedó resuelto el punto: exacta, aproximada o sin resolver. |
+| **DireccionEntrega** | predeterminada | Si es la que se propone por defecto al armar un pedido. |
+| **InvitacionRecompra** | agotamiento_estimado | Cuándo se estima que al cliente se le termina el gas. |
+| **InvitacionRecompra** | pedido_sugerido | Productos y cantidades que sugiere su historial. |
+| **Producto** | tipo | Formato comercializado: 10 kg, 15 kg o 45 kg. |
+| **Producto** | peso_kg | Kilos de gas del formato. |
+| **Producto** | precio | Precio de venta vigente. |
 | **Producto** | stock | Unidades disponibles en el depósito. |
-| **Producto** | promotions | Reglas de descuento por volumen configuradas. |
-| **Envase** | serial_number | Número de serie grabado en el botellón. Lo identifica unívocamente. |
-| **Envase** | state | Situación actual: en depósito, en tránsito, en poder del cliente, en mantenimiento o dado de baja. |
-| **Envase** | deposit_value | Importe en garantía que representa el envase. |
-| **MovimientoEnvase** | from_state / to_state | Situación anterior y posterior del envase. |
+| **Promocion** | cantidad | Cantidad mínima a partir de la cual se aplica el descuento. |
+| **Promocion** | descuento | Porcentaje que se descuenta al alcanzar esa cantidad. |
+| **Envase** | numero_de_serie | Número grabado en el botellón. Lo identifica unívocamente. |
+| **Envase** | estado | Situación actual: en depósito, lleno, despachado, en poder del cliente o devuelto vacío. |
+| **Envase** | deposito | Importe en garantía que representa el envase. |
+| **Envase** | vencimiento | Fecha hasta la que el envase puede despacharse, según su última revisión. |
+| **MovimientoEnvase** | desde / hacia | Situación anterior y posterior del envase. |
 | **MovimientoEnvase** | fecha | Momento en que se produjo el movimiento. |
-| **DireccionEntrega** | formatted_address | Domicilio completo tal como se muestra al usuario. |
-| **DireccionEntrega** | latitude / longitude | Coordenadas geográficas del domicilio. |
-| **DireccionEntrega** | additional_instructions | Indicaciones del cliente para encontrar el domicilio. |
+| **RevisionEnvase** | fecha | Cuándo se hizo la revisión. |
+| **RevisionEnvase** | resultado | Apta, apta con salvedades o rechazada. |
+| **RevisionEnvase** | proxima_revision | Hasta cuándo vale esta revisión. |
+| **CasoRecupero** | escalon | Paso de la gestión en que está el caso. |
+| **CasoRecupero** | deposito_comprometido | Importe en juego. |
+| **CasoRecupero** | estado | Abierto, devuelto, escalado, depósito cobrado, dado de baja o cerrado sin cargo. |
+| **CasoRecupero** | resolucion | Lo que decidió el administrador, si llegó a él. |
+| **AvisoRecupero** | escalon | Paso de la gestión al que pertenece. |
+| **AvisoRecupero** | tipo | Recordatorio, oferta de retiro o aviso de depósito. |
+| **AvisoRecupero** | vence | Plazo del escalón. |
+| **Carrito** | ultima_modificacion | Cuándo se tocó por última vez. |
+| **ItemCarrito** | cantidad | Unidades cargadas. |
+| **ItemCarrito** | precio_unitario | Precio vigente al momento de agregarlo. |
+| **Pedido** | estado | Ciclo de vida: reservado, pendiente, aceptado, en camino, entregado, cancelado. |
+| **Pedido** | total | Monto total, ya calculadas las promociones y los recargos. |
+| **Pedido** | modalidad_de_entrega | Reparto programado o express. |
+| **Pedido** | fecha_agendada | Fecha para la que el cliente programó la entrega. |
+| **Pedido** | quien_recibe | Persona que recibe si no es el cliente, con su documento y vínculo. |
+| **ItemPedido** | cantidad | Unidades solicitadas. |
+| **ItemPedido** | precio_unitario | Precio vigente al momento de la compra. |
+| **CambioEstadoPedido** | desde / hacia | Estado anterior y nuevo. |
+| **CambioEstadoPedido** | motivo | Por qué, cuando la transición lo pide. |
+| **CambioEstadoPedido** | fecha | Cuándo. |
+| **CambioDireccion** | motivo | Motivo declarado del cambio. |
+| **CambioDireccion** | fecha | Cuándo se cambió. |
 | **ZonaCobertura** | nombre | Denominación de la zona. |
-| **ZonaCobertura** | poligono | Vértices que delimitan el área de cobertura. |
-| **ZonaCobertura** | recargo | Importe adicional que se aplica a las entregas dentro de la zona. |
-| **FranjaHoraria** | startTime / endTime | Rango horario que abarca la franja. |
-| **FranjaHoraria** | capacity | Máximo de pedidos que la franja acepta por día. |
-| **OfertaDespacho** | expiresAt | Momento en que la oferta pierde vigencia. |
-| **OfertaDespacho** | status | Situación de la oferta: ofrecida, aceptada, rechazada o vencida. |
+| **ZonaCobertura** | area | Polígono que delimita el área de cobertura. |
+| **ZonaCobertura** | recargo | Valor adicional que se aplica a las entregas dentro de la zona. |
+| **ZonaCobertura** | tipo_de_recargo | Si el recargo es un monto fijo o un porcentaje del pedido. |
+| **ZonaCobertura** | vigente_hasta | Momento en que la zona deja de aplicarse. Vacío, sin vencimiento. |
+| **FranjaHoraria** | desde / hasta | Rango horario que abarca la franja. |
+| **FranjaHoraria** | cupo | Máximo de pedidos que la franja acepta por día. |
+| **Pago** | importe | Importe de la transacción. |
+| **Pago** | pasarela | Pasarela que procesa la transacción. |
+| **Pago** | estado | Situación del cobro ante la pasarela. |
+| **PropuestaConVigencia** | estado | Pendiente, aceptada, rechazada o vencida. |
+| **PropuestaConVigencia** | vence | Momento en que la propuesta pierde vigencia. |
+| **LoteRecorrido** | estado | En armado, ofrecido, asignado, deshecho o completado. |
+| **LoteRecorrido** | peso_total | Suma del peso de los pedidos del lote. |
+| **ParadaLote** | orden | Posición del pedido en el recorrido. |
+| **Chofer** | disponible | Si está disponible para recibir ofertas en este momento. |
+| **Chofer** | posicion | Última posición conocida. |
+| **Chofer** | calificacion | Promedio de las valoraciones de los clientes. |
 | **Vehiculo** | patente | Dominio del vehículo. |
-| **Vehiculo** | kilometraje | Kilómetros acumulados. Base de la proyección de mantenimiento. |
-| **Vehiculo** | vencimiento_rto | Fecha de vencimiento de la Revisión Técnica Obligatoria. |
-| **UbicacionGPS** | lat / lng | Coordenadas actuales del chofer. Se mantienen en memoria y no se persisten. |
-| **Pago** | gateway | Pasarela que procesa la transacción. |
-| **Pago** | amount | Importe de la transacción. |
-| **Pago** | status | Situación del cobro ante la pasarela. |
-| **Pago** | is_deposit | Distingue el cobro del depósito de envase del cobro de la mercadería. |
-| **Reclamo** | reason | Motivo del reclamo. |
-| **Reclamo** | photoUrl | Fotografía de respaldo, si el cliente la adjuntó. |
-| **Reclamo** | status | Situación del trámite: pendiente, en proceso, resuelto o rechazado. |
-| **Incidencia** | tipo | Naturaleza del contratiempo ocurrido durante la entrega. |
-| **Incidencia** | descripcion | Relato de lo sucedido. |
+| **Vehiculo** | tipo | Moto, utilitario o camión. |
+| **Vehiculo** | carga_maxima | Kilos que puede llevar, descontada la tara. |
+| **Vehiculo** | kilometraje | Última lectura del odómetro. Base de la proyección de mantenimiento. |
+| **Vehiculo** | estado_en_la_flota | Activo, en taller o inhabilitado. |
+| **UbicacionGPS** | latitud / longitud | Coordenadas actuales del chofer. Se mantienen en memoria y no se persisten. |
+| **PlanMantenimiento** | nombre | Seguro, verificación técnica, licencia, cambio de aceite... |
+| **PlanMantenimiento** | disparo | Por kilómetros, por tiempo o por fecha fija. |
+| **PlanMantenimiento** | intervalo | Cada cuántos kilómetros o meses se repite. |
+| **PlanMantenimiento** | anticipacion | Con cuánta anticipación se empieza a planificar. |
+| **PlanMantenimiento** | criticidad | Si al vencer inhabilita al vehículo o al chofer. |
+| **TareaMantenimiento** | estado | Proyectada, programada, en curso, hecha, vencida o cancelada. |
+| **TareaMantenimiento** | vence | Fecha o kilometraje de vencimiento. |
+| **TareaMantenimiento** | vencimiento_proyectado | Fecha estimada por el planificador. |
+| **TareaMantenimiento** | prestador | Aseguradora, taller o ente emisor. |
+| **TareaMantenimiento** | numero | Póliza, número de licencia u oblea. |
+| **TareaMantenimiento** | costo | Importe del trabajo. |
+| **PropuestaVentanaTaller** | desde / hasta | Ventana de taller ofrecida. |
+| **RegistroUsoVehiculo** | dia | Día registrado. |
+| **RegistroUsoVehiculo** | kilometros | Kilómetros recorridos ese día. |
+| **RegistroUsoVehiculo** | pedidos | Pedidos entregados ese día. |
+| **Reclamo** | motivo | Motivo del reclamo. |
+| **Reclamo** | estado | Pendiente, en proceso, resuelto o rechazado. |
+| **Incidencia** | tipo | Naturaleza del contratiempo. |
+| **Incidencia** | momento | Si ocurrió antes, durante o después de la entrega. |
+| **Incidencia** | estado | Abierta o resuelta. |
 | **Calificacion** | puntaje | Valoración numérica asignada al servicio. |
 | **Calificacion** | comentario | Observación escrita del cliente, si la dejó. |
-| **Promocion** | quantity | Cantidad mínima a partir de la cual se aplica el descuento. |
-| **Promocion** | discountPercentage | Porcentaje que se descuenta al alcanzar esa cantidad. |
 
 ---
 
@@ -352,123 +464,259 @@ recuperar. El cliente compra un Producto pero recibe un Envase, y es ese envase 
 
 El siguiente código produce el diagrama conceptual. Es un **modelo del dominio**: los
 conceptos llevan atributos pero **no métodos**, y no se representan claves foráneas ni
-detalles de implementación —eso corresponde al modelo de datos del Doc 3 y al DER.
+detalles de implementación —eso corresponde al modelo de datos del Doc 3 y al DER—.
+Cada contexto es un espacio de nombres y los conceptos incorporados el 24/09/2026 llevan
+el estereotipo «propuesto». Toda entidad pertenece a una distribuidora; para no cruzar el
+diagrama de líneas, sólo se dibujan las relaciones de la distribuidora que forman parte del
+negocio.
 
 ```mermaid
 classDiagram
     direction TB
 
-    class Distribuidora {
-        razon_social
-        cuit
-        activa
+    namespace OrganizacionYAcceso {
+        class Distribuidora {
+            razon_social
+            cuit
+            estado
+        }
+        class Usuario {
+            nombre
+            correo
+            telefono
+        }
+        class Rol {
+            tipo
+        }
+        class Administrador
+        class ConfiguracionModulo {
+            <<propuesto>>
+            modulo
+            parametros
+        }
+        class AsientoAuditoria {
+            <<propuesto>>
+            operacion
+            recurso
+            aplicacion
+            resultado
+            cambios
+            fecha
+        }
     }
-    class Usuario {
-        full_name
-        email
-        phone_number
+
+    namespace Clientes {
+        class Cliente {
+            validado
+            consumo_mensual_declarado
+            dias_de_aviso
+        }
+        class DireccionEntrega {
+            calle_y_altura
+            piso_y_departamento
+            punto
+            precision
+            predeterminada
+        }
+        class InvitacionRecompra {
+            <<propuesto>>
+            agotamiento_estimado
+            pedido_sugerido
+        }
     }
-    class Rol {
-        nombre
+
+    namespace CatalogoEInventario {
+        class Producto {
+            tipo
+            peso_kg
+            precio
+            stock
+        }
+        class Envase {
+            numero_de_serie
+            estado
+            deposito
+            vencimiento
+        }
+        class Promocion {
+            cantidad
+            descuento
+        }
+        class MovimientoEnvase {
+            desde
+            hacia
+            fecha
+        }
+        class RevisionEnvase {
+            <<propuesto>>
+            fecha
+            resultado
+            proxima_revision
+        }
+        class CasoRecupero {
+            <<propuesto>>
+            escalon
+            deposito_comprometido
+            estado
+            resolucion
+        }
+        class AvisoRecupero {
+            <<propuesto>>
+            escalon
+            tipo
+            vence
+        }
     }
-    class Cliente {
-        notification_token
+
+    namespace VentaYPedidos {
+        class Carrito {
+            <<propuesto>>
+            ultima_modificacion
+        }
+        class ItemCarrito {
+            <<propuesto>>
+            cantidad
+            precio_unitario
+        }
+        class Pedido {
+            estado
+            total
+            modalidad_de_entrega
+            fecha_agendada
+            quien_recibe
+        }
+        class ItemPedido {
+            cantidad
+            precio_unitario
+        }
+        class CambioEstadoPedido {
+            <<propuesto>>
+            desde
+            hacia
+            motivo
+            fecha
+        }
+        class CambioDireccion {
+            <<propuesto>>
+            motivo
+            fecha
+        }
+        class ZonaCobertura {
+            nombre
+            area
+            recargo
+            tipo_de_recargo
+            vigente_hasta
+        }
+        class FranjaHoraria {
+            desde
+            hasta
+            cupo
+        }
     }
-    class Chofer {
-        validated
-        isActive
-        calification
-        balance
+
+    namespace Pagos {
+        class Pago {
+            importe
+            pasarela
+            estado
+        }
     }
-    class Administrador
-    class Pedido {
-        status
-        totalAmount
-        paymentMethod
-        paymentStatus
-        scheduled_date
-        deposit_amount
-        deposit_paid
-        deliveryCode
-        cancellationReason
+
+    namespace DespachoYLogistica {
+        class PropuestaConVigencia {
+            <<abstract>>
+            estado
+            vence
+        }
+        class OfertaDespacho
+        class LoteRecorrido {
+            <<propuesto>>
+            estado
+            peso_total
+        }
+        class ParadaLote {
+            <<propuesto>>
+            orden
+        }
+        class OfertaLote {
+            <<propuesto>>
+        }
     }
-    class ItemPedido {
-        quantity
-        unitPrice
-        subtotal
+
+    namespace FlotaYChoferes {
+        class Chofer {
+            disponible
+            posicion
+            calificacion
+        }
+        class Vehiculo {
+            patente
+            tipo
+            carga_maxima
+            kilometraje
+            estado_en_la_flota
+        }
+        class PlanMantenimiento {
+            <<propuesto>>
+            nombre
+            disparo
+            intervalo
+            anticipacion
+            criticidad
+        }
+        class TareaMantenimiento {
+            <<propuesto>>
+            estado
+            vence
+            vencimiento_proyectado
+            prestador
+            numero
+            costo
+        }
+        class PropuestaVentanaTaller {
+            <<propuesto>>
+            desde
+            hasta
+        }
+        class UbicacionGPS {
+            latitud
+            longitud
+        }
+        class RegistroUsoVehiculo {
+            <<propuesto>>
+            dia
+            kilometros
+            pedidos
+        }
     }
-    class Producto {
-        type
-        price
-        stock
-    }
-    class Promocion {
-        quantity
-        discountPercentage
-    }
-    class Envase {
-        serial_number
-        state
-        deposit_value
-    }
-    class MovimientoEnvase {
-        from_state
-        to_state
-        fecha
-    }
-    class DireccionEntrega {
-        formatted_address
-        latitude
-        longitude
-        additional_instructions
-    }
-    class ZonaCobertura {
-        nombre
-        poligono
-        recargo
-    }
-    class FranjaHoraria {
-        startTime
-        endTime
-        capacity
-    }
-    class OfertaDespacho {
-        expiresAt
-        status
-    }
-    class Vehiculo {
-        patente
-        kilometraje
-        vencimiento_rto
-    }
-    class UbicacionGPS {
-        lat
-        lng
-    }
-    class Pago {
-        gateway
-        amount
-        status
-        is_deposit
-    }
-    class Reclamo {
-        reason
-        photoUrl
-        status
-    }
-    class Incidencia {
-        tipo
-        descripcion
-    }
-    class Calificacion {
-        puntaje
-        comentario
+
+    namespace Posventa {
+        class Reclamo {
+            motivo
+            estado
+        }
+        class Incidencia {
+            tipo
+            momento
+            estado
+        }
+        class Calificacion {
+            puntaje
+            comentario
+        }
     }
 
     Usuario <|-- Cliente : es un
     Usuario <|-- Chofer : es un
     Usuario <|-- Administrador : es un
     Usuario "N" -- "1" Rol : tiene asignado
+
+    PropuestaConVigencia <|-- OfertaDespacho : es una
+    PropuestaConVigencia <|-- OfertaLote : es una
+    PropuestaConVigencia <|-- PropuestaVentanaTaller : es una
+    PropuestaConVigencia <|-- InvitacionRecompra : es una
+    PropuestaConVigencia <|-- AvisoRecupero : es una
 
     Distribuidora "1" -- "N" Chofer : emplea
     Distribuidora "1" -- "N" Administrador : emplea
@@ -477,40 +725,65 @@ classDiagram
     Distribuidora "1" -- "N" Pedido : gestiona
     Distribuidora "1" *-- "N" ZonaCobertura : define
     Distribuidora "1" *-- "N" FranjaHoraria : define
+    Distribuidora "1" *-- "N" ConfiguracionModulo : parametriza
+    AsientoAuditoria "N" -- "0..1" Usuario : registra la acción de
 
-    Cliente "1" -- "N" Pedido : realiza
     Cliente "1" *-- "N" DireccionEntrega : registra
+    Cliente "1" -- "N" Pedido : realiza
+    Cliente "1" *-- "0..1" Carrito : arma
+    Cliente "1" -- "N" InvitacionRecompra : recibe
+    Cliente "N" -- "0..1" Producto : usa habitualmente
+    InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en
 
+    Carrito "1" *-- "N" ItemCarrito : contiene
+    ItemCarrito "N" -- "1" Producto : referencia
     Pedido "1" *-- "N" ItemPedido : contiene
     ItemPedido "N" -- "1" Producto : referencia
     Pedido "N" -- "1" DireccionEntrega : se entrega en
     Pedido "N" -- "0..1" FranjaHoraria : se programa en
-    Pedido "N" -- "0..1" Chofer : es asignado a
+    Pedido "1" *-- "N" CambioEstadoPedido : registra
+    Pedido "1" *-- "N" CambioDireccion : registra
+    Pedido "N" -- "0..1" Chofer : es entregado por
+    Pedido "1" -- "N" Pago : se salda con
+
     Pedido "1" *-- "N" OfertaDespacho : se ofrece mediante
     OfertaDespacho "N" -- "1" Chofer : se dirige a
-    Pedido "1" -- "N" Pago : se salda con
-    Pedido "1" -- "N" Reclamo : origina
-    Pedido "1" -- "N" Incidencia : origina
-    Pedido "1" -- "0..1" Calificacion : recibe
+    LoteRecorrido "1" *-- "N" ParadaLote : se compone de
+    ParadaLote "N" -- "1" Pedido : entrega
+    LoteRecorrido "1" *-- "N" OfertaLote : se ofrece mediante
+    OfertaLote "N" -- "1" Chofer : se dirige a
 
     Chofer "1" -- "N" Vehiculo : conduce
     Chofer "1" -- "1" UbicacionGPS : se ubica en
     Chofer "N" -- "N" ZonaCobertura : opera en
+    PlanMantenimiento "1" -- "N" TareaMantenimiento : genera
+    TareaMantenimiento "N" -- "0..1" Vehiculo : habilita
+    TareaMantenimiento "N" -- "0..1" Chofer : habilita
+    TareaMantenimiento "1" *-- "N" PropuestaVentanaTaller : se negocia mediante
+    PropuestaVentanaTaller "N" -- "1" Chofer : se dirige a
+    Vehiculo "1" *-- "N" RegistroUsoVehiculo : acumula
 
     Producto "1" *-- "N" Promocion : ofrece
     Envase "N" -- "1" Producto : materializa
     Envase "1" *-- "N" MovimientoEnvase : registra
+    Envase "1" *-- "N" RevisionEnvase : se revisa en
     MovimientoEnvase "N" -- "0..1" Pedido : se origina en
     MovimientoEnvase "N" -- "0..1" Usuario : es ejecutado por
+    Envase "1" -- "N" CasoRecupero : se reclama en
+    CasoRecupero "N" -- "1" Cliente : se abre con
+    CasoRecupero "1" *-- "N" AvisoRecupero : escala mediante
+
+    Pedido "1" -- "N" Reclamo : origina
+    Pedido "1" -- "N" Incidencia : origina
+    Pedido "1" -- "0..1" Calificacion : recibe
 ```
 
 **Figura 1 — Diagrama Conceptual**
 
-**Para llevarlo a draw.io o Lucidchart.** Ambas herramientas importan Mermaid
-directamente: en draw.io, *Extras → Editar diagrama* y pegar el bloque; en Lucidchart,
-*Importar datos → Mermaid*. Si se prefiere dibujarlo a mano, conviene agrupar
-visualmente en cuatro áreas: la de usuarios y roles, la del pedido y sus líneas, la de
-la flota y el despacho, y la del ciclo de envase.
+**Para llevarlo a Lucidchart.** `generar-lucidchart.py` emite
+`lucidchart/SPLG-modelo-conceptual.xml`, que se importa desde *Archivo → Importar* con las
+cajas ya acomodadas. La fuente es `diagramas/lucidchart/SPLG-modelo-conceptual.mmd`, la
+misma de esta figura.
 
 ---
 

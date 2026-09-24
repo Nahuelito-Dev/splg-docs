@@ -12844,9 +12844,17 @@ modelo propuesto de `diagramas/base-de-datos/`.
 | Carrito de compra | CU-122, CU-123, CU-124, CU-125, CU-126 | Tablas `cart` y `cart_item`. El carrito vive hoy en memoria de la App Cliente y se pierde al cerrarla. |
 | Dirección y receptor del pedido | CU-127, CU-128 | Tabla `order_address_change` y los campos de quién recibe en `order`. |
 | Vencimiento de envases | CU-132, CU-133, CU-134, CU-135 | Tabla `cylinder_inspection` y las fechas de fabricación, última revisión y vencimiento en `cylinder`. |
-| Habilitaciones y mantenimiento de flota | CU-136, CU-137, CU-138, CU-139, CU-140, CU-141, CU-142 | Tabla `fleet_maintenance`, los campos de seguro y verificación técnica en `car` y los de licencia en `delivery`. |
+| Habilitaciones y mantenimiento de flota | CU-136, CU-137, CU-138, CU-139, CU-140, CU-141, CU-142 | Tablas `maintenance_plan` (la regla) y `maintenance_task` (cada vencimiento: póliza, verificación, licencia, service), más kilometraje y estado en la flota en `car`. La tarea apunta a un vehículo o a un chofer, porque la licencia es de la persona. |
 | Consumo declarado y recompra | CU-143, CU-144, CU-145, CU-146 | Consumo promedio, garrafa habitual, días de aviso y próxima recompra estimada en `customer`. |
-| Compra express en moto | CU-147, CU-148, CU-149 | Modalidad de entrega en `order`, el recargo express y el radio express por distribuidora. |
+| Compra express en moto | CU-147, CU-148, CU-149 | Modalidad de entrega en `order`; el recargo, el radio y la vigencia de la oferta express, en `module_config`. |
+| Recargo porcentual y vigencia de zonas | CU-056, CU-150, CU-151 | Tipo de recargo, etiqueta, color y fecha de fin de vigencia en `coverage_zone`. |
+| Dirección resuelta contra el mapa | CU-116, CU-118 | Piso, departamento, punto en PostGIS, identificador del lugar y precisión en `user_address`. |
+| Registro de auditoría | CU-152, CU-153 | Tabla `audit_log`, de sólo escritura. |
+| Módulos inteligentes | CU-105, CU-106, CU-107, CU-108 | M1: `maintenance_window_proposal` y `vehicle_usage_log`. M2: `repurchase_invitation`. M3: `route_batch`, `route_batch_stop` y `route_batch_offer`. M4: `cylinder_recovery_case` y `cylinder_recovery_notice`. Los parámetros de los cuatro, en `module_config`. |
+
+Además, el historial de estados del pedido (`order_status_history`) y la declaración de las
+13 relaciones que hoy existen sin clave foránea. El sustento de cada decisión está en
+`material-de-trabajo/MODELO-DE-DOMINIO.md`.
 
 Dos aclaraciones para la defensa. La primera: CU-043, que ya figuraba en §10.1, es de otra
 naturaleza. Es una función que la documentación daba por hecha y el código no tenía; las de

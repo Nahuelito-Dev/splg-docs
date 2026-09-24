@@ -1,117 +1,255 @@
 classDiagram
     direction TB
 
-    class Distribuidora {
-        razon_social
-        cuit
-        activa
+    %% Modelo de dominio de SPLG — 24/09/2026
+    %% Ocho contextos. Lo marcado <<propuesto>> no esta implementado todavia.
+    %% Toda entidad pertenece a una Distribuidora (multi-tenant): solo se dibujan
+    %% las relaciones de la distribuidora que ya estaban en el modelo anterior.
+    %% Sustento en splg-docs/material-de-trabajo/MODELO-DE-DOMINIO.md
+
+    namespace OrganizacionYAcceso {
+        class Distribuidora {
+            razon_social
+            cuit
+            estado
+        }
+        class Usuario {
+            nombre
+            correo
+            telefono
+        }
+        class Rol {
+            tipo
+        }
+        class Administrador
+        class ConfiguracionModulo {
+            <<propuesto>>
+            modulo
+            parametros
+        }
+        class AsientoAuditoria {
+            <<propuesto>>
+            operacion
+            recurso
+            aplicacion
+            resultado
+            cambios
+            fecha
+        }
     }
-    class Usuario {
-        full_name
-        email
-        phone_number
+
+    namespace Clientes {
+        class Cliente {
+            validado
+            consumo_mensual_declarado
+            dias_de_aviso
+        }
+        class DireccionEntrega {
+            calle_y_altura
+            piso_y_departamento
+            punto
+            precision
+            predeterminada
+        }
+        class InvitacionRecompra {
+            <<propuesto>>
+            agotamiento_estimado
+            pedido_sugerido
+        }
     }
-    class Rol {
-        nombre
+
+    namespace CatalogoEInventario {
+        class Producto {
+            tipo
+            peso_kg
+            precio
+            stock
+        }
+        class Envase {
+            numero_de_serie
+            estado
+            deposito
+            vencimiento
+        }
+        class Promocion {
+            cantidad
+            descuento
+        }
+        class MovimientoEnvase {
+            desde
+            hacia
+            fecha
+        }
+        class RevisionEnvase {
+            <<propuesto>>
+            fecha
+            resultado
+            proxima_revision
+        }
+        class CasoRecupero {
+            <<propuesto>>
+            escalon
+            deposito_comprometido
+            estado
+            resolucion
+        }
+        class AvisoRecupero {
+            <<propuesto>>
+            escalon
+            tipo
+            vence
+        }
     }
-    class Cliente {
-        notification_token
+
+    namespace VentaYPedidos {
+        class Carrito {
+            <<propuesto>>
+            ultima_modificacion
+        }
+        class ItemCarrito {
+            <<propuesto>>
+            cantidad
+            precio_unitario
+        }
+        class Pedido {
+            estado
+            total
+            modalidad_de_entrega
+            fecha_agendada
+            quien_recibe
+        }
+        class ItemPedido {
+            cantidad
+            precio_unitario
+        }
+        class CambioEstadoPedido {
+            <<propuesto>>
+            desde
+            hacia
+            motivo
+            fecha
+        }
+        class CambioDireccion {
+            <<propuesto>>
+            motivo
+            fecha
+        }
+        class ZonaCobertura {
+            nombre
+            area
+            recargo
+            tipo_de_recargo
+            vigente_hasta
+        }
+        class FranjaHoraria {
+            desde
+            hasta
+            cupo
+        }
     }
-    class Chofer {
-        validated
-        isActive
-        calification
-        balance
+
+    namespace Pagos {
+        class Pago {
+            importe
+            pasarela
+            estado
+        }
     }
-    class Administrador
-    class Pedido {
-        status
-        totalAmount
-        paymentMethod
-        paymentStatus
-        scheduled_date
-        deposit_amount
-        deposit_paid
-        deliveryCode
-        cancellationReason
+
+    namespace DespachoYLogistica {
+        class PropuestaConVigencia {
+            <<abstract>>
+            estado
+            vence
+        }
+        class OfertaDespacho
+        class LoteRecorrido {
+            <<propuesto>>
+            estado
+            peso_total
+        }
+        class ParadaLote {
+            <<propuesto>>
+            orden
+        }
+        class OfertaLote {
+            <<propuesto>>
+        }
     }
-    class ItemPedido {
-        quantity
-        unitPrice
-        subtotal
+
+    namespace FlotaYChoferes {
+        class Chofer {
+            disponible
+            posicion
+            calificacion
+        }
+        class Vehiculo {
+            patente
+            tipo
+            carga_maxima
+            kilometraje
+            estado_en_la_flota
+        }
+        class PlanMantenimiento {
+            <<propuesto>>
+            nombre
+            disparo
+            intervalo
+            anticipacion
+            criticidad
+        }
+        class TareaMantenimiento {
+            <<propuesto>>
+            estado
+            vence
+            vencimiento_proyectado
+            prestador
+            numero
+            costo
+        }
+        class PropuestaVentanaTaller {
+            <<propuesto>>
+            desde
+            hasta
+        }
+        class UbicacionGPS {
+            latitud
+            longitud
+        }
+        class RegistroUsoVehiculo {
+            <<propuesto>>
+            dia
+            kilometros
+            pedidos
+        }
     }
-    class Producto {
-        type
-        price
-        stock
-    }
-    class Promocion {
-        quantity
-        discountPercentage
-    }
-    class Envase {
-        serial_number
-        state
-        deposit_value
-    }
-    class MovimientoEnvase {
-        from_state
-        to_state
-        fecha
-    }
-    class DireccionEntrega {
-        formatted_address
-        latitude
-        longitude
-        additional_instructions
-    }
-    class ZonaCobertura {
-        nombre
-        poligono
-        recargo
-    }
-    class FranjaHoraria {
-        startTime
-        endTime
-        capacity
-    }
-    class OfertaDespacho {
-        expiresAt
-        status
-    }
-    class Vehiculo {
-        patente
-        kilometraje
-        vencimiento_rto
-    }
-    class UbicacionGPS {
-        lat
-        lng
-    }
-    class Pago {
-        gateway
-        amount
-        status
-        is_deposit
-    }
-    class Reclamo {
-        reason
-        photoUrl
-        status
-    }
-    class Incidencia {
-        tipo
-        descripcion
-    }
-    class Calificacion {
-        puntaje
-        comentario
+
+    namespace Posventa {
+        class Reclamo {
+            motivo
+            estado
+        }
+        class Incidencia {
+            tipo
+            momento
+            estado
+        }
+        class Calificacion {
+            puntaje
+            comentario
+        }
     }
 
     Usuario <|-- Cliente : es un
     Usuario <|-- Chofer : es un
     Usuario <|-- Administrador : es un
     Usuario "N" -- "1" Rol : tiene asignado
+
+    PropuestaConVigencia <|-- OfertaDespacho : es una
+    PropuestaConVigencia <|-- OfertaLote : es una
+    PropuestaConVigencia <|-- PropuestaVentanaTaller : es una
+    PropuestaConVigencia <|-- InvitacionRecompra : es una
+    PropuestaConVigencia <|-- AvisoRecupero : es una
 
     Distribuidora "1" -- "N" Chofer : emplea
     Distribuidora "1" -- "N" Administrador : emplea
@@ -120,28 +258,54 @@ classDiagram
     Distribuidora "1" -- "N" Pedido : gestiona
     Distribuidora "1" *-- "N" ZonaCobertura : define
     Distribuidora "1" *-- "N" FranjaHoraria : define
+    Distribuidora "1" *-- "N" ConfiguracionModulo : parametriza
+    AsientoAuditoria "N" -- "0..1" Usuario : registra la acción de
 
-    Cliente "1" -- "N" Pedido : realiza
     Cliente "1" *-- "N" DireccionEntrega : registra
+    Cliente "1" -- "N" Pedido : realiza
+    Cliente "1" *-- "0..1" Carrito : arma
+    Cliente "1" -- "N" InvitacionRecompra : recibe
+    Cliente "N" -- "0..1" Producto : usa habitualmente
+    InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en
 
+    Carrito "1" *-- "N" ItemCarrito : contiene
+    ItemCarrito "N" -- "1" Producto : referencia
     Pedido "1" *-- "N" ItemPedido : contiene
     ItemPedido "N" -- "1" Producto : referencia
     Pedido "N" -- "1" DireccionEntrega : se entrega en
     Pedido "N" -- "0..1" FranjaHoraria : se programa en
-    Pedido "N" -- "0..1" Chofer : es asignado a
+    Pedido "1" *-- "N" CambioEstadoPedido : registra
+    Pedido "1" *-- "N" CambioDireccion : registra
+    Pedido "N" -- "0..1" Chofer : es entregado por
+    Pedido "1" -- "N" Pago : se salda con
+
     Pedido "1" *-- "N" OfertaDespacho : se ofrece mediante
     OfertaDespacho "N" -- "1" Chofer : se dirige a
-    Pedido "1" -- "N" Pago : se salda con
-    Pedido "1" -- "N" Reclamo : origina
-    Pedido "1" -- "N" Incidencia : origina
-    Pedido "1" -- "0..1" Calificacion : recibe
+    LoteRecorrido "1" *-- "N" ParadaLote : se compone de
+    ParadaLote "N" -- "1" Pedido : entrega
+    LoteRecorrido "1" *-- "N" OfertaLote : se ofrece mediante
+    OfertaLote "N" -- "1" Chofer : se dirige a
 
     Chofer "1" -- "N" Vehiculo : conduce
     Chofer "1" -- "1" UbicacionGPS : se ubica en
     Chofer "N" -- "N" ZonaCobertura : opera en
+    PlanMantenimiento "1" -- "N" TareaMantenimiento : genera
+    TareaMantenimiento "N" -- "0..1" Vehiculo : habilita
+    TareaMantenimiento "N" -- "0..1" Chofer : habilita
+    TareaMantenimiento "1" *-- "N" PropuestaVentanaTaller : se negocia mediante
+    PropuestaVentanaTaller "N" -- "1" Chofer : se dirige a
+    Vehiculo "1" *-- "N" RegistroUsoVehiculo : acumula
 
     Producto "1" *-- "N" Promocion : ofrece
     Envase "N" -- "1" Producto : materializa
     Envase "1" *-- "N" MovimientoEnvase : registra
+    Envase "1" *-- "N" RevisionEnvase : se revisa en
     MovimientoEnvase "N" -- "0..1" Pedido : se origina en
     MovimientoEnvase "N" -- "0..1" Usuario : es ejecutado por
+    Envase "1" -- "N" CasoRecupero : se reclama en
+    CasoRecupero "N" -- "1" Cliente : se abre con
+    CasoRecupero "1" *-- "N" AvisoRecupero : escala mediante
+
+    Pedido "1" -- "N" Reclamo : origina
+    Pedido "1" -- "N" Incidencia : origina
+    Pedido "1" -- "0..1" Calificacion : recibe
