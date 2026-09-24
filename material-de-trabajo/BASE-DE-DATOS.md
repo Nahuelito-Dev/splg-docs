@@ -247,19 +247,36 @@ usa la config de `app.module.ts`.
 4. `npm run migration:run` para aplicarla.
 5. Commiteás la migración junto con el cambio de entidad.
 
-### ⚠️ Baseline para una DB NUEVA (primer deploy a prod)
+### La migración inicial
 
-La primera migración del repo (`AddHotIndexes`) **solo agrega índices**: asume que
-el esquema (tablas) ya existe (se creó por `synchronize` en dev). Una base de datos
-**vacía** de prod NO tiene las tablas, así que hay que crearlas primero. Dos opciones:
+Desde el 24/09/2026 el repo tiene **una sola migración de partida**,
+`1790281980739-InitialSchema`, con el esquema completo: 20 tablas, 16 tipos
+enumerados, 38 índices y 30 claves foráneas, más las extensiones `uuid-ossp` y
+`postgis`. Se generó desde las entidades contra una base vacía.
 
-- **Opción A (recomendada):** generar una migración baseline del esquema completo
-  contra una DB vacía, y commitearla ANTES de `AddHotIndexes`:
-  ```bash
-  # apuntar DB_NAME a una base vacía y:
-  npm run migration:generate -- src/migrations/000_InitialSchema
-  ```
-- **Opción B:** en el primer arranque de prod, correr `synchronize` UNA vez para
-  crear el esquema y después dejarlo en false + `migration:run` para el resto.
+Reemplazó a las tres migraciones anteriores (`AddHotIndexes`,
+`DistributorIdNotNull` y `OrderCustomerRestrictOnDelete`), que suponían las
+tablas ya creadas por `synchronize` y no servían para una base nueva. Lo que
+hacían quedó incluido en la inicial.
 
-Definir esto antes del primer deploy productivo.
+**Cómo se verificó:** una base vacía, sin extensiones, con `migration:run` y nada
+más, quedó con un esquema idéntico al de desarrollo (el `pg_dump` de los dos da
+las mismas 506 líneas). La migración se revierte y se vuelve a aplicar sin
+errores, y la app arranca contra esa base.
+
+**Una base nueva** se crea así, sin pasos manuales:
+
+```bash
+npm run migration:run
+```
+
+**Una base que ya tenía las tres migraciones viejas** tiene el esquema, pero no
+el registro. Hay que anotarle la inicial como aplicada, una sola vez:
+
+```sql
+DELETE FROM migrations WHERE name IN ('AddHotIndexes1784228702584',
+  'DistributorIdNotNull1784234639090', 'OrderCustomerRestrictOnDelete1784236103204');
+INSERT INTO migrations(timestamp, name) VALUES (1790281980739, 'InitialSchema1790281980739');
+```
+
+Así se hizo con la base de desarrollo (`splg_db`).
