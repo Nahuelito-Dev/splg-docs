@@ -19417,7 +19417,7 @@ sequenceDiagram
     participant ACT as SuperAdmin o Admin de empresa
     participant CTRL as AdminController
     participant SRV as AdminService
-    participant RREP as RepositoryRole
+    participant RSRV as RoleService
     participant HLP as AdminRegistrationHelper
     participant USR as UsersService
     participant AREP as RepositoryAdmin
@@ -19433,10 +19433,10 @@ sequenceDiagram
             deactivate CTRL
         else Tiene tenant
             CTRL->>SRV: isSuperAdminRole(dto.role_id)
-            SRV->>RREP: findOne(where role_id)
-            activate RREP
-            RREP-->>SRV: Role o null
-            deactivate RREP
+            SRV->>RSRV: findById(role_id)
+            activate RSRV
+            RSRV-->>SRV: Role o null
+            deactivate RSRV
             SRV-->>CTRL: boolean
             deactivate SRV
             alt El rol pedido es super_admin
@@ -19475,7 +19475,8 @@ sequenceDiagram
         deactivate AREP
         SRV-->>CTRL: message, admin, user
         deactivate SRV
-        CTRL-->>ACT: 201 Admin registrado
+        CTRL->>CTRL: AdminMapper.toRegistrado(admin, user)
+        CTRL-->>ACT: 201 AdminRegistradoResponseDto
     end
     deactivate HLP
 ```
