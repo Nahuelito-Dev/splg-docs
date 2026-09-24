@@ -56,7 +56,7 @@ sequenceDiagram
                     GUARD-->>CTRL: true
                     CTRL->>SRV: checkIfTokenValid()
                     activate SRV
-                    SRV-->>CTRL: HttpException token valid
+                    SRV-->>CTRL: TokenValidoResponseDto token valid
                     deactivate SRV
                 end
             end

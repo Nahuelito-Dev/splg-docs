@@ -2471,16 +2471,18 @@ sequenceDiagram
         activate SDK
         SDK-->>SRV: UserCredential
         deactivate SDK
-        SRV-->>CTRL: UserCredential
+        SRV->>SRV: aSesionIniciada(credencial), sin refreshToken
+        SRV-->>CTRL: SesionIniciadaDto
         deactivate SRV
     else Login del panel, POST /auth/login/dashboard
-        CTRL->>SRV: login(dto, requestSource)
+        CTRL->>SRV: login(dto)
         activate SRV
         SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
         activate SDK
         SDK-->>SRV: UserCredential
         deactivate SDK
-        SRV-->>CTRL: UserCredential con stsTokenManager
+        SRV->>SRV: aSesionIniciada(credencial), sin refreshToken
+        SRV-->>CTRL: SesionIniciadaDto con accessToken
         deactivate SRV
         CTRL->>SRV: loginDashboard(accessToken)
         activate SRV
@@ -3251,7 +3253,7 @@ sequenceDiagram
                     GUARD-->>CTRL: true
                     CTRL->>SRV: checkIfTokenValid()
                     activate SRV
-                    SRV-->>CTRL: HttpException token valid
+                    SRV-->>CTRL: TokenValidoResponseDto token valid
                     deactivate SRV
                 end
             end
@@ -3265,8 +3267,10 @@ sequenceDiagram
 
 - El tenant efectivo se resuelve **acá**, una sola vez por request, y lo consumen todos los
   controllers vía `@CurrentDistributor()`. Un staff no puede cambiarlo por header.
-- `checkIfTokenValid` devuelve un `HttpException` con status `CONTINUE` (100) en vez de un
-  DTO: el valor informativo está en que la request haya llegado al handler.
+- `checkIfTokenValid` devuelve un `TokenValidoResponseDto`: el valor informativo está en
+  que la request haya llegado al handler. Conserva la forma que la respuesta tenía cuando
+  el servicio devolvía una `HttpException` como cuerpo (`response`, `status` 100,
+  `message`, `name`), para no cambiarle el contrato a quien la consuma.
 
 ---
 

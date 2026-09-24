@@ -32,16 +32,18 @@ sequenceDiagram
         activate SDK
         SDK-->>SRV: UserCredential
         deactivate SDK
-        SRV-->>CTRL: UserCredential
+        SRV->>SRV: aSesionIniciada(credencial), sin refreshToken
+        SRV-->>CTRL: SesionIniciadaDto
         deactivate SRV
     else Login del panel, POST /auth/login/dashboard
-        CTRL->>SRV: login(dto, requestSource)
+        CTRL->>SRV: login(dto)
         activate SRV
         SRV->>SDK: signInWithEmailAndPassword(auth, dto.email, dto.password)
         activate SDK
         SDK-->>SRV: UserCredential
         deactivate SDK
-        SRV-->>CTRL: UserCredential con stsTokenManager
+        SRV->>SRV: aSesionIniciada(credencial), sin refreshToken
+        SRV-->>CTRL: SesionIniciadaDto con accessToken
         deactivate SRV
         CTRL->>SRV: loginDashboard(accessToken)
         activate SRV
