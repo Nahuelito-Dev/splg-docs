@@ -1,98 +1,90 @@
-# Dónde quedamos — 23/09/2026
+# Dónde quedamos — 24/09/2026
 
-Lo que se hizo hoy y lo que sigue. Se lee junto con `ESTADO-Y-PRIORIDADES.md`,
-que tiene la foto completa del sistema.
+Se lee junto con `splg-app-backend/CONVENCIONES.md` (las reglas) y
+`MODELO-DE-DOMINIO.md` (el modelo nuevo).
 
 **Compromiso:** presentar avances la semana que viene.
 
 ---
 
-## Lo que quedó hecho hoy
+## Lo que se hizo hoy
 
-### Backend — 23 commits en `fix/alineacion-nest`
+### Fase 0 — las bases, terminada
 
-| Qué | Cómo se verificó |
+| Qué | Estado |
 |---|---|
-| **CU-011** — sólo el chofer asignado avisa la llegada, y el aviso también sale por push | Chofer ajeno 403, asignado 200, admin 200. El push se probó con token FCM registrado: falla, queda en el log y el endpoint igual responde 200 |
-| **CU-020** — un chofer sólo mueve pedidos que ya son suyos | Antes: un chofer sin relación con el pedido lo ponía en entregado y recibía 200, y en efectivo quedaba dado por cobrado. Ahora 403 |
-| **Salas de tiempo real** — se arman con el token, no con lo que manda el cliente | Con dos clientes reales: el ajeno ya no recibe nada, el legítimo sigue recibiendo lo suyo, y un chofer que reporta un id falso entra al radar con el id real de su token |
-| **Cupo de acceso** — por cuenta además de por IP | Con una cuenta bloqueada, otra entra desde la misma IP. Variando el email, el corte llega en el intento 101 |
-| **Colección de Postman** — carpeta nueva `02 · Recorrido del pedido` | Un pedido encadenado de punta a punta más el caso del chofer ajeno |
+| Prettier sobre todo el código | Hecho, en un commit aparte |
+| TypeScript `strict: true` | 339 errores → 0 |
+| ESLint estricto (`any` y promesas sueltas prohibidos) | Activo; `common/`, `main.ts`, `app.module`, `adapters`, `redis` en 0. Lo de cada módulo se resuelve en su tanda |
+| Migración inicial | `InitialSchema`: una base nueva se crea con `migration:run`. Verificado: esquema idéntico al de desarrollo |
+| `CONVENCIONES.md` | Las reglas de Nest y TypeScript y la lista de **12 puntos de módulo terminado** |
+| Bug real | El socket confirmaba la conexión antes de entrar a su sala |
 
-**Estado del backend:** 157 tests en verde, camino completo de la demo 19/19 en
-tres corridas, 131 endpoints sin ninguno roto.
+### Modelos para la cátedra, rehechos
 
-**Medido hoy, no supuesto:** el tracking en tiempo real entrega la posición al
-cliente en **4 ms de promedio** (8 de 8 posiciones), y el despacho automático
-ofrece el pedido y el chofer recibe la oferta.
+- Modelo de dominio en **8 contextos**, con los 153 CU. La **propuesta con
+  vigencia** es el concepto común del despacho y los 4 módulos inteligentes.
+- Modelo de datos completo: **37 tablas, 84 relaciones**; se declaran las 13
+  relaciones sin FK.
+- Actualizados el Doc 2 §1 (modelo conceptual) y el Doc 3 (tabla de
+  faltantes). `verificar-conformidad.py` pasa en todo.
 
-### Documentación
+### Tanda 1 — módulos alineados
 
-- **CU-150 y CU-151** — vigencia temporal de las zonas de cobertura
-- **CU-152 y CU-153** — registro de auditoría del sistema, más **IRQ-16**
-- **Cinco CU existentes modificados**: CU-116 y CU-118 (resolución de la
-  dirección contra el mapa, más piso y departamento), CU-056 (recargo
-  porcentual, etiqueta y color), CU-013 (chofer "casi libre") y CU-017 (tiempo
-  estimado de llegada junto con la posición)
-- Los cuatro casos nuevos están en **los cuatro documentos de la cátedra**, con
-  sus cinco artefactos cada uno, y el sitio publicado y verificado en vivo
-- `material-de-trabajo` pasó de **31 documentos a 8**, con los cumplidos en
-  `historico/`
+| Módulo | Qué cambió visible hacia afuera |
+|---|---|
+| `role` | Nada |
+| `auth` | Nada en éxito. 401 de token inválido suma `statusCode` y conserva `code`. Se cortó el ciclo `auth ↔ users` (un guard corría dos veces en `/users`) |
+| `gateways` | Nada. Identidad del socket tipada en `socket.data` |
+| `customer` | Dejan de salir `notification_token` y `user.firebase_uid` (ningún cliente los lee) |
+| `admin` | Dejan de salir `firebase_uid` y `uid` |
+| `health`, `redis`, `firebase` | Ya cumplían; Firebase lee credenciales por `ConfigService` |
+
+Cada uno: prueba unitaria, batería de Postman, comparación de forma de las
+respuestas y sus DSD actualizados en las **tres copias**.
 
 ---
 
 ## Lo primero para mañana
 
-**Paso 1 de la lista: los DTO de respuesta.** De 21 módulos con controlador,
-sólo 2 tienen DTO de respuesta (`order` y `auth`). Los otros 19 devuelven la
-entidad de TypeORM cruda, así que el contrato de la API es "lo que tenga la
-tabla": agregar una columna cambia la respuesta sin que nadie lo decida, y un
-campo interno se filtra sin que nadie se entere.
+1. **Terminar la tanda 1:** `incident`, `claims`, `rating`, `reports`.
+2. **Revisar el comparador de formas:** no marcó `firebase_uid` en `GET /admin`
+   ni en `POST /admin/register` aunque se sacó (verificado a mano). Entender
+   por qué antes de seguir confiando en él.
+3. **Tanda 2:** `distributor`, `payments` (mover el webhook de MP fuera de
+   `order`), `car`, `cylinder`, `coverage-zone`, `time-slot`, `notifications`,
+   `email`.
+4. **Tanda 3:** `users`, `delivery`, `user-address`, `gascylinder`, `order` al
+   final. Acá va el corte del ciclo `users ↔ customer ↔ email`: los registros de
+   cliente y de chofer se mueven juntos a sus módulos (cambia CU-002 y CU-003).
+5. **Pasada final:** propiedades a camelCase con `@Column({ name })` y renombres
+   de archivos. Va al final porque recién ahí todo tiene DTO de salida.
+6. Publicar el sitio.
 
-Es lo más barato, lo más mecánico y lo que más cubre antes de que las apps se
-acoplen a la forma de las tablas.
+## Cómo se trabaja un módulo
 
-**Después**, en este orden: partir `order.controller.ts` (456 líneas) sin tocar
-rutas ni respuestas; los bloques de datos que habilitan los módulos
-inteligentes; el carrito; los módulos inteligentes; express y vigencia de zonas.
+```bash
+mkdir -p /tmp/splg-alineacion
+cp splg-app-backend/scripts/alineacion/newman-base1.json /tmp/splg-alineacion/
+splg-app-backend/scripts/alineacion/modulo.sh <modulo> src/<modulo>
+```
 
----
+Detalle en `splg-app-backend/scripts/alineacion/LEEME.md`. El back de prueba
+corre en **:3100** porque el 3000 lo ocupa el MCP de Excalidraw.
 
-## Decidido hoy, pendiente de ejecutar
+## Hallazgos nuevos (en `HALLAZGOS.md`, sin corregir)
 
-| Qué | Decisión | Cuándo |
-|---|---|---|
-| Mover el webhook de MercadoPago a `payments` | Hacerlo: hoy vive en `order`, que no tiene por qué saber de MercadoPago | Pendiente |
-| Tabla de historial de estados del pedido | Hacerlo: hoy no queda registro de quién cambió un estado ni por qué | Pendiente |
-| Módulo de auditoría (CU-152, CU-153) | **Especificado, no construido.** Alcanza a toda escritura, es de sólo lectura y depura credenciales | Pendiente |
-| Sacar reservas a su propio módulo | **No**: una reserva es un pedido, el módulo nuevo dependería de `order` igual | Descartado |
-| Módulo de chat | **No**: ningún CU lo pide y Reclamos ya cubre el problema con registro | Descartado |
-| Módulo de almacenamiento (S3) | Más adelante. Cuando toque: puerto propio, como ya hace `payments` | Diferido |
+- **H-52 · ALTO:** un cliente se puede validar a sí mismo con
+  `PATCH /customers/:id` `{"validated":"true"}`. Verificado contra la API.
+- **H-53:** `/health` da 503 bajo la batería completa (umbral de 300 MB).
+- **H-54:** el evento "en camino" se llama distinto en cliente y panel.
+- **H-55:** la asignación manual no avisa al chofer por socket (revisar CU-012).
 
-### Del lado de los clientes — **no se tocó nada, como acordamos**
+## Reglas acordadas hoy
 
-| Qué | Decisión |
-|---|---|
-| Botón "Nuevo Cliente" del panel | Sacarlo: ningún CU tiene alta de cliente por el administrador, y hoy da 404 |
-| Pantalla de modificar pedido en la app cliente | Sacarla: no existe CU de modificar un pedido, y las rutas que llama dan 404 |
-| Cancelar devuelve el 90% | **Regla nueva del 23/09.** Falta incorporarla a CU-008, que hoy no dice nada de reembolso. No se puede implementar hasta que esté la integración de cobro |
-
-Lo que se creía que faltaba y **ya funciona**: mandar el pedido a una dirección
-distinta de la del registro —comprarle a la madre, por ejemplo—. Verificado
-contra la API.
-
----
-
-## Cosas que conviene no olvidar
-
-- **El watcher del backend se colgó** en medio de la sesión: estuve veinte
-  minutos probando contra código viejo creyendo que el arreglo no funcionaba.
-  Si algo no responde a un cambio, sospechar de eso primero y reiniciar.
-- **El sitio no lee los diagramas del markdown**: los toma de archivos `.mmd`
-  sueltos en `diagramas/`. Escribir el diagrama en `Casos-de-Uso.md` no alcanza.
-- **`fix/alineacion-nest` no tenía upstream**: los 23 commits del backend
-  estaban sólo en la máquina.
-- Quedan **dos deudas de forma** en la documentación: los subsistemas aparecen
-  con dos nombres distintos según la sección (SS-03, SS-04, SS-07, SS-08,
-  SS-10), y `gateways` y `payments` no figuran en `app.module.ts` porque los
-  importa `order.module.ts`.
+- A rajatabla lo que pide Nest y TypeScript.
+- No se cambia comportamiento; lo visible que cambie se escribe en el commit.
+- Se conservan los nombres de clase que usan los DSD; los DSD que cambian se
+  actualizan en las tres copias y se corre el verificador de la cátedra.
+- La autorización según quién pide puede quedar en el controlador (así CU-086 y
+  CU-087 no cambian); las invariantes del negocio van al servicio.
