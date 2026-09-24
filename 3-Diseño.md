@@ -8732,7 +8732,8 @@ sequenceDiagram
         SRV-->>CTRL: message Role deleted successfully
         deactivate SRV
     end
-    CTRL-->>SA: respuesta segun la operacion
+    CTRL->>CTRL: RoleMapper.toDto(role) a RoleResponseDto
+    CTRL-->>SA: RoleResponseDto, lista o mensaje, segun la operacion
     deactivate CTRL
     deactivate GRD
 ```
