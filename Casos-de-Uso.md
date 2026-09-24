@@ -14055,6 +14055,7 @@ sequenceDiagram
         CSRV->>CREP: save(customer)
         CSRV-->>CCTRL: Customer actualizado
         deactivate CSRV
+        CCTRL->>CCTRL: CustomerMapper.toDto(customer) a CustomerResponseDto
     end
     deactivate CREP
     deactivate QR
@@ -19808,7 +19809,8 @@ sequenceDiagram
     deactivate CREP
     SRV-->>CTRL: Customer[]
     deactivate SRV
-    CTRL-->>ADM: 200 Customer[]
+    CTRL->>CTRL: CustomerMapper.toDto(customer) a CustomerResponseDto
+    CTRL-->>ADM: 200 CustomerResponseDto[]
     deactivate CTRL
     deactivate DEC
 ```
@@ -19876,7 +19878,8 @@ sequenceDiagram
             SRV-->>CTRL: Customer
         end
     end
-    CTRL-->>ADM: 200 Customer
+    CTRL->>CTRL: CustomerMapper.toDto(customer)
+    CTRL-->>ADM: 200 CustomerResponseDto
     deactivate CTRL
 ```
 
@@ -19925,7 +19928,8 @@ sequenceDiagram
             CREP-->>SRV: Customer actualizado
             deactivate CREP
             SRV-->>CTRL: Customer
-            CTRL-->>CLI: 200 Customer
+            CTRL->>CTRL: CustomerMapper.toDto(customer)
+            CTRL-->>CLI: 200 CustomerResponseDto
             deactivate CTRL
         end
     end

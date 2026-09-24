@@ -874,3 +874,45 @@ puede conectarse al namespace de choferes.
 
 Es el mismo defecto que tiene Tutu con sus salas nombradas por email. No se
 importó de ahí: los dos lo tienen por separado.
+
+---
+
+## Encontrados durante la alineación a Nest — 24/09
+
+Aparecieron mientras se alineaban los módulos. Se anotan y **no** se corrigen
+sobre la marcha, porque arreglarlos cambia el comportamiento de la API.
+
+### H-52 · Un cliente se puede validar a sí mismo — **seguridad, ALTO**
+
+`UpdateCustomerDto` deriva de `CreateCustomerDto` con todos sus campos, así que
+`PATCH /customers/:id` acepta `validated` y `user_id` de parte del propio
+cliente. El control de propiedad sólo mira que el perfil sea suyo, no qué campos
+toca.
+
+**Verificado contra la API corriendo:** un cliente con `validated: "false"`
+mandó `PATCH /customers/{su id}` con `{"validated":"true"}`, recibió 200 y quedó
+validado. Se le devolvió el valor original después de la prueba.
+
+El arreglo es un DTO de modificación propio para el cliente, sin `validated` ni
+`user_id`. La validación ya tiene su endpoint de administrador
+(`PATCH /customers/:id/validate`).
+
+### H-53 · El chequeo de salud se cae bajo carga normal — **operación, medio**
+
+`/health` exige que el proceso use menos de 300 MB de memoria residente. Con la
+batería de Postman completa el proceso los pasa y el chequeo responde 503. Un
+balanceador de carga lo tomaría como una instancia caída y la sacaría de
+servicio justo cuando hay tráfico. El umbral es de un proceso vacío, no de uno
+trabajando.
+
+### H-54 · El mismo evento de tiempo real tiene dos nombres — **contrato, bajo**
+
+Cuando un pedido sale en camino, el cliente recibe `order:on-the-way` y el panel
+`order:on_the_way`. Medido con sockets reales durante el recorrido del pedido.
+Quien integre tiene que saber que cambia según el namespace.
+
+### H-55 · La asignación manual no le avisa al chofer por tiempo real — **a revisar contra CU-012**
+
+Cuando el administrador asigna un pedido a mano, el socket del chofer no recibe
+ningún evento (sí lo recibe en el despacho automático). Puede ser correcto si el
+aviso va sólo por push; hay que contrastarlo con lo que especifica CU-012.

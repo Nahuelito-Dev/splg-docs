@@ -30,7 +30,8 @@ sequenceDiagram
             CREP-->>SRV: Customer actualizado
             deactivate CREP
             SRV-->>CTRL: Customer
-            CTRL-->>CLI: 200 Customer
+            CTRL->>CTRL: CustomerMapper.toDto(customer)
+            CTRL-->>CLI: 200 CustomerResponseDto
             deactivate CTRL
         end
     end

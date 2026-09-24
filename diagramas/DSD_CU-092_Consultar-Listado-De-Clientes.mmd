@@ -27,6 +27,7 @@ sequenceDiagram
     deactivate CREP
     SRV-->>CTRL: Customer[]
     deactivate SRV
-    CTRL-->>ADM: 200 Customer[]
+    CTRL->>CTRL: CustomerMapper.toDto(customer) a CustomerResponseDto
+    CTRL-->>ADM: 200 CustomerResponseDto[]
     deactivate CTRL
     deactivate DEC

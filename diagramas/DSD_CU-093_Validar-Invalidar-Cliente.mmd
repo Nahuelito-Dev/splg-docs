@@ -48,5 +48,6 @@ sequenceDiagram
             SRV-->>CTRL: Customer
         end
     end
-    CTRL-->>ADM: 200 Customer
+    CTRL->>CTRL: CustomerMapper.toDto(customer)
+    CTRL-->>ADM: 200 CustomerResponseDto
     deactivate CTRL

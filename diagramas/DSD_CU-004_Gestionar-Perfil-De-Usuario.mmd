@@ -70,6 +70,7 @@ sequenceDiagram
         CSRV->>CREP: save(customer)
         CSRV-->>CCTRL: Customer actualizado
         deactivate CSRV
+        CCTRL->>CCTRL: CustomerMapper.toDto(customer) a CustomerResponseDto
     end
     deactivate CREP
     deactivate QR
