@@ -1195,3 +1195,16 @@ había comprado a B, y leía sus direcciones.
 otra distribuidora porque el catálogo es público (`GET /gascylinder` no pide
 sesión). `GET /car/user/:id` y `/car/patent/:p` de otra distribuidora dan lista
 vacía / `null`, no 404: ya estaban acotados y no filtran nada.
+
+## Encontrados en la tanda 3 — 25/09
+
+### H-85 · Pedir sin stock devolvía 500 — **defecto, ALTO**
+
+> **Resuelto el 25/09.** El alta del pedido devuelve tal cual todo error de quien pide (dominio o HTTP 4xx).
+
+`CreateOrderUseCase` sólo relanzaba los errores con `status` 400 o 404; los de
+dominio (`InsufficientStockError`, `GasCylinderNotFoundError`) no traen `status`,
+así que caían en el genérico. **Verificado contra la API:** pedir 99999
+unidades, o un producto inexistente, respondía 500 "Error al crear el pedido";
+el cliente no sabía que el problema era el stock. Ahora 400 "Stock insuficiente
+para …" y 404 "Garrafa no encontrada".
