@@ -10,6 +10,8 @@ sequenceDiagram
     alt La transicion de estado es valida y el chofer esta activo
         SIS-->>CHO: pedido asignado (datos de entrega y codigo de entrega)
         SIS-)CLI: aviso de que un chofer tomo el pedido
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     else El pedido ya esta entregado o cancelado
         SIS-->>CHO: error de solicitud (transicion no permitida)
     else El chofer no existe o esta dado de baja

@@ -1673,14 +1673,18 @@ sequenceDiagram
     participant ORQ as DispatchOrchestratorService
     participant OFERTAS as DispatchOfferRepositoryPort
     participant ORD as OrderRepositoryPort
-    participant DEL as RepositoryDelivery
+    participant DEL as DeliveryService
     participant SM as OrderStatusMachine
     participant RT as RealtimeDispatchPort
     participant NOT as NotificationPort
 
     alt El chofer ACEPTA, PATCH /orders/:id/status ACCEPTED
-        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
+        SRV->>ORD: findById(id)
+        ORD-->>SRV: Order de la distribuidora del chofer
+        SRV-->>CTRL: sin error
+        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
         SRV->>UCS: execute(id, ACCEPTED, deliveryId)
         activate UCS
         UCS->>ORD: findByIdFull(id)
@@ -1691,10 +1695,11 @@ sequenceDiagram
         activate SM
         SM-->>UCS: transicion valida
         deactivate SM
-        UCS->>DEL: findOne(delivery_id o user_id)
+        UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
         activate DEL
         DEL-->>UCS: Delivery con user
         deactivate DEL
+        UCS->>UCS: delivery.distributor_id igual a order.distributor_id
         UCS->>UCS: order.delivery_id, order.acceptedAt
         UCS->>UCS: order.deliveryCode = generateDeliveryCode()
         UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
@@ -1713,6 +1718,10 @@ sequenceDiagram
         UCS-->>CTRL: Order actualizado
         deactivate UCS
     else El chofer RECHAZA, POST /orders/:id/reject
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
+        SRV->>ORD: findById(id)
+        ORD-->>SRV: Order de la distribuidora del chofer
+        SRV-->>CTRL: sin error
         CTRL->>SRV: rejectOffer(id, user.user_id)
         SRV->>ORD: findByIdFull(id)
         ORD-->>SRV: Order
@@ -1939,64 +1948,82 @@ sequenceDiagram
     Note over CHO,CTRL: CU-078, el chofer obtiene el codigo y lo muestra como QR
     CHO->>CTRL: GET /orders/:id/delivery-code
     activate CTRL
-    CTRL->>SRV: getDeliveryCode(orderId, userId, role)
+    CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
     activate SRV
-    SRV->>ORD: findByIdFull(orderId)
+    SRV->>ORD: findById(id)
     activate ORD
-    ORD-->>SRV: Order
+    ORD-->>SRV: Order o null
     deactivate ORD
-    alt role DELIVERY y el pedido no es suyo
-        SRV-->>CHO: ForbiddenException, pedido no asignado a tu usuario
-        deactivate SRV
-    else Sin deliveryCode, pedido aun no aceptado
-        SRV-->>CHO: BadRequestException, todavia no tiene codigo
-    else Autorizado
-        SRV-->>CHO: orderId, deliveryCode
-        CHO->>CLI: muestra el QR en pantalla
-        activate CLI
+    alt Pedido de otra distribuidora que la del contexto
+        SRV-->>CHO: NotFoundException, Order with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        CTRL->>SRV: getDeliveryCode(orderId, userId, role)
+        SRV->>ORD: findByIdFull(orderId)
+        activate ORD
+        ORD-->>SRV: Order
+        deactivate ORD
+        alt role DELIVERY y el pedido no es suyo
+            SRV-->>CHO: ForbiddenException, pedido no asignado a tu usuario
+            deactivate SRV
+        else Sin deliveryCode, pedido aun no aceptado
+            SRV-->>CHO: BadRequestException, todavia no tiene codigo
+        else Autorizado
+            SRV-->>CHO: orderId, deliveryCode
+            CHO->>CLI: muestra el QR en pantalla
+            activate CLI
+        end
     end
 
     Note over CLI,CTRL: CU-079, el cliente escanea el QR y confirma
     CLI->>CTRL: POST /orders/:id/confirm-delivery con code e Idempotency-Key
-    CTRL->>SRV: confirmDelivery(id, code, userId, role)
+    CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
     activate SRV
-    SRV->>UCD: execute(orderId, code, userId, role)
-    activate UCD
-    UCD->>ORD: findByIdFull(orderId)
+    SRV->>ORD: findById(id)
     activate ORD
-    ORD-->>UCD: Order
+    ORD-->>SRV: Order o null
     deactivate ORD
-    alt role CUSTOMER y customer_id distinto de userId
-        UCD-->>CLI: ForbiddenException
-        deactivate UCD
-    else Ya esta DELIVERED
-        UCD-->>CLI: Order sin reprocesar, idempotente
-    else No esta ON_THE_WAY
-        UCD-->>CLI: BadRequestException, el pedido no esta en camino
-    else Estado valido
-        UCD->>COD: compareDeliveryCode(order.deliveryCode, code)
-        activate COD
-        COD-->>UCD: boolean con timingSafeEqual
-        deactivate COD
-        alt Codigo invalido
-            UCD-->>CLI: BadRequestException, codigo de entrega invalido
-        else Codigo correcto
-            UCD->>UCS: execute(order_id, DELIVERED)
-            activate UCS
-            UCS->>UCS: deliveredAt, si CASH entonces paymentStatus PAID
-            UCS->>RT: stopTracking(driverUserId)
-            activate RT
-            UCS->>CYL: onOrderDelivered(order_id, distributor_id)
-            activate CYL
-            CYL-->>UCS: cantidad de envases avanzados
-            deactivate CYL
-            UCS->>ORD: save(order)
-            activate ORD
-            UCS-)RT: notifyCustomer(customer_id, order:delivered, payload)
-            UCS-)RT: notifyAdmins(order:delivered, payload)
-            UCS-->>UCD: Order DELIVERED
-            deactivate UCS
-            UCD-->>CLI: OrderMapper.toDto(order)
+    alt Pedido de otra distribuidora que la del contexto
+        SRV-->>CLI: NotFoundException, Order with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        CTRL->>SRV: confirmDelivery(id, code, userId, role)
+        SRV->>UCD: execute(orderId, code, userId, role)
+        activate UCD
+        UCD->>ORD: findByIdFull(orderId)
+        activate ORD
+        ORD-->>UCD: Order
+        deactivate ORD
+        alt role CUSTOMER y customer_id distinto de userId
+            UCD-->>CLI: ForbiddenException
+            deactivate UCD
+        else Ya esta DELIVERED
+            UCD-->>CLI: Order sin reprocesar, idempotente
+        else No esta ON_THE_WAY
+            UCD-->>CLI: BadRequestException, el pedido no esta en camino
+        else Estado valido
+            UCD->>COD: compareDeliveryCode(order.deliveryCode, code)
+            activate COD
+            COD-->>UCD: boolean con timingSafeEqual
+            deactivate COD
+            alt Codigo invalido
+                UCD-->>CLI: BadRequestException, codigo de entrega invalido
+            else Codigo correcto
+                UCD->>UCS: execute(order_id, DELIVERED)
+                activate UCS
+                UCS->>UCS: deliveredAt, si CASH entonces paymentStatus PAID
+                UCS->>RT: stopTracking(driverUserId)
+                activate RT
+                UCS->>CYL: onOrderDelivered(order_id, distributor_id)
+                activate CYL
+                CYL-->>UCS: cantidad de envases avanzados
+                deactivate CYL
+                UCS->>ORD: save(order)
+                activate ORD
+                UCS-)RT: notifyCustomer(customer_id, order:delivered, payload)
+                UCS-)RT: notifyAdmins(order:delivered, payload)
+                UCS-->>UCD: Order DELIVERED
+                deactivate UCS
+                UCD-->>CLI: OrderMapper.toDto(order)
+            end
         end
     end
     deactivate RT
@@ -3570,7 +3597,7 @@ sequenceDiagram
     participant UC as CancelOrderUseCase
     participant ORD as OrderRepositoryPort
     participant FSM as OrderStatusMachine
-    participant STK as StockReservationService
+    participant STK as GasCylinderService
     participant QR as QueryRunner
     participant RT as RealtimeDispatchPort
 
@@ -3579,37 +3606,45 @@ sequenceDiagram
         IDEM-->>CTRL: respuesta cacheada, no se re-ejecuta
     else Primera ejecucion
         IDEM-->>CTRL: next.handle()
-        CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
-        CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
-        SRV->>UC: execute(orderId, userId, customer, reason)
-        activate UC
-        UC->>ORD: findByIdFull(orderId)
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente
-            ORD-->>UC: null
-            deactivate ORD
-            UC-->>CTRL: NotFoundException Order with ID not found
-            deactivate UC
-        else Pedido encontrado
-            ORD-->>UC: Order
-            alt Ya esta DELIVERED o CANCELLED
-                UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
-            else Cancelable
-                UC->>UC: applyCancellationPolicy(order, userId, customer)
-                alt El pedido ya esta ON_THE_WAY
-                    UC-->>CTRL: BadRequestException El pedido ya esta en camino, contacte al soporte
-                else Aun no salio
-                    alt order.customer_id distinto del userId autenticado
-                        UC-->>CTRL: BadRequestException No autorizado
-                    else Es el dueno del pedido
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
+            CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+            SRV->>UC: execute(orderId, userId, customer, reason)
+            activate UC
+            UC->>ORD: findByIdFull(orderId)
+            activate ORD
+            alt Pedido inexistente
+                ORD-->>UC: null
+                deactivate ORD
+                UC-->>CTRL: NotFoundException Order with ID not found
+                deactivate UC
+            else Pedido encontrado
+                ORD-->>UC: Order
+                alt order.customer_id distinto del userId autenticado
+                    UC-->>CTRL: NotFoundException Order with ID not found
+                else Ya esta DELIVERED o CANCELLED
+                    UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
+                else Es el dueno y el pedido es cancelable
+                    UC->>UC: applyCancellationPolicy(order, userId, customer)
+                    alt El pedido ya esta ON_THE_WAY
+                        UC-->>CTRL: BadRequestException El pedido ya esta en camino, contacte al soporte
+                    else Aun no salio
                         UC->>FSM: transitionOrder(order, CANCELLED)
                         activate FSM
                         UC->>UC: setear cancellationReason
                         UC->>UC: restoreStock(order)
                         UC->>QR: connect() y startTransaction()
                         activate QR
-                        UC->>STK: restore(queryRunner.manager, order.items)
+                        UC->>STK: restituirStock(queryRunner.manager, order.items)
                         activate STK
                         UC->>QR: commitTransaction() y release()
                         UC->>ORD: save(order)
@@ -3666,36 +3701,48 @@ sequenceDiagram
     participant RT as RealtimeDispatchPort
     participant CGW as CustomersGateway
 
-    CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve driver
-    CTRL->>SRV: cancelOrder(id, user.user_id, driver, body.reason)
+    CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
     activate SRV
-    SRV->>UC: execute(orderId, userId, driver, reason)
-    activate UC
-    UC->>ORD: findByIdFull(orderId)
+    SRV->>ORD: findById(id)
     activate ORD
-    alt Pedido inexistente
-        ORD-->>UC: null
-        deactivate ORD
-        UC-->>CTRL: NotFoundException Order with ID not found
-        deactivate UC
-    else Pedido encontrado
-        ORD-->>UC: Order con delivery_id
-        alt Ya esta DELIVERED o CANCELLED
-            UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
-        else Cancelable
-            UC->>UC: guardar previousDriverId
-            UC->>UC: applyCancellationPolicy(order, userId, driver)
-            UC->>FSM: transitionOrder(order, PENDING)
-            activate FSM
-            UC->>UC: delivery_id, acceptedAt y onTheWayAt a null
-            UC->>ORD: save(order)
-            activate ORD
-            UC->>UC: notify(order, driver, previousDriverId)
-            UC-)RT: notifyCustomer(customer_id, order searching-driver, payload)
-            activate RT
-            RT-)CGW: notifyCustomer(customerId, event, payload)
-            activate CGW
-            UC-->>CTRL: Order de nuevo en PENDING
+    ORD-->>SRV: Order o null
+    deactivate ORD
+    alt Pedido de otra distribuidora que la del chofer
+        SRV-->>CTRL: NotFoundException Order with ID not found
+    else Pedido de la distribuidora del chofer
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve driver
+        CTRL->>SRV: cancelOrder(id, user.user_id, driver, body.reason)
+        SRV->>UC: execute(orderId, userId, driver, reason)
+        activate UC
+        UC->>ORD: findByIdFull(orderId)
+        activate ORD
+        alt Pedido inexistente
+            ORD-->>UC: null
+            deactivate ORD
+            UC-->>CTRL: NotFoundException Order with ID not found
+            deactivate UC
+        else Pedido encontrado
+            ORD-->>UC: Order con delivery_id
+            alt order.delivery.user_id distinto del userId autenticado
+                UC-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+            else Ya esta DELIVERED o CANCELLED
+                UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
+            else Es el chofer asignado y el pedido es cancelable
+                UC->>UC: guardar previousDriverId
+                UC->>UC: applyCancellationPolicy(order, userId, driver)
+                UC->>FSM: transitionOrder(order, PENDING)
+                activate FSM
+                UC->>UC: delivery_id, acceptedAt y onTheWayAt a null
+                UC->>ORD: save(order)
+                activate ORD
+                UC->>UC: notify(order, driver, previousDriverId)
+                UC-)RT: notifyCustomer(customer_id, order searching-driver, payload)
+                activate RT
+                RT-)CGW: notifyCustomer(customerId, event, payload)
+                activate CGW
+                UC-->>CTRL: Order de nuevo en PENDING
+            end
         end
     end
     deactivate CGW
@@ -3733,7 +3780,7 @@ sequenceDiagram
     participant UC as CancelOrderUseCase
     participant ORD as OrderRepositoryPort
     participant FSM as OrderStatusMachine
-    participant STK as StockReservationService
+    participant STK as GasCylinderService
     participant RT as RealtimeDispatchPort
     participant DGW as DriversGateway
     participant AGW as AdminGateway
@@ -3743,41 +3790,51 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        alt Cancelacion forzada, DELETE /orders/:id
-            CTRL->>SRV: cancelOrder(id, user.user_id, admin)
-            activate SRV
-        else Cancelacion con motivo, PATCH /orders/:id/cancel
-            CTRL->>SRV: cancelOrder(id, user.user_id, admin, body.reason)
-        end
-        SRV->>UC: execute(orderId, userId, admin, reason)
-        activate UC
-        UC->>ORD: findByIdFull(orderId)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
+        activate SRV
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente o finalizado
-            UC-->>CTRL: NotFoundException o BadRequestException
-            deactivate UC
-        else Cancelable
-            ORD-->>UC: Order
-            deactivate ORD
-            UC->>UC: guardar previousDriverId
-            UC->>FSM: transitionOrder(order, CANCELLED)
-            activate FSM
-            UC->>UC: cancellationReason igual a reason o Cancelado por admin
-            UC->>STK: restore(queryRunner.manager, order.items)
-            activate STK
-            UC->>ORD: save(order)
-            activate ORD
-            UC-)RT: notifyCustomer(customer_id, order cancelled, payload)
-            activate RT
-            opt El pedido tenia chofer asignado
-                UC-)RT: notifyDriverOrderCancelled(previousDriverId, payload)
-                RT-)DGW: notifyOrderCancelled(driverId, payload)
-                activate DGW
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            alt Cancelacion forzada, DELETE /orders/:id
+                CTRL->>SRV: cancelOrder(id, user.user_id, admin)
+            else Cancelacion con motivo, PATCH /orders/:id/cancel
+                CTRL->>SRV: cancelOrder(id, user.user_id, admin, body.reason)
             end
-            UC-)RT: notifyAdmins(order cancelled, payload)
-            RT-)AGW: notifyAdmins(event, payload)
-            activate AGW
-            UC-->>CTRL: Order en estado CANCELLED
+            SRV->>UC: execute(orderId, userId, admin, reason)
+            activate UC
+            UC->>ORD: findByIdFull(orderId)
+            activate ORD
+            alt Pedido inexistente o finalizado
+                UC-->>CTRL: NotFoundException o BadRequestException
+                deactivate UC
+            else Cancelable
+                ORD-->>UC: Order
+                deactivate ORD
+                UC->>UC: guardar previousDriverId
+                UC->>FSM: transitionOrder(order, CANCELLED)
+                activate FSM
+                UC->>UC: cancellationReason igual a reason o Cancelado por admin
+                UC->>STK: restituirStock(queryRunner.manager, order.items)
+                activate STK
+                UC->>ORD: save(order)
+                activate ORD
+                UC-)RT: notifyCustomer(customer_id, order cancelled, payload)
+                activate RT
+                opt El pedido tenia chofer asignado
+                    UC-)RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                    RT-)DGW: notifyOrderCancelled(driverId, payload)
+                    activate DGW
+                end
+                UC-)RT: notifyAdmins(order cancelled, payload)
+                RT-)AGW: notifyAdmins(event, payload)
+                activate AGW
+                UC-->>CTRL: Order en estado CANCELLED
+            end
         end
     end
     deactivate AGW
@@ -4559,6 +4616,7 @@ sequenceDiagram
     participant RG as RolesGuard
     participant CTRL as OrderController
     participant SRV as OrderService
+    participant DSRV as DeliveryService
     participant ORD as OrderRepositoryPort
     participant REP as RepositoryOrder
     participant MAP as OrderMapper
@@ -4568,24 +4626,38 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        CTRL->>SRV: findByDelivery(deliveryId, paginationDto, distributorId)
-        activate SRV
-        SRV->>ORD: findByDelivery(deliveryId, limit, offset, distributorId)
-        activate ORD
-        ORD->>ORD: scoped(where delivery_id, distributorId)
-        ORD->>REP: findAndCount(where, take, skip, relations customer e items, order createdAt DESC)
-        activate REP
-        REP-->>ORD: orders y total
-        deactivate REP
-        ORD-->>SRV: orders, total, limit y offset
-        deactivate ORD
-        SRV-->>CTRL: PaginatedOrders
-        deactivate SRV
-        loop Por cada pedido asignado
-            CTRL->>MAP: toDto(order)
-            activate MAP
-            MAP-->>CTRL: OrderResponseDto
-            deactivate MAP
+        opt El solicitante tiene rol DELIVERY
+            CTRL->>SRV: assertEsElChofer(deliveryId, user.user_id)
+            activate SRV
+            SRV->>DSRV: buscarPorIdOUsuario(userId)
+            activate DSRV
+            DSRV-->>SRV: Delivery del chofer autenticado o null
+            deactivate DSRV
+            SRV-->>CTRL: sin error, o ForbiddenException si deliveryId no es su delivery_id ni su user_id
+            deactivate SRV
+        end
+        alt Chofer que pide los pedidos de otro repartidor
+            CTRL-->>CTRL: propaga ForbiddenException Solo podes ver tus propios pedidos
+        else Es su propio identificador, o el solicitante es administrador
+            CTRL->>SRV: findByDelivery(deliveryId, paginationDto, distributorId)
+            activate SRV
+            SRV->>ORD: findByDelivery(deliveryId, limit, offset, distributorId)
+            activate ORD
+            ORD->>ORD: scoped(where delivery_id, distributorId)
+            ORD->>REP: findAndCount(where, take, skip, relations customer e items, order createdAt DESC)
+            activate REP
+            REP-->>ORD: orders y total
+            deactivate REP
+            ORD-->>SRV: orders, total, limit y offset
+            deactivate ORD
+            SRV-->>CTRL: PaginatedOrders
+            deactivate SRV
+            loop Por cada pedido asignado
+                CTRL->>MAP: toDto(order)
+                activate MAP
+                MAP-->>CTRL: OrderResponseDto
+                deactivate MAP
+            end
         end
     end
 ```
@@ -4621,7 +4693,7 @@ sequenceDiagram
     participant CTRL as OrderController
     participant SRV as OrderService
     participant ORD as OrderRepositoryPort
-    participant DREP as RepositoryDelivery
+    participant DSRV as DeliveryService
     participant FSM as OrderStatusMachine
     participant OREP as RepositoryOrder
     participant MAP as OrderMapper
@@ -4631,47 +4703,59 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        CTRL->>SRV: assignDelivery(id, deliveryId)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(orderId)
-        SRV->>ORD: findByIdFull(orderId)
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente
-            ORD-->>SRV: null
-            deactivate ORD
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException Order with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Pedido encontrado
-            ORD-->>SRV: Order
-            SRV->>DREP: findOne(delivery_id)
-            activate DREP
-            alt Chofer inexistente
-                DREP-->>SRV: null
-                deactivate DREP
-                SRV-->>CTRL: NotFoundException Repartidor no encontrado
-            else Chofer encontrado
-                DREP-->>SRV: Delivery
-                alt El chofer no esta activo
-                    SRV-->>CTRL: BadRequestException El repartidor no esta activo
-                else Chofer activo
-                    SRV->>SRV: order.delivery_id igual a deliveryId
-                    SRV->>FSM: transitionOrder(order, ACCEPTED)
-                    activate FSM
-                    alt Transicion ilegal desde el estado actual
-                        FSM-->>SRV: InvalidOrderTransitionError
-                        deactivate FSM
-                        SRV-->>CTRL: error 400 via GlobalExceptionFilter
-                    else Transicion valida
-                        SRV->>SRV: order.acceptedAt igual a new Date
-                        SRV->>OREP: save(order)
-                        activate OREP
-                        OREP-->>SRV: Order
-                        deactivate OREP
-                        SRV-->>CTRL: Order en estado ACCEPTED
-                        CTRL->>MAP: toDto(order)
-                        activate MAP
-                        MAP-->>CTRL: OrderResponseDto
-                        deactivate MAP
+            CTRL->>SRV: assignDelivery(id, deliveryId)
+            activate SRV
+            SRV->>SRV: findOne(orderId)
+            SRV->>ORD: findByIdFull(orderId)
+            activate ORD
+            alt Pedido inexistente
+                ORD-->>SRV: null
+                deactivate ORD
+                SRV-->>CTRL: NotFoundException Order with ID not found
+                deactivate SRV
+            else Pedido encontrado
+                ORD-->>SRV: Order
+                SRV->>DSRV: findById(deliveryId)
+                activate DSRV
+                alt Chofer inexistente o de otra distribuidora que la del pedido
+                    DSRV-->>SRV: null o Delivery con otro distributor_id
+                    deactivate DSRV
+                    SRV-->>CTRL: NotFoundException Repartidor no encontrado
+                else Chofer de la distribuidora del pedido
+                    DSRV-->>SRV: Delivery
+                    alt El chofer no esta activo
+                        SRV-->>CTRL: BadRequestException El repartidor no esta activo
+                    else Chofer activo
+                        SRV->>SRV: order.delivery_id igual a deliveryId
+                        SRV->>FSM: transitionOrder(order, ACCEPTED)
+                        activate FSM
+                        alt Transicion ilegal desde el estado actual
+                            FSM-->>SRV: InvalidOrderTransitionError
+                            deactivate FSM
+                            SRV-->>CTRL: error 400 via GlobalExceptionFilter
+                        else Transicion valida
+                            SRV->>SRV: order.acceptedAt igual a new Date
+                            SRV->>OREP: save(order)
+                            activate OREP
+                            OREP-->>SRV: Order
+                            deactivate OREP
+                            SRV-->>CTRL: Order en estado ACCEPTED
+                            CTRL->>MAP: toDto(order)
+                            activate MAP
+                            MAP-->>CTRL: OrderResponseDto
+                            deactivate MAP
+                        end
                     end
                 end
             end
@@ -4759,7 +4843,7 @@ sequenceDiagram
     participant UC as UpdateOrderStatusUseCase
     participant ORD as OrderRepositoryPort
     participant FSM as OrderStatusMachine
-    participant DREP as RepositoryDelivery
+    participant DREP as DeliveryService
     participant RT as RealtimeDispatchPort
     participant REDIS as RedisService
     participant CGW as CustomersGateway
@@ -4771,54 +4855,64 @@ sequenceDiagram
         IDEM-->>CTRL: respuesta cacheada, no se re-procesa
     else Primera ejecucion
         IDEM-->>CTRL: next.handle()
-        CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
-        CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
-        SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
-        activate UC
-        UC->>ORD: findByIdFull(id)
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente
-            ORD-->>UC: null
-            deactivate ORD
-            UC-->>CTRL: NotFoundException Order with ID not found
-            deactivate UC
-        else Pedido encontrado
-            ORD-->>UC: Order
-            UC->>FSM: transitionOrder(order, ON_THE_WAY)
-            activate FSM
-            alt El pedido no estaba ACCEPTED
-                FSM-->>UC: InvalidOrderTransitionError
-                deactivate FSM
-                UC-->>CTRL: error 400 via GlobalExceptionFilter
-            else Transicion valida
-                UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
-                UC->>UC: order.onTheWayAt igual a new Date
-                alt El pedido no tiene chofer asignado
-                    UC-->>UC: devuelve null sin activar tracking
-                else Tiene chofer
-                    UC->>DREP: findOne(delivery_id, relations user)
-                    activate DREP
-                    DREP-->>UC: Delivery con User
-                    deactivate DREP
-                    UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
-                    activate RT
-                    RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
-                    activate REDIS
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
+            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
+            SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
+            activate UC
+            UC->>ORD: findByIdFull(id)
+            activate ORD
+            alt Pedido inexistente
+                ORD-->>UC: null
+                deactivate ORD
+                UC-->>CTRL: NotFoundException Order with ID not found
+                deactivate UC
+            else Pedido encontrado
+                ORD-->>UC: Order
+                UC->>FSM: transitionOrder(order, ON_THE_WAY)
+                activate FSM
+                alt El pedido no estaba ACCEPTED
+                    FSM-->>UC: InvalidOrderTransitionError
+                    deactivate FSM
+                    UC-->>CTRL: error 400 via GlobalExceptionFilter
+                else Transicion valida
+                    UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
+                    UC->>UC: order.onTheWayAt igual a new Date
+                    alt El pedido no tiene chofer asignado
+                        UC-->>UC: devuelve null sin activar tracking
+                    else Tiene chofer
+                        UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
+                        activate DREP
+                        DREP-->>UC: Delivery con User
+                        deactivate DREP
+                        UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
+                        activate RT
+                        RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
+                        activate REDIS
+                    end
+                    UC->>ORD: save(order)
+                    activate ORD
+                    UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
+                    UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
+                    RT-)CGW: notifyCustomer(customerId, event, payload)
+                    activate CGW
+                    UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
+                    RT-)AGW: notifyAdmins(event, payload)
+                    activate AGW
+                    UC->>UC: notifyCustomer(order)
+                    UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                    activate NOT
+                    UC-->>CTRL: Order en estado ON_THE_WAY
                 end
-                UC->>ORD: save(order)
-                activate ORD
-                UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
-                UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
-                RT-)CGW: notifyCustomer(customerId, event, payload)
-                activate CGW
-                UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
-                RT-)AGW: notifyAdmins(event, payload)
-                activate AGW
-                UC->>UC: notifyCustomer(order)
-                UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
-                activate NOT
-                UC-->>CTRL: Order en estado ON_THE_WAY
             end
         end
     end
@@ -4868,28 +4962,38 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        CTRL->>SRV: notifyDriverArrived(id)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(orderId)
-        SRV->>ORD: findByIdFull(orderId)
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente
-            ORD-->>SRV: null
-            deactivate ORD
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException Order with ID not found
-            deactivate SRV
-        else Pedido encontrado
-            ORD-->>SRV: Order con delivery y user
-            alt El pedido no esta ON_THE_WAY
-                SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
-            else Pedido en camino
-                SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
-                activate RT
-                RT->>CGW: notifyCustomer(customerId, event, payload)
-                activate CGW
-                CGW-->>SRV: emit en la sala customer_ del cliente
-                deactivate CGW
-                SRV-->>CTRL: message Cliente notificado
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            CTRL->>SRV: notifyDriverArrived(id)
+            SRV->>SRV: findOne(orderId)
+            SRV->>ORD: findByIdFull(orderId)
+            activate ORD
+            alt Pedido inexistente
+                ORD-->>SRV: null
+                deactivate ORD
+                SRV-->>CTRL: NotFoundException Order with ID not found
+                deactivate SRV
+            else Pedido encontrado
+                ORD-->>SRV: Order con delivery y user
+                alt El pedido no esta ON_THE_WAY
+                    SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
+                else Pedido en camino
+                    SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                    activate RT
+                    RT->>CGW: notifyCustomer(customerId, event, payload)
+                    activate CGW
+                    CGW-->>SRV: emit en la sala customer_ del cliente
+                    deactivate CGW
+                    SRV-->>CTRL: message Cliente notificado
+                end
             end
         end
     end

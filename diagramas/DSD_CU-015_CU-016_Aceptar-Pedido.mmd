@@ -7,14 +7,18 @@ sequenceDiagram
     participant ORQ as DispatchOrchestratorService
     participant OFERTAS as DispatchOfferRepositoryPort
     participant ORD as OrderRepositoryPort
-    participant DEL as RepositoryDelivery
+    participant DEL as DeliveryService
     participant SM as OrderStatusMachine
     participant RT as RealtimeDispatchPort
     participant NOT as NotificationPort
 
     alt El chofer ACEPTA, PATCH /orders/:id/status ACCEPTED
-        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
+        SRV->>ORD: findById(id)
+        ORD-->>SRV: Order de la distribuidora del chofer
+        SRV-->>CTRL: sin error
+        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
         SRV->>UCS: execute(id, ACCEPTED, deliveryId)
         activate UCS
         UCS->>ORD: findByIdFull(id)
@@ -25,10 +29,11 @@ sequenceDiagram
         activate SM
         SM-->>UCS: transicion valida
         deactivate SM
-        UCS->>DEL: findOne(delivery_id o user_id)
+        UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
         activate DEL
         DEL-->>UCS: Delivery con user
         deactivate DEL
+        UCS->>UCS: delivery.distributor_id igual a order.distributor_id
         UCS->>UCS: order.delivery_id, order.acceptedAt
         UCS->>UCS: order.deliveryCode = generateDeliveryCode()
         UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
@@ -47,6 +52,10 @@ sequenceDiagram
         UCS-->>CTRL: Order actualizado
         deactivate UCS
     else El chofer RECHAZA, POST /orders/:id/reject
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
+        SRV->>ORD: findById(id)
+        ORD-->>SRV: Order de la distribuidora del chofer
+        SRV-->>CTRL: sin error
         CTRL->>SRV: rejectOffer(id, user.user_id)
         SRV->>ORD: findByIdFull(id)
         ORD-->>SRV: Order

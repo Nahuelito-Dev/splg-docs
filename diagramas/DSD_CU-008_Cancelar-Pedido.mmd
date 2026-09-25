@@ -7,7 +7,7 @@ sequenceDiagram
     participant UC as CancelOrderUseCase
     participant ORD as OrderRepositoryPort
     participant FSM as OrderStatusMachine
-    participant STK as StockReservationService
+    participant STK as GasCylinderService
     participant QR as QueryRunner
     participant RT as RealtimeDispatchPort
 
@@ -16,37 +16,45 @@ sequenceDiagram
         IDEM-->>CTRL: respuesta cacheada, no se re-ejecuta
     else Primera ejecucion
         IDEM-->>CTRL: next.handle()
-        CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
-        CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
-        SRV->>UC: execute(orderId, userId, customer, reason)
-        activate UC
-        UC->>ORD: findByIdFull(orderId)
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente
-            ORD-->>UC: null
-            deactivate ORD
-            UC-->>CTRL: NotFoundException Order with ID not found
-            deactivate UC
-        else Pedido encontrado
-            ORD-->>UC: Order
-            alt Ya esta DELIVERED o CANCELLED
-                UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
-            else Cancelable
-                UC->>UC: applyCancellationPolicy(order, userId, customer)
-                alt El pedido ya esta ON_THE_WAY
-                    UC-->>CTRL: BadRequestException El pedido ya esta en camino, contacte al soporte
-                else Aun no salio
-                    alt order.customer_id distinto del userId autenticado
-                        UC-->>CTRL: BadRequestException No autorizado
-                    else Es el dueno del pedido
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
+            CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+            SRV->>UC: execute(orderId, userId, customer, reason)
+            activate UC
+            UC->>ORD: findByIdFull(orderId)
+            activate ORD
+            alt Pedido inexistente
+                ORD-->>UC: null
+                deactivate ORD
+                UC-->>CTRL: NotFoundException Order with ID not found
+                deactivate UC
+            else Pedido encontrado
+                ORD-->>UC: Order
+                alt order.customer_id distinto del userId autenticado
+                    UC-->>CTRL: NotFoundException Order with ID not found
+                else Ya esta DELIVERED o CANCELLED
+                    UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
+                else Es el dueno y el pedido es cancelable
+                    UC->>UC: applyCancellationPolicy(order, userId, customer)
+                    alt El pedido ya esta ON_THE_WAY
+                        UC-->>CTRL: BadRequestException El pedido ya esta en camino, contacte al soporte
+                    else Aun no salio
                         UC->>FSM: transitionOrder(order, CANCELLED)
                         activate FSM
                         UC->>UC: setear cancellationReason
                         UC->>UC: restoreStock(order)
                         UC->>QR: connect() y startTransaction()
                         activate QR
-                        UC->>STK: restore(queryRunner.manager, order.items)
+                        UC->>STK: restituirStock(queryRunner.manager, order.items)
                         activate STK
                         UC->>QR: commitTransaction() y release()
                         UC->>ORD: save(order)

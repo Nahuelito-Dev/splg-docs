@@ -716,7 +716,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | 1 | El chofer recibe en su app la oferta del pedido y presiona "Aceptar". |
 | 2 | La app pide el paso del pedido a estado ACCEPTED. La identidad del chofer sale de su token: cualquier identificador de repartidor que venga en el cuerpo de la solicitud se ignora. Un administrador sí puede indicar a qué chofer asignarlo. |
 | 3 | El sistema comprueba que la transición desde el estado actual sea legal, es decir que el pedido siga pendiente. |
-| 4 | Busca el perfil de repartidor de quien acepta y comprueba que exista y que esté activo. |
+| 4 | Busca el perfil de repartidor de quien acepta y comprueba que exista, que sea de la misma distribuidora que el pedido y que esté activo. |
 | 5 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación y genera el código secreto de entrega que se usará en la confirmación por código QR (CU-020). |
 | 6 | Cierra como aceptada la oferta de despacho que ese chofer tenía abierta sobre el pedido. |
 | 7 | Avisa al cliente en tiempo real de la aceptación, con el nombre y el teléfono del chofer, y avisa también al panel de administración. |
@@ -729,9 +729,10 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | Paso | Acción |
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 2 | Si el pedido pertenece a otra distribuidora que la de quien acepta, el sistema informa que no lo encontró, sin revelar que existe. |
 | 3 | Si el pedido está en un estado desde el que no se puede aceptar —entregado o cancelado—, el sistema rechaza la operación por transición no permitida. |
 | 3 | Si el pedido ya fue aceptado por otro chofer, el sistema **no** lo rechaza: reaplicar el mismo estado se considera idempotente, de modo que una aceptación tardía reasigna el pedido al segundo chofer y le genera un código de entrega nuevo. |
-| 4 | Si quien acepta no tiene perfil de repartidor, el sistema informa que no encontró al repartidor. |
+| 4 | Si quien acepta no tiene perfil de repartidor, o el repartidor es de otra distribuidora que la del pedido, el sistema informa que no encontró al repartidor. |
 | 4 | Si el repartidor no está activo, el sistema informa "El repartidor no está activo". |
 
 | Campo | Detalle |
@@ -742,6 +743,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Comentarios** | El sistema todavía no comprueba, al aceptar, que el chofer esté habilitado por el administrador: un chofer con su habilitación en falso puede tomar pedidos. El sistema todavía no rechaza la aceptación de un pedido que ya tiene chofer, con lo que un segundo chofer puede quedarse con un pedido ajeno. El sistema todavía no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. |
 
 ---
+
+
 #### Crítico · automático CU-017 — Actualizar Ubicación GPS del Chofer
 
 | Campo | Detalle |
@@ -809,6 +812,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | Paso | Acción |
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 2 | Si el pedido pertenece a otra distribuidora que la de quien lo mueve, el sistema informa que no lo encontró, sin revelar que existe. |
 | 3 | Si el pedido no está en estado ACCEPTED, el sistema rechaza la operación por transición no permitida. |
 | 4 | Si el pedido no tiene chofer asignado, el estado cambia igual pero no se abre ningún seguimiento. |
 
@@ -820,6 +824,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Comentarios** | El sistema todavía no verifica que el chofer que marca la salida sea el asignado al pedido: la identidad de quien dispara la operación solo se usa al aceptar, de modo que cualquier usuario con rol chofer puede poner en camino el pedido de otro. Ese control de autorización queda pendiente. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no "tu pedido está en camino". |
 
 ---
+
+
 #### Crítico CU-020 — Confirmar Entrega
 
 | Campo | Detalle |
@@ -1512,7 +1518,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El cliente accede al detalle del pedido y selecciona "Cancelar pedido". |
 | 2 | Puede ingresar un motivo de cancelación. La solicitud lleva una clave de idempotencia, de modo que un reintento no vuelve a procesar la cancelación. |
-| 3 | El sistema verifica, en este orden: que el pedido no esté ya entregado ni cancelado, que no esté en camino y, recién entonces, que le pertenezca al cliente que lo solicita. |
+| 3 | El sistema verifica, en este orden: que el pedido le pertenezca al cliente que lo solicita, que no esté ya entregado ni cancelado y que no esté en camino. |
 | 4 | Marca el pedido como CANCELLED con el motivo recibido; si el cliente no indicó ninguno, registra que lo canceló el cliente. |
 | 5 | En una transacción propia, y bloqueando cada garrafa, devuelve al inventario la cantidad de cada ítem del pedido. |
 | 6 | Persiste el pedido cancelado. La restitución del stock y el guardado del pedido son dos operaciones separadas: no comparten transacción. |
@@ -1525,9 +1531,9 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 3 | Si el pedido no pertenece al cliente autenticado, o es de una distribuidora distinta de la que el cliente tiene elegida, el sistema informa que no lo encontró, sin revelar que existe. Este control se hace antes de mirar el estado del pedido. |
 | 3 | Si el pedido ya está entregado o cancelado, el sistema informa "No se puede cancelar un pedido finalizado". |
-| 3 | Si el pedido ya está en camino, el sistema informa "El pedido ya está en camino. Contacte al soporte." Esta comprobación se evalúa **antes** que la de propiedad, de modo que un cliente que intente cancelar un pedido ajeno que ya salió recibe este mensaje y no el de falta de autorización. |
-| 3 | Si el pedido no pertenece al cliente autenticado, el sistema informa "No autorizado" con un error de solicitud incorrecta, no de acceso denegado. |
+| 3 | Si el pedido ya está en camino, el sistema informa "El pedido ya está en camino. Contacte al soporte." |
 
 | Campo | Detalle |
 |-------|---------|
@@ -1537,6 +1543,8 @@ respaldado por la lectura del código en poder del cliente.
 | **Comentarios** | El sistema todavía no ejecuta la restitución del stock y el guardado del pedido cancelado dentro de una única transacción: si el guardado falla después de restituir, el stock vuelve al inventario y el pedido sigue activo, es decir que queda contado dos veces. Es la propiedad de atomicidad más sensible del sistema y está pendiente. El sistema todavía no envía notificación al dispositivo en la cancelación: el aviso viaja solo por la conexión en tiempo real, con lo que un chofer con la app cerrada puede no enterarse. |
 
 ---
+
+
 #### Importante CU-009 — Cancelar Pedido (Chofer)
 
 | Campo | Detalle |
@@ -1544,7 +1552,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El chofer que tomó un pedido decide que no puede realizarlo. El pedido vuelve a estado pendiente y sin chofer para que otro lo tome. El stock no se restituye, porque el pedido sigue vivo. |
-| **Precondición** | El chofer está autenticado. El pedido está en estado ACCEPTED u ON_THE_WAY. El sistema no verifica que el chofer que libera el pedido sea el asignado. |
+| **Precondición** | El chofer está autenticado. El pedido es de la distribuidora del chofer, está asignado a él y su estado es ACCEPTED u ON_THE_WAY. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -1553,7 +1561,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El chofer accede al pedido y selecciona "No puedo realizarlo". |
 | 2 | Puede ingresar un motivo. Para este actor el motivo **no se persiste**: el pedido vuelve al circuito sin razón registrada. |
-| 3 | El sistema verifica que el pedido no esté ya entregado ni cancelado, y que su estado admita la vuelta a pendiente. |
+| 3 | El sistema verifica que el pedido esté asignado al chofer que lo libera, que no esté ya entregado ni cancelado, y que su estado admita la vuelta a pendiente. |
 | 4 | Devuelve el pedido a estado PENDING, le quita el chofer asignado y borra las marcas de aceptación y de salida. |
 | 5 | No restituye stock: el pedido sigue vigente y sus unidades siguen comprometidas. |
 | 6 | Avisa al cliente en tiempo real de que se está buscando un nuevo repartidor. |
@@ -1566,6 +1574,8 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 3 | Si el pedido pertenece a otra distribuidora que la del chofer, el sistema informa que no lo encontró, sin revelar que existe. |
+| 3 | Si el pedido no está asignado al chofer que lo libera, el sistema rechaza la operación: sólo el chofer asignado puede liberarlo. |
 | 3 | Si el pedido ya está entregado o cancelado, el sistema informa "No se puede cancelar un pedido finalizado". |
 | 3 | Si el estado del pedido no admite la vuelta a pendiente, el sistema rechaza la operación por transición no permitida. |
 
@@ -1574,9 +1584,11 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | La liberación del pedido se completa en menos de 1 segundo, al no abrir transacción ni restituir stock. |
 | **Frecuencia** | Baja por chofer: solo cuando no puede completar un reparto ya aceptado. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no verifica que el chofer que libera el pedido sea el asignado: cualquier usuario con rol chofer puede desasignar el pedido de otro. El sistema todavía no guarda el motivo por el que el chofer libera el pedido, con lo que se pierde la información que permitiría medir la calidad del servicio. El sistema todavía no dispara un re-despacho inmediato al liberarse el pedido: el cliente puede quedar hasta un minuto y medio sin que se ofrezca su pedido a nadie. |
+| **Comentarios** | El sistema todavía no guarda el motivo por el que el chofer libera el pedido, con lo que se pierde la información que permitiría medir la calidad del servicio. El sistema todavía no dispara un re-despacho inmediato al liberarse el pedido: el cliente puede quedar hasta un minuto y medio sin que se ofrezca su pedido a nadie. |
 
 ---
+
+
 #### Importante CU-010 — Cancelar Pedido (Administrador)
 
 | Campo | Detalle |
@@ -1606,6 +1618,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 3 | Si el pedido pertenece a otra distribuidora que la del administrador, el sistema informa que no lo encontró, sin revelar que existe. |
 | 3 | Si el pedido ya está entregado o cancelado, el sistema informa "No se puede cancelar un pedido finalizado". |
 
 | Campo | Detalle |
@@ -1616,6 +1629,8 @@ respaldado por la lectura del código en poder del cliente.
 | **Comentarios** | El panel dispone de dos vías equivalentes para cancelar: la cancelación con motivo y una cancelación forzada que no lo pide. El sistema todavía no envía notificación al dispositivo del cliente al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un cliente con la app cerrada no se entera hasta abrirla. El sistema todavía no ejecuta la restitución del stock y el guardado del pedido en una única transacción, con el mismo riesgo de stock duplicado señalado en CU-008. |
 
 ---
+
+
 #### Importante CU-011 — Listar Todos los Pedidos
 
 | Campo | Detalle |
@@ -1716,6 +1731,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 2 | Si el pedido pertenece a otra distribuidora que la de quien avisa, el sistema informa que no lo encontró, sin revelar que existe. |
 | 2 | Si el pedido no está en camino, el sistema informa "El pedido debe estar en camino para avisar llegada". |
 | 3 | Si el cliente no está conectado en ese momento, no se entera: no hay ningún canal alternativo. |
 
@@ -1727,6 +1743,8 @@ respaldado por la lectura del código en poder del cliente.
 | **Comentarios** | El sistema todavía no tiene un estado ARRIVED ni un campo con la hora de llegada: el ciclo de vida del pedido tiene cinco estados operativos y no seis, y el tiempo entre la llegada y la entrega no es medible. Incorporar ese estado con su marca de tiempo es un pendiente registrado en el Documento 3. El sistema todavía no envía notificación al dispositivo del cliente en este aviso: si el cliente tiene la app cerrada, el aviso se pierde, que es justamente el caso que este caso de uso quería cubrir. El sistema todavía no verifica que quien avisa la llegada sea el chofer asignado al pedido; la operación además está habilitada para el administrador. |
 
 ---
+
+
 #### Importante CU-004 — Gestionar Perfil de Usuario
 
 | Campo | Detalle |
@@ -1785,7 +1803,7 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | Elige asignar un chofer manualmente. |
 | 3 | El panel muestra el listado de choferes de la distribuidora (CU-035). |
 | 4 | El administrador selecciona uno y confirma. El chofer se identifica por su perfil de repartidor. |
-| 5 | El sistema verifica que el repartidor exista y que esté activo. |
+| 5 | El sistema verifica que el repartidor exista, que sea de la misma distribuidora que el pedido y que esté activo. |
 | 6 | Le asigna el pedido, lo pasa a estado ACCEPTED y registra el momento de la aceptación. |
 
 **Postcondición:** El pedido tiene estado ACCEPTED con el chofer seleccionado. Nadie fue notificado y el pedido queda sin código de entrega.
@@ -1794,7 +1812,8 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 5 | Si el repartidor indicado no existe, el sistema informa "Repartidor no encontrado". |
+| 4 | Si el pedido pertenece a otra distribuidora que la del administrador, el sistema informa que no lo encontró, sin revelar que existe. |
+| 5 | Si el repartidor indicado no existe o es de otra distribuidora que la del pedido, el sistema informa "Repartidor no encontrado". |
 | 5 | Si el repartidor fue desactivado entre la consulta del listado y la confirmación, el sistema informa "El repartidor no está activo". |
 | 6 | Si el pedido cambió de estado —por ejemplo, si ya fue cancelado o tomado por un chofer— y ya no admite la transición a aceptado, el sistema rechaza la asignación por transición no permitida. |
 
@@ -1875,6 +1894,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el pedido no existe, el sistema responde que no hubo rechazo y no hace nada más. |
+| 3 | Si el pedido pertenece a otra distribuidora que la del chofer, el sistema informa que no lo encontró, sin revelar que existe. |
 | 6 | Si el pedido ya fue aceptado por otro chofer o ya fue cancelado, la operación termina bien y en silencio: la oferta se cierra y el pedido no se re-ofrece. El sistema no distingue esos casos con un error propio. |
 | 6 | Si no aparece ningún candidato nuevo en ningún paso de radio, el pedido queda a la espera y lo retoma el proceso temporal de CU-014. |
 
@@ -1886,6 +1906,8 @@ respaldado por la lectura del código en poder del cliente.
 | **Comentarios** | El sistema todavía no acepta ni guarda un motivo de rechazo: la solicitud no admite cuerpo, con lo que se pierde la información sobre por qué los choferes rechazan pedidos. La exclusión del chofer ya contactado se sostiene únicamente en la tabla de ofertas de despacho; el pedido no guarda ninguna lista de choferes rechazados. |
 
 ---
+
+
 #### Importante CU-024 — Listar Reclamos
 
 | Campo | Detalle |
@@ -2559,36 +2581,41 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
+| **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, altura, piso y departamento, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. El sistema resuelve la dirección contra el servicio de mapas para quedarse con el mejor punto disponible, sin bloquear el alta. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
 | **Precondición** | El cliente está autenticado. La cuenta de usuario existe. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente el paso de resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente completa el formulario de dirección en la aplicación. |
+| 1 | El cliente completa el formulario de dirección en la aplicación, incluyendo piso y departamento si corresponde. |
 | 2 | La aplicación envía `POST /user-addres` con los datos de la dirección. |
 | 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. |
 | 4 | El sistema comprueba que la cuenta de usuario exista. |
-| 5 | Si la dirección viene marcada como predeterminada, el sistema quita esa marca de las demás direcciones del cliente. |
-| 6 | El sistema guarda la dirección y la devuelve con su identificador. |
+| 5 | El sistema consulta al servicio de mapas la dirección escrita y guarda, junto con el punto, la dirección normalizada que le devuelve y el identificador estable del lugar. |
+| 6 | El sistema registra con qué precisión quedó resuelta: exacta, aproximada a la cuadra, o sin resolver. |
+| 7 | Si la dirección viene marcada como predeterminada, el sistema quita esa marca de las demás direcciones del cliente. |
+| 8 | El sistema guarda la dirección y la devuelve con su identificador y la precisión con que quedó. |
 
-**Postcondición:** El cliente tiene una dirección más disponible para elegir al armar un pedido.
+**Postcondición:** El cliente tiene una dirección más disponible para elegir al armar un pedido, con el mejor punto que se haya podido resolver y con constancia de cuán preciso es.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 4 | Si la cuenta de usuario no existe, el sistema retorna error 404 "User with ID: … not found". |
-| 6 | Si la base rechaza el registro por duplicado o por integridad referencial, el sistema retorna error 400. |
+| 5 | Si el servicio de mapas no responde, o responde con un error, el alta **continúa igual** con las coordenadas que mandó la aplicación, y la dirección queda registrada como sin resolver. El fallo se registra en el log; el cliente no ve ningún error. |
+| 5 | Si el servicio de mapas ubica la calle pero no la altura exacta, el alta **continúa** con el punto aproximado y queda registrada como aproximada. |
+| 6 | En ningún caso el sistema rechaza el alta porque la dirección escrita y el punto no coincidan: guarda lo mejor que tenga y deja constancia. Rechazarla dejaría al cliente sin poder pedir, que es peor que una entrega con una llamada de por medio. |
+| 8 | Si la base rechaza el registro por duplicado o por integridad referencial, el sistema retorna error 400. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada. |
+| **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada, más una consulta al servicio de mapas. Esa consulta tiene un tiempo máximo de espera corto: si se agota, el alta sigue sin resolver. |
 | **Frecuencia** | Media: una o dos por cliente, y alguna más cuando se muda o pide para un tercero. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. Un administrador, en cambio, puede indicar el titular. |
+| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. Un administrador, en cambio, puede indicar el titular. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. |
 
 ---
 
@@ -2638,9 +2665,9 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
+| **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la altura, el piso y departamento, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Si cambia algo que afecta la ubicación, el sistema vuelve a resolverla contra el servicio de mapas. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
 | **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente la re-resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
 
@@ -2650,10 +2677,11 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 2 | La aplicación envía `PATCH /user-addres/:id` con los campos modificados. |
 | 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. |
-| 5 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
-| 6 | El sistema guarda los cambios y devuelve la dirección actualizada. |
+| 5 | Si cambió algún dato que afecta la ubicación —calle, altura, ciudad, código postal o coordenadas—, el sistema la resuelve de nuevo contra el servicio de mapas y actualiza el punto, la dirección normalizada y la precisión. Si sólo cambiaron el piso, el departamento o las indicaciones, no vuelve a consultar. |
+| 6 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
+| 7 | El sistema guarda los cambios y devuelve la dirección actualizada. |
 
-**Postcondición:** La dirección queda con los datos corregidos.
+**Postcondición:** La dirección queda con los datos corregidos y, si cambió su ubicación, con el mejor punto que se haya podido resolver.
 
 **Excepciones**
 
@@ -2661,6 +2689,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 | 4 | Si la dirección desapareció entre la lectura y la escritura, el sistema retorna error 404. |
+| 5 | Si el servicio de mapas no responde o no ubica la dirección nueva, la edición **continúa igual** con las coordenadas que haya, y la precisión pasa a aproximada o sin resolver. La edición nunca se rechaza por esto, por la misma razón que en CU-116. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -3456,15 +3485,15 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-10 |
 | **Requisitos asociados** | IRQ-09, IRQ-10 |
-| **Descripción** | El sistema registra una nueva zona de cobertura delimitada, asociandola al tenant activo en el encabezado de la petición. |
+| **Descripción** | El sistema registra una nueva zona de cobertura delimitada, asociandola al tenant activo en el encabezado de la petición. El recargo de la zona puede expresarse como un monto fijo o como un porcentaje del pedido. |
 | **Precondición** | El usuario tiene rol Administrador o Administrador General. Posee el encabezado con distribuidora actual. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente el recargo porcentual y los datos de presentación |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El usuario remite información para crear una zona (poligono, nombre, recargo). |
+| 1 | El usuario remite información para crear una zona: polígono, nombre, recargo —fijo o porcentual— y, si quiere, una etiqueta y un color para distinguirla en el mapa del panel. |
 | 2 | El sistema intercepta el identificador de la distribuidora en el decorador (@CurrentDistributor). |
 | 3 | El sistema guarda la entidad enlazando la zona a dicha distribuidora. |
 | 4 | El sistema confirma respondiendo con 201. |
@@ -3483,9 +3512,10 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no valida que el polígono ingresado sea geométricamente correcto -por ejemplo, que no se autointersecte- más allá del formato de sus coordenadas, ni comprueba superposición con zonas ya existentes de la misma distribuidora. |
+| **Comentarios** | El sistema no valida que el polígono ingresado sea geométricamente correcto -por ejemplo, que no se autointersecte- más allá del formato de sus coordenadas, ni comprueba superposición con zonas ya existentes de la misma distribuidora. El recargo admite las dos formas porque un monto fijo se desactualiza con la inflación y obliga a reeditar zona por zona, mientras que un porcentaje acompaña al precio del producto; una zona usa una u otra, nunca las dos a la vez. La etiqueta y el color son datos de presentación: los define quien conoce las zonas y los usa el panel para pintarlas, en vez de que el front invente una paleta que nadie eligió. La fecha de fin de vigencia de la zona se programa aparte, en CU-150. |
 
 ---
+
 
 #### Secundario CU-057 — Consultar Zonas de Cobertura
 
@@ -4561,6 +4591,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 3 | Si el pedido no existe, el sistema retorna error 404 "Order with ID: … not found". |
+| 3 | Si el pedido pertenece a otra distribuidora que la del solicitante, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el chofer no tiene perfil de repartidor o el pedido no está asignado a él, el sistema retorna error 403 "Este pedido no está asignado a tu usuario". |
 | 5 | Si el pedido todavía no fue aceptado y por lo tanto no tiene código, el sistema retorna error 400 "El pedido todavía no tiene código de entrega (debe estar aceptado)". |
 | 2 | Si el solicitante tiene rol CUSTOMER, el guard de roles rechaza la petición con error 403: el cliente nunca conoce el código por API, solo escaneando el QR físico. |
@@ -4573,6 +4604,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Comentarios** | El código de entrega no se regenera si el chofer lo solicita varias veces: siempre es el mismo mientras el pedido no cambie de chofer, lo cual es intencional para que el QR mostrado en pantalla sea estable durante todo el trayecto. |
 
 ---
+
 
 #### Crítico CU-079 — Confirmar Entrega Escaneando el QR
 
@@ -4608,6 +4640,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 3 | Si el cuerpo no trae `code` o viene vacío, la validación del DTO retorna error 400 (`src/order/dto/confirm-delivery.dto.ts`). |
 | 4 | Si el pedido no existe, el sistema retorna error 404 "Order with ID: … not found". |
+| 4 | Si el pedido pertenece a una distribuidora distinta de la que está en contexto —la del administrador que confirma una entrega asistida, o la que eligió el cliente—, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el pedido pertenece a otro cliente, el sistema retorna error 403 "No autorizado a confirmar la entrega de otro cliente". |
 | 5 | Si el pedido ya está en DELIVERED, el sistema **no** lo trata como error: devuelve el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red (`confirm-delivery.use-case.ts:53-57`). |
 | 5 | Si el pedido está en cualquier otro estado que no sea ON_THE_WAY, el sistema retorna error 400 "El pedido no está en camino, no se puede confirmar la entrega". |
@@ -4681,7 +4714,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El chofer abre la pantalla de "mis pedidos", o el administrador abre la ficha del repartidor en el panel. |
 | 2 | La app o el panel envían `GET /orders/delivery/:deliveryId` con paginación. |
-| 3 | El sistema valida el formato UUID del identificador del repartidor. |
+| 3 | El sistema valida el formato UUID del identificador del repartidor. Si el solicitante es un chofer, verifica además que ese identificador sea el de su propio perfil, ya sea el identificador de repartidor o el de usuario. |
 | 4 | El sistema busca los pedidos con ese `delivery_id`, acotados a la distribuidora del solicitante (`order.typeorm.repository.ts:113-134`). |
 | 5 | El sistema ordena por fecha de creación descendente y carga cliente, ítems, producto, dirección y franja horaria. |
 | 6 | El sistema devuelve la página de pedidos junto con el total. |
@@ -4695,14 +4728,14 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 2 | Si el solicitante tiene rol CUSTOMER, el guard de roles rechaza la petición con error 403. |
 | 4 | Si el repartidor no tiene pedidos, o pertenece a otra distribuidora, el sistema devuelve una lista vacía con total cero: no retorna 404. |
-| 4 | El endpoint no verifica que un chofer consulte **su propio** identificador, de modo que un chofer puede leer los pedidos de otro chofer de su misma distribuidora. **⚠️ verificar** si se trata de una decisión de diseño o de un control de pertenencia faltante. |
+| 3 | Si el solicitante es un chofer y el identificador no corresponde a su propio perfil, el sistema retorna error 403 "Sólo podés ver tus propios pedidos": un chofer sólo consulta sus propios pedidos. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Consulta paginada con conteo total y seis relaciones cargadas. |
 | **Frecuencia** | Alta durante la jornada: es la pantalla principal del chofer. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El endpoint no comprueba que un chofer consulte su propio identificador de repartidor: cualquier chofer autenticado puede ver los pedidos asignados a otro chofer de la misma distribuidora, aunque no puede operar sobre ellos por los controles de pertenencia de las demás operaciones. |
+| **Comentarios** | Para el administrador, un repartidor de otra distribuidora y uno sin pedidos dan el mismo resultado: una lista vacía con total cero. |
 
 ---
 

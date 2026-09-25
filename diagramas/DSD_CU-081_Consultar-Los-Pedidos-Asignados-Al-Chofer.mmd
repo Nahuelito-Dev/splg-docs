@@ -4,6 +4,7 @@ sequenceDiagram
     participant RG as RolesGuard
     participant CTRL as OrderController
     participant SRV as OrderService
+    participant DSRV as DeliveryService
     participant ORD as OrderRepositoryPort
     participant REP as RepositoryOrder
     participant MAP as OrderMapper
@@ -13,23 +14,37 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        CTRL->>SRV: findByDelivery(deliveryId, paginationDto, distributorId)
-        activate SRV
-        SRV->>ORD: findByDelivery(deliveryId, limit, offset, distributorId)
-        activate ORD
-        ORD->>ORD: scoped(where delivery_id, distributorId)
-        ORD->>REP: findAndCount(where, take, skip, relations customer e items, order createdAt DESC)
-        activate REP
-        REP-->>ORD: orders y total
-        deactivate REP
-        ORD-->>SRV: orders, total, limit y offset
-        deactivate ORD
-        SRV-->>CTRL: PaginatedOrders
-        deactivate SRV
-        loop Por cada pedido asignado
-            CTRL->>MAP: toDto(order)
-            activate MAP
-            MAP-->>CTRL: OrderResponseDto
-            deactivate MAP
+        opt El solicitante tiene rol DELIVERY
+            CTRL->>SRV: assertEsElChofer(deliveryId, user.user_id)
+            activate SRV
+            SRV->>DSRV: buscarPorIdOUsuario(userId)
+            activate DSRV
+            DSRV-->>SRV: Delivery del chofer autenticado o null
+            deactivate DSRV
+            SRV-->>CTRL: sin error, o ForbiddenException si deliveryId no es su delivery_id ni su user_id
+            deactivate SRV
+        end
+        alt Chofer que pide los pedidos de otro repartidor
+            CTRL-->>CTRL: propaga ForbiddenException Solo podes ver tus propios pedidos
+        else Es su propio identificador, o el solicitante es administrador
+            CTRL->>SRV: findByDelivery(deliveryId, paginationDto, distributorId)
+            activate SRV
+            SRV->>ORD: findByDelivery(deliveryId, limit, offset, distributorId)
+            activate ORD
+            ORD->>ORD: scoped(where delivery_id, distributorId)
+            ORD->>REP: findAndCount(where, take, skip, relations customer e items, order createdAt DESC)
+            activate REP
+            REP-->>ORD: orders y total
+            deactivate REP
+            ORD-->>SRV: orders, total, limit y offset
+            deactivate ORD
+            SRV-->>CTRL: PaginatedOrders
+            deactivate SRV
+            loop Por cada pedido asignado
+                CTRL->>MAP: toDto(order)
+                activate MAP
+                MAP-->>CTRL: OrderResponseDto
+                deactivate MAP
+            end
         end
     end

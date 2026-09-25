@@ -14,5 +14,7 @@ sequenceDiagram
         end
     else El pedido no existe
         SIS-->>CHO: sin efecto (rechazo no registrado)
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS

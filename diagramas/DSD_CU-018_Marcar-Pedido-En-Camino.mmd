@@ -7,7 +7,7 @@ sequenceDiagram
     participant UC as UpdateOrderStatusUseCase
     participant ORD as OrderRepositoryPort
     participant FSM as OrderStatusMachine
-    participant DREP as RepositoryDelivery
+    participant DREP as DeliveryService
     participant RT as RealtimeDispatchPort
     participant REDIS as RedisService
     participant CGW as CustomersGateway
@@ -19,54 +19,64 @@ sequenceDiagram
         IDEM-->>CTRL: respuesta cacheada, no se re-procesa
     else Primera ejecucion
         IDEM-->>CTRL: next.handle()
-        CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
-        CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
-        SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
-        activate UC
-        UC->>ORD: findByIdFull(id)
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente
-            ORD-->>UC: null
-            deactivate ORD
-            UC-->>CTRL: NotFoundException Order with ID not found
-            deactivate UC
-        else Pedido encontrado
-            ORD-->>UC: Order
-            UC->>FSM: transitionOrder(order, ON_THE_WAY)
-            activate FSM
-            alt El pedido no estaba ACCEPTED
-                FSM-->>UC: InvalidOrderTransitionError
-                deactivate FSM
-                UC-->>CTRL: error 400 via GlobalExceptionFilter
-            else Transicion valida
-                UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
-                UC->>UC: order.onTheWayAt igual a new Date
-                alt El pedido no tiene chofer asignado
-                    UC-->>UC: devuelve null sin activar tracking
-                else Tiene chofer
-                    UC->>DREP: findOne(delivery_id, relations user)
-                    activate DREP
-                    DREP-->>UC: Delivery con User
-                    deactivate DREP
-                    UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
-                    activate RT
-                    RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
-                    activate REDIS
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException Order with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
+            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
+            SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
+            activate UC
+            UC->>ORD: findByIdFull(id)
+            activate ORD
+            alt Pedido inexistente
+                ORD-->>UC: null
+                deactivate ORD
+                UC-->>CTRL: NotFoundException Order with ID not found
+                deactivate UC
+            else Pedido encontrado
+                ORD-->>UC: Order
+                UC->>FSM: transitionOrder(order, ON_THE_WAY)
+                activate FSM
+                alt El pedido no estaba ACCEPTED
+                    FSM-->>UC: InvalidOrderTransitionError
+                    deactivate FSM
+                    UC-->>CTRL: error 400 via GlobalExceptionFilter
+                else Transicion valida
+                    UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
+                    UC->>UC: order.onTheWayAt igual a new Date
+                    alt El pedido no tiene chofer asignado
+                        UC-->>UC: devuelve null sin activar tracking
+                    else Tiene chofer
+                        UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
+                        activate DREP
+                        DREP-->>UC: Delivery con User
+                        deactivate DREP
+                        UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
+                        activate RT
+                        RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
+                        activate REDIS
+                    end
+                    UC->>ORD: save(order)
+                    activate ORD
+                    UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
+                    UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
+                    RT-)CGW: notifyCustomer(customerId, event, payload)
+                    activate CGW
+                    UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
+                    RT-)AGW: notifyAdmins(event, payload)
+                    activate AGW
+                    UC->>UC: notifyCustomer(order)
+                    UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                    activate NOT
+                    UC-->>CTRL: Order en estado ON_THE_WAY
                 end
-                UC->>ORD: save(order)
-                activate ORD
-                UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
-                UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
-                RT-)CGW: notifyCustomer(customerId, event, payload)
-                activate CGW
-                UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
-                RT-)AGW: notifyAdmins(event, payload)
-                activate AGW
-                UC->>UC: notifyCustomer(order)
-                UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
-                activate NOT
-                UC-->>CTRL: Order en estado ON_THE_WAY
             end
         end
     end

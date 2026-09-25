@@ -7,9 +7,13 @@ sequenceDiagram
 
     CHO->>SIS: liberarPedido(pedidoId, motivo)
     activate SIS
-    alt El pedido no esta finalizado
+    alt El pedido esta asignado al chofer y no esta finalizado
         SIS-->>CHO: pedido liberado (vuelve a PENDIENTE y queda sin chofer)
         SIS-)CLI: aviso de que se esta buscando otro chofer
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else El pedido no esta asignado a este chofer
+        SIS-->>CHO: acceso denegado
     else El pedido ya esta entregado o cancelado
         SIS-->>CHO: error de solicitud (no se puede cancelar un pedido finalizado)
     end

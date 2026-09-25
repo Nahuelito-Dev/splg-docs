@@ -12,7 +12,7 @@ sequenceDiagram
         SIS-->>CHO: acceso denegado
     else el pedido todavía no fue aceptado
         SIS-->>CHO: error de solicitud (el pedido aún no tiene código)
-    else el pedido no existe
+    else el pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS

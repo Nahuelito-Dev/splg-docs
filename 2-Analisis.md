@@ -931,6 +931,8 @@ sequenceDiagram
     alt La transicion de estado es valida y el chofer esta activo
         SIS-->>CHO: pedido asignado (datos de entrega y codigo de entrega)
         SIS-)CLI: aviso de que un chofer tomo el pedido
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     else El pedido ya esta entregado o cancelado
         SIS-->>CHO: error de solicitud (transicion no permitida)
     else El chofer no existe o esta dado de baja
@@ -1630,12 +1632,12 @@ sequenceDiagram
             SIS-)CHO: aviso de pedido cancelado por el cliente
         end
         SIS-)ADM: aviso de cancelacion en el panel
+    else El pedido es de otro cliente o de otra distribuidora
+        SIS-->>CLI: recurso no encontrado
     else El pedido ya esta entregado o cancelado
         SIS-->>CLI: error de solicitud (no se puede cancelar un pedido finalizado)
     else El pedido ya esta en camino
         SIS-->>CLI: error de solicitud (contactar al soporte)
-    else El pedido es de otro cliente
-        SIS-->>CLI: error de solicitud (no autorizado)
     end
     deactivate SIS
 ```
@@ -1661,9 +1663,13 @@ sequenceDiagram
 
     CHO->>SIS: liberarPedido(pedidoId, motivo)
     activate SIS
-    alt El pedido no esta finalizado
+    alt El pedido esta asignado al chofer y no esta finalizado
         SIS-->>CHO: pedido liberado (vuelve a PENDIENTE y queda sin chofer)
         SIS-)CLI: aviso de que se esta buscando otro chofer
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else El pedido no esta asignado a este chofer
+        SIS-->>CHO: acceso denegado
     else El pedido ya esta entregado o cancelado
         SIS-->>CHO: error de solicitud (no se puede cancelar un pedido finalizado)
     end
@@ -1747,7 +1753,7 @@ sequenceDiagram
     activate SIS
     alt el pedido y el chofer existen y son compatibles
         SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado)
-    else el pedido o el chofer no existen
+    else el pedido o el chofer no existen o son de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -2247,6 +2253,8 @@ sequenceDiagram
         end
     else El pedido no existe
         SIS-->>CHO: sin efecto (rechazo no registrado)
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS
 ```
@@ -2277,6 +2285,8 @@ sequenceDiagram
     alt la transición es válida desde el estado actual
         SIS-->>CHO: pedido en camino (estado EN_CAMINO)
         SIS-)CLI: aviso de pedido en camino
+    else el pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     else la transición no está permitida
         SIS-->>CHO: error de solicitud (transición inválida)
     end
@@ -2305,6 +2315,8 @@ sequenceDiagram
     alt el pedido está en camino
         SIS-)CLI: aviso de que el repartidor llegó al domicilio
         SIS-->>CHO: cliente notificado
+    else el pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     else el pedido no está en camino
         SIS-->>CHO: error de solicitud (el pedido no está en camino)
     end
@@ -2394,7 +2406,7 @@ sequenceDiagram
         SIS-->>CHO: acceso denegado
     else el pedido todavía no fue aceptado
         SIS-->>CHO: error de solicitud (el pedido aún no tiene código)
-    else el pedido no existe
+    else el pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS

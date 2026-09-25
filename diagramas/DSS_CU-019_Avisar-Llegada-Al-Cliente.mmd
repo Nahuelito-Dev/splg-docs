@@ -10,6 +10,8 @@ sequenceDiagram
     alt el pedido está en camino
         SIS-)CLI: aviso de que el repartidor llegó al domicilio
         SIS-->>CHO: cliente notificado
+    else el pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     else el pedido no está en camino
         SIS-->>CHO: error de solicitud (el pedido no está en camino)
     end

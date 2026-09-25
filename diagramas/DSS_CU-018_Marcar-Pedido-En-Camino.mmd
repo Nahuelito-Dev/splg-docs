@@ -10,6 +10,8 @@ sequenceDiagram
     alt la transición es válida desde el estado actual
         SIS-->>CHO: pedido en camino (estado EN_CAMINO)
         SIS-)CLI: aviso de pedido en camino
+    else el pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
     else la transición no está permitida
         SIS-->>CHO: error de solicitud (transición inválida)
     end

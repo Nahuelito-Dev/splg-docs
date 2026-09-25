@@ -14,11 +14,11 @@ sequenceDiagram
             SIS-)CHO: aviso de pedido cancelado por el cliente
         end
         SIS-)ADM: aviso de cancelacion en el panel
+    else El pedido es de otro cliente o de otra distribuidora
+        SIS-->>CLI: recurso no encontrado
     else El pedido ya esta entregado o cancelado
         SIS-->>CLI: error de solicitud (no se puede cancelar un pedido finalizado)
     else El pedido ya esta en camino
         SIS-->>CLI: error de solicitud (contactar al soporte)
-    else El pedido es de otro cliente
-        SIS-->>CLI: error de solicitud (no autorizado)
     end
     deactivate SIS

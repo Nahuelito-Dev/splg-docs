@@ -5,7 +5,7 @@ sequenceDiagram
     participant CTRL as OrderController
     participant SRV as OrderService
     participant ORD as OrderRepositoryPort
-    participant DREP as RepositoryDelivery
+    participant DSRV as DeliveryService
     participant FSM as OrderStatusMachine
     participant OREP as RepositoryOrder
     participant MAP as OrderMapper
@@ -15,47 +15,59 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        CTRL->>SRV: assignDelivery(id, deliveryId)
+        CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(orderId)
-        SRV->>ORD: findByIdFull(orderId)
+        SRV->>ORD: findById(id)
         activate ORD
-        alt Pedido inexistente
-            ORD-->>SRV: null
-            deactivate ORD
+        ORD-->>SRV: Order o null
+        deactivate ORD
+        alt Pedido de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException Order with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Pedido encontrado
-            ORD-->>SRV: Order
-            SRV->>DREP: findOne(delivery_id)
-            activate DREP
-            alt Chofer inexistente
-                DREP-->>SRV: null
-                deactivate DREP
-                SRV-->>CTRL: NotFoundException Repartidor no encontrado
-            else Chofer encontrado
-                DREP-->>SRV: Delivery
-                alt El chofer no esta activo
-                    SRV-->>CTRL: BadRequestException El repartidor no esta activo
-                else Chofer activo
-                    SRV->>SRV: order.delivery_id igual a deliveryId
-                    SRV->>FSM: transitionOrder(order, ACCEPTED)
-                    activate FSM
-                    alt Transicion ilegal desde el estado actual
-                        FSM-->>SRV: InvalidOrderTransitionError
-                        deactivate FSM
-                        SRV-->>CTRL: error 400 via GlobalExceptionFilter
-                    else Transicion valida
-                        SRV->>SRV: order.acceptedAt igual a new Date
-                        SRV->>OREP: save(order)
-                        activate OREP
-                        OREP-->>SRV: Order
-                        deactivate OREP
-                        SRV-->>CTRL: Order en estado ACCEPTED
-                        CTRL->>MAP: toDto(order)
-                        activate MAP
-                        MAP-->>CTRL: OrderResponseDto
-                        deactivate MAP
+            CTRL->>SRV: assignDelivery(id, deliveryId)
+            activate SRV
+            SRV->>SRV: findOne(orderId)
+            SRV->>ORD: findByIdFull(orderId)
+            activate ORD
+            alt Pedido inexistente
+                ORD-->>SRV: null
+                deactivate ORD
+                SRV-->>CTRL: NotFoundException Order with ID not found
+                deactivate SRV
+            else Pedido encontrado
+                ORD-->>SRV: Order
+                SRV->>DSRV: findById(deliveryId)
+                activate DSRV
+                alt Chofer inexistente o de otra distribuidora que la del pedido
+                    DSRV-->>SRV: null o Delivery con otro distributor_id
+                    deactivate DSRV
+                    SRV-->>CTRL: NotFoundException Repartidor no encontrado
+                else Chofer de la distribuidora del pedido
+                    DSRV-->>SRV: Delivery
+                    alt El chofer no esta activo
+                        SRV-->>CTRL: BadRequestException El repartidor no esta activo
+                    else Chofer activo
+                        SRV->>SRV: order.delivery_id igual a deliveryId
+                        SRV->>FSM: transitionOrder(order, ACCEPTED)
+                        activate FSM
+                        alt Transicion ilegal desde el estado actual
+                            FSM-->>SRV: InvalidOrderTransitionError
+                            deactivate FSM
+                            SRV-->>CTRL: error 400 via GlobalExceptionFilter
+                        else Transicion valida
+                            SRV->>SRV: order.acceptedAt igual a new Date
+                            SRV->>OREP: save(order)
+                            activate OREP
+                            OREP-->>SRV: Order
+                            deactivate OREP
+                            SRV-->>CTRL: Order en estado ACCEPTED
+                            CTRL->>MAP: toDto(order)
+                            activate MAP
+                            MAP-->>CTRL: OrderResponseDto
+                            deactivate MAP
+                        end
                     end
                 end
             end
