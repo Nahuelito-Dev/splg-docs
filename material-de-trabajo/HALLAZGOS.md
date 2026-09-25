@@ -997,3 +997,14 @@ El endpoint era `@Public()` y guardaba el `role_id` que llegara en el cuerpo.
 `super_admin` (201). Con una cuenta de Firebase creada con la clave pública que
 viajan en las apps, eso bastaba para entrar al panel con todos los permisos.
 La fila de prueba se borró.
+
+### H-64 · Cualquier usuario manejaba a los choferes de cualquier distribuidora — **seguridad, ALTO**
+
+> **Resuelto el 24/09.** Disponibilidad y ubicación: sólo el propio chofer o un admin. Lecturas de choferes: admin de la misma distribuidora o el propio chofer.
+
+Los endpoints de `/delivery` sólo pedían estar autenticado. Un cliente podía
+listar los choferes activos con su ubicación, leer el perfil de cualquiera,
+moverle la posición y sacarlo de servicio.
+**Verificado contra la API, después del arreglo:** el cliente recibe 403 en los
+cuatro casos; un chofer, 403 sobre otro chofer; el propio chofer cambia su
+disponibilidad (200) y el admin lee y lista (200).
