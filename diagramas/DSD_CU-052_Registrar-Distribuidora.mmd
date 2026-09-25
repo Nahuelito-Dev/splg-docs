@@ -35,7 +35,8 @@ sequenceDiagram
             REPO-->>SRV: Distributor persistido
             deactivate REPO
             SRV-->>CTRL: Distributor
-            CTRL-->>SA: 201 Distributor
+            CTRL->>CTRL: DistributorMapper.toDto(distributor)
+            CTRL-->>SA: 201 DistributorResponseDto
             deactivate CTRL
         end
     end

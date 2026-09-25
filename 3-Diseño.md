@@ -7441,7 +7441,8 @@ sequenceDiagram
             REPO-->>SRV: Distributor persistido
             deactivate REPO
             SRV-->>CTRL: Distributor
-            CTRL-->>SA: 201 Distributor
+            CTRL->>CTRL: DistributorMapper.toDto(distributor)
+            CTRL-->>SA: 201 DistributorResponseDto
             deactivate CTRL
         end
     end
@@ -7483,7 +7484,8 @@ sequenceDiagram
         deactivate REPO
         SRV-->>CTRL: Distributor[]
         deactivate SRV
-        CTRL-->>SA: 200 Distributor[]
+        CTRL->>CTRL: DistributorMapper.toDto por cada una
+        CTRL-->>SA: 200 DistributorResponseDto[]
         deactivate CTRL
     else Detalle, GET /distributor/:id
         CTRL->>CTRL: ParseUUIDPipe valida el id
@@ -7498,7 +7500,8 @@ sequenceDiagram
             deactivate SRV
         else Existe
             SRV-->>CTRL: Distributor
-            CTRL-->>SA: 200 Distributor
+            CTRL->>CTRL: DistributorMapper.toDto(distributor)
+            CTRL-->>SA: 200 DistributorResponseDto
         end
     end
     deactivate GRD
@@ -7548,7 +7551,8 @@ sequenceDiagram
         REPO-->>SRV: Distributor actualizado
         deactivate REPO
         SRV-->>CTRL: Distributor
-        CTRL-->>SA: 200 Distributor
+        CTRL->>CTRL: DistributorMapper.toDto(distributor)
+        CTRL-->>SA: 200 DistributorResponseDto
         deactivate CTRL
     end
     deactivate GRD

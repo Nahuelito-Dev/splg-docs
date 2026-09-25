@@ -28,7 +28,8 @@ sequenceDiagram
         REPO-->>SRV: Distributor actualizado
         deactivate REPO
         SRV-->>CTRL: Distributor
-        CTRL-->>SA: 200 Distributor
+        CTRL->>CTRL: DistributorMapper.toDto(distributor)
+        CTRL-->>SA: 200 DistributorResponseDto
         deactivate CTRL
     end
     deactivate GRD
