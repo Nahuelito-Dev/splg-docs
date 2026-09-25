@@ -31,23 +31,23 @@ junto a la imagen, por si hay que retocarlo.
 |---------|-----------|
 | `uml/CU_contexto` | Los cinco actores contra los 18 subsistemas. Delimita el sistema. |
 | `uml/CU_SS-01` | SS-01 Autenticación y Usuarios — 11 casos de uso |
-| `uml/CU_SS-02` | SS-02 Gestión de Pedidos — 11 casos de uso |
-| `uml/CU_SS-03` | SS-03 Despacho y Asignación — 6 casos de uso |
+| `uml/CU_SS-02` | SS-02 Gestión de Pedidos — 30 casos de uso |
+| `uml/CU_SS-03` | SS-03 Despacho y Asignación — 7 casos de uso |
 | `uml/CU_SS-04` | SS-04 Seguimiento en Tiempo Real — 8 casos de uso |
 | `uml/CU_SS-05` | SS-05 Reclamos — 3 casos de uso |
 | `uml/CU_SS-06` | SS-06 Reportes y Dashboard — 5 casos de uso |
-| `uml/CU_SS-07` | SS-07 Choferes y Vehículos — 10 casos de uso |
+| `uml/CU_SS-07` | SS-07 Choferes y Vehículos — 24 casos de uso |
 | `uml/CU_SS-08` | SS-08 Catálogo de Productos — 6 casos de uso |
 | `uml/CU_SS-09` | SS-09 Franjas Horarias — 5 casos de uso |
 | `uml/CU_SS-10` | SS-10 Multi-Distribuidora — 4 casos de uso |
-| `uml/CU_SS-11` | SS-11 Cobertura Geográfica — 4 casos de uso |
+| `uml/CU_SS-11` | SS-11 Cobertura Geográfica — 6 casos de uso |
 | `uml/CU_SS-12` | SS-12 Incidencias y Calidad — 7 casos de uso |
-| `uml/CU_SS-13` | SS-13 Trazabilidad de Envases — 6 casos de uso |
-| `uml/CU_SS-14` | SS-14 Pagos y Conciliación — 1 casos de uso |
+| `uml/CU_SS-13` | SS-13 Trazabilidad de Envases — 10 casos de uso |
+| `uml/CU_SS-14` | SS-14 Pagos y Conciliación — 1 caso de uso |
 | `uml/CU_SS-15` | SS-15 Reservas Programadas — 6 casos de uso |
-| `uml/CU_SS-16` | SS-16 Cuentas y Roles — 9 casos de uso |
+| `uml/CU_SS-16` | SS-16 Cuentas y Roles — 12 casos de uso |
 | `uml/CU_SS-17` | SS-17 Notificaciones — 5 casos de uso |
-| `uml/CU_SS-18` | SS-18 Observabilidad — 1 casos de uso |
+| `uml/CU_SS-18` | SS-18 Observabilidad — 3 casos de uso |
 
 ---
 

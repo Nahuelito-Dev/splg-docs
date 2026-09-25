@@ -2477,7 +2477,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | Al crearse un pedido, el sistema abre un proceso de negociación con los choferes disponibles en lugar de avisarles a todos a la vez. Ofrece el pedido **a un solo chofer**, el más cercano al domicilio de entrega que todavía no haya sido contactado, y le otorga una ventana de aceptación acotada. La oferta se registra de forma durable, de modo que sobrevive a un reinicio del servidor y queda auditable. |
 | **Precondición** | Existe un pedido en estado PENDING sin chofer asignado, con sus coordenadas de entrega cargadas. Al menos un chofer de la misma distribuidora tiene su posición registrada en el radar. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente admitir como candidatos a los choferes que están por terminar su entrega (paso 3.a) |
 
 **Secuencia Normal**
 
@@ -2653,7 +2653,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | Mientras el chofer está en línea, su app envía periódicamente la posición del dispositivo por la conexión en tiempo real. El sistema la escribe en el radar geográfico que usa el despacho y, si el chofer está entregando un pedido, la reenvía al cliente de ese pedido y al panel. |
 | **Precondición** | El chofer está autenticado y conectado por la conexión en tiempo real de choferes. El dispositivo tiene el GPS activo y los permisos de ubicación concedidos. |
-| **Estado** | Implementado |
+| **Estado** | Implementado · pendiente el cálculo del tiempo estimado de llegada (pasos 6 y 7) |
 
 **Secuencia Normal**
 
@@ -8047,7 +8047,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | La planificación de la flota completa de una distribuidora se resuelve en una sola ejecución nocturna, fuera del horario de operación. |
 | **Frecuencia** | Automático, una vez por día a la hora configurada. La acumulación de kilómetros por vehículo se actualiza además con cada entrega confirmada. |
 | **Estabilidad** | Media |
-| **Comentarios** | **El módulo está especificado y todavía no implementado.** La especificación completa está en el Documento 3 §6.2 y en `docs/M3-Mantenimiento-Predictivo-Flota.md`. Su construcción requiere entidades que hoy no existen: el registro de uso por vehículo, la regla de mantenimiento, la tarea de mantenimiento y la propuesta de ventana. La entidad `Car` existe pero no lleva kilometraje ni estado de flota. La decisión que compromete dinero —la contratación del taller— queda siempre en manos del administrador: el sistema arma el cuadro de opciones y lo presenta, nunca contrata. Todos los plazos, la anticipación por tipo, el mínimo de vehículos por zona, la vigencia de la propuesta y la cantidad de ventanas alternativas se leen de la configuración de la distribuidora. |
+| **Comentarios** | **El módulo está especificado y todavía no implementado.** La especificación completa está en el Documento 3 §6.2. Su construcción requiere entidades que hoy no existen: el registro de uso por vehículo, la regla de mantenimiento, la tarea de mantenimiento y la propuesta de ventana. La entidad `Car` existe pero no lleva kilometraje ni estado de flota. La decisión que compromete dinero —la contratación del taller— queda siempre en manos del administrador: el sistema arma el cuadro de opciones y lo presenta, nunca contrata. Todos los plazos, la anticipación por tipo, el mínimo de vehículos por zona, la vigencia de la propuesta y la cantidad de ventanas alternativas se leen de la configuración de la distribuidora. |
 
 ---
 
@@ -9791,18 +9791,45 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
+    title DSS — CU-046 Consultar Direcciones De Entrega Del Cliente
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
 
-    CLI->>SIS: consultarDireccionesDeEntrega(usuarioId)
+    CLI->>SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
     activate SIS
-    alt el cliente tiene direcciones
-        SIS-->>CLI: listado con la predeterminada primero
-    else el cliente no tiene ninguna
-        SIS-->>CLI: listado vacío
-    end
+    SIS-->>CLI: dirección creada (direccionId)
     deactivate SIS
+
+    CLI->>SIS: listarDireccionesDelUsuario(usuarioId)
+    activate SIS
+    SIS-->>CLI: listado de direcciones
+    deactivate SIS
+
+    opt el cliente cambia su dirección habitual
+        CLI->>SIS: marcarDireccionPredeterminada(direccionId)
+        activate SIS
+        SIS-->>CLI: dirección predeterminada actualizada (las demás dejan de serlo)
+        deactivate SIS
+    end
+
+    opt corrección de datos
+        CLI->>SIS: actualizarDireccion(direccionId, datos)
+        activate SIS
+        SIS-->>CLI: dirección actualizada
+        deactivate SIS
+    end
+
+    opt baja de una dirección
+        CLI->>SIS: eliminarDireccion(direccionId)
+        activate SIS
+        alt la dirección existe y es del cliente
+            SIS-->>CLI: dirección eliminada
+        else la dirección no existe
+            SIS-->>CLI: recurso no encontrado
+        end
+        deactivate SIS
+    end
 ```
 
 ---
@@ -15379,20 +15406,128 @@ sequenceDiagram
 
 #### DSD — CU-046: Consultar Direcciones de Entrega del Cliente
 
-**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, `UsersService` (pertenencia del usuario a la distribuidora), entidad `UserAddress`.
 
 ```mermaid
 sequenceDiagram
+    title DSD — CU-046 Consultar Direcciones De Entrega Del Cliente
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant UREP as RepositoryUser
+    participant USRV as UsersService
 
-    CTRL->>SRV: findByUserId(userId, usuarioDeLaSesion)
-    SRV->>SRV: alcance(usuarioDeLaSesion) sobre el userId recibido
-    SRV->>AREP: find(where user_id, order isDefault DESC y createdAt DESC)
-    AREP-->>SRV: lista de UserAddress
-    SRV-->>CTRL: listado ordenado
+    CTRL->>CTRL: scope(user) devuelve user_id si no es admin
+
+    CTRL->>CTRL: acotar(userId o addressId, user, distributorId, escribe), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId o addressId, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id), si llega el id de la direccion
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
+        deactivate SRV
+    else Admin de empresa en alta, baja o predeterminada y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(userId o addressId, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, Administrador General, o consulta de un admin sobre un titular de su distribuidora
+        alt Alta, POST /user-address
+            CTRL->>SRV: create(createUserAddressDto, scope)
+            activate SRV
+            opt No es admin
+                SRV->>SRV: forzar user_id al del solicitante, ignorando el body
+            end
+            SRV->>UREP: findOne(user_id)
+            activate UREP
+            alt El usuario no existe
+                UREP-->>SRV: null
+                deactivate UREP
+                SRV-->>CTRL: NotFoundException User with ID not found
+                deactivate SRV
+            else Usuario valido
+                UREP-->>SRV: User
+                opt isDefault true
+                    SRV->>SRV: removeDefaultFromOtherAddresses(user_id)
+                    SRV->>AREP: find(user_id, isDefault true)
+                    activate AREP
+                    loop Por cada direccion predeterminada previa
+                        SRV->>AREP: save(address con isDefault false)
+                    end
+                end
+                SRV->>AREP: create(createUserAddressDto)
+                SRV->>AREP: save(address)
+                AREP-->>SRV: UserAddress
+                deactivate AREP
+                SRV-->>CTRL: UserAddress
+            end
+        else Consulta por usuario, GET /user-address/user/:userId
+            CTRL->>SRV: findByUserId(userId, scope)
+            activate SRV
+            SRV->>SRV: assertOwnership(userId, requesterUserId)
+            alt El solicitante no es el dueno
+                SRV-->>CTRL: ForbiddenException No autorizado a acceder a direcciones de otro usuario
+                deactivate SRV
+            else Autorizado
+                SRV->>AREP: find(user_id, order isDefault DESC y createdAt DESC)
+                activate AREP
+                AREP-->>SRV: UserAddress[]
+                deactivate AREP
+                SRV-->>CTRL: UserAddress[]
+            end
+        else Predeterminada, GET /user-address/user/:userId/default
+            CTRL->>SRV: findDefaultByUserId(userId, scope)
+            activate SRV
+            SRV->>SRV: assertOwnership(userId, requesterUserId)
+            SRV->>AREP: findOne(user_id, isDefault true)
+            activate AREP
+            alt No hay ninguna marcada
+                AREP-->>SRV: null
+                deactivate AREP
+                SRV->>SRV: findByUserId(userId)
+                alt Tiene al menos una direccion
+                    SRV-->>CTRL: la primera de la lista
+                    deactivate SRV
+                else No tiene ninguna
+                    SRV-->>CTRL: NotFoundException No addresses found for user
+                end
+            else Hay predeterminada
+                AREP-->>SRV: UserAddress
+                SRV-->>CTRL: UserAddress
+            end
+        else Marcar predeterminada, PATCH /user-address/:id/set-default
+            CTRL->>SRV: setAsDefault(id, scope)
+            activate SRV
+            SRV->>SRV: findOne(id, requesterUserId)
+            SRV->>SRV: removeDefaultFromOtherAddresses(user_id, id)
+            SRV->>AREP: find(user_id, isDefault true, address_id Not id)
+            activate AREP
+            SRV->>AREP: save(address con isDefault true)
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else Baja, DELETE /user-address/:id
+            CTRL->>SRV: remove(id, scope)
+            activate SRV
+            SRV->>SRV: findOne(id, requesterUserId)
+            opt La direccion borrada era la predeterminada
+                SRV->>AREP: find(user_id, address_id Not id, order createdAt DESC)
+                opt Quedan otras direcciones
+                    SRV->>AREP: save(la mas reciente con isDefault true)
+                end
+            end
+            SRV->>AREP: remove(address)
+            SRV-->>CTRL: message Address deleted successfully y addressId
+            deactivate SRV
+        end
+    end
+    deactivate AREP
 ```
 
 **Observaciones de diseño**
@@ -20025,7 +20160,7 @@ sequenceDiagram
             POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
         end
         Note over SRV: «include» CU-082 Crear Usuario Base
-        SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
+        SRV->>ASRV: crearPerfil(manager, user_id, distributorId o null)
         ASRV-->>SRV: perfil de administrador
         SRV-->>CTRL: User con rol
         deactivate SRV
@@ -20100,7 +20235,7 @@ sequenceDiagram
         CLI->>SRV: registrar(datos con rol super_admin, solicitante sistema)
         activate SRV
         Note over SRV: «include» CU-082 Crear Usuario Base
-        SRV->>ASRV: crearPerfil(manager, user_id, role_id, null)
+        SRV->>ASRV: crearPerfil(manager, user_id, null)
         ASRV-->>SRV: perfil de administrador sin distribuidora
         SRV-->>CLI: User
         deactivate SRV

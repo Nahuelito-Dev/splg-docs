@@ -30,7 +30,8 @@ CREATE TABLE "role" (
   "type" text NOT NULL,
   "createdAt" timestamptz,
   "updatedAt" timestamptz,
-  PRIMARY KEY ("role_id")
+  PRIMARY KEY ("role_id"),
+  UNIQUE ("type")
 );
 
 CREATE TABLE "coverage_zone" (
@@ -63,6 +64,7 @@ CREATE TABLE "gas_cylinder" (
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   PRIMARY KEY ("gas_cylinder_id"),
+  UNIQUE ("distributor_id", "type"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id")
 );
 
@@ -111,6 +113,7 @@ CREATE TABLE "user" (
   "deletedAt" timestamptz,
   PRIMARY KEY ("user_id"),
   UNIQUE ("phone_number"),
+  UNIQUE ("firebase_uid"),
   UNIQUE ("email"),
   FOREIGN KEY ("role_id") REFERENCES "role" ("role_id")
 );

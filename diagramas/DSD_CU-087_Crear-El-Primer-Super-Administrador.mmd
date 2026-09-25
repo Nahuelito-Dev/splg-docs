@@ -17,7 +17,7 @@ sequenceDiagram
         CLI->>SRV: registrar(datos con rol super_admin, solicitante sistema)
         activate SRV
         Note over SRV: «include» CU-082 Crear Usuario Base
-        SRV->>ASRV: crearPerfil(manager, user_id, role_id, null)
+        SRV->>ASRV: crearPerfil(manager, user_id, null)
         ASRV-->>SRV: perfil de administrador sin distribuidora
         SRV-->>CLI: User
         deactivate SRV

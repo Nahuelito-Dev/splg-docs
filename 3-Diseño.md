@@ -3992,7 +3992,7 @@ sequenceDiagram
 
 #### DSD — CU-046: Consultar Direcciones de Entrega del Cliente
 
-**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, entidad `UserAddress`.
+**Clases participantes:** `UserAddressController`, `UserAddressService`, `Repository<UserAddress>`, `UsersService` (pertenencia del usuario a la distribuidora), entidad `UserAddress`.
 
 ```mermaid
 sequenceDiagram
@@ -8915,7 +8915,7 @@ sequenceDiagram
             POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
         end
         Note over SRV: «include» CU-082 Crear Usuario Base
-        SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
+        SRV->>ASRV: crearPerfil(manager, user_id, distributorId o null)
         ASRV-->>SRV: perfil de administrador
         SRV-->>CTRL: User con rol
         deactivate SRV
@@ -8992,7 +8992,7 @@ sequenceDiagram
         CLI->>SRV: registrar(datos con rol super_admin, solicitante sistema)
         activate SRV
         Note over SRV: «include» CU-082 Crear Usuario Base
-        SRV->>ASRV: crearPerfil(manager, user_id, role_id, null)
+        SRV->>ASRV: crearPerfil(manager, user_id, null)
         ASRV-->>SRV: perfil de administrador sin distribuidora
         SRV-->>CLI: User
         deactivate SRV
@@ -12728,7 +12728,6 @@ Live y en Lucidchart (*Importar datos → Mermaid*).
 erDiagram
     ADMIN }o--o| DISTRIBUTOR : "administra"
     ADMIN }o--|| USER : "pertenece_a"
-    ADMIN }o--|| ROLE : "tiene"
     CAR }o--|| DISTRIBUTOR : "asociado_a"
     CAR }o--|| USER : "propiedad_de"
     CLAIM }o--|| DISTRIBUTOR : "dirigido_a"
@@ -12768,8 +12767,7 @@ erDiagram
     ADMIN {
         uuid admin_id PK
         uuid distributor_id FK "nullable"
-        uuid user_id FK
-        uuid role_id FK
+        uuid user_id FK "único"
         timestamptz createdAt
     }
     CAR {
@@ -13043,8 +13041,7 @@ erDiagram
 |---|---|---|---|---|
 | admin_id | uuid | NO | - | Identificador único de administrador (PK). |
 | distributor_id | uuid | SI | - | Distribuidora que administra (FK). @Index |
-| user_id | uuid | NO | - | Usuario asignado a este rol (FK). |
-| role_id | uuid | NO | - | Rol asociado (FK). |
+| user_id | uuid | NO | - | Usuario administrador (FK, único: un perfil por usuario). El rol es el del usuario (`user.role_id`); el perfil no lo repite (NORMALIZACION.md §3.3). |
 | createdAt | timestamptz | NO | now() | Fecha de creación. |
 
 ##### Car

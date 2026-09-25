@@ -23,7 +23,7 @@ sequenceDiagram
             POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
         end
         Note over SRV: «include» CU-082 Crear Usuario Base
-        SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
+        SRV->>ASRV: crearPerfil(manager, user_id, distributorId o null)
         ASRV-->>SRV: perfil de administrador
         SRV-->>CTRL: User con rol
         deactivate SRV

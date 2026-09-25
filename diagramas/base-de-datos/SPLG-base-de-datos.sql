@@ -1469,6 +1469,22 @@ ALTER TABLE ONLY public.distributor
 
 
 --
+-- Name: user UQ_40fe3048b17f675b652c1999270; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."user"
+    ADD CONSTRAINT "UQ_40fe3048b17f675b652c1999270" UNIQUE (firebase_uid);
+
+
+--
+-- Name: role UQ_9a0c91c218a16e604951ff1c099; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.role
+    ADD CONSTRAINT "UQ_9a0c91c218a16e604951ff1c099" UNIQUE (type);
+
+
+--
 -- Name: cylinder UQ_9e39bbb32ed614ddd09ac126e37; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1498,6 +1514,14 @@ ALTER TABLE ONLY public.cart
 
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE (email);
+
+
+--
+-- Name: gas_cylinder UQ_gas_cylinder_distribuidora_tipo; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gas_cylinder
+    ADD CONSTRAINT "UQ_gas_cylinder_distribuidora_tipo" UNIQUE (distributor_id, type);
 
 
 --

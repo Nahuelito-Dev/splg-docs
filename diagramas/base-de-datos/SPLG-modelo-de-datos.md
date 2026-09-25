@@ -263,6 +263,8 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `createdAt` | timestamptz | sí |  |  |
 | `updatedAt` | timestamptz | sí |  |  |
 
+Claves únicas compuestas: (`distributor_id`, `type`).
+
 ### `gas_cylinder_promotion` — Promoción
 
 | Columna | Tipo | Obligatoria | Clave | Referencia |
@@ -497,7 +499,7 @@ Claves únicas compuestas: (`order_id`, `from_role`).
 | Columna | Tipo | Obligatoria | Clave | Referencia |
 |---|---|:-:|:-:|---|
 | `role_id` | uuid | sí | PK |  |
-| `type` | text | sí |  |  |
+| `type` | text | sí | U |  |
 | `createdAt` | timestamptz | no |  |  |
 | `updatedAt` | timestamptz | no |  |  |
 
@@ -554,7 +556,7 @@ Claves únicas compuestas: (`batch_id`, `order_id`).
 |---|---|:-:|:-:|---|
 | `user_id` | uuid | sí | PK |  |
 | `role_id` | uuid | no | FK | `role.role_id` |
-| `firebase_uid` | varchar | no |  |  |
+| `firebase_uid` | varchar | no | U |  |
 | `full_name` | varchar | no |  |  |
 | `selfie` | varchar | no |  |  |
 | `email` | varchar | no | U |  |
