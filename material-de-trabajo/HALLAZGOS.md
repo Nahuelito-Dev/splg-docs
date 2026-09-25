@@ -1228,3 +1228,15 @@ token en cada handshake (`gateways/socket-identity.service.ts:42-53`). Un ID
 token de Firebase dura una hora: un chofer conectado más de una hora que pierde
 señal probablemente no pueda volver a entrar. Propuesta: `getIdToken(true)` en
 `onReconnectAttempt`, o recrear el socket. Hay que reproducirlo con la app.
+
+### H-88 · Editar un producto permitía duplicar su tipo — **defecto, MEDIO**
+
+> **Resuelto el 25/09.** `UNIQUE (distribuidora, tipo)` en `gas_cylinder`; el choque responde 409.
+
+El alta de un producto controlaba que el tipo no se repitiera en la
+distribuidora, pero `PATCH /gascylinder/:id` no: en la base había dos "Garrafa
+5kg" en Jeny Gas (uno inactivo, del 23/09). Salió al hacer el análisis de
+normalización: la clave natural no estaba declarada. La migración conserva el más
+antiguo y le agrega un sufijo al duplicado. **Verificado contra la API:**
+renombrar el duplicado al tipo del otro responde 409. En la misma migración se
+declararon únicos `role.type` y `user.firebase_uid`.
