@@ -20,6 +20,7 @@ sequenceDiagram
     deactivate REPO
     SRV-->>CTRL: CoverageZone[]
     deactivate SRV
-    CTRL-->>ADM: 200 CoverageZone[]
+    CTRL->>CTRL: CoverageZoneMapper.toDto por cada zona
+    CTRL-->>ADM: 200 CoverageZoneResponseDto[]
     deactivate CTRL
     deactivate DEC

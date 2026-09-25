@@ -18679,7 +18679,8 @@ sequenceDiagram
             REPO-->>SRV: CoverageZone persistida
             deactivate REPO
             SRV-->>CTRL: CoverageZone
-            CTRL-->>ADM: 201 CoverageZone
+            CTRL->>CTRL: CoverageZoneMapper.toDto(zone)
+            CTRL-->>ADM: 201 CoverageZoneResponseDto
             deactivate CTRL
         end
     end
@@ -18719,7 +18720,8 @@ sequenceDiagram
     deactivate REPO
     SRV-->>CTRL: CoverageZone[]
     deactivate SRV
-    CTRL-->>ADM: 200 CoverageZone[]
+    CTRL->>CTRL: CoverageZoneMapper.toDto por cada zona
+    CTRL-->>ADM: 200 CoverageZoneResponseDto[]
     deactivate CTRL
     deactivate DEC
 ```

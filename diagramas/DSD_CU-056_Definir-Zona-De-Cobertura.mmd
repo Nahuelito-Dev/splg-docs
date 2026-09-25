@@ -37,7 +37,8 @@ sequenceDiagram
             REPO-->>SRV: CoverageZone persistida
             deactivate REPO
             SRV-->>CTRL: CoverageZone
-            CTRL-->>ADM: 201 CoverageZone
+            CTRL->>CTRL: CoverageZoneMapper.toDto(zone)
+            CTRL-->>ADM: 201 CoverageZoneResponseDto
             deactivate CTRL
         end
     end
