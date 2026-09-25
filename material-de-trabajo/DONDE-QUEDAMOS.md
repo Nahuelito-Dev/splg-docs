@@ -47,7 +47,7 @@ respuestas y sus DSD actualizados en las **tres copias**.
 
 ## Avance del 24/09 a la noche (segunda sesión)
 
-**Módulos alineados (21):** `health`, `redis`, `firebase`, `common`, `role`,
+**Módulos alineados (19):** `health`, `redis`, `firebase`, `common`, `role`,
 `auth`, `gateways`, `customer`\*, `admin`, `claims`, `incident`, `rating`,
 `reports`, `distributor`, `time-slot`\*, `coverage-zone`, `car`, `cylinder`\*,
 `notifications`.
@@ -88,13 +88,14 @@ splg-app-backend/scripts/alineacion/modulo.sh <modulo> src/<modulo>
 Detalle en `splg-app-backend/scripts/alineacion/LEEME.md`. El back de prueba
 corre en **:3100** porque el 3000 lo ocupa el MCP de Excalidraw.
 
-## Hallazgos nuevos (en `HALLAZGOS.md`, sin corregir)
+## Hallazgos (detalle en `HALLAZGOS.md`)
 
-- **H-52 · ALTO:** un cliente se puede validar a sí mismo con
-  `PATCH /customers/:id` `{"validated":"true"}`. Verificado contra la API.
+- **H-52 · ALTO, corregido:** un cliente se validaba a sí mismo con `PATCH /customers/:id`.
+- **H-56 · corregido:** el informe de ventas por producto salía vacío en el panel.
 - **H-53:** `/health` da 503 bajo la batería completa (umbral de 300 MB).
 - **H-54:** el evento "en camino" se llama distinto en cliente y panel.
 - **H-55:** la asignación manual no avisa al chofer por socket (revisar CU-012).
+- **H-57:** la granularidad semanal de los informes se acepta y se ignora.
 
 ## Reglas acordadas hoy
 
