@@ -5841,15 +5841,15 @@ sequenceDiagram
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
-    participant UREP as RepositoryUser
+    participant USRV as UsersService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: create(createCarDto, distributorId)
     activate SRV
-    SRV->>UREP: findOne(where user_id del dto)
-    activate UREP
-    UREP-->>SRV: User o null
-    deactivate UREP
+    SRV->>USRV: findById(user_id del dto)
+    activate USRV
+    USRV-->>SRV: User o null
+    deactivate USRV
     alt Usuario inexistente
         SRV-->>CTRL: NotFoundException User with ID not found
         deactivate SRV
@@ -5872,6 +5872,7 @@ sequenceDiagram
         CREP-->>SRV: Car persistido
         deactivate CREP
         SRV-->>CTRL: Car
+        CTRL->>CTRL: CarMapper.toDto(car) a CarResponseDto
     end
 ```
 
@@ -6102,6 +6103,7 @@ sequenceDiagram
         SRV-->>CTRL: mensaje Car deleted successfully y carId
         deactivate SRV
     end
+    Note over CTRL: todo Car o Car[] sale por CarMapper.toDto como CarResponseDto
 ```
 
 **Figura 78 — DSD CU-051: Consultar Listado de Vehículos**
