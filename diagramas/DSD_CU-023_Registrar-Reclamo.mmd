@@ -40,5 +40,6 @@ sequenceDiagram
             CREP-->>SRV: Claim persistido
             deactivate CREP
             SRV-->>CTRL: Claim
+            CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
         end
     end

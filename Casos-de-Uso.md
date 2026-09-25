@@ -16341,6 +16341,7 @@ sequenceDiagram
             CREP-->>SRV: Claim persistido
             deactivate CREP
             SRV-->>CTRL: Claim
+            CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
         end
     end
 ```
@@ -16377,6 +16378,7 @@ sequenceDiagram
     deactivate CREP
     SRV-->>CTRL: Claim[]
     deactivate SRV
+    CTRL->>CTRL: ClaimMapper.toDto por cada reclamo, sin el deliveryCode del pedido
 ```
 
 **Observaciones de diseño**
@@ -16417,6 +16419,7 @@ sequenceDiagram
         CREP-->>SRV: Claim actualizado
         deactivate CREP
         SRV-->>CTRL: Claim
+        CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
     end
 ```
 

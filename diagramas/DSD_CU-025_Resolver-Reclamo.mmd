@@ -24,4 +24,5 @@ sequenceDiagram
         CREP-->>SRV: Claim actualizado
         deactivate CREP
         SRV-->>CTRL: Claim
+        CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
     end

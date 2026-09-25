@@ -17,3 +17,4 @@ sequenceDiagram
     deactivate CREP
     SRV-->>CTRL: Claim[]
     deactivate SRV
+    CTRL->>CTRL: ClaimMapper.toDto por cada reclamo, sin el deliveryCode del pedido
