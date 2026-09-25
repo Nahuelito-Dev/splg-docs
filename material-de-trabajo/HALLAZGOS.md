@@ -936,3 +936,22 @@ CU-028.
 `GET /reports/sales-evolution?granularity=week` pasa la validación (el DTO
 admite `week`) pero el controlador trata todo lo que no es `month` como `day`.
 Quien pide la evolución semanal recibe la diaria sin aviso. Afecta CU-030.
+
+### H-58 · Un endpoint público manda mails a cualquier dirección — **seguridad, medio**
+
+`POST /email/test` es `@Public()` y, con sólo pasarle un correo, genera dos
+links de restablecimiento en Firebase y manda un mail real a esa dirección. Un
+tercero puede usar el backend para mandar correos a quien quiera y gastar el
+cupo de Firebase y de Resend. Es un endpoint de prueba que quedó publicado: o
+se saca, o se restringe a administradores.
+
+### H-59 · Los links y el mail de bienvenida apuntan a otro proyecto — **defecto, ALTO**
+
+El link de "olvidé mi contraseña" se genera con `url:
+'https://taolistic-courses.firebaseapp.com/__/auth/action'`
+(`email.service.ts`), y el botón del mail de bienvenida lleva a
+`https://taolistic-courses.firebaseapp.com/` (`email-template.provider.ts`). Es
+el dominio de otro sistema: quien restablece su clave en SPLG termina en esa
+página. Las plantillas además firman como "Yeni Gass". Hay que llevar la URL a
+la configuración (`ConfigService`, con su entrada en Joi) y usar el nombre del
+producto.
