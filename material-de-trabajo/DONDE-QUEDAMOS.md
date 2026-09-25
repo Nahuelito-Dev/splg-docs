@@ -33,7 +33,7 @@ tablas, sin `forwardRef`, sin `process.env`, lint en 0 y prueba unitaria.
 
 | Módulo | Qué falta |
 |---|---|
-| `users` | Devuelve la entidad sin mapper, 7 errores de lint, sin pruebas. Seguridad ya corregida (H-62, H-63, H-65, H-73, H-75). Abierto H-66 |
+| `users` | Devuelve la entidad sin mapper, errores de lint heredados, sin pruebas. Seguridad y aislamiento entre distribuidoras ya resueltos (H-62, H-63, H-65, H-66, H-73, H-75, H-76) |
 | `delivery` | Devuelve la entidad sin mapper. Lint en 0 y seguridad corregida (H-61, H-64) |
 | `gascylinder` | Sin mapper, 3 errores de lint, sin pruebas |
 
@@ -52,6 +52,10 @@ tablas, sin `forwardRef`, sin `process.env`, lint en 0 y prueba unitaria.
 | Pasada final | camelCase con `@Column({ name })` y renombres de archivos (`isPublic.decorator.ts`, `timeout.interceptors.ts`) |
 | Documentación | Swagger completo del back (todas las respuestas y errores); mejorar la web y rehacer el visor de imágenes; publicar el sitio. Los `.svg`/`.png` de `diagramas/` son del primer commit y nunca se regeneraron: el sitio no los usa, pero están viejos |
 | `.env.example` | No existe: falta para levantar el proyecto desde cero |
+| Barrido de aislamiento entre distribuidoras | `users` ya cumple. Falta probar **todos** los endpoints de los demás módulos con dos distribuidoras (admin A contra datos de B), como se hizo con `users`. Pendiente conocido: `PATCH /customers/:id` (validar un cliente) cambia un dato compartido entre distribuidoras |
+| Panel: acciones sobre clientes | Un admin de empresa ya no puede editar, bloquear ni resetear la contraseña de un cliente (403). El panel todavía le muestra esos botones: hay que ocultarlos según el rol |
+| Módulo de auditoría | Pedido de la cátedra: registrar qué pasa en el sistema (quién cambió qué y cuándo). Va con soft delete (H-74) |
+| Reportes | nahue pidió un módulo de reportes: ya existe `reports` (ventas por distribuidora); definir si es ampliarlo o uno nuevo |
 
 ---
 
@@ -88,9 +92,9 @@ el parser de Mermaid 10.9.1 y el verificador de la cátedra.
 1. **Revisar y mergear** `feature/alta-unificada` del panel y de la app. Probar
    el panel con sesión: crear chofer, admin y cliente, y resetear una contraseña.
    (Claude no puede escribir contraseñas en el navegador: el login lo hace nahue.)
-2. **Decisiones pendientes de nahue:** H-66 (qué usuarios ve un admin de
-   empresa; propuesta: sus choferes, sus admins y los clientes que le
-   compraron) y H-72 (los 43 usuarios sin cuenta de acceso).
+2. **Barrido de aislamiento entre distribuidoras** en todos los módulos, con
+   dos distribuidoras contra la API (regla de nahue: la empresa A no ve ni
+   hace nada sobre la B).
 3. **Tanda 3:** `users` y `delivery` (mapper y pruebas), `gascylinder`, y
    `order` al final.
 4. **Normalización + soft delete + auditoría** del modelo de datos, con sus
@@ -99,8 +103,6 @@ el parser de Mermaid 10.9.1 y el verificador de la cátedra.
 
 ## Hallazgos abiertos (detalle en `HALLAZGOS.md`)
 
-- **H-66:** un admin de empresa lista usuarios de todas las distribuidoras (decisión de producto).
-- **H-72:** 43 usuarios anteriores sin cuenta de acceso.
 - **H-74:** borrados físicos y soft delete parcial.
 - **H-53:** `/health` da 503 bajo la batería completa (umbral de 300 MB).
 - **H-54:** el evento "en camino" se llama distinto en cliente y panel.

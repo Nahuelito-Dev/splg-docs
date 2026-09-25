@@ -1023,7 +1023,11 @@ Los tres endpoints sólo pedían estar autenticado y devolvían la cuenta con
 200. Después del arreglo, 403; las apps siguen leyendo su propia cuenta al
 entrar (200).
 
-### H-66 · Un admin de empresa lista usuarios de todas las distribuidoras — **seguridad, medio, ABIERTO**
+### H-66 · Un admin de empresa lista usuarios de todas las distribuidoras — **seguridad, ALTO**
+
+> **Resuelto el 24/09.** Decisión de nahue: cada distribuidora ve y administra sólo lo suyo. Con distribuidora en contexto, `users` muestra sólo sus choferes, sus admins y los clientes que le compraron; lo ajeno es 404. La cuenta de un cliente (compartido entre distribuidoras) la administra el administrador general. Verificado con dos distribuidoras: 20 casos.
+
+Además de listar, un admin de empresa podía ver, editar, **bloquear y borrar** usuarios de cualquier distribuidora.
 
 `GET /users` y `GET /users/:id` no se acotan a la distribuidora del admin. Los
 clientes no pertenecen a ninguna distribuidora (sólo choferes y admins), así
@@ -1075,9 +1079,9 @@ batería lo disparaba en cada corrida (el paso 3 repite el alta del paso 1).
 El panel llama a `POST /users/customer-registration-admin`, que no existe en el
 back (404). Se resuelve con la unificación de las altas.
 
-### H-72 · `POST /users` crea usuarios que no pueden entrar — **defecto, ALTO, parcialmente resuelto**
+### H-72 · `POST /users` crea usuarios que no pueden entrar — **defecto, ALTO**
 
-> **Resuelto hacia adelante el 24/09:** toda alta crea la cuenta de acceso en la misma operación. **Quedan** los 43 usuarios anteriores sin cuenta: hay que decidir si se les crea una o se dan de baja.
+> **Resuelto el 24/09.** Toda alta crea la cuenta de acceso en la misma operación. Decisión de nahue: los usuarios viejos sin cuenta se borraron (14 en la base de desarrollo: 10 de `qa_pruebas` que creaba la batería vieja, 3 clientes de prueba y 1 sin rol ni correo). **No se tocaron** los 30 de `@demo.splg.com`: son los datos de `seed:demo`, que no tienen cuenta a propósito y sostienen 183 pedidos de muestra.
 
 CU-082 guarda la fila en la base pero no crea la cuenta en Firebase; la
 contraseña que manda el panel se descarta. Hoy hay 43 usuarios sin
@@ -1111,3 +1115,14 @@ El panel mandaba `password` a `PATCH /users/:id`, que la descartaba (no es una
 columna) y respondía 200: el administrador creía haberla cambiado.
 **Verificado contra la API:** después del arreglo el chofer entra con la nueva
 y ya no con la vieja. Quien no es admin y manda `password` recibe 403.
+
+### H-76 · Un admin de empresa podía bloquear al super administrador — **seguridad, CRÍTICO**
+
+> **Resuelto el 24/09.** El seed ya no le carga distribuidora al super admin, la pertenencia sólo cuenta perfiles con rol `admin`, y un admin de empresa nunca administra a un super admin.
+
+El backfill de `seed.ts` completaba con la distribuidora por defecto toda fila
+de `admin` sin distribuidora, también la del super admin. Así el super admin
+"pertenecía" a Jeny Gas. **Verificado contra la API:** el admin de Jeny Gas lo
+bloqueó (200) y el super admin quedó sin acceso; se desbloqueó y se corrigió el
+dato. **Revisar la base de producción:** si se corrió el seed allá, el super
+admin tiene el mismo dato.
