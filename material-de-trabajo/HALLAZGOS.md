@@ -1054,3 +1054,28 @@ otra distribuidora da 404. De paso: al editar, el control de patente
 duplicada comparaba contra el auto ya mezclado por `preload` y nunca corría;
 el duplicado sólo lo frenaba la restricción única de la base. DSD CU-034,
 CU-051 y CU-111 actualizados (CU-111 además decía `ConflictException`).
+
+### H-70 · Un alta repetida borraba la cuenta del usuario existente — **seguridad, CRÍTICO**
+
+> **Resuelto el 24/09.** La compensación borra sólo la cuenta de Firebase que creó la misma llamada, por su uid.
+
+`registerWithUser` (clientes y choferes) compensaba cualquier error con
+`deleteUserByEmailSafe(dto.email)`. Con un email ya registrado, el alta fallaba
+y el rollback borraba de Firebase la cuenta de quien ya existía. El alta de
+clientes es pública: sin token, cualquiera dejaba sin acceso a cualquier
+usuario, super administrador incluido, sabiendo sólo su email.
+**Verificado contra la API:** después del alta repetida, la víctima (cuenta
+descartable) ya no podía entrar. Con el arreglo, sigue entrando. La propia
+batería lo disparaba en cada corrida (el paso 3 repite el alta del paso 1).
+
+### H-71 · El panel no puede crear clientes — **defecto, ALTO, ABIERTO**
+
+El panel llama a `POST /users/customer-registration-admin`, que no existe en el
+back (404). Se resuelve con la unificación de las altas.
+
+### H-72 · `POST /users` crea usuarios que no pueden entrar — **defecto, ALTO, ABIERTO**
+
+CU-082 guarda la fila en la base pero no crea la cuenta en Firebase; la
+contraseña que manda el panel se descarta. Hoy hay 43 usuarios sin
+`firebase_uid` (27 clientes, 6 choferes, 10 de QA). Además el DTO acepta
+`firebase_uid` del cuerpo. Se resuelve con la unificación de las altas.
