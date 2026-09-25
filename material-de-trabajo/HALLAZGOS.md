@@ -884,6 +884,8 @@ sobre la marcha, porque arreglarlos cambia el comportamiento de la API.
 
 ### H-52 · Un cliente se puede validar a sí mismo — **seguridad, ALTO**
 
+> **Resuelto el 24/09.** `validated` sólo lo manda un administrador (un cliente recibe 403) y `user_id` salió del DTO. Verificado contra la API.
+
 `UpdateCustomerDto` deriva de `CreateCustomerDto` con todos sus campos, así que
 `PATCH /customers/:id` acepta `validated` y `user_id` de parte del propio
 cliente. El control de propiedad sólo mira que el perfil sea suyo, no qué campos
@@ -918,6 +920,8 @@ ningún evento (sí lo recibe en el despacho automático). Puede ser correcto si
 aviso va sólo por push; hay que contrastarlo con lo que especifica CU-012.
 
 ### H-56 · El informe de ventas por producto sale vacío — **defecto, ALTO para el panel**
+
+> **Resuelto el 24/09.** Los alias se entrecomillan con `select(expresión, alias)`. Verificado contra la base: Garrafa 10kg en 2026, 182 unidades y $2.711.800.
 
 `GET /reports/sales-by-product` responde cada fila sin el tipo de producto y con
 `totalQuantity` y `totalSales` en `null`. La causa: Postgres pasa a minúsculas
