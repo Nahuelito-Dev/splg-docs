@@ -916,3 +916,19 @@ Quien integre tiene que saber que cambia según el namespace.
 Cuando el administrador asigna un pedido a mano, el socket del chofer no recibe
 ningún evento (sí lo recibe en el despacho automático). Puede ser correcto si el
 aviso va sólo por push; hay que contrastarlo con lo que especifica CU-012.
+
+### H-56 · El informe de ventas por producto sale vacío — **defecto, ALTO para el panel**
+
+`GET /reports/sales-by-product` responde cada fila sin el tipo de producto y con
+`totalQuantity` y `totalSales` en `null`. La causa: Postgres pasa a minúsculas
+los alias sin comillas (`AS productType` llega como `producttype`) y el servicio
+lee `row.productType`, que no existe. `Number(undefined)` da `NaN`, que en el
+JSON sale `null`. Se ve en la corrida de referencia de Postman, no sólo en el
+código. El arreglo es entrecomillar los alias o leerlos en minúsculas. Afecta
+CU-028.
+
+### H-57 · La granularidad semanal se acepta y se ignora — **contrato, bajo**
+
+`GET /reports/sales-evolution?granularity=week` pasa la validación (el DTO
+admite `week`) pero el controlador trata todo lo que no es `month` como `day`.
+Quien pide la evolución semanal recibe la diaria sin aviso. Afecta CU-030.
