@@ -1240,3 +1240,13 @@ normalización: la clave natural no estaba declarada. La migración conserva el 
 antiguo y le agrega un sufijo al duplicado. **Verificado contra la API:**
 renombrar el duplicado al tipo del otro responde 409. En la misma migración se
 declararon únicos `role.type` y `user.firebase_uid`.
+
+### H-89 · Las incidencias de un pedido revelaban si un pedido ajeno existía — **seguridad, BAJO**
+
+> **Resuelto el 25/09.** Pedido inexistente o de otra distribuidora: el mismo 404.
+
+`GET /incidents/order/:orderId` respondía 404 para un pedido de otra
+distribuidora y una lista vacía para uno inexistente. Salió al documentar CU-062.
+Además, el chofer que reporta una incidencia sobre un pedido que no tiene
+asignado recibía el mensaje del listado de pedidos; ahora "Este pedido no está
+asignado a tu usuario".
