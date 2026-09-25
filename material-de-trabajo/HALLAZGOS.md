@@ -966,3 +966,24 @@ contra la API:** un cliente pasó su dirección a otro cliente con 200, y la
 dirección aparecía en la lista del otro, donde podía terminar elegida para un
 pedido. Es el mismo patrón que H-52: un DTO de modificación que hereda todos
 los campos del alta.
+
+### H-61 · Cualquier usuario podía editar a cualquier chofer — **seguridad, CRÍTICO**
+
+> **Resuelto el 24/09.** `PATCH /delivery/:id` exige administrador, y el de empresa sólo edita choferes de su distribuidora.
+
+El endpoint no tenía restricción de rol. **Verificado contra la API:** un
+cliente cambió la calificación de un chofer ajeno y recibió 200. También podía
+cambiarle `validated` (habilitarlo para operar) e `isActive`.
+
+### H-62 · Un admin de empresa podía hacerse super administrador — **seguridad, CRÍTICO**
+
+> **Resuelto el 24/09.** Un admin que no es super_admin no puede asignar ese rol ni modificar a un super administrador.
+
+`PATCH /users/:id` le pasaba al admin todos los campos, `role_id` incluido.
+**Verificado contra la API:** el admin de una distribuidora se asignó el rol
+de super administrador con 200 y pasó a ver todas las distribuidoras. Se le
+restituyó el rol después de la prueba.
+
+**Los cuatro (H-52, H-60, H-61, H-62) salieron de la misma revisión:** DTOs de
+modificación que heredan todos los campos del alta, y endpoints que controlan
+quién es el dueño del recurso pero no qué campos puede tocar.
