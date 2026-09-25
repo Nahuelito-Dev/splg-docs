@@ -1126,3 +1126,72 @@ de `admin` sin distribuidora, también la del super admin. Así el super admin
 bloqueó (200) y el super admin quedó sin acceso; se desbloqueó y se corrigió el
 dato. **Revisar la base de producción:** si se corrió el seed allá, el super
 admin tiene el mismo dato.
+
+## Barrido de aislamiento entre distribuidoras — 25/09
+
+Regla de nahue (24/09): la empresa A no ve ni hace nada sobre la B; lo ajeno
+responde 404. `users` ya cumplía (H-66). Se probó el resto de la API con una
+batería de 205 casos (`splg-app-backend/scripts/alineacion/aislamiento/`):
+admin, chofer y cliente de A, y el super admin "viendo como" A, contra cada
+recurso sembrado en B. **Antes de los arreglos: 66 fallas. Después: 0.** La
+colección completa de Postman sigue sin regresiones sobre la distribuidora base.
+
+### H-77 · A un cliente o un chofer se le podía colgar un perfil de admin — **seguridad, ALTO**
+
+> **Resuelto el 25/09.** `POST /admin` exige que el perfil tenga el mismo rol que el usuario (admin o super_admin), distribuidora sólo para el admin de empresa, y uno por usuario. La pertenencia sólo cuenta el perfil si el usuario tiene ese rol.
+
+El alta no miraba el rol del usuario. La colección de Postman se lo hacía en
+cada corrida a un usuario cualquiera, así que en la base local había **85
+clientes y choferes con perfil de admin de Jeny Gas** (borrados). Con ese
+perfil, un cliente que sólo le compró a B pasaba a "pertenecer" a A, y el admin
+de A veía sus direcciones. **Revisar la base de producción** con:
+`SELECT count(*) FROM admin a JOIN "user" u USING (user_id) WHERE u.role_id IS DISTINCT FROM a.role_id;`
+
+### H-78 · Admin y chofer de una empresa operaban los pedidos de otra — **seguridad, CRÍTICO**
+
+> **Resuelto el 25/09.** Toda acción sobre `/orders/:id` controla primero la distribuidora del pedido; el chofer que acepta o al que se asigna un pedido tiene que ser de la misma.
+
+**Verificado contra la API:** el admin de A leyó el código de entrega de un
+pedido de B (el que el cliente escanea para confirmar), lo aceptó, lo asignó a
+un chofer y lo canceló; el chofer de A aceptó un pedido pendiente de B, le mandó
+su ubicación y lo rechazó. Todo 200/201. Con el arreglo: 404.
+
+### H-79 · Un chofer liberaba el pedido asignado a otro chofer — **seguridad, ALTO**
+
+> **Resuelto el 25/09.** Liberar (`PATCH /orders/:id/cancel`) y mandar la ubicación del pedido sólo lo hace el chofer asignado (403).
+
+Dentro de la misma empresa, cualquier chofer devolvía a pendiente el pedido que
+otro tenía en curso. Además el cliente que cancelaba un pedido ajeno recibía
+400 "No autorizado" **después** de que el servidor le revelara si estaba en
+camino; ahora es 404 y el control va primero.
+
+### H-80 · Los choferes de otra distribuidora se administraban — **seguridad, CRÍTICO**
+
+> **Resuelto el 25/09.** Validar, invalidar, activar, saldo, ubicación y baja de `/delivery/:id` controlan la distribuidora (404).
+
+**Verificado:** el admin de A validó, desactivó, le cambió el saldo y dio de
+baja al chofer de B.
+
+### H-81 · Clientes y direcciones de otras distribuidoras — **seguridad, ALTO**
+
+> **Resuelto el 25/09.** Un admin de empresa sólo llega a los clientes que le compraron. Dar de baja a un cliente y modificar sus direcciones pasa a ser del administrador general (403), como su cuenta en `users`.
+
+El admin de A leía, validaba, editaba y daba de baja a un cliente que sólo le
+había comprado a B, y leía sus direcciones.
+
+### H-82 · Incidencias y reclamos sobre pedidos ajenos — **seguridad, MEDIO**
+
+> **Resuelto el 25/09.** El pedido tiene que ser de la distribuidora en contexto; el chofer sólo reporta sobre el que tiene asignado.
+
+### H-83 · Un admin de empresa mandaba pushes arbitrarios y leía tokens de cualquiera — **seguridad, MEDIO**
+
+> **Resuelto el 25/09.** `send-test`, `order-confirmation` y los tokens de otro usuario, sólo el super admin. Las apps registran su propio token como siempre.
+
+### H-84 · La búsqueda de admins por correo cruzaba distribuidoras — **seguridad, BAJO**
+
+> **Resuelto el 25/09.** `GET /admin/term/:term` con distribuidora en contexto sólo encuentra a los suyos.
+
+**Se dejó así, a propósito:** `GET /gascylinder/:id` muestra un producto de
+otra distribuidora porque el catálogo es público (`GET /gascylinder` no pide
+sesión). `GET /car/user/:id` y `/car/patent/:p` de otra distribuidora dan lista
+vacía / `null`, no 404: ya estaban acotados y no filtran nada.
