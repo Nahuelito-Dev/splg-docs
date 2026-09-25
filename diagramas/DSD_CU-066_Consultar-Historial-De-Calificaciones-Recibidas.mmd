@@ -20,6 +20,7 @@ sequenceDiagram
     deactivate RREP
     SRV-->>CTRL: Rating[]
     deactivate SRV
-    CTRL-->>ADM: 200 Rating[]
+    CTRL->>CTRL: RatingMapper.toDto por cada calificacion
+    CTRL-->>ADM: 200 RatingResponseDto[]
     deactivate CTRL
     deactivate DEC

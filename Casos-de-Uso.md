@@ -13612,18 +13612,22 @@ sequenceDiagram
     participant ACT as Cliente o Chofer
     participant CTRL as RatingController
     participant RS as RatingService
-    participant OREP as RepositoryOrder
+    participant OSRV as OrderService
     participant RREP as RepositoryRating
-    participant DREP as RepositoryDelivery
+    participant DSRV as DeliveryService
 
     ACT->>CTRL: POST /ratings con orderId, stars, comment
     activate CTRL
     CTRL->>RS: create(dto, user.user_id, user.role)
     activate RS
-    RS->>OREP: findOne(order_id, relations delivery)
-    activate OREP
-    OREP-->>RS: Order con delivery
-    deactivate OREP
+    RS->>OSRV: findById(order_id)
+    activate OSRV
+    OSRV-->>RS: Order o null
+    deactivate OSRV
+    RS->>DSRV: findById(order.delivery_id), si tiene chofer
+    activate DSRV
+    DSRV-->>RS: Delivery con user_id
+    deactivate DSRV
     alt Pedido inexistente
         RS-->>ACT: NotFoundException, pedido no encontrado
         deactivate RS
@@ -13659,10 +13663,11 @@ sequenceDiagram
             activate RREP
             RREP-->>RS: average redondeado a dos decimales
             deactivate RREP
-            RS->>DREP: update(user_id, calification average)
-            activate DREP
+            RS->>DSRV: updateCalificationByUserId(user_id, average)
+            activate DSRV
         end
         RS-->>CTRL: Rating
+        CTRL->>CTRL: RatingMapper.toDto(rating) a RatingResponseDto
     end
 
     Note over ACT,RREP: CU-065, lectura del promedio
@@ -13675,7 +13680,7 @@ sequenceDiagram
     deactivate RREP
     RS-->>ACT: average, count
     deactivate RS
-    deactivate DREP
+    deactivate DSRV
     deactivate CTRL
 ```
 
@@ -18978,7 +18983,8 @@ sequenceDiagram
     deactivate RREP
     SRV-->>CTRL: Rating[]
     deactivate SRV
-    CTRL-->>ADM: 200 Rating[]
+    CTRL->>CTRL: RatingMapper.toDto por cada calificacion
+    CTRL-->>ADM: 200 RatingResponseDto[]
     deactivate CTRL
     deactivate DEC
 ```
