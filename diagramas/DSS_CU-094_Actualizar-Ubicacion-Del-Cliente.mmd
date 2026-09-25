@@ -6,8 +6,10 @@ sequenceDiagram
 
     CLI->>SIS: actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)
     activate SIS
-    alt el cliente existe
-        SIS-->>CLI: ubicación actualizada
+    alt las coordenadas no son un par latitud,longitud válido
+        SIS-->>CLI: rechazo por coordenadas inválidas
+    else el cliente existe
+        SIS-->>CLI: ubicación actualizada, guardada como punto geográfico
     else el cliente no existe
         SIS-->>CLI: recurso no encontrado
     end

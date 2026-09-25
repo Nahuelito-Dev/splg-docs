@@ -16,19 +16,18 @@ sequenceDiagram
     CTRL->>CTRL: ParseUUIDPipe valida el orderId
     CTRL->>SRV: findByOrder(orderId, distributorId)
     activate SRV
-    SRV->>OSRV: assertDeLaDistribuidora(orderId, distributorId)
+    SRV->>OSRV: findById(orderId)
     activate OSRV
-    OSRV->>OREP: findById(id), solo con distribuidora en contexto
+    OSRV->>OREP: findById(id)
     activate OREP
     OREP-->>OSRV: Order o null
     deactivate OREP
-    alt Pedido de otra distribuidora que la del contexto
-        OSRV-->>SRV: NotFoundException Order with ID not found
-        SRV-->>CTRL: NotFoundException
+    OSRV-->>SRV: Order o null
+    deactivate OSRV
+    alt Pedido inexistente, o de otra distribuidora que la del contexto
+        SRV-->>CTRL: NotFoundException Pedido no encontrado
         CTRL-->>USR: 404
-    else Pedido de la distribuidora, inexistente, o sin distribuidora en contexto
-        OSRV-->>SRV: sin error
-        deactivate OSRV
+    else Pedido de la distribuidora, o sin distribuidora en contexto
         SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
         activate IREP
         IREP-->>SRV: Incident[] del pedido, vacio si no hay

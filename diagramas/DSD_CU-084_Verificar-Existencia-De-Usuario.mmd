@@ -5,21 +5,23 @@ sequenceDiagram
     participant SRV as UsersService
     participant REP as RepositoryUser
 
-    CTRL->>SRV: checkUserExists(body.email, body.phoneNumber)
-    activate SRV
-    SRV->>SRV: armar conditions con email y phone_number
-    alt No vino ni email ni telefono
-        SRV-->>CTRL: exists false
-        deactivate SRV
-    else Al menos una condicion
-        SRV->>REP: findOne(where conditions en OR)
-        activate REP
-        alt Sin coincidencias
-            REP-->>SRV: null
-            deactivate REP
-            SRV-->>CTRL: exists false, email false, phoneNumber false
-        else Hay coincidencia
-            REP-->>SRV: User
-            SRV-->>CTRL: exists true con los flags por campo consultado
+    CTRL->>CTRL: ValidationPipe, CheckUserExistsDto con email o phoneNumber validos
+    alt Sin correo ni telefono, o con formato invalido
+        CTRL-->>CTRL: BadRequestException 400
+    else Cuerpo valido
+        CTRL->>SRV: checkUserExists(dto.email, dto.phoneNumber)
+        activate SRV
+        par Correo
+            opt Vino email
+                SRV->>REP: exists(where email)
+                REP-->>SRV: emailUsado
+            end
+        and Telefono
+            opt Vino phoneNumber
+                SRV->>REP: exists(where phone_number)
+                REP-->>SRV: telefonoUsado
+            end
         end
+        SRV-->>CTRL: exists igual a emailUsado o telefonoUsado, email emailUsado, phoneNumber telefonoUsado
+        deactivate SRV
     end

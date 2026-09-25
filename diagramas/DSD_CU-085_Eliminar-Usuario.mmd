@@ -12,33 +12,45 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        CTRL->>SRV: remove(id)
-        activate SRV
-        SRV->>SRV: findOne(id)
-        SRV->>REP: findOne(user_id, relations)
-        activate REP
-        alt No existe
-            REP-->>SRV: null
-            deactivate REP
-            SRV-->>CTRL: NotFoundException User with ID not found
-            deactivate SRV
-        else Existe
-            REP-->>SRV: User
-            SRV->>REP: delete(user_id)
+        CTRL->>CTRL: assertPuedeAdministrar(id, user, distributorId)
+        opt Hay distribuidora en contexto
+            CTRL->>SRV: perteneceA(id, distributorId)
+            SRV-->>CTRL: true o false
+        end
+        opt user.role es ADMIN, administrador de empresa
+            CTRL->>SRV: findAlcance(id)
+            SRV-->>CTRL: rol del usuario destino
+        end
+        alt No es de la distribuidora, o es un super admin
+            CTRL-->>RG: NotFoundException User with ID not found
+        else Un admin de empresa sobre la cuenta de un cliente
+            CTRL-->>RG: ForbiddenException La cuenta de un cliente la administra el administrador general
+        else Puede administrarlo
+            CTRL->>SRV: remove(id)
+            activate SRV
+            SRV->>REP: findOne(user_id, relations customer delivery cars addresses)
             activate REP
-            alt Violacion de FK, codigo 23503
-                REP-->>SRV: QueryFailedError
+            alt No existe
+                REP-->>SRV: null
+                SRV-->>CTRL: NotFoundException User with ID not found
+            else Existe
+                REP-->>SRV: User con perfil, vehiculos y direcciones
+                SRV->>REP: softRemove(user)
+                REP-->>SRV: deletedAt en el usuario y, en cascada, en perfil, vehiculos y direcciones
                 deactivate REP
-                SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
-            else Borrado en base
-                REP-->>SRV: DeleteResult
                 opt El usuario tiene firebase_uid
-                    SRV->>FB: deleteUserSafe(user.firebase_uid, logger)
+                    SRV->>FB: updateUser(firebase_uid, disabled true)
                     activate FB
-                    FB->>FB: deleteUser(uid)
+                    alt Firebase falla
+                        FB-->>SRV: error
+                        SRV->>SRV: logger.error, la baja queda hecha
+                    else Cuenta deshabilitada
+                        FB-->>SRV: cuenta deshabilitada
+                    end
+                    deactivate FB
                 end
-                SRV-->>CTRL: message Usuario eliminado permanentemente de DB y Firebase
+                SRV-->>CTRL: message Usuario dado de baja
             end
+            deactivate SRV
         end
     end
-    deactivate FB

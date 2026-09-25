@@ -430,7 +430,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Chofer (ACT-02)  
 **Subsistema:** SS-04 Seguimiento en Tiempo Real  
 **Calificación:** Importante  
-**Descripción:** El chofer avisa, antes de confirmar la entrega, que llegó al domicilio del cliente, para que este esté preparado a recibirlo. El aviso viaja solo por la conexión en tiempo real: no genera notificación push ni queda registrado como un estado ni un timestamp del pedido, de modo que si el cliente tiene la app cerrada no llega a enterarse.
+**Descripción:** El chofer avisa, antes de confirmar la entrega, que llegó al domicilio del cliente, para que este esté preparado a recibirlo. El aviso viaja por la conexión en tiempo real y como notificación al dispositivo, de modo que llega aunque el cliente tenga la app cerrada. No queda registrado como un estado ni como una marca de tiempo del pedido.
 
 ---
 
@@ -590,7 +590,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El administrador define descuentos automáticos por volumen para un producto, indicando para cada regla la cantidad mínima de unidades y el porcentaje de descuento a aplicar. Las reglas se aplican automáticamente al calcular el subtotal de cada ítem del pedido, pero el sistema no valida su contenido: un porcentaje mayor a cien se acepta igual y produce un subtotal negativo, de modo que la única barrera contra una promoción mal cargada es la revisión manual del administrador.
+**Descripción:** El administrador define descuentos automáticos por volumen para un producto, indicando para cada regla la cantidad mínima de unidades y el porcentaje de descuento a aplicar. Cada regla se guarda como una promoción propia del producto, una por cantidad, con la cantidad mínima desde dos unidades y el descuento mayor que cero y hasta cien. Las reglas se aplican automáticamente al calcular el subtotal de cada ítem del pedido.
 
 ---
 
@@ -678,7 +678,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente da de baja una dirección que ya no usa. Si la que borra era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`.
+**Descripción:** El cliente da de baja una dirección que ya no usa. La baja es lógica: la dirección deja de aparecer, pero los pedidos que la usaron la siguen mostrando. Si la que da de baja era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`.
 
 ---
 
@@ -854,7 +854,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-11 Cobertura Geográfica  
 **Calificación:** Secundario  
-**Descripción:** El sistema borra definitivamente una zona de cobertura de la distribuidora correspondiente.
+**Descripción:** El administrador da de baja una zona de cobertura de su distribuidora. La baja es lógica: la zona se conserva, pero deja de aparecer y de contar para la validación de cobertura.
 
 ---
 
@@ -1111,7 +1111,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** ACT-03 Administrador  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Importante  
-**Descripción:** El administrador elimina definitivamente la cuenta de un usuario, tanto de la base de datos como del proveedor de identidad. Pese a que la operación suele describirse como una baja lógica, en la práctica es un borrado físico e irreversible.
+**Descripción:** El administrador da de baja la cuenta de un usuario. La baja es lógica: el usuario, su perfil de cliente o de chofer, sus vehículos y sus direcciones dejan de aparecer pero se conservan para el historial y la auditoría, y la cuenta del proveedor de identidad queda deshabilitada, no borrada.
 
 ---
 
@@ -1188,10 +1188,10 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 ---
 
 **Código:** CU-095 | **Caso de Uso:** Eliminar Cliente (baja lógica)  
-**Actor/es:** ACT-03 Administrador  
+**Actor/es:** ACT-05 Administrador General  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El sistema borra los datos operativos del cliente mediante eliminación parcial en las tablas.
+**Descripción:** El Administrador General da de baja lógica el perfil de un cliente: deja de aparecer en las consultas, pero se conserva con su historial. Un administrador de empresa no puede hacerlo, porque un cliente puede comprarle a varias distribuidoras.
 
 ---
 
@@ -1199,7 +1199,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customer/:id`.
+**Descripción:** El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customers/:id`.
 
 ---
 
@@ -1207,7 +1207,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customer/user/:userId`.
+**Descripción:** El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customers/user/:userId`.
 
 ---
 
@@ -1215,7 +1215,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customer/:id`.
+**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`.
 
 ---
 
@@ -1263,7 +1263,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** El administrador da de baja el vehículo de un chofer. Sale de CU-051. A diferencia del chofer y del producto, **la baja del vehículo es física**: la fila se borra. Endpoint: `DELETE /car/:id` (`src/car/car.controller.ts:97`).
+**Descripción:** El administrador da de baja el vehículo de un chofer. Sale de CU-051. La baja es lógica: el vehículo deja de aparecer, se conserva para el historial y su patente puede volver a registrarse. Endpoint: `DELETE /car/:id`.
 
 ---
 
@@ -1356,26 +1356,26 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 ---
 
 **Código:** CU-099 | **Caso de Uso:** Consultar los Tokens de un Usuario  
-**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
+**Actor/es:** ACT-05 Administrador General; ACT-01 Cliente, ACT-02 Chofer y ACT-03 Administrador, cada uno sobre su propio usuario  
 **Subsistema:** SS-17 Notificaciones y Mensajería  
 **Calificación:** Secundario  
-**Descripción:** El administrador consulta el token de notificaciones push registrado para un usuario, o el propio usuario consulta el suyo, como herramienta de diagnóstico cuando no le llegan las notificaciones. La consulta solo revisa el perfil de cliente: para un chofer con token registrado, siempre devuelve vacío.
+**Descripción:** El Administrador General consulta el token de notificaciones push registrado para cualquier usuario, o cada usuario consulta el suyo, como herramienta de diagnóstico cuando no le llegan las notificaciones. La consulta solo revisa el perfil de cliente: para un chofer con token registrado, siempre devuelve vacío.
 
 ---
 
 **Código:** CU-100 | **Caso de Uso:** Enviar Notificación de Prueba  
-**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
+**Actor/es:** ACT-05 Administrador General  
 **Subsistema:** SS-17 Notificaciones y Mensajería  
 **Calificación:** Secundario  
-**Descripción:** El sistema emite un test de notificación push hacia Firebase Cloud Messaging.
+**Descripción:** El Administrador General envía una notificación push de prueba a un token concreto, para verificar de punta a punta el canal de notificaciones.
 
 ---
 
 **Código:** CU-101 | **Caso de Uso:** Reenviar Notificación de Confirmación de Pedido  
-**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
+**Actor/es:** ACT-05 Administrador General  
 **Subsistema:** SS-17 Notificaciones y Mensajería  
 **Calificación:** Secundario  
-**Descripción:** El sistema re-envia de forma sintetica la notificación correspondiente a un pedido específico.
+**Descripción:** El Administrador General vuelve a enviarle a un cliente la notificación de confirmación de un pedido, cuando la original no llegó.
 
 ---
 
@@ -1576,7 +1576,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-092 Consultar Listado de Clientes | SS-16 | ACT-03 | Importante |
 | CU-093 Validar / Invalidar Cliente | SS-16 | ACT-03 | Importante |
 | CU-094 Actualizar Ubicación del Cliente | SS-16 | ACT-03 | Secundario |
-| CU-095 Eliminar Cliente (baja lógica) | SS-16 | ACT-03 | Importante |
+| CU-095 Eliminar Cliente (baja lógica) | SS-16 | ACT-05 | Importante |
 | CU-129 Consultar Detalle del Cliente | SS-16 | ACT-03 | Importante |
 | CU-130 Buscar Cliente por Usuario | SS-16 | ACT-03 | Importante |
 | CU-131 Editar Datos del Cliente | SS-16 | ACT-03 | Importante |
@@ -1597,9 +1597,9 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-141 Registrar un Mantenimiento Realizado | SS-07 | ACT-03 | Importante |
 | CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante |
 | CU-098 Registrar el Token de Notificaciones del Dispositivo | SS-17 | ACT-01, ACT-02, ACT-03, ACT-05 | Crítico |
-| CU-099 Consultar los Tokens de un Usuario | SS-17 | ACT-03, ACT-05 | Secundario |
-| CU-100 Enviar Notificación de Prueba | SS-17 | ACT-03, ACT-05 | Secundario |
-| CU-101 Reenviar Notificación de Confirmación de Pedido | SS-17 | ACT-03, ACT-05 | Secundario |
+| CU-099 Consultar los Tokens de un Usuario | SS-17 | ACT-05; ACT-01, ACT-02 y ACT-03 sobre sí mismos | Secundario |
+| CU-100 Enviar Notificación de Prueba | SS-17 | ACT-05 | Secundario |
+| CU-101 Reenviar Notificación de Confirmación de Pedido | SS-17 | ACT-05 | Secundario |
 | CU-102 Probar el Servicio de Correo | SS-17 |  | Secundario |
 | CU-103 Eliminar Franja Horaria | SS-09 | ACT-03, ACT-05 | Importante |
 | CU-104 Verificar la Salud del Sistema (liveness / readiness) | SS-18 |  | Importante |

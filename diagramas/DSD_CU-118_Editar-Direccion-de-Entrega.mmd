@@ -28,7 +28,10 @@ sequenceDiagram
         CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
         activate SRV
         SRV->>SRV: findOne(id, usuarioDeLaSesion)
-        SRV->>AREP: preload(address_id + cambios)
+        opt Viene latitude sin longitude, o al reves
+            SRV-->>CTRL: BadRequestException latitude y longitude se cambian juntas
+        end
+        SRV->>AREP: preload(address_id + cambios, con location igual a puntoDesdeCoordenadas si vienen las dos)
         activate AREP
         AREP-->>SRV: UserAddress fusionada o null
         deactivate AREP

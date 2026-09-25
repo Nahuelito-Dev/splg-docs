@@ -1,7 +1,7 @@
 sequenceDiagram
     title DSS — CU-099 Consultar Los Tokens De Un Usuario
     autonumber
-    actor CLI as Cliente
+    actor CLI as Usuario, o el Administrador General
     participant SIS as Sistema
 
     CLI->>SIS: consultarTokensDelUsuario(usuarioId)

@@ -6,7 +6,7 @@ sequenceDiagram
     participant OFERTAS as DispatchOfferRepositoryPort
     participant RT as RealtimeDispatchPort
     participant REDIS as RedisService
-    participant DEL as RepositoryDelivery
+    participant DEL as DeliveryService
     participant DGW as DriversGateway
     participant NOT as NotificationsService
     participant FCM as FcmPort
@@ -27,9 +27,9 @@ sequenceDiagram
         deactivate REDIS
         RT-->>ORQ: driverIds
         deactivate RT
-        ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        ORQ->>DEL: choferesDeLaDistribuidora(driverIds, distributorId)
         activate DEL
-        DEL-->>ORQ: choferes de la misma distribuidora
+        DEL-->>ORQ: user_id de los choferes de la misma distribuidora
         deactivate DEL
         ORQ->>ORQ: filterByDistributor + descartar contactados
     end

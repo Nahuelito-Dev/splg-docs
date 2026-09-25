@@ -19,7 +19,7 @@ sequenceDiagram
     else Misma distribuidora o sin distribuidora en contexto
         SRV-->>CTRL: sin error
         deactivate SRV
-        CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+        CTRL->>SRV: toggleActiveStatus(id, dto.isActive), dto validado por ToggleDeliveryStatusDto
         activate SRV
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)

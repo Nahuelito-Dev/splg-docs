@@ -7,7 +7,7 @@ sequenceDiagram
     participant QR as QueryRunner
     participant EM as EntityManager
     participant TSS as TimeSlotService
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant PRC as OrderPricingService
 
     CTRL->>SRV: create(createOrderDto, distributorId)
@@ -48,10 +48,10 @@ sequenceDiagram
             end
         end
         loop Por cada item del pedido
-            UC->>STK: reserve(queryRunner.manager, gasCylinderId, quantity)
-            activate STK
-            STK-->>UC: GasCylinder bloqueado
-            deactivate STK
+            UC->>GCS: reservarStock(queryRunner.manager, gasCylinderId, quantity)
+            activate GCS
+            GCS-->>UC: GasCylinder bloqueado y descontado, con sus promociones
+            deactivate GCS
             UC->>PRC: priceItem(price, promotions, quantity)
             activate PRC
             PRC-->>UC: unitPrice y subtotal

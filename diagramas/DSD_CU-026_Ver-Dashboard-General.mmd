@@ -4,7 +4,7 @@ sequenceDiagram
     participant CTRL as OrderController
     participant SRV as OrderService
     participant OREP as RepositoryOrder
-    participant DREP as RepositoryDelivery
+    participant DSRV as DeliveryService
 
     CTRL->>SRV: getOrderStats(distributorId)
     activate SRV
@@ -42,10 +42,10 @@ sequenceDiagram
     activate OREP
     OREP-->>SRV: onTheWay
     deactivate OREP
-    SRV->>DREP: count(where isActive true y validated true)
-    activate DREP
-    DREP-->>SRV: activeDeliveries
-    deactivate DREP
+    SRV->>DSRV: contarDisponibles(distributorId)
+    activate DSRV
+    DSRV-->>SRV: activeDeliveries, choferes activos y validados
+    deactivate DSRV
     SRV->>OREP: count(where DELIVERED y paymentMethod CASH del mes)
     activate OREP
     OREP-->>SRV: cash

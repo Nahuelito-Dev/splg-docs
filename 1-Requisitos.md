@@ -553,7 +553,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | 5 | Selecciona el método de pago: EFECTIVO, MERCADOPAGO o TRANSFERENCIA. Con MERCADOPAGO o TRANSFERENCIA el sistema aplica un recargo del 10 % sobre el total; el pago en efectivo no tiene recargo. |
 | 6 | Revisa el resumen —ítems, descuentos, subtotal, recargos y total— y confirma el pedido. La app acompaña el envío con una clave de idempotencia, de modo que un reintento por corte de red no genere un segundo pedido. |
 | 7 | El sistema comprueba que el pedido se cree a nombre del propio cliente autenticado. Un administrador o un chofer sí pueden cargarlo a nombre de un cliente. |
-| 8 | El sistema abre una transacción y, dentro de ella: verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por zona que esa zona tenga definido; reserva con bloqueo el cupo de la franja horaria elegida para esa fecha; y, por cada ítem, bloquea la garrafa, comprueba que pertenezca a la distribuidora del pedido, descuenta el stock, aplica los descuentos por volumen configurados y calcula el subtotal con el precio de la base, nunca con el que envía el cliente. |
+| 8 | El sistema abre una transacción y, dentro de ella: comprueba que el cliente exista y que la dirección elegida sea suya; verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por zona que esa zona tenga definido; reserva con bloqueo el cupo de la franja horaria elegida para esa fecha; y, por cada ítem, bloquea la garrafa, comprueba que alcance el stock y lo descuenta, lee sus promociones, comprueba que pertenezca a la distribuidora del pedido, aplica los descuentos por volumen configurados y calcula el subtotal con el precio de la base, nunca con el que envía el cliente. |
 | 9 | Suma al total el recargo por zona de cobertura y, si el pago es online, el recargo del 10 %. |
 | 10 | Persiste el pedido y sus ítems con estado PENDING —o con estado RESERVED si es una pre-reserva— y confirma la transacción. |
 | 11 | Si el pago es en efectivo o por transferencia, abre la oferta del pedido a un único chofer (CU-013). Si el pago es por MercadoPago, genera el enlace de cobro y **no ofrece el pedido a nadie**: el despacho lo dispara la confirmación del cobro. Si el pedido es una pre-reserva, tampoco se ofrece: lo activa el proceso temporal el día agendado, y si la seña es por MercadoPago se genera un cobro solo por ese monto. |
@@ -568,12 +568,15 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 |------|--------|
 | 6 | Si el pedido se marca como pre-reserva sin indicar la fecha agendada, el sistema lo rechaza antes de abrir la transacción. |
 | 7 | Si un cliente intenta crear un pedido a nombre de otro cliente, el sistema deniega la operación. |
+| 8 | Si el cliente no existe, el sistema revierte e informa "Cliente no encontrado" (404). |
+| 8 | Si la dirección no existe o no es del cliente, el sistema revierte e informa "Dirección no encontrada" (404). |
 | 8 | Si la dirección cae fuera de todas las zonas de cobertura de la distribuidora, el sistema rechaza el pedido antes de tocar el stock. |
 | 8 | Si la franja horaria elegida no tiene cupo para esa fecha, el sistema revierte y rechaza el pedido. |
-| 8 | Si el stock de cualquier ítem es insuficiente, el sistema revierte por completo e informa que no hay stock para ese tipo de garrafa. El pedido no se crea y el inventario no se altera. |
+| 8 | Si algún producto del pedido no existe, el sistema revierte por completo e informa "Garrafa no encontrada", con el identificador del producto (404). |
+| 8 | Si el stock de cualquier ítem es menor que la cantidad pedida, el sistema revierte por completo e informa "Stock insuficiente para <producto>" (400). El pedido no se crea y el inventario no se altera. |
 | 8 | Si alguna garrafa no pertenece a la distribuidora del pedido, el sistema revierte y rechaza el pedido. |
 | 8 | Ante un choque de bloqueos entre dos pedidos concurrentes sobre las mismas garrafas, el sistema revierte y reintenta la operación completa antes de dar error. |
-| 8 | Ante cualquier otro error durante la transacción, el sistema revierte por completo e informa un error genérico. |
+| 8 | Ante cualquier otro error durante la transacción, el sistema revierte por completo e informa "Error al crear el pedido" (500). |
 | 11 | Si no hay ningún chofer elegible en ninguno de los pasos de radio, el pedido queda pendiente sin oferta y lo retoma el proceso temporal de CU-014. |
 | 12 | Si el envío de la notificación falla, el pedido queda creado igual. |
 
@@ -585,6 +588,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Comentarios** | La precisión del cálculo de totales se garantiza con aritmética decimal. Las promociones por volumen se aplican según la cantidad mínima configurada en el producto. El sistema todavía no le avisa al cliente cuando no encontró repartidor: si ningún chofer resulta elegible, el pedido queda pendiente en silencio y el cliente no ve ninguna diferencia. El sistema todavía no restringe la creación de pedidos a los clientes: el punto de entrada no declara rol, de modo que cualquier usuario autenticado puede crear un pedido, aunque un cliente solo puede hacerlo para sí mismo. |
 
 ---
+
+
 #### Crítico CU-006 — Consultar Detalle de Pedido
 
 | Campo | Detalle |
@@ -1084,7 +1089,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede a "Productos" en el Panel Web y elige dar de alta uno nuevo. |
 | 2 | Completa el tipo (por ejemplo "10kg", "15kg", "45kg"), el peso en kilogramos y el precio de venta, que son obligatorios, y opcionalmente el stock inicial, la descripción y las promociones por cantidad. |
-| 3 | El sistema valida que el tipo sea texto, y que el peso y el precio sean números. Si vienen, valida que el stock sea numérico y que las promociones sean una lista. |
+| 3 | El sistema valida que el tipo sea un texto no vacío de hasta 50 caracteres, y que el peso y el precio sean números mayores que cero. Si vienen, valida que el stock sea un entero no negativo y que las promociones sean una lista de reglas válidas (CU-039), sin dos reglas para la misma cantidad. |
 | 4 | El sistema toma la distribuidora del contexto y verifica que no exista ya un producto de ese mismo tipo en esa distribuidora. |
 | 5 | El sistema crea el producto asociado a la distribuidora. Queda activo por el valor por omisión de ese atributo. |
 | 6 | Si el stock es mayor a cero, el producto aparece de inmediato en el listado de productos disponibles de la App Cliente. |
@@ -1099,15 +1104,18 @@ respaldado por la lectura del código en poder del cliente.
 | 3 | Si falta el tipo, el peso o el precio, o alguno no es del tipo esperado, el sistema responde 400 detallando el campo. Enviar una propiedad no declarada también produce 400. |
 | 4 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 4 | Si ya existe un producto de ese tipo en la distribuidora —esté activo o dado de baja—, el sistema responde 400 con el mensaje "Ya existe una garrafa con este tipo en tu distribuidora". |
+| 5 | Si dos altas simultáneas del mismo tipo pasan ese control, la base rechaza la segunda, porque el tipo es único por distribuidora, y el sistema responde 409 "Ya existe un registro con esos datos (productos)". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura de unicidad y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Muy baja. El catálogo de tipos de garrafa es estable en el tiempo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Limitaciones registradas. El sistema todavía no valida el signo de los valores: un precio menor o igual a cero y un stock negativo se aceptan y quedan persistidos, con el precio negativo vigente en el catálogo. El control de tipo duplicado todavía no distingue producto activo de producto dado de baja; como CU-040 tampoco ofrece reactivación, dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. Las promociones se aceptan como lista sin ninguna validación de su contenido: ver CU-039. |
+| **Comentarios** | El control de tipo duplicado todavía no distingue producto activo de producto dado de baja; como CU-040 tampoco ofrece reactivación, dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. |
 
 ---
+
+
 #### Crítico CU-037 — Actualizar Precio de Producto
 
 | Campo | Detalle |
@@ -1124,7 +1132,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede a "Productos" en el Panel Web y selecciona el producto a modificar. |
 | 2 | Edita el precio e ingresa el nuevo valor. |
-| 3 | El sistema valida que el precio recibido sea un número. |
+| 3 | El sistema valida que el precio recibido sea un número mayor que cero. |
 | 4 | El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador. |
 | 5 | El sistema precarga el producto con los valores nuevos y persiste el cambio. |
 | 6 | El nuevo precio queda vigente en el catálogo para los pedidos que se creen a partir de ese momento. |
@@ -1136,18 +1144,21 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el precio no es un número, o se envía una propiedad no declarada, el sistema responde 400. |
+| 3 | Si el precio no es un número mayor que cero, o se envía una propiedad no declarada, el sistema responde 400. |
 | 4 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 4 | Si el producto no existe, o existe pero pertenece a otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos. |
+| 5 | Si en la misma edición se cambia el tipo al de otro producto de la distribuidora, la base lo rechaza, porque el tipo es único por distribuidora, y el sistema responde 409 "Ya existe un registro con esos datos (productos)". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una verificación de pertenencia, una precarga y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Media. El precio del gas envasado se actualiza con regularidad. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La inmutabilidad del precio en pedidos existentes se sostiene porque cada ítem del pedido guarda el precio unitario al momento de la compra, independiente del precio actual del producto. Limitación registrada: el sistema todavía no valida que el precio sea mayor a cero. Un precio de cero o negativo se acepta, queda vigente y el motor de precios lo aplica tal cual al calcular el total de los pedidos siguientes. Como la operación es una actualización parcial del producto, esta misma llamada permite modificar también el tipo, el peso, el stock, la descripción y las promociones. |
+| **Comentarios** | La inmutabilidad del precio en pedidos existentes se sostiene porque cada ítem del pedido guarda el precio unitario al momento de la compra, independiente del precio actual del producto. Como la operación es una actualización parcial del producto, esta misma llamada permite modificar también el tipo, el peso, el stock, la descripción y las promociones; el tipo sigue siendo único por distribuidora. |
 
 ---
+
+
 #### Crítico CU-038 — Actualizar Stock de Producto
 
 | Campo | Detalle |
@@ -1164,7 +1175,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede a "Productos" en el Panel Web y selecciona el producto. |
 | 2 | Ingresa la **cantidad a ajustar**: las unidades que se suman al stock actual. Un valor negativo descuenta. **No es el stock total resultante.** |
-| 3 | El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador. |
+| 3 | El sistema valida con `UpdateStockDto` que la cantidad sea un número entero entre -100.000 y 100.000, y verifica que el producto exista y pertenezca a la distribuidora del administrador. |
 | 4 | El sistema **suma** la cantidad recibida al stock actual del producto. |
 | 5 | El sistema comprueba que el stock resultante no quede por debajo de cero. |
 | 6 | El sistema persiste el nuevo stock y devuelve el producto actualizado. |
@@ -1176,6 +1187,7 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si la cantidad falta, no es un número entero o está fuera de rango, o se envía una propiedad no declarada, el sistema responde 400 sin tocar el stock. |
 | 3 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 3 | Si el producto no existe, o pertenece a otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos. |
 | 5 | Si el ajuste dejaría el stock resultante por debajo de cero, el sistema responde 400 con el mensaje `Stock cannot be negative` y no persiste el cambio. |
@@ -1185,9 +1197,11 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una verificación de pertenencia y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Alta. Cada reposición física de inventario pasa por esta operación. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Este caso de uso cubre únicamente el ajuste manual de inventario. El descuento automático al crear un pedido lo resuelve CU-005 dentro de la transacción del pedido. Limitaciones registradas. El cuerpo de la operación se recibe como objeto simple, sin declaración de datos de entrada, de modo que la validación global no interviene: el sistema todavía no verifica que la cantidad sea numérica ni que sea un número entero, y un valor ausente o no numérico deja el stock en un estado inconsistente en lugar de ser rechazado. La única comprobación es sobre el resultado de la suma, no sobre el valor ingresado. **Atención:** la semántica de ajuste incremental es contraria a lo que documentaba la versión anterior de este caso de uso; toda pantalla del panel construida contra aquella descripción corrompe el inventario y debe revisarse antes de dar el caso por cerrado. |
+| **Comentarios** | Este caso de uso cubre únicamente el ajuste manual de inventario. El descuento automático al crear un pedido lo resuelve CU-005 dentro de la transacción del pedido. El sistema todavía no bloquea el producto durante el ajuste manual: dos ajustes simultáneos sobre el mismo producto pueden pisarse. **Atención:** la semántica de ajuste incremental es contraria a lo que documentaba la versión anterior de este caso de uso; toda pantalla del panel construida contra aquella descripción corrompe el inventario y debe revisarse antes de dar el caso por cerrado. |
 
 ---
+
+
 #### Crítico CU-041 — Consultar Catálogo de Productos
 
 | Campo | Detalle |
@@ -1703,7 +1717,7 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 6 | Si el pedido no existe, el sistema informa "Orden no encontrada". |
+| 6 | Si el pedido no existe, el sistema informa "Order with ID: … not found" (404). |
 | 6 | Si quien registra es un administrador y el pedido pertenece a otra distribuidora que la suya, el sistema informa que no lo encontró, sin revelar que existe. |
 | 6 | Si el pedido no pertenece al cliente indicado, el sistema informa "Esta orden no pertenece al cliente indicado" con un error de solicitud incorrecta, no de acceso denegado. |
 
@@ -1723,7 +1737,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-03 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El chofer avisa que llegó al domicilio, antes de confirmar la entrega, para que el cliente esté preparado. El aviso es solo una notificación en tiempo real: no es un estado del pedido ni deja registro. |
+| **Descripción** | El chofer avisa que llegó al domicilio, antes de confirmar la entrega, para que el cliente esté preparado. El aviso viaja en tiempo real y como notificación al dispositivo del cliente: no es un estado del pedido ni deja registro. |
 | **Precondición** | El pedido está en estado ON_THE_WAY. Si quien avisa es un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
@@ -1733,7 +1747,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El chofer llega al domicilio y presiona "Llegué" en su app. |
 | 2 | El sistema recupera el pedido; si quien avisa es un chofer, comprueba que el pedido esté asignado a él, y después comprueba que esté en camino. |
-| 3 | Avisa al cliente en tiempo real de que el repartidor está afuera, con el nombre del repartidor. |
+| 3 | Avisa al cliente en tiempo real de que el repartidor está afuera, con el nombre del repartidor, y le envía además una notificación al dispositivo, "¡Tu pedido llegó!", para que el aviso le llegue aunque tenga la aplicación cerrada. |
 | 4 | El pedido no cambia de estado ni registra ninguna marca de tiempo: la llegada no queda asentada en ninguna parte. |
 
 **Postcondición:** El cliente fue avisado de la llegada. El pedido sigue en estado ON_THE_WAY y no queda constancia del aviso.
@@ -1746,14 +1760,15 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | Si el pedido pertenece a otra distribuidora que la de quien avisa, el sistema informa que no lo encontró, sin revelar que existe. |
 | 2 | Si quien avisa es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403). |
 | 2 | Si el pedido no está en camino, el sistema informa "El pedido debe estar en camino para avisar llegada". |
-| 3 | Si el cliente no está conectado en ese momento, no se entera: no hay ningún canal alternativo. |
+| 3 | Si el cliente no está conectado en ese momento, el aviso en tiempo real no le llega, pero sí la notificación al dispositivo. |
+| 3 | Si el cliente no registró un dispositivo, o el envío de la notificación falla, el sistema lo registra en el log y el aviso se da por hecho igual: el chofer recibe la confirmación. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | El aviso se completa en menos de 1 segundo, al no escribir ningún dato persistente. |
+| **Rendimiento** | El aviso se completa en menos de 1 segundo: no escribe ningún dato persistente, y la notificación al dispositivo es una sola llamada al servicio de mensajería. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido en camino, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no tiene un estado ARRIVED ni un campo con la hora de llegada: el ciclo de vida del pedido tiene cinco estados operativos y no seis, y el tiempo entre la llegada y la entrega no es medible. Incorporar ese estado con su marca de tiempo es un pendiente registrado en el Documento 3. El sistema todavía no envía notificación al dispositivo del cliente en este aviso: si el cliente tiene la app cerrada, el aviso se pierde, que es justamente el caso que este caso de uso quería cubrir. El sistema verifica que el chofer que avisa la llegada sea el asignado al pedido; la operación además está habilitada para el administrador, sobre el que no se aplica ese control. |
+| **Comentarios** | El sistema todavía no tiene un estado ARRIVED ni un campo con la hora de llegada: el ciclo de vida del pedido tiene cinco estados operativos y no seis, y el tiempo entre la llegada y la entrega no es medible. Incorporar ese estado con su marca de tiempo es un pendiente registrado en el Documento 3. El sistema verifica que el chofer que avisa la llegada sea el asignado al pedido; la operación además está habilitada para el administrador, sobre el que no se aplica ese control. |
 
 ---
 
@@ -2202,7 +2217,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer. |
 | 2 | Elige activarlo o desactivarlo. |
-| 3 | El panel envía el valor deseado del estado de actividad, verdadero o falso. |
+| 3 | El panel envía el valor deseado del estado de actividad, verdadero o falso. El cuerpo se valida con `ToggleDeliveryStatusDto`, que exige un valor sí/no. |
 | 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
@@ -2213,6 +2228,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador del chofer no es un identificador único válido, el sistema responde 400. |
+| 3 | Si el estado de actividad falta o no es verdadero o falso, el sistema responde 400 "isActive tiene que ser true o false"; si se envía una propiedad no declarada, también responde 400. En los dos casos el perfil no se toca. |
 | 4 | Si no existe un chofer con ese identificador, el sistema responde 404. |
 | 4 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
 
@@ -2221,7 +2237,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Suspensiones operativas puntuales. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El cuerpo de esta operación se recibe como objeto simple, sin declaración de datos de entrada, por lo que el valor del estado de actividad no pasa por la validación global. Limitaciones registradas: (a) el sistema todavía no quita al chofer del conjunto geoespacial al desactivarlo administrativamente —esa limpieza solo ocurre cuando el propio chofer se pone fuera de línea desde su app (CU-022)—, así que el chofer desactivado consume ofertas del despacho que después rechaza; (b) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar; (c) la actualización general del perfil de chofer (CU-096) también permite cambiar este mismo estado, con las mismas restricciones de rol y de distribuidora, según se detalla en los Comentarios de CU-032. |
+| **Comentarios** | Limitaciones registradas: (a) el sistema todavía no quita al chofer del conjunto geoespacial al desactivarlo administrativamente —esa limpieza solo ocurre cuando el propio chofer se pone fuera de línea desde su app (CU-022)—, así que el chofer desactivado consume ofertas del despacho que después rechaza; (b) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar; (c) la actualización general del perfil de chofer (CU-096) también permite cambiar este mismo estado, con las mismas restricciones de rol y de distribuidora, según se detalla en los Comentarios de CU-032. |
 
 ---
 
@@ -2311,7 +2327,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-04 |
-| **Descripción** | El administrador define descuentos por volumen sobre un producto de su distribuidora, indicando para cada regla la cantidad mínima de unidades y el porcentaje de descuento. Las reglas se guardan como un documento estructurado dentro del producto y el motor de precios aplica la mejor regla alcanzable al calcular el subtotal de cada ítem del pedido. |
+| **Descripción** | El administrador define descuentos por volumen sobre un producto de su distribuidora, indicando para cada regla la cantidad mínima de unidades y el porcentaje de descuento. Cada regla se guarda como una promoción propia del producto, en su propia tabla, con una sola promoción por cantidad; el motor de precios aplica la mejor regla alcanzable al calcular el subtotal de cada ítem del pedido. |
 | **Precondición** | El administrador está autenticado, tiene una distribuidora en contexto y el producto pertenece a esa distribuidora. |
 | **Estado** | Implementado |
 
@@ -2322,9 +2338,9 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El administrador accede a "Productos" en el Panel Web, selecciona un producto y abre la configuración de promociones. |
 | 2 | Define las reglas de descuento por cantidad, por ejemplo tres unidades con cinco por ciento y diez unidades con diez por ciento. |
 | 3 | Confirma el cambio como una actualización parcial del producto que incluye la lista de promociones. |
-| 4 | El sistema valida únicamente que lo recibido **sea una lista**. |
-| 5 | El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador, y persiste la lista dentro del producto. |
-| 6 | Al calcular el precio de un ítem, el motor de precios busca la mejor regla aplicable a la cantidad pedida y descuenta ese porcentaje del precio unitario. |
+| 4 | El sistema valida cada regla de la lista: la cantidad mínima es un entero desde 2 y el descuento es mayor que 0 y no supera 100. Comprueba además que no haya dos reglas para la misma cantidad. |
+| 5 | El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador y guarda el producto con sus promociones: la lista recibida reemplaza a las promociones anteriores, y las que no vienen en ella se borran. |
+| 6 | Al crear un pedido, las promociones del producto se leen después de bloquear su stock, dentro de la transacción del pedido (CU-005). Al calcular el precio de un ítem, el motor de precios busca la mejor regla aplicable a la cantidad pedida y descuenta ese porcentaje del precio unitario. |
 
 **Postcondición:** Las promociones quedan vigentes para el producto. Los pedidos siguientes aplican el descuento en cuanto la cantidad pedida alcanza la cantidad mínima de alguna regla.
 
@@ -2332,7 +2348,8 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si lo recibido no es una lista, o se envía una propiedad no declarada, el sistema responde 400. |
+| 4 | Si lo recibido no es una lista, alguna regla tiene una cantidad menor que 2 o no entera, un descuento que no es mayor que 0 o que supera 100, o se envía una propiedad no declarada, el sistema responde 400. |
+| 4 | Si hay dos reglas para la misma cantidad de unidades, el sistema responde 400 "Hay dos promociones para la misma cantidad de unidades". |
 | 5 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 5 | Si el producto no existe, o pertenece a otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos. |
 
@@ -2340,10 +2357,12 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Rendimiento** | Una verificación de pertenencia y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Las campañas de descuento por volumen se configuran de manera esporádica. |
-| **Estabilidad** | Media. La estructura de la regla no está tipada, de modo que un cambio de forma no es detectado por el sistema. |
-| **Comentarios** | Limitación registrada, de impacto directo sobre el importe cobrado: el sistema todavía no valida el contenido de cada regla. No comprueba que la cantidad mínima sea positiva, no comprueba que el porcentaje esté acotado, ni siquiera comprueba que cada elemento de la lista tenga la forma esperada. Un porcentaje mayor a cien se persiste y el motor de precios lo aplica tal cual, produciendo un subtotal negativo. Queda pendiente de implementación acotar la cantidad mínima a valores positivos y el porcentaje al intervalo mayor a cero y hasta cincuenta, validando cada regla de la lista como una estructura declarada. Hasta entonces, la única barrera contra una promoción mal cargada es la revisión manual del administrador. |
+| **Estabilidad** | Media. La regla es una estructura declarada: un cambio de forma lo rechaza la validación, y la base repite los controles de rango y de unicidad. |
+| **Comentarios** | El sistema todavía no ofrece una operación para agregar o quitar una sola promoción: la configuración se hace siempre enviando la lista completa, que reemplaza a la anterior. El sistema todavía no acota el descuento por debajo del 100 %: una promoción del 100 % se acepta y deja en cero el precio del ítem. |
 
 ---
+
+
 #### Importante CU-040 — Activar / Desactivar Producto
 
 > **Implementado parcialmente.** El sistema resuelve hoy únicamente la **desactivación**, que se ejecuta al eliminar el producto del catálogo y equivale a una baja lógica. **No existe camino de reactivación:** el atributo que marca al producto como activo no forma parte de los datos que aceptan ni el alta ni la modificación, y la validación global rechaza toda propiedad no declarada. Un producto desactivado no vuelve al catálogo sin intervención directa sobre la base de datos. Queda registrado como pendiente de implementación en el Documento 3, sección 10.
@@ -2568,7 +2587,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 1 | El cliente abre la sección de direcciones en la aplicación. |
 | 2 | La aplicación envía `GET /user-addres/user/:userId`. |
 | 3 | El sistema valida el formato del identificador de usuario. |
-| 4 | El sistema determina el alcance: si quien pide no es administrador, fuerza el filtro al usuario de la sesión e ignora el que venga en la petición. Si es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
+| 4 | El sistema determina el alcance: si quien pide no es administrador, comprueba que el usuario pedido sea el de la sesión. Si es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 5 | El sistema recupera las direcciones de ese usuario, ordenadas con la predeterminada primero y luego por fecha de alta descendente. |
 | 6 | El sistema devuelve el listado. |
 
@@ -2579,7 +2598,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 antes de llegar al servicio. |
-| 4 | Si un cliente pide las direcciones de otro usuario, el sistema devuelve las suyas, no las del otro. |
+| 4 | Si un cliente pide las direcciones de otro usuario, el sistema rechaza la solicitud con error 403 "No autorizado a acceder a direcciones de otro usuario". |
 | 4 | Si quien pide es un administrador con distribuidora en contexto y el usuario no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 5 | Si el cliente no tiene ninguna dirección, el sistema devuelve un listado vacío, no un error. |
 
@@ -2600,14 +2619,14 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, altura, piso y departamento, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. El sistema resuelve la dirección contra el servicio de mapas para quedarse con el mejor punto disponible, sin bloquear el alta. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
 | **Precondición** | El cliente está autenticado. La cuenta de usuario existe. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
-| **Estado** | Implementado · pendiente el paso de resolución contra el mapa y los campos de piso y departamento |
+| **Estado** | Implementado · pendiente la resolución automática contra el servicio de mapas |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente completa el formulario de dirección en la aplicación, incluyendo piso y departamento si corresponde. |
-| 2 | La aplicación envía `POST /user-addres` con los datos de la dirección. |
+| 2 | La aplicación envía `POST /user-addres` con los datos de la dirección: calle, ciudad, latitud y longitud obligatorias, y opcionalmente código postal, piso, departamento, identificador del lugar en el mapa, precisión, dirección normalizada e indicaciones. |
 | 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular indicado sea de ella y, si el administrador es de empresa, rechaza la operación. |
 | 4 | El sistema comprueba que la cuenta de usuario exista. |
 | 5 | El sistema consulta al servicio de mapas la dirección escrita y guarda, junto con el punto, la dirección normalizada que le devuelve y el identificador estable del lugar. |
@@ -2623,6 +2642,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 3 | Si quien opera es un administrador con distribuidora en contexto y el titular indicado no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
+| 2 | Si falta la latitud o la longitud, o alguna no es una coordenada válida, el sistema retorna error 400; lo mismo si la precisión no es exacta, aproximada o sin resolver. |
 | 4 | Si la cuenta de usuario no existe, el sistema retorna error 404 "User with ID: … not found". |
 | 5 | Si el servicio de mapas no responde, o responde con un error, el alta **continúa igual** con las coordenadas que mandó la aplicación, y la dirección queda registrada como sin resolver. El fallo se registra en el log; el cliente no ve ningún error. |
 | 5 | Si el servicio de mapas ubica la calle pero no la altura exacta, el alta **continúa** con el punto aproximado y queda registrada como aproximada. |
@@ -2634,7 +2654,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada, más una consulta al servicio de mapas. Esa consulta tiene un tiempo máximo de espera corto: si se agota, el alta sigue sin resolver. |
 | **Frecuencia** | Media: una o dos por cliente, y alguna más cuando se muda o pide para un tercero. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. El Administrador General, en cambio, puede indicar el titular; un administrador de empresa no da de alta direcciones. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. |
+| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. El Administrador General, en cambio, puede indicar el titular; un administrador de empresa no da de alta direcciones. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. La dirección guarda la latitud y la longitud como un único punto geográfico, y ya tiene los campos del identificador del lugar y de la precisión, que nace como sin resolver si no se indica otra. El sistema todavía no consulta el servicio de mapas: los pasos 5 y 6 quedan pendientes, de modo que el punto es el que manda la aplicación y la precisión es la que ella indique. |
 
 ---
 
@@ -2687,7 +2707,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la altura, el piso y departamento, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Si cambia algo que afecta la ubicación, el sistema vuelve a resolverla contra el servicio de mapas. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
 | **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
-| **Estado** | Implementado · pendiente la re-resolución contra el mapa y los campos de piso y departamento |
+| **Estado** | Implementado · pendiente la resolución automática contra el servicio de mapas |
 
 **Secuencia Normal**
 
@@ -2696,7 +2716,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 1 | El cliente edita los campos que quiere cambiar. |
 | 2 | La aplicación envía `PATCH /user-addres/:id` con los campos modificados. |
 | 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
-| 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. |
+| 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. La latitud y la longitud forman un único punto, de modo que se cambian juntas. |
 | 5 | Si cambió algún dato que afecta la ubicación —calle, altura, ciudad, código postal o coordenadas—, el sistema la resuelve de nuevo contra el servicio de mapas y actualiza el punto, la dirección normalizada y la precisión. Si sólo cambiaron el piso, el departamento o las indicaciones, no vuelve a consultar. |
 | 6 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
 | 7 | El sistema guarda los cambios y devuelve la dirección actualizada. |
@@ -2710,6 +2730,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
+| 4 | Si viene la latitud sin la longitud, o al revés, el sistema retorna error 400 "latitude y longitude se cambian juntas". |
 | 4 | Si la dirección desapareció entre la lectura y la escritura, el sistema retorna error 404. |
 | 5 | Si el servicio de mapas no responde o no ubica la dirección nueva, la edición **continúa igual** con las coordenadas que haya, y la precisión pasa a aproximada o sin resolver. La edición nunca se rechaza por esto, por la misma razón que en CU-116. |
 
@@ -2718,7 +2739,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Una lectura y una escritura, más una actualización si cambia la predeterminada. |
 | **Frecuencia** | Baja: se edita cuando el cliente detecta un error o cambia una indicación. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El caso incluye a CU-117 porque necesita saber de qué dirección se habla y de quién es antes de escribir. |
+| **Comentarios** | El caso incluye a CU-117 porque necesita saber de qué dirección se habla y de quién es antes de escribir. El piso, el departamento, el identificador del lugar y la precisión ya son campos editables de la dirección. El sistema todavía no vuelve a consultar el servicio de mapas: el paso 5 queda pendiente, de modo que el punto es el que manda la aplicación y la precisión es la que ella indique. |
 
 ---
 
@@ -2728,7 +2749,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente da de baja una dirección que ya no usa. Si la que borra era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`. |
+| **Descripción** | El cliente da de baja una dirección que ya no usa. La baja es lógica: la dirección deja de aparecer, pero se conserva, y los pedidos que la usaron la siguen mostrando. Si la que da de baja era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`. |
 | **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado |
 
@@ -2736,14 +2757,14 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente pide borrar una dirección. |
+| 1 | El cliente pide dar de baja una dirección. |
 | 2 | La aplicación envía `DELETE /user-addres/:id`. |
 | 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | Si la dirección era la predeterminada, el sistema busca las demás direcciones del cliente y marca como predeterminada a la más reciente. |
-| 5 | El sistema borra la dirección. |
+| 5 | El sistema da de baja lógica la dirección: registra la fecha de baja y la fila se conserva. |
 | 6 | El sistema confirma la baja. |
 
-**Postcondición:** La dirección deja de existir y el cliente conserva una dirección predeterminada si tenía otras.
+**Postcondición:** La dirección está dada de baja: no aparece entre las direcciones del cliente ni puede elegirse para un pedido nuevo, pero sigue en la base, y los pedidos que la usaron la siguen mostrando. El cliente conserva una dirección predeterminada si tenía otras.
 
 **Excepciones**
 
@@ -2752,14 +2773,13 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
-| 5 | Si algún pedido referencia la dirección, la base rechaza el borrado por integridad referencial. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura, un borrado y, en el peor caso, una consulta y una escritura más. |
+| **Rendimiento** | Una lectura, una escritura que marca la baja y, en el peor caso, una consulta y una escritura más. |
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | La baja es física, a diferencia de la del chofer (CU-097) y la del cliente (CU-095), que son lógicas. Un pedido viejo que apuntaba a esa dirección pierde el dato de dónde se entregó. |
+| **Comentarios** | El sistema todavía no ofrece una operación para revertir la baja de una dirección: para volver a usarla el cliente la registra de nuevo (CU-116). |
 
 ---
 
@@ -3231,7 +3251,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El chofer abre la sección de ganancias en la App Chofer. |
 | 2 | La aplicación consulta el perfil de chofer asociado a su usuario. |
-| 3 | El sistema devuelve el perfil completo del chofer junto con los datos de usuario y rol; el saldo viaja incluido en esa respuesta, porque la consulta devuelve la entidad tal cual, sin un mapeador que recorte campos. |
+| 3 | El sistema comprueba que el perfil consultado sea el del propio chofer y devuelve el perfil del chofer con los datos de usuario y rol, armado por el mapeador de respuestas; el saldo viaja incluido en esa respuesta. |
 | 4 | La aplicación muestra el saldo acumulado. |
 | 5 | El administrador, desde el Panel Web, consulta el listado de choferes de su distribuidora o el detalle de uno en particular, y ve el mismo saldo en cada perfil. |
 | 6 | Cuando corresponde liquidar o ajustar, el administrador envía el monto del ajuste sobre el perfil del chofer. |
@@ -3246,17 +3266,19 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 2 | Si el identificador recibido no es un UUID válido, el sistema retorna error 400. |
 | 2 | Si no existe perfil de chofer para ese usuario, el sistema retorna error 404. |
+| 3 | Si quien consulta es un chofer y el perfil es de otro chofer, el sistema retorna error 403 "No podés operar sobre otro chofer". |
+| 3 | Si quien consulta es un administrador con distribuidora en contexto y el chofer es de otra, el sistema retorna error 404, sin revelar que existe. |
 | 6 | Si el solicitante no tiene rol ADMIN ni SUPER_ADMIN, el sistema retorna error 403. |
 | 6 | Si el perfil de chofer indicado no existe, el sistema retorna error 404. |
 | 7 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
-| 7 | El cuerpo del ajuste se recibe como objeto plano, sin un DTO con reglas de validación, de modo que el sistema no rechaza un monto ausente o no numérico; el resultado de la operación queda librado a la conversión de la base de datos (**⚠️ verificar** el comportamiento exacto). |
+| 6 | El cuerpo del ajuste se valida con `UpdateDeliveryBalanceDto`: si el monto falta, no es un número con hasta dos decimales o está fuera del rango de ±1.000.000, o si se envía una propiedad no declarada, el sistema retorna error 400 sin tocar el saldo. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Tanto la consulta como el ajuste son accesos directos por clave y se resuelven en menos de 1 segundo. |
 | **Frecuencia** | El chofer consulta su saldo varias veces por semana. El ajuste del administrador es esporádico y sigue el ciclo de liquidación acordado con cada chofer. |
 | **Estabilidad** | Media |
-| **Comentarios** | **Limitación importante:** el saldo **no se actualiza automáticamente al confirmar una entrega**. La única escritura del campo es el ajuste manual del administrador; ni el flujo de confirmación de entrega ni ningún otro punto del backend lo modifican, y no existe cálculo de comisión por pedido. En términos prácticos, hoy es un saldo que el administrador lleva a mano, no una liquidación derivada de las entregas realizadas, a diferencia de lo que sugiere la descripción de alto nivel. Tampoco hay endpoint dedicado de consulta —el chofer lo lee dentro de su perfil— ni historial de movimientos: solo se conoce el saldo acumulado actual, sin trazabilidad de cómo se llegó a ese número, lo que impide auditar una liquidación discutida. Un tercer punto: las consultas de perfil de chofer, tanto por identificador de chofer como por identificador de usuario, no llevan restricción de rol, de manera que cualquier usuario autenticado que conozca un identificador puede leer el saldo de ese chofer (**⚠️ verificar** si es intencional; es la misma observación registrada en la trazabilidad para la consulta de choferes activos). |
+| **Comentarios** | **Limitación importante:** el saldo **no se actualiza automáticamente al confirmar una entrega**. La única escritura del campo es el ajuste manual del administrador; ni el flujo de confirmación de entrega ni ningún otro punto del backend lo modifican, y no existe cálculo de comisión por pedido. En términos prácticos, hoy es un saldo que el administrador lleva a mano, no una liquidación derivada de las entregas realizadas, a diferencia de lo que sugiere la descripción de alto nivel. Tampoco hay endpoint dedicado de consulta —el chofer lo lee dentro de su perfil— ni historial de movimientos: solo se conoce el saldo acumulado actual, sin trazabilidad de cómo se llegó a ese número, lo que impide auditar una liquidación discutida. Las consultas de perfil de chofer, tanto por identificador de chofer como por identificador de usuario, están restringidas a los roles de chofer y de administrador, y controlan el alcance: un chofer sólo lee su propio perfil y un administrador sólo los choferes de su distribuidora. |
 
 ---
 
@@ -3344,11 +3366,12 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Todas las operaciones son accesos directos sobre la tabla de vehículos y se resuelven en menos de 1 segundo. |
 | **Frecuencia** | Baja. Solo al incorporar, reemplazar o dar de baja una unidad de la flota. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El aislamiento entre distribuidoras es consistente en todo el módulo: las lecturas filtran por la distribuidora en contexto y las escrituras la exigen, de modo que un administrador no puede leer ni tocar la flota de otro comercio; el administrador general es el único que opera sin ese filtro. La unicidad de la patente está garantizada en dos niveles —una consulta previa en la aplicación que devuelve un mensaje entendible, y una restricción única en la columna de la base que cubre las escrituras concurrentes—. Dos asimetrías vale la pena señalar. La búsqueda por patente devuelve contenido vacío cuando no encuentra nada, en lugar del error 404 que devuelven las demás consultas, así que el panel debe contemplar ese caso en particular. Y la baja de un vehículo es **física**, a diferencia de la baja de un chofer, que es lógica: eliminar una unidad pierde definitivamente su historial, lo que conviene revisar si más adelante se quiere reconstruir qué vehículo realizó cada entrega. |
+| **Comentarios** | El aislamiento entre distribuidoras es consistente en todo el módulo: las lecturas filtran por la distribuidora en contexto y las escrituras la exigen, de modo que un administrador no puede leer ni tocar la flota de otro comercio; el administrador general es el único que opera sin ese filtro. La unicidad de la patente está garantizada en dos niveles —una consulta previa en la aplicación que devuelve un mensaje entendible, y una restricción única en la base, sólo entre los vehículos vigentes, que cubre las escrituras concurrentes—. La baja de un vehículo es lógica, como la de un chofer (CU-112): la unidad se conserva con su historial y su patente puede volver a registrarse. Una asimetría vale la pena señalar: la búsqueda por patente devuelve contenido vacío cuando no encuentra nada, en lugar del error 404 que devuelven las demás consultas, así que el panel debe contemplar ese caso en particular. |
 
 ---
 
 ---
+
 
 ### 7.5 Casos de Uso Expandidos — Ampliación del Alcance (CU-052 a CU-104)
 
@@ -3598,8 +3621,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El usuario solicita validación pasandole latitud y longitud por parámetro. |
 | 2 | El sistema recaba el ID de distribuidora del contexto. |
-| 3 | El sistema computa si el punto se halla en algun poligono de la distribuidora. |
-| 4 | Si no hay zonas configuradas por la empresa, asume total cobertura con 0 recargo. |
+| 3 | El sistema computa si el punto se halla en algún polígono de la distribuidora, considerando sólo las zonas activas y no dadas de baja (CU-059): una zona dada de baja no cubre ningún punto. |
+| 4 | Si la empresa no tiene ninguna zona activa y vigente, asume total cobertura con 0 recargo. |
 | 5 | El sistema responde indicando boolean de cobertura, nombre zona y plus de precio. |
 
 **Postcondición:** El usuario tiene un veredicto seguro para poder iniciar o vetar el pedido según alcance geográfico.
@@ -3619,13 +3642,14 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 ---
 
+
 #### Secundario CU-059 — Eliminar Zona de Cobertura
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-10 |
 | **Requisitos asociados** | IRQ-09, IRQ-10 |
-| **Descripción** | El sistema suprime un registro de zona geográfica atendiendose al perimetro de su distribuidora. |
+| **Descripción** | El administrador da de baja una zona de cobertura de su distribuidora. La baja es lógica: la zona queda con fecha de baja, deja de contar para la validación de cobertura y se conserva para el historial. |
 | **Precondición** | El usuario es Administrador o Administrador General. Zona existe y le pertenece al tenant en curso. |
 | **Estado** | Implementado |
 
@@ -3635,10 +3659,10 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El administrador demanda la eliminación pasando el UUID de la zona. |
 | 2 | El sistema autentica que la zona en cuestion efectivamente milite bajo el ID de su distribuidora. |
-| 3 | El sistema la remueve de la base de datos. |
-| 4 | El sistema devuelve la confirmación de borrado. |
+| 3 | El sistema da de baja lógica la zona: registra la fecha de baja y la fila se conserva. |
+| 4 | El sistema devuelve la confirmación de la baja. |
 
-**Postcondición:** Se extingue el marco territorial del catalogo validable.
+**Postcondición:** La zona está dada de baja: no aparece en las consultas y la validación de cobertura (CU-058) la ignora, pero sigue en la base. Si era la última zona vigente de la distribuidora, la validación vuelve a considerar cubierta cualquier dirección, sin recargo.
 
 **Excepciones**
 
@@ -3651,9 +3675,10 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El borrado es físico y no lógico: una zona eliminada no deja rastro, y si ya se usó para calcular recargos en pedidos pasados, esos pedidos quedan sin ningún registro de zona al que remitirse para su auditoría. |
+| **Comentarios** | El sistema todavía no ofrece una operación para revertir la baja de una zona. El pedido guarda sólo su total, con el recargo de zona incluido, y no la zona que lo originó: la baja lógica conserva la zona, pero ningún pedido queda vinculado a ella. |
 
 ---
+
 
 #### Importante CU-150 — Programar la Vigencia de una Zona de Cobertura
 
@@ -3764,7 +3789,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | Si el pedido no es un identificador único válido, si el tipo no es uno de los tipos previstos, si falta la descripción, o si se envía una propiedad no declarada, el sistema responde 400. |
 | 3 | Si el pedido no existe, el sistema responde 404 con el mensaje "Pedido no encontrado". |
 | 3 | Si el pedido pertenece a otra distribuidora que la de quien reporta, el sistema responde el mismo 404, sin revelar que existe. |
-| 3 | Si quien reporta es un chofer y el pedido no está asignado a él, el sistema responde 403 "Sólo podés ver tus propios pedidos". |
+| 3 | Si quien reporta es un chofer y el pedido no está asignado a él, el sistema responde 403 "Este pedido no está asignado a tu usuario". |
 | — | Si el usuario no tiene rol Chofer, Administrador ni Administrador General, el sistema responde 403. |
 
 | Campo | Detalle |
@@ -3829,7 +3854,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El usuario pide listar los incidentes pasando el ID de la orden. |
 | 2 | El sistema toma el scope del tenant (CurrentDistributor). |
-| 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el pedido sea de ella. Después efectúa la selección contra la base de datos limitando por orden y tenant. |
+| 3 | El sistema comprueba que el pedido exista y, si hay una distribuidora en contexto, que sea de ella. Después efectúa la selección contra la base de datos limitando por orden y tenant. |
 | 4 | El sistema envia el paquete de respuestas conteniendo las incidencias puntuales. |
 
 **Postcondición:** Se obtiene la traza de obstaculos referentes a un envio individual.
@@ -3838,15 +3863,15 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el pedido pertenece a otra distribuidora que la del solicitante, el sistema retorna error 404 "Order with ID: … not found" en lugar de una lista vacía. |
-| 3 | Si el pedido no existe o no tiene incidencias registradas, el sistema devuelve una lista vacía, no un error. |
+| 3 | Si el pedido no existe, o pertenece a otra distribuidora que la del solicitante, el sistema retorna el mismo error 404 "Pedido no encontrado", sin revelar que existe. |
+| 3 | Si el pedido existe pero no tiene incidencias registradas, el sistema devuelve una lista vacía, no un error. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Un pedido de otra distribuidora responde 404 y no una lista vacía. Un pedido inexistente, en cambio, devuelve una lista vacía: el control de distribuidora sólo actúa cuando el pedido existe. |
+| **Comentarios** | Un pedido inexistente y uno de otra distribuidora responden el mismo 404: una lista vacía para uno y un error para el otro revelaría que el ajeno existe. |
 
 ---
 
@@ -4533,10 +4558,10 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 1 | El daemon @Cron ejecuta el barrido del servicio. |
-| 2 | El sistema indaga BD para cazar las instancias añejas según la regla TTL configurada (RESERVATION_DEPOSIT_TTL_HOURS). |
-| 3 | El sistema genera transaccion (QueryRunner) para revertir e inicializa estado a CANCELLED. |
-| 4 | El sistema retrotrae el inventario restituyendo y sumando cantidades perdidas (StockReservationService). |
-| 5 | El sistema comitea atómicamente evitando incosistencias de caja. |
+| 2 | El sistema busca hasta cincuenta reservas con la seña sin pagar creadas antes del plazo configurado. El plazo en horas lo lee de la configuración al arrancar (`RESERVATION_DEPOSIT_TTL_HOURS`, 48 horas por defecto). |
+| 3 | Por cada reserva, abre una transacción y pasa el pedido a CANCELLED. |
+| 4 | Dentro de la misma transacción, el servicio de productos devuelve al inventario la cantidad de cada ítem, bloqueando cada producto; un producto que ya no existe se ignora. |
+| 5 | El sistema confirma la transacción, de modo que la cancelación y la devolución del stock quedan hechas juntas o no quedan. |
 
 **Postcondición:** La orden muere logicamente, impidiendo que el cliente acapare mercaderia que no pagará jamas.
 
@@ -4544,7 +4569,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| ⚠️ verificar | Si surge caida por rollback, la transaccion da catch, avisa por logging y se auto-resuelve cancelando la transaccion puntual. |
+| 3 | Si falla la expiración de una reserva, el sistema revierte su transacción, registra el error en el log y sigue con la siguiente: el pedido y el stock de esa reserva quedan como estaban. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -4554,6 +4579,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Comentarios** | El vencimiento por TTL configurado corre dentro de una transacción propia que revierte el pedido y restituye el stock de forma atómica, a diferencia de la cancelación manual de CU-008 y CU-010, que no comparten esa garantía. |
 
 ---
+
 
 #### Importante CU-077 — Expirar Pedidos de MercadoPago sin Pagar (Cron)
 
@@ -4570,10 +4596,10 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 1 | El background task es gatillado iterativamente cada media hora. |
-| 2 | El sistema levanta el stock de ordenes con atributos descritos y mas antiguos al delta. |
+| 2 | El sistema busca hasta cincuenta pedidos pendientes, pagados con MercadoPago y sin pago acreditado, creados antes del plazo configurado. El plazo en minutos lo lee de la configuración al arrancar (`ORDER_MERCADOPAGO_PENDING_TTL_MINUTES`, 60 minutos por defecto). |
 | 3 | El sistema asegura con lock DB (pessimistic_write) el pedido para bloquear concurrencia fortuita (un ping del webhook IPN ingresando identico microsegundo). |
 | 4 | El sistema re-chequea condición, transiciona la petición a un CANCELLED irrecuperable con reason. |
-| 5 | El sistema restaura existencias llamando modulo stock, luego comitea firmemente. |
+| 5 | Dentro de la misma transacción, el servicio de productos devuelve al inventario la cantidad de cada ítem, bloqueando cada producto, y el sistema confirma la transacción. |
 
 **Postcondición:** El capital inventariado recobra vida eximiendo perdidas por caidas en gateways externos.
 
@@ -4582,7 +4608,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 4 | Si el registro lockeado ya mutó (acaba de entrar el pago), el sistema aborta de inmediato perdonandolo sin rollback agresivo. |
-| ⚠️ verificar | Error interno transaccional desemboca en catch logger puro. |
+| 4 | Si falla la expiración de un pedido, el sistema revierte su transacción, registra el error en el log y sigue con el siguiente. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -4878,7 +4904,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-01 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Antes de completar el formulario de registro, la app consulta si un correo o un teléfono ya están tomados, para avisarle al usuario en el momento en lugar de fallar al enviar el alta. Endpoint: `POST /users/check-exists` (`src/users/users.controller.ts:147-148`). |
+| **Descripción** | Antes de completar el formulario de registro, la app consulta si un correo o un teléfono ya están tomados, para avisarle al usuario en el momento en lugar de fallar al enviar el alta. Endpoint: `POST /users/check-exists`. |
 | **Precondición** | Ninguna: el endpoint está marcado `@Public()` porque se usa durante el registro, cuando todavía no hay sesión. |
 | **Estado** | Implementado |
 
@@ -4887,10 +4913,10 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario completa el campo de correo o el de teléfono en la pantalla de registro. |
-| 2 | La app envía `POST /users/check-exists` con `{ email }`, `{ phoneNumber }` o ambos. |
-| 3 | El sistema arma las condiciones de búsqueda con los datos recibidos. |
-| 4 | El sistema busca un usuario que coincida con cualquiera de esas condiciones. |
-| 5 | El sistema devuelve `{ exists, email, phoneNumber }`, indicando si hubo coincidencia y sobre qué dato (`src/users/users.service.ts:201-222`). |
+| 2 | La app envía `POST /users/check-exists` con `{ email }`, `{ phoneNumber }` o ambos. El cuerpo se valida con `CheckUserExistsDto`: hace falta al menos uno de los dos, el correo con formato de correo y el teléfono en formato E.164. |
+| 3 | El sistema consulta por separado si el correo está en uso y si el teléfono está en uso; un dato que no vino se informa como no usado. |
+| 4 | Las dos consultas corren en paralelo y cada una mira sólo su propia columna. |
+| 5 | El sistema devuelve `{ exists, email, phoneNumber }`: `email` indica si el correo está en uso, `phoneNumber` si lo está el teléfono, y `exists` si lo está alguno de los dos. |
 | 6 | La app muestra el aviso correspondiente y habilita o bloquea el envío del formulario. |
 
 **Postcondición:** La app sabe si el correo o el teléfono están disponibles. No hay cambios de estado.
@@ -4899,17 +4925,17 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el cuerpo no trae ni correo ni teléfono, el sistema devuelve `{ exists: false }` sin consultar la base y sin error. |
-| 2 | El cuerpo se recibe como objeto sin DTO ni validación de formato, de modo que un correo mal formado se consulta igual y simplemente no encuentra coincidencias. |
+| 2 | Si el cuerpo no trae ni correo ni teléfono, o el correo o el teléfono que trae no tienen un formato válido, el sistema responde 400 sin consultar la base. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una sola lectura por condiciones alternativas sobre columnas con índice único. |
+| **Rendimiento** | Hasta dos lecturas de existencia en paralelo, cada una sobre una columna con índice único. |
 | **Frecuencia** | Alta durante el registro: la app la invoca por cada intento de alta. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Al ser público y no limitado por caso, permite sondear si un correo o teléfono está registrado. **⚠️ verificar** si conviene limitarlo por frecuencia, como ya se hace en el inicio de sesión. |
+| **Comentarios** | Al ser público, permite sondear si un correo o un teléfono están registrados. Lo alcanza sólo el límite global de solicitudes por IP: el sistema todavía no le aplica un límite propio más estricto, como el del inicio de sesión. |
 
 ---
+
 
 #### Importante CU-085 — Eliminar Usuario
 
@@ -4917,8 +4943,8 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) elimina una cuenta de usuario del sistema y del proveedor de identidad. El orden importa: el sistema borra primero en la base y solo si eso funciona toca el proveedor, para no dejar cuentas huérfanas fuera de la base. Endpoint: `DELETE /users/:id` (`src/users/users.controller.ts:206`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El usuario existe y no tiene pedidos ni otros registros que lo referencien. |
+| **Descripción** | El administrador (ACT-03) da de baja una cuenta de usuario. La baja es lógica: el usuario, su perfil de cliente o de chofer, sus vehículos y sus direcciones quedan con fecha de baja, dejan de aparecer y se conservan para el historial y la auditoría. La cuenta del proveedor de identidad se deshabilita, no se borra. Endpoint: `DELETE /users/:id`. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El usuario existe y, si hay una distribuidora en contexto, pertenece a ella. Un administrador de empresa sólo da de baja a su personal: la cuenta de un cliente la da de baja el Administrador General. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -4927,31 +4953,33 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador elige eliminar un usuario desde el panel. |
 | 2 | El panel envía `DELETE /users/:id`. |
-| 3 | El sistema valida el formato UUID y recupera el usuario con sus relaciones. |
-| 4 | El sistema borra el registro de la base; los perfiles de cliente y de chofer se borran en cascada desde el usuario. |
-| 5 | Si el borrado funcionó y el usuario tenía cuenta de acceso, el sistema la elimina también del proveedor de identidad por su identificador, en modo best-effort. |
-| 6 | El sistema devuelve el mensaje "Usuario eliminado permanentemente de DB y Firebase". |
+| 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el usuario sea de ella; si quien da de baja es un administrador de empresa, comprueba además que la cuenta no sea la de un cliente. |
+| 4 | El sistema recupera el usuario con su perfil de cliente o de chofer, sus vehículos y sus direcciones. |
+| 5 | El sistema da de baja lógica al usuario y, en cascada, a su perfil de cliente o de chofer, a sus vehículos y a sus direcciones: quedan con fecha de baja y dejan de aparecer. Los pedidos, pagos, calificaciones y demás registros que lo referencian se conservan. |
+| 6 | Si el usuario tiene cuenta de acceso, el sistema la deshabilita en el proveedor de identidad, sin borrarla. |
+| 7 | El sistema devuelve el mensaje "Usuario dado de baja". |
 
-**Postcondición:** La cuenta ya no existe ni en la base ni en el proveedor de identidad, y tampoco sus perfiles asociados.
+**Postcondición:** El usuario, su perfil de cliente o de chofer, sus vehículos y sus direcciones están dados de baja lógica: no aparecen en las consultas, pero siguen en la base y los historiales que los referencian los siguen mostrando. La cuenta del proveedor de identidad está deshabilitada: un ingreso posterior con esas credenciales responde "La cuenta no está habilitada" (401), y el correo sigue ocupado, de modo que no puede registrarse otra cuenta con él.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
-| 3 | Si el usuario no existe, el sistema retorna error 404 "User with ID: … not found". |
-| 4 | Si el usuario tiene pedidos asociados, la clave foránea con regla restrictiva impide el borrado y el sistema retorna error 409 "No se puede eliminar el usuario porque tiene pedidos u otros registros asociados. Bloquéalo en lugar de eliminarlo." (`users.service.ts:184-190`). |
-| 5 | Si el borrado en el proveedor de identidad falla, el sistema lo registra en el log y no revierte el borrado local. |
+| 3 | Si el usuario no existe, o si hay una distribuidora en contexto y el usuario no es de ella, el sistema retorna error 404 "User with ID: … not found", sin revelar que existe. |
+| 3 | Si quien da de baja es un administrador de empresa y la cuenta es la de un cliente, el sistema rechaza la operación con "La cuenta de un cliente la administra el administrador general" (403). |
+| 6 | Si deshabilitar la cuenta en el proveedor de identidad falla, la baja lógica igual queda hecha: el sistema registra el error en el log y no la revierte. El ingreso de ese usuario ya queda rechazado por el sistema, porque la cuenta dada de baja no aparece. |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Un borrado en base más una llamada de red al proveedor de identidad. |
+| **Rendimiento** | Una escritura en base, que marca la baja del usuario y de lo que depende de él, más una llamada de red al proveedor de identidad. |
 | **Frecuencia** | Baja: es una operación excepcional de mantenimiento de cuentas. |
 | **Estabilidad** | Media |
-| **Comentarios** | El resumen del endpoint dice "soft delete" pero el servicio ejecuta un borrado físico e irreversible, también en el proveedor de identidad (`users.service.ts:175-199`). **⚠️ verificar** la intención: el propio mensaje de error del caso 409 sugiere bloquear en lugar de eliminar, y para eso existe `PATCH /users/:id/block`. |
+| **Comentarios** | El sistema todavía no ofrece una operación para revertir la baja: reactivar una cuenta dada de baja requiere intervenir la base y el proveedor de identidad. |
 
 ---
+
 
 #### Secundario CU-091 — Validar Vigencia del Token de Sesión
 
@@ -5104,7 +5132,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) lista las cuentas administrativas de su distribuidora, o busca una puntual por identificador o correo. El Administrador General (ACT-05) sin empresa en contexto ve las de todas las distribuidoras. Endpoints: `GET /admin` (`src/admin/admin.controller.ts:91`) y `GET /admin/term/:term` (`:25`). |
+| **Descripción** | El administrador (ACT-03) lista las cuentas administrativas de su distribuidora, o busca una puntual por identificador o correo. El Administrador General (ACT-05) sin empresa en contexto ve las de todas las distribuidoras. Endpoints: `GET /admin` y `GET /admin/term/:term`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. |
 | **Estado** | Implementado |
 
@@ -5115,10 +5143,10 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador abre la pantalla de cuentas administrativas del panel. |
 | 2 | El panel envía `GET /admin`. |
 | 3 | El sistema resuelve la distribuidora del solicitante. |
-| 4 | Si hay distribuidora en contexto, el sistema filtra por ella; si no la hay, devuelve todas las cuentas (`src/admin/admin.service.ts:85-90`). |
+| 4 | Si hay distribuidora en contexto, el sistema filtra por ella; si no la hay, devuelve todas las cuentas. |
 | 5 | El sistema devuelve cada administrador con su usuario, su rol y su distribuidora. |
 | 6 | Para una búsqueda puntual, el panel envía `GET /admin/term/:term`: si el término es un UUID el sistema busca por identificador de administrador y, si no, por correo del usuario. Si hay una distribuidora en contexto, sólo da por encontrado a un administrador de ella. |
-| 7 | El sistema devuelve un objeto reducido con identificador, correo, nombre, rol e identificador del proveedor de identidad (`admin.service.ts:141-148`). |
+| 7 | El sistema devuelve un objeto reducido con identificador, correo, nombre y rol; no incluye el identificador del proveedor de identidad. |
 
 **Postcondición:** El administrador obtiene el listado o la ficha buscada. No hay cambios de estado.
 
@@ -5267,7 +5295,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) marca a un cliente como validado o le retira esa marca, del mismo modo en que CU-032 lo hace con los choferes. Es el control manual sobre la cartera de clientes. Endpoints: `PATCH /customers/:id/validate` (`src/customer/customer.controller.ts:88`) y `PATCH /customers/:id/invalidate` (`:98`). |
+| **Descripción** | El administrador (ACT-03) marca a un cliente como validado o le retira esa marca, del mismo modo en que CU-032 lo hace con los choferes. Es el control manual sobre la cartera de clientes. Endpoints: `PATCH /customers/:id/validate` y `PATCH /customers/:id/invalidate`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -5278,7 +5306,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador abre la ficha del cliente y elige validarlo o invalidarlo. |
 | 2 | El panel envía `PATCH /customers/:id/validate` o `PATCH /customers/:id/invalidate`. |
 | 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. Después recupera el cliente con su usuario, rol y direcciones. |
-| 4 | El sistema fija el campo `validated` en `'true'` o en `'false'` según la acción (`src/customer/customer.service.ts:246-258`). |
+| 4 | El sistema fija la marca de validación, un valor sí/no, en verdadero o en falso según la acción. No la invierte: asigna el valor de la operación elegida. |
 | 5 | El sistema guarda el cliente y lo devuelve actualizado. |
 
 **Postcondición:** El cliente queda con la marca de validación cambiada. La marca queda registrada para consulta del administrador.
@@ -5297,7 +5325,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una lectura con tres relaciones y una escritura. |
 | **Frecuencia** | Baja: solo en la revisión manual de cuentas de cliente. |
 | **Estabilidad** | Media |
-| **Comentarios** | El campo `validated` del cliente se guarda como texto `'true'` / `'false'` y no como booleano, a diferencia del equivalente del chofer. La marca no bloquea por sí sola la creación de pedidos: no se encontró ningún punto del flujo de pedido que la consulte. **⚠️ verificar** qué efecto de negocio se espera de ella. |
+| **Comentarios** | La marca de validación es un valor sí/no, igual que la del chofer. El sistema todavía no la usa para condicionar la operación del cliente: ningún punto del flujo de pedido la consulta, de modo que un cliente sin validar puede comprar igual. |
 
 ---
 
@@ -5308,7 +5336,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01, IRQ-07 |
-| **Descripción** | Se actualiza la coordenada de referencia guardada en el perfil del cliente. El cliente (ACT-01) puede actualizar la propia y el administrador (ACT-03) la de los clientes que le compraron a su distribuidora; la pertenencia se controla en el servicio. Endpoint: `PATCH /customers/:id/location` (`src/customer/customer.controller.ts:111`). |
+| **Descripción** | Se actualiza la coordenada de referencia guardada en el perfil del cliente. El cliente (ACT-01) puede actualizar la propia y el administrador (ACT-03) la de los clientes que le compraron a su distribuidora; la pertenencia se controla en el servicio. Endpoint: `PATCH /customers/:id/location`. |
 | **Precondición** | El solicitante está autenticado. Si no es administrador, el cliente indicado es el suyo. Si es un administrador con distribuidora en contexto, el cliente le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -5317,10 +5345,10 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente ajusta su ubicación en el mapa de la app, o el administrador la corrige desde el panel. |
-| 2 | La app envía `PATCH /customers/:id/location` con `{ latLng }`. |
+| 2 | La app envía `PATCH /customers/:id/location` con `{ latLng }`, un texto "latitud,longitud". El cuerpo se valida con `UpdateCustomerLocationDto`, que exige un par de coordenadas válido. |
 | 3 | El sistema valida el formato UUID y determina el alcance: un administrador con distribuidora en contexto sólo llega a los clientes que le compraron a ella, y el resto de los usuarios queda atado a su propio identificador de usuario. |
-| 4 | El sistema recupera el cliente y verifica la pertenencia (`customer.service.ts:163-172`). |
-| 5 | El sistema asigna la coordenada al campo `lat_lang` y guarda. |
+| 4 | El sistema recupera el cliente y verifica la pertenencia. |
+| 5 | El sistema convierte el texto en un punto geográfico y lo guarda como la ubicación del cliente. |
 | 6 | El sistema devuelve el cliente actualizado. |
 
 **Postcondición:** El perfil del cliente tiene la coordenada de referencia actualizada.
@@ -5333,7 +5361,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | Si quien pide es un administrador y el cliente nunca le compró a su distribuidora, el sistema retorna error 404 "Customer with ID: … not found", sin revelar que existe. |
 | 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 | 4 | Si un no administrador intenta modificar el perfil de otro cliente, el sistema retorna error 403 "No autorizado a acceder a datos de otro cliente". |
-| 2 | El cuerpo se recibe como objeto sin DTO ni validación de formato, de modo que cualquier texto se guarda como coordenada. **⚠️ verificar**: no hay validación del formato de `latLng`. |
+| 2 | Si `latLng` no es un par "latitud,longitud" válido, el sistema rechaza la solicitud con error 400, con el mensaje: latLng debe ser "latitud,longitud", por ejemplo -27.3671,-55.8961; también rechaza un cuerpo con campos que el DTO no declara. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -5351,7 +5379,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El Administrador General da de baja lógica el perfil de un cliente. Un administrador de empresa no puede hacerlo: un cliente puede comprarle a varias distribuidoras, y darlo de baja lo saca de todas. El registro se marca como borrado y deja de aparecer en las consultas, pero se conserva en la base junto con su historial. Endpoint: `DELETE /customers/:id` (`src/customer/customer.controller.ts:124`). |
+| **Descripción** | El Administrador General da de baja lógica el perfil de un cliente. Un administrador de empresa no puede hacerlo: un cliente puede comprarle a varias distribuidoras, y darlo de baja lo saca de todas. El registro se marca como borrado y deja de aparecer en las consultas, pero se conserva en la base junto con su historial. Endpoint: `DELETE /customers/:id`. |
 | **Precondición** | El solicitante está autenticado como Administrador General. El cliente existe y, si hay una distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -5362,7 +5390,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El Administrador General elige eliminar un cliente desde el panel. |
 | 2 | El panel envía `DELETE /customers/:id`. |
 | 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella; después comprueba que quien pide sea el Administrador General y recupera el cliente para confirmar que existe. |
-| 4 | El sistema aplica el borrado lógico sobre el perfil de cliente (`src/customer/customer.service.ts:240-244`). |
+| 4 | El sistema da de baja lógica el perfil de cliente: registra la fecha de baja y la fila se conserva. |
 | 5 | El sistema responde 200 con el mensaje "Customer deleted successfully". |
 
 **Postcondición:** El perfil del cliente queda marcado como borrado y no aparece en las consultas. El usuario base y los pedidos históricos se conservan.
@@ -5382,7 +5410,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una lectura y una escritura de marca de borrado. |
 | **Frecuencia** | Baja: es una operación excepcional de mantenimiento. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El borrado lógico alcanza al perfil de cliente, no al usuario base: la cuenta sigue existiendo y puede seguir autenticándose. **⚠️ verificar** si el efecto esperado es también bloquear el acceso, para lo que existe `PATCH /users/:id/block`. |
+| **Comentarios** | La baja alcanza al perfil de cliente, no al usuario base: la cuenta sigue existiendo y puede seguir autenticándose. Para impedir el acceso se da de baja al usuario (CU-085), que además da de baja el perfil en cascada, o se lo bloquea (CU-050). |
 
 ---
 
@@ -5392,7 +5420,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customer/:id`. |
+| **Descripción** | El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customers/:id`. |
 | **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -5401,7 +5429,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador elige un cliente del listado. |
-| 2 | El panel envía `GET /customer/:id`. |
+| 2 | El panel envía `GET /customers/:id`. |
 | 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. |
 | 4 | El sistema recupera el cliente con su cuenta de usuario. |
 | 5 | El sistema comprueba que quien pide tenga alcance sobre ese cliente. |
@@ -5432,7 +5460,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customer/user/:userId`. |
+| **Descripción** | El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customers/user/:userId`. |
 | **Precondición** | El solicitante está autenticado. La cuenta de usuario existe y, si quien pide es un administrador con distribuidora en contexto, su cliente le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -5441,7 +5469,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador llega con el identificador de usuario desde otra pantalla. |
-| 2 | El panel envía `GET /customer/user/:userId`. |
+| 2 | El panel envía `GET /customers/user/:userId`. |
 | 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente de esa cuenta le haya comprado alguna vez a ella. |
 | 4 | El sistema busca la ficha de cliente asociada a esa cuenta. |
 | 5 | El sistema devuelve la ficha encontrada. |
@@ -5471,7 +5499,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customer/:id`. |
+| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`. |
 | **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -5480,7 +5508,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador edita los campos de la ficha. |
-| 2 | El panel envía `PATCH /customer/:id` con los campos modificados. |
+| 2 | El panel envía `PATCH /customers/:id` con los campos modificados. |
 | 3 | El sistema valida el formato del identificador y de los campos. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. |
 | 4 | El sistema arma la ficha con los campos nuevos sobre los existentes. |
 | 5 | El sistema guarda los cambios y devuelve la ficha actualizada. |
@@ -5558,7 +5586,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador (ACT-03) da de baja lógica el perfil de un chofer. El registro se marca como borrado y sale de las consultas, pero se conserva con su historial de entregas. Endpoint: `DELETE /delivery/:id` (`src/delivery/delivery.controller.ts:154`). |
+| **Descripción** | El administrador (ACT-03) da de baja lógica el perfil de un chofer. El registro se marca como borrado y sale de las consultas, pero se conserva con su historial de entregas. Endpoint: `DELETE /delivery/:id`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
@@ -5569,7 +5597,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador elige eliminar un chofer desde el panel. |
 | 2 | El panel envía `DELETE /delivery/:id`. |
 | 3 | El sistema valida el formato UUID y recupera el chofer para confirmar que existe. Si hay una distribuidora en contexto, comprueba además que el chofer sea de ella. |
-| 4 | El sistema aplica el borrado lógico sobre el perfil de chofer (`src/delivery/delivery.service.ts:200-204`). |
+| 4 | El sistema da de baja lógica el perfil de chofer: registra la fecha de baja y la fila se conserva. |
 | 5 | El sistema responde 200 con el mensaje "Delivery deleted successfully". |
 
 **Postcondición:** El perfil del chofer queda marcado como borrado y no aparece en las consultas. Sus pedidos históricos se conservan.
@@ -5582,14 +5610,14 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | Si el chofer no existe, el sistema retorna error 404 "Delivery with ID: … not found". |
 | 3 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
-| 4 | El borrado lógico no desactiva al chofer ni lo saca del radar de posiciones. **⚠️ verificar** si un chofer dado de baja mientras estaba activo sigue siendo candidato del despacho por proximidad. |
+| 4 | La baja lógica no apaga la disponibilidad del chofer ni borra su última posición del radar, pero el despacho por proximidad sólo ofrece pedidos a los choferes vigentes de la distribuidora del pedido: un chofer dado de baja deja de recibir ofertas aunque siga figurando en el radar. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura de marca de borrado. |
 | **Frecuencia** | Baja: es una operación excepcional de mantenimiento de la flota. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La baja lógica no desactiva al chofer ni lo retira del radar de posiciones: un chofer dado de baja mientras estaba con su disponibilidad encendida puede seguir figurando como candidato del despacho hasta que se desconecte o alguien lo desactive explícitamente. |
+| **Comentarios** | La baja del perfil de chofer no da de baja al usuario: la cuenta sigue existiendo hasta que se la dé de baja por CU-085. El sistema todavía no retira del radar de posiciones al chofer dado de baja: su última posición queda hasta que se desconecte, aunque ya no recibe ofertas. |
 
 ---
 
@@ -5715,7 +5743,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador da de baja el vehículo de un chofer. Sale de CU-051. A diferencia del chofer y del producto, **la baja del vehículo es física**: la fila se borra. Endpoint: `DELETE /car/:id` (`src/car/car.controller.ts:97`). |
+| **Descripción** | El administrador da de baja el vehículo de un chofer. Sale de CU-051. La baja es lógica: el vehículo queda con fecha de baja, deja de aparecer y se conserva para el historial. Endpoint: `DELETE /car/:id`. |
 | **Precondición** | El solicitante está autenticado y opera sobre una distribuidora. El vehículo existe. |
 | **Estado** | Implementado |
 
@@ -5726,10 +5754,10 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador elige eliminar un vehículo. |
 | 2 | El panel envía `DELETE /car/:id`. |
 | 3 | El sistema comprueba que el vehículo exista y pertenezca a la distribuidora. |
-| 4 | El sistema borra la fila (`src/car/car.service.ts:126-128`). |
+| 4 | El sistema da de baja lógica el vehículo: registra la fecha de baja y la fila se conserva. |
 | 5 | El sistema confirma la baja. |
 
-**Postcondición:** El vehículo deja de existir en la base.
+**Postcondición:** El vehículo está dado de baja: no aparece en las consultas, pero sigue en la base y los registros que lo referencian lo siguen mostrando. Su patente queda libre: la unicidad de la patente se exige sólo entre los vehículos vigentes, de modo que puede volver a registrarse en un vehículo nuevo.
 
 **Excepciones**
 
@@ -5740,10 +5768,10 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de control y un borrado. |
+| **Rendimiento** | Una lectura de control y una escritura que marca la baja. |
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | **⚠️ verificar**: el borrado es físico (`carRepository.remove`), mientras que el chofer usa baja lógica (CU-097) y el producto una marca de inactivo (CU-040). Es una asimetría de política de borrado dentro del mismo subsistema, ya señalada en el Doc 3. |
+| **Comentarios** | El sistema todavía no ofrece una operación para revertir la baja de un vehículo: para volver a usarlo se registra uno nuevo con la misma patente. |
 
 ---
 
@@ -6213,7 +6241,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-03 |
 | **Requisitos asociados** | IRQ-01, IRQ-15 |
-| **Descripción** | El Administrador General (ACT-05) envía una notificación push arbitraria a un token concreto para verificar que el canal de notificaciones funciona de punta a punta. Es una herramienta de diagnóstico, no tráfico de usuario final: las notificaciones reales las dispara el propio flujo del pedido. Endpoint: `POST /notifications/send-test` (`src/notifications/notifications.controller.ts:40`). Es exclusiva del Administrador General: el envío usa el proyecto de mensajería de la plataforma y alcanza a cualquier dispositivo. |
+| **Descripción** | El Administrador General (ACT-05) envía una notificación push arbitraria a un token concreto para verificar que el canal de notificaciones funciona de punta a punta. Es una herramienta de diagnóstico, no tráfico de usuario final: las notificaciones reales las dispara el propio flujo del pedido. Endpoint: `POST /notifications/send-test`. Es exclusiva del Administrador General: el envío usa el proyecto de mensajería de la plataforma y alcanza a cualquier dispositivo. |
 | **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN y conoce el token del dispositivo de destino. |
 | **Estado** | Implementado |
 
@@ -6222,8 +6250,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 1 | El Administrador General ingresa el token de destino, un título y un cuerpo de mensaje. |
-| 2 | El panel envía `POST /notifications/send-test` con esos tres datos. |
-| 3 | El sistema arma el mensaje con la marca de tipo `TEST` y una marca temporal (`src/notifications/notifications.service.ts:30-39`). |
+| 2 | El panel envía `POST /notifications/send-test` con esos tres datos. El cuerpo se valida con `SendTestNotificationDto`: token, título y cuerpo son textos no vacíos, el título de hasta 100 caracteres y el cuerpo de hasta 500. |
+| 3 | El sistema arma el mensaje con la marca de tipo `TEST` y una marca temporal. |
 | 4 | El sistema lo envía al proveedor de mensajería contra ese token. |
 | 5 | El sistema registra el envío en el log y responde `{ success: true, messageId }`. |
 
@@ -6235,7 +6263,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 4 | Si el token es inválido o el proveedor rechaza el envío, el sistema registra el error y responde `{ success: false, error }` con estado 201: nunca lanza un error HTTP. |
 | 2 | Si el solicitante no es el Administrador General —incluido un administrador de empresa—, el guard de roles rechaza la petición con error 403. |
-| 2 | El cuerpo se recibe como objeto sin DTO ni validación de formato. |
+| 2 | Si falta el token, el título o el cuerpo, alguno está vacío o supera su largo máximo, o se envía una propiedad no declarada, el sistema responde 400 sin enviar nada. |
 
 | Campo | Detalle |
 |-------|---------|

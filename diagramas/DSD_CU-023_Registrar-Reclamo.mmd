@@ -34,9 +34,9 @@ sequenceDiagram
         OREP-->>OSRV: Order o null
         deactivate OREP
         alt Orden inexistente
-            OSRV-->>SRV: NotFoundException
+            OSRV-->>SRV: NotFoundException Order with ID not found
             deactivate OSRV
-            SRV-->>CTRL: NotFoundException Orden no encontrada
+            SRV-->>CTRL: la misma NotFoundException, sin capturarla
             deactivate SRV
         else Orden existente
             OSRV-->>SRV: Order

@@ -8,6 +8,7 @@ sequenceDiagram
     participant DSRV as DeliveryService
     participant RT as RealtimeDispatchPort
     participant CGW as CustomersGateway
+    participant NOT as NotificationPort
 
     RG->>RG: canActivate(ctx) contra Roles DELIVERY, ADMIN y SUPER_ADMIN
     alt Rol insuficiente
@@ -50,6 +51,11 @@ sequenceDiagram
                         activate CGW
                         CGW-->>SRV: emit en la sala customer_ del cliente
                         deactivate CGW
+                        SRV->>NOT: sendArrivalPushToCustomer(customer_id, order_id, driverName)
+                        activate NOT
+                        NOT->>NOT: token FCM del cliente y sendToToken con Tu pedido llego, best-effort
+                        NOT-->>SRV: sin error, aunque no haya token o FCM falle
+                        deactivate NOT
                         SRV-->>CTRL: message Cliente notificado
                     end
                 end

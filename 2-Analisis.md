@@ -840,7 +840,9 @@ sequenceDiagram
         Note over SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
         SIS-->>CLI: aviso de confirmación del pedido
     else Sin stock suficiente
-        SIS-->>CLI: rechazo (stock insuficiente para un ítem)
+        SIS-->>CLI: rechazo (stock insuficiente para el producto)
+    else Un producto del pedido no existe
+        SIS-->>CLI: rechazo (producto no encontrado)
     else Dirección fuera de la zona de cobertura
         SIS-->>CLI: rechazo (domicilio no cubierto)
     else Franja horaria sin cupo
@@ -1062,15 +1064,15 @@ sequenceDiagram
     autonumber
     actor CLI as Cliente
     participant SIS as Sistema
-    actor ADM as Administrador
 
     CLI->>SIS: registrarReclamo(pedido, motivo, evidencia)
     activate SIS
-    alt El pedido fue entregado y es del cliente
+    alt El pedido existe y es del cliente
         SIS-->>CLI: reclamo registrado (número, estado pendiente)
-        SIS-->>ADM: nuevo reclamo para gestionar
-    else El pedido no está entregado o no le pertenece
-        SIS-->>CLI: rechazo (no se puede reclamar este pedido)
+    else El pedido no existe
+        SIS-->>CLI: recurso no encontrado
+    else El pedido no le pertenece
+        SIS-->>CLI: rechazo (esta orden no pertenece al cliente indicado)
     end
     deactivate SIS
 ```
@@ -1360,9 +1362,11 @@ sequenceDiagram
 
     ADM->>SIS: eliminarUsuario(usuarioId)
     activate SIS
-    alt el usuario existe
-        SIS-->>ADM: usuario dado de baja (baja lógica, el histórico se conserva)
-    else el usuario no existe
+    alt el usuario existe y el administrador puede darlo de baja
+        SIS-->>ADM: usuario dado de baja (baja lógica de la cuenta, su perfil, vehículos y direcciones, y la cuenta de acceso queda deshabilitada)
+    else un administrador de empresa sobre la cuenta de un cliente
+        SIS-->>ADM: acceso denegado, la cuenta de un cliente la administra el administrador general
+    else el usuario no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -1942,7 +1946,7 @@ sequenceDiagram
     CLI->>SIS: eliminarDireccionDeEntrega(direccionId)
     activate SIS
     alt la dirección existe y es del cliente
-        SIS-->>CLI: baja confirmada
+        SIS-->>CLI: baja confirmada (baja lógica, los pedidos que la usaron la siguen mostrando)
     else la dirección no existe o es de otro
         SIS-->>CLI: operación rechazada
     end
@@ -2321,7 +2325,7 @@ sequenceDiagram
     CHO->>SIS: avisarLlegada(pedidoId)
     activate SIS
     alt el pedido está en camino
-        SIS-)CLI: aviso de que el repartidor llegó al domicilio
+        SIS-)CLI: aviso de que el repartidor llegó al domicilio, en tiempo real y como notificación al dispositivo
         SIS-->>CHO: cliente notificado
     else el pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
@@ -3012,8 +3016,8 @@ sequenceDiagram
     ADM->>SIS: eliminarVehiculo(vehiculoId)
     activate SIS
     alt el vehículo existe
-        SIS-->>ADM: vehículo eliminado
-    else el vehículo no existe
+        SIS-->>ADM: vehículo dado de baja (baja lógica, la patente queda libre)
+    else el vehículo no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -3782,9 +3786,9 @@ sequenceDiagram
 
     CLI->>SIS: validarCobertura(latitud, longitud)
     activate SIS
-    alt el punto cae dentro de una zona activa
+    alt el punto cae dentro de una zona activa y no dada de baja
         SIS-->>CLI: cubierta (zonaId, nombre de la zona, recargo aplicable)
-    else la distribuidora no tiene zonas cargadas
+    else la distribuidora no tiene zonas activas y vigentes
         SIS-->>CLI: cubierta sin recargo (cobertura irrestricta por omisión)
     else el punto está fuera de toda zona
         SIS-->>CLI: fuera de cobertura
@@ -3813,7 +3817,7 @@ sequenceDiagram
     ADM->>SIS: eliminarZonaDeCobertura(zonaId)
     activate SIS
     alt la zona pertenece a la distribuidora
-        SIS-->>ADM: zona eliminada
+        SIS-->>ADM: zona dada de baja (baja lógica, deja de contar para la cobertura)
     else la zona no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
     end
@@ -3952,7 +3956,11 @@ sequenceDiagram
 
     CHO->>SIS: consultarIncidenciasDelPedido(pedidoId)
     activate SIS
-    SIS-->>CHO: incidencias del pedido (tipo, descripción, estado, resolución)
+    alt el pedido existe y es de la distribuidora
+        SIS-->>CHO: incidencias del pedido (tipo, descripción, estado, resolución)
+    else el pedido no existe o es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado, sin revelar que existe
+    end
     deactivate SIS
 ```
 
@@ -4562,7 +4570,7 @@ sequenceDiagram
 #### DSS — CU-086: Registrar Administrador
 
 **Actor:** Administrador (y Super Administrador)
-**Operaciones del sistema:** `registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)`, `crearAdministradorSobreUsuarioExistente(usuarioId, rolId, distribuidoraId)`
+**Operaciones del sistema:** `registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)`, `crearAdministradorSobreUsuarioExistente(usuarioId, distribuidoraId)`
 
 ```mermaid
 sequenceDiagram
@@ -4789,8 +4797,10 @@ sequenceDiagram
 
     CLI->>SIS: actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)
     activate SIS
-    alt el cliente existe
-        SIS-->>CLI: ubicación actualizada
+    alt las coordenadas no son un par latitud,longitud válido
+        SIS-->>CLI: rechazo por coordenadas inválidas
+    else el cliente existe
+        SIS-->>CLI: ubicación actualizada, guardada como punto geográfico
     else el cliente no existe
         SIS-->>CLI: recurso no encontrado
     end
@@ -4810,7 +4820,7 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-095 Eliminar Cliente
     autonumber
-    actor ADM as Administrador
+    actor ADM as Administrador General
     participant SIS as Sistema
 
     ADM->>SIS: eliminarCliente(clienteId)
@@ -4946,7 +4956,7 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-099 Consultar Los Tokens De Un Usuario
     autonumber
-    actor CLI as Cliente
+    actor CLI as Usuario, o el Administrador General
     participant SIS as Sistema
 
     CLI->>SIS: consultarTokensDelUsuario(usuarioId)
@@ -4972,7 +4982,7 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-100 Enviar Notificacion De Prueba
     autonumber
-    actor ADM as Administrador
+    actor ADM as Administrador General
     participant SIS as Sistema
     actor CLI as Usuario Destinatario
 
@@ -5002,7 +5012,7 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-101 Reenviar Notificacion De Confirmacion De Pedido
     autonumber
-    actor ADM as Administrador
+    actor ADM as Administrador General
     participant SIS as Sistema
     actor CLI as Cliente
 

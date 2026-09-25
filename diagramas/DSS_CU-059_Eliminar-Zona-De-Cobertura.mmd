@@ -7,7 +7,7 @@ sequenceDiagram
     ADM->>SIS: eliminarZonaDeCobertura(zonaId)
     activate SIS
     alt la zona pertenece a la distribuidora
-        SIS-->>ADM: zona eliminada
+        SIS-->>ADM: zona dada de baja (baja lógica, deja de contar para la cobertura)
     else la zona no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
     end

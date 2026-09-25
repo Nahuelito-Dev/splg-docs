@@ -7,7 +7,7 @@ sequenceDiagram
     CLI->>SIS: eliminarDireccionDeEntrega(direccionId)
     activate SIS
     alt la dirección existe y es del cliente
-        SIS-->>CLI: baja confirmada
+        SIS-->>CLI: baja confirmada (baja lógica, los pedidos que la usaron la siguen mostrando)
     else la dirección no existe o es de otro
         SIS-->>CLI: operación rechazada
     end

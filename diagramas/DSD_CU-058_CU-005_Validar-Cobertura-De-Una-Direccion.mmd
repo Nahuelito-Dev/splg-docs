@@ -5,10 +5,10 @@ sequenceDiagram
     participant SRV as OrderService
     participant UC as CreateOrderUseCase
     participant DIS as DistributorService
-    participant AREP as RepositoryUserAddress
+    participant ADR as UserAddressService
     participant CZ as CoverageZoneService
     participant ZREP as RepositoryCoverageZone
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant PRC as OrderPricingService
 
     CTRL->>SRV: create(dto, distributorId del header X-Distributor)
@@ -21,25 +21,26 @@ sequenceDiagram
         DIS-->>UC: distribuidora por defecto
         deactivate DIS
     end
-    UC->>AREP: findOne(address_id, user_id)
-    activate AREP
-    AREP-->>UC: UserAddress con latitude y longitude
-    deactivate AREP
+    UC->>ADR: buscarDelUsuario(addressId, customerId)
+    activate ADR
+    ADR-->>UC: UserAddress con su location, o null
+    deactivate ADR
     alt Direccion inexistente o de otro usuario
         UC-->>CTRL: NotFoundException, direccion no encontrada
         deactivate UC
     else Direccion valida
+        UC->>UC: coordenadasDePunto(address.location), lat y lng del punto
         UC->>CZ: checkCoverage(distributorId, lat, lng)
         activate CZ
-        CZ->>ZREP: count(distributor_id, isActive true)
+        CZ->>ZREP: count(distributor_id, isActive true), sin las zonas dadas de baja
         activate ZREP
-        ZREP-->>CZ: total de zonas activas
+        ZREP-->>CZ: total de zonas activas y vigentes
         deactivate ZREP
         alt La distribuidora no definio zonas
             CZ-->>UC: covered true, surcharge 0, no-op
             deactivate CZ
         else Hay zonas definidas
-            CZ->>ZREP: query ST_Contains ordenada por surcharge ASC limit 1
+            CZ->>ZREP: query ST_Contains sobre zonas activas con deletedAt IS NULL, ordenada por surcharge ASC limit 1
             activate ZREP
             ZREP-->>CZ: zona contenedora o vacio
             deactivate ZREP
@@ -50,12 +51,13 @@ sequenceDiagram
                 CZ-->>UC: covered true, zoneId, zoneName, surcharge
             end
         end
-        UC->>STK: reserve(manager, gasCylinderId, quantity)
-        activate STK
+        UC->>GCS: reservarStock(manager, gasCylinderId, quantity)
+        activate GCS
+        GCS-->>UC: GasCylinder bloqueado y descontado, con sus promociones
+        deactivate GCS
         UC->>PRC: priceItem y applyPaymentSurcharge sobre el total mas el recargo de zona
         activate PRC
         PRC-->>UC: totalAmount final
         deactivate PRC
     end
-    deactivate STK
     deactivate SRV

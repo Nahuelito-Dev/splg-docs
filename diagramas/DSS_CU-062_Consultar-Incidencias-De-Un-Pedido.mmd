@@ -6,5 +6,9 @@ sequenceDiagram
 
     CHO->>SIS: consultarIncidenciasDelPedido(pedidoId)
     activate SIS
-    SIS-->>CHO: incidencias del pedido (tipo, descripción, estado, resolución)
+    alt el pedido existe y es de la distribuidora
+        SIS-->>CHO: incidencias del pedido (tipo, descripción, estado, resolución)
+    else el pedido no existe o es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado, sin revelar que existe
+    end
     deactivate SIS

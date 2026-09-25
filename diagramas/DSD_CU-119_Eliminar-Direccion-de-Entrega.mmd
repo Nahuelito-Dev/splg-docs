@@ -34,8 +34,8 @@ sequenceDiagram
         deactivate AREP
         SRV->>AREP: save(nueva predeterminada)
         activate AREP
-        SRV->>AREP: remove(direccion)
-        AREP-->>SRV: confirmación de baja
+        SRV->>AREP: softRemove(direccion)
+        AREP-->>SRV: deletedAt seteado, la fila permanece y los pedidos la siguen mostrando
         deactivate AREP
         alt la dirección existe
             SRV-->>CTRL: mensaje de baja con el identificador

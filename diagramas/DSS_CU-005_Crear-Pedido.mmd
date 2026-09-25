@@ -11,7 +11,9 @@ sequenceDiagram
         Note over SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
         SIS-->>CLI: aviso de confirmación del pedido
     else Sin stock suficiente
-        SIS-->>CLI: rechazo (stock insuficiente para un ítem)
+        SIS-->>CLI: rechazo (stock insuficiente para el producto)
+    else Un producto del pedido no existe
+        SIS-->>CLI: rechazo (producto no encontrado)
     else Dirección fuera de la zona de cobertura
         SIS-->>CLI: rechazo (domicilio no cubierto)
     else Franja horaria sin cupo

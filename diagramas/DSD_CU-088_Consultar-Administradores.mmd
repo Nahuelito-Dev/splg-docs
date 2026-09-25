@@ -44,8 +44,8 @@ sequenceDiagram
             SRV-->>CTRL: NotFoundException
             deactivate SRV
         else Encontrado
-            SRV->>SRV: proyecta admin_id email displayName fullName rol uid
-            SRV-->>CTRL: vista del admin
+            SRV-->>CTRL: Admin con user y role
+            CTRL->>CTRL: AdminMapper.toVista, admin_id email displayName fullName rol, sin uid
             CTRL-->>ADM: 200 vista del admin
             deactivate CTRL
         end

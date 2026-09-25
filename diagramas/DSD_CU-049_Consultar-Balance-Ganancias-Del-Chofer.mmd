@@ -29,7 +29,7 @@ sequenceDiagram
         else Misma distribuidora o sin distribuidora en contexto
             SRV-->>CTRL: sin error
             deactivate SRV
-            CTRL->>SRV: updateBalance(id, body.amount)
+            CTRL->>SRV: updateBalance(id, dto.amount), dto validado por UpdateDeliveryBalanceDto
             activate SRV
             SRV->>SRV: findOne(id)
             SRV->>DREP: findOne(where delivery_id, relations user y user.role)

@@ -8,13 +8,13 @@ sequenceDiagram
     CTRL->>SRV: remove(id, distributorId)
     activate SRV
     SRV->>SRV: findOne(id, distributorId)
-    SRV->>CREP: remove(car)
-    activate CREP
-    CREP-->>SRV: Car borrado
-    deactivate CREP
-    alt el vehiculo no existe
+    alt el vehiculo no existe o es de otra distribuidora
         SRV-->>CTRL: NotFoundException Car with ID not found
-        deactivate SRV
     else Vehiculo encontrado
-        SRV-->>CTRL: confirmacion de baja
+        SRV->>CREP: softRemove(car)
+        activate CREP
+        CREP-->>SRV: deletedAt seteado, la fila permanece
+        deactivate CREP
+        SRV-->>CTRL: message Car deleted successfully, carId
     end
+    deactivate SRV

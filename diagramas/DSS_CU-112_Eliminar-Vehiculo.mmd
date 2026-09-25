@@ -7,8 +7,8 @@ sequenceDiagram
     ADM->>SIS: eliminarVehiculo(vehiculoId)
     activate SIS
     alt el vehículo existe
-        SIS-->>ADM: vehículo eliminado
-    else el vehículo no existe
+        SIS-->>ADM: vehículo dado de baja (baja lógica, la patente queda libre)
+    else el vehículo no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS

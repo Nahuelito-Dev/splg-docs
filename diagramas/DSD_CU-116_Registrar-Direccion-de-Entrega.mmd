@@ -3,10 +3,10 @@ sequenceDiagram
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
-    participant UREP as RepositoryUser
     participant AREP as RepositoryUserAddress
     participant USRV as UsersService
 
+    CTRL->>CTRL: ValidationPipe, CreateUserAddressDto con latitude y longitude validas, floor, apartment, placeId y geocodePrecision opcionales
     CTRL->>CTRL: acotar(userId: dto.user_id, user, distributorId, true), solo admin con distribuidora en contexto
     alt Admin con distribuidora en contexto y el titular no es de ella
         CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
@@ -24,12 +24,13 @@ sequenceDiagram
     else Cliente, o Administrador General con el titular a su alcance
         CTRL->>SRV: create(dto, usuarioDeLaSesion)
         activate SRV
-        SRV->>UREP: findOne(where user_id)
-        activate UREP
-        UREP-->>SRV: User o null
-        deactivate UREP
+        SRV->>USRV: findById(user_id)
+        activate USRV
+        USRV-->>SRV: User o null
+        deactivate USRV
         SRV->>AREP: update(isDefault false en las demás)
         activate AREP
+        SRV->>SRV: location igual a puntoDesdeCoordenadas(latitude, longitude), geocodePrecision unresolved por defecto
         SRV->>AREP: save(direccion)
         AREP-->>SRV: UserAddress guardada
         deactivate AREP

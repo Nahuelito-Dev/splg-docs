@@ -294,7 +294,7 @@ es lo primero, `GET /users` es lo segundo.
 | Idempotencia | Cumple | Cabecera `Idempotency-Key` en las cinco operaciones del pedido que no son naturalmente idempotentes, resuelta por un interceptor propio. |
 | Paginación | Parcial | Por desplazamiento, con `limit` y `offset`. Sirve al panel y se degrada con el volumen. |
 | Orden y filtrado | Parcial | Hay filtro por término en usuarios; el orden está fijo en el código en la mayoría de las consultas. |
-| Referencias entre recursos | Cumple | Se usa el camino anidado —`GET /customer/user/:userId`— y no parámetros de consulta. |
+| Referencias entre recursos | Cumple | Se usa el camino anidado —`GET /customers/user/:userId`— y no parámetros de consulta. |
 | Límite de tasa | Cumple | Cien peticiones por minuto por dirección, configurable, con el contador compartido en Redis. |
 | Versionado | **No cumple** | El prefijo es `api`, sin número de versión. |
 | Seguridad | Parcial | Token de sesión propio en la cabecera de autorización, control por rol y aislamiento por distribuidora. Dos operaciones quedaron sin control de acceso, señaladas en §10.4. |
@@ -753,7 +753,7 @@ Operaciones:
 |------|--------|
 | 1 | El chofer presiona "Aceptar" en la hoja de detalle del pedido. |
 | 2 | La aplicación solicita al sistema el cambio de estado del pedido a aceptado. |
-| 3 | El sistema verifica que el pedido siga pendiente y que la oferta del chofer esté vigente. |
+| 3 | Si el pedido ya tiene un chofer asignado, el sistema verifica que sea el mismo que acepta. Después verifica que el pedido siga pendiente y que el chofer sea de la misma distribuidora que el pedido y esté activo. |
 | 4 | Asigna el chofer al pedido, lo pasa a aceptado y registra el momento de la aceptación. |
 | 5 | Cierra la oferta y avisa al resto de los choferes que el pedido ya fue tomado, para que desaparezca de sus pantallas. |
 | 6 | Notifica al cliente que su pedido fue aceptado y emite el evento de seguimiento en vivo. |
@@ -765,15 +765,16 @@ Operaciones:
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el pedido ya fue tomado por otro chofer o fue cancelado, la aceptación se rechaza y la oferta se cierra sin efecto. |
-| 3 | Si la oferta del chofer ya venció, la aceptación se rechaza y el pedido continúa su circuito normal de re-oferta (CU-014). |
+| 3 | Si el pedido ya fue tomado por otro chofer, la aceptación se rechaza con 403 "Este pedido no está asignado a tu usuario", antes de mirar el estado. |
+| 3 | Si el pedido fue cancelado o entregado, la aceptación se rechaza por transición no permitida. |
+| 3 | Si el chofer es de otra distribuidora, el sistema informa que no encontró al repartidor; si no está activo, informa "El repartidor no está activo". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La aceptación se confirma en menos de 2 segundos. |
 | **Frecuencia** | Varias veces por día por chofer, una por cada pedido que toma. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La verificación contra el código detectó que el sistema no comprueba que el pedido no tenga ya un chofer asignado antes de aceptar la transición, de modo que un segundo chofer puede desplazar al primero y provocar que se regenere el código de entrega, invalidando el que el cliente ya tenía. Tampoco se consulta el estado de habilitación del chofer en este punto. Ambas limitaciones están registradas como pendientes de corrección. |
+| **Comentarios** | El sistema comprueba que un pedido que ya tiene chofer sólo lo acepte ese mismo chofer, de modo que un segundo chofer no puede desplazar al primero ni regenerar el código de entrega que el cliente ya tenía. El sistema todavía no consulta el estado de habilitación del chofer en este punto, ni comprueba que su oferta siga vigente: una aceptación sobre una oferta vencida se admite si el pedido sigue pendiente. |
 
 ---
 
@@ -879,7 +880,7 @@ DriversGateway.handleUpdateLocation()
 | 1 | El chofer presiona "Confirmar entrega" en `DirectionsView`. |
 | 2 | La app envía `PATCH /orders/:id/status` con `{ status: "DELIVERED" }`. |
 | 3 | Backend `OrderController.updateStatus()` invoca `OrderService.updateStatus(orderId, DELIVERED, driverId)`. |
-| 4 | El servicio verifica que el pedido esté en estado ON_THE_WAY. La comprobación de que el chofer sea el asignado todavía no se realiza. |
+| 4 | El servicio comprueba primero que el chofer sea el asignado al pedido y después que el pedido esté en estado ON_THE_WAY. |
 | 5 | Actualiza `Order.status = DELIVERED` y registra `deliveredAt = now()`. |
 | 6 | Si `paymentMethod = CASH`: actualiza `paymentStatus = PAID` automáticamente. |
 | 7 | Emite `customersGateway.emit('order:delivered', { orderId })` al cliente por WebSocket. |
@@ -894,7 +895,7 @@ DriversGateway.handleUpdateLocation()
 | Paso | Acción |
 |------|--------|
 | 4 | Si el pedido no está en estado ON_THE_WAY → 400 "Transición de estado no permitida." |
-| 4 | Si el chofer no es el asignado → 403 "No autorizado." |
+| 4 | Si el chofer no es el asignado → 403 "Este pedido no está asignado a tu usuario", antes de mirar el estado. |
 | 4 | Si el pedido ya está DELIVERED o CANCELLED → 400 "El pedido ya está finalizado." |
 
 | Campo | Detalle |
@@ -902,7 +903,7 @@ DriversGateway.handleUpdateLocation()
 | **Rendimiento** | La confirmación debe procesarse en menos de 3 segundos. |
 | **Frecuencia** | Una vez por cada pedido completado (50–200 veces/día). |
 | **Estabilidad** | Alta. |
-| **Comentarios** | La verificación contra el código determinó que ningún punto de entrada comprueba que el chofer que confirma la entrega sea el asignado al pedido. Cualquier chofer autenticado puede marcar como entregado y como cobrado un pedido ajeno. Es el hallazgo de mayor gravedad registrado sobre este caso de uso y está pendiente de corrección. |
+| **Comentarios** | El sistema comprueba que el chofer que confirma la entrega sea el asignado al pedido: un chofer no puede marcar como entregado ni como cobrado un pedido ajeno. El control no alcanza al administrador, que puede mover cualquier pedido de su distribuidora. |
 
 #### Diagrama de Flujo Detallado
 
@@ -1210,7 +1211,7 @@ sequenceDiagram
 | 5 | `OrderService` delega en `CancelOrderUseCase.execute(orderId, userId, customer, reason)`. |
 | 6 | `CancelOrderUseCase` recupera el pedido con `OrderRepositoryPort.findByIdFull(orderId)` y aplica `applyCancellationPolicy(order, userId, customer)`, que verifica en este orden: que no esté ya DELIVERED ni CANCELLED, que no esté ON_THE_WAY y, recién entonces, que `order.customer_id` sea el usuario autenticado. |
 | 7 | Con la política aprobada, invoca la máquina de estados de dominio (`transitionOrder(order, CANCELLED)`) y setea `cancellationReason`. |
-| 8 | Abre un `QueryRunner.connect()` + `startTransaction()` propio y llama `StockReservationService.restore(queryRunner.manager, order.items)`, que bloquea cada `GasCylinder` y devuelve la cantidad de cada ítem al inventario; hace `commitTransaction()` y `release()`. |
+| 8 | Abre un `QueryRunner.connect()` + `startTransaction()` propio y llama `GasCylinderService.restituirStock(queryRunner.manager, order.items)`, que bloquea cada `GasCylinder` y devuelve la cantidad de cada ítem al inventario; hace `commitTransaction()` y `release()`. |
 | 9 | Persiste el pedido cancelado con `OrderRepositoryPort.save(order)`, en una operación separada de la restitución de stock del paso anterior. |
 | 10 | Llama `notify(order, customer, previousDriverId)`: emite `RealtimeDispatchPort.notifyCustomer(customer_id, order:cancelled)`, `notifyAdmins(order:cancelled)` y, si el pedido ya tenía chofer asignado, `notifyDriverOrderCancelled(previousDriverId)`. |
 | 11 | `OrderController` mapea la respuesta con `OrderMapper.toDto(order)`; `OrderTrackingView` actualiza el stepper mostrando el pedido como cancelado. |
@@ -1243,7 +1244,7 @@ sequenceDiagram
     participant UC as CancelOrderUseCase
     participant ORD as OrderRepositoryPort
     participant FSM as transitionOrder (dominio)
-    participant STK as StockReservationService
+    participant STK as GasCylinderService
     participant QR as QueryRunner
     participant RT as RealtimeDispatchPort
 
@@ -1273,7 +1274,7 @@ sequenceDiagram
                     else Es el dueno del pedido
                         UC->>FSM: transitionOrder(order, CANCELLED)
                         UC->>QR: connect() y startTransaction()
-                        UC->>STK: restore(queryRunner.manager, order.items)
+                        UC->>STK: restituirStock(queryRunner.manager, order.items)
                         UC->>QR: commitTransaction() y release()
                         UC->>ORD: save(order)
                         UC->>RT: notifyCustomer(customer_id, order:cancelled)
@@ -1305,10 +1306,10 @@ sequenceDiagram
 | `OrderService` | Backend Service | Delega en el caso de uso de cancelación |
 | `CancelOrderUseCase` | Backend Use Case | Aplica la política de cancelación y orquesta la transición |
 | `transitionOrder` (máquina de estados de dominio) | Domain | Valida la transición de estado hacia CANCELLED |
-| `StockReservationService` | Backend Service | Restituye el stock reservado, con bloqueo por `GasCylinder` |
+| `GasCylinderService` | Backend Service | Restituye el stock reservado con `restituirStock`, con bloqueo por `GasCylinder` |
 | `OrderRepositoryPort` | Infrastructure | Persistencia del `Order` |
 | `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`) | Infrastructure | Notifica a cliente, panel y chofer por WebSocket |
-| **Comentarios** | La verificación contra el código determinó que la restitución de stock (`StockReservationService.restore`) y el guardado del pedido cancelado (`OrderRepositoryPort.save`) corren en transacciones separadas, no en una única transacción: si el guardado falla después de restituir, el stock vuelve al inventario y el pedido sigue activo, quedando contado dos veces. Es el hallazgo #12 del informe de hallazgos contra el código y está pendiente de corrección. El sistema tampoco envía notificación push al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un chofer o un cliente con la app cerrada no se entera hasta reabrirla. |
+| **Comentarios** | La verificación contra el código determinó que la restitución de stock (`GasCylinderService.restituirStock`) y el guardado del pedido cancelado (`OrderRepositoryPort.save`) corren en transacciones separadas, no en una única transacción: si el guardado falla después de restituir, el stock vuelve al inventario y el pedido sigue activo, quedando contado dos veces. Es el hallazgo #12 del informe de hallazgos contra el código y está pendiente de corrección. El sistema tampoco envía notificación push al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un chofer o un cliente con la app cerrada no se entera hasta reabrirla. |
 
 ---
 
@@ -1328,9 +1329,11 @@ sequenceDiagram
     participant UC as CreateOrderUseCase
     participant DIS as DistributorService
     participant QR as QueryRunner
+    participant CUS as CustomersService
+    participant ADR as UserAddressService
     participant CZ as CoverageZoneService
     participant TS as TimeSlotService
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant PRC as OrderPricingService
     participant ORQ as DispatchOrchestratorService
     participant NOT as NotificationPort
@@ -1351,47 +1354,77 @@ sequenceDiagram
     end
     UC->>QR: connect y startTransaction()
     activate QR
-    UC->>CZ: checkCoverage(distributorId, lat, lng)
-    activate CZ
-    CZ-->>UC: covered y surcharge de zona
-    deactivate CZ
-    opt Vienen scheduledDate y timeSlotId
-        UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
-        activate TS
-        TS-->>UC: cupo disponible con lock pesimista
-        deactivate TS
-    end
-    loop Por cada item del pedido
-        UC->>STK: reserve(manager, gasCylinderId, quantity)
-        activate STK
-        STK-->>UC: GasCylinder bloqueado y descontado
-        deactivate STK
-        UC->>PRC: priceItem(price, promotions, quantity)
+    UC->>CUS: buscarComprador(customerId)
+    activate CUS
+    CUS-->>UC: correo del comprador o null
+    deactivate CUS
+    UC->>ADR: buscarDelUsuario(addressId, customerId)
+    activate ADR
+    ADR-->>UC: UserAddress del cliente o null
+    deactivate ADR
+    alt Cliente o direccion inexistentes
+        UC->>QR: rollbackTransaction()
+        UC-->>CTRL: NotFoundException Cliente no encontrado o Direccion no encontrada
+    else Cliente y direccion validos
+        UC->>UC: coordenadasDePunto(address.location)
+        opt Hay distribuidora y la direccion tiene punto
+            UC->>CZ: checkCoverage(distributorId, lat, lng)
+            activate CZ
+            CZ-->>UC: covered y surcharge de zona
+            deactivate CZ
+        end
+        opt Vienen scheduledDate y timeSlotId
+            UC->>TS: assertSlotAvailableTx(manager, timeSlotId, scheduledDate, distributorId)
+            activate TS
+            TS-->>UC: cupo disponible con lock pesimista
+            deactivate TS
+        end
+        loop Por cada item del pedido
+            UC->>GCS: reservarStock(manager, gasCylinderId, quantity)
+            activate GCS
+            GCS->>GCS: bloquear(manager, gasCylinderId) con lock pesimista
+            alt Producto inexistente
+                GCS-->>UC: GasCylinderNotFoundError Garrafa no encontrada, 404
+            else Stock menor a la cantidad
+                GCS-->>UC: InsufficientStockError Stock insuficiente para el producto, 400
+            else Stock suficiente
+                GCS->>GCS: descuenta el stock y save
+                GCS->>GCS: find GasCylinderPromotion del producto, despues del lock
+                GCS-->>UC: GasCylinder bloqueado y descontado, con sus promociones
+            end
+            deactivate GCS
+            UC->>PRC: priceItem(price, promotions, quantity)
+            activate PRC
+            PRC-->>UC: unitPrice y subtotal
+            deactivate PRC
+        end
+        UC->>PRC: applyPaymentSurcharge(total mas recargo de zona, paymentMethod)
         activate PRC
-        PRC-->>UC: unitPrice y subtotal
+        PRC-->>UC: totalAmount final
         deactivate PRC
+        alt Algun paso de la transaccion lanzo un error
+            UC->>QR: rollbackTransaction()
+            UC-->>CTRL: los errores de quien pide, de dominio o HTTP menor a 500, tal cual, y cualquier otro como InternalServerErrorException Error al crear el pedido
+        else Todo correcto
+            UC->>QR: save(Order con items) y commitTransaction()
+            alt paymentMethod MERCADOPAGO
+                UC->>UC: createMercadoPagoCheckout(savedOrder, items, customer)
+                Note over UC: NO se despacha: espera el webhook, ver DSD 4.11
+            else Efectivo o transferencia
+                UC->>ORQ: offerToNextDriver(savedOrder), ver DSD 4.4
+                activate ORQ
+            end
+            UC-)NOT: sendOrderConfirmation(customerId, orderId, token)
+            activate NOT
+            UC-)RT: notifyAdmins(order:created, payload)
+            activate RT
+            UC->>ORD: findByIdFull(order_id)
+            activate ORD
+            ORD-->>UC: Order con relaciones
+            deactivate ORD
+            UC-->>CTRL: order y paymentUrl
+        end
     end
-    UC->>PRC: applyPaymentSurcharge(total mas recargo de zona, paymentMethod)
-    activate PRC
-    PRC-->>UC: totalAmount final
-    deactivate PRC
-    UC->>QR: save(Order con items) y commitTransaction()
-    alt paymentMethod MERCADOPAGO
-        UC->>UC: createMercadoPagoCheckout(savedOrder, items, customer)
-        Note over UC: NO se despacha: espera el webhook, ver DSD 4.11
-    else Efectivo o transferencia
-        UC->>ORQ: offerToNextDriver(savedOrder), ver DSD 4.4
-        activate ORQ
-    end
-    UC-)NOT: sendOrderConfirmation(customerId, orderId, token)
-    activate NOT
-    UC-)RT: notifyAdmins(order:created, payload)
-    activate RT
-    UC->>ORD: findByIdFull(order_id)
-    activate ORD
-    ORD-->>UC: Order con relaciones
-    deactivate ORD
-    UC-->>CTRL: order y paymentUrl
     deactivate UC
     CTRL-->>CLI: OrderResponseDto
     deactivate CTRL
@@ -1414,7 +1447,7 @@ sequenceDiagram
     participant OFERTAS as DispatchOfferRepositoryPort
     participant RT as RealtimeDispatchPort
     participant REDIS as RedisService
-    participant DEL as RepositoryDelivery
+    participant DEL as DeliveryService
     participant DGW as DriversGateway
 
     ORQ->>OFERTAS: findOfferedDriverIds(order.order_id)
@@ -1430,9 +1463,9 @@ sequenceDiagram
         deactivate REDIS
         RT-->>ORQ: driverIds por cercania
         deactivate RT
-        ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        ORQ->>DEL: choferesDeLaDistribuidora(driverIds, distributorId)
         activate DEL
-        DEL-->>ORQ: choferes de la misma distribuidora
+        DEL-->>ORQ: user_id de los choferes de la misma distribuidora
         deactivate DEL
     end
     alt Hay un candidato aun no contactado
@@ -1510,7 +1543,7 @@ nombres de clases y de métodos son los del código.
 
 Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asignación**. El pedido no se difunde a todos los choferes: se ofrece a **uno solo** por vez, el más cercano que todavía no fue contactado, con una ventana de aceptación de 30 segundos.
 
-**Clases participantes:** `CreateOrderUseCase`, `DispatchOrchestratorService`, `DispatchOfferRepositoryPort` (impl. `DispatchOfferTypeormRepository`), `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `RedisService`, `Repository<Delivery>`, `DriversGateway`, `NotificationsService`, `FcmPort`, entidades `Order`, `DispatchOffer`, `Delivery`.
+**Clases participantes:** `CreateOrderUseCase`, `DispatchOrchestratorService`, `DispatchOfferRepositoryPort` (impl. `DispatchOfferTypeormRepository`), `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `RedisService`, `DeliveryService`, `DriversGateway`, `NotificationsService`, `FcmPort`, entidades `Order`, `DispatchOffer`, `Delivery`.
 
 ```mermaid
 sequenceDiagram
@@ -1521,7 +1554,7 @@ sequenceDiagram
     participant OFERTAS as DispatchOfferRepositoryPort
     participant RT as RealtimeDispatchPort
     participant REDIS as RedisService
-    participant DEL as RepositoryDelivery
+    participant DEL as DeliveryService
     participant DGW as DriversGateway
     participant NOT as NotificationsService
     participant FCM as FcmPort
@@ -1542,9 +1575,9 @@ sequenceDiagram
         deactivate REDIS
         RT-->>ORQ: driverIds
         deactivate RT
-        ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        ORQ->>DEL: choferesDeLaDistribuidora(driverIds, distributorId)
         activate DEL
-        DEL-->>ORQ: choferes de la misma distribuidora
+        DEL-->>ORQ: user_id de los choferes de la misma distribuidora
         deactivate DEL
         ORQ->>ORQ: filterByDistributor + descartar contactados
     end
@@ -1661,7 +1694,7 @@ sequenceDiagram
 
 ### 4.6 Crítico DSD — CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar)
 
-**Clases participantes:** `OrderController`, `OrderService`, `UpdateOrderStatusUseCase`, `DispatchOrchestratorService`, `DispatchOfferRepositoryPort`, `OrderRepositoryPort`, `Repository<Delivery>`, `transitionOrder` (máquina de estados de dominio), `generateDeliveryCode`, `RealtimeDispatchPort`, `NotificationPort`.
+**Clases participantes:** `OrderController`, `OrderService`, `UpdateOrderStatusUseCase`, `DispatchOrchestratorService`, `DispatchOfferRepositoryPort`, `OrderRepositoryPort`, `DeliveryService`, `transitionOrder` (máquina de estados de dominio), `generateDeliveryCode`, `RealtimeDispatchPort`, `NotificationPort`.
 
 ```mermaid
 sequenceDiagram
@@ -1761,7 +1794,7 @@ sequenceDiagram
 
 ### 4.7 Crítico DSD — CU-072: Crear reserva programada con seña
 
-**Clases participantes:** `OrderController`, `OrderService`, `CreateOrderUseCase`, `DistributorService`, `CoverageZoneService`, `TimeSlotService`, `StockReservationService`, `OrderPricingService`, `PaymentsService`, `PaymentGatewayPort` (impl. `MercadoPagoAdapter`), `OrderRepositoryPort`, `RealtimeDispatchPort`, `NotificationPort`, entidades `Order`, `OrderItem`, `Payment`.
+**Clases participantes:** `OrderController`, `OrderService`, `CreateOrderUseCase`, `DistributorService`, `CustomersService`, `UserAddressService`, `CoverageZoneService`, `TimeSlotService`, `GasCylinderService`, `OrderPricingService`, `PaymentsService`, `PaymentGatewayPort` (impl. `MercadoPagoAdapter`), `OrderRepositoryPort`, `RealtimeDispatchPort`, `NotificationPort`, entidades `Order`, `OrderItem`, `Payment`.
 
 ```mermaid
 sequenceDiagram
@@ -1772,7 +1805,7 @@ sequenceDiagram
     participant UC as CreateOrderUseCase
     participant QR as QueryRunner
     participant TS as TimeSlotService
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant PRC as OrderPricingService
     participant PAY as PaymentsService
     participant GW as PaymentGatewayPort
@@ -1794,10 +1827,10 @@ sequenceDiagram
         TS-->>UC: cupo disponible con lock pesimista
         deactivate TS
         loop Por cada item del pedido
-            UC->>STK: reserve(manager, gasCylinderId, quantity)
-            activate STK
-            STK-->>UC: GasCylinder bloqueado y descontado
-            deactivate STK
+            UC->>GCS: reservarStock(manager, gasCylinderId, quantity)
+            activate GCS
+            GCS-->>UC: GasCylinder bloqueado y descontado, con sus promociones
+            deactivate GCS
             UC->>PRC: priceItem(price, promotions, quantity)
             activate PRC
             PRC-->>UC: unitPrice, subtotal
@@ -1848,79 +1881,94 @@ sequenceDiagram
 
 ### 4.8 Crítico · automático DSD — CU-075 / CU-076 / CU-077: Los tres crons de reservas y pagos pendientes
 
-**Clases participantes:** `ReservationService`, `Repository<Order>`, `DataSource` / `QueryRunner`, `transitionOrder`, `StockReservationService`, `OrderRepositoryPort`, `DispatchOrchestratorService`.
+**Clases participantes:** `ReservationService`, `ConfigService` (TTL de la seña y del pago con MercadoPago), `Repository<Order>`, `DataSource` / `QueryRunner`, `transitionOrder`, `GasCylinderService`, `OrderRepositoryPort`, `DispatchOrchestratorService`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-075 / CU-076 / CU-077 Activar Reservas Vencidas Automaticamente
     autonumber
     participant RES as ReservationService
+    participant CFG as ConfigService
     participant OREP as RepositoryOrder
     participant QR as QueryRunner
     participant SM as OrderStatusMachine
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant ORD as OrderRepositoryPort
     participant ORQ as DispatchOrchestratorService
 
+    Note over RES,CFG: al construirse el servicio, una sola vez
+    RES->>CFG: getOrThrow(RESERVATION_DEPOSIT_TTL_HOURS)
+    activate CFG
+    CFG-->>RES: depositTtlHours, validado con su valor por defecto
+    RES->>CFG: getOrThrow(ORDER_MERCADOPAGO_PENDING_TTL_MINUTES)
+    CFG-->>RES: mpPendingTtlMinutes, validado con su valor por defecto
+    deactivate CFG
+
     Note over RES: activateDueReservations, cron cada 5 minutos, CU-075
-    RES->>OREP: find(status RESERVED, deposit_paid true, scheduled_date menor o igual a hoy)
+    RES->>OREP: find(status RESERVED, deposit_paid true, scheduled_date menor o igual a hoy, take 50)
     activate OREP
     OREP-->>RES: reservas con dia cumplido
     deactivate OREP
     loop Por cada reserva vencida
         RES->>SM: transitionOrder(order, PENDING)
-        activate SM
         RES->>OREP: save(order)
-        activate OREP
         RES->>ORD: findByIdFull(order_id)
         activate ORD
         ORD-->>RES: Order completo con coordenadas e items
         deactivate ORD
         RES->>ORQ: offerToNextDriver(full), ver DSD A.1
         activate ORQ
+        ORQ-->>RES: oferta abierta o nada, sus errores se ignoran
+        deactivate ORQ
     end
 
     Note over RES: expireUnpaidReservations, cron cada hora, CU-076
-    RES->>OREP: find(status RESERVED, deposit_paid false, createdAt menor a cutoff)
+    RES->>RES: cutoff = ahora menos depositTtlHours
+    RES->>OREP: find(status RESERVED, deposit_paid false, createdAt menor a cutoff, relations items, take 50)
+    activate OREP
     OREP-->>RES: reservas con sena impaga
     deactivate OREP
     loop Por cada reserva impaga
-        RES->>QR: startTransaction()
+        RES->>QR: connect y startTransaction()
         activate QR
         RES->>SM: transitionOrder(order, CANCELLED)
         RES->>QR: save(order)
-        RES->>STK: restore(manager, items)
-        activate STK
-        STK-->>RES: stock devuelto con lock pesimista
-        deactivate STK
-        RES->>QR: commitTransaction()
+        RES->>GCS: restituirStock(manager, items)
+        activate GCS
+        GCS-->>RES: stock devuelto con lock pesimista, un producto inexistente se ignora
+        deactivate GCS
+        alt Sin errores
+            RES->>QR: commitTransaction()
+        else Falla la transaccion
+            RES->>QR: rollbackTransaction(), se registra en el log y sigue con la proxima
+        end
+        deactivate QR
     end
 
     Note over RES: expireUnpaidMercadoPagoOrders, cron cada 30 minutos, CU-077
-    RES->>OREP: find(PENDING, mercadopago, gatewayPaymentId null, createdAt menor a cutoff)
+    RES->>RES: cutoff = ahora menos mpPendingTtlMinutes
+    RES->>OREP: find(PENDING, mercadopago, gatewayPaymentId null, createdAt menor a cutoff, relations items, take 50)
     activate OREP
     OREP-->>RES: pedidos con checkout abandonado
     deactivate OREP
     loop Por cada pedido abandonado
-        RES->>QR: startTransaction()
+        RES->>QR: connect y startTransaction()
+        activate QR
         RES->>QR: createQueryBuilder Order setLock pessimistic_write
         QR-->>RES: locked
-        deactivate QR
         alt Sigue PENDING y sin gatewayPaymentId
             RES->>SM: transitionOrder(locked, CANCELLED)
             RES->>QR: save(locked con cancellationReason)
-            activate QR
-            RES->>STK: restore(manager, items)
-            activate STK
+            RES->>GCS: restituirStock(manager, items)
+            activate GCS
+            GCS-->>RES: stock devuelto con lock pesimista
+            deactivate GCS
             RES->>QR: commitTransaction()
         else El webhook confirmo el pago un instante antes
             RES->>QR: commitTransaction sin tocar el pedido
         end
+        deactivate QR
     end
-    deactivate STK
-    deactivate QR
-    deactivate ORQ
-    deactivate SM
 ```
 
 **Figura 13 — DSD CU-075 / CU-076 / CU-077: Los tres crons de reservas y pagos pendientes**
@@ -2279,7 +2327,7 @@ sequenceDiagram
 
 ### 4.12 Crítico DSD — CU-058 / CU-005: Validación de zona de cobertura al crear un pedido
 
-**Clases participantes:** `OrderController`, `OrderService`, `CreateOrderUseCase`, `DistributorService`, `Repository<UserAddress>`, `CoverageZoneService`, `Repository<CoverageZone>` (PostGIS `ST_Contains`), `OrderPricingService`, `StockReservationService`.
+**Clases participantes:** `OrderController`, `OrderService`, `CreateOrderUseCase`, `DistributorService`, `UserAddressService`, `coordenadasDePunto`, `CoverageZoneService`, `Repository<CoverageZone>` (PostGIS `ST_Contains`), `OrderPricingService`, `GasCylinderService`.
 
 ```mermaid
 sequenceDiagram
@@ -2289,10 +2337,10 @@ sequenceDiagram
     participant SRV as OrderService
     participant UC as CreateOrderUseCase
     participant DIS as DistributorService
-    participant AREP as RepositoryUserAddress
+    participant ADR as UserAddressService
     participant CZ as CoverageZoneService
     participant ZREP as RepositoryCoverageZone
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant PRC as OrderPricingService
 
     CTRL->>SRV: create(dto, distributorId del header X-Distributor)
@@ -2305,25 +2353,26 @@ sequenceDiagram
         DIS-->>UC: distribuidora por defecto
         deactivate DIS
     end
-    UC->>AREP: findOne(address_id, user_id)
-    activate AREP
-    AREP-->>UC: UserAddress con latitude y longitude
-    deactivate AREP
+    UC->>ADR: buscarDelUsuario(addressId, customerId)
+    activate ADR
+    ADR-->>UC: UserAddress con su location, o null
+    deactivate ADR
     alt Direccion inexistente o de otro usuario
         UC-->>CTRL: NotFoundException, direccion no encontrada
         deactivate UC
     else Direccion valida
+        UC->>UC: coordenadasDePunto(address.location), lat y lng del punto
         UC->>CZ: checkCoverage(distributorId, lat, lng)
         activate CZ
-        CZ->>ZREP: count(distributor_id, isActive true)
+        CZ->>ZREP: count(distributor_id, isActive true), sin las zonas dadas de baja
         activate ZREP
-        ZREP-->>CZ: total de zonas activas
+        ZREP-->>CZ: total de zonas activas y vigentes
         deactivate ZREP
         alt La distribuidora no definio zonas
             CZ-->>UC: covered true, surcharge 0, no-op
             deactivate CZ
         else Hay zonas definidas
-            CZ->>ZREP: query ST_Contains ordenada por surcharge ASC limit 1
+            CZ->>ZREP: query ST_Contains sobre zonas activas con deletedAt IS NULL, ordenada por surcharge ASC limit 1
             activate ZREP
             ZREP-->>CZ: zona contenedora o vacio
             deactivate ZREP
@@ -2334,14 +2383,15 @@ sequenceDiagram
                 CZ-->>UC: covered true, zoneId, zoneName, surcharge
             end
         end
-        UC->>STK: reserve(manager, gasCylinderId, quantity)
-        activate STK
+        UC->>GCS: reservarStock(manager, gasCylinderId, quantity)
+        activate GCS
+        GCS-->>UC: GasCylinder bloqueado y descontado, con sus promociones
+        deactivate GCS
         UC->>PRC: priceItem y applyPaymentSurcharge sobre el total mas el recargo de zona
         activate PRC
         PRC-->>UC: totalAmount final
         deactivate PRC
     end
-    deactivate STK
     deactivate SRV
 ```
 
@@ -2874,8 +2924,9 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Bloquear es la alternativa **no destructiva** a CU-085: un usuario con pedidos no se
-  puede borrar (FK RESTRICT), pero sí bloquear.
+- Bloquear es la alternativa **reversible** a CU-085: la baja lógica deja al usuario fuera
+  de las consultas y deshabilita su cuenta de acceso, mientras que el bloqueo lo conserva
+  visible y se levanta con la misma operación.
 
 ---
 
@@ -3038,7 +3089,8 @@ sequenceDiagram
 #### DSD — CU-084: Verificar Existencia de Usuario (pre-registro)
 
 Consulta previa al alta, para que la app avise "ese email ya está en uso" antes de mandar
-el formulario completo. Construye un `where` con OR entre las condiciones presentes.
+el formulario completo. Consulta el correo y el teléfono por separado, en paralelo, e informa
+cada uno con su propio indicador.
 
 **Clases participantes:** `UsersController`, `UsersService`, `Repository<User>`, entidad `User`.
 
@@ -3050,23 +3102,25 @@ sequenceDiagram
     participant SRV as UsersService
     participant REP as RepositoryUser
 
-    CTRL->>SRV: checkUserExists(body.email, body.phoneNumber)
-    activate SRV
-    SRV->>SRV: armar conditions con email y phone_number
-    alt No vino ni email ni telefono
-        SRV-->>CTRL: exists false
-        deactivate SRV
-    else Al menos una condicion
-        SRV->>REP: findOne(where conditions en OR)
-        activate REP
-        alt Sin coincidencias
-            REP-->>SRV: null
-            deactivate REP
-            SRV-->>CTRL: exists false, email false, phoneNumber false
-        else Hay coincidencia
-            REP-->>SRV: User
-            SRV-->>CTRL: exists true con los flags por campo consultado
+    CTRL->>CTRL: ValidationPipe, CheckUserExistsDto con email o phoneNumber validos
+    alt Sin correo ni telefono, o con formato invalido
+        CTRL-->>CTRL: BadRequestException 400
+    else Cuerpo valido
+        CTRL->>SRV: checkUserExists(dto.email, dto.phoneNumber)
+        activate SRV
+        par Correo
+            opt Vino email
+                SRV->>REP: exists(where email)
+                REP-->>SRV: emailUsado
+            end
+        and Telefono
+            opt Vino phoneNumber
+                SRV->>REP: exists(where phone_number)
+                REP-->>SRV: telefonoUsado
+            end
         end
+        SRV-->>CTRL: exists igual a emailUsado o telefonoUsado, email emailUsado, phoneNumber telefonoUsado
+        deactivate SRV
     end
 ```
 
@@ -3076,15 +3130,18 @@ sequenceDiagram
 
 - Endpoint `@Public()` por necesidad (corre antes de que exista sesión). Es una superficie
   de enumeración de usuarios: queda cubierto por el throttle global, no por autenticación.
-- Es el mismo método que reusa `validateUniqueness` en el camino de CU-082.
+- Cada dato se consulta por su cuenta: una coincidencia sólo en el teléfono no marca el
+  correo como usado.
 
 ---
 
 #### DSD — CU-085: Eliminar Usuario (baja lógica)
 
-El orden de las operaciones es el punto de diseño: **primero** la base, **después**
-Firebase. Si el usuario tiene pedidos, la FK `Order → User` (RESTRICT) hace fallar el
-DELETE y no se toca Firebase, evitando dejar el usuario huérfano allá.
+La baja es lógica: `softRemove` marca `deletedAt` en el usuario y, por las relaciones
+con `cascade`, en su perfil de cliente o de chofer, sus vehículos y sus direcciones. Nada
+se borra, de modo que los pedidos y demás registros siguen apuntando a él. Después la
+cuenta de Firebase se **deshabilita**: si esa llamada falla, la baja queda hecha y el
+error va al log, porque el ingreso ya lo rechaza el sistema al no encontrar la cuenta.
 
 **Clases participantes:** `UsersController`, `RolesGuard`, `UsersService`, `Repository<User>`, `FirebaseAuthPort` (impl. `FirebaseAuthAdapter`), entidad `User`.
 
@@ -3103,46 +3160,58 @@ sequenceDiagram
         RG-->>CTRL: ForbiddenException Acceso denegado
     else Autorizado
         RG-->>CTRL: true
-        CTRL->>SRV: remove(id)
-        activate SRV
-        SRV->>SRV: findOne(id)
-        SRV->>REP: findOne(user_id, relations)
-        activate REP
-        alt No existe
-            REP-->>SRV: null
-            deactivate REP
-            SRV-->>CTRL: NotFoundException User with ID not found
-            deactivate SRV
-        else Existe
-            REP-->>SRV: User
-            SRV->>REP: delete(user_id)
+        CTRL->>CTRL: assertPuedeAdministrar(id, user, distributorId)
+        opt Hay distribuidora en contexto
+            CTRL->>SRV: perteneceA(id, distributorId)
+            SRV-->>CTRL: true o false
+        end
+        opt user.role es ADMIN, administrador de empresa
+            CTRL->>SRV: findAlcance(id)
+            SRV-->>CTRL: rol del usuario destino
+        end
+        alt No es de la distribuidora, o es un super admin
+            CTRL-->>RG: NotFoundException User with ID not found
+        else Un admin de empresa sobre la cuenta de un cliente
+            CTRL-->>RG: ForbiddenException La cuenta de un cliente la administra el administrador general
+        else Puede administrarlo
+            CTRL->>SRV: remove(id)
+            activate SRV
+            SRV->>REP: findOne(user_id, relations customer delivery cars addresses)
             activate REP
-            alt Violacion de FK, codigo 23503
-                REP-->>SRV: QueryFailedError
+            alt No existe
+                REP-->>SRV: null
+                SRV-->>CTRL: NotFoundException User with ID not found
+            else Existe
+                REP-->>SRV: User con perfil, vehiculos y direcciones
+                SRV->>REP: softRemove(user)
+                REP-->>SRV: deletedAt en el usuario y, en cascada, en perfil, vehiculos y direcciones
                 deactivate REP
-                SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
-            else Borrado en base
-                REP-->>SRV: DeleteResult
                 opt El usuario tiene firebase_uid
-                    SRV->>FB: deleteUserSafe(user.firebase_uid, logger)
+                    SRV->>FB: updateUser(firebase_uid, disabled true)
                     activate FB
-                    FB->>FB: deleteUser(uid)
+                    alt Firebase falla
+                        FB-->>SRV: error
+                        SRV->>SRV: logger.error, la baja queda hecha
+                    else Cuenta deshabilitada
+                        FB-->>SRV: cuenta deshabilitada
+                    end
+                    deactivate FB
                 end
-                SRV-->>CTRL: message Usuario eliminado permanentemente de DB y Firebase
+                SRV-->>CTRL: message Usuario dado de baja
             end
+            deactivate SRV
         end
     end
-    deactivate FB
 ```
 
 **Figura 28 — DSD CU-085: Eliminar Usuario (baja lógica)**
 
 **Observaciones de diseño**
 
-- `Customer` y `Delivery` cascadean desde `User`, así que un usuario sin pedidos se borra
-  con sus perfiles.
-- Pese al nombre del CU ("baja lógica"), la implementación es un **borrado físico** de la
-  fila; la baja lógica real del sistema es `blocked` (CU-050).
+- `Customer`, `Delivery`, `Car` y `UserAddress` tienen `@DeleteDateColumn` y cascadean desde
+  `User`, así que `softRemove` da de baja al usuario con sus perfiles, vehículos y direcciones.
+- Nada se borra: los pedidos, pagos y calificaciones siguen apuntando al usuario, y los
+  historiales lo leen con `withDeleted`. El bloqueo (CU-050) es la alternativa reversible.
 
 ---
 
@@ -3592,7 +3661,7 @@ Los tres CU de cancelación (008/009/010) comparten un único endpoint; lo que c
 **actor**, que sale siempre del token y nunca del body. Para el cliente la política es:
 cancelar de verdad y devolver el stock.
 
-**Clases participantes:** `OrderController`, `IdempotencyInterceptor`, `OrderService`, `CancelOrderUseCase`, `OrderRepositoryPort`, `transitionOrder` (máquina de estados de dominio), `StockReservationService`, `DataSource`, `QueryRunner`, `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `OrderMapper`, entidad `Order`.
+**Clases participantes:** `OrderController`, `IdempotencyInterceptor`, `OrderService`, `CancelOrderUseCase`, `OrderRepositoryPort`, `transitionOrder` (máquina de estados de dominio), `GasCylinderService`, `DataSource`, `QueryRunner`, `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `OrderMapper`, entidad `Order`.
 
 ```mermaid
 sequenceDiagram
@@ -3775,7 +3844,7 @@ El admin tiene **dos** puertas: la cancelación normal (`PATCH /orders/:id/cance
 motivo) y la cancelación forzada (`DELETE /orders/:id`, sin motivo). Las dos terminan en el
 mismo use-case con actor `admin`, que sí devuelve stock y sí avisa al chofer previo.
 
-**Clases participantes:** `OrderController`, `RolesGuard`, `OrderService`, `CancelOrderUseCase`, `OrderRepositoryPort`, `transitionOrder`, `StockReservationService`, `RealtimeDispatchPort`, `AdminGateway`, `DriversGateway`, `OrderMapper`, entidad `Order`.
+**Clases participantes:** `OrderController`, `RolesGuard`, `OrderService`, `CancelOrderUseCase`, `OrderRepositoryPort`, `transitionOrder`, `GasCylinderService`, `RealtimeDispatchPort`, `AdminGateway`, `DriversGateway`, `OrderMapper`, entidad `Order`.
 
 ```mermaid
 sequenceDiagram
@@ -4065,10 +4134,10 @@ sequenceDiagram
     autonumber
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
-    participant UREP as RepositoryUser
     participant AREP as RepositoryUserAddress
     participant USRV as UsersService
 
+    CTRL->>CTRL: ValidationPipe, CreateUserAddressDto con latitude y longitude validas, floor, apartment, placeId y geocodePrecision opcionales
     CTRL->>CTRL: acotar(userId: dto.user_id, user, distributorId, true), solo admin con distribuidora en contexto
     alt Admin con distribuidora en contexto y el titular no es de ella
         CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
@@ -4086,12 +4155,13 @@ sequenceDiagram
     else Cliente, o Administrador General con el titular a su alcance
         CTRL->>SRV: create(dto, usuarioDeLaSesion)
         activate SRV
-        SRV->>UREP: findOne(where user_id)
-        activate UREP
-        UREP-->>SRV: User o null
-        deactivate UREP
+        SRV->>USRV: findById(user_id)
+        activate USRV
+        USRV-->>SRV: User o null
+        deactivate USRV
         SRV->>AREP: update(isDefault false en las demás)
         activate AREP
+        SRV->>SRV: location igual a puntoDesdeCoordenadas(latitude, longitude), geocodePrecision unresolved por defecto
         SRV->>AREP: save(direccion)
         AREP-->>SRV: UserAddress guardada
         deactivate AREP
@@ -4201,7 +4271,10 @@ sequenceDiagram
         CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
         activate SRV
         SRV->>SRV: findOne(id, usuarioDeLaSesion)
-        SRV->>AREP: preload(address_id + cambios)
+        opt Viene latitude sin longitude, o al reves
+            SRV-->>CTRL: BadRequestException latitude y longitude se cambian juntas
+        end
+        SRV->>AREP: preload(address_id + cambios, con location igual a puntoDesdeCoordenadas si vienen las dos)
         activate AREP
         AREP-->>SRV: UserAddress fusionada o null
         deactivate AREP
@@ -4268,8 +4341,8 @@ sequenceDiagram
         deactivate AREP
         SRV->>AREP: save(nueva predeterminada)
         activate AREP
-        SRV->>AREP: remove(direccion)
-        AREP-->>SRV: confirmación de baja
+        SRV->>AREP: softRemove(direccion)
+        AREP-->>SRV: deletedAt seteado, la fila permanece y los pedidos la siguen mostrando
         deactivate AREP
         alt la dirección existe
             SRV-->>CTRL: mensaje de baja con el identificador
@@ -4284,7 +4357,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El borrado es físico: el repositorio usa `remove`, no una marca de baja. Es la asimetría que conviene tener presente en la defensa, porque el resto del sistema da de baja lógicamente.
+- La baja es lógica: el repositorio usa `softRemove`, que marca `deletedAt`. Las consultas de pedidos leen sus relaciones con `withDeleted`, de modo que un pedido sigue mostrando la dirección donde se entregó.
 - La promoción de la nueva predeterminada elige por fecha de alta descendente, sin preguntarle al cliente.
 
 ---
@@ -4514,7 +4587,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Quitar el último ítem deja el carrito vacío, no lo borra: el cliente conserva el mismo carrito para seguir comprando.
-- A diferencia de la baja de una dirección (CU-119), acá el borrado físico no pierde información de negocio.
+- A diferencia de la baja de una dirección (CU-119), que es lógica, acá el borrado es físico: un ítem del carrito no es información de negocio que haya que conservar.
 
 ---
 
@@ -4821,7 +4894,7 @@ automática) no encontró chofer o cuando hay que forzar una asignación. Salta 
 por completo: no crea `DispatchOffer` ni espera aceptación, escribe el `delivery_id` y
 transiciona directo a `ACCEPTED`.
 
-**Clases participantes:** `OrderController`, `RolesGuard`, `OrderService`, `OrderRepositoryPort`, `Repository<Delivery>`, `Repository<Order>`, `transitionOrder` (máquina de estados de dominio), `OrderMapper`, entidades `Order`, `Delivery`.
+**Clases participantes:** `OrderController`, `RolesGuard`, `OrderService`, `OrderRepositoryPort`, `DeliveryService`, `Repository<Order>`, `transitionOrder` (máquina de estados de dominio), `OrderMapper`, entidades `Order`, `Delivery`.
 
 ```mermaid
 sequenceDiagram
@@ -4969,7 +5042,7 @@ estado sino el **encendido del tracking**: se escribe en Redis el mapping
 chofer → (pedido, cliente), que es lo que después hace que `DriversGateway` reenvíe cada
 posición GPS al cliente correcto (CU-017).
 
-**Clases participantes:** `OrderController`, `IdempotencyInterceptor`, `OrderService`, `UpdateOrderStatusUseCase`, `OrderRepositoryPort`, `transitionOrder`, `Repository<Delivery>`, `Repository<User>`, `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `RedisService`, `CustomersGateway`, `AdminGateway`, `NotificationPort` (impl. `NotificationAdapter`), `OrderMapper`, entidades `Order`, `Delivery`, `User`.
+**Clases participantes:** `OrderController`, `IdempotencyInterceptor`, `OrderService`, `UpdateOrderStatusUseCase`, `OrderRepositoryPort`, `transitionOrder`, `DeliveryService`, `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `RedisService`, `CustomersGateway`, `AdminGateway`, `NotificationPort` (impl. `NotificationAdapter`), `OrderMapper`, entidades `Order`, `Delivery`, `User`.
 
 ```mermaid
 sequenceDiagram
@@ -5089,7 +5162,7 @@ sequenceDiagram
 El único caso del ciclo del pedido que **no** cambia el estado: es un aviso puro. Por eso
 no pasa por la máquina de estados ni por el use-case de transición.
 
-**Clases participantes:** `OrderController`, `RolesGuard`, `OrderService`, `OrderRepositoryPort`, `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `CustomersGateway`, entidad `Order`.
+**Clases participantes:** `OrderController`, `RolesGuard`, `OrderService`, `OrderRepositoryPort`, `DeliveryService`, `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`), `CustomersGateway`, `NotificationPort` (impl. `NotificationAdapter`, que delega en `NotificationsService.sendArrivalPushToCustomer`), entidad `Order`.
 
 ```mermaid
 sequenceDiagram
@@ -5102,6 +5175,7 @@ sequenceDiagram
     participant DSRV as DeliveryService
     participant RT as RealtimeDispatchPort
     participant CGW as CustomersGateway
+    participant NOT as NotificationPort
 
     RG->>RG: canActivate(ctx) contra Roles DELIVERY, ADMIN y SUPER_ADMIN
     alt Rol insuficiente
@@ -5144,6 +5218,11 @@ sequenceDiagram
                         activate CGW
                         CGW-->>SRV: emit en la sala customer_ del cliente
                         deactivate CGW
+                        SRV->>NOT: sendArrivalPushToCustomer(customer_id, order_id, driverName)
+                        activate NOT
+                        NOT->>NOT: token FCM del cliente y sendToToken con Tu pedido llego, best-effort
+                        NOT-->>SRV: sin error, aunque no haya token o FCM falle
+                        deactivate NOT
                         SRV-->>CTRL: message Cliente notificado
                     end
                 end
@@ -5159,8 +5238,10 @@ sequenceDiagram
 
 - El `driverName` sale de `order.delivery.user.full_name` con fallback a "El repartidor":
   el payload no depende de que la relación esté cargada.
-- **Gap de diseño detectado:** el endpoint no valida que quien avisa sea el chofer asignado
-  a *ese* pedido; cualquier `DELIVERY` autenticado puede disparar el aviso de un pedido ajeno.
+- `assertPedidoDelChofer` controla que quien avisa sea el chofer asignado a *ese* pedido
+  (403 si no); al administrador no se le aplica.
+- La notificación al dispositivo es best-effort: sin token registrado no se envía, y un
+  fallo de FCM queda en el log sin cambiar la respuesta al chofer.
 
 ---
 
@@ -5345,8 +5426,8 @@ verificable en el código y quedaron modelados.
 | CU-003 | El diagrama es el de CU-031: los dos son el alta de un chofer por `POST /users`, que incluye CU-082. |
 | CU-004 | El CU habla de "una pantalla"; el código lo resuelve con **dos** controllers (`UsersController` y `CustomersController`) sobre agregados distintos. Se modelaron los dos lados. |
 | CU-012 | Se documenta como observación el gap real: no genera `deliveryCode`, no cierra la `DispatchOffer` y no emite `order:accepted`. No se inventó ninguna llamada que el código no tenga. |
-| CU-019 | Falta la validación de que el chofer sea el asignado al pedido. Se señala como gap, no se dibuja como si existiera. |
-| CU-085 | El CU dice "baja lógica" pero `UsersService.remove` hace `Repository.delete` (borrado físico). El diagrama refleja el código. |
+| CU-019 | La validación de que el chofer sea el asignado al pedido la hace `assertPedidoDelChofer` (403). El aviso sale por socket y por notificación al dispositivo (`sendArrivalPushToCustomer`). |
+| CU-085 | La baja es lógica (`softRemove` con cascada a perfil, vehículos y direcciones) y la cuenta de Firebase se deshabilita con `updateUser(uid, { disabled: true })`, no se borra. |
 
 **Elementos representados con alias normalizado** (el nombre real va siempre en la línea
 "Clases participantes"): `RepositoryUser` = `Repository<User>`, `RepositoryCustomer` =
@@ -5404,9 +5485,9 @@ sequenceDiagram
         OREP-->>OSRV: Order o null
         deactivate OREP
         alt Orden inexistente
-            OSRV-->>SRV: NotFoundException
+            OSRV-->>SRV: NotFoundException Order with ID not found
             deactivate OSRV
-            SRV-->>CTRL: NotFoundException Orden no encontrada
+            SRV-->>CTRL: la misma NotFoundException, sin capturarla
             deactivate SRV
         else Orden existente
             OSRV-->>SRV: Order
@@ -5524,7 +5605,7 @@ sequenceDiagram
 
 Los KPIs se resuelven con **agregados SQL** (`SUM`/`COUNT`), no cargando pedidos a memoria. Las once consultas se lanzan en paralelo con `Promise.all`.
 
-**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, `Repository<Delivery>`, enums `OrderStatus`, `PaymentMethod`, operadores `Between`, `MoreThanOrEqual`.
+**Clases participantes:** `OrderController`, `OrderService`, `Repository<Order>`, `DeliveryService`, enums `OrderStatus`, `PaymentMethod`, operadores `Between`, `MoreThanOrEqual`.
 
 ```mermaid
 sequenceDiagram
@@ -5533,7 +5614,7 @@ sequenceDiagram
     participant CTRL as OrderController
     participant SRV as OrderService
     participant OREP as RepositoryOrder
-    participant DREP as RepositoryDelivery
+    participant DSRV as DeliveryService
 
     CTRL->>SRV: getOrderStats(distributorId)
     activate SRV
@@ -5571,10 +5652,10 @@ sequenceDiagram
     activate OREP
     OREP-->>SRV: onTheWay
     deactivate OREP
-    SRV->>DREP: count(where isActive true y validated true)
-    activate DREP
-    DREP-->>SRV: activeDeliveries
-    deactivate DREP
+    SRV->>DSRV: contarDisponibles(distributorId)
+    activate DSRV
+    DSRV-->>SRV: activeDeliveries, choferes activos y validados
+    deactivate DSRV
     SRV->>OREP: count(where DELIVERED y paymentMethod CASH del mes)
     activate OREP
     OREP-->>SRV: cash
@@ -5974,7 +6055,7 @@ sequenceDiagram
     else Misma distribuidora o sin distribuidora en contexto
         SRV-->>CTRL: sin error
         deactivate SRV
-        CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+        CTRL->>SRV: toggleActiveStatus(id, dto.isActive), dto validado por ToggleDeliveryStatusDto
         activate SRV
         SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
@@ -6167,7 +6248,7 @@ sequenceDiagram
         else Misma distribuidora o sin distribuidora en contexto
             SRV-->>CTRL: sin error
             deactivate SRV
-            CTRL->>SRV: updateBalance(id, body.amount)
+            CTRL->>SRV: updateBalance(id, dto.amount), dto validado por UpdateDeliveryBalanceDto
             activate SRV
             SRV->>SRV: findOne(id)
             SRV->>DREP: findOne(where delivery_id, relations user y user.role)
@@ -6309,7 +6390,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - `findByPatent` **no lanza 404**: devuelve `null`. Es la única consulta del módulo con esa semántica; el resto usa excepción.
-- La baja de vehículo es **física** (`carRepository.remove`), no lógica — a diferencia del chofer (CU-097, `softDelete`) y del producto (CU-040, `isActive = false`). Asimetría de política de borrado dentro del mismo subsistema.
+- La baja de vehículo es **lógica** (`carRepository.softRemove`, CU-112), como la del chofer (CU-097, `softDelete`); el producto usa en cambio una marca de inactivo (CU-040, `isActive = false`).
 - La verificación de patente duplicada en `update` corre **después** del `preload`, por lo que compara contra el objeto ya fusionado; el chequeo `existingCar.car_id !== id` evita el falso positivo de la propia patente.
 
 ---
@@ -6586,24 +6667,24 @@ sequenceDiagram
     CTRL->>SRV: remove(id, distributorId)
     activate SRV
     SRV->>SRV: findOne(id, distributorId)
-    SRV->>CREP: remove(car)
-    activate CREP
-    CREP-->>SRV: Car borrado
-    deactivate CREP
-    alt el vehiculo no existe
+    alt el vehiculo no existe o es de otra distribuidora
         SRV-->>CTRL: NotFoundException Car with ID not found
-        deactivate SRV
     else Vehiculo encontrado
-        SRV-->>CTRL: confirmacion de baja
+        SRV->>CREP: softRemove(car)
+        activate CREP
+        CREP-->>SRV: deletedAt seteado, la fila permanece
+        deactivate CREP
+        SRV-->>CTRL: message Car deleted successfully, carId
     end
+    deactivate SRV
 ```
 
 **Figura 84 — DSD CU-112: Eliminar Vehículo**
 
 **Observaciones de diseño**
 
-- El borrado es físico: no hay `@DeleteDateColumn` en `Car`, así que la fila desaparece.
-- Si el vehículo tuvo entregas asociadas, esa historia pierde la referencia. Es lo que hace que la asimetría con el chofer importe.
+- La baja es lógica: `Car` tiene `@DeleteDateColumn` y `softRemove` sólo marca `deletedAt`, así que la historia que lo referencia conserva el vehículo.
+- La patente es única sólo entre los vehículos vigentes (índice parcial `UQ_car_patente_vigente`, con `deletedAt IS NULL`): dar de baja un vehículo libera su patente.
 
 ---
 
@@ -7151,7 +7232,7 @@ sequenceDiagram
     participant SRV as GasCylinderService
     participant GREP as RepositoryGasCylinder
 
-    CTRL->>SRV: updateStock(id, body.quantity, distributorId)
+    CTRL->>SRV: updateStock(id, dto.quantity, distributorId), dto validado por UpdateStockDto
     activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
@@ -7180,16 +7261,16 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - `quantity` es un **delta**, no un valor absoluto: `+20` repone, `-5` descuenta. La firma del DTO inline (`{ quantity: number }`) no lo comunica.
-- La validación de negatividad ocurre **en memoria antes del `save`**, sin lock. Es un camino administrativo de baja concurrencia; la reserva de stock del flujo de pedido (`StockReservationService.reserve`) sí usa lock pesimista dentro de la transacción del pedido.
+- La validación de negatividad ocurre **en memoria antes del `save`**, sin lock. Es un camino administrativo de baja concurrencia; la reserva de stock del flujo de pedido (`GasCylinderService.reservarStock`) sí usa lock pesimista dentro de la transacción del pedido.
 - Este camino y el de la reserva de pedido escriben la misma columna `stock` por vías distintas: un ajuste manual concurrente con una compra podría perder una actualización.
 
 ---
 
 #### DSD — CU-039: Configurar Promociones por Cantidad
 
-Dos momentos distintos: la **configuración** (el admin guarda el JSONB) y la **aplicación** (el dominio elige la mejor promo al precificar un ítem del pedido).
+Dos momentos distintos: la **configuración** (el admin guarda el producto y, en cascada, sus filas de `gas_cylinder_promotion`, que reemplazan a las anteriores) y la **aplicación** (al reservar el stock se leen las promociones después del lock, y el dominio elige la mejor al precificar un ítem del pedido).
 
-**Clases participantes:** `GasCylinderController`, `GasCylinderService`, `Repository<GasCylinder>`, DTO `UpdateGasCylinderDto` (campo `promotions`), `CreateOrderUseCase`, `OrderPricingService`, `Decimal` (decimal.js), interfaz `VolumePromotion`, entidad `GasCylinder` (columna JSONB `promotions`).
+**Clases participantes:** `GasCylinderController`, `GasCylinderService`, `Repository<GasCylinder>`, `Repository<GasCylinderPromotion>`, DTO `UpdateGasCylinderDto` (campo `promotions`, lista de `PromocionDto`), `CreateOrderUseCase`, `OrderPricingService`, `Decimal` (decimal.js), interfaz `VolumePromotion`, entidades `GasCylinder` y `GasCylinderPromotion` (única por producto y cantidad, con los controles de rango en la base).
 
 ```mermaid
 sequenceDiagram
@@ -7198,32 +7279,53 @@ sequenceDiagram
     participant CTRL as GasCylinderController
     participant SRV as GasCylinderService
     participant GREP as RepositoryGasCylinder
+    participant PREP as RepositoryGasCylinderPromotion
     participant UC as CreateOrderUseCase
     participant PRC as OrderPricingService
     participant DEC as Decimal
 
+    CTRL->>CTRL: ValidationPipe, cada PromocionDto con quantity entero desde 2 y discountPercentage mayor que 0 y hasta 100
     CTRL->>SRV: update(id, dto con promotions, distributorId)
     activate SRV
     SRV->>SRV: findOne(id, distributorId)
-    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id, relations promotions)
     activate GREP
     GREP-->>SRV: GasCylinder o null
     deactivate GREP
     alt Producto inexistente o de otra distribuidora
         SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
-        deactivate SRV
     else Producto del tenant
-        SRV->>GREP: preload(gas_cylinder_id mas promotions)
-        activate GREP
-        GREP-->>SRV: GasCylinder fusionado
-        deactivate GREP
-        SRV->>GREP: save(gasCylinder)
-        activate GREP
-        GREP-->>SRV: GasCylinder con el JSONB de promociones
-        deactivate GREP
-        SRV-->>CTRL: GasCylinder
+        SRV->>SRV: assertPromocionesSinRepetir(promotions)
+        alt Dos promociones para la misma cantidad
+            SRV-->>CTRL: BadRequestException Hay dos promociones para la misma cantidad de unidades
+        else Cantidades distintas
+            SRV->>GREP: preload(gas_cylinder_id mas promotions)
+            activate GREP
+            GREP-->>SRV: GasCylinder fusionado con la lista nueva
+            deactivate GREP
+            SRV->>GREP: save(gasCylinder)
+            activate GREP
+            GREP->>PREP: cascade, inserta las promociones nuevas y borra las que no vinieron
+            activate PREP
+            PREP-->>GREP: filas de gas_cylinder_promotion
+            deactivate PREP
+            GREP-->>SRV: GasCylinder guardado
+            deactivate GREP
+            SRV->>SRV: findOne(id, distributorId)
+            SRV-->>CTRL: GasCylinder con sus promociones
+        end
     end
+    deactivate SRV
 
+    Note over UC,SRV: al crear un pedido, dentro de su transaccion
+    UC->>SRV: reservarStock(manager, gasCylinderId, quantity)
+    activate SRV
+    SRV->>GREP: SELECT del producto FOR UPDATE, lock pesimista
+    GREP-->>SRV: GasCylinder bloqueado
+    SRV->>PREP: find(where gas_cylinder_id), despues del lock
+    PREP-->>SRV: promociones del producto
+    SRV-->>UC: GasCylinder con price y promotions
+    deactivate SRV
     UC->>PRC: priceItem(gasCylinder.price, gasCylinder.promotions, quantity)
     activate PRC
     PRC->>PRC: bestApplicablePromotion(promotions, quantity)
@@ -7255,7 +7357,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Cuando varias promociones aplican, el código toma la de **mayor umbral alcanzado** (`sort` descendente por `quantity` + `find`), es decir la más favorable al cliente. El CU documentado no definía este criterio de desempate.
-- `OrderPricingService` es **dominio puro**: sin I/O, sin repositorios, testeable en aislamiento. Recibe el precio y las promos ya leídos de la fila bloqueada por el `StockReservationService`.
+- `OrderPricingService` es **dominio puro**: sin I/O, sin repositorios, testeable en aislamiento. Recibe el precio de la fila bloqueada por `GasCylinderService.reservarStock` y las promociones que ese método lee de `GasCylinderPromotion` después del lock.
 - Todos los montos se calculan en `Decimal` y se convierten con `toNumber()` recién al construir el `OrderItem` — requisito de precisión NFR-08.
 - La promoción se aplica **sobre el precio unitario**, no sobre el subtotal, de modo que `OrderItem.unitPrice` queda persistido ya con el descuento: el pedido histórico es autoexplicativo aunque después cambie la promo.
 
@@ -7299,7 +7401,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es **baja lógica**, no física: la fila sobrevive y los `OrderItem` históricos siguen resolviendo su relación con la garrafa. Coherente con CU-097 (chofer) e incoherente con CU-051 (vehículo, borrado físico).
+- Es **baja lógica**, no física: la fila sobrevive y los `OrderItem` históricos siguen resolviendo su relación con la garrafa. Coherente con CU-097 (chofer) y con CU-112 (vehículo), que también son bajas lógicas.
 - El efecto visible es sobre el catálogo: `findAll`, `findByType` y `getAvailableCylinders` filtran por `isActive: true` (CU-041), así que el producto desaparece de la app cliente inmediatamente. `findOne` por id **no** filtra, para que los pedidos históricos sigan siendo consultables.
 - **Deuda funcional a cerrar:** exponer `isActive` en el DTO de actualización, o agregar un endpoint `PATCH /gascylinder/:id/activate`, para que el toggle sea bidireccional como pide el CU.
 
@@ -7439,7 +7541,7 @@ sequenceDiagram
 
 La validación de cupo corre **dentro de la transacción del pedido y con lock pesimista sobre la fila de la franja**. Es la pieza que impide sobreventa de cupos bajo concurrencia.
 
-**Clases participantes:** `OrderController`, `OrderService`, `CreateOrderUseCase`, `DataSource`, `QueryRunner`, `EntityManager`, `TimeSlotService`, `StockReservationService`, `OrderPricingService`, entidades `TimeSlot`, `Order`, DTO `CreateOrderDto` (campos `timeSlotId` y `scheduledDate`).
+**Clases participantes:** `OrderController`, `OrderService`, `CreateOrderUseCase`, `DataSource`, `QueryRunner`, `EntityManager`, `TimeSlotService`, `GasCylinderService`, `OrderPricingService`, entidades `TimeSlot`, `Order`, DTO `CreateOrderDto` (campos `timeSlotId` y `scheduledDate`).
 
 ```mermaid
 sequenceDiagram
@@ -7451,7 +7553,7 @@ sequenceDiagram
     participant QR as QueryRunner
     participant EM as EntityManager
     participant TSS as TimeSlotService
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant PRC as OrderPricingService
 
     CTRL->>SRV: create(createOrderDto, distributorId)
@@ -7492,10 +7594,10 @@ sequenceDiagram
             end
         end
         loop Por cada item del pedido
-            UC->>STK: reserve(queryRunner.manager, gasCylinderId, quantity)
-            activate STK
-            STK-->>UC: GasCylinder bloqueado
-            deactivate STK
+            UC->>GCS: reservarStock(queryRunner.manager, gasCylinderId, quantity)
+            activate GCS
+            GCS-->>UC: GasCylinder bloqueado y descontado, con sus promociones
+            deactivate GCS
             UC->>PRC: priceItem(price, promotions, quantity)
             activate PRC
             PRC-->>UC: unitPrice y subtotal
@@ -8046,7 +8148,7 @@ sequenceDiagram
     CTRL->>SRV: remove(id, distributorId)
     activate SRV
     SRV->>SRV: findOne(id, distributorId)
-    SRV->>REPO: findOne(where coverage_zone_id y distributor_id)
+    SRV->>REPO: findOne(where coverage_zone_id y distributor_id), sin las dadas de baja
     activate REPO
     REPO-->>SRV: CoverageZone o null
     deactivate REPO
@@ -8054,9 +8156,9 @@ sequenceDiagram
         SRV-->>CTRL: NotFoundException, zona no encontrada
         deactivate SRV
     else Zona del tenant
-        SRV->>REPO: remove(zone)
+        SRV->>REPO: softRemove(zone)
         activate REPO
-        REPO-->>SRV: fila eliminada
+        REPO-->>SRV: deletedAt seteado, la fila permanece
         deactivate REPO
         SRV-->>CTRL: void
         CTRL-->>ADM: 200 sin cuerpo
@@ -8070,7 +8172,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - La condición de tenant se aplica **en el `WHERE` de la búsqueda**, no como chequeo posterior: una zona de otra distribuidora es indistinguible de una inexistente y devuelve 404, sin filtrar la existencia del recurso ajeno.
-- El borrado es **físico** (`remove`, no `softRemove`), a diferencia del de distribuidoras: una zona es un polígono de configuración, no un registro histórico.
+- La baja es **lógica** (`softRemove`): la zona queda con `deletedAt` y se conserva. La validación de cobertura (CU-058) la ignora, porque el conteo de zonas excluye las dadas de baja y la consulta de `ST_Contains` filtra `"deletedAt" IS NULL`.
 
 ---
 
@@ -8078,7 +8180,7 @@ sequenceDiagram
 
 #### C.8 DSD — CU-060: Registrar Incidencia de Entrega
 
-**Clases participantes:** `@CurrentUser()`, `IncidentController`, `IncidentService`, `Repository<Order>`, `Repository<Incident>`, entidad `Incident`, enum `IncidentStatus`.
+**Clases participantes:** `@CurrentUser()`, `IncidentController`, `IncidentService`, `OrderService` (`findById`, `assertAsignadoAlChofer`), `Repository<Incident>`, entidad `Incident`, enum `IncidentStatus`.
 
 ```mermaid
 sequenceDiagram
@@ -8103,13 +8205,13 @@ sequenceDiagram
         SRV-->>CTRL: NotFoundException, pedido no encontrado
     else Pedido de la distribuidora, o sin distribuidora en contexto
         opt Reporta un chofer
-            SRV->>OSRV: assertEsElChofer(order.delivery_id, userId)
+            SRV->>OSRV: assertAsignadoAlChofer(order.delivery_id, userId)
             activate OSRV
             OSRV-->>SRV: ForbiddenException si el pedido no esta asignado a ese chofer
             deactivate OSRV
         end
         alt Es un chofer y el pedido no esta asignado a el
-            SRV-->>CTRL: ForbiddenException Solo podes ver tus propios pedidos
+            SRV-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
         else Es el chofer asignado, o reporta un administrador
             SRV->>SRV: distributor_id se denormaliza de order.distributor_id
             SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
@@ -8187,7 +8289,7 @@ sequenceDiagram
 
 #### C.10 DSD — CU-062: Consultar Incidencias de un Pedido
 
-**Clases participantes:** `@CurrentDistributor()`, `IncidentController`, `IncidentService`, `Repository<Incident>`.
+**Clases participantes:** `@CurrentDistributor()`, `IncidentController`, `IncidentService`, `OrderService`, `OrderRepositoryPort`, `Repository<Incident>`.
 
 ```mermaid
 sequenceDiagram
@@ -8208,19 +8310,18 @@ sequenceDiagram
     CTRL->>CTRL: ParseUUIDPipe valida el orderId
     CTRL->>SRV: findByOrder(orderId, distributorId)
     activate SRV
-    SRV->>OSRV: assertDeLaDistribuidora(orderId, distributorId)
+    SRV->>OSRV: findById(orderId)
     activate OSRV
-    OSRV->>OREP: findById(id), solo con distribuidora en contexto
+    OSRV->>OREP: findById(id)
     activate OREP
     OREP-->>OSRV: Order o null
     deactivate OREP
-    alt Pedido de otra distribuidora que la del contexto
-        OSRV-->>SRV: NotFoundException Order with ID not found
-        SRV-->>CTRL: NotFoundException
+    OSRV-->>SRV: Order o null
+    deactivate OSRV
+    alt Pedido inexistente, o de otra distribuidora que la del contexto
+        SRV-->>CTRL: NotFoundException Pedido no encontrado
         CTRL-->>USR: 404
-    else Pedido de la distribuidora, inexistente, o sin distribuidora en contexto
-        OSRV-->>SRV: sin error
-        deactivate OSRV
+    else Pedido de la distribuidora, o sin distribuidora en contexto
         SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
         activate IREP
         IREP-->>SRV: Incident[] del pedido, vacio si no hay
@@ -8959,8 +9060,8 @@ sequenceDiagram
             SRV-->>CTRL: NotFoundException
             deactivate SRV
         else Encontrado
-            SRV->>SRV: proyecta admin_id email displayName fullName rol uid
-            SRV-->>CTRL: vista del admin
+            SRV-->>CTRL: Admin con user y role
+            CTRL->>CTRL: AdminMapper.toVista, admin_id email displayName fullName rol, sin uid
             CTRL-->>ADM: 200 vista del admin
             deactivate CTRL
         end
@@ -8973,8 +9074,8 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - `findAdminByTerm` implementa un **buscador polimórfico**: `isUUID(term)` decide contra qué columna se resuelve, evitando dos endpoints casi idénticos. El costo es que el `term` no puede ser un `ParseUUIDPipe` y llega como string crudo.
-- La búsqueda por término **no está scopeada por tenant** — a diferencia de `findAll` — pese a estar permitida al rol `ADMIN`. Es una asimetría del diseño actual que conviene señalar: un admin de empresa puede resolver por email a un admin de otra distribuidora.
-- La proyección de `findAdminByTerm` aplana `Admin`, `User` y `Role` en un objeto único para el panel, en vez de exponer el grafo de entidades.
+- La búsqueda por término está acotada por distribuidora igual que `findAll`: con distribuidora en contexto, un admin de otra responde 404 como si no existiera.
+- `AdminMapper.toVista` aplana `Admin`, `User` y `Role` en un objeto único para el panel, en vez de exponer el grafo de entidades, y no incluye el identificador de Firebase.
 
 ---
 
@@ -9268,8 +9369,8 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Los dos métodos son **simétricos y sin ownership**: ambos llaman a `findOne(id)` sin `requesterUserId`, de modo que `assertOwnership` no se dispara. Es correcto porque `@Roles(ADMIN, SUPER_ADMIN)` ya garantiza que el llamante es staff: validar a un cliente es, por definición, una acción sobre datos ajenos.
-- `validated` es un `string` `'true'` / `'false'`, no un booleano: es una deuda del modelo heredado que el diseño arrastra y que estos dos métodos son los únicos en escribir.
-- **No están scopeados por distribuidora**, a diferencia de `findAll`: un admin de empresa puede validar por id a un cliente que nunca le pidió. Es la asimetría gemela de la señalada en CU-088.
+- `validated` es un booleano, igual que en el chofer; estos dos métodos son los únicos que lo escriben.
+- Con distribuidora en contexto, el controlador llama antes a `CustomersService.assertDeLaDistribuidora`: un admin de empresa no puede validar a un cliente que nunca le compró, que responde 404 como si no existiera.
 
 ---
 
@@ -9286,8 +9387,12 @@ sequenceDiagram
     participant SRV as CustomersService
     participant CREP as RepositoryCustomer
 
-    CLI->>CTRL: PATCH /customers/:id/location con latLng
+    CLI->>CTRL: PATCH /customers/:id/location con UpdateCustomerLocationDto latLng
     activate CTRL
+    CTRL->>CTRL: ValidationPipe, IsLatLong sobre latLng
+    alt latLng no es latitud,longitud valido
+        CTRL-->>CLI: 400 latLng debe ser latitud,longitud
+    end
     CTRL->>CTRL: scope(user), admin devuelve undefined, cliente devuelve user.user_id
     CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
     CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
@@ -9316,7 +9421,7 @@ sequenceDiagram
             alt Es un cliente y el customer es de otro usuario
                 SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
             else Autorizado, dueno o admin
-                SRV->>SRV: customer.lat_lang igual a latLng
+                SRV->>SRV: customer.location igual a puntoDesdeLatLng(latLng), punto PostGIS
                 SRV->>CREP: save(customer)
                 activate CREP
                 CREP-->>SRV: Customer actualizado
@@ -9336,7 +9441,7 @@ sequenceDiagram
 
 - Es el patrón **anti-IDOR** del subsistema: la función `scope(user)` del controlador traduce el rol a un "sujeto de verificación" (`undefined` para staff, `user_id` para el resto) y `assertOwnership` decide con un único `if`. La regla de propiedad se escribe una vez y la reutilizan `findOne`, `findOneByUserId`, `update` y `updateLocation`.
 - La ruta **no** declara `@Roles`: cualquier usuario autenticado puede llamarla, y es el ownership —no el rol— lo que la protege. Es la decisión correcta porque el dueño legítimo del dato es el propio cliente.
-- `lat_lang` se guarda como string plano, no como geometría PostGIS: a diferencia de `CoverageZone.area`, esta coordenada no participa de consultas espaciales, sólo se muestra y se pasa al despacho.
+- La ubicación se guarda en `location`, un punto PostGIS (SRID 4326) como `CoverageZone.area`; la API la sigue recibiendo como texto "latitud,longitud", que `UpdateCustomerLocationDto` valida con `IsLatLong` y `puntoDesdeLatLng` convierte.
 
 ---
 
@@ -9675,7 +9780,7 @@ sequenceDiagram
     alt No es SUPER_ADMIN, incluido un admin de empresa
         CTRL-->>ADM: 403 ForbiddenException
     else SUPER_ADMIN
-        CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
+        CTRL->>SRV: sendTestNotification(dto.token, dto.title, dto.body), dto validado por SendTestNotificationDto
         activate SRV
         SRV->>SRV: arma message con notification y data type TEST mas timestamp
         SRV->>FCM: sendToToken(token, message)
@@ -10061,7 +10166,7 @@ sequenceDiagram
 
 - El barrido es **un solo `UPDATE` condicional**, no leer las zonas y guardarlas una por una: la condición de vencimiento se evalúa en la base, dentro de la misma sentencia que escribe, y así no hay ventana entre leer y escribir.
 - El cerrojo se libera en un `finally`, de modo que una ejecución que falle no deje bloqueadas a las siguientes. Su vencimiento es **menor que el intervalo del cron**, por la misma razón que en CU-014: una instancia que caiga sin liberarlo no puede frenar el proceso más de un ciclo.
-- La zona se marca inactiva y **no se borra**, a diferencia de CU-059. Los pedidos que se cobraron con ese recargo tienen que poder explicarse después, y una zona borrada no deja a qué remitirse.
+- La zona se marca inactiva y **no se da de baja**, a diferencia de CU-059: sigue a la vista del administrador, que puede reactivarla. Los pedidos que se cobraron con ese recargo tienen que poder explicarse después.
 - El cron **no** notifica al administrador. Si más adelante se decide avisarle, el aviso va acá y no en CU-150, porque el hecho que se comunica es el vencimiento, no la programación.
 
 ---
@@ -10845,7 +10950,7 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)` | CU-029 | Administrador | sí | — |
 | `consultarVentasPorProducto(fechaDesde, fechaHasta)` | CU-028 | Administrador | sí | — |
 | `consultarVigenciaDelEnvase(envaseId)` | CU-133 | Administrador | sí | — |
-| `crearAdministradorSobreUsuarioExistente(usuarioId, rolId, distribuidoraId)` | CU-086 | Administrador | sí | — |
+| `crearAdministradorSobreUsuarioExistente(usuarioId, distribuidoraId)` | CU-086 | Administrador | sí | — |
 | `crearCheckoutDePago(pedidoId, medioDePago)` | CU-048 | Pasarela de Pago. Receptores: Cliente y Chofer | sí | sí |
 | `crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)` | CU-042 | Administrador | sí | — |
 | `crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)` | CU-044 | Cliente | sí | sí |
@@ -10865,14 +10970,14 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `editarVehiculo(vehiculoId, datos)` | CU-111 | Administrador | sí | — |
 | `elegirModalidadDeEntrega(pedidoId, modalidad)` | CU-148 | Cliente | sí | — |
 | `eliminarChofer(choferId)` | CU-097 | Administrador | sí | — |
-| `eliminarCliente(clienteId)` | CU-095 | Administrador | sí | — |
+| `eliminarCliente(clienteId)` | CU-095 | Administrador General | sí | — |
 | `eliminarDireccionDeEntrega(direccionId)` | CU-119 | Cliente | sí | — |
 | `eliminarFranjaHoraria(franjaId)` | CU-103 | Administrador | sí | — |
 | `eliminarRol(rolId)` | CU-089 | Super Administrador | sí | — |
 | `eliminarUsuario(usuarioId)` | CU-085 | Administrador | sí | — |
 | `eliminarVehiculo(vehiculoId)` | CU-051 | Administrador | sí | — |
 | `eliminarZonaDeCobertura(zonaId)` | CU-059 | Administrador | sí | — |
-| `enviarNotificacionDePrueba(usuarioId, titulo, mensaje)` | CU-100 | Administrador | sí | — |
+| `enviarNotificacionDePrueba(usuarioId, titulo, mensaje)` | CU-100 | Administrador General | sí | — |
 | `expirarPedidosSinPagar()` | CU-077 | Sistema Automático | sí | sí |
 | `expirarReservasSinSenia()` | CU-076 | Sistema Automático | sí | sí |
 | `gestionarEnvasesNoDevueltos()` | CU-108 | Sistema Automático | sí | — |
@@ -10905,7 +11010,7 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `quitarItemDelCarrito(itemId)` | CU-124 | Cliente | sí | — |
 | `realizarCompraExpress(tipoGarrafa, medioDePago)` | CU-147 | Cliente | sí | — |
 | `rechazarOferta(pedidoId)` | CU-016 | Chofer | sí | sí |
-| `reenviarConfirmacionDePedido(usuarioId, pedidoId)` | CU-101 | Administrador | sí | — |
+| `reenviarConfirmacionDePedido(usuarioId, pedidoId)` | CU-101 | Administrador General | sí | — |
 | `registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)` | CU-086 | Administrador | sí | — |
 | `registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)` | CU-003 | Administrador | sí | — |
 | `registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)` | CU-002 | Cliente | sí | — |
@@ -13364,7 +13469,7 @@ modelo propuesto de `diagramas/base-de-datos/`.
 | Consumo declarado y recompra | CU-143, CU-144, CU-145, CU-146 | Consumo promedio, garrafa habitual, días de aviso y próxima recompra estimada en `customer`. |
 | Compra express en moto | CU-147, CU-148, CU-149 | Modalidad de entrega en `order`; el recargo, el radio y la vigencia de la oferta express, en `module_config`. |
 | Recargo porcentual y vigencia de zonas | CU-056, CU-150, CU-151 | Tipo de recargo, etiqueta, color y fecha de fin de vigencia en `coverage_zone`. |
-| Dirección resuelta contra el mapa | CU-116, CU-118 | Piso, departamento, punto en PostGIS, identificador del lugar y precisión en `user_address`. |
+| Dirección resuelta contra el mapa | CU-116, CU-118 | Nada: piso, departamento, punto en PostGIS, identificador del lugar y precisión ya están en `user_address`. Falta la consulta al servicio de mapas que los complete. |
 | Registro de auditoría | CU-152, CU-153 | Tabla `audit_log`, de sólo escritura. |
 | Módulos inteligentes | CU-105, CU-106, CU-107, CU-108 | M1: `maintenance_window_proposal` y `vehicle_usage_log`. M2: `repurchase_invitation`. M3: `route_batch`, `route_batch_stop` y `route_batch_offer`. M4: `cylinder_recovery_case` y `cylinder_recovery_notice`. Los parámetros de los cuatro, en `module_config`. |
 

@@ -6,7 +6,7 @@ sequenceDiagram
     participant UC as CreateOrderUseCase
     participant QR as QueryRunner
     participant TS as TimeSlotService
-    participant STK as StockReservationService
+    participant GCS as GasCylinderService
     participant PRC as OrderPricingService
     participant PAY as PaymentsService
     participant GW as PaymentGatewayPort
@@ -28,10 +28,10 @@ sequenceDiagram
         TS-->>UC: cupo disponible con lock pesimista
         deactivate TS
         loop Por cada item del pedido
-            UC->>STK: reserve(manager, gasCylinderId, quantity)
-            activate STK
-            STK-->>UC: GasCylinder bloqueado y descontado
-            deactivate STK
+            UC->>GCS: reservarStock(manager, gasCylinderId, quantity)
+            activate GCS
+            GCS-->>UC: GasCylinder bloqueado y descontado, con sus promociones
+            deactivate GCS
             UC->>PRC: priceItem(price, promotions, quantity)
             activate PRC
             PRC-->>UC: unitPrice, subtotal

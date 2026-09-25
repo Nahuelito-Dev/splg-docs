@@ -5,7 +5,7 @@ sequenceDiagram
     participant OFERTAS as DispatchOfferRepositoryPort
     participant RT as RealtimeDispatchPort
     participant REDIS as RedisService
-    participant DEL as RepositoryDelivery
+    participant DEL as DeliveryService
     participant DGW as DriversGateway
 
     ORQ->>OFERTAS: findOfferedDriverIds(order.order_id)
@@ -21,9 +21,9 @@ sequenceDiagram
         deactivate REDIS
         RT-->>ORQ: driverIds por cercania
         deactivate RT
-        ORQ->>DEL: find(user_id In driverIds, distributor_id)
+        ORQ->>DEL: choferesDeLaDistribuidora(driverIds, distributorId)
         activate DEL
-        DEL-->>ORQ: choferes de la misma distribuidora
+        DEL-->>ORQ: user_id de los choferes de la misma distribuidora
         deactivate DEL
     end
     alt Hay un candidato aun no contactado

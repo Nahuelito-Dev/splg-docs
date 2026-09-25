@@ -8,7 +8,7 @@ sequenceDiagram
     CHO->>SIS: avisarLlegada(pedidoId)
     activate SIS
     alt el pedido está en camino
-        SIS-)CLI: aviso de que el repartidor llegó al domicilio
+        SIS-)CLI: aviso de que el repartidor llegó al domicilio, en tiempo real y como notificación al dispositivo
         SIS-->>CHO: cliente notificado
     else el pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado

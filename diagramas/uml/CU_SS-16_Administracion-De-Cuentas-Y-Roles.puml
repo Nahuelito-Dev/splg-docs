@@ -59,7 +59,6 @@ A03 -[#8C4A9E]- U088
 A03 -[#8C4A9E]- U092
 A03 -[#8C4A9E]- U093
 A03 -[#8C4A9E]- U094
-A03 -[#8C4A9E]- U095
 A03 -[#8C4A9E]- U129
 A03 -[#8C4A9E]- U130
 A03 -[#8C4A9E]- U131
@@ -67,6 +66,7 @@ A05 -[#B4432B]- U086
 A05 -[#B4432B]- U087
 A05 -[#B4432B]- U089
 A05 -[#B4432B]- U090
+A05 -[#B4432B]- U095
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U093 ..> U129 : <<include>>

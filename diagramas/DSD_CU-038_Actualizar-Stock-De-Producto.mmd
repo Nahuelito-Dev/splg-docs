@@ -5,7 +5,7 @@ sequenceDiagram
     participant SRV as GasCylinderService
     participant GREP as RepositoryGasCylinder
 
-    CTRL->>SRV: updateStock(id, body.quantity, distributorId)
+    CTRL->>SRV: updateStock(id, dto.quantity, distributorId), dto validado por UpdateStockDto
     activate SRV
     SRV->>SRV: findOne(id, distributorId)
     SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)

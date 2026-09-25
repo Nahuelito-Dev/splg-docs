@@ -12,7 +12,7 @@ sequenceDiagram
     alt No es SUPER_ADMIN, incluido un admin de empresa
         CTRL-->>ADM: 403 ForbiddenException
     else SUPER_ADMIN
-        CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
+        CTRL->>SRV: sendTestNotification(dto.token, dto.title, dto.body), dto validado por SendTestNotificationDto
         activate SRV
         SRV->>SRV: arma message con notification y data type TEST mas timestamp
         SRV->>FCM: sendToToken(token, message)
