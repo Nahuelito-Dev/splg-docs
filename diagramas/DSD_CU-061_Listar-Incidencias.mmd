@@ -24,6 +24,7 @@ sequenceDiagram
     deactivate IREP
     SRV-->>CTRL: Incident[]
     deactivate SRV
-    CTRL-->>ADM: 200 Incident[]
+    CTRL->>CTRL: IncidentMapper.toDto por cada incidencia, sin el deliveryCode del pedido
+    CTRL-->>ADM: 200 IncidentResponseDto[]
     deactivate CTRL
     deactivate DEC

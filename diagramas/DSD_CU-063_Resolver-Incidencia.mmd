@@ -29,7 +29,8 @@ sequenceDiagram
         IREP-->>SRV: Incident actualizada
         deactivate IREP
         SRV-->>CTRL: Incident
-        CTRL-->>ADM: 200 Incident
+        CTRL->>CTRL: IncidentMapper.toDto(incident)
+        CTRL-->>ADM: 200 IncidentResponseDto
         deactivate CTRL
     end
     deactivate DEC

@@ -20,6 +20,7 @@ sequenceDiagram
     deactivate IREP
     SRV-->>CTRL: Incident[]
     deactivate SRV
-    CTRL-->>USR: 200 Incident[]
+    CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
+    CTRL-->>USR: 200 IncidentResponseDto[]
     deactivate CTRL
     deactivate DEC

@@ -4,7 +4,7 @@ sequenceDiagram
     participant CHO as Chofer
     participant CTRL as IncidentController
     participant SRV as IncidentService
-    participant OREP as RepositoryOrder
+    participant OSRV as OrderService
     participant IREP as RepositoryIncident
 
     CHO->>CTRL: POST /incidents con CreateIncidentDto
@@ -12,10 +12,10 @@ sequenceDiagram
     CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
     CTRL->>SRV: create(dto, user.user_id)
     activate SRV
-    SRV->>OREP: findOne(where order_id igual a dto.orderId)
-    activate OREP
-    OREP-->>SRV: Order o null
-    deactivate OREP
+    SRV->>OSRV: findById(dto.orderId)
+    activate OSRV
+    OSRV-->>SRV: Order o null
+    deactivate OSRV
     alt El pedido no existe
         SRV-->>CTRL: NotFoundException, pedido no encontrado
         deactivate SRV
@@ -30,6 +30,7 @@ sequenceDiagram
         IREP-->>SRV: Incident persistida
         deactivate IREP
         SRV-->>CTRL: Incident
-        CTRL-->>CHO: 201 Incident
+        CTRL->>CTRL: IncidentMapper.toDto(incident)
+        CTRL-->>CHO: 201 IncidentResponseDto
         deactivate CTRL
     end

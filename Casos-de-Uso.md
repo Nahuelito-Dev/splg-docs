@@ -18777,7 +18777,7 @@ sequenceDiagram
     participant CHO as Chofer
     participant CTRL as IncidentController
     participant SRV as IncidentService
-    participant OREP as RepositoryOrder
+    participant OSRV as OrderService
     participant IREP as RepositoryIncident
 
     CHO->>CTRL: POST /incidents con CreateIncidentDto
@@ -18785,10 +18785,10 @@ sequenceDiagram
     CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
     CTRL->>SRV: create(dto, user.user_id)
     activate SRV
-    SRV->>OREP: findOne(where order_id igual a dto.orderId)
-    activate OREP
-    OREP-->>SRV: Order o null
-    deactivate OREP
+    SRV->>OSRV: findById(dto.orderId)
+    activate OSRV
+    OSRV-->>SRV: Order o null
+    deactivate OSRV
     alt El pedido no existe
         SRV-->>CTRL: NotFoundException, pedido no encontrado
         deactivate SRV
@@ -18803,7 +18803,8 @@ sequenceDiagram
         IREP-->>SRV: Incident persistida
         deactivate IREP
         SRV-->>CTRL: Incident
-        CTRL-->>CHO: 201 Incident
+        CTRL->>CTRL: IncidentMapper.toDto(incident)
+        CTRL-->>CHO: 201 IncidentResponseDto
         deactivate CTRL
     end
 ```
@@ -18847,7 +18848,8 @@ sequenceDiagram
     deactivate IREP
     SRV-->>CTRL: Incident[]
     deactivate SRV
-    CTRL-->>ADM: 200 Incident[]
+    CTRL->>CTRL: IncidentMapper.toDto por cada incidencia, sin el deliveryCode del pedido
+    CTRL-->>ADM: 200 IncidentResponseDto[]
     deactivate CTRL
     deactivate DEC
 ```
@@ -18886,7 +18888,8 @@ sequenceDiagram
     deactivate IREP
     SRV-->>CTRL: Incident[]
     deactivate SRV
-    CTRL-->>USR: 200 Incident[]
+    CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
+    CTRL-->>USR: 200 IncidentResponseDto[]
     deactivate CTRL
     deactivate DEC
 ```
@@ -18934,7 +18937,8 @@ sequenceDiagram
         IREP-->>SRV: Incident actualizada
         deactivate IREP
         SRV-->>CTRL: Incident
-        CTRL-->>ADM: 200 Incident
+        CTRL->>CTRL: IncidentMapper.toDto(incident)
+        CTRL-->>ADM: 200 IncidentResponseDto
         deactivate CTRL
     end
     deactivate DEC
