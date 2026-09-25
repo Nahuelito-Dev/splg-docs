@@ -45,21 +45,37 @@ respuestas y sus DSD actualizados en las **tres copias**.
 
 ---
 
-## Lo primero para mañana
+## Avance del 24/09 a la noche (segunda sesión)
 
-1. **Terminar la tanda 1:** `incident`, `claims`, `rating`, `reports`.
-2. **Revisar el comparador de formas:** no marcó `firebase_uid` en `GET /admin`
-   ni en `POST /admin/register` aunque se sacó (verificado a mano). Entender
-   por qué antes de seguir confiando en él.
-3. **Tanda 2:** `distributor`, `payments` (mover el webhook de MP fuera de
-   `order`), `car`, `cylinder`, `coverage-zone`, `time-slot`, `notifications`,
-   `email`.
-4. **Tanda 3:** `users`, `delivery`, `user-address`, `gascylinder`, `order` al
-   final. Acá va el corte del ciclo `users ↔ customer ↔ email`: los registros de
-   cliente y de chofer se mueven juntos a sus módulos (cambia CU-002 y CU-003).
-5. **Pasada final:** propiedades a camelCase con `@Column({ name })` y renombres
-   de archivos. Va al final porque recién ahí todo tiene DTO de salida.
-6. Publicar el sitio.
+**Módulos alineados (21):** `health`, `redis`, `firebase`, `common`, `role`,
+`auth`, `gateways`, `customer`\*, `admin`, `claims`, `incident`, `rating`,
+`reports`, `distributor`, `time-slot`\*, `coverage-zone`, `car`, `cylinder`\*,
+`notifications`.
+
+\* Les queda un punto que va con `order` en la tanda 3: `customer` (alta de
+clientes crea el User), `time-slot` (el cupo cuenta pedidos dentro de la
+transacción del alta) y `cylinder` (lee el cliente del pedido). Los tres por
+el mismo motivo: `order` ya depende de ellos y la lectura inversa armaría un
+ciclo.
+
+**Hallazgos corregidos:** H-52 (un cliente se validaba solo) y H-56 (el
+informe por producto salía vacío). Anotados sin corregir: H-53, H-54, H-55,
+H-57.
+
+**Diagramas:** los DSD de flota (CU-136 a 142) y el diagrama de clases pasaron
+al modelo Plan + Tarea; CU-021 al día con la identidad del socket. Los 304
+diagramas pasan el parser de Mermaid 10.9.1 y el verificador de la cátedra.
+
+## Lo que sigue
+
+1. **Tanda 2, lo que falta:** `email` (ciclo con `users`, 41 errores de
+   ESLint) y `payments` (mover el webhook de MercadoPago fuera de `order`).
+2. **Decoradores compuestos** (`applyDecorators`): `@ApiBearerAuth` + `@Roles`
+   + las respuestas de error se repiten en todos los controladores.
+3. **Tanda 3:** `users`, `delivery`, `user-address`, `gascylinder` y `order`
+   al final, con los tres pendientes marcados con \*.
+4. **Pasada final:** camelCase con `@Column({ name })` y renombres de archivos.
+5. Publicar el sitio.
 
 ## Cómo se trabaja un módulo
 
