@@ -1,138 +1,219 @@
-# Dónde quedamos — 24/09/2026 (cierre)
+# Dónde quedamos — 25/09/2026
 
-Se lee junto con `splg-app-backend/CONVENCIONES.md` (las reglas y los 12 puntos
-de "módulo terminado") y `MODELO-DE-DOMINIO.md` (el modelo nuevo).
+Es lo primero que hay que leer. Estado general del sistema medido sobre el
+código, lo que se hizo el 25/09 y el plan desde el lunes 28/09. El cierre del
+24/09 quedó en `historico/DONDE-QUEDAMOS-2026-09-24.md`.
 
-**Objetivo:** dejar las bases del backend alineadas a rajatabla con Nest y
-TypeScript estricto, seguras y escalables, para desarrollar la tesis encima.
-
-**Ramas:** backend en `fix/alineacion-nest`; panel y app de clientes en
-`feature/alta-unificada`; docs en `develop`. Todo commiteado y pusheado.
+**Ramas:** backend en `fix/alineacion-nest` (pusheado, **falta mergear a
+`develop`**), panel y app de clientes en `feature/alta-unificada` (sin mergear),
+docs en `develop`.
 
 ---
 
-## Estado de los módulos del backend
+## 1. En una línea
 
-Medido sobre el código el 24/09 a la noche: lint = errores de ESLint estricto
-(`any` y promesas sueltas prohibidos), pruebas = archivos `.spec.ts`.
+**Las bases del backend están cerradas:** Nest y TypeScript estricto en todo el
+código, aislamiento entre distribuidoras probado, modelo de datos completo y
+normalizado, bajas lógicas y auditoría. **Desde el lunes se desarrolla por API
+sobre tablas que ya existen**, sin volver a tocar el esquema. El panel y las
+apps van después y se adaptan a la API.
 
-### Terminados: cumplen Nest + TypeScript estricto
+## 2. Cumplimiento de Nest y TypeScript (medido el 25/09)
 
-DTO de entrada y de salida, mapper explícito, `@Auth`, cada módulo dueño de sus
-tablas, sin `forwardRef`, sin `process.env`, lint en 0 y prueba unitaria.
+| Criterio (CONVENCIONES.md §12) | Estado |
+|---|---|
+| `tsc` estricto | 0 errores |
+| ESLint estricto (sin `any`, sin promesas sueltas) | 0 errores en todo `src` |
+| `any` en el código | 0 |
+| `forwardRef` | 0 |
+| `process.env` fuera de la configuración | 0 (todo por `ConfigService`, validado con Joi) |
+| DTO de entrada y de salida con mapper | todos los módulos con endpoints |
+| Pruebas | 326 en verde, en 45 archivos |
+| Cada módulo dueño de sus tablas | todos salvo dos lecturas de `order` (ver 4.2) |
+| Swagger | tipado en los módulos alineados; falta la pasada completa (6.4) |
+| Entidades = base de datos | 0 diferencias (`migration:generate` no encuentra nada) |
 
-| Módulo | Pruebas | Nota |
+## 3. Estado de los módulos del backend
+
+### 3.1 Terminados y andando
+
+Cumplen los 12 puntos de "módulo terminado" y se probaron contra la API.
+
+| Módulo | Qué hace | Notas |
 |---|---|---|
-| `role`, `auth`, `admin`, `claims`, `incident`, `rating`, `distributor`, `coverage-zone`, `car`, `notifications`, `email`, `payments`, `user-address` | sí | `auth`, `email`, `notifications` y `payments` no devuelven entidades: sus DTO se arman directo |
-| `registro` (nuevo) | sí (25) | El alta única de todos los roles, con la política de quién crea qué |
-| `reports` | sí | Excepción documentada: lee entidades ajenas, sólo lectura (CQRS) |
-| `health`, `redis`, `firebase`, `gateways`, `common`, `adapters` | parcial | Infraestructura; `common` usa `process.env` sólo en las fábricas de config, como permite la convención |
-| `customer`, `time-slot`, `cylinder` | sí | Terminados salvo un punto cada uno que depende de `order` (ver tanda 3) |
+| `auth`, `registro`, `users`, `role`, `admin` | acceso, alta única de usuarios, perfiles | aislamiento H-66, H-77, H-84; baja lógica de usuario |
+| `distributor` | distribuidoras (multi-tenant) | guarda también la configuración de procesos (`module_config`) |
+| `customer`, `user-address` | clientes y direcciones | pertenencia por pedidos; direcciones con punto PostGIS |
+| `delivery`, `car` | choferes y vehículos | aislamiento H-80; baja lógica |
+| `gascylinder` | catálogo, stock y promociones | promociones en tabla; stock con lock pesimista |
+| `cylinder` | envases físicos y su trazabilidad | salvo 4.2 |
+| `order` | pedidos, despacho secuencial, reservas, pagos | 221 errores de lint → 0; H-78, H-79, H-85 |
+| `time-slot`, `coverage-zone` | franjas y zonas PostGIS | salvo 4.2 (`time-slot`) |
+| `payments` | MercadoPago y efectivo | |
+| `claims`, `incident`, `rating` | posventa | H-82, H-89 |
+| `notifications`, `email` | push FCM y correos | rutas de administración sólo del Administrador General (H-83) |
+| `reports` | informes de ventas | modelo de lectura (CQRS) documentado |
+| `audit` **(nuevo)** | registro de toda escritura (CU-153) y consulta (CU-152) | inmutable en la base |
+| `health`, `redis`, `firebase`, `gateways`, `common`, `adapters` | infraestructura | |
 
-### A medias: funcionan y son seguros, falta alinearlos
+### 3.2 Con tablas listas, sin servicios todavía (se desarrollan desde el lunes)
 
-| Módulo | Qué falta |
+| Módulo | Tablas | Casos de uso |
+|---|---|---|
+| `fleet` | plan y tarea de mantenimiento, propuesta de ventana de taller, uso del vehículo; en `car`: tara, carga máxima, odómetro, estado en la flota | CU-105 (M1) y CU-136 a CU-142 |
+| `cart` | carrito e ítems | CU-122 a CU-126 |
+| `order` (ampliación) | historial de estados, cambio de dirección, quién recibe, modalidad express, lotes de recorrido | CU-018 a 020, CU-127, 128, CU-147 a 149, CU-107 (M3) |
+| `customer` (ampliación) | consumo declarado, invitación de recompra | CU-143 a 146, CU-106 (M2) |
+| `cylinder` (ampliación) | revisión, vencimiento, caso y aviso de recupero | CU-132 a 135, CU-108 (M4) |
+| `coverage-zone` (ampliación) | recargo porcentual, etiqueta, color, vigencia | CU-150, 151 |
+| `user-address` (ampliación) | piso, departamento, lugar y precisión | falta la resolución contra el mapa (CU-116, 118) |
+
+### 3.3 Lo que queda por refactorizar (chico)
+
+1. **`cylinder` y `time-slot` leen la tabla `order` directamente** (4.2). No se
+   pueden pasar a `OrderService` sin un ciclo, porque `order` los importa a
+   ellos. La salida es un puerto de lectura que `order` implemente, o un evento.
+   Es el único punto de la convención 4 que queda abierto.
+2. **Pasada final de camelCase:** muchas entidades viejas tienen propiedades
+   `snake_case`. Las tablas nuevas ya siguen la convención. No cambia la base,
+   pero sí las respuestas de la API: conviene hacerlo junto con la adaptación
+   del panel.
+3. **Swagger completo** (todas las respuestas y errores) y regenerar `openapi.json`.
+4. **`order.deliveryLatitude` y `deliveryLongitude`** siguen como `varchar`
+   (NORMALIZACION.md §5).
+
+## 4. Lo que se hizo el 25/09
+
+| Tema | Resultado | Detalle |
+|---|---|---|
+| Aislamiento entre distribuidoras | batería de 205 casos: 66 fallas → 0 | H-77 a H-84, `scripts/alineacion/aislamiento/` |
+| Tanda 3 (`users`, `delivery`, `gascylinder`, `order`) | alineados a Nest | H-85: pedir sin stock daba 500 |
+| Claves foráneas | las 13 sin declarar, declaradas | 84 en total |
+| Baja lógica (H-74) | usuarios, vehículos, zonas, direcciones | Firebase se deshabilita, no se borra |
+| Normalización | 1FN a 5FN documentado | `NORMALIZACION.md`; H-88 |
+| Modelo propuesto | 17 tablas y 26 columnas implementadas | comparado columna por columna: 0 diferencias |
+| Auditoría | CU-152 y CU-153 implementados | |
+| Documentación | modelos regenerados (MC, DBM, Lucidchart); CU/CUE/DSS/DSD en curso | ver 5 |
+| Tutu | analizado | `REUTILIZABLE-TUTU.md`, H-86 y H-87 |
+
+Todo el código se probó contra la API corriendo antes de commitear: la colección
+de Postman completa, la batería de aislamiento y casos puntuales.
+
+## 5. Documentación
+
+| Artefacto | Estado |
 |---|---|
-| `users` | Devuelve la entidad sin mapper, errores de lint heredados, sin pruebas. Seguridad y aislamiento entre distribuidoras ya resueltos (H-62, H-63, H-65, H-66, H-73, H-75, H-76) |
-| `delivery` | Devuelve la entidad sin mapper. Lint en 0 y seguridad corregida (H-61, H-64) |
-| `gascylinder` | Sin mapper, 3 errores de lint, sin pruebas |
+| Modelo conceptual (MC) y de base de datos (DBM) | regenerados; export para Lucidchart en `lucidchart/` (draw.io y `.sql` para Importar datos · ERD). Falta una última regeneración con las claves únicas de H-88 |
+| Normalización | `NORMALIZACION.md` |
+| CU / CUA / CUE / DSS / DSD | aislamiento hecho en unos 45 CU (pedidos, choferes, clientes, direcciones, posventa, notificaciones, admin), verificado contra la API. En curso: bajas lógicas, stock y normalización, textos viejos, auditoría (CU-152/153 en sus cinco artefactos), requisito no funcional de aislamiento, CUA, diagramas de casos de uso, de contexto y de iteraciones |
+| Sitio (splg-atlas) | se publica al cerrar la documentación |
 
-### A refactorizar
+**Para leer la documentación:** primero este archivo, después
+`MODELO-DE-DOMINIO.md` y `NORMALIZACION.md`, y después los casos de uso por
+subsistema en `Casos-de-Uso.md`.
 
-| Módulo | Qué tiene |
+## 6. Qué le sirve al panel (para cuando se adapte)
+
+El panel (`splg-app-admin`) tiene que adaptarse a la API nueva. Lista concreta:
+
+| Cambio en la API | Qué tiene que hacer el panel |
 |---|---|
-| `order` | 221 errores de lint, controlador de 456 líneas, 5 entidades ajenas registradas, 2 `process.env`. Es el último de la tanda 3 y cierra los pendientes de `customer`, `time-slot` y `cylinder` |
+| `customer.validated` es booleano | tratarlo como `true`/`false` (hoy convierte desde texto) |
+| Choferes: sin `isTraveling`, sin `notification_token` ni `firebase_uid` | quitar esas columnas |
+| `PATCH /delivery/:id` acepta sólo `validated` e `isActive` | ya es lo que manda |
+| El admin de empresa no edita, bloquea, resetea ni da de baja clientes, ni toca sus direcciones (403) | ocultar esos botones según el rol |
+| `POST /admin` ya no recibe `role_id`; `/admin` suma `user.role` | ajustar el tipo `Admin` |
+| Lo de otra distribuidora responde 404 | mensajes "no encontrado" coherentes |
+| Nuevos: `GET /audit` (registro de auditoría), promociones validadas, direcciones con piso y departamento | pantallas nuevas: registro de auditoría, gestión de flota y documentación |
+| `feature/alta-unificada` | probar con sesión (crear chofer, admin, cliente; resetear contraseña) y mergear |
 
-### A hacer (no existe todavía o es transversal)
+Del panel de Tutu sirven: visor de documentos, tabla de vencimientos,
+aprobación de choferes y el panel de colas (ver 7).
 
-| Tema | Detalle |
-|---|---|
-| Normalización del modelo de datos | Análisis formal tabla por tabla: dependencias funcionales, 1FN a FNBC, 4FN y 5FN, y justificación de cada desnormalización. Candidatos ya vistos: `admin.role_id` repite `user.role_id`; `lat_lang`/`latLng` guardan "lat,lng" en un texto; `customer.validated` es texto y `delivery.validated` booleano |
-| Soft delete y auditoría (H-74) | Sólo 4 de 20 entidades tienen borrado lógico; 6 borrados físicos (el peor, `DELETE /users/:id`); no hay registro de quién creó, modificó o borró. **Falta recuperar lo acordado la noche del 23/09 sobre la auditoría** |
-| Pasada final | camelCase con `@Column({ name })` y renombres de archivos (`isPublic.decorator.ts`, `timeout.interceptors.ts`) |
-| Documentación | Swagger completo del back (todas las respuestas y errores); mejorar la web y rehacer el visor de imágenes; publicar el sitio. Los `.svg`/`.png` de `diagramas/` son del primer commit y nunca se regeneraron: el sitio no los usa, pero están viejos |
-| `.env.example` | No existe: falta para levantar el proyecto desde cero |
-| Barrido de aislamiento entre distribuidoras | `users` ya cumple. Falta probar **todos** los endpoints de los demás módulos con dos distribuidoras (admin A contra datos de B), como se hizo con `users`. Pendiente conocido: `PATCH /customers/:id` (validar un cliente) cambia un dato compartido entre distribuidoras |
-| Panel: acciones sobre clientes | Un admin de empresa ya no puede editar, bloquear ni resetear la contraseña de un cliente (403). El panel todavía le muestra esos botones: hay que ocultarlos según el rol |
-| Módulo de auditoría | Pedido de la cátedra: registrar qué pasa en el sistema (quién cambió qué y cuándo). Va con soft delete (H-74) |
-| Reportes | nahue pidió un módulo de reportes: ya existe `reports` (ventas por distribuidora); definir si es ampliarlo o uno nuevo |
+## 7. Plan desde el lunes 28/09
 
----
+Orden acordado: primero la API, después panel y apps, al final los módulos
+inteligentes. **La flota es de la distribuidora:** la documentación de vehículos
+y la habilitación de choferes las carga y gestiona el admin de empresa desde el
+panel. El chofer no usa auto propio y no carga documentos.
 
-## Lo que se hizo el 24/09
+### Semana 1 — API
 
-**Seguridad** (cada punto verificado contra la API, con commit propio): H-58,
-H-59, H-61 a H-65, H-67 a H-70, H-73, H-75. Los críticos:
+1. **Mergear** `fix/alineacion-nest` a `develop` (antes del lunes).
+2. **Infraestructura de jobs con BullMQ** (idea de Tutu, `backend/src/bull`,
+   `bull-board`): reemplaza los crons en memoria y sostiene M1, M2 y M4. Incluye
+   el panel de colas, protegido para el Administrador General.
+3. **Subida de archivos** (SPLG no tiene): servicio de almacenamiento sobre
+   Firebase Storage, con filtro de tipo y tamaño (adaptado de Tutu). Lo necesitan
+   la documentación de flota, las fotos de incidencias y reclamos, y el visor.
+4. **Flota (CU-136 a 142) sobre `fleet`:** seguro, VTV, licencia y
+   mantenimientos como planes y tareas, cargados por el admin. Se adapta de
+   Tutu: vencimientos, reglas de validación y parser de fechas. Un vehículo con
+   algo vencido que inhabilita queda `grounded` y no recibe ofertas.
+5. **Avisos programados por vencimiento** (idea de Tutu: plantillas por
+   anticipación, cancelación por referencia) sobre BullMQ, sin estado en memoria.
+6. **Historial de estados del pedido** (`order_status_history`): lo escribe la
+   máquina de estados en cada transición. Es la fuente de verdad (NORMALIZACION 4.2).
+7. **Corregir H-86 y H-87** (reconexión del socket en las apps): `order:snapshot`
+   al reconectar y token fresco en cada intento.
 
-- **H-70:** un alta repetida borraba de Firebase la cuenta de quien ya existía.
-  Sin token, cualquiera dejaba afuera a cualquier usuario, super admin incluido.
-- **H-73:** un admin de empresa podía cambiarle el correo a un usuario de otra
-  distribuidora y así entrar como esa persona.
-- **H-63 / H-62:** cualquiera podía darse de alta como super admin, y un admin
-  de empresa podía volverse super admin.
+### Semana 2 — API
 
-**Alta unificada de usuarios:** las seis altas (cliente desde la app, chofer y
-cliente desde el panel, usuario base, admin y primer super admin) pasaron a un
-solo caso de uso, `RegistroService`, con dos puertas: `POST /auth/registro`
-(pública, siempre cliente, 10 por minuto por IP) y `POST /users` (panel, rol en
-el cuerpo). El primer super admin se crea con `npm run crear-superadmin` desde
-el servidor. Resolvió H-71 (el panel no podía crear clientes) y H-72 hacia
-adelante (altas sin cuenta de acceso).
+8. Carrito (CU-122 a 126), cambio de dirección y quién recibe (CU-127, 128),
+   modalidad express (CU-147 a 149), vigencia y recargo porcentual de zonas
+   (CU-150, 151).
+9. Revisión y vencimiento de envases (CU-132 a 135).
+10. Resolver 3.3.1 (lecturas de `order` desde `cylinder` y `time-slot`).
+11. Despacho: reordenar los primeros 3 a 5 candidatos por tiempo real de manejo
+    (idea de Tutu, Distance Matrix con caché).
 
-**Documentación de las altas:** CUA, CUE, DSS y DSD de CU-002, 003, 031, 082,
-086 y 087 reescritos y sincronizados en todas sus copias; CU-082 pasó a ser el
-caso incluido (`«include»`) por los otros cinco, también entre subsistemas;
-tabla 7.7 y diagrama de clases de servicios actualizados. Los diagramas pasan
-el parser de Mermaid 10.9.1 y el verificador de la cátedra.
+### Después — panel y apps
 
----
+12. Adaptar el panel (lista de la sección 6) y agregar las pantallas nuevas:
+    flota y documentación con visor (componentes de Tutu), vencimientos,
+    aprobación de choferes, registro de auditoría y colas.
+13. Apps: navegación del chofer con polilíneas (servicio Dart de Tutu),
+    detección de conexión y restauración del estado, control de versión.
 
-## Por dónde seguir mañana
+### Al final — módulos inteligentes
 
-1. **Revisar y mergear** `feature/alta-unificada` del panel y de la app. Probar
-   el panel con sesión: crear chofer, admin y cliente, y resetear una contraseña.
-   (Claude no puede escribir contraseñas en el navegador: el login lo hace nahue.)
-2. **Barrido de aislamiento entre distribuidoras** en todos los módulos, con
-   dos distribuidoras contra la API (regla de nahue: la empresa A no ve ni
-   hace nada sobre la B).
-3. **Tanda 3:** `users` y `delivery` (mapper y pruebas), `gascylinder`, y
-   `order` al final.
-4. **Normalización + soft delete + auditoría** del modelo de datos, con sus
-   migraciones y el diagrama de base de datos.
-5. Pasada final, Swagger completo, web y publicación.
+14. M1 planificación de flota, M2 recompra, M3 agrupación por recorrido (rutas
+    con paradas optimizadas), M4 recupero de envases. Las tablas ya están.
 
-## Hallazgos abiertos (detalle en `HALLAZGOS.md`)
+### Landing page (nueva, falta)
 
-- **H-74:** borrados físicos y soft delete parcial.
-- **H-53:** `/health` da 503 bajo la batería completa (umbral de 300 MB).
-- **H-54:** el evento "en camino" se llama distinto en cliente y panel.
-- **H-55:** la asignación manual no avisa al chofer por socket.
-- **H-57:** la granularidad semanal de los informes se acepta y se ignora.
+15. **Landing para promocionar el servicio.** No existe nada todavía. Qué es,
+    para quién (distribuidoras de gas: dueños y administración), qué resuelve
+    (pedidos por app, despacho automático, seguimiento en vivo, flota,
+    trazabilidad de envases), cómo se ve (capturas del panel y de las apps),
+    planes y contacto. Página estática independiente del panel, con la marca
+    SPLG. **Hay que definir:** dominio, si tiene formulario de contacto o
+    agenda de demo, y si muestra precios. Puede hacerse en paralelo a la
+    semana 1, porque no depende de la API.
 
-## Cómo se trabaja un módulo
+## 8. Hallazgos abiertos
 
-```bash
-bash splg-app-backend/postman/refrescar-ids.sh
-python3 splg-app-backend/postman/generar-coleccion.py
-splg-app-backend/scripts/alineacion/modulo.sh <etiqueta> src/<modulo>
-splg-app-backend/scripts/alineacion/aceptar.sh <etiqueta>   # después del commit
-```
+| # | Qué | Dónde |
+|---|---|---|
+| H-86 | Al reconectar el socket, las apps no recuperan el estado del pedido | plan, punto 7 |
+| H-87 | El chofer podría no reconectarse con el token vencido (sin verificar) | plan, punto 7 |
+| H-53 | `/health` da 503 bajo la batería completa | |
+| H-54 | El evento "en camino" se llama distinto en cliente y panel | |
+| H-55 | La asignación manual no avisa al chofer por socket | |
+| H-57 | La granularidad semanal de los informes se ignora | |
+| Prod | Revisar la base de producción (consultas de H-76 y H-77) y rotar secretos | |
 
-- El back de prueba corre en **:3100** (el 3000 es del MCP de Excalidraw).
-- Después de regenerar la colección, **no revertir** `SPLG-local.postman_environment.json`
-  sin conservar `distribuidoraBaseId`: las altas de choferes la usan.
-- `openapi.json` se baja de una instancia en :3101 con `SWAGGER_USER=` y
-  `SWAGGER_PASSWORD=` vacías (así no hace falta leer las credenciales).
-- Los DSD tienen tres copias (`.mmd`, Doc 3, `Casos-de-Uso.md` §7): `dsd.py`.
-  Los DSS, dos (Doc 2 y §6) además del `.mmd`. Los CUE, Doc 1 y §5. Los CUA,
-  Doc 0 y §4. Siempre `verificar-conformidad.py` y el validador de Mermaid.
+## 9. Cómo se trabaja
 
-## Reglas acordadas
-
-- A rajatabla lo que pide Nest y TypeScript; seguro por sobre todo.
-- No se cambia comportamiento sin decirlo; lo visible que cambie va en el commit.
-- Los diagramas se presentan a la cátedra: no se rompen, se actualizan en todas
-  sus copias.
-- La autorización según quién pide puede quedar en el controlador; las
-  invariantes del negocio van al servicio. La regla de quién crea qué usuario
-  vive en `autorizarAlta`.
+- El back de prueba corre en **:3100**. `scripts/alineacion/modulo.sh <etiqueta>
+  <carpetas>` hace lint, pruebas, la colección de Postman y compara las formas de
+  respuesta. `aislamiento/run.sh` corre la batería entre distribuidoras
+  (`SPLG_CLAVE=...`).
+- Migraciones: `npm run migration:generate`, **revisar el SQL** (para cambios de
+  tipo o renombres se escribe a mano, con conversión de datos),
+  `migration:run`, `migration:revert` y otra vez `run`, y chequear que
+  `generate` no encuentre diferencias.
+- Documentación: `cue.py`, `dss.py` y `dsd.py` editan todas las copias; después
+  el validador de Mermaid y `verificar-conformidad.py`.
+- **Nada se commitea sin probarlo contra la API**: ni el código ni las
+  afirmaciones nuevas de la documentación.
