@@ -16109,10 +16109,10 @@ sequenceDiagram
     autonumber
     participant NCTRL as NotificationsController
     participant NSRV as NotificationsService
-    participant CREP as RepositoryCustomer
-    participant DREP as RepositoryDelivery
+    participant CSRV as CustomersService
+    participant DSRV as DeliveryService
     participant CGW as CustomersGateway
-    participant ASRV as AuthService
+    participant SIS as SocketIdentityService
     participant RT as RealtimeDispatchPort
     participant NOT as NotificationPort
     participant FCM as FcmPort
@@ -16120,49 +16120,37 @@ sequenceDiagram
     NCTRL->>NCTRL: si no es admin, forzar userId al del token
     NCTRL->>NSRV: saveNotificationToken(userId, body.token, body.platform)
     activate NSRV
-    NSRV->>CREP: findOne(user_id)
-    activate CREP
+    NSRV->>CSRV: saveNotificationToken(userId, token)
+    activate CSRV
     alt Es un cliente
-        CREP-->>NSRV: Customer
-        deactivate CREP
-        NSRV->>CREP: save(customer con notification_token)
-        activate CREP
+        CSRV-->>NSRV: true
+        deactivate CSRV
         NSRV-->>NCTRL: success true
         deactivate NSRV
     else No es cliente
-        CREP-->>NSRV: null
-        deactivate CREP
-        NSRV->>DREP: findOne(user_id)
-        activate DREP
+        CSRV-->>NSRV: false
+        NSRV->>DSRV: saveNotificationToken(userId, token)
+        activate DSRV
         alt Es un chofer
-            DREP-->>NSRV: Delivery
-            deactivate DREP
-            NSRV->>DREP: save(delivery con notification_token)
-            activate DREP
+            DSRV-->>NSRV: true
+            deactivate DSRV
             NSRV-->>NCTRL: success true
         else No existe el perfil
-            DREP-->>NSRV: null
-            deactivate DREP
+            DSRV-->>NSRV: false
             NSRV-->>NCTRL: success false, error User not found
         end
     end
 
-    CGW->>CGW: handleConnection(client)
-    alt Handshake sin token
+    CGW->>SIS: identificar(client), en el handshake
+    activate SIS
+    alt Sin token, token invalido, usuario inexistente o bloqueado
+        SIS-->>CGW: null
         CGW->>CGW: client.disconnect()
-    else Con token
-        CGW->>ASRV: decodeToken(token)
-        activate ASRV
-        alt Token invalido
-            ASRV-->>CGW: UnauthorizedException
-            deactivate ASRV
-            CGW->>CGW: client.disconnect()
-        else Token valido
-            ASRV-->>CGW: email, user y sub
-            CGW->>CGW: handleCustomerJoin(data, client)
-            CGW->>CGW: client.join(sala customer_)
-            CGW->>CGW: client.emit(server ack)
-        end
+    else Identidad resuelta
+        SIS-->>CGW: userId, email y rol, guardados en socket.data
+        deactivate SIS
+        CGW->>CGW: handleCustomerJoin, sala customer_ con el userId del token
+        CGW->>CGW: client.join(sala) y client.emit(server ack)
     end
 
     opt Cambio de estado del pedido, ver CU-018
@@ -16171,11 +16159,12 @@ sequenceDiagram
         CGW->>CGW: server.to(roomName).emit(event, payload)
         NOT->>NSRV: sendOrderConfirmation(customerId, orderId, token)
         activate NSRV
-        NSRV->>CREP: findOne(user_id, relations user)
-        activate CREP
+        NSRV->>CSRV: findNotificationToken(customerId)
+        activate CSRV
+        CSRV-->>NSRV: esCliente y token
+        deactivate CSRV
         alt Sin cliente o sin token registrado
-            NSRV-->>NOT: success false, error No notification token
-            deactivate NSRV
+            NSRV-->>NOT: success false y el motivo
         else Token disponible
             NSRV->>FCM: sendToToken(notificationToken, message)
             activate FCM
@@ -16183,9 +16172,9 @@ sequenceDiagram
             deactivate FCM
             NSRV-->>NOT: success true y messageId
         end
+        deactivate NSRV
+        deactivate CGW
     end
-    deactivate CGW
-    deactivate CREP
 ```
 
 **Observaciones de diseño**
@@ -20171,8 +20160,8 @@ sequenceDiagram
     participant APP as App Cliente o App Chofer
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
-    participant CREP as RepositoryCustomer
-    participant DREP as RepositoryDelivery
+    participant CSRV as CustomersService
+    participant DSRV as DeliveryService
 
     APP->>CTRL: POST /notifications/token con userId token y platform
     activate CTRL
@@ -20184,35 +20173,27 @@ sequenceDiagram
     end
     CTRL->>SRV: saveNotificationToken(userId, body.token, body.platform)
     activate SRV
-    SRV->>CREP: findOne(where user_id)
-    activate CREP
-    CREP-->>SRV: Customer o null
-    deactivate CREP
+    SRV->>CSRV: saveNotificationToken(userId, token)
+    activate CSRV
+    CSRV-->>SRV: true si es cliente y lo guardo
+    deactivate CSRV
     alt Es un cliente
-        SRV->>SRV: customer.notification_token igual a token
-        SRV->>CREP: save(customer)
-        activate CREP
         SRV-->>CTRL: success true
-        deactivate SRV
     else No es cliente, se prueba como chofer
-        SRV->>DREP: findOne(where user_id)
-        activate DREP
-        DREP-->>SRV: Delivery o null
-        deactivate DREP
+        SRV->>DSRV: saveNotificationToken(userId, token)
+        activate DSRV
+        DSRV-->>SRV: true si es chofer y lo guardo
+        deactivate DSRV
         alt Es un chofer
-            SRV->>SRV: delivery.notification_token igual a token
-            SRV->>DREP: save(delivery)
-            activate DREP
             SRV-->>CTRL: success true
         else No existe en ninguno de los dos perfiles
             SRV->>SRV: logger.warn usuario no encontrado para token FCM
             SRV-->>CTRL: success false, error User not found
         end
     end
-    CTRL-->>APP: 200 resultado
+    deactivate SRV
+    CTRL-->>APP: 201 ResultadoDeEnvioDto
     deactivate CTRL
-    deactivate DREP
-    deactivate CREP
 ```
 
 **Observaciones de diseño**
@@ -20235,7 +20216,7 @@ sequenceDiagram
     participant USR as Usuario autenticado
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
-    participant CREP as RepositoryCustomer
+    participant CSRV as CustomersService
 
     USR->>CTRL: GET /notifications/user/:userId
     activate CTRL
@@ -20246,18 +20227,14 @@ sequenceDiagram
     else Es admin o consulta su propio userId
         CTRL->>SRV: getUserNotificationTokens(userId)
         activate SRV
-        SRV->>CREP: findOne(where user_id)
-        activate CREP
-        CREP-->>SRV: Customer o null
-        deactivate CREP
-        alt No hay perfil de cliente
-            SRV-->>CTRL: tokens vacio
-            deactivate SRV
-        else Hay cliente
-            SRV->>SRV: arma el arreglo con notification_token si existe
-            SRV-->>CTRL: tokens
-        end
-        CTRL-->>USR: 200 tokens
+        SRV->>CSRV: findNotificationToken(userId)
+        activate CSRV
+        CSRV-->>SRV: esCliente y token
+        deactivate CSRV
+        SRV->>SRV: arma el arreglo con el token si existe, vacio si no
+        SRV-->>CTRL: tokens
+        deactivate SRV
+        CTRL-->>USR: 200 TokensDeUsuarioDto
     end
 ```
 
@@ -20324,23 +20301,22 @@ sequenceDiagram
     participant ADM as Admin o SuperAdmin
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
-    participant CREP as RepositoryCustomer
+    participant CSRV as CustomersService
     participant FCM as FcmPort
 
     ADM->>CTRL: POST /notifications/order-confirmation con customerId orderId y token opcional
     activate CTRL
     CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
     activate SRV
-    SRV->>CREP: findOne(where user_id igual a customerId, relations user)
-    activate CREP
-    CREP-->>SRV: Customer o null
-    deactivate CREP
+    SRV->>CSRV: findNotificationToken(customerId)
+    activate CSRV
+    CSRV-->>SRV: esCliente y token
+    deactivate CSRV
     alt Cliente no encontrado
         SRV->>SRV: logger.warn customer not found
         SRV-->>CTRL: success false, error Customer not found
-        deactivate SRV
     else Cliente encontrado
-        SRV->>SRV: notificationToken igual al token del body o customer.notification_token
+        SRV->>SRV: notificationToken igual al token del body o al del cliente
         alt El cliente no tiene token registrado
             SRV->>SRV: logger.warn no notification token
             SRV-->>CTRL: success false, error No notification token
@@ -20350,15 +20326,16 @@ sequenceDiagram
             activate FCM
             alt Falla el envio
                 FCM-->>SRV: Error
-                deactivate FCM
                 SRV-->>CTRL: success false, error
             else Envio exitoso
                 FCM-->>SRV: messageId
                 SRV-->>CTRL: success true, messageId
             end
+            deactivate FCM
         end
     end
-    CTRL-->>ADM: 200 resultado
+    deactivate SRV
+    CTRL-->>ADM: 201 ResultadoDeEnvioDto
     deactivate CTRL
 ```
 
