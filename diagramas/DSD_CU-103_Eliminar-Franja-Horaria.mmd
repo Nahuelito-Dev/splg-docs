@@ -22,4 +22,5 @@ sequenceDiagram
         TREP-->>SRV: TimeSlot desactivado
         deactivate TREP
         SRV-->>CTRL: TimeSlot
+        CTRL->>CTRL: TimeSlotMapper.toDto(timeSlot)
     end

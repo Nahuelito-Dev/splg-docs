@@ -7121,6 +7121,7 @@ sequenceDiagram
     deactivate TREP
     SRV-->>CTRL: TimeSlot
     deactivate SRV
+    CTRL->>CTRL: TimeSlotMapper.toDto(timeSlot) a TimeSlotResponseDto
 ```
 
 **Figura 101 — DSD CU-042: Crear Franja Horaria**
@@ -7284,6 +7285,7 @@ sequenceDiagram
         deactivate TREP
         SRV-->>CTRL: TimeSlot[]
         deactivate SRV
+        CTRL->>CTRL: TimeSlotMapper.toDto por cada franja
     else Detalle de una franja, GET /time-slot/:id
         CTRL->>SRV: findOne(id, distributorId)
         activate SRV
@@ -7296,6 +7298,7 @@ sequenceDiagram
             deactivate SRV
         else Encontrada
             SRV-->>CTRL: TimeSlot
+            CTRL->>CTRL: TimeSlotMapper.toDto(timeSlot)
         end
     end
 ```
@@ -7340,6 +7343,7 @@ sequenceDiagram
         TREP-->>SRV: TimeSlot desactivado
         deactivate TREP
         SRV-->>CTRL: TimeSlot
+        CTRL->>CTRL: TimeSlotMapper.toDto(timeSlot)
     end
 ```
 
