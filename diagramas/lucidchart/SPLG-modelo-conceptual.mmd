@@ -2,7 +2,7 @@ classDiagram
     direction TB
 
     %% Modelo de dominio de SPLG — 24/09/2026
-    %% Ocho contextos. Lo marcado <<propuesto>> no esta implementado todavia.
+    %% Ocho contextos. Todo esta implementado en la base (25/09/2026).
     %% Toda entidad pertenece a una Distribuidora (multi-tenant): solo se dibujan
     %% las relaciones de la distribuidora que ya estaban en el modelo anterior.
     %% Sustento en splg-docs/material-de-trabajo/MODELO-DE-DOMINIO.md
@@ -23,12 +23,10 @@ classDiagram
         }
         class Administrador
         class ConfiguracionModulo {
-            <<propuesto>>
             modulo
             parametros
         }
         class AsientoAuditoria {
-            <<propuesto>>
             operacion
             recurso
             aplicacion
@@ -52,7 +50,6 @@ classDiagram
             predeterminada
         }
         class InvitacionRecompra {
-            <<propuesto>>
             agotamiento_estimado
             pedido_sugerido
         }
@@ -81,20 +78,17 @@ classDiagram
             fecha
         }
         class RevisionEnvase {
-            <<propuesto>>
             fecha
             resultado
             proxima_revision
         }
         class CasoRecupero {
-            <<propuesto>>
             escalon
             deposito_comprometido
             estado
             resolucion
         }
         class AvisoRecupero {
-            <<propuesto>>
             escalon
             tipo
             vence
@@ -103,11 +97,9 @@ classDiagram
 
     namespace VentaYPedidos {
         class Carrito {
-            <<propuesto>>
             ultima_modificacion
         }
         class ItemCarrito {
-            <<propuesto>>
             cantidad
             precio_unitario
         }
@@ -123,14 +115,12 @@ classDiagram
             precio_unitario
         }
         class CambioEstadoPedido {
-            <<propuesto>>
             desde
             hacia
             motivo
             fecha
         }
         class CambioDireccion {
-            <<propuesto>>
             motivo
             fecha
         }
@@ -164,16 +154,13 @@ classDiagram
         }
         class OfertaDespacho
         class LoteRecorrido {
-            <<propuesto>>
             estado
             peso_total
         }
         class ParadaLote {
-            <<propuesto>>
             orden
         }
         class OfertaLote {
-            <<propuesto>>
         }
     }
 
@@ -191,7 +178,6 @@ classDiagram
             estado_en_la_flota
         }
         class PlanMantenimiento {
-            <<propuesto>>
             nombre
             disparo
             intervalo
@@ -199,7 +185,6 @@ classDiagram
             criticidad
         }
         class TareaMantenimiento {
-            <<propuesto>>
             estado
             vence
             vencimiento_proyectado
@@ -208,7 +193,6 @@ classDiagram
             costo
         }
         class PropuestaVentanaTaller {
-            <<propuesto>>
             desde
             hasta
         }
@@ -217,7 +201,6 @@ classDiagram
             longitud
         }
         class RegistroUsoVehiculo {
-            <<propuesto>>
             dia
             kilometros
             pedidos

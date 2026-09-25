@@ -25,11 +25,17 @@ no está en la base.
 
 ## 1. Los números
 
+> **Implementado el 25/09/2026.** Las 17 tablas y 26 columnas propuestas están
+> en la base (migración `ModeloPropuesto`), las 13 relaciones sin clave foránea
+> se declararon, y la normalización sumó `gas_cylinder_promotion`. Un script
+> comparó el esquema contra la especificación columna por columna: 0
+> diferencias.
+
 | | Tablas | Columnas nuevas | Claves foráneas | Tipos enumerados |
 |---|---:|---:|---:|---:|
-| Implementado hoy | 20 | — | 30 declaradas + 13 sin declarar | 16 |
-| Propuesto | 17 nuevas | 26 en tablas existentes | 41 nuevas + las 13 que se declaran | 17 |
-| **Modelo completo** | **37** | | **84 relaciones** | **33** |
+| Antes (24/09) | 20 | — | 30 declaradas + 13 sin declarar | 16 |
+| Agregado el 25/09 | 17 del modelo + 1 de la normalización | 26 en tablas existentes | 41 nuevas + las 13 declaradas | 17 |
+| **Hoy, en la base** | **38** | | **84, todas declaradas** | **33** |
 
 ## 2. Ocho contextos
 
@@ -48,11 +54,15 @@ de la tabla (convención 4: cada módulo es dueño de sus entidades).
 | Flota y choferes | Chofer, Vehículo, Plan de mantenimiento*, Tarea de mantenimiento*, Propuesta de ventana de taller*, Registro de uso del vehículo* | `delivery`, `car` |
 | Posventa | Reclamo, Incidencia, Calificación | `claims`, `incident`, `rating` |
 
-\* propuesto, sin implementar.
+\* agregado el 25/09 (antes figuraba como propuesto).
 
-**Toda entidad pertenece a una distribuidora** (el sistema es multi-tenant). En
-el diagrama conceptual esa relación se declara una vez en la leyenda y no se
-dibuja desde cada entidad: con las líneas, el diagrama era ilegible.
+**Casi toda entidad pertenece a una distribuidora** (el sistema es
+multi-tenant). En el diagrama conceptual esa relación se declara una vez en la
+leyenda y no se dibuja desde cada entidad: con las líneas, el diagrama era
+ilegible. Las excepciones son Usuario, Cliente y Dirección: un cliente le compra
+a varias distribuidoras, así que no pertenece a ninguna; para una distribuidora,
+"sus" clientes son los que le compraron (`common/tenancy/pertenencia.ts`). Lo de
+otra distribuidora responde 404 (H-77 a H-84).
 
 ## 3. El patrón que atraviesa los módulos inteligentes
 

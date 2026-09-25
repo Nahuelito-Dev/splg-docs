@@ -115,38 +115,9 @@ enums = {n: v.split(",") for n, v in psql("""
 # que nunca se declararon como FOREIGN KEY: la base no las valida ni las
 # propaga al borrar. El destino de cada una se leyo de la entidad de TypeORM
 # correspondiente (los comentarios del backend dicen a que apunta cada columna).
-SIN_FK = [
-  # Un pago o un movimiento de envase son registro contable y de trazabilidad:
-  # no se pierden porque se borre lo que referencian. RESTRICT, no CASCADE.
-  {"tabla": "payment", "col": "order_id", "destino": "order", "destcol": "order_id",
-   "borrado": "RESTRICT"},
-  {"tabla": "payment", "col": "distributor_id", "destino": "distributor",
-   "destcol": "distributor_id", "borrado": "CASCADE"},
-  {"tabla": "cylinder_movement", "col": "cylinder_id", "destino": "cylinder",
-   "destcol": "cylinder_id", "borrado": "RESTRICT"},
-  {"tabla": "cylinder_movement", "col": "distributor_id", "destino": "distributor",
-   "destcol": "distributor_id", "borrado": "CASCADE"},
-  {"tabla": "cylinder_movement", "col": "order_id", "destino": "order",
-   "destcol": "order_id", "borrado": "SET NULL"},
-  {"tabla": "cylinder_movement", "col": "actor_user_id", "destino": "user",
-   "destcol": "user_id", "borrado": "SET NULL"},
-  {"tabla": "cylinder", "col": "gas_cylinder_id", "destino": "gas_cylinder",
-   "destcol": "gas_cylinder_id", "borrado": "SET NULL"},
-  {"tabla": "cylinder", "col": "current_customer_id", "destino": "user",
-   "destcol": "user_id", "borrado": "SET NULL"},
-  {"tabla": "cylinder", "col": "current_order_id", "destino": "order",
-   "destcol": "order_id", "borrado": "SET NULL"},
-  # Estas aparecieron al barrer el resto del esquema, mas alla de las tres
-  # tablas que se revisaron primero.
-  {"tabla": "order_dispatch_offer", "col": "distributor_id", "destino": "distributor",
-   "destcol": "distributor_id", "borrado": "CASCADE"},
-  {"tabla": "order_dispatch_offer", "col": "driver_id", "destino": "user",
-   "destcol": "user_id", "borrado": "CASCADE"},
-  {"tabla": "incident", "col": "reported_by", "destino": "user",
-   "destcol": "user_id", "borrado": "CASCADE"},
-  {"tabla": "rating", "col": "to_user_id", "destino": "user",
-   "destcol": "user_id", "borrado": "CASCADE"},
-]
+# Las 13 relaciones sin clave foránea se declararon el 25/09/2026
+# (migración DeclararRelacionesSinClaveForanea). Hoy no queda ninguna.
+SIN_FK = []
 
 # ---------------------------------------------------------------- lo propuesto
 # El modelo de dominio del 24/09/2026 (material-de-trabajo/MODELO-DE-DOMINIO.md),
@@ -176,7 +147,10 @@ def _dist():
 # mismo ciclo con su propio tipo (order_dispatch_offer_status_enum).
 PROPUESTA_ESTADOS = ["pending", "accepted", "rejected", "expired"]
 
-PROPUESTO = [
+# Implementado el 25/09/2026 (migración ModeloPropuesto): se conserva como
+# registro de dónde salió cada tabla y como especificación contra la que se
+# verificó el esquema. Sus etiquetas de negocio alimentan el modelo conceptual.
+PROPUESTO_IMPLEMENTADO = [
   {
     "clave": "vencimiento-envases",
     "casos": "CU-132 a CU-135",
@@ -742,6 +716,9 @@ PROPUESTO = [
   },
 ]
 
+# Lo que todavía no está en la base. Hoy nada.
+PROPUESTO = []
+
 # ---------------------------------------------------------------- verificaciones
 # El diccionario conceptual mapea etiqueta del negocio -> columna real. Si una
 # etiqueta apunta a una columna que no existe, el script corta: en el modelo
@@ -753,9 +730,9 @@ CONCEPTO = {
                        ("teléfono", "phone_number")]),
   "role": ("Rol", [("tipo", "type")]),
   "admin": ("Administrador", []),
-  "customer": ("Cliente", [("ubicación", "lat_lang"), ("validado", "validated")]),
+  "customer": ("Cliente", [("ubicación", "location"), ("validado", "validated")]),
   "delivery": ("Chofer", [("calificación", "calification"), ("disponible", "isActive"),
-                          ("posición", "actual_location"), ("saldo", "balance")]),
+                          ("posición", "location"), ("saldo", "balance")]),
   "car": ("Vehículo", [("patente", "car_patent"), ("tipo", "type_car"),
                        ("capacidad", "car_capacity")]),
   "user_address": ("Dirección de entrega", [("calle", "street"), ("ciudad", "city"),
@@ -766,6 +743,8 @@ CONCEPTO = {
                                    ("hasta", "endTime"), ("cupo", "capacity")]),
   "gas_cylinder": ("Tipo de garrafa", [("tipo", "type"), ("peso en kg", "weight"),
                                        ("precio", "price"), ("stock", "stock")]),
+  "gas_cylinder_promotion": ("Promoción", [("desde cantidad", "quantity"),
+                                           ("descuento", "discount_percentage")]),
   "cylinder": ("Envase", [("número de serie", "serial"), ("estado", "state"),
                           ("depósito", "deposit")]),
   "cylinder_movement": ("Movimiento de envase", [("desde", "from_state"), ("hacia", "to_state"),
@@ -780,6 +759,17 @@ CONCEPTO = {
   "incident": ("Incidencia", [("tipo", "type"), ("estado", "status")]),
   "rating": ("Calificación", [("puntaje", "stars"), ("comentario", "comment")]),
 }
+
+# Las tablas y columnas que venían de la propuesta traen su etiqueta de negocio.
+for _ag in PROPUESTO_IMPLEMENTADO:
+    for _tb in _ag["tablas"]:
+        CONCEPTO.setdefault(_tb["nombre"], (_tb["concepto"], []))
+        _nom, _atts = CONCEPTO[_tb["nombre"]]
+        CONCEPTO[_tb["nombre"]] = (_nom, _atts + [(c["concepto"], c["nombre"])
+                                                  for c in _tb["columnas"] if c.get("concepto")])
+    for _t, _cs in _ag["columnas"].items():
+        _nom, _atts = CONCEPTO[_t]
+        CONCEPTO[_t] = (_nom, _atts + [(c["concepto"], c["nombre"]) for c in _cs if c.get("concepto")])
 
 avisos = []
 faltan = []
@@ -1034,12 +1024,15 @@ skinparam legendBorderColor {TINTA}
 """
 def leyenda(marca_ref):
     """La misma leyenda en los dos diagramas; solo el físico marca las columnas
-    con «ref», porque el conceptual no muestra columnas."""
-    return f"""legend bottom
-|<#FFFFFF> **implementado** | tabla o atributo que ya existe en la base |
-|<#E4EDF4> **propuesto** | agregado pedido por la cátedra, todavía sin implementar |
-|<#FFFFFF> **línea punteada{' · «ref»' if marca_ref else ''}** | la relación existe en el dominio pero la base no la declara como clave foránea |
-endlegend"""
+    con «ref», porque el conceptual no muestra columnas. Las filas de lo
+    propuesto y de las relaciones sin clave foránea salen sólo si hay alguna."""
+    filas = ["|<#FFFFFF> **implementado** | tabla o atributo que ya existe en la base |"]
+    if PROPUESTO:
+        filas.append("|<#E4EDF4> **propuesto** | agregado pedido por la cátedra, todavía sin implementar |")
+    if SIN_FK:
+        filas.append(f"|<#FFFFFF> **línea punteada{' · «ref»' if marca_ref else ''}** | la relación existe "
+                     "en el dominio pero la base no la declara como clave foránea |")
+    return "legend bottom\n" + "\n".join(filas) + "\nendlegend"
 
 def marca(c, d):
     """PK, FK, referencia sin declarar o nada, para el modelo físico."""
@@ -1096,7 +1089,7 @@ def nombre_concepto(t):
 CONTEXTOS = [
   ("Organización y acceso", ["distributor", "role", "user", "admin", "module_config", "audit_log"]),
   ("Clientes", ["customer", "user_address", "repurchase_invitation"]),
-  ("Catálogo e inventario de envases", ["gas_cylinder", "cylinder", "cylinder_movement",
+  ("Catálogo e inventario de envases", ["gas_cylinder", "gas_cylinder_promotion", "cylinder", "cylinder_movement",
                                         "cylinder_inspection", "cylinder_recovery_case",
                                         "cylinder_recovery_notice"]),
   ("Venta y pedidos", ["cart", "cart_item", "order", "order_item", "order_status_history",
@@ -1115,7 +1108,7 @@ if _sin or _sobra:
     sys.exit(f"CONTEXTOS: sin contexto {_sin} · inexistentes {_sobra}")
 
 con = ["@startuml",
-       "title Modelo Conceptual — SPLG\\nEntidades del negocio por contexto: lo implementado y lo propuesto",
+       "title Modelo Conceptual — SPLG\\nEntidades del negocio por contexto",
        CAB, "hide circle", "skinparam linetype polyline",
        "skinparam packageStyle rectangle", f"skinparam package {{\n  BorderColor {TINTA}\n  FontSize 13\n}}", ""]
 _orden = orden_dependencias(completo)
@@ -1158,8 +1151,9 @@ for t in orden_dependencias(completo):
         else:
             con.append(f'c_{f["destino"]} {izq}--{der} c_{t}')
 con += ["", leyenda(False).replace("endlegend",
-         "|<#FFFFFF> **distribuidora** | toda entidad pertenece a una distribuidora (multi-tenant): "
-         "esas relaciones no se dibujan |\nendlegend"), "@enduml"]
+         "|<#FFFFFF> **distribuidora** | las entidades de una distribuidora (multi-tenant) se relacionan con ella: "
+         "esas relaciones no se dibujan. Usuario, Cliente y Dirección no pertenecen a ninguna: un cliente "
+         "le compra a varias y su pertenencia sale de sus pedidos |\nendlegend"), "@enduml"]
 open(SAL + "SPLG-modelo-conceptual.puml", "w", encoding="utf-8").write("\n".join(con))
 
 # --------------------------------------------------- 7. diccionario de datos
