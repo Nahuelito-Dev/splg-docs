@@ -13396,6 +13396,7 @@ sequenceDiagram
     deactivate CREP
     deactivate SM
     deactivate OREP
+    Note over CTRL: POST /cylinders/assign responde CylinderResponseDto[] via CylinderMapper
     deactivate CTRL
 ```
 
@@ -19091,7 +19092,8 @@ sequenceDiagram
         MREP-->>SRV: movimiento de alta registrado
         deactivate MREP
         SRV-->>CTRL: Cylinder
-        CTRL-->>ADM: 201 Cylinder
+        CTRL->>CTRL: CylinderMapper.toDto(cylinder)
+        CTRL-->>ADM: 201 CylinderResponseDto
         deactivate CTRL
     end
     deactivate DEC
@@ -19133,7 +19135,8 @@ sequenceDiagram
         deactivate CREP
         SRV-->>CTRL: Cylinder[]
         deactivate SRV
-        CTRL-->>USR: 200 Cylinder[]
+        CTRL->>CTRL: CylinderMapper.toDto por cada envase
+        CTRL-->>USR: 200 CylinderResponseDto[]
         deactivate CTRL
     else Detalle de un envase, GET /cylinders/:id
         USR->>DEC: GET /cylinders/:id
@@ -19150,7 +19153,8 @@ sequenceDiagram
             deactivate SRV
         else Encontrado
             SRV-->>CTRL: Cylinder
-            CTRL-->>USR: 200 Cylinder
+            CTRL->>CTRL: CylinderMapper.toDto(cylinder)
+            CTRL-->>USR: 200 CylinderResponseDto
             deactivate CTRL
         end
     end
@@ -19200,7 +19204,8 @@ sequenceDiagram
         MREP-->>SRV: CylinderMovement[] append only
         deactivate MREP
         SRV-->>CTRL: CylinderMovement[]
-        CTRL-->>ADM: 200 CylinderMovement[]
+        CTRL->>CTRL: CylinderMapper.movimientoToDto por cada movimiento
+        CTRL-->>ADM: 200 CylinderMovementResponseDto[]
         deactivate CTRL
     end
     deactivate DEC

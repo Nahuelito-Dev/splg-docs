@@ -37,7 +37,8 @@ sequenceDiagram
         MREP-->>SRV: movimiento de alta registrado
         deactivate MREP
         SRV-->>CTRL: Cylinder
-        CTRL-->>ADM: 201 Cylinder
+        CTRL->>CTRL: CylinderMapper.toDto(cylinder)
+        CTRL-->>ADM: 201 CylinderResponseDto
         deactivate CTRL
     end
     deactivate DEC

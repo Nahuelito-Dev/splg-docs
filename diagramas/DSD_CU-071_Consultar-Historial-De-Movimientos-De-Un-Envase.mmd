@@ -28,7 +28,8 @@ sequenceDiagram
         MREP-->>SRV: CylinderMovement[] append only
         deactivate MREP
         SRV-->>CTRL: CylinderMovement[]
-        CTRL-->>ADM: 200 CylinderMovement[]
+        CTRL->>CTRL: CylinderMapper.movimientoToDto por cada movimiento
+        CTRL-->>ADM: 200 CylinderMovementResponseDto[]
         deactivate CTRL
     end
     deactivate DEC
