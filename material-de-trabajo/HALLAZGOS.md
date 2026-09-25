@@ -987,3 +987,13 @@ restituyó el rol después de la prueba.
 **Los cuatro (H-52, H-60, H-61, H-62) salieron de la misma revisión:** DTOs de
 modificación que heredan todos los campos del alta, y endpoints que controlan
 quién es el dueño del recurso pero no qué campos puede tocar.
+
+### H-63 · Cualquiera podía darse de alta como super administrador — **seguridad, CRÍTICO**
+
+> **Resuelto el 24/09.** `POST /users` exige administrador y un admin de empresa no puede crear un super administrador.
+
+El endpoint era `@Public()` y guardaba el `role_id` que llegara en el cuerpo.
+**Verificado contra la API:** sin token, se creó un usuario con rol
+`super_admin` (201). Con una cuenta de Firebase creada con la clave pública que
+viajan en las apps, eso bastaba para entrar al panel con todos los permisos.
+La fila de prueba se borró.
