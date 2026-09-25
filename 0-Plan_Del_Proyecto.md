@@ -1407,7 +1407,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Importante  
-**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo y desde dónde. Puede filtrar por persona, por tipo de recurso, por período y por resultado. Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa?", preguntas que hoy no tienen dónde mirarse.
+**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo, desde qué aplicación y con qué resultado. Puede filtrar por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa?". El administrador de una distribuidora ve sólo los asientos de ella; el Administrador General, los de todas o los de la distribuidora que elija.
 
 ---
 
@@ -1415,7 +1415,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Sistema (ACT-04)  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Crítico  
-**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña.
+**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos —alta, modificación o baja—, exitosa o rechazada: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, y la propia base de datos lo impide, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña.
 
 ---
 

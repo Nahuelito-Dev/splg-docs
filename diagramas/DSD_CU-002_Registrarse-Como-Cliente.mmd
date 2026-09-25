@@ -18,7 +18,8 @@ sequenceDiagram
         activate SRV
         Note over SRV: «include» CU-082 Crear Usuario Base
         SRV->>CSRV: crearPerfil(manager, user_id, lat_lang, notification_token)
-        CSRV-->>SRV: perfil de cliente sin validar
+        CSRV->>CSRV: si viene lat_lang, puntoDesdeLatLng(lat_lang) a location, punto PostGIS
+        CSRV-->>SRV: perfil de cliente sin validar, con su ubicacion en location
         SRV-)LIS: usuario.registrado con rol customer
         SRV-->>CTRL: User con rol y perfil de cliente
         deactivate SRV

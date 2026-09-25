@@ -1,19 +1,23 @@
 sequenceDiagram
     title DSS — CU-153 Registrar Toda Operacion De Escritura
     autonumber
-    actor USR as Usuario autenticado
+    actor USR as Usuario
     participant SIS as Sistema
 
-    USR->>SIS: operación que modifica datos
+    USR->>SIS: operación que modifica datos (alta, modificación o baja)
     activate SIS
-    SIS->>SIS: resolver el autor desde su credencial
-    SIS->>SIS: ejecutar la operación
-    SIS->>SIS: depurar credenciales del contenido
-    alt la operación fue exitosa
-        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, exitosa)
-        SIS-->>USR: resultado de la operación
-    else la operación fue rechazada
-        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, motivo del rechazo)
-        SIS-->>USR: error de la operación
+    alt no pasa la autenticación o la autorización
+        SIS-->>USR: acceso denegado, sin asiento
+    else pasa la autenticación y la autorización
+        SIS->>SIS: resolver el autor, su rol y la distribuidora desde la credencial
+        SIS->>SIS: ejecutar la operación
+        SIS->>SIS: depurar las credenciales del cuerpo
+        alt la operación fue exitosa
+            SIS-)SIS: registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, exitosa, código)
+            SIS-->>USR: resultado de la operación, sin esperar el asiento
+        else la operación fue rechazada
+            SIS-)SIS: registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, rechazada, código, motivo)
+            SIS-->>USR: el mismo error de la operación
+        end
     end
     deactivate SIS

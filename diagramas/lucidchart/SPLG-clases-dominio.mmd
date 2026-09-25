@@ -50,7 +50,7 @@ classDiagram
         +isActive: boolean
         +calification: double
         +balance: double
-        +latLng: string
+        +location: Point
         +actual_location: string
         +notification_token: string
     }
@@ -68,8 +68,8 @@ classDiagram
     class Customer {
         +customer_id: UUID
         +notification_token: string
-        +lat_lang: string
-        +validated: string
+        +location: Point
+        +validated: boolean
     }
 
     class User {

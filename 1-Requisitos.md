@@ -36,6 +36,7 @@
 | 0 | 2026-04-17 | Versión inicial | Nahuel Wagner |
 | 1 | 2026-05-03 | Nombre corregido a SPLG. IRQ-08 agregado. CU expandidos: CU-003, CU-006, CU-007, CU-008, CU-009, CU-010, CU-011. NFR-07 y NFR-08 agregados. Matriz de rastreabilidad completa. Glosario ampliado. | Nahuel Wagner |
 | 2 | 2026-08-30 | Verificación de la documentación contra el código. Se completaron los campos Rendimiento, Frecuencia, Comentarios y Excepciones que faltaban en los casos de uso expandidos. Se incorporaron los objetivos OBJ-09 a OBJ-15 y los requisitos de información IRQ-09 a IRQ-15, que cubren multi-distribuidora, cobertura, incidencias, calificaciones, envases, reservas y estado operativo. Se completaron los requisitos no funcionales con sus requisitos asociados y comentarios. Matriz de rastreabilidad regenerada. | Nahuel Wagner |
+| 3 | 2026-09-25 | Requisito no funcional NFR-09 (aislamiento entre distribuidoras) agregado. CU-152 y CU-153 implementados: sus casos de uso expandidos describen lo construido. Los casos de los módulos inteligentes indican que su modelo de datos ya está en la base. | Nahuel Wagner |
 
 ---
 
@@ -388,9 +389,9 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
 | **Requisitos asociados** | CU-152, CU-153 |
 | **Descripción** | El sistema debe dejar constancia de toda operación que modifique datos, de modo que se pueda reconstruir después quién hizo qué, sobre qué y cuándo. Es lo que permite resolver una disputa con evidencia en lugar de con la palabra de cada parte. |
-| **Datos específicos** | Identificador del asiento (UUID); autor — referencia al usuario que originó la operación, con su rol al momento de hacerla, porque el rol puede cambiar después; distribuidora a la que corresponde la operación, que es lo que permite mostrarle a cada administrador lo suyo; operación realizada (alta, modificación, baja) y ruta que la atendió; tipo de recurso afectado e identificador del recurso, para poder buscar todo lo que le pasó a un pedido o a un usuario; marca temporal con zona horaria; aplicación de origen (panel, aplicación del cliente, aplicación del chofer); dirección de red desde la que se originó; resultado — si la operación fue exitosa o rechazada, y en ese caso el motivo; detalle de lo que cambió, **con las credenciales depuradas**: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña. |
+| **Datos específicos** | Identificador del asiento (UUID); autor — referencia al usuario que originó la operación, con su rol al momento de hacerla, porque el rol puede cambiar después; distribuidora a la que corresponde la operación, que es lo que permite mostrarle a cada administrador lo suyo; operación realizada (alta, modificación, baja) y ruta que la atendió; tipo de recurso afectado e identificador del recurso, para poder buscar todo lo que le pasó a un pedido o a un usuario; marca temporal con zona horaria; aplicación de origen (panel, aplicación del cliente, aplicación del chofer); dirección de red desde la que se originó; resultado — si la operación fue exitosa o rechazada, con el código de respuesta y, si fue rechazada, el motivo; detalle de lo que cambió, **con las credenciales depuradas**: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El registro es de **sólo escritura**: el sistema no expone ninguna operación de modificación ni de baja sobre él, para ningún rol, porque un registro editable no prueba nada. La depuración por antigüedad, si llega a hacer falta por volumen, es una tarea programada del sistema y nunca una operación disponible para un usuario. Este requisito sostiene a OBJ-04 (trazabilidad) más allá de la entrega: OBJ-04 pedía evidencia objetiva de **una entrega** —timestamps, GPS, foto— y esto la extiende a toda operación del sistema. Conviene notar que las contraseñas no forman parte del sistema: las valida Firebase y la base no tiene columna para ellas, de modo que la depuración protege el cuerpo de la petición en tránsito, que es el único lugar donde una credencial aparece. |
+| **Comentarios** | El registro es de **sólo escritura**: el sistema no expone ninguna operación de modificación ni de baja sobre él, para ningún rol, porque un registro editable no prueba nada, y la base de datos rechaza con un trigger toda modificación y todo borrado de un asiento. La depuración por antigüedad, si llega a hacer falta por volumen, es una tarea programada del sistema y nunca una operación disponible para un usuario. Este requisito sostiene a OBJ-04 (trazabilidad) más allá de la entrega: OBJ-04 pedía evidencia objetiva de **una entrega** —timestamps, GPS, foto— y esto la extiende a toda operación del sistema. Conviene notar que las contraseñas no forman parte del sistema: las valida Firebase y la base no tiene columna para ellas, de modo que la depuración protege el cuerpo de la petición en tránsito, que es el único lugar donde una credencial aparece. |
 
 ---
 
@@ -517,6 +518,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Comentarios** | El sistema todavía no autentica automáticamente al usuario recién registrado: la app encadena el inicio de sesión por su cuenta. La ruta anterior `POST /users/customer-registration` sigue respondiendo igual para las versiones ya publicadas de la app y se retira cuando la versión nueva esté en las tiendas. |
 
 ---
+
+
 #### Crítico CU-003 — Registrar Chofer *(ver CU-031)*
 
 > **Nota de consolidación:** El alta de un chofer la realiza siempre el Administrador y pertenece al subsistema **SS-07 (Gestión de Choferes y Vehículos)**. Para evitar duplicación, su especificación expandida es **canónica en [CU-031 — Registrar Chofer](#-cu-031--registrar-chofer)**. Este código (CU-003) se conserva por las referencias cruzadas existentes en SS-01 y en la matriz de rastreabilidad, pero **no se expande aquí**: es el mismo caso de uso visto desde el flujo de gestión de usuarios.
@@ -6450,20 +6453,20 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
-| **Requisitos asociados** | IRQ-16 |
-| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por período y por resultado, y abrir cada asiento para ver el detalle de lo que cambió. |
-| **Precondición** | El usuario tiene rol Administrador o Administrador General y está autenticado. |
-| **Estado** | Sin implementar |
+| **Requisitos asociados** | IRQ-16, NFR-09 |
+| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Cada asiento trae, además, el cuerpo de la operación con las credenciales depuradas. Endpoint: `GET /audit`. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN (Administrador) o SUPER_ADMIN (Administrador General). |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el registro de auditoría y, si quiere, indica filtros: quién, qué tipo de recurso, entre qué fechas, y si la operación resultó exitosa o fallida. |
-| 2 | El sistema restringe la consulta a los asientos de la distribuidora del administrador. El Administrador General no lleva esa restricción y ve los de todas. |
-| 3 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, paginados. |
-| 4 | Por cada asiento informa quién lo originó, qué operación fue, sobre qué recurso, cuándo, desde qué aplicación y con qué resultado. |
-| 5 | Al abrir un asiento, el sistema muestra además qué campos cambiaron y con qué valores. |
+| 1 | El administrador indica, si quiere, los filtros: quién hizo la operación (`actorUserId`), qué tipo de recurso (`resource`, por ejemplo `orders`), qué recurso puntual (`resourceId`), desde y hasta qué fecha (`desde`, `hasta`) y con qué resultado (`result`: `success` o `failure`). |
+| 2 | Se envía `GET /audit` con los filtros y la página: `limit`, entre 1 y 200, 50 por defecto, y `offset`, 0 por defecto. |
+| 3 | El sistema valida los filtros. Si hay una distribuidora en contexto —la del administrador de empresa, o la que eligió el Administrador General con "ver como"—, restringe la consulta a los asientos de esa distribuidora. El Administrador General sin distribuidora elegida ve los de todas. |
+| 4 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, junto con la cantidad total de coincidencias (`items` y `total`). |
+| 5 | Por cada asiento informa quién lo originó y con qué rol, a qué distribuidora corresponde, qué operación fue (método y ruta), sobre qué recurso e identificador, cuándo, desde qué aplicación y desde qué dirección de red, con qué resultado y código de respuesta, el motivo si fue rechazada y el cuerpo depurado de la operación. |
 
 **Postcondición:** Ninguna: la consulta no modifica nada. La propia consulta **no** genera un asiento, porque leer no es una operación de escritura.
 
@@ -6471,18 +6474,21 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el período indicado es inválido —la fecha de inicio posterior a la de fin—, el sistema informa el error. |
-| 3 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía. No es un error. |
+| 2 | Si el solicitante es un cliente o un chofer, el guard de roles rechaza la petición con error 403. |
+| 3 | Si un filtro no tiene el formato esperado —un autor que no es UUID, un resultado distinto de `success` o `failure`, una fecha inválida, un `limit` fuera del rango de 1 a 200 o un parámetro no declarado—, el sistema responde error 400. |
+| 3 | Si la fecha `desde` es posterior a `hasta`, el sistema no lo rechaza: ningún asiento cae en ese período y la respuesta es una lista vacía. |
+| 4 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía con total 0. No es un error. |
 | — | El sistema no expone ninguna operación de modificación ni de borrado sobre el registro, para ningún rol. Ver CU-153. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | La consulta filtrada responde en menos de 3 segundos. Requiere índice por fecha, por autor y por distribuidora: sin eso, la tabla crece hasta volver inusable la consulta. |
+| **Rendimiento** | Una sola lectura paginada con su conteo, apoyada en los índices por fecha, por autor y por distribuidora de la tabla `audit_log`: sin ellos, la tabla crece hasta volver inusable la consulta. La meta es responder en menos de 3 segundos. |
 | **Frecuencia** | Baja: se consulta ante una disputa o una sospecha, no a diario. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. La depuración por antigüedad, si llega a hacer falta, es una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
+| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. El Panel de Administración todavía no tiene la pantalla de consulta: el caso se ejerce por la API. La depuración por antigüedad no está construida; si llega a hacer falta, será una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
 
 ---
+
 
 #### Crítico · automático CU-153 — Registrar Toda Operación de Escritura
 
@@ -6490,37 +6496,38 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
 | **Requisitos asociados** | IRQ-16 |
-| **Descripción** | El sistema deja constancia de cada operación que modifica datos, sin que ningún usuario lo solicite y sin que ninguna funcionalidad tenga que acordarse de hacerlo. Es lo que sostiene la trazabilidad: sin este registro, una operación hecha y deshecha no deja rastro. |
-| **Precondición** | Ninguna: el registro es parte del camino de toda petición que modifica datos. |
-| **Estado** | Sin implementar |
+| **Descripción** | El sistema deja constancia de cada operación que modifica datos —toda petición `POST`, `PUT`, `PATCH` o `DELETE` de la API—, exitosa o rechazada, sin que ningún usuario lo solicite y sin que ninguna funcionalidad tenga que acordarse de hacerlo: lo hace un interceptor global. Es lo que sostiene la trazabilidad: sin este registro, una operación hecha y deshecha no deja rastro. |
+| **Precondición** | La petición modifica datos y pasó la autenticación y la autorización. Lo que un guard rechaza —sin credencial válida, sin el rol requerido, fuera del cupo de peticiones— no llegó a ser una operación y no se registra. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | Una petición que modifica datos —alta, modificación o baja— atraviesa el sistema. |
-| 2 | El sistema resuelve quién la origina a partir de su credencial: nunca de lo que venga en el cuerpo del mensaje. |
+| 1 | Una petición `POST`, `PUT`, `PATCH` o `DELETE` pasa la autenticación y la autorización. Las peticiones de sólo lectura siguen su curso sin registrarse. |
+| 2 | El sistema toma quién la origina —usuario y rol— y la distribuidora en contexto de lo que resolvió la autenticación a partir de la credencial: nunca de lo que venga en el cuerpo del mensaje. |
 | 3 | Deja pasar la operación y espera su resultado. |
-| 4 | Arma el asiento con quién, qué operación, sobre qué recurso, cuándo, desde qué aplicación, desde qué dirección de red, a qué distribuidora corresponde y con qué resultado terminó. |
-| 5 | **Depura el contenido antes de guardarlo**: las contraseñas, los tokens y cualquier credencial se reemplazan por una marca. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
-| 6 | Guarda el asiento. El registro es de sólo escritura: no existe forma de modificarlo ni de borrarlo. |
+| 4 | Arma el asiento: distribuidora, autor y rol, método, recurso (el primer segmento de la ruta después de `/api`, por ejemplo `orders`), identificador del recurso (el parámetro `:id` de la ruta o, si no lo tiene, el primero de sus parámetros), la ruta como patrón (`/api/users/email/:email`, de modo que un correo o un teléfono no quedan escritos en la ruta), la aplicación de origen (encabezado `X-Client-Source`), la dirección de red, el resultado (`success` o `failure`) y el código HTTP. |
+| 5 | **Depura el cuerpo antes de guardarlo**: los valores de las claves `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code`, `deliveryCode` y `secret` se reemplazan por `"[depurado]"`, en cualquier nivel del cuerpo y sin distinguir mayúsculas de minúsculas; los textos de más de 500 caracteres se recortan y lo anidado a más de cuatro niveles queda como `"[recortado]"`. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
+| 6 | Guarda el asiento en la tabla `audit_log` sin demorar la respuesta al usuario. |
 
-**Postcondición:** Queda un asiento por cada operación que modificó datos, exitosa o fallida. Las operaciones de sólo lectura no generan asiento.
+**Postcondición:** Queda un asiento por cada operación de escritura que pasó la autenticación y la autorización, exitosa o rechazada. Las operaciones de sólo lectura no generan asiento. El asiento no puede modificarse ni borrarse: la base de datos rechaza todo `UPDATE` y `DELETE` sobre `audit_log` con el trigger `audit_log_inmutable`. La única modificación que admite es la que hace la propia base cuando se borra el usuario autor o la distribuidora (`ON DELETE SET NULL`): vacía esa referencia sin tocar el resto del asiento.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la operación falla, **igual se registra**, con el motivo del rechazo. Un intento fallido de borrar algo ajeno es justamente lo que interesa ver. |
-| 6 | Si el asiento no se puede guardar, la operación del usuario **no se interrumpe**: el fallo queda en el registro de eventos del sistema. Que la auditoría falle no puede impedir que se trabaje. |
-| — | Quedan fuera del registro las verificaciones de estado del sistema y las notificaciones del proveedor de pagos: son tráfico de máquina, no acciones de una persona, y ahogarían el registro. |
+| 1 | Si un guard rechaza la petición (401, 403 o 429), no se registra: no llegó a ser una operación. |
+| 3 | Si la operación es rechazada —por la validación de los datos, por una regla del negocio o por un error—, **igual se registra**, con resultado `failure`, el código HTTP con el que responde el sistema y el motivo del rechazo; el error llega al usuario sin cambios. Un intento fallido de modificar algo ajeno es justamente lo que interesa ver. |
+| 6 | Si la base no acepta el asiento, la operación del usuario **no se interrumpe** ni se deshace: el asiento completo queda en el registro de eventos del sistema, con los datos necesarios para reconstruirlo. Que la auditoría falle no puede impedir que se trabaje. |
+| — | Las operaciones públicas —el ingreso, el registro de una cuenta, las notificaciones del proveedor de pagos— también se registran; si la petición no trae credencial, el asiento queda sin autor. Las verificaciones de estado del sistema son de sólo lectura y no generan asiento. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | El asiento no debe agregar más de 50 ms a la operación. Se escribe sin bloquear la respuesta al usuario. |
+| **Rendimiento** | La respuesta al usuario no espera la escritura del asiento: la operación sólo suma armarlo y depurar el cuerpo, en memoria. La tabla lleva índices por fecha, por autor y por distribuidora para la consulta de CU-152. |
 | **Frecuencia** | Automático, una vez por cada operación de escritura del sistema. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y hay que definir desde el principio cuánto tiempo se conserva. La depuración por antigüedad es un proceso del sistema, nunca una operación disponible para un usuario. |
+| **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y el plazo de conservación todavía no está definido. La depuración por antigüedad no está construida; cuando exista será un proceso del sistema, nunca una operación disponible para un usuario, y tendrá que contemplar el trigger que impide borrar asientos. |
 
 ---
 
@@ -6529,7 +6536,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 Los cuatro casos que siguen corresponden a los módulos inteligentes diseñados y
 todavía no construidos. Se documentan completos para que su implementación posterior
-parta de una especificación ya validada.
+parta de una especificación ya validada. Las tablas que necesitan ya están en la base
+de datos desde el 25/09/2026; lo que falta construir son los servicios que las usan.
 
 #### Importante · automático CU-105 — Planificar el mantenimiento y las habilitaciones de la flota
 
@@ -6849,6 +6857,17 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | **Estabilidad** | Alta |
 | **Comentarios** | La reserva de stock al crear el pedido se resuelve en una transacción con bloqueo de fila. La verificación contra el código detectó, en cambio, operaciones que todavía no son atómicas —la cancelación de pedido y la asignación de envases—, registradas en los casos de uso correspondientes. |
 
+### Crítico NFR-09 — Aislamiento entre Distribuidoras
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-09, OBJ-05 |
+| **Requisitos asociados** | IRQ-01, IRQ-02, IRQ-03, IRQ-07, IRQ-09, NFR-01; los casos de uso de gestión que operan sobre pedidos, choferes, vehículos, clientes, direcciones de entrega, reclamos, incidencias, notificaciones y administradores |
+| **Descripción** | Con una distribuidora en contexto, el sistema debe comportarse como si los datos de las demás distribuidoras no existieran: quien opera para una empresa no puede leer ni modificar lo que pertenece a otra, ni enterarse de que existe. |
+| **Especificación** | La distribuidora en contexto es la del perfil del administrador de empresa o del chofer, o la que eligió el Administrador General con "ver como" (encabezado `X-Distributor`); el Administrador General sin distribuidora elegida opera sobre todas. Un recurso de otra distribuidora responde "no encontrado" (404), igual que uno inexistente, sin revelar que existe. El control se hace en el controlador, antes de operar, con un método del servicio dueño del recurso. El cliente no pertenece a ninguna distribuidora, porque puede comprarle a varias: para una distribuidora, sus clientes son los que le compraron al menos una vez, y sólo sobre ellos opera su administrador. La cuenta del cliente —su baja y sus direcciones de entrega— la administran el propio cliente o el Administrador General, no el administrador de una empresa. Sobre sus propios recursos, el cliente no se acota por distribuidora: su control es que el recurso sea suyo. La pertenencia de un usuario a una distribuidora se define en un único lugar del código, `common/tenancy/pertenencia.ts`, y la usan todos los módulos que acotan por distribuidora. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El requisito se verifica con una batería automática de 205 casos contra la API corriendo (`scripts/alineacion/aislamiento` del backend): siembra datos en una segunda distribuidora y comprueba, operación por operación, que el administrador, el chofer y el cliente de la primera, y el Administrador General con "ver como" sobre ella, no los alcanzan. La corrida del 25/09/2026 terminó con los 205 casos en verde. Cada caso de uso afectado describe su control en sus precondiciones y excepciones. |
+
 ---
 
 ## 9. Matriz de Rastreabilidad Objetivos / Requisitos
@@ -6857,7 +6876,7 @@ La matriz relaciona cada requisito de información y cada caso de uso con los ob
 sistema que contribuye a alcanzar. Las marcas de los casos de uso se derivan del campo
 **Objetivos asociados** que cada uno declara en la sección 7.
 
-Comprende los 15 requisitos de información, los 8 requisitos no funcionales y los 153 casos de uso
+Comprende los 15 requisitos de información, los 9 requisitos no funcionales y los 153 casos de uso
 que declaran al menos un objetivo. Los casos restantes corresponden a operaciones de
 consulta y de soporte que no realizan un objetivo del sistema por sí mismas.
 
@@ -6886,6 +6905,7 @@ consulta y de soporte que no realizan un objetivo del sistema por sí mismas.
 | **NFR-06** | ✅ |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | **NFR-07** |  |  |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |
 | **NFR-08** |  |  |  | ✅ |  | ✅ |  |  |  |  |  |  |  |  |  |
+| **NFR-09** |  |  |  |  | ✅ |  |  |  | ✅ |  |  |  |  |  |  |
 | **CU-001** | ✅ | ✅ |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |
 | **CU-002** | ✅ |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | **CU-003** |  | ✅ |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |

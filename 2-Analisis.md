@@ -5109,8 +5109,8 @@ sequenceDiagram
 
 #### DSS — CU-152: Consultar el Registro de Auditoría
 
-**Actor:** Administrador
-**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)`
+**Actor:** Administrador (y Administrador General)
+**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)`
 
 ```mermaid
 sequenceDiagram
@@ -5119,14 +5119,15 @@ sequenceDiagram
     actor ADM as Administrador
     participant SIS as Sistema
 
-    ADM->>SIS: consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)
+    ADM->>SIS: consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)
     activate SIS
-    alt el período indicado es inválido
+    alt el solicitante no es administrador
+        SIS-->>ADM: acceso denegado
+    else algún filtro no tiene el formato esperado
         SIS-->>ADM: error de validación
-    else hay asientos que coinciden
-        SIS-->>ADM: asientos (autor, operación, recurso, fecha, origen, resultado) y total
-    else ningún asiento coincide
-        SIS-->>ADM: lista vacía
+    else filtros válidos
+        Note over SIS: con una distribuidora en contexto, sólo los asientos de ella
+        SIS-->>ADM: asientos del más reciente al más antiguo (autor, rol, operación, recurso, fecha, origen, resultado, cuerpo depurado) y total, o lista vacía si ninguno coincide
     end
     deactivate SIS
 ```
@@ -5138,26 +5139,30 @@ sequenceDiagram
 #### DSS — CU-153: Registrar Toda Operación de Escritura
 
 **Actor:** Sistema (sin actor humano: ocurre en el camino de toda petición que modifica datos)
-**Operaciones del sistema:** `registrarOperacion(autor, operación, recurso, origen, resultado)`
+**Operaciones del sistema:** `registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, resultado, código, motivo)`
 
 ```mermaid
 sequenceDiagram
     title DSS — CU-153 Registrar Toda Operacion De Escritura
     autonumber
-    actor USR as Usuario autenticado
+    actor USR as Usuario
     participant SIS as Sistema
 
-    USR->>SIS: operación que modifica datos
+    USR->>SIS: operación que modifica datos (alta, modificación o baja)
     activate SIS
-    SIS->>SIS: resolver el autor desde su credencial
-    SIS->>SIS: ejecutar la operación
-    SIS->>SIS: depurar credenciales del contenido
-    alt la operación fue exitosa
-        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, exitosa)
-        SIS-->>USR: resultado de la operación
-    else la operación fue rechazada
-        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, motivo del rechazo)
-        SIS-->>USR: error de la operación
+    alt no pasa la autenticación o la autorización
+        SIS-->>USR: acceso denegado, sin asiento
+    else pasa la autenticación y la autorización
+        SIS->>SIS: resolver el autor, su rol y la distribuidora desde la credencial
+        SIS->>SIS: ejecutar la operación
+        SIS->>SIS: depurar las credenciales del cuerpo
+        alt la operación fue exitosa
+            SIS-)SIS: registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, exitosa, código)
+            SIS-->>USR: resultado de la operación, sin esperar el asiento
+        else la operación fue rechazada
+            SIS-)SIS: registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, rechazada, código, motivo)
+            SIS-->>USR: el mismo error de la operación
+        end
     end
     deactivate SIS
 ```
@@ -5886,10 +5891,10 @@ diagrama de interacción de diseño.
 | Módulo | Casos de uso | Estado |
 |---|---|---|
 | **M1** | CU-013, CU-014, CU-015, CU-016 | Implementado |
-| **M2** | CU-105 | Especificado, sin construir |
-| **M3** | CU-106 | Especificado, sin construir |
-| **M4** | CU-107 | Especificado, sin construir |
-| **M5** | CU-108 | Especificado, sin construir |
+| **M2** | CU-105 | Especificado; tablas en la base, servicio sin construir |
+| **M3** | CU-106 | Especificado; tablas en la base, servicio sin construir |
+| **M4** | CU-107 | Especificado; tablas en la base, servicio sin construir |
+| **M5** | CU-108 | Especificado; tablas en la base, servicio sin construir |
 
 ### 3.3 Intervención humana
 

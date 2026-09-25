@@ -2636,7 +2636,8 @@ sequenceDiagram
         activate SRV
         Note over SRV: «include» CU-082 Crear Usuario Base
         SRV->>CSRV: crearPerfil(manager, user_id, lat_lang, notification_token)
-        CSRV-->>SRV: perfil de cliente sin validar
+        CSRV->>CSRV: si viene lat_lang, puntoDesdeLatLng(lat_lang) a location, punto PostGIS
+        CSRV-->>SRV: perfil de cliente sin validar, con su ubicacion en location
         SRV-)LIS: usuario.registrado con rol customer
         SRV-->>CTRL: User con rol y perfil de cliente
         deactivate SRV
@@ -2654,6 +2655,7 @@ sequenceDiagram
 - El correo de bienvenida **escucha** el evento `usuario.registrado` en lugar de que el alta llame al correo: `registro` no depende de `email`, y un correo que no sale nunca deshace un alta ya confirmada.
 - El cupo de altas es más estricto que el global porque cada alta crea una cuenta en el proveedor de identidad y manda un correo.
 - La respuesta sale por `UserMapper`: no incluye `firebase_uid` ni el token de notificaciones.
+- El perfil de cliente guarda la ubicación en `location`, un punto PostGIS. La API la sigue recibiendo como texto "latitud,longitud" en `lat_lang`, y el DTO rechaza (400) lo que no sea un par de coordenadas válido.
 - `POST /users/customer-registration` responde con el mismo método mientras las versiones publicadas de la app lo usen.
 
 ---
@@ -10173,39 +10175,48 @@ sequenceDiagram
 
 #### C.35 DSD — CU-152: Consultar el Registro de Auditoría
 
-**Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `AuditoriaController`, `ConsultarAuditoriaDto`, `AuditoriaService`, `Repository<AsientoDeAuditoria>`.
+**Clases participantes:** `AuthGuard`, `RolesGuard`, `ValidationPipe`, `@CurrentDistributor()`, `AuditController`, `ConsultarAuditoriaDto`, `AuditService`, `Repository<AuditLog>`, `AuditMapper`, `AsientoDeAuditoriaDto`, `RegistroDeAuditoriaDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-152 Consultar El Registro De Auditoria
     autonumber
-    participant ADM as Admin de la distribuidora
-    participant AUTH as AuthGuard
-    participant CTRL as AuditoriaController
-    participant DTO as ConsultarAuditoriaDto
-    participant SRV as AuditoriaService
-    participant REPO as RepositoryAsientoDeAuditoria
+    participant ADM as Panel o cliente HTTP
+    participant RG as RolesGuard
+    participant VP as ValidationPipe
+    participant CTRL as AuditController
+    participant SRV as AuditService
+    participant REPO as RepositoryAuditLog
+    participant MAP as AuditMapper
 
-    ADM->>AUTH: GET /auditoria con filtros
-    activate AUTH
-    AUTH-->>CTRL: request.distributorId y rol resueltos
-    deactivate AUTH
-    CTRL->>DTO: validar(filtros)
-    activate DTO
-    alt desde es posterior a hasta
-        DTO-->>ADM: BadRequestException, periodo invalido
-        deactivate DTO
-    else filtros validos
-        CTRL->>SRV: consultar(filtros, distributorId, rol)
-        activate SRV
-        SRV->>SRV: si el rol no es super_admin, fijar distributor_id en el filtro
-        SRV->>REPO: findAndCount(filtros, orden por fecha descendente, paginado)
-        activate REPO
-        REPO-->>SRV: asientos y total
-        deactivate REPO
-        SRV-->>CTRL: pagina de asientos
-        deactivate SRV
-        CTRL-->>ADM: 200 AuditoriaResponseDto
+    ADM->>RG: GET /audit con filtros
+    Note over RG: AuthGuard ya resolvio request.user y request.distributorId
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>ADM: 403 ForbiddenException
+    else Autorizado
+        RG->>VP: transformar y validar ConsultarAuditoriaDto
+        alt Filtro invalido
+            VP-->>ADM: 400 BadRequestException
+        else Filtros validos, limit 50 y offset 0 por defecto
+            VP->>CTRL: consultar(filtros, distributorId de CurrentDistributor)
+            activate CTRL
+            CTRL->>SRV: consultar(filtros, distributorId)
+            activate SRV
+            SRV->>SRV: armar where con distributorId si hay distribuidora en contexto, actorUserId, resource, resourceId, result y el periodo desde hasta
+            SRV->>REPO: findAndCount(where, order createdAt DESC, take limit, skip offset)
+            activate REPO
+            REPO-->>SRV: asientos y total
+            deactivate REPO
+            SRV-->>CTRL: items y total
+            deactivate SRV
+            loop Por cada asiento
+                CTRL->>MAP: toDto(asiento)
+                MAP-->>CTRL: AsientoDeAuditoriaDto
+            end
+            CTRL-->>ADM: 200 RegistroDeAuditoriaDto con items y total
+            deactivate CTRL
+        end
     end
 ```
 
@@ -10213,55 +10224,59 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El controlador expone **sólo lectura**. No hay `@Post`, `@Patch` ni `@Delete`: la ausencia de esas rutas es la garantía de inmutabilidad, no una validación que alguien pueda saltear.
-- La restricción por distribuidora se aplica **en el filtro de la consulta**, igual que en el resto del sistema: un asiento de otra distribuidora no aparece, en vez de aparecer y ser rechazado después.
-- La consulta **no** genera asiento propio: leer no es escribir, y registrarse a sí misma llenaría la tabla de ruido.
+- `AuditController` expone **sólo lectura**: un único `@Get()`, sin `@Post`, `@Patch` ni `@Delete`. La API no tiene cómo modificar un asiento, y además la base lo impide con el trigger de CU-153.
+- La restricción por distribuidora se aplica **en el `where` de la consulta**, igual que en el resto del sistema: un asiento de otra distribuidora no aparece, en vez de aparecer y ser rechazado después. El `distributorId` lo resuelve `AuthGuard`: la distribuidora del perfil para el administrador de empresa, la del encabezado `X-Distributor` para el Administrador General con "ver como", y ninguna —todas— para el Administrador General sin ese encabezado.
+- Los filtros los valida el `ValidationPipe` global contra `ConsultarAuditoriaDto` (`limit` entre 1 y 200, `offset` desde 0, `result` sólo `success` o `failure`, fechas válidas, sin parámetros no declarados). Un período con `desde` posterior a `hasta` no se rechaza: el `Between` no encuentra asientos y la respuesta es vacía.
+- La respuesta sale por `AuditMapper` como `RegistroDeAuditoriaDto`: `items` con los asientos y `total` con la cantidad de coincidencias, para paginar.
+- La consulta **no** genera asiento propio: es un `GET`, y el interceptor de CU-153 sólo registra escrituras.
 
 ---
 
 #### C.36 DSD — CU-153: Registrar Toda Operación de Escritura
 
-**Clases participantes:** `AuditoriaInterceptor` (registrado como `APP_INTERCEPTOR`), `AuditoriaService`, `DepuradorDeCredenciales`, `Repository<AsientoDeAuditoria>`.
+**Clases participantes:** `AuditInterceptor` (registrado como `APP_INTERCEPTOR` en `AuditModule`), función `depurarCambios`, `AuditService`, `Repository<AuditLog>`, entidad `AuditLog`, trigger `audit_log_inmutable` de la base.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-153 Registrar Toda Operacion De Escritura
     autonumber
-    participant USR as Usuario autenticado
-    participant INT as AuditoriaInterceptor
+    participant USR as Cliente HTTP
+    participant INT as AuditInterceptor
     participant CTRL as Controlador que corresponda
-    participant DEP as DepuradorDeCredenciales
-    participant SRV as AuditoriaService
-    participant REPO as RepositoryAsientoDeAuditoria
+    participant DEP as depurarCambios
+    participant SRV as AuditService
+    participant REPO as RepositoryAuditLog
 
-    USR->>INT: POST, PATCH, PUT o DELETE
+    Note over USR,INT: AuthGuard y RolesGuard ya aprobaron la peticion, lo que rechazan no llega al interceptor
+    USR->>INT: intercept(context, next)
     activate INT
-    alt el metodo no modifica datos
-        INT->>CTRL: deja pasar sin registrar
-    else es una operacion de escritura
-        INT->>INT: tomar autor, rol y distribuidora del request
-        INT->>CTRL: ejecutar la operacion
-        activate CTRL
+    alt El metodo no es POST, PUT, PATCH ni DELETE
+        INT->>CTRL: next.handle() sin registrar
+        CTRL-->>USR: respuesta
+    else Operacion de escritura
+        INT->>CTRL: next.handle()
         alt La operacion respondio bien
-            CTRL-->>INT: resultado
-            deactivate CTRL
-            INT->>DEP: depurar(cuerpo)
-            activate DEP
-            DEP-->>INT: cuerpo sin contrasenias ni tokens
-            deactivate DEP
-            INT-)SRV: registrar(asiento con resultado exitoso)
+            CTRL-->>INT: resultado, via tap
+            INT->>DEP: depurarCambios(request.body)
+            DEP-->>INT: cuerpo con las credenciales depuradas
+            INT-)SRV: registrar(asiento success con response.statusCode)
+            INT-->>USR: resultado, sin esperar el asiento
         else La operacion fue rechazada
-            INT->>DEP: depurar(cuerpo)
-            activate DEP
-            DEP-->>INT: cuerpo sin contrasenias ni tokens
-            deactivate DEP
-            INT-)SRV: registrar(asiento con el motivo del rechazo)
-            INT-->>USR: propaga el error original
+            CTRL-->>INT: error, via catchError
+            INT->>DEP: depurarCambios(request.body)
+            DEP-->>INT: cuerpo con las credenciales depuradas
+            INT-)SRV: registrar(asiento failure con codigo HTTP y motivo)
+            INT-->>USR: re-lanza el error original
         end
         activate SRV
-        SRV->>REPO: insert(asiento)
+        SRV->>REPO: save(create(asiento))
         activate REPO
-        REPO-->>SRV: asiento persistido
+        alt La base acepta el asiento
+            REPO-->>SRV: asiento guardado en audit_log
+        else La base lo rechaza
+            REPO-->>SRV: error
+            SRV->>SRV: logger.error con el asiento completo, no re-lanza
+        end
         deactivate REPO
         deactivate SRV
     end
@@ -10273,10 +10288,14 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Va en un **interceptor global** y no en cada servicio: así alcanza a toda escritura, incluidas las que se agreguen mañana. Una lista de operaciones a auditar se desactualiza apenas alguien se olvida de sumar la suya, y el agujero recién se nota cuando hace falta el registro.
-- El autor sale del request ya autenticado, **nunca del cuerpo**: es la misma regla que se aplicó a las salas de tiempo real y a la pertenencia de los pedidos.
-- La escritura del asiento **no bloquea** la respuesta al usuario, y su fallo se registra como advertencia sin interrumpir la operación. Que la auditoría falle no puede impedir que se trabaje.
-- La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. Sin este paso, auditar todo significaría guardar contraseñas en claro, que es exactamente lo contrario de lo que el sistema hace hoy —las valida Firebase y la base no las almacena—.
-- Se excluyen las verificaciones de estado y las notificaciones del proveedor de pagos: son tráfico de máquina y ahogarían el registro.
+- El interceptor corre **después de los guards**: conoce al usuario y a su distribuidora, y lo que `AuthGuard`, `RolesGuard` o el límite de peticiones rechazan no llega a él ni se registra. Corre **antes de los pipes**, de modo que una petición rechazada por el `ValidationPipe` (400) sí queda registrada como `failure`.
+- El autor, su rol y la distribuidora salen de `request.user` y `request.distributorId`, que resolvió la autenticación, **nunca del cuerpo**: es la misma regla que se aplicó a las salas de tiempo real y a la pertenencia de los pedidos.
+- `resource` es el primer segmento de la ruta después de `/api`; `resourceId`, el parámetro `:id` o, si la ruta no lo tiene, el primero de sus parámetros; `path` guarda el **patrón** de la ruta (`request.route.path`), no la ruta concreta, para que un correo o un teléfono que viaje en ella no quede escrito en el registro. `clientSource` sale del encabezado `X-Client-Source`.
+- `registrar` se invoca sin esperarla (`void`): la escritura del asiento **no demora** la respuesta. Y `registrar` no lanza: si la base rechaza el asiento, `AuditService` lo deja completo en el log con `logger.error` y la operación del usuario sigue su curso. Que la auditoría falle no puede impedir que se trabaje.
+- En la rama de error, `catchError` registra el asiento `failure` con el código que va a devolver el filtro global de excepciones y el mensaje del error, y **re-lanza el error original**: el usuario recibe la misma respuesta que sin auditoría.
+- La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. `depurarCambios` reemplaza por `"[depurado]"` los valores de `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code` (el código de entrega), `deliveryCode` y `secret`, en cualquier nivel y sin distinguir mayúsculas; recorta los textos de más de 500 caracteres y lo anidado a más de cuatro niveles.
+- La inmutabilidad no depende sólo de que la API no tenga rutas de edición: el trigger `audit_log_inmutable` (`BEFORE UPDATE OR DELETE`) rechaza cualquier modificación o borrado de un asiento. Sólo deja pasar el `UPDATE` que la propia base hace por `ON DELETE SET NULL` al borrarse el usuario autor o la distribuidora, que vacía esa referencia y nada más.
+- Las notificaciones del proveedor de pagos y las demás operaciones públicas también se registran, sin autor cuando la petición no trae credencial. Las verificaciones de estado son `GET` y no generan asiento.
 
 ---
 
@@ -11105,7 +11124,7 @@ classDiagram
         +isActive: boolean
         +calification: double
         +balance: double
-        +latLng: string
+        +location: Point
         +actual_location: string
         +notification_token: string
     }
@@ -11123,8 +11142,8 @@ classDiagram
     class Customer {
         +customer_id: UUID
         +notification_token: string
-        +lat_lang: string
-        +validated: string
+        +location: Point
+        +validated: boolean
     }
 
     class User {
@@ -11501,10 +11520,10 @@ compromete dinero.**
 | # | Módulo | CU | Aporte al negocio | Estado |
 |---|--------|-----|-------------------|--------|
 | **M1** | Negociación secuencial de asignación de pedidos | CU-013, CU-014 | Opera el presente | ✅ Implementado |
-| **M2** | Planificación predictiva de mantenimiento y habilitaciones de flota | CU-105 | Protege el activo vehículo — costos | 📋 Especificado |
-| **M3** | Anticipación de recompra por consumo estimado | CU-106 | Genera demanda — **ingresos** | 📋 Especificado |
-| **M4** | Agrupación inteligente de pedidos por recorrido | CU-107 | Reduce el costo por entrega — costos | 📋 Especificado |
-| **M5** | Recuperación de envases no devueltos | CU-108 | Protege el activo envase — costos | 📋 Especificado |
+| **M2** | Planificación predictiva de mantenimiento y habilitaciones de flota | CU-105 | Protege el activo vehículo — costos | 📋 Especificado · tablas en la base, servicio sin construir |
+| **M3** | Anticipación de recompra por consumo estimado | CU-106 | Genera demanda — **ingresos** | 📋 Especificado · tablas en la base, servicio sin construir |
+| **M4** | Agrupación inteligente de pedidos por recorrido | CU-107 | Reduce el costo por entrega — costos | 📋 Especificado · tablas en la base, servicio sin construir |
+| **M5** | Recuperación de envases no devueltos | CU-108 | Protege el activo envase — costos | 📋 Especificado · tablas en la base, servicio sin construir |
 
 ---
 
@@ -12658,10 +12677,16 @@ documento. El catálogo unificado de casos de uso, con sus diagramas de secuenci
 
 ### 7.4 Diagrama Entidad-Relación y Diccionario de Datos
 
-Modelo de datos completo, obtenido de las entidades del backend. Comprende **20 entidades
-persistidas**, 211 columnas y 38 relaciones. A diferencia del modelo conceptual del
+Modelo de datos de las entidades operativas, obtenido de las entidades del backend. Comprende
+**20 entidades persistidas**, 214 columnas y 38 relaciones. A diferencia del modelo conceptual del
 Documento 2 —que describe el dominio del problema— este es el modelo de la solución:
 incluye claves primarias y foráneas, tipos de dato, restricciones e índices.
+
+Las diecisiete tablas del modelo propuesto que se incorporaron a la base el 25/09/2026 —carrito,
+historial de estados y cambios de dirección del pedido, recorridos agrupados, flota, revisión y
+recuperación de envases, invitaciones de recompra, configuración de procesos y auditoría— y las
+columnas que ese mismo cambio agregó a las tablas existentes no se detallan en esta sección: su
+diccionario se genera desde la base en `diagramas/base-de-datos/SPLG-modelo-de-datos.md`.
 
 El bloque `erDiagram` es importable en draw.io (*Extras → Editar diagrama*), en Mermaid
 Live y en Lucidchart (*Importar datos → Mermaid*).
@@ -12679,7 +12704,7 @@ Live y en Lucidchart (*Importar datos → Mermaid*).
 | Customer | `customer` | 7 | Perfil de cliente extendido de un usuario. |
 | Cylinder | `cylinder` | 10 | Envase físico único (garrafa) rastreable por número de serie. |
 | CylinderMovement | `cylinder_movement` | 9 | Log inmutable de cambios de estado de cada envase físico. |
-| Delivery | `delivery` | 14 | Perfil de chofer de reparto para una distribuidora. |
+| Delivery | `delivery` | 13 | Perfil de chofer de reparto para una distribuidora. |
 | DispatchOffer | `order_dispatch_offer` | 7 | Oferta temporal de un pedido a un chofer específico para su despacho. |
 | Distributor | `distributor` | 13 | Distribuidora o tenant principal del sistema (multi-tenant). |
 | ⚠️ Email | — no persiste | 0 | Clase vacía sin decorador `@Entity`. No es una entidad del modelo. |
@@ -12693,7 +12718,7 @@ Live y en Lucidchart (*Importar datos → Mermaid*).
 | Role | `role` | 4 | Catálogo de roles del sistema. |
 | TimeSlot | `time_slot` | 9 | Franja horaria de entrega configurable por cada distribuidora. |
 | User | `user` | 12 | Cuenta global de usuario, base para perfiles específicos. |
-| UserAddress | `user_address` | 12 | Dirección física guardada por un usuario. |
+| UserAddress | `user_address` | 16 | Dirección física guardada por un usuario. |
 
 ---
 
@@ -12787,8 +12812,8 @@ erDiagram
         uuid customer_id PK
         uuid user_id FK
         text notification_token "nullable"
-        text lat_lang "nullable"
-        text validated "nullable"
+        geometry location "nullable, punto PostGIS"
+        boolean validated
         timestamptz createdAt "nullable"
         timestamptz deletedAt "nullable"
     }
@@ -12820,13 +12845,12 @@ erDiagram
         uuid distributor_id FK
         uuid user_id FK
         double calification "nullable"
-        text latLng "nullable"
+        geometry location "nullable, punto PostGIS"
         text actual_location "nullable"
         real cancelledCharge "nullable"
         boolean validated
         boolean isActive
         text notification_token "nullable"
-        text isTraveling "nullable"
         double balance
         timestamptz createdAt "nullable"
         timestamptz deletedAt "nullable"
@@ -12987,13 +13011,17 @@ erDiagram
         varchar street
         varchar city
         varchar postalCode "nullable"
-        varchar latitude "nullable"
-        varchar longitude "nullable"
+        varchar floor "nullable"
+        varchar apartment "nullable"
+        geometry location "nullable, punto PostGIS"
+        varchar place_id "nullable"
+        enum geocode_precision
         text formattedAddress "nullable"
         boolean isDefault
         text additionalInstructions "nullable"
         timestamptz createdAt
         timestamptz updatedAt
+        timestamptz deletedAt "nullable"
     }
 ```
 
@@ -13067,8 +13095,8 @@ erDiagram
 | customer_id | uuid | NO | - | Identificador único de cliente (PK). |
 | user_id | uuid | NO | - | Usuario al que extiende (FK). |
 | notification_token | text | SI | - | Token para notificaciones push (FCM). |
-| lat_lang | text | SI | - | Ubicación guardada del cliente. |
-| validated | text | SI | - | Indica si el cliente está validado (⚠️ verificar tipo text). |
+| location | geometry(Point, 4326) | SI | - | Última ubicación conocida del cliente, como punto PostGIS. La API la sigue recibiendo y devolviendo como texto "latitud,longitud" (`lat_lang`). |
+| validated | boolean | NO | false | Indica si la distribuidora aprobó al cliente. |
 | createdAt | timestamptz | SI | now() | Fecha de creación. |
 | deletedAt | timestamptz | SI | - | Fecha de soft-delete. |
 
@@ -13106,13 +13134,12 @@ erDiagram
 | distributor_id | uuid | NO | - | Distribuidora para la que trabaja (FK). @Index |
 | user_id | uuid | NO | - | Usuario al que extiende el perfil (FK). @Index |
 | calification | double precision | SI | - | Calificación promedio del chofer. |
-| latLng | text | SI | - | Ubicación general del chofer. |
+| location | geometry(Point, 4326) | SI | - | Última ubicación conocida del chofer, como punto PostGIS. La API la sigue recibiendo como texto "latitud,longitud". |
 | actual_location | text | SI | - | Ubicación en tiempo real del chofer. |
 | cancelledCharge | real | SI | - | Cargos por cancelaciones. |
 | validated | boolean | NO | false | Indica si la cuenta de chofer está validada. |
 | isActive | boolean | NO | true | Indica si el chofer está activo/conectado. |
 | notification_token | text | SI | - | Token FCM para notificaciones de ofertas de viaje. |
-| isTraveling | text | SI | - | Indica si el chofer está en viaje (⚠️ verificar tipo text). |
 | balance | double precision | NO | 0 | Saldo o balance a favor/en contra del chofer. |
 | createdAt | timestamptz | SI | now() | Fecha de creación. |
 | deletedAt | timestamptz | SI | - | Fecha de soft-delete. |
@@ -13299,13 +13326,17 @@ erDiagram
 | street | varchar(255) | NO | - | Calle y altura. |
 | city | varchar(100) | NO | - | Ciudad o localidad. |
 | postalCode | varchar(20) | SI | - | Código postal. |
-| latitude | varchar(50) | SI | - | Latitud referencial del mapa. |
-| longitude | varchar(50) | SI | - | Longitud referencial del mapa. |
+| floor | varchar(10) | SI | - | Piso. |
+| apartment | varchar(10) | SI | - | Departamento. |
+| location | geometry(Point, 4326) | SI | - | Punto de la dirección en PostGIS. La API sigue recibiendo y devolviendo `latitude` y `longitude` por separado, y exige las dos juntas. |
+| place_id | varchar(255) | SI | - | Identificador estable del lugar en el servicio de mapas. |
+| geocode_precision | enum | NO | 'unresolved' | Precisión con que se resolvió la dirección: exacta, aproximada o sin resolver. |
 | formattedAddress | text | SI | - | Dirección unificada devuelta por Geo API. |
 | isDefault | boolean | NO | false | Si es la dirección predeterminada. |
 | additionalInstructions | text | SI | - | Aclaraciones adicionales para el chofer. |
 | createdAt | timestamptz | NO | now() | Registro de la dirección. |
 | updatedAt | timestamptz | NO | now() | Última modificación. |
+| deletedAt | timestamptz | SI | - | Fecha de baja lógica: los pedidos que usaron la dirección la siguen mostrando. |
 
 ---
 
@@ -13327,6 +13358,7 @@ erDiagram
 | **IncidentStatus** | `open`, `resolved` |
 | **CylinderState** | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned` |
 | **ClaimStatus** | `pending`, `in_process`, `resolved`, `rejected` |
+| **AddressGeocodePrecision** | `exact`, `approximate`, `unresolved` |
 
 ---
 
@@ -13357,7 +13389,7 @@ erDiagram
 * `OrderItem`: No tiene el distributor_id de forma directa, pero su acceso debe estar delimitado por un `JOIN order`.
 * `Notification`, `Email`: Sin columnas definidas, actualmente exentos.
 
-**Huecos de aislamiento:** Las direcciones (`UserAddress`) son compartidas a nivel de toda la plataforma, por lo que una distribuidora en Salta podría ver la dirección de un usuario en Buenos Aires si este realiza un pedido. Para aislar operaciones a nivel de base de datos directamente en queries de ítems, el acceso a `OrderItem` debe ser siempre mediante relaciones hacia `Order`.
+**Aislamiento de lo compartido:** Las direcciones (`UserAddress`) y los clientes no tienen `distributor_id`, porque un cliente puede comprarle a varias distribuidoras. El acotamiento se hace en la aplicación: para una distribuidora, sus clientes son los que le compraron al menos una vez, según la definición única de `common/tenancy/pertenencia.ts`, y el administrador de empresa sólo alcanza las direcciones de esos usuarios (NFR-09). Para aislar operaciones a nivel de base de datos directamente en queries de ítems, el acceso a `OrderItem` debe ser siempre mediante relaciones hacia `Order`.
 
 ---
 
@@ -13367,7 +13399,7 @@ erDiagram
 2. **Reintentos de Despacho (`dispatchAttempts`)**: En el modelo antiguo se requería la columna `dispatchAttempts` en `Order`. En la base real, este mecanismo fue reemplazado y escalado arquitectónicamente mediante la creación de la entidad `DispatchOffer` (`order_dispatch_offer`), permitiendo trazabilidad y tiempos de expiración (`expiresAt`) por cada chofer ofertado.
 3. **Rechazos (`rejectedDriverIds`)**: Solucionado también con `DispatchOffer` en estado `rejected` en vez de un array en PostgreSQL o tabla intermedia huérfana.
 4. **Campos `arrivedAt` en Order**: No se detectó la columna `arrivedAt` en el TypeORM real sugerida por el doc; el tracking se hace con `acceptedAt`, `onTheWayAt`, y `deliveredAt`.
-5. **Tipos Ambiguos Mantenidos**: Los campos `customer.validated` y `delivery.isTraveling` siguen declarados como `text` o `varchar`, lo que el doc antiguo alertó como severidad crítica para pasar a `boolean`.
+5. **Tipos Corregidos**: `customer.validated` es `boolean`, y `delivery.isTraveling`, que ningún proceso escribía y que se deduce de los pedidos en camino, no existe en la base. Las ubicaciones del cliente, del chofer y de la dirección se guardan como punto PostGIS (`location`), un solo valor atómico en lugar de un texto "latitud,longitud" o de dos columnas de texto.
 6. **Multi-tenant**: Se consolidó fuertemente el esquema multi-distribuidora agregando `distributor_id` a prácticamente todas las entidades core de transacciones y catálogo.
 7. **Refuerzo en Pagos**: `Order` fue enriquecido con `gatewayPaymentId` y `deliveryCode` (prueba de entrega), e introdujo la tabla `Payment` funcionando como ledger transaccional independiente de los pagos por pasarelas (MercadoPago u otros).
 
@@ -13438,8 +13470,6 @@ diferencia y a qué caso de uso afecta.
 
 | Gap | Descripción | Prioridad |
 |-----|-------------|-----------|
-| Claves foráneas no declaradas | Las entidades de pago y de movimiento de envase guardan la referencia como columna suelta, sin declarar la relación. La base no tiene la restricción de integridad referencial que la haría cumplir. | 🟡 Importante |
-| Tipos de datos impropios | Dos atributos que representan un valor de verdad están tipados como texto. | 🟡 Importante |
 | Colisión de significado en el estado del chofer | Un mismo atributo expresa a la vez que el chofer se puso fuera de servicio y que el administrador lo dio de baja. Los dos casos son indistinguibles en la base. | 🟡 Importante |
 | Clases vacías | Dos archivos declaran clases sin contenido que no corresponden a ninguna tabla. Conviene eliminarlos o darles definición. | 🟢 Menor |
 
@@ -13455,26 +13485,29 @@ diferencia y a qué caso de uso afecta.
 ### 10.5 Alcance especificado y no construido
 
 Los casos de uso que siguen están documentados con sus cuatro artefactos y todavía no
-tienen contraparte en el código. No son omisiones del relevamiento: son el alcance que la
-cátedra pidió incorporar y que se especifica ahora para que la construcción posterior
-tenga contra qué hacerse. Cada grupo indica qué hace falta en la base de datos, según el
-modelo propuesto de `diagramas/base-de-datos/`.
+tienen contraparte funcional en el código. No son omisiones del relevamiento: son el alcance
+que la cátedra pidió incorporar y que se especificó para que la construcción posterior tenga
+contra qué hacerse. El modelo de datos que necesitan **ya está construido**: las diecisiete
+tablas y las columnas del modelo propuesto se incorporaron a la base el 25/09/2026. Lo que
+falta en cada grupo son los servicios y las operaciones de la API que usen esas tablas.
 
-| Grupo | Casos de uso | Qué falta en el modelo de datos |
-|-------|--------------|----------------------------------|
-| Carrito de compra | CU-122, CU-123, CU-124, CU-125, CU-126 | Tablas `cart` y `cart_item`. El carrito vive hoy en memoria de la App Cliente y se pierde al cerrarla. |
+| Grupo | Casos de uso | Modelo de datos construido |
+|-------|--------------|----------------------------|
+| Carrito de compra | CU-122, CU-123, CU-124, CU-125, CU-126 | Tablas `cart` y `cart_item`. Mientras no exista el servicio, el carrito vive en memoria de la App Cliente y se pierde al cerrarla. |
 | Dirección y receptor del pedido | CU-127, CU-128 | Tabla `order_address_change` y los campos de quién recibe en `order`. |
 | Vencimiento de envases | CU-132, CU-133, CU-134, CU-135 | Tabla `cylinder_inspection` y las fechas de fabricación, última revisión y vencimiento en `cylinder`. |
 | Habilitaciones y mantenimiento de flota | CU-136, CU-137, CU-138, CU-139, CU-140, CU-141, CU-142 | Tablas `maintenance_plan` (la regla) y `maintenance_task` (cada vencimiento: póliza, verificación, licencia, service), más kilometraje y estado en la flota en `car`. La tarea apunta a un vehículo o a un chofer, porque la licencia es de la persona. |
 | Consumo declarado y recompra | CU-143, CU-144, CU-145, CU-146 | Consumo promedio, garrafa habitual, días de aviso y próxima recompra estimada en `customer`. |
 | Compra express en moto | CU-147, CU-148, CU-149 | Modalidad de entrega en `order`; el recargo, el radio y la vigencia de la oferta express, en `module_config`. |
 | Recargo porcentual y vigencia de zonas | CU-056, CU-150, CU-151 | Tipo de recargo, etiqueta, color y fecha de fin de vigencia en `coverage_zone`. |
-| Dirección resuelta contra el mapa | CU-116, CU-118 | Nada: piso, departamento, punto en PostGIS, identificador del lugar y precisión ya están en `user_address`. Falta la consulta al servicio de mapas que los complete. |
-| Registro de auditoría | CU-152, CU-153 | Tabla `audit_log`, de sólo escritura. |
+| Dirección resuelta contra el mapa | CU-116, CU-118 | Piso, departamento, punto en PostGIS, identificador del lugar y precisión en `user_address`. Falta la consulta al servicio de mapas que los complete. |
 | Módulos inteligentes | CU-105, CU-106, CU-107, CU-108 | M1: `maintenance_window_proposal` y `vehicle_usage_log`. M2: `repurchase_invitation`. M3: `route_batch`, `route_batch_stop` y `route_batch_offer`. M4: `cylinder_recovery_case` y `cylinder_recovery_notice`. Los parámetros de los cuatro, en `module_config`. |
 
-Además, el historial de estados del pedido (`order_status_history`) y la declaración de las
-13 relaciones que hoy existen sin clave foránea. El sustento de cada decisión está en
+El historial de estados del pedido (`order_status_history`) también está creado en la base,
+aunque ningún servicio lo escribe todavía. Las 13 relaciones que la base no validaba quedaron
+declaradas como claves foráneas, sin filas huérfanas. El registro de auditoría (CU-152 y
+CU-153) está construido —tabla `audit_log`, interceptor de escrituras y consulta `GET /audit`—
+y por eso no figura en la tabla. El sustento de cada decisión está en
 `material-de-trabajo/MODELO-DE-DOMINIO.md`.
 
 Dos aclaraciones para la defensa. La primera: CU-043, que ya figuraba en §10.1, es de otra

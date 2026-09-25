@@ -1637,7 +1637,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 **Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Importante  
-**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo y desde dónde. Puede filtrar por persona, por tipo de recurso, por período y por resultado. Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa?", preguntas que hoy no tienen dónde mirarse.
+**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo, desde qué aplicación y con qué resultado. Puede filtrar por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa?". El administrador de una distribuidora ve sólo los asientos de ella; el Administrador General, los de todas o los de la distribuidora que elija.
 
 ---
 
@@ -1646,7 +1646,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 **Actor/es:** Sistema (ACT-04)  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Crítico  
-**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña.
+**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos —alta, modificación o baja—, exitosa o rechazada: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, y la propia base de datos lo impide, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña.
 
 ---
 
@@ -7921,20 +7921,20 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
-| **Requisitos asociados** | IRQ-16 |
-| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por período y por resultado, y abrir cada asiento para ver el detalle de lo que cambió. |
-| **Precondición** | El usuario tiene rol Administrador o Administrador General y está autenticado. |
-| **Estado** | Sin implementar |
+| **Requisitos asociados** | IRQ-16, NFR-09 |
+| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Cada asiento trae, además, el cuerpo de la operación con las credenciales depuradas. Endpoint: `GET /audit`. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN (Administrador) o SUPER_ADMIN (Administrador General). |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el registro de auditoría y, si quiere, indica filtros: quién, qué tipo de recurso, entre qué fechas, y si la operación resultó exitosa o fallida. |
-| 2 | El sistema restringe la consulta a los asientos de la distribuidora del administrador. El Administrador General no lleva esa restricción y ve los de todas. |
-| 3 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, paginados. |
-| 4 | Por cada asiento informa quién lo originó, qué operación fue, sobre qué recurso, cuándo, desde qué aplicación y con qué resultado. |
-| 5 | Al abrir un asiento, el sistema muestra además qué campos cambiaron y con qué valores. |
+| 1 | El administrador indica, si quiere, los filtros: quién hizo la operación (`actorUserId`), qué tipo de recurso (`resource`, por ejemplo `orders`), qué recurso puntual (`resourceId`), desde y hasta qué fecha (`desde`, `hasta`) y con qué resultado (`result`: `success` o `failure`). |
+| 2 | Se envía `GET /audit` con los filtros y la página: `limit`, entre 1 y 200, 50 por defecto, y `offset`, 0 por defecto. |
+| 3 | El sistema valida los filtros. Si hay una distribuidora en contexto —la del administrador de empresa, o la que eligió el Administrador General con "ver como"—, restringe la consulta a los asientos de esa distribuidora. El Administrador General sin distribuidora elegida ve los de todas. |
+| 4 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, junto con la cantidad total de coincidencias (`items` y `total`). |
+| 5 | Por cada asiento informa quién lo originó y con qué rol, a qué distribuidora corresponde, qué operación fue (método y ruta), sobre qué recurso e identificador, cuándo, desde qué aplicación y desde qué dirección de red, con qué resultado y código de respuesta, el motivo si fue rechazada y el cuerpo depurado de la operación. |
 
 **Postcondición:** Ninguna: la consulta no modifica nada. La propia consulta **no** genera un asiento, porque leer no es una operación de escritura.
 
@@ -7942,16 +7942,18 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el período indicado es inválido —la fecha de inicio posterior a la de fin—, el sistema informa el error. |
-| 3 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía. No es un error. |
+| 2 | Si el solicitante es un cliente o un chofer, el guard de roles rechaza la petición con error 403. |
+| 3 | Si un filtro no tiene el formato esperado —un autor que no es UUID, un resultado distinto de `success` o `failure`, una fecha inválida, un `limit` fuera del rango de 1 a 200 o un parámetro no declarado—, el sistema responde error 400. |
+| 3 | Si la fecha `desde` es posterior a `hasta`, el sistema no lo rechaza: ningún asiento cae en ese período y la respuesta es una lista vacía. |
+| 4 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía con total 0. No es un error. |
 | — | El sistema no expone ninguna operación de modificación ni de borrado sobre el registro, para ningún rol. Ver CU-153. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | La consulta filtrada responde en menos de 3 segundos. Requiere índice por fecha, por autor y por distribuidora: sin eso, la tabla crece hasta volver inusable la consulta. |
+| **Rendimiento** | Una sola lectura paginada con su conteo, apoyada en los índices por fecha, por autor y por distribuidora de la tabla `audit_log`: sin ellos, la tabla crece hasta volver inusable la consulta. La meta es responder en menos de 3 segundos. |
 | **Frecuencia** | Baja: se consulta ante una disputa o una sospecha, no a diario. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. La depuración por antigüedad, si llega a hacer falta, es una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
+| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. El Panel de Administración todavía no tiene la pantalla de consulta: el caso se ejerce por la API. La depuración por antigüedad no está construida; si llega a hacer falta, será una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
 
 ---
 
@@ -7962,37 +7964,38 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
 | **Requisitos asociados** | IRQ-16 |
-| **Descripción** | El sistema deja constancia de cada operación que modifica datos, sin que ningún usuario lo solicite y sin que ninguna funcionalidad tenga que acordarse de hacerlo. Es lo que sostiene la trazabilidad: sin este registro, una operación hecha y deshecha no deja rastro. |
-| **Precondición** | Ninguna: el registro es parte del camino de toda petición que modifica datos. |
-| **Estado** | Sin implementar |
+| **Descripción** | El sistema deja constancia de cada operación que modifica datos —toda petición `POST`, `PUT`, `PATCH` o `DELETE` de la API—, exitosa o rechazada, sin que ningún usuario lo solicite y sin que ninguna funcionalidad tenga que acordarse de hacerlo: lo hace un interceptor global. Es lo que sostiene la trazabilidad: sin este registro, una operación hecha y deshecha no deja rastro. |
+| **Precondición** | La petición modifica datos y pasó la autenticación y la autorización. Lo que un guard rechaza —sin credencial válida, sin el rol requerido, fuera del cupo de peticiones— no llegó a ser una operación y no se registra. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | Una petición que modifica datos —alta, modificación o baja— atraviesa el sistema. |
-| 2 | El sistema resuelve quién la origina a partir de su credencial: nunca de lo que venga en el cuerpo del mensaje. |
+| 1 | Una petición `POST`, `PUT`, `PATCH` o `DELETE` pasa la autenticación y la autorización. Las peticiones de sólo lectura siguen su curso sin registrarse. |
+| 2 | El sistema toma quién la origina —usuario y rol— y la distribuidora en contexto de lo que resolvió la autenticación a partir de la credencial: nunca de lo que venga en el cuerpo del mensaje. |
 | 3 | Deja pasar la operación y espera su resultado. |
-| 4 | Arma el asiento con quién, qué operación, sobre qué recurso, cuándo, desde qué aplicación, desde qué dirección de red, a qué distribuidora corresponde y con qué resultado terminó. |
-| 5 | **Depura el contenido antes de guardarlo**: las contraseñas, los tokens y cualquier credencial se reemplazan por una marca. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
-| 6 | Guarda el asiento. El registro es de sólo escritura: no existe forma de modificarlo ni de borrarlo. |
+| 4 | Arma el asiento: distribuidora, autor y rol, método, recurso (el primer segmento de la ruta después de `/api`, por ejemplo `orders`), identificador del recurso (el parámetro `:id` de la ruta o, si no lo tiene, el primero de sus parámetros), la ruta como patrón (`/api/users/email/:email`, de modo que un correo o un teléfono no quedan escritos en la ruta), la aplicación de origen (encabezado `X-Client-Source`), la dirección de red, el resultado (`success` o `failure`) y el código HTTP. |
+| 5 | **Depura el cuerpo antes de guardarlo**: los valores de las claves `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code`, `deliveryCode` y `secret` se reemplazan por `"[depurado]"`, en cualquier nivel del cuerpo y sin distinguir mayúsculas de minúsculas; los textos de más de 500 caracteres se recortan y lo anidado a más de cuatro niveles queda como `"[recortado]"`. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
+| 6 | Guarda el asiento en la tabla `audit_log` sin demorar la respuesta al usuario. |
 
-**Postcondición:** Queda un asiento por cada operación que modificó datos, exitosa o fallida. Las operaciones de sólo lectura no generan asiento.
+**Postcondición:** Queda un asiento por cada operación de escritura que pasó la autenticación y la autorización, exitosa o rechazada. Las operaciones de sólo lectura no generan asiento. El asiento no puede modificarse ni borrarse: la base de datos rechaza todo `UPDATE` y `DELETE` sobre `audit_log` con el trigger `audit_log_inmutable`. La única modificación que admite es la que hace la propia base cuando se borra el usuario autor o la distribuidora (`ON DELETE SET NULL`): vacía esa referencia sin tocar el resto del asiento.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la operación falla, **igual se registra**, con el motivo del rechazo. Un intento fallido de borrar algo ajeno es justamente lo que interesa ver. |
-| 6 | Si el asiento no se puede guardar, la operación del usuario **no se interrumpe**: el fallo queda en el registro de eventos del sistema. Que la auditoría falle no puede impedir que se trabaje. |
-| — | Quedan fuera del registro las verificaciones de estado del sistema y las notificaciones del proveedor de pagos: son tráfico de máquina, no acciones de una persona, y ahogarían el registro. |
+| 1 | Si un guard rechaza la petición (401, 403 o 429), no se registra: no llegó a ser una operación. |
+| 3 | Si la operación es rechazada —por la validación de los datos, por una regla del negocio o por un error—, **igual se registra**, con resultado `failure`, el código HTTP con el que responde el sistema y el motivo del rechazo; el error llega al usuario sin cambios. Un intento fallido de modificar algo ajeno es justamente lo que interesa ver. |
+| 6 | Si la base no acepta el asiento, la operación del usuario **no se interrumpe** ni se deshace: el asiento completo queda en el registro de eventos del sistema, con los datos necesarios para reconstruirlo. Que la auditoría falle no puede impedir que se trabaje. |
+| — | Las operaciones públicas —el ingreso, el registro de una cuenta, las notificaciones del proveedor de pagos— también se registran; si la petición no trae credencial, el asiento queda sin autor. Las verificaciones de estado del sistema son de sólo lectura y no generan asiento. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | El asiento no debe agregar más de 50 ms a la operación. Se escribe sin bloquear la respuesta al usuario. |
+| **Rendimiento** | La respuesta al usuario no espera la escritura del asiento: la operación sólo suma armarlo y depurar el cuerpo, en memoria. La tabla lleva índices por fecha, por autor y por distribuidora para la consulta de CU-152. |
 | **Frecuencia** | Automático, una vez por cada operación de escritura del sistema. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y hay que definir desde el principio cuánto tiempo se conserva. La depuración por antigüedad es un proceso del sistema, nunca una operación disponible para un usuario. |
+| **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y el plazo de conservación todavía no está definido. La depuración por antigüedad no está construida; cuando exista será un proceso del sistema, nunca una operación disponible para un usuario, y tendrá que contemplar el trigger que impide borrar asientos. |
 
 ---
 
@@ -12473,8 +12476,8 @@ sequenceDiagram
 
 #### DSS — CU-152: Consultar el Registro de Auditoría
 
-**Actor:** Administrador
-**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)`
+**Actor:** Administrador (y Administrador General)
+**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)`
 
 ```mermaid
 sequenceDiagram
@@ -12483,14 +12486,15 @@ sequenceDiagram
     actor ADM as Administrador
     participant SIS as Sistema
 
-    ADM->>SIS: consultarAuditoria(autor, tipoDeRecurso, desde, hasta, resultado, pagina)
+    ADM->>SIS: consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)
     activate SIS
-    alt el período indicado es inválido
+    alt el solicitante no es administrador
+        SIS-->>ADM: acceso denegado
+    else algún filtro no tiene el formato esperado
         SIS-->>ADM: error de validación
-    else hay asientos que coinciden
-        SIS-->>ADM: asientos (autor, operación, recurso, fecha, origen, resultado) y total
-    else ningún asiento coincide
-        SIS-->>ADM: lista vacía
+    else filtros válidos
+        Note over SIS: con una distribuidora en contexto, sólo los asientos de ella
+        SIS-->>ADM: asientos del más reciente al más antiguo (autor, rol, operación, recurso, fecha, origen, resultado, cuerpo depurado) y total, o lista vacía si ninguno coincide
     end
     deactivate SIS
 ```
@@ -12501,26 +12505,30 @@ sequenceDiagram
 #### DSS — CU-153: Registrar Toda Operación de Escritura
 
 **Actor:** Sistema (sin actor humano: ocurre en el camino de toda petición que modifica datos)
-**Operaciones del sistema:** `registrarOperacion(autor, operación, recurso, origen, resultado)`
+**Operaciones del sistema:** `registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, resultado, código, motivo)`
 
 ```mermaid
 sequenceDiagram
     title DSS — CU-153 Registrar Toda Operacion De Escritura
     autonumber
-    actor USR as Usuario autenticado
+    actor USR as Usuario
     participant SIS as Sistema
 
-    USR->>SIS: operación que modifica datos
+    USR->>SIS: operación que modifica datos (alta, modificación o baja)
     activate SIS
-    SIS->>SIS: resolver el autor desde su credencial
-    SIS->>SIS: ejecutar la operación
-    SIS->>SIS: depurar credenciales del contenido
-    alt la operación fue exitosa
-        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, exitosa)
-        SIS-->>USR: resultado de la operación
-    else la operación fue rechazada
-        SIS->>SIS: registrarOperacion(autor, operación, recurso, origen, motivo del rechazo)
-        SIS-->>USR: error de la operación
+    alt no pasa la autenticación o la autorización
+        SIS-->>USR: acceso denegado, sin asiento
+    else pasa la autenticación y la autorización
+        SIS->>SIS: resolver el autor, su rol y la distribuidora desde la credencial
+        SIS->>SIS: ejecutar la operación
+        SIS->>SIS: depurar las credenciales del cuerpo
+        alt la operación fue exitosa
+            SIS-)SIS: registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, exitosa, código)
+            SIS-->>USR: resultado de la operación, sin esperar el asiento
+        else la operación fue rechazada
+            SIS-)SIS: registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, rechazada, código, motivo)
+            SIS-->>USR: el mismo error de la operación
+        end
     end
     deactivate SIS
 ```
@@ -14059,7 +14067,8 @@ sequenceDiagram
         activate SRV
         Note over SRV: «include» CU-082 Crear Usuario Base
         SRV->>CSRV: crearPerfil(manager, user_id, lat_lang, notification_token)
-        CSRV-->>SRV: perfil de cliente sin validar
+        CSRV->>CSRV: si viene lat_lang, puntoDesdeLatLng(lat_lang) a location, punto PostGIS
+        CSRV-->>SRV: perfil de cliente sin validar, con su ubicacion en location
         SRV-)LIS: usuario.registrado con rol customer
         SRV-->>CTRL: User con rol y perfil de cliente
         deactivate SRV
@@ -14075,6 +14084,7 @@ sequenceDiagram
 - El correo de bienvenida **escucha** el evento `usuario.registrado` en lugar de que el alta llame al correo: `registro` no depende de `email`, y un correo que no sale nunca deshace un alta ya confirmada.
 - El cupo de altas es más estricto que el global porque cada alta crea una cuenta en el proveedor de identidad y manda un correo.
 - La respuesta sale por `UserMapper`: no incluye `firebase_uid` ni el token de notificaciones.
+- El perfil de cliente guarda la ubicación en `location`, un punto PostGIS. La API la sigue recibiendo como texto "latitud,longitud" en `lat_lang`, y el DTO rechaza (400) lo que no sea un par de coordenadas válido.
 - `POST /users/customer-registration` responde con el mismo método mientras las versiones publicadas de la app lo usen.
 
 ---
@@ -21238,94 +21248,107 @@ sequenceDiagram
 
 #### C.35 DSD — CU-152: Consultar el Registro de Auditoría
 
-**Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `AuditoriaController`, `ConsultarAuditoriaDto`, `AuditoriaService`, `Repository<AsientoDeAuditoria>`.
+**Clases participantes:** `AuthGuard`, `RolesGuard`, `ValidationPipe`, `@CurrentDistributor()`, `AuditController`, `ConsultarAuditoriaDto`, `AuditService`, `Repository<AuditLog>`, `AuditMapper`, `AsientoDeAuditoriaDto`, `RegistroDeAuditoriaDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-152 Consultar El Registro De Auditoria
     autonumber
-    participant ADM as Admin de la distribuidora
-    participant AUTH as AuthGuard
-    participant CTRL as AuditoriaController
-    participant DTO as ConsultarAuditoriaDto
-    participant SRV as AuditoriaService
-    participant REPO as RepositoryAsientoDeAuditoria
+    participant ADM as Panel o cliente HTTP
+    participant RG as RolesGuard
+    participant VP as ValidationPipe
+    participant CTRL as AuditController
+    participant SRV as AuditService
+    participant REPO as RepositoryAuditLog
+    participant MAP as AuditMapper
 
-    ADM->>AUTH: GET /auditoria con filtros
-    activate AUTH
-    AUTH-->>CTRL: request.distributorId y rol resueltos
-    deactivate AUTH
-    CTRL->>DTO: validar(filtros)
-    activate DTO
-    alt desde es posterior a hasta
-        DTO-->>ADM: BadRequestException, periodo invalido
-        deactivate DTO
-    else filtros validos
-        CTRL->>SRV: consultar(filtros, distributorId, rol)
-        activate SRV
-        SRV->>SRV: si el rol no es super_admin, fijar distributor_id en el filtro
-        SRV->>REPO: findAndCount(filtros, orden por fecha descendente, paginado)
-        activate REPO
-        REPO-->>SRV: asientos y total
-        deactivate REPO
-        SRV-->>CTRL: pagina de asientos
-        deactivate SRV
-        CTRL-->>ADM: 200 AuditoriaResponseDto
+    ADM->>RG: GET /audit con filtros
+    Note over RG: AuthGuard ya resolvio request.user y request.distributorId
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>ADM: 403 ForbiddenException
+    else Autorizado
+        RG->>VP: transformar y validar ConsultarAuditoriaDto
+        alt Filtro invalido
+            VP-->>ADM: 400 BadRequestException
+        else Filtros validos, limit 50 y offset 0 por defecto
+            VP->>CTRL: consultar(filtros, distributorId de CurrentDistributor)
+            activate CTRL
+            CTRL->>SRV: consultar(filtros, distributorId)
+            activate SRV
+            SRV->>SRV: armar where con distributorId si hay distribuidora en contexto, actorUserId, resource, resourceId, result y el periodo desde hasta
+            SRV->>REPO: findAndCount(where, order createdAt DESC, take limit, skip offset)
+            activate REPO
+            REPO-->>SRV: asientos y total
+            deactivate REPO
+            SRV-->>CTRL: items y total
+            deactivate SRV
+            loop Por cada asiento
+                CTRL->>MAP: toDto(asiento)
+                MAP-->>CTRL: AsientoDeAuditoriaDto
+            end
+            CTRL-->>ADM: 200 RegistroDeAuditoriaDto con items y total
+            deactivate CTRL
+        end
     end
 ```
 
 **Observaciones de diseño**
 
-- El controlador expone **sólo lectura**. No hay `@Post`, `@Patch` ni `@Delete`: la ausencia de esas rutas es la garantía de inmutabilidad, no una validación que alguien pueda saltear.
-- La restricción por distribuidora se aplica **en el filtro de la consulta**, igual que en el resto del sistema: un asiento de otra distribuidora no aparece, en vez de aparecer y ser rechazado después.
-- La consulta **no** genera asiento propio: leer no es escribir, y registrarse a sí misma llenaría la tabla de ruido.
+- `AuditController` expone **sólo lectura**: un único `@Get()`, sin `@Post`, `@Patch` ni `@Delete`. La API no tiene cómo modificar un asiento, y además la base lo impide con el trigger de CU-153.
+- La restricción por distribuidora se aplica **en el `where` de la consulta**, igual que en el resto del sistema: un asiento de otra distribuidora no aparece, en vez de aparecer y ser rechazado después. El `distributorId` lo resuelve `AuthGuard`: la distribuidora del perfil para el administrador de empresa, la del encabezado `X-Distributor` para el Administrador General con "ver como", y ninguna —todas— para el Administrador General sin ese encabezado.
+- Los filtros los valida el `ValidationPipe` global contra `ConsultarAuditoriaDto` (`limit` entre 1 y 200, `offset` desde 0, `result` sólo `success` o `failure`, fechas válidas, sin parámetros no declarados). Un período con `desde` posterior a `hasta` no se rechaza: el `Between` no encuentra asientos y la respuesta es vacía.
+- La respuesta sale por `AuditMapper` como `RegistroDeAuditoriaDto`: `items` con los asientos y `total` con la cantidad de coincidencias, para paginar.
+- La consulta **no** genera asiento propio: es un `GET`, y el interceptor de CU-153 sólo registra escrituras.
 
 ---
 
 
 #### C.36 DSD — CU-153: Registrar Toda Operación de Escritura
 
-**Clases participantes:** `AuditoriaInterceptor` (registrado como `APP_INTERCEPTOR`), `AuditoriaService`, `DepuradorDeCredenciales`, `Repository<AsientoDeAuditoria>`.
+**Clases participantes:** `AuditInterceptor` (registrado como `APP_INTERCEPTOR` en `AuditModule`), función `depurarCambios`, `AuditService`, `Repository<AuditLog>`, entidad `AuditLog`, trigger `audit_log_inmutable` de la base.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-153 Registrar Toda Operacion De Escritura
     autonumber
-    participant USR as Usuario autenticado
-    participant INT as AuditoriaInterceptor
+    participant USR as Cliente HTTP
+    participant INT as AuditInterceptor
     participant CTRL as Controlador que corresponda
-    participant DEP as DepuradorDeCredenciales
-    participant SRV as AuditoriaService
-    participant REPO as RepositoryAsientoDeAuditoria
+    participant DEP as depurarCambios
+    participant SRV as AuditService
+    participant REPO as RepositoryAuditLog
 
-    USR->>INT: POST, PATCH, PUT o DELETE
+    Note over USR,INT: AuthGuard y RolesGuard ya aprobaron la peticion, lo que rechazan no llega al interceptor
+    USR->>INT: intercept(context, next)
     activate INT
-    alt el metodo no modifica datos
-        INT->>CTRL: deja pasar sin registrar
-    else es una operacion de escritura
-        INT->>INT: tomar autor, rol y distribuidora del request
-        INT->>CTRL: ejecutar la operacion
-        activate CTRL
+    alt El metodo no es POST, PUT, PATCH ni DELETE
+        INT->>CTRL: next.handle() sin registrar
+        CTRL-->>USR: respuesta
+    else Operacion de escritura
+        INT->>CTRL: next.handle()
         alt La operacion respondio bien
-            CTRL-->>INT: resultado
-            deactivate CTRL
-            INT->>DEP: depurar(cuerpo)
-            activate DEP
-            DEP-->>INT: cuerpo sin contrasenias ni tokens
-            deactivate DEP
-            INT-)SRV: registrar(asiento con resultado exitoso)
+            CTRL-->>INT: resultado, via tap
+            INT->>DEP: depurarCambios(request.body)
+            DEP-->>INT: cuerpo con las credenciales depuradas
+            INT-)SRV: registrar(asiento success con response.statusCode)
+            INT-->>USR: resultado, sin esperar el asiento
         else La operacion fue rechazada
-            INT->>DEP: depurar(cuerpo)
-            activate DEP
-            DEP-->>INT: cuerpo sin contrasenias ni tokens
-            deactivate DEP
-            INT-)SRV: registrar(asiento con el motivo del rechazo)
-            INT-->>USR: propaga el error original
+            CTRL-->>INT: error, via catchError
+            INT->>DEP: depurarCambios(request.body)
+            DEP-->>INT: cuerpo con las credenciales depuradas
+            INT-)SRV: registrar(asiento failure con codigo HTTP y motivo)
+            INT-->>USR: re-lanza el error original
         end
         activate SRV
-        SRV->>REPO: insert(asiento)
+        SRV->>REPO: save(create(asiento))
         activate REPO
-        REPO-->>SRV: asiento persistido
+        alt La base acepta el asiento
+            REPO-->>SRV: asiento guardado en audit_log
+        else La base lo rechaza
+            REPO-->>SRV: error
+            SRV->>SRV: logger.error con el asiento completo, no re-lanza
+        end
         deactivate REPO
         deactivate SRV
     end
@@ -21335,10 +21358,14 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Va en un **interceptor global** y no en cada servicio: así alcanza a toda escritura, incluidas las que se agreguen mañana. Una lista de operaciones a auditar se desactualiza apenas alguien se olvida de sumar la suya, y el agujero recién se nota cuando hace falta el registro.
-- El autor sale del request ya autenticado, **nunca del cuerpo**: es la misma regla que se aplicó a las salas de tiempo real y a la pertenencia de los pedidos.
-- La escritura del asiento **no bloquea** la respuesta al usuario, y su fallo se registra como advertencia sin interrumpir la operación. Que la auditoría falle no puede impedir que se trabaje.
-- La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. Sin este paso, auditar todo significaría guardar contraseñas en claro, que es exactamente lo contrario de lo que el sistema hace hoy —las valida Firebase y la base no las almacena—.
-- Se excluyen las verificaciones de estado y las notificaciones del proveedor de pagos: son tráfico de máquina y ahogarían el registro.
+- El interceptor corre **después de los guards**: conoce al usuario y a su distribuidora, y lo que `AuthGuard`, `RolesGuard` o el límite de peticiones rechazan no llega a él ni se registra. Corre **antes de los pipes**, de modo que una petición rechazada por el `ValidationPipe` (400) sí queda registrada como `failure`.
+- El autor, su rol y la distribuidora salen de `request.user` y `request.distributorId`, que resolvió la autenticación, **nunca del cuerpo**: es la misma regla que se aplicó a las salas de tiempo real y a la pertenencia de los pedidos.
+- `resource` es el primer segmento de la ruta después de `/api`; `resourceId`, el parámetro `:id` o, si la ruta no lo tiene, el primero de sus parámetros; `path` guarda el **patrón** de la ruta (`request.route.path`), no la ruta concreta, para que un correo o un teléfono que viaje en ella no quede escrito en el registro. `clientSource` sale del encabezado `X-Client-Source`.
+- `registrar` se invoca sin esperarla (`void`): la escritura del asiento **no demora** la respuesta. Y `registrar` no lanza: si la base rechaza el asiento, `AuditService` lo deja completo en el log con `logger.error` y la operación del usuario sigue su curso. Que la auditoría falle no puede impedir que se trabaje.
+- En la rama de error, `catchError` registra el asiento `failure` con el código que va a devolver el filtro global de excepciones y el mensaje del error, y **re-lanza el error original**: el usuario recibe la misma respuesta que sin auditoría.
+- La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. `depurarCambios` reemplaza por `"[depurado]"` los valores de `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code` (el código de entrega), `deliveryCode` y `secret`, en cualquier nivel y sin distinguir mayúsculas; recorta los textos de más de 500 caracteres y lo anidado a más de cuatro niveles.
+- La inmutabilidad no depende sólo de que la API no tenga rutas de edición: el trigger `audit_log_inmutable` (`BEFORE UPDATE OR DELETE`) rechaza cualquier modificación o borrado de un asiento. Sólo deja pasar el `UPDATE` que la propia base hace por `ON DELETE SET NULL` al borrarse el usuario autor o la distribuidora, que vacía esa referencia y nada más.
+- Las notificaciones del proveedor de pagos y las demás operaciones públicas también se registran, sin autor cuando la petición no trae credencial. Las verificaciones de estado son `GET` y no generan asiento.
 
 ---
 

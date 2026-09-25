@@ -42,8 +42,8 @@ actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-18 Observabilidad y Operación" {
   usecase "CU-104\nVerificar la Salud del Sistema\n(liveness / readiness)" as U104 #back:FFFFFF;line:5B5F87
-  usecase "CU-152\nConsultar el Registro de\nAuditoría" as U152 <<pendiente>> #back:FFFFFF;line:5B5F87
-  usecase "CU-153\nRegistrar Toda Operación de\nEscritura" as U153 <<pendiente>> #back:FFFFFF;line:5B5F87
+  usecase "CU-152\nConsultar el Registro de\nAuditoría" as U152 #back:FFFFFF;line:5B5F87
+  usecase "CU-153\nRegistrar Toda Operación de\nEscritura" as U153 #back:FFFFFF;line:5B5F87
 }
 
 A01 -[#1F6F8B]- U104
