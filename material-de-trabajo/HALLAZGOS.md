@@ -955,3 +955,14 @@ el dominio de otro sistema: quien restablece su clave en SPLG termina en esa
 página. Las plantillas además firman como "Yeni Gass". Hay que llevar la URL a
 la configuración (`ConfigService`, con su entrada en Joi) y usar el nombre del
 producto.
+
+### H-60 · Una dirección se podía pasar a la cuenta de otro — **seguridad, ALTO**
+
+> **Resuelto el 24/09.** `user_id` salió de `UpdateUserAddressDto`.
+
+`PATCH /user-address/:id` aceptaba `user_id`. El control de propiedad miraba de
+quién era la dirección *antes* del cambio, no a quién pasaba. **Verificado
+contra la API:** un cliente pasó su dirección a otro cliente con 200, y la
+dirección aparecía en la lista del otro, donde podía terminar elegida para un
+pedido. Es el mismo patrón que H-52: un DTO de modificación que hereda todos
+los campos del alta.
