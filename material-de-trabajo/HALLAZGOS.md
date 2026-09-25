@@ -1208,3 +1208,23 @@ así que caían en el genérico. **Verificado contra la API:** pedir 99999
 unidades, o un producto inexistente, respondía 500 "Error al crear el pedido";
 el cliente no sabía que el problema era el stock. Ahora 400 "Stock insuficiente
 para …" y 404 "Garrafa no encontrada".
+
+## Comparando con Tutu — 25/09
+
+### H-86 · Al reconectar el socket, las apps no recuperan el estado del pedido — **defecto, MEDIO, ABIERTO**
+
+Cliente y chofer, al reconectar, sólo vuelven a unirse a su sala
+(`splg-app-cliente/lib/services/order_tracking_service.dart:127-129`,
+`splg-app-chofer/lib/services/driver_socket_service.dart:121-124`). Los eventos
+`order:*` emitidos durante el corte se pierden: la pantalla puede quedar en un
+estado viejo. Propuesta: al reconectar, el servidor emite un `order:snapshot` o
+la app pide `GET /orders/:id`. Sale de leer el código; no se reprodujo.
+
+### H-87 · El chofer podría no reconectarse con el token vencido — **defecto, ALTO, SIN VERIFICAR**
+
+La app fija el token una sola vez (`driver_socket_service.dart:67-84`,
+`setAuth({'token': token})` + `enableReconnection()`), y el gateway valida el
+token en cada handshake (`gateways/socket-identity.service.ts:42-53`). Un ID
+token de Firebase dura una hora: un chofer conectado más de una hora que pierde
+señal probablemente no pueda volver a entrar. Propuesta: `getIdToken(true)` en
+`onReconnectAttempt`, o recrear el socket. Hay que reproducirlo con la app.
