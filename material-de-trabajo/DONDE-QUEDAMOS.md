@@ -99,18 +99,26 @@ Cumplen los 12 puntos de "módulo terminado" y se probaron contra la API.
 Todo el código se probó contra la API corriendo antes de commitear: la colección
 de Postman completa, la batería de aislamiento y casos puntuales.
 
-## 5. Documentación
+## 5. Documentación — CERRADA (25/09)
 
 | Artefacto | Estado |
 |---|---|
-| Modelo conceptual (MC) y de base de datos (DBM) | regenerados; export para Lucidchart en `lucidchart/` (draw.io y `.sql` para Importar datos · ERD). Falta una última regeneración con las claves únicas de H-88 |
-| Normalización | `NORMALIZACION.md` |
-| CU / CUA / CUE / DSS / DSD | aislamiento hecho en unos 45 CU (pedidos, choferes, clientes, direcciones, posventa, notificaciones, admin), verificado contra la API. En curso: bajas lógicas, stock y normalización, textos viejos, auditoría (CU-152/153 en sus cinco artefactos), requisito no funcional de aislamiento, CUA, diagramas de casos de uso, de contexto y de iteraciones |
-| Sitio (splg-atlas) | se publica al cerrar la documentación |
+| Modelo conceptual (MC) y de base de datos (DBM) | regenerados con todo lo del 25/09, incluidas las claves únicas de H-88; sin elementos «propuesto». Export para Lucidchart en `lucidchart/` (draw.io y `.sql` para Importar datos · ERD) |
+| Normalización | `NORMALIZACION.md` (FNBC salvo seis redundancias justificadas) |
+| CU / CUA / CUE / DSS / DSD | los 153 CU con sus cinco artefactos. Aislamiento, bajas lógicas, stock, normalización y auditoría (CU-152/153) reflejados y verificados contra la API. Copias sincronizadas: 0 diferencias entre los `.mmd` y los documentos, CUE iguales en `1-Requisitos.md` y `Casos-de-Uso.md` |
+| Diagramas de casos de uso, contexto e iteraciones | al día; `diagramas/INDICE.md` suma 153 |
+| Verificación | 917/917 diagramas Mermaid válidos; `verificar-conformidad.py`: todos cumplen la plantilla de la cátedra |
+| Sitio (splg-atlas) | regenerado en local (`splg-documentacion.html`); **no publicado**: se publica cuando nahue lo apruebe |
 
-**Para leer la documentación:** primero este archivo, después
-`MODELO-DE-DOMINIO.md` y `NORMALIZACION.md`, y después los casos de uso por
-subsistema en `Casos-de-Uso.md`.
+**Orden de lectura sugerido:**
+
+1. Este archivo.
+2. `CAMBIOS-25-09.md`: qué cambió y en qué CU.
+3. `MODELO-DE-DOMINIO.md` y `NORMALIZACION.md`.
+4. El MC y el DBM (`diagramas/base-de-datos/` o `lucidchart/`).
+5. Los CU por subsistema en `Casos-de-Uso.md`. Para empezar, conviene mirar los que más cambiaron: CU-005, 008 al 019, 085, 093 al 096 y 152/153.
+
+Después sigue la etapa 2 (revisión del código del back y merge a develop), después Postman y por último el panel.
 
 ## 6. Qué le sirve al panel (para cuando se adapte)
 
