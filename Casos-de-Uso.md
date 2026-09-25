@@ -13423,6 +13423,7 @@ sequenceDiagram
     participant GW as PaymentGatewayPort
     participant MP as MercadoPago
     participant WCTRL as MercadoPagoWebhookController
+    participant EV as EventEmitter2
     participant UCP as ConfirmPaymentUseCase
     participant ORD as OrderRepositoryPort
     participant QR as QueryRunner
@@ -13462,7 +13463,8 @@ sequenceDiagram
         WCTRL-->>MP: 200 received true sin procesar
         deactivate WCTRL
     else Firma valida
-        WCTRL->>UCP: execute(type, dataId)
+        WCTRL->>EV: emitAsync(pago.notificado, PagoNotificadoEvent)
+        EV->>UCP: PagoNotificadoListener, execute(type, dataId)
         activate UCP
         UCP->>PAY: confirmFromGateway(type, dataId)
         alt type distinto de payment o sin dataId
