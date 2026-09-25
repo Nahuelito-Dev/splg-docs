@@ -939,6 +939,8 @@ Quien pide la evolución semanal recibe la diaria sin aviso. Afecta CU-030.
 
 ### H-58 · Un endpoint público manda mails a cualquier dirección — **seguridad, medio**
 
+> **Resuelto el 24/09.** `POST /email/test` exige super administrador.
+
 `POST /email/test` es `@Public()` y, con sólo pasarle un correo, genera dos
 links de restablecimiento en Firebase y manda un mail real a esa dirección. Un
 tercero puede usar el backend para mandar correos a quien quiera y gastar el
@@ -946,6 +948,8 @@ cupo de Firebase y de Resend. Es un endpoint de prueba que quedó publicado: o
 se saca, o se restringe a administradores.
 
 ### H-59 · Los links y el mail de bienvenida apuntan a otro proyecto — **defecto, ALTO**
+
+> **Resuelto el 24/09.** Los links salen de `APP_URL` o, si falta, del dominio del propio proyecto de Firebase (`EnlacesDeLaApp`). Verificado: con el dominio nuevo Firebase genera el link sin error.
 
 El link de "olvidé mi contraseña" se genera con `url:
 'https://taolistic-courses.firebaseapp.com/__/auth/action'`
@@ -1008,3 +1012,45 @@ moverle la posición y sacarlo de servicio.
 **Verificado contra la API, después del arreglo:** el cliente recibe 403 en los
 cuatro casos; un chofer, 403 sobre otro chofer; el propio chofer cambia su
 disponibilidad (200) y el admin lee y lista (200).
+
+### H-65 · Cualquier usuario leía la cuenta completa de cualquier otro — **seguridad, ALTO**
+
+> **Resuelto el 24/09.** `/users/:id` y `/users/email/:email`: el propio usuario o un admin. `/users/phone/:phone`: sólo admin.
+
+Los tres endpoints sólo pedían estar autenticado y devolvían la cuenta con
+`firebase_uid`, direcciones, autos y perfiles de cliente y chofer.
+**Verificado contra la API:** un cliente leyó la cuenta de otro usuario con
+200. Después del arreglo, 403; las apps siguen leyendo su propia cuenta al
+entrar (200).
+
+### H-66 · Un admin de empresa lista usuarios de todas las distribuidoras — **seguridad, medio, ABIERTO**
+
+`GET /users` y `GET /users/:id` no se acotan a la distribuidora del admin. Los
+clientes no pertenecen a ninguna distribuidora (sólo choferes y admins), así
+que qué le corresponde ver es **decisión de producto**. Propuesta: sus
+choferes, sus admins y los clientes que le compraron. Va con `users` en la
+tanda 3.
+
+### H-67 · El error de Firebase llegaba crudo al llamante — **seguridad, bajo**
+
+> **Resuelto el 24/09.** El detalle queda en el log; el llamante recibe un mensaje fijo.
+
+`POST /email/password-reset` devolvía la respuesta interna de Firebase
+(`RESET_PASSWORD_EXCEED_LIMIT` y el JSON completo).
+
+### H-68 · El reseteo de contraseña revelaba qué correos tienen cuenta — **seguridad, medio**
+
+> **Resuelto el 24/09.** Mismo mensaje exista o no la cuenta.
+
+Contestaba "sent successfully" si existía e "If the email exists…" si no;
+Swagger decía que el mensaje era el mismo.
+
+### H-69 · Un vehículo se le podía asignar a cualquier usuario — **seguridad, medio**
+
+> **Resuelto el 24/09.** El dueño tiene que ser chofer de la misma distribuidora; si no, 404.
+
+**Verificado contra la API:** asignarle el auto a un cliente o a un chofer de
+otra distribuidora da 404. De paso: al editar, el control de patente
+duplicada comparaba contra el auto ya mezclado por `preload` y nunca corría;
+el duplicado sólo lo frenaba la restricción única de la base. DSD CU-034,
+CU-051 y CU-111 actualizados (CU-111 además decía `ConflictException`).

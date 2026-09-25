@@ -5833,19 +5833,19 @@ sequenceDiagram
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
-    participant USRV as UsersService
+    participant DSRV as DeliveryService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: create(createCarDto, distributorId)
     activate SRV
-    SRV->>USRV: findById(user_id del dto)
-    activate USRV
-    USRV-->>SRV: User o null
-    deactivate USRV
-    alt Usuario inexistente
-        SRV-->>CTRL: NotFoundException User with ID not found
+    SRV->>DSRV: findDistributorIdByUserId(user_id del dto)
+    activate DSRV
+    DSRV-->>SRV: distributor_id del chofer o null
+    deactivate DSRV
+    alt No es chofer o es de otra distribuidora
+        SRV-->>CTRL: NotFoundException No hay un chofer con ese user ID en esta distribuidora
         deactivate SRV
-    else Usuario encontrado
+    else Chofer de la distribuidora
         alt El dto trae car_patent
             SRV->>CREP: findOne(where car_patent)
             activate CREP
@@ -6013,6 +6013,7 @@ sequenceDiagram
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
+    participant DSRV as DeliveryService
     participant CREP as RepositoryCar
 
     alt Consultas del parque, GET /car, /car/:id, /car/user/:userId, /car/patent/:patent
@@ -6061,6 +6062,24 @@ sequenceDiagram
         CTRL->>SRV: update(id, updateCarDto, distributorId)
         activate SRV
         SRV->>SRV: findOne(id, distributorId), guardia de tenant
+        alt El dto cambia el dueno
+            SRV->>DSRV: findDistributorIdByUserId(user_id nuevo)
+            activate DSRV
+            DSRV-->>SRV: distributor_id del chofer o null
+            deactivate DSRV
+            alt No es chofer o es de otra distribuidora
+                SRV-->>CTRL: NotFoundException No hay un chofer con ese user ID en esta distribuidora
+            end
+        end
+        alt El dto cambia la patente guardada
+            SRV->>CREP: findOne(where car_patent nueva)
+            activate CREP
+            CREP-->>SRV: Car existente o null
+            deactivate CREP
+            alt La patente pertenece a otro vehiculo
+                SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
+            end
+        end
         SRV->>CREP: preload(car_id mas campos del dto)
         activate CREP
         CREP-->>SRV: Car fusionado o undefined
@@ -6069,15 +6088,6 @@ sequenceDiagram
             SRV-->>CTRL: NotFoundException Car with ID not found
             deactivate SRV
         else Vehiculo cargado
-            alt El dto cambia la patente
-                SRV->>CREP: findOne(where car_patent nueva)
-                activate CREP
-                CREP-->>SRV: Car existente o null
-                deactivate CREP
-                alt La patente pertenece a otro vehiculo
-                    SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
-                end
-            end
             SRV->>CREP: save(car)
             activate CREP
             CREP-->>SRV: Car actualizado
@@ -6274,21 +6284,45 @@ sequenceDiagram
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
+    participant DSRV as DeliveryService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: update(id, updateCarDto, distributorId)
     activate SRV
-    SRV->>SRV: findOne(id, distributorId)
+    SRV->>SRV: findOne(id, distributorId), guardia de tenant
+    alt El dto cambia el dueno
+        SRV->>DSRV: findDistributorIdByUserId(user_id nuevo)
+        activate DSRV
+        DSRV-->>SRV: distributor_id del chofer o null
+        deactivate DSRV
+        alt No es chofer o es de otra distribuidora
+            SRV-->>CTRL: NotFoundException No hay un chofer con ese user ID en esta distribuidora
+        end
+    end
+    alt El dto cambia la patente guardada
+        SRV->>CREP: findOne(where car_patent nueva)
+        activate CREP
+        CREP-->>SRV: Car existente o null
+        deactivate CREP
+        alt La patente pertenece a otro vehiculo
+            SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
+        end
+    end
     SRV->>CREP: preload(car_id mas campos del dto)
     activate CREP
     CREP-->>SRV: Car fusionado o undefined
     deactivate CREP
-    alt la patente cambio y ya existe
-        SRV-->>CTRL: ConflictException patente repetida
+    alt preload no encontro el vehiculo
+        SRV-->>CTRL: NotFoundException Car with ID not found
         deactivate SRV
-    else Patente libre
-        SRV-->>CTRL: Car actualizado
+    else Vehiculo cargado
+        SRV->>CREP: save(car)
+        activate CREP
+        CREP-->>SRV: Car actualizado
+        deactivate CREP
+        SRV-->>CTRL: Car
     end
+    CTRL->>CTRL: CarMapper.toDto(car) a CarResponseDto
 ```
 
 **Figura 83 — DSD CU-111: Editar Vehículo**

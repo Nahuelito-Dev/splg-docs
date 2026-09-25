@@ -3,19 +3,19 @@ sequenceDiagram
     autonumber
     participant CTRL as CarController
     participant SRV as CarService
-    participant USRV as UsersService
+    participant DSRV as DeliveryService
     participant CREP as RepositoryCar
 
     CTRL->>SRV: create(createCarDto, distributorId)
     activate SRV
-    SRV->>USRV: findById(user_id del dto)
-    activate USRV
-    USRV-->>SRV: User o null
-    deactivate USRV
-    alt Usuario inexistente
-        SRV-->>CTRL: NotFoundException User with ID not found
+    SRV->>DSRV: findDistributorIdByUserId(user_id del dto)
+    activate DSRV
+    DSRV-->>SRV: distributor_id del chofer o null
+    deactivate DSRV
+    alt No es chofer o es de otra distribuidora
+        SRV-->>CTRL: NotFoundException No hay un chofer con ese user ID en esta distribuidora
         deactivate SRV
-    else Usuario encontrado
+    else Chofer de la distribuidora
         alt El dto trae car_patent
             SRV->>CREP: findOne(where car_patent)
             activate CREP
