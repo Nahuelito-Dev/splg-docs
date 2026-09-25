@@ -12,6 +12,8 @@ sequenceDiagram
         SIS-)CLI: aviso de pedido en camino
     else el pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else la transición no está permitida
         SIS-->>CHO: error de solicitud (transición inválida)
     end

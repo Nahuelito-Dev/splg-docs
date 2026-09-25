@@ -10,27 +10,37 @@ sequenceDiagram
     CHO->>CTRL: POST /incidents con CreateIncidentDto
     activate CTRL
     CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
-    CTRL->>SRV: create(dto, user.user_id)
+    CTRL->>SRV: create(dto, user.user_id, distributorId, esChofer)
     activate SRV
     SRV->>OSRV: findById(dto.orderId)
     activate OSRV
     OSRV-->>SRV: Order o null
     deactivate OSRV
-    alt El pedido no existe
+    alt El pedido no existe, o es de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException, pedido no encontrado
-        deactivate SRV
-    else Pedido encontrado
-        SRV->>SRV: distributor_id se denormaliza de order.distributor_id
-        SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
-        activate IREP
-        IREP-->>SRV: Incident en memoria
-        deactivate IREP
-        SRV->>IREP: save(incident)
-        activate IREP
-        IREP-->>SRV: Incident persistida
-        deactivate IREP
-        SRV-->>CTRL: Incident
-        CTRL->>CTRL: IncidentMapper.toDto(incident)
-        CTRL-->>CHO: 201 IncidentResponseDto
-        deactivate CTRL
+    else Pedido de la distribuidora, o sin distribuidora en contexto
+        opt Reporta un chofer
+            SRV->>OSRV: assertEsElChofer(order.delivery_id, userId)
+            activate OSRV
+            OSRV-->>SRV: ForbiddenException si el pedido no esta asignado a ese chofer
+            deactivate OSRV
+        end
+        alt Es un chofer y el pedido no esta asignado a el
+            SRV-->>CTRL: ForbiddenException Solo podes ver tus propios pedidos
+        else Es el chofer asignado, o reporta un administrador
+            SRV->>SRV: distributor_id se denormaliza de order.distributor_id
+            SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
+            activate IREP
+            IREP-->>SRV: Incident en memoria
+            deactivate IREP
+            SRV->>IREP: save(incident)
+            activate IREP
+            IREP-->>SRV: Incident persistida
+            deactivate IREP
+            SRV-->>CTRL: Incident
+            CTRL->>CTRL: IncidentMapper.toDto(incident)
+            CTRL-->>CHO: 201 IncidentResponseDto
+        end
     end
+    deactivate SRV
+    deactivate CTRL

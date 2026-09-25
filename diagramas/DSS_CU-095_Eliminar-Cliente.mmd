@@ -8,7 +8,9 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: cliente dado de baja (se conserva su histórico de pedidos)
-    else el cliente no existe
+    else el cliente no existe o nunca le compró a la distribuidora en contexto
         SIS-->>ADM: recurso no encontrado
+    else quien pide es un administrador de empresa
+        SIS-->>ADM: acceso denegado (la baja la hace el Administrador General)
     end
     deactivate SIS

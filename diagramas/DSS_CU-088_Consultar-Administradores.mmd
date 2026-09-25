@@ -14,7 +14,7 @@ sequenceDiagram
         activate SIS
         alt hay coincidencias
             SIS-->>ADM: administrador encontrado
-        else no hay coincidencias
+        else no hay coincidencias, o el administrador es de otra distribuidora
             SIS-->>ADM: recurso no encontrado
         end
         deactivate SIS

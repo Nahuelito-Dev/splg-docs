@@ -1,7 +1,7 @@
 sequenceDiagram
     title DSD — CU-101 Reenviar Notificacion De Confirmacion De Pedido
     autonumber
-    participant ADM as Admin o SuperAdmin
+    participant ADM as SuperAdmin
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
     participant CSRV as CustomersService
@@ -9,34 +9,39 @@ sequenceDiagram
 
     ADM->>CTRL: POST /notifications/order-confirmation con customerId orderId y token opcional
     activate CTRL
-    CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
-    activate SRV
-    SRV->>CSRV: findNotificationToken(customerId)
-    activate CSRV
-    CSRV-->>SRV: esCliente y token
-    deactivate CSRV
-    alt Cliente no encontrado
-        SRV->>SRV: logger.warn customer not found
-        SRV-->>CTRL: success false, error Customer not found
-    else Cliente encontrado
-        SRV->>SRV: notificationToken igual al token del body o al del cliente
-        alt El cliente no tiene token registrado
-            SRV->>SRV: logger.warn no notification token
-            SRV-->>CTRL: success false, error No notification token
-        else Hay token
-            SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
-            SRV->>FCM: sendToToken(notificationToken, message)
-            activate FCM
-            alt Falla el envio
-                FCM-->>SRV: Error
-                SRV-->>CTRL: success false, error
-            else Envio exitoso
-                FCM-->>SRV: messageId
-                SRV-->>CTRL: success true, messageId
+    CTRL->>CTRL: Roles SUPER_ADMIN verificado por RolesGuard
+    alt No es SUPER_ADMIN, incluido un admin de empresa
+        CTRL-->>ADM: 403 ForbiddenException
+    else SUPER_ADMIN
+        CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
+        activate SRV
+        SRV->>CSRV: findNotificationToken(customerId)
+        activate CSRV
+        CSRV-->>SRV: esCliente y token
+        deactivate CSRV
+        alt Cliente no encontrado
+            SRV->>SRV: logger.warn customer not found
+            SRV-->>CTRL: success false, error Customer not found
+        else Cliente encontrado
+            SRV->>SRV: notificationToken igual al token del body o al del cliente
+            alt El cliente no tiene token registrado
+                SRV->>SRV: logger.warn no notification token
+                SRV-->>CTRL: success false, error No notification token
+            else Hay token
+                SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
+                SRV->>FCM: sendToToken(notificationToken, message)
+                activate FCM
+                alt Falla el envio
+                    FCM-->>SRV: Error
+                    SRV-->>CTRL: success false, error
+                else Envio exitoso
+                    FCM-->>SRV: messageId
+                    SRV-->>CTRL: success true, messageId
+                end
+                deactivate FCM
             end
-            deactivate FCM
         end
+        deactivate SRV
+        CTRL-->>ADM: 201 ResultadoDeEnvioDto
     end
-    deactivate SRV
-    CTRL-->>ADM: 201 ResultadoDeEnvioDto
     deactivate CTRL

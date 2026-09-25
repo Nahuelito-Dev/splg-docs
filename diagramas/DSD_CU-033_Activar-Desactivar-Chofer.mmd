@@ -5,21 +5,36 @@ sequenceDiagram
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+    CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: findOne(id)
     activate SRV
-    SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
     activate DREP
     DREP-->>SRV: Delivery o null
     deactivate DREP
-    alt Chofer inexistente
+    SRV-->>CTRL: Delivery, o NotFoundException si no existe
+    CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+    alt Chofer de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Chofer encontrado
-        SRV->>SRV: delivery.isActive igual isActive
-        SRV->>DREP: save(delivery)
+        CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+        activate SRV
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
-        DREP-->>SRV: Delivery actualizado
+        DREP-->>SRV: Delivery o null
         deactivate DREP
-        SRV-->>CTRL: Delivery
+        alt Chofer inexistente
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
+        else Chofer encontrado
+            SRV->>SRV: delivery.isActive igual isActive
+            SRV->>DREP: save(delivery)
+            activate DREP
+            DREP-->>SRV: Delivery actualizado
+            deactivate DREP
+            SRV-->>CTRL: Delivery
+        end
     end

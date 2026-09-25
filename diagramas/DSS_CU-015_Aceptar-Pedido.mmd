@@ -12,6 +12,8 @@ sequenceDiagram
         SIS-)CLI: aviso de que un chofer tomo el pedido
     else El pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else El pedido ya tiene asignado a otro chofer
+        SIS-->>CHO: acceso denegado (el pedido no esta asignado a este chofer)
     else El pedido ya esta entregado o cancelado
         SIS-->>CHO: error de solicitud (transicion no permitida)
     else El chofer no existe o esta dado de baja

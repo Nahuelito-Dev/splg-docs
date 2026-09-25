@@ -2565,7 +2565,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 |------|--------|
 | 1 | El chofer recibe en su app la oferta del pedido y presiona "Aceptar". |
 | 2 | La app pide el paso del pedido a estado ACCEPTED. La identidad del chofer sale de su token: cualquier identificador de repartidor que venga en el cuerpo de la solicitud se ignora. Un administrador sí puede indicar a qué chofer asignarlo. |
-| 3 | El sistema comprueba que la transición desde el estado actual sea legal, es decir que el pedido siga pendiente. |
+| 3 | Si quien acepta es un chofer y el pedido ya tiene un chofer asignado, el sistema comprueba que sea él mismo. Luego comprueba que la transición desde el estado actual sea legal, es decir que el pedido siga pendiente. |
 | 4 | Busca el perfil de repartidor de quien acepta y comprueba que exista, que sea de la misma distribuidora que el pedido y que esté activo. |
 | 5 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación y genera el código secreto de entrega que se usará en la confirmación por código QR (CU-020). |
 | 6 | Cierra como aceptada la oferta de despacho que ese chofer tenía abierta sobre el pedido. |
@@ -2581,7 +2581,8 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
 | 2 | Si el pedido pertenece a otra distribuidora que la de quien acepta, el sistema informa que no lo encontró, sin revelar que existe. |
 | 3 | Si el pedido está en un estado desde el que no se puede aceptar —entregado o cancelado—, el sistema rechaza la operación por transición no permitida. |
-| 3 | Si el pedido ya fue aceptado por otro chofer, el sistema **no** lo rechaza: reaplicar el mismo estado se considera idempotente, de modo que una aceptación tardía reasigna el pedido al segundo chofer y le genera un código de entrega nuevo. |
+| 3 | Si el pedido ya tiene asignado a otro chofer, el sistema rechaza la aceptación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición: una aceptación tardía no desplaza al chofer que ya lo tomó. Este control no alcanza al administrador, que puede reasignar el pedido indicando otro chofer. |
+| 3 | Si el mismo chofer que ya tiene el pedido vuelve a aceptarlo, la operación no falla: reaplicar el mismo estado se considera idempotente y le genera un código de entrega nuevo. |
 | 4 | Si quien acepta no tiene perfil de repartidor, o el repartidor es de otra distribuidora que la del pedido, el sistema informa que no encontró al repartidor. |
 | 4 | Si el repartidor no está activo, el sistema informa "El repartidor no está activo". |
 
@@ -2590,7 +2591,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Rendimiento** | La aceptación se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta por chofer: se repite cada vez que le llega una oferta, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no comprueba, al aceptar, que el chofer esté habilitado por el administrador: un chofer con su habilitación en falso puede tomar pedidos. El sistema todavía no rechaza la aceptación de un pedido que ya tiene chofer, con lo que un segundo chofer puede quedarse con un pedido ajeno. El sistema todavía no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. |
+| **Comentarios** | El sistema todavía no comprueba, al aceptar, que el chofer esté habilitado por el administrador: un chofer con su habilitación en falso puede tomar pedidos. La aceptación de un pedido que ya tiene chofer se rechaza cuando la intenta otro chofer, de modo que un segundo chofer no puede quedarse con un pedido ajeno. El sistema todavía no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. |
 
 ---
 
@@ -2691,7 +2692,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Objetivos asociados** | OBJ-03 |
 | **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El chofer indica que salió hacia el domicilio del cliente. El sistema pasa el pedido a en camino, abre el seguimiento en vivo de la posición del chofer y avisa al cliente. |
-| **Precondición** | El pedido tiene estado ACCEPTED. |
+| **Precondición** | El pedido tiene estado ACCEPTED. Si quien lo mueve es un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2700,7 +2701,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 |------|--------|
 | 1 | El chofer presiona "En camino" en su app. |
 | 2 | La app pide el paso del pedido a estado ON_THE_WAY. |
-| 3 | El sistema comprueba que la transición sea legal, pasa el pedido a ON_THE_WAY y registra el momento de la salida. |
+| 3 | Si quien lo mueve es un chofer, el sistema comprueba que el pedido esté asignado a él. Después comprueba que la transición sea legal, pasa el pedido a ON_THE_WAY y registra el momento de la salida. |
 | 4 | Recupera el chofer **asignado al pedido** —no el que dispara la operación— y abre el seguimiento en vivo: a partir de ese momento, cada posición que emita ese chofer se reenvía al cliente del pedido (CU-017). |
 | 5 | Avisa al cliente en tiempo real del cambio de estado y avisa también al panel de administración. |
 | 6 | Envía al cliente una notificación al dispositivo con el texto genérico de confirmación de pedido. |
@@ -2713,6 +2714,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
 | 2 | Si el pedido pertenece a otra distribuidora que la de quien lo mueve, el sistema informa que no lo encontró, sin revelar que existe. |
+| 3 | Si quien lo mueve es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición. |
 | 3 | Si el pedido no está en estado ACCEPTED, el sistema rechaza la operación por transición no permitida. |
 | 4 | Si el pedido no tiene chofer asignado, el estado cambia igual pero no se abre ningún seguimiento. |
 
@@ -2721,7 +2723,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Rendimiento** | La transición a en camino se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido aceptado, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no verifica que el chofer que marca la salida sea el asignado al pedido: la identidad de quien dispara la operación solo se usa al aceptar, de modo que cualquier usuario con rol chofer puede poner en camino el pedido de otro. Ese control de autorización queda pendiente. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no "tu pedido está en camino". |
+| **Comentarios** | El sistema verifica que el chofer que marca la salida sea el asignado al pedido: un chofer no puede poner en camino el pedido de otro. El control no alcanza al administrador, que puede mover cualquier pedido de su distribuidora. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no "tu pedido está en camino". |
 
 ---
 
@@ -2733,7 +2735,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Objetivos asociados** | OBJ-03 |
 | **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El chofer avisa que llegó al domicilio, antes de confirmar la entrega, para que el cliente esté preparado. El aviso es solo una notificación en tiempo real: no es un estado del pedido ni deja registro. |
-| **Precondición** | El pedido está en estado ON_THE_WAY. |
+| **Precondición** | El pedido está en estado ON_THE_WAY. Si quien avisa es un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2741,7 +2743,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | Paso | Acción |
 |------|--------|
 | 1 | El chofer llega al domicilio y presiona "Llegué" en su app. |
-| 2 | El sistema recupera el pedido y comprueba que esté en camino. |
+| 2 | El sistema recupera el pedido; si quien avisa es un chofer, comprueba que el pedido esté asignado a él, y después comprueba que esté en camino. |
 | 3 | Avisa al cliente en tiempo real de que el repartidor está afuera, con el nombre del repartidor. |
 | 4 | El pedido no cambia de estado ni registra ninguna marca de tiempo: la llegada no queda asentada en ninguna parte. |
 
@@ -2753,6 +2755,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
 | 2 | Si el pedido pertenece a otra distribuidora que la de quien avisa, el sistema informa que no lo encontró, sin revelar que existe. |
+| 2 | Si quien avisa es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403). |
 | 2 | Si el pedido no está en camino, el sistema informa "El pedido debe estar en camino para avisar llegada". |
 | 3 | Si el cliente no está conectado en ese momento, no se entera: no hay ningún canal alternativo. |
 
@@ -2761,7 +2764,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Rendimiento** | El aviso se completa en menos de 1 segundo, al no escribir ningún dato persistente. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido en camino, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no tiene un estado ARRIVED ni un campo con la hora de llegada: el ciclo de vida del pedido tiene cinco estados operativos y no seis, y el tiempo entre la llegada y la entrega no es medible. Incorporar ese estado con su marca de tiempo es un pendiente registrado en el Documento 3. El sistema todavía no envía notificación al dispositivo del cliente en este aviso: si el cliente tiene la app cerrada, el aviso se pierde, que es justamente el caso que este caso de uso quería cubrir. El sistema todavía no verifica que quien avisa la llegada sea el chofer asignado al pedido; la operación además está habilitada para el administrador. |
+| **Comentarios** | El sistema todavía no tiene un estado ARRIVED ni un campo con la hora de llegada: el ciclo de vida del pedido tiene cinco estados operativos y no seis, y el tiempo entre la llegada y la entrega no es medible. Incorporar ese estado con su marca de tiempo es un pendiente registrado en el Documento 3. El sistema todavía no envía notificación al dispositivo del cliente en este aviso: si el cliente tiene la app cerrada, el aviso se pierde, que es justamente el caso que este caso de uso quería cubrir. El sistema verifica que el chofer que avisa la llegada sea el asignado al pedido; la operación además está habilitada para el administrador, sobre el que no se aplica ese control. |
 
 ---
 
@@ -2773,7 +2776,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Objetivos asociados** | OBJ-03, OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
 | **Descripción** | El chofer entrega la mercadería y marca el pedido como entregado. El sistema cierra el ciclo del pedido, da por cobrado el pago en efectivo, corta el seguimiento en vivo, avanza los envases al cliente y avisa. Existe además una segunda vía en la que quien confirma es el cliente, leyendo un código. |
-| **Precondición** | El pedido tiene estado ON_THE_WAY. |
+| **Precondición** | El pedido tiene estado ON_THE_WAY. Si lo confirma un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2782,7 +2785,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 |------|--------|
 | 1 | El chofer presiona "Confirmar entrega" en su app. |
 | 2 | La app pide el paso del pedido a estado DELIVERED. La solicitud lleva una clave de idempotencia, de modo que un reintento por corte de red no vuelve a procesar la entrega. |
-| 3 | El sistema comprueba que la transición sea legal, pasa el pedido a DELIVERED y registra el momento de la entrega. |
+| 3 | Si quien confirma es un chofer, el sistema comprueba que el pedido esté asignado a él. Después comprueba que la transición sea legal, pasa el pedido a DELIVERED y registra el momento de la entrega. |
 | 4 | Si el método de pago es efectivo, marca el pago como cobrado. |
 | 5 | Corta el seguimiento en vivo del chofer asignado al pedido. |
 | 6 | Avanza los envases despachados en el pedido al estado "con el cliente". Si ese paso falla, se registra la advertencia y la entrega no se revierte. |
@@ -2796,6 +2799,8 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | Paso | Acción |
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 2 | Si el pedido pertenece a otra distribuidora que la de quien lo mueve, el sistema informa que no lo encontró, sin revelar que existe. |
+| 3 | Si quien confirma es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición. |
 | 3 | Si el pedido está cancelado, o si está en un estado desde el que no se puede entregar, el sistema rechaza la operación por transición no permitida. |
 | 3 | Reconfirmar un pedido ya entregado no falla: la reaplicación del mismo estado se considera idempotente y vuelve a registrar el momento de la entrega. |
 | 6 | Si la distribuidora no trabaja con envases retornables, el avance de envases no hace nada y la entrega se completa igual. |
@@ -2837,7 +2842,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | La confirmación se procesa en menos de 3 segundos. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido entregado, en el pico de cada franja horaria de reparto. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no verifica, en la secuencia normal, que el chofer que confirma la entrega sea el asignado: cualquier usuario con rol chofer puede cerrar el pedido de otro y, si el pago es en efectivo, darlo por cobrado. Es la operación de mayor impacto económico del sistema y su control de autorización está pendiente; el único camino que sí controla la identidad es la secuencia alternativa, donde la confirmación la hace el cliente dueño del pedido. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no el de entrega. Un pedido asignado manualmente por el administrador no tiene código de entrega (CU-012), de modo que sobre él la secuencia alternativa no es posible. |
+| **Comentarios** | En la secuencia normal, el sistema verifica que el chofer que confirma la entrega sea el asignado al pedido: un chofer no puede cerrar el pedido de otro ni, si el pago es en efectivo, darlo por cobrado. El control no alcanza al administrador. La secuencia alternativa agrega una prueba más fuerte, porque la confirmación la hace el cliente dueño del pedido. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no el de entrega. Un pedido asignado manualmente por el administrador no tiene código de entrega (CU-012), de modo que sobre él la secuencia alternativa no es posible. |
 
 ---
 
@@ -2936,7 +2941,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-06 |
 | **Descripción** | El cliente registra un reclamo sobre un pedido propio, indicando el motivo, una descripción y opcionalmente una foto. El reclamo nace pendiente y hereda la distribuidora del pedido reclamado. |
-| **Precondición** | El cliente está autenticado. El pedido existe y le pertenece. El sistema no exige que el pedido esté entregado. |
+| **Precondición** | El cliente está autenticado. El pedido existe y le pertenece. Si el reclamo lo registra un administrador con distribuidora en contexto, el pedido es de ella. El sistema no exige que el pedido esté entregado. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2948,7 +2953,7 @@ respaldado por la lectura del código en poder del cliente.
 | 3 | Ingresa el motivo, una descripción detallada y, si quiere, adjunta una foto. |
 | 4 | Confirma el envío. |
 | 5 | El sistema fuerza como reclamante al cliente autenticado, ignorando cualquier identificador que venga en la solicitud. Un administrador sí puede registrar el reclamo a nombre de un cliente, para soporte. |
-| 6 | Comprueba que el pedido exista y que pertenezca al cliente indicado. |
+| 6 | Si quien registra es un administrador con distribuidora en contexto, comprueba primero que el pedido sea de ella. Después comprueba que el pedido exista y que pertenezca al cliente indicado. |
 | 7 | Crea el reclamo en estado PENDING y le asigna la distribuidora tomada del pedido reclamado, no del contexto de la solicitud. |
 
 **Postcondición:** Existe un reclamo con estado PENDING asociado al pedido, al cliente y a la distribuidora del pedido. El administrador no fue notificado: lo descubre al consultar el listado (CU-024).
@@ -2958,6 +2963,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 6 | Si el pedido no existe, el sistema informa "Orden no encontrada". |
+| 6 | Si quien registra es un administrador y el pedido pertenece a otra distribuidora que la suya, el sistema informa que no lo encontró, sin revelar que existe. |
 | 6 | Si el pedido no pertenece al cliente indicado, el sistema informa "Esta orden no pertenece al cliente indicado" con un error de solicitud incorrecta, no de acceso denegado. |
 
 | Campo | Detalle |
@@ -3306,7 +3312,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador marca a un chofer como validado o le retira esa marca desde dos operaciones dedicadas del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
-| **Precondición** | El administrador está autenticado. El chofer existe en el sistema. |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -3315,7 +3321,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a habilitar o deshabilitar. |
 | 2 | Presiona "Validar" o "Invalidar", según corresponda. |
-| 3 | El sistema busca el perfil de reparto por su identificador y trae al usuario y su rol. |
+| 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el chofer sea de ella. Después busca el perfil de reparto por su identificador y trae al usuario y su rol. |
 | 4 | El sistema fija la marca de validación en verdadero si se validó, o en falso si se invalidó. No la invierte: asigna el valor de la operación elegida. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
@@ -3327,13 +3333,14 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el identificador no es un identificador único válido, el sistema responde 400 antes de llegar al servicio. |
 | 3 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 3 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Se ejecuta al incorporar un chofer y de manera excepcional al suspenderlo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Limitaciones registradas: (a) el sistema todavía no consulta la marca de validación en ningún control de acceso —ni el orquestador de despacho al elegir candidatos, ni la aceptación de un pedido—, así que invalidar a un chofer no le impide seguir operando; (b) al invalidar, el sistema todavía no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de estas dos operaciones dedicadas, que sí exigen rol administrador, la actualización general del perfil de chofer (`PATCH /delivery/:id`) acepta en su cuerpo la marca de validación, el estado de actividad y la distribuidora, y **no declara restricción de rol**, por lo que cualquier usuario autenticado puede validarse a sí mismo, invalidar a un tercero o cambiarse de distribuidora. Corregir esa ruta es condición para que el actor declarado en este caso de uso sea real. |
+| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Limitaciones registradas: (a) el sistema todavía no consulta la marca de validación en ningún control de acceso —ni el orquestador de despacho al elegir candidatos, ni la aceptación de un pedido—, así que invalidar a un chofer no le impide seguir operando; (b) al invalidar, el sistema todavía no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de estas dos operaciones dedicadas, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación y el estado de actividad. |
 
 ---
 
@@ -3345,7 +3352,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022). |
-| **Precondición** | El administrador está autenticado. El chofer existe en el sistema. |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -3355,7 +3362,7 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer. |
 | 2 | Elige activarlo o desactivarlo. |
 | 3 | El panel envía el valor deseado del estado de actividad, verdadero o falso. |
-| 4 | El sistema busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
 **Postcondición:** El estado de actividad del chofer quedó en el valor indicado. Con el estado en falso, el chofer ya no puede aceptar pedidos: la aceptación se rechaza con "El repartidor no está activo". **Sigue, en cambio, dentro del conjunto geoespacial que alimenta el radar de asignación**, de modo que el despacho lo puede seguir eligiendo como candidato y ofreciéndole pedidos que él ya no podrá tomar.
@@ -3366,13 +3373,14 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el identificador del chofer no es un identificador único válido, el sistema responde 400. |
 | 4 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 4 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Suspensiones operativas puntuales. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El cuerpo de esta operación se recibe como objeto simple, sin declaración de datos de entrada, por lo que el valor del estado de actividad no pasa por la validación global. Limitaciones registradas: (a) el sistema todavía no quita al chofer del conjunto geoespacial al desactivarlo administrativamente —esa limpieza solo ocurre cuando el propio chofer se pone fuera de línea desde su app (CU-022)—, así que el chofer desactivado consume ofertas del despacho que después rechaza; (b) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar; (c) la actualización general del perfil de chofer permite cambiar este mismo estado sin restricción de rol, según se detalla en los Comentarios de CU-032. |
+| **Comentarios** | El cuerpo de esta operación se recibe como objeto simple, sin declaración de datos de entrada, por lo que el valor del estado de actividad no pasa por la validación global. Limitaciones registradas: (a) el sistema todavía no quita al chofer del conjunto geoespacial al desactivarlo administrativamente —esa limpieza solo ocurre cuando el propio chofer se pone fuera de línea desde su app (CU-022)—, así que el chofer desactivado consume ofertas del despacho que después rechaza; (b) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar; (c) la actualización general del perfil de chofer (CU-096) también permite cambiar este mismo estado, con las mismas restricciones de rol y de distribuidora, según se detalla en los Comentarios de CU-032. |
 
 ---
 
@@ -3905,7 +3913,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01, IRQ-07 |
-| **Descripción** | El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`. El sistema acota la consulta a las direcciones del propio cliente: si quien pide no es administrador ni Administrador General, el identificador de usuario que venga en la petición se ignora y se usa el de la sesión. |
+| **Descripción** | El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`. Un administrador con distribuidora en contexto sólo llega a las direcciones de los usuarios de su distribuidora. El sistema acota la consulta a las direcciones del propio cliente: si quien pide no es administrador ni Administrador General, el identificador de usuario que venga en la petición se ignora y se usa el de la sesión. |
 | **Precondición** | El cliente está autenticado. |
 | **Estado** | Implementado |
 
@@ -3916,7 +3924,7 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El cliente abre la sección de direcciones en la aplicación. |
 | 2 | La aplicación envía `GET /user-addres/user/:userId`. |
 | 3 | El sistema valida el formato del identificador de usuario. |
-| 4 | El sistema determina el alcance: si quien pide no es administrador, fuerza el filtro al usuario de la sesión e ignora el que venga en la petición. |
+| 4 | El sistema determina el alcance: si quien pide no es administrador, fuerza el filtro al usuario de la sesión e ignora el que venga en la petición. Si es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 5 | El sistema recupera las direcciones de ese usuario, ordenadas con la predeterminada primero y luego por fecha de alta descendente. |
 | 6 | El sistema devuelve el listado. |
 
@@ -3928,6 +3936,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 antes de llegar al servicio. |
 | 4 | Si un cliente pide las direcciones de otro usuario, el sistema devuelve las suyas, no las del otro. |
+| 4 | Si quien pide es un administrador con distribuidora en contexto y el usuario no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 5 | Si el cliente no tiene ninguna dirección, el sistema devuelve un listado vacío, no un error. |
 
 | Campo | Detalle |
@@ -3946,7 +3955,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, altura, piso y departamento, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. El sistema resuelve la dirección contra el servicio de mapas para quedarse con el mejor punto disponible, sin bloquear el alta. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
-| **Precondición** | El cliente está autenticado. La cuenta de usuario existe. |
+| **Precondición** | El cliente está autenticado. La cuenta de usuario existe. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado · pendiente el paso de resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
@@ -3955,7 +3964,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El cliente completa el formulario de dirección en la aplicación, incluyendo piso y departamento si corresponde. |
 | 2 | La aplicación envía `POST /user-addres` con los datos de la dirección. |
-| 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. |
+| 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular indicado sea de ella y, si el administrador es de empresa, rechaza la operación. |
 | 4 | El sistema comprueba que la cuenta de usuario exista. |
 | 5 | El sistema consulta al servicio de mapas la dirección escrita y guarda, junto con el punto, la dirección normalizada que le devuelve y el identificador estable del lugar. |
 | 6 | El sistema registra con qué precisión quedó resuelta: exacta, aproximada a la cuadra, o sin resolver. |
@@ -3968,6 +3977,8 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular indicado no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 4 | Si la cuenta de usuario no existe, el sistema retorna error 404 "User with ID: … not found". |
 | 5 | Si el servicio de mapas no responde, o responde con un error, el alta **continúa igual** con las coordenadas que mandó la aplicación, y la dirección queda registrada como sin resolver. El fallo se registra en el log; el cliente no ve ningún error. |
 | 5 | Si el servicio de mapas ubica la calle pero no la altura exacta, el alta **continúa** con el punto aproximado y queda registrada como aproximada. |
@@ -3979,7 +3990,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada, más una consulta al servicio de mapas. Esa consulta tiene un tiempo máximo de espera corto: si se agota, el alta sigue sin resolver. |
 | **Frecuencia** | Media: una o dos por cliente, y alguna más cuando se muda o pide para un tercero. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. Un administrador, en cambio, puede indicar el titular. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. |
+| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. El Administrador General, en cambio, puede indicar el titular; un administrador de empresa no da de alta direcciones. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. |
 
 ---
 
@@ -3999,7 +4010,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El cliente elige una dirección de su listado. |
 | 2 | La aplicación envía `GET /user-addres/:id`. |
-| 3 | El sistema valida el formato del identificador. |
+| 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el titular de la dirección sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 4 | El sistema recupera la dirección junto con su titular. |
 | 5 | El sistema comprueba que la dirección pertenezca a quien la pide. |
 | 6 | El sistema devuelve la dirección completa. |
@@ -4011,6 +4022,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si quien pide es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 4 | Si la dirección no existe, el sistema retorna error 404 "Address with ID: … not found". |
 | 5 | Si la dirección es de otro cliente, el sistema rechaza la operación. |
 
@@ -4030,7 +4042,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la altura, el piso y departamento, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Si cambia algo que afecta la ubicación, el sistema vuelve a resolverla contra el servicio de mapas. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
-| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado · pendiente la re-resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
@@ -4039,7 +4051,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El cliente edita los campos que quiere cambiar. |
 | 2 | La aplicación envía `PATCH /user-addres/:id` con los campos modificados. |
-| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. |
 | 5 | Si cambió algún dato que afecta la ubicación —calle, altura, ciudad, código postal o coordenadas—, el sistema la resuelve de nuevo contra el servicio de mapas y actualiza el punto, la dirección normalizada y la precisión. Si sólo cambiaron el piso, el departamento o las indicaciones, no vuelve a consultar. |
 | 6 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
@@ -4051,6 +4063,8 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 | 4 | Si la dirección desapareció entre la lectura y la escritura, el sistema retorna error 404. |
 | 5 | Si el servicio de mapas no responde o no ubica la dirección nueva, la edición **continúa igual** con las coordenadas que haya, y la precisión pasa a aproximada o sin resolver. La edición nunca se rechaza por esto, por la misma razón que en CU-116. |
@@ -4071,7 +4085,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente da de baja una dirección que ya no usa. Si la que borra era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`. |
-| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -4080,7 +4094,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El cliente pide borrar una dirección. |
 | 2 | La aplicación envía `DELETE /user-addres/:id`. |
-| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | Si la dirección era la predeterminada, el sistema busca las demás direcciones del cliente y marca como predeterminada a la más reciente. |
 | 5 | El sistema borra la dirección. |
 | 6 | El sistema confirma la baja. |
@@ -4091,6 +4105,8 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 | 5 | Si algún pedido referencia la dirección, la base rechaza el borrado por integridad referencial. |
 
@@ -4110,7 +4126,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-addres/:id/set-default`. |
-| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -4119,7 +4135,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El cliente elige una dirección de su listado y la marca como predeterminada. |
 | 2 | La aplicación envía `PATCH /user-addres/:id/set-default`. |
-| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema quita la marca de predeterminada de las demás direcciones del cliente. |
 | 5 | El sistema marca la dirección elegida y la devuelve. |
 
@@ -4129,6 +4145,8 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 
 | Campo | Detalle |
@@ -4156,7 +4174,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El cliente abre la pantalla de armado del pedido. |
 | 2 | La aplicación envía `GET /user-addres/user/:userId/default`. |
-| 3 | El sistema valida el formato del identificador de usuario. |
+| 3 | El sistema valida el formato del identificador de usuario. Si quien pide es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 4 | El sistema busca la dirección del cliente que tenga la marca de predeterminada. |
 | 5 | El sistema devuelve la dirección encontrada. |
 
@@ -4167,6 +4185,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si quien pide es un administrador con distribuidora en contexto y el usuario no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 4 | Si el cliente no tiene ninguna dirección, el sistema retorna error 404 "No addresses found for user: …". |
 
 | Campo | Detalle |
@@ -4585,7 +4604,7 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | La aplicación muestra el saldo acumulado. |
 | 5 | El administrador, desde el Panel Web, consulta el listado de choferes de su distribuidora o el detalle de uno en particular, y ve el mismo saldo en cada perfil. |
 | 6 | Cuando corresponde liquidar o ajustar, el administrador envía el monto del ajuste sobre el perfil del chofer. |
-| 7 | El sistema recupera el perfil, **suma** el monto recibido al saldo existente —un monto negativo descuenta— y persiste el resultado. |
+| 7 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después recupera el perfil, **suma** el monto recibido al saldo existente —un monto negativo descuenta— y persiste el resultado. |
 | 8 | El sistema devuelve el perfil con el saldo actualizado y el panel refresca la vista. |
 
 **Postcondición:** El saldo del chofer refleja el ajuste aplicado por el administrador. La consulta por sí sola no modifica ningún dato.
@@ -4598,6 +4617,7 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | Si no existe perfil de chofer para ese usuario, el sistema retorna error 404. |
 | 6 | Si el solicitante no tiene rol ADMIN ni SUPER_ADMIN, el sistema retorna error 403. |
 | 6 | Si el perfil de chofer indicado no existe, el sistema retorna error 404. |
+| 7 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 7 | El cuerpo del ajuste se recibe como objeto plano, sin un DTO con reglas de validación, de modo que el sistema no rechaza un monto ausente o no numérico; el resultado de la operación queda librado a la conversión de la base de datos (**⚠️ verificar** el comportamiento exacto). |
 
 | Campo | Detalle |
@@ -5111,7 +5131,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-11 |
 | **Descripción** | El chofer, o un administrador, deja asentada una incidencia sobre un pedido: una demora, un siniestro o cualquier inconveniente surgido durante el reparto. La incidencia queda abierta, con el pedido afectado, el tipo, la descripción, una foto opcional y el usuario que la reporta, a la espera de resolución (CU-062). |
-| **Precondición** | El usuario está autenticado con rol Chofer, Administrador o Administrador General. El pedido sobre el que se reporta existe. |
+| **Precondición** | El usuario está autenticado con rol Chofer, Administrador o Administrador General. El pedido sobre el que se reporta existe y, si hay una distribuidora en contexto, es de ella. Si reporta un chofer, el pedido está asignado a él. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5119,8 +5139,8 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario indica el pedido afectado, el tipo de incidencia, una descripción y, opcionalmente, una foto. |
-| 2 | El sistema toma el identificador del usuario que reporta desde el token de la sesión. La distribuidora **no** se toma del contexto de la petición. |
-| 3 | El sistema verifica **únicamente que el pedido exista**. |
+| 2 | El sistema toma el identificador del usuario que reporta desde el token de la sesión, y la distribuidora del contexto de la petición, que sólo sirve para acotar la búsqueda del pedido. |
+| 3 | El sistema verifica que el pedido exista y, si hay una distribuidora en contexto, que sea de ella. Si quien reporta es un chofer, verifica además que el pedido esté asignado a él. |
 | 4 | El sistema crea la incidencia en estado abierto, tomando la distribuidora del propio pedido referenciado y no de quien la reporta. |
 | 5 | El sistema devuelve la incidencia creada con estado 201. |
 
@@ -5132,6 +5152,8 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | Si el pedido no es un identificador único válido, si el tipo no es uno de los tipos previstos, si falta la descripción, o si se envía una propiedad no declarada, el sistema responde 400. |
 | 3 | Si el pedido no existe, el sistema responde 404 con el mensaje "Pedido no encontrado". |
+| 3 | Si el pedido pertenece a otra distribuidora que la de quien reporta, el sistema responde el mismo 404, sin revelar que existe. |
+| 3 | Si quien reporta es un chofer y el pedido no está asignado a él, el sistema responde 403 "Sólo podés ver tus propios pedidos". |
 | — | Si el usuario no tiene rol Chofer, Administrador ni Administrador General, el sistema responde 403. |
 
 | Campo | Detalle |
@@ -5139,7 +5161,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Inmediato: una lectura del pedido y una escritura. |
 | **Frecuencia** | Media. Depende de la conflictividad del reparto. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Limitación registrada, y es la única operación de escritura del módulo que la tiene: el sistema todavía no verifica que el pedido pertenezca a la distribuidora de quien reporta. Quien conozca el identificador de un pedido de otra distribuidora puede registrar una incidencia sobre él, y la incidencia queda asentada **bajo esa otra distribuidora**, donde su administrador la ve en su listado como si fuera propia. El resto del módulo sí aplica el aislamiento por distribuidora: el listado, la consulta por pedido y la resolución lo hacen. Corregirlo requiere tomar la distribuidora del contexto de la petición en esta operación y acotar la búsqueda del pedido a ese tenant, siguiendo el patrón que el propio módulo ya usa en sus demás operaciones. Queda pendiente de implementación y es requisito del aislamiento multiempresa sobre el que se apoya el subsistema SS-10. |
+| **Comentarios** | La distribuidora de la incidencia sale siempre del pedido referenciado y no de quien la reporta: la del contexto de la petición sólo acota la búsqueda del pedido, de modo que un pedido de otra distribuidora no existe para quien reporta y la incidencia nunca queda asentada bajo una distribuidora ajena. Un chofer sólo reporta sobre el pedido que tiene asignado. El Administrador General sin distribuidora en contexto puede reportar sobre cualquier pedido. |
 
 ---
 
@@ -5198,7 +5220,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El usuario pide listar los incidentes pasando el ID de la orden. |
 | 2 | El sistema toma el scope del tenant (CurrentDistributor). |
-| 3 | El sistema efectua la selección contra la base de datos limitando por orden y tenant. |
+| 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el pedido sea de ella. Después efectúa la selección contra la base de datos limitando por orden y tenant. |
 | 4 | El sistema envia el paquete de respuestas conteniendo las incidencias puntuales. |
 
 **Postcondición:** Se obtiene la traza de obstaculos referentes a un envio individual.
@@ -5207,14 +5229,15 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| ⚠️ verificar | Podria dar fallo por array vacio o excepción normal REST. |
+| 3 | Si el pedido pertenece a otra distribuidora que la del solicitante, el sistema retorna error 404 "Order with ID: … not found" en lugar de una lista vacía. |
+| 3 | Si el pedido no existe o no tiene incidencias registradas, el sistema devuelve una lista vacía, no un error. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La excepción marcada como a verificar en la especificación no representa un riesgo real: una lista vacía es la respuesta esperada cuando el pedido consultado no tiene incidencias registradas. |
+| **Comentarios** | Un pedido de otra distribuidora responde 404 y no una lista vacía. Un pedido inexistente, en cambio, devuelve una lista vacía: el control de distribuidora sólo actúa cuando el pedido existe. |
 
 ---
 
@@ -6412,12 +6435,33 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 5 | Si el correo o el teléfono ya están en uso, el sistema responde 409. Las demás fallas se tratan como en CU-082. |
 | — | Si el solicitante no tiene rol de administrador, el sistema responde 403 antes de evaluar el alta. |
 
+**Secuencia Alternativa — Alta directa del perfil sobre un usuario existente**
+
+El Administrador General puede crear sólo el perfil de administrador de un usuario que ya existe, sin pasar por CU-082. Endpoint: `POST /admin`.
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General indica el usuario y, si se trata de un administrador de empresa, su distribuidora. La solicitud no lleva rol. |
+| 2 | El sistema busca el usuario y su rol: el rol del perfil es el del usuario. |
+| 3 | El sistema verifica que el usuario tenga rol admin o super_admin, que la distribuidora venga sólo si es un administrador de empresa, y que el usuario no tenga ya un perfil de administrador. |
+| 4 | El sistema crea el perfil de administrador y lo devuelve. |
+
+**Excepciones de la secuencia alternativa**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el solicitante no es el Administrador General, el sistema responde 403. |
+| 2 | Si el usuario no existe, el sistema responde 404. |
+| 3 | Si el usuario no tiene rol admin ni super_admin, el sistema responde 400 "Sólo un usuario con rol admin o super_admin tiene perfil de administrador". |
+| 3 | Si falta la distribuidora para un administrador de empresa, o viene para un administrador general, el sistema responde 400 "Un admin de empresa lleva distribuidora y el super administrador no". |
+| 3 | Si el usuario ya tiene perfil de administrador, el sistema responde 409 "El usuario ya tiene perfil de administrador". |
+
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | El de CU-082. |
 | **Frecuencia** | Baja: sólo al incorporar personal administrativo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Antes de la unificación, el Administrador General podía crear un administrador de empresa sin distribuidora, que después no podía entrar: el acceso rechaza a un administrador sin distribuidora. El alta directa de un perfil de administrador sobre un usuario existente (`POST /admin`) sigue disponible sólo para el Administrador General. |
+| **Comentarios** | Antes de la unificación, el Administrador General podía crear un administrador de empresa sin distribuidora, que después no podía entrar: el acceso rechaza a un administrador sin distribuidora. El alta directa de un perfil de administrador sobre un usuario existente (`POST /admin`) la hace sólo el Administrador General y se describe en la secuencia alternativa. |
 
 ---
 
@@ -6481,7 +6525,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | El sistema resuelve la distribuidora del solicitante. |
 | 4 | Si hay distribuidora en contexto, el sistema filtra por ella; si no la hay, devuelve todas las cuentas (`src/admin/admin.service.ts:85-90`). |
 | 5 | El sistema devuelve cada administrador con su usuario, su rol y su distribuidora. |
-| 6 | Para una búsqueda puntual, el panel envía `GET /admin/term/:term`: si el término es un UUID el sistema busca por identificador de administrador y, si no, por correo del usuario. |
+| 6 | Para una búsqueda puntual, el panel envía `GET /admin/term/:term`: si el término es un UUID el sistema busca por identificador de administrador y, si no, por correo del usuario. Si hay una distribuidora en contexto, sólo da por encontrado a un administrador de ella. |
 | 7 | El sistema devuelve un objeto reducido con identificador, correo, nombre, rol e identificador del proveedor de identidad (`admin.service.ts:141-148`). |
 
 **Postcondición:** El administrador obtiene el listado o la ficha buscada. No hay cambios de estado.
@@ -6491,6 +6535,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 6 | Si la búsqueda no encuentra nada, el sistema retorna error 404 "Admin with … not found". |
+| 6 | Si el administrador encontrado es de otra distribuidora que la del solicitante, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 2 | Si el solicitante no tiene rol administrativo, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
@@ -6498,7 +6543,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Rendimiento** | Listado sin paginación con tres relaciones cargadas: el volumen esperado de cuentas administrativas es bajo. |
 | **Frecuencia** | Baja: solo al gestionar el personal administrativo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La búsqueda por término **no** está acotada por distribuidora, de modo que un administrador de empresa puede recuperar la ficha reducida de un administrador de otra empresa si conoce su correo o identificador. **⚠️ verificar**. |
+| **Comentarios** | La búsqueda por término está acotada por distribuidora igual que el listado: un administrador de empresa no recupera la ficha de un administrador de otra empresa aunque conozca su correo o su identificador. El Administrador General sin distribuidora en contexto encuentra a cualquiera. |
 
 ---
 
@@ -6684,7 +6729,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El administrador (ACT-03) marca a un cliente como validado o le retira esa marca, del mismo modo en que CU-032 lo hace con los choferes. Es el control manual sobre la cartera de clientes. Endpoints: `PATCH /customers/:id/validate` (`src/customer/customer.controller.ts:88`) y `PATCH /customers/:id/invalidate` (`:98`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -6693,7 +6738,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador abre la ficha del cliente y elige validarlo o invalidarlo. |
 | 2 | El panel envía `PATCH /customers/:id/validate` o `PATCH /customers/:id/invalidate`. |
-| 3 | El sistema valida el formato UUID y recupera el cliente con su usuario, rol y direcciones. |
+| 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. Después recupera el cliente con su usuario, rol y direcciones. |
 | 4 | El sistema fija el campo `validated` en `'true'` o en `'false'` según la acción (`src/customer/customer.service.ts:246-258`). |
 | 5 | El sistema guarda el cliente y lo devuelve actualizado. |
 
@@ -6706,7 +6751,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 3 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
-| 4 | La operación no está acotada por distribuidora, de modo que un administrador de empresa puede validar a un cliente que nunca le compró. **⚠️ verificar**. |
+| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -6724,8 +6769,8 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01, IRQ-07 |
-| **Descripción** | Se actualiza la coordenada de referencia guardada en el perfil del cliente. El cliente (ACT-01) puede actualizar la propia y el administrador (ACT-03) la de cualquiera; la pertenencia se controla en el servicio. Endpoint: `PATCH /customers/:id/location` (`src/customer/customer.controller.ts:111`). |
-| **Precondición** | El solicitante está autenticado. Si no es administrador, el cliente indicado es el suyo. |
+| **Descripción** | Se actualiza la coordenada de referencia guardada en el perfil del cliente. El cliente (ACT-01) puede actualizar la propia y el administrador (ACT-03) la de los clientes que le compraron a su distribuidora; la pertenencia se controla en el servicio. Endpoint: `PATCH /customers/:id/location` (`src/customer/customer.controller.ts:111`). |
+| **Precondición** | El solicitante está autenticado. Si no es administrador, el cliente indicado es el suyo. Si es un administrador con distribuidora en contexto, el cliente le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -6734,7 +6779,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El cliente ajusta su ubicación en el mapa de la app, o el administrador la corrige desde el panel. |
 | 2 | La app envía `PATCH /customers/:id/location` con `{ latLng }`. |
-| 3 | El sistema valida el formato UUID y determina el alcance: los administradores pasan sin restricción y el resto queda atado a su propio identificador de usuario (`src/customer/customer.controller.ts:26-30`). |
+| 3 | El sistema valida el formato UUID y determina el alcance: un administrador con distribuidora en contexto sólo llega a los clientes que le compraron a ella, y el resto de los usuarios queda atado a su propio identificador de usuario. |
 | 4 | El sistema recupera el cliente y verifica la pertenencia (`customer.service.ts:163-172`). |
 | 5 | El sistema asigna la coordenada al campo `lat_lang` y guarda. |
 | 6 | El sistema devuelve el cliente actualizado. |
@@ -6746,6 +6791,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si quien pide es un administrador y el cliente nunca le compró a su distribuidora, el sistema retorna error 404 "Customer with ID: … not found", sin revelar que existe. |
 | 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 | 4 | Si un no administrador intenta modificar el perfil de otro cliente, el sistema retorna error 403 "No autorizado a acceder a datos de otro cliente". |
 | 2 | El cuerpo se recibe como objeto sin DTO ni validación de formato, de modo que cualquier texto se guarda como coordenada. **⚠️ verificar**: no hay validación del formato de `latLng`. |
@@ -6766,17 +6812,17 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) da de baja lógica el perfil de un cliente. El registro se marca como borrado y deja de aparecer en las consultas, pero se conserva en la base junto con su historial. Endpoint: `DELETE /customers/:id` (`src/customer/customer.controller.ts:124`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe. |
+| **Descripción** | El Administrador General da de baja lógica el perfil de un cliente. Un administrador de empresa no puede hacerlo: un cliente puede comprarle a varias distribuidoras, y darlo de baja lo saca de todas. El registro se marca como borrado y deja de aparecer en las consultas, pero se conserva en la base junto con su historial. Endpoint: `DELETE /customers/:id` (`src/customer/customer.controller.ts:124`). |
+| **Precondición** | El solicitante está autenticado como Administrador General. El cliente existe y, si hay una distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador elige eliminar un cliente desde el panel. |
+| 1 | El Administrador General elige eliminar un cliente desde el panel. |
 | 2 | El panel envía `DELETE /customers/:id`. |
-| 3 | El sistema valida el formato UUID y recupera el cliente para confirmar que existe. |
+| 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella; después comprueba que quien pide sea el Administrador General y recupera el cliente para confirmar que existe. |
 | 4 | El sistema aplica el borrado lógico sobre el perfil de cliente (`src/customer/customer.service.ts:240-244`). |
 | 5 | El sistema responde 200 con el mensaje "Customer deleted successfully". |
 
@@ -6788,7 +6834,9 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 3 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
+| 3 | Si el cliente nunca le compró a la distribuidora en contexto, el sistema retorna el mismo error 404, sin revelar que existe. Este control se hace antes que el de rol. |
+| 3 | Si quien pide es un administrador de empresa, el sistema retorna error 403 "La cuenta de un cliente la administra el administrador general". |
+| 2 | Si el solicitante no tiene rol administrativo, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -6806,7 +6854,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customer/:id`. |
-| **Precondición** | El solicitante está autenticado. El cliente existe. |
+| **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -6815,7 +6863,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador elige un cliente del listado. |
 | 2 | El panel envía `GET /customer/:id`. |
-| 3 | El sistema valida el formato del identificador. |
+| 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. |
 | 4 | El sistema recupera el cliente con su cuenta de usuario. |
 | 5 | El sistema comprueba que quien pide tenga alcance sobre ese cliente. |
 | 6 | El sistema devuelve la ficha completa. |
@@ -6827,6 +6875,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 
 | Campo | Detalle |
@@ -6845,7 +6894,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customer/user/:userId`. |
-| **Precondición** | El solicitante está autenticado. La cuenta de usuario existe. |
+| **Precondición** | El solicitante está autenticado. La cuenta de usuario existe y, si quien pide es un administrador con distribuidora en contexto, su cliente le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -6854,7 +6903,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador llega con el identificador de usuario desde otra pantalla. |
 | 2 | El panel envía `GET /customer/user/:userId`. |
-| 3 | El sistema valida el formato del identificador. |
+| 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente de esa cuenta le haya comprado alguna vez a ella. |
 | 4 | El sistema busca la ficha de cliente asociada a esa cuenta. |
 | 5 | El sistema devuelve la ficha encontrada. |
 
@@ -6865,6 +6914,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si el cliente de esa cuenta nunca le compró a la distribuidora del administrador, el sistema retorna error 404, sin revelar que existe. |
 | 4 | Si la cuenta no tiene ficha de cliente, el sistema retorna error 404 "Customer for user ID: … not found". |
 
 | Campo | Detalle |
@@ -6883,7 +6933,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customer/:id`. |
-| **Precondición** | El solicitante está autenticado. El cliente existe. |
+| **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -6892,7 +6942,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador edita los campos de la ficha. |
 | 2 | El panel envía `PATCH /customer/:id` con los campos modificados. |
-| 3 | El sistema valida el formato del identificador y de los campos. |
+| 3 | El sistema valida el formato del identificador y de los campos. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. |
 | 4 | El sistema arma la ficha con los campos nuevos sobre los existentes. |
 | 5 | El sistema guarda los cambios y devuelve la ficha actualizada. |
 
@@ -6903,6 +6953,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 | 5 | Si la validación de entrada encuentra un campo no declarado, el sistema retorna error 400. |
 
@@ -6930,37 +6981,40 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-02 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | Se modifican los datos del perfil de un chofer, tomando cualquier subconjunto de los campos del alta. Lo usa el administrador (ACT-03) desde el panel para corregir datos del repartidor. Endpoint: `PATCH /delivery/:id` (`src/delivery/delivery.controller.ts:77`). |
-| **Precondición** | El solicitante está autenticado. El chofer existe. |
+| **Descripción** | El administrador (ACT-03) cambia desde el panel la marca de validación o el estado de actividad del perfil de un chofer. Son los dos únicos campos que la operación acepta: los datos de la persona —nombre, correo, contraseña— se cambian por `PATCH /users/:id`, y la ubicación, el saldo y la disponibilidad tienen cada uno su propia operación. Endpoint: `PATCH /delivery/:id` (`src/delivery/delivery.controller.ts:133`). |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la ficha del chofer y edita sus datos. |
-| 2 | El panel envía `PATCH /delivery/:id` con los campos a cambiar. |
-| 3 | El sistema valida el formato UUID del identificador. |
-| 4 | El sistema precarga la entidad del chofer con los cambios recibidos (`src/delivery/delivery.service.ts:186-198`). |
+| 1 | El administrador abre la ficha del chofer y cambia su validación o su estado de actividad. |
+| 2 | El panel envía `PATCH /delivery/:id` con `validated`, `isActive` o ambos. |
+| 3 | El sistema valida el formato UUID del identificador y el cuerpo: sólo admite esos dos campos, y cada uno tiene que ser verdadero o falso. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después precarga la entidad del chofer con los cambios recibidos (`src/delivery/delivery.service.ts:240-267`). |
 | 5 | El sistema guarda la entidad. |
 | 6 | El sistema devuelve el chofer recargado con sus relaciones. |
 
-**Postcondición:** El perfil del chofer refleja los cambios enviados.
+**Postcondición:** La validación o el estado de actividad del chofer quedan en los valores enviados. Ningún otro dato del perfil cambia.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si el cuerpo trae cualquier otro campo —correo, contraseña, nombre, calificación o distribuidora—, el sistema retorna error 400 y no modifica nada. |
+| 3 | Si `validated` o `isActive` no es verdadero o falso, el sistema retorna error 400. |
 | 4 | Si el chofer no existe, el sistema retorna error 404 "Delivery with ID: … not found". |
-| 2 | El endpoint **no** declara restricción de roles ni control de pertenencia: cualquier usuario autenticado, incluido un cliente, puede modificar el perfil de cualquier chofer. **⚠️ verificar**: es una diferencia con el resto de las escrituras del mismo controlador, que sí exigen rol administrativo. |
+| 4 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
+| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una precarga, una escritura y una lectura de relectura con relaciones. |
 | **Frecuencia** | Baja: corrección puntual de datos del repartidor. |
 | **Estabilidad** | Media |
-| **Comentarios** | El endpoint no restringe por rol ni comprueba pertenencia: a diferencia de las demás escrituras del mismo controlador, cualquier usuario autenticado, incluido un cliente, puede modificar el perfil de cualquier chofer. Es una brecha de autorización pendiente de corrección. |
+| **Comentarios** | La operación cambia los mismos dos datos que CU-032 y CU-033 cambian por sus operaciones dedicadas, con las mismas reglas de rol y de distribuidora. Un campo que no sea la validación o el estado de actividad se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. |
 
 ---
 
@@ -6972,7 +7026,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador (ACT-03) da de baja lógica el perfil de un chofer. El registro se marca como borrado y sale de las consultas, pero se conserva con su historial de entregas. Endpoint: `DELETE /delivery/:id` (`src/delivery/delivery.controller.ts:154`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -6981,7 +7035,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador elige eliminar un chofer desde el panel. |
 | 2 | El panel envía `DELETE /delivery/:id`. |
-| 3 | El sistema valida el formato UUID y recupera el chofer para confirmar que existe. |
+| 3 | El sistema valida el formato UUID y recupera el chofer para confirmar que existe. Si hay una distribuidora en contexto, comprueba además que el chofer sea de ella. |
 | 4 | El sistema aplica el borrado lógico sobre el perfil de chofer (`src/delivery/delivery.service.ts:200-204`). |
 | 5 | El sistema responde 200 con el mensaje "Delivery deleted successfully". |
 
@@ -6993,6 +7047,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 3 | Si el chofer no existe, el sistema retorna error 404 "Delivery with ID: … not found". |
+| 3 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 | 4 | El borrado lógico no desactiva al chofer ni lo saca del radar de posiciones. **⚠️ verificar** si un chofer dado de baja mientras estaba activo sigue siendo candidato del despacho por proximidad. |
 
@@ -7592,17 +7647,17 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) consulta el token de notificaciones registrado para un usuario, o el propio usuario consulta el suyo, para diagnosticar por qué no le llegan las notificaciones. Endpoint: `GET /notifications/user/:userId` (`src/notifications/notifications.controller.ts:57`). |
-| **Precondición** | El solicitante está autenticado. Si no es administrador, consulta su propio identificador. |
+| **Descripción** | El Administrador General (ACT-05) consulta el token de notificaciones registrado para cualquier usuario, o cada usuario consulta el suyo, para diagnosticar por qué no le llegan las notificaciones. Un administrador de empresa sólo consulta el propio: no tiene por qué leer los de usuarios de otra distribuidora. Endpoint: `GET /notifications/user/:userId` (`src/notifications/notifications.controller.ts:72`). |
+| **Precondición** | El solicitante está autenticado. Si no es el Administrador General, consulta su propio identificador. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el diagnóstico de notificaciones de un usuario, o la app consulta su propio registro. |
+| 1 | El Administrador General abre el diagnóstico de notificaciones de un usuario, o la app consulta su propio registro. |
 | 2 | Se envía `GET /notifications/user/:userId`. |
-| 3 | El sistema verifica que el solicitante sea administrador o que el identificador pedido sea el suyo (`notifications.controller.ts:64-66`). |
+| 3 | El sistema verifica que el solicitante sea el Administrador General o que el identificador pedido sea el suyo (`notifications.controller.ts:82-86`). |
 | 4 | El sistema busca el perfil de cliente de ese usuario y devuelve `{ tokens: [...] }` con el token guardado, o una lista vacía si no tiene. |
 
 **Postcondición:** El solicitante sabe si el usuario tiene token registrado. No hay cambios de estado.
@@ -7611,7 +7666,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si un no administrador pide el identificador de otro usuario, el sistema retorna error 403 "No autorizado a ver tokens de otro usuario". |
+| 3 | Si quien pide no es el Administrador General —incluido un administrador de empresa— y el identificador es de otro usuario, el sistema retorna error 403 "No autorizado a ver tokens de otro usuario". |
 | 4 | Si no existe perfil de cliente para ese identificador, el sistema devuelve `{ tokens: [] }` sin error. |
 | 4 | La consulta mira **solo** el perfil de cliente, mientras que CU-098 guarda el token también en el perfil de chofer: para un chofer con token registrado, este caso devuelve siempre una lista vacía (`notifications.service.ts:138-157`). **⚠️ verificar**: es una asimetría entre el alta y la consulta. |
 | 4 | Ante un error de base, el sistema lo registra y devuelve `{ tokens: [] }`, sin distinguir la falla de la ausencia de token. |
@@ -7632,15 +7687,15 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-03 |
 | **Requisitos asociados** | IRQ-01, IRQ-15 |
-| **Descripción** | El administrador (ACT-03) envía una notificación push arbitraria a un token concreto para verificar que el canal de notificaciones funciona de punta a punta. Es una herramienta de diagnóstico, no tráfico de usuario final: las notificaciones reales las dispara el propio flujo del pedido. Endpoint: `POST /notifications/send-test` (`src/notifications/notifications.controller.ts:27`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN y conoce el token del dispositivo de destino. |
+| **Descripción** | El Administrador General (ACT-05) envía una notificación push arbitraria a un token concreto para verificar que el canal de notificaciones funciona de punta a punta. Es una herramienta de diagnóstico, no tráfico de usuario final: las notificaciones reales las dispara el propio flujo del pedido. Endpoint: `POST /notifications/send-test` (`src/notifications/notifications.controller.ts:40`). Es exclusiva del Administrador General: el envío usa el proyecto de mensajería de la plataforma y alcanza a cualquier dispositivo. |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN y conoce el token del dispositivo de destino. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador ingresa el token de destino, un título y un cuerpo de mensaje. |
+| 1 | El Administrador General ingresa el token de destino, un título y un cuerpo de mensaje. |
 | 2 | El panel envía `POST /notifications/send-test` con esos tres datos. |
 | 3 | El sistema arma el mensaje con la marca de tipo `TEST` y una marca temporal (`src/notifications/notifications.service.ts:30-39`). |
 | 4 | El sistema lo envía al proveedor de mensajería contra ese token. |
@@ -7653,7 +7708,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 4 | Si el token es inválido o el proveedor rechaza el envío, el sistema registra el error y responde `{ success: false, error }` con estado 201: nunca lanza un error HTTP. |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
+| 2 | Si el solicitante no es el Administrador General —incluido un administrador de empresa—, el guard de roles rechaza la petición con error 403. |
 | 2 | El cuerpo se recibe como objeto sin DTO ni validación de formato. |
 
 | Campo | Detalle |
@@ -7672,15 +7727,15 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-05 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El administrador (ACT-03) vuelve a enviarle a un cliente la notificación de confirmación de un pedido, cuando la original no llegó. El envío automático de esa notificación ya lo hace el flujo de creación y de cambio de estado del pedido; este endpoint es el reenvío manual de soporte. Endpoint: `POST /notifications/order-confirmation` (`src/notifications/notifications.controller.ts:43`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El pedido y el cliente existen y el cliente tiene token de notificaciones registrado (CU-098). |
+| **Descripción** | El Administrador General (ACT-05) vuelve a enviarle a un cliente la notificación de confirmación de un pedido, cuando la original no llegó. El envío automático de esa notificación ya lo hace el flujo de creación y de cambio de estado del pedido; este endpoint es el reenvío manual de soporte. Endpoint: `POST /notifications/order-confirmation` (`src/notifications/notifications.controller.ts:58`). Es exclusiva del Administrador General: recibe un cliente y un pedido cualquiera, de cualquier distribuidora. |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. El pedido y el cliente existen y el cliente tiene token de notificaciones registrado (CU-098). |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador identifica el pedido cuya confirmación no le llegó al cliente. |
+| 1 | El Administrador General identifica el pedido cuya confirmación no le llegó al cliente. |
 | 2 | El panel envía `POST /notifications/order-confirmation` con el identificador del cliente, el del pedido y, opcionalmente, un token puntual. |
 | 3 | El sistema busca el perfil de cliente por identificador de usuario, con su usuario asociado. |
 | 4 | El sistema toma el token enviado en el cuerpo o, si no vino, el guardado en el perfil del cliente. |
@@ -7696,7 +7751,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | Si el cliente no existe, el sistema registra la advertencia y responde `{ success: false, error: 'Customer not found' }` sin error HTTP. |
 | 4 | Si el cliente no tiene token y no se envió uno en el cuerpo, el sistema responde `{ success: false, error: 'No notification token' }`. |
 | 6 | Si el proveedor rechaza el envío, el sistema registra el error y responde `{ success: false, error }`. |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
+| 2 | Si el solicitante no es el Administrador General —incluido un administrador de empresa—, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -8764,6 +8819,8 @@ sequenceDiagram
         SIS-)CLI: aviso de que un chofer tomo el pedido
     else El pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else El pedido ya tiene asignado a otro chofer
+        SIS-->>CHO: acceso denegado (el pedido no esta asignado a este chofer)
     else El pedido ya esta entregado o cancelado
         SIS-->>CHO: error de solicitud (transicion no permitida)
     else El chofer no existe o esta dado de baja
@@ -8867,6 +8924,8 @@ sequenceDiagram
         SIS-)CLI: aviso de pedido en camino
     else el pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else la transición no está permitida
         SIS-->>CHO: error de solicitud (transición inválida)
     end
@@ -8896,6 +8955,8 @@ sequenceDiagram
         SIS-->>CHO: cliente notificado
     else el pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else el pedido no está en camino
         SIS-->>CHO: error de solicitud (el pedido no está en camino)
     end
@@ -8932,6 +8993,10 @@ sequenceDiagram
         SIS-->>CLI: pedido entregado
         Note over SIS: Si el pago es en efectivo,<br/>queda saldado
         SIS-->>CHO: entrega registrada
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else El pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else El código no coincide o el pedido no está en camino
         SIS-->>CLI: rechazo (no se puede confirmar la entrega)
     end
@@ -9316,7 +9381,7 @@ sequenceDiagram
     activate SIS
     alt el chofer existe
         SIS-->>ADM: estado del chofer actualizado
-    else el chofer no existe
+    else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -10546,8 +10611,10 @@ sequenceDiagram
     activate SIS
     alt el pedido existe
         SIS-->>CHO: incidencia registrada (incidenciaId, estado ABIERTA)
-    else el pedido no existe
+    else el pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido no está asignado al chofer
+        SIS-->>CHO: acceso denegado
     end
     deactivate SIS
 ```
@@ -11460,7 +11527,7 @@ sequenceDiagram
         activate SIS
         alt hay coincidencias
             SIS-->>ADM: administrador encontrado
-        else no hay coincidencias
+        else no hay coincidencias, o el administrador es de otra distribuidora
             SIS-->>ADM: recurso no encontrado
         end
         deactivate SIS
@@ -11664,8 +11731,10 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: cliente dado de baja (se conserva su histórico de pedidos)
-    else el cliente no existe
+    else el cliente no existe o nunca le compró a la distribuidora en contexto
         SIS-->>ADM: recurso no encontrado
+    else quien pide es un administrador de empresa
+        SIS-->>ADM: acceso denegado (la baja la hace el Administrador General)
     end
     deactivate SIS
 ```
@@ -11688,7 +11757,7 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: ficha del cliente
-    else el cliente no existe
+    else el cliente no existe o nunca le compró a la distribuidora del administrador
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -11712,7 +11781,7 @@ sequenceDiagram
     activate SIS
     alt la cuenta tiene ficha de cliente
         SIS-->>ADM: ficha del cliente
-    else la cuenta no tiene ficha de cliente
+    else la cuenta no tiene ficha de cliente, o su cliente nunca le compró a la distribuidora del administrador
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -11736,7 +11805,7 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: ficha actualizada
-    else el cliente no existe
+    else el cliente no existe o nunca le compró a la distribuidora del administrador
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -11768,8 +11837,10 @@ sequenceDiagram
     activate SIS
     alt el chofer existe
         SIS-->>ADM: perfil del chofer actualizado
-    else el chofer no existe
+    else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
+    else los datos traen un campo distinto de la validación o el estado de actividad
+        SIS-->>ADM: error de solicitud (campo no admitido)
     end
     deactivate SIS
 ```
@@ -11793,7 +11864,7 @@ sequenceDiagram
     activate SIS
     alt el chofer existe
         SIS-->>ADM: chofer dado de baja (se conserva el histórico de entregas)
-    else el chofer no existe
+    else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -12198,9 +12269,9 @@ sequenceDiagram
 
     CLI->>SIS: consultarTokensDelUsuario(usuarioId)
     activate SIS
-    alt consulta sus propios dispositivos o es administrador
+    alt consulta sus propios dispositivos o es el Administrador General
         SIS-->>CLI: dispositivos registrados (plataforma, fecha de alta)
-    else consulta los dispositivos de otro usuario
+    else consulta los dispositivos de otro usuario sin ser el Administrador General
         SIS-->>CLI: acceso denegado
     end
     deactivate SIS
@@ -12229,6 +12300,8 @@ sequenceDiagram
         SIS-->>ADM: notificación enviada
     else el usuario no tiene dispositivos registrados
         SIS-->>ADM: no se pudo enviar (sin dispositivos registrados)
+    else quien pide no es el Administrador General
+        SIS-->>ADM: acceso denegado
     end
     deactivate SIS
 ```
@@ -12256,6 +12329,8 @@ sequenceDiagram
         SIS-->>ADM: notificación reenviada
     else el cliente no tiene dispositivos registrados
         SIS-->>ADM: no se pudo enviar
+    else quien pide no es el Administrador General
+        SIS-->>ADM: acceso denegado
     end
     deactivate SIS
 ```
@@ -13029,39 +13104,46 @@ sequenceDiagram
         SRV->>ORD: findById(id)
         ORD-->>SRV: Order de la distribuidora del chofer
         SRV-->>CTRL: sin error
-        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
-        SRV->>UCS: execute(id, ACCEPTED, deliveryId)
+        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token, role)
+        SRV->>UCS: execute(id, ACCEPTED, deliveryId, role)
         activate UCS
         UCS->>ORD: findByIdFull(id)
         activate ORD
         ORD-->>UCS: Order
         deactivate ORD
-        UCS->>SM: transitionOrder(order, ACCEPTED)
-        activate SM
-        SM-->>UCS: transicion valida
-        deactivate SM
-        UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
-        activate DEL
-        DEL-->>UCS: Delivery con user
-        deactivate DEL
-        UCS->>UCS: delivery.distributor_id igual a order.distributor_id
-        UCS->>UCS: order.delivery_id, order.acceptedAt
-        UCS->>UCS: order.deliveryCode = generateDeliveryCode()
-        UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
-        activate ORQ
-        ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
-        activate OFERTAS
-        OFERTAS-->>ORQ: true
-        deactivate OFERTAS
-        UCS->>ORD: save(order)
-        activate ORD
-        UCS-)RT: notifyCustomer(customer_id, order:accepted, payload)
-        activate RT
-        UCS-)RT: notifyAdmins(order:accepted, payload)
-        UCS-)NOT: sendOrderConfirmation(customer_id, order_id, token)
-        activate NOT
-        UCS-->>CTRL: Order actualizado
-        deactivate UCS
+        UCS->>UCS: assertPedidoDelChofer(order, deliveryId, role)
+        alt Es un chofer y el pedido ya tiene otro chofer asignado
+            UCS->>DEL: buscarPorIdOUsuario(deliveryId)
+            DEL-->>UCS: Delivery con otro delivery_id
+            UCS-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+        else Pedido sin chofer, del mismo chofer, o lo mueve un administrador
+            UCS->>SM: transitionOrder(order, ACCEPTED)
+            activate SM
+            SM-->>UCS: transicion valida
+            deactivate SM
+            UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
+            activate DEL
+            DEL-->>UCS: Delivery con user
+            deactivate DEL
+            UCS->>UCS: delivery.distributor_id igual a order.distributor_id
+            UCS->>UCS: order.delivery_id, order.acceptedAt
+            UCS->>UCS: order.deliveryCode = generateDeliveryCode()
+            UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
+            activate ORQ
+            ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
+            activate OFERTAS
+            OFERTAS-->>ORQ: true
+            deactivate OFERTAS
+            UCS->>ORD: save(order)
+            activate ORD
+            UCS-)RT: notifyCustomer(customer_id, order:accepted, payload)
+            activate RT
+            UCS-)RT: notifyAdmins(order:accepted, payload)
+            UCS-)NOT: sendOrderConfirmation(customer_id, order_id, token)
+            activate NOT
+            UCS-->>CTRL: Order actualizado
+            deactivate UCS
+        end
     else El chofer RECHAZA, POST /orders/:id/reject
         CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         SRV->>ORD: findById(id)
@@ -15233,23 +15315,40 @@ sequenceDiagram
     participant SRV as UserAddressService
     participant UREP as RepositoryUser
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: create(dto, usuarioDeLaSesion)
-    activate SRV
-    SRV->>UREP: findOne(where user_id)
-    activate UREP
-    UREP-->>SRV: User o null
-    deactivate UREP
-    SRV->>AREP: update(isDefault false en las demás)
-    activate AREP
-    SRV->>AREP: save(direccion)
-    AREP-->>SRV: UserAddress guardada
-    deactivate AREP
-    alt el usuario existe
-        SRV-->>CTRL: UserAddress creada
+    CTRL->>CTRL: acotar(userId: dto.user_id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
+        activate SRV
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else el usuario no existe
-        SRV-->>CTRL: NotFoundException User with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: create(dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>UREP: findOne(where user_id)
+        activate UREP
+        UREP-->>SRV: User o null
+        deactivate UREP
+        SRV->>AREP: update(isDefault false en las demás)
+        activate AREP
+        SRV->>AREP: save(direccion)
+        AREP-->>SRV: UserAddress guardada
+        deactivate AREP
+        alt el usuario existe
+            SRV-->>CTRL: UserAddress creada
+            deactivate SRV
+        else el usuario no existe
+            SRV-->>CTRL: NotFoundException User with ID not found
+        end
     end
 ```
 
@@ -15271,19 +15370,36 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>AREP: findOne(where address_id, relations user)
-    activate AREP
-    AREP-->>SRV: UserAddress o null
-    deactivate AREP
-    SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
-    alt la dirección existe y es del cliente
-        SRV-->>CTRL: UserAddress
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, false), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else no existe o es de otro
-        SRV-->>CTRL: NotFoundException o acceso denegado
+    else Cliente, o administrador con el titular a su alcance
+        CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>AREP: findOne(where address_id, relations user)
+        activate AREP
+        AREP-->>SRV: UserAddress o null
+        deactivate AREP
+        SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
+        alt la dirección existe y es del cliente
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else no existe o es de otro
+            SRV-->>CTRL: NotFoundException o acceso denegado
+        end
     end
 ```
 
@@ -15305,23 +15421,44 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: preload(address_id + cambios)
-    activate AREP
-    AREP-->>SRV: UserAddress fusionada o null
-    deactivate AREP
-    SRV->>AREP: save(direccion)
-    activate AREP
-    AREP-->>SRV: UserAddress actualizada
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: UserAddress actualizada
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: preload(address_id + cambios)
+        activate AREP
+        AREP-->>SRV: UserAddress fusionada o null
+        deactivate AREP
+        SRV->>AREP: save(direccion)
+        activate AREP
+        AREP-->>SRV: UserAddress actualizada
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: UserAddress actualizada
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end
 ```
 
@@ -15343,24 +15480,45 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: remove(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: find(otras direcciones del titular)
-    activate AREP
-    AREP-->>SRV: lista de UserAddress
-    deactivate AREP
-    SRV->>AREP: save(nueva predeterminada)
-    activate AREP
-    SRV->>AREP: remove(direccion)
-    AREP-->>SRV: confirmación de baja
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: mensaje de baja con el identificador
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: remove(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: find(otras direcciones del titular)
+        activate AREP
+        AREP-->>SRV: lista de UserAddress
+        deactivate AREP
+        SRV->>AREP: save(nueva predeterminada)
+        activate AREP
+        SRV->>AREP: remove(direccion)
+        AREP-->>SRV: confirmación de baja
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: mensaje de baja con el identificador
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end
 ```
 
@@ -15382,20 +15540,41 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: update(isDefault false en las demás del titular)
-    activate AREP
-    SRV->>AREP: save(direccion con isDefault true)
-    AREP-->>SRV: UserAddress actualizada
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: UserAddress predeterminada
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: update(isDefault false en las demás del titular)
+        activate AREP
+        SRV->>AREP: save(direccion con isDefault true)
+        AREP-->>SRV: UserAddress actualizada
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: UserAddress predeterminada
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end
 ```
 
@@ -15417,18 +15596,31 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
-    activate SRV
-    SRV->>AREP: findOne(where user_id e isDefault true)
-    activate AREP
-    AREP-->>SRV: UserAddress o null
-    deactivate AREP
-    alt hay dirección predeterminada
-        SRV-->>CTRL: UserAddress
+    CTRL->>CTRL: acotar(userId, user, distributorId, false), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId, distributorId)
+        activate SRV
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else no hay ninguna
-        SRV-->>CTRL: NotFoundException No addresses found for user
+    else Cliente, o administrador con el titular a su alcance
+        CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
+        activate SRV
+        SRV->>AREP: findOne(where user_id e isDefault true)
+        activate AREP
+        AREP-->>SRV: UserAddress o null
+        deactivate AREP
+        alt hay dirección predeterminada
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else no hay ninguna
+            SRV-->>CTRL: NotFoundException No addresses found for user
+        end
     end
 ```
 
@@ -16026,8 +16218,8 @@ sequenceDiagram
         else Misma distribuidora o sin distribuidora en contexto
             SRV-->>CTRL: sin error
             CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
-            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
-            SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
+            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId, role)
+            SRV->>UC: execute(id, ON_THE_WAY, deliveryId, role)
             activate UC
             UC->>ORD: findByIdFull(id)
             activate ORD
@@ -16038,40 +16230,47 @@ sequenceDiagram
                 deactivate UC
             else Pedido encontrado
                 ORD-->>UC: Order
-                UC->>FSM: transitionOrder(order, ON_THE_WAY)
-                activate FSM
-                alt El pedido no estaba ACCEPTED
-                    FSM-->>UC: InvalidOrderTransitionError
-                    deactivate FSM
-                    UC-->>CTRL: error 400 via GlobalExceptionFilter
-                else Transicion valida
-                    UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
-                    UC->>UC: order.onTheWayAt igual a new Date
-                    alt El pedido no tiene chofer asignado
-                        UC-->>UC: devuelve null sin activar tracking
-                    else Tiene chofer
-                        UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
-                        activate DREP
-                        DREP-->>UC: Delivery con User
-                        deactivate DREP
-                        UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
-                        activate RT
-                        RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
-                        activate REDIS
+                UC->>UC: assertPedidoDelChofer(order, deliveryId, role)
+                alt Es un chofer y el pedido esta asignado a otro chofer
+                    UC->>DREP: buscarPorIdOUsuario(deliveryId)
+                    DREP-->>UC: Delivery con otro delivery_id
+                    UC-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+                else Es el chofer asignado, el pedido no tiene chofer, o lo mueve un administrador
+                    UC->>FSM: transitionOrder(order, ON_THE_WAY)
+                    activate FSM
+                    alt El pedido no estaba ACCEPTED
+                        FSM-->>UC: InvalidOrderTransitionError
+                        deactivate FSM
+                        UC-->>CTRL: error 400 via GlobalExceptionFilter
+                    else Transicion valida
+                        UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
+                        UC->>UC: order.onTheWayAt igual a new Date
+                        alt El pedido no tiene chofer asignado
+                            UC-->>UC: devuelve null sin activar tracking
+                        else Tiene chofer
+                            UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
+                            activate DREP
+                            DREP-->>UC: Delivery con User
+                            deactivate DREP
+                            UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
+                            activate RT
+                            RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
+                            activate REDIS
+                        end
+                        UC->>ORD: save(order)
+                        activate ORD
+                        UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
+                        UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
+                        RT-)CGW: notifyCustomer(customerId, event, payload)
+                        activate CGW
+                        UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
+                        RT-)AGW: notifyAdmins(event, payload)
+                        activate AGW
+                        UC->>UC: notifyCustomer(order)
+                        UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                        activate NOT
+                        UC-->>CTRL: Order en estado ON_THE_WAY
                     end
-                    UC->>ORD: save(order)
-                    activate ORD
-                    UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
-                    UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
-                    RT-)CGW: notifyCustomer(customerId, event, payload)
-                    activate CGW
-                    UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
-                    RT-)AGW: notifyAdmins(event, payload)
-                    activate AGW
-                    UC->>UC: notifyCustomer(order)
-                    UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
-                    activate NOT
-                    UC-->>CTRL: Order en estado ON_THE_WAY
                 end
             end
         end
@@ -16112,6 +16311,7 @@ sequenceDiagram
     participant CTRL as OrderController
     participant SRV as OrderService
     participant ORD as OrderRepositoryPort
+    participant DSRV as DeliveryService
     participant RT as RealtimeDispatchPort
     participant CGW as CustomersGateway
 
@@ -16130,7 +16330,7 @@ sequenceDiagram
             SRV-->>CTRL: NotFoundException Order with ID not found
         else Misma distribuidora o sin distribuidora en contexto
             SRV-->>CTRL: sin error
-            CTRL->>SRV: notifyDriverArrived(id)
+            CTRL->>SRV: notifyDriverArrived(id, user.user_id, user.role)
             SRV->>SRV: findOne(orderId)
             SRV->>ORD: findByIdFull(orderId)
             activate ORD
@@ -16141,16 +16341,23 @@ sequenceDiagram
                 deactivate SRV
             else Pedido encontrado
                 ORD-->>SRV: Order con delivery y user
-                alt El pedido no esta ON_THE_WAY
-                    SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
-                else Pedido en camino
-                    SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
-                    activate RT
-                    RT->>CGW: notifyCustomer(customerId, event, payload)
-                    activate CGW
-                    CGW-->>SRV: emit en la sala customer_ del cliente
-                    deactivate CGW
-                    SRV-->>CTRL: message Cliente notificado
+                SRV->>SRV: assertPedidoDelChofer(order, userId, role)
+                alt Es un chofer y el pedido no esta asignado a el
+                    SRV->>DSRV: buscarPorIdOUsuario(userId)
+                    DSRV-->>SRV: Delivery con otro delivery_id, o null
+                    SRV-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+                else Es el chofer asignado o un administrador
+                    alt El pedido no esta ON_THE_WAY
+                        SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
+                    else Pedido en camino
+                        SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                        activate RT
+                        RT->>CGW: notifyCustomer(customerId, event, payload)
+                        activate CGW
+                        CGW-->>SRV: emit en la sala customer_ del cliente
+                        deactivate CGW
+                        SRV-->>CTRL: message Cliente notificado
+                    end
                 end
             end
         end
@@ -16382,34 +16589,47 @@ sequenceDiagram
     else El actor es ADMIN o SUPER_ADMIN
         CTRL->>CTRL: usar el createClaimDto tal cual llego
     end
-    CTRL->>SRV: create(dto)
+    CTRL->>SRV: create(dto, distributorId si es admin, null si es cliente)
     activate SRV
-    SRV->>OSRV: findOne(dto.orderId)
+    SRV->>OSRV: assertDeLaDistribuidora(dto.orderId, distributorId)
     activate OSRV
-    OSRV->>OREP: findByIdFull(id)
+    OSRV->>OREP: findById(id), solo con distribuidora en contexto
     activate OREP
     OREP-->>OSRV: Order o null
     deactivate OREP
-    alt Orden inexistente
-        OSRV-->>SRV: NotFoundException
+    alt Pedido de otra distribuidora que la del admin
+        OSRV-->>SRV: NotFoundException Order with ID not found
+        SRV-->>CTRL: NotFoundException
+    else Misma distribuidora, o lo registra el cliente
+        OSRV-->>SRV: sin error
         deactivate OSRV
-        SRV-->>CTRL: NotFoundException Orden no encontrada
-        deactivate SRV
-    else Orden existente
-        OSRV-->>SRV: Order
-        alt order.customer_id distinto de dto.customerId
-            SRV-->>CTRL: BadRequestException Esta orden no pertenece al cliente indicado
-        else El pedido es del cliente
-            SRV->>CREP: create(order_id, customer_id, distributor_id de la orden, reason, description, photoUrl)
-            activate CREP
-            CREP-->>SRV: Claim con status PENDING por defecto
-            deactivate CREP
-            SRV->>CREP: save(claim)
-            activate CREP
-            CREP-->>SRV: Claim persistido
-            deactivate CREP
-            SRV-->>CTRL: Claim
-            CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
+        SRV->>OSRV: findOne(dto.orderId)
+        activate OSRV
+        OSRV->>OREP: findByIdFull(id)
+        activate OREP
+        OREP-->>OSRV: Order o null
+        deactivate OREP
+        alt Orden inexistente
+            OSRV-->>SRV: NotFoundException
+            deactivate OSRV
+            SRV-->>CTRL: NotFoundException Orden no encontrada
+            deactivate SRV
+        else Orden existente
+            OSRV-->>SRV: Order
+            alt order.customer_id distinto de dto.customerId
+                SRV-->>CTRL: BadRequestException Esta orden no pertenece al cliente indicado
+            else El pedido es del cliente
+                SRV->>CREP: create(order_id, customer_id, distributor_id de la orden, reason, description, photoUrl)
+                activate CREP
+                CREP-->>SRV: Claim con status PENDING por defecto
+                deactivate CREP
+                SRV->>CREP: save(claim)
+                activate CREP
+                CREP-->>SRV: Claim persistido
+                deactivate CREP
+                SRV-->>CTRL: Claim
+                CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
+            end
         end
     end
 ```
@@ -16841,39 +17061,69 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     alt Validar, PATCH /delivery/:id/validate
-        CTRL->>SRV: validateDelivery(id)
+        CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+        CTRL->>SRV: findOne(id)
         activate SRV
-        SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
         DREP-->>SRV: Delivery o null
         deactivate DREP
-        alt Chofer inexistente
+        SRV-->>CTRL: Delivery, o NotFoundException si no existe
+        CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+        alt Chofer de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Chofer encontrado
-            SRV->>SRV: delivery.validated igual true
+            CTRL->>SRV: validateDelivery(id)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+            activate DREP
+            DREP-->>SRV: Delivery o null
+            deactivate DREP
+            alt Chofer inexistente
+                SRV-->>CTRL: NotFoundException Delivery with ID not found
+                deactivate SRV
+            else Chofer encontrado
+                SRV->>SRV: delivery.validated igual true
+                SRV->>DREP: save(delivery)
+                activate DREP
+                DREP-->>SRV: Delivery actualizado
+                deactivate DREP
+                SRV-->>CTRL: Delivery
+            end
+        end
+    else Invalidar, PATCH /delivery/:id/invalidate
+        CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+        CTRL->>SRV: findOne(id)
+        activate SRV
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
+        DREP-->>SRV: Delivery o null
+        deactivate DREP
+        SRV-->>CTRL: Delivery, o NotFoundException si no existe
+        CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+        alt Chofer de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            deactivate SRV
+            CTRL->>SRV: invalidateDelivery(id)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+            activate DREP
+            DREP-->>SRV: Delivery
+            deactivate DREP
+            SRV->>SRV: delivery.validated igual false
             SRV->>DREP: save(delivery)
             activate DREP
             DREP-->>SRV: Delivery actualizado
             deactivate DREP
             SRV-->>CTRL: Delivery
+            deactivate SRV
         end
-    else Invalidar, PATCH /delivery/:id/invalidate
-        CTRL->>SRV: invalidateDelivery(id)
-        activate SRV
-        SRV->>SRV: findOne(id)
-        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
-        activate DREP
-        DREP-->>SRV: Delivery
-        deactivate DREP
-        SRV->>SRV: delivery.validated igual false
-        SRV->>DREP: save(delivery)
-        activate DREP
-        DREP-->>SRV: Delivery actualizado
-        deactivate DREP
-        SRV-->>CTRL: Delivery
-        deactivate SRV
     end
 ```
 
@@ -16896,23 +17146,38 @@ sequenceDiagram
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+    CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: findOne(id)
     activate SRV
-    SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
     activate DREP
     DREP-->>SRV: Delivery o null
     deactivate DREP
-    alt Chofer inexistente
+    SRV-->>CTRL: Delivery, o NotFoundException si no existe
+    CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+    alt Chofer de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Chofer encontrado
-        SRV->>SRV: delivery.isActive igual isActive
-        SRV->>DREP: save(delivery)
+        CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+        activate SRV
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
-        DREP-->>SRV: Delivery actualizado
+        DREP-->>SRV: Delivery o null
         deactivate DREP
-        SRV-->>CTRL: Delivery
+        alt Chofer inexistente
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
+        else Chofer encontrado
+            SRV->>SRV: delivery.isActive igual isActive
+            SRV->>DREP: save(delivery)
+            activate DREP
+            DREP-->>SRV: Delivery actualizado
+            deactivate DREP
+            SRV-->>CTRL: Delivery
+        end
     end
 ```
 
@@ -17068,23 +17333,38 @@ sequenceDiagram
         SRV-->>CTRL: Delivery, el balance viaja dentro de la entidad
         deactivate SRV
     else Ajuste por el admin, PATCH /delivery/:id/balance
-        CTRL->>SRV: updateBalance(id, body.amount)
+        CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+        CTRL->>SRV: findOne(id)
         activate SRV
-        SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
         DREP-->>SRV: Delivery o null
         deactivate DREP
-        alt Chofer inexistente
+        SRV-->>CTRL: Delivery, o NotFoundException si no existe
+        CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+        alt Chofer de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Chofer encontrado
-            SRV->>SRV: delivery.balance igual balance actual mas amount
-            SRV->>DREP: save(delivery)
+            CTRL->>SRV: updateBalance(id, body.amount)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>DREP: findOne(where delivery_id, relations user y user.role)
             activate DREP
-            DREP-->>SRV: Delivery actualizado
+            DREP-->>SRV: Delivery o null
             deactivate DREP
-            SRV-->>CTRL: Delivery
+            alt Chofer inexistente
+                SRV-->>CTRL: NotFoundException Delivery with ID not found
+                deactivate SRV
+            else Chofer encontrado
+                SRV->>SRV: delivery.balance igual balance actual mas amount
+                SRV->>DREP: save(delivery)
+                activate DREP
+                DREP-->>SRV: Delivery actualizado
+                deactivate DREP
+                SRV-->>CTRL: Delivery
+            end
         end
     end
 ```
@@ -17218,30 +17498,56 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-096 Actualizar Perfil Del Chofer
     autonumber
+    participant RG as RolesGuard
+    participant DTO as UpdateDeliveryDto
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: update(id, updateDeliveryDto)
-    activate SRV
-    SRV->>DREP: preload(delivery_id mas campos del dto)
-    activate DREP
-    DREP-->>SRV: Delivery fusionado o undefined
-    deactivate DREP
-    alt preload no encontro el chofer
-        SRV-->>CTRL: NotFoundException Delivery with ID not found
-        deactivate SRV
-    else Chofer cargado
-        SRV->>DREP: save(delivery)
-        activate DREP
-        DREP-->>SRV: Delivery actualizado
-        deactivate DREP
-        SRV->>SRV: findOne(id)
-        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
-        activate DREP
-        DREP-->>SRV: Delivery con user y role
-        deactivate DREP
-        SRV-->>CTRL: Delivery completo
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        CTRL->>DTO: validar(body) con whitelist y forbidNonWhitelisted
+        activate DTO
+        alt Trae un campo distinto de validated e isActive, o no son booleanos
+            DTO-->>CTRL: BadRequestException
+            deactivate DTO
+        else Solo validated o isActive
+            DTO-->>CTRL: UpdateDeliveryDto
+            CTRL->>SRV: update(id, updateDeliveryDto, distributorId)
+            activate SRV
+            opt Con distribuidora en contexto
+                SRV->>DREP: findOne(where delivery_id)
+                activate DREP
+                DREP-->>SRV: Delivery o null
+                deactivate DREP
+            end
+            alt Con distribuidora en contexto, chofer inexistente o de otra distribuidora
+                SRV-->>CTRL: NotFoundException Delivery with ID not found
+            else Misma distribuidora o sin distribuidora en contexto
+                SRV->>DREP: preload(delivery_id mas validated e isActive)
+                activate DREP
+                DREP-->>SRV: Delivery fusionado o undefined
+                deactivate DREP
+                alt preload no encontro el chofer
+                    SRV-->>CTRL: NotFoundException Delivery with ID not found
+                else Chofer cargado
+                    SRV->>DREP: save(delivery)
+                    activate DREP
+                    DREP-->>SRV: Delivery actualizado
+                    deactivate DREP
+                    SRV->>SRV: findOne(id)
+                    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+                    activate DREP
+                    DREP-->>SRV: Delivery con user y role
+                    deactivate DREP
+                    SRV-->>CTRL: Delivery completo
+                end
+            end
+            deactivate SRV
+        end
     end
 ```
 
@@ -17265,22 +17571,37 @@ sequenceDiagram
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: remove(id)
+    CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: findOne(id)
     activate SRV
-    SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
     activate DREP
     DREP-->>SRV: Delivery o null
     deactivate DREP
-    alt Chofer inexistente
+    SRV-->>CTRL: Delivery, o NotFoundException si no existe
+    CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+    alt Chofer de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Chofer encontrado
-        SRV->>DREP: softDelete(where delivery_id)
+        CTRL->>SRV: remove(id)
+        activate SRV
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
-        DREP-->>SRV: UpdateResult, se sella deletedAt
+        DREP-->>SRV: Delivery o null
         deactivate DREP
-        SRV-->>CTRL: mensaje Delivery deleted successfully
+        alt Chofer inexistente
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
+        else Chofer encontrado
+            SRV->>DREP: softDelete(where delivery_id)
+            activate DREP
+            DREP-->>SRV: UpdateResult, se sella deletedAt
+            deactivate DREP
+            SRV-->>CTRL: mensaje Delivery deleted successfully
+        end
     end
 ```
 
@@ -18881,30 +19202,40 @@ sequenceDiagram
     CHO->>CTRL: POST /incidents con CreateIncidentDto
     activate CTRL
     CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
-    CTRL->>SRV: create(dto, user.user_id)
+    CTRL->>SRV: create(dto, user.user_id, distributorId, esChofer)
     activate SRV
     SRV->>OSRV: findById(dto.orderId)
     activate OSRV
     OSRV-->>SRV: Order o null
     deactivate OSRV
-    alt El pedido no existe
+    alt El pedido no existe, o es de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException, pedido no encontrado
-        deactivate SRV
-    else Pedido encontrado
-        SRV->>SRV: distributor_id se denormaliza de order.distributor_id
-        SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
-        activate IREP
-        IREP-->>SRV: Incident en memoria
-        deactivate IREP
-        SRV->>IREP: save(incident)
-        activate IREP
-        IREP-->>SRV: Incident persistida
-        deactivate IREP
-        SRV-->>CTRL: Incident
-        CTRL->>CTRL: IncidentMapper.toDto(incident)
-        CTRL-->>CHO: 201 IncidentResponseDto
-        deactivate CTRL
+    else Pedido de la distribuidora, o sin distribuidora en contexto
+        opt Reporta un chofer
+            SRV->>OSRV: assertEsElChofer(order.delivery_id, userId)
+            activate OSRV
+            OSRV-->>SRV: ForbiddenException si el pedido no esta asignado a ese chofer
+            deactivate OSRV
+        end
+        alt Es un chofer y el pedido no esta asignado a el
+            SRV-->>CTRL: ForbiddenException Solo podes ver tus propios pedidos
+        else Es el chofer asignado, o reporta un administrador
+            SRV->>SRV: distributor_id se denormaliza de order.distributor_id
+            SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
+            activate IREP
+            IREP-->>SRV: Incident en memoria
+            deactivate IREP
+            SRV->>IREP: save(incident)
+            activate IREP
+            IREP-->>SRV: Incident persistida
+            deactivate IREP
+            SRV-->>CTRL: Incident
+            CTRL->>CTRL: IncidentMapper.toDto(incident)
+            CTRL-->>CHO: 201 IncidentResponseDto
+        end
     end
+    deactivate SRV
+    deactivate CTRL
 ```
 
 **Observaciones de diseño**
@@ -18971,6 +19302,8 @@ sequenceDiagram
     participant DEC as CurrentDistributorDecorator
     participant CTRL as IncidentController
     participant SRV as IncidentService
+    participant OSRV as OrderService
+    participant OREP as OrderRepositoryPort
     participant IREP as RepositoryIncident
 
     USR->>DEC: GET /incidents/order/:orderId
@@ -18980,14 +19313,28 @@ sequenceDiagram
     CTRL->>CTRL: ParseUUIDPipe valida el orderId
     CTRL->>SRV: findByOrder(orderId, distributorId)
     activate SRV
-    SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
-    activate IREP
-    IREP-->>SRV: Incident[] del pedido
-    deactivate IREP
-    SRV-->>CTRL: Incident[]
+    SRV->>OSRV: assertDeLaDistribuidora(orderId, distributorId)
+    activate OSRV
+    OSRV->>OREP: findById(id), solo con distribuidora en contexto
+    activate OREP
+    OREP-->>OSRV: Order o null
+    deactivate OREP
+    alt Pedido de otra distribuidora que la del contexto
+        OSRV-->>SRV: NotFoundException Order with ID not found
+        SRV-->>CTRL: NotFoundException
+        CTRL-->>USR: 404
+    else Pedido de la distribuidora, inexistente, o sin distribuidora en contexto
+        OSRV-->>SRV: sin error
+        deactivate OSRV
+        SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
+        activate IREP
+        IREP-->>SRV: Incident[] del pedido, vacio si no hay
+        deactivate IREP
+        SRV-->>CTRL: Incident[]
+        CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
+        CTRL-->>USR: 200 IncidentResponseDto[]
+    end
     deactivate SRV
-    CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
-    CTRL-->>USR: 200 IncidentResponseDto[]
     deactivate CTRL
     deactivate DEC
 ```
@@ -19527,25 +19874,66 @@ sequenceDiagram
     participant CTRL as RegistroController
     participant SRV as RegistroService
     participant POL as PoliticaDeRegistro
+    participant ACTRL as AdminController
     participant ASRV as AdminService
+    participant USRV as UsersService
+    participant RSRV as RoleService
+    participant AREP as RepositoryAdmin
 
-    CTRL->>SRV: registrar(datos con rol admin o super_admin, solicitante con su sesion)
-    activate SRV
-    SRV->>POL: autorizarAlta(solicitante, rol, distributorId)
-    alt Admin de empresa pide un super_admin
-        POL-->>SRV: ForbiddenException No podes crear un super administrador
-        SRV-->>CTRL: 403
-    else Admin de empresa pide un admin
-        POL-->>SRV: su propia distribuidora, 403 si pidio otra
-    else Administrador General
-        POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
+    alt Alta con usuario nuevo, POST /users
+        CTRL->>SRV: registrar(datos con rol admin o super_admin, solicitante con su sesion)
+        activate SRV
+        SRV->>POL: autorizarAlta(solicitante, rol, distributorId)
+        alt Admin de empresa pide un super_admin
+            POL-->>SRV: ForbiddenException No podes crear un super administrador
+            SRV-->>CTRL: 403
+        else Admin de empresa pide un admin
+            POL-->>SRV: su propia distribuidora, 403 si pidio otra
+        else Administrador General
+            POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
+        end
+        Note over SRV: «include» CU-082 Crear Usuario Base
+        SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
+        ASRV-->>SRV: perfil de administrador
+        SRV-->>CTRL: User con rol
+        deactivate SRV
+        Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
+    else Alta directa del perfil, POST /admin, sólo SUPER_ADMIN
+        ACTRL->>ASRV: create(user_id, distributor_id opcional)
+        activate ASRV
+        ASRV->>USRV: findById(user_id)
+        activate USRV
+        USRV-->>ASRV: User o null
+        deactivate USRV
+        alt Usuario inexistente
+            ASRV-->>ACTRL: NotFoundException User with ID not found
+        else Usuario encontrado
+            ASRV->>RSRV: findOne(usuario.role_id)
+            activate RSRV
+            RSRV-->>ASRV: Role del usuario
+            deactivate RSRV
+            alt El rol no es admin ni super_admin
+                ASRV-->>ACTRL: BadRequestException Solo un usuario con rol admin o super_admin tiene perfil de administrador
+            else Admin sin distribuidora, o super_admin con distribuidora
+                ASRV-->>ACTRL: BadRequestException Un admin de empresa lleva distribuidora y el super administrador no
+            else Rol y distribuidora coherentes
+                ASRV->>AREP: exists(where user_id)
+                activate AREP
+                AREP-->>ASRV: true o false
+                deactivate AREP
+                alt Ya tiene perfil de administrador
+                    ASRV-->>ACTRL: ConflictException El usuario ya tiene perfil de administrador
+                else Sin perfil
+                    ASRV->>AREP: save(create(user_id, distributor_id))
+                    activate AREP
+                    AREP-->>ASRV: Admin
+                    deactivate AREP
+                    ASRV-->>ACTRL: Admin, responde 201 AdminResponseDto
+                end
+            end
+        end
+        deactivate ASRV
     end
-    Note over SRV: «include» CU-082 Crear Usuario Base
-    SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
-    ASRV-->>SRV: perfil de administrador
-    SRV-->>CTRL: User con rol
-    deactivate SRV
-    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Observaciones de diseño**
@@ -19631,9 +20019,9 @@ sequenceDiagram
         CTRL-->>ADM: 200 Admin[]
         deactivate CTRL
     else Busqueda por termino, GET /admin/term/:term
-        ADM->>CTRL: findOneByEmail(term)
+        ADM->>CTRL: findOneByEmail(term, distributorId)
         activate CTRL
-        CTRL->>SRV: findAdminByTerm(term)
+        CTRL->>SRV: findAdminByTerm(term, distributorId)
         activate SRV
         SRV->>SRV: isUUID(term)
         alt El termino es un UUID
@@ -19644,7 +20032,7 @@ sequenceDiagram
         end
         AREP-->>SRV: Admin o null
         deactivate AREP
-        alt No encontrado
+        alt No encontrado, o de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException
             deactivate SRV
         else Encontrado
@@ -19874,43 +20262,69 @@ sequenceDiagram
     alt Validar, PATCH /customers/:id/validate
         ADM->>CTRL: validateCustomer(id)
         activate CTRL
-        CTRL->>SRV: validateCustomer(id)
+        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(id), sin requesterUserId, es admin
-        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
         activate CREP
-        CREP-->>SRV: Customer o null
+        CREP-->>SRV: true o false
         deactivate CREP
-        alt No existe
-            SRV-->>CTRL: NotFoundException
+        alt El cliente nunca le compro a la distribuidora
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Existe
-            SRV->>SRV: customer.validated igual a true
-            SRV->>CREP: save(customer)
+            CTRL->>SRV: validateCustomer(id)
+            activate SRV
+            SRV->>SRV: findOne(id), sin requesterUserId, es admin
+            SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
             activate CREP
-            CREP-->>SRV: Customer actualizado
+            CREP-->>SRV: Customer o null
             deactivate CREP
-            SRV-->>CTRL: Customer
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>SRV: customer.validated igual a true
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+            end
         end
     else Invalidar, PATCH /customers/:id/invalidate
         ADM->>CTRL: invalidateCustomer(id)
-        CTRL->>SRV: invalidateCustomer(id)
+        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(id)
-        SRV->>CREP: findOne(where customer_id)
+        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
         activate CREP
-        CREP-->>SRV: Customer o null
+        CREP-->>SRV: true o false
         deactivate CREP
-        alt No existe
-            SRV-->>CTRL: NotFoundException
+        alt El cliente nunca le compro a la distribuidora
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Existe
-            SRV->>SRV: customer.validated igual a false
-            SRV->>CREP: save(customer)
+            CTRL->>SRV: invalidateCustomer(id)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>CREP: findOne(where customer_id)
             activate CREP
-            CREP-->>SRV: Customer actualizado
+            CREP-->>SRV: Customer o null
             deactivate CREP
-            SRV-->>CTRL: Customer
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>SRV: customer.validated igual a false
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+            end
         end
     end
     CTRL->>CTRL: CustomerMapper.toDto(customer)
@@ -19942,30 +20356,43 @@ sequenceDiagram
     CLI->>CTRL: PATCH /customers/:id/location con latLng
     activate CTRL
     CTRL->>CTRL: scope(user), admin devuelve undefined, cliente devuelve user.user_id
-    CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>SRV: findOne(id, requesterUserId)
-    SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt No existe
-        SRV-->>CTRL: NotFoundException
+    alt El cliente nunca le compro a la distribuidora
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Existe
-        SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
-        alt Es un cliente y el customer es de otro usuario
-            SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
-        else Autorizado, dueno o admin
-            SRV->>SRV: customer.lat_lang igual a latLng
-            SRV->>CREP: save(customer)
-            activate CREP
-            CREP-->>SRV: Customer actualizado
-            deactivate CREP
-            SRV-->>CTRL: Customer
-            CTRL->>CTRL: CustomerMapper.toDto(customer)
-            CTRL-->>CLI: 200 CustomerResponseDto
-            deactivate CTRL
+        CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+        activate SRV
+        SRV->>SRV: findOne(id, requesterUserId)
+        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+            deactivate SRV
+        else Existe
+            SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
+            alt Es un cliente y el customer es de otro usuario
+                SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
+            else Autorizado, dueno o admin
+                SRV->>SRV: customer.lat_lang igual a latLng
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+                CTRL->>CTRL: CustomerMapper.toDto(customer)
+                CTRL-->>CLI: 200 CustomerResponseDto
+                deactivate CTRL
+            end
         end
     end
 ```
@@ -19994,25 +20421,43 @@ sequenceDiagram
     ADM->>CTRL: DELETE /customers/:id
     activate CTRL
     CTRL->>CTRL: HttpCode 200, Roles ADMIN SUPER_ADMIN
-    CTRL->>SRV: remove(id)
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>SRV: findOne(id), sin ownership porque es staff
-    SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt No existe
-        SRV-->>CTRL: NotFoundException
+    alt El cliente nunca le compro a la distribuidora
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+        CTRL-->>ADM: 404
+    else Le compro a la distribuidora, o no hay distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Existe
-        SRV->>CREP: softDelete(where customer_id)
-        activate CREP
-        CREP-->>SRV: deletedAt seteado, la fila permanece
-        deactivate CREP
-        SRV-->>CTRL: message Customer deleted successfully
-        CTRL-->>ADM: 200 message
-        deactivate CTRL
+        alt user.role es ADMIN, administrador de empresa
+            CTRL-->>ADM: ForbiddenException La cuenta de un cliente la administra el administrador general
+        else SUPER_ADMIN
+            CTRL->>SRV: remove(id)
+            activate SRV
+            SRV->>SRV: findOne(id), sin ownership porque es staff
+            SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+            activate CREP
+            CREP-->>SRV: Customer o null
+            deactivate CREP
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>CREP: softDelete(where customer_id)
+                activate CREP
+                CREP-->>SRV: deletedAt seteado, la fila permanece
+                deactivate CREP
+                SRV-->>CTRL: message Customer deleted successfully
+                CTRL-->>ADM: 200 message
+            end
+        end
     end
+    deactivate CTRL
 ```
 
 **Observaciones de diseño**
@@ -20031,21 +20476,34 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-129 Consultar Detalle del Cliente
     autonumber
-    participant CTRL as CustomerController
-    participant SRV as CustomerService
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
     participant CREP as RepositoryCustomer
 
-    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>CREP: findOne(where customer_id, relations user)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt el cliente existe
-        SRV-->>CTRL: Customer con su usuario
-        deactivate SRV
-    else el cliente no existe
+    alt El cliente nunca le compro a la distribuidora
         SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
+        deactivate SRV
+        CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>CREP: findOne(where customer_id, relations user)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt el cliente existe
+            SRV-->>CTRL: Customer con su usuario
+            deactivate SRV
+        else el cliente no existe
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        end
     end
 ```
 
@@ -20064,21 +20522,34 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-130 Buscar Cliente por Usuario
     autonumber
-    participant CTRL as CustomerController
-    participant SRV as CustomerService
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
     participant CREP as RepositoryCustomer
 
-    CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+    CTRL->>CTRL: acotar(user_id: userId, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(user_id: userId, distributorId)
     activate SRV
-    SRV->>CREP: findOne(where user_id, relations user)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt la cuenta tiene ficha
-        SRV-->>CTRL: Customer
+    alt El cliente nunca le compro a la distribuidora
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else la cuenta no tiene ficha
-        SRV-->>CTRL: NotFoundException Customer for user ID not found
+        CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+        activate SRV
+        SRV->>CREP: findOne(where user_id, relations user)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt la cuenta tiene ficha
+            SRV-->>CTRL: Customer
+            deactivate SRV
+        else la cuenta no tiene ficha
+            SRV-->>CTRL: NotFoundException Customer for user ID not found
+        end
     end
 ```
 
@@ -20097,25 +20568,38 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-131 Editar Datos del Cliente
     autonumber
-    participant CTRL as CustomerController
-    participant SRV as CustomerService
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
     participant CREP as RepositoryCustomer
 
-    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>CREP: preload(customer_id + cambios)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer fusionado o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    SRV->>CREP: save(cliente)
-    activate CREP
-    CREP-->>SRV: Customer actualizado
-    deactivate CREP
-    alt el cliente existe
-        SRV-->>CTRL: Customer actualizado
-        deactivate SRV
-    else el cliente no existe
+    alt El cliente nunca le compro a la distribuidora
         SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
+        deactivate SRV
+        CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>CREP: preload(customer_id + cambios)
+        activate CREP
+        CREP-->>SRV: Customer fusionado o null
+        deactivate CREP
+        SRV->>CREP: save(cliente)
+        activate CREP
+        CREP-->>SRV: Customer actualizado
+        deactivate CREP
+        alt el cliente existe
+            SRV-->>CTRL: Customer actualizado
+            deactivate SRV
+        else el cliente no existe
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        end
     end
 ```
 
@@ -20199,11 +20683,11 @@ sequenceDiagram
 
     USR->>CTRL: GET /notifications/user/:userId
     activate CTRL
-    CTRL->>CTRL: isAdmin(user)
-    alt No es admin y el userId no es el suyo
+    CTRL->>CTRL: user.role es SUPER_ADMIN
+    alt No es SUPER_ADMIN, incluido un admin de empresa, y el userId no es el suyo
         CTRL-->>USR: ForbiddenException, no autorizado a ver tokens de otro usuario
         deactivate CTRL
-    else Es admin o consulta su propio userId
+    else Es SUPER_ADMIN o consulta su propio userId
         CTRL->>SRV: getUserNotificationTokens(userId)
         activate SRV
         SRV->>CSRV: findNotificationToken(userId)
@@ -20233,31 +20717,35 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-100 Enviar Notificacion De Prueba
     autonumber
-    participant ADM as Admin o SuperAdmin
+    participant ADM as SuperAdmin
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
     participant FCM as FcmPort
 
     ADM->>CTRL: POST /notifications/send-test con token title y body
     activate CTRL
-    CTRL->>CTRL: Roles ADMIN SUPER_ADMIN verificados por RolesGuard
-    CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
-    activate SRV
-    SRV->>SRV: arma message con notification y data type TEST mas timestamp
-    SRV->>FCM: sendToToken(token, message)
-    activate FCM
-    alt El envio falla
-        FCM-->>SRV: Error
-        deactivate FCM
-        SRV->>SRV: logger.error error sending test notification
-        SRV-->>CTRL: success false, error
-        deactivate SRV
-    else Envio exitoso
-        FCM-->>SRV: messageId
-        SRV->>SRV: logger.log test notification sent
-        SRV-->>CTRL: success true, messageId
+    CTRL->>CTRL: Roles SUPER_ADMIN verificado por RolesGuard
+    alt No es SUPER_ADMIN, incluido un admin de empresa
+        CTRL-->>ADM: 403 ForbiddenException
+    else SUPER_ADMIN
+        CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
+        activate SRV
+        SRV->>SRV: arma message con notification y data type TEST mas timestamp
+        SRV->>FCM: sendToToken(token, message)
+        activate FCM
+        alt El envio falla
+            FCM-->>SRV: Error
+            deactivate FCM
+            SRV->>SRV: logger.error error sending test notification
+            SRV-->>CTRL: success false, error
+            deactivate SRV
+        else Envio exitoso
+            FCM-->>SRV: messageId
+            SRV->>SRV: logger.log test notification sent
+            SRV-->>CTRL: success true, messageId
+        end
+        CTRL-->>ADM: 200 resultado
     end
-    CTRL-->>ADM: 200 resultado
     deactivate CTRL
 ```
 
@@ -20277,7 +20765,7 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-101 Reenviar Notificacion De Confirmacion De Pedido
     autonumber
-    participant ADM as Admin o SuperAdmin
+    participant ADM as SuperAdmin
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
     participant CSRV as CustomersService
@@ -20285,36 +20773,41 @@ sequenceDiagram
 
     ADM->>CTRL: POST /notifications/order-confirmation con customerId orderId y token opcional
     activate CTRL
-    CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
-    activate SRV
-    SRV->>CSRV: findNotificationToken(customerId)
-    activate CSRV
-    CSRV-->>SRV: esCliente y token
-    deactivate CSRV
-    alt Cliente no encontrado
-        SRV->>SRV: logger.warn customer not found
-        SRV-->>CTRL: success false, error Customer not found
-    else Cliente encontrado
-        SRV->>SRV: notificationToken igual al token del body o al del cliente
-        alt El cliente no tiene token registrado
-            SRV->>SRV: logger.warn no notification token
-            SRV-->>CTRL: success false, error No notification token
-        else Hay token
-            SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
-            SRV->>FCM: sendToToken(notificationToken, message)
-            activate FCM
-            alt Falla el envio
-                FCM-->>SRV: Error
-                SRV-->>CTRL: success false, error
-            else Envio exitoso
-                FCM-->>SRV: messageId
-                SRV-->>CTRL: success true, messageId
+    CTRL->>CTRL: Roles SUPER_ADMIN verificado por RolesGuard
+    alt No es SUPER_ADMIN, incluido un admin de empresa
+        CTRL-->>ADM: 403 ForbiddenException
+    else SUPER_ADMIN
+        CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
+        activate SRV
+        SRV->>CSRV: findNotificationToken(customerId)
+        activate CSRV
+        CSRV-->>SRV: esCliente y token
+        deactivate CSRV
+        alt Cliente no encontrado
+            SRV->>SRV: logger.warn customer not found
+            SRV-->>CTRL: success false, error Customer not found
+        else Cliente encontrado
+            SRV->>SRV: notificationToken igual al token del body o al del cliente
+            alt El cliente no tiene token registrado
+                SRV->>SRV: logger.warn no notification token
+                SRV-->>CTRL: success false, error No notification token
+            else Hay token
+                SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
+                SRV->>FCM: sendToToken(notificationToken, message)
+                activate FCM
+                alt Falla el envio
+                    FCM-->>SRV: Error
+                    SRV-->>CTRL: success false, error
+                else Envio exitoso
+                    FCM-->>SRV: messageId
+                    SRV-->>CTRL: success true, messageId
+                end
+                deactivate FCM
             end
-            deactivate FCM
         end
+        deactivate SRV
+        CTRL-->>ADM: 201 ResultadoDeEnvioDto
     end
-    deactivate SRV
-    CTRL-->>ADM: 201 ResultadoDeEnvioDto
     deactivate CTRL
 ```
 
@@ -21218,39 +21711,62 @@ sequenceDiagram
     title DSD — CU-020 Confirmar Entrega
     autonumber
     participant CTRL as OrderController
+    participant SRV as OrderService
     participant UC as UpdateOrderStatusUseCase
     participant REPO as OrderRepositoryPort
+    participant DSRV as DeliveryService
     participant SM as OrderStatusMachine
     participant RT as RealtimeDispatchPort
     participant NOT as NotificationsService
 
-    CTRL->>UC: execute(orderId, DELIVERED, userId)
-    activate UC
-    UC->>REPO: findByIdFull(orderId)
+    CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
+    activate SRV
+    SRV->>REPO: findById(id)
     activate REPO
-    REPO-->>UC: Order
+    REPO-->>SRV: Order o null
     deactivate REPO
-    UC->>SM: assertTransition(order.status, DELIVERED)
-    activate SM
-    alt Transicion invalida
-        SM-->>UC: InvalidOrderTransitionError
-        deactivate SM
-        UC-->>CTRL: 400 Bad Request
-        deactivate UC
-    else Transicion valida
-        UC->>UC: order.deliveredAt = new Date()
-        opt paymentMethod es CASH
-            UC->>UC: order.paymentStatus = PAID
-        end
-        UC->>REPO: save(order)
+    alt Pedido de otra distribuidora que la del contexto
+        SRV-->>CTRL: NotFoundException Order with ID not found
+        deactivate SRV
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
+        CTRL->>UC: execute(orderId, DELIVERED, userId, role)
+        activate UC
+        UC->>REPO: findByIdFull(orderId)
         activate REPO
         REPO-->>UC: Order
         deactivate REPO
-        UC-)RT: notifyOrderStatusChanged(order)
-        activate RT
-        UC-)NOT: sendOrderPush(customerId, orderId)
-        activate NOT
-        UC-->>CTRL: Order actualizada
+        UC->>UC: assertPedidoDelChofer(order, userId, role)
+        alt Es un chofer y el pedido esta asignado a otro chofer
+            UC->>DSRV: buscarPorIdOUsuario(userId)
+            activate DSRV
+            DSRV-->>UC: Delivery con otro delivery_id
+            deactivate DSRV
+            UC-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+        else Es el chofer asignado o lo mueve un administrador
+            UC->>SM: assertTransition(order.status, DELIVERED)
+            activate SM
+            alt Transicion invalida
+                SM-->>UC: InvalidOrderTransitionError
+                deactivate SM
+                UC-->>CTRL: 400 Bad Request
+            else Transicion valida
+                UC->>UC: order.deliveredAt = new Date()
+                opt paymentMethod es CASH
+                    UC->>UC: order.paymentStatus = PAID
+                end
+                UC->>REPO: save(order)
+                activate REPO
+                REPO-->>UC: Order
+                deactivate REPO
+                UC-)RT: notifyOrderStatusChanged(order)
+                activate RT
+                UC-)NOT: sendOrderPush(customerId, orderId)
+                activate NOT
+                UC-->>CTRL: Order actualizada
+            end
+        end
+        deactivate UC
     end
     deactivate NOT
     deactivate RT

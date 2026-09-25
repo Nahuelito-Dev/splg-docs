@@ -4,22 +4,43 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: remove(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: find(otras direcciones del titular)
-    activate AREP
-    AREP-->>SRV: lista de UserAddress
-    deactivate AREP
-    SRV->>AREP: save(nueva predeterminada)
-    activate AREP
-    SRV->>AREP: remove(direccion)
-    AREP-->>SRV: confirmación de baja
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: mensaje de baja con el identificador
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: remove(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: find(otras direcciones del titular)
+        activate AREP
+        AREP-->>SRV: lista de UserAddress
+        deactivate AREP
+        SRV->>AREP: save(nueva predeterminada)
+        activate AREP
+        SRV->>AREP: remove(direccion)
+        AREP-->>SRV: confirmación de baja
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: mensaje de baja con el identificador
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end

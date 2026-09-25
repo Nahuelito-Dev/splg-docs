@@ -27,9 +27,9 @@ sequenceDiagram
         CTRL-->>ADM: 200 Admin[]
         deactivate CTRL
     else Busqueda por termino, GET /admin/term/:term
-        ADM->>CTRL: findOneByEmail(term)
+        ADM->>CTRL: findOneByEmail(term, distributorId)
         activate CTRL
-        CTRL->>SRV: findAdminByTerm(term)
+        CTRL->>SRV: findAdminByTerm(term, distributorId)
         activate SRV
         SRV->>SRV: isUUID(term)
         alt El termino es un UUID
@@ -40,7 +40,7 @@ sequenceDiagram
         end
         AREP-->>SRV: Admin o null
         deactivate AREP
-        alt No encontrado
+        alt No encontrado, o de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException
             deactivate SRV
         else Encontrado

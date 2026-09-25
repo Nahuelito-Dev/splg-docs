@@ -933,6 +933,8 @@ sequenceDiagram
         SIS-)CLI: aviso de que un chofer tomo el pedido
     else El pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else El pedido ya tiene asignado a otro chofer
+        SIS-->>CHO: acceso denegado (el pedido no esta asignado a este chofer)
     else El pedido ya esta entregado o cancelado
         SIS-->>CHO: error de solicitud (transicion no permitida)
     else El chofer no existe o esta dado de baja
@@ -1003,6 +1005,10 @@ sequenceDiagram
         SIS-->>CLI: pedido entregado
         Note over SIS: Si el pago es en efectivo,<br/>queda saldado
         SIS-->>CHO: entrega registrada
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else El pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else El código no coincide o el pedido no está en camino
         SIS-->>CLI: rechazo (no se puede confirmar la entrega)
     end
@@ -2287,6 +2293,8 @@ sequenceDiagram
         SIS-)CLI: aviso de pedido en camino
     else el pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else la transición no está permitida
         SIS-->>CHO: error de solicitud (transición inválida)
     end
@@ -2317,6 +2325,8 @@ sequenceDiagram
         SIS-->>CHO: cliente notificado
     else el pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else el pedido no está en camino
         SIS-->>CHO: error de solicitud (el pedido no está en camino)
     end
@@ -2698,7 +2708,7 @@ sequenceDiagram
     activate SIS
     alt el chofer existe
         SIS-->>ADM: estado del chofer actualizado
-    else el chofer no existe
+    else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -2869,8 +2879,10 @@ sequenceDiagram
     activate SIS
     alt el chofer existe
         SIS-->>ADM: perfil del chofer actualizado
-    else el chofer no existe
+    else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
+    else los datos traen un campo distinto de la validación o el estado de actividad
+        SIS-->>ADM: error de solicitud (campo no admitido)
     end
     deactivate SIS
 ```
@@ -2895,7 +2907,7 @@ sequenceDiagram
     activate SIS
     alt el chofer existe
         SIS-->>ADM: chofer dado de baja (se conserva el histórico de entregas)
-    else el chofer no existe
+    else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -3890,8 +3902,10 @@ sequenceDiagram
     activate SIS
     alt el pedido existe
         SIS-->>CHO: incidencia registrada (incidenciaId, estado ABIERTA)
-    else el pedido no existe
+    else el pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido no está asignado al chofer
+        SIS-->>CHO: acceso denegado
     end
     deactivate SIS
 ```
@@ -4628,7 +4642,7 @@ sequenceDiagram
         activate SIS
         alt hay coincidencias
             SIS-->>ADM: administrador encontrado
-        else no hay coincidencias
+        else no hay coincidencias, o el administrador es de otra distribuidora
             SIS-->>ADM: recurso no encontrado
         end
         deactivate SIS
@@ -4803,8 +4817,10 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: cliente dado de baja (se conserva su histórico de pedidos)
-    else el cliente no existe
+    else el cliente no existe o nunca le compró a la distribuidora en contexto
         SIS-->>ADM: recurso no encontrado
+    else quien pide es un administrador de empresa
+        SIS-->>ADM: acceso denegado (la baja la hace el Administrador General)
     end
     deactivate SIS
 ```
@@ -4829,7 +4845,7 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: ficha del cliente
-    else el cliente no existe
+    else el cliente no existe o nunca le compró a la distribuidora del administrador
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -4855,7 +4871,7 @@ sequenceDiagram
     activate SIS
     alt la cuenta tiene ficha de cliente
         SIS-->>ADM: ficha del cliente
-    else la cuenta no tiene ficha de cliente
+    else la cuenta no tiene ficha de cliente, o su cliente nunca le compró a la distribuidora del administrador
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -4881,7 +4897,7 @@ sequenceDiagram
     activate SIS
     alt el cliente existe
         SIS-->>ADM: ficha actualizada
-    else el cliente no existe
+    else el cliente no existe o nunca le compró a la distribuidora del administrador
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -4935,9 +4951,9 @@ sequenceDiagram
 
     CLI->>SIS: consultarTokensDelUsuario(usuarioId)
     activate SIS
-    alt consulta sus propios dispositivos o es administrador
+    alt consulta sus propios dispositivos o es el Administrador General
         SIS-->>CLI: dispositivos registrados (plataforma, fecha de alta)
-    else consulta los dispositivos de otro usuario
+    else consulta los dispositivos de otro usuario sin ser el Administrador General
         SIS-->>CLI: acceso denegado
     end
     deactivate SIS
@@ -4967,6 +4983,8 @@ sequenceDiagram
         SIS-->>ADM: notificación enviada
     else el usuario no tiene dispositivos registrados
         SIS-->>ADM: no se pudo enviar (sin dispositivos registrados)
+    else quien pide no es el Administrador General
+        SIS-->>ADM: acceso denegado
     end
     deactivate SIS
 ```
@@ -4995,6 +5013,8 @@ sequenceDiagram
         SIS-->>ADM: notificación reenviada
     else el cliente no tiene dispositivos registrados
         SIS-->>ADM: no se pudo enviar
+    else quien pide no es el Administrador General
+        SIS-->>ADM: acceso denegado
     end
     deactivate SIS
 ```

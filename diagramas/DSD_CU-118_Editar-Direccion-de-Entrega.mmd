@@ -4,21 +4,42 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: preload(address_id + cambios)
-    activate AREP
-    AREP-->>SRV: UserAddress fusionada o null
-    deactivate AREP
-    SRV->>AREP: save(direccion)
-    activate AREP
-    AREP-->>SRV: UserAddress actualizada
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: UserAddress actualizada
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: preload(address_id + cambios)
+        activate AREP
+        AREP-->>SRV: UserAddress fusionada o null
+        deactivate AREP
+        SRV->>AREP: save(direccion)
+        activate AREP
+        AREP-->>SRV: UserAddress actualizada
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: UserAddress actualizada
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end

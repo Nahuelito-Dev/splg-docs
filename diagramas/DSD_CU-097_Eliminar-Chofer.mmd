@@ -5,20 +5,35 @@ sequenceDiagram
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: remove(id)
+    CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: findOne(id)
     activate SRV
-    SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
     activate DREP
     DREP-->>SRV: Delivery o null
     deactivate DREP
-    alt Chofer inexistente
+    SRV-->>CTRL: Delivery, o NotFoundException si no existe
+    CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+    alt Chofer de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Chofer encontrado
-        SRV->>DREP: softDelete(where delivery_id)
+        CTRL->>SRV: remove(id)
+        activate SRV
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
-        DREP-->>SRV: UpdateResult, se sella deletedAt
+        DREP-->>SRV: Delivery o null
         deactivate DREP
-        SRV-->>CTRL: mensaje Delivery deleted successfully
+        alt Chofer inexistente
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
+        else Chofer encontrado
+            SRV->>DREP: softDelete(where delivery_id)
+            activate DREP
+            DREP-->>SRV: UpdateResult, se sella deletedAt
+            deactivate DREP
+            SRV-->>CTRL: mensaje Delivery deleted successfully
+        end
     end

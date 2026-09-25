@@ -5,6 +5,8 @@ sequenceDiagram
     participant DEC as CurrentDistributorDecorator
     participant CTRL as IncidentController
     participant SRV as IncidentService
+    participant OSRV as OrderService
+    participant OREP as OrderRepositoryPort
     participant IREP as RepositoryIncident
 
     USR->>DEC: GET /incidents/order/:orderId
@@ -14,13 +16,27 @@ sequenceDiagram
     CTRL->>CTRL: ParseUUIDPipe valida el orderId
     CTRL->>SRV: findByOrder(orderId, distributorId)
     activate SRV
-    SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
-    activate IREP
-    IREP-->>SRV: Incident[] del pedido
-    deactivate IREP
-    SRV-->>CTRL: Incident[]
+    SRV->>OSRV: assertDeLaDistribuidora(orderId, distributorId)
+    activate OSRV
+    OSRV->>OREP: findById(id), solo con distribuidora en contexto
+    activate OREP
+    OREP-->>OSRV: Order o null
+    deactivate OREP
+    alt Pedido de otra distribuidora que la del contexto
+        OSRV-->>SRV: NotFoundException Order with ID not found
+        SRV-->>CTRL: NotFoundException
+        CTRL-->>USR: 404
+    else Pedido de la distribuidora, inexistente, o sin distribuidora en contexto
+        OSRV-->>SRV: sin error
+        deactivate OSRV
+        SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
+        activate IREP
+        IREP-->>SRV: Incident[] del pedido, vacio si no hay
+        deactivate IREP
+        SRV-->>CTRL: Incident[]
+        CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
+        CTRL-->>USR: 200 IncidentResponseDto[]
+    end
     deactivate SRV
-    CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
-    CTRL-->>USR: 200 IncidentResponseDto[]
     deactivate CTRL
     deactivate DEC

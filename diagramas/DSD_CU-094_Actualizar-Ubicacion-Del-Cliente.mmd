@@ -9,29 +9,42 @@ sequenceDiagram
     CLI->>CTRL: PATCH /customers/:id/location con latLng
     activate CTRL
     CTRL->>CTRL: scope(user), admin devuelve undefined, cliente devuelve user.user_id
-    CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>SRV: findOne(id, requesterUserId)
-    SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt No existe
-        SRV-->>CTRL: NotFoundException
+    alt El cliente nunca le compro a la distribuidora
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Existe
-        SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
-        alt Es un cliente y el customer es de otro usuario
-            SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
-        else Autorizado, dueno o admin
-            SRV->>SRV: customer.lat_lang igual a latLng
-            SRV->>CREP: save(customer)
-            activate CREP
-            CREP-->>SRV: Customer actualizado
-            deactivate CREP
-            SRV-->>CTRL: Customer
-            CTRL->>CTRL: CustomerMapper.toDto(customer)
-            CTRL-->>CLI: 200 CustomerResponseDto
-            deactivate CTRL
+        CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+        activate SRV
+        SRV->>SRV: findOne(id, requesterUserId)
+        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+            deactivate SRV
+        else Existe
+            SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
+            alt Es un cliente y el customer es de otro usuario
+                SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
+            else Autorizado, dueno o admin
+                SRV->>SRV: customer.lat_lang igual a latLng
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+                CTRL->>CTRL: CustomerMapper.toDto(customer)
+                CTRL-->>CLI: 200 CustomerResponseDto
+                deactivate CTRL
+            end
         end
     end

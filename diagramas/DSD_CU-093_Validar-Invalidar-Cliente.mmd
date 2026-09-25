@@ -9,43 +9,69 @@ sequenceDiagram
     alt Validar, PATCH /customers/:id/validate
         ADM->>CTRL: validateCustomer(id)
         activate CTRL
-        CTRL->>SRV: validateCustomer(id)
+        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(id), sin requesterUserId, es admin
-        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
         activate CREP
-        CREP-->>SRV: Customer o null
+        CREP-->>SRV: true o false
         deactivate CREP
-        alt No existe
-            SRV-->>CTRL: NotFoundException
+        alt El cliente nunca le compro a la distribuidora
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Existe
-            SRV->>SRV: customer.validated igual a true
-            SRV->>CREP: save(customer)
+            CTRL->>SRV: validateCustomer(id)
+            activate SRV
+            SRV->>SRV: findOne(id), sin requesterUserId, es admin
+            SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
             activate CREP
-            CREP-->>SRV: Customer actualizado
+            CREP-->>SRV: Customer o null
             deactivate CREP
-            SRV-->>CTRL: Customer
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>SRV: customer.validated igual a true
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+            end
         end
     else Invalidar, PATCH /customers/:id/invalidate
         ADM->>CTRL: invalidateCustomer(id)
-        CTRL->>SRV: invalidateCustomer(id)
+        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(id)
-        SRV->>CREP: findOne(where customer_id)
+        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
         activate CREP
-        CREP-->>SRV: Customer o null
+        CREP-->>SRV: true o false
         deactivate CREP
-        alt No existe
-            SRV-->>CTRL: NotFoundException
+        alt El cliente nunca le compro a la distribuidora
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Existe
-            SRV->>SRV: customer.validated igual a false
-            SRV->>CREP: save(customer)
+            CTRL->>SRV: invalidateCustomer(id)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>CREP: findOne(where customer_id)
             activate CREP
-            CREP-->>SRV: Customer actualizado
+            CREP-->>SRV: Customer o null
             deactivate CREP
-            SRV-->>CTRL: Customer
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>SRV: customer.validated igual a false
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+            end
         end
     end
     CTRL->>CTRL: CustomerMapper.toDto(customer)

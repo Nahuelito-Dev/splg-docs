@@ -8,7 +8,7 @@ sequenceDiagram
     activate SIS
     alt el chofer existe
         SIS-->>ADM: estado del chofer actualizado
-    else el chofer no existe
+    else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS

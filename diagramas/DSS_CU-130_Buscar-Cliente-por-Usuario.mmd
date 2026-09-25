@@ -8,7 +8,7 @@ sequenceDiagram
     activate SIS
     alt la cuenta tiene ficha de cliente
         SIS-->>ADM: ficha del cliente
-    else la cuenta no tiene ficha de cliente
+    else la cuenta no tiene ficha de cliente, o su cliente nunca le compró a la distribuidora del administrador
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS

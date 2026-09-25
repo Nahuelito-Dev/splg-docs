@@ -4,16 +4,29 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
-    activate SRV
-    SRV->>AREP: findOne(where user_id e isDefault true)
-    activate AREP
-    AREP-->>SRV: UserAddress o null
-    deactivate AREP
-    alt hay dirección predeterminada
-        SRV-->>CTRL: UserAddress
+    CTRL->>CTRL: acotar(userId, user, distributorId, false), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId, distributorId)
+        activate SRV
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else no hay ninguna
-        SRV-->>CTRL: NotFoundException No addresses found for user
+    else Cliente, o administrador con el titular a su alcance
+        CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
+        activate SRV
+        SRV->>AREP: findOne(where user_id e isDefault true)
+        activate AREP
+        AREP-->>SRV: UserAddress o null
+        deactivate AREP
+        alt hay dirección predeterminada
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else no hay ninguna
+            SRV-->>CTRL: NotFoundException No addresses found for user
+        end
     end

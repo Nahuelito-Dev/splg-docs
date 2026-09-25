@@ -18,39 +18,46 @@ sequenceDiagram
         SRV->>ORD: findById(id)
         ORD-->>SRV: Order de la distribuidora del chofer
         SRV-->>CTRL: sin error
-        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
-        SRV->>UCS: execute(id, ACCEPTED, deliveryId)
+        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token, role)
+        SRV->>UCS: execute(id, ACCEPTED, deliveryId, role)
         activate UCS
         UCS->>ORD: findByIdFull(id)
         activate ORD
         ORD-->>UCS: Order
         deactivate ORD
-        UCS->>SM: transitionOrder(order, ACCEPTED)
-        activate SM
-        SM-->>UCS: transicion valida
-        deactivate SM
-        UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
-        activate DEL
-        DEL-->>UCS: Delivery con user
-        deactivate DEL
-        UCS->>UCS: delivery.distributor_id igual a order.distributor_id
-        UCS->>UCS: order.delivery_id, order.acceptedAt
-        UCS->>UCS: order.deliveryCode = generateDeliveryCode()
-        UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
-        activate ORQ
-        ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
-        activate OFERTAS
-        OFERTAS-->>ORQ: true
-        deactivate OFERTAS
-        UCS->>ORD: save(order)
-        activate ORD
-        UCS-)RT: notifyCustomer(customer_id, order:accepted, payload)
-        activate RT
-        UCS-)RT: notifyAdmins(order:accepted, payload)
-        UCS-)NOT: sendOrderConfirmation(customer_id, order_id, token)
-        activate NOT
-        UCS-->>CTRL: Order actualizado
-        deactivate UCS
+        UCS->>UCS: assertPedidoDelChofer(order, deliveryId, role)
+        alt Es un chofer y el pedido ya tiene otro chofer asignado
+            UCS->>DEL: buscarPorIdOUsuario(deliveryId)
+            DEL-->>UCS: Delivery con otro delivery_id
+            UCS-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+        else Pedido sin chofer, del mismo chofer, o lo mueve un administrador
+            UCS->>SM: transitionOrder(order, ACCEPTED)
+            activate SM
+            SM-->>UCS: transicion valida
+            deactivate SM
+            UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
+            activate DEL
+            DEL-->>UCS: Delivery con user
+            deactivate DEL
+            UCS->>UCS: delivery.distributor_id igual a order.distributor_id
+            UCS->>UCS: order.delivery_id, order.acceptedAt
+            UCS->>UCS: order.deliveryCode = generateDeliveryCode()
+            UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
+            activate ORQ
+            ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
+            activate OFERTAS
+            OFERTAS-->>ORQ: true
+            deactivate OFERTAS
+            UCS->>ORD: save(order)
+            activate ORD
+            UCS-)RT: notifyCustomer(customer_id, order:accepted, payload)
+            activate RT
+            UCS-)RT: notifyAdmins(order:accepted, payload)
+            UCS-)NOT: sendOrderConfirmation(customer_id, order_id, token)
+            activate NOT
+            UCS-->>CTRL: Order actualizado
+            deactivate UCS
+        end
     else El chofer RECHAZA, POST /orders/:id/reject
         CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         SRV->>ORD: findById(id)

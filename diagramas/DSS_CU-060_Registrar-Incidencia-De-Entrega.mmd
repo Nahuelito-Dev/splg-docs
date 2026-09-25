@@ -8,7 +8,9 @@ sequenceDiagram
     activate SIS
     alt el pedido existe
         SIS-->>CHO: incidencia registrada (incidenciaId, estado ABIERTA)
-    else el pedido no existe
+    else el pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else el pedido no está asignado al chofer
+        SIS-->>CHO: acceso denegado
     end
     deactivate SIS

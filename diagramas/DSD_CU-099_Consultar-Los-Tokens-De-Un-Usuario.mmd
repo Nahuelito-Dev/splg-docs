@@ -8,11 +8,11 @@ sequenceDiagram
 
     USR->>CTRL: GET /notifications/user/:userId
     activate CTRL
-    CTRL->>CTRL: isAdmin(user)
-    alt No es admin y el userId no es el suyo
+    CTRL->>CTRL: user.role es SUPER_ADMIN
+    alt No es SUPER_ADMIN, incluido un admin de empresa, y el userId no es el suyo
         CTRL-->>USR: ForbiddenException, no autorizado a ver tokens de otro usuario
         deactivate CTRL
-    else Es admin o consulta su propio userId
+    else Es SUPER_ADMIN o consulta su propio userId
         CTRL->>SRV: getUserNotificationTokens(userId)
         activate SRV
         SRV->>CSRV: findNotificationToken(userId)

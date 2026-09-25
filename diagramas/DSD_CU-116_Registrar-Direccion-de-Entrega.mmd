@@ -5,21 +5,38 @@ sequenceDiagram
     participant SRV as UserAddressService
     participant UREP as RepositoryUser
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: create(dto, usuarioDeLaSesion)
-    activate SRV
-    SRV->>UREP: findOne(where user_id)
-    activate UREP
-    UREP-->>SRV: User o null
-    deactivate UREP
-    SRV->>AREP: update(isDefault false en las demás)
-    activate AREP
-    SRV->>AREP: save(direccion)
-    AREP-->>SRV: UserAddress guardada
-    deactivate AREP
-    alt el usuario existe
-        SRV-->>CTRL: UserAddress creada
+    CTRL->>CTRL: acotar(userId: dto.user_id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
+        activate SRV
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else el usuario no existe
-        SRV-->>CTRL: NotFoundException User with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: create(dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>UREP: findOne(where user_id)
+        activate UREP
+        UREP-->>SRV: User o null
+        deactivate UREP
+        SRV->>AREP: update(isDefault false en las demás)
+        activate AREP
+        SRV->>AREP: save(direccion)
+        AREP-->>SRV: UserAddress guardada
+        deactivate AREP
+        alt el usuario existe
+            SRV-->>CTRL: UserAddress creada
+            deactivate SRV
+        else el usuario no existe
+            SRV-->>CTRL: NotFoundException User with ID not found
+        end
     end

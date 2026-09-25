@@ -6,9 +6,9 @@ sequenceDiagram
 
     CLI->>SIS: consultarTokensDelUsuario(usuarioId)
     activate SIS
-    alt consulta sus propios dispositivos o es administrador
+    alt consulta sus propios dispositivos o es el Administrador General
         SIS-->>CLI: dispositivos registrados (plataforma, fecha de alta)
-    else consulta los dispositivos de otro usuario
+    else consulta los dispositivos de otro usuario sin ser el Administrador General
         SIS-->>CLI: acceso denegado
     end
     deactivate SIS

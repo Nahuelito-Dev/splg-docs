@@ -12,5 +12,7 @@ sequenceDiagram
         SIS-->>ADM: notificación reenviada
     else el cliente no tiene dispositivos registrados
         SIS-->>ADM: no se pudo enviar
+    else quien pide no es el Administrador General
+        SIS-->>ADM: acceso denegado
     end
     deactivate SIS

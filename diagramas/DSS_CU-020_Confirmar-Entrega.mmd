@@ -17,6 +17,10 @@ sequenceDiagram
         SIS-->>CLI: pedido entregado
         Note over SIS: Si el pago es en efectivo,<br/>queda saldado
         SIS-->>CHO: entrega registrada
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else El pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
     else El código no coincide o el pedido no está en camino
         SIS-->>CLI: rechazo (no se puede confirmar la entrega)
     end

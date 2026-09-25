@@ -1684,39 +1684,46 @@ sequenceDiagram
         SRV->>ORD: findById(id)
         ORD-->>SRV: Order de la distribuidora del chofer
         SRV-->>CTRL: sin error
-        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token)
-        SRV->>UCS: execute(id, ACCEPTED, deliveryId)
+        CTRL->>SRV: updateStatus(id, ACCEPTED, deliveryId del token, role)
+        SRV->>UCS: execute(id, ACCEPTED, deliveryId, role)
         activate UCS
         UCS->>ORD: findByIdFull(id)
         activate ORD
         ORD-->>UCS: Order
         deactivate ORD
-        UCS->>SM: transitionOrder(order, ACCEPTED)
-        activate SM
-        SM-->>UCS: transicion valida
-        deactivate SM
-        UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
-        activate DEL
-        DEL-->>UCS: Delivery con user
-        deactivate DEL
-        UCS->>UCS: delivery.distributor_id igual a order.distributor_id
-        UCS->>UCS: order.delivery_id, order.acceptedAt
-        UCS->>UCS: order.deliveryCode = generateDeliveryCode()
-        UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
-        activate ORQ
-        ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
-        activate OFERTAS
-        OFERTAS-->>ORQ: true
-        deactivate OFERTAS
-        UCS->>ORD: save(order)
-        activate ORD
-        UCS-)RT: notifyCustomer(customer_id, order:accepted, payload)
-        activate RT
-        UCS-)RT: notifyAdmins(order:accepted, payload)
-        UCS-)NOT: sendOrderConfirmation(customer_id, order_id, token)
-        activate NOT
-        UCS-->>CTRL: Order actualizado
-        deactivate UCS
+        UCS->>UCS: assertPedidoDelChofer(order, deliveryId, role)
+        alt Es un chofer y el pedido ya tiene otro chofer asignado
+            UCS->>DEL: buscarPorIdOUsuario(deliveryId)
+            DEL-->>UCS: Delivery con otro delivery_id
+            UCS-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+        else Pedido sin chofer, del mismo chofer, o lo mueve un administrador
+            UCS->>SM: transitionOrder(order, ACCEPTED)
+            activate SM
+            SM-->>UCS: transicion valida
+            deactivate SM
+            UCS->>DEL: buscarPorIdOUsuario(deliveryId, true)
+            activate DEL
+            DEL-->>UCS: Delivery con user
+            deactivate DEL
+            UCS->>UCS: delivery.distributor_id igual a order.distributor_id
+            UCS->>UCS: order.delivery_id, order.acceptedAt
+            UCS->>UCS: order.deliveryCode = generateDeliveryCode()
+            UCS->>ORQ: onDriverAccepted(orderId, delivery.user_id)
+            activate ORQ
+            ORQ->>OFERTAS: closeActiveOffer(orderId, driverId, ACCEPTED)
+            activate OFERTAS
+            OFERTAS-->>ORQ: true
+            deactivate OFERTAS
+            UCS->>ORD: save(order)
+            activate ORD
+            UCS-)RT: notifyCustomer(customer_id, order:accepted, payload)
+            activate RT
+            UCS-)RT: notifyAdmins(order:accepted, payload)
+            UCS-)NOT: sendOrderConfirmation(customer_id, order_id, token)
+            activate NOT
+            UCS-->>CTRL: Order actualizado
+            deactivate UCS
+        end
     else El chofer RECHAZA, POST /orders/:id/reject
         CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
         SRV->>ORD: findById(id)
@@ -3920,99 +3927,120 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-046 Consultar Direcciones De Entrega Del Cliente
     autonumber
-    participant CTRL as UserAddresController
-    participant SRV as UserAddresService
+    participant CTRL as UserAddressController
+    participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
     participant UREP as RepositoryUser
+    participant USRV as UsersService
 
     CTRL->>CTRL: scope(user) devuelve user_id si no es admin
 
-    alt Alta, POST /user-address
-        CTRL->>SRV: create(createUserAddressDto, scope)
+    CTRL->>CTRL: acotar(userId o addressId, user, distributorId, escribe), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId o addressId, distributorId)
         activate SRV
-        opt No es admin
-            SRV->>SRV: forzar user_id al del solicitante, ignorando el body
-        end
-        SRV->>UREP: findOne(user_id)
-        activate UREP
-        alt El usuario no existe
-            UREP-->>SRV: null
-            deactivate UREP
-            SRV-->>CTRL: NotFoundException User with ID not found
-            deactivate SRV
-        else Usuario valido
-            UREP-->>SRV: User
-            opt isDefault true
-                SRV->>SRV: removeDefaultFromOtherAddresses(user_id)
-                SRV->>AREP: find(user_id, isDefault true)
+        SRV->>AREP: findOne(where address_id), si llega el id de la direccion
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
+        deactivate SRV
+    else Admin de empresa en alta, baja o predeterminada y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(userId o addressId, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, Administrador General, o consulta de un admin sobre un titular de su distribuidora
+        alt Alta, POST /user-address
+            CTRL->>SRV: create(createUserAddressDto, scope)
+            activate SRV
+            opt No es admin
+                SRV->>SRV: forzar user_id al del solicitante, ignorando el body
+            end
+            SRV->>UREP: findOne(user_id)
+            activate UREP
+            alt El usuario no existe
+                UREP-->>SRV: null
+                deactivate UREP
+                SRV-->>CTRL: NotFoundException User with ID not found
+                deactivate SRV
+            else Usuario valido
+                UREP-->>SRV: User
+                opt isDefault true
+                    SRV->>SRV: removeDefaultFromOtherAddresses(user_id)
+                    SRV->>AREP: find(user_id, isDefault true)
+                    activate AREP
+                    loop Por cada direccion predeterminada previa
+                        SRV->>AREP: save(address con isDefault false)
+                    end
+                end
+                SRV->>AREP: create(createUserAddressDto)
+                SRV->>AREP: save(address)
+                AREP-->>SRV: UserAddress
+                deactivate AREP
+                SRV-->>CTRL: UserAddress
+            end
+        else Consulta por usuario, GET /user-address/user/:userId
+            CTRL->>SRV: findByUserId(userId, scope)
+            activate SRV
+            SRV->>SRV: assertOwnership(userId, requesterUserId)
+            alt El solicitante no es el dueno
+                SRV-->>CTRL: ForbiddenException No autorizado a acceder a direcciones de otro usuario
+                deactivate SRV
+            else Autorizado
+                SRV->>AREP: find(user_id, order isDefault DESC y createdAt DESC)
                 activate AREP
-                loop Por cada direccion predeterminada previa
-                    SRV->>AREP: save(address con isDefault false)
+                AREP-->>SRV: UserAddress[]
+                deactivate AREP
+                SRV-->>CTRL: UserAddress[]
+            end
+        else Predeterminada, GET /user-address/user/:userId/default
+            CTRL->>SRV: findDefaultByUserId(userId, scope)
+            activate SRV
+            SRV->>SRV: assertOwnership(userId, requesterUserId)
+            SRV->>AREP: findOne(user_id, isDefault true)
+            activate AREP
+            alt No hay ninguna marcada
+                AREP-->>SRV: null
+                deactivate AREP
+                SRV->>SRV: findByUserId(userId)
+                alt Tiene al menos una direccion
+                    SRV-->>CTRL: la primera de la lista
+                    deactivate SRV
+                else No tiene ninguna
+                    SRV-->>CTRL: NotFoundException No addresses found for user
+                end
+            else Hay predeterminada
+                AREP-->>SRV: UserAddress
+                SRV-->>CTRL: UserAddress
+            end
+        else Marcar predeterminada, PATCH /user-address/:id/set-default
+            CTRL->>SRV: setAsDefault(id, scope)
+            activate SRV
+            SRV->>SRV: findOne(id, requesterUserId)
+            SRV->>SRV: removeDefaultFromOtherAddresses(user_id, id)
+            SRV->>AREP: find(user_id, isDefault true, address_id Not id)
+            activate AREP
+            SRV->>AREP: save(address con isDefault true)
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else Baja, DELETE /user-address/:id
+            CTRL->>SRV: remove(id, scope)
+            activate SRV
+            SRV->>SRV: findOne(id, requesterUserId)
+            opt La direccion borrada era la predeterminada
+                SRV->>AREP: find(user_id, address_id Not id, order createdAt DESC)
+                opt Quedan otras direcciones
+                    SRV->>AREP: save(la mas reciente con isDefault true)
                 end
             end
-            SRV->>AREP: create(createUserAddressDto)
-            SRV->>AREP: save(address)
-            AREP-->>SRV: UserAddress
-            deactivate AREP
-            SRV-->>CTRL: UserAddress
-        end
-    else Consulta por usuario, GET /user-address/user/:userId
-        CTRL->>SRV: findByUserId(userId, scope)
-        activate SRV
-        SRV->>SRV: assertOwnership(userId, requesterUserId)
-        alt El solicitante no es el dueno
-            SRV-->>CTRL: ForbiddenException No autorizado a acceder a direcciones de otro usuario
+            SRV->>AREP: remove(address)
+            SRV-->>CTRL: message Address deleted successfully y addressId
             deactivate SRV
-        else Autorizado
-            SRV->>AREP: find(user_id, order isDefault DESC y createdAt DESC)
-            activate AREP
-            AREP-->>SRV: UserAddress[]
-            deactivate AREP
-            SRV-->>CTRL: UserAddress[]
         end
-    else Predeterminada, GET /user-address/user/:userId/default
-        CTRL->>SRV: findDefaultByUserId(userId, scope)
-        activate SRV
-        SRV->>SRV: assertOwnership(userId, requesterUserId)
-        SRV->>AREP: findOne(user_id, isDefault true)
-        activate AREP
-        alt No hay ninguna marcada
-            AREP-->>SRV: null
-            deactivate AREP
-            SRV->>SRV: findByUserId(userId)
-            alt Tiene al menos una direccion
-                SRV-->>CTRL: la primera de la lista
-                deactivate SRV
-            else No tiene ninguna
-                SRV-->>CTRL: NotFoundException No addresses found for user
-            end
-        else Hay predeterminada
-            AREP-->>SRV: UserAddress
-            SRV-->>CTRL: UserAddress
-        end
-    else Marcar predeterminada, PATCH /user-address/:id/set-default
-        CTRL->>SRV: setAsDefault(id, scope)
-        activate SRV
-        SRV->>SRV: findOne(id, requesterUserId)
-        SRV->>SRV: removeDefaultFromOtherAddresses(user_id, id)
-        SRV->>AREP: find(user_id, isDefault true, address_id Not id)
-        activate AREP
-        SRV->>AREP: save(address con isDefault true)
-        SRV-->>CTRL: UserAddress
-        deactivate SRV
-    else Baja, DELETE /user-address/:id
-        CTRL->>SRV: remove(id, scope)
-        activate SRV
-        SRV->>SRV: findOne(id, requesterUserId)
-        opt La direccion borrada era la predeterminada
-            SRV->>AREP: find(user_id, address_id Not id, order createdAt DESC)
-            opt Quedan otras direcciones
-                SRV->>AREP: save(la mas reciente con isDefault true)
-            end
-        end
-        SRV->>AREP: remove(address)
-        SRV-->>CTRL: message Address deleted successfully y addressId
-        deactivate SRV
     end
     deactivate AREP
 ```
@@ -4039,23 +4067,40 @@ sequenceDiagram
     participant SRV as UserAddressService
     participant UREP as RepositoryUser
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: create(dto, usuarioDeLaSesion)
-    activate SRV
-    SRV->>UREP: findOne(where user_id)
-    activate UREP
-    UREP-->>SRV: User o null
-    deactivate UREP
-    SRV->>AREP: update(isDefault false en las demás)
-    activate AREP
-    SRV->>AREP: save(direccion)
-    AREP-->>SRV: UserAddress guardada
-    deactivate AREP
-    alt el usuario existe
-        SRV-->>CTRL: UserAddress creada
+    CTRL->>CTRL: acotar(userId: dto.user_id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
+        activate SRV
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else el usuario no existe
-        SRV-->>CTRL: NotFoundException User with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(userId: dto.user_id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: create(dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>UREP: findOne(where user_id)
+        activate UREP
+        UREP-->>SRV: User o null
+        deactivate UREP
+        SRV->>AREP: update(isDefault false en las demás)
+        activate AREP
+        SRV->>AREP: save(direccion)
+        AREP-->>SRV: UserAddress guardada
+        deactivate AREP
+        alt el usuario existe
+            SRV-->>CTRL: UserAddress creada
+            deactivate SRV
+        else el usuario no existe
+            SRV-->>CTRL: NotFoundException User with ID not found
+        end
     end
 ```
 
@@ -4079,19 +4124,36 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>AREP: findOne(where address_id, relations user)
-    activate AREP
-    AREP-->>SRV: UserAddress o null
-    deactivate AREP
-    SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
-    alt la dirección existe y es del cliente
-        SRV-->>CTRL: UserAddress
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, false), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else no existe o es de otro
-        SRV-->>CTRL: NotFoundException o acceso denegado
+    else Cliente, o administrador con el titular a su alcance
+        CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>AREP: findOne(where address_id, relations user)
+        activate AREP
+        AREP-->>SRV: UserAddress o null
+        deactivate AREP
+        SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
+        alt la dirección existe y es del cliente
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else no existe o es de otro
+            SRV-->>CTRL: NotFoundException o acceso denegado
+        end
     end
 ```
 
@@ -4115,23 +4177,44 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: preload(address_id + cambios)
-    activate AREP
-    AREP-->>SRV: UserAddress fusionada o null
-    deactivate AREP
-    SRV->>AREP: save(direccion)
-    activate AREP
-    AREP-->>SRV: UserAddress actualizada
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: UserAddress actualizada
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: preload(address_id + cambios)
+        activate AREP
+        AREP-->>SRV: UserAddress fusionada o null
+        deactivate AREP
+        SRV->>AREP: save(direccion)
+        activate AREP
+        AREP-->>SRV: UserAddress actualizada
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: UserAddress actualizada
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end
 ```
 
@@ -4155,24 +4238,45 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: remove(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: find(otras direcciones del titular)
-    activate AREP
-    AREP-->>SRV: lista de UserAddress
-    deactivate AREP
-    SRV->>AREP: save(nueva predeterminada)
-    activate AREP
-    SRV->>AREP: remove(direccion)
-    AREP-->>SRV: confirmación de baja
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: mensaje de baja con el identificador
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: remove(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: find(otras direcciones del titular)
+        activate AREP
+        AREP-->>SRV: lista de UserAddress
+        deactivate AREP
+        SRV->>AREP: save(nueva predeterminada)
+        activate AREP
+        SRV->>AREP: remove(direccion)
+        AREP-->>SRV: confirmación de baja
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: mensaje de baja con el identificador
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end
 ```
 
@@ -4196,20 +4300,41 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>SRV: findOne(id, usuarioDeLaSesion)
-    SRV->>AREP: update(isDefault false en las demás del titular)
-    activate AREP
-    SRV->>AREP: save(direccion con isDefault true)
-    AREP-->>SRV: UserAddress actualizada
-    deactivate AREP
-    alt la dirección existe
-        SRV-->>CTRL: UserAddress predeterminada
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, true), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else la dirección no existe
-        SRV-->>CTRL: NotFoundException Address with ID not found
+    else Admin de empresa y el titular es de su distribuidora
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: ForbiddenException Las direcciones de un usuario las administra el administrador general
+    else Cliente, o Administrador General con el titular a su alcance
+        CTRL->>SRV: setAsDefault(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>SRV: findOne(id, usuarioDeLaSesion)
+        SRV->>AREP: update(isDefault false en las demás del titular)
+        activate AREP
+        SRV->>AREP: save(direccion con isDefault true)
+        AREP-->>SRV: UserAddress actualizada
+        deactivate AREP
+        alt la dirección existe
+            SRV-->>CTRL: UserAddress predeterminada
+            deactivate SRV
+        else la dirección no existe
+            SRV-->>CTRL: NotFoundException Address with ID not found
+        end
     end
 ```
 
@@ -4233,18 +4358,31 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
-    activate SRV
-    SRV->>AREP: findOne(where user_id e isDefault true)
-    activate AREP
-    AREP-->>SRV: UserAddress o null
-    deactivate AREP
-    alt hay dirección predeterminada
-        SRV-->>CTRL: UserAddress
+    CTRL->>CTRL: acotar(userId, user, distributorId, false), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(userId, distributorId)
+        activate SRV
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else no hay ninguna
-        SRV-->>CTRL: NotFoundException No addresses found for user
+    else Cliente, o administrador con el titular a su alcance
+        CTRL->>SRV: findDefaultByUserId(userId, usuarioDeLaSesion)
+        activate SRV
+        SRV->>AREP: findOne(where user_id e isDefault true)
+        activate AREP
+        AREP-->>SRV: UserAddress o null
+        deactivate AREP
+        alt hay dirección predeterminada
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else no hay ninguna
+            SRV-->>CTRL: NotFoundException No addresses found for user
+        end
     end
 ```
 
@@ -4866,8 +5004,8 @@ sequenceDiagram
         else Misma distribuidora o sin distribuidora en contexto
             SRV-->>CTRL: sin error
             CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
-            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
-            SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
+            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId, role)
+            SRV->>UC: execute(id, ON_THE_WAY, deliveryId, role)
             activate UC
             UC->>ORD: findByIdFull(id)
             activate ORD
@@ -4878,40 +5016,47 @@ sequenceDiagram
                 deactivate UC
             else Pedido encontrado
                 ORD-->>UC: Order
-                UC->>FSM: transitionOrder(order, ON_THE_WAY)
-                activate FSM
-                alt El pedido no estaba ACCEPTED
-                    FSM-->>UC: InvalidOrderTransitionError
-                    deactivate FSM
-                    UC-->>CTRL: error 400 via GlobalExceptionFilter
-                else Transicion valida
-                    UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
-                    UC->>UC: order.onTheWayAt igual a new Date
-                    alt El pedido no tiene chofer asignado
-                        UC-->>UC: devuelve null sin activar tracking
-                    else Tiene chofer
-                        UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
-                        activate DREP
-                        DREP-->>UC: Delivery con User
-                        deactivate DREP
-                        UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
-                        activate RT
-                        RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
-                        activate REDIS
+                UC->>UC: assertPedidoDelChofer(order, deliveryId, role)
+                alt Es un chofer y el pedido esta asignado a otro chofer
+                    UC->>DREP: buscarPorIdOUsuario(deliveryId)
+                    DREP-->>UC: Delivery con otro delivery_id
+                    UC-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+                else Es el chofer asignado, el pedido no tiene chofer, o lo mueve un administrador
+                    UC->>FSM: transitionOrder(order, ON_THE_WAY)
+                    activate FSM
+                    alt El pedido no estaba ACCEPTED
+                        FSM-->>UC: InvalidOrderTransitionError
+                        deactivate FSM
+                        UC-->>CTRL: error 400 via GlobalExceptionFilter
+                    else Transicion valida
+                        UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
+                        UC->>UC: order.onTheWayAt igual a new Date
+                        alt El pedido no tiene chofer asignado
+                            UC-->>UC: devuelve null sin activar tracking
+                        else Tiene chofer
+                            UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
+                            activate DREP
+                            DREP-->>UC: Delivery con User
+                            deactivate DREP
+                            UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
+                            activate RT
+                            RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
+                            activate REDIS
+                        end
+                        UC->>ORD: save(order)
+                        activate ORD
+                        UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
+                        UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
+                        RT-)CGW: notifyCustomer(customerId, event, payload)
+                        activate CGW
+                        UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
+                        RT-)AGW: notifyAdmins(event, payload)
+                        activate AGW
+                        UC->>UC: notifyCustomer(order)
+                        UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                        activate NOT
+                        UC-->>CTRL: Order en estado ON_THE_WAY
                     end
-                    UC->>ORD: save(order)
-                    activate ORD
-                    UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
-                    UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
-                    RT-)CGW: notifyCustomer(customerId, event, payload)
-                    activate CGW
-                    UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
-                    RT-)AGW: notifyAdmins(event, payload)
-                    activate AGW
-                    UC->>UC: notifyCustomer(order)
-                    UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
-                    activate NOT
-                    UC-->>CTRL: Order en estado ON_THE_WAY
                 end
             end
         end
@@ -4954,6 +5099,7 @@ sequenceDiagram
     participant CTRL as OrderController
     participant SRV as OrderService
     participant ORD as OrderRepositoryPort
+    participant DSRV as DeliveryService
     participant RT as RealtimeDispatchPort
     participant CGW as CustomersGateway
 
@@ -4972,7 +5118,7 @@ sequenceDiagram
             SRV-->>CTRL: NotFoundException Order with ID not found
         else Misma distribuidora o sin distribuidora en contexto
             SRV-->>CTRL: sin error
-            CTRL->>SRV: notifyDriverArrived(id)
+            CTRL->>SRV: notifyDriverArrived(id, user.user_id, user.role)
             SRV->>SRV: findOne(orderId)
             SRV->>ORD: findByIdFull(orderId)
             activate ORD
@@ -4983,16 +5129,23 @@ sequenceDiagram
                 deactivate SRV
             else Pedido encontrado
                 ORD-->>SRV: Order con delivery y user
-                alt El pedido no esta ON_THE_WAY
-                    SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
-                else Pedido en camino
-                    SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
-                    activate RT
-                    RT->>CGW: notifyCustomer(customerId, event, payload)
-                    activate CGW
-                    CGW-->>SRV: emit en la sala customer_ del cliente
-                    deactivate CGW
-                    SRV-->>CTRL: message Cliente notificado
+                SRV->>SRV: assertPedidoDelChofer(order, userId, role)
+                alt Es un chofer y el pedido no esta asignado a el
+                    SRV->>DSRV: buscarPorIdOUsuario(userId)
+                    DSRV-->>SRV: Delivery con otro delivery_id, o null
+                    SRV-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+                else Es el chofer asignado o un administrador
+                    alt El pedido no esta ON_THE_WAY
+                        SRV-->>CTRL: BadRequestException El pedido debe estar en camino para avisar llegada
+                    else Pedido en camino
+                        SRV-)RT: notifyCustomer(customer_id, order arrived, orderId, message y driverName)
+                        activate RT
+                        RT->>CGW: notifyCustomer(customerId, event, payload)
+                        activate CGW
+                        CGW-->>SRV: emit en la sala customer_ del cliente
+                        deactivate CGW
+                        SRV-->>CTRL: message Cliente notificado
+                    end
                 end
             end
         end
@@ -5230,34 +5383,47 @@ sequenceDiagram
     else El actor es ADMIN o SUPER_ADMIN
         CTRL->>CTRL: usar el createClaimDto tal cual llego
     end
-    CTRL->>SRV: create(dto)
+    CTRL->>SRV: create(dto, distributorId si es admin, null si es cliente)
     activate SRV
-    SRV->>OSRV: findOne(dto.orderId)
+    SRV->>OSRV: assertDeLaDistribuidora(dto.orderId, distributorId)
     activate OSRV
-    OSRV->>OREP: findByIdFull(id)
+    OSRV->>OREP: findById(id), solo con distribuidora en contexto
     activate OREP
     OREP-->>OSRV: Order o null
     deactivate OREP
-    alt Orden inexistente
-        OSRV-->>SRV: NotFoundException
+    alt Pedido de otra distribuidora que la del admin
+        OSRV-->>SRV: NotFoundException Order with ID not found
+        SRV-->>CTRL: NotFoundException
+    else Misma distribuidora, o lo registra el cliente
+        OSRV-->>SRV: sin error
         deactivate OSRV
-        SRV-->>CTRL: NotFoundException Orden no encontrada
-        deactivate SRV
-    else Orden existente
-        OSRV-->>SRV: Order
-        alt order.customer_id distinto de dto.customerId
-            SRV-->>CTRL: BadRequestException Esta orden no pertenece al cliente indicado
-        else El pedido es del cliente
-            SRV->>CREP: create(order_id, customer_id, distributor_id de la orden, reason, description, photoUrl)
-            activate CREP
-            CREP-->>SRV: Claim con status PENDING por defecto
-            deactivate CREP
-            SRV->>CREP: save(claim)
-            activate CREP
-            CREP-->>SRV: Claim persistido
-            deactivate CREP
-            SRV-->>CTRL: Claim
-            CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
+        SRV->>OSRV: findOne(dto.orderId)
+        activate OSRV
+        OSRV->>OREP: findByIdFull(id)
+        activate OREP
+        OREP-->>OSRV: Order o null
+        deactivate OREP
+        alt Orden inexistente
+            OSRV-->>SRV: NotFoundException
+            deactivate OSRV
+            SRV-->>CTRL: NotFoundException Orden no encontrada
+            deactivate SRV
+        else Orden existente
+            OSRV-->>SRV: Order
+            alt order.customer_id distinto de dto.customerId
+                SRV-->>CTRL: BadRequestException Esta orden no pertenece al cliente indicado
+            else El pedido es del cliente
+                SRV->>CREP: create(order_id, customer_id, distributor_id de la orden, reason, description, photoUrl)
+                activate CREP
+                CREP-->>SRV: Claim con status PENDING por defecto
+                deactivate CREP
+                SRV->>CREP: save(claim)
+                activate CREP
+                CREP-->>SRV: Claim persistido
+                deactivate CREP
+                SRV-->>CTRL: Claim
+                CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
+            end
         end
     end
 ```
@@ -5707,39 +5873,69 @@ sequenceDiagram
     participant DREP as RepositoryDelivery
 
     alt Validar, PATCH /delivery/:id/validate
-        CTRL->>SRV: validateDelivery(id)
+        CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+        CTRL->>SRV: findOne(id)
         activate SRV
-        SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
         DREP-->>SRV: Delivery o null
         deactivate DREP
-        alt Chofer inexistente
+        SRV-->>CTRL: Delivery, o NotFoundException si no existe
+        CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+        alt Chofer de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Chofer encontrado
-            SRV->>SRV: delivery.validated igual true
+            CTRL->>SRV: validateDelivery(id)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+            activate DREP
+            DREP-->>SRV: Delivery o null
+            deactivate DREP
+            alt Chofer inexistente
+                SRV-->>CTRL: NotFoundException Delivery with ID not found
+                deactivate SRV
+            else Chofer encontrado
+                SRV->>SRV: delivery.validated igual true
+                SRV->>DREP: save(delivery)
+                activate DREP
+                DREP-->>SRV: Delivery actualizado
+                deactivate DREP
+                SRV-->>CTRL: Delivery
+            end
+        end
+    else Invalidar, PATCH /delivery/:id/invalidate
+        CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+        CTRL->>SRV: findOne(id)
+        activate SRV
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+        activate DREP
+        DREP-->>SRV: Delivery o null
+        deactivate DREP
+        SRV-->>CTRL: Delivery, o NotFoundException si no existe
+        CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+        alt Chofer de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
+            deactivate SRV
+            CTRL->>SRV: invalidateDelivery(id)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+            activate DREP
+            DREP-->>SRV: Delivery
+            deactivate DREP
+            SRV->>SRV: delivery.validated igual false
             SRV->>DREP: save(delivery)
             activate DREP
             DREP-->>SRV: Delivery actualizado
             deactivate DREP
             SRV-->>CTRL: Delivery
+            deactivate SRV
         end
-    else Invalidar, PATCH /delivery/:id/invalidate
-        CTRL->>SRV: invalidateDelivery(id)
-        activate SRV
-        SRV->>SRV: findOne(id)
-        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
-        activate DREP
-        DREP-->>SRV: Delivery
-        deactivate DREP
-        SRV->>SRV: delivery.validated igual false
-        SRV->>DREP: save(delivery)
-        activate DREP
-        DREP-->>SRV: Delivery actualizado
-        deactivate DREP
-        SRV-->>CTRL: Delivery
-        deactivate SRV
     end
 ```
 
@@ -5764,23 +5960,38 @@ sequenceDiagram
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+    CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: findOne(id)
     activate SRV
-    SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
     activate DREP
     DREP-->>SRV: Delivery o null
     deactivate DREP
-    alt Chofer inexistente
+    SRV-->>CTRL: Delivery, o NotFoundException si no existe
+    CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+    alt Chofer de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Chofer encontrado
-        SRV->>SRV: delivery.isActive igual isActive
-        SRV->>DREP: save(delivery)
+        CTRL->>SRV: toggleActiveStatus(id, body.isActive)
+        activate SRV
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
-        DREP-->>SRV: Delivery actualizado
+        DREP-->>SRV: Delivery o null
         deactivate DREP
-        SRV-->>CTRL: Delivery
+        alt Chofer inexistente
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
+        else Chofer encontrado
+            SRV->>SRV: delivery.isActive igual isActive
+            SRV->>DREP: save(delivery)
+            activate DREP
+            DREP-->>SRV: Delivery actualizado
+            deactivate DREP
+            SRV-->>CTRL: Delivery
+        end
     end
 ```
 
@@ -5942,23 +6153,38 @@ sequenceDiagram
         SRV-->>CTRL: Delivery, el balance viaja dentro de la entidad
         deactivate SRV
     else Ajuste por el admin, PATCH /delivery/:id/balance
-        CTRL->>SRV: updateBalance(id, body.amount)
+        CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+        CTRL->>SRV: findOne(id)
         activate SRV
-        SRV->>SRV: findOne(id)
         SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
         DREP-->>SRV: Delivery o null
         deactivate DREP
-        alt Chofer inexistente
+        SRV-->>CTRL: Delivery, o NotFoundException si no existe
+        CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+        alt Chofer de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException Delivery with ID not found
+        else Misma distribuidora o sin distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Chofer encontrado
-            SRV->>SRV: delivery.balance igual balance actual mas amount
-            SRV->>DREP: save(delivery)
+            CTRL->>SRV: updateBalance(id, body.amount)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>DREP: findOne(where delivery_id, relations user y user.role)
             activate DREP
-            DREP-->>SRV: Delivery actualizado
+            DREP-->>SRV: Delivery o null
             deactivate DREP
-            SRV-->>CTRL: Delivery
+            alt Chofer inexistente
+                SRV-->>CTRL: NotFoundException Delivery with ID not found
+                deactivate SRV
+            else Chofer encontrado
+                SRV->>SRV: delivery.balance igual balance actual mas amount
+                SRV->>DREP: save(delivery)
+                activate DREP
+                DREP-->>SRV: Delivery actualizado
+                deactivate DREP
+                SRV-->>CTRL: Delivery
+            end
         end
     end
 ```
@@ -6096,30 +6322,56 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-096 Actualizar Perfil Del Chofer
     autonumber
+    participant RG as RolesGuard
+    participant DTO as UpdateDeliveryDto
     participant CTRL as DeliveryController
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: update(id, updateDeliveryDto)
-    activate SRV
-    SRV->>DREP: preload(delivery_id mas campos del dto)
-    activate DREP
-    DREP-->>SRV: Delivery fusionado o undefined
-    deactivate DREP
-    alt preload no encontro el chofer
-        SRV-->>CTRL: NotFoundException Delivery with ID not found
-        deactivate SRV
-    else Chofer cargado
-        SRV->>DREP: save(delivery)
-        activate DREP
-        DREP-->>SRV: Delivery actualizado
-        deactivate DREP
-        SRV->>SRV: findOne(id)
-        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
-        activate DREP
-        DREP-->>SRV: Delivery con user y role
-        deactivate DREP
-        SRV-->>CTRL: Delivery completo
+    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+    alt Rol insuficiente
+        RG-->>CTRL: ForbiddenException Acceso denegado
+    else Autorizado
+        RG-->>CTRL: true
+        CTRL->>DTO: validar(body) con whitelist y forbidNonWhitelisted
+        activate DTO
+        alt Trae un campo distinto de validated e isActive, o no son booleanos
+            DTO-->>CTRL: BadRequestException
+            deactivate DTO
+        else Solo validated o isActive
+            DTO-->>CTRL: UpdateDeliveryDto
+            CTRL->>SRV: update(id, updateDeliveryDto, distributorId)
+            activate SRV
+            opt Con distribuidora en contexto
+                SRV->>DREP: findOne(where delivery_id)
+                activate DREP
+                DREP-->>SRV: Delivery o null
+                deactivate DREP
+            end
+            alt Con distribuidora en contexto, chofer inexistente o de otra distribuidora
+                SRV-->>CTRL: NotFoundException Delivery with ID not found
+            else Misma distribuidora o sin distribuidora en contexto
+                SRV->>DREP: preload(delivery_id mas validated e isActive)
+                activate DREP
+                DREP-->>SRV: Delivery fusionado o undefined
+                deactivate DREP
+                alt preload no encontro el chofer
+                    SRV-->>CTRL: NotFoundException Delivery with ID not found
+                else Chofer cargado
+                    SRV->>DREP: save(delivery)
+                    activate DREP
+                    DREP-->>SRV: Delivery actualizado
+                    deactivate DREP
+                    SRV->>SRV: findOne(id)
+                    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+                    activate DREP
+                    DREP-->>SRV: Delivery con user y role
+                    deactivate DREP
+                    SRV-->>CTRL: Delivery completo
+                end
+            end
+            deactivate SRV
+        end
     end
 ```
 
@@ -6145,22 +6397,37 @@ sequenceDiagram
     participant SRV as DeliveryService
     participant DREP as RepositoryDelivery
 
-    CTRL->>SRV: remove(id)
+    CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: findOne(id)
     activate SRV
-    SRV->>SRV: findOne(id)
     SRV->>DREP: findOne(where delivery_id, relations user y user.role)
     activate DREP
     DREP-->>SRV: Delivery o null
     deactivate DREP
-    alt Chofer inexistente
+    SRV-->>CTRL: Delivery, o NotFoundException si no existe
+    CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+    alt Chofer de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException Delivery with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Chofer encontrado
-        SRV->>DREP: softDelete(where delivery_id)
+        CTRL->>SRV: remove(id)
+        activate SRV
+        SRV->>SRV: findOne(id)
+        SRV->>DREP: findOne(where delivery_id, relations user y user.role)
         activate DREP
-        DREP-->>SRV: UpdateResult, se sella deletedAt
+        DREP-->>SRV: Delivery o null
         deactivate DREP
-        SRV-->>CTRL: mensaje Delivery deleted successfully
+        alt Chofer inexistente
+            SRV-->>CTRL: NotFoundException Delivery with ID not found
+            deactivate SRV
+        else Chofer encontrado
+            SRV->>DREP: softDelete(where delivery_id)
+            activate DREP
+            DREP-->>SRV: UpdateResult, se sella deletedAt
+            deactivate DREP
+            SRV-->>CTRL: mensaje Delivery deleted successfully
+        end
     end
 ```
 
@@ -7826,30 +8093,40 @@ sequenceDiagram
     CHO->>CTRL: POST /incidents con CreateIncidentDto
     activate CTRL
     CTRL->>CTRL: Roles DELIVERY ADMIN SUPER_ADMIN verificados por RolesGuard
-    CTRL->>SRV: create(dto, user.user_id)
+    CTRL->>SRV: create(dto, user.user_id, distributorId, esChofer)
     activate SRV
     SRV->>OSRV: findById(dto.orderId)
     activate OSRV
     OSRV-->>SRV: Order o null
     deactivate OSRV
-    alt El pedido no existe
+    alt El pedido no existe, o es de otra distribuidora que la del contexto
         SRV-->>CTRL: NotFoundException, pedido no encontrado
-        deactivate SRV
-    else Pedido encontrado
-        SRV->>SRV: distributor_id se denormaliza de order.distributor_id
-        SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
-        activate IREP
-        IREP-->>SRV: Incident en memoria
-        deactivate IREP
-        SRV->>IREP: save(incident)
-        activate IREP
-        IREP-->>SRV: Incident persistida
-        deactivate IREP
-        SRV-->>CTRL: Incident
-        CTRL->>CTRL: IncidentMapper.toDto(incident)
-        CTRL-->>CHO: 201 IncidentResponseDto
-        deactivate CTRL
+    else Pedido de la distribuidora, o sin distribuidora en contexto
+        opt Reporta un chofer
+            SRV->>OSRV: assertEsElChofer(order.delivery_id, userId)
+            activate OSRV
+            OSRV-->>SRV: ForbiddenException si el pedido no esta asignado a ese chofer
+            deactivate OSRV
+        end
+        alt Es un chofer y el pedido no esta asignado a el
+            SRV-->>CTRL: ForbiddenException Solo podes ver tus propios pedidos
+        else Es el chofer asignado, o reporta un administrador
+            SRV->>SRV: distributor_id se denormaliza de order.distributor_id
+            SRV->>IREP: create(order_id, distributor_id, reported_by, type, description, photo_url, status OPEN)
+            activate IREP
+            IREP-->>SRV: Incident en memoria
+            deactivate IREP
+            SRV->>IREP: save(incident)
+            activate IREP
+            IREP-->>SRV: Incident persistida
+            deactivate IREP
+            SRV-->>CTRL: Incident
+            CTRL->>CTRL: IncidentMapper.toDto(incident)
+            CTRL-->>CHO: 201 IncidentResponseDto
+        end
     end
+    deactivate SRV
+    deactivate CTRL
 ```
 
 **Figura 112 — C.8 DSD — CU-060: Registrar Incidencia de Entrega**
@@ -7920,6 +8197,8 @@ sequenceDiagram
     participant DEC as CurrentDistributorDecorator
     participant CTRL as IncidentController
     participant SRV as IncidentService
+    participant OSRV as OrderService
+    participant OREP as OrderRepositoryPort
     participant IREP as RepositoryIncident
 
     USR->>DEC: GET /incidents/order/:orderId
@@ -7929,14 +8208,28 @@ sequenceDiagram
     CTRL->>CTRL: ParseUUIDPipe valida el orderId
     CTRL->>SRV: findByOrder(orderId, distributorId)
     activate SRV
-    SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
-    activate IREP
-    IREP-->>SRV: Incident[] del pedido
-    deactivate IREP
-    SRV-->>CTRL: Incident[]
+    SRV->>OSRV: assertDeLaDistribuidora(orderId, distributorId)
+    activate OSRV
+    OSRV->>OREP: findById(id), solo con distribuidora en contexto
+    activate OREP
+    OREP-->>OSRV: Order o null
+    deactivate OREP
+    alt Pedido de otra distribuidora que la del contexto
+        OSRV-->>SRV: NotFoundException Order with ID not found
+        SRV-->>CTRL: NotFoundException
+        CTRL-->>USR: 404
+    else Pedido de la distribuidora, inexistente, o sin distribuidora en contexto
+        OSRV-->>SRV: sin error
+        deactivate OSRV
+        SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
+        activate IREP
+        IREP-->>SRV: Incident[] del pedido, vacio si no hay
+        deactivate IREP
+        SRV-->>CTRL: Incident[]
+        CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
+        CTRL-->>USR: 200 IncidentResponseDto[]
+    end
     deactivate SRV
-    CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
-    CTRL-->>USR: 200 IncidentResponseDto[]
     deactivate CTRL
     deactivate DEC
 ```
@@ -8500,25 +8793,66 @@ sequenceDiagram
     participant CTRL as RegistroController
     participant SRV as RegistroService
     participant POL as PoliticaDeRegistro
+    participant ACTRL as AdminController
     participant ASRV as AdminService
+    participant USRV as UsersService
+    participant RSRV as RoleService
+    participant AREP as RepositoryAdmin
 
-    CTRL->>SRV: registrar(datos con rol admin o super_admin, solicitante con su sesion)
-    activate SRV
-    SRV->>POL: autorizarAlta(solicitante, rol, distributorId)
-    alt Admin de empresa pide un super_admin
-        POL-->>SRV: ForbiddenException No podes crear un super administrador
-        SRV-->>CTRL: 403
-    else Admin de empresa pide un admin
-        POL-->>SRV: su propia distribuidora, 403 si pidio otra
-    else Administrador General
-        POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
+    alt Alta con usuario nuevo, POST /users
+        CTRL->>SRV: registrar(datos con rol admin o super_admin, solicitante con su sesion)
+        activate SRV
+        SRV->>POL: autorizarAlta(solicitante, rol, distributorId)
+        alt Admin de empresa pide un super_admin
+            POL-->>SRV: ForbiddenException No podes crear un super administrador
+            SRV-->>CTRL: 403
+        else Admin de empresa pide un admin
+            POL-->>SRV: su propia distribuidora, 403 si pidio otra
+        else Administrador General
+            POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
+        end
+        Note over SRV: «include» CU-082 Crear Usuario Base
+        SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
+        ASRV-->>SRV: perfil de administrador
+        SRV-->>CTRL: User con rol
+        deactivate SRV
+        Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
+    else Alta directa del perfil, POST /admin, sólo SUPER_ADMIN
+        ACTRL->>ASRV: create(user_id, distributor_id opcional)
+        activate ASRV
+        ASRV->>USRV: findById(user_id)
+        activate USRV
+        USRV-->>ASRV: User o null
+        deactivate USRV
+        alt Usuario inexistente
+            ASRV-->>ACTRL: NotFoundException User with ID not found
+        else Usuario encontrado
+            ASRV->>RSRV: findOne(usuario.role_id)
+            activate RSRV
+            RSRV-->>ASRV: Role del usuario
+            deactivate RSRV
+            alt El rol no es admin ni super_admin
+                ASRV-->>ACTRL: BadRequestException Solo un usuario con rol admin o super_admin tiene perfil de administrador
+            else Admin sin distribuidora, o super_admin con distribuidora
+                ASRV-->>ACTRL: BadRequestException Un admin de empresa lleva distribuidora y el super administrador no
+            else Rol y distribuidora coherentes
+                ASRV->>AREP: exists(where user_id)
+                activate AREP
+                AREP-->>ASRV: true o false
+                deactivate AREP
+                alt Ya tiene perfil de administrador
+                    ASRV-->>ACTRL: ConflictException El usuario ya tiene perfil de administrador
+                else Sin perfil
+                    ASRV->>AREP: save(create(user_id, distributor_id))
+                    activate AREP
+                    AREP-->>ASRV: Admin
+                    deactivate AREP
+                    ASRV-->>ACTRL: Admin, responde 201 AdminResponseDto
+                end
+            end
+        end
+        deactivate ASRV
     end
-    Note over SRV: «include» CU-082 Crear Usuario Base
-    SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
-    ASRV-->>SRV: perfil de administrador
-    SRV-->>CTRL: User con rol
-    deactivate SRV
-    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Figura 126 — C.18 DSD — CU-086: Registrar Administrador**
@@ -8608,9 +8942,9 @@ sequenceDiagram
         CTRL-->>ADM: 200 Admin[]
         deactivate CTRL
     else Busqueda por termino, GET /admin/term/:term
-        ADM->>CTRL: findOneByEmail(term)
+        ADM->>CTRL: findOneByEmail(term, distributorId)
         activate CTRL
-        CTRL->>SRV: findAdminByTerm(term)
+        CTRL->>SRV: findAdminByTerm(term, distributorId)
         activate SRV
         SRV->>SRV: isUUID(term)
         alt El termino es un UUID
@@ -8621,7 +8955,7 @@ sequenceDiagram
         end
         AREP-->>SRV: Admin o null
         deactivate AREP
-        alt No encontrado
+        alt No encontrado, o de otra distribuidora que la del contexto
             SRV-->>CTRL: NotFoundException
             deactivate SRV
         else Encontrado
@@ -8859,43 +9193,69 @@ sequenceDiagram
     alt Validar, PATCH /customers/:id/validate
         ADM->>CTRL: validateCustomer(id)
         activate CTRL
-        CTRL->>SRV: validateCustomer(id)
+        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(id), sin requesterUserId, es admin
-        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
         activate CREP
-        CREP-->>SRV: Customer o null
+        CREP-->>SRV: true o false
         deactivate CREP
-        alt No existe
-            SRV-->>CTRL: NotFoundException
+        alt El cliente nunca le compro a la distribuidora
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Existe
-            SRV->>SRV: customer.validated igual a true
-            SRV->>CREP: save(customer)
+            CTRL->>SRV: validateCustomer(id)
+            activate SRV
+            SRV->>SRV: findOne(id), sin requesterUserId, es admin
+            SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
             activate CREP
-            CREP-->>SRV: Customer actualizado
+            CREP-->>SRV: Customer o null
             deactivate CREP
-            SRV-->>CTRL: Customer
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>SRV: customer.validated igual a true
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+            end
         end
     else Invalidar, PATCH /customers/:id/invalidate
         ADM->>CTRL: invalidateCustomer(id)
-        CTRL->>SRV: invalidateCustomer(id)
+        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
         activate SRV
-        SRV->>SRV: findOne(id)
-        SRV->>CREP: findOne(where customer_id)
+        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
         activate CREP
-        CREP-->>SRV: Customer o null
+        CREP-->>SRV: true o false
         deactivate CREP
-        alt No existe
-            SRV-->>CTRL: NotFoundException
+        alt El cliente nunca le compro a la distribuidora
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+            SRV-->>CTRL: sin error
             deactivate SRV
-        else Existe
-            SRV->>SRV: customer.validated igual a false
-            SRV->>CREP: save(customer)
+            CTRL->>SRV: invalidateCustomer(id)
+            activate SRV
+            SRV->>SRV: findOne(id)
+            SRV->>CREP: findOne(where customer_id)
             activate CREP
-            CREP-->>SRV: Customer actualizado
+            CREP-->>SRV: Customer o null
             deactivate CREP
-            SRV-->>CTRL: Customer
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>SRV: customer.validated igual a false
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+            end
         end
     end
     CTRL->>CTRL: CustomerMapper.toDto(customer)
@@ -8929,30 +9289,43 @@ sequenceDiagram
     CLI->>CTRL: PATCH /customers/:id/location con latLng
     activate CTRL
     CTRL->>CTRL: scope(user), admin devuelve undefined, cliente devuelve user.user_id
-    CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>SRV: findOne(id, requesterUserId)
-    SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt No existe
-        SRV-->>CTRL: NotFoundException
+    alt El cliente nunca le compro a la distribuidora
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Existe
-        SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
-        alt Es un cliente y el customer es de otro usuario
-            SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
-        else Autorizado, dueno o admin
-            SRV->>SRV: customer.lat_lang igual a latLng
-            SRV->>CREP: save(customer)
-            activate CREP
-            CREP-->>SRV: Customer actualizado
-            deactivate CREP
-            SRV-->>CTRL: Customer
-            CTRL->>CTRL: CustomerMapper.toDto(customer)
-            CTRL-->>CLI: 200 CustomerResponseDto
-            deactivate CTRL
+        CTRL->>SRV: updateLocation(id, body.latLng, scope(user))
+        activate SRV
+        SRV->>SRV: findOne(id, requesterUserId)
+        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+            deactivate SRV
+        else Existe
+            SRV->>SRV: assertOwnership(customer.user_id, requesterUserId)
+            alt Es un cliente y el customer es de otro usuario
+                SRV-->>CTRL: ForbiddenException, no autorizado a acceder a datos de otro cliente
+            else Autorizado, dueno o admin
+                SRV->>SRV: customer.lat_lang igual a latLng
+                SRV->>CREP: save(customer)
+                activate CREP
+                CREP-->>SRV: Customer actualizado
+                deactivate CREP
+                SRV-->>CTRL: Customer
+                CTRL->>CTRL: CustomerMapper.toDto(customer)
+                CTRL-->>CLI: 200 CustomerResponseDto
+                deactivate CTRL
+            end
         end
     end
 ```
@@ -8983,25 +9356,43 @@ sequenceDiagram
     ADM->>CTRL: DELETE /customers/:id
     activate CTRL
     CTRL->>CTRL: HttpCode 200, Roles ADMIN SUPER_ADMIN
-    CTRL->>SRV: remove(id)
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>SRV: findOne(id), sin ownership porque es staff
-    SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt No existe
-        SRV-->>CTRL: NotFoundException
+    alt El cliente nunca le compro a la distribuidora
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+        CTRL-->>ADM: 404
+    else Le compro a la distribuidora, o no hay distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else Existe
-        SRV->>CREP: softDelete(where customer_id)
-        activate CREP
-        CREP-->>SRV: deletedAt seteado, la fila permanece
-        deactivate CREP
-        SRV-->>CTRL: message Customer deleted successfully
-        CTRL-->>ADM: 200 message
-        deactivate CTRL
+        alt user.role es ADMIN, administrador de empresa
+            CTRL-->>ADM: ForbiddenException La cuenta de un cliente la administra el administrador general
+        else SUPER_ADMIN
+            CTRL->>SRV: remove(id)
+            activate SRV
+            SRV->>SRV: findOne(id), sin ownership porque es staff
+            SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+            activate CREP
+            CREP-->>SRV: Customer o null
+            deactivate CREP
+            alt No existe
+                SRV-->>CTRL: NotFoundException
+                deactivate SRV
+            else Existe
+                SRV->>CREP: softDelete(where customer_id)
+                activate CREP
+                CREP-->>SRV: deletedAt seteado, la fila permanece
+                deactivate CREP
+                SRV-->>CTRL: message Customer deleted successfully
+                CTRL-->>ADM: 200 message
+            end
+        end
     end
+    deactivate CTRL
 ```
 
 **Figura 134 — C.26 DSD — CU-095: Eliminar Cliente (baja lógica)**
@@ -9022,21 +9413,34 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-129 Consultar Detalle del Cliente
     autonumber
-    participant CTRL as CustomerController
-    participant SRV as CustomerService
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
     participant CREP as RepositoryCustomer
 
-    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>CREP: findOne(where customer_id, relations user)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt el cliente existe
-        SRV-->>CTRL: Customer con su usuario
-        deactivate SRV
-    else el cliente no existe
+    alt El cliente nunca le compro a la distribuidora
         SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
+        deactivate SRV
+        CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>CREP: findOne(where customer_id, relations user)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt el cliente existe
+            SRV-->>CTRL: Customer con su usuario
+            deactivate SRV
+        else el cliente no existe
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        end
     end
 ```
 
@@ -9057,21 +9461,34 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-130 Buscar Cliente por Usuario
     autonumber
-    participant CTRL as CustomerController
-    participant SRV as CustomerService
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
     participant CREP as RepositoryCustomer
 
-    CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+    CTRL->>CTRL: acotar(user_id: userId, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(user_id: userId, distributorId)
     activate SRV
-    SRV->>CREP: findOne(where user_id, relations user)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    alt la cuenta tiene ficha
-        SRV-->>CTRL: Customer
+    alt El cliente nunca le compro a la distribuidora
+        SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
         deactivate SRV
-    else la cuenta no tiene ficha
-        SRV-->>CTRL: NotFoundException Customer for user ID not found
+        CTRL->>SRV: findOneByUserId(userId, usuarioDeLaSesion)
+        activate SRV
+        SRV->>CREP: findOne(where user_id, relations user)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt la cuenta tiene ficha
+            SRV-->>CTRL: Customer
+            deactivate SRV
+        else la cuenta no tiene ficha
+            SRV-->>CTRL: NotFoundException Customer for user ID not found
+        end
     end
 ```
 
@@ -9092,25 +9509,38 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-131 Editar Datos del Cliente
     autonumber
-    participant CTRL as CustomerController
-    participant SRV as CustomerService
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
     participant CREP as RepositoryCustomer
 
-    CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+    CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
+    CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
     activate SRV
-    SRV->>CREP: preload(customer_id + cambios)
+    SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
     activate CREP
-    CREP-->>SRV: Customer fusionado o null
+    CREP-->>SRV: true o false
     deactivate CREP
-    SRV->>CREP: save(cliente)
-    activate CREP
-    CREP-->>SRV: Customer actualizado
-    deactivate CREP
-    alt el cliente existe
-        SRV-->>CTRL: Customer actualizado
-        deactivate SRV
-    else el cliente no existe
+    alt El cliente nunca le compro a la distribuidora
         SRV-->>CTRL: NotFoundException Customer with ID not found
+    else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
+        SRV-->>CTRL: sin error
+        deactivate SRV
+        CTRL->>SRV: update(id, dto, usuarioDeLaSesion)
+        activate SRV
+        SRV->>CREP: preload(customer_id + cambios)
+        activate CREP
+        CREP-->>SRV: Customer fusionado o null
+        deactivate CREP
+        SRV->>CREP: save(cliente)
+        activate CREP
+        CREP-->>SRV: Customer actualizado
+        deactivate CREP
+        alt el cliente existe
+            SRV-->>CTRL: Customer actualizado
+            deactivate SRV
+        else el cliente no existe
+            SRV-->>CTRL: NotFoundException Customer with ID not found
+        end
     end
 ```
 
@@ -9198,11 +9628,11 @@ sequenceDiagram
 
     USR->>CTRL: GET /notifications/user/:userId
     activate CTRL
-    CTRL->>CTRL: isAdmin(user)
-    alt No es admin y el userId no es el suyo
+    CTRL->>CTRL: user.role es SUPER_ADMIN
+    alt No es SUPER_ADMIN, incluido un admin de empresa, y el userId no es el suyo
         CTRL-->>USR: ForbiddenException, no autorizado a ver tokens de otro usuario
         deactivate CTRL
-    else Es admin o consulta su propio userId
+    else Es SUPER_ADMIN o consulta su propio userId
         CTRL->>SRV: getUserNotificationTokens(userId)
         activate SRV
         SRV->>CSRV: findNotificationToken(userId)
@@ -9234,31 +9664,35 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-100 Enviar Notificacion De Prueba
     autonumber
-    participant ADM as Admin o SuperAdmin
+    participant ADM as SuperAdmin
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
     participant FCM as FcmPort
 
     ADM->>CTRL: POST /notifications/send-test con token title y body
     activate CTRL
-    CTRL->>CTRL: Roles ADMIN SUPER_ADMIN verificados por RolesGuard
-    CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
-    activate SRV
-    SRV->>SRV: arma message con notification y data type TEST mas timestamp
-    SRV->>FCM: sendToToken(token, message)
-    activate FCM
-    alt El envio falla
-        FCM-->>SRV: Error
-        deactivate FCM
-        SRV->>SRV: logger.error error sending test notification
-        SRV-->>CTRL: success false, error
-        deactivate SRV
-    else Envio exitoso
-        FCM-->>SRV: messageId
-        SRV->>SRV: logger.log test notification sent
-        SRV-->>CTRL: success true, messageId
+    CTRL->>CTRL: Roles SUPER_ADMIN verificado por RolesGuard
+    alt No es SUPER_ADMIN, incluido un admin de empresa
+        CTRL-->>ADM: 403 ForbiddenException
+    else SUPER_ADMIN
+        CTRL->>SRV: sendTestNotification(body.token, body.title, body.body)
+        activate SRV
+        SRV->>SRV: arma message con notification y data type TEST mas timestamp
+        SRV->>FCM: sendToToken(token, message)
+        activate FCM
+        alt El envio falla
+            FCM-->>SRV: Error
+            deactivate FCM
+            SRV->>SRV: logger.error error sending test notification
+            SRV-->>CTRL: success false, error
+            deactivate SRV
+        else Envio exitoso
+            FCM-->>SRV: messageId
+            SRV->>SRV: logger.log test notification sent
+            SRV-->>CTRL: success true, messageId
+        end
+        CTRL-->>ADM: 200 resultado
     end
-    CTRL-->>ADM: 200 resultado
     deactivate CTRL
 ```
 
@@ -9280,7 +9714,7 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-101 Reenviar Notificacion De Confirmacion De Pedido
     autonumber
-    participant ADM as Admin o SuperAdmin
+    participant ADM as SuperAdmin
     participant CTRL as NotificationsController
     participant SRV as NotificationsService
     participant CSRV as CustomersService
@@ -9288,36 +9722,41 @@ sequenceDiagram
 
     ADM->>CTRL: POST /notifications/order-confirmation con customerId orderId y token opcional
     activate CTRL
-    CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
-    activate SRV
-    SRV->>CSRV: findNotificationToken(customerId)
-    activate CSRV
-    CSRV-->>SRV: esCliente y token
-    deactivate CSRV
-    alt Cliente no encontrado
-        SRV->>SRV: logger.warn customer not found
-        SRV-->>CTRL: success false, error Customer not found
-    else Cliente encontrado
-        SRV->>SRV: notificationToken igual al token del body o al del cliente
-        alt El cliente no tiene token registrado
-            SRV->>SRV: logger.warn no notification token
-            SRV-->>CTRL: success false, error No notification token
-        else Hay token
-            SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
-            SRV->>FCM: sendToToken(notificationToken, message)
-            activate FCM
-            alt Falla el envio
-                FCM-->>SRV: Error
-                SRV-->>CTRL: success false, error
-            else Envio exitoso
-                FCM-->>SRV: messageId
-                SRV-->>CTRL: success true, messageId
+    CTRL->>CTRL: Roles SUPER_ADMIN verificado por RolesGuard
+    alt No es SUPER_ADMIN, incluido un admin de empresa
+        CTRL-->>ADM: 403 ForbiddenException
+    else SUPER_ADMIN
+        CTRL->>SRV: sendOrderConfirmation(body.customerId, body.orderId, body.token)
+        activate SRV
+        SRV->>CSRV: findNotificationToken(customerId)
+        activate CSRV
+        CSRV-->>SRV: esCliente y token
+        deactivate CSRV
+        alt Cliente no encontrado
+            SRV->>SRV: logger.warn customer not found
+            SRV-->>CTRL: success false, error Customer not found
+        else Cliente encontrado
+            SRV->>SRV: notificationToken igual al token del body o al del cliente
+            alt El cliente no tiene token registrado
+                SRV->>SRV: logger.warn no notification token
+                SRV-->>CTRL: success false, error No notification token
+            else Hay token
+                SRV->>SRV: arma message con titulo Pedido Confirmado y data type ORDER_CONFIRMATION
+                SRV->>FCM: sendToToken(notificationToken, message)
+                activate FCM
+                alt Falla el envio
+                    FCM-->>SRV: Error
+                    SRV-->>CTRL: success false, error
+                else Envio exitoso
+                    FCM-->>SRV: messageId
+                    SRV-->>CTRL: success true, messageId
+                end
+                deactivate FCM
             end
-            deactivate FCM
         end
+        deactivate SRV
+        CTRL-->>ADM: 201 ResultadoDeEnvioDto
     end
-    deactivate SRV
-    CTRL-->>ADM: 201 ResultadoDeEnvioDto
     deactivate CTRL
 ```
 
@@ -10238,39 +10677,62 @@ sequenceDiagram
     title DSD — CU-020 Confirmar Entrega
     autonumber
     participant CTRL as OrderController
+    participant SRV as OrderService
     participant UC as UpdateOrderStatusUseCase
     participant REPO as OrderRepositoryPort
+    participant DSRV as DeliveryService
     participant SM as OrderStatusMachine
     participant RT as RealtimeDispatchPort
     participant NOT as NotificationsService
 
-    CTRL->>UC: execute(orderId, DELIVERED, userId)
-    activate UC
-    UC->>REPO: findByIdFull(orderId)
+    CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
+    activate SRV
+    SRV->>REPO: findById(id)
     activate REPO
-    REPO-->>UC: Order
+    REPO-->>SRV: Order o null
     deactivate REPO
-    UC->>SM: assertTransition(order.status, DELIVERED)
-    activate SM
-    alt Transicion invalida
-        SM-->>UC: InvalidOrderTransitionError
-        deactivate SM
-        UC-->>CTRL: 400 Bad Request
-        deactivate UC
-    else Transicion valida
-        UC->>UC: order.deliveredAt = new Date()
-        opt paymentMethod es CASH
-            UC->>UC: order.paymentStatus = PAID
-        end
-        UC->>REPO: save(order)
+    alt Pedido de otra distribuidora que la del contexto
+        SRV-->>CTRL: NotFoundException Order with ID not found
+        deactivate SRV
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
+        CTRL->>UC: execute(orderId, DELIVERED, userId, role)
+        activate UC
+        UC->>REPO: findByIdFull(orderId)
         activate REPO
         REPO-->>UC: Order
         deactivate REPO
-        UC-)RT: notifyOrderStatusChanged(order)
-        activate RT
-        UC-)NOT: sendOrderPush(customerId, orderId)
-        activate NOT
-        UC-->>CTRL: Order actualizada
+        UC->>UC: assertPedidoDelChofer(order, userId, role)
+        alt Es un chofer y el pedido esta asignado a otro chofer
+            UC->>DSRV: buscarPorIdOUsuario(userId)
+            activate DSRV
+            DSRV-->>UC: Delivery con otro delivery_id
+            deactivate DSRV
+            UC-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+        else Es el chofer asignado o lo mueve un administrador
+            UC->>SM: assertTransition(order.status, DELIVERED)
+            activate SM
+            alt Transicion invalida
+                SM-->>UC: InvalidOrderTransitionError
+                deactivate SM
+                UC-->>CTRL: 400 Bad Request
+            else Transicion valida
+                UC->>UC: order.deliveredAt = new Date()
+                opt paymentMethod es CASH
+                    UC->>UC: order.paymentStatus = PAID
+                end
+                UC->>REPO: save(order)
+                activate REPO
+                REPO-->>UC: Order
+                deactivate REPO
+                UC-)RT: notifyOrderStatusChanged(order)
+                activate RT
+                UC-)NOT: sendOrderPush(customerId, orderId)
+                activate NOT
+                UC-->>CTRL: Order actualizada
+            end
+        end
+        deactivate UC
     end
     deactivate NOT
     deactivate RT

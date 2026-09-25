@@ -715,7 +715,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 |------|--------|
 | 1 | El chofer recibe en su app la oferta del pedido y presiona "Aceptar". |
 | 2 | La app pide el paso del pedido a estado ACCEPTED. La identidad del chofer sale de su token: cualquier identificador de repartidor que venga en el cuerpo de la solicitud se ignora. Un administrador sí puede indicar a qué chofer asignarlo. |
-| 3 | El sistema comprueba que la transición desde el estado actual sea legal, es decir que el pedido siga pendiente. |
+| 3 | Si quien acepta es un chofer y el pedido ya tiene un chofer asignado, el sistema comprueba que sea él mismo. Luego comprueba que la transición desde el estado actual sea legal, es decir que el pedido siga pendiente. |
 | 4 | Busca el perfil de repartidor de quien acepta y comprueba que exista, que sea de la misma distribuidora que el pedido y que esté activo. |
 | 5 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación y genera el código secreto de entrega que se usará en la confirmación por código QR (CU-020). |
 | 6 | Cierra como aceptada la oferta de despacho que ese chofer tenía abierta sobre el pedido. |
@@ -731,7 +731,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
 | 2 | Si el pedido pertenece a otra distribuidora que la de quien acepta, el sistema informa que no lo encontró, sin revelar que existe. |
 | 3 | Si el pedido está en un estado desde el que no se puede aceptar —entregado o cancelado—, el sistema rechaza la operación por transición no permitida. |
-| 3 | Si el pedido ya fue aceptado por otro chofer, el sistema **no** lo rechaza: reaplicar el mismo estado se considera idempotente, de modo que una aceptación tardía reasigna el pedido al segundo chofer y le genera un código de entrega nuevo. |
+| 3 | Si el pedido ya tiene asignado a otro chofer, el sistema rechaza la aceptación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición: una aceptación tardía no desplaza al chofer que ya lo tomó. Este control no alcanza al administrador, que puede reasignar el pedido indicando otro chofer. |
+| 3 | Si el mismo chofer que ya tiene el pedido vuelve a aceptarlo, la operación no falla: reaplicar el mismo estado se considera idempotente y le genera un código de entrega nuevo. |
 | 4 | Si quien acepta no tiene perfil de repartidor, o el repartidor es de otra distribuidora que la del pedido, el sistema informa que no encontró al repartidor. |
 | 4 | Si el repartidor no está activo, el sistema informa "El repartidor no está activo". |
 
@@ -740,7 +741,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Rendimiento** | La aceptación se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta por chofer: se repite cada vez que le llega una oferta, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no comprueba, al aceptar, que el chofer esté habilitado por el administrador: un chofer con su habilitación en falso puede tomar pedidos. El sistema todavía no rechaza la aceptación de un pedido que ya tiene chofer, con lo que un segundo chofer puede quedarse con un pedido ajeno. El sistema todavía no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. |
+| **Comentarios** | El sistema todavía no comprueba, al aceptar, que el chofer esté habilitado por el administrador: un chofer con su habilitación en falso puede tomar pedidos. La aceptación de un pedido que ya tiene chofer se rechaza cuando la intenta otro chofer, de modo que un segundo chofer no puede quedarse con un pedido ajeno. El sistema todavía no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. |
 
 ---
 
@@ -791,7 +792,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Objetivos asociados** | OBJ-03 |
 | **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El chofer indica que salió hacia el domicilio del cliente. El sistema pasa el pedido a en camino, abre el seguimiento en vivo de la posición del chofer y avisa al cliente. |
-| **Precondición** | El pedido tiene estado ACCEPTED. |
+| **Precondición** | El pedido tiene estado ACCEPTED. Si quien lo mueve es un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -800,7 +801,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 |------|--------|
 | 1 | El chofer presiona "En camino" en su app. |
 | 2 | La app pide el paso del pedido a estado ON_THE_WAY. |
-| 3 | El sistema comprueba que la transición sea legal, pasa el pedido a ON_THE_WAY y registra el momento de la salida. |
+| 3 | Si quien lo mueve es un chofer, el sistema comprueba que el pedido esté asignado a él. Después comprueba que la transición sea legal, pasa el pedido a ON_THE_WAY y registra el momento de la salida. |
 | 4 | Recupera el chofer **asignado al pedido** —no el que dispara la operación— y abre el seguimiento en vivo: a partir de ese momento, cada posición que emita ese chofer se reenvía al cliente del pedido (CU-017). |
 | 5 | Avisa al cliente en tiempo real del cambio de estado y avisa también al panel de administración. |
 | 6 | Envía al cliente una notificación al dispositivo con el texto genérico de confirmación de pedido. |
@@ -813,6 +814,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
 | 2 | Si el pedido pertenece a otra distribuidora que la de quien lo mueve, el sistema informa que no lo encontró, sin revelar que existe. |
+| 3 | Si quien lo mueve es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición. |
 | 3 | Si el pedido no está en estado ACCEPTED, el sistema rechaza la operación por transición no permitida. |
 | 4 | Si el pedido no tiene chofer asignado, el estado cambia igual pero no se abre ningún seguimiento. |
 
@@ -821,7 +823,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Rendimiento** | La transición a en camino se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido aceptado, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no verifica que el chofer que marca la salida sea el asignado al pedido: la identidad de quien dispara la operación solo se usa al aceptar, de modo que cualquier usuario con rol chofer puede poner en camino el pedido de otro. Ese control de autorización queda pendiente. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no "tu pedido está en camino". |
+| **Comentarios** | El sistema verifica que el chofer que marca la salida sea el asignado al pedido: un chofer no puede poner en camino el pedido de otro. El control no alcanza al administrador, que puede mover cualquier pedido de su distribuidora. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no "tu pedido está en camino". |
 
 ---
 
@@ -833,7 +835,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Objetivos asociados** | OBJ-03, OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
 | **Descripción** | El chofer entrega la mercadería y marca el pedido como entregado. El sistema cierra el ciclo del pedido, da por cobrado el pago en efectivo, corta el seguimiento en vivo, avanza los envases al cliente y avisa. Existe además una segunda vía en la que quien confirma es el cliente, leyendo un código. |
-| **Precondición** | El pedido tiene estado ON_THE_WAY. |
+| **Precondición** | El pedido tiene estado ON_THE_WAY. Si lo confirma un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -842,7 +844,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 |------|--------|
 | 1 | El chofer presiona "Confirmar entrega" en su app. |
 | 2 | La app pide el paso del pedido a estado DELIVERED. La solicitud lleva una clave de idempotencia, de modo que un reintento por corte de red no vuelve a procesar la entrega. |
-| 3 | El sistema comprueba que la transición sea legal, pasa el pedido a DELIVERED y registra el momento de la entrega. |
+| 3 | Si quien confirma es un chofer, el sistema comprueba que el pedido esté asignado a él. Después comprueba que la transición sea legal, pasa el pedido a DELIVERED y registra el momento de la entrega. |
 | 4 | Si el método de pago es efectivo, marca el pago como cobrado. |
 | 5 | Corta el seguimiento en vivo del chofer asignado al pedido. |
 | 6 | Avanza los envases despachados en el pedido al estado "con el cliente". Si ese paso falla, se registra la advertencia y la entrega no se revierte. |
@@ -856,6 +858,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | Paso | Acción |
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
+| 2 | Si el pedido pertenece a otra distribuidora que la de quien lo mueve, el sistema informa que no lo encontró, sin revelar que existe. |
+| 3 | Si quien confirma es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición. |
 | 3 | Si el pedido está cancelado, o si está en un estado desde el que no se puede entregar, el sistema rechaza la operación por transición no permitida. |
 | 3 | Reconfirmar un pedido ya entregado no falla: la reaplicación del mismo estado se considera idempotente y vuelve a registrar el momento de la entrega. |
 | 6 | Si la distribuidora no trabaja con envases retornables, el avance de envases no hace nada y la entrega se completa igual. |
@@ -897,9 +901,11 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | La confirmación se procesa en menos de 3 segundos. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido entregado, en el pico de cada franja horaria de reparto. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no verifica, en la secuencia normal, que el chofer que confirma la entrega sea el asignado: cualquier usuario con rol chofer puede cerrar el pedido de otro y, si el pago es en efectivo, darlo por cobrado. Es la operación de mayor impacto económico del sistema y su control de autorización está pendiente; el único camino que sí controla la identidad es la secuencia alternativa, donde la confirmación la hace el cliente dueño del pedido. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no el de entrega. Un pedido asignado manualmente por el administrador no tiene código de entrega (CU-012), de modo que sobre él la secuencia alternativa no es posible. |
+| **Comentarios** | En la secuencia normal, el sistema verifica que el chofer que confirma la entrega sea el asignado al pedido: un chofer no puede cerrar el pedido de otro ni, si el pago es en efectivo, darlo por cobrado. El control no alcanza al administrador. La secuencia alternativa agrega una prueba más fuerte, porque la confirmación la hace el cliente dueño del pedido. El sistema todavía no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no el de entrega. Un pedido asignado manualmente por el administrador no tiene código de entrega (CU-012), de modo que sobre él la secuencia alternativa no es posible. |
 
 ---
+
+
 #### Crítico CU-022 — Activar / Desactivar Disponibilidad (Chofer)
 
 | Campo | Detalle |
@@ -1029,7 +1035,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador marca a un chofer como validado o le retira esa marca desde dos operaciones dedicadas del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
-| **Precondición** | El administrador está autenticado. El chofer existe en el sistema. |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -1038,7 +1044,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a habilitar o deshabilitar. |
 | 2 | Presiona "Validar" o "Invalidar", según corresponda. |
-| 3 | El sistema busca el perfil de reparto por su identificador y trae al usuario y su rol. |
+| 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el chofer sea de ella. Después busca el perfil de reparto por su identificador y trae al usuario y su rol. |
 | 4 | El sistema fija la marca de validación en verdadero si se validó, o en falso si se invalidó. No la invierte: asigna el valor de la operación elegida. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
@@ -1050,15 +1056,18 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el identificador no es un identificador único válido, el sistema responde 400 antes de llegar al servicio. |
 | 3 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 3 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Se ejecuta al incorporar un chofer y de manera excepcional al suspenderlo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Limitaciones registradas: (a) el sistema todavía no consulta la marca de validación en ningún control de acceso —ni el orquestador de despacho al elegir candidatos, ni la aceptación de un pedido—, así que invalidar a un chofer no le impide seguir operando; (b) al invalidar, el sistema todavía no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de estas dos operaciones dedicadas, que sí exigen rol administrador, la actualización general del perfil de chofer (`PATCH /delivery/:id`) acepta en su cuerpo la marca de validación, el estado de actividad y la distribuidora, y **no declara restricción de rol**, por lo que cualquier usuario autenticado puede validarse a sí mismo, invalidar a un tercero o cambiarse de distribuidora. Corregir esa ruta es condición para que el actor declarado en este caso de uso sea real. |
+| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Limitaciones registradas: (a) el sistema todavía no consulta la marca de validación en ningún control de acceso —ni el orquestador de despacho al elegir candidatos, ni la aceptación de un pedido—, así que invalidar a un chofer no le impide seguir operando; (b) al invalidar, el sistema todavía no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de estas dos operaciones dedicadas, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación y el estado de actividad. |
 
 ---
+
+
 #### Crítico CU-036 — Crear Producto (Garrafa)
 
 | Campo | Detalle |
@@ -1673,7 +1682,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-06 |
 | **Descripción** | El cliente registra un reclamo sobre un pedido propio, indicando el motivo, una descripción y opcionalmente una foto. El reclamo nace pendiente y hereda la distribuidora del pedido reclamado. |
-| **Precondición** | El cliente está autenticado. El pedido existe y le pertenece. El sistema no exige que el pedido esté entregado. |
+| **Precondición** | El cliente está autenticado. El pedido existe y le pertenece. Si el reclamo lo registra un administrador con distribuidora en contexto, el pedido es de ella. El sistema no exige que el pedido esté entregado. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -1685,7 +1694,7 @@ respaldado por la lectura del código en poder del cliente.
 | 3 | Ingresa el motivo, una descripción detallada y, si quiere, adjunta una foto. |
 | 4 | Confirma el envío. |
 | 5 | El sistema fuerza como reclamante al cliente autenticado, ignorando cualquier identificador que venga en la solicitud. Un administrador sí puede registrar el reclamo a nombre de un cliente, para soporte. |
-| 6 | Comprueba que el pedido exista y que pertenezca al cliente indicado. |
+| 6 | Si quien registra es un administrador con distribuidora en contexto, comprueba primero que el pedido sea de ella. Después comprueba que el pedido exista y que pertenezca al cliente indicado. |
 | 7 | Crea el reclamo en estado PENDING y le asigna la distribuidora tomada del pedido reclamado, no del contexto de la solicitud. |
 
 **Postcondición:** Existe un reclamo con estado PENDING asociado al pedido, al cliente y a la distribuidora del pedido. El administrador no fue notificado: lo descubre al consultar el listado (CU-024).
@@ -1695,6 +1704,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 6 | Si el pedido no existe, el sistema informa "Orden no encontrada". |
+| 6 | Si quien registra es un administrador y el pedido pertenece a otra distribuidora que la suya, el sistema informa que no lo encontró, sin revelar que existe. |
 | 6 | Si el pedido no pertenece al cliente indicado, el sistema informa "Esta orden no pertenece al cliente indicado" con un error de solicitud incorrecta, no de acceso denegado. |
 
 | Campo | Detalle |
@@ -1705,6 +1715,8 @@ respaldado por la lectura del código en poder del cliente.
 | **Comentarios** | El sistema todavía no exige que el pedido esté entregado para admitir un reclamo: se puede reclamar un pedido pendiente, aceptado o incluso cancelado, con lo que la regla de negocio que daba sentido al caso de uso no está implementada. El sistema todavía no avisa al administrador de que entró un reclamo nuevo, de modo que el vínculo entre este caso de uso y CU-024 depende de que alguien mire el listado. |
 
 ---
+
+
 #### Importante CU-019 — Avisar Llegada al Cliente
 
 | Campo | Detalle |
@@ -1712,7 +1724,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-03 |
 | **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El chofer avisa que llegó al domicilio, antes de confirmar la entrega, para que el cliente esté preparado. El aviso es solo una notificación en tiempo real: no es un estado del pedido ni deja registro. |
-| **Precondición** | El pedido está en estado ON_THE_WAY. |
+| **Precondición** | El pedido está en estado ON_THE_WAY. Si quien avisa es un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -1720,7 +1732,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El chofer llega al domicilio y presiona "Llegué" en su app. |
-| 2 | El sistema recupera el pedido y comprueba que esté en camino. |
+| 2 | El sistema recupera el pedido; si quien avisa es un chofer, comprueba que el pedido esté asignado a él, y después comprueba que esté en camino. |
 | 3 | Avisa al cliente en tiempo real de que el repartidor está afuera, con el nombre del repartidor. |
 | 4 | El pedido no cambia de estado ni registra ninguna marca de tiempo: la llegada no queda asentada en ninguna parte. |
 
@@ -1732,6 +1744,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
 | 2 | Si el pedido pertenece a otra distribuidora que la de quien avisa, el sistema informa que no lo encontró, sin revelar que existe. |
+| 2 | Si quien avisa es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403). |
 | 2 | Si el pedido no está en camino, el sistema informa "El pedido debe estar en camino para avisar llegada". |
 | 3 | Si el cliente no está conectado en ese momento, no se entera: no hay ningún canal alternativo. |
 
@@ -1740,7 +1753,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El aviso se completa en menos de 1 segundo, al no escribir ningún dato persistente. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido en camino, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no tiene un estado ARRIVED ni un campo con la hora de llegada: el ciclo de vida del pedido tiene cinco estados operativos y no seis, y el tiempo entre la llegada y la entrega no es medible. Incorporar ese estado con su marca de tiempo es un pendiente registrado en el Documento 3. El sistema todavía no envía notificación al dispositivo del cliente en este aviso: si el cliente tiene la app cerrada, el aviso se pierde, que es justamente el caso que este caso de uso quería cubrir. El sistema todavía no verifica que quien avisa la llegada sea el chofer asignado al pedido; la operación además está habilitada para el administrador. |
+| **Comentarios** | El sistema todavía no tiene un estado ARRIVED ni un campo con la hora de llegada: el ciclo de vida del pedido tiene cinco estados operativos y no seis, y el tiempo entre la llegada y la entrega no es medible. Incorporar ese estado con su marca de tiempo es un pendiente registrado en el Documento 3. El sistema todavía no envía notificación al dispositivo del cliente en este aviso: si el cliente tiene la app cerrada, el aviso se pierde, que es justamente el caso que este caso de uso quería cubrir. El sistema verifica que el chofer que avisa la llegada sea el asignado al pedido; la operación además está habilitada para el administrador, sobre el que no se aplica ese control. |
 
 ---
 
@@ -2180,7 +2193,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022). |
-| **Precondición** | El administrador está autenticado. El chofer existe en el sistema. |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2190,7 +2203,7 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer. |
 | 2 | Elige activarlo o desactivarlo. |
 | 3 | El panel envía el valor deseado del estado de actividad, verdadero o falso. |
-| 4 | El sistema busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
 **Postcondición:** El estado de actividad del chofer quedó en el valor indicado. Con el estado en falso, el chofer ya no puede aceptar pedidos: la aceptación se rechaza con "El repartidor no está activo". **Sigue, en cambio, dentro del conjunto geoespacial que alimenta el radar de asignación**, de modo que el despacho lo puede seguir eligiendo como candidato y ofreciéndole pedidos que él ya no podrá tomar.
@@ -2201,15 +2214,18 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el identificador del chofer no es un identificador único válido, el sistema responde 400. |
 | 4 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 4 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Suspensiones operativas puntuales. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El cuerpo de esta operación se recibe como objeto simple, sin declaración de datos de entrada, por lo que el valor del estado de actividad no pasa por la validación global. Limitaciones registradas: (a) el sistema todavía no quita al chofer del conjunto geoespacial al desactivarlo administrativamente —esa limpieza solo ocurre cuando el propio chofer se pone fuera de línea desde su app (CU-022)—, así que el chofer desactivado consume ofertas del despacho que después rechaza; (b) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar; (c) la actualización general del perfil de chofer permite cambiar este mismo estado sin restricción de rol, según se detalla en los Comentarios de CU-032. |
+| **Comentarios** | El cuerpo de esta operación se recibe como objeto simple, sin declaración de datos de entrada, por lo que el valor del estado de actividad no pasa por la validación global. Limitaciones registradas: (a) el sistema todavía no quita al chofer del conjunto geoespacial al desactivarlo administrativamente —esa limpieza solo ocurre cuando el propio chofer se pone fuera de línea desde su app (CU-022)—, así que el chofer desactivado consume ofertas del despacho que después rechaza; (b) el sistema todavía no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar; (c) la actualización general del perfil de chofer (CU-096) también permite cambiar este mismo estado, con las mismas restricciones de rol y de distribuidora, según se detalla en los Comentarios de CU-032. |
 
 ---
+
+
 #### Importante CU-034 — Registrar Vehículo del Chofer
 
 | Campo | Detalle |
@@ -2541,7 +2557,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01, IRQ-07 |
-| **Descripción** | El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`. El sistema acota la consulta a las direcciones del propio cliente: si quien pide no es administrador ni Administrador General, el identificador de usuario que venga en la petición se ignora y se usa el de la sesión. |
+| **Descripción** | El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`. Un administrador con distribuidora en contexto sólo llega a las direcciones de los usuarios de su distribuidora. El sistema acota la consulta a las direcciones del propio cliente: si quien pide no es administrador ni Administrador General, el identificador de usuario que venga en la petición se ignora y se usa el de la sesión. |
 | **Precondición** | El cliente está autenticado. |
 | **Estado** | Implementado |
 
@@ -2552,7 +2568,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 1 | El cliente abre la sección de direcciones en la aplicación. |
 | 2 | La aplicación envía `GET /user-addres/user/:userId`. |
 | 3 | El sistema valida el formato del identificador de usuario. |
-| 4 | El sistema determina el alcance: si quien pide no es administrador, fuerza el filtro al usuario de la sesión e ignora el que venga en la petición. |
+| 4 | El sistema determina el alcance: si quien pide no es administrador, fuerza el filtro al usuario de la sesión e ignora el que venga en la petición. Si es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 5 | El sistema recupera las direcciones de ese usuario, ordenadas con la predeterminada primero y luego por fecha de alta descendente. |
 | 6 | El sistema devuelve el listado. |
 
@@ -2564,6 +2580,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 antes de llegar al servicio. |
 | 4 | Si un cliente pide las direcciones de otro usuario, el sistema devuelve las suyas, no las del otro. |
+| 4 | Si quien pide es un administrador con distribuidora en contexto y el usuario no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 5 | Si el cliente no tiene ninguna dirección, el sistema devuelve un listado vacío, no un error. |
 
 | Campo | Detalle |
@@ -2582,7 +2599,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, altura, piso y departamento, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. El sistema resuelve la dirección contra el servicio de mapas para quedarse con el mejor punto disponible, sin bloquear el alta. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
-| **Precondición** | El cliente está autenticado. La cuenta de usuario existe. |
+| **Precondición** | El cliente está autenticado. La cuenta de usuario existe. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado · pendiente el paso de resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
@@ -2591,7 +2608,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El cliente completa el formulario de dirección en la aplicación, incluyendo piso y departamento si corresponde. |
 | 2 | La aplicación envía `POST /user-addres` con los datos de la dirección. |
-| 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. |
+| 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular indicado sea de ella y, si el administrador es de empresa, rechaza la operación. |
 | 4 | El sistema comprueba que la cuenta de usuario exista. |
 | 5 | El sistema consulta al servicio de mapas la dirección escrita y guarda, junto con el punto, la dirección normalizada que le devuelve y el identificador estable del lugar. |
 | 6 | El sistema registra con qué precisión quedó resuelta: exacta, aproximada a la cuadra, o sin resolver. |
@@ -2604,6 +2621,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular indicado no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 4 | Si la cuenta de usuario no existe, el sistema retorna error 404 "User with ID: … not found". |
 | 5 | Si el servicio de mapas no responde, o responde con un error, el alta **continúa igual** con las coordenadas que mandó la aplicación, y la dirección queda registrada como sin resolver. El fallo se registra en el log; el cliente no ve ningún error. |
 | 5 | Si el servicio de mapas ubica la calle pero no la altura exacta, el alta **continúa** con el punto aproximado y queda registrada como aproximada. |
@@ -2615,7 +2634,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Una escritura, más una actualización si la dirección entra como predeterminada, más una consulta al servicio de mapas. Esa consulta tiene un tiempo máximo de espera corto: si se agota, el alta sigue sin resolver. |
 | **Frecuencia** | Media: una o dos por cliente, y alguna más cuando se muda o pide para un tercero. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. Un administrador, en cambio, puede indicar el titular. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. |
+| **Comentarios** | El paso 3 es el que impide que un cliente cree direcciones a nombre de otro. El Administrador General, en cambio, puede indicar el titular; un administrador de empresa no da de alta direcciones. La resolución contra el mapa es **best-effort y nunca bloqueante**, como hacen las aplicaciones de reparto conocidas: la dirección aproximada sirve, y el chofer termina de resolverla con las indicaciones adicionales o llamando. La precisión registrada es lo que después permite priorizar cuáles direcciones conviene revisar. Piso y departamento son campos propios y no texto libre dentro de la calle, porque son datos operativos que el chofer necesita leer aparte. |
 
 ---
 
@@ -2635,7 +2654,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El cliente elige una dirección de su listado. |
 | 2 | La aplicación envía `GET /user-addres/:id`. |
-| 3 | El sistema valida el formato del identificador. |
+| 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el titular de la dirección sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 4 | El sistema recupera la dirección junto con su titular. |
 | 5 | El sistema comprueba que la dirección pertenezca a quien la pide. |
 | 6 | El sistema devuelve la dirección completa. |
@@ -2647,6 +2666,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si quien pide es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 4 | Si la dirección no existe, el sistema retorna error 404 "Address with ID: … not found". |
 | 5 | Si la dirección es de otro cliente, el sistema rechaza la operación. |
 
@@ -2666,7 +2686,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la altura, el piso y departamento, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Si cambia algo que afecta la ubicación, el sistema vuelve a resolverla contra el servicio de mapas. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
-| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado · pendiente la re-resolución contra el mapa y los campos de piso y departamento |
 
 **Secuencia Normal**
@@ -2675,7 +2695,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El cliente edita los campos que quiere cambiar. |
 | 2 | La aplicación envía `PATCH /user-addres/:id` con los campos modificados. |
-| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. |
 | 5 | Si cambió algún dato que afecta la ubicación —calle, altura, ciudad, código postal o coordenadas—, el sistema la resuelve de nuevo contra el servicio de mapas y actualiza el punto, la dirección normalizada y la precisión. Si sólo cambiaron el piso, el departamento o las indicaciones, no vuelve a consultar. |
 | 6 | Si la dirección pasa a ser la predeterminada, el sistema quita esa marca de las demás. |
@@ -2687,6 +2707,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 | 4 | Si la dirección desapareció entre la lectura y la escritura, el sistema retorna error 404. |
 | 5 | Si el servicio de mapas no responde o no ubica la dirección nueva, la edición **continúa igual** con las coordenadas que haya, y la precisión pasa a aproximada o sin resolver. La edición nunca se rechaza por esto, por la misma razón que en CU-116. |
@@ -2707,7 +2729,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente da de baja una dirección que ya no usa. Si la que borra era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`. |
-| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2716,7 +2738,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El cliente pide borrar una dirección. |
 | 2 | La aplicación envía `DELETE /user-addres/:id`. |
-| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | Si la dirección era la predeterminada, el sistema busca las demás direcciones del cliente y marca como predeterminada a la más reciente. |
 | 5 | El sistema borra la dirección. |
 | 6 | El sistema confirma la baja. |
@@ -2727,6 +2749,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 | 5 | Si algún pedido referencia la dirección, la base rechaza el borrado por integridad referencial. |
 
@@ -2746,7 +2770,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-addres/:id/set-default`. |
-| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. |
+| **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2755,7 +2779,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El cliente elige una dirección de su listado y la marca como predeterminada. |
 | 2 | La aplicación envía `PATCH /user-addres/:id/set-default`. |
-| 3 | El sistema recupera la dirección y comprueba que sea del cliente (CU-117). |
+| 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema quita la marca de predeterminada de las demás direcciones del cliente. |
 | 5 | El sistema marca la dirección elegida y la devuelve. |
 
@@ -2765,6 +2789,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Paso | Acción |
 |------|--------|
+| 3 | Si quien opera es un administrador con distribuidora en contexto y el titular de la dirección no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
+| 3 | Si quien opera es un administrador de empresa y el titular es de su distribuidora, el sistema retorna error 403 "Las direcciones de un usuario las administra el administrador general": las direcciones las administra el cliente o el Administrador General. |
 | 3 | Si la dirección no existe o es de otro cliente, el sistema rechaza la operación. |
 
 | Campo | Detalle |
@@ -2792,7 +2818,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El cliente abre la pantalla de armado del pedido. |
 | 2 | La aplicación envía `GET /user-addres/user/:userId/default`. |
-| 3 | El sistema valida el formato del identificador de usuario. |
+| 3 | El sistema valida el formato del identificador de usuario. Si quien pide es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 4 | El sistema busca la dirección del cliente que tenga la marca de predeterminada. |
 | 5 | El sistema devuelve la dirección encontrada. |
 
@@ -2803,6 +2829,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si quien pide es un administrador con distribuidora en contexto y el usuario no es de ella, el sistema retorna error 404 "Dirección no encontrada", sin revelar que existe. |
 | 4 | Si el cliente no tiene ninguna dirección, el sistema retorna error 404 "No addresses found for user: …". |
 
 | Campo | Detalle |
@@ -3208,7 +3235,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 4 | La aplicación muestra el saldo acumulado. |
 | 5 | El administrador, desde el Panel Web, consulta el listado de choferes de su distribuidora o el detalle de uno en particular, y ve el mismo saldo en cada perfil. |
 | 6 | Cuando corresponde liquidar o ajustar, el administrador envía el monto del ajuste sobre el perfil del chofer. |
-| 7 | El sistema recupera el perfil, **suma** el monto recibido al saldo existente —un monto negativo descuenta— y persiste el resultado. |
+| 7 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después recupera el perfil, **suma** el monto recibido al saldo existente —un monto negativo descuenta— y persiste el resultado. |
 | 8 | El sistema devuelve el perfil con el saldo actualizado y el panel refresca la vista. |
 
 **Postcondición:** El saldo del chofer refleja el ajuste aplicado por el administrador. La consulta por sí sola no modifica ningún dato.
@@ -3221,6 +3248,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 2 | Si no existe perfil de chofer para ese usuario, el sistema retorna error 404. |
 | 6 | Si el solicitante no tiene rol ADMIN ni SUPER_ADMIN, el sistema retorna error 403. |
 | 6 | Si el perfil de chofer indicado no existe, el sistema retorna error 404. |
+| 7 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 7 | El cuerpo del ajuste se recibe como objeto plano, sin un DTO con reglas de validación, de modo que el sistema no rechaza un monto ausente o no numérico; el resultado de la operación queda librado a la conversión de la base de datos (**⚠️ verificar** el comportamiento exacto). |
 
 | Campo | Detalle |
@@ -3231,6 +3259,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Comentarios** | **Limitación importante:** el saldo **no se actualiza automáticamente al confirmar una entrega**. La única escritura del campo es el ajuste manual del administrador; ni el flujo de confirmación de entrega ni ningún otro punto del backend lo modifican, y no existe cálculo de comisión por pedido. En términos prácticos, hoy es un saldo que el administrador lleva a mano, no una liquidación derivada de las entregas realizadas, a diferencia de lo que sugiere la descripción de alto nivel. Tampoco hay endpoint dedicado de consulta —el chofer lo lee dentro de su perfil— ni historial de movimientos: solo se conoce el saldo acumulado actual, sin trazabilidad de cómo se llegó a ese número, lo que impide auditar una liquidación discutida. Un tercer punto: las consultas de perfil de chofer, tanto por identificador de chofer como por identificador de usuario, no llevan restricción de rol, de manera que cualquier usuario autenticado que conozca un identificador puede leer el saldo de ese chofer (**⚠️ verificar** si es intencional; es la misma observación registrada en la trazabilidad para la consulta de choferes activos). |
 
 ---
+
 
 #### Secundario CU-050 — Bloquear / Desbloquear Usuario
 
@@ -3713,7 +3742,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-11 |
 | **Descripción** | El chofer, o un administrador, deja asentada una incidencia sobre un pedido: una demora, un siniestro o cualquier inconveniente surgido durante el reparto. La incidencia queda abierta, con el pedido afectado, el tipo, la descripción, una foto opcional y el usuario que la reporta, a la espera de resolución (CU-062). |
-| **Precondición** | El usuario está autenticado con rol Chofer, Administrador o Administrador General. El pedido sobre el que se reporta existe. |
+| **Precondición** | El usuario está autenticado con rol Chofer, Administrador o Administrador General. El pedido sobre el que se reporta existe y, si hay una distribuidora en contexto, es de ella. Si reporta un chofer, el pedido está asignado a él. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -3721,8 +3750,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario indica el pedido afectado, el tipo de incidencia, una descripción y, opcionalmente, una foto. |
-| 2 | El sistema toma el identificador del usuario que reporta desde el token de la sesión. La distribuidora **no** se toma del contexto de la petición. |
-| 3 | El sistema verifica **únicamente que el pedido exista**. |
+| 2 | El sistema toma el identificador del usuario que reporta desde el token de la sesión, y la distribuidora del contexto de la petición, que sólo sirve para acotar la búsqueda del pedido. |
+| 3 | El sistema verifica que el pedido exista y, si hay una distribuidora en contexto, que sea de ella. Si quien reporta es un chofer, verifica además que el pedido esté asignado a él. |
 | 4 | El sistema crea la incidencia en estado abierto, tomando la distribuidora del propio pedido referenciado y no de quien la reporta. |
 | 5 | El sistema devuelve la incidencia creada con estado 201. |
 
@@ -3734,6 +3763,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | Si el pedido no es un identificador único válido, si el tipo no es uno de los tipos previstos, si falta la descripción, o si se envía una propiedad no declarada, el sistema responde 400. |
 | 3 | Si el pedido no existe, el sistema responde 404 con el mensaje "Pedido no encontrado". |
+| 3 | Si el pedido pertenece a otra distribuidora que la de quien reporta, el sistema responde el mismo 404, sin revelar que existe. |
+| 3 | Si quien reporta es un chofer y el pedido no está asignado a él, el sistema responde 403 "Sólo podés ver tus propios pedidos". |
 | — | Si el usuario no tiene rol Chofer, Administrador ni Administrador General, el sistema responde 403. |
 
 | Campo | Detalle |
@@ -3741,9 +3772,11 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Rendimiento** | Inmediato: una lectura del pedido y una escritura. |
 | **Frecuencia** | Media. Depende de la conflictividad del reparto. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Limitación registrada, y es la única operación de escritura del módulo que la tiene: el sistema todavía no verifica que el pedido pertenezca a la distribuidora de quien reporta. Quien conozca el identificador de un pedido de otra distribuidora puede registrar una incidencia sobre él, y la incidencia queda asentada **bajo esa otra distribuidora**, donde su administrador la ve en su listado como si fuera propia. El resto del módulo sí aplica el aislamiento por distribuidora: el listado, la consulta por pedido y la resolución lo hacen. Corregirlo requiere tomar la distribuidora del contexto de la petición en esta operación y acotar la búsqueda del pedido a ese tenant, siguiendo el patrón que el propio módulo ya usa en sus demás operaciones. Queda pendiente de implementación y es requisito del aislamiento multiempresa sobre el que se apoya el subsistema SS-10. |
+| **Comentarios** | La distribuidora de la incidencia sale siempre del pedido referenciado y no de quien la reporta: la del contexto de la petición sólo acota la búsqueda del pedido, de modo que un pedido de otra distribuidora no existe para quien reporta y la incidencia nunca queda asentada bajo una distribuidora ajena. Un chofer sólo reporta sobre el pedido que tiene asignado. El Administrador General sin distribuidora en contexto puede reportar sobre cualquier pedido. |
 
 ---
+
+
 #### Importante CU-061 — Listar Incidencias
 
 | Campo | Detalle |
@@ -3796,7 +3829,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El usuario pide listar los incidentes pasando el ID de la orden. |
 | 2 | El sistema toma el scope del tenant (CurrentDistributor). |
-| 3 | El sistema efectua la selección contra la base de datos limitando por orden y tenant. |
+| 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el pedido sea de ella. Después efectúa la selección contra la base de datos limitando por orden y tenant. |
 | 4 | El sistema envia el paquete de respuestas conteniendo las incidencias puntuales. |
 
 **Postcondición:** Se obtiene la traza de obstaculos referentes a un envio individual.
@@ -3805,16 +3838,18 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| ⚠️ verificar | Podria dar fallo por array vacio o excepción normal REST. |
+| 3 | Si el pedido pertenece a otra distribuidora que la del solicitante, el sistema retorna error 404 "Order with ID: … not found" en lugar de una lista vacía. |
+| 3 | Si el pedido no existe o no tiene incidencias registradas, el sistema devuelve una lista vacía, no un error. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La excepción marcada como a verificar en la especificación no representa un riesgo real: una lista vacía es la respuesta esperada cuando el pedido consultado no tiene incidencias registradas. |
+| **Comentarios** | Un pedido de otra distribuidora responde 404 y no una lista vacía. Un pedido inexistente, en cambio, devuelve una lista vacía: el control de distribuidora sólo actúa cuando el pedido existe. |
 
 ---
+
 
 #### Importante CU-063 — Resolver Incidencia
 
@@ -4993,14 +5028,36 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 5 | Si el correo o el teléfono ya están en uso, el sistema responde 409. Las demás fallas se tratan como en CU-082. |
 | — | Si el solicitante no tiene rol de administrador, el sistema responde 403 antes de evaluar el alta. |
 
+**Secuencia Alternativa — Alta directa del perfil sobre un usuario existente**
+
+El Administrador General puede crear sólo el perfil de administrador de un usuario que ya existe, sin pasar por CU-082. Endpoint: `POST /admin`.
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General indica el usuario y, si se trata de un administrador de empresa, su distribuidora. La solicitud no lleva rol. |
+| 2 | El sistema busca el usuario y su rol: el rol del perfil es el del usuario. |
+| 3 | El sistema verifica que el usuario tenga rol admin o super_admin, que la distribuidora venga sólo si es un administrador de empresa, y que el usuario no tenga ya un perfil de administrador. |
+| 4 | El sistema crea el perfil de administrador y lo devuelve. |
+
+**Excepciones de la secuencia alternativa**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el solicitante no es el Administrador General, el sistema responde 403. |
+| 2 | Si el usuario no existe, el sistema responde 404. |
+| 3 | Si el usuario no tiene rol admin ni super_admin, el sistema responde 400 "Sólo un usuario con rol admin o super_admin tiene perfil de administrador". |
+| 3 | Si falta la distribuidora para un administrador de empresa, o viene para un administrador general, el sistema responde 400 "Un admin de empresa lleva distribuidora y el super administrador no". |
+| 3 | Si el usuario ya tiene perfil de administrador, el sistema responde 409 "El usuario ya tiene perfil de administrador". |
+
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | El de CU-082. |
 | **Frecuencia** | Baja: sólo al incorporar personal administrativo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Antes de la unificación, el Administrador General podía crear un administrador de empresa sin distribuidora, que después no podía entrar: el acceso rechaza a un administrador sin distribuidora. El alta directa de un perfil de administrador sobre un usuario existente (`POST /admin`) sigue disponible sólo para el Administrador General. |
+| **Comentarios** | Antes de la unificación, el Administrador General podía crear un administrador de empresa sin distribuidora, que después no podía entrar: el acceso rechaza a un administrador sin distribuidora. El alta directa de un perfil de administrador sobre un usuario existente (`POST /admin`) la hace sólo el Administrador General y se describe en la secuencia alternativa. |
 
 ---
+
 
 #### Importante CU-087 — Crear el Primer Administrador General
 
@@ -5060,7 +5117,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | El sistema resuelve la distribuidora del solicitante. |
 | 4 | Si hay distribuidora en contexto, el sistema filtra por ella; si no la hay, devuelve todas las cuentas (`src/admin/admin.service.ts:85-90`). |
 | 5 | El sistema devuelve cada administrador con su usuario, su rol y su distribuidora. |
-| 6 | Para una búsqueda puntual, el panel envía `GET /admin/term/:term`: si el término es un UUID el sistema busca por identificador de administrador y, si no, por correo del usuario. |
+| 6 | Para una búsqueda puntual, el panel envía `GET /admin/term/:term`: si el término es un UUID el sistema busca por identificador de administrador y, si no, por correo del usuario. Si hay una distribuidora en contexto, sólo da por encontrado a un administrador de ella. |
 | 7 | El sistema devuelve un objeto reducido con identificador, correo, nombre, rol e identificador del proveedor de identidad (`admin.service.ts:141-148`). |
 
 **Postcondición:** El administrador obtiene el listado o la ficha buscada. No hay cambios de estado.
@@ -5070,6 +5127,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 6 | Si la búsqueda no encuentra nada, el sistema retorna error 404 "Admin with … not found". |
+| 6 | Si el administrador encontrado es de otra distribuidora que la del solicitante, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 2 | Si el solicitante no tiene rol administrativo, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
@@ -5077,9 +5135,10 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Rendimiento** | Listado sin paginación con tres relaciones cargadas: el volumen esperado de cuentas administrativas es bajo. |
 | **Frecuencia** | Baja: solo al gestionar el personal administrativo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La búsqueda por término **no** está acotada por distribuidora, de modo que un administrador de empresa puede recuperar la ficha reducida de un administrador de otra empresa si conoce su correo o identificador. **⚠️ verificar**. |
+| **Comentarios** | La búsqueda por término está acotada por distribuidora igual que el listado: un administrador de empresa no recupera la ficha de un administrador de otra empresa aunque conozca su correo o su identificador. El Administrador General sin distribuidora en contexto encuentra a cualquiera. |
 
 ---
+
 
 #### Importante CU-089 — Gestionar Roles del Sistema
 
@@ -5209,7 +5268,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El administrador (ACT-03) marca a un cliente como validado o le retira esa marca, del mismo modo en que CU-032 lo hace con los choferes. Es el control manual sobre la cartera de clientes. Endpoints: `PATCH /customers/:id/validate` (`src/customer/customer.controller.ts:88`) y `PATCH /customers/:id/invalidate` (`:98`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5218,7 +5277,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador abre la ficha del cliente y elige validarlo o invalidarlo. |
 | 2 | El panel envía `PATCH /customers/:id/validate` o `PATCH /customers/:id/invalidate`. |
-| 3 | El sistema valida el formato UUID y recupera el cliente con su usuario, rol y direcciones. |
+| 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. Después recupera el cliente con su usuario, rol y direcciones. |
 | 4 | El sistema fija el campo `validated` en `'true'` o en `'false'` según la acción (`src/customer/customer.service.ts:246-258`). |
 | 5 | El sistema guarda el cliente y lo devuelve actualizado. |
 
@@ -5231,7 +5290,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 3 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
-| 4 | La operación no está acotada por distribuidora, de modo que un administrador de empresa puede validar a un cliente que nunca le compró. **⚠️ verificar**. |
+| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -5242,14 +5301,15 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 ---
 
+
 #### Secundario CU-094 — Actualizar Ubicación del Cliente
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01, IRQ-07 |
-| **Descripción** | Se actualiza la coordenada de referencia guardada en el perfil del cliente. El cliente (ACT-01) puede actualizar la propia y el administrador (ACT-03) la de cualquiera; la pertenencia se controla en el servicio. Endpoint: `PATCH /customers/:id/location` (`src/customer/customer.controller.ts:111`). |
-| **Precondición** | El solicitante está autenticado. Si no es administrador, el cliente indicado es el suyo. |
+| **Descripción** | Se actualiza la coordenada de referencia guardada en el perfil del cliente. El cliente (ACT-01) puede actualizar la propia y el administrador (ACT-03) la de los clientes que le compraron a su distribuidora; la pertenencia se controla en el servicio. Endpoint: `PATCH /customers/:id/location` (`src/customer/customer.controller.ts:111`). |
+| **Precondición** | El solicitante está autenticado. Si no es administrador, el cliente indicado es el suyo. Si es un administrador con distribuidora en contexto, el cliente le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5258,7 +5318,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El cliente ajusta su ubicación en el mapa de la app, o el administrador la corrige desde el panel. |
 | 2 | La app envía `PATCH /customers/:id/location` con `{ latLng }`. |
-| 3 | El sistema valida el formato UUID y determina el alcance: los administradores pasan sin restricción y el resto queda atado a su propio identificador de usuario (`src/customer/customer.controller.ts:26-30`). |
+| 3 | El sistema valida el formato UUID y determina el alcance: un administrador con distribuidora en contexto sólo llega a los clientes que le compraron a ella, y el resto de los usuarios queda atado a su propio identificador de usuario. |
 | 4 | El sistema recupera el cliente y verifica la pertenencia (`customer.service.ts:163-172`). |
 | 5 | El sistema asigna la coordenada al campo `lat_lang` y guarda. |
 | 6 | El sistema devuelve el cliente actualizado. |
@@ -5270,6 +5330,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si quien pide es un administrador y el cliente nunca le compró a su distribuidora, el sistema retorna error 404 "Customer with ID: … not found", sin revelar que existe. |
 | 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 | 4 | Si un no administrador intenta modificar el perfil de otro cliente, el sistema retorna error 403 "No autorizado a acceder a datos de otro cliente". |
 | 2 | El cuerpo se recibe como objeto sin DTO ni validación de formato, de modo que cualquier texto se guarda como coordenada. **⚠️ verificar**: no hay validación del formato de `latLng`. |
@@ -5283,23 +5344,24 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 ---
 
+
 #### Importante CU-095 — Eliminar Cliente
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) da de baja lógica el perfil de un cliente. El registro se marca como borrado y deja de aparecer en las consultas, pero se conserva en la base junto con su historial. Endpoint: `DELETE /customers/:id` (`src/customer/customer.controller.ts:124`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe. |
+| **Descripción** | El Administrador General da de baja lógica el perfil de un cliente. Un administrador de empresa no puede hacerlo: un cliente puede comprarle a varias distribuidoras, y darlo de baja lo saca de todas. El registro se marca como borrado y deja de aparecer en las consultas, pero se conserva en la base junto con su historial. Endpoint: `DELETE /customers/:id` (`src/customer/customer.controller.ts:124`). |
+| **Precondición** | El solicitante está autenticado como Administrador General. El cliente existe y, si hay una distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador elige eliminar un cliente desde el panel. |
+| 1 | El Administrador General elige eliminar un cliente desde el panel. |
 | 2 | El panel envía `DELETE /customers/:id`. |
-| 3 | El sistema valida el formato UUID y recupera el cliente para confirmar que existe. |
+| 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella; después comprueba que quien pide sea el Administrador General y recupera el cliente para confirmar que existe. |
 | 4 | El sistema aplica el borrado lógico sobre el perfil de cliente (`src/customer/customer.service.ts:240-244`). |
 | 5 | El sistema responde 200 con el mensaje "Customer deleted successfully". |
 
@@ -5311,7 +5373,9 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 3 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
+| 3 | Si el cliente nunca le compró a la distribuidora en contexto, el sistema retorna el mismo error 404, sin revelar que existe. Este control se hace antes que el de rol. |
+| 3 | Si quien pide es un administrador de empresa, el sistema retorna error 403 "La cuenta de un cliente la administra el administrador general". |
+| 2 | Si el solicitante no tiene rol administrativo, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -5329,7 +5393,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador abre la ficha de un cliente y ve sus datos, su marca de validación y su última ubicación conocida. Es la lectura puntual que el listado (CU-092) no cubre y de la que dependen la edición, la validación y la baja. Endpoint: `GET /customer/:id`. |
-| **Precondición** | El solicitante está autenticado. El cliente existe. |
+| **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5338,7 +5402,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador elige un cliente del listado. |
 | 2 | El panel envía `GET /customer/:id`. |
-| 3 | El sistema valida el formato del identificador. |
+| 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. |
 | 4 | El sistema recupera el cliente con su cuenta de usuario. |
 | 5 | El sistema comprueba que quien pide tenga alcance sobre ese cliente. |
 | 6 | El sistema devuelve la ficha completa. |
@@ -5350,6 +5414,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 
 | Campo | Detalle |
@@ -5368,7 +5433,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador ubica la ficha de cliente a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel: un pedido, un reclamo o una calificación. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /customer/user/:userId`. |
-| **Precondición** | El solicitante está autenticado. La cuenta de usuario existe. |
+| **Precondición** | El solicitante está autenticado. La cuenta de usuario existe y, si quien pide es un administrador con distribuidora en contexto, su cliente le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5377,7 +5442,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador llega con el identificador de usuario desde otra pantalla. |
 | 2 | El panel envía `GET /customer/user/:userId`. |
-| 3 | El sistema valida el formato del identificador. |
+| 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente de esa cuenta le haya comprado alguna vez a ella. |
 | 4 | El sistema busca la ficha de cliente asociada a esa cuenta. |
 | 5 | El sistema devuelve la ficha encontrada. |
 
@@ -5388,6 +5453,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si el cliente de esa cuenta nunca le compró a la distribuidora del administrador, el sistema retorna error 404, sin revelar que existe. |
 | 4 | Si la cuenta no tiene ficha de cliente, el sistema retorna error 404 "Customer for user ID: … not found". |
 
 | Campo | Detalle |
@@ -5406,7 +5472,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customer/:id`. |
-| **Precondición** | El solicitante está autenticado. El cliente existe. |
+| **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5415,7 +5481,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador edita los campos de la ficha. |
 | 2 | El panel envía `PATCH /customer/:id` con los campos modificados. |
-| 3 | El sistema valida el formato del identificador y de los campos. |
+| 3 | El sistema valida el formato del identificador y de los campos. Si quien pide es un administrador con distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. |
 | 4 | El sistema arma la ficha con los campos nuevos sobre los existentes. |
 | 5 | El sistema guarda los cambios y devuelve la ficha actualizada. |
 
@@ -5426,6 +5492,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
 | 5 | Si la validación de entrada encuentra un campo no declarado, el sistema retorna error 400. |
 
@@ -5447,39 +5514,43 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-02 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | Se modifican los datos del perfil de un chofer, tomando cualquier subconjunto de los campos del alta. Lo usa el administrador (ACT-03) desde el panel para corregir datos del repartidor. Endpoint: `PATCH /delivery/:id` (`src/delivery/delivery.controller.ts:77`). |
-| **Precondición** | El solicitante está autenticado. El chofer existe. |
+| **Descripción** | El administrador (ACT-03) cambia desde el panel la marca de validación o el estado de actividad del perfil de un chofer. Son los dos únicos campos que la operación acepta: los datos de la persona —nombre, correo, contraseña— se cambian por `PATCH /users/:id`, y la ubicación, el saldo y la disponibilidad tienen cada uno su propia operación. Endpoint: `PATCH /delivery/:id` (`src/delivery/delivery.controller.ts:133`). |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la ficha del chofer y edita sus datos. |
-| 2 | El panel envía `PATCH /delivery/:id` con los campos a cambiar. |
-| 3 | El sistema valida el formato UUID del identificador. |
-| 4 | El sistema precarga la entidad del chofer con los cambios recibidos (`src/delivery/delivery.service.ts:186-198`). |
+| 1 | El administrador abre la ficha del chofer y cambia su validación o su estado de actividad. |
+| 2 | El panel envía `PATCH /delivery/:id` con `validated`, `isActive` o ambos. |
+| 3 | El sistema valida el formato UUID del identificador y el cuerpo: sólo admite esos dos campos, y cada uno tiene que ser verdadero o falso. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después precarga la entidad del chofer con los cambios recibidos (`src/delivery/delivery.service.ts:240-267`). |
 | 5 | El sistema guarda la entidad. |
 | 6 | El sistema devuelve el chofer recargado con sus relaciones. |
 
-**Postcondición:** El perfil del chofer refleja los cambios enviados.
+**Postcondición:** La validación o el estado de actividad del chofer quedan en los valores enviados. Ningún otro dato del perfil cambia.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si el cuerpo trae cualquier otro campo —correo, contraseña, nombre, calificación o distribuidora—, el sistema retorna error 400 y no modifica nada. |
+| 3 | Si `validated` o `isActive` no es verdadero o falso, el sistema retorna error 400. |
 | 4 | Si el chofer no existe, el sistema retorna error 404 "Delivery with ID: … not found". |
-| 2 | El endpoint **no** declara restricción de roles ni control de pertenencia: cualquier usuario autenticado, incluido un cliente, puede modificar el perfil de cualquier chofer. **⚠️ verificar**: es una diferencia con el resto de las escrituras del mismo controlador, que sí exigen rol administrativo. |
+| 4 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
+| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una precarga, una escritura y una lectura de relectura con relaciones. |
 | **Frecuencia** | Baja: corrección puntual de datos del repartidor. |
 | **Estabilidad** | Media |
-| **Comentarios** | El endpoint no restringe por rol ni comprueba pertenencia: a diferencia de las demás escrituras del mismo controlador, cualquier usuario autenticado, incluido un cliente, puede modificar el perfil de cualquier chofer. Es una brecha de autorización pendiente de corrección. |
+| **Comentarios** | La operación cambia los mismos dos datos que CU-032 y CU-033 cambian por sus operaciones dedicadas, con las mismas reglas de rol y de distribuidora. Un campo que no sea la validación o el estado de actividad se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. |
 
 ---
+
 
 #### Importante CU-097 — Eliminar Chofer
 
@@ -5488,7 +5559,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El administrador (ACT-03) da de baja lógica el perfil de un chofer. El registro se marca como borrado y sale de las consultas, pero se conserva con su historial de entregas. Endpoint: `DELETE /delivery/:id` (`src/delivery/delivery.controller.ts:154`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5497,7 +5568,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El administrador elige eliminar un chofer desde el panel. |
 | 2 | El panel envía `DELETE /delivery/:id`. |
-| 3 | El sistema valida el formato UUID y recupera el chofer para confirmar que existe. |
+| 3 | El sistema valida el formato UUID y recupera el chofer para confirmar que existe. Si hay una distribuidora en contexto, comprueba además que el chofer sea de ella. |
 | 4 | El sistema aplica el borrado lógico sobre el perfil de chofer (`src/delivery/delivery.service.ts:200-204`). |
 | 5 | El sistema responde 200 con el mensaje "Delivery deleted successfully". |
 
@@ -5509,6 +5580,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
 | 3 | Si el chofer no existe, el sistema retorna error 404 "Delivery with ID: … not found". |
+| 3 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 | 4 | El borrado lógico no desactiva al chofer ni lo saca del radar de posiciones. **⚠️ verificar** si un chofer dado de baja mientras estaba activo sigue siendo candidato del despacho por proximidad. |
 
@@ -6101,17 +6173,17 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) consulta el token de notificaciones registrado para un usuario, o el propio usuario consulta el suyo, para diagnosticar por qué no le llegan las notificaciones. Endpoint: `GET /notifications/user/:userId` (`src/notifications/notifications.controller.ts:57`). |
-| **Precondición** | El solicitante está autenticado. Si no es administrador, consulta su propio identificador. |
+| **Descripción** | El Administrador General (ACT-05) consulta el token de notificaciones registrado para cualquier usuario, o cada usuario consulta el suyo, para diagnosticar por qué no le llegan las notificaciones. Un administrador de empresa sólo consulta el propio: no tiene por qué leer los de usuarios de otra distribuidora. Endpoint: `GET /notifications/user/:userId` (`src/notifications/notifications.controller.ts:72`). |
+| **Precondición** | El solicitante está autenticado. Si no es el Administrador General, consulta su propio identificador. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el diagnóstico de notificaciones de un usuario, o la app consulta su propio registro. |
+| 1 | El Administrador General abre el diagnóstico de notificaciones de un usuario, o la app consulta su propio registro. |
 | 2 | Se envía `GET /notifications/user/:userId`. |
-| 3 | El sistema verifica que el solicitante sea administrador o que el identificador pedido sea el suyo (`notifications.controller.ts:64-66`). |
+| 3 | El sistema verifica que el solicitante sea el Administrador General o que el identificador pedido sea el suyo (`notifications.controller.ts:82-86`). |
 | 4 | El sistema busca el perfil de cliente de ese usuario y devuelve `{ tokens: [...] }` con el token guardado, o una lista vacía si no tiene. |
 
 **Postcondición:** El solicitante sabe si el usuario tiene token registrado. No hay cambios de estado.
@@ -6120,7 +6192,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si un no administrador pide el identificador de otro usuario, el sistema retorna error 403 "No autorizado a ver tokens de otro usuario". |
+| 3 | Si quien pide no es el Administrador General —incluido un administrador de empresa— y el identificador es de otro usuario, el sistema retorna error 403 "No autorizado a ver tokens de otro usuario". |
 | 4 | Si no existe perfil de cliente para ese identificador, el sistema devuelve `{ tokens: [] }` sin error. |
 | 4 | La consulta mira **solo** el perfil de cliente, mientras que CU-098 guarda el token también en el perfil de chofer: para un chofer con token registrado, este caso devuelve siempre una lista vacía (`notifications.service.ts:138-157`). **⚠️ verificar**: es una asimetría entre el alta y la consulta. |
 | 4 | Ante un error de base, el sistema lo registra y devuelve `{ tokens: [] }`, sin distinguir la falla de la ausencia de token. |
@@ -6134,21 +6206,22 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 ---
 
+
 #### Secundario CU-100 — Enviar Notificación de Prueba
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-03 |
 | **Requisitos asociados** | IRQ-01, IRQ-15 |
-| **Descripción** | El administrador (ACT-03) envía una notificación push arbitraria a un token concreto para verificar que el canal de notificaciones funciona de punta a punta. Es una herramienta de diagnóstico, no tráfico de usuario final: las notificaciones reales las dispara el propio flujo del pedido. Endpoint: `POST /notifications/send-test` (`src/notifications/notifications.controller.ts:27`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN y conoce el token del dispositivo de destino. |
+| **Descripción** | El Administrador General (ACT-05) envía una notificación push arbitraria a un token concreto para verificar que el canal de notificaciones funciona de punta a punta. Es una herramienta de diagnóstico, no tráfico de usuario final: las notificaciones reales las dispara el propio flujo del pedido. Endpoint: `POST /notifications/send-test` (`src/notifications/notifications.controller.ts:40`). Es exclusiva del Administrador General: el envío usa el proyecto de mensajería de la plataforma y alcanza a cualquier dispositivo. |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN y conoce el token del dispositivo de destino. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador ingresa el token de destino, un título y un cuerpo de mensaje. |
+| 1 | El Administrador General ingresa el token de destino, un título y un cuerpo de mensaje. |
 | 2 | El panel envía `POST /notifications/send-test` con esos tres datos. |
 | 3 | El sistema arma el mensaje con la marca de tipo `TEST` y una marca temporal (`src/notifications/notifications.service.ts:30-39`). |
 | 4 | El sistema lo envía al proveedor de mensajería contra ese token. |
@@ -6161,7 +6234,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 4 | Si el token es inválido o el proveedor rechaza el envío, el sistema registra el error y responde `{ success: false, error }` con estado 201: nunca lanza un error HTTP. |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
+| 2 | Si el solicitante no es el Administrador General —incluido un administrador de empresa—, el guard de roles rechaza la petición con error 403. |
 | 2 | El cuerpo se recibe como objeto sin DTO ni validación de formato. |
 
 | Campo | Detalle |
@@ -6173,21 +6246,22 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 ---
 
+
 #### Secundario CU-101 — Reenviar Notificación de Confirmación de Pedido
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-05 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El administrador (ACT-03) vuelve a enviarle a un cliente la notificación de confirmación de un pedido, cuando la original no llegó. El envío automático de esa notificación ya lo hace el flujo de creación y de cambio de estado del pedido; este endpoint es el reenvío manual de soporte. Endpoint: `POST /notifications/order-confirmation` (`src/notifications/notifications.controller.ts:43`). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El pedido y el cliente existen y el cliente tiene token de notificaciones registrado (CU-098). |
+| **Descripción** | El Administrador General (ACT-05) vuelve a enviarle a un cliente la notificación de confirmación de un pedido, cuando la original no llegó. El envío automático de esa notificación ya lo hace el flujo de creación y de cambio de estado del pedido; este endpoint es el reenvío manual de soporte. Endpoint: `POST /notifications/order-confirmation` (`src/notifications/notifications.controller.ts:58`). Es exclusiva del Administrador General: recibe un cliente y un pedido cualquiera, de cualquier distribuidora. |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. El pedido y el cliente existen y el cliente tiene token de notificaciones registrado (CU-098). |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador identifica el pedido cuya confirmación no le llegó al cliente. |
+| 1 | El Administrador General identifica el pedido cuya confirmación no le llegó al cliente. |
 | 2 | El panel envía `POST /notifications/order-confirmation` con el identificador del cliente, el del pedido y, opcionalmente, un token puntual. |
 | 3 | El sistema busca el perfil de cliente por identificador de usuario, con su usuario asociado. |
 | 4 | El sistema toma el token enviado en el cuerpo o, si no vino, el guardado en el perfil del cliente. |
@@ -6203,7 +6277,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | Si el cliente no existe, el sistema registra la advertencia y responde `{ success: false, error: 'Customer not found' }` sin error HTTP. |
 | 4 | Si el cliente no tiene token y no se envió uno en el cuerpo, el sistema responde `{ success: false, error: 'No notification token' }`. |
 | 6 | Si el proveedor rechaza el envío, el sistema registra el error y responde `{ success: false, error }`. |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
+| 2 | Si el solicitante no es el Administrador General —incluido un administrador de empresa—, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -6213,6 +6287,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Comentarios** | El sistema no verifica que el pedido indicado exista ni que pertenezca a ese cliente: envía la notificación con el identificador que reciba. **⚠️ verificar**. |
 
 ---
+
 
 #### Secundario CU-102 — Probar el Servicio de Correo
 

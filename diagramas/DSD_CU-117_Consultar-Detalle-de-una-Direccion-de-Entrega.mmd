@@ -4,17 +4,34 @@ sequenceDiagram
     participant CTRL as UserAddressController
     participant SRV as UserAddressService
     participant AREP as RepositoryUserAddress
+    participant USRV as UsersService
 
-    CTRL->>SRV: findOne(id, usuarioDeLaSesion)
-    activate SRV
-    SRV->>AREP: findOne(where address_id, relations user)
-    activate AREP
-    AREP-->>SRV: UserAddress o null
-    deactivate AREP
-    SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
-    alt la dirección existe y es del cliente
-        SRV-->>CTRL: UserAddress
+    CTRL->>CTRL: acotar(addressId: id, user, distributorId, false), solo admin con distribuidora en contexto
+    alt Admin con distribuidora en contexto y el titular no es de ella
+        CTRL->>SRV: assertDeLaDistribuidora(addressId: id, distributorId)
+        activate SRV
+        SRV->>AREP: findOne(where address_id)
+        activate AREP
+        AREP-->>SRV: UserAddress con su user_id
+        deactivate AREP
+        SRV->>USRV: perteneceA(user_id, distributorId)
+        activate USRV
+        USRV-->>SRV: false
+        deactivate USRV
+        SRV-->>CTRL: NotFoundException Direccion no encontrada
         deactivate SRV
-    else no existe o es de otro
-        SRV-->>CTRL: NotFoundException o acceso denegado
+    else Cliente, o administrador con el titular a su alcance
+        CTRL->>SRV: findOne(id, usuarioDeLaSesion)
+        activate SRV
+        SRV->>AREP: findOne(where address_id, relations user)
+        activate AREP
+        AREP-->>SRV: UserAddress o null
+        deactivate AREP
+        SRV->>SRV: assertOwnership(titular, usuarioDeLaSesion)
+        alt la dirección existe y es del cliente
+            SRV-->>CTRL: UserAddress
+            deactivate SRV
+        else no existe o es de otro
+            SRV-->>CTRL: NotFoundException o acceso denegado
+        end
     end

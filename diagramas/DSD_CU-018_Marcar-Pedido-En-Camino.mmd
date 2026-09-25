@@ -30,8 +30,8 @@ sequenceDiagram
         else Misma distribuidora o sin distribuidora en contexto
             SRV-->>CTRL: sin error
             CTRL->>CTRL: si es DELIVERY, deliveryId sale del token y se ignora el body
-            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId)
-            SRV->>UC: execute(id, ON_THE_WAY, deliveryId)
+            CTRL->>SRV: updateStatus(id, ON_THE_WAY, deliveryId, role)
+            SRV->>UC: execute(id, ON_THE_WAY, deliveryId, role)
             activate UC
             UC->>ORD: findByIdFull(id)
             activate ORD
@@ -42,40 +42,47 @@ sequenceDiagram
                 deactivate UC
             else Pedido encontrado
                 ORD-->>UC: Order
-                UC->>FSM: transitionOrder(order, ON_THE_WAY)
-                activate FSM
-                alt El pedido no estaba ACCEPTED
-                    FSM-->>UC: InvalidOrderTransitionError
-                    deactivate FSM
-                    UC-->>CTRL: error 400 via GlobalExceptionFilter
-                else Transicion valida
-                    UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
-                    UC->>UC: order.onTheWayAt igual a new Date
-                    alt El pedido no tiene chofer asignado
-                        UC-->>UC: devuelve null sin activar tracking
-                    else Tiene chofer
-                        UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
-                        activate DREP
-                        DREP-->>UC: Delivery con User
-                        deactivate DREP
-                        UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
-                        activate RT
-                        RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
-                        activate REDIS
+                UC->>UC: assertPedidoDelChofer(order, deliveryId, role)
+                alt Es un chofer y el pedido esta asignado a otro chofer
+                    UC->>DREP: buscarPorIdOUsuario(deliveryId)
+                    DREP-->>UC: Delivery con otro delivery_id
+                    UC-->>CTRL: ForbiddenException Este pedido no esta asignado a tu usuario
+                else Es el chofer asignado, el pedido no tiene chofer, o lo mueve un administrador
+                    UC->>FSM: transitionOrder(order, ON_THE_WAY)
+                    activate FSM
+                    alt El pedido no estaba ACCEPTED
+                        FSM-->>UC: InvalidOrderTransitionError
+                        deactivate FSM
+                        UC-->>CTRL: error 400 via GlobalExceptionFilter
+                    else Transicion valida
+                        UC->>UC: applyStatusEffects(order, ON_THE_WAY, deliveryId)
+                        UC->>UC: order.onTheWayAt igual a new Date
+                        alt El pedido no tiene chofer asignado
+                            UC-->>UC: devuelve null sin activar tracking
+                        else Tiene chofer
+                            UC->>DREP: buscarPorIdOUsuario(delivery_id, true)
+                            activate DREP
+                            DREP-->>UC: Delivery con User
+                            deactivate DREP
+                            UC->>RT: startTracking(user.user_id, order.order_id, order.customer_id)
+                            activate RT
+                            RT->>REDIS: setDriverActiveOrder(driverUserId, orderId y customerId)
+                            activate REDIS
+                        end
+                        UC->>ORD: save(order)
+                        activate ORD
+                        UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
+                        UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
+                        RT-)CGW: notifyCustomer(customerId, event, payload)
+                        activate CGW
+                        UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
+                        RT-)AGW: notifyAdmins(event, payload)
+                        activate AGW
+                        UC->>UC: notifyCustomer(order)
+                        UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
+                        activate NOT
+                        UC-->>CTRL: Order en estado ON_THE_WAY
                     end
-                    UC->>ORD: save(order)
-                    activate ORD
-                    UC->>UC: emitStatusEvent(order, ON_THE_WAY, deliveryUser)
-                    UC-)RT: notifyCustomer(customer_id, order on-the-way, payload con driver)
-                    RT-)CGW: notifyCustomer(customerId, event, payload)
-                    activate CGW
-                    UC-)RT: notifyAdmins(order on_the_way, orderId, status y totalAmount)
-                    RT-)AGW: notifyAdmins(event, payload)
-                    activate AGW
-                    UC->>UC: notifyCustomer(order)
-                    UC-)NOT: sendOrderConfirmation(customer_id, order_id, notification_token)
-                    activate NOT
-                    UC-->>CTRL: Order en estado ON_THE_WAY
                 end
             end
         end
