@@ -6447,33 +6447,42 @@ sequenceDiagram
 
 #### DSD — CU-136: Registrar el Seguro del Vehículo
 
-**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+**Clases participantes:** `FleetController`, `MaintenanceTaskService`, `CarService`, `Repository<MaintenancePlan>`, `Repository<MaintenanceTask>`. El módulo `fleet` y sus entidades todavía no existen: están en el modelo propuesto (ver `material-de-trabajo/MODELO-DE-DOMINIO.md`).
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-136 Registrar el Seguro del Vehiculo
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant VREP as RepositoryCar
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant CARS as CarService
+    participant PREP as RepositoryMaintenancePlan
+    participant TREP as RepositoryMaintenanceTask
 
-    CTRL->>SRV: registrarSeguro(vehiculoId, datos, distribuidora)
+    CTRL->>SRV: registrarSeguro(vehiculoId, compania, poliza, vencimiento, distribuidora)
     activate SRV
-    SRV->>VREP: findOne(where car_id y distributor_id)
-    activate VREP
-    VREP-->>SRV: Car o null
-    deactivate VREP
-    SRV->>VREP: save(vehículo con los datos del seguro)
-    activate VREP
-    VREP-->>SRV: Car actualizado
-    deactivate VREP
-    SRV->>SRV: evaluarHabilitacion(seguro, verificación, licencia del chofer)
-    alt el vehículo existe
-        SRV-->>CTRL: Car con el seguro cargado
-        deactivate SRV
-    else el vehículo no existe
+    SRV->>CARS: findOne(vehiculoId, distribuidora)
+    activate CARS
+    alt el vehiculo no existe o es de otra distribuidora
+        CARS-->>SRV: NotFoundException
         SRV-->>CTRL: NotFoundException
+    else el vehiculo existe
+        CARS-->>SRV: Car
+        SRV->>PREP: findOne(plan Seguro de la distribuidora, sobre vehiculo, fecha fija)
+        activate PREP
+        PREP-->>SRV: MaintenancePlan bloqueante
+        deactivate PREP
+        SRV->>TREP: save(MaintenanceTask con prestador, numero de poliza y vencimiento)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask programada
+        deactivate TREP
+        SRV->>SRV: evaluarHabilitacion(vehiculo) con sus tareas bloqueantes vigentes
+        SRV->>CARS: actualizarEstadoEnFlota(vehiculoId, activo o inhabilitado)
+        SRV-->>CTRL: MaintenanceTask
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
+    deactivate CARS
+    deactivate SRV
 ```
 
 **Figura 88 — DSD CU-136: Registrar el Seguro del Vehículo**
@@ -6487,32 +6496,42 @@ sequenceDiagram
 
 #### DSD — CU-137: Registrar la Verificación Técnica Vehicular
 
-**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+**Clases participantes:** `FleetController`, `MaintenanceTaskService`, `CarService`, `Repository<MaintenancePlan>`, `Repository<MaintenanceTask>`. El módulo `fleet` y sus entidades todavía no existen: están en el modelo propuesto (ver `material-de-trabajo/MODELO-DE-DOMINIO.md`).
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-137 Registrar la Verificacion Tecnica Vehicular
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant VREP as RepositoryCar
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant CARS as CarService
+    participant PREP as RepositoryMaintenancePlan
+    participant TREP as RepositoryMaintenanceTask
 
     CTRL->>SRV: registrarVerificacion(vehiculoId, vencimiento, distribuidora)
     activate SRV
-    SRV->>VREP: findOne(where car_id y distributor_id)
-    activate VREP
-    VREP-->>SRV: Car o null
-    deactivate VREP
-    SRV->>VREP: save(vehículo con el vencimiento)
-    activate VREP
-    VREP-->>SRV: Car actualizado
-    deactivate VREP
-    alt el vehículo existe
-        SRV-->>CTRL: Car con la verificación cargada
-        deactivate SRV
-    else el vehículo no existe
+    SRV->>CARS: findOne(vehiculoId, distribuidora)
+    activate CARS
+    alt el vehiculo no existe o es de otra distribuidora
+        CARS-->>SRV: NotFoundException
         SRV-->>CTRL: NotFoundException
+    else el vehiculo existe
+        CARS-->>SRV: Car
+        SRV->>PREP: findOne(plan Verificacion tecnica de la distribuidora, sobre vehiculo, fecha fija)
+        activate PREP
+        PREP-->>SRV: MaintenancePlan bloqueante
+        deactivate PREP
+        SRV->>TREP: save(MaintenanceTask con el vencimiento de la verificacion)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask programada
+        deactivate TREP
+        SRV->>SRV: evaluarHabilitacion(vehiculo) con sus tareas bloqueantes vigentes
+        SRV->>CARS: actualizarEstadoEnFlota(vehiculoId, activo o inhabilitado)
+        SRV-->>CTRL: MaintenanceTask
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
+    deactivate CARS
+    deactivate SRV
 ```
 
 **Figura 89 — DSD CU-137: Registrar la Verificación Técnica Vehicular**
@@ -6526,37 +6545,46 @@ sequenceDiagram
 
 #### DSD — CU-138: Registrar la Licencia de Conducir del Chofer
 
-**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+**Clases participantes:** `FleetController`, `MaintenanceTaskService`, `DeliveryService`, `CarService`, `Repository<MaintenancePlan>`, `Repository<MaintenanceTask>`. El módulo `fleet` y sus entidades todavía no existen: están en el modelo propuesto (ver `material-de-trabajo/MODELO-DE-DOMINIO.md`).
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-138 Registrar la Licencia de Conducir del Chofer
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant DREP as RepositoryDelivery
-    participant VREP as RepositoryCar
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant DSRV as DeliveryService
+    participant CARS as CarService
+    participant PREP as RepositoryMaintenancePlan
+    participant TREP as RepositoryMaintenanceTask
 
-    CTRL->>SRV: registrarLicencia(choferId, datos, distribuidora)
+    CTRL->>SRV: registrarLicencia(choferId, numero, categoria, vencimiento, distribuidora)
     activate SRV
-    SRV->>DREP: findOne(where delivery_id y distributor_id)
-    activate DREP
-    DREP-->>SRV: Delivery o null
-    deactivate DREP
-    SRV->>VREP: find(where user_id del chofer)
-    activate VREP
-    VREP-->>SRV: vehículos del chofer
-    deactivate VREP
-    SRV->>DREP: save(chofer con los datos de la licencia)
-    activate DREP
-    DREP-->>SRV: Delivery actualizado
-    deactivate DREP
-    alt el chofer existe
-        SRV-->>CTRL: Delivery con la licencia cargada
-        deactivate SRV
-    else el chofer no existe
+    SRV->>DSRV: findOne(choferId)
+    activate DSRV
+    alt el chofer no existe o es de otra distribuidora
+        DSRV-->>SRV: NotFoundException o Delivery ajeno
         SRV-->>CTRL: NotFoundException
+    else el chofer existe
+        DSRV-->>SRV: Delivery
+        SRV->>PREP: findOne(plan Licencia de la distribuidora, sobre chofer, fecha fija)
+        activate PREP
+        PREP-->>SRV: MaintenancePlan bloqueante
+        deactivate PREP
+        SRV->>TREP: save(MaintenanceTask del chofer con numero, categoria y vencimiento)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask programada
+        deactivate TREP
+        SRV->>CARS: findByUserId(user_id del chofer, distribuidora)
+        activate CARS
+        CARS-->>SRV: vehiculos del chofer
+        deactivate CARS
+        SRV->>SRV: evaluarHabilitacion(chofer), la categoria tiene que habilitar sus vehiculos
+        SRV-->>CTRL: MaintenanceTask
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
+    deactivate DSRV
+    deactivate SRV
 ```
 
 **Figura 90 — DSD CU-138: Registrar la Licencia de Conducir del Chofer**
@@ -6570,33 +6598,30 @@ sequenceDiagram
 
 #### DSD — CU-139: Consultar los Vencimientos de la Flota
 
-**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+**Clases participantes:** `FleetController`, `MaintenanceTaskService`, `Repository<MaintenanceTask>`. El módulo `fleet` y sus entidades todavía no existen: están en el modelo propuesto (ver `material-de-trabajo/MODELO-DE-DOMINIO.md`).
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-139 Consultar los Vencimientos de la Flota
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant VREP as RepositoryCar
-    participant DREP as RepositoryDelivery
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant TREP as RepositoryMaintenanceTask
 
     CTRL->>SRV: vencimientosDeLaFlota(dias, distribuidora)
     activate SRV
-    SRV->>VREP: find(where distributor_id y vencimientos en la ventana)
-    activate VREP
-    VREP-->>SRV: lista de Car
-    deactivate VREP
-    SRV->>DREP: find(where distributor_id y licencia en la ventana)
-    activate DREP
-    DREP-->>SRV: lista de Delivery
-    deactivate DREP
+    Note over SRV,TREP: seguro, verificacion, licencia y services son tareas: una sola consulta
+    SRV->>TREP: find(tareas de la distribuidora sin realizar, que vencen dentro de la ventana, relations plan, car y delivery)
+    activate TREP
+    TREP-->>SRV: MaintenanceTask[] ordenadas por vencimiento
+    deactivate TREP
     alt hay vencimientos
-        SRV-->>CTRL: listado unificado y ordenado
-        deactivate SRV
+        SRV-->>CTRL: MaintenanceTask[]
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto por cada una
     else no hay
-        SRV-->>CTRL: listado vacío
+        SRV-->>CTRL: lista vacia
     end
+    deactivate SRV
 ```
 
 **Figura 91 — DSD CU-139: Consultar los Vencimientos de la Flota**
@@ -6610,37 +6635,44 @@ sequenceDiagram
 
 #### DSD — CU-140: Programar un Mantenimiento de Vehículo
 
-**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+**Clases participantes:** `FleetController`, `MaintenanceTaskService`, `CarService`, `NotificationsService`, `Repository<MaintenancePlan>`, `Repository<MaintenanceTask>`. El módulo `fleet` y sus entidades todavía no existen: están en el modelo propuesto (ver `material-de-trabajo/MODELO-DE-DOMINIO.md`).
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-140 Programar un Mantenimiento de Vehiculo
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant VREP as RepositoryCar
-    participant MREP as RepositoryFleetMaintenance
-    participant NOT as NotificationService
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant CARS as CarService
+    participant PREP as RepositoryMaintenancePlan
+    participant TREP as RepositoryMaintenanceTask
+    participant NOT as NotificationsService
 
-    CTRL->>SRV: programarMantenimiento(vehiculoId, datos, distribuidora)
+    CTRL->>SRV: programarMantenimiento(vehiculoId, planId, fecha, distribuidora)
     activate SRV
-    SRV->>VREP: findOne(where car_id y distributor_id)
-    activate VREP
-    VREP-->>SRV: Car o null
-    deactivate VREP
-    SRV->>MREP: save(mantenimiento en estado agendado)
-    activate MREP
-    MREP-->>SRV: FleetMaintenance guardado
-    deactivate MREP
-    SRV->>NOT: avisar(chofer del vehículo, mantenimiento agendado)
-    activate NOT
-    alt el vehículo existe y la fecha es válida
-        SRV-->>CTRL: FleetMaintenance agendado
-        deactivate SRV
-    else los datos no son válidos
-        SRV-->>CTRL: operación rechazada
+    SRV->>CARS: findOne(vehiculoId, distribuidora)
+    activate CARS
+    CARS-->>SRV: Car o NotFoundException
+    deactivate CARS
+    SRV->>PREP: findOne(planId de la distribuidora, sobre vehiculo)
+    activate PREP
+    PREP-->>SRV: MaintenancePlan o null
+    deactivate PREP
+    alt el vehiculo o el plan no existen, o la fecha ya paso
+        SRV-->>CTRL: NotFoundException o BadRequestException
+    else los datos son validos
+        SRV->>TREP: save(MaintenanceTask programada con scheduled_at)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask programada
+        deactivate TREP
+        Note over SRV,TREP: el despacho no cuenta con el vehiculo el dia programado
+        SRV->>NOT: avisar(chofer del vehiculo, mantenimiento programado)
+        activate NOT
+        deactivate NOT
+        SRV-->>CTRL: MaintenanceTask
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
-    deactivate NOT
+    deactivate SRV
 ```
 
 **Figura 92 — DSD CU-140: Programar un Mantenimiento de Vehículo**
@@ -6654,40 +6686,42 @@ sequenceDiagram
 
 #### DSD — CU-141: Registrar un Mantenimiento Realizado
 
-**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+**Clases participantes:** `FleetController`, `MaintenanceTaskService`, `CarService`, `Repository<MaintenanceTask>`. El módulo `fleet` y sus entidades todavía no existen: están en el modelo propuesto (ver `material-de-trabajo/MODELO-DE-DOMINIO.md`).
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-141 Registrar un Mantenimiento Realizado
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant MREP as RepositoryFleetMaintenance
-    participant VREP as RepositoryCar
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant TREP as RepositoryMaintenanceTask
+    participant CARS as CarService
 
-    CTRL->>SRV: registrarRealizado(mantenimientoId, datos, distribuidora)
+    CTRL->>SRV: registrarRealizado(tareaId, fecha, kilometraje, costo, detalle, distribuidora)
     activate SRV
-    SRV->>MREP: findOne(where maintenance_id y distributor_id)
-    activate MREP
-    MREP-->>SRV: FleetMaintenance o null
-    deactivate MREP
-    SRV->>MREP: findOne(último realizado del vehículo)
-    activate MREP
-    MREP-->>SRV: FleetMaintenance anterior o null
-    deactivate MREP
-    SRV->>MREP: save(mantenimiento en estado realizado)
-    activate MREP
-    SRV->>VREP: save(vehículo con el kilometraje nuevo)
-    activate VREP
-    VREP-->>SRV: Car actualizado
-    deactivate VREP
-    alt los datos son coherentes
-        SRV-->>CTRL: FleetMaintenance cerrado
-        deactivate SRV
-    else el kilometraje retrocede
-        SRV-->>CTRL: operación rechazada
+    SRV->>TREP: findOne(where task_id y distributor_id, relations plan y car)
+    activate TREP
+    TREP-->>SRV: MaintenanceTask o null
+    deactivate TREP
+    alt la tarea no existe o ya esta hecha
+        SRV-->>CTRL: NotFoundException o BadRequestException
+    else el kilometraje es menor que el ultimo conocido del vehiculo
+        SRV-->>CTRL: BadRequestException, el kilometraje retrocede
+    else los datos son coherentes
+        SRV->>TREP: save(tarea hecha con performed_at, kilometraje, costo y detalle)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask cerrada
+        SRV->>TREP: save(proxima tarea proyectada del mismo plan)
+        TREP-->>SRV: MaintenanceTask proyectada
+        deactivate TREP
+        SRV->>CARS: actualizarKilometraje(vehiculoId, kilometraje)
+        activate CARS
+        CARS-->>SRV: Car actualizado
+        deactivate CARS
+        SRV-->>CTRL: MaintenanceTask cerrada
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
-    deactivate MREP
+    deactivate SRV
 ```
 
 **Figura 93 — DSD CU-141: Registrar un Mantenimiento Realizado**
@@ -6701,33 +6735,35 @@ sequenceDiagram
 
 #### DSD — CU-142: Avisar los Vencimientos Próximos de la Flota
 
-**Clases participantes:** `CarController`, `CarService`, `Repository<Car>`, entidad `Car`. Los campos de seguro, verificación técnica y licencia, y la entidad `FleetMaintenance`, todavía no existen.
+**Clases participantes:** `FleetAlertsScheduler`, `MaintenanceTaskService`, `NotificationsService`, `Repository<MaintenanceTask>`. El módulo `fleet` y sus entidades todavía no existen: están en el modelo propuesto (ver `material-de-trabajo/MODELO-DE-DOMINIO.md`).
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-142 Avisar los Vencimientos Proximos de la Flota
     autonumber
-    participant SRV as CarService
-    participant VREP as RepositoryCar
-    participant DREP as RepositoryDelivery
-    participant NOT as NotificationService
+    participant SCH as FleetAlertsScheduler
+    participant SRV as MaintenanceTaskService
+    participant TREP as RepositoryMaintenanceTask
+    participant NOT as NotificationsService
 
-    SRV->>VREP: find(vencimientos de vehículos en la ventana)
-    activate VREP
-    VREP-->>SRV: lista de Car
-    deactivate VREP
-    SRV->>DREP: find(licencias en la ventana)
-    activate DREP
-    DREP-->>SRV: lista de Delivery
-    deactivate DREP
-    SRV->>NOT: avisar(administrador, habilitaciones por vencer)
-    activate NOT
-    alt hay habilitaciones por vencer
-        SRV-->>CTRL: avisos enviados y marcados
+    SCH->>SRV: avisarVencimientosProximos()
+    activate SRV
+    SRV->>TREP: find(tareas sin realizar ni avisar que entran en la anticipacion de su plan)
+    activate TREP
+    TREP-->>SRV: MaintenanceTask[] agrupadas por distribuidora
+    deactivate TREP
+    alt hay habilitaciones o mantenimientos por vencer
+        SRV->>NOT: avisar(administradores de cada distribuidora, detalle de lo que vence)
+        activate NOT
+        deactivate NOT
+        SRV->>TREP: save(tareas avisadas con alerted_at)
+        activate TREP
+        deactivate TREP
+        SRV-->>SCH: cantidad de avisos enviados
     else no hay
-        SRV-->>CTRL: ciclo sin avisos
+        SRV-->>SCH: ciclo sin avisos
     end
-    deactivate NOT
+    deactivate SRV
 ```
 
 **Figura 94 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota**
@@ -10706,14 +10742,30 @@ classDiagram
         +next_due_at: Date
         +notes: string
     }
-    class FleetMaintenance {
+    class MaintenancePlan {
         <<propuesto>>
-        +maintenance_id: UUID
-        +type: MaintenanceType
+        +plan_id: UUID
+        +name: string
+        +subject: MaintenanceSubject
+        +trigger: MaintenanceTrigger
+        +interval_km: int
+        +interval_months: int
+        +lead_time_days: int
+        +criticality: MaintenanceCriticality
+    }
+    class MaintenanceTask {
+        <<propuesto>>
+        +task_id: UUID
+        +status: MaintenanceTaskStatus
+        +due_at: Date
+        +predicted_due_at: Date
         +scheduled_at: Date
         +performed_at: Date
         +odometer_km: int
         +cost: Decimal
+        +provider: string
+        +reference_number: string
+        +alerted_at: Date
     }
     class OrderAddressChange {
         <<propuesto>>
@@ -10736,8 +10788,10 @@ classDiagram
     CartItem "0..*" --> "1" GasCylinder : refiere a
     CylinderInspection "0..*" --> "1" Cylinder : revisa
     CylinderInspection "0..*" --> "1" Distributor : pertenece a
-    FleetMaintenance "0..*" --> "1" Car : se hace sobre
-    FleetMaintenance "0..*" --> "1" Distributor : pertenece a
+    MaintenanceTask "0..*" --> "1" MaintenancePlan : sale de
+    MaintenanceTask "0..*" --> "0..1" Car : habilita o mantiene
+    MaintenanceTask "0..*" --> "0..1" Delivery : habilita al chofer
+    MaintenancePlan "0..*" --> "1" Distributor : pertenece a
     Car "0..*" --> "1" User : es conducido por
     OrderAddressChange "0..*" --> "1" Order : cambia el destino de
     OrderAddressChange "0..*" --> "2" UserAddress : de una dirección a otra

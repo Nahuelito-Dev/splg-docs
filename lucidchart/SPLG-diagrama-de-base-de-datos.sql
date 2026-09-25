@@ -292,6 +292,7 @@ CREATE TABLE "maintenance_task" (
   "provider" varchar(120),
   "reference_number" varchar(60),
   "category" varchar(10),
+  "alerted_at" timestamptz,
   "notes" text,
   PRIMARY KEY ("task_id"),
   FOREIGN KEY ("plan_id") REFERENCES "maintenance_plan" ("plan_id"),

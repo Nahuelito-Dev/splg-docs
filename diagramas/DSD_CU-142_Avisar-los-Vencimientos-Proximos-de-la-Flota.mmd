@@ -1,24 +1,26 @@
 sequenceDiagram
     title DSD — CU-142 Avisar los Vencimientos Proximos de la Flota
     autonumber
-    participant SRV as CarService
-    participant VREP as RepositoryCar
-    participant DREP as RepositoryDelivery
-    participant NOT as NotificationService
+    participant SCH as FleetAlertsScheduler
+    participant SRV as MaintenanceTaskService
+    participant TREP as RepositoryMaintenanceTask
+    participant NOT as NotificationsService
 
-    SRV->>VREP: find(vencimientos de vehículos en la ventana)
-    activate VREP
-    VREP-->>SRV: lista de Car
-    deactivate VREP
-    SRV->>DREP: find(licencias en la ventana)
-    activate DREP
-    DREP-->>SRV: lista de Delivery
-    deactivate DREP
-    SRV->>NOT: avisar(administrador, habilitaciones por vencer)
-    activate NOT
-    alt hay habilitaciones por vencer
-        SRV-->>CTRL: avisos enviados y marcados
+    SCH->>SRV: avisarVencimientosProximos()
+    activate SRV
+    SRV->>TREP: find(tareas sin realizar ni avisar que entran en la anticipacion de su plan)
+    activate TREP
+    TREP-->>SRV: MaintenanceTask[] agrupadas por distribuidora
+    deactivate TREP
+    alt hay habilitaciones o mantenimientos por vencer
+        SRV->>NOT: avisar(administradores de cada distribuidora, detalle de lo que vence)
+        activate NOT
+        deactivate NOT
+        SRV->>TREP: save(tareas avisadas con alerted_at)
+        activate TREP
+        deactivate TREP
+        SRV-->>SCH: cantidad de avisos enviados
     else no hay
-        SRV-->>CTRL: ciclo sin avisos
+        SRV-->>SCH: ciclo sin avisos
     end
-    deactivate NOT
+    deactivate SRV

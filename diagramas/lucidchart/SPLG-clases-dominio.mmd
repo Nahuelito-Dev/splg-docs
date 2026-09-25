@@ -166,14 +166,30 @@ classDiagram
         +next_due_at: Date
         +notes: string
     }
-    class FleetMaintenance {
+    class MaintenancePlan {
         <<propuesto>>
-        +maintenance_id: UUID
-        +type: MaintenanceType
+        +plan_id: UUID
+        +name: string
+        +subject: MaintenanceSubject
+        +trigger: MaintenanceTrigger
+        +interval_km: int
+        +interval_months: int
+        +lead_time_days: int
+        +criticality: MaintenanceCriticality
+    }
+    class MaintenanceTask {
+        <<propuesto>>
+        +task_id: UUID
+        +status: MaintenanceTaskStatus
+        +due_at: Date
+        +predicted_due_at: Date
         +scheduled_at: Date
         +performed_at: Date
         +odometer_km: int
         +cost: Decimal
+        +provider: string
+        +reference_number: string
+        +alerted_at: Date
     }
     class OrderAddressChange {
         <<propuesto>>
@@ -196,8 +212,10 @@ classDiagram
     CartItem "0..*" --> "1" GasCylinder : refiere a
     CylinderInspection "0..*" --> "1" Cylinder : revisa
     CylinderInspection "0..*" --> "1" Distributor : pertenece a
-    FleetMaintenance "0..*" --> "1" Car : se hace sobre
-    FleetMaintenance "0..*" --> "1" Distributor : pertenece a
+    MaintenanceTask "0..*" --> "1" MaintenancePlan : sale de
+    MaintenanceTask "0..*" --> "0..1" Car : habilita o mantiene
+    MaintenanceTask "0..*" --> "0..1" Delivery : habilita al chofer
+    MaintenancePlan "0..*" --> "1" Distributor : pertenece a
     Car "0..*" --> "1" User : es conducido por
     OrderAddressChange "0..*" --> "1" Order : cambia el destino de
     OrderAddressChange "0..*" --> "2" UserAddress : de una dirección a otra

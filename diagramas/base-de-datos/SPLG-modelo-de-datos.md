@@ -476,6 +476,7 @@ Tipo enumerado `repurchase_invitation_status_enum`: `pending`, `accepted`, `reje
 | `maintenance_task` **(tabla nueva)** | `provider` | varchar(120) | no | Aseguradora, taller o ente emisor. |
 | `maintenance_task` **(tabla nueva)** | `reference_number` | varchar(60) | no | Póliza, número de licencia u oblea. |
 | `maintenance_task` **(tabla nueva)** | `category` | varchar(10) | no | Categoría habilitante, para la licencia. |
+| `maintenance_task` **(tabla nueva)** | `alerted_at` | timestamptz | no | Cuándo se avisó que vence (CU-142); vacío, sin aviso. |
 | `maintenance_task` **(tabla nueva)** | `notes` | text | no | Detalle. |
 | `maintenance_window_proposal` **(tabla nueva)** | `proposal_id` | uuid | sí | Identificador. |
 | `maintenance_window_proposal` **(tabla nueva)** | `task_id` | uuid | sí | Tarea a programar. |

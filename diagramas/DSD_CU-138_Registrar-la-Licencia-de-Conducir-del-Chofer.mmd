@@ -1,28 +1,37 @@
 sequenceDiagram
     title DSD — CU-138 Registrar la Licencia de Conducir del Chofer
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant DREP as RepositoryDelivery
-    participant VREP as RepositoryCar
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant DSRV as DeliveryService
+    participant CARS as CarService
+    participant PREP as RepositoryMaintenancePlan
+    participant TREP as RepositoryMaintenanceTask
 
-    CTRL->>SRV: registrarLicencia(choferId, datos, distribuidora)
+    CTRL->>SRV: registrarLicencia(choferId, numero, categoria, vencimiento, distribuidora)
     activate SRV
-    SRV->>DREP: findOne(where delivery_id y distributor_id)
-    activate DREP
-    DREP-->>SRV: Delivery o null
-    deactivate DREP
-    SRV->>VREP: find(where user_id del chofer)
-    activate VREP
-    VREP-->>SRV: vehículos del chofer
-    deactivate VREP
-    SRV->>DREP: save(chofer con los datos de la licencia)
-    activate DREP
-    DREP-->>SRV: Delivery actualizado
-    deactivate DREP
-    alt el chofer existe
-        SRV-->>CTRL: Delivery con la licencia cargada
-        deactivate SRV
-    else el chofer no existe
+    SRV->>DSRV: findOne(choferId)
+    activate DSRV
+    alt el chofer no existe o es de otra distribuidora
+        DSRV-->>SRV: NotFoundException o Delivery ajeno
         SRV-->>CTRL: NotFoundException
+    else el chofer existe
+        DSRV-->>SRV: Delivery
+        SRV->>PREP: findOne(plan Licencia de la distribuidora, sobre chofer, fecha fija)
+        activate PREP
+        PREP-->>SRV: MaintenancePlan bloqueante
+        deactivate PREP
+        SRV->>TREP: save(MaintenanceTask del chofer con numero, categoria y vencimiento)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask programada
+        deactivate TREP
+        SRV->>CARS: findByUserId(user_id del chofer, distribuidora)
+        activate CARS
+        CARS-->>SRV: vehiculos del chofer
+        deactivate CARS
+        SRV->>SRV: evaluarHabilitacion(chofer), la categoria tiene que habilitar sus vehiculos
+        SRV-->>CTRL: MaintenanceTask
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
+    deactivate DSRV
+    deactivate SRV

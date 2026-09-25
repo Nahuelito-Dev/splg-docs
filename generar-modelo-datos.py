@@ -348,6 +348,8 @@ PROPUESTO = [
           "concepto": "número", "desc": "Póliza, número de licencia u oblea."},
          {"nombre": "category", "tipo": "varchar(10)", "nulo": True,
           "desc": "Categoría habilitante, para la licencia."},
+         {"nombre": "alerted_at", "tipo": "timestamptz", "nulo": True,
+          "desc": "Cuándo se avisó que vence (CU-142); vacío, sin aviso."},
          {"nombre": "notes", "tipo": "text", "nulo": True, "desc": "Detalle."},
        ],
        "pk": ["task_id"], "unicos": []},

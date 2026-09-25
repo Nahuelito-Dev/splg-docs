@@ -236,6 +236,7 @@ entity "maintenance_task" as e_maintenance_task <<propuesto>> {
   {field} provider : varchar(120) 
   {field} reference_number : varchar(60) 
   {field} category : varchar(10) 
+  {field} alerted_at : timestamptz 
   {field} notes : text 
 }
 entity "order" as e_order {

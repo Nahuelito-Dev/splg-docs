@@ -1,28 +1,35 @@
 sequenceDiagram
     title DSD — CU-140 Programar un Mantenimiento de Vehiculo
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant VREP as RepositoryCar
-    participant MREP as RepositoryFleetMaintenance
-    participant NOT as NotificationService
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant CARS as CarService
+    participant PREP as RepositoryMaintenancePlan
+    participant TREP as RepositoryMaintenanceTask
+    participant NOT as NotificationsService
 
-    CTRL->>SRV: programarMantenimiento(vehiculoId, datos, distribuidora)
+    CTRL->>SRV: programarMantenimiento(vehiculoId, planId, fecha, distribuidora)
     activate SRV
-    SRV->>VREP: findOne(where car_id y distributor_id)
-    activate VREP
-    VREP-->>SRV: Car o null
-    deactivate VREP
-    SRV->>MREP: save(mantenimiento en estado agendado)
-    activate MREP
-    MREP-->>SRV: FleetMaintenance guardado
-    deactivate MREP
-    SRV->>NOT: avisar(chofer del vehículo, mantenimiento agendado)
-    activate NOT
-    alt el vehículo existe y la fecha es válida
-        SRV-->>CTRL: FleetMaintenance agendado
-        deactivate SRV
-    else los datos no son válidos
-        SRV-->>CTRL: operación rechazada
+    SRV->>CARS: findOne(vehiculoId, distribuidora)
+    activate CARS
+    CARS-->>SRV: Car o NotFoundException
+    deactivate CARS
+    SRV->>PREP: findOne(planId de la distribuidora, sobre vehiculo)
+    activate PREP
+    PREP-->>SRV: MaintenancePlan o null
+    deactivate PREP
+    alt el vehiculo o el plan no existen, o la fecha ya paso
+        SRV-->>CTRL: NotFoundException o BadRequestException
+    else los datos son validos
+        SRV->>TREP: save(MaintenanceTask programada con scheduled_at)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask programada
+        deactivate TREP
+        Note over SRV,TREP: el despacho no cuenta con el vehiculo el dia programado
+        SRV->>NOT: avisar(chofer del vehiculo, mantenimiento programado)
+        activate NOT
+        deactivate NOT
+        SRV-->>CTRL: MaintenanceTask
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
-    deactivate NOT
+    deactivate SRV

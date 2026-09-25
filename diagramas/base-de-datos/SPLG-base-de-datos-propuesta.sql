@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS "maintenance_task" (
   "provider" varchar(120),
   "reference_number" varchar(60),
   "category" varchar(10),
+  "alerted_at" timestamptz,
   "notes" text,
   CONSTRAINT "PK_maintenance_task" PRIMARY KEY ("task_id")
 );

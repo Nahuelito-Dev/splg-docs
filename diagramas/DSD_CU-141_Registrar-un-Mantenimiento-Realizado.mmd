@@ -1,31 +1,33 @@
 sequenceDiagram
     title DSD — CU-141 Registrar un Mantenimiento Realizado
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant MREP as RepositoryFleetMaintenance
-    participant VREP as RepositoryCar
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant TREP as RepositoryMaintenanceTask
+    participant CARS as CarService
 
-    CTRL->>SRV: registrarRealizado(mantenimientoId, datos, distribuidora)
+    CTRL->>SRV: registrarRealizado(tareaId, fecha, kilometraje, costo, detalle, distribuidora)
     activate SRV
-    SRV->>MREP: findOne(where maintenance_id y distributor_id)
-    activate MREP
-    MREP-->>SRV: FleetMaintenance o null
-    deactivate MREP
-    SRV->>MREP: findOne(último realizado del vehículo)
-    activate MREP
-    MREP-->>SRV: FleetMaintenance anterior o null
-    deactivate MREP
-    SRV->>MREP: save(mantenimiento en estado realizado)
-    activate MREP
-    SRV->>VREP: save(vehículo con el kilometraje nuevo)
-    activate VREP
-    VREP-->>SRV: Car actualizado
-    deactivate VREP
-    alt los datos son coherentes
-        SRV-->>CTRL: FleetMaintenance cerrado
-        deactivate SRV
-    else el kilometraje retrocede
-        SRV-->>CTRL: operación rechazada
+    SRV->>TREP: findOne(where task_id y distributor_id, relations plan y car)
+    activate TREP
+    TREP-->>SRV: MaintenanceTask o null
+    deactivate TREP
+    alt la tarea no existe o ya esta hecha
+        SRV-->>CTRL: NotFoundException o BadRequestException
+    else el kilometraje es menor que el ultimo conocido del vehiculo
+        SRV-->>CTRL: BadRequestException, el kilometraje retrocede
+    else los datos son coherentes
+        SRV->>TREP: save(tarea hecha con performed_at, kilometraje, costo y detalle)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask cerrada
+        SRV->>TREP: save(proxima tarea proyectada del mismo plan)
+        TREP-->>SRV: MaintenanceTask proyectada
+        deactivate TREP
+        SRV->>CARS: actualizarKilometraje(vehiculoId, kilometraje)
+        activate CARS
+        CARS-->>SRV: Car actualizado
+        deactivate CARS
+        SRV-->>CTRL: MaintenanceTask cerrada
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto a MaintenanceTaskResponseDto
     end
-    deactivate MREP
+    deactivate SRV

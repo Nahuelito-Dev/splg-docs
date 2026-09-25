@@ -1,24 +1,21 @@
 sequenceDiagram
     title DSD — CU-139 Consultar los Vencimientos de la Flota
     autonumber
-    participant CTRL as CarController
-    participant SRV as CarService
-    participant VREP as RepositoryCar
-    participant DREP as RepositoryDelivery
+    participant CTRL as FleetController
+    participant SRV as MaintenanceTaskService
+    participant TREP as RepositoryMaintenanceTask
 
     CTRL->>SRV: vencimientosDeLaFlota(dias, distribuidora)
     activate SRV
-    SRV->>VREP: find(where distributor_id y vencimientos en la ventana)
-    activate VREP
-    VREP-->>SRV: lista de Car
-    deactivate VREP
-    SRV->>DREP: find(where distributor_id y licencia en la ventana)
-    activate DREP
-    DREP-->>SRV: lista de Delivery
-    deactivate DREP
+    Note over SRV,TREP: seguro, verificacion, licencia y services son tareas: una sola consulta
+    SRV->>TREP: find(tareas de la distribuidora sin realizar, que vencen dentro de la ventana, relations plan, car y delivery)
+    activate TREP
+    TREP-->>SRV: MaintenanceTask[] ordenadas por vencimiento
+    deactivate TREP
     alt hay vencimientos
-        SRV-->>CTRL: listado unificado y ordenado
-        deactivate SRV
+        SRV-->>CTRL: MaintenanceTask[]
+        CTRL->>CTRL: MaintenanceTaskMapper.toDto por cada una
     else no hay
-        SRV-->>CTRL: listado vacío
+        SRV-->>CTRL: lista vacia
     end
+    deactivate SRV
