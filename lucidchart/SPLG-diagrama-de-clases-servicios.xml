@@ -89,7 +89,7 @@
           <mxGeometry y="56" width="200" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c6" value="DispatchOrchestratorService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
-          <mxGeometry x="1137" y="959" width="340" height="160" as="geometry" />
+          <mxGeometry x="721" y="959" width="340" height="160" as="geometry" />
         </mxCell>
         <mxCell id="c6f0" value="+offerToNextDriver(order) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
           <mxGeometry y="30" width="340" height="26" as="geometry" />
@@ -107,7 +107,7 @@
           <mxGeometry y="134" width="340" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c7" value="RedisService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
-          <mxGeometry x="1114" y="1625" width="387" height="186" as="geometry" />
+          <mxGeometry x="698" y="1625" width="387" height="186" as="geometry" />
         </mxCell>
         <mxCell id="c7f0" value="+updateDriverLocation(driverId, lat, lng) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c7">
           <mxGeometry y="30" width="387" height="26" as="geometry" />
@@ -128,7 +128,7 @@
           <mxGeometry y="160" width="387" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c8" value="DriversGateway" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
-          <mxGeometry x="1288" y="1264" width="321" height="212" as="geometry" />
+          <mxGeometry x="872" y="1264" width="321" height="212" as="geometry" />
         </mxCell>
         <mxCell id="c8f0" value="&lt;&lt;WebSocket /drivers&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c8">
           <mxGeometry y="30" width="321" height="26" as="geometry" />
@@ -169,6 +169,99 @@
         <mxCell id="c9f4" value="+notifyCustomer(customerId, evento, payload) void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c9">
           <mxGeometry y="134" width="347" height="26" as="geometry" />
         </mxCell>
+        <mxCell id="c10" value="RegistroController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="3541" y="222" width="347" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c10f0" value="+registrarCliente(dto) Promise~UserResponseDto~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c10">
+          <mxGeometry y="30" width="347" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c10f1" value="+registrar(dto, usuario) Promise~UserResponseDto~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c10">
+          <mxGeometry y="56" width="347" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c11" value="RegistroService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="3492" y="699" width="446" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c11f0" value="+registrar(datos, solicitante) Promise~User~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c11">
+          <mxGeometry y="30" width="446" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c11f1" value="-crearPerfil(manager, userId, roleId, alta, datos) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c11">
+          <mxGeometry y="56" width="446" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" value="PoliticaDeRegistro" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="1907" y="998" width="433" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f0" value="«function»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c12">
+          <mxGeometry y="30" width="433" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f1" value="+autorizarAlta(solicitante, rol, distributorId) AltaAutorizada" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
+          <mxGeometry y="56" width="433" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13" value="UsersService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="2491" y="985" width="347" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f0" value="+assertDisponible(email, telefono) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="30" width="347" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f1" value="+crearEnTransaccion(manager, datos) Promise~User~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="56" width="347" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f2" value="+findOne(id) Promise~User~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="82" width="347" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c14" value="CustomersService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="2979" y="1011" width="354" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="c14f0" value="+crearPerfil(manager, userId, datos) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c14">
+          <mxGeometry y="30" width="354" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15" value="DeliveryService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="3488" y="1011" width="453" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f0" value="+crearPerfil(manager, userId, distributorId, datos) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="30" width="453" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c16" value="AdminService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="4109" y="998" width="459" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c16f0" value="+crearPerfil(manager, userId, roleId, distributorId) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c16">
+          <mxGeometry y="30" width="459" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c16f1" value="+existeSuperAdmin() Promise~boolean~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c16">
+          <mxGeometry y="56" width="459" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c17" value="FirebaseAuthPort" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="4717" y="985" width="301" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="c17f0" value="«abstract»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c17">
+          <mxGeometry y="30" width="301" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c17f1" value="+createUserSafe(props) Promise~UserRecord~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c17">
+          <mxGeometry y="56" width="301" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c17f2" value="+deleteUserSafe(uid, logger) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c17">
+          <mxGeometry y="82" width="301" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c18" value="UsuarioRegistradoEvent" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="5135" y="972" width="200" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="c18f0" value="+userId string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c18">
+          <mxGeometry y="30" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c18f1" value="+email string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c18">
+          <mxGeometry y="56" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c18f2" value="+fullName string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c18">
+          <mxGeometry y="82" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c18f3" value="+rol RolRegistrable" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c18">
+          <mxGeometry y="108" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c19" value="BienvenidaListener" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="5127" y="712" width="215" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="c19f0" value="+handle(evento) Promise~void~" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c19">
+          <mxGeometry y="30" width="215" height="26" as="geometry" />
+        </mxCell>
         <mxCell id="e0" value="delega" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c0" target="c1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -197,6 +290,33 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e9" value="registra ubicación" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c8" target="c7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="delega" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c10" target="c11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="autoriza" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c11" target="c12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c11" target="c13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="perfil de cliente" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c11" target="c14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="perfil de chofer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c11" target="c15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" value="perfil de administrador" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c11" target="c16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="cuenta de acceso" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c11" target="c17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="publica" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c11" target="c18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" value="escucha" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c19" target="c18">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

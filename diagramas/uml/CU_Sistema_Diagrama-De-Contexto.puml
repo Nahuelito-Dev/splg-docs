@@ -49,14 +49,14 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" as LIMITE 
   package "SS-08\nGestión de Productos e Inventario\n(6 casos de uso)" as SS08 <<subsystem>> #back:EFF6E2;line:5E7A3A
   package "SS-09\nFranjas Horarias\n(5 casos de uso)" as SS09 <<subsystem>> #back:FDEFE6;line:A26A45
   package "SS-10\nMulti-Distribuidora\n(4 casos de uso)" as SS10 <<subsystem>> #back:E6EEF7;line:44608B
-  package "SS-11\nCobertura Geográfica\n(4 casos de uso)" as SS11 <<subsystem>> #back:F7ECEF;line:8E5566
+  package "SS-11\nCobertura Geográfica\n(6 casos de uso)" as SS11 <<subsystem>> #back:F7ECEF;line:8E5566
   package "SS-12\nIncidencias y Calidad de Servicio\n(7 casos de uso)" as SS12 <<subsystem>> #back:EDF5F9;line:4A7488
   package "SS-13\nTrazabilidad de Envases\n(10 casos de uso)" as SS13 <<subsystem>> #back:F3F1E4;line:7A7340
   package "SS-14\nPagos y Conciliación\n(1 caso de uso)" as SS14 <<subsystem>> #back:E9EFE6;line:4E6B4A
   package "SS-15\nReservas Programadas\n(6 casos de uso)" as SS15 <<subsystem>> #back:F8EDF3;line:8A5674
   package "SS-16\nAdministración de Cuentas y Roles\n(12 casos de uso)" as SS16 <<subsystem>> #back:E8F1EC;line:4B7560
   package "SS-17\nNotificaciones y Mensajería\n(5 casos de uso)" as SS17 <<subsystem>> #back:F5F0E8;line:7C6B4C
-  package "SS-18\nObservabilidad y Operación\n(1 caso de uso)" as SS18 <<subsystem>> #back:ECEDF6;line:5B5F87
+  package "SS-18\nObservabilidad y Operación\n(3 casos de uso)" as SS18 <<subsystem>> #back:ECEDF6;line:5B5F87
   SS01 -[hidden]- SS02
   SS02 -[hidden]- SS03
   SS03 -[hidden]- SS04
@@ -83,7 +83,6 @@ A01 -[#1F6F8B]- SS09
 A01 -[#1F6F8B]- SS11
 A01 -[#1F6F8B]- SS12
 A01 -[#1F6F8B]- SS15
-A01 -[#1F6F8B]- SS16
 A01 -[#1F6F8B]- SS17
 A01 -[#1F6F8B]- SS18
 A02 -[#2E7D46]- SS01
@@ -94,7 +93,6 @@ A02 -[#2E7D46]- SS07
 A02 -[#2E7D46]- SS12
 A02 -[#2E7D46]- SS13
 A02 -[#2E7D46]- SS15
-A02 -[#2E7D46]- SS16
 A02 -[#2E7D46]- SS17
 A02 -[#2E7D46]- SS18
 A03 -[#8C4A9E]- SS01
@@ -117,10 +115,10 @@ A04 -[#8A6D1F]- SS01
 A04 -[#8A6D1F]- SS02
 A04 -[#8A6D1F]- SS03
 A04 -[#8A6D1F]- SS07
+A04 -[#8A6D1F]- SS11
 A04 -[#8A6D1F]- SS13
 A04 -[#8A6D1F]- SS14
 A04 -[#8A6D1F]- SS15
-A04 -[#8A6D1F]- SS16
 A04 -[#8A6D1F]- SS17
 A04 -[#8A6D1F]- SS18
 A05 -[#B4432B]- SS01
@@ -134,6 +132,7 @@ A05 -[#B4432B]- SS13
 A05 -[#B4432B]- SS15
 A05 -[#B4432B]- SS16
 A05 -[#B4432B]- SS17
+A05 -[#B4432B]- SS18
 
 actor "Firebase\nidentidad y avisos" as XFB <<external>>
 actor "MercadoPago\npasarela de cobro" as XMP <<external>>

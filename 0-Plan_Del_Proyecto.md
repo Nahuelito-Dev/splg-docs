@@ -238,7 +238,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Crítico  
-**Descripción:** Un nuevo usuario descarga la App Cliente y completa el formulario de registro con nombre completo, email, teléfono y contraseña. El sistema crea la cuenta en Firebase Auth y registra el perfil en la base de datos con rol cliente. El registro no deja al usuario con la sesión abierta: para empezar a operar tiene que iniciar sesión a continuación (CU-001).
+**Descripción:** Un nuevo usuario descarga la App Cliente y completa el formulario de registro con nombre completo, email, teléfono y contraseña. El sistema crea la cuenta en Firebase Auth y registra el perfil en la base de datos con rol cliente. El registro no deja al usuario con la sesión abierta: para empezar a operar tiene que iniciar sesión a continuación (CU-001). La creación de la cuenta la resuelve CU-082, que este caso incluye.
 
 ---
 
@@ -246,7 +246,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Crítico  
-**Descripción:** El administrador crea un nuevo usuario chofer desde el panel web, ingresando sus datos personales y de contacto y una contraseña temporal. La cuenta queda a la espera de que el administrador la marque como validada (CU-032), aunque esa marca no condiciona por sí sola que el chofer pueda operar: el control real sobre si puede recibir pedidos es su estado de actividad (CU-033). Es el mismo alta que CU-031, documentada acá desde el flujo de autenticación.
+**Descripción:** El administrador crea un nuevo usuario chofer desde el panel web, ingresando sus datos personales y de contacto y una contraseña temporal. La cuenta queda a la espera de que el administrador la marque como validada (CU-032), aunque esa marca no condiciona por sí sola que el chofer pueda operar: el control real sobre si puede recibir pedidos es su estado de actividad (CU-033). Es el mismo alta que CU-031, documentada acá desde el flujo de autenticación. Incluye CU-082.
 
 ---
 
@@ -526,7 +526,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Crítico  
-**Descripción:** El administrador da de alta a un repartidor de su distribuidora, cargando sus datos personales y de contacto. El sistema crea la cuenta con el rol de chofer y el perfil operativo asociado, que queda a la espera de la habilitación. Es el mismo caso de uso que CU-003, visto desde el flujo de gestión de la flota; su especificación expandida es canónica bajo este código.
+**Descripción:** El administrador da de alta a un repartidor de su distribuidora, cargando sus datos personales y de contacto. El sistema crea la cuenta con el rol de chofer y el perfil operativo asociado, que queda a la espera de la habilitación. Es el mismo caso de uso que CU-003, visto desde el flujo de gestión de la flota; su especificación expandida es canónica bajo este código. Incluye CU-082.
 
 ---
 
@@ -1084,10 +1084,10 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 ---
 
 **Código:** CU-082 | **Caso de Uso:** Crear Usuario Base  
-**Actor/es:** ACT-01 Cliente, ACT-02 Chofer, ACT-03 Administrador, ACT-04 Sistema Automático  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-002, CU-003, CU-031, CU-086 y CU-087  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Importante  
-**Descripción:** El sistema elabora un nuevo usuario raiz básico desde un origen no autenticado.
+**Descripción:** Es el alta común a todos los usuarios. Decide si quien pide puede crear ese rol, controla que el correo y el teléfono estén libres, crea la cuenta de acceso y guarda el usuario con el perfil de su rol en una sola operación. Si algo falla, deshace sólo lo que creó.
 
 ---
 
@@ -1116,18 +1116,18 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 ---
 
 **Código:** CU-086 | **Caso de Uso:** Registrar Administrador  
-**Actor/es:** ACT-03 Administrador  
+**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El sistema registra un usuario de alto perfil asignado a la distribuidora o rol que origina la acción.
+**Descripción:** Un administrador da de alta a otro administrador. Un administrador de empresa sólo puede crear administradores de su distribuidora; el Administrador General, en cualquier distribuidora, y también otros administradores generales. Incluye CU-082.
 
 ---
 
 **Código:** CU-087 | **Caso de Uso:** Crear el Primer Super Administrador (bootstrap)  
-**Actor/es:** ACT-01 Cliente, ACT-02 Chofer, ACT-03 Administrador, ACT-04 Sistema Automático  
+**Actor/es:** ACT-05 Administrador General  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El sistema arranca permitiendo la subscripcion pública inicial de la cuenta matriz del super administrador.
+**Descripción:** En la puesta en marcha, el Administrador General crea la primera cuenta de administrador general ejecutando un comando en el servidor. No existe una operación pública para esto. Incluye CU-082.
 
 ---
 

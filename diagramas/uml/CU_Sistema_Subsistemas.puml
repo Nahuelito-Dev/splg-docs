@@ -1,5 +1,5 @@
 @startuml
-title Subsistemas del Proyecto — SPLG (18 subsistemas · 149 casos de uso)
+title Subsistemas del Proyecto — SPLG (18 subsistemas · 153 casos de uso)
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
@@ -44,7 +44,7 @@ rectangle "SS-10 Multi-Distribuidora — restricción transversal:\ntodo subsist
     package "**SS-07**\nGestión de Choferes y Vehículos\n(24 casos)" as MSS07 <<subsystem>> #back:F0EEF9;line:5A5896
     package "**SS-08**\nGestión de Productos e Inventario\n(6 casos)" as MSS08 <<subsystem>> #back:EFF6E2;line:5E7A3A
     package "**SS-09**\nFranjas Horarias\n(5 casos)" as MSS09 <<subsystem>> #back:FDEFE6;line:A26A45
-    package "**SS-11**\nCobertura Geográfica\n(4 casos)" as MSS11 <<subsystem>> #back:F7ECEF;line:8E5566
+    package "**SS-11**\nCobertura Geográfica\n(6 casos)" as MSS11 <<subsystem>> #back:F7ECEF;line:8E5566
     package "**SS-12**\nIncidencias y Calidad de Servicio\n(7 casos)" as MSS12 <<subsystem>> #back:EDF5F9;line:4A7488
     package "**SS-13**\nTrazabilidad de Envases\n(10 casos)" as MSS13 <<subsystem>> #back:F3F1E4;line:7A7340
     package "**SS-14**\nPagos y Conciliación\n(1 caso)" as MSS14 <<subsystem>> #back:E9EFE6;line:4E6B4A
@@ -53,7 +53,7 @@ rectangle "SS-10 Multi-Distribuidora — restricción transversal:\ntodo subsist
   package "Subsistemas de soporte" as GSOP #back:FFFFFF;line:5A5896 {
     package "**SS-16**\nAdministración de Cuentas y Roles\n(12 casos)" as MSS16 <<subsystem>> #back:E8F1EC;line:4B7560
     package "**SS-17**\nNotificaciones y Mensajería\n(5 casos)" as MSS17 <<subsystem>> #back:F5F0E8;line:7C6B4C
-    package "**SS-18**\nObservabilidad y Operación\n(1 caso)" as MSS18 <<subsystem>> #back:ECEDF6;line:5B5F87
+    package "**SS-18**\nObservabilidad y Operación\n(3 casos)" as MSS18 <<subsystem>> #back:ECEDF6;line:5B5F87
   }
 }
 

@@ -1,5 +1,5 @@
 @startuml
-title Diagrama Completo de Casos de Uso — SPLG (149 casos de uso)
+title Diagrama Completo de Casos de Uso — SPLG (153 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -184,11 +184,14 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
   rectangle "SS-11 — Cobertura Geográfica" as RSS11 #back:F7ECEF;line:8E5566 {
     actor "Cliente\n(ACT-01)" as A01SS11
     actor "Administrador\n(ACT-03)" as A03SS11
+    actor "Sistema Automático\n(ACT-04)" as A04SS11
     actor "Administrador General\n(ACT-05)" as A05SS11
     usecase "CU-056\nDefinir Zona de Cobertura" as U056 #back:FFFFFF;line:8E5566
     usecase "CU-057\nConsultar Zonas de\nCobertura" as U057 #back:FFFFFF;line:8E5566
     usecase "CU-058\nValidar Cobertura de una\nDirección" as U058 #back:FFFFFF;line:8E5566
     usecase "CU-059\nEliminar Zona de Cobertura" as U059 #back:FFFFFF;line:8E5566
+    usecase "CU-150\nProgramar la Vigencia de\nuna Zona de Cobertura" as U150 #back:FFFFFF;line:8E5566
+    usecase "CU-151\nDesactivar las Zonas de\nCobertura Vencidas" as U151 #back:FFFFFF;line:8E5566
   }
   rectangle "SS-12 — Incidencias y Calidad de Servicio" as RSS12 #back:EDF5F9;line:4A7488 {
     actor "Cliente\n(ACT-01)" as A01SS12
@@ -237,10 +240,7 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
     usecase "CU-077\nExpirar Pedidos de\nMercadoPago sin Pagar\n(Cron)" as U077 #back:FFFFFF;line:8A5674
   }
   rectangle "SS-16 — Administración de Cuentas y Roles" as RSS16 #back:E8F1EC;line:4B7560 {
-    actor "Cliente\n(ACT-01)" as A01SS16
-    actor "Chofer\n(ACT-02)" as A02SS16
     actor "Administrador\n(ACT-03)" as A03SS16
-    actor "Sistema Automático\n(ACT-04)" as A04SS16
     actor "Administrador General\n(ACT-05)" as A05SS16
     usecase "CU-086\nRegistrar Administrador" as U086 #back:FFFFFF;line:4B7560
     usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)" as U087 #back:FFFFFF;line:4B7560
@@ -272,7 +272,10 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
     actor "Chofer\n(ACT-02)" as A02SS18
     actor "Administrador\n(ACT-03)" as A03SS18
     actor "Sistema Automático\n(ACT-04)" as A04SS18
+    actor "Administrador General\n(ACT-05)" as A05SS18
     usecase "CU-104\nVerificar la Salud del\nSistema (liveness /\nreadiness)" as U104 #back:FFFFFF;line:5B5F87
+    usecase "CU-152\nConsultar el Registro de\nAuditoría" as U152 #back:FFFFFF;line:5B5F87
+    usecase "CU-153\nRegistrar Toda Operación\nde Escritura" as U153 #back:FFFFFF;line:5B5F87
   }
 }
 
@@ -287,10 +290,6 @@ A01SS01 -[#1F6F8B]- U047
 A02SS01 -[#2E7D46]- U047
 A03SS01 -[#8C4A9E]- U047
 A03SS01 -[#8C4A9E]- U050
-A01SS01 -[#1F6F8B]- U082
-A02SS01 -[#2E7D46]- U082
-A03SS01 -[#8C4A9E]- U082
-A04SS01 -[#8A6D1F]- U082
 A03SS01 -[#8C4A9E]- U083
 A01SS01 -[#1F6F8B]- U084
 A02SS01 -[#2E7D46]- U084
@@ -419,6 +418,9 @@ A03SS11 -[#8C4A9E]- U058
 A05SS11 -[#B4432B]- U058
 A03SS11 -[#8C4A9E]- U059
 A05SS11 -[#B4432B]- U059
+A03SS11 -[#8C4A9E]- U150
+A05SS11 -[#B4432B]- U150
+A04SS11 -[#8A6D1F]- U151
 A02SS12 -[#2E7D46]- U060
 A03SS12 -[#8C4A9E]- U060
 A05SS12 -[#B4432B]- U060
@@ -467,10 +469,8 @@ A04SS15 -[#8A6D1F]- U075
 A04SS15 -[#8A6D1F]- U076
 A04SS15 -[#8A6D1F]- U077
 A03SS16 -[#8C4A9E]- U086
-A01SS16 -[#1F6F8B]- U087
-A02SS16 -[#2E7D46]- U087
-A03SS16 -[#8C4A9E]- U087
-A04SS16 -[#8A6D1F]- U087
+A05SS16 -[#B4432B]- U086
+A05SS16 -[#B4432B]- U087
 A03SS16 -[#8C4A9E]- U088
 A05SS16 -[#B4432B]- U089
 A05SS16 -[#B4432B]- U090
@@ -499,6 +499,9 @@ A01SS18 -[#1F6F8B]- U104
 A02SS18 -[#2E7D46]- U104
 A03SS18 -[#8C4A9E]- U104
 A04SS18 -[#8A6D1F]- U104
+A03SS18 -[#8C4A9E]- U152
+A05SS18 -[#B4432B]- U152
+A04SS18 -[#8A6D1F]- U153
 
 ' sin esta cadena invisible graphviz apila los 18 subsistemas en una sola tira
 U001 -[hidden]-> U023

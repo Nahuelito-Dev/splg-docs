@@ -1,5 +1,5 @@
 @startuml
-title SS-18 — Observabilidad y Operación (1 casos de uso)
+title SS-18 — Observabilidad y Operación (3 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -38,14 +38,20 @@ actor "Cliente\n(ACT-01)" as A01
 actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-18 Observabilidad y Operación" {
   usecase "CU-104\nVerificar la Salud del Sistema\n(liveness / readiness)" as U104 #back:FFFFFF;line:5B5F87
+  usecase "CU-152\nConsultar el Registro de\nAuditoría" as U152 <<pendiente>> #back:FFFFFF;line:5B5F87
+  usecase "CU-153\nRegistrar Toda Operación de\nEscritura" as U153 <<pendiente>> #back:FFFFFF;line:5B5F87
 }
 
 A01 -[#1F6F8B]- U104
 A02 -[#2E7D46]- U104
 A03 -[#8C4A9E]- U104
+A03 -[#8C4A9E]- U152
 A04 -[#8A6D1F]- U104
+A04 -[#8A6D1F]- U153
+A05 -[#B4432B]- U152
 
 @enduml

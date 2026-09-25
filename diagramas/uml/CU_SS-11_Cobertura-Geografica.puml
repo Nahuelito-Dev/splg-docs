@@ -1,5 +1,5 @@
 @startuml
-title SS-11 — Cobertura Geográfica (4 casos de uso)
+title SS-11 — Cobertura Geográfica (6 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -36,6 +36,7 @@ skinparam usecase {
 
 actor "Cliente\n(ACT-01)" as A01
 actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-11 Cobertura Geográfica" {
@@ -43,6 +44,8 @@ rectangle "SS-11 Cobertura Geográfica" {
   usecase "CU-057\nConsultar Zonas de Cobertura" as U057 #back:FFFFFF;line:8E5566
   usecase "CU-058\nValidar Cobertura de una\nDirección" as U058 #back:FFFFFF;line:8E5566
   usecase "CU-059\nEliminar Zona de Cobertura" as U059 #back:FFFFFF;line:8E5566
+  usecase "CU-150\nProgramar la Vigencia de una\nZona de Cobertura" as U150 <<pendiente>> #back:FFFFFF;line:8E5566
+  usecase "CU-151\nDesactivar las Zonas de\nCobertura Vencidas" as U151 <<pendiente>> #back:FFFFFF;line:8E5566
 }
 
 A01 -[#1F6F8B]- U058
@@ -50,9 +53,12 @@ A03 -[#8C4A9E]- U056
 A03 -[#8C4A9E]- U057
 A03 -[#8C4A9E]- U058
 A03 -[#8C4A9E]- U059
+A03 -[#8C4A9E]- U150
+A04 -[#8A6D1F]- U151
 A05 -[#B4432B]- U056
 A05 -[#B4432B]- U057
 A05 -[#B4432B]- U058
 A05 -[#B4432B]- U059
+A05 -[#B4432B]- U150
 
 @enduml

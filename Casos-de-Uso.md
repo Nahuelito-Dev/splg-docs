@@ -277,7 +277,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Crítico  
-**Descripción:** Un nuevo usuario descarga la App Cliente y completa el formulario de registro con nombre completo, email, teléfono y contraseña. El sistema crea la cuenta en Firebase Auth y registra el perfil en la base de datos con rol cliente. El registro no deja al usuario con la sesión abierta: para empezar a operar tiene que iniciar sesión a continuación (CU-001).
+**Descripción:** Un nuevo usuario descarga la App Cliente y completa el formulario de registro con nombre completo, email, teléfono y contraseña. El sistema crea la cuenta en Firebase Auth y registra el perfil en la base de datos con rol cliente. El registro no deja al usuario con la sesión abierta: para empezar a operar tiene que iniciar sesión a continuación (CU-001). La creación de la cuenta la resuelve CU-082, que este caso incluye.
 
 ---
 
@@ -286,7 +286,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Crítico  
-**Descripción:** El administrador crea un nuevo usuario chofer desde el panel web, ingresando sus datos personales y de contacto y una contraseña temporal. La cuenta queda a la espera de que el administrador la marque como validada (CU-032), aunque esa marca no condiciona por sí sola que el chofer pueda operar: el control real sobre si puede recibir pedidos es su estado de actividad (CU-033). Es el mismo alta que CU-031, documentada acá desde el flujo de autenticación.
+**Descripción:** El administrador crea un nuevo usuario chofer desde el panel web, ingresando sus datos personales y de contacto y una contraseña temporal. La cuenta queda a la espera de que el administrador la marque como validada (CU-032), aunque esa marca no condiciona por sí sola que el chofer pueda operar: el control real sobre si puede recibir pedidos es su estado de actividad (CU-033). Es el mismo alta que CU-031, documentada acá desde el flujo de autenticación. Incluye CU-082.
 
 ---
 
@@ -612,7 +612,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Crítico  
-**Descripción:** El administrador da de alta a un repartidor de su distribuidora, cargando sus datos personales y de contacto. El sistema crea la cuenta con el rol de chofer y el perfil operativo asociado, que queda a la espera de la habilitación. Es el mismo caso de uso que CU-003, visto desde el flujo de gestión de la flota; su especificación expandida es canónica bajo este código.
+**Descripción:** El administrador da de alta a un repartidor de su distribuidora, cargando sus datos personales y de contacto. El sistema crea la cuenta con el rol de chofer y el perfil operativo asociado, que queda a la espera de la habilitación. Es el mismo caso de uso que CU-003, visto desde el flujo de gestión de la flota; su especificación expandida es canónica bajo este código. Incluye CU-082.
 
 ---
 
@@ -1270,10 +1270,10 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 
 
 **Código:** CU-082 | **Caso de Uso:** Crear Usuario Base  
-**Actor/es:** ACT-01 Cliente, ACT-02 Chofer, ACT-03 Administrador, ACT-04 Sistema Automático  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-002, CU-003, CU-031, CU-086 y CU-087  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Importante  
-**Descripción:** El sistema elabora un nuevo usuario raiz básico desde un origen no autenticado.
+**Descripción:** Es el alta común a todos los usuarios. Decide si quien pide puede crear ese rol, controla que el correo y el teléfono estén libres, crea la cuenta de acceso y guarda el usuario con el perfil de su rol en una sola operación. Si algo falla, deshace sólo lo que creó.
 
 ---
 
@@ -1309,19 +1309,19 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 
 
 **Código:** CU-086 | **Caso de Uso:** Registrar Administrador  
-**Actor/es:** ACT-03 Administrador  
+**Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El sistema registra un usuario de alto perfil asignado a la distribuidora o rol que origina la acción.
+**Descripción:** Un administrador da de alta a otro administrador. Un administrador de empresa sólo puede crear administradores de su distribuidora; el Administrador General, en cualquier distribuidora, y también otros administradores generales. Incluye CU-082.
 
 ---
 
 
 **Código:** CU-087 | **Caso de Uso:** Crear el Primer Super Administrador (bootstrap)  
-**Actor/es:** ACT-01 Cliente, ACT-02 Chofer, ACT-03 Administrador, ACT-04 Sistema Automático  
+**Actor/es:** ACT-05 Administrador General  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El sistema arranca permitiendo la subscripcion pública inicial de la cuenta matriz del super administrador.
+**Descripción:** En la puesta en marcha, el Administrador General crea la primera cuenta de administrador general ejecutando un comando en el servidor. No existe una operación pública para esto. Incluye CU-082.
 
 ---
 
@@ -1756,8 +1756,8 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Un nuevo usuario se registra como Cliente desde la App Cliente ingresando sus datos personales. El sistema crea la cuenta en Firebase Auth, registra el usuario con rol cliente y crea su perfil asociado. El registro no abre sesión: para operar, el usuario inicia sesión a continuación. |
-| **Precondición** | El usuario no tiene cuenta previa con el mismo email. Tiene conexión a internet. |
+| **Descripción** | Un nuevo usuario se registra como Cliente desde la App Cliente ingresando sus datos personales. Es la única alta que no requiere sesión: la puerta pública siempre crea un cliente y nunca otro rol. La creación de la identidad la resuelve el caso incluido CU-082. El registro no abre sesión: para operar, el usuario inicia sesión a continuación. Endpoint: `POST /auth/registro`. |
+| **Precondición** | El usuario no tiene cuenta con el mismo correo ni con el mismo teléfono, tampoco una dada de baja. Tiene conexión a internet. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -1765,31 +1765,31 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario abre la App Cliente y selecciona "Registrarse". |
-| 2 | Ingresa nombre completo, email, número de teléfono y contraseña. La app puede acompañar el envío con el token de notificaciones del dispositivo y la ubicación del usuario. |
-| 3 | El sistema valida que los cuatro campos estén presentes y no vacíos, y que el email tenga formato de correo. El teléfono se acepta como texto libre y la contraseña, como texto no vacío: el mínimo de seis caracteres lo impone Firebase Auth al crear la cuenta. |
-| 4 | El sistema abre una transacción y comprueba que no exista ya un usuario registrado con ese email. |
-| 5 | Crea la cuenta en Firebase Auth con el email y la contraseña. |
-| 6 | Registra el usuario con rol cliente y crea su perfil de cliente asociado, con el token de notificaciones y la ubicación si los recibió, y confirma la transacción. |
-| 7 | Intenta enviar un correo de bienvenida. Si el envío falla, el registro queda hecho igual y solo se deja rastro del fallo. |
-| 8 | Devuelve los datos del usuario creado con su perfil y su rol. No se emite ninguna credencial. |
+| 2 | Ingresa nombre completo, correo, teléfono y contraseña. La app puede acompañar el envío con el token de notificaciones del dispositivo y la ubicación del usuario. |
+| 3 | El sistema controla el cupo de altas del origen: hasta diez por minuto. |
+| 4 | El sistema valida los datos: correo con formato de correo, contraseña de al menos seis caracteres, nombre de al menos dos y teléfono en formato internacional (`+549…`). Rechaza cualquier dato que no forme parte del registro de un cliente, como un rol o una distribuidora. |
+| 5 | **Incluye CU-082 Crear Usuario Base** con rol cliente: el sistema controla que el correo y el teléfono estén libres, crea la cuenta de acceso y guarda el usuario junto con su perfil de cliente, sin validar, en una sola transacción. |
+| 6 | El sistema devuelve los datos del usuario creado con su rol y su perfil. No emite ninguna credencial. |
+| 7 | El sistema envía el correo de bienvenida. Si el envío falla, el registro queda hecho igual y sólo se deja rastro del fallo. |
 
-**Postcondición:** Existe un nuevo usuario con rol CLIENTE y su perfil Customer asociado. El usuario todavía no tiene sesión: para realizar pedidos debe iniciar sesión con las mismas credenciales (CU-001).
+**Postcondición:** Existe un nuevo usuario con rol CLIENTE, su cuenta de acceso y su perfil de cliente. El usuario todavía no tiene sesión: para realizar pedidos debe iniciar sesión con las mismas credenciales (CU-001).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si algún campo requerido está vacío o el email no tiene formato válido, el sistema informa el error indicando el campo. |
-| 4 | Si el email ya está registrado, el sistema informa que el email ya está en uso e invita a iniciar sesión. |
-| 5 | Si Firebase rechaza la creación de la cuenta —email ya existente en Firebase o contraseña de menos de seis caracteres—, el registro no se completa. |
-| 6 | Si falla la persistencia, el sistema revierte la transacción y elimina de Firebase la cuenta recién creada, de modo que un reintento con el mismo email sea posible. |
+| 3 | Si el origen superó el cupo de altas, el sistema responde 429 y pide reintentar más tarde. |
+| 4 | Si algún campo falta, no tiene el formato esperado o sobra, el sistema responde 400 indicando el campo. |
+| 5 | Si el correo o el teléfono ya están en uso, el sistema responde 409 "Email o teléfono ya en uso" e invita a iniciar sesión. La cuenta existente no se modifica. |
+| 5 | Si el proveedor de identidad rechaza la cuenta, el sistema responde 400 con el motivo y no crea nada. |
+| 5 | Si falla la persistencia, el sistema revierte la transacción y elimina sólo la cuenta de acceso que creó en este mismo registro. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | El registro se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en Firebase Auth. |
+| **Rendimiento** | El registro se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en el proveedor de identidad. |
 | **Frecuencia** | Una vez por cliente, en el alta. A nivel del sistema, varias veces por día según el ritmo de registros nuevos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no autentica automáticamente al usuario recién registrado: la app tiene que encadenar el inicio de sesión por su cuenta. El sistema todavía no valida el formato del número de teléfono ni la fortaleza de la contraseña del lado del servidor: la única regla sobre la contraseña es la que aplica Firebase. |
+| **Comentarios** | El sistema todavía no autentica automáticamente al usuario recién registrado: la app encadena el inicio de sesión por su cuenta. La ruta anterior `POST /users/customer-registration` sigue respondiendo igual para las versiones ya publicadas de la app y se retira cuando la versión nueva esté en las tiendas. |
 
 ---
 
@@ -3253,8 +3253,8 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01, IRQ-03 |
-| **Descripción** | El administrador da de alta un chofer desde el Panel Web. La operación crea, en una sola transacción, la credencial en el proveedor de autenticación, el usuario con rol chofer y su perfil de reparto asociado a una distribuidora. El alta admite fijar en el mismo momento la marca de validación y el estado de actividad del chofer. |
-| **Precondición** | El administrador está autenticado. Si no es Administrador General, su usuario tiene una distribuidora asociada. No existe otro usuario registrado con el mismo correo. |
+| **Descripción** | El administrador da de alta un chofer desde el Panel Web. El chofer queda asociado a una distribuidora, que decide la política de alta según quién registra. La creación de la identidad la resuelve el caso incluido CU-082. El alta admite fijar en el mismo momento la marca de validación y el estado de actividad. Endpoint: `POST /users` con rol `delivery`. |
+| **Precondición** | El administrador está autenticado. Si no es Administrador General, su usuario tiene una distribuidora asociada. El correo y el teléfono no están en uso. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -3262,33 +3262,31 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador accede a la sección "Choferes" del Panel Web y elige dar de alta uno nuevo. |
-| 2 | Completa nombre completo, teléfono, correo y contraseña inicial. De manera opcional puede indicar selfie, calificación inicial, ubicación, estado de validación y estado de actividad. |
-| 3 | El sistema valida el formato de lo recibido: el nombre tiene al menos dos caracteres, el correo tiene forma de correo electrónico y la contraseña no viene vacía. |
-| 4 | El sistema resuelve la distribuidora del chofer: si quien da el alta es Administrador General, toma la que venga indicada o la que tenga en contexto; si es administrador de una empresa, lo crea siempre en la suya e ignora cualquier distribuidora recibida. |
-| 5 | El sistema abre una transacción y verifica que su propia base no tenga ya un usuario con ese correo. |
-| 6 | El sistema crea la credencial en el proveedor de autenticación con el correo y la contraseña. |
-| 7 | El sistema registra el usuario con rol chofer y crea su perfil de reparto en la misma transacción: la marca de validación queda en falso salvo que el alta indique otra cosa, el estado de actividad queda en **verdadero** salvo que el alta indique otra cosa, y el balance arranca en cero. |
-| 8 | El sistema confirma la transacción y devuelve el usuario creado junto con su perfil de reparto y su rol. |
+| 2 | Completa nombre completo, teléfono, correo y contraseña inicial. De manera opcional indica el estado de validación y el estado de actividad; el Administrador General, además, la distribuidora. |
+| 3 | El sistema valida el formato de lo recibido, como en CU-002. |
+| 4 | El sistema resuelve la distribuidora: un administrador de empresa da de alta siempre en la suya; el Administrador General, en la que indique o en la que tenga en contexto. |
+| 5 | El sistema controla que la distribuidora exista y esté activa. |
+| 6 | **Incluye CU-082 Crear Usuario Base** con rol chofer: el perfil de reparto se crea con la marca de validación en falso y el estado de actividad en verdadero salvo que el alta indique otra cosa, calificación y balance en cero. |
+| 7 | El sistema devuelve el usuario creado junto con su rol y su perfil de reparto. |
 
-**Postcondición:** Existe un usuario con rol chofer y su perfil de reparto, asociado a la distribuidora que corresponde. El chofer queda **operativo de inmediato**: con el estado de actividad en verdadero puede ponerse en línea, entrar al radar de asignación y aceptar pedidos, sin que medie ninguna validación posterior del administrador. La marca de validación queda registrada como dato informativo.
+**Postcondición:** Existe un usuario con rol chofer y su perfil de reparto, asociado a la distribuidora que corresponde. Con el estado de actividad en verdadero, el chofer puede ponerse en línea y entrar al radar de asignación sin que medie otra validación.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si falta un campo obligatorio o el formato es inválido, la validación global rechaza la petición con 400 y detalla el campo. Enviar una propiedad que no forma parte de los datos declarados también produce 400. |
-| 4 | Si el administrador no es Administrador General y su usuario no tiene distribuidora asociada, el sistema responde 403 "Tu usuario no tiene una distribuidora asociada". |
-| 5 | Si ya existe un usuario con ese correo en la base del sistema, el sistema responde 400 con el mensaje `User with this email already exists`. |
-| 6 | Si el proveedor de autenticación rechaza el alta —correo ya usado allí, o contraseña más corta que su mínimo— la operación falla, la transacción se revierte y no queda ningún registro a medias. |
-| 7 | Si el rol chofer no está cargado en la tabla de roles, el sistema responde con error interno y revierte la transacción. |
-| — | Ante cualquier falla posterior a la creación de la credencial, el sistema revierte la transacción y elimina la credencial recién creada en el proveedor de autenticación, de modo que el alta se puede reintentar con el mismo correo. |
+| 3 | Si falta un campo obligatorio, el formato es inválido o se envía un dato que no forma parte del alta, el sistema responde 400 indicando el campo. |
+| 4 | Si un administrador de empresa no tiene distribuidora asociada, o indica una distribuidora que no es la suya, el sistema responde 403. |
+| 4 | Si el Administrador General no indica distribuidora ni tiene una en contexto, el sistema responde 400 "Falta la distribuidora". |
+| 5 | Si la distribuidora no existe, está dada de baja o no está activa, el sistema responde 404. |
+| 6 | Si el correo o el teléfono ya están en uso, el sistema responde 409. Las demás fallas del alta se tratan como en CU-082. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | El alta involucra una llamada al proveedor de autenticación externo además de la transacción local; se resuelve en menos de tres segundos. |
-| **Frecuencia** | Baja. Cada distribuidora incorpora choferes de forma esporádica. |
+| **Rendimiento** | El alta se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en el proveedor de identidad. |
+| **Frecuencia** | Baja: al incorporar un chofer a la flota. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La marca de validación no habilita ni impide nada: el sistema todavía no la consulta al armar el radar de asignación ni al aceptar un pedido, de modo que la garantía de "el chofer no opera hasta ser validado" no existe. El único control efectivo sobre la operación del chofer es el estado de actividad (CU-033). Como el alta acepta esos dos campos en el cuerpo, el administrador puede crear un chofer ya validado y activo sin ejecutar CU-032. La longitud mínima de la contraseña tampoco la valida el backend: la rechaza, si corresponde, el proveedor de autenticación. Queda registrado como pendiente: hacer que la validación condicione efectivamente el despacho y la aceptación de pedidos, y sacar del alta los campos de validación y actividad para que el circuito de habilitación sea el de CU-032. |
+| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. CU-003 describe el mismo caso visto desde la gestión de usuarios. |
 
 ---
 
@@ -6193,35 +6191,52 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Se da de alta un registro de usuario en la tabla base, con sus datos de identidad y su rol, sin crear todavía el perfil de cliente, chofer o administrador. Es la primitiva de escritura sobre la que se apoyan los registros completos y la usan tanto el flujo de alta como las herramientas de carga. Endpoint público: `POST /users` (`src/users/users.controller.ts:45-46`). |
-| **Precondición** | Ninguna: el endpoint está marcado `@Public()` y no exige sesión. El correo y el teléfono enviados no deben existir ya en el sistema. |
+| **Descripción** | Caso de uso **incluido** (`«include»`) por todas las altas de usuarios: CU-002, CU-003, CU-031, CU-086 y CU-087. Decide si quien pide puede crear ese rol, controla que el correo y el teléfono estén libres, crea la cuenta de acceso en el proveedor de identidad y guarda, en una sola transacción, el usuario con su rol y el perfil que corresponde a ese rol. No lo inicia un actor por sí solo: siempre llega desde uno de los casos que lo incluyen. |
+| **Precondición** | El caso que lo incluye ya validó el formato de los datos y trae el rol pedido y quién lo pide. |
 | **Estado** | Implementado |
+
+**Quién puede crear qué**
+
+| Solicitante | Roles que puede crear | Distribuidora del perfil |
+|---|---|---|
+| Sin sesión (App Cliente) | Cliente | Ninguna |
+| Administrador de empresa | Cliente, Chofer, Administrador | La suya; no puede indicar otra |
+| Administrador General | Cualquiera | La que indique; ninguna para un Administrador General |
+| Herramientas del servidor (arranque, carga inicial) | Cualquiera | La que indiquen |
+
+Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y Administrador, siempre a una.
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente de API envía `POST /users` con nombre, correo, teléfono, rol y demás campos opcionales del DTO (`src/users/dto/create-user.dto.ts`). |
-| 2 | El sistema valida el formato de cada campo presente: el correo tiene que ser un correo, el rol un UUID y las banderas booleanas. |
-| 3 | El sistema arma la entidad de usuario y la persiste. |
-| 4 | El sistema devuelve el usuario creado con su identificador generado. |
+| 1 | El sistema aplica la tabla anterior al solicitante y al rol pedido, y resuelve la distribuidora del perfil. |
+| 2 | Si el perfil pertenece a una distribuidora, el sistema controla que exista y esté activa. |
+| 3 | El sistema controla que el correo y el teléfono no estén en uso por ningún usuario, tampoco por uno dado de baja. |
+| 4 | El sistema crea la cuenta de acceso en el proveedor de identidad. |
+| 5 | En una sola transacción, el sistema guarda el usuario con su rol y el identificador de la cuenta, y crea su perfil: de cliente, de chofer o de administrador. |
+| 6 | Confirmada la transacción, el sistema avisa que se registró un usuario nuevo, para lo que tenga que ocurrir después (el correo de bienvenida de CU-002). |
+| 7 | El sistema devuelve el usuario con su rol y su perfil, sin el identificador de la cuenta de acceso. |
 
-**Postcondición:** Existe un registro de usuario con identificador propio. El usuario todavía no tiene perfil de cliente, chofer ni administrador asociado, ni cuenta en el proveedor de identidad.
+**Postcondición:** Existe un usuario con cuenta de acceso, rol y perfil. Nunca queda un usuario sin perfil ni una cuenta de acceso sin usuario.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si algún campo no cumple su formato, la validación retorna error 400. |
-| 3 | Si el correo o el teléfono ya existen, la base rechaza el alta por índice único y el sistema retorna error 400 "Duplicate entry" con el detalle (`src/users/users.service.ts:225-227`). |
-| 3 | Ante cualquier otro error de base, el sistema retorna error 500 "Unexpected error, check server logs". |
+| 1 | Si el solicitante no puede crear ese rol, o pide una distribuidora que no le corresponde, el sistema responde 403. |
+| 1 | Si el rol necesita distribuidora y no se indicó ninguna, el sistema responde 400. |
+| 2 | Si la distribuidora no existe, está dada de baja o no está activa, el sistema responde 404. |
+| 3 | Si el correo o el teléfono ya están en uso, el sistema responde 409 "Email o teléfono ya en uso" sin crear nada. |
+| 4 | Si el proveedor de identidad rechaza la cuenta —correo ya usado allí, contraseña débil, teléfono inválido—, el sistema responde 400 con el motivo sin crear nada. |
+| 5 | Si falla el guardado del usuario o del perfil, el sistema revierte la transacción y elimina la cuenta de acceso creada en el paso 4. Nunca elimina una cuenta que no haya creado esta misma alta. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una sola escritura, sin transacción explícita ni llamadas externas. |
-| **Frecuencia** | Baja frente al alta completa de cliente: el camino habitual de registro es `POST /users/customer-registration`. |
-| **Estabilidad** | Media |
-| **Comentarios** | Todos los campos del DTO son opcionales, incluido el rol, de modo que es posible crear un usuario sin rol asignado. **⚠️ verificar** si el alta pública sin sesión responde a una necesidad vigente o es un resto del desarrollo inicial. |
+| **Rendimiento** | Dos lecturas de control, una llamada al proveedor de identidad y una transacción con dos escrituras. |
+| **Frecuencia** | La suma de las altas de los casos que lo incluyen. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Unifica lo que antes eran seis caminos de alta distintos, con reglas y compensaciones propias; uno de ellos borraba la cuenta del usuario existente ante un alta repetida (hallazgo H-70). Hay usuarios anteriores a esta unificación sin cuenta de acceso (H-72). |
 
 ---
 
@@ -6325,7 +6340,7 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | El panel envía `DELETE /users/:id`. |
 | 3 | El sistema valida el formato UUID y recupera el usuario con sus relaciones. |
 | 4 | El sistema borra el registro de la base; los perfiles de cliente y de chofer se borran en cascada desde el usuario. |
-| 5 | Si el borrado funcionó y el usuario tenía correo, el sistema lo elimina también del proveedor de identidad, en modo best-effort (`src/users/users.service.ts:196-198`). |
+| 5 | Si el borrado funcionó y el usuario tenía cuenta de acceso, el sistema la elimina también del proveedor de identidad por su identificador, en modo best-effort. |
 | 6 | El sistema devuelve el mensaje "Usuario eliminado permanentemente de DB y Firebase". |
 
 **Postcondición:** La cuenta ya no existe ni en la base ni en el proveedor de identidad, y tampoco sus perfiles asociados.
@@ -6359,44 +6374,40 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Se da de alta una cuenta de administrador con su usuario, su credencial en el proveedor de identidad y su perfil administrativo. Las reglas de alcance multi-empresa dependen de quién registra: el Administrador General (ACT-05) elige a qué distribuidora asignar el nuevo administrador y puede crear administradores generales, mientras que un administrador de empresa (ACT-03) solo puede crear administradores de **su propia** distribuidora y nunca administradores generales. Endpoints: `POST /admin/register` (`src/admin/admin.controller.ts:52`) y `POST /admin` (`:18`, alta directa del perfil, exclusiva de SUPER_ADMIN). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. Si es administrador de empresa, su usuario tiene distribuidora asociada. El correo y el teléfono no están en uso. |
+| **Descripción** | Se da de alta un administrador de empresa o un Administrador General desde el Panel Web. Las reglas dependen de quién registra: el Administrador General (ACT-05) crea administradores en cualquier distribuidora y también otros administradores generales; un administrador de empresa (ACT-03) sólo crea administradores de su propia distribuidora y nunca administradores generales. La creación de la identidad la resuelve el caso incluido CU-082. Endpoint: `POST /users` con rol `admin` o `super_admin`. |
+| **Precondición** | El solicitante está autenticado con rol de administrador. Si es administrador de empresa, su usuario tiene distribuidora asociada. El correo y el teléfono no están en uso. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador completa en el panel los datos del nuevo administrador: nombre, correo, teléfono, contraseña y rol. |
-| 2 | El panel envía `POST /admin/register` con esos datos. |
-| 3 | Si el solicitante es Administrador General, el sistema toma la distribuidora del cuerpo o la del contexto "ver como"; si no hay ninguna, el administrador queda sin empresa, es decir, transversal. |
-| 4 | Si el solicitante es administrador de empresa, el sistema ignora cualquier distribuidora enviada en el cuerpo y fuerza la propia (`admin.controller.ts:73-88`). |
-| 5 | El sistema verifica que el rol solicitado no sea el de Administrador General cuando quien registra es un administrador de empresa. |
-| 6 | El sistema valida que correo y teléfono estén presentes y libres (`src/admin/helpers/admin-registration.helper.ts:9-38`). |
-| 7 | El sistema crea la credencial en el proveedor de identidad. |
-| 8 | El sistema crea el usuario en la base con el identificador del proveedor. |
-| 9 | El sistema crea el perfil de administrador con el rol y la distribuidora resueltos. |
-| 10 | El sistema devuelve el mensaje "Admin registered successfully" junto con el administrador creado. |
+| 1 | El administrador completa en el panel los datos del nuevo administrador: nombre, correo, teléfono, contraseña y rol (administrador o, sólo para el Administrador General, administrador general). |
+| 2 | Si quien registra es el Administrador General, indica la distribuidora del nuevo administrador. |
+| 3 | El sistema valida el formato de los datos, como en CU-002. |
+| 4 | El sistema resuelve el alcance: un administrador de empresa sólo da de alta en su distribuidora; un administrador general nuevo no pertenece a ninguna. |
+| 5 | **Incluye CU-082 Crear Usuario Base** con el rol pedido: el perfil de administrador queda con ese rol y esa distribuidora. |
+| 6 | El sistema devuelve el usuario creado con su rol. |
 
-**Postcondición:** Existe un administrador con usuario, credencial y perfil, asociado a la distribuidora que corresponde según quién lo creó.
+**Postcondición:** Existe un administrador con cuenta de acceso y perfil, asociado a la distribuidora que corresponde según quién lo creó. Un administrador de empresa siempre tiene distribuidora: sin ella no podría operar.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el solicitante es administrador de empresa y su usuario no tiene distribuidora asociada, el sistema retorna error 403 "Tu usuario no tiene una distribuidora asociada". |
-| 5 | Si un administrador de empresa intenta crear un Administrador General, el sistema retorna error 403 "No podés crear un super administrador". |
-| 6 | Si falta el correo o el teléfono, el sistema retorna error 400 "Email and phone number are required". |
-| 6 | Si el correo o el teléfono ya están en uso, el sistema retorna error 409 "Email o teléfono ya en uso". |
-| 7 | Si la creación en el proveedor de identidad falla, el alta se interrumpe con el error mapeado por el puerto de identidad y no se crea el usuario local. |
-| 2 | Si el solicitante no tiene rol administrativo, el guard de roles rechaza la petición con error 403. |
+| 3 | Si falta un dato o su formato es inválido, el sistema responde 400. |
+| 4 | Si un administrador de empresa intenta crear un administrador general, el sistema responde 403 "No podés crear un super administrador". |
+| 4 | Si un administrador de empresa indica otra distribuidora, o no tiene una asociada, el sistema responde 403. |
+| 4 | Si el Administrador General pide un administrador de empresa sin indicar distribuidora, el sistema responde 400. |
+| 5 | Si el correo o el teléfono ya están en uso, el sistema responde 409. Las demás fallas se tratan como en CU-082. |
+| — | Si el solicitante no tiene rol de administrador, el sistema responde 403 antes de evaluar el alta. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Dos lecturas de unicidad, una llamada al proveedor de identidad y dos escrituras encadenadas. |
-| **Frecuencia** | Baja: solo al incorporar personal administrativo o al dar de alta una distribuidora. |
+| **Rendimiento** | El de CU-082. |
+| **Frecuencia** | Baja: sólo al incorporar personal administrativo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Las reglas de alcance multi-empresa de este caso no figuran en ninguna versión previa de la documentación. |
+| **Comentarios** | Antes de la unificación, el Administrador General podía crear un administrador de empresa sin distribuidora, que después no podía entrar: el acceso rechaza a un administrador sin distribuidora. El alta directa de un perfil de administrador sobre un usuario existente (`POST /admin`) sigue disponible sólo para el Administrador General. |
 
 ---
 
@@ -6407,36 +6418,36 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Puesta en marcha del sistema: cuando todavía no existe ningún administrador, este endpoint permite crear el primero sin estar autenticado, porque no hay nadie que pueda autorizar el alta. Una vez que existe al menos un administrador, la puerta se cierra sola. Endpoint público: `POST /admin/first-superadmin` (`src/admin/admin.controller.ts:32-33`). |
-| **Precondición** | No existe ningún administrador en el sistema. |
+| **Descripción** | Puesta en marcha del sistema: el Administrador General crea la primera cuenta de administrador general ejecutando un comando en el servidor. No hay una operación pública para esto: sólo puede hacerlo quien tiene acceso a la máquina donde corre el sistema. La creación de la identidad la resuelve el caso incluido CU-082. Comando: `npm run crear-superadmin`. |
+| **Precondición** | No existe ningún administrador general. Quien lo ejecuta tiene acceso al servidor. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | Quien instala el sistema envía `POST /admin/first-superadmin` con nombre, correo, teléfono, contraseña y rol. |
-| 2 | El sistema lista todos los administradores existentes. |
-| 3 | El sistema verifica que el listado esté vacío. |
-| 4 | El sistema ejecuta el mismo registro de administrador que CU-086: unicidad, credencial en el proveedor de identidad, usuario y perfil. |
-| 5 | El sistema responde 201 con el administrador creado. |
+| 1 | El Administrador General ejecuta el comando con correo, nombre y teléfono. |
+| 2 | El comando toma la contraseña de una variable de entorno o la pide por teclado sin mostrarla, para que no quede en el historial de la terminal. |
+| 3 | El sistema verifica que no exista ningún administrador general. |
+| 4 | **Incluye CU-082 Crear Usuario Base** con rol administrador general y sin distribuidora. |
+| 5 | El comando informa el correo y el identificador del administrador creado. |
 
-**Postcondición:** El sistema tiene su primer administrador y el endpoint deja de estar disponible, porque a partir de ahí la verificación del paso 3 falla siempre.
+**Postcondición:** El sistema tiene su primer administrador general, que ya puede entrar al Panel Web y crear el resto de las cuentas (CU-086).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si ya existe al menos un administrador, el sistema retorna error 403 "Ya existen administradores en el sistema". |
-| 4 | Si el correo o el teléfono ya están en uso, el sistema retorna error 409 "Email o teléfono ya en uso". |
-| 4 | Si falta el correo o el teléfono, el sistema retorna error 400 "Email and phone number are required". |
+| 1 | Si falta algún dato, el comando lo indica y termina sin crear nada. |
+| 3 | Si ya existe un administrador general, el comando lo avisa y termina con error sin crear nada. |
+| 4 | Si el correo o el teléfono ya están en uso, o el proveedor de identidad rechaza la cuenta, el comando informa el motivo. Las demás fallas se tratan como en CU-082. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Un listado completo de administradores más el alta de CU-086. |
+| **Rendimiento** | El de CU-082 más una consulta de conteo. |
 | **Frecuencia** | Una única vez en la vida de la instalación. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El resumen del endpoint lo marca como "development only" (`admin.controller.ts:35`), pero es también el mecanismo de arranque de una instalación nueva. La distribuidora del administrador creado sale exclusivamente del cuerpo, ya que no hay contexto de empresa sin sesión. |
+| **Comentarios** | Reemplaza al endpoint público `POST /admin/first-superadmin`, que quedaba expuesto en internet durante toda la vida del sistema aunque sólo sirviera una vez. |
 
 ---
 
@@ -8169,14 +8180,16 @@ sequenceDiagram
     actor CLI as Cliente
     participant SIS as Sistema
 
-    CLI->>SIS: registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
+    CLI->>SIS: registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
     activate SIS
-    alt datos válidos y correo/teléfono libres
-        SIS-->>CLI: cuenta creada (usuarioId, clienteId, rol CLIENTE)
+    alt datos válidos y correo y teléfono libres
+        SIS-->>CLI: cuenta creada (usuarioId, perfil de cliente, rol CLIENTE)
     else correo o teléfono ya registrados
-        SIS-->>CLI: error de solicitud (el usuario ya existe)
-    else datos incompletos o inválidos
-        SIS-->>CLI: error de validación
+        SIS-->>CLI: conflicto (el correo o el teléfono ya están en uso)
+    else datos incompletos o con formato inválido
+        SIS-->>CLI: error de validación indicando el campo
+    else demasiadas altas seguidas desde el mismo origen
+        SIS-->>CLI: demasiadas solicitudes (reintentar en un minuto)
     end
     deactivate SIS
 ```
@@ -8198,11 +8211,13 @@ sequenceDiagram
 
     ADM->>SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
     activate SIS
-    alt registro exitoso
-        SIS-->>ADM: chofer creado (usuarioId, choferId, validado en falso)
-    else el administrador no tiene distribuidora asociada
+    alt puede dar de alta en esa distribuidora y los datos son válidos
+        SIS-->>ADM: chofer registrado (usuarioId, perfil de chofer, rol CHOFER)
+    else la distribuidora no es la suya, o no tiene distribuidora asociada
         SIS-->>ADM: acceso denegado
-    else datos inválidos o correo duplicado
+    else correo o teléfono ya registrados
+        SIS-->>ADM: conflicto (el correo o el teléfono ya están en uso)
+    else datos inválidos o falta la distribuidora
         SIS-->>ADM: error de validación
     end
     deactivate SIS
@@ -9218,10 +9233,14 @@ sequenceDiagram
 
     ADM->>SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
     activate SIS
-    alt el administrador puede dar de alta en esa distribuidora
-        SIS-->>ADM: chofer registrado (pendiente de validación)
-    else el administrador no pertenece a esa distribuidora
+    alt puede dar de alta en esa distribuidora y los datos son válidos
+        SIS-->>ADM: chofer registrado (usuarioId, perfil de chofer, rol CHOFER)
+    else la distribuidora no es la suya, o no tiene distribuidora asociada
         SIS-->>ADM: acceso denegado
+    else correo o teléfono ya registrados
+        SIS-->>ADM: conflicto (el correo o el teléfono ya están en uso)
+    else datos inválidos o falta la distribuidora
+        SIS-->>ADM: error de validación
     end
     deactivate SIS
 ```
@@ -11225,17 +11244,22 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-082 Crear Usuario Base
     autonumber
-    actor CLI as Cliente
+    actor SOL as Solicitante
     participant SIS as Sistema
 
-    CLI->>SIS: crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)
+    SOL->>SIS: crearUsuario(rol, nombreCompleto, correo, telefono, contrasena, datosDelPerfil)
     activate SIS
-    alt datos válidos
-        SIS-->>CLI: usuario creado (usuarioId, rol asignado)
-    else datos inválidos o correo duplicado
-        SIS-->>CLI: error de validación
+    alt el solicitante puede crear ese rol y los datos son válidos
+        SIS-->>SOL: usuario creado con su cuenta de acceso y su perfil (usuarioId, rol)
+    else el rol o la distribuidora no le corresponden
+        SIS-->>SOL: acceso denegado
+    else correo o teléfono ya registrados
+        SIS-->>SOL: conflicto (el correo o el teléfono ya están en uso)
+    else datos inválidos
+        SIS-->>SOL: error de validación
     end
     deactivate SIS
+    Note over SOL,SIS: Caso incluido: lo inician CU-002, CU-003, CU-031, CU-086 y CU-087
 ```
 
 > Es el alta "cruda" de la cuenta, sin perfil asociado. El alta completa del cliente es CU-002.
@@ -11345,14 +11369,16 @@ sequenceDiagram
     actor ADM as Administrador
     participant SIS as Sistema
 
-    ADM->>SIS: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)
+    ADM->>SIS: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rol, distribuidoraId)
     activate SIS
     alt es super administrador
-        SIS-->>ADM: administrador creado en la distribuidora indicada
-    else es administrador de empresa y el alta es en su propia distribuidora
+        SIS-->>ADM: administrador creado en la distribuidora indicada, o super administrador sin distribuidora
+    else es administrador de empresa y el alta es un admin de su propia distribuidora
         SIS-->>ADM: administrador creado en su distribuidora
     else intenta crear en otra distribuidora o con rol de super administrador
         SIS-->>ADM: acceso denegado
+    else correo o teléfono ya registrados
+        SIS-->>ADM: conflicto (el correo o el teléfono ya están en uso)
     end
     deactivate SIS
 ```
@@ -11371,17 +11397,18 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-087 Crear El Primer Super Administrador
     autonumber
-    actor ADM as Administrador
+    actor GEN as Administrador General
     participant SIS as Sistema
 
-    ADM->>SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
+    GEN->>SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
     activate SIS
-    alt no existe ningún administrador en el sistema
-        SIS-->>ADM: super administrador creado (queda habilitado el acceso al panel)
-    else ya existen administradores
-        SIS-->>ADM: acceso denegado (la operación de arranque ya fue consumida)
+    alt no existe ningún super administrador
+        SIS-->>GEN: super administrador creado (queda habilitado el acceso al panel)
+    else ya existe un super administrador
+        SIS-->>GEN: rechazo (la operación de arranque ya fue usada)
     end
     deactivate SIS
+    Note over GEN,SIS: Se ejecuta desde el servidor, no desde el panel ni las apps
 ```
 
 > Es una operación de **una sola vez**: se autodeshabilita apenas existe el primer administrador.
@@ -13805,180 +13832,86 @@ sequenceDiagram
 
 #### DSD — CU-002: Registrarse como Cliente
 
-Endpoint `@Public()`. Crea **User + Customer + usuario de Firebase** en una sola unidad de
-trabajo; si algo falla, la transacción se revierte y además se compensa el usuario de
-Firebase (que vive fuera de la base y no participa del rollback).
+Puerta pública del alta: `POST /auth/registro`, con un cupo propio de diez altas por minuto por IP. Siempre crea un cliente: el DTO no tiene rol, y el `ValidationPipe` rechaza cualquier campo de más. La identidad la crea `RegistroService.registrar`, el mismo camino de todas las altas: el diagrama muestra la puerta y el perfil propios de este caso, y la nota `«include» CU-082` marca dónde entra el caso incluido, cuyo DSD tiene el detalle.
 
-**Clases participantes:** `UsersController`, `CustomersService`, `DataSource`, `QueryRunner`, `Repository<User>`, `Repository<Role>`, `Repository<Customer>`, `FirebaseAuthPort` (impl. `FirebaseAuthAdapter`), `EmailService`, entidades `User`, `Customer`, `Role`.
+**Clases participantes:** `AppThrottlerGuard`, `RegistroController`, `RegistroService`, `CustomersService`, `BienvenidaListener`, `EmailService`, DTO `RegistrarClienteDto`, `UserResponseDto`, evento `UsuarioRegistradoEvent`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-002 Registrarse Como Cliente
     autonumber
-    participant CTRL as UsersController
+    participant THR as AppThrottlerGuard
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
     participant CSRV as CustomersService
-    participant QR as QueryRunner
-    participant UREP as RepositoryUser
-    participant RREP as RepositoryRole
-    participant CREP as RepositoryCustomer
-    participant FB as FirebaseAuthPort
+    participant LIS as BienvenidaListener
     participant MAIL as EmailService
 
-    CTRL->>CSRV: registerWithUser(completeRegistrationDto)
-    activate CSRV
-    CSRV->>QR: connect() y startTransaction()
-    activate QR
-    CSRV->>UREP: findOne(email)
-    activate UREP
-    alt Ya existe un usuario con ese email
-        UREP-->>CSRV: User
-        deactivate UREP
-        CSRV->>QR: rollbackTransaction()
-        CSRV-->>CTRL: BadRequestException User with this email already exists
-        deactivate CSRV
-    else Email libre
-        UREP-->>CSRV: null
-        CSRV->>FB: createUserSafe(email, password, full_name, phone_number)
-        activate FB
-        FB->>FB: createUser(props)
-        FB-->>CSRV: UserRecord con uid
-        deactivate FB
-        CSRV->>RREP: findOne(type customer)
-        activate RREP
-        alt No existe el rol customer
-            RREP-->>CSRV: null
-            deactivate RREP
-            CSRV-->>CTRL: InternalServerErrorException Customer role not found
-        else Rol encontrado
-            RREP-->>CSRV: Role
-            CSRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id)
-            activate UREP
-            CSRV->>QR: manager.save(user)
-            CSRV->>CREP: create(user_id, notification_token, lat_lang, validated false)
-            activate CREP
-            CSRV->>QR: manager.save(customer)
-            CSRV->>QR: commitTransaction()
-            CSRV->>MAIL: sendWelcomeEmail(dto.email)
-            activate MAIL
-            CSRV->>UREP: findOne(user_id, relations customer y role)
-            UREP-->>CSRV: User completo
-            deactivate UREP
-            CSRV-->>CTRL: User con Customer y Role
-        end
+    THR->>THR: cupo de 10 altas por minuto por IP
+    alt Cupo agotado
+        THR-->>CTRL: 429 Too Many Requests
+    else Dentro del cupo
+        THR->>CTRL: POST /auth/registro con RegistrarClienteDto
+        activate CTRL
+        CTRL->>SRV: registrar(datos con rol customer, solicitante anonimo)
+        activate SRV
+        Note over SRV: «include» CU-082 Crear Usuario Base
+        SRV->>CSRV: crearPerfil(manager, user_id, lat_lang, notification_token)
+        CSRV-->>SRV: perfil de cliente sin validar
+        SRV-)LIS: usuario.registrado con rol customer
+        SRV-->>CTRL: User con rol y perfil de cliente
+        deactivate SRV
+        CTRL-->>THR: 201 UserResponseDto
+        deactivate CTRL
+        LIS->>MAIL: sendWelcomeEmail(email, nombre)
+        MAIL-->>LIS: si falla, solo queda el aviso en el log
     end
-
-    opt Cualquier error despues de crear el usuario de Firebase
-        CSRV->>QR: rollbackTransaction()
-        CSRV->>FB: deleteUserByEmailSafe(dto.email, logger)
-        activate FB
-        FB->>FB: getUserByEmail(email) y deleteUser(uid)
-        CSRV->>CSRV: handleDBExceptions(error)
-    end
-    CSRV->>QR: release()
-    deactivate MAIL
-    deactivate CREP
-    deactivate FB
-    deactivate QR
 ```
 
 **Observaciones de diseño**
 
-- El email de bienvenida es **best-effort**: si `EmailService.sendWelcomeEmail` falla, el
-  registro ya está commiteado y solo queda un `logger.warn`.
-- `deleteUserByEmailSafe` es un **rollback de compensación**, no una transacción: nunca
-  lanza, porque el peor caso tolerable es un usuario huérfano en Firebase.
-- El mapeo de errores de Firebase (`weak-password`, `email-already-exists`, …) está
-  centralizado en el puerto (`createUserSafe`), no duplicado en cada service.
+- El correo de bienvenida **escucha** el evento `usuario.registrado` en lugar de que el alta llame al correo: `registro` no depende de `email`, y un correo que no sale nunca deshace un alta ya confirmada.
+- El cupo de altas es más estricto que el global porque cada alta crea una cuenta en el proveedor de identidad y manda un correo.
+- La respuesta sale por `UserMapper`: no incluye `firebase_uid` ni el token de notificaciones.
+- `POST /users/customer-registration` responde con el mismo método mientras las versiones publicadas de la app lo usen.
 
 ---
 
 #### DSD — CU-003: Registrar Chofer
 
-Mismo endpoint que CU-031. A diferencia de CU-002, **no** es público: lo dispara un
-administrador, y el chofer nace atado a una distribuidora. La decisión de qué tenant se
-usa vive en el controller, no en el service.
+Mismo caso que CU-031, visto desde la gestión de usuarios. Lo dispara un administrador por `POST /users` con rol `delivery`, y el chofer nace atado a una distribuidora. La identidad la crea `RegistroService.registrar`, el mismo camino de todas las altas: el diagrama muestra la puerta y el perfil propios de este caso, y la nota `«include» CU-082` marca dónde entra el caso incluido, cuyo DSD tiene el detalle.
 
-**Clases participantes:** `UsersController`, `AuthGuard`, `RolesGuard`, `DeliveryService`, `DataSource`, `QueryRunner`, `Repository<User>`, `Repository<Role>`, `Repository<Delivery>`, `FirebaseAuthPort`, entidades `User`, `Delivery`, `Role`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `DeliveryService`, DTO `RegistrarUsuarioDto`, `UserResponseDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-003 Registrar Chofer
     autonumber
-    participant GUARD as AuthGuard
-    participant RG as RolesGuard
-    participant CTRL as UsersController
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
     participant DSRV as DeliveryService
-    participant QR as QueryRunner
-    participant UREP as RepositoryUser
-    participant RREP as RepositoryRole
-    participant DREP as RepositoryDelivery
-    participant FB as FirebaseAuthPort
 
-    GUARD->>GUARD: canActivate(context)
-    GUARD->>GUARD: resolveDistributor(local_user, request)
-    GUARD-->>RG: request.user con role y distributor_id
-    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
-    alt Rol no permitido
-        RG-->>CTRL: ForbiddenException Acceso denegado
-    else Rol permitido
-        RG-->>CTRL: true
-        CTRL->>CTRL: resolver targetDistributor segun rol
-        alt No es super_admin y no tiene distribuidora
-            CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
-        else Tenant resuelto
-            CTRL->>DSRV: registerWithUser(createDeliveryDto con distributorId)
-            activate DSRV
-            DSRV->>QR: connect() y startTransaction()
-            activate QR
-            DSRV->>UREP: findOne(email)
-            activate UREP
-            alt Email ya usado
-                UREP-->>DSRV: User
-                deactivate UREP
-                DSRV-->>CTRL: BadRequestException User with this email already exists
-                deactivate DSRV
-            else Email libre
-                UREP-->>DSRV: null
-                DSRV->>FB: createUserSafe(email, password, full_name, phone_number)
-                activate FB
-                FB-->>DSRV: UserRecord con uid
-                deactivate FB
-                DSRV->>RREP: findOne(type delivery)
-                activate RREP
-                RREP-->>DSRV: Role
-                deactivate RREP
-                DSRV->>UREP: create(email, full_name, firebase_uid, role_id, selfie)
-                activate UREP
-                DSRV->>QR: manager.save(user)
-                DSRV->>DREP: create(user_id, distributor_id, latLng, validated, isActive, balance 0)
-                activate DREP
-                DSRV->>QR: manager.save(delivery)
-                DSRV->>QR: commitTransaction()
-                DSRV->>UREP: findOne(user_id, relations delivery y role)
-                UREP-->>DSRV: User completo
-                deactivate UREP
-                DSRV-->>CTRL: User con Delivery y Role
-            end
-            opt Error en cualquier paso
-                DSRV->>QR: rollbackTransaction()
-                DSRV->>FB: deleteUserByEmailSafe(email, logger)
-                activate FB
-                DSRV->>DSRV: handleDBExceptions(error)
-            end
-            DSRV->>QR: release()
-        end
+    CTRL->>SRV: registrar(datos con rol delivery, solicitante con su sesion)
+    activate SRV
+    SRV->>POL: autorizarAlta(solicitante, delivery, distributorId)
+    alt Admin de empresa
+        POL-->>SRV: su propia distribuidora, 403 si pidio otra
+    else Administrador General
+        POL-->>SRV: la distribuidora indicada o la de X-Distributor, 400 si no hay ninguna
     end
-    deactivate DREP
-    deactivate FB
-    deactivate QR
+    Note over SRV: «include» CU-082 Crear Usuario Base
+    SRV->>DSRV: crearPerfil(manager, user_id, distributorId, validated, isActive)
+    DSRV-->>SRV: perfil de chofer con balance 0 y calificacion 0
+    SRV-->>CTRL: User con rol y perfil de chofer
+    deactivate SRV
+    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Observaciones de diseño**
 
-- Un `admin` de empresa crea al chofer SIEMPRE en su propia distribuidora: el
-  `distributorId` del body se ignora. Solo el `super_admin` puede elegirlo.
-- El `distributor_id` no es un dato de entrada libre: `AuthGuard.resolveDistributor` lo
-  deriva del perfil del staff (server-trusted), así que un admin no puede operar otro tenant.
+- La distribuidora la decide la política, no el cuerpo: un admin de empresa sólo puede dar de alta en la suya, que sale de su perfil y no del pedido.
+- El perfil de chofer lo crea `DeliveryService.crearPerfil`, dueño de la tabla, dentro de la transacción del alta.
 
 ---
 
@@ -14209,68 +14142,82 @@ sequenceDiagram
 
 #### DSD — CU-082: Crear Usuario Base
 
-Alta mínima de `User` sin perfil asociado (no crea Customer ni Delivery ni usuario de
-Firebase). Es la puerta de bajo nivel que usan los helpers de registro.
+El alta común de todos los usuarios, incluida por CU-002, CU-003, CU-031, CU-086 y CU-087. `RegistroService` orquesta; cada tabla la escribe el servicio que es su dueño.
 
-**Clases participantes:** `UsersController`, `UsersService`, `Repository<User>`, entidad `User`; helpers `validateUniqueness`, `createUserInFirebase`, `createUserInDatabase` de `user-registration.helper.ts`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `DistributorService`, `RoleService`, `UsersService`, `FirebaseAuthPort` (impl. `FirebaseAuthAdapter`), `DataSource`, `CustomersService` / `DeliveryService` / `AdminService` (según el rol), `EventEmitter2`, DTO `RegistrarUsuarioDto`, `UserResponseDto`, evento `UsuarioRegistradoEvent`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-082 Crear Usuario Base
     autonumber
-    participant CTRL as UsersController
-    participant SRV as UsersService
-    participant REP as RepositoryUser
-    participant HLP as UserRegistrationHelper
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
+    participant DIS as DistributorService
+    participant ROL as RoleService
+    participant USR as UsersService
     participant FB as FirebaseAuthPort
+    participant TX as DataSource
+    participant PERF as ServicioDelPerfil
+    participant EV as EventEmitter2
 
-    CTRL->>SRV: create(createUserDto)
+    CTRL->>SRV: registrar(datos, solicitante)
     activate SRV
-    SRV->>REP: create(createUserDto)
-    activate REP
-    REP-->>SRV: User no persistido
-    deactivate REP
-    SRV->>REP: save(user)
-    activate REP
-    alt Violacion de unicidad, codigo 23505
-        REP-->>SRV: QueryFailedError
-        deactivate REP
-        SRV->>SRV: handleDBExceptions(error)
-        SRV-->>CTRL: BadRequestException Duplicate entry
-        deactivate SRV
-    else Guardado correcto
-        REP-->>SRV: User persistido
-        SRV-->>CTRL: User
-    end
-
-    opt Camino de los helpers de registro
-        HLP->>SRV: checkUserExists(dto.email, dto.phone_number) desde validateUniqueness
-        activate SRV
-        SRV-->>HLP: exists, email, phoneNumber
-        deactivate SRV
-        alt Email o telefono ya en uso
-            HLP-->>HLP: HttpException CONFLICT Email o telefono ya en uso
+    SRV->>POL: autorizarAlta(solicitante, datos.rol, datos.distributorId)
+    alt El solicitante no puede crear ese rol o en esa distribuidora
+        POL-->>SRV: ForbiddenException o BadRequestException
+        SRV-->>CTRL: 403 o 400, sin tocar nada
+    else Alta autorizada
+        POL-->>SRV: AltaAutorizada con rol y distributorId
+        opt El perfil pertenece a una distribuidora
+            SRV->>DIS: assertActive(distributorId)
+            DIS-->>SRV: Distributor, o NotFoundException si no existe o esta dada de baja
+        end
+        SRV->>ROL: findByType(rol)
+        ROL-->>SRV: Role
+        SRV->>USR: assertDisponible(email, telefono)
+        alt Correo o telefono en uso, incluidos los usuarios dados de baja
+            USR-->>SRV: ConflictException
+            SRV-->>CTRL: 409 Email o telefono ya en uso
         else Libres
-            HLP->>SRV: createFirebaseUser(dto) desde createUserInFirebase
-            activate SRV
-            SRV->>FB: createUserSafe(createUserDto)
-            activate FB
-            FB-->>SRV: UserRecord
-            deactivate FB
-            SRV-->>HLP: UserRecord
-            deactivate SRV
-            HLP->>SRV: create(createUserDto con firebase_uid) desde createUserInDatabase
-            activate SRV
-            SRV-->>HLP: User
-            deactivate SRV
+            SRV->>FB: createUserSafe(email, password, full_name, phone_number)
+            alt Firebase rechaza la cuenta
+                FB-->>SRV: BadRequestException con el motivo mapeado
+                SRV-->>CTRL: 400, no se creo nada que deshacer
+            else Cuenta creada
+                FB-->>SRV: UserRecord con uid
+                SRV->>TX: transaction(manager)
+                activate TX
+                TX->>USR: crearEnTransaccion(manager, datos, firebase_uid, role_id)
+                USR-->>TX: User
+                TX->>PERF: crearPerfil(manager, user_id, datos del rol)
+                alt Falla el usuario o el perfil
+                    TX-->>SRV: error y rollback
+                    SRV->>FB: deleteUserSafe(uid) de la cuenta creada en esta llamada
+                    SRV-->>CTRL: error traducido por traducirErrorDeBase
+                else Transaccion confirmada
+                    TX-->>SRV: user_id
+                    SRV->>EV: emit(usuario.registrado, UsuarioRegistradoEvent)
+                    SRV->>USR: findOne(user_id)
+                    USR-->>SRV: User con rol y perfil
+                    SRV-->>CTRL: User
+                end
+                deactivate TX
+            end
         end
     end
+    deactivate SRV
+    Note over CTRL,PERF: ServicioDelPerfil es CustomersService, DeliveryService o AdminService segun el rol
+    Note over CTRL: UserMapper.toDto(user) a UserResponseDto, sin firebase_uid
 ```
 
 **Observaciones de diseño**
 
-- El endpoint es `@Public()`: es una puerta de alta genérica, no la del registro de
-  clientes (CU-002), que sí arma el agregado completo en transacción.
+- **Orden de las operaciones:** todo lo que puede fallar sin efectos (autorización, distribuidora, duplicados) va antes de crear la cuenta en el proveedor de identidad; así un rechazo nunca deja nada que deshacer.
+- **Compensación acotada:** si la transacción falla, se borra la cuenta del proveedor **por el `uid` que devolvió esta misma alta**. Borrar por correo se llevaba puesta la cuenta de quien ya estaba registrado (H-70).
+- Los duplicados se controlan también contra los usuarios dados de baja: un correo borrado no se reutiliza para heredar el historial de otro.
+- El módulo `registro` depende de los dueños de cada tabla y nadie depende de él, por eso no arma ciclos entre `users`, `customer`, `delivery`, `admin` y `email`.
+- El evento `usuario.registrado` se publica recién con la transacción confirmada.
 
 ---
 
@@ -14431,11 +14378,9 @@ sequenceDiagram
                 SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
             else Borrado en base
                 REP-->>SRV: DeleteResult
-                opt El usuario tiene email
-                    SRV->>SRV: cleanupFirebaseUser(user.email)
-                    SRV->>FB: deleteUserByEmailSafe(email, logger)
+                opt El usuario tiene firebase_uid
+                    SRV->>FB: deleteUserSafe(user.firebase_uid, logger)
                     activate FB
-                    FB->>FB: getUserByEmail(email)
                     FB->>FB: deleteUser(uid)
                 end
                 SRV-->>CTRL: message Usuario eliminado permanentemente de DB y Firebase
@@ -16270,7 +16215,7 @@ verificable en el código y quedaron modelados.
 | CU | Salvedad |
 |---|---|
 | CU-001 | `AuthService.login` recibe `requestSource` pero **no lo usa**: la validación de rol-por-app la hace `AuthGuard.validateUserRoleForApp`. El parámetro está en la firma y se dibuja como tal. |
-| CU-003 | El diagrama es el del endpoint `POST /users/delivery-registration`, que realiza a la vez CU-003 y CU-031. |
+| CU-003 | El diagrama es el de CU-031: los dos son el alta de un chofer por `POST /users`, que incluye CU-082. |
 | CU-004 | El CU habla de "una pantalla"; el código lo resuelve con **dos** controllers (`UsersController` y `CustomersController`) sobre agregados distintos. Se modelaron los dos lados. |
 | CU-012 | Se documenta como observación el gap real: no genera `deliveryCode`, no cierra la `DispatchOffer` y no emite `order:accepted`. No se inventó ninguna llamada que el código no tenga. |
 | CU-019 | Falta la validación de que el chofer sea el asignado al pedido. Se señala como gap, no se dibuja como si existiera. |
@@ -16282,7 +16227,7 @@ verificable en el código y quedaron modelados.
 `Repository<Order>`, `RepositoryRole` = `Repository<Role>`, `RepositoryUserAddress` =
 `Repository<UserAddress>`, `SelectQueryBuilderUser` = `SelectQueryBuilder<User>`,
 `OrderStatusMachine` = módulo `order-status.machine.ts` (funciones `transitionOrder` /
-`assertTransition`), `UserRegistrationHelper` = módulo `user-registration.helper.ts`,
+`assertTransition`), `PoliticaDeRegistro` = función `autorizarAlta` de `politica-de-registro.ts`,
 `FirebaseAuthClientSDK` = SDK `firebase/auth` (función `signInWithEmailAndPassword`).
 
 ---
@@ -16720,92 +16665,40 @@ sequenceDiagram
 
 #### DSD — CU-031: Registrar Chofer
 
-Registro **transaccional a través de dos sistemas**: la base propia (User + Delivery) y Firebase Auth. La compensación del lado de Firebase es explícita porque no participa de la transacción de Postgres.
+Alta de un chofer desde el panel: `POST /users` con rol `delivery`. La identidad la crea `RegistroService.registrar`, el mismo camino de todas las altas: el diagrama muestra la puerta y el perfil propios de este caso, y la nota `«include» CU-082` marca dónde entra el caso incluido, cuyo DSD tiene el detalle.
 
-**Clases participantes:** `UsersController`, `DeliveryService`, `DataSource`, `QueryRunner`, `EntityManager`, `FirebaseAuthPort` (impl. `FirebaseAuthAdapter`), `Repository<User>`, `Repository<Role>`, `Repository<Delivery>`, DTO `CreateDeliveryDto`, entidades `User`, `Role`, `Delivery`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `DistributorService`, `DeliveryService`, DTO `RegistrarUsuarioDto`, `UserResponseDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-031 Registrar Chofer
     autonumber
-    participant CTRL as UsersController
-    participant SRV as DeliveryService
-    participant DS as DataSource
-    participant QR as QueryRunner
-    participant FB as FirebaseAuthPort
-    participant UREP as RepositoryUser
-    participant RREP as RepositoryRole
-    participant DREP as RepositoryDelivery
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
+    participant DSRV as DeliveryService
 
-    CTRL->>CTRL: resolver targetDistributor segun rol del actor
-    alt No es SUPER_ADMIN y no tiene distribuidora
-        CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
-    else Distribuidora resuelta
-        CTRL->>SRV: registerWithUser(dto con distributorId)
-        activate SRV
-        SRV->>DS: createQueryRunner()
-        activate DS
-        DS-->>SRV: QueryRunner
-        deactivate DS
-        SRV->>QR: connect() y startTransaction()
-        activate QR
-        SRV->>UREP: findOne(where email)
-        activate UREP
-        UREP-->>SRV: User existente o null
-        deactivate UREP
-        alt Ya existe un usuario con ese email
-            SRV->>QR: rollbackTransaction()
-            SRV-->>CTRL: BadRequestException User with this email already exists
-            deactivate SRV
-        else Email libre
-            SRV->>FB: createUserSafe(email, password, full_name, phone_number)
-            activate FB
-            FB-->>SRV: firebaseUser con uid
-            deactivate FB
-            SRV->>RREP: findOne(where type delivery)
-            activate RREP
-            RREP-->>SRV: Role o null
-            deactivate RREP
-            alt No existe el rol delivery
-                SRV->>QR: rollbackTransaction()
-                SRV->>FB: deleteUserByEmailSafe(email, logger)
-                activate FB
-                SRV-->>CTRL: InternalServerErrorException Delivery role not found
-            else Rol encontrado
-                SRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id, selfie)
-                activate UREP
-                UREP-->>SRV: User en memoria
-                deactivate UREP
-                SRV->>QR: manager.save(user)
-                QR-->>SRV: savedUser con user_id
-                deactivate QR
-                SRV->>DREP: create(user_id, distributor_id, calification, latLng, actual_location, validated, isActive, balance 0)
-                activate DREP
-                DREP-->>SRV: Delivery en memoria
-                deactivate DREP
-                SRV->>QR: manager.save(delivery)
-                activate QR
-                SRV->>QR: commitTransaction()
-                SRV->>UREP: findOne(user_id, relations delivery y role)
-                activate UREP
-                UREP-->>SRV: User completo
-                deactivate UREP
-                SRV-->>CTRL: User con su perfil de chofer
-            end
-        end
-        SRV->>QR: release()
+    CTRL->>SRV: registrar(datos con rol delivery, solicitante con su sesion)
+    activate SRV
+    SRV->>POL: autorizarAlta(solicitante, delivery, distributorId)
+    alt Admin de empresa
+        POL-->>SRV: su propia distribuidora, 403 si pidio otra
+    else Administrador General
+        POL-->>SRV: la distribuidora indicada o la de X-Distributor, 400 si no hay ninguna
     end
-    deactivate FB
-    deactivate QR
+    Note over SRV: «include» CU-082 Crear Usuario Base
+    SRV->>DSRV: crearPerfil(manager, user_id, distributorId, validated, isActive)
+    DSRV-->>SRV: perfil de chofer con balance 0 y calificacion 0
+    SRV-->>CTRL: User con rol y perfil de chofer
+    deactivate SRV
+    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Observaciones de diseño**
 
-- **Compensación explícita del lado externo:** cualquier fallo posterior al alta en Firebase dispara `rollbackTransaction()` sobre Postgres **y** `deleteUserByEmailSafe(...)` sobre Firebase. Sin eso quedaría un usuario huérfano en el proveedor de identidad.
-- El `release()` del `QueryRunner` está en el `finally`: se ejecuta en todos los caminos, incluido el de error.
-- La lógica vive en `DeliveryService`, no en `UsersService`: `UsersService` dejó de conocer entidades de otros dominios (refactor P2-3).
-- Un admin de empresa **no puede elegir distribuidora**: se ignora el `distributorId` del body y se usa el del header. Sólo el `super_admin` puede targetear otro tenant.
-- Es el mismo endpoint que CU-003 (`POST /users/delivery-registration`); no existe un auto-registro de chofer.
+- **Una sola regla de autorización** para todas las altas: `autorizarAlta` recibe quién pide y qué rol pide, y devuelve la distribuidora del perfil o rechaza. Un admin de empresa no puede indicar otra distribuidora (403); el super admin indica la que quiera, que tiene que existir y estar activa (404 si no).
+- `DeliveryService.crearPerfil` recibe el `EntityManager` de la transacción del alta: el módulo dueño de la tabla escribe su fila sin que `registro` conozca la entidad `Delivery`.
+- No existe el auto-registro de choferes: la puerta pública siempre crea clientes.
 
 ---
 
@@ -19499,158 +19392,82 @@ sequenceDiagram
 
 #### C.18 DSD — CU-086: Registrar Administrador
 
-**Clases participantes:** `@CurrentUser()`, `@CurrentDistributor()`, `AdminController`, `AdminService`, `AdminRegistrationHelper`, `UsersService`, `Repository<Role>`, `Repository<Admin>`, entidades `User`, `Admin`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `AdminService`, DTO `RegistrarUsuarioDto`, `UserResponseDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-086 Registrar Administrador
     autonumber
-    participant ACT as SuperAdmin o Admin de empresa
-    participant CTRL as AdminController
-    participant SRV as AdminService
-    participant RSRV as RoleService
-    participant HLP as AdminRegistrationHelper
-    participant USR as UsersService
-    participant AREP as RepositoryAdmin
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
+    participant ASRV as AdminService
 
-    ACT->>CTRL: POST /admin/register con RegisterAdminDto
-    activate CTRL
-    alt El solicitante es SUPER_ADMIN
-        CTRL->>SRV: registerAdmin(dto con distributorId del body o del contexto)
-        activate SRV
-    else El solicitante es ADMIN de empresa
-        alt El admin no tiene distribuidora asociada
-            CTRL-->>ACT: ForbiddenException, tu usuario no tiene una distribuidora asociada
-            deactivate CTRL
-        else Tiene tenant
-            CTRL->>SRV: isSuperAdminRole(dto.role_id)
-            SRV->>RSRV: findById(role_id)
-            activate RSRV
-            RSRV-->>SRV: Role o null
-            deactivate RSRV
-            SRV-->>CTRL: boolean
-            deactivate SRV
-            alt El rol pedido es super_admin
-                CTRL-->>ACT: ForbiddenException, no podes crear un super administrador
-            else Rol permitido
-                CTRL->>SRV: registerAdmin(dto con distributorId forzado al del contexto)
-                activate SRV
-            end
-        end
+    CTRL->>SRV: registrar(datos con rol admin o super_admin, solicitante con su sesion)
+    activate SRV
+    SRV->>POL: autorizarAlta(solicitante, rol, distributorId)
+    alt Admin de empresa pide un super_admin
+        POL-->>SRV: ForbiddenException No podes crear un super administrador
+        SRV-->>CTRL: 403
+    else Admin de empresa pide un admin
+        POL-->>SRV: su propia distribuidora, 403 si pidio otra
+    else Administrador General
+        POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
     end
-
-    SRV->>HLP: validateUniqueness(dto, usersService)
-    activate HLP
-    HLP->>USR: findOneByEmail(dto.email)
-    activate USR
-    HLP->>USR: findOneByPhone(dto.phone_number)
-    alt Email o telefono ya en uso
-        HLP-->>ACT: HttpException 409, email o telefono ya en uso
-        deactivate HLP
-    else Datos libres
-        SRV->>HLP: createUserInFirebase(dto, usersService)
-        activate HLP
-        HLP->>USR: createFirebaseUser(dto)
-        USR-->>HLP: firebaseUser con uid
-        deactivate USR
-        SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
-        HLP->>USR: create(dto mas firebase_uid)
-        activate USR
-        USR-->>HLP: User local
-        deactivate USR
-        SRV->>SRV: arma CreateAdminDto con user_id, role_id y distributor_id
-        SRV->>AREP: create(adminData)
-        activate AREP
-        SRV->>AREP: save(admin)
-        AREP-->>SRV: Admin persistido
-        deactivate AREP
-        SRV-->>CTRL: message, admin, user
-        deactivate SRV
-        CTRL->>CTRL: AdminMapper.toRegistrado(admin, user)
-        CTRL-->>ACT: 201 AdminRegistradoResponseDto
-    end
-    deactivate HLP
+    Note over SRV: «include» CU-082 Crear Usuario Base
+    SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
+    ASRV-->>SRV: perfil de administrador
+    SRV-->>CTRL: User con rol
+    deactivate SRV
+    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Observaciones de diseño**
 
-- La regla multi-tenant vive **en el controlador**, no en el servicio: es una decisión de *autorización* (quién puede crear a quién), no de negocio. El `AdminService.registerAdmin` recibe el `distributorId` ya decidido y no vuelve a cuestionarlo.
-- Un admin de empresa tiene **dos barreras** contra la escalada de privilegios: no puede elegir distribuidora (se le pisa el `distributorId` del body con el del contexto) y no puede crear super_admins (`isSuperAdminRole` consulta el tipo real del `role_id`, en lugar de confiar en un nombre del payload).
-- El alta es una **transacción distribuida sin transacción**: primero Firebase, después la base local, después la entidad `Admin`. Si falla el paso 2, queda un usuario huérfano en Firebase. Es el punto frágil conocido de este flujo.
-- `distributor_id = null` es un valor legítimo y significativo: identifica al super_admin cross-tenant.
+- La regla de quién crea a quién es la misma función que en todas las altas (`autorizarAlta`): un admin de empresa no crea super admins ni admins de otra distribuidora.
+- Un admin de empresa siempre tiene distribuidora; `distributor_id = null` queda reservado al super admin. Antes se podía crear un admin sin distribuidora que después no podía entrar.
+- El alta es atómica (usuario y perfil en una transacción), con la compensación de CU-082.
 
 ---
 
 #### C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
 
-**Clases participantes:** `@Public()`, `AuthGuard`, `RolesGuard`, `AdminController`, `AdminService`, `Repository<Admin>`, `AdminRegistrationHelper`, `UsersService`.
+**Clases participantes:** comando `crear-superadmin` (`src/cli/crear-superadmin.ts`), `NestFactory.createApplicationContext`, `AdminService`, `RegistroService`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-087 Crear El Primer Super Administrador
     autonumber
-    participant OPE as Operador de instalacion
-    participant AUTH as AuthGuard
-    participant GRD as RolesGuard
-    participant CTRL as AdminController
-    participant SRV as AdminService
-    participant AREP as RepositoryAdmin
-    participant HLP as AdminRegistrationHelper
-    participant USR as UsersService
+    actor GEN as Administrador General
+    participant CLI as ComandoCrearSuperAdmin
+    participant ASRV as AdminService
+    participant SRV as RegistroService
 
-    OPE->>AUTH: POST /admin/first-superadmin con RegisterAdminDto, sin token
-    activate AUTH
-    AUTH->>AUTH: reflector.get isPublic sobre el handler
-    AUTH-->>GRD: isPublic true, devuelve true sin validar token
-    deactivate AUTH
-    GRD->>GRD: canActivate, isPublic true, no exige rol
-    GRD->>CTRL: createFirstSuperAdmin(registerAdminDto)
-    activate CTRL
-
-    Note over CTRL: Condicion de arranque, la unica autorizacion de esta ruta
-    CTRL->>SRV: findAll()
-    activate SRV
-    SRV->>AREP: find(where vacio, relations user role distributor)
-    activate AREP
-    AREP-->>SRV: Admin[]
-    deactivate AREP
-    SRV-->>CTRL: Admin[]
-    deactivate SRV
-    alt Ya existe al menos un administrador
-        CTRL-->>OPE: ForbiddenException 403, ya existen administradores en el sistema
-        deactivate CTRL
-    else Sistema virgen, cero admins
-        CTRL->>SRV: registerAdmin(registerAdminDto)
+    GEN->>CLI: npm run crear-superadmin con correo, nombre y telefono
+    activate CLI
+    CLI->>CLI: contraseña de SUPERADMIN_PASSWORD o pedida por teclado sin mostrarla
+    CLI->>ASRV: existeSuperAdmin()
+    ASRV-->>CLI: true o false
+    alt Ya existe un super administrador
+        CLI-->>GEN: aviso y salida con codigo 1, no se crea nada
+    else No existe ninguno
+        CLI->>SRV: registrar(datos con rol super_admin, solicitante sistema)
         activate SRV
-        SRV->>HLP: validateUniqueness(dto, usersService)
-        activate HLP
-        SRV->>HLP: createUserInFirebase(dto, usersService)
-        HLP->>USR: createFirebaseUser(dto)
-        activate USR
-        USR-->>HLP: firebaseUser con uid
-        deactivate USR
-        SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
-        HLP->>USR: create(dto mas firebase_uid)
-        activate USR
-        USR-->>HLP: User local
-        deactivate USR
-        SRV->>AREP: create(adminData) y save(admin)
-        activate AREP
-        AREP-->>SRV: Admin persistido
-        deactivate AREP
-        SRV-->>CTRL: message, admin, user
+        Note over SRV: «include» CU-082 Crear Usuario Base
+        SRV->>ASRV: crearPerfil(manager, user_id, role_id, null)
+        ASRV-->>SRV: perfil de administrador sin distribuidora
+        SRV-->>CLI: User
         deactivate SRV
-        CTRL-->>OPE: 201 primer super administrador creado
+        CLI-->>GEN: Super administrador creado con su correo e id
     end
-    deactivate HLP
+    deactivate CLI
 ```
 
 **Observaciones de diseño**
 
-- Es el **problema del arranque en frío**: para crear el primer administrador haría falta un administrador que lo autorice, y no existe. La solución de diseño es una ruta `@Public()` cuya autorización no es un rol sino un **invariante de estado del sistema**: `findAll().length === 0`.
-- La condición es **auto-clausurante**: en cuanto el endpoint tiene éxito una vez, `findAll()` devuelve un elemento y toda llamada posterior falla con 403 permanentemente. La ruta se cierra sola, sin intervención ni feature flag.
-- `@Public()` desactiva **los dos guards en cadena**: `AuthGuard` devuelve `true` antes de buscar el `Bearer` y `RolesGuard` respeta el mismo flag con `getAllAndOverride`, de modo que el `@Roles` de otros handlers de la clase no lo alcanza.
-- Riesgo residual asumido y documentado en el propio `@ApiOperation` ("development only"): la comprobación es **TOCTOU**, dos requests concurrentes sobre un sistema virgen podrían ambas leer cero admins. No hay lock ni unicidad que lo impida.
+- No hay endpoint: el arranque lo hace quien tiene acceso al servidor. Un endpoint público que sólo sirve una vez queda expuesto toda la vida del sistema.
+- La contraseña no viaja como argumento, para que no quede en el historial de la terminal.
+- El comando usa el mismo `RegistroService` que el panel, con el solicitante `sistema`: no hay un segundo camino de alta que mantener.
 
 ---
 

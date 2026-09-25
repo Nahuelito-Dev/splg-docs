@@ -1,107 +1,136 @@
-# Dónde quedamos — 24/09/2026
+# Dónde quedamos — 24/09/2026 (cierre)
 
-Se lee junto con `splg-app-backend/CONVENCIONES.md` (las reglas) y
-`MODELO-DE-DOMINIO.md` (el modelo nuevo).
+Se lee junto con `splg-app-backend/CONVENCIONES.md` (las reglas y los 12 puntos
+de "módulo terminado") y `MODELO-DE-DOMINIO.md` (el modelo nuevo).
 
-**Compromiso:** presentar avances la semana que viene.
+**Objetivo:** dejar las bases del backend alineadas a rajatabla con Nest y
+TypeScript estricto, seguras y escalables, para desarrollar la tesis encima.
 
----
-
-## Lo que se hizo hoy
-
-### Fase 0 — las bases, terminada
-
-| Qué | Estado |
-|---|---|
-| Prettier sobre todo el código | Hecho, en un commit aparte |
-| TypeScript `strict: true` | 339 errores → 0 |
-| ESLint estricto (`any` y promesas sueltas prohibidos) | Activo; `common/`, `main.ts`, `app.module`, `adapters`, `redis` en 0. Lo de cada módulo se resuelve en su tanda |
-| Migración inicial | `InitialSchema`: una base nueva se crea con `migration:run`. Verificado: esquema idéntico al de desarrollo |
-| `CONVENCIONES.md` | Las reglas de Nest y TypeScript y la lista de **12 puntos de módulo terminado** |
-| Bug real | El socket confirmaba la conexión antes de entrar a su sala |
-
-### Modelos para la cátedra, rehechos
-
-- Modelo de dominio en **8 contextos**, con los 153 CU. La **propuesta con
-  vigencia** es el concepto común del despacho y los 4 módulos inteligentes.
-- Modelo de datos completo: **37 tablas, 84 relaciones**; se declaran las 13
-  relaciones sin FK.
-- Actualizados el Doc 2 §1 (modelo conceptual) y el Doc 3 (tabla de
-  faltantes). `verificar-conformidad.py` pasa en todo.
-
-### Tanda 1 — módulos alineados
-
-| Módulo | Qué cambió visible hacia afuera |
-|---|---|
-| `role` | Nada |
-| `auth` | Nada en éxito. 401 de token inválido suma `statusCode` y conserva `code`. Se cortó el ciclo `auth ↔ users` (un guard corría dos veces en `/users`) |
-| `gateways` | Nada. Identidad del socket tipada en `socket.data` |
-| `customer` | Dejan de salir `notification_token` y `user.firebase_uid` (ningún cliente los lee) |
-| `admin` | Dejan de salir `firebase_uid` y `uid` |
-| `health`, `redis`, `firebase` | Ya cumplían; Firebase lee credenciales por `ConfigService` |
-
-Cada uno: prueba unitaria, batería de Postman, comparación de forma de las
-respuestas y sus DSD actualizados en las **tres copias**.
+**Ramas:** backend en `fix/alineacion-nest`; panel y app de clientes en
+`feature/alta-unificada`; docs en `develop`. Todo commiteado y pusheado.
 
 ---
 
-## Avance del 24/09 a la noche (segunda sesión)
+## Estado de los módulos del backend
 
-**Módulos alineados (19):** `health`, `redis`, `firebase`, `common`, `role`,
-`auth`, `gateways`, `customer`\*, `admin`, `claims`, `incident`, `rating`,
-`reports`, `distributor`, `time-slot`\*, `coverage-zone`, `car`, `cylinder`\*,
-`notifications`.
+Medido sobre el código el 24/09 a la noche: lint = errores de ESLint estricto
+(`any` y promesas sueltas prohibidos), pruebas = archivos `.spec.ts`.
 
-\* Les queda un punto que va con `order` en la tanda 3: `customer` (alta de
-clientes crea el User), `time-slot` (el cupo cuenta pedidos dentro de la
-transacción del alta) y `cylinder` (lee el cliente del pedido). Los tres por
-el mismo motivo: `order` ya depende de ellos y la lectura inversa armaría un
-ciclo.
+### Terminados: cumplen Nest + TypeScript estricto
 
-**Hallazgos corregidos:** H-52 (un cliente se validaba solo) y H-56 (el
-informe por producto salía vacío). Anotados sin corregir: H-53, H-54, H-55,
-H-57.
+DTO de entrada y de salida, mapper explícito, `@Auth`, cada módulo dueño de sus
+tablas, sin `forwardRef`, sin `process.env`, lint en 0 y prueba unitaria.
 
-**Diagramas:** los DSD de flota (CU-136 a 142) y el diagrama de clases pasaron
-al modelo Plan + Tarea; CU-021 al día con la identidad del socket. Los 304
-diagramas pasan el parser de Mermaid 10.9.1 y el verificador de la cátedra.
+| Módulo | Pruebas | Nota |
+|---|---|---|
+| `role`, `auth`, `admin`, `claims`, `incident`, `rating`, `distributor`, `coverage-zone`, `car`, `notifications`, `email`, `payments`, `user-address` | sí | `auth`, `email`, `notifications` y `payments` no devuelven entidades: sus DTO se arman directo |
+| `registro` (nuevo) | sí (25) | El alta única de todos los roles, con la política de quién crea qué |
+| `reports` | sí | Excepción documentada: lee entidades ajenas, sólo lectura (CQRS) |
+| `health`, `redis`, `firebase`, `gateways`, `common`, `adapters` | parcial | Infraestructura; `common` usa `process.env` sólo en las fábricas de config, como permite la convención |
+| `customer`, `time-slot`, `cylinder` | sí | Terminados salvo un punto cada uno que depende de `order` (ver tanda 3) |
 
-## Lo que sigue
+### A medias: funcionan y son seguros, falta alinearlos
 
-1. **Tanda 2, lo que falta:** `email` (ciclo con `users`, 41 errores de
-   ESLint) y `payments` (mover el webhook de MercadoPago fuera de `order`).
-2. **Decoradores compuestos** (`applyDecorators`): `@ApiBearerAuth` + `@Roles`
-   + las respuestas de error se repiten en todos los controladores.
-3. **Tanda 3:** `users`, `delivery`, `user-address`, `gascylinder` y `order`
-   al final, con los tres pendientes marcados con \*.
-4. **Pasada final:** camelCase con `@Column({ name })` y renombres de archivos.
-5. Publicar el sitio.
+| Módulo | Qué falta |
+|---|---|
+| `users` | Devuelve la entidad sin mapper, 7 errores de lint, sin pruebas. Seguridad ya corregida (H-62, H-63, H-65, H-73, H-75). Abierto H-66 |
+| `delivery` | Devuelve la entidad sin mapper. Lint en 0 y seguridad corregida (H-61, H-64) |
+| `gascylinder` | Sin mapper, 3 errores de lint, sin pruebas |
+
+### A refactorizar
+
+| Módulo | Qué tiene |
+|---|---|
+| `order` | 221 errores de lint, controlador de 456 líneas, 5 entidades ajenas registradas, 2 `process.env`. Es el último de la tanda 3 y cierra los pendientes de `customer`, `time-slot` y `cylinder` |
+
+### A hacer (no existe todavía o es transversal)
+
+| Tema | Detalle |
+|---|---|
+| Normalización del modelo de datos | Análisis formal tabla por tabla: dependencias funcionales, 1FN a FNBC, 4FN y 5FN, y justificación de cada desnormalización. Candidatos ya vistos: `admin.role_id` repite `user.role_id`; `lat_lang`/`latLng` guardan "lat,lng" en un texto; `customer.validated` es texto y `delivery.validated` booleano |
+| Soft delete y auditoría (H-74) | Sólo 4 de 20 entidades tienen borrado lógico; 6 borrados físicos (el peor, `DELETE /users/:id`); no hay registro de quién creó, modificó o borró. **Falta recuperar lo acordado la noche del 23/09 sobre la auditoría** |
+| Pasada final | camelCase con `@Column({ name })` y renombres de archivos (`isPublic.decorator.ts`, `timeout.interceptors.ts`) |
+| Documentación | Swagger completo del back (todas las respuestas y errores); mejorar la web y rehacer el visor de imágenes; publicar el sitio. Los `.svg`/`.png` de `diagramas/` son del primer commit y nunca se regeneraron: el sitio no los usa, pero están viejos |
+| `.env.example` | No existe: falta para levantar el proyecto desde cero |
+
+---
+
+## Lo que se hizo el 24/09
+
+**Seguridad** (cada punto verificado contra la API, con commit propio): H-58,
+H-59, H-61 a H-65, H-67 a H-70, H-73, H-75. Los críticos:
+
+- **H-70:** un alta repetida borraba de Firebase la cuenta de quien ya existía.
+  Sin token, cualquiera dejaba afuera a cualquier usuario, super admin incluido.
+- **H-73:** un admin de empresa podía cambiarle el correo a un usuario de otra
+  distribuidora y así entrar como esa persona.
+- **H-63 / H-62:** cualquiera podía darse de alta como super admin, y un admin
+  de empresa podía volverse super admin.
+
+**Alta unificada de usuarios:** las seis altas (cliente desde la app, chofer y
+cliente desde el panel, usuario base, admin y primer super admin) pasaron a un
+solo caso de uso, `RegistroService`, con dos puertas: `POST /auth/registro`
+(pública, siempre cliente, 10 por minuto por IP) y `POST /users` (panel, rol en
+el cuerpo). El primer super admin se crea con `npm run crear-superadmin` desde
+el servidor. Resolvió H-71 (el panel no podía crear clientes) y H-72 hacia
+adelante (altas sin cuenta de acceso).
+
+**Documentación de las altas:** CUA, CUE, DSS y DSD de CU-002, 003, 031, 082,
+086 y 087 reescritos y sincronizados en todas sus copias; CU-082 pasó a ser el
+caso incluido (`«include»`) por los otros cinco, también entre subsistemas;
+tabla 7.7 y diagrama de clases de servicios actualizados. Los diagramas pasan
+el parser de Mermaid 10.9.1 y el verificador de la cátedra.
+
+---
+
+## Por dónde seguir mañana
+
+1. **Revisar y mergear** `feature/alta-unificada` del panel y de la app. Probar
+   el panel con sesión: crear chofer, admin y cliente, y resetear una contraseña.
+   (Claude no puede escribir contraseñas en el navegador: el login lo hace nahue.)
+2. **Decisiones pendientes de nahue:** H-66 (qué usuarios ve un admin de
+   empresa; propuesta: sus choferes, sus admins y los clientes que le
+   compraron) y H-72 (los 43 usuarios sin cuenta de acceso).
+3. **Tanda 3:** `users` y `delivery` (mapper y pruebas), `gascylinder`, y
+   `order` al final.
+4. **Normalización + soft delete + auditoría** del modelo de datos, con sus
+   migraciones y el diagrama de base de datos.
+5. Pasada final, Swagger completo, web y publicación.
+
+## Hallazgos abiertos (detalle en `HALLAZGOS.md`)
+
+- **H-66:** un admin de empresa lista usuarios de todas las distribuidoras (decisión de producto).
+- **H-72:** 43 usuarios anteriores sin cuenta de acceso.
+- **H-74:** borrados físicos y soft delete parcial.
+- **H-53:** `/health` da 503 bajo la batería completa (umbral de 300 MB).
+- **H-54:** el evento "en camino" se llama distinto en cliente y panel.
+- **H-55:** la asignación manual no avisa al chofer por socket.
+- **H-57:** la granularidad semanal de los informes se acepta y se ignora.
 
 ## Cómo se trabaja un módulo
 
 ```bash
-mkdir -p /tmp/splg-alineacion
-cp splg-app-backend/scripts/alineacion/newman-base1.json /tmp/splg-alineacion/
-splg-app-backend/scripts/alineacion/modulo.sh <modulo> src/<modulo>
+bash splg-app-backend/postman/refrescar-ids.sh
+python3 splg-app-backend/postman/generar-coleccion.py
+splg-app-backend/scripts/alineacion/modulo.sh <etiqueta> src/<modulo>
+splg-app-backend/scripts/alineacion/aceptar.sh <etiqueta>   # después del commit
 ```
 
-Detalle en `splg-app-backend/scripts/alineacion/LEEME.md`. El back de prueba
-corre en **:3100** porque el 3000 lo ocupa el MCP de Excalidraw.
+- El back de prueba corre en **:3100** (el 3000 es del MCP de Excalidraw).
+- Después de regenerar la colección, **no revertir** `SPLG-local.postman_environment.json`
+  sin conservar `distribuidoraBaseId`: las altas de choferes la usan.
+- `openapi.json` se baja de una instancia en :3101 con `SWAGGER_USER=` y
+  `SWAGGER_PASSWORD=` vacías (así no hace falta leer las credenciales).
+- Los DSD tienen tres copias (`.mmd`, Doc 3, `Casos-de-Uso.md` §7): `dsd.py`.
+  Los DSS, dos (Doc 2 y §6) además del `.mmd`. Los CUE, Doc 1 y §5. Los CUA,
+  Doc 0 y §4. Siempre `verificar-conformidad.py` y el validador de Mermaid.
 
-## Hallazgos (detalle en `HALLAZGOS.md`)
+## Reglas acordadas
 
-- **H-52 · ALTO, corregido:** un cliente se validaba a sí mismo con `PATCH /customers/:id`.
-- **H-56 · corregido:** el informe de ventas por producto salía vacío en el panel.
-- **H-53:** `/health` da 503 bajo la batería completa (umbral de 300 MB).
-- **H-54:** el evento "en camino" se llama distinto en cliente y panel.
-- **H-55:** la asignación manual no avisa al chofer por socket (revisar CU-012).
-- **H-57:** la granularidad semanal de los informes se acepta y se ignora.
-
-## Reglas acordadas hoy
-
-- A rajatabla lo que pide Nest y TypeScript.
-- No se cambia comportamiento; lo visible que cambie se escribe en el commit.
-- Se conservan los nombres de clase que usan los DSD; los DSD que cambian se
-  actualizan en las tres copias y se corre el verificador de la cátedra.
-- La autorización según quién pide puede quedar en el controlador (así CU-086 y
-  CU-087 no cambian); las invariantes del negocio van al servicio.
+- A rajatabla lo que pide Nest y TypeScript; seguro por sobre todo.
+- No se cambia comportamiento sin decirlo; lo visible que cambie va en el commit.
+- Los diagramas se presentan a la cátedra: no se rompen, se actualizan en todas
+  sus copias.
+- La autorización según quién pide puede quedar en el controlador; las
+  invariantes del negocio van al servicio. La regla de quién crea qué usuario
+  vive en `autorizarAlta`.

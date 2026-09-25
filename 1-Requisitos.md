@@ -481,8 +481,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Un nuevo usuario se registra como Cliente desde la App Cliente ingresando sus datos personales. El sistema crea la cuenta en Firebase Auth, registra el usuario con rol cliente y crea su perfil asociado. El registro no abre sesión: para operar, el usuario inicia sesión a continuación. |
-| **Precondición** | El usuario no tiene cuenta previa con el mismo email. Tiene conexión a internet. |
+| **Descripción** | Un nuevo usuario se registra como Cliente desde la App Cliente ingresando sus datos personales. Es la única alta que no requiere sesión: la puerta pública siempre crea un cliente y nunca otro rol. La creación de la identidad la resuelve el caso incluido CU-082. El registro no abre sesión: para operar, el usuario inicia sesión a continuación. Endpoint: `POST /auth/registro`. |
+| **Precondición** | El usuario no tiene cuenta con el mismo correo ni con el mismo teléfono, tampoco una dada de baja. Tiene conexión a internet. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -490,31 +490,31 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario abre la App Cliente y selecciona "Registrarse". |
-| 2 | Ingresa nombre completo, email, número de teléfono y contraseña. La app puede acompañar el envío con el token de notificaciones del dispositivo y la ubicación del usuario. |
-| 3 | El sistema valida que los cuatro campos estén presentes y no vacíos, y que el email tenga formato de correo. El teléfono se acepta como texto libre y la contraseña, como texto no vacío: el mínimo de seis caracteres lo impone Firebase Auth al crear la cuenta. |
-| 4 | El sistema abre una transacción y comprueba que no exista ya un usuario registrado con ese email. |
-| 5 | Crea la cuenta en Firebase Auth con el email y la contraseña. |
-| 6 | Registra el usuario con rol cliente y crea su perfil de cliente asociado, con el token de notificaciones y la ubicación si los recibió, y confirma la transacción. |
-| 7 | Intenta enviar un correo de bienvenida. Si el envío falla, el registro queda hecho igual y solo se deja rastro del fallo. |
-| 8 | Devuelve los datos del usuario creado con su perfil y su rol. No se emite ninguna credencial. |
+| 2 | Ingresa nombre completo, correo, teléfono y contraseña. La app puede acompañar el envío con el token de notificaciones del dispositivo y la ubicación del usuario. |
+| 3 | El sistema controla el cupo de altas del origen: hasta diez por minuto. |
+| 4 | El sistema valida los datos: correo con formato de correo, contraseña de al menos seis caracteres, nombre de al menos dos y teléfono en formato internacional (`+549…`). Rechaza cualquier dato que no forme parte del registro de un cliente, como un rol o una distribuidora. |
+| 5 | **Incluye CU-082 Crear Usuario Base** con rol cliente: el sistema controla que el correo y el teléfono estén libres, crea la cuenta de acceso y guarda el usuario junto con su perfil de cliente, sin validar, en una sola transacción. |
+| 6 | El sistema devuelve los datos del usuario creado con su rol y su perfil. No emite ninguna credencial. |
+| 7 | El sistema envía el correo de bienvenida. Si el envío falla, el registro queda hecho igual y sólo se deja rastro del fallo. |
 
-**Postcondición:** Existe un nuevo usuario con rol CLIENTE y su perfil Customer asociado. El usuario todavía no tiene sesión: para realizar pedidos debe iniciar sesión con las mismas credenciales (CU-001).
+**Postcondición:** Existe un nuevo usuario con rol CLIENTE, su cuenta de acceso y su perfil de cliente. El usuario todavía no tiene sesión: para realizar pedidos debe iniciar sesión con las mismas credenciales (CU-001).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si algún campo requerido está vacío o el email no tiene formato válido, el sistema informa el error indicando el campo. |
-| 4 | Si el email ya está registrado, el sistema informa que el email ya está en uso e invita a iniciar sesión. |
-| 5 | Si Firebase rechaza la creación de la cuenta —email ya existente en Firebase o contraseña de menos de seis caracteres—, el registro no se completa. |
-| 6 | Si falla la persistencia, el sistema revierte la transacción y elimina de Firebase la cuenta recién creada, de modo que un reintento con el mismo email sea posible. |
+| 3 | Si el origen superó el cupo de altas, el sistema responde 429 y pide reintentar más tarde. |
+| 4 | Si algún campo falta, no tiene el formato esperado o sobra, el sistema responde 400 indicando el campo. |
+| 5 | Si el correo o el teléfono ya están en uso, el sistema responde 409 "Email o teléfono ya en uso" e invita a iniciar sesión. La cuenta existente no se modifica. |
+| 5 | Si el proveedor de identidad rechaza la cuenta, el sistema responde 400 con el motivo y no crea nada. |
+| 5 | Si falla la persistencia, el sistema revierte la transacción y elimina sólo la cuenta de acceso que creó en este mismo registro. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | El registro se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en Firebase Auth. |
+| **Rendimiento** | El registro se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en el proveedor de identidad. |
 | **Frecuencia** | Una vez por cliente, en el alta. A nivel del sistema, varias veces por día según el ritmo de registros nuevos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema todavía no autentica automáticamente al usuario recién registrado: la app tiene que encadenar el inicio de sesión por su cuenta. El sistema todavía no valida el formato del número de teléfono ni la fortaleza de la contraseña del lado del servidor: la única regla sobre la contraseña es la que aplica Firebase. |
+| **Comentarios** | El sistema todavía no autentica automáticamente al usuario recién registrado: la app encadena el inicio de sesión por su cuenta. La ruta anterior `POST /users/customer-registration` sigue respondiendo igual para las versiones ya publicadas de la app y se retira cuando la versión nueva esté en las tiendas. |
 
 ---
 #### Crítico CU-003 — Registrar Chofer *(ver CU-031)*
@@ -980,8 +980,8 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01, IRQ-03 |
-| **Descripción** | El administrador da de alta un chofer desde el Panel Web. La operación crea, en una sola transacción, la credencial en el proveedor de autenticación, el usuario con rol chofer y su perfil de reparto asociado a una distribuidora. El alta admite fijar en el mismo momento la marca de validación y el estado de actividad del chofer. |
-| **Precondición** | El administrador está autenticado. Si no es Administrador General, su usuario tiene una distribuidora asociada. No existe otro usuario registrado con el mismo correo. |
+| **Descripción** | El administrador da de alta un chofer desde el Panel Web. El chofer queda asociado a una distribuidora, que decide la política de alta según quién registra. La creación de la identidad la resuelve el caso incluido CU-082. El alta admite fijar en el mismo momento la marca de validación y el estado de actividad. Endpoint: `POST /users` con rol `delivery`. |
+| **Precondición** | El administrador está autenticado. Si no es Administrador General, su usuario tiene una distribuidora asociada. El correo y el teléfono no están en uso. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -989,33 +989,31 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador accede a la sección "Choferes" del Panel Web y elige dar de alta uno nuevo. |
-| 2 | Completa nombre completo, teléfono, correo y contraseña inicial. De manera opcional puede indicar selfie, calificación inicial, ubicación, estado de validación y estado de actividad. |
-| 3 | El sistema valida el formato de lo recibido: el nombre tiene al menos dos caracteres, el correo tiene forma de correo electrónico y la contraseña no viene vacía. |
-| 4 | El sistema resuelve la distribuidora del chofer: si quien da el alta es Administrador General, toma la que venga indicada o la que tenga en contexto; si es administrador de una empresa, lo crea siempre en la suya e ignora cualquier distribuidora recibida. |
-| 5 | El sistema abre una transacción y verifica que su propia base no tenga ya un usuario con ese correo. |
-| 6 | El sistema crea la credencial en el proveedor de autenticación con el correo y la contraseña. |
-| 7 | El sistema registra el usuario con rol chofer y crea su perfil de reparto en la misma transacción: la marca de validación queda en falso salvo que el alta indique otra cosa, el estado de actividad queda en **verdadero** salvo que el alta indique otra cosa, y el balance arranca en cero. |
-| 8 | El sistema confirma la transacción y devuelve el usuario creado junto con su perfil de reparto y su rol. |
+| 2 | Completa nombre completo, teléfono, correo y contraseña inicial. De manera opcional indica el estado de validación y el estado de actividad; el Administrador General, además, la distribuidora. |
+| 3 | El sistema valida el formato de lo recibido, como en CU-002. |
+| 4 | El sistema resuelve la distribuidora: un administrador de empresa da de alta siempre en la suya; el Administrador General, en la que indique o en la que tenga en contexto. |
+| 5 | El sistema controla que la distribuidora exista y esté activa. |
+| 6 | **Incluye CU-082 Crear Usuario Base** con rol chofer: el perfil de reparto se crea con la marca de validación en falso y el estado de actividad en verdadero salvo que el alta indique otra cosa, calificación y balance en cero. |
+| 7 | El sistema devuelve el usuario creado junto con su rol y su perfil de reparto. |
 
-**Postcondición:** Existe un usuario con rol chofer y su perfil de reparto, asociado a la distribuidora que corresponde. El chofer queda **operativo de inmediato**: con el estado de actividad en verdadero puede ponerse en línea, entrar al radar de asignación y aceptar pedidos, sin que medie ninguna validación posterior del administrador. La marca de validación queda registrada como dato informativo.
+**Postcondición:** Existe un usuario con rol chofer y su perfil de reparto, asociado a la distribuidora que corresponde. Con el estado de actividad en verdadero, el chofer puede ponerse en línea y entrar al radar de asignación sin que medie otra validación.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si falta un campo obligatorio o el formato es inválido, la validación global rechaza la petición con 400 y detalla el campo. Enviar una propiedad que no forma parte de los datos declarados también produce 400. |
-| 4 | Si el administrador no es Administrador General y su usuario no tiene distribuidora asociada, el sistema responde 403 "Tu usuario no tiene una distribuidora asociada". |
-| 5 | Si ya existe un usuario con ese correo en la base del sistema, el sistema responde 400 con el mensaje `User with this email already exists`. |
-| 6 | Si el proveedor de autenticación rechaza el alta —correo ya usado allí, o contraseña más corta que su mínimo— la operación falla, la transacción se revierte y no queda ningún registro a medias. |
-| 7 | Si el rol chofer no está cargado en la tabla de roles, el sistema responde con error interno y revierte la transacción. |
-| — | Ante cualquier falla posterior a la creación de la credencial, el sistema revierte la transacción y elimina la credencial recién creada en el proveedor de autenticación, de modo que el alta se puede reintentar con el mismo correo. |
+| 3 | Si falta un campo obligatorio, el formato es inválido o se envía un dato que no forma parte del alta, el sistema responde 400 indicando el campo. |
+| 4 | Si un administrador de empresa no tiene distribuidora asociada, o indica una distribuidora que no es la suya, el sistema responde 403. |
+| 4 | Si el Administrador General no indica distribuidora ni tiene una en contexto, el sistema responde 400 "Falta la distribuidora". |
+| 5 | Si la distribuidora no existe, está dada de baja o no está activa, el sistema responde 404. |
+| 6 | Si el correo o el teléfono ya están en uso, el sistema responde 409. Las demás fallas del alta se tratan como en CU-082. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | El alta involucra una llamada al proveedor de autenticación externo además de la transacción local; se resuelve en menos de tres segundos. |
-| **Frecuencia** | Baja. Cada distribuidora incorpora choferes de forma esporádica. |
+| **Rendimiento** | El alta se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en el proveedor de identidad. |
+| **Frecuencia** | Baja: al incorporar un chofer a la flota. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La marca de validación no habilita ni impide nada: el sistema todavía no la consulta al armar el radar de asignación ni al aceptar un pedido, de modo que la garantía de "el chofer no opera hasta ser validado" no existe. El único control efectivo sobre la operación del chofer es el estado de actividad (CU-033). Como el alta acepta esos dos campos en el cuerpo, el administrador puede crear un chofer ya validado y activo sin ejecutar CU-032. La longitud mínima de la contraseña tampoco la valida el backend: la rechaza, si corresponde, el proveedor de autenticación. Queda registrado como pendiente: hacer que la validación condicione efectivamente el despacho y la aceptación de pedidos, y sacar del alta los campos de validación y actividad para que el circuito de habilitación sea el de CU-032. |
+| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. CU-003 describe el mismo caso visto desde la gestión de usuarios. |
 
 ---
 #### Crítico CU-032 — Validar / Invalidar Chofer
@@ -4717,35 +4715,52 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Se da de alta un registro de usuario en la tabla base, con sus datos de identidad y su rol, sin crear todavía el perfil de cliente, chofer o administrador. Es la primitiva de escritura sobre la que se apoyan los registros completos y la usan tanto el flujo de alta como las herramientas de carga. Endpoint público: `POST /users` (`src/users/users.controller.ts:45-46`). |
-| **Precondición** | Ninguna: el endpoint está marcado `@Public()` y no exige sesión. El correo y el teléfono enviados no deben existir ya en el sistema. |
+| **Descripción** | Caso de uso **incluido** (`«include»`) por todas las altas de usuarios: CU-002, CU-003, CU-031, CU-086 y CU-087. Decide si quien pide puede crear ese rol, controla que el correo y el teléfono estén libres, crea la cuenta de acceso en el proveedor de identidad y guarda, en una sola transacción, el usuario con su rol y el perfil que corresponde a ese rol. No lo inicia un actor por sí solo: siempre llega desde uno de los casos que lo incluyen. |
+| **Precondición** | El caso que lo incluye ya validó el formato de los datos y trae el rol pedido y quién lo pide. |
 | **Estado** | Implementado |
+
+**Quién puede crear qué**
+
+| Solicitante | Roles que puede crear | Distribuidora del perfil |
+|---|---|---|
+| Sin sesión (App Cliente) | Cliente | Ninguna |
+| Administrador de empresa | Cliente, Chofer, Administrador | La suya; no puede indicar otra |
+| Administrador General | Cualquiera | La que indique; ninguna para un Administrador General |
+| Herramientas del servidor (arranque, carga inicial) | Cualquiera | La que indiquen |
+
+Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y Administrador, siempre a una.
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente de API envía `POST /users` con nombre, correo, teléfono, rol y demás campos opcionales del DTO (`src/users/dto/create-user.dto.ts`). |
-| 2 | El sistema valida el formato de cada campo presente: el correo tiene que ser un correo, el rol un UUID y las banderas booleanas. |
-| 3 | El sistema arma la entidad de usuario y la persiste. |
-| 4 | El sistema devuelve el usuario creado con su identificador generado. |
+| 1 | El sistema aplica la tabla anterior al solicitante y al rol pedido, y resuelve la distribuidora del perfil. |
+| 2 | Si el perfil pertenece a una distribuidora, el sistema controla que exista y esté activa. |
+| 3 | El sistema controla que el correo y el teléfono no estén en uso por ningún usuario, tampoco por uno dado de baja. |
+| 4 | El sistema crea la cuenta de acceso en el proveedor de identidad. |
+| 5 | En una sola transacción, el sistema guarda el usuario con su rol y el identificador de la cuenta, y crea su perfil: de cliente, de chofer o de administrador. |
+| 6 | Confirmada la transacción, el sistema avisa que se registró un usuario nuevo, para lo que tenga que ocurrir después (el correo de bienvenida de CU-002). |
+| 7 | El sistema devuelve el usuario con su rol y su perfil, sin el identificador de la cuenta de acceso. |
 
-**Postcondición:** Existe un registro de usuario con identificador propio. El usuario todavía no tiene perfil de cliente, chofer ni administrador asociado, ni cuenta en el proveedor de identidad.
+**Postcondición:** Existe un usuario con cuenta de acceso, rol y perfil. Nunca queda un usuario sin perfil ni una cuenta de acceso sin usuario.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si algún campo no cumple su formato, la validación retorna error 400. |
-| 3 | Si el correo o el teléfono ya existen, la base rechaza el alta por índice único y el sistema retorna error 400 "Duplicate entry" con el detalle (`src/users/users.service.ts:225-227`). |
-| 3 | Ante cualquier otro error de base, el sistema retorna error 500 "Unexpected error, check server logs". |
+| 1 | Si el solicitante no puede crear ese rol, o pide una distribuidora que no le corresponde, el sistema responde 403. |
+| 1 | Si el rol necesita distribuidora y no se indicó ninguna, el sistema responde 400. |
+| 2 | Si la distribuidora no existe, está dada de baja o no está activa, el sistema responde 404. |
+| 3 | Si el correo o el teléfono ya están en uso, el sistema responde 409 "Email o teléfono ya en uso" sin crear nada. |
+| 4 | Si el proveedor de identidad rechaza la cuenta —correo ya usado allí, contraseña débil, teléfono inválido—, el sistema responde 400 con el motivo sin crear nada. |
+| 5 | Si falla el guardado del usuario o del perfil, el sistema revierte la transacción y elimina la cuenta de acceso creada en el paso 4. Nunca elimina una cuenta que no haya creado esta misma alta. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una sola escritura, sin transacción explícita ni llamadas externas. |
-| **Frecuencia** | Baja frente al alta completa de cliente: el camino habitual de registro es `POST /users/customer-registration`. |
-| **Estabilidad** | Media |
-| **Comentarios** | Todos los campos del DTO son opcionales, incluido el rol, de modo que es posible crear un usuario sin rol asignado. **⚠️ verificar** si el alta pública sin sesión responde a una necesidad vigente o es un resto del desarrollo inicial. |
+| **Rendimiento** | Dos lecturas de control, una llamada al proveedor de identidad y una transacción con dos escrituras. |
+| **Frecuencia** | La suma de las altas de los casos que lo incluyen. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Unifica lo que antes eran seis caminos de alta distintos, con reglas y compensaciones propias; uno de ellos borraba la cuenta del usuario existente ante un alta repetida (hallazgo H-70). Hay usuarios anteriores a esta unificación sin cuenta de acceso (H-72). |
 
 ---
 
@@ -4846,7 +4861,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 2 | El panel envía `DELETE /users/:id`. |
 | 3 | El sistema valida el formato UUID y recupera el usuario con sus relaciones. |
 | 4 | El sistema borra el registro de la base; los perfiles de cliente y de chofer se borran en cascada desde el usuario. |
-| 5 | Si el borrado funcionó y el usuario tenía correo, el sistema lo elimina también del proveedor de identidad, en modo best-effort (`src/users/users.service.ts:196-198`). |
+| 5 | Si el borrado funcionó y el usuario tenía cuenta de acceso, el sistema la elimina también del proveedor de identidad por su identificador, en modo best-effort. |
 | 6 | El sistema devuelve el mensaje "Usuario eliminado permanentemente de DB y Firebase". |
 
 **Postcondición:** La cuenta ya no existe ni en la base ni en el proveedor de identidad, y tampoco sus perfiles asociados.
@@ -4917,44 +4932,40 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Se da de alta una cuenta de administrador con su usuario, su credencial en el proveedor de identidad y su perfil administrativo. Las reglas de alcance multi-empresa dependen de quién registra: el Administrador General (ACT-05) elige a qué distribuidora asignar el nuevo administrador y puede crear administradores generales, mientras que un administrador de empresa (ACT-03) solo puede crear administradores de **su propia** distribuidora y nunca administradores generales. Endpoints: `POST /admin/register` (`src/admin/admin.controller.ts:52`) y `POST /admin` (`:18`, alta directa del perfil, exclusiva de SUPER_ADMIN). |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. Si es administrador de empresa, su usuario tiene distribuidora asociada. El correo y el teléfono no están en uso. |
+| **Descripción** | Se da de alta un administrador de empresa o un Administrador General desde el Panel Web. Las reglas dependen de quién registra: el Administrador General (ACT-05) crea administradores en cualquier distribuidora y también otros administradores generales; un administrador de empresa (ACT-03) sólo crea administradores de su propia distribuidora y nunca administradores generales. La creación de la identidad la resuelve el caso incluido CU-082. Endpoint: `POST /users` con rol `admin` o `super_admin`. |
+| **Precondición** | El solicitante está autenticado con rol de administrador. Si es administrador de empresa, su usuario tiene distribuidora asociada. El correo y el teléfono no están en uso. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador completa en el panel los datos del nuevo administrador: nombre, correo, teléfono, contraseña y rol. |
-| 2 | El panel envía `POST /admin/register` con esos datos. |
-| 3 | Si el solicitante es Administrador General, el sistema toma la distribuidora del cuerpo o la del contexto "ver como"; si no hay ninguna, el administrador queda sin empresa, es decir, transversal. |
-| 4 | Si el solicitante es administrador de empresa, el sistema ignora cualquier distribuidora enviada en el cuerpo y fuerza la propia (`admin.controller.ts:73-88`). |
-| 5 | El sistema verifica que el rol solicitado no sea el de Administrador General cuando quien registra es un administrador de empresa. |
-| 6 | El sistema valida que correo y teléfono estén presentes y libres (`src/admin/helpers/admin-registration.helper.ts:9-38`). |
-| 7 | El sistema crea la credencial en el proveedor de identidad. |
-| 8 | El sistema crea el usuario en la base con el identificador del proveedor. |
-| 9 | El sistema crea el perfil de administrador con el rol y la distribuidora resueltos. |
-| 10 | El sistema devuelve el mensaje "Admin registered successfully" junto con el administrador creado. |
+| 1 | El administrador completa en el panel los datos del nuevo administrador: nombre, correo, teléfono, contraseña y rol (administrador o, sólo para el Administrador General, administrador general). |
+| 2 | Si quien registra es el Administrador General, indica la distribuidora del nuevo administrador. |
+| 3 | El sistema valida el formato de los datos, como en CU-002. |
+| 4 | El sistema resuelve el alcance: un administrador de empresa sólo da de alta en su distribuidora; un administrador general nuevo no pertenece a ninguna. |
+| 5 | **Incluye CU-082 Crear Usuario Base** con el rol pedido: el perfil de administrador queda con ese rol y esa distribuidora. |
+| 6 | El sistema devuelve el usuario creado con su rol. |
 
-**Postcondición:** Existe un administrador con usuario, credencial y perfil, asociado a la distribuidora que corresponde según quién lo creó.
+**Postcondición:** Existe un administrador con cuenta de acceso y perfil, asociado a la distribuidora que corresponde según quién lo creó. Un administrador de empresa siempre tiene distribuidora: sin ella no podría operar.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el solicitante es administrador de empresa y su usuario no tiene distribuidora asociada, el sistema retorna error 403 "Tu usuario no tiene una distribuidora asociada". |
-| 5 | Si un administrador de empresa intenta crear un Administrador General, el sistema retorna error 403 "No podés crear un super administrador". |
-| 6 | Si falta el correo o el teléfono, el sistema retorna error 400 "Email and phone number are required". |
-| 6 | Si el correo o el teléfono ya están en uso, el sistema retorna error 409 "Email o teléfono ya en uso". |
-| 7 | Si la creación en el proveedor de identidad falla, el alta se interrumpe con el error mapeado por el puerto de identidad y no se crea el usuario local. |
-| 2 | Si el solicitante no tiene rol administrativo, el guard de roles rechaza la petición con error 403. |
+| 3 | Si falta un dato o su formato es inválido, el sistema responde 400. |
+| 4 | Si un administrador de empresa intenta crear un administrador general, el sistema responde 403 "No podés crear un super administrador". |
+| 4 | Si un administrador de empresa indica otra distribuidora, o no tiene una asociada, el sistema responde 403. |
+| 4 | Si el Administrador General pide un administrador de empresa sin indicar distribuidora, el sistema responde 400. |
+| 5 | Si el correo o el teléfono ya están en uso, el sistema responde 409. Las demás fallas se tratan como en CU-082. |
+| — | Si el solicitante no tiene rol de administrador, el sistema responde 403 antes de evaluar el alta. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Dos lecturas de unicidad, una llamada al proveedor de identidad y dos escrituras encadenadas. |
-| **Frecuencia** | Baja: solo al incorporar personal administrativo o al dar de alta una distribuidora. |
+| **Rendimiento** | El de CU-082. |
+| **Frecuencia** | Baja: sólo al incorporar personal administrativo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Las reglas de alcance multi-empresa de este caso no figuran en ninguna versión previa de la documentación. |
+| **Comentarios** | Antes de la unificación, el Administrador General podía crear un administrador de empresa sin distribuidora, que después no podía entrar: el acceso rechaza a un administrador sin distribuidora. El alta directa de un perfil de administrador sobre un usuario existente (`POST /admin`) sigue disponible sólo para el Administrador General. |
 
 ---
 
@@ -4964,36 +4975,36 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Puesta en marcha del sistema: cuando todavía no existe ningún administrador, este endpoint permite crear el primero sin estar autenticado, porque no hay nadie que pueda autorizar el alta. Una vez que existe al menos un administrador, la puerta se cierra sola. Endpoint público: `POST /admin/first-superadmin` (`src/admin/admin.controller.ts:32-33`). |
-| **Precondición** | No existe ningún administrador en el sistema. |
+| **Descripción** | Puesta en marcha del sistema: el Administrador General crea la primera cuenta de administrador general ejecutando un comando en el servidor. No hay una operación pública para esto: sólo puede hacerlo quien tiene acceso a la máquina donde corre el sistema. La creación de la identidad la resuelve el caso incluido CU-082. Comando: `npm run crear-superadmin`. |
+| **Precondición** | No existe ningún administrador general. Quien lo ejecuta tiene acceso al servidor. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | Quien instala el sistema envía `POST /admin/first-superadmin` con nombre, correo, teléfono, contraseña y rol. |
-| 2 | El sistema lista todos los administradores existentes. |
-| 3 | El sistema verifica que el listado esté vacío. |
-| 4 | El sistema ejecuta el mismo registro de administrador que CU-086: unicidad, credencial en el proveedor de identidad, usuario y perfil. |
-| 5 | El sistema responde 201 con el administrador creado. |
+| 1 | El Administrador General ejecuta el comando con correo, nombre y teléfono. |
+| 2 | El comando toma la contraseña de una variable de entorno o la pide por teclado sin mostrarla, para que no quede en el historial de la terminal. |
+| 3 | El sistema verifica que no exista ningún administrador general. |
+| 4 | **Incluye CU-082 Crear Usuario Base** con rol administrador general y sin distribuidora. |
+| 5 | El comando informa el correo y el identificador del administrador creado. |
 
-**Postcondición:** El sistema tiene su primer administrador y el endpoint deja de estar disponible, porque a partir de ahí la verificación del paso 3 falla siempre.
+**Postcondición:** El sistema tiene su primer administrador general, que ya puede entrar al Panel Web y crear el resto de las cuentas (CU-086).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si ya existe al menos un administrador, el sistema retorna error 403 "Ya existen administradores en el sistema". |
-| 4 | Si el correo o el teléfono ya están en uso, el sistema retorna error 409 "Email o teléfono ya en uso". |
-| 4 | Si falta el correo o el teléfono, el sistema retorna error 400 "Email and phone number are required". |
+| 1 | Si falta algún dato, el comando lo indica y termina sin crear nada. |
+| 3 | Si ya existe un administrador general, el comando lo avisa y termina con error sin crear nada. |
+| 4 | Si el correo o el teléfono ya están en uso, o el proveedor de identidad rechaza la cuenta, el comando informa el motivo. Las demás fallas se tratan como en CU-082. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Un listado completo de administradores más el alta de CU-086. |
+| **Rendimiento** | El de CU-082 más una consulta de conteo. |
 | **Frecuencia** | Una única vez en la vida de la instalación. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El resumen del endpoint lo marca como "development only" (`admin.controller.ts:35`), pero es también el mecanismo de arranque de una instalación nueva. La distribuidora del administrador creado sale exclusivamente del cuerpo, ya que no hay contexto de empresa sin sesión. |
+| **Comentarios** | Reemplaza al endpoint público `POST /admin/first-superadmin`, que quedaba expuesto en internet durante toda la vida del sistema aunque sólo sirviera una vez. |
 
 ---
 
@@ -6590,6 +6601,11 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-015 Aceptar Pedido | → | Notificar Cliente | La aceptación dispara siempre la notificación al cliente (WebSocket + FCM). |
 | CU-018 Marcar En Camino | → | Notificar Cliente | El cambio a "en camino" notifica siempre al cliente. |
 | CU-020 Confirmar Entrega | → | Notificar Cliente | La confirmación de entrega notifica siempre al cliente. |
+| CU-002 Registrarse como Cliente | → | CU-082 Crear Usuario Base | Toda alta crea la cuenta de acceso, el usuario y su perfil por el mismo camino, con la misma regla de quién puede crear qué. |
+| CU-003 Registrar Chofer | → | CU-082 Crear Usuario Base | Ídem: el perfil que se crea es el de chofer. |
+| CU-031 Registrar Chofer | → | CU-082 Crear Usuario Base | Ídem, desde la gestión de la flota (SS-07). |
+| CU-086 Registrar Administrador | → | CU-082 Crear Usuario Base | Ídem: el perfil que se crea es el de administrador. |
+| CU-087 Crear el Primer Administrador General | → | CU-082 Crear Usuario Base | Ídem, invocado desde el comando de arranque en el servidor. |
 
 > *Reservar Stock* y *Notificar Cliente* son casos de uso **factorizados**: representan comportamiento común reutilizado por varios CU, por eso se modelan como CU incluidos sin código CU-XXX propio.
 

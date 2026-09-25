@@ -1068,14 +1068,46 @@ usuario, super administrador incluido, sabiendo sólo su email.
 descartable) ya no podía entrar. Con el arreglo, sigue entrando. La propia
 batería lo disparaba en cada corrida (el paso 3 repite el alta del paso 1).
 
-### H-71 · El panel no puede crear clientes — **defecto, ALTO, ABIERTO**
+### H-71 · El panel no puede crear clientes — **defecto, ALTO**
+
+> **Resuelto el 24/09** con la unificación de las altas: el panel crea clientes por `POST /users` con rol `customer` (rama `feature/alta-unificada` del panel).
 
 El panel llama a `POST /users/customer-registration-admin`, que no existe en el
 back (404). Se resuelve con la unificación de las altas.
 
-### H-72 · `POST /users` crea usuarios que no pueden entrar — **defecto, ALTO, ABIERTO**
+### H-72 · `POST /users` crea usuarios que no pueden entrar — **defecto, ALTO, parcialmente resuelto**
+
+> **Resuelto hacia adelante el 24/09:** toda alta crea la cuenta de acceso en la misma operación. **Quedan** los 43 usuarios anteriores sin cuenta: hay que decidir si se les crea una o se dan de baja.
 
 CU-082 guarda la fila en la base pero no crea la cuenta en Firebase; la
 contraseña que manda el panel se descarta. Hoy hay 43 usuarios sin
 `firebase_uid` (27 clientes, 6 choferes, 10 de QA). Además el DTO acepta
 `firebase_uid` del cuerpo. Se resuelve con la unificación de las altas.
+
+### H-73 · Un admin de empresa podía hacerse pasar por usuarios de otra distribuidora — **seguridad, CRÍTICO**
+
+> **Resuelto el 24/09.** `PATCH /users/:id` tiene DTO propio (sin correo, rol ni cuenta de acceso) y un admin de empresa sólo modifica choferes y admins de su distribuidora.
+
+`UpdateUserDto` heredaba todos los campos del alta.
+**Verificado contra la API:** el admin de Jeny Gas le cambió el correo a un
+chofer de otra distribuidora (200). El acceso identifica al usuario por el
+correo del token, así que alcanzaba con poner un correo propio para entrar como
+esa persona. Se restauró el correo después de la prueba. Con el arreglo: 404.
+
+### H-74 · Borrados físicos y soft delete parcial — **auditoría, ALTO, ABIERTO**
+
+Sólo 4 de 20 entidades tienen borrado lógico (`user`, `customer`, `delivery`,
+`distributor`). Hay 6 borrados físicos: `DELETE /users/:id` (usuario y cuenta de
+acceso, irreversible), admin, vehículo, rol, zona de cobertura y dirección. No
+hay registro de quién creó, modificó o borró cada dato. Pedidos, pagos,
+reclamos e incidencias no tienen borrado lógico. Va con la pasada de
+normalización del modelo de datos.
+
+### H-75 · El reseteo de contraseña del panel no hacía nada — **defecto, ALTO**
+
+> **Resuelto el 24/09.** La contraseña se cambia en el proveedor de identidad.
+
+El panel mandaba `password` a `PATCH /users/:id`, que la descartaba (no es una
+columna) y respondía 200: el administrador creía haberla cambiado.
+**Verificado contra la API:** después del arreglo el chofer entra con la nueva
+y ya no con la vieja. Quien no es admin y manda `password` recibe 403.

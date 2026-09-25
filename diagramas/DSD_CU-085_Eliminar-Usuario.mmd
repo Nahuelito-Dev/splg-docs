@@ -32,11 +32,9 @@ sequenceDiagram
                 SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
             else Borrado en base
                 REP-->>SRV: DeleteResult
-                opt El usuario tiene email
-                    SRV->>SRV: cleanupFirebaseUser(user.email)
-                    SRV->>FB: deleteUserByEmailSafe(email, logger)
+                opt El usuario tiene firebase_uid
+                    SRV->>FB: deleteUserSafe(user.firebase_uid, logger)
                     activate FB
-                    FB->>FB: getUserByEmail(email)
                     FB->>FB: deleteUser(uid)
                 end
                 SRV-->>CTRL: message Usuario eliminado permanentemente de DB y Firebase

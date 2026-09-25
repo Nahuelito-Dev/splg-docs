@@ -2527,184 +2527,90 @@ sequenceDiagram
 
 #### DSD — CU-002: Registrarse como Cliente
 
-Endpoint `@Public()`. Crea **User + Customer + usuario de Firebase** en una sola unidad de
-trabajo; si algo falla, la transacción se revierte y además se compensa el usuario de
-Firebase (que vive fuera de la base y no participa del rollback).
+Puerta pública del alta: `POST /auth/registro`, con un cupo propio de diez altas por minuto por IP. Siempre crea un cliente: el DTO no tiene rol, y el `ValidationPipe` rechaza cualquier campo de más. La identidad la crea `RegistroService.registrar`, el mismo camino de todas las altas: el diagrama muestra la puerta y el perfil propios de este caso, y la nota `«include» CU-082` marca dónde entra el caso incluido, cuyo DSD tiene el detalle.
 
-**Clases participantes:** `UsersController`, `CustomersService`, `DataSource`, `QueryRunner`, `Repository<User>`, `Repository<Role>`, `Repository<Customer>`, `FirebaseAuthPort` (impl. `FirebaseAuthAdapter`), `EmailService`, entidades `User`, `Customer`, `Role`.
+**Clases participantes:** `AppThrottlerGuard`, `RegistroController`, `RegistroService`, `CustomersService`, `BienvenidaListener`, `EmailService`, DTO `RegistrarClienteDto`, `UserResponseDto`, evento `UsuarioRegistradoEvent`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-002 Registrarse Como Cliente
     autonumber
-    participant CTRL as UsersController
+    participant THR as AppThrottlerGuard
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
     participant CSRV as CustomersService
-    participant QR as QueryRunner
-    participant UREP as RepositoryUser
-    participant RREP as RepositoryRole
-    participant CREP as RepositoryCustomer
-    participant FB as FirebaseAuthPort
+    participant LIS as BienvenidaListener
     participant MAIL as EmailService
 
-    CTRL->>CSRV: registerWithUser(completeRegistrationDto)
-    activate CSRV
-    CSRV->>QR: connect() y startTransaction()
-    activate QR
-    CSRV->>UREP: findOne(email)
-    activate UREP
-    alt Ya existe un usuario con ese email
-        UREP-->>CSRV: User
-        deactivate UREP
-        CSRV->>QR: rollbackTransaction()
-        CSRV-->>CTRL: BadRequestException User with this email already exists
-        deactivate CSRV
-    else Email libre
-        UREP-->>CSRV: null
-        CSRV->>FB: createUserSafe(email, password, full_name, phone_number)
-        activate FB
-        FB->>FB: createUser(props)
-        FB-->>CSRV: UserRecord con uid
-        deactivate FB
-        CSRV->>RREP: findOne(type customer)
-        activate RREP
-        alt No existe el rol customer
-            RREP-->>CSRV: null
-            deactivate RREP
-            CSRV-->>CTRL: InternalServerErrorException Customer role not found
-        else Rol encontrado
-            RREP-->>CSRV: Role
-            CSRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id)
-            activate UREP
-            CSRV->>QR: manager.save(user)
-            CSRV->>CREP: create(user_id, notification_token, lat_lang, validated false)
-            activate CREP
-            CSRV->>QR: manager.save(customer)
-            CSRV->>QR: commitTransaction()
-            CSRV->>MAIL: sendWelcomeEmail(dto.email)
-            activate MAIL
-            CSRV->>UREP: findOne(user_id, relations customer y role)
-            UREP-->>CSRV: User completo
-            deactivate UREP
-            CSRV-->>CTRL: User con Customer y Role
-        end
+    THR->>THR: cupo de 10 altas por minuto por IP
+    alt Cupo agotado
+        THR-->>CTRL: 429 Too Many Requests
+    else Dentro del cupo
+        THR->>CTRL: POST /auth/registro con RegistrarClienteDto
+        activate CTRL
+        CTRL->>SRV: registrar(datos con rol customer, solicitante anonimo)
+        activate SRV
+        Note over SRV: «include» CU-082 Crear Usuario Base
+        SRV->>CSRV: crearPerfil(manager, user_id, lat_lang, notification_token)
+        CSRV-->>SRV: perfil de cliente sin validar
+        SRV-)LIS: usuario.registrado con rol customer
+        SRV-->>CTRL: User con rol y perfil de cliente
+        deactivate SRV
+        CTRL-->>THR: 201 UserResponseDto
+        deactivate CTRL
+        LIS->>MAIL: sendWelcomeEmail(email, nombre)
+        MAIL-->>LIS: si falla, solo queda el aviso en el log
     end
-
-    opt Cualquier error despues de crear el usuario de Firebase
-        CSRV->>QR: rollbackTransaction()
-        CSRV->>FB: deleteUserByEmailSafe(dto.email, logger)
-        activate FB
-        FB->>FB: getUserByEmail(email) y deleteUser(uid)
-        CSRV->>CSRV: handleDBExceptions(error)
-    end
-    CSRV->>QR: release()
-    deactivate MAIL
-    deactivate CREP
-    deactivate FB
-    deactivate QR
 ```
 
 **Figura 20 — DSD CU-002: Registrarse como Cliente**
 
 **Observaciones de diseño**
 
-- El email de bienvenida es **best-effort**: si `EmailService.sendWelcomeEmail` falla, el
-  registro ya está commiteado y solo queda un `logger.warn`.
-- `deleteUserByEmailSafe` es un **rollback de compensación**, no una transacción: nunca
-  lanza, porque el peor caso tolerable es un usuario huérfano en Firebase.
-- El mapeo de errores de Firebase (`weak-password`, `email-already-exists`, …) está
-  centralizado en el puerto (`createUserSafe`), no duplicado en cada service.
+- El correo de bienvenida **escucha** el evento `usuario.registrado` en lugar de que el alta llame al correo: `registro` no depende de `email`, y un correo que no sale nunca deshace un alta ya confirmada.
+- El cupo de altas es más estricto que el global porque cada alta crea una cuenta en el proveedor de identidad y manda un correo.
+- La respuesta sale por `UserMapper`: no incluye `firebase_uid` ni el token de notificaciones.
+- `POST /users/customer-registration` responde con el mismo método mientras las versiones publicadas de la app lo usen.
 
 ---
 
 #### DSD — CU-003: Registrar Chofer
 
-Mismo endpoint que CU-031. A diferencia de CU-002, **no** es público: lo dispara un
-administrador, y el chofer nace atado a una distribuidora. La decisión de qué tenant se
-usa vive en el controller, no en el service.
+Mismo caso que CU-031, visto desde la gestión de usuarios. Lo dispara un administrador por `POST /users` con rol `delivery`, y el chofer nace atado a una distribuidora. La identidad la crea `RegistroService.registrar`, el mismo camino de todas las altas: el diagrama muestra la puerta y el perfil propios de este caso, y la nota `«include» CU-082` marca dónde entra el caso incluido, cuyo DSD tiene el detalle.
 
-**Clases participantes:** `UsersController`, `AuthGuard`, `RolesGuard`, `DeliveryService`, `DataSource`, `QueryRunner`, `Repository<User>`, `Repository<Role>`, `Repository<Delivery>`, `FirebaseAuthPort`, entidades `User`, `Delivery`, `Role`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `DeliveryService`, DTO `RegistrarUsuarioDto`, `UserResponseDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-003 Registrar Chofer
     autonumber
-    participant GUARD as AuthGuard
-    participant RG as RolesGuard
-    participant CTRL as UsersController
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
     participant DSRV as DeliveryService
-    participant QR as QueryRunner
-    participant UREP as RepositoryUser
-    participant RREP as RepositoryRole
-    participant DREP as RepositoryDelivery
-    participant FB as FirebaseAuthPort
 
-    GUARD->>GUARD: canActivate(context)
-    GUARD->>GUARD: resolveDistributor(local_user, request)
-    GUARD-->>RG: request.user con role y distributor_id
-    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
-    alt Rol no permitido
-        RG-->>CTRL: ForbiddenException Acceso denegado
-    else Rol permitido
-        RG-->>CTRL: true
-        CTRL->>CTRL: resolver targetDistributor segun rol
-        alt No es super_admin y no tiene distribuidora
-            CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
-        else Tenant resuelto
-            CTRL->>DSRV: registerWithUser(createDeliveryDto con distributorId)
-            activate DSRV
-            DSRV->>QR: connect() y startTransaction()
-            activate QR
-            DSRV->>UREP: findOne(email)
-            activate UREP
-            alt Email ya usado
-                UREP-->>DSRV: User
-                deactivate UREP
-                DSRV-->>CTRL: BadRequestException User with this email already exists
-                deactivate DSRV
-            else Email libre
-                UREP-->>DSRV: null
-                DSRV->>FB: createUserSafe(email, password, full_name, phone_number)
-                activate FB
-                FB-->>DSRV: UserRecord con uid
-                deactivate FB
-                DSRV->>RREP: findOne(type delivery)
-                activate RREP
-                RREP-->>DSRV: Role
-                deactivate RREP
-                DSRV->>UREP: create(email, full_name, firebase_uid, role_id, selfie)
-                activate UREP
-                DSRV->>QR: manager.save(user)
-                DSRV->>DREP: create(user_id, distributor_id, latLng, validated, isActive, balance 0)
-                activate DREP
-                DSRV->>QR: manager.save(delivery)
-                DSRV->>QR: commitTransaction()
-                DSRV->>UREP: findOne(user_id, relations delivery y role)
-                UREP-->>DSRV: User completo
-                deactivate UREP
-                DSRV-->>CTRL: User con Delivery y Role
-            end
-            opt Error en cualquier paso
-                DSRV->>QR: rollbackTransaction()
-                DSRV->>FB: deleteUserByEmailSafe(email, logger)
-                activate FB
-                DSRV->>DSRV: handleDBExceptions(error)
-            end
-            DSRV->>QR: release()
-        end
+    CTRL->>SRV: registrar(datos con rol delivery, solicitante con su sesion)
+    activate SRV
+    SRV->>POL: autorizarAlta(solicitante, delivery, distributorId)
+    alt Admin de empresa
+        POL-->>SRV: su propia distribuidora, 403 si pidio otra
+    else Administrador General
+        POL-->>SRV: la distribuidora indicada o la de X-Distributor, 400 si no hay ninguna
     end
-    deactivate DREP
-    deactivate FB
-    deactivate QR
+    Note over SRV: «include» CU-082 Crear Usuario Base
+    SRV->>DSRV: crearPerfil(manager, user_id, distributorId, validated, isActive)
+    DSRV-->>SRV: perfil de chofer con balance 0 y calificacion 0
+    SRV-->>CTRL: User con rol y perfil de chofer
+    deactivate SRV
+    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Figura 21 — DSD CU-003: Registrar Chofer**
 
 **Observaciones de diseño**
 
-- Un `admin` de empresa crea al chofer SIEMPRE en su propia distribuidora: el
-  `distributorId` del body se ignora. Solo el `super_admin` puede elegirlo.
-- El `distributor_id` no es un dato de entrada libre: `AuthGuard.resolveDistributor` lo
-  deriva del perfil del staff (server-trusted), así que un admin no puede operar otro tenant.
+- La distribuidora la decide la política, no el cuerpo: un admin de empresa sólo puede dar de alta en la suya, que sale de su perfil y no del pedido.
+- El perfil de chofer lo crea `DeliveryService.crearPerfil`, dueño de la tabla, dentro de la transacción del alta.
 
 ---
 
@@ -2941,70 +2847,84 @@ sequenceDiagram
 
 #### DSD — CU-082: Crear Usuario Base
 
-Alta mínima de `User` sin perfil asociado (no crea Customer ni Delivery ni usuario de
-Firebase). Es la puerta de bajo nivel que usan los helpers de registro.
+El alta común de todos los usuarios, incluida por CU-002, CU-003, CU-031, CU-086 y CU-087. `RegistroService` orquesta; cada tabla la escribe el servicio que es su dueño.
 
-**Clases participantes:** `UsersController`, `UsersService`, `Repository<User>`, entidad `User`; helpers `validateUniqueness`, `createUserInFirebase`, `createUserInDatabase` de `user-registration.helper.ts`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `DistributorService`, `RoleService`, `UsersService`, `FirebaseAuthPort` (impl. `FirebaseAuthAdapter`), `DataSource`, `CustomersService` / `DeliveryService` / `AdminService` (según el rol), `EventEmitter2`, DTO `RegistrarUsuarioDto`, `UserResponseDto`, evento `UsuarioRegistradoEvent`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-082 Crear Usuario Base
     autonumber
-    participant CTRL as UsersController
-    participant SRV as UsersService
-    participant REP as RepositoryUser
-    participant HLP as UserRegistrationHelper
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
+    participant DIS as DistributorService
+    participant ROL as RoleService
+    participant USR as UsersService
     participant FB as FirebaseAuthPort
+    participant TX as DataSource
+    participant PERF as ServicioDelPerfil
+    participant EV as EventEmitter2
 
-    CTRL->>SRV: create(createUserDto)
+    CTRL->>SRV: registrar(datos, solicitante)
     activate SRV
-    SRV->>REP: create(createUserDto)
-    activate REP
-    REP-->>SRV: User no persistido
-    deactivate REP
-    SRV->>REP: save(user)
-    activate REP
-    alt Violacion de unicidad, codigo 23505
-        REP-->>SRV: QueryFailedError
-        deactivate REP
-        SRV->>SRV: handleDBExceptions(error)
-        SRV-->>CTRL: BadRequestException Duplicate entry
-        deactivate SRV
-    else Guardado correcto
-        REP-->>SRV: User persistido
-        SRV-->>CTRL: User
-    end
-
-    opt Camino de los helpers de registro
-        HLP->>SRV: checkUserExists(dto.email, dto.phone_number) desde validateUniqueness
-        activate SRV
-        SRV-->>HLP: exists, email, phoneNumber
-        deactivate SRV
-        alt Email o telefono ya en uso
-            HLP-->>HLP: HttpException CONFLICT Email o telefono ya en uso
+    SRV->>POL: autorizarAlta(solicitante, datos.rol, datos.distributorId)
+    alt El solicitante no puede crear ese rol o en esa distribuidora
+        POL-->>SRV: ForbiddenException o BadRequestException
+        SRV-->>CTRL: 403 o 400, sin tocar nada
+    else Alta autorizada
+        POL-->>SRV: AltaAutorizada con rol y distributorId
+        opt El perfil pertenece a una distribuidora
+            SRV->>DIS: assertActive(distributorId)
+            DIS-->>SRV: Distributor, o NotFoundException si no existe o esta dada de baja
+        end
+        SRV->>ROL: findByType(rol)
+        ROL-->>SRV: Role
+        SRV->>USR: assertDisponible(email, telefono)
+        alt Correo o telefono en uso, incluidos los usuarios dados de baja
+            USR-->>SRV: ConflictException
+            SRV-->>CTRL: 409 Email o telefono ya en uso
         else Libres
-            HLP->>SRV: createFirebaseUser(dto) desde createUserInFirebase
-            activate SRV
-            SRV->>FB: createUserSafe(createUserDto)
-            activate FB
-            FB-->>SRV: UserRecord
-            deactivate FB
-            SRV-->>HLP: UserRecord
-            deactivate SRV
-            HLP->>SRV: create(createUserDto con firebase_uid) desde createUserInDatabase
-            activate SRV
-            SRV-->>HLP: User
-            deactivate SRV
+            SRV->>FB: createUserSafe(email, password, full_name, phone_number)
+            alt Firebase rechaza la cuenta
+                FB-->>SRV: BadRequestException con el motivo mapeado
+                SRV-->>CTRL: 400, no se creo nada que deshacer
+            else Cuenta creada
+                FB-->>SRV: UserRecord con uid
+                SRV->>TX: transaction(manager)
+                activate TX
+                TX->>USR: crearEnTransaccion(manager, datos, firebase_uid, role_id)
+                USR-->>TX: User
+                TX->>PERF: crearPerfil(manager, user_id, datos del rol)
+                alt Falla el usuario o el perfil
+                    TX-->>SRV: error y rollback
+                    SRV->>FB: deleteUserSafe(uid) de la cuenta creada en esta llamada
+                    SRV-->>CTRL: error traducido por traducirErrorDeBase
+                else Transaccion confirmada
+                    TX-->>SRV: user_id
+                    SRV->>EV: emit(usuario.registrado, UsuarioRegistradoEvent)
+                    SRV->>USR: findOne(user_id)
+                    USR-->>SRV: User con rol y perfil
+                    SRV-->>CTRL: User
+                end
+                deactivate TX
+            end
         end
     end
+    deactivate SRV
+    Note over CTRL,PERF: ServicioDelPerfil es CustomersService, DeliveryService o AdminService segun el rol
+    Note over CTRL: UserMapper.toDto(user) a UserResponseDto, sin firebase_uid
 ```
 
 **Figura 25 — DSD CU-082: Crear Usuario Base**
 
 **Observaciones de diseño**
 
-- El endpoint es `@Public()`: es una puerta de alta genérica, no la del registro de
-  clientes (CU-002), que sí arma el agregado completo en transacción.
+- **Orden de las operaciones:** todo lo que puede fallar sin efectos (autorización, distribuidora, duplicados) va antes de crear la cuenta en el proveedor de identidad; así un rechazo nunca deja nada que deshacer.
+- **Compensación acotada:** si la transacción falla, se borra la cuenta del proveedor **por el `uid` que devolvió esta misma alta**. Borrar por correo se llevaba puesta la cuenta de quien ya estaba registrado (H-70).
+- Los duplicados se controlan también contra los usuarios dados de baja: un correo borrado no se reutiliza para heredar el historial de otro.
+- El módulo `registro` depende de los dueños de cada tabla y nadie depende de él, por eso no arma ciclos entre `users`, `customer`, `delivery`, `admin` y `email`.
+- El evento `usuario.registrado` se publica recién con la transacción confirmada.
 
 ---
 
@@ -3169,11 +3089,9 @@ sequenceDiagram
                 SRV-->>CTRL: ConflictException tiene pedidos asociados, bloquealo en lugar de eliminarlo
             else Borrado en base
                 REP-->>SRV: DeleteResult
-                opt El usuario tiene email
-                    SRV->>SRV: cleanupFirebaseUser(user.email)
-                    SRV->>FB: deleteUserByEmailSafe(email, logger)
+                opt El usuario tiene firebase_uid
+                    SRV->>FB: deleteUserSafe(user.firebase_uid, logger)
                     activate FB
-                    FB->>FB: getUserByEmail(email)
                     FB->>FB: deleteUser(uid)
                 end
                 SRV-->>CTRL: message Usuario eliminado permanentemente de DB y Firebase
@@ -5167,7 +5085,7 @@ verificable en el código y quedaron modelados.
 | CU | Salvedad |
 |---|---|
 | CU-001 | `AuthService.login` recibe `requestSource` pero **no lo usa**: la validación de rol-por-app la hace `AuthGuard.validateUserRoleForApp`. El parámetro está en la firma y se dibuja como tal. |
-| CU-003 | El diagrama es el del endpoint `POST /users/delivery-registration`, que realiza a la vez CU-003 y CU-031. |
+| CU-003 | El diagrama es el de CU-031: los dos son el alta de un chofer por `POST /users`, que incluye CU-082. |
 | CU-004 | El CU habla de "una pantalla"; el código lo resuelve con **dos** controllers (`UsersController` y `CustomersController`) sobre agregados distintos. Se modelaron los dos lados. |
 | CU-012 | Se documenta como observación el gap real: no genera `deliveryCode`, no cierra la `DispatchOffer` y no emite `order:accepted`. No se inventó ninguna llamada que el código no tenga. |
 | CU-019 | Falta la validación de que el chofer sea el asignado al pedido. Se señala como gap, no se dibuja como si existiera. |
@@ -5179,7 +5097,7 @@ verificable en el código y quedaron modelados.
 `Repository<Order>`, `RepositoryRole` = `Repository<Role>`, `RepositoryUserAddress` =
 `Repository<UserAddress>`, `SelectQueryBuilderUser` = `SelectQueryBuilder<User>`,
 `OrderStatusMachine` = módulo `order-status.machine.ts` (funciones `transitionOrder` /
-`assertTransition`), `UserRegistrationHelper` = módulo `user-registration.helper.ts`,
+`assertTransition`), `PoliticaDeRegistro` = función `autorizarAlta` de `politica-de-registro.ts`,
 `FirebaseAuthClientSDK` = SDK `firebase/auth` (función `signInWithEmailAndPassword`).
 
 ---
@@ -5633,94 +5551,42 @@ sequenceDiagram
 
 #### DSD — CU-031: Registrar Chofer
 
-Registro **transaccional a través de dos sistemas**: la base propia (User + Delivery) y Firebase Auth. La compensación del lado de Firebase es explícita porque no participa de la transacción de Postgres.
+Alta de un chofer desde el panel: `POST /users` con rol `delivery`. La identidad la crea `RegistroService.registrar`, el mismo camino de todas las altas: el diagrama muestra la puerta y el perfil propios de este caso, y la nota `«include» CU-082` marca dónde entra el caso incluido, cuyo DSD tiene el detalle.
 
-**Clases participantes:** `UsersController`, `DeliveryService`, `DataSource`, `QueryRunner`, `EntityManager`, `FirebaseAuthPort` (impl. `FirebaseAuthAdapter`), `Repository<User>`, `Repository<Role>`, `Repository<Delivery>`, DTO `CreateDeliveryDto`, entidades `User`, `Role`, `Delivery`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `DistributorService`, `DeliveryService`, DTO `RegistrarUsuarioDto`, `UserResponseDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-031 Registrar Chofer
     autonumber
-    participant CTRL as UsersController
-    participant SRV as DeliveryService
-    participant DS as DataSource
-    participant QR as QueryRunner
-    participant FB as FirebaseAuthPort
-    participant UREP as RepositoryUser
-    participant RREP as RepositoryRole
-    participant DREP as RepositoryDelivery
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
+    participant DSRV as DeliveryService
 
-    CTRL->>CTRL: resolver targetDistributor segun rol del actor
-    alt No es SUPER_ADMIN y no tiene distribuidora
-        CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
-    else Distribuidora resuelta
-        CTRL->>SRV: registerWithUser(dto con distributorId)
-        activate SRV
-        SRV->>DS: createQueryRunner()
-        activate DS
-        DS-->>SRV: QueryRunner
-        deactivate DS
-        SRV->>QR: connect() y startTransaction()
-        activate QR
-        SRV->>UREP: findOne(where email)
-        activate UREP
-        UREP-->>SRV: User existente o null
-        deactivate UREP
-        alt Ya existe un usuario con ese email
-            SRV->>QR: rollbackTransaction()
-            SRV-->>CTRL: BadRequestException User with this email already exists
-            deactivate SRV
-        else Email libre
-            SRV->>FB: createUserSafe(email, password, full_name, phone_number)
-            activate FB
-            FB-->>SRV: firebaseUser con uid
-            deactivate FB
-            SRV->>RREP: findOne(where type delivery)
-            activate RREP
-            RREP-->>SRV: Role o null
-            deactivate RREP
-            alt No existe el rol delivery
-                SRV->>QR: rollbackTransaction()
-                SRV->>FB: deleteUserByEmailSafe(email, logger)
-                activate FB
-                SRV-->>CTRL: InternalServerErrorException Delivery role not found
-            else Rol encontrado
-                SRV->>UREP: create(email, full_name, phone_number, firebase_uid, role_id, selfie)
-                activate UREP
-                UREP-->>SRV: User en memoria
-                deactivate UREP
-                SRV->>QR: manager.save(user)
-                QR-->>SRV: savedUser con user_id
-                deactivate QR
-                SRV->>DREP: create(user_id, distributor_id, calification, latLng, actual_location, validated, isActive, balance 0)
-                activate DREP
-                DREP-->>SRV: Delivery en memoria
-                deactivate DREP
-                SRV->>QR: manager.save(delivery)
-                activate QR
-                SRV->>QR: commitTransaction()
-                SRV->>UREP: findOne(user_id, relations delivery y role)
-                activate UREP
-                UREP-->>SRV: User completo
-                deactivate UREP
-                SRV-->>CTRL: User con su perfil de chofer
-            end
-        end
-        SRV->>QR: release()
+    CTRL->>SRV: registrar(datos con rol delivery, solicitante con su sesion)
+    activate SRV
+    SRV->>POL: autorizarAlta(solicitante, delivery, distributorId)
+    alt Admin de empresa
+        POL-->>SRV: su propia distribuidora, 403 si pidio otra
+    else Administrador General
+        POL-->>SRV: la distribuidora indicada o la de X-Distributor, 400 si no hay ninguna
     end
-    deactivate FB
-    deactivate QR
+    Note over SRV: «include» CU-082 Crear Usuario Base
+    SRV->>DSRV: crearPerfil(manager, user_id, distributorId, validated, isActive)
+    DSRV-->>SRV: perfil de chofer con balance 0 y calificacion 0
+    SRV-->>CTRL: User con rol y perfil de chofer
+    deactivate SRV
+    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Figura 72 — DSD CU-031: Registrar Chofer**
 
 **Observaciones de diseño**
 
-- **Compensación explícita del lado externo:** cualquier fallo posterior al alta en Firebase dispara `rollbackTransaction()` sobre Postgres **y** `deleteUserByEmailSafe(...)` sobre Firebase. Sin eso quedaría un usuario huérfano en el proveedor de identidad.
-- El `release()` del `QueryRunner` está en el `finally`: se ejecuta en todos los caminos, incluido el de error.
-- La lógica vive en `DeliveryService`, no en `UsersService`: `UsersService` dejó de conocer entidades de otros dominios (refactor P2-3).
-- Un admin de empresa **no puede elegir distribuidora**: se ignora el `distributorId` del body y se usa el del header. Sólo el `super_admin` puede targetear otro tenant.
-- Es el mismo endpoint que CU-003 (`POST /users/delivery-registration`); no existe un auto-registro de chofer.
+- **Una sola regla de autorización** para todas las altas: `autorizarAlta` recibe quién pide y qué rol pide, y devuelve la distribuidora del perfil o rechaza. Un admin de empresa no puede indicar otra distribuidora (403); el super admin indica la que quiera, que tiene que existir y estar activa (404 si no).
+- `DeliveryService.crearPerfil` recibe el `EntityManager` de la transacción del alta: el módulo dueño de la tabla escribe su fila sin que `registro` conozca la entidad `Delivery`.
+- No existe el auto-registro de choferes: la puerta pública siempre crea clientes.
 
 ---
 
@@ -8521,162 +8387,86 @@ sequenceDiagram
 
 #### C.18 DSD — CU-086: Registrar Administrador
 
-**Clases participantes:** `@CurrentUser()`, `@CurrentDistributor()`, `AdminController`, `AdminService`, `AdminRegistrationHelper`, `UsersService`, `Repository<Role>`, `Repository<Admin>`, entidades `User`, `Admin`.
+**Clases participantes:** `RegistroController`, `RegistroService`, `autorizarAlta` (`politica-de-registro.ts`), `AdminService`, DTO `RegistrarUsuarioDto`, `UserResponseDto`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-086 Registrar Administrador
     autonumber
-    participant ACT as SuperAdmin o Admin de empresa
-    participant CTRL as AdminController
-    participant SRV as AdminService
-    participant RSRV as RoleService
-    participant HLP as AdminRegistrationHelper
-    participant USR as UsersService
-    participant AREP as RepositoryAdmin
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
+    participant ASRV as AdminService
 
-    ACT->>CTRL: POST /admin/register con RegisterAdminDto
-    activate CTRL
-    alt El solicitante es SUPER_ADMIN
-        CTRL->>SRV: registerAdmin(dto con distributorId del body o del contexto)
-        activate SRV
-    else El solicitante es ADMIN de empresa
-        alt El admin no tiene distribuidora asociada
-            CTRL-->>ACT: ForbiddenException, tu usuario no tiene una distribuidora asociada
-            deactivate CTRL
-        else Tiene tenant
-            CTRL->>SRV: isSuperAdminRole(dto.role_id)
-            SRV->>RSRV: findById(role_id)
-            activate RSRV
-            RSRV-->>SRV: Role o null
-            deactivate RSRV
-            SRV-->>CTRL: boolean
-            deactivate SRV
-            alt El rol pedido es super_admin
-                CTRL-->>ACT: ForbiddenException, no podes crear un super administrador
-            else Rol permitido
-                CTRL->>SRV: registerAdmin(dto con distributorId forzado al del contexto)
-                activate SRV
-            end
-        end
+    CTRL->>SRV: registrar(datos con rol admin o super_admin, solicitante con su sesion)
+    activate SRV
+    SRV->>POL: autorizarAlta(solicitante, rol, distributorId)
+    alt Admin de empresa pide un super_admin
+        POL-->>SRV: ForbiddenException No podes crear un super administrador
+        SRV-->>CTRL: 403
+    else Admin de empresa pide un admin
+        POL-->>SRV: su propia distribuidora, 403 si pidio otra
+    else Administrador General
+        POL-->>SRV: admin en la distribuidora indicada, o super_admin sin distribuidora
     end
-
-    SRV->>HLP: validateUniqueness(dto, usersService)
-    activate HLP
-    HLP->>USR: findOneByEmail(dto.email)
-    activate USR
-    HLP->>USR: findOneByPhone(dto.phone_number)
-    alt Email o telefono ya en uso
-        HLP-->>ACT: HttpException 409, email o telefono ya en uso
-        deactivate HLP
-    else Datos libres
-        SRV->>HLP: createUserInFirebase(dto, usersService)
-        activate HLP
-        HLP->>USR: createFirebaseUser(dto)
-        USR-->>HLP: firebaseUser con uid
-        deactivate USR
-        SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
-        HLP->>USR: create(dto mas firebase_uid)
-        activate USR
-        USR-->>HLP: User local
-        deactivate USR
-        SRV->>SRV: arma CreateAdminDto con user_id, role_id y distributor_id
-        SRV->>AREP: create(adminData)
-        activate AREP
-        SRV->>AREP: save(admin)
-        AREP-->>SRV: Admin persistido
-        deactivate AREP
-        SRV-->>CTRL: message, admin, user
-        deactivate SRV
-        CTRL->>CTRL: AdminMapper.toRegistrado(admin, user)
-        CTRL-->>ACT: 201 AdminRegistradoResponseDto
-    end
-    deactivate HLP
+    Note over SRV: «include» CU-082 Crear Usuario Base
+    SRV->>ASRV: crearPerfil(manager, user_id, role_id, distributorId o null)
+    ASRV-->>SRV: perfil de administrador
+    SRV-->>CTRL: User con rol
+    deactivate SRV
+    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
 ```
 
 **Figura 126 — C.18 DSD — CU-086: Registrar Administrador**
 
 **Observaciones de diseño**
 
-- La regla multi-tenant vive **en el controlador**, no en el servicio: es una decisión de *autorización* (quién puede crear a quién), no de negocio. El `AdminService.registerAdmin` recibe el `distributorId` ya decidido y no vuelve a cuestionarlo.
-- Un admin de empresa tiene **dos barreras** contra la escalada de privilegios: no puede elegir distribuidora (se le pisa el `distributorId` del body con el del contexto) y no puede crear super_admins (`isSuperAdminRole` consulta el tipo real del `role_id`, en lugar de confiar en un nombre del payload).
-- El alta es una **transacción distribuida sin transacción**: primero Firebase, después la base local, después la entidad `Admin`. Si falla el paso 2, queda un usuario huérfano en Firebase. Es el punto frágil conocido de este flujo.
-- `distributor_id = null` es un valor legítimo y significativo: identifica al super_admin cross-tenant.
+- La regla de quién crea a quién es la misma función que en todas las altas (`autorizarAlta`): un admin de empresa no crea super admins ni admins de otra distribuidora.
+- Un admin de empresa siempre tiene distribuidora; `distributor_id = null` queda reservado al super admin. Antes se podía crear un admin sin distribuidora que después no podía entrar.
+- El alta es atómica (usuario y perfil en una transacción), con la compensación de CU-082.
 
 ---
 
 #### C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
 
-**Clases participantes:** `@Public()`, `AuthGuard`, `RolesGuard`, `AdminController`, `AdminService`, `Repository<Admin>`, `AdminRegistrationHelper`, `UsersService`.
+**Clases participantes:** comando `crear-superadmin` (`src/cli/crear-superadmin.ts`), `NestFactory.createApplicationContext`, `AdminService`, `RegistroService`.
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-087 Crear El Primer Super Administrador
     autonumber
-    participant OPE as Operador de instalacion
-    participant AUTH as AuthGuard
-    participant GRD as RolesGuard
-    participant CTRL as AdminController
-    participant SRV as AdminService
-    participant AREP as RepositoryAdmin
-    participant HLP as AdminRegistrationHelper
-    participant USR as UsersService
+    actor GEN as Administrador General
+    participant CLI as ComandoCrearSuperAdmin
+    participant ASRV as AdminService
+    participant SRV as RegistroService
 
-    OPE->>AUTH: POST /admin/first-superadmin con RegisterAdminDto, sin token
-    activate AUTH
-    AUTH->>AUTH: reflector.get isPublic sobre el handler
-    AUTH-->>GRD: isPublic true, devuelve true sin validar token
-    deactivate AUTH
-    GRD->>GRD: canActivate, isPublic true, no exige rol
-    GRD->>CTRL: createFirstSuperAdmin(registerAdminDto)
-    activate CTRL
-
-    Note over CTRL: Condicion de arranque, la unica autorizacion de esta ruta
-    CTRL->>SRV: findAll()
-    activate SRV
-    SRV->>AREP: find(where vacio, relations user role distributor)
-    activate AREP
-    AREP-->>SRV: Admin[]
-    deactivate AREP
-    SRV-->>CTRL: Admin[]
-    deactivate SRV
-    alt Ya existe al menos un administrador
-        CTRL-->>OPE: ForbiddenException 403, ya existen administradores en el sistema
-        deactivate CTRL
-    else Sistema virgen, cero admins
-        CTRL->>SRV: registerAdmin(registerAdminDto)
+    GEN->>CLI: npm run crear-superadmin con correo, nombre y telefono
+    activate CLI
+    CLI->>CLI: contraseña de SUPERADMIN_PASSWORD o pedida por teclado sin mostrarla
+    CLI->>ASRV: existeSuperAdmin()
+    ASRV-->>CLI: true o false
+    alt Ya existe un super administrador
+        CLI-->>GEN: aviso y salida con codigo 1, no se crea nada
+    else No existe ninguno
+        CLI->>SRV: registrar(datos con rol super_admin, solicitante sistema)
         activate SRV
-        SRV->>HLP: validateUniqueness(dto, usersService)
-        activate HLP
-        SRV->>HLP: createUserInFirebase(dto, usersService)
-        HLP->>USR: createFirebaseUser(dto)
-        activate USR
-        USR-->>HLP: firebaseUser con uid
-        deactivate USR
-        SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
-        HLP->>USR: create(dto mas firebase_uid)
-        activate USR
-        USR-->>HLP: User local
-        deactivate USR
-        SRV->>AREP: create(adminData) y save(admin)
-        activate AREP
-        AREP-->>SRV: Admin persistido
-        deactivate AREP
-        SRV-->>CTRL: message, admin, user
+        Note over SRV: «include» CU-082 Crear Usuario Base
+        SRV->>ASRV: crearPerfil(manager, user_id, role_id, null)
+        ASRV-->>SRV: perfil de administrador sin distribuidora
+        SRV-->>CLI: User
         deactivate SRV
-        CTRL-->>OPE: 201 primer super administrador creado
+        CLI-->>GEN: Super administrador creado con su correo e id
     end
-    deactivate HLP
+    deactivate CLI
 ```
 
 **Figura 127 — C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)**
 
 **Observaciones de diseño**
 
-- Es el **problema del arranque en frío**: para crear el primer administrador haría falta un administrador que lo autorice, y no existe. La solución de diseño es una ruta `@Public()` cuya autorización no es un rol sino un **invariante de estado del sistema**: `findAll().length === 0`.
-- La condición es **auto-clausurante**: en cuanto el endpoint tiene éxito una vez, `findAll()` devuelve un elemento y toda llamada posterior falla con 403 permanentemente. La ruta se cierra sola, sin intervención ni feature flag.
-- `@Public()` desactiva **los dos guards en cadena**: `AuthGuard` devuelve `true` antes de buscar el `Bearer` y `RolesGuard` respeta el mismo flag con `getAllAndOverride`, de modo que el `@Roles` de otros handlers de la clase no lo alcanza.
-- Riesgo residual asumido y documentado en el propio `@ApiOperation` ("development only"): la comprobación es **TOCTOU**, dos requests concurrentes sobre un sistema virgen podrían ambas leer cero admins. No hay lock ni unicidad que lo impida.
+- No hay endpoint: el arranque lo hace quien tiene acceso al servidor. Un endpoint público que sólo sirve una vez queda expuesto toda la vida del sistema.
+- La contraseña no viaja como argumento, para que no quede en el historial de la terminal.
+- El comando usa el mismo `RegistroService` que el panel, con el solicitante `sistema`: no hay un segundo camino de alta que mantener.
 
 ---
 
@@ -10896,6 +10686,49 @@ classDiagram
         +notifyCustomer(customerId, evento, payload) void
     }
 
+
+    class RegistroController {
+        +registrarCliente(dto) Promise~UserResponseDto~
+        +registrar(dto, usuario) Promise~UserResponseDto~
+    }
+    class RegistroService {
+        +registrar(datos, solicitante) Promise~User~
+        -crearPerfil(manager, userId, roleId, alta, datos) Promise~void~
+    }
+    class PoliticaDeRegistro {
+        <<function>>
+        +autorizarAlta(solicitante, rol, distributorId) AltaAutorizada
+    }
+    class UsersService {
+        +assertDisponible(email, telefono) Promise~void~
+        +crearEnTransaccion(manager, datos) Promise~User~
+        +findOne(id) Promise~User~
+    }
+    class CustomersService {
+        +crearPerfil(manager, userId, datos) Promise~void~
+    }
+    class DeliveryService {
+        +crearPerfil(manager, userId, distributorId, datos) Promise~void~
+    }
+    class AdminService {
+        +crearPerfil(manager, userId, roleId, distributorId) Promise~void~
+        +existeSuperAdmin() Promise~boolean~
+    }
+    class FirebaseAuthPort {
+        <<abstract>>
+        +createUserSafe(props) Promise~UserRecord~
+        +deleteUserSafe(uid, logger) Promise~void~
+    }
+    class UsuarioRegistradoEvent {
+        +userId string
+        +email string
+        +fullName string
+        +rol RolRegistrable
+    }
+    class BienvenidaListener {
+        +handle(evento) Promise~void~
+    }
+
     OrderService ..> CreateOrderUseCase : delega
     OrderService ..> UpdateOrderStatusUseCase : delega
     OrderService ..> ConfirmDeliveryUseCase : delega
@@ -10907,6 +10740,16 @@ classDiagram
     DispatchOrchestratorService ..> DriversGateway : ofrece al chofer
     CreateOrderUseCase ..> DispatchOrchestratorService : dispara el despacho
     DriversGateway ..> RedisService : registra ubicación
+
+    RegistroController ..> RegistroService : delega
+    RegistroService ..> PoliticaDeRegistro : autoriza
+    RegistroService ..> UsersService : usuario
+    RegistroService ..> CustomersService : perfil de cliente
+    RegistroService ..> DeliveryService : perfil de chofer
+    RegistroService ..> AdminService : perfil de administrador
+    RegistroService ..> FirebaseAuthPort : cuenta de acceso
+    RegistroService ..> UsuarioRegistradoEvent : publica
+    BienvenidaListener ..> UsuarioRegistradoEvent : escucha
 ```
 
 **Figura 155 — Clases de Servicio (Backend — Capa de Aplicación)**

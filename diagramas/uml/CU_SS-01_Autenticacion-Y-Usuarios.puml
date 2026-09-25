@@ -58,26 +58,26 @@ A01 -[#1F6F8B]- U001
 A01 -[#1F6F8B]- U002
 A01 -[#1F6F8B]- U004
 A01 -[#1F6F8B]- U047
-A01 -[#1F6F8B]- U082
 A01 -[#1F6F8B]- U084
 A01 -[#1F6F8B]- U091
 A02 -[#2E7D46]- U001
 A02 -[#2E7D46]- U004
 A02 -[#2E7D46]- U047
-A02 -[#2E7D46]- U082
 A02 -[#2E7D46]- U084
 A02 -[#2E7D46]- U091
 A03 -[#8C4A9E]- U001
 A03 -[#8C4A9E]- U003
 A03 -[#8C4A9E]- U047
 A03 -[#8C4A9E]- U050
-A03 -[#8C4A9E]- U082
 A03 -[#8C4A9E]- U083
 A03 -[#8C4A9E]- U084
 A03 -[#8C4A9E]- U085
 A03 -[#8C4A9E]- U091
-A04 -[#8A6D1F]- U082
 A04 -[#8A6D1F]- U084
 A05 -[#B4432B]- U091
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U002 ..> U082 : <<include>>
+U003 ..> U082 : <<include>>
 
 @enduml

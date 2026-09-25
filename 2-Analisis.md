@@ -1092,14 +1092,16 @@ sequenceDiagram
     actor CLI as Cliente
     participant SIS as Sistema
 
-    CLI->>SIS: registrarCliente(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
+    CLI->>SIS: registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
     activate SIS
-    alt datos válidos y correo/teléfono libres
-        SIS-->>CLI: cuenta creada (usuarioId, clienteId, rol CLIENTE)
+    alt datos válidos y correo y teléfono libres
+        SIS-->>CLI: cuenta creada (usuarioId, perfil de cliente, rol CLIENTE)
     else correo o teléfono ya registrados
-        SIS-->>CLI: error de solicitud (el usuario ya existe)
-    else datos incompletos o inválidos
-        SIS-->>CLI: error de validación
+        SIS-->>CLI: conflicto (el correo o el teléfono ya están en uso)
+    else datos incompletos o con formato inválido
+        SIS-->>CLI: error de validación indicando el campo
+    else demasiadas altas seguidas desde el mismo origen
+        SIS-->>CLI: demasiadas solicitudes (reintentar en un minuto)
     end
     deactivate SIS
 ```
@@ -1122,11 +1124,13 @@ sequenceDiagram
 
     ADM->>SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
     activate SIS
-    alt registro exitoso
-        SIS-->>ADM: chofer creado (usuarioId, choferId, validado en falso)
-    else el administrador no tiene distribuidora asociada
+    alt puede dar de alta en esa distribuidora y los datos son válidos
+        SIS-->>ADM: chofer registrado (usuarioId, perfil de chofer, rol CHOFER)
+    else la distribuidora no es la suya, o no tiene distribuidora asociada
         SIS-->>ADM: acceso denegado
-    else datos inválidos o correo duplicado
+    else correo o teléfono ya registrados
+        SIS-->>ADM: conflicto (el correo o el teléfono ya están en uso)
+    else datos inválidos o falta la distribuidora
         SIS-->>ADM: error de validación
     end
     deactivate SIS
@@ -1246,17 +1250,22 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-082 Crear Usuario Base
     autonumber
-    actor CLI as Cliente
+    actor SOL as Solicitante
     participant SIS as Sistema
 
-    CLI->>SIS: crearUsuario(nombreCompleto, correo, telefono, contrasena, rolId)
+    SOL->>SIS: crearUsuario(rol, nombreCompleto, correo, telefono, contrasena, datosDelPerfil)
     activate SIS
-    alt datos válidos
-        SIS-->>CLI: usuario creado (usuarioId, rol asignado)
-    else datos inválidos o correo duplicado
-        SIS-->>CLI: error de validación
+    alt el solicitante puede crear ese rol y los datos son válidos
+        SIS-->>SOL: usuario creado con su cuenta de acceso y su perfil (usuarioId, rol)
+    else el rol o la distribuidora no le corresponden
+        SIS-->>SOL: acceso denegado
+    else correo o teléfono ya registrados
+        SIS-->>SOL: conflicto (el correo o el teléfono ya están en uso)
+    else datos inválidos
+        SIS-->>SOL: error de validación
     end
     deactivate SIS
+    Note over SOL,SIS: Caso incluido: lo inician CU-002, CU-003, CU-031, CU-086 y CU-087
 ```
 
 **Figura 16 — DSS CU-082: Crear Usuario Base**
@@ -2614,10 +2623,14 @@ sequenceDiagram
 
     ADM->>SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
     activate SIS
-    alt el administrador puede dar de alta en esa distribuidora
-        SIS-->>ADM: chofer registrado (pendiente de validación)
-    else el administrador no pertenece a esa distribuidora
+    alt puede dar de alta en esa distribuidora y los datos son válidos
+        SIS-->>ADM: chofer registrado (usuarioId, perfil de chofer, rol CHOFER)
+    else la distribuidora no es la suya, o no tiene distribuidora asociada
         SIS-->>ADM: acceso denegado
+    else correo o teléfono ya registrados
+        SIS-->>ADM: conflicto (el correo o el teléfono ya están en uso)
+    else datos inválidos o falta la distribuidora
+        SIS-->>ADM: error de validación
     end
     deactivate SIS
 ```
@@ -4532,14 +4545,16 @@ sequenceDiagram
     actor ADM as Administrador
     participant SIS as Sistema
 
-    ADM->>SIS: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rolId, distribuidoraId)
+    ADM->>SIS: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rol, distribuidoraId)
     activate SIS
     alt es super administrador
-        SIS-->>ADM: administrador creado en la distribuidora indicada
-    else es administrador de empresa y el alta es en su propia distribuidora
+        SIS-->>ADM: administrador creado en la distribuidora indicada, o super administrador sin distribuidora
+    else es administrador de empresa y el alta es un admin de su propia distribuidora
         SIS-->>ADM: administrador creado en su distribuidora
     else intenta crear en otra distribuidora o con rol de super administrador
         SIS-->>ADM: acceso denegado
+    else correo o teléfono ya registrados
+        SIS-->>ADM: conflicto (el correo o el teléfono ya están en uso)
     end
     deactivate SIS
 ```
@@ -4559,17 +4574,18 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-087 Crear El Primer Super Administrador
     autonumber
-    actor ADM as Administrador
+    actor GEN as Administrador General
     participant SIS as Sistema
 
-    ADM->>SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
+    GEN->>SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
     activate SIS
-    alt no existe ningún administrador en el sistema
-        SIS-->>ADM: super administrador creado (queda habilitado el acceso al panel)
-    else ya existen administradores
-        SIS-->>ADM: acceso denegado (la operación de arranque ya fue consumida)
+    alt no existe ningún super administrador
+        SIS-->>GEN: super administrador creado (queda habilitado el acceso al panel)
+    else ya existe un super administrador
+        SIS-->>GEN: rechazo (la operación de arranque ya fue usada)
     end
     deactivate SIS
+    Note over GEN,SIS: Se ejecuta desde el servidor, no desde el panel ni las apps
 ```
 
 **Figura 132 — DSS CU-087: Crear el Primer Super Administrador**

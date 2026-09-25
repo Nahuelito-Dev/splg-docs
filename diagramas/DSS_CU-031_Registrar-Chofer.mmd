@@ -6,9 +6,13 @@ sequenceDiagram
 
     ADM->>SIS: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
     activate SIS
-    alt el administrador puede dar de alta en esa distribuidora
-        SIS-->>ADM: chofer registrado (pendiente de validación)
-    else el administrador no pertenece a esa distribuidora
+    alt puede dar de alta en esa distribuidora y los datos son válidos
+        SIS-->>ADM: chofer registrado (usuarioId, perfil de chofer, rol CHOFER)
+    else la distribuidora no es la suya, o no tiene distribuidora asociada
         SIS-->>ADM: acceso denegado
+    else correo o teléfono ya registrados
+        SIS-->>ADM: conflicto (el correo o el teléfono ya están en uso)
+    else datos inválidos o falta la distribuidora
+        SIS-->>ADM: error de validación
     end
     deactivate SIS

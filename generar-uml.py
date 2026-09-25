@@ -72,6 +72,8 @@ from paleta import TINTE, BORDE, COLOR_ACT
 # necesita de otra —tipicamente, escribir sobre algo exige leerlo antes—, y son lo
 # que la catedra pidio que se viera en los diagramas de cada ABM.
 INCLUYE = {
+  # Toda alta de usuario crea la identidad por el mismo camino (CU-082).
+  "SS-01": [("CU-002","CU-082"), ("CU-003","CU-082")],
   "SS-02": [("CU-005","CU-125"), ("CU-005","CU-121"), ("CU-005","CU-148"),
             ("CU-147","CU-121"), ("CU-147","CU-148"), ("CU-144","CU-146"),
             ("CU-008","CU-006"), ("CU-009","CU-006"), ("CU-010","CU-006"),
@@ -103,6 +105,10 @@ FACTORIZADO = {
   "F-RECAR": "Recargo por Transferencia",
   "F-FOTO":  "Adjuntar Foto",
 }
+
+# Inclusiones entre subsistemas distintos: el caso incluido vive en otro
+# subsistema y se dibuja fuera del limite del que lo incluye, con su codigo.
+INCLUYE_EXTERNO = [("CU-031","CU-082"), ("CU-086","CU-082"), ("CU-087","CU-082")]
 
 # base -> incluido factorizado
 INCLUYE_FACTOR = {
@@ -393,6 +399,13 @@ for i, s in enumerate(subs):
         d.append(f'  usecase "{parte(FACTORIZADO[fc], 30)}" as {eid(fc)} <<factorizado>>'
                  f' #back:FFFFFF;line:{borde}')
     d += ["}", ""]
+    # casos de otro subsistema que alguno de este incluye: fuera del rectangulo
+    externos = [(a, b) for a, b in INCLUYE_EXTERNO
+                if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] != s]
+    for b in sorted({b for _, b in externos}):
+        d.append(f'usecase "{b}\\n{parte(casos[b]["nombre"], 30)}\\n({casos[b]["ss"]})" as {eid(b)}'
+                 f' #back:FFFFFF;line:6B7683')
+    if externos: d.append("")
     # La asociacion actor-caso de uso es una asociacion, no una dependencia:
     # en UML va sin punta de flecha. La flecha significaria navegabilidad, que
     # es una decision de diseno y no corresponde a un diagrama de requisitos.
@@ -403,6 +416,7 @@ for i, s in enumerate(subs):
     rel = [(a, b) for a, b in INCLUYE.get(s, [])
            if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] == s]
     rel += [(a, b) for a, b in INCLUYE_FACTOR.get(s, [])]
+    rel += externos
     if rel:
         d.append("")
         d.append("' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>")

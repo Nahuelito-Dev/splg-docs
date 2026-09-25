@@ -1,57 +1,26 @@
 sequenceDiagram
     title DSD — CU-087 Crear El Primer Super Administrador
     autonumber
-    participant OPE as Operador de instalacion
-    participant AUTH as AuthGuard
-    participant GRD as RolesGuard
-    participant CTRL as AdminController
-    participant SRV as AdminService
-    participant AREP as RepositoryAdmin
-    participant HLP as AdminRegistrationHelper
-    participant USR as UsersService
+    actor GEN as Administrador General
+    participant CLI as ComandoCrearSuperAdmin
+    participant ASRV as AdminService
+    participant SRV as RegistroService
 
-    OPE->>AUTH: POST /admin/first-superadmin con RegisterAdminDto, sin token
-    activate AUTH
-    AUTH->>AUTH: reflector.get isPublic sobre el handler
-    AUTH-->>GRD: isPublic true, devuelve true sin validar token
-    deactivate AUTH
-    GRD->>GRD: canActivate, isPublic true, no exige rol
-    GRD->>CTRL: createFirstSuperAdmin(registerAdminDto)
-    activate CTRL
-
-    Note over CTRL: Condicion de arranque, la unica autorizacion de esta ruta
-    CTRL->>SRV: findAll()
-    activate SRV
-    SRV->>AREP: find(where vacio, relations user role distributor)
-    activate AREP
-    AREP-->>SRV: Admin[]
-    deactivate AREP
-    SRV-->>CTRL: Admin[]
-    deactivate SRV
-    alt Ya existe al menos un administrador
-        CTRL-->>OPE: ForbiddenException 403, ya existen administradores en el sistema
-        deactivate CTRL
-    else Sistema virgen, cero admins
-        CTRL->>SRV: registerAdmin(registerAdminDto)
+    GEN->>CLI: npm run crear-superadmin con correo, nombre y telefono
+    activate CLI
+    CLI->>CLI: contraseña de SUPERADMIN_PASSWORD o pedida por teclado sin mostrarla
+    CLI->>ASRV: existeSuperAdmin()
+    ASRV-->>CLI: true o false
+    alt Ya existe un super administrador
+        CLI-->>GEN: aviso y salida con codigo 1, no se crea nada
+    else No existe ninguno
+        CLI->>SRV: registrar(datos con rol super_admin, solicitante sistema)
         activate SRV
-        SRV->>HLP: validateUniqueness(dto, usersService)
-        activate HLP
-        SRV->>HLP: createUserInFirebase(dto, usersService)
-        HLP->>USR: createFirebaseUser(dto)
-        activate USR
-        USR-->>HLP: firebaseUser con uid
-        deactivate USR
-        SRV->>HLP: createUserInDatabase(dto, firebaseUser.uid, usersService)
-        HLP->>USR: create(dto mas firebase_uid)
-        activate USR
-        USR-->>HLP: User local
-        deactivate USR
-        SRV->>AREP: create(adminData) y save(admin)
-        activate AREP
-        AREP-->>SRV: Admin persistido
-        deactivate AREP
-        SRV-->>CTRL: message, admin, user
+        Note over SRV: «include» CU-082 Crear Usuario Base
+        SRV->>ASRV: crearPerfil(manager, user_id, role_id, null)
+        ASRV-->>SRV: perfil de administrador sin distribuidora
+        SRV-->>CLI: User
         deactivate SRV
-        CTRL-->>OPE: 201 primer super administrador creado
+        CLI-->>GEN: Super administrador creado con su correo e id
     end
-    deactivate HLP
+    deactivate CLI

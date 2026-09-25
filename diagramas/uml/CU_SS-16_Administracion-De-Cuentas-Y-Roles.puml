@@ -34,10 +34,7 @@ skinparam usecase {
   BackgroundColor<<factorizado>> #F2F4F6
 }
 
-actor "Cliente\n(ACT-01)" as A01
-actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
-actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-16 Administración de Cuentas y Roles" {
@@ -55,10 +52,9 @@ rectangle "SS-16 Administración de Cuentas y Roles" {
   usecase "CU-131\nEditar Datos del Cliente" as U131 #back:FFFFFF;line:4B7560
 }
 
-A01 -[#1F6F8B]- U087
-A02 -[#2E7D46]- U087
+usecase "CU-082\nCrear Usuario Base\n(SS-01)" as U082 #back:FFFFFF;line:6B7683
+
 A03 -[#8C4A9E]- U086
-A03 -[#8C4A9E]- U087
 A03 -[#8C4A9E]- U088
 A03 -[#8C4A9E]- U092
 A03 -[#8C4A9E]- U093
@@ -67,7 +63,8 @@ A03 -[#8C4A9E]- U095
 A03 -[#8C4A9E]- U129
 A03 -[#8C4A9E]- U130
 A03 -[#8C4A9E]- U131
-A04 -[#8A6D1F]- U087
+A05 -[#B4432B]- U086
+A05 -[#B4432B]- U087
 A05 -[#B4432B]- U089
 A05 -[#B4432B]- U090
 
@@ -77,5 +74,7 @@ U094 ..> U129 : <<include>>
 U095 ..> U129 : <<include>>
 U131 ..> U129 : <<include>>
 U129 ..> U130 : <<include>>
+U086 ..> U082 : <<include>>
+U087 ..> U082 : <<include>>
 
 @enduml

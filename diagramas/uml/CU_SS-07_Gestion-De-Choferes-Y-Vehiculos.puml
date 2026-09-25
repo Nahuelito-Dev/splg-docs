@@ -65,6 +65,8 @@ rectangle "SS-07 Gestión de Choferes y Vehículos" {
   usecase "CU-142\nAvisar los Vencimientos\nPróximos de la Flota" as U142 <<pendiente>> #back:FFFFFF;line:5A5896
 }
 
+usecase "CU-082\nCrear Usuario Base\n(SS-01)" as U082 #back:FFFFFF;line:6B7683
+
 A02 -[#2E7D46]- U049
 A02 -[#2E7D46]- U115
 A03 -[#8C4A9E]- U031
@@ -109,5 +111,6 @@ U034 ..> U110 : <<include>>
 U111 ..> U113 : <<include>>
 U112 ..> U113 : <<include>>
 U105 ..> U051 : <<include>>
+U031 ..> U082 : <<include>>
 
 @enduml

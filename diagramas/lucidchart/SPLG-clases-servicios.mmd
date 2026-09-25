@@ -73,6 +73,49 @@ classDiagram
         +notifyCustomer(customerId, evento, payload) void
     }
 
+
+    class RegistroController {
+        +registrarCliente(dto) Promise~UserResponseDto~
+        +registrar(dto, usuario) Promise~UserResponseDto~
+    }
+    class RegistroService {
+        +registrar(datos, solicitante) Promise~User~
+        -crearPerfil(manager, userId, roleId, alta, datos) Promise~void~
+    }
+    class PoliticaDeRegistro {
+        <<function>>
+        +autorizarAlta(solicitante, rol, distributorId) AltaAutorizada
+    }
+    class UsersService {
+        +assertDisponible(email, telefono) Promise~void~
+        +crearEnTransaccion(manager, datos) Promise~User~
+        +findOne(id) Promise~User~
+    }
+    class CustomersService {
+        +crearPerfil(manager, userId, datos) Promise~void~
+    }
+    class DeliveryService {
+        +crearPerfil(manager, userId, distributorId, datos) Promise~void~
+    }
+    class AdminService {
+        +crearPerfil(manager, userId, roleId, distributorId) Promise~void~
+        +existeSuperAdmin() Promise~boolean~
+    }
+    class FirebaseAuthPort {
+        <<abstract>>
+        +createUserSafe(props) Promise~UserRecord~
+        +deleteUserSafe(uid, logger) Promise~void~
+    }
+    class UsuarioRegistradoEvent {
+        +userId string
+        +email string
+        +fullName string
+        +rol RolRegistrable
+    }
+    class BienvenidaListener {
+        +handle(evento) Promise~void~
+    }
+
     OrderService ..> CreateOrderUseCase : delega
     OrderService ..> UpdateOrderStatusUseCase : delega
     OrderService ..> ConfirmDeliveryUseCase : delega
@@ -84,3 +127,13 @@ classDiagram
     DispatchOrchestratorService ..> DriversGateway : ofrece al chofer
     CreateOrderUseCase ..> DispatchOrchestratorService : dispara el despacho
     DriversGateway ..> RedisService : registra ubicación
+
+    RegistroController ..> RegistroService : delega
+    RegistroService ..> PoliticaDeRegistro : autoriza
+    RegistroService ..> UsersService : usuario
+    RegistroService ..> CustomersService : perfil de cliente
+    RegistroService ..> DeliveryService : perfil de chofer
+    RegistroService ..> AdminService : perfil de administrador
+    RegistroService ..> FirebaseAuthPort : cuenta de acceso
+    RegistroService ..> UsuarioRegistradoEvent : publica
+    BienvenidaListener ..> UsuarioRegistradoEvent : escucha

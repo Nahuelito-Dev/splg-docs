@@ -1,70 +1,22 @@
 sequenceDiagram
     title DSD — CU-003 Registrar Chofer
     autonumber
-    participant GUARD as AuthGuard
-    participant RG as RolesGuard
-    participant CTRL as UsersController
+    participant CTRL as RegistroController
+    participant SRV as RegistroService
+    participant POL as PoliticaDeRegistro
     participant DSRV as DeliveryService
-    participant QR as QueryRunner
-    participant UREP as RepositoryUser
-    participant RREP as RepositoryRole
-    participant DREP as RepositoryDelivery
-    participant FB as FirebaseAuthPort
 
-    GUARD->>GUARD: canActivate(context)
-    GUARD->>GUARD: resolveDistributor(local_user, request)
-    GUARD-->>RG: request.user con role y distributor_id
-    RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
-    alt Rol no permitido
-        RG-->>CTRL: ForbiddenException Acceso denegado
-    else Rol permitido
-        RG-->>CTRL: true
-        CTRL->>CTRL: resolver targetDistributor segun rol
-        alt No es super_admin y no tiene distribuidora
-            CTRL-->>CTRL: ForbiddenException Tu usuario no tiene una distribuidora asociada
-        else Tenant resuelto
-            CTRL->>DSRV: registerWithUser(createDeliveryDto con distributorId)
-            activate DSRV
-            DSRV->>QR: connect() y startTransaction()
-            activate QR
-            DSRV->>UREP: findOne(email)
-            activate UREP
-            alt Email ya usado
-                UREP-->>DSRV: User
-                deactivate UREP
-                DSRV-->>CTRL: BadRequestException User with this email already exists
-                deactivate DSRV
-            else Email libre
-                UREP-->>DSRV: null
-                DSRV->>FB: createUserSafe(email, password, full_name, phone_number)
-                activate FB
-                FB-->>DSRV: UserRecord con uid
-                deactivate FB
-                DSRV->>RREP: findOne(type delivery)
-                activate RREP
-                RREP-->>DSRV: Role
-                deactivate RREP
-                DSRV->>UREP: create(email, full_name, firebase_uid, role_id, selfie)
-                activate UREP
-                DSRV->>QR: manager.save(user)
-                DSRV->>DREP: create(user_id, distributor_id, latLng, validated, isActive, balance 0)
-                activate DREP
-                DSRV->>QR: manager.save(delivery)
-                DSRV->>QR: commitTransaction()
-                DSRV->>UREP: findOne(user_id, relations delivery y role)
-                UREP-->>DSRV: User completo
-                deactivate UREP
-                DSRV-->>CTRL: User con Delivery y Role
-            end
-            opt Error en cualquier paso
-                DSRV->>QR: rollbackTransaction()
-                DSRV->>FB: deleteUserByEmailSafe(email, logger)
-                activate FB
-                DSRV->>DSRV: handleDBExceptions(error)
-            end
-            DSRV->>QR: release()
-        end
+    CTRL->>SRV: registrar(datos con rol delivery, solicitante con su sesion)
+    activate SRV
+    SRV->>POL: autorizarAlta(solicitante, delivery, distributorId)
+    alt Admin de empresa
+        POL-->>SRV: su propia distribuidora, 403 si pidio otra
+    else Administrador General
+        POL-->>SRV: la distribuidora indicada o la de X-Distributor, 400 si no hay ninguna
     end
-    deactivate DREP
-    deactivate FB
-    deactivate QR
+    Note over SRV: «include» CU-082 Crear Usuario Base
+    SRV->>DSRV: crearPerfil(manager, user_id, distributorId, validated, isActive)
+    DSRV-->>SRV: perfil de chofer con balance 0 y calificacion 0
+    SRV-->>CTRL: User con rol y perfil de chofer
+    deactivate SRV
+    Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto
