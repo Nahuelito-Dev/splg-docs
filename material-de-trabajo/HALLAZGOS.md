@@ -34,6 +34,8 @@ Ya está cubierto por un test de la colección de Postman, que hoy falla a prop�
 Pedir una ruta inexistente contesta con un `ENOENT` que incluye la ruta completa
 en disco (`/Users/…/splg-app-backend/…`). Expone la estructura de la máquina.
 
+> **Resuelto el 26/09.** Venía de `ServeStaticModule`, que apuntaba a una carpeta `public/` inexistente: toda ruta desconocida caía en su fallback. Se quitó el módulo y su dependencia. Verificado contra la API: `GET /api/noexiste` contesta `Cannot GET /api/noexiste`.
+
 ### H-04 · `OwnershipGuard` existe y no se usa — **arquitectura, medio**
 `src/auth/guards/ownership.guard.ts` está escrito y no se aplica en ningún lado.
 La pertenencia se controla a mano en los servicios (ver H-05). Es código muerto
