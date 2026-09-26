@@ -31,5 +31,5 @@
 .visor .lienzo-visor{overflow:hidden;position:relative;cursor:grab;touch-action:none;overscroll-behavior:contain}
 .visor .lienzo-visor.arrastrando{cursor:grabbing}
 .visor .marco{position:absolute;top:0;left:0;background:#FCFBF8;border-radius:8px;
-  padding:20px;transform-origin:0 0;transition:transform .08s linear}
+  padding:20px;transform-origin:0 0}
 .visor .marco svg,.visor .marco img{display:block;max-width:none;height:auto}

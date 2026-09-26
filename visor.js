@@ -2,8 +2,9 @@
  *
  * Los diagramas entran en la página achicados para respetar el ancho de la
  * columna, y así no se leen: los de interacción de diseño tienen quince líneas
- * de vida. Acá se abren en grande, entrando enteros en pantalla, y de ahí se
- * acercan con la rueda, con los botones, con doble clic o con el teclado.
+ * de vida. Acá se abren en grande y se recorren como una página: la rueda
+ * desplaza y Ctrl/⌘ + rueda (o pellizcar) acerca. Los altos abren ajustados al
+ * ancho y desde arriba; los demás, enteros en pantalla.
  *
  * Sirve igual para lo dibujado por mermaid y para los SVG escritos a mano de
  * las páginas de ramas y versionado, porque el nodo se clona dentro del mismo
@@ -28,11 +29,12 @@
       '<button type="button" data-zoom="-1" title="Alejar">−</button>' +
       '<span id="visorNivel">100%</span>' +
       '<button type="button" data-zoom="1" title="Acercar">+</button>' +
-      '<button type="button" data-zoom="0" title="Encuadrar">AJUSTAR</button>' +
+      '<button type="button" data-zoom="w" title="Ajustar al ancho (W)">ANCHO</button>' +
+      '<button type="button" data-zoom="0" title="Ver entero (0)">ENTERO</button>' +
       '<button type="button" id="visorCerrar" title="Cerrar (Esc)">CERRAR</button>' +
     "</div>" +
-    '<p class="ayuda">Rueda del mouse o + / − para acercar · arrastrar para mover · ' +
-      "doble clic para acercar · 0 encuadra · Esc cierra</p>" +
+    '<p class="ayuda">Rueda: desplazar (con Shift, de costado) · Ctrl/⌘ + rueda o pellizcar: acercar · ' +
+      "arrastrar: mover · doble clic: acercar ahí (con Shift, alejar) · W ancho · 0 entero · Esc cierra</p>" +
     '<div class="lienzo-visor" id="visorLienzo"><div class="marco" id="visorMarco"></div></div>';
 
   function montar() {
@@ -64,13 +66,16 @@
 
   var lienzo, marco, nivelTexto, nombre;
   var escala = 1, desplX = 0, desplY = 0, arrastrando = false, x0 = 0, y0 = 0;
+  // Dónde empezó el arrastre, para distinguirlo de un clic: soltar después de
+  // arrastrar desde una zona vacía se tomaba como clic afuera y cerraba el visor.
+  var inicioX = 0, inicioY = 0, seMovio = false;
 
   function aplicar() {
     marco.style.transform =
       "translate(" + desplX + "px," + desplY + "px) scale(" + escala + ")";
     nivelTexto.textContent = Math.round(escala * 100) + "%";
   }
-  function encuadrar() {
+  function encuadrar(modo) {
     // Entrar mostrando el diagrama entero: los de diseño son anchos y al 100%
     // arrancaban cortados, obligando a arrastrar para saber qué había.
     var fig = marco.firstElementChild;
@@ -87,7 +92,21 @@
     var w = marco.offsetWidth, h = marco.offsetHeight;
     var disp = lienzo.getBoundingClientRect();
     if (!w || !h) return;
-    escala = Math.min(1, (disp.width - 40) / w, (disp.height - 40) / h);
+    var entero = Math.min(1, (disp.width - 40) / w, (disp.height - 40) / h);
+    var ancho = Math.min(1.5, (disp.width - 40) / w);
+    // Al abrir se elige solo: si verlo entero lo achica mucho más que ajustarlo
+    // al ancho, es un diagrama alto (un DSD largo) y se lee mejor de arriba
+    // hacia abajo, como una página.
+    if (modo === "auto") modo = ancho > entero * 1.6 ? "ancho" : "entero";
+    if (modo === "ancho") {
+      escala = ancho;
+      desplX = (disp.width - w * escala) / 2;
+      desplY = 20;
+      aplicar();
+      marco.style.visibility = "";
+      return;
+    }
+    escala = entero;
     centrar(w, h, disp);
   }
   function centrar(w, h, disp) {
@@ -156,12 +175,13 @@
     }
     nombre.textContent = rotulo(fig);
     visor.setAttribute("open", "");
-    encuadrar();
+    encuadrar("auto");
     // Una imagen embebida grande —el diagrama completo son 300 KB de SVG— todavia
     // no tiene medidas cuando se la acaba de insertar, y el encuadre salia en 100%
     // mostrando una esquina vacia. Se reencuadra cuando el navegador ya la midio.
-    if (copia.tagName === "IMG" && !copia.complete) copia.addEventListener("load", encuadrar);
-    requestAnimationFrame(encuadrar);
+    var reencuadrar = function () { encuadrar("auto"); };
+    if (copia.tagName === "IMG" && !copia.complete) copia.addEventListener("load", reencuadrar);
+    requestAnimationFrame(reencuadrar);
   }
   function cerrar() {
     visor.removeAttribute("open");
@@ -184,30 +204,52 @@
       var b = ev.target.closest("button");
       if (b) {
         var z = b.getAttribute("data-zoom");
-        if (z === "0") encuadrar();
+        if (z === "0") encuadrar("entero");
+        else if (z === "w") encuadrar("ancho");
         else if (z) acercar(Number(z));
         if (b.id === "visorCerrar") cerrar();
         return;
       }
-      if (ev.target === lienzo) cerrar();
+      if (ev.target === lienzo && !seMovio) cerrar();
     });
-    lienzo.addEventListener("dblclick", function () { acercar(2); });
+    lienzo.addEventListener("dblclick", function (ev) {
+      // Acerca sobre el punto donde se hizo doble clic, no sobre el centro.
+      var disp = lienzo.getBoundingClientRect();
+      escalar(ev.shiftKey ? 0.5 : 2, ev.clientX - disp.left, ev.clientY - disp.top);
+    });
     lienzo.addEventListener("wheel", function (ev) {
       ev.preventDefault();
-      var disp = lienzo.getBoundingClientRect();
-      // El trackpad dispara muchas ruedas chicas y el mouse pocas grandes: con
-      // un paso fijo, el trackpad pegaba saltos. El paso sale del gesto.
-      // ctrlKey es el pellizco del trackpad; ahi el navegador manda un delta
-      // mucho mas chico y hay que amplificarlo para que responda igual.
-      var d = ev.deltaY * (ev.deltaMode === 1 ? 16 : 1);
-      var factor = Math.exp(-d * (ev.ctrlKey ? 0.012 : 0.0022));
-      // Un golpe de rueda no puede mas que duplicar o partir al medio.
-      factor = Math.min(2, Math.max(0.5, factor));
-      escalar(factor, ev.clientX - disp.left, ev.clientY - disp.top);
+      var linea = ev.deltaMode === 1 ? 16 : 1;
+      // Ctrl/⌘ + rueda acerca; el pellizco del trackpad llega también con
+      // ctrlKey. Sin modificador la rueda desplaza, como en cualquier página:
+      // antes acercaba, y en un diagrama largo no había forma de bajar sin
+      // arrastrar.
+      if (ev.ctrlKey || ev.metaKey) {
+        var disp = lienzo.getBoundingClientRect();
+        // El pellizco manda deltas mucho más chicos que la rueda (menos de 50
+        // por evento) y hay que amplificarlos; la rueda del mouse con Ctrl manda
+        // unos 100 por golpe, que con el mismo factor duplicaba de un tirón.
+        var d = ev.deltaY * linea;
+        var factor = Math.exp(-d * (Math.abs(d) < 50 ? 0.012 : 0.0022));
+        // Un golpe de rueda no puede más que duplicar o partir al medio.
+        factor = Math.min(2, Math.max(0.5, factor));
+        escalar(factor, ev.clientX - disp.left, ev.clientY - disp.top);
+        return;
+      }
+      var dx = ev.deltaX * linea, dy = ev.deltaY * linea;
+      // Shift + rueda desplaza de costado (el mouse sólo tiene rueda vertical).
+      if (ev.shiftKey && !dx) { dx = dy; dy = 0; }
+      desplX -= dx;
+      desplY -= dy;
+      sujetar();
+      aplicar();
     }, { passive: false });
     lienzo.addEventListener("pointerdown", function (ev) {
       if (ev.button !== 0 && ev.pointerType === "mouse") return;
       arrastrando = true;
+      seMovio = false;
+      inicioX = ev.clientX;
+      inicioY = ev.clientY;
       lienzo.setPointerCapture(ev.pointerId);
       lienzo.classList.add("arrastrando");
       x0 = ev.clientX - desplX;
@@ -216,6 +258,7 @@
     lienzo.addEventListener("pointermove", function (ev) {
       if (!arrastrando) return;
       ev.preventDefault();
+      if (Math.abs(ev.clientX - inicioX) + Math.abs(ev.clientY - inicioY) > 4) seMovio = true;
       desplX = ev.clientX - x0;
       desplY = ev.clientY - y0;
       sujetar();
@@ -236,7 +279,13 @@
       if (ev.key === "Escape") cerrar();
       if (ev.key === "+" || ev.key === "=") acercar(1);
       if (ev.key === "-") acercar(-1);
-      if (ev.key === "0") encuadrar();
+      if (ev.key === "0") encuadrar("entero");
+      if (ev.key === "w" || ev.key === "W") encuadrar("ancho");
+      var pagina = lienzo.getBoundingClientRect().height * 0.85;
+      if (ev.key === "PageDown" || ev.key === " ") { ev.preventDefault(); desplY -= pagina; sujetar(); aplicar(); }
+      if (ev.key === "PageUp") { desplY += pagina; sujetar(); aplicar(); }
+      if (ev.key === "Home") { desplY = 20; sujetar(); aplicar(); }
+      if (ev.key === "End") { desplY = lienzo.getBoundingClientRect().height - marco.offsetHeight * escala - 20; sujetar(); aplicar(); }
       if (ev.key === "1") { escalar(1 / escala); }
       var salto = ev.shiftKey ? 200 : 60;
       if (ev.key === "ArrowLeft")  { desplX += salto; sujetar(); aplicar(); }
