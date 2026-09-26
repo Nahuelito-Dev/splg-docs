@@ -1250,3 +1250,57 @@ distribuidora y una lista vacía para uno inexistente. Salió al documentar CU-0
 Además, el chofer que reporta una incidencia sobre un pedido que no tiene
 asignado recibía el mensaje del listado de pedidos; ahora "Este pedido no está
 asignado a tu usuario".
+
+## Mejoras que quedaron fuera de las bases — 26/09
+
+### H-90 · Un envase se podía colgar de un pedido de otra distribuidora — **seguridad, ALTO**
+
+> **Resuelto el 26/09.** El pedido se busca dentro de la distribuidora del envase; si es ajeno, 404.
+
+`POST /cylinders/assign` y `PATCH /cylinders/:id/transition` con `orderId`
+buscaban el pedido sólo por id. Probado contra la API: un admin de A asignó un
+envase suyo al pedido pendiente de B (201), y la transición a "con el cliente"
+dejó el envase a nombre del cliente de B. La batería de aislamiento probaba el
+envase de B, no el de A contra un pedido de B; suma cinco casos (210, 0 fallas).
+Salió al sacar las lecturas de `order` de `cylinder` y `time-slot`
+(`OrderLookupModule`, DONDE-QUEDAMOS 3.3.1).
+
+### H-91 · Reportar la posición del chofer pisaba el punto de entrega del pedido — **defecto, MEDIO**
+
+> **Resuelto el 26/09.** La posición va al radar (Redis GEO), como por socket.
+
+`order.deliveryLatitude/Longitude` se escribían al crear el pedido con el punto
+de la dirección, y el despacho buscaba choferes alrededor de ese punto.
+`PATCH /orders/:id/location` las sobrescribía con la posición del chofer: si el
+pedido volvía a despacharse (el chofer lo libera), se buscaba cerca del chofer
+anterior y no del cliente. Ninguna app ni el panel llaman a ese endpoint (el
+seguimiento va por socket); sólo la colección de Postman. Las dos columnas
+pasaron a `order.deliveryPoint` (punto PostGIS, NORMALIZACION §5) y el endpoint
+ya no toca el pedido.
+
+### H-92 · El seed de demostración no corría desde el 25/09 — **herramienta, BAJO**
+
+> **Resuelto el 26/09.**
+
+`npm run seed:demo` fallaba al limpiar la tanda anterior: borraba direcciones y
+clientes que todavía usaban pedidos de otras distribuidoras, y la clave foránea
+declarada el 25/09 lo frenaba. Ahora borra primero las otras distribuidoras
+(`SEED_SINGLE_TENANT`, el modo por defecto) y la limpieza respeta lo que sigue
+referenciado. Probado en una base descartable en los dos modos.
+
+### H-93 · Pasar las entidades a camelCase escondía cinco pérdidas de datos silenciosas — **riesgo, evitado**
+
+> **Evitado el 26/09**, antes de commitear.
+
+Al renombrar las 112 propiedades snake_case de las entidades (la base no
+cambia: cada columna lleva su `name`), el compilador no avisa cuando un DTO de
+la API, que sigue en snake_case, se vuelca entero en la entidad (`create(dto)`,
+`...dto`, `Object.assign`): los campos se pierden sin error. Pasaba en autos,
+usuarios, direcciones, distribuidoras y clientes; se mapean campo por campo.
+Tampoco avisa cuando una clave va en un objeto sin tipar: `getOrderStats` y el
+listado de pedidos disponibles habrían dejado de filtrar por distribuidora y por
+chofer. Y los strings de QueryBuilder (`'order.distributor_id'`) habrían llegado
+tal cual al SQL, porque TypeORM sólo traduce propiedades que existen (y `order`
+y `user` son palabras reservadas de Postgres). No se llegó a probar el error:
+se corrigió antes. Después del cambio, la colección completa y la batería de
+aislamiento dan 0 fallas y ninguna respuesta cambió de forma.

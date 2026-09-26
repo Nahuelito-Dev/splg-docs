@@ -68,19 +68,24 @@ Cumplen los 12 puntos de "módulo terminado" y se probaron contra la API.
 | `coverage-zone` (ampliación) | recargo porcentual, etiqueta, color, vigencia | CU-150, 151 |
 | `user-address` (ampliación) | piso, departamento, lugar y precisión | falta la resolución contra el mapa (CU-116, 118) |
 
-### 3.3 Lo que queda por refactorizar (chico)
+### 3.3 Mejoras que quedaron fuera de las bases — RESUELTAS el 26/09
 
-1. **`cylinder` y `time-slot` leen la tabla `order` directamente** (4.2). No se
-   pueden pasar a `OrderService` sin un ciclo, porque `order` los importa a
-   ellos. La salida es un puerto de lectura que `order` implemente, o un evento.
-   Es el único punto de la convención 4 que queda abierto.
-2. **Pasada final de camelCase:** muchas entidades viejas tienen propiedades
-   `snake_case`. Las tablas nuevas ya siguen la convención. No cambia la base,
-   pero sí las respuestas de la API: conviene hacerlo junto con la adaptación
-   del panel.
-3. **Swagger completo** (todas las respuestas y errores) y regenerar `openapi.json`.
-4. **`order.deliveryLatitude` y `deliveryLongitude`** siguen como `varchar`
-   (NORMALIZACION.md §5).
+No eran pendientes de las bases (esas se cerraron completas el 25/09): eran
+cuatro mejoras que se dejaron para después a propósito. Se hicieron el 26/09 en
+`refactor/mejoras-bases` (sale de `fix/alineacion-nest`).
+
+1. **`cylinder` y `time-slot` ya no leen la tabla `order`:** preguntan a
+   `OrderLookupModule`, un puerto de lectura que no depende de nadie (no arma
+   ciclo). Salió H-90 (aislamiento de envases), resuelto.
+2. **camelCase en todas las entidades:** 112 propiedades en 21 entidades. La
+   base no cambia (cada columna lleva su `name`) y **la API tampoco**: las
+   respuestas pasan por mappers y los DTOs siguen en snake_case, así que el
+   panel y las apps no se enteran. Ver H-93 por lo que había que cuidar.
+3. **Swagger completo:** cada código que la API devolvió en la corrida de
+   Postman está declarado en su ruta (antes faltaban en 52 de 130), con el
+   mensaje real como descripción; las respuestas de pedidos, tipadas.
+4. **`order.deliveryLatitude/Longitude` → `order.deliveryPoint`** (punto
+   PostGIS). Salió H-91, resuelto.
 
 ## 4. Lo que se hizo el 25/09
 
@@ -171,7 +176,7 @@ panel. El chofer no usa auto propio y no carga documentos.
    modalidad express (CU-147 a 149), vigencia y recargo porcentual de zonas
    (CU-150, 151).
 9. Revisión y vencimiento de envases (CU-132 a 135).
-10. Resolver 3.3.1 (lecturas de `order` desde `cylinder` y `time-slot`).
+10. ~~Resolver 3.3.1 (lecturas de `order` desde `cylinder` y `time-slot`).~~ Hecho el 26/09.
 11. Despacho: reordenar los primeros 3 a 5 candidatos por tiempo real de manejo
     (idea de Tutu, Distance Matrix con caché).
 

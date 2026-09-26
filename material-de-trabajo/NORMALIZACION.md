@@ -111,11 +111,13 @@ concreto, y el sistema garantiza su consistencia en un único lugar.
 
 ## 5. Lo que queda por decidir
 
-- `order.deliveryLatitude` y `deliveryLongitude` son dos `varchar`: atómicos
-  (cumplen 1FN), pero con el dominio equivocado. Guardan la última posición del
-  chofer sobre el pedido y los lee el seguimiento en vivo de las apps.
-  Convertirlos a punto sigue el mismo camino que 3.1, pero cambia lo que leen
-  las apps. Queda para cuando se toquen.
+- ~~`order.deliveryLatitude` y `deliveryLongitude` son dos `varchar`~~
+  **Resuelto el 26/09:** pasaron a `order.deliveryPoint`, un punto PostGIS
+  (geometry Point, 4326) con el mismo camino que 3.1. Es el punto de entrega,
+  copiado de la dirección al crear el pedido: la dirección del cliente puede
+  cambiar después (`order_address_change`). La posición del chofer no se guarda
+  en el pedido, vive en Redis (H-91). La API sigue devolviendo latitud y
+  longitud como texto; ninguna app las leía.
 - `role.type` es texto (único) y no un enumerado de Postgres: el ABM de roles
   permite crear otros además de los cuatro del sistema.
 - `delivery.actual_location` guarda una dirección legible derivada de la
