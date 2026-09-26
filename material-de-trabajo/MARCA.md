@@ -1,19 +1,20 @@
 # Marca SPLG — paleta y uso (26/09/2026)
 
-Una sola paleta para la landing, el panel y las dos apps. Reemplaza al violeta
-del panel y a la idea de usar la paleta del portfolio. Tono comercial de
-servicio de gas: naranja de llama como color de marca, ámbar de acento y un
-carbón azulado para textos y superficies oscuras.
+Una sola paleta para la landing, el panel y las dos apps. Registro sobrio de
+herramienta de gestión: neutros pizarra fríos para casi toda la interfaz, un
+naranja quemado como único color de marca y el ámbar reservado para acentos
+(etiquetas, gráficos). Reemplaza a la primera versión con fondo crema y naranja
+brillante, que se veía poco profesional.
 
 ## Escalas
 
-| Token | 50 | 100 | 200 | 300 | 400 | **500** | 600 | 700 | 800 | 900 |
+| Token | 50 | 100 | 200 | 300 | 400 | 500 | 600 | **700** | 800 | 900 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `llama` (marca) | #FFF4EB | #FFE6D2 | #FFC9A3 | #FFA469 | #FB8438 | **#F26B1D** | #DB5A10 | #B8460B | #92380E | #772F10 |
-| `gas` (acento) | #FFF9EB | #FFEFC6 | #FFDE88 | #FFCA4A | **#FFB21E** | #F99307 | #DD6D02 | #B74B06 | #943A0C | #7A300D |
-| `tinta` (neutro) | #F6F7F9 | #ECEEF2 | #D5D9E0 | #B0B6C3 | #858D9F | #5A6072 | #474C5B | #3A3E4A | #2A2E38 | **#1B1F27** |
+| `llama` (marca) | #FFF7ED | #FFEDD5 | #FED7AA | #FDBA74 | #FB923C | #F97316 | #EA580C | **#C2410C** | #9A3412 | #7C2D12 |
+| `gas` (acento) | #FFFBEB | #FEF3C7 | #FDE68A | #FCD34D | **#FBBF24** | #F59E0B | #D97706 | #B45309 | #92400E | #78350F |
+| `tinta` (neutro) | #F8FAFC | #F1F5F9 | #E2E8F0 | #CBD5E1 | #94A3B8 | #64748B | #475569 | #334155 | #1E293B | **#0F172A** |
 
-Fondo cálido de página: `crema` #FFF8F1.
+`tinta-950` #020617 para sombras profundas. Fondo de página: `canvas` #F8FAFC.
 
 ## Roles semánticos
 
@@ -21,32 +22,39 @@ Los componentes usan roles, no escalas: si la marca cambia, se cambia acá.
 
 | Rol | Valor | Uso |
 |---|---|---|
-| `primary` | llama-500 #F26B1D | botón principal, marca, indicadores activos |
-| `primary-hover` | llama-600 #DB5A10 | hover y presionado |
-| `on-primary` | tinta-900 #1B1F27 | texto sobre `primary` |
-| `primary-strong` | llama-700 #B8460B | enlaces y texto de acento sobre fondo claro |
-| `accent` | gas-400 #FFB21E | resaltados, etiquetas, gráficos |
+| `primary` | llama-700 #C2410C | botón principal, marca, enlaces |
+| `primary-hover` | llama-800 #9A3412 | hover y presionado |
+| `on-primary` | #FFFFFF | texto sobre `primary` |
+| `primary-soft` | llama-50 | fondos de íconos y selección suave |
+| `accent` | gas-400 #FBBF24 | etiquetas, gráficos, "Próximamente" |
 | `on-accent` | tinta-900 | texto sobre `accent` |
-| `ink` | tinta-900 | texto principal, barra lateral, secciones oscuras |
-| `muted` | tinta-500 #5A6072 | texto secundario |
-| `outline` | tinta-200 #D5D9E0 | bordes |
-| `bg` | crema #FFF8F1 | fondo de página |
-| `surface` | #FFFFFF | tarjetas, tablas, modales |
-| `success` / `danger` / `warn` / `info` | #16A34A / #DC2626 / #D97706 / #0284C7 | estados |
+| `ink` | tinta-900 #0F172A | texto principal, barra lateral, secciones oscuras |
+| `muted` | tinta-500 #64748B | texto secundario |
+| `outline` | tinta-200 #E2E8F0 | bordes |
+| `bg` | canvas #F8FAFC | fondo de página |
+| `surface` | #FFFFFF | tarjetas, tablas, modales, barra superior |
+| `success` / `danger` / `warn` / `info` | #15803D / #DC2626 / #B45309 / #0369A1 | estados |
+
+Sobre fondo oscuro (barra lateral del panel, sección "Despacho automático" de la
+landing) la marca se usa un tono más claro: llama-400 para el ítem activo y la
+línea que lo marca, llama-500 para la llama del logo.
 
 ## Contraste (WCAG 2.1, medido)
 
 | Combinación | Contraste | Nivel |
 |---|---|---|
-| tinta-900 sobre llama-500 (botón principal) | 5,42 | AA |
-| tinta-900 sobre gas-400 | 9,15 | AAA |
-| blanco sobre tinta-900 | 16,51 | AAA |
-| llama-700 sobre crema (enlaces) | 5,09 | AA |
-| tinta-500 sobre blanco (texto secundario) | 6,27 | AA |
-| blanco sobre llama-500 | 3,05 | **sólo texto grande o íconos** |
+| blanco sobre llama-700 (botón principal) | 5,18 | AA |
+| blanco sobre llama-800 (hover) | 7,31 | AAA |
+| llama-700 sobre fondo (enlaces) | 4,95 | AA |
+| tinta-900 sobre gas-400 (etiquetas de acento) | 10,69 | AAA |
+| blanco sobre tinta-900 (barra lateral) | 17,85 | AAA |
+| llama-400 sobre tinta-900 (ítem activo) | 7,89 | AAA |
+| tinta-400 sobre tinta-900 (menú inactivo) | 6,96 | AA |
+| tinta-500 sobre blanco (texto secundario) | 4,76 | AA |
+| tinta-500 sobre fondo | 4,55 | AA |
+| blanco sobre llama-500 | 2,80 | **no apto para texto** |
 
-Por eso el botón principal lleva texto tinta y no blanco. Si se quiere texto
-blanco, el fondo es llama-700 (5,36).
+Por eso el botón principal es llama-700 y no el naranja más brillante.
 
 ## Tipografía
 
@@ -56,6 +64,8 @@ blanco, el fondo es llama-700 (5,36).
 
 ## Dónde vive
 
-- Landing: `splg-landing/src/styles/tokens.css` y `tailwind.config`.
-- Panel: `splg-app-admin/tailwind.config.js` y el tema de MUI.
+- Panel: `splg-app-admin/src/theme/brand.json`, que leen `tailwind.config.js`,
+  el tema de MUI y los gráficos. `npm run colors` falla si aparece un color
+  fuera de la paleta.
+- Landing: `splg-landing/src/styles/tokens.css` (`@theme` de Tailwind v4).
 - Apps: `splg-lib` (tema de Flutter), cuando se adapten.
