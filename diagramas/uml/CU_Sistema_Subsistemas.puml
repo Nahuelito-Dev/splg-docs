@@ -1,5 +1,5 @@
 @startuml
-title Subsistemas del Proyecto — SPLG (18 subsistemas · 153 casos de uso)
+title Subsistemas del Proyecto — SPLG (18 subsistemas · 152 casos de uso)
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
@@ -51,7 +51,7 @@ rectangle "SS-10 Multi-Distribuidora — restricción transversal:\ntodo subsist
     package "**SS-15**\nReservas Programadas\n(6 casos)" as MSS15 <<subsystem>> #back:F8EDF3;line:8A5674
   }
   package "Subsistemas de soporte" as GSOP #back:FFFFFF;line:5A5896 {
-    package "**SS-16**\nAdministración de Cuentas y Roles\n(12 casos)" as MSS16 <<subsystem>> #back:E8F1EC;line:4B7560
+    package "**SS-16**\nAdministración de Cuentas y Roles\n(11 casos)" as MSS16 <<subsystem>> #back:E8F1EC;line:4B7560
     package "**SS-17**\nNotificaciones y Mensajería\n(5 casos)" as MSS17 <<subsystem>> #back:F5F0E8;line:7C6B4C
     package "**SS-18**\nObservabilidad y Operación\n(3 casos)" as MSS18 <<subsystem>> #back:ECEDF6;line:5B5F87
   }

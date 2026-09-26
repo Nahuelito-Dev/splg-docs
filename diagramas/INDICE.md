@@ -150,7 +150,6 @@ especificados representan el comportamiento previsto, no el actual.
 | CU-090 | Sembrar los Roles Iniciales | SS-16 | Implementado | `DSS_CU-090_cu-090-sembrar-los-roles-iniciales` | `DSD_CU-090_cu-090-sembrar-los-roles-iniciales` |
 | CU-091 | Validar Vigencia del Token de Sesión | SS-01 | Implementado | `DSS_CU-091_cu-091-validar-vigencia-del-token-de-sesión` | `DSD_CU-091_cu-091-validar-vigencia-del-token-de-sesión` |
 | CU-092 | Consultar Listado de Clientes | SS-16 | Implementado | `DSS_CU-092_cu-092-consultar-listado-de-clientes` | `DSD_CU-092_cu-092-consultar-listado-de-clientes` |
-| CU-093 | Validar / Invalidar Cliente | SS-16 | Implementado | `DSS_CU-093_cu-093-validar-invalidar-cliente` | `DSD_CU-093_cu-093-validar-invalidar-cliente` |
 | CU-094 | Actualizar Ubicación del Cliente | SS-16 | Implementado | `DSS_CU-094_cu-094-actualizar-ubicación-del-cliente` | `DSD_CU-094_cu-094-actualizar-ubicación-del-cliente` |
 | CU-095 | Eliminar Cliente (baja lógica) | SS-16 | Implementado | `DSS_CU-095_cu-095-eliminar-cliente-baja-lógica` | `DSD_CU-095_cu-095-eliminar-cliente-baja-lógica` |
 | CU-096 | Actualizar Perfil del Chofer | SS-07 | Implementado | `DSS_CU-096_cu-096-actualizar-perfil-del-chofer` | `DSD_CU-096_cu-096-actualizar-perfil-del-chofer` |

@@ -22,10 +22,10 @@ Todo lo demás está en `material-de-trabajo/` y no hace falta para entregar.
 
 | | Documento | Qué lleva |
 |---|---|---|
-| **0** | `0-Plan_Del_Proyecto.md` | Fases, hitos, cronograma, actores y los 153 casos de uso de alto nivel |
+| **0** | `0-Plan_Del_Proyecto.md` | Fases, hitos, cronograma, actores y los 152 casos de uso de alto nivel |
 | **0.1** | `0.1-Planificacion_Iteraciones.md` | Qué se hace en cada iteración |
-| **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 153 casos de uso expandidos |
-| **2** | `2-Analisis.md` | Modelo conceptual, los 153 diagramas de secuencia y los contratos |
+| **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 152 casos de uso expandidos |
+| **2** | `2-Analisis.md` | Modelo conceptual, los 152 diagramas de secuencia y los contratos |
 | **3** | `3-Diseño.md` | Arquitectura, casos de uso reales, los diagramas de interacción y los módulos inteligentes |
 
 ## El documento de consulta

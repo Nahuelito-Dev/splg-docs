@@ -730,7 +730,7 @@ CONCEPTO = {
                        ("teléfono", "phone_number")]),
   "role": ("Rol", [("tipo", "type")]),
   "admin": ("Administrador", []),
-  "customer": ("Cliente", [("ubicación", "location"), ("validado", "validated")]),
+  "customer": ("Cliente", [("ubicación", "location")]),
   "delivery": ("Chofer", [("calificación", "calification"), ("disponible", "isActive"),
                           ("posición", "location"), ("saldo", "balance")]),
   "car": ("Vehículo", [("patente", "car_patent"), ("tipo", "type_car"),

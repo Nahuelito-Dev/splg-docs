@@ -1,7 +1,7 @@
 classDiagram
     direction TB
 
-    %% Modelo de dominio de SPLG — 24/09/2026
+    %% Modelo de dominio de SPLG — 26/09/2026
     %% Ocho contextos. Todo esta implementado en la base (25/09/2026).
     %% Toda entidad pertenece a una Distribuidora (multi-tenant): solo se dibujan
     %% las relaciones de la distribuidora que ya estaban en el modelo anterior.
@@ -38,7 +38,6 @@ classDiagram
 
     namespace Clientes {
         class Cliente {
-            validado
             consumo_mensual_declarado
             dias_de_aviso
         }

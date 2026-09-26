@@ -6,7 +6,7 @@ sequenceDiagram
     participant CS as CylinderService
     participant CREP as RepositoryCylinder
     participant MREP as RepositoryCylinderMovement
-    participant OREP as RepositoryOrder
+    participant OREP as OrderLookupService
     participant SM as CylinderStateMachine
     participant UCS as UpdateOrderStatusUseCase
     participant ADP as CylinderLifecycleAdapter
@@ -16,10 +16,13 @@ sequenceDiagram
     activate CTRL
     CTRL->>CS: assignToOrder(orderId, serials, distributorId, actorUserId)
     activate CS
-    CS->>OREP: findOne(order_id)
+    CS->>OREP: findRef(orderId, distributorId)
     activate OREP
-    OREP-->>CS: Order o null
+    OREP-->>CS: OrderRef o null
     deactivate OREP
+    opt Pedido inexistente o de otra distribuidora
+        CS-->>CTRL: 404 Pedido no encontrado
+    end
     loop Por cada serial
         CS->>CS: findBySerial(serial, distributorId)
         CS->>CS: cylinder.current_order_id = orderId
@@ -42,11 +45,16 @@ sequenceDiagram
     CS->>CREP: findOne(cylinder_id, distributor_id)
     CREP-->>CS: Cylinder
     deactivate CREP
-    alt toState WITH_CUSTOMER y viene orderId
-        CS->>OREP: findOne(order_id)
+    opt Viene orderId
+        CS->>OREP: findRef(orderId, distributorId)
         activate OREP
-        OREP-->>CS: customer_id del pedido
+        OREP-->>CS: OrderRef o null
         deactivate OREP
+        alt Pedido inexistente o de otra distribuidora
+            CS-->>CTRL: 404 Pedido no encontrado
+        else toState WITH_CUSTOMER
+            CS->>CS: el envase toma el customerId del pedido
+        end
     end
     CS->>SM: assertTransition(fromState, toState)
     activate SM

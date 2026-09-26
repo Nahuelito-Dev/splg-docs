@@ -68,6 +68,16 @@ Cumplen los 12 puntos de "módulo terminado" y se probaron contra la API.
 | `coverage-zone` (ampliación) | recargo porcentual, etiqueta, color, vigencia | CU-150, 151 |
 | `user-address` (ampliación) | piso, departamento, lugar y precisión | falta la resolución contra el mapa (CU-116, 118) |
 
+### 3.2 bis Los clientes ya no se validan (26/09)
+
+Decisión de nahue: el cliente se registra y compra, no hay nada que aprobar.
+Fuera `PATCH /customers/:id/validate|invalidate`, la columna `customer.validated`
+(migración `ClienteSinValidacion`) y todo lo del panel. **CU-093 dado de baja**:
+la documentación pasa a **152 casos de uso**, con el número CU-093 reservado
+(no se renumera). El apéndice C de DSD corre un lugar (C.25 → C.24 …). Los
+choferes siguen validándose (CU-032). Rama `feat/sin-validacion-de-cliente` en el
+back y un commit más en `feat/adaptar-api-25-09` del panel.
+
 ### 3.3 Mejoras que quedaron fuera de las bases — RESUELTAS el 26/09
 
 No eran pendientes de las bases (esas se cerraron completas el 25/09): eran

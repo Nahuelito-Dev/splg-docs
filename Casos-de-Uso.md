@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **153 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **152 casos de uso**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -62,21 +62,21 @@ registrado.
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-El sistema comprende 153 casos de uso agrupados en 18 subsistemas. Se presentan dos
+El sistema comprende 152 casos de uso agrupados en 18 subsistemas. Se presentan dos
 vistas complementarias, ambas en notación UML: el **diagrama de contexto**, que delimita
 el sistema y muestra qué actor interviene en qué subsistema, y el **diagrama completo**,
-que abre los 153 casos uno por uno dentro de su subsistema.
+que abre los 152 casos uno por uno dentro de su subsistema.
 
 **Figura — Diagrama de contexto: actores contra subsistemas**
 
 ![Diagrama de contexto del sistema](diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png)
 
-**Figura — Diagrama completo: los 153 casos de uso**
+**Figura — Diagrama completo: los 152 casos de uso**
 
 ![Diagrama completo de casos de uso](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
 > El diagrama completo dibuja cada actor una vez por subsistema. UML admite que un mismo
-> clasificador se represente con más de un símbolo en el mismo diagrama, y con 153 casos
+> clasificador se represente con más de un símbolo en el mismo diagrama, y con 152 casos
 > es la diferencia entre una lámina legible y una maraña: con un único juego de actores a
 > la izquierda, las más de doscientas asociaciones cruzan el lienzo entero. Son los mismos
 > cinco actores de la sección 1. El color de la línea identifica al actor; el color de
@@ -207,7 +207,6 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-090 Sembrar los Roles Iniciales | SS-16 | ACT-05 | Importante |
 | CU-091 Validar Vigencia del Token de Sesión | SS-01 | ACT-01, ACT-02, ACT-03, ACT-05 | Secundario |
 | CU-092 Consultar Listado de Clientes | SS-16 | ACT-03 | Importante |
-| CU-093 Validar / Invalidar Cliente | SS-16 | ACT-03 | Importante |
 | CU-094 Actualizar Ubicación del Cliente | SS-16 | ACT-03 | Secundario |
 | CU-095 Eliminar Cliente (baja lógica) | SS-16 | ACT-05 | Importante |
 | CU-129 Consultar Detalle del Cliente | SS-16 | ACT-03 | Importante |
@@ -248,13 +247,15 @@ están en el documento 1 — Requisitos, §4.3.
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
 | **Crítico** | 44 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153 |
-| **Importante** | 91 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-093, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152 |
+| **Importante** | 90 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152 |
 | **Secundario** | 16 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **153** | CU-001 a CU-153 |
+| **Total** | **152** | CU-001 a CU-153, sin CU-093 |
 
-Los recuentos salen del catálogo de arriba y se verifican contra él: los 153
-códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
+> **CU-093 (Validar o Invalidar Cliente) se dio de baja el 26/09/2026.** Los clientes se registran y compran sin aprobación previa: la marca no condicionaba ningún pedido y sólo sumaba trabajo al administrador. El número queda reservado para no renumerar los demás casos. Los choferes siguen validándose (CU-032).
+
+Los recuentos salen del catálogo de arriba y se verifican contra él: los 152
+códigos son únicos y entre CU-001 y CU-153 el único hueco es CU-093, dado de baja.
 
 ---
 
@@ -1377,15 +1378,6 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 ---
 
 
-**Código:** CU-093 | **Caso de Uso:** Validar / Invalidar Cliente  
-**Actor/es:** ACT-03 Administrador  
-**Subsistema:** SS-16 Administración de Cuentas y Roles  
-**Calificación:** Importante  
-**Descripción:** El sistema revierte el flag de validez sobre un usuario de tipo cliente.
-
----
-
-
 **Código:** CU-094 | **Caso de Uso:** Actualizar Ubicación del Cliente  
 **Actor/es:** ACT-03 Administrador  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
@@ -1423,7 +1415,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`.
+**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`.
 
 ---
 
@@ -2683,7 +2675,7 @@ códigos son únicos y la numeración no tiene huecos entre CU-001 y CU-153.
 | **Rendimiento** | La actualización en el radar se completa en menos de 100 ms. |
 | **Frecuencia** | Cada vez que el GPS detecta un desplazamiento de 10 metros o más mientras el chofer está en línea. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La posición se almacena solo en el almacén en memoria y no en la base relacional, para maximizar la velocidad de la búsqueda por cercanía; como contrapartida, no queda histórico de recorridos. El identificador del chofer viaja dentro del mensaje y el sistema todavía no lo contrasta con la identidad de la conexión autenticada: un chofer conectado puede escribir la posición de otro y falsear el radar. El sistema todavía no valida que las coordenadas estén dentro de rango: una latitud imposible se acepta y se escribe. | El tiempo estimado se agrega al aviso que ya existía y no es un caso de uso aparte: el cliente no lo pide, lo recibe junto con la posición. Se calcula del lado del servidor y se reutiliza a propósito, porque rehacerlo en cada posición significaría una consulta externa por cada movimiento del GPS y por cada chofer en la calle, que es un costo que crece con la operación y no aporta precisión: entre dos posiciones separadas por diez metros el tiempo estimado es el mismo.
+| **Comentarios** | La posición se almacena solo en el almacén en memoria y no en la base relacional, para maximizar la velocidad de la búsqueda por cercanía; como contrapartida, no queda histórico de recorridos. De quién es la posición lo decide el token de la conexión, no el mensaje: un identificador de otro chofer dentro del mensaje se ignora (verificado el 26/09 por socket: la posición queda a nombre de quien emite). El sistema todavía no valida que las coordenadas estén dentro de rango: el almacén en memoria rechaza un par imposible y no escribe nada, pero el error llega sin mensaje propio y el chofer no se entera. | El tiempo estimado se agrega al aviso que ya existía y no es un caso de uso aparte: el cliente no lo pide, lo recibe junto con la posición. Se calcula del lado del servidor y se reutiliza a propósito, porque rehacerlo en cada posición significaría una consulta externa por cada movimiento del GPS y por cada chofer en la calle, que es un costo que crece con la operación y no aporta precisión: entre dos posiciones separadas por diez metros el tiempo estimado es el mismo.
 
 ---
 
@@ -5498,7 +5490,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Alta. |
 | **Estabilidad** | Alta. |
-| **Comentarios** | Atención: verificar. El pedido se recupera solo por su identificador y no se contrasta contra la distribuidora del solicitante, mientras que los envases sí se acotan a ella. Un administrador puede entonces asignar envases de su propia empresa a un pedido de otra distribuidora, lo que rompe el aislamiento multiempresa que el resto del módulo sostiene. Corresponde acotar también la búsqueda del pedido al contexto y responder 404 cuando el pedido sea ajeno. Atención: verificar. La operación tampoco es atómica: el recorrido escribe envase por envase fuera de toda transacción, de modo que la promesa de abortar el tramo completo ante un envase inválido no se cumple. Corresponde envolver el recorrido en una única transacción para que un serial fallido revierta los ya procesados, o bien validar los estados de todos los envases antes de escribir el primero. Mientras eso no ocurra, la respuesta 400 puede convivir con envases ya despachados, y un reintento de la misma lista fallará porque esos envases ya no están llenos. |
+| **Comentarios** | El pedido se busca dentro de la distribuidora del solicitante, igual que los envases: un pedido de otra distribuidora responde 404 (H-90, corregido el 26/09; antes se podía asignar un envase propio a un pedido ajeno). Atención: verificar. La operación tampoco es atómica: el recorrido escribe envase por envase fuera de toda transacción, de modo que la promesa de abortar el tramo completo ante un envase inválido no se cumple. Corresponde envolver el recorrido en una única transacción para que un serial fallido revierta los ya procesados, o bien validar los estados de todos los envases antes de escribir el primero. Mientras eso no ocurra, la respuesta 400 puede convivir con envases ya despachados, y un reintento de la misma lista fallará porque esos envases ya no están llenos. |
 
 ---
 
@@ -6734,47 +6726,6 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 ---
 
 
-#### Importante CU-093 — Validar o Invalidar Cliente
-
-| Campo | Detalle |
-|-------|---------|
-| **Objetivos asociados** | OBJ-05 |
-| **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) marca a un cliente como validado o le retira esa marca, del mismo modo en que CU-032 lo hace con los choferes. Es el control manual sobre la cartera de clientes. Endpoints: `PATCH /customers/:id/validate` y `PATCH /customers/:id/invalidate`. |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
-| **Estado** | Implementado |
-
-**Secuencia Normal**
-
-| Paso | Acción |
-|------|--------|
-| 1 | El administrador abre la ficha del cliente y elige validarlo o invalidarlo. |
-| 2 | El panel envía `PATCH /customers/:id/validate` o `PATCH /customers/:id/invalidate`. |
-| 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. Después recupera el cliente con su usuario, rol y direcciones. |
-| 4 | El sistema fija la marca de validación, un valor sí/no, en verdadero o en falso según la acción. No la invierte: asigna el valor de la operación elegida. |
-| 5 | El sistema guarda el cliente y lo devuelve actualizado. |
-
-**Postcondición:** El cliente queda con la marca de validación cambiada. La marca queda registrada para consulta del administrador.
-
-**Excepciones**
-
-| Paso | Acción |
-|------|--------|
-| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
-| 3 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
-| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
-
-| Campo | Detalle |
-|-------|---------|
-| **Rendimiento** | Una lectura con tres relaciones y una escritura. |
-| **Frecuencia** | Baja: solo en la revisión manual de cuentas de cliente. |
-| **Estabilidad** | Media |
-| **Comentarios** | La marca de validación es un valor sí/no, igual que la del chofer. El sistema todavía no la usa para condicionar la operación del cliente: ningún punto del flujo de pedido la consulta, de modo que un cliente sin validar puede comprar igual. |
-
----
-
-
 #### Secundario CU-094 — Actualizar Ubicación del Cliente
 
 | Campo | Detalle |
@@ -6944,7 +6895,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`. |
+| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`. |
 | **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -11712,34 +11663,6 @@ sequenceDiagram
 ---
 
 
-#### DSS — CU-093: Validar / Invalidar Cliente
-
-**Actor:** Administrador
-**Operaciones del sistema:** `validarCliente(clienteId)`, `invalidarCliente(clienteId)`
-
-```mermaid
-sequenceDiagram
-    title DSS — CU-093 Validar Invalidar Cliente
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    alt aprobación del cliente
-        ADM->>SIS: validarCliente(clienteId)
-        activate SIS
-        SIS-->>ADM: cliente validado
-        deactivate SIS
-    else revocación
-        ADM->>SIS: invalidarCliente(clienteId)
-        activate SIS
-        SIS-->>ADM: cliente invalidado
-        deactivate SIS
-    end
-```
-
----
-
-
 #### DSS — CU-094: Actualizar Ubicación del Cliente
 
 **Actor:** Cliente (también Administrador desde el panel)
@@ -11769,7 +11692,7 @@ sequenceDiagram
 
 #### DSS — CU-095: Eliminar Cliente (baja lógica)
 
-**Actor:** Administrador
+**Actor:** Administrador General
 **Operaciones del sistema:** `eliminarCliente(clienteId)`
 
 ```mermaid
@@ -12334,7 +12257,7 @@ sequenceDiagram
 
 #### DSS — CU-100: Enviar Notificación de Prueba
 
-**Actor:** Administrador
+**Actor:** Administrador General
 **Operaciones del sistema:** `enviarNotificacionDePrueba(usuarioId, titulo, mensaje)`
 
 ```mermaid
@@ -12363,7 +12286,7 @@ sequenceDiagram
 
 #### DSS — CU-101: Reenviar Notificación de Confirmación de Pedido
 
-**Actor:** Administrador
+**Actor:** Administrador General
 **Operaciones del sistema:** `reenviarConfirmacionDePedido(usuarioId, pedidoId)`
 
 ```mermaid
@@ -13569,7 +13492,7 @@ sequenceDiagram
 
 ### 4.10 Importante DSD — CU-068 / CU-070: Ciclo de vida del envase físico
 
-**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, `Repository<CylinderMovement>`, `Repository<Order>`, `assertTransition` (máquina de estados del envase), `UpdateOrderStatusUseCase`, `CylinderLifecyclePort`, `CylinderLifecycleAdapter`, entidades `Cylinder`, `CylinderMovement`.
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, `Repository<CylinderMovement>`, `OrderLookupService` (lectura de pedidos dentro de la distribuidora), `assertTransition` (máquina de estados del envase), `UpdateOrderStatusUseCase`, `CylinderLifecyclePort`, `CylinderLifecycleAdapter`, entidades `Cylinder`, `CylinderMovement`.
 
 ```mermaid
 sequenceDiagram
@@ -13580,7 +13503,7 @@ sequenceDiagram
     participant CS as CylinderService
     participant CREP as RepositoryCylinder
     participant MREP as RepositoryCylinderMovement
-    participant OREP as RepositoryOrder
+    participant OREP as OrderLookupService
     participant SM as CylinderStateMachine
     participant UCS as UpdateOrderStatusUseCase
     participant ADP as CylinderLifecycleAdapter
@@ -13590,10 +13513,13 @@ sequenceDiagram
     activate CTRL
     CTRL->>CS: assignToOrder(orderId, serials, distributorId, actorUserId)
     activate CS
-    CS->>OREP: findOne(order_id)
+    CS->>OREP: findRef(orderId, distributorId)
     activate OREP
-    OREP-->>CS: Order o null
+    OREP-->>CS: OrderRef o null
     deactivate OREP
+    opt Pedido inexistente o de otra distribuidora
+        CS-->>CTRL: 404 Pedido no encontrado
+    end
     loop Por cada serial
         CS->>CS: findBySerial(serial, distributorId)
         CS->>CS: cylinder.current_order_id = orderId
@@ -13616,11 +13542,16 @@ sequenceDiagram
     CS->>CREP: findOne(cylinder_id, distributor_id)
     CREP-->>CS: Cylinder
     deactivate CREP
-    alt toState WITH_CUSTOMER y viene orderId
-        CS->>OREP: findOne(order_id)
+    opt Viene orderId
+        CS->>OREP: findRef(orderId, distributorId)
         activate OREP
-        OREP-->>CS: customer_id del pedido
+        OREP-->>CS: OrderRef o null
         deactivate OREP
+        alt Pedido inexistente o de otra distribuidora
+            CS-->>CTRL: 404 Pedido no encontrado
+        else toState WITH_CUSTOMER
+            CS->>CS: el envase toma el customerId del pedido
+        end
     end
     CS->>SM: assertTransition(fromState, toState)
     activate SM
@@ -18927,7 +18858,7 @@ sequenceDiagram
 
 #### DSD — CU-045: Consultar Franjas Horarias Disponibles
 
-**Clases participantes:** `TimeSlotController`, `TimeSlotService`, `DistributorService`, `Repository<TimeSlot>`, `Repository<Order>`, interfaz `SlotAvailability`, entidades `TimeSlot`, `Order`, `Distributor`.
+**Clases participantes:** `TimeSlotController`, `TimeSlotService`, `DistributorService`, `Repository<TimeSlot>`, `OrderLookupService` (conteo de reservas), interfaz `SlotAvailability`, entidades `TimeSlot`, `Order`, `Distributor`.
 
 ```mermaid
 sequenceDiagram
@@ -18937,7 +18868,7 @@ sequenceDiagram
     participant SRV as TimeSlotService
     participant DIS as DistributorService
     participant TREP as RepositoryTimeSlot
-    participant OREP as RepositoryOrder
+    participant OREP as OrderLookupService
 
     alt Disponibilidad por fecha, GET /time-slot/availability
         CTRL->>SRV: getAvailability(date, distributor)
@@ -18960,7 +18891,7 @@ sequenceDiagram
         deactivate TREP
         loop Por cada franja activa
             SRV->>SRV: countBooked(time_slot_id, date, distributorId)
-            SRV->>OREP: count(where time_slot_id, scheduled_date y status distinto de CANCELLED)
+            SRV->>OREP: countBooked(timeSlotId, date, distributorId), sin cancelados
             activate OREP
             OREP-->>SRV: booked
             deactivate OREP
@@ -20513,101 +20444,7 @@ sequenceDiagram
 
 ---
 
-#### C.24 DSD — CU-093: Validar / Invalidar Cliente
-
-**Clases participantes:** `RolesGuard`, `CustomersController`, `CustomersService`, `Repository<Customer>`, entidad `Customer`.
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-093 Validar Invalidar Cliente
-    autonumber
-    participant ADM as Admin o SuperAdmin
-    participant CTRL as CustomersController
-    participant SRV as CustomersService
-    participant CREP as RepositoryCustomer
-
-    alt Validar, PATCH /customers/:id/validate
-        ADM->>CTRL: validateCustomer(id)
-        activate CTRL
-        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
-        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
-        activate SRV
-        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
-        activate CREP
-        CREP-->>SRV: true o false
-        deactivate CREP
-        alt El cliente nunca le compro a la distribuidora
-            SRV-->>CTRL: NotFoundException Customer with ID not found
-        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
-            SRV-->>CTRL: sin error
-            deactivate SRV
-            CTRL->>SRV: validateCustomer(id)
-            activate SRV
-            SRV->>SRV: findOne(id), sin requesterUserId, es admin
-            SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
-            activate CREP
-            CREP-->>SRV: Customer o null
-            deactivate CREP
-            alt No existe
-                SRV-->>CTRL: NotFoundException
-                deactivate SRV
-            else Existe
-                SRV->>SRV: customer.validated igual a true
-                SRV->>CREP: save(customer)
-                activate CREP
-                CREP-->>SRV: Customer actualizado
-                deactivate CREP
-                SRV-->>CTRL: Customer
-            end
-        end
-    else Invalidar, PATCH /customers/:id/invalidate
-        ADM->>CTRL: invalidateCustomer(id)
-        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
-        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
-        activate SRV
-        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
-        activate CREP
-        CREP-->>SRV: true o false
-        deactivate CREP
-        alt El cliente nunca le compro a la distribuidora
-            SRV-->>CTRL: NotFoundException Customer with ID not found
-        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
-            SRV-->>CTRL: sin error
-            deactivate SRV
-            CTRL->>SRV: invalidateCustomer(id)
-            activate SRV
-            SRV->>SRV: findOne(id)
-            SRV->>CREP: findOne(where customer_id)
-            activate CREP
-            CREP-->>SRV: Customer o null
-            deactivate CREP
-            alt No existe
-                SRV-->>CTRL: NotFoundException
-                deactivate SRV
-            else Existe
-                SRV->>SRV: customer.validated igual a false
-                SRV->>CREP: save(customer)
-                activate CREP
-                CREP-->>SRV: Customer actualizado
-                deactivate CREP
-                SRV-->>CTRL: Customer
-            end
-        end
-    end
-    CTRL->>CTRL: CustomerMapper.toDto(customer)
-    CTRL-->>ADM: 200 CustomerResponseDto
-    deactivate CTRL
-```
-
-**Observaciones de diseño**
-
-- Los dos métodos son **simétricos y sin ownership**: ambos llaman a `findOne(id)` sin `requesterUserId`, de modo que `assertOwnership` no se dispara. Es correcto porque `@Roles(ADMIN, SUPER_ADMIN)` ya garantiza que el llamante es staff: validar a un cliente es, por definición, una acción sobre datos ajenos.
-- `validated` es un booleano, igual que en el chofer; estos dos métodos son los únicos que lo escriben.
-- Con distribuidora en contexto, el controlador llama antes a `CustomersService.assertDeLaDistribuidora`: un admin de empresa no puede validar a un cliente que nunca le compró, que responde 404 como si no existiera.
-
----
-
-#### C.25 DSD — CU-094: Actualizar Ubicación del Cliente
+#### C.24 DSD — CU-094: Actualizar Ubicación del Cliente
 
 **Clases participantes:** `@CurrentUser()`, función `scope`, `CustomersController`, `CustomersService` (`assertOwnership`), `Repository<Customer>`.
 
@@ -20676,7 +20513,7 @@ sequenceDiagram
 
 ---
 
-#### C.26 DSD — CU-095: Eliminar Cliente (baja lógica)
+#### C.25 DSD — CU-095: Eliminar Cliente (baja lógica)
 
 **Clases participantes:** `RolesGuard`, `CustomersController`, `CustomersService`, `Repository<Customer>`.
 
@@ -20780,7 +20617,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La lectura la reutilizan la edición (CU-131), la validación (CU-093) y la baja (CU-095) antes de escribir.
+- La lectura la reutilizan la edición (CU-131) y la baja (CU-095) antes de escribir.
 - El registro dado de baja lógicamente no aparece: el repositorio filtra por la marca de borrado.
 
 ---
@@ -20883,7 +20720,7 @@ sequenceDiagram
 
 ### SS-17 — Notificaciones y Mensajería
 
-#### C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
+#### C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
 
 **Clases participantes:** `@CurrentUser()`, función `isAdmin`, `NotificationsController`, `NotificationsService`, `Repository<Customer>`, `Repository<Delivery>`.
 
@@ -20939,7 +20776,7 @@ sequenceDiagram
 
 ---
 
-#### C.28 DSD — CU-099: Consultar los Tokens de un Usuario
+#### C.27 DSD — CU-099: Consultar los Tokens de un Usuario
 
 **Clases participantes:** `@CurrentUser()`, función `isAdmin`, `NotificationsController`, `NotificationsService`, `Repository<Customer>`.
 
@@ -20980,7 +20817,7 @@ sequenceDiagram
 
 ---
 
-#### C.29 DSD — CU-100: Enviar Notificación de Prueba
+#### C.28 DSD — CU-100: Enviar Notificación de Prueba
 
 **Clases participantes:** `RolesGuard`, `NotificationsController`, `NotificationsService`, `FcmPort` (impl. `FirebaseFcmAdapter`).
 
@@ -21028,7 +20865,7 @@ sequenceDiagram
 
 ---
 
-#### C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+#### C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
 
 **Clases participantes:** `RolesGuard`, `NotificationsController`, `NotificationsService`, `Repository<Customer>`, `FcmPort`.
 
@@ -21091,7 +20928,7 @@ sequenceDiagram
 
 ---
 
-#### C.31 DSD — CU-102: Probar el Servicio de Correo
+#### C.30 DSD — CU-102: Probar el Servicio de Correo
 
 Endpoint marcado **TEMPORAL** en el propio código (`src/email/email.controller.ts:49`, comentario "AGREGAR ESTE ENDPOINT TEMPORAL") y declarado `@Public()` en `:50`. Se modela tal como está, incluida esa condición.
 
@@ -21169,7 +21006,7 @@ sequenceDiagram
 
 ### SS-18 — Observabilidad y Operación
 
-#### C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+#### C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
 
 **Clases participantes:** `@Public()`, `@SkipThrottle()`, `HealthController`, `HealthCheckService`, `TypeOrmHealthIndicator`, `RedisHealthIndicator`, `RedisService`, `MemoryHealthIndicator`, `DiskHealthIndicator`.
 
@@ -21273,7 +21110,7 @@ sequenceDiagram
 ---
 
 
-#### C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+#### C.32 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
 
 **Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `CoverageZoneController`, `CoverageZoneService`, `ProgramarVigenciaDto`, `Repository<CoverageZone>`, entidad `CoverageZone`.
 
@@ -21334,7 +21171,7 @@ sequenceDiagram
 ---
 
 
-#### C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+#### C.33 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
 
 **Clases participantes:** `@Cron` de `@nestjs/schedule`, `CoverageZoneCronService`, `RedisService` (cerrojo distribuido), `Repository<CoverageZone>`, entidad `CoverageZone`.
 
@@ -21381,7 +21218,7 @@ sequenceDiagram
 ---
 
 
-#### C.35 DSD — CU-152: Consultar el Registro de Auditoría
+#### C.34 DSD — CU-152: Consultar el Registro de Auditoría
 
 **Clases participantes:** `AuthGuard`, `RolesGuard`, `ValidationPipe`, `@CurrentDistributor()`, `AuditController`, `ConsultarAuditoriaDto`, `AuditService`, `Repository<AuditLog>`, `AuditMapper`, `AsientoDeAuditoriaDto`, `RegistroDeAuditoriaDto`.
 
@@ -21439,7 +21276,7 @@ sequenceDiagram
 ---
 
 
-#### C.36 DSD — CU-153: Registrar Toda Operación de Escritura
+#### C.35 DSD — CU-153: Registrar Toda Operación de Escritura
 
 **Clases participantes:** `AuditInterceptor` (registrado como `APP_INTERCEPTOR` en `AuditModule`), función `depurarCambios`, `AuditService`, `Repository<AuditLog>`, entidad `AuditLog`, trigger `audit_log_inmutable` de la base.
 
@@ -21513,13 +21350,13 @@ sequenceDiagram
 | Subsistema | CU modelados | Diagramas |
 |---|---|---|
 | SS-10 Multi-Distribuidora | CU-052, CU-053, CU-054, CU-055 | C.1 – C.4 |
-| SS-11 Cobertura Geográfica | CU-056, CU-057, CU-059, CU-150, CU-151 | C.5 – C.7, C.33, C.34 |
+| SS-11 Cobertura Geográfica | CU-056, CU-057, CU-059, CU-150, CU-151 | C.5 – C.7, C.32, C.33 |
 | SS-12 Incidencias y Calidad | CU-060, CU-061, CU-062, CU-063, CU-066 | C.8 – C.12 |
 | SS-13 Trazabilidad de Envases | CU-067, CU-069, CU-071 | C.13 – C.15 |
 | SS-15 Reservas Programadas | CU-073, CU-074 | C.16 – C.17 |
-| SS-16 Cuentas y Roles | CU-086, CU-087, CU-088, CU-089, CU-090, CU-092, CU-093, CU-094, CU-095 | C.18 – C.26 |
-| SS-17 Notificaciones | CU-098, CU-099, CU-100, CU-101, CU-102 | C.27 – C.31 |
-| SS-18 Observabilidad | CU-104 | C.32 |
+| SS-16 Cuentas y Roles | CU-086, CU-087, CU-088, CU-089, CU-090, CU-092, CU-094, CU-095 | C.18 – C.24 |
+| SS-17 Notificaciones | CU-098, CU-099, CU-100, CU-101, CU-102 | C.26 – C.30 |
+| SS-18 Observabilidad | CU-104 | C.31 |
 | **Total** | **32 CU** | **32 DSD** |
 
 #### CU no modelados y por qué

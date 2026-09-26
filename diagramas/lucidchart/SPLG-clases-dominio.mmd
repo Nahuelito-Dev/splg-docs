@@ -2,17 +2,16 @@ classDiagram
     direction TB
 
     class Order {
-        +order_id: UUID
+        +orderId: UUID
         +status: OrderStatus
         +paymentMethod: PaymentMethod
         +paymentType: PaymentType
         +paymentStatus: PaymentStatus
         +totalAmount: Decimal
-        +deposit_amount: Decimal
-        +deposit_paid: boolean
-        +scheduled_date: Date
-        +deliveryLatitude: string
-        +deliveryLongitude: string
+        +depositAmount: Decimal
+        +depositPaid: boolean
+        +scheduledDate: Date
+        +deliveryPoint: Point
         +deliveryCode: string
         +gatewayPaymentId: string
         +cancellationReason: string
@@ -23,14 +22,14 @@ classDiagram
     }
 
     class OrderItem {
-        +order_item_id: UUID
+        +orderItemId: UUID
         +quantity: int
         +unitPrice: Decimal
         +subtotal: Decimal
     }
 
     class GasCylinder {
-        +gas_cylinder_id: UUID
+        +gasCylinderId: UUID
         +type: string
         +weight: Decimal
         +price: Decimal
@@ -45,18 +44,18 @@ classDiagram
     }
 
     class Delivery {
-        +delivery_id: UUID
+        +deliveryId: UUID
         +validated: boolean
         +isActive: boolean
         +calification: double
         +balance: double
         +location: Point
-        +actual_location: string
-        +notification_token: string
+        +actualLocation: string
+        +notificationToken: string
     }
 
     class Claim {
-        +claim_id: UUID
+        +claimId: UUID
         +reason: string
         +description: string
         +status: ClaimStatus
@@ -66,34 +65,33 @@ classDiagram
     }
 
     class Customer {
-        +customer_id: UUID
-        +notification_token: string
+        +customerId: UUID
+        +notificationToken: string
         +location: Point
-        +validated: boolean
     }
 
     class User {
-        +user_id: UUID
-        +firebase_uid: string
-        +full_name: string
+        +userId: UUID
+        +firebaseUid: string
+        +fullName: string
         +email: string
-        +phone_number: string
-        +phone_verified: boolean
-        +email_verified: boolean
+        +phoneNumber: string
+        +phoneVerified: boolean
+        +emailVerified: boolean
         +blocked: boolean
     }
 
     class Distributor {
-        +distributor_id: UUID
+        +distributorId: UUID
     }
     class TimeSlot {
-        +time_slot_id: UUID
+        +timeSlotId: UUID
     }
     class UserAddress {
-        +address_id: UUID
+        +addressId: UUID
     }
     class Role {
-        +role_id: UUID
+        +roleId: UUID
     }
 
     class OrderStatus {
@@ -149,60 +147,60 @@ classDiagram
     %% implementado. Va marcado para no confundir el diseño con lo construido.
     class Cart {
         <<propuesto>>
-        +cart_id: UUID
+        +cartId: UUID
         +updatedAt: Date
     }
     class CartItem {
         <<propuesto>>
-        +cart_item_id: UUID
+        +cartItemId: UUID
         +quantity: int
-        +unit_price: Decimal
+        +unitPrice: Decimal
     }
     class CylinderInspection {
         <<propuesto>>
-        +inspection_id: UUID
-        +inspected_at: Date
+        +inspectionId: UUID
+        +inspectedAt: Date
         +result: InspectionResult
-        +next_due_at: Date
+        +nextDueAt: Date
         +notes: string
     }
     class MaintenancePlan {
         <<propuesto>>
-        +plan_id: UUID
+        +planId: UUID
         +name: string
         +subject: MaintenanceSubject
         +trigger: MaintenanceTrigger
-        +interval_km: int
-        +interval_months: int
-        +lead_time_days: int
+        +intervalKm: int
+        +intervalMonths: int
+        +leadTimeDays: int
         +criticality: MaintenanceCriticality
     }
     class MaintenanceTask {
         <<propuesto>>
-        +task_id: UUID
+        +taskId: UUID
         +status: MaintenanceTaskStatus
-        +due_at: Date
-        +predicted_due_at: Date
-        +scheduled_at: Date
-        +performed_at: Date
-        +odometer_km: int
+        +dueAt: Date
+        +predictedDueAt: Date
+        +scheduledAt: Date
+        +performedAt: Date
+        +odometerKm: int
         +cost: Decimal
         +provider: string
-        +reference_number: string
-        +alerted_at: Date
+        +referenceNumber: string
+        +alertedAt: Date
     }
     class OrderAddressChange {
         <<propuesto>>
-        +change_id: UUID
-        +changed_at: Date
+        +changeId: UUID
+        +changedAt: Date
         +reason: string
     }
     class Cylinder {
-        +cylinder_id: UUID
-        +serial_number: string
+        +cylinderId: UUID
+        +serialNumber: string
     }
     class Car {
-        +car_id: UUID
+        +carId: UUID
         +patente: string
     }
 

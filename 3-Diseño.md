@@ -143,32 +143,31 @@
 - Figura 129 — C.21 DSD — CU-089: Gestionar Roles del Sistema
 - Figura 130 — C.22 DSD — CU-090: Sembrar los Roles Iniciales
 - Figura 131 — C.23 DSD — CU-092: Consultar Listado de Clientes
-- Figura 132 — C.24 DSD — CU-093: Validar / Invalidar Cliente
-- Figura 133 — C.25 DSD — CU-094: Actualizar Ubicación del Cliente
-- Figura 134 — C.26 DSD — CU-095: Eliminar Cliente (baja lógica)
-- Figura 135 — DSD CU-129: Consultar Detalle del Cliente
-- Figura 136 — DSD CU-130: Buscar Cliente por Usuario
-- Figura 137 — DSD CU-131: Editar Datos del Cliente
-- Figura 138 — C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
-- Figura 139 — C.28 DSD — CU-099: Consultar los Tokens de un Usuario
-- Figura 140 — C.29 DSD — CU-100: Enviar Notificación de Prueba
-- Figura 141 — C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
-- Figura 142 — C.31 DSD — CU-102: Probar el Servicio de Correo
-- Figura 143 — C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
-- Figura 144 — C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
-- Figura 145 — C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
-- Figura 146 — C.35 DSD — CU-152: Consultar el Registro de Auditoría
-- Figura 147 — C.36 DSD — CU-153: Registrar Toda Operación de Escritura
-- Figura 148 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 149 — DSD CU-106: Anticipar la recompra por consumo estimado
-- Figura 150 — DSD CU-107: Agrupar pedidos por recorrido
-- Figura 151 — DSD CU-108: Recuperar envases no devueltos
-- Figura 152 — DSD CU-043: Modificar Capacidad de Franja Horaria
-- Figura 153 — DSD CU-020: Confirmar entrega (declaración del chofer)
-- Figura 154 — Clases del Dominio de Pedidos
-- Figura 155 — Clases de Servicio (Backend — Capa de Aplicación)
-- Figura 156 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
-- Figura 157 — Diagrama Entidad-Relación (Mermaid)
+- Figura 132 — C.24 DSD — CU-094: Actualizar Ubicación del Cliente
+- Figura 133 — C.25 DSD — CU-095: Eliminar Cliente (baja lógica)
+- Figura 134 — DSD CU-129: Consultar Detalle del Cliente
+- Figura 135 — DSD CU-130: Buscar Cliente por Usuario
+- Figura 136 — DSD CU-131: Editar Datos del Cliente
+- Figura 137 — C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 138 — C.27 DSD — CU-099: Consultar los Tokens de un Usuario
+- Figura 139 — C.28 DSD — CU-100: Enviar Notificación de Prueba
+- Figura 140 — C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 141 — C.30 DSD — CU-102: Probar el Servicio de Correo
+- Figura 142 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+- Figura 143 — C.32 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+- Figura 144 — C.33 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+- Figura 145 — C.34 DSD — CU-152: Consultar el Registro de Auditoría
+- Figura 146 — C.35 DSD — CU-153: Registrar Toda Operación de Escritura
+- Figura 147 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 148 — DSD CU-106: Anticipar la recompra por consumo estimado
+- Figura 149 — DSD CU-107: Agrupar pedidos por recorrido
+- Figura 150 — DSD CU-108: Recuperar envases no devueltos
+- Figura 151 — DSD CU-043: Modificar Capacidad de Franja Horaria
+- Figura 152 — DSD CU-020: Confirmar entrega (declaración del chofer)
+- Figura 153 — Clases del Dominio de Pedidos
+- Figura 154 — Clases de Servicio (Backend — Capa de Aplicación)
+- Figura 155 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
+- Figura 156 — Diagrama Entidad-Relación (Mermaid)
 
 ---
 
@@ -2101,7 +2100,7 @@ sequenceDiagram
 
 ### 4.10 Importante DSD — CU-068 / CU-070: Ciclo de vida del envase físico
 
-**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, `Repository<CylinderMovement>`, `Repository<Order>`, `assertTransition` (máquina de estados del envase), `UpdateOrderStatusUseCase`, `CylinderLifecyclePort`, `CylinderLifecycleAdapter`, entidades `Cylinder`, `CylinderMovement`.
+**Clases participantes:** `CylinderController`, `CylinderService`, `Repository<Cylinder>`, `Repository<CylinderMovement>`, `OrderLookupService` (lectura de pedidos dentro de la distribuidora), `assertTransition` (máquina de estados del envase), `UpdateOrderStatusUseCase`, `CylinderLifecyclePort`, `CylinderLifecycleAdapter`, entidades `Cylinder`, `CylinderMovement`.
 
 ```mermaid
 sequenceDiagram
@@ -2112,7 +2111,7 @@ sequenceDiagram
     participant CS as CylinderService
     participant CREP as RepositoryCylinder
     participant MREP as RepositoryCylinderMovement
-    participant OREP as RepositoryOrder
+    participant OREP as OrderLookupService
     participant SM as CylinderStateMachine
     participant UCS as UpdateOrderStatusUseCase
     participant ADP as CylinderLifecycleAdapter
@@ -2122,10 +2121,13 @@ sequenceDiagram
     activate CTRL
     CTRL->>CS: assignToOrder(orderId, serials, distributorId, actorUserId)
     activate CS
-    CS->>OREP: findOne(order_id)
+    CS->>OREP: findRef(orderId, distributorId)
     activate OREP
-    OREP-->>CS: Order o null
+    OREP-->>CS: OrderRef o null
     deactivate OREP
+    opt Pedido inexistente o de otra distribuidora
+        CS-->>CTRL: 404 Pedido no encontrado
+    end
     loop Por cada serial
         CS->>CS: findBySerial(serial, distributorId)
         CS->>CS: cylinder.current_order_id = orderId
@@ -2148,11 +2150,16 @@ sequenceDiagram
     CS->>CREP: findOne(cylinder_id, distributor_id)
     CREP-->>CS: Cylinder
     deactivate CREP
-    alt toState WITH_CUSTOMER y viene orderId
-        CS->>OREP: findOne(order_id)
+    opt Viene orderId
+        CS->>OREP: findRef(orderId, distributorId)
         activate OREP
-        OREP-->>CS: customer_id del pedido
+        OREP-->>CS: OrderRef o null
         deactivate OREP
+        alt Pedido inexistente o de otra distribuidora
+            CS-->>CTRL: 404 Pedido no encontrado
+        else toState WITH_CUSTOMER
+            CS->>CS: el envase toma el customerId del pedido
+        end
     end
     CS->>SM: assertTransition(fromState, toState)
     activate SM
@@ -7635,7 +7642,7 @@ sequenceDiagram
 
 #### DSD — CU-045: Consultar Franjas Horarias Disponibles
 
-**Clases participantes:** `TimeSlotController`, `TimeSlotService`, `DistributorService`, `Repository<TimeSlot>`, `Repository<Order>`, interfaz `SlotAvailability`, entidades `TimeSlot`, `Order`, `Distributor`.
+**Clases participantes:** `TimeSlotController`, `TimeSlotService`, `DistributorService`, `Repository<TimeSlot>`, `OrderLookupService` (conteo de reservas), interfaz `SlotAvailability`, entidades `TimeSlot`, `Order`, `Distributor`.
 
 ```mermaid
 sequenceDiagram
@@ -7645,7 +7652,7 @@ sequenceDiagram
     participant SRV as TimeSlotService
     participant DIS as DistributorService
     participant TREP as RepositoryTimeSlot
-    participant OREP as RepositoryOrder
+    participant OREP as OrderLookupService
 
     alt Disponibilidad por fecha, GET /time-slot/availability
         CTRL->>SRV: getAvailability(date, distributor)
@@ -7668,7 +7675,7 @@ sequenceDiagram
         deactivate TREP
         loop Por cada franja activa
             SRV->>SRV: countBooked(time_slot_id, date, distributorId)
-            SRV->>OREP: count(where time_slot_id, scheduled_date y status distinto de CANCELLED)
+            SRV->>OREP: countBooked(timeSlotId, date, distributorId), sin cancelados
             activate OREP
             OREP-->>SRV: booked
             deactivate OREP
@@ -9280,103 +9287,7 @@ sequenceDiagram
 
 ---
 
-#### C.24 DSD — CU-093: Validar / Invalidar Cliente
-
-**Clases participantes:** `RolesGuard`, `CustomersController`, `CustomersService`, `Repository<Customer>`, entidad `Customer`.
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-093 Validar Invalidar Cliente
-    autonumber
-    participant ADM as Admin o SuperAdmin
-    participant CTRL as CustomersController
-    participant SRV as CustomersService
-    participant CREP as RepositoryCustomer
-
-    alt Validar, PATCH /customers/:id/validate
-        ADM->>CTRL: validateCustomer(id)
-        activate CTRL
-        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
-        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
-        activate SRV
-        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
-        activate CREP
-        CREP-->>SRV: true o false
-        deactivate CREP
-        alt El cliente nunca le compro a la distribuidora
-            SRV-->>CTRL: NotFoundException Customer with ID not found
-        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
-            SRV-->>CTRL: sin error
-            deactivate SRV
-            CTRL->>SRV: validateCustomer(id)
-            activate SRV
-            SRV->>SRV: findOne(id), sin requesterUserId, es admin
-            SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
-            activate CREP
-            CREP-->>SRV: Customer o null
-            deactivate CREP
-            alt No existe
-                SRV-->>CTRL: NotFoundException
-                deactivate SRV
-            else Existe
-                SRV->>SRV: customer.validated igual a true
-                SRV->>CREP: save(customer)
-                activate CREP
-                CREP-->>SRV: Customer actualizado
-                deactivate CREP
-                SRV-->>CTRL: Customer
-            end
-        end
-    else Invalidar, PATCH /customers/:id/invalidate
-        ADM->>CTRL: invalidateCustomer(id)
-        CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo admin con distribuidora en contexto
-        CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
-        activate SRV
-        SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
-        activate CREP
-        CREP-->>SRV: true o false
-        deactivate CREP
-        alt El cliente nunca le compro a la distribuidora
-            SRV-->>CTRL: NotFoundException Customer with ID not found
-        else Le compro a la distribuidora, o no es un admin con distribuidora en contexto
-            SRV-->>CTRL: sin error
-            deactivate SRV
-            CTRL->>SRV: invalidateCustomer(id)
-            activate SRV
-            SRV->>SRV: findOne(id)
-            SRV->>CREP: findOne(where customer_id)
-            activate CREP
-            CREP-->>SRV: Customer o null
-            deactivate CREP
-            alt No existe
-                SRV-->>CTRL: NotFoundException
-                deactivate SRV
-            else Existe
-                SRV->>SRV: customer.validated igual a false
-                SRV->>CREP: save(customer)
-                activate CREP
-                CREP-->>SRV: Customer actualizado
-                deactivate CREP
-                SRV-->>CTRL: Customer
-            end
-        end
-    end
-    CTRL->>CTRL: CustomerMapper.toDto(customer)
-    CTRL-->>ADM: 200 CustomerResponseDto
-    deactivate CTRL
-```
-
-**Figura 132 — C.24 DSD — CU-093: Validar / Invalidar Cliente**
-
-**Observaciones de diseño**
-
-- Los dos métodos son **simétricos y sin ownership**: ambos llaman a `findOne(id)` sin `requesterUserId`, de modo que `assertOwnership` no se dispara. Es correcto porque `@Roles(ADMIN, SUPER_ADMIN)` ya garantiza que el llamante es staff: validar a un cliente es, por definición, una acción sobre datos ajenos.
-- `validated` es un booleano, igual que en el chofer; estos dos métodos son los únicos que lo escriben.
-- Con distribuidora en contexto, el controlador llama antes a `CustomersService.assertDeLaDistribuidora`: un admin de empresa no puede validar a un cliente que nunca le compró, que responde 404 como si no existiera.
-
----
-
-#### C.25 DSD — CU-094: Actualizar Ubicación del Cliente
+#### C.24 DSD — CU-094: Actualizar Ubicación del Cliente
 
 **Clases participantes:** `@CurrentUser()`, función `scope`, `CustomersController`, `CustomersService` (`assertOwnership`), `Repository<Customer>`.
 
@@ -9437,7 +9348,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 133 — C.25 DSD — CU-094: Actualizar Ubicación del Cliente**
+**Figura 132 — C.24 DSD — CU-094: Actualizar Ubicación del Cliente**
 
 **Observaciones de diseño**
 
@@ -9447,7 +9358,7 @@ sequenceDiagram
 
 ---
 
-#### C.26 DSD — CU-095: Eliminar Cliente (baja lógica)
+#### C.25 DSD — CU-095: Eliminar Cliente (baja lógica)
 
 **Clases participantes:** `RolesGuard`, `CustomersController`, `CustomersService`, `Repository<Customer>`.
 
@@ -9502,7 +9413,7 @@ sequenceDiagram
     deactivate CTRL
 ```
 
-**Figura 134 — C.26 DSD — CU-095: Eliminar Cliente (baja lógica)**
+**Figura 133 — C.25 DSD — CU-095: Eliminar Cliente (baja lógica)**
 
 **Observaciones de diseño**
 
@@ -9551,11 +9462,11 @@ sequenceDiagram
     end
 ```
 
-**Figura 135 — DSD CU-129: Consultar Detalle del Cliente**
+**Figura 134 — DSD CU-129: Consultar Detalle del Cliente**
 
 **Observaciones de diseño**
 
-- La lectura la reutilizan la edición (CU-131), la validación (CU-093) y la baja (CU-095) antes de escribir.
+- La lectura la reutilizan la edición (CU-131) y la baja (CU-095) antes de escribir.
 - El registro dado de baja lógicamente no aparece: el repositorio filtra por la marca de borrado.
 
 ---
@@ -9599,7 +9510,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 136 — DSD CU-130: Buscar Cliente por Usuario**
+**Figura 135 — DSD CU-130: Buscar Cliente por Usuario**
 
 **Observaciones de diseño**
 
@@ -9651,7 +9562,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 137 — DSD CU-131: Editar Datos del Cliente**
+**Figura 136 — DSD CU-131: Editar Datos del Cliente**
 
 **Observaciones de diseño**
 
@@ -9662,7 +9573,7 @@ sequenceDiagram
 
 ### SS-17 — Notificaciones y Mensajería
 
-#### C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
+#### C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
 
 **Clases participantes:** `@CurrentUser()`, función `isAdmin`, `NotificationsController`, `NotificationsService`, `Repository<Customer>`, `Repository<Delivery>`.
 
@@ -9709,7 +9620,7 @@ sequenceDiagram
     deactivate CTRL
 ```
 
-**Figura 138 — C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo**
+**Figura 137 — C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo**
 
 **Observaciones de diseño**
 
@@ -9720,7 +9631,7 @@ sequenceDiagram
 
 ---
 
-#### C.28 DSD — CU-099: Consultar los Tokens de un Usuario
+#### C.27 DSD — CU-099: Consultar los Tokens de un Usuario
 
 **Clases participantes:** `@CurrentUser()`, función `isAdmin`, `NotificationsController`, `NotificationsService`, `Repository<Customer>`.
 
@@ -9753,7 +9664,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 139 — C.28 DSD — CU-099: Consultar los Tokens de un Usuario**
+**Figura 138 — C.27 DSD — CU-099: Consultar los Tokens de un Usuario**
 
 **Observaciones de diseño**
 
@@ -9763,7 +9674,7 @@ sequenceDiagram
 
 ---
 
-#### C.29 DSD — CU-100: Enviar Notificación de Prueba
+#### C.28 DSD — CU-100: Enviar Notificación de Prueba
 
 **Clases participantes:** `RolesGuard`, `NotificationsController`, `NotificationsService`, `FcmPort` (impl. `FirebaseFcmAdapter`).
 
@@ -9803,7 +9714,7 @@ sequenceDiagram
     deactivate CTRL
 ```
 
-**Figura 140 — C.29 DSD — CU-100: Enviar Notificación de Prueba**
+**Figura 139 — C.28 DSD — CU-100: Enviar Notificación de Prueba**
 
 **Observaciones de diseño**
 
@@ -9813,7 +9724,7 @@ sequenceDiagram
 
 ---
 
-#### C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+#### C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
 
 **Clases participantes:** `RolesGuard`, `NotificationsController`, `NotificationsService`, `Repository<Customer>`, `FcmPort`.
 
@@ -9867,7 +9778,7 @@ sequenceDiagram
     deactivate CTRL
 ```
 
-**Figura 141 — C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
+**Figura 140 — C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 **Observaciones de diseño**
 
@@ -9878,7 +9789,7 @@ sequenceDiagram
 
 ---
 
-#### C.31 DSD — CU-102: Probar el Servicio de Correo
+#### C.30 DSD — CU-102: Probar el Servicio de Correo
 
 Endpoint marcado **TEMPORAL** en el propio código (`src/email/email.controller.ts:49`, comentario "AGREGAR ESTE ENDPOINT TEMPORAL") y declarado `@Public()` en `:50`. Se modela tal como está, incluida esa condición.
 
@@ -9945,7 +9856,7 @@ sequenceDiagram
     CTRL-->>ANY: 200 diagnostico del servicio de correo
 ```
 
-**Figura 142 — C.31 DSD — CU-102: Probar el Servicio de Correo**
+**Figura 141 — C.30 DSD — CU-102: Probar el Servicio de Correo**
 
 **Observaciones de diseño**
 
@@ -9958,7 +9869,7 @@ sequenceDiagram
 
 ### SS-18 — Observabilidad y Operación
 
-#### C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+#### C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
 
 **Clases participantes:** `@Public()`, `@SkipThrottle()`, `HealthController`, `HealthCheckService`, `TypeOrmHealthIndicator`, `RedisHealthIndicator`, `RedisService`, `MemoryHealthIndicator`, `DiskHealthIndicator`.
 
@@ -10048,7 +9959,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 143 — C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
+**Figura 142 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
 
 **Observaciones de diseño**
 
@@ -10063,7 +9974,7 @@ sequenceDiagram
 
 ---
 
-#### C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+#### C.32 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
 
 **Clases participantes:** `AuthGuard`, `@CurrentDistributor()`, `RolesGuard`, `CoverageZoneController`, `CoverageZoneService`, `ProgramarVigenciaDto`, `Repository<CoverageZone>`, entidad `CoverageZone`.
 
@@ -10114,7 +10025,7 @@ sequenceDiagram
     deactivate CTRL
 ```
 
-**Figura 144 — C.33 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura**
+**Figura 143 — C.32 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura**
 
 **Observaciones de diseño**
 
@@ -10125,7 +10036,7 @@ sequenceDiagram
 
 ---
 
-#### C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+#### C.33 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
 
 **Clases participantes:** `@Cron` de `@nestjs/schedule`, `CoverageZoneCronService`, `RedisService` (cerrojo distribuido), `Repository<CoverageZone>`, entidad `CoverageZone`.
 
@@ -10162,7 +10073,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 145 — C.34 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
+**Figura 144 — C.33 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
 
 **Observaciones de diseño**
 
@@ -10173,7 +10084,7 @@ sequenceDiagram
 
 ---
 
-#### C.35 DSD — CU-152: Consultar el Registro de Auditoría
+#### C.34 DSD — CU-152: Consultar el Registro de Auditoría
 
 **Clases participantes:** `AuthGuard`, `RolesGuard`, `ValidationPipe`, `@CurrentDistributor()`, `AuditController`, `ConsultarAuditoriaDto`, `AuditService`, `Repository<AuditLog>`, `AuditMapper`, `AsientoDeAuditoriaDto`, `RegistroDeAuditoriaDto`.
 
@@ -10220,7 +10131,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 146 — C.35 DSD — CU-152: Consultar el Registro de Auditoría**
+**Figura 145 — C.34 DSD — CU-152: Consultar el Registro de Auditoría**
 
 **Observaciones de diseño**
 
@@ -10232,7 +10143,7 @@ sequenceDiagram
 
 ---
 
-#### C.36 DSD — CU-153: Registrar Toda Operación de Escritura
+#### C.35 DSD — CU-153: Registrar Toda Operación de Escritura
 
 **Clases participantes:** `AuditInterceptor` (registrado como `APP_INTERCEPTOR` en `AuditModule`), función `depurarCambios`, `AuditService`, `Repository<AuditLog>`, entidad `AuditLog`, trigger `audit_log_inmutable` de la base.
 
@@ -10283,7 +10194,7 @@ sequenceDiagram
     deactivate INT
 ```
 
-**Figura 147 — C.36 DSD — CU-153: Registrar Toda Operación de Escritura**
+**Figura 146 — C.35 DSD — CU-153: Registrar Toda Operación de Escritura**
 
 **Observaciones de diseño**
 
@@ -10309,9 +10220,9 @@ sequenceDiagram
 | SS-12 Incidencias y Calidad | CU-060, CU-061, CU-062, CU-063, CU-066 | C.8 – C.12 |
 | SS-13 Trazabilidad de Envases | CU-067, CU-069, CU-071 | C.13 – C.15 |
 | SS-15 Reservas Programadas | CU-073, CU-074 | C.16 – C.17 |
-| SS-16 Cuentas y Roles | CU-086, CU-087, CU-088, CU-089, CU-090, CU-092, CU-093, CU-094, CU-095 | C.18 – C.26 |
-| SS-17 Notificaciones | CU-098, CU-099, CU-100, CU-101, CU-102 | C.27 – C.31 |
-| SS-18 Observabilidad | CU-104 | C.32 |
+| SS-16 Cuentas y Roles | CU-086, CU-087, CU-088, CU-089, CU-090, CU-092, CU-094, CU-095 | C.18 – C.24 |
+| SS-17 Notificaciones | CU-098, CU-099, CU-100, CU-101, CU-102 | C.26 – C.30 |
+| SS-18 Observabilidad | CU-104 | C.31 |
 | **Total** | **32 CU** | **32 DSD** |
 
 #### CU no modelados y por qué
@@ -10429,7 +10340,7 @@ sequenceDiagram
     deactivate TSK
 ```
 
-**Figura 148 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 147 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 > **Nota sobre este diagrama.** Ninguna de las clases de servicio, puerto o
 > repositorio que aparecen existe hoy en el código: `FleetMaintenancePlannerService`,
@@ -10516,7 +10427,7 @@ sequenceDiagram
     deactivate INV
 ```
 
-**Figura 149 — DSD CU-106: Anticipar la recompra por consumo estimado**
+**Figura 148 — DSD CU-106: Anticipar la recompra por consumo estimado**
 
 > **Nota sobre este diagrama.** `RepurchaseForecastService`,
 > `ConsumptionEstimatorService` y `RepurchaseInvitationRepositoryPort` son
@@ -10606,7 +10517,7 @@ sequenceDiagram
     deactivate ORD
 ```
 
-**Figura 150 — DSD CU-107: Agrupar pedidos por recorrido**
+**Figura 149 — DSD CU-107: Agrupar pedidos por recorrido**
 
 > **Nota sobre este diagrama.** `RouteBatchPlannerService`,
 > `RouteBatchRepositoryPort`, `RouteSequencerService` y `FleetCapacityService`
@@ -10698,7 +10609,7 @@ sequenceDiagram
     deactivate CASE
 ```
 
-**Figura 151 — DSD CU-108: Recuperar envases no devueltos**
+**Figura 150 — DSD CU-108: Recuperar envases no devueltos**
 
 > **Nota sobre este diagrama.** `CylinderRecoveryService`,
 > `RecoveryCaseRepositoryPort` y `DepositLedgerService` son **nombres
@@ -10784,7 +10695,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 152 — DSD CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 151 — DSD CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -10862,7 +10773,7 @@ sequenceDiagram
     deactivate RT
 ```
 
-**Figura 153 — DSD CU-020: Confirmar entrega (declaración del chofer)**
+**Figura 152 — DSD CU-020: Confirmar entrega (declaración del chofer)**
 
 > **Observación de diseño.** El caso de uso **no verifica que el chofer que confirma sea
 > el asignado al pedido**: no hay comparación entre el usuario autenticado y
@@ -10879,7 +10790,7 @@ Documento 2. El contrato de las que lo tienen, con precondiciones y postcondicio
 está en el Documento 2 · §2.2; el diagrama de interacción que muestra cómo se resuelve
 por dentro está en §4 de este documento.
 
-Son **177 operaciones**. **177** tienen su diagrama de interacción y
+Son **179 operaciones**. **179** tienen su diagrama de interacción y
 **16** tienen contrato escrito.
 
 | Operación | Caso de uso | Actor que la invoca | Diagrama de interacción | Contrato |
@@ -10925,6 +10836,7 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `confirmarEntregaConCodigo(pedidoId, codigoLeido)` | CU-079 | Cliente | sí | sí |
 | `confirmarSenia(pedidoId)` | CU-074 | Administrador | sí | sí |
 | `confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)` | CU-105 | Sistema Automático | sí | — |
+| `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)` | CU-152 | Administrador | sí | — |
 | `consultarCarrito()` | CU-125 | Cliente | sí | — |
 | `consultarCatalogo(pagina, limite, distribuidora)` | CU-041 | Cliente | sí | — |
 | `consultarChofer(choferId)` | CU-035 | Administrador | sí | — |
@@ -10983,6 +10895,7 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `declararConsumoPromedio(tipoGarrafa, cantidadPorMes)` | CU-143 | Cliente | sí | — |
 | `definirZonaDeCobertura(nombre, poligono, recargo, activa)` | CU-056 | Administrador | sí | — |
 | `desactivarProducto(productoId)` | CU-040 | Administrador | sí | — |
+| `desactivarZonasVencidas()` | CU-151 | Sistema | sí | — |
 | `despacharPedidoExpress(pedidoId)` | CU-149 | Sistema Automático | sí | — |
 | `editarDatosDelCliente(clienteId, cambios)` | CU-131 | Administrador | sí | — |
 | `editarDireccionDeEntrega(direccionId, cambios)` | CU-118 | Cliente | sí | — |
@@ -11002,7 +10915,6 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `gestionarEnvasesNoDevueltos()` | CU-108 | Sistema Automático | sí | — |
 | `indicarQuienRecibe(pedidoId, nombre, documento, relacion)` | CU-128 | Cliente | sí | — |
 | `invalidarChofer(choferId)` | CU-032 | Administrador | sí | — |
-| `invalidarCliente(clienteId)` | CU-093 | Administrador | sí | — |
 | `listarAdministradores()` | CU-088 | Administrador | sí | — |
 | `listarChoferes(pagina, limite)` | CU-035 | Administrador | sí | — |
 | `listarChoferesActivos(pagina, limite)` | CU-035 | Administrador | sí | — |
@@ -11026,6 +10938,7 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `planificarMantenimientoDeFlota()` | CU-105 | Sistema Automático | sí | — |
 | `probarServicioDeCorreo(destinatario)` | CU-102 | Administrador | sí | — |
 | `programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)` | CU-140 | Administrador | sí | — |
+| `programarVigenciaDeZona(zonaId, vigenteHasta)` | CU-150 | Administrador | sí | — |
 | `quitarItemDelCarrito(itemId)` | CU-124 | Cliente | sí | — |
 | `realizarCompraExpress(tipoGarrafa, medioDePago)` | CU-147 | Cliente | sí | — |
 | `rechazarOferta(pedidoId)` | CU-016 | Chofer | sí | sí |
@@ -11039,6 +10952,7 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)` | CU-138 | Administrador | sí | — |
 | `registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)` | CU-141 | Administrador | sí | — |
 | `registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)` | CU-070 | Chofer | sí | sí |
+| `registrarOperacion(autor, rol, distribuidora, operación, recurso, origen, resultado, código, motivo)` | CU-153 | Sistema | sí | — |
 | `registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)` | CU-132 | Administrador | sí | — |
 | `registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)` | CU-136 | Administrador | sí | — |
 | `registrarTokenDeNotificaciones(usuarioId, token, plataforma)` | CU-098 | Cliente | sí | — |
@@ -11053,7 +10967,6 @@ Son **177 operaciones**. **177** tienen su diagrama de interacción y
 | `suscribirseAlSeguimiento(clienteId)` | CU-021 | Cliente | sí | — |
 | `vaciarCarrito()` | CU-126 | Cliente | sí | — |
 | `validarChofer(choferId)` | CU-032 | Administrador | sí | — |
-| `validarCliente(clienteId)` | CU-093 | Administrador | sí | — |
 | `validarCobertura(latitud, longitud)` | CU-058 | Cliente | sí | sí |
 | `validarSesion()` | CU-091 | Usuario autenticado | sí | — |
 | `verificarDisponibilidad()` | CU-104 | Plataforma de Operación | sí | — |
@@ -11076,17 +10989,16 @@ classDiagram
     direction TB
 
     class Order {
-        +order_id: UUID
+        +orderId: UUID
         +status: OrderStatus
         +paymentMethod: PaymentMethod
         +paymentType: PaymentType
         +paymentStatus: PaymentStatus
         +totalAmount: Decimal
-        +deposit_amount: Decimal
-        +deposit_paid: boolean
-        +scheduled_date: Date
-        +deliveryLatitude: string
-        +deliveryLongitude: string
+        +depositAmount: Decimal
+        +depositPaid: boolean
+        +scheduledDate: Date
+        +deliveryPoint: Point
         +deliveryCode: string
         +gatewayPaymentId: string
         +cancellationReason: string
@@ -11097,14 +11009,14 @@ classDiagram
     }
 
     class OrderItem {
-        +order_item_id: UUID
+        +orderItemId: UUID
         +quantity: int
         +unitPrice: Decimal
         +subtotal: Decimal
     }
 
     class GasCylinder {
-        +gas_cylinder_id: UUID
+        +gasCylinderId: UUID
         +type: string
         +weight: Decimal
         +price: Decimal
@@ -11119,18 +11031,18 @@ classDiagram
     }
 
     class Delivery {
-        +delivery_id: UUID
+        +deliveryId: UUID
         +validated: boolean
         +isActive: boolean
         +calification: double
         +balance: double
         +location: Point
-        +actual_location: string
-        +notification_token: string
+        +actualLocation: string
+        +notificationToken: string
     }
 
     class Claim {
-        +claim_id: UUID
+        +claimId: UUID
         +reason: string
         +description: string
         +status: ClaimStatus
@@ -11140,34 +11052,33 @@ classDiagram
     }
 
     class Customer {
-        +customer_id: UUID
-        +notification_token: string
+        +customerId: UUID
+        +notificationToken: string
         +location: Point
-        +validated: boolean
     }
 
     class User {
-        +user_id: UUID
-        +firebase_uid: string
-        +full_name: string
+        +userId: UUID
+        +firebaseUid: string
+        +fullName: string
         +email: string
-        +phone_number: string
-        +phone_verified: boolean
-        +email_verified: boolean
+        +phoneNumber: string
+        +phoneVerified: boolean
+        +emailVerified: boolean
         +blocked: boolean
     }
 
     class Distributor {
-        +distributor_id: UUID
+        +distributorId: UUID
     }
     class TimeSlot {
-        +time_slot_id: UUID
+        +timeSlotId: UUID
     }
     class UserAddress {
-        +address_id: UUID
+        +addressId: UUID
     }
     class Role {
-        +role_id: UUID
+        +roleId: UUID
     }
 
     class OrderStatus {
@@ -11223,60 +11134,60 @@ classDiagram
     %% implementado. Va marcado para no confundir el diseño con lo construido.
     class Cart {
         <<propuesto>>
-        +cart_id: UUID
+        +cartId: UUID
         +updatedAt: Date
     }
     class CartItem {
         <<propuesto>>
-        +cart_item_id: UUID
+        +cartItemId: UUID
         +quantity: int
-        +unit_price: Decimal
+        +unitPrice: Decimal
     }
     class CylinderInspection {
         <<propuesto>>
-        +inspection_id: UUID
-        +inspected_at: Date
+        +inspectionId: UUID
+        +inspectedAt: Date
         +result: InspectionResult
-        +next_due_at: Date
+        +nextDueAt: Date
         +notes: string
     }
     class MaintenancePlan {
         <<propuesto>>
-        +plan_id: UUID
+        +planId: UUID
         +name: string
         +subject: MaintenanceSubject
         +trigger: MaintenanceTrigger
-        +interval_km: int
-        +interval_months: int
-        +lead_time_days: int
+        +intervalKm: int
+        +intervalMonths: int
+        +leadTimeDays: int
         +criticality: MaintenanceCriticality
     }
     class MaintenanceTask {
         <<propuesto>>
-        +task_id: UUID
+        +taskId: UUID
         +status: MaintenanceTaskStatus
-        +due_at: Date
-        +predicted_due_at: Date
-        +scheduled_at: Date
-        +performed_at: Date
-        +odometer_km: int
+        +dueAt: Date
+        +predictedDueAt: Date
+        +scheduledAt: Date
+        +performedAt: Date
+        +odometerKm: int
         +cost: Decimal
         +provider: string
-        +reference_number: string
-        +alerted_at: Date
+        +referenceNumber: string
+        +alertedAt: Date
     }
     class OrderAddressChange {
         <<propuesto>>
-        +change_id: UUID
-        +changed_at: Date
+        +changeId: UUID
+        +changedAt: Date
         +reason: string
     }
     class Cylinder {
-        +cylinder_id: UUID
-        +serial_number: string
+        +cylinderId: UUID
+        +serialNumber: string
     }
     class Car {
-        +car_id: UUID
+        +carId: UUID
         +patente: string
     }
 
@@ -11296,7 +11207,7 @@ classDiagram
     OrderAddressChange "0..*" --> "1" User : lo pide
 ```
 
-**Figura 154 — Clases del Dominio de Pedidos**
+**Figura 153 — Clases del Dominio de Pedidos**
 
 ### 5.2 Clases de Servicio (Backend — Capa de Aplicación)
 
@@ -11442,7 +11353,7 @@ classDiagram
     BienvenidaListener ..> UsuarioRegistradoEvent : escucha
 ```
 
-**Figura 155 — Clases de Servicio (Backend — Capa de Aplicación)**
+**Figura 154 — Clases de Servicio (Backend — Capa de Aplicación)**
 
 ### 5.3 Clases de Presentación — App Cliente (Flutter, MVVM)
 
@@ -11691,7 +11602,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 156 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
+**Figura 155 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
 
 ---
 
@@ -12811,7 +12722,6 @@ erDiagram
         uuid user_id FK
         text notification_token "nullable"
         geometry location "nullable, punto PostGIS"
-        boolean validated
         timestamptz createdAt "nullable"
         timestamptz deletedAt "nullable"
     }
@@ -12924,8 +12834,7 @@ erDiagram
         decimal totalAmount
         text notes "nullable"
         text deliveryInstructions "nullable"
-        varchar deliveryLatitude "nullable"
-        varchar deliveryLongitude "nullable"
+        geometry deliveryPoint "nullable"
         timestamp acceptedAt "nullable"
         timestamp onTheWayAt "nullable"
         timestamp deliveredAt "nullable"
@@ -13023,7 +12932,7 @@ erDiagram
     }
 ```
 
-**Figura 157 — Diagrama Entidad-Relación (Mermaid)**
+**Figura 156 — Diagrama Entidad-Relación (Mermaid)**
 
 ---
 
@@ -13093,7 +13002,6 @@ erDiagram
 | user_id | uuid | NO | - | Usuario al que extiende (FK). |
 | notification_token | text | SI | - | Token para notificaciones push (FCM). |
 | location | geometry(Point, 4326) | SI | - | Última ubicación conocida del cliente, como punto PostGIS. La API la sigue recibiendo y devolviendo como texto "latitud,longitud" (`lat_lang`). |
-| validated | boolean | NO | false | Indica si la distribuidora aprobó al cliente. |
 | createdAt | timestamptz | SI | now() | Fecha de creación. |
 | deletedAt | timestamptz | SI | - | Fecha de soft-delete. |
 
@@ -13224,8 +13132,7 @@ erDiagram
 | totalAmount | decimal(10,2) | NO | - | Total a cobrar en moneda base. |
 | notes | text | SI | - | Notas de cliente generales. |
 | deliveryInstructions | text | SI | - | Instrucciones específicas de entrega. |
-| deliveryLatitude | varchar(50) | SI | - | Latitud exacta de entrega. |
-| deliveryLongitude | varchar(50) | SI | - | Longitud exacta de entrega. |
+| deliveryPoint | geometry(Point, 4326) | SI | - | Punto de entrega: copia del punto de la dirección al crear el pedido. La posición del chofer no se guarda acá (vive en Redis). |
 | acceptedAt | timestamp | SI | - | Cuando un chofer acepta el viaje. |
 | onTheWayAt | timestamp | SI | - | Cuando el chofer está en camino. |
 | deliveredAt | timestamp | SI | - | Cuando se entregó el pedido. @Index |
@@ -13396,7 +13303,7 @@ erDiagram
 2. **Reintentos de Despacho (`dispatchAttempts`)**: En el modelo antiguo se requería la columna `dispatchAttempts` en `Order`. En la base real, este mecanismo fue reemplazado y escalado arquitectónicamente mediante la creación de la entidad `DispatchOffer` (`order_dispatch_offer`), permitiendo trazabilidad y tiempos de expiración (`expiresAt`) por cada chofer ofertado.
 3. **Rechazos (`rejectedDriverIds`)**: Solucionado también con `DispatchOffer` en estado `rejected` en vez de un array en PostgreSQL o tabla intermedia huérfana.
 4. **Campos `arrivedAt` en Order**: No se detectó la columna `arrivedAt` en el TypeORM real sugerida por el doc; el tracking se hace con `acceptedAt`, `onTheWayAt`, y `deliveredAt`.
-5. **Tipos Corregidos**: `customer.validated` es `boolean`, y `delivery.isTraveling`, que ningún proceso escribía y que se deduce de los pedidos en camino, no existe en la base. Las ubicaciones del cliente, del chofer y de la dirección se guardan como punto PostGIS (`location`), un solo valor atómico en lugar de un texto "latitud,longitud" o de dos columnas de texto.
+5. **Tipos Corregidos**: `customer.validated` ya no existe (los clientes no se validan desde el 26/09), `delivery.isTraveling`, que ningún proceso escribía y que se deduce de los pedidos en camino, no existe en la base. Las ubicaciones del cliente, del chofer y de la dirección se guardan como punto PostGIS (`location`), un solo valor atómico en lugar de un texto "latitud,longitud" o de dos columnas de texto; lo mismo el punto de entrega del pedido (`order.deliveryPoint`).
 6. **Multi-tenant**: Se consolidó fuertemente el esquema multi-distribuidora agregando `distributor_id` a prácticamente todas las entidades core de transacciones y catálogo.
 7. **Refuerzo en Pagos**: `Order` fue enriquecido con `gatewayPaymentId` y `deliveryCode` (prueba de entrega), e introdujo la tabla `Payment` funcionando como ledger transaccional independiente de los pagos por pasarelas (MercadoPago u otros).
 

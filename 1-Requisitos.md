@@ -398,7 +398,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 ## 7. Requisitos Funcionales — Casos de Uso
 
 La plantilla pide los casos de uso en dos niveles de detalle. La **descripción de
-alto nivel** de los 153 casos está en el Documento 0 · §7, que es donde la plantilla
+alto nivel** de los 152 casos está en el Documento 0 · §7, que es donde la plantilla
 del Plan del Proyecto la ubica; acá van los **casos de uso expandidos**, con la
 secuencia normal, las excepciones y el resto de los campos. Los cuatro artefactos de
 cada caso —alto nivel, expandido, diagrama de secuencia del sistema y diagrama de
@@ -795,7 +795,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Rendimiento** | La actualización en el radar se completa en menos de 100 ms. |
 | **Frecuencia** | Cada vez que el GPS detecta un desplazamiento de 10 metros o más mientras el chofer está en línea. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La posición se almacena solo en el almacén en memoria y no en la base relacional, para maximizar la velocidad de la búsqueda por cercanía; como contrapartida, no queda histórico de recorridos. El identificador del chofer viaja dentro del mensaje y el sistema todavía no lo contrasta con la identidad de la conexión autenticada: un chofer conectado puede escribir la posición de otro y falsear el radar. El sistema todavía no valida que las coordenadas estén dentro de rango: una latitud imposible se acepta y se escribe. | El tiempo estimado se agrega al aviso que ya existía y no es un caso de uso aparte: el cliente no lo pide, lo recibe junto con la posición. Se calcula del lado del servidor y se reutiliza a propósito, porque rehacerlo en cada posición significaría una consulta externa por cada movimiento del GPS y por cada chofer en la calle, que es un costo que crece con la operación y no aporta precisión: entre dos posiciones separadas por diez metros el tiempo estimado es el mismo.
+| **Comentarios** | La posición se almacena solo en el almacén en memoria y no en la base relacional, para maximizar la velocidad de la búsqueda por cercanía; como contrapartida, no queda histórico de recorridos. De quién es la posición lo decide el token de la conexión, no el mensaje: un identificador de otro chofer dentro del mensaje se ignora (verificado el 26/09 por socket: la posición queda a nombre de quien emite). El sistema todavía no valida que las coordenadas estén dentro de rango: el almacén en memoria rechaza un par imposible y no escribe nada, pero el error llega sin mensaje propio y el chofer no se entera. | El tiempo estimado se agrega al aviso que ya existía y no es un caso de uso aparte: el cliente no lo pide, lo recibe junto con la posición. Se calcula del lado del servidor y se reutiliza a propósito, porque rehacerlo en cada posición significaría una consulta externa por cada movimiento del GPS y por cada chofer en la calle, que es un costo que crece con la operación y no aporta precisión: entre dos posiciones separadas por diez metros el tiempo estimado es el mismo.
 
 ---
 
@@ -4117,7 +4117,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Alta. |
 | **Estabilidad** | Alta. |
-| **Comentarios** | Atención: verificar. El pedido se recupera solo por su identificador y no se contrasta contra la distribuidora del solicitante, mientras que los envases sí se acotan a ella. Un administrador puede entonces asignar envases de su propia empresa a un pedido de otra distribuidora, lo que rompe el aislamiento multiempresa que el resto del módulo sostiene. Corresponde acotar también la búsqueda del pedido al contexto y responder 404 cuando el pedido sea ajeno. Atención: verificar. La operación tampoco es atómica: el recorrido escribe envase por envase fuera de toda transacción, de modo que la promesa de abortar el tramo completo ante un envase inválido no se cumple. Corresponde envolver el recorrido en una única transacción para que un serial fallido revierta los ya procesados, o bien validar los estados de todos los envases antes de escribir el primero. Mientras eso no ocurra, la respuesta 400 puede convivir con envases ya despachados, y un reintento de la misma lista fallará porque esos envases ya no están llenos. |
+| **Comentarios** | El pedido se busca dentro de la distribuidora del solicitante, igual que los envases: un pedido de otra distribuidora responde 404 (H-90, corregido el 26/09; antes se podía asignar un envase propio a un pedido ajeno). Atención: verificar. La operación tampoco es atómica: el recorrido escribe envase por envase fuera de toda transacción, de modo que la promesa de abortar el tramo completo ante un envase inválido no se cumple. Corresponde envolver el recorrido en una única transacción para que un serial fallido revierta los ya procesados, o bien validar los estados de todos los envases antes de escribir el primero. Mientras eso no ocurra, la respuesta 400 puede convivir con envases ya despachados, y un reintento de la misma lista fallará porque esos envases ya no están llenos. |
 
 ---
 #### Importante CU-069 — Consultar el Parque de Envases
@@ -5299,47 +5299,6 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 ---
 
-#### Importante CU-093 — Validar o Invalidar Cliente
-
-| Campo | Detalle |
-|-------|---------|
-| **Objetivos asociados** | OBJ-05 |
-| **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) marca a un cliente como validado o le retira esa marca, del mismo modo en que CU-032 lo hace con los choferes. Es el control manual sobre la cartera de clientes. Endpoints: `PATCH /customers/:id/validate` y `PATCH /customers/:id/invalidate`. |
-| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
-| **Estado** | Implementado |
-
-**Secuencia Normal**
-
-| Paso | Acción |
-|------|--------|
-| 1 | El administrador abre la ficha del cliente y elige validarlo o invalidarlo. |
-| 2 | El panel envía `PATCH /customers/:id/validate` o `PATCH /customers/:id/invalidate`. |
-| 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el cliente le haya comprado alguna vez a ella. Después recupera el cliente con su usuario, rol y direcciones. |
-| 4 | El sistema fija la marca de validación, un valor sí/no, en verdadero o en falso según la acción. No la invierte: asigna el valor de la operación elegida. |
-| 5 | El sistema guarda el cliente y lo devuelve actualizado. |
-
-**Postcondición:** El cliente queda con la marca de validación cambiada. La marca queda registrada para consulta del administrador.
-
-**Excepciones**
-
-| Paso | Acción |
-|------|--------|
-| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
-| 3 | Si el cliente no existe, el sistema retorna error 404 "Customer with ID: … not found". |
-| 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
-| 3 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema retorna el mismo error 404, sin revelar que existe. |
-
-| Campo | Detalle |
-|-------|---------|
-| **Rendimiento** | Una lectura con tres relaciones y una escritura. |
-| **Frecuencia** | Baja: solo en la revisión manual de cuentas de cliente. |
-| **Estabilidad** | Media |
-| **Comentarios** | La marca de validación es un valor sí/no, igual que la del chofer. El sistema todavía no la usa para condicionar la operación del cliente: ningún punto del flujo de pedido la consulta, de modo que un cliente sin validar puede comprar igual. |
-
----
-
-
 #### Secundario CU-094 — Actualizar Ubicación del Cliente
 
 | Campo | Detalle |
@@ -5509,7 +5468,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`. |
+| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`. |
 | **Precondición** | El solicitante está autenticado. El cliente existe y, si quien pide es un administrador con distribuidora en contexto, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
@@ -6884,7 +6843,7 @@ La matriz relaciona cada requisito de información y cada caso de uso con los ob
 sistema que contribuye a alcanzar. Las marcas de los casos de uso se derivan del campo
 **Objetivos asociados** que cada uno declara en la sección 7.
 
-Comprende los 15 requisitos de información, los 9 requisitos no funcionales y los 153 casos de uso
+Comprende los 15 requisitos de información, los 9 requisitos no funcionales y los 152 casos de uso
 que declaran al menos un objetivo. Los casos restantes corresponden a operaciones de
 consulta y de soporte que no realizan un objetivo del sistema por sí mismas.
 
@@ -7006,7 +6965,6 @@ consulta y de soporte que no realizan un objetivo del sistema por sí mismas.
 | **CU-089** |  |  |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |
 | **CU-090** |  |  |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |
 | **CU-092** |  |  |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |
-| **CU-093** |  |  |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |
 | **CU-094** | ✅ | ✅ |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | **CU-095** |  |  |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |
 | **CU-096** |  | ✅ |  |  | ✅ |  |  |  |  |  |  |  |  |  |  |

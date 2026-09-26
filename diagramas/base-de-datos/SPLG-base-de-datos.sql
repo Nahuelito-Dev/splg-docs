@@ -565,7 +565,6 @@ CREATE TABLE public.customer (
     customer_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     user_id uuid NOT NULL,
     notification_token text,
-    validated boolean DEFAULT false NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now(),
     "deletedAt" timestamp with time zone,
     location public.geometry(Point,4326),
@@ -868,8 +867,6 @@ CREATE TABLE public."order" (
     "totalAmount" numeric(10,2) NOT NULL,
     notes text,
     "deliveryInstructions" text,
-    "deliveryLatitude" character varying(50),
-    "deliveryLongitude" character varying(50),
     "acceptedAt" timestamp without time zone,
     "onTheWayAt" timestamp without time zone,
     "deliveredAt" timestamp without time zone,
@@ -881,7 +878,8 @@ CREATE TABLE public."order" (
     receiver_name character varying(120),
     receiver_document character varying(20),
     receiver_relationship character varying(40),
-    delivery_mode public.order_delivery_mode_enum DEFAULT 'standard'::public.order_delivery_mode_enum NOT NULL
+    delivery_mode public.order_delivery_mode_enum DEFAULT 'standard'::public.order_delivery_mode_enum NOT NULL,
+    "deliveryPoint" public.geometry(Point,4326)
 );
 
 

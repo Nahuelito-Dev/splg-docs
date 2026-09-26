@@ -1,5 +1,5 @@
 @startuml
-title SS-16 — Administración de Cuentas y Roles (12 casos de uso)
+title SS-16 — Administración de Cuentas y Roles (11 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -44,7 +44,6 @@ rectangle "SS-16 Administración de Cuentas y Roles" {
   usecase "CU-089\nGestionar Roles del Sistema" as U089 #back:FFFFFF;line:4B7560
   usecase "CU-090\nSembrar los Roles Iniciales" as U090 #back:FFFFFF;line:4B7560
   usecase "CU-092\nConsultar Listado de Clientes" as U092 #back:FFFFFF;line:4B7560
-  usecase "CU-093\nValidar / Invalidar Cliente" as U093 #back:FFFFFF;line:4B7560
   usecase "CU-094\nActualizar Ubicación del\nCliente" as U094 #back:FFFFFF;line:4B7560
   usecase "CU-095\nEliminar Cliente (baja lógica)" as U095 #back:FFFFFF;line:4B7560
   usecase "CU-129\nConsultar Detalle del Cliente" as U129 #back:FFFFFF;line:4B7560
@@ -57,7 +56,6 @@ usecase "CU-082\nCrear Usuario Base\n(SS-01)" as U082 #back:FFFFFF;line:6B7683
 A03 -[#8C4A9E]- U086
 A03 -[#8C4A9E]- U088
 A03 -[#8C4A9E]- U092
-A03 -[#8C4A9E]- U093
 A03 -[#8C4A9E]- U094
 A03 -[#8C4A9E]- U129
 A03 -[#8C4A9E]- U130
@@ -69,7 +67,6 @@ A05 -[#B4432B]- U090
 A05 -[#B4432B]- U095
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
-U093 ..> U129 : <<include>>
 U094 ..> U129 : <<include>>
 U095 ..> U129 : <<include>>
 U131 ..> U129 : <<include>>

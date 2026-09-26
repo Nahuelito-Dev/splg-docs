@@ -54,7 +54,7 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" as LIMITE 
   package "SS-13\nTrazabilidad de Envases\n(10 casos de uso)" as SS13 <<subsystem>> #back:F3F1E4;line:7A7340
   package "SS-14\nPagos y Conciliación\n(1 caso de uso)" as SS14 <<subsystem>> #back:E9EFE6;line:4E6B4A
   package "SS-15\nReservas Programadas\n(6 casos de uso)" as SS15 <<subsystem>> #back:F8EDF3;line:8A5674
-  package "SS-16\nAdministración de Cuentas y Roles\n(12 casos de uso)" as SS16 <<subsystem>> #back:E8F1EC;line:4B7560
+  package "SS-16\nAdministración de Cuentas y Roles\n(11 casos de uso)" as SS16 <<subsystem>> #back:E8F1EC;line:4B7560
   package "SS-17\nNotificaciones y Mensajería\n(5 casos de uso)" as SS17 <<subsystem>> #back:F5F0E8;line:7C6B4C
   package "SS-18\nObservabilidad y Operación\n(3 casos de uso)" as SS18 <<subsystem>> #back:ECEDF6;line:5B5F87
   SS01 -[hidden]- SS02

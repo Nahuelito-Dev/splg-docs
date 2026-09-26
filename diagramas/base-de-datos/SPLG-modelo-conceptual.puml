@@ -60,7 +60,6 @@ entity "Configuración de módulo" as c_module_config {
 package "Clientes" {
 entity "Cliente" as c_customer {
   {field} ubicación
-  {field} validado
   {field} consumo mensual declarado
   {field} garrafa habitual
   {field} días de aviso

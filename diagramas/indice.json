@@ -752,14 +752,6 @@
   ]
  },
  {
-  "archivo": "DSS_CU-093_cu-093-validar-invalidar-cliente.mmd",
-  "tipo": "DSS",
-  "titulo": "DSS — CU-093: Validar / Invalidar Cliente",
-  "cus": [
-   93
-  ]
- },
- {
   "archivo": "DSS_CU-094_cu-094-actualizar-ubicación-del-cliente.mmd",
   "tipo": "DSS",
   "titulo": "DSS — CU-094: Actualizar Ubicación del Cliente",
@@ -1575,17 +1567,9 @@
   ]
  },
  {
-  "archivo": "DSD_CU-093_cu-093-validar-invalidar-cliente.mmd",
-  "tipo": "DSD",
-  "titulo": "C.24 DSD — CU-093: Validar / Invalidar Cliente",
-  "cus": [
-   93
-  ]
- },
- {
   "archivo": "DSD_CU-094_cu-094-actualizar-ubicación-del-cliente.mmd",
   "tipo": "DSD",
-  "titulo": "C.25 DSD — CU-094: Actualizar Ubicación del Cliente",
+  "titulo": "C.24 DSD — CU-094: Actualizar Ubicación del Cliente",
   "cus": [
    94
   ]
@@ -1593,7 +1577,7 @@
  {
   "archivo": "DSD_CU-095_cu-095-eliminar-cliente-baja-lógica.mmd",
   "tipo": "DSD",
-  "titulo": "C.26 DSD — CU-095: Eliminar Cliente (baja lógica)",
+  "titulo": "C.25 DSD — CU-095: Eliminar Cliente (baja lógica)",
   "cus": [
    95
   ]
@@ -1601,7 +1585,7 @@
  {
   "archivo": "DSD_CU-098_cu-098-registrar-el-token-de-notificaciones-del-dispositivo.mmd",
   "tipo": "DSD",
-  "titulo": "C.27 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo",
+  "titulo": "C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo",
   "cus": [
    98
   ]
@@ -1609,7 +1593,7 @@
  {
   "archivo": "DSD_CU-099_cu-099-consultar-los-tokens-de-un-usuario.mmd",
   "tipo": "DSD",
-  "titulo": "C.28 DSD — CU-099: Consultar los Tokens de un Usuario",
+  "titulo": "C.27 DSD — CU-099: Consultar los Tokens de un Usuario",
   "cus": [
    99
   ]
@@ -1617,7 +1601,7 @@
  {
   "archivo": "DSD_CU-100_cu-100-enviar-notificación-de-prueba.mmd",
   "tipo": "DSD",
-  "titulo": "C.29 DSD — CU-100: Enviar Notificación de Prueba",
+  "titulo": "C.28 DSD — CU-100: Enviar Notificación de Prueba",
   "cus": [
    100
   ]
@@ -1625,7 +1609,7 @@
  {
   "archivo": "DSD_CU-101_cu-101-reenviar-notificación-de-confirmación-de-pedido.mmd",
   "tipo": "DSD",
-  "titulo": "C.30 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido",
+  "titulo": "C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido",
   "cus": [
    101
   ]
@@ -1633,7 +1617,7 @@
  {
   "archivo": "DSD_CU-102_cu-102-probar-el-servicio-de-correo.mmd",
   "tipo": "DSD",
-  "titulo": "C.31 DSD — CU-102: Probar el Servicio de Correo",
+  "titulo": "C.30 DSD — CU-102: Probar el Servicio de Correo",
   "cus": [
    102
   ]
@@ -1641,7 +1625,7 @@
  {
   "archivo": "DSD_CU-104_cu-104-verificar-la-salud-del-sistema-liveness-readiness.mmd",
   "tipo": "DSD",
-  "titulo": "C.32 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)",
+  "titulo": "C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)",
   "cus": [
    104
   ]

@@ -145,25 +145,24 @@
 - Figura 134 — DSS CU-089: Gestionar Roles del Sistema
 - Figura 135 — DSS CU-090: Sembrar los Roles Iniciales
 - Figura 136 — DSS CU-092: Consultar Listado de Clientes
-- Figura 137 — DSS CU-093: Validar / Invalidar Cliente
-- Figura 138 — DSS CU-094: Actualizar Ubicación del Cliente
-- Figura 139 — DSS CU-095: Eliminar Cliente (baja lógica)
-- Figura 140 — DSS CU-129: Consultar Detalle del Cliente
-- Figura 141 — DSS CU-130: Buscar Cliente por Usuario
-- Figura 142 — DSS CU-131: Editar Datos del Cliente
-- Figura 143 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo
-- Figura 144 — DSS CU-099: Consultar los Tokens de un Usuario
-- Figura 145 — DSS CU-100: Enviar Notificación de Prueba
-- Figura 146 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido
-- Figura 147 — DSS CU-102: Probar el Servicio de Correo
-- Figura 148 — DSS CU-104: Verificar la Salud del Sistema
-- Figura 149 — DSS CU-152: Consultar el Registro de Auditoría
-- Figura 150 — DSS CU-153: Registrar Toda Operación de Escritura
-- Figura 151 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 152 — DSS CU-106: Anticipar la recompra por consumo estimado
-- Figura 153 — DSS CU-107: Agrupar pedidos por recorrido
-- Figura 154 — DSS CU-108: Recuperar envases no devueltos
-- Figura 155 — DSS CU-043: Modificar Capacidad de Franja Horaria
+- Figura 137 — DSS CU-094: Actualizar Ubicación del Cliente
+- Figura 138 — DSS CU-095: Eliminar Cliente (baja lógica)
+- Figura 139 — DSS CU-129: Consultar Detalle del Cliente
+- Figura 140 — DSS CU-130: Buscar Cliente por Usuario
+- Figura 141 — DSS CU-131: Editar Datos del Cliente
+- Figura 142 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 143 — DSS CU-099: Consultar los Tokens de un Usuario
+- Figura 144 — DSS CU-100: Enviar Notificación de Prueba
+- Figura 145 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 146 — DSS CU-102: Probar el Servicio de Correo
+- Figura 147 — DSS CU-104: Verificar la Salud del Sistema
+- Figura 148 — DSS CU-152: Consultar el Registro de Auditoría
+- Figura 149 — DSS CU-153: Registrar Toda Operación de Escritura
+- Figura 150 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 151 — DSS CU-106: Anticipar la recompra por consumo estimado
+- Figura 152 — DSS CU-107: Agrupar pedidos por recorrido
+- Figura 153 — DSS CU-108: Recuperar envases no devueltos
+- Figura 154 — DSS CU-043: Modificar Capacidad de Franja Horaria
 
 ---
 
@@ -210,7 +209,7 @@ mayoría de los demás conceptos.
 
 Los conceptos se organizan en **ocho contextos**, que son las áreas del negocio que los
 definen y los modifican. Los marcados con † se incorporaron el 24/09/2026 para que el
-modelo contenga los 153 casos de uso, incluidos los que todavía no están implementados.
+modelo contenga los 152 casos de uso, incluidos los que todavía no están implementados.
 
 | # | Concepto | Símbolo | Intención | Extensión | Contexto |
 |---|----------|---------|-----------|-----------|----------|
@@ -364,7 +363,6 @@ asocia a uno o al otro.
 | **AsientoAuditoria** | resultado | Si la operación fue exitosa o fallida. |
 | **AsientoAuditoria** | cambios | Qué cambió, con las credenciales depuradas. |
 | **AsientoAuditoria** | fecha | Cuándo ocurrió. |
-| **Cliente** | validado | Si el administrador validó al cliente. |
 | **Cliente** | consumo_mensual_declarado | Kilos de gas por mes que el cliente declara consumir. |
 | **Cliente** | dias_de_aviso | Con cuántos días de anticipación quiere que se le avise la recompra. |
 | **DireccionEntrega** | calle_y_altura | Domicilio de entrega. |
@@ -465,14 +463,21 @@ asocia a uno o al otro.
 El siguiente código produce el diagrama conceptual. Es un **modelo del dominio**: los
 conceptos llevan atributos pero **no métodos**, y no se representan claves foráneas ni
 detalles de implementación —eso corresponde al modelo de datos del Doc 3 y al DER—.
-Cada contexto es un espacio de nombres y los conceptos incorporados el 24/09/2026 llevan
-el estereotipo «propuesto». Toda entidad pertenece a una distribuidora; para no cruzar el
+Cada contexto es un espacio de nombres. Los conceptos incorporados el 24/09/2026 ya están
+implementados en la base desde el 25/09, así que ninguno lleva el estereotipo «propuesto».
+El cliente no tiene atributo de validación: los clientes no se validan desde el 26/09. Toda entidad pertenece a una distribuidora; para no cruzar el
 diagrama de líneas, sólo se dibujan las relaciones de la distribuidora que forman parte del
 negocio.
 
 ```mermaid
 classDiagram
     direction TB
+
+    %% Modelo de dominio de SPLG — 26/09/2026
+    %% Ocho contextos. Todo esta implementado en la base (25/09/2026).
+    %% Toda entidad pertenece a una Distribuidora (multi-tenant): solo se dibujan
+    %% las relaciones de la distribuidora que ya estaban en el modelo anterior.
+    %% Sustento en splg-docs/material-de-trabajo/MODELO-DE-DOMINIO.md
 
     namespace OrganizacionYAcceso {
         class Distribuidora {
@@ -490,12 +495,10 @@ classDiagram
         }
         class Administrador
         class ConfiguracionModulo {
-            <<propuesto>>
             modulo
             parametros
         }
         class AsientoAuditoria {
-            <<propuesto>>
             operacion
             recurso
             aplicacion
@@ -507,7 +510,6 @@ classDiagram
 
     namespace Clientes {
         class Cliente {
-            validado
             consumo_mensual_declarado
             dias_de_aviso
         }
@@ -519,7 +521,6 @@ classDiagram
             predeterminada
         }
         class InvitacionRecompra {
-            <<propuesto>>
             agotamiento_estimado
             pedido_sugerido
         }
@@ -548,20 +549,17 @@ classDiagram
             fecha
         }
         class RevisionEnvase {
-            <<propuesto>>
             fecha
             resultado
             proxima_revision
         }
         class CasoRecupero {
-            <<propuesto>>
             escalon
             deposito_comprometido
             estado
             resolucion
         }
         class AvisoRecupero {
-            <<propuesto>>
             escalon
             tipo
             vence
@@ -570,11 +568,9 @@ classDiagram
 
     namespace VentaYPedidos {
         class Carrito {
-            <<propuesto>>
             ultima_modificacion
         }
         class ItemCarrito {
-            <<propuesto>>
             cantidad
             precio_unitario
         }
@@ -590,14 +586,12 @@ classDiagram
             precio_unitario
         }
         class CambioEstadoPedido {
-            <<propuesto>>
             desde
             hacia
             motivo
             fecha
         }
         class CambioDireccion {
-            <<propuesto>>
             motivo
             fecha
         }
@@ -631,16 +625,13 @@ classDiagram
         }
         class OfertaDespacho
         class LoteRecorrido {
-            <<propuesto>>
             estado
             peso_total
         }
         class ParadaLote {
-            <<propuesto>>
             orden
         }
         class OfertaLote {
-            <<propuesto>>
         }
     }
 
@@ -658,7 +649,6 @@ classDiagram
             estado_en_la_flota
         }
         class PlanMantenimiento {
-            <<propuesto>>
             nombre
             disparo
             intervalo
@@ -666,7 +656,6 @@ classDiagram
             criticidad
         }
         class TareaMantenimiento {
-            <<propuesto>>
             estado
             vence
             vencimiento_proyectado
@@ -675,7 +664,6 @@ classDiagram
             costo
         }
         class PropuestaVentanaTaller {
-            <<propuesto>>
             desde
             hasta
         }
@@ -684,7 +672,6 @@ classDiagram
             longitud
         }
         class RegistroUsoVehiculo {
-            <<propuesto>>
             dia
             kilometros
             pedidos
@@ -4754,35 +4741,6 @@ sequenceDiagram
 
 ---
 
-#### DSS — CU-093: Validar / Invalidar Cliente
-
-**Actor:** Administrador
-**Operaciones del sistema:** `validarCliente(clienteId)`, `invalidarCliente(clienteId)`
-
-```mermaid
-sequenceDiagram
-    title DSS — CU-093 Validar Invalidar Cliente
-    autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
-
-    alt aprobación del cliente
-        ADM->>SIS: validarCliente(clienteId)
-        activate SIS
-        SIS-->>ADM: cliente validado
-        deactivate SIS
-    else revocación
-        ADM->>SIS: invalidarCliente(clienteId)
-        activate SIS
-        SIS-->>ADM: cliente invalidado
-        deactivate SIS
-    end
-```
-
-**Figura 137 — DSS CU-093: Validar / Invalidar Cliente**
-
----
-
 #### DSS — CU-094: Actualizar Ubicación del Cliente
 
 **Actor:** Cliente (también Administrador desde el panel)
@@ -4807,13 +4765,13 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 138 — DSS CU-094: Actualizar Ubicación del Cliente**
+**Figura 137 — DSS CU-094: Actualizar Ubicación del Cliente**
 
 ---
 
 #### DSS — CU-095: Eliminar Cliente (baja lógica)
 
-**Actor:** Administrador
+**Actor:** Administrador General
 **Operaciones del sistema:** `eliminarCliente(clienteId)`
 
 ```mermaid
@@ -4835,7 +4793,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 139 — DSS CU-095: Eliminar Cliente (baja lógica)**
+**Figura 138 — DSS CU-095: Eliminar Cliente (baja lógica)**
 
 ---
 
@@ -4861,7 +4819,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 140 — DSS CU-129: Consultar Detalle del Cliente**
+**Figura 139 — DSS CU-129: Consultar Detalle del Cliente**
 
 ---
 
@@ -4887,7 +4845,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 141 — DSS CU-130: Buscar Cliente por Usuario**
+**Figura 140 — DSS CU-130: Buscar Cliente por Usuario**
 
 ---
 
@@ -4913,7 +4871,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 142 — DSS CU-131: Editar Datos del Cliente**
+**Figura 141 — DSS CU-131: Editar Datos del Cliente**
 
 ---
 
@@ -4941,7 +4899,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 143 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo**
+**Figura 142 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo**
 
 > Es la **precondición técnica de CU-021**: sin token registrado no hay avisos al dispositivo.
 
@@ -4969,13 +4927,13 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 144 — DSS CU-099: Consultar los Tokens de un Usuario**
+**Figura 143 — DSS CU-099: Consultar los Tokens de un Usuario**
 
 ---
 
 #### DSS — CU-100: Enviar Notificación de Prueba
 
-**Actor:** Administrador
+**Actor:** Administrador General
 **Operaciones del sistema:** `enviarNotificacionDePrueba(usuarioId, titulo, mensaje)`
 
 ```mermaid
@@ -4999,13 +4957,13 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 145 — DSS CU-100: Enviar Notificación de Prueba**
+**Figura 144 — DSS CU-100: Enviar Notificación de Prueba**
 
 ---
 
 #### DSS — CU-101: Reenviar Notificación de Confirmación de Pedido
 
-**Actor:** Administrador
+**Actor:** Administrador General
 **Operaciones del sistema:** `reenviarConfirmacionDePedido(usuarioId, pedidoId)`
 
 ```mermaid
@@ -5029,7 +4987,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 146 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido**
+**Figura 145 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 > Se usa como acción de soporte cuando el cliente dice no haber recibido el aviso original.
 
@@ -5057,7 +5015,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 147 — DSS CU-102: Probar el Servicio de Correo**
+**Figura 146 — DSS CU-102: Probar el Servicio de Correo**
 
 > El propio código marca esta operación como **temporal** y hoy es accesible sin sesión: es una observación a resolver antes de producción, no una funcionalidad del producto.
 
@@ -5101,7 +5059,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 148 — DSS CU-104: Verificar la Salud del Sistema**
+**Figura 147 — DSS CU-104: Verificar la Salud del Sistema**
 
 > Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, hoy sin ningún caso de uso asociado en la matriz de rastreabilidad.
 
@@ -5132,7 +5090,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 149 — DSS CU-152: Consultar el Registro de Auditoría**
+**Figura 148 — DSS CU-152: Consultar el Registro de Auditoría**
 
 ---
 
@@ -5167,7 +5125,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 150 — DSS CU-153: Registrar Toda Operación de Escritura**
+**Figura 149 — DSS CU-153: Registrar Toda Operación de Escritura**
 
 ---
 
@@ -5251,7 +5209,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 151 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 150 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 ---
 
@@ -5290,7 +5248,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 152 — DSS CU-106: Anticipar la recompra por consumo estimado**
+**Figura 151 — DSS CU-106: Anticipar la recompra por consumo estimado**
 
 ---
 
@@ -5333,7 +5291,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 153 — DSS CU-107: Agrupar pedidos por recorrido**
+**Figura 152 — DSS CU-107: Agrupar pedidos por recorrido**
 
 ---
 
@@ -5388,7 +5346,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 154 — DSS CU-108: Recuperar envases no devueltos**
+**Figura 153 — DSS CU-108: Recuperar envases no devueltos**
 
 ---
 
@@ -5422,7 +5380,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 155 — DSS CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 154 — DSS CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -5577,7 +5535,7 @@ especificación original no había registrado.
 | **Notas** | Reemplaza el modelo de difusión a todos los choferes que tenía la especificación original de CU-013/CU-014 (uno de los diagramas corregidos) por un algoritmo de radios crecientes [5, 10, 15, 20] km que ofrece de a un chofer por vez. El informe de hallazgos señala que la disponibilidad del chofer (isActive) no forma parte del filtro de candidatos: un chofer que se desactivó igual puede recibir la oferta. |
 | **Excepciones** | Si no hay ningún chofer nuevo en ninguno de los radios `[5, 10, 15, 20]` km → no se lanza excepción: se registra en el log y se devuelve `null`; el proceso temporal reintentará. Si falla el push FCM → se ignora (best-effort, no bloquea el despacho). |
 | **Salida** | El `driver_id` (igual al `user_id`) del chofer al que se ofreció, o `null` si no hubo candidato. |
-| **Precondiciones** | El pedido existe, tiene estado `PENDING` y `delivery_id` nulo. El pedido tiene `deliveryLatitude` y `deliveryLongitude`. Existe al menos un chofer con posición registrada en el índice geoespacial de Redis. |
+| **Precondiciones** | El pedido existe, tiene estado `PENDING` y `delivery_id` nulo. El pedido tiene punto de entrega (`deliveryPoint`, copiado de la dirección al crearlo); sin él no se buscan choferes. Existe al menos un chofer con posición registrada en el índice geoespacial de Redis. |
 | **Postcondiciones** | Se creó una instancia de `DispatchOffer` con estado `OFFERED`. Se asoció la oferta al pedido (`order_id`) y al chofer (`driver_id`). Se asoció la oferta a la distribuidora del pedido (`distributor_id`). Se modificó `DispatchOffer.expiresAt` con el instante actual más 30 segundos. El chofer recibió el evento `server:new-order-request` en su room de WebSocket. El chofer recibió un push FCM con `event: NEW_ORDER`. El estado del pedido **no** cambió: sigue en `PENDING`. |
 
 ---

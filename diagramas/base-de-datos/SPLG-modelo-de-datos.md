@@ -128,7 +128,6 @@ Claves únicas compuestas: (`cart_id`, `gas_cylinder_id`).
 | `customer_id` | uuid | sí | PK |  |
 | `user_id` | uuid | sí | FK | `user.user_id` |
 | `notification_token` | text | no |  |  |
-| `validated` | boolean | sí |  |  |
 | `createdAt` | timestamptz | no |  |  |
 | `deletedAt` | timestamptz | no |  |  |
 | `location` | geometry | no |  |  |
@@ -379,8 +378,6 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `totalAmount` | numeric(10,2) | sí |  |  |
 | `notes` | text | no |  |  |
 | `deliveryInstructions` | text | no |  |  |
-| `deliveryLatitude` | varchar(50) | no |  |  |
-| `deliveryLongitude` | varchar(50) | no |  |  |
 | `acceptedAt` | timestamp | no |  |  |
 | `onTheWayAt` | timestamp | no |  |  |
 | `deliveredAt` | timestamp | no |  |  |
@@ -393,6 +390,7 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `receiver_document` | varchar(20) | no |  |  |
 | `receiver_relationship` | varchar(40) | no |  |  |
 | `delivery_mode` | order_delivery_mode_enum | sí |  |  |
+| `deliveryPoint` | geometry | no |  |  |
 
 ### `order_address_change` — Cambio de dirección
 

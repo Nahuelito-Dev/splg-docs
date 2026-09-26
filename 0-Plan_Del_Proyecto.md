@@ -1171,14 +1171,6 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
-**Código:** CU-093 | **Caso de Uso:** Validar / Invalidar Cliente  
-**Actor/es:** ACT-03 Administrador  
-**Subsistema:** SS-16 Administración de Cuentas y Roles  
-**Calificación:** Importante  
-**Descripción:** El sistema revierte el flag de validez sobre un usuario de tipo cliente.
-
----
-
 **Código:** CU-094 | **Caso de Uso:** Actualizar Ubicación del Cliente  
 **Actor/es:** ACT-03 Administrador  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
@@ -1215,7 +1207,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la validación (CU-093), de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`.
+**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha. Endpoint: `PATCH /customers/:id`.
 
 ---
 
@@ -1574,7 +1566,6 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-090 Sembrar los Roles Iniciales | SS-16 | ACT-05 | Importante |
 | CU-091 Validar Vigencia del Token de Sesión | SS-01 | ACT-01, ACT-02, ACT-03, ACT-05 | Secundario |
 | CU-092 Consultar Listado de Clientes | SS-16 | ACT-03 | Importante |
-| CU-093 Validar / Invalidar Cliente | SS-16 | ACT-03 | Importante |
 | CU-094 Actualizar Ubicación del Cliente | SS-16 | ACT-03 | Secundario |
 | CU-095 Eliminar Cliente (baja lógica) | SS-16 | ACT-05 | Importante |
 | CU-129 Consultar Detalle del Cliente | SS-16 | ACT-03 | Importante |
@@ -1615,10 +1606,12 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
 | **Crítico** | 44 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153 |
-| **Importante** | 91 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-093, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152 |
+| **Importante** | 90 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152 |
 | **Secundario** | 16 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **153** | CU-001 a CU-153 |
+| **Total** | **152** | CU-001 a CU-153, sin CU-093 |
+
+> **CU-093 (Validar o Invalidar Cliente) se dio de baja el 26/09/2026.** Los clientes se registran y compran sin aprobación previa: la marca no condicionaba ningún pedido y sólo sumaba trabajo al administrador. El número queda reservado para no renumerar los demás casos. Los choferes siguen validándose (CU-032).
 
 Los casos CU-001 a CU-051 provienen del relevamiento inicial. Los casos CU-052 a CU-104 se
 incorporaron al contrastar la documentación contra el sistema construido: son

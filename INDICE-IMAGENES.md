@@ -136,7 +136,6 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-090 | Sembrar los Roles Iniciales | `DSS_CU-090_Sembrar-Los-Roles-Iniciales.png` | `DSD_CU-090_Sembrar-Los-Roles-Iniciales.png` |
 | CU-091 | Validar Vigencia del Token de Sesión | `DSS_CU-091_Validar-Vigencia-Del-Token-De-Sesion.png` | `DSD_CU-091_Validar-Vigencia-Del-Token-De-Sesion.png` |
 | CU-092 | Consultar Listado de Clientes | `DSS_CU-092_Consultar-Listado-De-Clientes.png` | `DSD_CU-092_Consultar-Listado-De-Clientes.png` |
-| CU-093 | Validar / Invalidar Cliente | `DSS_CU-093_Validar-Invalidar-Cliente.png` | `DSD_CU-093_Validar-Invalidar-Cliente.png` |
 | CU-094 | Actualizar Ubicación del Cliente | `DSS_CU-094_Actualizar-Ubicacion-Del-Cliente.png` | `DSD_CU-094_Actualizar-Ubicacion-Del-Cliente.png` |
 | CU-095 | Eliminar Cliente (baja lógica) | `DSS_CU-095_Eliminar-Cliente.png` | `DSD_CU-095_Eliminar-Cliente.png` |
 | CU-096 | Actualizar Perfil del Chofer | `DSS_CU-096_Actualizar-Perfil-Del-Chofer.png` | `DSD_CU-096_Actualizar-Perfil-Del-Chofer.png` |

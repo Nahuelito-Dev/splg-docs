@@ -1,6 +1,6 @@
 # Modelo de dominio — 24/09/2026
 
-El modelo se rehízo para que contenga los 153 casos de uso y no sólo lo que ya
+El modelo se rehízo para que contenga los 152 casos de uso y no sólo lo que ya
 está construido. Hasta ahora el modelo de datos era la base actual con parches
 marcados como "propuesto", sin una organización del negocio detrás, y le
 faltaba todo lo que se agregó después: vigencia de zonas, auditoría, historial

@@ -1304,3 +1304,14 @@ tal cual al SQL, porque TypeORM sólo traduce propiedades que existen (y `order`
 y `user` son palabras reservadas de Postgres). No se llegó a probar el error:
 se corrigió antes. Después del cambio, la colección completa y la batería de
 aislamiento dan 0 fallas y ninguna respuesta cambió de forma.
+
+### H-94 · La ficha de un cliente en el panel dice "guardado" y no guarda nada — **defecto, MEDIO, ABIERTO**
+
+Probado el 26/09 en el panel contra la API. El modal de edición de clientes deja
+cambiar nombre, teléfono y email, y al guardar muestra "Cliente guardado
+correctamente", pero esos campos nunca se mandan: antes sólo se enviaba
+`validated`, y desde que los clientes no se validan no se envía nada (sólo el
+cambio de contraseña, del Administrador General). Ya pasaba antes de la baja de
+la validación. Como el admin de empresa no puede editar clientes (H-84), los
+campos tendrían que mostrarse de sólo lectura, y el Administrador General
+guardarlos por `PATCH /users/:id`. Va con la adaptación del panel.

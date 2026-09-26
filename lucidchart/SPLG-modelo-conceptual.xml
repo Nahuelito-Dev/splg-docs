@@ -65,16 +65,13 @@
           <mxGeometry y="160" width="200" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c5" value="Cliente" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
-          <mxGeometry x="1289" y="1137" width="200" height="108" as="geometry" />
+          <mxGeometry x="1289" y="1150" width="200" height="82" as="geometry" />
         </mxCell>
-        <mxCell id="c5f0" value="validado" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
+        <mxCell id="c5f0" value="consumo_mensual_declarado" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
           <mxGeometry y="30" width="200" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c5f1" value="consumo_mensual_declarado" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
+        <mxCell id="c5f1" value="dias_de_aviso" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
           <mxGeometry y="56" width="200" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="c5f2" value="dias_de_aviso" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
-          <mxGeometry y="82" width="200" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c6" value="DireccionEntrega" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
           <mxGeometry x="888" y="2008" width="200" height="160" as="geometry" />

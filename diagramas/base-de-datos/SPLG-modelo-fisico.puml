@@ -160,7 +160,6 @@ entity "customer" as e_customer {
   {field} **customer_id** : uuid * <<PK>>
   {field} //user_id// : uuid * <<FK>>
   {field} notification_token : text 
-  {field} validated : boolean * 
   {field} createdAt : timestamptz 
   {field} deletedAt : timestamptz 
   {field} location : geometry 
@@ -260,8 +259,6 @@ entity "order" as e_order {
   {field} totalAmount : numeric(10,2) * 
   {field} notes : text 
   {field} deliveryInstructions : text 
-  {field} deliveryLatitude : varchar(50) 
-  {field} deliveryLongitude : varchar(50) 
   {field} acceptedAt : timestamp 
   {field} onTheWayAt : timestamp 
   {field} deliveredAt : timestamp 
@@ -274,6 +271,7 @@ entity "order" as e_order {
   {field} receiver_document : varchar(20) 
   {field} receiver_relationship : varchar(40) 
   {field} delivery_mode : order_delivery_mode_enum * 
+  {field} deliveryPoint : geometry 
 }
 entity "route_batch" as e_route_batch {
   {field} **batch_id** : uuid * <<PK>>

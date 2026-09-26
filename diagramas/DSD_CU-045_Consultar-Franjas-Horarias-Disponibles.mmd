@@ -5,7 +5,7 @@ sequenceDiagram
     participant SRV as TimeSlotService
     participant DIS as DistributorService
     participant TREP as RepositoryTimeSlot
-    participant OREP as RepositoryOrder
+    participant OREP as OrderLookupService
 
     alt Disponibilidad por fecha, GET /time-slot/availability
         CTRL->>SRV: getAvailability(date, distributor)
@@ -28,7 +28,7 @@ sequenceDiagram
         deactivate TREP
         loop Por cada franja activa
             SRV->>SRV: countBooked(time_slot_id, date, distributorId)
-            SRV->>OREP: count(where time_slot_id, scheduled_date y status distinto de CANCELLED)
+            SRV->>OREP: countBooked(timeSlotId, date, distributorId), sin cancelados
             activate OREP
             OREP-->>SRV: booked
             deactivate OREP
