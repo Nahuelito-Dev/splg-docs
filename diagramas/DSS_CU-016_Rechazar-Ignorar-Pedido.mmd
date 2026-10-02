@@ -1,16 +1,16 @@
 sequenceDiagram
-    title DSS — CU-016 Rechazar Ignorar Pedido
+    title DSS — CU-016 Rechazar / Ignorar Pedido
     autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CH2 as Siguiente Chofer
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+    actor CH2 as Siguiente Chofer (ACT-02)
 
     CHO->>SIS: rechazarOferta(pedidoId)
     activate SIS
     alt El pedido existe
         SIS-->>CHO: rechazo registrado (se cierra la oferta si estaba activa)
         opt El pedido sigue pendiente y sin chofer asignado
-            SIS-)CH2: nueva oferta de pedido (pedidoId, total, items, vence en 30 s)
+            SIS-)CH2: notificarOferta(pedido)
         end
     else El pedido no existe
         SIS-->>CHO: sin efecto (rechazo no registrado)

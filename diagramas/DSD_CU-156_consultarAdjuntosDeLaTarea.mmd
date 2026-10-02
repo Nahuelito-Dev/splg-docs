@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-156 Consultar Adjuntos de una Tarea de Flota · consultarAdjuntosDeLaTarea
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetAttachmentService
+    participant COL as :Map#lt;String, TareaMantenimiento#gt;
+    participant TAR as tarea:TareaMantenimiento
+
+    ADM->>+SRV: consultarAdjuntosDeLaTarea(tareaId)
+    SRV->>+COL: get(tareaId)
+    COL-->>-SRV: tarea
+    SRV->>+TAR: getAdjuntos()
+    TAR-->>-SRV: adjuntos
+    SRV-->>-ADM: adjuntos

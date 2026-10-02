@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSS — CU-163 Consultar el Vehículo en Uso de un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarVehiculoEnUso(choferId)
+    activate SIS
+    alt el chofer es de la distribuidora y tiene un vehículo en uso
+        SIS-->>ADM: vehículo en uso, con su estado de habilitación
+    else el chofer es de la distribuidora y no tiene un vehículo en uso
+        SIS-->>ADM: respuesta sin vehículo
+    else el chofer no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    CHO->>SIS: consultarMiVehiculoEnUso()
+    activate SIS
+    alt el chofer tiene un vehículo en uso
+        SIS-->>CHO: vehículo en uso, con su estado de habilitación
+    else el chofer no tiene un vehículo en uso
+        SIS-->>CHO: respuesta sin vehículo
+    end
+    deactivate SIS

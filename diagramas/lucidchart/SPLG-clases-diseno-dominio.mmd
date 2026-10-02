@@ -1,0 +1,685 @@
+classDiagram
+    direction LR
+
+    %% Clases de diseño — dominio. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class Distribuidora {
+        - nombre: Cadena
+        - razonSocial: Cadena
+        - cuit: Cadena
+        - estado: EstadoDeDistribuidora
+        + «create» Distribuidora(nombre: Cadena, identificadorCorto: Cadena, razonSocial: Cadena, cuit: Cadena, correo: Cadena, telefono: Cadena, logo: Archivo, plan: Cadena)
+        + crearConfiguracion(despacho: ProcesoConfigurable, radiosKm: Decimal, ventanaDeAceptacion: Entero): ConfiguracionModulo
+        + crearConfiguracion(proceso: ProcesoConfigurable, parametros: Registro, administrador: Administrador): ConfiguracionModulo
+        + crearConfiguracion(tareasProgramadas: ProcesoConfigurable, intervalos: Registro, administrador: Administrador): ConfiguracionModulo
+        + crearFranja(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero): FranjaHoraria
+        + darDeBaja()
+        + definirZona(nombre: Cadena, poligono: Poligono, recargo: Moneda, activa: Booleano): ZonaCobertura
+        + getAdministradores(): Administrador[*]
+        + getChoferes(pagina: Entero, limite: Entero): Chofer[*]
+        + getChoferesActivos(pagina: Entero, limite: Entero): Chofer[*]
+        + getConfiguracion(despacho: ProcesoConfigurable): ConfiguracionModulo
+        + getConfiguracion(proceso: ProcesoConfigurable): ConfiguracionModulo
+        + getConfiguracion(tareasProgramadas: ProcesoConfigurable): ConfiguracionModulo
+        + getFranjasActivas(): FranjaHoraria[*]
+        + getProductosActivos(pagina: Entero, limite: Entero): Producto[*], Entero
+        + getProductosDisponibles(): Producto[*]
+        + getZonaQueCubre(latitud: Decimal, longitud: Decimal): ZonaCobertura
+        + getZonas(): ZonaCobertura[*]
+        + incorporarEnvase(numeroDeSerie: Cadena, tipoDeProducto: Cadena, deposito: Moneda): Envase
+        + modificar(datos: Registro)
+        + tieneProducto(tipo: Cadena): Booleano
+    }
+
+    class Usuario {
+        - nombre: Cadena
+        - correo: Cadena
+        - telefono: Cadena
+        - bloqueado: Booleano
+        + «create» Usuario(datosPersonales: Registro, rolChofer: TipoDeRol, cuenta: Registro)
+        + «create» Usuario(datosPersonales: Registro, rol: Rol, cuenta: Registro)
+        + «create» Usuario(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, rolCliente: TipoDeRol, cuenta: Registro)
+        + «create» Usuario(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, rol: Rol, cuenta: Registro)
+        + «create» Usuario(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, rolAdministradorGeneral: TipoDeRol, cuenta: Registro)
+        + actualizarPerfil(datos: Registro)
+        + calcularPromedio()
+        + calificar(pedido: Pedido, calificado: Usuario, estrellas: Entero, comentario: Cadena): Calificacion
+        + cambiarBloqueo(bloquear: Booleano)
+        + cambiarCorreo(correoNuevo: Cadena)
+        + darDeBaja()
+        + estaHabilitado(): Booleano
+        + getCalificacionesRecibidas(): Calificacion[*]
+        + getChofer(): Chofer
+        + getResumenDeCalificaciones(): Decimal, Entero
+        + getRol(): Rol
+    }
+
+    class Rol {
+        - tipo: Cadena
+        + «create» Rol(tipo: Cadena)
+        + actualizar(datos: Registro)
+        + validarEliminable()
+        + validarModificable()
+    }
+
+    class Administrador {
+        + «create» Administrador(usuario: Usuario, distribuidoraId: Identificador)
+    }
+
+    class ConfiguracionModulo {
+        - modulo: ProcesoConfigurable
+        - parametros: Registro
+        + «create» ConfiguracionModulo(despacho: ProcesoConfigurable, radiosKm: Decimal, ventanaDeAceptacion: Entero)
+        + «create» ConfiguracionModulo(proceso: ProcesoConfigurable, parametros: Registro, administrador: Administrador)
+        + «create» ConfiguracionModulo(tareasProgramadas: ProcesoConfigurable, intervalos: Registro, administrador: Administrador)
+        + actualizar(parametros: Registro, administrador: Administrador)
+        + actualizar(intervalos: Registro, administrador: Administrador)
+        + actualizar(radiosKm: Decimal, ventanaDeAceptacion: Entero, administrador: Administrador)
+    }
+
+    class AsientoAuditoria {
+        - operacion: Cadena
+        - recurso: Cadena
+        - aplicacion: Cadena
+        - resultado: ResultadoDeAuditoria
+        - cambios: Registro
+        - fecha: FechaHora
+        + «create» AsientoAuditoria(autor: Usuario, rol: Rol, distribuidoraId: Identificador, operacion: Cadena, recurso: Cadena, origen: Cadena, resultado: Cadena, codigo: Entero, motivo: Cadena)
+        + depurarCredenciales()
+    }
+
+    class Cliente {
+        - consumoMensualDeclarado: Decimal
+        - diasDeAviso: Entero
+        + «create» Cliente(usuario: Usuario, datosDelCliente: Registro)
+        + «create» Cliente(usuario: Usuario, ubicacion: UbicacionGPS)
+        + actualizarConsumo(cantidadPorMes: Decimal)
+        + actualizarUbicacion(coordenadas: Coordenada)
+        + configurarAviso(dias: Entero)
+        + crearCarrito(distribuidoraId: Identificador): Carrito
+        + darDeBaja()
+        + declararConsumo(tipoGarrafa: Cadena, cantidadPorMes: Decimal)
+        + desmarcarLasDemas(direccion: DireccionEntrega)
+        + desmarcarPredeterminadas()
+        + editarDatos(cambios: Registro)
+        + getCarrito(distribuidoraId: Identificador): Carrito
+        + getDireccion(direccionId: Identificador): DireccionEntrega
+        + getDirecciones(): DireccionEntrega[*]
+        + getDireccionPredeterminada(): DireccionEntrega
+        + getFechaEstimadaDeRecompra()
+        + getToken(): Cadena
+        + presentarReclamo(pedido: Pedido, motivo: Cadena, evidencia: Archivo): Reclamo
+        + promoverOtraPredeterminada()
+        + registrarDireccion(datos: Registro): DireccionEntrega
+        + registrarEstimacion(fechaEstimada: Fecha)
+        + registrarToken(token: Cadena)
+        + unirseASala()
+        + validarRango(cantidadPorMes: Decimal)
+        + validarRango(dias: Entero)
+    }
+
+    class DireccionEntrega {
+        - calleYAltura: Cadena
+        - pisoYDepartamento: Cadena
+        - punto: Coordenada
+        - precision: PrecisionDeGeocodificacion
+        - predeterminada: Booleano
+        + «create» DireccionEntrega(datos: Registro, punto: Coordenada, precision: PrecisionDeGeocodificacion, predeterminada: Booleano)
+        + darDeBaja()
+        + editar(cambios: Registro)
+        + esDelUsuario(usuario: Usuario)
+        + marcarPredeterminada()
+        + validarCoordenadas(cambios: Registro)
+    }
+
+    class InvitacionRecompra {
+        - agotamientoEstimado: FechaHora
+        + «create» InvitacionRecompra(cliente: Cliente, fechaEstimada: Fecha, vigencia: FechaHora)
+        + aceptar(): ItemPedido[*]
+        + validarVigencia()
+    }
+
+    class ItemSugerido {
+        - cantidad: Entero
+        + «create» ItemSugerido(producto: Producto, cantidad: Entero)
+    }
+
+    class Producto {
+        - tipo: Cadena
+        - pesoEnKilos: Decimal
+        - precio: Moneda
+        - stock: Entero
+        - activo: Booleano
+        + «create» Producto(distribuidora: Distribuidora, tipo: Cadena, peso: Decimal, precio: Moneda, stockInicial: Entero, descripcion: Cadena)
+        + actualizarPrecio(precio: Moneda)
+        + agregarPromocion(cantidad: Entero, descuento: Decimal)
+        + ajustarStock(variacion: Entero)
+        + desactivar()
+        + estaDisponibleEn(distribuidoraId: Identificador): Booleano
+        + getPrecio(): Moneda
+        + precioPara(cantidad: Entero): Moneda
+        + reactivar()
+        + reemplazarPromociones(promociones: Promocion[*])
+        + reservar(cantidad: Entero)
+        + restituir(cantidad: Entero)
+        + validarSinRepetir(promociones: Promocion[*])
+        + validarStockResultante(variacion: Entero)
+    }
+
+    class Promocion {
+        - cantidad: Entero
+        - descuento: Decimal
+        + «create» Promocion(cantidad: Entero, descuento: Decimal)
+    }
+
+    class Envase {
+        - numeroDeSerie: Cadena
+        - estado: EstadoDelEnvase
+        - deposito: Moneda
+        - /vencimiento: Fecha
+        + «create» Envase(numeroDeSerie: Cadena, tipoDeProducto: Cadena, deposito: Moneda)
+        + abrirCaso()
+        + actualizarVigencia(fecha: Fecha, vencimiento: Fecha)
+        + darDeBaja()
+        + despachar(pedido: Pedido, usuario: Usuario)
+        + diasHastaElVencimiento()
+        + entregarAlCliente(pedido: Pedido)
+        + estaVigente(hoy: Fecha): Booleano
+        + fueDevuelto(): Booleano
+        + getMovimientos(): MovimientoEnvase[*]
+        + getResumen()
+        + getVigencia(): Fecha, Entero
+        + marcarParaRetiro(pedido: Pedido)
+        + pasarA(estadoDestino: EstadoDelEnvase, pedido: Pedido, cliente: Cliente, observacion: Cadena)
+        + registrarRevision(fecha: Fecha, resultado: Cadena, vencimiento: Fecha)
+        + validarFechas(fecha: Fecha, vencimiento: Fecha)
+        + validarTransicion(estadoDestino: EstadoDelEnvase)
+    }
+
+    class MovimientoEnvase {
+        - desde: EstadoDelEnvase
+        - hacia: EstadoDelEnvase
+        - fecha: FechaHora
+        + «create» MovimientoEnvase(estadoDestino: EstadoDelEnvase)
+        + «create» MovimientoEnvase(pedido: Pedido, usuario: Usuario, nota: Cadena)
+        + «create» MovimientoEnvase(estadoOrigen: EstadoDelEnvase, estadoDestino: EstadoDelEnvase, pedido: Pedido, usuario: Usuario, observacion: Cadena)
+    }
+
+    class RevisionEnvase {
+        - fecha: FechaHora
+        - resultado: ResultadoDeRevision
+        - proximaRevision: FechaHora
+        + «create» RevisionEnvase(fecha: Fecha, resultado: Cadena, vencimiento: Fecha)
+    }
+
+    class CasoRecupero {
+        - escalon: Entero
+        - depositoComprometido: Moneda
+        - estado: EstadoDelCasoDeRecupero
+        - resolucion: Cadena
+        + «create» CasoRecupero(cliente: Cliente, deposito: Moneda)
+        + avisar(escalon: Entero)
+        + cerrar(devuelto: Booleano)
+        + escalar()
+        + resolver(decision: Cadena)
+        + validarEscalado()
+    }
+
+    class AvisoRecupero {
+        - escalon: Entero
+        - tipo: TipoDeAviso
+        - vence: FechaHora
+        + «create» AvisoRecupero(escalon: Entero)
+        + aceptar(pedido: Pedido)
+        + getEnvase(): Envase
+        + getPedidoDeEntrega(): Pedido
+    }
+
+    class Carrito {
+        - ultimaModificacion: FechaHora
+        + «create» Carrito(distribuidora: Distribuidora)
+        + agregarItem(producto: Producto, cantidad: Entero)
+        + calcularTotal(): Moneda
+        + getItem(itemId: Identificador)
+        + modificarCantidad(itemId: Identificador, cantidad: Entero)
+        + quitarItem(itemId: Identificador)
+        + vaciar()
+    }
+
+    class ItemCarrito {
+        - cantidad: Entero
+        - precioUnitario: Moneda
+        + «create» ItemCarrito(producto: Producto, cantidad: Entero, precioUnitario: Moneda)
+        + cambiarCantidad(cantidad: Entero)
+        + getDiferenciaDePrecio()
+        + getSubtotal(): Moneda
+    }
+
+    class Pedido {
+        - estado: EstadoPedido
+        - /total: Moneda
+        - modalidadDeEntrega: ModalidadDeEntrega
+        - fechaAgendada: Fecha
+        - metodoDePago: MetodoDePago
+        - senia: Moneda
+        - codigoDeEntrega: Cadena
+        - nombreDeQuienRecibe: Cadena
+        - documentoDeQuienRecibe: Cadena
+        - vinculoConQuienRecibe: Cadena
+        + «create» Pedido(cliente: Cliente, direccion: DireccionEntrega, express: Booleano, metodoDePago: MetodoDePago)
+        + «create» Pedido(cliente: Cliente, direccion: DireccionEntrega, franja: FranjaHoraria, zona: ZonaCobertura, fechaAgendada: Fecha, metodoDePago: MetodoDePago, montoDeLaSenia: Moneda)
+        + aceptar(chofer: Chofer, vehiculo: Vehiculo)
+        + activar()
+        + agregarItem(producto: Producto, cantidad: Entero)
+        + aplicarRecargoDePago()
+        + aplicarRecargoExpress()
+        + asignarChofer(chofer: Chofer, vehiculo: Vehiculo)
+        + calcularSaldo(): Moneda
+        + calcularTotal(): Moneda
+        + cambiarDireccion(direccion: DireccionEntrega, zona: ZonaCobertura, motivo: Cadena)
+        + cancelar(motivo: Cadena)
+        + cerrarOfertas()
+        + confirmarSenia()
+        + descontarRecargoExpress()
+        + entregar()
+        + esDeLaDistribuidora(distribuidoraId: Identificador)
+        + esDelChofer(chofer: Chofer): Booleano
+        + esDelCliente(cliente: Cliente): Booleano
+        + esReofertable(): Booleano
+        + estaDisponible()
+        + estaEnCamino(): Booleano
+        + estaSinPagar(): Booleano
+        + generarCodigoDeEntrega()
+        + getCambiosDeEstado(): CambioEstadoPedido[*]
+        + getChofer(): Chofer
+        + getChoferesContactados(): Chofer[*]
+        + getCliente(): Cliente
+        + getCodigoDeEntrega(): Cadena
+        + getFechaDeEntrega()
+        + getImporteACobrar(esSenia: Booleano): Moneda
+        + getIncidencias(): Incidencia[*]
+        + getMetodoDePago(): MetodoDePago
+        + getOfertaVigente(chofer: Chofer): OfertaDespacho
+        + getPago(identificadorDelPago: Identificador): Pago
+        + getPagosAprobados(): Pago[*]
+        + getPuntoDeEntrega(): Coordenada
+        + getReceptorDeCalificacion(usuario: Usuario): Usuario
+        + getTotal(): Moneda
+        + incluirRetiro(envase: Envase)
+        + indicarQuienRecibe(nombre: Cadena, documento: Cadena, relacion: Cadena)
+        + liberar()
+        + marcarEnCamino()
+        + marcarPagado(identificadorDelPago: Identificador)
+        + ofrecerA(chofer: Chofer, venceEn: Entero)
+        + pasarARepartoComun()
+        + puedeCalificar(usuario: Usuario): Booleano
+        + quitarChofer()
+        + registrarCambio(estadoAnterior: Cadena, estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
+        + registrarIncidencia(usuario: Usuario, tipo: Cadena, descripcion: Cadena, foto: Archivo): Incidencia
+        + tieneOfertaVigente(): Booleano
+        + transicionar(estadoDestino: EstadoPedido)
+        + validarCodigo(codigo: Cadena): Booleano
+        + validarDocumento(documento: Cadena)
+        + validarQueEsReservaPendiente()
+        + validarQueNoFueEntregado()
+        + validarQueNoSalio()
+        + validarTransicion(estadoDestino: EstadoPedido)
+    }
+
+    class ItemPedido {
+        - cantidad: Entero
+        - precioUnitario: Moneda
+        + «create» ItemPedido(producto: Producto, cantidad: Entero, precioUnitario: Moneda, subtotal: Moneda)
+        + getCantidad(): Entero
+        + getProducto()
+        + getSubtotal()
+        + restituirStock()
+    }
+
+    class CambioEstadoPedido {
+        - desde: EstadoPedido
+        - hacia: EstadoPedido
+        - motivo: Cadena
+        - fecha: FechaHora
+        + «create» CambioEstadoPedido(estadoAnterior: Cadena, estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
+    }
+
+    class CambioDireccion {
+        - motivo: Cadena
+        - fecha: FechaHora
+        + «create» CambioDireccion(direccion: DireccionEntrega, autor: Usuario, motivo: Cadena)
+    }
+
+    class ZonaCobertura {
+        - nombre: Cadena
+        - area: Poligono
+        - recargo: Moneda
+        - tipoDeRecargo: TipoDeRecargo
+        - vigenteHasta: FechaHora
+        + «create» ZonaCobertura(nombre: Cadena, poligono: Poligono, recargo: Moneda, activa: Booleano)
+        + calcularRecargo(subtotalItems: Moneda)
+        + cubre(direccion: DireccionEntrega): Booleano
+        + cubre(latitud: Decimal, longitud: Decimal)
+        + darDeBaja()
+        + desactivar()
+        + getRecargo(): Moneda
+        + programarVigencia(vigenteHasta: FechaHora)
+        + validarPoligono()
+        + validarRecargo()
+        + validarVigencia()
+    }
+
+    class FranjaHoraria {
+        - desde: Hora
+        - hasta: Hora
+        - cupo: Entero
+        - activa: Booleano
+        + «create» FranjaHoraria(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero)
+        + cuposLibres(fecha: Fecha): Entero, Pedido[*], Chofer[*]
+        + desactivar()
+        + modificar(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero)
+        + tieneCupo(fechaAgendada: Fecha)
+        + validarCapacidad(capacidad: Entero)
+    }
+
+    class Pago {
+        - importe: Moneda
+        - pasarela: Pasarela
+        - estado: EstadoDelPago
+        - esSenia: Booleano
+        - fecha: FechaHora
+        + «create» Pago(pedido: Pedido, distribuidora: Distribuidora, importe: Moneda, esSenia: Booleano)
+        + asignarEnlace(enlaceDePago: Cadena)
+        + marcarPagado()
+        + registrarResultado(identificadorDelPago: Identificador, estado: Cadena)
+        + reintegrar()
+    }
+
+    class PropuestaConVigencia {
+        <<abstract>>
+        - estado: EstadoDePropuesta
+        - vence: FechaHora
+    }
+
+    class OfertaDespacho {
+        + «create» OfertaDespacho(chofer: Chofer, venceEn: Entero)
+        + aceptar()
+        + cerrar()
+        + getPedido(): Pedido
+        + rechazar()
+        + vencer()
+    }
+
+    class LoteRecorrido {
+        - estado: EstadoDelLote
+        - /pesoTotal: Decimal
+        + «create» LoteRecorrido(pedidos: Pedido[*])
+        + asignarChofer(chofer: Chofer)
+        + deshacer()
+        + getOfertaVigente(chofer: Chofer): OfertaDespacho
+        + ofrecerA(chofer: Chofer, venceEn: Entero)
+    }
+
+    class ParadaLote {
+        - orden: Entero
+        + «create» ParadaLote(pedido: Pedido, orden: Entero)
+        + getPedido(): Pedido
+    }
+
+    class OfertaLote {
+        + «create» OfertaLote(chofer: Chofer, venceEn: Entero)
+        + aceptar()
+    }
+
+    class Chofer {
+        - disponible: Booleano
+        - habilitado: Booleano
+        - validado: Booleano
+        - /calificacion: Decimal
+        + «create» Chofer(usuario: Usuario, distribuidoraId: Identificador, datosDelChofer: Registro)
+        + actualizarPerfil(datos: Registro)
+        + actualizarUbicacion(latitud: Decimal, longitud: Decimal)
+        + ajustarSaldo(monto: Moneda)
+        + assertElegibleParaAsignacion()
+        + assertSinPedidoEnCurso()
+        + assertSinPedidosEnCurso()
+        + cambiarDisponibilidad(disponible: Booleano)
+        + cambiarEstado(activo: Booleano)
+        + darDeBaja()
+        + desconectar()
+        + estaActivo()
+        + estaInhabilitado(tareas: TareaMantenimiento[*])
+        + getAsignacionAbierta(): AsignacionVehiculo
+        + getCapacidadDeCarga(): Entero
+        + getHistorialDeVehiculos(pagina: Entero): AsignacionVehiculo[*]
+        + getPedidoEnCurso(): Pedido
+        + getPedidos(pagina: Entero, limite: Entero): Pedido[*], Entero
+        + getSaldo(): Moneda
+        + getUbicacion(): UbicacionGPS
+        + getUsuario(): Usuario
+        + getVehiculoEnUso(): Vehiculo
+        + getVehiculos(): Vehiculo[*]
+        + invalidar()
+        + liberarVehiculo()
+        + puedeRecibirOferta(distribuidora: Distribuidora): Booleano
+        + recalcularPromedio()
+        + registrarToken(token: Cadena)
+        + registrarVehiculo(tipo: Cadena, capacidad: Entero, patente: Cadena, marca: Cadena, modelo: Cadena, anio: Entero, color: Cadena): Vehiculo
+        + usarVehiculo(vehiculo: Vehiculo, nota: Cadena, administrador: Administrador)
+        + validar()
+        + validarHabilitacion()
+        + validarSinPedidosEnCurso()
+    }
+
+    class Vehiculo {
+        - patente: Cadena
+        - tipo: Cadena
+        - cargaMaxima: Decimal
+        - kilometraje: Entero
+        - estadoEnLaFlota: EstadoEnLaFlota
+        + «create» Vehiculo(tipo: Cadena, capacidad: Entero, patente: Cadena, marca: Cadena, modelo: Cadena, anio: Entero, color: Cadena)
+        + assertLibre()
+        + assertPatenteUnica(patente: Cadena)
+        + darDeBaja()
+        + editar(datos: Registro)
+        + estaInhabilitado(tareas: TareaMantenimiento[*])
+        + estimarKilometrajeDiario()
+        + getChofer(): Chofer
+        + getChoferEnUso(): Chofer
+        + getHistorialDeChoferes(pagina: Entero): AsignacionVehiculo[*]
+        + ponerFueraDeServicio()
+        + proyectarVencimientos()
+    }
+
+    class AsignacionVehiculo {
+        - asignadoEl: FechaHora
+        - liberadoEl: FechaHora
+        - nota: Cadena
+        + «create» AsignacionVehiculo(chofer: Chofer, vehiculo: Vehiculo, administrador: Administrador, nota: Cadena)
+        + cerrar()
+        + liberar(administrador: Administrador)
+    }
+
+    class PlanMantenimiento {
+        - nombre: Cadena
+        - disparo: DisparoDeMantenimiento
+        - intervalo: Entero
+        - anticipacion: Entero
+        - criticidad: Criticidad
+        + assertSujetoCoherente(recurso: Cadena)
+        + crearTarea(recurso: Cadena, vencimiento: Fecha, detalle: Registro): TareaMantenimiento
+    }
+
+    class TareaMantenimiento {
+        - estado: EstadoDeLaTarea
+        - vence: FechaHora
+        - vencimientoProyectado: FechaHora
+        - prestador: Cadena
+        - numero: Cadena
+        - costo: Moneda
+        + «create» TareaMantenimiento(recurso: Cadena, vencimiento: Fecha, detalle: Registro)
+        + adjuntar(clave: Cadena, archivo: Archivo, usuario: Usuario): AdjuntoTarea
+        + assertAbierta()
+        + cerrar(fecha: Fecha, kilometraje: Entero, costo: Moneda, observacion: Cadena)
+        + getAdjunto(adjuntoId: Identificador): AdjuntoTarea
+        + getAdjuntos(): AdjuntoTarea[*]
+        + getEstadoDeVencimiento()
+        + marcarAvisada(ahora: FechaHora)
+        + programar(ventanaElegida: PropuestaVentanaTaller, gastoEstimado: Moneda)
+        + proponerVentana(chofer: Chofer, ventana: PropuestaVentanaTaller): PropuestaVentanaTaller
+        + proyectarVencimiento(kilometrajeDiario: Entero)
+        + quedarPendienteDeConfirmacion(ventana: PropuestaVentanaTaller)
+        + quitarAdjunto(adjuntoId: Identificador): AdjuntoTarea
+    }
+
+    class AdjuntoTarea {
+        - nombreOriginal: Cadena
+        - tipoDeArchivo: Cadena
+        - fechaDeCarga: FechaHora
+        + «create» AdjuntoTarea(clave: Cadena, nombre: Cadena, tipo: Cadena, tamano: Entero, usuario: Usuario)
+    }
+
+    class PropuestaVentanaTaller {
+        - desde: FechaHora
+        - hasta: FechaHora
+        + «create» PropuestaVentanaTaller(chofer: Chofer, ventana: PropuestaVentanaTaller, vigencia: FechaHora)
+        + aceptar()
+        + assertVigente()
+    }
+
+    class UbicacionGPS {
+        - latitud: Decimal
+        - longitud: Decimal
+        + «create» UbicacionGPS(latitud: Decimal, longitud: Decimal)
+        + abrirSeguimiento(pedido: Pedido)
+        + actualizar(latitud: Decimal, longitud: Decimal)
+        + cerrarSeguimiento()
+        + eliminar()
+    }
+
+    class RegistroUsoVehiculo {
+        - dia: Fecha
+        - kilometros: Entero
+        - pedidos: Entero
+    }
+
+    class Reclamo {
+        - motivo: Cadena
+        - descripcion: Cadena
+        - estado: EstadoDelReclamo
+        - resolucion: Cadena
+        - fotografia: Cadena
+        + «create» Reclamo(pedido: Pedido, motivo: Cadena, evidencia: Archivo)
+        + adjuntarFoto(clave: Cadena): Cadena
+        + esDelCliente(cliente: Cliente): Booleano
+        + getFoto(): Cadena
+        + getResumen()
+        + reabrir(motivo: Cadena)
+        + resolver(resolucion: Cadena, estadoDestino: EstadoDelReclamo)
+        + tomar()
+        + validarTransicion(estadoDestino: EstadoDelReclamo)
+    }
+
+    class Incidencia {
+        - tipo: TipoDeIncidencia
+        - momento: MomentoDeIncidencia
+        - descripcion: Cadena
+        - estado: EstadoDeIncidencia
+        - resolucion: Cadena
+        - fotografia: Cadena
+        + «create» Incidencia(usuario: Usuario, tipo: Cadena, descripcion: Cadena, foto: Archivo)
+        + getResumen()
+        + resolver(notaDeResolucion: Cadena)
+    }
+
+    class Calificacion {
+        - puntaje: Entero
+        - comentario: Cadena
+        + «create» Calificacion(pedido: Pedido, calificado: Usuario, estrellas: Entero, comentario: Cadena)
+        + getEstrellas()
+    }
+
+
+    Usuario <|-- Cliente
+    Usuario <|-- Chofer
+    Usuario <|-- Administrador
+    PropuestaConVigencia <|-- OfertaDespacho
+    PropuestaConVigencia <|-- OfertaLote
+    PropuestaConVigencia <|-- PropuestaVentanaTaller
+    PropuestaConVigencia <|-- InvitacionRecompra
+    PropuestaConVigencia <|-- AvisoRecupero
+    Usuario "0..*" -- "0..1" Rol : tiene asignado
+    Distribuidora "1" --> "0..*" Chofer : emplea
+    Distribuidora "0..1" -- "0..*" Administrador : emplea
+    Distribuidora "1" -- "0..*" Producto : comercializa
+    Distribuidora "1" --> "0..*" Envase : posee
+    Distribuidora "1" -- "0..*" Pedido : gestiona
+    Distribuidora "1" *--> "0..*" ZonaCobertura : define
+    Distribuidora "1" *--> "0..*" FranjaHoraria : define
+    Distribuidora "1" *--> "0..*" ConfiguracionModulo : parametriza
+    Usuario "0..1" -- "0..*" AsientoAuditoria : origina
+    Cliente "1" *-- "0..*" DireccionEntrega : registra
+    Cliente "1" -- "0..*" Pedido : realiza
+    Cliente "1" *--> "0..*" Carrito : arma
+    Cliente "1" -- "0..*" InvitacionRecompra : recibe
+    Cliente "0..*" -- "0..1" Producto : usa habitualmente
+    InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en
+    InvitacionRecompra "1" *--> "1..*" ItemSugerido : sugiere
+    InvitacionRecompra "0..*" -- "0..1" DireccionEntrega : sugiere entregar en
+    ItemSugerido "0..*" -- "1" Producto : corresponde a
+    Carrito "1" *--> "0..*" ItemCarrito : contiene
+    ItemCarrito "0..*" --> "1" Producto : corresponde a
+    Pedido "1" *--> "1..*" ItemPedido : contiene
+    ItemPedido "0..*" --> "1" Producto : corresponde a
+    Pedido "0..*" -- "1" DireccionEntrega : se entrega en
+    Pedido "0..*" -- "0..1" FranjaHoraria : se programa en
+    Pedido "0..*" --> "0..1" ZonaCobertura : aplica el recargo de
+    Pedido "1" *--> "0..*" CambioEstadoPedido : registra
+    Usuario "0..1" -- "0..*" CambioEstadoPedido : efectúa
+    Pedido "1" *--> "0..*" CambioDireccion : registra
+    CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde
+    CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
+    Usuario "1" -- "0..*" CambioDireccion : realiza
+    Chofer "0..1" -- "0..*" Pedido : entrega
+    Pedido "1" --> "0..*" Pago : se salda con
+    Pedido "1" *--> "0..*" OfertaDespacho : genera
+    OfertaDespacho "0..*" -- "1" Chofer : se dirige a
+    LoteRecorrido "1" *--> "1..*" ParadaLote : se compone de
+    ParadaLote "0..*" -- "1" Pedido : atiende
+    LoteRecorrido "1" *--> "0..*" OfertaLote : genera
+    OfertaLote "0..*" -- "1" Chofer : se dirige a
+    Chofer "0..1" -- "0..*" LoteRecorrido : acepta
+    Chofer "1" --> "0..*" Vehiculo : tiene registrado
+    Chofer "0..*" --> "0..*" Vehiculo : usa
+    Chofer "1" --> "0..1" UbicacionGPS : se ubica en
+    PlanMantenimiento "1" --> "0..*" TareaMantenimiento : genera
+    TareaMantenimiento "0..*" <-- "0..1" Vehiculo : habilita
+    TareaMantenimiento "0..*" -- "0..1" Chofer : habilita
+    TareaMantenimiento "1" *-- "0..*" PropuestaVentanaTaller : origina
+    TareaMantenimiento "1" *--> "0..*" AdjuntoTarea : adjunta
+    PropuestaVentanaTaller "0..*" -- "1" Chofer : se dirige a
+    Vehiculo "1" *-- "0..*" RegistroUsoVehiculo : acumula
+    Producto "1" *--> "0..*" Promocion : ofrece
+    Producto "0..1" -- "0..*" Envase : describe
+    Envase "1" *--> "0..*" MovimientoEnvase : registra
+    Envase "1" *--> "0..*" RevisionEnvase : se somete a
+    Pedido "0..1" -- "0..*" MovimientoEnvase : origina
+    Usuario "0..1" -- "0..*" MovimientoEnvase : ejecuta
+    Cliente "0..1" -- "0..*" Envase : tiene en su poder
+    Pedido "0..1" -- "0..*" Envase : despacha
+    Envase "1" <--> "0..*" CasoRecupero : motiva
+    CasoRecupero "0..*" -- "1" Cliente : se abre contra
+    Usuario "0..1" -- "0..*" CasoRecupero : resuelve
+    CasoRecupero "1" *--> "0..*" AvisoRecupero : emite
+    Pedido "1" -- "0..*" Reclamo : origina
+    Cliente "1" --> "0..*" Reclamo : presenta
+    Pedido "1" --> "0..*" Incidencia : origina
+    Usuario "1" -- "0..*" Incidencia : reporta
+    Pedido "1" -- "0..2" Calificacion : recibe
+    Usuario "1" --> "0..*" Calificacion : emite
+    Usuario "1" --> "0..*" Calificacion : recibe
+    Carrito ..> Producto
+    Chofer ..> AsignacionVehiculo : create
+    LoteRecorrido ..> Pedido
+    Pedido ..> Producto

@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -49,6 +49,7 @@ rectangle "SS-16 Administración de Cuentas y Roles" {
   usecase "CU-129\nConsultar Detalle del Cliente" as U129 #back:FFFFFF;line:4B7560
   usecase "CU-130\nBuscar Cliente por Usuario" as U130 #back:FFFFFF;line:4B7560
   usecase "CU-131\nEditar Datos del Cliente" as U131 #back:FFFFFF;line:4B7560
+  usecase "Filtrar por Término" as F_TERM <<factorizado>> #back:FFFFFF;line:4B7560
 }
 
 usecase "CU-082\nCrear Usuario Base\n(SS-01)" as U082 #back:FFFFFF;line:6B7683
@@ -60,11 +61,11 @@ A03 -[#8C4A9E]- U094
 A03 -[#8C4A9E]- U129
 A03 -[#8C4A9E]- U130
 A03 -[#8C4A9E]- U131
-A05 -[#B4432B]- U086
 A05 -[#B4432B]- U087
 A05 -[#B4432B]- U089
 A05 -[#B4432B]- U090
 A05 -[#B4432B]- U095
+A05 --|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U094 ..> U129 : <<include>>
@@ -73,5 +74,11 @@ U131 ..> U129 : <<include>>
 U129 ..> U130 : <<include>>
 U086 ..> U082 : <<include>>
 U087 ..> U082 : <<include>>
+
+' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
+F_TERM ..> U092 : <<extend>>
+note on link
+  Punto de extensión: se indica el parámetro term sobre el listado
+end note
 
 @enduml

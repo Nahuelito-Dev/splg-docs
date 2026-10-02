@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-099 Consultar Los Tokens De Un Usuario
+    title DSS — CU-099 Consultar los Tokens de un Usuario
     autonumber
-    actor CLI as Usuario, o el Administrador General
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: consultarTokensDelUsuario(usuarioId)
     activate SIS
@@ -12,3 +12,4 @@ sequenceDiagram
         SIS-->>CLI: acceso denegado
     end
     deactivate SIS
+    Note over CLI,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03), sobre su propio<br/>usuario, y el Administrador General (ACT-05),<br/>sobre cualquiera

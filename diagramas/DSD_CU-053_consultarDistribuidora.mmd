@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-053 Consultar Distribuidoras · consultarDistribuidora
+    autonumber
+    actor AGE as Administrador General (ACT-05)
+    participant SRV as :DistributorService
+    participant COL as :Map#lt;String, Distribuidora#gt;
+
+    AGE->>+SRV: consultarDistribuidora(distribuidoraId)
+    SRV->>+COL: get(distribuidoraId)
+    COL-->>-SRV: distribuidora
+    SRV-->>-AGE: distribuidora

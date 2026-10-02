@@ -1,8 +1,8 @@
 sequenceDiagram
     title DSS — CU-045 Consultar Franjas Horarias Disponibles
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: consultarDisponibilidadDeFranjas(fecha, distribuidora)
     activate SIS

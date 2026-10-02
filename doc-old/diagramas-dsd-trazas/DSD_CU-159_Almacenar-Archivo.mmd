@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-159 Almacenar Archivo
+autonumber
+participant CALLER as Caso incluido
+participant PORT as StoragePort
+participant LOCAL as LocalDiskStorageAdapter
+participant S3A as S3StorageAdapter
+
+CALLER->>PORT: put(key, body, contentType)
+activate PORT
+alt STORAGE_DRIVER es local (por omision)
+    PORT->>LOCAL: put(key, body, contentType)
+    activate LOCAL
+    LOCAL->>LOCAL: resuelve la ruta bajo la raiz configurada y exige que siga dentro de ella
+    LOCAL->>LOCAL: crea la carpeta si falta, escribe el archivo y un sidecar con el content type
+    LOCAL-->>PORT: guardado
+    deactivate LOCAL
+else STORAGE_DRIVER es s3
+    PORT->>S3A: put(key, body, contentType)
+    activate S3A
+    S3A->>S3A: PutObjectCommand contra el bucket configurado
+    S3A-->>PORT: guardado
+    deactivate S3A
+end
+PORT-->>CALLER: archivo guardado
+deactivate PORT

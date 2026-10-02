@@ -1,5 +1,5 @@
 @startuml
-title SS-18 — Observabilidad y Operación (3 casos de uso)
+title SS-18 — Observabilidad y Operación (5 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -44,14 +44,18 @@ rectangle "SS-18 Observabilidad y Operación" {
   usecase "CU-104\nVerificar la Salud del Sistema\n(liveness / readiness)" as U104 #back:FFFFFF;line:5B5F87
   usecase "CU-152\nConsultar el Registro de\nAuditoría" as U152 #back:FFFFFF;line:5B5F87
   usecase "CU-153\nRegistrar Toda Operación de\nEscritura" as U153 #back:FFFFFF;line:5B5F87
+  usecase "CU-172\nConfigurar los Parámetros de\nun Proceso Automático" as U172 <<planificado>> #back:FFFFFF;line:5B5F87
+  usecase "CU-173\nConfigurar la Frecuencia de\nlas Tareas Programadas" as U173 <<planificado>> #back:FFFFFF;line:5B5F87
 }
 
 A01 -[#1F6F8B]- U104
 A02 -[#2E7D46]- U104
 A03 -[#8C4A9E]- U104
 A03 -[#8C4A9E]- U152
+A03 -[#8C4A9E]- U172
+A03 -[#8C4A9E]- U173
 A04 -[#8A6D1F]- U104
 A04 -[#8A6D1F]- U153
-A05 -[#B4432B]- U152
+A05 --|> A03
 
 @enduml

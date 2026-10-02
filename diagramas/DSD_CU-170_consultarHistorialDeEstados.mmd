@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-170 Consultar el Historial de Estados de un Pedido · consultarHistorialDeEstados
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant HIS as :OrderStatusHistoryService
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CLI->>+HIS: consultarHistorialDeEstados(pedidoId)
+    HIS->>+COL: get(pedidoId)
+    COL-->>-HIS: pedido
+    HIS->>PED: esDeLaDistribuidora(distribuidoraId)
+    HIS->>PED: esDelCliente(clienteId)
+    HIS->>+PED: getCambiosDeEstado()
+    PED-->>-HIS: cambios
+    HIS-->>-CLI: cambios

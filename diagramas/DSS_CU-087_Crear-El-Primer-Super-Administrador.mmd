@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-087 Crear El Primer Super Administrador
+    title DSS — CU-087 Crear el Primer Super Administrador (bootstrap)
     autonumber
-    actor GEN as Administrador General
-    participant SIS as Sistema
+    actor GEN as Administrador General (ACT-05)
+    participant SIS as :Sistema
 
     GEN->>SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
     activate SIS
@@ -12,4 +12,4 @@ sequenceDiagram
         SIS-->>GEN: rechazo (la operación de arranque ya fue usada)
     end
     deactivate SIS
-    Note over GEN,SIS: Se ejecuta desde el servidor, no desde el panel ni las apps
+    Note over GEN,SIS: Se ejecuta desde el servidor, no desde el<br/>panel ni las apps

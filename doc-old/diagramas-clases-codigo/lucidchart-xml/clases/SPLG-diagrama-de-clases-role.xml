@@ -1,0 +1,76 @@
+<mxfile host="app.diagrams.net" type="device">
+  <diagram name="Diagrama de clases — módulo role" id="d1">
+    <mxGraphModel dx="1400" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c0" value="RoleController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="460" height="212" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c0">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f1" value="+create(@Body() createRoleDto: CreateRoleDto) Promise&lt;RoleResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f2" value="+findAll() Promise&lt;RoleResponseDto[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f3" value="+findOne(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string) Promise&lt;RoleResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f4" value="+update(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Body() updateRoleDto: UpdateRoleDto) Promise&lt;RoleResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f5" value="+remove(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string) Promise&lt;MessageResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+          <mxGeometry y="160" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f6" value="+seedRoles() Promise&lt;MessageResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+          <mxGeometry y="186" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" value="RoleMapper" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="642" y="105" width="248" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c1f0" value="«mapper»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c1">
+          <mxGeometry y="30" width="248" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c1f1" value="+toDto(role: Role) RoleResponseDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c1">
+          <mxGeometry y="56" width="248" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="RoleService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="50" y="410" width="439" height="264" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f0" value="+create(createRoleDto: CreateRoleDto) Promise&lt;Role&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="30" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f1" value="+findAll() Promise&lt;Role[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="56" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f2" value="+findOne(id: string) Promise&lt;Role&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="82" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f3" value="+update(id: string, updateRoleDto: UpdateRoleDto) Promise&lt;Role&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="108" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f4" value="+remove(id: string) Promise&lt;MessageResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="134" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f5" value="-assertNoEsDelSistema(tipo: string, accion: string) void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="160" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f6" value="+findById(id: string) Promise&lt;Role | null&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="186" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f7" value="+findByType(type: string) Promise&lt;Role | null&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="212" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f8" value="+seedRoles() Promise&lt;MessageResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="238" width="439" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c0" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

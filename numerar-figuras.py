@@ -15,6 +15,10 @@ DOCS = ["0-Plan_Del_Proyecto.md", "0.1-Planificacion_Iteraciones.md",
         "1-Requisitos.md", "2-Analisis.md", "3-Diseño.md"]
 
 RE_EPIGRAFE = re.compile(r'^\s*\*{0,2}Figura\s+\d+\s*[—-]\s*(.+?)\*{0,2}\s*$', re.I)
+# Las vistas parciales de un mismo diagrama (el modelo conceptual por área, por
+# ejemplo) se rotulan «Figura N.k»: cuelgan de la figura N y no desplazan la
+# numeración del resto del documento.
+RE_SUBFIGURA = re.compile(r'^\s*\*{0,2}Figura\s+\d+\.\d+\s*[—-]\s*(.+?)\*{0,2}\s*$', re.I)
 # Algunos documentos ya traian el epigrafe escrito a mano y sin numerar, encima
 # de la figura. Su texto suele ser mejor que el del encabezado, asi que se lo
 # adopta y se quita, para no terminar con la figura rotulada dos veces.
@@ -24,7 +28,7 @@ def limpiar(t):
     t = re.sub(r'^\d+(\.\d+)*\.?\s+', '', t)
     t = re.sub(r'\*\*|`', '', t)
     t = re.sub(r'\b(Crítico|Importante|Secundario)\s*·?\s*(automático)?\s*[—-]?\s*', '', t, flags=re.I)
-    t = re.sub(r'^(Especificado|Pendiente|Implementado)[^·]*·\s*', '', t, flags=re.I)
+    t = re.sub(r'^(Especificado|Pendiente|Implementado|Planificado)[^·]*·\s*', '', t, flags=re.I)
     t = re.sub(r'\s*[—-]\s*(DSS|DSD)\s*[—-]\s*', ' ', t)
     t = re.sub(r'^(DSS|DSD)\s*[—-]\s*', r'\1 ', t)
     return t.strip()
@@ -54,6 +58,7 @@ def rotulo(lineas, i):
 def procesar(archivo):
     lineas = open(D + archivo, encoding="utf-8").read().split("\n")
     salida, indice, n, i = [], [], 0, 0
+    sub = 0
     heredado = None
     while i < len(lineas):
         l = lineas[i]
@@ -65,10 +70,20 @@ def procesar(archivo):
             i += 1
             continue
 
+        # vista parcial: se renumera como N.k respecto de la última figura
+        ms = RE_SUBFIGURA.match(l)
+        if ms and not l.strip().startswith(">"):
+            sub += 1
+            salida.append(f"**Figura {n}.{sub} — {ms.group(1).strip()}**")
+            indice.append((f"{n}.{sub}", ms.group(1).strip()))
+            i += 1
+            continue
+
         # un epígrafe que ya estaba: se renumera y se toma su texto
         m = RE_EPIGRAFE.match(l)
         if m and not l.strip().startswith(">"):
             n += 1
+            sub = 0
             salida.append(f"**Figura {n} — {m.group(1).strip()}**")
             indice.append((n, m.group(1).strip()))
             i += 1
@@ -92,8 +107,9 @@ def procesar(archivo):
             i = fin + 1
             # si ya venía rotulado abajo, ese caso lo toma la rama de arriba
             sig = next((k for k in range(i, min(i + 3, len(lineas))) if lineas[k].strip()), None)
-            if sig is not None and RE_EPIGRAFE.match(lineas[sig]): continue
+            if sig is not None and (RE_EPIGRAFE.match(lineas[sig]) or RE_SUBFIGURA.match(lineas[sig])): continue
             n += 1
+            sub = 0
             t = heredado or rotulo(lineas, inicio); heredado = None
             indice.append((n, t))
             salida += ["", f"**Figura {n} — {t}**"]
@@ -104,10 +120,11 @@ def procesar(archivo):
             salida.append(l)
             i += 1
             sig = next((k for k in range(i, min(i + 3, len(lineas))) if lineas[k].strip()), None)
-            if sig is not None and RE_EPIGRAFE.match(lineas[sig]): continue
+            if sig is not None and (RE_EPIGRAFE.match(lineas[sig]) or RE_SUBFIGURA.match(lineas[sig])): continue
             prev = next((s for s in reversed(salida[:-1]) if s.strip()), "")
-            if RE_EPIGRAFE.match(prev): continue      # ya rotulada arriba
+            if RE_EPIGRAFE.match(prev) or RE_SUBFIGURA.match(prev): continue      # ya rotulada arriba
             n += 1
+            sub = 0
             t = heredado or rotulo(lineas, i); heredado = None
             indice.append((n, t))
             salida += ["", f"**Figura {n} — {t}**"]

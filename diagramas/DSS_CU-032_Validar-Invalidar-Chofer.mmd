@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-032 Validar Invalidar Chofer
+    title DSS — CU-032 Validar / Invalidar Chofer
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     alt aprobación de la documentación
         ADM->>SIS: validarChofer(choferId)

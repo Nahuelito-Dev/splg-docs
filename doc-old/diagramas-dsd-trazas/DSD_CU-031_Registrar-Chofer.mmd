@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-031 Registrar Chofer
+autonumber
+participant CTRL as RegistroController
+participant SRV as RegistroService
+participant POL as PoliticaDeRegistro
+participant DSRV as DeliveryService
+
+CTRL->>SRV: registrar(datos con rol delivery, solicitante con su sesion)
+activate SRV
+SRV->>POL: autorizarAlta(solicitante, delivery, distributorId)
+alt Admin de empresa
+    POL-->>SRV: su propia distribuidora, 403 si pidio otra
+else Administrador General
+    POL-->>SRV: la distribuidora indicada o la de X-Distributor, 400 si no hay ninguna
+end
+Note over SRV: «include» CU-082 Crear Usuario Base
+SRV->>DSRV: crearPerfil(manager, user_id, distributorId, datos con validated e isEnabled)
+DSRV-->>SRV: perfil de chofer con balance 0 y calificacion 0
+SRV-->>CTRL: User con rol y perfil de chofer
+deactivate SRV
+Note over CTRL: POST /users, sólo ADMIN y SUPER_ADMIN, responde 201 UserResponseDto

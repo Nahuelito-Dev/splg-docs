@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-051 Gestionar Vehiculos
+    title DSS — CU-051 Consultar Listado de Vehículos
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: listarVehiculos()
     activate SIS
@@ -10,7 +10,7 @@ sequenceDiagram
     deactivate SIS
 
     opt búsqueda por patente
-        ADM->>SIS: consultarVehiculoPorPatente(patente)
+        ADM->>SIS: buscarVehiculoPorPatente(patente)
         activate SIS
         alt existe
             SIS-->>ADM: vehículo encontrado
@@ -21,7 +21,7 @@ sequenceDiagram
     end
 
     opt modificación
-        ADM->>SIS: actualizarVehiculo(vehiculoId, datos)
+        ADM->>SIS: editarVehiculo(vehiculoId, datos)
         activate SIS
         SIS-->>ADM: vehículo actualizado
         deactivate SIS

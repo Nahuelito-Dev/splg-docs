@@ -1,0 +1,66 @@
+classDiagram
+    direction LR
+
+    %% Módulo `delivery` — generado por generar-clases-diseno.py
+
+    class DeliveryController {
+        <<controller>>
+        +findAll(@Query() query: QueryDeliveryDto, @Res([ passthrough: true ]) res: Response, @CurrentDistributor() distributorId?: string | null) Promise<DeliveryResponseDto[]>
+        +findActive(@Query() paginationDto: PaginationDto, @Res([ passthrough: true ]) res: Response, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto[]>
+        +findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +findOneByUserId(@Param('userId', ParseUUIDPipe) userId: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +update(@Param('id', ParseUUIDPipe) id: string, @Body() updateDeliveryDto: UpdateDeliveryDto, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +validateDelivery(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +invalidateDelivery(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +updateLocation(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDeliveryLocationDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +updateBalance(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDeliveryBalanceDto, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +toggleStatus(@Param('id', ParseUUIDPipe) id: string, @Body() dto: ToggleDeliveryStatusDto, @CurrentDistributor() distributorId: string | null) Promise<DeliveryResponseDto>
+        +remove(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) Promise<MessageResponseDto>
+        +toggleAvailability(@Param('userId', ParseUUIDPipe) userId: string, @Body() dto: ToggleDeliveryAvailabilityDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<DisponibilidadDelChoferDto>
+        -acotar(id: string, distributorId: string | null) void
+    }
+
+    class DeliveryMapper {
+        <<mapper>>
+        +toDto(d: Delivery) DeliveryResponseDto
+    }
+
+    class DeliveryService {
+        +crearPerfil(manager: EntityManager, userId: string, distributorId: string, datos: PerfilDeChoferNuevo) Promise<void>
+        +findAll(paginationDto: PaginationDto, distributorId?: string | null, status?: DeliveryStatusFilter) Promise<[Delivery[], number]>
+        +findNotificationToken(userId: string) Promise<string | null>
+        +saveNotificationToken(userId: string, token: string) Promise<boolean>
+        +assertAlcance(delivery: Delivery, duenoUserId?: string | null, distributorId?: string | null) void
+        +findById(id: string) Promise<Delivery | null>
+        +buscarPorIdOUsuario(id: string, conUsuario = false) Promise<Delivery | null>
+        +choferesElegibles(userIds: string[], distributorId?: string | null) Promise<string[]>
+        +findDeliveryIdsByUserIds(userIds: string[], distributorId?: string | null) Promise<Array<
+        +contarHabilitados(distributorId?: string | null) Promise<number>
+        +contarEnLinea(distributorId?: string | null) Promise<number>
+        +assertElegibleParaAsignacion(delivery: Delivery) void
+        +updateCalificationByUserId(userId: string, average: number) Promise<void>
+        +findOne(id: string) Promise<Delivery>
+        +findDistributorIdByUserId(userId: string) Promise<string | null>
+        +findOneByUserId(userId: string) Promise<Delivery>
+        +findOneByEmail(email: string) Promise<Delivery>
+        +findActiveDeliveries(paginationDto: PaginationDto, distributorId?: string | null) Promise<[Delivery[], number]>
+        -buscarChoferes(limit: number, offset: number, distributorId: string | null | undefined, term: string | undefined, opciones: [ soloEnLinea?: boolean, status?: DeliveryStatusFilter ] = []) Promise<[Delivery[], number]>
+        -condicionDeEstado(opciones: [ soloEnLinea?: boolean, status?: DeliveryStatusFilter, ]) Partial<Record<'isEnabled' | 'validated' | 'isAvailable', boolean>>
+        -condicionSqlDeEstado(status: DeliveryStatusFilter) string
+        +update(id: string, updateDeliveryDto: UpdateDeliveryDto, distributorId?: string | null) Promise<Delivery>
+        +remove(id: string) Promise<MessageResponseDto>
+        +validateDelivery(id: string) Promise<Delivery>
+        +invalidateDelivery(id: string) Promise<Delivery>
+        +updateLocation(id: string, latLng: string, actualLocation?: string, duenoUserId?: string | null) Promise<Delivery>
+        +updateBalance(id: string, amount: number) Promise<Delivery>
+        +toggleActiveStatus(id: string, isEnabled: boolean) Promise<Delivery>
+        +toggleAvailability(userId: string, isAvailable: boolean, distributorId?: string | null) Promise<DisponibilidadDelChoferDto>
+        -handleDBExceptions(error: unknown) never
+    }
+
+    DeliveryController ..> DeliveryService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% DeliveryService usa OrderLookupService (módulo `order`)
+    %% DeliveryService usa RedisService (módulo `redis`)
+    %% DeliveryService usa UsersService (módulo `users`)

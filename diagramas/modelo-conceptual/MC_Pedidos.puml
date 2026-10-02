@@ -1,0 +1,123 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class Pedido {
+  estado
+  /total
+  modalidad de entrega
+  fecha agendada
+  método de pago
+  seña
+  código de entrega
+  nombre de quien recibe
+  documento de quien recibe
+  vínculo con quien recibe
+}
+class ItemPedido {
+  cantidad
+  precio unitario
+}
+class Carrito {
+  última modificación
+}
+class ItemCarrito {
+  cantidad
+  precio unitario
+}
+class CambioEstadoPedido {
+  desde
+  hacia
+  motivo
+  fecha
+}
+class CambioDireccion {
+  motivo
+  fecha
+}
+class ZonaCobertura {
+  nombre
+  área
+  recargo
+  tipo de recargo
+  vigente hasta
+}
+class FranjaHoraria {
+  desde
+  hasta
+  cupo
+  activa
+}
+class Pago {
+  importe
+  pasarela
+  estado
+  es seña
+  fecha
+}
+class Cliente <<referencia>>
+class Chofer <<referencia>>
+class Producto <<referencia>>
+class DireccionEntrega <<referencia>>
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+
+
+Distribuidora "1" -- "0..*" Pedido : gestiona >
+Distribuidora "1" *-- "0..*" ZonaCobertura : define >
+Distribuidora "1" *-- "0..*" FranjaHoraria : define >
+Cliente "1" -- "0..*" Pedido : realiza >
+Cliente "1" *-- "0..*" Carrito : arma >
+Carrito "1" *-- "0..*" ItemCarrito : contiene >
+ItemCarrito "0..*" -- "1" Producto : corresponde a >
+Pedido "1" *-- "1..*" ItemPedido : contiene >
+ItemPedido "0..*" -- "1" Producto : corresponde a >
+Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
+Pedido "0..*" -- "0..1" FranjaHoraria : se programa en >
+Pedido "0..*" -- "0..1" ZonaCobertura : aplica el recargo de >
+Pedido "1" *-- "0..*" CambioEstadoPedido : registra >
+Usuario "0..1" -- "0..*" CambioEstadoPedido : efectúa >
+Pedido "1" *-- "0..*" CambioDireccion : registra >
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde >
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia >
+Usuario "1" -- "0..*" CambioDireccion : realiza >
+Chofer "0..1" -- "0..*" Pedido : entrega >
+Pedido "1" -- "0..*" Pago : se salda con >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

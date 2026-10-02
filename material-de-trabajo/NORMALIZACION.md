@@ -1,10 +1,10 @@
 # Normalización del modelo de datos — 25/09/2026
 
-Análisis formal del esquema implementado (38 tablas, 84 claves foráneas, todas
+Análisis formal del esquema implementado (40 tablas, 93 claves foráneas, todas
 declaradas). Se lee junto con `MODELO-DE-DOMINIO.md` (qué es cada entidad) y con
 el diccionario de datos generado en `diagramas/base-de-datos/SPLG-modelo-de-datos.md`.
 
-**Resultado:** el esquema está en **FNBC** en todas las tablas, salvo seis
+**Resultado:** el esquema está en **FNBC** en todas las tablas, salvo ocho
 redundancias controladas (sección 4), cada una deliberada y con su porqué. No hay
 dependencias multivaluadas ni de reunión que no se sigan de las claves, así que
 también cumple **4FN y 5FN**. Las violaciones reales que había se corrigieron el
@@ -57,16 +57,18 @@ esa clave natural determina quede también garantizada por la base.
 | `coverage_zone` | `coverage_zone_id` | — | FNBC |
 | `cart` | `cart_id`, (`user_id`, `distributor_id`) | (`user_id`, `distributor_id`) → resto | FNBC |
 | `cart_item` | `cart_item_id`, (`cart_id`, `gas_cylinder_id`) | (`cart_id`, `gas_cylinder_id`) → `quantity`, `unit_price` | FNBC |
-| `order` | `order_id` | — | FNBC salvo 4.2 (importes y marcas de tiempo) |
-| `order_item` | `order_item_id` | `quantity`, `unitPrice` → `subtotal` | 3FN con la redundancia 4.2 |
+| `order` | `order_id` | — | FNBC salvo 4.2 (importes y marcas de tiempo) y 4.7 (foto de la zona) |
+| `order_item` | `order_item_id` | `quantity`, `unitPrice` → `subtotal` | Viola 3FN: `subtotal` depende transitivamente de `quantity` y `unitPrice`, dos atributos no primos. Redundancia controlada, ver 4.2 |
 | `order_status_history` | `history_id` | — | FNBC |
 | `order_address_change` | `change_id` | — | FNBC |
 | `order_dispatch_offer` | `offer_id` | — | FNBC salvo 4.1 |
 | `route_batch` / `_stop` / `_offer` | ids; (`batch_id`, `order_id`) en paradas | — | FNBC salvo 4.1 |
 | `payment` | `payment_id`, `gateway_payment_id` (si existe) | — | FNBC salvo 4.1 |
-| `claims`, `incident`, `rating` | ids; (`order_id`, `from_role`) en calificaciones | `order_id → customer_id` en reclamos | 3FN con 4.1 y 4.3 |
+| `claims`, `incident`, `rating` | ids; (`order_id`, `from_role`) en calificaciones | `order_id → customer_id` en reclamos | Viola 3FN en `claims` (`customer_id` depende transitivamente de `order_id`). Redundancia controlada, ver 4.1 y 4.3 |
 | `maintenance_plan` / `_task` / `_window_proposal` | ids | — | FNBC |
 | `vehicle_usage_log` | `log_id`, (`car_id`, `day`) | (`car_id`, `day`) → resto | FNBC |
+| `vehicle_assignment` | `assignment_id`; (`car_id`) único mientras `released_at` es nulo; (`delivery_id`) único mientras `released_at` es nulo | en la asignación abierta, `car_id → delivery_id` y `delivery_id → car_id`; `car_id → distributor_id` | FNBC salvo 4.1 (`distributor_id`). Los dos índices únicos parciales son la invariante de negocio a nivel de base: un vehículo no está en uso por dos choferes a la vez ni un chofer usa dos vehículos a la vez |
+| `maintenance_task_attachment` | `attachment_id` | — | FNBC salvo 4.1 (`distributor_id`) |
 | `repurchase_invitation` | `invitation_id` | — | FNBC (ver 3.4 sobre el pedido sugerido) |
 | `module_config` | `config_id`, (`distributor_id`, `module`) | (`distributor_id`, `module`) → `params` | FNBC |
 | `audit_log` | `audit_id` | — | FNBC |
@@ -102,12 +104,27 @@ concreto, y el sistema garantiza su consistencia en un único lugar.
 
 | # | Redundancia | DF que la hace derivable | Por qué se mantiene | Quién la mantiene consistente |
 |---|---|---|---|---|
-| 4.1 | `distributor_id` copiado en `incident`, `claims`, `rating`, `payment`, `cylinder_movement`, `order_dispatch_offer`, `cylinder_inspection`, el recupero y los lotes | `<fila> → order_id → distributor_id` (transitiva) | Aislamiento entre distribuidoras: cada consulta del panel filtra por distribuidora con un índice propio, sin unir con `order`. Es la columna sobre la que se apoya la regla "lo de otra distribuidora no existe" | El servicio la copia del pedido al crear la fila; nunca sale del cuerpo de la petición |
+| 4.1 | `distributor_id` copiado en `incident`, `claims`, `rating`, `payment`, `cylinder_movement`, `order_dispatch_offer`, `cylinder_inspection`, `vehicle_assignment` (desde `car`), `maintenance_task_attachment` (desde la tarea), el recupero y los lotes | `<fila> → order_id → distributor_id` (transitiva) | Aislamiento entre distribuidoras: cada consulta del panel filtra por distribuidora con un índice propio, sin unir con `order`. Es la columna sobre la que se apoya la regla "lo de otra distribuidora no existe" | El servicio la copia del pedido al crear la fila; nunca sale del cuerpo de la petición |
 | 4.2 | `order.totalAmount`, `order_item.unitPrice` y `order_item.subtotal`; `order.acceptedAt`, `onTheWayAt` y `deliveredAt` | el total y el subtotal se calculan desde los renglones; las marcas de tiempo, desde `order_status_history` | Una venta es un hecho histórico: el precio y el descuento del momento no pueden cambiar si mañana cambia el catálogo. Las marcas se conservan porque los listados las leen sin unir tablas; el historial es la fuente de verdad | `CreateOrderUseCase` fija precios con la promoción vigente; la máquina de estados de pedido escribe las marcas |
 | 4.3 | `claims.customer_id` | `claim_id → order_id → customer_id` | Un reclamo se filtra y se autoriza por cliente ("sólo el dueño del pedido reclama"); la columna evita unir con `order` en cada consulta | `ClaimsService` verifica que coincida con el cliente del pedido antes de guardar |
 | 4.4 | `delivery.calification` | promedio de `rating.stars` recibidas | El despacho y el panel muestran el promedio en cada listado de choferes | `RatingService` lo recalcula al registrar cada calificación |
 | 4.5 | `customer.next_repurchase_estimate_at` | se calcula del consumo declarado y del historial de pedidos | Es la entrada del proceso de recompra (M2), que recorre a todos los clientes cada día | El proceso de recompra (M2) al recalcular; todavía no está construido |
 | 4.6 | `cylinder.last_inspection_at` y `expires_at` | se deducen de la última fila de `cylinder_inspection` | El despacho consulta el vencimiento en cada asignación de envases | El registro de una revisión (CU-133) los actualizará en la misma transacción; todavía no está construido |
+| 4.7 | `order.zone_name`, `zone_surcharge_type`, `zone_surcharge_value` y `zone_surcharge_amount` | se derivan de la `coverage_zone` vigente al momento de pedir | La zona se puede editar o borrar después; estas cuatro columnas fijan la foto de lo que se cobró, para que un pedido viejo no cambie de total si la zona cambia. `order.subtotal_items` es la misma idea para el subtotal de los ítems (ver 4.2), separado del recargo de zona | `CreateOrderUseCase` las calcula una sola vez al crear el pedido; no se vuelven a tocar |
+| 4.8 | `order.vehicle_car_id`, `vehicle_patent`, `vehicle_brand` y `vehicle_model` | se derivan del vehículo en uso del chofer (`vehicle_assignment` abierta) al aceptar el pedido | El vehículo se puede reasignar, editar o dar de baja después; estas cuatro columnas fijan con qué vehículo se hizo la entrega, para que un pedido viejo no cambie de patente si la flota cambia | La aceptación del pedido (`OrderService.assignDelivery` y la actualización de estado a aceptado) las copia una sola vez; no se vuelven a tocar |
+
+**Dos vocabularios para el mismo hecho, sin que sea una redundancia de dato.**
+`order.paymentStatus` y `payment.status` no guardan lo mismo con otro nombre: el
+primero es el estado de cobro *del pedido*, en el vocabulario del dominio
+(`pending`/`paid`/`failed`); el segundo es el estado de *esta transacción* en el
+ledger, en el vocabulario de la pasarela (`pending`/`approved`/`rejected`/
+`cancelled`/`refunded`), y un pedido puede tener más de un `payment` (reintentos).
+`ConfirmPaymentUseCase` traduce el segundo al primero. Lo mismo
+`order.gatewayPaymentId` (una copia de conveniencia del último pago aprobado,
+para el índice único que garantiza la idempotencia del webhook) contra
+`payment.gateway_payment_id` (el de cada intento). No se lista en la tabla de
+redundancias porque no hay una dependencia funcional entre ambos: son dos
+conceptos relacionados, no el mismo dato duplicado.
 
 ## 5. Lo que queda por decidir
 

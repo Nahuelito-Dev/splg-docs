@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-166 Tomar un Reclamo Pendiente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: tomarReclamo(reclamoId)
+    activate SIS
+    alt el reclamo existe y está pendiente
+        SIS-->>ADM: reclamo en proceso
+    else el reclamo no existe
+        SIS-->>ADM: recurso no encontrado
+    else el reclamo no está pendiente
+        SIS-->>ADM: solicitud inválida: sólo se toma un reclamo pendiente
+    end
+    deactivate SIS

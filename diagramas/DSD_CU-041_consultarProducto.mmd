@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-041 Consultar Catálogo de Productos · consultarProducto
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :GasCylinderService
+    participant COL as :Map#lt;String, Producto#gt;
+
+    CLI->>+SRV: consultarProducto(productoId)
+    SRV->>+COL: get(productoId)
+    COL-->>-SRV: producto
+    SRV-->>-CLI: producto

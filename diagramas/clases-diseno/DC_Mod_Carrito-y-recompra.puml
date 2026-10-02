@@ -1,0 +1,119 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class CartService <<fachada>> {
+  + agregarItemAlCarrito(productoId: Identificador,\n      cantidad: Entero): Carrito
+  + consultarCarrito(): Carrito, Moneda
+  + modificarCantidadDelItem(itemId: Identificador,\n      cantidad: Entero): Carrito
+  + quitarItemDelCarrito(itemId: Identificador): Carrito
+  + vaciarCarrito(): Carrito
+}
+class RepurchaseForecastService <<fachada>> {
+  + aceptarInvitacionDeRecompra(invitacionId: Identificador): Pedido
+  + anticiparRecompras()
+}
+class ConsumptionEstimatorService <<fabricación pura>> {
+  + estimarProximaRecompra(cliente: Cliente): Fecha
+  + estimarProximaRecompra(fechaDeRegistro: Fecha,\n      cantidadPorMes: Decimal): Fecha
+  + estimarProximaRecompra(ultimaCompra: Fecha,\n      cantidadPorMes: Decimal): Fecha
+}
+class ConsumptionService <<fachada>> {
+  + actualizarConsumoPromedio(cantidadPorMes: Decimal): Cliente
+  + declararConsumoPromedio(tipoGarrafa: Cadena,\n      cantidadPorMes: Decimal): Cliente
+}
+class RepurchaseEstimatesService <<fachada>> {
+  + consultarRecomprasEstimadas(dias: Entero): InvitacionRecompra[*]
+}
+class "Map<String, Producto>" as Map_String_Producto <<referencia>>
+class "List<Pedido>" as List_Pedido <<referencia>>
+class "Map<String, Cliente>" as Map_String_Cliente <<referencia>>
+class "List<Cliente>" as List_Cliente <<referencia>>
+class "List<InvitacionRecompra>" as List_InvitacionRecompra <<referencia>>
+class "Map<String, InvitacionRecompra>" as Map_String_InvitacionRecompra <<referencia>>
+class NotificationsService <<referencia>>
+class Cliente <<referencia>>
+class Carrito <<referencia>>
+class InvitacionRecompra <<referencia>>
+class Producto <<referencia>>
+
+CartService --> "1" Map_String_Producto
+ConsumptionService --> "1" ConsumptionEstimatorService
+ConsumptionService --> "1" List_Pedido
+ConsumptionService --> "1" Map_String_Cliente
+RepurchaseEstimatesService --> "1" List_Cliente
+RepurchaseEstimatesService --> "1" List_Pedido
+RepurchaseForecastService --> "1" ConsumptionEstimatorService
+RepurchaseForecastService --> "1" List_Cliente
+RepurchaseForecastService --> "1" List_InvitacionRecompra
+RepurchaseForecastService --> "1" Map_String_InvitacionRecompra
+RepurchaseForecastService --> "1" NotificationsService
+CartService ..> Carrito
+CartService ..> Cliente
+CartService ..> Producto
+ConsumptionService ..> Cliente
+RepurchaseEstimatesService ..> Cliente
+RepurchaseForecastService ..> InvitacionRecompra : «create»
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

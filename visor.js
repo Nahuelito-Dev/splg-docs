@@ -246,6 +246,9 @@
     }, { passive: false });
     lienzo.addEventListener("pointerdown", function (ev) {
       if (ev.button !== 0 && ev.pointerType === "mouse") return;
+      // Sin esto el navegador arranca su propio arrastre de la imagen (o
+      // selecciona el texto del SVG) y cancela el nuestro al primer movimiento.
+      ev.preventDefault();
       arrastrando = true;
       seMovio = false;
       inicioX = ev.clientX;
@@ -272,6 +275,7 @@
       }
       lienzo.classList.remove("arrastrando");
     }
+    lienzo.addEventListener("dragstart", function (ev) { ev.preventDefault(); });
     lienzo.addEventListener("pointerup", soltar);
     lienzo.addEventListener("pointercancel", soltar);
     window.addEventListener("keydown", function (ev) {

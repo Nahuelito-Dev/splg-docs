@@ -1,0 +1,29 @@
+classDiagram
+    direction LR
+
+    %% Módulo `rating` — generado por generar-clases-diseno.py
+
+    class RatingController {
+        <<controller>>
+        +create(@Body() dto: CreateRatingDto, @CurrentUser() user: AuthenticatedUser) Promise<RatingResponseDto>
+        +getSummary(@Param('userId', ParseUUIDPipe) userId: string, @CurrentDistributor() distributorId: string | null) Promise<RatingSummaryDto>
+        +findForUser(@Param('userId', ParseUUIDPipe) userId: string, @CurrentDistributor() distributorId: string | null) Promise<RatingResponseDto[]>
+    }
+
+    class RatingMapper {
+        <<mapper>>
+        +toDto(r: Rating) RatingResponseDto
+    }
+
+    class RatingService {
+        +create(dto: CreateRatingDto, fromUserId: string, role: RoleType) Promise<Rating>
+        +getSummaryForUser(toUserId: string, distributorId?: string | null) Promise<RatingSummaryDto>
+        +findForUser(toUserId: string, distributorId?: string | null) Promise<Rating[]>
+        -refreshDeliveryAverage(driverUserId: string) Promise<void>
+    }
+
+    RatingController ..> RatingService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% RatingService usa DeliveryService (módulo `delivery`)
+    %% RatingService usa OrderService (módulo `order`)

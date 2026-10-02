@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-007 Consultar Historial De Pedidos
+    title DSS — CU-007 Consultar Historial de Pedidos
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: consultarHistorialDePedidos(clienteId, pagina, limite)
     activate SIS

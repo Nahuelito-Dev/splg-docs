@@ -1,16 +1,14 @@
 sequenceDiagram
-    title DSS — CU-140 Programar un Mantenimiento de Vehiculo
+    title DSS — CU-140 Programar un Mantenimiento de Vehículo
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    ADM->>SIS: programarMantenimiento(vehiculoId, tipo, fechaPrevista, observacion)
+    ADM->>SIS: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
     activate SIS
     alt los datos son válidos
         SIS-->>ADM: mantenimiento agendado
-    else la fecha es anterior a hoy
-        SIS-->>ADM: operación rechazada
-    else el vehículo no existe
+    else el vehículo o el plan no existen
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS

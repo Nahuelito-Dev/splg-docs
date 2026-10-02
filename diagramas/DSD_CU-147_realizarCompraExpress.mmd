@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSD — CU-147 Realizar una Compra Express · realizarCompraExpress
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :OrderService
+    participant CLE as cliente:Cliente
+    participant PRO as producto:Producto
+
+    CLI->>+SRV: realizarCompraExpress(tipoGarrafa, medioDePago)
+    SRV->>+CLE: getDireccionPredeterminada()
+    CLE-->>-SRV: direccion
+    SRV->>SRV: verificarCoberturaExpress(direccion)
+    create participant PED as :Pedido
+    SRV->>PED: «create»(cliente, direccion, express, medioDePago)
+    SRV->>PRO: reservar(1)
+    SRV->>+PED: agregarItem(producto, 1)
+    PED->>+PRO: precioPara(1)
+    PRO-->>-PED: precioUnitario, subtotal
+    create participant ITM as :ItemPedido
+    PED->>ITM: «create»(producto, 1, precioUnitario, subtotal)
+    deactivate PED
+    SRV->>+PED: calcularTotal()
+    PED->>PED: aplicarRecargoExpress()
+    PED-->>-SRV: total
+    alt medioDePago es MERCADOPAGO
+        Note over SRV,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). Crea el Pago
+    end
+    Note over SRV,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Chofer en moto
+    SRV-->>-CLI: pedido

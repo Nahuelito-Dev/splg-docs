@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarSalud
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant HCS as :HealthCheckService
+    participant RDH as :RedisHealthIndicator
+    participant RDS as :RedisService
+
+    SIS->>+HCS: verificarSalud()
+    Note over HCS,RDH: PostgreSQL, memoria y disco: los verifican los indicadores de Terminus
+    HCS->>+RDH: isHealthy(redis)
+    RDH->>+RDS: ping()
+    RDS-->>-RDH: activo
+    RDH-->>-HCS: estado de Redis
+    HCS-->>-SIS: estado por componente

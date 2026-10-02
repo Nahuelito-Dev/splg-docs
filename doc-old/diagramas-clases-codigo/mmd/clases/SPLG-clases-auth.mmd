@@ -1,0 +1,41 @@
+classDiagram
+    direction LR
+
+    %% Módulo `auth` — generado por generar-clases-diseno.py
+
+    class AuthController {
+        <<controller>>
+        +checkToken() TokenValidoResponseDto
+        +login(@Body() dto: LoginDto) Promise<SesionIniciadaDto>
+        +dashboardLogin(@Body() dto: LoginDto, @Res([ passthrough: true ]) res: Response) Promise<SesionIniciadaDto>
+    }
+
+    class AuthGuard {
+        <<guard>>
+        +canActivate(context: ExecutionContext) Promise<boolean>
+        -resolveDistributor(user: User, request: Request, ignorarHeader = false) Promise<string | null>
+        -extractTokenFromHeader(request: Request) string | null
+        -getUser(user_email: string, request_source: RequestSource) Promise<User>
+        -assertCuentaHabilitada(user: User) void
+        -validateUserRoleForApp(user: User, requestSource: RequestSource) void
+        -extractRequestSourceFromHeader(request: Request) RequestSource | null
+    }
+
+    class AuthService {
+        +checkIfTokenValid() TokenValidoResponseDto
+        +login(dto: LoginDto) Promise<SesionIniciadaDto>
+        -assertCuentaHabilitada(email: string) Promise<void>
+        -aSesionIniciada(credencial: UserCredential) Promise<SesionIniciadaDto>
+        +decodeToken(token: string) Promise<TokenDecodificado>
+        +loginDashboard(token: string) Promise<void>
+    }
+
+    AuthController ..> AuthService : usa
+    AuthGuard ..> AuthService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% AuthGuard usa DistributorService (módulo `distributor`)
+    %% AuthGuard usa UsersService (módulo `users`)
+    %% AuthService usa AdminService (módulo `admin`)
+    %% AuthService usa FirebaseAuthPort (módulo `firebase`)
+    %% AuthService usa UsersService (módulo `users`)

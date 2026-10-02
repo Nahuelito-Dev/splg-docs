@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-174 Adjuntar la Fotografía de un Reclamo · adjuntarFotoAlReclamo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :ClaimsService
+    participant COL as :Map#lt;String, Reclamo#gt;
+    participant REC as reclamo:Reclamo
+    participant STO as :StoragePort
+
+    CLI->>+SRV: adjuntarFotoAlReclamo(reclamoId, imagen)
+    SRV->>+COL: get(reclamoId)
+    COL-->>-SRV: reclamo
+    SRV->>+REC: esDelCliente(cliente)
+    REC-->>-SRV: propio
+    SRV->>STO: put(clave, imagen)
+    SRV->>+REC: adjuntarFoto(clave)
+    REC-->>-SRV: claveAnterior
+    opt El reclamo ya tenía una fotografía
+        SRV->>STO: remove(claveAnterior)
+    end
+    SRV-->>-CLI: reclamo

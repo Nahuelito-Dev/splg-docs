@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-094 Actualizar Ubicacion Del Cliente
+    title DSS — CU-094 Actualizar Ubicación del Cliente
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
-    CLI->>SIS: actualizarUbicacionDelCliente(clienteId, coordenadas, ubicacionDescriptiva)
+    CLI->>SIS: actualizarUbicacionDelCliente(clienteId, coordenadas)
     activate SIS
     alt las coordenadas no son un par latitud,longitud válido
         SIS-->>CLI: rechazo por coordenadas inválidas

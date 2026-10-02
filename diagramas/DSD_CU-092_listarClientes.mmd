@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-092 Consultar Listado de Clientes · listarClientes
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomersService
+    participant LST as :List#lt;Cliente#gt;
+
+    ADM->>+SRV: listarClientes(pagina, limite)
+    SRV->>+LST: buscar(pagina, limite)
+    LST-->>-SRV: clientes, total
+    SRV-->>-ADM: clientes, total

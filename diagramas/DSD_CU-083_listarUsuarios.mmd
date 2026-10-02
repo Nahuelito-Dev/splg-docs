@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-083 Buscar / Listar Usuarios · listarUsuarios
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UsersService
+    participant COL as :List#lt;Usuario#gt;
+
+    ADM->>+SRV: listarUsuarios(pagina, limite, textoDeBusqueda)
+    SRV->>+COL: buscar(textoDeBusqueda, pagina, limite)
+    COL-->>-SRV: usuarios, total
+    SRV-->>-ADM: usuarios, total

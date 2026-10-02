@@ -1,15 +1,15 @@
 sequenceDiagram
-    title DSS — CU-046 Consultar Direcciones De Entrega Del Cliente
+    title DSS — CU-046 Consultar Direcciones de Entrega del Cliente
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
-    CLI->>SIS: crearDireccion(calle, ciudad, codigoPostal, latitud, longitud, indicaciones, esPredeterminada)
+    CLI->>SIS: registrarDireccionDeEntrega(datos)
     activate SIS
     SIS-->>CLI: dirección creada (direccionId)
     deactivate SIS
 
-    CLI->>SIS: listarDireccionesDelUsuario(usuarioId)
+    CLI->>SIS: consultarDireccionesDeEntrega(usuarioId)
     activate SIS
     SIS-->>CLI: listado de direcciones
     deactivate SIS
@@ -22,14 +22,14 @@ sequenceDiagram
     end
 
     opt corrección de datos
-        CLI->>SIS: actualizarDireccion(direccionId, datos)
+        CLI->>SIS: editarDireccionDeEntrega(direccionId, cambios)
         activate SIS
         SIS-->>CLI: dirección actualizada
         deactivate SIS
     end
 
     opt baja de una dirección
-        CLI->>SIS: eliminarDireccion(direccionId)
+        CLI->>SIS: eliminarDireccionDeEntrega(direccionId)
         activate SIS
         alt la dirección existe y es del cliente
             SIS-->>CLI: dirección eliminada

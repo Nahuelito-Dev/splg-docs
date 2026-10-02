@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-115 Consultar Vehículos de un Chofer · consultarVehiculosDelChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: consultarVehiculosDelChofer(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: getVehiculos()
+    CHO-->>-SRV: vehiculos
+    SRV-->>-ADM: vehiculos

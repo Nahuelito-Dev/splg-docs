@@ -1,0 +1,84 @@
+@startuml
+title Modelo físico — Despacho y logística
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+skinparam linetype polyline
+
+entity "route_batch" as e_route_batch {
+  {field} **batch_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} status : route_batch_status_enum *
+  {field} total_weight_kg : numeric(10,2) *
+  {field} //delivery_id// : uuid <<FK>>
+  {field} created_at : timestamptz *
+}
+entity "order_dispatch_offer" as e_order_dispatch_offer {
+  {field} **offer_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //driver_id// : uuid * <<FK>>
+  {field} status : order_dispatch_offer_status_enum *
+  {field} expiresAt : timestamptz *
+  {field} offeredAt : timestamptz *
+}
+entity "route_batch_offer" as e_route_batch_offer {
+  {field} **offer_id** : uuid * <<PK>>
+  {field} //batch_id// : uuid * <<FK>>
+  {field} //delivery_id// : uuid * <<FK>>
+  {field} status : proposal_status_enum *
+  {field} expires_at : timestamptz *
+  {field} responded_at : timestamptz
+}
+entity "route_batch_stop" as e_route_batch_stop {
+  {field} **stop_id** : uuid * <<PK>>
+  {field} //batch_id// : uuid * <<FK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} sequence : integer *
+}
+entity "delivery" as e_delivery #F1F1F1 {
+}
+entity "user" as e_user #F1F1F1 {
+}
+entity "order" as e_order #F1F1F1 {
+}
+
+e_delivery |o--o{ e_route_batch : delivery_id
+e_user ||--o{ e_order_dispatch_offer : driver_id
+e_order ||--o{ e_order_dispatch_offer : order_id
+e_route_batch ||--o{ e_route_batch_offer : batch_id
+e_delivery ||--o{ e_route_batch_offer : delivery_id
+e_route_batch ||--o{ e_route_batch_stop : batch_id
+e_order ||--o{ e_route_batch_stop : order_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

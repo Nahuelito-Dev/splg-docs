@@ -1,0 +1,110 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class AuthService <<fachada>> {
+  + iniciarSesion(correo: Cadena,\n      contrasena: Cadena): Registro
+  + validarSesion(): Booleano
+}
+class RegistroService <<fachada>> {
+  + autorizarAlta(solicitante: Usuario, rolChofer: TipoDeRol,\n      distribuidoraId: Identificador)
+  + autorizarAlta(solicitante: Usuario, rol: Rol,\n      distribuidoraId: Identificador): Usuario
+  + crearPrimerSuperAdministrador(nombreCompleto: Cadena,\n      correo: Cadena, telefono: Cadena,\n      contrasena: Cadena): Usuario
+  + registrar(datosPersonales: Registro, rol: Rol,\n      distribuidoraId: Identificador)
+  + registrarAdministrador(nombreCompleto: Cadena,\n      correo: Cadena, telefono: Cadena,\n      contrasena: Cadena, rol: Cadena,\n      distribuidoraId: Identificador): Usuario
+  + registrarChofer(datosPersonales: Registro,\n      datosDelChofer: Registro,\n      distribuidoraId: Identificador): Usuario
+  + registrarse(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, contrasena: Cadena,\n      datosDelCliente: Registro): Usuario
+}
+interface FirebaseAuthPort <<interface>> <<puerto>> {
+  + createUserSafe(correo: Cadena, contrasena: Cadena,\n      nombreCompleto: Cadena, telefono: Cadena): Registro
+  + deleteUserSafe(cuenta: Registro)
+  + generatePasswordResetLink(correo: Cadena,\n      ajustes: Registro): Cadena
+  + generatePasswordResetLink(destinatario: Cadena,\n      ajustes: Registro): Cadena
+  + updateUser(cuenta: Registro, correoNuevo: Cadena)
+  + updateUser(cuenta: Registro, deshabilitada: Booleano)
+  + verifyIdToken(token: Cadena): Registro
+}
+interface FcmPort <<interface>> <<puerto>> {
+  + sendToToken(token: Cadena, notificacion: Registro)
+  + sendToToken(token: Cadena, confirmacion: Registro)
+}
+class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
+class "List<Administrador>" as List_Administrador <<referencia>>
+class Administrador <<referencia>>
+class Chofer <<referencia>>
+class Usuario <<referencia>>
+class Cliente <<referencia>>
+
+AuthService --> "1" FirebaseAuthPort
+AuthService --> "1" Map_String_Usuario
+RegistroService --> "1" FirebaseAuthPort
+RegistroService --> "1" List_Administrador
+RegistroService --> "1" Map_String_Usuario
+AuthService ..> Usuario
+RegistroService ..> Administrador : «create»
+RegistroService ..> Chofer : «create»
+RegistroService ..> Cliente : «create»
+RegistroService ..> Usuario : «create»
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

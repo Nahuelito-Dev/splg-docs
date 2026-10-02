@@ -1,0 +1,156 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class Distribuidora {
+  - nombre: Cadena
+  - razonSocial: Cadena
+  - cuit: Cadena
+  - estado: EstadoDeDistribuidora
+  + «create» Distribuidora(nombre: Cadena,\n      identificadorCorto: Cadena, razonSocial: Cadena,\n      cuit: Cadena, correo: Cadena, telefono: Cadena,\n      logo: Archivo, plan: Cadena)
+  + crearConfiguracion(despacho: ProcesoConfigurable,\n      radiosKm: Decimal,\n      ventanaDeAceptacion: Entero): ConfiguracionModulo
+  + crearConfiguracion(proceso: ProcesoConfigurable,\n      parametros: Registro,\n      administrador: Administrador): ConfiguracionModulo
+  + crearConfiguracion(tareasProgramadas: ProcesoConfigurable,\n      intervalos: Registro,\n      administrador: Administrador): ConfiguracionModulo
+  + crearFranja(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero): FranjaHoraria
+  + darDeBaja()
+  + definirZona(nombre: Cadena, poligono: Poligono,\n      recargo: Moneda, activa: Booleano): ZonaCobertura
+  + getAdministradores(): Administrador[*]
+  + getChoferes(pagina: Entero, limite: Entero): Chofer[*]
+  + getChoferesActivos(pagina: Entero,\n      limite: Entero): Chofer[*]
+  + getConfiguracion(despacho: ProcesoConfigurable): ConfiguracionModulo
+  + getConfiguracion(proceso: ProcesoConfigurable): ConfiguracionModulo
+  + getConfiguracion(tareasProgramadas: ProcesoConfigurable): ConfiguracionModulo
+  + getFranjasActivas(): FranjaHoraria[*]
+  + getProductosActivos(pagina: Entero,\n      limite: Entero): Producto[*], Entero
+  + getProductosDisponibles(): Producto[*]
+  + getZonaQueCubre(latitud: Decimal,\n      longitud: Decimal): ZonaCobertura
+  + getZonas(): ZonaCobertura[*]
+  + incorporarEnvase(numeroDeSerie: Cadena,\n      tipoDeProducto: Cadena, deposito: Moneda): Envase
+  + modificar(datos: Registro)
+  + tieneProducto(tipo: Cadena): Booleano
+}
+class ConfiguracionModulo {
+  - modulo: ProcesoConfigurable
+  - parametros: Registro
+  + «create» ConfiguracionModulo(despacho: ProcesoConfigurable,\n      radiosKm: Decimal, ventanaDeAceptacion: Entero)
+  + «create» ConfiguracionModulo(proceso: ProcesoConfigurable,\n      parametros: Registro, administrador: Administrador)
+  + «create» ConfiguracionModulo(tareasProgramadas: ProcesoConfigurable,\n      intervalos: Registro, administrador: Administrador)
+  + actualizar(parametros: Registro,\n      administrador: Administrador)
+  + actualizar(intervalos: Registro,\n      administrador: Administrador)
+  + actualizar(radiosKm: Decimal,\n      ventanaDeAceptacion: Entero,\n      administrador: Administrador)
+}
+class Usuario {
+  - nombre: Cadena
+  - correo: Cadena
+  - telefono: Cadena
+  - bloqueado: Booleano
+  + «create» Usuario(datosPersonales: Registro,\n      rolChofer: TipoDeRol, cuenta: Registro)
+  + «create» Usuario(datosPersonales: Registro, rol: Rol,\n      cuenta: Registro)
+  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, rolCliente: TipoDeRol,\n      cuenta: Registro)
+  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, rol: Rol, cuenta: Registro)
+  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena,\n      rolAdministradorGeneral: TipoDeRol,\n      cuenta: Registro)
+  + actualizarPerfil(datos: Registro)
+  + calcularPromedio()
+  + calificar(pedido: Pedido, calificado: Usuario,\n      estrellas: Entero, comentario: Cadena): Calificacion
+  + cambiarBloqueo(bloquear: Booleano)
+  + cambiarCorreo(correoNuevo: Cadena)
+  + darDeBaja()
+  + estaHabilitado(): Booleano
+  + getCalificacionesRecibidas(): Calificacion[*]
+  + getChofer(): Chofer
+  + getResumenDeCalificaciones(): Decimal, Entero
+  + getRol(): Rol
+}
+class Rol {
+  - tipo: Cadena
+  + «create» Rol(tipo: Cadena)
+  + actualizar(datos: Registro)
+  + validarEliminable()
+  + validarModificable()
+}
+class Administrador {
+  + «create» Administrador(usuario: Usuario,\n      distribuidoraId: Identificador)
+}
+class AsientoAuditoria {
+  - operacion: Cadena
+  - recurso: Cadena
+  - aplicacion: Cadena
+  - resultado: ResultadoDeAuditoria
+  - cambios: Registro
+  - fecha: FechaHora
+  + «create» AsientoAuditoria(autor: Usuario, rol: Rol,\n      distribuidoraId: Identificador, operacion: Cadena,\n      recurso: Cadena, origen: Cadena, resultado: Cadena,\n      codigo: Entero, motivo: Cadena)
+  + depurarCredenciales()
+}
+class Cliente <<referencia>>
+class Chofer <<referencia>>
+class Pedido <<referencia>>
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Usuario <|-- Chofer
+Usuario <|-- Administrador
+Usuario "0..*" -- "0..1" Rol : tiene asignado
+Distribuidora "1" --> "0..*" Chofer : emplea
+Distribuidora "0..1" -- "0..*" Administrador : emplea
+Distribuidora "1" -- "0..*" Pedido : gestiona
+Distribuidora "1" *--> "0..*" ConfiguracionModulo : parametriza
+Usuario "0..1" -- "0..*" AsientoAuditoria : origina
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

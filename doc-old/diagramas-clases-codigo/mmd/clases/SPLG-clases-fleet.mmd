@@ -1,0 +1,153 @@
+classDiagram
+    direction LR
+
+    %% Módulo `fleet` — generado por generar-clases-diseno.py
+
+    class CarAssignmentsController {
+        <<controller>>
+        +historial(@Param('id', ParseUUIDPipe) id: string, @Query() pagination: PaginationDto, @Res([ passthrough: true ]) res: Response, @CurrentDistributor([ required: true ]) distributorId: string) Promise<VehicleAssignmentHistoryResponseDto[]>
+    }
+
+    class CarDocumentsController {
+        <<controller>>
+        +findAll(@Param('carId', ParseUUIDPipe) carId: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetVehicleDocumentsResponseDto>
+    }
+
+    class DeliveryDocumentsController {
+        <<controller>>
+        +findAll(@Param('id', ParseUUIDPipe) deliveryId: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetDriverDocumentsResponseDto>
+    }
+
+    class DeliveryVehicleController {
+        <<controller>>
+        +miVehiculo(@CurrentUser() user: AuthenticatedUser, @CurrentDistributor([ required: true ]) distributorId: string) Promise<VehicleInUseResponseDto | null>
+        +vehiculoDelChofer(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<VehicleInUseResponseDto | null>
+        +ponerEnUso(@Param('id', ParseUUIDPipe) id: string, @Body() dto: AssignVehicleDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor([ required: true ]) distributorId: string) Promise<VehicleInUseResponseDto>
+        +liberar(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor([ required: true ]) distributorId: string) Promise<MessageResponseDto>
+        +historial(@Param('id', ParseUUIDPipe) id: string, @Query() pagination: PaginationDto, @Res([ passthrough: true ]) res: Response, @CurrentDistributor([ required: true ]) distributorId: string) Promise<VehicleAssignmentHistoryResponseDto[]>
+        -obtenerVehiculoEnUso(deliveryId: string, distributorId: string) Promise<VehicleInUseResponseDto | null>
+    }
+
+    class FleetAttachmentMapper {
+        <<mapper>>
+        +toDto(a: MaintenanceTaskAttachment) FleetTaskAttachmentResponseDto
+    }
+
+    class FleetAttachmentService {
+        +upload(taskId: string, distributorId: string, file: Express.Multer.File | undefined, uploadedByUserId: string) Promise<MaintenanceTaskAttachment>
+        +list(taskId: string, distributorId: string) Promise<MaintenanceTaskAttachment[]>
+        +getDownload(taskId: string, attachmentId: string, distributorId: string) Promise<FleetAttachmentDownload>
+        +remove(taskId: string, attachmentId: string, distributorId: string) Promise<void>
+        -findOneOrThrow(taskId: string, attachmentId: string, distributorId: string) Promise<MaintenanceTaskAttachment>
+    }
+
+    class FleetDispatchLockService {
+        +choferesInhabilitados(driverUserIds: string[], distributorId?: string | null) Promise<Set<string>>
+        +motivosDeInhabilitacion(driverUserId: string, distributorId?: string | null) Promise<string[]>
+        +assertChoferHabilitado(driverUserId: string, distributorId?: string | null) Promise<void>
+        +vehiculoEnUsoDelChofer(driverUserId: string, distributorId?: string | null) Promise<VehiculoEnUsoSnapshot | null>
+        -tareasInhabilitantesPorChofer(driverUserIds: string[], distributorId?: string | null) Promise<InhabilitacionesPorChofer>
+        -tareasAbiertasDe(deliveryIds: string[], carIds: string[], distributorId?: string | null) Promise<MaintenanceTask[]>
+        -agruparPorSujeto(tareas: MaintenanceTask[]) void
+        -filtrarInhabilitantes(tareas: MaintenanceTask[]) MaintenanceTask[]
+    }
+
+    class FleetExpirationsController {
+        <<controller>>
+        +find(@Query() query: FleetExpirationsQueryDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetExpirationsResponseDto>
+    }
+
+    class FleetExpirationsService {
+        +find(distributorId: string, withinDays: number) Promise<FleetExpirationsResponseDto>
+        -aEntry(task: MaintenanceTask) FleetExpirationEntryDto | null
+        -grupoDeVehiculo(mapa: Map<string, FleetVehicleExpirationsDto>, car: NonNullable<MaintenanceTask['car']>) FleetVehicleExpirationsDto
+        -grupoDeChofer(mapa: Map<string, FleetDriverExpirationsDto>, delivery: NonNullable<MaintenanceTask['delivery']>) FleetDriverExpirationsDto
+    }
+
+    class FleetPlanController {
+        <<controller>>
+        +create(@Body() dto: CreateFleetPlanDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetPlanResponseDto>
+        +findAll(@Query() query: QueryFleetPlanDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetPlanResponseDto[]>
+        +findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetPlanResponseDto>
+        +update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateFleetPlanDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetPlanResponseDto>
+    }
+
+    class FleetPlanMapper {
+        <<mapper>>
+        +toDto(p: MaintenancePlan) FleetPlanResponseDto
+    }
+
+    class FleetPlanSeedListener {
+        <<listener>>
+        +handle(evento: DistribuidoraCreadaEvent) Promise<void>
+    }
+
+    class FleetPlanService {
+        +create(dto: CreateFleetPlanDto, distributorId: string) Promise<MaintenancePlan>
+        +findAll(distributorId: string, query: QueryFleetPlanDto) Promise<MaintenancePlan[]>
+        +findOne(id: string, distributorId: string) Promise<MaintenancePlan>
+        +update(id: string, dto: UpdateFleetPlanDto, distributorId: string) Promise<MaintenancePlan>
+        -assertIntervaloCoherente(dto: [ trigger: MaintenanceTrigger, intervalKm?: number, intervalMonths?: number, ]) void
+    }
+
+    class FleetTaskController {
+        <<controller>>
+        +create(@Body() dto: CreateFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetTaskResponseDto>
+        +findAll(@Query() query: QueryFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetTaskResponseDto[]>
+        +findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetTaskResponseDto>
+        +update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetTaskResponseDto>
+        +close(@Param('id', ParseUUIDPipe) id: string, @Body() dto: CloseFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetTaskResponseDto>
+        +cancel(@Param('id', ParseUUIDPipe) id: string, @Body() dto: CancelFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetTaskResponseDto>
+        +uploadAttachment(@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentDistributor([ required: true ]) distributorId: string, @CurrentUser('user_id') userId: string) Promise<FleetTaskAttachmentResponseDto>
+        +listAttachments(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<FleetTaskAttachmentResponseDto[]>
+        +downloadAttachment(@Param('id', ParseUUIDPipe) id: string, @Param('attachmentId', ParseUUIDPipe) attachmentId: string, @CurrentDistributor([ required: true ]) distributorId: string, @Res() res: Response) Promise<void>
+        +removeAttachment(@Param('id', ParseUUIDPipe) id: string, @Param('attachmentId', ParseUUIDPipe) attachmentId: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<void>
+    }
+
+    class FleetTaskMapper {
+        <<mapper>>
+        +toDto(task: MaintenanceTask, attachments?: MaintenanceTaskAttachment[]) FleetTaskResponseDto
+    }
+
+    class FleetTaskService {
+        +create(dto: CreateFleetTaskDto, distributorId: string) Promise<MaintenanceTask>
+        +findAll(distributorId: string, query: QueryFleetTaskDto) Promise<MaintenanceTask[]>
+        +findOne(id: string, distributorId: string) Promise<MaintenanceTask>
+        +update(id: string, dto: UpdateFleetTaskDto, distributorId: string) Promise<MaintenanceTask>
+        +close(id: string, dto: CloseFleetTaskDto, distributorId: string) Promise<MaintenanceTask>
+        +cancel(id: string, dto: CancelFleetTaskDto, distributorId: string) Promise<MaintenanceTask>
+        +listByCar(carId: string, distributorId: string) Promise<
+        +motivosDeInhabilitacionDeVehiculo(carId: string, distributorId: string) Promise<string[]>
+        +assertVehiculoHabilitado(carId: string, distributorId: string) Promise<void>
+        +listByDelivery(deliveryId: string, distributorId: string) Promise<
+        -calcularBloqueo(tasks: MaintenanceTask[]) boolean
+        -assertAbierta(task: MaintenanceTask) void
+        -findPlanOrThrow(planId: string, distributorId: string) Promise<MaintenancePlan>
+        -assertSujetoCoherente(plan: MaintenancePlan, dto: CreateFleetTaskDto, distributorId: string) Promise<void>
+    }
+
+    class VehicleAssignmentMapper {
+        <<mapper>>
+        +toVehicleInUseDto(a: VehicleAssignment, isLocked: boolean) VehicleInUseResponseDto
+        +toHistoryDto(a: VehicleAssignment) VehicleAssignmentHistoryResponseDto
+    }
+
+    CarDocumentsController ..> FleetTaskService : usa
+    DeliveryDocumentsController ..> FleetTaskService : usa
+    DeliveryVehicleController ..> FleetTaskService : usa
+    FleetAttachmentService ..> FleetTaskService : usa
+    FleetExpirationsController ..> FleetExpirationsService : usa
+    FleetPlanController ..> FleetPlanService : usa
+    FleetTaskController ..> FleetTaskService : usa
+    FleetTaskController ..> FleetAttachmentService : usa
+    FleetTaskService ..> FleetDispatchLockService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% CarAssignmentsController usa VehicleAssignmentService (módulo `car`)
+    %% DeliveryVehicleController usa DeliveryService (módulo `delivery`)
+    %% DeliveryVehicleController usa VehicleAssignmentService (módulo `car`)
+    %% FleetAttachmentService usa StoragePort (módulo `storage`)
+    %% FleetDispatchLockService usa DeliveryService (módulo `delivery`)
+    %% FleetDispatchLockService usa VehicleAssignmentService (módulo `car`)
+    %% FleetTaskService usa CarService (módulo `car`)
+    %% FleetTaskService usa DeliveryService (módulo `delivery`)

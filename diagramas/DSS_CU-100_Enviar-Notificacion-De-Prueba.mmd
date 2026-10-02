@@ -1,18 +1,19 @@
 sequenceDiagram
-    title DSS — CU-100 Enviar Notificacion De Prueba
+    title DSS — CU-100 Enviar Notificación de Prueba
     autonumber
-    actor ADM as Administrador General
-    participant SIS as Sistema
-    actor CLI as Usuario Destinatario
+    actor ADM as Administrador General (ACT-05)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
 
-    ADM->>SIS: enviarNotificacionDePrueba(usuarioId, titulo, mensaje)
+    ADM->>SIS: enviarNotificacionDePrueba(token, titulo, mensaje)
     activate SIS
-    alt el usuario tiene al menos un dispositivo registrado
-        SIS-)CLI: notificación de prueba
+    alt el proveedor de mensajería acepta el envío al dispositivo del token
+        SIS-)CLI: notificarPrueba(titulo, mensaje)
         SIS-->>ADM: notificación enviada
-    else el usuario no tiene dispositivos registrados
-        SIS-->>ADM: no se pudo enviar (sin dispositivos registrados)
-    else quien pide no es el Administrador General
+    else el proveedor rechaza el envío (token inválido)
+        SIS-->>ADM: no se pudo enviar (resultado con el error del proveedor)
+    else Quien pide no es el Administrador General
         SIS-->>ADM: acceso denegado
     end
     deactivate SIS
+    Note over ADM,CLI: El dispositivo identificado por el token puede ser<br/>el de un Cliente (ACT-01) o el de un Chofer (ACT-02)

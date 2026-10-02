@@ -1,0 +1,24 @@
+sequenceDiagram
+    title DSD — CU-076 Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :ReservationService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as reserva:Pedido
+    participant ITM as item:ItemPedido
+    participant PRO as producto:Producto
+
+    SIS->>+SRV: expirarReservasSinSenia()
+    SRV->>+COL: buscarReservasSinSeniaAnterioresA(plazo)
+    COL-->>-SRV: reservas
+    loop Por cada reserva vencida
+        SRV->>+PED: cancelar()
+        PED->>PED: validarTransicion(cancelado)
+        loop Por cada item del Pedido
+            PED->>+ITM: restituirStock()
+            ITM->>PRO: restituir(cantidad)
+            deactivate ITM
+        end
+        deactivate PED
+    end
+    deactivate SRV

@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-165 Consultar El Historial De Choferes De Un Vehiculo
+autonumber
+participant CTRL as CarAssignmentsController
+participant VSRV as VehicleAssignmentService
+participant CREP as RepositoryCar
+participant AREP as RepositoryVehicleAssignment
+
+CTRL->>VSRV: historialDelVehiculo(id, distributorId, pagination)
+activate VSRV
+VSRV->>CREP: findOne(where car_id y distributor_id, withDeleted)
+activate CREP
+CREP-->>VSRV: Car o null
+deactivate CREP
+alt vehículo inexistente o de otra distribuidora
+    VSRV-->>CTRL: NotFoundException
+else vehículo del tenant, aunque esté dado de baja
+    VSRV->>AREP: findAndCount(where car_id, relations car delivery delivery.user, order assigned_at DESC, take, skip)
+    activate AREP
+    AREP-->>VSRV: filas y total
+    deactivate AREP
+    VSRV-->>CTRL: filas y total
+    CTRL->>CTRL: informarTotal(res, total) en X-Total-Count
+    CTRL->>CTRL: filas.map(VehicleAssignmentMapper.toHistoryDto)
+end
+deactivate VSRV

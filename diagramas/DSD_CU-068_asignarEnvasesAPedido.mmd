@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-068 Asignar Envases a un Pedido · asignarEnvasesAPedido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :CylinderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant ENV as envase:Envase
+
+    CHF->>+SRV: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    Note over SRV,ENV: Vigencia: ver DSD de verificarVigenciaAlAsignar (CU-135). Rechaza la asignación completa si alguna revisión venció
+    loop Por cada numeroDeSerie de numerosDeSerie
+        SRV->>+ENVS: get(numeroDeSerie)
+        ENVS-->>-SRV: envase
+        SRV->>+ENV: despachar(pedido, usuario)
+        ENV->>ENV: validarTransicion(despachado)
+        create participant NMOV as nuevo:MovimientoEnvase
+        ENV->>NMOV: «create»(pedido, usuario, nota)
+        deactivate ENV
+    end
+    SRV-->>-CHF: envases

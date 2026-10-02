@@ -1,14 +1,16 @@
 sequenceDiagram
-    title DSS — CU-102 Probar El Servicio De Correo
+    title DSS — CU-102 Probar el Servicio de Correo
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
 
-    ADM->>SIS: probarServicioDeCorreo(destinatario)
+    SUP->>SIS: probarServicioDeCorreo(destinatario)
     activate SIS
     alt el servicio de correo responde
-        SIS-->>ADM: correo de prueba enviado
+        SIS-->>SUP: correo de prueba enviado
     else el servicio de correo falla
-        SIS-->>ADM: error del servicio de correo
+        SIS-->>SUP: error del servicio de correo
+    else Quien pide no es el Administrador General
+        SIS-->>SUP: acceso denegado
     end
     deactivate SIS

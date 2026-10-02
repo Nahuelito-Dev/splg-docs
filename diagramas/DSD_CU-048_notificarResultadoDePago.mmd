@@ -1,0 +1,35 @@
+sequenceDiagram
+    title DSD — CU-048 Procesar Pago con MercadoPago · notificarResultadoDePago
+    autonumber
+    actor MPG as MercadoPago (ACT-06)
+    participant CNF as :ConfirmPaymentUseCase
+    participant PAS as :PaymentGatewayPort
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PGO as pago:Pago
+    participant RT as :RealtimeDispatchPort
+    participant NOT as :NotificationPort
+
+    MPG->>+CNF: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
+    CNF->>+PAS: verifyWebhookSignature(firma, identificadorDelPago)
+    PAS-->>-CNF: firmaValida
+    alt La firma es válida y la notificación es de un pago
+        CNF->>+PAS: getPayment(identificadorDelPago)
+        PAS-->>-CNF: estado, referenciaExterna
+        CNF->>+COL: get(referenciaExterna)
+        COL-->>-CNF: pedido
+        CNF->>+PED: getPago(identificadorDelPago)
+        PED-->>-CNF: pago
+        CNF->>PGO: registrarResultado(identificadorDelPago, estado)
+        alt El pago está aprobado y el pedido es una reserva
+            CNF->>PED: confirmarSenia()
+        else El pago está aprobado y el pedido es normal
+            CNF->>PED: marcarPagado(identificadorDelPago)
+            Note over CNF,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+        opt Es la primera confirmación del pago aprobado
+            CNF-)RT: notifyCustomer(cliente, pedido, tipo)
+            CNF-)NOT: sendPaymentApprovedPush(cliente, pedido, esSena)
+        end
+    end
+    CNF-->>-MPG: recibido

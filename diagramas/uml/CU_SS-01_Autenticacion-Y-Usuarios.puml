@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -74,10 +74,12 @@ A03 -[#8C4A9E]- U084
 A03 -[#8C4A9E]- U085
 A03 -[#8C4A9E]- U091
 A04 -[#8A6D1F]- U084
-A05 -[#B4432B]- U091
+A05 --|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U002 ..> U082 : <<include>>
 U003 ..> U082 : <<include>>
+U050 ..> U083 : <<include>>
+U085 ..> U083 : <<include>>
 
 @enduml

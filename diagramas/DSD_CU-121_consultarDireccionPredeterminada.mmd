@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-121 Consultar la Dirección Predeterminada · consultarDireccionPredeterminada
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, Cliente#gt;
+    participant CLE as cliente:Cliente
+
+    CLI->>+SRV: consultarDireccionPredeterminada(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: cliente
+    SRV->>+CLE: getDireccionPredeterminada()
+    CLE-->>-SRV: direccion
+    SRV-->>-CLI: direccion

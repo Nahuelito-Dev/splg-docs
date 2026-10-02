@@ -1,0 +1,145 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class Producto {
+  - tipo: Cadena
+  - pesoEnKilos: Decimal
+  - precio: Moneda
+  - stock: Entero
+  - activo: Booleano
+  + «create» Producto(distribuidora: Distribuidora,\n      tipo: Cadena, peso: Decimal, precio: Moneda,\n      stockInicial: Entero, descripcion: Cadena)
+  + actualizarPrecio(precio: Moneda)
+  + agregarPromocion(cantidad: Entero, descuento: Decimal)
+  + ajustarStock(variacion: Entero)
+  + desactivar()
+  + estaDisponibleEn(distribuidoraId: Identificador): Booleano
+  + getPrecio(): Moneda
+  + precioPara(cantidad: Entero): Moneda
+  + reactivar()
+  + reemplazarPromociones(promociones: Promocion[*])
+  + reservar(cantidad: Entero)
+  + restituir(cantidad: Entero)
+  + validarSinRepetir(promociones: Promocion[*])
+  + validarStockResultante(variacion: Entero)
+}
+class Promocion {
+  - cantidad: Entero
+  - descuento: Decimal
+  + «create» Promocion(cantidad: Entero, descuento: Decimal)
+}
+class Envase {
+  - numeroDeSerie: Cadena
+  - estado: EstadoDelEnvase
+  - deposito: Moneda
+  - /vencimiento: Fecha
+  + «create» Envase(numeroDeSerie: Cadena,\n      tipoDeProducto: Cadena, deposito: Moneda)
+  + abrirCaso()
+  + actualizarVigencia(fecha: Fecha, vencimiento: Fecha)
+  + darDeBaja()
+  + despachar(pedido: Pedido, usuario: Usuario)
+  + diasHastaElVencimiento()
+  + entregarAlCliente(pedido: Pedido)
+  + estaVigente(hoy: Fecha): Booleano
+  + fueDevuelto(): Booleano
+  + getMovimientos(): MovimientoEnvase[*]
+  + getResumen()
+  + getVigencia(): Fecha, Entero
+  + marcarParaRetiro(pedido: Pedido)
+  + pasarA(estadoDestino: EstadoDelEnvase, pedido: Pedido,\n      cliente: Cliente, observacion: Cadena)
+  + registrarRevision(fecha: Fecha, resultado: Cadena,\n      vencimiento: Fecha)
+  + validarFechas(fecha: Fecha, vencimiento: Fecha)
+  + validarTransicion(estadoDestino: EstadoDelEnvase)
+}
+class MovimientoEnvase {
+  - desde: EstadoDelEnvase
+  - hacia: EstadoDelEnvase
+  - fecha: FechaHora
+  + «create» MovimientoEnvase(estadoDestino: EstadoDelEnvase)
+  + «create» MovimientoEnvase(pedido: Pedido,\n      usuario: Usuario, nota: Cadena)
+  + «create» MovimientoEnvase(estadoOrigen: EstadoDelEnvase,\n      estadoDestino: EstadoDelEnvase, pedido: Pedido,\n      usuario: Usuario, observacion: Cadena)
+}
+class RevisionEnvase {
+  - fecha: FechaHora
+  - resultado: ResultadoDeRevision
+  - proximaRevision: FechaHora
+  + «create» RevisionEnvase(fecha: Fecha, resultado: Cadena,\n      vencimiento: Fecha)
+}
+class Distribuidora <<referencia>>
+class Cliente <<referencia>>
+class Pedido <<referencia>>
+class Usuario <<referencia>>
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Distribuidora "1" -- "0..*" Producto : comercializa
+Distribuidora "1" --> "0..*" Envase : posee
+Cliente "0..*" -- "0..1" Producto : usa habitualmente
+Producto "1" *--> "0..*" Promocion : ofrece
+Producto "0..1" -- "0..*" Envase : describe
+Envase "1" *--> "0..*" MovimientoEnvase : registra
+Envase "1" *--> "0..*" RevisionEnvase : se somete a
+Pedido "0..1" -- "0..*" MovimientoEnvase : origina
+Usuario "0..1" -- "0..*" MovimientoEnvase : ejecuta
+Cliente "0..1" -- "0..*" Envase : tiene en su poder
+Pedido "0..1" -- "0..*" Envase : despacha
+Pedido ..> Producto
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

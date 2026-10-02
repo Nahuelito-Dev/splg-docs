@@ -1,0 +1,94 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class CasoRecupero {
+  - escalon: Entero
+  - depositoComprometido: Moneda
+  - estado: EstadoDelCasoDeRecupero
+  - resolucion: Cadena
+  + «create» CasoRecupero(cliente: Cliente, deposito: Moneda)
+  + avisar(escalon: Entero)
+  + cerrar(devuelto: Booleano)
+  + escalar()
+  + resolver(decision: Cadena)
+  + validarEscalado()
+}
+class AvisoRecupero {
+  - escalon: Entero
+  - tipo: TipoDeAviso
+  - vence: FechaHora
+  + «create» AvisoRecupero(escalon: Entero)
+  + aceptar(pedido: Pedido)
+  + getEnvase(): Envase
+  + getPedidoDeEntrega(): Pedido
+}
+class Envase <<referencia>>
+class Cliente <<referencia>>
+class Usuario <<referencia>>
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Envase "1" <--> "0..*" CasoRecupero : motiva
+CasoRecupero "0..*" -- "1" Cliente : se abre contra
+Usuario "0..1" -- "0..*" CasoRecupero : resuelve
+CasoRecupero "1" *--> "0..*" AvisoRecupero : emite
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

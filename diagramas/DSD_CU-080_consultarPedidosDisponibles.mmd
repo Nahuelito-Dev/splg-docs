@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-080 Consultar el Pool de Pedidos Disponibles · consultarPedidosDisponibles
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CHF->>+SRV: consultarPedidosDisponibles(pagina, limite)
+    SRV->>+COL: buscarDisponibles(distribuidoraId, pagina, limite)
+    loop Por cada pedido de la distribuidora
+        COL->>PED: estaDisponible()
+    end
+    COL-->>-SRV: pedidos, total
+    SRV-->>-CHF: pedidos, total

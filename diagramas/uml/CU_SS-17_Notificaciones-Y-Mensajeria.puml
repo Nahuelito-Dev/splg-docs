@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -37,7 +37,6 @@ skinparam usecase {
 actor "Cliente\n(ACT-01)" as A01
 actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
-actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-17 Notificaciones y Mensajería" {
@@ -50,17 +49,13 @@ rectangle "SS-17 Notificaciones y Mensajería" {
 
 A01 -[#1F6F8B]- U098
 A01 -[#1F6F8B]- U099
-A01 -[#1F6F8B]- U102
 A02 -[#2E7D46]- U098
 A02 -[#2E7D46]- U099
-A02 -[#2E7D46]- U102
 A03 -[#8C4A9E]- U098
 A03 -[#8C4A9E]- U099
-A03 -[#8C4A9E]- U102
-A04 -[#8A6D1F]- U102
-A05 -[#B4432B]- U098
-A05 -[#B4432B]- U099
 A05 -[#B4432B]- U100
 A05 -[#B4432B]- U101
+A05 -[#B4432B]- U102
+A05 --|> A03
 
 @enduml

@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-004 Gestionar Perfil de Usuario · consultarPerfilCliente
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CustomersService
+    participant COL as :Map#lt;String, Cliente#gt;
+
+    CLI->>+SRV: consultarPerfilCliente(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: cliente
+    SRV-->>-CLI: cliente

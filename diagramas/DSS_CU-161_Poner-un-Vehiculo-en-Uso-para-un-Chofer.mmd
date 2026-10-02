@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-161 Poner un Vehículo en Uso para un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: ponerVehiculoEnUso(choferId, vehiculoId, nota)
+    activate SIS
+    alt el chofer y el vehículo son de la distribuidora, el vehículo está habilitado y no hay pedidos en curso
+        SIS-->>ADM: vehículo en uso (asignación abierta, anteriores cerradas)
+    else el chofer o el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    else el vehículo está inhabilitado por documentación vencida
+        SIS-->>ADM: asignación rechazada, con el motivo del vencimiento
+    else el chofer, o el que usa el vehículo, tiene un pedido en curso
+        SIS-->>ADM: conflicto: pedido en curso
+    end
+    deactivate SIS

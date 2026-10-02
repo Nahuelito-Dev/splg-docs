@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-089 Gestionar Roles del Sistema · actualizarRol
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :RoleService
+    participant COL as :Map#lt;String, Rol#gt;
+    participant ROL as rol:Rol
+
+    AGN->>+SRV: actualizarRol(rolId, datos)
+    SRV->>+COL: get(rolId)
+    COL-->>-SRV: rol
+    SRV->>+ROL: actualizar(datos)
+    ROL->>ROL: validarModificable()
+    deactivate ROL
+    SRV-->>-AGN: rol

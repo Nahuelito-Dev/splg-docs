@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-128 Indicar Quién Recibe el Pedido · indicarQuienRecibe
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :OrderService
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CLI->>+SRV: indicarQuienRecibe(pedidoId, nombre, documento, relacion)
+    SRV->>+COL: get(pedidoId)
+    COL-->>-SRV: pedido
+    SRV->>+PED: indicarQuienRecibe(nombre, documento, relacion)
+    PED->>PED: validarQueNoFueEntregado()
+    PED->>PED: validarDocumento(documento)
+    deactivate PED
+    SRV-->>-CLI: pedido

@@ -1,0 +1,41 @@
+sequenceDiagram
+    title DSD — CU-062 Consultar Incidencias De Un Pedido
+    autonumber
+    participant USR as Chofer o Admin
+    participant DEC as CurrentDistributor
+    participant CTRL as IncidentController
+    participant SRV as IncidentService
+    participant OSRV as OrderService
+    participant OREP as OrderRepositoryPort
+    participant IREP as RepositoryIncident
+
+    USR->>DEC: GET /incidents/order/:orderId
+    activate DEC
+    DEC->>CTRL: findByOrder(orderId, distributorId)
+    activate CTRL
+    CTRL->>CTRL: ParseUUIDPipe valida el orderId
+    CTRL->>SRV: findByOrder(orderId, distributorId)
+    activate SRV
+    SRV->>OSRV: findById(orderId)
+    activate OSRV
+    OSRV->>OREP: findById(id)
+    activate OREP
+    OREP-->>OSRV: Order o null
+    deactivate OREP
+    OSRV-->>SRV: Order o null
+    deactivate OSRV
+    alt Pedido inexistente, o de otra distribuidora que la del contexto
+        SRV-->>CTRL: NotFoundException Pedido no encontrado
+        CTRL-->>USR: 404
+    else Pedido de la distribuidora, o sin distribuidora en contexto
+        SRV->>IREP: find(where order_id mas distributor_id si hay tenant, order createdAt DESC)
+        activate IREP
+        IREP-->>SRV: Incident[] del pedido, vacio si no hay
+        deactivate IREP
+        SRV-->>CTRL: Incident[]
+        CTRL->>CTRL: IncidentMapper.toDto por cada incidencia
+        CTRL-->>USR: 200 IncidentResponseDto[]
+    end
+    deactivate SRV
+    deactivate CTRL
+    deactivate DEC

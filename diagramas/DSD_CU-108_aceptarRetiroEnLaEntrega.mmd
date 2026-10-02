@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-108 Recuperar envases no devueltos · aceptarRetiroEnLaEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CylinderRecoveryService
+    participant AVS as :Map#lt;String, AvisoRecupero#gt;
+    participant AVI as aviso:AvisoRecupero
+    participant PED as pedido:Pedido
+    participant ENV as envase:Envase
+
+    CLI->>+SRV: aceptarRetiroEnLaEntrega(ofertaId)
+    SRV->>+AVS: get(ofertaId)
+    AVS-->>-SRV: aviso
+    SRV->>+AVI: getPedidoDeEntrega()
+    AVI-->>-SRV: pedido
+    SRV->>+AVI: getEnvase()
+    AVI-->>-SRV: envase
+    SRV->>AVI: aceptar(pedido)
+    SRV->>PED: incluirRetiro(envase)
+    SRV->>ENV: marcarParaRetiro(pedido)
+    SRV-->>-CLI: retiro

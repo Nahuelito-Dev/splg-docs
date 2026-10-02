@@ -1,0 +1,43 @@
+sequenceDiagram
+    title DSD — CU-160 Recuperar Archivo
+autonumber
+participant CALLER as Caso incluido
+participant PORT as StoragePort
+participant LOCAL as LocalDiskStorageAdapter
+participant S3A as S3StorageAdapter
+
+CALLER->>PORT: getDownloadUrl(key)
+activate PORT
+alt STORAGE_DRIVER es local
+    PORT->>LOCAL: getDownloadUrl(key)
+    activate LOCAL
+    LOCAL-->>PORT: null, el disco local no tiene URL publica
+    deactivate LOCAL
+else STORAGE_DRIVER es s3
+    PORT->>S3A: getDownloadUrl(key)
+    activate S3A
+    S3A->>S3A: getSignedUrl sobre un GetObjectCommand, vigencia configurable
+    S3A-->>PORT: URL firmada
+    deactivate S3A
+end
+PORT-->>CALLER: URL o null
+deactivate PORT
+alt no hubo URL
+    CALLER->>PORT: getStream(key)
+    activate PORT
+    alt STORAGE_DRIVER es local
+        PORT->>LOCAL: getStream(key)
+        activate LOCAL
+        LOCAL->>LOCAL: lee el sidecar de content type y abre un flujo de lectura del archivo
+        LOCAL-->>PORT: stream, content type y tamano
+        deactivate LOCAL
+    else STORAGE_DRIVER es s3
+        PORT->>S3A: getStream(key)
+        activate S3A
+        S3A->>S3A: GetObjectCommand contra el bucket configurado
+        S3A-->>PORT: stream, content type y tamano
+        deactivate S3A
+    end
+    PORT-->>CALLER: stream, content type y tamano
+    deactivate PORT
+end

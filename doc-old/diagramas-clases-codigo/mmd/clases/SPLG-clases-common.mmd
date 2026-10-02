@@ -1,0 +1,33 @@
+classDiagram
+    direction LR
+
+    %% Módulo `common` — generado por generar-clases-diseno.py
+
+    class AppThrottlerGuard {
+        <<guard>>
+        #shouldSkip(context: ExecutionContext) Promise<boolean>
+        #getTracker(req: Record<string, unknown>) Promise<string>
+        -trackerDe(req: Request) string
+        #generateKey(context: ExecutionContext, suffix: string, name: string) string
+        -cuentaDelAcceso(context: ExecutionContext) string | null
+    }
+
+    class IdempotencyInterceptor {
+        <<interceptor>>
+        +intercept(context: ExecutionContext, next: CallHandler) Promise<Observable<unknown>>
+        -parseCached(raw: string) unknown
+    }
+
+    class LoggingInterceptor {
+        <<interceptor>>
+        +intercept(context: ExecutionContext, next: CallHandler) Observable<unknown>
+    }
+
+    class RolesGuard {
+        <<guard>>
+        +canActivate(ctx: ExecutionContext) boolean
+    }
+
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% IdempotencyInterceptor usa RedisService (módulo `redis`)

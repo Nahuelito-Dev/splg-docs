@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSD — CU-070 Registrar Movimiento de Envase (cambio de estado) · registrarMovimientoDeEnvase
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :CylinderService
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ENV as envase:Envase
+
+    CHF->>+SRV: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
+    SRV->>+ENVS: get(envaseId)
+    ENVS-->>-SRV: envase
+    opt Se indicó un pedido
+        SRV->>+PEDS: get(pedidoId)
+        PEDS-->>-SRV: pedido
+        SRV->>+PED: getCliente()
+        PED-->>-SRV: cliente
+    end
+    SRV->>+ENV: pasarA(estadoDestino, pedido, cliente, observacion)
+    ENV->>ENV: validarTransicion(estadoDestino)
+    create participant MOV as :MovimientoEnvase
+    ENV->>MOV: «create»(estadoOrigen, estadoDestino, pedido, usuario, observacion)
+    deactivate ENV
+    SRV-->>-CHF: envase

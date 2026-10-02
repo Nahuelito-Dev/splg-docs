@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-018 Marcar Pedido "En Camino" · marcarPedidoEnCamino
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant UCS as :UpdateOrderStatusUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+    participant NOT as :NotificationPort
+
+    CHF->>+UCS: marcarPedidoEnCamino(pedidoId)
+    UCS->>+PEDS: get(pedidoId)
+    PEDS-->>-UCS: pedido
+    UCS->>+PED: marcarEnCamino()
+    PED->>PED: transicionar(enCamino)
+    deactivate PED
+    opt El pedido tiene chofer
+        UCS->>+PED: getChofer()
+        PED-->>-UCS: chofer
+        UCS->>+CHO: getUbicacion()
+        CHO-->>-UCS: ubicacion
+        UCS->>UBI: abrirSeguimiento(pedido)
+    end
+    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
+    UCS-->>-CHF: pedido

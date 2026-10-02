@@ -1,0 +1,8 @@
+sequenceDiagram
+    title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarVida
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant HCS as :HealthCheckService
+
+    SIS->>+HCS: verificarVida()
+    HCS-->>-SIS: estado ok, marca de tiempo

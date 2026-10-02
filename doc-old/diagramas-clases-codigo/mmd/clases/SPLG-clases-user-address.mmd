@@ -1,0 +1,44 @@
+classDiagram
+    direction LR
+
+    %% Módulo `user-address` — generado por generar-clases-diseno.py
+
+    class UserAddressController {
+        <<controller>>
+        +create(@Body() createUserAddressDto: CreateUserAddressDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<UserAddressResponseDto>
+        +findAll(@Query() paginationDto: PaginationDto) Promise<ListadoDeDireccionesDto>
+        +findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<UserAddressConUsuarioDto>
+        +findByUserId(@Param('userId', ParseUUIDPipe) userId: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<UserAddressConUsuarioDto[]>
+        +findDefaultByUserId(@Param('userId', ParseUUIDPipe) userId: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<UserAddressConUsuarioDto>
+        +update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserAddressDto: UpdateUserAddressDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<UserAddressResponseDto>
+        +setAsDefault(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<UserAddressConUsuarioDto>
+        +remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<DireccionBorradaDto>
+        -acotar(ref: [ userId: string ] | [ addressId: string ], user: AuthenticatedUser, distributorId: string | null, escribe: boolean) Promise<void>
+    }
+
+    class UserAddressMapper {
+        <<mapper>>
+        +toDto(address: UserAddress) UserAddressResponseDto
+        +toDtoConUsuario(address: UserAddress) UserAddressConUsuarioDto
+    }
+
+    class UserAddressService {
+        -assertOwnership(ownerUserId: string, requesterUserId?: string | null) void
+        +create(createUserAddressDto: CreateUserAddressDto, requesterUserId?: string | null) Promise<UserAddress>
+        +findAll(paginationDto: PaginationDto) Promise<
+        +buscarDelUsuario(addressId: string, userId: string) Promise<UserAddress | null>
+        +assertDeLaDistribuidora(ref: [ userId: string ] | [ addressId: string ], distributorId: string) Promise<void>
+        +findOne(id: string, requesterUserId?: string | null) Promise<UserAddress>
+        +findByUserId(userId: string, requesterUserId?: string | null) Promise<UserAddress[]>
+        +findDefaultByUserId(userId: string, requesterUserId?: string | null) Promise<UserAddress>
+        +update(id: string, updateUserAddressDto: UpdateUserAddressDto, requesterUserId?: string | null) Promise<UserAddress>
+        +remove(id: string, requesterUserId?: string | null) Promise<DireccionBorradaDto>
+        +setAsDefault(id: string, requesterUserId?: string | null) Promise<UserAddress>
+        -promoverOtraPrincipal(userId: string, exceptId: string) Promise<boolean>
+        -removeDefaultFromOtherAddresses(userId: string, excludeAddressId?: string) Promise<void>
+    }
+
+    UserAddressController ..> UserAddressService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% UserAddressService usa UsersService (módulo `users`)

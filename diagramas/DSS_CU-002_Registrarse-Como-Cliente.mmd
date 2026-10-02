@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-002 Registrarse Como Cliente
+    title DSS — CU-002 Registrarse como Cliente
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
     activate SIS

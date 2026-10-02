@@ -1,0 +1,208 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+skinparam nodesep 30
+skinparam ranksep 70
+skinparam package {
+  BackgroundColor #FFFFFF
+}
+package "Acceso" as area_Acceso #EEF3F8 {
+  package "auth" as auth {
+  }
+  package "registro" as registro {
+  }
+  package "users" as users {
+  }
+  package "role" as role {
+  }
+  package "admin" as admin {
+  }
+  package "firebase" as firebase {
+  }
+  package "audit" as audit {
+  }
+}
+package "Negocio" as area_Negocio #F7F3E8 {
+  package "order" as order {
+  }
+  package "payments" as payments {
+  }
+  package "cart" as cart {
+  }
+  package "customer" as customer {
+  }
+  package "user-address" as user_address {
+  }
+  package "repurchase" as repurchase {
+  }
+  package "claims" as claims {
+  }
+  package "incident" as incident {
+  }
+  package "rating" as rating {
+  }
+  package "reports" as reports {
+  }
+  package "time-slot" as time_slot {
+  }
+  package "coverage-zone" as coverage_zone {
+  }
+  package "gascylinder" as gascylinder {
+  }
+  package "cylinder" as cylinder {
+  }
+  package "distributor" as distributor {
+  }
+}
+package "Flota y despacho" as area_Flota_y_despacho #EEF5EF {
+  package "delivery" as delivery {
+  }
+  package "car" as car {
+  }
+  package "fleet" as fleet {
+  }
+  package "gateways" as gateways {
+  }
+}
+package "Soporte" as area_Soporte #F2F2F2 {
+  package "notifications" as notifications {
+  }
+  package "email" as email {
+  }
+  package "redis" as redis {
+  }
+  package "storage" as storage {
+  }
+  package "health" as health {
+  }
+}
+auth ..> firebase
+auth ..> users
+car ..> delivery
+car ..> fleet
+cart ..> customer
+cart ..> gascylinder
+claims ..> customer
+claims ..> order
+claims ..> storage
+coverage_zone ..> distributor
+customer ..> cart
+customer ..> claims
+customer ..> user_address
+cylinder ..> distributor
+cylinder ..> notifications
+cylinder ..> order
+delivery ..> car
+delivery ..> distributor
+delivery ..> users
+distributor ..> coverage_zone
+distributor ..> cylinder
+distributor ..> delivery
+distributor ..> redis
+distributor ..> time_slot
+email ..> firebase
+email ..> users
+fleet ..> car
+fleet ..> delivery
+fleet ..> distributor
+fleet ..> email
+fleet ..> notifications
+fleet ..> storage
+gascylinder ..> distributor
+gateways ..> customer
+gateways ..> delivery
+health ..> redis
+incident ..> order
+notifications ..> customer
+notifications ..> delivery
+notifications ..> firebase
+order ..> coverage_zone
+order ..> customer
+order ..> cylinder
+order ..> delivery
+order ..> fleet
+order ..> gascylinder
+order ..> incident
+order ..> notifications
+order ..> payments
+order ..> time_slot
+payments ..> order
+rating ..> delivery
+rating ..> order
+rating ..> users
+registro ..> admin
+registro ..> customer
+registro ..> delivery
+registro ..> firebase
+registro ..> users
+reports ..> order
+repurchase ..> customer
+repurchase ..> notifications
+repurchase ..> order
+time_slot ..> distributor
+user_address ..> customer
+users ..> delivery
+users ..> firebase
+users ..> rating
+
+legend bottom right
+  Cada flecha punteada es una dependencia entre módulos: alguna clase del origen le manda
+  un mensaje, en algún DSD, a una clase del destino.
+endlegend
+@enduml

@@ -1,24 +1,25 @@
 sequenceDiagram
-    title DSS — CU-008 Cancelar Pedido
+    title DSS — CU-008 Cancelar Pedido (Cliente)
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-    actor CHO as Chofer
-    actor ADM as Administrador
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
 
     CLI->>SIS: cancelarPedido(pedidoId, motivo)
     activate SIS
-    alt El pedido es del cliente y todavia no salio en camino
+    alt El pedido es del cliente y todavía no salió en camino
         SIS-->>CLI: pedido cancelado (estado CANCELADO, stock restituido)
-        opt El pedido ya tenia chofer asignado
-            SIS-)CHO: aviso de pedido cancelado por el cliente
+        opt El pedido ya tenía chofer asignado
+            SIS-)CHO: notificarPedidoCancelado(pedido)
         end
-        SIS-)ADM: aviso de cancelacion en el panel
+        SIS-)ADM: notificarPedidoCancelado(pedido)
+        Note over SIS: Si el pedido tenía un<br/>pago aprobado por una<br/>pasarela (planificado,<br/>I-7), se reintegra con<br/>CU-168
     else El pedido es de otro cliente o de otra distribuidora
         SIS-->>CLI: recurso no encontrado
-    else El pedido ya esta entregado o cancelado
+    else El pedido ya está entregado o cancelado
         SIS-->>CLI: error de solicitud (no se puede cancelar un pedido finalizado)
-    else El pedido ya esta en camino
+    else El pedido ya está en camino
         SIS-->>CLI: error de solicitud (contactar al soporte)
     end
     deactivate SIS

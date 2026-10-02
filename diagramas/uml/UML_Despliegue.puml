@@ -1,0 +1,75 @@
+@startuml
+title Diagrama de despliegue — SPLG en ejecución
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowFontSize 12
+skinparam node {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+}
+skinparam artifact {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+}
+skinparam database {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam cloud {
+  BorderColor #8E5566
+  BackgroundColor #F7ECEF
+}
+skinparam nodesep 40
+skinparam ranksep 70
+
+node "Teléfono del cliente\n<<device>>\nAndroid o iOS" as DC {
+  artifact "splg-app-cliente\n(Flutter)" as AC
+}
+node "Teléfono del chofer\n<<device>>\nAndroid" as DD {
+  artifact "splg-app-chofer\n(Flutter)" as AD
+}
+node "Computadora del administrador\n<<device>>" as DA {
+  node "Navegador web\n<<execution environment>>" as NAV {
+    artifact "splg-app-admin\n(React, código estático)" as PANEL
+  }
+}
+
+node "Servidor virtual (VPS)\n<<device>>" as VPS {
+  node "Docker Compose\n<<execution environment>>" as DOCK {
+    node "Contenedor splg-app-backend\n<<execution environment>>\nNode.js" as CB {
+      artifact "splg-app-backend\n(NestJS)" as BACK
+    }
+    node "Contenedor splg-bd\n<<execution environment>>" as CBD {
+      database "PostgreSQL 14 + PostGIS 3.4" as PG
+    }
+    node "Contenedor splg-redis\n<<execution environment>>" as CRD {
+      database "Redis" as RD
+    }
+  }
+  node "Servidor web\n<<execution environment>>" as WEB {
+    artifact "splg-app-admin\n(archivos estáticos)" as PANELDIST
+  }
+}
+
+cloud "Firebase\n<<external>>\nAuth y FCM" as FB
+cloud "MercadoPago\n<<external>>\nCheckout Pro" as MP
+cloud "Servicio de correo\n<<external>>" as ML
+
+AC -down-> BACK : HTTPS / REST\nWSS / Socket.IO
+AD -down-> BACK : HTTPS / REST\nWSS / Socket.IO
+PANEL -down-> BACK : HTTPS / REST\nWSS / Socket.IO
+NAV .down.> PANELDIST : HTTPS\n(descarga de la aplicación)
+
+BACK -down-> PG : TCP 5432
+BACK -down-> RD : TCP 6379
+
+BACK -right-> FB : HTTPS\n(verificación de identidad)
+BACK <-right-> MP : HTTPS\n(cobro y webhook de pago)
+BACK -right-> ML : HTTPS\n(comprobantes)
+FB .up.> AC : FCM
+FB .up.> AD : FCM
+@enduml

@@ -11,9 +11,9 @@ módulos inteligentes.
 
 | Artefacto | Archivo | Cómo se actualiza |
 |---|---|---|
-| Modelo de dominio (UML, por contextos) | `diagramas/lucidchart/SPLG-modelo-conceptual.mmd` y su `.xml` para Lucidchart | A mano el `.mmd`; `python3 generar-lucidchart.py` emite el `.xml` |
-| Modelo conceptual de datos | `diagramas/base-de-datos/SPLG-modelo-conceptual.png/.svg` | `python3 generar-modelo-datos.py` |
-| Modelo físico | `diagramas/base-de-datos/SPLG-modelo-fisico.png/.svg` | ídem |
+| Modelo de dominio (UML, Larman) — es el mismo artefacto que el modelo conceptual del Documento 2: vista general y seis vistas por área | `diagramas/modelo-conceptual/MC_*.png/.svg` (fuente en `modelo_conceptual.py`); `diagramas/lucidchart/SPLG-modelo-conceptual.mmd` y su `.xml` para Lucidchart | `python3 generar-modelo-conceptual.py`, y `python3 generar-lucidchart.py` para el `.xml` |
+| Modelo entidad-relación conceptual — no confundir con el anterior: éste es del diseño de la base y usa la misma nomenclatura que el modelo conceptual | `diagramas/base-de-datos/conceptual/SPLG-der-*.png/.svg` | `python3 generar-modelo-datos.py` |
+| Modelo físico, una lámina por contexto | `diagramas/base-de-datos/fisico/SPLG-fisico-*.png/.svg` | ídem |
 | SQL de lo propuesto | `diagramas/base-de-datos/SPLG-base-de-datos-propuesta.sql` | ídem |
 | Diccionario de datos | `diagramas/base-de-datos/SPLG-modelo-de-datos.md` | ídem |
 
@@ -35,7 +35,13 @@ no está en la base.
 |---|---:|---:|---:|---:|
 | Antes (24/09) | 20 | — | 30 declaradas + 13 sin declarar | 16 |
 | Agregado el 25/09 | 17 del modelo + 1 de la normalización | 26 en tablas existentes | 41 nuevas + las 13 declaradas | 17 |
-| **Hoy, en la base** | **38** | | **84, todas declaradas** | **33** |
+| **25/09, en la base** | **38** | | **84, todas declaradas** | **33** |
+
+> Este cuadro describe el cambio del 24/09 al 25/09. Migraciones posteriores agregaron
+> `maintenance_task_attachment`, `vehicle_assignment` y columnas de zona de cobertura y de pedido; el total
+> actual es 40 tablas, 93 claves foráneas y 34 tipos enumerados, todas declaradas —
+> ver `diagramas/base-de-datos/SPLG-modelo-de-datos.md`, que se regenera desde la base
+> en ejecución y nunca queda desactualizado.
 
 ## 2. Ocho contextos
 
@@ -46,15 +52,17 @@ de la tabla (convención 4: cada módulo es dueño de sus entidades).
 | Contexto | Entidades | Módulos del backend |
 |---|---|---|
 | Organización y acceso | Distribuidora, Usuario, Rol, Administrador, Configuración de módulo*, Asiento de auditoría* | `distributor`, `users`, `role`, `admin`, `auth` |
-| Clientes | Cliente, Dirección de entrega, Invitación de recompra* | `customer`, `user-address` |
+| Clientes | Cliente, Dirección de entrega, Invitación de recompra*, Ítem sugerido‡ | `customer`, `user-address` |
 | Catálogo e inventario de envases | Producto, Promoción, Envase, Movimiento de envase, Revisión de envase*, Caso de recupero*, Aviso de recupero* | `gascylinder`, `cylinder` |
 | Venta y pedidos | Carrito*, Ítem del carrito*, Pedido, Ítem del pedido, Cambio de estado*, Cambio de dirección*, Zona de cobertura, Franja horaria | `order`, `coverage-zone`, `time-slot` |
 | Pagos | Pago | `payments` |
 | Despacho y logística | Oferta de despacho, Lote de recorrido*, Parada del lote*, Oferta de lote* | `order` (despacho) |
-| Flota y choferes | Chofer, Vehículo, Plan de mantenimiento*, Tarea de mantenimiento*, Propuesta de ventana de taller*, Registro de uso del vehículo* | `delivery`, `car` |
+| Flota y choferes | Chofer, Vehículo, Plan de mantenimiento*, Tarea de mantenimiento*, Adjunto de tarea de mantenimiento*, Propuesta de ventana de taller*, Registro de uso del vehículo* | `delivery`, `car`, `fleet` |
 | Posventa | Reclamo, Incidencia, Calificación | `claims`, `incident`, `rating` |
 
-\* agregado el 25/09 (antes figuraba como propuesto).
+\* agregado el 25/09 (antes figuraba como propuesto). ‡ agregado el 30/09, al verificar el
+modelo contra la base (asociación ItemSugerido–Producto y el adjunto de las tareas de
+mantenimiento, que ya existían en el código pero no en este documento).
 
 **Casi toda entidad pertenece a una distribuidora** (el sistema es
 multi-tenant). En el diagrama conceptual esa relación se declara una vez en la
@@ -70,13 +78,16 @@ Los cuatro módulos inteligentes hacen lo mismo con objetos distintos: **le
 proponen algo a alguien, con una vigencia, y esperan que lo acepte, lo rechace o
 lo deje vencer.** Si lo rechaza o vence, pasan a la alternativa siguiente.
 
+La numeración de los módulos es la de `3-Diseño.md` §6, que es la que se entrega: M1 es
+el despacho automático que ya existía antes del 24/09.
+
 | Propuesta | A quién | Módulo |
 |---|---|---|
-| Oferta de despacho | Chofer | Despacho automático (ya existe, CU-013) |
-| Propuesta de ventana de taller | Chofer | M1 — CU-105 |
-| Invitación de recompra | Cliente | M2 — CU-106 |
-| Oferta de lote | Chofer | M3 — CU-107 |
-| Aviso de recupero (oferta de retiro) | Cliente | M4 — CU-108 |
+| Oferta de despacho | Chofer | M1 — Despacho automático (ya existía, CU-013) |
+| Propuesta de ventana de taller | Chofer | M2 — CU-105 |
+| Invitación de recompra | Cliente | M3 — CU-106 |
+| Oferta de lote | Chofer | M4 — CU-107 |
+| Aviso de recupero (oferta de retiro) | Cliente | M5 — CU-108 |
 
 En el modelo de dominio es una clase abstracta, **Propuesta con vigencia**
 (estado + vencimiento), de la que heredan las cinco. En la base cada una tiene
@@ -161,16 +172,21 @@ sí.
 - **Los dos modelos de inventario** (`gas_cylinder.stock` numérico y `cylinder`
   por unidad) siguen conviviendo. Es una decisión de MVP documentada; unificarlos
   no lo pide ningún caso de uso.
-- **Promociones** siguen como JSON dentro de `gas_cylinder` (el grupo
-  repetitivo que marca `BASE-DE-DATOS.md`). En el modelo de dominio ya son una
-  entidad; en la base se normalizan cuando se toque el catálogo.
+- ~~Promociones siguen como JSON dentro de `gas_cylinder`~~ — resuelto: la
+  normalización del 25/09 sumó `gas_cylinder_promotion` como tabla propia, con
+  sus `CHECK` de cantidad y descuento. Este punto queda cerrado.
 
 ## 6. Qué cambia en el resto de la documentación
 
 - **Casos de uso, especificaciones y DSS: nada.** Describen qué hace el sistema,
   y el modelo nuevo no cambia ningún comportamiento especificado: los agrega.
-- **Diagrama de clases de dominio** (`3-Diseño.md` §5.1): tiene que tomar los
-  contextos y la Propuesta con vigencia. Se actualiza junto con los módulos, en
-  las tandas de alineación.
+- ~~Diagrama de clases de dominio (`3-Diseño.md` §5.1): tiene que tomar los
+  contextos y la Propuesta con vigencia~~ — resuelto: §5.1 se deriva de los DSD y del
+  modelo conceptual (`material-de-trabajo/generar-clases-diseno.py`), dibuja
+  todas las clases del modelo conceptual, con la generalización de
+  `PropuestaConVigencia` como clase abstracta, y sus operaciones salen de los
+  mensajes que reciben en los DSD. La correspondencia con las clases del
+  código (`Order`, `DispatchOffer`…) queda en las tablas de implementación de
+  cada DSD y en §5.6.
 - **DSD:** cambian los que nombran clases que se mueven o se parten. Es el punto
   12 de la lista de módulo terminado (`splg-app-backend/CONVENCIONES.md`).

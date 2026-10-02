@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-073 Listar Reservas y Estado de la Seña · listarReservas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReservationService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as reserva:Pedido
+
+    ADM->>+SRV: listarReservas()
+    SRV->>+COL: buscarReservas(distribuidoraId)
+    COL-->>-SRV: reservas
+    loop Por cada reserva
+        SRV->>+PED: calcularSaldo()
+        PED-->>-SRV: saldo
+    end
+    SRV-->>-ADM: reservas

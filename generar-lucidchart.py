@@ -14,7 +14,7 @@ para la asociacion.
 
 El modelo de datos no pasa por aca: ese va por Importar datos · ERD con el .sql.
 """
-import re, os, subprocess, html, sys
+import re, os, subprocess, html, sys, glob
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/"
 SAL = D + "lucidchart/"
@@ -27,27 +27,28 @@ def leer(ruta):
     src = open(ruta, encoding="utf-8").read()
     clases, orden = {}, []
 
-    for m in re.finditer(r'class\s+(\w+)\s*\{(.*?)\}', src, re.S):
-        nom, cuerpo = m.group(1), m.group(2)
+    # `class Id["Etiqueta"] {`: la etiqueta es el nombre que se ve (Map<String, Pedido>)
+    for m in re.finditer(r'class\s+(\w+)(?:\["([^"]+)"\])?\s*\{(.*?)\}', src, re.S):
+        nom, etiqueta, cuerpo = m.group(1), m.group(2), m.group(3)
         est, filas = "", []
         for l in cuerpo.split("\n"):
             l = l.strip()
             if not l: continue
-            e = re.match(r'<<(\w+)>>', l)
+            e = re.match(r'<<([^>]+)>>', l)
             if e: est = e.group(1); continue
             filas.append(l)
-        clases[nom] = {"filas": filas, "est": est}
+        clases[nom] = {"filas": filas, "est": est, "titulo": etiqueta or nom}
         orden.append(nom)
 
-    for m in re.finditer(r'^\s*class\s+(\w+)\s*$', src, re.M):
+    for m in re.finditer(r'^\s*class\s+(\w+)(?:\["([^"]+)"\])?\s*$', src, re.M):
         if m.group(1) not in clases:
-            clases[m.group(1)] = {"filas": [], "est": ""}
+            clases[m.group(1)] = {"filas": [], "est": "", "titulo": m.group(2) or m.group(1)}
             orden.append(m.group(1))
 
     rel = []
     patron = re.compile(
         r'^\s*(\w+)\s*(?:"([^"]+)"\s*)?'      # origen y su multiplicidad
-        r'(<\|--|--\|>|\*--|--\*|o--|--o|\.\.>|<\.\.|-->|<--|--)'
+        r'(<-->|\*-->|o-->|\.\.\|>|<\|--|--\|>|\*--|--\*|o--|--o|\.\.>|<\.\.|-->|<--|--)'
         r'\s*(?:"([^"]+)"\s*)?(\w+)'          # multiplicidad del destino y destino
         r'\s*(?::\s*(.+))?$', re.M)
     for m in patron.finditer(src):
@@ -56,6 +57,11 @@ def leer(ruta):
         rel.append({"a": a, "b": b, "tipo": tipo,
                     "ma": (ma or "").strip(), "mb": (mb or "").strip(),
                     "et": (et or "").strip()})
+    # clase de asociación: «%% asociacion-clase Clase A B» la une con la asociación A–B
+    for m in re.finditer(r'^\s*%%\s*asociacion-clase\s+(\w+)\s+(\w+)\s+(\w+)', src, re.M):
+        if m.group(1) in clases:
+            rel.append({"a": m.group(1), "b": m.group(1), "tipo": "ASOC",
+                        "ea": m.group(2), "eb": m.group(3), "ma": "", "mb": "", "et": ""})
     return clases, orden, rel
 
 def medida(c):
@@ -74,6 +80,7 @@ def acomodar(clases, orden, rel):
         w, h = medida(clases[n])
         lin.append(f'  {n} [width={w/72:.3f}, height={h/72:.3f}, fixedsize=true];')
     for r in rel:
+        if r["tipo"] == "ASOC": continue
         lin.append(f'  {r["a"]} -> {r["b"]};')
     lin.append("}")
     try:
@@ -108,6 +115,10 @@ def acomodar(clases, orden, rel):
 ESTILO = {
   "--":    "endArrow=none;",
   "-->":   "endArrow=open;endSize=10;",
+  "<-->":  "startArrow=open;startSize=10;endArrow=open;endSize=10;",
+  "*-->":  "endArrow=diamondThin;endFill=1;endSize=16;",
+  "o-->":  "endArrow=diamondThin;endFill=0;endSize=16;",
+  "..|>":  "dashed=1;endArrow=block;endFill=0;endSize=14;",
   "<--":   "endArrow=open;endSize=10;",
   "..>":   "dashed=1;endArrow=open;endSize=10;",
   "<..":   "dashed=1;endArrow=open;endSize=10;",
@@ -118,7 +129,7 @@ ESTILO = {
   "o--":   "endArrow=diamondThin;endFill=0;endSize=16;",
   "--o":   "endArrow=diamondThin;endFill=0;endSize=16;",
 }
-INVERTIR = {"*--", "o--", "<|--", "<.."}   # el simbolo va en el otro extremo
+INVERTIR = {"*--", "o--", "*-->", "o-->", "<|--", "<.."}   # el simbolo va en el otro extremo
 
 def esc(s): return html.escape(s, quote=True)
 
@@ -135,7 +146,7 @@ def xml(nombre, clases, orden, rel, pos):
     for i, n in enumerate(orden):
         cl, (x, y) = clases[n], pos.get(n, (40, 40))
         w, h = medida(cl); cid = f"c{i}"; ident[n] = cid
-        c.append(f'        <mxCell id="{cid}" value="{esc(n)}" style="swimlane;'
+        c.append(f'        <mxCell id="{cid}" value="{esc(cl.get("titulo", n))}" style="swimlane;'
                  'fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;'
                  'horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;'
                  'resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;'
@@ -154,7 +165,20 @@ def xml(nombre, clases, orden, rel, pos):
             c.append(f'          <mxGeometry y="{fy}" width="{w}" height="{ALTO_FILA}" as="geometry" />')
             c.append('        </mxCell>'); fy += ALTO_FILA
 
+    ids_rel = {}
     for k, r in enumerate(rel):
+        if r["tipo"] != "ASOC":
+            ids_rel[frozenset((r["a"], r["b"]))] = f"e{k}"
+    for k, r in enumerate(rel):
+        if r["tipo"] == "ASOC":
+            destino = ids_rel.get(frozenset((r["ea"], r["eb"])))
+            if destino:
+                c.append(f'        <mxCell id="e{k}" value="" style="edgeStyle=none;dashed=1;'
+                         'endArrow=none;html=1;strokeColor=#2C4257;" edge="1" parent="1"'
+                         f' source="{ident[r["a"]]}" target="{destino}">')
+                c.append('          <mxGeometry relative="1" as="geometry" />')
+                c.append('        </mxCell>')
+            continue
         org, dst, ma, mb = r["a"], r["b"], r["ma"], r["mb"]
         if r["tipo"] in INVERTIR:
             org, dst, ma, mb = dst, org, mb, ma
@@ -178,13 +202,15 @@ def xml(nombre, clases, orden, rel, pos):
     return "\n".join(c) + "\n"
 
 # ---------- que se convierte ----------
+# El modelo conceptual y el diagrama de clases de dominio son fijos. Las vistas por
+# módulo salen de los DSD (material-de-trabajo/generar-clases-diseno.py) porque en
+# un solo diagrama no entran los controladores, las fabricaciones puras, los puertos
+# y las colecciones.
 FUENTES = [
     ("SPLG-modelo-conceptual", "Modelo conceptual",
      "diagramas/lucidchart/SPLG-modelo-conceptual.mmd"),
-    ("SPLG-diagrama-de-clases-dominio", "Diagrama de clases — dominio",
-     "diagramas/lucidchart/SPLG-clases-dominio.mmd"),
-    ("SPLG-diagrama-de-clases-servicios", "Diagrama de clases — servicios",
-     "diagramas/lucidchart/SPLG-clases-servicios.mmd"),
+    ("SPLG-diagrama-de-clases-dominio", "Diagrama de clases de diseño — dominio",
+     "diagramas/lucidchart/SPLG-clases-diseno-dominio.mmd"),
 ]
 
 def main():
@@ -198,6 +224,20 @@ def main():
         destino = SAL + archivo + ".xml"
         open(destino, "w", encoding="utf-8").write(xml(titulo, clases, orden, rel, pos))
         print(f"  ✓ {archivo}.xml  ({len(orden)} clases, {len(rel)} relaciones)")
+
+    for viejo in glob.glob(SAL + "clases/*.xml"):
+        os.remove(viejo)
+    fuentes_servicios = sorted(glob.glob(D + "diagramas/lucidchart/clases/SPLG-clases-*.mmd"))
+    os.makedirs(SAL + "clases/", exist_ok=True)
+    for ruta in fuentes_servicios:
+        modulo = re.match(r'SPLG-clases-(.+)\.mmd$', os.path.basename(ruta)).group(1)
+        clases, orden, rel = leer(ruta)
+        pos = acomodar(clases, orden, rel)
+        destino = SAL + f"clases/SPLG-diagrama-de-clases-{modulo}.xml"
+        open(destino, "w", encoding="utf-8").write(
+            xml(f"Diagrama de clases — módulo {modulo}", clases, orden, rel, pos))
+    if fuentes_servicios:
+        print(f"  ✓ {len(fuentes_servicios)} vistas del diagrama de clases de diseño por módulo, en clases/")
 
     # el modelo de datos entra por otra puerta: Importar datos · ERD
     sql = D + "diagramas/base-de-datos/SPLG-base-de-datos-completa-lucidchart.sql"

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-046 Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, Cliente#gt;
+    participant CLE as cliente:Cliente
+
+    CLI->>+SRV: consultarDireccionesDeEntrega(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: cliente
+    SRV->>+CLE: getDirecciones()
+    CLE-->>-SRV: direcciones
+    SRV-->>-CLI: direcciones

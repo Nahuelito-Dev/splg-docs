@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-117 Consultar Detalle de una Dirección de Entrega · consultarDireccionDeEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, DireccionEntrega#gt;
+    participant DIR as direccion:DireccionEntrega
+
+    CLI->>+SRV: consultarDireccionDeEntrega(direccionId)
+    SRV->>+COL: get(direccionId)
+    COL-->>-SRV: direccion
+    SRV->>DIR: esDelUsuario(usuarioId)
+    SRV-->>-CLI: direccion

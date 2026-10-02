@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-055 Dar de Baja una Distribuidora · darDeBajaDistribuidora
+    autonumber
+    actor AGE as Administrador General (ACT-05)
+    participant SRV as :DistributorService
+    participant COL as :Map#lt;String, Distribuidora#gt;
+    participant DIS as distribuidora:Distribuidora
+
+    AGE->>+SRV: darDeBajaDistribuidora(distribuidoraId)
+    SRV->>+COL: get(distribuidoraId)
+    COL-->>-SRV: distribuidora
+    SRV->>DIS: darDeBaja()
+    SRV-->>-AGE: confirmacion

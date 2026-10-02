@@ -1,0 +1,98 @@
+@startuml
+title Modelo entidad-relación conceptual — Envases y catálogo
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Producto {
+  {field} tipo
+  {field} peso en kilos
+  {field} precio
+  {field} stock
+  {field} activo
+}
+entity Promocion {
+  {field} cantidad
+  {field} descuento
+}
+entity Envase {
+  {field} número de serie
+  {field} estado
+  {field} depósito
+  {field} /vencimiento
+}
+entity MovimientoEnvase {
+  {field} desde
+  {field} hacia
+  {field} fecha
+}
+entity RevisionEnvase {
+  {field} fecha
+  {field} resultado
+  {field} próxima revisión
+}
+entity CasoRecupero {
+  {field} escalón
+  {field} depósito comprometido
+  {field} estado
+  {field} resolución
+}
+entity AvisoRecupero {
+  {field} estado
+  {field} escalón
+  {field} tipo
+  {field} vence
+}
+entity Cliente #F1F1F1 {
+}
+entity Pedido #F1F1F1 {
+}
+entity Usuario #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+
+Distribuidora ||--o{ Producto : comercializa >
+Cliente }o--o| Producto : usa habitualmente >
+Producto ||--o{ Promocion : ofrece >
+Usuario |o--o{ Envase : tiene en su poder >
+Pedido |o--o{ Envase : despacha >
+Distribuidora ||--o{ Envase : posee >
+Producto |o--o{ Envase : describe >
+Envase ||--o{ RevisionEnvase : se somete a >
+Usuario |o--o{ MovimientoEnvase : ejecuta >
+Envase ||--o{ MovimientoEnvase : registra >
+Pedido |o--o{ MovimientoEnvase : origina >
+Envase ||--o{ CasoRecupero : motiva >
+Usuario |o--o{ CasoRecupero : resuelve >
+CasoRecupero }o--|| Usuario : se abre contra >
+CasoRecupero ||--o{ AvisoRecupero : emite >
+
+legend bottom right
+  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

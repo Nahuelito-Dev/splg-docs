@@ -1,35 +1,38 @@
 sequenceDiagram
-    title DSS — CU-048 Procesar Pago Con Mercadopago
+    title DSS — CU-048 Procesar Pago con MercadoPago
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
-    actor MP as Pasarela de Pago
-    actor CHO as Chofer
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+    actor MP as MercadoPago (ACT-06)
+    actor CHO as Chofer (ACT-02)
 
     CLI->>SIS: crearCheckoutDePago(pedidoId, medioDePago)
     activate SIS
     alt El pedido admite el cobro
         SIS-->>CLI: enlace de pago y plazo de vigencia
-    else El pedido ya esta pago, cancelado o entregado
-        SIS-->>CLI: rechazo (el pedido no admite un nuevo cobro)
+    else El pedido ya está pago, cancelado o entregado
+        SIS-->>CLI: rechazo por conflicto (el pedido no admite un nuevo cobro)
+    else El pedido no existe
+        SIS-->>CLI: recurso no encontrado
     end
     deactivate SIS
 
-    Note over CLI,MP: El cliente paga en el sitio de la pasarela,<br/>fuera del limite del sistema
+    Note over CLI,CHO: El cliente paga en el sitio de la pasarela,<br/>fuera del límite del sistema
 
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
-    alt La firma no es valida
-        SIS-->>MP: notificacion recibida (se descarta sin procesar)
+    alt La firma no es válida
+        SIS-->>MP: notificación recibida (se descarta sin procesar)
     else Pago aprobado de un pedido pendiente
-        SIS-->>MP: notificacion recibida
-        SIS-)CLI: aviso de pago acreditado
-        SIS-)CHO: oferta del pedido ya pagado
-    else Pago aprobado de la sena de una reserva
-        SIS-->>MP: notificacion recibida (la sena queda paga, la reserva no se despacha)
+        SIS-->>MP: notificación recibida
+        SIS-)CLI: notificarPagoAcreditado(pedido)
+        SIS-)CHO: notificarOferta(pedido)
+    else Pago aprobado de la seña de una reserva
+        SIS-->>MP: notificación recibida (la seña queda paga, la reserva no se despacha)
+        SIS-)CLI: notificarPagoAcreditado(pedido)
     else Pago aprobado de un pedido ya cancelado o entregado
-        SIS-->>MP: notificacion recibida (se registra el pago, sin reactivar el pedido)
+        SIS-->>MP: notificación recibida (se registra el pago, sin reactivar el pedido)
     else Pago rechazado o cancelado
-        SIS-->>MP: notificacion recibida (el pedido queda a la espera)
+        SIS-->>MP: notificación recibida (el pedido queda a la espera y el Cliente no recibe aviso)
     end
     deactivate SIS

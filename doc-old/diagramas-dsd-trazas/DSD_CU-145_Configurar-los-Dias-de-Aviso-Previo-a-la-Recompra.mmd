@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-145 Configurar los Dias de Aviso Previo a la Recompra
+    autonumber
+    participant CTRL as CustomersController
+    participant SRV as CustomersService
+    participant CREP as RepositoryCustomer
+
+    CTRL->>SRV: configurarAviso(usuarioDeLaSesion, dias)
+    activate SRV
+    SRV->>CREP: save(cliente con los días de aviso)
+    activate CREP
+    CREP-->>SRV: Customer actualizado
+    deactivate CREP
+    alt el valor es válido
+        SRV-->>CTRL: Customer con la preferencia
+        deactivate SRV
+    else el valor no es válido
+        SRV-->>CTRL: operación rechazada
+    end

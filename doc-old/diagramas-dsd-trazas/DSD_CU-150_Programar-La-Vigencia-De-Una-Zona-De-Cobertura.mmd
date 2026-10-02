@@ -1,0 +1,46 @@
+sequenceDiagram
+    title DSD — CU-150 Programar La Vigencia De Una Zona De Cobertura
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant DEC as CurrentDistributor
+    participant CTRL as CoverageZoneController
+    participant SRV as CoverageZoneService
+    participant REPO as RepositoryCoverageZone
+
+    ADM->>AUTH: PATCH /coverage-zones/:id con UpdateCoverageZoneDto (validFrom y validUntil)
+    activate AUTH
+    AUTH->>AUTH: resolveDistributor(user, request)
+    AUTH-->>DEC: request.distributorId asignado
+    deactivate AUTH
+    DEC->>CTRL: update(id, dto, distributorId)
+    activate CTRL
+    CTRL->>CTRL: ParseUUIDPipe sobre el id
+    CTRL->>SRV: update(id, dto, distributorId)
+    activate SRV
+    SRV->>REPO: findOne(where coverage_zone_id y distributor_id)
+    activate REPO
+    REPO-->>SRV: CoverageZone o null
+    deactivate REPO
+    alt No existe o pertenece a otra distribuidora
+        SRV-->>CTRL: NotFoundException, zona no encontrada
+    else La zona es de la distribuidora
+        SRV->>SRV: parseFechaVigencia(dto.validFrom) y parseFechaVigencia(dto.validUntil), lo que no vino conserva el valor actual
+        SRV->>SRV: validarVigencia(validFrom, validUntil)
+        alt validUntil es anterior o igual a validFrom
+            SRV-->>CTRL: BadRequestException, validUntil tiene que ser posterior a validFrom
+        else La vigencia es coherente
+            SRV->>REPO: preload(coverage_zone_id mas los campos que vinieron)
+            activate REPO
+            REPO-->>SRV: CoverageZone fusionada
+            deactivate REPO
+            SRV->>REPO: save(zona)
+            activate REPO
+            REPO-->>SRV: CoverageZone con la vigencia
+            deactivate REPO
+            SRV-->>CTRL: CoverageZone con la vigencia
+        end
+    end
+    deactivate SRV
+    CTRL-->>ADM: 200 CoverageZoneResponseDto
+    deactivate CTRL

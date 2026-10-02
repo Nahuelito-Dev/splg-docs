@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-144 Actualizar el Consumo Promedio Declarado · actualizarConsumoPromedio
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CON as :ConsumptionService
+    participant COL as :Map#lt;String, Cliente#gt;
+    participant CLE as cliente:Cliente
+    participant PEDS as :List#lt;Pedido#gt;
+    participant EST as :ConsumptionEstimatorService
+
+    CLI->>+CON: actualizarConsumoPromedio(cantidadPorMes)
+    CON->>+COL: get(usuarioId)
+    COL-->>-CON: cliente
+    CON->>+CLE: actualizarConsumo(cantidadPorMes)
+    CLE->>CLE: validarRango(cantidadPorMes)
+    deactivate CLE
+    CON->>+PEDS: getUltimoEntregado(cliente)
+    PEDS-->>-CON: ultimaCompra
+    CON->>+EST: estimarProximaRecompra(ultimaCompra, cantidadPorMes)
+    EST-->>-CON: fechaEstimada
+    CON->>CLE: registrarEstimacion(fechaEstimada)
+    CON-->>-CLI: cliente

@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-102 Probar el Servicio de Correo · probarServicioDeCorreo
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :EmailService
+    participant FBA as :FirebaseAuthPort
+    participant SND as :EmailSenderPort
+
+    AGN->>+SRV: probarServicioDeCorreo(destinatario)
+    SRV->>+FBA: generatePasswordResetLink(destinatario, ajustes)
+    FBA-->>-SRV: enlace
+    SRV->>SND: send(correoDePrueba)
+    SRV-->>-AGN: resultado

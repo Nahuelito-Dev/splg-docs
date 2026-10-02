@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-168 Reintegrar el Pago de un Pedido · reintegrarPagoDelPedido
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant REF as :RefundPaymentUseCase
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PGO as pago:Pago
+    participant PAS as :PaymentGatewayPort
+    participant RT as :RealtimeDispatchPort
+
+    ADM->>+REF: reintegrarPagoDelPedido(pedidoId, importe)
+    REF->>+COL: get(pedidoId)
+    COL-->>-REF: pedido
+    REF->>+PED: getPagosAprobados()
+    PED-->>-REF: pagos
+    loop Por cada pago aprobado
+        REF->>+PAS: refundPayment(pago, importe)
+        PAS-->>-REF: resultado
+        alt La pasarela aceptó la devolución
+            REF->>PGO: reintegrar()
+        else La pasarela rechazó o no respondió
+            REF-)RT: notifyAdmins(pedido)
+        end
+    end
+    REF-)RT: notifyCustomer(cliente, pedido)
+    REF-->>-ADM: reintegrado

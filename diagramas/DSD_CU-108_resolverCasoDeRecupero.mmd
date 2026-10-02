@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-108 Recuperar envases no devueltos · resolverCasoDeRecupero
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CylinderRecoveryService
+    participant COL as :Map#lt;String, CasoRecupero#gt;
+    participant CAS as caso:CasoRecupero
+    participant ENV as envase:Envase
+    participant DEP as :DepositLedgerService
+
+    ADM->>+SRV: resolverCasoDeRecupero(casoId, decision)
+    SRV->>+COL: get(casoId)
+    COL-->>-SRV: caso
+    SRV->>+CAS: resolver(decision)
+    CAS->>CAS: validarEscalado()
+    opt La decisión es dar de baja el envase
+        CAS->>ENV: darDeBaja()
+    end
+    deactivate CAS
+    SRV->>DEP: registerDecision(caso, decision)
+    SRV-->>-ADM: caso

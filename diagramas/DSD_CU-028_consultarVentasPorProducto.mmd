@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-028 Ver Reporte de Ventas por Producto · consultarVentasPorProducto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReportsService
+    participant COL as :List#lt;Pedido#gt;
+    participant ITM as item:ItemPedido
+
+    ADM->>+SRV: consultarVentasPorProducto(fechaDesde, fechaHasta)
+    SRV->>+COL: entregadosEntre(fechaDesde, fechaHasta)
+    COL-->>-SRV: pedidos
+    loop Por cada item de los pedidos entregados
+        SRV->>ITM: getProducto()
+        SRV->>ITM: getCantidad()
+        SRV->>ITM: getSubtotal()
+    end
+    SRV->>SRV: agruparPorProducto(items)
+    SRV-->>-ADM: ventasPorProducto

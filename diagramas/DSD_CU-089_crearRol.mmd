@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSD — CU-089 Gestionar Roles del Sistema · crearRol
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :RoleService
+
+    AGN->>+SRV: crearRol(tipo)
+    create participant ROL as rol:Rol
+    SRV->>ROL: «create»(tipo)
+    SRV-->>-AGN: rol

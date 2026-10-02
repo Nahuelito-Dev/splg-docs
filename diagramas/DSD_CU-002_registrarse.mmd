@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-002 Registrarse como Cliente · registrarse
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :RegistroService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant FBA as :FirebaseAuthPort
+
+    CLI->>+SRV: registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
+    SRV->>COL: verificarDisponibilidad(correo, telefono)
+    SRV->>+FBA: createUserSafe(correo, contrasena, nombreCompleto, telefono)
+    FBA-->>-SRV: cuenta
+    create participant USR as usuario:Usuario
+    SRV->>USR: «create»(nombreCompleto, correo, telefono, rolCliente, cuenta)
+    create participant CLE as cliente:Cliente
+    SRV->>CLE: «create»(usuario, datosDelCliente)
+    opt La persistencia falla
+        SRV->>FBA: deleteUserSafe(cuenta)
+    end
+    SRV-->>-CLI: usuario

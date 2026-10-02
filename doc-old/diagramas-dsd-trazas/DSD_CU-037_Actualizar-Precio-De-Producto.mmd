@@ -1,0 +1,33 @@
+sequenceDiagram
+    title DSD — CU-037 Actualizar Precio De Producto
+autonumber
+participant CTRL as GasCylinderController
+participant SRV as GasCylinderService
+participant GREP as RepositoryGasCylinder
+
+Note over CTRL: «include» CU-041 Consultar Catálogo de Productos
+CTRL->>SRV: update(id, updateGasCylinderDto con price, distributorId)
+activate SRV
+SRV->>SRV: findOne(id, distributorId), guardia de tenant
+SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+activate GREP
+GREP-->>SRV: GasCylinder o null
+deactivate GREP
+alt Producto inexistente o de otra distribuidora
+    SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+    deactivate SRV
+else Producto del tenant
+    SRV->>GREP: preload(gas_cylinder_id mas campos del dto)
+    activate GREP
+    GREP-->>SRV: GasCylinder fusionado o undefined
+    deactivate GREP
+    alt preload no encontro el producto
+        SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+    else Producto cargado
+        SRV->>GREP: save(gasCylinder)
+        activate GREP
+        GREP-->>SRV: GasCylinder con el precio nuevo
+        deactivate GREP
+        SRV-->>CTRL: GasCylinder
+    end
+end

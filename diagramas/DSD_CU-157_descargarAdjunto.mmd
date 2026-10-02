@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-157 Descargar un Adjunto de Flota · descargarAdjunto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetAttachmentService
+    participant COL as :Map#lt;String, TareaMantenimiento#gt;
+    participant TAR as tarea:TareaMantenimiento
+    participant STO as :StoragePort
+
+    ADM->>+SRV: descargarAdjunto(tareaId, adjuntoId)
+    SRV->>+COL: get(tareaId)
+    COL-->>-SRV: tarea
+    SRV->>+TAR: getAdjunto(adjuntoId)
+    TAR-->>-SRV: adjunto
+    SRV->>+STO: getDownloadUrl(adjunto)
+    STO-->>-SRV: url
+    opt El almacenamiento no entrega una URL
+        SRV->>+STO: getStream(adjunto)
+        STO-->>-SRV: contenido
+    end
+    SRV-->>-ADM: url o contenido

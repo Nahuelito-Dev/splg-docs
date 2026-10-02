@@ -1,0 +1,301 @@
+classDiagram
+    direction LR
+
+    %% Módulo `order` — generado por generar-clases-diseno.py
+
+    class CancelOrderUseCase {
+        <<usecase>>
+        +execute(orderId: string, userId: string, role: CancelActor, reason?: string) Promise<Order>
+        -notify(order: Order, previousDriverUserId: string | null) void
+    }
+
+    class ConfirmDeliveryUseCase {
+        <<usecase>>
+        +execute(orderId: string, code: string, userId: string, role: RoleType) Promise<Order>
+    }
+
+    class ConfirmPaymentUseCase {
+        <<usecase>>
+        +execute(input: ConfirmPaymentInput) Promise<void>
+        -handleApproved(order: Order, paymentId: string) Promise<void>
+    }
+
+    class CreateOrderUseCase {
+        <<usecase>>
+        +execute(createOrderDto: CreateOrderDto, distributorId?: string | null) Promise<CreateOrderResult>
+        -sendConfirmation(orderId: string, dto: CreateOrderDto) Promise<void>
+        -createMercadoPagoCheckout(savedOrder: Order, checkoutItems: PaymentCheckoutItem[], customer: [ email: string | null ]) Promise<string | undefined>
+        -createDepositCheckout(savedOrder: Order, depositAmount: number, customer: [ email: string | null ]) Promise<string | undefined>
+    }
+
+    class CylinderLifecycleAdapter {
+        +onOrderDelivered(orderId: string, distributorId?: string | null) Promise<number>
+    }
+
+    class CylinderLifecyclePort {
+        <<interface>>
+        +onOrderDelivered(orderId: string, distributorId?: string | null) Promise<number>
+    }
+
+    class DispatchOfferRepositoryPort {
+        <<interface>>
+        +create(orderId: string, driverId: string, expiresAt: Date, distributorId?: string | null) Promise<DispatchOffer>
+        +findOfferedDriverIds(orderId: string) Promise<string[]>
+        +hasActiveOffer(orderId: string, driverId?: string) Promise<boolean>
+        +findExpired(now: Date) Promise<DispatchOffer[]>
+        +updateStatus(offerId: string, status: DispatchOffer['status']) Promise<void>
+        +closeActiveOffer(orderId: string, driverId: string, status: DispatchOffer['status']) Promise<boolean>
+        +closeAllActiveOffers(orderId: string, status: DispatchOffer['status']) Promise<number>
+    }
+
+    class DispatchOfferTypeormRepository {
+        +create(orderId: string, driverId: string, expiresAt: Date, distributorId?: string | null) Promise<DispatchOffer>
+        +findOfferedDriverIds(orderId: string) Promise<string[]>
+        +hasActiveOffer(orderId: string, driverId?: string) Promise<boolean>
+        +findExpired(now: Date) Promise<DispatchOffer[]>
+        +updateStatus(offerId: string, status: DispatchOfferStatus) Promise<void>
+        +closeActiveOffer(orderId: string, driverId: string, status: DispatchOfferStatus) Promise<boolean>
+        +closeAllActiveOffers(orderId: string, status: DispatchOfferStatus) Promise<number>
+    }
+
+    class DispatchOrchestratorService {
+        +offerToNextDriver(order: Order) Promise<string | null>
+        +handleExpiredOffers() Promise<void>
+        +ensureOffered(order: Order) Promise<void>
+        +onDriverAccepted(orderId: string, driverId: string) Promise<void>
+        +onDriverRejected(order: Order, driverId: string) Promise<void>
+        +releaseOffer(orderId: string, driverId: string) Promise<void>
+        -isReofferable(order: Order) boolean
+        -findNearestAvailable(lat: number, lng: number, exclude: Set<string>, distributorId?: string | null) Promise<string | null>
+        -filterEligible(driverIds: string[], distributorId: string | null | undefined, cache: CacheDeInhabilitacion) Promise<string[]>
+    }
+
+    class DispatchService {
+        +tick() void
+        -bootstrapPendingWithoutOffer() Promise<void>
+    }
+
+    class NotificationAdapter {
+        +sendOrderConfirmation(customerId: string, orderId: string, token?: string) void
+        +sendArrivalPushToCustomer(customerId: string, orderId: string, driverName: string) void
+    }
+
+    class NotificationPort {
+        <<interface>>
+        +sendOrderConfirmation(customerId: string, orderId: string, token?: string) Promise<
+        +sendArrivalPushToCustomer(customerId: string, orderId: string, driverName: string) Promise<void>
+    }
+
+    class OrderController {
+        <<controller>>
+        +create(@Body() createOrderDto: CreateOrderDto, @CurrentUser() user: AuthenticatedUser, // Opcional para compatibilidad: si el cliente no manda X-Distributor (apps // previas al multi-tenant), el use-case cae a la distribuidora default. @CurrentDistributor() distributorId: string | null) void
+        +findAll(@Query() queryDto: QueryOrdersDto, @CurrentDistributor() distributorId: string | null) void
+        +findByCustomer(@CurrentUser() user: AuthenticatedUser, @Param('customerId', ParseUUIDPipe) customerId: string, @Query() paginationDto: PaginationDto, @CurrentDistributor() distributorId: string | null) void
+        +findByDelivery(@CurrentUser() user: AuthenticatedUser, @Param('deliveryId', ParseUUIDPipe) deliveryId: string, @Query() paginationDto: PaginationDto, @CurrentDistributor() distributorId: string | null) void
+        +findAvailableOrders(@Query() paginationDto: PaginationDto, @CurrentDistributor() distributorId: string | null) void
+        +findReservations(@CurrentDistributor() distributorId: string | null) void
+        +findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) void
+        +updateStatus(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: UpdateOrderStatusDto, @CurrentDistributor() distributorId: string | null) void
+        +rejectOffer(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) void
+        +getDeliveryCode(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) void
+        +confirmDelivery(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: ConfirmDeliveryDto, @CurrentDistributor() distributorId: string | null) void
+        +assignDelivery(@Param('id', ParseUUIDPipe) id: string, @Param('deliveryId', ParseUUIDPipe) deliveryId: string, @CurrentDistributor() distributorId: string | null) void
+        +updateLocation(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: UpdateLocationDto, @CurrentDistributor() distributorId: string | null) void
+        +getStats(@CurrentDistributor() distributorId: string | null) Promise<OrderStatsResponseDto>
+        +cancelOrder(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) void
+        +cancel(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: CancelOrderDto, @CurrentDistributor() distributorId: string | null) void
+        +notifyArrival(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) void
+        +confirmDeposit(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null) void
+        +getChartData(@CurrentDistributor() distributorId: string | null) Promise<SalesChartPointDto[]>
+    }
+
+    class OrderLookupService {
+        +findRef(orderId: string, distributorId?: string | null) Promise<OrderRef | null>
+        +countBooked(timeSlotId: string, date: string, distributorId?: string | null, manager?: EntityManager) Promise<number>
+        +countActiveByDelivery(deliveryId: string) Promise<number>
+    }
+
+    class OrderMapper {
+        <<mapper>>
+        +toDto(order: Order) OrderResponseDto
+        -mapStatus(status: OrderStatus) string
+        -mapPaymentType(type: PaymentType) string
+    }
+
+    class OrderPricingService {
+        +priceItem(basePrice: number | string, promotions: VolumePromotion[] | null | undefined, quantity: number) ItemPricing
+        +applyPaymentSurcharge(total: Decimal, method: PaymentMethod) Decimal
+        -bestApplicablePromotion(promotions: VolumePromotion[] | null | undefined, quantity: number) VolumePromotion | null
+    }
+
+    class OrderRecordMapper {
+        <<mapper>>
+        +toDto(o: Order) OrderRecordResponseDto
+    }
+
+    class OrderRepositoryPort {
+        <<interface>>
+        +findById(id: string) Promise<Order | null>
+        +findByIdFull(id: string) Promise<Order | null>
+        +findAllPaginated(limit: number, offset: number, distributorId?: string | null, filters?: OrderListFilters) Promise<PaginatedOrders>
+        +findAvailable(limit: number, offset: number, distributorId?: string | null) Promise<PaginatedOrders>
+        +findByCustomer(customerId: string, limit: number, offset: number, distributorId?: string | null) Promise<PaginatedOrders>
+        +findByDelivery(deliveryId: string, limit: number, offset: number, distributorId?: string | null) Promise<PaginatedOrders>
+        +save(order: Order) Promise<Order>
+    }
+
+    class OrderService {
+        -assertPedidoDelChofer(order: Order, userId: string, role: RoleType) void
+        +rejectOffer(orderId: string, driverId: string) void
+        +create(createOrderDto: CreateOrderDto, distributorId?: string | null) void
+        +findAll(queryDto: QueryOrdersDto, distributorId?: string | null) void
+        +findById(id: string) Promise<Order | null>
+        +assertDeLaDistribuidora(id: string, distributorId: string | null) Promise<void>
+        +assertEsElChofer(deliveryId: string, userId: string) Promise<void>
+        +assertAsignadoAlChofer(deliveryIdDelPedido: string | null, userId: string) Promise<void>
+        +findOne(id: string) void
+        +getOne(id: string, distributorId?: string | null, customerUserId?: string | null) Promise<OrderResponseDto>
+        +findAvailableOrders(paginationDto: PaginationDto, distributorId?: string | null) void
+        +findByCustomer(customerId: string, paginationDto: PaginationDto, distributorId?: string | null) void
+        +findByDelivery(deliveryId: string, paginationDto: PaginationDto, distributorId?: string | null) void
+        +updateStatus(id: string, status: OrderStatus, deliveryId?: string, role?: RoleType, actorUserId?: string) void
+        +getDeliveryCode(orderId: string, userId: string, role: RoleType) void
+        +confirmDelivery(orderId: string, code: string, userId: string, role: RoleType) void
+        +assignDelivery(orderId: string, deliveryId: string) void
+        +updateLocation(id: string, lat: string, lng: string, userId: string) void
+        +getOrderStats(distributorId?: string | null) void
+        +cancelOrder(orderId: string, userId: string, role: 'customer' | 'driver' | 'admin' | 'superadmin', reason?: string) void
+        +notifyDriverArrived(orderId: string, userId: string, role: RoleType) void
+        +getSalesChartData(distributorId?: string | null) void
+    }
+
+    class OrderTypeormRepository {
+        +findById(id: string) Promise<Order | null>
+        +findByIdFull(id: string) Promise<Order | null>
+        +findAllPaginated(limit: number, offset: number, distributorId?: string | null, filters?: OrderListFilters) Promise<PaginatedOrders>
+        +findAvailable(limit: number, offset: number, distributorId?: string | null) Promise<PaginatedOrders>
+        +findByCustomer(customerId: string, limit: number, offset: number, distributorId?: string | null) Promise<PaginatedOrders>
+        +findByDelivery(deliveryId: string, limit: number, offset: number, distributorId?: string | null) Promise<PaginatedOrders>
+        +save(order: Order) Promise<Order>
+    }
+
+    class PagoNotificadoListener {
+        <<listener>>
+        +handle(evento: PagoNotificadoEvent) Promise<void>
+    }
+
+    class RealtimeDispatchAdapter {
+        +findNearbyDrivers(lat: number, lng: number, radiusKm: number) Promise<string[]>
+        +reportDriverLocation(driverUserId: string, lat: number, lng: number) Promise<void>
+        +notifyDriverNewOrder(driverId: string, payload: unknown) void
+        +notifyDriverOrderCancelled(driverId: string, payload: unknown) void
+        +notifyCustomer(customerId: string, event: string, payload: unknown) void
+        +notifyAdmins(event: string, payload: unknown, distributorId?: string | null) void
+        +startTracking(driverUserId: string, orderId: string, customerId: string, distributorId?: string | null) void
+        +stopTracking(driverUserId: string) void
+    }
+
+    class RealtimeDispatchPort {
+        <<interface>>
+        +findNearbyDrivers(lat: number, lng: number, radiusKm: number) Promise<string[]>
+        +reportDriverLocation(driverUserId: string, lat: number, lng: number) Promise<void>
+        +notifyDriverNewOrder(driverId: string, payload: unknown) void
+        +notifyDriverOrderCancelled(driverId: string, payload: unknown) void
+        +notifyCustomer(customerId: string, event: string, payload: unknown) void
+        +notifyAdmins(event: string, payload: unknown, distributorId?: string | null) void
+        +startTracking(driverUserId: string, orderId: string, customerId: string, distributorId?: string | null) void
+        +stopTracking(driverUserId: string) void
+    }
+
+    class ReleaseOrderUseCase {
+        <<usecase>>
+        +execute(orderId: string, expectedDriverUserId?: string) Promise<Order>
+        +applyRelease(order: Order) string | null
+        +notifyReleased(order: Order, previousDriverUserId: string | null) Promise<void>
+    }
+
+    class ReservationService {
+        +findReservations(distributorId?: string | null) void
+        +confirmDeposit(orderId: string, distributorId?: string | null) Promise<Order>
+        +activateDueReservations() Promise<void>
+        +expireUnpaidReservations() Promise<void>
+        +expireUnpaidMercadoPagoOrders() Promise<void>
+    }
+
+    class UpdateOrderStatusUseCase {
+        <<usecase>>
+        +execute(id: string, status: OrderStatus, deliveryId?: string, role?: RoleType, actorUserId?: string) Promise<Order>
+        -handlePendingTarget(id: string, deliveryId?: string, role?: RoleType) Promise<Order>
+        -activarReservaConLock(id: string) Promise<Order>
+        -assertPedidoDelChofer(order: Order, deliveryId?: string, role?: RoleType) Promise<void>
+        -applyStatusEffects(order: Order, status: OrderStatus, previousStatus: OrderStatus, deliveryId?: string) Promise<User | null>
+        -emitStatusEvent(order: Order, status: OrderStatus, deliveryUser: User | null) void
+        -notifyCustomer(order: Order) Promise<void>
+    }
+
+    CancelOrderUseCase ..> RealtimeDispatchPort : usa
+    CancelOrderUseCase ..> ReleaseOrderUseCase : usa
+    ConfirmDeliveryUseCase ..> OrderRepositoryPort : usa
+    ConfirmDeliveryUseCase ..> UpdateOrderStatusUseCase : usa
+    ConfirmPaymentUseCase ..> OrderRepositoryPort : usa
+    ConfirmPaymentUseCase ..> DispatchOrchestratorService : usa
+    CreateOrderUseCase ..> OrderPricingService : usa
+    CreateOrderUseCase ..> DispatchOrchestratorService : usa
+    CreateOrderUseCase ..> NotificationPort : usa
+    CreateOrderUseCase ..> OrderRepositoryPort : usa
+    CreateOrderUseCase ..> RealtimeDispatchPort : usa
+    DispatchOrchestratorService ..> RealtimeDispatchPort : usa
+    DispatchOrchestratorService ..> OrderRepositoryPort : usa
+    DispatchOrchestratorService ..> DispatchOfferRepositoryPort : usa
+    DispatchService ..> OrderService : usa
+    DispatchService ..> DispatchOrchestratorService : usa
+    OrderController ..> OrderService : usa
+    OrderController ..> ReservationService : usa
+    OrderService ..> RealtimeDispatchPort : usa
+    OrderService ..> OrderRepositoryPort : usa
+    OrderService ..> CreateOrderUseCase : usa
+    OrderService ..> UpdateOrderStatusUseCase : usa
+    OrderService ..> CancelOrderUseCase : usa
+    OrderService ..> ConfirmDeliveryUseCase : usa
+    OrderService ..> DispatchOrchestratorService : usa
+    OrderService ..> DispatchOfferRepositoryPort : usa
+    OrderService ..> NotificationPort : usa
+    PagoNotificadoListener ..> ConfirmPaymentUseCase : usa
+    ReleaseOrderUseCase ..> RealtimeDispatchPort : usa
+    ReleaseOrderUseCase ..> DispatchOrchestratorService : usa
+    ReservationService ..> OrderRepositoryPort : usa
+    ReservationService ..> DispatchOrchestratorService : usa
+    UpdateOrderStatusUseCase ..> RealtimeDispatchPort : usa
+    UpdateOrderStatusUseCase ..> NotificationPort : usa
+    UpdateOrderStatusUseCase ..> OrderRepositoryPort : usa
+    UpdateOrderStatusUseCase ..> DispatchOrchestratorService : usa
+    UpdateOrderStatusUseCase ..> CylinderLifecyclePort : usa
+    UpdateOrderStatusUseCase ..> CancelOrderUseCase : usa
+    UpdateOrderStatusUseCase ..> ReleaseOrderUseCase : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% CancelOrderUseCase usa GasCylinderService (módulo `gascylinder`)
+    %% ConfirmPaymentUseCase usa PaymentsService (módulo `payments`)
+    %% CreateOrderUseCase usa CoverageZonePricingService (módulo `coverage-zone`)
+    %% CreateOrderUseCase usa CoverageZoneService (módulo `coverage-zone`)
+    %% CreateOrderUseCase usa CustomersService (módulo `customer`)
+    %% CreateOrderUseCase usa DistributorService (módulo `distributor`)
+    %% CreateOrderUseCase usa GasCylinderService (módulo `gascylinder`)
+    %% CreateOrderUseCase usa PaymentsService (módulo `payments`)
+    %% CreateOrderUseCase usa TimeSlotService (módulo `time-slot`)
+    %% CreateOrderUseCase usa UserAddressService (módulo `user-address`)
+    %% CylinderLifecycleAdapter usa CylinderService (módulo `cylinder`)
+    %% DispatchOrchestratorService usa DeliveryService (módulo `delivery`)
+    %% DispatchOrchestratorService usa FleetDispatchLockService (módulo `fleet`)
+    %% DispatchOrchestratorService usa NotificationsService (módulo `notifications`)
+    %% DispatchService usa RedisService (módulo `redis`)
+    %% NotificationAdapter usa NotificationsService (módulo `notifications`)
+    %% OrderService usa DeliveryService (módulo `delivery`)
+    %% OrderService usa FleetDispatchLockService (módulo `fleet`)
+    %% RealtimeDispatchAdapter usa AdminGateway (módulo `gateways`)
+    %% RealtimeDispatchAdapter usa CustomersGateway (módulo `gateways`)
+    %% RealtimeDispatchAdapter usa DriversGateway (módulo `gateways`)
+    %% RealtimeDispatchAdapter usa RedisService (módulo `redis`)
+    %% ReservationService usa GasCylinderService (módulo `gascylinder`)
+    %% UpdateOrderStatusUseCase usa DeliveryService (módulo `delivery`)
+    %% UpdateOrderStatusUseCase usa FleetDispatchLockService (módulo `fleet`)

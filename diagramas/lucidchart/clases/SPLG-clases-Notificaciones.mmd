@@ -1,0 +1,66 @@
+classDiagram
+    direction LR
+
+    %% Notificaciones y correo. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class NotificationsService {
+        <<fachada>>
+        + consultarTokensDelUsuario(usuario: Usuario): Cadena[*]
+        + enviarNotificacionDePrueba(token: Cadena, titulo: Cadena, mensaje: Cadena): Cadena
+        + escalateToAdmin(caso: CasoRecupero)
+        + reenviarConfirmacionDePedido(usuario: Usuario, pedidoId: Identificador): Cadena
+        + registrarTokenDeNotificaciones(usuario: Usuario, token: Cadena, plataforma: Cadena): Cadena
+        + sendBatchOffer(chofer: Chofer, recorrido: LoteRecorrido)
+        + sendOfferPushToDriver(chofer: Chofer, pedido: Pedido)
+        + sendOrderConfirmation(cliente: Cliente, pedido: Pedido)
+        + sendRecoveryStep(caso: CasoRecupero, escalon: Entero)
+        + sendRepurchaseInvitation(cliente: Cliente, invitacion: InvitacionRecompra)
+        + sendWindowProposal(propuesta: PropuestaVentanaTaller)
+    }
+
+    class EmailService {
+        <<fachada>>
+        + cambiarCorreo(correoActual: Cadena, correoNuevo: Cadena): Cadena
+        + probarServicioDeCorreo(destinatario: Cadena): Cadena
+        + solicitarRecuperacionDeClave(correo: Cadena): Cadena
+    }
+
+    class EmailSenderPort {
+        <<interface>>
+        + send(verificacionDeCorreo: Registro)
+        + send(correoDeRecuperacion: Cadena)
+        + send(correoDePrueba: Cadena)
+        + send(administrador: Administrador, vencimientos: Registro)
+    }
+
+    class FirebaseAuthPort {
+        <<interface>>
+    }
+    class Map_String_Usuario["Map<String, Usuario>"] {
+        <<colección>>
+    }
+    class FcmPort {
+        <<interface>>
+    }
+    class Map_String_Chofer["Map<String, Chofer>"] {
+        <<colección>>
+    }
+    class Map_String_Cliente["Map<String, Cliente>"] {
+        <<colección>>
+    }
+    class Chofer
+    class Usuario
+    class Cliente
+
+    Usuario <|-- Cliente
+    Usuario <|-- Chofer
+    EmailService --> "1" EmailSenderPort : emailSenderPort
+    EmailService --> "1" FirebaseAuthPort : firebaseAuthPort
+    EmailService --> "1" Map_String_Usuario : map<String, Usuario>
+    NotificationsService --> "1" FcmPort : fcmPort
+    NotificationsService --> "1" Map_String_Chofer : map<String, Chofer>
+    NotificationsService --> "1" Map_String_Cliente : map<String, Cliente>
+    EmailService ..> Usuario
+    NotificationsService ..> Chofer
+    NotificationsService ..> Cliente

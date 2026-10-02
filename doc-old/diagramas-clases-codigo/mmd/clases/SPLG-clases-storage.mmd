@@ -1,0 +1,31 @@
+classDiagram
+    direction LR
+
+    %% Módulo `storage` — generado por generar-clases-diseno.py
+
+    class LocalDiskStorageAdapter {
+        +put([ key, body, contentType ]: StorageObjectInput) Promise<void>
+        +remove(key: string) Promise<void>
+        +getDownloadUrl(_key: string) Promise<string | null>
+        +getStream(key: string) Promise<StorageObjectStream>
+        -readContentType(filePath: string) Promise<string | null>
+        -metaPath(filePath: string) string
+        -resolveKey(key: string) string
+    }
+
+    class S3StorageAdapter {
+        +put([ key, body, contentType ]: StorageObjectInput) Promise<void>
+        +remove(key: string) Promise<void>
+        +getDownloadUrl(key: string) Promise<string | null>
+        +getStream(key: string) Promise<StorageObjectStream>
+        -esLegible(body: unknown) body is Readable
+    }
+
+    class StoragePort {
+        <<interface>>
+        +put(input: StorageObjectInput) Promise<void>
+        +remove(key: string) Promise<void>
+        +getDownloadUrl(key: string) Promise<string | null>
+        +getStream(key: string) Promise<StorageObjectStream>
+    }
+

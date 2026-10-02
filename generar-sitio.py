@@ -94,6 +94,15 @@ def cargar(prefijo):
         codes = re.findall(r'CU-\d+', m.group(1))
         src = re.sub(r'^```mermaid\s*|\s*```$', '', open(f,encoding="utf-8").read().strip()).strip()
         titulo = m.group(2).replace("-", " ")
+        if prefijo == "DSD":
+            # estilo Larman: el diagrama es una operación del sistema y su título es la firma
+            fm = re.search(r'^\s*\w+\s*-{1,2}>>\+?\s*\w+\s*:\s*(\w+\(.*\))\s*$', src, re.M)
+            if fm and re.search(r'^\s*(?:create\s+)?participant\s+\w+\s+as\s+\w*:', src, re.M):
+                titulo = "Operación: " + fm.group(1)
+        if prefijo == "DSS":
+            # el nombre del caso, con sus tildes, está en el título del propio diagrama
+            tm = re.search(r'^\s*title DSS — CU-\d+(?:\s*/\s*CU-\d+)*:?\s+(.+)$', src, re.M)
+            if tm: titulo = tm.group(1).strip()
         for c in codes:
             o.setdefault(c, []).append({"titulo":titulo, "src":src,
                                         "comparte": codes if len(codes) > 1 else []})
@@ -127,7 +136,10 @@ UMLSIS = {
                "Actores contra subsistemas: define el límite del sistema"),
   "completo": ("CU_Sistema_Diagrama-Completo",
                "Diagrama completo de casos de uso",
-               "Los %d casos de uso, uno por uno, dentro de su subsistema"),
+               "Los %d casos de uso, uno por uno, dentro de su paquete, con los actores afuera del límite"),
+  "mapa": ("CU_Sistema_Mapa",
+               "Mapa del sistema",
+               "Una página: los 18 paquetes con su cantidad de casos y qué actor participa en cada uno"),
   "subsistemas": ("CU_Sistema_Subsistemas",
                "Subsistemas del proyecto",
                "Los 18 subsistemas, su agrupamiento y de quién depende cada uno"),
@@ -136,7 +148,7 @@ UMLSIS = {
                "Dónde corre cada pieza y cómo llega el código a producción"),
   "actores":  ("CU_Sistema_Actores",
                "Actores del sistema",
-               "Los cinco actores y el canal por el que operan"),
+               "Los actores, el canal por el que operan y los sistemas externos"),
 }
 umlsis = {}
 for _k,(_f,_n,_d) in UMLSIS.items():
@@ -326,7 +338,9 @@ for c in sorted(set(cua) | set(cue)):
 if "completo" in umlsis:
     umlsis["completo"]["descripcion"] = umlsis["completo"]["descripcion"] % len(datos["cu"])
 
-faltan = {k:[a for a in ("cua","cue","dss","dsd") if not v[a]] for k,v in datos["cu"].items()}
+# un caso incluido no lo inicia ningún actor: su operación forma parte del diagrama del caso base
+incluidos = {c for c,v in cua.items() if "caso incluido" in v["actores"].lower() or "ninguno directo" in v["actores"].lower()}
+faltan = {k:[a for a in ("cua","cue","dss","dsd") if not v[a] and not (a == "dss" and k in incluidos)] for k,v in datos["cu"].items()}
 faltan = {k:v for k,v in faltan.items() if v}
 if faltan:
     print("ATENCION, casos con artefactos faltantes:", faltan, file=sys.stderr)
@@ -366,30 +380,77 @@ _arq_html = md2html(_arq)["html"]
 # trabajan en Lucidchart. Los archivos viven en lucidchart/ y se generan con
 # generar-lucidchart.py; acá se muestran dibujados y se dejan para descargar,
 # para no tener que ir al repositorio a buscarlos.
+sys.path.insert(0, D)
+from modelo_conceptual import VISTAS as _vistas_mc
+
 def _lucid():
     fuentes = [
       ("Modelo conceptual", "SPLG-modelo-conceptual.xml",
        "diagramas/lucidchart/SPLG-modelo-conceptual.mmd",
        "Los conceptos del dominio con sus asociaciones y multiplicidades. "
        "Es el modelo de análisis: sin métodos, sin claves foráneas y sin navegabilidad."),
-      ("Diagrama de clases — dominio", "SPLG-diagrama-de-clases-dominio.xml",
-       "diagramas/lucidchart/SPLG-clases-dominio.mmd",
-       "Las clases de entidad con sus atributos tipados, las enumeraciones y las "
-       "multiplicidades reales de cada relación."),
-      ("Diagrama de clases — servicios", "SPLG-diagrama-de-clases-servicios.xml",
-       "diagramas/lucidchart/SPLG-clases-servicios.mmd",
-       "Las clases de la capa de aplicación con sus operaciones. Cada firma está "
-       "tomada del código, no inventada."),
+      ("Diagrama de clases de diseño — dominio", "SPLG-diagrama-de-clases-dominio.xml",
+       "diagramas/lucidchart/SPLG-clases-diseno-dominio.mmd",
+       "Las clases del modelo conceptual con sus atributos tipados y las operaciones que reciben "
+       "en los diagramas de interacción, con la navegabilidad que esos mensajes piden. Se deriva "
+       "de los DSD: no se escribe a mano."),
     ]
+    # Las clases de servicios, casos de uso, puertos y controladores no entran en un
+    # solo diagrama (126 clases): generar-clases-diseno.py las parte por módulo del
+    # backend. Se agregan todas acá, en orden alfabético del módulo.
+    for ruta_mmd in sorted(glob.glob(D + "diagramas/lucidchart/clases/SPLG-clases-*.mmd")):
+        modulo = re.match(r'SPLG-clases-(.+)\.mmd$', os.path.basename(ruta_mmd)).group(1)
+        fuentes.append((
+          f"Diagrama de clases — servicios · módulo {modulo}",
+          f"SPLG-diagrama-de-clases-{modulo}.xml",
+          f"diagramas/lucidchart/clases/SPLG-clases-{modulo}.mmd",
+          f"Vista `{modulo}` del diagrama de clases de diseño: controladores, fabricaciones "
+          f"puras, puertos y colecciones con las operaciones que reciben en los DSD."))
     mer, secc = [], []
     for titulo, xml, fuente, desc in fuentes:
         ruta = D + fuente
         if not os.path.exists(ruta): continue
         mer.append(open(ruta, encoding="utf-8").read().strip())
-        b64 = base64.b64encode(open(D + "lucidchart/" + xml, "rb").read()).decode()
+        xml_ruta = (D + "lucidchart/clases/" + xml if "/clases/" in fuente
+                   else D + "lucidchart/" + xml)
+        if not os.path.exists(xml_ruta): continue
+        b64 = base64.b64encode(open(xml_ruta, "rb").read()).decode()
+        cuerpo = f'<div class="diagram" data-mer="{len(mer)-1}"></div>'
+        if "clases-diseno-dominio" in fuente or re.search(r'lucidchart/clases/SPLG-clases-', fuente):
+            # el diagrama de clases de diseño se dibuja con PlantUML (estereotipos, interfaces,
+            # navegabilidad, realización): se muestran sus imágenes y no el Mermaid, que sólo es
+            # la fuente del draw.io
+            mer.pop()
+            cuerpo = ""
+            if "clases-diseno-dominio" in fuente:
+                nombres_img = ["DC_General"] + sorted(
+                    os.path.basename(f)[:-5] for f in glob.glob(D + "diagramas/clases-diseno/DC_*.puml")
+                    if not os.path.basename(f).startswith(("DC_Mod_", "DC_General", "DC_Paquetes")))
+            else:
+                nombres_img = ["DC_Mod_" + re.search(r'SPLG-clases-(.+)\.mmd$', fuente).group(1)]
+            for img in nombres_img:
+                for ext in (".svg", ".png"):
+                    ruta_img = D + "diagramas/clases-diseno/" + img + ext
+                    if os.path.exists(ruta_img):
+                        cuerpo += ('<div class="figura"><img class="umlimg" alt="Diagrama de clases de diseño: '
+                                   f'{img}" src="{imagen(ruta_img)}"></div>')
+                        break
+        if xml == "SPLG-modelo-conceptual.xml":
+            # el modelo conceptual se dibuja con PlantUML (dirección de lectura, clase de
+            # asociación y restricciones de generalización): se muestran sus imágenes y no
+            # el Mermaid, que es sólo la fuente del draw.io
+            mer.pop()
+            cuerpo = ""
+            for img in ["MC_General"] + [v[1] for v in _vistas_mc]:
+                for ext in (".svg", ".png"):
+                    ruta_img = D + "diagramas/modelo-conceptual/" + img + ext
+                    if os.path.exists(ruta_img):
+                        cuerpo += ('<div class="figura"><img class="umlimg" alt="Modelo conceptual: '
+                                   f'{img}" src="{imagen(ruta_img)}"></div>')
+                        break
         secc.append(
           f'<h2>{titulo}</h2><p>{desc}</p>'
-          f'<div class="diagram" data-mer="{len(mer)-1}"></div>'
+          f'{cuerpo}'
           f'<p class="bajar"><a download="{xml}" href="data:application/xml;base64,{b64}">'
           f'DESCARGAR {xml}</a> <span class="comollega">Lucidchart · Archivo · Importar · Draw.io</span></p>')
 
@@ -398,9 +459,9 @@ def _lucid():
         crudo = open(sql, encoding="utf-8").read()
         b64 = base64.b64encode(crudo.encode()).decode()
         img = ""
-        for cand in ("diagramas/base-de-datos/SPLG-modelo-fisico.svg",
-                     "diagramas/base-de-datos/SPLG-modelo-fisico.png"):
-            if os.path.exists(D + cand): img = f'<img class="umlimg" alt="Diagrama de base de datos" src="{imagen(D + cand)}">'; break
+        for ruta_img in sorted(glob.glob(D + "diagramas/base-de-datos/fisico/SPLG-fisico-*.svg")):
+            img += (f'<div class="figura"><img class="umlimg" alt="Modelo físico: '
+                    f'{os.path.basename(ruta_img)[12:-4]}" src="{imagen(ruta_img)}"></div>')
         secc.append(
           f'<h2>Diagrama de base de datos</h2>'
           f'<p>Las {crudo.count("CREATE TABLE")} tablas con sus columnas y sus claves foráneas. '
@@ -426,7 +487,6 @@ datos["paginas"] = {
                              + _arq_html},
     "ramas":      {"titulo": "Ramas y commits",     "html": cuerpo_de("branching.html")},
     "versionado": {"titulo": "Versionado automatico", "html": cuerpo_de("versionado.html")},
-    "agentes":    {"titulo": "Asistentes de IA",    "html": cuerpo_de("asistentes.html")},
 }
 
 marcas = {a: marca_de(a) for a in ("visor.js", "visor.css")}

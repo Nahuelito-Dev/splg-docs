@@ -1,0 +1,35 @@
+sequenceDiagram
+    title DSD — CU-071 Consultar Historial De Movimientos De Un Envase
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant DEC as CurrentDistributor
+    participant CTRL as CylinderController
+    participant SRV as CylinderService
+    participant CREP as RepositoryCylinder
+    participant MREP as RepositoryCylinderMovement
+
+    ADM->>DEC: GET /cylinders/:id/history
+    activate DEC
+    DEC->>CTRL: getHistory(id, distributorId)
+    activate CTRL
+    CTRL->>SRV: getHistory(id, distributorId)
+    activate SRV
+    SRV->>SRV: findOne(id, distributorId), valida existencia y tenant
+    SRV->>CREP: findOne(where cylinder_id mas distributor_id si hay tenant)
+    activate CREP
+    CREP-->>SRV: Cylinder o null
+    deactivate CREP
+    alt No existe o es de otra distribuidora
+        SRV-->>CTRL: NotFoundException, envase no encontrado
+        deactivate SRV
+    else Envase valido
+        SRV->>MREP: find(where cylinder_id, order createdAt ASC)
+        activate MREP
+        MREP-->>SRV: CylinderMovement[] append only
+        deactivate MREP
+        SRV-->>CTRL: CylinderMovement[]
+        CTRL->>CTRL: CylinderMapper.movimientoToDto por cada movimiento
+        CTRL-->>ADM: 200 CylinderMovementResponseDto[]
+        deactivate CTRL
+    end
+    deactivate DEC

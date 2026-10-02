@@ -1,5 +1,5 @@
 @startuml
-title SS-09 — Franjas Horarias (5 casos de uso)
+title SS-09 — Franjas Horarias (6 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -40,10 +40,11 @@ actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-09 Franjas Horarias" {
   usecase "CU-042\nCrear Franja Horaria" as U042 #back:FFFFFF;line:A26A45
-  usecase "CU-043\nModificar Capacidad de Franja\nHoraria" as U043 <<pendiente>> #back:FFFFFF;line:A26A45
+  usecase "CU-043\nModificar Capacidad de Franja\nHoraria" as U043 <<planificado>> #back:FFFFFF;line:A26A45
   usecase "CU-044\nSeleccionar Franja Horaria al\nCrear Pedido" as U044 #back:FFFFFF;line:A26A45
   usecase "CU-045\nConsultar Franjas Horarias\nDisponibles" as U045 #back:FFFFFF;line:A26A45
   usecase "CU-103\nEliminar Franja Horaria" as U103 #back:FFFFFF;line:A26A45
+  usecase "CU-154\nConsultar Listado de Franjas\nHorarias" as U154 #back:FFFFFF;line:A26A45
 }
 
 A01 -[#1F6F8B]- U044
@@ -51,9 +52,12 @@ A01 -[#1F6F8B]- U045
 A03 -[#8C4A9E]- U042
 A03 -[#8C4A9E]- U043
 A03 -[#8C4A9E]- U103
-A05 -[#B4432B]- U103
+A03 -[#8C4A9E]- U154
+A05 --|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U044 ..> U045 : <<include>>
+U043 ..> U154 : <<include>>
+U103 ..> U154 : <<include>>
 
 @enduml

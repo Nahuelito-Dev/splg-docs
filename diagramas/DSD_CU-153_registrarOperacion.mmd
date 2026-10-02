@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-153 Registrar Toda Operación de Escritura · registrarOperacion
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant AUD as :AuditService
+
+    SIS->>+AUD: registrarOperacion(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)
+    create participant ASI as :AsientoAuditoria
+    AUD->>ASI: «create»(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)
+    ASI->>ASI: depurarCredenciales()
+    deactivate AUD

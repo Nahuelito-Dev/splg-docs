@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-105 Planificar el mantenimiento y las habilitaciones de la flota · aceptarVentanaDeMantenimiento
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant PLN as :FleetMaintenancePlannerService
+    participant COL as :Map#lt;String, PropuestaVentanaTaller#gt;
+    participant PRP as propuesta:PropuestaVentanaTaller
+    participant TAR as tarea:TareaMantenimiento
+
+    CHF->>+PLN: aceptarVentanaDeMantenimiento(propuestaId)
+    PLN->>+COL: get(propuestaId)
+    COL-->>-PLN: propuesta
+    PLN->>+PRP: aceptar()
+    PRP->>PRP: assertVigente()
+    PRP->>TAR: quedarPendienteDeConfirmacion(ventana)
+    deactivate PRP
+    PLN-->>-CHF: propuesta

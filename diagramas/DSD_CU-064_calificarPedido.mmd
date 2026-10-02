@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSD — CU-064 Calificar Pedido (cliente↔chofer) · calificarPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :RatingService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant USU as usuario:Usuario
+    participant CHO as chofer:Chofer
+
+    CLI->>+SRV: calificarPedido(pedidoId, estrellas, comentario)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: puedeCalificar(usuario)
+    PED-->>-SRV: habilitado
+    SRV->>+PED: getReceptorDeCalificacion(usuario)
+    PED-->>-SRV: calificado
+    SRV->>+USU: calificar(pedido, calificado, estrellas, comentario)
+    create participant CAL as :Calificacion
+    USU->>CAL: «create»(pedido, calificado, estrellas, comentario)
+    USU-->>-SRV: calificacion
+    opt Califica el cliente
+        SRV->>CHO: recalcularPromedio()
+    end
+    SRV-->>-CLI: calificacion

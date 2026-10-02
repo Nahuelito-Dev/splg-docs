@@ -1,0 +1,40 @@
+@startuml
+title Diagrama de estados — Tarea de flota
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "SCHEDULED\nprogramada" as SCHEDULED
+state "DONE\nhecha" as DONE
+state "CANCELLED\ncancelada" as CANCELLED
+
+[*] --> SCHEDULED : crearTarea(plan, vehículo o chofer)
+SCHEDULED --> SCHEDULED : actualizarTarea() [tarea abierta]
+SCHEDULED --> DONE : registrarRealización(performedAt) [tarea abierta]
+SCHEDULED --> CANCELLED : cancelarTarea() [tarea abierta]
+DONE --> [*]
+CANCELLED --> [*]
+
+note bottom of CANCELLED
+  FORECAST, IN_PROGRESS y OVERDUE son valores
+  del tipo declarado en la entidad que ninguna
+  operación asigna hoy. FORECAST es el valor por
+  defecto de la columna. El vencimiento no se guarda:
+  se calcula de la fecha límite y del plazo de aviso
+  del plan, y una tarea abierta vencida de un plan
+  bloqueante inhabilita al vehículo o al chofer.
+end note
+@enduml

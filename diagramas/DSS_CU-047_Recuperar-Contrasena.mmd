@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-047 Recuperar Contrasena
+    title DSS — CU-047 Recuperar Contraseña
     autonumber
-    actor CLI as Usuario
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: solicitarRecuperacionDeClave(correo)
     activate SIS
@@ -19,3 +19,4 @@ sequenceDiagram
         SIS-->>CLI: correo actualizado (se envió la verificación al nuevo)
         deactivate SIS
     end
+    Note over CLI,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)

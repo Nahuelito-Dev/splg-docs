@@ -17,9 +17,9 @@ node --check /tmp/_splg_check.js
 echo "→ armando la carpeta"
 rm -rf publicar && mkdir -p publicar
 # Todo lo que el sitio referencia. Estaba escrito a mano y se quedo corto: al
-# sumar el visor y la pagina de agentes, publicar habria dejado la pagina sin
-# visor.css ni visor.js —404 en silencio— y sin asistentes.html.
-cp splg-documentacion.html index.html branching.html versionado.html asistentes.html \
+# sumar el visor, publicar habria dejado la pagina sin visor.css ni visor.js
+# —404 en silencio—.
+cp splg-documentacion.html index.html branching.html versionado.html \
    paginas.css visor.css visor.js publicar/
 
 echo "→ comprobando que no falte nada"

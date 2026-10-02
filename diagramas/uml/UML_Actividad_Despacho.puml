@@ -1,0 +1,68 @@
+@startuml
+title Diagrama de actividad — Despacho por proximidad (M1)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowFontSize 12
+skinparam activity {
+  BackgroundColor #F4F7FA
+  BorderColor #2C4257
+  DiamondBackgroundColor #FBF7E6
+  DiamondBorderColor #7A7340
+  BarColor #2C4257
+  StartColor #2C4257
+  EndColor #2C4257
+}
+skinparam swimlane {
+  BorderColor #6B7683
+  TitleFontStyle bold
+}
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+|Sistema|
+start
+:Pedido en estado PENDING sin chofer asignado;
+while (¿el pedido sigue PENDING y sin chofer?) is (sí)
+  if (¿tiene punto de entrega?) then (no)
+    :Sin oferta;
+    stop
+  endif
+  :radio := 5 km;
+  repeat
+    :Buscar choferes cercanos en Redis\n(GEORADIUS sobre el radio);
+    :Quedarse con los elegibles: habilitados, validados,\nde la distribuidora y sin bloqueo de flota;
+    :Descartar los ya contactados para este pedido;
+    backward :radio := radio + 5 km;
+  repeat while (¿sin candidato y radio <= 20 km?) is (sí) not (no)
+  if (¿hay candidato?) then (no)
+    :Sin oferta;\nel ciclo de 15 s lo reintenta;
+    stop
+  endif
+  :Crear la oferta (OFFERED, vigencia 30 s);
+  :Notificar al chofer por WebSocket\ny por notificación push;
+  |Chofer|
+  switch (¿respuesta del chofer?)
+  case (acepta)
+    :aceptarPedido();
+    |Sistema|
+    :Oferta ACCEPTED;\npedido ACCEPTED;
+  case (rechaza)
+    :rechazarOferta();
+    |Sistema|
+    :Oferta REJECTED;
+  case (no responde en 30 s)
+    |Sistema|
+    :Oferta EXPIRED\n(proceso de vencimiento cada 15 s);
+  endswitch
+endwhile (no)
+:Generar el código de entrega\ny avisar al cliente;
+stop
+note right
+  Cada vuelta del ciclo externo ofrece el pedido
+  al siguiente candidato, que nunca es un
+  chofer ya contactado para ese pedido.
+end note
+@enduml

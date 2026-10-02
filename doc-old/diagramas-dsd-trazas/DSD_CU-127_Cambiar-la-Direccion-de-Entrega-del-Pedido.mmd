@@ -1,0 +1,38 @@
+sequenceDiagram
+    title DSD — CU-127 Cambiar la Direccion de Entrega del Pedido
+autonumber
+participant CTRL as OrderController
+participant SRV as OrderService
+participant OREP as RepositoryOrder
+participant AREP as RepositoryUserAddress
+participant HREP as RepositoryOrderAddressChange
+participant RT as RealtimeDispatchPort
+
+CTRL->>SRV: cambiarDireccion(pedidoId, direccionId, motivo, usuarioDeLaSesion)
+activate SRV
+SRV->>OREP: findOne(where order_id, relations customer y delivery)
+activate OREP
+OREP-->>SRV: Order o null
+deactivate OREP
+SRV->>AREP: findOne(where address_id y user_id)
+activate AREP
+AREP-->>SRV: UserAddress o null
+deactivate AREP
+SRV->>SRV: verificarCobertura(coordenadas, distribuidora)
+SRV->>SRV: comparar el recargo de la zona nueva con el del pedido
+alt el pedido está pagado en línea y el recargo cambia
+    SRV-->>CTRL: operación rechazada, el recargo de la zona nueva es distinto
+else el pedido se paga en efectivo o el recargo no cambia
+    SRV->>SRV: recalcular el total si el recargo cambió y el pago es en efectivo
+    SRV->>HREP: save(cambio de dirección)
+    activate HREP
+    HREP-->>SRV: OrderAddressChange guardado
+    deactivate HREP
+    SRV->>OREP: save(pedido con la dirección nueva, el punto de entrega y el total)
+    activate OREP
+    OREP-->>SRV: Order actualizada
+    deactivate OREP
+    SRV-)RT: notifyDriverOrderAddressChanged(deliveryUserId, datos del cambio)
+    SRV-->>CTRL: Order con la dirección nueva
+end
+deactivate SRV

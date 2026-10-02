@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -44,8 +44,8 @@ rectangle "SS-11 Cobertura Geográfica" {
   usecase "CU-057\nConsultar Zonas de Cobertura" as U057 #back:FFFFFF;line:8E5566
   usecase "CU-058\nValidar Cobertura de una\nDirección" as U058 #back:FFFFFF;line:8E5566
   usecase "CU-059\nEliminar Zona de Cobertura" as U059 #back:FFFFFF;line:8E5566
-  usecase "CU-150\nProgramar la Vigencia de una\nZona de Cobertura" as U150 <<pendiente>> #back:FFFFFF;line:8E5566
-  usecase "CU-151\nDesactivar las Zonas de\nCobertura Vencidas" as U151 <<pendiente>> #back:FFFFFF;line:8E5566
+  usecase "CU-150\nProgramar la Vigencia de una\nZona de Cobertura" as U150 #back:FFFFFF;line:8E5566
+  usecase "CU-151\nDesactivar las Zonas de\nCobertura Vencidas" as U151 <<planificado>> #back:FFFFFF;line:8E5566
 }
 
 A01 -[#1F6F8B]- U058
@@ -55,10 +55,9 @@ A03 -[#8C4A9E]- U058
 A03 -[#8C4A9E]- U059
 A03 -[#8C4A9E]- U150
 A04 -[#8A6D1F]- U151
-A05 -[#B4432B]- U056
-A05 -[#B4432B]- U057
-A05 -[#B4432B]- U058
-A05 -[#B4432B]- U059
-A05 -[#B4432B]- U150
+A05 --|> A03
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U059 ..> U057 : <<include>>
 
 @enduml

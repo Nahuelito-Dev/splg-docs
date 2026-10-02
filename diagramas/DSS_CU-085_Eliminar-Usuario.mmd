@@ -1,15 +1,17 @@
 sequenceDiagram
-    title DSS — CU-085 Eliminar Usuario
+    title DSS — CU-085 Eliminar Usuario (baja lógica)
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: eliminarUsuario(usuarioId)
     activate SIS
     alt el usuario existe y el administrador puede darlo de baja
-        SIS-->>ADM: usuario dado de baja (baja lógica de la cuenta, su perfil, vehículos y direcciones, y la cuenta de acceso queda deshabilitada)
+        SIS-->>ADM: usuario dado de baja (baja lógica de la cuenta, su perfil y sus direcciones, vehículo en uso liberado y chofer fuera del radar si era chofer, y la cuenta de acceso queda deshabilitada)
     else un administrador de empresa sobre la cuenta de un cliente
         SIS-->>ADM: acceso denegado, la cuenta de un cliente la administra el administrador general
+    else el usuario es un chofer con pedidos aceptados o en camino
+        SIS-->>ADM: conflicto, el chofer tiene pedidos en curso
     else el usuario no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end

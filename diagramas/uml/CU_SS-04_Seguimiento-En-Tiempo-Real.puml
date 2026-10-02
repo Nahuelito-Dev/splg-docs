@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -61,8 +61,7 @@ A02 -[#2E7D46]- U022
 A02 -[#2E7D46]- U078
 A03 -[#8C4A9E]- U078
 A03 -[#8C4A9E]- U079
-A05 -[#B4432B]- U078
-A05 -[#B4432B]- U079
+A05 --|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U018 ..> F_AVISO : <<include>>
@@ -71,7 +70,7 @@ U020 ..> F_AVISO : <<include>>
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
 U019 ..> U018 : <<extend>>
 note on link
-  Punto de extension: el chofer se encuentra cerca del destino
+  Punto de extensión: el chofer se encuentra cerca del destino
 end note
 
 @enduml

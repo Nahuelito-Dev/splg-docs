@@ -1,0 +1,37 @@
+sequenceDiagram
+    title DSD — CU-138 Registrar la Licencia de Conducir del Chofer
+    autonumber
+    participant CTRL as FleetTaskController
+    participant SRV as FleetTaskService
+    participant PREP as RepositoryMaintenancePlan
+    participant DSRV as DeliveryService
+    participant TREP as RepositoryMaintenanceTask
+
+    CTRL->>SRV: create(dto con planId del plan Licencia, deliveryId, referenceNumber, category, dueAt, distribuidora)
+    activate SRV
+    SRV->>PREP: findOne(where plan_id y distributor_id)
+    activate PREP
+    alt el plan no existe o es de otra distribuidora
+        PREP-->>SRV: null
+        SRV-->>CTRL: NotFoundException Plan no encontrado
+    else el plan existe
+        PREP-->>SRV: MaintenancePlan con subject driver
+        deactivate PREP
+        SRV->>SRV: assertSujetoCoherente, exige deliveryId y no carId
+        SRV->>DSRV: findOne(deliveryId)
+        activate DSRV
+        alt el chofer no existe o es de otra distribuidora
+            DSRV-->>SRV: NotFoundException o Delivery ajeno
+            SRV-->>CTRL: NotFoundException
+        else el chofer existe
+            DSRV-->>SRV: Delivery
+            deactivate DSRV
+            SRV->>TREP: save(MaintenanceTask en estado scheduled, con deliveryId, referenceNumber, category y dueAt)
+            activate TREP
+            TREP-->>SRV: MaintenanceTask programada
+            deactivate TREP
+            SRV-->>CTRL: MaintenanceTask
+            CTRL->>CTRL: FleetTaskMapper.toDto a FleetTaskResponseDto, con expirationStatus (calcularEstadoDeVencimiento) y blocks (criticidad del plan)
+        end
+    end
+    deactivate SRV

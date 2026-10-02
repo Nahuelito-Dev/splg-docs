@@ -1,16 +1,18 @@
 sequenceDiagram
     title DSS — CU-135 Bloquear el Despacho de un Envase Vencido
     autonumber
-    actor SIS as Sistema Automático
-    participant SIS as Sistema
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
 
-    SIS->>SIS: verificarVigenciaAlAsignar(pedidoId, envaseId)
+    SAU->>SIS: verificarVigenciaAlAsignar(pedidoId, series)
     activate SIS
-    alt el envase está vigente
-        SIS-->>SIS: envase asignado
-    else el envase está vencido
-        SIS-->>SIS: se descarta y se busca otro
-    else no hay envases vigentes
-        SIS-->>SIS: aviso al administrador
+    alt Todos los envases están vigentes o sin fecha cargada
+        SIS-->>SAU: asignación admitida (todos los envases están vigentes)
+    else Alguno tiene la revisión vencida
+        SIS-->>SAU: asignación rechazada con la lista de series vencidas
+        SIS-)ADM: notificarEnvaseVencido(series)
+    else El pedido o algún envase no existe
+        SIS-->>SAU: recurso no encontrado
     end
     deactivate SIS

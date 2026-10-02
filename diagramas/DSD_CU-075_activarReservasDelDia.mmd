@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-075 Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :ReservationService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as reserva:Pedido
+
+    SIS->>+SRV: activarReservasDelDia()
+    SRV->>+COL: buscarReservasConSeniaPagaHasta(hoy)
+    COL-->>-SRV: reservas
+    loop Por cada reserva cuyo día llegó
+        SRV->>+PED: activar()
+        PED->>PED: validarTransicion(pendiente)
+        deactivate PED
+        Note over SRV,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    end
+    deactivate SRV

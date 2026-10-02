@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-113 Consultar Detalle del Vehículo · consultarDetalleDelVehiculo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COL as :Map#lt;String, Vehiculo#gt;
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: consultarDetalleDelVehiculo(vehiculoId)
+    SRV->>+COL: get(vehiculoId)
+    COL-->>-SRV: vehiculo
+    SRV->>+VEH: getChofer()
+    VEH-->>-SRV: chofer
+    SRV-->>-ADM: vehiculo, chofer

@@ -1,0 +1,64 @@
+classDiagram
+    direction LR
+
+    %% Pedidos: alta y cancelación. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class CreateOrderUseCase {
+        <<use case>>
+        + crearPedido(items: Lista, direccionId: Identificador, franjaId: Identificador, fechaAgendada: Fecha, metodoDePago: Cadena): Pedido, Cadena
+        + crearReserva(items: Lista, direccionId: Identificador, fechaAgendada: Fecha, franjaId: Identificador, metodoDePago: Cadena, montoDeLaSenia: Moneda): Pedido, Cadena
+    }
+
+    class CancelOrderUseCase {
+        <<use case>>
+        + cancelarPedido(pedidoId: Identificador, motivo: Cadena): Pedido
+        + cancelarPedidoForzado(pedidoId: Identificador): Pedido
+    }
+
+    class ReleaseOrderUseCase {
+        <<use case>>
+        + liberarPedido(pedidoId: Identificador, motivo: Cadena): Pedido
+    }
+
+    class NotificationPort {
+        <<interface>>
+        + sendArrivalPushToCustomer(cliente: Cliente, pedido: Pedido, nombreDelChofer: Cadena)
+        + sendOrderConfirmation(cliente: Cliente, pedido: Pedido)
+        + sendPaymentApprovedPush(cliente: Cliente, pedido: Pedido, esSena: Booleano)
+    }
+
+    class OrderStatusHistoryService {
+        <<fachada>>
+        + consultarHistorialDeEstados(pedidoId: Identificador): CambioEstadoPedido[*]
+        + registrarCambioDeEstado(pedidoId: Identificador, estadoAnterior: Cadena, estadoNuevo: Cadena, autor: Identificador, motivo: Cadena): CambioEstadoPedido
+    }
+
+    class Map_String_Pedido["Map<String, Pedido>"] {
+        <<colección>>
+    }
+    class RealtimeDispatchPort {
+        <<interface>>
+    }
+    class Pedido
+    class Cliente
+    class Producto
+    class FranjaHoraria
+    class ZonaCobertura
+    class OfertaDespacho
+
+    CancelOrderUseCase --> "1" Map_String_Pedido : map<String, Pedido>
+    CancelOrderUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
+    CreateOrderUseCase --> "1" NotificationPort : notificationPort
+    OrderStatusHistoryService --> "1" Map_String_Pedido : map<String, Pedido>
+    ReleaseOrderUseCase --> "1" Map_String_Pedido : map<String, Pedido>
+    ReleaseOrderUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
+    CancelOrderUseCase ..> Pedido
+    CreateOrderUseCase ..> Cliente
+    CreateOrderUseCase ..> FranjaHoraria
+    CreateOrderUseCase ..> Pedido : create
+    CreateOrderUseCase ..> Producto
+    CreateOrderUseCase ..> ZonaCobertura
+    OrderStatusHistoryService ..> Pedido
+    ReleaseOrderUseCase ..> OfertaDespacho
+    ReleaseOrderUseCase ..> Pedido

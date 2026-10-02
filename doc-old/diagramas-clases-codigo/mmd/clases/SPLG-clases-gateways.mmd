@@ -1,0 +1,47 @@
+classDiagram
+    direction LR
+
+    %% Módulo `gateways` — generado por generar-clases-diseno.py
+
+    class AdminGateway {
+        <<gateway>>
+        +handleConnection(client: SocketDeSplg) Promise<void>
+        +handleDisconnect() void
+        +notifyAdmins(event: string, payload: unknown, distributorId?: string | null) void
+        -salaDeDistribuidora(distributorId: string) string
+    }
+
+    class CustomersGateway {
+        <<gateway>>
+        +handleConnection(client: SocketDeSplg) Promise<void>
+        +handleDisconnect() void
+        +handleCustomerJoin(@MessageBody() _cuerpoIgnorado: unknown, @ConnectedSocket() client: SocketDeSplg) void
+        +notifyCustomer(customerId: string, event: string, payload: unknown) void
+    }
+
+    class DriversGateway {
+        <<gateway>>
+        +handleConnection(client: SocketDeSplg) Promise<void>
+        +handleDisconnect(client: SocketDeSplg) Promise<void>
+        +handleDriverJoin(@MessageBody() _cuerpoIgnorado: unknown, @ConnectedSocket() client: SocketDeSplg) void
+        +handleDriverLocation(@MessageBody() data: [ lat: number, lng: number ], @ConnectedSocket() client: SocketDeSplg) void
+        +notifyNewOrder(driverId: string, orderPayload: unknown) boolean
+        +notifyOrderCancelled(driverId: string, payload: unknown) void
+    }
+
+    class SocketIdentityService {
+        +identificar(client: SocketDeSplg) Promise<IdentidadDeSocket | null>
+        +obtener(client: SocketDeSplg) Promise<IdentidadDeSocket | null>
+        -resolverDistribuidora(user: User, role: RoleType) string | null
+    }
+
+    AdminGateway ..> SocketIdentityService : usa
+    CustomersGateway ..> SocketIdentityService : usa
+    DriversGateway ..> SocketIdentityService : usa
+    DriversGateway ..> CustomersGateway : usa
+    DriversGateway ..> AdminGateway : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% DriversGateway usa RedisService (módulo `redis`)
+    %% SocketIdentityService usa AuthService (módulo `auth`)
+    %% SocketIdentityService usa UsersService (módulo `users`)

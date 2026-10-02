@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-065 Consultar Promedio de Calificaciones de un Usuario · consultarResumenDeCalificaciones
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :RatingService
+    participant USU as usuario:Usuario
+    participant CAL as calificacion:Calificacion
+
+    CLI->>+SRV: consultarResumenDeCalificaciones(usuarioId)
+    SRV->>+USU: getResumenDeCalificaciones()
+    loop Por cada calificación recibida
+        USU->>CAL: getEstrellas()
+    end
+    USU->>USU: calcularPromedio()
+    USU-->>-SRV: promedio, cantidad
+    SRV-->>-CLI: resumen

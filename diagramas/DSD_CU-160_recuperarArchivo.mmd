@@ -1,0 +1,30 @@
+sequenceDiagram
+    title DSD — CU-160 Recuperar Archivo · recuperarArchivo
+    autonumber
+    participant SRV as :FleetAttachmentService
+    participant STO as :StoragePort
+    participant LOC as :LocalDiskStorageAdapter
+    participant S3A as :S3StorageAdapter
+
+    Note over SRV: Caso incluido desde CU-157 y CU-175
+    SRV->>+STO: getDownloadUrl(clave)
+    alt STORAGE_DRIVER es s3
+        STO->>+S3A: getDownloadUrl(clave)
+        S3A-->>-STO: url
+    else STORAGE_DRIVER es local
+        STO->>+LOC: getDownloadUrl(clave)
+        LOC-->>-STO: url
+        Note right of LOC: en almacenamiento local la url es nula
+    end
+    STO-->>-SRV: url
+    opt No hubo URL
+        SRV->>+STO: getStream(clave)
+        alt STORAGE_DRIVER es s3
+            STO->>+S3A: getStream(clave)
+            S3A-->>-STO: contenido
+        else STORAGE_DRIVER es local
+            STO->>+LOC: getStream(clave)
+            LOC-->>-STO: contenido
+        end
+        STO-->>-SRV: contenido
+    end

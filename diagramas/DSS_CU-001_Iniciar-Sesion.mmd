@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-001 Iniciar Sesion
+    title DSS — CU-001 Iniciar Sesión
     autonumber
-    actor USR as Usuario
-    participant SIS as Sistema
+    actor USR as Cliente (ACT-01)
+    participant SIS as :Sistema
 
-    USR->>SIS: iniciarSesion(correo, contrasenia)
+    USR->>SIS: iniciarSesion(correo, contrasena)
     activate SIS
     alt Credenciales validas
         SIS-->>USR: sesion iniciada (credencial con token de acceso)
@@ -12,3 +12,4 @@ sequenceDiagram
         SIS-->>USR: error de solicitud (credenciales invalidas)
     end
     deactivate SIS
+    Note over USR,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)

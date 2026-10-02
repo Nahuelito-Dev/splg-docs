@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-172 Configurar los Parámetros de un Proceso Automático · configurarParametrosDeProceso
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ModuleConfigService
+    participant DIS as distribuidora:Distribuidora
+    participant CFG as configuracion:ConfiguracionModulo
+
+    ADM->>+SRV: configurarParametrosDeProceso(proceso, parametros)
+    SRV->>SRV: validarParametros(proceso, parametros)
+    SRV->>+DIS: getConfiguracion(proceso)
+    DIS-->>-SRV: configuracion
+    alt La distribuidora no tiene configuración de ese proceso
+        SRV->>+DIS: crearConfiguracion(proceso, parametros, administrador)
+        create participant NCF as nueva:ConfiguracionModulo
+        DIS->>NCF: «create»(proceso, parametros, administrador)
+        DIS-->>-SRV: configuracion
+    else La distribuidora ya la tiene
+        SRV->>CFG: actualizar(parametros, administrador)
+    end
+    SRV-->>-ADM: configuracion

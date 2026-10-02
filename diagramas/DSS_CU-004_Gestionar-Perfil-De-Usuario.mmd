@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-004 Gestionar Perfil De Usuario
+    title DSS — CU-004 Gestionar Perfil de Usuario
     autonumber
-    actor CLI as Usuario
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: consultarPerfil(usuarioId)
     activate SIS
@@ -24,3 +24,4 @@ sequenceDiagram
         SIS-->>CLI: acceso denegado
     end
     deactivate SIS
+    Note over CLI,SIS: También lo inicia el Chofer (ACT-02)

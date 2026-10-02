@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-016 Rechazar / Ignorar Pedido · rechazarOferta
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant OFE as oferta:OfertaDespacho
+
+    CHF->>+SRV: rechazarOferta(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: getOfertaVigente(chofer)
+    PED-->>-SRV: oferta
+    SRV->>OFE: rechazar()
+    SRV->>+PED: esReofertable()
+    PED-->>-SRV: reofertable
+    opt El pedido sigue pendiente y sin chofer
+        Note over SRV,PED: Re-oferta inmediata: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    end
+    SRV-->>-CHF: rechazada

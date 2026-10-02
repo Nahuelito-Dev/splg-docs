@@ -1,0 +1,33 @@
+sequenceDiagram
+    title DSD — CU-013 Asignar Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :DispatchOrchestratorService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant RT as :RealtimeDispatchPort
+    participant CHO as chofer:Chofer
+    participant NOT as :NotificationsService
+
+    SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: getChoferesContactados()
+    PED-->>-SRV: contactados
+    SRV->>+PED: getPuntoDeEntrega()
+    PED-->>-SRV: destino
+    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nuevo
+        SRV->>+RT: findNearbyDrivers(destino, radioKm)
+        RT-->>-SRV: cercanos
+        SRV->>+CHO: puedeRecibirOferta(distribuidora)
+        CHO-->>-SRV: elegible
+    end
+    opt Hay un chofer elegible que no fue contactado
+        SRV->>+PED: ofrecerA(chofer, venceEn)
+        create participant OFE as :OfertaDespacho
+        PED->>OFE: «create»(chofer, venceEn)
+        deactivate PED
+        SRV-)RT: notifyDriverNewOrder(chofer, pedido)
+        SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
+    end
+    SRV-->>-SIS: chofer

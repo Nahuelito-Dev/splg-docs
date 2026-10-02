@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-048 Procesar Pago con MercadoPago · crearCheckoutDePago
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant PAG as :PaymentsService
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAS as :PaymentGatewayPort
+
+    CLI->>+PAG: crearCheckoutDePago(pedidoId, medioDePago)
+    PAG->>+COL: get(pedidoId)
+    COL-->>-PAG: pedido
+    PAG->>+PED: getImporteACobrar(esSenia)
+    PED-->>-PAG: importe
+    create participant PGO as :Pago
+    PAG->>PGO: «create»(pedido, distribuidora, importe, esSenia)
+    PAG->>+PAS: createCheckout(pedido, items, pagador)
+    PAS-->>-PAG: enlaceDePago
+    PAG->>PGO: asignarEnlace(enlaceDePago)
+    PAG-->>-CLI: enlaceDePago

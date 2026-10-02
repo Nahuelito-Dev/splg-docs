@@ -1,0 +1,90 @@
+classDiagram
+    direction LR
+
+    %% Despacho de pedidos. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class DispatchOrchestratorService {
+        <<fachada>>
+        + ensureOffered(pedido: Pedido)
+        + handleExpiredOffers()
+        + ofrecerAlSiguienteChofer(pedidoId: Identificador): Chofer
+    }
+
+    class DispatchService {
+        <<fachada>>
+        + vencerOfertasExpiradas()
+    }
+
+    class DispatchOfferRepositoryPort {
+        <<interface>>
+        + findExpired(ahora: FechaHora): OfertaDespacho[*]
+    }
+
+    class RealtimeDispatchPort {
+        <<interface>>
+        + findNearbyDrivers(destino: Coordenada, radioKm: Decimal): Chofer[*]
+        + findNearbyDrivers(destino: Coordenada, radioExpressKm: Decimal): Chofer[*]
+        + notifyAdmins(pedido: Pedido)
+        + notifyCustomer(cliente: Cliente, llegada: FechaHora)
+        + notifyCustomer(cliente: Cliente, pedido: Pedido, tipo: Cadena)
+        + notifyDriverNewOrder(chofer: Chofer, pedido: Pedido)
+        + notifyDriverOrderAddressChanged(chofer: Chofer, cambio: CambioEstadoPedido)
+        + notifyDriverOrderCancelled(choferAnterior: Chofer, pedido: Pedido)
+        + stopTracking(choferAnterior: Chofer)
+    }
+
+    class RouteBatchPlannerService {
+        <<fachada>>
+        + aceptarRecorrido(recorridoId: Identificador): Pedido[*]
+        + agruparPedidosPorRecorrido()
+        + agruparPorProximidad(pedidos: Pedido[*])
+    }
+
+    class Map_String_LoteRecorrido["Map<String, LoteRecorrido>"] {
+        <<colección>>
+        + get(clave: Cadena): LoteRecorrido
+    }
+
+    class CylinderLifecyclePort {
+        <<interface>>
+        + findHeldByCustomer(plazoDeTolerancia: Entero): Envase[*]
+    }
+
+    class OrderRepositoryPort {
+        <<interface>>
+        + findScheduled(distribuidora: Distribuidora): Pedido[*]
+    }
+
+    class LoteRecorrido
+    class Map_String_Pedido["Map<String, Pedido>"] {
+        <<colección>>
+    }
+    class NotificationsService {
+        <<fachada>>
+    }
+    class OrderService {
+        <<fachada>>
+    }
+    class Pedido
+    class Chofer
+    class OfertaDespacho
+    class OfertaLote
+
+    Map_String_LoteRecorrido "1" o-- "0..*" LoteRecorrido : elementos
+    DispatchOrchestratorService --> "1" DispatchOfferRepositoryPort : dispatchOfferRepositoryPort
+    DispatchOrchestratorService --> "1" Map_String_Pedido : map<String, Pedido>
+    DispatchOrchestratorService --> "1" NotificationsService : notificationsService
+    DispatchOrchestratorService --> "1" RealtimeDispatchPort : realtimeDispatchPort
+    DispatchService --> "1" DispatchOrchestratorService : dispatchOrchestratorService
+    DispatchService --> "1" OrderService : orderService
+    OrderService --> "1" RealtimeDispatchPort : realtimeDispatchPort
+    RouteBatchPlannerService --> "1" Map_String_LoteRecorrido : map<String, LoteRecorrido>
+    RouteBatchPlannerService --> "1" NotificationsService : notificationsService
+    RouteBatchPlannerService --> "1" OrderRepositoryPort : orderRepositoryPort
+    DispatchOrchestratorService ..> Chofer
+    DispatchOrchestratorService ..> OfertaDespacho
+    DispatchOrchestratorService ..> Pedido
+    RouteBatchPlannerService ..> Chofer
+    RouteBatchPlannerService ..> LoteRecorrido : create
+    RouteBatchPlannerService ..> OfertaLote

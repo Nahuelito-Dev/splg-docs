@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-172 Configurar Los Parámetros De Un Proceso Automático
+autonumber
+participant CTRL as ModuleConfigController
+participant SRV as ModuleConfigService
+participant CREP as RepositoryModuleConfig
+
+CTRL->>SRV: actualizar(distributorId, proceso, parametros, actorUserId)
+activate SRV
+SRV->>SRV: esquemaDelProceso(proceso)
+alt el proceso no es configurable
+    SRV-->>CTRL: NotFoundException
+else el proceso es configurable
+    SRV->>SRV: validarParametros(proceso, parametros)
+    alt los parámetros son inválidos
+        SRV-->>CTRL: BadRequestException con el detalle del campo
+    else los parámetros son válidos
+        SRV->>CREP: findOne(where distributor_id y module)
+        CREP-->>SRV: ModuleConfig o null
+        SRV->>CREP: save(distributor_id, module, params, updated_by_user_id)
+        CREP-->>SRV: ModuleConfig
+        SRV-->>CTRL: ModuleConfig
+        CTRL->>CTRL: ModuleConfigMapper.toDto(config)
+    end
+end
+deactivate SRV

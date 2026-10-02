@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-101 Reenviar Notificación de Confirmación de Pedido · reenviarConfirmacionDePedido
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :NotificationsService
+    participant COL as :Map#lt;String, Cliente#gt;
+    participant CLE as cliente:Cliente
+    participant FCM as :FcmPort
+
+    AGN->>+SRV: reenviarConfirmacionDePedido(usuarioId, pedidoId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: cliente
+    SRV->>+CLE: getToken()
+    CLE-->>-SRV: token
+    SRV->>FCM: sendToToken(token, confirmacion)
+    SRV-->>-AGN: resultado

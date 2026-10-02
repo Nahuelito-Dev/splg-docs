@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-095 Eliminar Cliente (baja lógica) · eliminarCliente
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :CustomersService
+    participant COL as :Map#lt;String, Cliente#gt;
+    participant CLE as cliente:Cliente
+
+    AGN->>+SRV: eliminarCliente(clienteId)
+    SRV->>+COL: get(clienteId)
+    COL-->>-SRV: cliente
+    SRV->>CLE: darDeBaja()
+    SRV-->>-AGN: mensaje

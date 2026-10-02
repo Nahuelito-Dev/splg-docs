@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-136 Registrar el Seguro del Vehiculo
+    title DSS — CU-136 Registrar el Seguro del Vehículo
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    ADM->>SIS: registrarSeguroDelVehiculo(vehiculoId, compania, poliza, vencimiento)
+    ADM->>SIS: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
     activate SIS
     alt el seguro está vigente
         SIS-->>ADM: vehículo habilitado

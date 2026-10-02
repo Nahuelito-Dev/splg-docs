@@ -1,0 +1,33 @@
+sequenceDiagram
+    title DSD — CU-149 Despachar un Pedido Express a un Chofer en Moto
+autonumber
+participant SRV as OrderService
+participant OREP as RepositoryOrder
+participant DREP as RepositoryDelivery
+participant NOT as NotificationsService
+participant RF as RefundPaymentUseCase
+
+SRV->>OREP: findOne(pedido express sin chofer)
+activate OREP
+OREP-->>SRV: Order
+deactivate OREP
+SRV->>DREP: find(choferes en moto disponibles dentro del radio, por distancia)
+activate DREP
+DREP-->>SRV: lista de Delivery ordenada
+deactivate DREP
+SRV->>NOT: sendOfferPushToDriver(chofer más cercano, pedido)
+activate NOT
+alt un chofer acepta
+    SRV->>OREP: save(pedido asignado)
+    OREP-->>SRV: Order actualizada
+    SRV-->>CTRL: Order asignada al chofer en moto
+else ninguno acepta
+    SRV->>SRV: descontar el recargo express del total y pasar el pedido a reparto común
+    SRV->>OREP: save(pedido degradado a reparto común)
+    OREP-->>SRV: Order actualizada
+    opt el cliente ya pagó en línea
+        SRV->>RF: execute(pedidoId, importe del recargo express)
+    end
+    SRV-->>CTRL: Order degradada a modalidad de reparto común
+end
+deactivate NOT

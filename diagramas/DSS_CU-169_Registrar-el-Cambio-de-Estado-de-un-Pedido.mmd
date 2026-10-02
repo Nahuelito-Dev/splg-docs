@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-169 Registrar el Cambio de Estado de un Pedido
+    autonumber
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+
+    Note over SAU: Se dispara en cada<br/>cambio de estado del<br/>pedido, dentro de la<br/>misma transacción
+    SAU->>SIS: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
+    activate SIS
+    alt El cambio es válido y se guarda
+        SIS-->>SAU: fila agregada al historial, junto con el cambio
+    else No se puede escribir el historial
+        SIS-->>SAU: cambio revertido
+    end
+    deactivate SIS

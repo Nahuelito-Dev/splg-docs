@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSD — CU-127 Cambiar la Dirección de Entrega del Pedido · cambiarDireccionDeEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :OrderService
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant CLE as cliente:Cliente
+    participant ZON as zona:ZonaCobertura
+    participant PED as pedido:Pedido
+    participant RT as :RealtimeDispatchPort
+
+    CLI->>+SRV: cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)
+    SRV->>+COL: get(pedidoId)
+    COL-->>-SRV: pedido
+    SRV->>+CLE: getDireccion(direccionId)
+    CLE-->>-SRV: direccionNueva
+    SRV->>+ZON: cubre(direccionNueva)
+    ZON-->>-SRV: cubierta
+    SRV->>+PED: cambiarDireccion(direccionNueva, zona, motivo)
+    PED->>PED: validarQueNoSalio()
+    create participant CAM as :CambioDireccion
+    PED->>CAM: «create»(direccionOrigen, direccionNueva, autor, motivo)
+    opt El pago es en efectivo y el recargo de la zona nueva cambió
+        PED->>ZON: calcularRecargo(subtotalItems)
+        PED->>PED: calcularTotal()
+    end
+    deactivate PED
+    SRV-)RT: notifyDriverOrderAddressChanged(chofer, cambio)
+    SRV-->>-CLI: pedido

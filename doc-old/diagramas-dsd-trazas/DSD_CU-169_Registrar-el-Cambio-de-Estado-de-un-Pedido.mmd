@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-169 Registrar El Cambio De Estado De Un Pedido
+autonumber
+participant UC as UpdateOrderStatusUseCase
+participant MAC as OrderStatusMachine
+participant HIS as OrderStatusHistoryService
+participant HREP as RepositoryOrderStatusHistory
+
+UC->>MAC: transitionOrder(pedido, estadoNuevo)
+alt la transición no es válida
+    MAC-->>UC: BadRequestException
+else la transición es válida
+    MAC-->>UC: pedido con el estado nuevo
+    UC->>HIS: record(manager, pedidoId, estadoAnterior, estadoNuevo, autorId, motivo)
+    activate HIS
+    HIS->>HREP: save(fila del historial)
+    HREP-->>HIS: OrderStatusHistory
+    HIS-->>UC: fila registrada
+    deactivate HIS
+    UC->>UC: guardar el pedido y confirmar la transacción
+end

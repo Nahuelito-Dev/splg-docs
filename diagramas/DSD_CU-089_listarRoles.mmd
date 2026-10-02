@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-089 Gestionar Roles del Sistema · listarRoles
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :RoleService
+    participant LST as :List#lt;Rol#gt;
+
+    AGN->>+SRV: listarRoles()
+    SRV->>+LST: listar()
+    LST-->>-SRV: roles
+    SRV-->>-AGN: roles

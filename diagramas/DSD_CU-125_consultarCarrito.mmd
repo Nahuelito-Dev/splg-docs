@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-125 Consultar el Carrito · consultarCarrito
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CartService
+    participant CLE as cliente:Cliente
+    participant CAR as carrito:Carrito
+    participant ITC as item:ItemCarrito
+    participant PRO as producto:Producto
+
+    CLI->>+SRV: consultarCarrito()
+    SRV->>+CLE: getCarrito(distribuidoraId)
+    CLE-->>-SRV: carrito
+    SRV->>+CAR: calcularTotal()
+    loop Por cada item del carrito
+        CAR->>+ITC: getSubtotal()
+        ITC->>PRO: getPrecio()
+        ITC-->>-CAR: subtotal
+        CAR->>ITC: getDiferenciaDePrecio()
+    end
+    CAR-->>-SRV: total
+    SRV-->>-CLI: carrito, total

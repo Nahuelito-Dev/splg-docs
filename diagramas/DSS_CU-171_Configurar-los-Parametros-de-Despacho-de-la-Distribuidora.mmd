@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-171 Configurar los Parámetros de Despacho de la Distribuidora
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
+    activate SIS
+    alt los valores son válidos
+        SIS-->>ADM: configuración de despacho guardada
+    else los valores están fuera de rango
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

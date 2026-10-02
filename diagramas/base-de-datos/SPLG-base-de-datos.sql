@@ -304,6 +304,16 @@ CREATE TYPE public.order_status_enum AS ENUM (
 
 
 --
+-- Name: order_zone_surcharge_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.order_zone_surcharge_type_enum AS ENUM (
+    'fixed',
+    'percentage'
+);
+
+
+--
 -- Name: payment_gateway_enum; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -545,15 +555,18 @@ CREATE TABLE public.coverage_zone (
     distributor_id uuid NOT NULL,
     name character varying(120) NOT NULL,
     area public.geometry(Polygon,4326) NOT NULL,
-    surcharge numeric(10,2) DEFAULT '0'::numeric NOT NULL,
+    surcharge_value numeric(10,2) DEFAULT '0'::numeric NOT NULL,
     "isActive" boolean DEFAULT true NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone,
-    surcharge_type public.coverage_zone_surcharge_type_enum DEFAULT 'fixed'::public.coverage_zone_surcharge_type_enum NOT NULL,
+    surcharge_type public.coverage_zone_surcharge_type_enum DEFAULT 'percentage'::public.coverage_zone_surcharge_type_enum NOT NULL,
     label character varying(40),
     color character varying(7),
-    valid_until timestamp with time zone
+    valid_until timestamp with time zone,
+    priority integer DEFAULT 0 NOT NULL,
+    valid_from timestamp with time zone,
+    CONSTRAINT "CHK_coverage_zone_surcharge" CHECK ((((surcharge_type = 'fixed'::public.coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric)) OR ((surcharge_type = 'percentage'::public.coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric) AND (surcharge_value <= (100)::numeric))))
 );
 
 
@@ -680,7 +693,9 @@ CREATE TABLE public.delivery (
     balance double precision DEFAULT '0'::double precision NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now(),
     "deletedAt" timestamp with time zone,
-    location public.geometry(Point,4326)
+    location public.geometry(Point,4326),
+    "isEnabled" boolean DEFAULT true NOT NULL,
+    "isAvailable" boolean DEFAULT false NOT NULL
 );
 
 
@@ -803,6 +818,23 @@ CREATE TABLE public.maintenance_task (
 
 
 --
+-- Name: maintenance_task_attachment; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.maintenance_task_attachment (
+    attachment_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    task_id uuid NOT NULL,
+    distributor_id uuid NOT NULL,
+    storage_key character varying(255) NOT NULL,
+    original_name character varying(255) NOT NULL,
+    mime_type character varying(100) NOT NULL,
+    size_bytes integer NOT NULL,
+    uploaded_by_user_id uuid NOT NULL,
+    uploaded_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: maintenance_window_proposal; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -879,7 +911,17 @@ CREATE TABLE public."order" (
     receiver_document character varying(20),
     receiver_relationship character varying(40),
     delivery_mode public.order_delivery_mode_enum DEFAULT 'standard'::public.order_delivery_mode_enum NOT NULL,
-    "deliveryPoint" public.geometry(Point,4326)
+    "deliveryPoint" public.geometry(Point,4326),
+    coverage_zone_id uuid,
+    zone_name character varying(120),
+    zone_surcharge_type public.order_zone_surcharge_type_enum,
+    zone_surcharge_value numeric(10,2),
+    zone_surcharge_amount numeric(10,2) DEFAULT '0'::numeric NOT NULL,
+    subtotal_items numeric(10,2) NOT NULL,
+    vehicle_car_id uuid,
+    vehicle_patent character varying(20),
+    vehicle_brand character varying(50),
+    vehicle_model character varying(50)
 );
 
 
@@ -1116,6 +1158,23 @@ CREATE TABLE public.user_address (
 
 
 --
+-- Name: vehicle_assignment; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.vehicle_assignment (
+    assignment_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    car_id uuid NOT NULL,
+    delivery_id uuid NOT NULL,
+    assigned_at timestamp with time zone NOT NULL,
+    released_at timestamp with time zone,
+    assigned_by_user_id uuid,
+    released_by_user_id uuid,
+    note text
+);
+
+
+--
 -- Name: vehicle_usage_log; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1128,6 +1187,14 @@ CREATE TABLE public.vehicle_usage_log (
     orders integer DEFAULT 0 NOT NULL,
     route_hours numeric(6,2) DEFAULT '0'::numeric NOT NULL
 );
+
+
+--
+-- Name: vehicle_assignment PK_03cbc11f348efffa59570945343; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "PK_03cbc11f348efffa59570945343" PRIMARY KEY (assignment_id);
 
 
 --
@@ -1176,6 +1243,14 @@ ALTER TABLE ONLY public.car
 
 ALTER TABLE ONLY public.rating
     ADD CONSTRAINT "PK_1ba02007f1315301d9553a6839a" PRIMARY KEY (rating_id);
+
+
+--
+-- Name: maintenance_task_attachment PK_368cf5b7606c8ff95e4b320c81d; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.maintenance_task_attachment
+    ADD CONSTRAINT "PK_368cf5b7606c8ff95e4b320c81d" PRIMARY KEY (attachment_id);
 
 
 --
@@ -1591,6 +1666,13 @@ CREATE UNIQUE INDEX "IDX_05b8eaefed5471a643ee578c74" ON public.payment USING btr
 
 
 --
+-- Name: IDX_07f53564ec7d34fc7e69b96cab; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_07f53564ec7d34fc7e69b96cab" ON public.maintenance_task_attachment USING btree (distributor_id);
+
+
+--
 -- Name: IDX_0cdad15fa39dd1ebace139096f; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1630,6 +1712,13 @@ CREATE INDEX "IDX_1c48ac355fa0315ba792b68045" ON public.cylinder_movement USING 
 --
 
 CREATE INDEX "IDX_1cbfd2007890911e8b42d207d4" ON public.cylinder_inspection USING btree (distributor_id);
+
+
+--
+-- Name: IDX_1f986e62c32ac5ee2d8d7eb133; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_1f986e62c32ac5ee2d8d7eb133" ON public.vehicle_assignment USING btree (distributor_id);
 
 
 --
@@ -1934,6 +2023,13 @@ CREATE INDEX "IDX_f5221735ace059250daac9d980" ON public.payment USING btree (ord
 
 
 --
+-- Name: IDX_user_email_lower; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_user_email_lower" ON public."user" USING btree (lower((email)::text));
+
+
+--
 -- Name: UQ_admin_user; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1945,6 +2041,20 @@ CREATE UNIQUE INDEX "UQ_admin_user" ON public.admin USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX "UQ_car_patente_vigente" ON public.car USING btree (car_patent) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_vehicle_assignment_car_abierta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_vehicle_assignment_car_abierta" ON public.vehicle_assignment USING btree (car_id) WHERE (released_at IS NULL);
+
+
+--
+-- Name: UQ_vehicle_assignment_delivery_abierta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_vehicle_assignment_delivery_abierta" ON public.vehicle_assignment USING btree (delivery_id) WHERE (released_at IS NULL);
 
 
 --
@@ -1980,6 +2090,14 @@ CREATE INDEX idx_order_status_delivery ON public."order" USING btree (status, de
 --
 
 CREATE TRIGGER audit_log_inmutable BEFORE DELETE OR UPDATE ON public.audit_log FOR EACH ROW EXECUTE FUNCTION public.audit_log_inmutable();
+
+
+--
+-- Name: maintenance_task_attachment FK_07f53564ec7d34fc7e69b96cabf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.maintenance_task_attachment
+    ADD CONSTRAINT "FK_07f53564ec7d34fc7e69b96cabf" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2036,6 +2154,14 @@ ALTER TABLE ONLY public.order_dispatch_offer
 
 ALTER TABLE ONLY public.admin
     ADD CONSTRAINT "FK_0fc586a3c26b9bb49e64e6ff1f4" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id);
+
+
+--
+-- Name: vehicle_assignment FK_10efb252b7fde3ea22e9151b677; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "FK_10efb252b7fde3ea22e9151b677" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE CASCADE;
 
 
 --
@@ -2100,6 +2226,22 @@ ALTER TABLE ONLY public.order_status_history
 
 ALTER TABLE ONLY public.cylinder_inspection
     ADD CONSTRAINT "FK_1cbfd2007890911e8b42d207d4b" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: order FK_1ec11b9220a926133a2e15dad92; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_1ec11b9220a926133a2e15dad92" FOREIGN KEY (coverage_zone_id) REFERENCES public.coverage_zone(coverage_zone_id) ON DELETE SET NULL;
+
+
+--
+-- Name: vehicle_assignment FK_1f986e62c32ac5ee2d8d7eb1330; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "FK_1f986e62c32ac5ee2d8d7eb1330" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2220,6 +2362,14 @@ ALTER TABLE ONLY public.cylinder_inspection
 
 ALTER TABLE ONLY public.claims
     ADD CONSTRAINT "FK_573f53b0981b244cd25223e3ce7" FOREIGN KEY (order_id) REFERENCES public."order"(order_id);
+
+
+--
+-- Name: vehicle_assignment FK_57f3c92c944f83e9d5d9fb24257; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "FK_57f3c92c944f83e9d5d9fb24257" FOREIGN KEY (released_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -2407,6 +2557,14 @@ ALTER TABLE ONLY public.cylinder
 
 
 --
+-- Name: maintenance_task_attachment FK_a13e7424735660fa5a1865781c6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.maintenance_task_attachment
+    ADD CONSTRAINT "FK_a13e7424735660fa5a1865781c6" FOREIGN KEY (uploaded_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: repurchase_invitation FK_a1798ae7c0a36f272fa9ec34208; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2452,6 +2610,14 @@ ALTER TABLE ONLY public.delivery
 
 ALTER TABLE ONLY public."order"
     ADD CONSTRAINT "FK_a4743951fe3b697adf8ce898cf4" FOREIGN KEY (time_slot_id) REFERENCES public.time_slot(time_slot_id);
+
+
+--
+-- Name: vehicle_assignment FK_a7cb484055004c370b38d80e880; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "FK_a7cb484055004c370b38d80e880" FOREIGN KEY (assigned_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -2519,6 +2685,14 @@ ALTER TABLE ONLY public."order"
 
 
 --
+-- Name: maintenance_task_attachment FK_d48d7736a7efef5c2a5c0b4b23d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.maintenance_task_attachment
+    ADD CONSTRAINT "FK_d48d7736a7efef5c2a5c0b4b23d" FOREIGN KEY (task_id) REFERENCES public.maintenance_task(task_id) ON DELETE CASCADE;
+
+
+--
 -- Name: rating FK_d613d840f71f5ab083af2ceb1cf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2540,6 +2714,14 @@ ALTER TABLE ONLY public.cylinder_recovery_case
 
 ALTER TABLE ONLY public."order"
     ADD CONSTRAINT "FK_df56039592a4bbbd3fa4a19f141" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id);
+
+
+--
+-- Name: vehicle_assignment FK_e553214db24f1d24bf12185dbb6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "FK_e553214db24f1d24bf12185dbb6" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE CASCADE;
 
 
 --

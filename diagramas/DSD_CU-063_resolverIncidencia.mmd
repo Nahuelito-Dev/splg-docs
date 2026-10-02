@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-063 Resolver Incidencia · resolverIncidencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :IncidentService
+    participant COL as :Map#lt;String, Incidencia#gt;
+    participant INC as incidencia:Incidencia
+
+    ADM->>+SRV: resolverIncidencia(incidenciaId, notaDeResolucion)
+    SRV->>+COL: get(incidenciaId)
+    COL-->>-SRV: incidencia
+    SRV->>INC: resolver(notaDeResolucion)
+    SRV-->>-ADM: incidencia

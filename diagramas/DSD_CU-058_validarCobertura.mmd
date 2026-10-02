@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-058 Validar Cobertura de una Dirección · validarCobertura
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CoverageZoneService
+    participant DIS as distribuidora:Distribuidora
+    participant ZON as zona:ZonaCobertura
+
+    CLI->>+SRV: validarCobertura(latitud, longitud)
+    alt La distribuidora no tiene zonas activas
+        Note over SRV,DIS: Toda dirección se considera cubierta, sin recargo
+    else La distribuidora tiene zonas activas
+        SRV->>+DIS: getZonaQueCubre(latitud, longitud)
+        loop Por cada zona activa y vigente, de mayor prioridad
+            DIS->>ZON: cubre(latitud, longitud)
+        end
+        DIS-->>-SRV: zona
+        opt Alguna zona cubre el punto
+            SRV->>+ZON: getRecargo()
+            ZON-->>-SRV: recargo
+        end
+    end
+    SRV-->>-CLI: cubierta, recargo, zona

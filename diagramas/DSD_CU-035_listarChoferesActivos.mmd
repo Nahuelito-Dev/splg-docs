@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-035 Consultar Listado de Choferes · listarChoferesActivos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant DIS as distribuidora:Distribuidora
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: listarChoferesActivos(pagina, limite)
+    SRV->>+DIS: getChoferesActivos(pagina, limite)
+    loop Por cada chofer de la distribuidora
+        DIS->>CHO: estaActivo()
+    end
+    DIS-->>-SRV: choferes
+    SRV-->>-ADM: choferes

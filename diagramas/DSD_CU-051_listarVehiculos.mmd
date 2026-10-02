@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-051 Consultar Listado de Vehículos · listarVehiculos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant FLO as :List#lt;Vehiculo#gt;
+
+    ADM->>+SRV: listarVehiculos()
+    SRV->>+FLO: getVehiculosDe(distribuidora)
+    FLO-->>-SRV: vehiculos
+    SRV-->>-ADM: vehiculos

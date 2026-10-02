@@ -1,15 +1,15 @@
 sequenceDiagram
     title DSS — CU-005 Crear Pedido
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
-    CLI->>SIS: crearPedido(items, direccion, franjaHoraria, metodoPago)
+    CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     activate SIS
     alt Hay stock y la dirección está cubierta
         SIS-->>CLI: pedido creado (número, total, estado pendiente)
-        Note over SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
-        SIS-->>CLI: aviso de confirmación del pedido
+        Note over CLI,SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
+        SIS-)CLI: notificarConfirmacionDePedido(pedido)
     else Sin stock suficiente
         SIS-->>CLI: rechazo (stock insuficiente para el producto)
     else Un producto del pedido no existe

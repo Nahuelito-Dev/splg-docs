@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-146 Consultar la Fecha Estimada de Recompra · consultarRecomprasEstimadas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant EXP as :RepurchaseEstimatesService
+    participant CLIS as :List#lt;Cliente#gt;
+    participant CLE as cliente:Cliente
+    participant PEDS as :List#lt;Pedido#gt;
+
+    ADM->>+EXP: consultarRecomprasEstimadas(dias)
+    EXP->>+CLIS: buscarConRecompraEstimadaDentroDe(dias)
+    CLIS-->>-EXP: clientes
+    loop Por cada cliente de la ventana
+        EXP->>CLE: getFechaEstimadaDeRecompra()
+        EXP->>+PEDS: getUltimoEntregado(cliente, distribuidoraId)
+        PEDS-->>-EXP: ultimaCompra
+    end
+    EXP-->>-ADM: recompras

@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-166 Tomar Un Reclamo Pendiente
+autonumber
+participant CTRL as ClaimsController
+participant SRV as ClaimsService
+participant CREP as RepositoryClaim
+
+CTRL->>SRV: take(id, distributorId)
+activate SRV
+SRV->>SRV: abrir una transaccion y leer el reclamo con bloqueo pesimista de la fila (where claim_id y distributor_id)
+alt Reclamo inexistente o de otra distribuidora
+    SRV-->>CTRL: NotFoundException Reclamo no encontrado
+else Reclamo del tenant
+    alt el estado no es PENDING
+        SRV-->>CTRL: BadRequestException Sólo se puede tomar un reclamo pendiente
+    else el estado es PENDING
+        SRV->>SRV: assertClaimTransition(PENDING, IN_PROCESS)
+        SRV->>SRV: claim.status igual IN_PROCESS
+        SRV->>CREP: save(claim) y confirmar la transaccion
+        activate CREP
+        CREP-->>SRV: Claim actualizado
+        deactivate CREP
+        SRV-->>CTRL: Claim
+        CTRL->>CTRL: ClaimMapper.toDto(claim) a ClaimResponseDto
+    end
+end
+deactivate SRV

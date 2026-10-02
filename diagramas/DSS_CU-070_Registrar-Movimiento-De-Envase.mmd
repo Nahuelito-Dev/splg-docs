@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-070 Registrar Movimiento De Envase
+    title DSS — CU-070 Registrar Movimiento de Envase (cambio de estado)
     autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
 
     CHO->>SIS: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
     activate SIS

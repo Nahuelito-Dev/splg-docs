@@ -1,5 +1,5 @@
 -- Esquema de SPLG — Sistema de Pedidos y Logística de Garrafas de Gas
--- Estado actual de la base: 38 tablas, 84 claves foráneas.
+-- Estado actual de la base: 40 tablas, 93 claves foráneas.
 -- Generado por generar-modelo-datos.py
 -- Los tipos enumerados y los geográficos de PostGIS se escriben como varchar para
 -- que cualquier herramienta de diagramación pueda leer el archivo.
@@ -37,7 +37,7 @@ CREATE TABLE "coverage_zone" (
   "distributor_id" uuid NOT NULL,
   "name" varchar(120) NOT NULL,
   "area" varchar(255) NOT NULL,
-  "surcharge" numeric(10,2) NOT NULL,
+  "surcharge_value" numeric(10,2) NOT NULL,
   "isActive" boolean NOT NULL,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
@@ -46,6 +46,8 @@ CREATE TABLE "coverage_zone" (
   "label" varchar(40),
   "color" varchar(7),
   "valid_until" timestamptz,
+  "priority" integer NOT NULL,
+  "valid_from" timestamptz,
   PRIMARY KEY ("coverage_zone_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
@@ -122,6 +124,7 @@ CREATE TABLE "admin" (
   "user_id" uuid NOT NULL,
   "createdAt" timestamptz NOT NULL,
   PRIMARY KEY ("admin_id"),
+  UNIQUE ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
@@ -213,6 +216,8 @@ CREATE TABLE "delivery" (
   "createdAt" timestamptz,
   "deletedAt" timestamptz,
   "location" varchar(255),
+  "isEnabled" boolean NOT NULL,
+  "isAvailable" boolean NOT NULL,
   PRIMARY KEY ("delivery_id"),
   UNIQUE ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
@@ -331,8 +336,19 @@ CREATE TABLE "order" (
   "receiver_relationship" varchar(40),
   "delivery_mode" varchar(32) NOT NULL,
   "deliveryPoint" varchar(255),
+  "coverage_zone_id" uuid,
+  "zone_name" varchar(120),
+  "zone_surcharge_type" varchar(32),
+  "zone_surcharge_value" numeric(10,2),
+  "zone_surcharge_amount" numeric(10,2) NOT NULL,
+  "subtotal_items" numeric(10,2) NOT NULL,
+  "vehicle_car_id" uuid,
+  "vehicle_patent" varchar(20),
+  "vehicle_brand" varchar(50),
+  "vehicle_model" varchar(50),
   PRIMARY KEY ("order_id"),
   FOREIGN KEY ("address_id") REFERENCES "user_address" ("address_id"),
+  FOREIGN KEY ("coverage_zone_id") REFERENCES "coverage_zone" ("coverage_zone_id") ON DELETE SET NULL,
   FOREIGN KEY ("customer_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
@@ -349,6 +365,24 @@ CREATE TABLE "route_batch" (
   PRIMARY KEY ("batch_id"),
   FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE SET NULL,
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "vehicle_assignment" (
+  "assignment_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "car_id" uuid NOT NULL,
+  "delivery_id" uuid NOT NULL,
+  "assigned_at" timestamptz NOT NULL,
+  "released_at" timestamptz,
+  "assigned_by_user_id" uuid,
+  "released_by_user_id" uuid,
+  "note" text,
+  PRIMARY KEY ("assignment_id"),
+  FOREIGN KEY ("assigned_by_user_id") REFERENCES "user" ("user_id"),
+  FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE CASCADE,
+  FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE CASCADE,
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("released_by_user_id") REFERENCES "user" ("user_id")
 );
 
 CREATE TABLE "vehicle_usage_log" (
@@ -421,6 +455,22 @@ CREATE TABLE "incident" (
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE,
   FOREIGN KEY ("reported_by") REFERENCES "user" ("user_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "maintenance_task_attachment" (
+  "attachment_id" uuid NOT NULL,
+  "task_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "storage_key" varchar(255) NOT NULL,
+  "original_name" varchar(255) NOT NULL,
+  "mime_type" varchar(100) NOT NULL,
+  "size_bytes" integer NOT NULL,
+  "uploaded_by_user_id" uuid NOT NULL,
+  "uploaded_at" timestamptz NOT NULL,
+  PRIMARY KEY ("attachment_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("task_id") REFERENCES "maintenance_task" ("task_id") ON DELETE CASCADE,
+  FOREIGN KEY ("uploaded_by_user_id") REFERENCES "user" ("user_id")
 );
 
 CREATE TABLE "maintenance_window_proposal" (

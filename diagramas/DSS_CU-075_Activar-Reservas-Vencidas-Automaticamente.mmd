@@ -1,19 +1,19 @@
 sequenceDiagram
-    title DSS — CU-075 Activar Reservas Vencidas Automaticamente
+    title DSS — CU-075 Activar Reservas Vencidas Automaticamente (Cron)
     autonumber
-    actor AUT as Sistema Automático
-    participant SIS as Sistema
-    actor CHO as Chofer
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
 
-    Note over AUT: Proceso periódico. Frecuencia real cada 5 minutos
-    AUT->>SIS: activarReservasDelDia()
+    Note over SAU: Proceso periódico.<br/>Frecuencia real cada 5<br/>minutos
+    SAU->>SIS: activarReservasDelDia()
     activate SIS
-    alt hay reservas con la seña paga y el día cumplido
-        loop por cada reserva vencida (hasta 50 por corrida)
-            SIS-)CHO: oferta del pedido activado (pedidoId, total, ítems, distancia)
+    alt Hay reservas con la seña paga y el día cumplido
+        loop Por cada reserva vencida (hasta 50 por corrida)
+            SIS-)CHO: notificarOferta(pedido)
         end
-        SIS-->>AUT: reservas activadas y enviadas a despacho
-    else no hay reservas para activar
-        SIS-->>AUT: sin trabajo por hacer
+        SIS-->>SAU: reservas activadas y enviadas a despacho
+    else No hay reservas para activar
+        SIS-->>SAU: sin trabajo por hacer
     end
     deactivate SIS

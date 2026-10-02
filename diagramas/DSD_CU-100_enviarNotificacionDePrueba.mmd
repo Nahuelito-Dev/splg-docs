@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSD — CU-100 Enviar Notificación de Prueba · enviarNotificacionDePrueba
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :NotificationsService
+    participant FCM as :FcmPort
+
+    AGN->>+SRV: enviarNotificacionDePrueba(token, titulo, mensaje)
+    SRV->>FCM: sendToToken(token, notificacion)
+    SRV-->>-AGN: resultado

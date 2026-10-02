@@ -1,0 +1,36 @@
+sequenceDiagram
+    title DSD — CU-105 Planificar el mantenimiento y las habilitaciones de la flota · planificarMantenimientoDeFlota
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant PLN as :FleetMaintenancePlannerService
+    participant VEH as vehiculo:Vehiculo
+    participant TAR as tarea:TareaMantenimiento
+    participant DEM as :DemandForecastService
+    participant COV as :FleetCoverageService
+    participant NOT as :NotificationsService
+
+    SIS->>+PLN: planificarMantenimientoDeFlota()
+    loop Por cada vehículo de la flota activa
+        PLN->>+VEH: proyectarVencimientos()
+        VEH->>VEH: estimarKilometrajeDiario()
+        VEH->>TAR: proyectarVencimiento(kilometrajeDiario)
+        VEH-->>-PLN: tareas dentro de la anticipación
+        loop Por cada tarea dentro de la ventana de anticipación
+            PLN->>+DEM: demandaProyectada(ventanas)
+            DEM-->>-PLN: demanda por ventana
+            PLN->>+COV: ventanasFactibles(vehiculo, ventanas)
+            COV-->>-PLN: ventanas factibles
+            PLN->>+VEH: getChoferEnUso()
+            VEH-->>-PLN: chofer
+            PLN->>+TAR: proponerVentana(chofer, ventana)
+            create participant PRP as :PropuestaVentanaTaller
+            TAR->>PRP: «create»(chofer, ventana, vigencia)
+            TAR-->>-PLN: propuesta
+            PLN-)NOT: sendWindowProposal(propuesta)
+            Note over PLN,PRP: Respuesta del Chofer: ver DSD de aceptarVentanaDeMantenimiento (CU-105)
+        end
+        opt Hay una habilitación bloqueante vencida
+            PLN->>VEH: ponerFueraDeServicio()
+        end
+    end
+    deactivate PLN

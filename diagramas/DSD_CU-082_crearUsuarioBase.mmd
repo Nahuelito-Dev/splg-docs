@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSD — CU-082 Crear Usuario Base · crearUsuarioBase
+    autonumber
+    participant SRV as :RegistroService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant FBA as :FirebaseAuthPort
+
+    Note over SRV: Caso incluido desde CU-002, CU-003, CU-031, CU-086 y CU-087
+    SRV->>+SRV: registrar(datosPersonales, rol, distribuidoraId)
+    SRV->>SRV: autorizarAlta(solicitante, rol, distribuidoraId)
+    SRV->>COL: verificarDisponibilidad(correo, telefono)
+    SRV->>+FBA: createUserSafe(correo, contrasena, nombreCompleto, telefono)
+    FBA-->>-SRV: cuenta
+    create participant USR as usuario:Usuario
+    SRV->>USR: «create»(datosPersonales, rol, cuenta)
+    alt rol es CLIENTE
+        create participant CLI as cliente:Cliente
+        SRV->>CLI: «create»(usuario, ubicacion)
+    else rol es CHOFER
+        create participant CHO as chofer:Chofer
+        SRV->>CHO: «create»(usuario, distribuidoraId, datosDelChofer)
+    else rol es ADMINISTRADOR o ADMINISTRADOR GENERAL
+        create participant ADMI as administrador:Administrador
+        SRV->>ADMI: «create»(usuario, distribuidoraId)
+    end
+    opt La persistencia falla
+        SRV->>FBA: deleteUserSafe(cuenta)
+    end
+    SRV-->>-SRV: usuario

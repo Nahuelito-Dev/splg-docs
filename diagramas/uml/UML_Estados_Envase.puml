@@ -1,0 +1,41 @@
+@startuml
+title Diagrama de estados — Envase
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "IN_DEPOT\nen depósito" as IN_DEPOT
+state "FILLED\nlleno" as FILLED
+state "DISPATCHED\nen reparto" as DISPATCHED
+state "WITH_CUSTOMER\nen poder del cliente" as WITH_CUSTOMER
+state "EMPTY_RETURNED\ndevuelto vacío" as EMPTY_RETURNED
+
+[*] --> IN_DEPOT : registrarEnvase(serie) [serie única en la distribuidora]
+IN_DEPOT --> FILLED : cargar()
+FILLED --> DISPATCHED : asignarAPedido(serie)
+FILLED --> IN_DEPOT : revertirLlenado()
+DISPATCHED --> WITH_CUSTOMER : entregarPedido() [automático al confirmar\nla entrega del pedido]
+DISPATCHED --> IN_DEPOT : reingresar() [volvió sin entregar]
+WITH_CUSTOMER --> EMPTY_RETURNED : devolverVacío()
+EMPTY_RETURNED --> IN_DEPOT : reingresar()
+
+note right of WITH_CUSTOMER
+  Cada transición registra un movimiento
+  (estado origen, estado destino, pedido, responsable).
+  Al llegar a WITH_CUSTOMER se anota el cliente;
+  al salir hacia EMPTY_RETURNED o IN_DEPOT se borra.
+end note
+@enduml

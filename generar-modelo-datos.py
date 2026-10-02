@@ -9,8 +9,11 @@ Sale, en diagramas/base-de-datos/:
   SPLG-base-de-datos-lucidchart.sql       el esquema actual en SQL portable
   SPLG-base-de-datos-propuesta.sql        solo los agregados pedidos por la catedra
   SPLG-base-de-datos-completa-lucidchart.sql  actual + propuesta, portable, para importar
-  SPLG-modelo-fisico.puml/.png/.svg       entidad-relacion con tablas y columnas
-  SPLG-modelo-conceptual.puml/...         entidades del negocio y cardinalidades
+  fisico/SPLG-fisico-NN-<contexto>.puml/.png/.svg    entidad-relación con tablas y columnas,
+                                          una lámina por contexto de negocio
+  conceptual/SPLG-der-NN-<área>.puml/...  entidad-relación conceptual con el vocabulario del
+                                          modelo conceptual (general y una por área)
+  SPLG-der-mermaid.md                     el físico en Mermaid, el que se pega en el Documento 3
   SPLG-modelo-de-datos.md                 el diccionario de datos en texto
   LEEME.md                                como usar cada archivo
 
@@ -21,7 +24,9 @@ Lo implementado sale de la base. Lo que la catedra pidio agregar vive en la
 constante PROPUESTO y se dibuja aparte, con estereotipo <<propuesto>>, para que
 en la defensa se distinga de un vistazo lo que ya corre de lo que falta.
 """
-import subprocess, os, re, sys, collections
+import subprocess, os, re, sys, collections, glob, textwrap
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import modelo_conceptual as MC
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/"
 SAL = D + "diagramas/base-de-datos/"
@@ -91,6 +96,20 @@ for t, cons, c in psql(f"""
   order by tc.table_name, tc.constraint_name, kcu.ordinal_position;"""):
     _uq[t][cons].append(c)
 unicos = {t: list(v.values()) for t, v in _uq.items()}          # [[col, col], [col]]
+# Un índice único sin condición equivale a una restricción UNIQUE aunque la base no la
+# declare como tal (admin.user_id tiene `UQ_admin_user`, un índice). Los parciales
+# (`WHERE released_at IS NULL`) no cuentan: sólo valen para un subconjunto de filas.
+for t, cols in psql(f"""
+  select i.indrelid::regclass::text,
+         string_agg(a.attname, ',' order by array_position(i.indkey::int2[], a.attnum))
+  from pg_index i join pg_attribute a on a.attrelid=i.indrelid and a.attnum = any(i.indkey)
+  where i.indisunique and not i.indisprimary and i.indpred is null
+    and i.indrelid::regclass::text not in {SALTAR}
+  group by i.indexrelid, i.indrelid;"""):
+    grupo = cols.split(",")
+    t = t.strip('"')
+    if grupo not in unicos.get(t, []):
+        unicos.setdefault(t, []).append(grupo)
 unicos_simples = {t: {g[0] for g in v if len(g) == 1} for t, v in unicos.items()}
 
 fks = []
@@ -101,6 +120,7 @@ for t, c, dt, dc, borrado in psql(f"""
   join information_schema.constraint_column_usage ccu on ccu.constraint_name=tc.constraint_name
   join information_schema.referential_constraints rc on rc.constraint_name=tc.constraint_name
   where tc.constraint_type='FOREIGN KEY' and tc.table_schema='public'
+    and tc.table_name not in {SALTAR} and ccu.table_name not in {SALTAR}
   order by 1,2;"""):
     fks.append({"tabla": t, "col": c, "destino": dt, "destcol": dc, "borrado": borrado})
 
@@ -109,6 +129,68 @@ enums = {n: v.split(",") for n, v in psql("""
   from pg_type t join pg_enum e on e.enumtypid=t.oid
   join pg_namespace n on n.oid=t.typnamespace and n.nspname='public'
   group by t.typname;""")}
+
+# ---------------------------------------------------------- CHECK e indices
+# Se piden aparte de information_schema porque una CHECK con OR (como la de
+# coverage_zone) no sale completa de information_schema.check_constraints.
+checks = collections.defaultdict(list)
+for t, nom, defi in psql("""
+  select conrelid::regclass::text, conname, pg_get_constraintdef(oid)
+  from pg_constraint
+  where contype='c' and connamespace='public'::regnamespace
+  order by 1, 2;"""):
+    checks[t.strip('"')].append((nom, defi))
+
+indices = collections.defaultdict(list)
+for t, nom, defi in psql("""
+  select tablename, indexname, indexdef
+  from pg_indexes
+  where schemaname='public'
+  order by tablename, indexname;"""):
+    # Los indices de PK ya se ven en la columna marcada <<PK>>; no aportan de nuevo.
+    if nom.upper().startswith('PK_'): continue
+    indices[t].append((nom, defi))
+
+# --------------------------------------------- descripciones desde el código
+# El diccionario completo (B-4) pide una descripcion por columna. Se toma del
+# comentario que antecede a cada @Column/@PrimaryGeneratedColumn/@Create..
+# /@Update../@DeleteDateColumn en la entidad de TypeORM. Si una columna no
+# tiene comentario en el código, queda sin descripcion: no se inventa una.
+def leer_descripciones_entidades():
+    desc = collections.defaultdict(dict)
+    decoradores_columna = ('@Column(', '@PrimaryGeneratedColumn(', '@CreateDateColumn(',
+                          '@UpdateDateColumn(', '@DeleteDateColumn(')
+    for ruta in glob.glob(BACK + "src/**/*.entity.ts", recursive=True):
+        src = open(ruta, encoding="utf-8").read()
+        m = re.search(r"@Entity\(\s*['\"]([a-zA-Z_]+)['\"]", src)
+        if not m: continue
+        tabla = m.group(1)
+        cm = re.search(r'export\s+class\s+\w+[^{]*\{', src)
+        inicio_clase = cm.end() if cm else 0
+        props = list(re.finditer(r'^ {2}(\w+)[!?]?\s*:', src, re.M))
+        for i, pm in enumerate(props):
+            previo = props[i - 1].end() if i else 0
+            inicio = max(previo, inicio_clase)
+            if pm.start() < inicio: continue     # propiedad de una interfaz anterior a la clase
+            segmento = src[inicio:pm.start()]
+            if not any(d in segmento for d in decoradores_columna):
+                continue
+            nm = re.search(r"name:\s*['\"](\w+)['\"]", segmento)
+            columna = nm.group(1) if nm else pm.group(1)
+            antes = segmento.split('@', 1)[0]
+            com = re.search(r'/\*\*(.*?)\*/', antes, re.S)
+            if com:
+                texto = re.sub(r'\s*\*\s?', ' ', com.group(1)).strip()
+            else:
+                lns = [l.strip()[2:].strip() for l in antes.strip().splitlines()
+                       if l.strip().startswith('//')]
+                texto = ' '.join(lns).strip()
+            texto = re.sub(r'\s+', ' ', texto)
+            if texto:
+                desc[tabla][columna] = texto
+    return desc
+
+descripciones = leer_descripciones_entidades()
 
 # ------------------------------------------------- relaciones que existen sin FK
 # Columnas que apuntan a otra tabla y se usan como referencia en el codigo, pero
@@ -716,8 +798,61 @@ PROPUESTO_IMPLEMENTADO = [
   },
 ]
 
-# Lo que todavía no está en la base. Hoy nada.
-PROPUESTO = []
+# Lo que todavía no está en la base: los cambios de modelo que necesitan los casos de uso
+# planificados (Documento 0, plan de construcción). Cada agregado se aplica en la
+# iteración que lo necesita, con su propia migración; mientras tanto se dibuja aparte.
+# `enum_valores` agrega valores a un tipo enumerado que ya existe.
+PROPUESTO = [
+  {
+    "clave": "express-recargo-y-tipo-de-vehiculo",
+    "casos": "CU-147 a CU-149 (I-7)",
+    "nota": "La compra express guarda el recargo para poder explicar el total después, igual que el pedido guarda la zona que lo originó. El tipo de vehículo es hoy texto libre (`type_car`: «Moto», «Auto»…) y la express depende de reconocer una moto: se agrega una columna enumerada y se rellena desde `type_car`.",
+    "titulo": "Recargo express y tipo de vehículo",
+    "pedido": "Explicar el total de un pedido express y reconocer la moto sin depender de un texto libre.",
+    "enums": {"vehicle_type_enum": ["motorcycle", "car", "van"]},
+    "columnas": {
+      "order": [
+        {"nombre": "express_surcharge_amount", "tipo": "numeric(12,2)", "nulo": False,
+         "default": "0", "desc": "Recargo de la modalidad express incluido en el total; cero en el reparto común."},
+      ],
+      "car": [
+        {"nombre": "vehicle_type", "tipo": "vehicle_type_enum", "nulo": True,
+         "desc": "Tipo de vehículo normalizado, rellenado desde `type_car`; vacío hasta el relleno."},
+      ],
+    },
+    "tablas": [],
+  },
+  {
+    "clave": "recupero-baja-y-oferta-de-retiro",
+    "casos": "CU-108 (I-8)",
+    "nota": "El ciclo del envase no tiene un estado de baja: se agrega una baja lógica en vez de un valor de estado, para no tocar la máquina de estados que ya usan el despacho y la devolución. El aviso de recupero necesita saber a qué entrega se ató la oferta de retiro.",
+    "titulo": "Baja del envase y oferta de retiro",
+    "pedido": "Poder dar un envase de baja y atar la oferta de retiro a la entrega programada.",
+    "enums": {},
+    "columnas": {
+      "cylinder": [
+        {"nombre": "decommissioned_at", "tipo": "timestamptz", "nulo": True,
+         "desc": "Cuándo se dio de baja el envase; vacío mientras está en circulación."},
+      ],
+      "cylinder_recovery_notice": [
+        _ref("order_id", "order", "order_id", "SET NULL",
+             "Pedido de la entrega a la que se ató la oferta de retiro.", nulo=True),
+      ],
+    },
+    "tablas": [],
+  },
+  {
+    "clave": "configuracion-despacho-y-tareas",
+    "casos": "CU-171 y CU-173 (I-1)",
+    "nota": "Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: sólo hace falta ampliar el tipo enumerado de procesos configurables.",
+    "titulo": "Configuración del despacho y de las tareas programadas",
+    "pedido": "Que el administrador configure el despacho y la frecuencia de las tareas de su distribuidora.",
+    "enums": {},
+    "enum_valores": {"configurable_process_enum": ["dispatch", "scheduled_tasks"]},
+    "columnas": {},
+    "tablas": [],
+  },
+]
 
 # ---------------------------------------------------------------- verificaciones
 # El diccionario conceptual mapea etiqueta del negocio -> columna real. Si una
@@ -731,14 +866,23 @@ CONCEPTO = {
   "role": ("Rol", [("tipo", "type")]),
   "admin": ("Administrador", []),
   "customer": ("Cliente", [("ubicación", "location")]),
-  "delivery": ("Chofer", [("calificación", "calification"), ("disponible", "isActive"),
+  "delivery": ("Chofer", [("calificación", "calification"), ("habilitado", "isEnabled"),
+                          ("disponible", "isAvailable"),
                           ("posición", "location"), ("saldo", "balance")]),
   "car": ("Vehículo", [("patente", "car_patent"), ("tipo", "type_car"),
                        ("capacidad", "car_capacity")]),
+  "vehicle_assignment": ("Asignación de vehículo", [("asignado el", "assigned_at"),
+                                                    ("liberado el", "released_at"),
+                                                    ("nota", "note")]),
   "user_address": ("Dirección de entrega", [("calle", "street"), ("ciudad", "city"),
                                             ("predeterminada", "isDefault")]),
   "coverage_zone": ("Zona de cobertura", [("nombre", "name"), ("área", "area"),
-                                          ("recargo", "surcharge")]),
+                                          ("recargo", "surcharge_value"),
+                                          ("tipo de recargo", "surcharge_type"),
+                                          ("etiqueta", "label"), ("color", "color"),
+                                          ("prioridad", "priority"),
+                                          ("vigente desde", "valid_from"),
+                                          ("vigente hasta", "valid_until")]),
   "time_slot": ("Franja horaria", [("nombre", "name"), ("desde", "startTime"),
                                    ("hasta", "endTime"), ("cupo", "capacity")]),
   "gas_cylinder": ("Tipo de garrafa", [("tipo", "type"), ("peso en kg", "weight"),
@@ -750,11 +894,20 @@ CONCEPTO = {
   "cylinder_movement": ("Movimiento de envase", [("desde", "from_state"), ("hacia", "to_state"),
                                                  ("fecha", "createdAt")]),
   "order": ("Pedido", [("estado", "status"), ("total", "totalAmount"),
-                       ("método de pago", "paymentMethod"), ("fecha agendada", "scheduled_date")]),
+                       ("método de pago", "paymentMethod"), ("fecha agendada", "scheduled_date"),
+                       ("modalidad de entrega", "delivery_mode"),
+                       ("recargo de zona", "zone_surcharge_amount"),
+                       ("subtotal de ítems", "subtotal_items"),
+                       ("nombre de quien recibe", "receiver_name"),
+                       ("documento de quien recibe", "receiver_document"),
+                       ("vínculo de quien recibe", "receiver_relationship")]),
   "order_item": ("Ítem del pedido", [("cantidad", "quantity"), ("precio unitario", "unitPrice"),
                                      ("subtotal", "subtotal")]),
   "order_dispatch_offer": ("Oferta de despacho", [("estado", "status"), ("vence", "expiresAt")]),
   "payment": ("Pago", [("importe", "amount"), ("pasarela", "gateway"), ("estado", "status")]),
+  "maintenance_task_attachment": ("Adjunto de tarea de mantenimiento",
+    [("nombre original", "original_name"), ("tipo de archivo", "mime_type"),
+     ("tamaño", "size_bytes"), ("subido el", "uploaded_at")]),
   "claims": ("Reclamo", [("motivo", "reason"), ("estado", "status")]),
   "incident": ("Incidencia", [("tipo", "type"), ("estado", "status")]),
   "rating": ("Calificación", [("puntaje", "stars"), ("comentario", "comment")]),
@@ -939,13 +1092,19 @@ open(SAL + "SPLG-base-de-datos-lucidchart.sql", "w", encoding="utf-8").write("\n
 
 # ------------------------------------------------------ 3. solo lo propuesto
 prop = ["-- Modelo propuesto — SPLG",
-        "-- Los agregados que pidió la cátedra, sobre el esquema que hoy está en la base.",
+        "-- Los cambios de modelo de los casos de uso planificados, sobre el esquema que hoy está en la base.",
         "-- PostgreSQL. Se ejecuta en este orden: tipos, columnas nuevas, tablas nuevas,",
         "-- claves foráneas. Generado por generar-modelo-datos.py.", ""]
 prop.append("-- ---------- tipos enumerados nuevos ----------")
 for ag in PROPUESTO:
     for n, v in ag["enums"].items():
         prop.append(f'CREATE TYPE "{n}" AS ENUM (' + ", ".join(f"'{x}'" for x in v) + ");")
+prop.append("")
+prop.append("-- ---------- valores nuevos de tipos enumerados existentes ----------")
+for ag in PROPUESTO:
+    for n, v in ag.get("enum_valores", {}).items():
+        for x in v:
+            prop.append(f'ALTER TYPE "{n}" ADD VALUE IF NOT EXISTS \'{x}\';')
 prop.append("")
 for ag in PROPUESTO:
     if not ag["columnas"] and not ag["tablas"]: continue
@@ -1008,12 +1167,16 @@ skinparam shadowing false
 skinparam defaultFontName Helvetica
 skinparam defaultFontSize 12
 skinparam dpi 150
-skinparam linetype ortho
 skinparam class {{
   BorderColor {TINTA}
   BackgroundColor #FFFFFF
   ArrowColor {TINTA}
   FontSize 12
+}}
+skinparam entity<<ajena>> {{
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
 }}
 skinparam class<<propuesto>> {{
   BorderColor {AZUL}
@@ -1028,7 +1191,7 @@ def leyenda(marca_ref):
     propuesto y de las relaciones sin clave foránea salen sólo si hay alguna."""
     filas = ["|<#FFFFFF> **implementado** | tabla o atributo que ya existe en la base |"]
     if PROPUESTO:
-        filas.append("|<#E4EDF4> **propuesto** | agregado pedido por la cátedra, todavía sin implementar |")
+        filas.append("|<#E4EDF4> **propuesto** | cambio planificado, todavía sin aplicar a la base |")
     if SIN_FK:
         filas.append(f"|<#FFFFFF> **línea punteada{' · «ref»' if marca_ref else ''}** | la relación existe "
                      "en el dominio pero la base no la declara como clave foránea |")
@@ -1040,48 +1203,6 @@ def marca(c, d):
     f = next((x for x in d["fks"] if x["col"] == c["nombre"]), None)
     if f: return ("<<ref>>" if f["sinfk"] else "<<FK>>"), f'//{c["nombre"]}//'
     return "", c["nombre"]
-
-# ----------------------------------------------------------- 5. modelo físico
-n_prop_cols = sum(len(v) for v in cols_prop.values())
-fis = ["@startuml",
-       "title Modelo Físico de Datos — SPLG\\n"
-       f"{len(tablas)} tablas y {len(fks)} claves foráneas implementadas · "
-       f"{len(sin_fk)} relaciones sin declarar · "
-       f"{len(tablas_prop)} tablas y {n_prop_cols} columnas propuestas",
-       CAB, "hide circle", ""]
-for t in orden_dependencias(completo):
-    d = completo[t]
-    fis.append(f'entity "{t}" as e_{t}' + (" <<propuesto>> " if d["prop"] else " ") + "{")
-    for c in d["columnas"]:
-        mk, nom = marca(c, d)
-        obl = "" if c["nulo"] else " *"
-        linea = f'{nom} : {c["tipo"]}{obl} {mk}'
-        fis.append("  {field} " + (f"<color:{AZUL}>{linea} <<propuesto>></color>"
-                                   if c["prop"] and not d["prop"] else linea))
-    fis.append("}")
-fis.append("")
-for t in orden_dependencias(completo):
-    for f in completo[t]["fks"]:
-        uno = f["col"] in unicos_simples.get(t, set())
-        der = "||" if uno else "o{"
-        if f["sinfk"]:
-            fis.append(f'e_{f["destino"]} ||..{der} e_{t} : {f["col"]} (sin FK)')
-        elif f["prop"]:
-            fis.append(f'e_{f["destino"]} ||--{der} e_{t} #line:{AZUL[1:]};text:{AZUL[1:]} : {f["col"]}')
-        else:
-            fis.append(f'e_{f["destino"]} ||--{der} e_{t} : {f["col"]}')
-fis += ["", leyenda(True), "@enduml"]
-open(SAL + "SPLG-modelo-fisico.puml", "w", encoding="utf-8").write("\n".join(fis))
-
-# ------------------------------------------------------- 6. modelo conceptual
-# El conceptual habla del negocio: nombres en castellano, sin columnas técnicas
-# ni claves. Cada atributo listado corresponde a una columna real, verificada
-# más arriba contra la base.
-CONCEPTO_PROP = {tb["nombre"]: tb["concepto"] for tb in tablas_prop}
-
-def nombre_concepto(t):
-    if t in CONCEPTO: return CONCEPTO[t][0]
-    return CONCEPTO_PROP.get(t, t)
 
 # Contextos del negocio (MODELO-DE-DOMINIO.md): cada entidad pertenece a uno.
 # Si aparece una tabla sin contexto, el script corta: el modelo tiene que decir
@@ -1097,8 +1218,9 @@ CONTEXTOS = [
   ("Pagos", ["payment"]),
   ("Despacho y logística", ["order_dispatch_offer", "route_batch", "route_batch_stop",
                             "route_batch_offer"]),
-  ("Flota y choferes", ["delivery", "car", "maintenance_plan", "maintenance_task",
-                        "maintenance_window_proposal", "vehicle_usage_log"]),
+  ("Flota y choferes", ["delivery", "car", "vehicle_assignment", "maintenance_plan", "maintenance_task",
+                        "maintenance_task_attachment", "maintenance_window_proposal",
+                        "vehicle_usage_log"]),
   ("Posventa", ["claims", "incident", "rating"]),
 ]
 _en_contexto = [t for _, ts in CONTEXTOS for t in ts]
@@ -1107,70 +1229,224 @@ _sobra = sorted(set(_en_contexto) - set(completo))
 if _sin or _sobra:
     sys.exit(f"CONTEXTOS: sin contexto {_sin} · inexistentes {_sobra}")
 
-con = ["@startuml",
-       "title Modelo Conceptual — SPLG\\nEntidades del negocio por contexto",
-       CAB, "hide circle", "skinparam linetype polyline",
-       "skinparam packageStyle rectangle", f"skinparam package {{\n  BorderColor {TINTA}\n  FontSize 13\n}}", ""]
-_orden = orden_dependencias(completo)
-for ctx, ts in CONTEXTOS:
-  con.append(f'package "{ctx}" {{')
-  for t in [x for x in _orden if x in ts]:
-    d = completo[t]
-    con.append(f'entity "{nombre_concepto(t)}" as c_{t}'
-               + (" <<propuesto>> " if d["prop"] else " ") + "{")
-    if not d["prop"]:
-        for etiqueta, _ in CONCEPTO.get(t, (t, []))[1]:
-            con.append("  {field} " + etiqueta)
-        for c in cols_prop.get(t, []):
-            if c.get("concepto"):
-                con.append("  {field} " + f'<color:{AZUL}>{c["concepto"]} <<propuesto>></color>')
-    else:
-        for c in next(x for x in tablas_prop if x["nombre"] == t)["columnas"]:
-            if c.get("concepto"): con.append("  {field} " + c["concepto"])
-    con.append("}")
-  con.append("}")
-con.append("")
-vistas = set()
-for t in orden_dependencias(completo):
-    d = completo[t]
-    for f in d["fks"]:
-        # Todo pertenece a una distribuidora: esa relación se declara una vez en
-        # la leyenda en lugar de dibujar una línea desde cada entidad.
-        if f["destino"] == "distributor": continue
-        par = (f["destino"], t, f["sinfk"], f["prop"])
-        if par in vistas: continue
-        vistas.add(par)
-        uno = f["col"] in unicos_simples.get(t, set())
-        der = "||" if uno else "o{"
-        col = next((c for c in d["columnas"] if c["nombre"] == f["col"]), None)
-        izq = "|o" if (col and col["nulo"]) else "||"
-        if f["sinfk"]:
-            con.append(f'c_{f["destino"]} {izq}..{der} c_{t} : sin FK')
-        elif f["prop"]:
-            con.append(f'c_{f["destino"]} {izq}--{der} c_{t} #line:{AZUL[1:]};text:{AZUL[1:]}')
-        else:
-            con.append(f'c_{f["destino"]} {izq}--{der} c_{t}')
-con += ["", leyenda(False).replace("endlegend",
-         "|<#FFFFFF> **distribuidora** | las entidades de una distribuidora (multi-tenant) se relacionan con ella: "
-         "esas relaciones no se dibujan. Usuario, Cliente y Dirección no pertenecen a ninguna: un cliente "
-         "le compra a varias y su pertenencia sale de sus pedidos |\nendlegend"), "@enduml"]
-open(SAL + "SPLG-modelo-conceptual.puml", "w", encoding="utf-8").write("\n".join(con))
+
+# ---------------------------------------------------------------- cardinalidades
+# Una clave foránea es «muchos a uno»; si la columna es única es «uno a cero-o-uno»
+# (user -> admin, customer, delivery). El lado del padre es obligatorio si la columna no
+# admite nulos. Las columnas únicas incluyen los índices únicos (ver más arriba).
+IZQ = {"uno": "||", "cero_uno": "|o", "muchos": "}o"}
+DER = {"uno": "||", "cero_uno": "o|", "muchos": "o{"}
+
+def card_hijo(t, f):
+    return "cero_uno" if f["col"] in unicos_simples.get(t, set()) else "muchos"
+
+def card_padre(t, f):
+    col = next((c for c in completo[t]["columnas"] if c["nombre"] == f["col"]), None)
+    return "cero_uno" if (col and col["nulo"]) else "uno"
+
+CONVENCIONES = ("Los nombres reflejan la base real: conviven camelCase "
+                "(paymentMethod, createdAt, isActive) y snake_case (scheduled_date, "
+                "delivery_mode) porque las columnas más antiguas se crearon así y las "
+                "posteriores siguieron otra convención; la tabla claims está en plural y el "
+                "resto en singular.")
+
+# ----------------------------------------------------------- 5. modelo físico
+# Una lámina por contexto de negocio, con las tablas del contexto completas y, como
+# referencia, el nombre de las tablas de otros contextos a las que apuntan.
+FIS = SAL + "fisico/"
+os.makedirs(FIS, exist_ok=True)
+for _viejo in glob.glob(FIS + "SPLG-fisico-*"): os.remove(_viejo)
+for _viejo in glob.glob(SAL + "SPLG-modelo-fisico.*"): os.remove(_viejo)
+
+def slug(txt):
+    import unicodedata
+    n = unicodedata.normalize("NFD", txt.lower())
+    return re.sub(r'[^a-z0-9]+', '-', "".join(c for c in n if not unicodedata.combining(c))).strip("-")
+
+fisicos = []
+_orden_global = orden_dependencias(completo)
+for k, (ctx, ts) in enumerate(CONTEXTOS, 1):
+    propias = [t for t in _orden_global if t in ts]
+    ajenas = []
+    for t in propias:
+        for f in completo[t]["fks"]:
+            if f["destino"] not in ts and f["destino"] != "distributor" and f["destino"] not in ajenas:
+                ajenas.append(f["destino"])
+    lin = ["@startuml",
+           f"title Modelo físico — {ctx}", CAB, "hide circle", "skinparam linetype polyline", ""]
+    for t in propias:
+        d = completo[t]
+        lin.append(f'entity "{t}" as e_{t} {{')
+        for c in d["columnas"]:
+            mk, nom = marca(c, d)
+            linea = f'{nom} : {c["tipo"]}{"" if c["nulo"] else " *"} {mk}'.rstrip()
+            lin.append("  {field} " + (f"<color:{AZUL}>{linea} <<propuesto>></color>" if c["prop"] else linea))
+        lin.append("}")
+    for t in ajenas:
+        lin.append(f'entity "{t}" as e_{t} #F1F1F1 {{')
+        lin.append("}")
+    lin.append("")
+    vistos = set()
+    for t in propias + ajenas:
+        for f in completo[t]["fks"]:
+            otros = set(propias) | set(ajenas)
+            if f["destino"] not in otros or f["destino"] == "distributor" and "distributor" not in propias:
+                continue
+            if t in ajenas and f["destino"] not in propias: continue
+            if (t, f["col"]) in vistos: continue
+            vistos.add((t, f["col"]))
+            est = f' #line:{AZUL[1:]};text:{AZUL[1:]}' if f["prop"] else ""
+            lin.append(f'e_{f["destino"]} {IZQ[card_padre(t, f)]}--{DER[card_hijo(t, f)]} e_{t}{est} : {f["col"]}')
+    lin += ["", "legend bottom",
+            "|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |"]
+    if "distributor" not in propias and any(f["destino"] == "distributor" for t in propias for f in completo[t]["fks"]):
+        lin.append("|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |")
+    if any(c["prop"] for t in propias for c in completo[t]["columnas"]):
+        lin.append("|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |")
+    lin += ["endlegend",
+            "note as N"] + ["  " + l for l in textwrap.wrap(CONVENCIONES, 110)] + ["end note", "@enduml"]
+    nombre = f"SPLG-fisico-{k:02d}-{slug(ctx)}"
+    open(FIS + nombre + ".puml", "w", encoding="utf-8").write("\n".join(lin))
+    fisicos.append(nombre)
+
+# ------------------------------------------------------- 6. modelo conceptual
+# El DER conceptual usa el mismo vocabulario que el modelo conceptual (Doc 2, §1): una
+# entidad por concepto que tiene tabla, con los atributos del concepto y las
+# relaciones con el nombre y el sentido de lectura de la asociación. Cada atributo
+# listado corresponde a una columna real; si no, el script corta.
+def atributos_de(concepto):
+    atrs = list(MC.CLASES[concepto][1])
+    # las especializaciones de PropuestaConVigencia heredan `estado` y `vence`
+    if any(concepto in h for p, h, _ in MC.GENERALIZACIONES if p == "PropuestaConVigencia"):
+        atrs = [a for a in MC.CLASES["PropuestaConVigencia"][1] if a not in atrs] + atrs
+    return atrs
+
+_mal = []
+for _c in MC.CLASES:
+    _t = MC.TABLA[_c]
+    if not _t: continue
+    for _a in atributos_de(_c):
+        _col = MC.ATRIBUTOS.get(_c, {}).get(_a) or MC.HEREDA_ATRIBUTOS.get(_a)
+        if not _col or _col not in {c["nombre"] for c in columnas[_t]}:
+            _mal.append(f"{_c}.{_a} -> {_t}.{_col}")
+if _mal:
+    sys.exit("El modelo conceptual tiene atributos sin columna en la base:\n  - " + "\n  - ".join(_mal))
+_sin_concepto = sorted(set(tablas) - set(MC.CONCEPTO_DE_TABLA))
+if _sin_concepto:
+    sys.exit(f"Tablas sin concepto en modelo_conceptual.TABLA: {_sin_concepto}")
+
+def nombre_concepto(t):
+    return MC.CONCEPTO_DE_TABLA[t]
+
+# relaciones del DER conceptual: (entidad izquierda, tarjeta izq., tarjeta der., entidad derecha, nombre)
+def relaciones_conceptuales():
+    sal, vistos = [], set()
+    for t in _orden_global:
+        for f in completo[t]["fks"]:
+            a = MC.asociacion_de_fk(t, f["col"], f["destino"])
+            if a is None: continue
+            ct, cd = MC.CONCEPTO_DE_TABLA[t], MC.CONCEPTO_DE_TABLA[f["destino"]]
+            hijo, padre = card_hijo(t, f), card_padre(t, f)
+            if a[0] == "ESPECIALIZACION":
+                izq, der, nom = ct, cd, "es un"
+                ci, cdr = hijo, padre
+                mi, md_ = izq, der
+            elif t == "vehicle_assignment":
+                # en el DER la clase de asociación es una entidad más
+                izq, der, nom, ci, cdr, mi, md_ = cd, ct, "figura en", padre, hijo, cd, ct
+            else:
+                nom = a[5]
+                if ct in MC._anc(a[0]) and cd in MC._anc(a[4]):
+                    izq, der, ci, cdr = ct, cd, hijo, padre
+                    mi, md_ = a[0], a[4]
+                else:
+                    izq, der, ci, cdr = cd, ct, padre, hijo
+                    mi, md_ = a[0], a[4]
+            clave = (izq, der, nom)
+            if clave in vistos: continue
+            vistos.add(clave)
+            sal.append((izq, ci, cdr, der, nom, mi, md_))
+    return sal
+
+REL_CONCEPTUALES = relaciones_conceptuales()
+
+def entidad_conceptual(c, con_atributos):
+    if not con_atributos:
+        return [f'entity {c}']
+    return [f'entity {c} {{'] + ["  {field} " + a for a in atributos_de(c)] + ["}"]
+
+def der_conceptual(titulo, foco, ref, general=False):
+    foco = [c for c in foco if MC.TABLA.get(c)]
+    ref = [c for c in ref if MC.TABLA.get(c) and c not in foco]
+    lin = ["@startuml", f"title {titulo}", CAB, "hide circle", "skinparam nodesep 25",
+           "skinparam ranksep 45", ""]
+    for c in foco:
+        lin += entidad_conceptual(c, not general)
+    for c in ref:
+        lin += [f'entity {c} #F1F1F1 {{', "}"]
+    lin.append("")
+    ents = set(foco) | set(ref)
+    vistas_g = set()
+    for izq, ci, cdr, der, nom, mi, md_ in REL_CONCEPTUALES:
+        if general:
+            # en la vista general cada relación con Usuario se dibuja con el perfil que la
+            # origina (Cliente, Chofer); las que son del Usuario mismo van en su vista
+            if izq == "Usuario" and mi != "Usuario": izq = mi
+            if der == "Usuario" and md_ != "Usuario": der = md_
+            if (izq == "Usuario" and nom != "es un" and der != "Rol" and der != "AsientoAuditoria") \
+                    or (der == "Usuario" and nom != "es un" and izq != "Rol"):
+                continue
+            if (izq, der, nom) in vistas_g: continue
+            vistas_g.add((izq, der, nom))
+        if izq in ents and der in ents and (izq in foco or der in foco):
+            txt = "" if general else f" : {nom} >"
+            lin.append(f'{izq} {IZQ[ci]}--{DER[cdr]} {der}{txt}')
+    if general:
+        lin += ["", "legend bottom right",
+                "  Vista de conjunto: sin atributos ni nombres de relación. Las relaciones de Usuario",
+                "  con los registros que sólo dejan constancia de su autoría figuran en la vista de su área.",
+                "endlegend"]
+    if ref:
+        lin += ["", "legend bottom right",
+                "  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.",
+                "endlegend"]
+    lin.append("@enduml")
+    return "\n".join(lin)
+
+CON = SAL + "conceptual/"
+os.makedirs(CON, exist_ok=True)
+for _viejo in glob.glob(CON + "SPLG-der-*"): os.remove(_viejo)
+for _viejo in glob.glob(SAL + "SPLG-modelo-entidad-relacion.*"): os.remove(_viejo)
+conceptuales = []
+_pre = ""
+_todo = [c for c in MC.CLASES]
+_g = der_conceptual("Modelo entidad-relación conceptual — vista general", _todo, [], general=True)
+nombre = "SPLG-der-00-general"
+open(CON + nombre + ".puml", "w", encoding="utf-8").write(_g.replace("hide circle", "hide circle\n" + _pre, 1))
+conceptuales.append(nombre)
+for k, (ttl, _arch, foco, ref) in enumerate(MC.VISTAS, 1):
+    nombre = f"SPLG-der-{k:02d}-{slug(ttl)}"
+    txt = der_conceptual(f"Modelo entidad-relación conceptual — {ttl}", foco, ref)
+    open(CON + nombre + ".puml", "w", encoding="utf-8").write(txt.replace("hide circle", "hide circle\n" + _pre, 1))
+    conceptuales.append(nombre)
 
 # --------------------------------------------------- 7. diccionario de datos
 md = ["# Modelo de Datos — SPLG", "",
       f"{len(tablas)} tablas y {len(fks)} claves foráneas, leídas de la base en ejecución.", "",
-      f"Además de lo implementado, este documento registra {len(sin_fk)} relaciones que el "
-      "sistema usa pero que la base no declara, y los agregados que pidió la cátedra.", "",
       "| Sección | Qué contiene |", "|---|---|",
-      "| [Diccionario de datos](#diccionario-de-datos) | Las tablas tal cual están hoy en la base |",
-      "| [Relaciones no declaradas](#relaciones-no-declaradas) | Columnas que apuntan a otra tabla sin clave foránea |",
-      "| [Modelo propuesto](#modelo-propuesto) | Lo que hay que agregar, por pedido de la cátedra |",
+      "| [Diccionario de datos](#diccionario-de-datos) | Las tablas tal cual están hoy en la base, "
+      "con tipo, obligatoriedad, clave, referencia, default, descripción, `CHECK` e índices |",
+      "| [Relaciones no declaradas](#relaciones-no-declaradas) | Columnas que apuntan a otra tabla "
+      "sin clave foránea |",
+      "| [Modelo propuesto](#modelo-propuesto) | Lo que falta agregar, por pedido de la cátedra |",
       "| [Tipos enumerados](#tipos-enumerados) | Los valores admitidos por cada enumerado |", "",
       "## Diccionario de datos", ""]
+_sin_doc = []
 for t in tablas:
-    nom = CONCEPTO.get(t, (t, []))[0]
-    md += [f"### `{t}` — {nom}", "", "| Columna | Tipo | Obligatoria | Clave | Referencia |",
-           "|---|---|:-:|:-:|---|"]
+    nom = MC.CONCEPTO_DE_TABLA.get(t) or CONCEPTO.get(t, (t, []))[0]
+    md += [f"### `{t}` — {nom}", "",
+           "| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |",
+           "|---|---|:-:|:-:|---|---|---|"]
     for c in columnas[t]:
         ref = next((f'`{f["destino"]}.{f["destcol"]}`' for f in fks
                     if f["tabla"] == t and f["col"] == c["nombre"]), "")
@@ -1180,49 +1456,76 @@ for t in tablas:
         clave = ("PK" if c["nombre"] in pk[t]
                  else "FK" if any(f["tabla"] == t and f["col"] == c["nombre"] for f in fks)
                  else "U" if c["nombre"] in unicos_simples.get(t, set()) else "")
+        dflt = c["default"].strip() or ""
+        desc = descripciones.get(t, {}).get(c["nombre"], "")
+        if not desc:
+            _sin_doc.append(f"{t}.{c['nombre']}")
+            desc = "_(sin descripción documentada en el código)_"
         md.append(f'| `{c["nombre"]}` | {tipo_sql(c)} | {"sí" if not c["nulo"] else "no"} '
-                  f'| {clave} | {ref} |')
+                  f'| {clave} | {ref} | {("`" + dflt + "`") if dflt else ""} | {desc} |')
     compuestos = [g for g in unicos.get(t, []) if len(g) > 1]
     if compuestos:
         md += ["", "Claves únicas compuestas: "
                + ", ".join("(" + ", ".join(f"`{c}`" for c in g) + ")" for g in compuestos) + "."]
+    if checks.get(t):
+        md += ["", "Restricciones `CHECK`:"]
+        for nom_c, defi in checks[t]:
+            md.append(f'- `{nom_c}`: `{defi}`')
+    if indices.get(t):
+        md += ["", "Índices (además de la clave primaria):"]
+        for nom_i, defi in indices[t]:
+            md.append(f'- `{nom_i}`: `{defi}`')
     md.append("")
 
-md += ["## Relaciones no declaradas", "",
-       f"{len(sin_fk)} columnas apuntan a otra tabla y el sistema las usa como referencia, "
-       "pero la base no las declara como `FOREIGN KEY`. La consecuencia práctica es que "
-       "PostgreSQL no valida que el destino exista ni propaga el borrado: la integridad "
-       "queda a cargo de la aplicación. En los diagramas se dibujan con línea punteada y la "
-       "etiqueta «sin FK».", "",
-       "El destino de cada columna se tomó de la entidad de TypeORM que la define. "
-       "La regla de borrado propuesta sigue el patrón del resto del esquema: `CASCADE` "
-       "para las columnas obligatorias y para el tenant, `SET NULL` para los punteros "
-       "opcionales, `RESTRICT` donde el borrado no debería propagarse.", "",
-       "| Tabla | Columna | Apunta a | Obligatoria | Filas huérfanas | Borrado propuesto |",
-       "|---|---|---|:-:|:-:|---|"]
-for s in sin_fk:
-    md.append(f'| `{s["tabla"]}` | `{s["col"]}` | `{s["destino"]}.{s["destcol"]}` '
-              f'| {"no" if s["nulo"] else "sí"} | {s["huerfanas"]} | `ON DELETE {s["borrado"]}` |')
-md += ["", "El DDL que las declararía:", "", "```sql"]
-for s in sin_fk:
-    md.append(f'ALTER TABLE "{s["tabla"]}" ADD CONSTRAINT "FK_{s["tabla"]}_{s["col"]}"')
-    md.append(f'  FOREIGN KEY ("{s["col"]}") REFERENCES "{s["destino"]}" ("{s["destcol"]}") '
-              f'ON DELETE {s["borrado"]};')
-_huerfanas = sum(s["huerfanas"] for s in sin_fk)
-md += ["```", "",
-       ("> La columna «filas huérfanas» se midió contra los datos que hoy tiene la base: "
-        + ("no hay ninguna, así que el DDL se puede aplicar tal cual."
-           if _huerfanas == 0 else
-           f"hay {_huerfanas} filas que apuntan a un identificador que ya no existe y que "
-           "hacen fallar el `ALTER TABLE`; hay que limpiarlas antes.")), ""]
+md += ["> **Cobertura de las descripciones.** "
+       f"{sum(len(v) for v in columnas.values()) - len(_sin_doc)} de "
+       f"{sum(len(v) for v in columnas.values())} columnas tienen descripción tomada del "
+       "comentario de la entidad de TypeORM que las define; las que no la tienen en el "
+       "código figuran arriba como «sin descripción documentada en el código» en lugar de "
+       "inventarse una.", ""]
 
-md += ["## Modelo propuesto", "",
-       f"{len(PROPUESTO)} agregados pedidos por la cátedra: {len(tablas_prop)} tablas nuevas, "
-       f"{sum(len(v) for v in cols_prop.values())} columnas nuevas sobre tablas existentes y "
-       f"{len(enums_prop)} tipos enumerados nuevos. El DDL completo está en "
-       "`SPLG-base-de-datos-propuesta.sql`.", ""]
+if sin_fk:
+    md += ["## Relaciones no declaradas", "",
+           f"{len(sin_fk)} columnas apuntan a otra tabla y el sistema las usa como referencia, "
+           "pero la base no las declara como `FOREIGN KEY`. La consecuencia práctica es que "
+           "PostgreSQL no valida que el destino exista ni propaga el borrado: la integridad "
+           "queda a cargo de la aplicación. En los diagramas se dibujan con línea punteada y la "
+           "etiqueta «sin FK».", "",
+           "El destino de cada columna se tomó de la entidad de TypeORM que la define. "
+           "La regla de borrado propuesta sigue el patrón del resto del esquema: `CASCADE` "
+           "para las columnas obligatorias y para el tenant, `SET NULL` para los punteros "
+           "opcionales, `RESTRICT` donde el borrado no debería propagarse.", "",
+           "| Tabla | Columna | Apunta a | Obligatoria | Filas huérfanas | Borrado propuesto |",
+           "|---|---|---|:-:|:-:|---|"]
+    for s in sin_fk:
+        md.append(f'| `{s["tabla"]}` | `{s["col"]}` | `{s["destino"]}.{s["destcol"]}` '
+                  f'| {"no" if s["nulo"] else "sí"} | {s["huerfanas"]} | `ON DELETE {s["borrado"]}` |')
+    md += ["", "El DDL que las declararía:", "", "```sql"]
+    for s in sin_fk:
+        md.append(f'ALTER TABLE "{s["tabla"]}" ADD CONSTRAINT "FK_{s["tabla"]}_{s["col"]}"')
+        md.append(f'  FOREIGN KEY ("{s["col"]}") REFERENCES "{s["destino"]}" ("{s["destcol"]}") '
+                  f'ON DELETE {s["borrado"]};')
+    _huerfanas = sum(s["huerfanas"] for s in sin_fk)
+    md += ["```", "",
+           ("> La columna «filas huérfanas» se midió contra los datos que hoy tiene la base: "
+            + ("no hay ninguna, así que el DDL se puede aplicar tal cual."
+               if _huerfanas == 0 else
+               f"hay {_huerfanas} filas que apuntan a un identificador que ya no existe y que "
+               "hacen fallar el `ALTER TABLE`; hay que limpiarlas antes.")), ""]
+else:
+    md += ["## Relaciones no declaradas", "",
+           "No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN "
+           "KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). "
+           f"Hoy las {len(fks)} relaciones del dominio están todas declaradas.", ""]
+
+if not PROPUESTO:
+    md += ["## Modelo propuesto", "",
+           "No hay ningún agregado pendiente: los agregados que pidió la cátedra el 24/09/2026 "
+           "ya están todos implementados (ver «Implementado el 25/09/2026» en "
+           "`generar-modelo-datos.py`, constante `PROPUESTO_IMPLEMENTADO`), así que esta "
+           "sección queda vacía en vez de mostrar un «0 agregados» que no dice nada.", ""]
 for i, ag in enumerate(PROPUESTO, 1):
-    md += [f"### {i}. {ag['titulo']}", "", f"**Pedido de la cátedra:** {ag['pedido']}", "",
+    md += [f"### {i}. {ag['titulo']}", "", f"**Casos de uso:** {ag['casos']}. **Qué resuelve:** {ag['pedido']}", "",
            "| Tabla | Columna | Tipo | Obligatoria | Qué guarda |", "|---|---|---|:-:|---|"]
     for t, cs in ag["columnas"].items():
         for c in cs:
@@ -1243,6 +1546,10 @@ for i, ag in enumerate(PROPUESTO, 1):
         md.append("")
         for n, v in ag["enums"].items():
             md.append(f'Tipo enumerado `{n}`: {", ".join("`"+x+"`" for x in v)}.')
+    if ag.get("enum_valores"):
+        md.append("")
+        for n, v in ag["enum_valores"].items():
+            md.append(f'Valores nuevos del tipo enumerado `{n}`: {", ".join("`"+x+"`" for x in v)}.')
     if ag.get("nota"):
         md += ["", "> **Decisión de modelado.** " + ag["nota"]]
     md.append("")
@@ -1256,6 +1563,8 @@ md.append("")
 open(SAL + "SPLG-modelo-de-datos.md", "w", encoding="utf-8").write("\n".join(md))
 
 # ------------------------------------------------------------- 8. LEEME.md
+TABLA_CORR = "\n".join(f"| {c} | {c if t else '—'} | {('`'+t+'`') if t else '—'} |"
+                       for c, t in MC.TABLA.items())
 leeme = f"""# Modelo de datos de SPLG — qué es cada archivo
 
 Todo lo que hay en esta carpeta lo genera `generar-modelo-datos.py`, que está en
@@ -1274,15 +1583,31 @@ python3 generar-modelo-datos.py
 | `SPLG-base-de-datos-lucidchart.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual |
 | `SPLG-base-de-datos-propuesta.sql` | Sólo los agregados de la cátedra | Boceto de la migración que falta |
 | `SPLG-base-de-datos-completa-lucidchart.sql` | Actual + propuesta, en SQL portable | **El que se importa en Lucidchart** |
-| `SPLG-modelo-fisico.png` / `.svg` | Entidad-relación con tablas y columnas | La lámina técnica |
-| `SPLG-modelo-conceptual.png` / `.svg` | Entidades del negocio y cardinalidades | La lámina para la defensa |
+| `fisico/SPLG-fisico-NN-<contexto>.png` / `.svg` | Entidad-relación con tablas y columnas, una lámina por contexto de negocio | Las láminas técnicas |
+| `conceptual/SPLG-der-NN-<área>.png` / `.svg` | Entidad-relación conceptual: una entidad por concepto del modelo conceptual, con sus atributos y las relaciones con su nombre | Las láminas para la defensa |
+| `SPLG-der-mermaid.md` | El físico en Mermaid, por contexto | Lo que se pega en el Documento 3 §7.4.2 |
 | `SPLG-modelo-de-datos.md` | Diccionario de datos y sustento escrito | El texto del informe |
 
-En los dos diagramas, lo que ya está implementado va en blanco con borde oscuro
-y lo propuesto en celeste con el estereotipo `<<propuesto>>`. Las relaciones que
-existen en el dominio pero que la base no declara como clave foránea van con
-línea punteada y la etiqueta «sin FK»; en el modelo físico, la columna que las
-sostiene lleva la marca `<<ref>>` en lugar de `<<FK>>`.
+En las láminas físicas, lo que ya está implementado va en blanco con borde oscuro y lo
+propuesto —columnas planificadas que todavía no están en la base— en celeste, con el
+marcador `<<propuesto>>`. Una tabla en gris es de otro contexto y sólo se muestra su nombre.
+Los nombres reflejan la base real: conviven camelCase (`paymentMethod`) y snake_case
+(`scheduled_date`), y la tabla `claims` está en plural; unificarlos exigiría renombrar
+columnas en una base en uso.
+
+Las láminas conceptuales usan el vocabulario del modelo conceptual (Documento 2, §1) y no el
+de las tablas: la entidad se llama como el concepto y lleva sus atributos. La relación con
+`distributor` de cada tabla no se dibuja; sí las que el modelo conceptual nombra.
+
+## Correspondencia entre el modelo conceptual y el modelo de datos
+
+| Concepto | Entidad | Tabla |
+|---|---|---|
+{TABLA_CORR}
+
+Los conceptos sin tabla son PropuestaConVigencia (abstracto), UbicacionGPS (la columna
+`delivery.actual_location`) e ItemSugerido (JSON dentro de `repurchase_invitation`).
+`material-de-trabajo/verificar-mc-der.py` comprueba esta correspondencia contra la base.
 
 `SPLG-base-de-datos-propuesta.sql` es PostgreSQL válido: agrega tipos, columnas
 y tablas sobre el esquema que ya está, sin tocar los datos existentes.
@@ -1335,15 +1660,91 @@ Un pedido que funciona bien:
 """
 open(SAL + "LEEME.md", "w", encoding="utf-8").write(leeme)
 
+# --------------------------------------------- 9. DER en Mermaid, por contexto
+# El Doc 3 (`3-Diseño.md` §7.4) embebe Mermaid, no PlantUML: este bloque arma
+# el mismo contenido que el `.puml` físico, pero en `erDiagram`, partido por
+# contexto de negocio para que cada lámina se pueda leer, con una lámina final
+# de relaciones entre contextos. Se pega a mano en el Doc 3 (los `.md` son la
+# fuente); lo que hay que evitar es tipearlo de nuevo si cambia la base.
+def tipo_mermaid(tipo):
+    """Mermaid erDiagram no acepta paréntesis ni comas en el tipo."""
+    t = re.sub(r'\(.*\)', '', tipo)
+    if t in enums: return "enum"
+    return {"varchar": "varchar", "text": "text", "geometry": "geometry",
+            "geography": "geography", "numeric": "decimal", "timestamptz": "timestamptz",
+            "timestamp": "timestamp", "uuid": "uuid", "boolean": "boolean", "integer": "int",
+            "jsonb": "jsonb", "date": "date", "double precision": "float"}.get(t, t)
+
+def entidad_mermaid(t):
+    d = actual[t]
+    ln = [f"    {t.upper()} {{"]
+    for c in d["columnas"]:
+        marcas = []
+        if c["nombre"] in d["pk"]: marcas.append("PK")
+        elif any(f["col"] == c["nombre"] for f in d["fks"]): marcas.append("FK")
+        if c["nombre"] in unicos_simples.get(t, set()) and c["nombre"] not in d["pk"]:
+            marcas.append("UK")
+        notas = [] if c["nulo"] is False else ["nullable"]
+        marca_txt = ", ".join(marcas)
+        com = ('"' + "; ".join(notas) + '"') if notas else ""
+        ln.append(f'        {tipo_mermaid(c["tipo"])} {c["nombre"]}'
+                  + (f" {marca_txt}" if marca_txt else "") + (f" {com}" if com else ""))
+    ln.append("    }")
+    return "\n".join(ln)
+
+def relacion_mermaid(f, t):
+    hijo = "|o" if f["col"] in unicos_simples.get(t, set()) else "}o"
+    col = next((c for c in actual[t]["columnas"] if c["nombre"] == f["col"]), None)
+    padre = "o|" if (col and col["nulo"]) else "||"
+    return f'    {t.upper()} {hijo}--{padre} {f["destino"].upper()} : "{f["col"]}"'
+
+_tabla_a_ctx = {t: ctx for ctx, ts in CONTEXTOS for t in ts}
+der = ["# DER de SPLG, en Mermaid — generado", "",
+       f"Generado por `generar-modelo-datos.py` desde la base en ejecución: "
+       f"{len(tablas)} tablas, {len(fks)} relaciones. Se pega tal cual en "
+       "`3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve "
+       "a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado "
+       "(uno por contexto de negocio) más una lámina final con las relaciones que cruzan "
+       "de un contexto a otro.", ""]
+_vistas_globales = set()
+for ctx, ts in CONTEXTOS:
+    der += [f"### {ctx}", "", "```mermaid", "erDiagram"]
+    for t in [x for x in orden_dependencias(actual) if x in ts]:
+        for f in actual[t]["fks"]:
+            if _tabla_a_ctx.get(f["destino"]) == ctx:
+                der.append(relacion_mermaid(f, t))
+                _vistas_globales.add((t, f["col"]))
+    der.append("")
+    for t in [x for x in orden_dependencias(actual) if x in ts]:
+        der.append(entidad_mermaid(t))
+    der += ["```", ""]
+
+der += ["### Relaciones entre contextos", "",
+        "Las que cruzan de un contexto a otro (ya sin repetir la entidad completa; "
+        "sus columnas están en la lámina de su propio contexto). La relación con "
+        "`distributor` se omite acá también por lo mismo que en el conceptual: "
+        "prácticamente todo pertenece a una distribuidora.", "",
+        "```mermaid", "erDiagram"]
+for t in orden_dependencias(actual):
+    for f in actual[t]["fks"]:
+        if (t, f["col"]) in _vistas_globales: continue
+        if f["destino"] == "distributor": continue
+        der.append(relacion_mermaid(f, t))
+der += ["```", ""]
+open(SAL + "SPLG-der-mermaid.md", "w", encoding="utf-8").write("\n".join(der))
+print(f"  ✓ SPLG-der-mermaid.md  ({len(CONTEXTOS)} láminas por contexto + 1 de cruces)")
+
 # ------------------------------------------------------------------ render
 entorno = dict(os.environ, PLANTUML_LIMIT_SIZE="32768")
-for n in ("SPLG-modelo-fisico", "SPLG-modelo-conceptual"):
-    for fmt in ("png", "svg"):
-        r = subprocess.run(["plantuml", "-t"+fmt, "-charset", "UTF-8", SAL+n+".puml"],
-                           capture_output=True, text=True, env=entorno)
-        if r.returncode: print("  ✗", n, fmt, r.stderr.strip()[:200])
-    if os.path.exists(SAL+n+".png"):
-        print(f"  ✓ {n} ({os.path.getsize(SAL+n+'.png')//1024} KB)")
+for carpeta, nombres in ((FIS, fisicos), (CON, conceptuales)):
+    for n in nombres:
+        for fmt in ("png", "svg"):
+            r = subprocess.run(["plantuml", "-t"+fmt, "-charset", "UTF-8", carpeta+n+".puml"],
+                               capture_output=True, text=True, env=entorno)
+            if r.returncode or "Error" in (r.stdout + r.stderr):
+                print("  ✗", n, fmt, (r.stderr or r.stdout).strip()[:200])
+        if os.path.exists(carpeta+n+".png"):
+            print(f"  ✓ {n} ({os.path.getsize(carpeta+n+'.png')//1024} KB)")
 
 for a in avisos: print("  ·", a)
 print(f"implementado · tablas: {len(tablas)} · columnas: {sum(len(v) for v in columnas.values())} · "

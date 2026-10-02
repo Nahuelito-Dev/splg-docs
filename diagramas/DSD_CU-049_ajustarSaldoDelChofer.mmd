@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-049 Consultar Balance / Ganancias del Chofer · ajustarSaldoDelChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: ajustarSaldoDelChofer(choferId, monto)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>CHO: ajustarSaldo(monto)
+    SRV-->>-ADM: chofer

@@ -1,5 +1,5 @@
 @startuml
-title SS-02 — Gestión de Pedidos (30 casos de uso)
+title SS-02 — Gestión de Pedidos (32 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -51,28 +51,31 @@ rectangle "SS-02 Gestión de Pedidos" {
   usecase "CU-046\nConsultar Direcciones de\nEntrega del Cliente" as U046 #back:FFFFFF;line:3F7A50
   usecase "CU-080\nConsultar el Pool de Pedidos\nDisponibles" as U080 #back:FFFFFF;line:3F7A50
   usecase "CU-081\nConsultar los Pedidos\nAsignados al Chofer" as U081 #back:FFFFFF;line:3F7A50
-  usecase "CU-106\nAnticipar la recompra por\nconsumo estimado" as U106 <<pendiente>> #back:FFFFFF;line:3F7A50
+  usecase "CU-106\nAnticipar la recompra por\nconsumo estimado" as U106 <<planificado>> #back:FFFFFF;line:3F7A50
   usecase "CU-116\nRegistrar Dirección de Entrega" as U116 #back:FFFFFF;line:3F7A50
   usecase "CU-117\nConsultar Detalle de una\nDirección de Entrega" as U117 #back:FFFFFF;line:3F7A50
   usecase "CU-118\nEditar Dirección de Entrega" as U118 #back:FFFFFF;line:3F7A50
   usecase "CU-119\nEliminar Dirección de Entrega" as U119 #back:FFFFFF;line:3F7A50
   usecase "CU-120\nMarcar una Dirección como\nPredeterminada" as U120 #back:FFFFFF;line:3F7A50
   usecase "CU-121\nConsultar la Dirección\nPredeterminada" as U121 #back:FFFFFF;line:3F7A50
-  usecase "CU-122\nAgregar Ítem al Carrito" as U122 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-123\nModificar la Cantidad de un\nÍtem del Carrito" as U123 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-124\nQuitar Ítem del Carrito" as U124 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-125\nConsultar el Carrito" as U125 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-126\nVaciar el Carrito" as U126 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-127\nCambiar la Dirección de\nEntrega del Pedido" as U127 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-128\nIndicar Quién Recibe el Pedido" as U128 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-143\nDeclarar el Consumo Promedio\nal Registrarse" as U143 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-144\nActualizar el Consumo Promedio\nDeclarado" as U144 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-145\nConfigurar los Días de Aviso\nPrevio a la Recompra" as U145 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-146\nConsultar la Fecha Estimada de\nRecompra" as U146 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-147\nRealizar una Compra Express" as U147 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "CU-148\nElegir la Modalidad de Entrega\ndel Pedido" as U148 <<pendiente>> #back:FFFFFF;line:3F7A50
-  usecase "Aplicar Promocion" as F_PROMO <<factorizado>> #back:FFFFFF;line:3F7A50
-  usecase "Recargo por Transferencia" as F_RECAR <<factorizado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-122\nAgregar Ítem al Carrito" as U122 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-123\nModificar la Cantidad de un\nÍtem del Carrito" as U123 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-124\nQuitar Ítem del Carrito" as U124 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-125\nConsultar el Carrito" as U125 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-126\nVaciar el Carrito" as U126 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-127\nCambiar la Dirección de\nEntrega del Pedido" as U127 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-128\nIndicar Quién Recibe el Pedido" as U128 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-143\nDeclarar el Consumo Promedio\nal Registrarse" as U143 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-144\nActualizar el Consumo Promedio\nDeclarado" as U144 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-145\nConfigurar los Días de Aviso\nPrevio a la Recompra" as U145 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-146\nConsultar la Fecha Estimada de\nRecompra" as U146 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-147\nRealizar una Compra Express" as U147 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-148\nElegir la Modalidad de Entrega\ndel Pedido" as U148 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-169\nRegistrar el Cambio de Estado\nde un Pedido" as U169 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-170\nConsultar el Historial de\nEstados de un Pedido" as U170 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "Filtrar Pedidos" as F_FILTRO <<factorizado>> #back:FFFFFF;line:3F7A50
+  usecase "Aplicar Promoción" as F_PROMO <<factorizado>> #back:FFFFFF;line:3F7A50
+  usecase "Aplicar Recargo por\nTransferencia" as F_RECAR <<factorizado>> #back:FFFFFF;line:3F7A50
   usecase "Reservar Stock" as F_STOCK <<factorizado>> #back:FFFFFF;line:3F7A50
 }
 
@@ -100,6 +103,7 @@ A01 -[#1F6F8B]- U144
 A01 -[#1F6F8B]- U145
 A01 -[#1F6F8B]- U147
 A01 -[#1F6F8B]- U148
+A01 -[#1F6F8B]- U170
 A02 -[#2E7D46]- U006
 A02 -[#2E7D46]- U009
 A02 -[#2E7D46]- U080
@@ -110,17 +114,15 @@ A03 -[#8C4A9E]- U011
 A03 -[#8C4A9E]- U080
 A03 -[#8C4A9E]- U081
 A03 -[#8C4A9E]- U146
+A03 -[#8C4A9E]- U170
 A04 -[#8A6D1F]- U106
-A05 -[#B4432B]- U080
-A05 -[#B4432B]- U081
+A04 -[#8A6D1F]- U169
+A05 --|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
-U005 ..> U125 : <<include>>
-U005 ..> U121 : <<include>>
-U005 ..> U148 : <<include>>
 U147 ..> U121 : <<include>>
-U147 ..> U148 : <<include>>
 U144 ..> U146 : <<include>>
+U170 ..> U006 : <<include>>
 U008 ..> U006 : <<include>>
 U009 ..> U006 : <<include>>
 U010 ..> U006 : <<include>>
@@ -138,11 +140,15 @@ U005 ..> F_STOCK : <<include>>
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
 F_PROMO ..> U005 : <<extend>>
 note on link
-  Punto de extension: la cantidad de un item alcanza el umbral de promocion por volumen
+  Punto de extensión: la cantidad de un ítem alcanza el umbral de promoción por volumen
 end note
 F_RECAR ..> U005 : <<extend>>
 note on link
-  Punto de extension: el medio de pago elegido es Transferencia
+  Punto de extensión: el medio de pago elegido es Transferencia
+end note
+F_FILTRO ..> U011 : <<extend>>
+note on link
+  Punto de extensión: se indica status, from/to o term sobre el listado
 end note
 
 @enduml

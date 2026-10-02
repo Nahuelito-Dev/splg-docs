@@ -1,0 +1,104 @@
+@startuml
+title Modelo entidad-relación conceptual — Usuarios y cuentas
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Distribuidora {
+  {field} nombre
+  {field} razón social
+  {field} CUIT
+  {field} estado
+}
+entity Usuario {
+  {field} nombre
+  {field} correo
+  {field} teléfono
+  {field} bloqueado
+}
+entity Rol {
+  {field} tipo
+}
+entity Administrador {
+}
+entity ConfiguracionModulo {
+  {field} módulo
+  {field} parámetros
+}
+entity AsientoAuditoria {
+  {field} operación
+  {field} recurso
+  {field} aplicación
+  {field} resultado
+  {field} cambios
+  {field} fecha
+}
+entity Cliente {
+  {field} consumo mensual declarado
+  {field} días de aviso
+}
+entity DireccionEntrega {
+  {field} calle y altura
+  {field} piso y departamento
+  {field} punto
+  {field} precisión
+  {field} predeterminada
+}
+entity InvitacionRecompra {
+  {field} estado
+  {field} vence
+  {field} agotamiento estimado
+}
+entity Chofer #F1F1F1 {
+}
+entity Producto #F1F1F1 {
+}
+entity Pedido #F1F1F1 {
+}
+
+Distribuidora ||--o{ Producto : comercializa >
+Usuario }o--o| Rol : tiene asignado >
+Distribuidora |o--o{ Administrador : emplea >
+Administrador |o--|| Usuario : es un >
+Usuario |o--o{ AsientoAuditoria : origina >
+Cliente }o--o| Producto : usa habitualmente >
+Cliente |o--|| Usuario : es un >
+Distribuidora ||--o{ Chofer : emplea >
+Chofer |o--|| Usuario : es un >
+Distribuidora ||--o{ ConfiguracionModulo : parametriza >
+Usuario ||--o{ DireccionEntrega : registra >
+Pedido }o--|| DireccionEntrega : se entrega en >
+Usuario ||--o{ Pedido : realiza >
+Distribuidora ||--o{ Pedido : gestiona >
+InvitacionRecompra }o--o| DireccionEntrega : sugiere entregar en >
+InvitacionRecompra }o--o| Pedido : se convierte en >
+Usuario ||--o{ InvitacionRecompra : recibe >
+
+legend bottom right
+  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,57 @@
+sequenceDiagram
+    title DSD — CU-035 Consultar Listado De Choferes
+autonumber
+participant CTRL as DeliveryController
+participant SRV as DeliveryService
+participant DREP as RepositoryDelivery
+
+alt Listado paginado, GET /delivery
+    CTRL->>SRV: findAll(paginationDto, distributorId)
+    activate SRV
+    SRV->>SRV: desestructurar limit 10 y offset 0 por defecto
+    opt Se paso term
+        Note over SRV: «extend» Filtrar por Término — punto de extensión: filtra por user.full_name o user.email
+    end
+    SRV->>DREP: findAndCount(where distributor_id si vino, term opcional, take, skip, relations user y user.role)
+    activate DREP
+    DREP-->>SRV: Delivery[] y total
+    deactivate DREP
+    SRV-->>CTRL: Delivery[] y total
+    deactivate SRV
+    CTRL->>CTRL: responde con header X-Total-Count
+else Solo activos, GET /delivery/active
+    CTRL->>SRV: findActiveDeliveries(paginationDto, distributorId)
+    activate SRV
+    SRV->>DREP: find(where isEnabled true, validated true, isAvailable true y distributor_id si vino, take, skip, relations user y user.role)
+    activate DREP
+    DREP-->>SRV: Delivery[]
+    deactivate DREP
+    SRV-->>CTRL: Delivery[]
+    deactivate SRV
+else Por delivery_id, GET /delivery/:id
+    CTRL->>SRV: findOne(id)
+    activate SRV
+    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    activate DREP
+    DREP-->>SRV: Delivery o null
+    deactivate DREP
+    alt No encontrado
+        SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
+    else Encontrado
+        SRV-->>CTRL: Delivery
+    end
+else Por user_id, GET /delivery/user/:userId
+    CTRL->>SRV: findOneByUserId(userId)
+    activate SRV
+    SRV->>DREP: findOne(where user_id, relations user y user.role)
+    activate DREP
+    DREP-->>SRV: Delivery o null
+    deactivate DREP
+    alt No encontrado
+        SRV-->>CTRL: NotFoundException Delivery for user ID not found
+        deactivate SRV
+    else Encontrado
+        SRV-->>CTRL: Delivery
+    end
+end

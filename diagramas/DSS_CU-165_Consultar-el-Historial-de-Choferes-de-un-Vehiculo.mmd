@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-165 Consultar el Historial de Choferes de un Vehículo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarHistorialDeChoferesDelVehiculo(vehiculoId, pagina)
+    activate SIS
+    alt el vehículo es de la distribuidora
+        SIS-->>ADM: página de asignaciones y total
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

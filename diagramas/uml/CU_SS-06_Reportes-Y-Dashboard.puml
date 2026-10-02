@@ -28,13 +28,14 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Administrador\n(ACT-03)" as A03
+actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-06 Reportes y Dashboard" {
   usecase "CU-026\nVer Dashboard General" as U026 #back:FFFFFF;line:3E7C79
@@ -49,5 +50,6 @@ A03 -[#8C4A9E]- U027
 A03 -[#8C4A9E]- U028
 A03 -[#8C4A9E]- U029
 A03 -[#8C4A9E]- U030
+A05 --|> A03
 
 @enduml

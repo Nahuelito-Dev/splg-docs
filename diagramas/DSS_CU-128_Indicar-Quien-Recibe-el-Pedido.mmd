@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-128 Indicar Quien Recibe el Pedido
+    title DSS — CU-128 Indicar Quién Recibe el Pedido
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: indicarQuienRecibe(pedidoId, nombre, documento, relacion)
     activate SIS

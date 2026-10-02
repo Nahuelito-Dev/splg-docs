@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-052 Registrar Distribuidora · registrarDistribuidora
+    autonumber
+    actor AGE as Administrador General (ACT-05)
+    participant SRV as :DistributorService
+    participant COL as :Map#lt;String, Distribuidora#gt;
+
+    AGE->>+SRV: registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)
+    SRV->>+COL: containsKey(identificadorCorto)
+    COL-->>-SRV: existe
+    create participant DIS as :Distribuidora
+    SRV->>DIS: «create»(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)
+    SRV-->>-AGE: distribuidora

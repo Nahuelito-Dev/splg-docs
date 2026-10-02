@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-095 Eliminar Cliente
+    title DSS — CU-095 Eliminar Cliente (baja lógica)
     autonumber
-    actor ADM as Administrador General
-    participant SIS as Sistema
+    actor ADM as Administrador General (ACT-05)
+    participant SIS as :Sistema
 
     ADM->>SIS: eliminarCliente(clienteId)
     activate SIS

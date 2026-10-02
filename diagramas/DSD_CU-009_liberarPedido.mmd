@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-009 Cancelar Pedido (Chofer) · liberarPedido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant REL as :ReleaseOrderUseCase
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant OFE as oferta:OfertaDespacho
+    participant RT as :RealtimeDispatchPort
+
+    CHF->>+REL: liberarPedido(pedidoId, motivo)
+    REL->>+COL: get(pedidoId)
+    COL-->>-REL: pedido
+    REL->>+PED: getChofer()
+    PED-->>-REL: choferAnterior
+    REL->>+PED: liberar()
+    PED->>PED: validarTransicion(pendiente)
+    PED->>PED: quitarChofer()
+    deactivate PED
+    opt El chofer anterior tenía una oferta vigente
+        REL->>OFE: cerrar()
+    end
+    REL-)RT: stopTracking(choferAnterior)
+    REL-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)
+    REL-)RT: notifyCustomer(cliente, pedido)
+    REL-)RT: notifyAdmins(pedido)
+    REL-->>-CHF: pedido

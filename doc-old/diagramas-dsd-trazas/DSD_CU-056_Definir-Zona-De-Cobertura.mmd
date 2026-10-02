@@ -1,0 +1,44 @@
+sequenceDiagram
+    title DSD — CU-056 Definir Zona De Cobertura
+    autonumber
+    participant ADM as Admin de la distribuidora
+    participant AUTH as AuthGuard
+    participant DEC as CurrentDistributor
+    participant CTRL as CoverageZoneController
+    participant SRV as CoverageZoneService
+    participant REPO as RepositoryCoverageZone
+
+    ADM->>AUTH: POST /coverage-zones con CreateCoverageZoneDto
+    activate AUTH
+    AUTH->>AUTH: resolveDistributor(user, request)
+    AUTH->>AUTH: rol ADMIN, se deriva del perfil, se ignora X-Distributor
+    AUTH-->>DEC: request.distributorId asignado
+    deactivate AUTH
+    DEC->>DEC: opts.required true, hay tenant en contexto
+    alt Sin tenant en contexto
+        DEC-->>ADM: BadRequestException, falta el header X-Distributor
+    else Tenant resuelto
+        DEC->>CTRL: create(dto, distributorId)
+        activate CTRL
+        CTRL->>SRV: create(dto, distributorId)
+        activate SRV
+        SRV->>SRV: toGeoJsonPolygon(dto.polygon)
+        alt Algun vertice no es un par lng lat numerico
+            SRV-->>CTRL: BadRequestException, vertice invalido
+            deactivate SRV
+        else Anillo valido
+            SRV->>SRV: cierra el anillo si el primer punto difiere del ultimo
+            SRV->>REPO: create(name, distributor_id, area Polygon, surcharge, isActive)
+            activate REPO
+            REPO-->>SRV: CoverageZone en memoria
+            deactivate REPO
+            SRV->>REPO: save(zone)
+            activate REPO
+            REPO-->>SRV: CoverageZone persistida
+            deactivate REPO
+            SRV-->>CTRL: CoverageZone
+            CTRL->>CTRL: CoverageZoneMapper.toDto(zone)
+            CTRL-->>ADM: 201 CoverageZoneResponseDto
+            deactivate CTRL
+        end
+    end

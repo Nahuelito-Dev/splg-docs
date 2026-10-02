@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-032 Validar / Invalidar Chofer · validarChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: validarChofer(choferId)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>CHO: validar()
+    SRV-->>-ADM: chofer

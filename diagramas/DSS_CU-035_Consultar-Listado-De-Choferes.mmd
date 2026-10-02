@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-035 Consultar Listado De Choferes
+    title DSS — CU-035 Consultar Listado de Choferes
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: listarChoferes(pagina, limite)
     activate SIS
@@ -17,7 +17,7 @@ sequenceDiagram
     end
 
     opt ficha individual
-        ADM->>SIS: consultarChofer(choferId)
+        ADM->>SIS: consultarDetalleDelChofer(choferId)
         activate SIS
         alt el chofer existe
             SIS-->>ADM: ficha del chofer (validación, calificación, saldo, vehículo)

@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-134 Consultar los Envases Próximos a Vencer · consultarEnvasesProximosAVencer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CylinderService
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant ENV as envase:Envase
+
+    ADM->>+SRV: consultarEnvasesProximosAVencer(dias)
+    SRV->>+ENVS: values(distribuidora)
+    ENVS-->>-SRV: envases
+    loop Por cada envase
+        SRV->>ENV: diasHastaElVencimiento()
+    end
+    SRV-->>-ADM: envases

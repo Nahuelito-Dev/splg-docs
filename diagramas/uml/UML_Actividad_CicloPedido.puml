@@ -1,0 +1,98 @@
+@startuml
+title Diagrama de actividad — Ciclo de vida del pedido
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowFontSize 12
+skinparam activity {
+  BackgroundColor #F4F7FA
+  BorderColor #2C4257
+  DiamondBackgroundColor #FBF7E6
+  DiamondBorderColor #7A7340
+  BarColor #2C4257
+  StartColor #2C4257
+  EndColor #2C4257
+}
+skinparam swimlane {
+  BorderColor #6B7683
+  TitleFontStyle bold
+}
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+|Cliente|
+|Sistema|
+|Chofer|
+|Pasarela|
+|Cliente|
+start
+:Elegir productos, dirección, método de pago y franja;
+:Confirmar el pedido;
+|Sistema|
+:Validar cobertura, franja y precio;
+:Reservar el stock (transacción);
+if (¿reserva programada?) then (sí)
+  :Crear el pedido en estado RESERVED;
+  :Esperar seña paga y día agendado\n(estados de la Reserva);
+  :Activar la reserva: RESERVED a PENDING;
+else (no)
+  :Crear el pedido en estado PENDING;
+endif
+if (¿paga con MercadoPago?) then (sí)
+  :Crear el checkout y devolver la URL de pago;
+  |Cliente|
+  :Pagar en la pasarela;
+  |Pasarela|
+  :Procesar el pago;
+  :Avisar el resultado por webhook;
+  |Sistema|
+  :Registrar el pago aprobado;
+else (efectivo o transferencia)
+endif
+:Despachar por proximidad\n(diagrama de actividad de M1);
+|Chofer|
+:Aceptar el pedido;
+|Sistema|
+:Pedido ACCEPTED;\ngenerar el código de entrega;
+if (¿se cancela antes de salir?) then (sí)
+  :Pedido CANCELLED;\nrestituir el stock;
+  stop
+else (no)
+endif
+|Chofer|
+:Marcar el pedido en camino;
+|Sistema|
+:Pedido ON_THE_WAY;\nactivar el seguimiento;
+fork
+  |Chofer|
+  :Informar la posición GPS\nmientras dure el camino;
+  |Cliente|
+  :Seguir al chofer en el mapa;
+fork again
+  |Chofer|
+  :Avisar la llegada;
+  :Mostrar el código de entrega (QR);
+  |Cliente|
+  :Escanear el código y confirmar la entrega;
+  |Sistema|
+  if (¿el código es válido?) then (sí)
+    :Pedido DELIVERED;\ndetener el seguimiento;
+  else (no)
+    :Rechazar la confirmación;
+    detach
+  endif
+end fork
+|Sistema|
+if (¿pago en efectivo?) then (sí)
+  :Marcar el pago como cobrado;
+else (no)
+endif
+:Pasar los envases a WITH_CUSTOMER;
+|Cliente|
+:Calificar el pedido (opcional);
+|Sistema|
+:Recalcular el promedio de calificaciones;
+stop
+@enduml

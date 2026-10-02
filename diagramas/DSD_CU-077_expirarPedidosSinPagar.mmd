@@ -1,0 +1,28 @@
+sequenceDiagram
+    title DSD — CU-077 Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :ReservationService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ITM as item:ItemPedido
+    participant PRO as producto:Producto
+
+    SIS->>+SRV: expirarPedidosSinPagar()
+    SRV->>+COL: buscarPendientesConMercadoPagoAnterioresA(plazo)
+    COL-->>-SRV: pedidos
+    loop Por cada pedido vencido
+        SRV->>+PED: estaSinPagar()
+        PED-->>-SRV: sinPagar
+        opt El pedido sigue pendiente y sin pago confirmado
+            SRV->>+PED: cancelar(motivo)
+            PED->>PED: validarTransicion(cancelado)
+            loop Por cada item del Pedido
+                PED->>+ITM: restituirStock()
+                ITM->>PRO: restituir(cantidad)
+                deactivate ITM
+            end
+            deactivate PED
+        end
+    end
+    deactivate SRV

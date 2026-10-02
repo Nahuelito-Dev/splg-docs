@@ -1,0 +1,119 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class CustomersService <<fachada>> {
+  + actualizarUbicacionDelCliente(cliente: Cliente,\n      coordenadas: Coordenada): Cliente
+  + buscarClientePorUsuario(usuario: Usuario): Cliente
+  + configurarDiasDeAviso(dias: Entero): Cliente
+  + consultarDetalleDelCliente(cliente: Cliente): Cliente
+  + consultarPerfilCliente(usuario: Usuario): Cliente
+  + editarDatosDelCliente(cliente: Cliente,\n      cambios: Registro): Cliente
+  + eliminarCliente(cliente: Cliente): Cadena
+  + listarClientes(pagina: Entero,\n      limite: Entero): Cliente[*], Entero
+}
+class "Map<String, Cliente>" as Map_String_Cliente <<colección>> {
+  + get(clave: Cadena): Cliente
+}
+class "List<Cliente>" as List_Cliente <<colección>> {
+  + buscar(pagina: Entero, limite: Entero): Cliente[*], Entero
+  + buscarConHistorialSuficiente(): Cliente[*]
+  + buscarConRecompraEstimadaDentroDe(dias: Entero): Cliente[*]
+}
+class "Map<String, InvitacionRecompra>" as Map_String_InvitacionRecompra <<colección>> {
+  + get(clave: Cadena): InvitacionRecompra
+}
+class "List<InvitacionRecompra>" as List_InvitacionRecompra <<colección>> {
+  + caducarVencidas(hoy: Fecha)
+}
+class UserAddressService <<fachada>> {
+  + consultarDireccionDeEntrega(direccionId: Identificador): DireccionEntrega
+  + consultarDireccionesDeEntrega(usuario: Usuario): DireccionEntrega[*]
+  + consultarDireccionPredeterminada(usuario: Usuario): DireccionEntrega
+  + editarDireccionDeEntrega(direccionId: Identificador,\n      cambios: Registro): DireccionEntrega
+  + eliminarDireccionDeEntrega(direccionId: Identificador)
+  + marcarDireccionPredeterminada(direccionId: Identificador): DireccionEntrega
+  + registrarDireccionDeEntrega(datos: Registro): DireccionEntrega
+}
+class "Map<String, DireccionEntrega>" as Map_String_DireccionEntrega <<colección>> {
+  + get(clave: Cadena): DireccionEntrega
+}
+class Cliente <<referencia>>
+class DireccionEntrega <<referencia>>
+class InvitacionRecompra <<referencia>>
+
+Map_String_Cliente "1" o--> "0..*" Cliente
+Map_String_DireccionEntrega "1" o--> "0..*" DireccionEntrega
+List_Cliente "1" o--> "0..*" Cliente
+Map_String_InvitacionRecompra "1" o--> "0..*" InvitacionRecompra
+List_InvitacionRecompra "1" o--> "0..*" InvitacionRecompra
+CustomersService --> "1" List_Cliente
+CustomersService --> "1" Map_String_Cliente
+UserAddressService --> "1" Map_String_Cliente
+UserAddressService --> "1" Map_String_DireccionEntrega
+CustomersService ..> Cliente
+UserAddressService ..> Cliente
+UserAddressService ..> DireccionEntrega
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,64 @@
+classDiagram
+    direction LR
+
+    %% Sesión, registro e identidad. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class AuthService {
+        <<fachada>>
+        + iniciarSesion(correo: Cadena, contrasena: Cadena): Registro
+        + validarSesion(): Booleano
+    }
+
+    class RegistroService {
+        <<fachada>>
+        + autorizarAlta(solicitante: Usuario, rolChofer: TipoDeRol, distribuidoraId: Identificador)
+        + autorizarAlta(solicitante: Usuario, rol: Rol, distribuidoraId: Identificador): Usuario
+        + crearPrimerSuperAdministrador(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, contrasena: Cadena): Usuario
+        + registrar(datosPersonales: Registro, rol: Rol, distribuidoraId: Identificador)
+        + registrarAdministrador(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, contrasena: Cadena, rol: Cadena, distribuidoraId: Identificador): Usuario
+        + registrarChofer(datosPersonales: Registro, datosDelChofer: Registro, distribuidoraId: Identificador): Usuario
+        + registrarse(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, contrasena: Cadena, datosDelCliente: Registro): Usuario
+    }
+
+    class FirebaseAuthPort {
+        <<interface>>
+        + createUserSafe(correo: Cadena, contrasena: Cadena, nombreCompleto: Cadena, telefono: Cadena): Registro
+        + deleteUserSafe(cuenta: Registro)
+        + generatePasswordResetLink(correo: Cadena, ajustes: Registro): Cadena
+        + generatePasswordResetLink(destinatario: Cadena, ajustes: Registro): Cadena
+        + updateUser(cuenta: Registro, correoNuevo: Cadena)
+        + updateUser(cuenta: Registro, deshabilitada: Booleano)
+        + verifyIdToken(token: Cadena): Registro
+    }
+
+    class FcmPort {
+        <<interface>>
+        + sendToToken(token: Cadena, notificacion: Registro)
+        + sendToToken(token: Cadena, confirmacion: Registro)
+    }
+
+    class Map_String_Usuario["Map<String, Usuario>"] {
+        <<colección>>
+    }
+    class List_Administrador["List<Administrador>"] {
+        <<colección>>
+    }
+    class Administrador
+    class Chofer
+    class Usuario
+    class Cliente
+
+    Usuario <|-- Cliente
+    Usuario <|-- Chofer
+    Usuario <|-- Administrador
+    AuthService --> "1" FirebaseAuthPort : firebaseAuthPort
+    AuthService --> "1" Map_String_Usuario : map<String, Usuario>
+    RegistroService --> "1" FirebaseAuthPort : firebaseAuthPort
+    RegistroService --> "1" List_Administrador : list<Administrador>
+    RegistroService --> "1" Map_String_Usuario : map<String, Usuario>
+    AuthService ..> Usuario
+    RegistroService ..> Administrador : create
+    RegistroService ..> Chofer : create
+    RegistroService ..> Cliente : create
+    RegistroService ..> Usuario : create

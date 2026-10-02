@@ -28,12 +28,13 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
 
+actor "Administrador\n(ACT-03)" as A03
 actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-10 Multi-Distribuidora" {
@@ -47,5 +48,10 @@ A05 -[#B4432B]- U052
 A05 -[#B4432B]- U053
 A05 -[#B4432B]- U054
 A05 -[#B4432B]- U055
+A05 --|> A03
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U054 ..> U053 : <<include>>
+U055 ..> U053 : <<include>>
 
 @enduml

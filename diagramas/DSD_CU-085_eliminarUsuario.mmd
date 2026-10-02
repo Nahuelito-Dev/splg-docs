@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-085 Eliminar Usuario (baja lógica) · eliminarUsuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UsersService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+    participant FBA as :FirebaseAuthPort
+
+    ADM->>+SRV: eliminarUsuario(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: usuario
+    opt El usuario es un Chofer
+        SRV->>CHO: validarSinPedidosEnCurso()
+    end
+    SRV->>USR: darDeBaja()
+    opt El usuario es un Chofer
+        SRV->>CHO: liberarVehiculo()
+    end
+    opt El usuario es un Chofer
+        SRV->>UBI: eliminar()
+    end
+    SRV->>FBA: updateUser(cuenta, deshabilitada)
+    SRV-->>-ADM: mensaje

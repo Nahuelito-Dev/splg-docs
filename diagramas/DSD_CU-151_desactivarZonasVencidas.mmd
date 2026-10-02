@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-151 Desactivar las Zonas de Cobertura Vencidas · desactivarZonasVencidas
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :CoverageZoneCronService
+    participant LST as :List#lt;ZonaCobertura#gt;
+    participant ZON as zona:ZonaCobertura
+
+    SIS->>+SRV: desactivarZonasVencidas()
+    Note over SIS,SRV: Una sola instancia toma el barrido
+    SRV->>+LST: getVencidas()
+    LST-->>-SRV: zonas
+    loop Por cada zona vencida
+        SRV->>ZON: desactivar()
+    end
+    deactivate SRV

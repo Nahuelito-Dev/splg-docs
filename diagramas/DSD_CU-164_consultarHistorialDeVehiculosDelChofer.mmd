@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-164 Consultar el Historial de Vehículos de un Chofer · consultarHistorialDeVehiculosDelChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :VehicleAssignmentService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: consultarHistorialDeVehiculosDelChofer(choferId, pagina)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: getHistorialDeVehiculos(pagina)
+    CHO-->>-SRV: asignaciones
+    SRV-->>-ADM: asignaciones

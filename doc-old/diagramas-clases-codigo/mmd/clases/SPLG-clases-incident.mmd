@@ -1,0 +1,30 @@
+classDiagram
+    direction LR
+
+    %% Módulo `incident` — generado por generar-clases-diseno.py
+
+    class IncidentController {
+        <<controller>>
+        +create(@Body() dto: CreateIncidentDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<IncidentResponseDto>
+        +findAll(@CurrentDistributor() distributorId: string | null) Promise<IncidentResponseDto[]>
+        +findByOrder(@Param('orderId', ParseUUIDPipe) orderId: string, @CurrentDistributor() distributorId: string | null) Promise<IncidentResponseDto[]>
+        +resolve(@Param('id', ParseUUIDPipe) id: string, @Body() dto: ResolveIncidentDto, @CurrentDistributor() distributorId: string | null) Promise<IncidentResponseDto>
+    }
+
+    class IncidentMapper {
+        <<mapper>>
+        +toDto(i: Incident) IncidentResponseDto
+    }
+
+    class IncidentService {
+        +create(dto: CreateIncidentDto, reportedByUserId: string, distributorId: string | null, esChofer: boolean) Promise<Incident>
+        +findAll(distributorId?: string | null) Promise<Incident[]>
+        +findByOrder(orderId: string, distributorId?: string | null) Promise<Incident[]>
+        +findOne(id: string, distributorId?: string | null) Promise<Incident>
+        +resolve(id: string, dto: ResolveIncidentDto, distributorId?: string | null) Promise<Incident>
+    }
+
+    IncidentController ..> IncidentService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% IncidentService usa OrderService (módulo `order`)

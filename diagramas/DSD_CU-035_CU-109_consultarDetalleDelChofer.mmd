@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-035 / CU-109 · consultarDetalleDelChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant USR as usuario:Usuario
+
+    ADM->>+SRV: consultarDetalleDelChofer(choferId)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: getUsuario()
+    CHO-->>-SRV: usuario
+    SRV->>+USR: getRol()
+    USR-->>-SRV: rol
+    SRV-->>-ADM: chofer, usuario, rol

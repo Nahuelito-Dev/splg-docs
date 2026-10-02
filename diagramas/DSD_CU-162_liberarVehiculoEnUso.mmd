@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-162 Liberar el Vehículo en Uso de un Chofer · liberarVehiculoEnUso
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :VehicleAssignmentService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant ASG as asignacion:AsignacionVehiculo
+
+    ADM->>+SRV: liberarVehiculoEnUso(choferId)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>CHO: assertSinPedidoEnCurso()
+    SRV->>+CHO: getAsignacionAbierta()
+    CHO-->>-SRV: asignacion
+    SRV->>ASG: liberar(administrador)
+    SRV-->>-ADM: confirmacion

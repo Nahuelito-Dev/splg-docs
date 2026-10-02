@@ -1,0 +1,69 @@
+sequenceDiagram
+    title DSD — CU-105 Planificar El Mantenimiento Y Las Habilitaciones De La Flota
+autonumber
+participant CRON as FleetMaintenancePlannerService
+participant USG as VehicleUsageRepositoryPort
+participant TSK as MaintenanceTaskRepositoryPort
+participant DEM as DemandForecastService
+participant COV as FleetCoverageService
+participant PRP as MaintenanceWindowProposalRepositoryPort
+participant NOT as NotificationsService
+participant FIT as FleetAvailabilityPort
+
+CRON->>USG: findRecentUsage(carId, dias)
+activate USG
+USG-->>CRON: historial de km por dia
+deactivate USG
+CRON->>CRON: estimateDailyKm(carId) con ponderacion y ajuste estacional
+CRON->>TSK: findForecastTasks(carId)
+activate TSK
+TSK-->>CRON: tareas de mantenimiento y habilitacion
+deactivate TSK
+
+loop Por cada tarea dentro de la ventana de anticipacion
+    CRON->>CRON: projectDueDate(task, car)
+    CRON->>DEM: forecastDemand(coverageZone, ventanas candidatas)
+    activate DEM
+    DEM-->>CRON: demanda proyectada por ventana
+    deactivate DEM
+    CRON->>COV: remainingActiveVehicles(coverageZone, ventana)
+    activate COV
+    COV-->>CRON: unidades activas restantes
+    deactivate COV
+    CRON->>CRON: descartar las ventanas que violan el minimo y ordenar por demanda
+
+    loop Por cada ventana alternativa
+        CRON->>PRP: create(taskId, ventana, driverId, expiresAt)
+        activate PRP
+        PRP-->>CRON: propuesta en estado PROPOSED
+        deactivate PRP
+        CRON->>NOT: sendWindowProposal(propuesta)
+        activate NOT
+        CRON->>PRP: awaitAnswer(proposalId)
+        activate PRP
+        PRP-->>CRON: ACCEPTED, REJECTED o EXPIRED
+        deactivate PRP
+        alt La propuesta fue aceptada
+            CRON->>TSK: markPendingConfirmation(taskId, ventana)
+            activate TSK
+            Note over TSK,FIT: El administrador confirma el gasto con confirmarVentanaDeTaller<br/>y recien entonces se programa la tarea y FleetAvailabilityPort<br/>bloquea la agenda con blockVehicleWindow
+            activate FIT
+        else Rechazada o vencida
+            CRON->>CRON: continuar con la ventana siguiente
+        end
+    end
+
+    alt Se agotaron las ventanas
+        CRON->>NOT: escalateToAdmin(task, ventanas evaluadas)
+    else La tarea quedo programada
+        CRON->>CRON: registrar el resultado de la negociacion
+    end
+end
+
+alt Habilitacion bloqueante vencida
+    CRON->>FIT: groundVehicle(carId)
+    Note over FIT: DispatchOrchestratorService consulta<br/>isVehicleFit antes de ofrecer un pedido
+end
+deactivate FIT
+deactivate NOT
+deactivate TSK

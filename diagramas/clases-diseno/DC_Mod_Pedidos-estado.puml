@@ -1,0 +1,161 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class OrderService <<fachada>> {
+  + asignarChoferAPedido(pedidoId: Identificador,\n      choferId: Identificador): Pedido
+  + avisarLlegada(pedidoId: Identificador)
+  + calcularValorPromedio(ventasDelDia: Registro,\n      entregadosDelDia: Entero)
+  + cambiarDireccionDeEntrega(pedidoId: Identificador,\n      direccionId: Identificador, motivo: Cadena): Pedido
+  + completarDiasSinVentas(ventasPorDia: Registro)
+  + consultarGraficoDeVentas(): Cadena
+  + consultarHistorialDePedidos(cliente: Cliente,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
+  + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
+  + consultarPedido(pedidoId: Identificador): Pedido
+  + consultarPedidosAsignados(choferId: Identificador,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
+  + consultarPedidosDisponibles(pagina: Entero,\n      limite: Entero): Pedido[*], Entero
+  + consultarResumenDePedidos(): Registro
+  + despacharPedidoExpress(pedidoId: Identificador): Booleano
+  + findAvailableOrders(): Pedido[*]
+  + indicarQuienRecibe(pedidoId: Identificador,\n      nombre: Cadena, documento: Cadena,\n      relacion: Cadena): Pedido
+  + listarPedidos(pagina: Entero, limite: Entero): Pedido[*],\n      Entero
+  + obtenerCodigoDeEntrega(pedidoId: Identificador): Cadena
+  + realizarCompraExpress(tipoGarrafa: Cadena,\n      metodoDePago: MetodoDePago): Pedido
+  + rechazarOferta(pedidoId: Identificador): Booleano
+  + verificarCoberturaExpress(direccion: DireccionEntrega)
+}
+class UpdateOrderStatusUseCase <<use case>> {
+  + aceptarPedido(pedidoId: Identificador): Pedido
+  + confirmarEntrega(pedidoId: Identificador): Pedido
+  + marcarPedidoEnCamino(pedidoId: Identificador): Pedido
+}
+class ConfirmDeliveryUseCase <<use case>> {
+  + confirmarEntregaConCodigo(pedidoId: Identificador,\n      codigo: Cadena): Pedido
+}
+class "Map<String, Pedido>" as Map_String_Pedido <<colección>> {
+  + get(clave: Cadena): Pedido
+}
+class "List<Pedido>" as List_Pedido <<colección>> {
+  + buscarDeLaDistribuidora(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
+  + buscarDelCliente(cliente: Cliente, pagina: Entero,\n      limite: Entero): Pedido[*], Entero
+  + buscarDisponibles(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
+  + buscarPendientesConMercadoPagoAnterioresA(plazo: Entero): Pedido[*]
+  + buscarReservas(distribuidoraId: Identificador): Pedido[*]
+  + buscarReservasConSeniaPagaHasta(hoy: Fecha): Pedido[*]
+  + buscarReservasSinSeniaAnterioresA(plazo: Entero): Pedido[*]
+  + contarEntregadosDelDia(distribuidoraId: Identificador): Entero
+  + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Booleano
+  + contarPorEstado(distribuidoraId: Identificador): Pedido[*],\n      Chofer[*], Booleano
+  + entregadosEntre(fechaDesde: Fecha,\n      fechaHasta: Fecha): Pedido[*]
+  + getUltimoEntregado(cliente: Cliente,\n      distribuidoraId: Identificador): Fecha
+  + totalEntregado(periodo: Cadena): Registro
+  + totalEntregadoPorDia(distribuidoraId: Identificador,\n      desde: FechaHora, hasta: FechaHora): Registro
+}
+class Pedido <<referencia>>
+class DeliveryService <<referencia>>
+class FleetDispatchLockService <<referencia>>
+class "List<Chofer>" as List_Chofer <<referencia>>
+class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
+class NotificationPort <<referencia>>
+class RealtimeDispatchPort <<referencia>>
+class Chofer <<referencia>>
+class Cliente <<referencia>>
+class Producto <<referencia>>
+class ZonaCobertura <<referencia>>
+class UbicacionGPS <<referencia>>
+class Envase <<referencia>>
+class OfertaDespacho <<referencia>>
+class NotificationsService <<referencia>>
+
+Map_String_Pedido "1" o--> "0..*" Pedido
+List_Pedido "1" o--> "0..*" Pedido
+ConfirmDeliveryUseCase --> "1" Map_String_Pedido
+OrderService --> "1" DeliveryService
+OrderService --> "1" FleetDispatchLockService
+OrderService --> "1" List_Chofer
+OrderService --> "1" List_Pedido
+OrderService --> "1" Map_String_Chofer
+OrderService --> "1" Map_String_Pedido
+OrderService --> "1" NotificationPort
+OrderService --> "1" RealtimeDispatchPort
+UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
+UpdateOrderStatusUseCase --> "1" Map_String_Pedido
+UpdateOrderStatusUseCase --> "1" NotificationPort
+ConfirmDeliveryUseCase ..> NotificationPort
+ConfirmDeliveryUseCase ..> Pedido
+ConfirmDeliveryUseCase ..> RealtimeDispatchPort
+List_Pedido ..> Pedido
+OrderService ..> Chofer
+OrderService ..> Cliente
+OrderService ..> NotificationsService
+OrderService ..> OfertaDespacho
+OrderService ..> Pedido : «create»
+OrderService ..> Producto
+OrderService ..> ZonaCobertura
+UpdateOrderStatusUseCase ..> Chofer
+UpdateOrderStatusUseCase ..> Envase
+UpdateOrderStatusUseCase ..> Pedido
+UpdateOrderStatusUseCase ..> UbicacionGPS
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -16,7 +16,8 @@ BORDE = ["#3C6E8F", "#3F7A50", "#7B4B8A", "#8A7326", "#9C5A46", "#3E7C79",
 
 # un color de linea por actor, para poder seguir cada asociacion en el diagrama grande
 COLOR_ACT = {"01": "#1F6F8B", "02": "#2E7D46", "03": "#8C4A9E",
-             "04": "#8A6D1F", "05": "#B4432B"}
+             "04": "#8A6D1F", "05": "#B4432B",
+             "06": "#0E7C86", "07": "#C98A00", "08": "#5F6B7A"}
 
 def indice(codigo):
     """SS-07 -> 6. Cae en cero si el codigo no tiene forma de subsistema."""

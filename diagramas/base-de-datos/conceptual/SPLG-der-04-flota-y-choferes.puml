@@ -1,0 +1,101 @@
+@startuml
+title Modelo entidad-relación conceptual — Flota y choferes
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Chofer {
+  {field} disponible
+  {field} habilitado
+  {field} validado
+  {field} /calificación
+}
+entity Vehiculo {
+  {field} patente
+  {field} tipo
+  {field} carga máxima
+  {field} kilometraje
+  {field} estado en la flota
+}
+entity AsignacionVehiculo {
+  {field} asignado el
+  {field} liberado el
+  {field} nota
+}
+entity PlanMantenimiento {
+  {field} nombre
+  {field} disparo
+  {field} intervalo
+  {field} anticipación
+  {field} criticidad
+}
+entity TareaMantenimiento {
+  {field} estado
+  {field} vence
+  {field} vencimiento proyectado
+  {field} prestador
+  {field} número
+  {field} costo
+}
+entity AdjuntoTarea {
+  {field} nombre original
+  {field} tipo de archivo
+  {field} fecha de carga
+}
+entity PropuestaVentanaTaller {
+  {field} estado
+  {field} vence
+  {field} desde
+  {field} hasta
+}
+entity RegistroUsoVehiculo {
+  {field} día
+  {field} kilómetros
+  {field} pedidos
+}
+entity Usuario #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+
+Usuario ||--o{ Vehiculo : tiene registrado >
+Distribuidora ||--o{ Chofer : emplea >
+Chofer |o--|| Usuario : es un >
+TareaMantenimiento }o--o| Vehiculo : habilita >
+TareaMantenimiento }o--o| Chofer : habilita >
+PlanMantenimiento ||--o{ TareaMantenimiento : genera >
+Vehiculo ||--o{ AsignacionVehiculo : figura en >
+Chofer ||--o{ AsignacionVehiculo : figura en >
+Vehiculo ||--o{ RegistroUsoVehiculo : acumula >
+TareaMantenimiento ||--o{ AdjuntoTarea : adjunta >
+PropuestaVentanaTaller }o--|| Chofer : se dirige a >
+TareaMantenimiento ||--o{ PropuestaVentanaTaller : origina >
+
+legend bottom right
+  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

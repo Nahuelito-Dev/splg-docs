@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-038 Actualizar Stock de Producto · actualizarStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :GasCylinderService
+    participant COL as :Map#lt;String, Producto#gt;
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: actualizarStock(productoId, variacion)
+    SRV->>+COL: get(productoId)
+    COL-->>-SRV: producto
+    SRV->>+PRO: ajustarStock(variacion)
+    PRO->>PRO: validarStockResultante(variacion)
+    deactivate PRO
+    SRV-->>-ADM: producto

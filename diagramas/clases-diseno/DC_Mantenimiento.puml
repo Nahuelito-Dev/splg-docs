@@ -1,0 +1,116 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class PlanMantenimiento {
+  - nombre: Cadena
+  - disparo: DisparoDeMantenimiento
+  - intervalo: Entero
+  - anticipacion: Entero
+  - criticidad: Criticidad
+  + assertSujetoCoherente(recurso: Cadena)
+  + crearTarea(recurso: Cadena, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
+}
+class TareaMantenimiento {
+  - estado: EstadoDeLaTarea
+  - vence: FechaHora
+  - vencimientoProyectado: FechaHora
+  - prestador: Cadena
+  - numero: Cadena
+  - costo: Moneda
+  + «create» TareaMantenimiento(recurso: Cadena,\n      vencimiento: Fecha, detalle: Registro)
+  + adjuntar(clave: Cadena, archivo: Archivo,\n      usuario: Usuario): AdjuntoTarea
+  + assertAbierta()
+  + cerrar(fecha: Fecha, kilometraje: Entero, costo: Moneda,\n      observacion: Cadena)
+  + getAdjunto(adjuntoId: Identificador): AdjuntoTarea
+  + getAdjuntos(): AdjuntoTarea[*]
+  + getEstadoDeVencimiento()
+  + marcarAvisada(ahora: FechaHora)
+  + programar(ventanaElegida: PropuestaVentanaTaller,\n      gastoEstimado: Moneda)
+  + proponerVentana(chofer: Chofer,\n      ventana: PropuestaVentanaTaller): PropuestaVentanaTaller
+  + proyectarVencimiento(kilometrajeDiario: Entero)
+  + quedarPendienteDeConfirmacion(ventana: PropuestaVentanaTaller)
+  + quitarAdjunto(adjuntoId: Identificador): AdjuntoTarea
+}
+class AdjuntoTarea {
+  - nombreOriginal: Cadena
+  - tipoDeArchivo: Cadena
+  - fechaDeCarga: FechaHora
+  + «create» AdjuntoTarea(clave: Cadena, nombre: Cadena,\n      tipo: Cadena, tamano: Entero, usuario: Usuario)
+}
+class PropuestaVentanaTaller {
+  - desde: FechaHora
+  - hasta: FechaHora
+  + «create» PropuestaVentanaTaller(chofer: Chofer,\n      ventana: PropuestaVentanaTaller,\n      vigencia: FechaHora)
+  + aceptar()
+  + assertVigente()
+}
+class Chofer <<referencia>>
+class Vehiculo <<referencia>>
+
+PlanMantenimiento "1" --> "0..*" TareaMantenimiento : genera
+TareaMantenimiento "0..*" <-- "0..1" Vehiculo : habilita
+TareaMantenimiento "0..*" -- "0..1" Chofer : habilita
+TareaMantenimiento "1" *-- "0..*" PropuestaVentanaTaller : origina
+TareaMantenimiento "1" *--> "0..*" AdjuntoTarea : adjunta
+PropuestaVentanaTaller "0..*" -- "1" Chofer : se dirige a
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

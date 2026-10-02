@@ -1,0 +1,59 @@
+sequenceDiagram
+    title DSD — CU-008 Cancelar Pedido
+autonumber
+participant IDEM as IdempotencyInterceptor
+participant CTRL as OrderController
+participant SRV as OrderService
+participant UC as CancelOrderUseCase
+participant ORD as OrderRepositoryPort
+participant FSM as OrderStatusMachine
+participant STK as GasCylinderService
+participant QR as QueryRunner
+participant RT as RealtimeDispatchPort
+participant BUS as EventEmitter2
+
+IDEM->>IDEM: intercept con header Idempotency-Key
+alt Ya hay respuesta cacheada para esa key
+    IDEM-->>CTRL: respuesta cacheada, no se re-ejecuta
+else Primera ejecucion
+    IDEM-->>CTRL: next.handle()
+    CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
+    SRV->>ORD: findById(id)
+    ORD-->>SRV: Order o null
+    alt Pedido de otra distribuidora que la del contexto
+        SRV-->>CTRL: NotFoundException Order with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
+        CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
+        CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
+        SRV->>UC: execute(orderId, userId, customer, reason)
+        activate UC
+        UC->>QR: connect() y startTransaction()
+        UC->>QR: leer el pedido con bloqueo pesimista, con sus items y su chofer
+        alt Pedido inexistente
+            UC-->>CTRL: NotFoundException Order with ID not found
+        else Pedido encontrado
+            alt order.customer_id distinto del userId autenticado
+                UC-->>CTRL: NotFoundException Order with ID not found
+            else Ya esta DELIVERED o CANCELLED
+                UC-->>CTRL: BadRequestException No se puede cancelar un pedido finalizado
+            else El pedido ya esta ON_THE_WAY
+                UC-->>CTRL: BadRequestException El pedido ya esta en camino, contacte al soporte
+            else El pedido es cancelable
+                UC->>FSM: transitionOrder(order, CANCELLED)
+                UC->>UC: setear cancellationReason
+                UC->>STK: restituirStock(queryRunner.manager, order.items)
+                UC->>QR: save(order) y commitTransaction()
+                UC->>UC: notify(order, previousDriverId)
+                UC-)RT: notifyCustomer(customer_id, order cancelled, payload)
+                opt El pedido ya tenia chofer asignado
+                    UC-)RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                end
+                UC-)RT: notifyAdmins(order cancelled, payload)
+                Note over UC,BUS: Planificado (I-7) - si hay un pago aprobado, se emite pedido.cancelado y CU-168 reintegra el pago
+                UC-->>CTRL: Order en estado CANCELLED
+            end
+        end
+        deactivate UC
+    end
+end

@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-141 Registrar un Mantenimiento Realizado
+    autonumber
+    participant CTRL as FleetTaskController
+    participant SRV as FleetTaskService
+    participant TREP as RepositoryMaintenanceTask
+
+    CTRL->>SRV: close(id, dto con performedAt, odometerKm, cost, provider, notes, distribuidora)
+    activate SRV
+    SRV->>TREP: findOne(where task_id y distributor_id, relations plan)
+    activate TREP
+    TREP-->>SRV: MaintenanceTask o null
+    deactivate TREP
+    alt la tarea no existe o es de otra distribuidora
+        SRV-->>CTRL: NotFoundException Tarea no encontrada
+    else la tarea ya esta hecha o cancelada
+        SRV-->>CTRL: BadRequestException La tarea ya esta hecha o cancelada
+    else la tarea esta abierta
+        SRV->>SRV: task.performedAt, odometerKm, cost, provider, notes y status igual done
+        SRV->>TREP: save(task)
+        activate TREP
+        TREP-->>SRV: MaintenanceTask cerrada
+        deactivate TREP
+        SRV-->>CTRL: MaintenanceTask cerrada
+        CTRL->>CTRL: FleetTaskMapper.toDto a FleetTaskResponseDto, con expirationStatus (calcularEstadoDeVencimiento) y blocks (criticidad del plan)
+    end
+    deactivate SRV

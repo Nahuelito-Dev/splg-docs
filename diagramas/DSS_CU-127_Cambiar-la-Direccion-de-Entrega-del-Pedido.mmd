@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-127 Cambiar la Direccion de Entrega del Pedido
+    title DSS — CU-127 Cambiar la Dirección de Entrega del Pedido
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)
     activate SIS
@@ -11,6 +11,8 @@ sequenceDiagram
     else el pedido ya salió
         SIS-->>CLI: cambio rechazado
     else la dirección está fuera de la zona de cobertura
+        SIS-->>CLI: cambio rechazado
+    else el pedido está pagado en línea y el recargo de la zona nueva es distinto
         SIS-->>CLI: cambio rechazado
     end
     deactivate SIS

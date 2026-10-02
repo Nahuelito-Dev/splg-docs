@@ -1,0 +1,109 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class Calificacion {
+  - puntaje: Entero
+  - comentario: Cadena
+  + «create» Calificacion(pedido: Pedido,\n      calificado: Usuario, estrellas: Entero,\n      comentario: Cadena)
+  + getEstrellas()
+}
+class Incidencia {
+  - tipo: TipoDeIncidencia
+  - momento: MomentoDeIncidencia
+  - descripcion: Cadena
+  - estado: EstadoDeIncidencia
+  - resolucion: Cadena
+  - fotografia: Cadena
+  + «create» Incidencia(usuario: Usuario, tipo: Cadena,\n      descripcion: Cadena, foto: Archivo)
+  + getResumen()
+  + resolver(notaDeResolucion: Cadena)
+}
+class Reclamo {
+  - motivo: Cadena
+  - descripcion: Cadena
+  - estado: EstadoDelReclamo
+  - resolucion: Cadena
+  - fotografia: Cadena
+  + «create» Reclamo(pedido: Pedido, motivo: Cadena,\n      evidencia: Archivo)
+  + adjuntarFoto(clave: Cadena): Cadena
+  + esDelCliente(cliente: Cliente): Booleano
+  + getFoto(): Cadena
+  + getResumen()
+  + reabrir(motivo: Cadena)
+  + resolver(resolucion: Cadena,\n      estadoDestino: EstadoDelReclamo)
+  + tomar()
+  + validarTransicion(estadoDestino: EstadoDelReclamo)
+}
+class Usuario <<referencia>>
+class Pedido <<referencia>>
+class Cliente <<referencia>>
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Pedido "1" -- "0..*" Reclamo : origina
+Cliente "1" --> "0..*" Reclamo : presenta
+Pedido "1" --> "0..*" Incidencia : origina
+Usuario "1" -- "0..*" Incidencia : reporta
+Pedido "1" -- "0..2" Calificacion : recibe
+Usuario "1" --> "0..*" Calificacion : emite
+Usuario "1" --> "0..*" Calificacion : recibe
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

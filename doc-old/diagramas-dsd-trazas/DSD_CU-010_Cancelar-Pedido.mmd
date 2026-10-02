@@ -1,0 +1,58 @@
+sequenceDiagram
+    title DSD — CU-010 Cancelar Pedido
+autonumber
+participant RG as RolesGuard
+participant CTRL as OrderController
+participant SRV as OrderService
+participant UC as CancelOrderUseCase
+participant ORD as OrderRepositoryPort
+participant FSM as OrderStatusMachine
+participant STK as GasCylinderService
+participant QR as QueryRunner
+participant RT as RealtimeDispatchPort
+participant DGW as DriversGateway
+participant AGW as AdminGateway
+participant BUS as EventEmitter2
+
+RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+alt Rol insuficiente
+    RG-->>CTRL: ForbiddenException Acceso denegado
+else Autorizado
+    RG-->>CTRL: true
+    CTRL->>SRV: assertDeLaDistribuidora(id, distributorId)
+    SRV->>ORD: findById(id)
+    ORD-->>SRV: Order o null
+    alt Pedido de otra distribuidora que la del contexto
+        SRV-->>CTRL: NotFoundException Order with ID not found
+    else Misma distribuidora o sin distribuidora en contexto
+        SRV-->>CTRL: sin error
+        alt Cancelacion forzada, DELETE /orders/:id
+            CTRL->>SRV: cancelOrder(id, user.user_id, admin)
+        else Cancelacion con motivo, PATCH /orders/:id/cancel
+            CTRL->>SRV: cancelOrder(id, user.user_id, admin, body.reason)
+        end
+        SRV->>UC: execute(orderId, userId, admin, reason)
+        activate UC
+        UC->>QR: connect() y startTransaction()
+        UC->>QR: leer el pedido con bloqueo pesimista, con sus items y su chofer
+        alt Pedido inexistente o finalizado
+            UC-->>CTRL: NotFoundException o BadRequestException
+        else Cancelable
+            UC->>UC: guardar previousDriverId
+            UC->>FSM: transitionOrder(order, CANCELLED)
+            UC->>UC: cancellationReason igual a reason o Cancelado por admin
+            UC->>STK: restituirStock(queryRunner.manager, order.items)
+            UC->>QR: save(order) y commitTransaction()
+            UC-)RT: notifyCustomer(customer_id, order cancelled, payload)
+            opt El pedido tenia chofer asignado
+                UC-)RT: notifyDriverOrderCancelled(previousDriverId, payload)
+                RT-)DGW: notifyOrderCancelled(driverId, payload)
+            end
+            UC-)RT: notifyAdmins(order cancelled, payload)
+            RT-)AGW: notifyAdmins(event, payload)
+            Note over UC,BUS: Planificado (I-7) - si hay un pago aprobado, se emite pedido.cancelado y CU-168 reintegra el pago
+            UC-->>CTRL: Order en estado CANCELLED
+        end
+        deactivate UC
+    end
+end

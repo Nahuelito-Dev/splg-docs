@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-094 Actualizar Ubicación del Cliente · actualizarUbicacionDelCliente
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CustomersService
+    participant COL as :Map#lt;String, Cliente#gt;
+    participant CLE as cliente:Cliente
+
+    CLI->>+SRV: actualizarUbicacionDelCliente(clienteId, coordenadas)
+    SRV->>+COL: get(clienteId)
+    COL-->>-SRV: cliente
+    SRV->>CLE: actualizarUbicacion(coordenadas)
+    SRV-->>-CLI: cliente

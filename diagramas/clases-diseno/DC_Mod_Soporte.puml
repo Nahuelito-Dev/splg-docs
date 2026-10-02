@@ -1,0 +1,124 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class ReportsService <<fachada>> {
+  + agruparPorChofer(pedidos: Pedido[*])
+  + agruparPorMetodoDePago(pedidos: Pedido[*])
+  + agruparPorPeriodo(pedidos: Pedido[*],\n      granularidad: Cadena)
+  + agruparPorProducto(items: ItemPedido[*])
+  + consultarEvolucionDeVentas(fechaDesde: Fecha,\n      fechaHasta: Fecha, granularidad: Cadena): Registro
+  + consultarVentasPorChofer(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
+  + consultarVentasPorMetodoDePago(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
+  + consultarVentasPorProducto(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
+}
+class HealthCheckService <<fachada>> {
+  + verificarDisponibilidad()
+  + verificarSalud()
+  + verificarVida()
+}
+class RedisHealthIndicator <<fabricación pura>> {
+  + isHealthy(redis: Registro)
+}
+class RedisService <<fabricación pura>> {
+  + del(marcasDeUltimaEjecucion: Registro)
+  + ping(): Booleano
+}
+interface StoragePort <<interface>> <<puerto>> {
+  + getDownloadUrl(adjunto: AdjuntoTarea): Cadena
+  + getDownloadUrl(clave: Cadena): Cadena
+  + getStream(adjunto: AdjuntoTarea): Archivo
+  + getStream(clave: Cadena): Archivo
+  + put(clave: Cadena, archivo: Archivo)
+  + put(clave: Cadena, imagen: Archivo)
+  + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
+  + remove(adjunto: AdjuntoTarea)
+  + remove(claveAnterior: Cadena)
+}
+class LocalDiskStorageAdapter <<adaptador>> {
+  + getDownloadUrl(clave: Cadena): Cadena
+  + getStream(clave: Cadena): Archivo
+  + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
+  + resolveKey(clave: Cadena)
+}
+class S3StorageAdapter <<adaptador>> {
+  + getDownloadUrl(clave: Cadena): Cadena
+  + getStream(clave: Cadena): Archivo
+  + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
+}
+class "List<Pedido>" as List_Pedido <<referencia>>
+class ItemPedido <<referencia>>
+class Pedido <<referencia>>
+
+HealthCheckService --> "1" RedisHealthIndicator
+RedisHealthIndicator --> "1" RedisService
+ReportsService --> "1" List_Pedido
+ReportsService ..> ItemPedido
+ReportsService ..> Pedido
+StoragePort ..> LocalDiskStorageAdapter
+StoragePort ..> S3StorageAdapter
+S3StorageAdapter ..|> StoragePort
+LocalDiskStorageAdapter ..|> StoragePort
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

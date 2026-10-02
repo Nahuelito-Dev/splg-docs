@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-091 Validar Vigencia del Token de Sesión · validarSesion
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :AuthService
+    participant FBA as :FirebaseAuthPort
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
+
+    CLI->>+SRV: validarSesion()
+    SRV->>+FBA: verifyIdToken(token)
+    FBA-->>-SRV: credencial
+    SRV->>+COL: get(correo)
+    COL-->>-SRV: usuario
+    SRV->>+USR: estaHabilitado()
+    USR-->>-SRV: habilitado
+    SRV-->>-CLI: sesionValida

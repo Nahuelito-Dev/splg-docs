@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-148 Elegir la Modalidad de Entrega del Pedido · consultarModalidadesDeEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :OrderService
+    participant CLE as cliente:Cliente
+    participant CHOS as :List#lt;Chofer#gt;
+
+    CLI->>+SRV: consultarModalidadesDeEntrega(direccionId)
+    SRV->>+CLE: getDireccion(direccionId)
+    CLE-->>-SRV: direccion
+    SRV->>SRV: verificarCoberturaExpress(direccion)
+    SRV->>+CHOS: buscarEnMotoDisponibles(direccion)
+    CHOS-->>-SRV: choferes
+    SRV-->>-CLI: modalidades

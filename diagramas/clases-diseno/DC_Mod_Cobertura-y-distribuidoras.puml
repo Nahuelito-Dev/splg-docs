@@ -1,0 +1,133 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class CoverageZoneService <<fachada>> {
+  + definirZonaDeCobertura(nombre: Cadena,\n      poligono: Poligono, recargo: Moneda,\n      activa: Booleano): ZonaCobertura
+  + eliminarZonaDeCobertura(zonaId: Identificador)
+  + listarZonasDeCobertura(): ZonaCobertura[*]
+  + programarVigenciaDeZona(zonaId: Identificador,\n      vigenteHasta: FechaHora): ZonaCobertura
+  + validarCobertura(latitud: Decimal,\n      longitud: Decimal): Booleano, Moneda, ZonaCobertura
+}
+class "Map<String, ZonaCobertura>" as Map_String_ZonaCobertura <<colección>> {
+  + get(clave: Cadena): ZonaCobertura
+}
+class CoverageZoneCronService <<fachada>> {
+  + desactivarZonasVencidas()
+}
+class "List<ZonaCobertura>" as List_ZonaCobertura <<colección>> {
+  + getVencidas(): ZonaCobertura[*]
+}
+class "Map<String, Distribuidora>" as Map_String_Distribuidora <<colección>> {
+  + containsKey(clave: Cadena): Booleano
+  + get(clave: Cadena): Distribuidora
+}
+class DistributorService <<fachada>> {
+  + consultarDistribuidora(distribuidoraId: Identificador): Distribuidora
+  + darDeBajaDistribuidora(distribuidoraId: Identificador)
+  + listarDistribuidoras(): Distribuidora[*]
+  + modificarDistribuidora(distribuidoraId: Identificador,\n      datos: Registro): Distribuidora
+  + registrarDistribuidora(nombre: Cadena,\n      identificadorCorto: Cadena, razonSocial: Cadena,\n      cuit: Cadena, correo: Cadena, telefono: Cadena,\n      logo: Archivo, plan: Cadena): Distribuidora
+}
+class "List<Distribuidora>" as List_Distribuidora <<colección>> {
+  + getTodas(): Distribuidora[*]
+}
+class ModuleConfigService <<fachada>> {
+  + configurarFrecuenciaDeTareas(intervalos: Registro): ConfiguracionModulo
+  + configurarParametrosDeDespacho(radiosKm: Lista,\n      ventanaDeAceptacion: Entero): ConfiguracionModulo
+  + configurarParametrosDeProceso(proceso: Cadena,\n      parametros: Registro): ConfiguracionModulo
+  + validarIntervalos(intervalos: Registro)
+  + validarParametros(radiosKm: Decimal,\n      ventanaDeAceptacion: Entero)
+  + validarParametros(proceso: ProcesoConfigurable,\n      parametros: Registro)
+}
+class DispatchConfigService <<fabricación pura>> {
+  + invalidar(distribuidora: Distribuidora)
+}
+class ScheduledTaskGate <<fabricación pura>> {
+  + reprogramar(distribuidora: Distribuidora)
+}
+class Distribuidora <<referencia>>
+class ZonaCobertura <<referencia>>
+class RedisService <<referencia>>
+class ConfiguracionModulo <<referencia>>
+
+Map_String_Distribuidora "1" o--> "0..*" Distribuidora
+List_Distribuidora "1" o--> "0..*" Distribuidora
+Map_String_ZonaCobertura "1" o--> "0..*" ZonaCobertura
+List_ZonaCobertura "1" o--> "0..*" ZonaCobertura
+CoverageZoneCronService --> "1" List_ZonaCobertura
+CoverageZoneService --> "1" Map_String_ZonaCobertura
+DistributorService --> "1" List_Distribuidora
+DistributorService --> "1" Map_String_Distribuidora
+ModuleConfigService --> "1" DispatchConfigService
+ModuleConfigService --> "1" ScheduledTaskGate
+ScheduledTaskGate --> "1" RedisService
+CoverageZoneCronService ..> ZonaCobertura
+CoverageZoneService ..> Distribuidora
+CoverageZoneService ..> ZonaCobertura
+DistributorService ..> Distribuidora : «create»
+ModuleConfigService ..> ConfiguracionModulo
+ModuleConfigService ..> Distribuidora
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

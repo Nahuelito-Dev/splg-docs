@@ -1,5 +1,5 @@
 @startuml
-title SS-07 — Gestión de Choferes y Vehículos (24 casos de uso)
+title SS-07 — Gestión de Choferes y Vehículos (35 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -28,8 +28,8 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
@@ -37,6 +37,7 @@ skinparam usecase {
 actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-07 Gestión de Choferes y Vehículos" {
   usecase "CU-031\nRegistrar Chofer" as U031 #back:FFFFFF;line:5A5896
@@ -48,7 +49,7 @@ rectangle "SS-07 Gestión de Choferes y Vehículos" {
   usecase "CU-051\nConsultar Listado de Vehículos" as U051 #back:FFFFFF;line:5A5896
   usecase "CU-096\nActualizar Perfil del Chofer" as U096 #back:FFFFFF;line:5A5896
   usecase "CU-097\nEliminar Chofer (baja lógica)" as U097 #back:FFFFFF;line:5A5896
-  usecase "CU-105\nPlanificar el mantenimiento y\nlas habilitaciones de la flota" as U105 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-105\nPlanificar el mantenimiento y\nlas habilitaciones de la flota" as U105 <<planificado>> #back:FFFFFF;line:5A5896
   usecase "CU-109\nConsultar Detalle del Chofer" as U109 #back:FFFFFF;line:5A5896
   usecase "CU-110\nBuscar Chofer por Usuario" as U110 #back:FFFFFF;line:5A5896
   usecase "CU-111\nEditar Vehículo" as U111 #back:FFFFFF;line:5A5896
@@ -56,19 +57,32 @@ rectangle "SS-07 Gestión de Choferes y Vehículos" {
   usecase "CU-113\nConsultar Detalle del Vehículo" as U113 #back:FFFFFF;line:5A5896
   usecase "CU-114\nBuscar Vehículo por Patente" as U114 #back:FFFFFF;line:5A5896
   usecase "CU-115\nConsultar Vehículos de un\nChofer" as U115 #back:FFFFFF;line:5A5896
-  usecase "CU-136\nRegistrar el Seguro del\nVehículo" as U136 <<pendiente>> #back:FFFFFF;line:5A5896
-  usecase "CU-137\nRegistrar la Verificación\nTécnica Vehicular" as U137 <<pendiente>> #back:FFFFFF;line:5A5896
-  usecase "CU-138\nRegistrar la Licencia de\nConducir del Chofer" as U138 <<pendiente>> #back:FFFFFF;line:5A5896
-  usecase "CU-139\nConsultar los Vencimientos de\nla Flota" as U139 <<pendiente>> #back:FFFFFF;line:5A5896
-  usecase "CU-140\nProgramar un Mantenimiento de\nVehículo" as U140 <<pendiente>> #back:FFFFFF;line:5A5896
-  usecase "CU-141\nRegistrar un Mantenimiento\nRealizado" as U141 <<pendiente>> #back:FFFFFF;line:5A5896
-  usecase "CU-142\nAvisar los Vencimientos\nPróximos de la Flota" as U142 <<pendiente>> #back:FFFFFF;line:5A5896
+  usecase "CU-136\nRegistrar el Seguro del\nVehículo" as U136 #back:FFFFFF;line:5A5896
+  usecase "CU-137\nRegistrar la Verificación\nTécnica Vehicular" as U137 #back:FFFFFF;line:5A5896
+  usecase "CU-138\nRegistrar la Licencia de\nConducir del Chofer" as U138 #back:FFFFFF;line:5A5896
+  usecase "CU-139\nConsultar los Vencimientos de\nla Flota" as U139 #back:FFFFFF;line:5A5896
+  usecase "CU-140\nProgramar un Mantenimiento de\nVehículo" as U140 #back:FFFFFF;line:5A5896
+  usecase "CU-141\nRegistrar un Mantenimiento\nRealizado" as U141 #back:FFFFFF;line:5A5896
+  usecase "CU-142\nAvisar los Vencimientos\nPróximos de la Flota" as U142 #back:FFFFFF;line:5A5896
+  usecase "CU-155\nAdjuntar Archivo a una Tarea\nde Flota" as U155 #back:FFFFFF;line:5A5896
+  usecase "CU-156\nConsultar Adjuntos de una\nTarea de Flota" as U156 #back:FFFFFF;line:5A5896
+  usecase "CU-157\nDescargar un Adjunto de Flota" as U157 #back:FFFFFF;line:5A5896
+  usecase "CU-158\nEliminar un Adjunto de Flota" as U158 #back:FFFFFF;line:5A5896
+  usecase "CU-159\nAlmacenar Archivo" as U159 #back:FFFFFF;line:5A5896
+  usecase "CU-160\nRecuperar Archivo" as U160 #back:FFFFFF;line:5A5896
+  usecase "CU-161\nPoner un Vehículo en Uso para\nun Chofer" as U161 #back:FFFFFF;line:5A5896
+  usecase "CU-162\nLiberar el Vehículo en Uso de\nun Chofer" as U162 #back:FFFFFF;line:5A5896
+  usecase "CU-163\nConsultar el Vehículo en Uso\nde un Chofer" as U163 #back:FFFFFF;line:5A5896
+  usecase "CU-164\nConsultar el Historial de\nVehículos de un Chofer" as U164 #back:FFFFFF;line:5A5896
+  usecase "CU-165\nConsultar el Historial de\nChoferes de un Vehículo" as U165 #back:FFFFFF;line:5A5896
+  usecase "Filtrar por Término" as F_TERM <<factorizado>> #back:FFFFFF;line:5A5896
 }
 
 usecase "CU-082\nCrear Usuario Base\n(SS-01)" as U082 #back:FFFFFF;line:6B7683
 
 A02 -[#2E7D46]- U049
 A02 -[#2E7D46]- U115
+A02 -[#2E7D46]- U163
 A03 -[#8C4A9E]- U031
 A03 -[#8C4A9E]- U032
 A03 -[#8C4A9E]- U033
@@ -92,14 +106,24 @@ A03 -[#8C4A9E]- U138
 A03 -[#8C4A9E]- U139
 A03 -[#8C4A9E]- U140
 A03 -[#8C4A9E]- U141
+A03 -[#8C4A9E]- U155
+A03 -[#8C4A9E]- U156
+A03 -[#8C4A9E]- U157
+A03 -[#8C4A9E]- U158
+A03 -[#8C4A9E]- U161
+A03 -[#8C4A9E]- U162
+A03 -[#8C4A9E]- U163
+A03 -[#8C4A9E]- U164
+A03 -[#8C4A9E]- U165
 A04 -[#8A6D1F]- U105
 A04 -[#8A6D1F]- U142
+A05 --|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U136 ..> U113 : <<include>>
 U137 ..> U113 : <<include>>
 U140 ..> U113 : <<include>>
-U138 ..> U109 : <<include>>
+U138 ..> U110 : <<include>>
 U105 ..> U139 : <<include>>
 U142 ..> U139 : <<include>>
 U096 ..> U110 : <<include>>
@@ -111,6 +135,16 @@ U034 ..> U110 : <<include>>
 U111 ..> U113 : <<include>>
 U112 ..> U113 : <<include>>
 U105 ..> U051 : <<include>>
+U155 ..> U159 : <<include>>
+U157 ..> U156 : <<include>>
+U157 ..> U160 : <<include>>
+U158 ..> U156 : <<include>>
 U031 ..> U082 : <<include>>
+
+' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
+F_TERM ..> U035 : <<extend>>
+note on link
+  Punto de extensión: se indica el parámetro term sobre el listado
+end note
 
 @enduml

@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-086 Registrar Administrador · registrarAdministrador
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :RegistroService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant FBA as :FirebaseAuthPort
+
+    ADM->>+SRV: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rol, distribuidoraId)
+    SRV->>SRV: autorizarAlta(solicitante, rol, distribuidoraId)
+    SRV->>COL: verificarDisponibilidad(correo, telefono)
+    SRV->>+FBA: createUserSafe(correo, contrasena, nombreCompleto, telefono)
+    FBA-->>-SRV: cuenta
+    create participant USR as usuario:Usuario
+    SRV->>USR: «create»(nombreCompleto, correo, telefono, rol, cuenta)
+    create participant ADO as administrador:Administrador
+    SRV->>ADO: «create»(usuario, distribuidoraId)
+    opt La persistencia falla
+        SRV->>FBA: deleteUserSafe(cuenta)
+    end
+    SRV-->>-ADM: usuario

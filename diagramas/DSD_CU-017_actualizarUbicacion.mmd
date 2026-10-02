@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-017 Actualizar Ubicación GPS del Chofer · actualizarUbicacion
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant GW as :DriversGateway
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+    participant CGW as :CustomersGateway
+    participant AGW as :AdminGateway
+
+    CHF->>+GW: actualizarUbicacion(usuarioId, latitud, longitud)
+    GW->>+CHO: actualizarUbicacion(latitud, longitud)
+    alt El chofer ya tiene una ubicación
+        CHO->>UBI: actualizar(latitud, longitud)
+    else El chofer no tiene ubicación
+        create participant NUB as nueva:UbicacionGPS
+        CHO->>NUB: «create»(latitud, longitud)
+    end
+    deactivate CHO
+    GW->>+CHO: getPedidoEnCurso()
+    CHO-->>-GW: pedido
+    opt El chofer tiene un pedido en curso
+        GW-)CGW: notifyCustomer(cliente, evento, posicion)
+        GW-)AGW: notifyAdmins(evento, posicion)
+    end
+    deactivate GW

@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-106 Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant RFS as :RepurchaseForecastService
+    participant COL as :Map#lt;String, InvitacionRecompra#gt;
+    participant INV as invitacion:InvitacionRecompra
+
+    CLI->>+RFS: aceptarInvitacionDeRecompra(invitacionId)
+    RFS->>+COL: get(invitacionId)
+    COL-->>-RFS: invitacion
+    RFS->>+INV: aceptar()
+    INV->>INV: validarVigencia()
+    INV-->>-RFS: items
+    Note over RFS,INV: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con sus ItemPedido
+    Note over RFS,INV: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    RFS-->>-CLI: pedido

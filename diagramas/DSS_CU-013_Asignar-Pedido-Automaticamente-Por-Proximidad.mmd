@@ -1,16 +1,17 @@
 sequenceDiagram
-    title DSS — CU-013 Asignar Pedido Automaticamente Por Proximidad
+    title DSS — CU-013 Asignar Pedido Automáticamente por Proximidad
     autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CHO as Chofer
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
 
-    SAU->>SIS: ofrecerAlSiguienteChofer(pedido)
+    Note over SAU: Se dispara al crearse el<br/>pedido
+    SAU->>SIS: ofrecerAlSiguienteChofer(pedidoId)
     activate SIS
-    Note over SIS: Recorre los radios 5, 10, 15 y 20 km<br/>y descarta los choferes ya contactados<br/>y los de otra distribuidora
+    Note over SIS: Recorre los radios 5,<br/>10, 15 y 20 km y<br/>descarta los choferes ya<br/>contactados y los de<br/>otra distribuidora
     alt Hay un candidato disponible
-        SIS-->>CHO: oferta del pedido (detalle, vence en 30 s)
-        SIS-->>SAU: oferta registrada
+        SIS-)CHO: notificarOferta(pedido)
+        SIS-->>SAU: oferta registrada (vence en 30 s)
     else No quedan candidatos nuevos
         SIS-->>SAU: sin candidatos, el pedido queda a la espera
     end

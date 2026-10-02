@@ -1,0 +1,101 @@
+sequenceDiagram
+    title DSD — CU-048 Procesar Pago Con Mercadopago
+autonumber
+participant UC as CreateOrderUseCase
+participant PAY as PaymentsService
+participant PREP as RepositoryPayment
+participant GW as PaymentGatewayPort
+participant MP as MercadoPago
+participant WCTRL as MercadoPagoWebhookController
+participant EV as EventEmitter2
+participant UCP as ConfirmPaymentUseCase
+participant ORD as OrderRepositoryPort
+participant QR as QueryRunner
+participant ORQ as DispatchOrchestratorService
+
+Note over UC,MP: Creacion del checkout, el pedido NO se despacha todavia
+UC->>PAY: createCheckout(orderId, amount, isDeposit, items, payerEmail)
+activate PAY
+PAY->>PREP: save(Payment con status PENDING, external_reference orderId)
+activate PREP
+PREP-->>PAY: Payment de ledger
+deactivate PREP
+PAY->>GW: createCheckout(orderId, items, payerEmail)
+activate GW
+GW->>MP: Preference.create con external_reference y notification_url
+activate MP
+MP-->>GW: init_point, preference id
+deactivate MP
+GW-->>PAY: initPoint, preferenceId
+deactivate GW
+PAY->>PREP: save(Payment con payment_url y metadata preferenceId)
+activate PREP
+PAY-->>UC: CreateCheckoutResult
+deactivate PAY
+UC-->>UC: devuelve paymentUrl al cliente
+
+Note over MP,ORQ: Notificacion de la pasarela
+MP->>WCTRL: POST /webhook/mercadopago con type, data.id, x-signature
+activate WCTRL
+WCTRL->>PAY: verifyWebhookSignature(xSignature, xRequestId, dataId)
+activate PAY
+PAY->>GW: verifyWebhookSignature(input)
+activate GW
+GW-->>PAY: boolean con HMAC
+deactivate GW
+alt Firma invalida
+    WCTRL-->>MP: 200 received true sin procesar
+    deactivate WCTRL
+else Firma valida
+    WCTRL->>EV: emitAsync(pago.notificado, PagoNotificadoEvent)
+    EV->>UCP: PagoNotificadoListener, execute(type, dataId)
+    activate UCP
+    UCP->>PAY: confirmFromGateway(type, dataId)
+    alt type distinto de payment o sin dataId
+        PAY-->>UCP: null
+        deactivate PAY
+    else Notificacion procesable
+        PAY->>GW: getPayment(dataId)
+        activate GW
+        GW->>MP: Payment.get(id)
+        activate MP
+        MP-->>GW: status y external_reference reales
+        deactivate MP
+        GW-->>PAY: GatewayPayment normalizado
+        deactivate GW
+        PAY->>PREP: updateLedger, match por gateway_payment_id o external_reference
+        PREP-->>PAY: is_deposit del registro
+        deactivate PREP
+        PAY-->>UCP: externalReference, gatewayPaymentId, status, isDeposit
+    end
+    UCP->>ORD: findByIdFull(externalReference)
+    activate ORD
+    ORD-->>UCP: Order o null
+    deactivate ORD
+    alt status approved
+        UCP->>QR: startTransaction y setLock pessimistic_write sobre Order
+        activate QR
+        QR-->>UCP: locked
+        deactivate QR
+        alt isTerminal(locked.status)
+            UCP->>QR: commit sin efectos, pago tardio ignorado
+            activate QR
+        else Ya tiene gatewayPaymentId
+            UCP->>QR: commit sin efectos, reintento del webhook
+        else locked.status RESERVED
+            UCP->>QR: save(locked con deposit_paid true y gatewayPaymentId)
+            UCP->>QR: commit, NO se despacha, lo hara el cron CU-075
+        else Pedido normal
+            UCP->>QR: save(locked con paymentStatus PAID y gatewayPaymentId)
+            UCP->>QR: commitTransaction()
+            UCP->>ORQ: offerToNextDriver(order), ver DSD A.1
+            activate ORQ
+        end
+    else status rejected o cancelled
+        UCP->>UCP: logger.log sin accion
+    end
+    WCTRL-->>MP: 200 received true
+end
+deactivate ORQ
+deactivate QR
+deactivate UCP

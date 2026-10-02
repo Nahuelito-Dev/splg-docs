@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-056 Definir Zona de Cobertura · definirZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: definirZonaDeCobertura(nombre, poligono, recargo, activa)
+    SRV->>+DIS: definirZona(nombre, poligono, recargo, activa)
+    create participant ZON as zona:ZonaCobertura
+    DIS->>ZON: «create»(nombre, poligono, recargo, activa)
+    ZON->>ZON: validarPoligono()
+    ZON->>ZON: validarRecargo()
+    DIS-->>-SRV: zona
+    SRV-->>-ADM: zona

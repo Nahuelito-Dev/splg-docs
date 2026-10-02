@@ -1,13 +1,13 @@
 sequenceDiagram
     title DSS — CU-125 Consultar el Carrito
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: consultarCarrito()
     activate SIS
     alt el cliente tiene carrito
-        SIS-->>CLI: detalle del carrito y total
+        SIS-->>CLI: detalle del carrito, total a precio vigente y diferencias de precio
     else el cliente no tiene carrito
         SIS-->>CLI: carrito vacío
     end

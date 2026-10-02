@@ -1,0 +1,39 @@
+@startuml
+title Diagrama de estados — Reclamo
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "PENDING\npendiente" as PENDING
+state "IN_PROCESS\nen proceso" as IN_PROCESS
+state "RESOLVED\nresuelto" as RESOLVED
+state "REJECTED\nrechazado" as REJECTED
+
+[*] --> PENDING : registrarReclamo() [el pedido es del cliente]
+PENDING --> IN_PROCESS : tomarReclamo() [administrador]
+PENDING --> RESOLVED : resolverReclamo(nota, RESOLVED)
+PENDING --> REJECTED : resolverReclamo(nota, REJECTED)
+IN_PROCESS --> RESOLVED : resolverReclamo(nota, RESOLVED)
+IN_PROCESS --> REJECTED : resolverReclamo(nota, REJECTED)
+RESOLVED --> IN_PROCESS : reabrirReclamo()
+REJECTED --> IN_PROCESS : reabrirReclamo()
+
+note bottom of RESOLVED
+  Un reclamo cerrado no se vuelve a cerrar:
+  para cambiar la resolución primero se reabre.
+  Ningún camino vuelve a PENDING.
+end note
+@enduml

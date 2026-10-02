@@ -1,9 +1,9 @@
 sequenceDiagram
-    title DSS — CU-049 Consultar Balance Ganancias Del Chofer
+    title DSS — CU-049 Consultar Balance / Ganancias del Chofer
     autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor ADM as Administrador
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
 
     CHO->>SIS: consultarPerfilDelChofer(usuarioId)
     activate SIS

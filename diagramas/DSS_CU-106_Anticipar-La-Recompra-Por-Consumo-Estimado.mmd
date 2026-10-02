@@ -1,26 +1,26 @@
 sequenceDiagram
-    title DSS — CU-106 Anticipar La Recompra Por Consumo Estimado
+    title DSS — CU-106 Anticipar la recompra por consumo estimado
     autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CLI as Cliente
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
 
-    Note over SAU: Se ejecuta una vez por dia
+    Note over SAU: Se ejecuta una vez por<br/>día
     SAU->>SIS: anticiparRecompras()
     activate SIS
-    Note over SIS: Estima el ritmo de consumo de cada cliente<br/>ponderado por kilaje y corregido por estacionalidad,<br/>y proyecta la fecha de agotamiento
+    Note over SIS: Estima el ritmo de<br/>consumo de cada cliente<br/>ponderado por kilaje y<br/>corregido por<br/>estacionalidad, y<br/>proyecta la fecha de<br/>agotamiento
 
-    loop Por cada cliente dentro de la ventana de anticipacion
-        alt El cliente no tiene pedido activo ni invitacion reciente
-            SIS-->>CLI: invitacion a reponer con el pedido precargado (vigencia limitada)
+    loop Por cada cliente dentro de la ventana de anticipación
+        alt El cliente no tiene pedido activo ni invitación reciente
+            SIS-)CLI: notificarInvitacionDeRecompra(invitacion)
             alt El cliente acepta dentro de la vigencia
                 CLI->>SIS: aceptarInvitacionDeRecompra(invitacionId)
-                SIS-->>CLI: pedido creado y en busqueda de chofer
+                SIS-->>CLI: pedido creado y en búsqueda de chofer
             else Rechaza o vence la vigencia
-                SIS->>SIS: cerrar la invitacion y registrar la fecha del intervalo minimo
+                Note over SIS: Se cierra la invitación<br/>y se registra la fecha<br/>del intervalo mínimo
             end
-        else El cliente esta excluido
-            SIS->>SIS: no emitir invitacion
+        else El cliente está excluido
+            Note over SIS: No se emite invitación
         end
     end
     SIS-->>SAU: invitaciones emitidas y caducadas procesadas

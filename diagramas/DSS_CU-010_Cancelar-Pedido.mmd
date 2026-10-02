@@ -1,17 +1,18 @@
 sequenceDiagram
-    title DSS — CU-010 Cancelar Pedido
+    title DSS — CU-010 Cancelar Pedido (Administrador)
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    alt cancelación ordinaria
+    alt Cancelación ordinaria
         ADM->>SIS: cancelarPedido(pedidoId, motivo)
         activate SIS
         SIS-->>ADM: pedido cancelado (motivo registrado, stock restituido)
         deactivate SIS
-    else cancelación forzada
+    else Cancelación forzada
         ADM->>SIS: cancelarPedidoForzado(pedidoId)
         activate SIS
         SIS-->>ADM: pedido cancelado por decisión administrativa
         deactivate SIS
     end
+    Note over ADM,SIS: Si el pedido tenía un pago aprobado por una<br/>pasarela (planificado, I-7), se reintegra con<br/>CU-168

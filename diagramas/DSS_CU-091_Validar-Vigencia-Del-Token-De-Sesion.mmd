@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-091 Validar Vigencia Del Token De Sesion
+    title DSS — CU-091 Validar Vigencia del Token de Sesión
     autonumber
-    actor CLI as Usuario
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: validarSesion()
     activate SIS
@@ -12,3 +12,4 @@ sequenceDiagram
         SIS-->>CLI: no autorizado
     end
     deactivate SIS
+    Note over CLI,SIS: También lo inician el Chofer (ACT-02), el<br/>Administrador (ACT-03) y el Administrador<br/>General (ACT-05)

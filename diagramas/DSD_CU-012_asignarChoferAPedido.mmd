@@ -1,0 +1,35 @@
+sequenceDiagram
+    title DSD — CU-012 Asignar Chofer Manualmente · asignarChoferAPedido
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :OrderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant DEL as :DeliveryService
+    participant CHO as chofer:Chofer
+    participant FLK as :FleetDispatchLockService
+    participant PED as pedido:Pedido
+    participant RT as :RealtimeDispatchPort
+
+    ADM->>+SRV: asignarChoferAPedido(pedidoId, choferId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+DEL: findById(choferId)
+    DEL-->>-SRV: chofer
+    SRV->>CHO: assertElegibleParaAsignacion()
+    SRV->>FLK: assertChoferHabilitado(chofer)
+    SRV->>+FLK: vehiculoEnUsoDelChofer(chofer)
+    FLK-->>-SRV: vehiculo
+    SRV->>+PED: getChofer()
+    PED-->>-SRV: choferAnterior
+    SRV->>+PED: asignarChofer(chofer, vehiculo)
+    PED->>PED: transicionar(aceptado)
+    PED->>PED: generarCodigoDeEntrega()
+    deactivate PED
+    SRV->>PED: cerrarOfertas()
+    opt Había otro chofer asignado
+        SRV-)RT: stopTracking(choferAnterior)
+        SRV-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)
+    end
+    SRV-)RT: notifyAdmins(pedido)
+    SRV-)RT: notifyDriverNewOrder(chofer, pedido)
+    SRV-->>-ADM: pedido

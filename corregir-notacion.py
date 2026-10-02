@@ -24,19 +24,29 @@ DOCS = ["2-Analisis.md", "3-Diseño.md", "Casos-de-Uso.md"]
 SALIDA = "/private/tmp/claude-501/-Users-nahuelwagner/d9854aad-6049-4dd8-9adb-953839ca219c/scratchpad/propuesta/"
 
 # ---------- 1. titulo ----------
+def nombres_del_catalogo():
+    """Nombre de cada caso de uso tal como figura en el catálogo de Casos-de-Uso.md §3."""
+    t = open(D + "Casos-de-Uso.md", encoding="utf-8").read()
+    return {m.group(1): m.group(2).strip()
+            for m in re.finditer(r'^\| (CU-\d{3}) ([^|]+?) \| SS-\d\d \|', t, re.M)}
+
 def titulo(base):
     m = re.match(r'(DSS|DSD)_((?:CU-\d+_)+)(.+)\.mmd$', base)
     if not m: return None
     tipo = "DSS" if m.group(1) == "DSS" else "DSD"
-    casos = " / ".join(re.findall(r'CU-\d+', m.group(2)))
+    cods = re.findall(r'CU-\d+', m.group(2))
+    casos = " / ".join(cods)
     nombre = m.group(3).replace("-", " ").replace("_", " ").strip()
+    if tipo == "DSS":
+        # el título de un DSS lleva el nombre real del caso, con sus tildes
+        nombre = nombres_del_catalogo().get(cods[0], nombre)
     return f"{tipo} — {casos} {nombre}"
 
 # ---------- 3. mensajes que no esperan respuesta ----------
 # El nombre solo no alcanza: se pide ademas que el destinatario no conteste.
 AVISO = re.compile(r'\b(notify\w*|send\w*(Push|Notification|Confirmation|Offer\w*)|'
                    r'emit\w*|broadcast\w*|publish\w*)\s*\(', re.I)
-AVISO_DSS = re.compile(r'^(aviso|notificaci|se le avisa|le llega)', re.I)
+AVISO_DSS = re.compile(r'^(aviso|notificar|notificaci|se le avisa|le llega)', re.I)
 
 def responde(lineas, i, destino):
     """Mira si el destinatario contesta algo despues del mensaje i."""

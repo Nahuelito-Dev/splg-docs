@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-059 Eliminar Zona de Cobertura · eliminarZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant COL as :Map#lt;String, ZonaCobertura#gt;
+    participant ZON as zona:ZonaCobertura
+
+    ADM->>+SRV: eliminarZonaDeCobertura(zonaId)
+    SRV->>+COL: get(zonaId)
+    COL-->>-SRV: zona
+    SRV->>ZON: darDeBaja()
+    SRV-->>-ADM: confirmacion

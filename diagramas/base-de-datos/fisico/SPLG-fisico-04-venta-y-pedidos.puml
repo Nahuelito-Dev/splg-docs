@@ -1,0 +1,174 @@
+@startuml
+title Modelo físico — Venta y pedidos
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+skinparam linetype polyline
+
+entity "coverage_zone" as e_coverage_zone {
+  {field} **coverage_zone_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(120) *
+  {field} area : geometry *
+  {field} surcharge_value : numeric(10,2) *
+  {field} isActive : boolean *
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} deletedAt : timestamptz
+  {field} surcharge_type : coverage_zone_surcharge_type_enum *
+  {field} label : varchar(40)
+  {field} color : varchar(7)
+  {field} valid_until : timestamptz
+  {field} priority : integer *
+  {field} valid_from : timestamptz
+}
+entity "time_slot" as e_time_slot {
+  {field} **time_slot_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(50) *
+  {field} startTime : time *
+  {field} endTime : time *
+  {field} capacity : integer *
+  {field} isActive : boolean *
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+}
+entity "cart" as e_cart {
+  {field} **cart_id** : uuid * <<PK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} updated_at : timestamptz *
+}
+entity "cart_item" as e_cart_item {
+  {field} **cart_item_id** : uuid * <<PK>>
+  {field} //cart_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} quantity : integer *
+  {field} unit_price : numeric(10,2) *
+}
+entity "order" as e_order {
+  {field} **order_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //customer_id// : uuid * <<FK>>
+  {field} //time_slot_id// : uuid <<FK>>
+  {field} scheduled_date : date
+  {field} deposit_amount : numeric(10,2) *
+  {field} deposit_paid : boolean *
+  {field} //delivery_id// : uuid <<FK>>
+  {field} //address_id// : uuid * <<FK>>
+  {field} status : order_status_enum *
+  {field} paymentMethod : order_paymentmethod_enum *
+  {field} paymentType : order_paymenttype_enum *
+  {field} paymentStatus : order_paymentstatus_enum *
+  {field} totalAmount : numeric(10,2) *
+  {field} notes : text
+  {field} deliveryInstructions : text
+  {field} acceptedAt : timestamp
+  {field} onTheWayAt : timestamp
+  {field} deliveredAt : timestamp
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} cancellationReason : text
+  {field} gatewayPaymentId : varchar(100)
+  {field} deliveryCode : varchar(12)
+  {field} receiver_name : varchar(120)
+  {field} receiver_document : varchar(20)
+  {field} receiver_relationship : varchar(40)
+  {field} delivery_mode : order_delivery_mode_enum *
+  {field} deliveryPoint : geometry
+  {field} //coverage_zone_id// : uuid <<FK>>
+  {field} zone_name : varchar(120)
+  {field} zone_surcharge_type : order_zone_surcharge_type_enum
+  {field} zone_surcharge_value : numeric(10,2)
+  {field} zone_surcharge_amount : numeric(10,2) *
+  {field} subtotal_items : numeric(10,2) *
+  {field} vehicle_car_id : uuid
+  {field} vehicle_patent : varchar(20)
+  {field} vehicle_brand : varchar(50)
+  {field} vehicle_model : varchar(50)
+  {field} <color:#1F5E8C>express_surcharge_amount : numeric(12,2) * <<propuesto>></color>
+}
+entity "order_address_change" as e_order_address_change {
+  {field} **change_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //from_address_id// : uuid * <<FK>>
+  {field} //to_address_id// : uuid * <<FK>>
+  {field} //changed_by_user_id// : uuid * <<FK>>
+  {field} changed_at : timestamptz *
+  {field} reason : text
+}
+entity "order_item" as e_order_item {
+  {field} **order_item_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} quantity : integer *
+  {field} unitPrice : numeric(10,2) *
+  {field} subtotal : numeric(10,2) *
+}
+entity "order_status_history" as e_order_status_history {
+  {field} **history_id** : uuid * <<PK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} from_status : order_status_enum
+  {field} to_status : order_status_enum *
+  {field} //changed_by_user_id// : uuid <<FK>>
+  {field} reason : text
+  {field} changed_at : timestamptz *
+}
+entity "user" as e_user #F1F1F1 {
+}
+entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
+}
+entity "user_address" as e_user_address #F1F1F1 {
+}
+entity "delivery" as e_delivery #F1F1F1 {
+}
+
+e_user ||--o{ e_cart : user_id
+e_cart ||--o{ e_cart_item : cart_id
+e_gas_cylinder ||--o{ e_cart_item : gas_cylinder_id
+e_user_address ||--o{ e_order : address_id
+e_coverage_zone |o--o{ e_order : coverage_zone_id
+e_user ||--o{ e_order : customer_id
+e_delivery |o--o{ e_order : delivery_id
+e_time_slot |o--o{ e_order : time_slot_id
+e_user ||--o{ e_order_address_change : changed_by_user_id
+e_user_address ||--o{ e_order_address_change : from_address_id
+e_order ||--o{ e_order_address_change : order_id
+e_user_address ||--o{ e_order_address_change : to_address_id
+e_gas_cylinder ||--o{ e_order_item : gas_cylinder_id
+e_order ||--o{ e_order_item : order_id
+e_user |o--o{ e_order_status_history : changed_by_user_id
+e_order ||--o{ e_order_status_history : order_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

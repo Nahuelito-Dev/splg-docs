@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-146 Consultar la Fecha Estimada de Recompra
+autonumber
+participant CTRL as RepurchaseController
+participant EXP as RepurchaseEstimatesService
+participant CSRV as CustomersService
+participant ORD as OrderRepositoryPort
+
+CTRL->>EXP: recomprasEstimadas(dias, distributorId)
+activate EXP
+EXP->>CSRV: findByEstimateWindow(dias)
+activate CSRV
+CSRV-->>EXP: lista de Customer con la estimación en la ventana
+deactivate CSRV
+loop por cada cliente de la ventana
+    EXP->>ORD: findDeliveredHistory(customerId, distributorId, ultima compra)
+    activate ORD
+    ORD-->>EXP: última compra a la distribuidora o null
+    deactivate ORD
+end
+alt hay clientes que le compraron a la distribuidora
+    EXP-->>CTRL: listado con consumo y última compra
+    deactivate EXP
+else no hay
+    EXP-->>CTRL: listado vacío
+end

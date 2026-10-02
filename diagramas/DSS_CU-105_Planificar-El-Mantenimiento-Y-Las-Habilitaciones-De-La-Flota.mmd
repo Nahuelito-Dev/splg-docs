@@ -1,39 +1,39 @@
 sequenceDiagram
-    title DSS — CU-105 Planificar El Mantenimiento Y Las Habilitaciones De La Flota
+    title DSS — CU-105 Planificar el mantenimiento y las habilitaciones de la flota
     autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CHO as Chofer
-    actor ADM as Administrador
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
 
-    Note over SAU: Se ejecuta una vez por dia,<br/>a la hora configurada
+    Note over SAU: Se ejecuta una vez por<br/>día, a la hora<br/>configurada
     SAU->>SIS: planificarMantenimientoDeFlota()
     activate SIS
-    Note over SIS: Estima el consumo diario de cada vehiculo,<br/>proyecta los vencimientos y arma las ventanas<br/>que no dejan la zona bajo el minimo
+    Note over SIS: Estima el consumo diario<br/>de cada vehículo,<br/>proyecta los<br/>vencimientos y arma las<br/>ventanas que no dejan la<br/>zona bajo el mínimo
 
-    loop Por cada tarea dentro de la ventana de anticipacion
+    loop Por cada tarea dentro de la ventana de anticipación
         loop Por cada ventana alternativa, de mejor a peor
-            SIS-->>CHO: propuesta de ventana de taller (vigencia limitada)
+            SIS-)CHO: notificarPropuestaDeVentana(propuesta)
             alt El chofer acepta
                 CHO->>SIS: aceptarVentanaDeMantenimiento(propuestaId)
-                SIS-->>CHO: ventana confirmada y agenda bloqueada
+                SIS-->>CHO: ventana aceptada, pendiente de la confirmación del administrador
             else Rechaza o vence la vigencia
-                SIS->>SIS: cerrar la propuesta y pasar a la siguiente ventana
+                Note over SIS: Se cierra la propuesta y<br/>se pasa a la siguiente<br/>ventana
             end
         end
 
         alt Se agotaron las ventanas sin acuerdo
-            SIS-->>ADM: cuadro de opciones evaluadas y motivo de cada descarte
+            SIS-)ADM: notificarOpcionesEvaluadas(tarea, opciones)
             ADM->>SIS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
             SIS-->>ADM: tarea programada
-        else La ventana quedo acordada con el chofer
-            SIS->>SIS: registrar la tarea como programada
+        else La ventana quedó acordada con el chofer
+            Note over SIS: Se registra la tarea<br/>como programada
         end
     end
 
-    alt Hay una habilitacion bloqueante vencida
-        SIS->>SIS: dejar el vehiculo fuera de servicio
-        SIS-->>ADM: aviso de vehiculo inhabilitado
+    alt Hay una habilitación bloqueante vencida
+        Note over SIS: Deja el vehículo fuera<br/>de servicio
+        SIS-)ADM: notificarVehiculoInhabilitado(vehiculo)
     end
-    SIS-->>SAU: planificacion resuelta
+    SIS-->>SAU: planificación resuelta
     deactivate SIS

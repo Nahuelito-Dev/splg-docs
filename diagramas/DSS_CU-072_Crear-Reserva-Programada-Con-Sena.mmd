@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-072 Crear Reserva Programada Con Sena
+    title DSS — CU-072 Crear Reserva Programada con Seña
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
     activate SIS

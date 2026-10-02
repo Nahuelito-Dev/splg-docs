@@ -1,0 +1,54 @@
+sequenceDiagram
+    title DSD — CU-033 Activar Desactivar Chofer
+autonumber
+participant CTRL as DeliveryController
+participant SRV as DeliveryService
+participant DREP as RepositoryDelivery
+participant REDIS as RedisService
+
+Note over CTRL: «include» CU-110 Buscar Chofer por Usuario
+CTRL->>CTRL: acotar(id, distributorId), solo con distribuidora en contexto
+CTRL->>SRV: findOne(id)
+activate SRV
+SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+activate DREP
+DREP-->>SRV: Delivery o null
+deactivate DREP
+SRV-->>CTRL: Delivery, o NotFoundException si no existe
+CTRL->>SRV: assertAlcance(delivery, null, distributorId)
+alt Chofer de otra distribuidora que la del contexto
+    SRV-->>CTRL: NotFoundException Delivery with ID not found
+else Misma distribuidora o sin distribuidora en contexto
+    SRV-->>CTRL: sin error
+    deactivate SRV
+    CTRL->>SRV: toggleActiveStatus(id, dto.isEnabled), dto validado por ToggleDeliveryStatusDto
+    activate SRV
+    SRV->>SRV: findOne(id)
+    SRV->>DREP: findOne(where delivery_id, relations user y user.role)
+    activate DREP
+    DREP-->>SRV: Delivery o null
+    deactivate DREP
+    alt Chofer inexistente
+        SRV-->>CTRL: NotFoundException Delivery with ID not found
+        deactivate SRV
+    else Chofer encontrado
+        SRV->>SRV: delivery.isEnabled igual isEnabled
+        alt Se deshabilita
+            SRV->>SRV: delivery.isAvailable igual false
+            SRV->>DREP: save(delivery)
+            activate DREP
+            DREP-->>SRV: Delivery actualizado
+            deactivate DREP
+            SRV->>REDIS: removeDriver(delivery.userId)
+            activate REDIS
+            REDIS-->>SRV: chofer sacado del radar drivers:locations
+            deactivate REDIS
+        else Se habilita
+            SRV->>DREP: save(delivery)
+            activate DREP
+            DREP-->>SRV: Delivery actualizado
+            deactivate DREP
+        end
+        SRV-->>CTRL: Delivery
+    end
+end

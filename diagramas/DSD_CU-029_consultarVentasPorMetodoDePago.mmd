@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-029 Ver Reporte por Método de Pago · consultarVentasPorMetodoDePago
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReportsService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as pedido:Pedido
+
+    ADM->>+SRV: consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)
+    SRV->>+COL: entregadosEntre(fechaDesde, fechaHasta)
+    COL-->>-SRV: pedidos
+    loop Por cada pedido entregado
+        SRV->>PED: getMetodoDePago()
+        SRV->>PED: getTotal()
+    end
+    SRV->>SRV: agruparPorMetodoDePago(pedidos)
+    SRV-->>-ADM: ventasPorMetodoDePago

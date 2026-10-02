@@ -1,15 +1,16 @@
 sequenceDiagram
-    title DSS — CU-021 Recibir Notificaciones En Tiempo Real
+    title DSS — CU-021 Recibir Notificaciones en Tiempo Real
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: suscribirseAlSeguimiento(clienteId)
     activate SIS
     SIS-->>CLI: suscripción confirmada
     deactivate SIS
 
-    loop mientras el pedido esté en curso
-        SIS-)CLI: cambio de estado del pedido (aceptado, en camino, entregado, cancelado)
-        SIS-)CLI: posición actual del chofer (latitud, longitud)
+    loop Mientras el pedido esté en curso
+        SIS-)CLI: notificarCambioDeEstado(pedido, estado)
+        SIS-)CLI: notificarUbicacionDelChofer(pedido, latitud, longitud)
     end
+    Note over CLI,SIS: Estados notificados: aceptado, en camino,<br/>entregado y cancelado

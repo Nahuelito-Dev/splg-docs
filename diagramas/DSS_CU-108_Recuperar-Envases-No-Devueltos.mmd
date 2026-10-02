@@ -1,42 +1,43 @@
 sequenceDiagram
-    title DSS — CU-108 Recuperar Envases No Devueltos
+    title DSS — CU-108 Recuperar envases no devueltos
     autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CLI as Cliente
-    actor ADM as Administrador
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
+    actor ADM as Administrador (ACT-03)
 
-    Note over SAU: Se ejecuta con la periodicidad configurada
+    Note over SAU: Se ejecuta con la<br/>periodicidad configurada
     SAU->>SIS: gestionarEnvasesNoDevueltos()
     activate SIS
-    Note over SIS: Detecta los envases retenidos por encima<br/>del plazo de tolerancia configurado
+    Note over SIS: Detecta los envases<br/>retenidos por encima del<br/>plazo de tolerancia<br/>configurado
 
     loop Por cada envase retenido
-        loop Por cada escalon de la secuencia
-            alt El envase ya volvio
-                SIS->>SIS: cerrar el caso y liberar el deposito
+        loop Por cada escalón de la secuencia
+            alt El envase ya volvió
+                Note over SIS: Se cierra el caso y se<br/>libera el depósito
             else El envase sigue retenido
-                SIS-->>CLI: aviso del escalon (recordatorio, deposito comprometido)
+                SIS-)CLI: notificarEscalonDeRecupero(caso, escalon)
                 alt Hay una entrega programada al mismo cliente
-                    SIS-->>CLI: oferta de devolver el envase en ese viaje (vigencia limitada)
+                    SIS-)CLI: notificarOfertaDeRetiro(oferta)
                     alt El cliente acepta el retiro
                         CLI->>SIS: aceptarRetiroEnLaEntrega(ofertaId)
+                        SIS-->>CLI: retiro acordado para esa entrega
                     else No responde antes de la vigencia
-                        SIS->>SIS: vencer la oferta de retiro
+                        Note over SIS: Vence la oferta de<br/>retiro
                     end
                 else No hay entrega programada
-                    SIS->>SIS: saltear la oferta de retiro
+                    Note over SIS: Se saltea la oferta de<br/>retiro
                 end
             end
         end
 
         alt Se agotaron los escalones y el importe supera el umbral
-            SIS-->>ADM: legajo del caso (cliente, historial del envase, importe)
+            SIS-)ADM: notificarLegajoDeRecupero(caso)
             ADM->>SIS: resolverCasoDeRecupero(casoId, decision)
-            Note over ADM,SIS: decision: cobrar el deposito, dar de baja el envase<br/>o cerrar el caso sin cargo
-            SIS-->>ADM: resolucion registrada
-        else El envase volvio o el importe no llega al umbral
-            SIS->>SIS: cerrar el caso segun corresponda
+            Note over SAU,ADM: decision: cobrar el depósito, dar de baja el<br/>envase o cerrar el caso sin cargo
+            SIS-->>ADM: resolución registrada
+        else El envase volvió o el importe no llega al umbral
+            Note over SIS: Se cierra el caso según<br/>corresponda
         end
     end
     SIS-->>SAU: casos de recupero procesados

@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-152 Consultar el Registro de Auditoría · consultarAuditoria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :AuditService
+    participant LST as :List#lt;AsientoAuditoria#gt;
+
+    ADM->>+SRV: consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)
+    SRV->>+LST: filtrar(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)
+    LST-->>-SRV: asientos
+    SRV-->>-ADM: asientos, total

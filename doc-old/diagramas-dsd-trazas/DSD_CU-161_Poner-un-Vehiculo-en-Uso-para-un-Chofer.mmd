@@ -1,0 +1,66 @@
+sequenceDiagram
+    title DSD — CU-161 Poner Un Vehiculo En Uso Para Un Chofer
+autonumber
+participant CTRL as DeliveryVehicleController
+participant FSRV as FleetTaskService
+participant VSRV as VehicleAssignmentService
+participant CREP as RepositoryCar
+participant AREP as RepositoryVehicleAssignment
+
+CTRL->>VSRV: assertChoferDelTenant(id, distributorId)
+activate VSRV
+alt chofer inexistente o de otra distribuidora
+    VSRV-->>CTRL: NotFoundException
+else chofer del tenant
+    VSRV-->>CTRL: ok
+end
+deactivate VSRV
+CTRL->>FSRV: assertVehiculoHabilitado(dto.carId, distributorId)
+activate FSRV
+alt vehículo inexistente o de otra distribuidora
+    FSRV-->>CTRL: NotFoundException
+else vehículo inhabilitado por documentación vencida
+    FSRV-->>CTRL: BadRequestException No se puede asignar con los motivos
+else vehículo habilitado
+    FSRV-->>CTRL: ok
+end
+deactivate FSRV
+CTRL->>VSRV: ponerEnUso(id, dto.carId, dto.note, distributorId, user.user_id)
+activate VSRV
+VSRV->>VSRV: assertChoferDelTenant(id, distributorId)
+VSRV->>VSRV: dataSource.transaction con withTransactionRetry
+VSRV->>CREP: findOne con bloqueo de escritura (where car_id y distributor_id)
+activate CREP
+CREP-->>VSRV: Car o null
+deactivate CREP
+alt el vehículo no existe o es de otra distribuidora
+    VSRV-->>CTRL: NotFoundException Vehículo no encontrado
+else el vehículo existe
+    VSRV->>AREP: findOne(where delivery_id y released_at nulo)
+    activate AREP
+    AREP-->>VSRV: asignación abierta del chofer o null
+    deactivate AREP
+    alt el chofer ya usa ese mismo vehículo
+        VSRV-->>CTRL: la asignación abierta, sin cerrar ni abrir otra ni agregar historial
+    else es otro vehículo o no tenía ninguno
+        VSRV->>AREP: findOne(where car_id y released_at nulo)
+        activate AREP
+        AREP-->>VSRV: asignación abierta del vehículo o null
+        deactivate AREP
+        VSRV->>VSRV: bloquear las filas de los choferes involucrados, en orden de id
+        VSRV->>VSRV: assertSinViajeEnCurso(cada chofer involucrado)
+        alt algún chofer tiene un pedido ACCEPTED u ON_THE_WAY
+            VSRV-->>CTRL: ConflictException
+        else sin viaje en curso
+            VSRV->>AREP: update released_at y released_by donde released_at nulo y delivery_id o car_id
+            VSRV->>AREP: save(nueva asignación con assigned_at, assigned_by y note)
+            activate AREP
+            AREP-->>VSRV: VehicleAssignment
+            deactivate AREP
+            VSRV-->>CTRL: VehicleAssignment con car
+        end
+    end
+end
+Note over VSRV,CTRL: unicidad (23505) da ConflictException al instante, un deadlock se reintenta hasta tres intentos en total y luego da ConflictException
+deactivate VSRV
+CTRL->>CTRL: VehicleAssignmentMapper.toVehicleInUseDto(asignación, false)

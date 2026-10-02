@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-135 Bloquear el Despacho de un Envase Vencido · verificarVigenciaAlAsignar
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :CylinderService
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant ENV as envase:Envase
+
+    SIS->>+SRV: verificarVigenciaAlAsignar(pedidoId, series)
+    loop Por cada serie de series
+        SRV->>+ENVS: get(serie)
+        ENVS-->>-SRV: envase
+        SRV->>+ENV: estaVigente(hoy)
+        ENV-->>-SRV: vigente
+    end
+    SRV-->>-SIS: vencidas

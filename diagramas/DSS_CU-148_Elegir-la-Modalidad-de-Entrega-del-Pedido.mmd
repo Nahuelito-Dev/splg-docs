@@ -1,10 +1,10 @@
 sequenceDiagram
     title DSS — CU-148 Elegir la Modalidad de Entrega del Pedido
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
-    CLI->>SIS: elegirModalidadDeEntrega(pedidoId, modalidad)
+    CLI->>SIS: consultarModalidadesDeEntrega(direccionId)
     activate SIS
     alt las dos modalidades están disponibles
         SIS-->>CLI: opciones con precio y tiempo estimado

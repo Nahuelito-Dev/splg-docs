@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-129 Consultar Detalle del Cliente · consultarDetalleDelCliente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomersService
+    participant COL as :Map#lt;String, Cliente#gt;
+
+    ADM->>+SRV: consultarDetalleDelCliente(clienteId)
+    SRV->>+COL: get(clienteId)
+    COL-->>-SRV: cliente
+    SRV-->>-ADM: cliente

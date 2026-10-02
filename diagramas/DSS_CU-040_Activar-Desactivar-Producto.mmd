@@ -1,14 +1,29 @@
 sequenceDiagram
-    title DSS — CU-040 Activar Desactivar Producto
+    title DSS — CU-040 Activar / Desactivar Producto
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    ADM->>SIS: desactivarProducto(productoId)
-    activate SIS
-    alt el producto existe en la distribuidora
-        SIS-->>ADM: producto desactivado (deja de aparecer en el catálogo)
-    else el producto no existe
-        SIS-->>ADM: recurso no encontrado
+    alt El administrador da de baja el producto
+        ADM->>SIS: desactivarProducto(productoId)
+        activate SIS
+        alt el producto existe en la distribuidora
+            SIS-->>ADM: producto desactivado (deja de aparecer en el catálogo)
+        else el producto no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    else El administrador reactiva un producto (planificado, I-1)
+        ADM->>SIS: consultarProductosInactivos()
+        activate SIS
+        SIS-->>ADM: productos dados de baja de la distribuidora
+        deactivate SIS
+        ADM->>SIS: reactivarProducto(productoId)
+        activate SIS
+        alt el producto existe en la distribuidora
+            SIS-->>ADM: producto reactivado (vuelve a aparecer en el catálogo)
+        else el producto no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
     end
-    deactivate SIS

@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-106 Anticipar la recompra por consumo estimado · anticiparRecompras
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant RFS as :RepurchaseForecastService
+    participant INVS as :List#lt;InvitacionRecompra#gt;
+    participant CLIS as :List#lt;Cliente#gt;
+    participant EST as :ConsumptionEstimatorService
+    participant NOT as :NotificationsService
+
+    SIS->>+RFS: anticiparRecompras()
+    RFS->>INVS: caducarVencidas(hoy)
+    RFS->>+CLIS: buscarConHistorialSuficiente()
+    CLIS-->>-RFS: clientes
+    loop Por cada cliente
+        RFS->>+EST: estimarProximaRecompra(cliente)
+        EST-->>-RFS: fechaEstimada
+        opt La recompra cae dentro de los días de aviso del cliente
+            create participant INV as :InvitacionRecompra
+            RFS->>INV: «create»(cliente, fechaEstimada, vigencia)
+            create participant ITS as :ItemSugerido
+            INV->>ITS: «create»(producto, cantidad)
+            RFS-)NOT: sendRepurchaseInvitation(cliente, invitacion)
+        end
+    end
+    deactivate RFS

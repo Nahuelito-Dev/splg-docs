@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-098 Registrar El Token De Notificaciones Del Dispositivo
+    title DSS — CU-098 Registrar el Token de Notificaciones del Dispositivo
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: registrarTokenDeNotificaciones(usuarioId, token, plataforma)
     activate SIS

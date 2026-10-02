@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-060 Registrar Incidencia de Entrega · registrarIncidencia
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :IncidentService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CHF->>+SRV: registrarIncidencia(pedidoId, tipo, descripcion, foto)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: esDelChofer(chofer)
+    PED-->>-SRV: asignado
+    SRV->>+PED: registrarIncidencia(usuario, tipo, descripcion, foto)
+    create participant INC as :Incidencia
+    PED->>INC: «create»(usuario, tipo, descripcion, foto)
+    PED-->>-SRV: incidencia
+    SRV-->>-CHF: incidencia

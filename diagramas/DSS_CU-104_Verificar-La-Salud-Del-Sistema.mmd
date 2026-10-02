@@ -1,28 +1,28 @@
 sequenceDiagram
-    title DSS — CU-104 Verificar La Salud Del Sistema
+    title DSS — CU-104 Verificar la Salud del Sistema (liveness / readiness)
     autonumber
-    actor OPS as Plataforma de Operacion
-    participant SIS as Sistema
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
 
-    Note over OPS: Sondeo periodico durante toda la vida de la instancia
+    Note over SAU: Sondeo periódico de la<br/>plataforma de despliegue<br/>durante toda la vida de<br/>la instancia
 
-    OPS->>SIS: verificarVida()
+    SAU->>SIS: verificarVida()
     activate SIS
-    SIS-->>OPS: la instancia esta viva
+    SIS-->>SAU: la instancia está viva
     deactivate SIS
 
-    OPS->>SIS: verificarDisponibilidad()
+    SAU->>SIS: verificarDisponibilidad()
     activate SIS
     alt Las dependencias responden
-        SIS-->>OPS: lista para recibir trafico
+        SIS-->>SAU: lista para recibir tráfico
     else Alguna dependencia no responde
-        SIS-->>OPS: no disponible (se le retira el trafico a la instancia)
+        SIS-->>SAU: no disponible (se le retira el tráfico a la instancia)
     end
     deactivate SIS
 
-    opt Diagnostico ampliado
-        OPS->>SIS: verificarSalud()
+    opt Diagnóstico ampliado
+        SAU->>SIS: verificarSalud()
         activate SIS
-        SIS-->>OPS: estado de cada verificacion (base de datos, memoria cache, memoria en uso, espacio en disco)
+        SIS-->>SAU: estado de cada verificación (base de datos, memoria caché, memoria en uso, espacio en disco)
         deactivate SIS
     end

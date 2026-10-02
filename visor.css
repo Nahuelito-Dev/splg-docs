@@ -29,6 +29,8 @@
 .visor button:hover{background:var(--primary);color:var(--on-accent);
   border-color:var(--primary)}
 .visor .lienzo-visor{overflow:hidden;position:relative;cursor:grab;touch-action:none;overscroll-behavior:contain}
+/* El diagrama se agarra y se mueve: nada de seleccionar texto ni arrastrar la imagen. */
+.visor .lienzo-visor,.visor .lienzo-visor *{user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 .visor .lienzo-visor.arrastrando{cursor:grabbing}
 .visor .marco{position:absolute;top:0;left:0;background:#FCFBF8;border-radius:8px;
   padding:20px;transform-origin:0 0}

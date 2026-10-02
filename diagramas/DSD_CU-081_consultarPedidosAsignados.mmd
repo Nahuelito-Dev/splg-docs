@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-081 Consultar los Pedidos Asignados al Chofer · consultarPedidosAsignados
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+
+    CHF->>+SRV: consultarPedidosAsignados(choferId, pagina, limite)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: getPedidos(pagina, limite)
+    CHO-->>-SRV: pedidos, total
+    SRV-->>-CHF: pedidos, total

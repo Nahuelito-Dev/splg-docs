@@ -441,8 +441,16 @@ Cuatro elementos ya presentes en el sistema sostienen el módulo:
 
 **a) La entidad `Car` ya existe** (`src/car/entities/car.entity.ts`): patente
 única, marca, modelo, año, capacidad en kg, chofer asignado y `distributor_id`
-(multi-tenant). Es CRUD puro — sin kilometraje, sin estado, sin mantenimiento.
-El sustrato del dominio está; el módulo inteligente sigue siendo trabajo real.
+(multi-tenant), y ya incorpora las columnas de flota (`tare_weight_kg`,
+`max_load_kg`, `odometer_km`, `fleet_status`, `in_service_since`) — no hace
+falta una subclase: es la misma fila la que lleva el dato operativo y el de
+mantenimiento. También existen ya, como entidades propias relacionadas a
+`Car` por `car_id`, `MaintenancePlan`, `MaintenanceTask` y `VehicleUsageLog`,
+con su CRUD (`src/fleet/*`). Lo que falta construir es la parte **inteligente**:
+el estimador de consumo diario, la proyección de vencimiento a partir del
+odómetro y el planificador automático de ventana de taller (Etapas ①②③ de
+este documento); hoy `MaintenanceTask.scheduledAt` lo fija a mano un
+administrador.
 
 **b) El insumo predictivo ya se genera, y es propio.** El sistema hace tracking
 GPS del chofer durante cada entrega (`startTracking`/`stopTracking` en
@@ -468,7 +476,7 @@ La infraestructura no cambia: `@Cron` ya está, FCM y WebSocket ya están, y
 
 | Concepto | Rol |
 |---|---|
-| `Vehicle` (extiende `Car`) | Agrega `odometer_km`, `odometer_source`, `fleet_status` (ACTIVE / IN_SERVICE / GROUNDED), `in_service_since` |
+| `Car` | Ya tiene (no se agrega subclase) `odometer_km`, `fleet_status` (ACTIVE / IN_SERVICE / GROUNDED), `in_service_since`, `tare_weight_kg`, `max_load_kg` |
 | `MaintenancePlan` | La **regla**: nombre, disparo (`BY_KM` / `BY_TIME` / `BY_FIXED_DATE`), intervalo, ventana de anticipación, criticidad **BLOCKING** vs **NON_BLOCKING** |
 | `MaintenanceTask` | La **instancia**: `FORECAST → SCHEDULED → IN_PROGRESS → DONE / OVERDUE`, con `predicted_due_date`, ventana asignada, taller y costo |
 | `VehicleUsageLog` | Append-only: km, cantidad de pedidos y horas en ruta por vehículo y día. Alimenta al predictor |
@@ -505,7 +513,7 @@ lo excluye del despacho sin intervención humana.
 - `VehicleUsageLog` — historial de km/día por vehículo (últimos N días)
 - `MaintenancePlan` — reglas activas por vehículo o tipo de vehículo
 - `MaintenanceTask` en estado `FORECAST`
-- `Vehicle.odometer_km` — última lectura conocida
+- `Car.odometer_km` — última lectura conocida
 - Demanda histórica por franja horaria (`time-slot`) y zona (`coverage-zone`)
 
 #### Proceso
@@ -542,7 +550,7 @@ estimateDailyKm(vehicleId: string, days = 90): number {
 ##### Etapa ② — Proyección de vencimiento
 
 ```typescript
-projectDueDate(task: MaintenanceTask, vehicle: Vehicle): Date {
+projectDueDate(task: MaintenanceTask, vehicle: Car): Date {
   if (task.plan.trigger === 'BY_FIXED_DATE') return task.plan.fixed_date;
 
   const kmPerDay = this.estimateDailyKm(vehicle.vehicle_id);
@@ -649,7 +657,7 @@ pasa a gobernar la operación.**
 
 - `MaintenanceTask` en `SCHEDULED` con ventana asignada
 - Notificación FCM/email al administrador con la anticipación configurada
-- `Vehicle.fleet_status` actualizado
+- `Car.fleet_status` actualizado
 - Exclusión efectiva del vehículo en el despacho
 
 #### Precondiciones
@@ -679,7 +687,7 @@ pasa a gobernar la operación.**
 solo; el administrador confirma o reprograma la ventana propuesta.
 
 **Impacto en los registros:** crea `MaintenanceTask` y `VehicleUsageLog`,
-actualiza `Vehicle.odometer_km` y `Vehicle.fleet_status`, y modifica
+actualiza `Car.odometer_km` y `Car.fleet_status`, y modifica
 indirectamente el conjunto de choferes candidatos de cada pedido.
 
 
@@ -742,10 +750,15 @@ la revisión de arquitectura del 2026-07-16 declaró de calidad de producción.
 
 ### 8. Riesgos y decisiones pendientes
 
-1. **`Car` hoy pertenece a un chofer** (`user_id` → `User`, ManyToOne). Para
-   flota real el vehículo pertenece a la **distribuidora** y se asigna por
-   turno. Es una decisión de modelado a tomar antes de implementar; da material
-   de análisis.
+1. **El vehículo pertenece a la distribuidora y se asigna al chofer que lo
+   usa.** La flota es de la distribuidora: el vehículo en uso de cada chofer
+   se registra en una asignación abierta, con su historial (CU-161 a CU-165),
+   y cualquier chofer puede usar cualquier vehículo de la flota. El vehículo
+   registrado a nombre de un chofer (`user_id` en `Car`) queda como dato
+   informativo; el que cuenta para el despacho y para este módulo es el
+   vehículo en uso. Es la base sobre la que el planificador cruza el consumo
+   de kilómetros, la tarea de mantenimiento y el chofer con quien negociar la
+   ventana.
 
 2. **El odómetro derivado de GPS acumula error.** El GPS mide distancia entre
    pings, no lo que marca el tablero. Mitigación: lectura manual periódica del

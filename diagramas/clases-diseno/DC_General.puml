@@ -1,0 +1,184 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+skinparam nodesep 18
+skinparam ranksep 35
+class Distribuidora
+class Usuario
+class Rol
+class Administrador
+class ConfiguracionModulo
+class AsientoAuditoria
+class Cliente
+class DireccionEntrega
+class InvitacionRecompra
+class ItemSugerido
+class Producto
+class Promocion
+class Envase
+class MovimientoEnvase
+class RevisionEnvase
+class CasoRecupero
+class AvisoRecupero
+class Carrito
+class ItemCarrito
+class Pedido
+class ItemPedido
+class CambioEstadoPedido
+class CambioDireccion
+class ZonaCobertura
+class FranjaHoraria
+class Pago
+abstract class PropuestaConVigencia
+class OfertaDespacho
+class LoteRecorrido
+class ParadaLote
+class OfertaLote
+class Chofer
+class Vehiculo
+class AsignacionVehiculo
+class PlanMantenimiento
+class TareaMantenimiento
+class AdjuntoTarea
+class PropuestaVentanaTaller
+class UbicacionGPS
+class RegistroUsoVehiculo
+class Reclamo
+class Incidencia
+class Calificacion
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Usuario <|-- Chofer
+Usuario <|-- Administrador
+PropuestaConVigencia <|-- OfertaDespacho : {disjoint, complete}
+PropuestaConVigencia <|-- OfertaLote
+PropuestaConVigencia <|-- PropuestaVentanaTaller
+PropuestaConVigencia <|-- InvitacionRecompra
+PropuestaConVigencia <|-- AvisoRecupero
+Usuario -- Rol
+Distribuidora --> Chofer
+Distribuidora -- Administrador
+Distribuidora -- Producto
+Distribuidora --> Envase
+Distribuidora -- Pedido
+Distribuidora *--> ZonaCobertura
+Distribuidora *--> FranjaHoraria
+Distribuidora *--> ConfiguracionModulo
+Usuario -- AsientoAuditoria
+Cliente *-- DireccionEntrega
+Cliente -- Pedido
+Cliente *--> Carrito
+Cliente -- InvitacionRecompra
+Cliente -- Producto
+InvitacionRecompra -- Pedido
+InvitacionRecompra *--> ItemSugerido
+InvitacionRecompra -- DireccionEntrega
+ItemSugerido -- Producto
+Carrito *--> ItemCarrito
+ItemCarrito --> Producto
+Pedido *--> ItemPedido
+ItemPedido --> Producto
+Pedido -- DireccionEntrega
+Pedido -- FranjaHoraria
+Pedido --> ZonaCobertura
+Pedido *--> CambioEstadoPedido
+Pedido *--> CambioDireccion
+CambioDireccion -- DireccionEntrega
+CambioDireccion -- DireccionEntrega
+Chofer -- Pedido
+Pedido --> Pago
+Pedido *--> OfertaDespacho
+OfertaDespacho -- Chofer
+LoteRecorrido *--> ParadaLote
+ParadaLote -- Pedido
+LoteRecorrido *--> OfertaLote
+OfertaLote -- Chofer
+Chofer -- LoteRecorrido
+Chofer --> Vehiculo
+Chofer --> Vehiculo
+Chofer --> UbicacionGPS
+PlanMantenimiento --> TareaMantenimiento
+TareaMantenimiento <-- Vehiculo
+TareaMantenimiento -- Chofer
+TareaMantenimiento *-- PropuestaVentanaTaller
+TareaMantenimiento *--> AdjuntoTarea
+PropuestaVentanaTaller -- Chofer
+Vehiculo *-- RegistroUsoVehiculo
+Producto *--> Promocion
+Producto -- Envase
+Envase *--> MovimientoEnvase
+Envase *--> RevisionEnvase
+Pedido -- MovimientoEnvase
+Cliente -- Envase
+Pedido -- Envase
+Envase <--> CasoRecupero
+CasoRecupero -- Cliente
+CasoRecupero *--> AvisoRecupero
+Pedido -- Reclamo
+Cliente --> Reclamo
+Pedido --> Incidencia
+Pedido -- Calificacion
+(Chofer, Vehiculo) .. AsignacionVehiculo
+
+legend bottom right
+  Vista de conjunto: sin miembros ni nombres de asociación. La flecha abierta marca
+  la navegabilidad que piden los diagramas de interacción; se omiten las asociaciones
+  de Usuario que sólo registran la autoría de un hecho, que figuran en su área.
+endlegend
+@enduml

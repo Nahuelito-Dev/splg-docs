@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-175 Consultar la Fotografía de un Reclamo · consultarFotoDelReclamo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :ClaimsService
+    participant COL as :Map#lt;String, Reclamo#gt;
+    participant REC as reclamo:Reclamo
+    participant STO as :StoragePort
+
+    CLI->>+SRV: consultarFotoDelReclamo(reclamoId)
+    SRV->>+COL: get(reclamoId)
+    COL-->>-SRV: reclamo
+    SRV->>+REC: esDelCliente(cliente)
+    REC-->>-SRV: propio
+    SRV->>+REC: getFoto()
+    REC-->>-SRV: clave
+    SRV->>+STO: getDownloadUrl(clave)
+    STO-->>-SRV: direccion
+    SRV-->>-CLI: fotografia

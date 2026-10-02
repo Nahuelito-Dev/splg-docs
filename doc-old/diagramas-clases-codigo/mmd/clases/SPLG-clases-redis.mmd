@@ -1,0 +1,23 @@
+classDiagram
+    direction LR
+
+    %% Módulo `redis` — generado por generar-clases-diseno.py
+
+    class RedisService {
+        +onModuleInit() void
+        +onModuleDestroy() void
+        +acquireLock(key: string, ttlMs = 30000) Promise<Lock | null>
+        +get(key: string) Promise<string | null>
+        +setex(key: string, ttlSec: number, value: string) Promise<void>
+        +del(key: string) Promise<void>
+        +incrWithExpire(key: string, windowSec: number) Promise<number>
+        +ping() Promise<boolean>
+        -driverActiveOrderKey(driverUserId: string) string
+        +setDriverActiveOrder(driverUserId: string, data: [ orderId: string, customerId: string, distributorId?: string | null, ], ttlSec = 3 * 60 * 60) Promise<void>
+        +getDriverActiveOrder(driverUserId: string) Promise<
+        +clearDriverActiveOrder(driverUserId: string) Promise<void>
+        +updateDriverLocation(driverId: string, lat: number, lng: number) void
+        +getNearbyDrivers(lat: number, lng: number, radiusKm: number = 5) Promise<string[]>
+        +removeDriver(driverId: string) void
+    }
+

@@ -1,0 +1,49 @@
+sequenceDiagram
+    title DSD — CU-095 Eliminar Cliente
+autonumber
+participant ADM as Admin o SuperAdmin
+participant CTRL as CustomersController
+participant SRV as CustomersService
+participant CREP as RepositoryCustomer
+
+ADM->>CTRL: DELETE /customers/:id
+activate CTRL
+Note over CTRL: «include» CU-129 Consultar Detalle del Cliente
+CTRL->>CTRL: HttpCode 200, Roles ADMIN SUPER_ADMIN
+CTRL->>CTRL: acotar(customer_id: id, user, distributorId), solo con distribuidora en contexto
+CTRL->>SRV: assertDeLaDistribuidora(customer_id: id, distributorId)
+activate SRV
+SRV->>CREP: createQueryBuilder, el cliente con un pedido en la distribuidora, getExists
+activate CREP
+CREP-->>SRV: true o false
+deactivate CREP
+alt El cliente nunca le compro a la distribuidora
+    SRV-->>CTRL: NotFoundException Customer with ID not found
+    CTRL-->>ADM: 404
+else Le compro a la distribuidora, o no hay distribuidora en contexto
+    SRV-->>CTRL: sin error
+    deactivate SRV
+    alt user.role es ADMIN, administrador de empresa
+        CTRL-->>ADM: ForbiddenException La cuenta de un cliente la administra el administrador general
+    else SUPER_ADMIN
+        CTRL->>SRV: remove(id)
+        activate SRV
+        SRV->>SRV: findOne(id), sin ownership porque es staff
+        SRV->>CREP: findOne(where customer_id, relations user user.role user.addresses)
+        activate CREP
+        CREP-->>SRV: Customer o null
+        deactivate CREP
+        alt No existe
+            SRV-->>CTRL: NotFoundException
+            deactivate SRV
+        else Existe
+            SRV->>CREP: softDelete(where customer_id)
+            activate CREP
+            CREP-->>SRV: deletedAt seteado, la fila permanece
+            deactivate CREP
+            SRV-->>CTRL: message Customer deleted successfully
+            CTRL-->>ADM: 200 message
+        end
+    end
+end
+deactivate CTRL

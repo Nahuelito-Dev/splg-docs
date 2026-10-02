@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-045 Consultar Franjas Horarias Disponibles · listarFranjas
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :TimeSlotService
+    participant MAP as :Map#lt;String, Distribuidora#gt;
+    participant DIS as distribuidora:Distribuidora
+
+    CLI->>+SRV: listarFranjas(distribuidora)
+    SRV->>+MAP: get(distribuidora)
+    MAP-->>-SRV: distribuidora
+    SRV->>+DIS: getFranjasActivas()
+    DIS-->>-SRV: franjas
+    SRV-->>-CLI: franjas

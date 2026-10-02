@@ -1,0 +1,39 @@
+classDiagram
+    direction LR
+
+    %% Módulo `customer` — generado por generar-clases-diseno.py
+
+    class CustomerMapper {
+        <<mapper>>
+        +toDto(customer: Customer) CustomerResponseDto
+    }
+
+    class CustomersController {
+        <<controller>>
+        +findAll(@Query() paginationDto: PaginationDto, @Res([ passthrough: true ]) res: Response, @CurrentDistributor() distributorId?: string | null) Promise<CustomerResponseDto[]>
+        +findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<CustomerResponseDto>
+        +findOneByUserId(@Param('userId', ParseUUIDPipe) userId: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<CustomerResponseDto>
+        +update(@Param('id', ParseUUIDPipe) id: string, @Body() updateCustomerDto: UpdateCustomerDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<CustomerResponseDto>
+        +updateLocation(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCustomerLocationDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<CustomerResponseDto>
+        +remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null) Promise<MessageResponseDto>
+        -acotar(por: [ customer_id: string ] | [ user_id: string ], user: AuthenticatedUser, distributorId: string | null) Promise<void>
+    }
+
+    class CustomersService {
+        +crearPerfil(manager: EntityManager, userId: string, datos: PerfilDeClienteNuevo) Promise<void>
+        +findNotificationToken(userId: string) Promise<
+        +saveNotificationToken(userId: string, token: string) Promise<boolean>
+        +findAll(paginationDto: PaginationDto, distributorId?: string | null) Promise<[Customer[], number]>
+        -assertOwnership(customerUserId: string, requesterUserId?: string | null) void
+        +buscarComprador(userId: string) Promise<
+        +assertDeLaDistribuidora(por: [ customer_id: string ] | [ user_id: string ], distributorId: string) Promise<void>
+        +findOne(id: string, requesterUserId?: string | null) Promise<Customer>
+        +findOneByUserId(userId: string, requesterUserId?: string | null) Promise<Customer>
+        +findOneByEmail(email: string) Promise<Customer>
+        +update(id: string, updateCustomerDto: UpdateCustomerDto, requesterUserId?: string | null) Promise<Customer>
+        +remove(id: string) Promise<MessageResponseDto>
+        +updateLocation(id: string, latLng: string, requesterUserId?: string | null) Promise<Customer>
+        -handleDBExceptions(error: unknown) never
+    }
+
+    CustomersController ..> CustomersService : usa

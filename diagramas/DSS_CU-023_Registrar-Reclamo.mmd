@@ -1,10 +1,10 @@
 sequenceDiagram
     title DSS — CU-023 Registrar Reclamo
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
-    CLI->>SIS: registrarReclamo(pedido, motivo, evidencia)
+    CLI->>SIS: registrarReclamo(pedidoId, motivo, evidencia)
     activate SIS
     alt El pedido existe y es del cliente
         SIS-->>CLI: reclamo registrado (número, estado pendiente)

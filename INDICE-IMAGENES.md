@@ -38,6 +38,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | `CU_Sistema_Actores.png` |
 | `CU_Sistema_Diagrama-Completo.png` |
 | `CU_Sistema_Diagrama-De-Contexto.png` |
+| `CU_Sistema_Mapa.png` |
 | `CU_Sistema_Subsistemas.png` |
 
 ## Por caso de uso
@@ -125,7 +126,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-079 | Confirmar Entrega Escaneando el QR (cliente) | `DSS_CU-079_Confirmar-Entrega-Escaneando-El-Qr.png` | `DSD_CU-078_CU-079_Obtener-El-Codigo-De-Entrega.png` |
 | CU-080 | Consultar el Pool de Pedidos Disponibles | `DSS_CU-080_Consultar-El-Pool-De-Pedidos-Disponibles.png` | `DSD_CU-080_Consultar-El-Pool-De-Pedidos-Disponibles.png` |
 | CU-081 | Consultar los Pedidos Asignados al Chofer | `DSS_CU-081_Consultar-Los-Pedidos-Asignados-Al-Chofer.png` | `DSD_CU-081_Consultar-Los-Pedidos-Asignados-Al-Chofer.png` |
-| CU-082 | Crear Usuario Base | `DSS_CU-082_Crear-Usuario-Base.png` | `DSD_CU-082_Crear-Usuario-Base.png` |
+| CU-082 | Crear Usuario Base | — (caso incluido, sin diagrama propio) | `DSD_CU-082_Crear-Usuario-Base.png` |
 | CU-083 | Buscar / Listar Usuarios | `DSS_CU-083_Buscar-Listar-Usuarios.png` | `DSD_CU-083_Buscar-Listar-Usuarios.png` |
 | CU-084 | Verificar Existencia de Usuario (pre-registro) | `DSS_CU-084_Verificar-Existencia-De-Usuario.png` | `DSD_CU-084_Verificar-Existencia-De-Usuario.png` |
 | CU-085 | Eliminar Usuario (baja lógica) | `DSS_CU-085_Eliminar-Usuario.png` | `DSD_CU-085_Eliminar-Usuario.png` |
@@ -192,3 +193,29 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-147 | Realizar una Compra Express | `DSS_CU-147_Realizar-una-Compra-Express.png` | `DSD_CU-147_Realizar-una-Compra-Express.png` |
 | CU-148 | Elegir la Modalidad de Entrega del Pedido | `DSS_CU-148_Elegir-la-Modalidad-de-Entrega-del-Pedido.png` | `DSD_CU-148_Elegir-la-Modalidad-de-Entrega-del-Pedido.png` |
 | CU-149 | Despachar un Pedido Express a un Chofer en Moto | `DSS_CU-149_Despachar-un-Pedido-Express-a-un-Chofer-en-Moto.png` | `DSD_CU-149_Despachar-un-Pedido-Express-a-un-Chofer-en-Moto.png` |
+| CU-150 | Programar la Vigencia de una Zona de Cobertura | `DSS_CU-150_Programar-La-Vigencia-De-Una-Zona-De-Cobertura.png` | `DSD_CU-150_Programar-La-Vigencia-De-Una-Zona-De-Cobertura.png` |
+| CU-151 | Desactivar las Zonas de Cobertura Vencidas | `DSS_CU-151_Desactivar-Las-Zonas-De-Cobertura-Vencidas.png` | `DSD_CU-151_Desactivar-Las-Zonas-De-Cobertura-Vencidas.png` |
+| CU-152 | Consultar el Registro de Auditoría | `DSS_CU-152_Consultar-El-Registro-De-Auditoria.png` | `DSD_CU-152_Consultar-El-Registro-De-Auditoria.png` |
+| CU-153 | Registrar Toda Operación de Escritura | `DSS_CU-153_Registrar-Toda-Operacion-De-Escritura.png` | `DSD_CU-153_Registrar-Toda-Operacion-De-Escritura.png` |
+| CU-154 | Consultar Listado de Franjas Horarias | `DSS_CU-154_Consultar-Listado-de-Franjas-Horarias.png` | `DSD_CU-154_Consultar-Listado-de-Franjas-Horarias.png` |
+| CU-155 | Adjuntar Archivo a una Tarea de Flota | `DSS_CU-155_Adjuntar-Archivo-a-una-Tarea-de-Flota.png` | `DSD_CU-155_Adjuntar-Archivo-a-una-Tarea-de-Flota.png` |
+| CU-156 | Consultar Adjuntos de una Tarea de Flota | `DSS_CU-156_Consultar-Adjuntos-de-una-Tarea-de-Flota.png` | `DSD_CU-156_Consultar-Adjuntos-de-una-Tarea-de-Flota.png` |
+| CU-157 | Descargar un Adjunto de Flota | `DSS_CU-157_Descargar-un-Adjunto-de-Flota.png` | `DSD_CU-157_Descargar-un-Adjunto-de-Flota.png` |
+| CU-158 | Eliminar un Adjunto de Flota | `DSS_CU-158_Eliminar-un-Adjunto-de-Flota.png` | `DSD_CU-158_Eliminar-un-Adjunto-de-Flota.png` |
+| CU-159 | Almacenar Archivo | — (caso incluido, sin diagrama propio) | `DSD_CU-159_Almacenar-Archivo.png` |
+| CU-160 | Recuperar Archivo | — (caso incluido, sin diagrama propio) | `DSD_CU-160_Recuperar-Archivo.png` |
+| CU-161 | Poner un Vehículo en Uso para un Chofer | `DSS_CU-161_Poner-un-Vehiculo-en-Uso-para-un-Chofer.png` | `DSD_CU-161_Poner-un-Vehiculo-en-Uso-para-un-Chofer.png` |
+| CU-162 | Liberar el Vehículo en Uso de un Chofer | `DSS_CU-162_Liberar-el-Vehiculo-en-Uso-de-un-Chofer.png` | `DSD_CU-162_Liberar-el-Vehiculo-en-Uso-de-un-Chofer.png` |
+| CU-163 | Consultar el Vehículo en Uso de un Chofer | `DSS_CU-163_Consultar-el-Vehiculo-en-Uso-de-un-Chofer.png` | `DSD_CU-163_Consultar-el-Vehiculo-en-Uso-de-un-Chofer.png` |
+| CU-164 | Consultar el Historial de Vehículos de un Chofer | `DSS_CU-164_Consultar-el-Historial-de-Vehiculos-de-un-Chofer.png` | `DSD_CU-164_Consultar-el-Historial-de-Vehiculos-de-un-Chofer.png` |
+| CU-165 | Consultar el Historial de Choferes de un Vehículo | `DSS_CU-165_Consultar-el-Historial-de-Choferes-de-un-Vehiculo.png` | `DSD_CU-165_Consultar-el-Historial-de-Choferes-de-un-Vehiculo.png` |
+| CU-166 | Tomar un Reclamo Pendiente | `DSS_CU-166_Tomar-un-Reclamo-Pendiente.png` | `DSD_CU-166_Tomar-un-Reclamo-Pendiente.png` |
+| CU-167 | Reabrir un Reclamo | `DSS_CU-167_Reabrir-un-Reclamo.png` | `DSD_CU-167_Reabrir-un-Reclamo.png` |
+| CU-168 | Reintegrar el Pago de un Pedido | `DSS_CU-168_Reintegrar-el-Pago-de-un-Pedido.png` | `DSD_CU-168_Reintegrar-el-Pago-de-un-Pedido.png` |
+| CU-169 | Registrar el Cambio de Estado de un Pedido | `DSS_CU-169_Registrar-el-Cambio-de-Estado-de-un-Pedido.png` | `DSD_CU-169_Registrar-el-Cambio-de-Estado-de-un-Pedido.png` |
+| CU-170 | Consultar el Historial de Estados de un Pedido | `DSS_CU-170_Consultar-el-Historial-de-Estados-de-un-Pedido.png` | `DSD_CU-170_Consultar-el-Historial-de-Estados-de-un-Pedido.png` |
+| CU-171 | Configurar los Parámetros de Despacho de la Distribuidora | `DSS_CU-171_Configurar-los-Parametros-de-Despacho-de-la-Distribuidora.png` | `DSD_CU-171_Configurar-los-Parametros-de-Despacho-de-la-Distribuidora.png` |
+| CU-172 | Configurar los Parámetros de un Proceso Automático | `DSS_CU-172_Configurar-los-Parametros-de-un-Proceso-Automatico.png` | `DSD_CU-172_Configurar-los-Parametros-de-un-Proceso-Automatico.png` |
+| CU-173 | Configurar la Frecuencia de las Tareas Programadas | `DSS_CU-173_Configurar-la-Frecuencia-de-las-Tareas-Programadas.png` | `DSD_CU-173_Configurar-la-Frecuencia-de-las-Tareas-Programadas.png` |
+| CU-174 | Adjuntar la Fotografía de un Reclamo | `DSS_CU-174_Adjuntar-la-Fotografia-de-un-Reclamo.png` | `DSD_CU-174_Adjuntar-la-Fotografia-de-un-Reclamo.png` |
+| CU-175 | Consultar la Fotografía de un Reclamo | `DSS_CU-175_Consultar-la-Fotografia-de-un-Reclamo.png` | `DSD_CU-175_Consultar-la-Fotografia-de-un-Reclamo.png` |

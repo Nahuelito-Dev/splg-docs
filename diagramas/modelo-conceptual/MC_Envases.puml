@@ -1,0 +1,101 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class Producto {
+  tipo
+  peso en kilos
+  precio
+  stock
+  activo
+}
+class Promocion {
+  cantidad
+  descuento
+}
+class Envase {
+  número de serie
+  estado
+  depósito
+  /vencimiento
+}
+class MovimientoEnvase {
+  desde
+  hacia
+  fecha
+}
+class RevisionEnvase {
+  fecha
+  resultado
+  próxima revisión
+}
+class CasoRecupero {
+  escalón
+  depósito comprometido
+  estado
+  resolución
+}
+class AvisoRecupero {
+  escalón
+  tipo
+  vence
+}
+class Cliente <<referencia>>
+class Pedido <<referencia>>
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+
+
+Distribuidora "1" -- "0..*" Producto : comercializa >
+Distribuidora "1" -- "0..*" Envase : posee >
+Cliente "0..*" -- "0..1" Producto : usa habitualmente >
+Producto "1" *-- "0..*" Promocion : ofrece >
+Producto "0..1" -- "0..*" Envase : describe >
+Envase "1" *-- "0..*" MovimientoEnvase : registra >
+Envase "1" *-- "0..*" RevisionEnvase : se somete a >
+Pedido "0..1" -- "0..*" MovimientoEnvase : origina >
+Usuario "0..1" -- "0..*" MovimientoEnvase : ejecuta >
+Cliente "0..1" -- "0..*" Envase : tiene en su poder >
+Pedido "0..1" -- "0..*" Envase : despacha >
+Envase "1" -- "0..*" CasoRecupero : motiva >
+CasoRecupero "0..*" -- "1" Cliente : se abre contra >
+Usuario "0..1" -- "0..*" CasoRecupero : resuelve >
+CasoRecupero "1" *-- "0..*" AvisoRecupero : emite >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

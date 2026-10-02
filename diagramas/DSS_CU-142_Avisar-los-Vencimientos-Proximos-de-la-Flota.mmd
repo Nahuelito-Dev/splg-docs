@@ -1,14 +1,18 @@
 sequenceDiagram
-    title DSS — CU-142 Avisar los Vencimientos Proximos de la Flota
+    title DSS — CU-142 Avisar los Vencimientos Próximos de la Flota
     autonumber
-    actor SIS as Sistema Automático
-    participant SIS as Sistema
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
 
-    SIS->>SIS: revisarVencimientosDeLaFlota()
+    Note over SAU: Se ejecuta una vez por<br/>día
+    SAU->>SIS: avisarVencimientosPendientes()
     activate SIS
-    alt hay habilitaciones por vencer sin avisar
-        SIS-->>SIS: avisos enviados
-    else no hay ninguna
-        SIS-->>SIS: el ciclo termina sin avisos
+    alt Hay habilitaciones por vencer sin avisar
+        SIS-)ADM: notificarVencimientosDeLaFlota(tareas)
+        Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
+        SIS-->>SAU: avisos enviados
+    else No hay ninguna
+        SIS-->>SAU: el ciclo termina sin avisos
     end
     deactivate SIS

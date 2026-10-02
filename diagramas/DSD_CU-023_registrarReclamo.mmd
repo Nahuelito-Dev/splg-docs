@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-023 Registrar Reclamo · registrarReclamo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :ClaimsService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant CLE as cliente:Cliente
+
+    CLI->>+SRV: registrarReclamo(pedidoId, motivo, evidencia)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: esDelCliente(cliente)
+    PED-->>-SRV: propio
+    SRV->>+CLE: presentarReclamo(pedido, motivo, evidencia)
+    create participant REC as :Reclamo
+    CLE->>REC: «create»(pedido, motivo, evidencia)
+    CLE-->>-SRV: reclamo
+    SRV-->>-CLI: reclamo

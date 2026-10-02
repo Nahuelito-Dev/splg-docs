@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-145 Configurar los Dias de Aviso Previo a la Recompra
+    title DSS — CU-145 Configurar los Días de Aviso Previo a la Recompra
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: configurarDiasDeAviso(dias)
     activate SIS

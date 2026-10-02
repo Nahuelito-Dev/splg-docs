@@ -28,26 +28,48 @@ skinparam rectangle {
 actor "Cliente\n(ACT-01)" as A01
 actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
-actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "MercadoPago\n(ACT-06)" as A06 <<secundario>>
+actor "Firebase\n(ACT-07)" as A07 <<secundario>>
+actor "Servicio de correo\n(ACT-08)" as A08 <<secundario>>
 
 rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
-  rectangle "App Cliente\n(Flutter)" as APPC
-  rectangle "App Chofer\n(Flutter)" as APPD
-  rectangle "Panel Web\n(React / Vite)" as PANEL
-  rectangle "Procesos programados\n(sin interfaz)" as PROC
-  rectangle "Backend\n(NestJS + PostgreSQL/PostGIS)" as BACK
+  usecase "CU-001\nIniciar Sesión" as U001 #back:FFFFFF;line:2C4257
+  usecase "CU-005\nCrear Pedido" as U005 #back:FFFFFF;line:2C4257
+  usecase "CU-012\nAsignar Chofer Manualmente" as U012 #back:FFFFFF;line:2C4257
+  usecase "CU-014\nReintentar Asignación con\nRadio Expandido (Cron)" as U014 #back:FFFFFF;line:2C4257
+  usecase "CU-015\nAceptar Pedido" as U015 #back:FFFFFF;line:2C4257
+  usecase "CU-018\nMarcar Pedido "En Camino"" as U018 #back:FFFFFF;line:2C4257
+  usecase "CU-020\nConfirmar Entrega" as U020 #back:FFFFFF;line:2C4257
+  usecase "CU-023\nRegistrar Reclamo" as U023 #back:FFFFFF;line:2C4257
+  usecase "CU-025\nResolver Reclamo" as U025 #back:FFFFFF;line:2C4257
+  usecase "CU-026\nVer Dashboard General" as U026 #back:FFFFFF;line:2C4257
+  usecase "CU-047\nRecuperar Contraseña" as U047 #back:FFFFFF;line:2C4257
+  usecase "CU-048\nProcesar Pago con\nMercadoPago" as U048 #back:FFFFFF;line:2C4257
+  usecase "CU-052\nRegistrar Distribuidora" as U052 #back:FFFFFF;line:2C4257
+  usecase "CU-072\nCrear Reserva Programada con\nSeña" as U072 #back:FFFFFF;line:2C4257
+  usecase "CU-075\nActivar Reservas Vencidas\nAutomaticamente (Cron)" as U075 #back:FFFFFF;line:2C4257
+  usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)" as U087 #back:FFFFFF;line:2C4257
 }
 
-A01 -[#1F6F8B]- APPC
-A02 -[#2E7D46]- APPD
-A03 -[#8C4A9E]- PANEL : alcance: su distribuidora
-A05 -[#B4432B]- PANEL : alcance: todas las distribuidoras
-A04 -[#8A6D1F]- PROC : sin intervención humana
+A01 -[#1F6F8B]- U005
+A01 -[#1F6F8B]- U023
+A01 -[#1F6F8B]- U072
+A02 -[#2E7D46]- U015
+A02 -[#2E7D46]- U018
+A02 -[#2E7D46]- U020
+A03 -[#8C4A9E]- U012
+A03 -[#8C4A9E]- U025
+A03 -[#8C4A9E]- U026
+A05 -[#B4432B]- U052
+A05 -[#B4432B]- U087
+A04 -[#8A6D1F]- U014
+A04 -[#8A6D1F]- U075
+U048 -[#6B7683]- A06
+U001 -[#6B7683]- A07
+U047 -[#6B7683]- A08
 
-APPC --> BACK
-APPD --> BACK
-PANEL --> BACK
-PROC --> BACK
+A05 --|> A03
 
 @enduml

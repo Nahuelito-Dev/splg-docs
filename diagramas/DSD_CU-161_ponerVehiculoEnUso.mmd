@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSD — CU-161 Poner un Vehículo en Uso para un Chofer · ponerVehiculoEnUso
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :VehicleAssignmentService
+    participant COC as :Map#lt;String, Chofer#gt;
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant FLT as :FleetTaskService
+    participant CHO as chofer:Chofer
+    participant LST as :List#lt;AsignacionVehiculo#gt;
+
+    ADM->>+SRV: ponerVehiculoEnUso(choferId, vehiculoId, nota)
+    SRV->>+COC: get(choferId)
+    COC-->>-SRV: chofer
+    SRV->>+COV: get(vehiculoId)
+    COV-->>-SRV: vehiculo
+    SRV->>FLT: assertVehiculoHabilitado(vehiculo)
+    SRV->>+CHO: usarVehiculo(vehiculo, nota, administrador)
+    alt El chofer ya usa ese vehículo
+        CHO-->>SRV: asignacion abierta
+    else Otro vehículo o ninguno
+        CHO->>CHO: assertSinPedidoEnCurso()
+        CHO->>LST: cerrarAbiertas(chofer, vehiculo, administrador)
+        create participant ASG as :AsignacionVehiculo
+        CHO->>ASG: «create»(chofer, vehiculo, administrador, nota)
+        CHO-->>SRV: asignacion
+    end
+    deactivate CHO
+    SRV-->>-ADM: asignacion

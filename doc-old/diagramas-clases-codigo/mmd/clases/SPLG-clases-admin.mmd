@@ -1,0 +1,33 @@
+classDiagram
+    direction LR
+
+    %% Módulo `admin` — generado por generar-clases-diseno.py
+
+    class AdminController {
+        <<controller>>
+        +create(@Body() createAdminDto: CreateAdminDto) Promise<AdminResponseDto>
+        +findOneByEmail(@Param() [ term ]: BuscarAdminParamDto, @CurrentDistributor() distributorId: string | null) Promise<AdminVistaResponseDto>
+        +findAll(@CurrentDistributor() distributorId?: string | null) Promise<AdminResponseDto[]>
+    }
+
+    class AdminMapper {
+        <<mapper>>
+        +toDto(admin: Admin) AdminResponseDto
+        +toVista(admin: Admin) AdminVistaResponseDto
+    }
+
+    class AdminService {
+        +crearPerfil(manager: EntityManager, userId: string, distributorId: string | null) Promise<void>
+        +existeSuperAdmin() Promise<boolean>
+        +create(createAdminDto: CreateAdminDto) Promise<Admin>
+        +findAll(distributorId?: string | null) Promise<Admin[]>
+        +findOne(id: string) Promise<Admin>
+        +findOneByEmail(email: string) Promise<Admin>
+        +findAdminByTerm(term: string, distributorId: string | null = null) Promise<Admin>
+    }
+
+    AdminController ..> AdminService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% AdminService usa RoleService (módulo `role`)
+    %% AdminService usa UsersService (módulo `users`)

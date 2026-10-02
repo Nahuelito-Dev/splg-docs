@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-157 Descargar un Adjunto de Flota
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: descargarAdjunto(tareaId, adjuntoId)
+    activate SIS
+    alt el adjunto existe
+        SIS-->>ADM: contenido del archivo
+    else el adjunto no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

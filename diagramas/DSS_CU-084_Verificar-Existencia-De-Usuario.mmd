@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-084 Verificar Existencia De Usuario
+    title DSS — CU-084 Verificar Existencia de Usuario (pre-registro)
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: verificarExistenciaDeUsuario(correo, telefono)
     activate SIS

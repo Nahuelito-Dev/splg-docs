@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-078 Obtener el Código de Entrega (QR del chofer) · obtenerCodigoDeEntrega
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CHF->>+SRV: obtenerCodigoDeEntrega(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: esDelChofer(chofer)
+    PED-->>-SRV: asignado
+    SRV->>+PED: getCodigoDeEntrega()
+    PED-->>-SRV: codigo
+    SRV-->>-CHF: codigo

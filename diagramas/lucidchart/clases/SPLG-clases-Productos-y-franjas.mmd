@@ -1,0 +1,63 @@
+classDiagram
+    direction LR
+
+    %% Productos y franjas horarias. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class GasCylinderService {
+        <<fachada>>
+        + actualizarProducto(productoId: Identificador, datos: Registro): Producto
+        + actualizarStock(productoId: Identificador, variacion: Entero): Producto
+        + consultarCatalogo(pagina: Entero, limite: Entero, distribuidora: Cadena): Producto[*], Entero
+        + consultarProducto(productoId: Identificador): Producto
+        + consultarProductosDisponibles(distribuidora: Cadena): Producto[*], MetodoDePago[*]
+        + consultarProductosInactivos(): Producto[*]
+        + crearProducto(tipo: Cadena, peso: Decimal, precio: Moneda, stockInicial: Entero, descripcion: Cadena, promociones: Lista): Producto
+        + desactivarProducto(productoId: Identificador): Cadena
+        + reactivarProducto(productoId: Identificador): Producto
+    }
+
+    class Map_String_Producto["Map<String, Producto>"] {
+        <<colección>>
+        + get(clave: Cadena): Producto
+    }
+
+    class List_Producto["List<Producto>"] {
+        <<colección>>
+        + buscarInactivos(): Producto[*]
+    }
+
+    class TimeSlotService {
+        <<fachada>>
+        + consultarDisponibilidadDeFranjas(fecha: Fecha, distribuidora: Cadena): Registro
+        + consultarFranjasHorarias(): FranjaHoraria[*]
+        + crearFranjaHoraria(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero): FranjaHoraria
+        + eliminarFranjaHoraria(franjaId: Identificador): FranjaHoraria
+        + listarFranjas(distribuidora: Cadena): FranjaHoraria[*]
+        + modificarFranjaHoraria(franjaId: Identificador, nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero): FranjaHoraria
+    }
+
+    class Map_String_FranjaHoraria["Map<String, FranjaHoraria>"] {
+        <<colección>>
+        + get(clave: Cadena): FranjaHoraria
+    }
+
+    class Producto
+    class FranjaHoraria
+    class Map_String_Distribuidora["Map<String, Distribuidora>"] {
+        <<colección>>
+    }
+    class Distribuidora
+
+    Map_String_Producto "1" o-- "0..*" Producto : elementos
+    List_Producto "1" o-- "0..*" Producto : elementos
+    Map_String_FranjaHoraria "1" o-- "0..*" FranjaHoraria : elementos
+    GasCylinderService --> "1" List_Producto : list<Producto>
+    GasCylinderService --> "1" Map_String_Distribuidora : map<String, Distribuidora>
+    GasCylinderService --> "1" Map_String_Producto : map<String, Producto>
+    TimeSlotService --> "1" Map_String_Distribuidora : map<String, Distribuidora>
+    TimeSlotService --> "1" Map_String_FranjaHoraria : map<String, FranjaHoraria>
+    GasCylinderService ..> Distribuidora
+    GasCylinderService ..> Producto : create
+    TimeSlotService ..> Distribuidora
+    TimeSlotService ..> FranjaHoraria

@@ -1,0 +1,93 @@
+classDiagram
+    direction LR
+
+    %% Flota: tareas, adjuntos y vencimientos. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class FleetTaskService {
+        <<fachada>>
+        + assertVehiculoHabilitado(vehiculo: Vehiculo)
+        + cerrarTareaDeFlota(tareaId: Identificador, fecha: Fecha, kilometraje: Entero, costo: Moneda, observacion: Cadena): TareaMantenimiento
+        + crearTareaDeFlota(planId: Identificador, recursoId: Identificador, vencimiento: Fecha, detalle: Registro): TareaMantenimiento
+        + motivosDeInhabilitacionDeVehiculo(vehiculo: Vehiculo): Cadena[*]
+    }
+
+    class FleetAttachmentService {
+        <<fachada>>
+        + adjuntarArchivoALaTarea(tareaId: Identificador, archivo: Archivo): AdjuntoTarea
+        + consultarAdjuntosDeLaTarea(tareaId: Identificador): AdjuntoTarea[*]
+        + descargarAdjunto(tareaId: Identificador, adjuntoId: Identificador)
+        + eliminarAdjunto(tareaId: Identificador, adjuntoId: Identificador)
+        + validarArchivo(archivo: Archivo)
+    }
+
+    class FleetExpirationsService {
+        <<fachada>>
+        + consultarVencimientosDeLaFlota(dias: Entero)
+    }
+
+    class FleetAlertsCron {
+        <<fachada>>
+        + avisarVencimientosPendientes()
+    }
+
+    class FleetDispatchLockService {
+        <<fabricación pura>>
+        + assertChoferHabilitado(chofer: Chofer)
+        + vehiculoEnUsoDelChofer(chofer: Chofer): Vehiculo
+    }
+
+    class Map_String_PlanMantenimiento["Map<String, PlanMantenimiento>"] {
+        <<colección>>
+        + get(clave: Cadena): PlanMantenimiento
+    }
+
+    class Map_String_TareaMantenimiento["Map<String, TareaMantenimiento>"] {
+        <<colección>>
+        + get(clave: Cadena): TareaMantenimiento
+    }
+
+    class List_TareaMantenimiento["List<TareaMantenimiento>"] {
+        <<colección>>
+        + getAbiertasHasta(dias: Entero): TareaMantenimiento[*]
+        + getSinAvisar(): TareaMantenimiento[*]
+    }
+
+    class TareaMantenimiento
+    class PlanMantenimiento
+    class EmailSenderPort {
+        <<interface>>
+    }
+    class StoragePort {
+        <<interface>>
+    }
+    class Map_String_Chofer["Map<String, Chofer>"] {
+        <<colección>>
+    }
+    class Map_String_Vehiculo["Map<String, Vehiculo>"] {
+        <<colección>>
+    }
+    class Distribuidora
+    class Vehiculo
+    class Chofer
+
+    Map_String_TareaMantenimiento "1" o-- "0..*" TareaMantenimiento : elementos
+    Map_String_PlanMantenimiento "1" o-- "0..*" PlanMantenimiento : elementos
+    List_TareaMantenimiento "1" o-- "0..*" TareaMantenimiento : elementos
+    FleetAlertsCron --> "1" EmailSenderPort : emailSenderPort
+    FleetAlertsCron --> "1" List_TareaMantenimiento : list<TareaMantenimiento>
+    FleetAttachmentService --> "1" Map_String_TareaMantenimiento : map<String, TareaMantenimiento>
+    FleetAttachmentService --> "1" StoragePort : storagePort
+    FleetExpirationsService --> "1" List_TareaMantenimiento : list<TareaMantenimiento>
+    FleetTaskService --> "1" Map_String_Chofer : map<String, Chofer>
+    FleetTaskService --> "1" Map_String_PlanMantenimiento : map<String, PlanMantenimiento>
+    FleetTaskService --> "1" Map_String_TareaMantenimiento : map<String, TareaMantenimiento>
+    FleetTaskService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
+    FleetAlertsCron ..> Distribuidora
+    FleetAlertsCron ..> TareaMantenimiento
+    FleetAttachmentService ..> TareaMantenimiento
+    FleetExpirationsService ..> Chofer
+    FleetExpirationsService ..> TareaMantenimiento
+    FleetExpirationsService ..> Vehiculo
+    FleetTaskService ..> PlanMantenimiento
+    FleetTaskService ..> TareaMantenimiento

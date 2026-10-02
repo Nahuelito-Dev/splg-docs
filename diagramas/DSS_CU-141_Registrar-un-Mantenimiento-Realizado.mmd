@@ -1,16 +1,14 @@
 sequenceDiagram
     title DSS — CU-141 Registrar un Mantenimiento Realizado
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    ADM->>SIS: registrarMantenimientoRealizado(mantenimientoId, fecha, kilometraje, costo, observacion)
+    ADM->>SIS: cerrarTareaDeFlota(tareaId, fecha, kilometraje, costo, observacion)
     activate SIS
-    alt los datos son coherentes
-        SIS-->>ADM: mantenimiento cerrado
-    else el kilometraje retrocede
-        SIS-->>ADM: operación rechazada
-    else el mantenimiento ya estaba cerrado
+    alt la tarea esta abierta
+        SIS-->>ADM: tarea cerrada
+    else la tarea ya estaba hecha o cancelada
         SIS-->>ADM: operación rechazada
     end
     deactivate SIS

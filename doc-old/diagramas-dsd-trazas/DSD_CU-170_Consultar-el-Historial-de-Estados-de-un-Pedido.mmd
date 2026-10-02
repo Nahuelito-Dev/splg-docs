@@ -1,0 +1,24 @@
+sequenceDiagram
+    title DSD — CU-170 Consultar El Historial De Estados De Un Pedido
+autonumber
+participant CTRL as OrderController
+participant OSRV as OrderService
+participant HIS as OrderStatusHistoryService
+participant HREP as RepositoryOrderStatusHistory
+
+CTRL->>OSRV: assertDeLaDistribuidora(pedidoId, distributorId)
+CTRL->>OSRV: getOne(pedidoId, distributorId, customerScope)
+activate OSRV
+alt el pedido no existe, es de otro cliente o de otra distribuidora
+    OSRV-->>CTRL: NotFoundException
+else el solicitante puede ver el pedido
+    OSRV-->>CTRL: pedido
+    deactivate OSRV
+    CTRL->>HIS: findByOrder(pedidoId)
+    activate HIS
+    HIS->>HREP: find(where order_id, order by changed_at ASC)
+    HREP-->>HIS: lista de OrderStatusHistory
+    HIS-->>CTRL: filas del historial
+    deactivate HIS
+    CTRL->>CTRL: OrderStatusHistoryMapper.toDto(fila) por cada fila
+end

@@ -1,0 +1,113 @@
+@startuml
+title Diagrama de componentes — SPLG
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam componentStyle uml2
+skinparam nodesep 25
+skinparam ArrowColor #2C4257
+skinparam ArrowFontSize 11
+skinparam component {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+}
+skinparam package {
+  BorderColor #6B7683
+  FontStyle bold
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+}
+skinparam database {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+}
+skinparam nodesep 35
+skinparam ranksep 50
+
+component "App Cliente\n(Flutter)" as AC
+component "App Chofer\n(Flutter)" as AD
+component "Panel de administración\n(React + Vite)" as PA
+
+package "Backend (NestJS)" as BE {
+  component "Capa de presentación\n(controladores, guardas, interceptores)" as API
+  component "Tiempo real\n(Gateways Socket.IO)" as RT
+  component "Autenticación\ny usuarios" as AUTH
+  component "Pedidos\ny despacho" as PED
+  component "Pagos" as PAG
+  component "Choferes\ny flota" as FLO
+  component "Catálogo, reclamos\ny reportes" as CAT
+  component "Notificaciones\ny correo" as NOT
+  component "Geoposición\ny exclusión mutua" as GEO
+}
+
+database "PostgreSQL + PostGIS" as PG
+database "Redis" as RD
+component "Firebase\n(Auth y FCM)" as FB <<externo>>
+component "MercadoPago" as MP <<externo>>
+component "Servicio de correo" as ML <<externo>>
+
+() "API REST\n(HTTPS)" as IREST
+() "Socket.IO\n(WSS)" as IWS
+() "IAutenticación" as IAUT
+() "IPedidos" as IPED
+() "IPago" as IPAG
+() "IFlota" as IFLO
+() "ICatálogo" as ICAT
+() "INotificar" as INOT
+() "IGeo" as IGEO
+() "ITiempoReal" as IRT
+
+
+AC -down-( IREST
+AD -down-( IREST
+PA -down-( IREST
+AC -down-( IWS
+AD -down-( IWS
+PA -down-( IWS
+API -up- IREST
+RT -up- IWS
+
+API -down-( IAUT
+API -down-( IPED
+API -down-( IFLO
+API -down-( ICAT
+AUTH -up- IAUT
+PED -up- IPED
+FLO -up- IFLO
+CAT -up- ICAT
+
+PED -down-( IPAG
+PAG -up- IPAG
+PED -down-( INOT
+NOT -up- INOT
+PED -down-( IGEO
+GEO -up- IGEO
+PED -down-( IRT
+RT -up- IRT
+PED -down-( IFLO
+
+() "Identidad,\nnotificaciones push" as IFB
+() "Pasarela de cobro\n(checkout, webhook)" as IMP
+() "Correo\ntransaccional" as IML
+() "SQL (TCP 5432)" as ISQL
+() "Redis (TCP 6379)" as IRD
+FB -up- IFB
+MP -up- IMP
+ML -up- IML
+PG -up- ISQL
+RD -up- IRD
+AUTH -down-( IFB
+NOT -down-( IFB
+PAG -down-( IMP
+NOT -down-( IML
+GEO -down-( IRD
+PED -down-( ISQL
+FLO -down-( ISQL
+AUTH -down-( ISQL
+CAT -down-( ISQL
+PAG -down-( ISQL
+@enduml

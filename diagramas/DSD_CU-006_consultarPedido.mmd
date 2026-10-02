@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-006 Consultar Detalle de Pedido · consultarPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :OrderService
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CLI->>+SRV: consultarPedido(pedidoId)
+    SRV->>+COL: get(pedidoId)
+    COL-->>-SRV: pedido
+    SRV->>PED: esDeLaDistribuidora(distribuidoraId)
+    SRV->>PED: esDelCliente(clienteId)
+    SRV-->>-CLI: pedido

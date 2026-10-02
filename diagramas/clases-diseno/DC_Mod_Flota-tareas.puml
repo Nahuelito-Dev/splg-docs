@@ -1,0 +1,130 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class FleetTaskService <<fachada>> {
+  + assertVehiculoHabilitado(vehiculo: Vehiculo)
+  + cerrarTareaDeFlota(tareaId: Identificador, fecha: Fecha,\n      kilometraje: Entero, costo: Moneda,\n      observacion: Cadena): TareaMantenimiento
+  + crearTareaDeFlota(planId: Identificador,\n      recursoId: Identificador, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
+  + motivosDeInhabilitacionDeVehiculo(vehiculo: Vehiculo): Cadena[*]
+}
+class FleetAttachmentService <<fachada>> {
+  + adjuntarArchivoALaTarea(tareaId: Identificador,\n      archivo: Archivo): AdjuntoTarea
+  + consultarAdjuntosDeLaTarea(tareaId: Identificador): AdjuntoTarea[*]
+  + descargarAdjunto(tareaId: Identificador,\n      adjuntoId: Identificador)
+  + eliminarAdjunto(tareaId: Identificador,\n      adjuntoId: Identificador)
+  + validarArchivo(archivo: Archivo)
+}
+class FleetExpirationsService <<fachada>> {
+  + consultarVencimientosDeLaFlota(dias: Entero)
+}
+class FleetAlertsCron <<fachada>> {
+  + avisarVencimientosPendientes()
+}
+class FleetDispatchLockService <<fabricación pura>> {
+  + assertChoferHabilitado(chofer: Chofer)
+  + vehiculoEnUsoDelChofer(chofer: Chofer): Vehiculo
+}
+class "Map<String, PlanMantenimiento>" as Map_String_PlanMantenimiento <<colección>> {
+  + get(clave: Cadena): PlanMantenimiento
+}
+class "Map<String, TareaMantenimiento>" as Map_String_TareaMantenimiento <<colección>> {
+  + get(clave: Cadena): TareaMantenimiento
+}
+class "List<TareaMantenimiento>" as List_TareaMantenimiento <<colección>> {
+  + getAbiertasHasta(dias: Entero): TareaMantenimiento[*]
+  + getSinAvisar(): TareaMantenimiento[*]
+}
+class TareaMantenimiento <<referencia>>
+class PlanMantenimiento <<referencia>>
+class EmailSenderPort <<referencia>>
+class StoragePort <<referencia>>
+class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
+class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
+class Distribuidora <<referencia>>
+class Vehiculo <<referencia>>
+class Chofer <<referencia>>
+
+Map_String_TareaMantenimiento "1" o--> "0..*" TareaMantenimiento
+Map_String_PlanMantenimiento "1" o--> "0..*" PlanMantenimiento
+List_TareaMantenimiento "1" o--> "0..*" TareaMantenimiento
+FleetAlertsCron --> "1" EmailSenderPort
+FleetAlertsCron --> "1" List_TareaMantenimiento
+FleetAttachmentService --> "1" Map_String_TareaMantenimiento
+FleetAttachmentService --> "1" StoragePort
+FleetExpirationsService --> "1" List_TareaMantenimiento
+FleetTaskService --> "1" Map_String_Chofer
+FleetTaskService --> "1" Map_String_PlanMantenimiento
+FleetTaskService --> "1" Map_String_TareaMantenimiento
+FleetTaskService --> "1" Map_String_Vehiculo
+FleetAlertsCron ..> Distribuidora
+FleetAlertsCron ..> TareaMantenimiento
+FleetAttachmentService ..> TareaMantenimiento
+FleetExpirationsService ..> Chofer
+FleetExpirationsService ..> TareaMantenimiento
+FleetExpirationsService ..> Vehiculo
+FleetTaskService ..> PlanMantenimiento
+FleetTaskService ..> TareaMantenimiento
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

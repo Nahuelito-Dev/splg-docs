@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-007 Consultar Historial de Pedidos · consultarHistorialDePedidos
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :OrderService
+    participant COL as :List#lt;Pedido#gt;
+
+    CLI->>+SRV: consultarHistorialDePedidos(clienteId, pagina, limite)
+    SRV->>+COL: buscarDelCliente(clienteId, pagina, limite)
+    COL-->>-SRV: pedidos, total
+    SRV-->>-CLI: pedidos, total

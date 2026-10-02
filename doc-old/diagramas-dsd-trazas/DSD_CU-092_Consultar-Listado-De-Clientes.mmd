@@ -1,0 +1,37 @@
+sequenceDiagram
+    title DSD — CU-092 Consultar Listado De Clientes
+autonumber
+participant ADM as Admin o SuperAdmin
+participant DEC as CurrentDistributor
+participant CTRL as CustomersController
+participant SRV as CustomersService
+participant CREP as RepositoryCustomer
+
+ADM->>DEC: GET /customers con PaginationDto
+activate DEC
+DEC->>CTRL: findAll(paginationDto, distributorId)
+activate CTRL
+CTRL->>SRV: findAll(paginationDto, distributorId)
+activate SRV
+SRV->>CREP: createQueryBuilder customer
+activate CREP
+SRV->>CREP: leftJoinAndSelect customer.user, user.role, user.addresses
+SRV->>CREP: take(limit) y skip(offset)
+opt Se paso term
+    Note over SRV: «extend» Filtrar por Término — punto de extensión: filtra por user.full_name o user.email
+    SRV->>CREP: andWhere term opcional sobre user.full_name o user.email
+end
+alt Hay tenant en contexto
+    SRV->>CREP: andWhere EXISTS subquery sobre Order por customer_id y distributor_id
+else super_admin cross tenant
+    SRV->>SRV: sin filtro, devuelve todos los clientes
+end
+SRV->>CREP: getManyAndCount()
+CREP-->>SRV: Customer[] con user role y addresses, y el total
+deactivate CREP
+SRV-->>CTRL: Customer[] y total
+deactivate SRV
+CTRL->>CTRL: CustomerMapper.toDto(customer) a CustomerResponseDto
+CTRL-->>ADM: 200 CustomerResponseDto[] con header X-Total-Count
+deactivate CTRL
+deactivate DEC

@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-034 Registrar Vehículo del Chofer · registrarVehiculo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: registrarVehiculo(tipo, capacidad, patente, marca, modelo, anio, color)
+    create participant VEH as :Vehiculo
+    CHO->>VEH: «create»(tipo, capacidad, patente, marca, modelo, anio, color)
+    CHO-->>-SRV: vehiculo
+    SRV-->>-ADM: vehiculo

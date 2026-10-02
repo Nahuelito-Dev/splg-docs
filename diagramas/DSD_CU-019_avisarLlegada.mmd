@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-019 Avisar Llegada al Cliente · avisarLlegada
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant RT as :RealtimeDispatchPort
+    participant NOT as :NotificationPort
+
+    CHF->>+SRV: avisarLlegada(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: esDelChofer(chofer)
+    PED-->>-SRV: asignado
+    SRV->>+PED: estaEnCamino()
+    PED-->>-SRV: enCamino
+    SRV->>+PED: getCliente()
+    PED-->>-SRV: cliente
+    SRV-)RT: notifyCustomer(cliente, llegada)
+    SRV->>NOT: sendArrivalPushToCustomer(cliente, pedido, nombreDelChofer)
+    SRV-->>-CHF: aviso

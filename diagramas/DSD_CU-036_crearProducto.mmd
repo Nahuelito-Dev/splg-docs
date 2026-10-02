@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-036 Crear Producto (Garrafa) · crearProducto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :GasCylinderService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)
+    SRV->>+DIS: tieneProducto(tipo)
+    DIS-->>-SRV: existe
+    create participant PRO as producto:Producto
+    SRV->>PRO: «create»(distribuidora, tipo, peso, precio, stockInicial, descripcion)
+    loop Por cada promocion de promociones
+        SRV->>+PRO: agregarPromocion(cantidad, descuento)
+        create participant PRM as :Promocion
+        PRO->>PRM: «create»(cantidad, descuento)
+        deactivate PRO
+    end
+    SRV-->>-ADM: producto

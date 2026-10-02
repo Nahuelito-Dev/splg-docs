@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-123 Modificar la Cantidad de un Item del Carrito
+    title DSS — CU-123 Modificar la Cantidad de un Ítem del Carrito
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: modificarCantidadDelItem(itemId, cantidad)
     activate SIS

@@ -1,0 +1,33 @@
+classDiagram
+    direction LR
+
+    %% Módulo `payments` — generado por generar-clases-diseno.py
+
+    class MercadoPagoAdapter {
+        +createCheckout(input: CreateCheckoutInput) Promise<CreateCheckoutResult>
+        +getPayment(paymentId: string) Promise<GatewayPayment>
+        +verifyWebhookSignature(input: VerifyWebhookSignatureInput) boolean
+    }
+
+    class MercadoPagoWebhookController {
+        <<controller>>
+        +handle(@Query() query: Record<string, unknown>, @Headers('x-signature') xSignature?: string, @Headers('x-request-id') xRequestId?: string) Promise<
+    }
+
+    class PaymentGatewayPort {
+        <<interface>>
+        +createCheckout(input: CreateCheckoutInput) Promise<CreateCheckoutResult>
+        +getPayment(paymentId: string) Promise<GatewayPayment>
+        +verifyWebhookSignature(input: VerifyWebhookSignatureInput) boolean
+    }
+
+    class PaymentsService {
+        +createCheckout(input: CreatePaymentCheckoutInput) Promise<CreateCheckoutResult>
+        +confirmFromGateway(input: ConfirmFromGatewayInput) Promise<ConfirmFromGatewayResult | null>
+        +verifyWebhookSignature(input: VerifyWebhookSignatureInput) boolean
+        -updateLedger(gatewayPayment: GatewayPayment) Promise<boolean>
+        -toLedgerStatus(gatewayStatus: string) LedgerPaymentStatus
+    }
+
+    MercadoPagoWebhookController ..> PaymentsService : usa
+    PaymentsService ..> PaymentGatewayPort : usa

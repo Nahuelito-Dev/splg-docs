@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-130 Buscar Cliente por Usuario · buscarClientePorUsuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomersService
+    participant COL as :Map#lt;String, Cliente#gt;
+
+    ADM->>+SRV: buscarClientePorUsuario(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: cliente
+    SRV-->>-ADM: cliente

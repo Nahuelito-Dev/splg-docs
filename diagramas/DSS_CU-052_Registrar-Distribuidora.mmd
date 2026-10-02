@@ -1,8 +1,8 @@
 sequenceDiagram
     title DSS — CU-052 Registrar Distribuidora
     autonumber
-    actor SUP as Super Administrador
-    participant SIS as Sistema
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
 
     SUP->>SIS: registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)
     activate SIS

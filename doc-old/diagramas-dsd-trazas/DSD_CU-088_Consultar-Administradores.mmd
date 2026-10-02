@@ -1,0 +1,53 @@
+sequenceDiagram
+    title DSD — CU-088 Consultar Administradores
+    autonumber
+    participant ADM as Admin o SuperAdmin
+    participant DEC as CurrentDistributor
+    participant CTRL as AdminController
+    participant SRV as AdminService
+    participant AREP as RepositoryAdmin
+
+    alt Listado, GET /admin
+        ADM->>DEC: GET /admin
+        activate DEC
+        DEC->>CTRL: findAll(distributorId)
+        activate CTRL
+        CTRL->>SRV: findAll(distributorId)
+        activate SRV
+        alt Hay tenant en contexto
+            SRV->>AREP: find(where distributor_id, relations user role distributor)
+            activate AREP
+        else super_admin cross tenant
+            SRV->>AREP: find(where vacio, relations user role distributor)
+        end
+        AREP-->>SRV: Admin[]
+        deactivate AREP
+        SRV-->>CTRL: Admin[]
+        deactivate SRV
+        CTRL-->>ADM: 200 Admin[]
+        deactivate CTRL
+    else Busqueda por termino, GET /admin/term/:term
+        ADM->>CTRL: findOneByEmail(term, distributorId)
+        activate CTRL
+        CTRL->>SRV: findAdminByTerm(term, distributorId)
+        activate SRV
+        SRV->>SRV: isUUID(term)
+        alt El termino es un UUID
+            SRV->>AREP: createQueryBuilder where admin.admin_id igual al termino
+            activate AREP
+        else El termino es un email
+            SRV->>AREP: createQueryBuilder where user.email igual al termino
+        end
+        AREP-->>SRV: Admin o null
+        deactivate AREP
+        alt No encontrado, o de otra distribuidora que la del contexto
+            SRV-->>CTRL: NotFoundException
+            deactivate SRV
+        else Encontrado
+            SRV-->>CTRL: Admin con user y role
+            CTRL->>CTRL: AdminMapper.toVista, admin_id email displayName fullName rol, sin uid
+            CTRL-->>ADM: 200 vista del admin
+            deactivate CTRL
+        end
+    end
+    deactivate DEC

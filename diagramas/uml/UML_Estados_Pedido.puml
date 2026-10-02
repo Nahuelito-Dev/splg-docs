@@ -1,0 +1,46 @@
+@startuml
+title Diagrama de estados — Pedido
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "RESERVED\nreservado" as RESERVED
+state "PENDING\npendiente de chofer" as PENDING
+state "ACCEPTED\naceptado" as ACCEPTED
+state "ON_THE_WAY\nen camino" as ON_THE_WAY
+state "DELIVERED\nentregado" as DELIVERED
+state "CANCELLED\ncancelado" as CANCELLED
+
+[*] --> PENDING : crearPedido() [pago en efectivo, transferencia\no MercadoPago; sin reserva]
+[*] --> RESERVED : crearPedido() [isReservation y scheduledDate informada]
+RESERVED --> PENDING : activarReserva() [depositPaid y scheduledDate <= hoy]
+RESERVED --> CANCELLED : cancelarPedido()\no vencer seña [depositPaid = false\ny antigüedad > plazo de la seña]
+PENDING --> ACCEPTED : aceptarPedido() [chofer habilitado,\nvalidado y de la misma distribuidora]
+PENDING --> CANCELLED : cancelarPedido()\no vencer pago [MercadoPago sin pago\ndentro del plazo]
+ACCEPTED --> ON_THE_WAY : marcarEnCamino() [pedido del chofer]
+ACCEPTED --> PENDING : liberarPedido() [chofer o administrador]
+ACCEPTED --> CANCELLED : cancelarPedido() [cliente o administrador]
+ON_THE_WAY --> DELIVERED : confirmarEntrega() [código de entrega válido]
+ON_THE_WAY --> PENDING : liberarPedido() [chofer o administrador]
+ON_THE_WAY --> CANCELLED : cancelarPedido() [administrador;\nel cliente recibe rechazo]
+DELIVERED --> [*]
+CANCELLED --> [*]
+
+note right of DELIVERED
+  Estados finales: no admiten transiciones.
+  Repetir el estado actual es una operación sin efecto.
+end note
+@enduml

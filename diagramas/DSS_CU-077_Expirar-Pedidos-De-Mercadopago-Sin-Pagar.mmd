@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-077 Expirar Pedidos De Mercadopago Sin Pagar
+    title DSS — CU-077 Expirar Pedidos de MercadoPago sin Pagar (Cron)
     autonumber
-    actor AUT as Sistema Automático
-    participant SIS as Sistema
+    actor AUT as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
 
-    Note over AUT: Proceso periódico. Frecuencia real cada 30 minutos
+    Note over AUT: Proceso periódico.<br/>Frecuencia real cada 30<br/>minutos
     AUT->>SIS: expirarPedidosSinPagar()
     activate SIS
     alt hay pedidos pendientes con pasarela más viejos que el plazo

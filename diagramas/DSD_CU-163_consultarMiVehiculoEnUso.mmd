@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-163 Consultar el Vehículo en Uso de un Chofer · consultarMiVehiculoEnUso
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :VehicleAssignmentService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant FLT as :FleetTaskService
+
+    CHF->>+SRV: consultarMiVehiculoEnUso()
+    SRV->>+COL: get(usuarioActual)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: getVehiculoEnUso()
+    CHO-->>-SRV: vehiculo
+    opt El chofer tiene un vehículo en uso
+        SRV->>+FLT: motivosDeInhabilitacionDeVehiculo(vehiculo)
+        FLT-->>-SRV: motivos
+    end
+    SRV-->>-CHF: vehiculo, inhabilitado

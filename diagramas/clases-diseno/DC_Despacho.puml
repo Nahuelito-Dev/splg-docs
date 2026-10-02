@@ -1,0 +1,113 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+abstract class PropuestaConVigencia {
+  - estado: EstadoDePropuesta
+  - vence: FechaHora
+}
+class OfertaDespacho {
+  + «create» OfertaDespacho(chofer: Chofer, venceEn: Entero)
+  + aceptar()
+  + cerrar()
+  + getPedido(): Pedido
+  + rechazar()
+  + vencer()
+}
+class OfertaLote {
+  + «create» OfertaLote(chofer: Chofer, venceEn: Entero)
+  + aceptar()
+}
+class LoteRecorrido {
+  - estado: EstadoDelLote
+  - /pesoTotal: Decimal
+  + «create» LoteRecorrido(pedidos: Pedido[*])
+  + asignarChofer(chofer: Chofer)
+  + deshacer()
+  + getOfertaVigente(chofer: Chofer): OfertaDespacho
+  + ofrecerA(chofer: Chofer, venceEn: Entero)
+}
+class ParadaLote {
+  - orden: Entero
+  + «create» ParadaLote(pedido: Pedido, orden: Entero)
+  + getPedido(): Pedido
+}
+class PropuestaVentanaTaller <<referencia>>
+class InvitacionRecompra <<referencia>>
+class AvisoRecupero <<referencia>>
+class Pedido <<referencia>>
+class Chofer <<referencia>>
+
+PropuestaConVigencia <|-- OfertaDespacho : {disjoint, complete}
+PropuestaConVigencia <|-- OfertaLote
+PropuestaConVigencia <|-- PropuestaVentanaTaller
+PropuestaConVigencia <|-- InvitacionRecompra
+PropuestaConVigencia <|-- AvisoRecupero
+Pedido "1" *--> "0..*" OfertaDespacho : genera
+OfertaDespacho "0..*" -- "1" Chofer : se dirige a
+LoteRecorrido "1" *--> "1..*" ParadaLote : se compone de
+ParadaLote "0..*" -- "1" Pedido : atiende
+LoteRecorrido "1" *--> "0..*" OfertaLote : genera
+OfertaLote "0..*" -- "1" Chofer : se dirige a
+Chofer "0..1" -- "0..*" LoteRecorrido : acepta
+LoteRecorrido ..> Pedido
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

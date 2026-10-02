@@ -1,0 +1,29 @@
+classDiagram
+    direction LR
+
+    %% Módulo `notifications` — generado por generar-clases-diseno.py
+
+    class NotificationsController {
+        <<controller>>
+        +sendTestNotification(@Body() dto: SendTestNotificationDto) Promise<ResultadoDeEnvioDto>
+        +sendOrderConfirmation(@Body() dto: SendOrderConfirmationDto) Promise<ResultadoDeEnvioDto>
+        +getUserTokens(@Param('userId', ParseUUIDPipe) userId: string, @CurrentUser() user: AuthenticatedUser) Promise<TokensDeUsuarioDto>
+        +saveToken(@Body() dto: SaveNotificationTokenDto, @CurrentUser() user: AuthenticatedUser) Promise<ResultadoDeEnvioDto>
+    }
+
+    class NotificationsService {
+        +sendTestNotification(token: string, title: string, body: string) Promise<ResultadoDeEnvioDto>
+        +sendOrderConfirmation(customerId: string, orderId: string, token?: string) Promise<ResultadoDeEnvioDto>
+        +sendOrderStatusUpdate(customer: User, order: Order, notificationToken?: string) Promise<ResultadoDeEnvioDto>
+        +getUserNotificationTokens(userId: string) Promise<TokensDeUsuarioDto>
+        +sendOfferPushToDriver(driverUserId: string, orderId: string) Promise<void>
+        +sendArrivalPushToCustomer(customerUserId: string, orderId: string, driverName: string) Promise<void>
+        +saveNotificationToken(userId: string, token: string, platform: string) Promise<ResultadoDeEnvioDto>
+    }
+
+    NotificationsController ..> NotificationsService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% NotificationsService usa CustomersService (módulo `customer`)
+    %% NotificationsService usa DeliveryService (módulo `delivery`)
+    %% NotificationsService usa FcmPort (módulo `firebase`)

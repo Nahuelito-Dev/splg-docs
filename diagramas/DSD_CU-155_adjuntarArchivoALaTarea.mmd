@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-155 Adjuntar Archivo a una Tarea de Flota · adjuntarArchivoALaTarea
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetAttachmentService
+    participant COL as :Map#lt;String, TareaMantenimiento#gt;
+    participant STO as :StoragePort
+    participant TAR as tarea:TareaMantenimiento
+
+    ADM->>+SRV: adjuntarArchivoALaTarea(tareaId, archivo)
+    SRV->>+COL: get(tareaId)
+    COL-->>-SRV: tarea
+    SRV->>SRV: validarArchivo(archivo)
+    SRV->>STO: put(clave, archivo)
+    SRV->>+TAR: adjuntar(clave, archivo, usuario)
+    create participant ADJ as :AdjuntoTarea
+    TAR->>ADJ: «create»(clave, nombre, tipo, tamano, usuario)
+    TAR-->>-SRV: adjunto
+    SRV-->>-ADM: adjunto

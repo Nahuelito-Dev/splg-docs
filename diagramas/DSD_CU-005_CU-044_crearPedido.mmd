@@ -1,0 +1,44 @@
+sequenceDiagram
+    title DSD — CU-005 / CU-044 · crearPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CRT as :CreateOrderUseCase
+    participant CLE as cliente:Cliente
+    participant ZON as zona:ZonaCobertura
+    participant FRA as franja:FranjaHoraria
+    participant PRO as producto:Producto
+    participant NOT as :NotificationPort
+
+    CLI->>+CRT: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+    CRT->>+CLE: getDireccion(direccionId)
+    CLE-->>-CRT: direccion
+    CRT->>+ZON: cubre(direccion)
+    ZON-->>-CRT: cubierta
+    opt Hay fechaAgendada y franjaId
+        CRT->>FRA: tieneCupo(fechaAgendada)
+    end
+    create participant PED as :Pedido
+    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago)
+    loop Por cada item de items
+        CRT->>PRO: reservar(cantidad)
+        CRT->>+PED: agregarItem(producto, cantidad)
+        PED->>+PRO: precioPara(cantidad)
+        PRO-->>-PED: precioUnitario, subtotal
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+        deactivate PED
+    end
+    CRT->>+PED: calcularTotal()
+    loop Por cada item del Pedido
+        PED->>ITM: getSubtotal()
+    end
+    PED->>ZON: calcularRecargo(subtotalItems)
+    PED->>PED: aplicarRecargoDePago()
+    PED-->>-CRT: total
+    alt metodoDePago es MERCADOPAGO
+        Note over CRT,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). No se despacha hasta confirmarlo
+    else efectivo o transferencia
+        Note over CRT,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    end
+    CRT-)NOT: sendOrderConfirmation(cliente, pedido)
+    CRT-->>-CLI: pedido, enlaceDePago

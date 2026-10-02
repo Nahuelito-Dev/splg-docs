@@ -1,0 +1,141 @@
+@startuml
+title Modelo entidad-relación conceptual — vista general
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Distribuidora
+entity Usuario
+entity Rol
+entity Administrador
+entity ConfiguracionModulo
+entity AsientoAuditoria
+entity Cliente
+entity DireccionEntrega
+entity InvitacionRecompra
+entity Producto
+entity Promocion
+entity Envase
+entity MovimientoEnvase
+entity RevisionEnvase
+entity CasoRecupero
+entity AvisoRecupero
+entity Carrito
+entity ItemCarrito
+entity Pedido
+entity ItemPedido
+entity CambioEstadoPedido
+entity CambioDireccion
+entity ZonaCobertura
+entity FranjaHoraria
+entity Pago
+entity OfertaDespacho
+entity LoteRecorrido
+entity ParadaLote
+entity OfertaLote
+entity Chofer
+entity Vehiculo
+entity AsignacionVehiculo
+entity PlanMantenimiento
+entity TareaMantenimiento
+entity AdjuntoTarea
+entity PropuestaVentanaTaller
+entity RegistroUsoVehiculo
+entity Reclamo
+entity Incidencia
+entity Calificacion
+
+Distribuidora ||--o{ ZonaCobertura
+Distribuidora ||--o{ Producto
+Distribuidora ||--o{ FranjaHoraria
+Usuario }o--o| Rol
+Distribuidora |o--o{ Administrador
+Administrador |o--|| Usuario
+Usuario |o--o{ AsientoAuditoria
+Chofer ||--o{ Vehiculo
+Cliente ||--o{ Carrito
+Cliente }o--o| Producto
+Cliente |o--|| Usuario
+Distribuidora ||--o{ Chofer
+Chofer |o--|| Usuario
+Producto ||--o{ Promocion
+Distribuidora ||--o{ ConfiguracionModulo
+Cliente ||--o{ DireccionEntrega
+Carrito ||--o{ ItemCarrito
+ItemCarrito }o--|| Producto
+TareaMantenimiento }o--o| Vehiculo
+TareaMantenimiento }o--o| Chofer
+PlanMantenimiento ||--o{ TareaMantenimiento
+Pedido }o--|| DireccionEntrega
+Pedido }o--o| ZonaCobertura
+Cliente ||--o{ Pedido
+Chofer |o--o{ Pedido
+Distribuidora ||--o{ Pedido
+Pedido }o--o| FranjaHoraria
+Chofer |o--o{ LoteRecorrido
+Vehiculo ||--o{ AsignacionVehiculo
+Chofer ||--o{ AsignacionVehiculo
+Vehiculo ||--o{ RegistroUsoVehiculo
+Cliente ||--o{ Reclamo
+Pedido ||--o{ Reclamo
+Cliente |o--o{ Envase
+Pedido |o--o{ Envase
+Distribuidora ||--o{ Envase
+Producto |o--o{ Envase
+Pedido ||--o{ Incidencia
+TareaMantenimiento ||--o{ AdjuntoTarea
+PropuestaVentanaTaller }o--|| Chofer
+TareaMantenimiento ||--o{ PropuestaVentanaTaller
+CambioDireccion }o--|| DireccionEntrega
+Pedido ||--o{ CambioDireccion
+CambioDireccion }o--|| DireccionEntrega
+OfertaDespacho }o--|| Chofer
+Pedido ||--o{ OfertaDespacho
+ItemPedido }o--|| Producto
+Pedido ||--o{ ItemPedido
+Pedido ||--o{ CambioEstadoPedido
+Pedido ||--o{ Pago
+Pedido ||--o{ Calificacion
+InvitacionRecompra }o--o| DireccionEntrega
+InvitacionRecompra }o--o| Pedido
+Cliente ||--o{ InvitacionRecompra
+LoteRecorrido ||--o{ OfertaLote
+OfertaLote }o--|| Chofer
+LoteRecorrido ||--o{ ParadaLote
+ParadaLote }o--|| Pedido
+Envase ||--o{ RevisionEnvase
+Envase ||--o{ MovimientoEnvase
+Pedido |o--o{ MovimientoEnvase
+Envase ||--o{ CasoRecupero
+CasoRecupero }o--|| Cliente
+CasoRecupero ||--o{ AvisoRecupero
+
+legend bottom right
+  Vista de conjunto: sin atributos ni nombres de relación. Las relaciones de Usuario
+  con los registros que sólo dejan constancia de su autoría figuran en la vista de su área.
+endlegend
+@enduml

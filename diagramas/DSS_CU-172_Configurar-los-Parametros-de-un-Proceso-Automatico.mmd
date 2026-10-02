@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-172 Configurar los Parámetros de un Proceso Automático
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: configurarParametrosDeProceso(proceso, parametros)
+    activate SIS
+    alt el proceso es configurable y los parámetros son válidos
+        SIS-->>ADM: parámetros del proceso guardados
+    else el proceso no es configurable
+        SIS-->>ADM: recurso no encontrado
+    else los parámetros son inválidos
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

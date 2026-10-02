@@ -1,0 +1,76 @@
+classDiagram
+    direction LR
+
+    %% Pagos y reservas. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class PaymentsService {
+        <<fachada>>
+        + crearCheckoutDePago(pedidoId: Identificador, metodoDePago: MetodoDePago): Cadena
+    }
+
+    class PaymentGatewayPort {
+        <<interface>>
+        + createCheckout(pedido: Pedido, items: ItemPedido[*], pagador: Cadena): Cadena
+        + getPayment(identificadorDelPago: Identificador): Cadena
+        + refundPayment(pago: Pago, importe: Moneda): Cadena
+        + verifyWebhookSignature(firma: Cadena, identificadorDelPago: Identificador): Booleano
+    }
+
+    class RefundPaymentUseCase {
+        <<use case>>
+        + reintegrarPagoDelPedido(pedidoId: Identificador, importe: Moneda): Booleano
+    }
+
+    class ConfirmPaymentUseCase {
+        <<use case>>
+        + notificarResultadoDePago(tipoDeNotificacion: Cadena, identificadorDelPago: Cadena, firma: Cadena)
+    }
+
+    class RefundPaymentUseCase {
+        <<use case>>
+        + reintegrarPagoDelPedido(pedidoId: Identificador, importe: Moneda): Booleano
+    }
+
+    class ReservationService {
+        <<fachada>>
+        + activarReservasDelDia()
+        + confirmarSenia(pedidoId: Identificador): Pedido
+        + expirarPedidosSinPagar()
+        + expirarReservasSinSenia()
+        + listarReservas(): Pedido[*]
+    }
+
+    class Map_String_Pedido["Map<String, Pedido>"] {
+        <<colección>>
+    }
+    class RealtimeDispatchPort {
+        <<interface>>
+    }
+    class List_Pedido["List<Pedido>"] {
+        <<colección>>
+    }
+    class Pago
+    class Pedido
+    class NotificationPort {
+        <<interface>>
+    }
+
+    ConfirmPaymentUseCase --> "1" Map_String_Pedido : map<String, Pedido>
+    PaymentsService --> "1" Map_String_Pedido : map<String, Pedido>
+    PaymentsService --> "1" PaymentGatewayPort : paymentGatewayPort
+    RefundPaymentUseCase --> "1" Map_String_Pedido : map<String, Pedido>
+    RefundPaymentUseCase --> "1" PaymentGatewayPort : paymentGatewayPort
+    RefundPaymentUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
+    ReservationService --> "1" List_Pedido : list<Pedido>
+    ReservationService --> "1" Map_String_Pedido : map<String, Pedido>
+    ConfirmPaymentUseCase ..> NotificationPort
+    ConfirmPaymentUseCase ..> Pago
+    ConfirmPaymentUseCase ..> PaymentGatewayPort
+    ConfirmPaymentUseCase ..> Pedido
+    ConfirmPaymentUseCase ..> RealtimeDispatchPort
+    PaymentsService ..> Pago : create
+    PaymentsService ..> Pedido
+    RefundPaymentUseCase ..> Pago
+    RefundPaymentUseCase ..> Pedido
+    ReservationService ..> Pedido

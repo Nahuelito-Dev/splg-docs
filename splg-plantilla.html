@@ -118,12 +118,25 @@ input[type=search]:focus{outline:none;border-color:var(--primary);
   color:var(--bg)}
 .filters button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
-/* ---------- menú de secciones ----------
-   La barra es el índice del sitio: cuatro secciones. La primera despliega la
-   documentación —buscador, filtros y los casos por subsistema—; las otras tres
-   son las páginas hermanas. Antes la barra era directamente la lista de los 108
-   casos, que no dejaba ver que el sitio tuviera otras partes. */
+/* ---------- menú izquierdo agrupado ----------
+   Reemplaza la lista plana de antes: rótulos chicos de grupo como en la
+   referencia (Empezar, Casos de uso, Modelos…), y algunos plegables porque
+   Módulos inteligentes y Sistema UML son ruido la mayoría de las veces que se
+   abre el sitio. */
 .secciones{display:flex;flex-direction:column;min-height:0;flex:1;overflow-y:auto}
+.grupo-menu{padding:10px 0;border-top:1px solid var(--outline)}
+.grupo-menu:first-child{border-top:none}
+.grupo-menu>p.rotulo-grupo{display:block;font-family:"IBM Plex Mono",monospace;
+  font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  padding:4px 20px 6px;margin:0}
+button.rotulo-grupo{width:100%;background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:7px;text-align:left;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);padding:4px 20px 6px}
+button.rotulo-grupo:hover{color:var(--content)}
+button.rotulo-grupo:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
+button.rotulo-grupo .flecha{transition:transform .12s ease;font-size:12px;line-height:1}
+button.rotulo-grupo[aria-expanded=true] .flecha{transform:rotate(90deg)}
 .seccion{display:flex;align-items:center;gap:10px;width:100%;
   font-family:var(--sans);font-size:13.5px;font-weight:500;letter-spacing:0;
   color:var(--content);background:transparent;border:none;
@@ -132,17 +145,23 @@ input[type=search]:focus{outline:none;border-color:var(--primary);
 .seccion:hover{background:var(--tint);color:var(--primary)}
 .seccion:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
 .seccion .nombre{flex:1;min-width:0}
-.seccion .cuenta{font-size:10px;color:var(--muted);background:var(--variant);
-  border-radius:99px;padding:2px 8px}
-.seccion .ir{color:var(--muted)}
-.seccion .flecha{transition:transform .12s ease;font-size:14px;line-height:1;color:var(--muted)}
-.seccion[aria-expanded=true]{color:var(--primary);background:var(--tint)}
+.seccion .cuenta,.item .cuenta{font-size:10px;color:var(--muted);background:var(--variant);
+  border-radius:99px;padding:2px 8px;flex:none}
 .seccion[aria-current=true]{background:var(--variant);color:var(--content);font-weight:600;
   box-shadow:inset 2px 0 0 var(--primary)}
-.seccion[aria-expanded=true] .flecha{transform:rotate(90deg);color:var(--primary)}
-.cuerpo-seccion{display:none;flex-direction:column;min-height:0;
-  border-bottom:1px solid var(--outline);background:var(--bg)}
-.cuerpo-seccion.abierta{display:flex;flex:1}
+.item .chev{color:var(--muted);flex:none;font-size:13px}
+
+/* El drill: al entrar a un subsistema el menú entero se cambia por su volver
+   y su lista de casos. No conviven los dos —si no, en el teléfono el panel no
+   entra—, así que uno de los dos siempre tiene `hidden`. */
+#drill{display:flex;flex-direction:column;min-height:0;flex:1;overflow-y:auto}
+#drill[hidden],#navPrincipal[hidden],.list[hidden]{display:none}
+.volver-drill{display:flex;align-items:center;gap:8px;width:100%;text-align:left;
+  font:inherit;font-size:12.5px;font-weight:600;color:var(--primary);background:var(--tint);
+  border:none;border-bottom:1px solid var(--outline);padding:12px 18px;cursor:pointer;flex:none}
+.volver-drill:hover{background:var(--variant)}
+.volver-drill:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
+#listaDrill{overflow-y:auto;flex:1;padding:6px 0 24px}
 
 .list{overflow-y:auto;flex:1;padding:6px 0 24px;min-height:0}
 button.grp{display:flex;align-items:center;gap:8px;width:100%;
@@ -183,9 +202,9 @@ button.grp .flecha{flex:none;transition:transform .12s ease;font-size:13px;line-
 
 /* Los enlaces dentro del texto van en tinta y subrayados, como la referencia:
    el color queda para los códigos (CU-013, ACT-01), que sí son etiquetas. */
-.pad a:not([data-cu]):not(.item):not(.ir){color:var(--content);text-decoration:underline;
+.pad a:not([data-cu]):not(.item):not(.ir):not(.tarjeta){color:var(--content);text-decoration:underline;
   text-underline-offset:2px;text-decoration-color:rgba(26,26,26,.35)}
-.pad a:not([data-cu]):not(.item):not(.ir):hover{text-decoration-color:var(--content)}
+.pad a:not([data-cu]):not(.item):not(.ir):not(.tarjeta):hover{text-decoration-color:var(--content)}
 
 /* ---------- detalle ---------- */
 main{overflow-y:auto;min-height:0;padding:0 0 90px}
@@ -350,6 +369,111 @@ footer.pie .cierre{margin-top:16px;padding-top:14px;border-top:1px solid var(--o
   .barra-doc{padding:9px 16px}
 }
 @media(min-width:881px){.fondo-cajon{display:none}}
+
+/* ---------- menús de la barra superior ----------
+   Documentación y Proceso despliegan un panel con destinos que ya existen en
+   el sitio: no se inventa contenido nuevo, cada ítem abre una vista que ya se
+   genera desde los .md. `<details>` da el desplegable sin escribir el manejo
+   de abrir/cerrar; sólo hace falta cerrarlo al elegir un ítem, porque acá no
+   hay una navegación de página real que lo haga por nosotros. */
+.navbar-menus{display:flex;align-items:center;gap:2px}
+.navbar-menus>.menu-link{font:inherit;font-size:13.5px;font-weight:500;color:var(--content);
+  text-decoration:none;padding:8px 10px;border-radius:6px}
+.navbar-menus>.menu-link:hover{background:var(--tint);color:var(--primary)}
+.navbar-menus>.menu-link[aria-current=true]{color:var(--primary);background:var(--tint)}
+.menu-nav{position:relative}
+.menu-nav>summary{list-style:none;font:inherit;font-size:13.5px;font-weight:500;
+  color:var(--content);cursor:pointer;padding:8px 10px;border-radius:6px;
+  display:flex;align-items:center;gap:5px;user-select:none}
+.menu-nav>summary::-webkit-details-marker{display:none}
+.menu-nav>summary:hover{background:var(--tint);color:var(--primary)}
+.menu-nav>summary svg{width:9px;height:9px;transition:transform .12s ease;flex:none}
+.menu-nav[open]>summary svg{transform:rotate(180deg)}
+.menu-nav[open]>summary{background:var(--tint);color:var(--primary)}
+.menu-nav-panel{position:absolute;top:calc(100% + 6px);left:0;min-width:236px;
+  background:var(--surface);border:1px solid var(--outline);border-radius:var(--radio);
+  box-shadow:0 14px 30px rgba(26,26,26,.16);padding:6px;display:flex;flex-direction:column;
+  gap:1px;z-index:50}
+.menu-nav-panel a,.menu-nav-panel button{display:block;width:100%;text-align:left;
+  font:inherit;font-size:13.5px;color:var(--content);text-decoration:none;background:none;
+  border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
+.menu-nav-panel a:hover,.menu-nav-panel button:hover{background:var(--tint);color:var(--primary)}
+@media(max-width:880px){.navbar-menus{display:none}}
+
+/* ---------- buscar en la documentación (⌘K) ----------
+   Antes el buscador vivía adentro del panel, filtrando la lista que se veía
+   debajo. Ahora el panel de la izquierda es navegación pura y buscar abre una
+   paleta encima de todo: el input, los filtros y la lista de resultados son
+   los mismos `#q`, `#filtros` y `#lista` de siempre, sólo que ahora viven
+   dentro de la paleta en vez de adentro del panel. */
+.buscar-panel{display:flex;align-items:center;gap:9px;width:100%;padding:9px 12px;
+  border:1px solid var(--outline);border-radius:var(--radio);background:var(--surface);
+  color:var(--muted);font:inherit;font-size:13.5px;cursor:pointer}
+.buscar-panel:hover{border-color:#D6D2C7;color:var(--content)}
+.buscar-panel:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.buscar-panel svg{flex:none}
+.buscar-panel span{flex:1;text-align:left}
+.buscar-panel kbd{font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  border:1px solid var(--outline);border-radius:4px;padding:1px 5px;background:var(--variant)}
+
+.paleta{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-start;
+  justify-content:center;padding:11vh 16px 0}
+.paleta[hidden]{display:none}
+.paleta-fondo{position:fixed;inset:0;background:rgba(28,26,23,.5)}
+.paleta-caja{position:relative;width:min(640px,100%);max-height:72vh;display:flex;
+  flex-direction:column;background:var(--surface);border:1px solid var(--outline);
+  border-radius:12px;box-shadow:0 24px 60px rgba(26,26,26,.32);overflow:hidden}
+.paleta-cabeza{display:flex;align-items:center;gap:10px;padding:5px 16px;flex:none}
+.paleta-cabeza svg{flex:none;color:var(--muted)}
+.paleta-cabeza input[type=search]{border:none;background:none;padding:10px 0}
+.paleta-cabeza input[type=search]:focus{box-shadow:none}
+.paleta-cabeza kbd{font-family:"IBM Plex Mono",monospace;font-size:10.5px;flex:none;
+  border:1px solid var(--outline);border-radius:4px;padding:2px 6px;color:var(--muted)}
+.paleta .filters{padding:10px 16px;border-top:1px solid var(--outline);
+  border-bottom:1px solid var(--outline)}
+.paleta .list{max-height:56vh}
+@media(max-width:620px){.paleta{padding-top:4vh}.paleta-caja{max-height:88vh}}
+
+/* ---------- grilla de tarjetas ----------
+   La portada y la página de cada subsistema entran por acá: no listan sus
+   partes en texto, las muestran en tarjetas, como en la referencia. */
+.tarjetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr));
+  gap:12px;margin:18px 0}
+.tarjeta{display:flex;flex-direction:column;gap:9px;padding:16px 17px;
+  background:var(--surface);border:1px solid var(--outline);border-radius:var(--radio);
+  text-align:left;cursor:pointer;font:inherit;color:var(--content);text-decoration:none}
+.tarjeta:hover{border-color:var(--primary)}
+.tarjeta:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.tarjeta .icono-tarjeta{width:26px;height:26px;flex:none;stroke:var(--primary);
+  fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tarjeta .cab{display:flex;align-items:center;gap:9px}
+.tarjeta .dot{width:9px;height:9px}
+.tarjeta b{font-family:var(--serif);font-size:15px;font-weight:600;line-height:1.25}
+.tarjeta .cod{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);
+  letter-spacing:.04em}
+.tarjeta p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ---------- migas + copiar página ---------- */
+.migas{justify-content:space-between}
+.migas .ruta{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.copiar-pagina{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+  color:var(--muted);background:none;border:1px solid var(--outline);border-radius:6px;
+  padding:4px 9px;cursor:pointer;flex:none;white-space:nowrap}
+.copiar-pagina:hover{border-color:var(--primary);color:var(--primary)}
+.copiar-pagina:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
+/* ---------- relacionados, plegable ---------- */
+details.relacionados{background:var(--surface);border:1px solid var(--outline);
+  border-radius:var(--radio);margin-bottom:22px;overflow:hidden}
+details.relacionados summary{list-style:none;cursor:pointer;padding:12px 18px;
+  font-family:var(--serif);font-size:15px;font-weight:600;background:var(--titulo);
+  display:flex;align-items:center;gap:8px}
+details.relacionados summary::-webkit-details-marker{display:none}
+details.relacionados summary::before{content:"›";transition:transform .12s ease;color:var(--muted)}
+details.relacionados[open] summary::before{transform:rotate(90deg)}
+details.relacionados[open] summary{border-bottom:1px solid var(--outline)}
+details.relacionados .body{padding:16px 18px}
 
 /* ---------- portada ----------
    El viaje de un pedido: sale de la distribuidora, la camioneta recorre el
@@ -566,7 +690,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 @media print{
   @page{margin:14mm}
   .app{display:block;height:auto}
-  aside,.visor,.paso,.figura .ampliar,.barra-doc,.navbar,.migas{display:none!important}
+  aside,.visor,.paso,.figura .ampliar,.barra-doc,.navbar,.migas,#paleta{display:none!important}
   main{overflow:visible}
   .pad{padding:0}
   body{background:#fff;color:#000;font-size:11pt}
@@ -601,42 +725,94 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     </svg>
     <span class="txt"><b>SPLG</b><span>DOCUMENTACIÓN DEL SISTEMA</span></span>
   </button>
+  <nav class="navbar-menus" aria-label="Secciones del sitio">
+    <details class="menu-nav" id="menuDoc">
+      <summary>Documentación
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="menu-nav-panel">
+        <button type="button" data-nav-buscar="todos">Buscar casos de uso…</button>
+        <a href="#sis-catalogo" data-nav-hash="sis-catalogo">Catálogo y calificación</a>
+        <a href="#sis-subsistemas" data-nav-hash="sis-subsistemas">Subsistemas del proyecto</a>
+        <a href="#sis-actores" data-nav-hash="sis-actores">Actores del sistema</a>
+        <a href="#sis-contexto" data-nav-hash="sis-contexto">Diagrama de contexto</a>
+      </div>
+    </details>
+    <a class="menu-link" href="#modelos" data-nav-hash="modelos">Modelos</a>
+    <a class="menu-link" href="#arquitectura" data-nav-hash="arquitectura">Arquitectura</a>
+    <details class="menu-nav" id="menuProceso">
+      <summary>Proceso
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="menu-nav-panel">
+        <a href="#ramas" data-nav-hash="ramas">Ramas y commits</a>
+        <a href="#versionado" data-nav-hash="versionado">Versionado automático</a>
+      </div>
+    </details>
+  </nav>
   <div class="espacio"></div>
-  <button class="accion" id="irABuscar" type="button" aria-label="Buscar">
+  <button class="accion" id="irABuscar" type="button" aria-label="Buscar en la documentación">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="2" stroke-linecap="round" aria-hidden="true">
       <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
     </svg>
-    <span class="larga">Buscar</span><kbd>/</kbd>
+    <span class="larga">Buscar</span><kbd>⌘K</kbd>
   </button>
 </header>
 <div class="app">
   <aside id="panel">
     <div class="tools">
-      <input type="search" id="q" placeholder="Buscar en la documentación" autocomplete="off" aria-label="Buscar caso de uso">
-      <div class="filters" id="filtros">
-        <button data-f="todos" aria-pressed="true">Todos</button>
-        <button data-f="Crítico" aria-pressed="false">Críticos</button>
-        <button data-f="cur" aria-pressed="false">CU reales</button>
-        <button data-f="mod" aria-pressed="false">Módulos</button>
-        <button data-f="sis" aria-pressed="false">Sistema</button>
-      </div>
-    </div>
-    <nav class="secciones">
-      <button type="button" class="seccion" data-pag="modelos"><span class="nombre">Modelos</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" data-pag="arquitectura"><span class="nombre">Arquitectura</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" data-pag="ramas"><span class="nombre">Ramas</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" data-pag="versionado"><span class="nombre">Versionado</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" data-pag="agentes"><span class="nombre">Agentes IA</span><span class="ir">→</span></button>
-      <button type="button" class="seccion" id="abrirDoc" aria-expanded="false" aria-controls="doc">
-        <span class="flecha" aria-hidden="true">›</span>
-        <span class="nombre">Documentación</span>
-        <span class="cuenta">__N_CASOS__</span>
+      <button type="button" class="buscar-panel" id="abrirPaletaPanel">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+        </svg>
+        <span>Buscar en la documentación</span><kbd>⌘K</kbd>
       </button>
-      <div class="cuerpo-seccion" id="doc">
-        <div class="list" id="lista"></div>
+    </div>
+    <nav class="secciones" id="navPrincipal">
+      <div class="grupo-menu">
+        <p class="rotulo-grupo">Empezar</p>
+        <button type="button" class="seccion" data-pag="inicio"><span class="nombre">Inicio</span></button>
+      </div>
+      <div class="grupo-menu">
+        <button type="button" class="rotulo-grupo" data-plegar="casos" aria-expanded="true" aria-controls="listaSubsistemas">
+          <span class="flecha" aria-hidden="true">›</span>Casos de uso<span class="cuenta">__N_CASOS__</span>
+        </button>
+        <div class="list" id="listaSubsistemas"></div>
+      </div>
+      <div class="grupo-menu">
+        <p class="rotulo-grupo">Modelos</p>
+        <button type="button" class="seccion" data-pag="modelos"><span class="nombre">Modelos para Lucidchart</span></button>
+      </div>
+      <div class="grupo-menu">
+        <p class="rotulo-grupo">Arquitectura</p>
+        <button type="button" class="seccion" data-pag="arquitectura"><span class="nombre">Arquitectura y despliegue</span></button>
+      </div>
+      <div class="grupo-menu">
+        <button type="button" class="rotulo-grupo" data-plegar="modulos" aria-expanded="true" aria-controls="listaModulos">
+          <span class="flecha" aria-hidden="true">›</span>Módulos inteligentes
+        </button>
+        <div class="list" id="listaModulos"></div>
+      </div>
+      <div class="grupo-menu">
+        <button type="button" class="rotulo-grupo" data-plegar="uml" aria-expanded="false" aria-controls="listaSistemaUml">
+          <span class="flecha" aria-hidden="true">›</span>Sistema UML
+        </button>
+        <div class="list" id="listaSistemaUml" hidden></div>
+      </div>
+      <div class="grupo-menu">
+        <p class="rotulo-grupo">Proceso</p>
+        <button type="button" class="seccion" data-pag="ramas"><span class="nombre">Ramas y commits</span></button>
+        <button type="button" class="seccion" data-pag="versionado"><span class="nombre">Versionado automático</span></button>
       </div>
     </nav>
+    <div id="drill" hidden>
+      <button type="button" class="volver-drill" id="volverDrill">‹ <span id="drillTitulo"></span></button>
+      <div class="list" id="listaDrill"></div>
+    </div>
   </aside>
   <div class="fondo-cajon" id="fondoCajon" hidden></div>
 <main id="main">
@@ -660,6 +836,32 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 </aside>
 </div>
 
+<!-- La paleta de búsqueda: el input, los filtros y la lista de resultados son
+     los mismos #q / #filtros / #lista de siempre. Antes vivían adentro del
+     panel izquierdo, filtrando lo que se veía debajo; ahora el panel es sólo
+     navegación y buscar abre esto encima de todo, con ⌘K/Ctrl+K o el botón. -->
+<div class="paleta" id="paleta" hidden role="dialog" aria-modal="true" aria-label="Buscar en la documentación">
+  <div class="paleta-fondo" id="paletaFondo"></div>
+  <div class="paleta-caja">
+    <div class="paleta-cabeza">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <input type="search" id="q" placeholder="Buscar casos de uso, páginas y secciones…" autocomplete="off" aria-label="Buscar en la documentación">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="filters" id="filtros">
+      <button data-f="todos" aria-pressed="true">Todos</button>
+      <button data-f="Crítico" aria-pressed="false">Críticos</button>
+      <button data-f="cur" aria-pressed="false">CU reales</button>
+      <button data-f="mod" aria-pressed="false">Módulos</button>
+      <button data-f="sis" aria-pressed="false">Sistema</button>
+    </div>
+    <div class="list" id="lista"></div>
+  </div>
+</div>
+
 <script id="datos" type="application/json">__DATOS__</script>
 <script>
 (function(){
@@ -679,8 +881,11 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     s.remove();
     return c;
   }
+  // El código de subsistema (SS-02) suelto de "SS-02 Gestión de Pedidos": lo
+  // pide tanto el drill del menú como la miga y el código de más abajo.
+  function codigoSS(str){ var m = /SS-\d\d/.exec(str || ""); return m ? m[0] : null; }
   var codigos = Object.keys(CU).sort(), filtro = "todos", sel = null, seq = 0;
-  var abiertos = {};
+  var abiertos = {}, ssActual = null;
 
   function initM(){
     if (!window.mermaid) return;
@@ -823,6 +1028,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         '<div class="grp">Diagramas del sistema · notación UML</div>' +
         '<button class="item" data-uml="actores"><span class="cod">ACT</span><span class="nm">Actores del sistema</span></button>' +
         '<button class="item" data-uml="contexto"><span class="cod">SIS</span><span class="nm">Diagrama de contexto</span></button>' +
+        '<button class="item" data-uml="mapa"><span class="cod">A4</span><span class="nm">Mapa del sistema (una página)</span></button>' +
         '<button class="item" data-uml="completo"><span class="cod">ALL</span><span class="nm">Diagrama completo de los __N_CASOS__ casos</span></button>' +
         '<button class="item" data-uml="subsistemas"><span class="cod">MAP</span><span class="nm">Mapa de subsistemas</span></button>' +
         '<button class="item" data-uml="despliegue"><span class="cod">DEP</span><span class="nm">Despliegue y entornos</span></button>' +
@@ -884,11 +1090,13 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   function cerrarSiEsCajon(){
     if (window.matchMedia("(max-width:880px)").matches) panel(false);
   }
+  // Elegir un resultado de la paleta la cierra siempre, sea o no el cajón del
+  // teléfono: son dos capas distintas y cada una se cierra por su motivo.
   function enlazar(c){
-    c.querySelectorAll("[data-cu]").forEach(function(b){ b.onclick=function(){ abrir(b.dataset.cu); cerrarSiEsCajon(); }; });
-    c.querySelectorAll("[data-uml]").forEach(function(b){ b.onclick=function(){ verUml(b.dataset.uml); cerrarSiEsCajon(); }; });
-    c.querySelectorAll("[data-mod]").forEach(function(b){ b.onclick=function(){ verMod(b.dataset.mod); cerrarSiEsCajon(); }; });
-    c.querySelectorAll("[data-sis]").forEach(function(b){ b.onclick=function(){ verSis(b.dataset.sis); cerrarSiEsCajon(); }; });
+    c.querySelectorAll("[data-cu]").forEach(function(b){ b.onclick=function(){ abrir(b.dataset.cu); cerrarSiEsCajon(); cerrarPaleta(); }; });
+    c.querySelectorAll("[data-uml]").forEach(function(b){ b.onclick=function(){ verUml(b.dataset.uml); cerrarSiEsCajon(); cerrarPaleta(); }; });
+    c.querySelectorAll("[data-mod]").forEach(function(b){ b.onclick=function(){ verMod(b.dataset.mod); cerrarSiEsCajon(); cerrarPaleta(); }; });
+    c.querySelectorAll("[data-sis]").forEach(function(b){ b.onclick=function(){ verSis(b.dataset.sis); cerrarSiEsCajon(); cerrarPaleta(); }; });
   }
 
   function abrir(c){
@@ -927,17 +1135,19 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       var m = MODS[v.modulo.codigo];
       h += card("k-mod","MOD","Módulo "+v.modulo.codigo+" — "+esc(m.nombre),"Doc 3 · "+m.sec, m.html);
     }
+    // "Relacionados", plegable: quién más nombra este caso no hace falta
+    // verlo siempre abierto, pero conviene saber que está.
     var citan = MENCIONAN[c] || [];
     if (citan.length) {
-      h += card("k-dep","DEP","Lo mencionan estos casos de uso",
-        citan.length + (citan.length === 1 ? " caso" : " casos"),
+      h += '<details class="relacionados"><summary>Relacionados · ' +
+        citan.length + (citan.length === 1 ? " caso" : " casos") + '</summary><div class="body">' +
         '<p class="quien">Cambiar este caso afecta a los que lo nombran.</p>' +
         '<div class="scroller"><table><thead><tr><th>Código</th><th>Caso de uso</th>' +
         "<th>Subsistema</th></tr></thead><tbody>" +
         citan.map(function(o){
           return '<tr><td class="p"><a href="#'+o+'" data-cu="'+o+'">'+o+"</a></td><td>" +
             esc(CU[o].cua.nombre||"") + "</td><td>" + esc(CU[o].cua.subsistema||"") + "</td></tr>";
-        }).join("") + "</tbody></table></div>");
+        }).join("") + "</tbody></table></div></div></details>";
     }
 
     if (v.respaldo && v.respaldo.length){
@@ -946,12 +1156,15 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         v.respaldo.map(function(r){ return "<tr><td>"+esc(r.doc)+"</td><td>"+esc(r.sec)+"</td><td>"+esc(r.que)+"</td></tr>"; }).join("") +
         "</tbody></table></div>");
     }
-    // Recorrer los casos en orden y llevarse el enlace directo. Antes había que
-    // volver al panel para pasar al siguiente, y para citar un caso en el
-    // documento había que copiar el hash de la barra de direcciones a mano.
-    var i = codigos.indexOf(c);
-    var previo = i > 0 ? codigos[i-1] : null;
-    var siguiente = i < codigos.length-1 ? codigos[i+1] : null;
+    // Recorrer los casos del mismo subsistema y llevarse el enlace directo.
+    // Antes el anterior/siguiente recorría los __N_CASOS__ casos sin importar de
+    // qué subsistema eran: paginaba "Gestión de Pedidos" y de golpe aparecía
+    // un caso de "Facturación". Ahora sigue el orden en que ya se lee en el
+    // menú, adentro del mismo subsistema.
+    var mismoSS = codigos.filter(function(x){ return (CU[x].cua.subsistema||"") === (a.subsistema||""); });
+    var i = mismoSS.indexOf(c);
+    var previo = i > 0 ? mismoSS[i-1] : null;
+    var siguiente = i < mismoSS.length-1 ? mismoSS[i+1] : null;
     h += '<nav class="paso">' +
       (previo ? '<button type="button" class="ir" data-paso="'+previo+'">← '+previo+
         " · "+esc(CU[previo].cua.nombre||"")+"</button>" : "<span></span>") +
@@ -983,6 +1196,9 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       var n = document.querySelectorAll('.k-cur [data-mer="'+i+'"]')[0]; if (n) dibujar(n, src); });
     if (v.modulo && MODS[v.modulo.codigo]) (MODS[v.modulo.codigo].mermaid||[]).forEach(function(src,i){
       var n = document.querySelectorAll('.k-mod [data-mer="'+i+'"]')[0]; if (n) dibujar(n, src); });
+    // El menú de la izquierda sigue al caso que se está leyendo: si hace
+    // falta, entra solo al subsistema que le toca y lo marca en la lista.
+    mostrarDrill(codigoSS(a.subsistema));
     pintar();
   }
 
@@ -1064,11 +1280,12 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     pintar();
   }
   function inicio(){
-    sel = null;
+    sel = null; location.hash = "";
     /* La portada era un segundo índice: repetía en fichas lo que la barra ya
        lista. Ahora muestra de qué se trata el sistema —el viaje de un pedido,
-       de la app del cliente hasta la garrafa en la puerta— y el tamaño de la
-       documentación. Para entrar a un caso está el menú. */
+       de la app del cliente hasta la garrafa en la puerta—, el tamaño de la
+       documentación y, como en la referencia, una grilla para entrar a cada
+       parte sin tener que abrir el menú. */
     var totalDiagramas = __N_MERMAID__ + __N_UML__;
     document.getElementById("detalle").innerHTML =
       '<div class="portada">' +
@@ -1088,19 +1305,51 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
           cifra(totalDiagramas, "diagramas") +
         "</div>" +
         '<h2 class="sec">Por dónde empezar</h2>' +
-        '<p class="pista">Elegí <strong>Documentación</strong> en el menú para recorrerlos, ' +
-          'o apretá <span class="kb">/</span> para buscar.</p>' +
+        '<div class="tarjetas">' + tarjetasInicio() + "</div>" +
       "</div>";
     document.getElementById("main").scrollTop = 0;
     document.querySelectorAll("[data-abre]").forEach(function(b){
-      b.onclick = function(){
-        seccionDoc(true);
-        if (window.matchMedia("(max-width:880px)").matches) panel(true);
-        ponerFiltro(b.dataset.abre);
-        pintar();
-        document.getElementById("lista").scrollIntoView({block:"nearest"});
-      };
+      b.onclick = function(){ abrirPaleta(b.dataset.abre); };
     });
+    enlazar(document.getElementById("detalle"));
+    salirDrill();
+    marcarMenu("pag", "inicio");
+  }
+
+  /* Íconos de trazo simple para las tarjetas: no son logos, son señas propias
+     —como el resto del sitio—, así que se dibujan con las mismas reglas que
+     ya usan `.pagina .icono` y el visor: trazo fino, sin relleno. */
+  function iconoTarjeta(tipo){
+    var trazos = {
+      casos: '<rect x="3" y="4" width="18" height="4.2" rx="1"/><rect x="3" y="10.4" width="18" height="4.2" rx="1"/><rect x="3" y="16.8" width="11" height="4.2" rx="1"/>',
+      modelos: '<rect x="3.5" y="3.5" width="12" height="9" rx="1.4"/><rect x="8.5" y="11.5" width="12" height="9" rx="1.4"/>',
+      arquitectura: '<rect x="3.5" y="14" width="6" height="6.5" rx="1"/><rect x="9" y="8.5" width="6" height="12" rx="1"/><rect x="14.5" y="3.5" width="6" height="17" rx="1"/>',
+      modulos: '<circle cx="12" cy="12" r="3.4"/><path d="M12 3.5v2.4M12 18.1v2.4M3.5 12h2.4M18.1 12h2.4M6 6l1.7 1.7M16.3 16.3 18 18M18 6l-1.7 1.7M7.7 16.3 6 18"/>',
+      sistema: '<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M12 7.2 6.4 16M12 7.2 17.6 16M7.2 18h9.6"/>',
+      proceso: '<circle cx="6" cy="6" r="2.3"/><circle cx="6" cy="18" r="2.3"/><circle cx="18" cy="6" r="2.3"/><path d="M6 8.3V15.7M8.3 6H15.7a2.3 2.3 0 0 1 2.3 2.3v0"/>'
+    };
+    return '<svg class="icono-tarjeta" viewBox="0 0 24 24" aria-hidden="true">' + (trazos[tipo] || trazos.casos) + "</svg>";
+  }
+  function tarjeta(clase, dataAttr, valor, icono, titulo, descripcion){
+    return '<button type="button" class="tarjeta" data-'+dataAttr+'="'+esc(valor)+'">' +
+      iconoTarjeta(icono) + "<b>"+esc(titulo)+"</b><p>"+esc(descripcion)+"</p></button>";
+  }
+  /* Las seis puertas de entrada de la portada. "Casos de uso", "Módulos
+     inteligentes" y "Sistema UML" abren la paleta ya facetada: no se inventó
+     una página nueva de "todos los subsistemas" que no pidió el brief. */
+  function tarjetasInicio(){
+    return tarjeta("", "abre", "todos", "casos", "Casos de uso",
+        codigos.length + " casos agrupados en " + Object.keys(SS).length + " subsistemas.") +
+      '<a class="tarjeta" href="#modelos">' +
+        iconoTarjeta("modelos") + "<b>Modelos</b><p>Diagramas de dominio y de servicios, preparados para Lucidchart.</p></a>" +
+      '<a class="tarjeta" href="#arquitectura">' +
+        iconoTarjeta("arquitectura") + "<b>Arquitectura</b><p>Organización del sistema, entornos de despliegue y criterios de diseño de la API.</p></a>" +
+      tarjeta("", "abre", "mod", "modulos", "Módulos inteligentes",
+        Object.keys(MODS).length + " procesos que automatizan decisiones del sistema.") +
+      tarjeta("", "abre", "sis", "sistema", "Sistema UML",
+        "Actores, diagrama de contexto y casos de uso en notación UML clásica.") +
+      '<a class="tarjeta" href="#ramas">' +
+        iconoTarjeta("proceso") + "<b>Proceso</b><p>Convenciones de ramas y commits, y versionado automático.</p></a>";
   }
 
   /* Ramas, versionado y agentes se muestran acá mismo. El archivo suelto sigue
@@ -1136,7 +1385,10 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     return true;
   }
   document.querySelectorAll(".seccion[data-pag]").forEach(function(b){
-    b.onclick = function(){ verPagina(b.dataset.pag); cerrarSiEsCajon(); };
+    b.onclick = function(){
+      if (b.dataset.pag === "inicio") inicio(); else verPagina(b.dataset.pag);
+      cerrarSiEsCajon();
+    };
   });
 
   /* Las cifras son la puerta de entrada, no un adorno: la portada dejó de
@@ -1198,8 +1450,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     "</div>";
   }
 
-  document.getElementById("alInicio").onclick = function(){
-    location.hash = ""; ponerFiltro("todos"); pintar(); inicio(); };
+  document.getElementById("alInicio").onclick = function(){ inicio(); };
   document.getElementById("q").addEventListener("input", pintar);
   function ponerFiltro(f){
     filtro = f;
@@ -1210,14 +1461,39 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     var b = ev.target.closest("button"); if (!b) return;
     ponerFiltro(b.dataset.f); pintar();
   });
+
+  /* ---------- paleta de búsqueda (⌘K) ----------
+     El input, los filtros y la lista son los de siempre; lo único nuevo es
+     mostrar y esconder la caja que los contiene. */
+  var paleta = document.getElementById("paleta");
+  function abrirPaleta(facetaInicial){
+    paleta.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    if (facetaInicial){ ponerFiltro(facetaInicial); pintar(); }
+    var q = document.getElementById("q");
+    q.focus(); q.select();
+  }
+  function cerrarPaleta(){
+    if (paleta.hidden) return;
+    paleta.hidden = true;
+    if (!(window.matchMedia("(max-width:880px)").matches && !app.classList.contains("sin-panel"))){
+      document.documentElement.style.overflow = "";
+    }
+  }
+  document.getElementById("abrirPaletaPanel").onclick = function(){ abrirPaleta("todos"); };
+  document.getElementById("irABuscar").onclick = function(){ abrirPaleta("todos"); };
+  document.getElementById("paletaFondo").onclick = cerrarPaleta;
   document.addEventListener("keydown", function(ev){
     var q = document.getElementById("q");
+    if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === "k"){
+      ev.preventDefault(); abrirPaleta("todos"); return;
+    }
+    if (ev.key === "Escape" && !paleta.hidden){ cerrarPaleta(); return; }
     if (ev.key === "Escape" && window.matchMedia("(max-width:880px)").matches &&
         !app.classList.contains("sin-panel")){ panel(false); return; }
-    if (ev.key === "/" && document.activeElement !== q){
-      ev.preventDefault(); seccionDoc(true); q.focus(); q.select(); return; }
-    if (ev.key === "Escape" && document.activeElement === q){ q.value=""; pintar(); q.blur(); return; }
+    if (ev.key === "/" && document.activeElement !== q){ ev.preventDefault(); abrirPaleta("todos"); return; }
     if (ev.key === "ArrowDown" || ev.key === "ArrowUp"){
+      if (paleta.hidden) return;
       var vis = codigos.filter(visible); if (!vis.length) return;
       var i = vis.indexOf(sel);
       i = ev.key === "ArrowDown" ? (i+1)%vis.length : (i<=0 ? vis.length-1 : i-1);
@@ -1225,13 +1501,173 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       var el = document.querySelector('[data-cu="'+vis[i]+'"]'); if (el) el.scrollIntoView({block:"nearest"});
     }
   });
+
+  /* ---------- menú izquierdo: grupos plegables, subsistemas, módulos, UML ---------- */
+  document.querySelectorAll("[data-plegar]").forEach(function(b){
+    var cont = document.getElementById(
+      { casos:"listaSubsistemas", modulos:"listaModulos", uml:"listaSistemaUml" }[b.dataset.plegar]);
+    b.onclick = function(){
+      var mostrar = cont.hidden;
+      cont.hidden = !mostrar;
+      b.setAttribute("aria-expanded", String(mostrar));
+    };
+  });
+  function pintarSubsistemas(){
+    var orden = ordenSS();
+    document.getElementById("listaSubsistemas").innerHTML = orden.map(function(k){
+      var cs = codigos.filter(function(c){ return (CU[c].cua.subsistema||"").indexOf(k) === 0; });
+      return '<button type="button" class="item subsistema" data-drill="'+k+'">' +
+        '<span class="dot" style="background:'+tinteDe(k)+'"></span>' +
+        '<span class="cod">'+k+'</span><span class="nm">'+esc((SS[k]||{}).nombre||"")+"</span>" +
+        '<span class="cuenta">'+cs.length+"</span><span class=\"chev\" aria-hidden=\"true\">›</span></button>";
+    }).join("");
+    document.querySelectorAll('#listaSubsistemas [data-drill]').forEach(function(b){
+      b.onclick = function(){ entrarSubsistema(b.dataset.drill); cerrarSiEsCajon(); };
+    });
+  }
+  function pintarModulos(){
+    document.getElementById("listaModulos").innerHTML = Object.keys(MODS).sort().map(function(k){
+      return '<button type="button" class="item" data-mod="'+k+'">' +
+        '<span class="dot" style="background:var(--mod)"></span><span class="cod">'+k+'</span>' +
+        '<span class="nm">'+esc(MODS[k].nombre)+"</span></button>";
+    }).join("");
+    enlazar(document.getElementById("listaModulos"));
+  }
+  function pintarSistemaUml(){
+    var gen = [["actores","ACT","Actores del sistema"],["contexto","DIA","Diagrama de casos de uso del sistema"],
+               ["subsistemas","SUB","Subsistemas del proyecto"],["catalogo","CAT","Catálogo de los __N_CASOS__ casos"]];
+    var uml = [["actores","ACT","Actores del sistema"],["contexto","SIS","Diagrama de contexto"],
+               ["mapa","A4","Mapa del sistema (una página)"],
+               ["completo","ALL","Diagrama completo de los __N_CASOS__ casos"],
+               ["subsistemas","MAP","Mapa de subsistemas"],["despliegue","DEP","Despliegue y entornos"]];
+    document.getElementById("listaSistemaUml").innerHTML =
+      '<div class="grp suelto">Vista general</div>' +
+      gen.filter(function(g){ return SIS[g[0]]; }).map(function(g){
+        return '<button type="button" class="item" data-sis="'+g[0]+'"><span class="cod">'+g[1]+'</span><span class="nm">'+g[2]+"</span></button>";
+      }).join("") +
+      '<div class="grp suelto">Notación UML</div>' +
+      uml.map(function(u){
+        return '<button type="button" class="item" data-uml="'+u[0]+'"><span class="cod">'+u[1]+'</span><span class="nm">'+u[2]+"</span></button>";
+      }).join("");
+    enlazar(document.getElementById("listaSistemaUml"));
+  }
+  function ordenSS(){ return Object.keys(SS).sort(function(a,b){ return a.localeCompare(b, "es"); }); }
+
+  /* El drill: al entrar a un subsistema el menú entero se cambia por su
+     volver y su lista de casos; no conviven los dos. */
+  function salirDrill(){
+    ssActual = null;
+    document.getElementById("drill").hidden = true;
+    document.getElementById("navPrincipal").hidden = false;
+  }
+  function mostrarDrill(k){
+    if (!k || !SS[k]){ salirDrill(); return; }
+    ssActual = k;
+    document.getElementById("navPrincipal").hidden = true;
+    var drill = document.getElementById("drill");
+    drill.hidden = false;
+    document.getElementById("drillTitulo").textContent = k + " " + (SS[k].nombre || "");
+    var cs = codigos.filter(function(c){ return (CU[c].cua.subsistema||"").indexOf(k) === 0; });
+    var lista = document.getElementById("listaDrill");
+    lista.innerHTML =
+      (SS[k].uml ? '<button type="button" class="item" data-uml="'+k+'"><span class="cod">UML</span>' +
+        '<span class="nm">Diagrama de casos de uso</span></button>' : "") +
+      cs.map(function(c){
+        var v = CU[c], cal = v.cua.calificacion || "Secundario";
+        return '<button type="button" class="item" data-cu="'+c+'" aria-current="'+(c===sel)+'">' +
+          '<span class="dot '+esc(cal)+'"></span><span class="cod">'+c.replace("CU-","")+"</span>" +
+          '<span class="nm">'+esc(v.cua.nombre||"")+"</span></button>";
+      }).join("");
+    enlazar(lista);
+  }
+  document.getElementById("volverDrill").onclick = salirDrill;
+
+  /* Ítem de tarjeta de un caso de uso, para la página índice de un subsistema. */
+  function tarjetaCU(c){
+    var v = CU[c], cal = v.cua.calificacion || "Secundario";
+    return '<button type="button" class="tarjeta" data-cu="'+c+'">' +
+      '<div class="cab"><span class="dot '+esc(cal)+'"></span><span class="cod">'+c+"</span></div>" +
+      "<b>"+esc(v.cua.nombre||"")+"</b><p>"+esc(v.cua.descripcion||"")+"</p></button>";
+  }
+  /* La página de cada subsistema: título + bajada + grilla con sus casos,
+     como pide el brief. Entra al hacer clic en el subsistema, tanto desde el
+     menú como desde la miga de un caso de uso. */
+  function verSubsistema(k){
+    var s = SS[k]; if (!s) return false;
+    sel = null; location.hash = "ss-" + k;
+    var cs = codigos.filter(function(c){ return (CU[c].cua.subsistema||"").indexOf(k) === 0; });
+    document.getElementById("detalle").innerHTML =
+      '<div class="head"><div class="over"><span>'+esc(k)+"</span></div>" +
+      "<h2>"+esc(s.nombre||k)+"</h2>" +
+      (s.descripcion ? '<div class="meta"><span>'+esc(s.descripcion)+"</span></div>" : "") + "</div>" +
+      '<div class="tarjetas">' +
+        (s.uml ? '<button type="button" class="tarjeta" data-uml="'+k+'">' + iconoTarjeta("sistema") +
+          "<b>Diagrama de casos de uso</b><p>Notación UML del subsistema.</p></button>" : "") +
+        cs.map(tarjetaCU).join("") +
+      "</div>";
+    document.getElementById("main").scrollTop = 0;
+    enlazar(document.getElementById("detalle"));
+    var orden = ordenSS(), i = orden.indexOf(k);
+    agregarPaso("ss-"+k,
+      i > 0 ? { clave: "ss-"+orden[i-1], rotulo: orden[i-1] + " · " + ((SS[orden[i-1]]||{}).nombre||"") } : null,
+      i < orden.length-1 ? { clave: "ss-"+orden[i+1], rotulo: orden[i+1] + " · " + ((SS[orden[i+1]]||{}).nombre||"") } : null);
+    mostrarDrill(k);
+    marcarMenu("drill", k);
+    return true;
+  }
+  function entrarSubsistema(k){ verSubsistema(k); }
+
+  /* El "anterior/siguiente" de las páginas que no son un caso de uso: el
+     orden es el del menú, como pide el brief. */
+  function agregarPaso(claveActual, previo, siguiente){
+    var nav = document.createElement("nav");
+    nav.className = "paso";
+    nav.innerHTML =
+      (previo ? '<button type="button" class="ir" data-irpaso="'+esc(previo.clave)+'">← '+esc(previo.rotulo)+"</button>" : "<span></span>") +
+      '<button type="button" class="copiar" data-copiar="'+esc(claveActual)+'">COPIAR ENLACE</button>' +
+      (siguiente ? '<button type="button" class="ir" data-irpaso="'+esc(siguiente.clave)+'">'+esc(siguiente.rotulo)+" →</button>" : "<span></span>");
+    document.getElementById("detalle").appendChild(nav);
+    nav.querySelectorAll("[data-irpaso]").forEach(function(b){ b.onclick = function(){ irA(b.dataset.irpaso); }; });
+    var copiar = nav.querySelector("[data-copiar]");
+    copiar.onclick = function(){
+      var url = location.href.split("#")[0] + "#" + copiar.dataset.copiar;
+      navigator.clipboard.writeText(url).then(function(){
+        copiar.textContent = "ENLACE COPIADO";
+        setTimeout(function(){ copiar.textContent = "COPIAR ENLACE"; }, 1600);
+      }).catch(function(){ copiar.textContent = url; });
+    };
+  }
+
+  /* Marca el ítem activo en el menú: subsistemas, módulos, sistema UML,
+     drill y páginas comparten la misma lógica de "limpiar y volver a marcar". */
+  function marcarMenu(tipo, valor){
+    document.querySelectorAll(
+      "#listaSubsistemas [data-drill],#listaModulos [data-mod]," +
+      "#listaSistemaUml [data-sis],#listaSistemaUml [data-uml]," +
+      "#listaDrill [data-cu],.seccion[data-pag]"
+    ).forEach(function(b){ b.removeAttribute("aria-current"); });
+    if (!tipo) return;
+    var sel_ = '[data-' + tipo + '="' + valor + '"]';
+    document.querySelectorAll(
+      "#listaSubsistemas " + sel_ + ",#listaModulos " + sel_ + ",#listaSistemaUml " + sel_ +
+      ",#listaDrill " + sel_ + ",.seccion" + sel_
+    ).forEach(function(b){ b.setAttribute("aria-current", "true"); });
+  }
+
   function irA(h){
-    if (!h) return false;
+    if (!h) { inicio(); return true; }
     if (CU[h]){ if (h !== sel) abrir(h); return true; }
-    if (h.indexOf("sis-") === 0 && SIS[h.slice(4)]){ ponerFiltro("sis"); verSis(h.slice(4)); return true; }
-    if (h.indexOf("mod-") === 0 && MODS[h.slice(4)]){ ponerFiltro("mod"); verMod(h.slice(4)); return true; }
-    if (h.indexOf("uml-") === 0){ ponerFiltro("sis"); verUml(h.slice(4)); return true; }
-    if (PAGS[h]) return verPagina(h);
+    if (h.indexOf("ss-") === 0 && SS[h.slice(3)]){ verSubsistema(h.slice(3)); return true; }
+    if (h.indexOf("sis-") === 0 && SIS[h.slice(4)]){ ponerFiltro("sis"); salirDrill(); verSis(h.slice(4)); marcarMenu("sis", h.slice(4)); return true; }
+    if (h.indexOf("mod-") === 0 && MODS[h.slice(4)]){ ponerFiltro("mod"); salirDrill(); verMod(h.slice(4)); marcarMenu("mod", h.slice(4)); return true; }
+    if (h.indexOf("uml-") === 0){
+      var k = h.slice(4);
+      if (UMLSIS[k]){ ponerFiltro("sis"); salirDrill(); verUml(k); marcarMenu("uml", k); }
+      else { verUml(k); mostrarDrill(k); marcarMenu("drill", k); }
+      return true;
+    }
+    if (h === "inicio"){ inicio(); return true; }
+    if (PAGS[h]){ salirDrill(); var ok = verPagina(h); marcarMenu("pag", h); return ok; }
     return false;
   }
   // Un solo manejador para todas las menciones, vengan de donde vengan.
@@ -1239,25 +1675,25 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     var a = ev.target.closest && ev.target.closest("a[data-cu]");
     if (!a) return;
     ev.preventDefault();
-    filtro = "todos";
-    document.querySelectorAll("#filtros button").forEach(function(x){
-      x.setAttribute("aria-pressed", String(x.dataset.f === "todos")); });
+    ponerFiltro("todos");
     abrir(a.dataset.cu);
   });
   window.addEventListener("hashchange", function(){ irA((location.hash||"").replace("#","")); });
 
-  /* La sección de documentación arranca plegada: la barra se lee primero como
-     el índice del sitio —documentación, ramas, versionado, agentes— y recién
-     al abrirla aparecen el buscador y los casos. */
-  var abrirDoc = document.getElementById("abrirDoc");
-  var cuerpoDoc = document.getElementById("doc");
-  function seccionDoc(mostrar){
-    cuerpoDoc.classList.toggle("abierta", mostrar);
-    abrirDoc.setAttribute("aria-expanded", String(mostrar));
-    try { localStorage.setItem("splg-doc", mostrar ? "1" : "0"); } catch (e) {}
-  }
-  abrirDoc.onclick = function(){ seccionDoc(!cuerpoDoc.classList.contains("abierta")); };
-  try { if (localStorage.getItem("splg-doc") === "1") seccionDoc(true); } catch (e) {}
+  /* Los menús desplegables de la barra superior: cada ítem ya es un enlace a
+     un hash que el sitio sabe resolver (`irA`), así que sólo hace falta
+     cerrar el `<details>` al elegir uno. */
+  document.querySelectorAll(".menu-nav-panel a,.menu-nav-panel button").forEach(function(el){
+    el.addEventListener("click", function(){
+      var det = el.closest("details"); if (det) det.open = false;
+      if (el.dataset.navBuscar) abrirPaleta(el.dataset.navBuscar);
+    });
+  });
+  document.addEventListener("click", function(ev){
+    document.querySelectorAll(".menu-nav[open]").forEach(function(det){
+      if (!det.contains(ev.target)) det.open = false;
+    });
+  });
 
   var app = document.querySelector(".app");
   var alternar = document.getElementById("alternarPanel");
@@ -1283,6 +1719,9 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   else { try { if (localStorage.getItem("splg-panel") === "0") panel(false); else panel(true); } catch (e) { panel(true); } }
   angosta.addEventListener("change", function(){ panel(!angosta.matches); });
 
+  pintarSubsistemas();
+  pintarModulos();
+  pintarSistemaUml();
   pintar();
   if (!irA((location.hash||"").replace("#",""))) inicio();
 })();
@@ -1306,6 +1745,8 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   if (!main || !detalle || !indice) return;
 
   var objetivos = [];   // { el, enlace }
+  // La sección que se eligió en el índice manda mientras dura el desplazamiento.
+  var elegido = null;
   var pintando = false; // evita que lo que insertamos vuelva a disparar el observador
 
   function texto(el){ return (el.textContent || "").replace(/\s+/g, " ").trim(); }
@@ -1353,7 +1794,14 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       if (t.nivel === 2) a.className = "n2";
       a.addEventListener("click", function(ev){
         ev.preventDefault();
-        main.scrollTo({ top: t.el.offsetTop - 16, behavior: "smooth" });
+        // La posición se mide contra `main`, que es lo que se desplaza:
+        // `offsetTop` cuenta desde el borde de la página y sumaba la barra
+        // de arriba, así que el título quedaba tapado.
+        var destino = t.el.getBoundingClientRect().top -
+          main.getBoundingClientRect().top + main.scrollTop - 16;
+        main.scrollTop = Math.max(0, destino);
+        elegido = { objetivo: objetivos[i], hasta: Date.now() + 1200 };
+        marcar();
       });
       indice.appendChild(a);
       objetivos.push({ el: t.el, enlace: a });
@@ -1368,6 +1816,14 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     objetivos.forEach(function(o){
       if (o.el.getBoundingClientRect().top <= corte) actual = o;
     });
+    // Al fondo de una página corta la última sección nunca llega a la franja
+    // de lectura: si ya no se puede bajar más, es la actual.
+    if (main.scrollTop + main.clientHeight >= main.scrollHeight - 2) {
+      actual = objetivos[objetivos.length - 1];
+    }
+    if (elegido && Date.now() < elegido.hasta && objetivos.indexOf(elegido.objetivo) >= 0) {
+      actual = elegido.objetivo;
+    }
     objetivos.forEach(function(o){
       if (o === actual) o.enlace.setAttribute("aria-current", "true");
       else o.enlace.removeAttribute("aria-current");
@@ -1390,8 +1846,13 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         var b = sp.querySelector("b");
         if (b && /Subsistema/i.test(b.textContent)) subsistema = texto(sp).replace(/^Subsistema\s*/i, "");
       });
-      partes.push({ rotulo: "Documentación", ir: "doc" });
-      if (subsistema && subsistema !== "—") partes.push({ rotulo: subsistema });
+      partes.push({ rotulo: "Documentación", ir: "inicio" });
+      if (subsistema && subsistema !== "—"){
+        // Si el texto trae el código del subsistema (SS-02), la miga entra
+        // directo a su página índice; si no, queda como texto suelto.
+        var m = /SS-\d\d/.exec(subsistema);
+        partes.push(m ? { rotulo: subsistema, hash: "ss-" + m[0] } : { rotulo: subsistema });
+      }
       if (codigo) partes.push({ rotulo: texto(codigo), actual: true });
     } else {
       var clave = (location.hash || "").replace("#", "");
@@ -1404,36 +1865,61 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     var nav = document.createElement("nav");
     nav.className = "migas";
     nav.setAttribute("aria-label", "Ubicación");
+    var ruta = document.createElement("span");
+    ruta.className = "ruta";
     partes.forEach(function(parte, i){
       if (i){
         var sep = document.createElement("span");
         sep.className = "sep"; sep.setAttribute("aria-hidden", "true");
         sep.textContent = "›";
-        nav.appendChild(sep);
+        ruta.appendChild(sep);
       }
-      if (parte.actual || !parte.ir){
+      if (parte.actual || (!parte.ir && !parte.hash)){
         var sp = document.createElement("span");
         sp.className = parte.actual ? "actual" : "";
         sp.textContent = parte.rotulo;
-        nav.appendChild(sp);
+        ruta.appendChild(sp);
       } else {
         var b = document.createElement("button");
         b.type = "button"; b.textContent = parte.rotulo;
         b.addEventListener("click", function(){
           if (parte.ir === "inicio"){ document.getElementById("alInicio").click(); return; }
-          var doc = document.getElementById("abrirDoc");
-          if (doc && doc.getAttribute("aria-expanded") !== "true") doc.click();
+          if (parte.hash){ location.hash = parte.hash; }
         });
-        nav.appendChild(b);
+        ruta.appendChild(b);
       }
     });
+    nav.appendChild(ruta);
+    nav.appendChild(copiarPaginaBtn());
     detalle.insertBefore(nav, detalle.firstChild);
+  }
+
+  /* "Copiar página": copia el contenido en texto plano, sin las migas ni el
+     sello de versión que se insertan acá mismo. No hace falta Markdown de
+     verdad —el brief acepta texto— y así no se arriesga nada del HTML de
+     cada artefacto tocando cómo se genera. */
+  function textoDePagina(){
+    var clon = detalle.cloneNode(true);
+    clon.querySelectorAll(".migas,.sello").forEach(function(n){ n.remove(); });
+    return clon.textContent.replace(/[ \t]+/g, " ").replace(/\n[ \t]+/g, "\n")
+      .replace(/\n{3,}/g, "\n\n").trim();
+  }
+  function copiarPaginaBtn(){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "copiar-pagina"; b.textContent = "Copiar página";
+    b.addEventListener("click", function(){
+      navigator.clipboard.writeText(textoDePagina()).then(function(){
+        b.textContent = "Copiado";
+        setTimeout(function(){ b.textContent = "Copiar página"; }, 1600);
+      }).catch(function(){});
+    });
+    return b;
   }
 
   /* La sección abierta, marcada en la barra izquierda. */
   function marcarSeccion(){
     var clave = (location.hash || "").replace("#", "");
-    var esCaso = /^(CU-|sis-|mod-|uml-)/.test(clave);
+    var esCaso = /^(CU-|ss-|sis-|mod-|uml-)/.test(clave);
     [].slice.call(document.querySelectorAll(".seccion[data-pag]")).forEach(function(b){
       if (!esCaso && b.dataset.pag === clave) b.setAttribute("aria-current", "true");
       else b.removeAttribute("aria-current");

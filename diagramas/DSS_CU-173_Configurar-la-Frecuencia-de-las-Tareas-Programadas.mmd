@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-173 Configurar la Frecuencia de las Tareas Programadas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: configurarFrecuenciaDeTareas(intervalos)
+    activate SIS
+    alt los intervalos son válidos
+        SIS-->>ADM: frecuencia de las tareas guardada
+    else un intervalo es inválido
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

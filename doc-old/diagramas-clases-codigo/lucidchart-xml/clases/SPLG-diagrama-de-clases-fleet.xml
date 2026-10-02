@@ -1,0 +1,322 @@
+<mxfile host="app.diagrams.net" type="device">
+  <diagram name="Diagrama de clases — módulo fleet" id="d1">
+    <mxGraphModel dx="1400" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c0" value="CarAssignmentsController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="1481" y="157" width="460" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c0">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c0f1" value="+historial(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Query() pagination: PaginationDto, @Res([ passthrough: true ]) res: Response, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;VehicleAssignmentHistoryResponseDto[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" value="CarDocumentsController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="40" y="586" width="460" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c1f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c1">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c1f1" value="+findAll(@Param(&#x27;carId&#x27;, ParseUUIDPipe) carId: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetVehicleDocumentsResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c1">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="DeliveryDocumentsController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="669" y="586" width="460" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c2">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f1" value="+findAll(@Param(&#x27;id&#x27;, ParseUUIDPipe) deliveryId: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetDriverDocumentsResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="DeliveryVehicleController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="1298" y="521" width="460" height="212" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c3">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f1" value="+miVehiculo(@CurrentUser() user: AuthenticatedUser, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;VehicleInUseResponseDto | null&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c3">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f2" value="+vehiculoDelChofer(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;VehicleInUseResponseDto | null&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c3">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f3" value="+ponerEnUso(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Body() dto: AssignVehicleDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;VehicleInUseResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c3">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f4" value="+liberar(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;MessageResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c3">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f5" value="+historial(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Query() pagination: PaginationDto, @Res([ passthrough: true ]) res: Response, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;VehicleAssignmentHistoryResponseDto[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c3">
+          <mxGeometry y="160" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f6" value="-obtenerVehiculoEnUso(deliveryId: string, distributorId: string) Promise&lt;VehicleInUseResponseDto | null&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c3">
+          <mxGeometry y="186" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="FleetAttachmentMapper" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="2739" y="157" width="460" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c4f0" value="«mapper»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c4">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c4f1" value="+toDto(a: MaintenanceTaskAttachment) FleetTaskAttachmentResponseDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c4">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="FleetAttachmentService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="1926" y="547" width="460" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="c5f0" value="+upload(taskId: string, distributorId: string, file: Express.Multer.File | undefined, uploadedByUserId: string) Promise&lt;MaintenanceTaskAttachment&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c5f1" value="+list(taskId: string, distributorId: string) Promise&lt;MaintenanceTaskAttachment[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c5f2" value="+getDownload(taskId: string, attachmentId: string, distributorId: string) Promise&lt;FleetAttachmentDownload&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c5f3" value="+remove(taskId: string, attachmentId: string, distributorId: string) Promise&lt;void&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c5f4" value="-findOneOrThrow(taskId: string, attachmentId: string, distributorId: string) Promise&lt;MaintenanceTaskAttachment&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c5">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" value="FleetDispatchLockService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="1298" y="1479" width="460" height="238" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f0" value="+choferesInhabilitados(driverUserIds: string[], distributorId?: string | null) Promise&lt;Set&lt;string&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f1" value="+motivosDeInhabilitacion(driverUserId: string, distributorId?: string | null) Promise&lt;string[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f2" value="+assertChoferHabilitado(driverUserId: string, distributorId?: string | null) Promise&lt;void&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f3" value="+vehiculoEnUsoDelChofer(driverUserId: string, distributorId?: string | null) Promise&lt;VehiculoEnUsoSnapshot | null&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f4" value="-tareasInhabilitantesPorChofer(driverUserIds: string[], distributorId?: string | null) Promise&lt;InhabilitacionesPorChofer&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f5" value="-tareasAbiertasDe(deliveryIds: string[], carIds: string[], distributorId?: string | null) Promise&lt;MaintenanceTask[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="160" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f6" value="-agruparPorSujeto(tareas: MaintenanceTask[]) void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="186" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f7" value="-filtrarInhabilitantes(tareas: MaintenanceTask[]) MaintenanceTask[]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c6">
+          <mxGeometry y="212" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" value="FleetExpirationsController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="3368" y="157" width="460" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c7f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c7">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c7f1" value="+find(@Query() query: FleetExpirationsQueryDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetExpirationsResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c7">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c8" value="FleetExpirationsService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="3368" y="560" width="460" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="c8f0" value="+find(distributorId: string, withinDays: number) Promise&lt;FleetExpirationsResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c8">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c8f1" value="-aEntry(task: MaintenanceTask) FleetExpirationEntryDto | null" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c8">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c8f2" value="-grupoDeVehiculo(mapa: Map&lt;string, FleetVehicleExpirationsDto&gt;, car: NonNullable&lt;MaintenanceTask[&#x27;car&#x27;]&gt;) FleetVehicleExpirationsDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c8">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c8f3" value="-grupoDeChofer(mapa: Map&lt;string, FleetDriverExpirationsDto&gt;, delivery: NonNullable&lt;MaintenanceTask[&#x27;delivery&#x27;]&gt;) FleetDriverExpirationsDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c8">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c9" value="FleetPlanController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="3996" y="118" width="460" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="c9f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c9">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c9f1" value="+create(@Body() dto: CreateFleetPlanDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetPlanResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c9">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c9f2" value="+findAll(@Query() query: QueryFleetPlanDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetPlanResponseDto[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c9">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c9f3" value="+findOne(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetPlanResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c9">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c9f4" value="+update(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Body() dto: UpdateFleetPlanDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetPlanResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c9">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c10" value="FleetPlanMapper" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="4609" y="157" width="334" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c10f0" value="«mapper»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c10">
+          <mxGeometry y="30" width="334" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c10f1" value="+toDto(p: MaintenancePlan) FleetPlanResponseDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c10">
+          <mxGeometry y="56" width="334" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c11" value="FleetPlanSeedListener" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="5088" y="157" width="387" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c11f0" value="«listener»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c11">
+          <mxGeometry y="30" width="387" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c11f1" value="+handle(evento: DistribuidoraCreadaEvent) Promise&lt;void&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c11">
+          <mxGeometry y="56" width="387" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" value="FleetPlanService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="3996" y="547" width="460" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f0" value="+create(dto: CreateFleetPlanDto, distributorId: string) Promise&lt;MaintenancePlan&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f1" value="+findAll(distributorId: string, query: QueryFleetPlanDto) Promise&lt;MaintenancePlan[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f2" value="+findOne(id: string, distributorId: string) Promise&lt;MaintenancePlan&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f3" value="+update(id: string, dto: UpdateFleetPlanDto, distributorId: string) Promise&lt;MaintenancePlan&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f4" value="-assertIntervaloCoherente(dto: [ trigger: MaintenanceTrigger, intervalKm?: number, intervalMonths?: number, ]) void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13" value="FleetTaskController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="2110" y="40" width="460" height="316" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f0" value="«controller»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c13">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f1" value="+create(@Body() dto: CreateFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetTaskResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f2" value="+findAll(@Query() query: QueryFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetTaskResponseDto[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f3" value="+findOne(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetTaskResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f4" value="+update(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Body() dto: UpdateFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetTaskResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f5" value="+close(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Body() dto: CloseFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetTaskResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="160" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f6" value="+cancel(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Body() dto: CancelFleetTaskDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetTaskResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="186" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f7" value="+uploadAttachment(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentDistributor([ required: true ]) distributorId: string, @CurrentUser(&#x27;user_id&#x27;) userId: string) Promise&lt;FleetTaskAttachmentResponseDto&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="212" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f8" value="+listAttachments(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;FleetTaskAttachmentResponseDto[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="238" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f9" value="+downloadAttachment(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Param(&#x27;attachmentId&#x27;, ParseUUIDPipe) attachmentId: string, @CurrentDistributor([ required: true ]) distributorId: string, @Res() res: Response) Promise&lt;void&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="264" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f10" value="+removeAttachment(@Param(&#x27;id&#x27;, ParseUUIDPipe) id: string, @Param(&#x27;attachmentId&#x27;, ParseUUIDPipe) attachmentId: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise&lt;void&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c13">
+          <mxGeometry y="290" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c14" value="FleetTaskMapper" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="5635" y="157" width="460" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c14f0" value="«mapper»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c14">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c14f1" value="+toDto(task: MaintenanceTask, attachments?: MaintenanceTaskAttachment[]) FleetTaskResponseDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c14">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15" value="FleetTaskService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="1298" y="907" width="460" height="394" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f0" value="+create(dto: CreateFleetTaskDto, distributorId: string) Promise&lt;MaintenanceTask&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f1" value="+findAll(distributorId: string, query: QueryFleetTaskDto) Promise&lt;MaintenanceTask[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f2" value="+findOne(id: string, distributorId: string) Promise&lt;MaintenanceTask&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f3" value="+update(id: string, dto: UpdateFleetTaskDto, distributorId: string) Promise&lt;MaintenanceTask&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="108" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f4" value="+close(id: string, dto: CloseFleetTaskDto, distributorId: string) Promise&lt;MaintenanceTask&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="134" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f5" value="+cancel(id: string, dto: CancelFleetTaskDto, distributorId: string) Promise&lt;MaintenanceTask&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="160" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f6" value="+listByCar(carId: string, distributorId: string) Promise&lt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="186" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f7" value="+motivosDeInhabilitacionDeVehiculo(carId: string, distributorId: string) Promise&lt;string[]&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="212" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f8" value="+assertVehiculoHabilitado(carId: string, distributorId: string) Promise&lt;void&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="238" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f9" value="+listByDelivery(deliveryId: string, distributorId: string) Promise&lt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="264" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f10" value="-calcularBloqueo(tasks: MaintenanceTask[]) boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="290" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f11" value="-assertAbierta(task: MaintenanceTask) void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="316" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f12" value="-findPlanOrThrow(planId: string, distributorId: string) Promise&lt;MaintenancePlan&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="342" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15f13" value="-assertSujetoCoherente(plan: MaintenancePlan, dto: CreateFleetTaskDto, distributorId: string) Promise&lt;void&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c15">
+          <mxGeometry y="368" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c16" value="VehicleAssignmentMapper" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
+          <mxGeometry x="6264" y="144" width="460" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="c16f0" value="«mapper»" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;fontStyle=2;" vertex="1" parent="c16">
+          <mxGeometry y="30" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c16f1" value="+toVehicleInUseDto(a: VehicleAssignment, isLocked: boolean) VehicleInUseResponseDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c16">
+          <mxGeometry y="56" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c16f2" value="+toHistoryDto(a: VehicleAssignment) VehicleAssignmentHistoryResponseDto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c16">
+          <mxGeometry y="82" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c1" target="c15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c2" target="c15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c3" target="c15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c5" target="c15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c7" target="c8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c9" target="c12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c13" target="c15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c13" target="c5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="usa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=none;startFill=0;dashed=1;endArrow=open;endSize=10;strokeColor=#2C4257;fontSize=11;" edge="1" parent="1" source="c15" target="c6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

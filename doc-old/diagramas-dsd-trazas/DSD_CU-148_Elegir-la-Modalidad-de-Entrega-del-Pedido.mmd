@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-148 Elegir la Modalidad de Entrega del Pedido
+autonumber
+participant CTRL as OrderController
+participant SRV as OrderService
+participant DREP as RepositoryDelivery
+
+CTRL->>SRV: modalidadesDisponibles(direccion, distribuidora)
+activate SRV
+SRV->>SRV: verificarCoberturaExpress(coordenadas, horario)
+SRV->>DREP: find(choferes en moto disponibles dentro del radio express)
+activate DREP
+DREP-->>SRV: lista de Delivery
+deactivate DREP
+alt hay express disponible
+    SRV-->>CTRL: las dos modalidades con precio y tiempo estimado
+    deactivate SRV
+else no hay express
+    SRV-->>CTRL: sólo la programada con el motivo
+end

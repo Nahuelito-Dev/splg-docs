@@ -1,0 +1,42 @@
+classDiagram
+    direction LR
+
+    %% Módulo `gascylinder` — generado por generar-clases-diseno.py
+
+    class GasCylinderController {
+        <<controller>>
+        +create(@Body() createGasCylinderDto: CreateGasCylinderDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<GasCylinderResponseDto>
+        +findAll(@Query() query: CatalogQueryDto) Promise<CatalogoDto>
+        +findOne(@Param('id', ParseUUIDPipe) id: string) Promise<GasCylinderResponseDto>
+        +findByType(@Param() [ type ]: TipoParamDto, @CurrentDistributor() distributorId: string | null) Promise<GasCylinderResponseDto>
+        +getAvailableCylinders(@Query() [ distributor ]: DistribuidoraQueryDto) Promise<DisponiblesDto>
+        +update(@Param('id', ParseUUIDPipe) id: string, @Body() updateGasCylinderDto: UpdateGasCylinderDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<GasCylinderResponseDto>
+        +updateStock(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateStockDto, @CurrentDistributor([ required: true ]) distributorId: string) Promise<GasCylinderResponseDto>
+        +remove(@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor([ required: true ]) distributorId: string) Promise<BajaDeProductoDto>
+    }
+
+    class GasCylinderMapper {
+        <<mapper>>
+        +toDto(g: GasCylinder) GasCylinderResponseDto
+    }
+
+    class GasCylinderService {
+        +resolveDistributor(slugOrId?: string) Promise<string | null>
+        +create(createGasCylinderDto: CreateGasCylinderDto, distributorId: string) Promise<GasCylinder>
+        +findAll(paginationDto: PaginationDto, distributor?: string) Promise<
+        +findOne(id: string, distributorId?: string | null) Promise<GasCylinder>
+        +findByType(type: string, distributor?: string) Promise<GasCylinder>
+        +update(id: string, updateGasCylinderDto: UpdateGasCylinderDto, distributorId: string) Promise<GasCylinder>
+        +updateStock(id: string, quantity: number, distributorId: string) Promise<GasCylinder>
+        +remove(id: string, distributorId: string) Promise<BajaDeProductoDto>
+        +getAvailableCylinders(distributor?: string) Promise<
+        +reservarStock(manager: EntityManager, gasCylinderId: string, quantity: number) Promise<GasCylinder>
+        +restituirStock(manager: EntityManager, items: MovimientoDeStock[]) Promise<void>
+        -bloquear(manager: EntityManager, gasCylinderId: string) Promise<GasCylinder | null>
+        -handleDBExceptions(error: unknown) never
+    }
+
+    GasCylinderController ..> GasCylinderService : usa
+
+    %% Dependencias hacia otros módulos (no se dibujan la flecha para no mezclar):
+    %% GasCylinderService usa DistributorService (módulo `distributor`)

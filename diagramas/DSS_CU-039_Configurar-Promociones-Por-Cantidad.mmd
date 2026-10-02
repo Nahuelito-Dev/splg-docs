@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-039 Configurar Promociones Por Cantidad
+    title DSS — CU-039 Configurar Promociones por Cantidad
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    ADM->>SIS: actualizarProducto(productoId, promociones)
+    ADM->>SIS: actualizarProducto(productoId, datos)
     activate SIS
     alt la tabla de promociones es válida
         SIS-->>ADM: promociones vigentes (cantidad mínima y porcentaje de descuento)

@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-006 Consultar Detalle De Pedido
+    title DSS — CU-006 Consultar Detalle de Pedido
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: consultarPedido(pedidoId)
     activate SIS

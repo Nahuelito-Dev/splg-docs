@@ -1,9 +1,13 @@
-# Lucidchart — los cuatro archivos para importar
+# Lucidchart — los archivos para importar
 
-Los genera `generar-lucidchart.py`, que está en la raíz del repositorio. No se
-editan a mano: si cambia un diagrama, se vuelve a correr.
+El modelo conceptual y el diagrama de clases de diseño los genera `generar-lucidchart.py`.
+El diagrama de clases de diseño **se deriva de los DSD** (`material-de-trabajo/generar-clases-diseno.py`
+lee `diagramas/DSD_*.mmd` y el modelo conceptual y escribe las fuentes `.mmd`). Nada se edita a
+mano: si cambia un DSD, se corren de nuevo.
 
 ```bash
+python3 generar-modelo-conceptual.py        # el .mmd del modelo conceptual, desde modelo_conceptual.py
+python3 material-de-trabajo/generar-clases-diseno.py   # el diagrama de clases de diseño, desde los DSD
 python3 generar-lucidchart.py
 ```
 
@@ -11,10 +15,16 @@ python3 generar-lucidchart.py
 
 | Archivo | Diagrama | Cómo entra a Lucidchart |
 |---|---|---|
-| `SPLG-modelo-conceptual.xml` | Modelo conceptual del dominio, 22 conceptos | Archivo · Importar |
-| `SPLG-diagrama-de-clases-dominio.xml` | Clases de dominio con atributos y multiplicidades | Archivo · Importar |
-| `SPLG-diagrama-de-clases-servicios.xml` | Clases de servicio con las operaciones reales | Archivo · Importar |
-| `SPLG-diagrama-de-base-de-datos.sql` | Entidad-relación, 25 tablas | Importar datos · ERD |
+| `SPLG-modelo-conceptual.xml` | Modelo conceptual del dominio, 43 conceptos | Archivo · Importar |
+| `SPLG-diagrama-de-clases-dominio.xml` | Las 43 clases de dominio con atributos tipados, operaciones y navegabilidad | Archivo · Importar |
+| `clases/SPLG-diagrama-de-clases-<vista>.xml` | Controladores, fabricaciones puras, puertos y colecciones de un módulo (o grupo de módulos), con sus operaciones | Archivo · Importar |
+| `SPLG-diagrama-de-base-de-datos.sql` | Entidad-relación, 40 tablas | Importar datos · ERD |
+
+Las clases de diseño no entran en un solo diagrama: `generar-clases-diseno.py` las reparte en
+vistas por módulo (por ejemplo `Pedidos-alta`, `Despacho`, `Flota-tareas`). Las cifras y la lista
+de vistas están en `material-de-trabajo/indice-clases-diseno.md`. Las imágenes del diagrama,
+con la notación UML completa (estereotipos, interfaces, navegabilidad), están en
+`diagramas/clases-diseno/` y las muestra el Documento 3 §5.
 
 ## Importar los `.xml`
 

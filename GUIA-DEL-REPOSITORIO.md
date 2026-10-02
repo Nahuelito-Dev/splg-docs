@@ -31,7 +31,7 @@ splg-docs/
 
 ## El documento único: `Casos-de-Uso.md`
 
-Es el que se abre cuando hay que mostrar un caso puntual. Tiene **los 108 casos, del
+Es el que se abre cuando hay que mostrar un caso puntual. Tiene **los 174 casos, del
 CU-001 al CU-108**, cada uno con sus cuatro artefactos:
 
 | Sección | Contenido | Cobertura |
@@ -60,13 +60,13 @@ para poder consultarlos sin saltar entre cuatro archivos.
 
 | # | Documento | Contiene |
 |---|-----------|----------|
-| 0 | `0-Plan_Del_Proyecto.md` | Fases e iteraciones, hitos, cronograma, actores, los 108 casos de uso de alto nivel y su calificación. |
+| 0 | `0-Plan_Del_Proyecto.md` | Fases e iteraciones, hitos, cronograma, actores, los 174 casos de uso de alto nivel y su calificación. |
 | 0.1 | `0.1-Planificacion_Iteraciones.md` | Metas, artefactos y problemas a resolver de cada iteración. |
-| 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 108 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
-| 2 | `2-Analisis.md` | Modelo conceptual, los 108 diagramas de secuencia del sistema, los 26 contratos de operación y los módulos inteligentes. |
+| 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 174 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
+| 2 | `2-Analisis.md` | Modelo conceptual, los 171 diagramas de secuencia del sistema, el catálogo de las 195 operaciones del sistema, los 111 contratos de operación y los módulos inteligentes. |
 | 3 | `3-Diseño.md` | Arquitectura, casos de uso reales, diagramas de interacción, diagrama de clases, especificación de los módulos inteligentes, wireframes y diagrama entidad-relación. |
 
-`Casos-de-Uso.md` reúne los cuatro artefactos de los 108 casos en un solo archivo. Es el
+`Casos-de-Uso.md` reúne los cuatro artefactos de los 174 casos en un solo archivo. Es el
 documento de consulta; su contenido se corresponde con el de los documentos 0, 1 y 2, que
 lo conservan porque las plantillas exigen que cada artefacto figure donde le toca.
 
@@ -113,14 +113,15 @@ Cada imagen lleva el código y el nombre del caso de uso en el nombre del archiv
 | Ruta | Contenido |
 |------|-----------|
 | `design/wireframes.html` | Los nueve wireframes renderizados, listos para capturar |
-| `design/diagrams-png/` | Diagramas exportados como imagen |
+| `doc-old/` | Material superado, conservado para consulta (ver `doc-old/LEEME.md`) |
 | `design/*.png` | Capturas de las aplicaciones en el simulador |
 
 ## Verificación contra el código
 
-La documentación se contrastó contra el sistema construido. El resultado está en
-`INFORME-HALLAZGOS.md`, la correspondencia caso por caso en `TRAZABILIDAD-CU-CODIGO.md`,
-y el detalle en los informes `AUDITORIA-*`.
+La documentación se contrasta contra el sistema construido con los verificadores de
+`material-de-trabajo/` (artefactos, relaciones, cifras de la base, cruce DSD↔clases y MC↔DER)
+y el gate `verificar-conformidad.py`. Lo pendiente de implementación está en `3-Diseño.md` §10.
+Los informes de auditoría anteriores quedaron en `doc-old/`.
 
 Lo anterior a esa revisión quedó en `old/` y no forma parte de la entrega.
 

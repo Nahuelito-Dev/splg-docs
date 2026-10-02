@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-170 Consultar el Historial de Estados de un Pedido
+    autonumber
+    actor USR as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    USR->>SIS: consultarHistorialDeEstados(pedidoId)
+    activate SIS
+    alt el pedido existe y el usuario puede verlo
+        SIS-->>USR: cambios de estado, del más antiguo al más reciente
+    else el pedido no existe o no es del usuario
+        SIS-->>USR: recurso no encontrado
+    end
+    deactivate SIS
+    Note over USR,SIS: También lo inician el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)

@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-020 Confirmar Entrega · confirmarEntrega
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant UCS as :UpdateOrderStatusUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAG as pago:Pago
+    participant UBI as ubicacion:UbicacionGPS
+    participant ENV as envase:Envase
+    participant NOT as :NotificationPort
+
+    CHF->>+UCS: confirmarEntrega(pedidoId)
+    UCS->>+PEDS: get(pedidoId)
+    PEDS-->>-UCS: pedido
+    UCS->>+PED: entregar()
+    PED->>PED: transicionar(entregado)
+    opt El método de pago es efectivo
+        PED->>PAG: marcarPagado()
+    end
+    deactivate PED
+    UCS->>UBI: cerrarSeguimiento()
+    loop Por cada envase despachado en el pedido
+        UCS->>ENV: entregarAlCliente(pedido)
+    end
+    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
+    UCS-->>-CHF: pedido

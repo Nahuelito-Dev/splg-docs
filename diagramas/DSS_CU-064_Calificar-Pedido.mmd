@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-064 Calificar Pedido
+    title DSS — CU-064 Calificar Pedido (cliente↔chofer)
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: calificarPedido(pedidoId, estrellas, comentario)
     activate SIS

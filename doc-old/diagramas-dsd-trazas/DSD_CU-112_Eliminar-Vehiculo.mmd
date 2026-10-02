@@ -1,0 +1,38 @@
+sequenceDiagram
+    title DSD — CU-112 Eliminar Vehiculo
+autonumber
+participant CTRL as CarController
+participant SRV as CarService
+participant VSRV as VehicleAssignmentService
+participant CREP as RepositoryCar
+
+Note over CTRL: «include» CU-113 Consultar Detalle del Vehículo
+CTRL->>SRV: remove(id, distributorId)
+activate SRV
+SRV->>SRV: findOne(id, distributorId)
+alt el vehiculo no existe o es de otra distribuidora
+    SRV-->>CTRL: NotFoundException Car with ID not found
+else Vehiculo encontrado
+    SRV->>SRV: abrir una transaccion
+    SRV->>CREP: findOne con bloqueo de escritura (where car_id y distributor_id)
+    CREP-->>SRV: Car o null
+    alt el vehiculo desaparecio antes del bloqueo
+        SRV-->>CTRL: NotFoundException Vehiculo no encontrado
+    else Vehiculo bloqueado
+        SRV->>VSRV: assertVehiculoLibre(id, manager)
+        activate VSRV
+        alt algun chofer lo tiene en uso
+            VSRV-->>SRV: ConflictException El vehiculo esta en uso: liberalo primero
+            SRV-->>CTRL: ConflictException
+        else el vehiculo esta libre
+            VSRV-->>SRV: ok
+            SRV->>CREP: softRemove(car)
+            activate CREP
+            CREP-->>SRV: deletedAt seteado, la fila permanece
+            deactivate CREP
+            SRV-->>CTRL: message Car deleted successfully, carId
+        end
+        deactivate VSRV
+    end
+end
+deactivate SRV

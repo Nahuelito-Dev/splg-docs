@@ -1,0 +1,38 @@
+@startuml
+title Diagrama de estados — Oferta de despacho
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "OFFERED\nofrecida" as OFFERED
+state "ACCEPTED\naceptada" as ACCEPTED
+state "REJECTED\nrechazada" as REJECTED
+state "EXPIRED\nvencida" as EXPIRED
+
+[*] --> OFFERED : ofrecerAlSiguiente() [chofer elegible\nno contactado antes, dentro del radio]
+OFFERED --> ACCEPTED : aceptarPedido() [oferta vigente]
+OFFERED --> REJECTED : rechazarOferta()
+OFFERED --> EXPIRED : vencerOfertas() [expiresAt < ahora;\nproceso cada 15 s]
+OFFERED --> EXPIRED : liberarPedido() [el chofer libera el pedido]
+ACCEPTED --> [*]
+REJECTED --> [*]
+EXPIRED --> [*]
+
+note right of OFFERED
+  Vigencia: 30 segundos desde la creación.
+  El pedido se ofrece de a un chofer por vez.
+end note
+@enduml

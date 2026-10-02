@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-079 Confirmar Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CDU as :ConfirmDeliveryUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAG as pago:Pago
+    participant RT as :RealtimeDispatchPort
+    participant NOT as :NotificationPort
+
+    CLI->>+CDU: confirmarEntregaConCodigo(pedidoId, codigo)
+    CDU->>+PEDS: get(pedidoId)
+    PEDS-->>-CDU: pedido
+    CDU->>+PED: validarCodigo(codigo)
+    PED-->>-CDU: valido
+    CDU->>+PED: entregar()
+    PED->>PED: transicionar(entregado)
+    opt El método de pago es efectivo
+        PED->>PAG: marcarPagado()
+    end
+    deactivate PED
+    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento y entrega los envases
+    CDU-)RT: notifyAdmins(pedido)
+    CDU-)NOT: sendOrderConfirmation(cliente, pedido)
+    CDU-->>-CLI: pedido

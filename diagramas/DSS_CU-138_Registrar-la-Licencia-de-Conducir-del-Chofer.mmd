@@ -1,16 +1,14 @@
 sequenceDiagram
     title DSS — CU-138 Registrar la Licencia de Conducir del Chofer
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    ADM->>SIS: registrarLicenciaDelChofer(choferId, numero, categoria, vencimiento)
+    ADM->>SIS: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
     activate SIS
-    alt la licencia es válida y alcanza para el vehículo
-        SIS-->>ADM: chofer habilitado
-    else la categoría no alcanza
-        SIS-->>ADM: dato guardado con aviso de incompatibilidad
-    else la licencia está vencida
-        SIS-->>ADM: chofer no habilitado
+    alt los datos son validos
+        SIS-->>ADM: tarea creada, categoria guardada sin verificar contra el vehiculo
+    else la licencia ya esta vencida al cargarla
+        SIS-->>ADM: tarea creada y chofer no habilitado
     end
     deactivate SIS

@@ -1,0 +1,32 @@
+sequenceDiagram
+    title DSD — CU-149 Despachar un Pedido Express a un Chofer en Moto · despacharPedidoExpress
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :OrderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant RT as :RealtimeDispatchPort
+    participant CHO as chofer:Chofer
+    participant NOT as :NotificationsService
+
+    SIS->>+SRV: despacharPedidoExpress(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+RT: findNearbyDrivers(destino, radioExpressKm)
+    RT-->>-SRV: cercanos
+    SRV->>+CHO: puedeRecibirOferta(distribuidora)
+    CHO-->>-SRV: elegible
+    alt Un chofer en moto elegible acepta
+        SRV->>PED: ofrecerA(chofer, venceEn)
+        SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
+        Note over SRV,PED: Oferta y aceptación: ver DSD de ofrecerAlSiguienteChofer (CU-013) y de aceptarPedido (CU-015). Crea la OfertaDespacho
+    else Ningún chofer en moto acepta
+        SRV->>+PED: pasarARepartoComun()
+        PED->>PED: descontarRecargoExpress()
+        deactivate PED
+        opt El cliente ya pagó en línea
+            Note over SRV,PED: Reintegro: ver DSD de reintegrarPagoDelPedido (CU-168)
+        end
+    end
+    SRV-)NOT: sendOrderConfirmation(cliente, pedido)
+    SRV-->>-SIS: asignado

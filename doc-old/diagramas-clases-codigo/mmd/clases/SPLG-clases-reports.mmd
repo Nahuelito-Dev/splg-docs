@@ -1,0 +1,23 @@
+classDiagram
+    direction LR
+
+    %% Módulo `reports` — generado por generar-clases-diseno.py
+
+    class ReportsController {
+        <<controller>>
+        -parseDates(from?: string, to?: string) void
+        +getSalesByDriver(@Query() rango: ReportRangeQueryDto, @CurrentDistributor() distributorId?: string | null) Promise<VentasPorChoferDto[]>
+        +getSalesByProduct(@Query() rango: ReportRangeQueryDto, @CurrentDistributor() distributorId?: string | null) Promise<VentasPorProductoDto[]>
+        +getSalesByPayment(@Query() rango: ReportRangeQueryDto, @CurrentDistributor() distributorId?: string | null) Promise<VentasPorMedioDePagoDto[]>
+        +getSalesEvolution(@Query() rango: ReportEvolutionQueryDto, @CurrentDistributor() distributorId?: string | null) Promise<EvolucionDeVentasDto[]>
+        -aGranularidadSql(granularity?: Granularidad) 'day' | 'week' | 'month'
+    }
+
+    class ReportsService {
+        +getSalesByDriver(startDate: Date, endDate: Date, distributorId?: string | null) Promise<VentasPorChoferDto[]>
+        +getSalesByProduct(startDate: Date, endDate: Date, distributorId?: string | null) Promise<VentasPorProductoDto[]>
+        +getSalesByPaymentMethod(startDate: Date, endDate: Date, distributorId?: string | null) Promise<VentasPorMedioDePagoDto[]>
+        +getSalesEvolution(startDate: Date, endDate: Date, granularity: 'day' | 'week' | 'month', distributorId?: string | null) Promise<EvolucionDeVentasDto[]>
+    }
+
+    ReportsController ..> ReportsService : usa

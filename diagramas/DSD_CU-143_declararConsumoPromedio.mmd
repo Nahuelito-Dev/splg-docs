@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-143 Declarar el Consumo Promedio al Registrarse · declararConsumoPromedio
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CON as :ConsumptionService
+    participant COL as :Map#lt;String, Cliente#gt;
+    participant CLE as cliente:Cliente
+    participant EST as :ConsumptionEstimatorService
+
+    CLI->>+CON: declararConsumoPromedio(tipoGarrafa, cantidadPorMes)
+    CON->>+COL: get(usuarioId)
+    COL-->>-CON: cliente
+    CON->>+CLE: declararConsumo(tipoGarrafa, cantidadPorMes)
+    CLE->>CLE: validarRango(cantidadPorMes)
+    deactivate CLE
+    CON->>+EST: estimarProximaRecompra(fechaDeRegistro, cantidadPorMes)
+    EST-->>-CON: fechaEstimada
+    CON->>CLE: registrarEstimacion(fechaEstimada)
+    CON-->>-CLI: cliente

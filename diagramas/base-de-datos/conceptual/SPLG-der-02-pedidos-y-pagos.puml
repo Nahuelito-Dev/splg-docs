@@ -1,0 +1,121 @@
+@startuml
+title Modelo entidad-relación conceptual — Pedidos y pagos
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Pedido {
+  {field} estado
+  {field} /total
+  {field} modalidad de entrega
+  {field} fecha agendada
+  {field} método de pago
+  {field} seña
+  {field} código de entrega
+  {field} nombre de quien recibe
+  {field} documento de quien recibe
+  {field} vínculo con quien recibe
+}
+entity ItemPedido {
+  {field} cantidad
+  {field} precio unitario
+}
+entity Carrito {
+  {field} última modificación
+}
+entity ItemCarrito {
+  {field} cantidad
+  {field} precio unitario
+}
+entity CambioEstadoPedido {
+  {field} desde
+  {field} hacia
+  {field} motivo
+  {field} fecha
+}
+entity CambioDireccion {
+  {field} motivo
+  {field} fecha
+}
+entity ZonaCobertura {
+  {field} nombre
+  {field} área
+  {field} recargo
+  {field} tipo de recargo
+  {field} vigente hasta
+}
+entity FranjaHoraria {
+  {field} desde
+  {field} hasta
+  {field} cupo
+  {field} activa
+}
+entity Pago {
+  {field} importe
+  {field} pasarela
+  {field} estado
+  {field} es seña
+  {field} fecha
+}
+entity Cliente #F1F1F1 {
+}
+entity Chofer #F1F1F1 {
+}
+entity Producto #F1F1F1 {
+}
+entity DireccionEntrega #F1F1F1 {
+}
+entity Usuario #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+
+Distribuidora ||--o{ ZonaCobertura : define >
+Distribuidora ||--o{ FranjaHoraria : define >
+Usuario ||--o{ Carrito : arma >
+Carrito ||--o{ ItemCarrito : contiene >
+ItemCarrito }o--|| Producto : corresponde a >
+Pedido }o--|| DireccionEntrega : se entrega en >
+Pedido }o--o| ZonaCobertura : aplica el recargo de >
+Usuario ||--o{ Pedido : realiza >
+Chofer |o--o{ Pedido : entrega >
+Distribuidora ||--o{ Pedido : gestiona >
+Pedido }o--o| FranjaHoraria : se programa en >
+Usuario ||--o{ CambioDireccion : realiza >
+CambioDireccion }o--|| DireccionEntrega : cambia desde >
+Pedido ||--o{ CambioDireccion : registra >
+CambioDireccion }o--|| DireccionEntrega : cambia hacia >
+ItemPedido }o--|| Producto : corresponde a >
+Pedido ||--o{ ItemPedido : contiene >
+Usuario |o--o{ CambioEstadoPedido : efectúa >
+Pedido ||--o{ CambioEstadoPedido : registra >
+Pedido ||--o{ Pago : se salda con >
+
+legend bottom right
+  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

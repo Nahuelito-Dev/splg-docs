@@ -1,0 +1,130 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class Cliente {
+  - consumoMensualDeclarado: Decimal
+  - diasDeAviso: Entero
+  + «create» Cliente(usuario: Usuario,\n      datosDelCliente: Registro)
+  + «create» Cliente(usuario: Usuario,\n      ubicacion: UbicacionGPS)
+  + actualizarConsumo(cantidadPorMes: Decimal)
+  + actualizarUbicacion(coordenadas: Coordenada)
+  + configurarAviso(dias: Entero)
+  + crearCarrito(distribuidoraId: Identificador): Carrito
+  + darDeBaja()
+  + declararConsumo(tipoGarrafa: Cadena,\n      cantidadPorMes: Decimal)
+  + desmarcarLasDemas(direccion: DireccionEntrega)
+  + desmarcarPredeterminadas()
+  + editarDatos(cambios: Registro)
+  + getCarrito(distribuidoraId: Identificador): Carrito
+  + getDireccion(direccionId: Identificador): DireccionEntrega
+  + getDirecciones(): DireccionEntrega[*]
+  + getDireccionPredeterminada(): DireccionEntrega
+  + getFechaEstimadaDeRecompra()
+  + getToken(): Cadena
+  + presentarReclamo(pedido: Pedido, motivo: Cadena,\n      evidencia: Archivo): Reclamo
+  + promoverOtraPredeterminada()
+  + registrarDireccion(datos: Registro): DireccionEntrega
+  + registrarEstimacion(fechaEstimada: Fecha)
+  + registrarToken(token: Cadena)
+  + unirseASala()
+  + validarRango(cantidadPorMes: Decimal)
+  + validarRango(dias: Entero)
+}
+class DireccionEntrega {
+  - calleYAltura: Cadena
+  - pisoYDepartamento: Cadena
+  - punto: Coordenada
+  - precision: PrecisionDeGeocodificacion
+  - predeterminada: Booleano
+  + «create» DireccionEntrega(datos: Registro,\n      punto: Coordenada,\n      precision: PrecisionDeGeocodificacion,\n      predeterminada: Booleano)
+  + darDeBaja()
+  + editar(cambios: Registro)
+  + esDelUsuario(usuario: Usuario)
+  + marcarPredeterminada()
+  + validarCoordenadas(cambios: Registro)
+}
+class InvitacionRecompra {
+  - agotamientoEstimado: FechaHora
+  + «create» InvitacionRecompra(cliente: Cliente,\n      fechaEstimada: Fecha, vigencia: FechaHora)
+  + aceptar(): ItemPedido[*]
+  + validarVigencia()
+}
+class ItemSugerido {
+  - cantidad: Entero
+  + «create» ItemSugerido(producto: Producto,\n      cantidad: Entero)
+}
+class Usuario <<referencia>>
+class Pedido <<referencia>>
+class Producto <<referencia>>
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Cliente "1" *-- "0..*" DireccionEntrega : registra
+Cliente "1" -- "0..*" Pedido : realiza
+Cliente "1" -- "0..*" InvitacionRecompra : recibe
+Cliente "0..*" -- "0..1" Producto : usa habitualmente
+InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en
+InvitacionRecompra "1" *--> "1..*" ItemSugerido : sugiere
+InvitacionRecompra "0..*" -- "0..1" DireccionEntrega : sugiere entregar en
+ItemSugerido "0..*" -- "1" Producto : corresponde a
+Pedido "0..*" -- "1" DireccionEntrega : se entrega en
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

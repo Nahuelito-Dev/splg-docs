@@ -1,0 +1,30 @@
+sequenceDiagram
+    title DSD — CU-143 Declarar el Consumo Promedio al Registrarse
+autonumber
+participant RSRV as RegistroService
+participant CONS as ConsumptionService
+participant CSRV as CustomersService
+participant EST as ConsumptionEstimatorService
+participant CREP as RepositoryCustomer
+
+RSRV->>RSRV: crearPerfil(manager, userId, alta, datos)
+alt el cliente declara su consumo
+    RSRV->>CONS: declararConsumoInicial(manager, userId, tipoGarrafaId, cantidadPorMes, confirmado)
+    activate CONS
+    CONS->>CSRV: aKilosPorMes(cantidadPorMes, peso del tipo de garrafa)
+    CSRV-->>CONS: kilos por mes
+    alt el valor está fuera de rango y no viene confirmado
+        CONS-->>RSRV: UnprocessableEntityException con el código de confirmación
+    else el valor es razonable o viene confirmado
+        CONS->>CSRV: guardarConsumo(manager, userId, kilosPorMes, tipoGarrafaId)
+        CSRV->>CREP: save(cliente con consumo y garrafa habitual)
+        CREP-->>CSRV: Customer actualizado
+        CONS->>EST: estimarProximaRecompra(fecha del registro, kilosPorMes)
+        EST-->>CONS: fecha estimada de recompra
+        CONS->>CSRV: guardarEstimacion(manager, userId, fecha estimada)
+        CONS-->>RSRV: consumo declarado y recompra estimada
+    end
+    deactivate CONS
+else el cliente no declara su consumo
+    RSRV->>RSRV: continuar el registro sin consumo declarado
+end

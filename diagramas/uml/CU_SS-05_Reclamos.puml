@@ -1,5 +1,5 @@
 @startuml
-title SS-05 — Reclamos (3 casos de uso)
+title SS-05 — Reclamos (7 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -28,30 +28,49 @@ skinparam rectangle {
 skinparam nodesep 18
 skinparam ranksep 70
 skinparam usecase {
-  BorderColor<<pendiente>> #9C4436
-  BackgroundColor<<pendiente>> #F6E4E1
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
   BorderColor<<factorizado>> #6B7683
   BackgroundColor<<factorizado>> #F2F4F6
 }
 
 actor "Cliente\n(ACT-01)" as A01
 actor "Administrador\n(ACT-03)" as A03
+actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-05 Reclamos" {
   usecase "CU-023\nRegistrar Reclamo" as U023 #back:FFFFFF;line:9C5A46
   usecase "CU-024\nListar Reclamos" as U024 #back:FFFFFF;line:9C5A46
   usecase "CU-025\nResolver Reclamo" as U025 #back:FFFFFF;line:9C5A46
-  usecase "Adjuntar Foto" as F_FOTO <<factorizado>> #back:FFFFFF;line:9C5A46
+  usecase "CU-166\nTomar un Reclamo Pendiente" as U166 #back:FFFFFF;line:9C5A46
+  usecase "CU-167\nReabrir un Reclamo" as U167 #back:FFFFFF;line:9C5A46
+  usecase "CU-174\nAdjuntar la Fotografía de un\nReclamo" as U174 <<planificado>> #back:FFFFFF;line:9C5A46
+  usecase "CU-175\nConsultar la Fotografía de un\nReclamo" as U175 <<planificado>> #back:FFFFFF;line:9C5A46
 }
 
+usecase "CU-159\nAlmacenar Archivo\n(SS-07)" as U159 #back:FFFFFF;line:6B7683
+usecase "CU-160\nRecuperar Archivo\n(SS-07)" as U160 #back:FFFFFF;line:6B7683
+
 A01 -[#1F6F8B]- U023
+A01 -[#1F6F8B]- U174
+A01 -[#1F6F8B]- U175
 A03 -[#8C4A9E]- U024
 A03 -[#8C4A9E]- U025
+A03 -[#8C4A9E]- U166
+A03 -[#8C4A9E]- U167
+A03 -[#8C4A9E]- U174
+A03 -[#8C4A9E]- U175
+A05 --|> A03
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U025 ..> U024 : <<include>>
+U174 ..> U159 : <<include>>
+U175 ..> U160 : <<include>>
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
-F_FOTO ..> U023 : <<extend>>
+U174 ..> U023 : <<extend>>
 note on link
-  Punto de extension: el cliente adjunta evidencia fotografica
+  Punto de extensión: el cliente adjunta evidencia fotográfica
 end note
 
 @enduml

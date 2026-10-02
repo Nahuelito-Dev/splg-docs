@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-133 Consultar la Vigencia de un Envase · consultarVigenciaDelEnvase
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CylinderService
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant ENV as envase:Envase
+
+    ADM->>+SRV: consultarVigenciaDelEnvase(envaseId)
+    SRV->>+ENVS: get(envaseId)
+    ENVS-->>-SRV: envase
+    SRV->>+ENV: getVigencia()
+    ENV->>ENV: diasHastaElVencimiento()
+    ENV-->>-SRV: vencimiento, dias
+    SRV-->>-ADM: vigencia

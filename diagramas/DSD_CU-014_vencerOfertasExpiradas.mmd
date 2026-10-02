@@ -1,0 +1,38 @@
+sequenceDiagram
+    title DSD — CU-014 Reintentar Asignación con Radio Expandido (Cron) · vencerOfertasExpiradas
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant TIK as :DispatchService
+    participant ORQ as :DispatchOrchestratorService
+    participant OFR as :DispatchOfferRepositoryPort
+    participant OFE as oferta:OfertaDespacho
+    participant PED as pedido:Pedido
+    participant ORS as :OrderService
+
+    SIS->>+TIK: vencerOfertasExpiradas()
+    TIK->>+ORQ: handleExpiredOffers()
+    ORQ->>+OFR: findExpired(ahora)
+    OFR-->>-ORQ: ofertas
+    loop Por cada oferta vencida
+        ORQ->>OFE: vencer()
+        ORQ->>+OFE: getPedido()
+        OFE-->>-ORQ: pedido
+        ORQ->>+PED: esReofertable()
+        PED-->>-ORQ: reofertable
+        opt El pedido sigue pendiente y sin chofer
+            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+    end
+    deactivate ORQ
+    TIK->>+ORS: findAvailableOrders()
+    ORS-->>-TIK: pendientes
+    loop Por cada pedido pendiente de más de 60 segundos
+        TIK->>+ORQ: ensureOffered(pedido)
+        ORQ->>+PED: tieneOfertaVigente()
+        PED-->>-ORQ: vigente
+        opt El pedido no tiene oferta vigente
+            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+        deactivate ORQ
+    end
+    deactivate TIK

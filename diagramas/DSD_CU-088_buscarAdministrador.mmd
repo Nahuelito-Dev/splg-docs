@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-088 Consultar Administradores · buscarAdministrador
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :AdminService
+    participant COL as :Map#lt;String, Administrador#gt;
+
+    ADM->>+SRV: buscarAdministrador(termino)
+    SRV->>+COL: get(termino)
+    COL-->>-SRV: administrador
+    SRV-->>-ADM: administrador

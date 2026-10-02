@@ -1,14 +1,18 @@
 sequenceDiagram
     title DSS — CU-012 Asignar Chofer Manualmente
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: asignarChoferAPedido(pedidoId, choferId)
     activate SIS
-    alt el pedido y el chofer existen y son compatibles
-        SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado)
+    alt el pedido está pendiente o aceptado por otro chofer, y el chofer es elegible
+        SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado, código de entrega nuevo)
     else el pedido o el chofer no existen o son de otra distribuidora
         SIS-->>ADM: recurso no encontrado
+    else el chofer está deshabilitado, no está validado o tiene la flota inhabilitada
+        SIS-->>ADM: asignación rechazada
+    else el pedido no admite pasar a aceptado
+        SIS-->>ADM: asignación rechazada por transición no permitida
     end
     deactivate SIS

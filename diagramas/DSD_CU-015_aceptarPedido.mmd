@@ -1,0 +1,28 @@
+sequenceDiagram
+    title DSD — CU-015 Aceptar Pedido · aceptarPedido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant UCS as :UpdateOrderStatusUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant CHO as chofer:Chofer
+    participant FLK as :FleetDispatchLockService
+    participant PED as pedido:Pedido
+    participant OFE as oferta:OfertaDespacho
+    participant NOT as :NotificationPort
+
+    CHF->>+UCS: aceptarPedido(pedidoId)
+    UCS->>+PEDS: get(pedidoId)
+    PEDS-->>-UCS: pedido
+    UCS->>CHO: assertElegibleParaAsignacion()
+    UCS->>FLK: assertChoferHabilitado(chofer)
+    UCS->>+FLK: vehiculoEnUsoDelChofer(chofer)
+    FLK-->>-UCS: vehiculo
+    UCS->>+PED: aceptar(chofer, vehiculo)
+    PED->>PED: transicionar(aceptado)
+    opt El pedido no estaba aceptado por este chofer
+        PED->>PED: generarCodigoDeEntrega()
+        PED->>OFE: aceptar()
+    end
+    deactivate PED
+    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
+    UCS-->>-CHF: pedido

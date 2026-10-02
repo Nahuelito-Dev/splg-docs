@@ -1,0 +1,100 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class FleetMaintenancePlannerService <<fachada>> {
+  + aceptarVentanaDeMantenimiento(propuestaId: Identificador): PropuestaVentanaTaller
+  + confirmarVentanaDeTaller(tareaId: Identificador,\n      ventanaElegida: Registro,\n      gastoEstimado: Moneda): TareaMantenimiento
+  + planificarMantenimientoDeFlota()
+}
+class DemandForecastService <<fabricación pura>> {
+  + demandaProyectada(ventanas: PropuestaVentanaTaller[*])
+}
+class FleetCoverageService <<fabricación pura>> {
+  + ventanasFactibles(vehiculo: Vehiculo,\n      ventanas: PropuestaVentanaTaller[*])
+}
+interface FleetAvailabilityPort <<interface>> <<puerto>> {
+  + blockVehicleWindow(tarea: TareaMantenimiento,\n      ventanaElegida: PropuestaVentanaTaller)
+}
+class "Map<String, PropuestaVentanaTaller>" as Map_String_PropuestaVentanaTaller <<colección>> {
+  + get(clave: Cadena): PropuestaVentanaTaller
+}
+class PropuestaVentanaTaller <<referencia>>
+class "Map<String, TareaMantenimiento>" as Map_String_TareaMantenimiento <<referencia>>
+class NotificationsService <<referencia>>
+class TareaMantenimiento <<referencia>>
+class Vehiculo <<referencia>>
+
+Map_String_PropuestaVentanaTaller "1" o--> "0..*" PropuestaVentanaTaller
+FleetMaintenancePlannerService --> "1" DemandForecastService
+FleetMaintenancePlannerService --> "1" FleetAvailabilityPort
+FleetMaintenancePlannerService --> "1" FleetCoverageService
+FleetMaintenancePlannerService --> "1" Map_String_PropuestaVentanaTaller
+FleetMaintenancePlannerService --> "1" Map_String_TareaMantenimiento
+FleetMaintenancePlannerService --> "1" NotificationsService
+FleetMaintenancePlannerService ..> PropuestaVentanaTaller
+FleetMaintenancePlannerService ..> TareaMantenimiento
+FleetMaintenancePlannerService ..> Vehiculo
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

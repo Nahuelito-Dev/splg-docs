@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-037 Actualizar Precio De Producto
+    title DSS — CU-037 Actualizar Precio de Producto
     autonumber
-    actor ADM as Administrador
-    participant SIS as Sistema
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
-    ADM->>SIS: actualizarProducto(productoId, precio)
+    ADM->>SIS: actualizarProducto(productoId, datos)
     activate SIS
     alt el producto pertenece a la distribuidora
         SIS-->>ADM: producto actualizado (precio vigente para los pedidos nuevos)

@@ -1,0 +1,39 @@
+sequenceDiagram
+    title DSD — CU-072 Crear Reserva Programada con Seña · crearReserva
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CRT as :CreateOrderUseCase
+    participant CLE as cliente:Cliente
+    participant ZON as zona:ZonaCobertura
+    participant FRA as franja:FranjaHoraria
+    participant PRO as producto:Producto
+
+    CLI->>+CRT: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
+    CRT->>+CLE: getDireccion(direccionId)
+    CLE-->>-CRT: direccion
+    CRT->>+ZON: cubre(direccion)
+    ZON-->>-CRT: cubierta
+    CRT->>FRA: tieneCupo(fechaAgendada)
+    create participant PED as :Pedido
+    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago, montoDeLaSenia)
+    loop Por cada item de items
+        CRT->>PRO: reservar(cantidad)
+        CRT->>+PED: agregarItem(producto, cantidad)
+        PED->>+PRO: precioPara(cantidad)
+        PRO-->>-PED: precioUnitario, subtotal
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+        deactivate PED
+    end
+    CRT->>+PED: calcularTotal()
+    loop Por cada item del Pedido
+        PED->>ITM: getSubtotal()
+    end
+    PED->>ZON: calcularRecargo(subtotalItems)
+    PED->>PED: aplicarRecargoDePago()
+    PED-->>-CRT: total
+    opt metodoDePago es MERCADOPAGO y montoDeLaSenia es mayor que cero
+        Note over CRT,PED: Pago de la seña: ver DSD de crearCheckoutDePago (CU-048). Crea el Pago
+    end
+    Note over CRT,PED: Avisos: ver DSD de crearPedido (CU-005). No se ofrece a ningún chofer
+    CRT-->>-CLI: reserva, enlaceDePago

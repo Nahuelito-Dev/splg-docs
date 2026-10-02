@@ -1,0 +1,43 @@
+sequenceDiagram
+    title DSD — CU-043 Modificar Capacidad De Franja Horaria
+autonumber
+participant CTRL as TimeSlotController
+participant DTO as UpdateTimeSlotDto
+participant SRV as TimeSlotService
+participant REPO as RepositoryTimeSlot
+participant ORD as RepositoryOrder
+
+CTRL->>DTO: validar(payload)
+activate DTO
+alt Datos inválidos
+    DTO-->>CTRL: BadRequestException
+    deactivate DTO
+else Datos válidos
+    CTRL->>SRV: update(id, dto, distributorId)
+    activate SRV
+    SRV->>REPO: findOne(time_slot_id, distributor_id)
+    activate REPO
+    alt La franja no existe en la distribuidora
+        REPO-->>SRV: null
+        deactivate REPO
+        SRV-->>CTRL: NotFoundException
+        deactivate SRV
+    else La franja existe
+        REPO-->>SRV: TimeSlot
+        SRV->>SRV: validar que endTime sea posterior a startTime
+        SRV->>ORD: count(pedidos programados por fecha futura en la franja)
+        activate ORD
+        ORD-->>SRV: cantidad comprometida por fecha
+        deactivate ORD
+        SRV->>SRV: determinar las fechas donde la cantidad supera la capacidad nueva
+        SRV->>REPO: save(TimeSlot actualizado)
+        activate REPO
+        REPO-->>SRV: TimeSlot
+        deactivate REPO
+        alt Hay fechas sobrecargadas
+            SRV-->>CTRL: franja actualizada y fechas sobrecargadas (advertencia)
+        else No hay sobrecarga
+            SRV-->>CTRL: franja actualizada
+        end
+    end
+end

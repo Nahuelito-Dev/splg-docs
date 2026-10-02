@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-174 Adjuntar la Fotografía de un Reclamo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: adjuntarFotoAlReclamo(reclamoId, imagen)
+    activate SIS
+    alt la imagen es válida y el reclamo es del solicitante
+        SIS-->>CLI: reclamo con su fotografía
+    else el reclamo no existe o no es del solicitante
+        SIS-->>CLI: recurso no encontrado
+    else el tipo de archivo no está permitido
+        SIS-->>CLI: tipo de archivo no soportado
+    else el archivo supera el tamaño máximo
+        SIS-->>CLI: archivo demasiado grande
+    end
+    deactivate SIS

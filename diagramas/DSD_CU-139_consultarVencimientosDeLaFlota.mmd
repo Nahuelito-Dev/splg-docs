@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-139 Consultar los Vencimientos de la Flota · consultarVencimientosDeLaFlota
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetExpirationsService
+    participant LST as :List#lt;TareaMantenimiento#gt;
+    participant TAR as tarea:TareaMantenimiento
+    participant VEH as vehiculo:Vehiculo
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: consultarVencimientosDeLaFlota(dias)
+    SRV->>+LST: getAbiertasHasta(dias)
+    LST-->>-SRV: tareas
+    loop Por cada tarea abierta
+        SRV->>TAR: getEstadoDeVencimiento()
+    end
+    loop Por cada vehículo con tareas
+        SRV->>VEH: estaInhabilitado(tareas)
+    end
+    loop Por cada chofer con tareas
+        SRV->>CHO: estaInhabilitado(tareas)
+    end
+    SRV-->>-ADM: vencimientos por vehiculo y por chofer

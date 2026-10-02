@@ -1,0 +1,33 @@
+sequenceDiagram
+    title DSD — CU-122 Agregar Ítem al Carrito · agregarItemAlCarrito
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CartService
+    participant CLE as cliente:Cliente
+    participant PRODS as :Map#lt;String, Producto#gt;
+    participant PRO as producto:Producto
+    participant CAR as carrito:Carrito
+
+    CLI->>+SRV: agregarItemAlCarrito(productoId, cantidad)
+    SRV->>+PRODS: get(productoId)
+    PRODS-->>-SRV: producto
+    SRV->>+PRO: estaDisponibleEn(distribuidoraId)
+    PRO-->>-SRV: disponible
+    SRV->>+CLE: getCarrito(distribuidoraId)
+    CLE-->>-SRV: carrito
+    alt El cliente no tiene carrito en la distribuidora
+        SRV->>+CLE: crearCarrito(distribuidoraId)
+        create participant NCAR as nuevo:Carrito
+        CLE->>NCAR: «create»(distribuidora)
+        CLE-->>-SRV: carrito
+    end
+    SRV->>+CAR: agregarItem(producto, cantidad)
+    CAR->>PRO: getPrecio()
+    create participant ITC as :ItemCarrito
+    CAR->>ITC: «create»(producto, cantidad, precioUnitario)
+    CAR->>CAR: calcularTotal()
+    loop Por cada item del carrito
+        CAR->>ITC: getSubtotal()
+    end
+    deactivate CAR
+    SRV-->>-CLI: carrito

@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-079 Confirmar Entrega Escaneando El Qr
+    title DSS — CU-079 Confirmar Entrega Escaneando el QR (cliente)
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
-    CLI->>SIS: confirmarEntregaConCodigo(pedidoId, codigoLeido)
+    CLI->>SIS: confirmarEntregaConCodigo(pedidoId, codigo)
     activate SIS
     alt el código coincide y el pedido está en camino
         SIS-->>CLI: entrega confirmada (estado ENTREGADO)

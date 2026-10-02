@@ -1,0 +1,33 @@
+sequenceDiagram
+    title DSD — CU-050 Bloquear Desbloquear Usuario
+autonumber
+participant RG as RolesGuard
+participant CTRL as UsersController
+participant SRV as UsersService
+participant REP as RepositoryUser
+
+RG->>RG: canActivate(ctx) contra Roles ADMIN y SUPER_ADMIN
+alt Rol insuficiente
+    RG-->>CTRL: ForbiddenException Acceso denegado
+else Autorizado
+    RG-->>CTRL: true
+    Note over CTRL: «include» CU-083 Buscar y Listar Usuarios
+    CTRL->>SRV: toggleBlockUser(id, body.block)
+    activate SRV
+    SRV->>REP: findOne(user_id)
+    activate REP
+    alt Usuario inexistente
+        REP-->>SRV: null
+        deactivate REP
+        SRV-->>CTRL: NotFoundException Usuario no encontrado
+        deactivate SRV
+    else Usuario encontrado
+        REP-->>SRV: User
+        SRV->>SRV: user.blocked igual a shouldBlock
+        SRV->>REP: save(user)
+        activate REP
+        REP-->>SRV: User
+        deactivate REP
+        SRV-->>CTRL: id, email, isBlocked y mensaje
+    end
+end

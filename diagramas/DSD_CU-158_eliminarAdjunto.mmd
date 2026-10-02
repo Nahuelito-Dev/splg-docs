@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-158 Eliminar un Adjunto de Flota · eliminarAdjunto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetAttachmentService
+    participant COL as :Map#lt;String, TareaMantenimiento#gt;
+    participant TAR as tarea:TareaMantenimiento
+    participant STO as :StoragePort
+
+    ADM->>+SRV: eliminarAdjunto(tareaId, adjuntoId)
+    SRV->>+COL: get(tareaId)
+    COL-->>-SRV: tarea
+    SRV->>+TAR: quitarAdjunto(adjuntoId)
+    TAR-->>-SRV: adjunto
+    SRV->>STO: remove(adjunto)
+    SRV-->>-ADM: confirmacion

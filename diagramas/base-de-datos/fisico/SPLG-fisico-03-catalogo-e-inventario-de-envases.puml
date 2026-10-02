@@ -1,0 +1,136 @@
+@startuml
+title Modelo físico — Catálogo e inventario de envases
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+skinparam linetype polyline
+
+entity "gas_cylinder" as e_gas_cylinder {
+  {field} **gas_cylinder_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} type : varchar(50) *
+  {field} weight : numeric(10,2) *
+  {field} price : numeric(10,2) *
+  {field} stock : integer *
+  {field} description : text
+  {field} isActive : boolean *
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+}
+entity "gas_cylinder_promotion" as e_gas_cylinder_promotion {
+  {field} **promotion_id** : uuid * <<PK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} quantity : integer *
+  {field} discount_percentage : numeric(5,2) *
+}
+entity "cylinder" as e_cylinder {
+  {field} **cylinder_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} serial : varchar *
+  {field} //gas_cylinder_id// : uuid <<FK>>
+  {field} state : cylinder_state_enum *
+  {field} //current_customer_id// : uuid <<FK>>
+  {field} //current_order_id// : uuid <<FK>>
+  {field} deposit : numeric(10,2) *
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} manufactured_at : timestamptz
+  {field} last_inspection_at : timestamptz
+  {field} expires_at : timestamptz
+  {field} <color:#1F5E8C>decommissioned_at : timestamptz <<propuesto>></color>
+}
+entity "cylinder_inspection" as e_cylinder_inspection {
+  {field} **inspection_id** : uuid * <<PK>>
+  {field} //cylinder_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} inspected_at : timestamptz *
+  {field} result : cylinder_inspection_result_enum *
+  {field} next_due_at : timestamptz
+  {field} notes : text
+}
+entity "cylinder_movement" as e_cylinder_movement {
+  {field} **movement_id** : uuid * <<PK>>
+  {field} //cylinder_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} from_state : cylinder_movement_from_state_enum
+  {field} to_state : cylinder_movement_to_state_enum *
+  {field} //order_id// : uuid <<FK>>
+  {field} //actor_user_id// : uuid <<FK>>
+  {field} note : text
+  {field} createdAt : timestamptz *
+}
+entity "cylinder_recovery_case" as e_cylinder_recovery_case {
+  {field} **case_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //cylinder_id// : uuid * <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} delivered_at : timestamptz *
+  {field} deposit_amount : numeric(10,2) *
+  {field} step : integer *
+  {field} status : recovery_case_status_enum *
+  {field} opened_at : timestamptz *
+  {field} closed_at : timestamptz
+  {field} //resolved_by_user_id// : uuid <<FK>>
+  {field} resolution_note : text
+}
+entity "cylinder_recovery_notice" as e_cylinder_recovery_notice {
+  {field} **notice_id** : uuid * <<PK>>
+  {field} //case_id// : uuid * <<FK>>
+  {field} step : integer *
+  {field} kind : recovery_notice_kind_enum *
+  {field} status : proposal_status_enum
+  {field} sent_at : timestamptz *
+  {field} expires_at : timestamptz *
+  {field} <color:#1F5E8C>//order_id// : uuid <<FK>> <<propuesto>></color>
+}
+entity "user" as e_user #F1F1F1 {
+}
+entity "order" as e_order #F1F1F1 {
+}
+
+e_gas_cylinder ||--o{ e_gas_cylinder_promotion : gas_cylinder_id
+e_user |o--o{ e_cylinder : current_customer_id
+e_order |o--o{ e_cylinder : current_order_id
+e_gas_cylinder |o--o{ e_cylinder : gas_cylinder_id
+e_cylinder ||--o{ e_cylinder_inspection : cylinder_id
+e_user |o--o{ e_cylinder_movement : actor_user_id
+e_cylinder ||--o{ e_cylinder_movement : cylinder_id
+e_order |o--o{ e_cylinder_movement : order_id
+e_cylinder ||--o{ e_cylinder_recovery_case : cylinder_id
+e_user |o--o{ e_cylinder_recovery_case : resolved_by_user_id
+e_user ||--o{ e_cylinder_recovery_case : user_id
+e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice : case_id
+e_order |o--o{ e_cylinder_recovery_notice #line:1F5E8C;text:1F5E8C : order_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

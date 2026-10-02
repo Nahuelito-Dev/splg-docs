@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera los diagramas UML de nivel sistema a partir de Casos-de-Uso.md.
+"""Genera los diagramas UML de nivel sistema a partir de Casos-de-Uso.md y renderiza los UML_*.puml.
 
     python3 generar-uml.py
 
@@ -48,8 +48,8 @@ for m in re.finditer(r'\*\*Código:\*\*\s*(CU-\d+)\s*\|\s*\*\*Caso de Uso:\*\*\s
                   "ss": ss.group(1) if ss else "SS-00",
                   "ssnom": ss.group(2) if ss else "Sin subsistema"}
 
-# estado de cada caso, del artefacto expandido: los que todavia no estan
-# construidos se dibujan con otro color en el diagrama de su subsistema
+# estado de cada caso, del artefacto expandido: los planificados (no construidos)
+# se dibujan con otro color en el diagrama de su subsistema
 a2 = next(i for i, x in enumerate(lin) if re.match(r'^## 5\. ', x))
 b2 = next(i for i, x in enumerate(lin) if re.match(r'^## 6\. ', x))
 blk2 = "\n".join(lin[a2:b2])
@@ -58,7 +58,7 @@ blk2 = "\n".join(lin[a2:b2])
 # cuatro modulos inteligentes salian dibujados como si estuvieran construidos.
 for m in re.finditer(r'^####\s+.*?(CU-\d+)\s+—.*?\|\s*\*\*Estado\*\*\s*\|\s*([^|]+)\|', blk2, re.S | re.M):
     if m.group(1) in casos:
-        casos[m.group(1)]["pendiente"] = not m.group(2).strip().lower().startswith("implementado")
+        casos[m.group(1)]["planificado"] = not m.group(2).strip().lower().startswith("implementado")
 
 SS = {}
 for v in casos.values():
@@ -73,24 +73,32 @@ from paleta import TINTE, BORDE, COLOR_ACT
 # que la catedra pidio que se viera en los diagramas de cada ABM.
 INCLUYE = {
   # Toda alta de usuario crea la identidad por el mismo camino (CU-082).
-  "SS-01": [("CU-002","CU-082"), ("CU-003","CU-082")],
-  "SS-02": [("CU-005","CU-125"), ("CU-005","CU-121"), ("CU-005","CU-148"),
-            ("CU-147","CU-121"), ("CU-147","CU-148"), ("CU-144","CU-146"),
+  "SS-01": [("CU-002","CU-082"), ("CU-003","CU-082"),
+            ("CU-050","CU-083"), ("CU-085","CU-083")],
+  "SS-02": [("CU-147","CU-121"), ("CU-144","CU-146"), ("CU-170","CU-006"),
             ("CU-008","CU-006"), ("CU-009","CU-006"), ("CU-010","CU-006"),
             ("CU-118","CU-117"), ("CU-119","CU-117"), ("CU-120","CU-117"),
             ("CU-123","CU-125"), ("CU-124","CU-125"), ("CU-126","CU-125"),
             ("CU-127","CU-046"), ("CU-127","CU-006"), ("CU-128","CU-006")],
+  "SS-05": [("CU-025","CU-024")],
   "SS-07": [("CU-136","CU-113"), ("CU-137","CU-113"), ("CU-140","CU-113"),
-            ("CU-138","CU-109"), ("CU-105","CU-139"), ("CU-142","CU-139"),
+            ("CU-138","CU-110"), ("CU-105","CU-139"), ("CU-142","CU-139"),
             ("CU-096","CU-110"), ("CU-097","CU-110"), ("CU-109","CU-110"),
             ("CU-032","CU-110"), ("CU-033","CU-110"), ("CU-034","CU-110"),
-            ("CU-111","CU-113"), ("CU-112","CU-113"), ("CU-105","CU-051")],
-  "SS-16": [("CU-094","CU-129"), ("CU-095","CU-129"),
-            ("CU-131","CU-129"), ("CU-129","CU-130")],
+            ("CU-111","CU-113"), ("CU-112","CU-113"), ("CU-105","CU-051"),
+            ("CU-155","CU-159"), ("CU-157","CU-156"), ("CU-157","CU-160"),
+            ("CU-158","CU-156")],
+  "SS-08": [("CU-037","CU-041"), ("CU-038","CU-041"),
+            ("CU-039","CU-041"), ("CU-040","CU-041")],
+  "SS-09": [("CU-044","CU-045"), ("CU-043","CU-154"), ("CU-103","CU-154")],
+  "SS-10": [("CU-054","CU-053"), ("CU-055","CU-053")],
+  "SS-11": [("CU-059","CU-057")],
+  "SS-12": [("CU-063","CU-061")],
   "SS-13": [("CU-135","CU-133"), ("CU-068","CU-135"), ("CU-134","CU-133"),
             ("CU-108","CU-071")],
+  "SS-16": [("CU-094","CU-129"), ("CU-095","CU-129"),
+            ("CU-131","CU-129"), ("CU-129","CU-130")],
   "SS-03": [("CU-149","CU-015")],
-  "SS-09": [("CU-044","CU-045")],
 }
 
 # Casos de uso factorizados: comportamiento comun que otros casos reutilizan
@@ -101,14 +109,16 @@ INCLUYE = {
 FACTORIZADO = {
   "F-STOCK": "Reservar Stock",
   "F-AVISO": "Notificar Cliente",
-  "F-PROMO": "Aplicar Promocion",
-  "F-RECAR": "Recargo por Transferencia",
-  "F-FOTO":  "Adjuntar Foto",
+  "F-PROMO": "Aplicar Promoción",
+  "F-RECAR": "Aplicar Recargo por Transferencia",
+  "F-TERM":  "Filtrar por Término",
+  "F-FILTRO": "Filtrar Pedidos",
 }
 
 # Inclusiones entre subsistemas distintos: el caso incluido vive en otro
 # subsistema y se dibuja fuera del limite del que lo incluye, con su codigo.
-INCLUYE_EXTERNO = [("CU-031","CU-082"), ("CU-086","CU-082"), ("CU-087","CU-082")]
+INCLUYE_EXTERNO = [("CU-031","CU-082"), ("CU-086","CU-082"), ("CU-087","CU-082"),
+                   ("CU-174","CU-159"), ("CU-175","CU-160")]
 
 # base -> incluido factorizado
 INCLUYE_FACTOR = {
@@ -120,12 +130,49 @@ INCLUYE_FACTOR = {
 # extension -> base, con su punto de extension. La flecha de <<extend>> va
 # SIEMPRE desde el caso opcional hacia el caso base, al reves que <<include>>.
 EXTIENDE = {
-  "SS-02": [("F-PROMO","CU-005","la cantidad de un item alcanza el umbral de promocion por volumen"),
-            ("F-RECAR","CU-005","el medio de pago elegido es Transferencia")],
+  "SS-02": [("F-PROMO","CU-005","la cantidad de un ítem alcanza el umbral de promoción por volumen"),
+            ("F-RECAR","CU-005","el medio de pago elegido es Transferencia"),
+            ("F-FILTRO","CU-011","se indica status, from/to o term sobre el listado")],
   "SS-03": [("CU-014","CU-013","no hay choferes disponibles en el radio")],
   "SS-04": [("CU-019","CU-018","el chofer se encuentra cerca del destino")],
-  "SS-05": [("F-FOTO","CU-023","el cliente adjunta evidencia fotografica")],
+  "SS-05": [("CU-174","CU-023","el cliente adjunta evidencia fotográfica")],
+  "SS-14": [("CU-168","CU-008","el pedido cancelado tiene un pago aprobado por una pasarela"),
+            ("CU-168","CU-010","el pedido cancelado tiene un pago aprobado por una pasarela"),
+            ("CU-168","CU-149","el pedido express pasa a reparto común y ya estaba pagado en linea")],
+  "SS-07": [("F-TERM","CU-035","se indica el parámetro term sobre el listado")],
+  "SS-08": [("F-TERM","CU-041","se indica el parámetro term sobre el listado")],
+  "SS-16": [("F-TERM","CU-092","se indica el parámetro term sobre el listado")],
 }
+
+# ---------- actores secundarios y generalizacion ----------
+# Los tres actores externos no estan en el campo Actor/es de los casos: ese campo
+# nombra al actor principal, el que inicia el caso. Estos son secundarios: el
+# sistema los invoca. Cada lista sale de los adaptadores del backend:
+#   ACT-06  payments/infrastructure/mercadopago.adapter.ts  (checkout y webhook)
+#   ACT-07  firebase/infrastructure/firebase-auth.adapter.ts (identidad) y
+#           fcm.adapter.ts (push)
+#   ACT-08  email/infrastructure/resend-email.adapter.ts
+ACTOR_EXT = {"06": "MercadoPago", "07": "Firebase", "08": "Servicio de correo"}
+SECUNDARIO = {
+  "06": ["CU-005", "CU-048", "CU-072", "CU-147"],
+  "07": ["CU-001", "CU-004", "CU-005", "CU-013", "CU-014", "CU-016", "CU-019",
+         "CU-021", "CU-047", "CU-072", "CU-079", "CU-082", "CU-085", "CU-091",
+         "CU-100", "CU-101", "CU-147", "F-AVISO"],
+  "08": ["CU-002", "CU-047", "CU-102", "CU-142"],
+}
+# El Administrador General hace todo lo que hace el Administrador y ademas lo que
+# es exclusivo suyo: ACT-05 especializa a ACT-03.
+GENERALIZA = ("05", "03")
+ESP, GEN = GENERALIZA
+
+def directos(cu):
+    """Los actores principales que se dibujan contra el caso. Como ACT-05
+    especializa a ACT-03, si el caso es de los dos la asociacion de ACT-05 sobra:
+    la hereda."""
+    a = list(casos[cu]["actores"])
+    if ESP in a and GEN in a: a.remove(ESP)
+    return a
+
 
 CABECERA = """skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -159,75 +206,6 @@ def escribir(nombre, texto):
 
 SUBSISTEMAS = []
 
-# ---------- 1. actores ----------
-act = ["@startuml", "title Actores del Sistema — SPLG", "left to right direction", CABECERA]
-for k in sorted(ACTOR):
-    act.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
-act += ["",
-  'rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {',
-  '  rectangle "App Cliente\\n(Flutter)" as APPC',
-  '  rectangle "App Chofer\\n(Flutter)" as APPD',
-  '  rectangle "Panel Web\\n(React / Vite)" as PANEL',
-  '  rectangle "Procesos programados\\n(sin interfaz)" as PROC',
-  '  rectangle "Backend\\n(NestJS + PostgreSQL/PostGIS)" as BACK',
-  "}", ""]
-canal = [("01", "APPC", ""), ("02", "APPD", ""),
-         ("03", "PANEL", "alcance: su distribuidora"),
-         ("05", "PANEL", "alcance: todas las distribuidoras"),
-         ("04", "PROC", "sin intervención humana")]
-for k, destino, etiqueta in canal:
-    et = f" : {etiqueta}" if etiqueta else ""
-    act.append(f'A{k} -[{COLOR_ACT[k]}]- {destino}{et}')
-act += ["", "APPC --> BACK", "APPD --> BACK", "PANEL --> BACK", "PROC --> BACK",
-        "", "@enduml"]
-escribir("CU_Sistema_Actores", "\n".join(act))
-
-# ---------- 2. contexto ----------
-# Un subsistema NO es un caso de uso: la elipse esta reservada para el caso de
-# uso. Un subsistema se dibuja como paquete. Y un diagrama de contexto muestra
-# ademas con que sistemas externos habla el nuestro, que es lo que faltaba.
-cnt = collections.Counter(v["ss"] for v in casos.values())
-ctx = ["@startuml", "title Diagrama de Contexto del Sistema — SPLG",
-       "left to right direction", CABECERA,
-       "skinparam nodesep 14", "skinparam ranksep 45",
-       "skinparam package {", "  BorderColor #2C4257", "  FontSize 12", "}", ""]
-for k in sorted(ACTOR):
-    ctx.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
-ctx += ["", 'rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" as LIMITE {']
-for i, s in enumerate(subs):
-    n = cnt[s]
-    ctx.append(f'  package "{s}\\n{SS[s]}\\n({n} caso{"s" if n != 1 else ""} de uso)" as {s.replace("-","")} '
-               f'<<subsystem>> #back:{TINTE[i % len(TINTE)][1:]};line:{BORDE[i % len(BORDE)][1:]}')
-# Los 18 paquetes en una sola tira dan una lamina de 5400 px de ancho o de
-# 4000 de alto, segun la direccion. La cadena invisible los reparte en columnas
-# y deja el diagrama en una proporcion que entra en una hoja. Es el mismo
-# recurso que usa el diagrama completo.
-PORCOL = 6
-ids = [s.replace("-", "") for s in subs]
-for c in range(0, len(ids), PORCOL):
-    col = ids[c:c + PORCOL]
-    for a, b in zip(col, col[1:]):
-        ctx.append(f'  {a} -[hidden]- {b}')
-ctx += ["}", ""]
-por_ss = collections.defaultdict(set)
-for v in casos.values():
-    for k in v["actores"]:
-        por_ss[k].add(v["ss"])
-for k in sorted(ACTOR):
-    for s in sorted(por_ss[k]):
-        ctx.append(f'A{k} -[{COLOR_ACT[k]}]- {s.replace("-","")}')
-# Los servicios de terceros son parte del contexto: el sistema depende de ellos
-# y estan fuera de su limite.
-ctx += ["", 'actor "Firebase\\nidentidad y avisos" as XFB <<external>>',
-        'actor "MercadoPago\\npasarela de cobro" as XMP <<external>>',
-        'actor "Servicio de correo" as XML <<external>>', "",
-        "LIMITE ..> XFB : autentica y notifica",
-        "LIMITE ..> XMP : cobra y concilia",
-        "LIMITE ..> XML : envía comprobantes"]
-ctx += ["", "@enduml"]
-escribir("CU_Sistema_Diagrama-De-Contexto", "\n".join(ctx))
-
-# ---------- 3. completo ----------
 def eid(c): return c.replace("-", "_") if c.startswith("F-") else "U" + c.replace("CU-", "")
 def parte(txt, ancho=26):
     """Corta el nombre en lineas para que la elipse no salga apaisada."""
@@ -238,39 +216,106 @@ def parte(txt, ancho=26):
     if l: out.append(l)
     return "\\n".join(out)
 
-# Los actores se dibujan una vez por subsistema. UML admite que un mismo
-# clasificador aparezca con mas de un simbolo en el diagrama, y con 115 casos es
-# la diferencia entre un diagrama legible y una maraña: con un unico juego de
-# actores a la izquierda las ~250 asociaciones cruzan el lienzo entero.
-POR_COLUMNA = 4   # subsistemas por columna; 4 es lo que menos hueco deja
+# ---------- 1. actores ----------
+# Los actores se asocian a casos de uso (no a componentes del sistema): cada uno con
+# los casos que mejor lo representan. Los tres externos son secundarios: no inician
+# nada, el sistema los invoca durante el caso.
+REPRESENTATIVOS = {
+  "01": ["CU-005", "CU-023", "CU-072"],
+  "02": ["CU-015", "CU-018", "CU-020"],
+  "03": ["CU-012", "CU-025", "CU-026"],
+  "05": ["CU-052", "CU-087"],
+  "04": ["CU-014", "CU-075"],
+}
+EXT_REPRESENTATIVO = {"06": "CU-048", "07": "CU-001", "08": "CU-047"}
+act = ["@startuml", "title Actores del Sistema — SPLG", "left to right direction", CABECERA]
+for k in ["01", "02", "03", "05", "04"]:
+    act.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
+for k in sorted(ACTOR_EXT):
+    act.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<secundario>>')
+act += ["", f'rectangle "{ "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" }" ' + "{"]
+usados = sorted({c for v in REPRESENTATIVOS.values() for c in v} | set(EXT_REPRESENTATIVO.values()))
+for c in usados:
+    act.append(f'  usecase "{c}\\n{parte(casos[c]["nombre"], 28)}" as {eid(c)} #back:FFFFFF;line:2C4257')
+act += ["}", ""]
+for k, lista in REPRESENTATIVOS.items():
+    for c in lista:
+        act.append(f'A{k} -[{COLOR_ACT[k]}]- {eid(c)}')
+for k, c in EXT_REPRESENTATIVO.items():
+    act.append(f'{eid(c)} -[#6B7683]- A{k}')
+act += ["", f"A{ESP} --|> A{GEN}", "", "@enduml"]
+escribir("CU_Sistema_Actores", "\n".join(act))
 
-com = ["@startuml", f"title Diagrama Completo de Casos de Uso — SPLG ({len(casos)} casos de uso)",
-       "left to right direction", CABECERA,
-       "skinparam nodesep 14", "skinparam ranksep 60", ""]
-com.append('rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {')
-primeros, flechas = [], []
-for i, s in enumerate(subs):
-    cs = sorted(c for c in casos if casos[c]["ss"] == s)
-    primeros.append(eid(cs[0]))
-    quienes = sorted({k for c in cs for k in casos[c]["actores"]})
-    tinte, borde = TINTE[i % len(TINTE)][1:], BORDE[i % len(BORDE)][1:]
-    com.append(f'  rectangle "{s} — {SS[s]}" as R{s.replace("-","")} #back:{tinte};line:{borde} ' + "{")
-    for k in quienes:
-        com.append(f'    actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}{s.replace("-","")}')
-    for c in cs:
-        com.append(f'    usecase "{c}\\n{parte(casos[c]["nombre"])}" as {eid(c)} #back:FFFFFF;line:{borde}')
-        for k in casos[c]["actores"]:
-            flechas.append(f'A{k}{s.replace("-","")} -[{COLOR_ACT[k]}]- {eid(c)}')
-    com.append("  }")
-com += ["}", ""] + flechas
-com += ["", "' sin esta cadena invisible graphviz apila los 18 subsistemas en una sola tira"]
-com += [f'{primeros[i-POR_COLUMNA]} -[hidden]-> {primeros[i]}' for i in range(POR_COLUMNA, len(primeros))]
-com += ["", "legend right",
-        "  Un color de linea por actor:",
-        "  " + "  ".join(f"<color:{COLOR_ACT[k]}>■</color> {ACTOR[k]} (ACT-{k})" for k in sorted(ACTOR)),
-        "  Cada actor se dibuja una vez por subsistema; son los mismos cinco actores.",
-        "endlegend", "", "@enduml"]
-escribir("CU_Sistema_Diagrama-Completo", "\n".join(com))
+# ---------- 2. contexto ----------
+# Un subsistema NO es un caso de uso: la elipse esta reservada para el caso de
+# uso. Un subsistema se dibuja como paquete. Y un diagrama de contexto muestra
+# ademas con que sistemas externos habla el nuestro, que es lo que faltaba.
+cnt = collections.Counter(v["ss"] for v in casos.values())
+ctx = ["@startuml", "title Diagrama de Contexto del Sistema — SPLG",
+       CABECERA,
+       "skinparam nodesep 14", "skinparam ranksep 90",
+       "skinparam rectangle {", "  BorderColor #2C4257", "  FontSize 12", "}", ""]
+for k in ["01", "02", "03", "05", "04"]:
+    ctx.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
+for k in sorted(ACTOR_EXT):
+    ctx.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<externo>>')
+lineas = "\\n".join(f'{s_}  {SS[s_]}  ({cnt[s_]})' for s_ in subs)
+ctx += ["", f'rectangle "**Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)**\\n\\n{lineas}\\n\\n(entre paréntesis, los casos de uso de cada subsistema)" as LIMITE #back:F4F7FA;line:2C4257', ""]
+# En un diagrama de contexto el sistema es una sola caja: lo que se dibuja es con
+# quien habla y para que. El detalle por subsistema esta en el mapa y en los
+# diagramas de cada subsistema.
+ROL = {"01": "pide, sigue y reclama sus pedidos", "02": "recibe ofertas y entrega",
+       "03": "gestiona su distribuidora", "05": "gestiona todas las distribuidoras",
+       "04": "ejecuta los procesos programados"}
+for k in ["01", "02", "03", "05", "04"]:
+    ctx.append(f'A{k} -[{COLOR_ACT[k]}]down- LIMITE : {ROL[k]}')
+ctx += ["",
+        f'LIMITE -[#6B7683]down- A06 : cobra y recibe el aviso de pago',
+        f'LIMITE -[#6B7683]down- A07 : identidad y avisos push',
+        f'LIMITE -[#6B7683]down- A08 : comprobantes por correo',
+        "", f"A{ESP} -right-|> A{GEN}", "", "@enduml"]
+escribir("CU_Sistema_Diagrama-De-Contexto", "\n".join(ctx))
+
+# ---------- 3. completo ----------
+def relaciones():
+    """<<include>> y <<extend>> de todos los subsistemas, sin repetir. Es la misma
+    lista que dibujan los diagramas por subsistema (seccion 6)."""
+    inc, ext = [], []
+    for s in subs:
+        for a, b in INCLUYE.get(s, []):
+            if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] == s:
+                inc.append((a, b))
+        inc += INCLUYE_FACTOR.get(s, [])
+        ext += EXTIENDE.get(s, [])
+    inc += [(a, b) for a, b in INCLUYE_EXTERNO
+            if a in casos and b in casos and casos[a]["ss"] != casos[b]["ss"]]
+    visto = set()
+    inc = [x for x in inc if not (x in visto or visto.add(x))]
+    return inc, ext
+
+# El actor es externo al sistema: va afuera del limite y una sola vez. Los
+# humanos a la izquierda; a la derecha, el Sistema Automatico y los tres
+# sistemas externos.
+IZQ = ["01", "02", "03", "05"]
+DER = ["04", "06", "07", "08"]
+NOMBRE_ACT = {**ACTOR, **ACTOR_EXT}
+LIMITE_TXT = "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)"
+
+# Graphviz no resuelve bien un diagrama de este tamano con los actores fuera del
+# limite; el completo y el mapa se componen en uml_lamina.py y salen como SVG.
+import uml_lamina
+inc, ext = relaciones()
+LAMINAS = {}
+LAMINAS["CU_Sistema_Diagrama-Completo"] = uml_lamina.completo(
+    casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
+    SECUNDARIO, FACTORIZADO, inc, ext, ESP, GEN, LIMITE_TXT, None)
+LAMINAS["CU_Sistema_Mapa"] = uml_lamina.mapa(
+    casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
+    SECUNDARIO, ESP, GEN, LIMITE_TXT)
+for _n, _svg in LAMINAS.items():
+    open(UML + _n + ".svg", "w", encoding="utf-8").write(_svg)
+    # el .puml del completo de antes ya no es la fuente de nada
+    if os.path.exists(UML + _n + ".puml"): os.remove(UML + _n + ".puml")
 
 
 # ---------- 4. mapa de subsistemas ----------
@@ -291,81 +336,34 @@ DEPENDE = [
   ("SS-13","SS-02","asigna envases al pedido"), ("SS-13","SS-08","el envase es de un tipo"),
   ("SS-15","SS-02","la reserva se convierte en pedido"), ("SS-15","SS-14","toma la seña"),
   ("SS-16","SS-01","administra las cuentas"), ("SS-17","SS-01","avisa a los usuarios"),
-  ("SS-18","SS-10","vigila la instancia"),
 ]
 mapa = ["@startuml", f"title Subsistemas del Proyecto — SPLG ({len(subs)} subsistemas · {len(casos)} casos de uso)",
         CABECERA, "skinparam nodesep 25", "skinparam ranksep 55",
         "skinparam package {", "  BorderColor #2C4257", "  FontSize 12", "}",
-        "", "left to right direction", "",
-        'rectangle "SS-10 Multi-Distribuidora — restricción transversal:'
-        '\\ntodo subsistema de negocio opera acotado a la distribuidora del usuario" as R10 '
-        '#back:F3F1E4;line:7A7340 {']
+        "", "left to right direction", ""]
+def paquete(s, sangria):
+    i = subs.index(s); n = cnt[s]
+    return (f'{sangria}package "{s} {SS[s]}\\n({n} caso{"s" if n != 1 else ""} de uso)" as M{s.replace("-","")} '
+            f'<<subsystem>> #back:{TINTE[i % len(TINTE)][1:]};line:{BORDE[i % len(BORDE)][1:]} ' + "{")
 for alias, grupo, titulo, borde in (("GNEG", NEGOCIO, "Subsistemas de negocio", "3C6E8F"),
-                                    ("GSOP", [s for s in subs if s not in NEGOCIO and s != "SS-10"],
+                                    ("GSOP", [s for s in subs if s not in NEGOCIO],
                                      "Subsistemas de soporte", "5A5896")):
-    mapa.append(f'  package "{titulo}" as {alias} #back:FFFFFF;line:{borde} ' + "{")
+    mapa.append(f'package "{titulo}" as {alias} #back:FFFFFF;line:{borde} ' + "{")
     for s in grupo:
-        i = subs.index(s)
-        n = cnt[s]
-        mapa.append(f'    package "**{s}**\\n{SS[s]}\\n({n} caso{"s" if n != 1 else ""})" as M{s.replace("-","")} '
-                    f'<<subsystem>> #back:{TINTE[i % len(TINTE)][1:]};line:{BORDE[i % len(BORDE)][1:]}')
-    mapa.append("  }")
-mapa += ["}", ""]
+        mapa.append(paquete(s, "  ")); mapa.append("  }")
+    mapa.append("}")
+mapa.append("")
 def nodo(s):
-    # SS-10 no es una caja mas: es el rectangulo que envuelve a todos
-    return "R10" if s == "SS-10" else "M" + s.replace("-", "")
+    return "M" + s.replace("-", "")
 for a, b, que in DEPENDE:
     if a in SS and b in SS:
         mapa.append(f'{nodo(a)} ..> {nodo(b)} : {que}')
+# SS-10 es un subsistema como los demas; lo que lo distingue es que acota a todos los de negocio
+mapa.append('GNEG ..> MSS10 : acotados a la distribuidora del usuario')
 mapa += ["", "@enduml"]
 escribir("CU_Sistema_Subsistemas", "\n".join(mapa))
 SUBSISTEMAS.append("CU_Sistema_Subsistemas")
 
-
-# ---------- 5. despliegue y entornos ----------
-# No habia ningun diagrama que mostrara donde corre cada cosa ni como llega el codigo
-# de la maquina de desarrollo a produccion. Sale de la configuracion real: los
-# docker-compose de cada repo y los flujos de trabajo de GitHub Actions.
-des = ["@startuml", "title Despliegue y Entornos — SPLG", CABECERA,
-       "skinparam nodesep 20", "skinparam ranksep 60", "skinparam componentStyle rectangle", "",
- 'node "Máquina de desarrollo" as DEV #back:E7F0F6;line:3C6E8F {',
- '  component "splg-app-backend\\n(NestJS)" as B',
- '  component "splg-app-admin\\n(React + Vite)" as P',
- '  component "splg-app-cliente\\nsplg-app-chofer\\n(Flutter)" as A',
- '  component "splg-lib\\n(contratos compartidos)" as L',
- '  database "splg-bd\\nPostGIS 14-3.4 · 5432" as BD',
- '  database "splg-redis\\nRedis · 6379" as RD',
- "}", "",
- 'node "GitHub" as GH #back:F3F1E4;line:7A7340 {',
- '  component "6 repositorios splg-*\\nGitFlow: develop → release → main" as REPO',
- '  component "checks.yml\\nverificación en cada cambio" as CI',
- '  component "release.yml\\netiqueta y publica la versión" as REL',
- '  component "deploy.yml\\ndespliega al integrar en main" as DEP',
- "}", "",
- 'node "Producción" as PROD #back:E9F4EA;line:3F7A50 {',
- '  component "Render\\nbackend + base de datos" as REN',
- '  component "Netlify\\npanel de administración" as NET',
- '  component "Netlify\\ndocumentación del sistema" as DOC',
- "}", "",
- 'cloud "Servicios externos" as EXT #back:F7ECEF;line:8E5566 {',
- '  component "Firebase\\nidentidad y avisos al dispositivo" as FB',
- '  component "MercadoPago\\npasarela de cobro" as MP',
- '  component "Slack\\naviso de cada despliegue" as SL',
- "}", "",
- "B --> BD", "B --> RD", "P --> B", "A --> B", "L ..> B : tipos", "L ..> P : tipos",
- "", "DEV --> REPO : push a develop",
- "REPO --> CI : en cada cambio", "REPO --> REL : al integrar en main",
- "REPO --> DEP : al integrar en main",
- "DEP --> REN : dispara la construcción", "DEP --> NET : dispara la construcción",
- "DEP --> SL : avisa inicio, éxito o falla",
- "DOC <.. DEV : se publica a mano con publicar.sh",
- "", "B ..> FB", "B ..> MP", "A ..> FB",
- "", "legend right",
- "  Lo que corre en cada lugar y cómo llega el código de una máquina a la otra.",
- "  La documentación es la única pieza que todavía se publica a mano.",
- "endlegend", "", "@enduml"]
-escribir("CU_Sistema_Despliegue", "\n".join(des))
-SUBSISTEMAS.append("CU_Sistema_Despliegue")
 
 # ---------- 6. un diagrama por subsistema ----------
 # Estaban escritos a mano y se quedaron cortos: SS-02 mostraba once casos cuando ya
@@ -374,12 +372,18 @@ for i, s in enumerate(subs):
     g = glob.glob(UML + f"CU_{s}_*.puml")
     if not g: continue
     cs = sorted(c for c in casos if casos[c]["ss"] == s)
-    quienes = sorted({k for c in cs for k in casos[c]["actores"]})
+    quienes = {k for c in cs for k in casos[c]["actores"]}
+    # el Administrador General especializa al Administrador: si participa uno de los
+    # dos, se dibujan ambos y la generalizacion, para que se lea por que ACT-05 no
+    # repite las asociaciones que hereda
+    if ESP in quienes or GEN in quienes:
+        quienes |= {ESP, GEN}
+    quienes = sorted(quienes)
     borde = BORDE[i % len(BORDE)][1:]
     d = ["@startuml", f"title {s} — {SS[s]} ({len(cs)} casos de uso)",
          "left to right direction", CABECERA, "skinparam nodesep 18", "skinparam ranksep 70",
-         "skinparam usecase {", "  BorderColor<<pendiente>> #9C4436",
-         "  BackgroundColor<<pendiente>> #F6E4E1",
+         "skinparam usecase {", "  BorderColor<<planificado>> #9C4436",
+         "  BackgroundColor<<planificado>> #F6E4E1",
          "  BorderColor<<factorizado>> #6B7683",
          "  BackgroundColor<<factorizado>> #F2F4F6", "}", ""]
     for k in quienes:
@@ -387,7 +391,7 @@ for i, s in enumerate(subs):
     d.append("")
     d.append(f'rectangle "{s} {SS[s]}" ' + "{")
     for c in cs:
-        est = " <<pendiente>>" if casos[c].get("pendiente") else ""
+        est = " <<planificado>>" if casos[c].get("planificado") else ""
         # el estereotipo va antes del color; al reves plantuml no lo toma
         d.append(f'  usecase "{c}\\n{parte(casos[c]["nombre"], 30)}" as {eid(c)}{est}'
                  f' #back:FFFFFF;line:{borde}')
@@ -402,17 +406,21 @@ for i, s in enumerate(subs):
     # casos de otro subsistema que alguno de este incluye: fuera del rectangulo
     externos = [(a, b) for a, b in INCLUYE_EXTERNO
                 if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] != s]
-    for b in sorted({b for _, b in externos}):
+    # la base de un <<extend>> que vive en otro subsistema se dibuja igual, fuera del limite
+    bases_ext = [b for a, b, _ in EXTIENDE.get(s, []) if b in casos and casos[b]["ss"] != s]
+    for b in sorted({b for _, b in externos} | set(bases_ext)):
         d.append(f'usecase "{b}\\n{parte(casos[b]["nombre"], 30)}\\n({casos[b]["ss"]})" as {eid(b)}'
                  f' #back:FFFFFF;line:6B7683')
-    if externos: d.append("")
+    if externos or bases_ext: d.append("")
     # La asociacion actor-caso de uso es una asociacion, no una dependencia:
     # en UML va sin punta de flecha. La flecha significaria navegabilidad, que
     # es una decision de diseno y no corresponde a un diagrama de requisitos.
     for k in quienes:
         for c in cs:
-            if k in casos[c]["actores"]:
+            if k in directos(c):
                 d.append(f'A{k} -[{COLOR_ACT[k]}]- {eid(c)}')
+    if ESP in quienes:
+        d.append(f'A{ESP} --|> A{GEN}')
     rel = [(a, b) for a, b in INCLUYE.get(s, [])
            if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] == s]
     rel += [(a, b) for a, b in INCLUYE_FACTOR.get(s, [])]
@@ -429,7 +437,7 @@ for i, s in enumerate(subs):
         for a, b, punto in ext:
             d.append(f'{eid(a)} ..> {eid(b)} : <<extend>>')
             d.append("note on link")
-            d.append(f'  Punto de extension: {punto}')
+            d.append(f'  Punto de extensión: {punto}')
             d.append("end note")
     d += ["", "@enduml"]
     nombre = os.path.basename(g[0])[:-5]
@@ -437,17 +445,32 @@ for i, s in enumerate(subs):
     SUBSISTEMAS.append(nombre)
 
 # ---------- render ----------
-objetivo = sys.argv[1:] or (["CU_Sistema_Actores", "CU_Sistema_Diagrama-De-Contexto",
-                             "CU_Sistema_Diagrama-Completo"] + SUBSISTEMAS)
+objetivo = sys.argv[1:] or (["CU_Sistema_Actores", "CU_Sistema_Diagrama-De-Contexto"]
+                            + list(LAMINAS) + SUBSISTEMAS)
 for n in objetivo:
-    for fmt in ("png", "svg"):
-        # sin el limite, plantuml recorta el diagrama completo a 4096 px de alto
-        entorno = dict(os.environ, PLANTUML_LIMIT_SIZE="32768")
-        r = subprocess.run(["plantuml", "-t" + fmt, "-charset", "UTF-8", UML + n + ".puml"],
-                           capture_output=True, text=True, env=entorno)
-        if r.returncode:
-            print(f"  ✗ {n}.{fmt}: {r.stderr.strip()[:300]}"); continue
+    if n in LAMINAS:
+        # el SVG ya esta escrito; el PNG sale al doble de tamano para poder imprimirlo
+        r = subprocess.run(["rsvg-convert", "-z", "1.5", "-o", UML + n + ".png", UML + n + ".svg"],
+                           capture_output=True, text=True)
+        if r.returncode: print(f"  ✗ {n}.png: {r.stderr.strip()[:300]}")
+    else:
+        for fmt in ("png", "svg"):
+            r = subprocess.run(["plantuml", "-t" + fmt, "-charset", "UTF-8", UML + n + ".puml"],
+                               capture_output=True, text=True)
+            if r.returncode:
+                print(f"  ✗ {n}.{fmt}: {r.stderr.strip()[:300]}"); continue
     p = UML + n + ".png"
     if os.path.exists(p):
         print(f"  ✓ {n}  ({os.path.getsize(p)//1024} KB)")
+# ---------- diagramas de comportamiento y arquitectura ----------
+# Estados, actividad, componentes, despliegue y Gantt: se escriben a mano en
+# diagramas/uml/UML_*.puml porque salen del codigo y del plan, no del catalogo.
+if not sys.argv[1:]:
+    for p in sorted(glob.glob(UML + "UML_*.puml")):
+        n = os.path.basename(p)[:-5]
+        for fmt in ("png", "svg"):
+            r = subprocess.run(["plantuml", "-t" + fmt, "-charset", "UTF-8", p],
+                               capture_output=True, text=True)
+            if r.returncode: print(f"  ✗ {n}.{fmt}: {r.stderr.strip()[:300]}")
+        print(f"  ✓ {n}")
 print(f"catalogo: {len(casos)} casos · {len(subs)} subsistemas · {len(ACTOR)} actores")

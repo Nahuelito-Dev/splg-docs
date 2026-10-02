@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-171 Configurar Los Parámetros De Despacho De La Distribuidora
+autonumber
+participant CTRL as ModuleConfigController
+participant SRV as ModuleConfigService
+participant CREP as RepositoryModuleConfig
+participant CFG as DispatchConfigService
+
+CTRL->>SRV: actualizar(distributorId, dispatch, parametros, actorUserId)
+activate SRV
+SRV->>SRV: validarParametros(dispatch, parametros)
+alt los parámetros son inválidos
+    SRV-->>CTRL: BadRequestException con el detalle del campo
+else los parámetros son válidos
+    SRV->>CREP: findOne(where distributor_id y module)
+    CREP-->>SRV: ModuleConfig o null
+    SRV->>CREP: save(distributor_id, module, params, updated_by_user_id)
+    CREP-->>SRV: ModuleConfig
+    SRV->>CFG: invalidar(distributorId)
+    SRV-->>CTRL: ModuleConfig
+    CTRL->>CTRL: ModuleConfigMapper.toDto(config)
+end
+deactivate SRV

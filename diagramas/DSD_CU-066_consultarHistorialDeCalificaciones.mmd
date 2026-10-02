@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-066 Consultar Historial de Calificaciones Recibidas · consultarHistorialDeCalificaciones
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :RatingService
+    participant USU as usuario:Usuario
+
+    ADM->>+SRV: consultarHistorialDeCalificaciones(usuarioId)
+    SRV->>+USU: getCalificacionesRecibidas()
+    USU-->>-SRV: calificaciones
+    SRV-->>-ADM: calificaciones

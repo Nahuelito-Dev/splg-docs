@@ -1,0 +1,188 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class Pedido {
+  - estado: EstadoPedido
+  - /total: Moneda
+  - modalidadDeEntrega: ModalidadDeEntrega
+  - fechaAgendada: Fecha
+  - metodoDePago: MetodoDePago
+  - senia: Moneda
+  - codigoDeEntrega: Cadena
+  - nombreDeQuienRecibe: Cadena
+  - documentoDeQuienRecibe: Cadena
+  - vinculoConQuienRecibe: Cadena
+  + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega, express: Booleano,\n      metodoDePago: MetodoDePago)
+  + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega, franja: FranjaHoraria,\n      zona: ZonaCobertura, fechaAgendada: Fecha,\n      metodoDePago: MetodoDePago, montoDeLaSenia: Moneda)
+  + aceptar(chofer: Chofer, vehiculo: Vehiculo)
+  + activar()
+  + agregarItem(producto: Producto, cantidad: Entero)
+  + aplicarRecargoDePago()
+  + aplicarRecargoExpress()
+  + asignarChofer(chofer: Chofer, vehiculo: Vehiculo)
+  + calcularSaldo(): Moneda
+  + calcularTotal(): Moneda
+  + cambiarDireccion(direccion: DireccionEntrega,\n      zona: ZonaCobertura, motivo: Cadena)
+  + cancelar(motivo: Cadena)
+  + cerrarOfertas()
+  + confirmarSenia()
+  + descontarRecargoExpress()
+  + entregar()
+  + esDeLaDistribuidora(distribuidoraId: Identificador)
+  + esDelChofer(chofer: Chofer): Booleano
+  + esDelCliente(cliente: Cliente): Booleano
+  + esReofertable(): Booleano
+  + estaDisponible()
+  + estaEnCamino(): Booleano
+  + estaSinPagar(): Booleano
+  + generarCodigoDeEntrega()
+  + getCambiosDeEstado(): CambioEstadoPedido[*]
+  + getChofer(): Chofer
+  + getChoferesContactados(): Chofer[*]
+  + getCliente(): Cliente
+  + getCodigoDeEntrega(): Cadena
+  + getFechaDeEntrega()
+  + getImporteACobrar(esSenia: Booleano): Moneda
+  + getIncidencias(): Incidencia[*]
+  + getMetodoDePago(): MetodoDePago
+  + getOfertaVigente(chofer: Chofer): OfertaDespacho
+  + getPago(identificadorDelPago: Identificador): Pago
+  + getPagosAprobados(): Pago[*]
+  + getPuntoDeEntrega(): Coordenada
+  + getReceptorDeCalificacion(usuario: Usuario): Usuario
+  + getTotal(): Moneda
+  + incluirRetiro(envase: Envase)
+  + indicarQuienRecibe(nombre: Cadena, documento: Cadena,\n      relacion: Cadena)
+  + liberar()
+  + marcarEnCamino()
+  + marcarPagado(identificadorDelPago: Identificador)
+  + ofrecerA(chofer: Chofer, venceEn: Entero)
+  + pasarARepartoComun()
+  + puedeCalificar(usuario: Usuario): Booleano
+  + quitarChofer()
+  + registrarCambio(estadoAnterior: Cadena,\n      estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
+  + registrarIncidencia(usuario: Usuario, tipo: Cadena,\n      descripcion: Cadena, foto: Archivo): Incidencia
+  + tieneOfertaVigente(): Booleano
+  + transicionar(estadoDestino: EstadoPedido)
+  + validarCodigo(codigo: Cadena): Booleano
+  + validarDocumento(documento: Cadena)
+  + validarQueEsReservaPendiente()
+  + validarQueNoFueEntregado()
+  + validarQueNoSalio()
+  + validarTransicion(estadoDestino: EstadoPedido)
+}
+class ItemPedido {
+  - cantidad: Entero
+  - precioUnitario: Moneda
+  + «create» ItemPedido(producto: Producto, cantidad: Entero,\n      precioUnitario: Moneda, subtotal: Moneda)
+  + getCantidad(): Entero
+  + getProducto()
+  + getSubtotal()
+  + restituirStock()
+}
+class CambioEstadoPedido {
+  - desde: EstadoPedido
+  - hacia: EstadoPedido
+  - motivo: Cadena
+  - fecha: FechaHora
+  + «create» CambioEstadoPedido(estadoAnterior: Cadena,\n      estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
+}
+class CambioDireccion {
+  - motivo: Cadena
+  - fecha: FechaHora
+  + «create» CambioDireccion(direccion: DireccionEntrega,\n      autor: Usuario, motivo: Cadena)
+}
+class Pago {
+  - importe: Moneda
+  - pasarela: Pasarela
+  - estado: EstadoDelPago
+  - esSenia: Booleano
+  - fecha: FechaHora
+  + «create» Pago(pedido: Pedido,\n      distribuidora: Distribuidora, importe: Moneda,\n      esSenia: Booleano)
+  + asignarEnlace(enlaceDePago: Cadena)
+  + marcarPagado()
+  + registrarResultado(identificadorDelPago: Identificador,\n      estado: Cadena)
+  + reintegrar()
+}
+class Cliente <<referencia>>
+class Chofer <<referencia>>
+class Producto <<referencia>>
+class DireccionEntrega <<referencia>>
+class Usuario <<referencia>>
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Usuario <|-- Chofer
+Cliente "1" -- "0..*" Pedido : realiza
+Pedido "1" *--> "1..*" ItemPedido : contiene
+ItemPedido "0..*" --> "1" Producto : corresponde a
+Pedido "0..*" -- "1" DireccionEntrega : se entrega en
+Pedido "1" *--> "0..*" CambioEstadoPedido : registra
+Usuario "0..1" -- "0..*" CambioEstadoPedido : efectúa
+Pedido "1" *--> "0..*" CambioDireccion : registra
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
+Usuario "1" -- "0..*" CambioDireccion : realiza
+Chofer "0..1" -- "0..*" Pedido : entrega
+Pedido "1" --> "0..*" Pago : se salda con
+Pedido ..> Producto
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

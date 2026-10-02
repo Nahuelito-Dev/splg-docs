@@ -1,8 +1,8 @@
 sequenceDiagram
-    title DSS — CU-041 Consultar Catalogo De Productos
+    title DSS — CU-041 Consultar Catálogo de Productos
     autonumber
-    actor CLI as Cliente
-    participant SIS as Sistema
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: consultarCatalogo(pagina, limite, distribuidora)
     activate SIS

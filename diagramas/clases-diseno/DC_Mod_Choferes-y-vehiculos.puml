@@ -1,0 +1,147 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class DeliveryService <<fachada>> {
+  + actualizarPerfilDelChofer(choferId: Identificador,\n      datos: Registro): Chofer
+  + ajustarSaldoDelChofer(choferId: Identificador,\n      monto: Moneda): Chofer
+  + buscarChoferPorUsuario(usuario: Usuario): Chofer
+  + cambiarDisponibilidad(usuario: Usuario,\n      disponible: Booleano): Registro
+  + cambiarEstadoDelChofer(choferId: Identificador,\n      activo: Booleano): Chofer
+  + consultarDetalleDelChofer(choferId: Identificador): Chofer,\n      Usuario, Rol
+  + consultarPerfilDelChofer(usuario: Usuario): Chofer, Moneda
+  + eliminarChofer(choferId: Identificador)
+  + findById(choferId: Identificador): Chofer
+  + invalidarChofer(choferId: Identificador): Chofer
+  + listarChoferes(pagina: Entero, limite: Entero): Chofer[*]
+  + listarChoferesActivos(pagina: Entero,\n      limite: Entero): Chofer[*]
+  + validarChofer(choferId: Identificador): Chofer
+}
+class "Map<String, Chofer>" as Map_String_Chofer <<colección>> {
+  + get(clave: Cadena): Chofer
+}
+class "List<Chofer>" as List_Chofer <<colección>> {
+  + buscarEnMotoDisponibles(direccion: DireccionEntrega): Chofer[*]
+  + contarEnLinea(distribuidoraId: Identificador): Chofer[*]
+  + contarHabilitados(distribuidoraId: Identificador): Chofer[*]
+}
+class CarService <<fachada>> {
+  + buscarVehiculoPorPatente(patente: Cadena): Vehiculo
+  + consultarDetalleDelVehiculo(vehiculoId: Identificador): Vehiculo,\n      Chofer
+  + consultarVehiculosDelChofer(usuario: Usuario): Vehiculo[*]
+  + editarVehiculo(vehiculoId: Identificador,\n      datos: Registro): Vehiculo
+  + eliminarVehiculo(vehiculoId: Identificador)
+  + listarVehiculos(): Vehiculo[*]
+  + registrarVehiculo(usuario: Usuario, tipo: Cadena,\n      capacidad: Decimal, patente: Cadena, marca: Cadena,\n      modelo: Cadena, anio: Entero,\n      color: Cadena): Vehiculo
+}
+class "Map<String, Vehiculo>" as Map_String_Vehiculo <<colección>> {
+  + get(clave: Cadena): Vehiculo
+}
+class "List<Vehiculo>" as List_Vehiculo <<colección>> {
+  + getVehiculosDe(distribuidora: Distribuidora): Vehiculo[*]
+}
+class VehicleAssignmentService <<fachada>> {
+  + consultarHistorialDeChoferesDelVehiculo(vehiculoId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
+  + consultarHistorialDeVehiculosDelChofer(choferId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
+  + consultarMiVehiculoEnUso(): Vehiculo, Booleano
+  + consultarVehiculoEnUso(choferId: Identificador): Vehiculo,\n      Booleano
+  + liberarVehiculoEnUso(choferId: Identificador)
+  + ponerVehiculoEnUso(choferId: Identificador,\n      vehiculoId: Identificador,\n      nota: Cadena): AsignacionVehiculo
+}
+class "List<AsignacionVehiculo>" as List_AsignacionVehiculo <<colección>> {
+  + cerrarAbiertas(chofer: Chofer, vehiculo: Vehiculo,\n      administrador: Administrador)
+}
+class Chofer <<referencia>>
+class Vehiculo <<referencia>>
+class AsignacionVehiculo <<referencia>>
+class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
+class Usuario <<referencia>>
+class UbicacionGPS <<referencia>>
+class FleetTaskService <<referencia>>
+class Distribuidora <<referencia>>
+
+Map_String_Chofer "1" o--> "0..*" Chofer
+List_Chofer "1" o--> "0..*" Chofer
+Map_String_Vehiculo "1" o--> "0..*" Vehiculo
+List_Vehiculo "1" o--> "0..*" Vehiculo
+List_AsignacionVehiculo "1" o--> "0..*" AsignacionVehiculo
+CarService --> "1" List_Vehiculo
+CarService --> "1" Map_String_Chofer
+CarService --> "1" Map_String_Vehiculo
+DeliveryService --> "1" Map_String_Chofer
+DeliveryService --> "1" Map_String_Usuario
+VehicleAssignmentService --> "1" Map_String_Chofer
+VehicleAssignmentService --> "1" Map_String_Vehiculo
+CarService ..> Chofer
+CarService ..> Vehiculo
+DeliveryService ..> Chofer
+DeliveryService ..> Distribuidora
+DeliveryService ..> UbicacionGPS
+DeliveryService ..> Usuario
+VehicleAssignmentService ..> AsignacionVehiculo
+VehicleAssignmentService ..> Chofer
+VehicleAssignmentService ..> FleetTaskService
+VehicleAssignmentService ..> Vehiculo
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

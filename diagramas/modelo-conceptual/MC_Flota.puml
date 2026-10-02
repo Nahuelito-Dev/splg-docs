@@ -1,0 +1,110 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class Chofer {
+  disponible
+  habilitado
+  validado
+  /calificación
+}
+class Vehiculo {
+  patente
+  tipo
+  carga máxima
+  kilometraje
+  estado en la flota
+}
+class AsignacionVehiculo {
+  asignado el
+  liberado el
+  nota
+}
+class PlanMantenimiento {
+  nombre
+  disparo
+  intervalo
+  anticipación
+  criticidad
+}
+class TareaMantenimiento {
+  estado
+  vence
+  vencimiento proyectado
+  prestador
+  número
+  costo
+}
+class AdjuntoTarea {
+  nombre original
+  tipo de archivo
+  fecha de carga
+}
+class PropuestaVentanaTaller {
+  desde
+  hasta
+}
+class UbicacionGPS {
+  latitud
+  longitud
+}
+class RegistroUsoVehiculo {
+  día
+  kilómetros
+  pedidos
+}
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+
+Usuario <|-- Chofer : {overlapping, incomplete}
+
+Distribuidora "1" -- "0..*" Chofer : emplea >
+Chofer "1" -- "0..*" Vehiculo : tiene registrado >
+Chofer "0..*" -- "0..*" Vehiculo : usa >
+Chofer "1" -- "0..1" UbicacionGPS : se ubica en >
+PlanMantenimiento "1" -- "0..*" TareaMantenimiento : genera >
+TareaMantenimiento "0..*" -- "0..1" Vehiculo : habilita >
+TareaMantenimiento "0..*" -- "0..1" Chofer : habilita >
+TareaMantenimiento "1" *-- "0..*" PropuestaVentanaTaller : origina >
+TareaMantenimiento "1" *-- "0..*" AdjuntoTarea : adjunta >
+PropuestaVentanaTaller "0..*" -- "1" Chofer : se dirige a >
+Vehiculo "1" *-- "0..*" RegistroUsoVehiculo : acumula >
+(Chofer, Vehiculo) .. AsignacionVehiculo
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

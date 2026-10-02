@@ -16,15 +16,73 @@ python3 generar-modelo-datos.py
 | `SPLG-base-de-datos-lucidchart.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual |
 | `SPLG-base-de-datos-propuesta.sql` | Sólo los agregados de la cátedra | Boceto de la migración que falta |
 | `SPLG-base-de-datos-completa-lucidchart.sql` | Actual + propuesta, en SQL portable | **El que se importa en Lucidchart** |
-| `SPLG-modelo-fisico.png` / `.svg` | Entidad-relación con tablas y columnas | La lámina técnica |
-| `SPLG-modelo-conceptual.png` / `.svg` | Entidades del negocio y cardinalidades | La lámina para la defensa |
+| `fisico/SPLG-fisico-NN-<contexto>.png` / `.svg` | Entidad-relación con tablas y columnas, una lámina por contexto de negocio | Las láminas técnicas |
+| `conceptual/SPLG-der-NN-<área>.png` / `.svg` | Entidad-relación conceptual: una entidad por concepto del modelo conceptual, con sus atributos y las relaciones con su nombre | Las láminas para la defensa |
+| `SPLG-der-mermaid.md` | El físico en Mermaid, por contexto | Lo que se pega en el Documento 3 §7.4.2 |
 | `SPLG-modelo-de-datos.md` | Diccionario de datos y sustento escrito | El texto del informe |
 
-En los dos diagramas, lo que ya está implementado va en blanco con borde oscuro
-y lo propuesto en celeste con el estereotipo `<<propuesto>>`. Las relaciones que
-existen en el dominio pero que la base no declara como clave foránea van con
-línea punteada y la etiqueta «sin FK»; en el modelo físico, la columna que las
-sostiene lleva la marca `<<ref>>` en lugar de `<<FK>>`.
+En las láminas físicas, lo que ya está implementado va en blanco con borde oscuro y lo
+propuesto —columnas planificadas que todavía no están en la base— en celeste, con el
+marcador `<<propuesto>>`. Una tabla en gris es de otro contexto y sólo se muestra su nombre.
+Los nombres reflejan la base real: conviven camelCase (`paymentMethod`) y snake_case
+(`scheduled_date`), y la tabla `claims` está en plural; unificarlos exigiría renombrar
+columnas en una base en uso.
+
+Las láminas conceptuales usan el vocabulario del modelo conceptual (Documento 2, §1) y no el
+de las tablas: la entidad se llama como el concepto y lleva sus atributos. La relación con
+`distributor` de cada tabla no se dibuja; sí las que el modelo conceptual nombra.
+
+## Correspondencia entre el modelo conceptual y el modelo de datos
+
+| Concepto | Entidad | Tabla |
+|---|---|---|
+| Distribuidora | Distribuidora | `distributor` |
+| Usuario | Usuario | `user` |
+| Rol | Rol | `role` |
+| Administrador | Administrador | `admin` |
+| ConfiguracionModulo | ConfiguracionModulo | `module_config` |
+| AsientoAuditoria | AsientoAuditoria | `audit_log` |
+| Cliente | Cliente | `customer` |
+| DireccionEntrega | DireccionEntrega | `user_address` |
+| InvitacionRecompra | InvitacionRecompra | `repurchase_invitation` |
+| ItemSugerido | — | — |
+| Producto | Producto | `gas_cylinder` |
+| Promocion | Promocion | `gas_cylinder_promotion` |
+| Envase | Envase | `cylinder` |
+| MovimientoEnvase | MovimientoEnvase | `cylinder_movement` |
+| RevisionEnvase | RevisionEnvase | `cylinder_inspection` |
+| CasoRecupero | CasoRecupero | `cylinder_recovery_case` |
+| AvisoRecupero | AvisoRecupero | `cylinder_recovery_notice` |
+| Carrito | Carrito | `cart` |
+| ItemCarrito | ItemCarrito | `cart_item` |
+| Pedido | Pedido | `order` |
+| ItemPedido | ItemPedido | `order_item` |
+| CambioEstadoPedido | CambioEstadoPedido | `order_status_history` |
+| CambioDireccion | CambioDireccion | `order_address_change` |
+| ZonaCobertura | ZonaCobertura | `coverage_zone` |
+| FranjaHoraria | FranjaHoraria | `time_slot` |
+| Pago | Pago | `payment` |
+| PropuestaConVigencia | — | — |
+| OfertaDespacho | OfertaDespacho | `order_dispatch_offer` |
+| LoteRecorrido | LoteRecorrido | `route_batch` |
+| ParadaLote | ParadaLote | `route_batch_stop` |
+| OfertaLote | OfertaLote | `route_batch_offer` |
+| Chofer | Chofer | `delivery` |
+| Vehiculo | Vehiculo | `car` |
+| AsignacionVehiculo | AsignacionVehiculo | `vehicle_assignment` |
+| PlanMantenimiento | PlanMantenimiento | `maintenance_plan` |
+| TareaMantenimiento | TareaMantenimiento | `maintenance_task` |
+| AdjuntoTarea | AdjuntoTarea | `maintenance_task_attachment` |
+| PropuestaVentanaTaller | PropuestaVentanaTaller | `maintenance_window_proposal` |
+| UbicacionGPS | — | — |
+| RegistroUsoVehiculo | RegistroUsoVehiculo | `vehicle_usage_log` |
+| Reclamo | Reclamo | `claims` |
+| Incidencia | Incidencia | `incident` |
+| Calificacion | Calificacion | `rating` |
+
+Los conceptos sin tabla son PropuestaConVigencia (abstracto), UbicacionGPS (la columna
+`delivery.actual_location`) e ItemSugerido (JSON dentro de `repurchase_invitation`).
+`material-de-trabajo/verificar-mc-der.py` comprueba esta correspondencia contra la base.
 
 `SPLG-base-de-datos-propuesta.sql` es PostgreSQL válido: agrega tipos, columnas
 y tablas sobre el esquema que ya está, sin tocar los datos existentes.
@@ -63,8 +121,8 @@ pedidos, cada uno con el motivo por el que está.
 
 Si además se quiere que revise el DDL, sumar
 **`SPLG-base-de-datos-completa-lucidchart.sql`**, que es el modelo entero en
-menos de 22 KB.
-No conviene pegar `SPLG-base-de-datos.sql`: son 74 KB
+menos de 24 KB.
+No conviene pegar `SPLG-base-de-datos.sql`: son 80 KB
 en su mayoría de índices y funciones de PostGIS que no aportan al análisis del
 modelo.
 

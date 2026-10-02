@@ -1,0 +1,82 @@
+classDiagram
+    direction LR
+
+    %% Carrito y recompra. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class CartService {
+        <<fachada>>
+        + agregarItemAlCarrito(productoId: Identificador, cantidad: Entero): Carrito
+        + consultarCarrito(): Carrito, Moneda
+        + modificarCantidadDelItem(itemId: Identificador, cantidad: Entero): Carrito
+        + quitarItemDelCarrito(itemId: Identificador): Carrito
+        + vaciarCarrito(): Carrito
+    }
+
+    class RepurchaseForecastService {
+        <<fachada>>
+        + aceptarInvitacionDeRecompra(invitacionId: Identificador): Pedido
+        + anticiparRecompras()
+    }
+
+    class ConsumptionEstimatorService {
+        <<fabricación pura>>
+        + estimarProximaRecompra(cliente: Cliente): Fecha
+        + estimarProximaRecompra(fechaDeRegistro: Fecha, cantidadPorMes: Decimal): Fecha
+        + estimarProximaRecompra(ultimaCompra: Fecha, cantidadPorMes: Decimal): Fecha
+    }
+
+    class ConsumptionService {
+        <<fachada>>
+        + actualizarConsumoPromedio(cantidadPorMes: Decimal): Cliente
+        + declararConsumoPromedio(tipoGarrafa: Cadena, cantidadPorMes: Decimal): Cliente
+    }
+
+    class RepurchaseEstimatesService {
+        <<fachada>>
+        + consultarRecomprasEstimadas(dias: Entero): InvitacionRecompra[*]
+    }
+
+    class Map_String_Producto["Map<String, Producto>"] {
+        <<colección>>
+    }
+    class List_Pedido["List<Pedido>"] {
+        <<colección>>
+    }
+    class Map_String_Cliente["Map<String, Cliente>"] {
+        <<colección>>
+    }
+    class List_Cliente["List<Cliente>"] {
+        <<colección>>
+    }
+    class List_InvitacionRecompra["List<InvitacionRecompra>"] {
+        <<colección>>
+    }
+    class Map_String_InvitacionRecompra["Map<String, InvitacionRecompra>"] {
+        <<colección>>
+    }
+    class NotificationsService {
+        <<fachada>>
+    }
+    class Cliente
+    class Carrito
+    class InvitacionRecompra
+    class Producto
+
+    CartService --> "1" Map_String_Producto : map<String, Producto>
+    ConsumptionService --> "1" ConsumptionEstimatorService : consumptionEstimatorService
+    ConsumptionService --> "1" List_Pedido : list<Pedido>
+    ConsumptionService --> "1" Map_String_Cliente : map<String, Cliente>
+    RepurchaseEstimatesService --> "1" List_Cliente : list<Cliente>
+    RepurchaseEstimatesService --> "1" List_Pedido : list<Pedido>
+    RepurchaseForecastService --> "1" ConsumptionEstimatorService : consumptionEstimatorService
+    RepurchaseForecastService --> "1" List_Cliente : list<Cliente>
+    RepurchaseForecastService --> "1" List_InvitacionRecompra : list<InvitacionRecompra>
+    RepurchaseForecastService --> "1" Map_String_InvitacionRecompra : map<String, InvitacionRecompra>
+    RepurchaseForecastService --> "1" NotificationsService : notificationsService
+    CartService ..> Carrito
+    CartService ..> Cliente
+    CartService ..> Producto
+    ConsumptionService ..> Cliente
+    RepurchaseEstimatesService ..> Cliente
+    RepurchaseForecastService ..> InvitacionRecompra : create

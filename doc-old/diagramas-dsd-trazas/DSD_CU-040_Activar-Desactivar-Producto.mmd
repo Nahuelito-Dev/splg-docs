@@ -1,0 +1,55 @@
+sequenceDiagram
+    title DSD — CU-040 Activar Desactivar Producto
+autonumber
+participant CTRL as GasCylinderController
+participant SRV as GasCylinderService
+participant GREP as RepositoryGasCylinder
+
+Note over CTRL: «include» CU-041 Consultar Catálogo de Productos
+alt Baja del producto
+    CTRL->>SRV: remove(id, distributorId)
+    activate SRV
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    activate GREP
+    GREP-->>SRV: GasCylinder o null
+    deactivate GREP
+    alt Producto inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        deactivate SRV
+    else Producto del tenant
+        SRV->>SRV: gasCylinder.isActive igual false
+        SRV->>GREP: save(gasCylinder)
+        activate GREP
+        GREP-->>SRV: GasCylinder desactivado
+        deactivate GREP
+        SRV-->>CTRL: mensaje Gas cylinder deactivated successfully y gasCylinderId
+    end
+else Reactivación del producto (planificado, I-1)
+    CTRL->>SRV: findInactive(distributorId)
+    activate SRV
+    SRV->>GREP: find(where distributor_id y isActive false)
+    activate GREP
+    GREP-->>SRV: lista de GasCylinder dados de baja
+    deactivate GREP
+    SRV-->>CTRL: productos inactivos de la distribuidora
+    deactivate SRV
+    CTRL->>SRV: reactivate(id, distributorId)
+    activate SRV
+    SRV->>SRV: findOne(id, distributorId)
+    SRV->>GREP: findOne(where gas_cylinder_id y distributor_id)
+    activate GREP
+    GREP-->>SRV: GasCylinder o null
+    deactivate GREP
+    alt Producto inexistente o de otra distribuidora
+        SRV-->>CTRL: NotFoundException Gas cylinder with ID not found
+        deactivate SRV
+    else Producto del tenant
+        SRV->>SRV: gasCylinder.isActive igual true
+        SRV->>GREP: save(gasCylinder)
+        activate GREP
+        GREP-->>SRV: GasCylinder reactivado
+        deactivate GREP
+        SRV-->>CTRL: GasCylinder reactivado
+    end
+end

@@ -1,0 +1,28 @@
+sequenceDiagram
+    title DSD — CU-158 Eliminar Un Adjunto De Flota
+autonumber
+participant CTRL as FleetTaskController
+participant SRV as FleetAttachmentService
+participant AREP as RepositoryMaintenanceTaskAttachment
+participant STO as StoragePort
+
+CTRL->>SRV: remove(taskId, attachmentId, distributorId)
+activate SRV
+SRV->>AREP: findOne(where attachment_id, task_id y distributor_id)
+activate AREP
+alt no existe
+    AREP-->>SRV: null
+    SRV-->>CTRL: NotFoundException
+else existe
+    AREP-->>SRV: MaintenanceTaskAttachment
+    SRV->>AREP: remove(attachment)
+    AREP-->>SRV: fila borrada
+    deactivate AREP
+    SRV->>STO: remove(storageKey)
+    activate STO
+    STO-->>SRV: archivo borrado
+    deactivate STO
+    SRV-->>CTRL: sin contenido
+    CTRL->>CTRL: 204
+end
+deactivate SRV

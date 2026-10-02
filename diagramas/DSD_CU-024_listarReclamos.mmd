@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-024 Listar Reclamos · listarReclamos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ClaimsService
+    participant COL as :Map#lt;String, Reclamo#gt;
+    participant REC as reclamo:Reclamo
+
+    ADM->>+SRV: listarReclamos()
+    SRV->>+COL: values(distribuidora)
+    COL-->>-SRV: reclamos
+    loop Por cada reclamo
+        SRV->>REC: getResumen()
+    end
+    SRV-->>-ADM: reclamos

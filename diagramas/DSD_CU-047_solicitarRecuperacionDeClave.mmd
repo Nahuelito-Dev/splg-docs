@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-047 Recuperar Contraseña · solicitarRecuperacionDeClave
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :EmailService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant FBA as :FirebaseAuthPort
+    participant SND as :EmailSenderPort
+
+    CLI->>+SRV: solicitarRecuperacionDeClave(correo)
+    SRV->>+COL: get(correo)
+    COL-->>-SRV: usuario
+    alt La cuenta existe
+        SRV->>+FBA: generatePasswordResetLink(correo, ajustes)
+        FBA-->>-SRV: enlace
+        SRV-)SND: send(correoDeRecuperacion)
+    else No hay una cuenta con ese correo
+        Note over SRV,COL: No se envía nada y la respuesta es la misma
+    end
+    SRV-->>-CLI: mensaje

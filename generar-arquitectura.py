@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Dibuja la lamina de arquitectura y despliegue.
+"""Dibuja la lamina de entornos y recorrido del codigo (vista de entrega, complementaria
+del diagrama de despliegue UML de diagramas/uml/UML_Despliegue.puml).
 
     python3 generar-arquitectura.py  ->  diagramas/uml/SPLG_Arquitectura.svg
 
@@ -86,7 +87,7 @@ defs = "".join(f'<marker id="p{c[1:]}" viewBox="0 0 10 10" refX="9" refY="5" mar
                f'orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="{c}"/></marker>' for c in colores)
 
 svg.append(f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img"
-  aria-label="Arquitectura y despliegue de SPLG">
+  aria-label="Entornos y recorrido del código de SPLG">
 <defs>{defs}</defs>
 <style>
   text{{font-family:Helvetica,Arial,sans-serif}}
@@ -105,7 +106,7 @@ svg.append(f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" wid
 </style>
 <rect width="{W}" height="{H}" fill="{PAPEL}"/>
 <rect x="{MARGEN}" y="{MARGEN}" width="6" height="34" rx="3" fill="{TEAL}"/>
-<text x="{MARGEN+20}" y="{MARGEN+26}" class="t-tit" fill="{TINTA}">Arquitectura y despliegue — SPLG</text>
+<text x="{MARGEN+20}" y="{MARGEN+26}" class="t-tit" fill="{TINTA}">Entornos y recorrido del código — SPLG</text>
 <text x="{MARGEN+20}" y="{MARGEN+48}" class="t-baj" fill="{SUAVE}">Dónde corre cada pieza y cómo llega el código de una máquina a la otra</text>''')
 
 y = CAB
@@ -152,8 +153,8 @@ svg.append(f'<text x="{px+470}" y="{y+16}" class="t-eti" fill="{SUAVE}">GitHub A
 y += FILAS[1][1]
 svg.append(ico("cohete", px, y + 58, ROJO, 1.6, 1.3))
 svg.append(caja(px + 78, y + 55, 168, 42, "deploy.yml", "al integrar en main", ROJO, "cohete"))
-svg.append(caja(px + 400, y + 18, 250, 42, "Render", "backend y base de datos", VERDE, "engra"))
-svg.append(caja(px + 400, y + 68, 250, 42, "Netlify", "panel de administración", VERDE, "web"))
+svg.append(caja(px + 400, y + 18, 250, 42, "Servidor virtual (VPS)", "backend, base y caché en Docker", VERDE, "engra"))
+svg.append(caja(px + 400, y + 68, 250, 42, "Servidor virtual (VPS)", "panel de administración estático", VERDE, "web"))
 svg.append(fle(px + 250, y + 70, px + 396, y + 40, ROJO, "construye"))
 svg.append(fle(px + 250, y + 82, px + 396, y + 89, ROJO, ""))
 svg.append(caja(px + 668, y + 43, 110, 42, "Slack", "avisa", TEAL, "nube"))

@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-126 Vaciar el Carrito · vaciarCarrito
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CartService
+    participant CLE as cliente:Cliente
+    participant CAR as carrito:Carrito
+    participant ITC as item:ItemCarrito
+
+    CLI->>+SRV: vaciarCarrito()
+    SRV->>+CLE: getCarrito(distribuidoraId)
+    CLE-->>-SRV: carrito
+    SRV->>+CAR: vaciar()
+    loop Por cada item del carrito
+        destroy ITC
+        CAR-xITC: «destroy»
+    end
+    deactivate CAR
+    SRV-->>-CLI: carrito

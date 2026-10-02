@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-042 Crear Franja Horaria · crearFranjaHoraria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TimeSlotService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)
+    SRV->>+DIS: crearFranja(nombre, horaInicio, horaFin, capacidad)
+    create participant FRA as franja:FranjaHoraria
+    DIS->>FRA: «create»(nombre, horaInicio, horaFin, capacidad)
+    DIS-->>-SRV: franja
+    SRV-->>-ADM: franja

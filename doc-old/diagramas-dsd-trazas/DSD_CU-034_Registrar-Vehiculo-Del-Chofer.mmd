@@ -1,0 +1,39 @@
+sequenceDiagram
+    title DSD — CU-034 Registrar Vehiculo Del Chofer
+autonumber
+participant CTRL as CarController
+participant SRV as CarService
+participant DSRV as DeliveryService
+participant CREP as RepositoryCar
+
+Note over CTRL: «include» CU-110 Buscar Chofer por Usuario
+CTRL->>SRV: create(createCarDto, distributorId)
+activate SRV
+SRV->>DSRV: findDistributorIdByUserId(user_id del dto)
+activate DSRV
+DSRV-->>SRV: distributor_id del chofer o null
+deactivate DSRV
+alt No es chofer o es de otra distribuidora
+    SRV-->>CTRL: NotFoundException No hay un chofer con ese user ID en esta distribuidora
+    deactivate SRV
+else Chofer de la distribuidora
+    alt El dto trae car_patent
+        SRV->>CREP: findOne(where car_patent)
+        activate CREP
+        CREP-->>SRV: Car existente o null
+        deactivate CREP
+        alt La patente ya esta registrada
+            SRV-->>CTRL: BadRequestException La patente del vehiculo ya esta registrada
+        end
+    end
+    SRV->>CREP: create(datos del dto, user_id, distributor_id)
+    activate CREP
+    CREP-->>SRV: Car en memoria
+    deactivate CREP
+    SRV->>CREP: save(car)
+    activate CREP
+    CREP-->>SRV: Car persistido
+    deactivate CREP
+    SRV-->>CTRL: Car
+    CTRL->>CTRL: CarMapper.toDto(car) a CarResponseDto
+end

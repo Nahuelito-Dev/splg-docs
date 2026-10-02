@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-084 Verificar Existencia de Usuario (pre-registro) · verificarExistenciaDeUsuario
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UsersService
+    participant COL as :Map#lt;String, Usuario#gt;
+
+    CLI->>+SRV: verificarExistenciaDeUsuario(correo, telefono)
+    SRV->>+COL: contiene(correo)
+    COL-->>-SRV: correoUsado
+    SRV->>+COL: contiene(telefono)
+    COL-->>-SRV: telefonoUsado
+    SRV-->>-CLI: existe, correoUsado, telefonoUsado

@@ -1,20 +1,20 @@
 sequenceDiagram
-    title DSS — CU-018 Marcar Pedido En Camino
+    title DSS — CU-018 Marcar Pedido "En Camino"
     autonumber
-    actor CHO as Chofer
-    participant SIS as Sistema
-    actor CLI as Cliente
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
 
-    CHO->>SIS: actualizarEstadoDePedido(pedidoId, EN_CAMINO)
+    CHO->>SIS: marcarPedidoEnCamino(pedidoId)
     activate SIS
-    alt la transición es válida desde el estado actual
+    alt La transición es válida desde el estado actual
         SIS-->>CHO: pedido en camino (estado EN_CAMINO)
-        SIS-)CLI: aviso de pedido en camino
-    else el pedido es de otra distribuidora
+        SIS-)CLI: notificarPedidoEnCamino(pedido)
+    else El pedido es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
-    else el pedido está asignado a otro chofer
+    else El pedido está asignado a otro chofer
         SIS-->>CHO: acceso denegado
-    else la transición no está permitida
+    else La transición no está permitida
         SIS-->>CHO: error de solicitud (transición inválida)
     end
     deactivate SIS

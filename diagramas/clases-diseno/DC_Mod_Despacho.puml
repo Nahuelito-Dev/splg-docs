@@ -1,0 +1,128 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<use case>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class DispatchOrchestratorService <<fachada>> {
+  + ensureOffered(pedido: Pedido)
+  + handleExpiredOffers()
+  + ofrecerAlSiguienteChofer(pedidoId: Identificador): Chofer
+}
+class DispatchService <<fachada>> {
+  + vencerOfertasExpiradas()
+}
+interface DispatchOfferRepositoryPort <<interface>> <<puerto>> {
+  + findExpired(ahora: FechaHora): OfertaDespacho[*]
+}
+interface RealtimeDispatchPort <<interface>> <<puerto>> {
+  + findNearbyDrivers(destino: Coordenada,\n      radioKm: Decimal): Chofer[*]
+  + findNearbyDrivers(destino: Coordenada,\n      radioExpressKm: Decimal): Chofer[*]
+  + notifyAdmins(pedido: Pedido)
+  + notifyCustomer(cliente: Cliente, llegada: FechaHora)
+  + notifyCustomer(cliente: Cliente, pedido: Pedido,\n      tipo: Cadena)
+  + notifyDriverNewOrder(chofer: Chofer, pedido: Pedido)
+  + notifyDriverOrderAddressChanged(chofer: Chofer,\n      cambio: CambioEstadoPedido)
+  + notifyDriverOrderCancelled(choferAnterior: Chofer,\n      pedido: Pedido)
+  + stopTracking(choferAnterior: Chofer)
+}
+class RouteBatchPlannerService <<fachada>> {
+  + aceptarRecorrido(recorridoId: Identificador): Pedido[*]
+  + agruparPedidosPorRecorrido()
+  + agruparPorProximidad(pedidos: Pedido[*])
+}
+class "Map<String, LoteRecorrido>" as Map_String_LoteRecorrido <<colección>> {
+  + get(clave: Cadena): LoteRecorrido
+}
+interface CylinderLifecyclePort <<interface>> <<puerto>> {
+  + findHeldByCustomer(plazoDeTolerancia: Entero): Envase[*]
+}
+interface OrderRepositoryPort <<interface>> <<puerto>> {
+  + findScheduled(distribuidora: Distribuidora): Pedido[*]
+}
+class LoteRecorrido <<referencia>>
+class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
+class NotificationsService <<referencia>>
+class OrderService <<referencia>>
+class Pedido <<referencia>>
+class Chofer <<referencia>>
+class OfertaDespacho <<referencia>>
+class OfertaLote <<referencia>>
+
+Map_String_LoteRecorrido "1" o--> "0..*" LoteRecorrido
+DispatchOrchestratorService --> "1" DispatchOfferRepositoryPort
+DispatchOrchestratorService --> "1" Map_String_Pedido
+DispatchOrchestratorService --> "1" NotificationsService
+DispatchOrchestratorService --> "1" RealtimeDispatchPort
+DispatchService --> "1" DispatchOrchestratorService
+DispatchService --> "1" OrderService
+RouteBatchPlannerService --> "1" Map_String_LoteRecorrido
+RouteBatchPlannerService --> "1" NotificationsService
+RouteBatchPlannerService --> "1" OrderRepositoryPort
+DispatchOrchestratorService ..> Chofer
+DispatchOrchestratorService ..> OfertaDespacho
+DispatchOrchestratorService ..> Pedido
+RouteBatchPlannerService ..> Chofer
+RouteBatchPlannerService ..> LoteRecorrido : «create»
+RouteBatchPlannerService ..> OfertaLote
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

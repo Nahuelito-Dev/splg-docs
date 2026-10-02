@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-132 Registrar la Revisión Periódica de un Envase · registrarRevisionDeEnvase
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CylinderService
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant ENV as envase:Envase
+
+    ADM->>+SRV: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
+    SRV->>+ENVS: get(envaseId)
+    ENVS-->>-SRV: envase
+    SRV->>+ENV: registrarRevision(fecha, resultado, vencimiento)
+    ENV->>ENV: validarFechas(fecha, vencimiento)
+    create participant REV as :RevisionEnvase
+    ENV->>REV: «create»(fecha, resultado, vencimiento)
+    ENV->>ENV: actualizarVigencia(fecha, vencimiento)
+    opt El resultado es rechazo y el envase está en poder de un cliente
+        ENV->>ENV: marcarParaRetiro()
+    end
+    deactivate ENV
+    SRV-->>-ADM: envase

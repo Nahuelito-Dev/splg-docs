@@ -1,30 +1,30 @@
 sequenceDiagram
-    title DSS — CU-107 Agrupar Pedidos Por Recorrido
+    title DSS — CU-107 Agrupar pedidos por recorrido
     autonumber
-    actor SAU as Sistema Automatico
-    participant SIS as Sistema
-    actor CHO as Chofer
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
 
-    Note over SAU: Se ejecuta con la periodicidad configurada
+    Note over SAU: Se ejecuta con la<br/>periodicidad configurada
     SAU->>SIS: agruparPedidosPorRecorrido()
     activate SIS
-    Note over SIS: Agrupa por zona, proximidad, franja horaria<br/>y capacidad de carga, y ordena las paradas<br/>por secuencia de entrega
+    Note over SIS: Agrupa por zona,<br/>proximidad, franja<br/>horaria y capacidad de<br/>carga, y ordena las<br/>paradas por secuencia de<br/>entrega
 
     loop Por cada lote armado
         loop Por cada chofer candidato no contactado
-            SIS-->>CHO: oferta del recorrido completo (paradas, peso, vigencia)
+            SIS-)CHO: notificarOfertaDeRecorrido(recorrido)
             alt El chofer acepta dentro de la vigencia
                 CHO->>SIS: aceptarRecorrido(recorridoId)
                 SIS-->>CHO: pedidos asignados en el orden establecido
             else Rechaza o vence la vigencia
-                SIS->>SIS: cerrar la oferta y pasar al candidato siguiente
+                Note over SIS: Se cierra la oferta y se<br/>pasa al candidato<br/>siguiente
             end
         end
 
-        alt Ningun chofer tomo el lote
-            SIS->>SIS: deshacer el lote y devolver los pedidos al circuito individual
-        else El lote quedo asignado
-            SIS->>SIS: registrar el recorrido asignado
+        alt Ningún chofer tomó el lote
+            Note over SIS: Se deshace el lote y los<br/>pedidos vuelven al<br/>circuito individual
+        else El lote quedó asignado
+            Note over SIS: Se registra el recorrido<br/>asignado
         end
     end
     SIS-->>SAU: lotes procesados

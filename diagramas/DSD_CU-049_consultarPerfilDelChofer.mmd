@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-049 Consultar Balance / Ganancias del Chofer · consultarPerfilDelChofer
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
+    participant CHO as chofer:Chofer
+
+    CHF->>+SRV: consultarPerfilDelChofer(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: usuario
+    SRV->>+USR: getChofer()
+    USR-->>-SRV: chofer
+    SRV->>+CHO: getSaldo()
+    CHO-->>-SRV: saldo
+    SRV-->>-CHF: chofer, saldo

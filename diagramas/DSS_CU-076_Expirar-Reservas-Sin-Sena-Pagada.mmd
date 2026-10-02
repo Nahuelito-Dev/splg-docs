@@ -1,10 +1,10 @@
 sequenceDiagram
-    title DSS — CU-076 Expirar Reservas Sin Sena Pagada
+    title DSS — CU-076 Expirar Reservas sin Seña Pagada (Cron)
     autonumber
-    actor AUT as Sistema Automático
-    participant SIS as Sistema
+    actor AUT as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
 
-    Note over AUT: Proceso periódico. Frecuencia real cada 1 hora
+    Note over AUT: Proceso periódico.<br/>Frecuencia real cada 1<br/>hora
     AUT->>SIS: expirarReservasSinSenia()
     activate SIS
     alt hay reservas sin seña más viejas que el plazo configurado
