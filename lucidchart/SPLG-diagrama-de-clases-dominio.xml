@@ -61,7 +61,7 @@
         <mxCell id="c0f17" value="+ getFranjasActivas(): FranjaHoraria[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="472" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c0f18" value="+ getProductosActivos(pagina: Entero, limite: Entero): Producto[*], Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+        <mxCell id="c0f18" value="+ getProductosActivos(pagina: Entero, limite: Entero, out total: Entero): Producto[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="498" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c0f19" value="+ getProductosDisponibles(): Producto[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
@@ -139,7 +139,7 @@
         <mxCell id="c1f17" value="+ getChofer(): Chofer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c1">
           <mxGeometry y="472" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c1f18" value="+ getResumenDeCalificaciones(): Decimal, Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c1">
+        <mxCell id="c1f18" value="+ getResumenDeCalificaciones(out cantidad: Entero): Decimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c1">
           <mxGeometry y="498" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c1f19" value="+ getRol(): Rol" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c1">
@@ -487,7 +487,7 @@
         <mxCell id="c12f14" value="+ getResumen()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
           <mxGeometry y="394" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c12f15" value="+ getVigencia(): Fecha, Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
+        <mxCell id="c12f15" value="+ getVigencia(out dias: Entero): Fecha" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
           <mxGeometry y="420" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c12f16" value="+ marcarParaRetiro(pedido: Pedido)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c12">
@@ -626,7 +626,7 @@
           <mxGeometry y="212" width="420" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c18" value="ItemCarrito" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
-          <mxGeometry x="349" y="5378" width="460" height="186" as="geometry" />
+          <mxGeometry x="349" y="5365" width="460" height="212" as="geometry" />
         </mxCell>
         <mxCell id="c18f0" value="- cantidad: Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c18">
           <mxGeometry y="30" width="460" height="26" as="geometry" />
@@ -645,6 +645,9 @@
         </mxCell>
         <mxCell id="c18f5" value="+ getSubtotal(): Moneda" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c18">
           <mxGeometry y="160" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c18f6" value="+ sumarCantidad(cantidad: Entero)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c18">
+          <mxGeometry y="186" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c19" value="Pedido" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
           <mxGeometry x="2701" y="4572" width="460" height="1798" as="geometry" />
@@ -976,7 +979,7 @@
         <mxCell id="c24f4" value="+ «create» FranjaHoraria(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c24">
           <mxGeometry y="134" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c24f5" value="+ cuposLibres(fecha: Fecha): Entero, Pedido[*], Chofer[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c24">
+        <mxCell id="c24f5" value="+ cuposLibres(fecha: Fecha, out reservados: Pedido[*], out libres: Chofer[*]): Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c24">
           <mxGeometry y="160" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c24f6" value="+ desactivar()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c24">
@@ -1168,7 +1171,7 @@
         <mxCell id="c31f20" value="+ getPedidoEnCurso(): Pedido" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c31">
           <mxGeometry y="550" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c31f21" value="+ getPedidos(pagina: Entero, limite: Entero): Pedido[*], Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c31">
+        <mxCell id="c31f21" value="+ getPedidos(pagina: Entero, limite: Entero, out total: Entero): Pedido[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c31">
           <mxGeometry y="576" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c31f22" value="+ getSaldo(): Moneda" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c31">

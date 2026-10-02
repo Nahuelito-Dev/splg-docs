@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -63,9 +63,9 @@ skinparam ranksep 90
 class GasCylinderService <<fachada>> {
   + actualizarProducto(productoId: Identificador,\n      datos: Registro): Producto
   + actualizarStock(productoId: Identificador,\n      variacion: Entero): Producto
-  + consultarCatalogo(pagina: Entero, limite: Entero,\n      distribuidora: Cadena): Producto[*], Entero
+  + consultarCatalogo(pagina: Entero, limite: Entero,\n      distribuidora: Cadena,\n      out total: Entero): Producto[*]
   + consultarProducto(productoId: Identificador): Producto
-  + consultarProductosDisponibles(distribuidora: Cadena): Producto[*],\n      MetodoDePago[*]
+  + consultarProductosDisponibles(distribuidora: Cadena,\n      out mediosDePago: MetodoDePago[*]): Producto[*]
   + consultarProductosInactivos(): Producto[*]
   + crearProducto(tipo: Cadena, peso: Decimal,\n      precio: Moneda, stockInicial: Entero,\n      descripcion: Cadena, promociones: Lista): Producto
   + desactivarProducto(productoId: Identificador): Cadena
@@ -102,7 +102,7 @@ GasCylinderService --> "1" Map_String_Producto
 TimeSlotService --> "1" Map_String_Distribuidora
 TimeSlotService --> "1" Map_String_FranjaHoraria
 GasCylinderService ..> Distribuidora
-GasCylinderService ..> Producto : «create»
+GasCylinderService ..> Producto : <<create>>
 TimeSlotService ..> Distribuidora
 TimeSlotService ..> FranjaHoraria
 

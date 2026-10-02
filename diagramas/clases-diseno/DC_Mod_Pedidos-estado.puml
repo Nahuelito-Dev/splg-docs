@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -67,43 +67,43 @@ class OrderService <<fachada>> {
   + cambiarDireccionDeEntrega(pedidoId: Identificador,\n      direccionId: Identificador, motivo: Cadena): Pedido
   + completarDiasSinVentas(ventasPorDia: Registro)
   + consultarGraficoDeVentas(): Cadena
-  + consultarHistorialDePedidos(cliente: Cliente,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
+  + consultarHistorialDePedidos(cliente: Cliente,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
   + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
   + consultarPedido(pedidoId: Identificador): Pedido
-  + consultarPedidosAsignados(choferId: Identificador,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
-  + consultarPedidosDisponibles(pagina: Entero,\n      limite: Entero): Pedido[*], Entero
+  + consultarPedidosAsignados(choferId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
+  + consultarPedidosDisponibles(pagina: Entero,\n      limite: Entero, out total: Entero): Pedido[*]
   + consultarResumenDePedidos(): Registro
   + despacharPedidoExpress(pedidoId: Identificador): Booleano
   + findAvailableOrders(): Pedido[*]
   + indicarQuienRecibe(pedidoId: Identificador,\n      nombre: Cadena, documento: Cadena,\n      relacion: Cadena): Pedido
-  + listarPedidos(pagina: Entero, limite: Entero): Pedido[*],\n      Entero
+  + listarPedidos(pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
   + obtenerCodigoDeEntrega(pedidoId: Identificador): Cadena
   + realizarCompraExpress(tipoGarrafa: Cadena,\n      metodoDePago: MetodoDePago): Pedido
   + rechazarOferta(pedidoId: Identificador): Booleano
   + verificarCoberturaExpress(direccion: DireccionEntrega)
 }
-class UpdateOrderStatusUseCase <<use case>> {
+class UpdateOrderStatusUseCase <<controlador>> {
   + aceptarPedido(pedidoId: Identificador): Pedido
   + confirmarEntrega(pedidoId: Identificador): Pedido
   + marcarPedidoEnCamino(pedidoId: Identificador): Pedido
 }
-class ConfirmDeliveryUseCase <<use case>> {
+class ConfirmDeliveryUseCase <<controlador>> {
   + confirmarEntregaConCodigo(pedidoId: Identificador,\n      codigo: Cadena): Pedido
 }
 class "Map<String, Pedido>" as Map_String_Pedido <<colección>> {
   + get(clave: Cadena): Pedido
 }
 class "List<Pedido>" as List_Pedido <<colección>> {
-  + buscarDeLaDistribuidora(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
-  + buscarDelCliente(cliente: Cliente, pagina: Entero,\n      limite: Entero): Pedido[*], Entero
-  + buscarDisponibles(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero): Pedido[*], Entero
+  + buscarDeLaDistribuidora(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
+  + buscarDelCliente(cliente: Cliente, pagina: Entero,\n      limite: Entero, out total: Entero): Pedido[*]
+  + buscarDisponibles(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
   + buscarPendientesConMercadoPagoAnterioresA(plazo: Entero): Pedido[*]
   + buscarReservas(distribuidoraId: Identificador): Pedido[*]
   + buscarReservasConSeniaPagaHasta(hoy: Fecha): Pedido[*]
   + buscarReservasSinSeniaAnterioresA(plazo: Entero): Pedido[*]
   + contarEntregadosDelDia(distribuidoraId: Identificador): Entero
   + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Booleano
-  + contarPorEstado(distribuidoraId: Identificador): Pedido[*],\n      Chofer[*], Booleano
+  + contarPorEstado(distribuidoraId: Identificador,\n      out aceptados: Chofer[*],\n      out enCamino: Booleano): Pedido[*]
   + entregadosEntre(fechaDesde: Fecha,\n      fechaHasta: Fecha): Pedido[*]
   + getUltimoEntregado(cliente: Cliente,\n      distribuidoraId: Identificador): Fecha
   + totalEntregado(periodo: Cadena): Registro
@@ -116,14 +116,14 @@ class "List<Chofer>" as List_Chofer <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class NotificationPort <<referencia>>
 class RealtimeDispatchPort <<referencia>>
-class Chofer <<referencia>>
-class Cliente <<referencia>>
-class Producto <<referencia>>
-class ZonaCobertura <<referencia>>
 class UbicacionGPS <<referencia>>
 class Envase <<referencia>>
-class OfertaDespacho <<referencia>>
 class NotificationsService <<referencia>>
+class Chofer <<referencia>>
+class Cliente <<referencia>>
+class OfertaDespacho <<referencia>>
+class ZonaCobertura <<referencia>>
+class Producto <<referencia>>
 
 Map_String_Pedido "1" o--> "0..*" Pedido
 List_Pedido "1" o--> "0..*" Pedido
@@ -147,7 +147,7 @@ OrderService ..> Chofer
 OrderService ..> Cliente
 OrderService ..> NotificationsService
 OrderService ..> OfertaDespacho
-OrderService ..> Pedido : «create»
+OrderService ..> Pedido : <<create>>
 OrderService ..> Producto
 OrderService ..> ZonaCobertura
 UpdateOrderStatusUseCase ..> Chofer

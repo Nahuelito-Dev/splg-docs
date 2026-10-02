@@ -34,11 +34,10 @@ skinparam usecase {
   BackgroundColor<<factorizado>> #F2F4F6
 }
 
-actor "Cliente\n(ACT-01)" as A01
-actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "Plataforma de despliegue\n(ACT-09)" as A09
 
 rectangle "SS-18 Observabilidad y Operación" {
   usecase "CU-104\nVerificar la Salud del Sistema\n(liveness / readiness)" as U104 #back:FFFFFF;line:5B5F87
@@ -48,14 +47,11 @@ rectangle "SS-18 Observabilidad y Operación" {
   usecase "CU-173\nConfigurar la Frecuencia de\nlas Tareas Programadas" as U173 <<planificado>> #back:FFFFFF;line:5B5F87
 }
 
-A01 -[#1F6F8B]- U104
-A02 -[#2E7D46]- U104
-A03 -[#8C4A9E]- U104
 A03 -[#8C4A9E]- U152
 A03 -[#8C4A9E]- U172
 A03 -[#8C4A9E]- U173
-A04 -[#8A6D1F]- U104
 A04 -[#8A6D1F]- U153
+A09 -[#4F6D3A]- U104
 A05 --|> A03
 
 @enduml

@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -66,8 +66,8 @@ class DeliveryService <<fachada>> {
   + buscarChoferPorUsuario(usuario: Usuario): Chofer
   + cambiarDisponibilidad(usuario: Usuario,\n      disponible: Booleano): Registro
   + cambiarEstadoDelChofer(choferId: Identificador,\n      activo: Booleano): Chofer
-  + consultarDetalleDelChofer(choferId: Identificador): Chofer,\n      Usuario, Rol
-  + consultarPerfilDelChofer(usuario: Usuario): Chofer, Moneda
+  + consultarDetalleDelChofer(choferId: Identificador,\n      out usuario: Usuario, out rol: Rol): Chofer
+  + consultarPerfilDelChofer(usuario: Usuario,\n      out saldo: Moneda): Chofer
   + eliminarChofer(choferId: Identificador)
   + findById(choferId: Identificador): Chofer
   + invalidarChofer(choferId: Identificador): Chofer
@@ -85,7 +85,7 @@ class "List<Chofer>" as List_Chofer <<colección>> {
 }
 class CarService <<fachada>> {
   + buscarVehiculoPorPatente(patente: Cadena): Vehiculo
-  + consultarDetalleDelVehiculo(vehiculoId: Identificador): Vehiculo,\n      Chofer
+  + consultarDetalleDelVehiculo(vehiculoId: Identificador,\n      out chofer: Chofer): Vehiculo
   + consultarVehiculosDelChofer(usuario: Usuario): Vehiculo[*]
   + editarVehiculo(vehiculoId: Identificador,\n      datos: Registro): Vehiculo
   + eliminarVehiculo(vehiculoId: Identificador)
@@ -101,8 +101,8 @@ class "List<Vehiculo>" as List_Vehiculo <<colección>> {
 class VehicleAssignmentService <<fachada>> {
   + consultarHistorialDeChoferesDelVehiculo(vehiculoId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
   + consultarHistorialDeVehiculosDelChofer(choferId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
-  + consultarMiVehiculoEnUso(): Vehiculo, Booleano
-  + consultarVehiculoEnUso(choferId: Identificador): Vehiculo,\n      Booleano
+  + consultarMiVehiculoEnUso(out inhabilitado: Booleano): Vehiculo
+  + consultarVehiculoEnUso(choferId: Identificador,\n      out inhabilitado: Booleano): Vehiculo
   + liberarVehiculoEnUso(choferId: Identificador)
   + ponerVehiculoEnUso(choferId: Identificador,\n      vehiculoId: Identificador,\n      nota: Cadena): AsignacionVehiculo
 }
@@ -113,10 +113,10 @@ class Chofer <<referencia>>
 class Vehiculo <<referencia>>
 class AsignacionVehiculo <<referencia>>
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
-class Usuario <<referencia>>
 class UbicacionGPS <<referencia>>
-class FleetTaskService <<referencia>>
 class Distribuidora <<referencia>>
+class Usuario <<referencia>>
+class FleetTaskService <<referencia>>
 
 Map_String_Chofer "1" o--> "0..*" Chofer
 List_Chofer "1" o--> "0..*" Chofer

@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -62,7 +62,7 @@ skinparam nodesep 25
 skinparam ranksep 90
 class CartService <<fachada>> {
   + agregarItemAlCarrito(productoId: Identificador,\n      cantidad: Entero): Carrito
-  + consultarCarrito(): Carrito, Moneda
+  + consultarCarrito(out total: Moneda): Carrito
   + modificarCantidadDelItem(itemId: Identificador,\n      cantidad: Entero): Carrito
   + quitarItemDelCarrito(itemId: Identificador): Carrito
   + vaciarCarrito(): Carrito
@@ -90,10 +90,10 @@ class "List<Cliente>" as List_Cliente <<referencia>>
 class "List<InvitacionRecompra>" as List_InvitacionRecompra <<referencia>>
 class "Map<String, InvitacionRecompra>" as Map_String_InvitacionRecompra <<referencia>>
 class NotificationsService <<referencia>>
-class Cliente <<referencia>>
 class Carrito <<referencia>>
-class InvitacionRecompra <<referencia>>
 class Producto <<referencia>>
+class Cliente <<referencia>>
+class InvitacionRecompra <<referencia>>
 
 CartService --> "1" Map_String_Producto
 ConsumptionService --> "1" ConsumptionEstimatorService
@@ -111,7 +111,7 @@ CartService ..> Cliente
 CartService ..> Producto
 ConsumptionService ..> Cliente
 RepurchaseEstimatesService ..> Cliente
-RepurchaseForecastService ..> InvitacionRecompra : «create»
+RepurchaseForecastService ..> InvitacionRecompra : <<create>>
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

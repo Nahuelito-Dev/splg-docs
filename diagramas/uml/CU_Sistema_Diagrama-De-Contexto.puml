@@ -39,6 +39,7 @@ actor "Sistema Automático\n(ACT-04)" as A04
 actor "MercadoPago\n(ACT-06)" as A06 <<externo>>
 actor "Firebase\n(ACT-07)" as A07 <<externo>>
 actor "Servicio de correo\n(ACT-08)" as A08 <<externo>>
+actor "Plataforma de despliegue\n(ACT-09)" as A09 <<externo>>
 
 rectangle "**Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)**\n\nSS-01  Autenticación y Usuarios  (11)\nSS-02  Gestión de Pedidos  (32)\nSS-03  Despacho y Asignación  (8)\nSS-04  Seguimiento en Tiempo Real  (8)\nSS-05  Reclamos  (7)\nSS-06  Reportes y Dashboard  (5)\nSS-07  Gestión de Choferes y Vehículos  (35)\nSS-08  Gestión de Productos e Inventario  (6)\nSS-09  Franjas Horarias  (6)\nSS-10  Multi-Distribuidora  (4)\nSS-11  Cobertura Geográfica  (6)\nSS-12  Incidencias y Calidad de Servicio  (7)\nSS-13  Trazabilidad de Envases  (10)\nSS-14  Pagos y Conciliación  (2)\nSS-15  Reservas Programadas  (6)\nSS-16  Administración de Cuentas y Roles  (11)\nSS-17  Notificaciones y Mensajería  (5)\nSS-18  Observabilidad y Operación  (5)\n\n(entre paréntesis, los casos de uso de cada subsistema)" as LIMITE #back:F4F7FA;line:2C4257
 
@@ -50,7 +51,8 @@ A04 -[#8A6D1F]down- LIMITE : ejecuta los procesos programados
 
 LIMITE -[#6B7683]down- A06 : cobra y recibe el aviso de pago
 LIMITE -[#6B7683]down- A07 : identidad y avisos push
-LIMITE -[#6B7683]down- A08 : comprobantes por correo
+LIMITE -[#6B7683]down- A08 : correos de bienvenida, recuperación y vencimientos
+LIMITE -[#4F6D3A]down- A09 : sondea la salud del sistema
 
 A05 -right-|> A03
 

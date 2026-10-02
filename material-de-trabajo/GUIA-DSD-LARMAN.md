@@ -21,6 +21,8 @@ reinventan.
   `##### Operación: firma`, el diagrama, el epígrafe de figura (sólo Doc 3), el párrafo de
   clases participantes y la tabla de implementación (§7).
 
+**Idiomas.** Los objetos del dominio llevan el nombre castellano del modelo conceptual (`Pedido`, `Cliente`); las fabricaciones puras, los puertos y los servicios de infraestructura llevan su nombre real (`NotificationPort`, `OrderPricingService`), porque no pertenecen al modelo conceptual. Un mismo diagrama mezcla los dos idiomas a propósito, y el Documento 3 (§4) lo explica.
+
 ## 2. Primer mensaje y Controlador
 
 El primer mensaje sale del actor (`actor ADM as Administrador (ACT-03)`, igual que en el DSS) y

@@ -17,15 +17,15 @@ skinparam ArrowFontSize 12
 skinparam NoteBackgroundColor #FBF7E6
 skinparam NoteBorderColor #7A7340
 hide empty description
-state "OFFERED\nofrecida" as OFFERED
-state "ACCEPTED\naceptada" as ACCEPTED
-state "REJECTED\nrechazada" as REJECTED
-state "EXPIRED\nvencida" as EXPIRED
+state "Ofrecida\n(OFFERED)" as OFFERED
+state "Aceptada\n(ACCEPTED)" as ACCEPTED
+state "Rechazada\n(REJECTED)" as REJECTED
+state "Vencida\n(EXPIRED)" as EXPIRED
 
 [*] --> OFFERED : ofrecerAlSiguiente() [chofer elegible\nno contactado antes, dentro del radio]
 OFFERED --> ACCEPTED : aceptarPedido() [oferta vigente]
 OFFERED --> REJECTED : rechazarOferta()
-OFFERED --> EXPIRED : vencerOfertas() [expiresAt < ahora;\nproceso cada 15 s]
+OFFERED --> EXPIRED : vencerOfertas() [vigencia cumplida;\nproceso cada 15 s]
 OFFERED --> EXPIRED : liberarPedido() [el chofer libera el pedido]
 ACCEPTED --> [*]
 REJECTED --> [*]

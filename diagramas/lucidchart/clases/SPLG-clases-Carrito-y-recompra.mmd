@@ -7,7 +7,7 @@ classDiagram
     class CartService {
         <<fachada>>
         + agregarItemAlCarrito(productoId: Identificador, cantidad: Entero): Carrito
-        + consultarCarrito(): Carrito, Moneda
+        + consultarCarrito(out total: Moneda): Carrito
         + modificarCantidadDelItem(itemId: Identificador, cantidad: Entero): Carrito
         + quitarItemDelCarrito(itemId: Identificador): Carrito
         + vaciarCarrito(): Carrito
@@ -58,10 +58,10 @@ classDiagram
     class NotificationsService {
         <<fachada>>
     }
-    class Cliente
     class Carrito
-    class InvitacionRecompra
     class Producto
+    class Cliente
+    class InvitacionRecompra
 
     CartService --> "1" Map_String_Producto : map<String, Producto>
     ConsumptionService --> "1" ConsumptionEstimatorService : consumptionEstimatorService

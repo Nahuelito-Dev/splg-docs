@@ -109,7 +109,8 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
         # las bases a la izquierda y los casos incluidos a la derecha
         cs = [c for c in cs if c not in ids_inc] + [c for c in cs if c in ids_inc]
         paq.append({"id": s, "titulo": f"{s} — {SS[s]}", "casos": cs, "ss": s})
-    paq.append({"id": "FACT", "titulo": "Casos de uso factorizados", "casos": list(factorizado), "ss": None})
+    if factorizado:
+        paq.append({"id": "FACT", "titulo": "Casos de uso factorizados", "casos": list(factorizado), "ss": None})
     for p in paq:
         n = len(p["casos"])
         p["cols"] = 1 if n <= 4 else (2 if n <= 12 else (3 if n <= 30 else 4))
@@ -314,6 +315,10 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
             pts = bezier(p1, c1, c2, p2)
             choques = sum(1 for (px, py) in pts[1:-1] for (cx, cy) in ajenos
                           if ((px - cx) / (RX + 5)) ** 2 + ((py - cy) / (RY + 5)) ** 2 < 1)
+            # la curva tiene que quedar dentro del limite y por debajo de su titulo
+            choques += 50 * sum(1 for (px, py) in pts
+                                if py < Y_lim + 60 or py > Y_lim + H_lim - 20
+                                or px < X_lim + 10 or px > X_lim + W_lim - 10)
             if mejor is None or choques < mejor[0]:
                 mejor = (choques, p1, c1, c2, p2, pts)
             if choques == 0: break
@@ -366,7 +371,7 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
     # actores
     for k in ACT:
         x, y = apos[k]
-        o.append(_actor(x, y, k, NOMBRE_ACT[k], COLOR_ACT[k], 1.45, 17, ext=k in ("06", "07", "08")))
+        o.append(_actor(x, y, k, NOMBRE_ACT[k], COLOR_ACT[k], 1.45, 17, ext=k in ("06", "07", "08", "09")))
     xe, ye = apos[esp]
     xg, yg = apos[gen]
     o.append(f'<path class="gen" data-esp="{esp}" data-gen="{gen}" d="M{xe:.1f} {ye - 24:.1f} V{yg + 168:.1f}" '
@@ -386,7 +391,7 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
     ly += 40
     notas = ["Cada actor se dibuja una sola vez y fuera del límite del sistema; los humanos a la izquierda, el Sistema Automático y los sistemas externos a la derecha.",
              f"ACT-{esp} especializa a ACT-{gen} (flecha con triángulo hueco): hereda todas sus asociaciones y sólo se asocia a los casos que son exclusivos suyos.",
-             "ACT-06, ACT-07 y ACT-08 son actores secundarios: el sistema los invoca. Las líneas a ellos no inician el caso de uso.",
+             "ACT-06, ACT-07 y ACT-08 son actores secundarios: el sistema los invoca. ACT-09 es un sistema externo que inicia CU-104.",
              "Las líneas de cada actor se juntan en un haz hasta el borde del paquete y de ahí se abren a cada caso.",
              "Las flechas punteadas son relaciones entre casos de uso: «include» va del caso base al incluido; «extend» va de la extensión al caso base."]
     for tx_ in notas:
@@ -425,7 +430,7 @@ def mapa(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directo
     xi, xd = 130, W - 150
     cyl = yl + hl / 2
     yi = {"01": cyl - 400, "02": cyl - 150, "03": cyl + 100, "05": cyl + 400}
-    yd = {"04": cyl - 330, "06": cyl - 110, "07": cyl + 110, "08": cyl + 330}
+    yd = {"04": cyl - 400, "06": cyl - 200, "07": cyl, "08": cyl + 200, "09": cyl + 400}
     apos = {k: (xi, yi[k]) for k in IZQ}
     apos.update({k: (xd, yd[k]) for k in DER})
 
@@ -468,14 +473,14 @@ def mapa(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directo
                  + "</g>")
     for k in IZQ + DER:
         x, y = apos[k]
-        o.append(_actor(x, y, k, NOMBRE_ACT[k], COLOR_ACT[k], 1.45, 17, ext=k in ("06", "07", "08")))
+        o.append(_actor(x, y, k, NOMBRE_ACT[k], COLOR_ACT[k], 1.45, 17, ext=k in ("06", "07", "08", "09")))
     xe, ye = apos[esp]; xg, yg = apos[gen]
     o.append(f'<path class="gen" data-esp="{esp}" data-gen="{gen}" d="M{xe:.1f} {ye - 24:.1f} V{yg + 168:.1f}" '
              f'fill="none" stroke="{TINTA}" stroke-width="2" marker-end="url(#hueco)"/>')
     o.append(_texto(xe + 14, (ye + yg) / 2 + 40, ["especializa a"], 13, False, "start"))
     ly = yl + hl + 95
     notas = [f"ACT-{esp} especializa a ACT-{gen}: hereda todo lo suyo y la línea sólo llega a los paquetes con casos exclusivos del Administrador General.",
-             "Una línea por actor hacia cada paquete en el que participa. ACT-06, ACT-07 y ACT-08 son actores secundarios (sistemas externos).",
+             "Una línea por actor hacia cada paquete en el que participa. ACT-06, ACT-07 y ACT-08 son actores secundarios; ACT-09 es un sistema externo que inicia CU-104.",
              "CU: cantidad de casos de uso del paquete. El detalle caso por caso está en el Diagrama Completo."]
     for t in notas:
         o.append(_texto(60, ly, [t], 15, False, "start")); ly += 26

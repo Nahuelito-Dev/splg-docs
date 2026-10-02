@@ -17,23 +17,23 @@ skinparam ArrowFontSize 12
 skinparam NoteBackgroundColor #FBF7E6
 skinparam NoteBorderColor #7A7340
 hide empty description
-state "PENDING\npendiente" as PENDING
-state "IN_PROCESS\nen proceso" as IN_PROCESS
-state "RESOLVED\nresuelto" as RESOLVED
-state "REJECTED\nrechazado" as REJECTED
+state "Pendiente\n(PENDING)" as PENDING
+state "En proceso\n(IN_PROCESS)" as IN_PROCESS
+state "Resuelto\n(RESOLVED)" as RESOLVED
+state "Rechazado\n(REJECTED)" as REJECTED
 
 [*] --> PENDING : registrarReclamo() [el pedido es del cliente]
 PENDING --> IN_PROCESS : tomarReclamo() [administrador]
-PENDING --> RESOLVED : resolverReclamo(nota, RESOLVED)
-PENDING --> REJECTED : resolverReclamo(nota, REJECTED)
-IN_PROCESS --> RESOLVED : resolverReclamo(nota, RESOLVED)
-IN_PROCESS --> REJECTED : resolverReclamo(nota, REJECTED)
+PENDING --> RESOLVED : resolverReclamo(nota) [se acepta]
+PENDING --> REJECTED : resolverReclamo(nota) [se rechaza]
+IN_PROCESS --> RESOLVED : resolverReclamo(nota) [se acepta]
+IN_PROCESS --> REJECTED : resolverReclamo(nota) [se rechaza]
 RESOLVED --> IN_PROCESS : reabrirReclamo()
 REJECTED --> IN_PROCESS : reabrirReclamo()
 
 note bottom of RESOLVED
   Un reclamo cerrado no se vuelve a cerrar:
   para cambiar la resolución primero se reabre.
-  Ningún camino vuelve a PENDING.
+  Ningún camino vuelve a Pendiente.
 end note
 @enduml

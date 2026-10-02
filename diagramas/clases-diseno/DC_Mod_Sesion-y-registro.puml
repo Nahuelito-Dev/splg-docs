@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -88,10 +88,10 @@ interface FcmPort <<interface>> <<puerto>> {
 }
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class "List<Administrador>" as List_Administrador <<referencia>>
-class Administrador <<referencia>>
-class Chofer <<referencia>>
 class Usuario <<referencia>>
+class Administrador <<referencia>>
 class Cliente <<referencia>>
+class Chofer <<referencia>>
 
 AuthService --> "1" FirebaseAuthPort
 AuthService --> "1" Map_String_Usuario
@@ -99,10 +99,10 @@ RegistroService --> "1" FirebaseAuthPort
 RegistroService --> "1" List_Administrador
 RegistroService --> "1" Map_String_Usuario
 AuthService ..> Usuario
-RegistroService ..> Administrador : «create»
-RegistroService ..> Chofer : «create»
-RegistroService ..> Cliente : «create»
-RegistroService ..> Usuario : «create»
+RegistroService ..> Administrador : <<create>>
+RegistroService ..> Chofer : <<create>>
+RegistroService ..> Cliente : <<create>>
+RegistroService ..> Usuario : <<create>>
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -69,13 +69,13 @@ interface PaymentGatewayPort <<interface>> <<puerto>> {
   + refundPayment(pago: Pago, importe: Moneda): Cadena
   + verifyWebhookSignature(firma: Cadena,\n      identificadorDelPago: Identificador): Booleano
 }
-class RefundPaymentUseCase <<use case>> {
+class RefundPaymentUseCase <<controlador>> {
   + reintegrarPagoDelPedido(pedidoId: Identificador,\n      importe: Moneda): Booleano
 }
-class ConfirmPaymentUseCase <<use case>> {
+class ConfirmPaymentUseCase <<controlador>> {
   + notificarResultadoDePago(tipoDeNotificacion: Cadena,\n      identificadorDelPago: Cadena, firma: Cadena)
 }
-class RefundPaymentUseCase <<use case>> {
+class RefundPaymentUseCase <<controlador>> {
   + reintegrarPagoDelPedido(pedidoId: Identificador,\n      importe: Moneda): Booleano
 }
 class ReservationService <<fachada>> {
@@ -88,8 +88,8 @@ class ReservationService <<fachada>> {
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class RealtimeDispatchPort <<referencia>>
 class "List<Pedido>" as List_Pedido <<referencia>>
-class Pago <<referencia>>
 class Pedido <<referencia>>
+class Pago <<referencia>>
 class NotificationPort <<referencia>>
 
 ConfirmPaymentUseCase --> "1" Map_String_Pedido
@@ -105,7 +105,7 @@ ConfirmPaymentUseCase ..> Pago
 ConfirmPaymentUseCase ..> PaymentGatewayPort
 ConfirmPaymentUseCase ..> Pedido
 ConfirmPaymentUseCase ..> RealtimeDispatchPort
-PaymentsService ..> Pago : «create»
+PaymentsService ..> Pago : <<create>>
 PaymentsService ..> Pedido
 RefundPaymentUseCase ..> Pago
 RefundPaymentUseCase ..> Pedido

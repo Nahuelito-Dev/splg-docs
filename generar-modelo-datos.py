@@ -1373,11 +1373,16 @@ REL_CONCEPTUALES = relaciones_conceptuales()
 def entidad_conceptual(c, con_atributos):
     if not con_atributos:
         return [f'entity {c}']
-    return [f'entity {c} {{'] + ["  {field} " + a for a in atributos_de(c)] + ["}"]
+    return [f'entity {c} {{', "  * identificador", "  --"] + ["  {field} " + a for a in atributos_de(c)] + ["}"]
 
 def der_conceptual(titulo, foco, ref, general=False):
     foco = [c for c in foco if MC.TABLA.get(c)]
     ref = [c for c in ref if MC.TABLA.get(c) and c not in foco]
+    if ref and not general:
+        # una entidad de referencia sin ninguna relación en la vista no aporta nada: se quita
+        con_relacion = {x for izq, _ci, _cd, der, _n, _mi, _md in REL_CONCEPTUALES
+                        for x in (izq, der) if izq in foco or der in foco}
+        ref = [c for c in ref if c in con_relacion]
     lin = ["@startuml", f"title {titulo}", CAB, "hide circle", "skinparam nodesep 25",
            "skinparam ranksep 45", ""]
     for c in foco:
@@ -1406,10 +1411,11 @@ def der_conceptual(titulo, foco, ref, general=False):
                 "  Vista de conjunto: sin atributos ni nombres de relación. Las relaciones de Usuario",
                 "  con los registros que sólo dejan constancia de su autoría figuran en la vista de su área.",
                 "endlegend"]
-    if ref:
-        lin += ["", "legend bottom right",
-                "  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.",
-                "endlegend"]
+    if not general:
+        leyenda = ["  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado."]
+        if ref:
+            leyenda.append("  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.")
+        lin += ["", "legend bottom right"] + leyenda + ["endlegend"]
     lin.append("@enduml")
     return "\n".join(lin)
 

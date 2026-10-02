@@ -9,7 +9,7 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 
 | Para | Comando |
 |---|---|
-| Gate: ¿cumple las plantillas de la cátedra? | `python3 verificar-conformidad.py` (14 chequeos) |
+| Gate: ¿cumple las plantillas de la cátedra? | `python3 verificar-conformidad.py` (18 chequeos) |
 | Regenerar el sitio | `python3 generar-sitio.py` → `splg-documentacion.html` |
 | Regenerar los HTML para Drive | `python3 generar-html-drive.py` |
 | Publicar en Netlify | `./publicar.sh` — **sólo con el ok de nahue** |

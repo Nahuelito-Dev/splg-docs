@@ -29,25 +29,27 @@ skinparam nodesep 25
 skinparam ranksep 45
 
 entity OfertaDespacho {
+  * identificador
+  --
   {field} estado
   {field} vence
 }
 entity OfertaLote {
+  * identificador
+  --
   {field} estado
   {field} vence
 }
 entity LoteRecorrido {
+  * identificador
+  --
   {field} estado
   {field} /peso total
 }
 entity ParadaLote {
+  * identificador
+  --
   {field} orden
-}
-entity PropuestaVentanaTaller #F1F1F1 {
-}
-entity InvitacionRecompra #F1F1F1 {
-}
-entity AvisoRecupero #F1F1F1 {
 }
 entity Pedido #F1F1F1 {
 }
@@ -62,6 +64,7 @@ LoteRecorrido ||--o{ ParadaLote : se compone de >
 ParadaLote }o--|| Pedido : atiende >
 
 legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
   Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
 endlegend
 @enduml

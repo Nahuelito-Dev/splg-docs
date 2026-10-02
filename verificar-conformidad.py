@@ -223,8 +223,8 @@ def verificar_diagrama_cu():
         actores = [a["data-act"] for a in _elementos(doc, "actor")]
         rep = sorted({k for k in actores if actores.count(k) > 1})
         if rep: errores.append(f"{nombre}: actores dibujados mas de una vez {rep}")
-        if sorted(actores) != ["01","02","03","04","05","06","07","08"]:
-            errores.append(f"{nombre}: los actores dibujados son {sorted(actores)}, no los ocho")
+        if sorted(actores) != ["01","02","03","04","05","06","07","08","09"]:
+            errores.append(f"{nombre}: los actores dibujados son {sorted(actores)}, no los nueve")
         lim = _elementos(doc, "limite")
         if len(lim) != 1: errores.append(f"{nombre}: falta el limite del sistema"); continue
         x0, x1 = float(lim[0]["data-x"]), float(lim[0]["data-x"]) + float(lim[0]["data-w"])
@@ -250,6 +250,8 @@ def verificar_diagrama_cu():
     sub = set()
     for f in glob.glob(D + "diagramas/uml/CU_SS-*.puml"):
         for m in re.finditer(r'(\w+)\s*\.\.>\s*(\w+)\s*:\s*<<(include|extend)>>', open(f, encoding="utf-8").read()):
+            # los casos factorizados (sin codigo) se dibujan solo en los diagramas por subsistema
+            if m.group(1).startswith("F_") or m.group(2).startswith("F_"): continue
             sub.add((m.group(3), cod(m.group(1)), cod(m.group(2))))
     if dib != sub:
         errores.append(f"completo: relaciones de mas {sorted(dib - sub)[:4]} / de menos {sorted(sub - dib)[:4]}")
@@ -371,7 +373,7 @@ def verificar_plantillas():
     if len(desc) != 18: errores.append(f"Doc 1 §4: describe {len(desc)} subsistemas de 18")
     emb = set(re.findall(r'diagramas/uml/CU_(SS-\d\d)_[^)]*\.png\)', s4))
     if len(emb) != 18: errores.append(f"Doc 1 §4.3: embebe {len(emb)} diagramas por subsistema de 18")
-    if "CU_Sistema_Diagrama-De-Contexto.png)" not in s4: errores.append("Doc 1 §4.3: falta el diagrama de contexto")
+    if "CU_Sistema_Diagrama-De-Contexto.png)" not in s3: errores.append("Doc 1 §3.1: falta el diagrama de contexto")
 
     # figuras: toda imagen existe y lleva su epígrafe numerado
     for doc in ("0-Plan_Del_Proyecto.md", "1-Requisitos.md", "3-Diseño.md"):
@@ -397,7 +399,7 @@ print(f"[{'OK' if not _errs else 'FALLA':5}] Secciones de la plantilla (Doc 0, 0
 # --- Operaciones del sistema: diagramas de secuencia, catálogo y contratos ---
 # El catálogo (material-de-trabajo/operaciones-sistema.json) es la única fuente de las
 # firmas. Los DSS tienen que dibujar al sistema como :Sistema, iniciar con un actor del
-# catálogo de actores (ACT-01 a ACT-08), no tener mensajes del sistema a sí mismo, usar un
+# catálogo de actores (ACT-01 a ACT-09), no tener mensajes del sistema a sí mismo, usar un
 # mensaje asíncrono con nombre (notificar...) para lo que el sistema le manda a un actor
 # sin que lo haya pedido, y llamar a cada operación con la misma firma que el catálogo.
 # Cada operación que cambia estado tiene su contrato, con los campos de la plantilla de la
@@ -433,9 +435,9 @@ def verificar_operaciones():
             errores.append(f"{base}: el sistema no es la lifeline :Sistema")
         parts = {}
         for m in re.finditer(r'^\s*actor\s+(\w+)\s+as\s+(.+?)\s*$', t, re.M):
-            mm = re.match(r'^(.+) \((ACT-0[1-8])\)$', m.group(2))
+            mm = re.match(r'^(.+) \((ACT-0[1-9])\)$', m.group(2))
             if not mm or mm.group(2) not in actores:
-                errores.append(f"{base}: el actor «{m.group(2)}» no lleva un código del catálogo (ACT-01 a ACT-08)")
+                errores.append(f"{base}: el actor «{m.group(2)}» no lleva un código del catálogo (ACT-01 a ACT-09)")
             else:
                 parts[m.group(1)] = (mm.group(1), mm.group(2))
         if re.search(r'^\s*SIS\s*-{1,2}[>)]{1,2}\s*SIS\b', t, re.M):

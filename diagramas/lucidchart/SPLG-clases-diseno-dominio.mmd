@@ -23,7 +23,7 @@ classDiagram
         + getConfiguracion(proceso: ProcesoConfigurable): ConfiguracionModulo
         + getConfiguracion(tareasProgramadas: ProcesoConfigurable): ConfiguracionModulo
         + getFranjasActivas(): FranjaHoraria[*]
-        + getProductosActivos(pagina: Entero, limite: Entero): Producto[*], Entero
+        + getProductosActivos(pagina: Entero, limite: Entero, out total: Entero): Producto[*]
         + getProductosDisponibles(): Producto[*]
         + getZonaQueCubre(latitud: Decimal, longitud: Decimal): ZonaCobertura
         + getZonas(): ZonaCobertura[*]
@@ -51,7 +51,7 @@ classDiagram
         + estaHabilitado(): Booleano
         + getCalificacionesRecibidas(): Calificacion[*]
         + getChofer(): Chofer
-        + getResumenDeCalificaciones(): Decimal, Entero
+        + getResumenDeCalificaciones(out cantidad: Entero): Decimal
         + getRol(): Rol
     }
 
@@ -189,7 +189,7 @@ classDiagram
         + fueDevuelto(): Booleano
         + getMovimientos(): MovimientoEnvase[*]
         + getResumen()
-        + getVigencia(): Fecha, Entero
+        + getVigencia(out dias: Entero): Fecha
         + marcarParaRetiro(pedido: Pedido)
         + pasarA(estadoDestino: EstadoDelEnvase, pedido: Pedido, cliente: Cliente, observacion: Cadena)
         + registrarRevision(fecha: Fecha, resultado: Cadena, vencimiento: Fecha)
@@ -254,6 +254,7 @@ classDiagram
         + cambiarCantidad(cantidad: Entero)
         + getDiferenciaDePrecio()
         + getSubtotal(): Moneda
+        + sumarCantidad(cantidad: Entero)
     }
 
     class Pedido {
@@ -376,7 +377,7 @@ classDiagram
         - cupo: Entero
         - activa: Booleano
         + «create» FranjaHoraria(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero)
-        + cuposLibres(fecha: Fecha): Entero, Pedido[*], Chofer[*]
+        + cuposLibres(fecha: Fecha, out reservados: Pedido[*], out libres: Chofer[*]): Entero
         + desactivar()
         + modificar(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero)
         + tieneCupo(fechaAgendada: Fecha)
@@ -454,7 +455,7 @@ classDiagram
         + getCapacidadDeCarga(): Entero
         + getHistorialDeVehiculos(pagina: Entero): AsignacionVehiculo[*]
         + getPedidoEnCurso(): Pedido
-        + getPedidos(pagina: Entero, limite: Entero): Pedido[*], Entero
+        + getPedidos(pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
         + getSaldo(): Moneda
         + getUbicacion(): UbicacionGPS
         + getUsuario(): Usuario

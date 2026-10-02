@@ -29,27 +29,39 @@ skinparam nodesep 25
 skinparam ranksep 45
 
 entity Distribuidora {
+  * identificador
+  --
   {field} nombre
   {field} razón social
   {field} CUIT
   {field} estado
 }
 entity Usuario {
+  * identificador
+  --
   {field} nombre
   {field} correo
   {field} teléfono
   {field} bloqueado
 }
 entity Rol {
+  * identificador
+  --
   {field} tipo
 }
 entity Administrador {
+  * identificador
+  --
 }
 entity ConfiguracionModulo {
+  * identificador
+  --
   {field} módulo
   {field} parámetros
 }
 entity AsientoAuditoria {
+  * identificador
+  --
   {field} operación
   {field} recurso
   {field} aplicación
@@ -58,10 +70,14 @@ entity AsientoAuditoria {
   {field} fecha
 }
 entity Cliente {
+  * identificador
+  --
   {field} consumo mensual declarado
   {field} días de aviso
 }
 entity DireccionEntrega {
+  * identificador
+  --
   {field} calle y altura
   {field} piso y departamento
   {field} punto
@@ -69,6 +85,8 @@ entity DireccionEntrega {
   {field} predeterminada
 }
 entity InvitacionRecompra {
+  * identificador
+  --
   {field} estado
   {field} vence
   {field} agotamiento estimado
@@ -99,6 +117,7 @@ InvitacionRecompra }o--o| Pedido : se convierte en >
 Usuario ||--o{ InvitacionRecompra : recibe >
 
 legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
   Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
 endlegend
 @enduml

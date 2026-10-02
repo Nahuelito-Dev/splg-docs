@@ -29,10 +29,14 @@ skinparam nodesep 25
 skinparam ranksep 45
 
 entity Calificacion {
+  * identificador
+  --
   {field} puntaje
   {field} comentario
 }
 entity Incidencia {
+  * identificador
+  --
   {field} tipo
   {field} momento
   {field} descripción
@@ -41,6 +45,8 @@ entity Incidencia {
   {field} fotografía
 }
 entity Reclamo {
+  * identificador
+  --
   {field} motivo
   {field} descripción
   {field} estado
@@ -50,8 +56,6 @@ entity Reclamo {
 entity Usuario #F1F1F1 {
 }
 entity Pedido #F1F1F1 {
-}
-entity Cliente #F1F1F1 {
 }
 
 Usuario ||--o{ Reclamo : presenta >
@@ -63,6 +67,7 @@ Pedido ||--o{ Calificacion : recibe >
 Usuario ||--o{ Calificacion : recibe >
 
 legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
   Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
 endlegend
 @enduml

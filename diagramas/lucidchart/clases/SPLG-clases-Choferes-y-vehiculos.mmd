@@ -11,8 +11,8 @@ classDiagram
         + buscarChoferPorUsuario(usuario: Usuario): Chofer
         + cambiarDisponibilidad(usuario: Usuario, disponible: Booleano): Registro
         + cambiarEstadoDelChofer(choferId: Identificador, activo: Booleano): Chofer
-        + consultarDetalleDelChofer(choferId: Identificador): Chofer, Usuario, Rol
-        + consultarPerfilDelChofer(usuario: Usuario): Chofer, Moneda
+        + consultarDetalleDelChofer(choferId: Identificador, out usuario: Usuario, out rol: Rol): Chofer
+        + consultarPerfilDelChofer(usuario: Usuario, out saldo: Moneda): Chofer
         + eliminarChofer(choferId: Identificador)
         + findById(choferId: Identificador): Chofer
         + invalidarChofer(choferId: Identificador): Chofer
@@ -36,7 +36,7 @@ classDiagram
     class CarService {
         <<fachada>>
         + buscarVehiculoPorPatente(patente: Cadena): Vehiculo
-        + consultarDetalleDelVehiculo(vehiculoId: Identificador): Vehiculo, Chofer
+        + consultarDetalleDelVehiculo(vehiculoId: Identificador, out chofer: Chofer): Vehiculo
         + consultarVehiculosDelChofer(usuario: Usuario): Vehiculo[*]
         + editarVehiculo(vehiculoId: Identificador, datos: Registro): Vehiculo
         + eliminarVehiculo(vehiculoId: Identificador)
@@ -58,8 +58,8 @@ classDiagram
         <<fachada>>
         + consultarHistorialDeChoferesDelVehiculo(vehiculoId: Identificador, pagina: Entero): AsignacionVehiculo[*]
         + consultarHistorialDeVehiculosDelChofer(choferId: Identificador, pagina: Entero): AsignacionVehiculo[*]
-        + consultarMiVehiculoEnUso(): Vehiculo, Booleano
-        + consultarVehiculoEnUso(choferId: Identificador): Vehiculo, Booleano
+        + consultarMiVehiculoEnUso(out inhabilitado: Booleano): Vehiculo
+        + consultarVehiculoEnUso(choferId: Identificador, out inhabilitado: Booleano): Vehiculo
         + liberarVehiculoEnUso(choferId: Identificador)
         + ponerVehiculoEnUso(choferId: Identificador, vehiculoId: Identificador, nota: Cadena): AsignacionVehiculo
     }
@@ -75,12 +75,12 @@ classDiagram
     class Map_String_Usuario["Map<String, Usuario>"] {
         <<colección>>
     }
-    class Usuario
     class UbicacionGPS
+    class Distribuidora
+    class Usuario
     class FleetTaskService {
         <<fachada>>
     }
-    class Distribuidora
 
     Usuario <|-- Chofer
     Map_String_Chofer "1" o-- "0..*" Chofer : elementos

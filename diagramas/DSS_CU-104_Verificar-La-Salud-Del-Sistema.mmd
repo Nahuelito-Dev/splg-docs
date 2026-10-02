@@ -1,28 +1,28 @@
 sequenceDiagram
     title DSS — CU-104 Verificar la Salud del Sistema (liveness / readiness)
     autonumber
-    actor SAU as Sistema Automático (ACT-04)
+    actor PLA as Plataforma de despliegue (ACT-09)
     participant SIS as :Sistema
 
-    Note over SAU: Sondeo periódico de la<br/>plataforma de despliegue<br/>durante toda la vida de<br/>la instancia
+    Note over PLA: Sondeo periódico de la<br/>plataforma de despliegue<br/>durante toda la vida de<br/>la instancia
 
-    SAU->>SIS: verificarVida()
+    PLA->>SIS: verificarVida()
     activate SIS
-    SIS-->>SAU: la instancia está viva
+    SIS-->>PLA: la instancia está viva
     deactivate SIS
 
-    SAU->>SIS: verificarDisponibilidad()
+    PLA->>SIS: verificarDisponibilidad()
     activate SIS
     alt Las dependencias responden
-        SIS-->>SAU: lista para recibir tráfico
+        SIS-->>PLA: lista para recibir tráfico
     else Alguna dependencia no responde
-        SIS-->>SAU: no disponible (se le retira el tráfico a la instancia)
+        SIS-->>PLA: no disponible (se le retira el tráfico a la instancia)
     end
     deactivate SIS
 
     opt Diagnóstico ampliado
-        SAU->>SIS: verificarSalud()
+        PLA->>SIS: verificarSalud()
         activate SIS
-        SIS-->>SAU: estado de cada verificación (base de datos, memoria caché, memoria en uso, espacio en disco)
+        SIS-->>PLA: estado de cada verificación (base de datos, memoria caché, memoria en uso, espacio en disco)
         deactivate SIS
     end

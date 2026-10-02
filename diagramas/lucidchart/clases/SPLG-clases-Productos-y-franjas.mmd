@@ -8,9 +8,9 @@ classDiagram
         <<fachada>>
         + actualizarProducto(productoId: Identificador, datos: Registro): Producto
         + actualizarStock(productoId: Identificador, variacion: Entero): Producto
-        + consultarCatalogo(pagina: Entero, limite: Entero, distribuidora: Cadena): Producto[*], Entero
+        + consultarCatalogo(pagina: Entero, limite: Entero, distribuidora: Cadena, out total: Entero): Producto[*]
         + consultarProducto(productoId: Identificador): Producto
-        + consultarProductosDisponibles(distribuidora: Cadena): Producto[*], MetodoDePago[*]
+        + consultarProductosDisponibles(distribuidora: Cadena, out mediosDePago: MetodoDePago[*]): Producto[*]
         + consultarProductosInactivos(): Producto[*]
         + crearProducto(tipo: Cadena, peso: Decimal, precio: Moneda, stockInicial: Entero, descripcion: Cadena, promociones: Lista): Producto
         + desactivarProducto(productoId: Identificador): Cadena

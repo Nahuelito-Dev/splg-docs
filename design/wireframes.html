@@ -404,15 +404,8 @@
   <p>Sistema de Pedidos y Logística de Garrafas de Gas &nbsp;·&nbsp; Doc 3 §7 — Interfaces de Usuario</p>
 </div>
 
-<div class="instruction-box">
-  <strong>📸 Cómo capturar cada wireframe como PNG (macOS):</strong><br>
-  <strong>Opción 1 (más fácil) — Cmd + Shift + 4:</strong> presioná la combinación de teclas → el cursor se convierte en una cruz → arrastrá para seleccionar el área del wireframe → se guarda como PNG en el Escritorio.<br>
-  <strong>Opción 2 — Chrome DevTools:</strong> F12 → en el panel Elements, hacé clic derecho sobre el <code>&lt;div class="phone"&gt;</code> o <code>&lt;div class="dt-frame"&gt;</code> → "Capture node screenshot" → se descarga automáticamente.<br>
-  Guardar cada PNG en <code>docs/design/</code> con el nombre que aparece debajo de cada wireframe.
-</div>
-
 <!-- ═══════════════════════════ APP CLIENTE ═══════════════════════════ -->
-<div class="section-divider">📱 App Cliente — 5 pantallas</div>
+<div class="section-divider">App Cliente — 5 pantallas</div>
 
 <div class="wf-row">
 
@@ -424,17 +417,17 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
 
-      <div class="search-bar">🔍&nbsp; Buscar garrafas...</div>
+      <div class="search-bar">Buscar garrafas...</div>
       <div class="addr-banner">
-        📍 Av. San Martín 1234
+        Av. San Martín 1234
         <span class="chg">Cambiar</span>
       </div>
       <div class="sec-hdr">Garrafas disponibles</div>
 
       <div class="pcard">
-        <div class="pthumb">🔵</div>
+        <div class="pthumb" style="font-size:10px;font-weight:700">10 kg</div>
         <div class="pdet">
           <div class="pname">Garrafa 10 kg</div>
           <div class="pstk">Stock: 25 unidades</div>
@@ -447,7 +440,7 @@
         </div>
       </div>
       <div class="pcard">
-        <div class="pthumb">🟣</div>
+        <div class="pthumb" style="font-size:10px;font-weight:700">15 kg</div>
         <div class="pdet">
           <div class="pname">Garrafa 15 kg</div>
           <div class="pstk">Stock: 12 unidades</div>
@@ -460,7 +453,7 @@
         </div>
       </div>
       <div class="pcard">
-        <div class="pthumb">🟡</div>
+        <div class="pthumb" style="font-size:10px;font-weight:700">45 kg</div>
         <div class="pdet">
           <div class="pname">Garrafa 45 kg</div>
           <div class="pstk">Stock: 5 unidades</div>
@@ -472,7 +465,7 @@
           </div>
         </div>
       </div>
-      <div class="fab">🛒 &nbsp; Ver pedido — $9.000</div>
+      <div class="fab">Ver pedido — $9.000</div>
       <div class="ph-home"></div>
     </div>
   </div>
@@ -485,7 +478,7 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
       <div class="app-nav"><span class="back">‹</span><span class="nav-t">Confirmar pedido</span></div>
 
       <div class="fsect">
@@ -500,8 +493,8 @@
       <div class="fsect">
         <div class="frow">
           <div class="flbl">Dirección de entrega</div>
-          <div class="ffield">📍&nbsp; Seleccionar en mapa</div>
-          <div class="ffield">📋&nbsp; Mis direcciones guardadas</div>
+          <div class="ffield">Seleccionar en mapa</div>
+          <div class="ffield">Mis direcciones guardadas</div>
         </div>
       </div>
 
@@ -540,21 +533,21 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
       <div class="app-nav"><span class="back">‹</span><span class="nav-t">Tu pedido #1234</span></div>
 
       <div class="mapp" style="height:196px">
-        <span style="font-size:26px;position:absolute;top:22px;left:50%;transform:translateX(-50%)">🏠</span>
+        <span style="font-size:11px;font-weight:700;position:absolute;top:22px;left:50%;transform:translateX(-50%)">Destino</span>
         <div style="width:3px;height:70px;background:#1a73e8;opacity:.6;border-radius:2px"></div>
-        <span style="font-size:22px;position:absolute;bottom:24px;left:50%;transform:translateX(-50%)">🚗</span>
+        <span style="font-size:11px;font-weight:700;position:absolute;bottom:24px;left:50%;transform:translateX(-50%)">Chofer</span>
         <span class="mlbl" style="position:absolute;top:8px;right:8px">Google Maps</span>
         <span style="font-size:10px;background:rgba(255,255,255,.85);padding:2px 8px;border-radius:10px;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);white-space:nowrap">Juan G. · ~15 min</span>
       </div>
 
       <div class="stepper">
-        <div class="step"><div class="sdot done">✓</div><div class="slbl">Pendiente</div></div>
+        <div class="step"><div class="sdot done">&bull;</div><div class="slbl">Pendiente</div></div>
         <div class="sconn done"></div>
-        <div class="step"><div class="sdot done">✓</div><div class="slbl">Aceptado</div></div>
+        <div class="step"><div class="sdot done">&bull;</div><div class="slbl">Aceptado</div></div>
         <div class="sconn done"></div>
         <div class="step"><div class="sdot active">●</div><div class="slbl active">En camino</div></div>
         <div class="sconn"></div>
@@ -562,13 +555,13 @@
       </div>
 
       <div class="dcard">
-        <div class="drow">🧑&nbsp; <strong>Juan García</strong></div>
-        <div class="drow">🚗&nbsp; Renault Kangoo · ABC 123</div>
+        <div class="drow"><strong>Juan García</strong></div>
+        <div class="drow">Renault Kangoo · ABC 123</div>
         <div class="drow">⏱&nbsp; ETA: ~15 minutos</div>
       </div>
 
       <div class="arow" style="gap:8px">
-        <div class="btn-o" style="flex:1;margin:0;text-align:center;padding:9px 0;font-size:11px">📞 Llamar</div>
+        <div class="btn-o" style="flex:1;margin:0;text-align:center;padding:9px 0;font-size:11px">Llamar</div>
         <div class="btn-od" style="flex:1;margin:0;text-align:center;padding:9px 0;font-size:11px">Cancelar</div>
       </div>
       <div style="height:8px"></div>
@@ -588,9 +581,9 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
       <div class="login-logo">
-        <span class="login-icon">🔥</span>
+        <span class="login-icon" style="font-size:30px;font-weight:800;letter-spacing:2px">SPLG</span>
         <div class="login-brand">SPLG Gas</div>
         <div class="login-sub">Pedidos de garrafas a domicilio</div>
       </div>
@@ -601,7 +594,7 @@
         </div>
         <div class="frow" style="padding:6px 0">
           <div class="flbl">Contraseña</div>
-          <div class="ffield">●●●●●●●● <span style="margin-left:auto;font-size:13px">👁</span></div>
+          <div class="ffield">●●●●●●●● <span style="margin-left:auto;font-size:11px">Ver</span></div>
         </div>
       </div>
       <div class="btn-p">INGRESAR</div>
@@ -619,7 +612,7 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
       <div class="app-nav"><span class="back">‹</span><span class="nav-t">Crear cuenta</span></div>
       <div style="padding:0 10px">
         <div class="frow" style="padding:7px 0">
@@ -648,7 +641,7 @@
 </div>
 
 <!-- ═══════════════════════════ APP CHOFER ═══════════════════════════ -->
-<div class="section-divider">🚗 App Chofer — 3 pantallas</div>
+<div class="section-divider">App Chofer — 3 pantallas</div>
 
 <div class="wf-row">
 
@@ -660,26 +653,26 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
       <div class="greet">
-        <div class="greet-name">👋 Hola, Juan García</div>
+        <div class="greet-name">Hola, Juan García</div>
         <div class="greet-sub">3 pedidos entregados hoy</div>
       </div>
       <div class="mapp" style="height:196px">
-        <span style="font-size:30px">📍</span>
+        <span style="font-size:12px;font-weight:700">Mapa</span>
         <span class="mlbl">Mi ubicación actual</span>
       </div>
       <div class="toggle-wrap">
         <div class="toggle-title">Disponibilidad</div>
         <div class="toggle-track">
-          <span class="toggle-text">🟢 &nbsp; ACTIVO</span>
+          <span class="toggle-text">ACTIVO</span>
           <div class="toggle-thumb"></div>
         </div>
       </div>
       <div class="mini-stat">
         <div><div class="sval">3</div><div class="slb">Entregas hoy</div></div>
         <div><div class="sval">$13.500</div><div class="slb">Ganancia</div></div>
-        <div><div class="sval">4.9 ⭐</div><div class="slb">Calificación</div></div>
+        <div><div class="sval">4.9</div><div class="slb">Calificación</div></div>
       </div>
       <div class="ph-home"></div>
     </div>
@@ -693,22 +686,22 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
       <div class="mapp" style="height:216px">
-        <span style="font-size:28px">📍</span>
+        <span style="font-size:12px;font-weight:700">Mapa</span>
         <span class="mlbl">Tu ubicación</span>
       </div>
       <div class="bsheet">
         <div class="bhandle"></div>
-        <div class="btitle">🔔 &nbsp; NUEVO PEDIDO</div>
-        <div class="brow">📍 &nbsp; Av. San Martín 1234, Posadas</div>
-        <div class="brow">🔵 &nbsp; Garrafa 10 kg × 2 unidades</div>
-        <div class="brow">💰 &nbsp; Total: $9.000</div>
-        <div class="brow">📏 &nbsp; Distancia: 2.3 km</div>
+        <div class="btitle">NUEVO PEDIDO</div>
+        <div class="brow">Dirección: Av. San Martín 1234, Posadas</div>
+        <div class="brow">Producto: Garrafa 10 kg × 2 unidades</div>
+        <div class="brow">Total: $9.000</div>
+        <div class="brow">Distancia: 2.3 km</div>
         <div class="countdown">0:28</div>
         <div class="countdown-lbl">Tiempo para aceptar</div>
-        <div class="btn-s" style="margin:4px 0">✅ &nbsp; ACEPTAR PEDIDO</div>
-        <div class="btn-d" style="margin:4px 0">❌ &nbsp; RECHAZAR</div>
+        <div class="btn-s" style="margin:4px 0">ACEPTAR PEDIDO</div>
+        <div class="btn-d" style="margin:4px 0">RECHAZAR</div>
       </div>
       <div class="ph-home"></div>
     </div>
@@ -722,21 +715,21 @@
     </div>
     <div class="phone">
       <div class="ph-notch"></div>
-      <div class="ph-status"><span>9:41</span><span>📶 🔋</span></div>
+      <div class="ph-status"><span>9:41</span><span>LTE &nbsp;100%</span></div>
       <div class="app-nav"><span class="back">‹</span><span class="nav-t">Entrega en curso</span></div>
       <div class="mapp" style="height:210px;position:relative">
-        <span style="font-size:22px;position:absolute;top:22px;left:50%;transform:translateX(-50%)">🏠</span>
+        <span style="font-size:11px;font-weight:700;position:absolute;top:22px;left:50%;transform:translateX(-50%)">Destino</span>
         <div style="width:3px;height:80px;background:#1a73e8;opacity:.65;border-radius:2px"></div>
-        <span style="font-size:22px;position:absolute;bottom:22px;left:50%;transform:translateX(-50%)">🚗</span>
+        <span style="font-size:11px;font-weight:700;position:absolute;bottom:22px;left:50%;transform:translateX(-50%)">Chofer</span>
         <span class="mlbl" style="position:absolute;top:8px;right:8px">Ruta activa</span>
       </div>
       <div class="dcard">
-        <div class="drow">👤 &nbsp; <strong>María González</strong></div>
-        <div class="drow">📍 &nbsp; Av. Corrientes 456</div>
-        <div class="drow">📏 &nbsp; 1.8 km restantes</div>
+        <div class="drow">Cliente: <strong>María González</strong></div>
+        <div class="drow">Dirección: Av. Corrientes 456</div>
+        <div class="drow">Distancia: 1.8 km restantes</div>
       </div>
-      <div class="btn-o">📣 &nbsp; AVISAR LLEGADA</div>
-      <div class="btn-s">✅ &nbsp; CONFIRMAR ENTREGA</div>
+      <div class="btn-o">AVISAR LLEGADA</div>
+      <div class="btn-s">CONFIRMAR ENTREGA</div>
       <div class="ph-home"></div>
     </div>
   </div>
@@ -744,7 +737,7 @@
 </div>
 
 <!-- ═══════════════════════════ PANEL ADMIN ═══════════════════════════ -->
-<div class="section-divider">💻 Panel Administrador — 2 pantallas</div>
+<div class="section-divider">Panel Administrador — 2 pantallas</div>
 
 <!-- D-23 Dashboard -->
 <div class="wf-row">
@@ -764,22 +757,22 @@
       </div>
       <div class="app-shell">
         <div class="sidebar">
-          <div class="sb-logo">🔥 SPLG Admin</div>
-          <div class="sb-item on">📊 Dashboard</div>
-          <div class="sb-item">📦 Pedidos</div>
-          <div class="sb-item">🚗 Choferes</div>
-          <div class="sb-item">🛢 Productos</div>
-          <div class="sb-item">📋 Reclamos</div>
-          <div class="sb-item">⚙️ Configuración</div>
+          <div class="sb-logo">SPLG Admin</div>
+          <div class="sb-item on">Dashboard</div>
+          <div class="sb-item">Pedidos</div>
+          <div class="sb-item">Choferes</div>
+          <div class="sb-item">Productos</div>
+          <div class="sb-item">Reclamos</div>
+          <div class="sb-item">Configuración</div>
         </div>
         <div class="main">
           <div class="pg-hd">Dashboard — 03/05/2026</div>
           <div class="kgrid">
-            <div class="kcard"><div class="kico">📦</div><div class="kval">12</div><div class="klbl">Pedidos hoy</div></div>
-            <div class="kcard"><div class="kico">✅</div><div class="kval">7</div><div class="klbl">Entregados</div></div>
-            <div class="kcard"><div class="kico">🚗</div><div class="kval">3</div><div class="klbl">Choferes activos</div></div>
-            <div class="kcard"><div class="kico">💰</div><div class="kval">$84.500</div><div class="klbl">Ventas hoy</div></div>
-            <div class="kcard"><div class="kico">⚠️</div><div class="kval">1</div><div class="klbl">Reclamos pend.</div></div>
+            <div class="kcard"><div class="kval">12</div><div class="klbl">Pedidos hoy</div></div>
+            <div class="kcard"><div class="kval">7</div><div class="klbl">Entregados</div></div>
+            <div class="kcard"><div class="kval">3</div><div class="klbl">Choferes activos</div></div>
+            <div class="kcard"><div class="kval">$84.500</div><div class="klbl">Ventas hoy</div></div>
+            <div class="kcard"><div class="kval">1</div><div class="klbl">Reclamos pend.</div></div>
           </div>
           <div class="chart-card">
             <div class="chart-hdr">Ventas — Últimos 7 días</div>
@@ -817,13 +810,13 @@
       </div>
       <div class="app-shell">
         <div class="sidebar">
-          <div class="sb-logo">🔥 SPLG Admin</div>
-          <div class="sb-item">📊 Dashboard</div>
-          <div class="sb-item on">📦 Pedidos</div>
-          <div class="sb-item">🚗 Choferes</div>
-          <div class="sb-item">🛢 Productos</div>
-          <div class="sb-item">📋 Reclamos</div>
-          <div class="sb-item">⚙️ Configuración</div>
+          <div class="sb-logo">SPLG Admin</div>
+          <div class="sb-item">Dashboard</div>
+          <div class="sb-item on">Pedidos</div>
+          <div class="sb-item">Choferes</div>
+          <div class="sb-item">Productos</div>
+          <div class="sb-item">Reclamos</div>
+          <div class="sb-item">Configuración</div>
         </div>
         <div class="main">
           <div class="pg-hd">Pedidos</div>
@@ -832,7 +825,7 @@
               <div class="fchip">Estado ▾</div>
               <div class="fchip">Fecha ▾</div>
               <div class="fchip">Chofer ▾</div>
-              <div class="schip">🔍 Buscar cliente...</div>
+              <div class="schip">Buscar cliente...</div>
             </div>
             <table>
               <thead>
@@ -854,16 +847,16 @@
                   <td>$9.000</td>
                   <td><span class="sbadge s-blue">● En camino</span></td>
                   <td>03/05 10:23</td>
-                  <td><span class="alink">👁</span></td>
+                  <td><span class="alink">Ver</span></td>
                 </tr>
                 <tr>
                   <td>#1233</td>
                   <td>Carlos Pérez</td>
                   <td>Garrafa 10 kg ×1</td>
                   <td>$4.500</td>
-                  <td><span class="sbadge s-green">✓ Entregado</span></td>
+                  <td><span class="sbadge s-green">Entregado</span></td>
                   <td>03/05 09:15</td>
-                  <td><span class="alink">👁</span></td>
+                  <td><span class="alink">Ver</span></td>
                 </tr>
                 <tr>
                   <td>#1232</td>
@@ -872,7 +865,7 @@
                   <td>$10.700</td>
                   <td><span class="sbadge s-yellow">● Aceptado</span></td>
                   <td>03/05 09:02</td>
-                  <td><span class="alink">👁</span></td>
+                  <td><span class="alink">Ver</span></td>
                 </tr>
                 <tr>
                   <td>#1231</td>
@@ -881,16 +874,16 @@
                   <td>$6.200</td>
                   <td><span class="sbadge s-gray">⏳ Pendiente</span></td>
                   <td>03/05 08:47</td>
-                  <td><span class="alink">👁</span></td>
+                  <td><span class="alink">Ver</span></td>
                 </tr>
                 <tr>
                   <td>#1230</td>
                   <td>Julia Sosa</td>
                   <td>Garrafa 10 kg ×1</td>
                   <td>$4.500</td>
-                  <td><span class="sbadge s-red">✕ Cancelado</span></td>
+                  <td><span class="sbadge s-red">Cancelado</span></td>
                   <td>03/05 08:30</td>
-                  <td><span class="alink">👁</span></td>
+                  <td><span class="alink">Ver</span></td>
                 </tr>
               </tbody>
             </table>

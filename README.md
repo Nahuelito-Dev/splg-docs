@@ -8,7 +8,7 @@ Sistema de Pedidos y Logística de Garrafas de Gas · Proceso Unificado · FCEQy
 
 | Si querés… | Abrí |
 |---|---|
-| **Ver un caso de uso** (cualquiera, del 1 al 160) con todo lo que tiene | **`Casos-de-Uso.md`** |
+| **Ver un caso de uso** (cualquiera, del CU-001 al CU-175) con todo lo que tiene | **`Casos-de-Uso.md`** |
 | **Entregar a la cátedra** | Los cinco documentos numerados de esta carpeta |
 | **Subir los documentos a Drive** | `drive/` — ya están en HTML |
 | **Poner una imagen en un documento** | `INDICE-IMAGENES.md` te dice cuál va dónde |
@@ -40,7 +40,7 @@ la cátedra exige su artefacto ahí**. Este archivo los reúne para no saltar en
 ## Los tres comandos
 
 ```bash
-python3 verificar-conformidad.py   # ¿cumple las plantillas? (11 chequeos)
+python3 verificar-conformidad.py   # ¿cumple las plantillas? (18 chequeos)
 python3 generar-html-drive.py      # regenera drive/*.html
 python3 generar-sitio.py           # regenera splg-documentacion.html
 ```
@@ -51,8 +51,8 @@ python3 generar-sitio.py           # regenera splg-documentacion.html
 |---|---|
 | **Proceso Unificado** | La metodología que exige la cátedra |
 | **Markdown** | Los seis documentos, versionados como texto plano |
-| **Mermaid** | Los 293 diagramas de secuencia, interacción, flujo y estados |
-| **PlantUML** | Los 19 diagramas de casos de uso en notación UML clásica |
+| **Mermaid** | Los 369 diagramas de secuencia, interacción, flujo y estados |
+| **PlantUML** | Los 32 diagramas de casos de uso, estados, actividad, componentes, despliegue y cronograma |
 | **Python** | Verificación de conformidad y generación de los entregables |
 | **Git** | Historia completa de cada cambio |
 | **Netlify** | Publicación del atlas |

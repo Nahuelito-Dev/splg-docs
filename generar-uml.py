@@ -24,12 +24,14 @@ b = next(i for i, x in enumerate(lin) if re.match(r'^## 5\. ', x))
 blk = "\n".join(lin[a:b])
 
 ACTOR = {"01": "Cliente", "02": "Chofer", "03": "Administrador",
-         "04": "Sistema Automático", "05": "Administrador General"}
+         "04": "Sistema Automático", "05": "Administrador General",
+         "09": "Plataforma de despliegue"}
 # el campo Actor/es esta escrito de varias formas ("ACT-03 Administrador",
 # "Administrador (ACT-03)", "Sistema (ACT-04)", o el nombre solo)
 POR_NOMBRE = {"cliente": "01", "chofer": "02", "administrador": "03",
               "sistema automático": "04", "sistema": "04",
-              "administrador general": "05"}
+              "administrador general": "05",
+              "plataforma de despliegue": "09"}
 
 casos = {}
 for m in re.finditer(r'\*\*Código:\*\*\s*(CU-\d+)\s*\|\s*\*\*Caso de Uso:\*\*\s*(.+?)\s*\n(.*?)(?=\*\*Código:\*\*|\Z)', blk, re.S):
@@ -110,7 +112,7 @@ FACTORIZADO = {
   "F-STOCK": "Reservar Stock",
   "F-AVISO": "Notificar Cliente",
   "F-PROMO": "Aplicar Promoción",
-  "F-RECAR": "Aplicar Recargo por Transferencia",
+  "F-RECAR": "Aplicar Recargo por Pago en Línea",
   "F-TERM":  "Filtrar por Término",
   "F-FILTRO": "Filtrar Pedidos",
 }
@@ -131,7 +133,7 @@ INCLUYE_FACTOR = {
 # SIEMPRE desde el caso opcional hacia el caso base, al reves que <<include>>.
 EXTIENDE = {
   "SS-02": [("F-PROMO","CU-005","la cantidad de un ítem alcanza el umbral de promoción por volumen"),
-            ("F-RECAR","CU-005","el medio de pago elegido es Transferencia"),
+            ("F-RECAR","CU-005","el medio de pago elegido es MercadoPago o Transferencia"),
             ("F-FILTRO","CU-011","se indica status, from/to o term sobre el listado")],
   "SS-03": [("CU-014","CU-013","no hay choferes disponibles en el radio")],
   "SS-04": [("CU-019","CU-018","el chofer se encuentra cerca del destino")],
@@ -155,9 +157,9 @@ EXTIENDE = {
 ACTOR_EXT = {"06": "MercadoPago", "07": "Firebase", "08": "Servicio de correo"}
 SECUNDARIO = {
   "06": ["CU-005", "CU-048", "CU-072", "CU-147"],
-  "07": ["CU-001", "CU-004", "CU-005", "CU-013", "CU-014", "CU-016", "CU-019",
-         "CU-021", "CU-047", "CU-072", "CU-079", "CU-082", "CU-085", "CU-091",
-         "CU-100", "CU-101", "CU-147", "F-AVISO"],
+  "07": ["CU-001", "CU-004", "CU-005", "CU-013", "CU-014", "CU-015", "CU-016", "CU-019",
+         "CU-018", "CU-020", "CU-021", "CU-047", "CU-072", "CU-079", "CU-082", "CU-085",
+         "CU-091", "CU-100", "CU-101", "CU-147"],
   "08": ["CU-002", "CU-047", "CU-102", "CU-142"],
 }
 # El Administrador General hace todo lo que hace el Administrador y ademas lo que
@@ -228,13 +230,15 @@ REPRESENTATIVOS = {
   "04": ["CU-014", "CU-075"],
 }
 EXT_REPRESENTATIVO = {"06": "CU-048", "07": "CU-001", "08": "CU-047"}
+PRIMARIO_EXT = {"09": "CU-104"}
 act = ["@startuml", "title Actores del Sistema — SPLG", "left to right direction", CABECERA]
 for k in ["01", "02", "03", "05", "04"]:
     act.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
 for k in sorted(ACTOR_EXT):
     act.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<secundario>>')
+act.append(f'actor "{ACTOR["09"]}\\n(ACT-09)" as A09 <<externo>>')
 act += ["", f'rectangle "{ "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" }" ' + "{"]
-usados = sorted({c for v in REPRESENTATIVOS.values() for c in v} | set(EXT_REPRESENTATIVO.values()))
+usados = sorted({c for v in REPRESENTATIVOS.values() for c in v} | set(EXT_REPRESENTATIVO.values()) | set(PRIMARIO_EXT.values()))
 for c in usados:
     act.append(f'  usecase "{c}\\n{parte(casos[c]["nombre"], 28)}" as {eid(c)} #back:FFFFFF;line:2C4257')
 act += ["}", ""]
@@ -243,6 +247,8 @@ for k, lista in REPRESENTATIVOS.items():
         act.append(f'A{k} -[{COLOR_ACT[k]}]- {eid(c)}')
 for k, c in EXT_REPRESENTATIVO.items():
     act.append(f'{eid(c)} -[#6B7683]- A{k}')
+for k, c in PRIMARIO_EXT.items():
+    act.append(f'A{k} -[{COLOR_ACT[k]}]- {eid(c)}')
 act += ["", f"A{ESP} --|> A{GEN}", "", "@enduml"]
 escribir("CU_Sistema_Actores", "\n".join(act))
 
@@ -259,6 +265,7 @@ for k in ["01", "02", "03", "05", "04"]:
     ctx.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
 for k in sorted(ACTOR_EXT):
     ctx.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<externo>>')
+ctx.append(f'actor "{ACTOR["09"]}\\n(ACT-09)" as A09 <<externo>>')
 lineas = "\\n".join(f'{s_}  {SS[s_]}  ({cnt[s_]})' for s_ in subs)
 ctx += ["", f'rectangle "**Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)**\\n\\n{lineas}\\n\\n(entre paréntesis, los casos de uso de cada subsistema)" as LIMITE #back:F4F7FA;line:2C4257', ""]
 # En un diagrama de contexto el sistema es una sola caja: lo que se dibuja es con
@@ -272,7 +279,8 @@ for k in ["01", "02", "03", "05", "04"]:
 ctx += ["",
         f'LIMITE -[#6B7683]down- A06 : cobra y recibe el aviso de pago',
         f'LIMITE -[#6B7683]down- A07 : identidad y avisos push',
-        f'LIMITE -[#6B7683]down- A08 : comprobantes por correo',
+        f'LIMITE -[#6B7683]down- A08 : correos de bienvenida, recuperación y vencimientos',
+        f'LIMITE -[{COLOR_ACT["09"]}]down- A09 : sondea la salud del sistema',
         "", f"A{ESP} -right-|> A{GEN}", "", "@enduml"]
 escribir("CU_Sistema_Diagrama-De-Contexto", "\n".join(ctx))
 
@@ -297,7 +305,7 @@ def relaciones():
 # humanos a la izquierda; a la derecha, el Sistema Automatico y los tres
 # sistemas externos.
 IZQ = ["01", "02", "03", "05"]
-DER = ["04", "06", "07", "08"]
+DER = ["04", "06", "07", "08", "09"]
 NOMBRE_ACT = {**ACTOR, **ACTOR_EXT}
 LIMITE_TXT = "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)"
 
@@ -305,10 +313,15 @@ LIMITE_TXT = "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)"
 # limite; el completo y el mapa se componen en uml_lamina.py y salen como SVG.
 import uml_lamina
 inc, ext = relaciones()
+# Los casos factorizados no son casos de uso del catalogo (no llevan codigo): se
+# dibujan en los diagramas de cada subsistema, que declaran sus relaciones, y no en
+# la lamina completa, que muestra solo los casos numerados.
+inc = [(a, b) for a, b in inc if not (a.startswith("F-") or b.startswith("F-"))]
+ext = [(a, b, p) for a, b, p in ext if not (a.startswith("F-") or b.startswith("F-"))]
 LAMINAS = {}
 LAMINAS["CU_Sistema_Diagrama-Completo"] = uml_lamina.completo(
     casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
-    SECUNDARIO, FACTORIZADO, inc, ext, ESP, GEN, LIMITE_TXT, None)
+    SECUNDARIO, {}, inc, ext, ESP, GEN, LIMITE_TXT, None)
 LAMINAS["CU_Sistema_Mapa"] = uml_lamina.mapa(
     casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
     SECUNDARIO, ESP, GEN, LIMITE_TXT)

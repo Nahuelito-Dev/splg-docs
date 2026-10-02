@@ -29,6 +29,8 @@ skinparam nodesep 25
 skinparam ranksep 45
 
 entity Producto {
+  * identificador
+  --
   {field} tipo
   {field} peso en kilos
   {field} precio
@@ -36,32 +38,44 @@ entity Producto {
   {field} activo
 }
 entity Promocion {
+  * identificador
+  --
   {field} cantidad
   {field} descuento
 }
 entity Envase {
+  * identificador
+  --
   {field} número de serie
   {field} estado
   {field} depósito
   {field} /vencimiento
 }
 entity MovimientoEnvase {
+  * identificador
+  --
   {field} desde
   {field} hacia
   {field} fecha
 }
 entity RevisionEnvase {
+  * identificador
+  --
   {field} fecha
   {field} resultado
   {field} próxima revisión
 }
 entity CasoRecupero {
+  * identificador
+  --
   {field} escalón
   {field} depósito comprometido
   {field} estado
   {field} resolución
 }
 entity AvisoRecupero {
+  * identificador
+  --
   {field} estado
   {field} escalón
   {field} tipo
@@ -93,6 +107,7 @@ CasoRecupero }o--|| Usuario : se abre contra >
 CasoRecupero ||--o{ AvisoRecupero : emite >
 
 legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
   Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
 endlegend
 @enduml

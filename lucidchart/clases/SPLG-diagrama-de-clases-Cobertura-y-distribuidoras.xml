@@ -22,7 +22,7 @@
         <mxCell id="c0f4" value="+ programarVigenciaDeZona(zonaId: Identificador, vigenteHasta: FechaHora): ZonaCobertura" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="134" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c0f5" value="+ validarCobertura(latitud: Decimal, longitud: Decimal): Booleano, Moneda, ZonaCobertura" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+        <mxCell id="c0f5" value="+ validarCobertura(latitud: Decimal, longitud: Decimal, out recargo: Moneda, out zona: ZonaCobertura): Booleano" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="160" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c1" value="Map&lt;String, ZonaCobertura&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">

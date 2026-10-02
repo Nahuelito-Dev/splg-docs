@@ -400,14 +400,15 @@ def tipo_de_nombre(n):
 # =============================================================================== lectura de los DSD
 class Op:
     """Una operación de diseño: lo que recibe un objeto en un DSD."""
-    def __init__(self, nombre, params, retorno, crea=False):
+    def __init__(self, nombre, params, retorno, crea=False, salidas=()):
         self.nombre, self.params, self.retorno, self.crea = nombre, params, retorno, crea
+        self.salidas = list(salidas)   # parámetros de salida: lo que el DSD devuelve además del retorno
 
     def clave(self):
         return (self.nombre, tuple(n for n, _ in self.params))
 
     def firma(self, clase=None):
-        ps = ", ".join(f"{n}: {t}" for n, t in self.params)
+        ps = ", ".join([f"{n}: {t}" for n, t in self.params] + [f"out {n}: {t}" for n, t in self.salidas])
         if self.crea:
             return f"«create» {clase}({ps})"
         r = f": {self.retorno}" if self.retorno else ""
@@ -452,11 +453,13 @@ RETORNO_ESPECIFICO = {
 
 
 def _tipo_de_retorno(texto, clase=None, op=None):
-    """Tipos de lo que devuelve un mensaje de retorno, o None si el DSD no lo precisa
-    (códigos de error, prosa, acuses)."""
+    """(retorno, salidas) de un mensaje de retorno: el primer valor que devuelve es el retorno
+    de la operación y los demás son parámetros de salida (`out`); una operación nunca tiene
+    dos retornos. Retorno None si el DSD no lo precisa (códigos de error, prosa, acuses)."""
     if (clase, op) in RETORNO_ESPECIFICO:
-        return RETORNO_ESPECIFICO[(clase, op)]
+        return RETORNO_ESPECIFICO[(clase, op)], []
     tipos = []
+    nombres = []
     tokens = [x.strip() for x in re.split(r',\s*|\s+y\s+', texto.strip())]
     hay_coleccion = any((tipo_de_nombre(x) or "").endswith("[*]") for x in tokens)
     for tk in tokens:
@@ -470,7 +473,10 @@ def _tipo_de_retorno(texto, clase=None, op=None):
             t = "?"
         if t not in tipos:
             tipos.append(t)
-    return ", ".join(tipos) if tipos else None
+            nombres.append(camel(tk) if " " in tk else tk)
+    if not tipos:
+        return None, []
+    return tipos[0], list(zip(nombres[1:], tipos[1:]))
 
 
 def leer_dsd():
@@ -508,7 +514,7 @@ def _tipos_del_catalogo():
 
 
 # =============================================================================== el modelo
-ESTEREOTIPO = {"use case": "use case", "fachada": "fachada", "pura": "fabricación pura",
+ESTEREOTIPO = {"use case": "controlador", "fachada": "fachada", "pura": "fabricación pura",
                "puerto": "puerto", "adaptador": "adaptador", "coleccion": "colección",
                "externa": "biblioteca"}
 
@@ -529,6 +535,7 @@ class Clase:
             self.ops[k] = op
         elif not self.ops[k].retorno and op.retorno:
             self.ops[k].retorno = op.retorno
+            self.ops[k].salidas = op.salidas
 
 
 class DC:
@@ -624,11 +631,11 @@ def construir():
                 if cl.tipo == "coleccion" and c["nombre"] in OPS_POR_CLAVE and len(ps) == 1:
                     ps = [("clave", "Cadena")]
                 try:
-                    ret = _tipo_de_retorno(c["retorno"], dst, c["nombre"]) if c["retorno"] else None
+                    ret, sal = _tipo_de_retorno(c["retorno"], dst, c["nombre"]) if c["retorno"] else (None, [])
                 except KeyError as e:
                     dc.sin_resolver.append(f"{d['base']}: {dst}.{c['nombre']}: {e.args[0]}")
-                    ret = None
-                cl.agregar_op(Op(c["nombre"], ps, ret))
+                    ret, sal = None, []
+                cl.agregar_op(Op(c["nombre"], ps, ret, salidas=sal))
             if org and org != dst and ids.get(c["de"]) is not None:
                 mensajes.add((org, dst))
     # las clases de los DSD que son colecciones o de servicio reciben módulo y papel
@@ -664,7 +671,7 @@ def _asignar_modulo_y_papel(dc, cl, primeros):
     elif cl.tipo == "adaptador":
         cl.estereotipo = "adaptador"
     elif cl.nombre in primeros:
-        cl.estereotipo = "use case" if cl.nombre.endswith("UseCase") else "fachada"
+        cl.estereotipo = "controlador" if cl.nombre.endswith("UseCase") else "fachada"
     else:
         cl.estereotipo = "fabricación pura"
 
@@ -689,6 +696,7 @@ def _fusionar_sobrecargas(dc):
                     if len(j[1]) < len(k[1]) and k[1][: len(j[1])] == j[1]:
                         if not cl.ops[k].retorno and cl.ops[j].retorno:
                             cl.ops[k].retorno = cl.ops[j].retorno
+                            cl.ops[k].salidas = cl.ops[j].salidas
                         del cl.ops[j]
 
 
@@ -921,7 +929,7 @@ def verificar_dc():
     # 4: notación UML, sin sintaxis del código
     for c, v in clases.items():
         for o in v["ops"]:
-            if not re.match(r'^(?:«create» )?\w+\((?:\w+: [\wáéíóú\[\]*]+(?:, \w+: [\wáéíóú\[\]*]+)*)?\)(?:: [\w\[\]*]+(?:, [\w\[\]*]+)*)?$', o):
+            if not re.match(r'^(?:«create» )?\w+\((?:(?:out )?\w+: [\wáéíóú\[\]*]+(?:, (?:out )?\w+: [\wáéíóú\[\]*]+)*)?\)(?:: [\w\[\]*]+)?$', o):
                 errores.append(f"{c}: la operación «{o}» no está en notación UML (+ nombre(parámetro: Tipo): Retorno)")
         for a in v["attrs"]:
             if not re.match(r'^/?\w+: [\w\[\]*]+$', a):

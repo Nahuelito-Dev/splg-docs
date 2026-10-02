@@ -17,23 +17,24 @@ skinparam ArrowFontSize 12
 skinparam NoteBackgroundColor #FBF7E6
 skinparam NoteBorderColor #7A7340
 hide empty description
-state "RESERVED\nreservado" as RESERVED
-state "PENDING\npendiente de chofer" as PENDING
-state "ACCEPTED\naceptado" as ACCEPTED
-state "ON_THE_WAY\nen camino" as ON_THE_WAY
-state "DELIVERED\nentregado" as DELIVERED
-state "CANCELLED\ncancelado" as CANCELLED
+state "Reservado\n(RESERVED)" as RESERVED
+state "Pendiente de chofer\n(PENDING)" as PENDING
+state "Aceptado\n(ACCEPTED)" as ACCEPTED
+state "En camino\n(ON_THE_WAY)" as ON_THE_WAY
+state "Entregado\n(DELIVERED)" as DELIVERED
+state "Cancelado\n(CANCELLED)" as CANCELLED
 
-[*] --> PENDING : crearPedido() [pago en efectivo, transferencia\no MercadoPago; sin reserva]
-[*] --> RESERVED : crearPedido() [isReservation y scheduledDate informada]
-RESERVED --> PENDING : activarReserva() [depositPaid y scheduledDate <= hoy]
-RESERVED --> CANCELLED : cancelarPedido()\no vencer seña [depositPaid = false\ny antigüedad > plazo de la seña]
-PENDING --> ACCEPTED : aceptarPedido() [chofer habilitado,\nvalidado y de la misma distribuidora]
-PENDING --> CANCELLED : cancelarPedido()\no vencer pago [MercadoPago sin pago\ndentro del plazo]
+[*] --> PENDING : crearPedido() [no es una reserva]
+[*] --> RESERVED : crearPedido() [es una reserva con fecha agendada]
+RESERVED --> PENDING : activarReserva() [seña abonada y fecha agendada\nalcanzada]
+RESERVED --> CANCELLED : cancelarPedido()\no vencer seña [seña sin abonar y\nplazo de la seña vencido]
+PENDING --> ACCEPTED : aceptarPedido() o\nasignarChoferAPedido() [chofer habilitado,\nvalidado y de la misma distribuidora]
+PENDING --> CANCELLED : cancelarPedido()\no vencer pago [pago en línea sin acreditar\ndentro del plazo]
 ACCEPTED --> ON_THE_WAY : marcarEnCamino() [pedido del chofer]
 ACCEPTED --> PENDING : liberarPedido() [chofer o administrador]
 ACCEPTED --> CANCELLED : cancelarPedido() [cliente o administrador]
-ON_THE_WAY --> DELIVERED : confirmarEntrega() [código de entrega válido]
+ON_THE_WAY --> DELIVERED : confirmarEntrega() [chofer asignado]
+ON_THE_WAY --> DELIVERED : confirmarEntregaConCodigo() [código de entrega válido]
 ON_THE_WAY --> PENDING : liberarPedido() [chofer o administrador]
 ON_THE_WAY --> CANCELLED : cancelarPedido() [administrador;\nel cliente recibe rechazo]
 DELIVERED --> [*]

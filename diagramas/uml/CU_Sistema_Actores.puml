@@ -33,6 +33,7 @@ actor "Sistema Automático\n(ACT-04)" as A04
 actor "MercadoPago\n(ACT-06)" as A06 <<secundario>>
 actor "Firebase\n(ACT-07)" as A07 <<secundario>>
 actor "Servicio de correo\n(ACT-08)" as A08 <<secundario>>
+actor "Plataforma de despliegue\n(ACT-09)" as A09 <<externo>>
 
 rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
   usecase "CU-001\nIniciar Sesión" as U001 #back:FFFFFF;line:2C4257
@@ -51,6 +52,7 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
   usecase "CU-072\nCrear Reserva Programada con\nSeña" as U072 #back:FFFFFF;line:2C4257
   usecase "CU-075\nActivar Reservas Vencidas\nAutomaticamente (Cron)" as U075 #back:FFFFFF;line:2C4257
   usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)" as U087 #back:FFFFFF;line:2C4257
+  usecase "CU-104\nVerificar la Salud del\nSistema (liveness /\nreadiness)" as U104 #back:FFFFFF;line:2C4257
 }
 
 A01 -[#1F6F8B]- U005
@@ -69,6 +71,7 @@ A04 -[#8A6D1F]- U075
 U048 -[#6B7683]- A06
 U001 -[#6B7683]- A07
 U047 -[#6B7683]- A08
+A09 -[#4F6D3A]- U104
 
 A05 --|> A03
 

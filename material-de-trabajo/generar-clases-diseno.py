@@ -153,7 +153,7 @@ skinparam class<<referencia>> {{
 skinparam class<<fachada>> {{
   HeaderBackgroundColor #D6E4F0
 }}
-skinparam class<<use case>> {{
+skinparam class<<controlador>> {{
   HeaderBackgroundColor #D6E4F0
 }}
 skinparam class<<fabricación pura>> {{
@@ -271,7 +271,7 @@ def lineas_relaciones(en_vista, con_nombre=True, ambos_extremos=True, incluir_de
     if incluir_dep:
         for o, d in sorted(dc.dependencias):
             if o in en_vista and d in en_vista:
-                et = " : «create»" if (o, d) in dc.creaciones else ""
+                et = " : <<create>>" if (o, d) in dc.creaciones else ""
                 r.append(f"{ident(o)} ..> {ident(d)}{et}")
     for ad, pu in dc.realizaciones:
         if ad in en_vista and pu in en_vista:
@@ -310,7 +310,7 @@ def vista_dominio(titulo, foco, ref):
             lin.append(flecha_asoc(a))
     for o, d in sorted(dc.dependencias):
         if o in en_vista and d in en_vista and (o in foco_s or d in foco_s):
-            et = " : «create»" if (o, d) in dc.creaciones else ""
+            et = " : <<create>>" if (o, d) in dc.creaciones else ""
             lin.append(f"{ident(o)} ..> {ident(d)}{et}")
     c, a_, b_ = M.CLASE_ASOCIACION
     if {c, a_, b_} <= en_vista:
@@ -392,7 +392,7 @@ def vista_modulo(titulo, propias):
             lin.append(flecha_asoc(dict(a, nombre="")))
     for o, d in sorted(dc.dependencias):
         if o in propias_s and d in en_vista:
-            et = " : «create»" if (o, d) in dc.creaciones else ""
+            et = " : <<create>>" if (o, d) in dc.creaciones else ""
             lin.append(f"{ident(o)} ..> {ident(d)}{et}")
     for ad, pu in dc.realizaciones:
         if ad in en_vista and pu in en_vista:
@@ -596,15 +596,10 @@ def documento(indice, vistas_mod, deps):
           "El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del "
           "§4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que "
           "recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se "
-          "mandan mensajes decide la relación que los une. No se dibuja a mano ni se lee del código: "
-          "lo genera `material-de-trabajo/generar-clases-diseno.py` a partir de los "
-          f"{len(X.leer_dsd())} DSD en estilo Larman (`diagramas/DSD_*.mmd`) y del modelo conceptual "
-          "(Documento 2, §1), y `verificar-conformidad.py` comprueba que lo dibujado sigue siendo lo "
-          "que dicen los DSD.", "",
-          "```bash",
-          "python3 material-de-trabajo/generar-clases-diseno.py   # lee los DSD y el modelo conceptual y dibuja",
-          "python3 verificar-conformidad.py                       # contrasta el diagrama con los DSD y con el modelo",
-          "```", "",
+          "mandan mensajes decide la relación que los une. Se construye a partir de los "
+          f"{len(X.leer_dsd())} diagramas de interacción en la notación de Larman y del modelo "
+          "conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de "
+          "ellos.", "",
           "**Cómo se deriva.**", "",
           "| Del DSD | Al diagrama de clases |", "|---|---|",
           "| Un mensaje `A->>B: operacion(parametro)` | La operación `+ operacion(parametro: Tipo): Retorno` en la clase de `B`, con el retorno que el DSD muestra. Una operación aparece una sola vez aunque varios DSD la usen |",
@@ -612,7 +607,7 @@ def documento(indice, vistas_mod, deps):
           "| Dos objetos de dominio que se mandan mensajes y tienen asociación en el modelo conceptual | Esa asociación, con su nombre y su multiplicidad, **navegable** en el sentido del mensaje (visibilidad por atributo) |",
           "| Un objeto de dominio que llega por parámetro o variable local (controlador a objeto, objeto a objeto sin asociación) | **Dependencia** (línea punteada) |",
           "| Servicio, puerto o colección que colabora con otro | Asociación navegable de multiplicidad 1: el colaborador se inyecta como atributo. Si el código real no lo inyecta, dependencia |",
-          "| Primer receptor del mensaje del actor | `«use case»` (clase `…UseCase` del módulo) o `«fachada»` (servicio fachada del módulo): el controlador de aplicación |",
+          "| Primer receptor del mensaje del actor | `«controlador»` (clase `…UseCase` del módulo) o `«fachada»` (servicio fachada del módulo): el controlador de aplicación |",
           "| Objeto de infraestructura que sólo recibe mensajes de otros | `«fabricación pura»` |",
           "| Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con `..|>` sólo si aparece en un DSD |",
           "| `:Map<String, X>` y `:List<X>` | `«colección»` agregada a su clase `X` (el DSD las usa para buscar por identificador) |", "",
@@ -623,10 +618,12 @@ def documento(indice, vistas_mod, deps):
           "dominio son las del modelo conceptual (`Pedido`, `ItemPedido`) y los controladores, "
           "fabricaciones puras y puertos llevan su nombre real (`CreateOrderUseCase`, "
           "`OrderPricingService`, `NotificationPort`). Una operación sin retorno es una "
-          "que el DSD no muestra devolviendo nada.", "",
+          "que el DSD no muestra devolviendo nada. Una operación tiene un solo retorno: cuando el "
+          "DSD devuelve varios valores, el primero es el retorno y los demás son parámetros de "
+          "salida (`out nombre: Tipo`).", "",
           "**Tipos.** Los primitivos son los del catálogo de operaciones del Documento 2; los de los "
           "atributos de dominio salen de las columnas del backend, y los de los argumentos y retornos, "
-          "del catálogo, del modelo conceptual o del glosario de `dc_larman.py`.", "",
+          "del catálogo o del modelo conceptual.", "",
           "| Tipo | Significado |", "|---|---|"]
     L += [f"| `{k}` | {v} |" for k, v in X.PRIMITIVOS.items()]
     L += ["", "| Enumeración | Enumeración del backend |", "|---|---|"]

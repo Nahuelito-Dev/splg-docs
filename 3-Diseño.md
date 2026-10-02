@@ -15,264 +15,288 @@
 - Figura 1 — Diagrama de componentes
 - Figura 2 — Diagrama de despliegue
 - Figura 3 — Entornos y recorrido del código
-- Figura 4 — CU-001 Iniciar Sesión — Diagrama de Interacción
-- Figura 5 — CU-048 Pago con pasarela y confirmación por webhook — Diagrama de Interacción
-- Figura 6 — CU-079 Confirmar Entrega Escaneando el QR — Diagrama de Interacción
-- Figura 7 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción
-- Figura 8 — DSD CU-005: Crear pedido con despacho automático
-- Figura 9 — DSD CU-017: Actualización de la ubicación del chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)
-- Figura 10 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1) — Operación: ofrecerAlSiguienteChofer(pedidoId)
-- Figura 11 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal) — Operación: vencerOfertasExpiradas()
-- Figura 12 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: aceptarPedido(pedidoId)
-- Figura 13 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: rechazarOferta(pedidoId)
-- Figura 14 — DSD CU-072: Crear reserva programada con seña
-- Figura 15 — DSD CU-075: Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia
-- Figura 16 — DSD CU-076: Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia
-- Figura 17 — DSD CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar
-- Figura 18 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: obtenerCodigoDeEntrega(pedidoId)
-- Figura 19 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: confirmarEntregaConCodigo(pedidoId, codigo)
-- Figura 20 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
-- Figura 21 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
-- Figura 22 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago
-- Figura 23 — DSD CU-048: Procesar Pago con MercadoPago · notificarResultadoDePago
-- Figura 24 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido
-- Figura 25 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: calificarPedido(pedidoId, estrellas, comentario)
-- Figura 26 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: consultarResumenDeCalificaciones(usuarioId)
-- Figura 27 — DSD CU-001: Iniciar Sesión
-- Figura 28 — DSD CU-002: Registrarse como Cliente
-- Figura 29 — DSD CU-003: Registrar Chofer
-- Figura 30 — DSD CU-004: Gestionar Perfil de Usuario
-- Figura 31 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfil(usuarioId)
-- Figura 32 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)
-- Figura 33 — DSD CU-047: Recuperar Contraseña
-- Figura 34 — DSD CU-047: Recuperar Contraseña — Operación: solicitarRecuperacionDeClave(correo)
-- Figura 35 — DSD CU-050: Bloquear / Desbloquear Usuario
-- Figura 36 — DSD CU-082: Crear Usuario Base
-- Figura 37 — DSD CU-083: Buscar / Listar Usuarios
-- Figura 38 — DSD CU-083: Buscar / Listar Usuarios — Operación: buscarUsuarioPorTelefono(telefono)
-- Figura 39 — DSD CU-083: Buscar / Listar Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
-- Figura 40 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)
-- Figura 41 — DSD CU-085: Eliminar Usuario (baja lógica)
-- Figura 42 — DSD CU-091: Validar Vigencia del Token de Sesión
-- Figura 43 — DSD CU-006: Consultar Detalle de Pedido
-- Figura 44 — DSD CU-007: Consultar Historial de Pedidos
-- Figura 45 — DSD CU-169: Registrar el Cambio de Estado de un Pedido
-- Figura 46 — DSD CU-170: Consultar el Historial de Estados de un Pedido
-- Figura 47 — DSD CU-143: Declarar el Consumo Promedio al Registrarse
-- Figura 48 — DSD CU-144: Actualizar el Consumo Promedio Declarado
-- Figura 49 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra
-- Figura 50 — DSD CU-146: Consultar la Fecha Estimada de Recompra
-- Figura 51 — DSD CU-147: Realizar una Compra Express
-- Figura 52 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido
-- Figura 53 — DSD CU-008: Cancelar Pedido (Cliente)
-- Figura 54 — DSD CU-009: Cancelar Pedido (Chofer)
-- Figura 55 — DSD CU-010: Cancelar Pedido (Administrador)
-- Figura 56 — DSD CU-168: Reintegrar el Pago de un Pedido
-- Figura 57 — DSD CU-011: Listar Todos los Pedidos
-- Figura 58 — DSD CU-046: Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
-- Figura 59 — DSD CU-046 / CU-116: Consultar Direcciones de Entrega del Cliente · registrarDireccionDeEntrega
-- Figura 60 — DSD CU-046 / CU-118: Consultar Direcciones de Entrega del Cliente · editarDireccionDeEntrega
-- Figura 61 — DSD CU-046 / CU-119: Consultar Direcciones de Entrega del Cliente · eliminarDireccionDeEntrega
-- Figura 62 — DSD CU-046 / CU-120: Consultar Direcciones de Entrega del Cliente · marcarDireccionPredeterminada
-- Figura 63 — DSD CU-117: Consultar Detalle de una Dirección de Entrega
-- Figura 64 — DSD CU-121: Consultar la Dirección Predeterminada
-- Figura 65 — DSD CU-122: Agregar Ítem al Carrito
-- Figura 66 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito
-- Figura 67 — DSD CU-124: Quitar Ítem del Carrito
-- Figura 68 — DSD CU-125: Consultar el Carrito
-- Figura 69 — DSD CU-126: Vaciar el Carrito
-- Figura 70 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido
-- Figura 71 — DSD CU-128: Indicar Quién Recibe el Pedido
-- Figura 72 — DSD CU-080: Consultar el Pool de Pedidos Disponibles
-- Figura 73 — DSD CU-081: Consultar los Pedidos Asignados al Chofer
-- Figura 74 — DSD CU-012: Asignar Chofer Manualmente
-- Figura 75 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
-- Figura 76 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)
-- Figura 77 — DSD CU-018: Marcar Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)
-- Figura 78 — DSD CU-019: Avisar Llegada al Cliente — Operación: avisarLlegada(pedidoId)
-- Figura 79 — DSD CU-021: Recibir Notificaciones en Tiempo Real — Operación: suscribirseAlSeguimiento(clienteId)
-- Figura 80 — DSD CU-022: Activar / Desactivar Disponibilidad — Operación: cambiarDisponibilidad(usuarioId, disponible)
-- Figura 81 — DSD CU-023: Registrar Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)
-- Figura 82 — DSD CU-024: Listar Reclamos — Operación: listarReclamos()
-- Figura 83 — DSD CU-025: Resolver Reclamo
-- Figura 84 — DSD CU-166: Tomar un Reclamo Pendiente
-- Figura 85 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)
-- Figura 86 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)
-- Figura 87 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)
-- Figura 88 — DSD CU-026: Ver Dashboard General · consultarResumenDePedidos
-- Figura 89 — DSD CU-026: Ver Dashboard General · consultarGraficoDeVentas
-- Figura 90 — DSD CU-027: Ver Reporte de Ventas por Chofer
-- Figura 91 — DSD CU-028: Ver Reporte de Ventas por Producto
-- Figura 92 — DSD CU-029: Ver Reporte por Método de Pago
-- Figura 93 — DSD CU-030: Ver Gráfico de Ventas
-- Figura 94 — DSD CU-032: Validar / Invalidar Chofer
-- Figura 95 — DSD CU-032: Validar / Invalidar Chofer — Operación: invalidarChofer(choferId)
-- Figura 96 — DSD CU-033: Activar / Desactivar Chofer (Admin)
-- Figura 97 — DSD CU-034: Registrar Vehículo del Chofer
-- Figura 98 — DSD CU-035: Consultar Listado de Choferes
-- Figura 99 — DSD CU-035: Consultar Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)
-- Figura 100 — DSD CU-035: Consultar Listado de Choferes — Operación: consultarDetalleDelChofer(choferId)
-- Figura 101 — DSD CU-049: Consultar Balance / Ganancias del Chofer
-- Figura 102 — DSD CU-049: Consultar Balance / Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)
-- Figura 103 — DSD CU-051: Consultar Listado de Vehículos
-- Figura 104 — DSD CU-051: Consultar Listado de Vehículos — Operación: buscarVehiculoPorPatente(patente)
-- Figura 105 — DSD CU-051: Consultar Listado de Vehículos — Operación: editarVehiculo(vehiculoId, datos)
-- Figura 106 — DSD CU-051: Consultar Listado de Vehículos — Operación: eliminarVehiculo(vehiculoId)
-- Figura 107 — DSD CU-096: Actualizar Perfil del Chofer
-- Figura 108 — DSD CU-097: Eliminar Chofer (baja lógica)
-- Figura 109 — DSD CU-110: Buscar Chofer por Usuario
-- Figura 110 — DSD CU-113: Consultar Detalle del Vehículo
-- Figura 111 — DSD CU-115: Consultar Vehículos de un Chofer
-- Figura 112 — DSD CU-136: Registrar el Seguro del Vehículo
-- Figura 113 — DSD CU-139: Consultar los Vencimientos de la Flota
-- Figura 114 — DSD CU-141: Registrar un Mantenimiento Realizado
-- Figura 115 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota
-- Figura 116 — DSD CU-155: Adjuntar Archivo a una Tarea de Flota
-- Figura 117 — DSD CU-156: Consultar Adjuntos de una Tarea de Flota
-- Figura 118 — DSD CU-157: Descargar un Adjunto de Flota
-- Figura 119 — DSD CU-158: Eliminar un Adjunto de Flota
-- Figura 120 — DSD CU-159: Almacenar Archivo
-- Figura 121 — DSD CU-160: Recuperar Archivo
-- Figura 122 — DSD CU-161: Poner un Vehículo en Uso para un Chofer
-- Figura 123 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer
-- Figura 124 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer
-- Figura 125 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()
-- Figura 126 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer
-- Figura 127 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo
-- Figura 128 — DSD CU-036: Crear Producto (Garrafa)
-- Figura 129 — DSD CU-037: Actualizar Precio de Producto
-- Figura 130 — DSD CU-038: Actualizar Stock de Producto
-- Figura 131 — DSD CU-040: Activar / Desactivar Producto
-- Figura 132 — DSD CU-040: Activar / Desactivar Producto — Operación: reactivarProducto(productoId)
-- Figura 133 — DSD CU-040: Activar / Desactivar Producto — Operación: consultarProductosInactivos()
-- Figura 134 — DSD CU-041: Consultar Catálogo de Productos
-- Figura 135 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProducto(productoId)
-- Figura 136 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)
-- Figura 137 — DSD CU-042: Crear Franja Horaria
-- Figura 138 — DSD CU-045: Consultar Franjas Horarias Disponibles
-- Figura 139 — DSD CU-044 / CU-045: Consultar Franjas Horarias Disponibles
-- Figura 140 — DSD CU-103: Eliminar Franja Horaria
-- Figura 141 — DSD CU-154: Consultar Listado de Franjas Horarias
-- Figura 142 — C.1 DSD — CU-052: Registrar Distribuidora
-- Figura 143 — C.2 DSD — CU-053: Consultar Distribuidoras
-- Figura 144 — C.2 DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)
-- Figura 145 — C.3 DSD — CU-054: Modificar Datos de la Distribuidora
-- Figura 146 — C.4 DSD — CU-055: Dar de Baja una Distribuidora
-- Figura 147 — C.5 DSD — CU-056: Definir Zona de Cobertura
-- Figura 148 — C.6 DSD — CU-057: Consultar Zonas de Cobertura
-- Figura 149 — C.7 DSD — CU-059: Eliminar Zona de Cobertura
-- Figura 150 — C.8 DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
-- Figura 151 — C.9 DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()
-- Figura 152 — C.10 DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)
-- Figura 153 — C.11 DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
-- Figura 154 — C.12 DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)
-- Figura 155 — C.13 DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
-- Figura 156 — C.14 DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)
-- Figura 157 — C.14 DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)
-- Figura 158 — C.15 DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)
-- Figura 159 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
-- Figura 160 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)
-- Figura 161 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)
-- Figura 162 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)
-- Figura 163 — C.16 DSD — CU-073: Listar Reservas y Estado de la Seña
-- Figura 164 — C.17 DSD — CU-074: Confirmar Seña Cobrada en Efectivo
-- Figura 165 — C.18 DSD — CU-086: Registrar Administrador
-- Figura 166 — C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
-- Figura 167 — C.20 DSD — CU-088: Consultar Administradores
-- Figura 168 — C.20 DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)
-- Figura 169 — C.21 DSD — CU-089: Gestionar Roles del Sistema
-- Figura 170 — C.21 DSD — CU-089: Gestionar Roles del Sistema — Operación: actualizarRol(rolId, datos)
-- Figura 171 — C.21 DSD — CU-089: Gestionar Roles del Sistema — Operación: eliminarRol(rolId)
-- Figura 172 — C.21 DSD — CU-089: Gestionar Roles del Sistema — Operación: listarRoles()
-- Figura 173 — C.22 DSD — CU-090: Sembrar los Roles Iniciales
-- Figura 174 — C.23 DSD — CU-092: Consultar Listado de Clientes
-- Figura 175 — C.24 DSD — CU-094: Actualizar Ubicación del Cliente
-- Figura 176 — C.25 DSD — CU-095: Eliminar Cliente (baja lógica)
-- Figura 177 — DSD CU-129: Consultar Detalle del Cliente
-- Figura 178 — DSD CU-130: Buscar Cliente por Usuario
-- Figura 179 — DSD CU-131: Editar Datos del Cliente
-- Figura 180 — C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
-- Figura 181 — C.27 DSD — CU-099: Consultar los Tokens de un Usuario
-- Figura 182 — C.28 DSD — CU-100: Enviar Notificación de Prueba
-- Figura 183 — C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
-- Figura 184 — C.30 DSD — CU-102: Probar el Servicio de Correo
-- Figura 185 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
-- Figura 186 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()
-- Figura 187 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()
-- Figura 188 — C.32 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
-- Figura 189 — C.33 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
-- Figura 190 — C.34 DSD — CU-152: Consultar el Registro de Auditoría
-- Figura 191 — C.35 DSD — CU-153: Registrar Toda Operación de Escritura
-- Figura 192 — DSD CU-172: Configurar los Parámetros de un Proceso Automático
-- Figura 193 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas
-- Figura 194 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 195 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
-- Figura 196 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
-- Figura 197 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra
-- Figura 198 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras
-- Figura 199 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()
-- Figura 200 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)
-- Figura 201 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()
-- Figura 202 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
-- Figura 203 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
-- Figura 204 — DSD CU-043: Modificar Capacidad de Franja Horaria
-- Figura 205 — DSD CU-020: Confirmar entrega (declaración del chofer) — Operación: confirmarEntrega(pedidoId)
-- Figura 206 — Diagrama de Clases de Dominio
-- Figura 206.1 — Clases de dominio: organización y acceso
-- Figura 206.2 — Clases de dominio: clientes
-- Figura 206.3 — Clases de dominio: pedido, líneas y pago
-- Figura 206.4 — Clases de dominio: carrito, franjas y cobertura
-- Figura 206.5 — Clases de dominio: despacho y propuestas con vigencia
-- Figura 206.6 — Clases de dominio: choferes y vehículos
-- Figura 206.7 — Clases de dominio: mantenimiento de la flota
-- Figura 206.8 — Clases de dominio: productos y envases
-- Figura 206.9 — Clases de dominio: recupero de envases
-- Figura 206.10 — Clases de dominio: posventa
-- Figura 207 — Clases de diseño: sesión, registro e identidad
-- Figura 208 — Clases de diseño: usuarios, roles, administradores y auditoría
-- Figura 209 — Clases de diseño: clientes y direcciones de entrega
-- Figura 210 — Clases de diseño: carrito y recompra
-- Figura 211 — Clases de diseño: productos y franjas horarias
-- Figura 212 — Clases de diseño: cobertura y distribuidoras
-- Figura 213 — Clases de diseño: pedidos: alta y cancelación
-- Figura 214 — Clases de diseño: pedidos: consulta y estado
-- Figura 215 — Clases de diseño: pagos y reservas
-- Figura 216 — Clases de diseño: despacho de pedidos
-- Figura 217 — Clases de diseño: seguimiento en tiempo real
-- Figura 218 — Clases de diseño: choferes y vehículos
-- Figura 219 — Clases de diseño: flota: tareas, adjuntos y vencimientos
-- Figura 220 — Clases de diseño: flota: planificador de mantenimiento
-- Figura 221 — Clases de diseño: envases
-- Figura 222 — Clases de diseño: recupero de envases
-- Figura 223 — Clases de diseño: reclamos, incidencias y calificaciones
-- Figura 224 — Clases de diseño: notificaciones y correo
-- Figura 225 — Clases de diseño: reportes, salud y almacenamiento
-- Figura 226 — Dependencias entre módulos
-- Figura 227 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
-- Figura 228 — Organización y acceso
-- Figura 229 — Clientes
-- Figura 230 — Catálogo e inventario de envases
-- Figura 231 — Venta y pedidos
-- Figura 232 — Pagos
-- Figura 233 — Despacho y logística
-- Figura 234 — Flota y choferes
-- Figura 235 — Posventa
-- Figura 236 — Relaciones entre contextos
-- Figura 237 — Modelo entidad-relación conceptual
-- Figura 237.1 — Modelo entidad-relación conceptual: usuarios y cuentas
-- Figura 237.2 — Modelo entidad-relación conceptual: pedidos y pagos
-- Figura 237.3 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
-- Figura 237.4 — Modelo entidad-relación conceptual: flota y choferes
-- Figura 237.5 — Modelo entidad-relación conceptual: envases y catálogo
-- Figura 237.6 — Modelo entidad-relación conceptual: posventa
-- Figura 238 — Diagrama de estados del pedido
-- Figura 239 — Diagrama de estados del reclamo
-- Figura 240 — Diagrama de estados del envase
-- Figura 241 — Diagrama de estados de la reserva programada
-- Figura 242 — Diagrama de estados de la tarea de flota
-- Figura 243 — Diagrama de estados de la oferta de despacho
-- Figura 244 — Diagrama de actividad del despacho por proximidad
-- Figura 245 — Diagrama de actividad del ciclo de vida del pedido
+- Figura 4 — CU-001 Iniciar Sesión — Interfaz Gráfica
+- Figura 5 — CU-001 Iniciar Sesión — Diagrama de Interacción
+- Figura 6 — CU-005 Crear Pedido — Interfaz Gráfica
+- Figura 7 — CU-005 Crear Pedido — Diagrama de Interacción
+- Figura 8 — CU-013 Asignar Pedido Automáticamente por Proximidad — Interfaz Gráfica
+- Figura 9 — CU-013 Asignar Pedido Automáticamente por Proximidad — Diagrama de Interacción
+- Figura 10 — CU-014 Reintentar Asignación con Radio Expandido (Cron) — Diagrama de Interacción
+- Figura 11 — CU-015 Aceptar Pedido — Interfaz Gráfica
+- Figura 12 — CU-015 Aceptar Pedido — Diagrama de Interacción
+- Figura 13 — CU-017 Actualizar Ubicación GPS del Chofer — Interfaz Gráfica
+- Figura 14 — CU-017 Actualizar Ubicación GPS del Chofer — Diagrama de Interacción
+- Figura 15 — CU-020 Confirmar Entrega — Interfaz Gráfica
+- Figura 16 — CU-020 Confirmar Entrega — Diagrama de Interacción
+- Figura 17 — CU-048 Procesar Pago con MercadoPago — Interfaz Gráfica
+- Figura 18 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago
+- Figura 19 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Interfaz Gráfica
+- Figura 20 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Diagrama de Interacción
+- Figura 21 — CU-008 Cancelar Pedido (Cliente) — Interfaz Gráfica
+- Figura 22 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción
+- Figura 23 — DSD CU-001: Iniciar Sesión
+- Figura 24 — DSD CU-002: Registrarse como Cliente
+- Figura 25 — DSD CU-003: Registrar Chofer
+- Figura 26 — DSD CU-004: Gestionar Perfil de Usuario
+- Figura 27 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfil(usuarioId)
+- Figura 28 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)
+- Figura 29 — DSD CU-047: Recuperar Contraseña
+- Figura 30 — DSD CU-047: Recuperar Contraseña — Operación: solicitarRecuperacionDeClave(correo)
+- Figura 31 — DSD CU-050: Bloquear / Desbloquear Usuario
+- Figura 32 — DSD CU-082: Crear Usuario Base
+- Figura 33 — DSD CU-083: Buscar / Listar Usuarios
+- Figura 34 — DSD CU-083: Buscar / Listar Usuarios — Operación: buscarUsuarioPorTelefono(telefono)
+- Figura 35 — DSD CU-083: Buscar / Listar Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
+- Figura 36 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)
+- Figura 37 — DSD CU-085: Eliminar Usuario (baja lógica)
+- Figura 38 — DSD CU-091: Validar Vigencia del Token de Sesión
+- Figura 39 — DSD CU-005: Crear pedido con despacho automático
+- Figura 40 — DSD CU-006: Consultar Detalle de Pedido
+- Figura 41 — DSD CU-007: Consultar Historial de Pedidos
+- Figura 42 — DSD CU-169: Registrar el Cambio de Estado de un Pedido
+- Figura 43 — DSD CU-170: Consultar el Historial de Estados de un Pedido
+- Figura 44 — DSD CU-143: Declarar el Consumo Promedio al Registrarse
+- Figura 45 — DSD CU-144: Actualizar el Consumo Promedio Declarado
+- Figura 46 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra
+- Figura 47 — DSD CU-146: Consultar la Fecha Estimada de Recompra
+- Figura 48 — DSD CU-147: Realizar una Compra Express
+- Figura 49 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido
+- Figura 50 — DSD CU-008: Cancelar Pedido (Cliente)
+- Figura 51 — DSD CU-009: Cancelar Pedido (Chofer)
+- Figura 52 — DSD CU-010: Cancelar Pedido (Administrador)
+- Figura 53 — DSD CU-168: Reintegrar el Pago de un Pedido
+- Figura 54 — DSD CU-011: Listar Todos los Pedidos
+- Figura 55 — DSD CU-046: Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
+- Figura 56 — DSD CU-046 / CU-116: Consultar Direcciones de Entrega del Cliente · registrarDireccionDeEntrega
+- Figura 57 — DSD CU-046 / CU-118: Consultar Direcciones de Entrega del Cliente · editarDireccionDeEntrega
+- Figura 58 — DSD CU-046 / CU-119: Consultar Direcciones de Entrega del Cliente · eliminarDireccionDeEntrega
+- Figura 59 — DSD CU-046 / CU-120: Consultar Direcciones de Entrega del Cliente · marcarDireccionPredeterminada
+- Figura 60 — DSD CU-117: Consultar Detalle de una Dirección de Entrega
+- Figura 61 — DSD CU-121: Consultar la Dirección Predeterminada
+- Figura 62 — DSD CU-122: Agregar Ítem al Carrito
+- Figura 63 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito
+- Figura 64 — DSD CU-124: Quitar Ítem del Carrito
+- Figura 65 — DSD CU-125: Consultar el Carrito
+- Figura 66 — DSD CU-126: Vaciar el Carrito
+- Figura 67 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido
+- Figura 68 — DSD CU-128: Indicar Quién Recibe el Pedido
+- Figura 69 — DSD CU-080: Consultar el Pool de Pedidos Disponibles
+- Figura 70 — DSD CU-081: Consultar los Pedidos Asignados al Chofer
+- Figura 71 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1) — Operación: ofrecerAlSiguienteChofer(pedidoId)
+- Figura 72 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal) — Operación: vencerOfertasExpiradas()
+- Figura 73 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: aceptarPedido(pedidoId)
+- Figura 74 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: rechazarOferta(pedidoId)
+- Figura 75 — DSD CU-012: Asignar Chofer Manualmente
+- Figura 76 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
+- Figura 77 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)
+- Figura 78 — DSD CU-017: Actualización de la ubicación del chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)
+- Figura 79 — DSD CU-020: Confirmar entrega (declaración del chofer) — Operación: confirmarEntrega(pedidoId)
+- Figura 80 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: obtenerCodigoDeEntrega(pedidoId)
+- Figura 81 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: confirmarEntregaConCodigo(pedidoId, codigo)
+- Figura 82 — DSD CU-018: Marcar Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)
+- Figura 83 — DSD CU-019: Avisar Llegada al Cliente — Operación: avisarLlegada(pedidoId)
+- Figura 84 — DSD CU-021: Recibir Notificaciones en Tiempo Real — Operación: suscribirseAlSeguimiento(clienteId)
+- Figura 85 — DSD CU-022: Activar / Desactivar Disponibilidad — Operación: cambiarDisponibilidad(usuarioId, disponible)
+- Figura 86 — DSD CU-023: Registrar Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)
+- Figura 87 — DSD CU-024: Listar Reclamos — Operación: listarReclamos()
+- Figura 88 — DSD CU-025: Resolver Reclamo
+- Figura 89 — DSD CU-166: Tomar un Reclamo Pendiente
+- Figura 90 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)
+- Figura 91 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)
+- Figura 92 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)
+- Figura 93 — DSD CU-026: Ver Dashboard General · consultarResumenDePedidos
+- Figura 94 — DSD CU-026: Ver Dashboard General · consultarGraficoDeVentas
+- Figura 95 — DSD CU-027: Ver Reporte de Ventas por Chofer
+- Figura 96 — DSD CU-028: Ver Reporte de Ventas por Producto
+- Figura 97 — DSD CU-029: Ver Reporte por Método de Pago
+- Figura 98 — DSD CU-030: Ver Gráfico de Ventas
+- Figura 99 — DSD CU-032: Validar / Invalidar Chofer
+- Figura 100 — DSD CU-032: Validar / Invalidar Chofer — Operación: invalidarChofer(choferId)
+- Figura 101 — DSD CU-033: Activar / Desactivar Chofer (Admin)
+- Figura 102 — DSD CU-034: Registrar Vehículo del Chofer
+- Figura 103 — DSD CU-035: Consultar Listado de Choferes
+- Figura 104 — DSD CU-035: Consultar Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)
+- Figura 105 — DSD CU-035: Consultar Listado de Choferes — Operación: consultarDetalleDelChofer(choferId)
+- Figura 106 — DSD CU-049: Consultar Balance / Ganancias del Chofer
+- Figura 107 — DSD CU-049: Consultar Balance / Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)
+- Figura 108 — DSD CU-051: Consultar Listado de Vehículos
+- Figura 109 — DSD CU-051: Consultar Listado de Vehículos — Operación: buscarVehiculoPorPatente(patente)
+- Figura 110 — DSD CU-051: Consultar Listado de Vehículos — Operación: editarVehiculo(vehiculoId, datos)
+- Figura 111 — DSD CU-051: Consultar Listado de Vehículos — Operación: eliminarVehiculo(vehiculoId)
+- Figura 112 — DSD CU-096: Actualizar Perfil del Chofer
+- Figura 113 — DSD CU-097: Eliminar Chofer (baja lógica)
+- Figura 114 — DSD CU-110: Buscar Chofer por Usuario
+- Figura 115 — DSD CU-113: Consultar Detalle del Vehículo
+- Figura 116 — DSD CU-115: Consultar Vehículos de un Chofer
+- Figura 117 — DSD CU-136: Registrar el Seguro del Vehículo
+- Figura 118 — DSD CU-139: Consultar los Vencimientos de la Flota
+- Figura 119 — DSD CU-141: Registrar un Mantenimiento Realizado
+- Figura 120 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota
+- Figura 121 — DSD CU-155: Adjuntar Archivo a una Tarea de Flota
+- Figura 122 — DSD CU-156: Consultar Adjuntos de una Tarea de Flota
+- Figura 123 — DSD CU-157: Descargar un Adjunto de Flota
+- Figura 124 — DSD CU-158: Eliminar un Adjunto de Flota
+- Figura 125 — DSD CU-159: Almacenar Archivo
+- Figura 126 — DSD CU-160: Recuperar Archivo
+- Figura 127 — DSD CU-161: Poner un Vehículo en Uso para un Chofer
+- Figura 128 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer
+- Figura 129 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer
+- Figura 130 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()
+- Figura 131 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer
+- Figura 132 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo
+- Figura 133 — DSD CU-036: Crear Producto (Garrafa)
+- Figura 134 — DSD CU-037: Actualizar Precio de Producto
+- Figura 135 — DSD CU-038: Actualizar Stock de Producto
+- Figura 136 — DSD CU-040: Activar / Desactivar Producto
+- Figura 137 — DSD CU-040: Activar / Desactivar Producto — Operación: reactivarProducto(productoId)
+- Figura 138 — DSD CU-040: Activar / Desactivar Producto — Operación: consultarProductosInactivos()
+- Figura 139 — DSD CU-041: Consultar Catálogo de Productos
+- Figura 140 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProducto(productoId)
+- Figura 141 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)
+- Figura 142 — DSD CU-042: Crear Franja Horaria
+- Figura 143 — DSD CU-045: Consultar Franjas Horarias Disponibles
+- Figura 144 — DSD CU-044 / CU-045: Consultar Franjas Horarias Disponibles
+- Figura 145 — DSD CU-103: Eliminar Franja Horaria
+- Figura 146 — DSD CU-154: Consultar Listado de Franjas Horarias
+- Figura 147 — DSD CU-043: Modificar Capacidad de Franja Horaria
+- Figura 148 — DSD — CU-052: Registrar Distribuidora
+- Figura 149 — DSD — CU-053: Consultar Distribuidoras
+- Figura 150 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)
+- Figura 151 — DSD — CU-054: Modificar Datos de la Distribuidora
+- Figura 152 — DSD — CU-055: Dar de Baja una Distribuidora
+- Figura 153 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido
+- Figura 154 — DSD — CU-056: Definir Zona de Cobertura
+- Figura 155 — DSD — CU-057: Consultar Zonas de Cobertura
+- Figura 156 — DSD — CU-059: Eliminar Zona de Cobertura
+- Figura 157 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: calificarPedido(pedidoId, estrellas, comentario)
+- Figura 158 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: consultarResumenDeCalificaciones(usuarioId)
+- Figura 159 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
+- Figura 160 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()
+- Figura 161 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)
+- Figura 162 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
+- Figura 163 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)
+- Figura 164 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
+- Figura 165 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
+- Figura 166 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
+- Figura 167 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)
+- Figura 168 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)
+- Figura 169 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)
+- Figura 170 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
+- Figura 171 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)
+- Figura 172 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)
+- Figura 173 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)
+- Figura 174 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago
+- Figura 175 — DSD CU-048: Procesar Pago con MercadoPago · notificarResultadoDePago
+- Figura 176 — DSD CU-072: Crear reserva programada con seña
+- Figura 177 — DSD CU-075: Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia
+- Figura 178 — DSD CU-076: Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia
+- Figura 179 — DSD CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar
+- Figura 180 — DSD — CU-073: Listar Reservas y Estado de la Seña
+- Figura 181 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo
+- Figura 182 — DSD — CU-086: Registrar Administrador
+- Figura 183 — DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
+- Figura 184 — DSD — CU-088: Consultar Administradores
+- Figura 185 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)
+- Figura 186 — DSD — CU-089: Gestionar Roles del Sistema
+- Figura 187 — DSD — CU-089: Gestionar Roles del Sistema — Operación: actualizarRol(rolId, datos)
+- Figura 188 — DSD — CU-089: Gestionar Roles del Sistema — Operación: eliminarRol(rolId)
+- Figura 189 — DSD — CU-089: Gestionar Roles del Sistema — Operación: listarRoles()
+- Figura 190 — DSD — CU-090: Sembrar los Roles Iniciales
+- Figura 191 — DSD — CU-092: Consultar Listado de Clientes
+- Figura 192 — DSD — CU-094: Actualizar Ubicación del Cliente
+- Figura 193 — DSD — CU-095: Eliminar Cliente (baja lógica)
+- Figura 194 — DSD CU-129: Consultar Detalle del Cliente
+- Figura 195 — DSD CU-130: Buscar Cliente por Usuario
+- Figura 196 — DSD CU-131: Editar Datos del Cliente
+- Figura 197 — DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 198 — DSD — CU-099: Consultar los Tokens de un Usuario
+- Figura 199 — DSD — CU-100: Enviar Notificación de Prueba
+- Figura 200 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 201 — DSD — CU-102: Probar el Servicio de Correo
+- Figura 202 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+- Figura 203 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()
+- Figura 204 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()
+- Figura 205 — DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+- Figura 206 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+- Figura 207 — DSD — CU-152: Consultar el Registro de Auditoría
+- Figura 208 — DSD — CU-153: Registrar Toda Operación de Escritura
+- Figura 209 — DSD CU-172: Configurar los Parámetros de un Proceso Automático
+- Figura 210 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas
+- Figura 211 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 212 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
+- Figura 213 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
+- Figura 214 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra
+- Figura 215 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras
+- Figura 216 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()
+- Figura 217 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)
+- Figura 218 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()
+- Figura 219 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
+- Figura 220 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
+- Figura 221 — Diagrama de Clases de Dominio
+- Figura 221.1 — Clases de dominio: organización y acceso
+- Figura 221.2 — Clases de dominio: clientes
+- Figura 221.3 — Clases de dominio: pedido, líneas y pago
+- Figura 221.4 — Clases de dominio: carrito, franjas y cobertura
+- Figura 221.5 — Clases de dominio: despacho y propuestas con vigencia
+- Figura 221.6 — Clases de dominio: choferes y vehículos
+- Figura 221.7 — Clases de dominio: mantenimiento de la flota
+- Figura 221.8 — Clases de dominio: productos y envases
+- Figura 221.9 — Clases de dominio: recupero de envases
+- Figura 221.10 — Clases de dominio: posventa
+- Figura 222 — Clases de diseño: sesión, registro e identidad
+- Figura 223 — Clases de diseño: usuarios, roles, administradores y auditoría
+- Figura 224 — Clases de diseño: clientes y direcciones de entrega
+- Figura 225 — Clases de diseño: carrito y recompra
+- Figura 226 — Clases de diseño: productos y franjas horarias
+- Figura 227 — Clases de diseño: cobertura y distribuidoras
+- Figura 228 — Clases de diseño: pedidos: alta y cancelación
+- Figura 229 — Clases de diseño: pedidos: consulta y estado
+- Figura 230 — Clases de diseño: pagos y reservas
+- Figura 231 — Clases de diseño: despacho de pedidos
+- Figura 232 — Clases de diseño: seguimiento en tiempo real
+- Figura 233 — Clases de diseño: choferes y vehículos
+- Figura 234 — Clases de diseño: flota: tareas, adjuntos y vencimientos
+- Figura 235 — Clases de diseño: flota: planificador de mantenimiento
+- Figura 236 — Clases de diseño: envases
+- Figura 237 — Clases de diseño: recupero de envases
+- Figura 238 — Clases de diseño: reclamos, incidencias y calificaciones
+- Figura 239 — Clases de diseño: notificaciones y correo
+- Figura 240 — Clases de diseño: reportes, salud y almacenamiento
+- Figura 241 — Dependencias entre módulos
+- Figura 242 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
+- Figura 243 — D-16 — Catálogo de Productos (App Cliente)
+- Figura 244 — D-17 — Checkout (App Cliente)
+- Figura 245 — D-18 — Seguimiento en Tiempo Real (App Cliente)
+- Figura 246 — D-19 — Login y Registro (App Cliente + Chofer)
+- Figura 247 — D-20 — Home del Chofer (App Chofer)
+- Figura 248 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)
+- Figura 249 — D-22 — En Ruta (App Chofer)
+- Figura 250 — D-23 — Dashboard Administrador (Panel Web)
+- Figura 251 — D-24 — Listado de Pedidos Admin (Panel Web)
+- Figura 252 — Organización y acceso
+- Figura 253 — Clientes
+- Figura 254 — Catálogo e inventario de envases
+- Figura 255 — Venta y pedidos
+- Figura 256 — Pagos
+- Figura 257 — Despacho y logística
+- Figura 258 — Flota y choferes
+- Figura 259 — Posventa
+- Figura 260 — Relaciones entre contextos
+- Figura 261 — Modelo entidad-relación conceptual
+- Figura 261.1 — Modelo entidad-relación conceptual: usuarios y cuentas
+- Figura 261.2 — Modelo entidad-relación conceptual: pedidos y pagos
+- Figura 261.3 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
+- Figura 261.4 — Modelo entidad-relación conceptual: flota y choferes
+- Figura 261.5 — Modelo entidad-relación conceptual: envases y catálogo
+- Figura 261.6 — Modelo entidad-relación conceptual: posventa
+- Figura 262 — Diagrama de estados del pedido
+- Figura 263 — Diagrama de estados del reclamo
+- Figura 264 — Diagrama de estados del envase
+- Figura 265 — Diagrama de estados de la reserva programada
+- Figura 266 — Diagrama de estados de la tarea de flota
+- Figura 267 — Diagrama de estados de la oferta de despacho
+- Figura 268 — Diagrama de actividad del despacho por proximidad
+- Figura 269 — Diagrama de actividad del ciclo de vida del pedido
 
 ---
 
@@ -325,15 +349,6 @@ El diseño cubre la **Fase 1** del sistema:
 | Panel Admin | React + Vite + TypeScript | ● Implementado (no cubre aún todas las operaciones de la API) |
 | Notificaciones | Firebase Cloud Messaging y correo transaccional | ● Implementado |
 
-------------|------------|--------|
-| Backend API | NestJS + TypeORM + PostgreSQL | ● Implementado (MVP) |
-| Cache / Geo | Redis (GEOADD, GEORADIUS) | ● Implementado |
-| WebSocket | Socket.IO + Redis Adapter | ● Backend implementado |
-| App Cliente | Flutter (Stacked MVVM) | ● Implementado (MVP) |
-| App Chofer | Flutter (Stacked MVVM) | Parcial (GPS listo, WS pendiente) |
-| Panel Admin | React + MUI | Parcial (navegación lista, páginas en desarrollo) |
-| Notificaciones | Firebase Cloud Messaging | ● Implementado |
-
 ---
 
 ## 2. Arquitectura del Sistema
@@ -364,19 +379,38 @@ El diseño cubre la **Fase 1** del sistema:
 
 ### 2.2 Módulos NestJS
 
-| Módulo | Responsabilidad Principal |
+| Módulo | Responsabilidad principal |
 |--------|--------------------------|
-| `AuthModule` | JWT, Firebase Auth, guardias de roles |
-| `OrderModule` | CRUD pedidos, máquina de estados, despacho |
-| `DispatchModule` | Cron de reintentos, asignación por proximidad |
-| `DeliveryModule` | Gestión de choferes, disponibilidad |
-| `GasCylinderModule` | Catálogo, stock, promociones |
-| `TimeSlotModule` | Franjas horarias y capacidades |
-| `GatewaysModule` | WebSocket `/drivers` y `/customers` |
-| `RedisModule` | GEOADD, GEORADIUS, operaciones geo |
-| `NotificationsModule` | FCM push notifications |
-| `ClaimsModule` | Reclamos y resolución |
-| `ReportsModule` | Estadísticas y dashboard |
+| `AuthModule` | Verificación del token de identidad de Firebase en cada solicitud, inicio de sesión y guardas de autenticación y de rol |
+| `RegistroModule` | Alta de cuentas: registro del cliente, alta administrativa de usuarios y política de registro |
+| `UsersModule` | Usuarios, rol asignado y búsqueda |
+| `RoleModule` | Catálogo de roles y su alta inicial |
+| `AdminModule` | Cuentas de los administradores |
+| `DistributorModule` | Distribuidoras (multi-tenancy) y su configuración |
+| `CustomersModule` | Clientes y su validación |
+| `UserAddressModule` | Direcciones de entrega del cliente y dirección predeterminada |
+| `OrderModule` | Alta y ciclo de vida del pedido, máquina de estados, despacho por proximidad con oferta al siguiente chofer, reservas programadas y recargo por pago en línea |
+| `CartModule` | Entidades del carrito de compras (carrito e ítems); todavía no expone endpoints propios |
+| `GasCylinderModule` | Catálogo de productos, stock y promociones |
+| `CylinderModule` | Trazabilidad del envase físico: estados, movimientos y recuperación |
+| `TimeSlotModule` | Franjas horarias y sus cupos |
+| `CoverageZoneModule` | Zonas de cobertura geográfica y recargo por zona |
+| `DeliveryModule` | Choferes, disponibilidad y asignación de vehículo |
+| `CarModule` | Vehículos |
+| `FleetModule` | Documentación y vencimientos de la flota, planes y tareas de mantenimiento, bloqueo de choferes y vehículos inhabilitados |
+| `PaymentsModule` | Cobro con MercadoPago, recepción del webhook y registro de pagos |
+| `ClaimsModule` | Reclamos y su resolución |
+| `IncidentModule` | Incidencias de la entrega |
+| `RatingModule` | Calificaciones del servicio |
+| `ReportsModule` | Estadísticas y panel de indicadores |
+| `AuditModule` | Registro de auditoría de las acciones administrativas |
+| `NotificationsModule` | Notificaciones push (FCM) y registro del token de dispositivo |
+| `EmailModule` | Correo transaccional: bienvenida, recuperación de contraseña, aviso de vencimientos |
+| `FirebaseModule` | Acceso a Firebase Authentication y Cloud Messaging |
+| `StorageModule` | Almacenamiento de archivos adjuntos (documentación de flota) |
+| `GatewaysModule` | WebSocket `/drivers`, `/customers` y `/admin` |
+| `RedisModule` | GEOADD, GEORADIUS y cerrojos de los procesos programados |
+| `HealthModule` | Sondas de estado del servicio |
 
 ---
 
@@ -400,29 +434,31 @@ es lo primero, `GET /users` es lo segundo.
 | Orden y filtrado | Parcial | Hay filtro por término en usuarios; el orden está fijo en el código en la mayoría de las consultas. |
 | Referencias entre recursos | Cumple | Se usa el camino anidado —`GET /customers/user/:userId`— y no parámetros de consulta. |
 | Límite de tasa | Cumple | Cien peticiones por minuto por dirección, configurable, con el contador compartido en Redis. |
-| Versionado | **No cumple** | El prefijo es `api`, sin número de versión. |
-| Seguridad | Cumple | Token de sesión propio en la cabecera de autorización, control por rol y aislamiento por distribuidora. La consulta de un usuario por correo y la prueba del servicio de correo exigen autenticación y rol. |
+| Versionado | Trabajo futuro | El prefijo es `api`, sin número de versión. |
+| Seguridad | Cumple | Token de identidad de Firebase en la cabecera de autorización, verificado en cada solicitud (el sistema no emite un token propio), control por rol y aislamiento por distribuidora. La consulta de un usuario por correo y la prueba del servicio de correo exigen autenticación y rol. |
 
 #### Nomenclatura: las tres inconsistencias
 
-La primera es de **número**: la mayoría de los recursos está en singular —`/order`, `/customer`,
-`/delivery`, `/car`— y uno en plural, `/claims`. La convención pide plural, porque la dirección
-nombra la colección y no un elemento.
+La primera es de **número**: la mayoría de los recursos está en plural —`/orders`, `/customers`,
+`/coverage-zones`, `/claims`, `/users`, `/cylinders`— y otros en singular —`/car`, `/delivery`,
+`/distributor`, `/role`, `/time-slot`, `/gascylinder`, `/user-address`—. La convención pide plural,
+porque la dirección nombra la colección y no un elemento.
 
-La segunda es de **separador**: conviven `/time-slot`, `/coverage-zone` y `/user-addres`, que usan
-guion, con `/gascylinder`, que no. Además `/user-addres` está mal escrito: le falta una `s` y
-debería ser `/user-addresses`.
+La segunda es de **separador y de forma**: conviven `/time-slot`, `/coverage-zones` y `/user-address`,
+que usan guion, con `/gascylinder`, que escribe dos palabras juntas. A eso se suma que los vehículos
+están en `/car` pero su documentación cuelga de `/cars/:carId/documents`, y que los choferes están
+en `/delivery` y su documentación en `/delivery/:id/documents`.
 
 La tercera, y la que más se aleja del estilo, son los **verbos en el camino**: `PATCH /:id/validate`,
 `PATCH /:id/invalidate`, `PATCH /:id/set-default`, `PATCH /:id/cancel`, `PATCH /:id/resolve`,
 `PATCH /:id/block`. Son transiciones de estado escritas como acciones. La forma que respeta el
-estilo es modificar el atributo que cambia —`PATCH /customers/:id` con el campo de validación—,
+estilo es modificar el atributo que cambia —`PATCH /delivery/:id` con el campo de validación—,
 o modelar la transición como un sub-recurso.
 
 Ninguna de las tres se corrige en el alcance actual: las direcciones publicadas ya están en dos
 aplicaciones distribuidas y en el panel, y cambiarlas sin versionado rompe a los clientes
 instalados. Es justamente lo que el versionado resuelve, y es la razón por la que la ausencia de
-versionado se marca como incumplimiento y no como un detalle.
+versionado se registra como trabajo futuro y no como un detalle.
 
 #### Idempotencia
 
@@ -460,7 +496,7 @@ no son tráfico de usuario final y un límite ahí produciría reintentos en cas
 
 #### Versionado
 
-Es el único criterio que el sistema no cumple de ninguna forma. El prefijo global es `api`, sin
+Es el único criterio que el sistema todavía no resuelve de ninguna forma. El prefijo global es `api`, sin
 número de versión, de modo que cualquier cambio incompatible en una respuesta rompe a las
 aplicaciones ya instaladas, que no se actualizan solas. La corrección es de bajo costo mientras el
 sistema no esté en producción con usuarios reales: pasar el prefijo a `api/v1` y publicar los
@@ -497,7 +533,7 @@ sección 2.2.
 | Redis (TCP 6379) | Redis | Geoposición y exclusión mutua | Índice geográfico, adaptador de Socket.IO y cerrojos |
 | Identidad y notificaciones push | Firebase | Autenticación y usuarios, Notificaciones y correo | Verificación de identidad y envío de FCM |
 | Pasarela de cobro | MercadoPago | Pagos | Creación del cobro y aviso del resultado por webhook |
-| Correo transaccional | Servicio de correo | Notificaciones y correo | Envío de comprobantes y de recuperación de contraseña |
+| Correo transaccional | Servicio de correo | Notificaciones y correo | Envío de la bienvenida, de la recuperación de contraseña y del aviso de vencimientos |
 
 ### 2.5 Diagrama de Despliegue
 
@@ -517,7 +553,9 @@ corren en contenedores del mismo servidor.
 | Teléfono del chofer | «device» Android | `splg-app-chofer` | HTTPS / REST y WSS / Socket.IO hacia el backend; recibe FCM de Firebase |
 | Computadora del administrador | «device» con navegador web | `splg-app-admin` (código estático descargado del servidor web) | HTTPS / REST y WSS / Socket.IO hacia el backend |
 | Servidor virtual (VPS) | «device» | Docker Compose con los contenedores `splg-app-backend`, `splg-bd` (PostgreSQL 14 con PostGIS 3.4) y `splg-redis`, y el servidor web que sirve el panel | El backend usa TCP 5432 y TCP 6379 dentro del servidor |
-| Firebase, MercadoPago y servicio de correo | Servicios externos | — | HTTPS desde el backend; MercadoPago devuelve el aviso de pago por webhook |
+| Firebase | «execution environment» «externo» | Authentication y Cloud Messaging | HTTPS desde el backend para verificar la identidad; FCM hacia las aplicaciones móviles |
+| MercadoPago | «execution environment» «externo» | Checkout Pro | HTTPS desde el backend para crear el cobro; MercadoPago llama por webhook al backend con el resultado del pago |
+| Servicio de correo | «execution environment» «externo» | — | HTTPS desde el backend: bienvenida, recuperación de contraseña y aviso de vencimientos |
 
 El recorrido del código desde la máquina de desarrollo hasta el servidor es otra vista, que no
 forma parte del despliegue en ejecución: la lámina siguiente la muestra como ilustración
@@ -537,9 +575,9 @@ complementaria.
 
 > Esta sección presenta los **Casos de Uso Reales** según la plantilla UP de la cátedra. Cada CU priorizado se acompaña de:
 >
-> 1. **Interfaz Gráfica** — referencia al wireframe de la pantalla real en `design/wireframes.html`
+> 1. **Interfaz Gráfica** — el wireframe de la pantalla que usa el caso de uso
 > 2. **Especificación del CU Real** — tabla formal con todos los campos requeridos (Código, Objetivos asociados, Requisitos asociados, Descripción, Precondición, Secuencia, Postcondición, Excepciones, Rendimiento, Frecuencia, Estabilidad)
-> 3. **Diagrama de Interacción** — flujo UI → ViewModel → Servicio → Backend
+> 3. **Diagrama de Interacción** — colaboración entre los objetos de diseño que realizan la operación, en la notación de Larman
 > 4. **Clases de Diseño Participantes**
 >
 > **Criterio de selección.** Se desarrollan como Casos de Uso Reales los **diez casos que
@@ -549,8 +587,8 @@ complementaria.
 > especificación describe una interfaz real y no una propuesta.
 >
 > Son **CU-001, CU-005, CU-008, CU-013, CU-014, CU-015, CU-017, CU-020, CU-048 y CU-079**.
-> Cuatro de ellos —CU-013, CU-014, CU-017 y CU-005— son procesos que el sistema ejecuta por
-> iniciativa propia, sin actor humano.
+> Dos de ellos —CU-013 y CU-014— son procesos que el sistema ejecuta por iniciativa propia, sin
+> actor humano, y por eso no tienen pantalla propia.
 
 ---
 
@@ -561,7 +599,11 @@ complementaria.
 
 #### Interfaz Gráfica
 
-> Ver wireframe **D-19 — Login y Registro** en [`design/wireframes.html`](design/wireframes.html). Aplica a las tres apps con variantes mínimas (campos comunes: email, password).
+![Pantalla de inicio de sesión](diagramas/wireframes/D-19a.png)
+
+**Figura 4 — CU-001 Iniciar Sesión — Interfaz Gráfica**
+
+Pantalla de inicio de sesión de la App Cliente. La App Chofer y el Panel Admin la repiten con variantes mínimas; los campos comunes son el correo y la contraseña.
 
 #### Especificación del CU Real
 
@@ -570,8 +612,8 @@ complementaria.
 | **Código** | CU-001 |
 | **Caso de Uso** | Iniciar Sesión |
 | **Actor Principal** | ACT-01 (Cliente), ACT-02 (Chofer), ACT-03 (Administrador) |
-| **Objetivos asociados** | OBJ-01, OBJ-05 |
-| **Requisitos asociados** | IRQ-01, IRQ-03 |
+| **Objetivos asociados** | OBJ-01, OBJ-02, OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El usuario ingresa email y contraseña en la pantalla de login. El sistema valida las credenciales contra Firebase Authentication y devuelve el token de identidad que Firebase emite, sin generar credencial propia. La app persiste el token y navega a la HomeView según el rol, que se resuelve contra la base en cada solicitud. |
 | **Precondición** | El usuario tiene una cuenta registrada en el sistema (CU-002 o CU-003). |
 
@@ -609,29 +651,27 @@ complementaria.
 
 ```mermaid
 sequenceDiagram
-    participant U as Usuario
-    participant V as LoginView
-    participant VM as AuthViewModel
-    participant API as AuthController
-    participant AS as AuthService
-    participant FB as Firebase Auth
-    participant DB as PostgreSQL
+    title DSD — CU-001 Iniciar Sesión · iniciarSesion
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    actor FIR as Firebase (ACT-07)
+    participant SRV as :AuthService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
 
-    U->>V: ingresa email + password
-    V->>VM: login(email, password)
-    VM->>API: POST /auth/login
-    API->>AS: signInWithFirebase(email, pwd)
-    AS->>FB: signInWithEmailAndPassword()
-    FB-->>AS: firebaseUid
-    AS->>DB: SELECT User WHERE firebaseUid = $1
-    DB-->>AS: User { id, role, profileId }
-    AS->>AS: toma el token de identidad que devolvio Firebase
-    AS-->>API: token de identidad de Firebase y datos del usuario
-    API-->>VM: 200 OK
-    VM->>V: navigateToHome(role)
+    CLI->>+SRV: iniciarSesion(correo, contrasena)
+    SRV->>+FIR: signInWithEmailAndPassword(correo, contrasena)
+    FIR-->>-SRV: credencial
+    SRV->>+COL: get(correo)
+    COL-->>-SRV: usuario
+    SRV->>+USR: estaHabilitado()
+    USR-->>-SRV: habilitado
+    SRV-->>-CLI: sesion
 ```
 
-**Figura 4 — CU-001 Iniciar Sesión — Diagrama de Interacción**
+**Figura 5 — CU-001 Iniciar Sesión — Diagrama de Interacción**
+
+La operación del sistema es `iniciarSesion`; su contrato y su tabla de implementación están en la sección 4.1.
 
 #### Clases de Diseño Participantes
 
@@ -640,20 +680,25 @@ sequenceDiagram
 | `LoginView` | Presentation (Flutter / React) | UI con email/password fields y botón |
 | `AuthViewModel` | Presentation | Valida formulario, gestiona errores |
 | `AuthController` | Backend Controller (NestJS) | Endpoint `POST /auth/login` |
-| `AuthService` | Backend Service | Orquesta Firebase Auth + firma JWT |
+| `AuthService` | Backend Service | Orquesta el ingreso con Firebase Auth; no emite un token propio |
 | `FirebaseAuthAdapter` | Infrastructure | Verifica el token de identidad contra Firebase |
-| **Comentarios** | El sistema no emite una credencial propia: la credencial de sesión es el token de identidad que emite Firebase, y el rol se resuelve contra la base en cada solicitud. El ingreso tampoco consulta la habilitación del chofer: un chofer que el administrador aún no habilitó puede iniciar sesión, pero no puede ponerse en línea (CU-022). |
+
+**Comentarios.** El sistema no emite una credencial propia: la credencial de sesión es el token de identidad que emite Firebase, y el rol se resuelve contra la base en cada solicitud. El ingreso tampoco consulta la habilitación del chofer: un chofer que el administrador aún no habilitó puede iniciar sesión, pero no puede ponerse en línea (CU-022).
 
 ---
 
-### 3.2 CU-005 Crítico · automático — Crear Pedido
+### 3.2 CU-005 Crítico — Crear Pedido
 
 **Actor:** Cliente (ACT-01)
 **Pantalla:** CheckoutView (App Cliente)
 
 #### Interfaz Gráfica
 
-> Ver wireframe **D-17 — Checkout** en [`design/wireframes.html`](design/wireframes.html). Incluye carrito, dirección, franja horaria, fecha y método de pago.
+![Pantalla de confirmación del pedido](diagramas/wireframes/D-17.png)
+
+**Figura 6 — CU-005 Crear Pedido — Interfaz Gráfica**
+
+Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha y método de pago.
 
 #### Especificación del CU Real
 
@@ -662,8 +707,8 @@ sequenceDiagram
 | **Código** | CU-005 |
 | **Caso de Uso** | Crear Pedido |
 | **Actor Principal** | ACT-01 (Cliente) |
-| **Objetivos asociados** | OBJ-01, OBJ-04, OBJ-06 |
-| **Requisitos asociados** | IRQ-02, IRQ-04 |
+| **Objetivos asociados** | OBJ-01, OBJ-02, OBJ-06, OBJ-07 |
+| **Requisitos asociados** | IRQ-02, IRQ-04, IRQ-05, IRQ-07, IRQ-08 |
 | **Descripción** | El cliente revisa el carrito en `CheckoutView`, selecciona dirección, franja horaria, fecha y método de pago. Al confirmar, el sistema valida y reserva atómicamente el stock dentro de una transacción PostgreSQL (Módulo M3), persiste la orden con estado PENDING y dispara el despacho automático (CU-013). |
 | **Precondición** | El cliente está autenticado (CU-001). El carrito tiene ítems con cantidades > 0. |
 
@@ -713,33 +758,58 @@ sequenceDiagram
             └─ [Botón "Confirmar Pedido"] ─▶ [OrderTrackingView]
 ```
 
-#### Interacción UI → ViewModel → Servicio → Backend
+#### Diagrama de Interacción
 
+```mermaid
+sequenceDiagram
+    title DSD — CU-005 / CU-044 · crearPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CRT as :CreateOrderUseCase
+    participant CLE as cliente:Cliente
+    participant ZON as zona:ZonaCobertura
+    participant FRA as franja:FranjaHoraria
+    participant PRO as producto:Producto
+    participant NOT as :NotificationPort
+
+    CLI->>+CRT: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+    CRT->>+CLE: getDireccion(direccionId)
+    CLE-->>-CRT: direccion
+    CRT->>+ZON: cubre(direccion)
+    ZON-->>-CRT: cubierta
+    opt Hay fechaAgendada y franjaId
+        CRT->>FRA: tieneCupo(fechaAgendada)
+    end
+    create participant PED as :Pedido
+    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago)
+    loop Por cada item de items
+        CRT->>PRO: reservar(cantidad)
+        CRT->>+PED: agregarItem(producto, cantidad)
+        PED->>+PRO: precioPara(cantidad)
+        PRO-->>-PED: precioUnitario, subtotal
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+        deactivate PED
+    end
+    CRT->>+PED: calcularTotal()
+    loop Por cada item del Pedido
+        PED->>ITM: getSubtotal()
+    end
+    PED->>ZON: calcularRecargo(subtotalItems)
+    PED->>PED: aplicarRecargoDePago()
+    PED-->>-CRT: total
+    alt metodoDePago es MERCADOPAGO
+        Note over CRT,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). No se despacha hasta confirmarlo
+    else efectivo o transferencia
+        Note over CRT,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    end
+    CRT-)NOT: sendOrderConfirmation(cliente, pedido)
+    CRT-->>-CLI: pedido, enlaceDePago
 ```
-CheckoutView
-  │  confirmOrder()
-  ▼
-CheckoutViewModel
-  │  canConfirmOrder: address ≠ null && timeRange != null && items.length > 0
-  │  finalTotal = itemsTotal + transferSurcharge (10% si TRANSFER)
-  │  historyService.createOrder(updatedOrder)
-  ▼
-HistoryService (HTTP)
-  │  POST /orders  { items, address, paymentMethod, deliveryWindowStart,
-  │                  deliveryWindowEnd, requestedDeliveryDate, total }
-  ▼
-Backend: OrderController.create() → OrderService.create() → CreateOrderUseCase.execute()
-  │  [1] GasCylinderService.reservarStock() con lock pesimista por ítem
-  │  [2] Calcular precio con promociones (decimal.js)
-  │  [3] Aplicar recargo de zona de cobertura y recargo 10% si el pago es online
-  │  [4] Descontar stock (atómico, dentro de la misma transacción)
-  │  [5] Persist Order + OrderItems, commitTransaction()
-  │  [6] Si CASH: DispatchOrchestratorService.offerToNextDriver()  (automático)
-  │      Si MERCADOPAGO: genera checkout, el despacho lo dispara el webhook (CU-048)
-  │      Si es reserva: no despacha, lo dispara el proceso programado (CU-075)
-  │  [7] FCM: sendOrderConfirmation()
-  └─▶ return { orderId, status, totalAmount }
-```
+
+**Figura 7 — CU-005 Crear Pedido — Diagrama de Interacción**
+
+La operación del sistema es `crearPedido`; su contrato y su tabla de implementación están en la sección 4.2.
 
 #### Clases de Diseño Participantes
 
@@ -754,7 +824,8 @@ Backend: OrderController.create() → OrderService.create() → CreateOrderUseCa
 | `GasCylinderService` | Service (NestJS) | Lock pesimista y descuento de stock por producto |
 | `DispatchOrchestratorService` | Service (NestJS) | Ofrece el pedido al chofer más cercano cuando el pago es en efectivo |
 | `NotificationsService` | Infrastructure | FCM push al cliente |
-| **Comentarios** | El circuito tiene dos limitaciones conocidas: la falta de stock no llega traducida a una respuesta de solicitud incorrecta y se devuelve como error interno, y el motor de precios no valida que el descuento configurado en una promoción no supere el total, lo que puede producir un subtotal negativo. |
+
+**Comentarios.** El circuito tiene dos limitaciones conocidas: la falta de stock no llega traducida a una respuesta de solicitud incorrecta y se devuelve como error interno, y el motor de precios no valida que el descuento configurado en una promoción no supere el total, lo que puede producir un subtotal negativo.
 
 ---
 
@@ -765,7 +836,11 @@ Backend: OrderController.create() → OrderService.create() → CreateOrderUseCa
 
 #### Interfaz Gráfica
 
-> CU sin pantalla propia (proceso automático del Sistema). La salida visible es la notificación del pedido entrante en App Chofer — ver wireframe **D-21 — Pedido Entrante** en [`design/wireframes.html`](design/wireframes.html).
+Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visible es el aviso del pedido entrante en la App Chofer.
+
+![Aviso de pedido entrante en la App Chofer](diagramas/wireframes/D-21.png)
+
+**Figura 8 — CU-013 Asignar Pedido Automáticamente por Proximidad — Interfaz Gráfica**
 
 #### Especificación del CU Real
 
@@ -774,8 +849,8 @@ Backend: OrderController.create() → OrderService.create() → CreateOrderUseCa
 | **Código** | CU-013 |
 | **Caso de Uso** | Asignar Pedido Automáticamente por Proximidad |
 | **Actor Principal** | ACT-04 (Sistema) |
-| **Objetivos asociados** | OBJ-02, OBJ-03 |
-| **Requisitos asociados** | IRQ-04, IRQ-05 |
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | Al confirmarse un pedido en efectivo (o al confirmarse el pago de un pedido con MercadoPago, CU-048), el sistema busca al chofer habilitado, validado y disponible más cercano usando el radar geoespacial de Redis, probando radios crecientes de 5, 10, 15 y 20 km hasta encontrar uno sin contactar. Sin intervención humana, emite una oferta con una ventana de aceptación de 30 segundos y notifica por WebSocket al chofer elegido. |
 | **Precondición** | Existe una orden con estado PENDING sin chofer asignado. El radar `drivers:locations` de Redis puede contener cero o más choferes conectados. |
 
@@ -860,12 +935,58 @@ Operaciones:
   └─ [Botón "Rechazar"] → CU-016
 ```
 
+#### Diagrama de Interacción
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-013 Asignar Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :DispatchOrchestratorService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant RT as :RealtimeDispatchPort
+    participant CHO as chofer:Chofer
+    participant NOT as :NotificationsService
+
+    SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: getChoferesContactados()
+    PED-->>-SRV: contactados
+    SRV->>+PED: getPuntoDeEntrega()
+    PED-->>-SRV: destino
+    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nuevo
+        SRV->>+RT: findNearbyDrivers(destino, radioKm)
+        RT-->>-SRV: cercanos
+        SRV->>+CHO: puedeRecibirOferta(distribuidora)
+        CHO-->>-SRV: elegible
+    end
+    opt Hay un chofer elegible que no fue contactado
+        SRV->>+PED: ofrecerA(chofer, venceEn)
+        create participant OFE as :OfertaDespacho
+        PED->>OFE: «create»(chofer, venceEn)
+        deactivate PED
+        SRV-)RT: notifyDriverNewOrder(chofer, pedido)
+        SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
+    end
+    SRV-->>-SIS: chofer
+```
+
+**Figura 9 — CU-013 Asignar Pedido Automáticamente por Proximidad — Diagrama de Interacción**
+
+La operación del sistema es `ofrecerAlSiguienteChofer` (CU-013); su contrato y su tabla de implementación están en la sección 4.3.
+
 ---
 
 ### 3.4 CU-014 Crítico · automático — Reintentar Asignación con Radio Expandido (Cron)
 
 **Actor:** Sistema (ACT-04)
 **Disparador:** tarea programada que se ejecuta cada 15 segundos
+
+#### Interfaz Gráfica
+
+Este caso de uso no tiene pantalla: lo ejecuta el Sistema. Su salida visible es el aviso del pedido al chofer siguiente, que es el de CU-013.
 
 #### Especificación del CU Real
 
@@ -906,12 +1027,67 @@ Operaciones:
 | **Estabilidad** | Alta |
 | **Comentarios** | La ventana de aceptación y los radios de búsqueda son constantes del código; su configuración desde el sistema está planificada (CU-171, I-1). La cátedra exige que un módulo inteligente sea parametrizable como mínimo en el momento de su ejecución, de modo que llevar estos dos valores a configuración es un pendiente declarado. El sistema no avisa al administrador cuando un pedido agota los radios sin encontrar chofer: simplemente se reintenta en el ciclo siguiente. |
 
+#### Diagrama de Interacción
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-014 Reintentar Asignación con Radio Expandido (Cron) · vencerOfertasExpiradas
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant TIK as :DispatchService
+    participant ORQ as :DispatchOrchestratorService
+    participant OFR as :DispatchOfferRepositoryPort
+    participant OFE as oferta:OfertaDespacho
+    participant PED as pedido:Pedido
+    participant ORS as :OrderService
+
+    SIS->>+TIK: vencerOfertasExpiradas()
+    TIK->>+ORQ: handleExpiredOffers()
+    ORQ->>+OFR: findExpired(ahora)
+    OFR-->>-ORQ: ofertas
+    loop Por cada oferta vencida
+        ORQ->>OFE: vencer()
+        ORQ->>+OFE: getPedido()
+        OFE-->>-ORQ: pedido
+        ORQ->>+PED: esReofertable()
+        PED-->>-ORQ: reofertable
+        opt El pedido sigue pendiente y sin chofer
+            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+    end
+    deactivate ORQ
+    TIK->>+ORS: findAvailableOrders()
+    ORS-->>-TIK: pendientes
+    loop Por cada pedido pendiente de más de 60 segundos
+        TIK->>+ORQ: ensureOffered(pedido)
+        ORQ->>+PED: tieneOfertaVigente()
+        PED-->>-ORQ: vigente
+        opt El pedido no tiene oferta vigente
+            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+        deactivate ORQ
+    end
+    deactivate TIK
+```
+
+**Figura 10 — CU-014 Reintentar Asignación con Radio Expandido (Cron) — Diagrama de Interacción**
+
+La operación del sistema es `vencerOfertasExpiradas` (CU-014); su contrato y su tabla de implementación están en la sección 4.3.
+
 ---
 
 ### 3.5 CU-015 Crítico — Aceptar Pedido
 
 **Actor:** Chofer (ACT-02)
 **Pantalla:** OrderInfoBottomSheet (App Chofer)
+
+#### Interfaz Gráfica
+
+![Pedido entrante en la App Chofer](diagramas/wireframes/D-21.png)
+
+**Figura 11 — CU-015 Aceptar Pedido — Interfaz Gráfica**
+
+La hoja inferior muestra los ítems, el total y la ventana de aceptación de 30 segundos, con los botones «Aceptar» y «Rechazar».
 
 #### Especificación del CU Real
 
@@ -920,7 +1096,7 @@ Operaciones:
 | **Código** | CU-015 |
 | **Caso de Uso** | Aceptar pedido |
 | **Actor Principal** | ACT-02 (Chofer) |
-| **Objetivos asociados** | OBJ-02 |
+| **Objetivos asociados** | OBJ-02, OBJ-03 |
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | El chofer que recibió una oferta la acepta desde la aplicación. El sistema le asigna el pedido, cierra la oferta, avisa al cliente y deja de ofrecer el pedido al resto de los choferes. |
 | **Precondición** | El chofer tiene una oferta vigente para ese pedido y el pedido continúa pendiente de asignación. |
@@ -955,16 +1131,57 @@ Operaciones:
 | **Estabilidad** | Alta |
 | **Comentarios** | El sistema comprueba que un pedido que ya tiene chofer sólo lo acepte ese mismo chofer, de modo que un segundo chofer no puede desplazar al primero ni regenerar el código de entrega que el cliente ya tenía. Sí consulta habilitación y validación del chofer en este punto (mismo gate que la asignación manual, CU-012) y la regla de flota (vehículo en uso y documentación al día). La copia del vehículo (patente, marca y modelo) queda en el pedido y se borra si el pedido vuelve a pendiente. Pero no comprueba que la oferta del aceptante siga vigente: una aceptación sobre una oferta ya vencida se admite igual si el pedido sigue pendiente y sin chofer. |
 
+#### Diagrama de Interacción
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-015 Aceptar Pedido · aceptarPedido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant UCS as :UpdateOrderStatusUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant CHO as chofer:Chofer
+    participant FLK as :FleetDispatchLockService
+    participant PED as pedido:Pedido
+    participant OFE as oferta:OfertaDespacho
+    participant NOT as :NotificationPort
+
+    CHF->>+UCS: aceptarPedido(pedidoId)
+    UCS->>+PEDS: get(pedidoId)
+    PEDS-->>-UCS: pedido
+    UCS->>CHO: assertElegibleParaAsignacion()
+    UCS->>FLK: assertChoferHabilitado(chofer)
+    UCS->>+FLK: vehiculoEnUsoDelChofer(chofer)
+    FLK-->>-UCS: vehiculo
+    UCS->>+PED: aceptar(chofer, vehiculo)
+    PED->>PED: transicionar(aceptado)
+    opt El pedido no estaba aceptado por este chofer
+        PED->>PED: generarCodigoDeEntrega()
+        PED->>OFE: aceptar()
+    end
+    deactivate PED
+    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
+    UCS-->>-CHF: pedido
+```
+
+**Figura 12 — CU-015 Aceptar Pedido — Diagrama de Interacción**
+
+La operación del sistema es `aceptarPedido` (CU-015); su contrato y su tabla de implementación están en la sección 4.3.
+
 ---
 
-### 3.6 CU-017 Crítico · automático — Actualizar Ubicación GPS del Chofer
+### 3.6 CU-017 Crítico — Actualizar Ubicación GPS del Chofer
 
 **Actor:** Chofer (ACT-02)
 **Disparador:** LocationService (Flutter) — stream continuo cada 10 metros
 
 #### Interfaz Gráfica
 
-> Ver wireframe **D-20 — Home del Chofer** y **D-22 — En Ruta** en [`design/wireframes.html`](design/wireframes.html). El chofer ve su posición en el mapa; el cliente ve la posición del chofer en su `OrderTrackingView` (wireframe **D-18**).
+![Seguimiento del pedido en la App Cliente](diagramas/wireframes/D-18.png)
+
+**Figura 13 — CU-017 Actualizar Ubicación GPS del Chofer — Interfaz Gráfica**
+
+El chofer envía su posición desde la App Chofer sin intervención de pantalla. El cliente ve esa posición en el seguimiento de su pedido, que muestra la figura.
 
 #### Especificación del CU Real
 
@@ -974,7 +1191,7 @@ Operaciones:
 | **Caso de Uso** | Actualizar Ubicación GPS del Chofer |
 | **Actor Principal** | ACT-02 (Chofer) |
 | **Objetivos asociados** | OBJ-02, OBJ-03 |
-| **Requisitos asociados** | IRQ-05 |
+| **Requisitos asociados** | IRQ-03 |
 | **Descripción** | Mientras está conectado al WebSocket `/drivers`, la app del chofer emite eventos `driver:update-location` cada vez que el GPS detecta un movimiento de al menos 10 metros. El backend actualiza el radar geoespacial de Redis (`drivers:locations`) y, si el chofer tiene un pedido activo en tracking (desde que pasa a ON_THE_WAY), reenvía la ubicación al cliente de ese pedido y al panel admin. |
 | **Precondición** | El chofer está autenticado con rol chofer (o admin/super_admin) y conectado al namespace `/drivers`. La app tiene permisos de ubicación concedidos. No es necesario estar habilitado ni validado: la actualización de posición no lo exige, y es justamente lo que permite que un chofer deshabilitado quede igual en el radar si su socket sigue conectado (ver Comentarios). |
 
@@ -1007,25 +1224,40 @@ Operaciones:
 | **Estabilidad** | Alta. |
 | **Comentarios** | La ubicación del chofer se mantiene únicamente en el radar geoespacial en memoria, que es lo que permite resolver la búsqueda por proximidad con la latencia que el despacho necesita. No se conserva un histórico de posiciones en la base relacional, de modo que el recorrido de una entrega no puede reconstruirse a posteriori. El radar no filtra por habilitación ni validación: ese filtro lo aplica `DeliveryService.choferesElegibles()` recién al buscar candidatos para una oferta (CU-013/CU-014); si un chofer deshabilitado quedara conectado por socket sin pasar por el endpoint de disponibilidad, seguiría actualizando su posición pero no recibiría ofertas nuevas. |
 
-#### Diagrama de Flujo Detallado
+#### Diagrama de Interacción
 
+```mermaid
+sequenceDiagram
+    title DSD — CU-017 Actualizar Ubicación GPS del Chofer · actualizarUbicacion
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant GW as :DriversGateway
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+    participant CGW as :CustomersGateway
+    participant AGW as :AdminGateway
+
+    CHF->>+GW: actualizarUbicacion(usuarioId, latitud, longitud)
+    GW->>+CHO: actualizarUbicacion(latitud, longitud)
+    alt El chofer ya tiene una ubicación
+        CHO->>UBI: actualizar(latitud, longitud)
+    else El chofer no tiene ubicación
+        create participant NUB as nueva:UbicacionGPS
+        CHO->>NUB: «create»(latitud, longitud)
+    end
+    deactivate CHO
+    GW->>+CHO: getPedidoEnCurso()
+    CHO-->>-GW: pedido
+    opt El chofer tiene un pedido en curso
+        GW-)CGW: notifyCustomer(cliente, evento, posicion)
+        GW-)AGW: notifyAdmins(evento, posicion)
+    end
+    deactivate GW
 ```
-[LocationService] (App Chofer)
-  │  positionStream emite nueva Position
-  ▼
-HomeViewModel.onData(position)
-  │  _updateUserLocation(position) → actualiza marcador en GoogleMap
-  │  [pendiente] orderService.sendLocation(lat, lng)
-  ▼
-DriversGateway (WebSocket /drivers)
-  │  socket.emit('driver:update-location', { lat, lng })
-  ▼
-DriversGateway.handleDriverLocation()
-  │  redisService.updateDriverLocation(userId, lat, lng) → GEOADD drivers:locations
-  │  Si redisService.getDriverActiveOrder(userId) existe:
-  │      customersGateway.notifyCustomer(customerId, 'order:driver-location', payload)
-  │      adminGateway.notifyAdmins('order:driver-location', payload)
-```
+
+**Figura 14 — CU-017 Actualizar Ubicación GPS del Chofer — Diagrama de Interacción**
+
+La operación del sistema es `actualizarUbicacion` (CU-017); su contrato y su tabla de implementación están en la sección 4.4.
 
 **Nota de implementación:** `HomeViewModel.connect()` abre el socket del namespace de choferes mediante `DriverSocketService`, autenticado con el token de Firebase, emite `driver:join` y escucha `server:new-order-request`; mientras el chofer está en línea reenvía su posición con `driver:update-location`.
 
@@ -1038,7 +1270,11 @@ DriversGateway.handleDriverLocation()
 
 #### Interfaz Gráfica
 
-> Ver wireframe **D-22 — En Ruta** en [`design/wireframes.html`](design/wireframes.html). Botón "Confirmar Entrega" disponible cuando la orden está en estado ON_THE_WAY.
+![Pantalla En ruta de la App Chofer](diagramas/wireframes/D-22.png)
+
+**Figura 15 — CU-020 Confirmar Entrega — Interfaz Gráfica**
+
+El botón «Confirmar entrega» está disponible cuando el pedido está en estado ON_THE_WAY.
 
 #### Especificación del CU Real
 
@@ -1084,19 +1320,42 @@ DriversGateway.handleDriverLocation()
 | **Estabilidad** | Alta. |
 | **Comentarios** | El sistema comprueba que el chofer que confirma la entrega sea el asignado al pedido: un chofer no puede marcar como entregado ni como cobrado un pedido ajeno. El control no alcanza al administrador, que puede mover cualquier pedido de su distribuidora. |
 
-#### Diagrama de Flujo Detallado
+#### Diagrama de Interacción
 
+```mermaid
+sequenceDiagram
+    title DSD — CU-020 Confirmar Entrega · confirmarEntrega
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant UCS as :UpdateOrderStatusUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAG as pago:Pago
+    participant UBI as ubicacion:UbicacionGPS
+    participant ENV as envase:Envase
+    participant NOT as :NotificationPort
+
+    CHF->>+UCS: confirmarEntrega(pedidoId)
+    UCS->>+PEDS: get(pedidoId)
+    PEDS-->>-UCS: pedido
+    UCS->>+PED: entregar()
+    PED->>PED: transicionar(entregado)
+    opt El método de pago es efectivo
+        PED->>PAG: marcarPagado()
+    end
+    deactivate PED
+    UCS->>UBI: cerrarSeguimiento()
+    loop Por cada envase despachado en el pedido
+        UCS->>ENV: entregarAlCliente(pedido)
+    end
+    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
+    UCS-->>-CHF: pedido
 ```
-[App Chofer] Chofer presiona "Confirmar Entrega"
-  │  PATCH /orders/:id/status  { status: "DELIVERED" }
-  ▼
-OrderService.updateStatus(orderId, DELIVERED)
-  │  [1] Registrar deliveredAt timestamp
-  │  [2] FCM al cliente: "¡Tu pedido fue entregado!"
-  │  [3] customersGateway: emit 'order:delivered'
-  │  [4] redisService: GEOADD → chofer sigue disponible para próxima orden
-  └─▶ return { status: DELIVERED }
-```
+
+**Figura 16 — CU-020 Confirmar Entrega — Diagrama de Interacción**
+
+La operación del sistema es `confirmarEntrega` (CU-020); su contrato y su tabla de implementación están en la sección 4.4.
+
 
 ---
 
@@ -1109,7 +1368,11 @@ OrderService.updateStatus(orderId, DELIVERED)
 
 #### Interfaz Gráfica
 
-> CU sin pantalla propia (proceso automático del Sistema, disparado por la notificación webhook de MercadoPago). La pantalla visible asociada es la selección del método de pago dentro del checkout — ver wireframe **D-17 — Checkout** en [`design/wireframes.html`](design/wireframes.html), opción "MercadoPago" del selector de método de pago (parte de CU-005). El pago en sí se completa en el Checkout Pro de MercadoPago, fuera de las aplicaciones del sistema: ninguna pantalla de la App Cliente, la App Chofer ni el Panel Admin interviene en la confirmación que describe este CU.
+CU sin pantalla propia (proceso automático del Sistema, disparado por la notificación webhook de MercadoPago). La pantalla visible asociada es la selección del método de pago dentro del checkout — ver la figura siguiente, opción "MercadoPago" del selector de método de pago (parte de CU-005). El pago en sí se completa en el Checkout Pro de MercadoPago, fuera de las aplicaciones del sistema: ninguna pantalla de la App Cliente, la App Chofer ni el Panel Admin interviene en la confirmación que describe este CU.
+
+![Selección del método de pago en la confirmación del pedido](diagramas/wireframes/D-17.png)
+
+**Figura 17 — CU-048 Procesar Pago con MercadoPago — Interfaz Gráfica**
 
 #### Especificación del CU Real
 
@@ -1164,51 +1427,49 @@ OrderService.updateStatus(orderId, DELIVERED)
 
 #### Diagrama de Interacción
 
+##### Operación: crearCheckoutDePago(pedidoId, medioDePago)
+
 ```mermaid
 sequenceDiagram
-    participant MP as MercadoPago
-    participant WCTRL as MercadoPagoWebhookController
-    participant PAY as PaymentsService
-    participant GW as PaymentGatewayPort
-    participant UCP as ConfirmPaymentUseCase
-    participant ORD as OrderRepositoryPort
-    participant QR as QueryRunner
-    participant ORQ as DispatchOrchestratorService
+    title DSD — CU-048 Procesar Pago con MercadoPago · crearCheckoutDePago
+    autonumber
+    participant CRT as :CreateOrderUseCase
+    participant PAG as :PaymentsService
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAS as :PaymentGatewayPort
 
-    MP->>WCTRL: POST /webhook/mercadopago (type, data.id, x-signature)
-    WCTRL->>PAY: verifyWebhookSignature(xSignature, xRequestId, dataId)
-    PAY->>GW: verifyWebhookSignature(input)
-    GW-->>PAY: boolean con HMAC
-    alt Firma invalida
-        WCTRL-->>MP: 200 received true, sin procesar
-    else Firma valida
-        WCTRL->>UCP: execute(type, dataId)
-        UCP->>PAY: confirmFromGateway(type, dataId)
-        PAY->>GW: getPayment(dataId)
-        GW-->>PAY: estado real y external_reference
-        PAY-->>UCP: gatewayPaymentId, status, isDeposit
-        UCP->>ORD: findByIdFull(externalReference)
-        ORD-->>UCP: Order
-        alt status approved
-            UCP->>QR: startTransaction() y lock pesimista sobre Order
-            alt isTerminal(status) o ya tiene gatewayPaymentId
-                UCP->>QR: commit sin efectos, idempotente
-            else status RESERVED
-                UCP->>QR: save(deposit_paid true) y commit, no se despacha
-            else pedido normal
-                UCP->>QR: save(paymentStatus PAID) y commitTransaction()
-                UCP->>ORQ: offerToNextDriver(order)
-            end
-        else rejected o cancelled
-            UCP->>UCP: logger.log sin accion
-        end
-        WCTRL-->>MP: 200 received true
-    end
+    Note over CRT: Operación interna invocada desde CU-005, CU-072 y CU-147
+    CRT->>+PAG: crearCheckoutDePago(pedidoId, medioDePago)
+    PAG->>+COL: get(pedidoId)
+    COL-->>-PAG: pedido
+    PAG->>+PED: getImporteACobrar(esSenia)
+    PED-->>-PAG: importe
+    create participant PGO as :Pago
+    PAG->>PGO: «create»(pedido, distribuidora, importe, esSenia)
+    PAG->>+PAS: createCheckout(pedido, items, pagador)
+    PAS-->>-PAG: enlaceDePago
+    PAG->>PGO: asignarEnlace(enlaceDePago)
+    PAG-->>-CRT: enlaceDePago
 ```
 
-**Figura 5 — CU-048 Pago con pasarela y confirmación por webhook — Diagrama de Interacción**
+**Figura 18 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago**
 
-> El diagrama de secuencia técnico completo, con la creación previa del checkout y la triple guarda de idempotencia, está documentado en §4.11.
+**Clases participantes:** `CreateOrderUseCase` (el caso de uso que la invoca), `PaymentsService` (controlador de fachada del módulo de pagos), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `PaymentGatewayPort` (fabricación pura: la pasarela de pago, MercadoPago Checkout Pro).
+
+**GRASP.** *Controlador*: `PaymentsService`. *Creador*: el servicio crea el `Pago`, porque es quien lleva el registro de los intentos de cobro. *Experto*: `Pedido` sabe cuánto hay que cobrar: su total, o el monto de la seña si el cobro es de una reserva. El `Pago` nace «pendiente»; si la pasarela no devuelve el enlace, queda sin él y el pedido queda creado igual. Si el pedido ya está pago, cancelado o entregado, el servicio lo rechaza con un conflicto (409) antes de registrar ningún intento, y si no existe responde 404.
+
+**Referencias.** `crearCheckoutDePago` no es una operación del sistema: ningún actor la invoca ni tiene un endpoint propio. Es una colaboración interna que ejecuta `CreateOrderUseCase` dentro de la creación del pedido (`crearPedido`, CU-005), de la reserva (`crearReserva`, CU-072) y de la compra express (`realizarCompraExpress`, CU-147), y su resultado, el enlace de pago, viaja en la respuesta de esas operaciones. Se la diagrama aparte porque crea el `Pago`, y sus efectos figuran en las Notas del contrato de `crearPedido`. El resultado del pago llega después, por la notificación de la pasarela: es la operación `notificarResultadoDePago`, de este mismo caso de uso.
+
+**No se dibuja:** la persistencia del `Pago` y la preferencia de pago de MercadoPago (`MercadoPagoAdapter`), que es la implementación del puerto. El estado del `Pedido` no cambia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`, invocado por `CreateOrderUseCase` al crear el pedido con MercadoPago o la seña de una reserva |
+| `Map<String, Pedido>.get(...)` | `CreateOrderUseCase.execute`: entrega el `Order` recién guardado; `PaymentsService.createCheckout` recibe su identificador y no lo relee |
+| `Pedido.getImporteACobrar(...)` | `CreateOrderUseCase.createMercadoPagoCheckout` toma `Order.totalAmount`; `CreateOrderUseCase.createDepositCheckout` toma `Order.depositAmount` |
+| `Pago.«create»` | `PaymentsService.createCheckout`: crea y guarda el `Payment` con `Payment.status` pendiente, `Payment.amount` y `Payment.isDeposit` |
+| `Pago.asignarEnlace(...)` | `PaymentsService.createCheckout`: asigna `Payment.paymentUrl` y guarda |
 
 #### Clases de Diseño Participantes
 
@@ -1221,9 +1482,8 @@ sequenceDiagram
 | `OrderRepositoryPort` | Infrastructure | Persistencia del `Order` |
 | `Repository<Payment>` | Infrastructure | Ledger de pagos, con índice único parcial sobre `gateway_payment_id` |
 | `DispatchOrchestratorService` | Backend Service | Dispara el despacho al siguiente chofer candidato una vez pagado el pedido |
-| **Comentarios** | La idempotencia descansa en tres mecanismos encadenados: el índice único parcial sobre `gateway_payment_id` en el ledger de pagos, un índice análogo en el `Order`, y el lock pesimista dentro de la transacción de `ConfirmPaymentUseCase`. **Limitación conocida:** el camino de pago `rejected` / `cancelled` no está implementado y el sistema se limita a registrarlo en el log, sin liberar el stock reservado ni cancelar el pedido. Quien resuelve esa situación es el proceso temporal de CU-077, que cada 30 minutos cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado y recién ahí restituye el stock. El reembolso por cancelación está planificado (CU-168, I-7); el contracargo no se contempla: el ledger sabe traducir ese estado, pero el `Order` no reacciona a él. |
 
----
+**Comentarios.** La idempotencia descansa en tres mecanismos encadenados: el índice único parcial sobre `gateway_payment_id` en el ledger de pagos, un índice análogo en el `Order`, y el lock pesimista dentro de la transacción de `ConfirmPaymentUseCase`. **Limitación conocida:** el camino de pago `rejected` / `cancelled` no está implementado y el sistema se limita a registrarlo en el log, sin liberar el stock reservado ni cancelar el pedido. Quien resuelve esa situación es el proceso temporal de CU-077, que cada 30 minutos cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado y recién ahí restituye el stock. El reembolso por cancelación está planificado (CU-168, I-7); el contracargo no se contempla: el ledger sabe traducir ese estado, pero el `Order` no reacciona a él.
 
 ---
 
@@ -1236,7 +1496,11 @@ sequenceDiagram
 
 #### Interfaz Gráfica
 
-> No hay wireframe relevado específicamente para la vista de escaneo del QR: el inventario de pantallas de `design/wireframes.html` no incluye una cámara lectora. Funcionalmente, la acción se dispara desde `OrderTrackingView` (wireframe **D-18 — Seguimiento en Tiempo Real**) mientras el stepper del pedido marca "En camino": el cliente abre el lector de cámara para leer el QR que el chofer le muestra en su pantalla (obtenido en CU-078), y la app extrae del contenido leído el código de diez caracteres.
+La vista de escaneo del código QR no tiene wireframe: el diseño de pantallas no incluye una cámara lectora. La acción se dispara desde el seguimiento del pedido mientras el estado es «En camino» (figura siguiente): el cliente abre el lector de cámara para leer el QR que el chofer le muestra en su pantalla (obtenido en CU-078), y la app extrae del contenido leído el código de diez caracteres.
+
+![Seguimiento del pedido](diagramas/wireframes/D-18.png)
+
+**Figura 19 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Interfaz Gráfica**
 
 #### Especificación del CU Real
 
@@ -1291,49 +1555,36 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant CLI as App Cliente
-    participant CTRL as OrderController
-    participant SRV as OrderService
-    participant UCD as ConfirmDeliveryUseCase
-    participant COD as DeliveryCodeUtil
-    participant UCS as UpdateOrderStatusUseCase
-    participant ORD as OrderRepositoryPort
-    participant CYL as CylinderLifecyclePort
-    participant RT as RealtimeDispatchPort
+    title DSD — CU-079 Confirmar Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CDU as :ConfirmDeliveryUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAG as pago:Pago
+    participant RT as :RealtimeDispatchPort
+    participant NOT as :NotificationPort
 
-    CLI->>CTRL: POST /orders/:id/confirm-delivery con code e Idempotency-Key
-    CTRL->>SRV: confirmDelivery(id, code, userId, role)
-    SRV->>UCD: execute(orderId, code, userId, role)
-    UCD->>ORD: findByIdFull(orderId)
-    ORD-->>UCD: Order
-    alt role CUSTOMER y customer_id distinto de userId
-        UCD-->>CLI: ForbiddenException
-    else Ya esta DELIVERED
-        UCD-->>CLI: Order sin reprocesar, idempotente
-    else No esta ON_THE_WAY
-        UCD-->>CLI: BadRequestException, el pedido no esta en camino
-    else Estado valido
-        UCD->>COD: compareDeliveryCode(order.deliveryCode, code)
-        COD-->>UCD: boolean con timingSafeEqual
-        alt Codigo invalido
-            UCD-->>CLI: BadRequestException, codigo de entrega invalido
-        else Codigo correcto
-            UCD->>UCS: execute(order_id, DELIVERED)
-            UCS->>UCS: deliveredAt, si CASH entonces paymentStatus PAID
-            UCS->>RT: stopTracking(driverUserId)
-            UCS->>CYL: onOrderDelivered(order_id, distributor_id)
-            UCS->>ORD: save(order)
-            UCS->>RT: notifyCustomer(customer_id, order:delivered)
-            UCS->>RT: notifyAdmins(order:delivered)
-            UCS-->>UCD: Order DELIVERED
-            UCD-->>CLI: OrderMapper.toDto(order)
-        end
+    CLI->>+CDU: confirmarEntregaConCodigo(pedidoId, codigo)
+    CDU->>+PEDS: get(pedidoId)
+    PEDS-->>-CDU: pedido
+    CDU->>+PED: validarCodigo(codigo)
+    PED-->>-CDU: valido
+    CDU->>+PED: entregar()
+    PED->>PED: transicionar(entregado)
+    opt El método de pago es efectivo
+        PED->>PAG: marcarPagado()
     end
+    deactivate PED
+    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento y entrega los envases
+    CDU-)RT: notifyAdmins(pedido)
+    CDU-)NOT: sendOrderConfirmation(cliente, pedido)
+    CDU-->>-CLI: pedido
 ```
 
-**Figura 6 — CU-079 Confirmar Entrega Escaneando el QR — Diagrama de Interacción**
+**Figura 20 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Diagrama de Interacción**
 
-> El diagrama de secuencia técnico completo, junto con CU-078 (obtención del código por el chofer), está documentado en §4.9.
+La operación del sistema es `confirmarEntregaConCodigo` (CU-079); su contrato y su tabla de implementación están en la sección 4.4.
 
 #### Clases de Diseño Participantes
 
@@ -1350,9 +1601,8 @@ sequenceDiagram
 | `OrderRepositoryPort` | Infrastructure | Persistencia del `Order` |
 | `CylinderLifecyclePort` | Infrastructure | Avanza los envases despachados a `CON_EL_CLIENTE` |
 | `RealtimeDispatchPort` | Infrastructure | Notifica por WebSocket y FCM, y corta el tracking del chofer |
-| **Comentarios** | La validación vive en `ConfirmDeliveryUseCase`; los efectos de pasar a DELIVERED se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH /orders/:id/status`: cero duplicación de lógica con CU-020. La doble idempotencia (cabecera `Idempotency-Key` más el chequeo de `status === DELIVERED` dentro del caso de uso) tolera el reintento de red y el doble escaneo. El espacio del código es de 16^10 combinaciones, por lo que adivinarlo a fuerza bruta es inviable; los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte. Limitación conocida: la garantía completa de este mecanismo depende de que el pedido conserve un único chofer asignado, y aceptar un pedido no comprueba que no tenga ya un chofer (CU-015), de modo que un segundo chofer puede regenerar el `deliveryCode` e invalidar el QR que el primero ya le había mostrado al cliente. |
 
----
+**Comentarios.** La validación vive en `ConfirmDeliveryUseCase`; los efectos de pasar a DELIVERED se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH /orders/:id/status`: cero duplicación de lógica con CU-020. La doble idempotencia (cabecera `Idempotency-Key` más el chequeo de `status === DELIVERED` dentro del caso de uso) tolera el reintento de red y el doble escaneo. El espacio del código es de 16^10 combinaciones, por lo que adivinarlo a fuerza bruta es inviable; los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte. Limitación conocida: la garantía completa de este mecanismo depende de que el pedido conserve un único chofer asignado, y aceptar un pedido no comprueba que no tenga ya un chofer (CU-015), de modo que un segundo chofer puede regenerar el `deliveryCode` e invalidar el QR que el primero ya le había mostrado al cliente.
 
 ---
 
@@ -1365,7 +1615,11 @@ sequenceDiagram
 
 #### Interfaz Gráfica
 
-> Ver wireframe **D-18 — Seguimiento en Tiempo Real** en [`design/wireframes.html`](design/wireframes.html). El botón "Cancelar" está en la fila de acciones junto a "Llamar", debajo de la tarjeta del chofer, y queda disponible mientras el pedido no salió hacia el domicilio.
+![Seguimiento del pedido con el botón Cancelar](diagramas/wireframes/D-18.png)
+
+**Figura 21 — CU-008 Cancelar Pedido (Cliente) — Interfaz Gráfica**
+
+El botón «Cancelar» está en la fila de acciones junto a «Llamar», debajo de la tarjeta del chofer, y queda disponible mientras el pedido no salió hacia el domicilio.
 
 #### Especificación del CU Real
 
@@ -1417,61 +1671,41 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant IDEM as IdempotencyInterceptor
-    participant CTRL as OrderController
-    participant SRV as OrderService
-    participant UC as CancelOrderUseCase
-    participant ORD as OrderRepositoryPort
-    participant FSM as transitionOrder (dominio)
-    participant STK as GasCylinderService
-    participant QR as QueryRunner
-    participant RT as RealtimeDispatchPort
+    title DSD — CU-008 / CU-010 · cancelarPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CAN as :CancelOrderUseCase
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ITM as item:ItemPedido
+    participant PRO as producto:Producto
+    participant RT as :RealtimeDispatchPort
 
-    IDEM->>IDEM: intercept con header Idempotency-Key
-    alt Ya hay respuesta cacheada para esa key
-        IDEM-->>CTRL: respuesta cacheada, no se re-ejecuta
-    else Primera ejecucion
-        IDEM-->>CTRL: next.handle()
-        CTRL->>CTRL: mapRoleToCancelActor(user.role) devuelve customer
-        CTRL->>SRV: cancelOrder(id, user.user_id, customer, body.reason)
-        SRV->>UC: execute(orderId, userId, customer, reason)
-        UC->>ORD: findByIdFull(orderId)
-        alt Pedido inexistente
-            ORD-->>UC: null
-            UC-->>CTRL: NotFoundException
-        else Pedido encontrado
-            ORD-->>UC: Order
-            alt Ya esta DELIVERED o CANCELLED
-                UC-->>CTRL: BadRequestException, pedido finalizado
-            else Cancelable
-                UC->>UC: aplicar la política de cancelación del actor customer dentro de execute
-                alt El pedido ya esta ON_THE_WAY
-                    UC-->>CTRL: BadRequestException, contacte al soporte
-                else Aun no salio
-                    alt customer_id distinto del userId autenticado
-                        UC-->>CTRL: BadRequestException, no autorizado
-                    else Es el dueno del pedido
-                        UC->>FSM: transitionOrder(order, CANCELLED)
-                        UC->>QR: connect() y startTransaction()
-                        UC->>STK: restituirStock(queryRunner.manager, order.items)
-                        UC->>QR: commitTransaction() y release()
-                        UC->>ORD: save(order)
-                        UC->>RT: notifyCustomer(customer_id, order:cancelled)
-                        opt Tenia chofer asignado
-                            UC->>RT: notifyDriverOrderCancelled(previousDriverId)
-                        end
-                        UC->>RT: notifyAdmins(order:cancelled)
-                        UC-->>CTRL: Order en estado CANCELLED
-                    end
-                end
-            end
-        end
+    CLI->>+CAN: cancelarPedido(pedidoId, motivo)
+    CAN->>+COL: get(pedidoId)
+    COL-->>-CAN: pedido
+    CAN->>+PED: getChofer()
+    PED-->>-CAN: choferAnterior
+    CAN->>+PED: cancelar(motivo)
+    PED->>PED: validarTransicion(cancelado)
+    loop Por cada item del Pedido
+        PED->>+ITM: restituirStock()
+        ITM->>PRO: restituir(cantidad)
+        deactivate ITM
     end
+    deactivate PED
+    CAN-)RT: notifyCustomer(cliente, pedido)
+    opt Había un chofer asignado
+        CAN-)RT: stopTracking(choferAnterior)
+        CAN-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)
+    end
+    CAN-)RT: notifyAdmins(pedido)
+    CAN-->>-CLI: pedido
 ```
 
-**Figura 7 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción**
+**Figura 22 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción**
 
-> El diagrama de secuencia técnico completo, junto con las variantes de chofer (CU-009) y administrador (CU-010) sobre el mismo endpoint, está documentado en `Casos-de-Uso.md`, sección "DSD — CU-008: Cancelar Pedido (Cliente)".
+La operación del sistema es `cancelarPedido` (CU-008); su contrato y su tabla de implementación están en la sección 4.2.
 
 #### Clases de Diseño Participantes
 
@@ -1488,1118 +1722,18 @@ sequenceDiagram
 | `GasCylinderService` | Backend Service | Restituye el stock reservado con `restituirStock`, con bloqueo por `GasCylinder` |
 | `OrderRepositoryPort` | Infrastructure | Persistencia del `Order` |
 | `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`) | Infrastructure | Notifica a cliente, panel y chofer por WebSocket |
-| **Comentarios** | La restitución de stock (`GasCylinderService.restituirStock`) y el guardado del pedido cancelado (`OrderRepositoryPort.save`) corren en transacciones separadas, no en una única transacción: si el guardado falla después de restituir, el stock vuelve al inventario y el pedido sigue activo, quedando contado dos veces. Es una limitación conocida. El sistema tampoco envía notificación push al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un chofer o un cliente con la app cerrada no se entera hasta reabrirla. |
+
+**Comentarios.** La restitución de stock (`GasCylinderService.restituirStock`) y el guardado del pedido cancelado (`OrderRepositoryPort.save`) corren en transacciones separadas, no en una única transacción: si el guardado falla después de restituir, el stock vuelve al inventario y el pedido sigue activo, quedando contado dos veces. Es una limitación conocida. El sistema tampoco envía notificación push al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un chofer o un cliente con la app cerrada no se entera hasta reabrirla.
 
 ---
 
 ## 4. Diagramas de Interacción (Nivel de Diseño)
 
-### 4.1 Crítico DSD — CU-005: Crear pedido con despacho automático
+Este capítulo reúne los diagramas de interacción de diseño de las operaciones del sistema, en la notación de Larman. Cada uno muestra cómo colaboran los objetos de diseño para resolver una operación que el actor le manda al sistema, con sus clases participantes, los patrones GRASP que justifican la asignación de responsabilidades y una tabla que relaciona cada operación de diseño con su implementación. Se agrupan por subsistema, del 4.1 al 4.18; el 4.19 recoge los módulos inteligentes en diseño, el 4.20 las observaciones comunes a los diagramas y el 4.21 el catálogo de operaciones del sistema.
 
-##### Operación: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+Los objetos del dominio llevan el nombre que tienen en el modelo conceptual, en castellano. Las fabricaciones puras, los puertos y los servicios de infraestructura conservan el nombre real que tienen en el código (o el que tendrán, si el caso de uso está planificado), porque no pertenecen al modelo conceptual. Por eso un mismo diagrama puede mezclar ambos idiomas.
 
-```mermaid
-sequenceDiagram
-    title DSD — CU-005 / CU-044 · crearPedido
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant CRT as :CreateOrderUseCase
-    participant CLE as cliente:Cliente
-    participant ZON as zona:ZonaCobertura
-    participant FRA as franja:FranjaHoraria
-    participant PRO as producto:Producto
-    participant NOT as :NotificationPort
-
-    CLI->>+CRT: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
-    CRT->>+CLE: getDireccion(direccionId)
-    CLE-->>-CRT: direccion
-    CRT->>+ZON: cubre(direccion)
-    ZON-->>-CRT: cubierta
-    opt Hay fechaAgendada y franjaId
-        CRT->>FRA: tieneCupo(fechaAgendada)
-    end
-    create participant PED as :Pedido
-    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago)
-    loop Por cada item de items
-        CRT->>PRO: reservar(cantidad)
-        CRT->>+PED: agregarItem(producto, cantidad)
-        PED->>+PRO: precioPara(cantidad)
-        PRO-->>-PED: precioUnitario, subtotal
-        create participant ITM as :ItemPedido
-        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
-        deactivate PED
-    end
-    CRT->>+PED: calcularTotal()
-    loop Por cada item del Pedido
-        PED->>ITM: getSubtotal()
-    end
-    PED->>ZON: calcularRecargo(subtotalItems)
-    PED->>PED: aplicarRecargoDePago()
-    PED-->>-CRT: total
-    alt metodoDePago es MERCADOPAGO
-        Note over CRT,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). No se despacha hasta confirmarlo
-    else efectivo o transferencia
-        Note over CRT,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-    end
-    CRT-)NOT: sendOrderConfirmation(cliente, pedido)
-    CRT-->>-CLI: pedido, enlaceDePago
-```
-
-**Figura 8 — DSD CU-005: Crear pedido con despacho automático**
-
-**Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`, y `NotificationPort` (fabricación pura: el aviso al cliente). El diagrama sirve también a CU-044, que es la elección de la franja dentro de la misma operación.
-
-**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. La navegación se resuelve por las asociaciones del modelo conceptual: el `Cliente` entrega su dirección, la `ZonaCobertura` dice si la cubre, la `FranjaHoraria` si tiene cupo y el `Producto` reserva su stock. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa; el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido` y el recargo a la `ZonaCobertura`; `Producto` sabe su precio y su promoción por volumen.
-
-**Referencias.** El pago con MercadoPago es la operación `crearCheckoutDePago` (CU-048) y el ofrecimiento al chofer más cercano, que crea la `OfertaDespacho`, es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
-
-**No se dibuja:** la transacción y el bloqueo de stock (`QueryRunner`), la persistencia, los servicios que el código usa para buscar al cliente, la dirección, la zona y la franja, el aviso en vivo al panel (`notifyAdmins`) y la lectura final del pedido. La reserva con seña es otra operación (`crearReserva`, CU-072).
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CreateOrderUseCase.crearPedido(...)` | `OrderController.create` → `OrderService.create` → `CreateOrderUseCase.execute` |
-| `Cliente.getDireccion(...)` | `UserAddressService.buscarDelUsuario`; el cliente se obtiene con `CustomersService.buscarComprador` |
-| `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage` |
-| `FranjaHoraria.tieneCupo(...)` | `TimeSlotService.assertSlotAvailableTx`, con bloqueo de la franja |
-| `Pedido.«create»` | `CreateOrderUseCase.execute`: arma la entidad `Order` con el cliente, la dirección, la franja y el snapshot de la zona |
-| `Producto.reservar(...)` | `GasCylinderService.reservarStock`: bloquea la fila y resta de `GasCylinder.stock` |
-| `Pedido.agregarItem(...)` | `CreateOrderUseCase.execute`: acumula los `OrderItem` en `Order.items` |
-| `Producto.precioPara(...)` | `OrderPricingService.priceItem`: precio de lista y promociones por volumen |
-| `ItemPedido.«create»` | `CreateOrderUseCase.execute`: crea cada `OrderItem` con su precio unitario y su subtotal |
-| `ItemPedido.getSubtotal()` | `OrderItem.subtotal` |
-| `Pedido.calcularTotal()` | `CreateOrderUseCase.execute`: suma los subtotales con `Decimal` y aplica los dos recargos; el resultado queda en `Order.totalAmount` |
-| `ZonaCobertura.calcularRecargo(...)` | `CoverageZonePricingService.zoneSurcharge` |
-| `Pedido.aplicarRecargoDePago()` | `OrderPricingService.applyPaymentSurcharge` |
-
-### 4.2 Crítico · automático DSD — CU-013: Despacho por proximidad (vista general)
-
-La operación `ofrecerAlSiguienteChofer` de CU-013 se dibuja en la sección 4.4, con su contrato y su tabla de implementación.
-
-### 4.3 Crítico · automático DSD — CU-017: Actualización de la ubicación del chofer
-
-##### Operación: actualizarUbicacion(usuarioId, latitud, longitud)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-017 Actualizar Ubicación GPS del Chofer · actualizarUbicacion
-    autonumber
-    actor CHF as Chofer (ACT-02)
-    participant GW as :DriversGateway
-    participant CHO as chofer:Chofer
-    participant UBI as ubicacion:UbicacionGPS
-    participant CGW as :CustomersGateway
-    participant AGW as :AdminGateway
-
-    CHF->>+GW: actualizarUbicacion(usuarioId, latitud, longitud)
-    GW->>+CHO: actualizarUbicacion(latitud, longitud)
-    alt El chofer ya tiene una ubicación
-        CHO->>UBI: actualizar(latitud, longitud)
-    else El chofer no tiene ubicación
-        create participant NUB as nueva:UbicacionGPS
-        CHO->>NUB: «create»(latitud, longitud)
-    end
-    deactivate CHO
-    GW->>+CHO: getPedidoEnCurso()
-    CHO-->>-GW: pedido
-    opt El chofer tiene un pedido en curso
-        GW-)CGW: notifyCustomer(cliente, evento, posicion)
-        GW-)AGW: notifyAdmins(evento, posicion)
-    end
-    deactivate GW
-```
-
-**Figura 9 — DSD CU-017: Actualización de la ubicación del chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)**
-
-**Clases participantes:** `DriversGateway` (controlador: recibe el evento del chofer y coordina), los objetos de dominio `Chofer` y `UbicacionGPS`, `CustomersGateway` y `AdminGateway` (fabricación pura: el reenvío en vivo al cliente y al panel).
-
-**GRASP.** *Controlador*: `DriversGateway` recibe la operación; el chofer se identifica por el token del handshake y no por el cuerpo del mensaje. *Experto*: `Chofer` conoce su ubicación y su pedido en curso, y es quien la actualiza o la crea; la `UbicacionGPS` toma las coordenadas. *Bajo Acoplamiento*: el reenvío al cliente y al panel queda en los gateways, que no conocen al chofer.
-
-**No se dibuja:** el descarte del evento cuando faltan las coordenadas, el índice geoespacial donde se guarda la posición y el nombre de cada evento en vivo.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `DriversGateway.actualizarUbicacion(...)` | `DriversGateway.handleDriverLocation`: evento `driver:update-location`; el usuario sale de la identidad resuelta en el handshake |
-| `Chofer.actualizarUbicacion(...)` | `DriversGateway.handleDriverLocation`: llama a `RedisService.updateDriverLocation` con el `Delivery.userId` del chofer |
-| `UbicacionGPS.actualizar(...)` | `RedisService.updateDriverLocation`: reemplaza la posición del miembro en el índice `drivers:locations` |
-| `UbicacionGPS.«create»` | `RedisService.updateDriverLocation`: la primera posición agrega el miembro al índice |
-| `Chofer.getPedidoEnCurso()` | `RedisService.getDriverActiveOrder`: el pedido y el cliente que dejó `RealtimeDispatchPort.startTracking` |
-
----
-
-
----
-
-### Ampliación — Diagramas de interacción de los procesos incorporados
-
-Los 10 diagramas que siguen modelan la colaboración real entre los objetos de diseño
-—controladores, servicios de aplicación, puertos, adaptadores y repositorios— de los
-procesos que la especificación original no había registrado. A diferencia de los
-diagramas de secuencia del Documento 2, aquí el sistema no es una caja negra: los
-nombres de clases y de métodos son los del código.
-
-### 4.4 Crítico · automático DSD — CU-013: Ofrecer el pedido al chofer más cercano (M1)
-
-
-Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asignación**. El pedido no se difunde a todos los choferes: se ofrece a **uno solo** por vez, el más cercano que todavía no fue contactado, con una ventana de aceptación de 30 segundos.
-
-##### Operación: ofrecerAlSiguienteChofer(pedidoId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-013 Asignar Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
-    autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant SRV as :DispatchOrchestratorService
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant RT as :RealtimeDispatchPort
-    participant CHO as chofer:Chofer
-    participant NOT as :NotificationsService
-
-    SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
-    SRV->>+PED: getChoferesContactados()
-    PED-->>-SRV: contactados
-    SRV->>+PED: getPuntoDeEntrega()
-    PED-->>-SRV: destino
-    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nuevo
-        SRV->>+RT: findNearbyDrivers(destino, radioKm)
-        RT-->>-SRV: cercanos
-        SRV->>+CHO: puedeRecibirOferta(distribuidora)
-        CHO-->>-SRV: elegible
-    end
-    opt Hay un chofer elegible que no fue contactado
-        SRV->>+PED: ofrecerA(chofer, venceEn)
-        create participant OFE as :OfertaDespacho
-        PED->>OFE: «create»(chofer, venceEn)
-        deactivate PED
-        SRV-)RT: notifyDriverNewOrder(chofer, pedido)
-        SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
-    end
-    SRV-->>-SIS: chofer
-```
-
-**Figura 10 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1) — Operación: ofrecerAlSiguienteChofer(pedidoId)**
-
-**Clases participantes:** `DispatchOrchestratorService` (controlador del despacho secuencial), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `RealtimeDispatchPort` (fabricación pura: el radar de choferes por cercanía y el aviso en vivo) y `NotificationsService` (fabricación pura: el aviso al dispositivo).
-
-**GRASP.** *Controlador*: `DispatchOrchestratorService` recibe la operación y coordina la búsqueda. *Experto*: `Pedido` conoce su punto de entrega, los choferes que ya contactó y sus ofertas; `Chofer` sabe si puede recibir la oferta (habilitado, validado, de la distribuidora, con vehículo en uso y documentación vigente). *Creador*: el `Pedido` crea sus `OfertaDespacho`, porque las contiene (composición); el controlador no las crea. *Fabricación pura*: el radar y los avisos quedan fuera de los objetos de dominio (Bajo Acoplamiento): el orquestador no conoce Redis ni Socket.IO.
-
-**No se dibuja:** la persistencia de la oferta, la vigencia de 30 segundos que se calcula a partir del reloj, la lectura de la configuración de radios (CU-171) y el cache de elegibilidad dentro de un mismo intento.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `Map<String, Pedido>.get(...)` | `OrderRepositoryPort.findByIdFull`: quien dispara el despacho lee el `Order` y se lo pasa a `DispatchOrchestratorService.offerToNextDriver` |
-| `DispatchOrchestratorService.ofrecerAlSiguienteChofer(...)` | `DispatchOrchestratorService.offerToNextDriver` |
-| `Pedido.getChoferesContactados()` | `DispatchOfferRepositoryPort.findOfferedDriverIds`: los choferes con una `DispatchOffer` de ese pedido, en cualquier estado |
-| `Pedido.getPuntoDeEntrega()` | `Order.deliveryPoint`, convertido con `coordenadasDePunto()` |
-| `Chofer.puedeRecibirOferta(...)` | `DeliveryService.choferesElegibles` (habilitado, validado y de la distribuidora del pedido) y `FleetDispatchLockService.choferesInhabilitados` (licencia y vehículo con documentación vigente) |
-| `Pedido.ofrecerA(...)` | `DispatchOrchestratorService.offerToNextDriver`: calcula `DispatchOffer.expiresAt` y llama a `DispatchOfferRepositoryPort.create` |
-| `OfertaDespacho.«create»` | `DispatchOfferRepositoryPort.create`: inserta la `DispatchOffer` en estado `OFFERED` |
-
-**Observaciones de diseño**
-
-- El orquestador **no conoce Redis ni Socket.io**: habla contra `RealtimeDispatchPort`; el `RealtimeDispatchAdapter` traduce a `RedisService` (GEO) y a los gateways.
-- La oferta es **durable** (fila en `dispatch_offer`, no una clave en memoria): sobrevive reinicios y es multi-instancia.
-- El push FCM es **complementario y best-effort** (`void`, no se espera): cubre al chofer con la app en background, donde el socket no llega.
-- Multi-tenant: `filterByDistributor` restringe los candidatos a los choferes de la distribuidora del pedido.
-
----
-
-### 4.5 Crítico · automático DSD — CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal)
-
-##### Operación: vencerOfertasExpiradas()
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-014 Reintentar Asignación con Radio Expandido (Cron) · vencerOfertasExpiradas
-    autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant TIK as :DispatchService
-    participant ORQ as :DispatchOrchestratorService
-    participant OFR as :DispatchOfferRepositoryPort
-    participant OFE as oferta:OfertaDespacho
-    participant PED as pedido:Pedido
-    participant ORS as :OrderService
-
-    SIS->>+TIK: vencerOfertasExpiradas()
-    TIK->>+ORQ: handleExpiredOffers()
-    ORQ->>+OFR: findExpired(ahora)
-    OFR-->>-ORQ: ofertas
-    loop Por cada oferta vencida
-        ORQ->>OFE: vencer()
-        ORQ->>+OFE: getPedido()
-        OFE-->>-ORQ: pedido
-        ORQ->>+PED: esReofertable()
-        PED-->>-ORQ: reofertable
-        opt El pedido sigue pendiente y sin chofer
-            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-        end
-    end
-    deactivate ORQ
-    TIK->>+ORS: findAvailableOrders()
-    ORS-->>-TIK: pendientes
-    loop Por cada pedido pendiente de más de 60 segundos
-        TIK->>+ORQ: ensureOffered(pedido)
-        ORQ->>+PED: tieneOfertaVigente()
-        PED-->>-ORQ: vigente
-        opt El pedido no tiene oferta vigente
-            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-        end
-        deactivate ORQ
-    end
-    deactivate TIK
-```
-
-**Figura 11 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal) — Operación: vencerOfertasExpiradas()**
-
-**Clases participantes:** `DispatchService` (controlador: el reloj del proceso), `DispatchOrchestratorService`, `DispatchOfferRepositoryPort` (fabricación pura: la búsqueda de ofertas vencidas atraviesa todos los pedidos), `OrderService` (consulta de los pedidos pendientes) y los objetos de dominio `OfertaDespacho` y `Pedido`.
-
-**GRASP.** *Controlador*: `DispatchService` recibe la operación del proceso temporal y la reparte; no decide a quién ofrecer. *Experto*: `OfertaDespacho` sabe vencer; `Pedido` sabe si todavía es re-ofertable (pendiente y sin chofer) y si tiene una oferta vigente. *Alta Cohesión*: la decisión de a quién ofrecer vive en `DispatchOrchestratorService` y el reloj en `DispatchService`.
-
-**Referencias.** La nueva `OfertaDespacho`, que crea el `Pedido` y se avisa al chofer elegido, es la operación `ofrecerAlSiguienteChofer` (CU-013), con su propio diagrama.
-
-**No se dibuja:** el bloqueo distribuido de cada ciclo (`RedisService.acquireLock`, una sola instancia procesa cada ciclo de 15 segundos), la lectura del pedido de cada oferta y la persistencia.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `DispatchService.vencerOfertasExpiradas(...)` | `DispatchService.tick`: corre cada 15 segundos con el bloqueo distribuido y llama a `DispatchOrchestratorService.handleExpiredOffers` y a `DispatchService.bootstrapPendingWithoutOffer` |
-| `OfertaDespacho.vencer(...)` | `DispatchOrchestratorService.handleExpiredOffers`: llama a `DispatchOfferRepositoryPort.updateStatus` con el estado `EXPIRED` |
-| `OfertaDespacho.getPedido()` | `DispatchOffer.order`, que `DispatchOrchestratorService.handleExpiredOffers` lee con `OrderRepositoryPort.findByIdFull` |
-| `Pedido.esReofertable()` | `DispatchOrchestratorService.isReofferable`: `Order.status` pendiente y sin `Order.deliveryId` |
-| `Pedido.tieneOfertaVigente()` | `DispatchOfferRepositoryPort.hasActiveOffer` |
-
-**Observaciones de diseño**
-
-- El cron aporta **el reloj y el lock**; la lógica de a-quién-ofrecer vive íntegra en el orquestador (SRP).
-- TTL del lock 12 s < período 15 s: si la instancia muere sin liberar, el lock expira antes del tick siguiente.
-- `bootstrapPendingWithoutOffer` es la red de seguridad para pedidos creados cuando no había ningún chofer conectado.
-
----
-
-### 4.6 Crítico DSD — CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar)
-
-##### Operación: aceptarPedido(pedidoId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-015 Aceptar Pedido · aceptarPedido
-    autonumber
-    actor CHF as Chofer (ACT-02)
-    participant UCS as :UpdateOrderStatusUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant CHO as chofer:Chofer
-    participant FLK as :FleetDispatchLockService
-    participant PED as pedido:Pedido
-    participant OFE as oferta:OfertaDespacho
-    participant NOT as :NotificationPort
-
-    CHF->>+UCS: aceptarPedido(pedidoId)
-    UCS->>+PEDS: get(pedidoId)
-    PEDS-->>-UCS: pedido
-    UCS->>CHO: assertElegibleParaAsignacion()
-    UCS->>FLK: assertChoferHabilitado(chofer)
-    UCS->>+FLK: vehiculoEnUsoDelChofer(chofer)
-    FLK-->>-UCS: vehiculo
-    UCS->>+PED: aceptar(chofer, vehiculo)
-    PED->>PED: transicionar(aceptado)
-    opt El pedido no estaba aceptado por este chofer
-        PED->>PED: generarCodigoDeEntrega()
-        PED->>OFE: aceptar()
-    end
-    deactivate PED
-    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
-    UCS-->>-CHF: pedido
-```
-
-**Figura 12 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: aceptarPedido(pedidoId)**
-
-**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `FleetDispatchLockService` (fabricación pura: reúne la documentación vencida de la flota) y `NotificationPort` (fabricación pura: el aviso al cliente).
-
-**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación y coordina. *Experto*: `Chofer` sabe si está habilitado y validado; `Pedido` conoce su estado y es quien se asigna el chofer, guarda la copia del vehículo, pasa a «aceptado», genera su código de entrega y cierra la oferta que el chofer tenía. El controlador no le asigna atributos. *Alta Cohesión*: `FleetDispatchLockService` es el único lugar que conoce las reglas de la flota (Bajo Acoplamiento con el despacho). La aceptación es idempotente: si el mismo chofer ya había aceptado, el `Pedido` no regenera el código ni cierra otra oferta.
-
-**No se dibuja:** la transacción con el bloqueo del pedido y del chofer, el guardado, la verificación de que el pedido sea de la distribuidora del chofer y, si ya tiene otro chofer, el rechazo con acceso denegado, el aviso en vivo al cliente y al panel (`notifyCustomer`, `notifyAdmins`) y la obtención del chofer a partir del usuario autenticado (`DeliveryService.buscarPorIdOUsuario`).
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UpdateOrderStatusUseCase.aceptarPedido(...)` | `OrderController.updateStatus` → `OrderService.updateStatus` → `UpdateOrderStatusUseCase.execute` con el estado aceptado |
-| `Map<String, Pedido>.get(...)` | `UpdateOrderStatusUseCase.execute`: lee el `Order` con bloqueo pesimista dentro de una transacción |
-| `Chofer.assertElegibleParaAsignacion()` | `DeliveryService.assertElegibleParaAsignacion`: verifica `Delivery.isEnabled` y `Delivery.validated` |
-| `Pedido.aceptar(...)` | `UpdateOrderStatusUseCase.applyStatusEffects`: asigna `Order.deliveryId` y `Order.delivery`, copia `Order.vehiclePatent`, `Order.vehicleBrand` y `Order.vehicleModel`, y registra `Order.acceptedAt` |
-| `Pedido.transicionar(...)` | `transitionOrder()` |
-| `Pedido.generarCodigoDeEntrega()` | `generateDeliveryCode()`, que queda en `Order.deliveryCode` |
-| `OfertaDespacho.aceptar()` | `DispatchOrchestratorService.onDriverAccepted`: llama a `DispatchOfferRepositoryPort.closeActiveOffer` con el estado `ACCEPTED` |
-
-##### Operación: rechazarOferta(pedidoId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-016 Rechazar / Ignorar Pedido · rechazarOferta
-    autonumber
-    actor CHF as Chofer (ACT-02)
-    participant SRV as :OrderService
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant OFE as oferta:OfertaDespacho
-
-    CHF->>+SRV: rechazarOferta(pedidoId)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
-    SRV->>+PED: getOfertaVigente(chofer)
-    PED-->>-SRV: oferta
-    SRV->>OFE: rechazar()
-    SRV->>+PED: esReofertable()
-    PED-->>-SRV: reofertable
-    opt El pedido sigue pendiente y sin chofer
-        Note over SRV,PED: Re-oferta inmediata: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-    end
-    SRV-->>-CHF: rechazada
-```
-
-**Figura 13 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: rechazarOferta(pedidoId)**
-
-**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `OfertaDespacho`.
-
-**GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce sus ofertas y sabe si todavía se puede re-ofrecer; `OfertaDespacho` es quien pasa a «rechazada». El chofer que rechazó queda como ya contactado, porque su oferta sigue en el historial del `Pedido`, y por eso no vuelve a recibirlo.
-
-**Referencias.** La nueva `OfertaDespacho` al siguiente chofer más cercano es la operación `ofrecerAlSiguienteChofer` (CU-013), con su propio diagrama.
-
-**No se dibuja:** el chofer que rechaza, que sale del usuario autenticado, la verificación de que el pedido sea de la distribuidora, y el caso del pedido asignado a mano por el administrador, que no tiene oferta: el pedido no cambia y se avisa a los administradores (`RealtimeDispatchPort.notifyAdmins`).
-
-| Operación de diseño | Implementación |
-|---|---|
-| `OrderService.rechazarOferta(...)` | `OrderController.rejectOffer` → `OrderService.rejectOffer` |
-| `Map<String, Pedido>.get(...)` | `OrderService.rejectOffer`: lee el `Order` con `OrderRepositoryPort.findByIdFull`; si no existe, el rechazo no tiene efecto |
-| `Pedido.getOfertaVigente(...)` | `DispatchOfferRepositoryPort.hasActiveOffer`, con el chofer, y `DispatchOrchestratorService.onDriverRejected`, que cierra la oferta de ese chofer |
-| `OfertaDespacho.rechazar()` | `DispatchOrchestratorService.onDriverRejected`: llama a `DispatchOfferRepositoryPort.closeActiveOffer` con el estado `REJECTED` |
-| `Pedido.esReofertable()` | `DispatchOrchestratorService.isReofferable`: `Order.status` pendiente y sin `Order.deliveryId` |
-
-**Observaciones de diseño**
-
-- El rechazo explícito **no espera el timeout de 30 s**: cierra la oferta y re-ofrece de inmediato, acortando el tiempo de asignación.
-- El **código secreto de entrega** se genera acá, al aceptar, no al entregar: ya queda listo para el QR de CU-078/CU-079.
-- El cierre de la oferta al aceptar es *best-effort* (`.catch(() => undefined)`): un fallo de auditoría no debe impedir que el pedido quede asignado.
-
----
-
-### 4.7 Crítico DSD — CU-072: Crear reserva programada con seña
-
-##### Operación: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-072 Crear Reserva Programada con Seña · crearReserva
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant CRT as :CreateOrderUseCase
-    participant CLE as cliente:Cliente
-    participant ZON as zona:ZonaCobertura
-    participant FRA as franja:FranjaHoraria
-    participant PRO as producto:Producto
-
-    CLI->>+CRT: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
-    CRT->>+CLE: getDireccion(direccionId)
-    CLE-->>-CRT: direccion
-    CRT->>+ZON: cubre(direccion)
-    ZON-->>-CRT: cubierta
-    CRT->>FRA: tieneCupo(fechaAgendada)
-    create participant PED as :Pedido
-    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago, montoDeLaSenia)
-    loop Por cada item de items
-        CRT->>PRO: reservar(cantidad)
-        CRT->>+PED: agregarItem(producto, cantidad)
-        PED->>+PRO: precioPara(cantidad)
-        PRO-->>-PED: precioUnitario, subtotal
-        create participant ITM as :ItemPedido
-        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
-        deactivate PED
-    end
-    CRT->>+PED: calcularTotal()
-    loop Por cada item del Pedido
-        PED->>ITM: getSubtotal()
-    end
-    PED->>ZON: calcularRecargo(subtotalItems)
-    PED->>PED: aplicarRecargoDePago()
-    PED-->>-CRT: total
-    opt metodoDePago es MERCADOPAGO y montoDeLaSenia es mayor que cero
-        Note over CRT,PED: Pago de la seña: ver DSD de crearCheckoutDePago (CU-048). Crea el Pago
-    end
-    Note over CRT,PED: Avisos: ver DSD de crearPedido (CU-005). No se ofrece a ningún chofer
-    CRT-->>-CLI: reserva, enlaceDePago
-```
-
-**Figura 14 — DSD CU-072: Crear reserva programada con seña**
-
-**Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`. Es la misma colaboración que `crearPedido` (CU-005), con la fecha agendada obligatoria y el monto de la seña; la diferencia está en el estado con que nace el `Pedido` y en que no se despacha.
-
-**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa, y el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Cliente` entrega su dirección, `ZonaCobertura` dice si la cubre y calcula su recargo, `FranjaHoraria` si tiene cupo para la fecha, `Producto` reserva su stock y conoce su precio, y `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido`.
-
-**Referencias.** El enlace de pago de la seña es la operación `crearCheckoutDePago` (CU-048), que crea el `Pago`. Los avisos a los administradores son los mismos de `crearPedido`. La activación de la reserva el día agendado es `activarReservasDelDia` (CU-075).
-
-**No se dibuja:** la transacción con bloqueo de la franja y del stock, que revierte todo si algo falla; el rechazo de una fecha agendada ausente o pasada, que el caso de uso resuelve antes de abrir la transacción; la persistencia y la lectura final del pedido.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CreateOrderUseCase.crearReserva(...)` | `OrderController.create` → `OrderService.create` → `CreateOrderUseCase.execute`, con la reserva marcada y la fecha agendada |
-| `Cliente.getDireccion(...)` | `UserAddressService.buscarDelUsuario`; el cliente se obtiene con `CustomersService.buscarComprador` |
-| `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage` |
-| `FranjaHoraria.tieneCupo(...)` | `TimeSlotService.assertSlotAvailableTx`, con bloqueo de la franja |
-| `Pedido.«create»` | `CreateOrderUseCase.execute`: arma la entidad `Order` en estado reservado, con `Order.scheduledDate`, `Order.depositAmount` y `Order.depositPaid` en falso |
-| `Producto.reservar(...)` | `GasCylinderService.reservarStock`: bloquea la fila y resta de `GasCylinder.stock` |
-| `Pedido.agregarItem(...)` | `CreateOrderUseCase.execute`: acumula los `OrderItem` en `Order.items` |
-| `Producto.precioPara(...)` | `OrderPricingService.priceItem`: precio de lista y promociones por volumen |
-| `ItemPedido.«create»` | `CreateOrderUseCase.execute`: crea cada `OrderItem` con su precio unitario y su subtotal |
-| `ItemPedido.getSubtotal()` | `OrderItem.subtotal` |
-| `Pedido.calcularTotal()` | `CreateOrderUseCase.execute`: suma los subtotales con `Decimal` y aplica los dos recargos; el resultado queda en `Order.totalAmount` |
-| `ZonaCobertura.calcularRecargo(...)` | `CoverageZonePricingService.zoneSurcharge` |
-| `Pedido.aplicarRecargoDePago()` | `OrderPricingService.applyPaymentSurcharge` |
-
-**Observaciones de diseño**
-
-- Una reserva **nace en `RESERVED`**, no en `PENDING`: el stock queda comprometido pero el pedido **no se despacha** hasta el día agendado.
-- El checkout de la reserva se crea **solo por el monto de la seña**, no por el total del pedido (`isDeposit: true` en el ledger `Payment`).
-- La validación del cupo de franja horaria ocurre **dentro de la transacción y con lock pesimista**, para que dos reservas concurrentes no superen la capacidad.
-
----
-
-### 4.8 Crítico · automático DSD — CU-075 / CU-076 / CU-077: Los tres crons de reservas y pagos pendientes
-
-##### Operación: activarReservasDelDia()
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-075 Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia
-    autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant SRV as :ReservationService
-    participant COL as :List#lt;Pedido#gt;
-    participant PED as reserva:Pedido
-
-    SIS->>+SRV: activarReservasDelDia()
-    SRV->>+COL: buscarReservasConSeniaPagaHasta(hoy)
-    COL-->>-SRV: reservas
-    loop Por cada reserva cuyo día llegó
-        SRV->>+PED: activar()
-        PED->>PED: validarTransicion(pendiente)
-        deactivate PED
-        Note over SRV,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-    end
-    deactivate SRV
-```
-
-**Figura 15 — DSD CU-075: Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia**
-
-**Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
-
-**GRASP.** *Controlador*: `ReservationService` recibe la ejecución programada. *Experto*: `Pedido` valida su transición de «reservado» a «pendiente»; el estado no se asigna desde afuera. El stock reservado al crear la reserva no se toca.
-
-**Referencias.** El ofrecimiento al chofer más cercano, que crea la `OfertaDespacho` y avisa al chofer, es `ofrecerAlSiguienteChofer` (CU-013).
-
-**No se dibuja:** el ciclo de ejecución (cada cinco minutos), el lote de hasta 50 reservas por corrida y el guardado de cada una. Si la transición de una reserva falla, se registra el error y el proceso sigue con las demás; si falla el despacho, se ignora y la reserva queda pendiente.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `ReservationService.activarReservasDelDia(...)` | `ReservationService.activateDueReservations`, disparado por `@Cron` cada cinco minutos |
-| `List<Pedido>.buscarReservasConSeniaPagaHasta(...)` | `ReservationService.activateDueReservations`: lee los `Order` con `Order.status` reservado, `Order.depositPaid` verdadero y `Order.scheduledDate` menor o igual a hoy, hasta 50 |
-| `Pedido.activar()` | `ReservationService.activateDueReservations`: aplica `transitionOrder()` a pendiente y guarda |
-| `Pedido.validarTransicion(...)` | `transitionOrder()` |
-
-##### Operación: expirarReservasSinSenia()
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-076 Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia
-    autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant SRV as :ReservationService
-    participant COL as :List#lt;Pedido#gt;
-    participant PED as reserva:Pedido
-    participant ITM as item:ItemPedido
-    participant PRO as producto:Producto
-
-    SIS->>+SRV: expirarReservasSinSenia()
-    SRV->>+COL: buscarReservasSinSeniaAnterioresA(plazo)
-    COL-->>-SRV: reservas
-    loop Por cada reserva vencida
-        SRV->>+PED: cancelar()
-        PED->>PED: validarTransicion(cancelado)
-        loop Por cada item del Pedido
-            PED->>+ITM: restituirStock()
-            ITM->>PRO: restituir(cantidad)
-            deactivate ITM
-        end
-        deactivate PED
-    end
-    deactivate SRV
-```
-
-**Figura 16 — DSD CU-076: Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia**
-
-**Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y los objetos de dominio `Pedido`, `ItemPedido` y `Producto`.
-
-**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` valida su transición a «cancelado» y le pide a cada `ItemPedido` que restituya; el `ItemPedido` conoce su `Producto` y su cantidad. El cambio de estado y la restitución del stock se aplican juntos o no se aplica ninguno.
-
-**No se dibuja:** el ciclo de ejecución (cada hora), el plazo de la seña (`RESERVATION_DEPOSIT_TTL_HOURS`), el lote de hasta 50 reservas por corrida y la transacción propia de cada reserva: si una falla, se revierte esa reserva, que queda intacta, y el proceso sigue con las demás.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `ReservationService.expirarReservasSinSenia(...)` | `ReservationService.expireUnpaidReservations`, disparado por `@Cron` cada hora |
-| `List<Pedido>.buscarReservasSinSeniaAnterioresA(...)` | `ReservationService.expireUnpaidReservations`: lee los `Order` con `Order.status` reservado, `Order.depositPaid` falso y `Order.createdAt` anterior al plazo, con sus ítems, hasta 50 |
-| `Pedido.cancelar()` | `ReservationService.expireUnpaidReservations`: aplica `transitionOrder()` a cancelado y guarda, dentro de una transacción |
-| `Pedido.validarTransicion(...)` | `transitionOrder()` |
-| `ItemPedido.restituirStock()` | `GasCylinderService.restituirStock`: recorre los ítems del pedido |
-| `Producto.restituir(...)` | `GasCylinderService.restituirStock`: bloquea la fila y suma `OrderItem.quantity` a `GasCylinder.stock` |
-
-##### Operación: expirarPedidosSinPagar()
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-077 Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar
-    autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant SRV as :ReservationService
-    participant COL as :List#lt;Pedido#gt;
-    participant PED as pedido:Pedido
-    participant ITM as item:ItemPedido
-    participant PRO as producto:Producto
-
-    SIS->>+SRV: expirarPedidosSinPagar()
-    SRV->>+COL: buscarPendientesConMercadoPagoAnterioresA(plazo)
-    COL-->>-SRV: pedidos
-    loop Por cada pedido vencido
-        SRV->>+PED: estaSinPagar()
-        PED-->>-SRV: sinPagar
-        opt El pedido sigue pendiente y sin pago confirmado
-            SRV->>+PED: cancelar(motivo)
-            PED->>PED: validarTransicion(cancelado)
-            loop Por cada item del Pedido
-                PED->>+ITM: restituirStock()
-                ITM->>PRO: restituir(cantidad)
-                deactivate ITM
-            end
-            deactivate PED
-        end
-    end
-    deactivate SRV
-```
-
-**Figura 17 — DSD CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar**
-
-**Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y los objetos de dominio `Pedido`, `ItemPedido` y `Producto`.
-
-**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` sabe si sigue pendiente y sin pago confirmado, valida su transición a «cancelado» y le pide a cada `ItemPedido` que restituya. La comprobación se hace de nuevo sobre el pedido releído con bloqueo, para que un pago que se confirma un instante antes no sea pisado por la expiración.
-
-**No se dibuja:** el ciclo de ejecución (cada 30 minutos), el plazo (`ORDER_MERCADOPAGO_PENDING_TTL_MINUTES`), el lote de hasta 50 pedidos por corrida y la transacción propia de cada pedido: si una falla, se revierte y el proceso sigue con los demás.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `ReservationService.expirarPedidosSinPagar(...)` | `ReservationService.expireUnpaidMercadoPagoOrders`, disparado por `@Cron` cada 30 minutos |
-| `List<Pedido>.buscarPendientesConMercadoPagoAnterioresA(...)` | `ReservationService.expireUnpaidMercadoPagoOrders`: lee los `Order` con `Order.status` pendiente, `Order.paymentMethod` en MercadoPago, `Order.gatewayPaymentId` nulo y `Order.createdAt` anterior al plazo, con sus ítems, hasta 50 |
-| `Pedido.estaSinPagar()` | `ReservationService.expireUnpaidMercadoPagoOrders`: relee el `Order` con bloqueo pesimista y comprueba que `Order.status` siga pendiente y `Order.gatewayPaymentId` sea nulo |
-| `Pedido.cancelar(...)` | `ReservationService.expireUnpaidMercadoPagoOrders`: aplica `transitionOrder()` a cancelado y asigna `Order.cancellationReason` |
-| `Pedido.validarTransicion(...)` | `transitionOrder()` |
-| `ItemPedido.restituirStock()` | `GasCylinderService.restituirStock`: recorre los ítems del pedido |
-| `Producto.restituir(...)` | `GasCylinderService.restituirStock`: bloquea la fila y suma `OrderItem.quantity` a `GasCylinder.stock` |
-
-**Observaciones de diseño**
-
-- Los tres procesos son del actor **ACT-04 (Sistema Automático)**: ninguno requiere intervención humana.
-- CU-077 resuelve la **carrera pago contra expiración** releyendo el pedido con bloqueo pesimista dentro de la transacción; el camino inverso (el pago llega después de expirado) lo cubre `ConfirmPaymentUseCase.handleApproved`, que ve el pedido en estado terminal y no lo reactiva.
-- CU-076 y CU-077 abren **una transacción por pedido**: el fallo de uno no arrastra a los demás. CU-075 activa cada reserva por separado, sin transacción propia: si una falla se registra el error y se sigue con las demás.
-- Cada corrida procesa como máximo 50 pedidos; los que queden esperan a la corrida siguiente.
-
----
-
-### 4.9 Crítico DSD — CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude)
-
-##### Operación: obtenerCodigoDeEntrega(pedidoId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-078 Obtener el Código de Entrega (QR del chofer) · obtenerCodigoDeEntrega
-    autonumber
-    actor CHF as Chofer (ACT-02)
-    participant SRV as :OrderService
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-
-    CHF->>+SRV: obtenerCodigoDeEntrega(pedidoId)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
-    SRV->>+PED: esDelChofer(chofer)
-    PED-->>-SRV: asignado
-    SRV->>+PED: getCodigoDeEntrega()
-    PED-->>-SRV: codigo
-    SRV-->>-CHF: codigo
-```
-
-**Figura 18 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: obtenerCodigoDeEntrega(pedidoId)**
-
-**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
-
-**GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce su código de entrega, que generó al aceptarse (CU-015), y sabe si el chofer que lo pide es el asignado. Es una consulta: no cambia el estado del pedido.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, y el error si el pedido todavía no tiene código porque no fue aceptado.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `OrderService.obtenerCodigoDeEntrega(...)` | `OrderController.getDeliveryCode` → `OrderService.getDeliveryCode` |
-| `Map<String, Pedido>.get(...)` | `OrderService.findOne`: lee el `Order` con `OrderRepositoryPort.findByIdFull` |
-| `Pedido.esDelChofer(...)` | `OrderService.assertPedidoDelChofer`: el chofer tiene que ser el asignado; un administrador puede verlo |
-| `Pedido.getCodigoDeEntrega()` | `Order.deliveryCode` |
-
-##### Operación: confirmarEntregaConCodigo(pedidoId, codigo)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-079 Confirmar Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant CDU as :ConfirmDeliveryUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant PAG as pago:Pago
-    participant RT as :RealtimeDispatchPort
-    participant NOT as :NotificationPort
-
-    CLI->>+CDU: confirmarEntregaConCodigo(pedidoId, codigo)
-    CDU->>+PEDS: get(pedidoId)
-    PEDS-->>-CDU: pedido
-    CDU->>+PED: validarCodigo(codigo)
-    PED-->>-CDU: valido
-    CDU->>+PED: entregar()
-    PED->>PED: transicionar(entregado)
-    opt El método de pago es efectivo
-        PED->>PAG: marcarPagado()
-    end
-    deactivate PED
-    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento y entrega los envases
-    CDU-)RT: notifyAdmins(pedido)
-    CDU-)NOT: sendOrderConfirmation(cliente, pedido)
-    CDU-->>-CLI: pedido
-```
-
-**Figura 19 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: confirmarEntregaConCodigo(pedidoId, codigo)**
-
-**Clases participantes:** `ConfirmDeliveryUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: los avisos).
-
-**GRASP.** *Controlador*: `ConfirmDeliveryUseCase` recibe la operación. *Experto*: `Pedido` conoce su código de entrega y es quien lo compara con el que escaneó el cliente, pasa a «entregado» y le indica a su `Pago` que quedó saldado si fue en efectivo. La comparación se hace en tiempo constante y la operación es idempotente: un pedido ya entregado se devuelve sin reprocesar.
-
-**Referencias.** El cierre del seguimiento del chofer y el paso de los envases a poder del cliente son los mismos de la operación `confirmarEntrega` (CU-020), que tiene su propio diagrama.
-
-**No se dibuja:** la verificación de que el pedido sea del cliente que lo confirma, el rechazo si el pedido no está en camino o el código no coincide, y la transacción con el bloqueo del pedido que resuelve `UpdateOrderStatusUseCase.execute`.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `ConfirmDeliveryUseCase.confirmarEntregaConCodigo(...)` | `OrderController.confirmDelivery` → `OrderService.confirmDelivery` → `ConfirmDeliveryUseCase.execute` |
-| `Map<String, Pedido>.get(...)` | `ConfirmDeliveryUseCase.execute`: lee el `Order` con `OrderRepositoryPort.findByIdFull` |
-| `Pedido.validarCodigo(...)` | `compareDeliveryCode()`, contra `Order.deliveryCode` |
-| `Pedido.entregar()` | `ConfirmDeliveryUseCase.execute`: delega en `UpdateOrderStatusUseCase.execute`, que registra `Order.deliveredAt` |
-| `Pedido.transicionar(...)` | `transitionOrder()` |
-| `Pago.marcarPagado()` | `UpdateOrderStatusUseCase.applyStatusEffects`: asigna `Order.paymentStatus` pagado cuando `Order.paymentMethod` es efectivo |
-| `RealtimeDispatchPort.notifyAdmins(...)` | `UpdateOrderStatusUseCase.execute`: avisa a los administradores de la distribuidora |
-
-**Observaciones de diseño**
-
-- Se **invierte el actor** respecto de CU-020: quien confirma es el **cliente**, no el chofer. El código lo posee el chofer; que el cliente lo conozca prueba que el chofer estuvo presente.
-- `compareDeliveryCode` usa `timingSafeEqual` (comparación de tiempo constante) para no filtrar el secreto por timing.
-- La **validación** vive en `ConfirmDeliveryUseCase`; los **efectos** de pasar a `DELIVERED` se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH :id/status`: cero duplicación de lógica.
-- Doble idempotencia: el header `Idempotency-Key` (`IdempotencyInterceptor`) y el chequeo de `status === DELIVERED` dentro del caso de uso.
-
----
-
-### 4.10 Importante DSD — CU-068 / CU-070: Ciclo de vida del envase físico
-
-##### Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-068 Asignar Envases a un Pedido · asignarEnvasesAPedido
-    autonumber
-    actor CHF as Chofer (ACT-02)
-    participant SRV as :CylinderService
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant ENVS as :Map#lt;String, Envase#gt;
-    participant ENV as envase:Envase
-
-    CHF->>+SRV: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
-    Note over SRV,ENV: Vigencia: ver DSD de verificarVigenciaAlAsignar (CU-135). Rechaza la asignación completa si alguna revisión venció
-    loop Por cada numeroDeSerie de numerosDeSerie
-        SRV->>+ENVS: get(numeroDeSerie)
-        ENVS-->>-SRV: envase
-        SRV->>+ENV: despachar(pedido, usuario)
-        ENV->>ENV: validarTransicion(despachado)
-        create participant NMOV as nuevo:MovimientoEnvase
-        ENV->>NMOV: «create»(pedido, usuario, nota)
-        deactivate ENV
-    end
-    SRV-->>-CHF: envases
-```
-
-**Figura 20 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)**
-
-**Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), las colecciones `Map<String, Pedido>` y `Map<String, Envase>` y los objetos de dominio `Envase` y `MovimientoEnvase`.
-
-**GRASP.** *Controlador*: `CylinderService` recibe la operación. *Experto*: cada `Envase` conoce su estado y es quien se despacha: valida la transición de «lleno» a «despachado», queda asociado al pedido que lo lleva y deja su rastro. *Creador*: el `Envase` crea su `MovimientoEnvase`, porque lo contiene (composición).
-
-**Referencias.** La verificación de que ninguna revisión esté vencida es la operación `verificarVigenciaAlAsignar` (CU-135), con su propio diagrama.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, el rechazo de la asignación completa si algún envase no existe, no está lleno o tiene la revisión vencida, y la persistencia.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CylinderService.asignarEnvasesAPedido(...)` | `CylinderController.assign` → `CylinderService.assignToOrder` |
-| `Map<String, Pedido>.get(...)` | `OrderLookupService.findRef`: si el pedido no existe en la distribuidora, responde recurso no encontrado |
-| `Map<String, Envase>.get(...)` | `CylinderService.findBySerial` |
-| `Envase.despachar(...)` | `CylinderService.assignToOrder`: asigna `Cylinder.currentOrderId` y llama a `CylinderService.recordTransition` con el estado despachado |
-| `Envase.validarTransicion(...)` | `assertTransition()` |
-| `MovimientoEnvase.«create»` | `CylinderService.recordTransition`: guarda el `CylinderMovement` con `CylinderMovement.orderId`, `CylinderMovement.actorUserId` y `CylinderMovement.note` |
-
-##### Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-070 Registrar Movimiento de Envase (cambio de estado) · registrarMovimientoDeEnvase
-    autonumber
-    actor CHF as Chofer (ACT-02)
-    participant SRV as :CylinderService
-    participant ENVS as :Map#lt;String, Envase#gt;
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant ENV as envase:Envase
-
-    CHF->>+SRV: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
-    SRV->>+ENVS: get(envaseId)
-    ENVS-->>-SRV: envase
-    opt Se indicó un pedido
-        SRV->>+PEDS: get(pedidoId)
-        PEDS-->>-SRV: pedido
-        SRV->>+PED: getCliente()
-        PED-->>-SRV: cliente
-    end
-    SRV->>+ENV: pasarA(estadoDestino, pedido, cliente, observacion)
-    ENV->>ENV: validarTransicion(estadoDestino)
-    create participant MOV as :MovimientoEnvase
-    ENV->>MOV: «create»(estadoOrigen, estadoDestino, pedido, usuario, observacion)
-    deactivate ENV
-    SRV-->>-CHF: envase
-```
-
-**Figura 21 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)**
-
-**Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), las colecciones `Map<String, Envase>` y `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Envase` y `MovimientoEnvase`.
-
-**GRASP.** *Controlador*: `CylinderService` recibe la operación. *Experto*: el `Pedido` conoce a su cliente; el `Envase` conoce su estado y es quien pasa al estado destino: valida que la transición sea legal, actualiza quién lo tiene (en poder del cliente, o ninguno al volver vacío o al depósito) y deja su rastro. *Creador*: el `Envase` crea su `MovimientoEnvase`, porque lo contiene (composición). Las transiciones válidas son las de la máquina de estados del envase.
-
-**No se dibuja:** el contexto de la distribuidora: un envase de otra distribuidora no se encuentra, y la persistencia.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CylinderService.registrarMovimientoDeEnvase(...)` | `CylinderController.transition` → `CylinderService.transition` |
-| `Map<String, Envase>.get(...)` | `CylinderService.findOne` |
-| `Map<String, Pedido>.get(...)` | `OrderLookupService.findRef`: si el pedido no existe en la distribuidora, responde recurso no encontrado |
-| `Pedido.getCliente()` | `Order.customerId`, que `CylinderService.transition` usa sólo si el destino es «en poder del cliente» |
-| `Envase.pasarA(...)` | `CylinderService.recordTransition`: asigna `Cylinder.state` y `Cylinder.currentCustomerId` |
-| `Envase.validarTransicion(...)` | `assertTransition()` |
-| `MovimientoEnvase.«create»` | `CylinderService.recordTransition`: guarda el `CylinderMovement` con `CylinderMovement.fromState`, `CylinderMovement.toState`, `CylinderMovement.orderId`, `CylinderMovement.actorUserId` y `CylinderMovement.note` |
-
-**Observaciones de diseño**
-
-- `CylinderMovement` es una bitácora **append-only**: cada transición deja rastro con `from_state`, `to_state`, `order_id`, `actor_user_id` y nota. Es la base de la trazabilidad de envases (SS-13).
-- El pedido **no conoce el módulo de envases**: habla contra `CylinderLifecyclePort`, y `CylinderLifecycleAdapter` delega en `CylinderService`.
-- El avance automático es **best-effort dentro de un `try/catch`** en `UpdateOrderStatusUseCase`: si falla, se loguea pero la entrega del pedido no se rompe.
-- El serial es único **por distribuidora** (índice compuesto): dos empresas pueden tener envases con el mismo serial de fábrica.
-
----
-
-### 4.11 Crítico DSD — CU-048: Pago con pasarela y confirmación por webhook
-
-##### Operación: crearCheckoutDePago(pedidoId, medioDePago)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-048 Procesar Pago con MercadoPago · crearCheckoutDePago
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant PAG as :PaymentsService
-    participant COL as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant PAS as :PaymentGatewayPort
-
-    CLI->>+PAG: crearCheckoutDePago(pedidoId, medioDePago)
-    PAG->>+COL: get(pedidoId)
-    COL-->>-PAG: pedido
-    PAG->>+PED: getImporteACobrar(esSenia)
-    PED-->>-PAG: importe
-    create participant PGO as :Pago
-    PAG->>PGO: «create»(pedido, distribuidora, importe, esSenia)
-    PAG->>+PAS: createCheckout(pedido, items, pagador)
-    PAS-->>-PAG: enlaceDePago
-    PAG->>PGO: asignarEnlace(enlaceDePago)
-    PAG-->>-CLI: enlaceDePago
-```
-
-**Figura 22 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago**
-
-**Clases participantes:** `PaymentsService` (controlador de fachada del módulo de pagos), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `PaymentGatewayPort` (fabricación pura: la pasarela de pago, hoy MercadoPago Checkout Pro).
-
-**GRASP.** *Controlador*: `PaymentsService`. *Creador*: el servicio crea el `Pago`, porque es quien lleva el registro de los intentos de cobro. *Experto*: `Pedido` sabe cuánto hay que cobrar: su total, o el monto de la seña si el cobro es de una reserva. El `Pago` nace «pendiente»; si la pasarela no devuelve el enlace, queda sin él y el pedido queda creado igual. Si el pedido ya está pago, cancelado o entregado, el servicio lo rechaza con un conflicto (409) antes de registrar ningún intento, y si no existe responde 404.
-
-**Referencias.** `crearCheckoutDePago` no tiene un endpoint propio: es una operación del sistema porque el Cliente la dispara al confirmar un pedido con MercadoPago, y la ejecuta `CreateOrderUseCase` dentro de la creación del pedido (`crearPedido`, CU-005), que la invoca por su diagrama. Se la diagrama aparte, como operación propia del catálogo, porque tiene su propio contrato: crea el `Pago`. El resultado del pago llega después, por la notificación de la pasarela: es la operación `notificarResultadoDePago`, de este mismo caso de uso.
-
-**No se dibuja:** la persistencia del `Pago` y la preferencia de pago de MercadoPago (`MercadoPagoAdapter`), que es la implementación del puerto. El estado del `Pedido` no cambia.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`, invocado por `CreateOrderUseCase` al crear el pedido con MercadoPago o la seña de una reserva |
-| `Map<String, Pedido>.get(...)` | `CreateOrderUseCase.execute`: entrega el `Order` recién guardado; `PaymentsService.createCheckout` recibe su identificador y no lo relee |
-| `Pedido.getImporteACobrar(...)` | `CreateOrderUseCase.createMercadoPagoCheckout` toma `Order.totalAmount`; `CreateOrderUseCase.createDepositCheckout` toma `Order.depositAmount` |
-| `Pago.«create»` | `PaymentsService.createCheckout`: crea y guarda el `Payment` con `Payment.status` pendiente, `Payment.amount` y `Payment.isDeposit` |
-| `Pago.asignarEnlace(...)` | `PaymentsService.createCheckout`: asigna `Payment.paymentUrl` y guarda |
-
-##### Operación: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-048 Procesar Pago con MercadoPago · notificarResultadoDePago
-    autonumber
-    actor MPG as MercadoPago (ACT-06)
-    participant CNF as :ConfirmPaymentUseCase
-    participant PAS as :PaymentGatewayPort
-    participant COL as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant PGO as pago:Pago
-    participant RT as :RealtimeDispatchPort
-    participant NOT as :NotificationPort
-
-    MPG->>+CNF: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
-    CNF->>+PAS: verifyWebhookSignature(firma, identificadorDelPago)
-    PAS-->>-CNF: firmaValida
-    alt La firma es válida y la notificación es de un pago
-        CNF->>+PAS: getPayment(identificadorDelPago)
-        PAS-->>-CNF: estado, referenciaExterna
-        CNF->>+COL: get(referenciaExterna)
-        COL-->>-CNF: pedido
-        CNF->>+PED: getPago(identificadorDelPago)
-        PED-->>-CNF: pago
-        CNF->>PGO: registrarResultado(identificadorDelPago, estado)
-        alt El pago está aprobado y el pedido es una reserva
-            CNF->>PED: confirmarSenia()
-        else El pago está aprobado y el pedido es normal
-            CNF->>PED: marcarPagado(identificadorDelPago)
-            Note over CNF,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-        end
-        opt Es la primera confirmación del pago aprobado
-            CNF-)RT: notifyCustomer(cliente, pedido, tipo)
-            CNF-)NOT: sendPaymentApprovedPush(cliente, pedido, esSena)
-        end
-    end
-    CNF-->>-MPG: recibido
-```
-
-**Figura 23 — DSD CU-048: Procesar Pago con MercadoPago · notificarResultadoDePago**
-
-**Clases participantes:** `ConfirmPaymentUseCase` (controlador de caso de uso), `PaymentGatewayPort` (fabricación pura: la pasarela de pago), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `RealtimeDispatchPort` y `NotificationPort` (fabricaciones puras: el aviso al Cliente por tiempo real y por notificación push).
-
-**GRASP.** *Controlador*: `ConfirmPaymentUseCase` recibe la notificación y coordina. *Experto*: `Pago` registra lo que informó la pasarela; `Pedido` conoce su pago y es quien pasa a pagado, o a seña paga si es una reserva. El sistema no confía en el cuerpo de la notificación: valida la firma y consulta el pago real a la pasarela. Si el pedido ya está cancelado o entregado, se registra el pago y no se lo reactiva. El aviso al Cliente sale una sola vez, en la primera confirmación del pago aprobado, sea de un pedido o de la seña de una reserva; un pago rechazado o cancelado no se avisa (limitación conocida, §10).
-
-**Referencias.** El ofrecimiento al chofer más cercano, que crea la `OfertaDespacho`, es `ofrecerAlSiguienteChofer` (CU-013). Una reserva no se ofrece: la activa `activarReservasDelDia` (CU-075) el día agendado.
-
-**No se dibuja:** la transacción con bloqueo pesimista del pedido, que impide que dos notificaciones del mismo pago lo procesen a la vez; el evento (`PagoNotificadoEvent`) con el que el módulo de pagos le pasa la notificación al de pedidos; el descarte silencioso de las notificaciones con firma inválida, de otro tipo o sin identificador, y la respuesta siempre 200 hacia la pasarela.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `ConfirmPaymentUseCase.notificarResultadoDePago(...)` | `MercadoPagoWebhookController.handle` verifica la firma y publica el evento `PagoNotificadoEvent`; `PagoNotificadoListener.handle` llama a `ConfirmPaymentUseCase.execute` |
-| `PaymentGatewayPort.verifyWebhookSignature(...)` | `MercadoPagoWebhookController.handle` la invoca por `PaymentsService.verifyWebhookSignature`, antes de publicar el evento |
-| `PaymentGatewayPort.getPayment(...)` | `PaymentsService.confirmFromGateway`: consulta el pago real en la pasarela |
-| `Map<String, Pedido>.get(...)` | `ConfirmPaymentUseCase.execute`: `OrderRepositoryPort.findByIdFull` con la referencia externa del pago |
-| `Pedido.getPago(...)` | `PaymentsService.confirmFromGateway`: busca el `Payment` por `Payment.gatewayPaymentId` y, si es la primera notificación, el pendiente de esa referencia |
-| `Pago.registrarResultado(...)` | `PaymentsService.confirmFromGateway`: asigna `Payment.gatewayPaymentId` y `Payment.status`, traducido del estado de la pasarela |
-| `Pedido.confirmarSenia()` | `ConfirmPaymentUseCase.handleApproved`: asigna `Order.depositPaid` y `Order.gatewayPaymentId` |
-| `Pedido.marcarPagado(...)` | `ConfirmPaymentUseCase.handleApproved`: asigna `Order.paymentStatus` pagado y `Order.gatewayPaymentId` |
-| `RealtimeDispatchPort.notifyCustomer(...)` | `ConfirmPaymentUseCase.handleApproved`, después del commit: emite al Cliente el evento `order:payment-approved`; sólo en la primera confirmación, no en los reintentos de la pasarela |
-| `NotificationPort.sendPaymentApprovedPush(...)` | `ConfirmPaymentUseCase.notificarPagoAprobado`, después del commit y del despacho: el push al Cliente («pago recibido» o «seña recibida»), una sola vez; un fallo se registra y no revierte el pago |
-
-**Observaciones de diseño**
-
-- El dominio de pedidos **no conoce MercadoPago**: `ConfirmPaymentUseCase` consume el resultado *normalizado* de `PaymentsService`, y solo `MercadoPagoAdapter` toca el SDK. Sumar otra pasarela es agregar un adapter, no tocar `order`.
-- El sistema **nunca confía en el payload del webhook**: valida la firma HMAC y después consulta el pago real con `getPayment`.
-- Idempotencia por triple guarda: firma, `gateway_payment_id` ya asignado en el ledger, y lock pesimista sobre el `Order` antes de marcar `PAID`. Nunca se despacha dos veces el mismo pedido.
-- El webhook **siempre responde 200**, incluso ante firma inválida o error interno, para que MercadoPago no entre en bucle de reintentos con 5xx.
-- El camino de pago `rejected` / `cancelled` no libera el stock ni cancela el pedido: sólo deja registro en el log; el pedido queda pendiente y lo cancela el proceso de CU-077 al vencer el plazo. Es una limitación del sistema y no una funcionalidad.
-
----
-
-### 4.12 Crítico DSD — CU-058 / CU-005: Validación de zona de cobertura al crear un pedido
-
-
-##### Operación: validarCobertura(latitud, longitud)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-058 Validar Cobertura de una Dirección · validarCobertura
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :CoverageZoneService
-    participant DIS as distribuidora:Distribuidora
-    participant ZON as zona:ZonaCobertura
-
-    CLI->>+SRV: validarCobertura(latitud, longitud)
-    alt La distribuidora no tiene zonas activas
-        Note over SRV,DIS: Toda dirección se considera cubierta, sin recargo
-    else La distribuidora tiene zonas activas
-        SRV->>+DIS: getZonaQueCubre(latitud, longitud)
-        loop Por cada zona activa y vigente, de mayor prioridad
-            DIS->>ZON: cubre(latitud, longitud)
-        end
-        DIS-->>-SRV: zona
-        opt Alguna zona cubre el punto
-            SRV->>+ZON: getRecargo()
-            ZON-->>-SRV: recargo
-        end
-    end
-    SRV-->>-CLI: cubierta, recargo, zona
-```
-
-**Figura 24 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido**
-
-**Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y los objetos de dominio `Distribuidora` y `ZonaCobertura`. La operación la usa también la creación del pedido (`crearPedido`, CU-005), que le pregunta por la dirección elegida.
-
-**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la `Distribuidora` sabe qué zonas tiene y cuál cubre un punto; la `ZonaCobertura` sabe si contiene el punto y cuál es su recargo. La consulta no cambia estado. Una distribuidora sin zonas definidas no bloquea la venta: toda dirección queda cubierta, sin recargo.
-
-**No se dibuja:** que la evaluación de cada zona la resuelve una sola consulta geográfica en la base, que ignora las zonas inactivas, fuera de vigencia o dadas de baja, y el cálculo del monto del recargo sobre un subtotal, que es de `crearPedido`.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CoverageZoneService.validarCobertura(...)` | `CoverageZoneController.check` → `CoverageZoneService.checkCoverage` |
-| `Distribuidora.getZonaQueCubre(...)` | `CoverageZoneService.checkCoverage`: una consulta PostGIS (`ST_Covers`) sobre las zonas activas, vigentes y no dadas de baja de la distribuidora, que devuelve la primera por `CoverageZone.priority` y menor área |
-| `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage`: es la condición `ST_Covers` de la misma consulta sobre `CoverageZone.area`; un punto sobre el borde cuenta como cubierto |
-| `ZonaCobertura.getRecargo()` | `CoverageZoneService.checkCoverage`: devuelve `CoverageZone.surchargeValue` y su tipo |
-
-**Observaciones de diseño**
-
-- La cobertura se valida **antes de reservar stock**: un pedido fuera de zona no llega a bloquear inventario.
-- La zona aporta además un **recargo por lejanía** que se suma al subtotal de los ítems **antes** del recargo por método de pago (+10 % en pagos online).
-- Regla de compatibilidad: una distribuidora **sin zonas cargadas** no queda bloqueada — `checkCoverage` devuelve `covered: true, surcharge: 0`.
-- La consulta geoespacial es un `ST_Contains` de PostGIS resuelto en la base, no en memoria; se elige la zona de **mayor prioridad** y, a igual prioridad, la de **menor área** entre las que contienen el punto.
-
----
-
-### 4.13 Importante DSD — CU-064 / CU-065: Calificación bidireccional y recálculo del promedio
-
-##### Operación: calificarPedido(pedidoId, estrellas, comentario)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-064 Calificar Pedido (cliente↔chofer) · calificarPedido
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :RatingService
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant USU as usuario:Usuario
-    participant CHO as chofer:Chofer
-
-    CLI->>+SRV: calificarPedido(pedidoId, estrellas, comentario)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
-    SRV->>+PED: puedeCalificar(usuario)
-    PED-->>-SRV: habilitado
-    SRV->>+PED: getReceptorDeCalificacion(usuario)
-    PED-->>-SRV: calificado
-    SRV->>+USU: calificar(pedido, calificado, estrellas, comentario)
-    create participant CAL as :Calificacion
-    USU->>CAL: «create»(pedido, calificado, estrellas, comentario)
-    USU-->>-SRV: calificacion
-    opt Califica el cliente
-        SRV->>CHO: recalcularPromedio()
-    end
-    SRV-->>-CLI: calificacion
-```
-
-**Figura 25 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: calificarPedido(pedidoId, estrellas, comentario)**
-
-**Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Usuario`, `Calificacion` y `Chofer`.
-
-**GRASP.** *Controlador*: `RatingService` recibe la operación. *Experto*: `Pedido` sabe si está entregado, quiénes son sus dos partes y a quién le toca recibir la calificación de cada una; `Chofer` es quien recalcula su promedio. *Creador*: el `Usuario` que califica emite y crea su `Calificacion`. Calificar no cambia el estado del pedido; hay a lo sumo una calificación por parte y por pedido.
-
-**No se dibuja:** el rol de quien califica, que sale de la sesión, el rechazo si el pedido no está entregado, no es del que califica o ya fue calificado por esa parte (índice único), y la persistencia.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `RatingService.calificarPedido(...)` | `RatingController.create` → `RatingService.create` |
-| `Map<String, Pedido>.get(...)` | `OrderService.findById` |
-| `Pedido.puedeCalificar(...)` | `RatingService.create`: exige `Order.status` entregado y que el usuario sea `Order.customerId` o el chofer asignado |
-| `Pedido.getReceptorDeCalificacion(...)` | `RatingService.create`: deriva `Rating.toUserId`, que es el chofer si califica el cliente y `Order.customerId` si califica el chofer |
-| `Usuario.calificar(...)` | `RatingService.create`: arma el `Rating` con `Rating.fromUserId`, `Rating.toUserId`, `Rating.fromRole`, `Rating.stars` y `Rating.comment` |
-| `Calificacion.«create»` | `RatingService.create`: guarda el `Rating`; el índice único por parte y pedido rechaza una segunda calificación con conflicto |
-| `Chofer.recalcularPromedio()` | `RatingService.refreshDeliveryAverage`: calcula con `RatingService.getSummaryForUser` y lo guarda en `Delivery.calification` con `DeliveryService.updateCalificationByUserId` |
-
-##### Operación: consultarResumenDeCalificaciones(usuarioId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-065 Consultar Promedio de Calificaciones de un Usuario · consultarResumenDeCalificaciones
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :RatingService
-    participant USU as usuario:Usuario
-    participant CAL as calificacion:Calificacion
-
-    CLI->>+SRV: consultarResumenDeCalificaciones(usuarioId)
-    SRV->>+USU: getResumenDeCalificaciones()
-    loop Por cada calificación recibida
-        USU->>CAL: getEstrellas()
-    end
-    USU->>USU: calcularPromedio()
-    USU-->>-SRV: promedio, cantidad
-    SRV-->>-CLI: resumen
-```
-
-**Figura 26 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: consultarResumenDeCalificaciones(usuarioId)**
-
-**Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones) y los objetos de dominio `Usuario` y `Calificacion`.
-
-**GRASP.** *Controlador*: `RatingService` recibe la operación. *Experto*: el `Usuario` conoce las calificaciones que recibió y calcula su promedio y su cantidad, pidiéndole las estrellas a cada `Calificacion`. Es una consulta: no cambia ningún estado.
-
-**No se dibuja:** el filtro por la distribuidora del contexto y el cálculo agregado, que el código resuelve en una sola consulta SQL.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `RatingService.consultarResumenDeCalificaciones(...)` | `RatingController.getSummary` → `RatingService.getSummaryForUser` |
-| `Usuario.getResumenDeCalificaciones()` | `RatingService.getSummaryForUser`: consulta el promedio y la cantidad de `Rating.stars` filtrando por `Rating.toUserId` |
-| `Calificacion.getEstrellas()` | `Rating.stars`, que `RatingService.getSummaryForUser` agrega con `AVG` |
-| `Usuario.calcularPromedio()` | `RatingService.getSummaryForUser`: redondea a dos decimales |
-
-**Observaciones de diseño**
-
-- La calificación es **bidireccional y simétrica**: el emisor sale siempre del token y el calificado se **deriva del pedido** — el cliente nunca elige a quién califica.
-- La regla "una calificación por pedido y por lado" se garantiza con un **índice único `(order_id, from_role)`** en la base, no con una consulta previa: se captura el `23505` de PostgreSQL. Es la forma correcta bajo concurrencia.
-- `Delivery.calification` es un **valor desnormalizado** que se recalcula al vuelo con `refreshDeliveryAverage`, para lecturas rápidas del listado de choferes; la fuente de verdad sigue siendo la tabla `rating`.
-- `getSummaryForUser` **no filtra por `from_role`**: filtrarlo por `CUSTOMER` daba promedio 0 para los clientes calificados por choferes.
-
----
-
-### Sección B — Diagramas de Interacción por Subsistema
-
----
-
----
-
-
----
-
-### Cobertura completa — diagramas de interacción por subsistema
-
-Los 84 diagramas que siguen completan la cobertura: cada caso de uso implementado
-tiene su diagrama de interacción. Se agrupan por subsistema. Los nombres de clase y de
-método son los del código; los alias de participante se escriben sin acentos ni símbolos
-para que los bloques sean importables en draw.io, Lucidchart y Mermaid Live.
-
-### SS-01 — Autenticación y Usuarios
+### 4.1 SS-01 — Autenticación y Usuarios
 
 #### DSD — CU-001: Iniciar Sesión
 
@@ -2632,7 +1766,7 @@ sequenceDiagram
     SRV-->>-CLI: sesion
 ```
 
-**Figura 27 — DSD CU-001: Iniciar Sesión**
+**Figura 23 — DSD CU-001: Iniciar Sesión**
 
 **Clases participantes:** `AuthService` (controlador de fachada del módulo de acceso), `Firebase` (actor externo: es quien verifica la contraseña), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`. El diagrama vale igual para el Chofer y el Administrador, que inician sesión con la misma operación.
 
@@ -2685,7 +1819,7 @@ sequenceDiagram
     SRV-->>-CLI: usuario
 ```
 
-**Figura 28 — DSD CU-002: Registrarse como Cliente**
+**Figura 24 — DSD CU-002: Registrarse como Cliente**
 
 **Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura: el puerto hacia el proveedor de identidad) y los objetos de dominio `Usuario` y `Cliente`.
 
@@ -2741,7 +1875,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 29 — DSD CU-003: Registrar Chofer**
+**Figura 25 — DSD CU-003: Registrar Chofer**
 
 **Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Chofer`. El diagrama sirve a CU-003 y a CU-031: es el mismo alta visto desde la gestión de usuarios y desde la de choferes.
 
@@ -2789,7 +1923,7 @@ sequenceDiagram
     SRV-->>-CLI: usuario
 ```
 
-**Figura 30 — DSD CU-004: Gestionar Perfil de Usuario**
+**Figura 26 — DSD CU-004: Gestionar Perfil de Usuario**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`. Lo inicia también el Chofer.
 
@@ -2819,7 +1953,7 @@ sequenceDiagram
     SRV-->>-CLI: usuario
 ```
 
-**Figura 31 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfil(usuarioId)**
+**Figura 27 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfil(usuarioId)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `Map<String, Usuario>`.
 
@@ -2848,7 +1982,7 @@ sequenceDiagram
     SRV-->>-CLI: cliente
 ```
 
-**Figura 32 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)**
+**Figura 28 — DSD CU-004: Gestionar Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes) y la colección `Map<String, Cliente>`.
 
@@ -2902,7 +2036,7 @@ sequenceDiagram
     SRV-->>-CLI: correoNuevo
 ```
 
-**Figura 33 — DSD CU-047: Recuperar Contraseña**
+**Figura 29 — DSD CU-047: Recuperar Contraseña**
 
 **Clases participantes:** `EmailService` (controlador de fachada del módulo de correo), `FirebaseAuthPort` (fabricación pura: acredita al dueño de la cuenta y cambia el correo en el proveedor de identidad), la colección `Map<String, Usuario>`, el objeto de dominio `Usuario` y `EmailSenderPort` (fabricación pura: el envío del correo de verificación). Lo inician el Cliente, el Chofer y el Administrador.
 
@@ -2942,7 +2076,7 @@ sequenceDiagram
     SRV-->>-CLI: mensaje
 ```
 
-**Figura 34 — DSD CU-047: Recuperar Contraseña — Operación: solicitarRecuperacionDeClave(correo)**
+**Figura 30 — DSD CU-047: Recuperar Contraseña — Operación: solicitarRecuperacionDeClave(correo)**
 
 **Clases participantes:** `EmailService` (controlador de fachada del módulo de correo), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura: genera el enlace firmado) y `EmailSenderPort` (fabricación pura: el envío). Lo inician el Cliente, el Chofer y el Administrador.
 
@@ -2990,7 +2124,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 35 — DSD CU-050: Bloquear / Desbloquear Usuario**
+**Figura 31 — DSD CU-050: Bloquear / Desbloquear Usuario**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`.
 
@@ -3050,7 +2184,7 @@ sequenceDiagram
     SRV-->>-SRV: usuario
 ```
 
-**Figura 36 — DSD CU-082: Crear Usuario Base**
+**Figura 32 — DSD CU-082: Crear Usuario Base**
 
 **Clases participantes:** `RegistroService` (controlador de los casos base), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura: la cuenta de acceso en Firebase, detrás de un puerto) y los objetos de dominio `Usuario`, `Cliente`, `Chofer` y `Administrador`.
 
@@ -3100,7 +2234,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 37 — DSD CU-083: Buscar / Listar Usuarios**
+**Figura 33 — DSD CU-083: Buscar / Listar Usuarios**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `Map<String, Usuario>`.
 
@@ -3129,7 +2263,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 38 — DSD CU-083: Buscar / Listar Usuarios — Operación: buscarUsuarioPorTelefono(telefono)**
+**Figura 34 — DSD CU-083: Buscar / Listar Usuarios — Operación: buscarUsuarioPorTelefono(telefono)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `Map<String, Usuario>`.
 
@@ -3158,7 +2292,7 @@ sequenceDiagram
     SRV-->>-ADM: usuarios, total
 ```
 
-**Figura 39 — DSD CU-083: Buscar / Listar Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)**
+**Figura 35 — DSD CU-083: Buscar / Listar Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `List<Usuario>`.
 
@@ -3204,7 +2338,7 @@ sequenceDiagram
     SRV-->>-CLI: existe, correoUsado, telefonoUsado
 ```
 
-**Figura 40 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)**
+**Figura 36 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `Map<String, Usuario>`.
 
@@ -3274,7 +2408,7 @@ sequenceDiagram
     SRV-->>-ADM: mensaje
 ```
 
-**Figura 41 — DSD CU-085: Eliminar Usuario (baja lógica)**
+**Figura 37 — DSD CU-085: Eliminar Usuario (baja lógica)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>`, los objetos de dominio `Usuario`, `Chofer` y `UbicacionGPS`, y `FirebaseAuthPort` (fabricación pura: deshabilita la cuenta de acceso).
 
@@ -3335,7 +2469,7 @@ sequenceDiagram
     SRV-->>-CLI: sesionValida
 ```
 
-**Figura 42 — DSD CU-091: Validar Vigencia del Token de Sesión**
+**Figura 38 — DSD CU-091: Validar Vigencia del Token de Sesión**
 
 **Clases participantes:** `AuthService` (controlador de fachada del módulo de acceso), `FirebaseAuthPort` (fabricación pura: verifica el token), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`. Lo inician el Cliente, el Chofer, el Administrador y el Administrador General.
 
@@ -3360,7 +2494,86 @@ sequenceDiagram
 
 ---
 
-### SS-02 — Gestión de Pedidos
+### 4.2 SS-02 — Gestión de Pedidos
+
+#### DSD — CU-005: Crear pedido con despacho automático
+
+##### Operación: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-005 / CU-044 · crearPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CRT as :CreateOrderUseCase
+    participant CLE as cliente:Cliente
+    participant ZON as zona:ZonaCobertura
+    participant FRA as franja:FranjaHoraria
+    participant PRO as producto:Producto
+    participant NOT as :NotificationPort
+
+    CLI->>+CRT: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+    CRT->>+CLE: getDireccion(direccionId)
+    CLE-->>-CRT: direccion
+    CRT->>+ZON: cubre(direccion)
+    ZON-->>-CRT: cubierta
+    opt Hay fechaAgendada y franjaId
+        CRT->>FRA: tieneCupo(fechaAgendada)
+    end
+    create participant PED as :Pedido
+    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago)
+    loop Por cada item de items
+        CRT->>PRO: reservar(cantidad)
+        CRT->>+PED: agregarItem(producto, cantidad)
+        PED->>+PRO: precioPara(cantidad)
+        PRO-->>-PED: precioUnitario, subtotal
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+        deactivate PED
+    end
+    CRT->>+PED: calcularTotal()
+    loop Por cada item del Pedido
+        PED->>ITM: getSubtotal()
+    end
+    PED->>ZON: calcularRecargo(subtotalItems)
+    PED->>PED: aplicarRecargoDePago()
+    PED-->>-CRT: total
+    alt metodoDePago es MERCADOPAGO
+        Note over CRT,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). No se despacha hasta confirmarlo
+    else efectivo o transferencia
+        Note over CRT,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    end
+    CRT-)NOT: sendOrderConfirmation(cliente, pedido)
+    CRT-->>-CLI: pedido, enlaceDePago
+```
+
+**Figura 39 — DSD CU-005: Crear pedido con despacho automático**
+
+**Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`, y `NotificationPort` (fabricación pura: el aviso al cliente). El diagrama sirve también a CU-044, que es la elección de la franja dentro de la misma operación.
+
+**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. La navegación se resuelve por las asociaciones del modelo conceptual: el `Cliente` entrega su dirección, la `ZonaCobertura` dice si la cubre, la `FranjaHoraria` si tiene cupo y el `Producto` reserva su stock. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa; el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido` y el recargo a la `ZonaCobertura`; `Producto` sabe su precio y su promoción por volumen.
+
+**Referencias.** El pago con MercadoPago es la operación `crearCheckoutDePago` (CU-048) y el ofrecimiento al chofer más cercano, que crea la `OfertaDespacho`, es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
+
+**No se dibuja:** la transacción y el bloqueo de stock (`QueryRunner`), la persistencia, los servicios que el código usa para buscar al cliente, la dirección, la zona y la franja, el aviso en vivo al panel (`notifyAdmins`) y la lectura final del pedido. La reserva con seña es otra operación (`crearReserva`, CU-072).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CreateOrderUseCase.crearPedido(...)` | `OrderController.create` → `OrderService.create` → `CreateOrderUseCase.execute` |
+| `Cliente.getDireccion(...)` | `UserAddressService.buscarDelUsuario`; el cliente se obtiene con `CustomersService.buscarComprador` |
+| `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage` |
+| `FranjaHoraria.tieneCupo(...)` | `TimeSlotService.assertSlotAvailableTx`, con bloqueo de la franja |
+| `Pedido.«create»` | `CreateOrderUseCase.execute`: arma la entidad `Order` con el cliente, la dirección, la franja y el snapshot de la zona |
+| `Producto.reservar(...)` | `GasCylinderService.reservarStock`: bloquea la fila y resta de `GasCylinder.stock` |
+| `Pedido.agregarItem(...)` | `CreateOrderUseCase.execute`: acumula los `OrderItem` en `Order.items` |
+| `Producto.precioPara(...)` | `OrderPricingService.priceItem`: precio de lista y promociones por volumen |
+| `ItemPedido.«create»` | `CreateOrderUseCase.execute`: crea cada `OrderItem` con su precio unitario y su subtotal |
+| `ItemPedido.getSubtotal()` | `OrderItem.subtotal` |
+| `Pedido.calcularTotal()` | `CreateOrderUseCase.execute`: suma los subtotales con `Decimal` y aplica los dos recargos; el resultado queda en `Order.totalAmount` |
+| `ZonaCobertura.calcularRecargo(...)` | `CoverageZonePricingService.zoneSurcharge` |
+| `Pedido.aplicarRecargoDePago()` | `OrderPricingService.applyPaymentSurcharge` |
+
+---
 
 #### DSD — CU-006: Consultar Detalle de Pedido
 
@@ -3383,7 +2596,7 @@ sequenceDiagram
     SRV-->>-CLI: pedido
 ```
 
-**Figura 43 — DSD CU-006: Consultar Detalle de Pedido**
+**Figura 40 — DSD CU-006: Consultar Detalle de Pedido**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -3425,7 +2638,7 @@ sequenceDiagram
     SRV-->>-CLI: pedidos, total
 ```
 
-**Figura 44 — DSD CU-007: Consultar Historial de Pedidos**
+**Figura 41 — DSD CU-007: Consultar Historial de Pedidos**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y la colección `List<Pedido>`, de la que salen los pedidos del cliente, los más recientes primero.
 
@@ -3468,7 +2681,7 @@ sequenceDiagram
     HIS-->>-SIS: cambio
 ```
 
-**Figura 45 — DSD CU-169: Registrar el Cambio de Estado de un Pedido**
+**Figura 42 — DSD CU-169: Registrar el Cambio de Estado de un Pedido**
 
 **Clases participantes:** `OrderStatusHistoryService` (controlador de fachada del historial, **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
 
@@ -3507,7 +2720,7 @@ sequenceDiagram
     HIS-->>-CLI: cambios
 ```
 
-**Figura 46 — DSD CU-170: Consultar el Historial de Estados de un Pedido**
+**Figura 43 — DSD CU-170: Consultar el Historial de Estados de un Pedido**
 
 **Clases participantes:** `OrderStatusHistoryService` (controlador de fachada del historial, **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -3549,7 +2762,7 @@ sequenceDiagram
     CON-->>-CLI: cliente
 ```
 
-**Figura 47 — DSD CU-143: Declarar el Consumo Promedio al Registrarse**
+**Figura 44 — DSD CU-143: Declarar el Consumo Promedio al Registrarse**
 
 **Clases participantes:** `ConsumptionService` (controlador de fachada del consumo declarado), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`. **Colaboración propuesta:** `ConsumptionService` y `ConsumptionEstimatorService` no existen en el código; viven en el módulo `repurchase`.
 
@@ -3596,7 +2809,7 @@ sequenceDiagram
     CON-->>-CLI: cliente
 ```
 
-**Figura 48 — DSD CU-144: Actualizar el Consumo Promedio Declarado**
+**Figura 45 — DSD CU-144: Actualizar el Consumo Promedio Declarado**
 
 **Clases participantes:** `ConsumptionService` (controlador de fachada del consumo declarado), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), la colección `Map<String, Cliente>`, la colección `List<Pedido>` y el objeto de dominio `Cliente`. **Colaboración propuesta:** las dos clases del módulo `repurchase` no existen en el código.
 
@@ -3635,7 +2848,7 @@ sequenceDiagram
     SRV-->>-CLI: cliente
 ```
 
-**Figura 49 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra**
+**Figura 46 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes, con la operación `configurarAviso` como **colaboración propuesta**: no existe en el código), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
@@ -3676,7 +2889,7 @@ sequenceDiagram
     EXP-->>-ADM: recompras
 ```
 
-**Figura 50 — DSD CU-146: Consultar la Fecha Estimada de Recompra**
+**Figura 47 — DSD CU-146: Consultar la Fecha Estimada de Recompra**
 
 **Clases participantes:** `RepurchaseEstimatesService` (controlador de fachada del listado, **colaboración propuesta**: no existe en el código), las colecciones `List<Cliente>` y `List<Pedido>` y el objeto de dominio `Cliente`.
 
@@ -3728,7 +2941,7 @@ sequenceDiagram
     SRV-->>-CLI: pedido
 ```
 
-**Figura 51 — DSD CU-147: Realizar una Compra Express**
+**Figura 48 — DSD CU-147: Realizar una Compra Express**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), los objetos de dominio `Cliente`, `Producto`, `Pedido` e `ItemPedido`. **Colaboración propuesta:** las operaciones `OrderService.compraExpress`, `OrderService.direccionPredeterminada` y `OrderService.verificarCoberturaExpress` no existen en el código.
 
@@ -3740,7 +2953,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El pedido express no lleva franja horaria: el campo queda vacío, y todo lo que hoy lo asume tiene que contemplar ese caso.
+- El pedido express no lleva franja horaria: el campo queda vacío, y todo lo que lo asume tiene que contemplar ese caso.
 - La comprobación de chofer disponible se hace antes de cobrar, no después: cobrar y después no tener quién lo lleve es el peor resultado posible.
 - La cobertura express no es una zona distinta sobre la misma tabla: es un radio máximo, parámetro del proceso `express_dispatch` de la distribuidora (CU-172), medido desde el chofer en moto más cercano. El modelo construido no distingue zonas express y no hace falta una migración.
 - Si el pedido pasa a reparto común porque nadie lo acepta (CU-149), se descuenta el recargo express del total y, si el cliente ya pagó en línea, se reintegra esa parte (CU-168).
@@ -3769,7 +2982,7 @@ sequenceDiagram
     SRV-->>-CLI: modalidades
 ```
 
-**Figura 52 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido**
+**Figura 49 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), el objeto de dominio `Cliente` y la colección `List<Chofer>`. **Colaboración propuesta:** las operaciones `OrderService.modalidadesDisponibles` y `OrderService.verificarCoberturaExpress` no existen en el código.
 
@@ -3782,7 +2995,7 @@ sequenceDiagram
 - La consulta no escribe: la modalidad elegida se guarda al crear el pedido (CU-005), no al mostrar las opciones, porque el pedido todavía no existe.
 - La disponibilidad de la express se evalúa en el momento de mostrar las opciones y otra vez al crear el pedido: entre una cosa y la otra el último chofer se pudo ocupar.
 - El recargo express, el radio, el horario de servicio, el tiempo estimado y la vigencia de la oferta se toman de la configuración del proceso `express_dispatch` de la distribuidora (CU-172), no de constantes del programa; el recargo se calcula en el servidor.
-- Para reconocer una moto, el tipo de vehículo pasa a un valor enumerado (`car.vehicle_type`, planificado en I-7); hoy `type_car` es texto libre.
+- Para reconocer una moto, el tipo de vehículo pasa a un valor enumerado (`car.vehicle_type`, planificado en I-7); `type_car` es texto libre.
 
 ---
 
@@ -3824,7 +3037,7 @@ sequenceDiagram
     CAN-->>-CLI: pedido
 ```
 
-**Figura 53 — DSD CU-008: Cancelar Pedido (Cliente)**
+**Figura 50 — DSD CU-008: Cancelar Pedido (Cliente)**
 
 **Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido` y `Producto`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo). El mismo diagrama sirve a CU-008 (el Cliente) y a CU-010 (el Administrador): lo que cambia es el actor, que sale siempre del token y nunca del cuerpo de la solicitud.
 
@@ -3888,7 +3101,7 @@ sequenceDiagram
     REL-->>-CHF: pedido
 ```
 
-**Figura 54 — DSD CU-009: Cancelar Pedido (Chofer)**
+**Figura 51 — DSD CU-009: Cancelar Pedido (Chofer)**
 
 **Clases participantes:** `ReleaseOrderUseCase` (controlador de caso de uso: el camino único de liberación), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `OfertaDespacho`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo).
 
@@ -3952,7 +3165,7 @@ sequenceDiagram
     CAN-->>-ADM: pedido
 ```
 
-**Figura 55 — DSD CU-010: Cancelar Pedido (Administrador)**
+**Figura 52 — DSD CU-010: Cancelar Pedido (Administrador)**
 
 **Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido` y `Producto`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo).
 
@@ -4015,7 +3228,7 @@ sequenceDiagram
     REF-->>-ADM: reintegrado
 ```
 
-**Figura 56 — DSD CU-168: Reintegrar el Pago de un Pedido**
+**Figura 53 — DSD CU-168: Reintegrar el Pago de un Pedido**
 
 **Clases participantes:** `RefundPaymentUseCase` (controlador de caso de uso, **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, `PaymentGatewayPort` (fabricación pura: la devolución por la pasarela) y `RealtimeDispatchPort` (los avisos).
 
@@ -4050,7 +3263,7 @@ sequenceDiagram
     SRV-->>-ADM: pedidos, total
 ```
 
-**Figura 57 — DSD CU-011: Listar Todos los Pedidos**
+**Figura 54 — DSD CU-011: Listar Todos los Pedidos**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y la colección `List<Pedido>`.
 
@@ -4091,7 +3304,7 @@ sequenceDiagram
     SRV-->>-CLI: direcciones
 ```
 
-**Figura 58 — DSD CU-046: Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega**
+**Figura 55 — DSD CU-046: Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
@@ -4129,7 +3342,7 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 59 — DSD CU-046 / CU-116: Consultar Direcciones de Entrega del Cliente · registrarDireccionDeEntrega**
+**Figura 56 — DSD CU-046 / CU-116: Consultar Direcciones de Entrega del Cliente · registrarDireccionDeEntrega**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, Cliente>` y los objetos de dominio `Cliente` y `DireccionEntrega`.
 
@@ -4165,7 +3378,7 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 60 — DSD CU-046 / CU-118: Consultar Direcciones de Entrega del Cliente · editarDireccionDeEntrega**
+**Figura 57 — DSD CU-046 / CU-118: Consultar Direcciones de Entrega del Cliente · editarDireccionDeEntrega**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y el objeto de dominio `DireccionEntrega`.
 
@@ -4203,7 +3416,7 @@ sequenceDiagram
     SRV-->>-CLI: confirmacion
 ```
 
-**Figura 61 — DSD CU-046 / CU-119: Consultar Direcciones de Entrega del Cliente · eliminarDireccionDeEntrega**
+**Figura 58 — DSD CU-046 / CU-119: Consultar Direcciones de Entrega del Cliente · eliminarDireccionDeEntrega**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y los objetos de dominio `DireccionEntrega` y `Cliente`.
 
@@ -4239,7 +3452,7 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 62 — DSD CU-046 / CU-120: Consultar Direcciones de Entrega del Cliente · marcarDireccionPredeterminada**
+**Figura 59 — DSD CU-046 / CU-120: Consultar Direcciones de Entrega del Cliente · marcarDireccionPredeterminada**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y los objetos de dominio `DireccionEntrega` y `Cliente`.
 
@@ -4293,7 +3506,7 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 63 — DSD CU-117: Consultar Detalle de una Dirección de Entrega**
+**Figura 60 — DSD CU-117: Consultar Detalle de una Dirección de Entrega**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y el objeto de dominio `DireccionEntrega`.
 
@@ -4368,7 +3581,7 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 64 — DSD CU-121: Consultar la Dirección Predeterminada**
+**Figura 61 — DSD CU-121: Consultar la Dirección Predeterminada**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
@@ -4403,6 +3616,7 @@ sequenceDiagram
     participant PRODS as :Map#lt;String, Producto#gt;
     participant PRO as producto:Producto
     participant CAR as carrito:Carrito
+    participant ITC as :ItemCarrito
 
     CLI->>+SRV: agregarItemAlCarrito(productoId, cantidad)
     SRV->>+PRODS: get(productoId)
@@ -4418,9 +3632,14 @@ sequenceDiagram
         CLE-->>-SRV: carrito
     end
     SRV->>+CAR: agregarItem(producto, cantidad)
-    CAR->>PRO: getPrecio()
-    create participant ITC as :ItemCarrito
-    CAR->>ITC: «create»(producto, cantidad, precioUnitario)
+    alt El producto ya está en el carrito
+        CAR->>+ITC: sumarCantidad(cantidad)
+        deactivate ITC
+    else El producto todavía no está en el carrito
+        CAR->>PRO: getPrecio()
+        create participant NIT as nuevo:ItemCarrito
+        CAR->>NIT: «create»(producto, cantidad, precioUnitario)
+    end
     CAR->>CAR: calcularTotal()
     loop Por cada item del carrito
         CAR->>ITC: getSubtotal()
@@ -4429,7 +3648,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 65 — DSD CU-122: Agregar Ítem al Carrito**
+**Figura 62 — DSD CU-122: Agregar Ítem al Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código), la colección `Map<String, Producto>` y los objetos de dominio `Cliente`, `Producto`, `Carrito` e `ItemCarrito`.
 
@@ -4470,7 +3689,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 66 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito**
+**Figura 63 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito` e `ItemCarrito`.
 
@@ -4511,7 +3730,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 67 — DSD CU-124: Quitar Ítem del Carrito**
+**Figura 64 — DSD CU-124: Quitar Ítem del Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito` e `ItemCarrito`.
 
@@ -4555,7 +3774,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito, total
 ```
 
-**Figura 68 — DSD CU-125: Consultar el Carrito**
+**Figura 65 — DSD CU-125: Consultar el Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito`, `ItemCarrito` y `Producto`.
 
@@ -4596,7 +3815,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 69 — DSD CU-126: Vaciar el Carrito**
+**Figura 66 — DSD CU-126: Vaciar el Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito` e `ItemCarrito`.
 
@@ -4648,7 +3867,7 @@ sequenceDiagram
     SRV-->>-CLI: pedido
 ```
 
-**Figura 70 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido**
+**Figura 67 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>`, los objetos de dominio `Cliente`, `ZonaCobertura`, `Pedido` y `CambioDireccion`, y `RealtimeDispatchPort` (fabricación pura: el aviso en vivo al chofer). **Colaboración propuesta:** la operación `OrderService.cambiarDireccion` y el aviso `RealtimeDispatchPort.notifyDriverOrderAddressChanged` no existen en el código.
 
@@ -4689,7 +3908,7 @@ sequenceDiagram
     SRV-->>-CLI: pedido
 ```
 
-**Figura 71 — DSD CU-128: Indicar Quién Recibe el Pedido**
+**Figura 68 — DSD CU-128: Indicar Quién Recibe el Pedido**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos, con la operación `indicarQuienRecibe` como **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -4727,7 +3946,7 @@ sequenceDiagram
     SRV-->>-CHF: pedidos, total
 ```
 
-**Figura 72 — DSD CU-080: Consultar el Pool de Pedidos Disponibles**
+**Figura 69 — DSD CU-080: Consultar el Pool de Pedidos Disponibles**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -4770,7 +3989,7 @@ sequenceDiagram
     SRV-->>-CHF: pedidos, total
 ```
 
-**Figura 73 — DSD CU-081: Consultar los Pedidos Asignados al Chofer**
+**Figura 70 — DSD CU-081: Consultar los Pedidos Asignados al Chofer**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -4794,7 +4013,253 @@ sequenceDiagram
 
 ---
 
-### SS-03 — Despacho
+### 4.3 SS-03 — Despacho
+
+#### DSD — CU-013: Asignar Pedido Automáticamente por Proximidad (M1)
+
+
+Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asignación**. El pedido no se difunde a todos los choferes: se ofrece a **uno solo** por vez, el más cercano que todavía no fue contactado, con una ventana de aceptación de 30 segundos.
+
+##### Operación: ofrecerAlSiguienteChofer(pedidoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-013 Asignar Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :DispatchOrchestratorService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant RT as :RealtimeDispatchPort
+    participant CHO as chofer:Chofer
+    participant NOT as :NotificationsService
+
+    SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: getChoferesContactados()
+    PED-->>-SRV: contactados
+    SRV->>+PED: getPuntoDeEntrega()
+    PED-->>-SRV: destino
+    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nuevo
+        SRV->>+RT: findNearbyDrivers(destino, radioKm)
+        RT-->>-SRV: cercanos
+        SRV->>+CHO: puedeRecibirOferta(distribuidora)
+        CHO-->>-SRV: elegible
+    end
+    opt Hay un chofer elegible que no fue contactado
+        SRV->>+PED: ofrecerA(chofer, venceEn)
+        create participant OFE as :OfertaDespacho
+        PED->>OFE: «create»(chofer, venceEn)
+        deactivate PED
+        SRV-)RT: notifyDriverNewOrder(chofer, pedido)
+        SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
+    end
+    SRV-->>-SIS: chofer
+```
+
+**Figura 71 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1) — Operación: ofrecerAlSiguienteChofer(pedidoId)**
+
+**Clases participantes:** `DispatchOrchestratorService` (controlador del despacho secuencial), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `RealtimeDispatchPort` (fabricación pura: el radar de choferes por cercanía y el aviso en vivo) y `NotificationsService` (fabricación pura: el aviso al dispositivo).
+
+**GRASP.** *Controlador*: `DispatchOrchestratorService` recibe la operación y coordina la búsqueda. *Experto*: `Pedido` conoce su punto de entrega, los choferes que ya contactó y sus ofertas; `Chofer` sabe si puede recibir la oferta (habilitado, validado, de la distribuidora, con vehículo en uso y documentación vigente). *Creador*: el `Pedido` crea sus `OfertaDespacho`, porque las contiene (composición); el controlador no las crea. *Fabricación pura*: el radar y los avisos quedan fuera de los objetos de dominio (Bajo Acoplamiento): el orquestador no conoce Redis ni Socket.IO.
+
+**No se dibuja:** la persistencia de la oferta, la vigencia de 30 segundos que se calcula a partir del reloj, la lectura de la configuración de radios (CU-171) y el cache de elegibilidad dentro de un mismo intento.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `Map<String, Pedido>.get(...)` | `OrderRepositoryPort.findByIdFull`: quien dispara el despacho lee el `Order` y se lo pasa a `DispatchOrchestratorService.offerToNextDriver` |
+| `DispatchOrchestratorService.ofrecerAlSiguienteChofer(...)` | `DispatchOrchestratorService.offerToNextDriver` |
+| `Pedido.getChoferesContactados()` | `DispatchOfferRepositoryPort.findOfferedDriverIds`: los choferes con una `DispatchOffer` de ese pedido, en cualquier estado |
+| `Pedido.getPuntoDeEntrega()` | `Order.deliveryPoint`, convertido con `coordenadasDePunto()` |
+| `Chofer.puedeRecibirOferta(...)` | `DeliveryService.choferesElegibles` (habilitado, validado y de la distribuidora del pedido) y `FleetDispatchLockService.choferesInhabilitados` (licencia y vehículo con documentación vigente) |
+| `Pedido.ofrecerA(...)` | `DispatchOrchestratorService.offerToNextDriver`: calcula `DispatchOffer.expiresAt` y llama a `DispatchOfferRepositoryPort.create` |
+| `OfertaDespacho.«create»` | `DispatchOfferRepositoryPort.create`: inserta la `DispatchOffer` en estado `OFFERED` |
+
+**Observaciones de diseño**
+
+- El orquestador **no conoce Redis ni Socket.io**: habla contra `RealtimeDispatchPort`; el `RealtimeDispatchAdapter` traduce a `RedisService` (GEO) y a los gateways.
+- La oferta es **durable** (fila en `dispatch_offer`, no una clave en memoria): sobrevive reinicios y es multi-instancia.
+- El push FCM es **complementario y best-effort** (`void`, no se espera): cubre al chofer con la app en background, donde el socket no llega.
+- Multi-tenant: `filterByDistributor` restringe los candidatos a los choferes de la distribuidora del pedido.
+
+---
+
+#### DSD — CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal)
+
+##### Operación: vencerOfertasExpiradas()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-014 Reintentar Asignación con Radio Expandido (Cron) · vencerOfertasExpiradas
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant TIK as :DispatchService
+    participant ORQ as :DispatchOrchestratorService
+    participant OFR as :DispatchOfferRepositoryPort
+    participant OFE as oferta:OfertaDespacho
+    participant PED as pedido:Pedido
+    participant ORS as :OrderService
+
+    SIS->>+TIK: vencerOfertasExpiradas()
+    TIK->>+ORQ: handleExpiredOffers()
+    ORQ->>+OFR: findExpired(ahora)
+    OFR-->>-ORQ: ofertas
+    loop Por cada oferta vencida
+        ORQ->>OFE: vencer()
+        ORQ->>+OFE: getPedido()
+        OFE-->>-ORQ: pedido
+        ORQ->>+PED: esReofertable()
+        PED-->>-ORQ: reofertable
+        opt El pedido sigue pendiente y sin chofer
+            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+    end
+    deactivate ORQ
+    TIK->>+ORS: findAvailableOrders()
+    ORS-->>-TIK: pendientes
+    loop Por cada pedido pendiente de más de 60 segundos
+        TIK->>+ORQ: ensureOffered(pedido)
+        ORQ->>+PED: tieneOfertaVigente()
+        PED-->>-ORQ: vigente
+        opt El pedido no tiene oferta vigente
+            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+        deactivate ORQ
+    end
+    deactivate TIK
+```
+
+**Figura 72 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal) — Operación: vencerOfertasExpiradas()**
+
+**Clases participantes:** `DispatchService` (controlador: el reloj del proceso), `DispatchOrchestratorService`, `DispatchOfferRepositoryPort` (fabricación pura: la búsqueda de ofertas vencidas atraviesa todos los pedidos), `OrderService` (consulta de los pedidos pendientes) y los objetos de dominio `OfertaDespacho` y `Pedido`.
+
+**GRASP.** *Controlador*: `DispatchService` recibe la operación del proceso temporal y la reparte; no decide a quién ofrecer. *Experto*: `OfertaDespacho` sabe vencer; `Pedido` sabe si todavía es re-ofertable (pendiente y sin chofer) y si tiene una oferta vigente. *Alta Cohesión*: la decisión de a quién ofrecer vive en `DispatchOrchestratorService` y el reloj en `DispatchService`.
+
+**Referencias.** La nueva `OfertaDespacho`, que crea el `Pedido` y se avisa al chofer elegido, es la operación `ofrecerAlSiguienteChofer` (CU-013), con su propio diagrama.
+
+**No se dibuja:** el bloqueo distribuido de cada ciclo (`RedisService.acquireLock`, una sola instancia procesa cada ciclo de 15 segundos), la lectura del pedido de cada oferta y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DispatchService.vencerOfertasExpiradas(...)` | `DispatchService.tick`: corre cada 15 segundos con el bloqueo distribuido y llama a `DispatchOrchestratorService.handleExpiredOffers` y a `DispatchService.bootstrapPendingWithoutOffer` |
+| `OfertaDespacho.vencer(...)` | `DispatchOrchestratorService.handleExpiredOffers`: llama a `DispatchOfferRepositoryPort.updateStatus` con el estado `EXPIRED` |
+| `OfertaDespacho.getPedido()` | `DispatchOffer.order`, que `DispatchOrchestratorService.handleExpiredOffers` lee con `OrderRepositoryPort.findByIdFull` |
+| `Pedido.esReofertable()` | `DispatchOrchestratorService.isReofferable`: `Order.status` pendiente y sin `Order.deliveryId` |
+| `Pedido.tieneOfertaVigente()` | `DispatchOfferRepositoryPort.hasActiveOffer` |
+
+**Observaciones de diseño**
+
+- El cron aporta **el reloj y el lock**; la lógica de a-quién-ofrecer vive íntegra en el orquestador (SRP).
+- TTL del lock 12 s < período 15 s: si la instancia muere sin liberar, el lock expira antes del tick siguiente.
+- `bootstrapPendingWithoutOffer` es la red de seguridad para pedidos creados cuando no había ningún chofer conectado.
+
+---
+
+#### DSD — CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar)
+
+##### Operación: aceptarPedido(pedidoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-015 Aceptar Pedido · aceptarPedido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant UCS as :UpdateOrderStatusUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant CHO as chofer:Chofer
+    participant FLK as :FleetDispatchLockService
+    participant PED as pedido:Pedido
+    participant OFE as oferta:OfertaDespacho
+    participant NOT as :NotificationPort
+
+    CHF->>+UCS: aceptarPedido(pedidoId)
+    UCS->>+PEDS: get(pedidoId)
+    PEDS-->>-UCS: pedido
+    UCS->>CHO: assertElegibleParaAsignacion()
+    UCS->>FLK: assertChoferHabilitado(chofer)
+    UCS->>+FLK: vehiculoEnUsoDelChofer(chofer)
+    FLK-->>-UCS: vehiculo
+    UCS->>+PED: aceptar(chofer, vehiculo)
+    PED->>PED: transicionar(aceptado)
+    opt El pedido no estaba aceptado por este chofer
+        PED->>PED: generarCodigoDeEntrega()
+        PED->>OFE: aceptar()
+    end
+    deactivate PED
+    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
+    UCS-->>-CHF: pedido
+```
+
+**Figura 73 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: aceptarPedido(pedidoId)**
+
+**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `FleetDispatchLockService` (fabricación pura: reúne la documentación vencida de la flota) y `NotificationPort` (fabricación pura: el aviso al cliente).
+
+**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación y coordina. *Experto*: `Chofer` sabe si está habilitado y validado; `Pedido` conoce su estado y es quien se asigna el chofer, guarda la copia del vehículo, pasa a «aceptado», genera su código de entrega y cierra la oferta que el chofer tenía. El controlador no le asigna atributos. *Alta Cohesión*: `FleetDispatchLockService` es el único lugar que conoce las reglas de la flota (Bajo Acoplamiento con el despacho). La aceptación es idempotente: si el mismo chofer ya había aceptado, el `Pedido` no regenera el código ni cierra otra oferta.
+
+**No se dibuja:** la transacción con el bloqueo del pedido y del chofer, el guardado, la verificación de que el pedido sea de la distribuidora del chofer y, si ya tiene otro chofer, el rechazo con acceso denegado, el aviso en vivo al cliente y al panel (`notifyCustomer`, `notifyAdmins`) y la obtención del chofer a partir del usuario autenticado (`DeliveryService.buscarPorIdOUsuario`).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UpdateOrderStatusUseCase.aceptarPedido(...)` | `OrderController.updateStatus` → `OrderService.updateStatus` → `UpdateOrderStatusUseCase.execute` con el estado aceptado |
+| `Map<String, Pedido>.get(...)` | `UpdateOrderStatusUseCase.execute`: lee el `Order` con bloqueo pesimista dentro de una transacción |
+| `Chofer.assertElegibleParaAsignacion()` | `DeliveryService.assertElegibleParaAsignacion`: verifica `Delivery.isEnabled` y `Delivery.validated` |
+| `Pedido.aceptar(...)` | `UpdateOrderStatusUseCase.applyStatusEffects`: asigna `Order.deliveryId` y `Order.delivery`, copia `Order.vehiclePatent`, `Order.vehicleBrand` y `Order.vehicleModel`, y registra `Order.acceptedAt` |
+| `Pedido.transicionar(...)` | `transitionOrder()` |
+| `Pedido.generarCodigoDeEntrega()` | `generateDeliveryCode()`, que queda en `Order.deliveryCode` |
+| `OfertaDespacho.aceptar()` | `DispatchOrchestratorService.onDriverAccepted`: llama a `DispatchOfferRepositoryPort.closeActiveOffer` con el estado `ACCEPTED` |
+
+##### Operación: rechazarOferta(pedidoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-016 Rechazar / Ignorar Pedido · rechazarOferta
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant OFE as oferta:OfertaDespacho
+
+    CHF->>+SRV: rechazarOferta(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: getOfertaVigente(chofer)
+    PED-->>-SRV: oferta
+    SRV->>OFE: rechazar()
+    SRV->>+PED: esReofertable()
+    PED-->>-SRV: reofertable
+    opt El pedido sigue pendiente y sin chofer
+        Note over SRV,PED: Re-oferta inmediata: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    end
+    SRV-->>-CHF: rechazada
+```
+
+**Figura 74 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: rechazarOferta(pedidoId)**
+
+**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `OfertaDespacho`.
+
+**GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce sus ofertas y sabe si todavía se puede re-ofrecer; `OfertaDespacho` es quien pasa a «rechazada». El chofer que rechazó queda como ya contactado, porque su oferta sigue en el historial del `Pedido`, y por eso no vuelve a recibirlo.
+
+**Referencias.** La nueva `OfertaDespacho` al siguiente chofer más cercano es la operación `ofrecerAlSiguienteChofer` (CU-013), con su propio diagrama.
+
+**No se dibuja:** el chofer que rechaza, que sale del usuario autenticado, la verificación de que el pedido sea de la distribuidora, y el caso del pedido asignado a mano por el administrador, que no tiene oferta: el pedido no cambia y se avisa a los administradores (`RealtimeDispatchPort.notifyAdmins`).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `OrderService.rechazarOferta(...)` | `OrderController.rejectOffer` → `OrderService.rejectOffer` |
+| `Map<String, Pedido>.get(...)` | `OrderService.rejectOffer`: lee el `Order` con `OrderRepositoryPort.findByIdFull`; si no existe, el rechazo no tiene efecto |
+| `Pedido.getOfertaVigente(...)` | `DispatchOfferRepositoryPort.hasActiveOffer`, con el chofer, y `DispatchOrchestratorService.onDriverRejected`, que cierra la oferta de ese chofer |
+| `OfertaDespacho.rechazar()` | `DispatchOrchestratorService.onDriverRejected`: llama a `DispatchOfferRepositoryPort.closeActiveOffer` con el estado `REJECTED` |
+| `Pedido.esReofertable()` | `DispatchOrchestratorService.isReofferable`: `Order.status` pendiente y sin `Order.deliveryId` |
+
+**Observaciones de diseño**
+
+- El rechazo explícito **no espera el timeout de 30 s**: cierra la oferta y re-ofrece de inmediato, acortando el tiempo de asignación.
+- El **código secreto de entrega** se genera acá, al aceptar, no al entregar: ya queda listo para el QR de CU-078/CU-079.
+- El cierre de la oferta al aceptar es *best-effort* (`.catch(() => undefined)`): un fallo de auditoría no debe impedir que el pedido quede asignado.
+
+---
 
 #### DSD — CU-012: Asignar Chofer Manualmente
 
@@ -4844,7 +4309,7 @@ sequenceDiagram
     SRV-->>-ADM: pedido
 ```
 
-**Figura 74 — DSD CU-012: Asignar Chofer Manualmente**
+**Figura 75 — DSD CU-012: Asignar Chofer Manualmente**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), `DeliveryService`, `FleetDispatchLockService`, `RealtimeDispatchPort`, la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `Chofer`.
 
@@ -4899,7 +4364,7 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Figura 75 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)**
+**Figura 76 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)**
 
 **Clases participantes:** `ModuleConfigService` (controlador de fachada; colaboración propuesta), `DispatchConfigService` (fabricación pura propuesta: entrega los parámetros al despacho con una copia en memoria) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. **Colaboración propuesta:** `ModuleConfigService` y `DispatchConfigService` no existen en el código; la entidad `ModuleConfig` y su tabla sí, sin servicio ni endpoint.
 
@@ -4954,7 +4419,7 @@ sequenceDiagram
     SRV-->>-SIS: asignado
 ```
 
-**Figura 76 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)**
+**Figura 77 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Chofer`, `RealtimeDispatchPort` (fabricación pura: el radar de choferes) y `NotificationsService` (fabricación pura: los avisos). **Colaboración propuesta:** el despacho express no existe en el código; el campo de modalidad de entrega (`Order.deliveryMode`) está en la entidad sin servicio que lo use.
 
@@ -4973,7 +4438,214 @@ sequenceDiagram
 
 ---
 
-### SS-04 — Seguimiento
+### 4.4 SS-04 — Seguimiento
+
+#### DSD — CU-017: Actualización de la ubicación del chofer
+
+##### Operación: actualizarUbicacion(usuarioId, latitud, longitud)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-017 Actualizar Ubicación GPS del Chofer · actualizarUbicacion
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant GW as :DriversGateway
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+    participant CGW as :CustomersGateway
+    participant AGW as :AdminGateway
+
+    CHF->>+GW: actualizarUbicacion(usuarioId, latitud, longitud)
+    GW->>+CHO: actualizarUbicacion(latitud, longitud)
+    alt El chofer ya tiene una ubicación
+        CHO->>UBI: actualizar(latitud, longitud)
+    else El chofer no tiene ubicación
+        create participant NUB as nueva:UbicacionGPS
+        CHO->>NUB: «create»(latitud, longitud)
+    end
+    deactivate CHO
+    GW->>+CHO: getPedidoEnCurso()
+    CHO-->>-GW: pedido
+    opt El chofer tiene un pedido en curso
+        GW-)CGW: notifyCustomer(cliente, evento, posicion)
+        GW-)AGW: notifyAdmins(evento, posicion)
+    end
+    deactivate GW
+```
+
+**Figura 78 — DSD CU-017: Actualización de la ubicación del chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)**
+
+**Clases participantes:** `DriversGateway` (controlador: recibe el evento del chofer y coordina), los objetos de dominio `Chofer` y `UbicacionGPS`, `CustomersGateway` y `AdminGateway` (fabricación pura: el reenvío en vivo al cliente y al panel).
+
+**GRASP.** *Controlador*: `DriversGateway` recibe la operación; el chofer se identifica por el token del handshake y no por el cuerpo del mensaje. *Experto*: `Chofer` conoce su ubicación y su pedido en curso, y es quien la actualiza o la crea; la `UbicacionGPS` toma las coordenadas. *Bajo Acoplamiento*: el reenvío al cliente y al panel queda en los gateways, que no conocen al chofer.
+
+**No se dibuja:** el descarte del evento cuando faltan las coordenadas, el índice geoespacial donde se guarda la posición y el nombre de cada evento en vivo.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DriversGateway.actualizarUbicacion(...)` | `DriversGateway.handleDriverLocation`: evento `driver:update-location`; el usuario sale de la identidad resuelta en el handshake |
+| `Chofer.actualizarUbicacion(...)` | `DriversGateway.handleDriverLocation`: llama a `RedisService.updateDriverLocation` con el `Delivery.userId` del chofer |
+| `UbicacionGPS.actualizar(...)` | `RedisService.updateDriverLocation`: reemplaza la posición del miembro en el índice `drivers:locations` |
+| `UbicacionGPS.«create»` | `RedisService.updateDriverLocation`: la primera posición agrega el miembro al índice |
+| `Chofer.getPedidoEnCurso()` | `RedisService.getDriverActiveOrder`: el pedido y el cliente que dejó `RealtimeDispatchPort.startTracking` |
+
+---
+
+#### DSD — CU-020: Confirmar entrega (declaración del chofer)
+
+
+Camino en el que el propio chofer declara la entrega. La variante con código
+QR, en la que confirma el cliente, está en el diagrama 4.9.
+
+##### Operación: confirmarEntrega(pedidoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-020 Confirmar Entrega · confirmarEntrega
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant UCS as :UpdateOrderStatusUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAG as pago:Pago
+    participant UBI as ubicacion:UbicacionGPS
+    participant ENV as envase:Envase
+    participant NOT as :NotificationPort
+
+    CHF->>+UCS: confirmarEntrega(pedidoId)
+    UCS->>+PEDS: get(pedidoId)
+    PEDS-->>-UCS: pedido
+    UCS->>+PED: entregar()
+    PED->>PED: transicionar(entregado)
+    opt El método de pago es efectivo
+        PED->>PAG: marcarPagado()
+    end
+    deactivate PED
+    UCS->>UBI: cerrarSeguimiento()
+    loop Por cada envase despachado en el pedido
+        UCS->>ENV: entregarAlCliente(pedido)
+    end
+    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
+    UCS-->>-CHF: pedido
+```
+
+**Figura 79 — DSD CU-020: Confirmar entrega (declaración del chofer) — Operación: confirmarEntrega(pedidoId)**
+
+**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Pago`, `UbicacionGPS` y `Envase`, y `NotificationPort` (fabricación pura: el aviso al cliente).
+
+**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación. *Experto*: `Pedido` es quien pasa a «entregado», registra el momento de la entrega y le indica a su `Pago` que quedó saldado; cada `Envase` despachado en el pedido es quien pasa a estar en poder del cliente y registra su `MovimientoEnvase`. El cierre del seguimiento lo hace la `UbicacionGPS`. La confirmación con código del cliente es otra operación, `confirmarEntregaConCodigo` (CU-079).
+
+**No se dibuja:** la transacción con el bloqueo del pedido, el guardado, la verificación de que el pedido sea del chofer que lo cierra, los eventos en vivo al cliente y al panel, y que la entrega de los envases es un efecto best-effort: si falla, la entrega igual se confirma.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UpdateOrderStatusUseCase.confirmarEntrega(...)` | `OrderController.updateStatus` → `OrderService.updateStatus` → `UpdateOrderStatusUseCase.execute` con el estado entregado |
+| `Map<String, Pedido>.get(...)` | `UpdateOrderStatusUseCase.execute`: lee el `Order` con bloqueo pesimista dentro de una transacción |
+| `Pedido.entregar()` | `UpdateOrderStatusUseCase.applyStatusEffects`: registra `Order.deliveredAt` |
+| `Pedido.transicionar(...)` | `transitionOrder()` |
+| `Pago.marcarPagado()` | `UpdateOrderStatusUseCase.applyStatusEffects`: asigna `Order.paymentStatus` pagado cuando `Order.paymentMethod` es efectivo |
+| `UbicacionGPS.cerrarSeguimiento()` | `RealtimeDispatchPort.stopTracking` |
+| `Envase.entregarAlCliente(...)` | `CylinderLifecyclePort.onOrderDelivered`: pasa los envases del pedido a «en poder del cliente» |
+
+---
+
+#### DSD — CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude)
+
+##### Operación: obtenerCodigoDeEntrega(pedidoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-078 Obtener el Código de Entrega (QR del chofer) · obtenerCodigoDeEntrega
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CHF->>+SRV: obtenerCodigoDeEntrega(pedidoId)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: esDelChofer(chofer)
+    PED-->>-SRV: asignado
+    SRV->>+PED: getCodigoDeEntrega()
+    PED-->>-SRV: codigo
+    SRV-->>-CHF: codigo
+```
+
+**Figura 80 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: obtenerCodigoDeEntrega(pedidoId)**
+
+**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
+
+**GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce su código de entrega, que generó al aceptarse (CU-015), y sabe si el chofer que lo pide es el asignado. Es una consulta: no cambia el estado del pedido.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, y el error si el pedido todavía no tiene código porque no fue aceptado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `OrderService.obtenerCodigoDeEntrega(...)` | `OrderController.getDeliveryCode` → `OrderService.getDeliveryCode` |
+| `Map<String, Pedido>.get(...)` | `OrderService.findOne`: lee el `Order` con `OrderRepositoryPort.findByIdFull` |
+| `Pedido.esDelChofer(...)` | `OrderService.assertPedidoDelChofer`: el chofer tiene que ser el asignado; un administrador puede verlo |
+| `Pedido.getCodigoDeEntrega()` | `Order.deliveryCode` |
+
+##### Operación: confirmarEntregaConCodigo(pedidoId, codigo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-079 Confirmar Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CDU as :ConfirmDeliveryUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAG as pago:Pago
+    participant RT as :RealtimeDispatchPort
+    participant NOT as :NotificationPort
+
+    CLI->>+CDU: confirmarEntregaConCodigo(pedidoId, codigo)
+    CDU->>+PEDS: get(pedidoId)
+    PEDS-->>-CDU: pedido
+    CDU->>+PED: validarCodigo(codigo)
+    PED-->>-CDU: valido
+    CDU->>+PED: entregar()
+    PED->>PED: transicionar(entregado)
+    opt El método de pago es efectivo
+        PED->>PAG: marcarPagado()
+    end
+    deactivate PED
+    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento y entrega los envases
+    CDU-)RT: notifyAdmins(pedido)
+    CDU-)NOT: sendOrderConfirmation(cliente, pedido)
+    CDU-->>-CLI: pedido
+```
+
+**Figura 81 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: confirmarEntregaConCodigo(pedidoId, codigo)**
+
+**Clases participantes:** `ConfirmDeliveryUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: los avisos).
+
+**GRASP.** *Controlador*: `ConfirmDeliveryUseCase` recibe la operación. *Experto*: `Pedido` conoce su código de entrega y es quien lo compara con el que escaneó el cliente, pasa a «entregado» y le indica a su `Pago` que quedó saldado si fue en efectivo. La comparación se hace en tiempo constante y la operación es idempotente: un pedido ya entregado se devuelve sin reprocesar.
+
+**Referencias.** El cierre del seguimiento del chofer y el paso de los envases a poder del cliente son los mismos de la operación `confirmarEntrega` (CU-020), que tiene su propio diagrama.
+
+**No se dibuja:** la verificación de que el pedido sea del cliente que lo confirma, el rechazo si el pedido no está en camino o el código no coincide, y la transacción con el bloqueo del pedido que resuelve `UpdateOrderStatusUseCase.execute`.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ConfirmDeliveryUseCase.confirmarEntregaConCodigo(...)` | `OrderController.confirmDelivery` → `OrderService.confirmDelivery` → `ConfirmDeliveryUseCase.execute` |
+| `Map<String, Pedido>.get(...)` | `ConfirmDeliveryUseCase.execute`: lee el `Order` con `OrderRepositoryPort.findByIdFull` |
+| `Pedido.validarCodigo(...)` | `compareDeliveryCode()`, contra `Order.deliveryCode` |
+| `Pedido.entregar()` | `ConfirmDeliveryUseCase.execute`: delega en `UpdateOrderStatusUseCase.execute`, que registra `Order.deliveredAt` |
+| `Pedido.transicionar(...)` | `transitionOrder()` |
+| `Pago.marcarPagado()` | `UpdateOrderStatusUseCase.applyStatusEffects`: asigna `Order.paymentStatus` pagado cuando `Order.paymentMethod` es efectivo |
+| `RealtimeDispatchPort.notifyAdmins(...)` | `UpdateOrderStatusUseCase.execute`: avisa a los administradores de la distribuidora |
+
+**Observaciones de diseño**
+
+- Se **invierte el actor** respecto de CU-020: quien confirma es el **cliente**, no el chofer. El código lo posee el chofer; que el cliente lo conozca prueba que el chofer estuvo presente.
+- `compareDeliveryCode` usa `timingSafeEqual` (comparación de tiempo constante) para no filtrar el secreto por timing.
+- La **validación** vive en `ConfirmDeliveryUseCase`; los **efectos** de pasar a `DELIVERED` se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH :id/status`: cero duplicación de lógica.
+- Doble idempotencia: el header `Idempotency-Key` (`IdempotencyInterceptor`) y el chequeo de `status === DELIVERED` dentro del caso de uso.
+
+---
 
 #### DSD — CU-018: Marcar Pedido "En Camino"
 
@@ -5014,7 +4686,7 @@ sequenceDiagram
     UCS-->>-CHF: pedido
 ```
 
-**Figura 77 — DSD CU-018: Marcar Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)**
+**Figura 82 — DSD CU-018: Marcar Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)**
 
 **Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `UbicacionGPS`, y `NotificationPort` (fabricación pura: el aviso al cliente).
 
@@ -5077,7 +4749,7 @@ sequenceDiagram
     SRV-->>-CHF: aviso
 ```
 
-**Figura 78 — DSD CU-019: Avisar Llegada al Cliente — Operación: avisarLlegada(pedidoId)**
+**Figura 83 — DSD CU-019: Avisar Llegada al Cliente — Operación: avisarLlegada(pedidoId)**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>`, el objeto de dominio `Pedido`, `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: el aviso en vivo y el aviso al dispositivo).
 
@@ -5130,7 +4802,7 @@ sequenceDiagram
     GW-->>-CLI: confirmacion
 ```
 
-**Figura 79 — DSD CU-021: Recibir Notificaciones en Tiempo Real — Operación: suscribirseAlSeguimiento(clienteId)**
+**Figura 84 — DSD CU-021: Recibir Notificaciones en Tiempo Real — Operación: suscribirseAlSeguimiento(clienteId)**
 
 **Clases participantes:** `CustomersGateway` (controlador: recibe el evento del cliente), `SocketIdentityService` (fabricación pura: resuelve la identidad del handshake) y el objeto de dominio `Cliente`.
 
@@ -5189,7 +4861,7 @@ sequenceDiagram
     SRV-->>-CHF: disponibilidad
 ```
 
-**Figura 80 — DSD CU-022: Activar / Desactivar Disponibilidad — Operación: cambiarDisponibilidad(usuarioId, disponible)**
+**Figura 85 — DSD CU-022: Activar / Desactivar Disponibilidad — Operación: cambiarDisponibilidad(usuarioId, disponible)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `UbicacionGPS`.
 
@@ -5220,36 +4892,7 @@ sequenceDiagram
 
 ---
 
-### CU no modelados y por qué
-
-Ninguno. Los 25 casos de uso del alcance (CU-001, CU-002, CU-003, CU-004, CU-006, CU-007,
-CU-008, CU-009, CU-010, CU-011, CU-012, CU-018, CU-019, CU-021, CU-022, CU-046, CU-047,
-CU-050, CU-080, CU-081, CU-082, CU-083, CU-084, CU-085 y CU-091) tienen implementación
-verificable en el código y quedaron modelados.
-
-**Salvedades sobre lo que sí se modeló:**
-
-| CU | Salvedad |
-|---|---|
-| CU-001 | `AuthService.login` recibe `requestSource` pero **no lo usa**: la validación de rol-por-app la hace `AuthGuard.validateUserRoleForApp`. El parámetro está en la firma y se dibuja como tal. |
-| CU-003 | El diagrama es el de CU-031: los dos son el alta de un chofer por `POST /users`, que incluye CU-082. |
-| CU-004 | El CU habla de "una pantalla"; el código lo resuelve con **dos** controllers (`UsersController` y `CustomersController`) sobre agregados distintos. Se modelaron los dos lados. |
-| CU-012 | Se documenta como observación el gap real: no genera `deliveryCode`, no cierra la `DispatchOffer` y no emite `order:accepted`. No se inventó ninguna llamada que el código no tenga. |
-| CU-019 | La validación de que el chofer sea el asignado al pedido la hace `assertPedidoDelChofer` (403). El aviso sale por socket y por notificación al dispositivo (`sendArrivalPushToCustomer`). |
-| CU-085 | La baja es lógica (`softRemove` con cascada a perfil y direcciones, sin tocar los vehículos) y la cuenta de Firebase se deshabilita con `updateUser(uid, { disabled: true })`, no se borra. |
-
-**Elementos representados con alias normalizado** (el nombre real va siempre en la línea
-"Clases participantes"): `RepositoryUser` = `Repository<User>`, `RepositoryCustomer` =
-`Repository<Customer>`, `RepositoryDelivery` = `Repository<Delivery>`, `RepositoryOrder` =
-`Repository<Order>`, `RepositoryRole` = `Repository<Role>`, `RepositoryUserAddress` =
-`Repository<UserAddress>`, `SelectQueryBuilderUser` = `SelectQueryBuilder<User>`,
-`OrderStatusMachine` = módulo `order-status.machine.ts` (funciones `transitionOrder` /
-`assertTransition`), `PoliticaDeRegistro` = función `autorizarAlta` de `politica-de-registro.ts`,
-`FirebaseAuthClientSDK` = SDK `firebase/auth` (función `signInWithEmailAndPassword`).
-
----
-
-### SS-05 — Reclamos
+### 4.5 SS-05 — Reclamos
 
 #### DSD — CU-023: Registrar Reclamo
 
@@ -5280,7 +4923,7 @@ sequenceDiagram
     SRV-->>-CLI: reclamo
 ```
 
-**Figura 81 — DSD CU-023: Registrar Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)**
+**Figura 86 — DSD CU-023: Registrar Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Cliente` y `Reclamo`.
 
@@ -5326,7 +4969,7 @@ sequenceDiagram
     SRV-->>-ADM: reclamos
 ```
 
-**Figura 82 — DSD CU-024: Listar Reclamos — Operación: listarReclamos()**
+**Figura 87 — DSD CU-024: Listar Reclamos — Operación: listarReclamos()**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
@@ -5369,7 +5012,7 @@ sequenceDiagram
     SRV-->>-ADM: reclamo
 ```
 
-**Figura 83 — DSD CU-025: Resolver Reclamo**
+**Figura 88 — DSD CU-025: Resolver Reclamo**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
@@ -5418,7 +5061,7 @@ sequenceDiagram
     SRV-->>-ADM: reclamo
 ```
 
-**Figura 84 — DSD CU-166: Tomar un Reclamo Pendiente**
+**Figura 89 — DSD CU-166: Tomar un Reclamo Pendiente**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
@@ -5464,7 +5107,7 @@ sequenceDiagram
     SRV-->>-ADM: reclamo
 ```
 
-**Figura 85 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)**
+**Figura 90 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
@@ -5516,7 +5159,7 @@ sequenceDiagram
     SRV-->>-CLI: reclamo
 ```
 
-**Figura 86 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)**
+**Figura 91 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo` y `StoragePort` (fabricación pura: el almacenamiento de archivos). **Colaboración propuesta:** la operación no existe en el código (`ClaimsService.attachPhoto` y `ClaimsService.assertEsDelCliente` son nombres propuestos); `StoragePort` existe y lo usan los adjuntos de flota.
 
@@ -5559,7 +5202,7 @@ sequenceDiagram
     SRV-->>-CLI: fotografia
 ```
 
-**Figura 87 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)**
+**Figura 92 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo` y `StoragePort` (fabricación pura: el almacenamiento de archivos). **Colaboración propuesta:** la operación no existe en el código (`ClaimsService.getPhoto` es un nombre propuesto); `StoragePort` existe.
 
@@ -5575,7 +5218,7 @@ sequenceDiagram
 
 ---
 
-### SS-06 — Reportes y Dashboard
+### 4.6 SS-06 — Reportes y Dashboard
 
 #### DSD — CU-026: Ver Dashboard General
 
@@ -5609,7 +5252,7 @@ sequenceDiagram
     SRV-->>-ADM: resumen
 ```
 
-**Figura 88 — DSD CU-026: Ver Dashboard General · consultarResumenDePedidos**
+**Figura 93 — DSD CU-026: Ver Dashboard General · consultarResumenDePedidos**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y las colecciones `List<Pedido>` y `List<Chofer>`.
 
@@ -5645,7 +5288,7 @@ sequenceDiagram
     SRV-->>-ADM: serie
 ```
 
-**Figura 89 — DSD CU-026: Ver Dashboard General · consultarGraficoDeVentas**
+**Figura 94 — DSD CU-026: Ver Dashboard General · consultarGraficoDeVentas**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y la colección `List<Pedido>`.
 
@@ -5693,7 +5336,7 @@ sequenceDiagram
     SRV-->>-ADM: ventasPorChofer
 ```
 
-**Figura 90 — DSD CU-027: Ver Reporte de Ventas por Chofer**
+**Figura 95 — DSD CU-027: Ver Reporte de Ventas por Chofer**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -5742,7 +5385,7 @@ sequenceDiagram
     SRV-->>-ADM: ventasPorProducto
 ```
 
-**Figura 91 — DSD CU-028: Ver Reporte de Ventas por Producto**
+**Figura 96 — DSD CU-028: Ver Reporte de Ventas por Producto**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `ItemPedido`.
 
@@ -5791,7 +5434,7 @@ sequenceDiagram
     SRV-->>-ADM: ventasPorMetodoDePago
 ```
 
-**Figura 92 — DSD CU-029: Ver Reporte por Método de Pago**
+**Figura 97 — DSD CU-029: Ver Reporte por Método de Pago**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -5838,7 +5481,7 @@ sequenceDiagram
     SRV-->>-ADM: evolucion
 ```
 
-**Figura 93 — DSD CU-030: Ver Gráfico de Ventas**
+**Figura 98 — DSD CU-030: Ver Gráfico de Ventas**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -5862,7 +5505,7 @@ sequenceDiagram
 
 ---
 
-### SS-07 — Choferes y Vehículos
+### 4.7 SS-07 — Choferes y Vehículos
 
 #### DSD — CU-031: Registrar Chofer
 
@@ -5900,7 +5543,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 94 — DSD CU-032: Validar / Invalidar Chofer**
+**Figura 99 — DSD CU-032: Validar / Invalidar Chofer**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -5932,7 +5575,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 95 — DSD CU-032: Validar / Invalidar Chofer — Operación: invalidarChofer(choferId)**
+**Figura 100 — DSD CU-032: Validar / Invalidar Chofer — Operación: invalidarChofer(choferId)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -5981,7 +5624,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 96 — DSD CU-033: Activar / Desactivar Chofer (Admin)**
+**Figura 101 — DSD CU-033: Activar / Desactivar Chofer (Admin)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `UbicacionGPS`.
 
@@ -6027,7 +5670,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo
 ```
 
-**Figura 97 — DSD CU-034: Registrar Vehículo del Chofer**
+**Figura 102 — DSD CU-034: Registrar Vehículo del Chofer**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `Vehiculo`.
 
@@ -6069,7 +5712,7 @@ sequenceDiagram
     SRV-->>-ADM: choferes
 ```
 
-**Figura 98 — DSD CU-035: Consultar Listado de Choferes**
+**Figura 103 — DSD CU-035: Consultar Listado de Choferes**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes) y el objeto de dominio `Distribuidora`.
 
@@ -6102,7 +5745,7 @@ sequenceDiagram
     SRV-->>-ADM: choferes
 ```
 
-**Figura 99 — DSD CU-035: Consultar Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)**
+**Figura 104 — DSD CU-035: Consultar Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), y los objetos de dominio `Distribuidora` y `Chofer`.
 
@@ -6138,7 +5781,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer, usuario, rol
 ```
 
-**Figura 100 — DSD CU-035: Consultar Listado de Choferes — Operación: consultarDetalleDelChofer(choferId)**
+**Figura 105 — DSD CU-035: Consultar Listado de Choferes — Operación: consultarDetalleDelChofer(choferId)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `Usuario`.
 
@@ -6183,7 +5826,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 101 — DSD CU-049: Consultar Balance / Ganancias del Chofer**
+**Figura 106 — DSD CU-049: Consultar Balance / Ganancias del Chofer**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -6219,7 +5862,7 @@ sequenceDiagram
     SRV-->>-CHF: chofer, saldo
 ```
 
-**Figura 102 — DSD CU-049: Consultar Balance / Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)**
+**Figura 107 — DSD CU-049: Consultar Balance / Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Usuario>` y los objetos de dominio `Usuario` y `Chofer`.
 
@@ -6260,7 +5903,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculos
 ```
 
-**Figura 103 — DSD CU-051: Consultar Listado de Vehículos**
+**Figura 108 — DSD CU-051: Consultar Listado de Vehículos**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos) y la colección `List<Vehiculo>` de la flota.
 
@@ -6289,7 +5932,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo
 ```
 
-**Figura 104 — DSD CU-051: Consultar Listado de Vehículos — Operación: buscarVehiculoPorPatente(patente)**
+**Figura 109 — DSD CU-051: Consultar Listado de Vehículos — Operación: buscarVehiculoPorPatente(patente)**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos) y la colección `Map<String, Vehiculo>`, indexada por patente.
 
@@ -6327,7 +5970,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo
 ```
 
-**Figura 105 — DSD CU-051: Consultar Listado de Vehículos — Operación: editarVehiculo(vehiculoId, datos)**
+**Figura 110 — DSD CU-051: Consultar Listado de Vehículos — Operación: editarVehiculo(vehiculoId, datos)**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -6363,7 +6006,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 106 — DSD CU-051: Consultar Listado de Vehículos — Operación: eliminarVehiculo(vehiculoId)**
+**Figura 111 — DSD CU-051: Consultar Listado de Vehículos — Operación: eliminarVehiculo(vehiculoId)**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -6406,7 +6049,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 107 — DSD CU-096: Actualizar Perfil del Chofer**
+**Figura 112 — DSD CU-096: Actualizar Perfil del Chofer**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -6456,7 +6099,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 108 — DSD CU-097: Eliminar Chofer (baja lógica)**
+**Figura 113 — DSD CU-097: Eliminar Chofer (baja lógica)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer`, `Usuario`, `AsignacionVehiculo` y `UbicacionGPS`.
 
@@ -6517,7 +6160,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 109 — DSD CU-110: Buscar Chofer por Usuario**
+**Figura 114 — DSD CU-110: Buscar Chofer por Usuario**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`.
 
@@ -6587,7 +6230,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo, chofer
 ```
 
-**Figura 110 — DSD CU-113: Consultar Detalle del Vehículo**
+**Figura 115 — DSD CU-113: Consultar Detalle del Vehículo**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -6642,7 +6285,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculos
 ```
 
-**Figura 111 — DSD CU-115: Consultar Vehículos de un Chofer**
+**Figura 116 — DSD CU-115: Consultar Vehículos de un Chofer**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -6696,7 +6339,7 @@ sequenceDiagram
     SRV-->>-ADM: tarea
 ```
 
-**Figura 112 — DSD CU-136: Registrar el Seguro del Vehículo**
+**Figura 117 — DSD CU-136: Registrar el Seguro del Vehículo**
 
 **Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), las colecciones `Map<String, PlanMantenimiento>`, `Map<String, Vehiculo>` y `Map<String, Chofer>`, y los objetos de dominio `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al seguro del vehículo (CU-136), la verificación técnica (CU-137), la licencia del chofer (CU-138) y el mantenimiento programado (CU-140): cambia el plan y el tipo de recurso.
 
@@ -6778,7 +6421,7 @@ sequenceDiagram
     SRV-->>-ADM: vencimientos por vehiculo y por chofer
 ```
 
-**Figura 113 — DSD CU-139: Consultar los Vencimientos de la Flota**
+**Figura 118 — DSD CU-139: Consultar los Vencimientos de la Flota**
 
 **Clases participantes:** `FleetExpirationsService` (controlador de fachada de los vencimientos), la colección `List<TareaMantenimiento>` y los objetos de dominio `TareaMantenimiento`, `Vehiculo` y `Chofer`.
 
@@ -6836,7 +6479,7 @@ sequenceDiagram
     SRV-->>-ADM: tarea
 ```
 
-**Figura 114 — DSD CU-141: Registrar un Mantenimiento Realizado**
+**Figura 119 — DSD CU-141: Registrar un Mantenimiento Realizado**
 
 **Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), la colección `Map<String, TareaMantenimiento>` y el objeto de dominio `TareaMantenimiento`.
 
@@ -6888,7 +6531,7 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 115 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota**
+**Figura 120 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota**
 
 **Clases participantes:** `FleetAlertsCron` (controlador del proceso temporal), la colección `List<TareaMantenimiento>`, los objetos de dominio `TareaMantenimiento` y `Distribuidora`, y `EmailSenderPort` (fabricación pura: el envío del correo, detrás de un puerto).
 
@@ -6936,7 +6579,7 @@ sequenceDiagram
     SRV-->>-ADM: adjunto
 ```
 
-**Figura 116 — DSD CU-155: Adjuntar Archivo a una Tarea de Flota**
+**Figura 121 — DSD CU-155: Adjuntar Archivo a una Tarea de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto) y los objetos de dominio `TareaMantenimiento` y `AdjuntoTarea`.
 
@@ -6981,7 +6624,7 @@ sequenceDiagram
     SRV-->>-ADM: adjuntos
 ```
 
-**Figura 117 — DSD CU-156: Consultar Adjuntos de una Tarea de Flota**
+**Figura 122 — DSD CU-156: Consultar Adjuntos de una Tarea de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>` y el objeto de dominio `TareaMantenimiento`.
 
@@ -7029,7 +6672,7 @@ sequenceDiagram
     SRV-->>-ADM: url o contenido
 ```
 
-**Figura 118 — DSD CU-157: Descargar un Adjunto de Flota**
+**Figura 123 — DSD CU-157: Descargar un Adjunto de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto).
 
@@ -7073,7 +6716,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 119 — DSD CU-158: Eliminar un Adjunto de Flota**
+**Figura 124 — DSD CU-158: Eliminar un Adjunto de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto).
 
@@ -7100,28 +6743,24 @@ Caso incluido desde CU-155 y CU-174: no tiene operación del sistema propia, el 
 ##### Caso incluido: put(clave, contenido, tipo)
 
 ```mermaid
+%%{init: {"sequence": {"actorMargin": 190}}}%%
 sequenceDiagram
     title DSD — CU-159 Almacenar Archivo · almacenarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
     participant STO as :StoragePort
-    participant LOC as :LocalDiskStorageAdapter
-    participant S3A as :S3StorageAdapter
 
-    Note over SRV: Caso incluido desde CU-155 y CU-174
+    Note over SRV,STO: Caso incluido desde CU-155 y CU-174<br/>(la implementación activa la decide STORAGE_DRIVER)
     SRV->>+STO: put(clave, contenido, tipo)
-    alt STORAGE_DRIVER es local
-        STO->>+LOC: put(clave, contenido, tipo)
-        LOC->>LOC: resolveKey(clave)
-        deactivate LOC
+    alt STORAGE_DRIVER es local (por omisión)
+        Note over SRV,STO: LocalDiskStorageAdapter:<br/>escribe el archivo en disco
     else STORAGE_DRIVER es s3
-        STO->>+S3A: put(clave, contenido, tipo)
-        deactivate S3A
+        Note over SRV,STO: S3StorageAdapter:<br/>sube el archivo al depósito
     end
     deactivate STO
 ```
 
-**Figura 120 — DSD CU-159: Almacenar Archivo**
+**Figura 125 — DSD CU-159: Almacenar Archivo**
 
 **Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-155; en CU-174 lo sería `ClaimsService`), `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto) y sus dos adaptadores, `LocalDiskStorageAdapter` y `S3StorageAdapter`. No hay objeto de dominio: el archivo todavía no tiene registro, y el `AdjuntoTarea` que lo describe lo crea el caso base después de guardarlo.
 
@@ -7131,10 +6770,7 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `StoragePort.put(...)` | `StoragePort.put`: clase abstracta; `StorageModule` arma el adaptador una sola vez, según `STORAGE_DRIVER` |
-| `LocalDiskStorageAdapter.put(...)` | `LocalDiskStorageAdapter.put`: crea la carpeta si falta, escribe el archivo y un sidecar con el content type |
-| `LocalDiskStorageAdapter.resolveKey(...)` | `LocalDiskStorageAdapter.resolveKey`: resuelve la ruta bajo la raíz configurada y exige que siga dentro de ella |
-| `S3StorageAdapter.put(...)` | `S3StorageAdapter.put`: `PutObjectCommand` contra el bucket configurado |
+| `StoragePort.put(...)` | `StoragePort.put`: clase abstracta; `StorageModule` arma la implementación una sola vez, según `STORAGE_DRIVER`. `LocalDiskStorageAdapter.put` crea la carpeta si falta, escribe el archivo y un sidecar con el content type, y exige que la ruta resuelta siga dentro de la raíz configurada; `S3StorageAdapter.put` hace un `PutObjectCommand` contra el bucket configurado |
 
 **Observaciones de diseño**
 
@@ -7150,39 +6786,29 @@ Caso incluido desde CU-157 y CU-175: no tiene operación del sistema propia, el 
 ##### Caso incluido: getDownloadUrl(clave)
 
 ```mermaid
+%%{init: {"sequence": {"actorMargin": 190}}}%%
 sequenceDiagram
     title DSD — CU-160 Recuperar Archivo · recuperarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
     participant STO as :StoragePort
-    participant LOC as :LocalDiskStorageAdapter
-    participant S3A as :S3StorageAdapter
 
-    Note over SRV: Caso incluido desde CU-157 y CU-175
+    Note over SRV,STO: Caso incluido desde CU-157 y CU-175<br/>(la implementación activa la decide STORAGE_DRIVER)
     SRV->>+STO: getDownloadUrl(clave)
     alt STORAGE_DRIVER es s3
-        STO->>+S3A: getDownloadUrl(clave)
-        S3A-->>-STO: url
-    else STORAGE_DRIVER es local
-        STO->>+LOC: getDownloadUrl(clave)
-        LOC-->>-STO: url
-        Note right of LOC: en almacenamiento local la url es nula
+        Note over SRV,STO: S3StorageAdapter:<br/>devuelve una URL firmada
+    else STORAGE_DRIVER es local (por omisión)
+        Note over SRV,STO: LocalDiskStorageAdapter:<br/>devuelve nulo, no hay URL
     end
     STO-->>-SRV: url
     opt No hubo URL
         SRV->>+STO: getStream(clave)
-        alt STORAGE_DRIVER es s3
-            STO->>+S3A: getStream(clave)
-            S3A-->>-STO: contenido
-        else STORAGE_DRIVER es local
-            STO->>+LOC: getStream(clave)
-            LOC-->>-STO: contenido
-        end
+        Note over SRV,STO: Lee el archivo<br/>(disco local o S3)
         STO-->>-SRV: contenido
     end
 ```
 
-**Figura 121 — DSD CU-160: Recuperar Archivo**
+**Figura 126 — DSD CU-160: Recuperar Archivo**
 
 **Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-157; en CU-175 lo sería `ClaimsService`), `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto) y sus dos adaptadores, `LocalDiskStorageAdapter` y `S3StorageAdapter`. No hay objeto de dominio: el caso base le pasa la clave que ya leyó del `AdjuntoTarea`.
 
@@ -7192,12 +6818,8 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `StoragePort.getDownloadUrl(...)` | `StoragePort.getDownloadUrl`: clase abstracta; `StorageModule` arma el adaptador una sola vez, según `STORAGE_DRIVER` |
-| `S3StorageAdapter.getDownloadUrl(...)` | `S3StorageAdapter.getDownloadUrl`: `getSignedUrl` de la biblioteca de S3 sobre un `GetObjectCommand`, con vigencia configurable |
-| `LocalDiskStorageAdapter.getDownloadUrl(...)` | `LocalDiskStorageAdapter.getDownloadUrl`: devuelve `null`, el disco local no tiene URL pública |
-| `StoragePort.getStream(...)` | `StoragePort.getStream`: el caso base lo pide sólo si no hubo URL |
-| `S3StorageAdapter.getStream(...)` | `S3StorageAdapter.getStream`: `GetObjectCommand` contra el bucket configurado |
-| `LocalDiskStorageAdapter.getStream(...)` | `LocalDiskStorageAdapter.getStream`: lee el sidecar de content type y abre un flujo de lectura del archivo |
+| `StoragePort.getDownloadUrl(...)` | `StoragePort.getDownloadUrl`: clase abstracta; `StorageModule` arma la implementación una sola vez, según `STORAGE_DRIVER`. `S3StorageAdapter.getDownloadUrl` usa `getSignedUrl` de la biblioteca de S3 sobre un `GetObjectCommand`, con vigencia configurable; `LocalDiskStorageAdapter.getDownloadUrl` devuelve `null`, porque el disco local no tiene URL pública |
+| `StoragePort.getStream(...)` | `StoragePort.getStream`: el caso base lo pide sólo si no hubo URL. `S3StorageAdapter.getStream` hace un `GetObjectCommand` contra el bucket configurado; `LocalDiskStorageAdapter.getStream` lee el sidecar de content type y abre un flujo de lectura del archivo |
 
 **Observaciones de diseño**
 
@@ -7242,7 +6864,7 @@ sequenceDiagram
     SRV-->>-ADM: asignacion
 ```
 
-**Figura 122 — DSD CU-161: Poner un Vehículo en Uso para un Chofer**
+**Figura 127 — DSD CU-161: Poner un Vehículo en Uso para un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), las colecciones `Map<String, Chofer>`, `Map<String, Vehiculo>` y `List<AsignacionVehiculo>`, `FleetTaskService` (fabricación pura: la regla de habilitación de la flota) y los objetos de dominio `Chofer` y `AsignacionVehiculo`. En el código, la comprobación de flota la hace `DeliveryVehicleController.ponerEnUso` antes de llamar al servicio, porque el módulo de vehículos no puede depender del de flota.
 
@@ -7297,7 +6919,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 123 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer**
+**Figura 128 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `AsignacionVehiculo`.
 
@@ -7347,7 +6969,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo, inhabilitado
 ```
 
-**Figura 124 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer**
+**Figura 129 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>`, el objeto de dominio `Chofer` y `FleetTaskService` (fabricación pura: la regla de habilitación de la flota). En el código, el cálculo de la inhabilitación lo pide `DeliveryVehicleController` después de leer la asignación.
 
@@ -7385,7 +7007,7 @@ sequenceDiagram
     SRV-->>-CHF: vehiculo, inhabilitado
 ```
 
-**Figura 125 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()**
+**Figura 130 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>`, el objeto de dominio `Chofer` y `FleetTaskService` (fabricación pura: la regla de habilitación de la flota).
 
@@ -7429,7 +7051,7 @@ sequenceDiagram
     SRV-->>-ADM: asignaciones
 ```
 
-**Figura 126 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer**
+**Figura 131 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -7471,7 +7093,7 @@ sequenceDiagram
     SRV-->>-ADM: asignaciones
 ```
 
-**Figura 127 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo**
+**Figura 132 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -7492,7 +7114,7 @@ sequenceDiagram
 
 ---
 
-### SS-08 — Catálogo de Productos
+### 4.8 SS-08 — Catálogo de Productos
 
 #### DSD — CU-036: Crear Producto (Garrafa)
 
@@ -7521,7 +7143,7 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 128 — DSD CU-036: Crear Producto (Garrafa)**
+**Figura 133 — DSD CU-036: Crear Producto (Garrafa)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), y los objetos de dominio `Distribuidora`, `Producto` y `Promocion`.
 
@@ -7579,7 +7201,7 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 129 — DSD CU-037: Actualizar Precio de Producto**
+**Figura 134 — DSD CU-037: Actualizar Precio de Producto**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y los objetos de dominio `Producto` y `Promocion`. El diagrama sirve a CU-037, el cambio de precio, y a CU-039, el reemplazo de las promociones por cantidad: es una sola operación.
 
@@ -7626,7 +7248,7 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 130 — DSD CU-038: Actualizar Stock de Producto**
+**Figura 135 — DSD CU-038: Actualizar Stock de Producto**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y el objeto de dominio `Producto`.
 
@@ -7688,7 +7310,7 @@ sequenceDiagram
     SRV-->>-ADM: mensaje
 ```
 
-**Figura 131 — DSD CU-040: Activar / Desactivar Producto**
+**Figura 136 — DSD CU-040: Activar / Desactivar Producto**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y el objeto de dominio `Producto`.
 
@@ -7720,7 +7342,7 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 132 — DSD CU-040: Activar / Desactivar Producto — Operación: reactivarProducto(productoId)**
+**Figura 137 — DSD CU-040: Activar / Desactivar Producto — Operación: reactivarProducto(productoId)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y el objeto de dominio `Producto`. Colaboración propuesta (I-1): la reactivación no está construida.
 
@@ -7732,7 +7354,7 @@ sequenceDiagram
 |---|---|
 | `GasCylinderService.reactivarProducto(...)` | Colaboración propuesta (I-1): `GasCylinderController` no tiene la ruta de reactivación y `GasCylinderService` no tiene la operación |
 | `Map<String, Producto>.get(...)` | `GasCylinderService.findOne`, con la distribuidora del contexto; no filtra por `GasCylinder.isActive`, de modo que encuentra un producto dado de baja |
-| `Producto.reactivar()` | Colaboración propuesta (I-1): hoy `GasCylinderService.remove` es lo único que escribe `GasCylinder.isActive`, y la modificación del producto no lo admite |
+| `Producto.reactivar()` | Colaboración propuesta (I-1): `GasCylinderService.remove` es lo único que escribe `GasCylinder.isActive`, y la modificación del producto no lo admite |
 
 ##### Operación: consultarProductosInactivos()
 
@@ -7750,7 +7372,7 @@ sequenceDiagram
     SRV-->>-ADM: productos
 ```
 
-**Figura 133 — DSD CU-040: Activar / Desactivar Producto — Operación: consultarProductosInactivos()**
+**Figura 138 — DSD CU-040: Activar / Desactivar Producto — Operación: consultarProductosInactivos()**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos) y la colección `List<Producto>`. Colaboración propuesta (I-1): el listado de inactivos no está construido.
 
@@ -7796,7 +7418,7 @@ sequenceDiagram
     SRV-->>-CLI: productos, total
 ```
 
-**Figura 134 — DSD CU-041: Consultar Catálogo de Productos**
+**Figura 139 — DSD CU-041: Consultar Catálogo de Productos**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -7826,7 +7448,7 @@ sequenceDiagram
     SRV-->>-CLI: producto
 ```
 
-**Figura 135 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProducto(productoId)**
+**Figura 140 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProducto(productoId)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos) y la colección `Map<String, Producto>`.
 
@@ -7858,7 +7480,7 @@ sequenceDiagram
     SRV-->>-CLI: productos, mediosDePago
 ```
 
-**Figura 136 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)**
+**Figura 141 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -7880,7 +7502,7 @@ sequenceDiagram
 
 ---
 
-### SS-09 — Franjas Horarias
+### 4.9 SS-09 — Franjas Horarias
 
 #### DSD — CU-042: Crear Franja Horaria
 
@@ -7903,7 +7525,7 @@ sequenceDiagram
     SRV-->>-ADM: franja
 ```
 
-**Figura 137 — DSD CU-042: Crear Franja Horaria**
+**Figura 142 — DSD CU-042: Crear Franja Horaria**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas) y los objetos de dominio `Distribuidora` y `FranjaHoraria`.
 
@@ -7969,7 +7591,7 @@ sequenceDiagram
     SRV-->>-CLI: franjas
 ```
 
-**Figura 138 — DSD CU-045: Consultar Franjas Horarias Disponibles**
+**Figura 143 — DSD CU-045: Consultar Franjas Horarias Disponibles**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`. La disponibilidad por fecha es otra operación, `consultarDisponibilidadDeFranjas` (CU-044 y CU-045).
 
@@ -8007,7 +7629,7 @@ sequenceDiagram
     SRV-->>-CLI: disponibilidad
 ```
 
-**Figura 139 — DSD CU-044 / CU-045: Consultar Franjas Horarias Disponibles**
+**Figura 144 — DSD CU-044 / CU-045: Consultar Franjas Horarias Disponibles**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, Distribuidora>` y los objetos de dominio `Distribuidora` y `FranjaHoraria`.
 
@@ -8052,7 +7674,7 @@ sequenceDiagram
     SRV-->>-ADM: franja
 ```
 
-**Figura 140 — DSD CU-103: Eliminar Franja Horaria**
+**Figura 145 — DSD CU-103: Eliminar Franja Horaria**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`.
 
@@ -8093,7 +7715,7 @@ sequenceDiagram
     SRV-->>-ADM: franjas
 ```
 
-**Figura 141 — DSD CU-154: Consultar Listado de Franjas Horarias**
+**Figura 146 — DSD CU-154: Consultar Listado de Franjas Horarias**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas) y el objeto de dominio `Distribuidora`.
 
@@ -8113,51 +7735,65 @@ sequenceDiagram
 
 ---
 
-### CU no modelados y por qué
+#### Planificado (I-1) · DSD — CU-043: Modificar Capacidad de Franja Horaria
 
-Ninguno. CU-043, que el sistema no realiza, se modeló como caso planificado (I-1): el DSS y el DSD especifican el comportamiento a construir.
 
-#### Implementaciones parciales que sí se modelaron, con la salvedad anotada
+> Colaboración **propuesta**. Las piezas marcadas como propuestas no existen en el código:
+> `TimeSlotController` no declara una operación de modificación y no hay `UpdateTimeSlotDto`.
+> Las clases `TimeSlotController`, `TimeSlotService` y el repositorio de `TimeSlot` sí existen.
 
-| CU | Nombre | Qué falta en el código |
-|---|---|---|
-| **CU-040** | Activar / Desactivar Producto | Se modeló **sólo la desactivación** (`DELETE /gascylinder/:id` → `isActive = false`), que es lo único que existe. **No hay reactivación:** `isActive` no está declarado en `UpdateGasCylinderDto` ni en `CreateGasCylinderDto`, del que hereda, y el `ValidationPipe` global (`whitelist: true`, `forbidNonWhitelisted: true`) rechaza con 400 cualquier propiedad no declarada. El toggle bidireccional que pide el CU no es alcanzable por la API. |
+##### Operación: modificarFranjaHoraria(franjaId, nombre, horaInicio, horaFin, capacidad)
 
-#### Notas de verificación
+```mermaid
+sequenceDiagram
+    title DSD — CU-043 Modificar Capacidad de Franja Horaria · modificarFranjaHoraria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TimeSlotService
+    participant COL as :Map#lt;String, FranjaHoraria#gt;
+    participant FRA as franja:FranjaHoraria
 
-- Los 27 diagramas se construyeron leyendo los archivos fuente, no la documentación previa: cada mensaje corresponde a un método existente con esa firma en `src/`.
-- Los nombres de excepción y los textos de error reproducidos en los diagramas son los literales del código.
-- Donde el código expone **varios endpoints para un mismo CU** (CU-030, CU-035, CU-041, CU-045, CU-049, CU-051), los caminos se agruparon en un `alt` que representa la elección del actor, no una bifurcación interna del sistema.
+    ADM->>+SRV: modificarFranjaHoraria(franjaId, nombre, horaInicio, horaFin, capacidad)
+    SRV->>+COL: get(franjaId)
+    COL-->>-SRV: franja
+    SRV->>+FRA: modificar(nombre, horaInicio, horaFin, capacidad)
+    FRA->>FRA: validarCapacidad(capacidad)
+    deactivate FRA
+    SRV-->>-ADM: franja
+```
+
+**Figura 147 — DSD CU-043: Modificar Capacidad de Franja Horaria**
+
+**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`. Colaboración propuesta (I-1): `TimeSlotController` no declara una operación de modificación.
+
+**GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `FranjaHoraria` toma sus valores nuevos y valida que la capacidad sea mayor que cero. Los pedidos ya agendados se conservan aunque superen la capacidad nueva; los que se agenden después se validan contra el límite nuevo.
+
+**No se dibuja:** la comprobación de que la franja sea de la distribuidora del Administrador y la advertencia en la respuesta si para alguna fecha próxima la franja ya excede la capacidad nueva.
+
+**Observaciones de diseño**
+
+- Si la capacidad nueva es menor que lo comprometido para alguna fecha, el cambio se guarda y la respuesta lo advierte; no se responde 400 ni se tocan los pedidos ya agendados (decisión del Documento 1, CU-043, Comentarios).
+- La misma regla de capacidad mayor a cero se agrega al alta (`CreateTimeSlotDto`), para que las dos operaciones compartan la validación.
 
 ---
 
-#### Nota transversal sobre multi-tenancy (SS-10)
-
-En **todas** las rutas no públicas el `AuthGuard` resuelve el tenant efectivo de
-la request antes de que el controlador exista, y lo deja en `request.distributorId`
-(`src/auth/guards/jwt-auth.guard.ts:75-86`). El decorador de parámetro
-`@CurrentDistributor()` sólo **lee** ese valor
-(`src/common/decorators/current-distributor.decorator.ts:23-43`); con
-`{ required: true }` lanza `BadRequestException` si no hay tenant. La regla de
-resolución (`resolveDistributor`, `jwt-auth.guard.ts:100-143`) es:
-
-- **ADMIN / DELIVERY** → el `distributor_id` se **deriva del perfil** (server-trusted); se ignora el header `X-Distributor`, de modo que un staff nunca puede operar otro tenant.
-- **CUSTOMER / SUPER_ADMIN** → del header `X-Distributor` (slug o uuid), validado contra una distribuidora activa; sin header devuelve `null` (super_admin cross-tenant).
-
-Para no repetir esta cadena en los 32 diagramas, se modela explícitamente en el
-primer diagrama de cada subsistema que la use y se abrevia en los siguientes.
-
----
-
-### SS-10 — Multi-Distribuidora (Multi-Tenancy)
+### 4.10 SS-10 — Multi-Distribuidora (Multi-Tenancy)
 
 `DistributorController` es el **único** controlador del sistema que NO usa
 `@CurrentDistributor`: administrar tenants es una operación de *plataforma*, no
-de tenant. Por eso lleva `@Roles(RoleType.SUPER_ADMIN)` a nivel de clase
-(`src/distributor/distributor.controller.ts:31`) y el `RolesGuard` global lo
+de tenant. Por eso lleva `@Roles(RoleType.SUPER_ADMIN)` a nivel de clase y el `RolesGuard` global lo
 resuelve leyendo la metadata de la clase con `getAllAndOverride`.
 
-#### C.1 DSD — CU-052: Registrar Distribuidora
+#### Resolución de la distribuidora en cada solicitud
+
+En todas las rutas no públicas, la guarda de autenticación resuelve la distribuidora efectiva de la solicitud antes de que el controlador exista y la deja en la propia solicitud. El decorador de parámetro `@CurrentDistributor()` sólo **lee** ese valor; con `{ required: true }` lanza `BadRequestException` si no hay distribuidora. La regla de resolución es:
+
+- **ADMIN / DELIVERY**: la distribuidora se **deriva del perfil** (dato confiable del servidor) y se ignora el encabezado `X-Distributor`, de modo que el personal de una distribuidora nunca puede operar otra.
+- **CUSTOMER / SUPER_ADMIN**: se toma del encabezado `X-Distributor` (slug o uuid), validado contra una distribuidora activa; sin encabezado resulta `null` (el super administrador opera entre distribuidoras).
+
+Para no repetir esta cadena en cada diagrama, se modela en el primer diagrama de cada subsistema que la use y se abrevia en los siguientes.
+
+#### DSD — CU-052: Registrar Distribuidora
 
 ##### Operación: registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)
 
@@ -8177,7 +7813,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidora
 ```
 
-**Figura 142 — C.1 DSD — CU-052: Registrar Distribuidora**
+**Figura 148 — DSD — CU-052: Registrar Distribuidora**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -8198,7 +7834,7 @@ sequenceDiagram
 
 ---
 
-#### C.2 DSD — CU-053: Consultar Distribuidoras
+#### DSD — CU-053: Consultar Distribuidoras
 
 ##### Operación: listarDistribuidoras()
 
@@ -8216,7 +7852,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidoras
 ```
 
-**Figura 143 — C.2 DSD — CU-053: Consultar Distribuidoras**
+**Figura 149 — DSD — CU-053: Consultar Distribuidoras**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras) y la colección `List<Distribuidora>`.
 
@@ -8245,7 +7881,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidora
 ```
 
-**Figura 144 — C.2 DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)**
+**Figura 150 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras) y la colección `Map<String, Distribuidora>`.
 
@@ -8265,7 +7901,7 @@ sequenceDiagram
 
 ---
 
-#### C.3 DSD — CU-054: Modificar Datos de la Distribuidora
+#### DSD — CU-054: Modificar Datos de la Distribuidora
 
 ##### Operación: modificarDistribuidora(distribuidoraId, datos)
 
@@ -8285,7 +7921,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidora
 ```
 
-**Figura 145 — C.3 DSD — CU-054: Modificar Datos de la Distribuidora**
+**Figura 151 — DSD — CU-054: Modificar Datos de la Distribuidora**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -8306,7 +7942,7 @@ sequenceDiagram
 
 ---
 
-#### C.4 DSD — CU-055: Dar de Baja una Distribuidora
+#### DSD — CU-055: Dar de Baja una Distribuidora
 
 ##### Operación: darDeBajaDistribuidora(distribuidoraId)
 
@@ -8326,7 +7962,7 @@ sequenceDiagram
     SRV-->>-AGE: confirmacion
 ```
 
-**Figura 146 — C.4 DSD — CU-055: Dar de Baja una Distribuidora**
+**Figura 152 — DSD — CU-055: Dar de Baja una Distribuidora**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -8347,9 +7983,64 @@ sequenceDiagram
 
 ---
 
-### SS-11 — Cobertura Geográfica
+### 4.11 SS-11 — Cobertura Geográfica
 
-#### C.5 DSD — CU-056: Definir Zona de Cobertura
+#### DSD — CU-058 / CU-005: Validación de zona de cobertura al crear un pedido
+
+
+##### Operación: validarCobertura(latitud, longitud)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-058 Validar Cobertura de una Dirección · validarCobertura
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :CoverageZoneService
+    participant DIS as distribuidora:Distribuidora
+    participant ZON as zona:ZonaCobertura
+
+    CLI->>+SRV: validarCobertura(latitud, longitud)
+    alt La distribuidora no tiene zonas activas
+        Note over SRV,DIS: Toda dirección se considera cubierta, sin recargo
+    else La distribuidora tiene zonas activas
+        SRV->>+DIS: getZonaQueCubre(latitud, longitud)
+        loop Por cada zona activa y vigente, de mayor prioridad
+            DIS->>ZON: cubre(latitud, longitud)
+        end
+        DIS-->>-SRV: zona
+        opt Alguna zona cubre el punto
+            SRV->>+ZON: getRecargo()
+            ZON-->>-SRV: recargo
+        end
+    end
+    SRV-->>-CLI: cubierta, recargo, zona
+```
+
+**Figura 153 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido**
+
+**Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y los objetos de dominio `Distribuidora` y `ZonaCobertura`. La operación la usa también la creación del pedido (`crearPedido`, CU-005), que le pregunta por la dirección elegida.
+
+**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la `Distribuidora` sabe qué zonas tiene y cuál cubre un punto; la `ZonaCobertura` sabe si contiene el punto y cuál es su recargo. La consulta no cambia estado. Una distribuidora sin zonas definidas no bloquea la venta: toda dirección queda cubierta, sin recargo.
+
+**No se dibuja:** que la evaluación de cada zona la resuelve una sola consulta geográfica en la base, que ignora las zonas inactivas, fuera de vigencia o dadas de baja, y el cálculo del monto del recargo sobre un subtotal, que es de `crearPedido`.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CoverageZoneService.validarCobertura(...)` | `CoverageZoneController.check` → `CoverageZoneService.checkCoverage` |
+| `Distribuidora.getZonaQueCubre(...)` | `CoverageZoneService.checkCoverage`: una consulta PostGIS (`ST_Covers`) sobre las zonas activas, vigentes y no dadas de baja de la distribuidora, que devuelve la primera por `CoverageZone.priority` y menor área |
+| `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage`: es la condición `ST_Covers` de la misma consulta sobre `CoverageZone.area`; un punto sobre el borde cuenta como cubierto |
+| `ZonaCobertura.getRecargo()` | `CoverageZoneService.checkCoverage`: devuelve `CoverageZone.surchargeValue` y su tipo |
+
+**Observaciones de diseño**
+
+- La cobertura se valida **antes de reservar stock**: un pedido fuera de zona no llega a bloquear inventario.
+- La zona aporta además un **recargo por lejanía** que se suma al subtotal de los ítems **antes** del recargo por método de pago (+10 % en pagos online).
+- Regla de compatibilidad: una distribuidora **sin zonas cargadas** no queda bloqueada — `checkCoverage` devuelve `covered: true, surcharge: 0`.
+- La consulta geoespacial es un `ST_Contains` de PostGIS resuelto en la base, no en memoria; se elige la zona de **mayor prioridad** y, a igual prioridad, la de **menor área** entre las que contienen el punto.
+
+---
+
+#### DSD — CU-056: Definir Zona de Cobertura
 
 
 ##### Operación: definirZonaDeCobertura(nombre, poligono, recargo, activa)
@@ -8372,7 +8063,7 @@ sequenceDiagram
     SRV-->>-ADM: zona
 ```
 
-**Figura 147 — C.5 DSD — CU-056: Definir Zona de Cobertura**
+**Figura 154 — DSD — CU-056: Definir Zona de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y los objetos de dominio `Distribuidora` y `ZonaCobertura`.
 
@@ -8395,7 +8086,7 @@ sequenceDiagram
 
 ---
 
-#### C.6 DSD — CU-057: Consultar Zonas de Cobertura
+#### DSD — CU-057: Consultar Zonas de Cobertura
 
 
 ##### Operación: listarZonasDeCobertura()
@@ -8414,7 +8105,7 @@ sequenceDiagram
     SRV-->>-ADM: zonas
 ```
 
-**Figura 148 — C.6 DSD — CU-057: Consultar Zonas de Cobertura**
+**Figura 155 — DSD — CU-057: Consultar Zonas de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y el objeto de dominio `Distribuidora`.
 
@@ -8434,7 +8125,7 @@ sequenceDiagram
 
 ---
 
-#### C.7 DSD — CU-059: Eliminar Zona de Cobertura
+#### DSD — CU-059: Eliminar Zona de Cobertura
 
 
 ##### Operación: eliminarZonaDeCobertura(zonaId)
@@ -8455,7 +8146,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 149 — C.7 DSD — CU-059: Eliminar Zona de Cobertura**
+**Figura 156 — DSD — CU-059: Eliminar Zona de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura), la colección `Map<String, ZonaCobertura>` y el objeto de dominio `ZonaCobertura`.
 
@@ -8476,9 +8167,104 @@ sequenceDiagram
 
 ---
 
-### SS-12 — Incidencias y Calidad de Servicio
+### 4.12 SS-12 — Incidencias y Calidad de Servicio
 
-#### C.8 DSD — CU-060: Registrar Incidencia de Entrega
+#### DSD — CU-064 / CU-065: Calificación bidireccional y recálculo del promedio
+
+##### Operación: calificarPedido(pedidoId, estrellas, comentario)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-064 Calificar Pedido (cliente↔chofer) · calificarPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :RatingService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant USU as usuario:Usuario
+    participant CHO as chofer:Chofer
+
+    CLI->>+SRV: calificarPedido(pedidoId, estrellas, comentario)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: puedeCalificar(usuario)
+    PED-->>-SRV: habilitado
+    SRV->>+PED: getReceptorDeCalificacion(usuario)
+    PED-->>-SRV: calificado
+    SRV->>+USU: calificar(pedido, calificado, estrellas, comentario)
+    create participant CAL as :Calificacion
+    USU->>CAL: «create»(pedido, calificado, estrellas, comentario)
+    USU-->>-SRV: calificacion
+    opt Califica el cliente
+        SRV->>CHO: recalcularPromedio()
+    end
+    SRV-->>-CLI: calificacion
+```
+
+**Figura 157 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: calificarPedido(pedidoId, estrellas, comentario)**
+
+**Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Usuario`, `Calificacion` y `Chofer`.
+
+**GRASP.** *Controlador*: `RatingService` recibe la operación. *Experto*: `Pedido` sabe si está entregado, quiénes son sus dos partes y a quién le toca recibir la calificación de cada una; `Chofer` es quien recalcula su promedio. *Creador*: el `Usuario` que califica emite y crea su `Calificacion`. Calificar no cambia el estado del pedido; hay a lo sumo una calificación por parte y por pedido.
+
+**No se dibuja:** el rol de quien califica, que sale de la sesión, el rechazo si el pedido no está entregado, no es del que califica o ya fue calificado por esa parte (índice único), y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RatingService.calificarPedido(...)` | `RatingController.create` → `RatingService.create` |
+| `Map<String, Pedido>.get(...)` | `OrderService.findById` |
+| `Pedido.puedeCalificar(...)` | `RatingService.create`: exige `Order.status` entregado y que el usuario sea `Order.customerId` o el chofer asignado |
+| `Pedido.getReceptorDeCalificacion(...)` | `RatingService.create`: deriva `Rating.toUserId`, que es el chofer si califica el cliente y `Order.customerId` si califica el chofer |
+| `Usuario.calificar(...)` | `RatingService.create`: arma el `Rating` con `Rating.fromUserId`, `Rating.toUserId`, `Rating.fromRole`, `Rating.stars` y `Rating.comment` |
+| `Calificacion.«create»` | `RatingService.create`: guarda el `Rating`; el índice único por parte y pedido rechaza una segunda calificación con conflicto |
+| `Chofer.recalcularPromedio()` | `RatingService.refreshDeliveryAverage`: calcula con `RatingService.getSummaryForUser` y lo guarda en `Delivery.calification` con `DeliveryService.updateCalificationByUserId` |
+
+##### Operación: consultarResumenDeCalificaciones(usuarioId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-065 Consultar Promedio de Calificaciones de un Usuario · consultarResumenDeCalificaciones
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :RatingService
+    participant USU as usuario:Usuario
+    participant CAL as calificacion:Calificacion
+
+    CLI->>+SRV: consultarResumenDeCalificaciones(usuarioId)
+    SRV->>+USU: getResumenDeCalificaciones()
+    loop Por cada calificación recibida
+        USU->>CAL: getEstrellas()
+    end
+    USU->>USU: calcularPromedio()
+    USU-->>-SRV: promedio, cantidad
+    SRV-->>-CLI: resumen
+```
+
+**Figura 158 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: consultarResumenDeCalificaciones(usuarioId)**
+
+**Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones) y los objetos de dominio `Usuario` y `Calificacion`.
+
+**GRASP.** *Controlador*: `RatingService` recibe la operación. *Experto*: el `Usuario` conoce las calificaciones que recibió y calcula su promedio y su cantidad, pidiéndole las estrellas a cada `Calificacion`. Es una consulta: no cambia ningún estado.
+
+**No se dibuja:** el filtro por la distribuidora del contexto y el cálculo agregado, que el código resuelve en una sola consulta SQL.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RatingService.consultarResumenDeCalificaciones(...)` | `RatingController.getSummary` → `RatingService.getSummaryForUser` |
+| `Usuario.getResumenDeCalificaciones()` | `RatingService.getSummaryForUser`: consulta el promedio y la cantidad de `Rating.stars` filtrando por `Rating.toUserId` |
+| `Calificacion.getEstrellas()` | `Rating.stars`, que `RatingService.getSummaryForUser` agrega con `AVG` |
+| `Usuario.calcularPromedio()` | `RatingService.getSummaryForUser`: redondea a dos decimales |
+
+**Observaciones de diseño**
+
+- La calificación es **bidireccional y simétrica**: el emisor sale siempre del token y el calificado se **deriva del pedido** — el cliente nunca elige a quién califica.
+- La regla "una calificación por pedido y por lado" se garantiza con un **índice único `(order_id, from_role)`** en la base, no con una consulta previa: se captura el `23505` de PostgreSQL. Es la forma correcta bajo concurrencia.
+- `Delivery.calification` es un **valor desnormalizado** que se recalcula al vuelo con `refreshDeliveryAverage`, para lecturas rápidas del listado de choferes; la fuente de verdad sigue siendo la tabla `rating`.
+- `getSummaryForUser` **no filtra por `from_role`**: filtrarlo por `CUSTOMER` daba promedio 0 para los clientes calificados por choferes.
+
+---
+
+#### DSD — CU-060: Registrar Incidencia de Entrega
 
 ##### Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
 
@@ -8503,7 +8289,7 @@ sequenceDiagram
     SRV-->>-CHF: incidencia
 ```
 
-**Figura 150 — C.8 DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)**
+**Figura 159 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` e `Incidencia`.
 
@@ -8527,7 +8313,7 @@ sequenceDiagram
 
 ---
 
-#### C.9 DSD — CU-061: Listar Incidencias
+#### DSD — CU-061: Listar Incidencias
 
 ##### Operación: listarIncidencias()
 
@@ -8549,7 +8335,7 @@ sequenceDiagram
     SRV-->>-ADM: incidencias
 ```
 
-**Figura 151 — C.9 DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()**
+**Figura 160 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Incidencia>` y el objeto de dominio `Incidencia`.
 
@@ -8570,7 +8356,7 @@ sequenceDiagram
 
 ---
 
-#### C.10 DSD — CU-062: Consultar Incidencias de un Pedido
+#### DSD — CU-062: Consultar Incidencias de un Pedido
 
 ##### Operación: consultarIncidenciasDelPedido(pedidoId)
 
@@ -8591,7 +8377,7 @@ sequenceDiagram
     SRV-->>-CHF: incidencias
 ```
 
-**Figura 152 — C.10 DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)**
+**Figura 161 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -8612,7 +8398,7 @@ sequenceDiagram
 
 ---
 
-#### C.11 DSD — CU-063: Resolver Incidencia
+#### DSD — CU-063: Resolver Incidencia
 
 ##### Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
 
@@ -8632,7 +8418,7 @@ sequenceDiagram
     SRV-->>-ADM: incidencia
 ```
 
-**Figura 153 — C.11 DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)**
+**Figura 162 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Incidencia>` y el objeto de dominio `Incidencia`.
 
@@ -8653,7 +8439,7 @@ sequenceDiagram
 
 ---
 
-#### C.12 DSD — CU-066: Consultar Historial de Calificaciones Recibidas
+#### DSD — CU-066: Consultar Historial de Calificaciones Recibidas
 
 ##### Operación: consultarHistorialDeCalificaciones(usuarioId)
 
@@ -8671,7 +8457,7 @@ sequenceDiagram
     SRV-->>-ADM: calificaciones
 ```
 
-**Figura 154 — C.12 DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)**
+**Figura 163 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)**
 
 **Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones) y el objeto de dominio `Usuario`.
 
@@ -8692,9 +8478,115 @@ sequenceDiagram
 
 ---
 
-### SS-13 — Trazabilidad de Envases
+### 4.13 SS-13 — Trazabilidad de Envases
 
-#### C.13 DSD — CU-067: Dar de Alta un Envase Físico
+#### DSD — CU-068 / CU-070: Ciclo de vida del envase físico
+
+##### Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-068 Asignar Envases a un Pedido · asignarEnvasesAPedido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :CylinderService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant ENV as envase:Envase
+
+    CHF->>+SRV: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    Note over SRV,ENV: Vigencia: ver DSD de verificarVigenciaAlAsignar (CU-135). Rechaza la asignación completa si alguna revisión venció
+    loop Por cada numeroDeSerie de numerosDeSerie
+        SRV->>+ENVS: get(numeroDeSerie)
+        ENVS-->>-SRV: envase
+        SRV->>+ENV: despachar(pedido, usuario)
+        ENV->>ENV: validarTransicion(despachado)
+        create participant NMOV as nuevo:MovimientoEnvase
+        ENV->>NMOV: «create»(pedido, usuario, nota)
+        deactivate ENV
+    end
+    SRV-->>-CHF: envases
+```
+
+**Figura 164 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)**
+
+**Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), las colecciones `Map<String, Pedido>` y `Map<String, Envase>` y los objetos de dominio `Envase` y `MovimientoEnvase`.
+
+**GRASP.** *Controlador*: `CylinderService` recibe la operación. *Experto*: cada `Envase` conoce su estado y es quien se despacha: valida la transición de «lleno» a «despachado», queda asociado al pedido que lo lleva y deja su rastro. *Creador*: el `Envase` crea su `MovimientoEnvase`, porque lo contiene (composición).
+
+**Referencias.** La verificación de que ninguna revisión esté vencida es la operación `verificarVigenciaAlAsignar` (CU-135), con su propio diagrama.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, el rechazo de la asignación completa si algún envase no existe, no está lleno o tiene la revisión vencida, y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CylinderService.asignarEnvasesAPedido(...)` | `CylinderController.assign` → `CylinderService.assignToOrder` |
+| `Map<String, Pedido>.get(...)` | `OrderLookupService.findRef`: si el pedido no existe en la distribuidora, responde recurso no encontrado |
+| `Map<String, Envase>.get(...)` | `CylinderService.findBySerial` |
+| `Envase.despachar(...)` | `CylinderService.assignToOrder`: asigna `Cylinder.currentOrderId` y llama a `CylinderService.recordTransition` con el estado despachado |
+| `Envase.validarTransicion(...)` | `assertTransition()` |
+| `MovimientoEnvase.«create»` | `CylinderService.recordTransition`: guarda el `CylinderMovement` con `CylinderMovement.orderId`, `CylinderMovement.actorUserId` y `CylinderMovement.note` |
+
+##### Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-070 Registrar Movimiento de Envase (cambio de estado) · registrarMovimientoDeEnvase
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :CylinderService
+    participant ENVS as :Map#lt;String, Envase#gt;
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ENV as envase:Envase
+
+    CHF->>+SRV: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
+    SRV->>+ENVS: get(envaseId)
+    ENVS-->>-SRV: envase
+    opt Se indicó un pedido
+        SRV->>+PEDS: get(pedidoId)
+        PEDS-->>-SRV: pedido
+        SRV->>+PED: getCliente()
+        PED-->>-SRV: cliente
+    end
+    SRV->>+ENV: pasarA(estadoDestino, pedido, cliente, observacion)
+    ENV->>ENV: validarTransicion(estadoDestino)
+    create participant MOV as :MovimientoEnvase
+    ENV->>MOV: «create»(estadoOrigen, estadoDestino, pedido, usuario, observacion)
+    deactivate ENV
+    SRV-->>-CHF: envase
+```
+
+**Figura 165 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)**
+
+**Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), las colecciones `Map<String, Envase>` y `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Envase` y `MovimientoEnvase`.
+
+**GRASP.** *Controlador*: `CylinderService` recibe la operación. *Experto*: el `Pedido` conoce a su cliente; el `Envase` conoce su estado y es quien pasa al estado destino: valida que la transición sea legal, actualiza quién lo tiene (en poder del cliente, o ninguno al volver vacío o al depósito) y deja su rastro. *Creador*: el `Envase` crea su `MovimientoEnvase`, porque lo contiene (composición). Las transiciones válidas son las de la máquina de estados del envase.
+
+**No se dibuja:** el contexto de la distribuidora: un envase de otra distribuidora no se encuentra, y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CylinderService.registrarMovimientoDeEnvase(...)` | `CylinderController.transition` → `CylinderService.transition` |
+| `Map<String, Envase>.get(...)` | `CylinderService.findOne` |
+| `Map<String, Pedido>.get(...)` | `OrderLookupService.findRef`: si el pedido no existe en la distribuidora, responde recurso no encontrado |
+| `Pedido.getCliente()` | `Order.customerId`, que `CylinderService.transition` usa sólo si el destino es «en poder del cliente» |
+| `Envase.pasarA(...)` | `CylinderService.recordTransition`: asigna `Cylinder.state` y `Cylinder.currentCustomerId` |
+| `Envase.validarTransicion(...)` | `assertTransition()` |
+| `MovimientoEnvase.«create»` | `CylinderService.recordTransition`: guarda el `CylinderMovement` con `CylinderMovement.fromState`, `CylinderMovement.toState`, `CylinderMovement.orderId`, `CylinderMovement.actorUserId` y `CylinderMovement.note` |
+
+**Observaciones de diseño**
+
+- `CylinderMovement` es una bitácora **append-only**: cada transición deja rastro con `from_state`, `to_state`, `order_id`, `actor_user_id` y nota. Es la base de la trazabilidad de envases (SS-13).
+- El pedido **no conoce el módulo de envases**: habla contra `CylinderLifecyclePort`, y `CylinderLifecycleAdapter` delega en `CylinderService`.
+- El avance automático es **best-effort dentro de un `try/catch`** en `UpdateOrderStatusUseCase`: si falla, se loguea pero la entrega del pedido no se rompe.
+- El serial es único **por distribuidora** (índice compuesto): dos empresas pueden tener envases con el mismo serial de fábrica.
+
+---
+
+#### DSD — CU-067: Dar de Alta un Envase Físico
 
 ##### Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
 
@@ -8716,7 +8608,7 @@ sequenceDiagram
     SRV-->>-ADM: envase
 ```
 
-**Figura 155 — C.13 DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)**
+**Figura 166 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases) y los objetos de dominio `Distribuidora`, `Envase` y `MovimientoEnvase`.
 
@@ -8739,7 +8631,7 @@ sequenceDiagram
 
 ---
 
-#### C.14 DSD — CU-069: Consultar el Parque de Envases
+#### DSD — CU-069: Consultar el Parque de Envases
 
 ##### Operación: consultarEnvase(envaseId)
 
@@ -8759,7 +8651,7 @@ sequenceDiagram
     SRV-->>-ADM: envase
 ```
 
-**Figura 156 — C.14 DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)**
+**Figura 167 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), la colección `Map<String, Envase>` y el objeto de dominio `Envase`.
 
@@ -8793,7 +8685,7 @@ sequenceDiagram
     SRV-->>-ADM: envases
 ```
 
-**Figura 157 — C.14 DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)**
+**Figura 168 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), la colección `Map<String, Envase>` y el objeto de dominio `Envase`.
 
@@ -8815,7 +8707,7 @@ sequenceDiagram
 
 ---
 
-#### C.15 DSD — CU-071: Consultar Historial de Movimientos de un Envase
+#### DSD — CU-071: Consultar Historial de Movimientos de un Envase
 
 ##### Operación: consultarHistorialDelEnvase(envaseId)
 
@@ -8836,7 +8728,7 @@ sequenceDiagram
     SRV-->>-ADM: movimientos
 ```
 
-**Figura 158 — C.15 DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)**
+**Figura 169 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), la colección `Map<String, Envase>` y el objeto de dominio `Envase`.
 
@@ -8886,7 +8778,7 @@ sequenceDiagram
     SRV-->>-ADM: envase
 ```
 
-**Figura 159 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)**
+**Figura 170 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y los objetos de dominio `Envase` y `RevisionEnvase`. **Colaboración propuesta:** `CylinderService.registrarRevision` no existe en el código; las columnas `Cylinder.lastInspectionAt` y `Cylinder.expiresAt` sí.
 
@@ -8925,7 +8817,7 @@ sequenceDiagram
     SRV-->>-ADM: vigencia
 ```
 
-**Figura 160 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)**
+**Figura 171 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y el objeto de dominio `Envase`. **Colaboración propuesta:** `CylinderService.consultarVigencia` no existe en el código.
 
@@ -8962,7 +8854,7 @@ sequenceDiagram
     SRV-->>-ADM: envases
 ```
 
-**Figura 161 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)**
+**Figura 172 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y el objeto de dominio `Envase`. **Colaboración propuesta:** `CylinderService.proximosAVencer` no existe en el código.
 
@@ -8972,7 +8864,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Sin un índice sobre la fecha de vencimiento la consulta recorre el parque entero; con 190 envases hoy no se nota, con varios miles sí.
+- Sin un índice sobre la fecha de vencimiento la consulta recorre el parque entero; con 190 envases no se nota, con varios miles sí.
 - El listado es la vista de mantenimiento del parque de envases y no alimenta a ningún módulo inteligente: la planificación de la flota (M2, CU-105) trabaja sobre vehículos y choferes, no sobre envases.
 
 ---
@@ -9000,7 +8892,7 @@ sequenceDiagram
     SRV-->>-SIS: vencidas
 ```
 
-**Figura 162 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)**
+**Figura 173 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y el objeto de dominio `Envase`. **Colaboración propuesta:** la verificación no existe en el código.
 
@@ -9017,9 +8909,357 @@ sequenceDiagram
 
 ---
 
-### SS-15 — Reservas Programadas
+### 4.14 SS-14 — Pagos y Conciliación
 
-#### C.16 DSD — CU-073: Listar Reservas y Estado de la Seña
+#### DSD — CU-048: Pago con pasarela y confirmación por webhook
+
+##### Operación: crearCheckoutDePago(pedidoId, medioDePago)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-048 Procesar Pago con MercadoPago · crearCheckoutDePago
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant PAG as :PaymentsService
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PAS as :PaymentGatewayPort
+
+    CLI->>+PAG: crearCheckoutDePago(pedidoId, medioDePago)
+    PAG->>+COL: get(pedidoId)
+    COL-->>-PAG: pedido
+    PAG->>+PED: getImporteACobrar(esSenia)
+    PED-->>-PAG: importe
+    create participant PGO as :Pago
+    PAG->>PGO: «create»(pedido, distribuidora, importe, esSenia)
+    PAG->>+PAS: createCheckout(pedido, items, pagador)
+    PAS-->>-PAG: enlaceDePago
+    PAG->>PGO: asignarEnlace(enlaceDePago)
+    PAG-->>-CLI: enlaceDePago
+```
+
+**Figura 174 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago**
+
+**Clases participantes:** `CreateOrderUseCase` (el caso de uso que la invoca), `PaymentsService` (controlador de fachada del módulo de pagos), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `PaymentGatewayPort` (fabricación pura: la pasarela de pago, MercadoPago Checkout Pro).
+
+**GRASP.** *Controlador*: `PaymentsService`. *Creador*: el servicio crea el `Pago`, porque es quien lleva el registro de los intentos de cobro. *Experto*: `Pedido` sabe cuánto hay que cobrar: su total, o el monto de la seña si el cobro es de una reserva. El `Pago` nace «pendiente»; si la pasarela no devuelve el enlace, queda sin él y el pedido queda creado igual. Si el pedido ya está pago, cancelado o entregado, el servicio lo rechaza con un conflicto (409) antes de registrar ningún intento, y si no existe responde 404.
+
+**Referencias.** `crearCheckoutDePago` no es una operación del sistema: ningún actor la invoca ni tiene un endpoint propio. Es una colaboración interna que ejecuta `CreateOrderUseCase` dentro de la creación del pedido (`crearPedido`, CU-005), de la reserva (`crearReserva`, CU-072) y de la compra express (`realizarCompraExpress`, CU-147), y su resultado, el enlace de pago, viaja en la respuesta de esas operaciones. Se la diagrama aparte porque crea el `Pago`, y sus efectos figuran en las Notas del contrato de `crearPedido`. El resultado del pago llega después, por la notificación de la pasarela: es la operación `notificarResultadoDePago`, de este mismo caso de uso.
+
+**No se dibuja:** la persistencia del `Pago` y la preferencia de pago de MercadoPago (`MercadoPagoAdapter`), que es la implementación del puerto. El estado del `Pedido` no cambia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`, invocado por `CreateOrderUseCase` al crear el pedido con MercadoPago o la seña de una reserva |
+| `Map<String, Pedido>.get(...)` | `CreateOrderUseCase.execute`: entrega el `Order` recién guardado; `PaymentsService.createCheckout` recibe su identificador y no lo relee |
+| `Pedido.getImporteACobrar(...)` | `CreateOrderUseCase.createMercadoPagoCheckout` toma `Order.totalAmount`; `CreateOrderUseCase.createDepositCheckout` toma `Order.depositAmount` |
+| `Pago.«create»` | `PaymentsService.createCheckout`: crea y guarda el `Payment` con `Payment.status` pendiente, `Payment.amount` y `Payment.isDeposit` |
+| `Pago.asignarEnlace(...)` | `PaymentsService.createCheckout`: asigna `Payment.paymentUrl` y guarda |
+
+##### Operación: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-048 Procesar Pago con MercadoPago · notificarResultadoDePago
+    autonumber
+    actor MPG as MercadoPago (ACT-06)
+    participant CNF as :ConfirmPaymentUseCase
+    participant PAS as :PaymentGatewayPort
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PGO as pago:Pago
+    participant RT as :RealtimeDispatchPort
+    participant NOT as :NotificationPort
+
+    MPG->>+CNF: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
+    CNF->>+PAS: verifyWebhookSignature(firma, identificadorDelPago)
+    PAS-->>-CNF: firmaValida
+    alt La firma es válida y la notificación es de un pago
+        CNF->>+PAS: getPayment(identificadorDelPago)
+        PAS-->>-CNF: estado, referenciaExterna
+        CNF->>+COL: get(referenciaExterna)
+        COL-->>-CNF: pedido
+        CNF->>+PED: getPago(identificadorDelPago)
+        PED-->>-CNF: pago
+        CNF->>PGO: registrarResultado(identificadorDelPago, estado)
+        alt El pago está aprobado y el pedido es una reserva
+            CNF->>PED: confirmarSenia()
+        else El pago está aprobado y el pedido es normal
+            CNF->>PED: marcarPagado(identificadorDelPago)
+            Note over CNF,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        end
+        opt Es la primera confirmación del pago aprobado
+            CNF-)RT: notifyCustomer(cliente, pedido, tipo)
+            CNF-)NOT: sendPaymentApprovedPush(cliente, pedido, esSena)
+        end
+    end
+    CNF-->>-MPG: recibido
+```
+
+**Figura 175 — DSD CU-048: Procesar Pago con MercadoPago · notificarResultadoDePago**
+
+**Clases participantes:** `ConfirmPaymentUseCase` (controlador de caso de uso), `PaymentGatewayPort` (fabricación pura: la pasarela de pago), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `RealtimeDispatchPort` y `NotificationPort` (fabricaciones puras: el aviso al Cliente por tiempo real y por notificación push).
+
+**GRASP.** *Controlador*: `ConfirmPaymentUseCase` recibe la notificación y coordina. *Experto*: `Pago` registra lo que informó la pasarela; `Pedido` conoce su pago y es quien pasa a pagado, o a seña paga si es una reserva. El sistema no confía en el cuerpo de la notificación: valida la firma y consulta el pago real a la pasarela. Si el pedido ya está cancelado o entregado, se registra el pago y no se lo reactiva. El aviso al Cliente sale una sola vez, en la primera confirmación del pago aprobado, sea de un pedido o de la seña de una reserva; un pago rechazado o cancelado no se avisa (limitación conocida, §10).
+
+**Referencias.** El ofrecimiento al chofer más cercano, que crea la `OfertaDespacho`, es `ofrecerAlSiguienteChofer` (CU-013). Una reserva no se ofrece: la activa `activarReservasDelDia` (CU-075) el día agendado.
+
+**No se dibuja:** la transacción con bloqueo pesimista del pedido, que impide que dos notificaciones del mismo pago lo procesen a la vez; el evento (`PagoNotificadoEvent`) con el que el módulo de pagos le pasa la notificación al de pedidos; el descarte silencioso de las notificaciones con firma inválida, de otro tipo o sin identificador, y la respuesta siempre 200 hacia la pasarela.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ConfirmPaymentUseCase.notificarResultadoDePago(...)` | `MercadoPagoWebhookController.handle` verifica la firma y publica el evento `PagoNotificadoEvent`; `PagoNotificadoListener.handle` llama a `ConfirmPaymentUseCase.execute` |
+| `PaymentGatewayPort.verifyWebhookSignature(...)` | `MercadoPagoWebhookController.handle` la invoca por `PaymentsService.verifyWebhookSignature`, antes de publicar el evento |
+| `PaymentGatewayPort.getPayment(...)` | `PaymentsService.confirmFromGateway`: consulta el pago real en la pasarela |
+| `Map<String, Pedido>.get(...)` | `ConfirmPaymentUseCase.execute`: `OrderRepositoryPort.findByIdFull` con la referencia externa del pago |
+| `Pedido.getPago(...)` | `PaymentsService.confirmFromGateway`: busca el `Payment` por `Payment.gatewayPaymentId` y, si es la primera notificación, el pendiente de esa referencia |
+| `Pago.registrarResultado(...)` | `PaymentsService.confirmFromGateway`: asigna `Payment.gatewayPaymentId` y `Payment.status`, traducido del estado de la pasarela |
+| `Pedido.confirmarSenia()` | `ConfirmPaymentUseCase.handleApproved`: asigna `Order.depositPaid` y `Order.gatewayPaymentId` |
+| `Pedido.marcarPagado(...)` | `ConfirmPaymentUseCase.handleApproved`: asigna `Order.paymentStatus` pagado y `Order.gatewayPaymentId` |
+| `RealtimeDispatchPort.notifyCustomer(...)` | `ConfirmPaymentUseCase.handleApproved`, después del commit: emite al Cliente el evento `order:payment-approved`; sólo en la primera confirmación, no en los reintentos de la pasarela |
+| `NotificationPort.sendPaymentApprovedPush(...)` | `ConfirmPaymentUseCase.notificarPagoAprobado`, después del commit y del despacho: el push al Cliente («pago recibido» o «seña recibida»), una sola vez; un fallo se registra y no revierte el pago |
+
+**Observaciones de diseño**
+
+- El dominio de pedidos **no conoce MercadoPago**: `ConfirmPaymentUseCase` consume el resultado *normalizado* de `PaymentsService`, y solo `MercadoPagoAdapter` toca el SDK. Sumar otra pasarela es agregar un adapter, no tocar `order`.
+- El sistema **nunca confía en el payload del webhook**: valida la firma HMAC y después consulta el pago real con `getPayment`.
+- Idempotencia por triple guarda: firma, `gateway_payment_id` ya asignado en el ledger, y lock pesimista sobre el `Order` antes de marcar `PAID`. Nunca se despacha dos veces el mismo pedido.
+- El webhook **siempre responde 200**, incluso ante firma inválida o error interno, para que MercadoPago no entre en bucle de reintentos con 5xx.
+- El camino de pago `rejected` / `cancelled` no libera el stock ni cancela el pedido: sólo deja registro en el log; el pedido queda pendiente y lo cancela el proceso de CU-077 al vencer el plazo. Es una limitación del sistema y no una funcionalidad.
+
+---
+
+### 4.15 SS-15 — Reservas Programadas
+
+#### DSD — CU-072: Crear reserva programada con seña
+
+##### Operación: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-072 Crear Reserva Programada con Seña · crearReserva
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CRT as :CreateOrderUseCase
+    participant CLE as cliente:Cliente
+    participant ZON as zona:ZonaCobertura
+    participant FRA as franja:FranjaHoraria
+    participant PRO as producto:Producto
+
+    CLI->>+CRT: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
+    CRT->>+CLE: getDireccion(direccionId)
+    CLE-->>-CRT: direccion
+    CRT->>+ZON: cubre(direccion)
+    ZON-->>-CRT: cubierta
+    CRT->>FRA: tieneCupo(fechaAgendada)
+    create participant PED as :Pedido
+    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago, montoDeLaSenia)
+    loop Por cada item de items
+        CRT->>PRO: reservar(cantidad)
+        CRT->>+PED: agregarItem(producto, cantidad)
+        PED->>+PRO: precioPara(cantidad)
+        PRO-->>-PED: precioUnitario, subtotal
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+        deactivate PED
+    end
+    CRT->>+PED: calcularTotal()
+    loop Por cada item del Pedido
+        PED->>ITM: getSubtotal()
+    end
+    PED->>ZON: calcularRecargo(subtotalItems)
+    PED->>PED: aplicarRecargoDePago()
+    PED-->>-CRT: total
+    opt metodoDePago es MERCADOPAGO y montoDeLaSenia es mayor que cero
+        Note over CRT,PED: Pago de la seña: ver DSD de crearCheckoutDePago (CU-048). Crea el Pago
+    end
+    Note over CRT,PED: Avisos: ver DSD de crearPedido (CU-005). No se ofrece a ningún chofer
+    CRT-->>-CLI: reserva, enlaceDePago
+```
+
+**Figura 176 — DSD CU-072: Crear reserva programada con seña**
+
+**Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`. Es la misma colaboración que `crearPedido` (CU-005), con la fecha agendada obligatoria y el monto de la seña; la diferencia está en el estado con que nace el `Pedido` y en que no se despacha.
+
+**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa, y el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Cliente` entrega su dirección, `ZonaCobertura` dice si la cubre y calcula su recargo, `FranjaHoraria` si tiene cupo para la fecha, `Producto` reserva su stock y conoce su precio, y `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido`.
+
+**Referencias.** El enlace de pago de la seña es la operación `crearCheckoutDePago` (CU-048), que crea el `Pago`. Los avisos a los administradores son los mismos de `crearPedido`. La activación de la reserva el día agendado es `activarReservasDelDia` (CU-075).
+
+**No se dibuja:** la transacción con bloqueo de la franja y del stock, que revierte todo si algo falla; el rechazo de una fecha agendada ausente o pasada, que el caso de uso resuelve antes de abrir la transacción; la persistencia y la lectura final del pedido.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CreateOrderUseCase.crearReserva(...)` | `OrderController.create` → `OrderService.create` → `CreateOrderUseCase.execute`, con la reserva marcada y la fecha agendada |
+| `Cliente.getDireccion(...)` | `UserAddressService.buscarDelUsuario`; el cliente se obtiene con `CustomersService.buscarComprador` |
+| `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage` |
+| `FranjaHoraria.tieneCupo(...)` | `TimeSlotService.assertSlotAvailableTx`, con bloqueo de la franja |
+| `Pedido.«create»` | `CreateOrderUseCase.execute`: arma la entidad `Order` en estado reservado, con `Order.scheduledDate`, `Order.depositAmount` y `Order.depositPaid` en falso |
+| `Producto.reservar(...)` | `GasCylinderService.reservarStock`: bloquea la fila y resta de `GasCylinder.stock` |
+| `Pedido.agregarItem(...)` | `CreateOrderUseCase.execute`: acumula los `OrderItem` en `Order.items` |
+| `Producto.precioPara(...)` | `OrderPricingService.priceItem`: precio de lista y promociones por volumen |
+| `ItemPedido.«create»` | `CreateOrderUseCase.execute`: crea cada `OrderItem` con su precio unitario y su subtotal |
+| `ItemPedido.getSubtotal()` | `OrderItem.subtotal` |
+| `Pedido.calcularTotal()` | `CreateOrderUseCase.execute`: suma los subtotales con `Decimal` y aplica los dos recargos; el resultado queda en `Order.totalAmount` |
+| `ZonaCobertura.calcularRecargo(...)` | `CoverageZonePricingService.zoneSurcharge` |
+| `Pedido.aplicarRecargoDePago()` | `OrderPricingService.applyPaymentSurcharge` |
+
+**Observaciones de diseño**
+
+- Una reserva **nace en `RESERVED`**, no en `PENDING`: el stock queda comprometido pero el pedido **no se despacha** hasta el día agendado.
+- El checkout de la reserva se crea **solo por el monto de la seña**, no por el total del pedido (`isDeposit: true` en el ledger `Payment`).
+- La validación del cupo de franja horaria ocurre **dentro de la transacción y con lock pesimista**, para que dos reservas concurrentes no superen la capacidad.
+
+---
+
+#### DSD — CU-075 / CU-076 / CU-077: Los tres crons de reservas y pagos pendientes
+
+##### Operación: activarReservasDelDia()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-075 Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :ReservationService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as reserva:Pedido
+
+    SIS->>+SRV: activarReservasDelDia()
+    SRV->>+COL: buscarReservasConSeniaPagaHasta(hoy)
+    COL-->>-SRV: reservas
+    loop Por cada reserva cuyo día llegó
+        SRV->>+PED: activar()
+        PED->>PED: validarTransicion(pendiente)
+        deactivate PED
+        Note over SRV,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    end
+    deactivate SRV
+```
+
+**Figura 177 — DSD CU-075: Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia**
+
+**Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
+
+**GRASP.** *Controlador*: `ReservationService` recibe la ejecución programada. *Experto*: `Pedido` valida su transición de «reservado» a «pendiente»; el estado no se asigna desde afuera. El stock reservado al crear la reserva no se toca.
+
+**Referencias.** El ofrecimiento al chofer más cercano, que crea la `OfertaDespacho` y avisa al chofer, es `ofrecerAlSiguienteChofer` (CU-013).
+
+**No se dibuja:** el ciclo de ejecución (cada cinco minutos), el lote de hasta 50 reservas por corrida y el guardado de cada una. Si la transición de una reserva falla, se registra el error y el proceso sigue con las demás; si falla el despacho, se ignora y la reserva queda pendiente.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReservationService.activarReservasDelDia(...)` | `ReservationService.activateDueReservations`, disparado por `@Cron` cada cinco minutos |
+| `List<Pedido>.buscarReservasConSeniaPagaHasta(...)` | `ReservationService.activateDueReservations`: lee los `Order` con `Order.status` reservado, `Order.depositPaid` verdadero y `Order.scheduledDate` menor o igual a hoy, hasta 50 |
+| `Pedido.activar()` | `ReservationService.activateDueReservations`: aplica `transitionOrder()` a pendiente y guarda |
+| `Pedido.validarTransicion(...)` | `transitionOrder()` |
+
+##### Operación: expirarReservasSinSenia()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-076 Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :ReservationService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as reserva:Pedido
+    participant ITM as item:ItemPedido
+    participant PRO as producto:Producto
+
+    SIS->>+SRV: expirarReservasSinSenia()
+    SRV->>+COL: buscarReservasSinSeniaAnterioresA(plazo)
+    COL-->>-SRV: reservas
+    loop Por cada reserva vencida
+        SRV->>+PED: cancelar()
+        PED->>PED: validarTransicion(cancelado)
+        loop Por cada item del Pedido
+            PED->>+ITM: restituirStock()
+            ITM->>PRO: restituir(cantidad)
+            deactivate ITM
+        end
+        deactivate PED
+    end
+    deactivate SRV
+```
+
+**Figura 178 — DSD CU-076: Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia**
+
+**Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y los objetos de dominio `Pedido`, `ItemPedido` y `Producto`.
+
+**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` valida su transición a «cancelado» y le pide a cada `ItemPedido` que restituya; el `ItemPedido` conoce su `Producto` y su cantidad. El cambio de estado y la restitución del stock se aplican juntos o no se aplica ninguno.
+
+**No se dibuja:** el ciclo de ejecución (cada hora), el plazo de la seña (`RESERVATION_DEPOSIT_TTL_HOURS`), el lote de hasta 50 reservas por corrida y la transacción propia de cada reserva: si una falla, se revierte esa reserva, que queda intacta, y el proceso sigue con las demás.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReservationService.expirarReservasSinSenia(...)` | `ReservationService.expireUnpaidReservations`, disparado por `@Cron` cada hora |
+| `List<Pedido>.buscarReservasSinSeniaAnterioresA(...)` | `ReservationService.expireUnpaidReservations`: lee los `Order` con `Order.status` reservado, `Order.depositPaid` falso y `Order.createdAt` anterior al plazo, con sus ítems, hasta 50 |
+| `Pedido.cancelar()` | `ReservationService.expireUnpaidReservations`: aplica `transitionOrder()` a cancelado y guarda, dentro de una transacción |
+| `Pedido.validarTransicion(...)` | `transitionOrder()` |
+| `ItemPedido.restituirStock()` | `GasCylinderService.restituirStock`: recorre los ítems del pedido |
+| `Producto.restituir(...)` | `GasCylinderService.restituirStock`: bloquea la fila y suma `OrderItem.quantity` a `GasCylinder.stock` |
+
+##### Operación: expirarPedidosSinPagar()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-077 Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SRV as :ReservationService
+    participant COL as :List#lt;Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ITM as item:ItemPedido
+    participant PRO as producto:Producto
+
+    SIS->>+SRV: expirarPedidosSinPagar()
+    SRV->>+COL: buscarPendientesConMercadoPagoAnterioresA(plazo)
+    COL-->>-SRV: pedidos
+    loop Por cada pedido vencido
+        SRV->>+PED: estaSinPagar()
+        PED-->>-SRV: sinPagar
+        opt El pedido sigue pendiente y sin pago confirmado
+            SRV->>+PED: cancelar(motivo)
+            PED->>PED: validarTransicion(cancelado)
+            loop Por cada item del Pedido
+                PED->>+ITM: restituirStock()
+                ITM->>PRO: restituir(cantidad)
+                deactivate ITM
+            end
+            deactivate PED
+        end
+    end
+    deactivate SRV
+```
+
+**Figura 179 — DSD CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar**
+
+**Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y los objetos de dominio `Pedido`, `ItemPedido` y `Producto`.
+
+**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` sabe si sigue pendiente y sin pago confirmado, valida su transición a «cancelado» y le pide a cada `ItemPedido` que restituya. La comprobación se hace de nuevo sobre el pedido releído con bloqueo, para que un pago que se confirma un instante antes no sea pisado por la expiración.
+
+**No se dibuja:** el ciclo de ejecución (cada 30 minutos), el plazo (`ORDER_MERCADOPAGO_PENDING_TTL_MINUTES`), el lote de hasta 50 pedidos por corrida y la transacción propia de cada pedido: si una falla, se revierte y el proceso sigue con los demás.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReservationService.expirarPedidosSinPagar(...)` | `ReservationService.expireUnpaidMercadoPagoOrders`, disparado por `@Cron` cada 30 minutos |
+| `List<Pedido>.buscarPendientesConMercadoPagoAnterioresA(...)` | `ReservationService.expireUnpaidMercadoPagoOrders`: lee los `Order` con `Order.status` pendiente, `Order.paymentMethod` en MercadoPago, `Order.gatewayPaymentId` nulo y `Order.createdAt` anterior al plazo, con sus ítems, hasta 50 |
+| `Pedido.estaSinPagar()` | `ReservationService.expireUnpaidMercadoPagoOrders`: relee el `Order` con bloqueo pesimista y comprueba que `Order.status` siga pendiente y `Order.gatewayPaymentId` sea nulo |
+| `Pedido.cancelar(...)` | `ReservationService.expireUnpaidMercadoPagoOrders`: aplica `transitionOrder()` a cancelado y asigna `Order.cancellationReason` |
+| `Pedido.validarTransicion(...)` | `transitionOrder()` |
+| `ItemPedido.restituirStock()` | `GasCylinderService.restituirStock`: recorre los ítems del pedido |
+| `Producto.restituir(...)` | `GasCylinderService.restituirStock`: bloquea la fila y suma `OrderItem.quantity` a `GasCylinder.stock` |
+
+**Observaciones de diseño**
+
+- Los tres procesos son del actor **ACT-04 (Sistema Automático)**: ninguno requiere intervención humana.
+- CU-077 resuelve la **carrera pago contra expiración** releyendo el pedido con bloqueo pesimista dentro de la transacción; el camino inverso (el pago llega después de expirado) lo cubre `ConfirmPaymentUseCase.handleApproved`, que ve el pedido en estado terminal y no lo reactiva.
+- CU-076 y CU-077 abren **una transacción por pedido**: el fallo de uno no arrastra a los demás. CU-075 activa cada reserva por separado, sin transacción propia: si una falla se registra el error y se sigue con las demás.
+- Cada corrida procesa como máximo 50 pedidos; los que queden esperan a la corrida siguiente.
+
+---
+
+#### DSD — CU-073: Listar Reservas y Estado de la Seña
 
 ##### Operación: listarReservas()
 
@@ -9042,7 +9282,7 @@ sequenceDiagram
     SRV-->>-ADM: reservas
 ```
 
-**Figura 163 — C.16 DSD — CU-073: Listar Reservas y Estado de la Seña**
+**Figura 180 — DSD — CU-073: Listar Reservas y Estado de la Seña**
 
 **Clases participantes:** `ReservationService` (controlador de fachada del módulo de reservas), la colección `List<Pedido>` y el objeto de dominio `Pedido` en estado «reservado».
 
@@ -9060,11 +9300,11 @@ sequenceDiagram
 
 - El servicio **no devuelve la entidad `Order`** sino una proyección armada a mano para el panel: el `remainingBalance` es un dato **derivado** (total menos seña sólo si la seña está paga), no una columna. Calcularlo en el servidor evita que dos clientes distintos lo computen de forma divergente.
 - El orden por `scheduled_date ASC` pone primero las reservas más próximas a vencer: es la agenda operativa del día, no un listado histórico.
-- Es la contracara de lectura de los tres crons documentados en `3-Diseño.md` §4.8: lo que el admin ve acá es exactamente el conjunto sobre el que `activateDueReservations` y `expireUnpaidReservations` van a actuar.
+- Es la contracara de lectura de los tres crons documentados en la sección 4.15 del Documento 3: lo que el admin ve acá es exactamente el conjunto sobre el que `activateDueReservations` y `expireUnpaidReservations` van a actuar.
 
 ---
 
-#### C.17 DSD — CU-074: Confirmar Seña Cobrada en Efectivo
+#### DSD — CU-074: Confirmar Seña Cobrada en Efectivo
 
 ##### Operación: confirmarSenia(pedidoId)
 
@@ -9086,7 +9326,7 @@ sequenceDiagram
     SRV-->>-ADM: reserva
 ```
 
-**Figura 164 — C.17 DSD — CU-074: Confirmar Seña Cobrada en Efectivo**
+**Figura 181 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo**
 
 **Clases participantes:** `ReservationService` (controlador de fachada del módulo de reservas), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -9109,9 +9349,9 @@ sequenceDiagram
 
 ---
 
-### SS-16 — Administración de Cuentas y Roles
+### 4.16 SS-16 — Administración de Cuentas y Roles
 
-#### C.18 DSD — CU-086: Registrar Administrador
+#### DSD — CU-086: Registrar Administrador
 
 
 ##### Operación: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rol, distribuidoraId)
@@ -9140,7 +9380,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 165 — C.18 DSD — CU-086: Registrar Administrador**
+**Figura 182 — DSD — CU-086: Registrar Administrador**
 
 **Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Administrador`.
 
@@ -9164,7 +9404,7 @@ sequenceDiagram
 
 ---
 
-#### C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
+#### DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
 
 
 ##### Operación: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
@@ -9195,7 +9435,7 @@ sequenceDiagram
     SRV-->>-AGN: usuario
 ```
 
-**Figura 166 — C.19 DSD — CU-087: Crear el Primer Super Administrador (bootstrap)**
+**Figura 183 — DSD — CU-087: Crear el Primer Super Administrador (bootstrap)**
 
 **Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `List<Administrador>`, la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Administrador`. Lo inicia el Administrador General desde el servidor, con el comando `crear-superadmin`: no hay endpoint.
 
@@ -9205,7 +9445,7 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `RegistroService.crearPrimerSuperAdministrador(...)` | El comando `src/cli/crear-superadmin.ts` llama a `RegistroService.registrar` con el rol `super_admin` y el solicitante `sistema` |
+| `RegistroService.crearPrimerSuperAdministrador(...)` | El comando de arranque `crear-superadmin` llama a `RegistroService.registrar` con el rol `super_admin` y el solicitante `sistema` |
 | `List<Administrador>.existeAdministradorGeneral()` | `AdminService.existeSuperAdmin`: cuenta los `Admin` cuyo usuario tiene el rol `super_admin`; el comando se detiene si hay alguno |
 | `Map<String, Usuario>.verificarDisponibilidad(...)` | `UsersService.assertDisponible`: busca un `User` con ese `User.email` o ese `User.phoneNumber`, también entre los dados de baja; responde 409 si lo hay |
 | `Usuario.«create»` | `UsersService.crearEnTransaccion`: guarda el `User` dentro de la transacción del alta, con el rol que devuelve `RoleService.findByType` |
@@ -9219,7 +9459,7 @@ sequenceDiagram
 
 ---
 
-#### C.20 DSD — CU-088: Consultar Administradores
+#### DSD — CU-088: Consultar Administradores
 
 
 ##### Operación: listarAdministradores()
@@ -9238,7 +9478,7 @@ sequenceDiagram
     SRV-->>-ADM: administradores
 ```
 
-**Figura 167 — C.20 DSD — CU-088: Consultar Administradores**
+**Figura 184 — DSD — CU-088: Consultar Administradores**
 
 **Clases participantes:** `AdminService` (controlador de fachada del módulo de administradores) y la colección `List<Administrador>`.
 
@@ -9267,7 +9507,7 @@ sequenceDiagram
     SRV-->>-ADM: administrador
 ```
 
-**Figura 168 — C.20 DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)**
+**Figura 185 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)**
 
 **Clases participantes:** `AdminService` (controlador de fachada del módulo de administradores) y la colección `Map<String, Administrador>`.
 
@@ -9288,7 +9528,7 @@ sequenceDiagram
 
 ---
 
-#### C.21 DSD — CU-089: Gestionar Roles del Sistema
+#### DSD — CU-089: Gestionar Roles del Sistema
 
 
 ##### Operación: crearRol(tipo)
@@ -9306,7 +9546,7 @@ sequenceDiagram
     SRV-->>-AGN: rol
 ```
 
-**Figura 169 — C.21 DSD — CU-089: Gestionar Roles del Sistema**
+**Figura 186 — DSD — CU-089: Gestionar Roles del Sistema**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles) y el objeto de dominio `Rol`.
 
@@ -9339,7 +9579,7 @@ sequenceDiagram
     SRV-->>-AGN: rol
 ```
 
-**Figura 170 — C.21 DSD — CU-089: Gestionar Roles del Sistema — Operación: actualizarRol(rolId, datos)**
+**Figura 187 — DSD — CU-089: Gestionar Roles del Sistema — Operación: actualizarRol(rolId, datos)**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles), la colección `Map<String, Rol>` y el objeto de dominio `Rol`.
 
@@ -9373,7 +9613,7 @@ sequenceDiagram
     SRV-->>-AGN: mensaje
 ```
 
-**Figura 171 — C.21 DSD — CU-089: Gestionar Roles del Sistema — Operación: eliminarRol(rolId)**
+**Figura 188 — DSD — CU-089: Gestionar Roles del Sistema — Operación: eliminarRol(rolId)**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles), la colección `Map<String, Rol>` y el objeto de dominio `Rol`.
 
@@ -9404,7 +9644,7 @@ sequenceDiagram
     SRV-->>-AGN: roles
 ```
 
-**Figura 172 — C.21 DSD — CU-089: Gestionar Roles del Sistema — Operación: listarRoles()**
+**Figura 189 — DSD — CU-089: Gestionar Roles del Sistema — Operación: listarRoles()**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles) y la colección `List<Rol>`.
 
@@ -9426,7 +9666,7 @@ sequenceDiagram
 
 ---
 
-#### C.22 DSD — CU-090: Sembrar los Roles Iniciales
+#### DSD — CU-090: Sembrar los Roles Iniciales
 
 
 ##### Operación: sembrarRolesIniciales()
@@ -9451,7 +9691,7 @@ sequenceDiagram
     SRV-->>-AGN: mensaje
 ```
 
-**Figura 173 — C.22 DSD — CU-090: Sembrar los Roles Iniciales**
+**Figura 190 — DSD — CU-090: Sembrar los Roles Iniciales**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles), la colección `Map<String, Rol>` y el objeto de dominio `Rol`.
 
@@ -9468,12 +9708,12 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - La operación es **idempotente por construcción**: el `findByType` previo hace que reejecutarla no duplique filas ni falle. Se puede invocar tantas veces como haga falta durante una instalación.
-- Los cuatro tipos están **hardcodeados** en el servicio y espejan el enum `RoleType` (`src/common/constants/role-type.enum.ts`). Es una duplicación deliberada: el enum gobierna las comprobaciones en runtime, la lista gobierna la siembra.
+- Los cuatro tipos están **hardcodeados** en el servicio y espejan el enum `RoleType`. Es una duplicación deliberada: el enum gobierna las comprobaciones en runtime, la lista gobierna la siembra.
 - Junto con CU-087 forma el **par de arranque** del sistema: primero se siembran los roles, después se crea el primer super administrador con uno de esos `role_id`. El orden inverso no funciona.
 
 ---
 
-#### C.23 DSD — CU-092: Consultar Listado de Clientes
+#### DSD — CU-092: Consultar Listado de Clientes
 
 
 ##### Operación: listarClientes(pagina, limite)
@@ -9492,7 +9732,7 @@ sequenceDiagram
     SRV-->>-ADM: clientes, total
 ```
 
-**Figura 174 — C.23 DSD — CU-092: Consultar Listado de Clientes**
+**Figura 191 — DSD — CU-092: Consultar Listado de Clientes**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes) y la colección `List<Cliente>`.
 
@@ -9509,12 +9749,12 @@ sequenceDiagram
 
 - Es el caso de **scoping multi-tenant más complejo del sistema**: los clientes son entidades **globales** (una misma persona puede pedirle a varias distribuidoras), así que `Customer` no tiene columna `distributor_id`. La pertenencia al tenant no es un atributo sino una **relación**, y se expresa como un `EXISTS` sobre `Order`.
 - La consecuencia de diseño es que "cliente de la distribuidora X" significa exactamente "cliente que alguna vez le pidió a X". Un cliente registrado que nunca pidió no aparece en ningún panel de tenant.
-- Por eso este endpoint usa `createQueryBuilder` y no el `find` declarativo que usan el resto de los listados del lote: la subconsulta correlacionada no se puede expresar con `FindOptionsWhere`.
+- Por eso este endpoint usa `createQueryBuilder` y no el `find` declarativo que usan el resto de los listados: la subconsulta correlacionada no se puede expresar con `FindOptionsWhere`.
 - `GET /customers?term=` filtra por nombre o correo y `GET /customers` informa el total real en el encabezado `X-Total-Count` (`informarTotal`).
 
 ---
 
-#### C.24 DSD — CU-094: Actualizar Ubicación del Cliente
+#### DSD — CU-094: Actualizar Ubicación del Cliente
 
 
 ##### Operación: actualizarUbicacionDelCliente(clienteId, coordenadas)
@@ -9535,7 +9775,7 @@ sequenceDiagram
     SRV-->>-CLI: cliente
 ```
 
-**Figura 175 — C.24 DSD — CU-094: Actualizar Ubicación del Cliente**
+**Figura 192 — DSD — CU-094: Actualizar Ubicación del Cliente**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`. La inicia el Cliente sobre su propia ficha y, con el mismo diagrama, el Administrador sobre la de sus clientes.
 
@@ -9557,7 +9797,7 @@ sequenceDiagram
 
 ---
 
-#### C.25 DSD — CU-095: Eliminar Cliente (baja lógica)
+#### DSD — CU-095: Eliminar Cliente (baja lógica)
 
 
 ##### Operación: eliminarCliente(clienteId)
@@ -9578,7 +9818,7 @@ sequenceDiagram
     SRV-->>-AGN: mensaje
 ```
 
-**Figura 176 — C.25 DSD — CU-095: Eliminar Cliente (baja lógica)**
+**Figura 193 — DSD — CU-095: Eliminar Cliente (baja lógica)**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
@@ -9619,7 +9859,7 @@ sequenceDiagram
     SRV-->>-ADM: cliente
 ```
 
-**Figura 177 — DSD CU-129: Consultar Detalle del Cliente**
+**Figura 194 — DSD CU-129: Consultar Detalle del Cliente**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes) y la colección `Map<String, Cliente>`.
 
@@ -9658,7 +9898,7 @@ sequenceDiagram
     SRV-->>-ADM: cliente
 ```
 
-**Figura 178 — DSD CU-130: Buscar Cliente por Usuario**
+**Figura 195 — DSD CU-130: Buscar Cliente por Usuario**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes) y la colección `Map<String, Cliente>`.
 
@@ -9699,7 +9939,7 @@ sequenceDiagram
     SRV-->>-ADM: cliente
 ```
 
-**Figura 179 — DSD CU-131: Editar Datos del Cliente**
+**Figura 196 — DSD CU-131: Editar Datos del Cliente**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
@@ -9720,9 +9960,9 @@ sequenceDiagram
 
 ---
 
-### SS-17 — Notificaciones y Mensajería
+### 4.17 SS-17 — Notificaciones y Mensajería
 
-#### C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
+#### DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
 
 
 ##### Operación: registrarTokenDeNotificaciones(usuarioId, token, plataforma)
@@ -9751,7 +9991,7 @@ sequenceDiagram
     SRV-->>-CLI: resultado
 ```
 
-**Figura 180 — C.26 DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo**
+**Figura 197 — DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones), las colecciones `Map<String, Cliente>` y `Map<String, Chofer>` y los objetos de dominio `Cliente` y `Chofer`. Una sola operación sirve a las dos aplicaciones móviles.
 
@@ -9772,11 +10012,11 @@ sequenceDiagram
 - El control **anti-secuestro** vive en el controlador: sólo el super administrador puede registrar el token de otro usuario porque el `userId` del body se descarta y se fuerza el del token. Sin esa línea, un usuario A podría apuntar su dispositivo al perfil de B y quedarse con sus push (o dejar a B sin notificaciones).
 - **Un único endpoint sirve a las dos apps.** El servicio resuelve el perfil por descarte: primero `Customer`, después `Delivery`. El precio es una consulta extra para los choferes; el beneficio es que las dos apps Flutter comparten exactamente el mismo cliente HTTP.
 - El servicio **nunca lanza**: devuelve `{ success: false, error }`. Registrar un token es una operación auxiliar y su fallo no debe romper el arranque de la app.
-- Es la **precondición técnica** de todo el subsistema de push: sin este token, `FcmPort.sendToToken` no tiene destino y CU-100, CU-101 y `sendOfferPushToDriver` (§4.4 de `3-Diseño.md`) son no-ops.
+- Es la **precondición técnica** de todo el subsistema de push: sin este token, `FcmPort.sendToToken` no tiene destino y CU-100, CU-101 y `sendOfferPushToDriver` (sección 4.3 del Documento 3) son no-ops.
 
 ---
 
-#### C.27 DSD — CU-099: Consultar los Tokens de un Usuario
+#### DSD — CU-099: Consultar los Tokens de un Usuario
 
 
 ##### Operación: consultarTokensDelUsuario(usuarioId)
@@ -9798,7 +10038,7 @@ sequenceDiagram
     SRV-->>-CLI: tokens
 ```
 
-**Figura 181 — C.27 DSD — CU-099: Consultar los Tokens de un Usuario**
+**Figura 198 — DSD — CU-099: Consultar los Tokens de un Usuario**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`. La inician el Cliente, el Chofer, el Administrador y el Administrador General.
 
@@ -9820,7 +10060,7 @@ sequenceDiagram
 
 ---
 
-#### C.28 DSD — CU-100: Enviar Notificación de Prueba
+#### DSD — CU-100: Enviar Notificación de Prueba
 
 
 ##### Operación: enviarNotificacionDePrueba(token, titulo, mensaje)
@@ -9838,7 +10078,7 @@ sequenceDiagram
     SRV-->>-AGN: resultado
 ```
 
-**Figura 182 — C.28 DSD — CU-100: Enviar Notificación de Prueba**
+**Figura 199 — DSD — CU-100: Enviar Notificación de Prueba**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones) y `FcmPort` (fabricación pura: el puerto hacia el proveedor de notificaciones push). La operación recibe el token del dispositivo, no al usuario, y por eso no navega ningún objeto de dominio.
 
@@ -9858,7 +10098,7 @@ sequenceDiagram
 
 ---
 
-#### C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+#### DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
 
 
 ##### Operación: reenviarConfirmacionDePedido(usuarioId, pedidoId)
@@ -9882,7 +10122,7 @@ sequenceDiagram
     SRV-->>-AGN: resultado
 ```
 
-**Figura 183 — C.29 DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
+**Figura 200 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones), la colección `Map<String, Cliente>`, el objeto de dominio `Cliente` y `FcmPort` (fabricación pura: el puerto hacia el proveedor de notificaciones push).
 
@@ -9901,11 +10141,11 @@ sequenceDiagram
 - Es un **reenvío manual de soporte**: el push de confirmación normal lo dispara `CreateOrderUseCase` al crear el pedido. Este endpoint existe para el caso en que el cliente no lo recibió (dispositivo apagado, token vencido, app reinstalada).
 - El `token` del body es un **override opcional** que precede al almacenado: permite al soporte probar contra un dispositivo concreto sin pisar el token guardado del cliente.
 - Los tres modos de falla (cliente inexistente, sin token, error de FCM) se devuelven como resultado con `success: false`, nunca como excepción, por la misma razón que en CU-100.
-- El mismo método lo invoca `UpdateOrderStatusUseCase` cuando el chofer acepta el pedido (ver `3-Diseño.md` §4.6): el endpoint es una **segunda puerta** a una lógica ya usada internamente, no una implementación paralela.
+- El mismo método lo invoca `UpdateOrderStatusUseCase` cuando el chofer acepta el pedido (ver la sección 4.3 del Documento 3): el endpoint es una **segunda puerta** a una lógica ya usada internamente, no una implementación paralela.
 
 ---
 
-#### C.30 DSD — CU-102: Probar el Servicio de Correo
+#### DSD — CU-102: Probar el Servicio de Correo
 
 
 Endpoint de diagnóstico: manda un correo real y genera un enlace de restablecimiento para la dirección que se le pasa (`POST /email/test`). Sólo lo usa el Administrador General.
@@ -9928,7 +10168,7 @@ sequenceDiagram
     SRV-->>-AGN: resultado
 ```
 
-**Figura 184 — C.30 DSD — CU-102: Probar el Servicio de Correo**
+**Figura 201 — DSD — CU-102: Probar el Servicio de Correo**
 
 **Clases participantes:** `EmailService` (controlador de fachada del módulo de correo), `FirebaseAuthPort` (fabricación pura: genera el enlace de prueba) y `EmailSenderPort` (fabricación pura: el envío). La inicia el Administrador General, el único que puede invocarla.
 
@@ -9949,9 +10189,9 @@ sequenceDiagram
 
 ---
 
-### SS-18 — Observabilidad y Operación
+### 4.18 SS-18 — Observabilidad y Operación
 
-#### C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+#### DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
 
 ##### Operación: verificarVida()
 
@@ -9959,14 +10199,14 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarVida
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
+    actor SIS as Plataforma de despliegue (ACT-09)
     participant HCS as :HealthCheckService
 
     SIS->>+HCS: verificarVida()
     HCS-->>-SIS: estado ok, marca de tiempo
 ```
 
-**Figura 185 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
+**Figura 202 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
 
 **Clases participantes:** `HealthCheckService` (controlador de fachada de la verificación de salud: el servicio de Terminus que ejecuta los indicadores).
 
@@ -9984,7 +10224,7 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarDisponibilidad
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
+    actor SIS as Plataforma de despliegue (ACT-09)
     participant HCS as :HealthCheckService
     participant RDH as :RedisHealthIndicator
     participant RDS as :RedisService
@@ -9998,7 +10238,7 @@ sequenceDiagram
     HCS-->>-SIS: estado por componente
 ```
 
-**Figura 186 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()**
+**Figura 203 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()**
 
 **Clases participantes:** `HealthCheckService` (controlador de fachada de la verificación de salud: el servicio de Terminus que ejecuta los indicadores), `RedisHealthIndicator` y `RedisService`. La prueba de PostgreSQL la hace el indicador de TypeORM de Terminus, que no se dibuja para no repetir la misma colaboración.
 
@@ -10016,7 +10256,7 @@ sequenceDiagram
 sequenceDiagram
     title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarSalud
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
+    actor SIS as Plataforma de despliegue (ACT-09)
     participant HCS as :HealthCheckService
     participant RDH as :RedisHealthIndicator
     participant RDS as :RedisService
@@ -10030,7 +10270,7 @@ sequenceDiagram
     HCS-->>-SIS: estado por componente
 ```
 
-**Figura 187 — C.31 DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()**
+**Figura 204 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()**
 
 **Clases participantes:** `HealthCheckService` (controlador de fachada de la verificación de salud: el servicio de Terminus que ejecuta los indicadores), `RedisHealthIndicator` y `RedisService`. Las pruebas de PostgreSQL, de memoria (RSS bajo el umbral configurado) y de disco (menos del 90 % de uso) las hacen indicadores de Terminus que no se dibujan para no repetir la misma colaboración.
 
@@ -10050,12 +10290,12 @@ sequenceDiagram
   - `/health` (**completo**) agrega memoria (RSS bajo el umbral `HEALTH_MEMORY_RSS_THRESHOLD_MB`) y disco (menos del 90 % de uso) para monitoreo externo y alertas de capacidad.
 - Confundir las tres provoca el modo de falla clásico: una base caída reiniciaría en bucle todas las réplicas sanas. El diseño lo evita explícitamente.
 - `@SkipThrottle()` a nivel de clase es **necesario, no cosmético**: con el rate limit global de 100 req/min, un balanceador chequeando cada 5 s consumiría una porción significativa de la cuota y podría autobloquear el health check.
-- `RedisHealthIndicator` es un indicador **propio** (`src/health/redis.health.ts`) que envuelve `RedisService.ping()` en el contrato de Terminus: `ping()` ya devuelve `false` en lugar de lanzar, así que el indicador traduce ese booleano al `HealthCheckError` que Terminus espera.
+- `RedisHealthIndicator` es un indicador **propio** que envuelve `RedisService.ping()` en el contrato de Terminus: `ping()` ya devuelve `false` en lugar de lanzar, así que el indicador traduce ese booleano al `HealthCheckError` que Terminus espera.
 - Los cuatro indicadores se pasan como **lambdas** a `HealthCheckService.check`, que los ejecuta y agrega los resultados: agregar un componente nuevo (por ejemplo, el proveedor de pagos) es sumar una línea, sin tocar la lógica de agregación.
 
 ---
 
-#### C.32 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+#### DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
 
 
 ##### Operación: programarVigenciaDeZona(zonaId, vigenteHasta)
@@ -10078,7 +10318,7 @@ sequenceDiagram
     SRV-->>-ADM: zona
 ```
 
-**Figura 188 — C.32 DSD — CU-150: Programar la Vigencia de una Zona de Cobertura**
+**Figura 205 — DSD — CU-150: Programar la Vigencia de una Zona de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura), la colección `Map<String, ZonaCobertura>` y el objeto de dominio `ZonaCobertura`.
 
@@ -10103,7 +10343,7 @@ sequenceDiagram
 
 ---
 
-#### C.33 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+#### DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
 
 
 **Colaboración propuesta:** `CoverageZoneCronService` no existe en el código. Una zona vencida deja de aplicarse porque `CoverageZoneService.checkCoverage` sólo considera las zonas con `valid_until` nulo o posterior a ahora; ningún proceso pone `isActive` en falso.
@@ -10129,7 +10369,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 189 — C.33 DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
+**Figura 206 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
 
 **Clases participantes:** `CoverageZoneCronService` (controlador del proceso programado; colaboración propuesta), la colección `List<ZonaCobertura>` y el objeto de dominio `ZonaCobertura`. La inicia el Sistema Automático cada cinco minutos.
 
@@ -10149,7 +10389,7 @@ sequenceDiagram
 
 ---
 
-#### C.34 DSD — CU-152: Consultar el Registro de Auditoría
+#### DSD — CU-152: Consultar el Registro de Auditoría
 
 ##### Operación: consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)
 
@@ -10167,7 +10407,7 @@ sequenceDiagram
     SRV-->>-ADM: asientos, total
 ```
 
-**Figura 190 — C.34 DSD — CU-152: Consultar el Registro de Auditoría**
+**Figura 207 — DSD — CU-152: Consultar el Registro de Auditoría**
 
 **Clases participantes:** `AuditService` (controlador de fachada del módulo de auditoría) y la colección `List<AsientoAuditoria>`.
 
@@ -10190,7 +10430,7 @@ sequenceDiagram
 
 ---
 
-#### C.35 DSD — CU-153: Registrar Toda Operación de Escritura
+#### DSD — CU-153: Registrar Toda Operación de Escritura
 
 ##### Operación: registrarOperacion(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)
 
@@ -10208,7 +10448,7 @@ sequenceDiagram
     deactivate AUD
 ```
 
-**Figura 191 — C.35 DSD — CU-153: Registrar Toda Operación de Escritura**
+**Figura 208 — DSD — CU-153: Registrar Toda Operación de Escritura**
 
 **Clases participantes:** `AuditService` (controlador de fachada del módulo de auditoría) y el objeto de dominio `AsientoAuditoria`. Lo dispara el sistema después de cada escritura, exitosa o rechazada; ningún usuario lo pide.
 
@@ -10265,7 +10505,7 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Figura 192 — DSD CU-172: Configurar los Parámetros de un Proceso Automático**
+**Figura 209 — DSD CU-172: Configurar los Parámetros de un Proceso Automático**
 
 **Clases participantes (colaboración propuesta):** `ModuleConfigService` (controlador del módulo de configuración de procesos, que no existe en el código y se construye en la iteración I-1) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. La tabla de configuración ya existe, sin servicio ni punto de entrada.
 
@@ -10314,7 +10554,7 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Figura 193 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas**
+**Figura 210 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas**
 
 **Clases participantes (colaboración propuesta):** `ModuleConfigService` y `ScheduledTaskGate` (controlador y fabricación pura del módulo de configuración, que no existen en el código y se construyen en la iteración I-1), `RedisService` (existente) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
 
@@ -10330,62 +10570,14 @@ sequenceDiagram
 
 ---
 
-### Resumen del lote
-
-| Subsistema | CU modelados | Diagramas |
-|---|---|---|
-| SS-10 Multi-Distribuidora | CU-052, CU-053, CU-054, CU-055 | C.1 – C.4 |
-| SS-11 Cobertura Geográfica | CU-056, CU-057, CU-059 | C.5 – C.7 |
-| SS-12 Incidencias y Calidad | CU-060, CU-061, CU-062, CU-063, CU-066 | C.8 – C.12 |
-| SS-13 Trazabilidad de Envases | CU-067, CU-069, CU-071 | C.13 – C.15 |
-| SS-15 Reservas Programadas | CU-073, CU-074 | C.16 – C.17 |
-| SS-16 Cuentas y Roles | CU-086, CU-087, CU-088, CU-089, CU-090, CU-092, CU-094, CU-095 | C.18 – C.24 |
-| SS-17 Notificaciones | CU-098, CU-099, CU-100, CU-101, CU-102 | C.26 – C.30 |
-| SS-18 Observabilidad | CU-104 | C.31 |
-| **Total** | **32 CU** | **32 DSD** |
-
-#### CU no modelados y por qué
-
-Ninguno. Los 32 casos de uso del alcance tienen implementación en el
-árbol de código y todos quedaron modelados. Se deja constancia, sin
-embargo, de los CU **vecinos** que quedaron fuera del alcance de este lote por
-estar ya cubiertos en `docs/3-Diseño.md` §4, para que no se los confunda con
-omisiones:
-
-| CU | Motivo de exclusión |
-|---|---|
-| CU-058 (Validar Cobertura de una Dirección) | Ya modelado en `3-Diseño.md` §4.12 (DSD CU-058 / CU-005). |
-| CU-064, CU-065 (Calificación y promedio) | Ya modelados en `3-Diseño.md` §4.13. Sólo se agregó acá CU-066, que faltaba. |
-| CU-068, CU-070 (Asignar envases, Registrar movimiento) | Ya modelados en `3-Diseño.md` §4.10 (ciclo de vida del envase físico). |
-| CU-072, CU-075, CU-076, CU-077 (Crear reserva y los tres crons) | Ya modelados en `3-Diseño.md` §4.7 y §4.8. |
-| CU-091 (Validar Vigencia del Token de Sesión) | Fuera del alcance solicitado para este lote; pertenece a SS-16 pero no fue pedido. |
-| CU-096, CU-097 (Perfil y baja del chofer) | Fuera del alcance solicitado para este lote. |
-| CU-103 (Eliminar Franja Horaria) | Fuera del alcance solicitado para este lote. |
-
-#### Observaciones transversales del lote
-
-Cuatro patrones de diseño se repiten en los 32 diagramas y conviene enunciarlos
-una sola vez:
-
-1. **Aislamiento multi-tenant en dos tiempos.** El `AuthGuard` resuelve el tenant una vez por request y lo deja en `request.distributorId`; el decorador `@CurrentDistributor()` sólo lo lee. Ningún servicio deduce el tenant por su cuenta y ningún `distributor_id` llega desde el body del cliente. La única excepción justificada es `IncidentService.create`, que lo denormaliza **del pedido** porque la incidencia pertenece al pedido y no a quien la reporta.
-
-2. **Escribir exige tenant, leer no.** Las escrituras usan `@CurrentDistributor({ required: true })` y fallan con 400 si no hay tenant; las lecturas admiten `null` y construyen el `where` con spread condicional, habilitando la vista cross-tenant del super_admin sin duplicar consultas.
-
-3. **404 en lugar de 403 para recursos de otro tenant.** El filtro por `distributor_id` se aplica dentro del `WHERE`, no como comprobación posterior. Un recurso ajeno es indistinguible de uno inexistente y no se filtra su existencia.
-
-4. **Best-effort explícito en los caminos auxiliares.** Notificaciones y correo devuelven `{ success: false, error }` en vez de lanzar: un push o un mail que no sale nunca debe tumbar el flujo de negocio que lo disparó. Esta decisión es la contracara de la que se toma en pedidos y pagos, donde el fallo sí es terminal.
-
----
-
-
-#### Módulos inteligentes en diseño (CU-105 a CU-108)
+### 4.19 Módulos inteligentes en diseño (CU-105 a CU-108)
 
 Colaboración propuesta para los módulos planificados. Las clases marcadas
 como propuestas no existen aún en el código.
 
-##### DSD — CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+#### DSD — CU-105: Planificar el mantenimiento y las habilitaciones de la flota
 
-###### Operación: planificarMantenimientoDeFlota()
+##### Operación: planificarMantenimientoDeFlota()
 
 ```mermaid
 sequenceDiagram
@@ -10426,7 +10618,7 @@ sequenceDiagram
     deactivate PLN
 ```
 
-**Figura 194 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 211 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del proceso temporal), `DemandForecastService` y `FleetCoverageService` (fabricaciones puras: la demanda proyectada por franja y el mínimo de vehículos por zona), `NotificationsService` (existente: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`. Ninguna de las tres clases de servicio existe en el código: se construyen en la iteración I-10.
 
@@ -10434,7 +10626,7 @@ sequenceDiagram
 
 **No se dibuja:** el historial de uso del vehículo y el promedio de la flota como respaldo, la negociación de las ventanas alternativas una por vez, el escalamiento al administrador cuando se agotan y el bloqueo de la agenda, que ocurre al confirmar (ver CU-105: `confirmarVentanaDeTaller`).
 
-###### Operación: aceptarVentanaDeMantenimiento(propuestaId)
+##### Operación: aceptarVentanaDeMantenimiento(propuestaId)
 
 ```mermaid
 sequenceDiagram
@@ -10456,7 +10648,7 @@ sequenceDiagram
     PLN-->>-CHF: propuesta
 ```
 
-**Figura 195 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
+**Figura 212 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, PropuestaVentanaTaller>` y los objetos de dominio `PropuestaVentanaTaller` y `TareaMantenimiento`.
 
@@ -10464,7 +10656,7 @@ sequenceDiagram
 
 **No se dibuja:** el guardado y el aviso al administrador.
 
-###### Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
+##### Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
 
 ```mermaid
 sequenceDiagram
@@ -10484,7 +10676,7 @@ sequenceDiagram
     PLN-->>-ADM: tarea
 ```
 
-**Figura 196 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
+**Figura 213 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `FleetAvailabilityPort` (fabricación pura: el puerto con el que el despacho sabe qué vehículos están aptos).
 
@@ -10494,9 +10686,7 @@ sequenceDiagram
 
 ---
 
----
-
-##### DSD — CU-106: Anticipar la recompra por consumo estimado
+#### DSD — CU-106: Anticipar la recompra por consumo estimado
 
 ##### Operación: aceptarInvitacionDeRecompra(invitacionId)
 
@@ -10520,7 +10710,7 @@ sequenceDiagram
     RFS-->>-CLI: pedido
 ```
 
-**Figura 197 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra**
+**Figura 214 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra**
 
 **Clases participantes:** `RepurchaseForecastService` (controlador del módulo de recompra, **colaboración propuesta**: no existe en el código), la colección `Map<String, InvitacionRecompra>` y el objeto de dominio `InvitacionRecompra`.
 
@@ -10561,7 +10751,7 @@ sequenceDiagram
     deactivate RFS
 ```
 
-**Figura 198 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras**
+**Figura 215 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras**
 
 **Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario, **colaboración propuesta**: no existe en el código), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), `NotificationsService` (fabricación pura: el aviso al cliente), las colecciones `List<InvitacionRecompra>` y `List<Cliente>`, y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
 
@@ -10576,9 +10766,9 @@ sequenceDiagram
 
 ---
 
-##### DSD — CU-107: Agrupar pedidos por recorrido
+#### DSD — CU-107: Agrupar pedidos por recorrido
 
-###### Operación: agruparPedidosPorRecorrido()
+##### Operación: agruparPedidosPorRecorrido()
 
 ```mermaid
 sequenceDiagram
@@ -10620,7 +10810,7 @@ sequenceDiagram
     deactivate PLN
 ```
 
-**Figura 199 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()**
+**Figura 216 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()**
 
 **Clases participantes:** `RouteBatchPlannerService` (controlador del proceso temporal; colaboración propuesta), `OrderRepositoryPort` (fabricación pura: la búsqueda de los pedidos programados atraviesa todos los pedidos), `NotificationsService` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido`, `ParadaLote`, `OfertaLote` y `Chofer`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; `OrderRepositoryPort` y `NotificationsService` sí. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
 
@@ -10630,7 +10820,7 @@ sequenceDiagram
 
 **No se dibuja:** el orden de las paradas, el cálculo de la capacidad de carga, el recorte del lote si ningún vehículo tiene capacidad, el recálculo si un pedido se acepta o se cancela mientras corre la oferta y la persistencia.
 
-###### Operación: aceptarRecorrido(recorridoId)
+##### Operación: aceptarRecorrido(recorridoId)
 
 ```mermaid
 sequenceDiagram
@@ -10660,7 +10850,7 @@ sequenceDiagram
     SRV-->>-CHF: pedidos
 ```
 
-**Figura 200 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)**
+**Figura 217 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)**
 
 **Clases participantes:** `RouteBatchPlannerService` (controlador; colaboración propuesta), la colección `Map<String, LoteRecorrido>` y los objetos de dominio `LoteRecorrido`, `OfertaLote`, `ParadaLote` y `Pedido`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recorridos (I-9).
 
@@ -10670,11 +10860,9 @@ sequenceDiagram
 
 ---
 
----
+#### DSD — CU-108: Recuperar envases no devueltos
 
-##### DSD — CU-108: Recuperar envases no devueltos
-
-###### Operación: gestionarEnvasesNoDevueltos()
+##### Operación: gestionarEnvasesNoDevueltos()
 
 ```mermaid
 sequenceDiagram
@@ -10716,9 +10904,9 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 201 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()**
+**Figura 218 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()**
 
-**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal; colaboración propuesta), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código, ni las consultas que el recupero le pide al puerto del ciclo de envase (`findHeldByCustomer`); el puerto sí existe, y es el mismo que hoy registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
+**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal; colaboración propuesta), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código, ni las consultas que el recupero le pide al puerto del ciclo de envase (`findHeldByCustomer`); el puerto sí existe, y es el mismo que registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
 
 **GRASP.** *Controlador*: `CylinderRecoveryService` recibe la operación del proceso temporal. *Creador*: el `Envase` que motiva el caso crea el `CasoRecupero`, y el `CasoRecupero` crea sus `AvisoRecupero` por cada escalón ejecutado, porque los contiene (composición). *Experto*: el `Envase` sabe si volvió; el `CasoRecupero` conoce su escalón y es quien se cierra o se escala. El caso se reevalúa antes de cada paso, porque el envase puede haber vuelto, y el sistema nunca cobra un depósito por su cuenta: agotada la secuencia, el caso queda a resolución del administrador.
 
@@ -10726,7 +10914,7 @@ sequenceDiagram
 
 **No se dibuja:** los plazos de cada escalón, la entrega programada del cliente donde se ofrece el retiro, el marcado para revisión manual si el último movimiento del envase no permite saber en poder de quién está, el cierre del caso por importe bajo el umbral como envase perdido y la persistencia.
 
-###### Operación: aceptarRetiroEnLaEntrega(ofertaId)
+##### Operación: aceptarRetiroEnLaEntrega(ofertaId)
 
 ```mermaid
 sequenceDiagram
@@ -10752,7 +10940,7 @@ sequenceDiagram
     SRV-->>-CLI: retiro
 ```
 
-**Figura 202 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
+**Figura 219 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, AvisoRecupero>` y los objetos de dominio `AvisoRecupero`, `Pedido` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recupero de envases (I-8).
 
@@ -10760,7 +10948,7 @@ sequenceDiagram
 
 **No se dibuja:** el rechazo si la oferta venció o ya fue cerrada, y la persistencia.
 
-###### Operación: resolverCasoDeRecupero(casoId, decision)
+##### Operación: resolverCasoDeRecupero(casoId, decision)
 
 ```mermaid
 sequenceDiagram
@@ -10786,7 +10974,7 @@ sequenceDiagram
     SRV-->>-ADM: caso
 ```
 
-**Figura 203 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
+**Figura 220 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, CasoRecupero>`, `DepositLedgerService` (fabricación pura propuesta: registra la decisión y el importe) y los objetos de dominio `CasoRecupero` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` y `DepositLedgerService` no existen en el código.
 
@@ -10794,9 +10982,7 @@ sequenceDiagram
 
 **No se dibuja:** la distribuidora del contexto, que filtra la lectura del caso, el rechazo si el caso no está escalado y la persistencia.
 
----
-
-## Trazabilidad
+#### Trazabilidad de los módulos
 
 | Caso de uso | Módulo | Objetivos | Requisitos de información | Subsistema | Actor principal | Decisión reservada |
 |-------------|--------|-----------|---------------------------|------------|-----------------|--------------------|
@@ -10810,119 +10996,32 @@ sequenceDiagram
 > Documento 3 §6 y se repite en el campo *Comentarios* de cada caso de uso
 > expandido.
 
----
+### 4.20 Observaciones transversales de diseño
 
-##### Planificado (I-1) · DSD — CU-043: Modificar Capacidad de Franja Horaria
+Cuatro patrones de diseño se repiten en los diagramas de los subsistemas y conviene
+enunciarlos una sola vez:
 
+1. **Aislamiento multi-tenant en dos tiempos.** El `AuthGuard` resuelve el tenant una vez por request y lo deja en `request.distributorId`; el decorador `@CurrentDistributor()` sólo lo lee. Ningún servicio deduce el tenant por su cuenta y ningún `distributor_id` llega desde el body del cliente. La única excepción justificada es `IncidentService.create`, que lo denormaliza **del pedido** porque la incidencia pertenece al pedido y no a quien la reporta.
 
-> Colaboración **propuesta**. Las piezas marcadas como propuestas no existen en el código:
-> `TimeSlotController` no declara una operación de modificación y no hay `UpdateTimeSlotDto`.
-> Las clases `TimeSlotController`, `TimeSlotService` y el repositorio de `TimeSlot` sí existen.
+2. **Escribir exige tenant, leer no.** Las escrituras usan `@CurrentDistributor({ required: true })` y fallan con 400 si no hay tenant; las lecturas admiten `null` y construyen el `where` con spread condicional, habilitando la vista cross-tenant del super_admin sin duplicar consultas.
 
-##### Operación: modificarFranjaHoraria(franjaId, nombre, horaInicio, horaFin, capacidad)
+3. **404 en lugar de 403 para recursos de otro tenant.** El filtro por `distributor_id` se aplica dentro del `WHERE`, no como comprobación posterior. Un recurso ajeno es indistinguible de uno inexistente y no se filtra su existencia.
 
-```mermaid
-sequenceDiagram
-    title DSD — CU-043 Modificar Capacidad de Franja Horaria · modificarFranjaHoraria
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :TimeSlotService
-    participant COL as :Map#lt;String, FranjaHoraria#gt;
-    participant FRA as franja:FranjaHoraria
-
-    ADM->>+SRV: modificarFranjaHoraria(franjaId, nombre, horaInicio, horaFin, capacidad)
-    SRV->>+COL: get(franjaId)
-    COL-->>-SRV: franja
-    SRV->>+FRA: modificar(nombre, horaInicio, horaFin, capacidad)
-    FRA->>FRA: validarCapacidad(capacidad)
-    deactivate FRA
-    SRV-->>-ADM: franja
-```
-
-**Figura 204 — DSD CU-043: Modificar Capacidad de Franja Horaria**
-
-**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`. Colaboración propuesta (I-1): `TimeSlotController` no declara una operación de modificación.
-
-**GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `FranjaHoraria` toma sus valores nuevos y valida que la capacidad sea mayor que cero. Los pedidos ya agendados se conservan aunque superen la capacidad nueva; los que se agenden después se validan contra el límite nuevo.
-
-**No se dibuja:** la comprobación de que la franja sea de la distribuidora del Administrador y la advertencia en la respuesta si para alguna fecha próxima la franja ya excede la capacidad nueva.
-
-**Observaciones de diseño**
-
-- Si la capacidad nueva es menor que lo comprometido para alguna fecha, el cambio se guarda y la respuesta lo advierte; no se responde 400 ni se tocan los pedidos ya agendados (decisión del Documento 1, CU-043, Comentarios).
-- La misma regla de capacidad mayor a cero se agrega al alta (`CreateTimeSlotDto`), para que las dos operaciones compartan la validación.
+4. **Best-effort explícito en los caminos auxiliares.** Notificaciones y correo devuelven `{ success: false, error }` en vez de lanzar: un push o un mail que no sale nunca debe tumbar el flujo de negocio que lo disparó. Esta decisión es la contracara de la que se toma en pedidos y pagos, donde el fallo sí es terminal.
 
 ---
 
-### 4.14 Crítico DSD — CU-020: Confirmar entrega (declaración del chofer)
-
-
-Camino en el que el propio chofer declara la entrega. La variante con código
-QR, en la que confirma el cliente, está en el diagrama 4.9.
-
-##### Operación: confirmarEntrega(pedidoId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-020 Confirmar Entrega · confirmarEntrega
-    autonumber
-    actor CHF as Chofer (ACT-02)
-    participant UCS as :UpdateOrderStatusUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant PAG as pago:Pago
-    participant UBI as ubicacion:UbicacionGPS
-    participant ENV as envase:Envase
-    participant NOT as :NotificationPort
-
-    CHF->>+UCS: confirmarEntrega(pedidoId)
-    UCS->>+PEDS: get(pedidoId)
-    PEDS-->>-UCS: pedido
-    UCS->>+PED: entregar()
-    PED->>PED: transicionar(entregado)
-    opt El método de pago es efectivo
-        PED->>PAG: marcarPagado()
-    end
-    deactivate PED
-    UCS->>UBI: cerrarSeguimiento()
-    loop Por cada envase despachado en el pedido
-        UCS->>ENV: entregarAlCliente(pedido)
-    end
-    UCS-)NOT: sendOrderConfirmation(cliente, pedido)
-    UCS-->>-CHF: pedido
-```
-
-**Figura 205 — DSD CU-020: Confirmar entrega (declaración del chofer) — Operación: confirmarEntrega(pedidoId)**
-
-**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Pago`, `UbicacionGPS` y `Envase`, y `NotificationPort` (fabricación pura: el aviso al cliente).
-
-**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación. *Experto*: `Pedido` es quien pasa a «entregado», registra el momento de la entrega y le indica a su `Pago` que quedó saldado; cada `Envase` despachado en el pedido es quien pasa a estar en poder del cliente y registra su `MovimientoEnvase`. El cierre del seguimiento lo hace la `UbicacionGPS`. La confirmación con código del cliente es otra operación, `confirmarEntregaConCodigo` (CU-079).
-
-**No se dibuja:** la transacción con el bloqueo del pedido, el guardado, la verificación de que el pedido sea del chofer que lo cierra, los eventos en vivo al cliente y al panel, y que la entrega de los envases es un efecto best-effort: si falla, la entrega igual se confirma.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UpdateOrderStatusUseCase.confirmarEntrega(...)` | `OrderController.updateStatus` → `OrderService.updateStatus` → `UpdateOrderStatusUseCase.execute` con el estado entregado |
-| `Map<String, Pedido>.get(...)` | `UpdateOrderStatusUseCase.execute`: lee el `Order` con bloqueo pesimista dentro de una transacción |
-| `Pedido.entregar()` | `UpdateOrderStatusUseCase.applyStatusEffects`: registra `Order.deliveredAt` |
-| `Pedido.transicionar(...)` | `transitionOrder()` |
-| `Pago.marcarPagado()` | `UpdateOrderStatusUseCase.applyStatusEffects`: asigna `Order.paymentStatus` pagado cuando `Order.paymentMethod` es efectivo |
-| `UbicacionGPS.cerrarSeguimiento()` | `RealtimeDispatchPort.stopTracking` |
-| `Envase.entregarAlCliente(...)` | `CylinderLifecyclePort.onOrderDelivered`: pasa los envases del pedido a «en poder del cliente» |
-
----
-
-### 4.15 Operaciones
+### 4.21 Operaciones del sistema
 
 Cada operación del sistema con su firma. Una operación del sistema es un mensaje que
 un actor le manda al sistema y que aparece como tal en el diagrama de secuencia del
 Documento 2. El catálogo, con una sola firma por operación, y el contrato de las que
 modifican el modelo conceptual, con precondiciones y postcondiciones, están en el
 Documento 2 · §2.2; el diagrama de interacción que muestra cómo se resuelve por dentro
-está en §4 de este documento.
+está en las secciones 4.1 a 4.19 de este documento.
 
-Son **195 operaciones**. **195** tienen su diagrama de interacción y
-**111** tienen contrato: son las que cambian el estado del sistema.
+Son **194 operaciones**. **194** tienen su diagrama de interacción y
+**110** tienen contrato: son las que cambian el estado del sistema.
 
 | Operación | Caso de uso | Actor que la invoca | Diagrama de interacción | Contrato |
 |---|---|---|---|---|
@@ -11020,7 +11119,6 @@ Son **195 operaciones**. **195** tienen su diagrama de interacción y
 | `consultarVentasPorMetodoDePago(fechaDesde fecha, fechaHasta fecha)` | CU-029 | Administrador (ACT-03) | sí | — |
 | `consultarVentasPorProducto(fechaDesde fecha, fechaHasta fecha)` | CU-028 | Administrador (ACT-03) | sí | — |
 | `consultarVigenciaDelEnvase(envaseId identificador)` | CU-133 | Administrador (ACT-03) | sí | — |
-| `crearCheckoutDePago(pedidoId identificador, medioDePago cadena)` | CU-048 | Cliente (ACT-01) | sí | sí |
 | `crearFranjaHoraria(nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-042 | Administrador (ACT-03) | sí | sí |
 | `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | CU-005 / CU-044 | Cliente (ACT-01) | sí | sí |
 | `crearPrimerSuperAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena)` | CU-087 | Administrador General (ACT-05) | sí | sí |
@@ -11116,21 +11214,15 @@ Son **195 operaciones**. **195** tienen su diagrama de interacción y
 | `validarCobertura(latitud decimal, longitud decimal)` | CU-058 | Cliente (ACT-01) | sí | — |
 | `validarSesion()` | CU-091 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
 | `vencerOfertasExpiradas()` | CU-014 | Sistema Automático (ACT-04) | sí | sí |
-| `verificarDisponibilidad()` | CU-104 | Sistema Automático (ACT-04) | sí | — |
+| `verificarDisponibilidad()` | CU-104 | Plataforma de despliegue (ACT-09) | sí | — |
 | `verificarExistenciaDeUsuario(correo cadena, telefono cadena)` | CU-084 | Cliente (ACT-01) | sí | — |
-| `verificarSalud()` | CU-104 | Sistema Automático (ACT-04) | sí | — |
-| `verificarVida()` | CU-104 | Sistema Automático (ACT-04) | sí | — |
+| `verificarSalud()` | CU-104 | Plataforma de despliegue (ACT-09) | sí | — |
+| `verificarVida()` | CU-104 | Plataforma de despliegue (ACT-09) | sí | — |
 | `verificarVigenciaAlAsignar(pedidoId identificador, series lista)` | CU-135 | Sistema Automático (ACT-04) | sí | — |
 
-<!-- dc:inicio -->
 ## 5. Diagrama de Clases de Diseño
 
-El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del §4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se mandan mensajes decide la relación que los une. No se dibuja a mano ni se lee del código: lo genera `material-de-trabajo/generar-clases-diseno.py` a partir de los 198 DSD en estilo Larman (`diagramas/DSD_*.mmd`) y del modelo conceptual (Documento 2, §1), y `verificar-conformidad.py` comprueba que lo dibujado sigue siendo lo que dicen los DSD.
-
-```bash
-python3 material-de-trabajo/generar-clases-diseno.py   # lee los DSD y el modelo conceptual y dibuja
-python3 verificar-conformidad.py                       # contrasta el diagrama con los DSD y con el modelo
-```
+El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del §4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se mandan mensajes decide la relación que los une. Se construye a partir de los 198 diagramas de interacción en la notación de Larman y del modelo conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de ellos.
 
 **Cómo se deriva.**
 
@@ -11141,14 +11233,14 @@ python3 verificar-conformidad.py                       # contrasta el diagrama c
 | Dos objetos de dominio que se mandan mensajes y tienen asociación en el modelo conceptual | Esa asociación, con su nombre y su multiplicidad, **navegable** en el sentido del mensaje (visibilidad por atributo) |
 | Un objeto de dominio que llega por parámetro o variable local (controlador a objeto, objeto a objeto sin asociación) | **Dependencia** (línea punteada) |
 | Servicio, puerto o colección que colabora con otro | Asociación navegable de multiplicidad 1: el colaborador se inyecta como atributo. Si el código real no lo inyecta, dependencia |
-| Primer receptor del mensaje del actor | `«use case»` (clase `…UseCase` del módulo) o `«fachada»` (servicio fachada del módulo): el controlador de aplicación |
+| Primer receptor del mensaje del actor | `«controlador»` (clase `…UseCase` del módulo) o `«fachada»` (servicio fachada del módulo): el controlador de aplicación |
 | Objeto de infraestructura que sólo recibe mensajes de otros | `«fabricación pura»` |
 | Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con `..|>` sólo si aparece en un DSD |
 | `:Map<String, X>` y `:List<X>` | `«colección»` agregada a su clase `X` (el DSD las usa para buscar por identificador) |
 
-**Notación.** Atributos `- nombre: Tipo` (privados; `/` marca un atributo derivado); operaciones `+ nombre(parametro: Tipo): Retorno`; `X[*]` es una colección de `X`; una línea sin punta no dice nada de la navegabilidad o es navegable en los dos sentidos (la composición se dibuja así cuando los DSD la recorren en ambos). Los nombres están en el idioma del DSD: las clases de dominio son las del modelo conceptual (`Pedido`, `ItemPedido`) y los controladores, fabricaciones puras y puertos llevan su nombre real (`CreateOrderUseCase`, `OrderPricingService`, `NotificationPort`). Una operación sin retorno es una que el DSD no muestra devolviendo nada.
+**Notación.** Atributos `- nombre: Tipo` (privados; `/` marca un atributo derivado); operaciones `+ nombre(parametro: Tipo): Retorno`; `X[*]` es una colección de `X`; una línea sin punta no dice nada de la navegabilidad o es navegable en los dos sentidos (la composición se dibuja así cuando los DSD la recorren en ambos). Los nombres están en el idioma del DSD: las clases de dominio son las del modelo conceptual (`Pedido`, `ItemPedido`) y los controladores, fabricaciones puras y puertos llevan su nombre real (`CreateOrderUseCase`, `OrderPricingService`, `NotificationPort`). Una operación sin retorno es una que el DSD no muestra devolviendo nada. Una operación tiene un solo retorno: cuando el DSD devuelve varios valores, el primero es el retorno y los demás son parámetros de salida (`out nombre: Tipo`).
 
-**Tipos.** Los primitivos son los del catálogo de operaciones del Documento 2; los de los atributos de dominio salen de las columnas del backend, y los de los argumentos y retornos, del catálogo, del modelo conceptual o del glosario de `dc_larman.py`.
+**Tipos.** Los primitivos son los del catálogo de operaciones del Documento 2; los de los atributos de dominio salen de las columnas del backend, y los de los argumentos y retornos, del catálogo o del modelo conceptual.
 
 | Tipo | Significado |
 |---|---|
@@ -11195,7 +11287,7 @@ python3 verificar-conformidad.py                       # contrasta el diagrama c
 | `TipoDeRecargo` | `CoverageZoneSurchargeType` |
 | `TipoDeRol` | `RoleType` |
 
-En total el diagrama tiene **154 clases** y **682 operaciones**: 43 clases de dominio (todas las del modelo conceptual) y 111 de diseño (2 adaptador, 36 colección, 11 fabricación pura, 44 fachada, 11 puerto, 7 use case). Las 70 asociaciones del modelo conceptual están todas; 35 resultan navegables según los mensajes de los DSD, y 120 pares de clases quedan unidos por una dependencia.
+En total el diagrama tiene **154 clases** y **682 operaciones**: 43 clases de dominio (todas las del modelo conceptual) y 111 de diseño (2 adaptador, 36 colección, 7 controlador, 11 fabricación pura, 44 fachada, 11 puerto). Las 70 asociaciones del modelo conceptual están todas; 35 resultan navegables según los mensajes de los DSD, y 120 pares de clases quedan unidos por una dependencia.
 
 ### 5.1 Clases del Dominio
 
@@ -11203,47 +11295,47 @@ Las clases del modelo conceptual, con sus atributos tipados y las operaciones qu
 
 ![Clases de dominio: vista general](diagramas/clases-diseno/DC_General.png)
 
-**Figura 206 — Diagrama de Clases de Dominio**
+**Figura 221 — Diagrama de Clases de Dominio**
 
 ![Clases de dominio: organización y acceso](diagramas/clases-diseno/DC_Organizacion-y-acceso.png)
 
-**Figura 206.1 — Clases de dominio: organización y acceso**
+**Figura 221.1 — Clases de dominio: organización y acceso**
 
 ![Clases de dominio: clientes](diagramas/clases-diseno/DC_Clientes.png)
 
-**Figura 206.2 — Clases de dominio: clientes**
+**Figura 221.2 — Clases de dominio: clientes**
 
 ![Clases de dominio: pedido, líneas y pago](diagramas/clases-diseno/DC_Pedido.png)
 
-**Figura 206.3 — Clases de dominio: pedido, líneas y pago**
+**Figura 221.3 — Clases de dominio: pedido, líneas y pago**
 
 ![Clases de dominio: carrito, franjas y cobertura](diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png)
 
-**Figura 206.4 — Clases de dominio: carrito, franjas y cobertura**
+**Figura 221.4 — Clases de dominio: carrito, franjas y cobertura**
 
 ![Clases de dominio: despacho y propuestas con vigencia](diagramas/clases-diseno/DC_Despacho.png)
 
-**Figura 206.5 — Clases de dominio: despacho y propuestas con vigencia**
+**Figura 221.5 — Clases de dominio: despacho y propuestas con vigencia**
 
 ![Clases de dominio: choferes y vehículos](diagramas/clases-diseno/DC_Choferes-y-vehiculos.png)
 
-**Figura 206.6 — Clases de dominio: choferes y vehículos**
+**Figura 221.6 — Clases de dominio: choferes y vehículos**
 
 ![Clases de dominio: mantenimiento de la flota](diagramas/clases-diseno/DC_Mantenimiento.png)
 
-**Figura 206.7 — Clases de dominio: mantenimiento de la flota**
+**Figura 221.7 — Clases de dominio: mantenimiento de la flota**
 
 ![Clases de dominio: productos y envases](diagramas/clases-diseno/DC_Productos-y-envases.png)
 
-**Figura 206.8 — Clases de dominio: productos y envases**
+**Figura 221.8 — Clases de dominio: productos y envases**
 
 ![Clases de dominio: recupero de envases](diagramas/clases-diseno/DC_Recupero.png)
 
-**Figura 206.9 — Clases de dominio: recupero de envases**
+**Figura 221.9 — Clases de dominio: recupero de envases**
 
 ![Clases de dominio: posventa](diagramas/clases-diseno/DC_Posventa.png)
 
-**Figura 206.10 — Clases de dominio: posventa**
+**Figura 221.10 — Clases de dominio: posventa**
 
 ### 5.2 Clases de Diseño, por módulo
 
@@ -11253,88 +11345,88 @@ Los controladores, las fabricaciones puras, los puertos y las colecciones de los
 |---|---|
 | `«adaptador»` | `LocalDiskStorageAdapter`, `S3StorageAdapter` |
 | `«colección»` | `List<Administrador>`, `List<AsientoAuditoria>`, `List<AsignacionVehiculo>`, `List<Chofer>`, `List<Cliente>`, `List<Distribuidora>`, `List<InvitacionRecompra>`, `List<Pedido>`, `List<Producto>`, `List<Rol>`, `List<TareaMantenimiento>`, `List<Usuario>`, `List<Vehiculo>`, `List<ZonaCobertura>`, `Map<String, Administrador>`, `Map<String, AvisoRecupero>`, `Map<String, CasoRecupero>`, `Map<String, Chofer>`, `Map<String, Cliente>`, `Map<String, DireccionEntrega>`, `Map<String, Distribuidora>`, `Map<String, Envase>`, `Map<String, FranjaHoraria>`, `Map<String, Incidencia>`, `Map<String, InvitacionRecompra>`, `Map<String, LoteRecorrido>`, `Map<String, Pedido>`, `Map<String, PlanMantenimiento>`, `Map<String, Producto>`, `Map<String, PropuestaVentanaTaller>`, `Map<String, Reclamo>`, `Map<String, Rol>`, `Map<String, TareaMantenimiento>`, `Map<String, Usuario>`, `Map<String, Vehiculo>`, `Map<String, ZonaCobertura>` |
+| `«controlador»` | `CancelOrderUseCase`, `ConfirmDeliveryUseCase`, `ConfirmPaymentUseCase`, `CreateOrderUseCase`, `RefundPaymentUseCase`, `ReleaseOrderUseCase`, `UpdateOrderStatusUseCase` |
 | `«fabricación pura»` | `AdminGateway`, `ConsumptionEstimatorService`, `DemandForecastService`, `DepositLedgerService`, `DispatchConfigService`, `FleetCoverageService`, `FleetDispatchLockService`, `RedisHealthIndicator`, `RedisService`, `ScheduledTaskGate`, `SocketIdentityService` |
 | `«fachada»` | `AdminService`, `AuditService`, `AuthService`, `CarService`, `CartService`, `ClaimsService`, `ConsumptionService`, `CoverageZoneCronService`, `CoverageZoneService`, `CustomersGateway`, `CustomersService`, `CylinderRecoveryService`, `CylinderService`, `DeliveryService`, `DispatchOrchestratorService`, `DispatchService`, `DistributorService`, `DriversGateway`, `EmailService`, `FleetAlertsCron`, `FleetAttachmentService`, `FleetExpirationsService`, `FleetMaintenancePlannerService`, `FleetTaskService`, `GasCylinderService`, `HealthCheckService`, `IncidentService`, `ModuleConfigService`, `NotificationsService`, `OrderService`, `OrderStatusHistoryService`, `PaymentsService`, `RatingService`, `RegistroService`, `ReportsService`, `RepurchaseEstimatesService`, `RepurchaseForecastService`, `ReservationService`, `RoleService`, `RouteBatchPlannerService`, `TimeSlotService`, `UserAddressService`, `UsersService`, `VehicleAssignmentService` |
 | `«puerto»` | `CylinderLifecyclePort`, `DispatchOfferRepositoryPort`, `EmailSenderPort`, `FcmPort`, `FirebaseAuthPort`, `FleetAvailabilityPort`, `NotificationPort`, `OrderRepositoryPort`, `PaymentGatewayPort`, `RealtimeDispatchPort`, `StoragePort` |
-| `«use case»` | `CancelOrderUseCase`, `ConfirmDeliveryUseCase`, `ConfirmPaymentUseCase`, `CreateOrderUseCase`, `RefundPaymentUseCase`, `ReleaseOrderUseCase`, `UpdateOrderStatusUseCase` |
 
 Realizaciones puerto-adaptador que aparecen en los DSD: `S3StorageAdapter` realiza `StoragePort`, `LocalDiskStorageAdapter` realiza `StoragePort`.
 
 ![Clases de diseño: sesión, registro e identidad](diagramas/clases-diseno/DC_Mod_Sesion-y-registro.png)
 
-**Figura 207 — Clases de diseño: sesión, registro e identidad**
+**Figura 222 — Clases de diseño: sesión, registro e identidad**
 
 ![Clases de diseño: usuarios, roles, administradores y auditoría](diagramas/clases-diseno/DC_Mod_Usuarios.png)
 
-**Figura 208 — Clases de diseño: usuarios, roles, administradores y auditoría**
+**Figura 223 — Clases de diseño: usuarios, roles, administradores y auditoría**
 
 ![Clases de diseño: clientes y direcciones de entrega](diagramas/clases-diseno/DC_Mod_Clientes.png)
 
-**Figura 209 — Clases de diseño: clientes y direcciones de entrega**
+**Figura 224 — Clases de diseño: clientes y direcciones de entrega**
 
 ![Clases de diseño: carrito y recompra](diagramas/clases-diseno/DC_Mod_Carrito-y-recompra.png)
 
-**Figura 210 — Clases de diseño: carrito y recompra**
+**Figura 225 — Clases de diseño: carrito y recompra**
 
 ![Clases de diseño: productos y franjas horarias](diagramas/clases-diseno/DC_Mod_Productos-y-franjas.png)
 
-**Figura 211 — Clases de diseño: productos y franjas horarias**
+**Figura 226 — Clases de diseño: productos y franjas horarias**
 
 ![Clases de diseño: cobertura y distribuidoras](diagramas/clases-diseno/DC_Mod_Cobertura-y-distribuidoras.png)
 
-**Figura 212 — Clases de diseño: cobertura y distribuidoras**
+**Figura 227 — Clases de diseño: cobertura y distribuidoras**
 
 ![Clases de diseño: pedidos: alta y cancelación](diagramas/clases-diseno/DC_Mod_Pedidos-alta.png)
 
-**Figura 213 — Clases de diseño: pedidos: alta y cancelación**
+**Figura 228 — Clases de diseño: pedidos: alta y cancelación**
 
 ![Clases de diseño: pedidos: consulta y estado](diagramas/clases-diseno/DC_Mod_Pedidos-estado.png)
 
-**Figura 214 — Clases de diseño: pedidos: consulta y estado**
+**Figura 229 — Clases de diseño: pedidos: consulta y estado**
 
 ![Clases de diseño: pagos y reservas](diagramas/clases-diseno/DC_Mod_Pagos.png)
 
-**Figura 215 — Clases de diseño: pagos y reservas**
+**Figura 230 — Clases de diseño: pagos y reservas**
 
 ![Clases de diseño: despacho de pedidos](diagramas/clases-diseno/DC_Mod_Despacho.png)
 
-**Figura 216 — Clases de diseño: despacho de pedidos**
+**Figura 231 — Clases de diseño: despacho de pedidos**
 
 ![Clases de diseño: seguimiento en tiempo real](diagramas/clases-diseno/DC_Mod_Tiempo-real.png)
 
-**Figura 217 — Clases de diseño: seguimiento en tiempo real**
+**Figura 232 — Clases de diseño: seguimiento en tiempo real**
 
 ![Clases de diseño: choferes y vehículos](diagramas/clases-diseno/DC_Mod_Choferes-y-vehiculos.png)
 
-**Figura 218 — Clases de diseño: choferes y vehículos**
+**Figura 233 — Clases de diseño: choferes y vehículos**
 
 ![Clases de diseño: flota: tareas, adjuntos y vencimientos](diagramas/clases-diseno/DC_Mod_Flota-tareas.png)
 
-**Figura 219 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
+**Figura 234 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
 
 ![Clases de diseño: flota: planificador de mantenimiento](diagramas/clases-diseno/DC_Mod_Flota-planificador.png)
 
-**Figura 220 — Clases de diseño: flota: planificador de mantenimiento**
+**Figura 235 — Clases de diseño: flota: planificador de mantenimiento**
 
 ![Clases de diseño: envases](diagramas/clases-diseno/DC_Mod_Envases.png)
 
-**Figura 221 — Clases de diseño: envases**
+**Figura 236 — Clases de diseño: envases**
 
 ![Clases de diseño: recupero de envases](diagramas/clases-diseno/DC_Mod_Recupero.png)
 
-**Figura 222 — Clases de diseño: recupero de envases**
+**Figura 237 — Clases de diseño: recupero de envases**
 
 ![Clases de diseño: reclamos, incidencias y calificaciones](diagramas/clases-diseno/DC_Mod_Posventa.png)
 
-**Figura 223 — Clases de diseño: reclamos, incidencias y calificaciones**
+**Figura 238 — Clases de diseño: reclamos, incidencias y calificaciones**
 
 ![Clases de diseño: notificaciones y correo](diagramas/clases-diseno/DC_Mod_Notificaciones.png)
 
-**Figura 224 — Clases de diseño: notificaciones y correo**
+**Figura 239 — Clases de diseño: notificaciones y correo**
 
 ![Clases de diseño: reportes, salud y almacenamiento](diagramas/clases-diseno/DC_Mod_Soporte.png)
 
-**Figura 225 — Clases de diseño: reportes, salud y almacenamiento**
+**Figura 240 — Clases de diseño: reportes, salud y almacenamiento**
 
 ### 5.3 Dependencias entre módulos
 
@@ -11342,7 +11434,7 @@ Un módulo depende de otro cuando alguna de sus clases le manda un mensaje, en a
 
 ![Dependencias entre módulos](diagramas/clases-diseno/DC_Paquetes.png)
 
-**Figura 226 — Dependencias entre módulos**
+**Figura 241 — Dependencias entre módulos**
 
 | Módulo | Depende de |
 |---|---|
@@ -11395,7 +11487,7 @@ CheckoutViewModel (ReactiveViewModel)
   + getSubtotal(item): double          (calcula el descuento vigente)
   + getAppliedDiscount(item): Discount?
   + itemsTotal: double
-  + transferSurcharge: double          (recargo del 10% si el medio de pago es transferencia)
+  + transferSurcharge: double          (vista previa del recargo del 10% del pago en línea; el total lo calcula el servidor)
   + finalTotal: double
   + canConfirmOrder: bool
 
@@ -11493,40 +11585,31 @@ tenerla presente al leer el DER (§7.4.2): una relación que en el conceptual sa
 puede ir de cliente a chofer o de chofer a cliente, y necesitan una sola columna que sirva
 para las dos direcciones.
 
-### 5.7 Resultado del cruce contra los diagramas de interacción
+### 5.7 Correspondencia con los diagramas de interacción
 
-Última corrida de `cruzar-dsd-clases.py`. El script lee todo `splg-app-backend/src` y verifica,
-por cada mensaje `Origen->>Destino: operación(args)`, que la clase del destino exista y tenga esa
-operación, o que la diferencia esté justificada. Los 195 DSD en estilo Larman se cruzan contra las
-clases de diseño que se derivan de ellos (las mismas del diagrama de §5.1 y §5.2): el modelo de
-dominio y las clases del código se corresponden en las tablas de implementación de cada DSD. Los
-cinco que todavía no se rehicieron en ese estilo se cruzan contra el código con las reglas
-anteriores.
+Cada mensaje `Origen->>Destino: operación(argumentos)` de un diagrama de interacción tiene su
+clase y su operación en el diagrama de clases de diseño, y cada clase del diagrama corresponde a
+una clase del código o a una colaboración propuesta, como lo dice la tabla de implementación de
+cada diagrama. Los 198 diagramas de interacción en la notación de Larman se cruzan contra las
+clases de diseño que se derivan de ellos (las del diagrama de §5.1 y §5.2).
 
 | | |
 |---|---|
-| DSD en estilo Larman cruzados | 195 |
-| Clases de diseño derivadas de ellos (41 del modelo conceptual) | 150 |
-| Operaciones derivadas | 638 |
-| Diferencias en los DSD en estilo Larman | **0** |
-| DSD anteriores, cruzados contra el código: clases referenciadas | 18 |
-| Pares clase.operación referenciados | 26 |
-| Coinciden con un método real | 24 |
-| Justificados por una excepción de su clase | 2 |
-| **Sin justificar (clases u operaciones)** | **0** |
+| Diagramas de interacción en la notación de Larman | 198 |
+| Clases de diseño del diagrama | 154 |
+| de ellas, clases de dominio (todas las del modelo conceptual) | 43 |
+| Operaciones del diagrama | 682 |
+| Mensajes sin clase u operación en el diagrama de clases | **0** |
 
-**Coherencia del diagrama de clases con los DSD.** `verificar-conformidad.py` lee los diagramas
-dibujados (`diagramas/clases-diseno/*.puml`) y comprueba que toda operación y toda clase de un
-DSD está en el diagrama; que las clases de dominio son las del modelo conceptual, con sus atributos,
-sus asociaciones, su multiplicidad y la navegabilidad que piden los mensajes; que todo mensaje entre
-objetos de dominio sin asociación tiene su dependencia; y que ninguna operación ni atributo usa
-sintaxis del código. Si un DSD cambia y el diagrama no se regenera, el chequeo falla.
+El diagrama de clases coincide con los diagramas de interacción: toda operación y toda clase de un
+diagrama está en el diagrama de clases; las clases de dominio son las del modelo conceptual, con sus
+atributos, sus asociaciones, su multiplicidad y la navegabilidad que piden los mensajes; todo mensaje
+entre objetos de dominio sin asociación tiene su dependencia; y ninguna operación ni atributo usa
+sintaxis del código.
 
-Las excepciones están escritas en el propio script, cada una con su motivo, y el script las
-vuelve a verificar contra el código en cada corrida: una excepción que deja de ser cierta
-(la función se movió, lo propuesto se construyó) hace fallar el cruce. Son de cinco tipos.
+No toda clase del diagrama es una clase del código con ese nombre. Son de tres tipos.
 
-- **La operación es una función de módulo, no un método de la clase (8).**
+- **La operación es una función de módulo, no un método de la clase.**
   `mapRoleToCancelActor` (`order/application/cancel-order.use-case.ts`), `informarTotal`
   (`common/http/total.ts`, en CU-164 y CU-165), `assertClaimTransition`
   (`claims/claim-status.machine.ts`), `coordenadasDePunto` (`common/geo/punto.ts`),
@@ -11535,17 +11618,16 @@ vuelve a verificar contra el código en cada corrida: una excepción que deja de
   `OrderService.delivered` es una función local de `getOrderStats`, `OrderTypeormRepository.scoped`
   es un método privado del adaptador del puerto `OrderRepositoryPort`, e `isUUID` es de
   `class-validator`.
-- **El participante es un módulo de funciones, un script o una abstracción, no una clase (8).**
+- **El participante es un módulo de funciones, un script o una abstracción, no una clase.**
   `OrderStatusMachine` (`order/domain/order-status.machine.ts`), `CylinderStateMachine`
   (`cylinder/domain/cylinder-state.machine.ts`), `DeliveryCodeUtil`, `PoliticaDeRegistro`,
   `depurarCambios`, el decorador `CurrentDistributor` y el script `ComandoCrearSuperAdmin`
-  (`cli/crear-superadmin.ts`) son archivos de funciones: el script exige que cada operación
-  que reciben exista como función exportada de ese archivo. `ServicioDelPerfil` es la
+  (`cli/crear-superadmin.ts`) son archivos de funciones: cada operación
+  que reciben existe como función exportada de ese archivo. `ServicioDelPerfil` es la
   abstracción de `CustomersService`, `DeliveryService` y `AdminService`, y la operación tiene
   que existir en los tres.
-- **Colaboración propuesta, sin código (planificada).** 31 clases y 38 operaciones que el
-  Documento 3 marca como propuestas, cada una con el caso de uso al que responde, y que el script
-  verifica que sigan sin existir:
+- **Colaboración propuesta, sin código.** Las clases y operaciones que este
+  documento marca como propuestas, cada una con el caso de uso al que responde:
   - el carrito de compras (`CartController` y `CartService`; existen las entidades `Cart` y
     `CartItem`, CU-122 a CU-126);
   - los módulos inteligentes (CU-105 a CU-108): `FleetMaintenancePlannerService`,
@@ -11571,30 +11653,6 @@ vuelve a verificar contra el código en cada corrida: una excepción que deja de
     `TimeSlotService.update` y `UpdateTimeSlotDto` (CU-043), el aviso de cambio de dirección
     (`RealtimeDispatchPort`, CU-127) y el barrido de zonas vencidas `CoverageZoneCronService`
     (CU-151).
-
-Cada DSD con operaciones o clases propuestas lo dice en su párrafo de clases participantes.
-
-**Lo que se corrigió en los DSD.** Los mensajes que nombraban algo que no existe, cuando el
-código hace lo mismo con otro nombre u otra forma:
-
-- CU-008 y CU-009: `applyCancellationPolicy` y `restoreStock` no existen; la política y la
-  restitución de stock ocurren dentro de `CancelOrderUseCase.execute`, que llama a
-  `GasCylinderService.restituirStock`.
-- CU-136, CU-137 y CU-138: el estado de vencimiento y el bloqueo no los calcula
-  `FleetTaskService.create` sino `FleetTaskMapper.toDto`.
-- CU-098: no hay una función `isAdmin`; el controlador compara `user.role` con `SUPER_ADMIN`.
-  CU-099 se corrigió en el mismo sentido.
-- CU-068 y CU-070: `OrderLookupService.findOne` es `findRef(orderId, distributorId)`.
-- CU-096: la validación del cuerpo la hace el `ValidationPipe` con los decoradores del DTO,
-  no un método `validar` del DTO.
-- CU-149: el aviso al chofer es `NotificationsService.sendOfferPushToDriver`.
-- CU-151: los nombres reales del cerrojo son `RedisService.acquireLock` y `Lock.release`.
-- CU-150: se reescribió el DSD completo. No hay un endpoint de vigencia aparte: `validFrom` y
-  `validUntil` se programan con `PATCH /coverage-zones/:id`
-  (`CoverageZoneController.update` y `CoverageZoneService.update`), y la única regla es que
-  `validUntil` sea posterior a `validFrom`.
-- Todos los DSD que nombraban el decorador como `CurrentDistributorDecorator` usan el nombre
-  real, `CurrentDistributor`.
 
 ---
 
@@ -11641,8 +11699,7 @@ compromete dinero.**
 | Desemboca en | CU-081 Consultar los Pedidos Asignados al Chofer, CU-017 Actualizar Ubicación GPS del Chofer, CU-018 Marcar Pedido "En Camino" |
 | Comparte mecánica con | CU-149 Despachar un Pedido Express a un Chofer en Moto |
 
-**Archivos:** `src/order/application/dispatch-orchestrator.service.ts` (orquestador),
-`src/order/dispatch.service.ts` (proceso temporal), entidad `DispatchOffer`.
+**Componentes:** `DispatchOrchestratorService` (orquestador), `DispatchService` (proceso temporal) y la entidad `DispatchOffer`.
 
 #### Descripción
 
@@ -11733,7 +11790,7 @@ de otra distribuidora.
 | Ventana de aceptación | 30 segundos | `OFFER_TTL_SECONDS` |
 | Frecuencia de revisión de vencimientos | cada 15 segundos | `@Cron('*/15 * * * * *')` |
 
-> Los dos primeros son hoy constantes de clase. Llevarlos a configuración por
+> Los dos primeros son constantes de clase. Llevarlos a configuración por
 > distribuidora es el caso de uso CU-171 (planificado, I-1).
 
 #### Por qué no es una consulta
@@ -11792,7 +11849,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 227 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
+**Figura 242 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
 
 ---
 
@@ -12082,7 +12139,7 @@ opciones y lo presenta; la contratación la asume siempre una persona.
 #### Diagrama de secuencia
 
 Diagrama de secuencia del sistema: **DSS — CU-105**, documento 2 seccion 2.1.  
-Diagrama de interaccion de diseno: **DSD — CU-105**, seccion 4 de este documento.
+Diagrama de interacción de diseño: **DSD — CU-105**, sección 4.19 de este documento.
 
 ### 6.3 Módulo M3 — Anticipación de recompra por consumo estimado
 
@@ -12186,7 +12243,7 @@ El cliente recibió una invitación a reponer con vigencia limitada y el pedido 
 #### Diagrama de secuencia
 
 Diagrama de secuencia del sistema: **DSS — CU-106**, documento 2 seccion 2.1.  
-Diagrama de interaccion de diseno: **DSD — CU-106**, seccion 4 de este documento.
+Diagrama de interacción de diseño: **DSD — CU-106**, sección 4.19 de este documento.
 
 ### 6.4 Módulo M4 — Agrupación inteligente de pedidos por recorrido
 
@@ -12277,7 +12334,7 @@ Quedó ofrecido al chofer un recorrido como lote ordenado por secuencia de entre
 #### Diagrama de secuencia
 
 Diagrama de secuencia del sistema: **DSS — CU-107**, documento 2 seccion 2.1.  
-Diagrama de interaccion de diseno: **DSD — CU-107**, seccion 4 de este documento.
+Diagrama de interacción de diseño: **DSD — CU-107**, sección 4.19 de este documento.
 
 ### 6.5 Módulo M5 — Recuperación de envases no devueltos
 
@@ -12387,354 +12444,101 @@ El cliente recibió el paso de gestión que le correspondía en la secuencia esc
 #### Diagrama de secuencia
 
 Diagrama de secuencia del sistema: **DSS — CU-108**, documento 2 seccion 2.1.  
-Diagrama de interaccion de diseno: **DSD — CU-108**, seccion 4 de este documento.
+Diagrama de interacción de diseño: **DSD — CU-108**, sección 4.19 de este documento.
 
 ## 7. Pantallas UI — Wireframes y Diagramas
 
-> Esta sección documenta los **assets visuales** del sistema (wireframes y diagramas UML) que acompañan cada CU Real de §3. Los wireframes están renderizados en HTML/CSS y los diagramas en Mermaid, todos listos para screenshot o exportar PNG sin requerir Lucidchart.
+Esta sección reúne los wireframes de las pantallas que acompañan a los casos de uso reales de la sección 3, la ubicación de cada tipo de diagrama UML y el modelo de datos.
 
-### 7.1 Wireframes — Inventario y Ubicación
+### 7.1 Wireframes — Inventario
 
-Los **9 wireframes** del sistema están renderizados en [`design/wireframes.html`](design/wireframes.html) usando phone frames CSS para móvil y desktop browser frames para Panel Admin. Listos para screenshot directo (Cmd+Shift+4 en macOS).
+El diseño comprende **9 pantallas**: seis en teléfono móvil (App Cliente y App Chofer) y dos en escritorio (Panel Admin).
 
-| ID | Pantalla | App | CU asociado | Frame |
+| ID | Pantalla | App | CU asociado | Formato |
 |----|----------|-----|------------|-------|
-| **D-16** | Catálogo de Productos | App Cliente | CU-041 | Móvil 294px |
-| **D-17** | Checkout (carrito + franja + pago) | App Cliente | CU-005 | Móvil 294px |
-| **D-18** | Seguimiento en Tiempo Real | App Cliente | CU-017, CU-021 | Móvil 294px |
-| **D-19** | Login y Registro | App Cliente / App Chofer / Admin | CU-001, CU-002 | Móvil 294px |
-| **D-20** | Home del Chofer (toggle disponibilidad) | App Chofer | CU-022 | Móvil 294px |
-| **D-21** | Pedido Entrante (bottom sheet) | App Chofer | CU-015 | Móvil 294px |
-| **D-22** | En Ruta (mapa + confirmar entrega) | App Chofer | CU-018, CU-020 | Móvil 294px |
-| **D-23** | Dashboard del Admin | Panel Admin | CU-026 | Desktop 880px |
-| **D-24** | Listado de Pedidos (Admin) | Panel Admin | CU-011 | Desktop 880px |
+| **D-16** | Catálogo de Productos | App Cliente | CU-041 | Móvil |
+| **D-17** | Checkout (carrito + franja + pago) | App Cliente | CU-005 | Móvil |
+| **D-18** | Seguimiento en Tiempo Real | App Cliente | CU-017, CU-021 | Móvil |
+| **D-19** | Login y Registro | App Cliente / App Chofer / Admin | CU-001, CU-002 | Móvil |
+| **D-20** | Home del Chofer (toggle disponibilidad) | App Chofer | CU-022 | Móvil |
+| **D-21** | Pedido Entrante (bottom sheet) | App Chofer | CU-015 | Móvil |
+| **D-22** | En Ruta (mapa + confirmar entrega) | App Chofer | CU-018, CU-020 | Móvil |
+| **D-23** | Dashboard del Admin | Panel Admin | CU-026 | Escritorio |
+| **D-24** | Listado de Pedidos (Admin) | Panel Admin | CU-011 | Escritorio |
 
-**Cómo capturarlos como PNG individuales:**
+#### D-16 — Catálogo de Productos (App Cliente)
 
-1. Abrir `docs/design/wireframes.html` en el navegador (doble clic).
-2. Hacer scroll hasta la pantalla deseada.
-3. Cmd+Shift+4 (macOS) o Win+Shift+S (Windows) para captura selectiva.
-4. Guardar en `docs/design/` con el nombre indicado en el wireframe (ej: `ui-cliente-checkout.png`).
+UI App Cliente. Lista de garrafas disponibles con precio, stock y selector de cantidad.
 
-#### Códigos de los wireframes
+![D-16 Catálogo de Productos (App Cliente)](diagramas/wireframes/D-16.png)
 
-Los 9 wireframes están renderizados en `design/wireframes.html`, que es la versión
-presentable. Se incluye además el código de cada uno para poder regenerarlos o
-modificarlos sin depender del archivo HTML.
+**Figura 243 — D-16 — Catálogo de Productos (App Cliente)**
 
-#### D-16 — Wireframe — Catálogo de Productos (App Cliente)
+#### D-17 — Checkout (App Cliente)
 
-**Plantilla cátedra (Doc 3 §7 / CU-041):** UI App Cliente. Lista de garrafas disponibles con precio, stock y selector de cantidad.  
-**Guardar como:** `docs/design/ui-cliente-catalogo.png`  
-**Insertar en:** Doc 3 §3.1 (CU-005 pantallas) como primera pantalla del flujo
+UI App Cliente. Formulario de confirmación del pedido con resumen, dirección, franja horaria, fecha y método de pago.
 
-**Componentes Lucidchart/Excalidraw:**
-- `SearchBar`: rectángulo con placeholder texto + icono lupa
-- `BannerDireccion`: rectángulo con icono pin + texto dirección + botón Cambiar
-- `ProductCard`: rectángulo redondeado con imagen + nombre + stock + precio + botones +/-
-- `FABCarrito`: rectángulo redondeado verde en la parte inferior (igual Rappi)
+![D-17 Checkout (App Cliente)](diagramas/wireframes/D-17.png)
 
-```
-┌──────────────────────┐
-│ (lupa)  Buscar garrafas  │   ← SearchBar
-├──────────────────────┤
-│ (pin) Av. San Martín... │   ← Banner dirección
-│         [Cambiar]    │
-├──────────────────────┤
-│  Garrafas disponibles│   ← Título sección
-├──────────────────────┤
-│ ┌─────┐  Garrafa 10kg│
-│ │ img │  Stock: 25   │   ← ProductCard
-│ │     │  $4.500      │
-│ └─────┘  [−] 2 [+]   │
-├──────────────────────┤
-│ ┌─────┐  Garrafa 15kg│
-│ │ img │  Stock: 12   │
-│ │     │  $6.200      │
-│ └─────┘  [−] 0 [+]   │
-├──────────────────────┤
-│ ┌─────┐  Garrafa 45kg│
-│ │ img │  Stock: 5    │
-│ │     │  $15.000     │
-│ └─────┘  [−] 0 [+]   │
-├──────────────────────┤
-│  [(carrito) Ver pedido $9.000] │  ← FAB verde (flotante)
-└──────────────────────┘
-```
+**Figura 244 — D-17 — Checkout (App Cliente)**
 
----
+#### D-18 — Seguimiento en Tiempo Real (App Cliente)
 
-#### D-17 — Wireframe — Checkout (App Cliente)
+UI más importante de la app. Mapa con pin del chofer en movimiento + stepper de estados (igual PedidosYa) + card del chofer.
 
-**Plantilla cátedra (Doc 3 §7 / CU-005):** UI App Cliente. Formulario de confirmación del pedido con resumen, dirección, franja horaria, fecha y método de pago.  
-**Guardar como:** `docs/design/ui-cliente-checkout.png`  
-**Insertar en:** Doc 3 §3.1 (CU-005) flujo de pantallas
+![D-18 Seguimiento en Tiempo Real (App Cliente)](diagramas/wireframes/D-18.png)
 
-```
-┌──────────────────────┐
-│ ←  Confirmar pedido  │   ← NavigationBar
-├──────────────────────┤
-│  RESUMEN DEL PEDIDO  │
-│  Garrafa 10kg × 2    │
-│  Descuento 5%  −$450 │
-│  Subtotal:   $8.550  │
-├──────────────────────┤
-│  DIRECCIÓN           │
-│  [(pin) Seleccionar en mapa]│
-│  [(lista) Mis direcciones]│
-├──────────────────────┤
-│  FRANJA HORARIA      │
-│  ○ Mañana  09:00-13:00│   ← RadioButton
-│  ● Tarde   17:00-21:00│   ← Seleccionado
-├──────────────────────┤
-│  FECHA DE ENTREGA    │
-│  [(cal.) Hoy 03/05/2026] │
-├──────────────────────┤
-│  MÉTODO DE PAGO      │
-│  ● Efectivo          │
-│  ○ MercadoPago       │
-│  ○ Transferencia+10% │   ← Badge de recargo
-├──────────────────────┤
-│  TOTAL: $8.550       │
-│  [CONFIRMAR PEDIDO]  │   ← Botón primario
-└──────────────────────┘
-```
+**Figura 245 — D-18 — Seguimiento en Tiempo Real (App Cliente)**
 
----
+#### D-19 — Login y Registro (App Cliente + Chofer)
 
-#### D-18 — Wireframe — Seguimiento en Tiempo Real (App Cliente)
+UI de autenticación compartida por App Cliente y App Chofer.
 
-**Plantilla cátedra (Doc 3 §7 / CU-017 + CU-021):** UI más importante de la app. Mapa con pin del chofer en movimiento + stepper de estados (igual PedidosYa) + card del chofer.  
-**Guardar como:** `docs/design/ui-cliente-tracking.png`  
-**Insertar en:** Doc 3 §3.5 (CU-017) pantallas
+![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19a.png)
 
-**Componentes clave:**
-- Mapa: rectángulo gris claro con marcadores ((pin) casa del cliente, (auto) chofer)
-- Stepper: 4 círculos conectados con línea, el actual coloreado (igual PedidosYa)
-- Card chofer: rectángulo blanco con nombre, vehículo y ETA
+**Figura 246 — D-19 — Login y Registro (App Cliente + Chofer)**
 
-```
-┌──────────────────────┐
-│ ←  Tu pedido #1234   │   ← NavigationBar
-├──────────────────────┤
-│                      │
-│   [  MAPA GOOGLE  ]  │   ← Frame mapa (fondo gris/verde)
-│                      │
-│      (pin) Tu casa      │
-│        ↑             │
-│      (auto) Juan G.      │   ← Marcador con avatar del chofer
-│                      │
-├──────────────────────┤
-│ (ok) ── (ok) ── (o) ── ( ) │   ← Stepper de estados
-│ Pend. Acept Camino Entregado│
-│             ↑ actual │
-├──────────────────────┤
-│ (persona) Juan García       │   ← Card del chofer
-│ (auto) Renault Kangoo    │
-│ (reloj) ETA: ~15 minutos  │
-├──────────────────────┤
-│ [(tel.) Llamar] [Cancelar]│   ← Botones de acción
-└──────────────────────┘
-```
+![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19b.png)
 
----
+#### D-20 — Home del Chofer (App Chofer)
 
-#### D-19 — Wireframe — Login y Registro (App Cliente + Chofer)
+UI principal del chofer. Mapa con su posición actual + toggle grande de disponibilidad (igual Rappi Repartidor).
 
-**Plantilla cátedra (Doc 3 §7 / CU-001 + CU-002):** UI de autenticación compartida por App Cliente y App Chofer.  
-**Guardar como:** `docs/design/ui-login.png`  
-**Insertar en:** Doc 3 (sección Login)
+![D-20 Home del Chofer (App Chofer)](diagramas/wireframes/D-20.png)
 
-```
---- Pantalla Login ---          --- Pantalla Registro ---
-┌──────────────────────┐        ┌──────────────────────┐
-│                      │        │ ←  Crear cuenta      │
-│    (logo)  SPLG Gas      │        ├──────────────────────┤
-│                      │        │  Nombre completo     │
-├──────────────────────┤        │  [Nombre Apellido]   │
-│  Email               │        ├──────────────────────┤
-│  [usuario@mail.com]  │        │  Email               │
-├──────────────────────┤        │  [usuario@mail.com]  │
-│  Contraseña          │        ├──────────────────────┤
-│  [••••••••] (ver)       │        │  Teléfono            │
-├──────────────────────┤        │  [+54 9 XXX XXXX]    │
-│    [  INGRESAR  ]    │        ├──────────────────────┤
-├──────────────────────┤        │  Contraseña          │
-│  ¿No tenés cuenta?   │        │  [Min. 6 caracteres] │
-│    [REGISTRARSE]     │        ├──────────────────────┤
-└──────────────────────┘        │   [CREAR CUENTA]     │
-                                └──────────────────────┘
-```
+**Figura 247 — D-20 — Home del Chofer (App Chofer)**
 
----
+#### D-21 — Pedido Entrante Bottom Sheet (App Chofer)
 
-#### D-20 — Wireframe — Home del Chofer (App Chofer)
+UI de pedido entrante. Bottom sheet que sube desde abajo con datos del pedido, distancia y botones Aceptar/Rechazar (igual Rappi).
 
-**Plantilla cátedra (Doc 3 §7 / CU-022):** UI principal del chofer. Mapa con su posición actual + toggle grande de disponibilidad (igual Rappi Repartidor).  
-**Guardar como:** `docs/design/ui-chofer-home.png`  
-**Insertar en:** Doc 3 §3.2 (CU-013) pantallas del chofer
+![D-21 Pedido Entrante Bottom Sheet (App Chofer)](diagramas/wireframes/D-21.png)
 
-```
-┌──────────────────────┐
-│  Hola, Juan        │   ← Header con nombre
-│ Pedidos hoy: 3       │
-├──────────────────────┤
-│                      │
-│  [   MAPA GOOGLE  ]  │   ← Mapa con pin del chofer
-│                      │
-│        (pin) Yo         │
-│                      │
-├──────────────────────┤
-│  DISPONIBILIDAD      │
-│ ┌────────────────┐   │
-│ │  (on)  ACTIVO    │   │   ← Toggle Switch grande
-│ │  [══════════●] │   │     (verde = activo)
-│ └────────────────┘   │
-├──────────────────────┤
-│  Ganancias hoy: $X   │   ← Mini stat
-└──────────────────────┘
-```
+**Figura 248 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)**
 
----
+#### D-22 — En Ruta (App Chofer)
 
-#### D-21 — Wireframe — Pedido Entrante Bottom Sheet (App Chofer)
+UI del chofer navegando hacia el cliente. Mapa con ruta trazada + botones Avisar Llegada y Confirmar Entrega.
 
-**Plantilla cátedra (Doc 3 §7 / CU-015):** UI de pedido entrante. Bottom sheet que sube desde abajo con datos del pedido, distancia y botones Aceptar/Rechazar (igual Rappi).  
-**Guardar como:** `docs/design/ui-chofer-pedido-entrante.png`  
-**Insertar en:** Doc 3 §3.4 (CU-015) pantallas
+![D-22 En Ruta (App Chofer)](diagramas/wireframes/D-22.png)
 
-```
-┌──────────────────────┐
-│                      │
-│  [  MAPA - fondo  ]  │   ← Mapa completo de fondo
-│                      │
-│  ┌────────────────┐  │
-│  │ (!) NUEVO PEDIDO│  │   ← Bottom Sheet (sube desde abajo)
-│  │────────────────│  │
-│  │ (pin) Av. San     │  │
-│  │    Martín 1234 │  │
-│  │────────────────│  │
-│  │ • Garrafa 10kg │  │
-│  │   × 2 unidades │  │
-│  │────────────────│  │
-│  │ $ Total: $9.000│ │
-│  │ (dist.) Dist: 2.3km │  │
-│  │────────────────│  │
-│  │   (reloj) 28 seg ... │  │   ← Countdown timer
-│  │────────────────│  │
-│  │ [(ok) ACEPTAR]   │  │   ← Botón verde
-│  │ [x RECHAZAR]  │  │   ← Botón rojo
-│  └────────────────┘  │
-└──────────────────────┘
-```
+**Figura 249 — D-22 — En Ruta (App Chofer)**
 
----
+#### D-23 — Dashboard Administrador (Panel Web)
 
-#### D-22 — Wireframe — En Ruta (App Chofer)
+UI Panel Web. Dashboard con KPIs del día, choferes activos y gráfico de ventas últimos 7 días.
 
-**Plantilla cátedra (Doc 3 §7 / CU-018 + CU-020):** UI del chofer navegando hacia el cliente. Mapa con ruta trazada + botones Avisar Llegada y Confirmar Entrega.  
-**Guardar como:** `docs/design/ui-chofer-en-ruta.png`  
-**Insertar en:** Doc 3 §3.6 (CU-020) pantallas
+![D-23 Dashboard Administrador (Panel Web)](diagramas/wireframes/D-23.png)
 
-```
-┌──────────────────────┐
-│ ←  Entrega en curso  │   ← NavigationBar
-├──────────────────────┤
-│                      │
-│  [  MAPA + RUTA  ]   │   ← Mapa con ruta trazada A→B
-│   ┄┄┄┄┄┄┄┄┄┄┄┄┄┄    │
-│   (casa) Destino         │
-│         ↑            │
-│        (auto)            │
-│                      │
-├──────────────────────┤
-│ (usuario) Cliente: María G. │   ← Info card
-│ (pin) Av. Corrientes 456│
-│ (dist.) 1.8 km restantes  │
-├──────────────────────┤
-│ [(aviso) AVISAR LLEGADA]  │   ← Botón outline
-│ [(ok) CONFIRMAR ENTREGA]│   ← Botón primario verde
-└──────────────────────┘
-```
+**Figura 250 — D-23 — Dashboard Administrador (Panel Web)**
 
----
+#### D-24 — Listado de Pedidos Admin (Panel Web)
 
-#### D-23 — Wireframe — Dashboard Administrador (Panel Web)
+UI Panel Web. Tabla paginada con todos los pedidos, filtros y badges de estado de colores.
 
-**Plantilla cátedra (Doc 3 §7 / CU-026):** UI Panel Web. Dashboard con KPIs del día, choferes activos y gráfico de ventas últimos 7 días.  
-**Guardar como:** `docs/design/ui-admin-dashboard.png`  
-**Insertar en:** Doc 3 §7 (pantallas admin)
+![D-24 Listado de Pedidos Admin (Panel Web)](diagramas/wireframes/D-24.png)
 
-> Frame para Panel Web: **1280 × 800 px** en Lucidchart (desktop, no mobile)
-
-```
-┌──────────────────────────────────────────────┐
-│ (logo) SPLG Admin  [Pedidos][Choferes][Productos]│   ← Navbar
-├────────┬─────────────────────────────────────┤
-│        │  (grafico) Dashboard — 03/05/2026           │
-│ MENÚ   │  ┌────────┐ ┌────────┐ ┌────────┐  │
-│        │  │  12    │ │   7    │ │   3    │  │
-│ Pedidos│  │Pedidos │ │Entreg. │ │Activos │  │
-│ Choferes  │ hoy   │ │  hoy   │ │choferes│  │
-│ Productos │└────────┘ └────────┘ └────────┘  │
-│ Stock  │  ┌────────┐ ┌────────┐             │
-│ Reclamos  │$84.500 │ │   1    │             │
-│        │  │Ventas  │ │Reclamo │             │
-│        │  │  hoy   │ │Pend.   │             │
-│        │  └────────┘ └────────┘             │
-│        │                                     │
-│        │  Ventas últimos 7 días              │
-│        │  ▓  ▓  ▓  ▓  ▓  ▓  ▓               │
-│        │  L  M  X  J  V  S  D               │
-└────────┴─────────────────────────────────────┘
-```
-
----
-
-#### D-24 — Wireframe — Listado de Pedidos Admin (Panel Web)
-
-**Plantilla cátedra (Doc 3 §7 / CU-011):** UI Panel Web. Tabla paginada con todos los pedidos, filtros y badges de estado de colores.  
-**Guardar como:** `docs/design/ui-admin-pedidos.png`  
-**Insertar en:** Doc 3 §7 (pantallas admin)
-
-```
-┌──────────────────────────────────────────────┐
-│ Pedidos  [Estado ▼] [Fecha ▼] [(lupa) Buscar]   │   ← Toolbar con filtros
-├──────────────────────────────────────────────┤
-│ ID    │ Cliente   │ Total   │ Estado    │ Ver│
-├───────┼───────────┼─────────┼───────────┼────┤
-│ #1234 │ María G.  │ $9.000  │ (o) Camino │ (ver) │
-│ #1233 │ Carlos P. │ $4.500  │ (ok) Entregado│ (ver) │
-│ #1232 │ Ana R.    │ $13.000 │ Aceptado│ (ver) │
-│ #1231 │ Luis M.   │ $6.200  │ (espera) Pendiente│(ver) │
-│ #1230 │ Julia S.  │ $4.500  │ x Cancelado│(ver) │
-├──────────────────────────────────────────────┤
-│   [← Anterior]   Página 1 de 12   [Siguiente →] │
-└──────────────────────────────────────────────┘
-```
-
----
-
-
-
-Una vez renderizados y exportados, insertar cada imagen en los documentos con el siguiente markdown:
-
-```markdown
-> ![Descripción](nombre-archivo.png)
-> *Figura X — Descripción — CU-XXX*
-```
-
-| Diagrama | Archivo | Insertar en |
-|---|---|---|
-| Casos de uso del sistema | `diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png` | Doc 0 §6 · Doc 1 §3 |
-| Casos de uso por subsistema | `diagramas/uml/CU_SS-NN_*.png` (18) | Doc 1 §4.3 |
-| Secuencia del sistema | `diagramas/png/DSS_CU-NNN_*.png` (149) | Doc 2 §2.1 |
-| Interacción de diseño | `diagramas/png/DSD_CU-NNN_*.png` (103) | Doc 3 §4 |
-
-Cada archivo lleva el código y el nombre del caso de uso, de modo que se ubica sin
-abrirlo. El detalle caso por caso está en `INDICE-IMAGENES.md`. En los documentos HTML
-de `drive/`, cada diagrama figura como un recuadro con el nombre exacto del archivo que
-hay que insertar en ese lugar.
+**Figura 251 — D-24 — Listado de Pedidos Admin (Panel Web)**
 
 ---
 
@@ -12758,13 +12562,7 @@ Los wireframes siguen el patrón visual de las apps líderes del segmento (Rappi
 
 ### 7.3 Diagramas UML — Ubicación
 
-Los diagramas de secuencia, el modelo conceptual, el de clases y el entidad-relación están en
-Mermaid, dentro del documento que corresponde a cada uno. Los de casos de uso, estados,
-actividad, componentes, despliegue y el cronograma son imágenes generadas con PlantUML, que se
-guardan en `diagramas/uml/` junto a su fuente. El catálogo unificado de casos de uso, con sus
-diagramas de secuencia, está en `Casos-de-Uso.md`. Los diagramas Mermaid son pegables en
-[mermaid.live](https://mermaid.live), en draw.io (*Extras → Editar diagrama*) y en Lucidchart
-(*Importar datos → Mermaid*).
+Cada tipo de diagrama figura en el documento que le corresponde, según la tabla siguiente.
 
 | Tipo | Dónde está | Documento |
 |------|-----------|-----------|
@@ -12785,24 +12583,15 @@ diagramas de secuencia, está en `Casos-de-Uso.md`. Los diagramas Mermaid son pe
 
 ### 7.4 Diagrama Entidad-Relación y Diccionario de Datos
 
-Modelo de datos de las **40 tablas** implementadas, leído de la base en ejecución (no se
-mantiene a mano: lo genera `generar-modelo-datos.py`, en la raíz del repositorio, y se
-corre de nuevo si la base cambia). Comprende 411 columnas y **93 claves foráneas, todas
-declaradas** — no quedan relaciones sin `FOREIGN KEY`. A diferencia del modelo conceptual
+Modelo de datos de las **40 tablas** del sistema. Comprende 411 columnas y **93 claves foráneas, todas
+declaradas**: no quedan relaciones sin `FOREIGN KEY`. A diferencia del modelo conceptual
 del Documento 2 —que describe el dominio del problema—, éste es el modelo de la solución:
 incluye claves primarias y foráneas, tipos de dato, restricciones e índices.
 
-Por el tamaño (40 tablas), esta sección da el inventario completo y el diagrama
-entidad-relación completo, partido por contexto de negocio para que cada lámina se pueda
-leer, pero **no repite acá el diccionario columna por columna**: eso vive, siempre
-actualizado, en `diagramas/base-de-datos/SPLG-modelo-de-datos.md`, con descripción, valor
-por defecto, `CHECK`, índices y las claves únicas de cada tabla. Mantener esa segunda copia
-a mano fue justamente lo que hizo que esta sección quedara desactualizada (quedó atrás de
-tres migraciones, ver Lista de Cambios); no se repite el error.
-
-Los bloques `erDiagram` son Mermaid embebido (la fuente vive en
-`diagramas/base-de-datos/SPLG-der-mermaid.md`) e importables en draw.io
-(*Extras → Editar diagrama*), en Mermaid Live y en Lucidchart (*Importar datos → Mermaid*).
+Por el tamaño, esta sección da el inventario completo y el diagrama entidad-relación completo,
+partido por contexto de negocio para que cada lámina se pueda leer. El diccionario columna por
+columna, con descripción, valor por defecto, `CHECK`, índices y claves únicas de cada tabla,
+acompaña a la documentación como el archivo `SPLG-modelo-de-datos.md`.
 
 **Cardinalidades.** Cada relación se lee de la clave foránea: el lado del padre es obligatorio
 (`||`) si la columna no admite nulos y opcional (`o|`) si los admite; el lado del hijo es
@@ -12817,8 +12606,6 @@ son las de las primeras tablas, y en snake_case (`scheduled_date`, `delivery_mod
 `photo_url`), que son las de las migraciones posteriores; la tabla `claims` está en plural
 y el resto en singular. Unificarlas exigiría renombrar columnas en una base en uso, y no se
 hizo; el modelo conceptual no se ve afectado porque nombra los atributos en lenguaje natural.
-Las mismas láminas, un archivo por contexto y con las convenciones al pie, están en
-`diagramas/base-de-datos/fisico/`.
 
 #### 7.4.1 Inventario de Entidades
 
@@ -12867,7 +12654,7 @@ Las mismas láminas, un archivo por contexto y con las convenciones al pie, est�
 
 #### 7.4.2 Diagrama Entidad-Relación (Mermaid)
 
-### Organización y acceso
+##### Organización y acceso
 
 ```mermaid
 erDiagram
@@ -12947,9 +12734,9 @@ erDiagram
     }
 ```
 
-**Figura 228 — Organización y acceso**
+**Figura 252 — Organización y acceso**
 
-### Clientes
+##### Clientes
 
 ```mermaid
 erDiagram
@@ -13000,9 +12787,9 @@ erDiagram
     }
 ```
 
-**Figura 229 — Clientes**
+**Figura 253 — Clientes**
 
-### Catálogo e inventario de envases
+##### Catálogo e inventario de envases
 
 ```mermaid
 erDiagram
@@ -13091,9 +12878,9 @@ erDiagram
     }
 ```
 
-**Figura 230 — Catálogo e inventario de envases**
+**Figura 254 — Catálogo e inventario de envases**
 
-### Venta y pedidos
+##### Venta y pedidos
 
 ```mermaid
 erDiagram
@@ -13214,9 +13001,9 @@ erDiagram
     }
 ```
 
-**Figura 231 — Venta y pedidos**
+**Figura 255 — Venta y pedidos**
 
-### Pagos
+##### Pagos
 
 ```mermaid
 erDiagram
@@ -13241,9 +13028,9 @@ erDiagram
     }
 ```
 
-**Figura 232 — Pagos**
+**Figura 256 — Pagos**
 
-### Despacho y logística
+##### Despacho y logística
 
 ```mermaid
 erDiagram
@@ -13283,9 +13070,9 @@ erDiagram
     }
 ```
 
-**Figura 233 — Despacho y logística**
+**Figura 257 — Despacho y logística**
 
-### Flota y choferes
+##### Flota y choferes
 
 ```mermaid
 erDiagram
@@ -13413,9 +13200,9 @@ erDiagram
     }
 ```
 
-**Figura 234 — Flota y choferes**
+**Figura 258 — Flota y choferes**
 
-### Posventa
+##### Posventa
 
 ```mermaid
 erDiagram
@@ -13459,9 +13246,9 @@ erDiagram
     }
 ```
 
-**Figura 235 — Posventa**
+**Figura 259 — Posventa**
 
-### Relaciones entre contextos
+##### Relaciones entre contextos
 
 Las que cruzan de un contexto a otro (ya sin repetir la entidad completa; sus columnas están en la lámina de su propio contexto). La relación con `distributor` se omite acá también por lo mismo que en el conceptual: prácticamente todo pertenece a una distribuidora.
 
@@ -13508,22 +13295,20 @@ erDiagram
     CYLINDER_RECOVERY_CASE }o--|| USER : "user_id"
 ```
 
-**Figura 236 — Relaciones entre contextos**
+**Figura 260 — Relaciones entre contextos**
 
 
 #### 7.4.3 Diccionario de Datos
 
 El diccionario completo de las 40 tablas —columna, tipo, obligatoriedad, clave, referencia,
-default, descripción, restricciones `CHECK` e índices— está en
-[`diagramas/base-de-datos/SPLG-modelo-de-datos.md`](../diagramas/base-de-datos/SPLG-modelo-de-datos.md),
-generado por `generar-modelo-datos.py` desde la base en ejecución. La descripción de cada
-columna se toma del comentario de la entidad de TypeORM que la define; las columnas sin
-comentario en el código figuran ahí como «sin descripción documentada en el código» en vez
-de inventarse una — hoy son 64 de 398.
+default, descripción, restricciones `CHECK` e índices— acompaña a la documentación como el
+archivo `SPLG-modelo-de-datos.md`. La descripción de cada columna se toma del comentario de la
+entidad de TypeORM que la define; las columnas sin comentario en el código figuran allí como
+«sin descripción documentada en el código» en vez de inventarse una (son 64 de 398).
 
 #### 7.4.4 Tipos enumerados
 
-**34 tipos enumerados** (antes se documentaban 15; ver Lista de Cambios). El detalle de los
+**34 tipos enumerados**. El detalle de los
 valores de cada uno está en la sección «Tipos enumerados» de
 `SPLG-modelo-de-datos.md`; acá sólo la lista, para no duplicar un dato que cambia con cada
 migración:
@@ -13579,12 +13364,12 @@ como deuda, con su corrección concreta:
 - **Faltan `CHECK` de rango.** `rating.stars` dice «de 1 a 5» en la descripción pero nada
   lo impide en la base (correspondería `CHECK (stars BETWEEN 1 AND 5)`); lo mismo
   `order_item.quantity > 0`, montos `>= 0` y `time_slot."endTime" > "startTime"` con
-  `capacity > 0`. Hoy sólo hay `CHECK` en `gas_cylinder_promotion` (2) y `coverage_zone` (1).
-- **Faltan `UNIQUE` de negocio.** `distributor.tax_id` (CUIT) no es único — hoy hay 136
+  `capacity > 0`. Sólo hay `CHECK` en `gas_cylinder_promotion` (2) y `coverage_zone` (1).
+- **Faltan `UNIQUE` de negocio.** `distributor.tax_id` (CUIT) no es único: hay 136
   filas con CUIT y sólo 5 valores distintos—, ni `user_address` tiene
   `UNIQUE (user_id) WHERE "isDefault"`, ni `time_slot` tiene
   `UNIQUE (distributor_id, name)`.
-- **`car.type_car` es texto libre.** Hoy conviven «Camión», «camioneta», «Camioneta»,
+- **`car.type_car` es texto libre.** En la base conviven «Camión», «camioneta», «Camioneta»,
   «moto», «Moto», «Utilitario» para lo que el dominio modela como tres valores
   (§1.4 del Documento 2). Correspondería un tipo enumerado o un `CHECK`.
 - **Cuatro columnas de fecha sin zona horaria**, junto a todo el resto del esquema en
@@ -13612,6 +13397,8 @@ con una clave foránea, con el nombre y el sentido de lectura de la asociación.
 cardinalidades son las que impone la base (ver 7.4.2). La Distribuidora está relacionada con
 todos los conceptos que le pertenecen; las demás claves a `distributor` son la pertenencia de
 cada fila a su distribuidora y no se dibujan, igual que en el Documento 2.
+
+Varias relaciones salen de Usuario y no de Cliente o de Chofer, porque la clave foránea de la base apunta a `user`: el perfil (cliente, chofer o administrador) y el usuario son la misma persona, y un usuario tiene a lo sumo un perfil de cada clase. Por eso, en las vistas por área, un concepto de perfil que no tiene ninguna relación propia en la vista no se dibuja. Cada entidad lleva su identificador, y los atributos derivados se marcan con `/`.
 
 Tres conceptos no tienen tabla propia: PropuestaConVigencia es abstracto, UbicacionGPS es la
 columna `actual_location` de `delivery` e ItemSugerido se guarda como JSON dentro de
@@ -13668,46 +13455,33 @@ los atributos también se comprueba contra la base.
 
 ![Modelo entidad-relación conceptual: vista general](diagramas/base-de-datos/conceptual/SPLG-der-00-general.png)
 
-**Figura 237 — Modelo entidad-relación conceptual**
+**Figura 261 — Modelo entidad-relación conceptual**
 
 ![DER conceptual: usuarios y cuentas](diagramas/base-de-datos/conceptual/SPLG-der-01-usuarios-y-cuentas.png)
 
-**Figura 237.1 — Modelo entidad-relación conceptual: usuarios y cuentas**
+**Figura 261.1 — Modelo entidad-relación conceptual: usuarios y cuentas**
 
 ![DER conceptual: pedidos y pagos](diagramas/base-de-datos/conceptual/SPLG-der-02-pedidos-y-pagos.png)
 
-**Figura 237.2 — Modelo entidad-relación conceptual: pedidos y pagos**
+**Figura 261.2 — Modelo entidad-relación conceptual: pedidos y pagos**
 
 ![DER conceptual: despacho y propuestas con vigencia](diagramas/base-de-datos/conceptual/SPLG-der-03-despacho-y-propuestas-con-vigencia.png)
 
-**Figura 237.3 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
+**Figura 261.3 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
 
 ![DER conceptual: flota y choferes](diagramas/base-de-datos/conceptual/SPLG-der-04-flota-y-choferes.png)
 
-**Figura 237.4 — Modelo entidad-relación conceptual: flota y choferes**
+**Figura 261.4 — Modelo entidad-relación conceptual: flota y choferes**
 
 ![DER conceptual: envases y catálogo](diagramas/base-de-datos/conceptual/SPLG-der-05-envases-y-catalogo.png)
 
-**Figura 237.5 — Modelo entidad-relación conceptual: envases y catálogo**
+**Figura 261.5 — Modelo entidad-relación conceptual: envases y catálogo**
 
 ![DER conceptual: posventa](diagramas/base-de-datos/conceptual/SPLG-der-06-posventa.png)
 
-**Figura 237.6 — Modelo entidad-relación conceptual: posventa**
+**Figura 261.6 — Modelo entidad-relación conceptual: posventa**
 
 ---
-
-### 7.5 Cómo insertar imágenes en este documento
-
-Una vez exportadas las PNG, reemplazar los placeholders en cada sección de §3 (CU Real) con:
-
-```markdown
-![Pantalla Checkout](design/ui-cliente-checkout.png)
-
-**Figura 230 — Cómo insertar imágenes en este documento**
-*Figura X — CheckoutView (App Cliente) — CU-005*
-```
-
-Los `[INSERTAR IMAGEN: ...]` que aparezcan en otros docs (Doc 0 §6, Doc 1 §3, Doc 2 §1.5) se reemplazan con el mismo patrón apuntando al archivo PNG correspondiente.
 
 ---
 
@@ -13726,21 +13500,24 @@ Los `[INSERTAR IMAGEN: ...]` que aparezcan en otros docs (Doc 0 §6, Doc 1 §3, 
 
 ## 9. Trazabilidad Diseño → Análisis → Requisitos
 
-| Elemento de Diseño | Elemento Análisis (Doc 2) | CU (Doc 1) | Requisito (Doc 1) |
-|--------------------|--------------------------|------------|-------------------|
-| `DispatchOrchestratorService.offerToNextDriver()` | DSS-CU013 `asignarPorProximidad` | CU-013 | IRQ-04 |
-| `DispatchService.tick()` → `DispatchOrchestratorService.handleExpiredOffers()` / `ensureOffered()` | DSS-CU014 `reintentarConRadioExpandido` | CU-014 | IRQ-04 |
-| `CreateOrderUseCase.execute()` QueryRunner | DSS-CU005 `crearPedido` | CU-005 | IRQ-02, IRQ-03 |
-| `DriversGateway.handleDriverLocation()` | DSS-CU017 `actualizarUbicacion` | CU-017 | IRQ-05 |
-| `UpdateOrderStatusUseCase.execute(DELIVERED)` | Contrato `confirmarEntrega` | CU-020 | IRQ-06 |
-| `CheckoutViewModel.transferSurcharge` | — | CU-005 | IRQ-02 |
-| `LocationService.startTracking()` | DSS-CU017 | CU-017 | IRQ-05 |
+| Elemento de Diseño | Operación del sistema (Doc 2) | CU (Doc 1) | Requisitos (Doc 1) |
+|--------------------|-------------------------------|------------|--------------------|
+| `AuthService.login()` | `iniciarSesion` | CU-001 | IRQ-01 |
+| `CreateOrderUseCase.execute()` | `crearPedido` | CU-005 | IRQ-02, IRQ-04, IRQ-05, IRQ-07, IRQ-08 |
+| `DispatchOrchestratorService.offerToNextDriver()` | `ofrecerAlSiguienteChofer` | CU-013 | IRQ-02, IRQ-03 |
+| `DispatchService.tick()` → `DispatchOrchestratorService.handleExpiredOffers()` | `vencerOfertasExpiradas` | CU-014 | IRQ-02, IRQ-03 |
+| `UpdateOrderStatusUseCase.execute()` (estado aceptado) | `aceptarPedido` | CU-015 | IRQ-02, IRQ-03 |
+| `DriversGateway.handleDriverLocation()` | `actualizarUbicacion` | CU-017 | IRQ-03 |
+| `UpdateOrderStatusUseCase.execute()` (estado entregado) | `confirmarEntrega` | CU-020 | IRQ-02, IRQ-08 |
+| `PaymentsService.createCheckout()` y `ConfirmPaymentUseCase.execute()` | `crearCheckoutDePago` y `notificarResultadoDePago` | CU-048 | IRQ-02, IRQ-08 |
+| `ConfirmDeliveryUseCase.execute()` | `confirmarEntregaConCodigo` | CU-079 | IRQ-02, IRQ-08 |
+| `CancelOrderUseCase.execute()` | `cancelarPedido` | CU-008 | IRQ-02, IRQ-04 |
 
 ---
 
-## 10. Pendientes de Implementación (Gaps Identificados)
+## 10. Trabajo futuro
 
-Quedan sólo los pendientes: cada
+Lo que falta construir. Cada
 fila indica el caso de uso al que corresponde y la iteración del plan de construcción
 (Documento 0, §4) en que se resuelve. Todo caso de uso pendiente está especificado con sus cinco
 artefactos —caso de uso de alto nivel, expandido, diagrama de secuencia del sistema, diagrama de
@@ -13749,7 +13526,7 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 
 ### 10.1 Funcionalidad ausente
 
-| Gap | Descripción | CU | Iteración | Prioridad |
+| Pendiente | Descripción | CU | Iteración | Prioridad |
 |-----|-------------|----|:---------:|-----------|
 | Modificación de franja horaria | No existe operación de actualización: la franja se puede crear, consultar y eliminar, pero no modificar. La capacidad queda fija desde el alta. Si la capacidad nueva es menor que lo comprometido, el sistema advierte la sobrecarga y no bloquea. | CU-043 | I-1 | Crítico |
 | Reactivación de producto | Sólo existe la desactivación. El atributo que marca al producto como activo no es modificable y la validación de entrada rechaza todo campo no declarado, de modo que un producto dado de baja no puede volver al catálogo ni siquiera listarse. | CU-040 | I-1 | Crítico |
@@ -13761,7 +13538,7 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 
 ### 10.2 Parametrización pendiente
 
-| Gap | Descripción | CU | Iteración | Prioridad |
+| Pendiente | Descripción | CU | Iteración | Prioridad |
 |-----|-------------|----|:---------:|-----------|
 | Parámetros del despacho | Los pasos de radio de búsqueda y la ventana de aceptación de la oferta son constantes del programa. El módulo inteligente M1 exige que sean configurables por distribuidora. | CU-171 | I-1 | Crítico |
 | Parámetros de los procesos automáticos | La tabla de configuración por distribuidora existe, sin servicio ni endpoint: ningún parámetro de los módulos inteligentes ni de la compra express puede editarse. | CU-172 | I-1 | Importante |
@@ -13769,22 +13546,22 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 
 ### 10.3 Integridad y consistencia del modelo
 
-| Gap | Descripción | Prioridad |
+| Pendiente | Descripción | Prioridad |
 |-----|-------------|-----------|
 | Columna `isActive` deprecada en `delivery` | La habilitación administrativa (`isEnabled`) y la presencia en línea (`isAvailable`) ya son columnas separadas; ningún camino del código lee ni escribe `isActive`, que queda en su valor por omisión (`true`) desde el alta. La columna vieja sigue declarada en la entidad y en la base porque no se migró su baja. Es una deuda de limpieza de esquema, no una colisión funcional, y no corresponde a ningún caso de uso. | Menor |
 
 ### 10.4 Observaciones de seguridad
 
 Sin pendientes. Las dos operaciones que figuraban en esta sección —la consulta de un usuario por
-correo y la prueba del servicio de correo— exigen hoy autenticación y rol.
+correo y la prueba del servicio de correo— exigen autenticación y rol.
 
 ---
 
 ### 10.5 Alcance especificado y no construido
 
 Los casos de uso que siguen están documentados con sus cinco artefactos y el sistema no los realiza.
-No son omisiones del relevamiento: son el alcance que la cátedra pidió incorporar y que se
-especificó para que la construcción posterior tenga contra qué hacerse. El modelo de datos que
+No son omisiones del relevamiento: son alcance que se especificó para que la construcción
+posterior tenga contra qué hacerse. El modelo de datos que
 necesitan **ya está construido**: las diecisiete tablas y las columnas del modelo propuesto se
 incorporaron a la base el 25/09/2026. Lo que falta en cada grupo son los servicios, las operaciones
 de la API y las pantallas que usen esas tablas.
@@ -13833,21 +13610,21 @@ chofer o el administrador lo liberan, y entonces se despacha de nuevo.
 
 ![Diagrama de estados del pedido](diagramas/uml/UML_Estados_Pedido.png)
 
-**Figura 238 — Diagrama de estados del pedido**
+**Figura 262 — Diagrama de estados del pedido**
 
 
 #### Reclamo
 
 ![Diagrama de estados del reclamo](diagramas/uml/UML_Estados_Reclamo.png)
 
-**Figura 239 — Diagrama de estados del reclamo**
+**Figura 263 — Diagrama de estados del reclamo**
 
 
 #### Envase
 
 ![Diagrama de estados del envase](diagramas/uml/UML_Estados_Envase.png)
 
-**Figura 240 — Diagrama de estados del envase**
+**Figura 264 — Diagrama de estados del envase**
 
 
 #### Reserva programada
@@ -13857,21 +13634,21 @@ la seña, y el diagrama muestra cómo llega a `PENDING` o a `CANCELLED`.
 
 ![Diagrama de estados de la reserva programada](diagramas/uml/UML_Estados_Reserva.png)
 
-**Figura 241 — Diagrama de estados de la reserva programada**
+**Figura 265 — Diagrama de estados de la reserva programada**
 
 
 #### Tarea de flota
 
 ![Diagrama de estados de la tarea de flota](diagramas/uml/UML_Estados_TareaFlota.png)
 
-**Figura 242 — Diagrama de estados de la tarea de flota**
+**Figura 266 — Diagrama de estados de la tarea de flota**
 
 
 #### Oferta de despacho
 
 ![Diagrama de estados de la oferta de despacho](diagramas/uml/UML_Estados_OfertaDespacho.png)
 
-**Figura 243 — Diagrama de estados de la oferta de despacho**
+**Figura 267 — Diagrama de estados de la oferta de despacho**
 
 
 ### 11.2 Diagramas de Actividad
@@ -13884,7 +13661,7 @@ responde, el pedido pasa al siguiente candidato que no haya sido contactado ante
 
 ![Diagrama de actividad del despacho por proximidad](diagramas/uml/UML_Actividad_Despacho.png)
 
-**Figura 244 — Diagrama de actividad del despacho por proximidad**
+**Figura 268 — Diagrama de actividad del despacho por proximidad**
 
 
 #### Ciclo de vida del pedido
@@ -13894,7 +13671,7 @@ pago. Las dos ramas paralelas del tramo en camino terminan cuando el pedido qued
 
 ![Diagrama de actividad del ciclo de vida del pedido](diagramas/uml/UML_Actividad_CicloPedido.png)
 
-**Figura 245 — Diagrama de actividad del ciclo de vida del pedido**
+**Figura 269 — Diagrama de actividad del ciclo de vida del pedido**
 
 
 ---

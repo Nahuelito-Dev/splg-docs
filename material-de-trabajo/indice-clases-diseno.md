@@ -2,9 +2,9 @@
 
 Las genera `generar-clases-diseno.py`; no se editan a mano.
 
-- Clases de diseño: **154**; operaciones: **682**.
-- Por papel: adaptador: 2, coleccion: 36, dominio: 43, fabricación pura: 11, fachada: 44, puerto: 11, use case: 7.
-- Asociaciones: 227 (70 del modelo conceptual, 157 de colaboración); dependencias: 120; realizaciones: 2.
+- Clases de diseño: **152**; operaciones: **676**.
+- Por papel: coleccion: 36, controlador: 7, dominio: 43, fabricación pura: 11, fachada: 44, puerto: 11.
+- Asociaciones: 228 (70 del modelo conceptual, 158 de colaboración); dependencias: 118; realizaciones: 0.
 - Dependencias entre módulos: 68.
 
 | Vista | Archivo | Clases | Operaciones |
@@ -12,7 +12,7 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Organización y acceso (dominio) | `diagramas/clases-diseno/DC_Organizacion-y-acceso.png` | 6 | 50 |
 | Clientes (dominio) | `diagramas/clases-diseno/DC_Clientes.png` | 4 | 35 |
 | Pedido, líneas y pago (dominio) | `diagramas/clases-diseno/DC_Pedido.png` | 5 | 70 |
-| Carrito, franjas y cobertura (dominio) | `diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png` | 4 | 28 |
+| Carrito, franjas y cobertura (dominio) | `diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png` | 4 | 29 |
 | Despacho y propuestas con vigencia (dominio) | `diagramas/clases-diseno/DC_Despacho.png` | 5 | 15 |
 | Choferes y vehículos (dominio) | `diagramas/clases-diseno/DC_Choferes-y-vehiculos.png` | 5 | 53 |
 | Mantenimiento de la flota (dominio) | `diagramas/clases-diseno/DC_Mantenimiento.png` | 4 | 19 |
@@ -37,4 +37,4 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Recupero de envases (módulo) | `diagramas/clases-diseno/DC_Mod_Recupero.png` | 4 | 6 |
 | Reclamos, incidencias y calificaciones (módulo) | `diagramas/clases-diseno/DC_Mod_Posventa.png` | 5 | 18 |
 | Notificaciones y correo (módulo) | `diagramas/clases-diseno/DC_Mod_Notificaciones.png` | 3 | 18 |
-| Reportes, salud y almacenamiento (módulo) | `diagramas/clases-diseno/DC_Mod_Soporte.png` | 7 | 30 |
+| Reportes, salud y almacenamiento (módulo) | `diagramas/clases-diseno/DC_Mod_Soporte.png` | 5 | 23 |

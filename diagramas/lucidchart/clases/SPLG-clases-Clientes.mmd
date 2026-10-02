@@ -13,7 +13,7 @@ classDiagram
         + consultarPerfilCliente(usuario: Usuario): Cliente
         + editarDatosDelCliente(cliente: Cliente, cambios: Registro): Cliente
         + eliminarCliente(cliente: Cliente): Cadena
-        + listarClientes(pagina: Entero, limite: Entero): Cliente[*], Entero
+        + listarClientes(pagina: Entero, limite: Entero, out total: Entero): Cliente[*]
     }
 
     class Map_String_Cliente["Map<String, Cliente>"] {
@@ -23,7 +23,7 @@ classDiagram
 
     class List_Cliente["List<Cliente>"] {
         <<colección>>
-        + buscar(pagina: Entero, limite: Entero): Cliente[*], Entero
+        + buscar(pagina: Entero, limite: Entero, out total: Entero): Cliente[*]
         + buscarConHistorialSuficiente(): Cliente[*]
         + buscarConRecompraEstimadaDentroDe(dias: Entero): Cliente[*]
     }

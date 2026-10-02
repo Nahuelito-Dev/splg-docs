@@ -201,8 +201,9 @@
 | 4 | 2026-10-01 | Casos de uso CU-161 a CU-167: vehículo en uso por chofer (asignación, liberación, consulta e historiales) y reclamos (tomar y reabrir), con sus diagramas de secuencia y los contratos de las operaciones que modifican datos. | Nahuel Wagner |
 | 5 | 2026-10-01 | Diagramas de secuencia del sistema de CU-168 a CU-175 y los contratos de sus operaciones. Diagramas de CU-008, CU-010, CU-040, CU-043, CU-125, CU-127, CU-135, CU-148 y CU-149 ajustados a las decisiones de diseño. | Nahuel Wagner |
 | 6 | 2026-10-01 | Diagramas de secuencia del sistema en notación de Larman: lifeline `:Sistema`, actores del catálogo, salidas al actor como mensajes asíncronos con nombre y casos incluidos sin diagrama propio. Catálogo de operaciones del sistema, con una sola firma por operación, y contratos de todas las operaciones que modifican el modelo conceptual. | Nahuel Wagner |
+| 7 | 2026-10-01 | Cierre de la documentación: modelo conceptual, diagramas de secuencia del sistema en notación de Larman, catálogo de 194 operaciones y 110 contratos de operación coherentes con el código; firmas corregidas de crearRol, actualizarUbicacionDelCliente y enviarNotificacionDePrueba; actor de probarServicioDeCorreo; comportamiento de crearCheckoutDePago, notificarResultadoDePago, editarVehiculo, eliminarUsuario y cambiarDisponibilidad. | Nahuel Wagner |
+| 8 | 2026-10-01 | Revisión final: CU-048 pasa a operación interna de crearPedido (catálogo de 194 operaciones y 110 contratos), notificaciones fuera de las postcondiciones de los contratos, contratos de confirmarEntrega, ofrecerAlSiguienteChofer, crearPedido y agregarItemAlCarrito ajustados, actor ACT-09 en CU-104. | Nahuel Wagner |
 
-| 7 | 2026-10-01 | Cierre de la documentación: modelo conceptual, diagramas de secuencia del sistema en notación de Larman, catálogo de 195 operaciones y 111 contratos de operación coherentes con el código; firmas corregidas de crearRol, actualizarUbicacionDelCliente y enviarNotificacionDePrueba; actor de probarServicioDeCorreo; comportamiento de crearCheckoutDePago, notificarResultadoDePago, editarVehiculo, eliminarUsuario y cambiarDisponibilidad. | Nahuel Wagner |
 ---
 
 ## Leyenda
@@ -333,9 +334,9 @@ no distingue «cero o más» de «uno o más». Cada multiplicidad se contrasta 
 nulabilidad o la unicidad de la columna real cuando es posible; donde la base es más laxa que la
 regla de negocio, se explica en la nota que sigue a la tabla.
 
-**Categorías de asociación (Larman).** La plantilla pide agrupar las relaciones por
-categoría, con el formato «A es una parte física de B — ejemplo». Un ejemplo por
-categoría, tomado del modelo:
+**Categorías de asociación (Larman).** Las relaciones se agrupan por categoría, con el
+formato «A es una parte física de B — ejemplo». Un ejemplo por categoría, tomado del
+modelo:
 
 | Categoría de la relación | Ejemplos |
 |---|---|
@@ -468,13 +469,13 @@ en el backend antes de endurecer esta multiplicidad.
 Los nombres de atributo van en lenguaje natural, sin `snake_case`: la notación de
 identificador de columna es del modelo de datos (Documento 3), no del modelo conceptual.
 Los atributos derivados —los que se calculan a partir de otros datos del sistema y no se
-piden ni se guardan por separado— llevan `/` adelante, como indica la plantilla.
+piden ni se guardan por separado— llevan `/` adelante, como indica la notación UML.
 
 | Concepto | Atributo – Descripción |
 |----------|------------------------|
 | **Distribuidora** | nombre: Nombre comercial, el que ve el cliente. |
 | **Distribuidora** | razón social: Nombre legal de la empresa comercializadora. |
-| **Distribuidora** | CUIT: Identificación tributaria de la empresa. Hoy no funciona como clave —hay distribuidoras con el mismo valor—; corregirlo es una tarea del modelo de datos, no del dominio. |
+| **Distribuidora** | CUIT: Identificación tributaria de la empresa. No funciona como clave —hay distribuidoras con el mismo valor—; corregirlo es una tarea del modelo de datos, no del dominio. |
 | **Distribuidora** | estado: Si la distribuidora puede operar en la plataforma o está suspendida. |
 | **Usuario** | nombre: Nombre completo. |
 | **Usuario** | correo: Correo único. Identifica al usuario en la autenticación. |
@@ -632,7 +633,7 @@ atributos, nombres y multiplicidades. En cada vista por área, los conceptos en 
 pertenecen a otra vista y se muestran sólo como referencia. Toda entidad pertenece a una
 distribuidora; para no cruzar los diagramas de líneas, las vistas por área dibujan sólo las
 relaciones de la distribuidora que forman parte del negocio. El cliente no tiene atributo de
-validación: los clientes no se validan desde el 26/09.
+validación: se registra y compra sin aprobación previa.
 
 La generalización de Usuario es `{overlapping}`: nada impide que la misma persona sea Cliente
 y Chofer a la vez —cada perfil es una fila aparte, con su propia clave hacia Usuario—, y es
@@ -667,12 +668,6 @@ cinco tipos y el concepto abstracto no se instancia.
 ![Modelo conceptual: posventa](diagramas/modelo-conceptual/MC_Posventa.png)
 
 **Figura 1.6 — Modelo conceptual: posventa**
-
-**Para llevarlo a Lucidchart.** `generar-lucidchart.py` emite
-`lucidchart/SPLG-modelo-conceptual.xml`, que se importa desde *Archivo → Importar* con las
-cajas ya acomodadas, la clase de asociación y los nombres con su sentido de lectura. Las
-imágenes de esta sección y ese archivo salen del mismo modelo, `modelo_conceptual.py`, con
-`generar-modelo-conceptual.py`.
 
 ---
 
@@ -728,7 +723,7 @@ sequenceDiagram
     CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     activate SIS
     alt Hay stock y la dirección está cubierta
-        SIS-->>CLI: pedido creado (número, total, estado pendiente)
+        SIS-->>CLI: pedido creado (número, total, estado pendiente y, si el pago es por MercadoPago, enlace de pago)
         Note over CLI,SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
         SIS-)CLI: notificarConfirmacionDePedido(pedido)
     else Sin stock suficiente
@@ -1499,7 +1494,7 @@ sequenceDiagram
     CLI->>SIS: realizarCompraExpress(tipoGarrafa, medioDePago)
     activate SIS
     alt hay cobertura, horario y chofer
-        SIS-->>CLI: pedido express creado y despachado
+        SIS-->>CLI: pedido express creado y despachado (con MercadoPago, el enlace de pago)
     else no hay cobertura express o está fuera de horario
         SIS-->>CLI: se ofrece el flujo con franja horaria
     else no hay chofer en moto disponible
@@ -2329,7 +2324,7 @@ sequenceDiagram
 
 **Figura 56 — DSS CU-022: Activar / Desactivar Disponibilidad**
 
-> **Observación de análisis:** el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que hoy "fuera de turno" y "dado de baja" son indistinguibles.
+> **Observación de análisis:** el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que "fuera de turno" y "dado de baja" son indistinguibles.
 
 ---
 
@@ -3622,7 +3617,7 @@ sequenceDiagram
 
 ---
 
-### SS-08 — Gestión de Productos (Catálogo)
+### SS-08 — Gestión de Productos e Inventario
 
 #### DSS — CU-036: Crear Producto (Garrafa)
 
@@ -4697,30 +4692,19 @@ sequenceDiagram
 
 #### DSS — CU-048: Procesar Pago con MercadoPago
 
-**Actor:** Cliente (ACT-01), Sistema Automático (ACT-04), MercadoPago (ACT-06)
-**Operaciones del sistema:** `crearCheckoutDePago(pedidoId, medioDePago)`, `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)`
+**Actor:** MercadoPago (ACT-06)
+**Operaciones del sistema:** `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)`
 
 ```mermaid
 sequenceDiagram
     title DSS — CU-048 Procesar Pago con MercadoPago
     autonumber
-    actor CLI as Cliente (ACT-01)
     participant SIS as :Sistema
     actor MP as MercadoPago (ACT-06)
+    actor CLI as Cliente (ACT-01)
     actor CHO as Chofer (ACT-02)
 
-    CLI->>SIS: crearCheckoutDePago(pedidoId, medioDePago)
-    activate SIS
-    alt El pedido admite el cobro
-        SIS-->>CLI: enlace de pago y plazo de vigencia
-    else El pedido ya está pago, cancelado o entregado
-        SIS-->>CLI: rechazo por conflicto (el pedido no admite un nuevo cobro)
-    else El pedido no existe
-        SIS-->>CLI: recurso no encontrado
-    end
-    deactivate SIS
-
-    Note over CLI,CHO: El cliente paga en el sitio de la pasarela,<br/>fuera del límite del sistema
+    Note over SIS,MP: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
 
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
@@ -4743,7 +4727,7 @@ sequenceDiagram
 
 **Figura 139 — DSS CU-048: Procesar Pago con MercadoPago**
 
-> El sistema responde **siempre** con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido. El aviso al Cliente (evento `order:payment-approved` y notificación push) sale sólo en la primera confirmación del pago aprobado, no en los reintentos de la pasarela. `crearCheckoutDePago` no tiene un endpoint propio: el Cliente la dispara al confirmar un pedido con MercadoPago, y la ejecuta la creación del pedido (`crearPedido`, CU-005).
+> El sistema responde **siempre** con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido. El aviso al Cliente (evento `order:payment-approved` y notificación push) sale sólo en la primera confirmación del pago aprobado, no en los reintentos de la pasarela. El enlace de pago no lo pide el Cliente en un mensaje aparte: lo genera la propia creación del pedido (`crearPedido`, CU-005) o de la reserva (`crearReserva`, CU-072) y viaja en su respuesta. Esa colaboración interna se diagrama en el Documento 3, con el nombre `crearCheckoutDePago`.
 
 ---
 
@@ -5456,36 +5440,36 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-104 Verificar la Salud del Sistema (liveness / readiness)
     autonumber
-    actor SAU as Sistema Automático (ACT-04)
+    actor PLA as Plataforma de despliegue (ACT-09)
     participant SIS as :Sistema
 
-    Note over SAU: Sondeo periódico de la<br/>plataforma de despliegue<br/>durante toda la vida de<br/>la instancia
+    Note over PLA: Sondeo periódico de la<br/>plataforma de despliegue<br/>durante toda la vida de<br/>la instancia
 
-    SAU->>SIS: verificarVida()
+    PLA->>SIS: verificarVida()
     activate SIS
-    SIS-->>SAU: la instancia está viva
+    SIS-->>PLA: la instancia está viva
     deactivate SIS
 
-    SAU->>SIS: verificarDisponibilidad()
+    PLA->>SIS: verificarDisponibilidad()
     activate SIS
     alt Las dependencias responden
-        SIS-->>SAU: lista para recibir tráfico
+        SIS-->>PLA: lista para recibir tráfico
     else Alguna dependencia no responde
-        SIS-->>SAU: no disponible (se le retira el tráfico a la instancia)
+        SIS-->>PLA: no disponible (se le retira el tráfico a la instancia)
     end
     deactivate SIS
 
     opt Diagnóstico ampliado
-        SAU->>SIS: verificarSalud()
+        PLA->>SIS: verificarSalud()
         activate SIS
-        SIS-->>SAU: estado de cada verificación (base de datos, memoria caché, memoria en uso, espacio en disco)
+        SIS-->>PLA: estado de cada verificación (base de datos, memoria caché, memoria en uso, espacio en disco)
         deactivate SIS
     end
 ```
 
 **Figura 163 — DSS CU-104: Verificar la Salud del Sistema (liveness / readiness)**
 
-> Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, hoy sin ningún caso de uso asociado en la matriz de rastreabilidad.
+> Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, sin ningún caso de uso asociado en la matriz de rastreabilidad.
 
 ---
 
@@ -5854,7 +5838,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 
 Una operación del sistema es un mensaje que un actor le manda al sistema y que aparece como tal en un diagrama de secuencia de §2.1. El catálogo reúne **todas** las operaciones, cada una con una única firma: la que usan los diagramas de secuencia de §2.1, los contratos de esta sección y los diagramas de interacción del Documento 3. Los parámetros llevan su tipo; los diagramas de secuencia usan la misma firma sin los tipos, para no recargar el dibujo.
 
-Son **195 operaciones**. **111** modifican el modelo conceptual y tienen contrato; las **84** restantes no modifican nada y por eso no llevan contrato.
+Son **194 operaciones**. **110** modifican el modelo conceptual y tienen contrato; las **84** restantes no modifican nada y por eso no llevan contrato.
 
 | Operación | Casos de uso | Actor iniciador | Cambia estado |
 |---|---|---|---|
@@ -5952,7 +5936,6 @@ Son **195 operaciones**. **111** modifican el modelo conceptual y tienen contrat
 | `consultarVentasPorMetodoDePago(fechaDesde fecha, fechaHasta fecha)` | CU-029 | Administrador (ACT-03) | No |
 | `consultarVentasPorProducto(fechaDesde fecha, fechaHasta fecha)` | CU-028 | Administrador (ACT-03) | No |
 | `consultarVigenciaDelEnvase(envaseId identificador)` | CU-133 | Administrador (ACT-03) | No |
-| `crearCheckoutDePago(pedidoId identificador, medioDePago cadena)` | CU-048 | Cliente (ACT-01) | Sí |
 | `crearFranjaHoraria(nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-042 | Administrador (ACT-03) | Sí |
 | `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | CU-005, CU-044 | Cliente (ACT-01) | Sí |
 | `crearPrimerSuperAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena)` | CU-087 | Administrador General (ACT-05) | Sí |
@@ -6048,10 +6031,10 @@ Son **195 operaciones**. **111** modifican el modelo conceptual y tienen contrat
 | `validarCobertura(latitud decimal, longitud decimal)` | CU-058 | Cliente (ACT-01) | No |
 | `validarSesion()` | CU-091 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05) | No |
 | `vencerOfertasExpiradas()` | CU-014 | Sistema Automático (ACT-04) | Sí |
-| `verificarDisponibilidad()` | CU-104 | Sistema Automático (ACT-04) | No |
+| `verificarDisponibilidad()` | CU-104 | Plataforma de despliegue (ACT-09) | No |
 | `verificarExistenciaDeUsuario(correo cadena, telefono cadena)` | CU-084 | Cliente (ACT-01) | No |
-| `verificarSalud()` | CU-104 | Sistema Automático (ACT-04) | No |
-| `verificarVida()` | CU-104 | Sistema Automático (ACT-04) | No |
+| `verificarSalud()` | CU-104 | Plataforma de despliegue (ACT-09) | No |
+| `verificarVida()` | CU-104 | Plataforma de despliegue (ACT-09) | No |
 | `verificarVigenciaAlAsignar(pedidoId identificador, series lista)` | CU-135 | Sistema Automático (ACT-04) | No |
 
 Las operaciones de sólo consulta, que devuelven información sin alterar ninguna instancia, asociación ni atributo del modelo conceptual, no llevan contrato. Tampoco lo llevan las que no modifican el modelo aunque no sean consultas: `avisarLlegada`, `enviarNotificacionDePrueba`, `iniciarSesion`, `probarServicioDeCorreo`, `reenviarConfirmacionDePedido`, `solicitarRecuperacionDeClave`, `suscribirseAlSeguimiento` y `verificarVigenciaAlAsignar`, que verifican una identidad, verifican una regla o envían un aviso sin registrar nada.
@@ -6114,11 +6097,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Crear un pedido reservando el stock de forma atómica, calcular el total con promociones y recargos, y disparar el despacho automático. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-005, CU-044. Funciones: IRQ-02, IRQ-04, IRQ-05, IRQ-07, IRQ-08, OBJ-01, OBJ-02, OBJ-04, OBJ-06, OBJ-07. |
-| **Notas** | El total incluye las promociones por volumen, el recargo por medio de pago y el recargo de zona. Si el medio de pago es MercadoPago, se genera además el checkout (crearCheckoutDePago) y se devuelve el enlace de pago. Si el checkout falla, el pedido queda creado igual, sin enlace. La reserva con fecha y seña es una operación distinta: crearReserva. |
+| **Notas** | El total incluye las promociones por volumen, el recargo por medio de pago y el recargo de zona. Si el medio de pago es MercadoPago, la propia operación registra el intento de cobro y le pide a la pasarela el enlace de pago, que devuelve en su respuesta (colaboración interna, `crearCheckoutDePago`, cuyo diagrama de interacción está en el Documento 3, CU-048): el intento de cobro se registra antes de conocer la respuesta de la pasarela, y el estado del Pedido no cambia hasta que la pasarela notifica el resultado (notificarResultadoDePago). Si la pasarela no devuelve el enlace, el Pago queda «pendiente» sin enlace y el pedido queda creado igual. La reserva con fecha y seña es una operación distinta: crearReserva. Al confirmarse el pedido se notifica al Cliente. |
 | **Excepciones** | Si algún producto no existe o no es de la distribuidora → error de solicitud (producto no encontrado). Si el stock es insuficiente → la operación se revierte por completo y se informa el producto. Si la dirección está fuera de la zona de cobertura → error de solicitud (domicilio no cubierto). Si la franja no tiene cupo para esa fecha → error de solicitud (franja completa). Si el cliente o la dirección no existen → recurso no encontrado. |
 | **Salida** | El pedido creado con sus ítems (número, total, estado pendiente) y, si corresponde, el enlace de pago. |
 | **Precondiciones** | El Cliente está autenticado. La DireccionEntrega pertenece al Cliente y está dentro de una ZonaCobertura. Cada Producto del pedido existe, es de la Distribuidora y tiene stock suficiente. Si se indica una FranjaHoraria, está activa y tiene cupo para la fecha. |
-| **Postcondiciones** | Se creó una instancia de Pedido, en estado «pendiente», asociada al Cliente que lo realizó, a la DireccionEntrega elegida y, si se indicó, a la FranjaHoraria. Se crearon sus instancias de ItemPedido, cada una asociada a su Producto, con el precio unitario del momento. El atributo stock de cada Producto pedido se decrementó en la cantidad pedida. Se creó una OfertaDespacho dirigida al Chofer disponible más cercano. El Cliente fue notificado. |
+| **Postcondiciones** | Se creó una instancia de Pedido, en estado «pendiente», asociada al Cliente que lo realizó, a la DireccionEntrega elegida y, si se indicó, a la FranjaHoraria. Se crearon sus instancias de ItemPedido, cada una asociada a su Producto, con el precio unitario del momento. El atributo stock de cada Producto pedido se decrementó en la cantidad pedida. Si el medio de pago es MercadoPago, se creó una instancia de Pago, en estado «pendiente», asociada al Pedido y a la Distribuidora, con el importe del intento y el enlace de pago. Si el medio de pago no es MercadoPago y hubo Chofer elegible, se creó una OfertaDespacho dirigida al Chofer disponible más cercano. |
 
 ---
 
@@ -6130,11 +6113,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Cancelar un pedido que todavía no salió hacia el domicilio, dejándolo en estado cancelado y devolviendo al inventario las unidades reservadas. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-008, CU-010. Funciones: IRQ-02, IRQ-04, OBJ-01, OBJ-05, OBJ-06. |
-| **Notas** | Lo inician el Cliente sobre un pedido propio (CU-008) y el Administrador sobre cualquier pedido activo de su distribuidora (CU-010). El cambio de estado y la restitución del stock se confirman en una única transacción, con el pedido bloqueado: dos cancelaciones simultáneas no devuelven el stock dos veces. Si el pedido tenía un pago aprobado por una pasarela, el reintegro se pide con reintegrarPagoDelPedido (CU-168, planificado I-7). |
+| **Notas** | Lo inician el Cliente sobre un pedido propio (CU-008) y el Administrador sobre cualquier pedido activo de su distribuidora (CU-010). El cambio de estado y la restitución del stock se confirman en una única transacción, con el pedido bloqueado: dos cancelaciones simultáneas no devuelven el stock dos veces. Si el pedido tenía un pago aprobado por una pasarela, el reintegro se pide con reintegrarPagoDelPedido (CU-168, planificado I-7). Si el Pedido tenía un Chofer asociado, se notifica al Cliente, al Administrador y a ese Chofer. |
 | **Excepciones** | Si el pedido no existe, es de otro cliente o es de otra distribuidora → recurso no encontrado. Si el pedido ya está entregado o cancelado → error de solicitud (no se puede cancelar un pedido finalizado). Si el pedido ya está en camino y quien lo cancela es el Cliente → error de solicitud (contactar al soporte). |
 | **Salida** | El pedido con estado cancelado y el motivo registrado. |
 | **Precondiciones** | El pedido existe y es de la distribuidora de quien opera. Si lo cancela el Cliente, el pedido es suyo y su estado es «reservado», «pendiente» o «aceptado». Si lo cancela el Administrador, su estado es «reservado», «pendiente», «aceptado» o «en camino». |
-| **Postcondiciones** | El atributo estado de la instancia de Pedido pasó a «cancelado», con el motivo de la cancelación registrado. Por cada ItemPedido, el atributo stock del Producto referenciado se incrementó en la cantidad reservada. Si el Pedido tenía un Chofer asociado, el Cliente, el Administrador y ese Chofer fueron notificados. |
+| **Postcondiciones** | El atributo estado de la instancia de Pedido pasó a «cancelado», con el motivo de la cancelación registrado. Por cada ItemPedido, el atributo stock del Producto referenciado se incrementó en la cantidad reservada. |
 
 ---
 
@@ -6146,11 +6129,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Devolver a «pendiente» un pedido que el chofer había tomado y no puede realizar, para que otro chofer lo tome. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-009. Funciones: IRQ-02, OBJ-02. |
-| **Notas** | El stock no se restituye, porque el pedido sigue vivo. El pedido se vuelve a ofrecer en la siguiente ejecución del proceso temporal de despacho (CU-014). |
+| **Notas** | El stock no se restituye, porque el pedido sigue vivo. El pedido se vuelve a ofrecer en la siguiente ejecución del proceso temporal de despacho (CU-014). Se notifica al Cliente de que se busca otro chofer. |
 | **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido no está asignado al chofer que lo libera → acceso denegado. Si el pedido ya está entregado o cancelado → error de solicitud (no se puede cancelar un pedido finalizado). Si el estado del pedido no admite la vuelta a pendiente → error de solicitud (transición no permitida). |
 | **Salida** | El pedido con estado pendiente y sin chofer. |
 | **Precondiciones** | El Chofer está autenticado. El pedido es de su distribuidora, está asociado a él y su estado es «aceptado» o «en camino». |
-| **Postcondiciones** | Se rompió la asociación entre el Pedido y el Chofer. El atributo estado de la instancia de Pedido pasó a «pendiente». Las OfertaDespacho del Pedido que seguían vigentes quedaron cerradas. El stock de los Productos no varió. El Cliente fue notificado de que se busca otro chofer. |
+| **Postcondiciones** | Se rompió la asociación entre el Pedido y el Chofer. El atributo estado de la instancia de Pedido pasó a «pendiente». Las OfertaDespacho del Pedido que seguían vigentes quedaron cerradas. El stock de los Productos no varió. |
 
 ---
 
@@ -6177,12 +6160,12 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `asignarChoferAPedido(pedidoId identificador, choferId identificador)` |
 | **Responsabilidades** | Asignar manualmente un chofer a un pedido pendiente, o reasignarlo a otro chofer si ya lo había aceptado uno. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-012. Funciones: IRQ-04, OBJ-02, OBJ-05. |
-| **Notas** | Es la salida del administrador cuando el despacho automático no encuentra candidatos. Tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, cierra las ofertas abiertas y guarda la copia del vehículo. En una reasignación, el código nuevo deja sin efecto el anterior. El Cliente no recibe aviso de la asignación manual. |
+| **Referencias cruzadas** | Casos de uso: CU-012. Funciones: IRQ-02, IRQ-03, OBJ-02, OBJ-05. |
+| **Notas** | Es la salida del administrador cuando el despacho automático no encuentra candidatos. Tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, cierra las ofertas abiertas y guarda la copia del vehículo. En una reasignación, el código nuevo deja sin efecto el anterior. El Cliente no recibe aviso de la asignación manual. Se notifica al Chofer nuevo, al Chofer anterior (si lo hubo) y al panel. |
 | **Excepciones** | Si el pedido o el chofer no existen o son de otra distribuidora → recurso no encontrado. Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida → error de solicitud (no se puede asignar). Si el pedido no admite pasar a «aceptado» (cancelado, en camino o entregado) → error de solicitud (transición no permitida). |
 | **Salida** | El pedido con estado aceptado, el chofer vinculado y el código de entrega nuevo. |
 | **Precondiciones** | El Administrador está autenticado. El Pedido es de su distribuidora y su estado es «pendiente», o «aceptado» por otro Chofer. El Chofer es de la misma distribuidora, está habilitado y validado, tiene un Vehículo en uso y ni su licencia ni ese Vehículo tienen documentación vencida. |
-| **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer indicado; si el Pedido tenía otro Chofer, esa asociación se rompió. El atributo estado del Pedido pasó a «aceptado» y quedaron registrados el momento de la aceptación y un código de entrega nuevo. El Pedido guardó la patente, la marca y el modelo del Vehículo en uso del Chofer. Las OfertaDespacho vigentes del Pedido quedaron cerradas. El Chofer nuevo, el Chofer anterior (si lo hubo) y el panel fueron notificados. |
+| **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer indicado; si el Pedido tenía otro Chofer, esa asociación se rompió. El atributo estado del Pedido pasó a «aceptado» y quedaron registrados el momento de la aceptación y un código de entrega nuevo. El Pedido guardó la patente, la marca y el modelo del Vehículo en uso del Chofer. Las OfertaDespacho vigentes del Pedido quedaron cerradas. |
 
 ---
 
@@ -6194,11 +6177,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Ofrecer el pedido al chofer más cercano de la misma distribuidora que todavía no fue contactado, con una vigencia limitada para aceptarlo. |
 | **Tipo** | Sistema (proceso automático) |
 | **Referencias cruzadas** | Casos de uso: CU-013. Funciones: IRQ-02, IRQ-03, OBJ-02. |
-| **Notas** | Busca por radios crecientes (5, 10, 15 y 20 km por omisión, configurables por distribuidora en CU-171) y ofrece a un solo chofer por vez. Sólo considera choferes habilitados y validados, con vehículo en uso y documentación vigente. |
+| **Notas** | Busca por radios crecientes (5, 10, 15 y 20 km: `RADIUS_STEPS_KM`) y ofrece a un solo chofer por vez, con una vigencia de 30 segundos (`OFFER_TTL_SECONDS`). Los radios y la vigencia son constantes del programa; serán configurables por distribuidora con CU-171 (I-1). Sólo considera choferes habilitados y validados, con vehículo en uso y documentación vigente. Se notifica al Chofer elegido. |
 | **Excepciones** | Si ningún radio produce un chofer nuevo → no se crea la oferta y el pedido queda pendiente; el proceso temporal lo reintenta (CU-014). Si falla el aviso push → se ignora y la oferta igual queda creada. |
 | **Salida** | El chofer al que se ofreció el pedido, o ninguno si no hubo candidato. |
 | **Precondiciones** | El Pedido tiene estado «pendiente», no tiene Chofer asociado y tiene punto de entrega. Existe al menos un Chofer disponible con UbicacionGPS registrada. |
-| **Postcondiciones** | Se creó una instancia de OfertaDespacho, en estado «ofrecida», dirigida al Chofer elegido y asociada al Pedido y a la Distribuidora, con una vigencia de 30 segundos desde su creación. El Chofer fue notificado. El Pedido no cambió de estado: sigue «pendiente». |
+| **Postcondiciones** | Se creó una instancia de OfertaDespacho, en estado «ofrecida», dirigida al Chofer elegido y asociada al Pedido y a la Distribuidora, con una vigencia de 30 segundos desde su creación. El Pedido no cambió de estado: sigue «pendiente». |
 
 ---
 
@@ -6210,11 +6193,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Cerrar las ofertas cuya vigencia venció y volver a ofrecer cada pedido todavía pendiente al siguiente chofer más cercano, sin intervención humana. |
 | **Tipo** | Sistema (proceso automático) |
 | **Referencias cruzadas** | Casos de uso: CU-014. Funciones: IRQ-02, IRQ-03, OBJ-02. |
-| **Notas** | Se ejecuta cada 15 segundos. Con más de una instancia del sistema en ejecución, sólo una procesa cada ciclo, para que no se dupliquen las ofertas. También ofrece los pedidos pendientes sin oferta activa y con más de 60 segundos de antigüedad. |
+| **Notas** | Se ejecuta cada 15 segundos. Con más de una instancia del sistema en ejecución, sólo una procesa cada ciclo, para que no se dupliquen las ofertas. También ofrece los pedidos pendientes sin oferta activa y con más de 60 segundos de antigüedad. Se notifica a cada Chofer al que se le ofrece un Pedido. |
 | **Excepciones** | Si otra instancia ya está procesando el ciclo → el ciclo se saltea. Si el pedido de una oferta vencida ya fue aceptado, cancelado o no existe → la oferta se cierra igual y no se vuelve a ofrecer. |
 | **Salida** | Ninguna: es un proceso interno sin actor receptor. |
 | **Precondiciones** | Existe al menos una OfertaDespacho en estado «ofrecida» cuya vigencia ya terminó. |
-| **Postcondiciones** | Cada OfertaDespacho vencida pasó a estado «vencida». Por cada Pedido que sigue «pendiente» y sin Chofer, se creó una nueva OfertaDespacho dirigida a un Chofer que no había sido contactado, y ese Chofer fue notificado. |
+| **Postcondiciones** | Cada OfertaDespacho vencida pasó a estado «vencida». Por cada Pedido que sigue «pendiente» y sin Chofer, se creó una nueva OfertaDespacho dirigida a un Chofer que no había sido contactado. |
 
 ---
 
@@ -6226,11 +6209,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Asignar el pedido al chofer que lo acepta, pasarlo a «aceptado» y avisar al cliente. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-015. Funciones: IRQ-02, IRQ-03, OBJ-02, OBJ-03. |
-| **Notas** | Si el pedido ya tiene otro chofer asignado, un segundo chofer no lo desplaza ni regenera el código de entrega. Si acepta el mismo chofer, la operación es idempotente: conserva el código y el momento de aceptación. Un chofer sin vehículo en uso no puede aceptar pedidos. La copia de patente, marca y modelo se borra si el pedido vuelve a pendiente. |
+| **Notas** | Si el pedido ya tiene otro chofer asignado, un segundo chofer no lo desplaza ni regenera el código de entrega. Si acepta el mismo chofer, la operación es idempotente: conserva el código y el momento de aceptación. Un chofer sin vehículo en uso no puede aceptar pedidos. La copia de patente, marca y modelo se borra si el pedido vuelve a pendiente. Se notifica al Cliente. |
 | **Excepciones** | Si el pedido es de otra distribuidora o no existe → recurso no encontrado. Si el pedido ya tiene asignado a otro chofer → acceso denegado. Si el pedido ya está entregado o cancelado → error de solicitud (transición no permitida). Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida → error de solicitud. |
 | **Salida** | El pedido con estado aceptado, los datos de entrega y el código de entrega. |
 | **Precondiciones** | El Pedido tiene estado «pendiente». El Chofer está habilitado y validado, tiene un Vehículo en uso y ni su licencia ni ese Vehículo tienen documentación vencida. |
-| **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer que lo aceptó. El atributo estado del Pedido pasó a «aceptado», con la fecha de aceptación y un código de entrega. La OfertaDespacho vigente del Chofer pasó a «aceptada». El Pedido guardó la patente, la marca y el modelo del Vehículo en uso del Chofer. El Cliente fue notificado. |
+| **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer que lo aceptó. El atributo estado del Pedido pasó a «aceptado», con la fecha de aceptación y un código de entrega. La OfertaDespacho vigente del Chofer pasó a «aceptada». El Pedido guardó la patente, la marca y el modelo del Vehículo en uso del Chofer. |
 
 ---
 
@@ -6242,11 +6225,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Cerrar la oferta activa del chofer que rechaza y volver a ofrecer el pedido de inmediato al siguiente chofer, sin esperar el vencimiento. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-016. Funciones: IRQ-02, IRQ-04, OBJ-02. |
-| **Notas** | Si el pedido ya fue tomado por otro chofer o se canceló mientras llegaba el rechazo, la oferta se cierra igual y no se devuelve error al chofer que rechazó tarde. |
+| **Notas** | Si el pedido ya fue tomado por otro chofer o se canceló mientras llegaba el rechazo, la oferta se cierra igual y no se devuelve error al chofer que rechazó tarde. Se notifica al Chofer al que se ofrece el Pedido. |
 | **Excepciones** | Si el pedido no existe → el rechazo no se registra y no hay efecto. Si el pedido es de otra distribuidora → recurso no encontrado. Si el pedido ya no es re-ofertable → la oferta se cierra y no se vuelve a ofrecer. |
 | **Salida** | Si el rechazo quedó registrado. |
 | **Precondiciones** | El Chofer está autenticado. Existe una OfertaDespacho en estado «ofrecida» del Pedido dirigida a ese Chofer. |
-| **Postcondiciones** | La OfertaDespacho del Chofer pasó a estado «rechazada». Si el Pedido sigue «pendiente» y sin Chofer, se creó una nueva OfertaDespacho dirigida al siguiente Chofer más cercano que no había sido contactado, y ese Chofer fue notificado. El Chofer que rechazó queda como ya contactado y no vuelve a recibir este Pedido. |
+| **Postcondiciones** | La OfertaDespacho del Chofer pasó a estado «rechazada». Si el Pedido sigue «pendiente» y sin Chofer, se creó una nueva OfertaDespacho dirigida al siguiente Chofer más cercano que no había sido contactado. El Chofer que rechazó queda como ya contactado y no vuelve a recibir este Pedido. |
 
 ---
 
@@ -6274,11 +6257,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Registrar que el chofer salió hacia el domicilio del cliente: pasa el pedido a «en camino», abre el seguimiento en vivo y avisa al cliente. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-018. Funciones: IRQ-02, OBJ-03. |
-| **Notas** | Un chofer sólo puede poner en camino un pedido que tiene asignado; el Administrador puede mover cualquier pedido de su distribuidora. Si el pedido no tiene chofer, el estado cambia pero no hay seguimiento. |
+| **Notas** | Un chofer sólo puede poner en camino un pedido que tiene asignado; el Administrador puede mover cualquier pedido de su distribuidora. Si el pedido no tiene chofer, el estado cambia pero no hay seguimiento. Se notifica al Cliente. |
 | **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si quien opera es un Chofer y el pedido está asignado a otro → acceso denegado. Si el pedido no está «aceptado» → error de solicitud (transición no permitida). |
 | **Salida** | El pedido con estado en camino. |
 | **Precondiciones** | El Pedido tiene estado «aceptado». Si opera un Chofer, es el asociado al Pedido. |
-| **Postcondiciones** | El atributo estado del Pedido pasó a «en camino», con el momento de la salida registrado. Quedó abierto el seguimiento de la UbicacionGPS del Chofer para este Pedido. El Cliente fue notificado. |
+| **Postcondiciones** | El atributo estado del Pedido pasó a «en camino», con el momento de la salida registrado. Quedó abierto el seguimiento de la UbicacionGPS del Chofer para este Pedido. |
 
 ---
 
@@ -6290,11 +6273,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Cerrar el ciclo del pedido marcándolo como entregado, saldar el pago en efectivo si corresponde y avisar al cliente. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-020. Funciones: IRQ-02, IRQ-08, OBJ-03, OBJ-04. |
-| **Notas** | El chofer que confirma es el asignado al pedido. La confirmación con código de entrega es una operación distinta: confirmarEntregaConCodigo (CU-079). Al entregarse, cada envase despachado en el pedido pasa a estar en poder del cliente. |
-| **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido está asignado a otro chofer → acceso denegado. Si el pedido no está en camino (ya entregado o cancelado) → error de solicitud (transición no permitida). |
+| **Notas** | El chofer que confirma es el asignado al pedido. La confirmación con código de entrega es una operación distinta: confirmarEntregaConCodigo (CU-079). Al entregarse, cada envase despachado en el pedido pasa a estar en poder del cliente. Reconfirmar una entrega ya registrada no es un error de transición: la máquina de estados del pedido acepta que el estado nuevo sea igual al actual, de modo que la operación es idempotente. Se notifica al Cliente. |
+| **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido está asignado a otro chofer → acceso denegado. Si el pedido está cancelado o todavía no salió hacia el domicilio → error de solicitud (transición no permitida). |
 | **Salida** | El pedido con estado entregado. |
 | **Precondiciones** | El Pedido tiene estado «en camino» y está asociado al Chofer que confirma. |
-| **Postcondiciones** | El atributo estado del Pedido pasó a «entregado». Si el método de pago es efectivo, el atributo estado del Pago asociado pasó a «pagado». Se cerró el seguimiento de la UbicacionGPS del Chofer para este Pedido. Cada Envase despachado en el Pedido pasó a «en poder del cliente», con su MovimientoEnvase registrado. El Cliente fue notificado. |
+| **Postcondiciones** | El atributo estado del Pedido pasó a «entregado». Si el método de pago es efectivo, el atributo estado del Pago asociado pasó a «pagado». Se cerró el seguimiento de la UbicacionGPS del Chofer para este Pedido. Cada Envase despachado en el Pedido pasó a «en poder del cliente», con su MovimientoEnvase registrado. |
 
 ---
 
@@ -6594,27 +6577,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Cambiar el correo de la cuenta del usuario autenticado, dejando la nueva dirección pendiente de verificación. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-047. Funciones: IRQ-01, OBJ-01. |
-| **Notas** | Es la variante autenticada de CU-047. El token de identidad del usuario acredita que es el dueño de la cuenta. La contraseña no se almacena en el sistema. |
+| **Notas** | Es la variante autenticada de CU-047. El token de identidad del usuario acredita que es el dueño de la cuenta. La contraseña no se almacena en el sistema. Se envía un correo de verificación a la dirección nueva. |
 | **Excepciones** | Si el token de identidad es inválido o venció → error de solicitud. Si el correo del token no coincide con el correo actual declarado → error de solicitud. |
 | **Salida** | Confirmación del cambio, con el envío de la verificación a la dirección nueva. |
 | **Precondiciones** | El Usuario está autenticado y su correo actual coincide con el que declara. |
-| **Postcondiciones** | El atributo correo de la instancia de Usuario tomó el valor nuevo, pendiente de verificación. Se envió un correo de verificación a la dirección nueva. |
-
----
-
-#### Crítico Contrato: `crearCheckoutDePago()`
-
-| Campo | Detalle |
-|-------|---------|
-| **Nombre** | `crearCheckoutDePago(pedidoId identificador, medioDePago cadena)` |
-| **Responsabilidades** | Registrar el intento de cobro de un pedido o de la seña de una reserva y pedir a la pasarela el enlace de pago al que se redirige al cliente. |
-| **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-048. Funciones: IRQ-02, IRQ-08, OBJ-02, OBJ-07. |
-| **Notas** | La dispara el Cliente al confirmar un pedido con MercadoPago o la seña de una reserva, y la ejecuta la propia creación del pedido (crearPedido): no tiene un endpoint propio. El intento de cobro se registra antes de conocer la respuesta de la pasarela: si la pasarela falla, queda el rastro del intento, sin enlace de pago. El estado del pedido no cambia hasta que la pasarela notifica el resultado (notificarResultadoDePago). |
-| **Excepciones** | Si el pedido ya está pago, cancelado o entregado → error de conflicto (el pedido no admite un nuevo cobro) y no se registra ningún intento. Si el pedido no existe → recurso no encontrado. Si la pasarela no devuelve el enlace → el Pago queda «pendiente» sin enlace y el pedido queda creado igual. |
-| **Salida** | El enlace de pago y el plazo de vigencia. |
-| **Precondiciones** | El Pedido existe y admite un cobro. El importe a cobrar es mayor que cero. |
-| **Postcondiciones** | Se creó una instancia de Pago, en estado «pendiente», asociada al Pedido y a la Distribuidora, con el importe del intento y marcada como seña si corresponde. El Pago quedó con el enlace de pago. El estado del Pedido no cambió. |
+| **Postcondiciones** | El atributo correo de la instancia de Usuario tomó el valor nuevo, pendiente de verificación. |
 
 ---
 
@@ -6626,11 +6593,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Recibir la notificación de la pasarela, validar su firma, consultar el estado real del pago, actualizar el Pago y aplicar sus efectos sobre el pedido. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-048. Funciones: IRQ-02, IRQ-08, OBJ-02, OBJ-07. |
-| **Notas** | La pasarela recibe siempre una respuesta de recibido, con o sin procesamiento, para que no reintente en bucle. La notificación es idempotente: repetirla no produce cambios adicionales, y el aviso al Cliente sale sólo en la primera confirmación. Un pago rechazado o cancelado deja el pedido a la espera sin avisarle al Cliente (limitación conocida, §10 del Documento 3); si vence el plazo sin pago, lo cancela expirarPedidosSinPagar. |
+| **Notas** | La pasarela recibe siempre una respuesta de recibido, con o sin procesamiento, para que no reintente en bucle. La notificación es idempotente: repetirla no produce cambios adicionales, y el aviso al Cliente sale sólo en la primera confirmación. Un pago rechazado o cancelado deja el pedido a la espera sin avisarle al Cliente (limitación conocida, §10 del Documento 3); si vence el plazo sin pago, lo cancela expirarPedidosSinPagar. La primera vez que el pago se aprueba se notifica al Cliente; repetir la misma notificación no lo vuelve a avisar. |
 | **Excepciones** | Si la firma es inválida → se descarta sin procesar y no se revela si el pedido existe. Si el tipo de notificación no es de pago o falta el identificador → se ignora. Si el pedido ya está cancelado o entregado → se registra el pago y no se reactiva el pedido. Si el pedido no existe → se registra la advertencia y se corta. |
 | **Salida** | Confirmación de recibido hacia la pasarela. |
 | **Precondiciones** | La notificación proviene de la pasarela y su firma es válida. Existe un Pago asociado al Pedido referenciado. |
-| **Postcondiciones** | El atributo estado del Pago tomó el que informó la pasarela (aprobado, rechazado, cancelado, reembolsado o pendiente). Si el Pago fue aprobado y el Pedido es una reserva, se registró la seña como paga, el Pedido no se ofreció a ningún Chofer y el Cliente fue notificado. Si fue aprobado y el Pedido es un pedido normal, el Pedido quedó pagado, se creó una OfertaDespacho dirigida al Chofer más cercano y el Cliente fue notificado. |
+| **Postcondiciones** | El atributo estado del Pago tomó el que informó la pasarela (aprobado, rechazado, cancelado, reembolsado o pendiente). Si el Pago fue aprobado y el Pedido es una reserva, se registró la seña como paga, el Pedido no se ofreció a ningún Chofer. Si fue aprobado y el Pedido es un pedido normal, el Pedido quedó pagado, se creó una OfertaDespacho dirigida al Chofer más cercano. |
 
 ---
 
@@ -6882,11 +6849,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Crear un pedido agendado para una fecha futura, reservando el stock de forma atómica y registrando el monto de la seña. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-072. Funciones: IRQ-02, IRQ-08, OBJ-01, OBJ-06. |
-| **Notas** | Comparte con crearPedido el cálculo de precios con promociones y recargos. Si la seña se paga con la pasarela, se genera el checkout de la seña (crearCheckoutDePago); si la pasarela falla, la reserva queda creada igual, sin enlace de pago. El pedido no se ofrece a ningún chofer hasta el día agendado (activarReservasDelDia). |
+| **Notas** | Comparte con crearPedido el cálculo de precios con promociones y recargos. Si la seña se paga con la pasarela, se genera el checkout de la seña (crearCheckoutDePago); si la pasarela falla, la reserva queda creada igual, sin enlace de pago. El pedido no se ofrece a ningún chofer hasta el día agendado (activarReservasDelDia). Se notifica a los administradores de la Distribuidora. |
 | **Excepciones** | Si falta la fecha agendada o es pasada → error de solicitud. Si la dirección está fuera de la zona de cobertura → error de solicitud. Si la franja no tiene cupo para esa fecha → error de solicitud. Si el stock es insuficiente → error de solicitud y la operación se revierte por completo. Si algún producto no es de la distribuidora → error de solicitud. |
 | **Salida** | La reserva creada (número, total, seña, estado reservado) y, si corresponde, el enlace de pago de la seña. |
 | **Precondiciones** | El Cliente está autenticado. La DireccionEntrega pertenece al Cliente y está dentro de una ZonaCobertura. La fecha agendada es futura y la FranjaHoraria tiene cupo para ella. Cada Producto existe, es de la Distribuidora y tiene stock suficiente. |
-| **Postcondiciones** | Se creó una instancia de Pedido, en estado «reservado», con la fecha agendada y la seña pendiente de pago, asociada al Cliente, a la DireccionEntrega y a la FranjaHoraria. Se crearon sus instancias de ItemPedido, con el precio y el subtotal calculados con las promociones vigentes. El atributo stock de cada Producto pedido se decrementó. Si el pago es con pasarela y la seña es mayor que cero, se creó un Pago por ese importe, marcado como seña, en estado «pendiente». El Pedido no se ofreció a ningún Chofer. Los administradores de la Distribuidora fueron notificados. |
+| **Postcondiciones** | Se creó una instancia de Pedido, en estado «reservado», con la fecha agendada y la seña pendiente de pago, asociada al Cliente, a la DireccionEntrega y a la FranjaHoraria. Se crearon sus instancias de ItemPedido, con el precio y el subtotal calculados con las promociones vigentes. El atributo stock de cada Producto pedido se decrementó. Si el pago es con pasarela y la seña es mayor que cero, se creó un Pago por ese importe, marcado como seña, en estado «pendiente». El Pedido no se ofreció a ningún Chofer. |
 
 ---
 
@@ -6914,11 +6881,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Detectar las reservas cuyo día agendado llegó y cuya seña está paga, pasarlas a pedido pendiente y lanzar su despacho automático. |
 | **Tipo** | Sistema (proceso automático) |
 | **Referencias cruzadas** | Casos de uso: CU-075. Funciones: IRQ-02, IRQ-14, OBJ-02. |
-| **Notas** | Se ejecuta cada 5 minutos y procesa como máximo 50 reservas por corrida. Si el despacho de una reserva activada falla, la activación no se revierte: el proceso temporal de despacho la retoma. |
+| **Notas** | Se ejecuta cada 5 minutos y procesa como máximo 50 reservas por corrida. Si el despacho de una reserva activada falla, la activación no se revierte: el proceso temporal de despacho la retoma. Se notifica a cada Chofer al que se le ofrece un Pedido. |
 | **Excepciones** | Si la transición de una reserva es inválida → se registra el error y se continúa con las siguientes. Si falla el despacho → se ignora y la reserva queda pendiente. |
 | **Salida** | Ninguna: es un proceso interno. |
 | **Precondiciones** | Existen Pedidos «reservados» con la seña paga y con fecha agendada igual o anterior a hoy. |
-| **Postcondiciones** | El atributo estado de cada Pedido reservado cuyo día llegó pasó de «reservado» a «pendiente». Se creó una OfertaDespacho por cada Pedido activado que encontró un Chofer cercano, y ese Chofer fue notificado. El stock reservado al crear la reserva no se modificó. |
+| **Postcondiciones** | El atributo estado de cada Pedido reservado cuyo día llegó pasó de «reservado» a «pendiente». Se creó una OfertaDespacho por cada Pedido activado que encontró un Chofer cercano. El stock reservado al crear la reserva no se modificó. |
 
 ---
 
@@ -6962,11 +6929,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Validar que el código escaneado por el cliente coincida con el del pedido, como prueba de que el chofer estuvo presente, y cerrar el pedido como entregado. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-079. Funciones: IRQ-02, IRQ-08, OBJ-03, OBJ-04, OBJ-07. |
-| **Notas** | La comparación del código se hace en tiempo constante. La operación es idempotente: una segunda confirmación sobre un pedido ya entregado no reprocesa nada y devuelve el pedido tal cual está. El código lo muestra el chofer con obtenerCodigoDeEntrega. |
+| **Notas** | La comparación del código se hace en tiempo constante. La operación es idempotente: una segunda confirmación sobre un pedido ya entregado no reprocesa nada y devuelve el pedido tal cual está. El código lo muestra el chofer con obtenerCodigoDeEntrega. Se notifica al Cliente y a los administradores de la Distribuidora. |
 | **Excepciones** | Si el pedido no existe → recurso no encontrado. Si el pedido es de otro cliente → acceso denegado. Si el pedido no está en camino → error de solicitud. Si el código no coincide → error de solicitud (código inválido). Si el pedido ya está entregado → no es error: se devuelve sin reprocesar. |
 | **Salida** | El pedido con estado entregado. |
 | **Precondiciones** | El Cliente está autenticado y el Pedido es suyo. El Pedido tiene estado «en camino» y tiene un código de entrega. El código recibido coincide con el del Pedido. |
-| **Postcondiciones** | El atributo estado del Pedido pasó a «entregado». Si el método de pago es efectivo, el atributo estado del Pago asociado pasó a «pagado». Se cerró el seguimiento de la UbicacionGPS del Chofer para este Pedido. Cada Envase despachado en el Pedido pasó a «en poder del cliente», con su MovimientoEnvase registrado. El Cliente y los administradores de la Distribuidora fueron notificados. |
+| **Postcondiciones** | El atributo estado del Pedido pasó a «entregado». Si el método de pago es efectivo, el atributo estado del Pago asociado pasó a «pagado». Se cerró el seguimiento de la UbicacionGPS del Chofer para este Pedido. Cada Envase despachado en el Pedido pasó a «en poder del cliente», con su MovimientoEnvase registrado. |
 
 ---
 
@@ -7218,11 +7185,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Proyectar el vencimiento de cada tarea de mantenimiento y de cada habilitación de la flota, y negociar con el chofer la ventana de taller que menos perjudica a la operación. |
 | **Tipo** | Sistema (proceso automático) (planificado, I-10) |
 | **Referencias cruzadas** | Casos de uso: CU-105. Funciones: IRQ-02, IRQ-03, OBJ-02, OBJ-05. |
-| **Notas** | Se ejecuta una vez por día, a la hora configurada. La ventana no se impone: se ofrece al chofer de a una alternativa por vez, con vigencia limitada. Si ninguna prospera, el caso queda a resolución del administrador con el cuadro completo. Un vehículo con una habilitación bloqueante vencida deja de recibir ofertas de pedidos. |
+| **Notas** | Se ejecuta una vez por día, a la hora configurada. La ventana no se impone: se ofrece al chofer de a una alternativa por vez, con vigencia limitada. Si ninguna prospera, el caso queda a resolución del administrador con el cuadro completo. Un vehículo con una habilitación bloqueante vencida deja de recibir ofertas de pedidos. Se notifica al Chofer y al Administrador. |
 | **Excepciones** | Si el vehículo no tiene historial de uso ni promedio de flota para su tipo → la tarea queda en observación y sólo se evalúan sus habilitaciones por fecha fija. Si ninguna ventana es factible o el vehículo no tiene chofer → se escala al administrador. Si la tarea llega a su fecha sin ventana acordada → se marca vencida. |
 | **Salida** | Ninguna: es un proceso interno. |
 | **Precondiciones** | El Vehiculo existe y pertenece a una Distribuidora activa. Tiene al menos un PlanMantenimiento aplicable. |
-| **Postcondiciones** | Cada TareaMantenimiento dentro de la ventana de anticipación tiene su fecha de vencimiento proyectada. Se creó una instancia de PropuestaVentanaTaller, en estado «ofrecida», por cada ventana propuesta a un Chofer. El Chofer y el Administrador fueron notificados. Si hay una habilitación bloqueante vencida, el Vehiculo quedó fuera de servicio. |
+| **Postcondiciones** | Cada TareaMantenimiento dentro de la ventana de anticipación tiene su fecha de vencimiento proyectada. Se creó una instancia de PropuestaVentanaTaller, en estado «ofrecida», por cada ventana propuesta a un Chofer. Si hay una habilitación bloqueante vencida, el Vehiculo quedó fuera de servicio. |
 
 ---
 
@@ -7250,11 +7217,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Estimar, para cada cliente con historial, cuándo se le termina el gas y ofrecerle la reposición con el pedido armado antes de que la necesite. |
 | **Tipo** | Sistema (proceso automático) (planificado, I-6) |
 | **Referencias cruzadas** | Casos de uso: CU-106. Funciones: IRQ-01, IRQ-02, IRQ-04, OBJ-01. |
-| **Notas** | Se ejecuta una vez por día. La decisión es del cliente: el sistema no crea ningún pedido hasta que acepta. La caducidad y el intervalo mínimo entre invitaciones evitan que se vuelva insistencia. |
+| **Notas** | Se ejecuta una vez por día. La decisión es del cliente: el sistema no crea ningún pedido hasta que acepta. La caducidad y el intervalo mínimo entre invitaciones evitan que se vuelva insistencia. Se notifica al Cliente. |
 | **Excepciones** | Si el cliente no llega al mínimo de pedidos, o su serie es demasiado irregular → queda fuera de la corrida. Si no hay stock del producto sugerido → no se emite la invitación. |
 | **Salida** | Ninguna: es un proceso interno. |
 | **Precondiciones** | El Cliente tiene al menos la cantidad mínima configurada de Pedidos «entregados», no tiene un Pedido activo y no recibió una invitación dentro del intervalo mínimo. |
-| **Postcondiciones** | Se creó una instancia de InvitacionRecompra, en estado «ofrecida», asociada al Cliente, con sus instancias de ItemSugerido y una vigencia limitada. El Cliente fue notificado. Las invitaciones vencidas pasaron a «caducada». |
+| **Postcondiciones** | Se creó una instancia de InvitacionRecompra, en estado «ofrecida», asociada al Cliente, con sus instancias de ItemSugerido y una vigencia limitada. Las invitaciones vencidas pasaron a «caducada». |
 
 ---
 
@@ -7282,11 +7249,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Armar lotes de pedidos programados que se pueden entregar en un mismo viaje y negociarlos con los choferes de a uno por vez. |
 | **Tipo** | Sistema (proceso automático) (planificado, I-9) |
 | **Referencias cruzadas** | Casos de uso: CU-107. Funciones: IRQ-02, IRQ-03, IRQ-05, OBJ-02, OBJ-08. |
-| **Notas** | El lote nunca se impone: ante el silencio o el rechazo generalizado, los pedidos siguen su camino individual y ninguno queda retenido por la agrupación. Respeta el compromiso horario de cada pedido y la capacidad del vehículo. |
+| **Notas** | El lote nunca se impone: ante el silencio o el rechazo generalizado, los pedidos siguen su camino individual y ninguno queda retenido por la agrupación. Respeta el compromiso horario de cada pedido y la capacidad del vehículo. Se notifica a cada Chofer candidato. |
 | **Excepciones** | Si no hay pedidos suficientes para un lote → no se hace nada. Si ningún vehículo tiene capacidad para el lote → se recorta o se descarta. Si un pedido es aceptado o cancelado mientras la oferta corre → se recalcula el lote. |
 | **Salida** | Ninguna: es un proceso interno. |
 | **Precondiciones** | Hay al menos dos Pedidos programados de la misma Distribuidora, dentro del radio de agrupación y con franjas compatibles, y al menos un Chofer activo con capacidad de carga disponible. |
-| **Postcondiciones** | Se creó una instancia de LoteRecorrido con una instancia de ParadaLote por cada Pedido, en su orden de entrega, y una instancia de OfertaLote dirigida a cada Chofer candidato. El Chofer fue notificado. Si ningún Chofer lo tomó, el LoteRecorrido se deshizo y los Pedidos volvieron al circuito individual. |
+| **Postcondiciones** | Se creó una instancia de LoteRecorrido con una instancia de ParadaLote por cada Pedido, en su orden de entrega, y una instancia de OfertaLote dirigida a cada Chofer candidato. Si ningún Chofer lo tomó, el LoteRecorrido se deshizo y los Pedidos volvieron al circuito individual. |
 
 ---
 
@@ -7345,12 +7312,12 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `agregarItemAlCarrito(productoId identificador, cantidad entero)` |
 | **Responsabilidades** | Sumar un tipo de garrafa al carrito del cliente con una cantidad, para armar la compra en varios momentos. |
 | **Tipo** | Sistema (planificado, I-3) |
-| **Referencias cruzadas** | Casos de uso: CU-122. Funciones: IRQ-01, OBJ-02. |
-| **Notas** | El carrito sobrevive al cierre de la aplicación y al cambio de dispositivo. Es el primer paso del proceso de compra que termina en crearPedido. |
+| **Referencias cruzadas** | Casos de uso: CU-122. Funciones: IRQ-02, OBJ-01. |
+| **Notas** | El carrito sobrevive al cierre de la aplicación y al cambio de dispositivo. Es el primer paso del proceso de compra que termina en crearPedido. Si el tipo de garrafa ya está en el carrito, se suma la cantidad al ítem existente y no se agrega otro. |
 | **Excepciones** | Si el tipo de garrafa no existe, está dado de baja o es de otra distribuidora → rechazo. Si la cantidad no es un entero positivo → rechazo. |
 | **Salida** | El carrito con el total actualizado. |
 | **Precondiciones** | El Cliente está autenticado. El Producto existe, está activo y pertenece a la Distribuidora. |
-| **Postcondiciones** | Si el Cliente no tenía un Carrito en la Distribuidora, se creó una instancia de Carrito. Se creó una instancia de ItemCarrito, asociada al Carrito y al Producto, con la cantidad pedida. El total del Carrito quedó actualizado. |
+| **Postcondiciones** | Si el Cliente no tenía un Carrito en la Distribuidora, se creó una instancia de Carrito. Si el Producto ya estaba en el Carrito, el atributo cantidad de su ItemCarrito aumentó en la cantidad pedida; si no, se creó una instancia de ItemCarrito, asociada al Carrito y al Producto, con la cantidad pedida. El total del Carrito quedó actualizado. |
 
 ---
 
@@ -7361,7 +7328,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `modificarCantidadDelItem(itemId identificador, cantidad entero)` |
 | **Responsabilidades** | Cambiar cuántas garrafas de un tipo quiere el cliente sin sacar el ítem y volver a agregarlo. |
 | **Tipo** | Sistema (planificado, I-3) |
-| **Referencias cruzadas** | Casos de uso: CU-123. Funciones: IRQ-01, OBJ-02. |
+| **Referencias cruzadas** | Casos de uso: CU-123. Funciones: IRQ-02, OBJ-01. |
 | **Notas** | Poner la cantidad en cero y quitar el ítem son dos intenciones distintas: para dejarlo en cero hay que usar quitarItemDelCarrito. |
 | **Excepciones** | Si el ítem no está en el carrito del cliente → rechazo. Si la cantidad es cero o negativa → rechazo. |
 | **Salida** | El carrito con el total actualizado. |
@@ -7377,7 +7344,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `quitarItemDelCarrito(itemId identificador)` |
 | **Responsabilidades** | Sacar del carrito un tipo de garrafa que el cliente había agregado. |
 | **Tipo** | Sistema (planificado, I-3) |
-| **Referencias cruzadas** | Casos de uso: CU-124. Funciones: IRQ-01, OBJ-02. |
+| **Referencias cruzadas** | Casos de uso: CU-124. Funciones: IRQ-02, OBJ-01. |
 | **Notas** | El ítem se borra físicamente: un carrito no es un documento contable y no hay nada que auditar en lo que el cliente descartó antes de comprar. |
 | **Excepciones** | Si el ítem no está en el carrito del cliente → rechazo. |
 | **Salida** | El carrito con el total actualizado. |
@@ -7393,7 +7360,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `vaciarCarrito()` |
 | **Responsabilidades** | Descartar de una vez todo lo que el cliente había armado en su carrito. |
 | **Tipo** | Sistema (planificado, I-3) |
-| **Referencias cruzadas** | Casos de uso: CU-126. Funciones: IRQ-01, OBJ-02. |
+| **Referencias cruzadas** | Casos de uso: CU-126. Funciones: IRQ-02, OBJ-01. |
 | **Notas** | El sistema también vacía el carrito por su cuenta cuando crearPedido registra la compra, para que el cliente no arranque la próxima con lo que ya compró. |
 | **Excepciones** | Si el cliente no tiene carrito → se devuelve un carrito vacío y no se hace nada. |
 | **Salida** | El carrito vacío. |
@@ -7409,7 +7376,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `cambiarDireccionDeEntrega(pedidoId identificador, direccionId identificador, motivo cadena)` |
 | **Responsabilidades** | Cambiar a dónde quiere el cliente que le lleven un pedido ya confirmado, mientras no salió el repartidor, dejando asentado el motivo. |
 | **Tipo** | Sistema (planificado, I-4) |
-| **Referencias cruzadas** | Casos de uso: CU-127. Funciones: IRQ-01, OBJ-02. |
+| **Referencias cruzadas** | Casos de uso: CU-127. Funciones: IRQ-02, OBJ-01. |
 | **Notas** | El pedido pagado en línea conserva su total: si el recargo de la zona nueva es distinto del de la zona original, se rechaza el cambio y el cliente debe cancelar y volver a pedir. El pedido pagado en efectivo recalcula el total si el recargo cambió. |
 | **Excepciones** | Si el pedido ya está en camino o entregado → rechazo. Si la dirección es de otro cliente → rechazo. Si la dirección queda fuera de la zona de cobertura → rechazo con el motivo. Si el pedido está pagado en línea y el recargo de la zona nueva difiere → rechazo. |
 | **Salida** | El pedido con la dirección nueva. |
@@ -7425,7 +7392,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `indicarQuienRecibe(pedidoId identificador, nombre cadena, documento cadena, relacion cadena)` |
 | **Responsabilidades** | Dejar asentado que otra persona va a recibir el pedido: su nombre, su documento y su relación con el cliente. |
 | **Tipo** | Sistema (planificado, I-4) |
-| **Referencias cruzadas** | Casos de uso: CU-128. Funciones: IRQ-01, OBJ-02. |
+| **Referencias cruzadas** | Casos de uso: CU-128. Funciones: IRQ-02, OBJ-01, OBJ-04. |
 | **Notas** | El chofer ve los datos para saber a quién entregar. Los datos se conservan hasta que vence el plazo de reclamo del pedido y después quedan anulados. |
 | **Excepciones** | Si el pedido ya fue entregado → rechazo. Si el documento no tiene un formato válido → rechazo. |
 | **Salida** | El pedido con los datos de quien recibe. |
@@ -7506,11 +7473,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Revisar cada día qué tareas de mantenimiento abiertas están por vencer o ya vencieron y avisar por correo a los administradores de cada distribuidora. |
 | **Tipo** | Sistema (proceso automático) |
 | **Referencias cruzadas** | Casos de uso: CU-142. Funciones: IRQ-03, OBJ-05. |
-| **Notas** | Se ejecuta una vez por día, a las 8 de la mañana. La anticipación es la de cada plan. El aviso sale por correo, no por notificación push. |
+| **Notas** | Se ejecuta una vez por día, a las 8 de la mañana. La anticipación es la de cada plan. El aviso sale por correo, no por notificación push. Cada Administrador con correo cargado recibe un correo con el detalle de lo que vence o venció. |
 | **Excepciones** | Si el envío falla para una distribuidora → sus tareas no se marcan como avisadas y se reintentan en el ciclo siguiente. Si la distribuidora no tiene ningún administrador con correo cargado → las tareas se marcan como avisadas igual. |
 | **Salida** | Ninguna: es un proceso interno. |
 | **Precondiciones** | Existen TareaMantenimiento abiertas, con fecha límite, que todavía no fueron avisadas y cuyo estado de vencimiento es «por vencer» o «vencida». |
-| **Postcondiciones** | El atributo avisada de cada TareaMantenimiento alcanzada tomó el instante del envío, para no repetir el aviso al día siguiente. Cada Administrador con correo cargado recibió un correo con el detalle de lo que vence o venció. |
+| **Postcondiciones** | El atributo avisada de cada TareaMantenimiento alcanzada tomó el instante del envío, para no repetir el aviso al día siguiente. |
 
 ---
 
@@ -7586,11 +7553,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Ofrecer el pedido express al chofer en moto más cercano con una ventana de aceptación más corta, y pasarlo a reparto común si nadie lo acepta. |
 | **Tipo** | Sistema (proceso automático) (planificado, I-7) |
 | **Referencias cruzadas** | Casos de uso: CU-149. Funciones: IRQ-02, OBJ-03. |
-| **Notas** | A diferencia del despacho normal, no expande el radio: buscar más lejos rompería la promesa de entrega dentro de la hora. Si ningún chofer en moto tiene la licencia vigente, no ofrece el pedido y pasa directamente al reparto común. |
+| **Notas** | A diferencia del despacho normal, no expande el radio: buscar más lejos rompería la promesa de entrega dentro de la hora. Si ningún chofer en moto tiene la licencia vigente, no ofrece el pedido y pasa directamente al reparto común. En ambos casos se notifica al Cliente. |
 | **Excepciones** | Si ningún chofer en moto acepta → la modalidad express se cancela, el recargo se descuenta del total y, si ya se pagó en línea, se reintegra sólo esa parte (reintegrarPagoDelPedido). Si el cliente paga en efectivo, basta con descontar el recargo. |
 | **Salida** | Si el pedido quedó asignado o pasó a reparto común. |
 | **Precondiciones** | Existe un Pedido en modalidad express, en estado «pendiente» y sin Chofer asociado. |
-| **Postcondiciones** | Si un Chofer en moto aceptó, se formó la asociación entre el Pedido y ese Chofer y el Pedido pasó a «aceptado». Si ninguno aceptó, el atributo modalidad del Pedido pasó a reparto común y el atributo total se redujo en el recargo express. En ambos casos, el Cliente fue notificado. |
+| **Postcondiciones** | Si un Chofer en moto aceptó, se formó la asociación entre el Pedido y ese Chofer y el Pedido pasó a «aceptado». Si ninguno aceptó, el atributo modalidad del Pedido pasó a reparto común y el atributo total se redujo en el recargo express. |
 
 ---
 
@@ -7683,7 +7650,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-161. Funciones: IRQ-03, OBJ-02, OBJ-05. |
 | **Notas** | Nunca quedan dos asignaciones abiertas para el mismo chofer ni para el mismo vehículo. La operación corre en una única transacción que bloquea el vehículo y los choferes involucrados. Es idempotente: si el chofer ya usa ese vehículo, no cierra ni abre nada. |
-| **Excepciones** | Si el chofer o el vehículo no existen o son de otra distribuidora → recurso no encontrado. Si el chofer, o quien usa hoy el vehículo, tiene un pedido aceptado o en camino → error de conflicto. Si la documentación del vehículo está vencida → error de solicitud (no se puede asignar). Si hay un conflicto de concurrencia que no se resuelve → error de conflicto. |
+| **Excepciones** | Si el chofer o el vehículo no existen o son de otra distribuidora → recurso no encontrado. Si el chofer, o quien usa el vehículo en ese momento, tiene un pedido aceptado o en camino → error de conflicto. Si la documentación del vehículo está vencida → error de solicitud (no se puede asignar). Si hay un conflicto de concurrencia que no se resuelve → error de conflicto. |
 | **Salida** | La asignación creada, con el vehículo. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Chofer y el Vehiculo son de esa Distribuidora. El Vehiculo está habilitado. Ni el Chofer ni el usuario actual del Vehiculo tienen un Pedido «aceptado» o «en camino». |
 | **Postcondiciones** | Se creó una instancia de AsignacionVehiculo con la fecha de asignación, el Administrador que la hizo y la nota, asociada al Chofer y al Vehiculo. Las instancias de AsignacionVehiculo abiertas del Chofer y del Vehiculo se cerraron con su fecha de liberación y el Administrador que las cerró. Si el Chofer ya usaba ese Vehiculo, no se modificó nada. |
@@ -7746,11 +7713,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Devolver por la pasarela el importe de los pagos aprobados de un pedido cancelado, o el recargo de un pedido express pasado a reparto común, y dejar constancia en los pagos. |
 | **Tipo** | Sistema (planificado, I-7) |
 | **Referencias cruzadas** | Casos de uso: CU-168. Funciones: IRQ-08, OBJ-07. |
-| **Notas** | Corre fuera de la transacción de la cancelación. La clave de idempotencia es el identificador del pago: repetir la solicitud no devuelve el dinero dos veces. Si no se indica el importe, se devuelve el del pago completo. No cambia el estado de pago del pedido: sigue indicando que se cobró. El administrador puede reintentar un reintegro fallido desde el detalle del pedido. |
+| **Notas** | Corre fuera de la transacción de la cancelación. La clave de idempotencia es el identificador del pago: repetir la solicitud no devuelve el dinero dos veces. Si no se indica el importe, se devuelve el del pago completo. No cambia el estado de pago del pedido: sigue indicando que se cobró. El administrador puede reintentar un reintegro fallido desde el detalle del pedido. Se notifica al panel y al Cliente. |
 | **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido no está cancelado ni es un express degradado → error de conflicto. Si no hay un pago aprobado por una pasarela → el proceso termina sin devolución. Si la pasarela rechaza o no responde → el pago queda aprobado y se avisa al panel de la devolución fallida. |
 | **Salida** | Si el pago fue reintegrado o la devolución falló. |
 | **Precondiciones** | El Pedido está cancelado, o es un pedido express pasado a reparto común. Tiene al menos un Pago aprobado por una pasarela. |
-| **Postcondiciones** | El atributo estado de cada Pago aprobado alcanzado pasó a «reintegrado», con su fecha de modificación actualizada. El panel y el Cliente fueron notificados. Si la pasarela rechazó la devolución, el Pago conserva el estado «aprobado». |
+| **Postcondiciones** | El atributo estado de cada Pago aprobado alcanzado pasó a «reintegrado», con su fecha de modificación actualizada. Si la pasarela rechazó la devolución, el Pago conserva el estado «aprobado». |
 
 ---
 
@@ -7906,7 +7873,7 @@ frecuencia de ejecución del proceso y la vigencia de las ofertas que emite.
 
 | Módulo | Estado | Ubicación en el código |
 |--------|--------|------------------------|
-| M1 | **Implementado** | `src/order/application/dispatch-orchestrator.service.ts`, `src/order/dispatch.service.ts` |
+| M1 | **Implementado** | `DispatchOrchestratorService`, `DispatchService` |
 | M2 | Planificado (I-10): Análisis y Diseño especificados | Documento 3 §6.2 |
 | M3 | Planificado (I-6): Análisis y Diseño especificados | — |
 | M4 | Planificado (I-9): Análisis y Diseño especificados | — |
@@ -7914,7 +7881,7 @@ frecuencia de ejecución del proceso y la vigencia de las ofertas que emite.
 
 ### 3.6 Valores vigentes del módulo M1
 
-Los siguientes valores son los que el sistema aplica hoy. Se registran aquí porque
+Los siguientes valores son los que el sistema aplica. Se registran aquí porque
 los diagramas de secuencia de la sección 2 y los contratos de operación los
 referencian.
 
@@ -7925,7 +7892,7 @@ referencian.
 | Frecuencia de revisión de ofertas vencidas | cada 15 segundos | `@Cron('*/15 * * * * *')` en `dispatch.service.ts` |
 | Revisión de reservas de stock | cada 5 minutos, cada 30 minutos y cada hora | `@Cron` en `reservation.service.ts` |
 
-> Los dos primeros parámetros son hoy constantes de clase. Llevarlos a
+> Los dos primeros parámetros son constantes de clase. Llevarlos a
 > configuración por distribuidora es el caso de uso CU-171 (planificado, I-1).
 
 > Esta sección se desarrolla con mayor detalle en el **Doc 3 — Diseño**, donde cada
@@ -7973,7 +7940,7 @@ referencian.
 | **Despacho automático** | Concepto | Proceso por el cual el sistema ofrece un pedido a un chofer por vez, con vigencia acotada, usando GEORADIUS para ordenar los candidatos por cercanía. Corresponde al módulo inteligente M1. |
 | **Radio expandido** | Concepto | Estrategia del proceso de negociación que amplía progresivamente el radio de búsqueda de choferes (5 → 10 → 15 → 20 km) a medida que se agotan los candidatos de cada paso. |
 | **Promoción por volumen** | Concepto | Descuento aplicado automáticamente cuando la cantidad de un producto en el carrito alcanza un mínimo. |
-| **Recargo por transferencia** | Concepto | Aumento del 10% al total cuando el método de pago es TRANSFER, aplicado automáticamente al calcular el pedido. |
+| **Recargo por pago en línea** | Concepto | Aumento del 10 % al total cuando el método de pago es MERCADOPAGO o TRANSFER, que el servidor aplica automáticamente al calcular el pedido; el efectivo no lleva recargo. |
 | **Validación de chofer** | Concepto | Habilitación permanente de un chofer por parte del administrador (`Delivery.validated = true`). Distinta de la disponibilidad operativa (`isActive`). |
 | **Ventana de aceptación** | Concepto | Lapso durante el cual una oferta de pedido permanece vigente para el chofer al que se le ofreció. Vencida sin respuesta, el pedido pasa al siguiente candidato. |
 | **Oferta de despacho** | Concepto | Propuesta de un pedido a un chofer determinado, con vigencia limitada. Se materializa en la entidad `DispatchOffer`. |

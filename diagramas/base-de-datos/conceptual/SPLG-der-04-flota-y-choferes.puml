@@ -29,12 +29,16 @@ skinparam nodesep 25
 skinparam ranksep 45
 
 entity Chofer {
+  * identificador
+  --
   {field} disponible
   {field} habilitado
   {field} validado
   {field} /calificación
 }
 entity Vehiculo {
+  * identificador
+  --
   {field} patente
   {field} tipo
   {field} carga máxima
@@ -42,11 +46,15 @@ entity Vehiculo {
   {field} estado en la flota
 }
 entity AsignacionVehiculo {
+  * identificador
+  --
   {field} asignado el
   {field} liberado el
   {field} nota
 }
 entity PlanMantenimiento {
+  * identificador
+  --
   {field} nombre
   {field} disparo
   {field} intervalo
@@ -54,6 +62,8 @@ entity PlanMantenimiento {
   {field} criticidad
 }
 entity TareaMantenimiento {
+  * identificador
+  --
   {field} estado
   {field} vence
   {field} vencimiento proyectado
@@ -62,17 +72,23 @@ entity TareaMantenimiento {
   {field} costo
 }
 entity AdjuntoTarea {
+  * identificador
+  --
   {field} nombre original
   {field} tipo de archivo
   {field} fecha de carga
 }
 entity PropuestaVentanaTaller {
+  * identificador
+  --
   {field} estado
   {field} vence
   {field} desde
   {field} hasta
 }
 entity RegistroUsoVehiculo {
+  * identificador
+  --
   {field} día
   {field} kilómetros
   {field} pedidos
@@ -96,6 +112,7 @@ PropuestaVentanaTaller }o--|| Chofer : se dirige a >
 TareaMantenimiento ||--o{ PropuestaVentanaTaller : origina >
 
 legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
   Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
 endlegend
 @enduml

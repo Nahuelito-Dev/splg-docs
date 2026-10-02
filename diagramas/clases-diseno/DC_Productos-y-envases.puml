@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -99,7 +99,7 @@ class Envase {
   + fueDevuelto(): Booleano
   + getMovimientos(): MovimientoEnvase[*]
   + getResumen()
-  + getVigencia(): Fecha, Entero
+  + getVigencia(out dias: Entero): Fecha
   + marcarParaRetiro(pedido: Pedido)
   + pasarA(estadoDestino: EstadoDelEnvase, pedido: Pedido,\n      cliente: Cliente, observacion: Cadena)
   + registrarRevision(fecha: Fecha, resultado: Cadena,\n      vencimiento: Fecha)

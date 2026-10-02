@@ -137,6 +137,13 @@ INCLUIDOS = {
     "recuperarArchivo": {"casos": ["CU-160"], "bases": ["CU-157", "CU-175"],
                          "controladores": {"FleetAttachmentService", "ClaimsService"},
                          "firma": "getDownloadUrl(clave)"},
+    # No es un caso incluido sino una operación interna: ningún actor la invoca y no es del
+    # catálogo; la ejecuta CreateOrderUseCase dentro de crearPedido, crearReserva y
+    # realizarCompraExpress. Se la trata igual (primer mensaje desde el controlador del caso base).
+    "crearCheckoutDePago": {"casos": ["CU-048"], "bases": ["CU-005", "CU-072", "CU-147"],
+                            "controladores": {"CreateOrderUseCase"},
+                            "firma": "crearCheckoutDePago(pedidoId, medioDePago)",
+                            "frase": "Operación interna invocada desde"},
 }
 
 # --------------------------------------------------------------------------- lectura
@@ -220,14 +227,19 @@ def bloque_mermaid(md, src):
 
 def tabla_de_implementacion(md, src):
     """{(clase, operación): texto de la celda} de la tabla `Operación de diseño | Implementación`
-    que sigue al diagrama `src` dentro de `md`; None si no hay diagrama o no hay tabla."""
-    fin = bloque_mermaid(md, src)
-    if fin is None:
-        return None
-    resto = md[fin:]
-    corte = re.search(r'```mermaid|^#{2,4} ', resto, re.M)
-    resto = resto[: corte.start()] if corte else resto
-    t = re.search(r'^\| Operación de diseño \| Implementación \|\n\|[-| ]+\|\n((?:\|.*\|\n?)+)', resto, re.M)
+    que sigue a un diagrama `src` dentro de `md` (si el diagrama aparece más de una vez, el
+    primero que tenga la tabla); None si no hay diagrama o no hay tabla."""
+    norm = lambda x: "\n".join(l.rstrip() for l in x.strip().split("\n"))
+    t = None
+    for m in re.finditer(r'```mermaid\n(.*?)\n```', md, re.S):
+        if norm(m.group(1)) != norm(src):
+            continue
+        resto = md[m.end():]
+        corte = re.search(r'```mermaid|^#{2,4} ', resto, re.M)
+        resto = resto[: corte.start()] if corte else resto
+        t = re.search(r'^\| Operación de diseño \| Implementación \|\n\|[-| ]+\|\n((?:\|.*\|\n?)+)', resto, re.M)
+        if t:
+            break
     if not t:
         return None
     filas = {}
@@ -314,12 +326,13 @@ def verificar(estricto=False, solo=None):
             if origen not in inc["controladores"]:
                 e(f"el primer mensaje sale de {origen!r}: tiene que ser el controlador del caso base {sorted(inc['controladores'])}")
             notas_inc = " ".join(re.findall(r'^\s*Note\s+.*?:\s*(.*)$', src, re.M))
-            if not re.search(r'Caso incluido desde', notas_inc) or any(b not in notas_inc for b in inc["bases"]):
-                e(f"falta la nota «Caso incluido desde …» con los casos base {', '.join(inc['bases'])}")
+            frase = inc.get("frase", "Caso incluido desde")
+            if frase not in notas_inc or any(b not in notas_inc for b in inc["bases"]):
+                e(f"falta la nota «{frase} …» con los casos base {', '.join(inc['bases'])}")
         elif et is None:
             e("el primer mensaje no sale de un actor")
         else:
-            a = re.fullmatch(r'(.+) \((ACT-0[1-8])\)', et)
+            a = re.fullmatch(r'(.+) \((ACT-0[1-9])\)', et)
             if not a or a.group(2) not in actores or actores[a.group(2)] != a.group(1):
                 e(f"el actor {et!r} no es del catálogo (nombre y código)")
             elif a.group(2) not in o["actores"]:

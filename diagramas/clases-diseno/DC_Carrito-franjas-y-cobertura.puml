@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -74,6 +74,7 @@ class ItemCarrito {
   + cambiarCantidad(cantidad: Entero)
   + getDiferenciaDePrecio()
   + getSubtotal(): Moneda
+  + sumarCantidad(cantidad: Entero)
 }
 class FranjaHoraria {
   - desde: Hora
@@ -81,7 +82,7 @@ class FranjaHoraria {
   - cupo: Entero
   - activa: Booleano
   + «create» FranjaHoraria(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero)
-  + cuposLibres(fecha: Fecha): Entero, Pedido[*], Chofer[*]
+  + cuposLibres(fecha: Fecha, out reservados: Pedido[*],\n      out libres: Chofer[*]): Entero
   + desactivar()
   + modificar(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero)
   + tieneCupo(fechaAgendada: Fecha)

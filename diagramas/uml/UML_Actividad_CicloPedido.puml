@@ -34,11 +34,11 @@ start
 :Validar cobertura, franja y precio;
 :Reservar el stock (transacción);
 if (¿reserva programada?) then (sí)
-  :Crear el pedido en estado RESERVED;
+  :Crear el pedido en estado Reservado;
   :Esperar seña paga y día agendado\n(estados de la Reserva);
-  :Activar la reserva: RESERVED a PENDING;
+  :Activar la reserva: Reservado a Pendiente;
 else (no)
-  :Crear el pedido en estado PENDING;
+  :Crear el pedido en estado Pendiente;
 endif
 if (¿paga con MercadoPago?) then (sí)
   :Crear el checkout y devolver la URL de pago;
@@ -55,16 +55,16 @@ endif
 |Chofer|
 :Aceptar el pedido;
 |Sistema|
-:Pedido ACCEPTED;\ngenerar el código de entrega;
+:Pedido aceptado;\ngenerar el código de entrega;
 if (¿se cancela antes de salir?) then (sí)
-  :Pedido CANCELLED;\nrestituir el stock;
+  :Pedido cancelado;\nrestituir el stock;
   stop
 else (no)
 endif
 |Chofer|
 :Marcar el pedido en camino;
 |Sistema|
-:Pedido ON_THE_WAY;\nactivar el seguimiento;
+:Pedido en camino;\nactivar el seguimiento;
 fork
   |Chofer|
   :Informar la posición GPS\nmientras dure el camino;
@@ -78,7 +78,7 @@ fork again
   :Escanear el código y confirmar la entrega;
   |Sistema|
   if (¿el código es válido?) then (sí)
-    :Pedido DELIVERED;\ndetener el seguimiento;
+    :Pedido entregado;\ndetener el seguimiento;
   else (no)
     :Rechazar la confirmación;
     detach
@@ -89,7 +89,7 @@ if (¿pago en efectivo?) then (sí)
   :Marcar el pago como cobrado;
 else (no)
 endif
-:Pasar los envases a WITH_CUSTOMER;
+:Pasar los envases a «en poder del cliente»;
 |Cliente|
 :Calificar el pedido (opcional);
 |Sistema|

@@ -18,17 +18,17 @@ classDiagram
     }
 
     class RefundPaymentUseCase {
-        <<use case>>
+        <<controlador>>
         + reintegrarPagoDelPedido(pedidoId: Identificador, importe: Moneda): Booleano
     }
 
     class ConfirmPaymentUseCase {
-        <<use case>>
+        <<controlador>>
         + notificarResultadoDePago(tipoDeNotificacion: Cadena, identificadorDelPago: Cadena, firma: Cadena)
     }
 
     class RefundPaymentUseCase {
-        <<use case>>
+        <<controlador>>
         + reintegrarPagoDelPedido(pedidoId: Identificador, importe: Moneda): Booleano
     }
 
@@ -50,8 +50,8 @@ classDiagram
     class List_Pedido["List<Pedido>"] {
         <<colección>>
     }
-    class Pago
     class Pedido
+    class Pago
     class NotificationPort {
         <<interface>>
     }

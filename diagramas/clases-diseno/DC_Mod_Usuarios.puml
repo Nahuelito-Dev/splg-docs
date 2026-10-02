@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -73,11 +73,11 @@ class UsersService <<fachada>> {
   + buscarUsuarioPorTelefono(telefono: Cadena): Usuario
   + consultarPerfil(usuario: Usuario): Usuario
   + eliminarUsuario(usuario: Usuario): Cadena
-  + listarUsuarios(pagina: Entero, limite: Entero,\n      textoDeBusqueda: Cadena): Usuario[*], Entero
+  + listarUsuarios(pagina: Entero, limite: Entero,\n      textoDeBusqueda: Cadena,\n      out total: Entero): Usuario[*]
   + verificarExistenciaDeUsuario(correo: Cadena,\n      telefono: Cadena): Booleano
 }
 class "List<Usuario>" as List_Usuario <<colección>> {
-  + buscar(textoDeBusqueda: Cadena, pagina: Entero,\n      limite: Entero): Usuario[*], Entero
+  + buscar(textoDeBusqueda: Cadena, pagina: Entero,\n      limite: Entero, out total: Entero): Usuario[*]
 }
 class RoleService <<fachada>> {
   + actualizarRol(rolId: Identificador, datos: Registro): Rol
@@ -106,7 +106,7 @@ class "Map<String, Administrador>" as Map_String_Administrador <<colección>> {
   + get(clave: Cadena): Administrador
 }
 class AuditService <<fachada>> {
-  + consultarAuditoria(autor: Identificador,\n      tipoDeRecurso: Cadena, recurso: Cadena,\n      desde: FechaHora, hasta: FechaHora,\n      resultado: Cadena, limite: Entero,\n      desplazamiento: Entero): AsientoAuditoria[*], Entero
+  + consultarAuditoria(autor: Identificador,\n      tipoDeRecurso: Cadena, recurso: Cadena,\n      desde: FechaHora, hasta: FechaHora,\n      resultado: Cadena, limite: Entero,\n      desplazamiento: Entero,\n      out total: Entero): AsientoAuditoria[*]
   + registrarOperacion(autor: Identificador, rol: Cadena,\n      distribuidoraId: Identificador, operacion: Cadena,\n      recurso: Cadena, origen: Cadena, resultado: Cadena,\n      codigo: Cadena, motivo: Cadena)
 }
 class "List<AsientoAuditoria>" as List_AsientoAuditoria <<colección>> {
@@ -135,8 +135,8 @@ RoleService --> "1" Map_String_Rol
 UsersService --> "1" FirebaseAuthPort
 UsersService --> "1" List_Usuario
 UsersService --> "1" Map_String_Usuario
-AuditService ..> AsientoAuditoria : «create»
-RoleService ..> Rol : «create»
+AuditService ..> AsientoAuditoria : <<create>>
+RoleService ..> Rol : <<create>>
 UsersService ..> Chofer
 UsersService ..> UbicacionGPS
 UsersService ..> Usuario

@@ -17,11 +17,11 @@ skinparam ArrowFontSize 12
 skinparam NoteBackgroundColor #FBF7E6
 skinparam NoteBorderColor #7A7340
 hide empty description
-state "IN_DEPOT\nen depósito" as IN_DEPOT
-state "FILLED\nlleno" as FILLED
-state "DISPATCHED\nen reparto" as DISPATCHED
-state "WITH_CUSTOMER\nen poder del cliente" as WITH_CUSTOMER
-state "EMPTY_RETURNED\ndevuelto vacío" as EMPTY_RETURNED
+state "En depósito\n(IN_DEPOT)" as IN_DEPOT
+state "Lleno\n(FILLED)" as FILLED
+state "En reparto\n(DISPATCHED)" as DISPATCHED
+state "En poder del cliente\n(WITH_CUSTOMER)" as WITH_CUSTOMER
+state "Devuelto vacío\n(EMPTY_RETURNED)" as EMPTY_RETURNED
 
 [*] --> IN_DEPOT : registrarEnvase(serie) [serie única en la distribuidora]
 IN_DEPOT --> FILLED : cargar()
@@ -35,7 +35,7 @@ EMPTY_RETURNED --> IN_DEPOT : reingresar()
 note right of WITH_CUSTOMER
   Cada transición registra un movimiento
   (estado origen, estado destino, pedido, responsable).
-  Al llegar a WITH_CUSTOMER se anota el cliente;
-  al salir hacia EMPTY_RETURNED o IN_DEPOT se borra.
+  Al llegar a «en poder del cliente» se anota el cliente;
+  al salir hacia «devuelto vacío» o «en depósito» se borra.
 end note
 @enduml

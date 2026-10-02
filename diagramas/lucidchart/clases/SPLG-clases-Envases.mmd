@@ -28,8 +28,8 @@ classDiagram
     class Map_String_Pedido["Map<String, Pedido>"] {
         <<colección>>
     }
-    class Distribuidora
     class Pedido
+    class Distribuidora
 
     Map_String_Envase "1" o-- "0..*" Envase : elementos
     CylinderService --> "1" Map_String_Envase : map<String, Envase>

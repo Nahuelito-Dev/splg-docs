@@ -10,7 +10,7 @@ classDiagram
         + eliminarZonaDeCobertura(zonaId: Identificador)
         + listarZonasDeCobertura(): ZonaCobertura[*]
         + programarVigenciaDeZona(zonaId: Identificador, vigenteHasta: FechaHora): ZonaCobertura
-        + validarCobertura(latitud: Decimal, longitud: Decimal): Booleano, Moneda, ZonaCobertura
+        + validarCobertura(latitud: Decimal, longitud: Decimal, out recargo: Moneda, out zona: ZonaCobertura): Booleano
     }
 
     class Map_String_ZonaCobertura["Map<String, ZonaCobertura>"] {

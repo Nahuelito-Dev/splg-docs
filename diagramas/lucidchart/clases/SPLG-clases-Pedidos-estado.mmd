@@ -12,16 +12,16 @@ classDiagram
         + cambiarDireccionDeEntrega(pedidoId: Identificador, direccionId: Identificador, motivo: Cadena): Pedido
         + completarDiasSinVentas(ventasPorDia: Registro)
         + consultarGraficoDeVentas(): Cadena
-        + consultarHistorialDePedidos(cliente: Cliente, pagina: Entero, limite: Entero): Pedido[*], Entero
+        + consultarHistorialDePedidos(cliente: Cliente, pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
         + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
         + consultarPedido(pedidoId: Identificador): Pedido
-        + consultarPedidosAsignados(choferId: Identificador, pagina: Entero, limite: Entero): Pedido[*], Entero
-        + consultarPedidosDisponibles(pagina: Entero, limite: Entero): Pedido[*], Entero
+        + consultarPedidosAsignados(choferId: Identificador, pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
+        + consultarPedidosDisponibles(pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
         + consultarResumenDePedidos(): Registro
         + despacharPedidoExpress(pedidoId: Identificador): Booleano
         + findAvailableOrders(): Pedido[*]
         + indicarQuienRecibe(pedidoId: Identificador, nombre: Cadena, documento: Cadena, relacion: Cadena): Pedido
-        + listarPedidos(pagina: Entero, limite: Entero): Pedido[*], Entero
+        + listarPedidos(pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
         + obtenerCodigoDeEntrega(pedidoId: Identificador): Cadena
         + realizarCompraExpress(tipoGarrafa: Cadena, metodoDePago: MetodoDePago): Pedido
         + rechazarOferta(pedidoId: Identificador): Booleano
@@ -29,14 +29,14 @@ classDiagram
     }
 
     class UpdateOrderStatusUseCase {
-        <<use case>>
+        <<controlador>>
         + aceptarPedido(pedidoId: Identificador): Pedido
         + confirmarEntrega(pedidoId: Identificador): Pedido
         + marcarPedidoEnCamino(pedidoId: Identificador): Pedido
     }
 
     class ConfirmDeliveryUseCase {
-        <<use case>>
+        <<controlador>>
         + confirmarEntregaConCodigo(pedidoId: Identificador, codigo: Cadena): Pedido
     }
 
@@ -47,16 +47,16 @@ classDiagram
 
     class List_Pedido["List<Pedido>"] {
         <<colección>>
-        + buscarDeLaDistribuidora(distribuidoraId: Identificador, pagina: Entero, limite: Entero): Pedido[*], Entero
-        + buscarDelCliente(cliente: Cliente, pagina: Entero, limite: Entero): Pedido[*], Entero
-        + buscarDisponibles(distribuidoraId: Identificador, pagina: Entero, limite: Entero): Pedido[*], Entero
+        + buscarDeLaDistribuidora(distribuidoraId: Identificador, pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
+        + buscarDelCliente(cliente: Cliente, pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
+        + buscarDisponibles(distribuidoraId: Identificador, pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
         + buscarPendientesConMercadoPagoAnterioresA(plazo: Entero): Pedido[*]
         + buscarReservas(distribuidoraId: Identificador): Pedido[*]
         + buscarReservasConSeniaPagaHasta(hoy: Fecha): Pedido[*]
         + buscarReservasSinSeniaAnterioresA(plazo: Entero): Pedido[*]
         + contarEntregadosDelDia(distribuidoraId: Identificador): Entero
         + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Booleano
-        + contarPorEstado(distribuidoraId: Identificador): Pedido[*], Chofer[*], Booleano
+        + contarPorEstado(distribuidoraId: Identificador, out aceptados: Chofer[*], out enCamino: Booleano): Pedido[*]
         + entregadosEntre(fechaDesde: Fecha, fechaHasta: Fecha): Pedido[*]
         + getUltimoEntregado(cliente: Cliente, distribuidoraId: Identificador): Fecha
         + totalEntregado(periodo: Cadena): Registro
@@ -82,16 +82,16 @@ classDiagram
     class RealtimeDispatchPort {
         <<interface>>
     }
-    class Chofer
-    class Cliente
-    class Producto
-    class ZonaCobertura
     class UbicacionGPS
     class Envase
-    class OfertaDespacho
     class NotificationsService {
         <<fachada>>
     }
+    class Chofer
+    class Cliente
+    class OfertaDespacho
+    class ZonaCobertura
+    class Producto
 
     Map_String_Pedido "1" o-- "0..*" Pedido : elementos
     List_Pedido "1" o-- "0..*" Pedido : elementos

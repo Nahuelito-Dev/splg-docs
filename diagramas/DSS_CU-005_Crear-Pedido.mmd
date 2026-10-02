@@ -7,7 +7,7 @@ sequenceDiagram
     CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     activate SIS
     alt Hay stock y la dirección está cubierta
-        SIS-->>CLI: pedido creado (número, total, estado pendiente)
+        SIS-->>CLI: pedido creado (número, total, estado pendiente y, si el pago es por MercadoPago, enlace de pago)
         Note over CLI,SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
         SIS-)CLI: notificarConfirmacionDePedido(pedido)
     else Sin stock suficiente

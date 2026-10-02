@@ -19,7 +19,7 @@ skinparam database {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
 }
-skinparam cloud {
+skinparam node<<externo>> {
   BorderColor #8E5566
   BackgroundColor #F7ECEF
 }
@@ -55,9 +55,9 @@ node "Servidor virtual (VPS)\n<<device>>" as VPS {
   }
 }
 
-cloud "Firebase\n<<external>>\nAuth y FCM" as FB
-cloud "MercadoPago\n<<external>>\nCheckout Pro" as MP
-cloud "Servicio de correo\n<<external>>" as ML
+node "Firebase\n<<execution environment>>\n<<externo>>\nAuth y FCM" as FB
+node "MercadoPago\n<<execution environment>>\n<<externo>>\nCheckout Pro" as MP
+node "Servicio de correo\n<<execution environment>>\n<<externo>>" as ML
 
 AC -down-> BACK : HTTPS / REST\nWSS / Socket.IO
 AD -down-> BACK : HTTPS / REST\nWSS / Socket.IO
@@ -68,8 +68,9 @@ BACK -down-> PG : TCP 5432
 BACK -down-> RD : TCP 6379
 
 BACK -right-> FB : HTTPS\n(verificación de identidad)
-BACK <-right-> MP : HTTPS\n(cobro y webhook de pago)
-BACK -right-> ML : HTTPS\n(comprobantes)
+BACK -right-> MP : HTTPS (creación del cobro)
+MP -down-> BACK : HTTPS (webhook de pago)
+BACK -right-> ML : HTTPS\n(bienvenida, recuperación de clave,\naviso de vencimientos)
 FB .up.> AC : FCM
 FB .up.> AD : FCM
 @enduml

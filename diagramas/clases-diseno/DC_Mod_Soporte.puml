@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -93,30 +93,15 @@ interface StoragePort <<interface>> <<puerto>> {
   + remove(adjunto: AdjuntoTarea)
   + remove(claveAnterior: Cadena)
 }
-class LocalDiskStorageAdapter <<adaptador>> {
-  + getDownloadUrl(clave: Cadena): Cadena
-  + getStream(clave: Cadena): Archivo
-  + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
-  + resolveKey(clave: Cadena)
-}
-class S3StorageAdapter <<adaptador>> {
-  + getDownloadUrl(clave: Cadena): Cadena
-  + getStream(clave: Cadena): Archivo
-  + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
-}
 class "List<Pedido>" as List_Pedido <<referencia>>
-class ItemPedido <<referencia>>
 class Pedido <<referencia>>
+class ItemPedido <<referencia>>
 
 HealthCheckService --> "1" RedisHealthIndicator
 RedisHealthIndicator --> "1" RedisService
 ReportsService --> "1" List_Pedido
 ReportsService ..> ItemPedido
 ReportsService ..> Pedido
-StoragePort ..> LocalDiskStorageAdapter
-StoragePort ..> S3StorageAdapter
-S3StorageAdapter ..|> StoragePort
-LocalDiskStorageAdapter ..|> StoragePort
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

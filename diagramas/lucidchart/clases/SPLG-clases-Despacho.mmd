@@ -66,10 +66,10 @@ classDiagram
     class OrderService {
         <<fachada>>
     }
-    class Pedido
+    class OfertaLote
     class Chofer
     class OfertaDespacho
-    class OfertaLote
+    class Pedido
 
     Map_String_LoteRecorrido "1" o-- "0..*" LoteRecorrido : elementos
     DispatchOrchestratorService --> "1" DispatchOfferRepositoryPort : dispatchOfferRepositoryPort

@@ -7,6 +7,7 @@ sequenceDiagram
     participant PRODS as :Map#lt;String, Producto#gt;
     participant PRO as producto:Producto
     participant CAR as carrito:Carrito
+    participant ITC as :ItemCarrito
 
     CLI->>+SRV: agregarItemAlCarrito(productoId, cantidad)
     SRV->>+PRODS: get(productoId)
@@ -22,9 +23,14 @@ sequenceDiagram
         CLE-->>-SRV: carrito
     end
     SRV->>+CAR: agregarItem(producto, cantidad)
-    CAR->>PRO: getPrecio()
-    create participant ITC as :ItemCarrito
-    CAR->>ITC: «create»(producto, cantidad, precioUnitario)
+    alt El producto ya está en el carrito
+        CAR->>+ITC: sumarCantidad(cantidad)
+        deactivate ITC
+    else El producto todavía no está en el carrito
+        CAR->>PRO: getPrecio()
+        create participant NIT as nuevo:ItemCarrito
+        CAR->>NIT: «create»(producto, cantidad, precioUnitario)
+    end
     CAR->>CAR: calcularTotal()
     loop Por cada item del carrito
         CAR->>ITC: getSubtotal()

@@ -24,8 +24,8 @@ skinparam NoteBackgroundColor #FBF7E6
 skinparam NoteBorderColor #7A7340
 |Sistema|
 start
-:Pedido en estado PENDING sin chofer asignado;
-while (¿el pedido sigue PENDING y sin chofer?) is (sí)
+:Pedido en estado Pendiente sin chofer asignado;
+while (¿el pedido sigue pendiente y sin chofer?) is (sí)
   if (¿tiene punto de entrega?) then (no)
     :Sin oferta;
     stop
@@ -41,21 +41,21 @@ while (¿el pedido sigue PENDING y sin chofer?) is (sí)
     :Sin oferta;\nel ciclo de 15 s lo reintenta;
     stop
   endif
-  :Crear la oferta (OFFERED, vigencia 30 s);
+  :Crear la oferta (ofrecida, vigencia de 30 s);
   :Notificar al chofer por WebSocket\ny por notificación push;
   |Chofer|
   switch (¿respuesta del chofer?)
   case (acepta)
     :aceptarPedido();
     |Sistema|
-    :Oferta ACCEPTED;\npedido ACCEPTED;
+    :Oferta aceptada;\npedido aceptado;
   case (rechaza)
     :rechazarOferta();
     |Sistema|
-    :Oferta REJECTED;
+    :Oferta rechazada;
   case (no responde en 30 s)
     |Sistema|
-    :Oferta EXPIRED\n(proceso de vencimiento cada 15 s);
+    :Oferta vencida\n(proceso de vencimiento cada 15 s);
   endswitch
 endwhile (no)
 :Generar el código de entrega\ny avisar al cliente;

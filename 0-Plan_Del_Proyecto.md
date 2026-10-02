@@ -14,8 +14,8 @@
 
 - Figura 1 — Cronograma del proyecto: diagrama de Gantt
 - Figura 2 — Actores del sistema y el canal por el que operan
-- Figura 3 — Diagrama de Casos de Uso del Sistema
-- Figura 4 — Mapa del sistema: paquetes y actores
+- Figura 3 — Mapa del sistema: paquetes y actores
+- Figura 4 — Diagrama de Casos de Uso del Sistema
 
 ---
 
@@ -30,8 +30,9 @@
 | 4 | 2026-10-01 | Casos de uso de alto nivel CU-161 a CU-167: vehículo en uso por chofer y reclamos. | Nahuel Wagner |
 | 5 | 2026-10-01 | Casos de uso de alto nivel CU-168 a CU-175: reintegro de pagos, historial de estados del pedido, configuración de procesos y de tareas programadas, y fotografía del reclamo. Estado y iteración de cada caso en el catálogo. Plan de construcción de los casos de uso planificados (I-1 a I-10) y decisiones de diseño incorporadas. | Nahuel Wagner |
 | 6 | 2026-10-01 | Cronograma como diagrama de Gantt con las seis iteraciones de Construcción, las diez iteraciones de los casos planificados y los hitos; fechas de las fases alineadas con la Planificación de Iteraciones; despliegue en un servidor virtual con Docker Compose. | Nahuel Wagner |
+| 7 | 2026-10-01 | Cierre de la documentación: los 174 casos de uso con sus cuatro artefactos, el catálogo de 194 operaciones del sistema y las cifras del plan coherentes con los Documentos 1, 2 y 3 y con el sistema construido. | Nahuel Wagner |
+| 8 | 2026-10-01 | Revisión final: mapa del sistema como diagrama principal y diagrama completo como lámina anexa, actor ACT-09 (plataforma de despliegue), cronograma con I-1, I-2, I-3 e I-5 cerrando en C-06 y el resto postergado, recargo del 10 % del pago en línea, catálogo de 194 operaciones. | Nahuel Wagner |
 
-| 7 | 2026-10-01 | Cierre de la documentación: los 174 casos de uso con sus cuatro artefactos, el catálogo de 195 operaciones del sistema y las cifras del plan coherentes con los Documentos 1, 2 y 3 y con el sistema construido. | Nahuel Wagner |
 ---
 
 ## 1. Componentes del Sistema
@@ -70,7 +71,7 @@ Los hitos que marcan el final de cada fase se describen en la siguiente tabla.
 |------|-------------|------|
 | Fase de Inicio | Identificación del escenario real (distribuidor de gas con operación telefónica y sin trazabilidad), relevamiento de necesidades con el cliente, identificación de actores y casos de uso principales, redacción de la Propuesta de Proyecto y presentación del Plan del Proyecto. | Plan del Proyecto aprobado por el docente (28/04/2026). |
 | Fase de Elaboración | Análisis de los casos de uso arquitectónicamente más críticos (CU-001, CU-005, CU-013, CU-017, CU-020); definición y validación de la arquitectura técnica (NestJS, Flutter, React, PostgreSQL, Redis, Firebase Auth); Modelo Conceptual preliminar; prototipo de arquitectura que valida el despacho automático con Redis GEORADIUS. | Arquitectura validada con el cliente y prototipo funcional demostrado (19/05/2026). |
-| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, dashboard, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado por la cátedra, con la construcción de los casos de uso planificados en las diez iteraciones I-1 a I-10: cimientos (I-1), vigencia de envases (I-2), carrito persistente (I-3), pedido en curso (I-4), consumo declarado y reclamos con imagen (I-5), recompra (I-6), compra express y reintegros (I-7), recupero de envases (I-8), recorridos (I-9) y flota (I-10). | Release 2.0 al cierre de C-05 (08/09/2026) y alcance ampliado construido al cierre de C-06 (20/10/2026); las iteraciones I-6, I-8, I-9 e I-10 se postergan primero si el tiempo no alcanza. |
+| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, dashboard, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado, con la construcción de los casos de uso planificados en las diez iteraciones I-1 a I-10: cimientos (I-1), vigencia de envases (I-2), carrito persistente (I-3), pedido en curso (I-4), consumo declarado y reclamos con imagen (I-5), recompra (I-6), compra express y reintegros (I-7), recupero de envases (I-8), recorridos (I-9) y flota (I-10). | Release 2.0 al cierre de C-05 (08/09/2026) y, al cierre de C-06 (20/10/2026), construidas las iteraciones I-1, I-2, I-3 e I-5; las iteraciones I-4, I-6, I-7, I-8, I-9 e I-10 quedan postergadas a una iteración posterior a la defensa. |
 | Fase de Transición | Pruebas de aceptación con usuarios reales (choferes y clientes del distribuidor), corrección de los defectos detectados, despliegue en producción (Docker Compose sobre un servidor virtual, VPS) y entrega de la documentación (manuales de usuario y guías de despliegue). | Sistema en producción, usuarios capacitados y documentación entregada (22/12/2026). |
 
 ---
@@ -86,19 +87,19 @@ El cronograma abarca **37 semanas**, desde el **07/04/2026** hasta el **22/12/20
 **Figura 1 — Cronograma del proyecto: diagrama de Gantt**
 
 
-Las barras de color pleno son las fases e iteraciones del plan. Los rombos son los hitos de cierre: Plan del Proyecto aprobado (28/04/2026), arquitectura validada (19/05/2026), Release 2.0 (08/09/2026), cierre de C-06 (20/10/2026) y sistema en producción (22/12/2026). Las diez iteraciones I-1 a I-10 de la sección siguiente se dibujan dentro de C-06, en los cuatro carriles que se describen allí, con su duración estimada y a partir del 01/10/2026; las cuatro de tono claro (I-6, I-8, I-9 e I-10) son las que el orden de recorte posterga primero.
+Las barras de color pleno son las fases e iteraciones del plan. Los rombos son los hitos de cierre: Plan del Proyecto aprobado (28/04/2026), arquitectura validada (19/05/2026), Release 2.0 (08/09/2026), cierre de C-06 (20/10/2026) y sistema en producción (22/12/2026). Las diez iteraciones I-1 a I-10 de la sección siguiente se dibujan en dos bloques: las cuatro que entran en C-06 y cierran el 20/10/2026 (I-1, I-2, I-3 e I-5, a partir del 01/10/2026) y, aparte, las seis que quedan postergadas a una iteración posterior a la defensa (I-4, I-6, I-7, I-8, I-9 e I-10), con fechas estimadas a partir del 21/10/2026 que respetan sus dependencias. La columna Duración cuenta días corridos.
 
-| Fase | Iteración | Desde | Hasta | Duración | Hito de cierre |
+| Fase | Iteración | Desde | Hasta | Duración (días corridos) | Hito de cierre |
 |------|:---------:|:-----:|:-----:|:--------:|----------------|
-| Inicio | — | 07/04/2026 | 28/04/2026 | 3 semanas | Plan del Proyecto aprobado |
-| Elaboración | E-01 | 28/04/2026 | 19/05/2026 | 3 semanas | Arquitectura validada y prototipo demostrado |
-| Construcción | C-01 | 19/05/2026 | 02/06/2026 | 2 semanas | Autenticación, roles y base del backend |
-| Construcción | C-02 | 02/06/2026 | 23/06/2026 | 3 semanas | Pedidos, stock atómico y despacho automático |
-| Construcción | C-03 | 23/06/2026 | 14/07/2026 | 3 semanas | Seguimiento en tiempo real y App Chofer |
-| Construcción | C-04 | 14/07/2026 | 04/08/2026 | 3 semanas | Reclamos, reportes, dashboard y Panel |
-| Construcción | C-05 | 04/08/2026 | 08/09/2026 | 5 semanas | App Cliente y Release 2.0 |
-| Construcción | C-06 | 09/09/2026 | 20/10/2026 | 6 semanas | Alcance ampliado construido |
-| Transición | T-01 | 21/10/2026 | 22/12/2026 | 9 semanas | Sistema en producción y usuarios capacitados |
+| Inicio | — | 07/04/2026 | 28/04/2026 | 21 días (3 semanas) | Plan del Proyecto aprobado |
+| Elaboración | E-01 | 28/04/2026 | 19/05/2026 | 21 días (3 semanas) | Arquitectura validada y prototipo demostrado |
+| Construcción | C-01 | 19/05/2026 | 02/06/2026 | 14 días (2 semanas) | Autenticación, roles y base del backend |
+| Construcción | C-02 | 02/06/2026 | 23/06/2026 | 21 días (3 semanas) | Pedidos, stock atómico y despacho automático |
+| Construcción | C-03 | 23/06/2026 | 14/07/2026 | 21 días (3 semanas) | Seguimiento en tiempo real y App Chofer |
+| Construcción | C-04 | 14/07/2026 | 04/08/2026 | 21 días (3 semanas) | Reclamos, reportes, dashboard y Panel |
+| Construcción | C-05 | 04/08/2026 | 08/09/2026 | 35 días (5 semanas) | App Cliente y Release 2.0 |
+| Construcción | C-06 | 09/09/2026 | 20/10/2026 | 42 días (6 semanas) | Iteraciones I-1, I-2, I-3 e I-5 construidas |
+| Transición | T-01 | 21/10/2026 | 22/12/2026 | 62 días (9 semanas) | Sistema en producción y usuarios capacitados |
 
 ### Plan de construcción de los casos de uso planificados
 
@@ -135,7 +136,7 @@ L+ más de siete.
 La primera es la configuración de procesos por distribuidora: la tabla ya existe y falta el servicio
 que la lee y la valida, con un esquema de validación por proceso; sin ella la compra express y los
 cuatro módulos inteligentes quedarían con parámetros fijos en el código, que es lo que el criterio de
-parametrización de la cátedra no admite. La segunda es el evento de dominio de pedido entregado, que
+parametrización del proyecto no admite. La segunda es el evento de dominio de pedido entregado, que
 necesitan el recálculo de la recompra, el registro de uso de la flota y el recupero de envases. La
 tercera es la plantilla del proceso temporal con cerrojo distribuido, que estrena la desactivación de
 zonas vencidas (CU-151) con el caso más simple y repiten los módulos inteligentes; para los procesos
@@ -146,8 +147,8 @@ caso necesita para verse.
 
 **Dependencias y orden.** I-1 no depende de nada. I-8 depende de I-2, porque comparte el módulo y el
 ciclo del envase. I-6 depende de I-5, por el consumo declarado y el aviso de recompra, y del evento de
-pedido entregado de I-1. I-7 depende de I-3, porque la modalidad se elige dentro de la compra desde el
-carrito, y del vehículo en uso del chofer (CU-161 a CU-165). I-9 e I-10 dependen del vehículo en uso,
+pedido entregado de I-1. I-4 depende de I-3, porque el cambio de dirección se ofrece sobre el pedido que sale del carrito. I-7 depende de I-3 y de I-4, porque la modalidad se elige dentro de la compra desde el
+carrito y el reintegro actúa sobre el pedido en curso, y del vehículo en uso del chofer (CU-161 a CU-165). I-9 e I-10 dependen del vehículo en uso,
 para conocer la capacidad de carga y el kilometraje, y I-9 depende además de I-7, porque los pedidos
 express no se agrupan. En el diseño de datos, los cambios que no están en la base se reparten
 entre las iteraciones que los necesitan: la columna del recargo express y el tipo de vehículo
@@ -157,12 +158,15 @@ nuevos de la configuración de procesos en I-1.
 **Carga estimada.** La suma de las diez iteraciones ronda las 58 a 64 jornadas de trabajo de una
 persona (I-1, 5; I-2, de 4 a 5; I-3, de 5 a 6; I-4, 4; I-5, de 5 a 6; I-6, 6; I-7, de 7 a 8; I-8, 6;
 I-9, de 7 a 8; I-10, de 9 a 10). Repartida en cuatro carriles que tocan módulos distintos del backend
-—envases (I-2, I-8), pedido (I-3, I-4, I-7, I-9), cliente (I-5, I-6) y flota (I-10)—, no entra completa
-en la iteración C-06, que cierra el 20/10/2026: las metas de C-06 cubren I-1 a I-5 y la compra express.
-Si el tiempo no alcanza antes de la defensa, el orden de recorte, de lo primero que se posterga a lo
-último, es: la negociación de ventana y el bloqueo del vehículo de I-10, I-9, I-8 y la captura de
-kilómetros de I-10. No conviene postergar I-1, I-2 (tiene dos casos críticos), I-7 (la compra express es
-un caso crítico) ni I-6, el módulo inteligente más barato de mostrar funcionando de punta a punta.
+—envases (I-2, I-8), pedido (I-3, I-4, I-7, I-9), cliente (I-5, I-6) y flota (I-10)—, no entra en la
+iteración C-06, que cierra el 20/10/2026. **Qué cierra C-06:** las iteraciones I-1, I-2, I-3 e I-5, que
+terminan el 15/10/2026 como máximo. **Qué se posterga:** las iteraciones I-4, I-6, I-7, I-8, I-9 e I-10
+quedan declaradas como postergadas a una iteración posterior a la defensa; el Gantt las dibuja aparte,
+con fechas estimadas a partir del 21/10/2026 que respetan las dependencias. Entre ellas, el orden en que
+se retomarían es I-4 (completa el cambio de dirección del pedido en curso), I-6 (el módulo inteligente
+más barato de mostrar funcionando de punta a punta), I-7 (la compra express es un caso crítico), I-8,
+I-10 e I-9. Dentro de I-10, lo primero que se posterga es la negociación de ventana y el bloqueo del
+vehículo, y la captura de kilómetros.
 
 **Decisiones de diseño incorporadas.** Los casos planificados recogen las siguientes decisiones, que
 quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
@@ -192,11 +196,12 @@ quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
 | ACT-01 | **Cliente** | Humano | Usuario final que instala la App Cliente (Flutter) en su celular. Realiza pedidos de garrafas, elige franja horaria, selecciona método de pago, sigue el pedido en tiempo real en el mapa y puede registrar reclamos post-entrega. |
 | ACT-02 | **Chofer / Repartidor** | Humano | Repartidor del distribuidor que utiliza la App Chofer (Flutter) en su dispositivo Android. Recibe notificaciones de pedidos cercanos por WebSocket, acepta o rechaza pedidos, actualiza su posición GPS en tiempo real y confirma la entrega al cliente. |
 | ACT-03 | **Administrador** | Humano | Operador interno de una distribuidora, con alcance acotado a su propia empresa. Accede al Panel Web (React/Vite) para gestionar choferes, vehículos, productos, stock, precios, franjas horarias, reclamos y visualizar reportes y el dashboard operativo. Tiene acceso total dentro del alcance de su distribuidora. |
-| ACT-04 | **Sistema Automático** | Sistema | Procesos que el backend ejecuta por iniciativa propia, sin intervención humana y sin interfaz de usuario. Comprende la negociación secuencial de asignación de pedidos (CU-013), el vencimiento y re-oferta de las propuestas a los choferes (CU-014), la activación y expiración de las reservas programadas (CU-075 a CU-077), la reserva y restitución de stock, y los avisos automáticos. |
+| ACT-04 | **Sistema Automático** | Sistema | Procesos que el backend ejecuta por iniciativa propia, sin intervención humana y sin interfaz de usuario. Comprende la negociación secuencial de asignación de pedidos (CU-013), el vencimiento y re-oferta de las propuestas a los choferes (CU-014), la activación y expiración de las reservas programadas (CU-075 a CU-077), la reserva y restitución de stock, y los avisos automáticos. Es un actor interno de disparo temporal —el equivalente al actor «Tiempo» de Larman—: representa el reloj y los eventos internos que inician casos de uso sin que los inicie una persona ni un sistema externo. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras, designa a sus administradores y administra los roles del sistema. Es el único actor cuyo alcance no está acotado a una distribuidora: los demás operan siempre dentro de la suya. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro. El sistema le crea el checkout de cada pedido o seña que se paga por MercadoPago y recibe de ella el aviso de pago aprobado. No inicia ningún caso de uso. Participa en CU-005, CU-048, CU-072 y CU-147. |
-| ACT-07 | **Firebase** | Secundario (sistema externo) | Identidad y mensajería. El sistema le pide crear y deshabilitar cuentas, verificar el token de sesión y generar el enlace de recuperación de contraseña, y le entrega las notificaciones push que llegan a los dispositivos. No inicia ningún caso de uso. Participa en CU-001, CU-004, CU-005, CU-013, CU-014, CU-016, CU-019, CU-021, CU-047, CU-072, CU-079, CU-082, CU-085, CU-091, CU-100, CU-101 y CU-147, y en el caso factorizado Notificar Cliente. |
+| ACT-07 | **Firebase** | Secundario (sistema externo) | Identidad y mensajería. El sistema le pide crear y deshabilitar cuentas, verificar el token de identidad y generar el enlace de recuperación de contraseña, y le entrega las notificaciones push que llegan a los dispositivos. No inicia ningún caso de uso. Participa en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-021, CU-047, CU-072, CU-079, CU-082, CU-085, CU-091, CU-100, CU-101 y CU-147. |
 | ACT-08 | **Servicio de correo** | Secundario (sistema externo) | Envía los correos transaccionales del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y aviso de vencimientos de la flota. No inicia ningún caso de uso. Participa en CU-002, CU-047, CU-102 y CU-142. |
+| ACT-09 | **Plataforma de despliegue** | Primario (sistema externo) | Orquestador de contenedores, balanceador de carga o servicio de monitoreo que sondea el estado del backend para decidir si le envía tráfico o si reinicia la instancia. Es quien inicia CU-104. |
 
 
 ![Actores del sistema y el canal por el que operan](diagramas/uml/CU_Sistema_Actores.png)
@@ -208,7 +213,8 @@ quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
 > Automático no tiene interfaz: son los procesos que el backend dispara por sí mismo, y es el
 > actor principal de los casos de uso que la documentación marca como automáticos.
 > MercadoPago, Firebase y el servicio de correo son sistemas externos que el backend invoca:
-> participan como actores secundarios y no inician ningún caso de uso.
+> participan como actores secundarios y no inician ningún caso de uso. La plataforma de
+> despliegue es un sistema externo que, al revés, es quien consulta el estado del backend.
 
 
 ### Descripción Ampliada de Actores
@@ -223,7 +229,7 @@ Empleado del distribuidor que ejecuta las entregas físicas. Trabaja principalme
 Operador de oficina de una distribuidora. Su alcance está acotado a la empresa a la que pertenece: no ve ni gestiona datos de otras distribuidoras. Puede ser una o más personas. Accede al Panel Web desde una PC o notebook con conexión a internet. Sus principales necesidades son: visibilidad completa del estado operativo, control de inventario y reportes de ventas para la toma de decisiones.
 
 **ACT-04 — Sistema Automático:**
-No es un actor humano sino el conjunto de procesos que el backend ejecuta por iniciativa propia, sin intervención de nadie y sin interfaz. Son cinco los **procesos automatizados** del sistema, y este actor es el que los lleva adelante: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Su especificación completa está en el Documento 3, sección 6.
+No es un actor humano sino el conjunto de procesos que el backend ejecuta por iniciativa propia, sin intervención de nadie y sin interfaz. Se mantiene como actor porque es el disparador temporal interno de esos casos de uso, el equivalente al actor «Tiempo» de Larman. Son cinco los **procesos automatizados** del sistema, y este actor es el que los lleva adelante: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Su especificación completa está en el Documento 3, sección 6.
 
 No hay que confundirlos con las tareas de mantenimiento del propio sistema, que también corren solas pero no deciden nada: vencer una oferta de despacho y devolver el pedido al circuito, activar una reserva que llegó a su fecha, liberar el stock de un pedido que caducó sin pagarse. Son la ejecución programada de los circuitos que los procesos automatizados gobiernan, no procesos en sí mismos. Los tres módulos que deciden por su cuenta —M2, M3 y M5— siempre proponen y nunca ejecutan: la contratación de un taller, el cobro de un depósito y la baja de un envase los confirma una persona.
 
@@ -234,18 +240,22 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ## 6. Diagrama de Casos de Uso del Sistema
 
-**Figura 3 — Diagrama de Casos de Uso del Sistema**
+**Figura 3 — Mapa del sistema: paquetes y actores**
+
+![Mapa del sistema: paquetes y actores](diagramas/uml/CU_Sistema_Mapa.png)
+
+> Resumen de una página del sistema: los 18 paquetes con su cantidad de casos de uso y una
+> línea por actor hacia cada paquete en el que participa. Los actores se dibujan fuera del
+> límite del sistema, una sola vez cada uno. El Administrador General especializa al
+> Administrador.
+
+**Figura 4 — Diagrama de Casos de Uso del Sistema**
 
 ![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y casos de uso
-> dentro, agrupados en paquetes, con las relaciones `«include»` y `«extend»`. El Administrador
-> General especializa al Administrador. La lámina se genera con `generar-uml.py`; la versión
-> vectorial es `diagramas/uml/CU_Sistema_Diagrama-Completo.svg`.
-
-**Figura 4 — Mapa del sistema: paquetes y actores**
-
-![Mapa del sistema: paquetes y actores](diagramas/uml/CU_Sistema_Mapa.png)
+> Lámina anexa: los 174 casos de uso uno por uno, agrupados en los paquetes de cada
+> subsistema, con las relaciones `«include»` y `«extend»` entre ellos. Por su tamaño se
+> entrega también en formato vectorial, que permite ampliarla sin pérdida de legibilidad.
 
 ---
 
@@ -254,8 +264,15 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 > Los casos de uso CU-001 a CU-051 corresponden al alcance relevado inicialmente. Los
 > casos CU-052 a CU-104 se incorporaron al contrastar la documentación contra el sistema
 > construido: son comportamientos que el sistema ya realiza y que el relevamiento original
-> no había registrado. El catálogo consolidado, con la especificación expandida y los
-> diagramas de secuencia de cada caso, figura en `Casos-de-Uso.md`.
+> no había registrado. Los casos CU-105 a CU-108 son los cuatro módulos inteligentes
+> planificados (M2 a M5). Los casos CU-109 a CU-175 se incorporaron después: desglosan en
+> casos propios las operaciones de los ABM de choferes, vehículos, clientes, direcciones y
+> franjas horarias, y suman la funcionalidad construida y planificada del carrito, el pedido
+> en curso, la vigencia de los envases, la flota, el consumo declarado, la compra express,
+> los reintegros, el registro de auditoría y la configuración de los procesos automáticos.
+> La especificación expandida de cada caso está en el Documento 1; sus diagramas de
+> secuencia del sistema, en el Documento 2, y los de interacción de diseño, en el
+> Documento 3.
 
 ---
 
@@ -295,7 +312,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Crítico  
-**Descripción:** El cliente selecciona uno o más productos del catálogo, la cantidad, una dirección de entrega y, opcionalmente, una fecha y franja horaria de entrega; también elige el método de pago (efectivo, MercadoPago o transferencia con recargo). El sistema comprueba que la dirección esté dentro de la zona de cobertura, reserva el stock y, si corresponde, el cupo de la franja de forma atómica, calcula el total con promociones y recargos, y registra el pedido. Salvo que el pago sea por MercadoPago o que el pedido sea una reserva a futuro, el sistema abre de inmediato la oferta al chofer más cercano disponible (CU-013).
+**Descripción:** El cliente selecciona uno o más productos del catálogo, la cantidad, una dirección de entrega y, opcionalmente, una fecha y franja horaria de entrega; también elige el método de pago (efectivo, MercadoPago o transferencia; con MercadoPago o transferencia el servidor suma un recargo del 10 %). El sistema comprueba que la dirección esté dentro de la zona de cobertura, reserva el stock y, si corresponde, el cupo de la franja de forma atómica, calcula el total con promociones y recargos, y registra el pedido. Salvo que el pago sea por MercadoPago o que el pedido sea una reserva a futuro, el sistema abre de inmediato la oferta al chofer más cercano disponible (CU-013).
 
 ---
 
@@ -711,7 +728,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-09 Franjas Horarias  
 **Calificación:** Importante  
-**Descripción:** El administrador necesita poder modificar la capacidad máxima diaria de una franja horaria ya creada, para ajustarla a la disponibilidad operativa real. Hoy esa operación no existe: la única forma de corregir la capacidad de una franja es darla de baja y crear una nueva, lo que desvincula el cupo corregido de los pedidos ya agendados en la franja original.
+**Descripción:** El administrador necesita poder modificar la capacidad máxima diaria de una franja horaria ya creada, para ajustarla a la disponibilidad operativa real. Esa operación todavía no existe: la única forma de corregir la capacidad de una franja es darla de baja y crear una nueva, lo que desvincula el cupo corregido de los pedidos ya agendados en la franja original.
 
 ---
 
@@ -735,7 +752,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`.
+**Descripción:** El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-address/user/:userId`.
 
 ---
 
@@ -743,7 +760,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`.
+**Descripción:** El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-address`.
 
 ---
 
@@ -751,7 +768,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente abre una dirección puntual y ve todos sus datos. Es la lectura de la que dependen la edición, la baja y la marca de predeterminada, y la que aplica el control de pertenencia. Endpoint: `GET /user-addres/:id`.
+**Descripción:** El cliente abre una dirección puntual y ve todos sus datos. Es la lectura de la que dependen la edición, la baja y la marca de predeterminada, y la que aplica el control de pertenencia. Endpoint: `GET /user-address/:id`.
 
 ---
 
@@ -759,7 +776,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente corrige los datos de una dirección ya registrada: la calle, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`.
+**Descripción:** El cliente corrige los datos de una dirección ya registrada: la calle, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-address/:id`.
 
 ---
 
@@ -767,7 +784,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente da de baja una dirección que ya no usa. La baja es lógica: la dirección deja de aparecer, pero los pedidos que la usaron la siguen mostrando. Si la que da de baja era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`.
+**Descripción:** El cliente da de baja una dirección que ya no usa. La baja es lógica: la dirección deja de aparecer, pero los pedidos que la usaron la siguen mostrando. Si la que da de baja era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-address/:id`.
 
 ---
 
@@ -775,7 +792,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-addres/:id/set-default`.
+**Descripción:** El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-address/:id/set-default`.
 
 ---
 
@@ -783,7 +800,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Importante  
-**Descripción:** La aplicación recupera la dirección que el cliente dejó marcada, para proponerla sola cuando arranca un pedido. Es la lectura que evita que el cliente tenga que elegir dirección en cada compra. Endpoint: `GET /user-addres/user/:userId/default`.
+**Descripción:** La aplicación recupera la dirección que el cliente dejó marcada, para proponerla sola cuando arranca un pedido. Es la lectura que evita que el cliente tenga que elegir dirección en cada compra. Endpoint: `GET /user-address/user/:userId/default`.
 
 ---
 
@@ -879,7 +896,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Secundario  
-**Descripción:** El administrador marca o desmarca a un usuario —cliente o chofer— como bloqueado desde el panel web, por motivos de moderación o seguridad. Hoy esa marca queda registrada pero no tiene ningún efecto real: un usuario bloqueado puede seguir iniciando sesión y operando con total normalidad, porque ningún control de acceso del sistema consulta ese campo.
+**Descripción:** El administrador marca o desmarca a un usuario —cliente o chofer— como bloqueado desde el panel web, por motivos de moderación o seguridad. Un usuario bloqueado no puede iniciar sesión ni operar: la guardia de autenticación rechaza toda solicitud de su cuenta mientras la marca esté puesta.
 
 ---
 
@@ -1328,7 +1345,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** El administrador abre la ficha de un chofer y ve sus datos personales, su vehículo, su marca de validación, su estado de actividad y su calificación. Es la lectura puntual que el listado (CU-035) no cubre, y de la que dependen la edición y la baja. Endpoint: `GET /delivery/:id` (`src/delivery/delivery.controller.ts:59`).
+**Descripción:** El administrador abre la ficha de un chofer y ve sus datos personales, su vehículo, su marca de validación, su estado de actividad y su calificación. Es la lectura puntual que el listado (CU-035) no cubre, y de la que dependen la edición y la baja. Endpoint: `GET /delivery/:id`.
 
 ---
 
@@ -1336,7 +1353,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** El administrador ubica el perfil de chofer a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel —un pedido, un reclamo, una calificación—. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /delivery/user/:userId` (`src/delivery/delivery.controller.ts:68`).
+**Descripción:** El administrador ubica el perfil de chofer a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel —un pedido, un reclamo, una calificación—. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /delivery/user/:userId`.
 
 ---
 
@@ -1344,7 +1361,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** El administrador corrige los datos del vehículo de un chofer: tipo, patente, marca, modelo, año, color o capacidad de carga. Sale de CU-051, que agrupaba editar, eliminar y consultar en un solo caso. Endpoint: `PATCH /car/:id` (`src/car/car.controller.ts:85`).
+**Descripción:** El administrador corrige los datos del vehículo de un chofer: tipo, patente, marca, modelo, año, color o capacidad de carga. Sale de CU-051, que agrupaba editar, eliminar y consultar en un solo caso. Endpoint: `PATCH /car/:id`.
 
 ---
 
@@ -1360,7 +1377,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** El administrador abre la ficha de un vehículo y ve su tipo, patente, marca, modelo, año, color, capacidad de carga y el chofer al que pertenece. Sale de CU-051. Endpoint: `GET /car/:id` (`src/car/car.controller.ts:51`).
+**Descripción:** El administrador abre la ficha de un vehículo y ve su tipo, patente, marca, modelo, año, color, capacidad de carga y el chofer al que pertenece. Sale de CU-051. Endpoint: `GET /car/:id`.
 
 ---
 
@@ -1368,7 +1385,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** El administrador ubica un vehículo por su patente, que es el dato con el que se lo nombra en la operación diaria. Es la búsqueda que incluyen la edición y la baja. Endpoint: `GET /car/patent/:patent` (`src/car/car.controller.ts:74`).
+**Descripción:** El administrador ubica un vehículo por su patente, que es el dato con el que se lo nombra en la operación diaria. Es la búsqueda que incluyen la edición y la baja. Endpoint: `GET /car/patent/:patent`.
 
 ---
 
@@ -1376,7 +1393,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03), Chofer (ACT-02)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** Se listan los vehículos registrados a nombre de un chofer. El administrador lo usa desde la ficha del chofer; el propio chofer, para ver los suyos. Sale de CU-051. Endpoint: `GET /car/user/:userId` (`src/car/car.controller.ts:63`).
+**Descripción:** Se listan los vehículos registrados a nombre de un chofer. El administrador lo usa desde la ficha del chofer; el propio chofer, para ver los suyos. Sale de CU-051. Endpoint: `GET /car/user/:userId`.
 
 ---
 
@@ -1576,12 +1593,12 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-09 Franjas Horarias  
 **Calificación:** Importante  
-**Descripción:** El administrador consulta el listado completo de franjas horarias de su distribuidora, para seleccionar la que va a modificar o dar de baja. Es el caso propio de búsqueda del ABM de franjas, que la cátedra pidió separar: hasta ahora sólo existía la consulta de disponibilidad de cara al cliente (CU-045).
+**Descripción:** El administrador consulta el listado completo de franjas horarias de su distribuidora, para seleccionar la que va a modificar o dar de baja. Es el caso propio de búsqueda del ABM de franjas, que se separó del resto de las operaciones del ABM: hasta ahora sólo existía la consulta de disponibilidad de cara al cliente (CU-045).
 
 ---
 
 **Código:** CU-104 | **Caso de Uso:** Verificar la Salud del Sistema (liveness / readiness)  
-**Actor/es:** Sistema Automático, Cliente, Chofer, Administrador  
+**Actor/es:** Plataforma de despliegue (ACT-09)  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Importante  
 **Descripción:** El sistema verifica Redis, bases de datos y memoria, arrojando el informe Liveness/Readiness.
@@ -1806,7 +1823,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-101 Reenviar Notificación de Confirmación de Pedido | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-102 Probar el Servicio de Correo | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-103 Eliminar Franja Horaria | SS-09 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-104 Verificar la Salud del Sistema (liveness / readiness) | SS-18 |  | Importante | Implementado |
+| CU-104 Verificar la Salud del Sistema (liveness / readiness) | SS-18 | ACT-09 | Importante | Implementado |
 | CU-152 Consultar el Registro de Auditoría | SS-18 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-153 Registrar Toda Operación de Escritura | SS-18 | ACT-04 | Crítico | Implementado |
 | CU-172 Configurar los Parámetros de un Proceso Automático | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
@@ -1846,6 +1863,6 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 Los casos CU-001 a CU-051 provienen del relevamiento inicial. Los casos CU-052 a CU-104 se
 incorporaron al contrastar la documentación contra el sistema construido: son
-comportamientos que el sistema ya ejecuta y que el relevamiento no había registrado.
+comportamientos que el sistema ya ejecuta y que el relevamiento no había registrado. Los casos CU-105 a CU-108 son los cuatro módulos inteligentes planificados (M2 a M5). Los casos CU-109 a CU-175 se incorporaron después: desglosan en casos propios las operaciones de los ABM de choferes, vehículos, clientes, direcciones y franjas horarias, y suman la funcionalidad construida y planificada del carrito, el pedido en curso, la vigencia de los envases, la flota, el consumo declarado, la compra express, los reintegros, el registro de auditoría y la configuración de los procesos automáticos.
 
 ---

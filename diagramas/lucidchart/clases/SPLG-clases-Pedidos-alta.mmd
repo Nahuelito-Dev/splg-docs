@@ -5,19 +5,19 @@ classDiagram
     %% no se edita a mano.
 
     class CreateOrderUseCase {
-        <<use case>>
-        + crearPedido(items: Lista, direccionId: Identificador, franjaId: Identificador, fechaAgendada: Fecha, metodoDePago: Cadena): Pedido, Cadena
-        + crearReserva(items: Lista, direccionId: Identificador, fechaAgendada: Fecha, franjaId: Identificador, metodoDePago: Cadena, montoDeLaSenia: Moneda): Pedido, Cadena
+        <<controlador>>
+        + crearPedido(items: Lista, direccionId: Identificador, franjaId: Identificador, fechaAgendada: Fecha, metodoDePago: Cadena, out enlaceDePago: Cadena): Pedido
+        + crearReserva(items: Lista, direccionId: Identificador, fechaAgendada: Fecha, franjaId: Identificador, metodoDePago: Cadena, montoDeLaSenia: Moneda, out enlaceDePago: Cadena): Pedido
     }
 
     class CancelOrderUseCase {
-        <<use case>>
+        <<controlador>>
         + cancelarPedido(pedidoId: Identificador, motivo: Cadena): Pedido
         + cancelarPedidoForzado(pedidoId: Identificador): Pedido
     }
 
     class ReleaseOrderUseCase {
-        <<use case>>
+        <<controlador>>
         + liberarPedido(pedidoId: Identificador, motivo: Cadena): Pedido
     }
 
@@ -40,16 +40,20 @@ classDiagram
     class RealtimeDispatchPort {
         <<interface>>
     }
-    class Pedido
+    class PaymentsService {
+        <<fachada>>
+    }
     class Cliente
-    class Producto
     class FranjaHoraria
-    class ZonaCobertura
+    class Pedido
     class OfertaDespacho
+    class ZonaCobertura
+    class Producto
 
     CancelOrderUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     CancelOrderUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
     CreateOrderUseCase --> "1" NotificationPort : notificationPort
+    CreateOrderUseCase --> "1" PaymentsService : paymentsService
     OrderStatusHistoryService --> "1" Map_String_Pedido : map<String, Pedido>
     ReleaseOrderUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     ReleaseOrderUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort

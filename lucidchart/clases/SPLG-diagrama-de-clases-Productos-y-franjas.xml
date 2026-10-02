@@ -16,13 +16,13 @@
         <mxCell id="c0f2" value="+ actualizarStock(productoId: Identificador, variacion: Entero): Producto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="82" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c0f3" value="+ consultarCatalogo(pagina: Entero, limite: Entero, distribuidora: Cadena): Producto[*], Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+        <mxCell id="c0f3" value="+ consultarCatalogo(pagina: Entero, limite: Entero, distribuidora: Cadena, out total: Entero): Producto[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="108" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c0f4" value="+ consultarProducto(productoId: Identificador): Producto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="134" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c0f5" value="+ consultarProductosDisponibles(distribuidora: Cadena): Producto[*], MetodoDePago[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+        <mxCell id="c0f5" value="+ consultarProductosDisponibles(distribuidora: Cadena, out mediosDePago: MetodoDePago[*]): Producto[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="160" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c0f6" value="+ consultarProductosInactivos(): Producto[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">

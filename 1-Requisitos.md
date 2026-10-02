@@ -12,10 +12,10 @@
 
 ## Índice de Figuras
 
-- Figura 1 — Diagrama de Casos de Uso del Sistema
-- Figura 2 — Mapa del sistema: paquetes y actores
-- Figura 3 — Diagrama de Subsistemas
-- Figura 4 — Diagrama de contexto del sistema
+- Figura 1 — Mapa del sistema: paquetes y actores
+- Figura 2 — Diagrama de contexto del sistema
+- Figura 3 — Diagrama de Casos de Uso del Sistema
+- Figura 4 — Diagrama de Subsistemas
 - Figura 5 — SS-01 Autenticación y Usuarios: casos de uso
 - Figura 6 — SS-02 Gestión de Pedidos: casos de uso
 - Figura 7 — SS-03 Despacho y Asignación: casos de uso
@@ -23,7 +23,7 @@
 - Figura 9 — SS-05 Reclamos: casos de uso
 - Figura 10 — SS-06 Reportes y Dashboard: casos de uso
 - Figura 11 — SS-07 Gestión de Choferes y Vehículos: casos de uso
-- Figura 12 — SS-08 Gestión de Productos (Catálogo): casos de uso
+- Figura 12 — SS-08 Gestión de Productos e Inventario: casos de uso
 - Figura 13 — SS-09 Franjas Horarias: casos de uso
 - Figura 14 — SS-10 Multi-Distribuidora: casos de uso
 - Figura 15 — SS-11 Cobertura Geográfica: casos de uso
@@ -45,7 +45,9 @@
 | C | **Crítico** | El sistema no puede funcionar sin este elemento. Debe implementarse en las primeras iteraciones. |
 | I | **Importante** | Agrega valor significativo al sistema. Forma parte del MVP pero no bloquea la operación base. |
 | S | **Secundario** | Deseable pero prescindible en Fase 1. Puede diferirse a iteraciones posteriores. |
-| A | **Automático** | Proceso ejecutado por el sistema sin intervención humana. |
+| M | **Menor** | Mejora de bajo impacto, que puede quedar para el final sin afectar la operación. |
+
+El indicador **A** (*automático*) no es una prioridad sino una marca: señala el proceso que el sistema ejecuta sin intervención humana y se combina con cualquiera de las prioridades anteriores (por ejemplo, «C, A»).
 
 ---
 
@@ -59,8 +61,9 @@
 | 3 | 2026-09-25 | Requisito no funcional NFR-09 (aislamiento entre distribuidoras) agregado. CU-152 y CU-153 implementados: sus casos de uso expandidos describen lo construido. Los casos de los módulos inteligentes indican que su modelo de datos ya está en la base. | Nahuel Wagner |
 | 4 | 2026-10-01 | Casos de uso CU-161 a CU-167 agregados: vehículo en uso por chofer (poner en uso, liberar, consultar el vehículo en uso y los dos historiales) y reclamos (tomar un reclamo pendiente y reabrir uno cerrado). IRQ-03 e IRQ-06 ampliados. | Nahuel Wagner |
 | 5 | 2026-10-01 | Casos de uso expandidos CU-168 a CU-175. Estado uniforme «Planificado (I-n)» en los casos no construidos. Decisiones de diseño aplicadas a las secuencias, excepciones y comentarios de los casos planificados. Relaciones de CU-168, CU-170, CU-174 y CU-175 en la tabla maestra. IRQ-02, IRQ-06, IRQ-08, IRQ-09 e IRQ-15 ampliados. | Nahuel Wagner |
-
 | 6 | 2026-10-01 | Cierre de la documentación: casos de uso expandidos coherentes con el código y con los contratos de operación (CU-022, CU-032, CU-033, CU-048, CU-084, CU-085, CU-089, CU-094, CU-096, CU-100, CU-102 y CU-111), limitaciones conocidas redactadas como tales y cabecera alineada con los demás documentos. | Nahuel Wagner |
+| 7 | 2026-10-01 | Revisión final: diagrama de contexto en las fronteras del sistema, leyenda de prioridad con Menor, objetivos de la iteración reformulados, recargo del pago en línea, autenticación con el token de Firebase, actor ACT-09 y ajustes de CU-005, CU-012, CU-013, CU-048, CU-050, CU-104, CU-122, CU-126, CU-159 y CU-160. | Nahuel Wagner |
+
 ---
 
 ## 1. Presentación General
@@ -90,7 +93,7 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 | OBJ-04 | I | Garantizar trazabilidad de entregas | Registrar evidencia objetiva (foto opcional, timestamps de cada cambio de estado, GPS) de cada entrega para resolver reclamos de forma objetiva y sin disputa. | Alta |
 | OBJ-05 | I | Centralizar el control operativo | Brindar al administrador una herramienta única (Panel Web) para gestionar choferes, vehículos, productos, stock, precios, franjas horarias, reclamos y visualizar reportes en tiempo real. | Alta |
 | OBJ-06 | C, A | Sincronizar el inventario en tiempo real | Reservar automáticamente el stock al confirmar un pedido (transacción atómica PostgreSQL) y restituirlo automáticamente si el pedido se cancela, evitando ventas sin producto disponible. | Alta |
-| OBJ-07 | I | Habilitar múltiples métodos de pago | Permitir al cliente pagar con efectivo, MercadoPago o transferencia bancaria, con aplicación automática del recargo del 10% para transferencias. | Alta |
+| OBJ-07 | I | Habilitar múltiples métodos de pago | Permitir al cliente pagar con efectivo, MercadoPago o transferencia bancaria, con aplicación automática, en el servidor, del recargo del 10 % cuando el pago es en línea (MercadoPago o transferencia). | Alta |
 | OBJ-08 | I | Gestionar franjas horarias de entrega | Permitir al administrador configurar rangos horarios de entrega con capacidad máxima diaria para distribuir la carga de trabajo de los choferes de forma ordenada. | Media |
 | OBJ-09 | C | Operar varias distribuidoras sobre una misma instancia | Atender desde un único sistema a varias empresas comercializadoras manteniendo los datos de cada una aislados de los del resto, de modo que toda operación de gestión quede acotada a la distribuidora del usuario que la invoca. | Alta |
 | OBJ-10 | I | Delimitar el área de reparto | Permitir que cada distribuidora defina las zonas dentro de las cuales acepta pedidos, con el recargo que corresponde a cada una, y verificar que el domicilio de entrega caiga dentro de alguna de ellas antes de tomar el pedido. | Alta |
@@ -104,30 +107,30 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 
 ## 3. Diagrama de Casos de Uso del Sistema
 
-**Figura 1 — Diagrama de Casos de Uso del Sistema**
+Con 174 casos de uso, un único diagrama con todos ellos no se puede leer en una página. La
+vista principal es por eso el **mapa del sistema** (Figura 1), seguido del **diagrama de
+contexto** (Figura 2, en la sección 3.1). El diagrama con los casos de uso uno por uno
+(Figura 3) se presenta como lámina anexa, y el detalle de cada subsistema está en la
+sección 4.3.
 
-![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
-
-> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y casos de uso
-> dentro, agrupados en paquetes, con las relaciones `«include»` y `«extend»`. El Administrador
-> General especializa al Administrador. La lámina se genera con `generar-uml.py`; la versión
-> vectorial es `diagramas/uml/CU_Sistema_Diagrama-Completo.svg`.
-
-**Figura 2 — Mapa del sistema: paquetes y actores**
+**Figura 1 — Mapa del sistema: paquetes y actores**
 
 ![Mapa del sistema: paquetes y actores](diagramas/uml/CU_Sistema_Mapa.png)
 
-> Resumen de una página del diagrama anterior: los 18 paquetes con su cantidad de casos de
-> uso y una línea por actor hacia cada paquete en el que participa. Versión vectorial:
-> `diagramas/uml/CU_Sistema_Mapa.svg`.
-
-
+> Resumen de una página del sistema: los 18 paquetes con su cantidad de casos de uso y una
+> línea por actor hacia cada paquete en el que participa. Los actores se dibujan fuera del
+> límite del sistema, una sola vez cada uno. El Administrador General especializa al
+> Administrador.
 
 ### 3.1 Fronteras del Sistema
 
 El rectángulo del diagrama es el **límite del sistema**: lo que queda adentro es
 responsabilidad de SPLG y lo que queda afuera no. Los actores se dibujan fuera de ese
 límite porque interactúan con el sistema sin formar parte de él.
+
+![Diagrama de contexto del sistema](diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png)
+
+**Figura 2 — Diagrama de contexto del sistema**
 
 **Queda dentro del límite**
 
@@ -147,13 +150,24 @@ Los 18 subsistemas de la §4 son la división interna de ese límite.
 |---|---|
 | Firebase | Servicio de terceros: valida la identidad y entrega los avisos al dispositivo |
 | MercadoPago | Servicio de terceros: procesa el cobro y avisa el resultado por webhook |
-| Servicio de correo | Servicio de terceros: entrega los comprobantes |
+| Servicio de correo | Servicio de terceros: envía los correos transaccionales (bienvenida, recuperación de contraseña, prueba del servicio y aviso de vencimientos de la flota) |
 | El traslado físico de la garrafa | Lo hace el chofer; el sistema lo registra, no lo ejecuta |
 | La facturación fiscal | No está en el alcance de esta fase |
 | La contabilidad de la distribuidora | Sistema aparte, sin integración prevista |
 
 El sistema **no decide** por el chofer ni por el cliente: propone, registra y avisa. Toda
 acción sobre el mundo físico queda del lado de las personas.
+
+### 3.2 Diagrama completo de casos de uso (lámina anexa)
+
+**Figura 3 — Diagrama de Casos de Uso del Sistema**
+
+![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
+
+> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y los 174 casos
+> de uso dentro, agrupados en paquetes, con las relaciones `«include»` y `«extend»` entre
+> casos de la lista. El Administrador General especializa al Administrador. Por su tamaño se
+> entrega también en formato vectorial, que permite ampliarla sin pérdida de legibilidad.
 
 
 ---
@@ -169,14 +183,14 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 
 | Código | Subsistema | Descripción |
 |--------|------------|-------------|
-| SS-01 | Autenticación y Usuarios | Registro, ingreso y control de acceso diferenciado por rol, resuelto contra el proveedor de identidad y sostenido con un token de sesión propio. |
+| SS-01 | Autenticación y Usuarios | Registro, ingreso y control de acceso diferenciado por rol, delegado en el proveedor de identidad: el sistema verifica en cada solicitud el token de identidad de Firebase y resuelve el rol contra la base. |
 | SS-02 | Gestión de Pedidos | Alta transaccional del pedido, ciclo de vida de sus estados y cancelación, con reserva y restitución de stock. |
 | SS-03 | Despacho y Asignación | Negociación secuencial del pedido con los choferes disponibles: oferta con vigencia acotada, paso al siguiente candidato y ampliación progresiva del radio de búsqueda. |
 | SS-04 | Seguimiento en Tiempo Real | Actualización de la posición del chofer y aviso de cada cambio de estado al cliente, por conexión persistente y por notificación al dispositivo. |
 | SS-05 | Reclamos | Registro del reclamo posterior a la entrega por parte del cliente, y su gestión y resolución por el administrador. |
 | SS-06 | Reportes y Dashboard | Estadísticas operativas y análisis de ventas para el administrador. |
 | SS-07 | Gestión de Choferes y Vehículos | Alta, validación y administración de los repartidores y de las unidades de la flota. |
-| SS-08 | Gestión de Productos (Catálogo) | Tipos de garrafa comercializados, con su precio, su stock y sus promociones por volumen. |
+| SS-08 | Gestión de Productos e Inventario | Tipos de garrafa comercializados, con su precio, su stock y sus promociones por volumen. |
 | SS-09 | Franjas Horarias | Configuración de los rangos horarios de entrega y de su capacidad máxima diaria. |
 | **SS-11** | **Cobertura Geográfica** | Definición de las áreas dentro de las cuales la distribuidora acepta pedidos, con el recargo que corresponde a cada una, y validación de cobertura de un domicilio. |
 | **SS-12** | **Incidencias y Calidad de Servicio** | Registro por el chofer de los contratiempos ocurridos durante el reparto, y calificación recíproca entre cliente y chofer al cerrar el pedido. |
@@ -191,7 +205,7 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 | **SS-10** | **Multi-Distribuidora** | Alta y administración de las empresas comercializadoras, y aislamiento de los datos de cada una. Es la dimensión transversal a la que quedan acotados los subsistemas de negocio. |
 | **SS-16** | **Administración de Cuentas y Roles** | Designación de administradores, definición de los roles del sistema y gestión del padrón de clientes por parte del administrador. |
 | **SS-17** | **Notificaciones y Mensajería** | Registro de los dispositivos de cada usuario y envío de los avisos, tanto al dispositivo como por correo. |
-| **SS-18** | **Observabilidad y Operación** | Verificación del estado de los componentes de los que depende el sistema. Es el subsistema que realiza los requisitos no funcionales de disponibilidad y escalabilidad. |
+| **SS-18** | **Observabilidad y Operación** | Verificación del estado de los componentes de los que depende el sistema, registro de auditoría de toda operación de escritura y configuración de los procesos automáticos y de las tareas programadas de cada distribuidora. Es el subsistema que realiza los requisitos no funcionales de disponibilidad y escalabilidad. |
 
 > **Sobre SS-08 y SS-13.** El sistema distingue dos conceptos que el lenguaje corriente
 > confunde. SS-08 administra el **producto**: el tipo de garrafa que se vende, con su
@@ -200,7 +214,7 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 > El cliente compra un producto pero recibe un envase, y es ese envase concreto el que
 > hay que rastrear.
 
-**Figura 3 — Diagrama de Subsistemas**
+**Figura 4 — Diagrama de Subsistemas**
 
 ![Subsistemas del proyecto](diagramas/uml/CU_Sistema_Subsistemas.png)
 
@@ -209,11 +223,7 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 
 ### 4.3 Diagramas de Casos de Uso por Subsistema
 
-La plantilla pide un diagrama de casos de uso por subsistema. Cada uno está en notación UML: los actores fuera del límite, los casos de uso dentro, las relaciones `«include»` y `«extend»` con sus puntos de extensión, y el Administrador General dibujado como especialización del Administrador. Por eso el Administrador General se asocia sólo a los casos que son exclusivos suyos: los demás los hereda. Los casos de otro subsistema que uno de éste incluye o extiende se dibujan fuera del límite, con el código de su subsistema. Las fuentes PlantUML están en `diagramas/uml/` junto a cada imagen.
-
-![Diagrama de contexto del sistema](diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png)
-
-**Figura 4 — Diagrama de contexto del sistema**
+Cada subsistema tiene su diagrama de casos de uso, en notación UML: los actores fuera del límite, los casos de uso dentro, las relaciones `«include»` y `«extend»` con sus puntos de extensión, y el Administrador General dibujado como especialización del Administrador. Por eso el Administrador General se asocia sólo a los casos que son exclusivos suyos: los demás los hereda. Los casos de otro subsistema que uno de éste incluye o extiende se dibujan fuera del límite, con el código de su subsistema.
 
 ![SS-01 Autenticación y Usuarios](diagramas/uml/CU_SS-01_Autenticacion-Y-Usuarios.png)
 
@@ -243,9 +253,9 @@ La plantilla pide un diagrama de casos de uso por subsistema. Cada uno está en 
 
 **Figura 11 — SS-07 Gestión de Choferes y Vehículos: casos de uso**
 
-![SS-08 Gestión de Productos (Catálogo)](diagramas/uml/CU_SS-08_Gestion-De-Productos.png)
+![SS-08 Gestión de Productos e Inventario](diagramas/uml/CU_SS-08_Gestion-De-Productos.png)
 
-**Figura 12 — SS-08 Gestión de Productos (Catálogo): casos de uso**
+**Figura 12 — SS-08 Gestión de Productos e Inventario: casos de uso**
 
 ![SS-09 Franjas Horarias](diagramas/uml/CU_SS-09_Franjas-Horarias.png)
 
@@ -287,7 +297,7 @@ La plantilla pide un diagrama de casos de uso por subsistema. Cada uno está en 
 
 **Figura 22 — SS-18 Observabilidad y Operación: casos de uso**
 
-Los diagramas del sistema completo, el mapa de una página, los actores y los subsistemas están en las secciones 3 y 4 de este documento.
+El mapa de una página, el diagrama de contexto y el diagrama completo están en la sección 3; los actores, en la sección 7.1.
 
 ---
 
@@ -300,8 +310,8 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 |--------|----------|-------------|:-----------:|
 | OBJ-I-01 | Completar la especificación de los casos de uso construidos | Documentar los casos de uso que el sistema ya ejecuta y que el relevamiento inicial no había registrado, de modo que la especificación y el sistema describan lo mismo. Comprende los casos CU-052 a CU-104. | Alta |
 | OBJ-I-02 | Incorporar el alcance multi-distribuidora | Reflejar en la documentación que el sistema atiende a varias empresas comercializadoras con sus datos aislados, dimensión ausente de la especificación original. | Alta |
-| OBJ-I-03 | Verificar la correspondencia entre documentación y sistema | Contrastar cada caso de uso contra el código que lo implementa y dejar registrados los apartamientos: funcionalidad documentada que no está construida y parámetros que deberían ser configurables. | Alta |
-| OBJ-I-04 | Rehacer la selección de módulos inteligentes | Reemplazar los procesos automáticos que no satisfacen los criterios de la cátedra por otros que sí lo hacen, y dejar asentado el motivo del descarte de cada uno de los excluidos. | Alta |
+| OBJ-I-03 | Construir los casos de uso planificados | Realizar, en el orden de las iteraciones I-1 a I-10 del plan de construcción (Documento 0, sección 4), los casos de uso que están especificados y que el sistema todavía no ejecuta, y llevar a configuración por distribuidora los parámetros que son constantes del programa. | Alta |
+| OBJ-I-04 | Incorporar los módulos inteligentes | Construir los procesos automatizados que deciden por su cuenta, se parametrizan por distribuidora y no ejecutan sin una persona lo que compromete dinero (M1 a M5). | Alta |
 | OBJ-I-05 | Completar el modelo de datos | Documentar el diagrama entidad-relación con la totalidad de las entidades, sus atributos y sus relaciones. | Media |
 
 ---
@@ -323,9 +333,9 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02, OBJ-06 |
-| **Requisitos asociados** | CU-005, CU-006, CU-007, CU-008, CU-009, CU-010, CU-169, CU-170 |
+| **Requisitos asociados** | CU-005, CU-006, CU-007, CU-008, CU-009, CU-010, CU-012, CU-122, CU-123, CU-124, CU-125, CU-126, CU-169, CU-170 |
 | **Descripción** | El sistema debe almacenar el historial completo de cada pedido desde su creación hasta la entrega o cancelación, incluyendo todos los cambios de estado y sus timestamps. |
-| **Datos específicos** | ID de pedido (UUID), referencia al cliente, referencia al chofer asignado (nullable), coordenadas de entrega (lat/lng), ítems y cantidades, precio unitario al momento de compra, subtotal por ítem, descuento aplicado (%), total del pedido, método de pago (CASH / MERCADOPAGO / TRANSFER), estado del pago (PENDING / PAID / FAILED), estado del pedido (PENDING / ACCEPTED / ON_THE_WAY / DELIVERED / CANCELLED), franja horaria seleccionada, fecha solicitada de entrega, ventana de entrega (inicio y fin), `dispatchAttempts`, motivo de cancelación (si aplica), timestamps: `createdAt`, `acceptedAt`, `onTheWayAt`, `deliveredAt`. De cada cambio de estado: estado anterior (vacío en la creación), estado nuevo, usuario que lo originó (vacío si fue un proceso programado), motivo y fecha. |
+| **Datos específicos** | ID de pedido (UUID), referencia al cliente, referencia al chofer asignado (nullable), coordenadas de entrega (lat/lng), ítems y cantidades, precio unitario al momento de compra, subtotal por ítem, descuento aplicado (%), total del pedido, método de pago (CASH / MERCADOPAGO / TRANSFER), estado del pago (PENDING / PAID / FAILED), estado del pedido (PENDING / ACCEPTED / ON_THE_WAY / DELIVERED / CANCELLED), franja horaria seleccionada, fecha solicitada de entrega, ventana de entrega (inicio y fin), `dispatchAttempts`, motivo de cancelación (si aplica), timestamps: `createdAt`, `acceptedAt`, `onTheWayAt`, `deliveredAt`. De cada cambio de estado: estado anterior (vacío en la creación), estado nuevo, usuario que lo originó (vacío si fue un proceso programado), motivo y fecha. Del carrito del cliente, que precede al pedido: cliente, distribuidora, y por cada ítem el tipo de garrafa, la cantidad y el precio unitario vigente al agregarlo, como referencia. |
 | **Estabilidad** | Alta |
 
 ### IRQ-03 — Información sobre Choferes y Vehículos
@@ -406,7 +416,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | **Objetivos asociados** | OBJ-10, OBJ-09 |
 | **Requisitos asociados** | CU-005, CU-056, CU-057, CU-058, CU-059, CU-072 |
 | **Descripción** | El sistema debe almacenar las áreas geográficas dentro de las cuales cada distribuidora acepta pedidos, con el recargo asociado a cada área, para poder resolver si un domicilio queda cubierto y con qué costo adicional. |
-| **Datos específicos** | Identificador de la zona (UUID) — clave de la zona de cobertura; Distribuidora propietaria — empresa a la que pertenece la zona; las consultas se acotan siempre por este dato; Nombre de la zona — denominación con la que el administrador la identifica (ej.: "Centro", "Villa Cabello"); Polígono del área — vértices que delimitan la zona, en coordenadas geográficas, sobre los que se resuelve si un punto cae dentro; Recargo — monto fijo que se suma al total del pedido entregado dentro de la zona; Estado activo/inactivo — indica si la zona se considera en la validación de cobertura; Fecha de alta y fecha de última modificación — momento en que se definió la zona y en que se la modificó por última vez. |
+| **Datos específicos** | Identificador de la zona (UUID) — clave de la zona de cobertura; Distribuidora propietaria — empresa a la que pertenece la zona; las consultas se acotan siempre por este dato; Nombre de la zona — denominación con la que el administrador la identifica (ej.: "Centro", "Villa Cabello"); Polígono del área — vértices que delimitan la zona, en coordenadas geográficas, sobre los que se resuelve si un punto cae dentro; Recargo — tipo (monto fijo o porcentaje sobre el subtotal de ítems) y valor, que se suman al total del pedido entregado dentro de la zona; Estado activo/inactivo — indica si la zona se considera en la validación de cobertura; Fecha de alta y fecha de última modificación — momento en que se definió la zona y en que se la modificó por última vez. |
 | **Estabilidad** | Alta |
 | **Comentarios** | Si la distribuidora no definió ninguna zona, el sistema asume cobertura total con recargo cero: la ausencia de zonas no bloquea la operación. El resultado de la validación devuelve si el punto está cubierto, el nombre de la zona alcanzada y el recargo que le corresponde. |
 
@@ -463,7 +473,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | **Descripción** | El sistema debe reunir e informar el estado de sus componentes y el resultado de las pruebas de sus canales de aviso, de modo que el orquestador sepa si la instancia puede recibir tráfico y el administrador pueda diagnosticar la mensajería. |
 | **Datos específicos** | Estado de la sonda de vida — indicación de que el proceso responde, acompañada de su marca temporal; Estado de la base de datos — resultado de la verificación de conexión con PostgreSQL; Estado del cache — resultado de la verificación de conexión con Redis, del que dependen el despacho por proximidad y el seguimiento en vivo; Memoria residente del proceso — consumo medido contra el umbral de 300 MB; Ocupación de disco — margen libre medido contra el umbral del 90 %; Diagnóstico de notificaciones: token de destino, título y cuerpo — datos con los que se arma el mensaje de prueba; Diagnóstico de notificaciones: identificador del mensaje o error devuelto — resultado que entrega el proveedor de mensajería; Diagnóstico de correo: dirección de destino y resultado del envío — dirección probada y estado devuelto por el proveedor; Diagnóstico de correo: comportamiento de la caché de enlaces — indica si los dos enlaces de recuperación generados seguidos resultaron iguales. |
 | **Estabilidad** | Media |
-| **Comentarios** | Estos datos no se persisten: se calculan en el momento de la consulta y solo quedan en el registro de eventos. Es el requisito de información que sostiene a NFR-03 (Disponibilidad) y NFR-04 (Escalabilidad). La prueba del servicio de correo está declarada como temporal en el propio código y hoy es pública: corresponde exigirle rol administrativo antes de producción (CU-102). |
+| **Comentarios** | Estos datos no se persisten: se calculan en el momento de la consulta y solo quedan en el registro de eventos. Es el requisito de información que sostiene a NFR-03 (Disponibilidad) y NFR-04 (Escalabilidad). La prueba del servicio de correo es una operación de diagnóstico exclusiva del Administrador General (CU-102). |
 
 ### IRQ-16 — Información sobre el Registro de Auditoría
 
@@ -480,12 +490,11 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 
 ## 7. Requisitos Funcionales — Casos de Uso
 
-La plantilla pide los casos de uso en dos niveles de detalle. La **descripción de
-alto nivel** de los 174 casos está en el Documento 0 · §7, que es donde la plantilla
-del Plan del Proyecto la ubica; acá van los **casos de uso expandidos**, con la
-secuencia normal, las excepciones y el resto de los campos. Los cuatro artefactos de
-cada caso —alto nivel, expandido, diagrama de secuencia del sistema y diagrama de
-interacción— están reunidos en `Casos-de-Uso.md`.
+Los casos de uso se documentan en dos niveles de detalle. La **descripción de alto
+nivel** de los 174 casos está en el Documento 0 · §7; acá van los **casos de uso
+expandidos**, con la secuencia normal, las excepciones y el resto de los campos. El
+diagrama de secuencia del sistema de cada caso está en el Documento 2 y su diagrama de
+interacción de diseño, en el Documento 3.
 
 ### 7.1 Definición de Actores
 
@@ -494,11 +503,12 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | ACT-01 | Cliente | Humano | Usuario final que realiza pedidos de garrafas mediante la App Cliente (Flutter). |
 | ACT-02 | Chofer | Humano | Repartidor que gestiona entregas mediante la App Chofer (Flutter). |
 | ACT-03 | Administrador | Humano | Operador del distribuidor que accede al Panel Web (React/Vite). |
-| ACT-04 | Sistema Automático | Automático | Procesos que el backend ejecuta por iniciativa propia, sin que ningún usuario los solicite y sin interfaz. Es el actor de los cinco procesos automatizados del sistema: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Las tareas de mantenimiento del propio sistema —vencer una oferta, activar una reserva que llegó a su fecha, liberar el stock de un pedido caducado— no son procesos automatizados: son la ejecución programada de esos circuitos. |
+| ACT-04 | Sistema Automático | Automático | Procesos que el backend ejecuta por iniciativa propia, sin que ningún usuario los solicite y sin interfaz. Es el actor de los cinco procesos automatizados del sistema: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Las tareas de mantenimiento del propio sistema —vencer una oferta, activar una reserva que llegó a su fecha, liberar el stock de un pedido caducado— no son procesos automatizados: son la ejecución programada de esos circuitos. Es un actor interno de disparo temporal —el equivalente al actor «Tiempo» de Larman—: representa el reloj y los eventos internos que inician casos de uso sin que los inicie una persona ni un sistema externo. |
 | ACT-05 | Administrador General | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras y designa a sus administradores. Es el único actor cuyo alcance no está limitado a una distribuidora. |
 | ACT-06 | MercadoPago | Secundario (sistema externo) | Pasarela de cobro. El sistema le crea el checkout de cada pedido o seña que se paga por MercadoPago y recibe de ella el aviso de pago aprobado. No inicia ningún caso de uso. Participa en CU-005, CU-048, CU-072 y CU-147. |
-| ACT-07 | Firebase | Secundario (sistema externo) | Identidad y mensajería. El sistema le pide crear y deshabilitar cuentas, verificar el token de sesión y generar el enlace de recuperación de contraseña, y le entrega las notificaciones push que llegan a los dispositivos. No inicia ningún caso de uso. Participa en CU-001, CU-004, CU-005, CU-013, CU-014, CU-016, CU-019, CU-021, CU-047, CU-072, CU-079, CU-082, CU-085, CU-091, CU-100, CU-101 y CU-147, y en el caso factorizado Notificar Cliente. |
+| ACT-07 | Firebase | Secundario (sistema externo) | Identidad y mensajería. El sistema le pide crear y deshabilitar cuentas, verificar el token de identidad y generar el enlace de recuperación de contraseña, y le entrega las notificaciones push que llegan a los dispositivos. No inicia ningún caso de uso. Participa en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-021, CU-047, CU-072, CU-079, CU-082, CU-085, CU-091, CU-100, CU-101 y CU-147. |
 | ACT-08 | Servicio de correo | Secundario (sistema externo) | Envía los correos transaccionales del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y aviso de vencimientos de la flota. No inicia ningún caso de uso. Participa en CU-002, CU-047, CU-102 y CU-142. |
+| ACT-09 | Plataforma de despliegue | Primario (sistema externo) | Orquestador de contenedores, balanceador de carga o servicio de monitoreo que sondea el estado del backend para decidir si le envía tráfico o si reinicia la instancia. Es quien inicia CU-104. |
 
 
 ![Actores del sistema y el canal por el que operan](diagramas/uml/CU_Sistema_Actores.png)
@@ -510,16 +520,17 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 > Automático no tiene interfaz: son los procesos que el backend dispara por sí mismo, y es el
 > actor principal de los casos de uso que la documentación marca como automáticos.
 > MercadoPago, Firebase y el servicio de correo son sistemas externos que el backend invoca:
-> participan como actores secundarios y no inician ningún caso de uso.
+> participan como actores secundarios y no inician ningún caso de uso. La plataforma de
+> despliegue es un sistema externo que, al revés, es quien consulta el estado del backend.
 
 > **Generalización.** El Administrador General (ACT-05) es una especialización del Administrador (ACT-03): hace todo lo que hace éste y además lo que es exclusivo de la plataforma. Por eso, en los diagramas, ACT-05 se asocia sólo a los casos de uso que son exclusivos suyos; los demás los hereda. ACT-06, ACT-07 y ACT-08 son actores secundarios: el sistema los invoca para completar un caso que inició otro actor.
 
 
 ---
 
-### 7.2 Casos de Uso Expandidos — Críticos
+### 7.2 Casos de Uso Expandidos — Núcleo del sistema
 
-> Los CU Críticos se documentan con formato expandido completo (precondición, secuencia normal, postcondición, excepciones).
+> Esta sección reúne los casos de uso críticos del relevamiento inicial y los que más directamente dependen de ellos. Las secciones 7.2 a 7.6 agrupan los casos por su origen y no por su prioridad: todos, críticos o no, se documentan con el mismo formato expandido (precondición, secuencia normal, postcondición, excepciones), y la prioridad de cada uno figura en su encabezado.
 
 ---
 
@@ -678,7 +689,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Rendimiento** | La creación del pedido se completa en menos de 5 segundos. |
 | **Frecuencia** | Variable según la demanda del distribuidor (estimado: 10–50 pedidos/día en Fase 1). |
 | **Estabilidad** | Alta |
-| **Comentarios** | La precisión del cálculo de totales se garantiza con aritmética decimal. Las promociones por volumen se aplican según la cantidad mínima configurada en el producto. El sistema no le avisa al cliente cuando no encontró repartidor: si ningún chofer resulta elegible, el pedido queda pendiente en silencio y el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: el punto de entrada no declara rol, de modo que cualquier usuario autenticado puede crear un pedido, aunque un cliente solo puede hacerlo para sí mismo. **Nota de consolidación:** el proceso de compra con carrito persistente (CU-122 a CU-126) y la elección explícita de modalidad (CU-148, frente a la express de CU-147) son el diseño objetivo cuando esas piezas se construyan; hoy este caso no las usa, porque la app resuelve ítems y dirección de antemano y los envía ya armados en un único `POST /orders`. Por eso este diagrama no dibuja un include hacia CU-125 ni hacia CU-148, a diferencia de versiones anteriores de este documento. Tampoco incluye CU-121: el endpoint `GET /user-addres/user/:userId/default` existe y funciona, pero ninguna app lo invoca; el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. |
+| **Comentarios** | La precisión del cálculo de totales se garantiza con aritmética decimal. Las promociones por volumen se aplican según la cantidad mínima configurada en el producto. El sistema no le avisa al cliente cuando no encontró repartidor: si ningún chofer resulta elegible, el pedido queda pendiente en silencio y el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: el punto de entrada no declara rol, de modo que cualquier usuario autenticado puede crear un pedido, aunque un cliente solo puede hacerlo para sí mismo. El proceso de compra con carrito persistente (CU-122 a CU-126, I-3) y la elección explícita de modalidad (CU-148, frente a la express de CU-147, I-7) están planificados; este caso no los usa, porque la app resuelve ítems y dirección de antemano y los envía ya armados en un único `POST /orders`. Por eso no incluye a CU-125 ni a CU-148. Tampoco incluye CU-121: el endpoint `GET /user-address/user/:userId/default` existe y funciona, pero ninguna app lo invoca; el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. |
 
 ---
 
@@ -719,7 +730,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Comentarios** | La vista de detalle no incorpora las incidencias ni las calificaciones asociadas al pedido: para consultarlas hace falta recurrir por separado a CU-062 y a CU-065/CU-066. |
 
 ---
-#### Crítico · automático CU-013 — Ofrecer el Pedido al Chofer Más Cercano
+#### Crítico · automático CU-013 — Asignar Pedido Automáticamente por Proximidad
 
 | Campo | Detalle |
 |-------|---------|
@@ -736,8 +747,8 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | 1 | El sistema recibe el aviso de que se creó un pedido, una vez confirmada la transacción del alta. |
 | 2 | Recupera el conjunto de choferes a los que ya se le ofreció este pedido, para no volver a contactarlos. |
 | 3 | Busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —5, 10, 15 y 20 km—: en cada paso obtiene los choferes presentes en el radar ordenados por cercanía, los restringe a los de la distribuidora dueña del pedido y descarta los ya contactados y a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-161, CU-136 a CU-138). Se queda con el primero que aparece y corta la búsqueda. |
-| 3.a | Entre los candidatos admite tanto a los choferes libres como a los que están por terminar su entrega en curso, pero descarta a los que tienen una entrega en pleno recorrido. Así un chofer que está entregando la última garrafa puede recibir el pedido siguiente sin que quede un hueco muerto entre uno y otro. |
-| 4 | Registra la oferta a nombre de ese chofer, con su momento de vencimiento fijado en la ventana de aceptación configurada. |
+| 3.a | *(Planificado, todavía sin iteración asignada en el plan de construcción.)* Entre los candidatos admite tanto a los choferes libres como a los que están por terminar su entrega en curso, pero descarta a los que tienen una entrega en pleno recorrido. Así un chofer que está entregando la última garrafa puede recibir el pedido siguiente sin que quede un hueco muerto entre uno y otro. |
+| 4 | Registra la oferta a nombre de ese chofer, con su momento de vencimiento fijado en la ventana de aceptación, que es de 30 segundos. |
 | 5 | Le avisa al chofer por la conexión en tiempo real, con el detalle del pedido y la hora en que la oferta pierde vigencia. |
 | 6 | Le envía además una notificación al dispositivo, para el caso de que tenga la aplicación cerrada. El envío no bloquea el proceso. |
 
@@ -798,7 +809,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Rendimiento** | Cada ejecución del barrido, acotada a 50 pedidos, se completa en menos de 3 segundos. |
 | **Frecuencia** | Automático, cada 15 segundos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El cerrojo distribuido vence a los 12 segundos, es decir antes del siguiente ciclo, para que una instancia que caiga sin liberarlo no bloquee el proceso. Con varias instancias del backend corriendo, solo una procesa cada ciclo. El barrido de pendientes está acotado a 50 pedidos por ciclo: con una cola mayor, la cola se drena de a 50 cada 15 segundos. El rechazo explícito del chofer no espera a este proceso: cierra la oferta y dispara la siguiente de inmediato. El sistema **no** escala al administrador cuando se agotan los candidatos; el pedido simplemente permanece pendiente. Los pasos de radio y la ventana de aceptación son hoy constantes del programa: llevarlos a configuración por distribuidora es un pendiente registrado en el Documento 3. |
+| **Comentarios** | El cerrojo distribuido vence a los 12 segundos, es decir antes del siguiente ciclo, para que una instancia que caiga sin liberarlo no bloquee el proceso. Con varias instancias del backend corriendo, solo una procesa cada ciclo. El barrido de pendientes está acotado a 50 pedidos por ciclo: con una cola mayor, la cola se drena de a 50 cada 15 segundos. El rechazo explícito del chofer no espera a este proceso: cierra la oferta y dispara la siguiente de inmediato. El sistema **no** escala al administrador cuando se agotan los candidatos; el pedido simplemente permanece pendiente. Los pasos de radio y la ventana de aceptación son constantes del programa (`RADIUS_STEPS_KM` y `OFFER_TTL_SECONDS`): llevarlos a configuración por distribuidora es un pendiente registrado en el Documento 3. |
 
 ---
 #### Crítico CU-171 — Configurar los Parámetros de Despacho de la Distribuidora
@@ -837,7 +848,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al incorporar la distribuidora y cuando ajusta su cobertura. |
 | **Estabilidad** | Media |
-| **Comentarios** | Cumple el criterio de parametrización de la cátedra para el módulo M1 (Documento 3, §6.1): los pasos de radio y la ventana de aceptación dejan de ser constantes del programa (`RADIUS_STEPS_KM` y `OFFER_TTL_SECONDS` de `DispatchOrchestratorService`). Se guardan en `module_config`, en la fila de la distribuidora para el proceso `dispatch`, un valor que se agrega a `configurable_process_enum` (los cinco actuales corresponden a CU-105 a CU-108 y CU-149). Los valores por omisión son los de las constantes actuales, de modo que una distribuidora que no configura nada se comporta igual. El orquestador lee la configuración en cada oferta, con una copia en memoria de un minuto por distribuidora para no consultar la base en cada ciclo de 15 segundos: un cambio rige, como máximo, un minuto después de guardado en las demás instancias. La asignación manual (CU-012) usa la misma ventana. Los límites de validación son una propuesta de diseño. La frecuencia con que corre el ciclo de reintentos es otro parámetro, que se configura en CU-173. |
+| **Comentarios** | Cumple el criterio de parametrización del proyecto para el módulo M1 (Documento 3, §6.1): los pasos de radio y la ventana de aceptación, que hasta ahora son constantes del programa (`RADIUS_STEPS_KM` y `OFFER_TTL_SECONDS` de `DispatchOrchestratorService`), pasan a ser configurables por distribuidora. Se guardan en `module_config`, en la fila de la distribuidora para el proceso `dispatch`, un valor que se agrega a `configurable_process_enum` (los cinco actuales corresponden a CU-105 a CU-108 y CU-149). Los valores por omisión son los de las constantes actuales, de modo que una distribuidora que no configura nada se comporta igual. El orquestador lee la configuración en cada oferta, con una copia en memoria de un minuto por distribuidora para no consultar la base en cada ciclo de 15 segundos: un cambio rige, como máximo, un minuto después de guardado en las demás instancias. La asignación manual (CU-012) usa la misma ventana. Los límites de validación son una propuesta de diseño. La frecuencia con que corre el ciclo de reintentos es otro parámetro, que se configura en CU-173. |
 
 ---
 
@@ -864,7 +875,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | 7 | Avisa al cliente en tiempo real de la aceptación, con el nombre y el teléfono del chofer, y avisa también al panel de administración. |
 | 8 | Envía al cliente una notificación al dispositivo. El texto es el genérico de confirmación de pedido y no menciona ni la aceptación ni al chofer. |
 
-**Postcondición:** El pedido tiene estado ACCEPTED con el chofer asignado y con su código de entrega generado. El cliente fue avisado en tiempo real y recibió una notificación en su dispositivo.
+**Postcondición:** El pedido tiene estado ACCEPTED con el chofer asignado y con su código de entrega generado.
 
 **Excepciones**
 
@@ -953,7 +964,7 @@ interacción— están reunidos en `Casos-de-Uso.md`.
 | 5 | Avisa al cliente en tiempo real del cambio de estado y avisa también al panel de administración. |
 | 6 | Envía al cliente una notificación al dispositivo con el texto genérico de confirmación de pedido. |
 
-**Postcondición:** El pedido tiene estado ON_THE_WAY con la marca de la salida registrada. El seguimiento en vivo está abierto y el cliente fue avisado.
+**Postcondición:** El pedido tiene estado ON_THE_WAY con la marca de la salida registrada. El seguimiento en vivo está abierto.
 
 **Excepciones**
 
@@ -1398,9 +1409,9 @@ respaldado por la lectura del código en poder del cliente.
 
 ---
 
-### 7.3 Casos de Uso Expandidos — Importantes y Secundarios (con CU-147 y CU-149, críticos de la compra express)
+### 7.3 Casos de Uso Expandidos — Importantes y Secundarios, y compra express (CU-147 y CU-149)
 
-> Esta sección contiene **todos los CUs no Críticos** del sistema (Importantes y Secundarios) en **formato Expandido completo** (Objetivos asociados, Requisitos asociados, Descripción, Precondición, Secuencia normal numerada, Postcondición, Excepciones y Estabilidad). La cátedra exige formato Expandido solo para Críticos; aquí se aplica también al resto para garantizar trazabilidad uniforme y facilitar la fase de Análisis y Diseño.
+> Esta sección contiene **todos los CUs no Críticos** del sistema (Importantes y Secundarios) en **formato Expandido completo** (Objetivos asociados, Requisitos asociados, Descripción, Precondición, Secuencia normal numerada, Postcondición, Excepciones y Estabilidad). El mismo formato se aplica a todos los casos, sin distinguir su prioridad, para garantizar trazabilidad uniforme y facilitar la fase de Análisis y Diseño.
 
 ---
 
@@ -1550,7 +1561,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una escritura, dentro de la transacción del registro. |
 | **Frecuencia** | Una vez por cliente. |
 | **Estabilidad** | Media |
-| **Comentarios** | La cátedra pidió que el consumo promedio se declare en el registro para poder avisar la recompra. El módulo inteligente M3 (CU-106) ya anticipa la recompra, pero lo hace sobre el historial de pedidos: hasta la tercera o cuarta compra no tiene con qué estimar. El dato declarado cubre justamente esa ventana inicial. Los campos del consumo existen en `customer` desde el 25/09/2026; faltan el servicio y el paso del registro. El tipo de garrafa habitual pertenece al catálogo de una distribuidora, pero el cliente se registra sin distribuidora y los clientes se comparten entre distribuidoras: la app ofrece los tipos de la distribuidora en contexto y el cálculo usa el peso. |
+| **Comentarios** | El consumo promedio se declara en el registro para poder avisar la recompra. El módulo inteligente M3 (CU-106) ya anticipa la recompra, pero lo hace sobre el historial de pedidos: hasta la tercera o cuarta compra no tiene con qué estimar. El dato declarado cubre justamente esa ventana inicial. Los campos del consumo existen en `customer` desde el 25/09/2026; faltan el servicio y el paso del registro. El tipo de garrafa habitual pertenece al catálogo de una distribuidora, pero el cliente se registra sin distribuidora y los clientes se comparten entre distribuidoras: la app ofrece los tipos de la distribuidora en contexto y el cálculo usa el peso. |
 
 ---
 
@@ -1660,7 +1671,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura por rango sobre la fecha estimada. |
 | **Frecuencia** | Media: semanal. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es la cara operativa del módulo inteligente M3 (CU-106), que avisa al cliente. La cátedra pidió que el consumo promedio sirva para notificar la recompra; este caso es el que lo pone también del lado del negocio. |
+| **Comentarios** | Es la cara operativa del módulo inteligente M3 (CU-106), que avisa al cliente. El consumo promedio sirve para notificar la recompra; este caso es el que lo pone también del lado del negocio. |
 
 ---
 
@@ -1704,7 +1715,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Cuatro lecturas antes de mostrar el precio; el cliente espera esa respuesta. |
 | **Frecuencia** | Media, con picos en los días de frío. |
 | **Estabilidad** | Media |
-| **Comentarios** | La cátedra pidió un segundo flujo de compra, directo y por moto. Se documenta como caso aparte y no como una variante de CU-005 porque cambian los pasos, los controles y el actor que lo atiende. Requiere la modalidad de entrega en el pedido y el recargo express en la configuración de la distribuidora. La modalidad (`delivery_mode`) existe en `order` desde el 25/09/2026; falta el servicio. El recargo express se calcula en el servidor y se guarda en el pedido (columna `express_surcharge_amount`, planificada en I-7) para poder explicar el total después; no repite el patrón del recargo por transferencia, que calcula la app. La cobertura express no es una zona aparte: es un radio máximo en la configuración del proceso `express_dispatch` (CU-172). Entre la comprobación de disponibilidad y el pago el último chofer puede ocuparse: la degradación con aviso es el camino previsto y no un caso raro. Este caso no incluye CU-148: el cliente elige la compra express desde la pantalla principal (paso 1), sin pasar por el paso donde CU-148 ofrece a elegir entre programada y express. |
+| **Comentarios** | El sistema incorpora un segundo flujo de compra, directo y por moto. Se documenta como caso aparte y no como una variante de CU-005 porque cambian los pasos, los controles y el actor que lo atiende. Requiere la modalidad de entrega en el pedido y el recargo express en la configuración de la distribuidora. La modalidad (`delivery_mode`) existe en `order` desde el 25/09/2026; falta el servicio. El recargo express se calcula en el servidor y se guarda en el pedido (columna `express_surcharge_amount`, planificada en I-7) para poder explicar el total después; no repite el patrón del recargo por pago en línea, que el servidor suma al total sin guardarlo aparte. La cobertura express no es una zona aparte: es un radio máximo en la configuración del proceso `express_dispatch` (CU-172). Entre la comprobación de disponibilidad y el pago el último chofer puede ocuparse: la degradación con aviso es el camino previsto y no un caso raro. Este caso no incluye CU-148: el cliente elige la compra express desde la pantalla principal (paso 1), sin pasar por el paso donde CU-148 ofrece a elegir entre programada y express. |
 
 ---
 
@@ -1743,7 +1754,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Dos lecturas, dentro del armado del pedido. |
 | **Frecuencia** | Alta: se ejecuta en cada compra. |
 | **Estabilidad** | Media |
-| **Comentarios** | Consultar las opciones no escribe nada: la modalidad se guarda al crear el pedido, y la disponibilidad express se vuelve a evaluar en ese momento, porque entre una cosa y la otra el último chofer pudo ocuparse. La express se decide por tres condiciones: dirección dentro de la zona de cobertura, horario de servicio y un chofer en moto dentro del radio express; el radio, el recargo, el horario y el tiempo estimado son parámetros del proceso `express_dispatch` (CU-172). Para reconocer una moto, `Car.typeCar` —texto libre— pasa a un tipo enumerado (columna `vehicle_type`, con relleno desde `type_car`, planificada en I-7). Es el punto donde los dos flujos de compra se encuentran. Documentarlo aparte evita que la modalidad quede escondida como una bandera dentro del alta del pedido, que es justamente lo que la cátedra objetó en los casos que agrupaban varias operaciones. |
+| **Comentarios** | Consultar las opciones no escribe nada: la modalidad se guarda al crear el pedido, y la disponibilidad express se vuelve a evaluar en ese momento, porque entre una cosa y la otra el último chofer pudo ocuparse. La express se decide por tres condiciones: dirección dentro de la zona de cobertura, horario de servicio y un chofer en moto dentro del radio express; el radio, el recargo, el horario y el tiempo estimado son parámetros del proceso `express_dispatch` (CU-172). Para reconocer una moto, `Car.typeCar` —texto libre— pasa a un tipo enumerado (columna `vehicle_type`, con relleno desde `type_car`, planificada en I-7). Es el punto donde los dos flujos de compra se encuentran. Documentarlo aparte evita que la modalidad quede escondida como una bandera dentro del alta del pedido, que es justamente lo que se evita en los casos que agrupaban varias operaciones. |
 
 ---
 
@@ -1858,7 +1869,7 @@ respaldado por la lectura del código en poder del cliente.
 | 7 | Avisa al cliente en tiempo real de la cancelación con el motivo, avisa al panel de administración y, si había chofer asignado, le avisa a él que no es necesario ir. |
 | 8 | **(Planificado, I-7)** Si el pedido tenía un pago aprobado por una pasarela, el sistema lo reintegra: **CU-168 Reintegrar el Pago de un Pedido extiende este caso**. |
 
-**Postcondición:** El pedido tiene estado CANCELLED con su motivo. El stock fue restituido en la misma transacción. El cliente y el chofer fueron avisados por la conexión en tiempo real. **(Planificado, I-7)** Si el pedido estaba pagado por una pasarela, el pago fue reintegrado (CU-168).
+**Postcondición:** El pedido tiene estado CANCELLED con su motivo. El stock fue restituido en la misma transacción. **(Planificado, I-7)** Si el pedido estaba pagado por una pasarela, el pago fue reintegrado (CU-168).
 
 **Excepciones**
 
@@ -1954,7 +1965,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El alta del reclamo se completa en menos de 1 segundo. |
 | **Frecuencia** | Baja por cliente: esporádica, solo ante un problema con un pedido. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no exige que el pedido esté entregado para admitir un reclamo: se puede reclamar un pedido pendiente, aceptado o incluso cancelado, con lo que la regla de negocio que daba sentido al caso de uso no está implementada. El sistema no avisa al administrador de que entró un reclamo nuevo, de modo que el vínculo entre este caso de uso y CU-024 depende de que alguien mire el listado. La carga de la fotografía y su consulta (CU-174 y CU-175) están planificadas (I-5): el reclamo guarda hoy la columna de la imagen, pero no existe un camino para subirla. |
+| **Comentarios** | El sistema no exige que el pedido esté entregado para admitir un reclamo: se puede reclamar un pedido pendiente, aceptado o incluso cancelado, con lo que la regla de negocio que daba sentido al caso de uso no está implementada. El sistema no avisa al administrador de que entró un reclamo nuevo, de modo que el vínculo entre este caso de uso y CU-024 depende de que alguien mire el listado. La carga de la fotografía y su consulta (CU-174 y CU-175) están planificadas (I-5): el reclamo guarda la columna de la imagen, pero no existe un camino para subirla. |
 
 ---
 
@@ -2046,7 +2057,7 @@ respaldado por la lectura del código en poder del cliente.
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
-| **Requisitos asociados** | IRQ-04 |
+| **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | El administrador asigna a mano un chofer habilitado y validado a un pedido pendiente, o reasigna a otro chofer un pedido que ya había aceptado uno. Es la salida cuando el despacho automático no encontró candidatos o cuando la logística exige una asignación específica. |
 | **Precondición** | El administrador está autenticado. El pedido existe y está pendiente, o aceptado por otro chofer. El chofer está habilitado por el administrador y validado, tiene un vehículo en uso (CU-161) y ni su licencia ni ese vehículo tienen documentación vencida (CU-136 a CU-138). |
 | **Estado** | Implementado |
@@ -2064,7 +2075,7 @@ respaldado por la lectura del código en poder del cliente.
 | 7 | Cierra las ofertas de despacho que hubiera en curso sobre el pedido. |
 | 8 | Avisa al chofer nuevo, que recibe el pedido con el mismo evento que una oferta; al chofer anterior, si lo hubo, que el pedido se reasignó y se le corta el seguimiento; y al panel de administración. |
 
-**Postcondición:** El pedido tiene estado ACCEPTED con el chofer seleccionado y con un código de entrega propio. Las ofertas de despacho en curso quedaron cerradas. Si el pedido tenía otro chofer, ese chofer quedó avisado y sin seguimiento.
+**Postcondición:** El pedido tiene estado ACCEPTED con el chofer seleccionado y con un código de entrega propio. Las ofertas de despacho en curso quedaron cerradas. Si el pedido tenía otro chofer, ese chofer quedó sin seguimiento.
 
 **Excepciones**
 
@@ -2675,7 +2686,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Dos lecturas de verificación y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Se ejecuta al incorporar un chofer o al cambiar su unidad. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La unicidad de la patente es global al sistema, no por distribuidora: dos empresas no pueden registrar la misma patente, y el mensaje de conflicto revela indirectamente que esa patente existe en otro tenant. El sistema no exige ninguno de los datos descriptivos del vehículo, de modo que es posible registrar una unidad sin patente, sin tipo y sin capacidad; si el negocio requiere esos datos, la restricción está pendiente de implementación. El conflicto de patente se informa hoy como error de petición inválida y no como conflicto de recurso. |
+| **Comentarios** | La unicidad de la patente es global al sistema, no por distribuidora: dos empresas no pueden registrar la misma patente, y el mensaje de conflicto revela indirectamente que esa patente existe en otro tenant. El sistema no exige ninguno de los datos descriptivos del vehículo, de modo que es posible registrar una unidad sin patente, sin tipo y sin capacidad; si el negocio requiere esos datos, la restricción está pendiente de implementación. El conflicto de patente se informa como error de petición inválida y no como conflicto de recurso. |
 
 ---
 #### Importante CU-035 — Consultar Listado de Choferes
@@ -2921,7 +2932,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El control de cupo agrega una lectura con bloqueo y un conteo dentro de la transacción del pedido; el impacto está por debajo de los doscientos milisegundos. |
 | **Frecuencia** | Media. Depende de qué proporción de los pedidos se agende en lugar de pedirse para entrega inmediata. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El control de concurrencia es la parte sólida de este caso: el bloqueo pesimista sobre la fila de la franja se sostiene hasta el commit de la transacción que inserta el pedido, así que la capacidad no se supera bajo carga. Limitaciones registradas. El sistema no exige la franja: es un dato opcional, de modo que la promesa de que "el cliente debe elegir una franja" no rige. El control de cupo se dispara **solo si vienen la fecha y la franja juntas**: un pedido que trae la franja sin fecha agendada guarda igual la referencia a la franja pero no pasa por ninguna verificación de capacidad, lo que deja la franja asociada a un pedido que no cuenta contra su cupo. El conflicto de cupo se informa hoy como error de petición inválida y no como conflicto de recurso, de modo que el frontend no puede distinguirlo por código de un dato mal formado y debe leer el mensaje. |
+| **Comentarios** | El control de concurrencia es la parte sólida de este caso: el bloqueo pesimista sobre la fila de la franja se sostiene hasta el commit de la transacción que inserta el pedido, así que la capacidad no se supera bajo carga. Limitaciones registradas. El sistema no exige la franja: es un dato opcional, de modo que la promesa de que "el cliente debe elegir una franja" no rige. El control de cupo se dispara **solo si vienen la fecha y la franja juntas**: un pedido que trae la franja sin fecha agendada guarda igual la referencia a la franja pero no pasa por ninguna verificación de capacidad, lo que deja la franja asociada a un pedido que no cuenta contra su cupo. El conflicto de cupo se informa como error de petición inválida y no como conflicto de recurso, de modo que el frontend no puede distinguirlo por código de un dato mal formado y debe leer el mensaje. |
 
 ---
 #### Importante CU-045 — Consultar Franjas Horarias Disponibles
@@ -2975,7 +2986,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01, IRQ-07 |
-| **Descripción** | El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-addres/user/:userId`. Un administrador con distribuidora en contexto sólo llega a las direcciones de los usuarios de su distribuidora. El sistema acota la consulta a las direcciones del propio cliente: si quien pide no es administrador ni Administrador General, el identificador de usuario que venga en la petición se ignora y se usa el de la sesión. |
+| **Descripción** | El cliente abre su libreta de direcciones y ve todas las que tiene registradas, con la predeterminada primero y el resto ordenado de la más nueva a la más vieja. Es la consulta del listado: el alta, la edición, la baja y la marca de predeterminada son los casos CU-116 a CU-121. Endpoint: `GET /user-address/user/:userId`. Un administrador con distribuidora en contexto sólo llega a las direcciones de los usuarios de su distribuidora. El sistema acota la consulta a las direcciones del propio cliente: si quien pide no es administrador ni Administrador General, el identificador de usuario que venga en la petición se ignora y se usa el de la sesión. |
 | **Precondición** | El cliente está autenticado. |
 | **Estado** | Implementado |
 
@@ -2984,7 +2995,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente abre la sección de direcciones en la aplicación. |
-| 2 | La aplicación envía `GET /user-addres/user/:userId`. |
+| 2 | La aplicación envía `GET /user-address/user/:userId`. |
 | 3 | El sistema valida el formato del identificador de usuario. |
 | 4 | El sistema determina el alcance: si quien pide no es administrador, comprueba que el usuario pedido sea el de la sesión. Si es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 5 | El sistema recupera las direcciones de ese usuario, ordenadas con la predeterminada primero y luego por fecha de alta descendente. |
@@ -3006,7 +3017,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Una lectura por índice sobre el identificador de usuario. |
 | **Frecuencia** | Muy alta: se ejecuta cada vez que el cliente arma un pedido y cada vez que abre su libreta. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Este caso agrupaba siete operaciones distintas sobre la libreta de direcciones. La cátedra pidió que cada operación de un ABM figure como caso de uso propio, de modo que quedó acotado a la consulta del listado y las otras seis pasaron a ser CU-116, CU-117, CU-118, CU-119, CU-120 y CU-121. Es el mismo criterio que se aplicó en CU-051 con el listado de vehículos. |
+| **Comentarios** | Este caso agrupaba siete operaciones distintas sobre la libreta de direcciones. Cada operación de un ABM figura como caso de uso propio, de modo que quedó acotado a la consulta del listado y las otras seis pasaron a ser CU-116, CU-117, CU-118, CU-119, CU-120 y CU-121. Es el mismo criterio que se aplicó en CU-051 con el listado de vehículos. |
 
 ---
 
@@ -3016,7 +3027,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, altura, piso y departamento, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. El sistema resuelve la dirección contra el servicio de mapas para quedarse con el mejor punto disponible, sin bloquear el alta. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-addres`. |
+| **Descripción** | El cliente da de alta una dirección donde quiere recibir sus garrafas: calle, altura, piso y departamento, ciudad, código postal, coordenadas e indicaciones adicionales, y puede marcarla como predeterminada en el mismo acto. El sistema resuelve la dirección contra el servicio de mapas para quedarse con el mejor punto disponible, sin bloquear el alta. Es el alta del ABM de direcciones que hasta ahora estaba dentro de CU-046. Endpoint: `POST /user-address`. |
 | **Precondición** | El cliente está autenticado. La cuenta de usuario existe. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado, con funcionalidad planificada: la resolución automática de la dirección contra el servicio de mapas. |
 
@@ -3025,7 +3036,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente completa el formulario de dirección en la aplicación, incluyendo piso y departamento si corresponde. |
-| 2 | La aplicación envía `POST /user-addres` con los datos de la dirección: calle, ciudad, latitud y longitud obligatorias, y opcionalmente código postal, piso, departamento, identificador del lugar en el mapa, precisión, dirección normalizada e indicaciones. |
+| 2 | La aplicación envía `POST /user-address` con los datos de la dirección: calle, ciudad, latitud y longitud obligatorias, y opcionalmente código postal, piso, departamento, identificador del lugar en el mapa, precisión, dirección normalizada e indicaciones. |
 | 3 | El sistema fuerza el titular de la dirección al usuario de la sesión, sin tomar el que venga en el cuerpo del mensaje. Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular indicado sea de ella y, si el administrador es de empresa, rechaza la operación. |
 | 4 | El sistema comprueba que la cuenta de usuario exista. |
 | 5 | El sistema consulta al servicio de mapas la dirección escrita y guarda, junto con el punto, la dirección normalizada que le devuelve y el identificador estable del lugar. |
@@ -3063,7 +3074,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente abre una dirección puntual y ve todos sus datos. Es la lectura de la que dependen la edición, la baja y la marca de predeterminada, y la que aplica el control de pertenencia. Endpoint: `GET /user-addres/:id`. |
+| **Descripción** | El cliente abre una dirección puntual y ve todos sus datos. Es la lectura de la que dependen la edición, la baja y la marca de predeterminada, y la que aplica el control de pertenencia. Endpoint: `GET /user-address/:id`. |
 | **Precondición** | El cliente está autenticado. La dirección existe. |
 | **Estado** | Implementado |
 
@@ -3072,7 +3083,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente elige una dirección de su listado. |
-| 2 | La aplicación envía `GET /user-addres/:id`. |
+| 2 | La aplicación envía `GET /user-address/:id`. |
 | 3 | El sistema valida el formato del identificador. Si quien pide es un administrador con distribuidora en contexto, comprueba que el titular de la dirección sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 4 | El sistema recupera la dirección junto con su titular. |
 | 5 | El sistema comprueba que la dirección pertenezca a quien la pide. |
@@ -3104,7 +3115,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la altura, el piso y departamento, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Si cambia algo que afecta la ubicación, el sistema vuelve a resolverla contra el servicio de mapas. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-addres/:id`. |
+| **Descripción** | El cliente corrige los datos de una dirección ya registrada: la calle, la altura, el piso y departamento, la ciudad, el código postal, las coordenadas o las indicaciones para el repartidor. Si cambia algo que afecta la ubicación, el sistema vuelve a resolverla contra el servicio de mapas. Es la modificación del ABM de direcciones. Endpoint: `PATCH /user-address/:id`. |
 | **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado, con funcionalidad planificada: la resolución automática de la dirección contra el servicio de mapas. |
 
@@ -3113,7 +3124,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente edita los campos que quiere cambiar. |
-| 2 | La aplicación envía `PATCH /user-addres/:id` con los campos modificados. |
+| 2 | La aplicación envía `PATCH /user-address/:id` con los campos modificados. |
 | 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema arma la dirección con los campos nuevos sobre los existentes. La latitud y la longitud forman un único punto, de modo que se cambian juntas. |
 | 5 | Si cambió algún dato que afecta la ubicación —calle, altura, ciudad, código postal o coordenadas—, el sistema la resuelve de nuevo contra el servicio de mapas y actualiza el punto, la dirección normalizada y la precisión. Si sólo cambiaron el piso, el departamento o las indicaciones, no vuelve a consultar. |
@@ -3148,7 +3159,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente da de baja una dirección que ya no usa. La baja es lógica: la dirección deja de aparecer, pero se conserva, y los pedidos que la usaron la siguen mostrando. Si la que da de baja era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-addres/:id`. |
+| **Descripción** | El cliente da de baja una dirección que ya no usa. La baja es lógica: la dirección deja de aparecer, pero se conserva, y los pedidos que la usaron la siguen mostrando. Si la que da de baja era la predeterminada, el sistema promueve a predeterminada la más reciente de las que quedan, para que el cliente nunca se quede sin una. Endpoint: `DELETE /user-address/:id`. |
 | **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado |
 
@@ -3157,7 +3168,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente pide dar de baja una dirección. |
-| 2 | La aplicación envía `DELETE /user-addres/:id`. |
+| 2 | La aplicación envía `DELETE /user-address/:id`. |
 | 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | Si la dirección era la predeterminada, el sistema busca las demás direcciones del cliente y marca como predeterminada a la más reciente. |
 | 5 | El sistema da de baja lógica la dirección: registra la fecha de baja y la fila se conserva. |
@@ -3188,7 +3199,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-addres/:id/set-default`. |
+| **Descripción** | El cliente elige cuál de sus direcciones se propone sola al armar un pedido. El sistema marca esa y desmarca las demás, de modo que siempre hay exactamente una. Endpoint: `PATCH /user-address/:id/set-default`. |
 | **Precondición** | El cliente está autenticado. La dirección existe y le pertenece. Si quien opera es un administrador, es el Administrador General: un administrador de empresa no modifica direcciones. |
 | **Estado** | Implementado |
 
@@ -3197,7 +3208,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente elige una dirección de su listado y la marca como predeterminada. |
-| 2 | La aplicación envía `PATCH /user-addres/:id/set-default`. |
+| 2 | La aplicación envía `PATCH /user-address/:id/set-default`. |
 | 3 | Si quien opera es un administrador con distribuidora en contexto, el sistema comprueba primero que el titular sea de ella y, si el administrador es de empresa, rechaza la operación. Después recupera la dirección y comprueba que sea del cliente (CU-117). |
 | 4 | El sistema quita la marca de predeterminada de las demás direcciones del cliente. |
 | 5 | El sistema marca la dirección elegida y la devuelve. |
@@ -3227,7 +3238,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | La aplicación recupera la dirección que el cliente dejó marcada, para proponerla sola cuando arranca un pedido. Es la lectura que evita que el cliente tenga que elegir dirección en cada compra. Endpoint: `GET /user-addres/user/:userId/default`. |
+| **Descripción** | La aplicación recupera la dirección que el cliente dejó marcada, para proponerla sola cuando arranca un pedido. Es la lectura que evita que el cliente tenga que elegir dirección en cada compra. Endpoint: `GET /user-address/user/:userId/default`. |
 | **Precondición** | El cliente está autenticado. |
 | **Estado** | Implementado |
 
@@ -3236,7 +3247,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente abre la pantalla de armado del pedido. |
-| 2 | La aplicación envía `GET /user-addres/user/:userId/default`. |
+| 2 | La aplicación envía `GET /user-address/user/:userId/default`. |
 | 3 | El sistema valida el formato del identificador de usuario. Si quien pide es un administrador con distribuidora en contexto, comprueba que el usuario sea de ella: chofer o administrador de ella, o cliente que le compró alguna vez. |
 | 4 | El sistema busca la dirección del cliente que tenga la marca de predeterminada. |
 | 5 | El sistema devuelve la dirección encontrada. |
@@ -3256,7 +3267,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Una lectura por índice. |
 | **Frecuencia** | Muy alta: se ejecuta al inicio de cada compra. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El mensaje de error no distingue entre un cliente sin direcciones y uno que tiene direcciones pero ninguna marcada; en los dos casos dice que no encontró direcciones. El endpoint está implementado y responde correctamente, pero hoy ninguna app lo consume (ver CU-005 y CU-147): queda disponible para cuando el proceso de compra lo adopte. |
+| **Comentarios** | El mensaje de error no distingue entre un cliente sin direcciones y uno que tiene direcciones pero ninguna marcada; en los dos casos dice que no encontró direcciones. El endpoint está implementado y responde correctamente, pero ninguna app lo consume (ver CU-005 y CU-147): queda disponible para cuando el proceso de compra lo adopte. |
 
 ---
 
@@ -3264,8 +3275,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Campo | Detalle |
 |-------|---------|
-| **Objetivos asociados** | OBJ-02 |
-| **Requisitos asociados** | IRQ-01 |
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El cliente elige un tipo de garrafa del catálogo y lo suma a su carrito con una cantidad. El carrito sobrevive al cierre de la aplicación y al cambio de dispositivo, de modo que el cliente puede armar la compra en varios momentos. Es el primer paso del proceso de compra que termina en CU-005 Crear Pedido. |
 | **Precondición** | El cliente está autenticado. El tipo de garrafa existe, está activo y pertenece a la distribuidora. |
 | **Estado** | Planificado (I-3). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
@@ -3282,7 +3293,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 6 | El sistema guarda en el ítem el precio unitario vigente en el catálogo, como referencia del precio que vio el cliente. |
 | 7 | El sistema devuelve el carrito con su total recalculado. |
 
-**Postcondición:** El carrito del cliente contiene el tipo de garrafa con la cantidad pedida y el total actualizado.
+**Postcondición:** El carrito del cliente contiene el tipo de garrafa y el total actualizado: con la cantidad pedida si el tipo de garrafa no estaba, o con la cantidad que ya tenía más la pedida si estaba.
 
 **Excepciones**
 
@@ -3297,7 +3308,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Una lectura del carrito y una escritura del ítem. |
 | **Frecuencia** | Muy alta: es la operación más repetida del proceso de compra. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El carrito vive en memoria de la aplicación del cliente y no se guarda en el servidor: si el cliente cierra la aplicación, pierde lo que había armado. La cátedra pidió que agregar y quitar ítems figuren como casos de uso del proceso de compra, y eso supone persistirlo. Las tablas `cart` y `cart_item` existen desde el 25/09/2026, con una restricción única por cliente y distribuidora y otra por carrito y tipo de garrafa; faltan el servicio y los endpoints. **Decisión de diseño sobre el precio:** el pedido se cobra al precio vigente del catálogo en el momento de confirmar, no al guardado en el carrito, y el sistema le avisa al cliente la diferencia antes de confirmar (CU-125). El precio guardado en el ítem sirve para detectar el cambio y no para fijarlo: respetar el del carrito permitiría comprar indefinidamente con un precio viejo. El carrito no reserva stock: el stock se sigue controlando al crear el pedido, con el bloqueo que ya existe. |
+| **Comentarios** | El carrito vive en memoria de la aplicación del cliente y no se guarda en el servidor: si el cliente cierra la aplicación, pierde lo que había armado. Agregar y quitar ítems son casos de uso del proceso de compra, y eso supone persistir el carrito. Las tablas `cart` y `cart_item` existen desde el 25/09/2026, con una restricción única por cliente y distribuidora y otra por carrito y tipo de garrafa; faltan el servicio y los endpoints. **Decisión de diseño sobre el precio:** el pedido se cobra al precio vigente del catálogo en el momento de confirmar, no al guardado en el carrito, y el sistema le avisa al cliente la diferencia antes de confirmar (CU-125). El precio guardado en el ítem sirve para detectar el cambio y no para fijarlo: respetar el del carrito permitiría comprar indefinidamente con un precio viejo. El carrito no reserva stock: el stock se sigue controlando al crear el pedido, con el bloqueo que ya existe. |
 
 ---
 
@@ -3305,8 +3316,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Campo | Detalle |
 |-------|---------|
-| **Objetivos asociados** | OBJ-02 |
-| **Requisitos asociados** | IRQ-01 |
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El cliente cambia cuántas garrafas de un tipo quiere, sin tener que sacar el ítem y volver a agregarlo. Es la modificación dentro del proceso de compra. |
 | **Precondición** | El cliente está autenticado y el ítem está en su carrito. |
 | **Estado** | Planificado (I-3). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
@@ -3343,8 +3354,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Campo | Detalle |
 |-------|---------|
-| **Objetivos asociados** | OBJ-02 |
-| **Requisitos asociados** | IRQ-01 |
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El cliente saca del carrito un tipo de garrafa que había agregado. Es la baja dentro del proceso de compra, la contracara de CU-122. |
 | **Precondición** | El cliente está autenticado y el ítem está en su carrito. |
 | **Estado** | Planificado (I-3). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
@@ -3380,8 +3391,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Campo | Detalle |
 |-------|---------|
-| **Objetivos asociados** | OBJ-02 |
-| **Requisitos asociados** | IRQ-01 |
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El cliente ve lo que lleva armado: los tipos de garrafa, las cantidades, el precio unitario de cada uno y el total. Es la lectura de la que dependen las otras operaciones del carrito (CU-123, CU-124, CU-126) para saber sobre qué ítem actúan. |
 | **Precondición** | El cliente está autenticado. |
 | **Estado** | Planificado (I-3). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
@@ -3418,8 +3429,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Campo | Detalle |
 |-------|---------|
-| **Objetivos asociados** | OBJ-02 |
-| **Requisitos asociados** | IRQ-01 |
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El cliente descarta de una vez todo lo que había armado, en lugar de quitar los ítems de a uno. El sistema también vacía el carrito por su cuenta cuando la compra se confirma, para que el cliente no arranque la próxima con lo que ya compró. |
 | **Precondición** | El cliente está autenticado y tiene un carrito con ítems. |
 | **Estado** | Planificado (I-3). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
@@ -3447,7 +3458,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Un borrado por lote. |
 | **Frecuencia** | Baja como acción del cliente; alta como paso final de cada compra confirmada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El actor principal es el cliente, pero el caso también lo dispara CU-005 Crear Pedido una vez que el pedido quedó registrado. Cuando la app crea el pedido desde el carrito, `CreateOrderUseCase` lee los ítems del carrito dentro de la transacción del pedido, cobra el precio vigente del catálogo y vacía el carrito en la misma transacción. |
+| **Comentarios** | El actor principal es el cliente, pero el caso también lo dispara CU-005 Crear Pedido una vez que el pedido quedó registrado. Cuando se construya el carrito (I-3), la creación del pedido desde el carrito (`CreateOrderUseCase`) deberá leer los ítems del carrito dentro de la transacción del pedido, cobrar el precio vigente del catálogo y vaciar el carrito en la misma transacción; hasta entonces, `CreateOrderUseCase` no lee ningún carrito. |
 
 ---
 
@@ -3455,8 +3466,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Campo | Detalle |
 |-------|---------|
-| **Objetivos asociados** | OBJ-02 |
-| **Requisitos asociados** | IRQ-01 |
+| **Objetivos asociados** | OBJ-01 |
+| **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El cliente cambia a dónde quiere que le lleven un pedido ya confirmado, mientras todavía no salió el repartidor. El sistema comprueba que la dirección nueva sea suya y esté dentro de la zona de cobertura, y guarda el cambio con su motivo para que el chofer y el administrador vean qué pasó. |
 | **Precondición** | El cliente está autenticado, el pedido es suyo y está en estado pendiente o aceptado. |
 | **Estado** | Planificado (I-4). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
@@ -3490,7 +3501,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Tres lecturas y dos escrituras. |
 | **Frecuencia** | Baja, pero de mucho impacto operativo cuando ocurre. |
 | **Estabilidad** | Media |
-| **Comentarios** | La dirección se fija al crear el pedido y no hay ninguna operación que la cambie: el cliente tiene que cancelar y volver a pedir. El caso se documenta a pedido de la cátedra como parte del flujo del proceso de compra. La tabla `order_address_change` existe desde el 25/09/2026; faltan el caso de uso y su endpoint. **Decisión de diseño sobre el dinero:** el recargo de zona depende de la dirección. En un pedido pagado en línea el importe ya lo cobró la pasarela: si el recargo de la zona nueva es distinto, el sistema rechaza el cambio en lugar de cobrar de más o devolver una parte; en efectivo, donde no se cobró nada, recalcula el total. El punto de entrega (`deliveryPoint`) del pedido se actualiza con la dirección nueva, porque es contra el que se compara la llegada del chofer. |
+| **Comentarios** | La dirección se fija al crear el pedido y no hay ninguna operación que la cambie: el cliente tiene que cancelar y volver a pedir. El caso se documenta como parte del flujo del proceso de compra. La tabla `order_address_change` existe desde el 25/09/2026; faltan el caso de uso y su endpoint. **Decisión de diseño sobre el dinero:** el recargo de zona depende de la dirección. En un pedido pagado en línea el importe ya lo cobró la pasarela: si el recargo de la zona nueva es distinto, el sistema rechaza el cambio en lugar de cobrar de más o devolver una parte; en efectivo, donde no se cobró nada, recalcula el total. El punto de entrega (`deliveryPoint`) del pedido se actualiza con la dirección nueva, porque es contra el que se compara la llegada del chofer. |
 
 ---
 
@@ -3498,8 +3509,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Campo | Detalle |
 |-------|---------|
-| **Objetivos asociados** | OBJ-02 |
-| **Requisitos asociados** | IRQ-01 |
+| **Objetivos asociados** | OBJ-01, OBJ-04 |
+| **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El cliente aclara que la garrafa la va a recibir otra persona: un familiar, el encargado del edificio o un vecino. Registra su nombre, su documento y qué relación tiene con él, para que el chofer sepa a quién puede entregarle y quede asentado quién recibió. |
 | **Precondición** | El cliente está autenticado, el pedido es suyo y todavía no fue entregado. |
 | **Estado** | Planificado (I-4). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
@@ -3529,7 +3540,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Una lectura y una escritura. |
 | **Frecuencia** | Media: es frecuente en horario laboral, cuando el titular no está en su casa. |
 | **Estabilidad** | Media |
-| **Comentarios** | La entrega se confirma escaneando un código que el chofer muestra (CU-020). Ese control asegura que la entrega ocurrió, pero no dice quién la recibió. Este caso completa esa información y responde al pedido de la cátedra. Los campos `receiver_name`, `receiver_document` y `receiver_relationship` existen en `order` desde el 25/09/2026; faltan el servicio, el endpoint (`PATCH /orders/:id/receiver`) y la exposición en las respuestas. **Datos personales de un tercero:** (1) se conservan hasta que vence el plazo de reclamo del pedido, porque un reclamo posterior necesita saber quién recibió, y después se anulan con un proceso diario, que es una tarea de mantenimiento del sistema; (2) el documento se excluye del registro de auditoría (CU-153), que es inmutable por un disparador de la base: se agrega `receiverdocument` a la lista de campos sensibles que se depuran antes de guardar el asiento (`SENSIBLES`, en `depurarCambios`), en el mismo cambio que expone el endpoint; (3) la respuesta del pedido los expone sólo al cliente dueño, al chofer asignado y al administrador de la distribuidora. |
+| **Comentarios** | La entrega se confirma escaneando un código que el chofer muestra (CU-020). Ese control asegura que la entrega ocurrió, pero no dice quién la recibió. Este caso completa esa información. Los campos `receiver_name`, `receiver_document` y `receiver_relationship` existen en `order` desde el 25/09/2026; faltan el servicio, el endpoint (`PATCH /orders/:id/receiver`) y la exposición en las respuestas. **Datos personales de un tercero:** (1) se conservan hasta que vence el plazo de reclamo del pedido, porque un reclamo posterior necesita saber quién recibió, y después se anulan con un proceso diario, que es una tarea de mantenimiento del sistema; (2) el documento se excluye del registro de auditoría (CU-153), que es inmutable por un disparador de la base: se agrega `receiverdocument` a la lista de campos sensibles que se depuran antes de guardar el asiento (`SENSIBLES`, en `depurarCambios`), en el mismo cambio que expone el endpoint; (3) la respuesta del pedido los expone sólo al cliente dueño, al chofer asignado y al administrador de la distribuidora. |
 
 ---
 #### Importante CU-047 — Recuperar Contraseña
@@ -3613,7 +3624,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 14 | Si el pedido no es una reserva, el sistema dispara el despacho del pedido al siguiente chofer candidato (CU-013) en modo best-effort. |
 | 15 | El sistema responde 200 a MercadoPago acusando recibo. |
 
-**Postcondición:** El registro de pagos refleja el estado real informado por la pasarela. Si el pago fue aprobado, el pedido quedó con estado de pago PAGADO y con el identificador del pago de la pasarela grabado —o con la seña marcada como pagada, si era una reserva— y el Cliente fue notificado del pago aprobado y el despacho se disparó exactamente una vez. Repetir la misma notificación no vuelve a marcar el pedido, ni a notificar al Cliente, ni a despacharlo.
+**Postcondición:** El registro de pagos refleja el estado real informado por la pasarela. Si el pago fue aprobado, el pedido quedó con estado de pago PAGADO y con el identificador del pago de la pasarela grabado —o con la seña marcada como pagada, si era una reserva— y el despacho se disparó exactamente una vez. Repetir la misma notificación no vuelve a marcar el pedido, ni a notificar al Cliente, ni a despacharlo.
 
 **Excepciones**
 
@@ -3636,7 +3647,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | El procesamiento completo de una notificación se resuelve en menos de 3 segundos; la consulta a MercadoPago está acotada a 5 segundos de espera máxima. |
 | **Frecuencia** | Una o más notificaciones por cada pedido pagado con MercadoPago. La pasarela reintenta la misma notificación ante cualquier respuesta que no sea exitosa, y a veces incluso cuando lo es. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La idempotencia no descansa en un solo mecanismo sino en tres, encadenados: un índice único parcial sobre el identificador de pago en el registro de pagos, un índice análogo sobre el identificador de pago del pedido, y el bloqueo pesimista sobre el pedido dentro de la transacción, que serializa dos notificaciones concurrentes del mismo pago. La validación de la firma vive en el controlador y no en el caso de uso, para poder registrar el intento inválido sin exponer detalles del dominio. **Limitación conocida:** el camino de pago rechazado o cancelado **no está implementado**; en el código figura como un pendiente marcado explícitamente. Hoy el sistema solo lo deja registrado en el log: no le avisa al Cliente, no libera el stock reservado ni cancela el pedido, que queda pendiente con su pago pendiente. Quien termina resolviendo esa situación es un proceso temporal que corre cada 30 minutos y cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado, restituyendo el stock recién en ese momento. Es decir, entre el rechazo del pago y el paso de ese proceso, el stock permanece reservado sin necesidad. Ese proceso, además, vuelve a tomar el pedido con bloqueo pesimista y solo lo cancela si sigue pendiente y sin identificador de pago, de modo que la carrera entre el pago tardío y la expiración está resuelta en ambas direcciones. El reembolso por cancelación está planificado (CU-168, I-7); el contracargo no se contempla: el registro de pagos sabe traducir ese estado, pero el pedido no reacciona a él. Por último, si la pasarela está caída al crear el pedido, este queda sin URL de pago y no existe un endpoint para regenerar el checkout. La creación del enlace de pago (`crearCheckoutDePago`) no tiene endpoint propio: la invoca la creación del pedido (CU-005) cuando el medio de pago es MercadoPago, y la creación de la reserva (CU-072) para su seña. Rechaza con 409 el pedido que ya está pago, cancelado o entregado, y con 404 el que no existe. |
+| **Comentarios** | La idempotencia no descansa en un solo mecanismo sino en tres, encadenados: un índice único parcial sobre el identificador de pago en el registro de pagos, un índice análogo sobre el identificador de pago del pedido, y el bloqueo pesimista sobre el pedido dentro de la transacción, que serializa dos notificaciones concurrentes del mismo pago. La validación de la firma vive en el controlador y no en el caso de uso, para poder registrar el intento inválido sin exponer detalles del dominio. **Limitación conocida:** el camino de pago rechazado o cancelado **no está implementado**; en el código figura como un pendiente marcado explícitamente. El sistema solo lo deja registrado en el log: no le avisa al Cliente, no libera el stock reservado ni cancela el pedido, que queda pendiente con su pago pendiente. Quien termina resolviendo esa situación es un proceso temporal que corre cada 30 minutos y cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado, restituyendo el stock recién en ese momento. Es decir, entre el rechazo del pago y el paso de ese proceso, el stock permanece reservado sin necesidad. Ese proceso, además, vuelve a tomar el pedido con bloqueo pesimista y solo lo cancela si sigue pendiente y sin identificador de pago, de modo que la carrera entre el pago tardío y la expiración está resuelta en ambas direcciones. El reembolso por cancelación está planificado (CU-168, I-7); el contracargo no se contempla: el registro de pagos sabe traducir ese estado, pero el pedido no reacciona a él. Por último, si la pasarela está caída al crear el pedido, este queda sin URL de pago y no existe un endpoint para regenerar el checkout. La creación del enlace de pago (`crearCheckoutDePago`) no tiene endpoint propio: la invoca la creación del pedido (CU-005) cuando el medio de pago es MercadoPago, y la creación de la reserva (CU-072) para su seña. Rechaza con 409 el pedido que ya está pago, cancelado o entregado, y con 404 el que no existe. |
 
 ---
 
@@ -3723,7 +3734,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Tanto la consulta como el ajuste son accesos directos por clave y se resuelven en menos de 1 segundo. |
 | **Frecuencia** | El chofer consulta su saldo varias veces por semana. El ajuste del administrador es esporádico y sigue el ciclo de liquidación acordado con cada chofer. |
 | **Estabilidad** | Media |
-| **Comentarios** | **Limitación importante:** el saldo **no se actualiza automáticamente al confirmar una entrega**. La única escritura del campo es el ajuste manual del administrador; ni el flujo de confirmación de entrega ni ningún otro punto del backend lo modifican, y no existe cálculo de comisión por pedido. En términos prácticos, hoy es un saldo que el administrador lleva a mano, no una liquidación derivada de las entregas realizadas, a diferencia de lo que sugiere la descripción de alto nivel. Tampoco hay endpoint dedicado de consulta —el chofer lo lee dentro de su perfil— ni historial de movimientos: solo se conoce el saldo acumulado actual, sin trazabilidad de cómo se llegó a ese número, lo que impide auditar una liquidación discutida. Las consultas de perfil de chofer, tanto por identificador de chofer como por identificador de usuario, están restringidas a los roles de chofer y de administrador, y controlan el alcance: un chofer sólo lee su propio perfil y un administrador sólo los choferes de su distribuidora. |
+| **Comentarios** | **Limitación importante:** el saldo **no se actualiza automáticamente al confirmar una entrega**. La única escritura del campo es el ajuste manual del administrador; ni el flujo de confirmación de entrega ni ningún otro punto del backend lo modifican, y no existe cálculo de comisión por pedido. En términos prácticos, es un saldo que el administrador lleva a mano, no una liquidación derivada de las entregas realizadas, a diferencia de lo que sugiere la descripción de alto nivel. Tampoco hay endpoint dedicado de consulta —el chofer lo lee dentro de su perfil— ni historial de movimientos: solo se conoce el saldo acumulado actual, sin trazabilidad de cómo se llegó a ese número, lo que impide auditar una liquidación discutida. Las consultas de perfil de chofer, tanto por identificador de chofer como por identificador de usuario, están restringidas a los roles de chofer y de administrador, y controlan el alcance: un chofer sólo lee su propio perfil y un administrador sólo los choferes de su distribuidora. |
 
 ---
 
@@ -3765,7 +3776,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Es una lectura y una escritura por clave primaria; se resuelve en menos de 1 segundo. |
 | **Frecuencia** | Excepcional. Solo ante un episodio de moderación o una sospecha de seguridad. |
 | **Estabilidad** | Media |
-| **Comentarios** | **Limitación importante:** el bloqueo hoy **no impide iniciar sesión ni operar**. El campo se escribe únicamente en esta operación y se inicializa en falso al crear clientes y choferes, pero ningún otro punto del backend lo lee: ni el servicio de autenticación, ni el guardián de autenticación que resuelve el usuario y su distribuidora en cada petición, ni el guardián de roles consultan ese campo. Un usuario marcado como bloqueado puede autenticarse contra Firebase y seguir usando la aplicación con total normalidad. La descripción de alto nivel —"un usuario bloqueado no puede iniciar sesión ni operar en el sistema hasta ser desbloqueado"— describe la intención de diseño, no el comportamiento implementado. Para que el bloqueo tenga efecto real haría falta agregar la verificación del campo en el guardián de autenticación, que ya lee el usuario completo de la base en cada petición, y opcionalmente deshabilitar además la cuenta en Firebase Authentication, para cortar también la emisión de tokens nuevos. Como observación secundaria, el campo no registra quién ejecutó el bloqueo, cuándo ni por qué motivo, con lo cual la decisión de moderación no queda auditada. |
+| **Comentarios** | El bloqueo tiene efecto real sobre el acceso. La guardia de autenticación (`AuthGuard`), por la que pasan el panel y las dos aplicaciones en cada solicitud, rechaza con 401 «La cuenta está bloqueada. Comuníquese con la distribuidora.» a toda cuenta marcada, y también la rechazan el inicio de sesión (`POST /auth`) y la conexión por WebSocket. El bloqueo no deshabilita la cuenta en Firebase Authentication: el usuario puede seguir obteniendo tokens de Firebase, pero ninguno le sirve para operar con el sistema. El campo no guarda quién ejecutó el bloqueo ni por qué motivo; la operación queda en el registro de auditoría (CU-153), que registra quién la hizo y cuándo. |
 
 ---
 
@@ -3775,7 +3786,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador consulta el listado de vehículos de su distribuidora, con el tipo, la patente y el chofer al que pertenece cada uno. Endpoint: `GET /car` (`src/car/car.controller.ts:44`). Este caso agrupaba antes seis operaciones distintas; a pedido de la cátedra cada una quedó como caso propio: el detalle en CU-113, la edición en CU-111, la baja en CU-112, la búsqueda por patente en CU-114 y los vehículos de un chofer en CU-115. |
+| **Descripción** | El administrador consulta el listado de vehículos de su distribuidora, con el tipo, la patente y el chofer al que pertenece cada uno. Endpoint: `GET /car`. Este caso agrupaba antes seis operaciones distintas; cada una quedó como caso propio: el detalle en CU-113, la edición en CU-111, la baja en CU-112, la búsqueda por patente en CU-114 y los vehículos de un chofer en CU-115. |
 | **Precondición** | El administrador está autenticado y tiene una distribuidora en contexto. |
 | **Estado** | Implementado |
 
@@ -4514,7 +4525,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Rendimiento** | Inmediato. |
 | **Frecuencia** | Media. |
 | **Estabilidad** | Alta. |
-| **Comentarios** | El sistema no impone ningún formato al serial más allá de que sea texto: no valida longitud, patrón ni que no esté vacío, de modo que hoy admite cadenas sin sentido. Si el negocio exige un formato de grabado, hay que incorporarlo a la validación. La unicidad se resuelve de forma optimista contra el índice, lo cual es correcto frente a altas concurrentes. Limitación: el alta del envase y su movimiento inicial son dos escrituras sucesivas sin transacción que las abarque; si la segunda falla, el envase queda creado sin su primer movimiento y el historial arranca incompleto. Convendría envolver ambas en una única transacción. |
+| **Comentarios** | El sistema no impone ningún formato al serial más allá de que sea texto: no valida longitud, patrón ni que no esté vacío, de modo que admite cadenas sin sentido. Si el negocio exige un formato de grabado, hay que incorporarlo a la validación. La unicidad se resuelve de forma optimista contra el índice, lo cual es correcto frente a altas concurrentes. Limitación: el alta del envase y su movimiento inicial son dos escrituras sucesivas sin transacción que las abarque; si la segunda falla, el envase queda creado sin su primer movimiento y el historial arranca incompleto. Convendría envolver ambas en una única transacción. |
 
 ---
 #### Crítico CU-068 — Asignar Envases a un Pedido
@@ -4708,7 +4719,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Rendimiento** | Una lectura y dos escrituras. |
 | **Frecuencia** | Baja por envase: la revisión es periódica y se hace por lote en el taller. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La cátedra pidió que el sistema conozca las fechas de vencimiento de las garrafas. La tabla `cylinder_inspection` y las columnas `manufactured_at`, `last_inspection_at` y `expires_at` de `cylinder` existen desde el 25/09/2026; faltan el servicio, los endpoints (`POST /cylinders/:id/inspections` y `GET /cylinders/:id/inspections`) y la exposición de `expires_at` en la respuesta del envase. **Decisión de diseño (envase rechazado):** el modelo no dice qué pasa con un envase rechazado en la revisión; se fija su vencimiento en la fecha de la revisión para que el control de despacho lo alcance sin una regla aparte. **Alcance:** la descripción del caso dice que un envase vencido tampoco se puede llenar, pero CU-135 bloquea sólo el despacho; bloquear también la transición a lleno queda fuera del alcance y se anota sin ampliarlo. La periodicidad legal de la prueba hidráulica no está fijada en la documentación: la fecha de vencimiento la carga el administrador. |
+| **Comentarios** | El sistema debe conocer las fechas de vencimiento de las garrafas. La tabla `cylinder_inspection` y las columnas `manufactured_at`, `last_inspection_at` y `expires_at` de `cylinder` existen desde el 25/09/2026; faltan el servicio, los endpoints (`POST /cylinders/:id/inspections` y `GET /cylinders/:id/inspections`) y la exposición de `expires_at` en la respuesta del envase. **Decisión de diseño (envase rechazado):** el modelo no dice qué pasa con un envase rechazado en la revisión; se fija su vencimiento en la fecha de la revisión para que el control de despacho lo alcance sin una regla aparte. **Alcance:** la descripción del caso dice que un envase vencido tampoco se puede llenar, pero CU-135 bloquea sólo el despacho; bloquear también la transición a lleno queda fuera del alcance y se anota sin ampliarlo. La periodicidad legal de la prueba hidráulica no está fijada en la documentación: la fecha de vencimiento la carga el administrador. |
 
 ---
 
@@ -4877,7 +4888,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | **Rendimiento** | Medio: la operación abre una transacción con bloqueos pesimistas sobre las garrafas y, si hay agenda, sobre la franja horaria. |
 | **Frecuencia** | Media. |
 | **Estabilidad** | Alta. |
-| **Comentarios** | Lo que decide que el pedido nazca reservado es el indicador de reserva del cuerpo, no la presencia de una fecha agendada: un pedido con fecha futura y sin ese indicador nace pendiente y se despacha en el acto, con lo cual la fecha agendada queda registrada pero sin efecto sobre el circuito. La relación es la inversa: la reserva exige fecha, pero la fecha no implica reserva. La seña arranca siempre marcada como no cobrada, nunca sin valor. El mapeo de los errores de dominio se pierde en el camino: el filtro global de excepciones traduciría el error de stock insuficiente a 400 y el de garrafa inexistente a 404, pero el manejador del alta los convierte en 500 antes de que lleguen a él. Corresponde corregirlo dejando pasar los errores de dominio hacia el filtro, para que la falta de stock vuelva a ser un 400 con mensaje de negocio. Limitación: ningún test cubre hoy el camino de stock insuficiente, que es justamente el que devuelve mal el código. Limitación: el alta de pedidos no declara restricción de roles, de modo que un chofer autenticado también puede crear la reserva; el único control es el que impide a un cliente pedir a nombre de otro. Conviene declarar los roles admitidos en el endpoint. |
+| **Comentarios** | Lo que decide que el pedido nazca reservado es el indicador de reserva del cuerpo, no la presencia de una fecha agendada: un pedido con fecha futura y sin ese indicador nace pendiente y se despacha en el acto, con lo cual la fecha agendada queda registrada pero sin efecto sobre el circuito. La relación es la inversa: la reserva exige fecha, pero la fecha no implica reserva. La seña arranca siempre marcada como no cobrada, nunca sin valor. El mapeo de los errores de dominio se pierde en el camino: el filtro global de excepciones traduciría el error de stock insuficiente a 400 y el de garrafa inexistente a 404, pero el manejador del alta los convierte en 500 antes de que lleguen a él. Corresponde corregirlo dejando pasar los errores de dominio hacia el filtro, para que la falta de stock vuelva a ser un 400 con mensaje de negocio. Limitación: ningún test cubre el camino de stock insuficiente, que es justamente el que devuelve mal el código. Limitación: el alta de pedidos no declara restricción de roles, de modo que un chofer autenticado también puede crear la reserva; el único control es el que impide a un cliente pedir a nombre de otro. Conviene declarar los roles admitidos en el endpoint. |
 
 ---
 #### Importante CU-073 — Listar Reservas y Estado de la Seña
@@ -5076,8 +5087,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El chofer (ACT-02) recupera el código secreto de entrega del pedido que está llevando, para renderizarlo como QR en su app y mostrárselo al cliente al llegar al domicilio. El código se genera cuando el pedido es aceptado y es la mitad emisora del mecanismo anti-fraude que se completa en CU-079. Endpoint: `GET /orders/:id/delivery-code` (`src/order/order.controller.ts:282`). |
-| **Precondición** | El chofer está autenticado con rol DELIVERY (o el solicitante es ADMIN / SUPER_ADMIN). El pedido existe y ya fue aceptado, por lo que tiene `deliveryCode` cargado (`src/order/application/update-order-status.use-case.ts:125`). El chofer solicitante es el asignado al pedido. |
+| **Descripción** | El chofer (ACT-02) recupera el código secreto de entrega del pedido que está llevando, para renderizarlo como QR en su app y mostrárselo al cliente al llegar al domicilio. El código se genera cuando el pedido es aceptado y es la mitad emisora del mecanismo anti-fraude que se completa en CU-079. Endpoint: `GET /orders/:id/delivery-code`. |
+| **Precondición** | El chofer está autenticado con rol DELIVERY (o el solicitante es ADMIN / SUPER_ADMIN). El pedido existe y ya fue aceptado, por lo que tiene `deliveryCode` cargado. El chofer solicitante es el asignado al pedido. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5087,9 +5098,9 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | El chofer abre en su app el detalle del pedido que está por entregar y pide el QR de entrega. |
 | 2 | La app envía `GET /orders/:id/delivery-code` con el token de sesión. |
 | 3 | El sistema valida el formato UUID del identificador del pedido y recupera el pedido. |
-| 4 | Si el solicitante tiene rol DELIVERY, el sistema resuelve su perfil de chofer por `user_id` y verifica que `order.delivery_id` coincida con ese perfil (`src/order/order.service.ts:151-160`). |
+| 4 | Si el solicitante tiene rol DELIVERY, el sistema resuelve su perfil de chofer por `user_id` y verifica que `order.delivery_id` coincida con ese perfil. |
 | 5 | El sistema verifica que el pedido tenga `deliveryCode` cargado. |
-| 6 | El sistema devuelve `{ orderId, deliveryCode }` (`src/order/order.service.ts:169`). |
+| 6 | El sistema devuelve `{ orderId, deliveryCode }`. |
 | 7 | La app del chofer renderiza el código como QR en pantalla. |
 
 **Postcondición:** El chofer dispone del código secreto de diez caracteres hexadecimales del pedido y lo muestra como QR. El estado del pedido no cambia: la operación es de solo lectura.
@@ -5121,7 +5132,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-03, OBJ-04, OBJ-07 |
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
-| **Descripción** | El **cliente** (ACT-01) escanea con su app el QR que le muestra el chofer y envía el código leído; si coincide con el guardado en el pedido, el sistema da la entrega por realizada. Es un mecanismo anti-fraude que **invierte el actor de CU-020**: allí el chofer se autodeclara entregado, acá la entrega la confirma quien recibe. Como el cliente solo puede conocer el código habiendo visto el QR en la mano del chofer, la confirmación prueba que el chofer estuvo presente (`src/order/application/confirm-delivery.use-case.ts:14-26`). Endpoint: `POST /orders/:id/confirm-delivery` (`src/order/order.controller.ts:302`). |
+| **Descripción** | El **cliente** (ACT-01) escanea con su app el QR que le muestra el chofer y envía el código leído; si coincide con el guardado en el pedido, el sistema da la entrega por realizada. Es un mecanismo anti-fraude que **invierte el actor de CU-020**: allí el chofer se autodeclara entregado, acá la entrega la confirma quien recibe. Como el cliente solo puede conocer el código habiendo visto el QR en la mano del chofer, la confirmación prueba que el chofer estuvo presente. Endpoint: `POST /orders/:id/confirm-delivery`. |
 | **Precondición** | El cliente está autenticado y es el titular del pedido. El pedido está en estado ON_THE_WAY y tiene `deliveryCode` generado desde su aceptación. El chofer está en el domicilio mostrando el QR. |
 | **Estado** | Implementado |
 
@@ -5132,11 +5143,11 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | El chofer llega al domicilio y muestra en su app el QR obtenido en CU-078. |
 | 2 | El cliente lo escanea con su app, que extrae el código de diez caracteres. |
 | 3 | La app envía `POST /orders/:id/confirm-delivery` con `{ code }` y la cabecera `Idempotency-Key`. |
-| 4 | El sistema recupera el pedido completo y valida la pertenencia: si el rol es CUSTOMER, `order.customer_id` tiene que ser el usuario autenticado (`confirm-delivery.use-case.ts:45-51`). |
+| 4 | El sistema recupera el pedido completo y valida la pertenencia: si el rol es CUSTOMER, `order.customer_id` tiene que ser el usuario autenticado. |
 | 5 | El sistema verifica que el pedido esté en estado ON_THE_WAY. |
-| 6 | El sistema compara el código recibido contra `order.deliveryCode` con una comparación de tiempo constante que evita ataques de temporización (`src/order/domain/delivery-code.util.ts:27-40`). |
+| 6 | El sistema compara el código recibido contra `order.deliveryCode` con una comparación de tiempo constante que evita ataques de temporización. |
 | 7 | Con el código válido, el sistema delega en el mismo caso de uso de cambio de estado que usa el chofer, y el pedido pasa a DELIVERED con `deliveredAt = now()`. |
-| 8 | Si el método de pago es efectivo, el sistema marca `paymentStatus = PAID` (`update-order-status.use-case.ts:156-158`). |
+| 8 | Si el método de pago es efectivo, el sistema marca `paymentStatus = PAID`. |
 | 9 | El sistema corta el seguimiento GPS en vivo del chofer que entregó (`stopTracking`). |
 | 10 | El sistema avanza a WITH_CUSTOMER los envases despachados en ese pedido, en modo best-effort: si falla, la entrega igual se completa. |
 | 11 | El sistema emite el evento de tiempo real del nuevo estado al cliente, avisa a los administradores y dispara la notificación push, todo best-effort. |
@@ -5147,11 +5158,11 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el cuerpo no trae `code` o viene vacío, la validación del DTO retorna error 400 (`src/order/dto/confirm-delivery.dto.ts`). |
+| 3 | Si el cuerpo no trae `code` o viene vacío, la validación del DTO retorna error 400. |
 | 4 | Si el pedido no existe, el sistema retorna error 404 "Order with ID: … not found". |
 | 4 | Si el pedido pertenece a una distribuidora distinta de la que está en contexto —la del administrador que confirma una entrega asistida, o la que eligió el cliente—, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el pedido pertenece a otro cliente, el sistema retorna error 403 "No autorizado a confirmar la entrega de otro cliente". |
-| 5 | Si el pedido ya está en DELIVERED, el sistema **no** lo trata como error: devuelve el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red (`confirm-delivery.use-case.ts:53-57`). |
+| 5 | Si el pedido ya está en DELIVERED, el sistema **no** lo trata como error: devuelve el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red. |
 | 5 | Si el pedido está en cualquier otro estado que no sea ON_THE_WAY, el sistema retorna error 400 "El pedido no está en camino, no se puede confirmar la entrega". |
 | 6 | Si el código no coincide, o el pedido no tiene código cargado, o los largos difieren, el sistema retorna error 400 "Código de entrega inválido". |
 
@@ -5173,7 +5184,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-01 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El chofer (ACT-02) consulta la bolsa de pedidos pendientes que todavía no tienen repartidor asignado dentro de su distribuidora, para tomar trabajo por su cuenta cuando el despacho automático no lo alcanzó. La misma consulta alimenta el arranque del cron de despacho, que recorre este pool para ofrecer los pedidos sin oferta activa (`src/order/dispatch.service.ts:49-53`). Endpoint: `GET /orders/available` (`src/order/order.controller.ts:188`). |
+| **Descripción** | El chofer (ACT-02) consulta la bolsa de pedidos pendientes que todavía no tienen repartidor asignado dentro de su distribuidora, para tomar trabajo por su cuenta cuando el despacho automático no lo alcanzó. La misma consulta alimenta el arranque del cron de despacho, que recorre este pool para ofrecer los pedidos sin oferta activa. Endpoint: `GET /orders/available`. |
 | **Precondición** | El solicitante está autenticado con rol DELIVERY, ADMIN o SUPER_ADMIN. |
 | **Estado** | Implementado |
 
@@ -5184,7 +5195,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | El chofer abre la pantalla de pedidos disponibles en su app. |
 | 2 | La app envía `GET /orders/available` con los parámetros de paginación `limit` y `offset`. |
 | 3 | El sistema resuelve la distribuidora efectiva del solicitante a partir de su perfil autenticado. |
-| 4 | El sistema busca los pedidos con estado PENDING y `delivery_id` nulo, acotados a esa distribuidora (`src/order/infrastructure/order.typeorm.repository.ts:65-87`). |
+| 4 | El sistema busca los pedidos con estado PENDING y `delivery_id` nulo, acotados a esa distribuidora. |
 | 5 | El sistema ordena el resultado por fecha de creación ascendente, de modo que el pedido más antiguo aparece primero. |
 | 6 | El sistema devuelve los pedidos con cliente, ítems, producto, dirección y franja horaria, junto con el total, el límite y el desplazamiento. |
 
@@ -5213,7 +5224,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
-| **Descripción** | El chofer (ACT-02) consulta el listado de pedidos que tiene asignados, y el administrador (ACT-03) usa el mismo endpoint para auditar la carga de trabajo de un repartidor. Es la vista operativa de la jornada del chofer. Endpoint: `GET /orders/delivery/:deliveryId` (`src/order/order.controller.ts:167`). |
+| **Descripción** | El chofer (ACT-02) consulta el listado de pedidos que tiene asignados, y el administrador (ACT-03) usa el mismo endpoint para auditar la carga de trabajo de un repartidor. Es la vista operativa de la jornada del chofer. Endpoint: `GET /orders/delivery/:deliveryId`. |
 | **Precondición** | El solicitante está autenticado con rol DELIVERY, ADMIN o SUPER_ADMIN. El identificador de repartidor existe. |
 | **Estado** | Implementado |
 
@@ -5224,7 +5235,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | El chofer abre la pantalla de "mis pedidos", o el administrador abre la ficha del repartidor en el panel. |
 | 2 | La app o el panel envían `GET /orders/delivery/:deliveryId` con paginación. |
 | 3 | El sistema valida el formato UUID del identificador del repartidor. Si el solicitante es un chofer, verifica además que ese identificador sea el de su propio perfil, ya sea el identificador de repartidor o el de usuario. |
-| 4 | El sistema busca los pedidos con ese `delivery_id`, acotados a la distribuidora del solicitante (`order.typeorm.repository.ts:113-134`). |
+| 4 | El sistema busca los pedidos con ese `delivery_id`, acotados a la distribuidora del solicitante. |
 | 5 | El sistema ordena por fecha de creación descendente y carga cliente, ítems, producto, dirección y franja horaria. |
 | 6 | El sistema devuelve la página de pedidos junto con el total. |
 
@@ -5312,7 +5323,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) lista los usuarios del sistema con paginación y búsqueda por texto libre, y consulta un usuario puntual por correo o por teléfono. Es la base de las pantallas de gestión de cuentas del panel. Endpoints: `GET /users` (`src/users/users.controller.ts:120`), `GET /users/email/:email` (`:55`) y `GET /users/phone/:phoneNumber` (`:139`). |
+| **Descripción** | El administrador (ACT-03) lista los usuarios del sistema con paginación y búsqueda por texto libre, y consulta un usuario puntual por correo o por teléfono. Es la base de las pantallas de gestión de cuentas del panel. Endpoints: `GET /users`, `GET /users/email/:email` (`:55`) y `GET /users/phone/:phoneNumber` (`:139`). |
 | **Precondición** | Para el listado, el solicitante está autenticado con rol ADMIN o SUPER_ADMIN. La búsqueda por correo es pública y la búsqueda por teléfono exige sesión. |
 | **Estado** | Implementado |
 
@@ -5323,7 +5334,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 1 | El administrador abre la pantalla de usuarios del panel y opcionalmente escribe un texto de búsqueda. |
 | 2 | El panel envía `GET /users` con `limit`, `offset` y el parámetro `term`. |
 | 3 | El sistema arma la consulta con las relaciones de rol, perfil de cliente y perfil de chofer. |
-| 4 | Si hay término de búsqueda, el sistema filtra por coincidencia parcial e insensible a mayúsculas sobre correo, nombre completo y teléfono (`src/users/users.service.ts:100-108`). |
+| 4 | Si hay término de búsqueda, el sistema filtra por coincidencia parcial e insensible a mayúsculas sobre correo, nombre completo y teléfono. |
 | 5 | El sistema devuelve los usuarios de la página junto con el total bajo la clave `maxUsers`. |
 | 6 | Para una búsqueda puntual, el panel envía `GET /users/email/:email` o `GET /users/phone/:phoneNumber` y el sistema devuelve el usuario con rol, perfiles, vehículos y direcciones. |
 
@@ -5335,7 +5346,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza el listado con error 403. |
 | 6 | Si la búsqueda por correo no encuentra nada, el sistema retorna error 404 "User with email: … not found". |
-| 6 | Si la búsqueda por teléfono no encuentra nada, el sistema devuelve `null` con estado 200: la asimetría con la búsqueda por correo es real y está en el código (`users.service.ts:139-146`). |
+| 6 | Si la búsqueda por teléfono no encuentra nada, el sistema devuelve `null` con estado 200: la asimetría con la búsqueda por correo es real y está en el código. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -5437,7 +5448,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-01 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | Una aplicación cliente comprueba si su token de sesión sigue siendo válido antes de dejar entrar al usuario a la pantalla principal. La validación real la hace el guard de autenticación al resolver la petición: si el token no sirve, la llamada no llega siquiera al controlador. Endpoint: `POST /auth` (`src/auth/auth.controller.ts:22`). |
+| **Descripción** | Una aplicación cliente comprueba si su token de sesión sigue siendo válido antes de dejar entrar al usuario a la pantalla principal. La validación real la hace el guard de autenticación al resolver la petición: si el token no sirve, la llamada no llega siquiera al controlador. Endpoint: `POST /auth`. |
 | **Precondición** | La aplicación tiene guardado un token de sesión de una autenticación previa. |
 | **Estado** | Implementado |
 
@@ -5448,7 +5459,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 1 | La aplicación arranca y recupera el token guardado en el dispositivo. |
 | 2 | La aplicación envía `POST /auth` con ese token. |
 | 3 | El guard de autenticación verifica el token y resuelve el usuario y su distribuidora. |
-| 4 | El controlador responde el mensaje "token valid" (`src/auth/auth.service.ts:39-41`). |
+| 4 | El controlador responde el mensaje "token valid". |
 | 5 | La aplicación mantiene la sesión y navega a la pantalla principal. |
 
 **Postcondición:** La aplicación sabe si puede seguir usando el token o si tiene que pedir credenciales otra vez. No hay cambios de estado.
@@ -5623,7 +5634,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El Administrador General (ACT-05) administra el catálogo de roles que gobierna toda la autorización del sistema: los crea, los lista, los consulta, los modifica y los elimina. Todo el controlador es exclusivo de SUPER_ADMIN (`src/role/role.controller.ts:18`). Endpoints: `POST /role` (`:23`), `GET /role` (`:28`), `GET /role/:id` (`:33`), `PATCH /role/:id` (`:39`) y `DELETE /role/:id` (`:47`). |
+| **Descripción** | El Administrador General (ACT-05) administra el catálogo de roles que gobierna toda la autorización del sistema: los crea, los lista, los consulta, los modifica y los elimina. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoints: `POST /role` (`:23`), `GET /role` (`:28`), `GET /role/:id` (`:33`), `PATCH /role/:id` (`:39`) y `DELETE /role/:id` (`:47`). |
 | **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
 | **Estado** | Implementado |
 
@@ -5666,7 +5677,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El Administrador General (ACT-05) inicializa el catálogo de roles del sistema con los cuatro roles que la autorización necesita: cliente, chofer, administrador y administrador general. La operación es repetible sin efectos secundarios: los roles que ya existen no se duplican. Endpoint: `POST /role/seed` (`src/role/role.controller.ts:52`). |
+| **Descripción** | El Administrador General (ACT-05) inicializa el catálogo de roles del sistema con los cuatro roles que la autorización necesita: cliente, chofer, administrador y administrador general. La operación es repetible sin efectos secundarios: los roles que ya existen no se duplican. Endpoint: `POST /role/seed`. |
 | **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
 | **Estado** | Implementado |
 
@@ -5676,7 +5687,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El Administrador General ejecuta la siembra de roles al poner en marcha la instalación. |
 | 2 | El panel envía `POST /role/seed`. |
-| 3 | El sistema recorre la lista fija `customer`, `delivery`, `admin`, `super_admin` (`src/role/role.service.ts:63`). |
+| 3 | El sistema recorre la lista fija `customer`, `delivery`, `admin`, `super_admin`. |
 | 4 | Para cada tipo, el sistema busca si ya existe un rol con ese nombre. |
 | 5 | Si no existe, lo crea; si existe, lo saltea. |
 | 6 | El sistema devuelve el mensaje "Roles seeded successfully". |
@@ -5705,7 +5716,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) consulta la cartera de clientes de su distribuidora. El recorte multi-empresa no se hace por un campo del cliente sino por su actividad: un cliente aparece si tiene al menos un pedido hecho a esa distribuidora (`src/customer/customer.service.ts:143-154`). Es el equivalente para clientes del CU-035 de choferes, que la documentación sí tenía. Endpoint: `GET /customers` (`src/customer/customer.controller.ts:37`). |
+| **Descripción** | El administrador (ACT-03) consulta la cartera de clientes de su distribuidora. El recorte multi-empresa no se hace por un campo del cliente sino por su actividad: un cliente aparece si tiene al menos un pedido hecho a esa distribuidora. Es el equivalente para clientes del CU-035 de choferes, que la documentación sí tenía. Endpoint: `GET /customers`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. |
 | **Punto de extensión** | *Filtrar por Término*: el listado admite el parámetro `term` (`GET /customers?term=`), y filtra por nombre o correo del cliente. |
 | **Estado** | Implementado |
@@ -5858,7 +5869,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una lectura con una relación. |
 | **Frecuencia** | Alta: es la puerta de entrada a validar, editar y dar de baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Este caso estaba implícito dentro de la gestión del cliente. La cátedra pidió que cada operación del ABM figure por separado, y ésta es la lectura puntual, la contracara de CU-109 para el chofer. |
+| **Comentarios** | Este caso estaba implícito dentro de la gestión del cliente. Cada operación del ABM figura por separado, y ésta es la lectura puntual, la contracara de CU-109 para el chofer. |
 
 ---
 
@@ -5897,7 +5908,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una lectura por índice. |
 | **Frecuencia** | Alta: es el salto habitual desde un pedido o un reclamo a la ficha del cliente. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es la búsqueda del ABM de clientes: la que la cátedra pidió que apareciera como caso propio y que las demás operaciones incluyan con `«include»`. |
+| **Comentarios** | Es la búsqueda del ABM de clientes: la que figura como caso propio y que las demás operaciones incluyen con `«include»`. |
 
 ---
 
@@ -5950,7 +5961,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-02 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador (ACT-03) cambia desde el panel la marca de validación del perfil de un chofer. Es el único campo que la operación acepta: los datos de la persona —nombre, correo, contraseña— se cambian por `PATCH /users/:id`, y la ubicación, el saldo, la disponibilidad y el estado de actividad tienen cada uno su propia operación (este último, `cambiarEstadoDelChofer`, CU-033). Endpoint: `PATCH /delivery/:id` (`src/delivery/delivery.controller.ts:133`). |
+| **Descripción** | El administrador (ACT-03) cambia desde el panel la marca de validación del perfil de un chofer. Es el único campo que la operación acepta: los datos de la persona —nombre, correo, contraseña— se cambian por `PATCH /users/:id`, y la ubicación, el saldo, la disponibilidad y el estado de actividad tienen cada uno su propia operación (este último, `cambiarEstadoDelChofer`, CU-033). Endpoint: `PATCH /delivery/:id`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. El chofer existe y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
@@ -5961,7 +5972,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador abre la ficha del chofer y cambia su validación: **incluye CU-110 Buscar Chofer por Usuario**, la búsqueda de la que sale el perfil. |
 | 2 | El panel envía `PATCH /delivery/:id` con `validated`. |
 | 3 | El sistema valida el formato UUID del identificador y el cuerpo: sólo admite el campo `validated`, que tiene que ser verdadero o falso. |
-| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después precarga la entidad del chofer con los cambios recibidos (`src/delivery/delivery.service.ts:240-267`). |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después precarga la entidad del chofer con los cambios recibidos. |
 | 5 | El sistema guarda la entidad. |
 | 6 | El sistema devuelve el chofer recargado con sus relaciones. |
 
@@ -6036,7 +6047,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador abre la ficha de un chofer y ve sus datos personales, su vehículo, su marca de validación, su estado de actividad y su calificación. Es la lectura puntual que el listado (CU-035) no cubre, y de la que dependen la edición y la baja. Endpoint: `GET /delivery/:id` (`src/delivery/delivery.controller.ts:59`). |
+| **Descripción** | El administrador abre la ficha de un chofer y ve sus datos personales, su vehículo, su marca de validación, su estado de actividad y su calificación. Es la lectura puntual que el listado (CU-035) no cubre, y de la que dependen la edición y la baja. Endpoint: `GET /delivery/:id`. |
 | **Precondición** | El solicitante está autenticado. El chofer existe. |
 | **Estado** | Implementado |
 
@@ -6064,7 +6075,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una lectura con dos relaciones. |
 | **Frecuencia** | Alta: es la puerta de entrada a editar y a dar de baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Este caso estaba implícito dentro de la gestión del chofer. La cátedra pidió que cada operación del ABM figure por separado, y ésta es la lectura puntual. |
+| **Comentarios** | Este caso estaba implícito dentro de la gestión del chofer. Cada operación del ABM figura por separado, y ésta es la lectura puntual. |
 
 ---
 
@@ -6074,7 +6085,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador ubica el perfil de chofer a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel —un pedido, un reclamo, una calificación—. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /delivery/user/:userId` (`src/delivery/delivery.controller.ts:68`). |
+| **Descripción** | El administrador ubica el perfil de chofer a partir de la cuenta de usuario, que es el dato con el que llega desde el resto del panel —un pedido, un reclamo, una calificación—. Es la búsqueda que incluyen las demás operaciones del ABM. Endpoint: `GET /delivery/user/:userId`. |
 | **Precondición** | El solicitante está autenticado. La cuenta de usuario existe. |
 | **Estado** | Implementado |
 
@@ -6112,7 +6123,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador corrige los datos del vehículo de un chofer: tipo, patente, marca, modelo, año, color o capacidad de carga. Sale de CU-051, que agrupaba editar, eliminar y consultar en un solo caso. Endpoint: `PATCH /car/:id` (`src/car/car.controller.ts:85`). |
+| **Descripción** | El administrador corrige los datos del vehículo de un chofer: tipo, patente, marca, modelo, año, color o capacidad de carga. Sale de CU-051, que agrupaba editar, eliminar y consultar en un solo caso. Endpoint: `PATCH /car/:id`. |
 | **Precondición** | El solicitante está autenticado y opera sobre una distribuidora. El vehículo existe. Para cambiar su patente o su tipo, ningún chofer lo tiene en uso. |
 | **Estado** | Implementado |
 
@@ -6122,9 +6133,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El administrador abre la ficha del vehículo y edita los campos: **incluye CU-113 Consultar Detalle del Vehículo**, la ficha desde la que actúa. |
 | 2 | El panel envía `PATCH /car/:id` con los campos a cambiar. |
-| 3 | El sistema comprueba que el vehículo exista y pertenezca a la distribuidora (`src/car/car.service.ts:100`). |
+| 3 | El sistema comprueba que el vehículo exista y pertenezca a la distribuidora. |
 | 4 | El sistema precarga la entidad con los cambios recibidos. |
-| 5 | Si cambió la patente, el sistema comprueba que no esté usada por otro vehículo (`src/car/car.service.ts:111-113`). |
+| 5 | Si cambió la patente, el sistema comprueba que no esté usada por otro vehículo. |
 | 6 | Si cambió la patente o el tipo, el sistema comprueba que ningún chofer tenga el vehículo en uso. |
 | 7 | El sistema guarda el vehículo y lo devuelve. |
 
@@ -6194,7 +6205,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador abre la ficha de un vehículo y ve su tipo, patente, marca, modelo, año, color, capacidad de carga y el chofer al que pertenece. Sale de CU-051. Endpoint: `GET /car/:id` (`src/car/car.controller.ts:51`). |
+| **Descripción** | El administrador abre la ficha de un vehículo y ve su tipo, patente, marca, modelo, año, color, capacidad de carga y el chofer al que pertenece. Sale de CU-051. Endpoint: `GET /car/:id`. |
 | **Precondición** | El solicitante está autenticado. El vehículo existe. |
 | **Estado** | Implementado |
 
@@ -6231,7 +6242,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador ubica un vehículo por su patente, que es el dato con el que se lo nombra en la operación diaria. Es una vía alternativa de búsqueda, independiente del listado (CU-051) y del detalle por identificador (CU-113): la edición (CU-111) y la baja (CU-112) incluyen CU-113, no este caso. Endpoint: `GET /car/patent/:patent` (`src/car/car.controller.ts:74`). |
+| **Descripción** | El administrador ubica un vehículo por su patente, que es el dato con el que se lo nombra en la operación diaria. Es una vía alternativa de búsqueda, independiente del listado (CU-051) y del detalle por identificador (CU-113): la edición (CU-111) y la baja (CU-112) incluyen CU-113, no este caso. Endpoint: `GET /car/patent/:patent`. |
 | **Precondición** | El solicitante está autenticado. |
 | **Estado** | Implementado |
 
@@ -6241,7 +6252,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El administrador escribe la patente, como forma alternativa de ubicar el vehículo sin pasar por el listado. |
 | 2 | El panel envía `GET /car/patent/:patent`. |
-| 3 | El sistema busca el vehículo por patente dentro de la distribuidora (`src/car/car.service.ts:136-140`). |
+| 3 | El sistema busca el vehículo por patente dentro de la distribuidora. |
 | 4 | El sistema devuelve el vehículo encontrado. |
 
 **Postcondición:** El administrador tiene el vehículo que corresponde a esa patente.
@@ -6267,7 +6278,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | Se listan los vehículos registrados a nombre de un chofer. El administrador lo usa desde la ficha del chofer; el propio chofer, para ver los suyos. Sale de CU-051. Endpoint: `GET /car/user/:userId` (`src/car/car.controller.ts:63`). |
+| **Descripción** | Se listan los vehículos registrados a nombre de un chofer. El administrador lo usa desde la ficha del chofer; el propio chofer, para ver los suyos. Sale de CU-051. Endpoint: `GET /car/user/:userId`. |
 | **Precondición** | El solicitante está autenticado. La cuenta de usuario existe. |
 | **Estado** | Implementado |
 
@@ -6304,7 +6315,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador registra el seguro de un vehículo de la flota como una tarea de mantenimiento contra el plan "Seguro del vehículo" (bloqueante, con treinta días de anticipación): carga la aseguradora, el número de póliza y la fecha de vencimiento. Un vehículo con el seguro vencido queda inhabilitado, tal como pedía la especificación original, pero por el mecanismo genérico de planes y tareas (CU-105) y no por campos propios en la ficha del vehículo. Endpoint: `POST /fleet/tasks` con el `planId` del plan "Seguro del vehículo" y `carId` (`src/fleet/fleet-task.controller.ts:69`). |
+| **Descripción** | El administrador registra el seguro de un vehículo de la flota como una tarea de mantenimiento contra el plan "Seguro del vehículo" (bloqueante, con treinta días de anticipación): carga la aseguradora, el número de póliza y la fecha de vencimiento. Un vehículo con el seguro vencido queda inhabilitado, tal como pedía la especificación original, pero por el mecanismo genérico de planes y tareas (CU-105) y no por campos propios en la ficha del vehículo. Endpoint: `POST /fleet/tasks` con el `planId` del plan "Seguro del vehículo" y `carId`. |
 | **Precondición** | El administrador está autenticado. El vehículo existe y es de su distribuidora. El plan "Seguro del vehículo" existe y está activo: toda distribuidora lo tiene sembrado de alta. |
 | **Punto de extensión** | Ninguno propio; comparte el mecanismo con CU-137 y CU-138, que son la misma operación contra otro plan. |
 | **Estado** | Implementado |
@@ -6424,7 +6435,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador ve en una sola pantalla qué tareas de mantenimiento —seguros, VTV, licencias y services— vencen dentro de una ventana de días, agrupadas por vehículo y por chofer, con la marca de si cada uno queda inhabilitado. Es la vista de control de la flota, la contracara de CU-134 para los envases. Endpoint: `GET /fleet/expirations` (`src/fleet/fleet-expirations.controller.ts`). |
+| **Descripción** | El administrador ve en una sola pantalla qué tareas de mantenimiento —seguros, VTV, licencias y services— vencen dentro de una ventana de días, agrupadas por vehículo y por chofer, con la marca de si cada uno queda inhabilitado. Es la vista de control de la flota, la contracara de CU-134 para los envases. Endpoint: `GET /fleet/expirations`. |
 | **Precondición** | El administrador está autenticado. |
 | **Estado** | Implementado |
 
@@ -6502,7 +6513,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador cierra una tarea de mantenimiento agendada (CU-136 a CU-140): anota cuándo se hizo, el kilometraje, el costo y el proveedor. Es lo que construye el historial del vehículo o del chofer. Endpoint: `PATCH /fleet/tasks/:id/close` (`src/fleet/fleet-task.controller.ts:119`). |
+| **Descripción** | El administrador cierra una tarea de mantenimiento agendada (CU-136 a CU-140): anota cuándo se hizo, el kilometraje, el costo y el proveedor. Es lo que construye el historial del vehículo o del chofer. Endpoint: `PATCH /fleet/tasks/:id/close`. |
 | **Precondición** | El administrador está autenticado. La tarea existe, es de su distribuidora y está abierta (no está hecha ni cancelada). |
 | **Estado** | Implementado |
 
@@ -6541,7 +6552,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El sistema revisa todos los días a las 8 de la mañana qué tareas de mantenimiento abiertas están por vencer o ya vencieron, con la anticipación propia de cada plan (`leadTimeDays`), y avisa por correo a los administradores de cada distribuidora. Es lo que convierte el tablero de CU-139 en algo que no depende de que alguien se acuerde de mirarlo. Implementado en `FleetAlertsCron` (`src/fleet/fleet-alerts.cron.ts`). |
+| **Descripción** | El sistema revisa todos los días a las 8 de la mañana qué tareas de mantenimiento abiertas están por vencer o ya vencieron, con la anticipación propia de cada plan (`leadTimeDays`), y avisa por correo a los administradores de cada distribuidora. Es lo que convierte el tablero de CU-139 en algo que no depende de que alguien se acuerde de mirarlo. Implementado en `FleetAlertsCron`. |
 | **Precondición** | Ninguna: el proceso corre por iniciativa del sistema. |
 | **Estado** | Implementado |
 
@@ -6580,7 +6591,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador sube un archivo —la foto o el PDF de una póliza, una VTV, una licencia o un comprobante— como adjunto de una tarea de mantenimiento de la flota (CU-136 a CU-141). El sistema acepta PDF, JPG, PNG o WEBP, de hasta diez megabytes. Endpoint: `POST /fleet/tasks/:id/attachments`, con el archivo como `multipart/form-data` (`src/fleet/fleet-task.controller.ts:153`). |
+| **Descripción** | El administrador sube un archivo —la foto o el PDF de una póliza, una VTV, una licencia o un comprobante— como adjunto de una tarea de mantenimiento de la flota (CU-136 a CU-141). El sistema acepta PDF, JPG, PNG o WEBP, de hasta diez megabytes. Endpoint: `POST /fleet/tasks/:id/attachments`, con el archivo como `multipart/form-data`. |
 | **Precondición** | El administrador está autenticado. La tarea existe y es de su distribuidora. |
 | **Estado** | Implementado |
 
@@ -6623,7 +6634,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador lista los adjuntos de una tarea de mantenimiento, ordenados del más reciente al más antiguo. Endpoint: `GET /fleet/tasks/:id/attachments` (`src/fleet/fleet-task.controller.ts:194`). |
+| **Descripción** | El administrador lista los adjuntos de una tarea de mantenimiento, ordenados del más reciente al más antiguo. Endpoint: `GET /fleet/tasks/:id/attachments`. |
 | **Precondición** | El administrador está autenticado. La tarea existe y es de su distribuidora. |
 | **Estado** | Implementado |
 
@@ -6660,7 +6671,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador descarga el contenido de un adjunto de una tarea de mantenimiento. Endpoint: `GET /fleet/tasks/:id/attachments/:attachmentId/download` (`src/fleet/fleet-task.controller.ts:207`). |
+| **Descripción** | El administrador descarga el contenido de un adjunto de una tarea de mantenimiento. Endpoint: `GET /fleet/tasks/:id/attachments/:attachmentId/download`. |
 | **Precondición** | El administrador está autenticado. La tarea y el adjunto existen y son de su distribuidora. |
 | **Estado** | Implementado |
 
@@ -6697,7 +6708,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador borra un adjunto de una tarea de mantenimiento, por ejemplo si lo subió equivocado. Endpoint: `DELETE /fleet/tasks/:id/attachments/:attachmentId` (`src/fleet/fleet-task.controller.ts:243`). |
+| **Descripción** | El administrador borra un adjunto de una tarea de mantenimiento, por ejemplo si lo subió equivocado. Endpoint: `DELETE /fleet/tasks/:id/attachments/:attachmentId`. |
 | **Precondición** | El administrador está autenticado. La tarea y el adjunto existen y son de su distribuidora. |
 | **Estado** | Implementado |
 
@@ -6735,9 +6746,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-155. Guarda el contenido de un archivo en el almacenamiento activo de la distribuidora, detrás de un puerto único (`StoragePort`) con dos implementaciones intercambiables: disco local (por omisión) o Amazon S3 (por configuración). Quien lo incluye no sabe cuál de las dos está activa. |
+| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-155 y, planificado en I-5, por CU-174. Guarda el contenido de un archivo en el almacenamiento activo de la distribuidora, detrás de un puerto único (`StoragePort`) con dos implementaciones intercambiables: disco local (por omisión) o Amazon S3 (por configuración). Quien lo incluye no sabe cuál de las dos está activa. |
 | **Precondición** | El archivo ya pasó los controles de tipo y tamaño de quien lo incluye. |
-| **Estado** | Implementado, con el adaptador de disco local activo por configuración. El adaptador de S3 está implementado y probado con el cliente simulado, pero **inactivo**: no hay bucket ni credenciales configurados en este entorno. |
+| **Estado** | Implementado, con el adaptador de disco local activo por configuración. El adaptador de S3 está implementado y probado con el cliente simulado, y no se ejecutó contra un depósito real; el adaptador activo lo decide la configuración (`STORAGE_DRIVER`, disco local por omisión). |
 
 **Secuencia Normal**
 
@@ -6761,9 +6772,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una escritura, de duración variable según el tamaño del archivo y, en S3, la latencia de red. |
-| **Frecuencia** | Igual que CU-155, que es el único caso que lo incluye hoy. |
+| **Frecuencia** | Igual que CU-155 y CU-174 (este último planificado, I-5), que son los casos que lo incluyen. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El disco local no tiene URL pública: por eso `Recuperar Archivo` (CU-160) necesita una segunda operación para servir el contenido a través de este backend. El módulo de almacenamiento está escrito para que cualquier otro servicio del sistema pueda guardar archivos por el mismo puerto; hoy `fleet` es el único que lo usa. |
+| **Comentarios** | El disco local no tiene URL pública: por eso `Recuperar Archivo` (CU-160) necesita una segunda operación para servir el contenido a través de este backend. El módulo de almacenamiento está escrito para que cualquier otro servicio del sistema pueda guardar archivos por el mismo puerto; `fleet` es el único servicio construido que lo usa; el de reclamos lo usará con CU-174 y CU-175 (I-5). |
 
 ---
 
@@ -6773,7 +6784,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-157. Resuelve cómo servir el contenido de un archivo ya guardado, según el adaptador de almacenamiento activo. |
+| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-157 y, planificado en I-5, por CU-175. Resuelve cómo servir el contenido de un archivo ya guardado, según el adaptador de almacenamiento activo. |
 | **Precondición** | El archivo existe en el almacenamiento, bajo la clave que guarda el adjunto. |
 | **Estado** | Implementado, con el adaptador de disco local activo. El camino de S3 está implementado y no se ejecutó contra un bucket real. |
 
@@ -6799,7 +6810,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Inmediato para la URL firmada; para el flujo de lectura, depende del tamaño del archivo. |
-| **Frecuencia** | Igual que CU-157, que es el único caso que lo incluye hoy. |
+| **Frecuencia** | Igual que CU-157 y CU-175 (este último planificado, I-5), que son los casos que lo incluyen. |
 | **Estabilidad** | Alta |
 | **Comentarios** | La firma de la URL de S3 se prueba con el cliente simulado del adaptador; no hay una prueba contra un depósito real. |
 
@@ -6826,7 +6837,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | El sistema comprueba que el chofer exista y sea de la distribuidora del administrador. |
 | 4 | El sistema comprueba que el vehículo exista, sea de la distribuidora y no esté inhabilitado por documentación vencida (seguro o verificación técnica). |
 | 5 | Si el chofer ya tiene en uso ese mismo vehículo, el sistema no cierra ni abre nada: devuelve la asignación abierta y el historial no cambia. |
-| 6 | El sistema comprueba que el chofer no tenga un pedido aceptado o en camino y que, si otro chofer usa hoy ese vehículo, tampoco lo tenga. |
+| 6 | El sistema comprueba que el chofer no tenga un pedido aceptado o en camino y que, si otro chofer usa ese vehículo en ese momento, tampoco lo tenga. |
 | 7 | En una sola transacción, el sistema cierra la asignación abierta del chofer y la del vehículo, con la fecha y el administrador que la cerró, y abre la nueva con el administrador que la hizo y la nota. |
 | 8 | El sistema devuelve el vehículo en uso del chofer: patente, marca, modelo, tipo, si está inhabilitado, desde cuándo lo usa y la nota. |
 
@@ -6840,7 +6851,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 4 | Si el vehículo no existe o es de otra distribuidora, el sistema responde 404 "Vehículo … no encontrado"; lo mismo si desaparece entre la comprobación del paso 4 y el bloqueo del paso 7. |
 | 4 | Si el vehículo está inhabilitado por documentación vencida, el controlador responde 400 "No se puede asignar: …", con el motivo de cada vencimiento (la comprobación la hace `FleetTaskService`, no el servicio de asignaciones). |
 | 4 | Si el identificador del vehículo no tiene formato de UUID o falta, el sistema responde 400 por dato inválido. |
-| 6 | Si el chofer, o el que usa hoy el vehículo, tiene un pedido aceptado o en camino, el sistema responde 409 "No se puede modificar el vehículo de un chofer con un pedido en curso (aceptado o en camino)". |
+| 6 | Si el chofer, o el que usa el vehículo en ese momento, tiene un pedido aceptado o en camino, el sistema responde 409 "No se puede modificar el vehículo de un chofer con un pedido en curso (aceptado o en camino)". |
 | 7 | Si dos pedidos simultáneos chocan por el mismo vehículo o el mismo chofer y la base rechaza la inserción por unicidad (23505), el sistema responde 409 de inmediato: dos índices únicos parciales garantizan que no queden dos asignaciones abiertas. Si el choque es un deadlock, reintenta la transacción (dos reintentos, tres intentos en total) y, si persiste, responde 409 "Dos operaciones chocaron al mismo tiempo". |
 
 | Campo | Detalle |
@@ -7018,7 +7029,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-03, OBJ-01 |
 | **Requisitos asociados** | IRQ-01, IRQ-03 |
-| **Descripción** | La app del cliente (ACT-01) o la del chofer (ACT-02) registran el token de notificaciones push del dispositivo contra el perfil del usuario. Es la **precondición técnica de CU-021**: sin token registrado, ninguna notificación push del sistema llega. El mismo endpoint sirve a las dos apps, porque el sistema busca al usuario primero como cliente y después como chofer. Endpoint: `POST /notifications/token` (`src/notifications/notifications.controller.ts:70`). |
+| **Descripción** | La app del cliente (ACT-01) o la del chofer (ACT-02) registran el token de notificaciones push del dispositivo contra el perfil del usuario. Es la **precondición técnica de CU-021**: sin token registrado, ninguna notificación push del sistema llega. El mismo endpoint sirve a las dos apps, porque el sistema busca al usuario primero como cliente y después como chofer. Endpoint: `POST /notifications/token`. |
 | **Precondición** | El usuario está autenticado y su dispositivo le concedió permiso de notificaciones a la app. |
 | **Estado** | Implementado |
 
@@ -7028,9 +7039,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | La app obtiene del servicio de mensajería el token del dispositivo al iniciar sesión o al rotarse el token. |
 | 2 | La app envía `POST /notifications/token` con el token, la plataforma y el identificador de usuario. |
-| 3 | El sistema aplica el control anti-secuestro: si el solicitante no es administrador, ignora el identificador del cuerpo y usa el de su propia sesión (`notifications.controller.ts:77-80`). |
+| 3 | El sistema aplica el control anti-secuestro: si el solicitante no es administrador, ignora el identificador del cuerpo y usa el de su propia sesión. |
 | 4 | El sistema busca un perfil de cliente con ese identificador de usuario; si lo encuentra, guarda ahí el token y responde `{ success: true }`. |
-| 5 | Si no hay perfil de cliente, el sistema busca un perfil de chofer y guarda el token en él (`src/notifications/notifications.service.ts:216-227`). |
+| 5 | Si no hay perfil de cliente, el sistema busca un perfil de chofer y guarda el token en él. |
 | 6 | El sistema registra la operación en el log indicando si el token quedó en un cliente o en un chofer, y la plataforma. |
 
 **Postcondición:** El perfil del usuario tiene guardado el token del dispositivo, y a partir de ese momento puede recibir las notificaciones push del sistema. Cada perfil guarda un único token: registrar uno nuevo reemplaza al anterior.
@@ -7058,7 +7069,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El Administrador General (ACT-05) consulta el token de notificaciones registrado para cualquier usuario, o cada usuario consulta el suyo, para diagnosticar por qué no le llegan las notificaciones. Un administrador de empresa sólo consulta el propio: no tiene por qué leer los de usuarios de otra distribuidora. Endpoint: `GET /notifications/user/:userId` (`src/notifications/notifications.controller.ts:72`). |
+| **Descripción** | El Administrador General (ACT-05) consulta el token de notificaciones registrado para cualquier usuario, o cada usuario consulta el suyo, para diagnosticar por qué no le llegan las notificaciones. Un administrador de empresa sólo consulta el propio: no tiene por qué leer los de usuarios de otra distribuidora. Endpoint: `GET /notifications/user/:userId`. |
 | **Precondición** | El solicitante está autenticado. Si no es el Administrador General, consulta su propio identificador. |
 | **Estado** | Implementado |
 
@@ -7068,7 +7079,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El Administrador General abre el diagnóstico de notificaciones de un usuario, o la app consulta su propio registro. |
 | 2 | Se envía `GET /notifications/user/:userId`. |
-| 3 | El sistema verifica que el solicitante sea el Administrador General o que el identificador pedido sea el suyo (`notifications.controller.ts:82-86`). |
+| 3 | El sistema verifica que el solicitante sea el Administrador General o que el identificador pedido sea el suyo. |
 | 4 | El sistema busca el perfil de cliente de ese usuario y devuelve `{ tokens: [...] }` con el token guardado, o una lista vacía si no tiene. |
 
 **Postcondición:** El solicitante sabe si el usuario tiene token registrado. No hay cambios de estado.
@@ -7079,7 +7090,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 3 | Si quien pide no es el Administrador General —incluido un administrador de empresa— y el identificador es de otro usuario, el sistema retorna error 403 "No autorizado a ver tokens de otro usuario". |
 | 4 | Si no existe perfil de cliente para ese identificador, el sistema devuelve `{ tokens: [] }` sin error. |
-| 4 | La consulta mira **solo** el perfil de cliente, mientras que CU-098 guarda el token también en el perfil de chofer: para un chofer con token registrado, este caso devuelve siempre una lista vacía (`notifications.service.ts:138-157`): es una asimetría entre el alta y la consulta. |
+| 4 | La consulta mira **solo** el perfil de cliente, mientras que CU-098 guarda el token también en el perfil de chofer: para un chofer con token registrado, este caso devuelve siempre una lista vacía: es una asimetría entre el alta y la consulta. |
 | 4 | Ante un error de base, el sistema lo registra y devuelve `{ tokens: [] }`, sin distinguir la falla de la ausencia de token. |
 
 | Campo | Detalle |
@@ -7138,7 +7149,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-05 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El Administrador General (ACT-05) vuelve a enviarle a un cliente la notificación de confirmación de un pedido, cuando la original no llegó. El envío automático de esa notificación ya lo hace el flujo de creación y de cambio de estado del pedido; este endpoint es el reenvío manual de soporte. Endpoint: `POST /notifications/order-confirmation` (`src/notifications/notifications.controller.ts:58`). Es exclusiva del Administrador General: recibe un cliente y un pedido cualquiera, de cualquier distribuidora. |
+| **Descripción** | El Administrador General (ACT-05) vuelve a enviarle a un cliente la notificación de confirmación de un pedido, cuando la original no llegó. El envío automático de esa notificación ya lo hace el flujo de creación y de cambio de estado del pedido; este endpoint es el reenvío manual de soporte. Endpoint: `POST /notifications/order-confirmation`. Es exclusiva del Administrador General: recibe un cliente y un pedido cualquiera, de cualquier distribuidora. |
 | **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. El pedido y el cliente existen y el cliente tiene token de notificaciones registrado (CU-098). |
 | **Estado** | Implementado |
 
@@ -7150,7 +7161,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 2 | El panel envía `POST /notifications/order-confirmation` con el identificador del cliente, el del pedido y, opcionalmente, un token puntual. |
 | 3 | El sistema busca el perfil de cliente por identificador de usuario, con su usuario asociado. |
 | 4 | El sistema toma el token enviado en el cuerpo o, si no vino, el guardado en el perfil del cliente. |
-| 5 | El sistema arma la notificación "¡Pedido Confirmado!" con los primeros ocho caracteres del identificador del pedido en el cuerpo (`src/notifications/notifications.service.ts:75-85`). |
+| 5 | El sistema arma la notificación "¡Pedido Confirmado!" con los primeros ocho caracteres del identificador del pedido en el cuerpo. |
 | 6 | El sistema la envía al proveedor de mensajería y responde `{ success: true, messageId }`. |
 
 **Postcondición:** El cliente recibió otra vez la notificación de confirmación del pedido.
@@ -7189,8 +7200,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 1 | El Administrador General envía `POST /email/test` con `{ email }`. |
-| 2 | El sistema valida que la dirección tenga formato de correo (`src/email/dto/test-email.dto.ts`). |
-| 3 | El sistema genera dos enlaces de recuperación de contraseña seguidos para la misma dirección (`src/email/email.service.ts:289-290`). |
+| 2 | El sistema valida que la dirección tenga formato de correo. |
+| 3 | El sistema genera dos enlaces de recuperación de contraseña seguidos para la misma dirección. |
 | 4 | El sistema envía un correo con la plantilla de verificación y el asunto "Test Email from Yeni Gass". |
 | 5 | El sistema devuelve `{ success: true, message, emailSent, resendStatus, cacheStats }`, donde `cacheStats` indica si los dos enlaces generados resultaron iguales, es decir, si la caché respondió. |
 
@@ -7223,7 +7234,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-08, OBJ-05 |
 | **Requisitos asociados** | IRQ-05 |
-| **Descripción** | El administrador (ACT-03) retira del uso una franja horaria de entrega de su distribuidora. La operación es una desactivación: la franja queda inactiva y deja de ofrecerse al agendar pedidos, pero el registro se conserva para no romper los pedidos históricos que la referencian. Endpoint: `DELETE /time-slot/:id` (`src/time-slot/time-slot.controller.ts:65`). |
+| **Descripción** | El administrador (ACT-03) retira del uso una franja horaria de entrega de su distribuidora. La operación es una desactivación: la franja queda inactiva y deja de ofrecerse al agendar pedidos, pero el registro se conserva para no romper los pedidos históricos que la referencian. Endpoint: `DELETE /time-slot/:id`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN y tiene distribuidora resuelta en el contexto de la petición. La franja existe y pertenece a esa distribuidora. |
 | **Estado** | Implementado |
 
@@ -7234,7 +7245,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador elige eliminar una franja horaria desde el panel: **incluye CU-154 Consultar Listado de Franjas Horarias**, el listado administrativo del que sale. |
 | 2 | El panel envía `DELETE /time-slot/:id`. |
 | 3 | El sistema valida el formato UUID y exige que haya distribuidora en el contexto. |
-| 4 | El sistema recupera la franja acotando la búsqueda a esa distribuidora, lo que impide operar sobre franjas de otra empresa (`src/time-slot/time-slot.service.ts:82-89`). |
+| 4 | El sistema recupera la franja acotando la búsqueda a esa distribuidora, lo que impide operar sobre franjas de otra empresa. |
 | 5 | El sistema fija `isActive = false` y guarda. |
 | 6 | El sistema devuelve la franja desactivada. |
 
@@ -7245,7 +7256,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
-| 3 | Si no hay distribuidora en el contexto, el sistema retorna error 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)" (`src/common/decorators/current-distributor.decorator.ts:36-40`). |
+| 3 | Si no hay distribuidora en el contexto, el sistema retorna error 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 | 4 | Si la franja no existe o pertenece a otra distribuidora, el sistema retorna error 404 "Time slot not found". |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 | 5 | La desactivación no comprueba si hay pedidos futuros ya agendados a esa franja: esos pedidos conservan su franja, ahora inactiva, y la franja deja de ofrecerse para agendar. |
@@ -7266,7 +7277,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
 | **Requisitos asociados** | IRQ-05 |
-| **Descripción** | El administrador consulta el listado completo de las franjas horarias de su distribuidora, para seleccionar la que va a modificar (CU-043) o dar de baja (CU-103). Es el caso propio de búsqueda del ABM de franjas: hasta ahora sólo existía la consulta de disponibilidad de cara al cliente (CU-045), que resuelve otra cosa —cupo restante por fecha— y no sirve para elegir la franja a editar. Endpoint: `GET /time-slot` (`src/time-slot/time-slot.controller.ts`). |
+| **Descripción** | El administrador consulta el listado completo de las franjas horarias de su distribuidora, para seleccionar la que va a modificar (CU-043) o dar de baja (CU-103). Es el caso propio de búsqueda del ABM de franjas: hasta ahora sólo existía la consulta de disponibilidad de cara al cliente (CU-045), que resuelve otra cosa —cupo restante por fecha— y no sirve para elegir la franja a editar. Endpoint: `GET /time-slot`. |
 | **Precondición** | El solicitante está autenticado. |
 | **Estado** | Implementado |
 
@@ -7307,8 +7318,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-15 |
 | **Requisitos asociados** | IRQ-15 |
-| **Descripción** | El Sistema Automático (ACT-04) —balanceador de carga, orquestador de contenedores o monitoreo externo— consulta el estado de salud del backend y de sus dependencias para decidir si le manda tráfico o si reinicia la instancia. Es el caso de uso que realiza los requisitos no funcionales de disponibilidad y escalabilidad, que hoy no tienen ningún otro caso que los materialice. Endpoints: `GET /health` (`src/health/health.controller.ts:42`), `GET /health/live` (`:60`) y `GET /health/ready` (`:72`). |
-| **Precondición** | El proceso del backend está corriendo y aceptando conexiones. Los tres endpoints son públicos y están exceptuados del límite global de peticiones (`health.controller.ts:17`), porque el tráfico de sondeo no es tráfico de usuario. |
+| **Descripción** | La plataforma de despliegue (ACT-09) —balanceador de carga, orquestador de contenedores o monitoreo externo— consulta el estado de salud del backend y de sus dependencias para decidir si le manda tráfico o si reinicia la instancia. Es el caso de uso que realiza los requisitos no funcionales de disponibilidad y escalabilidad, que ningún otro caso materializa. Endpoints: `GET /health`, `GET /health/live` y `GET /health/ready`. |
+| **Precondición** | El proceso del backend está corriendo y aceptando conexiones. Los tres endpoints son públicos y están exceptuados del límite global de peticiones, porque el tráfico de sondeo no es tráfico de usuario. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -7319,7 +7330,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 2 | Antes de enviarle tráfico a la instancia, consulta `GET /health/ready`. |
 | 3 | El sistema verifica la conexión con PostgreSQL y con Redis, que son las dependencias críticas. |
 | 4 | Si ambas responden, el sistema devuelve estado 200 con el detalle por componente y la instancia entra en rotación. |
-| 5 | El monitoreo externo consulta `GET /health`, que además de PostgreSQL y Redis verifica que la memoria residente del proceso esté por debajo de 300 MB y que el disco tenga margen libre (`health.controller.ts:47-53`). |
+| 5 | El monitoreo externo consulta `GET /health`, que además de PostgreSQL y Redis verifica que la memoria residente del proceso esté por debajo de 300 MB y que el disco tenga margen libre. |
 | 6 | El sistema devuelve el detalle de los cuatro indicadores. |
 
 **Postcondición:** El orquestador sabe si la instancia está viva y si puede recibir tráfico. No hay cambios de estado en el sistema.
@@ -7463,7 +7474,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al poner en marcha cada proceso y cuando la distribuidora ajusta su operación. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es el medio por el que los cuatro módulos inteligentes y la compra express cumplen el criterio de parametrización de la cátedra: ningún parámetro nace como constante del programa. La tabla `module_config` ya existe, con una fila por distribuidora y proceso y los parámetros en un campo JSON; como el JSON no se valida solo, cada proceso trae su propio esquema de validación y un parámetro mal escrito se rechaza en vez de guardarse. Los parámetros de cada proceso están en la tabla de parámetros de su módulo, en el Documento 3, §6: el planificador de flota lleva la hora de ejecución, la vigencia de la propuesta, la cantidad de ventanas alternativas, el mínimo de vehículos por zona, los días mínimos de historial, el peso de las semanas recientes y los factores estacionales; la recompra, el mínimo de pedidos, la anticipación, la vigencia, el intervalo mínimo entre invitaciones, los coeficientes por mes y la hora; la agrupación por recorrido, el tamaño máximo del lote, el radio, la tolerancia de franja, la vigencia y la frecuencia; la recuperación de envases, la tolerancia, el plazo de cada escalón, el umbral de importe, la vigencia de la oferta de retiro y la hora; y el despacho express, el recargo, el radio, el horario de servicio, el tiempo estimado y la vigencia de la oferta. Los parámetros del despacho normal (CU-171) y la frecuencia de las tareas programadas (CU-173) se configuran con sus propios casos. |
+| **Comentarios** | Es el medio por el que los cuatro módulos inteligentes y la compra express cumplen el criterio de parametrización del proyecto: ningún parámetro de negocio nace como constante del programa. La tabla `module_config` ya existe, con una fila por distribuidora y proceso y los parámetros en un campo JSON; como el JSON no se valida solo, cada proceso trae su propio esquema de validación y un parámetro mal escrito se rechaza en vez de guardarse. Los parámetros de cada proceso están en la tabla de parámetros de su módulo, en el Documento 3, §6: el planificador de flota lleva la hora de ejecución, la vigencia de la propuesta, la cantidad de ventanas alternativas, el mínimo de vehículos por zona, los días mínimos de historial, el peso de las semanas recientes y los factores estacionales; la recompra, el mínimo de pedidos, la anticipación, la vigencia, el intervalo mínimo entre invitaciones, los coeficientes por mes y la hora; la agrupación por recorrido, el tamaño máximo del lote, el radio, la tolerancia de franja, la vigencia y la frecuencia; la recuperación de envases, la tolerancia, el plazo de cada escalón, el umbral de importe, la vigencia de la oferta de retiro y la hora; y el despacho express, el recargo, el radio, el horario de servicio, el tiempo estimado y la vigencia de la oferta. Los parámetros del despacho normal (CU-171) y la frecuencia de las tareas programadas (CU-173) se configuran con sus propios casos. |
 
 ---
 
@@ -7716,7 +7727,7 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | Caso de Uso base | `«include»` | Caso de Uso incluido | Justificación |
 |------------------|:-----------:|----------------------|---------------|
 | CU-005 Crear Pedido | → | Reservar Stock | Toda creación de pedido reserva stock dentro de la transacción PostgreSQL (`SELECT … FOR UPDATE`). |
-| CU-005 Crear Pedido | → | CU-013 Despacho Automático | Al confirmar el pedido se dispara siempre el algoritmo de despacho por proximidad. |
+| CU-005 Crear Pedido | → | CU-013 Asignar Pedido Automáticamente por Proximidad | Al confirmar el pedido se dispara siempre el algoritmo de despacho por proximidad. |
 | CU-044 Seleccionar Franja Horaria | → | CU-045 Consultar Franjas Disponibles | Para seleccionar una franja, el sistema siempre consulta primero las disponibles con cupo. |
 | CU-015 Aceptar Pedido | → | Notificar Cliente | La aceptación dispara siempre la notificación al cliente (WebSocket + FCM). |
 | CU-018 Marcar En Camino | → | Notificar Cliente | El cambio a "en camino" notifica siempre al cliente. |
@@ -7791,12 +7802,12 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 
 | Caso de Uso que extiende | `«extend»` | Caso de Uso base | Punto de extensión (condición) |
 |--------------------------|:----------:|------------------|-------------------------------|
-| CU-014 Reintentar Asignación (Cron) | → | CU-013 Despacho Automático | *No hay choferes disponibles en el radio.* |
+| CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer | → | CU-013 Asignar Pedido Automáticamente por Proximidad | *No hay choferes disponibles en el radio.* |
 | CU-168 Reintegrar el Pago de un Pedido | → | CU-008 Cancelar Pedido (Cliente) | *El pedido cancelado tiene un pago aprobado por una pasarela.* |
 | CU-168 Reintegrar el Pago de un Pedido | → | CU-010 Cancelar Pedido (Administrador) | *El pedido cancelado tiene un pago aprobado por una pasarela.* |
 | CU-168 Reintegrar el Pago de un Pedido | → | CU-149 Despachar un Pedido Express a un Chofer en Moto | *El pedido express pasa a reparto común y el cliente ya había pagado en línea.* |
 | Aplicar Promoción | → | CU-005 Crear Pedido | *La cantidad de un ítem alcanza el umbral de promoción por volumen.* |
-| Aplicar Recargo por Transferencia | → | CU-005 Crear Pedido | *El método de pago seleccionado es Transferencia.* |
+| Aplicar Recargo por Pago en Línea | → | CU-005 Crear Pedido | *El método de pago seleccionado es MercadoPago o Transferencia.* |
 | CU-019 Avisar Llegada | → | CU-018 Marcar En Camino | *El chofer se encuentra cerca del destino.* |
 | CU-174 Adjuntar la Fotografía de un Reclamo | → | CU-023 Registrar Reclamo | *El cliente adjunta evidencia fotográfica del reclamo.* |
 | Filtrar por Término | → | CU-092 Consultar Listado de Clientes | *Se indica el parámetro `term`: filtra por nombre o correo (`GET /customers?term=`).* |
@@ -7819,7 +7830,7 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | **Objetivos asociados** | OBJ-01, OBJ-05 |
 | **Requisitos asociados** | IRQ-01, IRQ-09, CU-001, CU-091 |
 | **Descripción** | El sistema debe garantizar que cada usuario solo acceda a las funcionalidades y datos correspondientes a su rol. Toda comunicación HTTP y WebSocket debe estar autenticada. |
-| **Especificación** | Autenticación delegada en Firebase Authentication: el sistema no emite credencial propia y valida el token de identidad de Firebase en cada solicitud, resolviendo el rol contra la base. Roles diferenciados: CLIENTE, CHOFER, ADMIN. Guardas NestJS registradas globalmente: `AuthGuard` y `RolesGuard`. Las conexiones WebSocket requieren JWT válido en el handshake. Las contraseñas se gestionan exclusivamente a través de Firebase Auth. La sesión del Panel Web usa cookie `httpOnly` para prevenir ataques XSS. |
+| **Especificación** | Autenticación delegada en Firebase Authentication: el sistema no emite credencial propia y valida el token de identidad de Firebase en cada solicitud, resolviendo el rol contra la base. Roles diferenciados: CLIENTE, CHOFER, ADMIN. Guardas NestJS registradas globalmente: `AuthGuard` y `RolesGuard`. Las conexiones WebSocket requieren el token de identidad de Firebase, válido, en el handshake. Las contraseñas se gestionan exclusivamente a través de Firebase Auth. La sesión del Panel Web usa cookie `httpOnly` para prevenir ataques XSS. |
 | **Estabilidad** | Alta |
 | **Comentarios** | Las limitaciones conocidas respecto de este requisito se registran en el campo Comentarios de los casos de uso afectados. El requisito describe la meta; su cumplimiento efectivo es parcial. |
 
@@ -7854,7 +7865,7 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | **Descripción** | La arquitectura debe soportar crecimiento en la cantidad de usuarios y pedidos en futuras fases sin rediseño. |
 | **Especificación** | El backend usa el adaptador Redis para Socket.IO (`redis-io.adapter`) que permite correr múltiples instancias del servidor NestJS sin pérdida de eventos WebSocket. La containerización con Docker facilita el escalado horizontal. PostgreSQL y Redis son desplegables en nodos separados si el volumen lo requiere. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La arquitectura es un monolito modular sin estado en el proceso: la sesión se valida contra el proveedor de identidad y el estado compartido vive en la base y en el cache. Eso habilita agregar instancias detrás de un balanceador sin rediseño, aunque hoy se ejecuta una sola. |
+| **Comentarios** | La arquitectura es un monolito modular sin estado en el proceso: la sesión se valida contra el proveedor de identidad y el estado compartido vive en la base y en el cache. Eso habilita agregar instancias detrás de un balanceador sin rediseño, aunque se ejecuta una sola. |
 
 ### Importante NFR-05 — Portabilidad
 
@@ -8068,13 +8079,13 @@ que declaran al menos un objetivo: todos lo hacen.
 | **CU-119** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | **CU-120** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
 | **CU-121** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| **CU-122** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| **CU-123** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| **CU-124** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| **CU-125** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| **CU-126** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| **CU-127** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| **CU-128** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-122** | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-123** | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-124** | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-125** | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-126** | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-127** | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-128** | ● |  |  | ● |  |  |  |  |  |  |  |  |  |  |  |
 | **CU-129** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
 | **CU-130** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
 | **CU-131** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |

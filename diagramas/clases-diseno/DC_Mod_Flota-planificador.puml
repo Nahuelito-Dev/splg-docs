@@ -25,7 +25,7 @@ skinparam class<<referencia>> {
 skinparam class<<fachada>> {
   HeaderBackgroundColor #D6E4F0
 }
-skinparam class<<use case>> {
+skinparam class<<controlador>> {
   HeaderBackgroundColor #D6E4F0
 }
 skinparam class<<fabricación pura>> {
@@ -80,8 +80,8 @@ class "Map<String, PropuestaVentanaTaller>" as Map_String_PropuestaVentanaTaller
 class PropuestaVentanaTaller <<referencia>>
 class "Map<String, TareaMantenimiento>" as Map_String_TareaMantenimiento <<referencia>>
 class NotificationsService <<referencia>>
-class TareaMantenimiento <<referencia>>
 class Vehiculo <<referencia>>
+class TareaMantenimiento <<referencia>>
 
 Map_String_PropuestaVentanaTaller "1" o--> "0..*" PropuestaVentanaTaller
 FleetMaintenancePlannerService --> "1" DemandForecastService

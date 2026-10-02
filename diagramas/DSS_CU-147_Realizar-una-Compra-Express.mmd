@@ -7,7 +7,7 @@ sequenceDiagram
     CLI->>SIS: realizarCompraExpress(tipoGarrafa, medioDePago)
     activate SIS
     alt hay cobertura, horario y chofer
-        SIS-->>CLI: pedido express creado y despachado
+        SIS-->>CLI: pedido express creado y despachado (con MercadoPago, el enlace de pago)
     else no hay cobertura express o está fuera de horario
         SIS-->>CLI: se ofrece el flujo con franja horaria
     else no hay chofer en moto disponible

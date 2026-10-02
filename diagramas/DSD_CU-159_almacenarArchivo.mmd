@@ -1,19 +1,15 @@
+%%{init: {"sequence": {"actorMargin": 190}}}%%
 sequenceDiagram
     title DSD — CU-159 Almacenar Archivo · almacenarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
     participant STO as :StoragePort
-    participant LOC as :LocalDiskStorageAdapter
-    participant S3A as :S3StorageAdapter
 
-    Note over SRV: Caso incluido desde CU-155 y CU-174
+    Note over SRV,STO: Caso incluido desde CU-155 y CU-174<br/>(la implementación activa la decide STORAGE_DRIVER)
     SRV->>+STO: put(clave, contenido, tipo)
-    alt STORAGE_DRIVER es local
-        STO->>+LOC: put(clave, contenido, tipo)
-        LOC->>LOC: resolveKey(clave)
-        deactivate LOC
+    alt STORAGE_DRIVER es local (por omisión)
+        Note over SRV,STO: LocalDiskStorageAdapter:<br/>escribe el archivo en disco
     else STORAGE_DRIVER es s3
-        STO->>+S3A: put(clave, contenido, tipo)
-        deactivate S3A
+        Note over SRV,STO: S3StorageAdapter:<br/>sube el archivo al depósito
     end
     deactivate STO

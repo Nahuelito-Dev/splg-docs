@@ -47,33 +47,14 @@ classDiagram
         + remove(claveAnterior: Cadena)
     }
 
-    class LocalDiskStorageAdapter {
-        <<adaptador>>
-        + getDownloadUrl(clave: Cadena): Cadena
-        + getStream(clave: Cadena): Archivo
-        + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
-        + resolveKey(clave: Cadena)
-    }
-
-    class S3StorageAdapter {
-        <<adaptador>>
-        + getDownloadUrl(clave: Cadena): Cadena
-        + getStream(clave: Cadena): Archivo
-        + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
-    }
-
     class List_Pedido["List<Pedido>"] {
         <<colección>>
     }
-    class ItemPedido
     class Pedido
+    class ItemPedido
 
     HealthCheckService --> "1" RedisHealthIndicator : redisHealthIndicator
     RedisHealthIndicator --> "1" RedisService : redisService
     ReportsService --> "1" List_Pedido : list<Pedido>
     ReportsService ..> ItemPedido
     ReportsService ..> Pedido
-    StoragePort ..> LocalDiskStorageAdapter
-    StoragePort ..> S3StorageAdapter
-    S3StorageAdapter ..|> StoragePort
-    LocalDiskStorageAdapter ..|> StoragePort
