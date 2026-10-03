@@ -1,7 +1,7 @@
 # Documento de Análisis — Fase II
 **Proyecto:** SPLG – Sistema de Pedidos y Logística de Garrafas de Gas
-**Versión:** 1.2
-**Fecha:** 2026-10-01
+**Versión:** 1.3
+**Fecha:** 2026-10-03
 **Realizado por:** Nahuel Wagner
 
 ---
@@ -203,6 +203,7 @@
 | 6 | 2026-10-01 | Diagramas de secuencia del sistema en notación de Larman: lifeline `:Sistema`, actores del catálogo, salidas al actor como mensajes asíncronos con nombre y casos incluidos sin diagrama propio. Catálogo de operaciones del sistema, con una sola firma por operación, y contratos de todas las operaciones que modifican el modelo conceptual. | Nahuel Wagner |
 | 7 | 2026-10-01 | Cierre de la documentación: modelo conceptual, diagramas de secuencia del sistema en notación de Larman, catálogo de 194 operaciones y 110 contratos de operación coherentes con el código; firmas corregidas de crearRol, actualizarUbicacionDelCliente y enviarNotificacionDePrueba; actor de probarServicioDeCorreo; comportamiento de crearCheckoutDePago, notificarResultadoDePago, editarVehiculo, eliminarUsuario y cambiarDisponibilidad. | Nahuel Wagner |
 | 8 | 2026-10-01 | Revisión final: CU-048 pasa a operación interna de crearPedido (catálogo de 194 operaciones y 110 contratos), notificaciones fuera de las postcondiciones de los contratos, contratos de confirmarEntrega, ofrecerAlSiguienteChofer, crearPedido y agregarItemAlCarrito ajustados, actor ACT-09 en CU-104. | Nahuel Wagner |
+| 9 | 2026-10-03 | Versión 1.1 del sistema (versión del software, back y panel, distinta de la versión de este documento): ItemPedido con precio unitario y subtotal guardados en el renglón, y contrato de crearPedido ajustado. | Nahuel Wagner |
 
 ---
 
@@ -536,7 +537,8 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **Pedido** | documento de quien recibe: Documento de esa persona. |
 | **Pedido** | vínculo con quien recibe: Relación con el cliente: familiar, encargado, vecino. |
 | **ItemPedido** | cantidad: Unidades solicitadas. |
-| **ItemPedido** | precio unitario: Precio vigente al momento de la compra. |
+| **ItemPedido** | precio unitario: Precio con el que se vendió el renglón, con las promociones por volumen ya aplicadas y redondeado a centavos; se conserva aunque el producto cambie de precio. |
+| **ItemPedido** | /subtotal: Cantidad por precio unitario. |
 | **CambioEstadoPedido** | desde / hacia: Estado anterior y nuevo. |
 | **CambioEstadoPedido** | motivo: Por qué, cuando la transición lo pide. |
 | **CambioEstadoPedido** | fecha: Cuándo. |
@@ -6101,7 +6103,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Excepciones** | Si algún producto no existe o no es de la distribuidora → error de solicitud (producto no encontrado). Si el stock es insuficiente → la operación se revierte por completo y se informa el producto. Si la dirección está fuera de la zona de cobertura → error de solicitud (domicilio no cubierto). Si la franja no tiene cupo para esa fecha → error de solicitud (franja completa). Si el cliente o la dirección no existen → recurso no encontrado. |
 | **Salida** | El pedido creado con sus ítems (número, total, estado pendiente) y, si corresponde, el enlace de pago. |
 | **Precondiciones** | El Cliente está autenticado. La DireccionEntrega pertenece al Cliente y está dentro de una ZonaCobertura. Cada Producto del pedido existe, es de la Distribuidora y tiene stock suficiente. Si se indica una FranjaHoraria, está activa y tiene cupo para la fecha. |
-| **Postcondiciones** | Se creó una instancia de Pedido, en estado «pendiente», asociada al Cliente que lo realizó, a la DireccionEntrega elegida y, si se indicó, a la FranjaHoraria. Se crearon sus instancias de ItemPedido, cada una asociada a su Producto, con el precio unitario del momento. El atributo stock de cada Producto pedido se decrementó en la cantidad pedida. Si el medio de pago es MercadoPago, se creó una instancia de Pago, en estado «pendiente», asociada al Pedido y a la Distribuidora, con el importe del intento y el enlace de pago. Si el medio de pago no es MercadoPago y hubo Chofer elegible, se creó una OfertaDespacho dirigida al Chofer disponible más cercano. |
+| **Postcondiciones** | Se creó una instancia de Pedido, en estado «pendiente», asociada al Cliente que lo realizó, a la DireccionEntrega elegida y, si se indicó, a la FranjaHoraria. Se crearon sus instancias de ItemPedido, cada una asociada a su Producto, con el precio unitario —con las promociones por volumen ya aplicadas y redondeado a centavos— y el subtotal, cantidad por ese precio, calculados en ese momento, que no cambian aunque el Producto cambie de precio. El atributo stock de cada Producto pedido se decrementó en la cantidad pedida. Si el medio de pago es MercadoPago, se creó una instancia de Pago, en estado «pendiente», asociada al Pedido y a la Distribuidora, con el importe del intento y el enlace de pago. Si el medio de pago no es MercadoPago y hubo Chofer elegible, se creó una OfertaDespacho dirigida al Chofer disponible más cercano. |
 
 ---
 

@@ -130,10 +130,11 @@ class Pedido {
 class ItemPedido {
   - cantidad: Entero
   - precioUnitario: Moneda
+  - /subtotal: Moneda
   + «create» ItemPedido(producto: Producto, cantidad: Entero,\n      precioUnitario: Moneda, subtotal: Moneda)
   + getCantidad(): Entero
   + getProducto()
-  + getSubtotal()
+  + getSubtotal(): Moneda
   + restituirStock()
 }
 class CambioEstadoPedido {

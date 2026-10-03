@@ -1,8 +1,8 @@
 # Documento 3 — Diseño del Sistema
 **Proyecto:** SPLG – Sistema de Pedidos y Logística de Garrafas de Gas  
 **Metodología:** Unified Process (UP)  
-**Versión:** 1.4  
-**Fecha:** 2026-10-01  
+**Versión:** 1.5  
+**Fecha:** 2026-10-03  
 **Realizado por:** Nahuel Wagner  
 **Realizado para:** Distribuidor de Gas Envasado (Cliente Real)  
 **Institución:** FCEQyN – UNaM  
@@ -308,8 +308,9 @@
 | 1 | 2026-08-30 | Verificación de la documentación contra el código. Corrección de los casos de uso reales y de los diagramas que modelaban comportamiento inexistente. Unificación del nombre del proyecto con el resto de los documentos. | Nahuel Wagner |
 | 2 | 2026-10-01 | Diagramas de interacción de diseño de CU-161 a CU-175 y ajustes de los casos planificados a las decisiones de diseño. Sección 10 reescrita: sólo lo pendiente, cada fila con su caso de uso y su iteración. Tabla de operaciones ampliada. | Nahuel Wagner |
 | 3 | 2026-10-01 | Arquitectura con diagrama de componentes y diagrama de despliegue UML; nueva sección 11 con los diagramas de estados y de actividad; estado actual de los componentes e índice de diagramas UML. | Nahuel Wagner |
-
 | 4 | 2026-10-01 | Cierre de la documentación: 198 diagramas de interacción de diseño en notación de Larman con su tabla de implementación, tabla de operaciones del sistema de 195 filas, pendientes de la sección 10 y diagramas nuevos (componentes, despliegue, estados y actividad) coherentes con el código. | Nahuel Wagner |
+| 5 | 2026-10-03 | Versión 1.1 del sistema (versión del software, back y panel, distinta de la versión de este documento): diagramas de interacción de los reportes y del tablero con los días en hora argentina, la semana ISO y el rango con `to` inclusivo; el reporte por producto suma los subtotales de los renglones; el detalle del pedido expone precio por renglón y distribuidora. | Nahuel Wagner |
+
 ---
 
 ## Leyenda de Prioridad
@@ -721,7 +722,7 @@ Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha
 | 3 | Llama `historyService.createOrder()` → `POST /orders` con DTO completo. |
 | 4 | Backend `OrderController.create()` invoca `OrderService.create()`, que delega en `CreateOrderUseCase.execute(createOrderDto, distributorId)`. El caso de uso abre `DataSource.createQueryRunner()` y `queryRunner.startTransaction()`. |
 | 5 | Por cada ítem, `GasCylinderService.reservarStock(queryRunner.manager, gasCylinderId, quantity)` toma lock pesimista (`SELECT ... FOR UPDATE`, `pessimistic_write`) sobre el `GasCylinder`, valida stock suficiente y lo devuelve bloqueado. |
-| 6 | Calcula precio unitario y subtotal con promociones por volumen (decimal.js), recargo por zona de cobertura si la distribuidora definió zonas, y recargo del 10% si el método de pago es online (MERCADOPAGO o TRANSFER). |
+| 6 | Calcula, para cada renglón, el precio unitario con las promociones por volumen (decimal.js), redondeado a centavos, y el subtotal como cantidad por ese precio, y los guarda en el `OrderItem`: el pedido conserva el precio con el que se vendió aunque el catálogo cambie. Luego suma el recargo por zona de cobertura, si la distribuidora definió zonas, y el recargo del 10% si el método de pago es online (MERCADOPAGO o TRANSFER). |
 | 7 | Decrementa el stock de cada `GasCylinder` dentro de la transacción. Construye y persiste el `Order` (estado PENDING, o RESERVED si es una pre-reserva) junto a sus `OrderItem[]`. |
 | 8 | Hace `queryRunner.commitTransaction()`. Ya fuera de la transacción, dispara el despacho según el método de pago: si es CASH, llama `DispatchOrchestratorService.offerToNextDriver(savedOrder)` directamente (best-effort); si es MERCADOPAGO, en cambio NO despacha en ese momento — genera el checkout de pago y el despacho se dispara recién cuando el webhook confirme el pago (CU-048); si es una pre-reserva, tampoco despacha (lo hace el proceso programado el día agendado, CU-075). En paralelo envía la confirmación por FCM (`sendOrderConfirmation()`, best-effort). |
 | 9 | Retorna `{ orderId, status, totalAmount, paymentUrl? }` al cliente. |
@@ -2602,7 +2603,7 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce la distribuidora y el cliente a los que pertenece, así que es quien responde si el solicitante puede verlo. Los dos controles se contestan «no encontrado», nunca «prohibido», para no revelar que el pedido existe.
 
-**No se dibuja:** la conversión del pedido a la respuesta (`OrderMapper.toDto`) y la decisión del controlador HTTP de acotar por cliente sólo cuando quien consulta es un cliente.
+**No se dibuja:** la conversión del pedido a la respuesta (`OrderMapper.toDto`), que expone por renglón el precio unitario y el subtotal guardados y la `distributor_id` del pedido, y la decisión del controlador HTTP de acotar por cliente sólo cuando quien consulta es un cliente.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -3269,7 +3270,7 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `OrderService`. La colección de pedidos resuelve la búsqueda acotada a la distribuidora del contexto; el Administrador General sin distribuidora en el contexto recibe todas.
 
-**No se dibuja:** los filtros opcionales del listado (término, estado y rango de fechas), que el controlador HTTP pasa al servicio, y la conversión de cada pedido a la respuesta.
+**No se dibuja:** los filtros opcionales del listado (término, estado y rango de fechas, que son días en hora argentina con `to` inclusivo sobre la fecha de creación; un `from` posterior a `to` se rechaza con 400), que el controlador HTTP pasa al servicio, y la conversión de cada pedido a la respuesta.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -5258,14 +5259,14 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `OrderService`. Cada colección responde por los datos que guarda: los pedidos cuentan sus estados y suman lo entregado, los choferes cuentan los que están en línea y los habilitados. El valor promedio del pedido es un cálculo sobre dos resultados que ya tiene el servicio, y por eso se lo queda: es un cociente entre las ventas del día y los pedidos entregados ese día, que vale cero si no hubo entregas.
 
-**No se dibuja:** la ventana de cada período (el día, la semana calendario de domingo a sábado y el mes en curso), que se calculan con la fecha de la consulta, ni el paralelismo con el que el servicio dispara las consultas.
+**No se dibuja:** la ventana de cada período (el día, la semana ISO de lunes a domingo y el mes en curso, todos en hora argentina), que se calculan con la fecha de la consulta, ni el paralelismo con el que el servicio dispara las consultas.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `OrderService.consultarResumenDePedidos(...)` | `OrderController.getStats` → `OrderService.getOrderStats` |
 | `List<Pedido>.contarPorEstado(...)` | `OrderService.getOrderStats`: cuenta los `Order` por `Order.status` pendiente, aceptado y en camino, acotados por `Order.distributorId` |
 | `List<Pedido>.totalEntregado(...)` | `OrderService.getOrderStats`: suma `Order.totalAmount` de los entregados en la ventana de cada período |
-| `List<Pedido>.contarEntregadosDelDia(...)` | `OrderService.getOrderStats`: cuenta los `Order` entregados entre la medianoche y la siguiente |
+| `List<Pedido>.contarEntregadosDelDia(...)` | `OrderService.getOrderStats`: cuenta los `Order` entregados entre el inicio del día argentino y el del día siguiente |
 | `List<Pedido>.contarEntregadosDelMesPorMetodo(...)` | `OrderService.getOrderStats`: cuenta los entregados desde el día 1 con `Order.paymentMethod` en efectivo y en MercadoPago |
 | `List<Chofer>.contarEnLinea(...)` | `DeliveryService.contarEnLinea` |
 | `List<Chofer>.contarHabilitados(...)` | `DeliveryService.contarHabilitados` |
@@ -5299,7 +5300,7 @@ sequenceDiagram
 | Operación de diseño | Implementación |
 |---|---|
 | `OrderService.consultarGraficoDeVentas(...)` | `OrderController.getChartData` → `OrderService.getSalesChartData` |
-| `List<Pedido>.totalEntregadoPorDia(...)` | `OrderService.getSalesChartData`: suma `Order.totalAmount` de los entregados y los agrupa por día de `Order.deliveredAt`, acotados por `Order.distributorId` |
+| `List<Pedido>.totalEntregadoPorDia(...)` | `OrderService.getSalesChartData`: suma `Order.totalAmount` de los entregados y los agrupa por día argentino de `Order.deliveredAt`, acotados por `Order.distributorId` |
 | `OrderService.completarDiasSinVentas(...)` | `OrderService.getSalesChartData`: recorre los siete días y toma cero para los que no tienen fila |
 
 **Observaciones de diseño**
@@ -5356,7 +5357,7 @@ sequenceDiagram
 
 - Es el **único reporte que agrega en memoria** (los otros tres usan `QueryBuilder` con `GROUP BY`): necesita `delivery.user.full_name`, y el agrupado se arma sobre `delivery.user_id`.
 - La suma de dinero se hace con `Decimal` y recién al final se convierte con `toNumber()` — misma regla de NFR-08 que el pricing del pedido: **nunca coma flotante sobre montos**.
-- `parseDates` tiene defaults propios: sin `from` toma hoy a las 00:00, sin `to` toma el instante actual.
+- `parseDates` resuelve los días en hora argentina: sin `from` ni `to` toma el día de hoy y con uno solo el rango es ese día. Devuelve el intervalo `[inicio de from, inicio del día siguiente a to)`, de modo que `to` queda inclusivo, y rechaza con 400 un `from` posterior a `to`. Los cuatro reportes cuentan los pedidos entregados por `Order.deliveredAt`.
 
 ---
 
@@ -5407,6 +5408,7 @@ sequenceDiagram
 - El `innerJoin` (no `leftJoin`) implica que un pedido sin ítems no aparece; correcto para un reporte de producto.
 - La agregación ocurre **en PostgreSQL**, y el servicio sólo castea con `Number` — el resultado vuelve como string desde el driver.
 - Se agrupa por `type` **y** `description` porque `description` no es funcionalmente dependiente de `type` en el modelo actual y Postgres lo exigiría en el `GROUP BY`.
+- Suma `OrderItem.subtotal`, el valor guardado en cada renglón al crear el pedido, y no el precio vigente del catálogo ni el total del pedido: queda fuera el recargo de zona y el del método de pago, que sí suman los reportes por chofer, por método de pago y de evolución.
 
 ---
 
@@ -5495,7 +5497,7 @@ sequenceDiagram
 | `List<Pedido>.entregadosEntre(...)` | `ReportsService.getSalesEvolution`: toma los `Order` con `Order.status` entregado y `Order.deliveredAt` dentro del rango |
 | `Pedido.getFechaDeEntrega()` | `Order.deliveredAt` |
 | `Pedido.getTotal()` | `Order.totalAmount` |
-| `ReportsService.agruparPorPeriodo(...)` | `ReportsService.getSalesEvolution`: la consulta agrupa con `date_trunc` sobre `Order.deliveredAt`, cuenta los pedidos, suma `Order.totalAmount` y ordena por período |
+| `ReportsService.agruparPorPeriodo(...)` | `ReportsService.getSalesEvolution`: la consulta agrupa con `date_trunc` sobre `Order.deliveredAt` expresada en hora argentina (la semana es la ISO, de lunes a domingo), cuenta los pedidos, suma `Order.totalAmount` y ordena por período |
 
 **Observaciones de diseño**
 

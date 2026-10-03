@@ -74,7 +74,7 @@ _c("Pedido", "VentaYPedidos",
    ["estado", "/total", "modalidad de entrega", "fecha agendada", "método de pago", "seña",
     "código de entrega", "nombre de quien recibe", "documento de quien recibe",
     "vínculo con quien recibe"])
-_c("ItemPedido", "VentaYPedidos", ["cantidad", "precio unitario"])
+_c("ItemPedido", "VentaYPedidos", ["cantidad", "precio unitario", "/subtotal"])
 _c("CambioEstadoPedido", "VentaYPedidos", ["desde", "hacia", "motivo", "fecha"])
 _c("CambioDireccion", "VentaYPedidos", ["motivo", "fecha"])
 _c("ZonaCobertura", "VentaYPedidos",
@@ -307,7 +307,7 @@ ATRIBUTOS = {
                "código de entrega": "deliveryCode", "nombre de quien recibe": "receiver_name",
                "documento de quien recibe": "receiver_document",
                "vínculo con quien recibe": "receiver_relationship"},
-    "ItemPedido": {"cantidad": "quantity", "precio unitario": "unitPrice"},
+    "ItemPedido": {"cantidad": "quantity", "precio unitario": "unitPrice", "/subtotal": "subtotal"},
     "CambioEstadoPedido": {"desde": "from_status", "hacia": "to_status", "motivo": "reason",
                            "fecha": "changed_at"},
     "CambioDireccion": {"motivo": "reason", "fecha": "changed_at"},

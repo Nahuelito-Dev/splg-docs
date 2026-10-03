@@ -50,6 +50,7 @@ class Pedido {
 class ItemPedido {
   cantidad
   precio unitario
+  /subtotal
 }
 class Carrito {
   última modificación

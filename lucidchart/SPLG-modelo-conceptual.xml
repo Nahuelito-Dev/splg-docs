@@ -251,13 +251,16 @@
           <mxGeometry y="264" width="200" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c19" value="ItemPedido" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
-          <mxGeometry x="1075" y="2255" width="200" height="82" as="geometry" />
+          <mxGeometry x="1075" y="2242" width="200" height="108" as="geometry" />
         </mxCell>
         <mxCell id="c19f0" value="cantidad" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c19">
           <mxGeometry y="30" width="200" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c19f1" value="precio unitario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c19">
           <mxGeometry y="56" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c19f2" value="/subtotal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c19">
+          <mxGeometry y="82" width="200" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c20" value="CambioEstadoPedido" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
           <mxGeometry x="3029" y="2229" width="200" height="134" as="geometry" />

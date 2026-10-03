@@ -80,7 +80,7 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
     ("Pedido", "modalidad de entrega"): "ModalidadDeEntrega",
 }
 MONEDA = {"precio", "importe", "seña", "recargo", "costo", "depósito", "depósito comprometido",
-          "precio unitario", "descuento_"}
+          "precio unitario", "descuento_", "/subtotal"}
 
 # =============================================================================== utilidades
 def sin_acentos(t):

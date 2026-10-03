@@ -1,7 +1,7 @@
 # Documento de Requisitos del Sistema
 **Proyecto:** SPLG – Sistema de Pedidos y Logística de Garrafas de Gas
-**Versión:** 1.4
-**Fecha:** 2026-10-01
+**Versión:** 1.5
+**Fecha:** 2026-10-03
 **Realizado por:** Nahuel Wagner
 **Realizado para:** Distribuidor de Gas Envasado (Cliente Real)
 **Institución:** FCEQyN – UNaM
@@ -63,6 +63,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 5 | 2026-10-01 | Casos de uso expandidos CU-168 a CU-175. Estado uniforme «Planificado (I-n)» en los casos no construidos. Decisiones de diseño aplicadas a las secuencias, excepciones y comentarios de los casos planificados. Relaciones de CU-168, CU-170, CU-174 y CU-175 en la tabla maestra. IRQ-02, IRQ-06, IRQ-08, IRQ-09 e IRQ-15 ampliados. | Nahuel Wagner |
 | 6 | 2026-10-01 | Cierre de la documentación: casos de uso expandidos coherentes con el código y con los contratos de operación (CU-022, CU-032, CU-033, CU-048, CU-084, CU-085, CU-089, CU-094, CU-096, CU-100, CU-102 y CU-111), limitaciones conocidas redactadas como tales y cabecera alineada con los demás documentos. | Nahuel Wagner |
 | 7 | 2026-10-01 | Revisión final: diagrama de contexto en las fronteras del sistema, leyenda de prioridad con Menor, objetivos de la iteración reformulados, recargo del pago en línea, autenticación con el token de Firebase, actor ACT-09 y ajustes de CU-005, CU-012, CU-013, CU-048, CU-050, CU-104, CU-122, CU-126, CU-159 y CU-160. | Nahuel Wagner |
+| 8 | 2026-10-03 | Versión 1.1 del sistema (versión del software, back y panel, distinta de la versión de este documento): CU-006 informa el precio unitario y el subtotal de cada renglón (los del momento de pedir) y la distribuidora del pedido; CU-011 aclara el filtro por fechas (hora argentina, `to` inclusivo, fecha de creación) y rechaza un rango invertido; CU-026 cuenta día, semana ISO y mes en hora argentina; CU-030 incorpora la evolución de ventas por rango y granularidad (con semana ISO) y el corte de los días en hora argentina; CU-027 a CU-029 definen el rango de fechas, rechazan un rango invertido y aclaran qué suma cada reporte. | Nahuel Wagner |
 
 ---
 
@@ -657,7 +658,7 @@ interacción de diseño, en el Documento 3.
 | 5 | Selecciona el método de pago: EFECTIVO, MERCADOPAGO o TRANSFERENCIA. Con MERCADOPAGO o TRANSFERENCIA el sistema aplica un recargo del 10 % sobre el total; el pago en efectivo no tiene recargo. |
 | 6 | Revisa el resumen —ítems, descuentos, subtotal, recargos y total— y confirma el pedido. La app acompaña el envío con una clave de idempotencia, de modo que un reintento por corte de red no genere un segundo pedido. |
 | 7 | El sistema comprueba que el pedido se cree a nombre del propio cliente autenticado. Un administrador o un chofer sí pueden cargarlo a nombre de un cliente. |
-| 8 | El sistema abre una transacción y, dentro de ella: comprueba que el cliente exista y que la dirección elegida sea suya; verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por zona que esa zona tenga definido; reserva con bloqueo el cupo de la franja horaria elegida para esa fecha; y, por cada ítem, bloquea la garrafa, comprueba que alcance el stock y lo descuenta, lee sus promociones, comprueba que pertenezca a la distribuidora del pedido, aplica los descuentos por volumen configurados y calcula el subtotal con el precio de la base, nunca con el que envía el cliente. |
+| 8 | El sistema abre una transacción y, dentro de ella: comprueba que el cliente exista y que la dirección elegida sea suya; verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por zona que esa zona tenga definido; reserva con bloqueo el cupo de la franja horaria elegida para esa fecha; y, por cada ítem, bloquea la garrafa, comprueba que alcance el stock y lo descuenta, lee sus promociones, comprueba que pertenezca a la distribuidora del pedido, aplica los descuentos por volumen configurados, redondea el precio unitario a centavos y calcula el subtotal como cantidad por ese precio, tomando el precio de la base y nunca el que envía el cliente. |
 | 9 | Suma al total el recargo por zona de cobertura y, si el pago es online, el recargo del 10 %. |
 | 10 | Persiste el pedido y sus ítems con estado PENDING —o con estado RESERVED si es una pre-reserva— y confirma la transacción. |
 | 11 | Si el pago es en efectivo o por transferencia, abre la oferta del pedido a un único chofer (CU-013). Si el pago es por MercadoPago, genera el enlace de cobro y **no ofrece el pedido a nadie**: el despacho lo dispara la confirmación del cobro. Si el pedido es una pre-reserva, tampoco se ofrece: lo activa el proceso temporal el día agendado, y si la seña es por MercadoPago se genera un cobro solo por ese monto. |
@@ -709,7 +710,7 @@ interacción de diseño, en el Documento 3.
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario selecciona un pedido desde su listado —historial del cliente o listado del panel—. |
-| 2 | El sistema recupera el pedido con todos sus datos: ítems, precios unitarios, subtotales, total, estado, chofer asignado si lo hay, dirección de entrega, franja horaria, método y estado del pago, y las marcas de tiempo de cada transición. |
+| 2 | El sistema recupera el pedido con todos sus datos: ítems —cada uno con el precio unitario y el subtotal que quedaron guardados en su renglón al crear el pedido—, total, estado, distribuidora a la que pertenece (`distributor_id`), chofer asignado si lo hay, dirección de entrega, franja horaria, método y estado del pago, y las marcas de tiempo de cada transición. |
 | 3 | Si hay una distribuidora en el contexto de la solicitud, el sistema comprueba que el pedido pertenezca a esa distribuidora. Si quien consulta es un cliente, comprueba además que el pedido sea suyo. |
 | 4 | El sistema devuelve la vista detallada del pedido. |
 | 5 | La app muestra las acciones disponibles según el rol: el cliente puede cancelar mientras el pedido esté pendiente o aceptado; el administrador puede cancelar o asignar chofer manualmente. |
@@ -727,7 +728,7 @@ interacción de diseño, en el Documento 3.
 | **Rendimiento** | La consulta del detalle se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta: se ejecuta cada vez que el usuario abre un pedido desde su listado, varias veces por pedido activo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La vista de detalle no incorpora las incidencias ni las calificaciones asociadas al pedido: para consultarlas hace falta recurrir por separado a CU-062 y a CU-065/CU-066. |
+| **Comentarios** | La vista de detalle no incorpora las incidencias ni las calificaciones asociadas al pedido: para consultarlas hace falta recurrir por separado a CU-062 y a CU-065/CU-066. El precio unitario y el subtotal de cada ítem son los del momento de pedir, con las promociones por volumen ya aplicadas, y no el precio vigente del catálogo: si el administrador cambia el precio después, el detalle y el remito impreso del pedido siguen mostrando lo que se cobró. La respuesta informa además `distributor_id`, la distribuidora dueña del pedido, que el Administrador General usa para operar sobre el pedido sin elegir una distribuidora con «Ver como» (por ejemplo, CU-012). |
 
 ---
 #### Crítico · automático CU-013 — Asignar Pedido Automáticamente por Proximidad
@@ -1897,7 +1898,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El administrador visualiza los pedidos de su distribuidora con paginación, ordenados del más reciente al más antiguo. Admite filtrar por estado, por rango de fechas y por un término de búsqueda. |
 | **Precondición** | El administrador está autenticado. |
-| **Punto de extensión** | *Filtrar por Estado*, *Filtrar por Fecha* y *Buscar por Término*: el listado admite los parámetros `status`, `from`/`to` (formato `YYYY-MM-DD`) y `term` (`GET /orders?status=&from=&to=&term=`). |
+| **Punto de extensión** | *Filtrar por Estado*, *Filtrar por Fecha* y *Buscar por Término*: el listado admite los parámetros `status`, `from`/`to` (formato `YYYY-MM-DD`, días en hora argentina y `to` inclusivo) y `term` (`GET /orders?status=&from=&to=&term=`). |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -1917,7 +1918,8 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 2 | Si el administrador de la plataforma consulta sin indicar distribuidora, el listado abarca los pedidos de todas las distribuidoras. |
 | 2 | Si `status` no es uno de los estados válidos del pedido, el sistema responde 400 "status debe ser un estado de pedido válido". |
-| 2 | Si `from` o `to` no respetan el formato `YYYY-MM-DD`, el sistema responde 400. |
+| 2 | Si `from` o `to` no respetan el formato `YYYY-MM-DD` o no son una fecha que exista, el sistema responde 400. |
+| 2 | Los días `from` y `to` se interpretan en hora argentina (America/Argentina/Buenos_Aires) y `to` es inclusivo: el filtro toma los pedidos creados desde el inicio de `from` hasta el inicio del día siguiente a `to`. Filtra por la fecha de creación del pedido, a diferencia de los reportes de ventas (CU-027 a CU-030), que cuentan por la fecha de entrega. Si `from` es posterior a `to`, el sistema responde 400 «from no puede ser posterior a to», igual que los reportes. |
 | 2 | El listado no admite un parámetro que filtre por cliente o por chofer asignado. |
 
 | Campo | Detalle |
@@ -2433,7 +2435,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede al panel de control. |
 | 2 | El panel pide en paralelo el resumen de indicadores y la serie de ventas de los últimos siete días (CU-030). |
-| 3 | El sistema calcula el resumen con consultas agregadas, acotado a la distribuidora del administrador: cantidad de pedidos pendientes, aceptados y en camino; pedidos entregados en el día; ventas del día, de la semana, del mes y acumuladas; cantidad de choferes activos **y habilitados**; valor promedio del pedido entregado en el día; y el reparto entre efectivo y MercadoPago de los pedidos entregados del mes. |
+| 3 | El sistema calcula el resumen con consultas agregadas, acotado a la distribuidora del administrador: cantidad de pedidos pendientes, aceptados y en camino; pedidos entregados en el día; ventas del día, de la semana, del mes y acumuladas —el día, la semana y el mes se cuentan en hora argentina, y la semana es la ISO, de lunes a domingo, no los últimos siete días—; cantidad de choferes activos **y habilitados**; valor promedio del pedido entregado en el día; y el reparto entre efectivo y MercadoPago de los pedidos entregados del mes. |
 | 4 | Devuelve el resumen y, en la segunda consulta, la serie de siete días. |
 | 5 | El panel dibuja las tarjetas de indicadores y el gráfico de evolución. |
 | 6 | Los datos se refrescan volviendo a pedirlos. |
@@ -2470,7 +2472,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador accede a "Reportes" y elige el reporte por chofer. |
-| 2 | Configura el rango de fechas. Si no lo indica, el reporte cubre **el día en curso**, desde la medianoche hasta el momento de la consulta. |
+| 2 | Configura el rango de fechas. Las fechas son días `YYYY-MM-DD` en hora argentina (America/Argentina/Buenos_Aires) y la de fin es inclusiva: el rango va desde el inicio del día de inicio hasta el inicio del día siguiente al de fin. Si indica una sola, el rango es ese día; si no indica ninguna, el reporte cubre **el día en curso**. |
 | 3 | Solicita la generación del reporte. |
 | 4 | El sistema toma los pedidos entregados de su distribuidora cuya fecha de entrega cae dentro del rango, los agrupa por chofer y, con aritmética decimal, cuenta los pedidos y suma los importes. |
 | 5 | Devuelve, por cada chofer, su identificador, su nombre, la cantidad de pedidos entregados y el monto total vendido. |
@@ -2484,7 +2486,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si alguna de las dos fechas no se puede interpretar, el sistema la rechaza indicando el formato esperado. |
 | 4 | Si no hay pedidos entregados en el rango, el sistema devuelve una lista vacía y el panel muestra que no hay datos. |
-| 4 | Si el rango está invertido —la fecha de fin es anterior a la de inicio—, el sistema **no lo rechaza**: la consulta simplemente devuelve una lista vacía. |
+| 3 | Si el rango está invertido —la fecha de inicio es posterior a la de fin—, el sistema responde 400 «from no puede ser posterior a to». |
 | 4 | Los pedidos entregados por un chofer que ya no tenga perfil de repartidor o usuario asociado quedan fuera del reporte. |
 
 | Campo | Detalle |
@@ -2492,7 +2494,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El reporte, con su agregación por chofer, se completa en menos de 2 segundos. |
 | **Frecuencia** | Baja: el administrador lo consulta esporádicamente, por lo general al cierre de un período. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no calcula la calificación promedio ni el tiempo promedio de entrega por chofer, que son las dos métricas que convertirían este listado en un reporte de rendimiento; tal como está, informa volumen y facturación pero no desempeño. El sistema no valida que la fecha de fin sea posterior a la de inicio, con lo que un rango mal cargado se confunde con un período sin actividad. |
+| **Comentarios** | El sistema no calcula la calificación promedio ni el tiempo promedio de entrega por chofer, que son las dos métricas que convertirían este listado en un reporte de rendimiento; tal como está, informa volumen y facturación pero no desempeño. El reporte cuenta los pedidos por su fecha de entrega y no por la de creación, y suma el total del pedido, con los recargos incluidos. |
 
 ---
 #### Importante CU-028 — Ver Reporte de Ventas por Producto
@@ -2510,7 +2512,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador accede a "Reportes" y elige el reporte por producto. |
-| 2 | Configura el rango de fechas y solicita el reporte. Si no indica rango, cubre el día en curso. |
+| 2 | Configura el rango de fechas y solicita el reporte. Las fechas son días `YYYY-MM-DD` en hora argentina y la de fin es inclusiva; si indica una sola, el rango es ese día, y si no indica rango, cubre el día en curso. |
 | 3 | El sistema toma los ítems de los pedidos entregados de su distribuidora cuya fecha de entrega cae dentro del rango. |
 | 4 | Los agrupa **por tipo y descripción de la garrafa** —no por el identificador del producto— y suma las cantidades y los subtotales. |
 | 5 | Devuelve, por cada agrupación, el tipo, la descripción, las unidades vendidas y el monto total. |
@@ -2523,6 +2525,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 2 | Si alguna de las dos fechas no se puede interpretar, el sistema la rechaza indicando el formato esperado. |
+| 2 | Si la fecha de inicio es posterior a la de fin, el sistema responde 400 «from no puede ser posterior a to». |
 | 3 | Si no hay pedidos entregados en el rango, el sistema devuelve una lista vacía y el panel muestra que no hay datos. |
 
 | Campo | Detalle |
@@ -2530,7 +2533,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El reporte, con su agregación por producto, se completa en menos de 2 segundos. |
 | **Frecuencia** | Baja: esporádica, por lo general al cierre de un período o al analizar el mix de ventas. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no informa el monto de los descuentos aplicados, y con el modelo de datos actual **no puede**: el descuento por volumen se absorbe al calcular el precio unitario del ítem y el importe descontado no se guarda en ninguna parte. Informarlo exige primero un cambio en el modelo, y así conviene declararlo en la tesis. El sistema no calcula el porcentaje de participación de cada producto sobre el total: ese cálculo queda del lado del panel. La agrupación por tipo y descripción reúne bajo una misma fila productos distintos que compartan ambos valores, y no permite volver desde el reporte al producto concreto. |
+| **Comentarios** | El sistema no informa el monto de los descuentos aplicados, y con el modelo de datos actual **no puede**: el descuento por volumen se absorbe al calcular el precio unitario del ítem y el importe descontado no se guarda en ninguna parte. Informarlo exige primero un cambio en el modelo, y así conviene declararlo en la tesis. El sistema no calcula el porcentaje de participación de cada producto sobre el total: ese cálculo queda del lado del panel. La agrupación por tipo y descripción reúne bajo una misma fila productos distintos que compartan ambos valores, y no permite volver desde el reporte al producto concreto. El monto se arma con los subtotales guardados en los renglones, sin el recargo de zona ni el del método de pago: por eso el total de este reporte puede ser menor que el de los reportes por chofer y por método de pago, que suman el total del pedido. |
 
 ---
 #### Secundario CU-029 — Ver Reporte por Método de Pago
@@ -2548,7 +2551,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador accede a "Reportes" y elige el reporte por método de pago. |
-| 2 | Configura el rango de fechas y solicita el reporte. Si no indica rango, cubre el día en curso. |
+| 2 | Configura el rango de fechas y solicita el reporte. Las fechas son días `YYYY-MM-DD` en hora argentina y la de fin es inclusiva; si indica una sola, el rango es ese día, y si no indica rango, cubre el día en curso. |
 | 3 | El sistema toma los pedidos **entregados** de su distribuidora cuya fecha de entrega cae dentro del rango. |
 | 4 | Los agrupa por método de pago y suma la cantidad de pedidos y el importe total de cada grupo. |
 | 5 | Devuelve, por cada método, su nombre, la cantidad de pedidos y el monto total. |
@@ -2561,6 +2564,7 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 2 | Si alguna de las dos fechas no se puede interpretar, el sistema la rechaza indicando el formato esperado. |
+| 2 | Si la fecha de inicio es posterior a la de fin, el sistema responde 400 «from no puede ser posterior a to». |
 | 3 | Si no hay pedidos entregados en el rango, el sistema devuelve una lista vacía y el panel muestra que no hay datos. |
 
 | Campo | Detalle |
@@ -2568,7 +2572,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El reporte se completa en menos de 2 segundos. |
 | **Frecuencia** | Baja: esporádica, a demanda del administrador. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El reporte mide entregas y no pedidos: un pedido pagado por MercadoPago y luego cancelado no aparece en ninguna fila, de modo que el reporte no sirve para conciliar cobros. El sistema no calcula el porcentaje de cada método sobre el total: ese cálculo queda del lado del panel. |
+| **Comentarios** | El reporte mide entregas y no pedidos: un pedido pagado por MercadoPago y luego cancelado no aparece en ninguna fila, de modo que el reporte no sirve para conciliar cobros. El sistema no calcula el porcentaje de cada método sobre el total: ese cálculo queda del lado del panel. El importe de cada método es la suma del total de los pedidos, con los recargos incluidos. |
 
 ---
 #### Secundario CU-030 — Ver Gráfico de Ventas (últimos 7 días)
@@ -2577,7 +2581,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-07 |
 | **Requisitos asociados** | IRQ-07 |
-| **Descripción** | El panel de control muestra automáticamente la evolución de las ventas diarias de los últimos siete días de la distribuidora, para identificar tendencias de demanda y picos recientes. |
+| **Descripción** | El panel de control muestra automáticamente la evolución de las ventas diarias de los últimos siete días de la distribuidora, para identificar tendencias de demanda y picos recientes. Además, desde la sección de reportes el administrador pide la evolución de las ventas para un rango de fechas y una granularidad —día, semana o mes—. |
 | **Precondición** | El administrador está autenticado y accedió al panel de control. |
 | **Estado** | Implementado |
 
@@ -2587,9 +2591,11 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede al panel de control (CU-026). |
 | 2 | El panel pide automáticamente la serie de ventas. La ventana de siete días está fija en el sistema y no se puede parametrizar. |
-| 3 | El sistema suma, en una única consulta agregada, el importe de los pedidos entregados de su distribuidora agrupados por día de entrega, desde el comienzo del día de hace seis jornadas hasta el final del día en curso. |
+| 3 | El sistema suma, en una única consulta agregada, el importe de los pedidos entregados de su distribuidora agrupados por día de entrega, desde el comienzo del día de hace seis jornadas hasta el final del día en curso, en hora argentina. |
 | 4 | Rellena con cero los días sin ventas y devuelve, por cada uno de los siete días, el nombre abreviado del día de la semana en español, la fecha y el monto vendido. |
 | 5 | El panel dibuja el gráfico de evolución diaria. |
+| 6 | Desde "Reportes", el administrador elige un rango de fechas y una granularidad —día, semana ISO (de lunes a domingo) o mes— y pide la evolución de ventas. Sin granularidad, el sistema agrupa por día. |
+| 7 | El sistema toma los pedidos entregados de su distribuidora cuya fecha de entrega cae dentro del rango (días `YYYY-MM-DD` en hora argentina, fecha de fin inclusiva, y el día en curso si no se indica rango), los agrupa por período en hora argentina y devuelve, en orden cronológico, el instante en que arranca cada período, la cantidad de pedidos y el monto vendido, que es el total del pedido con los recargos incluidos. |
 
 **Postcondición:** El administrador visualizó la serie de ventas de los últimos siete días. No se modifica ningún dato.
 
@@ -2599,13 +2605,15 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si no hubo entregas en toda la ventana, el sistema devuelve igual los siete días, todos en cero: la serie nunca vuelve vacía. |
 | 3 | Si el administrador de la plataforma consulta sin indicar distribuidora, la serie consolida todas. |
+| 7 | Si una fecha no se puede interpretar, si la de inicio es posterior a la de fin o si la granularidad no es `day`, `week` o `month`, el sistema responde 400. |
+| 7 | Los períodos sin entregas no aparecen en la serie de la evolución por rango: a diferencia de la serie fija de siete días, no se rellenan con cero. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La serie de siete días se completa en menos de 2 segundos. |
 | **Frecuencia** | Alta: se recalcula cada vez que el administrador entra al panel de control, junto con CU-026. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no informa la cantidad de pedidos por día: la serie trae únicamente el importe vendido, con lo que no se puede distinguir un día de pocas ventas grandes de uno de muchas ventas chicas. El sistema no permite elegir la cantidad de días de la ventana. Limitación conocida: el corte de los días depende de la zona horaria, porque el agrupamiento lo resuelve la base sobre la fecha de entrega mientras que el relleno de los días sin ventas se arma con fechas en horario universal; si el servidor no corre en horario universal, los bordes de cada día pueden no coincidir. |
+| **Comentarios** | El sistema no informa la cantidad de pedidos por día: la serie trae únicamente el importe vendido, con lo que no se puede distinguir un día de pocas ventas grandes de uno de muchas ventas chicas. El sistema no permite elegir la cantidad de días de la ventana. El corte de los días se hace en hora argentina (America/Argentina/Buenos_Aires) tanto en el agrupamiento que resuelve la base sobre la fecha de entrega como en el relleno de los días sin ventas, de modo que los bordes de cada día coinciden sin importar la zona horaria del servidor. |
 
 ---
 #### Importante CU-033 — Activar / Desactivar Chofer (Admin)

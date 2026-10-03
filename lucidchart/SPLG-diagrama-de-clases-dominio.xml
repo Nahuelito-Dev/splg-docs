@@ -857,7 +857,7 @@
           <mxGeometry y="1772" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c20" value="ItemPedido" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
-          <mxGeometry x="40" y="6866" width="460" height="212" as="geometry" />
+          <mxGeometry x="40" y="6853" width="460" height="238" as="geometry" />
         </mxCell>
         <mxCell id="c20f0" value="- cantidad: Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
           <mxGeometry y="30" width="460" height="26" as="geometry" />
@@ -865,20 +865,23 @@
         <mxCell id="c20f1" value="- precioUnitario: Moneda" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
           <mxGeometry y="56" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c20f2" value="+ «create» ItemPedido(producto: Producto, cantidad: Entero, precioUnitario: Moneda, subtotal: Moneda)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
+        <mxCell id="c20f2" value="- /subtotal: Moneda" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
           <mxGeometry y="82" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c20f3" value="+ getCantidad(): Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
+        <mxCell id="c20f3" value="+ «create» ItemPedido(producto: Producto, cantidad: Entero, precioUnitario: Moneda, subtotal: Moneda)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
           <mxGeometry y="108" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c20f4" value="+ getProducto()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
+        <mxCell id="c20f4" value="+ getCantidad(): Entero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
           <mxGeometry y="134" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c20f5" value="+ getSubtotal()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
+        <mxCell id="c20f5" value="+ getProducto()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
           <mxGeometry y="160" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c20f6" value="+ restituirStock()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
+        <mxCell id="c20f6" value="+ getSubtotal(): Moneda" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
           <mxGeometry y="186" width="460" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c20f7" value="+ restituirStock()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c20">
+          <mxGeometry y="212" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c21" value="CambioEstadoPedido" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#FFFFFF;strokeColor=#2C4257;" vertex="1" parent="1">
           <mxGeometry x="5223" y="6892" width="460" height="160" as="geometry" />
