@@ -1052,7 +1052,7 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 | 4 | Dentro de cada radio, `DeliveryService.choferesElegibles()` filtra la lista contra la base, conservando sólo los choferes con `isEnabled = true` y `validated = true` (preservando el orden de cercanía). Después `FleetDispatchLockService.choferesInhabilitados` descarta a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-136 a CU-138, CU-161), y se toma el primero que todavía no fue contactado para este pedido. |
 | 5 | Crea la oferta (`DispatchOfferRepositoryPort.create`) con vencimiento a los 30 segundos y llama `RealtimeDispatchPort.notifyDriverNewOrder(driverId, payload)` → `DriversGateway.notifyNewOrder()` → `socket.to('driver_' + driverId).emit('server:new-order-request', { event: 'NEW_ORDER', orderId, totalAmount, paymentMethod, expiresAt, items })`. En paralelo envía un push FCM complementario (`NotificationsService.sendOfferPushToDriver`, best-effort). |
 | 6 | Se detiene en el primer chofer elegible encontrado: no se contacta a ningún otro mientras esa oferta esté vigente. |
-| 7 | Si ningún radio produce un candidato nunca contactado, se repite la búsqueda con los choferes que dejaron vencer su oferta hace más que el enfriamiento (3 minutos): la re-oferta es el último recurso, y quien rechazó o ya tuvo el pedido no vuelve a recibirlo. |
+| 7 | Si ningún radio produce un candidato nunca contactado, se repite la búsqueda con los choferes que dejaron vencer su oferta hace más que el enfriamiento (3 minutos): la re-oferta es el último recurso, y quien rechazó o ya tuvo el pedido no vuelve a recibirlo. Un chofer con tres ofertas vencidas para el mismo pedido (la original y dos re-ofertas) queda agotado para ese pedido. |
 | 8 | Si tampoco hay un chofer que se pueda re-ofertar: no se crea oferta, se avisa a los administradores del panel (`order:no-drivers`, una sola vez por agotamiento) y el pedido queda en PENDING para que el ciclo del cron (CU-014) lo reintente. |
 
 **Postcondición:** Existe una oferta (`DispatchOffer`) vigente para el chofer más cercano disponible, que recibió la notificación en tiempo real. La orden permanece en PENDING hasta que el chofer la acepte (CU-015), la rechace (CU-016) o la oferta venza y se re-ofrezca al siguiente (CU-014).
@@ -4281,7 +4281,7 @@ sequenceDiagram
 |---|---|
 | `Map<String, Pedido>.get(...)` | `OrderRepositoryPort.findByIdFull`: quien dispara el despacho lee el `Order` y se lo pasa a `DispatchOrchestratorService.offerToNextDriver` |
 | `DispatchOrchestratorService.ofrecerAlSiguienteChofer(...)` | `DispatchOrchestratorService.offerToNextDriver` |
-| `Pedido.getEstadoDeLasOfertas(...)` | `DispatchOfferRepositoryPort.findDriverOfferState`: clasifica a los choferes que ya tuvieron una `DispatchOffer` de ese pedido en bloqueados (rechazaron, ya lo tuvieron, tienen una oferta vigente o la dejaron vencer hace menos que el enfriamiento de 3 minutos) y re-ofertables (todas sus ofertas vencieron hace más que el enfriamiento) |
+| `Pedido.getEstadoDeLasOfertas(...)` | `DispatchOfferRepositoryPort.findDriverOfferState`: clasifica a los choferes que ya tuvieron una `DispatchOffer` de ese pedido en bloqueados (rechazaron, ya lo tuvieron, tienen una oferta vigente, la dejaron vencer hace menos que el enfriamiento de 3 minutos o acumulan tres ofertas vencidas para ese pedido) y re-ofertables (menos de tres ofertas, todas vencidas hace más que el enfriamiento) |
 | `Pedido.getPuntoDeEntrega()` | `Order.deliveryPoint`, convertido con `coordenadasDePunto()` |
 | `Chofer.puedeRecibirOferta(...)` | `DeliveryService.choferesElegibles` (habilitado, validado y de la distribuidora del pedido) y `FleetDispatchLockService.choferesInhabilitados` (licencia y vehículo con documentación vigente) |
 | `Pedido.ofrecerA(...)` | `DispatchOrchestratorService.offerToNextDriver`: calcula `DispatchOffer.expiresAt` y llama a `DispatchOfferRepositoryPort.create` |
@@ -17234,7 +17234,9 @@ Para cada oferta OFFERED cuya vigencia ya pasó:
 
 Un pedido solo se re-ofrece si cumple `status = PENDING` **y** no tiene chofer
 asignado (`delivery_id` nulo). Esta guarda evita que un pedido ya tomado vuelva a
-entrar al circuito.
+entrar al circuito. A un mismo chofer se le ofrece el pedido como máximo tres veces
+(la oferta original y dos re-ofertas, separadas por el enfriamiento de 3 minutos);
+agotados los candidatos, se avisa una vez a los administradores con `order:no-drivers`.
 
 #### Salidas
 
