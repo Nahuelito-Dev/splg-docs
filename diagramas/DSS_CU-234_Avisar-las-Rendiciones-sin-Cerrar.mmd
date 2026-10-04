@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSS — CU-234 Avisar las Rendiciones sin Cerrar
+    autonumber
+    actor SAU as Sistema Automático (ACT-04)
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    Note over SAU: Proceso temporal
+    SAU->>SIS: avisarRendicionesSinCerrar()
+    activate SIS
+    alt Otra instancia ya está ejecutando el proceso
+        SIS-->>SAU: ejecución salteada
+    else Hay rendiciones atrasadas
+        Note over SAU,SIS: Marca cada rendición como avisada
+        SIS-)ADM: notificarRendicionesSinCerrar(rendiciones)
+        SIS-->>SAU: avisos enviados (cantidad)
+    else No hay rendiciones atrasadas
+        SIS-->>SAU: sin cambios
+    end
+    deactivate SIS

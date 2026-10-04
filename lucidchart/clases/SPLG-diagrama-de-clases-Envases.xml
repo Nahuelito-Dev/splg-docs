@@ -19,7 +19,7 @@
         <mxCell id="c0f3" value="+ consultarEnvasesProximosAVencer(dias: Entero): Envase[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="108" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c0f4" value="+ consultarHistorialDelEnvase(envaseId: Identificador): MovimientoEnvase[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
+        <mxCell id="c0f4" value="+ consultarHistorialDelEnvase(envaseId: Identificador): MovimientoDeCaja[*]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">
           <mxGeometry y="134" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c0f5" value="+ consultarVigenciaDelEnvase(envaseId: Identificador): FechaHora" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c0">

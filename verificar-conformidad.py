@@ -175,7 +175,7 @@ _n = str(len(TODOS))
 # Se buscan los totales que el catalogo dejo atras, no cualquier numero: hay frases
 # legitimas que cuentan una parte ("25 casos de uso reales", "45 casos" del relevamiento
 # inicial), y marcarlas seria ruido.
-SUPERADOS = {"104", "108", "115", "131", "159", "166"}
+SUPERADOS = {"104", "108", "115", "131", "159", "166", "174"}
 _viejos = set()
 for _f in ("README.md", "Casos-de-Uso.md", "0-Plan_Del_Proyecto.md", "1-Requisitos.md",
            "2-Analisis.md", "3-Diseño.md", "GUIA-actualizar-drive.md", "INDICE-IMAGENES.md"):
@@ -277,6 +277,14 @@ def verificar_diagrama_cu():
     paq = {p["data-pq"]: int(p["data-n"]) for p in _elementos(mapa, "paquete")}
     if paq != dict(cuenta):
         errores.append(f"mapa: paquetes {paq} distintos del catalogo {dict(cuenta)}")
+    # ningún PNG de subsistema mide justo el tope de 4096 px de PlantUML: la imagen saldría cortada
+    import struct
+    for f in sorted(glob.glob(D + "diagramas/uml/CU_SS-*.png")):
+        with open(f, "rb") as fh:
+            cab = fh.read(24)
+        ancho, alto = struct.unpack(">II", cab[16:24])
+        if 4096 in (ancho, alto):
+            errores.append(f"{os.path.basename(f)} mide {ancho}x{alto}: PlantUML lo cortó al tope de 4096 px")
     return errores
 
 _errs = verificar_diagrama_cu()
@@ -318,13 +326,13 @@ def verificar_plantillas():
     if not tabla_con(hitos, ["Descripción", "Hito"]):
         errores.append("Doc 0 §3: falta la tabla Descripción · Hito")
     fila_c = next((l for l in hitos.split("\n") if l.startswith("| Fase de Construcción")), "")
-    falt = [f"I-{n}" for n in range(1, 11) if f"(I-{n})" not in fila_c]
+    falt = [f"I-{n}" for n in range(1, 12) if f"(I-{n})" not in fila_c]
     if falt: errores.append(f"Doc 0 §3: el hito de Construcción no refleja las iteraciones {falt}")
     cal = seccion(d0, orden[2], orden[3])
     if "### Cronograma (Diagrama de Gantt)" not in cal or "UML_Gantt." not in cal:
         errores.append("Doc 0 §4: falta el Cronograma (Diagrama de Gantt) como figura")
     gantt = open(D + "diagramas/uml/UML_Gantt.puml", encoding="utf-8").read()
-    for cod in ["INI", "E01", "C01", "C02", "C03", "C04", "C05", "C06", "T01"] + [f"I{n}" for n in range(1, 11)]:
+    for cod in ["INI", "E01", "C01", "C02", "C03", "C04", "C05", "C06", "T01"] + [f"I{n}" for n in range(1, 12)]:
         if f"[{cod}]" not in gantt: errores.append(f"Gantt: falta la barra {cod}")
     if gantt.count("happens") < 5: errores.append("Gantt: faltan los hitos de cierre")
     if not tabla_con(seccion(d0, orden[3], orden[4]), ["Actor", "Descripción"]):
@@ -370,9 +378,10 @@ def verificar_plantillas():
     if not re.search(r'\*\*Figura \d+ — Diagrama de Subsistemas\*\*', s4) or "CU_Sistema_Subsistemas" not in s4:
         errores.append("Doc 1 §4: falta el Diagrama de Subsistemas como figura numerada")
     desc = set(re.findall(r'^\|\s*\*{0,2}(SS-\d\d)\*{0,2}\s*\|[^|]*\|\s*\S', s4, re.M))
-    if len(desc) != 18: errores.append(f"Doc 1 §4: describe {len(desc)} subsistemas de 18")
+    n_ss = len(set(re.findall(r'\*\*Subsistema:\*\*\s*(SS-\d\d)', _cat[_a:_b])))
+    if len(desc) != n_ss: errores.append(f"Doc 1 §4: describe {len(desc)} subsistemas de {n_ss}")
     emb = set(re.findall(r'diagramas/uml/CU_(SS-\d\d)_[^)]*\.png\)', s4))
-    if len(emb) != 18: errores.append(f"Doc 1 §4.3: embebe {len(emb)} diagramas por subsistema de 18")
+    if len(emb) != n_ss: errores.append(f"Doc 1 §4.3: embebe {len(emb)} diagramas por subsistema de {n_ss}")
     if "CU_Sistema_Diagrama-De-Contexto.png)" not in s3: errores.append("Doc 1 §3.1: falta el diagrama de contexto")
 
     # figuras: toda imagen existe y lleva su epígrafe numerado
@@ -387,6 +396,7 @@ def verificar_plantillas():
     d3 = "\n".join(leer("3-Diseño.md"))
     for img in ("UML_Componentes", "UML_Despliegue", "UML_Estados_Pedido", "UML_Estados_Reclamo", "UML_Estados_Envase",
                 "UML_Estados_Reserva", "UML_Estados_TareaFlota", "UML_Estados_OfertaDespacho",
+                "UML_Estados_Empleado", "UML_Estados_Licencia", "UML_Estados_Jornada",
                 "UML_Actividad_Despacho", "UML_Actividad_CicloPedido"):
         if f"diagramas/uml/{img}.png" not in d3: errores.append(f"Doc 3: falta el diagrama {img}")
     return errores
@@ -496,7 +506,18 @@ def verificar_operaciones():
             errores.append(f"contratos: el nombre de {nom} no es la firma del catálogo ({ops[nom]['firmaConTipos']})")
     return errores
 
-_errs_op = verificar_operaciones()
+def verificar_tabla_operaciones_doc3():
+    """La tabla de operaciones del Documento 3 (§4.21) la genera generar-operaciones.py: sus cifras son las del catálogo."""
+    cat = json.load(open(D + "material-de-trabajo/operaciones-sistema.json", encoding="utf-8"))["operaciones"]
+    d3 = "\n".join(leer("3-Diseño.md"))
+    m = re.search(r'Son \*\*(\d+) operaciones\*\*\. \*\*(\d+)\*\* tienen su diagrama de interacción y\s+\*\*(\d+)\*\* tienen contrato', d3)
+    if not m: return ["no está la tabla de operaciones del sistema (generar-operaciones.py)"]
+    esperado = (len(cat), len(cat), sum(1 for o in cat if o["cambiaEstado"]))
+    if tuple(map(int, m.groups())) != esperado:
+        return [f"la tabla dice {m.groups()} y el catálogo {esperado}: correr generar-operaciones.py"]
+    return []
+
+_errs_op = verificar_operaciones() + verificar_tabla_operaciones_doc3()
 if _errs_op: FALLAS.append("operaciones del sistema (DSS, catálogo y contratos)")
 print(f"[{'OK' if not _errs_op else 'FALLA':5}] Operaciones del sistema: DSS con :Sistema, iniciador del catálogo y sin auto-mensajes; una firma por operación; contrato de cada una que cambia estado"
       + (f" | {len(_errs_op)} errores: {_errs_op[:6]}" if _errs_op else ""))
@@ -507,7 +528,7 @@ print(f"[{'OK' if not _errs_op else 'FALLA':5}] Operaciones del sistema: DSS con
 # entonces se corre con DSD_ESTRICTO=1 (o se fija el valor por omisión acá).
 sys.path.insert(0, D + "material-de-trabajo")
 import dsd_larman
-_estricto = os.environ.get("DSD_ESTRICTO", "1") == "1"  # estricto por omisión: las 195 operaciones tienen su DSD
+_estricto = os.environ.get("DSD_ESTRICTO", "1") == "1"  # estricto por omisión: todas las operaciones tienen su DSD
 _errs_dsd, _pend_dsd, _hechos_dsd = dsd_larman.verificar(estricto=_estricto)
 if _errs_dsd: FALLAS.append("DSD en estilo Larman")
 print(f"[{'OK' if not _errs_dsd else 'FALLA':5}] DSD en estilo Larman: {len(_hechos_dsd)} hechos, {len(_pend_dsd)} operaciones del catálogo todavía sin DSD, {len(dsd_larman.AVISOS)} avisos"

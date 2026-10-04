@@ -26,6 +26,7 @@ classDiagram
         class ConfiguracionModulo {
             módulo
             parámetros
+            exigir carga de camión abierta
         }
         class AsientoAuditoria {
             operación
@@ -64,6 +65,7 @@ classDiagram
             precio
             stock
             activo
+            costo promedio
         }
         class Promocion {
             cantidad
@@ -188,6 +190,8 @@ classDiagram
             carga máxima
             kilometraje
             estado en la flota
+            tipo de combustible
+            capacidad del tanque
         }
         class AsignacionVehiculo {
             asignado el
@@ -200,6 +204,8 @@ classDiagram
             intervalo
             anticipación
             criticidad
+            documento que controla
+            aplica a
         }
         class TareaMantenimiento {
             estado
@@ -208,6 +214,8 @@ classDiagram
             prestador
             número
             costo
+            vigente desde
+            detalle
         }
         class AdjuntoTarea {
             nombre original
@@ -236,6 +244,7 @@ classDiagram
             estado
             resolución
             fotografía
+            clave de la fotografía
         }
         class Incidencia {
             tipo
@@ -251,6 +260,323 @@ classDiagram
         }
     }
 
+    namespace Personal {
+        class PuestoDeTrabajo {
+            nombre
+            categoría
+            activo
+        }
+        class Empleado {
+            legajo
+            nombre
+            apellido
+            documento
+            CUIL
+            fecha de nacimiento
+            domicilio
+            teléfono
+            contacto de emergencia
+            fecha de ingreso
+            fecha de egreso
+            motivo de egreso
+            modalidad de contratación
+            estado
+        }
+        class JornadaDeTrabajo {
+            día
+            ingreso
+            egreso
+            origen
+            observación
+        }
+        class LicenciaLaboral {
+            tipo
+            desde
+            hasta
+            /días
+            estado
+            motivo
+            motivo de rechazo
+            resuelta el
+        }
+        class Adjunto {
+            nombre original
+            tipo de archivo
+            etiqueta
+            fecha de carga
+        }
+    }
+
+    namespace GastosDeFlota {
+        class CargaCombustible {
+            fecha y hora
+            tipo de combustible
+            litros
+            precio por litro
+            importe
+            kilometraje
+            tanque lleno
+            estación
+            medio de pago
+            comprobante
+            anómala
+            observación
+            anulada el
+        }
+        class MultaTransito {
+            fecha de la infracción
+            jurisdicción
+            número de acta
+            infracción
+            importe
+            importe con pago voluntario
+            vencimiento
+            estado
+            pagada el
+            importe pagado
+            imputada al chofer
+            avisada el
+            motivo de anulación
+        }
+        class Siniestro {
+            fecha
+            ubicación
+            domicilio
+            descripción
+            hubo heridos
+            hubo terceros
+            derrame de GLP
+            denuncia policial
+            reclamo al seguro
+            estado
+            vehículo inutilizable
+            costo de reparación
+            reintegro del seguro
+            franquicia
+            cerrado el
+        }
+        class Neumatico {
+            número de serie
+            marca
+            medida
+            costo
+            estado
+            posición
+            kilometraje de montaje
+        }
+        class MovimientoNeumatico {
+            tipo
+            kilometraje
+            fecha
+        }
+    }
+
+    namespace StockFisico {
+        class Deposito {
+            nombre
+            código
+            tipo
+            dirección
+            predeterminado
+            activo
+        }
+        class UbicacionDeStock {
+            tipo
+        }
+        class SaldoDeStock {
+            condición
+            cantidad
+        }
+        class MovimientoDeStock {
+            cantidad
+            condición de origen
+            condición de destino
+            motivo
+            fecha
+        }
+        class UmbralDeStock {
+            mínimo de llenas
+            avisado el
+        }
+        class AjusteDeStock {
+            número
+            motivo
+            nota
+            fecha
+        }
+        class ItemAjusteDeStock {
+            condición
+            diferencia
+        }
+        class CargaDeCamion {
+            número
+            día
+            estado
+            abierta el
+            salió el
+            regresó el
+            cerrada el
+            nota de diferencia
+        }
+        class ItemCarga {
+            llenas cargadas
+            llenas repuestas
+            vacías cargadas
+            llenas declaradas al regreso
+            vacías declaradas al regreso
+            llenas entregadas
+            vacías recolectadas
+            /llenas esperadas
+            /vacías esperadas
+            diferencia de llenas
+            diferencia de vacías
+        }
+    }
+
+    namespace Compras {
+        class Proveedor {
+            razón social
+            CUIT
+            tipo
+            contacto
+            teléfono
+            correo
+            dirección
+            plazo de pago
+            activo
+        }
+        class OrdenDeCompra {
+            número
+            estado
+            emitida el
+            fecha esperada
+            total
+            motivo de cancelación
+            notas
+        }
+        class ItemOrdenDeCompra {
+            cantidad
+            costo unitario
+            vacíos a canjear
+            cantidad recibida
+        }
+        class RecepcionDeCompra {
+            número
+            tipo de comprobante
+            número de comprobante
+            recibida el
+            total
+            estado de pago
+            estado
+            motivo de anulación
+        }
+        class ItemRecepcion {
+            llenas recibidas
+            vacías entregadas
+            costo unitario
+        }
+    }
+
+    namespace CajaYFinanzas {
+        class Caja {
+            nombre
+            tipo
+            saldo
+            requiere sesión
+            activa
+        }
+        class SesionDeCaja {
+            estado
+            abierta el
+            monto inicial
+            cerrada el
+            monto esperado
+            monto contado
+            diferencia
+            observaciones
+        }
+        class CategoriaDeCaja {
+            nombre
+            sentido
+            código de sistema
+            activa
+        }
+        class MovimientoDeCaja {
+            sentido
+            importe
+            medio
+            fecha
+            descripción
+            origen
+        }
+        class RendicionChofer {
+            número
+            fecha de negocio
+            estado
+            efectivo esperado
+            efectivo declarado
+            gastos del chofer
+            diferencia
+            resolución de la diferencia
+            presentada el
+            aprobada el
+            observaciones
+            aviso enviado el
+        }
+        class PedidoRendido {
+            importe
+            medio de pago
+        }
+        class GastoDeRendicion {
+            importe
+            descripción
+        }
+        class CuentaCorriente {
+            razón social
+            CUIT
+            condición fiscal
+            límite de crédito
+            plazo de pago en días
+            estado
+            saldo
+        }
+        class AsientoCuentaCorriente {
+            tipo
+            importe
+            vence
+            medio de pago
+            fecha
+            descripción
+        }
+        class ImputacionCuentaCorriente {
+            importe
+        }
+        class ReglaComision {
+            base
+            valor
+            vigente desde
+            vigente hasta
+            activa
+        }
+        class AsientoComision {
+            tipo
+            importe
+            fecha
+            descripción
+        }
+        class LiquidacionComisiones {
+            número
+            período desde
+            período hasta
+            bruto
+            deducciones
+            neto
+            estado
+            aprobada el
+            pagada el
+        }
+    }
+
     Usuario <|-- Cliente : {overlapping, incomplete}
     Usuario <|-- Chofer
     Usuario <|-- Administrador
@@ -263,6 +589,8 @@ classDiagram
     Usuario "0..*" -- "0..1" Rol : tiene asignado ▸
     Distribuidora "1" -- "0..*" Chofer : emplea ▸
     Distribuidora "0..1" -- "0..*" Administrador : emplea ▸
+    Distribuidora "1" -- "0..*" Empleado : emplea ▸
+    Distribuidora "1" *-- "0..*" PuestoDeTrabajo : define ▸
     Distribuidora "1" -- "0..*" Producto : comercializa ▸
     Distribuidora "1" -- "0..*" Envase : posee ▸
     Distribuidora "1" -- "0..*" Pedido : gestiona ▸
@@ -323,6 +651,23 @@ classDiagram
     CasoRecupero "0..*" -- "1" Cliente : se abre contra ▸
     Usuario "0..1" -- "0..*" CasoRecupero : resuelve ▸
     CasoRecupero "1" *-- "0..*" AvisoRecupero : emite ▸
+    Empleado "0..*" -- "1" PuestoDeTrabajo : ocupa ▸
+    Empleado "0..1" -- "0..1" Usuario : accede con ▸
+    Empleado "1" *-- "0..*" JornadaDeTrabajo : registra ▸
+    Empleado "1" *-- "0..*" LicenciaLaboral : solicita ▸
+    Usuario "0..1" -- "0..*" LicenciaLaboral : resuelve ▸
+    Empleado "1" *-- "0..*" Adjunto : conserva ▸
+    TareaMantenimiento "0..*" -- "0..1" Empleado : habilita ▸
+    Vehiculo "1" *-- "0..*" CargaCombustible : registra ▸
+    Vehiculo "1" *-- "0..*" MultaTransito : acumula ▸
+    Vehiculo "1" *-- "0..*" Siniestro : sufre ▸
+    Vehiculo "0..1" -- "0..*" Neumatico : monta ▸
+    Distribuidora "1" *-- "0..*" Neumatico : posee ▸
+    Neumatico "1" *-- "0..*" MovimientoNeumatico : registra ▸
+    MovimientoNeumatico "0..*" -- "0..1" Vehiculo : ocurre en ▸
+    Empleado "0..1" -- "0..*" CargaCombustible : carga ▸
+    Empleado "0..1" -- "0..*" MultaTransito : responde por ▸
+    Empleado "0..1" -- "0..*" Siniestro : interviene en ▸
     Pedido "1" -- "0..*" Reclamo : origina ▸
     Cliente "1" -- "0..*" Reclamo : presenta ▸
     Pedido "1" -- "0..*" Incidencia : origina ▸
@@ -330,3 +675,72 @@ classDiagram
     Pedido "1" -- "0..2" Calificacion : recibe ▸
     Usuario "1" -- "0..*" Calificacion : emite ▸
     Usuario "1" -- "0..*" Calificacion : recibe ▸
+    Distribuidora "1" -- "0..*" Deposito : dispone de ▸
+    Distribuidora "1" -- "0..*" Proveedor : compra a ▸
+    Deposito "1" -- "0..1" UbicacionDeStock : se registra como {xor} ▸
+    Vehiculo "1" -- "0..1" UbicacionDeStock : se registra como {xor} ▸
+    UbicacionDeStock "1" *-- "0..*" SaldoDeStock : acumula ▸
+    SaldoDeStock "0..*" -- "1" Producto : corresponde a ▸
+    MovimientoDeStock "0..*" -- "1" Producto : corresponde a ▸
+    MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de ▸
+    MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en ▸
+    Usuario "0..1" -- "0..*" MovimientoDeStock : ejecuta ▸
+    Deposito "1" *-- "0..*" UmbralDeStock : fija ▸
+    UmbralDeStock "0..*" -- "1" Producto : controla ▸
+    UbicacionDeStock "1" -- "0..*" AjusteDeStock : se corrige con ▸
+    AjusteDeStock "1" *-- "1..*" ItemAjusteDeStock : contiene ▸
+    ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a ▸
+    Usuario "1" -- "0..*" AjusteDeStock : registra ▸
+    Proveedor "1" -- "0..*" OrdenDeCompra : recibe ▸
+    OrdenDeCompra "0..*" -- "1" Deposito : se destina a ▸
+    OrdenDeCompra "1" *-- "1..*" ItemOrdenDeCompra : contiene ▸
+    ItemOrdenDeCompra "0..*" -- "1" Producto : corresponde a ▸
+    Usuario "1" -- "0..*" OrdenDeCompra : emite ▸
+    Proveedor "1" -- "0..*" RecepcionDeCompra : entrega ▸
+    OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra : se cumple con ▸
+    RecepcionDeCompra "0..*" -- "1" Deposito : ingresa en ▸
+    RecepcionDeCompra "1" *-- "1..*" ItemRecepcion : contiene ▸
+    ItemRecepcion "0..*" -- "1" Producto : corresponde a ▸
+    Usuario "1" -- "0..*" RecepcionDeCompra : registra ▸
+    Vehiculo "1" -- "0..*" CargaDeCamion : transporta ▸
+    Chofer "1" -- "0..*" CargaDeCamion : reparte con ▸
+    CargaDeCamion "0..*" -- "1" UbicacionDeStock : parte de ▸
+    CargaDeCamion "1" *-- "1..*" ItemCarga : contiene ▸
+    ItemCarga "0..*" -- "1" Producto : corresponde a ▸
+    Usuario "1" -- "0..*" CargaDeCamion : abre ▸
+    Usuario "0..1" -- "0..*" CargaDeCamion : cierra ▸
+    Distribuidora "1" *-- "0..*" Caja : define ▸
+    Distribuidora "1" *-- "0..*" CategoriaDeCaja : define ▸
+    Distribuidora "1" *-- "0..*" CuentaCorriente : lleva ▸
+    Distribuidora "1" *-- "0..*" ReglaComision : define ▸
+    Caja "1" *-- "0..*" SesionDeCaja : registra ▸
+    Caja "1" *-- "0..*" MovimientoDeCaja : asienta ▸
+    SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja : agrupa ▸
+    CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja : clasifica ▸
+    MovimientoDeCaja "0..1" -- "0..1" MovimientoDeCaja : anula a ▸
+    Chofer "1" *-- "0..*" RendicionChofer : presenta ▸
+    RendicionChofer "0..*" -- "0..1" Caja : ingresa en ▸
+    RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera ▸
+    RendicionChofer "1" *-- "0..*" PedidoRendido : rinde ▸
+    PedidoRendido "0..1" -- "1" Pedido : corresponde a ▸
+    RendicionChofer "1" *-- "0..*" GastoDeRendicion : declara ▸
+    GastoDeRendicion "0..*" -- "1" CategoriaDeCaja : se clasifica en ▸
+    Cliente "1" -- "0..*" CuentaCorriente : tiene habilitada ▸
+    CuentaCorriente "1" *-- "0..*" AsientoCuentaCorriente : registra ▸
+    Pedido "0..1" -- "0..*" AsientoCuentaCorriente : origina ▸
+    AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en ▸
+    Chofer "0..1" -- "0..*" AsientoCuentaCorriente : cobra ▸
+    RendicionChofer "0..1" -- "0..*" AsientoCuentaCorriente : incluye ▸
+    AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente : anula a ▸
+    ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda ▸
+    ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con ▸
+    ReglaComision "0..*" -- "0..1" Empleado : se aplica a ▸
+    ReglaComision "0..*" -- "0..1" Producto : se aplica a ▸
+    Empleado "1" *-- "0..*" AsientoComision : devenga ▸
+    Empleado "1" *-- "0..*" LiquidacionComisiones : percibe ▸
+    Empleado "0..1" -- "0..1" Chofer : actúa como ▸
+    AsientoComision "0..*" -- "0..1" Pedido : corresponde a ▸
+    ReglaComision "0..1" -- "0..*" AsientoComision : determina ▸
+    LiquidacionComisiones "0..1" -- "0..*" AsientoComision : incluye ▸
+    RendicionChofer "0..1" -- "0..*" AsientoComision : origina ▸
+    LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja : se paga con ▸

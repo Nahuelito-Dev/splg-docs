@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-241 Registrar la Comisión de una Entrega
+    autonumber
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+
+    Note over SAU: Evento: pedido entregado
+    SAU->>SIS: registrarComisionDeEntrega(pedidoId)
+    activate SIS
+    alt Hay una regla aplicable
+        Note over SAU,SIS: Asienta la comisión con una copia de la regla
+        SIS-->>SAU: comisión registrada
+    else No hay regla aplicable o el pedido ya devengó su comisión
+        SIS-->>SAU: sin cambios
+    end
+    deactivate SIS

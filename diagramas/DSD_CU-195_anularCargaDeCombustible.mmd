@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-195 Registrar una Carga de Combustible · anularCargaDeCombustible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FuelLoadService
+    participant COC as :Map#lt;String, CargaCombustible#gt;
+    participant CAR as cargaCombustible:CargaCombustible
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: anularCargaDeCombustible(cargaId)
+    SRV->>+COC: get(cargaId)
+    COC-->>-SRV: cargaCombustible
+    SRV->>+CAR: anular(ahora)
+    CAR->>CAR: assertNoAnulada()
+    CAR->>VEH: recalcularKilometraje()
+    deactivate CAR
+    SRV-->>-ADM: cargaCombustible

@@ -1,0 +1,24 @@
+sequenceDiagram
+    title DSD — CU-240 Configurar las Comisiones por Entrega · crearReglaDeComision
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CommissionService
+    participant EMPS as :Map#lt;String, Empleado#gt;
+    participant PROS as :Map#lt;String, Producto#gt;
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
+    opt La regla es de un empleado
+        SRV->>+EMPS: get(empleadoId)
+        EMPS-->>-SRV: empleado
+    end
+    opt La regla es de un producto
+        SRV->>+PROS: get(productoId)
+        PROS-->>-SRV: producto
+    end
+    SRV->>+DIS: crearReglaDeComision(empleado, producto, base, valor, vigenteDesde)
+    DIS->>DIS: validarSinSolapamiento(empleado, producto, vigenteDesde)
+    create participant NRG as nueva:ReglaComision
+    DIS->>NRG: «create»(empleado, producto, base, valor, vigenteDesde)
+    DIS-->>-SRV: regla
+    SRV-->>-ADM: regla

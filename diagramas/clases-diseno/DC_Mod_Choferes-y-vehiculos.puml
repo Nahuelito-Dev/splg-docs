@@ -82,6 +82,7 @@ class "List<Chofer>" as List_Chofer <<colección>> {
   + buscarEnMotoDisponibles(direccion: DireccionEntrega): Chofer[*]
   + contarEnLinea(distribuidoraId: Identificador): Chofer[*]
   + contarHabilitados(distribuidoraId: Identificador): Chofer[*]
+  + getConEfectivoOCobrosSinRendir(hoy: Fecha): Chofer[*]
 }
 class CarService <<fachada>> {
   + buscarVehiculoPorPatente(patente: Cadena): Vehiculo
@@ -90,12 +91,14 @@ class CarService <<fachada>> {
   + editarVehiculo(vehiculoId: Identificador,\n      datos: Registro): Vehiculo
   + eliminarVehiculo(vehiculoId: Identificador)
   + listarVehiculos(): Vehiculo[*]
+  + reactivarVehiculo(vehiculoId: Identificador): Vehiculo
   + registrarVehiculo(usuario: Usuario, tipo: Cadena,\n      capacidad: Decimal, patente: Cadena, marca: Cadena,\n      modelo: Cadena, anio: Entero,\n      color: Cadena): Vehiculo
 }
 class "Map<String, Vehiculo>" as Map_String_Vehiculo <<colección>> {
   + get(clave: Cadena): Vehiculo
 }
 class "List<Vehiculo>" as List_Vehiculo <<colección>> {
+  + getActivos(): Vehiculo[*]
   + getVehiculosDe(distribuidora: Distribuidora): Vehiculo[*]
 }
 class VehicleAssignmentService <<fachada>> {
@@ -103,20 +106,22 @@ class VehicleAssignmentService <<fachada>> {
   + consultarHistorialDeVehiculosDelChofer(choferId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
   + consultarMiVehiculoEnUso(out inhabilitado: Booleano): Vehiculo
   + consultarVehiculoEnUso(choferId: Identificador,\n      out inhabilitado: Booleano): Vehiculo
+  + getEmpleadoAl(vehiculo: Vehiculo,\n      fechaYHora: FechaHora): Empleado
   + liberarVehiculoEnUso(choferId: Identificador)
   + ponerVehiculoEnUso(choferId: Identificador,\n      vehiculoId: Identificador,\n      nota: Cadena): AsignacionVehiculo
 }
 class "List<AsignacionVehiculo>" as List_AsignacionVehiculo <<colección>> {
   + cerrarAbiertas(chofer: Chofer, vehiculo: Vehiculo,\n      administrador: Administrador)
+  + getAbierta(): AsignacionVehiculo
 }
 class Chofer <<referencia>>
 class Vehiculo <<referencia>>
 class AsignacionVehiculo <<referencia>>
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
-class UbicacionGPS <<referencia>>
-class Distribuidora <<referencia>>
-class Usuario <<referencia>>
 class FleetTaskService <<referencia>>
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+class UbicacionGPS <<referencia>>
 
 Map_String_Chofer "1" o--> "0..*" Chofer
 List_Chofer "1" o--> "0..*" Chofer
@@ -131,6 +136,7 @@ DeliveryService --> "1" Map_String_Usuario
 VehicleAssignmentService --> "1" Map_String_Chofer
 VehicleAssignmentService --> "1" Map_String_Vehiculo
 CarService ..> Chofer
+CarService ..> FleetTaskService
 CarService ..> Vehiculo
 DeliveryService ..> Chofer
 DeliveryService ..> Distribuidora

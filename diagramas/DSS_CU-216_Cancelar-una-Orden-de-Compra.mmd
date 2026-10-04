@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-216 Cancelar una Orden de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cancelarOrdenDeCompra(ordenId, motivo)
+    activate SIS
+    alt la orden no tiene recepciones
+        SIS-->>ADM: orden cancelada
+    else la orden tiene recepciones o ya está cerrada
+        SIS-->>ADM: conflicto
+    else la orden no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

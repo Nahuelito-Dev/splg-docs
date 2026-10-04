@@ -1,0 +1,158 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class Deposito {
+  - nombre: Cadena
+  - codigo: Cadena
+  - tipo: TipoDeDeposito
+  - direccion: Cadena
+  - predeterminado: Booleano
+  - activo: Booleano
+  + «create» Deposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena)
+  + actualizar(datos: Registro): Deposito
+  + darDeBaja()
+  + estaActivo()
+  + fijarMinimo(producto: Producto, minimoDeLlenas: Entero)
+  + getDistribuidora(): Distribuidora
+  + getLlenas(producto: Producto): Entero
+  + getOrden(ordenId: Identificador)
+  + getUmbral(producto: Producto)
+  + marcarPredeterminado()
+  + registrarRecepcion(ordenId: Identificador,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, items: Registro,\n      autor: Usuario): RecepcionDeCompra
+  + validarCodigoSinUsar(codigo: Cadena)
+  + validarCompraSinOrden(proveedorId: Identificador)
+  + validarSinSaldo(conSaldo: Booleano)
+}
+class UbicacionDeStock {
+  - tipo: TipoDeUbicacion
+  + «create» UbicacionDeStock(depositoDeStock: Deposito)
+  + «create» UbicacionDeStock(vehiculo: Vehiculo)
+  + acreditar(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
+  + ajustar(motivoDeAjuste: MotivoDeAjuste, nota: Cadena,\n      items: Registro, autor: Usuario): AjusteDeStock
+  + descontar(producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      cantidad: Entero): Booleano
+  + esLaMismaQue(ubicacionDestino: UbicacionDeStock): Booleano
+  + getSaldos(productoId: Identificador): SaldoDeStock[*]
+  + tieneSaldo(): Booleano
+}
+class SaldoDeStock {
+  - condicion: CondicionDeStock
+  - cantidad: Entero
+  + «create» SaldoDeStock(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
+  + getCantidad(): Entero
+  + restar(cantidad: Entero): Booleano
+  + sumar(cantidad: Entero)
+}
+class MovimientoDeStock {
+  - cantidad: Entero
+  - condicionDeOrigen: CondicionDeStock
+  - condicionDeDestino: CondicionDeStock
+  - motivo: MotivoDeMovimiento
+  - fecha: FechaHora
+  + «create» MovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento)
+  + getMotivo(): MotivoDeMovimiento
+}
+class UmbralDeStock {
+  - minimoDeLlenas: Entero
+  - avisadoEl: FechaHora
+  + «create» UmbralDeStock(producto: Producto,\n      minimoDeLlenas: Entero)
+  + actualizar(minimoDeLlenas: Entero)
+  + estaPorDebajoDelMinimo(llenos: Entero): Booleano
+  + getDeposito(): Deposito
+  + limpiarAviso()
+  + marcarAvisado(ahora: FechaHora)
+}
+class AjusteDeStock {
+  - numero: Entero
+  - motivo: MotivoDeAjuste
+  - nota: Cadena
+  - fecha: FechaHora
+  + «create» AjusteDeStock(motivoDeAjuste: MotivoDeAjuste,\n      nota: Cadena, autor: Usuario)
+  + getMotivo(): MotivoDeAjuste
+}
+class ItemAjusteDeStock {
+  - condicion: CondicionDeStock
+  - diferencia: Entero
+  + «create» ItemAjusteDeStock(producto: Producto,\n      condicionDeStock: CondicionDeStock,\n      diferencia: Moneda)
+  + getProducto(): Producto
+}
+class Producto <<referencia>>
+class Vehiculo <<referencia>>
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+
+Distribuidora "1" --> "0..*" Deposito : dispone de
+Deposito "1" --> "0..1" UbicacionDeStock : se registra como {xor}
+Vehiculo "1" --> "0..1" UbicacionDeStock : se registra como {xor}
+UbicacionDeStock "1" *--> "0..*" SaldoDeStock : acumula
+SaldoDeStock "0..*" -- "1" Producto : corresponde a
+MovimientoDeStock "0..*" -- "1" Producto : corresponde a
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en
+Usuario "0..1" -- "0..*" MovimientoDeStock : ejecuta
+Deposito "1" *--> "0..*" UmbralDeStock : fija
+UmbralDeStock "0..*" -- "1" Producto : controla
+UbicacionDeStock "1" --> "0..*" AjusteDeStock : se corrige con
+AjusteDeStock "1" *--> "1..*" ItemAjusteDeStock : contiene
+ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a
+Usuario "1" -- "0..*" AjusteDeStock : registra
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

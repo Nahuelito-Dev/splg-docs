@@ -41,6 +41,7 @@ class Producto {
   precio
   stock
   activo
+  costo promedio
 }
 class Promocion {
   cantidad

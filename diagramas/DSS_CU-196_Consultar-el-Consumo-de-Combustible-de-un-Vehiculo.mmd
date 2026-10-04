@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-196 Consultar el Consumo de Combustible de un Vehículo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)
+    activate SIS
+    alt el vehículo existe y el rango es válido
+        SIS-->>ADM: tramos, kilómetros por litro, costo por kilómetro y anomalías del período
+    else el vehículo no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el rango de fechas no es válido
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS

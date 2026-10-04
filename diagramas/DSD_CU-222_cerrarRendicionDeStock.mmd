@@ -1,0 +1,39 @@
+sequenceDiagram
+    title DSD — CU-222 Cerrar la Rendición de Stock del Camión · cerrarRendicionDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TruckLoadService
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+    participant ICA as item:ItemCarga
+    participant LED as :StockLedgerService
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: cerrarRendicionDeStock(cargaId, nota)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: cerrar(nota, autor)
+    CAR->>CAR: validarQueRegreso()
+    loop Por cada tipo de garrafa de la carga
+        CAR->>ICA: calcularDiferencia()
+    end
+    opt Hay diferencia entre lo declarado y lo esperado
+        CAR->>CAR: validarNotaDeDiferencia(nota)
+    end
+    CAR-->>-SRV: carga
+    loop Por cada tipo de garrafa de la carga
+        SRV->>+ICA: getProducto()
+        ICA-->>-SRV: producto
+        Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo del camión
+        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        opt Faltaron garrafas llenas
+            SRV->>PRO: restarStock(faltante)
+            alt El stock vendible alcanza para el faltante
+                PRO-->>SRV: restado
+            else El stock vendible quedaría negativo
+                PRO-->>SRV: vendibleInsuficiente
+                SRV-->>ADM: solicitudInvalida
+            end
+        end
+    end
+    SRV-->>-ADM: carga

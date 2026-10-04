@@ -13,9 +13,9 @@ python3 generar-modelo-datos.py
 | Archivo | Qué es | Para qué sirve |
 |---|---|---|
 | `SPLG-base-de-datos.sql` | Volcado de `pg_dump`, esquema completo | Recrear la base tal cual está |
-| `SPLG-base-de-datos-lucidchart.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual |
-| `SPLG-base-de-datos-propuesta.sql` | Sólo los agregados de la cátedra | Boceto de la migración que falta |
-| `SPLG-base-de-datos-completa-lucidchart.sql` | Actual + propuesta, en SQL portable | **El que se importa en Lucidchart** |
+| `SPLG-base-de-datos-lucidchart.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual; `generar-lucidchart.py` lo copia a `lucidchart/SPLG-diagrama-de-base-de-datos.sql` |
+| `SPLG-base-de-datos-propuesta.sql` | Sólo lo planificado (los módulos de gestión) | Boceto de las migraciones que faltan |
+| `SPLG-base-de-datos-completa-lucidchart.sql` | Actual + planificado, en SQL portable | **El que se importa en Lucidchart** para ver todo; `generar-lucidchart.py` lo copia a `lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql` |
 | `fisico/SPLG-fisico-NN-<contexto>.png` / `.svg` | Entidad-relación con tablas y columnas, una lámina por contexto de negocio | Las láminas técnicas |
 | `conceptual/SPLG-der-NN-<área>.png` / `.svg` | Entidad-relación conceptual: una entidad por concepto del modelo conceptual, con sus atributos y las relaciones con su nombre | Las láminas para la defensa |
 | `SPLG-der-mermaid.md` | El físico en Mermaid, por contexto | Lo que se pega en el Documento 3 §7.4.2 |
@@ -79,6 +79,43 @@ de las tablas: la entidad se llama como el concepto y lleva sus atributos. La re
 | Reclamo | Reclamo | `claims` |
 | Incidencia | Incidencia | `incident` |
 | Calificacion | Calificacion | `rating` |
+| PuestoDeTrabajo | PuestoDeTrabajo | `job_position` |
+| Empleado | Empleado | `employee` |
+| JornadaDeTrabajo | JornadaDeTrabajo | `employee_attendance` |
+| LicenciaLaboral | LicenciaLaboral | `employee_leave` |
+| Adjunto | Adjunto | `attachment` |
+| CargaCombustible | CargaCombustible | `fuel_load` |
+| MultaTransito | MultaTransito | `traffic_fine` |
+| Siniestro | Siniestro | `vehicle_accident` |
+| Neumatico | Neumatico | `tire` |
+| MovimientoNeumatico | MovimientoNeumatico | `tire_event` |
+| Deposito | Deposito | `warehouse` |
+| UbicacionDeStock | UbicacionDeStock | `stock_location` |
+| SaldoDeStock | SaldoDeStock | `stock_balance` |
+| MovimientoDeStock | MovimientoDeStock | `stock_movement` |
+| UmbralDeStock | UmbralDeStock | `stock_threshold` |
+| AjusteDeStock | AjusteDeStock | `stock_adjustment` |
+| ItemAjusteDeStock | ItemAjusteDeStock | `stock_adjustment_item` |
+| CargaDeCamion | CargaDeCamion | `truck_load` |
+| ItemCarga | ItemCarga | `truck_load_item` |
+| Proveedor | Proveedor | `supplier` |
+| OrdenDeCompra | OrdenDeCompra | `purchase_order` |
+| ItemOrdenDeCompra | ItemOrdenDeCompra | `purchase_order_item` |
+| RecepcionDeCompra | RecepcionDeCompra | `purchase_receipt` |
+| ItemRecepcion | ItemRecepcion | `purchase_receipt_item` |
+| Caja | Caja | `cash_box` |
+| SesionDeCaja | SesionDeCaja | `cash_session` |
+| CategoriaDeCaja | CategoriaDeCaja | `cash_category` |
+| MovimientoDeCaja | MovimientoDeCaja | `cash_movement` |
+| RendicionChofer | RendicionChofer | `driver_settlement` |
+| PedidoRendido | PedidoRendido | `driver_settlement_order` |
+| GastoDeRendicion | GastoDeRendicion | `driver_settlement_expense` |
+| CuentaCorriente | CuentaCorriente | `customer_account` |
+| AsientoCuentaCorriente | AsientoCuentaCorriente | `customer_account_entry` |
+| ImputacionCuentaCorriente | ImputacionCuentaCorriente | `customer_account_allocation` |
+| ReglaComision | ReglaComision | `commission_rule` |
+| AsientoComision | AsientoComision | `commission_entry` |
+| LiquidacionComisiones | LiquidacionComisiones | `driver_liquidation` |
 
 Los conceptos sin tabla son PropuestaConVigencia (abstracto), UbicacionGPS (la columna
 `delivery.actual_location`) e ItemSugerido (JSON dentro de `repurchase_invitation`).
@@ -121,8 +158,8 @@ pedidos, cada uno con el motivo por el que está.
 
 Si además se quiere que revise el DDL, sumar
 **`SPLG-base-de-datos-completa-lucidchart.sql`**, que es el modelo entero en
-menos de 24 KB.
-No conviene pegar `SPLG-base-de-datos.sql`: son 80 KB
+menos de 53 KB.
+No conviene pegar `SPLG-base-de-datos.sql`: son 84 KB
 en su mayoría de índices y funciones de PostGIS que no aportan al análisis del
 modelo.
 

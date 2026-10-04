@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-239 Consultar la Antigüedad de la Deuda
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarAntiguedadDeDeuda()
+    activate SIS
+    SIS-->>ADM: deuda de la distribuidora por tramos de antigüedad
+    deactivate SIS

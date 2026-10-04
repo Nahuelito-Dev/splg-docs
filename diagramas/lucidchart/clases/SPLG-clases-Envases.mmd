@@ -9,7 +9,7 @@ classDiagram
         + asignarEnvasesAPedido(pedidoId: Identificador, numerosDeSerie: Lista): Envase[*]
         + consultarEnvase(envaseId: Identificador): Envase
         + consultarEnvasesProximosAVencer(dias: Entero): Envase[*]
-        + consultarHistorialDelEnvase(envaseId: Identificador): MovimientoEnvase[*]
+        + consultarHistorialDelEnvase(envaseId: Identificador): MovimientoDeCaja[*]
         + consultarVigenciaDelEnvase(envaseId: Identificador): FechaHora
         + darDeAltaEnvase(numeroDeSerie: Cadena, tipoDeProducto: Cadena, deposito: Cadena): Envase
         + listarEnvases(estado: Cadena): Envase[*]

@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-226 Abrir la Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: abrirCaja(cajaId, montoInicial)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: sesión abierta con su monto inicial
+    else la caja ya tiene una sesión abierta
+        SIS-->>ADM: operación rechazada
+    else la caja no exige sesión
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

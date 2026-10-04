@@ -1,0 +1,58 @@
+@startuml
+title SS-20 — Compras (4 casos de uso)
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
+}
+
+actor "Administrador\n(ACT-03)" as A03
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-20 Compras" {
+  usecase "CU-214\nGestionar los Proveedores" as U214 <<planificado>> #back:FFFFFF;line:55657A
+  usecase "CU-215\nEmitir una Orden de Compra" as U215 <<planificado>> #back:FFFFFF;line:55657A
+  usecase "CU-216\nCancelar una Orden de Compra" as U216 <<planificado>> #back:FFFFFF;line:55657A
+  usecase "CU-217\nRegistrar la Recepción de una\nCompra" as U217 <<planificado>> #back:FFFFFF;line:55657A
+}
+
+usecase "CU-250\nAplicar un Movimiento de Stock\n(SS-08)" as U250 <<planificado>> #back:FFFFFF;line:6B7683
+
+A03 -[#8C4A9E]- U214
+A03 -[#8C4A9E]- U215
+A03 -[#8C4A9E]- U216
+A03 -[#8C4A9E]- U217
+A05 --|> A03
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U217 ..> U250 : <<include>>
+
+@enduml

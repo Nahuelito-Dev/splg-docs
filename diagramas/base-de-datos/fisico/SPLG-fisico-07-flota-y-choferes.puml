@@ -20,6 +20,10 @@ skinparam class<<propuesto>> {
   BorderColor #1F5E8C
   BackgroundColor #E4EDF4
 }
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
 skinparam legendBackgroundColor #FFFFFF
 skinparam legendBorderColor #2C4257
 
@@ -38,6 +42,8 @@ entity "maintenance_plan" as e_maintenance_plan {
   {field} criticality : maintenance_criticality_enum *
   {field} car_type : varchar
   {field} is_active : boolean *
+  {field} <color:#1F5E8C>document_kind : maintenance_document_kind_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>applies_to_categories : job_position_category_enum[] <<propuesto>></color>
 }
 entity "car" as e_car {
   {field} **car_id** : uuid * <<PK>>
@@ -59,6 +65,8 @@ entity "car" as e_car {
   {field} fleet_status : fleet_status_enum *
   {field} in_service_since : timestamptz
   {field} <color:#1F5E8C>vehicle_type : vehicle_type_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>fuel_type : fuel_type_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>tank_capacity_liters : numeric(6,2) <<propuesto>></color>
 }
 entity "delivery" as e_delivery {
   {field} **delivery_id** : uuid * <<PK>>
@@ -96,6 +104,9 @@ entity "maintenance_task" as e_maintenance_task {
   {field} category : varchar(10)
   {field} alerted_at : timestamptz
   {field} notes : text
+  {field} <color:#1F5E8C>//employee_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>valid_from : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>details : jsonb <<propuesto>></color>
 }
 entity "vehicle_assignment" as e_vehicle_assignment {
   {field} **assignment_id** : uuid * <<PK>>
@@ -141,12 +152,15 @@ entity "maintenance_window_proposal" as e_maintenance_window_proposal {
 }
 entity "user" as e_user #F1F1F1 {
 }
+entity "employee" as e_employee #F1F1F1 {
+}
 
 e_user ||--o{ e_car : user_id
 e_user ||--o| e_delivery : user_id
 e_car |o--o{ e_maintenance_task : car_id
 e_delivery |o--o{ e_maintenance_task : delivery_id
 e_maintenance_plan ||--o{ e_maintenance_task : plan_id
+e_employee |o--o{ e_maintenance_task #line:1F5E8C;text:1F5E8C : employee_id
 e_user |o--o{ e_vehicle_assignment : assigned_by_user_id
 e_car ||--o{ e_vehicle_assignment : car_id
 e_delivery ||--o{ e_vehicle_assignment : delivery_id

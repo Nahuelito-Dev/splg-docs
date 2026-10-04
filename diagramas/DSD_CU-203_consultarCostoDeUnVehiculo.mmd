@@ -1,0 +1,40 @@
+sequenceDiagram
+    title DSD — CU-203 Consultar el Costo Total de un Vehículo · consultarCostoDeUnVehiculo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetCostReportService
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant VEH as vehiculo:Vehiculo
+    participant TAR as tarea:TareaMantenimiento
+    participant CAR as cargaCombustible:CargaCombustible
+    participant MUL as multaTransito:MultaTransito
+    participant SIN as siniestro:Siniestro
+
+    ADM->>+SRV: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)
+    SRV->>+COV: get(vehiculoId)
+    COV-->>-SRV: vehiculo
+    SRV->>+VEH: getCostoTotal(fechaDesde, fechaHasta)
+    loop Por cada tarea de mantenimiento hecha en el rango, sin contar los seguros
+        VEH->>+TAR: getCosto()
+        TAR-->>-VEH: costo
+    end
+    loop Por cada póliza cuya vigencia se solapa con el rango
+        VEH->>+TAR: getPrimaProrrateada(fechaDesde, fechaHasta)
+        TAR-->>-VEH: costo
+    end
+    loop Por cada carga de combustible vigente del rango
+        VEH->>+CAR: getImporte()
+        CAR-->>-VEH: importe
+    end
+    loop Por cada multa pagada y no imputada del rango
+        VEH->>+MUL: getImportePagado()
+        MUL-->>-VEH: importePagado
+    end
+    loop Por cada siniestro del rango
+        VEH->>+SIN: getCostoNeto()
+        SIN-->>-VEH: costo
+    end
+    VEH-->>-SRV: costoDelVehiculo
+    SRV->>+VEH: getKilometrosRecorridos(fechaDesde, fechaHasta)
+    VEH-->>-SRV: kilometros
+    SRV-->>-ADM: costoDelVehiculo

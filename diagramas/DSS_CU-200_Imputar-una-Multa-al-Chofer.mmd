@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-200 Imputar una Multa al Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: imputarMultaAlChofer(multaId, empleadoId)
+    activate SIS
+    alt la multa y el empleado existen y la multa no está anulada
+        SIS-->>ADM: multa imputada al empleado
+    else la multa o el empleado no existen en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la multa está anulada
+        SIS-->>ADM: solicitud inválida: la multa anulada no se imputa
+    end
+    deactivate SIS

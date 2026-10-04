@@ -1,0 +1,143 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class Proveedor {
+  - razonSocial: Cadena
+  - cuit: Cadena
+  - tipo: TipoDeProveedor
+  - contacto: Cadena
+  - telefono: Cadena
+  - correo: Cadena
+  - direccion: Cadena
+  - plazoDePago: Entero
+  - activo: Booleano
+  + «create» Proveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero)
+  + actualizar(datos: Registro): Proveedor
+  + coincideCon(termino: Cadena)
+  + darDeBaja()
+  + emitirOrden(depositoDeStock: Deposito,\n      fechaEsperada: Fecha,\n      items: Registro): OrdenDeCompra
+}
+class OrdenDeCompra {
+  - numero: Entero
+  - estado: EstadoDeLaOrden
+  - emitidaEl: FechaHora
+  - fechaEsperada: Fecha
+  - total: Moneda
+  - motivoDeCancelacion: Cadena
+  - notas: Cadena
+  + «create» OrdenDeCompra(depositoDeStock: Deposito,\n      fechaEsperada: Fecha, autor: Usuario)
+  + acumularRecibido(items: Registro): Booleano
+  + calcularTotal()
+  + cancelar(motivo: Cadena): OrdenDeCompra
+  + enviar(ahora: FechaHora): OrdenDeCompra
+  + getTotal(): Moneda
+  + validarQueEstaEnBorrador()
+  + validarSinRecepciones()
+}
+class ItemOrdenDeCompra {
+  - cantidad: Entero
+  - costoUnitario: Moneda
+  - vaciosACanjear: Entero
+  - cantidadRecibida: Entero
+  + «create» ItemOrdenDeCompra(producto: Producto,\n      cantidad: Entero, costoUnitario: Moneda,\n      vaciasACanjear: Entero)
+}
+class RecepcionDeCompra {
+  - numero: Entero
+  - tipoDeComprobante: TipoDeComprobante
+  - numeroDeComprobante: Cadena
+  - recibidaEl: FechaHora
+  - total: Moneda
+  - estadoDePago: EstadoDePagoDeCompra
+  - estado: EstadoDeLaRecepcion
+  - motivoDeAnulacion: Cadena
+  + «create» RecepcionDeCompra(tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, autor: Usuario)
+  + anular(motivo: Cadena): RecepcionDeCompra
+  + getItems(): Registro
+  + getTotal(): Moneda
+  + validarQueEstaConfirmada()
+}
+class ItemRecepcion {
+  - llenasRecibidas: Entero
+  - vaciasEntregadas: Entero
+  - costoUnitario: Moneda
+  + «create» ItemRecepcion(producto: Producto,\n      llenasRecibidas: Entero, vaciasEntregadas: Entero,\n      costoUnitario: Moneda)
+  + getProducto(): Producto
+}
+class Deposito <<referencia>>
+class Producto <<referencia>>
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+
+Distribuidora "1" --> "0..*" Proveedor : compra a
+Proveedor "1" --> "0..*" OrdenDeCompra : recibe
+OrdenDeCompra "0..*" <-- "1" Deposito : se destina a
+OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra : contiene
+ItemOrdenDeCompra "0..*" -- "1" Producto : corresponde a
+Usuario "1" -- "0..*" OrdenDeCompra : emite
+Proveedor "1" -- "0..*" RecepcionDeCompra : entrega
+OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra : se cumple con
+RecepcionDeCompra "0..*" <-- "1" Deposito : ingresa en
+RecepcionDeCompra "1" *--> "1..*" ItemRecepcion : contiene
+ItemRecepcion "0..*" -- "1" Producto : corresponde a
+Usuario "1" -- "0..*" RecepcionDeCompra : registra
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

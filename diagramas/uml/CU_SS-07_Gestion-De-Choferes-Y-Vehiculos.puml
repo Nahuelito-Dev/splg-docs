@@ -1,5 +1,5 @@
 @startuml
-title SS-07 — Gestión de Choferes y Vehículos (35 casos de uso)
+title SS-07 — Gestión de Choferes y Vehículos (48 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -75,14 +75,31 @@ rectangle "SS-07 Gestión de Choferes y Vehículos" {
   usecase "CU-163\nConsultar el Vehículo en Uso\nde un Chofer" as U163 #back:FFFFFF;line:5A5896
   usecase "CU-164\nConsultar el Historial de\nVehículos de un Chofer" as U164 #back:FFFFFF;line:5A5896
   usecase "CU-165\nConsultar el Historial de\nChoferes de un Vehículo" as U165 #back:FFFFFF;line:5A5896
+  usecase "CU-195\nRegistrar una Carga de\nCombustible" as U195 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-196\nConsultar el Consumo de\nCombustible de un Vehículo" as U196 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-197\nRegistrar la Habilitación para\nTransportar Mercancías\nPeligrosas" as U197 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-198\nRegistrar una Multa de\nTránsito" as U198 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-199\nRegistrar el Pago de una Multa" as U199 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-200\nImputar una Multa al Chofer" as U200 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-201\nRegistrar un Siniestro" as U201 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-202\nCerrar un Siniestro" as U202 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-203\nConsultar el Costo Total de un\nVehículo" as U203 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-204\nConsultar el Tablero de Costos\nde la Flota" as U204 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-205\nRegistrar un Neumático" as U205 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-206\nRegistrar un Movimiento de\nNeumático" as U206 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-247\nReactivar un Vehículo" as U247 <<planificado>> #back:FFFFFF;line:5A5896
   usecase "Filtrar por Término" as F_TERM <<factorizado>> #back:FFFFFF;line:5A5896
 }
 
 usecase "CU-082\nCrear Usuario Base\n(SS-01)" as U082 #back:FFFFFF;line:6B7683
+usecase "CU-174\nAdjuntar la Fotografía de un\nReclamo\n(SS-05)" as U174 #back:FFFFFF;line:6B7683
+usecase "CU-175\nConsultar la Fotografía de un\nReclamo\n(SS-05)" as U175 #back:FFFFFF;line:6B7683
 
 A02 -[#2E7D46]- U049
 A02 -[#2E7D46]- U115
 A02 -[#2E7D46]- U163
+A02 -[#2E7D46]- U195
+A02 -[#2E7D46]- U201
 A03 -[#8C4A9E]- U031
 A03 -[#8C4A9E]- U032
 A03 -[#8C4A9E]- U033
@@ -115,8 +132,22 @@ A03 -[#8C4A9E]- U162
 A03 -[#8C4A9E]- U163
 A03 -[#8C4A9E]- U164
 A03 -[#8C4A9E]- U165
+A03 -[#8C4A9E]- U195
+A03 -[#8C4A9E]- U196
+A03 -[#8C4A9E]- U197
+A03 -[#8C4A9E]- U198
+A03 -[#8C4A9E]- U199
+A03 -[#8C4A9E]- U200
+A03 -[#8C4A9E]- U201
+A03 -[#8C4A9E]- U202
+A03 -[#8C4A9E]- U203
+A03 -[#8C4A9E]- U204
+A03 -[#8C4A9E]- U205
+A03 -[#8C4A9E]- U206
+A03 -[#8C4A9E]- U247
 A04 -[#8A6D1F]- U105
 A04 -[#8A6D1F]- U142
+A04 -[#8A6D1F]- U198
 A05 --|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
@@ -139,7 +170,15 @@ U155 ..> U159 : <<include>>
 U157 ..> U156 : <<include>>
 U157 ..> U160 : <<include>>
 U158 ..> U156 : <<include>>
+U195 ..> U113 : <<include>>
+U196 ..> U113 : <<include>>
+U197 ..> U113 : <<include>>
+U198 ..> U113 : <<include>>
+U201 ..> U113 : <<include>>
+U203 ..> U113 : <<include>>
 U031 ..> U082 : <<include>>
+U174 ..> U159 : <<include>>
+U175 ..> U160 : <<include>>
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
 F_TERM ..> U035 : <<extend>>

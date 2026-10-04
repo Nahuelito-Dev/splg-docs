@@ -1,0 +1,39 @@
+@startuml
+title Diagrama de estados — Carga de combustible (planificado, I-12)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Normal" as NORMAL
+state "Anómala" as ANOMALA
+state "Anulada" as ANULADA
+
+[*] --> NORMAL : registrarCargaDeCombustible(vehículo, datos) [desvío ≤ 25 %]
+[*] --> ANOMALA : registrarCargaDeCombustible(vehículo, datos) [desvío > 25 %]
+NORMAL --> NORMAL : modificarCargaDeCombustible(datos)
+ANOMALA --> ANOMALA : modificarCargaDeCombustible(datos)
+NORMAL --> ANULADA : anularCargaDeCombustible()
+ANOMALA --> ANULADA : anularCargaDeCombustible()
+ANULADA --> [*]
+
+note bottom of ANULADA
+  La anomalía se decide al registrar la carga y no se
+  recalcula al modificarla. Una carga anulada se conserva
+  pero no cuenta en el consumo ni en el costo, y no admite
+  cambios. El estado se deriva de la marca de anomalía y de
+  la fecha de anulación (deletedAt); no es una columna.
+end note
+@enduml

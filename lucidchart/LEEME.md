@@ -15,10 +15,11 @@ python3 generar-lucidchart.py
 
 | Archivo | Diagrama | Cómo entra a Lucidchart |
 |---|---|---|
-| `SPLG-modelo-conceptual.xml` | Modelo conceptual del dominio, 43 conceptos | Archivo · Importar |
-| `SPLG-diagrama-de-clases-dominio.xml` | Las 43 clases de dominio con atributos tipados, operaciones y navegabilidad | Archivo · Importar |
+| `SPLG-modelo-conceptual.xml` | Modelo conceptual del dominio, 80 conceptos | Archivo · Importar |
+| `SPLG-diagrama-de-clases-dominio.xml` | Las 80 clases de dominio con atributos tipados, operaciones y navegabilidad | Archivo · Importar |
 | `clases/SPLG-diagrama-de-clases-<vista>.xml` | Controladores, fabricaciones puras, puertos y colecciones de un módulo (o grupo de módulos), con sus operaciones | Archivo · Importar |
-| `SPLG-diagrama-de-base-de-datos.sql` | Entidad-relación, 40 tablas | Importar datos · ERD |
+| `SPLG-diagrama-de-base-de-datos.sql` | Entidad-relación de lo implementado: las 43 tablas que tiene la base y sus 96 claves foráneas | Importar datos · ERD |
+| `SPLG-diagrama-de-base-de-datos-con-planificadas.sql` | Entidad-relación de lo implementado más lo planificado: las 43 tablas de la base y las 36 de los módulos de personal, flota ampliada, stock y compras, y caja y rendición (79 tablas y 215 claves foráneas) | Importar datos · ERD |
 
 Las clases de diseño no entran en un solo diagrama: `generar-clases-diseno.py` las reparte en
 vistas por módulo (por ejemplo `Pedidos-alta`, `Despacho`, `Flota-tareas`). Las cifras y la lista
@@ -46,8 +47,16 @@ código dentro del editor y no admite estilos.
 3. Pegar o subir el archivo.
 
 Lucidchart arma una tabla por cada `CREATE TABLE` y una línea por cada clave
-foránea. El detalle de qué trae ese volcado está en
-`diagramas/base-de-datos/LEEME.md`.
+foránea. Hay dos archivos y se importa el que se necesite, no los dos juntos:
+
+- `SPLG-diagrama-de-base-de-datos.sql` es el estado real de la base (`splg_db`): las tablas
+  implementadas, con las de adjuntos, numeración de comprobantes y archivos pendientes de borrar.
+- `SPLG-diagrama-de-base-de-datos-con-planificadas.sql` suma las tablas de los módulos que todavía
+  no se construyeron. Es la imagen completa del sistema una vez terminadas las iteraciones I-11 a I-14.
+
+Los dos son SQL portable: sólo `CREATE TABLE` con sus claves primarias, únicas y foráneas, sin tipos
+enumerados ni de PostGIS, que el importador no entiende. Se cargan sin errores en un PostgreSQL
+común. El detalle de qué trae cada volcado está en `diagramas/base-de-datos/LEEME.md`.
 
 ## La notación que sale dibujada
 

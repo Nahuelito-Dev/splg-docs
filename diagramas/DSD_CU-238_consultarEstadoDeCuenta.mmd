@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-238 Consultar el Estado de Cuenta de un Cliente · consultarEstadoDeCuenta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomerAccountService
+    participant CUES as :Map#lt;String, CuentaCorriente#gt;
+    participant CUE as cuentaCorriente:CuentaCorriente
+    participant ASIS as :List#lt;AsientoCuentaCorriente#gt;
+
+    ADM->>+SRV: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
+    SRV->>+CUES: get(cuentaId)
+    CUES-->>-SRV: cuentaCorriente
+    SRV->>+ASIS: filtrar(cuentaCorriente, fechaDesde, fechaHasta)
+    ASIS-->>-SRV: asientosDeLaCuenta
+    SRV->>+CUE: calcularSaldoAl(fechaDesde)
+    CUE-->>-SRV: saldoInicial
+    SRV-->>-ADM: asientosDeLaCuenta, saldoInicial

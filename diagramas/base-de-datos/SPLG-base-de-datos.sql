@@ -42,6 +42,23 @@ CREATE TYPE public.address_geocode_precision_enum AS ENUM (
 
 
 --
+-- Name: attachment_owner_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.attachment_owner_type_enum AS ENUM (
+    'employee',
+    'fuel_load',
+    'traffic_fine',
+    'vehicle_accident',
+    'purchase_receipt',
+    'stock_adjustment',
+    'driver_settlement',
+    'cash_movement',
+    'customer_account_entry'
+);
+
+
+--
 -- Name: audit_result_enum; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -455,6 +472,25 @@ CREATE TABLE public.admin (
 
 
 --
+-- Name: attachment; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.attachment (
+    attachment_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    owner_type public.attachment_owner_type_enum NOT NULL,
+    owner_id uuid NOT NULL,
+    label character varying(80),
+    storage_key character varying(255) NOT NULL,
+    original_name character varying(255) NOT NULL,
+    mime_type character varying(100) NOT NULL,
+    size_bytes integer NOT NULL,
+    uploaded_by_user_id uuid NOT NULL,
+    uploaded_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: audit_log; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -542,7 +578,8 @@ CREATE TABLE public.claims (
     "photoUrl" character varying,
     status public.claims_status_enum DEFAULT 'pending'::public.claims_status_enum NOT NULL,
     "resolutionNote" text,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    photo_key character varying(512)
 );
 
 
@@ -717,6 +754,17 @@ CREATE TABLE public.distributor (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone
+);
+
+
+--
+-- Name: document_sequence; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.document_sequence (
+    distributor_id uuid NOT NULL,
+    doc_type character varying(40) NOT NULL,
+    last_number integer DEFAULT 0 NOT NULL
 );
 
 
@@ -899,9 +947,9 @@ CREATE TABLE public."order" (
     "totalAmount" numeric(10,2) NOT NULL,
     notes text,
     "deliveryInstructions" text,
-    "acceptedAt" timestamp without time zone,
-    "onTheWayAt" timestamp without time zone,
-    "deliveredAt" timestamp without time zone,
+    "acceptedAt" timestamp with time zone,
+    "onTheWayAt" timestamp with time zone,
+    "deliveredAt" timestamp with time zone,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "cancellationReason" text,
@@ -1097,6 +1145,23 @@ CREATE TABLE public.route_batch_stop (
 
 
 --
+-- Name: storage_orphan; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.storage_orphan (
+    orphan_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    storage_key character varying(512) NOT NULL,
+    attempts integer DEFAULT 0 NOT NULL,
+    last_error text,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    kind character varying(10) DEFAULT 'remove'::character varying NOT NULL,
+    status character varying(10) DEFAULT 'pending'::character varying NOT NULL,
+    next_attempt_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: time_slot; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1246,6 +1311,14 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: attachment PK_31d5367aee6b3ad16c69cce1cde; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.attachment
+    ADD CONSTRAINT "PK_31d5367aee6b3ad16c69cce1cde" PRIMARY KEY (attachment_id);
+
+
+--
 -- Name: maintenance_task_attachment PK_368cf5b7606c8ff95e4b320c81d; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1315,6 +1388,14 @@ ALTER TABLE ONLY public.gas_cylinder
 
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT "PK_758b8ce7c18b9d347461b30228d" PRIMARY KEY (user_id);
+
+
+--
+-- Name: storage_orphan PK_7875e03a159e8f5bbc0ddc30c1a; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.storage_orphan
+    ADD CONSTRAINT "PK_7875e03a159e8f5bbc0ddc30c1a" PRIMARY KEY (orphan_id);
 
 
 --
@@ -1486,6 +1567,14 @@ ALTER TABLE ONLY public.role
 
 
 --
+-- Name: document_sequence PK_document_sequence; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.document_sequence
+    ADD CONSTRAINT "PK_document_sequence" PRIMARY KEY (distributor_id, doc_type);
+
+
+--
 -- Name: claims PK_e8c55807de8dde683de34399da3; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1547,6 +1636,14 @@ ALTER TABLE ONLY public.distributor
 
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT "UQ_40fe3048b17f675b652c1999270" UNIQUE (firebase_uid);
+
+
+--
+-- Name: storage_orphan UQ_79763cafe43e9dcf31ea86b6f59; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.storage_orphan
+    ADD CONSTRAINT "UQ_79763cafe43e9dcf31ea86b6f59" UNIQUE (storage_key);
 
 
 --
@@ -1768,6 +1865,13 @@ CREATE INDEX "IDX_531df2a7a7ab3fda4f1591e80d" ON public.cylinder_inspection USIN
 --
 
 CREATE INDEX "IDX_6f590ebbc097c4ed21d5d3e11e" ON public.rating USING btree (to_user_id);
+
+
+--
+-- Name: IDX_70d35b9e83fa8fca69e685f548; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_70d35b9e83fa8fca69e685f548" ON public.attachment USING btree (distributor_id, owner_type, owner_id);
 
 
 --
@@ -2141,6 +2245,14 @@ ALTER TABLE ONLY public.order_address_change
 
 
 --
+-- Name: attachment FK_0e9e069d0e8d22fab610a465c16; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.attachment
+    ADD CONSTRAINT "FK_0e9e069d0e8d22fab610a465c16" FOREIGN KEY (uploaded_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: order_dispatch_offer FK_0f0f1167f4d0249c579b32b10ce; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2274,6 +2386,14 @@ ALTER TABLE ONLY public.maintenance_task
 
 ALTER TABLE ONLY public.user_address
     ADD CONSTRAINT "FK_29d6df815a78e4c8291d3cf5e53" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+
+
+--
+-- Name: attachment FK_2a226377b800631ab8142a2fe8c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.attachment
+    ADD CONSTRAINT "FK_2a226377b800631ab8142a2fe8c" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2714,6 +2834,14 @@ ALTER TABLE ONLY public.cylinder_recovery_case
 
 ALTER TABLE ONLY public."order"
     ADD CONSTRAINT "FK_df56039592a4bbbd3fa4a19f141" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id);
+
+
+--
+-- Name: document_sequence FK_document_sequence_distributor; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.document_sequence
+    ADD CONSTRAINT "FK_document_sequence_distributor" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --

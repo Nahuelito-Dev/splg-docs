@@ -1,0 +1,32 @@
+sequenceDiagram
+    title DSD — CU-248 Verificar la Carga de Camión Abierta del Chofer · verificarCargaDeCamionAbierta
+    autonumber
+    participant SRV as :DispatchOrchestratorService
+    participant TLS as :TruckLoadService
+    participant CHO as chofer:Chofer
+    participant DIS as distribuidora:Distribuidora
+    participant CFG as configuracion:ConfiguracionModulo
+    participant VEH as vehiculo:Vehiculo
+
+    Note over SRV,TLS: Caso incluido desde CU-012, CU-013 y CU-015
+    SRV->>+TLS: verificarCargaDeCamionAbierta(chofer)
+    TLS->>+CHO: getDistribuidora()
+    CHO-->>-TLS: distribuidora
+    TLS->>+DIS: getConfiguracion(controlDeStock)
+    DIS-->>-TLS: configuracion
+    TLS->>+CFG: getExigirCargaDeCamionAbierta()
+    CFG-->>-TLS: exigida
+    alt La distribuidora exige una carga de camión abierta
+        TLS->>+CHO: getVehiculoEnUso()
+        CHO-->>-TLS: vehiculo
+        TLS->>+VEH: getCargaAbierta()
+        VEH-->>-TLS: carga
+        alt El chofer no tiene una carga abierta
+            TLS-->>SRV: rechazado
+        else El chofer tiene una carga abierta
+            TLS-->>SRV: habilitado
+        end
+    else La distribuidora no lo exige
+        TLS-->>SRV: habilitado
+    end
+    deactivate TLS

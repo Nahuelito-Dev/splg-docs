@@ -1,0 +1,100 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class PuestoDeTrabajo {
+  nombre
+  categoría
+  activo
+}
+class Empleado {
+  legajo
+  nombre
+  apellido
+  documento
+  CUIL
+  fecha de nacimiento
+  domicilio
+  teléfono
+  contacto de emergencia
+  fecha de ingreso
+  fecha de egreso
+  motivo de egreso
+  modalidad de contratación
+  estado
+}
+class JornadaDeTrabajo {
+  día
+  ingreso
+  egreso
+  origen
+  observación
+}
+class LicenciaLaboral {
+  tipo
+  desde
+  hasta
+  /días
+  estado
+  motivo
+  motivo de rechazo
+  resuelta el
+}
+class Adjunto {
+  nombre original
+  tipo de archivo
+  etiqueta
+  fecha de carga
+}
+class Distribuidora <<referencia>>
+class Usuario <<referencia>>
+class TareaMantenimiento <<referencia>>
+
+
+Distribuidora "1" -- "0..*" Empleado : emplea >
+Distribuidora "1" *-- "0..*" PuestoDeTrabajo : define >
+Empleado "0..*" -- "1" PuestoDeTrabajo : ocupa >
+Empleado "0..1" -- "0..1" Usuario : accede con >
+Empleado "1" *-- "0..*" JornadaDeTrabajo : registra >
+Empleado "1" *-- "0..*" LicenciaLaboral : solicita >
+Usuario "0..1" -- "0..*" LicenciaLaboral : resuelve >
+Empleado "1" *-- "0..*" Adjunto : conserva >
+TareaMantenimiento "0..*" -- "0..1" Empleado : habilita >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

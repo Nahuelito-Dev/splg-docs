@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-199 Registrar el Pago de una Multa
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarPagoDeMulta(multaId, fechaDePago, importePagado)
+    activate SIS
+    alt la multa existe y está pendiente o apelada
+        SIS-->>ADM: multa pagada, con su fecha y su importe pagado
+    else la multa no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la multa ya está pagada o anulada
+        SIS-->>ADM: solicitud inválida: la multa no admite el pago
+    end
+    deactivate SIS

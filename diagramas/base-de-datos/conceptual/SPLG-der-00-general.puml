@@ -20,6 +20,10 @@ skinparam class<<propuesto>> {
   BorderColor #1F5E8C
   BackgroundColor #E4EDF4
 }
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
 skinparam legendBackgroundColor #FFFFFF
 skinparam legendBorderColor #2C4257
 
@@ -65,38 +69,114 @@ entity TareaMantenimiento
 entity AdjuntoTarea
 entity PropuestaVentanaTaller
 entity RegistroUsoVehiculo
+entity PuestoDeTrabajo <<propuesto>>
+entity Empleado <<propuesto>>
+entity JornadaDeTrabajo <<propuesto>>
+entity LicenciaLaboral <<propuesto>>
+entity Adjunto
+entity CargaCombustible <<propuesto>>
+entity MultaTransito <<propuesto>>
+entity Siniestro <<propuesto>>
+entity Neumatico <<propuesto>>
+entity MovimientoNeumatico <<propuesto>>
 entity Reclamo
 entity Incidencia
 entity Calificacion
+entity Deposito <<propuesto>>
+entity UbicacionDeStock <<propuesto>>
+entity SaldoDeStock <<propuesto>>
+entity MovimientoDeStock <<propuesto>>
+entity UmbralDeStock <<propuesto>>
+entity AjusteDeStock <<propuesto>>
+entity ItemAjusteDeStock <<propuesto>>
+entity CargaDeCamion <<propuesto>>
+entity ItemCarga <<propuesto>>
+entity Proveedor <<propuesto>>
+entity OrdenDeCompra <<propuesto>>
+entity ItemOrdenDeCompra <<propuesto>>
+entity RecepcionDeCompra <<propuesto>>
+entity ItemRecepcion <<propuesto>>
+entity Caja <<propuesto>>
+entity SesionDeCaja <<propuesto>>
+entity CategoriaDeCaja <<propuesto>>
+entity MovimientoDeCaja <<propuesto>>
+entity RendicionChofer <<propuesto>>
+entity PedidoRendido <<propuesto>>
+entity GastoDeRendicion <<propuesto>>
+entity CuentaCorriente <<propuesto>>
+entity AsientoCuentaCorriente <<propuesto>>
+entity ImputacionCuentaCorriente <<propuesto>>
+entity ReglaComision <<propuesto>>
+entity AsientoComision <<propuesto>>
+entity LiquidacionComisiones <<propuesto>>
 
+Distribuidora ||--o{ Caja
+Distribuidora ||--o{ CategoriaDeCaja
 Distribuidora ||--o{ ZonaCobertura
 Distribuidora ||--o{ Producto
+Distribuidora ||--o{ PuestoDeTrabajo
+Distribuidora ||--o{ Proveedor
 Distribuidora ||--o{ FranjaHoraria
 Usuario }o--o| Rol
+Distribuidora ||--o{ Deposito
 Distribuidora |o--o{ Administrador
 Administrador |o--|| Usuario
 Usuario |o--o{ AsientoAuditoria
 Chofer ||--o{ Vehiculo
 Cliente ||--o{ Carrito
+Caja ||--o{ SesionDeCaja
 Cliente }o--o| Producto
 Cliente |o--|| Usuario
+Distribuidora ||--o{ CuentaCorriente
+Cliente ||--o{ CuentaCorriente
 Distribuidora ||--o{ Chofer
 Chofer |o--|| Usuario
+Distribuidora ||--o{ Empleado
+Empleado }o--|| PuestoDeTrabajo
 Producto ||--o{ Promocion
 Distribuidora ||--o{ ConfiguracionModulo
+Proveedor ||--o{ OrdenDeCompra
+OrdenDeCompra }o--|| Deposito
+Deposito ||--o{ UmbralDeStock
+UmbralDeStock }o--|| Producto
 Cliente ||--o{ DireccionEntrega
 Carrito ||--o{ ItemCarrito
 ItemCarrito }o--|| Producto
+Caja ||--o{ MovimientoDeCaja
+SesionDeCaja |o--o{ MovimientoDeCaja
+CategoriaDeCaja ||--o{ MovimientoDeCaja
+MovimientoDeCaja |o--o| MovimientoDeCaja
+Distribuidora ||--o{ ReglaComision
+ReglaComision }o--o| Empleado
+ReglaComision }o--o| Producto
+Empleado ||--o{ JornadaDeTrabajo
+Empleado ||--o{ LicenciaLaboral
+Vehiculo ||--o{ CargaCombustible
+Empleado |o--o{ CargaCombustible
 TareaMantenimiento }o--o| Vehiculo
 TareaMantenimiento }o--o| Chofer
 PlanMantenimiento ||--o{ TareaMantenimiento
+TareaMantenimiento }o--o| Empleado
 Pedido }o--|| DireccionEntrega
 Pedido }o--o| ZonaCobertura
 Cliente ||--o{ Pedido
 Chofer |o--o{ Pedido
 Distribuidora ||--o{ Pedido
 Pedido }o--o| FranjaHoraria
+OrdenDeCompra ||--o{ ItemOrdenDeCompra
+ItemOrdenDeCompra }o--|| Producto
+Proveedor ||--o{ RecepcionDeCompra
+OrdenDeCompra |o--o{ RecepcionDeCompra
+RecepcionDeCompra }o--|| Deposito
 Chofer |o--o{ LoteRecorrido
+Deposito |o--o| UbicacionDeStock
+Vehiculo |o--o| UbicacionDeStock
+Distribuidora ||--o{ Neumatico
+Vehiculo |o--o{ Neumatico
+Vehiculo ||--o{ MultaTransito
+Empleado |o--o{ MultaTransito
+Vehiculo ||--o{ Siniestro
+Empleado |o--o{ Siniestro
 Vehiculo ||--o{ AsignacionVehiculo
 Chofer ||--o{ AsignacionVehiculo
 Vehiculo ||--o{ RegistroUsoVehiculo
@@ -106,6 +186,11 @@ Cliente |o--o{ Envase
 Pedido |o--o{ Envase
 Distribuidora ||--o{ Envase
 Producto |o--o{ Envase
+Empleado ||--o{ LiquidacionComisiones
+LiquidacionComisiones }o--o| MovimientoDeCaja
+Chofer ||--o{ RendicionChofer
+RendicionChofer }o--o| Caja
+RendicionChofer }o--o| MovimientoDeCaja
 Pedido ||--o{ Incidencia
 TareaMantenimiento ||--o{ AdjuntoTarea
 PropuestaVentanaTaller }o--|| Chofer
@@ -119,6 +204,8 @@ ItemPedido }o--|| Producto
 Pedido ||--o{ ItemPedido
 Pedido ||--o{ CambioEstadoPedido
 Pedido ||--o{ Pago
+RecepcionDeCompra ||--o{ ItemRecepcion
+ItemRecepcion }o--|| Producto
 Pedido ||--o{ Calificacion
 InvitacionRecompra }o--o| DireccionEntrega
 InvitacionRecompra }o--o| Pedido
@@ -127,12 +214,46 @@ LoteRecorrido ||--o{ OfertaLote
 OfertaLote }o--|| Chofer
 LoteRecorrido ||--o{ ParadaLote
 ParadaLote }o--|| Pedido
+UbicacionDeStock ||--o{ AjusteDeStock
+UbicacionDeStock ||--o{ SaldoDeStock
+SaldoDeStock }o--|| Producto
+MovimientoDeStock }o--|| Producto
+MovimientoDeStock }o--o| UbicacionDeStock
+MovimientoDeStock }o--o| UbicacionDeStock
+Neumatico ||--o{ MovimientoNeumatico
+MovimientoNeumatico }o--o| Vehiculo
+Vehiculo ||--o{ CargaDeCamion
+Chofer ||--o{ CargaDeCamion
+CargaDeCamion }o--|| UbicacionDeStock
+Empleado ||--o{ AsientoComision
+AsientoComision }o--o| Pedido
+ReglaComision |o--o{ AsientoComision
+RendicionChofer |o--o{ AsientoComision
+LiquidacionComisiones |o--o{ AsientoComision
+CuentaCorriente ||--o{ AsientoCuentaCorriente
+Pedido |o--o{ AsientoCuentaCorriente
+AsientoCuentaCorriente }o--o| MovimientoDeCaja
+Chofer |o--o{ AsientoCuentaCorriente
+RendicionChofer |o--o{ AsientoCuentaCorriente
+AsientoCuentaCorriente |o--o| AsientoCuentaCorriente
 Envase ||--o{ RevisionEnvase
 Envase ||--o{ MovimientoEnvase
 Pedido |o--o{ MovimientoEnvase
 Envase ||--o{ CasoRecupero
 CasoRecupero }o--|| Cliente
+RendicionChofer ||--o{ GastoDeRendicion
+GastoDeRendicion }o--|| CategoriaDeCaja
+RendicionChofer ||--o{ PedidoRendido
+PedidoRendido |o--|| Pedido
+AjusteDeStock ||--o{ ItemAjusteDeStock
+ItemAjusteDeStock }o--|| Producto
+CargaDeCamion ||--o{ ItemCarga
+ItemCarga }o--|| Producto
+ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente
+ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente
 CasoRecupero ||--o{ AvisoRecupero
+Empleado ||--o{ Adjunto
+Empleado ||--o{ Chofer
 
 legend bottom right
   Vista de conjunto: sin atributos ni nombres de relación. Las relaciones de Usuario

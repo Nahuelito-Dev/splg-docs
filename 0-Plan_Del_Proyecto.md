@@ -30,8 +30,12 @@
 | 4 | 2026-10-01 | Casos de uso de alto nivel CU-161 a CU-167: vehículo en uso por chofer y reclamos. | Nahuel Wagner |
 | 5 | 2026-10-01 | Casos de uso de alto nivel CU-168 a CU-175: reintegro de pagos, historial de estados del pedido, configuración de procesos y de tareas programadas, y fotografía del reclamo. Estado y iteración de cada caso en el catálogo. Plan de construcción de los casos de uso planificados (I-1 a I-10) y decisiones de diseño incorporadas. | Nahuel Wagner |
 | 6 | 2026-10-01 | Cronograma como diagrama de Gantt con las seis iteraciones de Construcción, las diez iteraciones de los casos planificados y los hitos; fechas de las fases alineadas con la Planificación de Iteraciones; despliegue en un servidor virtual con Docker Compose. | Nahuel Wagner |
-| 7 | 2026-10-01 | Cierre de la documentación: los 174 casos de uso con sus cuatro artefactos, el catálogo de 194 operaciones del sistema y las cifras del plan coherentes con los Documentos 1, 2 y 3 y con el sistema construido. | Nahuel Wagner |
+| 7 | 2026-10-01 | Cierre de la documentación: los 195 casos de uso con sus cuatro artefactos, el catálogo de 194 operaciones del sistema y las cifras del plan coherentes con los Documentos 1, 2 y 3 y con el sistema construido. | Nahuel Wagner |
 | 8 | 2026-10-01 | Revisión final: mapa del sistema como diagrama principal y diagrama completo como lámina anexa, actor ACT-09 (plataforma de despliegue), cronograma con I-1, I-2, I-3 e I-5 cerrando en C-06 y el resto postergado, recargo del 10 % del pago en línea, catálogo de 194 operaciones. | Nahuel Wagner |
+| 9 | 2026-10-03 | Módulo de Personal: casos de uso de alto nivel CU-176 a CU-194 y CU-246 (subsistema SS-19, iteración I-11), con su fila en el catálogo, su plan de construcción y su barra en el cronograma. | Nahuel Wagner |
+| 10 | 2026-10-03 | Módulo de flota ampliada: casos de uso de alto nivel CU-195 a CU-206 y CU-247 (combustible, multas, siniestros, costos y neumáticos), iteración I-12 y calificación de los casos nuevos. | Nahuel Wagner |
+| 11 | 2026-10-03 | Módulo de stock y compras: casos de uso de alto nivel CU-207 a CU-224 y CU-248 a CU-250 (stock físico por depósito y camión, compras a proveedores, carga y rendición del camión), subsistema SS-20 e iteración I-13. | Nahuel Wagner |
+| 12 | 2026-10-03 | Módulo de caja y rendición: casos de uso de alto nivel CU-225 a CU-245 (subsistema SS-21, iteración I-14) y catálogo de 249 casos de uso. | Nahuel Wagner |
 
 ---
 
@@ -59,7 +63,7 @@ El desarrollo se lleva a cabo en fases, con una o más iteraciones en cada una. 
 | Fase de Construcción | 6 (C-01 a C-06) | 22 semanas | 19/05/2026 – 20/10/2026 |
 | Fase de Transición | 1 (T-01) | 9 semanas | 21/10/2026 – 22/12/2026 |
 
-La iteración C-06 contiene el plan de construcción de los casos de uso planificados, que se reparte en diez iteraciones de trabajo, I-1 a I-10 (sección 4). La Fase de Construcción las absorbe: no agregan iteraciones al calendario de fases.
+La iteración C-06 contiene el plan de construcción de los casos de uso planificados, que se reparte en diez iteraciones de trabajo, I-1 a I-10, y en las cuatro iteraciones de los módulos de gestión de la distribuidora, I-11 a I-14 (sección 4). La Fase de Construcción las absorbe: no agregan iteraciones al calendario de fases.
 
 ---
 
@@ -71,7 +75,7 @@ Los hitos que marcan el final de cada fase se describen en la siguiente tabla.
 |------|-------------|------|
 | Fase de Inicio | Identificación del escenario real (distribuidor de gas con operación telefónica y sin trazabilidad), relevamiento de necesidades con el cliente, identificación de actores y casos de uso principales, redacción de la Propuesta de Proyecto y presentación del Plan del Proyecto. | Plan del Proyecto aprobado por el docente (28/04/2026). |
 | Fase de Elaboración | Análisis de los casos de uso arquitectónicamente más críticos (CU-001, CU-005, CU-013, CU-017, CU-020); definición y validación de la arquitectura técnica (NestJS, Flutter, React, PostgreSQL, Redis, Firebase Auth); Modelo Conceptual preliminar; prototipo de arquitectura que valida el despacho automático con Redis GEORADIUS. | Arquitectura validada con el cliente y prototipo funcional demostrado (19/05/2026). |
-| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, dashboard, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado, con la construcción de los casos de uso planificados en las diez iteraciones I-1 a I-10: cimientos (I-1), vigencia de envases (I-2), carrito persistente (I-3), pedido en curso (I-4), consumo declarado y reclamos con imagen (I-5), recompra (I-6), compra express y reintegros (I-7), recupero de envases (I-8), recorridos (I-9) y flota (I-10). | Release 2.0 al cierre de C-05 (08/09/2026) y, al cierre de C-06 (20/10/2026), construidas las iteraciones I-1, I-2, I-3 e I-5; las iteraciones I-4, I-6, I-7, I-8, I-9 e I-10 quedan postergadas a una iteración posterior a la defensa. |
+| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, dashboard, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado, con la construcción de los casos de uso planificados en las diez iteraciones I-1 a I-10: cimientos (I-1), vigencia de envases (I-2), carrito persistente (I-3), pedido en curso (I-4), consumo declarado y reclamos con imagen (I-5), recompra (I-6), compra express y reintegros (I-7), recupero de envases (I-8), recorridos (I-9) y flota (I-10) y, en la iteración I-11, personal y legajos (I-11). | Release 2.0 al cierre de C-05 (08/09/2026) y, al cierre de C-06 (20/10/2026), construidas las iteraciones I-1, I-2, I-3 e I-5; las iteraciones I-4, I-6, I-7, I-8, I-9 e I-10 quedan postergadas a una iteración posterior a la defensa. |
 | Fase de Transición | Pruebas de aceptación con usuarios reales (choferes y clientes del distribuidor), corrección de los defectos detectados, despliegue en producción (Docker Compose sobre un servidor virtual, VPS) y entrega de la documentación (manuales de usuario y guías de despliegue). | Sistema en producción, usuarios capacitados y documentación entregada (22/12/2026). |
 
 ---
@@ -103,16 +107,16 @@ Las barras de color pleno son las fases e iteraciones del plan. Los rombos son l
 
 ### Plan de construcción de los casos de uso planificados
 
-El sistema construido no realiza treinta y dos casos de uso, que están especificados con sus
+El sistema construido no realiza ciento cinco casos de uso (los treinta del alcance original y los setenta y cinco de los módulos de gestión: veinte de personal, I-11; trece de flota ampliada, I-12; veintiuno de stock y compras, I-13; y veintiuno de caja y rendición, I-14), que están especificados con sus
 artefactos completos y figuran como «Planificado» en el catálogo de la sección 8: los veintitrés que la
 documentación venía señalando como no construidos (CU-043, CU-105 a CU-108, CU-122 a CU-128, CU-132 a
 CU-135, CU-143 a CU-148 y CU-151), el despacho de un pedido express a un chofer en moto (CU-149), que es
-condición de la compra express, y ocho casos nuevos que formalizan funcionalidad que faltaba (CU-168 a
-CU-175). Otros cuatro casos construidos tienen un tramo planificado asociado a una iteración (CU-008,
-CU-010, CU-023 y CU-040). Cada caso muestra su iteración como «Planificado (I-n)» en el catálogo y en su
+condición de la compra express, y seis casos nuevos que formalizan funcionalidad que faltaba (CU-168 a
+CU-173). Otros tres casos construidos tienen un tramo planificado asociado a una iteración (CU-008,
+CU-010 y CU-040). La fotografía del reclamo (CU-174 y CU-175, y el tramo de CU-023) ya está construida. Cada caso muestra su iteración como «Planificado (I-n)» en el catálogo y en su
 caso de uso expandido.
 
-El plan agrupa los casos en diez iteraciones de construcción, I-1 a I-10, de acuerdo con el módulo del
+El plan agrupa los casos en catorce iteraciones de construcción, I-1 a I-14, de acuerdo con el módulo del
 sistema que tocan y con sus dependencias.
 
 | Iteración | Casos de uso | Tamaño | Qué se puede mostrar al cerrarla |
@@ -121,16 +125,27 @@ sistema que tocan y con sus dependencias.
 | **I-2** Vigencia de envases | CU-132, CU-133, CU-134, CU-135 | M | Un envase con la revisión vencida no puede asignarse a ningún pedido. |
 | **I-3** Carrito persistente | CU-122, CU-123, CU-124, CU-125, CU-126 | L | El cliente arma el carrito, cierra la app, la vuelve a abrir y el carrito sigue ahí. |
 | **I-4** Pedido en curso | CU-127, CU-128, CU-169, CU-170 | M | El cliente cambia la dirección de un pedido en curso y el chofer lo ve, con quién recibe; el cliente y el administrador ven el historial de estados del pedido. |
-| **I-5** Consumo declarado y reclamos con imagen | CU-143, CU-144, CU-145, CU-146, CU-174, CU-175; CU-023 (fotografía) | M | El administrador ve qué clientes se quedan sin gas esta semana; el cliente adjunta una fotografía a su reclamo. |
+| **I-5** Consumo declarado | CU-143, CU-144, CU-145, CU-146 | M | El administrador ve qué clientes se quedan sin gas esta semana. |
 | **I-6** Módulo M3: recompra | CU-106 | L | Un cliente recibe la invitación a reponer y, al aceptarla, el pedido entra al despacho. |
 | **I-7** Compra express y reintegros | CU-148, CU-147, CU-149, CU-168; CU-008 y CU-010 (reintegro) | L | Un pedido express sale a un chofer en moto o se degrada a reparto común avisándole al cliente; el pago de un pedido cancelado se devuelve por la pasarela. |
 | **I-8** Módulo M5: recupero de envases | CU-108 | L | Un envase retenido abre su caso, escala y el administrador lo resuelve. |
 | **I-9** Módulo M4: agrupación por recorrido | CU-107 | L | Tres pedidos programados cercanos se ofrecen como un solo recorrido ordenado. |
 | **I-10** Módulo M2: flota | CU-105 | L+ | El planificador propone una ventana de taller al chofer y escala si se agotan las alternativas. |
+| **I-11** Personal y legajos | CU-176 a CU-194 y CU-246 | L+ | El administrador lleva el legajo de cada persona de la distribuidora, su asistencia y sus licencias, y un chofer con la documentación vencida o con licencia aprobada queda fuera del despacho. |
+| **I-12** Flota ampliada | CU-195 a CU-206 y CU-247 | L | El administrador y el chofer registran las cargas de combustible, las multas y los siniestros de cada vehículo, y el administrador ve el costo y el rendimiento de cada unidad y de toda la flota. |
+| **I-13** Stock y compras | CU-207 a CU-224 y CU-248 a CU-250; CU-038 (ajuste de stock) y CU-020 (descuento del camión al entregar) | L+ | El administrador ve el stock físico por depósito y por camión, compra a una planta de llenado y recibe el remito, carga el camión, lo rinde al volver y el sistema concilia el stock vendible con el físico. |
+| **I-14** Caja y rendición | CU-225 a CU-245 | L+ | El administrador abre y cierra la caja con arqueo, el chofer rinde su cobranza del día y el administrador la aprueba; un cliente compra a cuenta corriente y paga después; las entregas devengan comisiones que se liquidan y se pagan desde una caja. |
 
 El tamaño es relativo, para una persona, e incluye el backend, el panel, las aplicaciones y la prueba
 contra el sistema en funcionamiento: S hasta un día, M de dos a cuatro días, L de cuatro a siete días y
 L+ más de siete.
+
+**Iteración I-11: Personal y legajos.** A diferencia de las diez anteriores, que cierran lo que el sistema ya tenía especificado, la I-11 incorpora un módulo de gestión de la distribuidora: el personal. Son los veinte casos de uso CU-176 a CU-194 y CU-246 del subsistema SS-19, con sus cinco artefactos, y su modelo de datos planificado: las tablas `job_position`, `employee`, `employee_attendance` y `employee_leave`, que usan la tabla de adjuntos genéricos `attachment` (ya implementada), y las columnas nuevas de `maintenance_plan` y `maintenance_task` que hacen que la documentación con vencimiento del personal (licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART) reutilice los planes, las tareas, los adjuntos, el aviso diario y el bloqueo de despacho de la flota. No hay roles nuevos: el personal administrativo que entra al panel es un administrador, y ayudantes, depósito y vendedores son legajos sin cuenta. Se estima en 12 jornadas de una persona (tres de tablas y alta unificada del chofer, de dos a tres de documentación y bloqueo de despacho, dos de asistencia y licencias, de tres a cuatro de panel, más las pruebas contra el sistema en funcionamiento), depende de los adjuntos genéricos y de la numeración del legajo, y queda postergada a una iteración posterior a la defensa, con fechas estimadas del 21/10/2026 al 05/11/2026. Modifica casos existentes sin reescribirlos: el alta de un chofer (CU-003, CU-031) crea además su legajo en la misma transacción; la licencia de conducir (CU-138) pasa a tener como dueño al empleado; el tablero y el aviso de vencimientos de la flota (CU-139, CU-142) suman a las personas; y el bloqueo de despacho (CU-012, CU-013 y CU-015, que incluyen el caso nuevo CU-246) considera también las licencias aprobadas y el estado del legajo.
+**Iteración I-12: Flota ampliada.** Suma los doce casos CU-195 a CU-206 y el caso CU-247 (Reactivar un Vehículo) al subsistema SS-07, con sus cinco artefactos y su modelo de datos planificado: las tablas `fuel_load`, `traffic_fine`, `vehicle_accident`, `tire` y `tire_event`, y las columnas nuevas de `car`. El chofer y el administrador registran las cargas de combustible, las multas y los siniestros de cada vehículo, y el administrador ve el costo y el rendimiento de cada unidad y de toda la flota; la funcionalidad opcional de neumáticos es lo primero que se posterga. Depende del legajo del personal (I-11) y de los adjuntos genéricos, tiene tamaño L y queda postergada a una iteración posterior a la defensa.
+
+**Iteración I-13: Stock y compras.** Incorpora el stock físico por depósito y por camión, las compras a plantas de llenado y la carga y rendición del camión: los dieciocho casos CU-207 a CU-224 (subsistemas SS-08 ampliado y SS-20 Compras) y los tres casos incluidos CU-248 (verificar la carga de camión abierta), CU-249 (configurar ese control) y CU-250 (aplicar un movimiento de stock), con catorce tablas nuevas. Modifica casos existentes sin reescribirlos: el ajuste de stock (CU-038) y el descuento del camión al entregar (CU-020), y el despacho (CU-012, CU-013 y CU-015) puede exigir una carga abierta. Depende de la numeración correlativa por distribuidora y del evento de pedido entregado, que ya están implementados; tiene tamaño L+ y queda postergada a una iteración posterior a la defensa.
+
+**Módulo de caja y rendición (I-14).** A los casos planificados se suman los veintiún casos del subsistema SS-21 Caja, Rendiciones y Cuentas Corrientes (CU-225 a CU-245), que no tienen construcción previa y se agrupan en una única iteración, I-14. Depende de la tanda de cimientos de los módulos de empresa (numeración correlativa por distribuidora, adjuntos genéricos y evento de pedido entregado) y del vehículo en uso del chofer; las comisiones por entrega y los cargos a cuenta se asientan al entregar el pedido. Queda postergada a una iteración posterior a la defensa, con fechas estimadas del 14/12/2026 al 12/01/2027, después de las iteraciones I-11 a I-13 porque las comisiones se anclan en el legajo del personal. Su tamaño es L+ (más de siete jornadas): catorce tablas nuevas, nueve servicios, dos procesos temporales y un tablero en el panel.
 
 **Piezas transversales.** La primera iteración construye cuatro piezas que reutilizan las siguientes.
 La primera es la configuración de procesos por distribuidora: la tabla ya existe y falta el servicio
@@ -200,7 +215,7 @@ quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras, designa a sus administradores y administra los roles del sistema. Es el único actor cuyo alcance no está acotado a una distribuidora: los demás operan siempre dentro de la suya. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro. El sistema le crea el checkout de cada pedido o seña que se paga por MercadoPago y recibe de ella el aviso de pago aprobado. No inicia ningún caso de uso. Participa en CU-005, CU-048, CU-072 y CU-147. |
 | ACT-07 | **Firebase** | Secundario (sistema externo) | Identidad y mensajería. El sistema le pide crear y deshabilitar cuentas, verificar el token de identidad y generar el enlace de recuperación de contraseña, y le entrega las notificaciones push que llegan a los dispositivos. No inicia ningún caso de uso. Participa en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-021, CU-047, CU-072, CU-079, CU-082, CU-085, CU-091, CU-100, CU-101 y CU-147. |
-| ACT-08 | **Servicio de correo** | Secundario (sistema externo) | Envía los correos transaccionales del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y aviso de vencimientos de la flota. No inicia ningún caso de uso. Participa en CU-002, CU-047, CU-102 y CU-142. |
+| ACT-08 | **Servicio de correo** | Secundario (sistema externo) | Envía los correos transaccionales del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y aviso de vencimientos de la flota y del personal. No inicia ningún caso de uso. Participa en CU-002, CU-047, CU-102, CU-142, CU-188, CU-211 y CU-224. |
 | ACT-09 | **Plataforma de despliegue** | Primario (sistema externo) | Orquestador de contenedores, balanceador de carga o servicio de monitoreo que sondea el estado del backend para decidir si le envía tráfico o si reinicia la instancia. Es quien inicia CU-104. |
 
 
@@ -244,7 +259,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ![Mapa del sistema: paquetes y actores](diagramas/uml/CU_Sistema_Mapa.png)
 
-> Resumen de una página del sistema: los 18 paquetes con su cantidad de casos de uso y una
+> Resumen de una página del sistema: los 21 paquetes con su cantidad de casos de uso y una
 > línea por actor hacia cada paquete en el que participa. Los actores se dibujan fuera del
 > límite del sistema, una sola vez cada uno. El Administrador General especializa al
 > Administrador.
@@ -253,7 +268,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-> Lámina anexa: los 174 casos de uso uno por uno, agrupados en los paquetes de cada
+> Lámina anexa: los 249 casos de uso uno por uno, agrupados en los paquetes de cada
 > subsistema, con las relaciones `«include»` y `«extend»` entre ellos. Por su tamaño se
 > entrega también en formato vectorial, que permite ampliarla sin pérdida de legibilidad.
 
@@ -576,7 +591,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-05 Reclamos  
 **Calificación:** Importante  
-**Descripción:** El cliente adjunta una fotografía como evidencia de su reclamo, al registrarlo o después. La imagen se guarda en el almacenamiento de archivos del sistema y el reclamo conserva su referencia. Endpoint: `POST /claims/:id/photo`, con la imagen en un formulario multipart.
+**Descripción:** El cliente adjunta una fotografía como evidencia de su reclamo, al registrarlo o después, mientras el reclamo no esté resuelto ni rechazado. La imagen (JPG, PNG o WEBP, de hasta 10 MB, validada por su contenido) se guarda en el almacenamiento de archivos del sistema y el reclamo conserva su referencia. Endpoint: `POST /claims/:id/photo`, con la imagen en un formulario multipart.
 
 ---
 
@@ -584,7 +599,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-05 Reclamos  
 **Calificación:** Secundario  
-**Descripción:** El cliente y el administrador ven la fotografía que respalda un reclamo. El sistema la entrega por una URL firmada del proveedor de almacenamiento o, con el disco local, sirviendo el archivo. Endpoint: `GET /claims/:id/photo`.
+**Descripción:** El cliente y el administrador ven la fotografía que respalda un reclamo, aunque el reclamo esté cerrado. El sistema la entrega por una URL firmada del proveedor de almacenamiento o, con el disco local, sirviendo el archivo; con `?modo=url` devuelve el enlace en JSON. Endpoint: `GET /claims/:id/photo`.
 
 ---
 
@@ -1541,6 +1556,110 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
+**Código:** CU-195 | **Caso de Uso:** Registrar una Carga de Combustible  
+**Actor/es:** Administrador (ACT-03), Chofer (ACT-02)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador, o el chofer desde su aplicación con el vehículo que tiene en uso, registra una carga de combustible: fecha y hora, tipo de combustible, litros, precio por litro, importe, kilometraje del tablero, si se llenó el tanque, estación, medio de pago y comprobante. El sistema impide que el kilometraje retroceda, actualiza el kilometraje del vehículo y marca la carga como anómala si su consumo se aparta del promedio, con aviso a los administradores. El administrador también modifica una carga, la anula y consulta las cargas con filtros. Endpoints: `POST /fleet/fuel-loads`, `POST /fleet/fuel-loads/mine`, `PATCH /fleet/fuel-loads/:id`, `DELETE /fleet/fuel-loads/:id` y `GET /fleet/fuel-loads`.
+
+---
+
+**Código:** CU-196 | **Caso de Uso:** Consultar el Consumo de Combustible de un Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta cuánto rinde un vehículo en un período: kilómetros por litro, costo por kilómetro, tramos entre cargas de tanque lleno y las cargas anómalas. Endpoint: `GET /cars/:carId/fuel-efficiency?from&to`.
+
+---
+
+**Código:** CU-197 | **Caso de Uso:** Registrar la Habilitación para Transportar Mercancías Peligrosas  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador registra la habilitación del vehículo para transportar mercancías peligrosas, que es la que exige el reparto de gas licuado: número, autoridad que la otorga, inicio de vigencia y vencimiento. Se carga con la misma operación que el seguro, como una tarea de mantenimiento contra un plan bloqueante: un vehículo con la habilitación vencida queda inhabilitado y no recibe pedidos. Endpoint: `POST /fleet/tasks`.
+
+---
+
+**Código:** CU-198 | **Caso de Uso:** Registrar una Multa de Tránsito  
+**Actor/es:** Administrador (ACT-03), Sistema Automático (ACT-04)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador registra una multa de tránsito de un vehículo: fecha y hora de la infracción, jurisdicción, número de acta, infracción, importe, importe con pago voluntario y vencimiento. El sistema sugiere el chofer que usaba el vehículo en ese momento. El administrador también modifica la multa, la anula y las consulta con filtros; cada día el sistema avisa de las que están por vencer. Endpoints: `POST /fleet/fines`, `PATCH /fleet/fines/:id`, `PATCH /fleet/fines/:id/void` y `GET /fleet/fines`. El administrador anula con un motivo obligatorio.
+
+---
+
+**Código:** CU-199 | **Caso de Uso:** Registrar el Pago de una Multa  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Secundario  
+**Descripción:** El administrador registra que una multa se pagó: fecha de pago e importe pagado. La multa pasa a pagada, desde pendiente o desde apelada. Endpoint: `PATCH /fleet/fines/:id/pay`.
+
+---
+
+**Código:** CU-200 | **Caso de Uso:** Imputar una Multa al Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Secundario  
+**Descripción:** El administrador imputa una multa al chofer que conducía el vehículo, para que se le descuente en la liquidación. Mientras no exista el módulo de caja queda la marca de imputación. Endpoint: `PATCH /fleet/fines/:id/charge-to-employee`.
+
+---
+
+**Código:** CU-201 | **Caso de Uso:** Registrar un Siniestro  
+**Actor/es:** Administrador (ACT-03), Chofer (ACT-02)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador, o el chofer desde su aplicación, registra un siniestro de un vehículo: fecha, lugar, descripción, si hubo heridos o terceros, si hubo derrame de gas, denuncia policial y reclamo al seguro. Si el vehículo no puede circular, queda fuera de servicio. El administrador también modifica el siniestro y los consulta con filtros. Endpoints: `POST /fleet/accidents`, `POST /fleet/accidents/mine`, `PATCH /fleet/accidents/:id` y `GET /fleet/accidents`.
+
+---
+
+**Código:** CU-202 | **Caso de Uso:** Cerrar un Siniestro  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Secundario  
+**Descripción:** El administrador cierra un siniestro cuando se resolvió: asienta el costo de la reparación, el reintegro del seguro y la franquicia. Endpoint: `PATCH /fleet/accidents/:id/close`.
+
+---
+
+**Código:** CU-203 | **Caso de Uso:** Consultar el Costo Total de un Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta cuánto cuesta un vehículo en un período, por rubro —mantenimiento, seguros, combustible, multas y siniestros—, los kilómetros recorridos y el costo por kilómetro, con la evolución mes a mes. Endpoint: `GET /cars/:carId/costs?from&to`.
+
+---
+
+**Código:** CU-204 | **Caso de Uso:** Consultar el Tablero de Costos de la Flota  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta el costo de toda la flota en un período, con un renglón por vehículo —rubros, kilómetros y costo por kilómetro— ordenados por costo por kilómetro. Endpoint: `GET /fleet/costs?from&to`.
+
+---
+
+**Código:** CU-205 | **Caso de Uso:** Registrar un Neumático  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Secundario  
+**Descripción:** El administrador da de alta un neumático de la distribuidora: número de serie, marca, medida y costo. Queda en depósito hasta que se lo monta en un vehículo. Es una funcionalidad opcional del módulo. Endpoint: `POST /fleet/tires`.
+
+---
+
+**Código:** CU-206 | **Caso de Uso:** Registrar un Movimiento de Neumático  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Secundario  
+**Descripción:** El administrador registra un movimiento de un neumático: montaje en un vehículo, desmontaje, rotación de posición, recapado o baja, con el kilometraje del vehículo. Es una funcionalidad opcional del módulo. Endpoint: `POST /fleet/tires/:id/events`.
+
+---
+
+**Código:** CU-247 | **Caso de Uso:** Reactivar un Vehículo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador devuelve a la flota activa un vehículo que estaba fuera de servicio, por ejemplo por un siniestro, siempre que su documentación bloqueante esté en regla. Si alguna sigue vencida, el sistema lo rechaza y dice cuál. Endpoint: `PATCH /car/:id/reactivate`.
+
+---
+
 **Código:** CU-098 | **Caso de Uso:** Registrar el Token de Notificaciones del Dispositivo  
 **Actor/es:** ACT-01 Cliente, ACT-02 Chofer, ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-17 Notificaciones y Mensajería  
@@ -1668,6 +1787,507 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Calificación:** Importante  
 **Descripción:** Sobre el historial de movimientos del ciclo de envase, un proceso temporal detecta los botellones que siguen en poder de un cliente por encima del plazo de tolerancia configurado y abre para cada caso una secuencia escalonada de gestión: primero un recordatorio de devolución, después un aviso con el detalle del depósito comprometido, y en el medio la oferta de devolver el envase en la próxima entrega ya programada del cliente. Si al cabo de los plazos el envase sigue sin volver, el caso se escala al administrador con el legajo armado, y es él quien decide el cobro del depósito o la baja del envase.
 
+### SS-21 — Caja, Rendiciones y Cuentas Corrientes
+
+
+**Código:** CU-225 | **Caso de Uso:** Gestionar las Cajas  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador da de alta, edita y desactiva desde el panel las cajas de su distribuidora —efectivo, banco o billetera—. Cada caja lleva su saldo, que sólo cambia por movimientos del libro. Cada distribuidora tiene sembrada una «Caja central». Endpoints: `GET /cash-boxes`, `POST /cash-boxes` y `PATCH /cash-boxes/:id`.
+
+---
+
+**Código:** CU-226 | **Caso de Uso:** Abrir la Caja  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la sesión de una caja de efectivo con el monto con que empieza el turno. La sesión es el período entre una apertura y un cierre, y es la unidad del arqueo. Endpoint: `POST /cash-boxes/:id/sessions`.
+
+---
+
+**Código:** CU-227 | **Caso de Uso:** Cerrar la Caja con Arqueo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Crítico  
+**Descripción:** El administrador cierra la sesión de una caja contando el efectivo que hay y comparándolo con lo que el libro dice que debería haber. La diferencia queda registrada y el saldo se ajusta a lo contado. Endpoint: `PATCH /cash-sessions/:id/close`.
+
+---
+
+**Código:** CU-228 | **Caso de Uso:** Registrar un Ingreso o Egreso de Caja  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Crítico  
+**Descripción:** El administrador asienta en el libro de una caja un ingreso o un egreso manual, con su categoría y su medio, o mueve fondos entre dos cajas. Es el único camino por el que cambia un saldo. Endpoints: `POST /cash-movements` y `POST /cash-movements/transfer`.
+
+---
+
+**Código:** CU-229 | **Caso de Uso:** Anular un Movimiento de Caja  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige un movimiento de caja asentando otro de sentido contrario que lo anula, sin tocar el original. Un movimiento se anula una sola vez. Endpoint: `POST /cash-movements/:id/reverse`.
+
+---
+
+**Código:** CU-230 | **Caso de Uso:** Gestionar las Categorías de Ingresos y Gastos  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Secundario  
+**Descripción:** El administrador mantiene las categorías con que se clasifican los movimientos de caja: las da de alta, las renombra y las desactiva. Las categorías de sistema no se pueden modificar. Endpoints: `GET /cash-categories`, `POST /cash-categories`, `PATCH /cash-categories/:id` y `DELETE /cash-categories/:id`.
+
+---
+
+**Código:** CU-231 | **Caso de Uso:** Generar la Rendición Diaria del Chofer  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** Un proceso temporal abre, al cierre de cada día, la rendición de cada chofer que entregó pedidos cobrados en efectivo y todavía no los rindió. La rendición reúne esos pedidos y los cobros de cuenta corriente hechos en la calle.
+
+---
+
+**Código:** CU-232 | **Caso de Uso:** Declarar el Efectivo Rendido  
+**Actor/es:** Chofer (ACT-02), Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Crítico  
+**Descripción:** El chofer declara cuánto efectivo entrega y qué gastos pagó con la cobranza, desde la App Chofer; el administrador puede hacerlo por él desde el panel. La rendición queda presentada con su diferencia. Endpoint: `POST /driver-settlements/:id/submit`.
+
+---
+
+**Código:** CU-233 | **Caso de Uso:** Aprobar la Rendición del Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Crítico  
+**Descripción:** El administrador revisa la rendición presentada por el chofer, resuelve la diferencia y la aprueba: el efectivo entra a la caja que elige. También puede reabrirla para que se corrija. Endpoints: `PATCH /driver-settlements/:id/approve` y `PATCH /driver-settlements/:id/reopen`.
+
+---
+
+**Código:** CU-234 | **Caso de Uso:** Avisar las Rendiciones sin Cerrar  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** Un proceso temporal avisa por correo a los administradores de cada distribuidora de las rendiciones de días anteriores que siguen abiertas o presentadas sin aprobar. Cada rendición se marca como avisada para no repetir el mismo correo.
+
+---
+
+**Código:** CU-235 | **Caso de Uso:** Habilitar la Cuenta Corriente de un Cliente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la cuenta corriente de un cliente en su distribuidora, con la razón social, la condición fiscal, el límite de crédito y el plazo de pago, y después la modifica o la bloquea. Endpoints: `POST /customer-accounts` y `PATCH /customer-accounts/:id`.
+
+---
+
+**Código:** CU-236 | **Caso de Uso:** Vender a Cuenta Corriente  
+**Actor/es:** Administrador (ACT-03), Sistema Automático (ACT-04)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Crítico  
+**Descripción:** El administrador crea desde el panel un pedido pagado a cuenta corriente, después de verificar que el cliente tenga crédito. Cuando el pedido se entrega, el sistema asienta el cargo en la cuenta. Es un caso de pedido con el medio de pago «cuenta corriente», en `POST /orders`.
+
+---
+
+**Código:** CU-237 | **Caso de Uso:** Registrar un Pago de Cuenta Corriente  
+**Actor/es:** Administrador (ACT-03), Chofer (ACT-02)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Crítico  
+**Descripción:** El administrador registra el cobro de un cliente a cuenta corriente, o el chofer lo registra al cobrarlo en la calle. El pago se aplica a las deudas más antiguas. El administrador también corrige el saldo con notas de crédito y de débito. Endpoints: `POST /customer-accounts/:id/payments` y `POST /customer-accounts/:id/adjustments`.
+
+---
+
+**Código:** CU-238 | **Caso de Uso:** Consultar el Estado de Cuenta de un Cliente  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta el estado de cuenta de un cliente: los cargos, los pagos y los ajustes de un período, con el saldo corrido, el crédito disponible y la antigüedad de su deuda. Endpoints: `GET /customer-accounts` y `GET /customer-accounts/:id/entries`.
+
+---
+
+**Código:** CU-239 | **Caso de Uso:** Consultar la Antigüedad de la Deuda  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Secundario  
+**Descripción:** El administrador consulta cuánto se le debe a la distribuidora y desde cuándo, repartido en tramos de antigüedad: de 0 a 30 días, de 31 a 60, de 61 a 90 y más de 90. Endpoint: `GET /customer-accounts/aging`.
+
+---
+
+**Código:** CU-240 | **Caso de Uso:** Configurar las Comisiones por Entrega  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador define cuánto gana un chofer por entrega: por unidad, por pedido o como porcentaje del total, para un chofer, un producto o todos, con su vigencia. Endpoints: `GET /commission-rules`, `POST /commission-rules` y `PATCH /commission-rules/:id`.
+
+---
+
+**Código:** CU-241 | **Caso de Uso:** Registrar la Comisión de una Entrega  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** Cuando un pedido se entrega, el sistema calcula y asienta la comisión que gana el chofer con la regla vigente en ese momento. Es automático y se dispara con el evento «pedido entregado»; el proceso de conciliación nocturno genera las que falten.
+
+---
+
+**Código:** CU-242 | **Caso de Uso:** Liquidar las Comisiones de un Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador reúne las comisiones y las deducciones de un chofer en un período en una liquidación, la aprueba y, si hace falta, la anula. Endpoints: `POST /driver-liquidations`, `PATCH /driver-liquidations/:id/approve` y `PATCH /driver-liquidations/:id/void`.
+
+---
+
+**Código:** CU-243 | **Caso de Uso:** Registrar el Pago de una Liquidación  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador paga una liquidación aprobada: el neto sale de la caja que elige y la liquidación queda pagada. Endpoint: `PATCH /driver-liquidations/:id/pay`.
+
+---
+
+**Código:** CU-244 | **Caso de Uso:** Consultar Mis Comisiones  
+**Actor/es:** Chofer (ACT-02)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Secundario  
+**Descripción:** El chofer consulta desde la App Chofer sus comisiones y sus deducciones de un período, y cuánto tiene sin liquidar. Endpoint: `GET /commissions/mine`.
+
+---
+
+**Código:** CU-245 | **Caso de Uso:** Consultar el Tablero Financiero  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador ve en una sola pantalla el estado de la plata de su distribuidora: el saldo por caja, las rendiciones pendientes, la deuda total y vencida de las cuentas corrientes y las comisiones a liquidar. Endpoint: `GET /finance/dashboard`.
+
+---
+
+### SS-19 — Personal y Legajos
+
+
+**Código:** CU-176 | **Caso de Uso:** Gestionar los Puestos de Trabajo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador mantiene el catálogo de puestos de trabajo de su distribuidora (chofer, ayudante, depósito, administración, vendedor y los que agregue), cada uno con una categoría que gobierna las reglas que se le aplican al personal que lo ocupa; el nombre del puesto es libre. Puede consultarlos, crearlos, modificarlos y darlos de baja mientras no tengan empleados activos.
+
+---
+
+**Código:** CU-177 | **Caso de Uso:** Registrar el Legajo de un Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Crítico  
+**Descripción:** El administrador da de alta el legajo de una persona que trabaja en su distribuidora, sea chofer, ayudante, personal de depósito, administrativo o vendedor: sus datos personales, su puesto, su fecha de ingreso y su modalidad de contratación. Tenga o no cuenta de acceso al sistema, todo empleado existe como legajo.
+
+---
+
+**Código:** CU-178 | **Caso de Uso:** Modificar el Legajo de un Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige los datos de un legajo —domicilio, teléfono, puesto, modalidad de contratación— o lo elimina si fue una alta equivocada. La salida normal de una persona no es la eliminación sino el egreso.
+
+---
+
+**Código:** CU-179 | **Caso de Uso:** Consultar el Legajo de un Empleado  
+**Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador abre la ficha completa de un empleado: sus datos personales, su puesto, su fecha de ingreso, su estado, si tiene cuenta de acceso y, si es chofer, el vínculo con su ficha de reparto.
+
+---
+
+**Código:** CU-180 | **Caso de Uso:** Consultar el Listado de Empleados  
+**Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta el listado de empleados de su distribuidora, con filtros por nombre, puesto, categoría, estado, cuenta de acceso y estado de la documentación, y con el peor vencimiento de cada persona.
+
+---
+
+**Código:** CU-181 | **Caso de Uso:** Registrar el Egreso de un Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Crítico  
+**Descripción:** El administrador da de baja a una persona de la distribuidora con su fecha y su motivo (renuncia, despido, fin de contrato, jubilación u otro). Si tenía cuenta de acceso queda bloqueada y, si era chofer, queda deshabilitado y se le libera el vehículo. También puede reingresarla más adelante.
+
+---
+
+**Código:** CU-182 | **Caso de Uso:** Otorgar una Cuenta de Acceso a un Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador le da acceso al sistema a un empleado que tiene legajo y no tiene cuenta. El rol de la cuenta lo decide la categoría de su puesto: los choferes entran con el rol chofer y la administración con el rol administrador; el resto del personal no tiene cuenta.
+
+---
+
+**Código:** CU-183 | **Caso de Uso:** Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Crítico  
+**Descripción:** El administrador registra el curso de transporte de mercancías peligrosas que habilita a un chofer a llevar gas licuado, con el número de certificado y su fecha de vencimiento. Mientras el curso esté vencido, el chofer no recibe pedidos.
+
+---
+
+**Código:** CU-184 | **Caso de Uso:** Registrar el Examen Psicofísico del Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Crítico  
+**Descripción:** El administrador registra el examen psicofísico de un chofer con su fecha de vencimiento. Mientras esté vencido, el chofer no recibe pedidos.
+
+---
+
+**Código:** CU-185 | **Caso de Uso:** Registrar el Alta en la ART del Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador registra la cobertura de la aseguradora de riesgos del trabajo de un empleado, con la aseguradora, el número de póliza y la fecha en que vence la cobertura. A diferencia de los documentos del chofer, aplica a todo el personal y no inhabilita para el despacho.
+
+---
+
+**Código:** CU-186 | **Caso de Uso:** Adjuntar un Archivo al Legajo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Secundario  
+**Descripción:** El administrador adjunta un archivo al legajo de un empleado —el escaneo del documento, el contrato, un certificado— con una etiqueta que dice qué es.
+
+---
+
+**Código:** CU-187 | **Caso de Uso:** Consultar los Vencimientos del Personal  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador ve qué documentación del personal vence dentro de una ventana de días —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— y, para cada empleado, qué documentos le faltan y si está inhabilitado para el despacho.
+
+---
+
+**Código:** CU-188 | **Caso de Uso:** Avisar los Vencimientos Próximos del Personal  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** Todos los días el sistema revisa qué documentación del personal está por vencer, ya venció o falta cargar, y avisa por correo a los administradores de cada distribuidora. Reutiliza el aviso diario de los vencimientos de la flota.
+
+---
+
+**Código:** CU-189 | **Caso de Uso:** Registrar la Asistencia de un Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador carga a mano la jornada de un empleado —hora de ingreso y de egreso—, la corrige dejando una nota que explique el cambio y consulta las jornadas de un día o de un período, con los empleados que están presentes y los que tienen una jornada sin cerrar.
+
+---
+
+**Código:** CU-190 | **Caso de Uso:** Registrar el Inicio y el Fin de la Jornada  
+**Actor/es:** Chofer (ACT-02)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Secundario  
+**Descripción:** El chofer marca desde su aplicación cuándo empieza y cuándo termina su jornada de trabajo.
+
+---
+
+**Código:** CU-191 | **Caso de Uso:** Registrar una Licencia o Ausencia  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador registra una licencia o ausencia de un empleado —vacaciones, enfermedad, accidente de trabajo, estudio, casamiento, nacimiento, duelo, licencia sin goce, suspensión o ausencia injustificada— con su período, la modifica mientras está solicitada y la cancela.
+
+---
+
+**Código:** CU-192 | **Caso de Uso:** Resolver una Solicitud de Licencia  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta las licencias de su distribuidora, con la bandeja de las pendientes, y las aprueba o las rechaza con un motivo.
+
+---
+
+**Código:** CU-193 | **Caso de Uso:** Consultar el Saldo de Vacaciones de un Empleado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Secundario  
+**Descripción:** El administrador consulta cuántos días de vacaciones le corresponden a un empleado en un año, cuántos tomó y cuántos le quedan.
+
+---
+
+**Código:** CU-194 | **Caso de Uso:** Consultar el Tablero de Personal  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Secundario  
+**Descripción:** El administrador ve, en una sola tarjeta de su pantalla de inicio, cuántos empleados activos tiene por puesto, cuántos están presentes hoy, cuántos de licencia y cómo está la documentación del personal.
+
+---
+
+**Código:** CU-246 | **Caso de Uso:** Verificar la Habilitación Laboral del Chofer  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-012, CU-013 y CU-015  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** Antes de asignarle o aceptarle un pedido a un chofer, el sistema comprueba que su situación laboral lo habilite: que su legajo esté activo, que no tenga una licencia aprobada que cubra el día de hoy y que no tenga vencida una documentación bloqueante cuyo dueño es su empleado.
+### SS-08 — Gestión de Productos e Inventario (ampliación: stock físico y carga del camión, I-13)
+
+**Código:** CU-207 | **Caso de Uso:** Gestionar los Depósitos  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador da de alta, edita, consulta y da de baja los depósitos y sucursales de su distribuidora, que son los lugares donde se guarda el stock físico. El primer depósito que se crea queda como predeterminado. Endpoints: `GET /warehouses`, `POST /warehouses`, `PATCH /warehouses/:id` y `DELETE /warehouses/:id`.
+
+---
+
+**Código:** CU-208 | **Caso de Uso:** Consultar el Stock por Ubicación  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Crítico  
+**Descripción:** El administrador consulta cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, y el resumen por tipo de garrafa con lo reservado, lo vendible y el mínimo. Endpoints: `GET /stock` y `GET /stock/summary`.
+
+---
+
+**Código:** CU-209 | **Caso de Uso:** Consultar los Movimientos de Stock  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta el libro de movimientos de stock (kardex) con filtros por tipo de garrafa, ubicación, motivo y fechas. Endpoint: `GET /stock/movements`.
+
+---
+
+**Código:** CU-210 | **Caso de Uso:** Configurar el Stock Mínimo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Secundario  
+**Descripción:** El administrador define, para cada depósito y tipo de garrafa, el mínimo de unidades llenas por debajo del cual el sistema avisa. Endpoints: `GET /stock/thresholds` y `PUT /stock/thresholds`.
+
+---
+
+**Código:** CU-211 | **Caso de Uso:** Avisar el Stock Bajo  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El sistema revisa cada hora los depósitos que bajaron de su mínimo de unidades llenas y avisa por correo a los administradores de la distribuidora, una sola vez hasta que el stock se recupere.
+
+---
+
+**Código:** CU-212 | **Caso de Uso:** Transferir Stock entre Depósitos  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Secundario  
+**Descripción:** El administrador traslada unidades de un tipo de garrafa y condición de un depósito a otro de la misma distribuidora. Endpoint: `POST /stock/transfers`.
+
+---
+
+**Código:** CU-213 | **Caso de Uso:** Registrar un Ajuste o una Merma de Stock  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige el stock de una ubicación por un recuento, una merma, una pérdida o un hallazgo, con una nota obligatoria, y consulta los ajustes registrados. Endpoints: `POST /stock/adjustments`, `GET /stock/adjustments` y `PATCH /cylinders/stock`.
+
+---
+
+**Código:** CU-218 | **Caso de Uso:** Registrar la Carga del Camión  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Crítico  
+**Descripción:** El administrador abre la hoja de carga de un camión con las garrafas llenas (y los vacíos para canje) que salen del depósito, repone en ruta, cancela una carga que no salió y consulta las cargas. Endpoints: `POST /truck-loads`, `PATCH /truck-loads/:id/reload`, `PATCH /truck-loads/:id/cancel` y `GET /truck-loads`.
+
+---
+
+**Código:** CU-219 | **Caso de Uso:** Registrar la Salida del Camión  
+**Actor/es:** Chofer (ACT-02), Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El chofer, desde su aplicación, o el administrador marcan que el camión salió a repartir. Endpoint: `PATCH /truck-loads/:id/depart`.
+
+---
+
+**Código:** CU-220 | **Caso de Uso:** Descontar del Camión lo Entregado  
+**Actor/es:** Sistema Automático (ACT-04)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Crítico  
+**Descripción:** Cuando se confirma la entrega de un pedido, el sistema descuenta del camión las garrafas llenas entregadas y acredita los envases vacíos recolectados, en una relación de uno a uno.
+
+---
+
+**Código:** CU-221 | **Caso de Uso:** Registrar el Regreso del Camión  
+**Actor/es:** Chofer (ACT-02), Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El chofer, desde su aplicación, o el administrador declaran lo que el camión devuelve al regresar: garrafas llenas, vacías y defectuosas por tipo. Endpoint: `PATCH /truck-loads/:id/return`.
+
+---
+
+**Código:** CU-222 | **Caso de Uso:** Cerrar la Rendición de Stock del Camión  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Crítico  
+**Descripción:** El administrador revisa lo declarado frente a lo esperado, devuelve el stock del camión al depósito y cierra la carga, con una nota si hay diferencia. Endpoint: `PATCH /truck-loads/:id/close`.
+
+---
+
+**Código:** CU-223 | **Caso de Uso:** Consultar la Carga Actual del Camión  
+**Actor/es:** Chofer (ACT-02)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Secundario  
+**Descripción:** El chofer consulta desde su aplicación la hoja de carga abierta del vehículo que tiene en uso, con lo cargado, lo entregado y lo esperado. Endpoint: `GET /truck-loads/mine`.
+
+---
+
+**Código:** CU-224 | **Caso de Uso:** Conciliar el Stock Vendible con el Físico  
+**Actor/es:** Administrador (ACT-03), Sistema Automático (ACT-04)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** Cada noche el sistema aplica las entregas que quedaron sin movimiento de stock y compara el stock vendible con el físico menos lo reservado, y avisa de la diferencia; el administrador consulta la conciliación. Endpoint: `GET /stock/reconciliation`.
+
+---
+
+**Código:** CU-248 | **Caso de Uso:** Verificar la Carga de Camión Abierta del Chofer  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-012, CU-013 y CU-015  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** Antes de asignarle o aceptarle un pedido a un chofer, el sistema comprueba, si la distribuidora lo exige, que tenga una carga de camión abierta.
+
+---
+
+**Código:** CU-249 | **Caso de Uso:** Configurar el Control de Carga de Camión Abierta  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Secundario  
+**Descripción:** El administrador prende o apaga, para su distribuidora, la exigencia de que un chofer tenga una carga de camión abierta para recibir pedidos. Endpoint: `PUT /module-config/stock_control`.
+
+---
+
+**Código:** CU-250 | **Caso de Uso:** Aplicar un Movimiento de Stock  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-212, CU-213, CU-217, CU-218, CU-220 y CU-222  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Crítico  
+**Descripción:** Cada vez que el stock físico cambia, el sistema asienta un movimiento con su origen y su destino y mueve los saldos de las ubicaciones, sin dejar ninguno negativo.
+
+---
+
+### SS-20 — Compras (I-13)
+
+**Código:** CU-214 | **Caso de Uso:** Gestionar los Proveedores  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador da de alta, edita, consulta y da de baja a los proveedores de la distribuidora, principalmente las plantas de llenado a las que se compra gas. Endpoints: `GET /suppliers`, `POST /suppliers`, `PATCH /suppliers/:id` y `DELETE /suppliers/:id`.
+
+---
+
+**Código:** CU-215 | **Caso de Uso:** Emitir una Orden de Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador prepara una orden de compra a un proveedor, con los tipos de garrafa, cantidades, costos y los envases vacíos que se entregan en canje, la envía y consulta las órdenes emitidas. Endpoints: `POST /purchase-orders`, `PATCH /purchase-orders/:id/send` y `GET /purchase-orders`.
+
+---
+
+**Código:** CU-216 | **Caso de Uso:** Cancelar una Orden de Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Secundario  
+**Descripción:** El administrador cancela una orden de compra en borrador o enviada que no se va a cumplir, con el motivo. Endpoint: `PATCH /purchase-orders/:id/cancel`.
+
+---
+
+**Código:** CU-217 | **Caso de Uso:** Registrar la Recepción de una Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Crítico  
+**Descripción:** El administrador registra el remito de ingreso de una compra: lo recibido de la planta, los vacíos que ésta se llevó y el costo, y el stock del depósito sube. También puede anular una recepción y consultarlas. Endpoints: `POST /purchase-receipts`, `PATCH /purchase-receipts/:id/void` y `GET /purchase-receipts`.
+
 ---
 
 ## 8. Calificación de los Casos de Uso
@@ -1681,32 +2301,22 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-005 Crear Pedido | SS-02 | ACT-01 | Crítico | Implementado |
 | CU-006 Consultar Detalle de Pedido | SS-02 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-007 Consultar Historial de Pedidos | SS-02 | ACT-01 | Importante | Implementado |
-| CU-169 Registrar el Cambio de Estado de un Pedido | SS-02 | ACT-04 | Importante | Planificado (I-4) |
-| CU-170 Consultar el Historial de Estados de un Pedido | SS-02 | ACT-01, ACT-03, ACT-05 | Secundario | Planificado (I-4) |
-| CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | ACT-01 | Importante | Planificado (I-5) |
-| CU-144 Actualizar el Consumo Promedio Declarado | SS-02 | ACT-01 | Importante | Planificado (I-5) |
-| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Planificado (I-5) |
-| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante | Planificado (I-5) |
-| CU-147 Realizar una Compra Express | SS-02 | ACT-01 | Crítico | Planificado (I-7) |
-| CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | ACT-01 | Importante | Planificado (I-7) |
 | CU-008 Cancelar Pedido (Cliente) | SS-02 | ACT-01 | Importante | Implementado, con funcionalidad planificada (I-1, I-7) |
 | CU-009 Cancelar Pedido (Chofer) | SS-02 | ACT-02 | Importante | Implementado |
 | CU-010 Cancelar Pedido (Administrador) | SS-02 | ACT-03 | Importante | Implementado, con funcionalidad planificada (I-7) |
 | CU-011 Listar Todos los Pedidos | SS-02 | ACT-03 | Importante | Implementado |
-| CU-012 Asignar Chofer Manualmente | SS-03 | ACT-03 | Secundario | Implementado |
-| CU-149 Despachar un Pedido Express a un Chofer en Moto | SS-03 | ACT-04 | Crítico | Planificado (I-7) |
-| CU-013 Asignar Pedido Automáticamente por Proximidad | SS-03 | ACT-04 | Crítico | Implementado, con funcionalidad planificada |
+| CU-012 Asignar Chofer Manualmente | SS-03 | ACT-03 | Secundario | Implementado, con funcionalidad planificada (I-11, I-13) |
+| CU-013 Asignar Pedido Automáticamente por Proximidad | SS-03 | ACT-04 | Crítico | Implementado, con funcionalidad planificada (I-11, I-13) |
 | CU-014 Reintentar Asignación con Radio Expandido (Cron) | SS-03 | ACT-04 | Crítico | Implementado |
-| CU-171 Configurar los Parámetros de Despacho de la Distribuidora | SS-03 | ACT-03, ACT-05 | Crítico | Planificado (I-1) |
-| CU-015 Aceptar Pedido | SS-03 | ACT-02 | Crítico | Implementado |
+| CU-015 Aceptar Pedido | SS-03 | ACT-02 | Crítico | Implementado, con funcionalidad planificada (I-11, I-13) |
 | CU-016 Rechazar / Ignorar Pedido | SS-03 | ACT-02 | Importante | Implementado |
 | CU-017 Actualizar Ubicación GPS del Chofer | SS-04 | ACT-02 | Crítico | Implementado, con funcionalidad planificada |
 | CU-018 Marcar Pedido "En Camino" | SS-04 | ACT-02 | Crítico | Implementado |
 | CU-019 Avisar Llegada al Cliente | SS-04 | ACT-02 | Importante | Implementado |
-| CU-020 Confirmar Entrega | SS-04 | ACT-02 | Crítico | Implementado |
+| CU-020 Confirmar Entrega | SS-04 | ACT-02 | Crítico | Implementado, con funcionalidad planificada (I-13) |
 | CU-021 Recibir Notificaciones en Tiempo Real | SS-04 | ACT-01 | Crítico | Implementado |
 | CU-022 Activar / Desactivar Disponibilidad | SS-04 | ACT-02 | Crítico | Implementado |
-| CU-023 Registrar Reclamo | SS-05 | ACT-01 | Importante | Implementado, con funcionalidad planificada (I-5) |
+| CU-023 Registrar Reclamo | SS-05 | ACT-01 | Importante | Implementado |
 | CU-024 Listar Reclamos | SS-05 | ACT-03 | Importante | Implementado |
 | CU-025 Resolver Reclamo | SS-05 | ACT-03 | Importante | Implementado |
 | CU-026 Ver Dashboard General | SS-06 | ACT-03 | Importante | Implementado |
@@ -1721,7 +2331,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-035 Consultar Listado de Choferes | SS-07 | ACT-03 | Importante | Implementado |
 | CU-036 Crear Producto (Garrafa) | SS-08 | ACT-03 | Crítico | Implementado |
 | CU-037 Actualizar Precio de Producto | SS-08 | ACT-03 | Crítico | Implementado |
-| CU-038 Actualizar Stock de Producto | SS-08 | ACT-03 | Crítico | Implementado |
+| CU-038 Actualizar Stock de Producto | SS-08 | ACT-03 | Crítico | Implementado, con funcionalidad planificada (I-13) |
 | CU-039 Configurar Promociones por Cantidad | SS-08 | ACT-03 | Importante | Implementado |
 | CU-040 Activar / Desactivar Producto | SS-08 | ACT-03 | Importante | Implementado, con funcionalidad planificada (I-1) |
 | CU-041 Consultar Catálogo de Productos | SS-08 | ACT-01, ACT-03 | Crítico | Implementado |
@@ -1730,22 +2340,8 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-044 Seleccionar Franja Horaria al Crear Pedido | SS-09 | ACT-01 | Importante | Implementado |
 | CU-045 Consultar Franjas Horarias Disponibles | SS-09 | ACT-01 | Importante | Implementado |
 | CU-046 Consultar Direcciones de Entrega del Cliente | SS-02 | ACT-01 | Importante | Implementado |
-| CU-116 Registrar Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado, con funcionalidad planificada |
-| CU-117 Consultar Detalle de una Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado |
-| CU-118 Editar Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado, con funcionalidad planificada |
-| CU-119 Eliminar Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado |
-| CU-120 Marcar una Dirección como Predeterminada | SS-02 | ACT-01 | Importante | Implementado |
-| CU-121 Consultar la Dirección Predeterminada | SS-02 | ACT-01 | Importante | Implementado |
-| CU-122 Agregar Ítem al Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
-| CU-123 Modificar la Cantidad de un Ítem del Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
-| CU-124 Quitar Ítem del Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
-| CU-125 Consultar el Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
-| CU-126 Vaciar el Carrito | SS-02 | ACT-01 | Menor | Planificado (I-3) |
-| CU-127 Cambiar la Dirección de Entrega del Pedido | SS-02 | ACT-01 | Importante | Planificado (I-4) |
-| CU-128 Indicar Quién Recibe el Pedido | SS-02 | ACT-01 | Importante | Planificado (I-4) |
 | CU-047 Recuperar Contraseña | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
 | CU-048 Procesar Pago con MercadoPago | SS-14 | ACT-04 | Crítico | Implementado |
-| CU-168 Reintegrar el Pago de un Pedido | SS-14 | ACT-04, ACT-03 | Importante | Planificado (I-7) |
 | CU-049 Consultar Balance / Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante | Implementado |
 | CU-050 Bloquear / Desbloquear Usuario | SS-01 | ACT-03 | Secundario | Implementado |
 | CU-051 Consultar Listado de Vehículos | SS-07 | ACT-03 | Importante | Implementado |
@@ -1757,8 +2353,6 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-057 Consultar Zonas de Cobertura | SS-11 | ACT-03, ACT-05 | Secundario | Implementado |
 | CU-058 Validar Cobertura de una Dirección | SS-11 | ACT-01, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-059 Eliminar Zona de Cobertura | SS-11 | ACT-03, ACT-05 | Secundario | Implementado |
-| CU-150 Programar la Vigencia de una Zona de Cobertura | SS-11 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-151 Desactivar las Zonas de Cobertura Vencidas | SS-11 | ACT-04 | Importante | Planificado (I-1) |
 | CU-060 Registrar Incidencia de Entrega | SS-12 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-061 Listar Incidencias | SS-12 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-062 Consultar Incidencias de un Pedido | SS-12 | ACT-02, ACT-03, ACT-05 | Secundario | Implementado |
@@ -1771,10 +2365,6 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-069 Consultar el Parque de Envases | SS-13 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-070 Registrar Movimiento de Envase (cambio de estado) | SS-13 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-071 Consultar Historial de Movimientos de un Envase | SS-13 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-132 Registrar la Revisión Periódica de un Envase | SS-13 | ACT-03 | Crítico | Planificado (I-2) |
-| CU-133 Consultar la Vigencia de un Envase | SS-13 | ACT-03 | Importante | Planificado (I-2) |
-| CU-134 Consultar los Envases Próximos a Vencer | SS-13 | ACT-03 | Importante | Planificado (I-2) |
-| CU-135 Bloquear el Despacho de un Envase Vencido | SS-13 | ACT-04 | Crítico | Planificado (I-2) |
 | CU-072 Crear Reserva Programada con Seña | SS-15 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-073 Listar Reservas y Estado de la Seña | SS-15 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-074 Confirmar Seña Cobrada en Efectivo | SS-15 | ACT-03, ACT-05 | Crítico | Implementado |
@@ -1782,7 +2372,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-076 Expirar Reservas sin Seña Pagada (Cron) | SS-15 | ACT-04 | Importante | Implementado |
 | CU-077 Expirar Pedidos de MercadoPago sin Pagar (Cron) | SS-15 | ACT-04 | Importante | Implementado |
 | CU-078 Obtener el Código de Entrega (QR del chofer) | SS-04 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
-| CU-079 Confirmar Entrega Escaneando el QR (cliente) | SS-04 | ACT-01, ACT-03, ACT-05 | Crítico | Implementado |
+| CU-079 Confirmar Entrega Escaneando el QR (cliente) | SS-04 | ACT-01, ACT-03, ACT-05 | Crítico | Implementado, con funcionalidad planificada (I-13) |
 | CU-080 Consultar el Pool de Pedidos Disponibles | SS-02 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-081 Consultar los Pedidos Asignados al Chofer | SS-02 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-082 Crear Usuario Base | SS-01 | ACT-01, ACT-02, ACT-03, ACT-04 | Importante | Implementado |
@@ -1798,25 +2388,8 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-092 Consultar Listado de Clientes | SS-16 | ACT-03 | Importante | Implementado |
 | CU-094 Actualizar Ubicación del Cliente | SS-16 | ACT-03 | Secundario | Implementado |
 | CU-095 Eliminar Cliente (baja lógica) | SS-16 | ACT-05 | Importante | Implementado |
-| CU-129 Consultar Detalle del Cliente | SS-16 | ACT-03 | Importante | Implementado |
-| CU-130 Buscar Cliente por Usuario | SS-16 | ACT-03 | Importante | Implementado |
-| CU-131 Editar Datos del Cliente | SS-16 | ACT-03 | Importante | Implementado |
 | CU-096 Actualizar Perfil del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-097 Eliminar Chofer (baja lógica) | SS-07 | ACT-03 | Importante | Implementado |
-| CU-109 Consultar Detalle del Chofer | SS-07 | ACT-03 | Importante | Implementado |
-| CU-110 Buscar Chofer por Usuario | SS-07 | ACT-03 | Importante | Implementado |
-| CU-111 Editar Vehículo | SS-07 | ACT-03 | Importante | Implementado |
-| CU-112 Eliminar Vehículo | SS-07 | ACT-03 | Importante | Implementado |
-| CU-113 Consultar Detalle del Vehículo | SS-07 | ACT-03 | Importante | Implementado |
-| CU-114 Buscar Vehículo por Patente | SS-07 | ACT-03 | Importante | Implementado |
-| CU-115 Consultar Vehículos de un Chofer | SS-07 | ACT-03, ACT-02 | Importante | Implementado |
-| CU-136 Registrar el Seguro del Vehículo | SS-07 | ACT-03 | Crítico | Implementado |
-| CU-137 Registrar la Verificación Técnica Vehicular | SS-07 | ACT-03 | Crítico | Implementado |
-| CU-138 Registrar la Licencia de Conducir del Chofer | SS-07 | ACT-03 | Crítico | Implementado |
-| CU-139 Consultar los Vencimientos de la Flota | SS-07 | ACT-03 | Importante | Implementado |
-| CU-140 Programar un Mantenimiento de Vehículo | SS-07 | ACT-03 | Importante | Implementado |
-| CU-141 Registrar un Mantenimiento Realizado | SS-07 | ACT-03 | Importante | Implementado |
-| CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante | Implementado |
 | CU-098 Registrar el Token de Notificaciones del Dispositivo | SS-17 | ACT-01, ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-099 Consultar los Tokens de un Usuario | SS-17 | ACT-05; ACT-01, ACT-02 y ACT-03 sobre sí mismos | Secundario | Implementado |
 | CU-100 Enviar Notificación de Prueba | SS-17 | ACT-05 | Secundario | Implementado |
@@ -1824,14 +2397,55 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-102 Probar el Servicio de Correo | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-103 Eliminar Franja Horaria | SS-09 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-104 Verificar la Salud del Sistema (liveness / readiness) | SS-18 | ACT-09 | Importante | Implementado |
-| CU-152 Consultar el Registro de Auditoría | SS-18 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-153 Registrar Toda Operación de Escritura | SS-18 | ACT-04 | Crítico | Implementado |
-| CU-172 Configurar los Parámetros de un Proceso Automático | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
-| CU-173 Configurar la Frecuencia de las Tareas Programadas | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
 | CU-105 Planificar el mantenimiento y las habilitaciones de la flota | SS-07 | ACT-04, ACT-03 | Importante | Planificado (I-10) |
 | CU-106 Anticipar la recompra por consumo estimado | SS-02 | ACT-04, ACT-03 | Importante | Planificado (I-6) |
 | CU-107 Agrupar pedidos por recorrido | SS-03 | ACT-04, ACT-03 | Importante | Planificado (I-9) |
 | CU-108 Recuperar envases no devueltos | SS-13 | ACT-04, ACT-03 | Importante | Planificado (I-8) |
+| CU-109 Consultar Detalle del Chofer | SS-07 | ACT-03 | Importante | Implementado |
+| CU-110 Buscar Chofer por Usuario | SS-07 | ACT-03 | Importante | Implementado |
+| CU-111 Editar Vehículo | SS-07 | ACT-03 | Importante | Implementado |
+| CU-112 Eliminar Vehículo | SS-07 | ACT-03 | Importante | Implementado |
+| CU-113 Consultar Detalle del Vehículo | SS-07 | ACT-03 | Importante | Implementado |
+| CU-114 Buscar Vehículo por Patente | SS-07 | ACT-03 | Importante | Implementado |
+| CU-115 Consultar Vehículos de un Chofer | SS-07 | ACT-03, ACT-02 | Importante | Implementado |
+| CU-116 Registrar Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado, con funcionalidad planificada |
+| CU-117 Consultar Detalle de una Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado |
+| CU-118 Editar Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado, con funcionalidad planificada |
+| CU-119 Eliminar Dirección de Entrega | SS-02 | ACT-01 | Importante | Implementado |
+| CU-120 Marcar una Dirección como Predeterminada | SS-02 | ACT-01 | Importante | Implementado |
+| CU-121 Consultar la Dirección Predeterminada | SS-02 | ACT-01 | Importante | Implementado |
+| CU-122 Agregar Ítem al Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
+| CU-123 Modificar la Cantidad de un Ítem del Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
+| CU-124 Quitar Ítem del Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
+| CU-125 Consultar el Carrito | SS-02 | ACT-01 | Importante | Planificado (I-3) |
+| CU-126 Vaciar el Carrito | SS-02 | ACT-01 | Menor | Planificado (I-3) |
+| CU-127 Cambiar la Dirección de Entrega del Pedido | SS-02 | ACT-01 | Importante | Planificado (I-4) |
+| CU-128 Indicar Quién Recibe el Pedido | SS-02 | ACT-01 | Importante | Planificado (I-4) |
+| CU-129 Consultar Detalle del Cliente | SS-16 | ACT-03 | Importante | Implementado |
+| CU-130 Buscar Cliente por Usuario | SS-16 | ACT-03 | Importante | Implementado |
+| CU-131 Editar Datos del Cliente | SS-16 | ACT-03 | Importante | Implementado |
+| CU-132 Registrar la Revisión Periódica de un Envase | SS-13 | ACT-03 | Crítico | Planificado (I-2) |
+| CU-133 Consultar la Vigencia de un Envase | SS-13 | ACT-03 | Importante | Planificado (I-2) |
+| CU-134 Consultar los Envases Próximos a Vencer | SS-13 | ACT-03 | Importante | Planificado (I-2) |
+| CU-135 Bloquear el Despacho de un Envase Vencido | SS-13 | ACT-04 | Crítico | Planificado (I-2) |
+| CU-136 Registrar el Seguro del Vehículo | SS-07 | ACT-03 | Crítico | Implementado |
+| CU-137 Registrar la Verificación Técnica Vehicular | SS-07 | ACT-03 | Crítico | Implementado |
+| CU-138 Registrar la Licencia de Conducir del Chofer | SS-07 | ACT-03 | Crítico | Implementado |
+| CU-139 Consultar los Vencimientos de la Flota | SS-07 | ACT-03 | Importante | Implementado |
+| CU-140 Programar un Mantenimiento de Vehículo | SS-07 | ACT-03 | Importante | Implementado |
+| CU-141 Registrar un Mantenimiento Realizado | SS-07 | ACT-03 | Importante | Implementado |
+| CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante | Implementado |
+| CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | ACT-01 | Importante | Planificado (I-5) |
+| CU-144 Actualizar el Consumo Promedio Declarado | SS-02 | ACT-01 | Importante | Planificado (I-5) |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Planificado (I-5) |
+| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante | Planificado (I-5) |
+| CU-147 Realizar una Compra Express | SS-02 | ACT-01 | Crítico | Planificado (I-7) |
+| CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | ACT-01 | Importante | Planificado (I-7) |
+| CU-149 Despachar un Pedido Express a un Chofer en Moto | SS-03 | ACT-04 | Crítico | Planificado (I-7) |
+| CU-150 Programar la Vigencia de una Zona de Cobertura | SS-11 | ACT-03, ACT-05 | Importante | Implementado |
+| CU-151 Desactivar las Zonas de Cobertura Vencidas | SS-11 | ACT-04 | Importante | Planificado (I-1) |
+| CU-152 Consultar el Registro de Auditoría | SS-18 | ACT-03, ACT-05 | Importante | Implementado |
+| CU-153 Registrar Toda Operación de Escritura | SS-18 | ACT-04 | Crítico | Implementado |
 | CU-154 Consultar Listado de Franjas Horarias | SS-09 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-155 Adjuntar Archivo a una Tarea de Flota | SS-07 | ACT-03 | Importante | Implementado |
 | CU-156 Consultar Adjuntos de una Tarea de Flota | SS-07 | ACT-03 | Secundario | Implementado |
@@ -1846,18 +2460,99 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-165 Consultar el Historial de Choferes de un Vehículo | SS-07 | ACT-03, ACT-05 | Secundario | Implementado |
 | CU-166 Tomar un Reclamo Pendiente | SS-05 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-167 Reabrir un Reclamo | SS-05 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-174 Adjuntar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Importante | Planificado (I-5) |
-| CU-175 Consultar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Secundario | Planificado (I-5) |
+| CU-168 Reintegrar el Pago de un Pedido | SS-14 | ACT-04, ACT-03 | Importante | Planificado (I-7) |
+| CU-169 Registrar el Cambio de Estado de un Pedido | SS-02 | ACT-04 | Importante | Planificado (I-4) |
+| CU-170 Consultar el Historial de Estados de un Pedido | SS-02 | ACT-01, ACT-03, ACT-05 | Secundario | Planificado (I-4) |
+| CU-171 Configurar los Parámetros de Despacho de la Distribuidora | SS-03 | ACT-03, ACT-05 | Crítico | Planificado (I-1) |
+| CU-172 Configurar los Parámetros de un Proceso Automático | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
+| CU-173 Configurar la Frecuencia de las Tareas Programadas | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
+| CU-174 Adjuntar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Importante | Implementado |
+| CU-175 Consultar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Secundario | Implementado |
+| CU-176 Gestionar los Puestos de Trabajo | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-177 Registrar el Legajo de un Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
+| CU-178 Modificar el Legajo de un Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-179 Consultar el Legajo de un Empleado | SS-19 | ACT-03, ACT-05 | Importante | Planificado (I-11) |
+| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Planificado (I-11) |
+| CU-181 Registrar el Egreso de un Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
+| CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
+| CU-184 Registrar el Examen Psicofísico del Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
+| CU-185 Registrar el Alta en la ART del Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-186 Adjuntar un Archivo al Legajo | SS-19 | ACT-03 | Secundario | Planificado (I-11) |
+| CU-187 Consultar los Vencimientos del Personal | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-188 Avisar los Vencimientos Próximos del Personal | SS-19 | ACT-04 | Importante | Planificado (I-11) |
+| CU-189 Registrar la Asistencia de un Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-190 Registrar el Inicio y el Fin de la Jornada | SS-19 | ACT-02 | Secundario | Planificado (I-11) |
+| CU-191 Registrar una Licencia o Ausencia | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-192 Resolver una Solicitud de Licencia | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-193 Consultar el Saldo de Vacaciones de un Empleado | SS-19 | ACT-03 | Secundario | Planificado (I-11) |
+| CU-194 Consultar el Tablero de Personal | SS-19 | ACT-03 | Secundario | Planificado (I-11) |
+| CU-195 Registrar una Carga de Combustible | SS-07 | ACT-03, ACT-02 | Importante | Planificado (I-12) |
+| CU-196 Consultar el Consumo de Combustible de un Vehículo | SS-07 | ACT-03 | Importante | Planificado (I-12) |
+| CU-197 Registrar la Habilitación para Transportar Mercancías Peligrosas | SS-07 | ACT-03 | Crítico | Planificado (I-12) |
+| CU-198 Registrar una Multa de Tránsito | SS-07 | ACT-03, ACT-04 | Importante | Planificado (I-12) |
+| CU-199 Registrar el Pago de una Multa | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
+| CU-200 Imputar una Multa al Chofer | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
+| CU-201 Registrar un Siniestro | SS-07 | ACT-03, ACT-02 | Importante | Planificado (I-12) |
+| CU-202 Cerrar un Siniestro | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
+| CU-203 Consultar el Costo Total de un Vehículo | SS-07 | ACT-03 | Importante | Planificado (I-12) |
+| CU-204 Consultar el Tablero de Costos de la Flota | SS-07 | ACT-03 | Importante | Planificado (I-12) |
+| CU-205 Registrar un Neumático | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
+| CU-206 Registrar un Movimiento de Neumático | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
+| CU-207 Gestionar los Depósitos | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-208 Consultar el Stock por Ubicación | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
+| CU-209 Consultar los Movimientos de Stock | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-210 Configurar el Stock Mínimo | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
+| CU-211 Avisar el Stock Bajo | SS-08 | ACT-04 | Importante | Planificado (I-13) |
+| CU-212 Transferir Stock entre Depósitos | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
+| CU-213 Registrar un Ajuste o una Merma de Stock | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-214 Gestionar los Proveedores | SS-20 | ACT-03 | Importante | Planificado (I-13) |
+| CU-215 Emitir una Orden de Compra | SS-20 | ACT-03 | Importante | Planificado (I-13) |
+| CU-216 Cancelar una Orden de Compra | SS-20 | ACT-03 | Secundario | Planificado (I-13) |
+| CU-217 Registrar la Recepción de una Compra | SS-20 | ACT-03 | Crítico | Planificado (I-13) |
+| CU-218 Registrar la Carga del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
+| CU-219 Registrar la Salida del Camión | SS-08 | ACT-02, ACT-03 | Importante | Planificado (I-13) |
+| CU-220 Descontar del Camión lo Entregado | SS-08 | ACT-04 | Crítico | Planificado (I-13) |
+| CU-221 Registrar el Regreso del Camión | SS-08 | ACT-02, ACT-03 | Importante | Planificado (I-13) |
+| CU-222 Cerrar la Rendición de Stock del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
+| CU-223 Consultar la Carga Actual del Camión | SS-08 | ACT-02 | Secundario | Planificado (I-13) |
+| CU-224 Conciliar el Stock Vendible con el Físico | SS-08 | ACT-03, ACT-04 | Importante | Planificado (I-13) |
+| CU-225 Gestionar las Cajas | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-226 Abrir la Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-227 Cerrar la Caja con Arqueo | SS-21 | ACT-03 | Crítico | Planificado (I-14) |
+| CU-228 Registrar un Ingreso o Egreso de Caja | SS-21 | ACT-03 | Crítico | Planificado (I-14) |
+| CU-229 Anular un Movimiento de Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-230 Gestionar las Categorías de Ingresos y Gastos | SS-21 | ACT-03 | Secundario | Planificado (I-14) |
+| CU-231 Generar la Rendición Diaria del Chofer | SS-21 | ACT-04 | Importante | Planificado (I-14) |
+| CU-232 Declarar el Efectivo Rendido | SS-21 | ACT-02, ACT-03 | Crítico | Planificado (I-14) |
+| CU-233 Aprobar la Rendición del Chofer | SS-21 | ACT-03 | Crítico | Planificado (I-14) |
+| CU-234 Avisar las Rendiciones sin Cerrar | SS-21 | ACT-04 | Importante | Planificado (I-14) |
+| CU-235 Habilitar la Cuenta Corriente de un Cliente | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-236 Vender a Cuenta Corriente | SS-21 | ACT-03, ACT-04 | Crítico | Planificado (I-14) |
+| CU-237 Registrar un Pago de Cuenta Corriente | SS-21 | ACT-03, ACT-02 | Crítico | Planificado (I-14) |
+| CU-238 Consultar el Estado de Cuenta de un Cliente | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-239 Consultar la Antigüedad de la Deuda | SS-21 | ACT-03 | Secundario | Planificado (I-14) |
+| CU-240 Configurar las Comisiones por Entrega | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-241 Registrar la Comisión de una Entrega | SS-21 | ACT-04 | Importante | Planificado (I-14) |
+| CU-242 Liquidar las Comisiones de un Chofer | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-243 Registrar el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-244 Consultar Mis Comisiones | SS-21 | ACT-02 | Secundario | Planificado (I-14) |
+| CU-245 Consultar el Tablero Financiero | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-246 Verificar la Habilitación Laboral del Chofer | SS-19 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (I-11) |
+| CU-247 Reactivar un Vehículo | SS-07 | ACT-03 | Importante | Planificado (I-12) |
+| CU-248 Verificar la Carga de Camión Abierta del Chofer | SS-08 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (I-13) |
+| CU-249 Configurar el Control de Carga de Camión Abierta | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
+| CU-250 Aplicar un Movimiento de Stock | SS-08 | ACT-03, ACT-04 | Crítico | Planificado (I-13) |
 
 ### Resumen de Calificación
 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
-| **Crítico** | 45 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153, CU-171 |
-| **Importante** | 101 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174 |
-| **Secundario** | 26 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175 |
+| **Crítico** | 49 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153, CU-171, CU-177, CU-181, CU-183, CU-184 |
+| **Importante** | 113 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-246 |
+| **Secundario** | 30 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **174** | CU-001 a CU-175, sin CU-093 |
+| **Total** | **194** | CU-001 a CU-194 y CU-246, sin CU-093 |
 
 > **CU-093 (Validar o Invalidar Cliente) se dio de baja el 26/09/2026.** Los clientes se registran y compran sin aprobación previa: la marca no condicionaba ningún pedido y sólo sumaba trabajo al administrador. El número queda reservado para no renumerar los demás casos. Los choferes siguen validándose (CU-032).
 

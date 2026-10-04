@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-245 Consultar el Tablero Financiero
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarTableroFinanciero(fecha)
+    activate SIS
+    SIS-->>ADM: saldos por caja, rendiciones pendientes, deuda y comisiones a liquidar
+    deactivate SIS

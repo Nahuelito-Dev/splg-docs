@@ -12,22 +12,32 @@ sequenceDiagram
     SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
     SRV->>+PEDS: get(pedidoId)
     PEDS-->>-SRV: pedido
-    SRV->>+PED: getChoferesContactados()
-    PED-->>-SRV: contactados
     SRV->>+PED: getPuntoDeEntrega()
     PED-->>-SRV: destino
-    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nuevo
+    SRV->>+PED: getEstadoDeLasOfertas(ahora, enfriamiento)
+    PED-->>-SRV: estado
+    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nunca contactado
         SRV->>+RT: findNearbyDrivers(destino, radioKm)
         RT-->>-SRV: cercanos
         SRV->>+CHO: puedeRecibirOferta(distribuidora)
         CHO-->>-SRV: elegible
     end
-    opt Hay un chofer elegible que no fue contactado
+    opt No hay un chofer nuevo y alguno dejó vencer su oferta hace más que el enfriamiento
+        loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer con la oferta vencida
+            SRV->>+RT: findNearbyDrivers(destino, radioKm)
+            RT-->>-SRV: cercanos
+            SRV->>+CHO: puedeRecibirOferta(distribuidora)
+            CHO-->>-SRV: elegible
+        end
+    end
+    alt Hay un chofer elegible
         SRV->>+PED: ofrecerA(chofer, venceEn)
         create participant OFE as :OfertaDespacho
         PED->>OFE: «create»(chofer, venceEn)
         deactivate PED
         SRV-)RT: notifyDriverNewOrder(chofer, pedido)
         SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
+    else No queda ningún chofer elegible
+        SRV-)RT: notifyAdmins(evento, aviso)
     end
     SRV-->>-SIS: chofer

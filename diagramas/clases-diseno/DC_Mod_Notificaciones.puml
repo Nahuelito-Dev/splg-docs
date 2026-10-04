@@ -83,14 +83,18 @@ interface EmailSenderPort <<interface>> <<puerto>> {
   + send(correoDeRecuperacion: Cadena)
   + send(correoDePrueba: Cadena)
   + send(administrador: Administrador, vencimientos: Registro)
+  + send(administradores: Administrador[*], detalle: Registro)
+  + send(administrador: Administrador, stockBajo: Registro)
+  + send(administrador: Administrador, diferencias: Registro)
+  + send(administrador: Administrador,\n      rendiciones: RendicionChofer[*])
 }
 class FirebaseAuthPort <<referencia>>
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class FcmPort <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class "Map<String, Cliente>" as Map_String_Cliente <<referencia>>
-class Chofer <<referencia>>
 class Cliente <<referencia>>
+class Chofer <<referencia>>
 class Usuario <<referencia>>
 
 EmailService --> "1" EmailSenderPort

@@ -58,10 +58,10 @@ classDiagram
     class NotificationsService {
         <<fachada>>
     }
-    class Carrito
     class Producto
-    class Cliente
     class InvitacionRecompra
+    class Carrito
+    class Cliente
 
     CartService --> "1" Map_String_Producto : map<String, Producto>
     ConsumptionService --> "1" ConsumptionEstimatorService : consumptionEstimatorService

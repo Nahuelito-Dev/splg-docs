@@ -47,11 +47,11 @@ classDiagram
     class Map_String_Pedido["Map<String, Pedido>"] {
         <<colección>>
     }
-    class Usuario
-    class Pedido
     class StoragePort {
         <<interface>>
     }
+    class Usuario
+    class Pedido
     class Cliente
     class Chofer
 
@@ -61,13 +61,13 @@ classDiagram
     Map_String_Incidencia "1" o-- "0..*" Incidencia : elementos
     ClaimsService --> "1" Map_String_Pedido : map<String, Pedido>
     ClaimsService --> "1" Map_String_Reclamo : map<String, Reclamo>
+    ClaimsService --> "1" StoragePort : storagePort
     IncidentService --> "1" Map_String_Incidencia : map<String, Incidencia>
     IncidentService --> "1" Map_String_Pedido : map<String, Pedido>
     RatingService --> "1" Map_String_Pedido : map<String, Pedido>
     ClaimsService ..> Cliente
     ClaimsService ..> Pedido
     ClaimsService ..> Reclamo
-    ClaimsService ..> StoragePort
     IncidentService ..> Incidencia
     IncidentService ..> Pedido
     RatingService ..> Chofer

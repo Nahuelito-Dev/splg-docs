@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSS — CU-222 Cerrar la Rendición de Stock del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cerrarRendicionDeStock(cargaId, nota)
+    activate SIS
+    alt la carga regresó y la rendición cierra sin diferencia
+        SIS-->>ADM: carga cerrada
+    else la carga regresó y hay diferencia con su nota
+        SIS-->>ADM: carga cerrada con diferencia
+    else hay diferencia y falta la nota
+        SIS-->>ADM: solicitud inválida
+    else el faltante dejaría negativo el stock vendible
+        SIS-->>ADM: solicitud inválida
+    else la carga no regresó
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

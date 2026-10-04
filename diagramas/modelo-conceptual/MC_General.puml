@@ -80,6 +80,43 @@ class RegistroUsoVehiculo
 class Reclamo
 class Incidencia
 class Calificacion
+class PuestoDeTrabajo
+class Empleado
+class JornadaDeTrabajo
+class LicenciaLaboral
+class Adjunto
+class CargaCombustible
+class MultaTransito
+class Siniestro
+class Neumatico
+class MovimientoNeumatico
+class Deposito
+class UbicacionDeStock
+class SaldoDeStock
+class MovimientoDeStock
+class UmbralDeStock
+class AjusteDeStock
+class ItemAjusteDeStock
+class CargaDeCamion
+class ItemCarga
+class Proveedor
+class OrdenDeCompra
+class ItemOrdenDeCompra
+class RecepcionDeCompra
+class ItemRecepcion
+class Caja
+class SesionDeCaja
+class CategoriaDeCaja
+class MovimientoDeCaja
+class RendicionChofer
+class PedidoRendido
+class GastoDeRendicion
+class CuentaCorriente
+class AsientoCuentaCorriente
+class ImputacionCuentaCorriente
+class ReglaComision
+class AsientoComision
+class LiquidacionComisiones
 
 Usuario <|-- Cliente : {overlapping, incomplete}
 Usuario <|-- Chofer
@@ -93,6 +130,8 @@ PropuestaConVigencia <|-- AvisoRecupero
 Usuario -- Rol
 Distribuidora -- Chofer
 Distribuidora -- Administrador
+Distribuidora -- Empleado
+Distribuidora *-- PuestoDeTrabajo
 Distribuidora -- Producto
 Distribuidora -- Envase
 Distribuidora -- Pedido
@@ -149,10 +188,93 @@ Pedido -- Envase
 Envase -- CasoRecupero
 CasoRecupero -- Cliente
 CasoRecupero *-- AvisoRecupero
+Empleado -- PuestoDeTrabajo
+Empleado -- Usuario
+Empleado *-- JornadaDeTrabajo
+Empleado *-- LicenciaLaboral
+Empleado *-- Adjunto
+TareaMantenimiento -- Empleado
+Vehiculo *-- CargaCombustible
+Vehiculo *-- MultaTransito
+Vehiculo *-- Siniestro
+Vehiculo -- Neumatico
+Distribuidora *-- Neumatico
+Neumatico *-- MovimientoNeumatico
+MovimientoNeumatico -- Vehiculo
+Empleado -- CargaCombustible
+Empleado -- MultaTransito
+Empleado -- Siniestro
 Pedido -- Reclamo
 Cliente -- Reclamo
 Pedido -- Incidencia
 Pedido -- Calificacion
+Distribuidora -- Deposito
+Distribuidora -- Proveedor
+Deposito -- UbicacionDeStock
+Vehiculo -- UbicacionDeStock
+UbicacionDeStock *-- SaldoDeStock
+SaldoDeStock -- Producto
+MovimientoDeStock -- Producto
+MovimientoDeStock -- UbicacionDeStock
+MovimientoDeStock -- UbicacionDeStock
+Deposito *-- UmbralDeStock
+UmbralDeStock -- Producto
+UbicacionDeStock -- AjusteDeStock
+AjusteDeStock *-- ItemAjusteDeStock
+ItemAjusteDeStock -- Producto
+Usuario -- AjusteDeStock
+Proveedor -- OrdenDeCompra
+OrdenDeCompra -- Deposito
+OrdenDeCompra *-- ItemOrdenDeCompra
+ItemOrdenDeCompra -- Producto
+Proveedor -- RecepcionDeCompra
+OrdenDeCompra -- RecepcionDeCompra
+RecepcionDeCompra -- Deposito
+RecepcionDeCompra *-- ItemRecepcion
+ItemRecepcion -- Producto
+Usuario -- RecepcionDeCompra
+Vehiculo -- CargaDeCamion
+Chofer -- CargaDeCamion
+CargaDeCamion -- UbicacionDeStock
+CargaDeCamion *-- ItemCarga
+ItemCarga -- Producto
+Usuario -- CargaDeCamion
+Usuario -- CargaDeCamion
+Distribuidora *-- Caja
+Distribuidora *-- CategoriaDeCaja
+Distribuidora *-- CuentaCorriente
+Distribuidora *-- ReglaComision
+Caja *-- SesionDeCaja
+Caja *-- MovimientoDeCaja
+SesionDeCaja -- MovimientoDeCaja
+CategoriaDeCaja -- MovimientoDeCaja
+MovimientoDeCaja -- MovimientoDeCaja
+Chofer *-- RendicionChofer
+RendicionChofer -- Caja
+RendicionChofer -- MovimientoDeCaja
+RendicionChofer *-- PedidoRendido
+PedidoRendido -- Pedido
+RendicionChofer *-- GastoDeRendicion
+GastoDeRendicion -- CategoriaDeCaja
+Cliente -- CuentaCorriente
+CuentaCorriente *-- AsientoCuentaCorriente
+Pedido -- AsientoCuentaCorriente
+AsientoCuentaCorriente -- MovimientoDeCaja
+Chofer -- AsientoCuentaCorriente
+RendicionChofer -- AsientoCuentaCorriente
+AsientoCuentaCorriente -- AsientoCuentaCorriente
+ImputacionCuentaCorriente -- AsientoCuentaCorriente
+ImputacionCuentaCorriente -- AsientoCuentaCorriente
+ReglaComision -- Empleado
+ReglaComision -- Producto
+Empleado *-- AsientoComision
+Empleado *-- LiquidacionComisiones
+Empleado -- Chofer
+AsientoComision -- Pedido
+ReglaComision -- AsientoComision
+LiquidacionComisiones -- AsientoComision
+RendicionChofer -- AsientoComision
+LiquidacionComisiones -- MovimientoDeCaja
 (Chofer, Vehiculo) .. AsignacionVehiculo
 
 legend bottom right

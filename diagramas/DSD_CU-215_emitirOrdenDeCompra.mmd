@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-215 Emitir una Orden de Compra · emitirOrdenDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseOrderService
+    participant DIS as distribuidora:Distribuidora
+    participant PRV as proveedor:Proveedor
+
+    ADM->>+SRV: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
+    SRV->>+DIS: getProveedor(proveedorId)
+    DIS-->>-SRV: proveedor
+    SRV->>+DIS: getDeposito(depositoId)
+    DIS-->>-SRV: depositoDeStock
+    SRV->>+PRV: emitirOrden(depositoDeStock, fechaEsperada, items)
+    create participant ORD as nueva:OrdenDeCompra
+    PRV->>ORD: «create»(depositoDeStock, fechaEsperada, autor)
+    loop Por cada renglón de la orden
+        create participant ITO as nuevo:ItemOrdenDeCompra
+        ORD->>ITO: «create»(producto, cantidad, costoUnitario, vaciasACanjear)
+    end
+    ORD->>ORD: calcularTotal()
+    PRV-->>-SRV: ordenDeCompra
+    SRV-->>-ADM: ordenDeCompra

@@ -1,0 +1,22 @@
+classDiagram
+    direction LR
+
+    %% Adjuntos. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class AttachmentsService {
+        <<fachada>>
+        + adjuntarArchivoAlLegajo(empleadoId: Identificador, archivo: Archivo, etiqueta: Cadena): Adjunto
+    }
+
+    class Map_String_Empleado["Map<String, Empleado>"] {
+        <<colección>>
+    }
+    class StoragePort {
+        <<interface>>
+    }
+    class Empleado
+
+    AttachmentsService --> "1" Map_String_Empleado : map<String, Empleado>
+    AttachmentsService --> "1" StoragePort : storagePort
+    AttachmentsService ..> Empleado

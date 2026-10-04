@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-202 Cerrar un Siniestro
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)
+    activate SIS
+    alt el siniestro existe y no está cerrado
+        SIS-->>ADM: siniestro cerrado, con sus importes y la fecha de cierre
+    else el siniestro no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el siniestro ya está cerrado o algún importe es negativo
+        SIS-->>ADM: solicitud inválida, con el motivo
+    end
+    deactivate SIS

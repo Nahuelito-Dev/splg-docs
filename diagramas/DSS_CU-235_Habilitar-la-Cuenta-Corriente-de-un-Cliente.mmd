@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSS — CU-235 Habilitar la Cuenta Corriente de un Cliente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt Habilitación de la cuenta
+        ADM->>SIS: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: cuenta corriente creada con saldo cero
+        else el cliente ya tiene una cuenta vigente
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    else Modificación de la cuenta
+        ADM->>SIS: modificarCuentaCorriente(cuentaId, datos)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: cuenta con los datos nuevos
+        else se pretende cerrar una cuenta con saldo
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    end

@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-210 Configurar el Stock Mínimo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: configurarStockMinimo(depositoId, minimos)
+    activate SIS
+    alt los mínimos son válidos
+        SIS-->>ADM: umbrales vigentes del depósito
+    else un mínimo es negativo
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    else el depósito o un tipo de garrafa no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

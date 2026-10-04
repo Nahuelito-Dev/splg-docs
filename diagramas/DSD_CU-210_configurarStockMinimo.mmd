@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-210 Configurar el Stock Mínimo · configurarStockMinimo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockService
+    participant COL as :Map#lt;String, Deposito#gt;
+    participant PRS as :Map#lt;String, Producto#gt;
+    participant DEP as deposito:Deposito
+    participant UMB as umbral:UmbralDeStock
+
+    ADM->>+SRV: configurarStockMinimo(depositoId, minimos)
+    SRV->>+COL: get(depositoId)
+    COL-->>-SRV: depositoDeStock
+    loop Por cada mínimo indicado
+        SRV->>+PRS: get(productoId)
+        PRS-->>-SRV: producto
+        SRV->>+DEP: fijarMinimo(producto, minimoDeLlenas)
+        DEP->>DEP: getUmbral(producto)
+        alt El depósito no tiene umbral para el tipo de garrafa
+            create participant NUM as nuevo:UmbralDeStock
+            DEP->>NUM: «create»(producto, minimoDeLlenas)
+        else El depósito ya tiene umbral para el tipo de garrafa
+            DEP->>UMB: actualizar(minimoDeLlenas)
+        end
+        deactivate DEP
+    end
+    SRV-->>-ADM: umbrales

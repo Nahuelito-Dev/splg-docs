@@ -1,0 +1,33 @@
+sequenceDiagram
+    title DSD — CU-211 Avisar el Stock Bajo · avisarStockBajo
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant CRN as :StockLowCron
+    participant UMBS as :List#lt;UmbralDeStock#gt;
+    participant UMB as umbral:UmbralDeStock
+    participant DEP as deposito:Deposito
+    participant DIS as distribuidora:Distribuidora
+    participant MAI as :EmailSenderPort
+
+    SIS->>+CRN: avisarStockBajo()
+    CRN->>+UMBS: getConMinimo()
+    UMBS-->>-CRN: umbrales
+    loop Por cada umbral
+        CRN->>+UMB: getDeposito()
+        UMB-->>-CRN: depositoDeStock
+        CRN->>+DEP: getLlenas(producto)
+        DEP-->>-CRN: llenos
+        CRN->>+UMB: estaPorDebajoDelMinimo(llenos)
+        UMB-->>-CRN: bajo
+        alt El depósito bajó del mínimo y todavía no se avisó
+            CRN->>+DEP: getDistribuidora()
+            DEP-->>-CRN: distribuidora
+            CRN->>+DIS: getAdministradores()
+            DIS-->>-CRN: administradores
+            CRN->>MAI: send(administrador, stockBajo)
+            CRN->>UMB: marcarAvisado(ahora)
+        else El depósito se recuperó
+            CRN->>UMB: limpiarAviso()
+        end
+    end
+    deactivate CRN

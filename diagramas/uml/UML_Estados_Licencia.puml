@@ -1,0 +1,41 @@
+@startuml
+title Diagrama de estados — Licencia laboral (planificado, I-11)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Solicitada\n(requested)" as REQUESTED
+state "Aprobada\n(approved)" as APPROVED
+state "Rechazada\n(rejected)" as REJECTED
+state "Cancelada\n(cancelled)" as CANCELLED
+
+[*] --> REQUESTED : registrarLicencia(empleado, tipo, período)\n[sin superposición]
+REQUESTED --> REQUESTED : modificarLicencia(datos)
+REQUESTED --> APPROVED : aprobarLicencia()
+REQUESTED --> REJECTED : rechazarLicencia(motivo)\n[hay motivo]
+REQUESTED --> CANCELLED : cancelarLicencia()
+APPROVED --> CANCELLED : cancelarLicencia()\n[no terminó]
+REJECTED --> [*]
+CANCELLED --> [*]
+APPROVED --> [*] : when(pasó el último día)
+
+note bottom of REJECTED
+  Dos licencias solicitadas o aprobadas del mismo
+  empleado no pueden superponerse: lo impide una
+  restricción de exclusión de la base. Una licencia
+  rechazada o cancelada libera el período.
+end note
+@enduml

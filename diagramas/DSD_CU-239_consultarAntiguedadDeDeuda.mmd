@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-239 Consultar la Antigüedad de la Deuda · consultarAntiguedadDeDeuda
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomerAccountService
+    participant CUES as :List#lt;CuentaCorriente#gt;
+    participant CUE as cuentaCorriente:CuentaCorriente
+
+    ADM->>+SRV: consultarAntiguedadDeDeuda()
+    SRV->>+CUES: getConSaldo()
+    CUES-->>-SRV: cuentas
+    loop Por cada cuenta con saldo
+        SRV->>CUE: calcularAntiguedad(hoy)
+    end
+    SRV-->>-ADM: antiguedad, total

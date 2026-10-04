@@ -76,6 +76,7 @@ class "Map<String, Producto>" as Map_String_Producto <<colección>> {
 }
 class "List<Producto>" as List_Producto <<colección>> {
   + buscarInactivos(): Producto[*]
+  + getActivos(): Producto[*]
 }
 class TimeSlotService <<fachada>> {
   + consultarDisponibilidadDeFranjas(fecha: Fecha,\n      distribuidora: Cadena): Registro

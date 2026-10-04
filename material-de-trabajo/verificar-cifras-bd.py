@@ -12,7 +12,7 @@ import subprocess, os, re, sys
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/../"
 BACK = os.path.abspath(D + "../splg-app-backend") + "/"
-CONTENEDOR = "splg-bd"
+CONTENEDOR = os.environ.get("SPLG_BD_CONTENEDOR", "splg-bd")
 env = {}
 for l in open(BACK + ".env", encoding="utf-8"):
     m = re.match(r'\s*([A-Z_]+)\s*=\s*(.*)', l)
@@ -31,7 +31,8 @@ n_tablas = int(psql(f"select count(*) from information_schema.tables "
                     f"where table_schema='public' and table_type='BASE TABLE' "
                     f"and table_name not in {SALTAR};"))
 n_fk = int(psql(f"select count(*) from information_schema.table_constraints "
-                f"where constraint_type='FOREIGN KEY' and table_schema='public';"))
+                f"where constraint_type='FOREIGN KEY' and table_schema='public' "
+                f"and table_name not in {SALTAR};"))
 n_enum = int(psql("select count(distinct t.typname) from pg_type t "
                   "join pg_enum e on e.enumtypid=t.oid "
                   "join pg_namespace n on n.oid=t.typnamespace and n.nspname='public';"))
@@ -48,11 +49,19 @@ def check(nombre, esperado, real):
     print(f"[{'OK' if ok else 'FALLA':5}] {nombre}: documento dice {esperado}, la base/el código tiene {real}")
     if not ok: fallas.append(nombre)
 
-# Lo que dicen los documentos (se transcribe la afirmación central de cada uno;
-# si el texto cambia de redacción, hay que actualizar esta constante también).
-DOC_TABLAS, DOC_FK, DOC_ENUM = 40, 93, 34
-DOC_CONCEPTOS = 43       # 2-Analisis.md §1.2 y 1.5, material-de-trabajo/MODELO-DE-DOMINIO.md
-DOC_ENTIDADES_DISENO = 43  # 3-Diseño.md §5.1: las clases del modelo conceptual, con sus operaciones
+# Lo que dicen los documentos: se leen del texto (3-Diseño.md §7.4 y 2-Analisis.md §1.5), no se
+# transcriben, así que un número viejo en la prosa hace fallar la verificación.
+def del_doc(ruta, patron):
+    m = re.search(patron, open(D + ruta, encoding="utf-8").read())
+    if not m:
+        sys.exit(f"{ruta}: no encuentro la afirmación {patron!r}")
+    return int(m.group(1))
+
+DOC_TABLAS = del_doc("3-Diseño.md", r'Modelo de datos de las \*\*(\d+) tablas\*\*')
+DOC_FK = del_doc("3-Diseño.md", r'\*\*(\d+) claves foráneas, todas declaradas')
+DOC_ENUM = del_doc("3-Diseño.md", r'\*\*(\d+) tipos enumerados\*\*')
+DOC_CONCEPTOS = del_doc("2-Analisis.md", r'El modelo tiene (\d+) conceptos')
+DOC_ENTIDADES_DISENO = del_doc("3-Diseño.md", r'(\d+) clases de dominio \(todas las del modelo conceptual\)')
 
 check("Tablas de dominio", DOC_TABLAS, n_tablas)
 check("Claves foráneas", DOC_FK, n_fk)

@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-242 Liquidar las Comisiones de un Chofer · liquidarComisionesDelChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CommissionService
+    participant EMPS as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant ASIS as :List#lt;AsientoComision#gt;
+    participant ASI as asientoDeComision:AsientoComision
+
+    ADM->>+SRV: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
+    SRV->>+EMPS: get(empleadoId)
+    EMPS-->>-SRV: empleado
+    SRV->>+EMP: liquidar(fechaDesde, fechaHasta)
+    EMP->>+ASIS: getSinLiquidar(empleado, fechaDesde, fechaHasta)
+    ASIS-->>-EMP: asientosDeComision
+    create participant NLI as nueva:LiquidacionComisiones
+    EMP->>NLI: «create»(fechaDesde, fechaHasta)
+    loop Por cada asiento sin liquidar del período
+        EMP->>+NLI: incluir(asientoDeComision)
+        NLI->>ASI: asignarALiquidacion(liquidacion)
+        deactivate NLI
+    end
+    EMP->>NLI: calcularTotales()
+    EMP-->>-SRV: liquidacion
+    SRV-->>-ADM: liquidacion

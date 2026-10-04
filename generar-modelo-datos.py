@@ -33,7 +33,7 @@ SAL = D + "diagramas/base-de-datos/"
 os.makedirs(SAL, exist_ok=True)
 
 BACK = os.path.abspath(D + "../splg-app-backend") + "/"
-CONTENEDOR = "splg-bd"
+CONTENEDOR = os.environ.get("SPLG_BD_CONTENEDOR", "splg-bd")
 env = {}
 for l in open(BACK + ".env", encoding="utf-8"):
     m = re.match(r'\s*([A-Z_]+)\s*=\s*(.*)', l)
@@ -798,6 +798,257 @@ PROPUESTO_IMPLEMENTADO = [
   },
 ]
 
+def _col(nombre, tipo, desc, nulo=False, default=None, ref=None):
+    c = {"nombre": nombre, "tipo": tipo, "nulo": nulo, "desc": desc}
+    if default is not None: c["default"] = default
+    if ref: c["ref"] = ref
+    return c
+
+def _cant(nombre, desc, default="0"):
+    return _col(nombre, "integer", desc, default=default)
+
+def _ts(nombre, desc, nulo=True):
+    return _col(nombre, "timestamptz", desc, nulo=nulo)
+
+def _usr(nombre, desc, nulo=False):
+    return _ref(nombre, "user", "user_id", "RESTRICT", desc, nulo=nulo)
+
+def _gas(desc="Tipo de garrafa."):
+    return _ref("gas_cylinder_id", "gas_cylinder", "gas_cylinder_id", "RESTRICT", desc)
+
+STOCK_Y_COMPRAS = {
+    "clave": "stock-y-compras",
+    "casos": "CU-207 a CU-224 (I-13)",
+    "nota": "El saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo del módulo de personal, que se documenta aparte (iteración I-11): se declara sin clave foránea hasta que esa tabla exista en este modelo. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.",
+    "titulo": "Stock físico, compras y carga del camión",
+    "pedido": "Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué se le compra a cada proveedor y qué sale y vuelve en cada reparto.",
+    "enums": {
+      "warehouse_kind_enum": ["depot", "branch"],
+      "stock_location_kind_enum": ["warehouse", "vehicle"],
+      "stock_condition_enum": ["full", "empty", "defective"],
+      "stock_movement_reason_enum": ["initial_count", "purchase_receipt", "plant_empty_out", "truck_load",
+                                     "truck_return", "delivery", "empty_collected", "transfer", "adjustment",
+                                     "shrinkage", "condition_change", "reversal"],
+      "stock_reference_type_enum": ["order", "purchase_receipt", "truck_load", "stock_adjustment",
+                                    "transfer", "initial"],
+      "stock_adjustment_reason_enum": ["count_correction", "shrinkage", "leak", "damaged", "lost",
+                                       "found", "initial_count"],
+      "supplier_kind_enum": ["filling_plant", "other"],
+      "purchase_order_status_enum": ["draft", "sent", "partially_received", "received", "cancelled"],
+      "purchase_document_type_enum": ["delivery_note", "invoice"],
+      "purchase_payment_status_enum": ["unpaid", "paid"],
+      "purchase_receipt_status_enum": ["confirmed", "voided"],
+      "truck_load_status_enum": ["loading", "on_route", "returned", "closed", "closed_with_difference",
+                                 "cancelled"],
+    },
+    "enum_valores": {"configurable_process_enum": ["stock_control"]},
+    "columnas": {
+      "gas_cylinder": [
+        _col("average_unit_cost", "numeric(12,2)", "Costo promedio ponderado de la garrafa, que se recalcula en cada recepción de compra; vacío mientras no se compró.", nulo=True),
+      ],
+    },
+    "tablas": [
+      {"nombre": "warehouse", "concepto": "Depósito",
+       "desc": "Depósito o sucursal de la distribuidora donde se guarda el stock físico.",
+       "columnas": [
+         _id("warehouse_id"), _dist(),
+         _col("name", "varchar(80)", "Nombre del depósito."),
+         _col("code", "varchar(12)", "Código, único entre los depósitos vigentes de la distribuidora."),
+         _col("kind", "warehouse_kind_enum", "Depósito o sucursal."),
+         _col("address", "text", "Dirección.", nulo=True),
+         _col("location", "geometry(Point,4326)", "Punto geográfico.", nulo=True),
+         _col("is_default", "boolean", "Si es el depósito predeterminado de la distribuidora.", default="false"),
+         _col("is_active", "boolean", "Si está en uso.", default="true"),
+         _ts("createdAt", "Alta.", nulo=False), _ts("updatedAt", "Última modificación.", nulo=False),
+         _ts("deletedAt", "Baja lógica."),
+       ],
+       "pk": ["warehouse_id"], "unicos": []},
+      {"nombre": "stock_location", "concepto": "Ubicación de stock",
+       "desc": "Lugar donde puede haber stock: un depósito o un vehículo.",
+       "columnas": [
+         _id("location_id"), _dist(),
+         _col("kind", "stock_location_kind_enum", "Depósito o vehículo."),
+         _ref("warehouse_id", "warehouse", "warehouse_id", "CASCADE", "Depósito, si la ubicación es un depósito.", nulo=True),
+         _ref("car_id", "car", "car_id", "CASCADE", "Vehículo, si la ubicación es un camión.", nulo=True),
+       ],
+       "pk": ["location_id"], "unicos": [["warehouse_id"], ["car_id"]]},
+      {"nombre": "stock_balance", "concepto": "Saldo de stock",
+       "desc": "Cantidad de un tipo de garrafa en una condición dentro de una ubicación, mantenida con cada movimiento.",
+       "columnas": [
+         _id("balance_id"), _dist(),
+         _ref("location_id", "stock_location", "location_id", "CASCADE", "Ubicación."),
+         _gas(),
+         _col("condition", "stock_condition_enum", "Llena, vacía o defectuosa."),
+         _cant("quantity", "Unidades; nunca negativa."),
+         _ts("updatedAt", "Última actualización.", nulo=False),
+       ],
+       "pk": ["balance_id"], "unicos": [["location_id", "gas_cylinder_id", "condition"]]},
+      {"nombre": "stock_movement", "concepto": "Movimiento de stock",
+       "desc": "Libro de sólo agregado: cada cambio de stock entre ubicaciones o con el exterior.",
+       "columnas": [
+         _id("movement_id"), _dist(), _gas(),
+         _col("batch_id", "uuid", "Agrupa los movimientos de una misma operación."),
+         _col("quantity", "integer", "Unidades movidas; siempre positiva."),
+         _ref("from_location_id", "stock_location", "location_id", "RESTRICT", "Ubicación de origen; vacía si entra desde afuera.", nulo=True),
+         _col("from_condition", "stock_condition_enum", "Condición en el origen.", nulo=True),
+         _ref("to_location_id", "stock_location", "location_id", "RESTRICT", "Ubicación de destino; vacía si sale.", nulo=True),
+         _col("to_condition", "stock_condition_enum", "Condición en el destino.", nulo=True),
+         _col("reason", "stock_movement_reason_enum", "Motivo del movimiento."),
+         _col("reference_type", "stock_reference_type_enum", "Tipo del documento que lo originó."),
+         _col("reference_id", "uuid", "Identificador de ese documento; sin clave foránea a propósito, porque apunta a tablas distintas según el tipo.", nulo=True),
+         _usr("actor_user_id", "Usuario que lo provocó; vacío si fue el sistema.", nulo=True),
+         _ts("occurred_at", "Cuándo ocurrió.", nulo=False), _ts("createdAt", "Cuándo se asentó.", nulo=False),
+       ],
+       "pk": ["movement_id"], "unicos": []},
+      {"nombre": "stock_threshold", "concepto": "Umbral de stock",
+       "desc": "Mínimo de unidades llenas de un tipo de garrafa en un depósito, para avisar cuando baja.",
+       "columnas": [
+         _id("threshold_id"), _dist(),
+         _ref("warehouse_id", "warehouse", "warehouse_id", "CASCADE", "Depósito controlado."),
+         _gas(),
+         _cant("min_full", "Mínimo de unidades llenas."),
+         _ts("alerted_at", "Cuándo se avisó; vacío si no hay aviso emitido."),
+       ],
+       "pk": ["threshold_id"], "unicos": [["warehouse_id", "gas_cylinder_id"]]},
+      {"nombre": "stock_adjustment", "concepto": "Ajuste de stock",
+       "desc": "Corrección del stock de una ubicación, con su motivo y una nota obligatoria.",
+       "columnas": [
+         _id("adjustment_id"), _dist(),
+         _col("number", "integer", "Número correlativo por distribuidora."),
+         _ref("location_id", "stock_location", "location_id", "RESTRICT", "Ubicación corregida."),
+         _col("reason", "stock_adjustment_reason_enum", "Motivo del ajuste."),
+         _col("notes", "text", "Nota que explica el ajuste; obligatoria."),
+         _usr("created_by_user_id", "Usuario que lo registró."),
+         _ts("createdAt", "Cuándo se registró.", nulo=False),
+       ],
+       "pk": ["adjustment_id"], "unicos": [["distributor_id", "number"]]},
+      {"nombre": "stock_adjustment_item", "concepto": "Renglón de ajuste de stock",
+       "desc": "Diferencia de un tipo de garrafa y condición dentro de un ajuste.",
+       "columnas": [
+         _id("item_id"),
+         _ref("adjustment_id", "stock_adjustment", "adjustment_id", "CASCADE", "Ajuste."),
+         _gas(),
+         _col("condition", "stock_condition_enum", "Condición afectada."),
+         _col("quantity_delta", "integer", "Diferencia, positiva o negativa; nunca cero."),
+       ],
+       "pk": ["item_id"], "unicos": []},
+      {"nombre": "supplier", "concepto": "Proveedor",
+       "desc": "Proveedor de la distribuidora, principalmente una planta de llenado.",
+       "columnas": [
+         _id("supplier_id"), _dist(),
+         _col("business_name", "varchar(120)", "Razón social."),
+         _col("cuit", "varchar(11)", "CUIT, único entre los proveedores vigentes de la distribuidora."),
+         _col("kind", "supplier_kind_enum", "Planta de llenado u otro."),
+         _col("contact_name", "varchar(80)", "Persona de contacto.", nulo=True),
+         _col("phone", "varchar(30)", "Teléfono.", nulo=True),
+         _col("email", "varchar(120)", "Correo.", nulo=True),
+         _col("address", "text", "Dirección.", nulo=True),
+         _col("payment_terms_days", "integer", "Plazo de pago en días.", nulo=True),
+         _col("is_active", "boolean", "Si está en uso.", default="true"),
+         _ts("createdAt", "Alta.", nulo=False), _ts("updatedAt", "Última modificación.", nulo=False),
+         _ts("deletedAt", "Baja lógica."),
+       ],
+       "pk": ["supplier_id"], "unicos": []},
+      {"nombre": "purchase_order", "concepto": "Orden de compra",
+       "desc": "Pedido de garrafas a un proveedor para un depósito destino.",
+       "columnas": [
+         _id("purchase_order_id"), _dist(),
+         _col("number", "integer", "Número correlativo por distribuidora."),
+         _ref("supplier_id", "supplier", "supplier_id", "RESTRICT", "Proveedor."),
+         _ref("destination_warehouse_id", "warehouse", "warehouse_id", "RESTRICT", "Depósito destino."),
+         _col("status", "purchase_order_status_enum", "Borrador, enviada, parcialmente recibida, recibida o cancelada.", default="'draft'"),
+         _ts("issued_at", "Cuándo se envió."),
+         _col("expected_date", "date", "Fecha esperada de llegada.", nulo=True),
+         _col("total_amount", "numeric(12,2)", "Total de la orden.", default="0"),
+         _col("cancel_reason", "text", "Motivo de la cancelación.", nulo=True),
+         _col("notes", "text", "Observaciones.", nulo=True),
+         _usr("created_by_user_id", "Usuario que la emitió."),
+         _ts("createdAt", "Alta.", nulo=False), _ts("updatedAt", "Última modificación.", nulo=False),
+       ],
+       "pk": ["purchase_order_id"], "unicos": [["distributor_id", "number"]]},
+      {"nombre": "purchase_order_item", "concepto": "Renglón de orden de compra",
+       "desc": "Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje.",
+       "columnas": [
+         _id("item_id"),
+         _ref("purchase_order_id", "purchase_order", "purchase_order_id", "CASCADE", "Orden."),
+         _gas(),
+         _col("quantity", "integer", "Unidades pedidas; positiva."),
+         _col("unit_cost", "numeric(12,2)", "Costo unitario esperado."),
+         _cant("empties_to_exchange", "Vacíos que se entregan a la planta."),
+         _cant("received_quantity", "Unidades recibidas hasta ahora."),
+       ],
+       "pk": ["item_id"], "unicos": [["purchase_order_id", "gas_cylinder_id"]]},
+      {"nombre": "purchase_receipt", "concepto": "Recepción de compra",
+       "desc": "Remito de ingreso de una compra, con o sin orden.",
+       "columnas": [
+         _id("receipt_id"), _dist(),
+         _col("number", "integer", "Número interno correlativo."),
+         _ref("supplier_id", "supplier", "supplier_id", "RESTRICT", "Proveedor."),
+         _ref("purchase_order_id", "purchase_order", "purchase_order_id", "SET NULL", "Orden que cumple; vacía en una compra sin orden.", nulo=True),
+         _ref("warehouse_id", "warehouse", "warehouse_id", "RESTRICT", "Depósito donde ingresa."),
+         _col("supplier_document_type", "purchase_document_type_enum", "Remito o factura del proveedor."),
+         _col("supplier_document_number", "varchar(30)", "Número del comprobante, único por proveedor."),
+         _ts("received_at", "Cuándo se recibió.", nulo=False),
+         _usr("received_by_user_id", "Usuario que la registró."),
+         _col("total_amount", "numeric(12,2)", "Total del remito.", default="0"),
+         _col("payment_status", "purchase_payment_status_enum", "Impago o pagado.", default="'unpaid'"),
+         _col("cash_movement_id", "uuid", "Egreso de caja que la pagó, del módulo de caja (I-14).", nulo=True),
+         _col("status", "purchase_receipt_status_enum", "Confirmada o anulada.", default="'confirmed'"),
+         _col("void_reason", "text", "Motivo de la anulación.", nulo=True),
+         _ts("createdAt", "Alta.", nulo=False), _ts("updatedAt", "Última modificación.", nulo=False),
+       ],
+       "pk": ["receipt_id"], "unicos": [["distributor_id", "number"],
+                                        ["distributor_id", "supplier_id", "supplier_document_number"]]},
+      {"nombre": "purchase_receipt_item", "concepto": "Renglón de recepción de compra",
+       "desc": "Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta.",
+       "columnas": [
+         _id("item_id"),
+         _ref("receipt_id", "purchase_receipt", "receipt_id", "CASCADE", "Recepción."),
+         _gas(),
+         _cant("quantity_full", "Unidades llenas recibidas."),
+         _cant("quantity_empty_out", "Vacíos que se llevó la planta."),
+         _col("unit_cost", "numeric(12,2)", "Costo unitario real."),
+       ],
+       "pk": ["item_id"], "unicos": []},
+      {"nombre": "truck_load", "concepto": "Carga de camión",
+       "desc": "Hoja de carga: el turno de un camión, desde que se carga hasta que se rinde.",
+       "columnas": [
+         _id("load_id"), _dist(),
+         _col("number", "integer", "Número correlativo por distribuidora."),
+         _ref("car_id", "car", "car_id", "RESTRICT", "Vehículo."),
+         _ref("delivery_id", "delivery", "delivery_id", "RESTRICT", "Chofer."),
+         _col("helper_employee_id", "uuid", "Ayudante: legajo del módulo de personal, sin cuenta de usuario.", nulo=True),
+         _ref("origin_location_id", "stock_location", "location_id", "RESTRICT", "Depósito de salida."),
+         _col("business_date", "date", "Día de negocio."),
+         _col("status", "truck_load_status_enum", "Cargando, en ruta, regresó, cerrada, cerrada con diferencia o cancelada.", default="'loading'"),
+         _ts("opened_at", "Apertura.", nulo=False), _ts("departed_at", "Salida."),
+         _ts("returned_at", "Regreso."), _ts("closed_at", "Cierre."),
+         _usr("opened_by_user_id", "Usuario que abrió la carga."),
+         _usr("closed_by_user_id", "Usuario que la cerró.", nulo=True),
+         _col("difference_note", "text", "Nota de la diferencia; obligatoria si cierra con diferencia.", nulo=True),
+       ],
+       "pk": ["load_id"], "unicos": [["distributor_id", "number"]]},
+      {"nombre": "truck_load_item", "concepto": "Renglón de carga de camión",
+       "desc": "Por tipo de garrafa: lo cargado, lo repuesto, lo entregado, lo declarado al regreso y la diferencia.",
+       "columnas": [
+         _id("item_id"),
+         _ref("load_id", "truck_load", "load_id", "CASCADE", "Carga."),
+         _gas(),
+         _cant("loaded_full", "Llenas cargadas."), _cant("reloaded_full", "Llenas repuestas en ruta."),
+         _cant("loaded_empty", "Vacías cargadas para canje."),
+         _col("declared_return_full", "integer", "Llenas declaradas al regreso.", nulo=True),
+         _col("declared_return_empty", "integer", "Vacías declaradas al regreso.", nulo=True),
+         _col("delivered_full", "integer", "Llenas entregadas, al cierre.", nulo=True),
+         _col("collected_empty", "integer", "Vacías recolectadas, al cierre.", nulo=True),
+         _col("expected_full", "integer", "Llenas esperadas, al cierre.", nulo=True),
+         _col("expected_empty", "integer", "Vacías esperadas, al cierre.", nulo=True),
+         _col("difference_full", "integer", "Diferencia de llenas, al cierre.", nulo=True),
+         _col("difference_empty", "integer", "Diferencia de vacías, al cierre.", nulo=True),
+       ],
+       "pk": ["item_id"], "unicos": [["load_id", "gas_cylinder_id"]]},
+    ],
+}
+
 # Lo que todavía no está en la base: los cambios de modelo que necesitan los casos de uso
 # planificados (Documento 0, plan de construcción). Cada agregado se aplica en la
 # iteración que lo necesita, con su propia migración; mientras tanto se dibuja aparte.
@@ -852,7 +1103,267 @@ PROPUESTO = [
     "columnas": {},
     "tablas": [],
   },
+  STOCK_Y_COMPRAS,
+  {
+    "clave": "caja-rendicion-cuentas-corrientes",
+    "casos": "CU-225 a CU-245 (I-14)",
+    "nota": "Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE \"deletedAt\" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, I-11), de modo que un chofer cobra comisión como empleado; `employee` figura acá sólo con las columnas mínimas que necesita este módulo y el módulo de personal la completa.",
+    "titulo": "Caja, rendición del chofer, cuentas corrientes y comisiones",
+    "pedido": "Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.",
+    "enums": {
+      "cash_box_kind_enum": ["cash", "bank", "wallet"],
+      "cash_session_status_enum": ["open", "closed"],
+      "cash_direction_enum": ["income", "expense"],
+      "cash_system_code_enum": ["driver_settlement", "customer_payment", "purchase", "fuel", "traffic_fine",
+                                "commission_payment", "cash_difference", "box_transfer"],
+      "cash_method_enum": ["cash", "transfer", "card", "mercadopago", "check"],
+      "cash_reference_type_enum": ["manual", "driver_settlement", "customer_payment", "purchase_receipt",
+                                   "fuel_load", "traffic_fine", "driver_liquidation", "box_transfer", "reversal"],
+      "driver_settlement_status_enum": ["open", "submitted", "approved"],
+      "settlement_difference_resolution_enum": ["none", "charged_to_driver", "absorbed"],
+      "tax_condition_enum": ["registered", "monotax", "exempt", "final_consumer"],
+      "customer_account_status_enum": ["active", "blocked", "closed"],
+      "customer_entry_type_enum": ["sale_charge", "payment", "credit_note", "debit_note", "reversal"],
+      "commission_basis_enum": ["per_unit", "per_order", "percent_of_total"],
+      "commission_entry_type_enum": ["delivery_commission", "settlement_shortage", "traffic_fine",
+                                     "adjustment", "legacy_balance", "carry_forward"],
+      "driver_liquidation_status_enum": ["draft", "approved", "paid", "closed", "voided"],
+    },
+    "enum_valores": {"order_paymentmethod_enum": ["account"], "order_paymenttype_enum": ["account"]},
+    "columnas": {},
+    "tablas": [
+      {"nombre": "cash_box", "concepto": "Caja",
+       "desc": "Cuenta de fondos de la distribuidora: efectivo, banco o billetera. Su saldo sólo cambia por el libro.",
+       "columnas": [
+         _id("cash_box_id"), _dist(),
+         {"nombre": "name", "tipo": "varchar(80)", "nulo": False, "desc": "Nombre de la caja."},
+         {"nombre": "kind", "tipo": "cash_box_kind_enum", "nulo": False, "desc": "Efectivo, banco o billetera."},
+         {"nombre": "balance", "tipo": "numeric(14,2)", "nulo": False, "default": "0",
+          "desc": "Saldo; una restricción impide que una caja de efectivo quede en negativo."},
+         {"nombre": "requires_session", "tipo": "boolean", "nulo": False, "default": "false",
+          "desc": "Si exige una sesión abierta para registrar movimientos."},
+         {"nombre": "is_active", "tipo": "boolean", "nulo": False, "default": "true", "desc": "Si la caja está activa."},
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+         {"nombre": "updatedAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Última modificación."},
+         {"nombre": "deletedAt", "tipo": "timestamptz", "nulo": True, "desc": "Baja lógica."},
+       ],
+       "pk": ["cash_box_id"], "unicos": []},
+      {"nombre": "cash_session", "concepto": "Sesión de caja",
+       "desc": "Período entre una apertura y un cierre con arqueo de una caja.",
+       "columnas": [
+         _id("session_id"), _dist(),
+         _ref("cash_box_id", "cash_box", "cash_box_id", "CASCADE", "Caja que se abre."),
+         {"nombre": "status", "tipo": "cash_session_status_enum", "nulo": False, "default": "'open'",
+          "desc": "Abierta o cerrada."},
+         {"nombre": "opened_at", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Apertura."},
+         _ref("opened_by_user_id", "user", "user_id", "RESTRICT", "Administrador que la abrió."),
+         {"nombre": "opening_amount", "tipo": "numeric(12,2)", "nulo": False, "default": "0",
+          "desc": "Monto con que se abrió."},
+         {"nombre": "closed_at", "tipo": "timestamptz", "nulo": True, "desc": "Cierre."},
+         _ref("closed_by_user_id", "user", "user_id", "RESTRICT", "Administrador que la cerró.", nulo=True),
+         {"nombre": "expected_amount", "tipo": "numeric(12,2)", "nulo": True,
+          "desc": "Monto que debía haber: el inicial más los movimientos de la sesión."},
+         {"nombre": "counted_amount", "tipo": "numeric(12,2)", "nulo": True, "desc": "Monto contado en el arqueo."},
+         {"nombre": "difference", "tipo": "numeric(12,2)", "nulo": True,
+          "desc": "Contado menos esperado; negativa es faltante."},
+         {"nombre": "notes", "tipo": "text", "nulo": True, "desc": "Observaciones del arqueo."},
+       ],
+       "pk": ["session_id"], "unicos": []},
+      {"nombre": "cash_category", "concepto": "Categoría de caja",
+       "desc": "Categoría de ingreso o de gasto; las de sistema se siembran y no se modifican.",
+       "columnas": [
+         _id("category_id"), _dist(),
+         {"nombre": "name", "tipo": "varchar(80)", "nulo": False, "desc": "Nombre de la categoría."},
+         {"nombre": "direction", "tipo": "cash_direction_enum", "nulo": False, "desc": "Ingreso o egreso."},
+         {"nombre": "system_code", "tipo": "cash_system_code_enum", "nulo": True,
+          "desc": "Código con que los procesos automáticos la buscan; vacío en las propias."},
+         {"nombre": "is_active", "tipo": "boolean", "nulo": False, "default": "true", "desc": "Si se ofrece para movimientos nuevos."},
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+         {"nombre": "updatedAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Última modificación."},
+       ],
+       "pk": ["category_id"], "unicos": [["distributor_id", "system_code"]]},
+      {"nombre": "cash_movement", "concepto": "Movimiento de caja",
+       "desc": "Asiento del libro de una caja; de sólo agregar, se corrige con un contraasiento.",
+       "columnas": [
+         _id("movement_id"), _dist(),
+         _ref("cash_box_id", "cash_box", "cash_box_id", "CASCADE", "Caja del asiento."),
+         _ref("session_id", "cash_session", "session_id", "SET NULL", "Sesión en que se asentó.", nulo=True),
+         {"nombre": "direction", "tipo": "cash_direction_enum", "nulo": False, "desc": "Ingreso o egreso."},
+         {"nombre": "amount", "tipo": "numeric(12,2)", "nulo": False, "desc": "Importe, siempre mayor que cero."},
+         _ref("category_id", "cash_category", "category_id", "RESTRICT", "Categoría del movimiento."),
+         {"nombre": "method", "tipo": "cash_method_enum", "nulo": False, "desc": "Medio, informativo."},
+         {"nombre": "occurred_at", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Cuándo ocurrió."},
+         {"nombre": "description", "tipo": "varchar(255)", "nulo": True, "desc": "Descripción libre."},
+         {"nombre": "reference_type", "tipo": "cash_reference_type_enum", "nulo": False, "default": "'manual'",
+          "desc": "Qué lo originó: carga manual, rendición, pago, liquidación, transferencia o anulación."},
+         {"nombre": "reference_id", "tipo": "uuid", "nulo": True, "desc": "Identificador de lo que lo originó."},
+         _ref("reverses_movement_id", "cash_movement", "movement_id", "RESTRICT",
+              "Movimiento al que anula; único: un movimiento se anula una sola vez.", nulo=True),
+         _ref("created_by_user_id", "user", "user_id", "RESTRICT", "Quien lo asentó."),
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+       ],
+       "pk": ["movement_id"], "unicos": [["reverses_movement_id"]]},
+      {"nombre": "driver_settlement", "concepto": "Rendición del chofer",
+       "desc": "Rendición diaria del efectivo que cobró un chofer.",
+       "columnas": [
+         _id("settlement_id"), _dist(),
+         _ref("delivery_id", "delivery", "delivery_id", "RESTRICT", "Chofer que rinde."),
+         {"nombre": "number", "tipo": "integer", "nulo": False, "desc": "Número correlativo por distribuidora."},
+         {"nombre": "business_date", "tipo": "date", "nulo": False, "desc": "Día argentino que se rinde."},
+         {"nombre": "status", "tipo": "driver_settlement_status_enum", "nulo": False, "default": "'open'",
+          "desc": "Abierta, presentada o aprobada."},
+         {"nombre": "expected_cash", "tipo": "numeric(12,2)", "nulo": False, "default": "0",
+          "desc": "Efectivo que debería entregar."},
+         {"nombre": "declared_cash", "tipo": "numeric(12,2)", "nulo": True, "desc": "Efectivo que declara entregar."},
+         {"nombre": "driver_expenses", "tipo": "numeric(12,2)", "nulo": False, "default": "0",
+          "desc": "Gastos pagados con la cobranza."},
+         {"nombre": "difference", "tipo": "numeric(12,2)", "nulo": True,
+          "desc": "Declarado más gastos menos esperado; negativa es faltante."},
+         {"nombre": "difference_resolution", "tipo": "settlement_difference_resolution_enum", "nulo": True,
+          "desc": "Cómo se resolvió la diferencia."},
+         _ref("destination_cash_box_id", "cash_box", "cash_box_id", "SET NULL", "Caja donde entró el efectivo.", nulo=True),
+         _ref("cash_movement_id", "cash_movement", "movement_id", "SET NULL", "Ingreso a caja de la aprobación.", nulo=True),
+         {"nombre": "submitted_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo se presentó."},
+         _ref("submitted_by_user_id", "user", "user_id", "RESTRICT", "Quien la presentó.", nulo=True),
+         {"nombre": "approved_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo se aprobó."},
+         _ref("approved_by_user_id", "user", "user_id", "RESTRICT", "Administrador que la aprobó.", nulo=True),
+         {"nombre": "alerted_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo se avisó que seguía sin cerrar."},
+         {"nombre": "notes", "tipo": "text", "nulo": True, "desc": "Observaciones."},
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+       ],
+       "pk": ["settlement_id"], "unicos": []},
+      {"nombre": "driver_settlement_order", "concepto": "Pedido rendido",
+       "desc": "Pedido en efectivo incluido en una rendición; un pedido se rinde una sola vez.",
+       "columnas": [
+         _id("settlement_order_id"),
+         _ref("settlement_id", "driver_settlement", "settlement_id", "CASCADE", "Rendición que lo incluye."),
+         _ref("order_id", "order", "order_id", "RESTRICT", "Pedido rendido; único."),
+         {"nombre": "amount", "tipo": "numeric(12,2)", "nulo": False, "desc": "Importe cobrado."},
+         {"nombre": "payment_method", "tipo": "order_paymentmethod_enum", "nulo": False,
+          "desc": "Medio de pago del pedido al rendirlo."},
+       ],
+       "pk": ["settlement_order_id"], "unicos": [["order_id"]]},
+      {"nombre": "driver_settlement_expense", "concepto": "Gasto de rendición",
+       "desc": "Gasto que el chofer pagó con la cobranza.",
+       "columnas": [
+         _id("expense_id"),
+         _ref("settlement_id", "driver_settlement", "settlement_id", "CASCADE", "Rendición que lo declara."),
+         _ref("category_id", "cash_category", "category_id", "RESTRICT", "Categoría del gasto."),
+         {"nombre": "amount", "tipo": "numeric(12,2)", "nulo": False, "desc": "Importe pagado."},
+         {"nombre": "description", "tipo": "varchar(255)", "nulo": True, "desc": "Descripción libre."},
+       ],
+       "pk": ["expense_id"], "unicos": []},
+      {"nombre": "customer_account", "concepto": "Cuenta corriente",
+       "desc": "Cuenta corriente de un cliente en una distribuidora: crédito, plazo y saldo.",
+       "columnas": [
+         _id("account_id"), _dist(),
+         _ref("customer_user_id", "user", "user_id", "RESTRICT", "Cliente titular."),
+         {"nombre": "business_name", "tipo": "varchar(120)", "nulo": False, "desc": "Razón social."},
+         {"nombre": "tax_id", "tipo": "varchar(11)", "nulo": True, "desc": "CUIT."},
+         {"nombre": "tax_condition", "tipo": "tax_condition_enum", "nulo": False, "desc": "Condición fiscal."},
+         {"nombre": "credit_limit", "tipo": "numeric(12,2)", "nulo": False, "default": "0", "desc": "Límite de crédito."},
+         {"nombre": "payment_terms_days", "tipo": "integer", "nulo": False, "default": "30", "desc": "Plazo de pago en días."},
+         {"nombre": "status", "tipo": "customer_account_status_enum", "nulo": False, "default": "'active'",
+          "desc": "Activa, bloqueada o cerrada."},
+         {"nombre": "balance", "tipo": "numeric(14,2)", "nulo": False, "default": "0", "desc": "Saldo; positivo es deuda del cliente."},
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+         {"nombre": "updatedAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Última modificación."},
+         {"nombre": "deletedAt", "tipo": "timestamptz", "nulo": True, "desc": "Baja lógica."},
+       ],
+       "pk": ["account_id"], "unicos": []},
+      {"nombre": "customer_account_entry", "concepto": "Asiento de cuenta corriente",
+       "desc": "Asiento del libro de una cuenta corriente: cargo, pago, nota de crédito o de débito.",
+       "columnas": [
+         _id("entry_id"), _dist(),
+         _ref("account_id", "customer_account", "account_id", "CASCADE", "Cuenta del asiento."),
+         {"nombre": "type", "tipo": "customer_entry_type_enum", "nulo": False, "desc": "Cargo, pago, nota o anulación."},
+         {"nombre": "amount", "tipo": "numeric(12,2)", "nulo": False, "desc": "Importe; el signo lo da el tipo."},
+         _ref("order_id", "order", "order_id", "SET NULL", "Pedido que originó el cargo.", nulo=True),
+         {"nombre": "due_date", "tipo": "date", "nulo": True, "desc": "Vencimiento del cargo."},
+         {"nombre": "payment_method", "tipo": "cash_method_enum", "nulo": True, "desc": "Medio del pago."},
+         _ref("cash_movement_id", "cash_movement", "movement_id", "SET NULL", "Ingreso a caja del pago.", nulo=True),
+         _ref("collected_by_delivery_id", "delivery", "delivery_id", "SET NULL", "Chofer que cobró en la calle.", nulo=True),
+         _ref("settlement_id", "driver_settlement", "settlement_id", "SET NULL", "Rendición en que entró lo cobrado.", nulo=True),
+         _ref("reverses_entry_id", "customer_account_entry", "entry_id", "RESTRICT",
+              "Asiento al que anula; único.", nulo=True),
+         {"nombre": "description", "tipo": "varchar(255)", "nulo": True, "desc": "Descripción o motivo."},
+         {"nombre": "occurred_at", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Cuándo ocurrió."},
+         _ref("created_by_user_id", "user", "user_id", "RESTRICT", "Quien lo asentó.", nulo=True),
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+       ],
+       "pk": ["entry_id"], "unicos": [["reverses_entry_id"]]},
+      {"nombre": "customer_account_allocation", "concepto": "Imputación de cuenta corriente",
+       "desc": "Aplicación de un pago o una nota de crédito a un cargo; alimenta la antigüedad de la deuda.",
+       "columnas": [
+         _id("allocation_id"),
+         _ref("debit_entry_id", "customer_account_entry", "entry_id", "CASCADE", "Cargo que se cancela."),
+         _ref("credit_entry_id", "customer_account_entry", "entry_id", "CASCADE", "Pago o nota que lo cancela."),
+         {"nombre": "amount", "tipo": "numeric(12,2)", "nulo": False, "desc": "Importe aplicado."},
+       ],
+       "pk": ["allocation_id"], "unicos": []},
+      {"nombre": "commission_rule", "concepto": "Regla de comisión",
+       "desc": "Cuánto gana un chofer por entrega, con su alcance y su vigencia.",
+       "columnas": [
+         _id("rule_id"), _dist(),
+         _ref("employee_id", "employee", "employee_id", "CASCADE", "Empleado de la regla; vacío vale para todos los choferes.", nulo=True),
+         _ref("gas_cylinder_id", "gas_cylinder", "gas_cylinder_id", "CASCADE", "Producto de la regla; vacío vale para todos.", nulo=True),
+         {"nombre": "basis", "tipo": "commission_basis_enum", "nulo": False, "desc": "Por unidad, por pedido o porcentaje del total."},
+         {"nombre": "value", "tipo": "numeric(10,4)", "nulo": False, "desc": "Monto o porcentaje, según la base."},
+         {"nombre": "valid_from", "tipo": "date", "nulo": False, "desc": "Inicio de la vigencia."},
+         {"nombre": "valid_to", "tipo": "date", "nulo": True, "desc": "Fin de la vigencia."},
+         {"nombre": "is_active", "tipo": "boolean", "nulo": False, "default": "true", "desc": "Si la regla está activa."},
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+         {"nombre": "updatedAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Última modificación."},
+       ],
+       "pk": ["rule_id"], "unicos": []},
+      {"nombre": "commission_entry", "concepto": "Asiento de comisión",
+       "desc": "Asiento del libro de comisiones de un chofer: comisión, deducción o saldo heredado.",
+       "columnas": [
+         _id("entry_id"), _dist(),
+         _ref("employee_id", "employee", "employee_id", "RESTRICT", "Empleado del asiento."),
+         {"nombre": "type", "tipo": "commission_entry_type_enum", "nulo": False, "desc": "Comisión, faltante, multa, ajuste, saldo heredado o arrastre."},
+         {"nombre": "amount", "tipo": "numeric(12,2)", "nulo": False, "desc": "Importe con signo; las deducciones son negativas."},
+         _ref("order_id", "order", "order_id", "SET NULL", "Pedido que devengó la comisión.", nulo=True),
+         _ref("rule_id", "commission_rule", "rule_id", "SET NULL", "Regla aplicada.", nulo=True),
+         {"nombre": "rule_snapshot", "tipo": "jsonb", "nulo": True, "desc": "Copia de la regla con que se calculó."},
+         _ref("settlement_id", "driver_settlement", "settlement_id", "SET NULL", "Rendición que originó un faltante.", nulo=True),
+         _ref("liquidation_id", "driver_liquidation", "liquidation_id", "SET NULL", "Liquidación que lo incluye; vacío si está libre.", nulo=True),
+         {"nombre": "description", "tipo": "varchar(255)", "nulo": True, "desc": "Descripción o motivo."},
+         {"nombre": "occurred_at", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Cuándo ocurrió."},
+         _ref("created_by_user_id", "user", "user_id", "RESTRICT", "Quien lo asentó; vacío si fue el sistema.", nulo=True),
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+       ],
+       "pk": ["entry_id"], "unicos": []},
+      {"nombre": "driver_liquidation", "concepto": "Liquidación de comisiones",
+       "desc": "Liquidación de las comisiones y las deducciones de un chofer en un período.",
+       "columnas": [
+         _id("liquidation_id"), _dist(),
+         {"nombre": "number", "tipo": "integer", "nulo": False, "desc": "Número correlativo por distribuidora."},
+         _ref("employee_id", "employee", "employee_id", "RESTRICT", "Empleado liquidado."),
+         {"nombre": "period_from", "tipo": "date", "nulo": False, "desc": "Inicio del período."},
+         {"nombre": "period_to", "tipo": "date", "nulo": False, "desc": "Fin del período."},
+         {"nombre": "gross", "tipo": "numeric(12,2)", "nulo": False, "desc": "Suma de las comisiones."},
+         {"nombre": "deductions", "tipo": "numeric(12,2)", "nulo": False, "desc": "Suma de las deducciones."},
+         {"nombre": "net", "tipo": "numeric(12,2)", "nulo": False, "desc": "Neto a pagar."},
+         {"nombre": "status", "tipo": "driver_liquidation_status_enum", "nulo": False, "default": "'draft'",
+          "desc": "Borrador, aprobada, pagada, cerrada sin pago o anulada."},
+         {"nombre": "approved_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo se aprobó."},
+         _ref("approved_by_user_id", "user", "user_id", "RESTRICT", "Administrador que la aprobó.", nulo=True),
+         {"nombre": "paid_at", "tipo": "timestamptz", "nulo": True, "desc": "Cuándo se pagó."},
+         _ref("cash_movement_id", "cash_movement", "movement_id", "SET NULL", "Egreso de caja del pago.", nulo=True),
+         {"nombre": "createdAt", "tipo": "timestamptz", "nulo": False, "default": "now()", "desc": "Alta."},
+       ],
+       "pk": ["liquidation_id"], "unicos": []},
+    ],
+  },
 ]
+
+# Los módulos de gestión de la distribuidora traen su modelo planificado en un archivo propio.
+import propuesto_personal
+PROPUESTO += propuesto_personal.AGREGADOS
+# Flota ampliada (iteración I-12): combustible, multas, siniestros y neumáticos, en su propio archivo.
+import propuesto_flota
+PROPUESTO += propuesto_flota.AGREGADOS
 
 # ---------------------------------------------------------------- verificaciones
 # El diccionario conceptual mapea etiqueta del negocio -> columna real. Si una
@@ -908,6 +1419,12 @@ CONCEPTO = {
   "maintenance_task_attachment": ("Adjunto de tarea de mantenimiento",
     [("nombre original", "original_name"), ("tipo de archivo", "mime_type"),
      ("tamaño", "size_bytes"), ("subido el", "uploaded_at")]),
+  "attachment": ("Adjunto", [("nombre original", "original_name"), ("tipo de archivo", "mime_type"),
+                             ("etiqueta", "label"), ("fecha de carga", "uploaded_at")]),
+  "document_sequence": ("Secuencia de documentos", [("tipo de documento", "doc_type"),
+                                                    ("último número", "last_number")]),
+  "storage_orphan": ("Archivo pendiente de borrado", [("clave", "storage_key"), ("intentos", "attempts"),
+                                                       ("estado", "status")]),
   "claims": ("Reclamo", [("motivo", "reason"), ("estado", "status")]),
   "incident": ("Incidencia", [("tipo", "type"), ("estado", "status")]),
   "rating": ("Calificación", [("puntaje", "stars"), ("comentario", "comment")]),
@@ -965,6 +1482,11 @@ for s in SIN_FK:
     s = dict(s, nulo=col["nulo"], huerfanas=huerfanas)
     sin_fk.append(s)
 
+# Si otro módulo ya llevó a la base una tabla o un tipo que el modelo propuesto traía (los adjuntos
+# genéricos, por ejemplo), deja de ser propuesto: se toma de la base.
+for _ag in PROPUESTO:
+    _ag["tablas"] = [tb for tb in _ag["tablas"] if tb["nombre"] not in columnas]
+    _ag["enums"] = {n: v for n, v in _ag["enums"].items() if n not in enums}
 # Lo propuesto tampoco puede pisar lo que ya existe.
 enums_prop = {}
 for ag in PROPUESTO:
@@ -1002,6 +1524,7 @@ def portable(tipo):
     """Sin nada propio de PostGIS ni enums: asi lo entiende cualquier
     herramienta que importe SQL."""
     if tipo in enums or tipo in enums_prop: return "varchar(32)"
+    if tipo.endswith("[]"): return "varchar(255)"
     if tipo.startswith(("geography", "geometry")): return "varchar(255)"
     return tipo
 
@@ -1146,15 +1669,16 @@ open(SAL + "SPLG-base-de-datos-propuesta.sql", "w", encoding="utf-8").write("\n"
 
 # --------------------------------------- 4. actual + propuesta, SQL portable
 n_fk_completo = sum(len(d["fks"]) for d in completo.values())
-comp = ["-- Modelo completo de SPLG — lo implementado más lo que pidió la cátedra",
+comp = ["-- Modelo completo de SPLG: lo implementado más lo planificado",
         f"-- {len(completo)} tablas y {n_fk_completo} relaciones.",
         f"-- Hoy en la base hay {len(tablas)} tablas y {len(fks)} claves foráneas declaradas;",
-        f"-- este archivo suma {len(tablas_prop)} tablas nuevas, "
-        f"{sum(len(v) for v in cols_prop.values())} columnas nuevas y declara además las",
-        f"-- {len(sin_fk)} relaciones que hoy existen en el dominio pero no están declaradas",
-        "-- como FOREIGN KEY (ver «Relaciones no declaradas» en SPLG-modelo-de-datos.md).",
-        "-- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin defaults ni índices.",
-        "-- Las tablas van en orden de dependencia. Generado por generar-modelo-datos.py.", ""]
+        f"-- este archivo suma {len(tablas_prop)} tablas planificadas y "
+        f"{sum(len(v) for v in cols_prop.values())} columnas nuevas en tablas que ya existen."]
+if sin_fk:
+    comp += [f"-- Declara además las {len(sin_fk)} relaciones que hoy existen en el dominio pero no están declaradas",
+             "-- como FOREIGN KEY (ver «Relaciones no declaradas» en SPLG-modelo-de-datos.md)."]
+comp += ["-- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin defaults ni índices.",
+         "-- Las tablas van en orden de dependencia. Generado por generar-modelo-datos.py.", ""]
 for t in orden_dependencias(completo):
     d = completo[t]
     comp.append(("-- tabla propuesta\n" if d["prop"] else "") + crear_tabla(t, d))
@@ -1179,6 +1703,10 @@ skinparam entity<<ajena>> {{
   FontColor #55616C
 }}
 skinparam class<<propuesto>> {{
+  BorderColor {AZUL}
+  BackgroundColor #E4EDF4
+}}
+skinparam entity<<propuesto>> {{
   BorderColor {AZUL}
   BackgroundColor #E4EDF4
 }}
@@ -1222,6 +1750,18 @@ CONTEXTOS = [
                         "maintenance_task_attachment", "maintenance_window_proposal",
                         "vehicle_usage_log"]),
   ("Posventa", ["claims", "incident", "rating"]),
+  (propuesto_personal.CONTEXTO[0], propuesto_personal.CONTEXTO[1] + ["attachment"]),
+  ("Gastos de la flota", ["fuel_load", "traffic_fine", "vehicle_accident", "tire", "tire_event"]),
+  ("Stock físico y carga del camión", ["warehouse", "stock_location", "stock_balance", "stock_movement",
+                                      "stock_threshold", "stock_adjustment", "stock_adjustment_item",
+                                      "truck_load", "truck_load_item"]),
+  ("Compras", ["supplier", "purchase_order", "purchase_order_item", "purchase_receipt",
+               "purchase_receipt_item"]),
+  ("Tablas técnicas", sorted(MC.TABLAS_TECNICAS)),
+  ("Caja y finanzas", ["cash_box", "cash_session", "cash_category", "cash_movement", "driver_settlement",
+                       "driver_settlement_order", "driver_settlement_expense", "customer_account",
+                       "customer_account_entry", "customer_account_allocation", "commission_rule",
+                       "commission_entry", "driver_liquidation"]),
 ]
 _en_contexto = [t for _, ts in CONTEXTOS for t in ts]
 _sin = sorted(set(completo) - set(_en_contexto))
@@ -1238,7 +1778,8 @@ IZQ = {"uno": "||", "cero_uno": "|o", "muchos": "}o"}
 DER = {"uno": "||", "cero_uno": "o|", "muchos": "o{"}
 
 def card_hijo(t, f):
-    return "cero_uno" if f["col"] in unicos_simples.get(t, set()) else "muchos"
+    prop = {g[0] for g in completo[t]["unicos"] if len(g) == 1} if t in completo else set()
+    return "cero_uno" if f["col"] in unicos_simples.get(t, set()) | prop else "muchos"
 
 def card_padre(t, f):
     col = next((c for c in completo[t]["columnas"] if c["nombre"] == f["col"]), None)
@@ -1276,7 +1817,7 @@ for k, (ctx, ts) in enumerate(CONTEXTOS, 1):
            f"title Modelo físico — {ctx}", CAB, "hide circle", "skinparam linetype polyline", ""]
     for t in propias:
         d = completo[t]
-        lin.append(f'entity "{t}" as e_{t} {{')
+        lin.append(f'entity "{t}" as e_{t}' + (" <<propuesto>>" if d["prop"] else "") + " {")
         for c in d["columnas"]:
             mk, nom = marca(c, d)
             linea = f'{nom} : {c["tipo"]}{"" if c["nulo"] else " *"} {mk}'.rstrip()
@@ -1321,17 +1862,25 @@ def atributos_de(concepto):
         atrs = [a for a in MC.CLASES["PropuestaConVigencia"][1] if a not in atrs] + atrs
     return atrs
 
+def _columnas_de(tabla):
+    """Columnas de una tabla: las de la base y las que agrega lo propuesto."""
+    r = {c["nombre"] for c in columnas[tabla]} | {c["nombre"] for c in cols_prop.get(tabla, [])}
+    for _tb in tablas_prop:
+        if _tb["nombre"] == tabla:
+            r |= {c["nombre"] for c in _tb["columnas"]}
+    return r
+
 _mal = []
 for _c in MC.CLASES:
     _t = MC.TABLA[_c]
     if not _t: continue
     for _a in atributos_de(_c):
         _col = MC.ATRIBUTOS.get(_c, {}).get(_a) or MC.HEREDA_ATRIBUTOS.get(_a)
-        if not _col or _col not in {c["nombre"] for c in columnas[_t]}:
+        if not _col or _col not in _columnas_de(_t):
             _mal.append(f"{_c}.{_a} -> {_t}.{_col}")
 if _mal:
     sys.exit("El modelo conceptual tiene atributos sin columna en la base:\n  - " + "\n  - ".join(_mal))
-_sin_concepto = sorted(set(tablas) - set(MC.CONCEPTO_DE_TABLA))
+_sin_concepto = sorted(set(completo) - set(MC.CONCEPTO_DE_TABLA) - set(MC.TABLAS_TECNICAS))
 if _sin_concepto:
     sys.exit(f"Tablas sin concepto en modelo_conceptual.TABLA: {_sin_concepto}")
 
@@ -1366,14 +1915,20 @@ def relaciones_conceptuales():
             if clave in vistos: continue
             vistos.add(clave)
             sal.append((izq, ci, cdr, der, nom, mi, md_))
+    # asociaciones con dueño polimórfico: no tienen clave foránea, pero el modelo las nombra
+    for a, ma, t_, mb, b, n, _cat in MC.ASOCIACIONES:
+        if (a, b, n) in MC.POLIMORFICAS:
+            sal.append((a, "uno", "muchos", b, n, a, b))
     return sal
 
 REL_CONCEPTUALES = relaciones_conceptuales()
 
 def entidad_conceptual(c, con_atributos):
+    est = " <<propuesto>>" if c in MC.PLANIFICADOS else ""
     if not con_atributos:
-        return [f'entity {c}']
-    return [f'entity {c} {{', "  * identificador", "  --"] + ["  {field} " + a for a in atributos_de(c)] + ["}"]
+        return [f'entity {c}{est}']
+    marca = f" #E4EDF4;line:{AZUL[1:]}" if c in MC.PLANIFICADOS else ""
+    return [f'entity {c}{est}{marca} {{', "  * identificador", "  --"] + ["  {field} " + a for a in atributos_de(c)] + ["}"]
 
 def der_conceptual(titulo, foco, ref, general=False):
     foco = [c for c in foco if MC.TABLA.get(c)]
@@ -1449,7 +2004,7 @@ md = ["# Modelo de Datos — SPLG", "",
       "## Diccionario de datos", ""]
 _sin_doc = []
 for t in tablas:
-    nom = MC.CONCEPTO_DE_TABLA.get(t) or CONCEPTO.get(t, (t, []))[0]
+    nom = MC.CONCEPTO_DE_TABLA.get(t) or MC.TABLAS_TECNICAS.get(t, (None,))[0] or CONCEPTO.get(t, (t, []))[0]
     md += [f"### `{t}` — {nom}", "",
            "| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |",
            "|---|---|:-:|:-:|---|---|---|"]
@@ -1586,9 +2141,9 @@ python3 generar-modelo-datos.py
 | Archivo | Qué es | Para qué sirve |
 |---|---|---|
 | `SPLG-base-de-datos.sql` | Volcado de `pg_dump`, esquema completo | Recrear la base tal cual está |
-| `SPLG-base-de-datos-lucidchart.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual |
-| `SPLG-base-de-datos-propuesta.sql` | Sólo los agregados de la cátedra | Boceto de la migración que falta |
-| `SPLG-base-de-datos-completa-lucidchart.sql` | Actual + propuesta, en SQL portable | **El que se importa en Lucidchart** |
+| `SPLG-base-de-datos-lucidchart.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual; `generar-lucidchart.py` lo copia a `lucidchart/SPLG-diagrama-de-base-de-datos.sql` |
+| `SPLG-base-de-datos-propuesta.sql` | Sólo lo planificado (los módulos de gestión) | Boceto de las migraciones que faltan |
+| `SPLG-base-de-datos-completa-lucidchart.sql` | Actual + planificado, en SQL portable | **El que se importa en Lucidchart** para ver todo; `generar-lucidchart.py` lo copia a `lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql` |
 | `fisico/SPLG-fisico-NN-<contexto>.png` / `.svg` | Entidad-relación con tablas y columnas, una lámina por contexto de negocio | Las láminas técnicas |
 | `conceptual/SPLG-der-NN-<área>.png` / `.svg` | Entidad-relación conceptual: una entidad por concepto del modelo conceptual, con sus atributos y las relaciones con su nombre | Las láminas para la defensa |
 | `SPLG-der-mermaid.md` | El físico en Mermaid, por contexto | Lo que se pega en el Documento 3 §7.4.2 |
@@ -1681,8 +2236,8 @@ def tipo_mermaid(tipo):
             "timestamp": "timestamp", "uuid": "uuid", "boolean": "boolean", "integer": "int",
             "jsonb": "jsonb", "date": "date", "double precision": "float"}.get(t, t)
 
-def entidad_mermaid(t):
-    d = actual[t]
+def entidad_mermaid(t, modelo=None):
+    d = (modelo or actual)[t]
     ln = [f"    {t.upper()} {{"]
     for c in d["columnas"]:
         marcas = []
@@ -1698,9 +2253,11 @@ def entidad_mermaid(t):
     ln.append("    }")
     return "\n".join(ln)
 
-def relacion_mermaid(f, t):
-    hijo = "|o" if f["col"] in unicos_simples.get(t, set()) else "}o"
-    col = next((c for c in actual[t]["columnas"] if c["nombre"] == f["col"]), None)
+def relacion_mermaid(f, t, modelo=None):
+    modelo = modelo or actual
+    simples = unicos_simples.get(t, set()) | {g[0] for g in modelo[t]["unicos"] if len(g) == 1}
+    hijo = "|o" if f["col"] in simples else "}o"
+    col = next((c for c in modelo[t]["columnas"] if c["nombre"] == f["col"]), None)
     padre = "o|" if (col and col["nulo"]) else "||"
     return f'    {t.upper()} {hijo}--{padre} {f["destino"].upper()} : "{f["col"]}"'
 
@@ -1714,15 +2271,18 @@ der = ["# DER de SPLG, en Mermaid — generado", "",
        "de un contexto a otro.", ""]
 _vistas_globales = set()
 for ctx, ts in CONTEXTOS:
-    der += [f"### {ctx}", "", "```mermaid", "erDiagram"]
-    for t in [x for x in orden_dependencias(actual) if x in ts]:
-        for f in actual[t]["fks"]:
+    # un contexto sin ninguna tabla en la base (módulo planificado) se dibuja desde el modelo completo
+    planificado = any(x not in actual for x in ts)
+    modelo = completo if planificado else actual
+    der += [f"### {ctx}" + (" (planificado)" if planificado else ""), "", "```mermaid", "erDiagram"]
+    for t in [x for x in orden_dependencias(modelo) if x in ts]:
+        for f in modelo[t]["fks"]:
             if _tabla_a_ctx.get(f["destino"]) == ctx:
-                der.append(relacion_mermaid(f, t))
+                der.append(relacion_mermaid(f, t, modelo))
                 _vistas_globales.add((t, f["col"]))
     der.append("")
-    for t in [x for x in orden_dependencias(actual) if x in ts]:
-        der.append(entidad_mermaid(t))
+    for t in [x for x in orden_dependencias(modelo) if x in ts]:
+        der.append(entidad_mermaid(t, modelo))
     der += ["```", ""]
 
 der += ["### Relaciones entre contextos", "",
@@ -1731,11 +2291,11 @@ der += ["### Relaciones entre contextos", "",
         "`distributor` se omite acá también por lo mismo que en el conceptual: "
         "prácticamente todo pertenece a una distribuidora.", "",
         "```mermaid", "erDiagram"]
-for t in orden_dependencias(actual):
-    for f in actual[t]["fks"]:
+for t in orden_dependencias(completo):
+    for f in completo[t]["fks"]:
         if (t, f["col"]) in _vistas_globales: continue
         if f["destino"] == "distributor": continue
-        der.append(relacion_mermaid(f, t))
+        der.append(relacion_mermaid(f, t, completo))
 der += ["```", ""]
 open(SAL + "SPLG-der-mermaid.md", "w", encoding="utf-8").write("\n".join(der))
 print(f"  ✓ SPLG-der-mermaid.md  ({len(CONTEXTOS)} láminas por contexto + 1 de cruces)")

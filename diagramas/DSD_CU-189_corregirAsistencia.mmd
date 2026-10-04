@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-189 Registrar la Asistencia de un Empleado · corregirAsistencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :AttendanceService
+    participant COJ as :Map#lt;String, JornadaDeTrabajo#gt;
+    participant JOR as jornada:JornadaDeTrabajo
+
+    ADM->>+SRV: corregirAsistencia(asistenciaId, datos, nota)
+    SRV->>+COJ: get(asistenciaId)
+    COJ-->>-SRV: jornada
+    SRV->>+JOR: corregir(datos, nota)
+    JOR->>JOR: assertNotaObligatoria(nota)
+    deactivate JOR
+    SRV-->>-ADM: jornada

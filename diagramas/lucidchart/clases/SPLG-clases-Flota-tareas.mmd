@@ -9,6 +9,7 @@ classDiagram
         + assertVehiculoHabilitado(vehiculo: Vehiculo)
         + cerrarTareaDeFlota(tareaId: Identificador, fecha: Fecha, kilometraje: Entero, costo: Moneda, observacion: Cadena): TareaMantenimiento
         + crearTareaDeFlota(planId: Identificador, recursoId: Identificador, vencimiento: Fecha, detalle: Registro): TareaMantenimiento
+        + crearTareaDelEmpleado(empleadoId: Identificador, planId: Identificador, vencimiento: Fecha, detalle: Registro): TareaMantenimiento
         + motivosDeInhabilitacionDeVehiculo(vehiculo: Vehiculo): Cadena[*]
     }
 
@@ -24,6 +25,7 @@ classDiagram
     class FleetExpirationsService {
         <<fachada>>
         + consultarVencimientosDeLaFlota(dias: Entero)
+        + consultarVencimientosDelPersonal(dias: Entero, categoria: Cadena)
     }
 
     class FleetAlertsCron {
@@ -32,9 +34,10 @@ classDiagram
     }
 
     class FleetDispatchLockService {
-        <<fabricación pura>>
+        <<fachada>>
         + assertChoferHabilitado(chofer: Chofer)
         + vehiculoEnUsoDelChofer(chofer: Chofer): Vehiculo
+        + verificarHabilitacionLaboral(chofer: Chofer): Booleano
     }
 
     class Map_String_PlanMantenimiento["Map<String, PlanMantenimiento>"] {
@@ -49,6 +52,8 @@ classDiagram
 
     class List_TareaMantenimiento["List<TareaMantenimiento>"] {
         <<colección>>
+        + getAbiertasDeEmpleadosHasta(dias: Entero, categoria: CategoriaDeCaja): TareaMantenimiento[*]
+        + getAbiertasDeEmpleadosPorEstado()
         + getAbiertasHasta(dias: Entero): TareaMantenimiento[*]
         + getSinAvisar(): TareaMantenimiento[*]
     }
@@ -64,12 +69,16 @@ classDiagram
     class Map_String_Chofer["Map<String, Chofer>"] {
         <<colección>>
     }
+    class Map_String_Empleado["Map<String, Empleado>"] {
+        <<colección>>
+    }
     class Map_String_Vehiculo["Map<String, Vehiculo>"] {
         <<colección>>
     }
-    class Distribuidora
-    class Vehiculo
     class Chofer
+    class Empleado
+    class Vehiculo
+    class Distribuidora
 
     Map_String_TareaMantenimiento "1" o-- "0..*" TareaMantenimiento : elementos
     Map_String_PlanMantenimiento "1" o-- "0..*" PlanMantenimiento : elementos
@@ -80,14 +89,20 @@ classDiagram
     FleetAttachmentService --> "1" StoragePort : storagePort
     FleetExpirationsService --> "1" List_TareaMantenimiento : list<TareaMantenimiento>
     FleetTaskService --> "1" Map_String_Chofer : map<String, Chofer>
+    FleetTaskService --> "1" Map_String_Empleado : map<String, Empleado>
     FleetTaskService --> "1" Map_String_PlanMantenimiento : map<String, PlanMantenimiento>
     FleetTaskService --> "1" Map_String_TareaMantenimiento : map<String, TareaMantenimiento>
     FleetTaskService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
     FleetAlertsCron ..> Distribuidora
+    FleetAlertsCron ..> Empleado
     FleetAlertsCron ..> TareaMantenimiento
     FleetAttachmentService ..> TareaMantenimiento
+    FleetDispatchLockService ..> Chofer
+    FleetDispatchLockService ..> Empleado
     FleetExpirationsService ..> Chofer
+    FleetExpirationsService ..> Empleado
     FleetExpirationsService ..> TareaMantenimiento
     FleetExpirationsService ..> Vehiculo
+    FleetTaskService ..> Empleado
     FleetTaskService ..> PlanMantenimiento
     FleetTaskService ..> TareaMantenimiento

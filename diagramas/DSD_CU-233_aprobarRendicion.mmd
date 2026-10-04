@@ -1,0 +1,31 @@
+sequenceDiagram
+    title DSD — CU-233 Aprobar la Rendición del Chofer · aprobarRendicion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DriverSettlementService
+    participant RENS as :Map#lt;String, RendicionChofer#gt;
+    participant CAJS as :Map#lt;String, Caja#gt;
+    participant REN as rendicion:RendicionChofer
+    participant CHF as chofer:Chofer
+    participant EMP as empleado:Empleado
+
+    ADM->>+SRV: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
+    SRV->>+RENS: get(rendicionId)
+    RENS-->>-SRV: rendicion
+    SRV->>+CAJS: get(cajaDestinoId)
+    CAJS-->>-SRV: caja
+    SRV->>+REN: aprobar(caja, resolucionDeDiferencia)
+    REN->>REN: validarPresentada()
+    Note over SRV,REN: Ingreso: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema rendición de chofer
+    alt La diferencia es un faltante a cargo del chofer
+        REN->>+CHF: getEmpleado()
+        CHF-->>-REN: empleado
+        REN->>+EMP: registrarFaltante(rendicion, importe)
+        create participant NAC as nuevo:AsientoComision
+        EMP->>NAC: «create»(tipoDeAsientoDeComision, importe, rendicion)
+        deactivate EMP
+    else La diferencia la absorbe la distribuidora
+        REN->>REN: absorberDiferencia()
+    end
+    deactivate REN
+    SRV-->>-ADM: rendicion

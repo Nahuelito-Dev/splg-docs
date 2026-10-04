@@ -1,0 +1,132 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class SupplierService <<fachada>> {
+  + actualizarProveedor(proveedorId: Identificador,\n      datos: Registro): Proveedor
+  + consultarProveedores(termino: Cadena): Proveedor[*]
+  + darDeBajaProveedor(proveedorId: Identificador)
+  + registrarProveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero): Proveedor
+}
+class "Map<String, Proveedor>" as Map_String_Proveedor <<colección>> {
+  + get(clave: Cadena): Proveedor
+}
+class PurchaseOrderService <<fachada>> {
+  + cancelarOrdenDeCompra(ordenId: Identificador,\n      motivo: Cadena): OrdenDeCompra
+  + consultarOrdenesDeCompra(estado: Cadena,\n      proveedorId: Identificador, desde: FechaHora,\n      hasta: FechaHora): OrdenDeCompra[*]
+  + emitirOrdenDeCompra(proveedorId: Identificador,\n      depositoId: Identificador, items: Lista,\n      fechaEsperada: Fecha): OrdenDeCompra
+  + enviarOrdenDeCompra(ordenId: Identificador): OrdenDeCompra
+}
+class "List<OrdenDeCompra>" as List_OrdenDeCompra <<colección>> {
+  + buscar(estado: Cadena, proveedorId: Identificador,\n      desde: FechaHora,\n      hasta: FechaHora): OrdenDeCompra[*]
+}
+class "Map<String, OrdenDeCompra>" as Map_String_OrdenDeCompra <<colección>> {
+  + get(clave: Cadena): OrdenDeCompra
+}
+class PurchaseReceiptService <<fachada>> {
+  + anularRecepcionDeCompra(recepcionId: Identificador,\n      motivo: Cadena): Booleano
+  + consultarRecepcionesDeCompra(proveedorId: Identificador,\n      desde: FechaHora, hasta: FechaHora,\n      estadoDePago: Cadena): RecepcionDeCompra[*]
+  + registrarRecepcionDeCompra(ordenId: Identificador,\n      proveedorId: Identificador,\n      depositoId: Identificador,\n      tipoDeComprobante: Cadena,\n      numeroDeComprobante: Cadena,\n      items: Lista): RecepcionDeCompra
+}
+class "Map<String, RecepcionDeCompra>" as Map_String_RecepcionDeCompra <<colección>> {
+  + get(clave: Cadena): RecepcionDeCompra
+}
+class "List<RecepcionDeCompra>" as List_RecepcionDeCompra <<colección>> {
+  + buscar(proveedorId: Identificador, desde: FechaHora,\n      hasta: FechaHora,\n      estadoDePago: Cadena): RecepcionDeCompra[*]
+}
+class Proveedor <<referencia>>
+class OrdenDeCompra <<referencia>>
+class RecepcionDeCompra <<referencia>>
+class "Map<String, Deposito>" as Map_String_Deposito <<referencia>>
+class StockLedgerService <<referencia>>
+class Distribuidora <<referencia>>
+class Deposito <<referencia>>
+class Producto <<referencia>>
+class ItemRecepcion <<referencia>>
+
+Map_String_Proveedor "1" o--> "0..*" Proveedor
+List_OrdenDeCompra "1" o--> "0..*" OrdenDeCompra
+Map_String_OrdenDeCompra "1" o--> "0..*" OrdenDeCompra
+Map_String_RecepcionDeCompra "1" o--> "0..*" RecepcionDeCompra
+List_RecepcionDeCompra "1" o--> "0..*" RecepcionDeCompra
+PurchaseOrderService --> "1" List_OrdenDeCompra
+PurchaseOrderService --> "1" Map_String_OrdenDeCompra
+PurchaseReceiptService --> "1" List_RecepcionDeCompra
+PurchaseReceiptService --> "1" Map_String_Deposito
+PurchaseReceiptService --> "1" Map_String_RecepcionDeCompra
+PurchaseReceiptService --> "1" StockLedgerService
+SupplierService --> "1" Map_String_Proveedor
+List_OrdenDeCompra ..> OrdenDeCompra
+List_RecepcionDeCompra ..> RecepcionDeCompra
+PurchaseOrderService ..> Distribuidora
+PurchaseOrderService ..> OrdenDeCompra
+PurchaseOrderService ..> Proveedor
+PurchaseReceiptService ..> Deposito
+PurchaseReceiptService ..> ItemRecepcion
+PurchaseReceiptService ..> Producto
+PurchaseReceiptService ..> RecepcionDeCompra
+SupplierService ..> Distribuidora
+SupplierService ..> Proveedor
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

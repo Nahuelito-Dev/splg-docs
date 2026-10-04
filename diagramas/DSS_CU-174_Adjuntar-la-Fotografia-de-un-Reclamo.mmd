@@ -10,6 +10,8 @@ sequenceDiagram
         SIS-->>CLI: reclamo con su fotografía
     else el reclamo no existe o no es del solicitante
         SIS-->>CLI: recurso no encontrado
+    else el reclamo está resuelto o rechazado
+        SIS-->>CLI: conflicto, hay que reabrirlo
     else el tipo de archivo no está permitido
         SIS-->>CLI: tipo de archivo no soportado
     else el archivo supera el tamaño máximo

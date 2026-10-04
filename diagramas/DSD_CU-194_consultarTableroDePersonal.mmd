@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-194 Consultar el Tablero de Personal · consultarTableroDePersonal
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PersonnelDashboardService
+    participant LEM as :List#lt;Empleado#gt;
+    participant LJO as :List#lt;JornadaDeTrabajo#gt;
+    participant LLI as :List#lt;LicenciaLaboral#gt;
+    participant LTA as :List#lt;TareaMantenimiento#gt;
+
+    ADM->>+SRV: consultarTableroDePersonal()
+    SRV->>LEM: getActivosPorPuesto()
+    SRV->>LJO: getAbiertasDeHoy()
+    SRV->>LLI: getAprobadasQueCubren(hoy)
+    SRV->>LTA: getAbiertasDeEmpleadosPorEstado()
+    SRV-->>-ADM: activos por puesto, presentes, de licencia y documentos por estado

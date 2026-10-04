@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-235 Habilitar la Cuenta Corriente de un Cliente · habilitarCuentaCorriente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomerAccountService
+    participant CLIS as :Map#lt;String, Cliente#gt;
+    participant CLI as cliente:Cliente
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
+    SRV->>+CLIS: get(clienteId)
+    CLIS-->>-SRV: cliente
+    SRV->>+CLI: validarSinCuentaCorriente(distribuidoraId)
+    deactivate CLI
+    SRV->>+DIS: habilitarCuentaCorriente(cliente, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
+    create participant NCU as nueva:CuentaCorriente
+    DIS->>NCU: «create»(cliente, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
+    DIS-->>-SRV: cuentaCorriente
+    SRV-->>-ADM: cuentaCorriente

@@ -1,0 +1,126 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class ReglaComision {
+  - base: BaseDeComision
+  - valor: Decimal
+  - vigenteDesde: Fecha
+  - vigenteHasta: Fecha
+  - activa: Booleano
+  + «create» ReglaComision(empleado: Empleado,\n      producto: Producto, base: BaseDeComision,\n      valor: Decimal, vigenteDesde: Fecha)
+  + calcularImporte(pedido: Pedido): Moneda
+  + modificar(datos: Registro)
+  + validarSinSolapamiento(datos: Registro)
+}
+class AsientoComision {
+  - tipo: TipoDeAsientoDeComision
+  - importe: Moneda
+  - fecha: FechaHora
+  - descripcion: Cadena
+  + «create» AsientoComision(tipoDeAsientoDeComision: TipoDeAsientoDeComision,\n      importe: Moneda, rendicion: RendicionChofer)
+  + «create» AsientoComision(pedido: Pedido,\n      regla: ReglaComision, importe: Moneda)
+  + «create» AsientoComision(tipoDeAsientoDeComision: TipoDeAsientoDeComision,\n      saldoDeudor: Moneda,\n      liquidacion: LiquidacionComisiones)
+  + asignarALiquidacion(liquidacion: LiquidacionComisiones)
+  + liberar()
+}
+class LiquidacionComisiones {
+  - numero: Entero
+  - periodoDesde: Fecha
+  - periodoHasta: Fecha
+  - bruto: Moneda
+  - deducciones: Moneda
+  - neto: Moneda
+  - estado: EstadoDeLaLiquidacion
+  - aprobadaEl: FechaHora
+  - pagadaEl: FechaHora
+  + «create» LiquidacionComisiones(fechaDesde: Fecha,\n      fechaHasta: Fecha)
+  + anular()
+  + aprobar(administrador: Administrador)
+  + calcularTotales()
+  + cerrarSinPago()
+  + incluir(asientoDeComision: AsientoComision)
+  + marcarAprobada()
+  + pagar(caja: Caja)
+  + validarAprobada()
+  + validarBorrador()
+  + validarNoPagada()
+}
+class Empleado <<referencia>>
+class Chofer <<referencia>>
+class Producto <<referencia>>
+class Pedido <<referencia>>
+class MovimientoDeCaja <<referencia>>
+class Distribuidora <<referencia>>
+class RendicionChofer <<referencia>>
+
+Distribuidora "1" *--> "0..*" ReglaComision : define
+ReglaComision "0..*" <-- "0..1" Empleado : se aplica a
+ReglaComision "0..*" -- "0..1" Producto : se aplica a
+Empleado "1" *--> "0..*" AsientoComision : devenga
+Empleado "1" *-- "0..*" LiquidacionComisiones : percibe
+AsientoComision "0..*" -- "0..1" Pedido : corresponde a
+ReglaComision "0..1" -- "0..*" AsientoComision : determina
+LiquidacionComisiones "0..1" --> "0..*" AsientoComision : incluye
+RendicionChofer "0..1" -- "0..*" AsientoComision : origina
+LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja : se paga con
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

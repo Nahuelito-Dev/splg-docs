@@ -1,0 +1,188 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class WarehouseService <<fachada>> {
+  + actualizarDeposito(depositoId: Identificador,\n      datos: Registro): Deposito
+  + consultarDepositos(): Deposito[*]
+  + darDeBajaDeposito(depositoId: Identificador)
+  + registrarDeposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena): Deposito
+}
+class "Map<String, Deposito>" as Map_String_Deposito <<colección>> {
+  + get(clave: Cadena): Deposito
+}
+class StockService <<fachada>> {
+  + configurarStockMinimo(depositoId: Identificador,\n      minimos: Lista): UmbralDeStock[*]
+  + consultarMovimientosDeStock(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out total: Entero): MovimientoDeStock[*]
+  + consultarResumenDeStock(): Registro
+  + consultarStockPorUbicacion(ubicacionId: Identificador,\n      productoId: Identificador): SaldoDeStock[*]
+  + transferirStock(origenId: Identificador,\n      destinoId: Identificador,\n      productoId: Identificador, condicion: Cadena,\n      cantidad: Entero): Booleano
+}
+class "List<UbicacionDeStock>" as List_UbicacionDeStock <<colección>> {
+  + getCantidadPorCondicion(producto: Producto)
+  + getLlenas(producto: Producto)
+}
+class "List<UmbralDeStock>" as List_UmbralDeStock <<colección>> {
+  + getConMinimo(): UmbralDeStock[*]
+  + getMinimoDeLlenas(producto: Producto)
+}
+class "Map<String, UbicacionDeStock>" as Map_String_UbicacionDeStock <<colección>> {
+  + get(clave: Cadena): UbicacionDeStock
+}
+class "List<MovimientoDeStock>" as List_MovimientoDeStock <<colección>> {
+  + buscar(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out total: Entero): MovimientoDeStock[*]
+}
+class StockLowCron <<fachada>> {
+  + avisarStockBajo()
+}
+class StockLedgerService <<fachada>> {
+  + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento): Booleano
+  + existeMovimiento(pedido: Pedido): Booleano
+}
+class StockAdjustmentService <<fachada>> {
+  + consultarAjustesDeStock(desde: FechaHora,\n      hasta: FechaHora, motivo: Cadena): Registro
+  + registrarAjusteDeStock(ubicacionId: Identificador,\n      motivo: Cadena, nota: Cadena,\n      items: Lista): AjusteDeStock
+}
+class "List<AjusteDeStock>" as List_AjusteDeStock <<colección>> {
+  + buscar(desde: FechaHora, hasta: FechaHora,\n      motivo: Cadena): Registro
+}
+class StockDeliveryListener <<fachada>> {
+  + descontarStockDeLaEntrega(pedidoId: Identificador): Booleano
+}
+class StockReconciliationCron <<fachada>> {
+  + conciliarStock()
+}
+class StockReconciliationService <<fachada>> {
+  + consultarConciliacionDeStock(): Registro
+}
+class Deposito <<referencia>>
+class UbicacionDeStock <<referencia>>
+class UmbralDeStock <<referencia>>
+class MovimientoDeStock <<referencia>>
+class AjusteDeStock <<referencia>>
+class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
+class EmailSenderPort <<referencia>>
+class "List<Pedido>" as List_Pedido <<referencia>>
+class "List<Producto>" as List_Producto <<referencia>>
+class "Map<String, Producto>" as Map_String_Producto <<referencia>>
+class Producto <<referencia>>
+class Distribuidora <<referencia>>
+class ItemPedido <<referencia>>
+class ItemAjusteDeStock <<referencia>>
+class Vehiculo <<referencia>>
+class Pedido <<referencia>>
+
+Map_String_Deposito "1" o--> "0..*" Deposito
+List_UbicacionDeStock "1" o--> "0..*" UbicacionDeStock
+List_UmbralDeStock "1" o--> "0..*" UmbralDeStock
+Map_String_UbicacionDeStock "1" o--> "0..*" UbicacionDeStock
+List_MovimientoDeStock "1" o--> "0..*" MovimientoDeStock
+List_AjusteDeStock "1" o--> "0..*" AjusteDeStock
+StockAdjustmentService --> "1" List_AjusteDeStock
+StockAdjustmentService --> "1" Map_String_UbicacionDeStock
+StockAdjustmentService --> "1" StockLedgerService
+StockDeliveryListener --> "1" Map_String_Pedido
+StockDeliveryListener --> "1" StockLedgerService
+StockLowCron --> "1" EmailSenderPort
+StockLowCron --> "1" List_UmbralDeStock
+StockReconciliationCron --> "1" EmailSenderPort
+StockReconciliationCron --> "1" List_Pedido
+StockReconciliationCron --> "1" List_Producto
+StockReconciliationCron --> "1" List_UbicacionDeStock
+StockReconciliationService --> "1" List_Pedido
+StockReconciliationService --> "1" List_Producto
+StockReconciliationService --> "1" List_UbicacionDeStock
+StockService --> "1" List_MovimientoDeStock
+StockService --> "1" List_Producto
+StockService --> "1" List_UbicacionDeStock
+StockService --> "1" List_UmbralDeStock
+StockService --> "1" Map_String_Deposito
+StockService --> "1" Map_String_Producto
+StockService --> "1" Map_String_UbicacionDeStock
+StockService --> "1" StockLedgerService
+WarehouseService --> "1" Map_String_Deposito
+List_AjusteDeStock ..> AjusteDeStock
+List_MovimientoDeStock ..> MovimientoDeStock
+StockAdjustmentService ..> ItemAjusteDeStock
+StockAdjustmentService ..> Producto
+StockAdjustmentService ..> UbicacionDeStock
+StockDeliveryListener ..> Distribuidora
+StockDeliveryListener ..> ItemPedido
+StockDeliveryListener ..> Pedido
+StockDeliveryListener ..> Vehiculo
+StockLedgerService ..> MovimientoDeStock : <<create>>
+StockLedgerService ..> UbicacionDeStock
+StockLowCron ..> Deposito
+StockLowCron ..> Distribuidora
+StockLowCron ..> UmbralDeStock
+StockReconciliationCron ..> Distribuidora
+StockReconciliationCron ..> Producto
+StockReconciliationService ..> Producto
+StockService ..> Deposito
+StockService ..> Producto
+StockService ..> UbicacionDeStock
+WarehouseService ..> Deposito
+WarehouseService ..> Distribuidora
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

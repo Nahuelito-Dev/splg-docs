@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-229 Anular un Movimiento de Caja · anularMovimientoDeCaja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashLedgerService
+    participant MOVS as :Map#lt;String, MovimientoDeCaja#gt;
+    participant MOV as movimiento:MovimientoDeCaja
+    participant CAJ as caja:Caja
+
+    ADM->>+SRV: anularMovimientoDeCaja(movimientoId, motivo)
+    SRV->>+MOVS: get(movimientoId)
+    MOVS-->>-SRV: movimiento
+    SRV->>MOV: validarAnulable()
+    SRV->>+MOV: getCaja()
+    MOV-->>-SRV: caja
+    SRV->>+CAJ: contraasentar(movimiento, motivo)
+    create participant NMO as contraasiento:MovimientoDeCaja
+    CAJ->>NMO: «create»(movimiento, motivo)
+    CAJ->>CAJ: actualizarSaldo(sentido, importe)
+    CAJ-->>-SRV: contraasiento
+    SRV-->>-ADM: contraasiento

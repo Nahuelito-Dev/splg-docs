@@ -58,6 +58,9 @@ classDiagram
         + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Booleano
         + contarPorEstado(distribuidoraId: Identificador, out aceptados: Chofer[*], out enCamino: Booleano): Pedido[*]
         + entregadosEntre(fechaDesde: Fecha, fechaHasta: Fecha): Pedido[*]
+        + getEnEfectivoSinRendir(chofer: Chofer, hoy: Fecha): Pedido[*]
+        + getEntregadosSinMovimiento(): Pedido[*]
+        + getReservado(producto: Producto)
         + getUltimoEntregado(cliente: Cliente, distribuidoraId: Identificador): Fecha
         + totalEntregado(periodo: Cadena): Registro
         + totalEntregadoPorDia(distribuidoraId: Identificador, desde: FechaHora, hasta: FechaHora): Registro
@@ -68,7 +71,7 @@ classDiagram
         <<fachada>>
     }
     class FleetDispatchLockService {
-        <<fabricación pura>>
+        <<fachada>>
     }
     class List_Chofer["List<Chofer>"] {
         <<colección>>
@@ -83,15 +86,15 @@ classDiagram
         <<interface>>
     }
     class UbicacionGPS
+    class OfertaDespacho
+    class Producto
     class Envase
+    class Chofer
     class NotificationsService {
         <<fachada>>
     }
-    class Chofer
-    class Cliente
-    class OfertaDespacho
     class ZonaCobertura
-    class Producto
+    class Cliente
 
     Map_String_Pedido "1" o-- "0..*" Pedido : elementos
     List_Pedido "1" o-- "0..*" Pedido : elementos
@@ -107,6 +110,7 @@ classDiagram
     UpdateOrderStatusUseCase --> "1" FleetDispatchLockService : fleetDispatchLockService
     UpdateOrderStatusUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     UpdateOrderStatusUseCase --> "1" NotificationPort : notificationPort
+    Chofer ..> List_Pedido
     ConfirmDeliveryUseCase ..> NotificationPort
     ConfirmDeliveryUseCase ..> Pedido
     ConfirmDeliveryUseCase ..> RealtimeDispatchPort

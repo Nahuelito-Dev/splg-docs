@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-247 Reactivar un Vehículo · reactivarVehiculo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant FLT as :FleetTaskService
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: reactivarVehiculo(vehiculoId)
+    SRV->>+COV: get(vehiculoId)
+    COV-->>-SRV: vehiculo
+    SRV->>FLT: assertVehiculoHabilitado(vehiculo)
+    SRV->>+VEH: reactivar()
+    VEH->>VEH: assertFueraDeServicio()
+    deactivate VEH
+    SRV-->>-ADM: vehiculo

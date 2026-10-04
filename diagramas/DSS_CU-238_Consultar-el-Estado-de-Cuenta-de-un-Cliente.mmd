@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-238 Consultar el Estado de Cuenta de un Cliente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: asientos del período con su saldo corrido y el saldo inicial
+    else la cuenta no existe o es de otra distribuidora
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

@@ -76,7 +76,7 @@ En Google Docs: *Insertar → Imagen → Subir desde la computadora*, y borrás 
 | Documento | Marcadores | Además |
 |---|:--:|---|
 | 0 — Plan del Proyecto | 2 | — |
-| 1 — Requisitos | 3 | La sección 4.3 lista los **18 diagramas por subsistema** en una tabla, con el nombre de cada archivo |
+| 1 — Requisitos | 3 | La sección 4.3 lista los **19 diagramas por subsistema** en una tabla, con el nombre de cada archivo |
 | 2 — Análisis | 110 | Los diagramas de secuencia del sistema |
 | 3 — Diseño | 110 | Los diagramas de interacción de diseño |
 

@@ -1,0 +1,79 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class CargaDeCamion {
+  número
+  día
+  estado
+  abierta el
+  salió el
+  regresó el
+  cerrada el
+  nota de diferencia
+}
+class ItemCarga {
+  llenas cargadas
+  llenas repuestas
+  vacías cargadas
+  llenas declaradas al regreso
+  vacías declaradas al regreso
+  llenas entregadas
+  vacías recolectadas
+  /llenas esperadas
+  /vacías esperadas
+  diferencia de llenas
+  diferencia de vacías
+}
+class Vehiculo <<referencia>>
+class Chofer <<referencia>>
+class UbicacionDeStock <<referencia>>
+class Producto <<referencia>>
+class Usuario <<referencia>>
+
+
+Vehiculo "1" -- "0..*" CargaDeCamion : transporta >
+Chofer "1" -- "0..*" CargaDeCamion : reparte con >
+CargaDeCamion "0..*" -- "1" UbicacionDeStock : parte de >
+CargaDeCamion "1" *-- "1..*" ItemCarga : contiene >
+ItemCarga "0..*" -- "1" Producto : corresponde a >
+Usuario "1" -- "0..*" CargaDeCamion : abre >
+Usuario "0..1" -- "0..*" CargaDeCamion : cierra >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

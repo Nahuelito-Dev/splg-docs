@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-236 Vender a Cuenta Corriente · venderACuentaCorriente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant UCS as :CreateOrderUseCase
+    participant CLI as cliente:Cliente
+    participant PED as pedido:Pedido
+    participant CUE as cuentaCorriente:CuentaCorriente
+
+    ADM->>+UCS: venderACuentaCorriente(clienteId, direccionId, items)
+    Note over UCS,PED: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con el método de pago cuenta corriente
+    UCS->>+CLI: getCuentaCorriente(distribuidoraId)
+    CLI-->>-UCS: cuentaCorriente
+    UCS->>+PED: getTotal()
+    PED-->>-UCS: total
+    UCS->>+CUE: verificarCredito(total)
+    CUE->>CUE: validarActiva()
+    CUE->>CUE: calcularDisponible()
+    deactivate CUE
+    UCS-->>-ADM: pedido

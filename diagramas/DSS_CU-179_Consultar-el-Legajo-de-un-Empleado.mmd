@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-179 Consultar el Legajo de un Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarEmpleado(empleadoId)
+    activate SIS
+    alt el empleado existe en la distribuidora
+        SIS-->>ADM: legajo completo, con su cuenta de acceso y su ficha de chofer si las tiene
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

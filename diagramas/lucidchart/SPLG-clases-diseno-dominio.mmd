@@ -10,10 +10,19 @@ classDiagram
         - cuit: Cadena
         - estado: EstadoDeDistribuidora
         + «create» Distribuidora(nombre: Cadena, identificadorCorto: Cadena, razonSocial: Cadena, cuit: Cadena, correo: Cadena, telefono: Cadena, logo: Archivo, plan: Cadena)
+        + assertDocumentoYCuilDisponibles(datos: Registro, empleado: Empleado)
+        + assertNombreDePuestoDisponible(nombre: Cadena, puesto: PuestoDeTrabajo)
+        + crearCaja(nombre: Cadena, tipoDeCaja: TipoDeCaja, requiereSesion: Booleano): Caja
+        + crearCategoriaDeCaja(nombre: Cadena, sentido: SentidoDeCaja): CategoriaDeCaja
+        + crearConfiguracion(controlDeStock: ProcesoConfigurable, exigirCargaDeCamionAbierta: Booleano): ConfiguracionModulo
         + crearConfiguracion(despacho: ProcesoConfigurable, radiosKm: Decimal, ventanaDeAceptacion: Entero): ConfiguracionModulo
         + crearConfiguracion(proceso: ProcesoConfigurable, parametros: Registro, administrador: Administrador): ConfiguracionModulo
         + crearConfiguracion(tareasProgramadas: ProcesoConfigurable, intervalos: Registro, administrador: Administrador): ConfiguracionModulo
+        + crearDeposito(nombre: Cadena, codigo: Cadena, tipo: Cadena, direccion: Cadena): Deposito
         + crearFranja(nombre: Cadena, horaInicio: Hora, horaFin: Hora, capacidad: Entero): FranjaHoraria
+        + crearProveedor(razonSocial: Cadena, cuit: Cadena, tipo: Cadena, datosDeContacto: Registro, plazoDePago: Entero): Proveedor
+        + crearPuesto(nombre: Cadena, categoria: CategoriaDeCaja): PuestoDeTrabajo
+        + crearReglaDeComision(empleado: Empleado, producto: Producto, base: BaseDeComision, valor: Decimal, vigenteDesde: Fecha): ReglaComision
         + darDeBaja()
         + definirZona(nombre: Cadena, poligono: Poligono, recargo: Moneda, activa: Booleano): ZonaCobertura
         + getAdministradores(): Administrador[*]
@@ -22,14 +31,29 @@ classDiagram
         + getConfiguracion(despacho: ProcesoConfigurable): ConfiguracionModulo
         + getConfiguracion(proceso: ProcesoConfigurable): ConfiguracionModulo
         + getConfiguracion(tareasProgramadas: ProcesoConfigurable): ConfiguracionModulo
+        + getConfiguracion(controlDeStock: ProcesoConfigurable): ConfiguracionModulo
+        + getDeposito(depositoId: Identificador): Deposito
+        + getDepositoPredeterminado(): UbicacionDeStock
+        + getDepositos(): Deposito[*]
         + getFranjasActivas(): FranjaHoraria[*]
         + getProductosActivos(pagina: Entero, limite: Entero, out total: Entero): Producto[*]
         + getProductosDisponibles(): Producto[*]
+        + getProveedor(proveedorId: Identificador): Proveedor
+        + getProveedores(): Proveedor[*]
+        + getPuestos(): PuestoDeTrabajo[*]
         + getZonaQueCubre(latitud: Decimal, longitud: Decimal): ZonaCobertura
         + getZonas(): ZonaCobertura[*]
+        + habilitarCuentaCorriente(cliente: Cliente, razonSocial: Cadena, cuit: Cadena, condicionFiscal: CondicionFiscal, limiteDeCredito: Moneda, plazoEnDias: Entero): CuentaCorriente
         + incorporarEnvase(numeroDeSerie: Cadena, tipoDeProducto: Cadena, deposito: Moneda): Envase
         + modificar(datos: Registro)
+        + registrarEmpleado(datos: Registro, puesto: PuestoDeTrabajo): Empleado
+        + registrarNeumatico(datos: Registro): Neumatico
         + tieneProducto(tipo: Cadena): Booleano
+        + validarCategoriaNueva(nombre: Cadena, sentido: SentidoDeCaja)
+        + validarCodigoSinUsar(codigo: Cadena)
+        + validarCuitSinUsar(cuit: Cadena)
+        + validarNombreDisponible(nombre: Cadena)
+        + validarSinSolapamiento(empleado: Empleado, producto: Producto, vigenteDesde: Fecha)
     }
 
     class Usuario {
@@ -43,6 +67,7 @@ classDiagram
         + «create» Usuario(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, rol: Rol, cuenta: Registro)
         + «create» Usuario(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, rolAdministradorGeneral: TipoDeRol, cuenta: Registro)
         + actualizarPerfil(datos: Registro)
+        + bloquear()
         + calcularPromedio()
         + calificar(pedido: Pedido, calificado: Usuario, estrellas: Entero, comentario: Cadena): Calificacion
         + cambiarBloqueo(bloquear: Booleano)
@@ -51,6 +76,8 @@ classDiagram
         + estaHabilitado(): Booleano
         + getCalificacionesRecibidas(): Calificacion[*]
         + getChofer(): Chofer
+        + getEmpleado(): Empleado
+        + getPerfilDeChofer(): Chofer
         + getResumenDeCalificaciones(out cantidad: Entero): Decimal
         + getRol(): Rol
     }
@@ -70,12 +97,16 @@ classDiagram
     class ConfiguracionModulo {
         - modulo: ProcesoConfigurable
         - parametros: Registro
+        - exigirCargaDeCamionAbierta: Booleano
+        + «create» ConfiguracionModulo(controlDeStock: ProcesoConfigurable, exigirCargaDeCamionAbierta: Booleano)
         + «create» ConfiguracionModulo(despacho: ProcesoConfigurable, radiosKm: Decimal, ventanaDeAceptacion: Entero)
         + «create» ConfiguracionModulo(proceso: ProcesoConfigurable, parametros: Registro, administrador: Administrador)
         + «create» ConfiguracionModulo(tareasProgramadas: ProcesoConfigurable, intervalos: Registro, administrador: Administrador)
         + actualizar(parametros: Registro, administrador: Administrador)
         + actualizar(intervalos: Registro, administrador: Administrador)
+        + actualizar(exigirCargaDeCamionAbierta: Booleano, administrador: Administrador)
         + actualizar(radiosKm: Decimal, ventanaDeAceptacion: Entero, administrador: Administrador)
+        + getExigirCargaDeCamionAbierta(): Booleano
     }
 
     class AsientoAuditoria {
@@ -104,6 +135,7 @@ classDiagram
         + desmarcarPredeterminadas()
         + editarDatos(cambios: Registro)
         + getCarrito(distribuidoraId: Identificador): Carrito
+        + getCuentaCorriente(distribuidoraId: Identificador): CuentaCorriente
         + getDireccion(direccionId: Identificador): DireccionEntrega
         + getDirecciones(): DireccionEntrega[*]
         + getDireccionPredeterminada(): DireccionEntrega
@@ -117,6 +149,7 @@ classDiagram
         + unirseASala()
         + validarRango(cantidadPorMes: Decimal)
         + validarRango(dias: Entero)
+        + validarSinCuentaCorriente(distribuidoraId: Identificador)
     }
 
     class DireccionEntrega {
@@ -136,7 +169,7 @@ classDiagram
     class InvitacionRecompra {
         - agotamientoEstimado: FechaHora
         + «create» InvitacionRecompra(cliente: Cliente, fechaEstimada: Fecha, vigencia: FechaHora)
-        + aceptar(): ItemPedido[*]
+        + aceptar(): Registro
         + validarVigencia()
     }
 
@@ -151,18 +184,26 @@ classDiagram
         - precio: Moneda
         - stock: Entero
         - activo: Booleano
+        - costoPromedio: Moneda
         + «create» Producto(distribuidora: Distribuidora, tipo: Cadena, peso: Decimal, precio: Moneda, stockInicial: Entero, descripcion: Cadena)
         + actualizarPrecio(precio: Moneda)
         + agregarPromocion(cantidad: Entero, descuento: Decimal)
         + ajustarStock(variacion: Entero)
+        + ajustarStock(diferencia: Moneda): Booleano
+        + calcularDiferencia(llenasFisicas: Entero, reservado: Entero)
         + desactivar()
         + estaDisponibleEn(distribuidoraId: Identificador): Booleano
         + getPrecio(): Moneda
+        + getStock(): Entero
         + precioPara(cantidad: Entero): Moneda
         + reactivar()
+        + recalcularCostoPromedio(llenasRecibidas: Entero, costoUnitario: Moneda)
         + reemplazarPromociones(promociones: Promocion[*])
         + reservar(cantidad: Entero)
+        + restarStock(llenasRecibidas: Entero)
+        + restarStock(faltante: Entero): Booleano
         + restituir(cantidad: Entero)
+        + sumarStock(llenasRecibidas: Entero)
         + validarSinRepetir(promociones: Promocion[*])
         + validarStockResultante(variacion: Entero)
     }
@@ -187,7 +228,7 @@ classDiagram
         + entregarAlCliente(pedido: Pedido)
         + estaVigente(hoy: Fecha): Booleano
         + fueDevuelto(): Booleano
-        + getMovimientos(): MovimientoEnvase[*]
+        + getMovimientos(): MovimientoDeCaja[*]
         + getResumen()
         + getVigencia(out dias: Entero): Fecha
         + marcarParaRetiro(pedido: Pedido)
@@ -294,12 +335,13 @@ classDiagram
         + generarCodigoDeEntrega()
         + getCambiosDeEstado(): CambioEstadoPedido[*]
         + getChofer(): Chofer
-        + getChoferesContactados(): Chofer[*]
         + getCliente(): Cliente
         + getCodigoDeEntrega(): Cadena
+        + getEstadoDeLasOfertas(ahora: FechaHora, enfriamiento: Entero): Cadena
         + getFechaDeEntrega()
         + getImporteACobrar(esSenia: Booleano): Moneda
         + getIncidencias(): Incidencia[*]
+        + getItems()
         + getMetodoDePago(): MetodoDePago
         + getOfertaVigente(chofer: Chofer): OfertaDespacho
         + getPago(identificadorDelPago: Identificador): Pago
@@ -307,6 +349,7 @@ classDiagram
         + getPuntoDeEntrega(): Coordenada
         + getReceptorDeCalificacion(usuario: Usuario): Usuario
         + getTotal(): Moneda
+        + getVehiculo(): Vehiculo
         + incluirRetiro(envase: Envase)
         + indicarQuienRecibe(nombre: Cadena, documento: Cadena, relacion: Cadena)
         + liberar()
@@ -440,6 +483,7 @@ classDiagram
         - validado: Booleano
         - /calificacion: Decimal
         + «create» Chofer(usuario: Usuario, distribuidoraId: Identificador, datosDelChofer: Registro)
+        + abrirRendicion(hoy: Fecha): RendicionChofer
         + actualizarPerfil(datos: Registro)
         + actualizarUbicacion(latitud: Decimal, longitud: Decimal)
         + ajustarSaldo(monto: Moneda)
@@ -450,13 +494,17 @@ classDiagram
         + cambiarEstado(activo: Booleano)
         + darDeBaja()
         + desconectar()
+        + deshabilitar()
         + estaActivo()
         + estaInhabilitado(tareas: TareaMantenimiento[*])
         + getAsignacionAbierta(): AsignacionVehiculo
         + getCapacidadDeCarga(): Entero
+        + getDistribuidora(): Distribuidora
+        + getEmpleado(): Empleado
         + getHistorialDeVehiculos(pagina: Entero): AsignacionVehiculo[*]
         + getPedidoEnCurso(): Pedido
         + getPedidos(pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
+        + getRendicionAbierta(): RendicionChofer
         + getSaldo(): Moneda
         + getUbicacion(): UbicacionGPS
         + getUsuario(): Usuario
@@ -480,18 +528,36 @@ classDiagram
         - cargaMaxima: Decimal
         - kilometraje: Entero
         - estadoEnLaFlota: EstadoEnLaFlota
+        - tipoDeCombustible: TipoDeCombustible
+        - capacidadDelTanque: Decimal
         + «create» Vehiculo(tipo: Cadena, capacidad: Entero, patente: Cadena, marca: Cadena, modelo: Cadena, anio: Entero, color: Cadena)
+        + abrirCarga(chofer: Chofer, deposito: Moneda, ayudanteId: Identificador, items: Registro): CargaDeCamion
+        + actualizarKilometraje(kilometraje: Entero)
+        + assertFueraDeServicio()
+        + assertKilometrajeCreciente(kilometraje: Entero)
         + assertLibre()
+        + assertLitrosDentroDelTanque(litros: Decimal)
         + assertPatenteUnica(patente: Cadena)
         + darDeBaja()
         + editar(datos: Registro)
         + estaInhabilitado(tareas: TareaMantenimiento[*])
         + estimarKilometrajeDiario()
+        + getCargaAbierta(): CargaDeCamion
+        + getCargas(fechaDesde: Fecha, fechaHasta: Fecha): CargaDeCamion[*]
         + getChofer(): Chofer
         + getChoferEnUso(): Chofer
+        + getCostoTotal(fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + getHistorialDeChoferes(pagina: Entero): AsignacionVehiculo[*]
+        + getKilometrosRecorridos(fechaDesde: Fecha, fechaHasta: Fecha): Entero
+        + getUbicacionDeStock(): UbicacionDeStock
         + ponerFueraDeServicio()
         + proyectarVencimientos()
+        + reactivar()
+        + recalcularKilometraje()
+        + registrarCarga(datos: Registro): CargaCombustible
+        + registrarMulta(datos: Registro, empleado: Empleado): MultaTransito
+        + registrarSiniestro(datos: Registro): Siniestro
+        + validarSinCargaAbierta()
     }
 
     class AsignacionVehiculo {
@@ -499,7 +565,7 @@ classDiagram
         - liberadoEl: FechaHora
         - nota: Cadena
         + «create» AsignacionVehiculo(chofer: Chofer, vehiculo: Vehiculo, administrador: Administrador, nota: Cadena)
-        + cerrar()
+        + cerrar(ahora: FechaHora)
         + liberar(administrador: Administrador)
     }
 
@@ -509,24 +575,35 @@ classDiagram
         - intervalo: Entero
         - anticipacion: Entero
         - criticidad: Criticidad
+        - documentoQueControla: DocumentoControlado
+        - aplicaA: CategoriaDePuesto[*]
+        + assertAplicaA(empleado: Empleado)
         + assertSujetoCoherente(recurso: Cadena)
+        + assertSujetoEmpleado()
         + crearTarea(recurso: Cadena, vencimiento: Fecha, detalle: Registro): TareaMantenimiento
+        + crearTarea(empleado: Empleado, vencimiento: Fecha, detalle: Registro): TareaMantenimiento
     }
 
     class TareaMantenimiento {
         - estado: EstadoDeLaTarea
-        - vence: FechaHora
+        - vence: Fecha
         - vencimientoProyectado: FechaHora
         - prestador: Cadena
         - numero: Cadena
         - costo: Moneda
+        - vigenteDesde: Fecha
+        - detalle: Registro
         + «create» TareaMantenimiento(recurso: Cadena, vencimiento: Fecha, detalle: Registro)
+        + «create» TareaMantenimiento(empleado: Empleado, vencimiento: Fecha, detalle: Registro)
         + adjuntar(clave: Cadena, archivo: Archivo, usuario: Usuario): AdjuntoTarea
         + assertAbierta()
         + cerrar(fecha: Fecha, kilometraje: Entero, costo: Moneda, observacion: Cadena)
+        + estaVencida()
         + getAdjunto(adjuntoId: Identificador): AdjuntoTarea
         + getAdjuntos(): AdjuntoTarea[*]
+        + getCosto(): Moneda
         + getEstadoDeVencimiento()
+        + getPrimaProrrateada(fechaDesde: Fecha, fechaHasta: Fecha): Moneda
         + marcarAvisada(ahora: FechaHora)
         + programar(ventanaElegida: PropuestaVentanaTaller, gastoEstimado: Moneda)
         + proponerVentana(chofer: Chofer, ventana: PropuestaVentanaTaller): PropuestaVentanaTaller
@@ -566,12 +643,218 @@ classDiagram
         - pedidos: Entero
     }
 
+    class PuestoDeTrabajo {
+        - nombre: Cadena
+        - categoria: CategoriaDePuesto
+        - activo: Booleano
+        + «create» PuestoDeTrabajo(nombre: Cadena, categoria: CategoriaDeCaja)
+        + assertSinEmpleadosActivos()
+        + contarEmpleadosActivos()
+        + darDeBaja()
+        + getNombre(): Cadena
+        + getRolDeAcceso(): Rol
+        + modificar(datos: Registro)
+    }
+
+    class Empleado {
+        - legajo: Cadena
+        - nombre: Cadena
+        - apellido: Cadena
+        - documento: Cadena
+        - cuil: Cadena
+        - fechaDeNacimiento: Fecha
+        - domicilio: Cadena
+        - telefono: Cadena
+        - contactoDeEmergencia: Cadena
+        - fechaDeIngreso: Fecha
+        - fechaDeEgreso: Fecha
+        - motivoDeEgreso: MotivoDeEgreso
+        - modalidadDeContratacion: ModalidadDeContratacion
+        - estado: EstadoDelEmpleado
+        + «create» Empleado(datos: Registro, puesto: PuestoDeTrabajo)
+        + abrirJornada(origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
+        + adjuntar(clave: Cadena, archivo: Archivo, etiqueta: Cadena): Adjunto
+        + assertActivo()
+        + assertEgresado()
+        + assertEsAltaErronea()
+        + assertFechaNoAnteriorAlIngreso(fechaDeEgreso: Fecha)
+        + assertSinJornadaAbierta()
+        + assertSinSuperposicion(fechaDesde: Fecha, fechaHasta: Fecha)
+        + assertSinSuperposicionExcepto(fechaDesde: Fecha, fechaHasta: Fecha, licencia: LicenciaLaboral)
+        + calcularSaldoSinLiquidar(): Moneda
+        + cerrarJornada()
+        + darDeBaja()
+        + egresar(fechaDeEgreso: Fecha, motivoDeEgreso: MotivoDeEgreso): Usuario
+        + estaActivo(): Booleano
+        + estaInhabilitado(tareas: TareaMantenimiento[*]): Booleano
+        + getCuenta(): Registro
+        + getDiasTomados(anio: Entero): Entero
+        + getFechaDeIngreso(): Fecha
+        + getLegajo(): Cadena
+        + getLicenciasAprobadas(): LicenciaLaboral[*]
+        + getNombre(): Cadena
+        + getPeorVencimiento()
+        + getPlanesFaltantes(): PlanMantenimiento[*]
+        + getPuesto(): PuestoDeTrabajo
+        + getTareas(): TareaMantenimiento[*]
+        + getTareasBloqueantesVencidas(): TareaMantenimiento[*]
+        + liquidar(fechaDesde: Fecha, fechaHasta: Fecha): LiquidacionComisiones
+        + modificar(datos: Registro)
+        + registrarArrastre(liquidacion: LiquidacionComisiones, saldoDeudor: Moneda)
+        + registrarComision(pedido: Pedido, regla: ReglaComision)
+        + registrarFaltante(rendicion: RendicionChofer, importe: Moneda)
+        + registrarJornada(ingreso: FechaHora, egreso: FechaHora, origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
+        + reingresar(fechaDeIngreso: Fecha)
+        + solicitarLicencia(tipoDeLicencia: TipoDeLicencia, fechaDesde: Fecha, fechaHasta: Fecha, motivo: Cadena): LicenciaLaboral
+        + validarSinComisionPrevia(pedido: Pedido)
+        + vincularCuenta(usuario: Usuario)
+    }
+
+    class JornadaDeTrabajo {
+        - dia: Fecha
+        - ingreso: FechaHora
+        - egreso: FechaHora
+        - origen: OrigenDeLaJornada
+        - observacion: Cadena
+        + «create» JornadaDeTrabajo(ahora: FechaHora, origenDeJornada: OrigenDeLaJornada)
+        + «create» JornadaDeTrabajo(ingreso: FechaHora, egreso: FechaHora, origenDeJornada: OrigenDeLaJornada)
+        + assertNotaObligatoria(nota: Cadena)
+        + cerrar(ahora: FechaHora)
+        + corregir(datos: Registro, nota: Cadena)
+        + getDuracion()
+    }
+
+    class LicenciaLaboral {
+        - tipo: TipoDeLicencia
+        - desde: Fecha
+        - hasta: Fecha
+        - /dias: Entero
+        - estado: EstadoDeLaLicencia
+        - motivo: Cadena
+        - motivoDeRechazo: Cadena
+        - resueltaEl: FechaHora
+        + «create» LicenciaLaboral(tipoDeLicencia: TipoDeLicencia, fechaDesde: Fecha, fechaHasta: Fecha, motivo: Cadena)
+        + aprobar(usuario: Usuario)
+        + assertMotivoObligatorio(motivoDeRechazo: Cadena)
+        + assertNoTerminada()
+        + assertSolicitada()
+        + cancelar()
+        + cubre(hoy: Fecha)
+        + getDias(): Entero
+        + getEmpleado(): Empleado
+        + modificar(datos: Registro)
+        + rechazar(usuario: Usuario, motivoDeRechazo: Cadena)
+        + validarTransicion(estadoNuevoDeLicencia: EstadoDeLaLicencia)
+    }
+
+    class Adjunto {
+        - nombreOriginal: Cadena
+        - tipoDeArchivo: Cadena
+        - etiqueta: Cadena
+        - fechaDeCarga: FechaHora
+        + «create» Adjunto(clave: Cadena, archivo: Archivo, etiqueta: Cadena)
+    }
+
+    class CargaCombustible {
+        - fechaYHora: FechaHora
+        - tipoDeCombustible: TipoDeCombustible
+        - litros: Decimal
+        - precioPorLitro: Moneda
+        - importe: Moneda
+        - kilometraje: Entero
+        - tanqueLleno: Booleano
+        - estacion: Cadena
+        - medioDePago: MedioDePagoDeCombustible
+        - comprobante: Cadena
+        - anomala: Booleano
+        - observacion: Cadena
+        - anuladaEl: FechaHora
+        + «create» CargaCombustible(datos: Registro)
+        + anular(ahora: FechaHora)
+        + assertImporteCoherente()
+        + assertNoAnulada()
+        + getImporte(): Moneda
+        + marcarAnomala()
+        + modificar(datos: Registro)
+    }
+
+    class MultaTransito {
+        - fechaDeLaInfraccion: FechaHora
+        - jurisdiccion: Cadena
+        - numeroDeActa: Cadena
+        - infraccion: Cadena
+        - importe: Moneda
+        - importeConPagoVoluntario: Moneda
+        - vencimiento: Fecha
+        - estado: EstadoDeLaMulta
+        - pagadaEl: FechaHora
+        - importePagado: Moneda
+        - imputadaAlChofer: Booleano
+        - avisadaEl: FechaHora
+        - motivoDeAnulacion: Cadena
+        + «create» MultaTransito(datos: Registro, empleado: Empleado)
+        + anular(motivo: Cadena)
+        + assertAdmiteCambios()
+        + assertNoAnulada()
+        + getImportePagado(): Moneda
+        + imputarA(empleado: Empleado)
+        + marcarAvisada(ahora: FechaHora)
+        + modificar(datos: Registro)
+        + pagar(fechaDePago: FechaHora, importePagado: Moneda)
+        + validarTransicion(estadoDestino: EstadoDeLaMulta)
+    }
+
+    class Siniestro {
+        - fecha: FechaHora
+        - ubicacion: Coordenada
+        - domicilio: Cadena
+        - descripcion: Cadena
+        - huboHeridos: Booleano
+        - huboTerceros: Booleano
+        - derrameDeGLP: Booleano
+        - denunciaPolicial: Cadena
+        - reclamoAlSeguro: Cadena
+        - estado: EstadoDelSiniestro
+        - vehiculoInutilizable: Booleano
+        - costoDeReparacion: Moneda
+        - reintegroDelSeguro: Moneda
+        - franquicia: Moneda
+        - cerradoEl: FechaHora
+        + «create» Siniestro(datos: Registro)
+        + assertNoCerrado()
+        + cerrar(costoDeReparacion: Moneda, reintegroDelSeguro: Moneda, franquicia: Moneda)
+        + getCostoNeto(): Moneda
+        + modificar(datos: Registro)
+        + validarTransicion(estadoDestino: EstadoDelSiniestro)
+    }
+
+    class Neumatico {
+        - numeroDeSerie: Cadena
+        - marca: Cadena
+        - medida: Cadena
+        - costo: Moneda
+        - estado: EstadoDelNeumatico
+        - posicion: Cadena
+        - kilometrajeDeMontaje: Entero
+        + «create» Neumatico(datos: Registro)
+        + registrarMovimiento(datos: Registro, vehiculo: Vehiculo): MovimientoNeumatico
+        + validarTransicion(estadoDestino: EstadoDelNeumatico)
+    }
+
+    class MovimientoNeumatico {
+        - tipo: TipoDeMovimientoDeNeumatico
+        - kilometraje: Entero
+        - fecha: FechaHora
+        + «create» MovimientoNeumatico(datos: Registro)
+    }
+
     class Reclamo {
         - motivo: Cadena
         - descripcion: Cadena
         - estado: EstadoDelReclamo
         - resolucion: Cadena
         - fotografia: Cadena
+        - claveDeLaFotografia: Cadena
         + «create» Reclamo(pedido: Pedido, motivo: Cadena, evidencia: Archivo)
         + adjuntarFoto(clave: Cadena): Cadena
         + esDelCliente(cliente: Cliente): Booleano
@@ -602,6 +885,386 @@ classDiagram
         + getEstrellas()
     }
 
+    class Deposito {
+        - nombre: Cadena
+        - codigo: Cadena
+        - tipo: TipoDeDeposito
+        - direccion: Cadena
+        - predeterminado: Booleano
+        - activo: Booleano
+        + «create» Deposito(nombre: Cadena, codigo: Cadena, tipo: Cadena, direccion: Cadena)
+        + actualizar(datos: Registro): Deposito
+        + darDeBaja()
+        + estaActivo()
+        + fijarMinimo(producto: Producto, minimoDeLlenas: Entero)
+        + getDistribuidora(): Distribuidora
+        + getLlenas(producto: Producto): Entero
+        + getOrden(ordenId: Identificador)
+        + getUmbral(producto: Producto)
+        + marcarPredeterminado()
+        + registrarRecepcion(ordenId: Identificador, tipoDeComprobante: TipoDeComprobante, numeroDeComprobante: Cadena, items: Registro, autor: Usuario): RecepcionDeCompra
+        + validarCodigoSinUsar(codigo: Cadena)
+        + validarCompraSinOrden(proveedorId: Identificador)
+        + validarSinSaldo(conSaldo: Booleano)
+    }
+
+    class UbicacionDeStock {
+        - tipo: TipoDeUbicacion
+        + «create» UbicacionDeStock(depositoDeStock: Deposito)
+        + «create» UbicacionDeStock(vehiculo: Vehiculo)
+        + acreditar(producto: Producto, condicionDestino: CondicionDeStock, cantidad: Entero)
+        + ajustar(motivoDeAjuste: MotivoDeAjuste, nota: Cadena, items: Registro, autor: Usuario): AjusteDeStock
+        + descontar(producto: Producto, condicionOrigen: CondicionDeStock, cantidad: Entero): Booleano
+        + esLaMismaQue(ubicacionDestino: UbicacionDeStock): Booleano
+        + getSaldos(productoId: Identificador): SaldoDeStock[*]
+        + tieneSaldo(): Booleano
+    }
+
+    class SaldoDeStock {
+        - condicion: CondicionDeStock
+        - cantidad: Entero
+        + «create» SaldoDeStock(producto: Producto, condicionDestino: CondicionDeStock, cantidad: Entero)
+        + getCantidad(): Entero
+        + restar(cantidad: Entero): Booleano
+        + sumar(cantidad: Entero)
+    }
+
+    class MovimientoDeStock {
+        - cantidad: Entero
+        - condicionDeOrigen: CondicionDeStock
+        - condicionDeDestino: CondicionDeStock
+        - motivo: MotivoDeMovimiento
+        - fecha: FechaHora
+        + «create» MovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, condicionOrigen: CondicionDeStock, condicionDestino: CondicionDeStock, cantidad: Entero, motivoDeMovimiento: MotivoDeMovimiento)
+        + getMotivo(): MotivoDeMovimiento
+    }
+
+    class UmbralDeStock {
+        - minimoDeLlenas: Entero
+        - avisadoEl: FechaHora
+        + «create» UmbralDeStock(producto: Producto, minimoDeLlenas: Entero)
+        + actualizar(minimoDeLlenas: Entero)
+        + estaPorDebajoDelMinimo(llenos: Entero): Booleano
+        + getDeposito(): Deposito
+        + limpiarAviso()
+        + marcarAvisado(ahora: FechaHora)
+    }
+
+    class AjusteDeStock {
+        - numero: Entero
+        - motivo: MotivoDeAjuste
+        - nota: Cadena
+        - fecha: FechaHora
+        + «create» AjusteDeStock(motivoDeAjuste: MotivoDeAjuste, nota: Cadena, autor: Usuario)
+        + getMotivo(): MotivoDeAjuste
+    }
+
+    class ItemAjusteDeStock {
+        - condicion: CondicionDeStock
+        - diferencia: Entero
+        + «create» ItemAjusteDeStock(producto: Producto, condicionDeStock: CondicionDeStock, diferencia: Moneda)
+        + getProducto(): Producto
+    }
+
+    class CargaDeCamion {
+        - numero: Entero
+        - dia: Fecha
+        - estado: EstadoDeLaCarga
+        - abiertaEl: FechaHora
+        - salioEl: FechaHora
+        - regresoEl: FechaHora
+        - cerradaEl: FechaHora
+        - notaDeDiferencia: Cadena
+        + «create» CargaDeCamion(chofer: Chofer, deposito: Moneda, ayudanteId: Identificador, autor: Usuario)
+        + cancelar(): CargaDeCamion
+        + cerrar(nota: Cadena, autor: Usuario): CargaDeCamion
+        + getEstado(): EstadoDeLaCarga
+        + getItems()
+        + registrarRegreso(devueltos: Registro, ahora: FechaHora): CargaDeCamion
+        + reponer(items: Registro): CargaDeCamion
+        + salir(ahora: FechaHora): CargaDeCamion
+        + validarNotaDeDiferencia(nota: Cadena)
+        + validarQueEstaAbierta()
+        + validarQueEstaCargando()
+        + validarQueEstaEnRuta()
+        + validarQueRegreso()
+    }
+
+    class ItemCarga {
+        - llenasCargadas: Entero
+        - llenasRepuestas: Entero
+        - vaciasCargadas: Entero
+        - llenasDeclaradasAlRegreso: Entero
+        - vaciasDeclaradasAlRegreso: Entero
+        - llenasEntregadas: Entero
+        - vaciasRecolectadas: Entero
+        - /llenasEsperadas: Entero
+        - /vaciasEsperadas: Entero
+        - diferenciaDeLlenas: Entero
+        - diferenciaDeVacias: Entero
+        + «create» ItemCarga(producto: Producto, llenasCargadas: Entero, vaciasCargadas: Entero)
+        + calcularDiferencia()
+        + calcularEsperado()
+        + declararRegreso(llenasDevueltas: Entero, vaciasDevueltas: Entero)
+        + getEsperado()
+        + getProducto(): Producto
+        + sumarRepuesto(llenasRepuestas: Entero)
+    }
+
+    class Proveedor {
+        - razonSocial: Cadena
+        - cuit: Cadena
+        - tipo: TipoDeProveedor
+        - contacto: Cadena
+        - telefono: Cadena
+        - correo: Cadena
+        - direccion: Cadena
+        - plazoDePago: Entero
+        - activo: Booleano
+        + «create» Proveedor(razonSocial: Cadena, cuit: Cadena, tipo: Cadena, datosDeContacto: Registro, plazoDePago: Entero)
+        + actualizar(datos: Registro): Proveedor
+        + coincideCon(termino: Cadena)
+        + darDeBaja()
+        + emitirOrden(depositoDeStock: Deposito, fechaEsperada: Fecha, items: Registro): OrdenDeCompra
+    }
+
+    class OrdenDeCompra {
+        - numero: Entero
+        - estado: EstadoDeLaOrden
+        - emitidaEl: FechaHora
+        - fechaEsperada: Fecha
+        - total: Moneda
+        - motivoDeCancelacion: Cadena
+        - notas: Cadena
+        + «create» OrdenDeCompra(depositoDeStock: Deposito, fechaEsperada: Fecha, autor: Usuario)
+        + acumularRecibido(items: Registro): Booleano
+        + calcularTotal()
+        + cancelar(motivo: Cadena): OrdenDeCompra
+        + enviar(ahora: FechaHora): OrdenDeCompra
+        + getTotal(): Moneda
+        + validarQueEstaEnBorrador()
+        + validarSinRecepciones()
+    }
+
+    class ItemOrdenDeCompra {
+        - cantidad: Entero
+        - costoUnitario: Moneda
+        - vaciosACanjear: Entero
+        - cantidadRecibida: Entero
+        + «create» ItemOrdenDeCompra(producto: Producto, cantidad: Entero, costoUnitario: Moneda, vaciasACanjear: Entero)
+    }
+
+    class RecepcionDeCompra {
+        - numero: Entero
+        - tipoDeComprobante: TipoDeComprobante
+        - numeroDeComprobante: Cadena
+        - recibidaEl: FechaHora
+        - total: Moneda
+        - estadoDePago: EstadoDePagoDeCompra
+        - estado: EstadoDeLaRecepcion
+        - motivoDeAnulacion: Cadena
+        + «create» RecepcionDeCompra(tipoDeComprobante: TipoDeComprobante, numeroDeComprobante: Cadena, autor: Usuario)
+        + anular(motivo: Cadena): RecepcionDeCompra
+        + getItems(): Registro
+        + getTotal(): Moneda
+        + validarQueEstaConfirmada()
+    }
+
+    class ItemRecepcion {
+        - llenasRecibidas: Entero
+        - vaciasEntregadas: Entero
+        - costoUnitario: Moneda
+        + «create» ItemRecepcion(producto: Producto, llenasRecibidas: Entero, vaciasEntregadas: Entero, costoUnitario: Moneda)
+        + getProducto(): Producto
+    }
+
+    class Caja {
+        - nombre: Cadena
+        - tipo: TipoDeCaja
+        - saldo: Moneda
+        - requiereSesion: Booleano
+        - activa: Booleano
+        + «create» Caja(nombre: Cadena, tipoDeCaja: TipoDeCaja, requiereSesion: Booleano)
+        + abrirSesion(montoInicial: Moneda, administrador: Administrador): SesionDeCaja
+        + actualizarSaldo(sentido: SentidoDeCaja, importe: Moneda)
+        + calcularDiferencia(montoContado: Moneda): Moneda
+        + contraasentar(movimiento: MovimientoDeCaja, motivo: Cadena): MovimientoDeCaja
+        + modificar(datos: Registro)
+        + registrarMovimiento(sentido: SentidoDeCaja, importe: Moneda, categoria: CategoriaDeCaja, medio: MedioDeCaja, descripcion: Cadena, referencia: OrigenDelMovimiento): MovimientoDeCaja
+        + validarCambio(datos: Registro)
+        + validarPuedeAbrirse()
+        + validarSaldoSuficiente(sentido: SentidoDeCaja, importe: Moneda)
+        + validarSesionAbierta()
+    }
+
+    class SesionDeCaja {
+        - estado: EstadoDeLaSesion
+        - abiertaEl: FechaHora
+        - montoInicial: Moneda
+        - cerradaEl: FechaHora
+        - montoEsperado: Moneda
+        - montoContado: Moneda
+        - diferencia: Moneda
+        - observaciones: Cadena
+        + «create» SesionDeCaja(montoInicial: Moneda, administrador: Administrador)
+        + cerrar(montoContado: Moneda, diferencia: Moneda, administrador: Administrador)
+        + getCaja(): Caja
+        + validarAbierta()
+    }
+
+    class CategoriaDeCaja {
+        - nombre: Cadena
+        - sentido: SentidoDeCaja
+        - codigoDeSistema: CodigoDeSistema
+        - activa: Booleano
+        + «create» CategoriaDeCaja(nombre: Cadena, sentido: SentidoDeCaja)
+        + modificar(datos: Registro)
+        + validarQueNoEsDeSistema()
+    }
+
+    class MovimientoDeCaja {
+        - sentido: SentidoDeCaja
+        - importe: Moneda
+        - medio: MedioDeCaja
+        - fecha: FechaHora
+        - descripcion: Cadena
+        - origen: OrigenDelMovimiento
+        + «create» MovimientoDeCaja(movimiento: MovimientoDeCaja, motivo: Cadena)
+        + «create» MovimientoDeCaja(sentido: SentidoDeCaja, importe: Moneda, categoria: CategoriaDeCaja, medio: MedioDeCaja, descripcion: Cadena, referencia: OrigenDelMovimiento)
+        + getCaja(): Caja
+        + validarAnulable()
+    }
+
+    class RendicionChofer {
+        - numero: Entero
+        - fechaDeNegocio: Fecha
+        - estado: EstadoDeLaRendicion
+        - efectivoEsperado: Moneda
+        - efectivoDeclarado: Moneda
+        - gastosDelChofer: Moneda
+        - diferencia: Moneda
+        - resolucionDeLaDiferencia: ResolucionDeDiferencia
+        - presentadaEl: FechaHora
+        - aprobadaEl: FechaHora
+        - observaciones: Cadena
+        - avisoEnviadoEl: FechaHora
+        + «create» RendicionChofer(hoy: Fecha)
+        + absorberDiferencia()
+        + agregarCobro(cobro: AsientoCuentaCorriente)
+        + agregarCobro(asiento: AsientoCuentaCorriente)
+        + agregarPedido(pedido: Pedido)
+        + aprobar(caja: Caja, resolucionDeDiferencia: ResolucionDeDiferencia)
+        + calcularDiferencia()
+        + calcularEfectivoEsperado()
+        + marcarAvisada(ahora: FechaHora)
+        + presentar(efectivoDeclarado: Moneda, gastos: GastoDeRendicion[*])
+        + reabrir()
+        + recalcularEfectivoEsperado()
+        + validarAbierta()
+        + validarPresentada()
+    }
+
+    class PedidoRendido {
+        - importe: Moneda
+        - medioDePago: MetodoDePago
+        + «create» PedidoRendido(pedido: Pedido)
+    }
+
+    class GastoDeRendicion {
+        - importe: Moneda
+        - descripcion: Cadena
+        + «create» GastoDeRendicion(categoria: CategoriaDeCaja, importe: Moneda, descripcion: Cadena)
+    }
+
+    class CuentaCorriente {
+        - razonSocial: Cadena
+        - cuit: Cadena
+        - condicionFiscal: CondicionFiscal
+        - limiteDeCredito: Moneda
+        - plazoDePagoEnDias: Entero
+        - estado: EstadoDeLaCuenta
+        - saldo: Moneda
+        + «create» CuentaCorriente(cliente: Cliente, razonSocial: Cadena, cuit: Cadena, condicionFiscal: CondicionFiscal, limiteDeCredito: Moneda, plazoEnDias: Entero)
+        + actualizarSaldo(importe: Moneda)
+        + calcularAntiguedad(hoy: Fecha)
+        + calcularDisponible()
+        + calcularSaldoAl(fechaDesde: Fecha): Moneda
+        + cargarVenta(pedido: Pedido)
+        + modificar(datos: Registro)
+        + registrarAjuste(tipoDeAsiento: TipoDeAsiento, importe: Moneda, motivo: Cadena): AsientoCuentaCorriente
+        + registrarPago(importe: Moneda, medio: MedioDeCaja, movimiento: MovimientoDeCaja): AsientoCuentaCorriente
+        + validarActiva()
+        + validarAjuste(tipoDeAsiento: TipoDeAsiento, importe: Moneda)
+        + validarCambio(datos: Registro)
+        + validarSinCargoPrevio(pedido: Pedido)
+        + verificarCredito(total: Moneda)
+    }
+
+    class AsientoCuentaCorriente {
+        - tipo: TipoDeAsiento
+        - importe: Moneda
+        - vence: Fecha
+        - medioDePago: MedioDeCaja
+        - fecha: FechaHora
+        - descripcion: Cadena
+        + «create» AsientoCuentaCorriente(pedido: Pedido, importe: Moneda, vencimiento: Fecha)
+        + «create» AsientoCuentaCorriente(tipoDeAsiento: TipoDeAsiento, importe: Moneda, motivo: Cadena)
+        + «create» AsientoCuentaCorriente(tipoDeAsiento: TipoDeAsiento, importe: Moneda, medio: MedioDeCaja, movimiento: MovimientoDeCaja)
+        + asignarARendicion(rendicion: RendicionChofer)
+    }
+
+    class ImputacionCuentaCorriente {
+        - importe: Moneda
+        + «create» ImputacionCuentaCorriente(cargo: AsientoCuentaCorriente, asiento: AsientoCuentaCorriente, importe: Moneda)
+    }
+
+    class ReglaComision {
+        - base: BaseDeComision
+        - valor: Decimal
+        - vigenteDesde: Fecha
+        - vigenteHasta: Fecha
+        - activa: Booleano
+        + «create» ReglaComision(empleado: Empleado, producto: Producto, base: BaseDeComision, valor: Decimal, vigenteDesde: Fecha)
+        + calcularImporte(pedido: Pedido): Moneda
+        + modificar(datos: Registro)
+        + validarSinSolapamiento(datos: Registro)
+    }
+
+    class AsientoComision {
+        - tipo: TipoDeAsientoDeComision
+        - importe: Moneda
+        - fecha: FechaHora
+        - descripcion: Cadena
+        + «create» AsientoComision(tipoDeAsientoDeComision: TipoDeAsientoDeComision, importe: Moneda, rendicion: RendicionChofer)
+        + «create» AsientoComision(pedido: Pedido, regla: ReglaComision, importe: Moneda)
+        + «create» AsientoComision(tipoDeAsientoDeComision: TipoDeAsientoDeComision, saldoDeudor: Moneda, liquidacion: LiquidacionComisiones)
+        + asignarALiquidacion(liquidacion: LiquidacionComisiones)
+        + liberar()
+    }
+
+    class LiquidacionComisiones {
+        - numero: Entero
+        - periodoDesde: Fecha
+        - periodoHasta: Fecha
+        - bruto: Moneda
+        - deducciones: Moneda
+        - neto: Moneda
+        - estado: EstadoDeLaLiquidacion
+        - aprobadaEl: FechaHora
+        - pagadaEl: FechaHora
+        + «create» LiquidacionComisiones(fechaDesde: Fecha, fechaHasta: Fecha)
+        + anular()
+        + aprobar(administrador: Administrador)
+        + calcularTotales()
+        + cerrarSinPago()
+        + incluir(asientoDeComision: AsientoComision)
+        + marcarAprobada()
+        + pagar(caja: Caja)
+        + validarAprobada()
+        + validarBorrador()
+        + validarNoPagada()
+    }
+
 
     Usuario <|-- Cliente
     Usuario <|-- Chofer
@@ -614,6 +1277,8 @@ classDiagram
     Usuario "0..*" -- "0..1" Rol : tiene asignado
     Distribuidora "1" --> "0..*" Chofer : emplea
     Distribuidora "0..1" -- "0..*" Administrador : emplea
+    Distribuidora "1" --> "0..*" Empleado : emplea
+    Distribuidora "1" *--> "0..*" PuestoDeTrabajo : define
     Distribuidora "1" -- "0..*" Producto : comercializa
     Distribuidora "1" --> "0..*" Envase : posee
     Distribuidora "1" -- "0..*" Pedido : gestiona
@@ -674,6 +1339,23 @@ classDiagram
     CasoRecupero "0..*" -- "1" Cliente : se abre contra
     Usuario "0..1" -- "0..*" CasoRecupero : resuelve
     CasoRecupero "1" *--> "0..*" AvisoRecupero : emite
+    Empleado "0..*" --> "1" PuestoDeTrabajo : ocupa
+    Empleado "0..1" --> "0..1" Usuario : accede con
+    Empleado "1" *--> "0..*" JornadaDeTrabajo : registra
+    Empleado "1" *--> "0..*" LicenciaLaboral : solicita
+    Usuario "0..1" -- "0..*" LicenciaLaboral : resuelve
+    Empleado "1" *--> "0..*" Adjunto : conserva
+    TareaMantenimiento "0..*" <--> "0..1" Empleado : habilita
+    Vehiculo "1" *-- "0..*" CargaCombustible : registra
+    Vehiculo "1" *--> "0..*" MultaTransito : acumula
+    Vehiculo "1" *-- "0..*" Siniestro : sufre
+    Vehiculo "0..1" -- "0..*" Neumatico : monta
+    Distribuidora "1" *--> "0..*" Neumatico : posee
+    Neumatico "1" *--> "0..*" MovimientoNeumatico : registra
+    MovimientoNeumatico "0..*" -- "0..1" Vehiculo : ocurre en
+    Empleado "0..1" -- "0..*" CargaCombustible : carga
+    Empleado "0..1" -- "0..*" MultaTransito : responde por
+    Empleado "0..1" -- "0..*" Siniestro : interviene en
     Pedido "1" -- "0..*" Reclamo : origina
     Cliente "1" --> "0..*" Reclamo : presenta
     Pedido "1" --> "0..*" Incidencia : origina
@@ -681,7 +1363,79 @@ classDiagram
     Pedido "1" -- "0..2" Calificacion : recibe
     Usuario "1" --> "0..*" Calificacion : emite
     Usuario "1" --> "0..*" Calificacion : recibe
+    Distribuidora "1" --> "0..*" Deposito : dispone de
+    Distribuidora "1" --> "0..*" Proveedor : compra a
+    Deposito "1" --> "0..1" UbicacionDeStock : se registra como {xor}
+    Vehiculo "1" --> "0..1" UbicacionDeStock : se registra como {xor}
+    UbicacionDeStock "1" *--> "0..*" SaldoDeStock : acumula
+    SaldoDeStock "0..*" -- "1" Producto : corresponde a
+    MovimientoDeStock "0..*" -- "1" Producto : corresponde a
+    MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de
+    MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en
+    Usuario "0..1" -- "0..*" MovimientoDeStock : ejecuta
+    Deposito "1" *--> "0..*" UmbralDeStock : fija
+    UmbralDeStock "0..*" -- "1" Producto : controla
+    UbicacionDeStock "1" --> "0..*" AjusteDeStock : se corrige con
+    AjusteDeStock "1" *--> "1..*" ItemAjusteDeStock : contiene
+    ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a
+    Usuario "1" -- "0..*" AjusteDeStock : registra
+    Proveedor "1" --> "0..*" OrdenDeCompra : recibe
+    OrdenDeCompra "0..*" <-- "1" Deposito : se destina a
+    OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra : contiene
+    ItemOrdenDeCompra "0..*" -- "1" Producto : corresponde a
+    Usuario "1" -- "0..*" OrdenDeCompra : emite
+    Proveedor "1" -- "0..*" RecepcionDeCompra : entrega
+    OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra : se cumple con
+    RecepcionDeCompra "0..*" <-- "1" Deposito : ingresa en
+    RecepcionDeCompra "1" *--> "1..*" ItemRecepcion : contiene
+    ItemRecepcion "0..*" -- "1" Producto : corresponde a
+    Usuario "1" -- "0..*" RecepcionDeCompra : registra
+    Vehiculo "1" --> "0..*" CargaDeCamion : transporta
+    Chofer "1" -- "0..*" CargaDeCamion : reparte con
+    CargaDeCamion "0..*" -- "1" UbicacionDeStock : parte de
+    CargaDeCamion "1" *--> "1..*" ItemCarga : contiene
+    ItemCarga "0..*" -- "1" Producto : corresponde a
+    Usuario "1" -- "0..*" CargaDeCamion : abre
+    Usuario "0..1" -- "0..*" CargaDeCamion : cierra
+    Distribuidora "1" *--> "0..*" Caja : define
+    Distribuidora "1" *--> "0..*" CategoriaDeCaja : define
+    Distribuidora "1" *--> "0..*" CuentaCorriente : lleva
+    Distribuidora "1" *--> "0..*" ReglaComision : define
+    Caja "1" *--> "0..*" SesionDeCaja : registra
+    Caja "1" *--> "0..*" MovimientoDeCaja : asienta
+    SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja : agrupa
+    CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja : clasifica
+    MovimientoDeCaja "0..1" -- "0..1" MovimientoDeCaja : anula a
+    Chofer "1" *-- "0..*" RendicionChofer : presenta
+    RendicionChofer "0..*" -- "0..1" Caja : ingresa en
+    RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera
+    RendicionChofer "1" *--> "0..*" PedidoRendido : rinde
+    PedidoRendido "0..1" -- "1" Pedido : corresponde a
+    RendicionChofer "1" *--> "0..*" GastoDeRendicion : declara
+    GastoDeRendicion "0..*" -- "1" CategoriaDeCaja : se clasifica en
+    Cliente "1" -- "0..*" CuentaCorriente : tiene habilitada
+    CuentaCorriente "1" *--> "0..*" AsientoCuentaCorriente : registra
+    Pedido "0..1" -- "0..*" AsientoCuentaCorriente : origina
+    AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en
+    Chofer "0..1" -- "0..*" AsientoCuentaCorriente : cobra
+    RendicionChofer "0..1" --> "0..*" AsientoCuentaCorriente : incluye
+    AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente : anula a
+    ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda
+    ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con
+    ReglaComision "0..*" <-- "0..1" Empleado : se aplica a
+    ReglaComision "0..*" -- "0..1" Producto : se aplica a
+    Empleado "1" *--> "0..*" AsientoComision : devenga
+    Empleado "1" *-- "0..*" LiquidacionComisiones : percibe
+    Empleado "0..1" -- "0..1" Chofer : actúa como
+    AsientoComision "0..*" -- "0..1" Pedido : corresponde a
+    ReglaComision "0..1" -- "0..*" AsientoComision : determina
+    LiquidacionComisiones "0..1" --> "0..*" AsientoComision : incluye
+    RendicionChofer "0..1" -- "0..*" AsientoComision : origina
+    LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja : se paga con
     Carrito ..> Producto
     Chofer ..> AsignacionVehiculo : create
+    CuentaCorriente ..> ImputacionCuentaCorriente : create
     LoteRecorrido ..> Pedido
     Pedido ..> Producto
+    RendicionChofer ..> Empleado
+    Vehiculo ..> AsignacionVehiculo

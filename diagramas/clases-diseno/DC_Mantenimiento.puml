@@ -63,23 +63,34 @@ class PlanMantenimiento {
   - intervalo: Entero
   - anticipacion: Entero
   - criticidad: Criticidad
+  - documentoQueControla: DocumentoControlado
+  - aplicaA: CategoriaDePuesto[*]
+  + assertAplicaA(empleado: Empleado)
   + assertSujetoCoherente(recurso: Cadena)
+  + assertSujetoEmpleado()
   + crearTarea(recurso: Cadena, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
+  + crearTarea(empleado: Empleado, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
 }
 class TareaMantenimiento {
   - estado: EstadoDeLaTarea
-  - vence: FechaHora
+  - vence: Fecha
   - vencimientoProyectado: FechaHora
   - prestador: Cadena
   - numero: Cadena
   - costo: Moneda
+  - vigenteDesde: Fecha
+  - detalle: Registro
   + «create» TareaMantenimiento(recurso: Cadena,\n      vencimiento: Fecha, detalle: Registro)
+  + «create» TareaMantenimiento(empleado: Empleado,\n      vencimiento: Fecha, detalle: Registro)
   + adjuntar(clave: Cadena, archivo: Archivo,\n      usuario: Usuario): AdjuntoTarea
   + assertAbierta()
   + cerrar(fecha: Fecha, kilometraje: Entero, costo: Moneda,\n      observacion: Cadena)
+  + estaVencida()
   + getAdjunto(adjuntoId: Identificador): AdjuntoTarea
   + getAdjuntos(): AdjuntoTarea[*]
+  + getCosto(): Moneda
   + getEstadoDeVencimiento()
+  + getPrimaProrrateada(fechaDesde: Fecha,\n      fechaHasta: Fecha): Moneda
   + marcarAvisada(ahora: FechaHora)
   + programar(ventanaElegida: PropuestaVentanaTaller,\n      gastoEstimado: Moneda)
   + proponerVentana(chofer: Chofer,\n      ventana: PropuestaVentanaTaller): PropuestaVentanaTaller

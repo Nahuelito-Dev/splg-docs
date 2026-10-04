@@ -1,0 +1,180 @@
+@startuml
+title Modelo físico — Stock físico y carga del camión
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+skinparam linetype polyline
+
+entity "warehouse" as e_warehouse <<propuesto>> {
+  {field} <color:#1F5E8C>**warehouse_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>name : varchar(80) * <<propuesto>></color>
+  {field} <color:#1F5E8C>code : varchar(12) * <<propuesto>></color>
+  {field} <color:#1F5E8C>kind : warehouse_kind_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>address : text <<propuesto>></color>
+  {field} <color:#1F5E8C>location : geometry(Point,4326) <<propuesto>></color>
+  {field} <color:#1F5E8C>is_default : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+}
+entity "stock_threshold" as e_stock_threshold <<propuesto>> {
+  {field} <color:#1F5E8C>**threshold_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//warehouse_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>min_full : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>alerted_at : timestamptz <<propuesto>></color>
+}
+entity "stock_location" as e_stock_location <<propuesto>> {
+  {field} <color:#1F5E8C>**location_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>kind : stock_location_kind_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>//warehouse_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//car_id// : uuid <<FK>> <<propuesto>></color>
+}
+entity "stock_adjustment" as e_stock_adjustment <<propuesto>> {
+  {field} <color:#1F5E8C>**adjustment_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>number : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>//location_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>reason : stock_adjustment_reason_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>notes : text * <<propuesto>></color>
+  {field} <color:#1F5E8C>//created_by_user_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+}
+entity "stock_balance" as e_stock_balance <<propuesto>> {
+  {field} <color:#1F5E8C>**balance_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//location_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>condition : stock_condition_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>quantity : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "stock_movement" as e_stock_movement <<propuesto>> {
+  {field} <color:#1F5E8C>**movement_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>batch_id : uuid * <<propuesto>></color>
+  {field} <color:#1F5E8C>quantity : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>//from_location_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>from_condition : stock_condition_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>//to_location_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>to_condition : stock_condition_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>reason : stock_movement_reason_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>reference_type : stock_reference_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>reference_id : uuid <<propuesto>></color>
+  {field} <color:#1F5E8C>//actor_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+}
+entity "truck_load" as e_truck_load <<propuesto>> {
+  {field} <color:#1F5E8C>**load_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>number : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>//car_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//delivery_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>helper_employee_id : uuid <<propuesto>></color>
+  {field} <color:#1F5E8C>//origin_location_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>business_date : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>status : truck_load_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>opened_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>departed_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>returned_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>closed_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>//opened_by_user_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//closed_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>difference_note : text <<propuesto>></color>
+}
+entity "stock_adjustment_item" as e_stock_adjustment_item <<propuesto>> {
+  {field} <color:#1F5E8C>**item_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//adjustment_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>condition : stock_condition_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>quantity_delta : integer * <<propuesto>></color>
+}
+entity "truck_load_item" as e_truck_load_item <<propuesto>> {
+  {field} <color:#1F5E8C>**item_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//load_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>loaded_full : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>reloaded_full : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>loaded_empty : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>declared_return_full : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>declared_return_empty : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>delivered_full : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>collected_empty : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>expected_full : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>expected_empty : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>difference_full : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>difference_empty : integer <<propuesto>></color>
+}
+entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
+}
+entity "car" as e_car #F1F1F1 {
+}
+entity "user" as e_user #F1F1F1 {
+}
+entity "delivery" as e_delivery #F1F1F1 {
+}
+
+e_warehouse ||--o{ e_stock_threshold #line:1F5E8C;text:1F5E8C : warehouse_id
+e_gas_cylinder ||--o{ e_stock_threshold #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_warehouse |o--o| e_stock_location #line:1F5E8C;text:1F5E8C : warehouse_id
+e_car |o--o| e_stock_location #line:1F5E8C;text:1F5E8C : car_id
+e_stock_location ||--o{ e_stock_adjustment #line:1F5E8C;text:1F5E8C : location_id
+e_user ||--o{ e_stock_adjustment #line:1F5E8C;text:1F5E8C : created_by_user_id
+e_stock_location ||--o{ e_stock_balance #line:1F5E8C;text:1F5E8C : location_id
+e_gas_cylinder ||--o{ e_stock_balance #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_gas_cylinder ||--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_stock_location |o--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : from_location_id
+e_stock_location |o--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : to_location_id
+e_user |o--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : actor_user_id
+e_car ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : car_id
+e_delivery ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : delivery_id
+e_stock_location ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : origin_location_id
+e_user ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : opened_by_user_id
+e_user |o--o{ e_truck_load #line:1F5E8C;text:1F5E8C : closed_by_user_id
+e_stock_adjustment ||--o{ e_stock_adjustment_item #line:1F5E8C;text:1F5E8C : adjustment_id
+e_gas_cylinder ||--o{ e_stock_adjustment_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_truck_load ||--o{ e_truck_load_item #line:1F5E8C;text:1F5E8C : load_id
+e_gas_cylinder ||--o{ e_truck_load_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

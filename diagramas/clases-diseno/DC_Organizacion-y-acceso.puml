@@ -63,10 +63,19 @@ class Distribuidora {
   - cuit: Cadena
   - estado: EstadoDeDistribuidora
   + «create» Distribuidora(nombre: Cadena,\n      identificadorCorto: Cadena, razonSocial: Cadena,\n      cuit: Cadena, correo: Cadena, telefono: Cadena,\n      logo: Archivo, plan: Cadena)
+  + assertDocumentoYCuilDisponibles(datos: Registro,\n      empleado: Empleado)
+  + assertNombreDePuestoDisponible(nombre: Cadena,\n      puesto: PuestoDeTrabajo)
+  + crearCaja(nombre: Cadena, tipoDeCaja: TipoDeCaja,\n      requiereSesion: Booleano): Caja
+  + crearCategoriaDeCaja(nombre: Cadena,\n      sentido: SentidoDeCaja): CategoriaDeCaja
+  + crearConfiguracion(controlDeStock: ProcesoConfigurable,\n      exigirCargaDeCamionAbierta: Booleano): ConfiguracionModulo
   + crearConfiguracion(despacho: ProcesoConfigurable,\n      radiosKm: Decimal,\n      ventanaDeAceptacion: Entero): ConfiguracionModulo
   + crearConfiguracion(proceso: ProcesoConfigurable,\n      parametros: Registro,\n      administrador: Administrador): ConfiguracionModulo
   + crearConfiguracion(tareasProgramadas: ProcesoConfigurable,\n      intervalos: Registro,\n      administrador: Administrador): ConfiguracionModulo
+  + crearDeposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena): Deposito
   + crearFranja(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero): FranjaHoraria
+  + crearProveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero): Proveedor
+  + crearPuesto(nombre: Cadena,\n      categoria: CategoriaDeCaja): PuestoDeTrabajo
+  + crearReglaDeComision(empleado: Empleado,\n      producto: Producto, base: BaseDeComision,\n      valor: Decimal, vigenteDesde: Fecha): ReglaComision
   + darDeBaja()
   + definirZona(nombre: Cadena, poligono: Poligono,\n      recargo: Moneda, activa: Booleano): ZonaCobertura
   + getAdministradores(): Administrador[*]
@@ -75,24 +84,43 @@ class Distribuidora {
   + getConfiguracion(despacho: ProcesoConfigurable): ConfiguracionModulo
   + getConfiguracion(proceso: ProcesoConfigurable): ConfiguracionModulo
   + getConfiguracion(tareasProgramadas: ProcesoConfigurable): ConfiguracionModulo
+  + getConfiguracion(controlDeStock: ProcesoConfigurable): ConfiguracionModulo
+  + getDeposito(depositoId: Identificador): Deposito
+  + getDepositoPredeterminado(): UbicacionDeStock
+  + getDepositos(): Deposito[*]
   + getFranjasActivas(): FranjaHoraria[*]
   + getProductosActivos(pagina: Entero, limite: Entero,\n      out total: Entero): Producto[*]
   + getProductosDisponibles(): Producto[*]
+  + getProveedor(proveedorId: Identificador): Proveedor
+  + getProveedores(): Proveedor[*]
+  + getPuestos(): PuestoDeTrabajo[*]
   + getZonaQueCubre(latitud: Decimal,\n      longitud: Decimal): ZonaCobertura
   + getZonas(): ZonaCobertura[*]
+  + habilitarCuentaCorriente(cliente: Cliente,\n      razonSocial: Cadena, cuit: Cadena,\n      condicionFiscal: CondicionFiscal,\n      limiteDeCredito: Moneda,\n      plazoEnDias: Entero): CuentaCorriente
   + incorporarEnvase(numeroDeSerie: Cadena,\n      tipoDeProducto: Cadena, deposito: Moneda): Envase
   + modificar(datos: Registro)
+  + registrarEmpleado(datos: Registro,\n      puesto: PuestoDeTrabajo): Empleado
+  + registrarNeumatico(datos: Registro): Neumatico
   + tieneProducto(tipo: Cadena): Booleano
+  + validarCategoriaNueva(nombre: Cadena,\n      sentido: SentidoDeCaja)
+  + validarCodigoSinUsar(codigo: Cadena)
+  + validarCuitSinUsar(cuit: Cadena)
+  + validarNombreDisponible(nombre: Cadena)
+  + validarSinSolapamiento(empleado: Empleado,\n      producto: Producto, vigenteDesde: Fecha)
 }
 class ConfiguracionModulo {
   - modulo: ProcesoConfigurable
   - parametros: Registro
+  - exigirCargaDeCamionAbierta: Booleano
+  + «create» ConfiguracionModulo(controlDeStock: ProcesoConfigurable,\n      exigirCargaDeCamionAbierta: Booleano)
   + «create» ConfiguracionModulo(despacho: ProcesoConfigurable,\n      radiosKm: Decimal, ventanaDeAceptacion: Entero)
   + «create» ConfiguracionModulo(proceso: ProcesoConfigurable,\n      parametros: Registro, administrador: Administrador)
   + «create» ConfiguracionModulo(tareasProgramadas: ProcesoConfigurable,\n      intervalos: Registro, administrador: Administrador)
   + actualizar(parametros: Registro,\n      administrador: Administrador)
   + actualizar(intervalos: Registro,\n      administrador: Administrador)
+  + actualizar(exigirCargaDeCamionAbierta: Booleano,\n      administrador: Administrador)
   + actualizar(radiosKm: Decimal,\n      ventanaDeAceptacion: Entero,\n      administrador: Administrador)
+  + getExigirCargaDeCamionAbierta(): Booleano
 }
 class Usuario {
   - nombre: Cadena
@@ -105,6 +133,7 @@ class Usuario {
   + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, rol: Rol, cuenta: Registro)
   + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena,\n      rolAdministradorGeneral: TipoDeRol,\n      cuenta: Registro)
   + actualizarPerfil(datos: Registro)
+  + bloquear()
   + calcularPromedio()
   + calificar(pedido: Pedido, calificado: Usuario,\n      estrellas: Entero, comentario: Cadena): Calificacion
   + cambiarBloqueo(bloquear: Booleano)
@@ -113,6 +142,8 @@ class Usuario {
   + estaHabilitado(): Booleano
   + getCalificacionesRecibidas(): Calificacion[*]
   + getChofer(): Chofer
+  + getEmpleado(): Empleado
+  + getPerfilDeChofer(): Chofer
   + getResumenDeCalificaciones(out cantidad: Entero): Decimal
   + getRol(): Rol
 }

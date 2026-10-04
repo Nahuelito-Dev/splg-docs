@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-243 Registrar el Pago de una Liquidación · pagarLiquidacion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CommissionService
+    participant LIQS as :Map#lt;String, LiquidacionComisiones#gt;
+    participant CAJS as :Map#lt;String, Caja#gt;
+    participant LIQ as liquidacion:LiquidacionComisiones
+
+    ADM->>+SRV: pagarLiquidacion(liquidacionId, cajaId)
+    SRV->>+LIQS: get(liquidacionId)
+    LIQS-->>-SRV: liquidacion
+    SRV->>+CAJS: get(cajaId)
+    CAJS-->>-SRV: caja
+    SRV->>+LIQ: pagar(caja)
+    LIQ->>LIQ: validarAprobada()
+    Note over SRV,LIQ: Egreso: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema pago de comisiones
+    deactivate LIQ
+    SRV-->>-ADM: liquidacion

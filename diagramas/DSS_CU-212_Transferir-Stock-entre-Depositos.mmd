@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-212 Transferir Stock entre Depósitos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: transferirStock(origenId, destinoId, productoId, condicion, cantidad)
+    activate SIS
+    alt el origen tiene la cantidad
+        SIS-->>ADM: transferencia registrada, con su lote
+    else el origen no tiene la cantidad
+        SIS-->>ADM: solicitud inválida, con el saldo disponible
+    else origen y destino son la misma ubicación
+        SIS-->>ADM: solicitud inválida
+    else una ubicación no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSD — CU-181 Registrar el Egreso de un Empleado · registrarEgresoDelEmpleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant UC as :TerminateEmployeeUseCase
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant USR as usuario:Usuario
+    participant CHO as chofer:Chofer
+    participant ASG as asignacion:AsignacionVehiculo
+
+    ADM->>+UC: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
+    UC->>+COE: get(empleadoId)
+    COE-->>-UC: empleado
+    UC->>+EMP: egresar(fechaDeEgreso, motivoDeEgreso)
+    EMP->>EMP: assertActivo()
+    EMP->>EMP: assertFechaNoAnteriorAlIngreso(fechaDeEgreso)
+    EMP-->>-UC: usuario
+    opt El empleado tiene cuenta de acceso
+        UC->>USR: bloquear()
+        UC->>+USR: getPerfilDeChofer()
+        USR-->>-UC: chofer
+        opt La cuenta tiene perfil de reparto
+            UC->>+CHO: deshabilitar()
+            CHO->>ASG: liberar()
+            deactivate CHO
+        end
+    end
+    UC-->>-ADM: empleado

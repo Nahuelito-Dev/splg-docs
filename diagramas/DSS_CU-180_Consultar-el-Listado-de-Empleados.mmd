@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-180 Consultar el Listado de Empleados
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarEmpleados(filtros)
+    activate SIS
+    alt hay empleados que cumplen los filtros
+        SIS-->>ADM: página de empleados con su peor vencimiento, sin datos sensibles
+    else ninguno cumple los filtros
+        SIS-->>ADM: página vacía
+    end
+    deactivate SIS

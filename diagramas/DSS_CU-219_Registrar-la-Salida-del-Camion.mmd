@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSS — CU-219 Registrar la Salida del Camión
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: registrarSalidaDelCamion(cargaId)
+    activate SIS
+    alt la carga está cargando
+        SIS-->>CHO: carga en ruta
+    else la carga no está cargando
+        SIS-->>CHO: conflicto
+    else la carga no existe o no es suya
+        SIS-->>CHO: recurso no encontrado
+    end
+    deactivate SIS
+    Note over CHO,SIS: También lo inicia el Administrador (ACT-03)

@@ -1,0 +1,31 @@
+@startuml
+title Diagrama de estados — Sesión de caja
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Abierta\n(open)" as ABI
+state "Cerrada\n(closed)" as CER
+
+[*] --> ABI : abrirCaja(montoInicial) [la caja exige sesión y no tiene otra abierta;\nsi el monto inicial difiere del saldo, se asienta un ajuste]
+ABI --> CER : cerrarCajaConArqueo(montoContado)\n[el ajuste por la diferencia ya está asentado]
+CER --> [*]
+
+note bottom of CER
+  Si la diferencia entre lo contado y el saldo teórico no es cero, se asienta
+  primero un ajuste y después se cierra: el saldo queda igual a lo contado.
+end note
+@enduml

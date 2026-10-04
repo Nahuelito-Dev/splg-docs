@@ -1,0 +1,42 @@
+@startuml
+title Diagrama de estados — Vigencia de la póliza y de la habilitación (planificado, I-12)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Vigente\n(current)" as CURRENT
+state "Por vencer\n(due_soon)" as DUESOON
+state "Vencida\n(expired)" as EXPIRED
+state "Cerrada\n(DONE)" as DONE
+
+[*] --> CURRENT : crearTareaDeFlota(plan, vehículo) [vence fuera de la anticipación]
+[*] --> DUESOON : crearTareaDeFlota(plan, vehículo) [vence dentro de la anticipación]
+[*] --> EXPIRED : crearTareaDeFlota(plan, vehículo) [el vencimiento ya pasó]
+CURRENT --> DUESOON : when(hoy ≥ vencimiento − anticipación del plan)
+DUESOON --> EXPIRED : when(hoy > vencimiento)
+CURRENT --> DONE : cerrarTareaDeFlota(tarea)
+DUESOON --> DONE : cerrarTareaDeFlota(tarea)
+EXPIRED --> DONE : cerrarTareaDeFlota(tarea)
+DONE --> [*]
+
+note bottom of EXPIRED
+  La vigencia no se guarda: se calcula en cada consulta del
+  vencimiento, la anticipación del plan y su criticidad.
+  Vale para el seguro y para la habilitación para transportar
+  mercancías peligrosas. Vencida y de un plan bloqueante,
+  inhabilita al vehículo, que no recibe ofertas de pedidos.
+end note
+@enduml

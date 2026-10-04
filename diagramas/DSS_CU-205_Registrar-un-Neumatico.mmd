@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-205 Registrar un Neumático
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarNeumatico(datos)
+    activate SIS
+    alt los datos son válidos y el número de serie está libre
+        SIS-->>ADM: neumático registrado, en depósito
+    else ya existe un neumático con ese número de serie
+        SIS-->>ADM: conflicto: neumático ya registrado
+    else falta un dato obligatorio
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

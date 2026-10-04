@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-194 Consultar el Tablero de Personal
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarTableroDePersonal()
+    activate SIS
+    SIS-->>ADM: empleados activos por puesto, presentes hoy, de licencia hoy y documentos por estado de vencimiento
+    deactivate SIS

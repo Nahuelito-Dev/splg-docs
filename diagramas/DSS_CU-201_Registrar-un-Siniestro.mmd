@@ -1,0 +1,48 @@
+sequenceDiagram
+    title DSS — CU-201 Registrar un Siniestro
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    actor CHF as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarSiniestro(vehiculoId, datos)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: siniestro denunciado, con el vehículo fuera de servicio y su asignación cerrada si quedó inutilizable
+        opt hubo derrame de gas
+            SIS-)ADM: notificarDerrameDeGas(siniestro)
+        end
+    else el vehículo no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else falta la fecha o la descripción, o el punto no es una coordenada válida
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS
+
+    Note over CHF,SIS: El chofer no indica el vehículo:<br/>el sistema usa el que tiene en uso
+    CHF->>SIS: registrarSiniestro(vehiculoId, datos)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>CHF: siniestro denunciado
+    else el chofer no tiene un vehículo en uso
+        SIS-->>CHF: conflicto: sin vehículo en uso
+    else falta la fecha o la descripción, o el punto no es una coordenada válida
+        SIS-->>CHF: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS
+
+    ADM->>SIS: modificarSiniestro(siniestroId, datos)
+    activate SIS
+    alt el siniestro existe y no está cerrado
+        SIS-->>ADM: siniestro modificado, con su estado avanzado
+    else el siniestro no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el estado pedido no sigue al actual o el siniestro está cerrado
+        SIS-->>ADM: solicitud inválida: transición no permitida
+    end
+    deactivate SIS
+
+    ADM->>SIS: consultarSiniestros(filtros)
+    activate SIS
+    SIS-->>ADM: siniestros que cumplen los filtros, con el total
+    deactivate SIS

@@ -64,11 +64,16 @@ class ReportsService <<fachada>> {
   + agruparPorChofer(pedidos: Pedido[*])
   + agruparPorMetodoDePago(pedidos: Pedido[*])
   + agruparPorPeriodo(pedidos: Pedido[*],\n      granularidad: Cadena)
-  + agruparPorProducto(items: ItemPedido[*])
+  + agruparPorProducto(items: Registro)
   + consultarEvolucionDeVentas(fechaDesde: Fecha,\n      fechaHasta: Fecha, granularidad: Cadena): Registro
   + consultarVentasPorChofer(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
   + consultarVentasPorMetodoDePago(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
   + consultarVentasPorProducto(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
+}
+class FleetCostReportService <<fachada>> {
+  + consultarCostoDeUnVehiculo(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
+  + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
+  + ordenarPorCostoPorKilometro(costos: Registro)
 }
 class HealthCheckService <<fachada>> {
   + verificarDisponibilidad()
@@ -87,19 +92,25 @@ interface StoragePort <<interface>> <<puerto>> {
   + getDownloadUrl(clave: Cadena): Cadena
   + getStream(adjunto: AdjuntoTarea): Archivo
   + getStream(clave: Cadena): Archivo
-  + put(clave: Cadena, archivo: Archivo)
   + put(clave: Cadena, imagen: Archivo)
   + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
+  + put(clave: Cadena, archivo: Archivo, tipo: Cadena)
   + remove(adjunto: AdjuntoTarea)
   + remove(claveAnterior: Cadena)
 }
+class "List<Vehiculo>" as List_Vehiculo <<referencia>>
+class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
 class "List<Pedido>" as List_Pedido <<referencia>>
 class Pedido <<referencia>>
+class Vehiculo <<referencia>>
 class ItemPedido <<referencia>>
 
+FleetCostReportService --> "1" List_Vehiculo
+FleetCostReportService --> "1" Map_String_Vehiculo
 HealthCheckService --> "1" RedisHealthIndicator
 RedisHealthIndicator --> "1" RedisService
 ReportsService --> "1" List_Pedido
+FleetCostReportService ..> Vehiculo
 ReportsService ..> ItemPedido
 ReportsService ..> Pedido
 

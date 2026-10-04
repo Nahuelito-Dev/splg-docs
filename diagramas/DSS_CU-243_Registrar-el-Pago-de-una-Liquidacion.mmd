@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-243 Registrar el Pago de una Liquidación
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: pagarLiquidacion(liquidacionId, cajaId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación pagada y movimiento de caja registrado
+    else la liquidación no está aprobada
+        SIS-->>ADM: operación rechazada
+    else la caja no puede cubrir el pago
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

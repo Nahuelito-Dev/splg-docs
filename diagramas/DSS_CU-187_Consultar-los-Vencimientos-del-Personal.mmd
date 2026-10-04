@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSS — CU-187 Consultar los Vencimientos del Personal
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarVencimientosDelPersonal(dias, categoria)
+    activate SIS
+    alt hay vencimientos en la ventana
+        SIS-->>ADM: tareas por empleado ordenadas por urgencia, con la marca de inhabilitado
+    else no hay ninguno
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS
+
+    ADM->>SIS: consultarDocumentacionDelEmpleado(empleadoId)
+    activate SIS
+    alt el empleado existe en la distribuidora
+        SIS-->>ADM: tareas con su estado de vencimiento, marca de inhabilitado y documentos faltantes
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

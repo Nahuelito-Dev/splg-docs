@@ -44,12 +44,20 @@ language es
 [I-10 Flota (M2)] as [I10] starts 2026-10-21 and lasts 10 days
 [I-7 Compra express y reintegros] as [I7] starts at [I4]'s end and lasts 8 days
 [I-9 Recorridos (M4)] as [I9] starts at [I7]'s end and lasts 8 days
+[I-11 Personal y legajos] as [I11] starts 2026-10-21 and lasts 12 days
+[I-12 Flota ampliada] as [I12] starts 2026-11-30 and lasts 10 days
+[I-13 Stock y compras] as [I13] starts 2026-11-06 and lasts 16 days
+[I-14 Caja y rendición] as [I14] starts 2026-12-14 and lasts 20 days
 [I4] is colored in #F0E1CC
 [I6] is colored in #F0E1CC
 [I7] is colored in #F0E1CC
 [I8] is colored in #F0E1CC
 [I9] is colored in #F0E1CC
 [I10] is colored in #F0E1CC
+[I11] is colored in #F0E1CC
+[I12] is colored in #F0E1CC
+[I13] is colored in #F0E1CC
+[I14] is colored in #F0E1CC
 -- Fase de Transición --
 [T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-10-21 and ends 2026-12-22
 [T01] is colored in #B58AC2

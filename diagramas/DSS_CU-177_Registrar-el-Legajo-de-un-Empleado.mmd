@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-177 Registrar el Legajo de un Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarEmpleado(datos)
+    activate SIS
+    alt los datos son válidos y el puesto existe
+        SIS-->>ADM: legajo creado, activo y sin cuenta de acceso
+    else el puesto no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el documento o el CUIL ya pertenecen a otro empleado vigente
+        SIS-->>ADM: conflicto
+    else falta un dato o el CUIL no es válido
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS

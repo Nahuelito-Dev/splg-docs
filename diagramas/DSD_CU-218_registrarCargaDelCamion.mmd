@@ -1,0 +1,48 @@
+sequenceDiagram
+    title DSD — CU-218 Registrar la Carga del Camión · registrarCargaDelCamion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TruckLoadService
+    participant COLV as :Map#lt;String, Vehiculo#gt;
+    participant COLD as :Map#lt;String, Deposito#gt;
+    participant VEH as vehiculo:Vehiculo
+    participant LED as :StockLedgerService
+
+    ADM->>+SRV: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+    SRV->>+COLV: get(vehiculoId)
+    COLV-->>-SRV: vehiculo
+    SRV->>+COLD: get(depositoId)
+    COLD-->>-SRV: deposito
+    SRV->>+VEH: getChoferEnUso()
+    VEH-->>-SRV: chofer
+    alt El vehículo no está en uso por un chofer
+        SRV-->>ADM: conflicto
+    else El vehículo está en uso por un chofer
+        SRV->>+VEH: abrirCarga(chofer, deposito, ayudanteId, items)
+        VEH->>VEH: validarSinCargaAbierta()
+        opt El vehículo todavía no tiene ubicación de stock
+            create participant UBC as nueva:UbicacionDeStock
+            VEH->>UBC: «create»(vehiculo)
+        end
+        create participant CAR as nueva:CargaDeCamion
+        VEH->>CAR: «create»(chofer, deposito, ayudanteId, autor)
+        loop Por cada tipo de garrafa cargado
+            create participant ICA as nuevo:ItemCarga
+            CAR->>ICA: «create»(producto, llenasCargadas, vaciasCargadas)
+        end
+        VEH-->>-SRV: carga
+        loop Por cada tipo de garrafa cargado
+            SRV->>+ICA: getProducto()
+            ICA-->>-SRV: producto
+            Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
+            SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+            alt El depósito tiene las unidades
+                LED-->>-SRV: aplicado
+            else El depósito no tiene las unidades
+                LED-->>SRV: saldoInsuficiente
+                SRV-->>ADM: solicitudInvalida
+            end
+        end
+        SRV-->>ADM: carga
+    end
+    deactivate SRV

@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSS — CU-224 Conciliar el Stock Vendible con el Físico
+    autonumber
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
+
+    opt proceso nocturno
+        Note over SAU: Se ejecuta una vez por noche
+        SAU->>SIS: conciliarStock()
+        activate SIS
+        alt hay diferencia entre el vendible y el físico
+            SIS-)ADM: notificarDiferenciaDeStock(diferencias)
+            Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
+            SIS-->>SAU: entregas aplicadas y diferencias avisadas
+        else no hay diferencia
+            SIS-->>SAU: entregas aplicadas
+        end
+        deactivate SIS
+    end
+
+    opt consulta de la conciliación
+        ADM->>SIS: consultarConciliacionDeStock()
+        activate SIS
+        SIS-->>ADM: vendible, físico, reservado y diferencia por tipo de garrafa
+        deactivate SIS
+    end

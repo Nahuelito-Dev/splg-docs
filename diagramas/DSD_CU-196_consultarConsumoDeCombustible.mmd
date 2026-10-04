@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-196 Consultar el Consumo de Combustible de un Vehículo · consultarConsumoDeCombustible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FuelLoadService
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant VEH as vehiculo:Vehiculo
+    participant CAL as :FuelConsumptionCalculator
+
+    ADM->>+SRV: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)
+    SRV->>+COV: get(vehiculoId)
+    COV-->>-SRV: vehiculo
+    SRV->>+VEH: getCargas(fechaDesde, fechaHasta)
+    VEH-->>-SRV: cargas
+    SRV->>+CAL: calcularConsumo(cargas)
+    CAL-->>-SRV: consumo
+    SRV-->>-ADM: consumo

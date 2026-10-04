@@ -75,6 +75,7 @@ interface RealtimeDispatchPort <<interface>> <<puerto>> {
   + findNearbyDrivers(destino: Coordenada,\n      radioKm: Decimal): Chofer[*]
   + findNearbyDrivers(destino: Coordenada,\n      radioExpressKm: Decimal): Chofer[*]
   + notifyAdmins(pedido: Pedido)
+  + notifyAdmins(evento: Registro, aviso: AvisoRecupero)
   + notifyCustomer(cliente: Cliente, llegada: FechaHora)
   + notifyCustomer(cliente: Cliente, pedido: Pedido,\n      tipo: Cadena)
   + notifyDriverNewOrder(chofer: Chofer, pedido: Pedido)
@@ -97,19 +98,23 @@ interface OrderRepositoryPort <<interface>> <<puerto>> {
   + findScheduled(distribuidora: Distribuidora): Pedido[*]
 }
 class LoteRecorrido <<referencia>>
+class FleetDispatchLockService <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class NotificationsService <<referencia>>
+class TruckLoadService <<referencia>>
 class OrderService <<referencia>>
-class OfertaLote <<referencia>>
 class Chofer <<referencia>>
-class OfertaDespacho <<referencia>>
 class Pedido <<referencia>>
+class OfertaDespacho <<referencia>>
+class OfertaLote <<referencia>>
 
 Map_String_LoteRecorrido "1" o--> "0..*" LoteRecorrido
 DispatchOrchestratorService --> "1" DispatchOfferRepositoryPort
+DispatchOrchestratorService --> "1" FleetDispatchLockService
 DispatchOrchestratorService --> "1" Map_String_Pedido
 DispatchOrchestratorService --> "1" NotificationsService
 DispatchOrchestratorService --> "1" RealtimeDispatchPort
+DispatchOrchestratorService --> "1" TruckLoadService
 DispatchService --> "1" DispatchOrchestratorService
 DispatchService --> "1" OrderService
 RouteBatchPlannerService --> "1" Map_String_LoteRecorrido

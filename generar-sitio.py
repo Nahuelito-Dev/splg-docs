@@ -139,10 +139,10 @@ UMLSIS = {
                "Los %d casos de uso, uno por uno, dentro de su paquete, con los actores afuera del límite"),
   "mapa": ("CU_Sistema_Mapa",
                "Mapa del sistema",
-               "Una página: los 18 paquetes con su cantidad de casos y qué actor participa en cada uno"),
+               "Una página: los 21 paquetes con su cantidad de casos y qué actor participa en cada uno"),
   "subsistemas": ("CU_Sistema_Subsistemas",
                "Subsistemas del proyecto",
-               "Los 18 subsistemas, su agrupamiento y de quién depende cada uno"),
+               "Los 21 subsistemas, su agrupamiento y de quién depende cada uno"),
   "despliegue": ("SPLG_Arquitectura",
                "Despliegue y entornos",
                "Dónde corre cada pieza y cómo llega el código a producción"),
@@ -162,7 +162,7 @@ import html as _html
 
 # Los codigos que aparecen en el texto se marcan con su color: el subsistema con
 # el mismo tinte que su caja en los diagramas, el caso de uso y el actor con su
-# propia marca. Con 149 casos y 18 subsistemas, encontrar uno en una tabla de
+# propia marca. Con 249 casos y 21 subsistemas, encontrar uno en una tabla de
 # texto plano era leer renglon por renglon.
 def marcar(s):
     s = re.sub(r'\b(SS-\d\d)\b', r'<span class="marca-ss" data-ss="\1">\1</span>', s)
@@ -454,28 +454,39 @@ def _lucid():
           f'<p class="bajar"><a download="{xml}" href="data:application/xml;base64,{b64}">'
           f'DESCARGAR {xml}</a> <span class="comollega">Lucidchart · Archivo · Importar · Draw.io</span></p>')
 
-    sql = D + "lucidchart/SPLG-diagrama-de-base-de-datos.sql"
-    if os.path.exists(sql):
+    _fisicos = sorted(glob.glob(D + "diagramas/base-de-datos/fisico/SPLG-fisico-*.svg"))
+    for archivo, titulo_sql, desc_sql, con_imagen in (
+            ("SPLG-diagrama-de-base-de-datos.sql", "Diagrama de base de datos",
+             "Las {n} tablas que la base tiene hoy, con sus columnas y sus claves foráneas.", True),
+            ("SPLG-diagrama-de-base-de-datos-con-planificadas.sql", "Diagrama de base de datos con las tablas planificadas",
+             "Las {n} tablas: las {real} implementadas y las {plan} de los módulos planificados (personal, flota "
+             "ampliada, stock y compras, caja y rendición), que todavía no están en la base.", False)):
+        sql = D + "lucidchart/" + archivo
+        if not os.path.exists(sql):
+            continue
         crudo = open(sql, encoding="utf-8").read()
         b64 = base64.b64encode(crudo.encode()).decode()
+        n = crudo.count("CREATE TABLE")
+        n_real = open(D + "lucidchart/SPLG-diagrama-de-base-de-datos.sql", encoding="utf-8").read().count("CREATE TABLE")
         img = ""
-        for ruta_img in sorted(glob.glob(D + "diagramas/base-de-datos/fisico/SPLG-fisico-*.svg")):
-            img += (f'<div class="figura"><img class="umlimg" alt="Modelo físico: '
-                    f'{os.path.basename(ruta_img)[12:-4]}" src="{imagen(ruta_img)}"></div>')
+        if con_imagen:
+            for ruta_img in _fisicos:
+                img += (f'<div class="figura"><img class="umlimg" alt="Modelo físico: '
+                        f'{os.path.basename(ruta_img)[12:-4]}" src="{imagen(ruta_img)}"></div>')
         secc.append(
-          f'<h2>Diagrama de base de datos</h2>'
-          f'<p>Las {crudo.count("CREATE TABLE")} tablas con sus columnas y sus claves foráneas. '
+          f'<h2>{titulo_sql}</h2>'
+          f'<p>{desc_sql.format(n=n, real=n_real, plan=n - n_real)} '
           f'Entra por otra puerta que los anteriores: no es un diagrama sino el esquema, '
           f'y Lucidchart lo arma solo a partir del SQL.</p>{img}'
-          f'<p class="bajar"><a download="SPLG-diagrama-de-base-de-datos.sql" '
-          f'href="data:text/plain;base64,{b64}">DESCARGAR SPLG-diagrama-de-base-de-datos.sql</a> '
+          f'<p class="bajar"><a download="{archivo}" '
+          f'href="data:text/plain;base64,{b64}">DESCARGAR {archivo}</a> '
           f'<span class="comollega">Lucidchart · Importar datos · ERD · PostgreSQL</span></p>')
 
     intro = ('<div class="intro"><h1>Modelos para Lucidchart</h1>'
-             '<p>Los cuatro diagramas que se trabajan en Lucidchart, dibujados acá y '
+             '<p>Los diagramas que se trabajan en Lucidchart, dibujados acá y '
              'listos para bajar. Los tres primeros son archivos de draw.io, que es uno de '
-             'los formatos que Lucidchart importa de fábrica; el cuarto es el esquema de '
-             'la base. Se generan con <code>generar-lucidchart.py</code>.</p></div>')
+             'los formatos que Lucidchart importa de fábrica; los dos últimos son el esquema de '
+             'la base, con lo implementado y con lo planificado. Se generan con <code>generar-lucidchart.py</code>.</p></div>')
     return {"titulo": "Modelos para Lucidchart", "html": intro + "".join(secc), "mermaid": mer}
 
 datos["paginas"] = {

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-225 Gestionar las Cajas · crearCaja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashBoxService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: crearCaja(nombre, tipo, requiereSesion)
+    SRV->>+DIS: crearCaja(nombre, tipoDeCaja, requiereSesion)
+    DIS->>DIS: validarNombreDisponible(nombre)
+    create participant NCA as nueva:Caja
+    DIS->>NCA: «create»(nombre, tipoDeCaja, requiereSesion)
+    DIS-->>-SRV: caja
+    SRV-->>-ADM: caja

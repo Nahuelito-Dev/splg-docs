@@ -1,0 +1,46 @@
+sequenceDiagram
+    title DSD — CU-220 Descontar del Camión lo Entregado · descontarStockDeLaEntrega
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant LST as :StockDeliveryListener
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ITP as item:ItemPedido
+    participant VEH as vehiculo:Vehiculo
+    participant DIS as distribuidora:Distribuidora
+    participant LED as :StockLedgerService
+
+    SIS->>+LST: descontarStockDeLaEntrega(pedidoId)
+    LST->>+COL: get(pedidoId)
+    COL-->>-LST: pedido
+    LST->>+LED: existeMovimiento(pedido)
+    LED-->>-LST: existe
+    alt El pedido ya tiene movimientos de stock
+        LST-->>SIS: nadaQueHacer
+    else El pedido todavía no tiene movimientos de stock
+        LST->>+PED: getVehiculo()
+        PED-->>-LST: vehiculo
+        LST->>+VEH: getCargaAbierta()
+        VEH-->>-LST: carga
+        alt El vehículo tiene una carga abierta
+            LST->>+VEH: getUbicacionDeStock()
+            VEH-->>-LST: ubicacionDeStock
+        else El vehículo no tiene una carga abierta
+            LST->>+DIS: getDepositoPredeterminado()
+            DIS-->>-LST: ubicacionDeStock
+        end
+        LST->>PED: getItems()
+        loop Por cada ítem del pedido
+            LST->>+ITP: getCantidad()
+            ITP-->>-LST: cantidad
+            Note over LST,LED: Llenas que salen hacia el cliente y vacías que se reciben, una a una: ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo de la ubicación de origen
+            LST->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+            alt La ubicación de origen tiene las llenas
+                LED-->>-LST: aplicado
+            else El camión con carga abierta no alcanza lo entregado
+                LED-->>LST: saldoInsuficiente
+                LST-->>SIS: saldoInsuficiente
+            end
+        end
+    end
+    deactivate LST

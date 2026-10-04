@@ -11,7 +11,7 @@ classDiagram
 
     class PaymentGatewayPort {
         <<interface>>
-        + createCheckout(pedido: Pedido, items: ItemPedido[*], pagador: Cadena): Cadena
+        + createCheckout(pedido: Pedido, items: Registro, pagador: Cadena): Cadena
         + getPayment(identificadorDelPago: Identificador): Cadena
         + refundPayment(pago: Pago, importe: Moneda): Cadena
         + verifyWebhookSignature(firma: Cadena, identificadorDelPago: Identificador): Booleano
@@ -27,11 +27,6 @@ classDiagram
         + notificarResultadoDePago(tipoDeNotificacion: Cadena, identificadorDelPago: Cadena, firma: Cadena)
     }
 
-    class RefundPaymentUseCase {
-        <<controlador>>
-        + reintegrarPagoDelPedido(pedidoId: Identificador, importe: Moneda): Booleano
-    }
-
     class ReservationService {
         <<fachada>>
         + activarReservasDelDia()
@@ -44,6 +39,9 @@ classDiagram
     class Map_String_Pedido["Map<String, Pedido>"] {
         <<colección>>
     }
+    class NotificationPort {
+        <<interface>>
+    }
     class RealtimeDispatchPort {
         <<interface>>
     }
@@ -52,11 +50,10 @@ classDiagram
     }
     class Pedido
     class Pago
-    class NotificationPort {
-        <<interface>>
-    }
 
     ConfirmPaymentUseCase --> "1" Map_String_Pedido : map<String, Pedido>
+    ConfirmPaymentUseCase --> "1" NotificationPort : notificationPort
+    ConfirmPaymentUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
     PaymentsService --> "1" Map_String_Pedido : map<String, Pedido>
     PaymentsService --> "1" PaymentGatewayPort : paymentGatewayPort
     RefundPaymentUseCase --> "1" Map_String_Pedido : map<String, Pedido>
@@ -64,11 +61,9 @@ classDiagram
     RefundPaymentUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
     ReservationService --> "1" List_Pedido : list<Pedido>
     ReservationService --> "1" Map_String_Pedido : map<String, Pedido>
-    ConfirmPaymentUseCase ..> NotificationPort
     ConfirmPaymentUseCase ..> Pago
     ConfirmPaymentUseCase ..> PaymentGatewayPort
     ConfirmPaymentUseCase ..> Pedido
-    ConfirmPaymentUseCase ..> RealtimeDispatchPort
     PaymentsService ..> Pago : create
     PaymentsService ..> Pedido
     RefundPaymentUseCase ..> Pago

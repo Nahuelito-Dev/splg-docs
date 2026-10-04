@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-206 Registrar un Movimiento de Neumático · registrarMovimientoDeNeumatico
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TireService
+    participant CON as :Map#lt;String, Neumatico#gt;
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant NEU as neumatico:Neumatico
+
+    ADM->>+SRV: registrarMovimientoDeNeumatico(neumaticoId, datos)
+    SRV->>+CON: get(neumaticoId)
+    CON-->>-SRV: neumatico
+    opt El movimiento es un montaje
+        SRV->>+COV: get(vehiculoId)
+        COV-->>-SRV: vehiculo
+    end
+    SRV->>+NEU: registrarMovimiento(datos, vehiculo)
+    NEU->>NEU: validarTransicion(estadoDestino)
+    create participant MOV as :MovimientoNeumatico
+    NEU->>MOV: «create»(datos)
+    NEU-->>-SRV: movimientoNeumatico
+    SRV-->>-ADM: movimientoNeumatico

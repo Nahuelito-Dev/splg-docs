@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-245 Consultar el Tablero Financiero · consultarTableroFinanciero
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FinanceDashboardService
+    participant CAJS as :List#lt;Caja#gt;
+    participant RENS as :List#lt;RendicionChofer#gt;
+    participant CUES as :List#lt;CuentaCorriente#gt;
+    participant ASIS as :List#lt;AsientoComision#gt;
+
+    ADM->>+SRV: consultarTableroFinanciero(fecha)
+    SRV->>+CAJS: getActivas()
+    CAJS-->>-SRV: cajas
+    SRV->>+RENS: getPendientes(fecha)
+    RENS-->>-SRV: rendiciones
+    SRV->>+CUES: getConSaldo()
+    CUES-->>-SRV: cuentas
+    SRV->>+ASIS: getSinLiquidar()
+    ASIS-->>-SRV: comisiones
+    SRV-->>-ADM: tablero

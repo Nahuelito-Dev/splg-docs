@@ -39,7 +39,7 @@ no está en la base.
 
 > Este cuadro describe el cambio del 24/09 al 25/09. Migraciones posteriores agregaron
 > `maintenance_task_attachment`, `vehicle_assignment` y columnas de zona de cobertura y de pedido; el total
-> actual es 40 tablas, 93 claves foráneas y 34 tipos enumerados, todas declaradas —
+> actual es 43 tablas, 96 claves foráneas y 35 tipos enumerados, todas declaradas —
 > ver `diagramas/base-de-datos/SPLG-modelo-de-datos.md`, que se regenera desde la base
 > en ejecución y nunca queda desactualizado.
 

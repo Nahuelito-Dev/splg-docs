@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-205 Registrar un Neumático · registrarNeumatico
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TireService
+    participant CON as :Map#lt;String, Neumatico#gt;
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: registrarNeumatico(datos)
+    SRV->>+CON: containsKey(serie)
+    CON-->>-SRV: existe
+    SRV->>+DIS: registrarNeumatico(datos)
+    create participant NEU as nuevo:Neumatico
+    DIS->>NEU: «create»(datos)
+    DIS-->>-SRV: neumatico
+    SRV-->>-ADM: neumatico

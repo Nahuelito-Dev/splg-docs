@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSS — CU-181 Registrar el Egreso de un Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
+    activate SIS
+    alt el empleado está activo y la fecha es válida
+        SIS-->>ADM: legajo egresado, cuenta bloqueada y vehículo liberado si era chofer
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el empleado ya está egresado
+        SIS-->>ADM: conflicto
+    else la fecha es anterior a la de ingreso
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS
+
+    ADM->>SIS: reingresarEmpleado(empleadoId, fechaDeIngreso)
+    activate SIS
+    alt el empleado está egresado
+        SIS-->>ADM: legajo activo con la fecha de ingreso nueva
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el empleado no está egresado
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

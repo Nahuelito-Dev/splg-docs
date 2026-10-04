@@ -51,6 +51,9 @@ rectangle "SS-03 Despacho y Asignación" {
   usecase "Notificar Cliente" as F_AVISO <<factorizado>> #back:FFFFFF;line:7B4B8A
 }
 
+usecase "CU-246\nVerificar la Habilitación\nLaboral del Chofer\n(SS-19)" as U246 <<planificado>> #back:FFFFFF;line:6B7683
+usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer\n(SS-08)" as U248 <<planificado>> #back:FFFFFF;line:6B7683
+
 A02 -[#2E7D46]- U015
 A02 -[#2E7D46]- U016
 A02 -[#2E7D46]- U107
@@ -65,6 +68,12 @@ A05 --|> A03
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U149 ..> U015 : <<include>>
 U015 ..> F_AVISO : <<include>>
+U012 ..> U246 : <<include>>
+U013 ..> U246 : <<include>>
+U015 ..> U246 : <<include>>
+U012 ..> U248 : <<include>>
+U013 ..> U248 : <<include>>
+U015 ..> U248 : <<include>>
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
 U014 ..> U013 : <<extend>>

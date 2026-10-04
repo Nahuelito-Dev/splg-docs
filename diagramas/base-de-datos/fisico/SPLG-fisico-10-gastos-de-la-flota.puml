@@ -1,0 +1,155 @@
+@startuml
+title Modelo físico — Gastos de la flota
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+skinparam linetype polyline
+
+entity "fuel_load" as e_fuel_load <<propuesto>> {
+  {field} <color:#1F5E8C>**fuel_load_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//car_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>loaded_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>fuel_type : fuel_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>liters : numeric(10,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>unit_price : numeric(12,3) * <<propuesto>></color>
+  {field} <color:#1F5E8C>total_amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>odometer_km : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>is_full_tank : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>station : varchar(120) <<propuesto>></color>
+  {field} <color:#1F5E8C>payment_method : fuel_payment_method_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>receipt_number : varchar(40) <<propuesto>></color>
+  {field} <color:#1F5E8C>cash_movement_id : uuid <<propuesto>></color>
+  {field} <color:#1F5E8C>anomaly : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
+  {field} <color:#1F5E8C>//created_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+}
+entity "tire" as e_tire <<propuesto>> {
+  {field} <color:#1F5E8C>**tire_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//car_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>serial : varchar(40) * <<propuesto>></color>
+  {field} <color:#1F5E8C>brand : varchar(60) * <<propuesto>></color>
+  {field} <color:#1F5E8C>size : varchar(30) * <<propuesto>></color>
+  {field} <color:#1F5E8C>cost : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>status : tire_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>position : varchar(6) <<propuesto>></color>
+  {field} <color:#1F5E8C>mounted_odometer_km : integer <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "traffic_fine" as e_traffic_fine <<propuesto>> {
+  {field} <color:#1F5E8C>**fine_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//car_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>jurisdiction : varchar(80) * <<propuesto>></color>
+  {field} <color:#1F5E8C>act_number : varchar(40) * <<propuesto>></color>
+  {field} <color:#1F5E8C>infraction : text * <<propuesto>></color>
+  {field} <color:#1F5E8C>amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>voluntary_payment_amount : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>due_date : date <<propuesto>></color>
+  {field} <color:#1F5E8C>status : traffic_fine_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>paid_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>paid_amount : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>charged_to_employee : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>cash_movement_id : uuid <<propuesto>></color>
+  {field} <color:#1F5E8C>void_reason : text <<propuesto>></color>
+  {field} <color:#1F5E8C>alerted_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "vehicle_accident" as e_vehicle_accident <<propuesto>> {
+  {field} <color:#1F5E8C>**accident_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//car_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>location : geometry(Point,4326) <<propuesto>></color>
+  {field} <color:#1F5E8C>address : text <<propuesto>></color>
+  {field} <color:#1F5E8C>description : text * <<propuesto>></color>
+  {field} <color:#1F5E8C>injuries : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>third_parties_involved : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>hazmat_release : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>police_report_number : varchar(40) <<propuesto>></color>
+  {field} <color:#1F5E8C>insurer_claim_number : varchar(40) <<propuesto>></color>
+  {field} <color:#1F5E8C>status : vehicle_accident_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>vehicle_unusable : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>repair_cost : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>insurer_reimbursement : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>deductible_amount : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>closed_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "tire_event" as e_tire_event <<propuesto>> {
+  {field} <color:#1F5E8C>**event_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//tire_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//car_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>event_type : tire_event_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>odometer_km : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>position : varchar(6) <<propuesto>></color>
+  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>//created_by_user_id// : uuid <<FK>> <<propuesto>></color>
+}
+entity "car" as e_car #F1F1F1 {
+}
+entity "employee" as e_employee #F1F1F1 {
+}
+entity "user" as e_user #F1F1F1 {
+}
+
+e_car ||--o{ e_fuel_load #line:1F5E8C;text:1F5E8C : car_id
+e_employee |o--o{ e_fuel_load #line:1F5E8C;text:1F5E8C : employee_id
+e_user |o--o{ e_fuel_load #line:1F5E8C;text:1F5E8C : created_by_user_id
+e_car |o--o{ e_tire #line:1F5E8C;text:1F5E8C : car_id
+e_car ||--o{ e_traffic_fine #line:1F5E8C;text:1F5E8C : car_id
+e_employee |o--o{ e_traffic_fine #line:1F5E8C;text:1F5E8C : employee_id
+e_car ||--o{ e_vehicle_accident #line:1F5E8C;text:1F5E8C : car_id
+e_employee |o--o{ e_vehicle_accident #line:1F5E8C;text:1F5E8C : employee_id
+e_tire ||--o{ e_tire_event #line:1F5E8C;text:1F5E8C : tire_id
+e_car |o--o{ e_tire_event #line:1F5E8C;text:1F5E8C : car_id
+e_user |o--o{ e_tire_event #line:1F5E8C;text:1F5E8C : created_by_user_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

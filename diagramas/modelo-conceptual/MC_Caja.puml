@@ -1,0 +1,90 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class Caja {
+  nombre
+  tipo
+  saldo
+  requiere sesión
+  activa
+}
+class SesionDeCaja {
+  estado
+  abierta el
+  monto inicial
+  cerrada el
+  monto esperado
+  monto contado
+  diferencia
+  observaciones
+}
+class CategoriaDeCaja {
+  nombre
+  sentido
+  código de sistema
+  activa
+}
+class MovimientoDeCaja {
+  sentido
+  importe
+  medio
+  fecha
+  descripción
+  origen
+}
+class Distribuidora <<referencia>>
+class RendicionChofer <<referencia>>
+class AsientoCuentaCorriente <<referencia>>
+class LiquidacionComisiones <<referencia>>
+
+
+Distribuidora "1" *-- "0..*" Caja : define >
+Distribuidora "1" *-- "0..*" CategoriaDeCaja : define >
+Caja "1" *-- "0..*" SesionDeCaja : registra >
+Caja "1" *-- "0..*" MovimientoDeCaja : asienta >
+SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja : agrupa >
+CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja : clasifica >
+MovimientoDeCaja "0..1" -- "0..1" MovimientoDeCaja : anula a >
+RendicionChofer "0..*" -- "0..1" Caja : ingresa en >
+RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera >
+AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en >
+LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja : se paga con >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

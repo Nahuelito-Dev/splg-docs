@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-230 Gestionar las Categorías de Ingresos y Gastos · crearCategoriaDeCaja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashCategoryService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: crearCategoriaDeCaja(nombre, sentido)
+    SRV->>+DIS: crearCategoriaDeCaja(nombre, sentido)
+    DIS->>DIS: validarCategoriaNueva(nombre, sentido)
+    create participant NCT as nueva:CategoriaDeCaja
+    DIS->>NCT: «create»(nombre, sentido)
+    DIS-->>-SRV: categoria
+    SRV-->>-ADM: categoria

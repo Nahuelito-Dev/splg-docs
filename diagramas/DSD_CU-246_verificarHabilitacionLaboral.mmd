@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSD — CU-246 Verificar la Habilitación Laboral del Chofer · verificarHabilitacionLaboral
+    autonumber
+    participant SRV as :DispatchOrchestratorService
+    participant FLK as :FleetDispatchLockService
+    participant CHO as chofer:Chofer
+    participant EMP as empleado:Empleado
+    participant LIC as licencia:LicenciaLaboral
+    participant TAR as tarea:TareaMantenimiento
+
+    Note over SRV,FLK: Caso incluido desde CU-012, CU-013 y CU-015
+    SRV->>+FLK: verificarHabilitacionLaboral(chofer)
+    FLK->>+CHO: getEmpleado()
+    CHO-->>-FLK: empleado
+    opt El chofer tiene legajo
+        FLK->>+EMP: estaActivo()
+        EMP-->>-FLK: activo
+        FLK->>+EMP: getLicenciasAprobadas()
+        loop Por cada licencia aprobada
+            EMP->>LIC: cubre(hoy)
+        end
+        EMP-->>-FLK: licencias
+        FLK->>+EMP: getTareasBloqueantesVencidas()
+        loop Por cada tarea bloqueante abierta
+            EMP->>TAR: estaVencida()
+        end
+        EMP-->>-FLK: tareas
+    end
+    FLK-->>-SRV: habilitado

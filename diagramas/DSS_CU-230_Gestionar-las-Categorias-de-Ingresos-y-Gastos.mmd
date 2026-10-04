@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSS — CU-230 Gestionar las Categorías de Ingresos y Gastos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt Alta de la categoría
+        ADM->>SIS: crearCategoriaDeCaja(nombre, sentido)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: categoría creada
+        else ya existe una categoría con ese nombre y sentido
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    else Modificación o baja de la categoría
+        ADM->>SIS: modificarCategoriaDeCaja(categoriaId, datos)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: categoría con los datos nuevos
+        else la categoría es de sistema
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    end

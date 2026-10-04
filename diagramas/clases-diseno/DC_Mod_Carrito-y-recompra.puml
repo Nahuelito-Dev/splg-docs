@@ -90,10 +90,10 @@ class "List<Cliente>" as List_Cliente <<referencia>>
 class "List<InvitacionRecompra>" as List_InvitacionRecompra <<referencia>>
 class "Map<String, InvitacionRecompra>" as Map_String_InvitacionRecompra <<referencia>>
 class NotificationsService <<referencia>>
-class Carrito <<referencia>>
 class Producto <<referencia>>
-class Cliente <<referencia>>
 class InvitacionRecompra <<referencia>>
+class Carrito <<referencia>>
+class Cliente <<referencia>>
 
 CartService --> "1" Map_String_Producto
 ConsumptionService --> "1" ConsumptionEstimatorService

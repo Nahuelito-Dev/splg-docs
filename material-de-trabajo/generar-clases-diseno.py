@@ -73,13 +73,35 @@ VISTAS_MODULOS = [
     ("Flota: planificador de mantenimiento", "Flota-planificador",
      ["=FleetMaintenancePlannerService", "=DemandForecastService", "=FleetCoverageService",
       "=FleetAvailabilityPort", "=Map<String, PropuestaVentanaTaller>"]),
+    ("Personal: puestos, legajos, jornadas y licencias", "Personal",
+     ["employee", "=Map<String, Empleado>", "=Map<String, PuestoDeTrabajo>", "=Map<String, JornadaDeTrabajo>",
+      "=Map<String, LicenciaLaboral>", "=List<Empleado>", "=List<JornadaDeTrabajo>", "=List<LicenciaLaboral>"]),
+    ("Adjuntos", "Adjuntos", ["attachment"]),
     ("Envases", "Envases", ["=CylinderService", "=Map<String, Envase>"]),
     ("Recupero de envases", "Recupero",
      ["=CylinderRecoveryService", "=DepositLedgerService", "=Map<String, AvisoRecupero>",
       "=Map<String, CasoRecupero>"]),
+    ("Flota: gastos, multas y siniestros", "Flota-gastos",
+     ["fleet-expense", "=Map<String, Empleado>", "=FleetCostReportService", "=List<Vehiculo>"]),
     ("Reclamos, incidencias y calificaciones", "Posventa", ["claims", "incident", "rating"]),
     ("Notificaciones y correo", "Notificaciones", ["notifications", "email"]),
     ("Reportes, salud y almacenamiento", "Soporte", ["reports", "health", "redis", "storage"]),
+    ("Stock", "Stock", ["stock"]),
+    ("Compras", "Compras", ["purchase"]),
+    ("Carga del camión", "Carga-del-camion", ["truck-load"]),
+    ("Caja: cajas, sesiones y libro", "Caja",
+     ["=CashBoxService", "=CashLedgerService", "=CashCategoryService", "=FinanceDashboardService",
+      "=Map<String, Caja>", "=Map<String, SesionDeCaja>", "=Map<String, CategoriaDeCaja>",
+      "=Map<String, MovimientoDeCaja>", "=List<Caja>"]),
+    ("Rendición del chofer", "Rendicion",
+     ["=DriverSettlementService", "=DriverSettlementCron", "=SettlementOverdueCron",
+      "=Map<String, RendicionChofer>", "=List<RendicionChofer>"]),
+    ("Cuentas corrientes", "Cuentas-corrientes",
+     ["=CustomerAccountService", "=Map<String, CuentaCorriente>", "=List<CuentaCorriente>",
+      "=List<AsientoCuentaCorriente>"]),
+    ("Comisiones y liquidaciones", "Comisiones",
+     ["=CommissionService", "=Map<String, ReglaComision>", "=Map<String, LiquidacionComisiones>", "=Map<String, Empleado>",
+      "=List<ReglaComision>", "=List<AsientoComision>"]),
 ]
 
 # Vistas de dominio: el foco lleva atributos y operaciones; la referencia, sólo el nombre.
@@ -108,11 +130,38 @@ VISTAS_DOMINIO = [
     ("Productos y envases", "Productos-y-envases",
      ["Producto", "Promocion", "Envase", "MovimientoEnvase", "RevisionEnvase"],
      ["Distribuidora", "Cliente", "Pedido", "Usuario"]),
+    ("Personal", "Personal",
+     ["PuestoDeTrabajo", "Empleado", "JornadaDeTrabajo", "LicenciaLaboral", "Adjunto"],
+     ["Distribuidora", "Usuario", "TareaMantenimiento", "Chofer"]),
     ("Recupero de envases", "Recupero",
      ["CasoRecupero", "AvisoRecupero"],
      ["Envase", "Cliente", "Usuario"]),
     ("Posventa", "Posventa", ["Calificacion", "Incidencia", "Reclamo"],
      ["Usuario", "Pedido", "Cliente"]),
+    ("Gastos de la flota", "Gastos-de-flota",
+     ["CargaCombustible", "MultaTransito", "Siniestro", "Neumatico", "MovimientoNeumatico"],
+     ["Vehiculo", "Empleado", "Distribuidora"]),
+    ("Stock físico", "Stock-fisico",
+     ["Deposito", "UbicacionDeStock", "SaldoDeStock", "MovimientoDeStock", "UmbralDeStock",
+      "AjusteDeStock", "ItemAjusteDeStock"],
+     ["Producto", "Vehiculo", "Usuario", "Distribuidora"]),
+    ("Carga del camión", "Carga-del-camion", ["CargaDeCamion", "ItemCarga"],
+     ["Vehiculo", "Chofer", "UbicacionDeStock", "Producto", "Usuario", "Pedido"]),
+    ("Compras", "Compras",
+     ["Proveedor", "OrdenDeCompra", "ItemOrdenDeCompra", "RecepcionDeCompra", "ItemRecepcion"],
+     ["Deposito", "Producto", "Usuario", "Distribuidora"]),
+    ("Caja y movimientos", "Caja",
+     ["Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja"],
+     ["Distribuidora", "RendicionChofer", "AsientoCuentaCorriente", "LiquidacionComisiones"]),
+    ("Rendición del chofer", "Rendicion",
+     ["RendicionChofer", "PedidoRendido", "GastoDeRendicion"],
+     ["Chofer", "Empleado", "Pedido", "Caja", "MovimientoDeCaja", "CategoriaDeCaja", "AsientoComision"]),
+    ("Cuentas corrientes", "Cuentas-corrientes",
+     ["CuentaCorriente", "AsientoCuentaCorriente", "ImputacionCuentaCorriente"],
+     ["Cliente", "Distribuidora", "Pedido", "MovimientoDeCaja", "Chofer", "RendicionChofer"]),
+    ("Comisiones y liquidaciones", "Comisiones",
+     ["ReglaComision", "AsientoComision", "LiquidacionComisiones"],
+     ["Empleado", "Chofer", "Producto", "Pedido", "MovimientoDeCaja", "Distribuidora", "RendicionChofer"]),
 ]
 _cubiertas = [c for _, _, f, _ in VISTAS_DOMINIO for c in f]
 assert sorted(_cubiertas) == sorted(M.CLASES), "las vistas de dominio no cubren las clases del MC"
@@ -123,8 +172,10 @@ AREAS_PAQUETES = [
     ("Negocio", ["order", "payments", "cart", "customer", "user-address", "repurchase", "claims",
                  "incident", "rating", "reports", "time-slot", "coverage-zone", "gascylinder",
                  "cylinder", "distributor"]),
-    ("Flota y despacho", ["delivery", "car", "fleet", "gateways"]),
+    ("Flota y despacho", ["delivery", "car", "fleet", "fleet-expense", "gateways"]),
+    ("Personal", ["employee", "attachment"]),
     ("Soporte", ["notifications", "email", "redis", "storage", "health"]),
+    ("Stock y compras", ["stock", "purchase", "truck-load"]),
 ]
 
 CAB = f"""skinparam backgroundColor #FFFFFF
@@ -362,7 +413,7 @@ def clases_de_vista(modulos):
                 r.append(m[1:])
             continue
         r += [n for n, cl in dc.clases.items() if cl.tipo != "dominio" and cl.modulo == m]
-    return r
+    return list(collections.OrderedDict.fromkeys(r))   # una clase nombrada y de su módulo se declara una sola vez
 
 
 def vista_modulo(titulo, propias):
@@ -427,7 +478,7 @@ def vista_paquetes():
     usados = {m for k in deps for m in k} | {c.modulo for c in dc.clases.values() if c.modulo}
     lin = ["@startuml", CAB, "skinparam nodesep 30", "skinparam ranksep 70",
            "skinparam package {", "  BackgroundColor #FFFFFF", "}"]
-    colores = {"Acceso": "#EEF3F8", "Negocio": "#F7F3E8", "Flota y despacho": "#EEF5EF", "Soporte": "#F2F2F2"}
+    colores = {"Acceso": "#EEF3F8", "Negocio": "#F7F3E8", "Flota y despacho": "#EEF5EF", "Personal": "#F5EEF3", "Soporte": "#F2F2F2", "Stock y compras": "#F4EEF7"}
     for area, mods in AREAS_PAQUETES:
         lin.append(f'package "{area}" as area_{ident(area)} {colores[area]} {{')
         for m in mods:

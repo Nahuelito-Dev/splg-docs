@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSS — CU-213 Registrar un Ajuste o una Merma de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt registro de un ajuste
+        ADM->>SIS: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
+        activate SIS
+        alt el ajuste es válido
+            SIS-->>ADM: ajuste registrado, con su número
+        else la nota está vacía o un saldo quedaría negativo
+            SIS-->>ADM: solicitud inválida, con el detalle
+        else la ubicación no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt consulta de los ajustes
+        ADM->>SIS: consultarAjustesDeStock(desde, hasta, motivo)
+        activate SIS
+        SIS-->>ADM: ajustes del período
+        deactivate SIS
+    end

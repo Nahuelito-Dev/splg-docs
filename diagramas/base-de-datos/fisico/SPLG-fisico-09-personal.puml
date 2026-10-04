@@ -1,0 +1,140 @@
+@startuml
+title Modelo físico — Personal
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+skinparam linetype polyline
+
+entity "job_position" as e_job_position <<propuesto>> {
+  {field} <color:#1F5E8C>**position_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>name : varchar(80) * <<propuesto>></color>
+  {field} <color:#1F5E8C>category : job_position_category_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+}
+entity "attachment" as e_attachment {
+  {field} **attachment_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} owner_type : attachment_owner_type_enum *
+  {field} owner_id : uuid *
+  {field} label : varchar(80)
+  {field} storage_key : varchar(255) *
+  {field} original_name : varchar(255) *
+  {field} mime_type : varchar(100) *
+  {field} size_bytes : integer *
+  {field} //uploaded_by_user_id// : uuid * <<FK>>
+  {field} uploaded_at : timestamptz *
+}
+entity "employee" as e_employee <<propuesto>> {
+  {field} <color:#1F5E8C>**employee_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//position_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>file_number : varchar(20) * <<propuesto>></color>
+  {field} <color:#1F5E8C>first_name : varchar(80) * <<propuesto>></color>
+  {field} <color:#1F5E8C>last_name : varchar(80) * <<propuesto>></color>
+  {field} <color:#1F5E8C>document_type : employee_document_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>document_number : varchar(20) * <<propuesto>></color>
+  {field} <color:#1F5E8C>cuil : varchar(11) <<propuesto>></color>
+  {field} <color:#1F5E8C>birth_date : date <<propuesto>></color>
+  {field} <color:#1F5E8C>address_line : varchar(200) <<propuesto>></color>
+  {field} <color:#1F5E8C>city : varchar(80) <<propuesto>></color>
+  {field} <color:#1F5E8C>province : varchar(80) <<propuesto>></color>
+  {field} <color:#1F5E8C>postal_code : varchar(10) <<propuesto>></color>
+  {field} <color:#1F5E8C>phone : varchar(30) <<propuesto>></color>
+  {field} <color:#1F5E8C>personal_email : varchar(120) <<propuesto>></color>
+  {field} <color:#1F5E8C>emergency_contact_name : varchar(120) <<propuesto>></color>
+  {field} <color:#1F5E8C>emergency_contact_phone : varchar(30) <<propuesto>></color>
+  {field} <color:#1F5E8C>emergency_contact_relationship : varchar(40) <<propuesto>></color>
+  {field} <color:#1F5E8C>hire_date : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>termination_date : date <<propuesto>></color>
+  {field} <color:#1F5E8C>termination_reason : employee_termination_reason_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>employment_type : employment_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>status : employee_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>bank_cbu : varchar(22) <<propuesto>></color>
+  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+}
+entity "employee_attendance" as e_employee_attendance <<propuesto>> {
+  {field} <color:#1F5E8C>**attendance_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>work_date : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>check_in_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>check_out_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>source : attendance_source_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>//recorded_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "employee_leave" as e_employee_leave <<propuesto>> {
+  {field} <color:#1F5E8C>**leave_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>type : employee_leave_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>start_date : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>end_date : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>days : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>status : employee_leave_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>reason : text <<propuesto>></color>
+  {field} <color:#1F5E8C>rejection_reason : text <<propuesto>></color>
+  {field} <color:#1F5E8C>//requested_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//decided_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>decided_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "user" as e_user #F1F1F1 {
+}
+
+e_user ||--o{ e_attachment : uploaded_by_user_id
+e_user |o--o| e_employee #line:1F5E8C;text:1F5E8C : user_id
+e_job_position ||--o{ e_employee #line:1F5E8C;text:1F5E8C : position_id
+e_employee ||--o{ e_employee_attendance #line:1F5E8C;text:1F5E8C : employee_id
+e_user |o--o{ e_employee_attendance #line:1F5E8C;text:1F5E8C : recorded_by_user_id
+e_employee ||--o{ e_employee_leave #line:1F5E8C;text:1F5E8C : employee_id
+e_user |o--o{ e_employee_leave #line:1F5E8C;text:1F5E8C : requested_by_user_id
+e_user |o--o{ e_employee_leave #line:1F5E8C;text:1F5E8C : decided_by_user_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

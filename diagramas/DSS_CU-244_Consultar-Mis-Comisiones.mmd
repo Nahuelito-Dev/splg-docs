@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-244 Consultar Mis Comisiones
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHF->>SIS: consultarMisComisiones(fechaDesde, fechaHasta)
+    activate SIS
+    SIS-->>CHF: comisiones del período y saldo sin liquidar
+    deactivate SIS

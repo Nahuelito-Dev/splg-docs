@@ -20,6 +20,10 @@ skinparam class<<propuesto>> {
   BorderColor #1F5E8C
   BackgroundColor #E4EDF4
 }
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
 skinparam legendBackgroundColor #FFFFFF
 skinparam legendBorderColor #2C4257
 

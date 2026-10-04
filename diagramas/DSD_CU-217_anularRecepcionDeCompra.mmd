@@ -1,0 +1,33 @@
+sequenceDiagram
+    title DSD — CU-217 Registrar la Recepción de una Compra · anularRecepcionDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseReceiptService
+    participant COL as :Map#lt;String, RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+    participant IRE as item:ItemRecepcion
+    participant LED as :StockLedgerService
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: anularRecepcionDeCompra(recepcionId, motivo)
+    SRV->>+COL: get(recepcionId)
+    COL-->>-SRV: recepcion
+    SRV->>+REC: getItems()
+    REC-->>-SRV: items
+    loop Por cada renglón de la recepción
+        SRV->>+IRE: getProducto()
+        IRE-->>-SRV: producto
+        Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock inverso y mueve el saldo del depósito
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        alt El depósito todavía tiene las llenas ingresadas
+            LED-->>-SRV: aplicado
+            SRV->>PRO: restarStock(llenasRecibidas)
+        else El depósito ya no tiene las llenas ingresadas
+            LED-->>SRV: saldoInsuficiente
+            SRV-->>ADM: conflicto
+        end
+    end
+    SRV->>+REC: anular(motivo)
+    REC->>REC: validarQueEstaConfirmada()
+    REC-->>-SRV: recepcion
+    SRV-->>-ADM: recepcion

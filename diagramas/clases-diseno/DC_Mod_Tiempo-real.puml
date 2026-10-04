@@ -73,8 +73,8 @@ class AdminGateway <<fabricación pura>> {
 class SocketIdentityService <<fabricación pura>> {
   + obtener(conexion: Registro): Registro
 }
-class Chofer <<referencia>>
 class Cliente <<referencia>>
+class Chofer <<referencia>>
 
 CustomersGateway --> "1" SocketIdentityService
 DriversGateway --> "1" AdminGateway

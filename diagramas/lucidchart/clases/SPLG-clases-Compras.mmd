@@ -1,0 +1,91 @@
+classDiagram
+    direction LR
+
+    %% Compras. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class SupplierService {
+        <<fachada>>
+        + actualizarProveedor(proveedorId: Identificador, datos: Registro): Proveedor
+        + consultarProveedores(termino: Cadena): Proveedor[*]
+        + darDeBajaProveedor(proveedorId: Identificador)
+        + registrarProveedor(razonSocial: Cadena, cuit: Cadena, tipo: Cadena, datosDeContacto: Registro, plazoDePago: Entero): Proveedor
+    }
+
+    class Map_String_Proveedor["Map<String, Proveedor>"] {
+        <<colección>>
+        + get(clave: Cadena): Proveedor
+    }
+
+    class PurchaseOrderService {
+        <<fachada>>
+        + cancelarOrdenDeCompra(ordenId: Identificador, motivo: Cadena): OrdenDeCompra
+        + consultarOrdenesDeCompra(estado: Cadena, proveedorId: Identificador, desde: FechaHora, hasta: FechaHora): OrdenDeCompra[*]
+        + emitirOrdenDeCompra(proveedorId: Identificador, depositoId: Identificador, items: Lista, fechaEsperada: Fecha): OrdenDeCompra
+        + enviarOrdenDeCompra(ordenId: Identificador): OrdenDeCompra
+    }
+
+    class List_OrdenDeCompra["List<OrdenDeCompra>"] {
+        <<colección>>
+        + buscar(estado: Cadena, proveedorId: Identificador, desde: FechaHora, hasta: FechaHora): OrdenDeCompra[*]
+    }
+
+    class Map_String_OrdenDeCompra["Map<String, OrdenDeCompra>"] {
+        <<colección>>
+        + get(clave: Cadena): OrdenDeCompra
+    }
+
+    class PurchaseReceiptService {
+        <<fachada>>
+        + anularRecepcionDeCompra(recepcionId: Identificador, motivo: Cadena): Booleano
+        + consultarRecepcionesDeCompra(proveedorId: Identificador, desde: FechaHora, hasta: FechaHora, estadoDePago: Cadena): RecepcionDeCompra[*]
+        + registrarRecepcionDeCompra(ordenId: Identificador, proveedorId: Identificador, depositoId: Identificador, tipoDeComprobante: Cadena, numeroDeComprobante: Cadena, items: Lista): RecepcionDeCompra
+    }
+
+    class Map_String_RecepcionDeCompra["Map<String, RecepcionDeCompra>"] {
+        <<colección>>
+        + get(clave: Cadena): RecepcionDeCompra
+    }
+
+    class List_RecepcionDeCompra["List<RecepcionDeCompra>"] {
+        <<colección>>
+        + buscar(proveedorId: Identificador, desde: FechaHora, hasta: FechaHora, estadoDePago: Cadena): RecepcionDeCompra[*]
+    }
+
+    class Proveedor
+    class OrdenDeCompra
+    class RecepcionDeCompra
+    class Map_String_Deposito["Map<String, Deposito>"] {
+        <<colección>>
+    }
+    class StockLedgerService {
+        <<fachada>>
+    }
+    class Distribuidora
+    class Deposito
+    class Producto
+    class ItemRecepcion
+
+    Map_String_Proveedor "1" o-- "0..*" Proveedor : elementos
+    List_OrdenDeCompra "1" o-- "0..*" OrdenDeCompra : elementos
+    Map_String_OrdenDeCompra "1" o-- "0..*" OrdenDeCompra : elementos
+    Map_String_RecepcionDeCompra "1" o-- "0..*" RecepcionDeCompra : elementos
+    List_RecepcionDeCompra "1" o-- "0..*" RecepcionDeCompra : elementos
+    PurchaseOrderService --> "1" List_OrdenDeCompra : list<OrdenDeCompra>
+    PurchaseOrderService --> "1" Map_String_OrdenDeCompra : map<String, OrdenDeCompra>
+    PurchaseReceiptService --> "1" List_RecepcionDeCompra : list<RecepcionDeCompra>
+    PurchaseReceiptService --> "1" Map_String_Deposito : map<String, Deposito>
+    PurchaseReceiptService --> "1" Map_String_RecepcionDeCompra : map<String, RecepcionDeCompra>
+    PurchaseReceiptService --> "1" StockLedgerService : stockLedgerService
+    SupplierService --> "1" Map_String_Proveedor : map<String, Proveedor>
+    List_OrdenDeCompra ..> OrdenDeCompra
+    List_RecepcionDeCompra ..> RecepcionDeCompra
+    PurchaseOrderService ..> Distribuidora
+    PurchaseOrderService ..> OrdenDeCompra
+    PurchaseOrderService ..> Proveedor
+    PurchaseReceiptService ..> Deposito
+    PurchaseReceiptService ..> ItemRecepcion
+    PurchaseReceiptService ..> Producto
+    PurchaseReceiptService ..> RecepcionDeCompra
+    SupplierService ..> Distribuidora
+    SupplierService ..> Proveedor

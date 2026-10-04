@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSS — CU-221 Registrar el Regreso del Camión
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: registrarRegresoDelCamion(cargaId, devueltos)
+    activate SIS
+    alt la carga está en ruta
+        SIS-->>CHO: lo declarado, lo esperado y la diferencia
+    else la carga no está en ruta
+        SIS-->>CHO: conflicto
+    else una cantidad es negativa
+        SIS-->>CHO: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS
+    Note over CHO,SIS: También lo inicia el Administrador (ACT-03)

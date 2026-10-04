@@ -1,0 +1,165 @@
+classDiagram
+    direction LR
+
+    %% Personal: puestos, legajos, jornadas y licencias. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class JobPositionService {
+        <<fachada>>
+        + consultarPuestosDeTrabajo()
+        + crearPuestoDeTrabajo(nombre: Cadena, categoria: Cadena): PuestoDeTrabajo
+        + eliminarPuestoDeTrabajo(puestoId: Identificador): Cadena
+        + modificarPuestoDeTrabajo(puestoId: Identificador, datos: Registro): PuestoDeTrabajo
+    }
+
+    class Map_String_PuestoDeTrabajo["Map<String, PuestoDeTrabajo>"] {
+        <<colección>>
+        + get(clave: Cadena): PuestoDeTrabajo
+    }
+
+    class EmployeeService {
+        <<fachada>>
+        + consultarDocumentacionDelEmpleado(empleadoId: Identificador): TareaMantenimiento[*]
+        + consultarEmpleado(empleadoId: Identificador)
+        + consultarEmpleados(filtros: Registro)
+        + consultarSaldoDeVacaciones(empleadoId: Identificador, anio: Entero): Entero
+        + eliminarEmpleado(empleadoId: Identificador): Cadena
+        + modificarEmpleado(empleadoId: Identificador, datos: Registro): Empleado
+        + registrarEmpleado(datos: Registro): Empleado
+        + reingresarEmpleado(empleadoId: Identificador, fechaDeIngreso: Fecha): Empleado
+    }
+
+    class CuilValidator {
+        <<fabricación pura>>
+        + esValido(cuil: Cadena)
+    }
+
+    class Map_String_Empleado["Map<String, Empleado>"] {
+        <<colección>>
+        + get(clave: Cadena): Empleado
+    }
+
+    class List_Empleado["List<Empleado>"] {
+        <<colección>>
+        + filtrar(filtros: Registro): Empleado[*]
+        + getActivosPorPuesto()
+    }
+
+    class TerminateEmployeeUseCase {
+        <<controlador>>
+        + registrarEgresoDelEmpleado(empleadoId: Identificador, fechaDeEgreso: Fecha, motivo: Cadena): Empleado
+    }
+
+    class GrantEmployeeAccountUseCase {
+        <<controlador>>
+        + otorgarCuentaDeAcceso(empleadoId: Identificador, correo: Cadena): Empleado
+    }
+
+    class AttendanceService {
+        <<fachada>>
+        + consultarAsistencias(desde: Fecha, hasta: Fecha)
+        + corregirAsistencia(asistenciaId: Identificador, datos: Registro, nota: Cadena): JornadaDeTrabajo
+        + registrarAsistencia(empleadoId: Identificador, ingreso: FechaHora, egreso: FechaHora): JornadaDeTrabajo
+        + registrarFinDeJornada()
+        + registrarInicioDeJornada()
+    }
+
+    class List_JornadaDeTrabajo["List<JornadaDeTrabajo>"] {
+        <<colección>>
+        + getAbiertasDeHoy()
+        + getEntre(desde: FechaHora, hasta: FechaHora): JornadaDeTrabajo[*]
+    }
+
+    class Map_String_JornadaDeTrabajo["Map<String, JornadaDeTrabajo>"] {
+        <<colección>>
+        + get(clave: Cadena): JornadaDeTrabajo
+    }
+
+    class LeaveService {
+        <<fachada>>
+        + aprobarLicencia(licenciaId: Identificador): LicenciaLaboral
+        + cancelarLicencia(licenciaId: Identificador): LicenciaLaboral
+        + consultarLicencias(estado: Cadena, desde: Fecha, hasta: Fecha)
+        + modificarLicencia(licenciaId: Identificador, datos: Registro): LicenciaLaboral
+        + rechazarLicencia(licenciaId: Identificador, motivo: Cadena): LicenciaLaboral
+        + registrarLicencia(empleadoId: Identificador, tipo: Cadena, desde: Fecha, hasta: Fecha, motivo: Cadena): LicenciaLaboral
+    }
+
+    class Map_String_LicenciaLaboral["Map<String, LicenciaLaboral>"] {
+        <<colección>>
+        + get(clave: Cadena): LicenciaLaboral
+    }
+
+    class List_LicenciaLaboral["List<LicenciaLaboral>"] {
+        <<colección>>
+        + filtrar(estado: Cadena, desde: FechaHora, hasta: FechaHora): LicenciaLaboral[*]
+        + getAprobadasQueCubren(hoy: Fecha)
+    }
+
+    class VacationPolicy {
+        <<fabricación pura>>
+        + diasCorrespondientes(fechaDeIngreso: Fecha, anio: Entero): Entero
+    }
+
+    class PersonnelDashboardService {
+        <<fachada>>
+        + consultarTableroDePersonal(): Entero
+    }
+
+    class PuestoDeTrabajo
+    class Empleado
+    class JornadaDeTrabajo
+    class LicenciaLaboral
+    class RegistroService {
+        <<fachada>>
+    }
+    class List_TareaMantenimiento["List<TareaMantenimiento>"] {
+        <<colección>>
+    }
+    class Distribuidora
+    class Chofer
+    class Usuario
+    class TareaMantenimiento
+
+    Usuario <|-- Chofer
+    Map_String_PuestoDeTrabajo "1" o-- "0..*" PuestoDeTrabajo : elementos
+    Map_String_Empleado "1" o-- "0..*" Empleado : elementos
+    List_Empleado "1" o-- "0..*" Empleado : elementos
+    List_JornadaDeTrabajo "1" o-- "0..*" JornadaDeTrabajo : elementos
+    Map_String_JornadaDeTrabajo "1" o-- "0..*" JornadaDeTrabajo : elementos
+    Map_String_LicenciaLaboral "1" o-- "0..*" LicenciaLaboral : elementos
+    List_LicenciaLaboral "1" o-- "0..*" LicenciaLaboral : elementos
+    AttendanceService --> "1" List_JornadaDeTrabajo : list<JornadaDeTrabajo>
+    AttendanceService --> "1" Map_String_Empleado : map<String, Empleado>
+    AttendanceService --> "1" Map_String_JornadaDeTrabajo : map<String, JornadaDeTrabajo>
+    EmployeeService --> "1" List_Empleado : list<Empleado>
+    EmployeeService --> "1" Map_String_Empleado : map<String, Empleado>
+    EmployeeService --> "1" Map_String_PuestoDeTrabajo : map<String, PuestoDeTrabajo>
+    EmployeeService --> "1" VacationPolicy : vacationPolicy
+    GrantEmployeeAccountUseCase --> "1" Map_String_Empleado : map<String, Empleado>
+    GrantEmployeeAccountUseCase --> "1" RegistroService : registroService
+    JobPositionService --> "1" Map_String_PuestoDeTrabajo : map<String, PuestoDeTrabajo>
+    LeaveService --> "1" List_LicenciaLaboral : list<LicenciaLaboral>
+    LeaveService --> "1" Map_String_Empleado : map<String, Empleado>
+    LeaveService --> "1" Map_String_LicenciaLaboral : map<String, LicenciaLaboral>
+    PersonnelDashboardService --> "1" List_Empleado : list<Empleado>
+    PersonnelDashboardService --> "1" List_JornadaDeTrabajo : list<JornadaDeTrabajo>
+    PersonnelDashboardService --> "1" List_LicenciaLaboral : list<LicenciaLaboral>
+    PersonnelDashboardService --> "1" List_TareaMantenimiento : list<TareaMantenimiento>
+    TerminateEmployeeUseCase --> "1" Map_String_Empleado : map<String, Empleado>
+    AttendanceService ..> Empleado
+    AttendanceService ..> JornadaDeTrabajo
+    AttendanceService ..> Usuario
+    Empleado ..> CuilValidator
+    EmployeeService ..> Distribuidora
+    EmployeeService ..> Empleado
+    EmployeeService ..> TareaMantenimiento
+    GrantEmployeeAccountUseCase ..> Empleado
+    GrantEmployeeAccountUseCase ..> PuestoDeTrabajo
+    JobPositionService ..> Distribuidora
+    JobPositionService ..> PuestoDeTrabajo
+    LeaveService ..> Empleado
+    LeaveService ..> LicenciaLaboral
+    TerminateEmployeeUseCase ..> Chofer
+    TerminateEmployeeUseCase ..> Empleado
+    TerminateEmployeeUseCase ..> Usuario

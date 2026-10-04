@@ -1,0 +1,188 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class JobPositionService <<fachada>> {
+  + consultarPuestosDeTrabajo()
+  + crearPuestoDeTrabajo(nombre: Cadena,\n      categoria: Cadena): PuestoDeTrabajo
+  + eliminarPuestoDeTrabajo(puestoId: Identificador): Cadena
+  + modificarPuestoDeTrabajo(puestoId: Identificador,\n      datos: Registro): PuestoDeTrabajo
+}
+class "Map<String, PuestoDeTrabajo>" as Map_String_PuestoDeTrabajo <<colección>> {
+  + get(clave: Cadena): PuestoDeTrabajo
+}
+class EmployeeService <<fachada>> {
+  + consultarDocumentacionDelEmpleado(empleadoId: Identificador): TareaMantenimiento[*]
+  + consultarEmpleado(empleadoId: Identificador)
+  + consultarEmpleados(filtros: Registro)
+  + consultarSaldoDeVacaciones(empleadoId: Identificador,\n      anio: Entero): Entero
+  + eliminarEmpleado(empleadoId: Identificador): Cadena
+  + modificarEmpleado(empleadoId: Identificador,\n      datos: Registro): Empleado
+  + registrarEmpleado(datos: Registro): Empleado
+  + reingresarEmpleado(empleadoId: Identificador,\n      fechaDeIngreso: Fecha): Empleado
+}
+class CuilValidator <<fabricación pura>> {
+  + esValido(cuil: Cadena)
+}
+class "Map<String, Empleado>" as Map_String_Empleado <<colección>> {
+  + get(clave: Cadena): Empleado
+}
+class "List<Empleado>" as List_Empleado <<colección>> {
+  + filtrar(filtros: Registro): Empleado[*]
+  + getActivosPorPuesto()
+}
+class TerminateEmployeeUseCase <<controlador>> {
+  + registrarEgresoDelEmpleado(empleadoId: Identificador,\n      fechaDeEgreso: Fecha, motivo: Cadena): Empleado
+}
+class GrantEmployeeAccountUseCase <<controlador>> {
+  + otorgarCuentaDeAcceso(empleadoId: Identificador,\n      correo: Cadena): Empleado
+}
+class AttendanceService <<fachada>> {
+  + consultarAsistencias(desde: Fecha, hasta: Fecha)
+  + corregirAsistencia(asistenciaId: Identificador,\n      datos: Registro, nota: Cadena): JornadaDeTrabajo
+  + registrarAsistencia(empleadoId: Identificador,\n      ingreso: FechaHora,\n      egreso: FechaHora): JornadaDeTrabajo
+  + registrarFinDeJornada()
+  + registrarInicioDeJornada()
+}
+class "List<JornadaDeTrabajo>" as List_JornadaDeTrabajo <<colección>> {
+  + getAbiertasDeHoy()
+  + getEntre(desde: FechaHora,\n      hasta: FechaHora): JornadaDeTrabajo[*]
+}
+class "Map<String, JornadaDeTrabajo>" as Map_String_JornadaDeTrabajo <<colección>> {
+  + get(clave: Cadena): JornadaDeTrabajo
+}
+class LeaveService <<fachada>> {
+  + aprobarLicencia(licenciaId: Identificador): LicenciaLaboral
+  + cancelarLicencia(licenciaId: Identificador): LicenciaLaboral
+  + consultarLicencias(estado: Cadena, desde: Fecha,\n      hasta: Fecha)
+  + modificarLicencia(licenciaId: Identificador,\n      datos: Registro): LicenciaLaboral
+  + rechazarLicencia(licenciaId: Identificador,\n      motivo: Cadena): LicenciaLaboral
+  + registrarLicencia(empleadoId: Identificador,\n      tipo: Cadena, desde: Fecha, hasta: Fecha,\n      motivo: Cadena): LicenciaLaboral
+}
+class "Map<String, LicenciaLaboral>" as Map_String_LicenciaLaboral <<colección>> {
+  + get(clave: Cadena): LicenciaLaboral
+}
+class "List<LicenciaLaboral>" as List_LicenciaLaboral <<colección>> {
+  + filtrar(estado: Cadena, desde: FechaHora,\n      hasta: FechaHora): LicenciaLaboral[*]
+  + getAprobadasQueCubren(hoy: Fecha)
+}
+class VacationPolicy <<fabricación pura>> {
+  + diasCorrespondientes(fechaDeIngreso: Fecha,\n      anio: Entero): Entero
+}
+class PersonnelDashboardService <<fachada>> {
+  + consultarTableroDePersonal(): Entero
+}
+class PuestoDeTrabajo <<referencia>>
+class Empleado <<referencia>>
+class JornadaDeTrabajo <<referencia>>
+class LicenciaLaboral <<referencia>>
+class RegistroService <<referencia>>
+class "List<TareaMantenimiento>" as List_TareaMantenimiento <<referencia>>
+class Distribuidora <<referencia>>
+class Chofer <<referencia>>
+class Usuario <<referencia>>
+class TareaMantenimiento <<referencia>>
+
+Map_String_PuestoDeTrabajo "1" o--> "0..*" PuestoDeTrabajo
+Map_String_Empleado "1" o--> "0..*" Empleado
+List_Empleado "1" o--> "0..*" Empleado
+List_JornadaDeTrabajo "1" o--> "0..*" JornadaDeTrabajo
+Map_String_JornadaDeTrabajo "1" o--> "0..*" JornadaDeTrabajo
+Map_String_LicenciaLaboral "1" o--> "0..*" LicenciaLaboral
+List_LicenciaLaboral "1" o--> "0..*" LicenciaLaboral
+AttendanceService --> "1" List_JornadaDeTrabajo
+AttendanceService --> "1" Map_String_Empleado
+AttendanceService --> "1" Map_String_JornadaDeTrabajo
+EmployeeService --> "1" List_Empleado
+EmployeeService --> "1" Map_String_Empleado
+EmployeeService --> "1" Map_String_PuestoDeTrabajo
+EmployeeService --> "1" VacationPolicy
+GrantEmployeeAccountUseCase --> "1" Map_String_Empleado
+GrantEmployeeAccountUseCase --> "1" RegistroService
+JobPositionService --> "1" Map_String_PuestoDeTrabajo
+LeaveService --> "1" List_LicenciaLaboral
+LeaveService --> "1" Map_String_Empleado
+LeaveService --> "1" Map_String_LicenciaLaboral
+PersonnelDashboardService --> "1" List_Empleado
+PersonnelDashboardService --> "1" List_JornadaDeTrabajo
+PersonnelDashboardService --> "1" List_LicenciaLaboral
+PersonnelDashboardService --> "1" List_TareaMantenimiento
+TerminateEmployeeUseCase --> "1" Map_String_Empleado
+AttendanceService ..> Empleado
+AttendanceService ..> JornadaDeTrabajo
+AttendanceService ..> Usuario
+EmployeeService ..> Distribuidora
+EmployeeService ..> Empleado
+EmployeeService ..> TareaMantenimiento
+GrantEmployeeAccountUseCase ..> Empleado
+GrantEmployeeAccountUseCase ..> PuestoDeTrabajo
+JobPositionService ..> Distribuidora
+JobPositionService ..> PuestoDeTrabajo
+LeaveService ..> Empleado
+LeaveService ..> LicenciaLaboral
+TerminateEmployeeUseCase ..> Chofer
+TerminateEmployeeUseCase ..> Empleado
+TerminateEmployeeUseCase ..> Usuario
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSS — CU-225 Gestionar las Cajas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt Alta de la caja
+        ADM->>SIS: crearCaja(nombre, tipo, requiereSesion)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: caja creada con saldo cero
+        else ya existe una caja con ese nombre
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    else Modificación de la caja
+        ADM->>SIS: modificarCaja(cajaId, datos)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: caja con los datos nuevos
+        else la caja tiene una sesión abierta y se pretende desactivarla
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    end

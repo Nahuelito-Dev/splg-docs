@@ -1,0 +1,59 @@
+sequenceDiagram
+    title DSS — CU-198 Registrar una Multa de Tránsito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarMultaDeTransito(vehiculoId, datos)
+    activate SIS
+    alt los datos son válidos y el acta no estaba registrada
+        SIS-->>ADM: multa registrada, pendiente, con el chofer deducido
+    else el vehículo no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else ya existe una multa con esa jurisdicción y ese número de acta
+        SIS-->>ADM: conflicto: multa ya registrada
+    else falta un dato o el importe no es positivo
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS
+
+    ADM->>SIS: modificarMultaDeTransito(multaId, datos)
+    activate SIS
+    alt la multa existe y no está pagada ni anulada
+        SIS-->>ADM: multa modificada
+    else la multa no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la multa está pagada o anulada
+        SIS-->>ADM: solicitud inválida: la multa no admite cambios
+    end
+    deactivate SIS
+
+    ADM->>SIS: anularMultaDeTransito(multaId, motivo)
+    activate SIS
+    alt la multa existe y no está pagada ni anulada
+        SIS-->>ADM: multa anulada
+    else la multa no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la multa está pagada o anulada
+        SIS-->>ADM: solicitud inválida: la multa no se puede anular
+    else falta el motivo
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS
+
+    ADM->>SIS: consultarMultasDeTransito(filtros)
+    activate SIS
+    SIS-->>ADM: multas que cumplen los filtros, con el total
+    deactivate SIS
+
+    Note over SAU,SIS: Se ejecuta una vez por día,<br/>a las 08:00 hora argentina
+    SAU->>SIS: avisarMultasPorVencer()
+    activate SIS
+    alt hay multas pendientes que vencen en siete días o menos, o ya vencidas, sin aviso
+        SIS-)ADM: notificarMultasPorVencer(multas)
+        SIS-->>SAU: avisos enviados
+    else no hay ninguna
+        SIS-->>SAU: el ciclo termina sin avisos
+    end
+    deactivate SIS

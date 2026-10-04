@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-189 Registrar la Asistencia de un Empleado · registrarAsistencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :AttendanceService
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+
+    ADM->>+SRV: registrarAsistencia(empleadoId, ingreso, egreso)
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>+EMP: registrarJornada(ingreso, egreso, origenDeJornada)
+    EMP->>EMP: assertActivo()
+    EMP->>EMP: assertSinJornadaAbierta()
+    create participant JOR as nueva:JornadaDeTrabajo
+    EMP->>JOR: «create»(ingreso, egreso, origenDeJornada)
+    EMP-->>-SRV: jornada
+    SRV-->>-ADM: jornada

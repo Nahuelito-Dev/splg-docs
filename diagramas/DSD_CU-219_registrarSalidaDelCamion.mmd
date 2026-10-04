@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-219 Registrar la Salida del Camión · registrarSalidaDelCamion
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SRV as :TruckLoadService
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+
+    CHO->>+SRV: registrarSalidaDelCamion(cargaId)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: salir(ahora)
+    CAR->>CAR: validarQueEstaCargando()
+    CAR-->>-SRV: carga
+    SRV-->>-CHO: carga
+    Note over CHO,SRV: También lo inicia el Administrador (ACT-03)

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-176 Gestionar los Puestos de Trabajo · crearPuestoDeTrabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :JobPositionService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: crearPuestoDeTrabajo(nombre, categoria)
+    SRV->>+DIS: crearPuesto(nombre, categoria)
+    DIS->>DIS: assertNombreDePuestoDisponible(nombre)
+    create participant PUE as puesto:PuestoDeTrabajo
+    DIS->>PUE: «create»(nombre, categoria)
+    DIS-->>-SRV: puesto
+    SRV-->>-ADM: puesto

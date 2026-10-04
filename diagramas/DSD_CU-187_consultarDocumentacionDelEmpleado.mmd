@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-187 Consultar los Vencimientos del Personal · consultarDocumentacionDelEmpleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :EmployeeService
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant TAR as tarea:TareaMantenimiento
+
+    ADM->>+SRV: consultarDocumentacionDelEmpleado(empleadoId)
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>+EMP: getTareas()
+    EMP-->>-SRV: tareas
+    loop Por cada tarea del empleado
+        SRV->>TAR: getEstadoDeVencimiento()
+    end
+    SRV->>+EMP: getPlanesFaltantes()
+    EMP-->>-SRV: planes
+    SRV->>+EMP: estaInhabilitado(tareas)
+    EMP-->>-SRV: inhabilitado
+    SRV-->>-ADM: tareas, planes faltantes y marca de inhabilitado

@@ -1,0 +1,40 @@
+sequenceDiagram
+    title DSS — CU-191 Registrar una Licencia o Ausencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)
+    activate SIS
+    alt el período no se superpone con otra licencia
+        SIS-->>ADM: licencia solicitada
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el empleado está egresado o el período se superpone con otra licencia
+        SIS-->>ADM: conflicto
+    else la fecha de fin es anterior a la de inicio
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS
+
+    ADM->>SIS: modificarLicencia(licenciaId, datos)
+    activate SIS
+    alt la licencia está solicitada y el período es válido
+        SIS-->>ADM: licencia modificada
+    else la licencia no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la licencia no está solicitada o el período se superpone
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+
+    ADM->>SIS: cancelarLicencia(licenciaId)
+    activate SIS
+    alt la licencia no está rechazada ni cancelada y no terminó
+        SIS-->>ADM: licencia cancelada
+    else la licencia no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la licencia ya estaba rechazada o cancelada, o ya terminó
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

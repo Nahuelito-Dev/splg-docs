@@ -1,0 +1,47 @@
+@startuml
+title Diagrama de estados — Empleado (planificado, I-11)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Activo\n(active)" as ACTIVE {
+  state "En servicio" as EN_SERVICIO
+  state "De licencia" as DE_LICENCIA
+  [*] --> EN_SERVICIO
+  EN_SERVICIO --> DE_LICENCIA : when(una licencia aprobada\ncubre el día de hoy)
+  DE_LICENCIA --> EN_SERVICIO : when(la licencia terminó)
+}
+state "Egresado\n(terminated)" as TERMINATED
+
+[*] --> ACTIVE : registrarEmpleado(datos)
+ACTIVE --> ACTIVE : modificarEmpleado(datos)
+ACTIVE --> TERMINATED : registrarEgresoDelEmpleado(fecha, motivo)
+TERMINATED --> ACTIVE : reingresarEmpleado(fechaDeIngreso)
+ACTIVE --> [*] : eliminarEmpleado()\n[alta errónea: sin jornadas ni documentos]
+
+note bottom of TERMINATED
+  El egreso bloquea la cuenta de acceso y, si era
+  chofer, lo deshabilita y libera su vehículo. El
+  reingreso no desbloquea la cuenta. Los datos
+  del legajo se conservan.
+end note
+note bottom of ACTIVE
+  «En servicio» y «De licencia» no se guardan: se
+  derivan de las licencias aprobadas. Un chofer
+  de licencia, con un documento bloqueante vencido
+  o egresado no recibe pedidos.
+end note
+@enduml

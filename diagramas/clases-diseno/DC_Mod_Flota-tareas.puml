@@ -64,6 +64,7 @@ class FleetTaskService <<fachada>> {
   + assertVehiculoHabilitado(vehiculo: Vehiculo)
   + cerrarTareaDeFlota(tareaId: Identificador, fecha: Fecha,\n      kilometraje: Entero, costo: Moneda,\n      observacion: Cadena): TareaMantenimiento
   + crearTareaDeFlota(planId: Identificador,\n      recursoId: Identificador, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
+  + crearTareaDelEmpleado(empleadoId: Identificador,\n      planId: Identificador, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
   + motivosDeInhabilitacionDeVehiculo(vehiculo: Vehiculo): Cadena[*]
 }
 class FleetAttachmentService <<fachada>> {
@@ -75,13 +76,15 @@ class FleetAttachmentService <<fachada>> {
 }
 class FleetExpirationsService <<fachada>> {
   + consultarVencimientosDeLaFlota(dias: Entero)
+  + consultarVencimientosDelPersonal(dias: Entero,\n      categoria: Cadena)
 }
 class FleetAlertsCron <<fachada>> {
   + avisarVencimientosPendientes()
 }
-class FleetDispatchLockService <<fabricación pura>> {
+class FleetDispatchLockService <<fachada>> {
   + assertChoferHabilitado(chofer: Chofer)
   + vehiculoEnUsoDelChofer(chofer: Chofer): Vehiculo
+  + verificarHabilitacionLaboral(chofer: Chofer): Booleano
 }
 class "Map<String, PlanMantenimiento>" as Map_String_PlanMantenimiento <<colección>> {
   + get(clave: Cadena): PlanMantenimiento
@@ -90,6 +93,8 @@ class "Map<String, TareaMantenimiento>" as Map_String_TareaMantenimiento <<colec
   + get(clave: Cadena): TareaMantenimiento
 }
 class "List<TareaMantenimiento>" as List_TareaMantenimiento <<colección>> {
+  + getAbiertasDeEmpleadosHasta(dias: Entero,\n      categoria: CategoriaDeCaja): TareaMantenimiento[*]
+  + getAbiertasDeEmpleadosPorEstado()
   + getAbiertasHasta(dias: Entero): TareaMantenimiento[*]
   + getSinAvisar(): TareaMantenimiento[*]
 }
@@ -98,10 +103,12 @@ class PlanMantenimiento <<referencia>>
 class EmailSenderPort <<referencia>>
 class StoragePort <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
+class "Map<String, Empleado>" as Map_String_Empleado <<referencia>>
 class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
-class Distribuidora <<referencia>>
-class Vehiculo <<referencia>>
 class Chofer <<referencia>>
+class Empleado <<referencia>>
+class Vehiculo <<referencia>>
+class Distribuidora <<referencia>>
 
 Map_String_TareaMantenimiento "1" o--> "0..*" TareaMantenimiento
 Map_String_PlanMantenimiento "1" o--> "0..*" PlanMantenimiento
@@ -112,15 +119,21 @@ FleetAttachmentService --> "1" Map_String_TareaMantenimiento
 FleetAttachmentService --> "1" StoragePort
 FleetExpirationsService --> "1" List_TareaMantenimiento
 FleetTaskService --> "1" Map_String_Chofer
+FleetTaskService --> "1" Map_String_Empleado
 FleetTaskService --> "1" Map_String_PlanMantenimiento
 FleetTaskService --> "1" Map_String_TareaMantenimiento
 FleetTaskService --> "1" Map_String_Vehiculo
 FleetAlertsCron ..> Distribuidora
+FleetAlertsCron ..> Empleado
 FleetAlertsCron ..> TareaMantenimiento
 FleetAttachmentService ..> TareaMantenimiento
+FleetDispatchLockService ..> Chofer
+FleetDispatchLockService ..> Empleado
 FleetExpirationsService ..> Chofer
+FleetExpirationsService ..> Empleado
 FleetExpirationsService ..> TareaMantenimiento
 FleetExpirationsService ..> Vehiculo
+FleetTaskService ..> Empleado
 FleetTaskService ..> PlanMantenimiento
 FleetTaskService ..> TareaMantenimiento
 

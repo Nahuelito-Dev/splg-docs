@@ -1,0 +1,35 @@
+sequenceDiagram
+    title DSS — CU-237 Registrar un Pago de Cuenta Corriente
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt El chofer registra el cobro en la calle
+        CHF->>SIS: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
+        activate SIS
+        alt la operación es válida
+            SIS-->>CHF: pago registrado y aplicado a las deudas más antiguas
+        else el cobro no se puede registrar (caja sin sesión, sin caja o sin rendición abierta)
+            SIS-->>CHF: operación rechazada
+        end
+        deactivate SIS
+    else El administrador registra el cobro en una caja
+        ADM->>SIS: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: pago registrado y aplicado a las deudas más antiguas
+        else el cobro no se puede registrar (caja sin sesión, sin caja o sin rendición abierta)
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    else Ajuste con una nota de crédito o de débito
+        ADM->>SIS: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: ajuste registrado y saldo actualizado
+        else el ajuste no es válido
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    end

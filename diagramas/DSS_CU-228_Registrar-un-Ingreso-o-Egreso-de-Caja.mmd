@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSS — CU-228 Registrar un Ingreso o Egreso de Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt Ingreso o egreso manual
+        ADM->>SIS: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: movimiento registrado con el saldo actualizado
+        else la caja exige sesión y no está abierta, o el saldo no alcanza
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    else Transferencia entre cajas
+        ADM->>SIS: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: los dos movimientos asentados
+        else alguna caja no admite el movimiento
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    end

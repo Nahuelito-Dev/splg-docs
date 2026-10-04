@@ -78,8 +78,8 @@ class AvisoRecupero <<referencia>>
 class CasoRecupero <<referencia>>
 class CylinderLifecyclePort <<referencia>>
 class NotificationsService <<referencia>>
-class Pedido <<referencia>>
 class Envase <<referencia>>
+class Pedido <<referencia>>
 
 Map_String_AvisoRecupero "1" o--> "0..*" AvisoRecupero
 Map_String_CasoRecupero "1" o--> "0..*" CasoRecupero

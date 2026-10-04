@@ -1,0 +1,40 @@
+@startuml
+title Diagrama de estados — Liquidación de comisiones
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Borrador\n(draft)" as BOR
+state "Aprobada\n(approved)" as APR
+state "Pagada\n(paid)" as PAG
+state "Cerrada sin pago\n(closed)" as CIE
+state "Anulada\n(voided)" as ANU
+
+[*] --> BOR : liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)\n[hay asientos sin liquidar en el período]
+BOR --> APR : aprobarLiquidacion()\n[el neto es mayor que cero]
+BOR --> CIE : aprobarLiquidacion()\n[el neto es cero o negativo; si es negativo,\nse asienta un arrastre para la liquidación siguiente]
+APR --> PAG : pagarLiquidacion(cajaId)\n[la caja cubre el pago]
+BOR --> ANU : anularLiquidacion()
+APR --> ANU : anularLiquidacion()
+PAG --> [*]
+CIE --> [*]
+ANU --> [*]
+
+note bottom of ANU
+  Anular libera los asientos para otra liquidación. Una liquidación pagada
+  no se anula: se corrige anulando antes el movimiento de caja.
+end note
+@enduml

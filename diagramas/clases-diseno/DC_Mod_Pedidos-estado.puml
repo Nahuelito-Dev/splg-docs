@@ -105,6 +105,9 @@ class "List<Pedido>" as List_Pedido <<colección>> {
   + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Booleano
   + contarPorEstado(distribuidoraId: Identificador,\n      out aceptados: Chofer[*],\n      out enCamino: Booleano): Pedido[*]
   + entregadosEntre(fechaDesde: Fecha,\n      fechaHasta: Fecha): Pedido[*]
+  + getEnEfectivoSinRendir(chofer: Chofer,\n      hoy: Fecha): Pedido[*]
+  + getEntregadosSinMovimiento(): Pedido[*]
+  + getReservado(producto: Producto)
   + getUltimoEntregado(cliente: Cliente,\n      distribuidoraId: Identificador): Fecha
   + totalEntregado(periodo: Cadena): Registro
   + totalEntregadoPorDia(distribuidoraId: Identificador,\n      desde: FechaHora, hasta: FechaHora): Registro
@@ -117,13 +120,13 @@ class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class NotificationPort <<referencia>>
 class RealtimeDispatchPort <<referencia>>
 class UbicacionGPS <<referencia>>
-class Envase <<referencia>>
-class NotificationsService <<referencia>>
-class Chofer <<referencia>>
-class Cliente <<referencia>>
 class OfertaDespacho <<referencia>>
-class ZonaCobertura <<referencia>>
 class Producto <<referencia>>
+class Envase <<referencia>>
+class Chofer <<referencia>>
+class NotificationsService <<referencia>>
+class ZonaCobertura <<referencia>>
+class Cliente <<referencia>>
 
 Map_String_Pedido "1" o--> "0..*" Pedido
 List_Pedido "1" o--> "0..*" Pedido

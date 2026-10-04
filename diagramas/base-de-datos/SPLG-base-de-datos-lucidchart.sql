@@ -1,5 +1,5 @@
 -- Esquema de SPLG — Sistema de Pedidos y Logística de Garrafas de Gas
--- Estado actual de la base: 40 tablas, 93 claves foráneas.
+-- Estado actual de la base: 43 tablas, 96 claves foráneas.
 -- Generado por generar-modelo-datos.py
 -- Los tipos enumerados y los geográficos de PostGIS se escriben como varchar para
 -- que cualquier herramienta de diagramación pueda leer el archivo.
@@ -32,6 +32,20 @@ CREATE TABLE "role" (
   UNIQUE ("type")
 );
 
+CREATE TABLE "storage_orphan" (
+  "orphan_id" uuid NOT NULL,
+  "storage_key" varchar(512) NOT NULL,
+  "attempts" integer NOT NULL,
+  "last_error" text,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL,
+  "kind" varchar(10) NOT NULL,
+  "status" varchar(10) NOT NULL,
+  "next_attempt_at" timestamptz NOT NULL,
+  PRIMARY KEY ("orphan_id"),
+  UNIQUE ("storage_key")
+);
+
 CREATE TABLE "coverage_zone" (
   "coverage_zone_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -49,6 +63,14 @@ CREATE TABLE "coverage_zone" (
   "priority" integer NOT NULL,
   "valid_from" timestamptz,
   PRIMARY KEY ("coverage_zone_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "document_sequence" (
+  "distributor_id" uuid NOT NULL,
+  "doc_type" varchar(40) NOT NULL,
+  "last_number" integer NOT NULL,
+  PRIMARY KEY ("distributor_id", "doc_type"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
@@ -127,6 +149,23 @@ CREATE TABLE "admin" (
   UNIQUE ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "attachment" (
+  "attachment_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "owner_type" varchar(32) NOT NULL,
+  "owner_id" uuid NOT NULL,
+  "label" varchar(80),
+  "storage_key" varchar(255) NOT NULL,
+  "original_name" varchar(255) NOT NULL,
+  "mime_type" varchar(100) NOT NULL,
+  "size_bytes" integer NOT NULL,
+  "uploaded_by_user_id" uuid NOT NULL,
+  "uploaded_at" timestamptz NOT NULL,
+  PRIMARY KEY ("attachment_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("uploaded_by_user_id") REFERENCES "user" ("user_id")
 );
 
 CREATE TABLE "audit_log" (
@@ -323,9 +362,9 @@ CREATE TABLE "order" (
   "totalAmount" numeric(10,2) NOT NULL,
   "notes" text,
   "deliveryInstructions" text,
-  "acceptedAt" timestamp,
-  "onTheWayAt" timestamp,
-  "deliveredAt" timestamp,
+  "acceptedAt" timestamptz,
+  "onTheWayAt" timestamptz,
+  "deliveredAt" timestamptz,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   "cancellationReason" text,
@@ -409,7 +448,8 @@ CREATE TABLE "claims" (
   "photoUrl" varchar,
   "status" varchar(32) NOT NULL,
   "resolutionNote" text,
-  "createdAt" timestamp NOT NULL,
+  "createdAt" timestamptz NOT NULL,
+  "photo_key" varchar(512),
   PRIMARY KEY ("claim_id"),
   FOREIGN KEY ("customer_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),

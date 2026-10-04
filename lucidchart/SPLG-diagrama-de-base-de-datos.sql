@@ -1,11 +1,9 @@
--- Modelo completo de SPLG — lo implementado más lo que pidió la cátedra
--- 40 tablas y 94 relaciones.
--- Hoy en la base hay 40 tablas y 93 claves foráneas declaradas;
--- este archivo suma 0 tablas nuevas, 4 columnas nuevas y declara además las
--- 0 relaciones que hoy existen en el dominio pero no están declaradas
--- como FOREIGN KEY (ver «Relaciones no declaradas» en SPLG-modelo-de-datos.md).
--- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin defaults ni índices.
--- Las tablas van en orden de dependencia. Generado por generar-modelo-datos.py.
+-- Esquema de SPLG — Sistema de Pedidos y Logística de Garrafas de Gas
+-- Estado actual de la base: 43 tablas, 96 claves foráneas.
+-- Generado por generar-modelo-datos.py
+-- Los tipos enumerados y los geográficos de PostGIS se escriben como varchar para
+-- que cualquier herramienta de diagramación pueda leer el archivo.
+-- Las tablas van en orden de dependencia: se puede ejecutar de corrido.
 
 CREATE TABLE "distributor" (
   "distributor_id" uuid NOT NULL,
@@ -34,6 +32,20 @@ CREATE TABLE "role" (
   UNIQUE ("type")
 );
 
+CREATE TABLE "storage_orphan" (
+  "orphan_id" uuid NOT NULL,
+  "storage_key" varchar(512) NOT NULL,
+  "attempts" integer NOT NULL,
+  "last_error" text,
+  "created_at" timestamptz NOT NULL,
+  "updated_at" timestamptz NOT NULL,
+  "kind" varchar(10) NOT NULL,
+  "status" varchar(10) NOT NULL,
+  "next_attempt_at" timestamptz NOT NULL,
+  PRIMARY KEY ("orphan_id"),
+  UNIQUE ("storage_key")
+);
+
 CREATE TABLE "coverage_zone" (
   "coverage_zone_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -51,6 +63,14 @@ CREATE TABLE "coverage_zone" (
   "priority" integer NOT NULL,
   "valid_from" timestamptz,
   PRIMARY KEY ("coverage_zone_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "document_sequence" (
+  "distributor_id" uuid NOT NULL,
+  "doc_type" varchar(40) NOT NULL,
+  "last_number" integer NOT NULL,
+  PRIMARY KEY ("distributor_id", "doc_type"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
@@ -131,6 +151,23 @@ CREATE TABLE "admin" (
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
 
+CREATE TABLE "attachment" (
+  "attachment_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "owner_type" varchar(32) NOT NULL,
+  "owner_id" uuid NOT NULL,
+  "label" varchar(80),
+  "storage_key" varchar(255) NOT NULL,
+  "original_name" varchar(255) NOT NULL,
+  "mime_type" varchar(100) NOT NULL,
+  "size_bytes" integer NOT NULL,
+  "uploaded_by_user_id" uuid NOT NULL,
+  "uploaded_at" timestamptz NOT NULL,
+  PRIMARY KEY ("attachment_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("uploaded_by_user_id") REFERENCES "user" ("user_id")
+);
+
 CREATE TABLE "audit_log" (
   "audit_id" uuid NOT NULL,
   "distributor_id" uuid,
@@ -171,7 +208,6 @@ CREATE TABLE "car" (
   "odometer_km" integer,
   "fleet_status" varchar(32) NOT NULL,
   "in_service_since" timestamptz,
-  "vehicle_type" varchar(32),
   PRIMARY KEY ("car_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
@@ -326,9 +362,9 @@ CREATE TABLE "order" (
   "totalAmount" numeric(10,2) NOT NULL,
   "notes" text,
   "deliveryInstructions" text,
-  "acceptedAt" timestamp,
-  "onTheWayAt" timestamp,
-  "deliveredAt" timestamp,
+  "acceptedAt" timestamptz,
+  "onTheWayAt" timestamptz,
+  "deliveredAt" timestamptz,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   "cancellationReason" text,
@@ -349,7 +385,6 @@ CREATE TABLE "order" (
   "vehicle_patent" varchar(20),
   "vehicle_brand" varchar(50),
   "vehicle_model" varchar(50),
-  "express_surcharge_amount" numeric(12,2) NOT NULL,
   PRIMARY KEY ("order_id"),
   FOREIGN KEY ("address_id") REFERENCES "user_address" ("address_id"),
   FOREIGN KEY ("coverage_zone_id") REFERENCES "coverage_zone" ("coverage_zone_id") ON DELETE SET NULL,
@@ -413,7 +448,8 @@ CREATE TABLE "claims" (
   "photoUrl" varchar,
   "status" varchar(32) NOT NULL,
   "resolutionNote" text,
-  "createdAt" timestamp NOT NULL,
+  "createdAt" timestamptz NOT NULL,
+  "photo_key" varchar(512),
   PRIMARY KEY ("claim_id"),
   FOREIGN KEY ("customer_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
@@ -434,7 +470,6 @@ CREATE TABLE "cylinder" (
   "manufactured_at" timestamptz,
   "last_inspection_at" timestamptz,
   "expires_at" timestamptz,
-  "decommissioned_at" timestamptz,
   PRIMARY KEY ("cylinder_id"),
   UNIQUE ("distributor_id", "serial"),
   FOREIGN KEY ("current_customer_id") REFERENCES "user" ("user_id") ON DELETE SET NULL,
@@ -687,8 +722,6 @@ CREATE TABLE "cylinder_recovery_notice" (
   "status" varchar(32),
   "sent_at" timestamptz NOT NULL,
   "expires_at" timestamptz NOT NULL,
-  "order_id" uuid,
   PRIMARY KEY ("notice_id"),
-  FOREIGN KEY ("case_id") REFERENCES "cylinder_recovery_case" ("case_id") ON DELETE CASCADE,
-  FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE SET NULL
+  FOREIGN KEY ("case_id") REFERENCES "cylinder_recovery_case" ("case_id") ON DELETE CASCADE
 );

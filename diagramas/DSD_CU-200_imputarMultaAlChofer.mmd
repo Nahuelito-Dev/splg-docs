@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-200 Imputar una Multa al Chofer · imputarMultaAlChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TrafficFineService
+    participant COM as :Map#lt;String, MultaTransito#gt;
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant MUL as multaTransito:MultaTransito
+
+    ADM->>+SRV: imputarMultaAlChofer(multaId, empleadoId)
+    SRV->>+COM: get(multaId)
+    COM-->>-SRV: multaTransito
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>+MUL: imputarA(empleado)
+    MUL->>MUL: assertNoAnulada()
+    deactivate MUL
+    SRV-->>-ADM: multaTransito

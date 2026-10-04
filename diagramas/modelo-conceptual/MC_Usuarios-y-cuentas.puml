@@ -54,6 +54,7 @@ class Administrador
 class ConfiguracionModulo {
   módulo
   parámetros
+  exigir carga de camión abierta
 }
 class AsientoAuditoria {
   operación

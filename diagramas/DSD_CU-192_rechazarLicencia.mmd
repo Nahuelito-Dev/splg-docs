@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-192 Resolver una Solicitud de Licencia · rechazarLicencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :LeaveService
+    participant COL as :Map#lt;String, LicenciaLaboral#gt;
+    participant LIC as licencia:LicenciaLaboral
+
+    ADM->>+SRV: rechazarLicencia(licenciaId, motivo)
+    SRV->>+COL: get(licenciaId)
+    COL-->>-SRV: licencia
+    SRV->>+LIC: rechazar(usuario, motivoDeRechazo)
+    LIC->>LIC: assertMotivoObligatorio(motivoDeRechazo)
+    LIC->>LIC: validarTransicion(estadoNuevoDeLicencia)
+    deactivate LIC
+    SRV-->>-ADM: licencia

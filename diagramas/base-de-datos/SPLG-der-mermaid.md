@@ -1,6 +1,6 @@
 # DER de SPLG, en Mermaid — generado
 
-Generado por `generar-modelo-datos.py` desde la base en ejecución: 40 tablas, 93 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
+Generado por `generar-modelo-datos.py` desde la base en ejecución: 43 tablas, 96 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
 
 ### Organización y acceso
 
@@ -291,9 +291,9 @@ erDiagram
         decimal totalAmount
         text notes "nullable"
         text deliveryInstructions "nullable"
-        timestamp acceptedAt "nullable"
-        timestamp onTheWayAt "nullable"
-        timestamp deliveredAt "nullable"
+        timestamptz acceptedAt "nullable"
+        timestamptz onTheWayAt "nullable"
+        timestamptz deliveredAt "nullable"
         timestamptz createdAt
         timestamptz updatedAt
         text cancellationReason "nullable"
@@ -551,7 +551,8 @@ erDiagram
         varchar photoUrl "nullable"
         enum status
         text resolutionNote "nullable"
-        timestamp createdAt
+        timestamptz createdAt
+        varchar photo_key "nullable"
     }
     INCIDENT {
         uuid incident_id PK
@@ -580,29 +581,684 @@ erDiagram
     }
 ```
 
+### Personal (planificado)
+
+```mermaid
+erDiagram
+    EMPLOYEE }o--|| JOB_POSITION : "position_id"
+    EMPLOYEE_ATTENDANCE }o--|| EMPLOYEE : "employee_id"
+    EMPLOYEE_LEAVE }o--|| EMPLOYEE : "employee_id"
+
+    JOB_POSITION {
+        uuid position_id PK
+        uuid distributor_id FK
+        varchar name
+        job_position_category_enum category
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    ATTACHMENT {
+        uuid attachment_id PK
+        uuid distributor_id FK
+        enum owner_type
+        uuid owner_id
+        varchar label "nullable"
+        varchar storage_key
+        varchar original_name
+        varchar mime_type
+        int size_bytes
+        uuid uploaded_by_user_id FK
+        timestamptz uploaded_at
+    }
+    EMPLOYEE {
+        uuid employee_id PK
+        uuid distributor_id FK
+        uuid user_id FK "nullable"
+        uuid position_id FK
+        varchar file_number
+        varchar first_name
+        varchar last_name
+        employee_document_type_enum document_type
+        varchar document_number
+        varchar cuil "nullable"
+        date birth_date "nullable"
+        varchar address_line "nullable"
+        varchar city "nullable"
+        varchar province "nullable"
+        varchar postal_code "nullable"
+        varchar phone "nullable"
+        varchar personal_email "nullable"
+        varchar emergency_contact_name "nullable"
+        varchar emergency_contact_phone "nullable"
+        varchar emergency_contact_relationship "nullable"
+        date hire_date
+        date termination_date "nullable"
+        employee_termination_reason_enum termination_reason "nullable"
+        employment_type_enum employment_type
+        employee_status_enum status
+        varchar bank_cbu "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    EMPLOYEE_ATTENDANCE {
+        uuid attendance_id PK
+        uuid distributor_id FK
+        uuid employee_id FK
+        date work_date
+        timestamptz check_in_at
+        timestamptz check_out_at "nullable"
+        attendance_source_enum source
+        uuid recorded_by_user_id FK "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    EMPLOYEE_LEAVE {
+        uuid leave_id PK
+        uuid distributor_id FK
+        uuid employee_id FK
+        employee_leave_type_enum type
+        date start_date
+        date end_date
+        int days
+        employee_leave_status_enum status
+        text reason "nullable"
+        text rejection_reason "nullable"
+        uuid requested_by_user_id FK "nullable"
+        uuid decided_by_user_id FK "nullable"
+        timestamptz decided_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+```
+
+### Gastos de la flota (planificado)
+
+```mermaid
+erDiagram
+    TIRE_EVENT }o--|| TIRE : "tire_id"
+
+    FUEL_LOAD {
+        uuid fuel_load_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz loaded_at
+        fuel_type_enum fuel_type
+        decimal liters
+        decimal unit_price
+        decimal total_amount
+        int odometer_km
+        boolean is_full_tank
+        varchar station "nullable"
+        fuel_payment_method_enum payment_method
+        varchar receipt_number "nullable"
+        uuid cash_movement_id "nullable"
+        boolean anomaly
+        text notes "nullable"
+        uuid created_by_user_id FK "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    TIRE {
+        uuid tire_id PK
+        uuid distributor_id FK
+        uuid car_id FK "nullable"
+        varchar serial
+        varchar brand
+        varchar size
+        decimal cost
+        tire_status_enum status
+        varchar position "nullable"
+        int mounted_odometer_km "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    TRAFFIC_FINE {
+        uuid fine_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz occurred_at
+        varchar jurisdiction
+        varchar act_number
+        text infraction
+        decimal amount
+        decimal voluntary_payment_amount "nullable"
+        date due_date "nullable"
+        traffic_fine_status_enum status
+        timestamptz paid_at "nullable"
+        decimal paid_amount "nullable"
+        boolean charged_to_employee
+        uuid cash_movement_id "nullable"
+        text void_reason "nullable"
+        timestamptz alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    VEHICLE_ACCIDENT {
+        uuid accident_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz occurred_at
+        geometry location "nullable"
+        text address "nullable"
+        text description
+        boolean injuries
+        boolean third_parties_involved
+        boolean hazmat_release
+        varchar police_report_number "nullable"
+        varchar insurer_claim_number "nullable"
+        vehicle_accident_status_enum status
+        boolean vehicle_unusable
+        decimal repair_cost "nullable"
+        decimal insurer_reimbursement "nullable"
+        decimal deductible_amount "nullable"
+        timestamptz closed_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    TIRE_EVENT {
+        uuid event_id PK
+        uuid distributor_id FK
+        uuid tire_id FK
+        uuid car_id FK "nullable"
+        tire_event_type_enum event_type
+        int odometer_km
+        varchar position "nullable"
+        timestamptz occurred_at
+        uuid created_by_user_id FK "nullable"
+    }
+```
+
+### Stock físico y carga del camión (planificado)
+
+```mermaid
+erDiagram
+    STOCK_THRESHOLD }o--|| WAREHOUSE : "warehouse_id"
+    STOCK_LOCATION |o--o| WAREHOUSE : "warehouse_id"
+    STOCK_ADJUSTMENT }o--|| STOCK_LOCATION : "location_id"
+    STOCK_BALANCE }o--|| STOCK_LOCATION : "location_id"
+    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "from_location_id"
+    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "to_location_id"
+    TRUCK_LOAD }o--|| STOCK_LOCATION : "origin_location_id"
+    STOCK_ADJUSTMENT_ITEM }o--|| STOCK_ADJUSTMENT : "adjustment_id"
+    TRUCK_LOAD_ITEM }o--|| TRUCK_LOAD : "load_id"
+
+    WAREHOUSE {
+        uuid warehouse_id PK
+        uuid distributor_id FK
+        varchar name
+        varchar code
+        warehouse_kind_enum kind
+        text address "nullable"
+        geometry location "nullable"
+        boolean is_default
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    STOCK_THRESHOLD {
+        uuid threshold_id PK
+        uuid distributor_id FK
+        uuid warehouse_id FK
+        uuid gas_cylinder_id FK
+        int min_full
+        timestamptz alerted_at "nullable"
+    }
+    STOCK_LOCATION {
+        uuid location_id PK
+        uuid distributor_id FK
+        stock_location_kind_enum kind
+        uuid warehouse_id FK "nullable"
+        uuid car_id FK "nullable"
+    }
+    STOCK_ADJUSTMENT {
+        uuid adjustment_id PK
+        uuid distributor_id FK
+        int number
+        uuid location_id FK
+        stock_adjustment_reason_enum reason
+        text notes
+        uuid created_by_user_id FK
+        timestamptz createdAt
+    }
+    STOCK_BALANCE {
+        uuid balance_id PK
+        uuid distributor_id FK
+        uuid location_id FK
+        uuid gas_cylinder_id FK
+        stock_condition_enum condition
+        int quantity
+        timestamptz updatedAt
+    }
+    STOCK_MOVEMENT {
+        uuid movement_id PK
+        uuid distributor_id FK
+        uuid gas_cylinder_id FK
+        uuid batch_id
+        int quantity
+        uuid from_location_id FK "nullable"
+        stock_condition_enum from_condition "nullable"
+        uuid to_location_id FK "nullable"
+        stock_condition_enum to_condition "nullable"
+        stock_movement_reason_enum reason
+        stock_reference_type_enum reference_type
+        uuid reference_id "nullable"
+        uuid actor_user_id FK "nullable"
+        timestamptz occurred_at
+        timestamptz createdAt
+    }
+    TRUCK_LOAD {
+        uuid load_id PK
+        uuid distributor_id FK
+        int number
+        uuid car_id FK
+        uuid delivery_id FK
+        uuid helper_employee_id "nullable"
+        uuid origin_location_id FK
+        date business_date
+        truck_load_status_enum status
+        timestamptz opened_at
+        timestamptz departed_at "nullable"
+        timestamptz returned_at "nullable"
+        timestamptz closed_at "nullable"
+        uuid opened_by_user_id FK
+        uuid closed_by_user_id FK "nullable"
+        text difference_note "nullable"
+    }
+    STOCK_ADJUSTMENT_ITEM {
+        uuid item_id PK
+        uuid adjustment_id FK
+        uuid gas_cylinder_id FK
+        stock_condition_enum condition
+        int quantity_delta
+    }
+    TRUCK_LOAD_ITEM {
+        uuid item_id PK
+        uuid load_id FK
+        uuid gas_cylinder_id FK
+        int loaded_full
+        int reloaded_full
+        int loaded_empty
+        int declared_return_full "nullable"
+        int declared_return_empty "nullable"
+        int delivered_full "nullable"
+        int collected_empty "nullable"
+        int expected_full "nullable"
+        int expected_empty "nullable"
+        int difference_full "nullable"
+        int difference_empty "nullable"
+    }
+```
+
+### Compras (planificado)
+
+```mermaid
+erDiagram
+    PURCHASE_ORDER }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_ORDER_ITEM }o--|| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT_ITEM }o--|| PURCHASE_RECEIPT : "receipt_id"
+
+    SUPPLIER {
+        uuid supplier_id PK
+        uuid distributor_id FK
+        varchar business_name
+        varchar cuit
+        supplier_kind_enum kind
+        varchar contact_name "nullable"
+        varchar phone "nullable"
+        varchar email "nullable"
+        text address "nullable"
+        int payment_terms_days "nullable"
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    PURCHASE_ORDER {
+        uuid purchase_order_id PK
+        uuid distributor_id FK
+        int number
+        uuid supplier_id FK
+        uuid destination_warehouse_id FK
+        purchase_order_status_enum status
+        timestamptz issued_at "nullable"
+        date expected_date "nullable"
+        decimal total_amount
+        text cancel_reason "nullable"
+        text notes "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    PURCHASE_ORDER_ITEM {
+        uuid item_id PK
+        uuid purchase_order_id FK
+        uuid gas_cylinder_id FK
+        int quantity
+        decimal unit_cost
+        int empties_to_exchange
+        int received_quantity
+    }
+    PURCHASE_RECEIPT {
+        uuid receipt_id PK
+        uuid distributor_id FK
+        int number
+        uuid supplier_id FK
+        uuid purchase_order_id FK "nullable"
+        uuid warehouse_id FK
+        purchase_document_type_enum supplier_document_type
+        varchar supplier_document_number
+        timestamptz received_at
+        uuid received_by_user_id FK
+        decimal total_amount
+        purchase_payment_status_enum payment_status
+        uuid cash_movement_id "nullable"
+        purchase_receipt_status_enum status
+        text void_reason "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    PURCHASE_RECEIPT_ITEM {
+        uuid item_id PK
+        uuid receipt_id FK
+        uuid gas_cylinder_id FK
+        int quantity_full
+        int quantity_empty_out
+        decimal unit_cost
+    }
+```
+
+### Tablas técnicas
+
+```mermaid
+erDiagram
+
+    STORAGE_ORPHAN {
+        uuid orphan_id PK
+        varchar storage_key UK
+        int attempts
+        text last_error "nullable"
+        timestamptz created_at
+        timestamptz updated_at
+        varchar kind
+        varchar status
+        timestamptz next_attempt_at
+    }
+    DOCUMENT_SEQUENCE {
+        uuid distributor_id PK
+        varchar doc_type PK
+        int last_number
+    }
+```
+
+### Caja y finanzas (planificado)
+
+```mermaid
+erDiagram
+    CASH_SESSION }o--|| CASH_BOX : "cash_box_id"
+    CASH_MOVEMENT }o--|| CASH_BOX : "cash_box_id"
+    CASH_MOVEMENT }o--o| CASH_SESSION : "session_id"
+    CASH_MOVEMENT }o--|| CASH_CATEGORY : "category_id"
+    CASH_MOVEMENT |o--o| CASH_MOVEMENT : "reverses_movement_id"
+    DRIVER_LIQUIDATION }o--o| CASH_MOVEMENT : "cash_movement_id"
+    DRIVER_SETTLEMENT }o--o| CASH_BOX : "destination_cash_box_id"
+    DRIVER_SETTLEMENT }o--o| CASH_MOVEMENT : "cash_movement_id"
+    COMMISSION_ENTRY }o--o| COMMISSION_RULE : "rule_id"
+    COMMISSION_ENTRY }o--o| DRIVER_SETTLEMENT : "settlement_id"
+    COMMISSION_ENTRY }o--o| DRIVER_LIQUIDATION : "liquidation_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--|| CUSTOMER_ACCOUNT : "account_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| CASH_MOVEMENT : "cash_movement_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| DRIVER_SETTLEMENT : "settlement_id"
+    CUSTOMER_ACCOUNT_ENTRY |o--o| CUSTOMER_ACCOUNT_ENTRY : "reverses_entry_id"
+    DRIVER_SETTLEMENT_EXPENSE }o--|| DRIVER_SETTLEMENT : "settlement_id"
+    DRIVER_SETTLEMENT_EXPENSE }o--|| CASH_CATEGORY : "category_id"
+    DRIVER_SETTLEMENT_ORDER }o--|| DRIVER_SETTLEMENT : "settlement_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "debit_entry_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "credit_entry_id"
+
+    CASH_BOX {
+        uuid cash_box_id PK
+        uuid distributor_id FK
+        varchar name
+        cash_box_kind_enum kind
+        decimal balance
+        boolean requires_session
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    CASH_CATEGORY {
+        uuid category_id PK
+        uuid distributor_id FK
+        varchar name
+        cash_direction_enum direction
+        cash_system_code_enum system_code "nullable"
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    CASH_SESSION {
+        uuid session_id PK
+        uuid distributor_id FK
+        uuid cash_box_id FK
+        cash_session_status_enum status
+        timestamptz opened_at
+        uuid opened_by_user_id FK
+        decimal opening_amount
+        timestamptz closed_at "nullable"
+        uuid closed_by_user_id FK "nullable"
+        decimal expected_amount "nullable"
+        decimal counted_amount "nullable"
+        decimal difference "nullable"
+        text notes "nullable"
+    }
+    CUSTOMER_ACCOUNT {
+        uuid account_id PK
+        uuid distributor_id FK
+        uuid customer_user_id FK
+        varchar business_name
+        varchar tax_id "nullable"
+        tax_condition_enum tax_condition
+        decimal credit_limit
+        int payment_terms_days
+        customer_account_status_enum status
+        decimal balance
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    CASH_MOVEMENT {
+        uuid movement_id PK
+        uuid distributor_id FK
+        uuid cash_box_id FK
+        uuid session_id FK "nullable"
+        cash_direction_enum direction
+        decimal amount
+        uuid category_id FK
+        cash_method_enum method
+        timestamptz occurred_at
+        varchar description "nullable"
+        cash_reference_type_enum reference_type
+        uuid reference_id "nullable"
+        uuid reverses_movement_id FK "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+    }
+    COMMISSION_RULE {
+        uuid rule_id PK
+        uuid distributor_id FK
+        uuid employee_id FK "nullable"
+        uuid gas_cylinder_id FK "nullable"
+        commission_basis_enum basis
+        decimal value
+        date valid_from
+        date valid_to "nullable"
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    DRIVER_LIQUIDATION {
+        uuid liquidation_id PK
+        uuid distributor_id FK
+        int number
+        uuid employee_id FK
+        date period_from
+        date period_to
+        decimal gross
+        decimal deductions
+        decimal net
+        driver_liquidation_status_enum status
+        timestamptz approved_at "nullable"
+        uuid approved_by_user_id FK "nullable"
+        timestamptz paid_at "nullable"
+        uuid cash_movement_id FK "nullable"
+        timestamptz createdAt
+    }
+    DRIVER_SETTLEMENT {
+        uuid settlement_id PK
+        uuid distributor_id FK
+        uuid delivery_id FK
+        int number
+        date business_date
+        driver_settlement_status_enum status
+        decimal expected_cash
+        decimal declared_cash "nullable"
+        decimal driver_expenses
+        decimal difference "nullable"
+        settlement_difference_resolution_enum difference_resolution "nullable"
+        uuid destination_cash_box_id FK "nullable"
+        uuid cash_movement_id FK "nullable"
+        timestamptz submitted_at "nullable"
+        uuid submitted_by_user_id FK "nullable"
+        timestamptz approved_at "nullable"
+        uuid approved_by_user_id FK "nullable"
+        timestamptz alerted_at "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+    }
+    COMMISSION_ENTRY {
+        uuid entry_id PK
+        uuid distributor_id FK
+        uuid employee_id FK
+        commission_entry_type_enum type
+        decimal amount
+        uuid order_id FK "nullable"
+        uuid rule_id FK "nullable"
+        jsonb rule_snapshot "nullable"
+        uuid settlement_id FK "nullable"
+        uuid liquidation_id FK "nullable"
+        varchar description "nullable"
+        timestamptz occurred_at
+        uuid created_by_user_id FK "nullable"
+        timestamptz createdAt
+    }
+    CUSTOMER_ACCOUNT_ENTRY {
+        uuid entry_id PK
+        uuid distributor_id FK
+        uuid account_id FK
+        customer_entry_type_enum type
+        decimal amount
+        uuid order_id FK "nullable"
+        date due_date "nullable"
+        cash_method_enum payment_method "nullable"
+        uuid cash_movement_id FK "nullable"
+        uuid collected_by_delivery_id FK "nullable"
+        uuid settlement_id FK "nullable"
+        uuid reverses_entry_id FK "nullable"
+        varchar description "nullable"
+        timestamptz occurred_at
+        uuid created_by_user_id FK "nullable"
+        timestamptz createdAt
+    }
+    DRIVER_SETTLEMENT_EXPENSE {
+        uuid expense_id PK
+        uuid settlement_id FK
+        uuid category_id FK
+        decimal amount
+        varchar description "nullable"
+    }
+    DRIVER_SETTLEMENT_ORDER {
+        uuid settlement_order_id PK
+        uuid settlement_id FK
+        uuid order_id FK
+        decimal amount
+        enum payment_method
+    }
+    CUSTOMER_ACCOUNT_ALLOCATION {
+        uuid allocation_id PK
+        uuid debit_entry_id FK
+        uuid credit_entry_id FK
+        decimal amount
+    }
+```
+
 ### Relaciones entre contextos
 
 Las que cruzan de un contexto a otro (ya sin repetir la entidad completa; sus columnas están en la lámina de su propio contexto). La relación con `distributor` se omite acá también por lo mismo que en el conceptual: prácticamente todo pertenece a una distribuidora.
 
 ```mermaid
 erDiagram
+    ATTACHMENT }o--|| USER : "uploaded_by_user_id"
     CAR }o--|| USER : "user_id"
     CART }o--|| USER : "user_id"
+    CASH_SESSION }o--|| USER : "opened_by_user_id"
+    CASH_SESSION }o--o| USER : "closed_by_user_id"
     CUSTOMER }o--o| GAS_CYLINDER : "declared_cylinder_type_id"
     CUSTOMER |o--|| USER : "user_id"
+    CUSTOMER_ACCOUNT }o--|| USER : "customer_user_id"
     DELIVERY |o--|| USER : "user_id"
+    EMPLOYEE |o--o| USER : "user_id"
+    PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
+    PURCHASE_ORDER }o--|| USER : "created_by_user_id"
+    STOCK_THRESHOLD }o--|| GAS_CYLINDER : "gas_cylinder_id"
     USER_ADDRESS }o--|| USER : "user_id"
     CART_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    CASH_MOVEMENT }o--|| USER : "created_by_user_id"
+    COMMISSION_RULE }o--o| EMPLOYEE : "employee_id"
+    COMMISSION_RULE }o--o| GAS_CYLINDER : "gas_cylinder_id"
+    EMPLOYEE_ATTENDANCE }o--o| USER : "recorded_by_user_id"
+    EMPLOYEE_LEAVE }o--o| USER : "requested_by_user_id"
+    EMPLOYEE_LEAVE }o--o| USER : "decided_by_user_id"
+    FUEL_LOAD }o--|| CAR : "car_id"
+    FUEL_LOAD }o--o| EMPLOYEE : "employee_id"
+    FUEL_LOAD }o--o| USER : "created_by_user_id"
+    MAINTENANCE_TASK }o--o| EMPLOYEE : "employee_id"
     ORDER }o--|| USER_ADDRESS : "address_id"
     ORDER }o--|| USER : "customer_id"
     ORDER }o--o| DELIVERY : "delivery_id"
+    PURCHASE_ORDER_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
+    PURCHASE_RECEIPT }o--|| USER : "received_by_user_id"
     ROUTE_BATCH }o--o| DELIVERY : "delivery_id"
+    STOCK_LOCATION |o--o| CAR : "car_id"
+    TIRE }o--o| CAR : "car_id"
+    TRAFFIC_FINE }o--|| CAR : "car_id"
+    TRAFFIC_FINE }o--o| EMPLOYEE : "employee_id"
+    VEHICLE_ACCIDENT }o--|| CAR : "car_id"
+    VEHICLE_ACCIDENT }o--o| EMPLOYEE : "employee_id"
     VEHICLE_ASSIGNMENT }o--o| USER : "assigned_by_user_id"
     VEHICLE_ASSIGNMENT }o--o| USER : "released_by_user_id"
     CLAIMS }o--|| USER : "customer_id"
     CLAIMS }o--|| ORDER : "order_id"
     CYLINDER }o--o| USER : "current_customer_id"
     CYLINDER }o--o| ORDER : "current_order_id"
+    DRIVER_LIQUIDATION }o--|| EMPLOYEE : "employee_id"
+    DRIVER_LIQUIDATION }o--o| USER : "approved_by_user_id"
+    DRIVER_SETTLEMENT }o--|| DELIVERY : "delivery_id"
+    DRIVER_SETTLEMENT }o--o| USER : "submitted_by_user_id"
+    DRIVER_SETTLEMENT }o--o| USER : "approved_by_user_id"
     INCIDENT }o--|| ORDER : "order_id"
     INCIDENT }o--|| USER : "reported_by"
     MAINTENANCE_TASK_ATTACHMENT }o--|| USER : "uploaded_by_user_id"
@@ -614,6 +1270,7 @@ erDiagram
     ORDER_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     ORDER_STATUS_HISTORY }o--o| USER : "changed_by_user_id"
     PAYMENT }o--|| ORDER : "order_id"
+    PURCHASE_RECEIPT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     RATING }o--|| USER : "from_user_id"
     RATING }o--|| ORDER : "order_id"
     RATING }o--|| USER : "to_user_id"
@@ -621,8 +1278,28 @@ erDiagram
     REPURCHASE_INVITATION }o--|| USER : "user_id"
     ROUTE_BATCH_OFFER }o--|| DELIVERY : "delivery_id"
     ROUTE_BATCH_STOP }o--|| ORDER : "order_id"
+    STOCK_ADJUSTMENT }o--|| USER : "created_by_user_id"
+    STOCK_BALANCE }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    STOCK_MOVEMENT }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    STOCK_MOVEMENT }o--o| USER : "actor_user_id"
+    TIRE_EVENT }o--o| CAR : "car_id"
+    TIRE_EVENT }o--o| USER : "created_by_user_id"
+    TRUCK_LOAD }o--|| CAR : "car_id"
+    TRUCK_LOAD }o--|| DELIVERY : "delivery_id"
+    TRUCK_LOAD }o--|| USER : "opened_by_user_id"
+    TRUCK_LOAD }o--o| USER : "closed_by_user_id"
+    COMMISSION_ENTRY }o--|| EMPLOYEE : "employee_id"
+    COMMISSION_ENTRY }o--o| ORDER : "order_id"
+    COMMISSION_ENTRY }o--o| USER : "created_by_user_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| ORDER : "order_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| DELIVERY : "collected_by_delivery_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| USER : "created_by_user_id"
     CYLINDER_MOVEMENT }o--o| USER : "actor_user_id"
     CYLINDER_MOVEMENT }o--o| ORDER : "order_id"
     CYLINDER_RECOVERY_CASE }o--o| USER : "resolved_by_user_id"
     CYLINDER_RECOVERY_CASE }o--|| USER : "user_id"
+    DRIVER_SETTLEMENT_ORDER |o--|| ORDER : "order_id"
+    STOCK_ADJUSTMENT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    TRUCK_LOAD_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    CYLINDER_RECOVERY_NOTICE }o--o| ORDER : "order_id"
 ```

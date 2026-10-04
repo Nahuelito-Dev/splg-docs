@@ -1,0 +1,114 @@
+@startuml
+title Modelo entidad-relación conceptual — Stock físico
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Deposito <<propuesto>> #E4EDF4;line:1F5E8C {
+  * identificador
+  --
+  {field} nombre
+  {field} código
+  {field} tipo
+  {field} dirección
+  {field} predeterminado
+  {field} activo
+}
+entity UbicacionDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+  * identificador
+  --
+  {field} tipo
+}
+entity SaldoDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+  * identificador
+  --
+  {field} condición
+  {field} cantidad
+}
+entity MovimientoDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+  * identificador
+  --
+  {field} cantidad
+  {field} condición de origen
+  {field} condición de destino
+  {field} motivo
+  {field} fecha
+}
+entity UmbralDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+  * identificador
+  --
+  {field} mínimo de llenas
+  {field} avisado el
+}
+entity AjusteDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+  * identificador
+  --
+  {field} número
+  {field} motivo
+  {field} nota
+  {field} fecha
+}
+entity ItemAjusteDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+  * identificador
+  --
+  {field} condición
+  {field} diferencia
+}
+entity Producto #F1F1F1 {
+}
+entity Vehiculo #F1F1F1 {
+}
+entity Usuario #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+
+Distribuidora ||--o{ Deposito : dispone de >
+Deposito ||--o{ UmbralDeStock : fija >
+UmbralDeStock }o--|| Producto : controla >
+Deposito |o--o| UbicacionDeStock : se registra como {xor} >
+Vehiculo |o--o| UbicacionDeStock : se registra como {xor} >
+UbicacionDeStock ||--o{ AjusteDeStock : se corrige con >
+Usuario ||--o{ AjusteDeStock : registra >
+UbicacionDeStock ||--o{ SaldoDeStock : acumula >
+SaldoDeStock }o--|| Producto : corresponde a >
+MovimientoDeStock }o--|| Producto : corresponde a >
+MovimientoDeStock }o--o| UbicacionDeStock : sale de >
+MovimientoDeStock }o--o| UbicacionDeStock : entra en >
+Usuario |o--o{ MovimientoDeStock : ejecuta >
+AjusteDeStock ||--o{ ItemAjusteDeStock : contiene >
+ItemAjusteDeStock }o--|| Producto : corresponde a >
+
+legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
+  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

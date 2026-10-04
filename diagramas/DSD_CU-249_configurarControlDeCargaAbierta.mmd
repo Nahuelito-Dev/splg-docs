@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-249 Configurar el Control de Carga de Camión Abierta · configurarControlDeCargaAbierta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ModuleConfigService
+    participant DIS as distribuidora:Distribuidora
+    participant CFG as configuracion:ConfiguracionModulo
+
+    ADM->>+SRV: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)
+    SRV->>+DIS: getConfiguracion(controlDeStock)
+    DIS-->>-SRV: configuracion
+    alt La distribuidora no tiene configuración del control de stock
+        SRV->>+DIS: crearConfiguracion(controlDeStock, exigirCargaDeCamionAbierta)
+        create participant NCF as nueva:ConfiguracionModulo
+        DIS->>NCF: «create»(controlDeStock, exigirCargaDeCamionAbierta)
+        DIS-->>-SRV: configuracion
+    else La distribuidora ya tiene configuración del control de stock
+        SRV->>CFG: actualizar(exigirCargaDeCamionAbierta, administrador)
+    end
+    SRV-->>-ADM: configuracion

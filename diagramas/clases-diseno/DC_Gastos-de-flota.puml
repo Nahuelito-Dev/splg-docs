@@ -1,0 +1,166 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class CargaCombustible {
+  - fechaYHora: FechaHora
+  - tipoDeCombustible: TipoDeCombustible
+  - litros: Decimal
+  - precioPorLitro: Moneda
+  - importe: Moneda
+  - kilometraje: Entero
+  - tanqueLleno: Booleano
+  - estacion: Cadena
+  - medioDePago: MedioDePagoDeCombustible
+  - comprobante: Cadena
+  - anomala: Booleano
+  - observacion: Cadena
+  - anuladaEl: FechaHora
+  + «create» CargaCombustible(datos: Registro)
+  + anular(ahora: FechaHora)
+  + assertImporteCoherente()
+  + assertNoAnulada()
+  + getImporte(): Moneda
+  + marcarAnomala()
+  + modificar(datos: Registro)
+}
+class MultaTransito {
+  - fechaDeLaInfraccion: FechaHora
+  - jurisdiccion: Cadena
+  - numeroDeActa: Cadena
+  - infraccion: Cadena
+  - importe: Moneda
+  - importeConPagoVoluntario: Moneda
+  - vencimiento: Fecha
+  - estado: EstadoDeLaMulta
+  - pagadaEl: FechaHora
+  - importePagado: Moneda
+  - imputadaAlChofer: Booleano
+  - avisadaEl: FechaHora
+  - motivoDeAnulacion: Cadena
+  + «create» MultaTransito(datos: Registro,\n      empleado: Empleado)
+  + anular(motivo: Cadena)
+  + assertAdmiteCambios()
+  + assertNoAnulada()
+  + getImportePagado(): Moneda
+  + imputarA(empleado: Empleado)
+  + marcarAvisada(ahora: FechaHora)
+  + modificar(datos: Registro)
+  + pagar(fechaDePago: FechaHora, importePagado: Moneda)
+  + validarTransicion(estadoDestino: EstadoDeLaMulta)
+}
+class Siniestro {
+  - fecha: FechaHora
+  - ubicacion: Coordenada
+  - domicilio: Cadena
+  - descripcion: Cadena
+  - huboHeridos: Booleano
+  - huboTerceros: Booleano
+  - derrameDeGLP: Booleano
+  - denunciaPolicial: Cadena
+  - reclamoAlSeguro: Cadena
+  - estado: EstadoDelSiniestro
+  - vehiculoInutilizable: Booleano
+  - costoDeReparacion: Moneda
+  - reintegroDelSeguro: Moneda
+  - franquicia: Moneda
+  - cerradoEl: FechaHora
+  + «create» Siniestro(datos: Registro)
+  + assertNoCerrado()
+  + cerrar(costoDeReparacion: Moneda,\n      reintegroDelSeguro: Moneda, franquicia: Moneda)
+  + getCostoNeto(): Moneda
+  + modificar(datos: Registro)
+  + validarTransicion(estadoDestino: EstadoDelSiniestro)
+}
+class Neumatico {
+  - numeroDeSerie: Cadena
+  - marca: Cadena
+  - medida: Cadena
+  - costo: Moneda
+  - estado: EstadoDelNeumatico
+  - posicion: Cadena
+  - kilometrajeDeMontaje: Entero
+  + «create» Neumatico(datos: Registro)
+  + registrarMovimiento(datos: Registro,\n      vehiculo: Vehiculo): MovimientoNeumatico
+  + validarTransicion(estadoDestino: EstadoDelNeumatico)
+}
+class MovimientoNeumatico {
+  - tipo: TipoDeMovimientoDeNeumatico
+  - kilometraje: Entero
+  - fecha: FechaHora
+  + «create» MovimientoNeumatico(datos: Registro)
+}
+class Vehiculo <<referencia>>
+class Empleado <<referencia>>
+class Distribuidora <<referencia>>
+
+Vehiculo "1" *-- "0..*" CargaCombustible : registra
+Vehiculo "1" *--> "0..*" MultaTransito : acumula
+Vehiculo "1" *-- "0..*" Siniestro : sufre
+Vehiculo "0..1" -- "0..*" Neumatico : monta
+Distribuidora "1" *--> "0..*" Neumatico : posee
+Neumatico "1" *--> "0..*" MovimientoNeumatico : registra
+MovimientoNeumatico "0..*" -- "0..1" Vehiculo : ocurre en
+Empleado "0..1" -- "0..*" CargaCombustible : carga
+Empleado "0..1" -- "0..*" MultaTransito : responde por
+Empleado "0..1" -- "0..*" Siniestro : interviene en
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

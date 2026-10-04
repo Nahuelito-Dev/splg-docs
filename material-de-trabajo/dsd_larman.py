@@ -106,10 +106,53 @@ PROPUESTAS_CLASE = {
   "ScheduledTaskGate": "CU-173: decide en cada ciclo qué distribuidoras atiende cada tarea programada, según su intervalo",
   # Historial de estados del pedido (I-4)
   "OrderStatusHistoryService": "CU-169, CU-170: escribe y lee order_status_history, que existe sin servicio",
+  # Caja, rendición, cuentas corrientes y comisiones (I-14)
+  "CashBoxService": "CU-225 a CU-227: cajas y sesiones de caja con arqueo, módulo cash",
+  "CashLedgerService": "CU-228, CU-229: punto único de escritura del libro de caja y de los saldos",
+  "CashCategoryService": "CU-230: categorías de ingresos y gastos de caja",
+  "DriverSettlementService": "CU-232, CU-233: presentación, aprobación y reapertura de la rendición del chofer",
+  "DriverSettlementCron": "CU-231: proceso diario que abre las rendiciones",
+  "SettlementOverdueCron": "CU-234: proceso diario que avisa las rendiciones sin cerrar",
+  "CustomerAccountService": "CU-235 a CU-239: cuentas corrientes, cargos, pagos, ajustes y consultas",
+  "CommissionService": "CU-240 a CU-244: reglas, comisiones por entrega y liquidaciones",
+  "FinanceDashboardService": "CU-245: tablero financiero",
   # Reintegro de pagos (I-7)
   "ReintegroListener": "CU-168: escucha el evento de pedido cancelado",
   "RefundPaymentUseCase": "CU-168: devuelve el pago por la pasarela, fuera de la transacción de la cancelación",
+  # Personal y legajos (I-11): módulo employee
+  "JobPositionService": "CU-176: puestos de trabajo de la distribuidora",
+  "EmployeeService": "CU-177 a CU-180, CU-187, CU-193: legajo del empleado, listado, documentación y saldo de vacaciones",
+  "TerminateEmployeeUseCase": "CU-181: egreso del empleado en una transacción, con el corte de la cuenta y la liberación del vehículo",
+  "GrantEmployeeAccountUseCase": "CU-182: alta de la cuenta de acceso de un empleado, delegada en el registro de usuarios",
+  "AttendanceService": "CU-189, CU-190: jornadas de trabajo, cargadas por el panel o marcadas por el chofer",
+  "LeaveService": "CU-191, CU-192: licencias y ausencias, su solicitud y su resolución",
+  "PersonnelDashboardService": "CU-194: cifras del tablero de personal",
+  "AttachmentsService": "CU-186: adjuntos genéricos con dueño, módulo attachment",
+  "CuilValidator": "CU-177, CU-178: función pura del dígito verificador del CUIL (domain/cuil.ts)",
+  "VacationPolicy": "CU-193: función pura de los días de vacaciones por antigüedad, LCT art. 150 (domain/vacaciones.ts)",
+  # Flota ampliada (I-12): módulo fleet-expense
+  "FuelLoadService": "CU-195, CU-196: cargas de combustible y consumo de un vehículo, en el módulo fleet-expense",
+  "FuelConsumptionCalculator": "CU-195, CU-196: función pura del consumo por tramo entre cargas de tanque lleno y de su desvío (domain/consumo.ts)",
+  "TrafficFineService": "CU-198 a CU-200: multas de tránsito, su pago y su imputación al chofer",
+  "FleetExpenseAlertsCron": "CU-198: aviso diario de las multas por vencer, 08:00 hora argentina",
+  "VehicleAccidentService": "CU-201, CU-202: siniestros de los vehículos, su avance y su cierre",
+  "FleetCostReportService": "CU-203, CU-204: modelo de lectura del costo por vehículo y de la flota, en el módulo reports",
+  "TireService": "CU-205, CU-206: neumáticos y sus movimientos (funcionalidad opcional)",
+  # Stock y compras (I-13): módulos stock, purchase y truck-load
+  "WarehouseService": "CU-207: ABM de depósitos y su ubicación de stock",
+  "StockService": "CU-208, CU-209, CU-210, CU-212: consultas de stock, umbrales y transferencias",
+  "StockLedgerService": "CU-212, CU-213, CU-217, CU-218, CU-220, CU-222: único punto de escritura de saldos y movimientos de stock",
+  "StockAdjustmentService": "CU-213: ajustes y mermas de stock",
+  "StockLowCron": "CU-211: proceso horario que avisa los depósitos bajo su mínimo",
+  "StockDeliveryListener": "CU-220: escucha el evento de pedido entregado y descuenta el stock",
+  "StockReconciliationCron": "CU-224: proceso nocturno que aplica entregas sin movimiento y concilia el vendible con el físico",
+  "StockReconciliationService": "CU-224: consulta de la conciliación de stock",
+  "SupplierService": "CU-214: ABM de proveedores",
+  "PurchaseOrderService": "CU-215, CU-216: órdenes de compra",
+  "PurchaseReceiptService": "CU-217: recepciones de compra",
+  "TruckLoadService": "CU-218, CU-219, CU-221, CU-222, CU-223: hoja de carga y rendición del camión",
 }
+
 
 # Clases de bibliotecas que pueden ser participantes de un DSD porque son la única clase de
 # aplicación de su operación (no hay una propia en `src/`).
@@ -140,6 +183,20 @@ INCLUIDOS = {
     # No es un caso incluido sino una operación interna: ningún actor la invoca y no es del
     # catálogo; la ejecuta CreateOrderUseCase dentro de crearPedido, crearReserva y
     # realizarCompraExpress. Se la trata igual (primer mensaje desde el controlador del caso base).
+    # Planificado (I-11): el gate de despacho ampliado con la situación laboral del chofer.
+    "verificarHabilitacionLaboral": {"casos": ["CU-246"], "bases": ["CU-012", "CU-013", "CU-015"],
+                                     "controladores": {"OrderService", "DispatchOrchestratorService",
+                                                       "UpdateOrderStatusUseCase"},
+                                     "firma": "verificarHabilitacionLaboral(chofer)"},
+    "verificarCargaDeCamionAbierta": {"casos": ["CU-248"], "bases": ["CU-012", "CU-013", "CU-015"],
+                                      "controladores": {"OrderService", "DispatchOrchestratorService",
+                                                        "UpdateOrderStatusUseCase"},
+                                      "firma": "verificarCargaDeCamionAbierta(chofer)"},
+    "aplicarMovimientoDeStock": {"casos": ["CU-250"],
+                                 "bases": ["CU-212", "CU-213", "CU-217", "CU-218", "CU-220", "CU-222"],
+                                 "controladores": {"StockService", "StockAdjustmentService", "PurchaseReceiptService",
+                                                   "TruckLoadService", "StockDeliveryListener"},
+                                 "firma": "aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)"},
     "crearCheckoutDePago": {"casos": ["CU-048"], "bases": ["CU-005", "CU-072", "CU-147"],
                             "controladores": {"CreateOrderUseCase"},
                             "firma": "crearCheckoutDePago(pedidoId, medioDePago)",

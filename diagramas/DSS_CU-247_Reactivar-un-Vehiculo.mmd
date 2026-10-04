@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-247 Reactivar un Vehículo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reactivarVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo está fuera de servicio y su documentación bloqueante está en regla
+        SIS-->>ADM: vehículo activo
+    else el vehículo no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el vehículo no está fuera de servicio
+        SIS-->>ADM: solicitud inválida: el vehículo no está fuera de servicio
+    else hay documentación bloqueante vencida
+        SIS-->>ADM: solicitud inválida, con el documento vencido
+    end
+    deactivate SIS

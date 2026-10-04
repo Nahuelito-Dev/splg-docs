@@ -38,8 +38,8 @@ classDiagram
     class NotificationsService {
         <<fachada>>
     }
-    class Vehiculo
     class TareaMantenimiento
+    class Vehiculo
 
     Map_String_PropuestaVentanaTaller "1" o-- "0..*" PropuestaVentanaTaller : elementos
     FleetMaintenancePlannerService --> "1" DemandForecastService : demandForecastService

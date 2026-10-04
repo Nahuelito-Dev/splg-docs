@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-209 Consultar los Movimientos de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
+    activate SIS
+    alt el rango de fechas es válido
+        SIS-->>ADM: página de movimientos y total
+    else el rango está invertido
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

@@ -68,7 +68,7 @@ class RegistroService <<fachada>> {
   + autorizarAlta(solicitante: Usuario, rolChofer: TipoDeRol,\n      distribuidoraId: Identificador)
   + autorizarAlta(solicitante: Usuario, rol: Rol,\n      distribuidoraId: Identificador): Usuario
   + crearPrimerSuperAdministrador(nombreCompleto: Cadena,\n      correo: Cadena, telefono: Cadena,\n      contrasena: Cadena): Usuario
-  + registrar(datosPersonales: Registro, rol: Rol,\n      distribuidoraId: Identificador)
+  + registrar(datosPersonales: Registro, rol: Rol,\n      distribuidoraId: Identificador): Usuario
   + registrarAdministrador(nombreCompleto: Cadena,\n      correo: Cadena, telefono: Cadena,\n      contrasena: Cadena, rol: Cadena,\n      distribuidoraId: Identificador): Usuario
   + registrarChofer(datosPersonales: Registro,\n      datosDelChofer: Registro,\n      distribuidoraId: Identificador): Usuario
   + registrarse(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, contrasena: Cadena,\n      datosDelCliente: Registro): Usuario
@@ -84,14 +84,14 @@ interface FirebaseAuthPort <<interface>> <<puerto>> {
 }
 interface FcmPort <<interface>> <<puerto>> {
   + sendToToken(token: Cadena, notificacion: Registro)
-  + sendToToken(token: Cadena, confirmacion: Registro)
+  + sendToToken(token: Cadena, confirmacion: Cadena)
 }
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class "List<Administrador>" as List_Administrador <<referencia>>
 class Usuario <<referencia>>
-class Administrador <<referencia>>
 class Cliente <<referencia>>
 class Chofer <<referencia>>
+class Administrador <<referencia>>
 
 AuthService --> "1" FirebaseAuthPort
 AuthService --> "1" Map_String_Usuario

@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-228 Registrar un Ingreso o Egreso de Caja · registrarMovimientoDeCaja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashLedgerService
+    participant CAJS as :Map#lt;String, Caja#gt;
+    participant CATS as :Map#lt;String, CategoriaDeCaja#gt;
+    participant CAJ as caja:Caja
+
+    ADM->>+SRV: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)
+    SRV->>+CAJS: get(cajaId)
+    CAJS-->>-SRV: caja
+    SRV->>+CATS: get(categoriaId)
+    CATS-->>-SRV: categoria
+    SRV->>+CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
+    CAJ->>CAJ: validarSesionAbierta()
+    CAJ->>CAJ: validarSaldoSuficiente(sentido, importe)
+    create participant NMO as nuevo:MovimientoDeCaja
+    CAJ->>NMO: «create»(sentido, importe, categoria, medio, descripcion, referencia)
+    CAJ->>CAJ: actualizarSaldo(sentido, importe)
+    CAJ-->>-SRV: movimiento
+    SRV-->>-ADM: movimiento

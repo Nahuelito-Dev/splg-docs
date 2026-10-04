@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-214 Gestionar los Proveedores · registrarProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    SRV->>+DIS: crearProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    DIS->>DIS: validarCuitSinUsar(cuit)
+    create participant PRV as nuevo:Proveedor
+    DIS->>PRV: «create»(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    DIS-->>-SRV: proveedor
+    SRV-->>-ADM: proveedor

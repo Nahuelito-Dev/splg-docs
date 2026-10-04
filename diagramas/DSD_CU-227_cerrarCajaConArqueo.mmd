@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-227 Cerrar la Caja con Arqueo · cerrarCajaConArqueo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashBoxService
+    participant SESS as :Map#lt;String, SesionDeCaja#gt;
+    participant SES as sesionDeCaja:SesionDeCaja
+    participant CAJ as caja:Caja
+
+    ADM->>+SRV: cerrarCajaConArqueo(sesionId, montoContado)
+    SRV->>+SESS: get(sesionId)
+    SESS-->>-SRV: sesionDeCaja
+    SRV->>+SES: getCaja()
+    SES-->>-SRV: caja
+    SRV->>+CAJ: calcularDiferencia(montoContado)
+    CAJ-->>-SRV: diferencia
+    opt La diferencia no es cero
+        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema diferencia de caja
+    end
+    SRV->>+SES: cerrar(montoContado, diferencia, administrador)
+    SES->>SES: validarAbierta()
+    deactivate SES
+    SRV-->>-ADM: sesionDeCaja

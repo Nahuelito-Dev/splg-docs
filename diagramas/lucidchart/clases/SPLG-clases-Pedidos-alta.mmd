@@ -8,6 +8,7 @@ classDiagram
         <<controlador>>
         + crearPedido(items: Lista, direccionId: Identificador, franjaId: Identificador, fechaAgendada: Fecha, metodoDePago: Cadena, out enlaceDePago: Cadena): Pedido
         + crearReserva(items: Lista, direccionId: Identificador, fechaAgendada: Fecha, franjaId: Identificador, metodoDePago: Cadena, montoDeLaSenia: Moneda, out enlaceDePago: Cadena): Pedido
+        + venderACuentaCorriente(cliente: Cliente, direccionId: Identificador, items: Lista): Pedido
     }
 
     class CancelOrderUseCase {
@@ -43,12 +44,13 @@ classDiagram
     class PaymentsService {
         <<fachada>>
     }
-    class Cliente
-    class FranjaHoraria
     class Pedido
-    class OfertaDespacho
-    class ZonaCobertura
+    class Cliente
     class Producto
+    class FranjaHoraria
+    class OfertaDespacho
+    class CuentaCorriente
+    class ZonaCobertura
 
     CancelOrderUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     CancelOrderUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
@@ -59,6 +61,7 @@ classDiagram
     ReleaseOrderUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort
     CancelOrderUseCase ..> Pedido
     CreateOrderUseCase ..> Cliente
+    CreateOrderUseCase ..> CuentaCorriente
     CreateOrderUseCase ..> FranjaHoraria
     CreateOrderUseCase ..> Pedido : create
     CreateOrderUseCase ..> Producto

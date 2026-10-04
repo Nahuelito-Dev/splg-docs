@@ -239,13 +239,18 @@ def main():
     if fuentes_servicios:
         print(f"  ✓ {len(fuentes_servicios)} vistas del diagrama de clases de diseño por módulo, en clases/")
 
-    # el modelo de datos entra por otra puerta: Importar datos · ERD
-    sql = D + "diagramas/base-de-datos/SPLG-base-de-datos-completa-lucidchart.sql"
-    if os.path.exists(sql):
-        import shutil
-        shutil.copy(sql, SAL + "SPLG-diagrama-de-base-de-datos.sql")
-        n = open(sql, encoding="utf-8").read().count("CREATE TABLE")
-        print(f"  ✓ SPLG-diagrama-de-base-de-datos.sql  ({n} tablas)")
+    # el modelo de datos entra por otra puerta: Importar datos · ERD. Son dos esquemas: lo que la base
+    # tiene hoy, y eso más lo planificado (las tablas de los módulos que todavía no se construyeron).
+    import shutil
+    for origen, destino, que in (
+            ("SPLG-base-de-datos-lucidchart.sql", "SPLG-diagrama-de-base-de-datos.sql", "implementadas"),
+            ("SPLG-base-de-datos-completa-lucidchart.sql", "SPLG-diagrama-de-base-de-datos-con-planificadas.sql",
+             "implementadas y planificadas")):
+        sql = D + "diagramas/base-de-datos/" + origen
+        if os.path.exists(sql):
+            shutil.copy(sql, SAL + destino)
+            n = open(sql, encoding="utf-8").read().count("CREATE TABLE")
+            print(f"  ✓ {destino}  ({n} tablas, {que})")
 
 if __name__ == "__main__":
     main()

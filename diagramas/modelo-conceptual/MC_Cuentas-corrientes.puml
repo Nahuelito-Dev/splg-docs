@@ -1,0 +1,80 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class CuentaCorriente {
+  razón social
+  CUIT
+  condición fiscal
+  límite de crédito
+  plazo de pago en días
+  estado
+  saldo
+}
+class AsientoCuentaCorriente {
+  tipo
+  importe
+  vence
+  medio de pago
+  fecha
+  descripción
+}
+class ImputacionCuentaCorriente {
+  importe
+}
+class Cliente <<referencia>>
+class Distribuidora <<referencia>>
+class Pedido <<referencia>>
+class MovimientoDeCaja <<referencia>>
+class Chofer <<referencia>>
+class RendicionChofer <<referencia>>
+
+
+Distribuidora "1" *-- "0..*" CuentaCorriente : lleva >
+Cliente "1" -- "0..*" CuentaCorriente : tiene habilitada >
+CuentaCorriente "1" *-- "0..*" AsientoCuentaCorriente : registra >
+Pedido "0..1" -- "0..*" AsientoCuentaCorriente : origina >
+AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en >
+Chofer "0..1" -- "0..*" AsientoCuentaCorriente : cobra >
+RendicionChofer "0..1" -- "0..*" AsientoCuentaCorriente : incluye >
+AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente : anula a >
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda >
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-244 Consultar Mis Comisiones · consultarMisComisiones
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :CommissionService
+    participant EMPS as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant ASIS as :List#lt;AsientoComision#gt;
+
+    CHF->>+SRV: consultarMisComisiones(fechaDesde, fechaHasta)
+    SRV->>+EMPS: get(usuarioId)
+    EMPS-->>-SRV: empleado
+    SRV->>+ASIS: filtrar(empleado, fechaDesde, fechaHasta)
+    ASIS-->>-SRV: comisiones
+    SRV->>+EMP: calcularSaldoSinLiquidar()
+    EMP-->>-SRV: saldo
+    SRV-->>-CHF: comisiones, saldo

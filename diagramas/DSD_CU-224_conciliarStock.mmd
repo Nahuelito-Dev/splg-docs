@@ -1,0 +1,30 @@
+sequenceDiagram
+    title DSD — CU-224 Conciliar el Stock Vendible con el Físico · conciliarStock
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant CRN as :StockReconciliationCron
+    participant PEDS as :List#lt;Pedido#gt;
+    participant PRD as :List#lt;Producto#gt;
+    participant PRO as producto:Producto
+    participant UBS as :List#lt;UbicacionDeStock#gt;
+    participant DIS as distribuidora:Distribuidora
+    participant MAI as :EmailSenderPort
+
+    SIS->>+CRN: conciliarStock()
+    CRN->>+PEDS: getEntregadosSinMovimiento()
+    PEDS-->>-CRN: pedidos
+    Note over CRN,PEDS: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220). Crea los MovimientoDeStock
+    CRN->>+PRD: getActivos()
+    PRD-->>-CRN: productos
+    loop Por cada tipo de garrafa
+        CRN->>PRO: getStock()
+        CRN->>UBS: getLlenas(producto)
+        CRN->>PEDS: getReservado(producto)
+        CRN->>PRO: calcularDiferencia(llenasFisicas, reservado)
+    end
+    opt Algún tipo de garrafa tiene diferencia
+        CRN->>+DIS: getAdministradores()
+        DIS-->>-CRN: administradores
+        CRN->>MAI: send(administrador, diferencias)
+    end
+    deactivate CRN

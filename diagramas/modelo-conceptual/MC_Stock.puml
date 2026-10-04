@@ -1,0 +1,99 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class Deposito {
+  nombre
+  código
+  tipo
+  dirección
+  predeterminado
+  activo
+}
+class UbicacionDeStock {
+  tipo
+}
+class SaldoDeStock {
+  condición
+  cantidad
+}
+class MovimientoDeStock {
+  cantidad
+  condición de origen
+  condición de destino
+  motivo
+  fecha
+}
+class UmbralDeStock {
+  mínimo de llenas
+  avisado el
+}
+class AjusteDeStock {
+  número
+  motivo
+  nota
+  fecha
+}
+class ItemAjusteDeStock {
+  condición
+  diferencia
+}
+class Producto <<referencia>>
+class Vehiculo <<referencia>>
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+
+
+Distribuidora "1" -- "0..*" Deposito : dispone de >
+Deposito "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+Vehiculo "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+UbicacionDeStock "1" *-- "0..*" SaldoDeStock : acumula >
+SaldoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en >
+Usuario "0..1" -- "0..*" MovimientoDeStock : ejecuta >
+Deposito "1" *-- "0..*" UmbralDeStock : fija >
+UmbralDeStock "0..*" -- "1" Producto : controla >
+UbicacionDeStock "1" -- "0..*" AjusteDeStock : se corrige con >
+AjusteDeStock "1" *-- "1..*" ItemAjusteDeStock : contiene >
+ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a >
+Usuario "1" -- "0..*" AjusteDeStock : registra >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-179 Consultar el Legajo de un Empleado · consultarEmpleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :EmployeeService
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant PUE as puesto:PuestoDeTrabajo
+    participant USR as usuario:Usuario
+
+    ADM->>+SRV: consultarEmpleado(empleadoId)
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>+EMP: getLegajo()
+    EMP->>PUE: getNombre()
+    EMP-->>-SRV: legajo
+    opt El empleado tiene cuenta de acceso
+        SRV->>+EMP: getCuenta()
+        EMP->>USR: getPerfilDeChofer()
+        EMP-->>-SRV: cuenta
+    end
+    SRV-->>-ADM: legajo con su puesto, su cuenta y su ficha de chofer

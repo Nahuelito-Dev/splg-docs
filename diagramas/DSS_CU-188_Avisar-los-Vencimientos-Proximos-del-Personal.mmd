@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-188 Avisar los Vencimientos Próximos del Personal
+    autonumber
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
+
+    Note over SAU: Se ejecuta una vez por<br/>día
+    SAU->>SIS: avisarVencimientosPendientes()
+    activate SIS
+    alt Hay documentación del personal por vencer, vencida o faltante
+        SIS-)ADM: notificarVencimientosDelPersonal(tareas)
+        Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
+        SIS-->>SAU: avisos enviados
+    else No hay ninguna
+        SIS-->>SAU: el ciclo termina sin avisos
+    end
+    deactivate SIS

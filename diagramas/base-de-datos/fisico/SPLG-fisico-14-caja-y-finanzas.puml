@@ -1,0 +1,268 @@
+@startuml
+title Modelo físico — Caja y finanzas
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+skinparam linetype polyline
+
+entity "cash_box" as e_cash_box <<propuesto>> {
+  {field} <color:#1F5E8C>**cash_box_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>name : varchar(80) * <<propuesto>></color>
+  {field} <color:#1F5E8C>kind : cash_box_kind_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>balance : numeric(14,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>requires_session : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+}
+entity "cash_category" as e_cash_category <<propuesto>> {
+  {field} <color:#1F5E8C>**category_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>name : varchar(80) * <<propuesto>></color>
+  {field} <color:#1F5E8C>direction : cash_direction_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>system_code : cash_system_code_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "cash_session" as e_cash_session <<propuesto>> {
+  {field} <color:#1F5E8C>**session_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//cash_box_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>status : cash_session_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>opened_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>//opened_by_user_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>opening_amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>closed_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>//closed_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>expected_amount : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>counted_amount : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>difference : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
+}
+entity "customer_account" as e_customer_account <<propuesto>> {
+  {field} <color:#1F5E8C>**account_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//customer_user_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>business_name : varchar(120) * <<propuesto>></color>
+  {field} <color:#1F5E8C>tax_id : varchar(11) <<propuesto>></color>
+  {field} <color:#1F5E8C>tax_condition : tax_condition_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>credit_limit : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>payment_terms_days : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>status : customer_account_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>balance : numeric(14,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+}
+entity "cash_movement" as e_cash_movement <<propuesto>> {
+  {field} <color:#1F5E8C>**movement_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//cash_box_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//session_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>direction : cash_direction_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>//category_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>method : cash_method_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>description : varchar(255) <<propuesto>></color>
+  {field} <color:#1F5E8C>reference_type : cash_reference_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>reference_id : uuid <<propuesto>></color>
+  {field} <color:#1F5E8C>//reverses_movement_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//created_by_user_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+}
+entity "commission_rule" as e_commission_rule <<propuesto>> {
+  {field} <color:#1F5E8C>**rule_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>basis : commission_basis_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>value : numeric(10,4) * <<propuesto>></color>
+  {field} <color:#1F5E8C>valid_from : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>valid_to : date <<propuesto>></color>
+  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+}
+entity "driver_liquidation" as e_driver_liquidation <<propuesto>> {
+  {field} <color:#1F5E8C>**liquidation_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>number : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>period_from : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>period_to : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>gross : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>deductions : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>net : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>status : driver_liquidation_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>approved_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>//approved_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>paid_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>//cash_movement_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+}
+entity "driver_settlement" as e_driver_settlement <<propuesto>> {
+  {field} <color:#1F5E8C>**settlement_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//delivery_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>number : integer * <<propuesto>></color>
+  {field} <color:#1F5E8C>business_date : date * <<propuesto>></color>
+  {field} <color:#1F5E8C>status : driver_settlement_status_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>expected_cash : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>declared_cash : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>driver_expenses : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>difference : numeric(12,2) <<propuesto>></color>
+  {field} <color:#1F5E8C>difference_resolution : settlement_difference_resolution_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>//destination_cash_box_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//cash_movement_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>submitted_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>//submitted_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>approved_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>//approved_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>alerted_at : timestamptz <<propuesto>></color>
+  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+}
+entity "commission_entry" as e_commission_entry <<propuesto>> {
+  {field} <color:#1F5E8C>**entry_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//employee_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>type : commission_entry_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>//order_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//rule_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>rule_snapshot : jsonb <<propuesto>></color>
+  {field} <color:#1F5E8C>//settlement_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//liquidation_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>description : varchar(255) <<propuesto>></color>
+  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>//created_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+}
+entity "customer_account_entry" as e_customer_account_entry <<propuesto>> {
+  {field} <color:#1F5E8C>**entry_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//account_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>type : customer_entry_type_enum * <<propuesto>></color>
+  {field} <color:#1F5E8C>amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>//order_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>due_date : date <<propuesto>></color>
+  {field} <color:#1F5E8C>payment_method : cash_method_enum <<propuesto>></color>
+  {field} <color:#1F5E8C>//cash_movement_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//collected_by_delivery_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//settlement_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//reverses_entry_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>description : varchar(255) <<propuesto>></color>
+  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
+  {field} <color:#1F5E8C>//created_by_user_id// : uuid <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+}
+entity "driver_settlement_expense" as e_driver_settlement_expense <<propuesto>> {
+  {field} <color:#1F5E8C>**expense_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//settlement_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//category_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>description : varchar(255) <<propuesto>></color>
+}
+entity "driver_settlement_order" as e_driver_settlement_order <<propuesto>> {
+  {field} <color:#1F5E8C>**settlement_order_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//settlement_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//order_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>amount : numeric(12,2) * <<propuesto>></color>
+  {field} <color:#1F5E8C>payment_method : order_paymentmethod_enum * <<propuesto>></color>
+}
+entity "customer_account_allocation" as e_customer_account_allocation <<propuesto>> {
+  {field} <color:#1F5E8C>**allocation_id** : uuid * <<PK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//debit_entry_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>//credit_entry_id// : uuid * <<FK>> <<propuesto>></color>
+  {field} <color:#1F5E8C>amount : numeric(12,2) * <<propuesto>></color>
+}
+entity "user" as e_user #F1F1F1 {
+}
+entity "employee" as e_employee #F1F1F1 {
+}
+entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
+}
+entity "delivery" as e_delivery #F1F1F1 {
+}
+entity "order" as e_order #F1F1F1 {
+}
+
+e_cash_box ||--o{ e_cash_session #line:1F5E8C;text:1F5E8C : cash_box_id
+e_user ||--o{ e_cash_session #line:1F5E8C;text:1F5E8C : opened_by_user_id
+e_user |o--o{ e_cash_session #line:1F5E8C;text:1F5E8C : closed_by_user_id
+e_user ||--o{ e_customer_account #line:1F5E8C;text:1F5E8C : customer_user_id
+e_cash_box ||--o{ e_cash_movement #line:1F5E8C;text:1F5E8C : cash_box_id
+e_cash_session |o--o{ e_cash_movement #line:1F5E8C;text:1F5E8C : session_id
+e_cash_category ||--o{ e_cash_movement #line:1F5E8C;text:1F5E8C : category_id
+e_cash_movement |o--o| e_cash_movement #line:1F5E8C;text:1F5E8C : reverses_movement_id
+e_user ||--o{ e_cash_movement #line:1F5E8C;text:1F5E8C : created_by_user_id
+e_employee |o--o{ e_commission_rule #line:1F5E8C;text:1F5E8C : employee_id
+e_gas_cylinder |o--o{ e_commission_rule #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_employee ||--o{ e_driver_liquidation #line:1F5E8C;text:1F5E8C : employee_id
+e_user |o--o{ e_driver_liquidation #line:1F5E8C;text:1F5E8C : approved_by_user_id
+e_cash_movement |o--o{ e_driver_liquidation #line:1F5E8C;text:1F5E8C : cash_movement_id
+e_delivery ||--o{ e_driver_settlement #line:1F5E8C;text:1F5E8C : delivery_id
+e_cash_box |o--o{ e_driver_settlement #line:1F5E8C;text:1F5E8C : destination_cash_box_id
+e_cash_movement |o--o{ e_driver_settlement #line:1F5E8C;text:1F5E8C : cash_movement_id
+e_user |o--o{ e_driver_settlement #line:1F5E8C;text:1F5E8C : submitted_by_user_id
+e_user |o--o{ e_driver_settlement #line:1F5E8C;text:1F5E8C : approved_by_user_id
+e_employee ||--o{ e_commission_entry #line:1F5E8C;text:1F5E8C : employee_id
+e_order |o--o{ e_commission_entry #line:1F5E8C;text:1F5E8C : order_id
+e_commission_rule |o--o{ e_commission_entry #line:1F5E8C;text:1F5E8C : rule_id
+e_driver_settlement |o--o{ e_commission_entry #line:1F5E8C;text:1F5E8C : settlement_id
+e_driver_liquidation |o--o{ e_commission_entry #line:1F5E8C;text:1F5E8C : liquidation_id
+e_user |o--o{ e_commission_entry #line:1F5E8C;text:1F5E8C : created_by_user_id
+e_customer_account ||--o{ e_customer_account_entry #line:1F5E8C;text:1F5E8C : account_id
+e_order |o--o{ e_customer_account_entry #line:1F5E8C;text:1F5E8C : order_id
+e_cash_movement |o--o{ e_customer_account_entry #line:1F5E8C;text:1F5E8C : cash_movement_id
+e_delivery |o--o{ e_customer_account_entry #line:1F5E8C;text:1F5E8C : collected_by_delivery_id
+e_driver_settlement |o--o{ e_customer_account_entry #line:1F5E8C;text:1F5E8C : settlement_id
+e_customer_account_entry |o--o| e_customer_account_entry #line:1F5E8C;text:1F5E8C : reverses_entry_id
+e_user |o--o{ e_customer_account_entry #line:1F5E8C;text:1F5E8C : created_by_user_id
+e_driver_settlement ||--o{ e_driver_settlement_expense #line:1F5E8C;text:1F5E8C : settlement_id
+e_cash_category ||--o{ e_driver_settlement_expense #line:1F5E8C;text:1F5E8C : category_id
+e_driver_settlement ||--o{ e_driver_settlement_order #line:1F5E8C;text:1F5E8C : settlement_id
+e_order ||--o| e_driver_settlement_order #line:1F5E8C;text:1F5E8C : order_id
+e_customer_account_entry ||--o{ e_customer_account_allocation #line:1F5E8C;text:1F5E8C : debit_entry_id
+e_customer_account_entry ||--o{ e_customer_account_allocation #line:1F5E8C;text:1F5E8C : credit_entry_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

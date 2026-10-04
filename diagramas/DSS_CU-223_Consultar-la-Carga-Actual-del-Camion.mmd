@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-223 Consultar la Carga Actual del Camión
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: consultarCargaActual()
+    activate SIS
+    alt el chofer tiene una carga abierta
+        SIS-->>CHO: carga con lo cargado, lo entregado y lo esperado
+    else no tiene carga abierta
+        SIS-->>CHO: ninguna carga
+    end
+    deactivate SIS

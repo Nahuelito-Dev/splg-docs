@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-178 Modificar el Legajo de un Empleado · modificarEmpleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :EmployeeService
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant DIS as distribuidora:Distribuidora
+    participant EMP as empleado:Empleado
+    participant CUI as :CuilValidator
+
+    ADM->>+SRV: modificarEmpleado(empleadoId, datos)
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>+DIS: assertDocumentoYCuilDisponibles(datos, empleado)
+    deactivate DIS
+    SRV->>+EMP: modificar(datos)
+    EMP->>CUI: esValido(cuil)
+    deactivate EMP
+    SRV-->>-ADM: empleado

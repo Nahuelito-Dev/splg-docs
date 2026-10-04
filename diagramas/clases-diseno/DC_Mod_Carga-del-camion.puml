@@ -1,0 +1,112 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class TruckLoadService <<fachada>> {
+  + cancelarCargaDelCamion(cargaId: Identificador): CargaDeCamion
+  + cerrarRendicionDeStock(cargaId: Identificador,\n      nota: Cadena): Booleano
+  + consultarCargaActual(): CargaDeCamion
+  + consultarCargasDelCamion(estado: Cadena, fecha: Fecha,\n      vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
+  + registrarCargaDelCamion(vehiculoId: Identificador,\n      depositoId: Identificador,\n      ayudanteId: Identificador, items: Lista): Booleano
+  + registrarRegresoDelCamion(cargaId: Identificador,\n      devueltos: Lista): CargaDeCamion
+  + registrarSalidaDelCamion(cargaId: Identificador): CargaDeCamion
+  + reponerCargaDelCamion(cargaId: Identificador,\n      items: Lista): Booleano
+  + verificarCargaDeCamionAbierta(chofer: Chofer): Booleano
+}
+class "Map<String, CargaDeCamion>" as Map_String_CargaDeCamion <<colección>> {
+  + get(clave: Cadena): CargaDeCamion
+}
+class "List<CargaDeCamion>" as List_CargaDeCamion <<colección>> {
+  + buscar(estado: Cadena, fecha: Fecha,\n      vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
+}
+class CargaDeCamion <<referencia>>
+class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
+class "Map<String, Deposito>" as Map_String_Deposito <<referencia>>
+class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
+class StockLedgerService <<referencia>>
+class Distribuidora <<referencia>>
+class ConfiguracionModulo <<referencia>>
+class Vehiculo <<referencia>>
+class Chofer <<referencia>>
+class Producto <<referencia>>
+class ItemCarga <<referencia>>
+
+Map_String_CargaDeCamion "1" o--> "0..*" CargaDeCamion
+List_CargaDeCamion "1" o--> "0..*" CargaDeCamion
+TruckLoadService --> "1" List_CargaDeCamion
+TruckLoadService --> "1" Map_String_CargaDeCamion
+TruckLoadService --> "1" Map_String_Chofer
+TruckLoadService --> "1" Map_String_Deposito
+TruckLoadService --> "1" Map_String_Vehiculo
+TruckLoadService --> "1" StockLedgerService
+List_CargaDeCamion ..> CargaDeCamion
+TruckLoadService ..> CargaDeCamion
+TruckLoadService ..> Chofer
+TruckLoadService ..> ConfiguracionModulo
+TruckLoadService ..> Distribuidora
+TruckLoadService ..> ItemCarga
+TruckLoadService ..> Producto
+TruckLoadService ..> Vehiculo
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,37 @@
+sequenceDiagram
+    title DSD — CU-237 Registrar un Pago de Cuenta Corriente · registrarPagoDeCuentaCorriente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomerAccountService
+    participant CUES as :Map#lt;String, CuentaCorriente#gt;
+    participant CUE as cuenta:CuentaCorriente
+    participant CHFS as :Map#lt;String, Chofer#gt;
+    participant CHF as chofer:Chofer
+    participant REN as rendicion:RendicionChofer
+
+    ADM->>+SRV: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
+    SRV->>+CUES: get(cuentaId)
+    CUES-->>-SRV: cuenta
+    alt El cobro entra a una caja
+        Note over SRV,CUE: Caja: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja
+    else El cobro lo registra un chofer en la calle
+        SRV->>+CHFS: get(usuarioId)
+        CHFS-->>-SRV: chofer
+        SRV->>+CHF: getRendicionAbierta()
+        CHF-->>-SRV: rendicion
+    end
+    SRV->>+CUE: registrarPago(importe, medio, movimiento)
+    create participant NAS as nuevo:AsientoCuentaCorriente
+    CUE->>NAS: «create»(tipoDeAsiento, importe, medio, movimiento)
+    CUE->>CUE: actualizarSaldo(importe)
+    loop Por cada cargo impago cubierto, del más antiguo
+        create participant NIM as nueva:ImputacionCuentaCorriente
+        CUE->>NIM: «create»(cargo, asiento, importe)
+    end
+    CUE-->>-SRV: asiento
+    opt El cobro lo registró un chofer
+        SRV->>+REN: agregarCobro(asiento)
+        REN->>NAS: asignarARendicion(rendicion)
+        deactivate REN
+    end
+    SRV-->>-ADM: asiento

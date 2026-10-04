@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-186 Adjuntar un Archivo al Legajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)
+    activate SIS
+    alt el empleado existe y el archivo es admisible
+        SIS-->>ADM: adjunto registrado en el legajo
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el tipo o el tamaño del archivo no están permitidos
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS

@@ -1,0 +1,82 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class RendicionChofer {
+  número
+  fecha de negocio
+  estado
+  efectivo esperado
+  efectivo declarado
+  gastos del chofer
+  diferencia
+  resolución de la diferencia
+  presentada el
+  aprobada el
+  observaciones
+  aviso enviado el
+}
+class PedidoRendido {
+  importe
+  medio de pago
+}
+class GastoDeRendicion {
+  importe
+  descripción
+}
+class Chofer <<referencia>>
+class Pedido <<referencia>>
+class Caja <<referencia>>
+class MovimientoDeCaja <<referencia>>
+class CategoriaDeCaja <<referencia>>
+class AsientoCuentaCorriente <<referencia>>
+class AsientoComision <<referencia>>
+
+
+Chofer "1" *-- "0..*" RendicionChofer : presenta >
+RendicionChofer "0..*" -- "0..1" Caja : ingresa en >
+RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera >
+RendicionChofer "1" *-- "0..*" PedidoRendido : rinde >
+PedidoRendido "0..1" -- "1" Pedido : corresponde a >
+RendicionChofer "1" *-- "0..*" GastoDeRendicion : declara >
+GastoDeRendicion "0..*" -- "1" CategoriaDeCaja : se clasifica en >
+RendicionChofer "0..1" -- "0..*" AsientoCuentaCorriente : incluye >
+RendicionChofer "0..1" -- "0..*" AsientoComision : origina >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

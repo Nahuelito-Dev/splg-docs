@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSS — CU-208 Consultar el Stock por Ubicación
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt resumen por tipo de garrafa
+        ADM->>SIS: consultarResumenDeStock()
+        activate SIS
+        SIS-->>ADM: llenas, vacías, defectuosas, reservado, vendible y mínimo por tipo
+        deactivate SIS
+    end
+
+    opt detalle de una ubicación
+        ADM->>SIS: consultarStockPorUbicacion(ubicacionId, productoId)
+        activate SIS
+        alt la ubicación existe
+            SIS-->>ADM: saldos por tipo de garrafa y condición
+        else la ubicación no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end

@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSS — CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)
+    activate SIS
+    alt el plan aplica al puesto del empleado y el vencimiento está vigente
+        SIS-->>ADM: tarea creada, empleado habilitado
+    else el vencimiento ya pasó al cargarlo
+        SIS-->>ADM: tarea creada y empleado no habilitado para el despacho
+    else el empleado o el plan no existen en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el empleado está egresado
+        SIS-->>ADM: conflicto
+    else el plan no es de sujeto empleado o no aplica a la categoría del puesto
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS

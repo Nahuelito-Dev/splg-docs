@@ -1,0 +1,101 @@
+@startuml
+title SS-21 — Caja, Rendiciones y Cuentas Corrientes (21 casos de uso)
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
+}
+
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-21 Caja, Rendiciones y Cuentas Corrientes" {
+  usecase "CU-225\nGestionar las Cajas" as U225 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-226\nAbrir la Caja" as U226 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-227\nCerrar la Caja con Arqueo" as U227 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-228\nRegistrar un Ingreso o Egreso\nde Caja" as U228 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-229\nAnular un Movimiento de Caja" as U229 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-230\nGestionar las Categorías de\nIngresos y Gastos" as U230 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-231\nGenerar la Rendición Diaria\ndel Chofer" as U231 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-232\nDeclarar el Efectivo Rendido" as U232 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-233\nAprobar la Rendición del\nChofer" as U233 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-234\nAvisar las Rendiciones sin\nCerrar" as U234 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-235\nHabilitar la Cuenta Corriente\nde un Cliente" as U235 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-236\nVender a Cuenta Corriente" as U236 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-237\nRegistrar un Pago de Cuenta\nCorriente" as U237 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-238\nConsultar el Estado de Cuenta\nde un Cliente" as U238 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-239\nConsultar la Antigüedad de la\nDeuda" as U239 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-240\nConfigurar las Comisiones por\nEntrega" as U240 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-241\nRegistrar la Comisión de una\nEntrega" as U241 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-242\nLiquidar las Comisiones de un\nChofer" as U242 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-243\nRegistrar el Pago de una\nLiquidación" as U243 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-244\nConsultar Mis Comisiones" as U244 <<planificado>> #back:FFFFFF;line:2A8A5C
+  usecase "CU-245\nConsultar el Tablero\nFinanciero" as U245 <<planificado>> #back:FFFFFF;line:2A8A5C
+}
+
+usecase "CU-005\nCrear Pedido\n(SS-02)" as U005 #back:FFFFFF;line:6B7683
+
+A02 -[#2E7D46]- U232
+A02 -[#2E7D46]- U237
+A02 -[#2E7D46]- U244
+A03 -[#8C4A9E]- U225
+A03 -[#8C4A9E]- U226
+A03 -[#8C4A9E]- U227
+A03 -[#8C4A9E]- U228
+A03 -[#8C4A9E]- U229
+A03 -[#8C4A9E]- U230
+A03 -[#8C4A9E]- U232
+A03 -[#8C4A9E]- U233
+A03 -[#8C4A9E]- U235
+A03 -[#8C4A9E]- U236
+A03 -[#8C4A9E]- U237
+A03 -[#8C4A9E]- U238
+A03 -[#8C4A9E]- U239
+A03 -[#8C4A9E]- U240
+A03 -[#8C4A9E]- U242
+A03 -[#8C4A9E]- U243
+A03 -[#8C4A9E]- U245
+A04 -[#8A6D1F]- U231
+A04 -[#8A6D1F]- U234
+A04 -[#8A6D1F]- U236
+A04 -[#8A6D1F]- U241
+A05 --|> A03
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U227 ..> U228 : <<include>>
+U233 ..> U228 : <<include>>
+U237 ..> U228 : <<include>>
+U243 ..> U228 : <<include>>
+U236 ..> U005 : <<include>>
+
+@enduml

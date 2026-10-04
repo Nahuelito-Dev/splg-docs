@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-198 Registrar una Multa de Tránsito · registrarMultaDeTransito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TrafficFineService
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant ASG as :VehicleAssignmentService
+    participant COM as :Map#lt;String, MultaTransito#gt;
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: registrarMultaDeTransito(vehiculoId, datos)
+    SRV->>+COV: get(vehiculoId)
+    COV-->>-SRV: vehiculo
+    SRV->>+COM: containsKey(claveDeActa)
+    COM-->>-SRV: existe
+    SRV->>+ASG: getEmpleadoAl(vehiculo, fechaYHora)
+    ASG-->>-SRV: empleado
+    SRV->>+VEH: registrarMulta(datos, empleado)
+    create participant MUL as :MultaTransito
+    VEH->>MUL: «create»(datos, empleado)
+    VEH-->>-SRV: multaTransito
+    SRV-->>-ADM: multaTransito

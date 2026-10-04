@@ -1,0 +1,40 @@
+sequenceDiagram
+    title DSS — CU-217 Registrar la Recepción de una Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt recepción de una compra
+        ADM->>SIS: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
+        activate SIS
+        alt la recepción es válida
+            SIS-->>ADM: recepción registrada
+        else el comprobante ya se registró para el proveedor
+            SIS-->>ADM: conflicto
+        else los vacíos entregados superan el saldo del depósito
+            SIS-->>ADM: solicitud inválida, con el saldo disponible
+        else la orden no existe
+            SIS-->>ADM: recurso no encontrado
+        else la orden está cancelada o ya recibida por completo
+            SIS-->>ADM: conflicto
+        end
+        deactivate SIS
+    end
+
+    opt anulación de una recepción
+        ADM->>SIS: anularRecepcionDeCompra(recepcionId, motivo)
+        activate SIS
+        alt el depósito todavía tiene lo ingresado
+            SIS-->>ADM: recepción anulada
+        else el depósito ya no tiene lo ingresado
+            SIS-->>ADM: conflicto
+        end
+        deactivate SIS
+    end
+
+    opt consulta de las recepciones
+        ADM->>SIS: consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)
+        activate SIS
+        SIS-->>ADM: recepciones de compra
+        deactivate SIS
+    end

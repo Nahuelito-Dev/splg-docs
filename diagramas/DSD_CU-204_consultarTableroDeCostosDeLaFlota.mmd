@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-204 Consultar el Tablero de Costos de la Flota · consultarTableroDeCostosDeLaFlota
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetCostReportService
+    participant LST as :List#lt;Vehiculo#gt;
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)
+    SRV->>+LST: getActivos()
+    LST-->>-SRV: vehiculos
+    loop Por cada vehículo de la flota
+        SRV->>+VEH: getCostoTotal(fechaDesde, fechaHasta)
+        VEH-->>-SRV: costoDelVehiculo
+        Note over SRV,VEH: Costo por rubro: ver DSD de consultarCostoDeUnVehiculo (CU-203)
+        SRV->>+VEH: getKilometrosRecorridos(fechaDesde, fechaHasta)
+        VEH-->>-SRV: kilometros
+    end
+    SRV->>SRV: ordenarPorCostoPorKilometro(costos)
+    SRV-->>-ADM: costos

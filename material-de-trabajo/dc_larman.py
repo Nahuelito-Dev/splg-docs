@@ -58,6 +58,10 @@ ENUMERACIONES = {
     "IncidentStatus": "EstadoDeIncidencia", "IncidentMoment": "MomentoDeIncidencia",
     "RouteBatchStatus": "EstadoDelLote", "PrecisionDeGeocodificacion": "PrecisionDeGeocodificacion",
     "RoleType": "TipoDeRol", "PaymentGateway": "Pasarela", "LedgerPaymentStatus": "EstadoDelPago", "RaterRole": "RolDelCalificador",
+    # Flota ampliada (I-12): enumeraciones planificadas
+    "FuelType": "TipoDeCombustible", "FuelPaymentMethod": "MedioDePagoDeCombustible",
+    "TrafficFineStatus": "EstadoDeLaMulta", "VehicleAccidentStatus": "EstadoDelSiniestro",
+    "TireStatus": "EstadoDelNeumatico", "TireEventType": "TipoDeMovimientoDeNeumatico",
 }
 
 # Atributos del modelo conceptual que el código no tiene como columna propia o que el modelo
@@ -78,7 +82,155 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
     ("DireccionEntrega", "punto"): "Coordenada",
     ("DireccionEntrega", "precisión"): "PrecisionDeGeocodificacion",
     ("Pedido", "modalidad de entrega"): "ModalidadDeEntrega",
+    # Stock y compras (planificado, I-13): conceptos sin entidad en el código
+    ("Deposito", "nombre"): "Cadena",
+    ("Deposito", "código"): "Cadena",
+    ("Deposito", "tipo"): "Cadena",
+    ("Deposito", "dirección"): "Cadena",
+    ("Deposito", "predeterminado"): "Booleano",
+    ("Deposito", "activo"): "Booleano",
+    ("UbicacionDeStock", "tipo"): "Cadena",
+    ("SaldoDeStock", "condición"): "Cadena",
+    ("SaldoDeStock", "cantidad"): "Entero",
+    ("MovimientoDeStock", "cantidad"): "Entero",
+    ("MovimientoDeStock", "condición de origen"): "Cadena",
+    ("MovimientoDeStock", "condición de destino"): "Cadena",
+    ("MovimientoDeStock", "motivo"): "Cadena",
+    ("MovimientoDeStock", "fecha"): "FechaHora",
+    ("UmbralDeStock", "mínimo de llenas"): "Entero",
+    ("UmbralDeStock", "avisado el"): "FechaHora",
+    ("AjusteDeStock", "número"): "Entero",
+    ("AjusteDeStock", "motivo"): "Cadena",
+    ("AjusteDeStock", "nota"): "Cadena",
+    ("AjusteDeStock", "fecha"): "FechaHora",
+    ("ItemAjusteDeStock", "condición"): "Cadena",
+    ("ItemAjusteDeStock", "diferencia"): "Entero",
+    ("CargaDeCamion", "número"): "Entero",
+    ("CargaDeCamion", "día"): "Fecha",
+    ("CargaDeCamion", "estado"): "Cadena",
+    ("CargaDeCamion", "abierta el"): "FechaHora",
+    ("CargaDeCamion", "salió el"): "FechaHora",
+    ("CargaDeCamion", "regresó el"): "FechaHora",
+    ("CargaDeCamion", "cerrada el"): "FechaHora",
+    ("CargaDeCamion", "nota de diferencia"): "Cadena",
+    ("ItemCarga", "llenas cargadas"): "Entero",
+    ("ItemCarga", "llenas repuestas"): "Entero",
+    ("ItemCarga", "vacías cargadas"): "Entero",
+    ("ItemCarga", "llenas declaradas al regreso"): "Entero",
+    ("ItemCarga", "vacías declaradas al regreso"): "Entero",
+    ("ItemCarga", "llenas entregadas"): "Entero",
+    ("ItemCarga", "vacías recolectadas"): "Entero",
+    ("ItemCarga", "/llenas esperadas"): "Entero",
+    ("ItemCarga", "/vacías esperadas"): "Entero",
+    ("ItemCarga", "diferencia de llenas"): "Entero",
+    ("ItemCarga", "diferencia de vacías"): "Entero",
+    ("Proveedor", "razón social"): "Cadena",
+    ("Proveedor", "CUIT"): "Cadena",
+    ("Proveedor", "tipo"): "Cadena",
+    ("Proveedor", "contacto"): "Cadena",
+    ("Proveedor", "teléfono"): "Cadena",
+    ("Proveedor", "correo"): "Cadena",
+    ("Proveedor", "dirección"): "Cadena",
+    ("Proveedor", "plazo de pago"): "Entero",
+    ("Proveedor", "activo"): "Booleano",
+    ("OrdenDeCompra", "número"): "Entero",
+    ("OrdenDeCompra", "estado"): "Cadena",
+    ("OrdenDeCompra", "emitida el"): "FechaHora",
+    ("OrdenDeCompra", "fecha esperada"): "Fecha",
+    ("OrdenDeCompra", "total"): "Moneda",
+    ("OrdenDeCompra", "motivo de cancelación"): "Cadena",
+    ("OrdenDeCompra", "notas"): "Cadena",
+    ("ItemOrdenDeCompra", "cantidad"): "Entero",
+    ("ItemOrdenDeCompra", "costo unitario"): "Moneda",
+    ("ItemOrdenDeCompra", "vacíos a canjear"): "Entero",
+    ("ItemOrdenDeCompra", "cantidad recibida"): "Entero",
+    ("RecepcionDeCompra", "número"): "Entero",
+    ("RecepcionDeCompra", "tipo de comprobante"): "Cadena",
+    ("RecepcionDeCompra", "número de comprobante"): "Cadena",
+    ("RecepcionDeCompra", "recibida el"): "FechaHora",
+    ("RecepcionDeCompra", "total"): "Moneda",
+    ("RecepcionDeCompra", "estado de pago"): "Cadena",
+    ("RecepcionDeCompra", "estado"): "Cadena",
+    ("RecepcionDeCompra", "motivo de anulación"): "Cadena",
+    ("ItemRecepcion", "llenas recibidas"): "Entero",
+    ("ItemRecepcion", "vacías entregadas"): "Entero",
+    ("ItemRecepcion", "costo unitario"): "Moneda",
+    ("Producto", "costo promedio"): "Moneda",
+    ("Caja", "nombre"): "Cadena",
+    ("Empleado", "nombre"): "Cadena",
+    ("Caja", "tipo"): "TipoDeCaja",
+    ("Caja", "saldo"): "Moneda",
+    ("Caja", "requiere sesión"): "Booleano",
+    ("Caja", "activa"): "Booleano",
+    ("SesionDeCaja", "estado"): "EstadoDeLaSesion",
+    ("SesionDeCaja", "abierta el"): "FechaHora",
+    ("SesionDeCaja", "monto inicial"): "Moneda",
+    ("SesionDeCaja", "cerrada el"): "FechaHora",
+    ("SesionDeCaja", "monto esperado"): "Moneda",
+    ("SesionDeCaja", "monto contado"): "Moneda",
+    ("SesionDeCaja", "diferencia"): "Moneda",
+    ("SesionDeCaja", "observaciones"): "Cadena",
+    ("CategoriaDeCaja", "nombre"): "Cadena",
+    ("CategoriaDeCaja", "sentido"): "SentidoDeCaja",
+    ("CategoriaDeCaja", "código de sistema"): "CodigoDeSistema",
+    ("CategoriaDeCaja", "activa"): "Booleano",
+    ("MovimientoDeCaja", "sentido"): "SentidoDeCaja",
+    ("MovimientoDeCaja", "importe"): "Moneda",
+    ("MovimientoDeCaja", "medio"): "MedioDeCaja",
+    ("MovimientoDeCaja", "fecha"): "FechaHora",
+    ("MovimientoDeCaja", "descripción"): "Cadena",
+    ("MovimientoDeCaja", "origen"): "OrigenDelMovimiento",
+    ("RendicionChofer", "número"): "Entero",
+    ("RendicionChofer", "fecha de negocio"): "Fecha",
+    ("RendicionChofer", "estado"): "EstadoDeLaRendicion",
+    ("RendicionChofer", "efectivo esperado"): "Moneda",
+    ("RendicionChofer", "efectivo declarado"): "Moneda",
+    ("RendicionChofer", "gastos del chofer"): "Moneda",
+    ("RendicionChofer", "diferencia"): "Moneda",
+    ("RendicionChofer", "resolución de la diferencia"): "ResolucionDeDiferencia",
+    ("RendicionChofer", "presentada el"): "FechaHora",
+    ("RendicionChofer", "aprobada el"): "FechaHora",
+    ("RendicionChofer", "observaciones"): "Cadena",
+    ("RendicionChofer", "aviso enviado el"): "FechaHora",
+    ("PedidoRendido", "importe"): "Moneda",
+    ("PedidoRendido", "medio de pago"): "MetodoDePago",
+    ("GastoDeRendicion", "importe"): "Moneda",
+    ("GastoDeRendicion", "descripción"): "Cadena",
+    ("CuentaCorriente", "razón social"): "Cadena",
+    ("CuentaCorriente", "CUIT"): "Cadena",
+    ("CuentaCorriente", "condición fiscal"): "CondicionFiscal",
+    ("CuentaCorriente", "límite de crédito"): "Moneda",
+    ("CuentaCorriente", "plazo de pago en días"): "Entero",
+    ("CuentaCorriente", "estado"): "EstadoDeLaCuenta",
+    ("CuentaCorriente", "saldo"): "Moneda",
+    ("AsientoCuentaCorriente", "tipo"): "TipoDeAsiento",
+    ("AsientoCuentaCorriente", "importe"): "Moneda",
+    ("AsientoCuentaCorriente", "vence"): "Fecha",
+    ("AsientoCuentaCorriente", "medio de pago"): "MedioDeCaja",
+    ("AsientoCuentaCorriente", "fecha"): "FechaHora",
+    ("AsientoCuentaCorriente", "descripción"): "Cadena",
+    ("ImputacionCuentaCorriente", "importe"): "Moneda",
+    ("ReglaComision", "base"): "BaseDeComision",
+    ("ReglaComision", "valor"): "Decimal",
+    ("ReglaComision", "vigente desde"): "Fecha",
+    ("ReglaComision", "vigente hasta"): "Fecha",
+    ("ReglaComision", "activa"): "Booleano",
+    ("AsientoComision", "tipo"): "TipoDeAsientoDeComision",
+    ("AsientoComision", "importe"): "Moneda",
+    ("AsientoComision", "fecha"): "FechaHora",
+    ("AsientoComision", "descripción"): "Cadena",
+    ("LiquidacionComisiones", "número"): "Entero",
+    ("LiquidacionComisiones", "período desde"): "Fecha",
+    ("LiquidacionComisiones", "período hasta"): "Fecha",
+    ("LiquidacionComisiones", "bruto"): "Moneda",
+    ("LiquidacionComisiones", "deducciones"): "Moneda",
+    ("LiquidacionComisiones", "neto"): "Moneda",
+    ("LiquidacionComisiones", "estado"): "EstadoDeLaLiquidacion",
+    ("LiquidacionComisiones", "aprobada el"): "FechaHora",
+    ("LiquidacionComisiones", "pagada el"): "FechaHora",
 }
+# Los atributos de los conceptos planificados no tienen todavía una columna en el código.
+TIPO_ATRIBUTO_SIN_COLUMNA.update(getattr(M, "TIPOS_PLANIFICADOS", {}))
 MONEDA = {"precio", "importe", "seña", "recargo", "costo", "depósito", "depósito comprometido",
           "precio unitario", "descuento_", "/subtotal"}
 
@@ -155,8 +307,26 @@ MODULO_PLANIFICADA = {
     "OrderStatusHistoryService": "order", "RouteBatchPlannerService": "order",
     "RouteSequencerService": "order",
     "RefundPaymentUseCase": "payments", "ReintegroListener": "payments",
+    "JobPositionService": "employee", "EmployeeService": "employee", "TerminateEmployeeUseCase": "employee",
+    "GrantEmployeeAccountUseCase": "employee", "AttendanceService": "employee", "LeaveService": "employee",
+    "PersonnelDashboardService": "employee", "AttachmentsService": "attachment",
+    "CuilValidator": "employee", "VacationPolicy": "employee",
     "CoverageZoneCronService": "coverage-zone",
     "HealthCheckService": "health",
+    "FuelLoadService": "fleet-expense", "FuelConsumptionCalculator": "fleet-expense",
+    "TrafficFineService": "fleet-expense", "FleetExpenseAlertsCron": "fleet-expense",
+    "VehicleAccidentService": "fleet-expense", "TireService": "fleet-expense",
+    "FleetCostReportService": "reports",
+    "WarehouseService": "stock", "StockService": "stock", "StockLedgerService": "stock",
+    "StockAdjustmentService": "stock", "StockLowCron": "stock", "StockDeliveryListener": "stock",
+    "StockReconciliationCron": "stock", "StockReconciliationService": "stock",
+    "SupplierService": "purchase", "PurchaseOrderService": "purchase",
+    "PurchaseReceiptService": "purchase", "TruckLoadService": "truck-load",
+    "CashBoxService": "cash", "CashLedgerService": "cash", "CashCategoryService": "cash",
+    "FinanceDashboardService": "cash",
+    "DriverSettlementService": "driver-settlement", "DriverSettlementCron": "driver-settlement",
+    "SettlementOverdueCron": "driver-settlement",
+    "CustomerAccountService": "customer-account", "CommissionService": "commission",
 }
 
 
@@ -225,7 +395,44 @@ def tipo_de_atributo(concepto, atributo):
                 if atributo in ("día",):
                     return "Fecha"
             return t
+    t = _tipo_planificado(concepto, atributo)
+    if t:
+        return t
     raise KeyError(f"sin tipo para {concepto}.{atributo}")
+
+
+# Tipos de las columnas planificadas (módulo Personal, I-11): salen de `propuesto_personal.py`.
+ENUM_PLANIFICADO = {
+    "job_position_category_enum": "CategoriaDePuesto", "employee_status_enum": "EstadoDelEmpleado",
+    "employee_termination_reason_enum": "MotivoDeEgreso", "employment_type_enum": "ModalidadDeContratacion",
+    "attendance_source_enum": "OrigenDeLaJornada", "employee_leave_type_enum": "TipoDeLicencia",
+    "employee_leave_status_enum": "EstadoDeLaLicencia", "maintenance_document_kind_enum": "DocumentoControlado",
+    "employee_document_type_enum": "TipoDeDocumento", "attachment_owner_type_enum": "TipoDeDuenio",
+}
+
+
+def _tipo_planificado(concepto, atributo):
+    import propuesto_personal as PP
+    col = M.ATRIBUTOS.get(concepto, {}).get(atributo)
+    tabla = M.TABLA.get(concepto)
+    for ag in PP.AGREGADOS:
+        defs = [c for tb in ag["tablas"] if tb["nombre"] == tabla for c in tb["columnas"]]
+        defs += ag["columnas"].get(tabla, [])
+        for c in defs:
+            if c["nombre"] != col:
+                continue
+            sql = c["tipo"]
+            lista = sql.endswith("[]")
+            sql = sql.rstrip("[]")
+            if sql in ENUM_PLANIFICADO:
+                t = ENUM_PLANIFICADO[sql]
+            else:
+                base = re.sub(r'\(.*\)', '', sql)
+                t = {"uuid": "Identificador", "varchar": "Cadena", "text": "Cadena", "date": "Fecha",
+                     "timestamptz": "FechaHora", "integer": "Entero", "boolean": "Booleano",
+                     "jsonb": "Registro"}.get(base)
+            return t and (t + "[*]" if lista else t)
+    return None
 
 
 def nombre_de_atributo(a):
@@ -254,6 +461,8 @@ ALIAS_CLASE = {
     "administrador": "Administrador", "administradores": "Administrador", "movimientos": "MovimientoEnvase",
     "envase": "Envase", "envases": "Envase", "usuarios": "Usuario",
     "distribuidoras": "Distribuidora", "choferes": "Chofer", "clientes": "Cliente", "reclamos": "Reclamo",
+    "carga": "CargaCombustible", "cargas": "CargaCombustible", "multa": "MultaTransito",
+    "multas": "MultaTransito", "siniestros": "Siniestro", "neumaticos": "Neumatico",
     "incidencias": "Incidencia", "productos": "Producto", "vehiculos": "Vehiculo", "pedidos": "Pedido",
     "pago": "Pago", "pagos": "Pago", "roles": "Rol", "rol": "Rol", "tareas": "TareaMantenimiento",
     "aviso": "AvisoRecupero", "cercanos": "Chofer", "contactados": "Chofer", "aceptados": "Chofer", "libres": "Chofer",
@@ -261,13 +470,27 @@ ALIAS_CLASE = {
     "usuario": "Usuario", "chofer": "Chofer", "choferAnterior": "Chofer", "cliente": "Cliente",
     "vehiculo": "Vehiculo", "producto": "Producto", "pedido": "Pedido", "reclamo": "Reclamo",
     "incidencia": "Incidencia", "distribuidora": "Distribuidora", "item": "ItemPedido", "items": "ItemPedido",
-    "itemsDelCarrito": "ItemCarrito", "promociones": "Promocion", 
+    "itemsDelCarrito": "ItemCarrito", "promociones": "Promocion",
+    "adjuntoNuevo": "Adjunto",     "puesto": "PuestoDeTrabajo", "puestos": "PuestoDeTrabajo", "licencia": "LicenciaLaboral",
+    "licencias": "LicenciaLaboral", "jornada": "JornadaDeTrabajo", "jornadas": "JornadaDeTrabajo",
+    "empleado": "Empleado", "empleados": "Empleado", "planes": "PlanMantenimiento",
+    "movimiento": "MovimientoDeCaja", "movimientos": "MovimientoDeCaja", "contraasiento": "MovimientoDeCaja",
+    "salida": "MovimientoDeCaja", "entrada": "MovimientoDeCaja", "sesion": "SesionDeCaja",
+    "origen_": "Caja", "caja": "Caja", "cajas": "Caja", "categoria": "CategoriaDeCaja",
+    "rendicion": "RendicionChofer", "rendiciones": "RendicionChofer", "gasto": "GastoDeRendicion",
+    "cuenta": "CuentaCorriente", "cuentas": "CuentaCorriente", "asiento": "AsientoCuentaCorriente",
+    "asientosDeLaCuenta": "AsientoCuentaCorriente", "cargo": "AsientoCuentaCorriente",
+    "regla": "ReglaComision", "liquidacion": "LiquidacionComisiones",
+    "comisiones": "AsientoComision", "sesionDeCaja": "SesionDeCaja", "cuentaCorriente": "CuentaCorriente",
+    "asientoDeComision": "AsientoComision", "asientosDeComision": "AsientoComision",
+    "categoria_": "CategoriaDeCaja", "cobro": "AsientoCuentaCorriente", "cobros": "AsientoCuentaCorriente"
 }
-_PLURALES = {"cercanos", "contactados", "aceptados", "libres", "activos", "habilitados", "vencidas",
+_PLURALES = {"cargas", "multas", "siniestros", "neumaticos", "cercanos", "contactados", "aceptados", "libres", "activos", "habilitados", "vencidas",
              "recompras", "direcciones", "franjas", "zonas", "cambios", "adjuntos", "tareas", "ventanas",
-             "ofertas", "asignaciones", "asientos", "calificaciones", "movimientos", "envases", "usuarios",
+             "ofertas", "asignaciones", "asientos", "cobros", "empleados", "asientosDeLaCuenta", "asientosDeComision", "cajas", "rendiciones", "cuentas", "comisiones", "calificaciones", "movimientos", "envases", "usuarios",
              "distribuidoras", "choferes", "clientes", "reclamos", "incidencias", "productos", "vehiculos",
-             "pedidos", "pagos", "roles", "administradores", "reservas", "items", "promociones"}
+             "pedidos", "pagos", "roles", "administradores", "reservas", "items", "promociones",
+             "puestos", "licencias", "jornadas", "empleados", "planes"}
 
 # nombre -> tipo, para lo que no es una clase ni un atributo del modelo.
 GLOSARIO = {
@@ -293,7 +516,7 @@ GLOSARIO = {
     "cantidad": "Entero", "kilometraje": "Entero", "kilometrajeDiario": "Entero", "peso": "Decimal",
     "cantidadPorMes": "Decimal", "latitud": "Decimal", "longitud": "Decimal", "radioKm": "Decimal",
     "radioExpressKm": "Decimal", "radiosKm": "Decimal", "plazo": "Entero", "plazoDeTolerancia": "Entero",
-    "ventanaDeAceptacion": "Entero", "venceEn": "Entero", "granularidad": "Cadena", "periodo": "Cadena",
+    "ventanaDeAceptacion": "Entero", "venceEn": "Entero", "enfriamiento": "Entero", "granularidad": "Cadena", "periodo": "Cadena",
     "monto": "Moneda", "montoDeLaSenia": "Moneda", "importe": "Moneda", "precio": "Moneda",
     "precioUnitario": "Moneda", "subtotal": "Moneda", "subtotalItems": "Moneda", "recargo": "Moneda",
     "costo": "Moneda", "gastoEstimado": "Moneda", "total": "Moneda", "saldo": "Moneda", "ajustes_": "Moneda",
@@ -313,7 +536,14 @@ GLOSARIO = {
     "metodoDePago": "MetodoDePago", "medioDePago": "MetodoDePago", "paymentMethod": "MetodoDePago",
     "estado": "Cadena", "estadoAnterior": "Cadena", "estadoNuevo": "Cadena", "estadoFinal": "Cadena",
     "estadoOrigen": "Cadena", "estadoDestino": "Cadena",
-    "calificado": "Usuario", "despacho": "ProcesoConfigurable", "tareasProgramadas": "ProcesoConfigurable",
+    "origenDeJornada": "OrigenDeLaJornada", "estadoNuevoDeLicencia": "EstadoDeLaLicencia",
+    "tipoDeLicencia": "TipoDeLicencia", "motivoDeEgreso": "MotivoDeEgreso", "motivoDeRechazo": "Cadena",
+    "saldoDeVacaciones": "Entero", "fechaDesde": "Fecha", "fechaHasta": "Fecha", "habilitado": "Booleano",
+    "activo": "Booleano",
+    "aprobada": "EstadoDeLaLicencia", "rechazada_": "EstadoDeLaLicencia", "cancelada": "EstadoDeLaLicencia",
+    "filtros": "Registro", "confirmación": "Cadena", "confirmacion": "Cadena",
+    "correspondientes": "Entero", "tomados": "Entero", "presentes": "Entero",
+        "calificado": "Usuario", "despacho": "ProcesoConfigurable", "tareasProgramadas": "ProcesoConfigurable",
     "devuelto": "Booleano", "nombreDelChofer": "Cadena", "usuarioActual": "Usuario", "asignado": "Booleano",
     "pendientes": "Pedido[*]", "reservados": "Pedido[*]", "retiro": "Envase", "tokens": "Cadena[*]",
     "marcasDeUltimaEjecucion": "Registro", "bloqueado": "Booleano", "habilitado": "Booleano",
@@ -325,6 +555,18 @@ GLOSARIO = {
     "cancelado": "EstadoPedido", "aceptado": "EstadoPedido", "enCamino": "Booleano",
     "entregado": "EstadoPedido", "enProceso": "EstadoDelReclamo", "despachado": "EstadoDelEnvase",
     "enDeposito": "EstadoDelEnvase", "gasCylinderId": "Identificador",
+    # Stock y compras (I-13)
+    "minimos": "Registro", "minimoDeLlenos": "Entero", "condicion": "Cadena", "items": "Registro",
+    "devueltos": "Registro", "datosDeContacto": "Registro", "plazoDePago": "Entero",
+    "tipoDeComprobante": "Cadena", "numeroDeComprobante": "Cadena", "estadoDePago": "Cadena",
+    "vaciosACanjear": "Entero", "llenosCargados": "Entero", "vaciosCargados": "Entero",
+    "llenosRepuestos": "Entero", "llenosDevueltos": "Entero", "vaciosDevueltos": "Entero",
+    "llenosRecibidos": "Entero", "vaciosEntregados": "Entero", "llenosFisicos": "Entero",
+    "reservado": "Entero", "faltante": "Entero", "diferencia": "Entero", "diferencias": "Registro",
+    "stockBajo": "Registro", "conSaldo": "Booleano", "bajo": "Booleano", "esperado": "Entero",
+    "conciliacion": "Registro", "resultado_": "Registro", "costoUnitario": "Moneda",
+    "fechaEsperada": "Fecha", "codigo_": "Cadena", "ubicacionDeOrigen": "UbicacionDeStock",
+    "ayudanteId": "Identificador",
     # retornos
     "cubierta": "Booleano", "firmaValida": "Booleano", "sesionValida": "Booleano", "valido": "Booleano",
     "existe": "Booleano", "elegible": "Booleano", "reofertable": "Booleano", "rechazada": "Booleano",
@@ -337,7 +579,27 @@ GLOSARIO = {
     "ventasPorProducto": "Registro", "ventasPorMetodoDePago": "Registro", "disponibilidad": "Registro",
     "promedio": "Decimal", "modalidades": "ModalidadDeEntrega[*]", "mediosDePago": "MetodoDePago[*]",
     "motivos": "Cadena[*]", "estadoDelPago": "EstadoDelPago", "confirmada": "Booleano",
+    "sentido": "SentidoDeCaja", "medio": "MedioDeCaja", "referencia": "OrigenDelMovimiento",
+    "codigoDeSistema": "CodigoDeSistema", "montoInicial": "Moneda", "montoContado": "Moneda",
+    "efectivoDeclarado": "Moneda", "gastos": "GastoDeRendicion[*]", "resolucionDeDiferencia": "ResolucionDeDiferencia",
+    "condicionFiscal": "CondicionFiscal", "limiteDeCredito": "Moneda", "plazoEnDias": "Entero",
+    "razonSocial": "Cadena", "diferencia": "Moneda", "base": "BaseDeComision", "valor": "Decimal",
+    "vigenteDesde": "Fecha", "saldoInicial": "Moneda", "antiguedad": "Registro", "tablero": "Registro",
+    "vencimiento": "Fecha", "pagoDeCuenta": "AsientoCuentaCorriente", "importe_": "Moneda",
+    "cajaOrigenId": "Identificador", "cajaDestinoId": "Identificador", "tipo": "Cadena",
+    "tipoDeCaja": "TipoDeCaja", "tipoDeAsiento": "TipoDeAsiento", "tipoDeAsientoDeComision": "TipoDeAsientoDeComision",
+    "neto": "Moneda", "saldoDeudor": "Moneda", "choferId": "Identificador", "administradores": "Administrador[*]", "movimientoId": "Identificador",
 }
+
+GLOSARIO.update({
+    # Flota ampliada (I-12)
+    "litros": "Decimal", "desvio": "Decimal", "consumo": "Registro", "fechaYHora": "FechaHora",
+    "claveDelPlan": "Cadena", "vigenteDesde": "Fecha", "numero": "Cadena", "prestador": "Cadena",
+    "claveDeActa": "Cadena", "jurisdiccion": "Cadena", "numeroDeActa": "Cadena",
+    "fechaDePago": "FechaHora", "importePagado": "Moneda", "costoDeReparacion": "Moneda",
+    "reintegroDelSeguro": "Moneda", "franquicia": "Moneda", "filtros": "Registro",
+    "costos": "Registro", "costoDelVehiculo": "Registro", "movimientoNeumatico": "MovimientoNeumatico",
+})
 
 # El DSD a veces pasa un valor literal o un estado como argumento: se lo reemplaza por el parámetro
 # que lo recibe en el diseño (nombre, tipo). Se busca por (clase, nombre) y después por nombre.
@@ -365,7 +627,78 @@ ALIAS_PARAMETRO = {
     ("AsientoAuditoria", "origen"): ("origen", "Cadena"),
     ("AsientoAuditoria", "codigo"): ("codigo", "Entero"),
     ("Usuario", "cuenta"): ("cuenta", "Registro"),
+    # Flota ampliada (I-12): el estado destino es del tipo enumerado de cada concepto
+    ("MultaTransito", "estadoDestino"): ("estadoDestino", "EstadoDeLaMulta"),
+    ("Siniestro", "estadoDestino"): ("estadoDestino", "EstadoDelSiniestro"),
+    ("Neumatico", "estadoDestino"): ("estadoDestino", "EstadoDelNeumatico"),
+    # Las fachadas del módulo reciben identificadores y valores tipados, no objetos
+    ("CustomerAccountService", "clienteId"): ("clienteId", "Identificador"),
+    ("CashBoxService", "tipo"): ("tipo", "TipoDeCaja"),
+    ("CashCategoryService", "sentido"): ("sentido", "SentidoDeCaja"),
+    ("CashLedgerService", "sentido"): ("sentido", "SentidoDeCaja"),
+    ("CashLedgerService", "medio"): ("medio", "MedioDeCaja"),
+    ("DriverSettlementService", "gastos"): ("gastos", "GastoDeRendicion[*]"),
+    ("DriverSettlementService", "resolucionDeDiferencia"): ("resolucionDeDiferencia", "ResolucionDeDiferencia"),
+    ("CustomerAccountService", "condicionFiscal"): ("condicionFiscal", "CondicionFiscal"),
+    ("CustomerAccountService", "tipo"): ("tipo", "TipoDeAsiento"),
+    ("CustomerAccountService", "medio"): ("medio", "MedioDeCaja"),
+    ("CommissionService", "base"): ("base", "BaseDeComision"),
+    ("CommissionService", "usuarioId"): ("usuarioId", "Identificador"),
 }
+
+
+# Stock y compras (I-13): nombres de los DSD que resuelven a una clase del módulo.
+ALIAS_CLASE.update({
+    "carga": "CargaDeCamion", "cargas": "CargaDeCamion", "ajuste": "AjusteDeStock", "ajustes": "AjusteDeStock",
+    "depositoDeStock": "Deposito", "depositos": "Deposito", "orden": "OrdenDeCompra", "ordenes": "OrdenDeCompra",
+    "proveedor": "Proveedor", "proveedores": "Proveedor", "recepcion": "RecepcionDeCompra",
+    "recepciones": "RecepcionDeCompra", "saldos": "SaldoDeStock", "umbrales": "UmbralDeStock",
+    "movimientosDeStock": "MovimientoDeStock", "ubicacionDeStock": "UbicacionDeStock",
+    "ubicacionOrigen": "UbicacionDeStock", "ubicacionDestino": "UbicacionDeStock",
+})
+_PLURALES |= {"cargas", "ajustes", "depositos", "ordenes", "proveedores", "recepciones", "saldos", "umbrales",
+              "movimientosDeStock"}
+GLOSARIO.update({"lote": "Identificador", "llenos": "Entero", "domicilio": "Cadena"})
+# Enumeraciones del módulo de stock y compras (I-13): todavía no existen en el código.
+ENUMERACIONES.update({
+    "StockCondition": "CondicionDeStock", "StockMovementReason": "MotivoDeMovimiento",
+    "StockAdjustmentReason": "MotivoDeAjuste", "WarehouseKind": "TipoDeDeposito",
+    "StockLocationKind": "TipoDeUbicacion", "SupplierKind": "TipoDeProveedor",
+    "PurchaseOrderStatus": "EstadoDeLaOrden", "PurchaseDocumentType": "TipoDeComprobante",
+    "PurchasePaymentStatus": "EstadoDePagoDeCompra", "PurchaseReceiptStatus": "EstadoDeLaRecepcion",
+    "TruckLoadStatus": "EstadoDeLaCarga",
+})
+TIPO_ATRIBUTO_SIN_COLUMNA.update({
+    ("Deposito", "tipo"): "TipoDeDeposito", ("UbicacionDeStock", "tipo"): "TipoDeUbicacion",
+    ("SaldoDeStock", "condición"): "CondicionDeStock",
+    ("MovimientoDeStock", "condición de origen"): "CondicionDeStock",
+    ("MovimientoDeStock", "condición de destino"): "CondicionDeStock",
+    ("MovimientoDeStock", "motivo"): "MotivoDeMovimiento", ("AjusteDeStock", "motivo"): "MotivoDeAjuste",
+    ("ItemAjusteDeStock", "condición"): "CondicionDeStock", ("CargaDeCamion", "estado"): "EstadoDeLaCarga",
+    ("Proveedor", "tipo"): "TipoDeProveedor", ("OrdenDeCompra", "estado"): "EstadoDeLaOrden",
+    ("RecepcionDeCompra", "tipo de comprobante"): "TipoDeComprobante",
+    ("RecepcionDeCompra", "estado de pago"): "EstadoDePagoDeCompra",
+    ("RecepcionDeCompra", "estado"): "EstadoDeLaRecepcion",
+    ("ConfiguracionModulo", "exigir carga de camión abierta"): "Booleano",
+})
+GLOSARIO.update({
+    "condicionDeStock": "CondicionDeStock", "condicionOrigen": "CondicionDeStock",
+    "condicionDestino": "CondicionDeStock", "motivoDeMovimiento": "MotivoDeMovimiento",
+    "motivoDeAjuste": "MotivoDeAjuste", "tipoDeComprobante": "TipoDeComprobante",
+    "estadoDeLaOrden": "EstadoDeLaOrden", "estadoDePagoDeCompra": "EstadoDePagoDeCompra",
+    "controlDeStock": "ProcesoConfigurable", "exigirCargaDeCamionAbierta": "Booleano",
+    "exigida": "Booleano", "aplicado": "Booleano", "descontado": "Booleano", "existe": "Booleano",
+    "rechazado": "Booleano", "saldoInsuficiente": "Booleano", "vendibleInsuficiente": "Booleano",
+    "solicitudInvalida": "Booleano", "conflicto": "Booleano", "nadaQueHacer": "Booleano",
+    "acumulado": "Booleano", "ordenNoAdmiteRecepciones": "Booleano", "ajustado": "Booleano",
+    "esLaMisma": "Booleano", "restado": "Booleano", "sumado": "Booleano", "habilitado": "Booleano",
+    "llenasCargadas": "Entero", "vaciasCargadas": "Entero", "llenasRepuestas": "Entero",
+    "llenasDevueltas": "Entero", "vaciasDevueltas": "Entero", "llenasRecibidas": "Entero",
+    "vaciasEntregadas": "Entero", "llenasFisicas": "Entero", "vaciasACanjear": "Entero",
+    "minimoDeLlenas": "Entero",
+})
+ALIAS_PARAMETRO.update({("Distribuidora", "direccion"): ("direccion", "Cadena"),
+                        ("Deposito", "direccion"): ("direccion", "Cadena")})
 
 
 def _tipo_clase_del_nombre(n):
@@ -449,6 +782,7 @@ RETORNO_ESPECIFICO = {
     ("OrderService", "avisarLlegada"): None,
     ("CylinderService", "verificarVigenciaAlAsignar"): "Envase[*]",
     ("Pedido", "estaSinPagar"): "Booleano",
+    ("Siniestro", "getCostoNeto"): "Moneda",
 }
 
 
@@ -655,6 +989,8 @@ def _modulo_de_dominio(concepto):
     ent = next((v for v in manifiesto().values() if v["kind"] == "entity" and v.get("tabla") == tabla), None) if tabla else None
     if ent:
         return ent["file"].split("/")[0]
+    if concepto in getattr(M, "MODULO_PLANIFICADO", {}):
+        return M.MODULO_PLANIFICADO[concepto]
     return {"ItemSugerido": "customer", "PropuestaConVigencia": "order", "UbicacionGPS": "delivery"}[concepto]
 
 
@@ -847,6 +1183,12 @@ def verificar_dc():
     ident = lambda n: re.sub(r'\W+', '_', n).strip("_")
     ops_de = {c: {re.match(r'^(?:«create» )?(\w+)', o).group(1) if not o.startswith("«create»") else "«create»"
                   for o in v["ops"]} for c, v in clases.items()}
+    # una clase se declara una sola vez por diagrama: dos declaraciones duplican sus miembros en la imagen
+    for ruta in sorted(glob.glob(D + "diagramas/clases-diseno/*.puml")):
+        decl = re.findall(r'^(?:abstract class|class|interface) (.+?) (?:<<|\{|$)', open(ruta, encoding="utf-8").read(), re.M)
+        rep = sorted({x for x in decl if decl.count(x) > 1})
+        if rep:
+            errores.append(f"{os.path.basename(ruta)}: clases declaradas más de una vez {rep[:3]}")
     # 1 y 2: operaciones y clases de los DSD
     n_ops = 0
     for ruta in sorted(glob.glob(D + "diagramas/DSD_*.mmd")):

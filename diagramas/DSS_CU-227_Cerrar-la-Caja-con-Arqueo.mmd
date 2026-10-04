@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-227 Cerrar la Caja con Arqueo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cerrarCajaConArqueo(sesionId, montoContado)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: sesión cerrada con el monto esperado, el contado y la diferencia
+    else la sesión ya estaba cerrada
+        SIS-->>ADM: operación rechazada
+    else el monto contado es negativo
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

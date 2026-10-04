@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-249 Configurar el Control de Carga de Camión Abierta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)
+    activate SIS
+    alt el valor es válido
+        SIS-->>ADM: configuración guardada
+    else el valor no es booleano
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-190 Registrar el Inicio y el Fin de la Jornada · registrarInicioDeJornada
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SRV as :AttendanceService
+    participant USR as usuario:Usuario
+    participant EMP as empleado:Empleado
+
+    CHO->>+SRV: registrarInicioDeJornada()
+    SRV->>+USR: getEmpleado()
+    USR-->>-SRV: empleado
+    SRV->>+EMP: abrirJornada(origenDeJornada)
+    EMP->>EMP: assertSinJornadaAbierta()
+    create participant JOR as nueva:JornadaDeTrabajo
+    EMP->>JOR: «create»(ahora, origenDeJornada)
+    EMP-->>-SRV: jornada
+    SRV-->>-CHO: jornada abierta

@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-182 Otorgar una Cuenta de Acceso a un Empleado · otorgarCuentaDeAcceso
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant UC as :GrantEmployeeAccountUseCase
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant PUE as puesto:PuestoDeTrabajo
+    participant REG as :RegistroService
+
+    ADM->>+UC: otorgarCuentaDeAcceso(empleadoId, correo)
+    UC->>+COE: get(empleadoId)
+    COE-->>-UC: empleado
+    UC->>+EMP: getPuesto()
+    EMP-->>-UC: puesto
+    UC->>+PUE: getRolDeAcceso()
+    PUE-->>-UC: rol
+    UC->>+REG: registrar(datosPersonales, rol, distribuidoraId)
+    Note over UC,REG: Se crea el Usuario: ver DSD de crearUsuarioBase (CU-082)
+    REG-->>-UC: usuario
+    UC->>EMP: vincularCuenta(usuario)
+    UC-->>-ADM: empleado

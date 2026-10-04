@@ -1,0 +1,28 @@
+sequenceDiagram
+    title DSD — CU-201 Registrar un Siniestro · registrarSiniestro
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :VehicleAccidentService
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant VEH as vehiculo:Vehiculo
+    participant LST as :List#lt;AsignacionVehiculo#gt;
+    participant AGN as asignacion:AsignacionVehiculo
+    participant MAI as :EmailSenderPort
+
+    ADM->>+SRV: registrarSiniestro(vehiculoId, datos)
+    SRV->>+COV: get(vehiculoId)
+    COV-->>-SRV: vehiculo
+    SRV->>+VEH: registrarSiniestro(datos)
+    create participant SIN as :Siniestro
+    VEH->>SIN: «create»(datos)
+    opt El vehículo quedó inutilizable
+        VEH->>VEH: ponerFueraDeServicio()
+        VEH->>+LST: getAbierta()
+        LST-->>-VEH: asignacion
+        VEH->>AGN: cerrar(ahora)
+    end
+    VEH-->>-SRV: siniestro
+    opt Hubo derrame de gas
+        SRV-)MAI: send(administradores, detalle)
+    end
+    SRV-->>-ADM: siniestro

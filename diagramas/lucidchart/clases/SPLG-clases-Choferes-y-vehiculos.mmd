@@ -31,6 +31,7 @@ classDiagram
         + buscarEnMotoDisponibles(direccion: DireccionEntrega): Chofer[*]
         + contarEnLinea(distribuidoraId: Identificador): Chofer[*]
         + contarHabilitados(distribuidoraId: Identificador): Chofer[*]
+        + getConEfectivoOCobrosSinRendir(hoy: Fecha): Chofer[*]
     }
 
     class CarService {
@@ -41,6 +42,7 @@ classDiagram
         + editarVehiculo(vehiculoId: Identificador, datos: Registro): Vehiculo
         + eliminarVehiculo(vehiculoId: Identificador)
         + listarVehiculos(): Vehiculo[*]
+        + reactivarVehiculo(vehiculoId: Identificador): Vehiculo
         + registrarVehiculo(usuario: Usuario, tipo: Cadena, capacidad: Decimal, patente: Cadena, marca: Cadena, modelo: Cadena, anio: Entero, color: Cadena): Vehiculo
     }
 
@@ -51,6 +53,7 @@ classDiagram
 
     class List_Vehiculo["List<Vehiculo>"] {
         <<colección>>
+        + getActivos(): Vehiculo[*]
         + getVehiculosDe(distribuidora: Distribuidora): Vehiculo[*]
     }
 
@@ -60,6 +63,7 @@ classDiagram
         + consultarHistorialDeVehiculosDelChofer(choferId: Identificador, pagina: Entero): AsignacionVehiculo[*]
         + consultarMiVehiculoEnUso(out inhabilitado: Booleano): Vehiculo
         + consultarVehiculoEnUso(choferId: Identificador, out inhabilitado: Booleano): Vehiculo
+        + getEmpleadoAl(vehiculo: Vehiculo, fechaYHora: FechaHora): Empleado
         + liberarVehiculoEnUso(choferId: Identificador)
         + ponerVehiculoEnUso(choferId: Identificador, vehiculoId: Identificador, nota: Cadena): AsignacionVehiculo
     }
@@ -67,6 +71,7 @@ classDiagram
     class List_AsignacionVehiculo["List<AsignacionVehiculo>"] {
         <<colección>>
         + cerrarAbiertas(chofer: Chofer, vehiculo: Vehiculo, administrador: Administrador)
+        + getAbierta(): AsignacionVehiculo
     }
 
     class Chofer
@@ -75,12 +80,12 @@ classDiagram
     class Map_String_Usuario["Map<String, Usuario>"] {
         <<colección>>
     }
-    class UbicacionGPS
-    class Distribuidora
-    class Usuario
     class FleetTaskService {
         <<fachada>>
     }
+    class Usuario
+    class Distribuidora
+    class UbicacionGPS
 
     Usuario <|-- Chofer
     Map_String_Chofer "1" o-- "0..*" Chofer : elementos
@@ -98,6 +103,7 @@ classDiagram
     VehicleAssignmentService --> "1" Map_String_Chofer : map<String, Chofer>
     VehicleAssignmentService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
     CarService ..> Chofer
+    CarService ..> FleetTaskService
     CarService ..> Vehiculo
     Chofer ..> List_AsignacionVehiculo
     DeliveryService ..> Chofer
@@ -108,3 +114,4 @@ classDiagram
     VehicleAssignmentService ..> Chofer
     VehicleAssignmentService ..> FleetTaskService
     VehicleAssignmentService ..> Vehiculo
+    Vehiculo ..> List_AsignacionVehiculo

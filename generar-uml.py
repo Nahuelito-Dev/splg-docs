@@ -89,9 +89,15 @@ INCLUYE = {
             ("CU-032","CU-110"), ("CU-033","CU-110"), ("CU-034","CU-110"),
             ("CU-111","CU-113"), ("CU-112","CU-113"), ("CU-105","CU-051"),
             ("CU-155","CU-159"), ("CU-157","CU-156"), ("CU-157","CU-160"),
-            ("CU-158","CU-156")],
+            ("CU-158","CU-156"),
+            # flota ampliada (I-12): cada alta o consulta parte de la ficha del vehículo
+            ("CU-195","CU-113"), ("CU-196","CU-113"), ("CU-197","CU-113"), ("CU-198","CU-113"),
+            ("CU-201","CU-113"), ("CU-203","CU-113")],
   "SS-08": [("CU-037","CU-041"), ("CU-038","CU-041"),
-            ("CU-039","CU-041"), ("CU-040","CU-041")],
+            ("CU-039","CU-041"), ("CU-040","CU-041"),
+            ("CU-210","CU-208"), ("CU-212","CU-208"), ("CU-213","CU-208"),
+            ("CU-212","CU-250"), ("CU-213","CU-250"), ("CU-218","CU-250"), ("CU-220","CU-250"),
+            ("CU-222","CU-250")],
   "SS-09": [("CU-044","CU-045"), ("CU-043","CU-154"), ("CU-103","CU-154")],
   "SS-10": [("CU-054","CU-053"), ("CU-055","CU-053")],
   "SS-11": [("CU-059","CU-057")],
@@ -101,6 +107,10 @@ INCLUYE = {
   "SS-16": [("CU-094","CU-129"), ("CU-095","CU-129"),
             ("CU-131","CU-129"), ("CU-129","CU-130")],
   "SS-03": [("CU-149","CU-015")],
+  "SS-19": [("CU-178","CU-179"), ("CU-181","CU-179"), ("CU-182","CU-179"), ("CU-183","CU-179"),
+            ("CU-184","CU-179"), ("CU-185","CU-179"), ("CU-186","CU-179"), ("CU-191","CU-179"),
+            ("CU-193","CU-179"), ("CU-187","CU-179"), ("CU-188","CU-187")],
+  "SS-21": [("CU-227","CU-228"), ("CU-233","CU-228"), ("CU-237","CU-228"), ("CU-243","CU-228")],
 }
 
 # Casos de uso factorizados: comportamiento comun que otros casos reutilizan
@@ -120,7 +130,10 @@ FACTORIZADO = {
 # Inclusiones entre subsistemas distintos: el caso incluido vive en otro
 # subsistema y se dibuja fuera del limite del que lo incluye, con su codigo.
 INCLUYE_EXTERNO = [("CU-031","CU-082"), ("CU-086","CU-082"), ("CU-087","CU-082"),
-                   ("CU-174","CU-159"), ("CU-175","CU-160")]
+                   ("CU-174","CU-159"), ("CU-175","CU-160"),
+                   ("CU-003","CU-177"), ("CU-012","CU-246"), ("CU-013","CU-246"), ("CU-015","CU-246"),
+                   ("CU-217","CU-250"), ("CU-012","CU-248"), ("CU-013","CU-248"), ("CU-015","CU-248"),
+                   ("CU-236","CU-005")]
 
 # base -> incluido factorizado
 INCLUYE_FACTOR = {
@@ -160,7 +173,7 @@ SECUNDARIO = {
   "07": ["CU-001", "CU-004", "CU-005", "CU-013", "CU-014", "CU-015", "CU-016", "CU-019",
          "CU-018", "CU-020", "CU-021", "CU-047", "CU-072", "CU-079", "CU-082", "CU-085",
          "CU-091", "CU-100", "CU-101", "CU-147"],
-  "08": ["CU-002", "CU-047", "CU-102", "CU-142"],
+  "08": ["CU-002", "CU-047", "CU-102", "CU-142", "CU-188", "CU-211", "CU-224"],
 }
 # El Administrador General hace todo lo que hace el Administrador y ademas lo que
 # es exclusivo suyo: ACT-05 especializa a ACT-03.
@@ -336,7 +349,7 @@ for _n, _svg in LAMINAS.items():
 # dentro de dos marcos: no mostraba ninguna relacion, y sin relaciones no es un diagrama
 # sino una lista dibujada. Este dice quien depende de quien.
 NEGOCIO = ["SS-01","SS-02","SS-03","SS-04","SS-05","SS-06","SS-07","SS-08","SS-09",
-           "SS-11","SS-12","SS-13","SS-14","SS-15"]
+           "SS-11","SS-12","SS-13","SS-14","SS-15","SS-19","SS-20","SS-21"]
 DEPENDE = [
   ("SS-02","SS-01","el pedido es de un cliente"), ("SS-02","SS-08","toma precio y stock"),
   ("SS-02","SS-09","reserva cupo de franja"), ("SS-02","SS-11","valida cobertura"),
@@ -348,7 +361,11 @@ DEPENDE = [
   ("SS-12","SS-02","registra sobre la entrega"), ("SS-12","SS-07","califica al chofer"),
   ("SS-13","SS-02","asigna envases al pedido"), ("SS-13","SS-08","el envase es de un tipo"),
   ("SS-15","SS-02","la reserva se convierte en pedido"), ("SS-15","SS-14","toma la seña"),
+  ("SS-19","SS-01","otorga cuentas de acceso"), ("SS-19","SS-07","comparte vencimientos y bloqueo de despacho"),
+  ("SS-20","SS-08","la recepción acredita el stock"), ("SS-08","SS-02","descuenta lo entregado"),
+  ("SS-08","SS-07","carga el camión del chofer"),
   ("SS-16","SS-01","administra las cuentas"), ("SS-17","SS-01","avisa a los usuarios"),
+  ("SS-21","SS-02","rinde y cobra a cuenta los pedidos"), ("SS-21","SS-07","rinde y liquida a los choferes"),
 ]
 mapa = ["@startuml", f"title Subsistemas del Proyecto — SPLG ({len(subs)} subsistemas · {len(casos)} casos de uso)",
         CABECERA, "skinparam nodesep 25", "skinparam ranksep 55",
@@ -421,10 +438,15 @@ for i, s in enumerate(subs):
                 if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] != s]
     # la base de un <<extend>> que vive en otro subsistema se dibuja igual, fuera del limite
     bases_ext = [b for a, b, _ in EXTIENDE.get(s, []) if b in casos and casos[b]["ss"] != s]
-    for b in sorted({b for _, b in externos} | set(bases_ext)):
-        d.append(f'usecase "{b}\\n{parte(casos[b]["nombre"], 30)}\\n({casos[b]["ss"]})" as {eid(b)}'
+    # los casos de otro subsistema que incluyen a uno de éste: se muestran como referencia externa,
+    # con su flecha «include», para que el caso incluido no quede suelto
+    entrantes = [(a, b) for a, b in INCLUYE_EXTERNO
+                 if a in casos and b in casos and casos[b]["ss"] == s and casos[a]["ss"] != s]
+    for b in sorted({b for _, b in externos} | set(bases_ext) | {a for a, _ in entrantes}):
+        est = " <<planificado>>" if casos[b].get("planificado") else ""
+        d.append(f'usecase "{b}\\n{parte(casos[b]["nombre"], 30)}\\n({casos[b]["ss"]})" as {eid(b)}{est}'
                  f' #back:FFFFFF;line:6B7683')
-    if externos or bases_ext: d.append("")
+    if externos or bases_ext or entrantes: d.append("")
     # La asociacion actor-caso de uso es una asociacion, no una dependencia:
     # en UML va sin punta de flecha. La flecha significaria navegabilidad, que
     # es una decision de diseno y no corresponde a un diagrama de requisitos.
@@ -437,7 +459,7 @@ for i, s in enumerate(subs):
     rel = [(a, b) for a, b in INCLUYE.get(s, [])
            if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] == s]
     rel += [(a, b) for a, b in INCLUYE_FACTOR.get(s, [])]
-    rel += externos
+    rel += externos + entrantes
     if rel:
         d.append("")
         d.append("' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>")
@@ -468,8 +490,10 @@ for n in objetivo:
         if r.returncode: print(f"  ✗ {n}.png: {r.stderr.strip()[:300]}")
     else:
         for fmt in ("png", "svg"):
+            # PlantUML corta la imagen a 4096 px: un subsistema grande se pierde sin avisar
             r = subprocess.run(["plantuml", "-t" + fmt, "-charset", "UTF-8", UML + n + ".puml"],
-                               capture_output=True, text=True)
+                               capture_output=True, text=True,
+                               env={**os.environ, "PLANTUML_LIMIT_SIZE": "16384"})
             if r.returncode:
                 print(f"  ✗ {n}.{fmt}: {r.stderr.strip()[:300]}"); continue
     p = UML + n + ".png"

@@ -1,0 +1,37 @@
+@startuml
+title Diagrama de estados — Rendición del chofer
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Abierta\n(open)" as ABI
+state "Presentada\n(submitted)" as PRE
+state "Aprobada\n(approved)" as APR
+
+[*] --> ABI : when(23:30 de cada día) generarRendicionesDelDia()\n[el chofer no tiene una rendición abierta y tiene\nefectivo o cobros de cuenta corriente sin rendir]
+ABI --> ABI : when(23:30 de cada día) generarRendicionesDelDia()\n[el chofer ya tiene una rendición abierta: se completa]
+ABI --> PRE : declararEfectivoRendido(efectivoDeclarado, gastos)\n[la presenta el chofer o el administrador]
+PRE --> ABI : reabrirRendicion()
+PRE --> APR : aprobarRendicion(cajaDestinoId, resolucionDeDiferencia)\n[la diferencia está resuelta]
+ABI --> ABI : when(08:00 de un día posterior)\navisarRendicionesSinCerrar()
+PRE --> PRE : when(08:00 de un día posterior)\navisarRendicionesSinCerrar()
+APR --> [*]
+
+note bottom of APR
+  La diferencia no es un estado: es un atributo de la rendición, con su resolución
+  (absorbida o a cargo del chofer). Una rendición aprobada no se reabre.
+end note
+@enduml

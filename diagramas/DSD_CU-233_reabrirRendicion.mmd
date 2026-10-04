@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-233 Aprobar la Rendición del Chofer · reabrirRendicion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DriverSettlementService
+    participant RENS as :Map#lt;String, RendicionChofer#gt;
+    participant REN as rendicion:RendicionChofer
+
+    ADM->>+SRV: reabrirRendicion(rendicionId)
+    SRV->>+RENS: get(rendicionId)
+    RENS-->>-SRV: rendicion
+    SRV->>+REN: reabrir()
+    REN->>REN: validarPresentada()
+    deactivate REN
+    SRV-->>-ADM: rendicion

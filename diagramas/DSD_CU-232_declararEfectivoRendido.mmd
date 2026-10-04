@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-232 Declarar el Efectivo Rendido · declararEfectivoRendido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :DriverSettlementService
+    participant RENS as :Map#lt;String, RendicionChofer#gt;
+    participant REN as rendicion:RendicionChofer
+
+    CHF->>+SRV: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
+    SRV->>+RENS: get(rendicionId)
+    RENS-->>-SRV: rendicion
+    SRV->>+REN: presentar(efectivoDeclarado, gastos)
+    REN->>REN: validarAbierta()
+    REN->>REN: recalcularEfectivoEsperado()
+    loop Por cada gasto declarado
+        create participant NGA as nuevo:GastoDeRendicion
+        REN->>NGA: «create»(categoria, importe, descripcion)
+    end
+    REN->>REN: calcularDiferencia()
+    deactivate REN
+    SRV-->>-CHF: rendicion

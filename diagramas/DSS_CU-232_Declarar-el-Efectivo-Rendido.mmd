@@ -1,0 +1,30 @@
+sequenceDiagram
+    title DSS — CU-232 Declarar el Efectivo Rendido
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt El chofer presenta su rendición
+        CHF->>SIS: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
+        activate SIS
+        alt la operación es válida
+            SIS-->>CHF: rendición presentada con el efectivo esperado y la diferencia
+        else la rendición no está abierta
+            SIS-->>CHF: operación rechazada
+        else el efectivo o un gasto no es válido
+            SIS-->>CHF: operación rechazada
+        end
+        deactivate SIS
+    else El administrador presenta una rendición
+        ADM->>SIS: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
+        activate SIS
+        alt la operación es válida
+            SIS-->>ADM: rendición presentada con el efectivo esperado y la diferencia
+        else la rendición no está abierta
+            SIS-->>ADM: operación rechazada
+        else el efectivo o un gasto no es válido
+            SIS-->>ADM: operación rechazada
+        end
+        deactivate SIS
+    end

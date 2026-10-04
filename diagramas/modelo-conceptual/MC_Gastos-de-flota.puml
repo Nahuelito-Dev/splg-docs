@@ -1,0 +1,118 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class CargaCombustible {
+  fecha y hora
+  tipo de combustible
+  litros
+  precio por litro
+  importe
+  kilometraje
+  tanque lleno
+  estación
+  medio de pago
+  comprobante
+  anómala
+  observación
+  anulada el
+}
+class MultaTransito {
+  fecha de la infracción
+  jurisdicción
+  número de acta
+  infracción
+  importe
+  importe con pago voluntario
+  vencimiento
+  estado
+  pagada el
+  importe pagado
+  imputada al chofer
+  avisada el
+  motivo de anulación
+}
+class Siniestro {
+  fecha
+  ubicación
+  domicilio
+  descripción
+  hubo heridos
+  hubo terceros
+  derrame de GLP
+  denuncia policial
+  reclamo al seguro
+  estado
+  vehículo inutilizable
+  costo de reparación
+  reintegro del seguro
+  franquicia
+  cerrado el
+}
+class Neumatico {
+  número de serie
+  marca
+  medida
+  costo
+  estado
+  posición
+  kilometraje de montaje
+}
+class MovimientoNeumatico {
+  tipo
+  kilometraje
+  fecha
+}
+class Vehiculo <<referencia>>
+class Empleado <<referencia>>
+class Distribuidora <<referencia>>
+
+
+Vehiculo "1" *-- "0..*" CargaCombustible : registra >
+Vehiculo "1" *-- "0..*" MultaTransito : acumula >
+Vehiculo "1" *-- "0..*" Siniestro : sufre >
+Vehiculo "0..1" -- "0..*" Neumatico : monta >
+Distribuidora "1" *-- "0..*" Neumatico : posee >
+Neumatico "1" *-- "0..*" MovimientoNeumatico : registra >
+MovimientoNeumatico "0..*" -- "0..1" Vehiculo : ocurre en >
+Empleado "0..1" -- "0..*" CargaCombustible : carga >
+Empleado "0..1" -- "0..*" MultaTransito : responde por >
+Empleado "0..1" -- "0..*" Siniestro : interviene en >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

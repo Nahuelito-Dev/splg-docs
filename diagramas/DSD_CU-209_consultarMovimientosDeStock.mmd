@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-209 Consultar los Movimientos de Stock · consultarMovimientosDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockService
+    participant MOVS as :List#lt;MovimientoDeStock#gt;
+    participant MOV as movimiento:MovimientoDeStock
+
+    ADM->>+SRV: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
+    SRV->>+MOVS: buscar(productoId, ubicacionId, motivo, desde, hasta, pagina)
+    loop Por cada movimiento de la página
+        MOVS->>MOV: getMotivo()
+    end
+    MOVS-->>-SRV: movimientosDeStock, total
+    SRV-->>-ADM: movimientosDeStock, total

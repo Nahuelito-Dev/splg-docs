@@ -1,0 +1,45 @@
+@startuml
+title Diagrama de estados — Multa de tránsito (planificado, I-12)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Pendiente\n(pending)" as PENDING
+state "Apelada\n(appealed)" as APPEALED
+state "Pagada\n(paid)" as PAID
+state "Anulada\n(voided)" as VOIDED
+
+[*] --> PENDING : registrarMultaDeTransito(vehículo, datos)
+PENDING --> APPEALED : modificarMultaDeTransito(datos) [estado pedido = apelada]
+PENDING --> PAID : registrarPagoDeMulta(multa, fecha, importe)
+APPEALED --> PAID : registrarPagoDeMulta(multa, fecha, importe)
+PENDING --> VOIDED : anularMultaDeTransito(multa, motivo)
+APPEALED --> VOIDED : anularMultaDeTransito(multa, motivo)
+PENDING --> PENDING : when(vence en siete días o menos y sin aviso) / marcarAvisada(ahora)
+PENDING --> PENDING : imputarMultaAlChofer(empleado)
+APPEALED --> APPEALED : imputarMultaAlChofer(empleado)
+PAID --> PAID : imputarMultaAlChofer(empleado)
+PAID --> [*]
+VOIDED --> [*]
+
+note bottom of VOIDED
+  Una multa pagada o anulada no vuelve atrás ni admite
+  cambios de sus datos. La imputación al chofer no cambia el
+  estado y se admite también en una multa pagada, porque la
+  distribuidora la paga y se la cobra al chofer; la anulada
+  no se imputa.
+end note
+@enduml

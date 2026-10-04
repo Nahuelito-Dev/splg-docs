@@ -44,8 +44,8 @@ rectangle "SS-05 Reclamos" {
   usecase "CU-025\nResolver Reclamo" as U025 #back:FFFFFF;line:9C5A46
   usecase "CU-166\nTomar un Reclamo Pendiente" as U166 #back:FFFFFF;line:9C5A46
   usecase "CU-167\nReabrir un Reclamo" as U167 #back:FFFFFF;line:9C5A46
-  usecase "CU-174\nAdjuntar la Fotografía de un\nReclamo" as U174 <<planificado>> #back:FFFFFF;line:9C5A46
-  usecase "CU-175\nConsultar la Fotografía de un\nReclamo" as U175 <<planificado>> #back:FFFFFF;line:9C5A46
+  usecase "CU-174\nAdjuntar la Fotografía de un\nReclamo" as U174 #back:FFFFFF;line:9C5A46
+  usecase "CU-175\nConsultar la Fotografía de un\nReclamo" as U175 #back:FFFFFF;line:9C5A46
 }
 
 usecase "CU-159\nAlmacenar Archivo\n(SS-07)" as U159 #back:FFFFFF;line:6B7683

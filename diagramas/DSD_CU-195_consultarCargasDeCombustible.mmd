@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-195 Registrar una Carga de Combustible · consultarCargasDeCombustible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FuelLoadService
+    participant LST as :List#lt;CargaCombustible#gt;
+
+    ADM->>+SRV: consultarCargasDeCombustible(filtros)
+    SRV->>+LST: getVigentes(filtros)
+    LST-->>-SRV: cargas
+    SRV-->>-ADM: cargas

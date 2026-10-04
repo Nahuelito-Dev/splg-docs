@@ -1,6 +1,6 @@
 # Modelo de Datos — SPLG
 
-40 tablas y 93 claves foráneas, leídas de la base en ejecución.
+43 tablas y 96 claves foráneas, leídas de la base en ejecución.
 
 | Sección | Qué contiene |
 |---|---|
@@ -23,6 +23,25 @@
 Índices (además de la clave primaria):
 - `IDX_0fc586a3c26b9bb49e64e6ff1f`: `CREATE INDEX "IDX_0fc586a3c26b9bb49e64e6ff1f" ON public.admin USING btree (distributor_id)`
 - `UQ_admin_user`: `CREATE UNIQUE INDEX "UQ_admin_user" ON public.admin USING btree (user_id)`
+
+### `attachment` — Adjunto
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `attachment_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `owner_type` | attachment_owner_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `owner_id` | uuid | sí |  |  |  | Sin FK (ver la nota de la clase). |
+| `label` | varchar(80) | no |  |  |  | Texto libre para distinguir adjuntos del mismo dueño: "DNI frente", "Póliza 2026". |
+| `storage_key` | varchar(255) | sí |  |  |  | Clave dentro del `StoragePort` activo (disco local o S3). |
+| `original_name` | varchar(255) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `mime_type` | varchar(100) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `size_bytes` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `uploaded_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `uploaded_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_70d35b9e83fa8fca69e685f548`: `CREATE INDEX "IDX_70d35b9e83fa8fca69e685f548" ON public.attachment USING btree (distributor_id, owner_type, owner_id)`
 
 ### `audit_log` — AsientoAuditoria
 
@@ -115,10 +134,11 @@ Claves únicas compuestas: (`cart_id`, `gas_cylinder_id`).
 | `customer_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `reason` | varchar | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `description` | text | sí |  |  |  | _(sin descripción documentada en el código)_ |
-| `photoUrl` | varchar | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `photoUrl` | varchar | no |  |  |  | URL externa que mandaban las apps antes de que la foto se subiera al storage. |
 | `status` | claims_status_enum | sí |  |  | `'pending'::claims_status_enum` | _(sin descripción documentada en el código)_ |
 | `resolutionNote` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `createdAt` | timestamp | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `photo_key` | varchar(512) | no |  |  |  | Key de la foto en el storage (`claims/{distribuidora}/{reclamo}/{uuid}.{ext}`). |
 
 Índices (además de la clave primaria):
 - `IDX_870bf1e0dc6005837ff0643b5f`: `CREATE INDEX "IDX_870bf1e0dc6005837ff0643b5f" ON public.claims USING btree (distributor_id)`
@@ -315,6 +335,14 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 - `IDX_02331b27890084627684d99ec5`: `CREATE UNIQUE INDEX "IDX_02331b27890084627684d99ec5" ON public.distributor USING btree (slug)`
 - `UQ_02331b27890084627684d99ec5b`: `CREATE UNIQUE INDEX "UQ_02331b27890084627684d99ec5b" ON public.distributor USING btree (slug)`
 
+### `document_sequence` — Secuencia de documentos
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `distributor_id` | uuid | sí | PK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `doc_type` | varchar(40) | sí | PK |  |  | _(sin descripción documentada en el código)_ |
+| `last_number` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+
 ### `gas_cylinder` — Producto
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -488,9 +516,9 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `totalAmount` | numeric(10,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `deliveryInstructions` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `acceptedAt` | timestamp | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `onTheWayAt` | timestamp | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `deliveredAt` | timestamp | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `acceptedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `onTheWayAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `deliveredAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `cancellationReason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
@@ -696,6 +724,23 @@ Claves únicas compuestas: (`batch_id`, `order_id`).
 Índices (además de la clave primaria):
 - `UQ_route_batch_stop_batch_order`: `CREATE UNIQUE INDEX "UQ_route_batch_stop_batch_order" ON public.route_batch_stop USING btree (batch_id, order_id)`
 
+### `storage_orphan` — Archivo pendiente de borrado
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `orphan_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `storage_key` | varchar(512) | sí | U |  |  | _(sin descripción documentada en el código)_ |
+| `attempts` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+| `last_error` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `created_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updated_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `kind` | varchar(10) | sí |  |  | `'remove'::character varying` | _(sin descripción documentada en el código)_ |
+| `status` | varchar(10) | sí |  |  | `'pending'::character varying` | _(sin descripción documentada en el código)_ |
+| `next_attempt_at` | timestamptz | sí |  |  | `now()` | Desde cuándo el cron puede (re)intentar el borrado. |
+
+Índices (además de la clave primaria):
+- `UQ_79763cafe43e9dcf31ea86b6f59`: `CREATE UNIQUE INDEX "UQ_79763cafe43e9dcf31ea86b6f59" ON public.storage_orphan USING btree (storage_key)`
+
 ### `time_slot` — FranjaHoraria
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -797,11 +842,11 @@ Claves únicas compuestas: (`car_id`, `day`).
 - `IDX_8d4be9c7008fc808b4900a83a5`: `CREATE INDEX "IDX_8d4be9c7008fc808b4900a83a5" ON public.vehicle_usage_log USING btree (distributor_id)`
 - `UQ_vehicle_usage_log_car_day`: `CREATE UNIQUE INDEX "UQ_vehicle_usage_log_car_day" ON public.vehicle_usage_log USING btree (car_id, day)`
 
-> **Cobertura de las descripciones.** 65 de 411 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 71 de 435 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
-No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 93 relaciones del dominio están todas declaradas.
+No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 96 relaciones del dominio están todas declaradas.
 
 ### 1. Recargo express y tipo de vehículo
 
@@ -841,11 +886,601 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 
 > **Decisión de modelado.** Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: sólo hace falta ampliar el tipo enumerado de procesos configurables.
 
+### 4. Stock físico, compras y carga del camión
+
+**Casos de uso:** CU-207 a CU-224 (I-13). **Qué resuelve:** Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué se le compra a cada proveedor y qué sale y vuelve en cada reparto.
+
+| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
+|---|---|---|:-:|---|
+| `gas_cylinder` | `average_unit_cost` | numeric(12,2) | no | Costo promedio ponderado de la garrafa, que se recalcula en cada recepción de compra; vacío mientras no se compró. |
+| `warehouse` **(tabla nueva)** | `warehouse_id` | uuid | sí | Identificador. |
+| `warehouse` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `warehouse` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre del depósito. |
+| `warehouse` **(tabla nueva)** | `code` | varchar(12) | sí | Código, único entre los depósitos vigentes de la distribuidora. |
+| `warehouse` **(tabla nueva)** | `kind` | warehouse_kind_enum | sí | Depósito o sucursal. |
+| `warehouse` **(tabla nueva)** | `address` | text | no | Dirección. |
+| `warehouse` **(tabla nueva)** | `location` | geometry(Point,4326) | no | Punto geográfico. |
+| `warehouse` **(tabla nueva)** | `is_default` | boolean | sí | Si es el depósito predeterminado de la distribuidora. |
+| `warehouse` **(tabla nueva)** | `is_active` | boolean | sí | Si está en uso. |
+| `warehouse` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `warehouse` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `warehouse` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
+| `stock_location` **(tabla nueva)** | `location_id` | uuid | sí | Identificador. |
+| `stock_location` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `stock_location` **(tabla nueva)** | `kind` | stock_location_kind_enum | sí | Depósito o vehículo. |
+| `stock_location` **(tabla nueva)** | `warehouse_id` | uuid | no | Depósito, si la ubicación es un depósito. |
+| `stock_location` **(tabla nueva)** | `car_id` | uuid | no | Vehículo, si la ubicación es un camión. |
+| `stock_balance` **(tabla nueva)** | `balance_id` | uuid | sí | Identificador. |
+| `stock_balance` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `stock_balance` **(tabla nueva)** | `location_id` | uuid | sí | Ubicación. |
+| `stock_balance` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
+| `stock_balance` **(tabla nueva)** | `condition` | stock_condition_enum | sí | Llena, vacía o defectuosa. |
+| `stock_balance` **(tabla nueva)** | `quantity` | integer | sí | Unidades; nunca negativa. |
+| `stock_balance` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última actualización. |
+| `stock_movement` **(tabla nueva)** | `movement_id` | uuid | sí | Identificador. |
+| `stock_movement` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `stock_movement` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
+| `stock_movement` **(tabla nueva)** | `batch_id` | uuid | sí | Agrupa los movimientos de una misma operación. |
+| `stock_movement` **(tabla nueva)** | `quantity` | integer | sí | Unidades movidas; siempre positiva. |
+| `stock_movement` **(tabla nueva)** | `from_location_id` | uuid | no | Ubicación de origen; vacía si entra desde afuera. |
+| `stock_movement` **(tabla nueva)** | `from_condition` | stock_condition_enum | no | Condición en el origen. |
+| `stock_movement` **(tabla nueva)** | `to_location_id` | uuid | no | Ubicación de destino; vacía si sale. |
+| `stock_movement` **(tabla nueva)** | `to_condition` | stock_condition_enum | no | Condición en el destino. |
+| `stock_movement` **(tabla nueva)** | `reason` | stock_movement_reason_enum | sí | Motivo del movimiento. |
+| `stock_movement` **(tabla nueva)** | `reference_type` | stock_reference_type_enum | sí | Tipo del documento que lo originó. |
+| `stock_movement` **(tabla nueva)** | `reference_id` | uuid | no | Identificador de ese documento; sin clave foránea a propósito, porque apunta a tablas distintas según el tipo. |
+| `stock_movement` **(tabla nueva)** | `actor_user_id` | uuid | no | Usuario que lo provocó; vacío si fue el sistema. |
+| `stock_movement` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
+| `stock_movement` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se asentó. |
+| `stock_threshold` **(tabla nueva)** | `threshold_id` | uuid | sí | Identificador. |
+| `stock_threshold` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `stock_threshold` **(tabla nueva)** | `warehouse_id` | uuid | sí | Depósito controlado. |
+| `stock_threshold` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
+| `stock_threshold` **(tabla nueva)** | `min_full` | integer | sí | Mínimo de unidades llenas. |
+| `stock_threshold` **(tabla nueva)** | `alerted_at` | timestamptz | no | Cuándo se avisó; vacío si no hay aviso emitido. |
+| `stock_adjustment` **(tabla nueva)** | `adjustment_id` | uuid | sí | Identificador. |
+| `stock_adjustment` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `stock_adjustment` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
+| `stock_adjustment` **(tabla nueva)** | `location_id` | uuid | sí | Ubicación corregida. |
+| `stock_adjustment` **(tabla nueva)** | `reason` | stock_adjustment_reason_enum | sí | Motivo del ajuste. |
+| `stock_adjustment` **(tabla nueva)** | `notes` | text | sí | Nota que explica el ajuste; obligatoria. |
+| `stock_adjustment` **(tabla nueva)** | `created_by_user_id` | uuid | sí | Usuario que lo registró. |
+| `stock_adjustment` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
+| `stock_adjustment_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
+| `stock_adjustment_item` **(tabla nueva)** | `adjustment_id` | uuid | sí | Ajuste. |
+| `stock_adjustment_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
+| `stock_adjustment_item` **(tabla nueva)** | `condition` | stock_condition_enum | sí | Condición afectada. |
+| `stock_adjustment_item` **(tabla nueva)** | `quantity_delta` | integer | sí | Diferencia, positiva o negativa; nunca cero. |
+| `supplier` **(tabla nueva)** | `supplier_id` | uuid | sí | Identificador. |
+| `supplier` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `supplier` **(tabla nueva)** | `business_name` | varchar(120) | sí | Razón social. |
+| `supplier` **(tabla nueva)** | `cuit` | varchar(11) | sí | CUIT, único entre los proveedores vigentes de la distribuidora. |
+| `supplier` **(tabla nueva)** | `kind` | supplier_kind_enum | sí | Planta de llenado u otro. |
+| `supplier` **(tabla nueva)** | `contact_name` | varchar(80) | no | Persona de contacto. |
+| `supplier` **(tabla nueva)** | `phone` | varchar(30) | no | Teléfono. |
+| `supplier` **(tabla nueva)** | `email` | varchar(120) | no | Correo. |
+| `supplier` **(tabla nueva)** | `address` | text | no | Dirección. |
+| `supplier` **(tabla nueva)** | `payment_terms_days` | integer | no | Plazo de pago en días. |
+| `supplier` **(tabla nueva)** | `is_active` | boolean | sí | Si está en uso. |
+| `supplier` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `supplier` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `supplier` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
+| `purchase_order` **(tabla nueva)** | `purchase_order_id` | uuid | sí | Identificador. |
+| `purchase_order` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `purchase_order` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
+| `purchase_order` **(tabla nueva)** | `supplier_id` | uuid | sí | Proveedor. |
+| `purchase_order` **(tabla nueva)** | `destination_warehouse_id` | uuid | sí | Depósito destino. |
+| `purchase_order` **(tabla nueva)** | `status` | purchase_order_status_enum | sí | Borrador, enviada, parcialmente recibida, recibida o cancelada. |
+| `purchase_order` **(tabla nueva)** | `issued_at` | timestamptz | no | Cuándo se envió. |
+| `purchase_order` **(tabla nueva)** | `expected_date` | date | no | Fecha esperada de llegada. |
+| `purchase_order` **(tabla nueva)** | `total_amount` | numeric(12,2) | sí | Total de la orden. |
+| `purchase_order` **(tabla nueva)** | `cancel_reason` | text | no | Motivo de la cancelación. |
+| `purchase_order` **(tabla nueva)** | `notes` | text | no | Observaciones. |
+| `purchase_order` **(tabla nueva)** | `created_by_user_id` | uuid | sí | Usuario que la emitió. |
+| `purchase_order` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `purchase_order` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `purchase_order_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
+| `purchase_order_item` **(tabla nueva)** | `purchase_order_id` | uuid | sí | Orden. |
+| `purchase_order_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
+| `purchase_order_item` **(tabla nueva)** | `quantity` | integer | sí | Unidades pedidas; positiva. |
+| `purchase_order_item` **(tabla nueva)** | `unit_cost` | numeric(12,2) | sí | Costo unitario esperado. |
+| `purchase_order_item` **(tabla nueva)** | `empties_to_exchange` | integer | sí | Vacíos que se entregan a la planta. |
+| `purchase_order_item` **(tabla nueva)** | `received_quantity` | integer | sí | Unidades recibidas hasta ahora. |
+| `purchase_receipt` **(tabla nueva)** | `receipt_id` | uuid | sí | Identificador. |
+| `purchase_receipt` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `purchase_receipt` **(tabla nueva)** | `number` | integer | sí | Número interno correlativo. |
+| `purchase_receipt` **(tabla nueva)** | `supplier_id` | uuid | sí | Proveedor. |
+| `purchase_receipt` **(tabla nueva)** | `purchase_order_id` | uuid | no | Orden que cumple; vacía en una compra sin orden. |
+| `purchase_receipt` **(tabla nueva)** | `warehouse_id` | uuid | sí | Depósito donde ingresa. |
+| `purchase_receipt` **(tabla nueva)** | `supplier_document_type` | purchase_document_type_enum | sí | Remito o factura del proveedor. |
+| `purchase_receipt` **(tabla nueva)** | `supplier_document_number` | varchar(30) | sí | Número del comprobante, único por proveedor. |
+| `purchase_receipt` **(tabla nueva)** | `received_at` | timestamptz | sí | Cuándo se recibió. |
+| `purchase_receipt` **(tabla nueva)** | `received_by_user_id` | uuid | sí | Usuario que la registró. |
+| `purchase_receipt` **(tabla nueva)** | `total_amount` | numeric(12,2) | sí | Total del remito. |
+| `purchase_receipt` **(tabla nueva)** | `payment_status` | purchase_payment_status_enum | sí | Impago o pagado. |
+| `purchase_receipt` **(tabla nueva)** | `cash_movement_id` | uuid | no | Egreso de caja que la pagó, del módulo de caja (I-14). |
+| `purchase_receipt` **(tabla nueva)** | `status` | purchase_receipt_status_enum | sí | Confirmada o anulada. |
+| `purchase_receipt` **(tabla nueva)** | `void_reason` | text | no | Motivo de la anulación. |
+| `purchase_receipt` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `purchase_receipt` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `purchase_receipt_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
+| `purchase_receipt_item` **(tabla nueva)** | `receipt_id` | uuid | sí | Recepción. |
+| `purchase_receipt_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
+| `purchase_receipt_item` **(tabla nueva)** | `quantity_full` | integer | sí | Unidades llenas recibidas. |
+| `purchase_receipt_item` **(tabla nueva)** | `quantity_empty_out` | integer | sí | Vacíos que se llevó la planta. |
+| `purchase_receipt_item` **(tabla nueva)** | `unit_cost` | numeric(12,2) | sí | Costo unitario real. |
+| `truck_load` **(tabla nueva)** | `load_id` | uuid | sí | Identificador. |
+| `truck_load` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `truck_load` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
+| `truck_load` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo. |
+| `truck_load` **(tabla nueva)** | `delivery_id` | uuid | sí | Chofer. |
+| `truck_load` **(tabla nueva)** | `helper_employee_id` | uuid | no | Ayudante: legajo del módulo de personal, sin cuenta de usuario. |
+| `truck_load` **(tabla nueva)** | `origin_location_id` | uuid | sí | Depósito de salida. |
+| `truck_load` **(tabla nueva)** | `business_date` | date | sí | Día de negocio. |
+| `truck_load` **(tabla nueva)** | `status` | truck_load_status_enum | sí | Cargando, en ruta, regresó, cerrada, cerrada con diferencia o cancelada. |
+| `truck_load` **(tabla nueva)** | `opened_at` | timestamptz | sí | Apertura. |
+| `truck_load` **(tabla nueva)** | `departed_at` | timestamptz | no | Salida. |
+| `truck_load` **(tabla nueva)** | `returned_at` | timestamptz | no | Regreso. |
+| `truck_load` **(tabla nueva)** | `closed_at` | timestamptz | no | Cierre. |
+| `truck_load` **(tabla nueva)** | `opened_by_user_id` | uuid | sí | Usuario que abrió la carga. |
+| `truck_load` **(tabla nueva)** | `closed_by_user_id` | uuid | no | Usuario que la cerró. |
+| `truck_load` **(tabla nueva)** | `difference_note` | text | no | Nota de la diferencia; obligatoria si cierra con diferencia. |
+| `truck_load_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
+| `truck_load_item` **(tabla nueva)** | `load_id` | uuid | sí | Carga. |
+| `truck_load_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
+| `truck_load_item` **(tabla nueva)** | `loaded_full` | integer | sí | Llenas cargadas. |
+| `truck_load_item` **(tabla nueva)** | `reloaded_full` | integer | sí | Llenas repuestas en ruta. |
+| `truck_load_item` **(tabla nueva)** | `loaded_empty` | integer | sí | Vacías cargadas para canje. |
+| `truck_load_item` **(tabla nueva)** | `declared_return_full` | integer | no | Llenas declaradas al regreso. |
+| `truck_load_item` **(tabla nueva)** | `declared_return_empty` | integer | no | Vacías declaradas al regreso. |
+| `truck_load_item` **(tabla nueva)** | `delivered_full` | integer | no | Llenas entregadas, al cierre. |
+| `truck_load_item` **(tabla nueva)** | `collected_empty` | integer | no | Vacías recolectadas, al cierre. |
+| `truck_load_item` **(tabla nueva)** | `expected_full` | integer | no | Llenas esperadas, al cierre. |
+| `truck_load_item` **(tabla nueva)** | `expected_empty` | integer | no | Vacías esperadas, al cierre. |
+| `truck_load_item` **(tabla nueva)** | `difference_full` | integer | no | Diferencia de llenas, al cierre. |
+| `truck_load_item` **(tabla nueva)** | `difference_empty` | integer | no | Diferencia de vacías, al cierre. |
+
+`warehouse` — Depósito o sucursal de la distribuidora donde se guarda el stock físico. Clave primaria `warehouse_id`. Referencias: `distributor_id` → `distributor`.
+`stock_location` — Lugar donde puede haber stock: un depósito o un vehículo. Clave primaria `location_id`. Referencias: `distributor_id` → `distributor`, `warehouse_id` → `warehouse`, `car_id` → `car`. Única: (`warehouse_id`), (`car_id`).
+`stock_balance` — Cantidad de un tipo de garrafa en una condición dentro de una ubicación, mantenida con cada movimiento. Clave primaria `balance_id`. Referencias: `distributor_id` → `distributor`, `location_id` → `stock_location`, `gas_cylinder_id` → `gas_cylinder`. Única: (`location_id`, `gas_cylinder_id`, `condition`).
+`stock_movement` — Libro de sólo agregado: cada cambio de stock entre ubicaciones o con el exterior. Clave primaria `movement_id`. Referencias: `distributor_id` → `distributor`, `gas_cylinder_id` → `gas_cylinder`, `from_location_id` → `stock_location`, `to_location_id` → `stock_location`, `actor_user_id` → `user`.
+`stock_threshold` — Mínimo de unidades llenas de un tipo de garrafa en un depósito, para avisar cuando baja. Clave primaria `threshold_id`. Referencias: `distributor_id` → `distributor`, `warehouse_id` → `warehouse`, `gas_cylinder_id` → `gas_cylinder`. Única: (`warehouse_id`, `gas_cylinder_id`).
+`stock_adjustment` — Corrección del stock de una ubicación, con su motivo y una nota obligatoria. Clave primaria `adjustment_id`. Referencias: `distributor_id` → `distributor`, `location_id` → `stock_location`, `created_by_user_id` → `user`. Única: (`distributor_id`, `number`).
+`stock_adjustment_item` — Diferencia de un tipo de garrafa y condición dentro de un ajuste. Clave primaria `item_id`. Referencias: `adjustment_id` → `stock_adjustment`, `gas_cylinder_id` → `gas_cylinder`.
+`supplier` — Proveedor de la distribuidora, principalmente una planta de llenado. Clave primaria `supplier_id`. Referencias: `distributor_id` → `distributor`.
+`purchase_order` — Pedido de garrafas a un proveedor para un depósito destino. Clave primaria `purchase_order_id`. Referencias: `distributor_id` → `distributor`, `supplier_id` → `supplier`, `destination_warehouse_id` → `warehouse`, `created_by_user_id` → `user`. Única: (`distributor_id`, `number`).
+`purchase_order_item` — Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje. Clave primaria `item_id`. Referencias: `purchase_order_id` → `purchase_order`, `gas_cylinder_id` → `gas_cylinder`. Única: (`purchase_order_id`, `gas_cylinder_id`).
+`purchase_receipt` — Remito de ingreso de una compra, con o sin orden. Clave primaria `receipt_id`. Referencias: `distributor_id` → `distributor`, `supplier_id` → `supplier`, `purchase_order_id` → `purchase_order`, `warehouse_id` → `warehouse`, `received_by_user_id` → `user`. Única: (`distributor_id`, `number`), (`distributor_id`, `supplier_id`, `supplier_document_number`).
+`purchase_receipt_item` — Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta. Clave primaria `item_id`. Referencias: `receipt_id` → `purchase_receipt`, `gas_cylinder_id` → `gas_cylinder`.
+`truck_load` — Hoja de carga: el turno de un camión, desde que se carga hasta que se rinde. Clave primaria `load_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `delivery_id` → `delivery`, `origin_location_id` → `stock_location`, `opened_by_user_id` → `user`, `closed_by_user_id` → `user`. Única: (`distributor_id`, `number`).
+`truck_load_item` — Por tipo de garrafa: lo cargado, lo repuesto, lo entregado, lo declarado al regreso y la diferencia. Clave primaria `item_id`. Referencias: `load_id` → `truck_load`, `gas_cylinder_id` → `gas_cylinder`. Única: (`load_id`, `gas_cylinder_id`).
+
+Tipo enumerado `warehouse_kind_enum`: `depot`, `branch`.
+Tipo enumerado `stock_location_kind_enum`: `warehouse`, `vehicle`.
+Tipo enumerado `stock_condition_enum`: `full`, `empty`, `defective`.
+Tipo enumerado `stock_movement_reason_enum`: `initial_count`, `purchase_receipt`, `plant_empty_out`, `truck_load`, `truck_return`, `delivery`, `empty_collected`, `transfer`, `adjustment`, `shrinkage`, `condition_change`, `reversal`.
+Tipo enumerado `stock_reference_type_enum`: `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial`.
+Tipo enumerado `stock_adjustment_reason_enum`: `count_correction`, `shrinkage`, `leak`, `damaged`, `lost`, `found`, `initial_count`.
+Tipo enumerado `supplier_kind_enum`: `filling_plant`, `other`.
+Tipo enumerado `purchase_order_status_enum`: `draft`, `sent`, `partially_received`, `received`, `cancelled`.
+Tipo enumerado `purchase_document_type_enum`: `delivery_note`, `invoice`.
+Tipo enumerado `purchase_payment_status_enum`: `unpaid`, `paid`.
+Tipo enumerado `purchase_receipt_status_enum`: `confirmed`, `voided`.
+Tipo enumerado `truck_load_status_enum`: `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled`.
+
+Valores nuevos del tipo enumerado `configurable_process_enum`: `stock_control`.
+
+> **Decisión de modelado.** El saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo del módulo de personal, que se documenta aparte (iteración I-11): se declara sin clave foránea hasta que esa tabla exista en este modelo. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
+
+### 5. Caja, rendición del chofer, cuentas corrientes y comisiones
+
+**Casos de uso:** CU-225 a CU-245 (I-14). **Qué resuelve:** Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.
+
+| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
+|---|---|---|:-:|---|
+| `cash_box` **(tabla nueva)** | `cash_box_id` | uuid | sí | Identificador. |
+| `cash_box` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `cash_box` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre de la caja. |
+| `cash_box` **(tabla nueva)** | `kind` | cash_box_kind_enum | sí | Efectivo, banco o billetera. |
+| `cash_box` **(tabla nueva)** | `balance` | numeric(14,2) | sí | Saldo; una restricción impide que una caja de efectivo quede en negativo. |
+| `cash_box` **(tabla nueva)** | `requires_session` | boolean | sí | Si exige una sesión abierta para registrar movimientos. |
+| `cash_box` **(tabla nueva)** | `is_active` | boolean | sí | Si la caja está activa. |
+| `cash_box` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `cash_box` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `cash_box` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
+| `cash_session` **(tabla nueva)** | `session_id` | uuid | sí | Identificador. |
+| `cash_session` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `cash_session` **(tabla nueva)** | `cash_box_id` | uuid | sí | Caja que se abre. |
+| `cash_session` **(tabla nueva)** | `status` | cash_session_status_enum | sí | Abierta o cerrada. |
+| `cash_session` **(tabla nueva)** | `opened_at` | timestamptz | sí | Apertura. |
+| `cash_session` **(tabla nueva)** | `opened_by_user_id` | uuid | sí | Administrador que la abrió. |
+| `cash_session` **(tabla nueva)** | `opening_amount` | numeric(12,2) | sí | Monto con que se abrió. |
+| `cash_session` **(tabla nueva)** | `closed_at` | timestamptz | no | Cierre. |
+| `cash_session` **(tabla nueva)** | `closed_by_user_id` | uuid | no | Administrador que la cerró. |
+| `cash_session` **(tabla nueva)** | `expected_amount` | numeric(12,2) | no | Monto que debía haber: el inicial más los movimientos de la sesión. |
+| `cash_session` **(tabla nueva)** | `counted_amount` | numeric(12,2) | no | Monto contado en el arqueo. |
+| `cash_session` **(tabla nueva)** | `difference` | numeric(12,2) | no | Contado menos esperado; negativa es faltante. |
+| `cash_session` **(tabla nueva)** | `notes` | text | no | Observaciones del arqueo. |
+| `cash_category` **(tabla nueva)** | `category_id` | uuid | sí | Identificador. |
+| `cash_category` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `cash_category` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre de la categoría. |
+| `cash_category` **(tabla nueva)** | `direction` | cash_direction_enum | sí | Ingreso o egreso. |
+| `cash_category` **(tabla nueva)** | `system_code` | cash_system_code_enum | no | Código con que los procesos automáticos la buscan; vacío en las propias. |
+| `cash_category` **(tabla nueva)** | `is_active` | boolean | sí | Si se ofrece para movimientos nuevos. |
+| `cash_category` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `cash_category` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `cash_movement` **(tabla nueva)** | `movement_id` | uuid | sí | Identificador. |
+| `cash_movement` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `cash_movement` **(tabla nueva)** | `cash_box_id` | uuid | sí | Caja del asiento. |
+| `cash_movement` **(tabla nueva)** | `session_id` | uuid | no | Sesión en que se asentó. |
+| `cash_movement` **(tabla nueva)** | `direction` | cash_direction_enum | sí | Ingreso o egreso. |
+| `cash_movement` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe, siempre mayor que cero. |
+| `cash_movement` **(tabla nueva)** | `category_id` | uuid | sí | Categoría del movimiento. |
+| `cash_movement` **(tabla nueva)** | `method` | cash_method_enum | sí | Medio, informativo. |
+| `cash_movement` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
+| `cash_movement` **(tabla nueva)** | `description` | varchar(255) | no | Descripción libre. |
+| `cash_movement` **(tabla nueva)** | `reference_type` | cash_reference_type_enum | sí | Qué lo originó: carga manual, rendición, pago, liquidación, transferencia o anulación. |
+| `cash_movement` **(tabla nueva)** | `reference_id` | uuid | no | Identificador de lo que lo originó. |
+| `cash_movement` **(tabla nueva)** | `reverses_movement_id` | uuid | no | Movimiento al que anula; único: un movimiento se anula una sola vez. |
+| `cash_movement` **(tabla nueva)** | `created_by_user_id` | uuid | sí | Quien lo asentó. |
+| `cash_movement` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `driver_settlement` **(tabla nueva)** | `settlement_id` | uuid | sí | Identificador. |
+| `driver_settlement` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `driver_settlement` **(tabla nueva)** | `delivery_id` | uuid | sí | Chofer que rinde. |
+| `driver_settlement` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
+| `driver_settlement` **(tabla nueva)** | `business_date` | date | sí | Día argentino que se rinde. |
+| `driver_settlement` **(tabla nueva)** | `status` | driver_settlement_status_enum | sí | Abierta, presentada o aprobada. |
+| `driver_settlement` **(tabla nueva)** | `expected_cash` | numeric(12,2) | sí | Efectivo que debería entregar. |
+| `driver_settlement` **(tabla nueva)** | `declared_cash` | numeric(12,2) | no | Efectivo que declara entregar. |
+| `driver_settlement` **(tabla nueva)** | `driver_expenses` | numeric(12,2) | sí | Gastos pagados con la cobranza. |
+| `driver_settlement` **(tabla nueva)** | `difference` | numeric(12,2) | no | Declarado más gastos menos esperado; negativa es faltante. |
+| `driver_settlement` **(tabla nueva)** | `difference_resolution` | settlement_difference_resolution_enum | no | Cómo se resolvió la diferencia. |
+| `driver_settlement` **(tabla nueva)** | `destination_cash_box_id` | uuid | no | Caja donde entró el efectivo. |
+| `driver_settlement` **(tabla nueva)** | `cash_movement_id` | uuid | no | Ingreso a caja de la aprobación. |
+| `driver_settlement` **(tabla nueva)** | `submitted_at` | timestamptz | no | Cuándo se presentó. |
+| `driver_settlement` **(tabla nueva)** | `submitted_by_user_id` | uuid | no | Quien la presentó. |
+| `driver_settlement` **(tabla nueva)** | `approved_at` | timestamptz | no | Cuándo se aprobó. |
+| `driver_settlement` **(tabla nueva)** | `approved_by_user_id` | uuid | no | Administrador que la aprobó. |
+| `driver_settlement` **(tabla nueva)** | `alerted_at` | timestamptz | no | Cuándo se avisó que seguía sin cerrar. |
+| `driver_settlement` **(tabla nueva)** | `notes` | text | no | Observaciones. |
+| `driver_settlement` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `driver_settlement_order` **(tabla nueva)** | `settlement_order_id` | uuid | sí | Identificador. |
+| `driver_settlement_order` **(tabla nueva)** | `settlement_id` | uuid | sí | Rendición que lo incluye. |
+| `driver_settlement_order` **(tabla nueva)** | `order_id` | uuid | sí | Pedido rendido; único. |
+| `driver_settlement_order` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe cobrado. |
+| `driver_settlement_order` **(tabla nueva)** | `payment_method` | order_paymentmethod_enum | sí | Medio de pago del pedido al rendirlo. |
+| `driver_settlement_expense` **(tabla nueva)** | `expense_id` | uuid | sí | Identificador. |
+| `driver_settlement_expense` **(tabla nueva)** | `settlement_id` | uuid | sí | Rendición que lo declara. |
+| `driver_settlement_expense` **(tabla nueva)** | `category_id` | uuid | sí | Categoría del gasto. |
+| `driver_settlement_expense` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe pagado. |
+| `driver_settlement_expense` **(tabla nueva)** | `description` | varchar(255) | no | Descripción libre. |
+| `customer_account` **(tabla nueva)** | `account_id` | uuid | sí | Identificador. |
+| `customer_account` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `customer_account` **(tabla nueva)** | `customer_user_id` | uuid | sí | Cliente titular. |
+| `customer_account` **(tabla nueva)** | `business_name` | varchar(120) | sí | Razón social. |
+| `customer_account` **(tabla nueva)** | `tax_id` | varchar(11) | no | CUIT. |
+| `customer_account` **(tabla nueva)** | `tax_condition` | tax_condition_enum | sí | Condición fiscal. |
+| `customer_account` **(tabla nueva)** | `credit_limit` | numeric(12,2) | sí | Límite de crédito. |
+| `customer_account` **(tabla nueva)** | `payment_terms_days` | integer | sí | Plazo de pago en días. |
+| `customer_account` **(tabla nueva)** | `status` | customer_account_status_enum | sí | Activa, bloqueada o cerrada. |
+| `customer_account` **(tabla nueva)** | `balance` | numeric(14,2) | sí | Saldo; positivo es deuda del cliente. |
+| `customer_account` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `customer_account` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `customer_account` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
+| `customer_account_entry` **(tabla nueva)** | `entry_id` | uuid | sí | Identificador. |
+| `customer_account_entry` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `customer_account_entry` **(tabla nueva)** | `account_id` | uuid | sí | Cuenta del asiento. |
+| `customer_account_entry` **(tabla nueva)** | `type` | customer_entry_type_enum | sí | Cargo, pago, nota o anulación. |
+| `customer_account_entry` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe; el signo lo da el tipo. |
+| `customer_account_entry` **(tabla nueva)** | `order_id` | uuid | no | Pedido que originó el cargo. |
+| `customer_account_entry` **(tabla nueva)** | `due_date` | date | no | Vencimiento del cargo. |
+| `customer_account_entry` **(tabla nueva)** | `payment_method` | cash_method_enum | no | Medio del pago. |
+| `customer_account_entry` **(tabla nueva)** | `cash_movement_id` | uuid | no | Ingreso a caja del pago. |
+| `customer_account_entry` **(tabla nueva)** | `collected_by_delivery_id` | uuid | no | Chofer que cobró en la calle. |
+| `customer_account_entry` **(tabla nueva)** | `settlement_id` | uuid | no | Rendición en que entró lo cobrado. |
+| `customer_account_entry` **(tabla nueva)** | `reverses_entry_id` | uuid | no | Asiento al que anula; único. |
+| `customer_account_entry` **(tabla nueva)** | `description` | varchar(255) | no | Descripción o motivo. |
+| `customer_account_entry` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
+| `customer_account_entry` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quien lo asentó. |
+| `customer_account_entry` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `customer_account_allocation` **(tabla nueva)** | `allocation_id` | uuid | sí | Identificador. |
+| `customer_account_allocation` **(tabla nueva)** | `debit_entry_id` | uuid | sí | Cargo que se cancela. |
+| `customer_account_allocation` **(tabla nueva)** | `credit_entry_id` | uuid | sí | Pago o nota que lo cancela. |
+| `customer_account_allocation` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe aplicado. |
+| `commission_rule` **(tabla nueva)** | `rule_id` | uuid | sí | Identificador. |
+| `commission_rule` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `commission_rule` **(tabla nueva)** | `employee_id` | uuid | no | Empleado de la regla; vacío vale para todos los choferes. |
+| `commission_rule` **(tabla nueva)** | `gas_cylinder_id` | uuid | no | Producto de la regla; vacío vale para todos. |
+| `commission_rule` **(tabla nueva)** | `basis` | commission_basis_enum | sí | Por unidad, por pedido o porcentaje del total. |
+| `commission_rule` **(tabla nueva)** | `value` | numeric(10,4) | sí | Monto o porcentaje, según la base. |
+| `commission_rule` **(tabla nueva)** | `valid_from` | date | sí | Inicio de la vigencia. |
+| `commission_rule` **(tabla nueva)** | `valid_to` | date | no | Fin de la vigencia. |
+| `commission_rule` **(tabla nueva)** | `is_active` | boolean | sí | Si la regla está activa. |
+| `commission_rule` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `commission_rule` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `commission_entry` **(tabla nueva)** | `entry_id` | uuid | sí | Identificador. |
+| `commission_entry` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `commission_entry` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado del asiento. |
+| `commission_entry` **(tabla nueva)** | `type` | commission_entry_type_enum | sí | Comisión, faltante, multa, ajuste, saldo heredado o arrastre. |
+| `commission_entry` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe con signo; las deducciones son negativas. |
+| `commission_entry` **(tabla nueva)** | `order_id` | uuid | no | Pedido que devengó la comisión. |
+| `commission_entry` **(tabla nueva)** | `rule_id` | uuid | no | Regla aplicada. |
+| `commission_entry` **(tabla nueva)** | `rule_snapshot` | jsonb | no | Copia de la regla con que se calculó. |
+| `commission_entry` **(tabla nueva)** | `settlement_id` | uuid | no | Rendición que originó un faltante. |
+| `commission_entry` **(tabla nueva)** | `liquidation_id` | uuid | no | Liquidación que lo incluye; vacío si está libre. |
+| `commission_entry` **(tabla nueva)** | `description` | varchar(255) | no | Descripción o motivo. |
+| `commission_entry` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
+| `commission_entry` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quien lo asentó; vacío si fue el sistema. |
+| `commission_entry` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+| `driver_liquidation` **(tabla nueva)** | `liquidation_id` | uuid | sí | Identificador. |
+| `driver_liquidation` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `driver_liquidation` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
+| `driver_liquidation` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado liquidado. |
+| `driver_liquidation` **(tabla nueva)** | `period_from` | date | sí | Inicio del período. |
+| `driver_liquidation` **(tabla nueva)** | `period_to` | date | sí | Fin del período. |
+| `driver_liquidation` **(tabla nueva)** | `gross` | numeric(12,2) | sí | Suma de las comisiones. |
+| `driver_liquidation` **(tabla nueva)** | `deductions` | numeric(12,2) | sí | Suma de las deducciones. |
+| `driver_liquidation` **(tabla nueva)** | `net` | numeric(12,2) | sí | Neto a pagar. |
+| `driver_liquidation` **(tabla nueva)** | `status` | driver_liquidation_status_enum | sí | Borrador, aprobada, pagada, cerrada sin pago o anulada. |
+| `driver_liquidation` **(tabla nueva)** | `approved_at` | timestamptz | no | Cuándo se aprobó. |
+| `driver_liquidation` **(tabla nueva)** | `approved_by_user_id` | uuid | no | Administrador que la aprobó. |
+| `driver_liquidation` **(tabla nueva)** | `paid_at` | timestamptz | no | Cuándo se pagó. |
+| `driver_liquidation` **(tabla nueva)** | `cash_movement_id` | uuid | no | Egreso de caja del pago. |
+| `driver_liquidation` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
+
+`cash_box` — Cuenta de fondos de la distribuidora: efectivo, banco o billetera. Su saldo sólo cambia por el libro. Clave primaria `cash_box_id`. Referencias: `distributor_id` → `distributor`.
+`cash_session` — Período entre una apertura y un cierre con arqueo de una caja. Clave primaria `session_id`. Referencias: `distributor_id` → `distributor`, `cash_box_id` → `cash_box`, `opened_by_user_id` → `user`, `closed_by_user_id` → `user`.
+`cash_category` — Categoría de ingreso o de gasto; las de sistema se siembran y no se modifican. Clave primaria `category_id`. Referencias: `distributor_id` → `distributor`. Única: (`distributor_id`, `system_code`).
+`cash_movement` — Asiento del libro de una caja; de sólo agregar, se corrige con un contraasiento. Clave primaria `movement_id`. Referencias: `distributor_id` → `distributor`, `cash_box_id` → `cash_box`, `session_id` → `cash_session`, `category_id` → `cash_category`, `reverses_movement_id` → `cash_movement`, `created_by_user_id` → `user`. Única: (`reverses_movement_id`).
+`driver_settlement` — Rendición diaria del efectivo que cobró un chofer. Clave primaria `settlement_id`. Referencias: `distributor_id` → `distributor`, `delivery_id` → `delivery`, `destination_cash_box_id` → `cash_box`, `cash_movement_id` → `cash_movement`, `submitted_by_user_id` → `user`, `approved_by_user_id` → `user`.
+`driver_settlement_order` — Pedido en efectivo incluido en una rendición; un pedido se rinde una sola vez. Clave primaria `settlement_order_id`. Referencias: `settlement_id` → `driver_settlement`, `order_id` → `order`. Única: (`order_id`).
+`driver_settlement_expense` — Gasto que el chofer pagó con la cobranza. Clave primaria `expense_id`. Referencias: `settlement_id` → `driver_settlement`, `category_id` → `cash_category`.
+`customer_account` — Cuenta corriente de un cliente en una distribuidora: crédito, plazo y saldo. Clave primaria `account_id`. Referencias: `distributor_id` → `distributor`, `customer_user_id` → `user`.
+`customer_account_entry` — Asiento del libro de una cuenta corriente: cargo, pago, nota de crédito o de débito. Clave primaria `entry_id`. Referencias: `distributor_id` → `distributor`, `account_id` → `customer_account`, `order_id` → `order`, `cash_movement_id` → `cash_movement`, `collected_by_delivery_id` → `delivery`, `settlement_id` → `driver_settlement`, `reverses_entry_id` → `customer_account_entry`, `created_by_user_id` → `user`. Única: (`reverses_entry_id`).
+`customer_account_allocation` — Aplicación de un pago o una nota de crédito a un cargo; alimenta la antigüedad de la deuda. Clave primaria `allocation_id`. Referencias: `debit_entry_id` → `customer_account_entry`, `credit_entry_id` → `customer_account_entry`.
+`commission_rule` — Cuánto gana un chofer por entrega, con su alcance y su vigencia. Clave primaria `rule_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `gas_cylinder_id` → `gas_cylinder`.
+`commission_entry` — Asiento del libro de comisiones de un chofer: comisión, deducción o saldo heredado. Clave primaria `entry_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `order_id` → `order`, `rule_id` → `commission_rule`, `settlement_id` → `driver_settlement`, `liquidation_id` → `driver_liquidation`, `created_by_user_id` → `user`.
+`driver_liquidation` — Liquidación de las comisiones y las deducciones de un chofer en un período. Clave primaria `liquidation_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `approved_by_user_id` → `user`, `cash_movement_id` → `cash_movement`.
+
+Tipo enumerado `cash_box_kind_enum`: `cash`, `bank`, `wallet`.
+Tipo enumerado `cash_session_status_enum`: `open`, `closed`.
+Tipo enumerado `cash_direction_enum`: `income`, `expense`.
+Tipo enumerado `cash_system_code_enum`: `driver_settlement`, `customer_payment`, `purchase`, `fuel`, `traffic_fine`, `commission_payment`, `cash_difference`, `box_transfer`.
+Tipo enumerado `cash_method_enum`: `cash`, `transfer`, `card`, `mercadopago`, `check`.
+Tipo enumerado `cash_reference_type_enum`: `manual`, `driver_settlement`, `customer_payment`, `purchase_receipt`, `fuel_load`, `traffic_fine`, `driver_liquidation`, `box_transfer`, `reversal`.
+Tipo enumerado `driver_settlement_status_enum`: `open`, `submitted`, `approved`.
+Tipo enumerado `settlement_difference_resolution_enum`: `none`, `charged_to_driver`, `absorbed`.
+Tipo enumerado `tax_condition_enum`: `registered`, `monotax`, `exempt`, `final_consumer`.
+Tipo enumerado `customer_account_status_enum`: `active`, `blocked`, `closed`.
+Tipo enumerado `customer_entry_type_enum`: `sale_charge`, `payment`, `credit_note`, `debit_note`, `reversal`.
+Tipo enumerado `commission_basis_enum`: `per_unit`, `per_order`, `percent_of_total`.
+Tipo enumerado `commission_entry_type_enum`: `delivery_commission`, `settlement_shortage`, `traffic_fine`, `adjustment`, `legacy_balance`, `carry_forward`.
+Tipo enumerado `driver_liquidation_status_enum`: `draft`, `approved`, `paid`, `closed`, `voided`.
+
+Valores nuevos del tipo enumerado `order_paymentmethod_enum`: `account`.
+Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
+
+> **Decisión de modelado.** Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE "deletedAt" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, I-11), de modo que un chofer cobra comisión como empleado; `employee` figura acá sólo con las columnas mínimas que necesita este módulo y el módulo de personal la completa.
+
+### 6. Personal y legajos
+
+**Casos de uso:** CU-176 a CU-194 (I-11). **Qué resuelve:** Llevar el legajo de cada persona que trabaja en la distribuidora, su asistencia, sus licencias y la documentación con vencimiento, y que ese control inhabilite para el despacho a quien no esté en regla.
+
+| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
+|---|---|---|:-:|---|
+| `maintenance_plan` | `document_kind` | maintenance_document_kind_enum | no | Qué documento controla el plan: le dice al panel qué formulario mostrar y al sistema qué forma de detalle validar. |
+| `maintenance_plan` | `applies_to_categories` | job_position_category_enum[] | no | Categorías de puesto a las que aplica el plan; vacío significa todas. |
+| `maintenance_task` | `employee_id` | uuid | no | Empleado dueño de la tarea; obligatorio si el plan es de sujeto empleado. |
+| `maintenance_task` | `valid_from` | timestamptz | no | Inicio de la vigencia del documento (póliza, habilitación o documentación del personal); lo usa el prorrateo de la prima. |
+| `maintenance_task` | `details` | jsonb | no | Datos propios del tipo de documento (número de certificado, aseguradora, póliza, cobertura, franquicia, cuotas), con la forma que fija cada plan. |
+| `job_position` **(tabla nueva)** | `position_id` | uuid | sí | Identificador. |
+| `job_position` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `job_position` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre del puesto, único entre los vigentes de la distribuidora sin distinguir mayúsculas. |
+| `job_position` **(tabla nueva)** | `category` | job_position_category_enum | sí | Categoría que manda las reglas: el nombre es libre. |
+| `job_position` **(tabla nueva)** | `is_active` | boolean | sí | Si el puesto se ofrece. |
+| `job_position` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
+| `job_position` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
+| `job_position` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
+| `employee` **(tabla nueva)** | `employee_id` | uuid | sí | Identificador. |
+| `employee` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `employee` **(tabla nueva)** | `user_id` | uuid | no | Cuenta de acceso del empleado, si la tiene; única entre los legajos vigentes. |
+| `employee` **(tabla nueva)** | `position_id` | uuid | sí | Puesto que ocupa. |
+| `employee` **(tabla nueva)** | `file_number` | varchar(20) | sí | Número de legajo, único por distribuidora. |
+| `employee` **(tabla nueva)** | `first_name` | varchar(80) | sí | Nombre. |
+| `employee` **(tabla nueva)** | `last_name` | varchar(80) | sí | Apellido. |
+| `employee` **(tabla nueva)** | `document_type` | employee_document_type_enum | sí | Tipo de documento. |
+| `employee` **(tabla nueva)** | `document_number` | varchar(20) | sí | Número de documento, único por distribuidora. |
+| `employee` **(tabla nueva)** | `cuil` | varchar(11) | no | CUIL de once dígitos, con dígito verificador válido. |
+| `employee` **(tabla nueva)** | `birth_date` | date | no | Fecha de nacimiento. |
+| `employee` **(tabla nueva)** | `address_line` | varchar(200) | no | Domicilio. |
+| `employee` **(tabla nueva)** | `city` | varchar(80) | no | Localidad. |
+| `employee` **(tabla nueva)** | `province` | varchar(80) | no | Provincia. |
+| `employee` **(tabla nueva)** | `postal_code` | varchar(10) | no | Código postal. |
+| `employee` **(tabla nueva)** | `phone` | varchar(30) | no | Teléfono. |
+| `employee` **(tabla nueva)** | `personal_email` | varchar(120) | no | Correo personal. |
+| `employee` **(tabla nueva)** | `emergency_contact_name` | varchar(120) | no | Contacto de emergencia. |
+| `employee` **(tabla nueva)** | `emergency_contact_phone` | varchar(30) | no | Teléfono del contacto de emergencia. |
+| `employee` **(tabla nueva)** | `emergency_contact_relationship` | varchar(40) | no | Vínculo con el contacto de emergencia. |
+| `employee` **(tabla nueva)** | `hire_date` | date | sí | Fecha de ingreso. |
+| `employee` **(tabla nueva)** | `termination_date` | date | no | Fecha de egreso; vacía mientras está activo. |
+| `employee` **(tabla nueva)** | `termination_reason` | employee_termination_reason_enum | no | Motivo del egreso. |
+| `employee` **(tabla nueva)** | `employment_type` | employment_type_enum | sí | Modalidad de contratación. |
+| `employee` **(tabla nueva)** | `status` | employee_status_enum | sí | Activo o egresado; está egresado si y sólo si tiene fecha de egreso. |
+| `employee` **(tabla nueva)** | `bank_cbu` | varchar(22) | no | CBU, para pagar liquidaciones. |
+| `employee` **(tabla nueva)** | `notes` | text | no | Observaciones. |
+| `employee` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
+| `employee` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
+| `employee` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica, sólo para altas erróneas. |
+| `employee_attendance` **(tabla nueva)** | `attendance_id` | uuid | sí | Identificador. |
+| `employee_attendance` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `employee_attendance` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado de la jornada. |
+| `employee_attendance` **(tabla nueva)** | `work_date` | date | sí | Día argentino del ingreso. |
+| `employee_attendance` **(tabla nueva)** | `check_in_at` | timestamptz | sí | Ingreso. |
+| `employee_attendance` **(tabla nueva)** | `check_out_at` | timestamptz | no | Egreso; vacío mientras la jornada está abierta. |
+| `employee_attendance` **(tabla nueva)** | `source` | attendance_source_enum | sí | Panel o aplicación del chofer. |
+| `employee_attendance` **(tabla nueva)** | `recorded_by_user_id` | uuid | no | Usuario que la cargó. |
+| `employee_attendance` **(tabla nueva)** | `notes` | text | no | Observación; obligatoria al corregir. |
+| `employee_attendance` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
+| `employee_attendance` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
+| `employee_leave` **(tabla nueva)** | `leave_id` | uuid | sí | Identificador. |
+| `employee_leave` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `employee_leave` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado de la licencia. |
+| `employee_leave` **(tabla nueva)** | `type` | employee_leave_type_enum | sí | Tipo de licencia o ausencia. |
+| `employee_leave` **(tabla nueva)** | `start_date` | date | sí | Primer día. |
+| `employee_leave` **(tabla nueva)** | `end_date` | date | sí | Último día, inclusive. |
+| `employee_leave` **(tabla nueva)** | `days` | integer | sí | Días corridos del período. |
+| `employee_leave` **(tabla nueva)** | `status` | employee_leave_status_enum | sí | Solicitada, aprobada, rechazada o cancelada. |
+| `employee_leave` **(tabla nueva)** | `reason` | text | no | Motivo de la solicitud. |
+| `employee_leave` **(tabla nueva)** | `rejection_reason` | text | no | Motivo del rechazo; obligatorio al rechazar. |
+| `employee_leave` **(tabla nueva)** | `requested_by_user_id` | uuid | no | Usuario que la cargó. |
+| `employee_leave` **(tabla nueva)** | `decided_by_user_id` | uuid | no | Administrador que la resolvió. |
+| `employee_leave` **(tabla nueva)** | `decided_at` | timestamptz | no | Cuándo se resolvió. |
+| `employee_leave` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
+| `employee_leave` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
+
+`job_position` — Puesto que ocupa el personal de una distribuidora; su categoría gobierna las reglas. Clave primaria `position_id`. Referencias: `distributor_id` → `distributor`.
+`employee` — Legajo de una persona que trabaja en la distribuidora, con o sin cuenta de acceso. Clave primaria `employee_id`. Referencias: `distributor_id` → `distributor`, `user_id` → `user`, `position_id` → `job_position`. Única: (`user_id`), (`distributor_id`, `file_number`), (`distributor_id`, `document_number`).
+`employee_attendance` — Una jornada de un empleado: su ingreso y su egreso. Clave primaria `attendance_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `recorded_by_user_id` → `user`.
+`employee_leave` — Licencia o ausencia de un empleado, con su período y su estado. Clave primaria `leave_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `requested_by_user_id` → `user`, `decided_by_user_id` → `user`.
+
+Tipo enumerado `job_position_category_enum`: `driver`, `helper`, `warehouse`, `administration`, `sales`, `management`, `other`.
+Tipo enumerado `employee_document_type_enum`: `dni`, `passport`, `other`.
+Tipo enumerado `employee_termination_reason_enum`: `resignation`, `dismissal`, `end_of_contract`, `retirement`, `other`.
+Tipo enumerado `employment_type_enum`: `permanent`, `fixed_term`, `part_time`, `contractor`.
+Tipo enumerado `employee_status_enum`: `active`, `terminated`.
+Tipo enumerado `attendance_source_enum`: `panel`, `driver_app`.
+Tipo enumerado `employee_leave_type_enum`: `vacation`, `sick`, `work_accident`, `study`, `marriage`, `birth`, `bereavement`, `unpaid`, `suspension`, `unjustified_absence`, `other`.
+Tipo enumerado `employee_leave_status_enum`: `requested`, `approved`, `rejected`, `cancelled`.
+Tipo enumerado `maintenance_document_kind_enum`: `insurance`, `vtv`, `hazmat_vehicle_permit`, `driver_license`, `hazmat_driver_course`, `psychophysical`, `art_coverage`, `service`, `generic`.
+
+Valores nuevos del tipo enumerado `maintenance_subject_enum`: `employee`.
+
+> **Decisión de modelado.** Todo empleado existe como legajo, tenga o no cuenta de acceso: un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no sólo el servicio.
+
+### 7. Flota ampliada: combustible, multas y siniestros
+
+**Casos de uso:** CU-195 a CU-202 (I-12). **Qué resuelve:** Llevar las cargas de combustible, las multas de tránsito y los siniestros de cada vehículo, para conocer su consumo y su costo.
+
+| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
+|---|---|---|:-:|---|
+| `car` | `fuel_type` | fuel_type_enum | no | Combustible que usa el vehículo; es el que se propone en cada carga. |
+| `car` | `tank_capacity_liters` | numeric(6,2) | no | Litros que entran en el tanque; una carga no puede superarlos en más de un 5 %. |
+| `fuel_load` **(tabla nueva)** | `fuel_load_id` | uuid | sí | Identificador. |
+| `fuel_load` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `fuel_load` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo que cargó. |
+| `fuel_load` **(tabla nueva)** | `employee_id` | uuid | no | Empleado que hizo la carga. |
+| `fuel_load` **(tabla nueva)** | `loaded_at` | timestamptz | sí | Cuándo se hizo la carga. |
+| `fuel_load` **(tabla nueva)** | `fuel_type` | fuel_type_enum | sí | Combustible cargado; por omisión el del vehículo. |
+| `fuel_load` **(tabla nueva)** | `liters` | numeric(10,2) | sí | Litros cargados; mayores que cero. |
+| `fuel_load` **(tabla nueva)** | `unit_price` | numeric(12,3) | sí | Precio de cada litro. |
+| `fuel_load` **(tabla nueva)** | `total_amount` | numeric(12,2) | sí | Importe total; coincide con litros por precio, con un 1 % de tolerancia. |
+| `fuel_load` **(tabla nueva)** | `odometer_km` | integer | sí | Kilometraje del tablero; no puede ser menor que el de la carga anterior. |
+| `fuel_load` **(tabla nueva)** | `is_full_tank` | boolean | sí | Si se llenó el tanque: base del cálculo de consumo. |
+| `fuel_load` **(tabla nueva)** | `station` | varchar(120) | no | Estación de servicio. |
+| `fuel_load` **(tabla nueva)** | `payment_method` | fuel_payment_method_enum | sí | Caja, efectivo del chofer, tarjeta o cuenta corriente de combustible. |
+| `fuel_load` **(tabla nueva)** | `receipt_number` | varchar(40) | no | Número del comprobante. |
+| `fuel_load` **(tabla nueva)** | `cash_movement_id` | uuid | no | Movimiento de caja que originó el pago; lo completa el módulo de caja. |
+| `fuel_load` **(tabla nueva)** | `anomaly` | boolean | sí | El consumo del tramo se aparta más de un 25 % del promedio. |
+| `fuel_load` **(tabla nueva)** | `notes` | text | no | Observaciones de quien cargó. |
+| `fuel_load` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quién la registró. |
+| `fuel_load` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
+| `fuel_load` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `fuel_load` **(tabla nueva)** | `deletedAt` | timestamptz | no | Cuándo se anuló; una carga anulada no cuenta en los cálculos. |
+| `traffic_fine` **(tabla nueva)** | `fine_id` | uuid | sí | Identificador. |
+| `traffic_fine` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `traffic_fine` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo multado. |
+| `traffic_fine` **(tabla nueva)** | `employee_id` | uuid | no | Empleado responsable; se deduce de la asignación de vehículo abierta al momento de la infracción. |
+| `traffic_fine` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió la infracción. |
+| `traffic_fine` **(tabla nueva)** | `jurisdiction` | varchar(80) | sí | Jurisdicción que labró el acta. |
+| `traffic_fine` **(tabla nueva)** | `act_number` | varchar(40) | sí | Número del acta; único por distribuidora y jurisdicción. |
+| `traffic_fine` **(tabla nueva)** | `infraction` | text | sí | Descripción de la infracción. |
+| `traffic_fine` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe de la multa. |
+| `traffic_fine` **(tabla nueva)** | `voluntary_payment_amount` | numeric(12,2) | no | Importe con el descuento por pagar antes. |
+| `traffic_fine` **(tabla nueva)** | `due_date` | date | no | Fecha de vencimiento del pago. |
+| `traffic_fine` **(tabla nueva)** | `status` | traffic_fine_status_enum | sí | Pendiente, apelada, pagada o anulada. |
+| `traffic_fine` **(tabla nueva)** | `paid_at` | timestamptz | no | Cuándo se pagó. |
+| `traffic_fine` **(tabla nueva)** | `paid_amount` | numeric(12,2) | no | Importe efectivamente pagado. |
+| `traffic_fine` **(tabla nueva)** | `charged_to_employee` | boolean | sí | Si la asume el empleado: se descuenta en su liquidación. |
+| `traffic_fine` **(tabla nueva)** | `cash_movement_id` | uuid | no | Movimiento de caja del pago; lo completa el módulo de caja. |
+| `traffic_fine` **(tabla nueva)** | `void_reason` | text | no | Motivo con el que se anuló; obligatorio al anular. |
+| `traffic_fine` **(tabla nueva)** | `alerted_at` | timestamptz | no | Cuándo se avisó del vencimiento, para no repetir el aviso. |
+| `traffic_fine` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
+| `traffic_fine` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `vehicle_accident` **(tabla nueva)** | `accident_id` | uuid | sí | Identificador. |
+| `vehicle_accident` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `vehicle_accident` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo siniestrado. |
+| `vehicle_accident` **(tabla nueva)** | `employee_id` | uuid | no | Empleado que conducía. |
+| `vehicle_accident` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
+| `vehicle_accident` **(tabla nueva)** | `location` | geometry(Point,4326) | no | Punto donde ocurrió. |
+| `vehicle_accident` **(tabla nueva)** | `address` | text | no | Domicilio aproximado. |
+| `vehicle_accident` **(tabla nueva)** | `description` | text | sí | Qué pasó. |
+| `vehicle_accident` **(tabla nueva)** | `injuries` | boolean | sí | Si hubo personas heridas. |
+| `vehicle_accident` **(tabla nueva)** | `third_parties_involved` | boolean | sí | Si hubo terceros involucrados. |
+| `vehicle_accident` **(tabla nueva)** | `hazmat_release` | boolean | sí | Si hubo fuga o derrame de gas: obliga a avisar a los administradores. |
+| `vehicle_accident` **(tabla nueva)** | `police_report_number` | varchar(40) | no | Número de la denuncia policial. |
+| `vehicle_accident` **(tabla nueva)** | `insurer_claim_number` | varchar(40) | no | Número del reclamo a la aseguradora. |
+| `vehicle_accident` **(tabla nueva)** | `status` | vehicle_accident_status_enum | sí | Denunciado, en revisión, en reparación o cerrado. |
+| `vehicle_accident` **(tabla nueva)** | `vehicle_unusable` | boolean | sí | Si el vehículo no puede circular: pasa a fuera de servicio. |
+| `vehicle_accident` **(tabla nueva)** | `repair_cost` | numeric(12,2) | no | Costo de la reparación. |
+| `vehicle_accident` **(tabla nueva)** | `insurer_reimbursement` | numeric(12,2) | no | Lo que reintegró la aseguradora. |
+| `vehicle_accident` **(tabla nueva)** | `deductible_amount` | numeric(12,2) | no | Franquicia a cargo de la distribuidora. |
+| `vehicle_accident` **(tabla nueva)** | `closed_at` | timestamptz | no | Cuándo se cerró. |
+| `vehicle_accident` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
+| `vehicle_accident` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+
+`fuel_load` — Una carga de combustible de un vehículo, con su kilometraje y su importe. Clave primaria `fuel_load_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `employee_id` → `employee`, `created_by_user_id` → `user`.
+`traffic_fine` — Una multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada. Clave primaria `fine_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `employee_id` → `employee`. Única: (`distributor_id`, `jurisdiction`, `act_number`).
+`vehicle_accident` — Un siniestro de un vehículo, de denunciado a cerrado, con sus costos. Clave primaria `accident_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `employee_id` → `employee`.
+
+Tipo enumerado `fuel_type_enum`: `diesel`, `gasoline`, `cng`, `lpg`.
+Tipo enumerado `fuel_payment_method_enum`: `cash_box`, `driver_cash`, `card`, `fuel_account`.
+Tipo enumerado `traffic_fine_status_enum`: `pending`, `appealed`, `paid`, `voided`.
+Tipo enumerado `vehicle_accident_status_enum`: `reported`, `under_review`, `repairing`, `closed`.
+
+> **Decisión de modelado.** La carga de combustible, la multa y el siniestro son registros propios del vehículo y no columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo. El siniestro no se mezcla con `incident`, que es el contratiempo de calidad de un pedido. El empleado se referencia por `employee_id` y no por `delivery`, porque el responsable de una multa o el que carga combustible puede ser un empleado sin cuenta de acceso. `cash_movement_id` queda sin clave foránea hasta que exista el módulo de caja (I-14).
+
+### 8. Flota ampliada: neumáticos
+
+**Casos de uso:** CU-205 y CU-206 (I-12, opcional). **Qué resuelve:** Llevar cada neumático y sus movimientos —montaje, desmontaje, rotación, recapado y baja— para saber cuántos kilómetros recorrió.
+
+| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
+|---|---|---|:-:|---|
+| `tire` **(tabla nueva)** | `tire_id` | uuid | sí | Identificador. |
+| `tire` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `tire` **(tabla nueva)** | `car_id` | uuid | no | Vehículo en el que está montado, si lo está. |
+| `tire` **(tabla nueva)** | `serial` | varchar(40) | sí | Número de serie del neumático; único por distribuidora. |
+| `tire` **(tabla nueva)** | `brand` | varchar(60) | sí | Marca. |
+| `tire` **(tabla nueva)** | `size` | varchar(30) | sí | Medida del neumático. |
+| `tire` **(tabla nueva)** | `cost` | numeric(12,2) | sí | Costo de compra. |
+| `tire` **(tabla nueva)** | `status` | tire_status_enum | sí | En depósito, montado o dado de baja. |
+| `tire` **(tabla nueva)** | `position` | varchar(6) | no | Código corto de la posición en el vehículo. |
+| `tire` **(tabla nueva)** | `mounted_odometer_km` | integer | no | Kilometraje del vehículo al montarlo. |
+| `tire` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
+| `tire` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
+| `tire_event` **(tabla nueva)** | `event_id` | uuid | sí | Identificador. |
+| `tire_event` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
+| `tire_event` **(tabla nueva)** | `tire_id` | uuid | sí | Neumático movido. |
+| `tire_event` **(tabla nueva)** | `car_id` | uuid | no | Vehículo del movimiento, si corresponde. |
+| `tire_event` **(tabla nueva)** | `event_type` | tire_event_type_enum | sí | Montaje, desmontaje, rotación, recapado o baja. |
+| `tire_event` **(tabla nueva)** | `odometer_km` | integer | sí | Kilometraje del vehículo en el movimiento. |
+| `tire_event` **(tabla nueva)** | `position` | varchar(6) | no | Posición de destino, en un montaje o una rotación. |
+| `tire_event` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
+| `tire_event` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quién lo registró. |
+
+`tire` — Un neumático de la distribuidora, en depósito, montado en un vehículo o dado de baja. Clave primaria `tire_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`. Única: (`distributor_id`, `serial`).
+`tire_event` — Un movimiento de un neumático; el libro no se modifica. Clave primaria `event_id`. Referencias: `distributor_id` → `distributor`, `tire_id` → `tire`, `car_id` → `car`, `created_by_user_id` → `user`.
+
+Tipo enumerado `tire_status_enum`: `in_stock`, `mounted`, `retired`.
+Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, `retire`.
+
+> **Decisión de modelado.** Funcionalidad opcional del módulo, que se puede construir aparte. Los movimientos del neumático son un libro que no se modifica: el estado y la posición actuales del neumático se guardan en `tire` para no recorrer el historial en cada consulta.
+
 ## Tipos enumerados
 
 | Tipo | Valores | Estado |
 |---|---|---|
 | `address_geocode_precision_enum` | `exact`, `approximate`, `unresolved` | implementado |
+| `attachment_owner_type_enum` | `employee`, `fuel_load`, `traffic_fine`, `vehicle_accident`, `purchase_receipt`, `stock_adjustment`, `driver_settlement`, `cash_movement`, `customer_account_entry` | implementado |
 | `audit_result_enum` | `success`, `failure` | implementado |
 | `claims_status_enum` | `pending`, `in_process`, `resolved`, `rejected` | implementado |
 | `configurable_process_enum` | `fleet_planner`, `repurchase`, `route_batching`, `cylinder_recovery`, `express_dispatch` | implementado |
@@ -879,4 +1514,45 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 | `recovery_notice_kind_enum` | `reminder`, `pickup_offer`, `deposit_warning` | implementado |
 | `repurchase_invitation_status_enum` | `pending`, `accepted`, `rejected`, `expired` | implementado |
 | `route_batch_status_enum` | `forming`, `offered`, `assigned`, `dissolved`, `completed` | implementado |
+| `attendance_source_enum` | `panel`, `driver_app` | propuesto |
+| `cash_box_kind_enum` | `cash`, `bank`, `wallet` | propuesto |
+| `cash_direction_enum` | `income`, `expense` | propuesto |
+| `cash_method_enum` | `cash`, `transfer`, `card`, `mercadopago`, `check` | propuesto |
+| `cash_reference_type_enum` | `manual`, `driver_settlement`, `customer_payment`, `purchase_receipt`, `fuel_load`, `traffic_fine`, `driver_liquidation`, `box_transfer`, `reversal` | propuesto |
+| `cash_session_status_enum` | `open`, `closed` | propuesto |
+| `cash_system_code_enum` | `driver_settlement`, `customer_payment`, `purchase`, `fuel`, `traffic_fine`, `commission_payment`, `cash_difference`, `box_transfer` | propuesto |
+| `commission_basis_enum` | `per_unit`, `per_order`, `percent_of_total` | propuesto |
+| `commission_entry_type_enum` | `delivery_commission`, `settlement_shortage`, `traffic_fine`, `adjustment`, `legacy_balance`, `carry_forward` | propuesto |
+| `customer_account_status_enum` | `active`, `blocked`, `closed` | propuesto |
+| `customer_entry_type_enum` | `sale_charge`, `payment`, `credit_note`, `debit_note`, `reversal` | propuesto |
+| `driver_liquidation_status_enum` | `draft`, `approved`, `paid`, `closed`, `voided` | propuesto |
+| `driver_settlement_status_enum` | `open`, `submitted`, `approved` | propuesto |
+| `employee_document_type_enum` | `dni`, `passport`, `other` | propuesto |
+| `employee_leave_status_enum` | `requested`, `approved`, `rejected`, `cancelled` | propuesto |
+| `employee_leave_type_enum` | `vacation`, `sick`, `work_accident`, `study`, `marriage`, `birth`, `bereavement`, `unpaid`, `suspension`, `unjustified_absence`, `other` | propuesto |
+| `employee_status_enum` | `active`, `terminated` | propuesto |
+| `employee_termination_reason_enum` | `resignation`, `dismissal`, `end_of_contract`, `retirement`, `other` | propuesto |
+| `employment_type_enum` | `permanent`, `fixed_term`, `part_time`, `contractor` | propuesto |
+| `fuel_payment_method_enum` | `cash_box`, `driver_cash`, `card`, `fuel_account` | propuesto |
+| `fuel_type_enum` | `diesel`, `gasoline`, `cng`, `lpg` | propuesto |
+| `job_position_category_enum` | `driver`, `helper`, `warehouse`, `administration`, `sales`, `management`, `other` | propuesto |
+| `maintenance_document_kind_enum` | `insurance`, `vtv`, `hazmat_vehicle_permit`, `driver_license`, `hazmat_driver_course`, `psychophysical`, `art_coverage`, `service`, `generic` | propuesto |
+| `purchase_document_type_enum` | `delivery_note`, `invoice` | propuesto |
+| `purchase_order_status_enum` | `draft`, `sent`, `partially_received`, `received`, `cancelled` | propuesto |
+| `purchase_payment_status_enum` | `unpaid`, `paid` | propuesto |
+| `purchase_receipt_status_enum` | `confirmed`, `voided` | propuesto |
+| `settlement_difference_resolution_enum` | `none`, `charged_to_driver`, `absorbed` | propuesto |
+| `stock_adjustment_reason_enum` | `count_correction`, `shrinkage`, `leak`, `damaged`, `lost`, `found`, `initial_count` | propuesto |
+| `stock_condition_enum` | `full`, `empty`, `defective` | propuesto |
+| `stock_location_kind_enum` | `warehouse`, `vehicle` | propuesto |
+| `stock_movement_reason_enum` | `initial_count`, `purchase_receipt`, `plant_empty_out`, `truck_load`, `truck_return`, `delivery`, `empty_collected`, `transfer`, `adjustment`, `shrinkage`, `condition_change`, `reversal` | propuesto |
+| `stock_reference_type_enum` | `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial` | propuesto |
+| `supplier_kind_enum` | `filling_plant`, `other` | propuesto |
+| `tax_condition_enum` | `registered`, `monotax`, `exempt`, `final_consumer` | propuesto |
+| `tire_event_type_enum` | `mount`, `unmount`, `rotate`, `retread`, `retire` | propuesto |
+| `tire_status_enum` | `in_stock`, `mounted`, `retired` | propuesto |
+| `traffic_fine_status_enum` | `pending`, `appealed`, `paid`, `voided` | propuesto |
+| `truck_load_status_enum` | `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled` | propuesto |
+| `vehicle_accident_status_enum` | `reported`, `under_review`, `repairing`, `closed` | propuesto |
 | `vehicle_type_enum` | `motorcycle`, `car`, `van` | propuesto |
+| `warehouse_kind_enum` | `depot`, `branch` | propuesto |

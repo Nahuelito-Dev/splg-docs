@@ -25,6 +25,7 @@ classDiagram
     class List_Producto["List<Producto>"] {
         <<colección>>
         + buscarInactivos(): Producto[*]
+        + getActivos(): Producto[*]
     }
 
     class TimeSlotService {

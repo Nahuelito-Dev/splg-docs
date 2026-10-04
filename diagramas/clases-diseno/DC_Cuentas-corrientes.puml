@@ -1,0 +1,121 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam genericDisplay old
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #D6E4F0
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #F3E9CF
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #DCEBDD
+}
+skinparam interface {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  HeaderBackgroundColor #DCEBDD
+  FontSize 14
+  AttributeFontSize 12
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide empty members
+
+class CuentaCorriente {
+  - razonSocial: Cadena
+  - cuit: Cadena
+  - condicionFiscal: CondicionFiscal
+  - limiteDeCredito: Moneda
+  - plazoDePagoEnDias: Entero
+  - estado: EstadoDeLaCuenta
+  - saldo: Moneda
+  + «create» CuentaCorriente(cliente: Cliente,\n      razonSocial: Cadena, cuit: Cadena,\n      condicionFiscal: CondicionFiscal,\n      limiteDeCredito: Moneda, plazoEnDias: Entero)
+  + actualizarSaldo(importe: Moneda)
+  + calcularAntiguedad(hoy: Fecha)
+  + calcularDisponible()
+  + calcularSaldoAl(fechaDesde: Fecha): Moneda
+  + cargarVenta(pedido: Pedido)
+  + modificar(datos: Registro)
+  + registrarAjuste(tipoDeAsiento: TipoDeAsiento,\n      importe: Moneda,\n      motivo: Cadena): AsientoCuentaCorriente
+  + registrarPago(importe: Moneda, medio: MedioDeCaja,\n      movimiento: MovimientoDeCaja): AsientoCuentaCorriente
+  + validarActiva()
+  + validarAjuste(tipoDeAsiento: TipoDeAsiento,\n      importe: Moneda)
+  + validarCambio(datos: Registro)
+  + validarSinCargoPrevio(pedido: Pedido)
+  + verificarCredito(total: Moneda)
+}
+class AsientoCuentaCorriente {
+  - tipo: TipoDeAsiento
+  - importe: Moneda
+  - vence: Fecha
+  - medioDePago: MedioDeCaja
+  - fecha: FechaHora
+  - descripcion: Cadena
+  + «create» AsientoCuentaCorriente(pedido: Pedido,\n      importe: Moneda, vencimiento: Fecha)
+  + «create» AsientoCuentaCorriente(tipoDeAsiento: TipoDeAsiento,\n      importe: Moneda, motivo: Cadena)
+  + «create» AsientoCuentaCorriente(tipoDeAsiento: TipoDeAsiento,\n      importe: Moneda, medio: MedioDeCaja,\n      movimiento: MovimientoDeCaja)
+  + asignarARendicion(rendicion: RendicionChofer)
+}
+class ImputacionCuentaCorriente {
+  - importe: Moneda
+  + «create» ImputacionCuentaCorriente(cargo: AsientoCuentaCorriente,\n      asiento: AsientoCuentaCorriente, importe: Moneda)
+}
+class Cliente <<referencia>>
+class Distribuidora <<referencia>>
+class Pedido <<referencia>>
+class MovimientoDeCaja <<referencia>>
+class Chofer <<referencia>>
+class RendicionChofer <<referencia>>
+
+Distribuidora "1" *--> "0..*" CuentaCorriente : lleva
+Cliente "1" -- "0..*" CuentaCorriente : tiene habilitada
+CuentaCorriente "1" *--> "0..*" AsientoCuentaCorriente : registra
+Pedido "0..1" -- "0..*" AsientoCuentaCorriente : origina
+AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en
+Chofer "0..1" -- "0..*" AsientoCuentaCorriente : cobra
+RendicionChofer "0..1" --> "0..*" AsientoCuentaCorriente : incluye
+AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente : anula a
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con
+CuentaCorriente ..> ImputacionCuentaCorriente : <<create>>
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+title Diagrama de estados — Siniestro (planificado, I-12)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Denunciado\n(reported)" as REPORTED
+state "En revisión\n(under_review)" as REVIEW
+state "En reparación\n(repairing)" as REPAIRING
+state "Cerrado\n(closed)" as CLOSED
+
+[*] --> REPORTED : registrarSiniestro(vehículo, datos)
+REPORTED --> REVIEW : modificarSiniestro(datos) [estado pedido = en revisión]
+REVIEW --> REPAIRING : modificarSiniestro(datos) [estado pedido = en reparación]
+REPORTED --> CLOSED : cerrarSiniestro(costos)
+REVIEW --> CLOSED : cerrarSiniestro(costos)
+REPAIRING --> CLOSED : cerrarSiniestro(costos)
+CLOSED --> [*]
+
+note bottom of CLOSED
+  Un siniestro cerrado no admite cambios. Si dejó inutilizable
+  al vehículo, éste pasa a fuera de servicio al registrarlo o
+  al modificarlo; cerrar el siniestro no lo devuelve a la flota:
+  eso lo hace reactivarVehiculo (CU-247).
+end note
+@enduml

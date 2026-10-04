@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-204 Consultar el Tablero de Costos de la Flota
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)
+    activate SIS
+    alt el rango es válido
+        SIS-->>ADM: un renglón por vehículo, ordenado por costo por kilómetro
+    else el rango de fechas no es válido
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS

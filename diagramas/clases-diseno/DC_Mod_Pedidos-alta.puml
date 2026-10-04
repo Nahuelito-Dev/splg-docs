@@ -63,6 +63,7 @@ skinparam ranksep 90
 class CreateOrderUseCase <<controlador>> {
   + crearPedido(items: Lista, direccionId: Identificador,\n      franjaId: Identificador, fechaAgendada: Fecha,\n      metodoDePago: Cadena,\n      out enlaceDePago: Cadena): Pedido
   + crearReserva(items: Lista, direccionId: Identificador,\n      fechaAgendada: Fecha, franjaId: Identificador,\n      metodoDePago: Cadena, montoDeLaSenia: Moneda,\n      out enlaceDePago: Cadena): Pedido
+  + venderACuentaCorriente(cliente: Cliente,\n      direccionId: Identificador, items: Lista): Pedido
 }
 class CancelOrderUseCase <<controlador>> {
   + cancelarPedido(pedidoId: Identificador,\n      motivo: Cadena): Pedido
@@ -83,12 +84,13 @@ class OrderStatusHistoryService <<fachada>> {
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class RealtimeDispatchPort <<referencia>>
 class PaymentsService <<referencia>>
-class Cliente <<referencia>>
-class FranjaHoraria <<referencia>>
 class Pedido <<referencia>>
-class OfertaDespacho <<referencia>>
-class ZonaCobertura <<referencia>>
+class Cliente <<referencia>>
 class Producto <<referencia>>
+class FranjaHoraria <<referencia>>
+class OfertaDespacho <<referencia>>
+class CuentaCorriente <<referencia>>
+class ZonaCobertura <<referencia>>
 
 CancelOrderUseCase --> "1" Map_String_Pedido
 CancelOrderUseCase --> "1" RealtimeDispatchPort
@@ -99,6 +101,7 @@ ReleaseOrderUseCase --> "1" Map_String_Pedido
 ReleaseOrderUseCase --> "1" RealtimeDispatchPort
 CancelOrderUseCase ..> Pedido
 CreateOrderUseCase ..> Cliente
+CreateOrderUseCase ..> CuentaCorriente
 CreateOrderUseCase ..> FranjaHoraria
 CreateOrderUseCase ..> Pedido : <<create>>
 CreateOrderUseCase ..> Producto

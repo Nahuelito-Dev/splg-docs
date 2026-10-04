@@ -54,6 +54,11 @@ rectangle "SS-01 Autenticación y Usuarios" {
   usecase "CU-091\nValidar Vigencia del Token de\nSesión" as U091 #back:FFFFFF;line:3C6E8F
 }
 
+usecase "CU-031\nRegistrar Chofer\n(SS-07)" as U031 #back:FFFFFF;line:6B7683
+usecase "CU-086\nRegistrar Administrador\n(SS-16)" as U086 #back:FFFFFF;line:6B7683
+usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)\n(SS-16)" as U087 #back:FFFFFF;line:6B7683
+usecase "CU-177\nRegistrar el Legajo de un\nEmpleado\n(SS-19)" as U177 <<planificado>> #back:FFFFFF;line:6B7683
+
 A01 -[#1F6F8B]- U001
 A01 -[#1F6F8B]- U002
 A01 -[#1F6F8B]- U004
@@ -81,5 +86,9 @@ U002 ..> U082 : <<include>>
 U003 ..> U082 : <<include>>
 U050 ..> U083 : <<include>>
 U085 ..> U083 : <<include>>
+U003 ..> U177 : <<include>>
+U031 ..> U082 : <<include>>
+U086 ..> U082 : <<include>>
+U087 ..> U082 : <<include>>
 
 @enduml

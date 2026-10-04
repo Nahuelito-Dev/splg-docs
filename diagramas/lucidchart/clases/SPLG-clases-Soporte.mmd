@@ -9,11 +9,18 @@ classDiagram
         + agruparPorChofer(pedidos: Pedido[*])
         + agruparPorMetodoDePago(pedidos: Pedido[*])
         + agruparPorPeriodo(pedidos: Pedido[*], granularidad: Cadena)
-        + agruparPorProducto(items: ItemPedido[*])
+        + agruparPorProducto(items: Registro)
         + consultarEvolucionDeVentas(fechaDesde: Fecha, fechaHasta: Fecha, granularidad: Cadena): Registro
         + consultarVentasPorChofer(fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + consultarVentasPorMetodoDePago(fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + consultarVentasPorProducto(fechaDesde: Fecha, fechaHasta: Fecha): Registro
+    }
+
+    class FleetCostReportService {
+        <<fachada>>
+        + consultarCostoDeUnVehiculo(vehiculoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + ordenarPorCostoPorKilometro(costos: Registro)
     }
 
     class HealthCheckService {
@@ -40,21 +47,31 @@ classDiagram
         + getDownloadUrl(clave: Cadena): Cadena
         + getStream(adjunto: AdjuntoTarea): Archivo
         + getStream(clave: Cadena): Archivo
-        + put(clave: Cadena, archivo: Archivo)
         + put(clave: Cadena, imagen: Archivo)
         + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
+        + put(clave: Cadena, archivo: Archivo, tipo: Cadena)
         + remove(adjunto: AdjuntoTarea)
         + remove(claveAnterior: Cadena)
     }
 
+    class List_Vehiculo["List<Vehiculo>"] {
+        <<colección>>
+    }
+    class Map_String_Vehiculo["Map<String, Vehiculo>"] {
+        <<colección>>
+    }
     class List_Pedido["List<Pedido>"] {
         <<colección>>
     }
     class Pedido
+    class Vehiculo
     class ItemPedido
 
+    FleetCostReportService --> "1" List_Vehiculo : list<Vehiculo>
+    FleetCostReportService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
     HealthCheckService --> "1" RedisHealthIndicator : redisHealthIndicator
     RedisHealthIndicator --> "1" RedisService : redisService
     ReportsService --> "1" List_Pedido : list<Pedido>
+    FleetCostReportService ..> Vehiculo
     ReportsService ..> ItemPedido
     ReportsService ..> Pedido

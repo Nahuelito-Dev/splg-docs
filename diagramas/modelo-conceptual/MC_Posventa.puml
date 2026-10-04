@@ -53,6 +53,7 @@ class Reclamo {
   estado
   resolución
   fotografía
+  clave de la fotografía
 }
 class Usuario <<referencia>>
 class Pedido <<referencia>>

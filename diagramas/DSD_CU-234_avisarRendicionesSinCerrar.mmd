@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-234 Avisar las Rendiciones sin Cerrar · avisarRendicionesSinCerrar
+    autonumber
+    actor SAU as Sistema Automático (ACT-04)
+    participant CRN as :SettlementOverdueCron
+    participant RENS as :List#lt;RendicionChofer#gt;
+    participant REN as rendicion:RendicionChofer
+    participant DIS as distribuidora:Distribuidora
+    participant MAI as :EmailSenderPort
+
+    SAU->>+CRN: avisarRendicionesSinCerrar()
+    Note over SAU,CRN: Una sola instancia toma el proceso
+    CRN->>+RENS: getSinCerrarDeDiasAnteriores(hoy)
+    RENS-->>-CRN: rendiciones
+    loop Por cada distribuidora con rendiciones atrasadas
+        CRN->>+DIS: getAdministradores()
+        DIS-->>-CRN: administradores
+        CRN->>MAI: send(administrador, rendiciones)
+        loop Por cada rendición atrasada de la distribuidora
+            CRN->>REN: marcarAvisada(ahora)
+        end
+    end
+    deactivate CRN

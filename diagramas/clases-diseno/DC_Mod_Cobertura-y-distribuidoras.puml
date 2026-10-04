@@ -91,6 +91,7 @@ class "List<Distribuidora>" as List_Distribuidora <<colección>> {
   + getTodas(): Distribuidora[*]
 }
 class ModuleConfigService <<fachada>> {
+  + configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta: Booleano): ConfiguracionModulo
   + configurarFrecuenciaDeTareas(intervalos: Registro): ConfiguracionModulo
   + configurarParametrosDeDespacho(radiosKm: Lista,\n      ventanaDeAceptacion: Entero): ConfiguracionModulo
   + configurarParametrosDeProceso(proceso: Cadena,\n      parametros: Registro): ConfiguracionModulo

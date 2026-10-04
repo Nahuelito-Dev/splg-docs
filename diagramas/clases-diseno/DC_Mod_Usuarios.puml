@@ -117,8 +117,8 @@ class Administrador <<referencia>>
 class Rol <<referencia>>
 class AsientoAuditoria <<referencia>>
 class FirebaseAuthPort <<referencia>>
-class Chofer <<referencia>>
 class UbicacionGPS <<referencia>>
+class Chofer <<referencia>>
 
 Map_String_Usuario "1" o--> "0..*" Usuario
 List_Usuario "1" o--> "0..*" Usuario

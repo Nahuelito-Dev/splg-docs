@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-197 Registrar la Habilitación para Transportar Mercancías Peligrosas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
+    activate SIS
+    alt el plan y el vehículo existen y los datos son válidos
+        SIS-->>ADM: habilitación registrada, con su estado de vencimiento y si bloquea
+    else el plan o el vehículo no existen en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else falta el vencimiento o la vigencia es incoherente
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

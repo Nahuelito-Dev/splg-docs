@@ -47,6 +47,8 @@ class Vehiculo {
   carga máxima
   kilometraje
   estado en la flota
+  tipo de combustible
+  capacidad del tanque
 }
 class AsignacionVehiculo {
   asignado el
@@ -59,6 +61,8 @@ class PlanMantenimiento {
   intervalo
   anticipación
   criticidad
+  documento que controla
+  aplica a
 }
 class TareaMantenimiento {
   estado
@@ -67,6 +71,8 @@ class TareaMantenimiento {
   prestador
   número
   costo
+  vigente desde
+  detalle
 }
 class AdjuntoTarea {
   nombre original

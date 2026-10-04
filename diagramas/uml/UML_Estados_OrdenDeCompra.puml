@@ -1,0 +1,46 @@
+@startuml
+title Diagrama de estados — Orden de compra
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Borrador\n(draft)" as draft
+state "Enviada\n(sent)" as sent
+state "Parcialmente recibida\n(partially_received)" as partial
+state "Recibida\n(received)" as received
+state "Cancelada\n(cancelled)" as cancelled
+
+[*] --> draft : emitirOrdenDeCompra()
+draft --> sent : enviarOrdenDeCompra()
+draft --> cancelled : cancelarOrdenDeCompra(motivo)
+sent --> cancelled : cancelarOrdenDeCompra(motivo)
+sent --> partial : registrarRecepcionDeCompra() [lo recibido no alcanza lo pedido]
+sent --> received : registrarRecepcionDeCompra() [lo recibido alcanza lo pedido]
+partial --> partial : registrarRecepcionDeCompra() [todavía falta recibir]
+partial --> partial : anularRecepcionDeCompra() [quedan otras recepciones]
+partial --> received : registrarRecepcionDeCompra() [lo recibido alcanza lo pedido]
+received --> partial : anularRecepcionDeCompra() [quedan otras recepciones]
+received --> sent : anularRecepcionDeCompra() [era la única recepción]
+partial --> sent : anularRecepcionDeCompra() [era la única recepción]
+cancelled --> [*]
+
+note bottom of cancelled
+  Una orden con recepciones no se cancela: primero se
+  anula lo recibido. La compra sin orden no pasa por
+  este diagrama. Una orden enviada cuya fecha esperada
+  venció sigue enviada; sólo figura en el correo diario.
+end note
+@enduml

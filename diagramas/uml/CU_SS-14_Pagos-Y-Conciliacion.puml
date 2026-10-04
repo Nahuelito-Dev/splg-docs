@@ -45,7 +45,7 @@ rectangle "SS-14 Pagos y Conciliación" {
 
 usecase "CU-008\nCancelar Pedido (Cliente)\n(SS-02)" as U008 #back:FFFFFF;line:6B7683
 usecase "CU-010\nCancelar Pedido\n(Administrador)\n(SS-02)" as U010 #back:FFFFFF;line:6B7683
-usecase "CU-149\nDespachar un Pedido Express a\nun Chofer en Moto\n(SS-03)" as U149 #back:FFFFFF;line:6B7683
+usecase "CU-149\nDespachar un Pedido Express a\nun Chofer en Moto\n(SS-03)" as U149 <<planificado>> #back:FFFFFF;line:6B7683
 
 A03 -[#8C4A9E]- U168
 A04 -[#8A6D1F]- U048

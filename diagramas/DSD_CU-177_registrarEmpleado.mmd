@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-177 Registrar el Legajo de un Empleado · registrarEmpleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :EmployeeService
+    participant COP as :Map#lt;String, PuestoDeTrabajo#gt;
+    participant DIS as distribuidora:Distribuidora
+    participant CUI as :CuilValidator
+
+    ADM->>+SRV: registrarEmpleado(datos)
+    SRV->>+COP: get(puestoId)
+    COP-->>-SRV: puesto
+    SRV->>+DIS: registrarEmpleado(datos, puesto)
+    DIS->>DIS: assertDocumentoYCuilDisponibles(datos)
+    create participant EMP as nuevo:Empleado
+    DIS->>EMP: «create»(datos, puesto)
+    EMP->>CUI: esValido(cuil)
+    DIS-->>-SRV: empleado
+    SRV-->>-ADM: empleado

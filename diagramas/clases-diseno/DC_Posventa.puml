@@ -80,6 +80,7 @@ class Reclamo {
   - estado: EstadoDelReclamo
   - resolucion: Cadena
   - fotografia: Cadena
+  - claveDeLaFotografia: Cadena
   + «create» Reclamo(pedido: Pedido, motivo: Cadena,\n      evidencia: Archivo)
   + adjuntarFoto(clave: Cadena): Cadena
   + esDelCliente(cliente: Cliente): Booleano

@@ -1,0 +1,35 @@
+@startuml
+title Diagrama de estados — Cuenta corriente
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Activa\n(active)" as ACT
+state "Bloqueada\n(blocked)" as BLO
+state "Cerrada\n(closed)" as CER
+
+[*] --> ACT : habilitarCuentaCorriente(clienteId, ...)\n[el cliente no tiene cuenta vigente]
+ACT --> BLO : modificarCuentaCorriente(estado)\n[lo decide el administrador]
+BLO --> ACT : modificarCuentaCorriente(estado)
+ACT --> CER : modificarCuentaCorriente(estado) [saldo igual a cero]
+BLO --> CER : modificarCuentaCorriente(estado) [saldo igual a cero]
+CER --> [*]
+
+note bottom of BLO
+  Bloqueada impide las ventas a cuenta nuevas; los cobros y los ajustes siguen
+  permitidos. Una cuenta con saldo no se cierra.
+end note
+@enduml

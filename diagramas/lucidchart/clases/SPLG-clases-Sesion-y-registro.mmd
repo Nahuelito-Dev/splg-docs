@@ -15,7 +15,7 @@ classDiagram
         + autorizarAlta(solicitante: Usuario, rolChofer: TipoDeRol, distribuidoraId: Identificador)
         + autorizarAlta(solicitante: Usuario, rol: Rol, distribuidoraId: Identificador): Usuario
         + crearPrimerSuperAdministrador(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, contrasena: Cadena): Usuario
-        + registrar(datosPersonales: Registro, rol: Rol, distribuidoraId: Identificador)
+        + registrar(datosPersonales: Registro, rol: Rol, distribuidoraId: Identificador): Usuario
         + registrarAdministrador(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, contrasena: Cadena, rol: Cadena, distribuidoraId: Identificador): Usuario
         + registrarChofer(datosPersonales: Registro, datosDelChofer: Registro, distribuidoraId: Identificador): Usuario
         + registrarse(nombreCompleto: Cadena, correo: Cadena, telefono: Cadena, contrasena: Cadena, datosDelCliente: Registro): Usuario
@@ -35,7 +35,7 @@ classDiagram
     class FcmPort {
         <<interface>>
         + sendToToken(token: Cadena, notificacion: Registro)
-        + sendToToken(token: Cadena, confirmacion: Registro)
+        + sendToToken(token: Cadena, confirmacion: Cadena)
     }
 
     class Map_String_Usuario["Map<String, Usuario>"] {
@@ -45,9 +45,9 @@ classDiagram
         <<colección>>
     }
     class Usuario
-    class Administrador
     class Cliente
     class Chofer
+    class Administrador
 
     Usuario <|-- Cliente
     Usuario <|-- Chofer

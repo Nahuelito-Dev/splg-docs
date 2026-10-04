@@ -20,6 +20,10 @@ skinparam class<<propuesto>> {
   BorderColor #1F5E8C
   BackgroundColor #E4EDF4
 }
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
 skinparam legendBackgroundColor #FFFFFF
 skinparam legendBorderColor #2C4257
 
@@ -84,9 +88,9 @@ entity "order" as e_order {
   {field} totalAmount : numeric(10,2) *
   {field} notes : text
   {field} deliveryInstructions : text
-  {field} acceptedAt : timestamp
-  {field} onTheWayAt : timestamp
-  {field} deliveredAt : timestamp
+  {field} acceptedAt : timestamptz
+  {field} onTheWayAt : timestamptz
+  {field} deliveredAt : timestamptz
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
   {field} cancellationReason : text

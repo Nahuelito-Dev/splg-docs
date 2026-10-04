@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-191 Registrar una Licencia o Ausencia · registrarLicencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :LeaveService
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+
+    ADM->>+SRV: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>+EMP: solicitarLicencia(tipoDeLicencia, fechaDesde, fechaHasta, motivo)
+    EMP->>EMP: assertActivo()
+    EMP->>EMP: assertSinSuperposicion(fechaDesde, fechaHasta)
+    create participant LIC as nueva:LicenciaLaboral
+    EMP->>LIC: «create»(tipoDeLicencia, fechaDesde, fechaHasta, motivo)
+    EMP-->>-SRV: licencia
+    SRV-->>-ADM: licencia

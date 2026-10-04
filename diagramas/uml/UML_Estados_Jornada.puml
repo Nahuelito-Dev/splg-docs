@@ -1,0 +1,36 @@
+@startuml
+title Diagrama de estados — Jornada de trabajo (planificado, I-11)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam state {
+  BorderColor #2C4257
+  BackgroundColor #F4F7FA
+  StartColor #2C4257
+  EndColor #2C4257
+  AttributeFontSize 12
+}
+skinparam ArrowFontSize 12
+skinparam NoteBackgroundColor #FBF7E6
+skinparam NoteBorderColor #7A7340
+hide empty description
+state "Abierta\n(sin egreso)" as ABIERTA
+state "Cerrada\n(con egreso)" as CERRADA
+
+[*] --> ABIERTA : registrarInicioDeJornada() o\nregistrarAsistencia(ingreso)\n[el empleado no tiene otra abierta]
+[*] --> CERRADA : registrarAsistencia(ingreso, egreso)
+ABIERTA --> CERRADA : registrarFinDeJornada()
+ABIERTA --> CERRADA : corregirAsistencia(egreso, nota)
+CERRADA --> CERRADA : corregirAsistencia(datos, nota)
+CERRADA --> [*]
+
+note right of ABIERTA
+  Hay una sola jornada abierta por empleado
+  (índice único parcial). Una jornada del día
+  anterior que sigue abierta se avisa por correo
+  a las 7 de la mañana: el sistema no la cierra solo.
+end note
+@enduml

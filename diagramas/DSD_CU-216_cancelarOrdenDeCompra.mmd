@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-216 Cancelar una Orden de Compra · cancelarOrdenDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseOrderService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+
+    ADM->>+SRV: cancelarOrdenDeCompra(ordenId, motivo)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: cancelar(motivo)
+    ORD->>ORD: validarSinRecepciones()
+    ORD-->>-SRV: ordenDeCompra
+    SRV-->>-ADM: ordenDeCompra

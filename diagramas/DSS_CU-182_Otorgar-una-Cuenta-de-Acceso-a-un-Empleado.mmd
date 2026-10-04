@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-182 Otorgar una Cuenta de Acceso a un Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: otorgarCuentaDeAcceso(empleadoId, correo)
+    activate SIS
+    alt el empleado está activo, sin cuenta, y su puesto admite acceso
+        SIS-->>ADM: cuenta creada con el rol del puesto y vinculada al legajo
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el empleado ya tiene cuenta o está egresado
+        SIS-->>ADM: conflicto
+    else la categoría del puesto no admite cuenta
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS

@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-217 Registrar la Recepción de una Compra · consultarRecepcionesDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseReceiptService
+    participant RECS as :List#lt;RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+
+    ADM->>+SRV: consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)
+    SRV->>+RECS: buscar(proveedorId, desde, hasta, estadoDePago)
+    loop Por cada recepción del filtro
+        RECS->>REC: getTotal()
+    end
+    RECS-->>-SRV: recepciones
+    SRV-->>-ADM: recepciones

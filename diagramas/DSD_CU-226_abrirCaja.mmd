@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-226 Abrir la Caja · abrirCaja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashBoxService
+    participant CAJS as :Map#lt;String, Caja#gt;
+    participant CAJ as caja:Caja
+
+    ADM->>+SRV: abrirCaja(cajaId, montoInicial)
+    SRV->>+CAJS: get(cajaId)
+    CAJS-->>-SRV: caja
+    SRV->>+CAJ: abrirSesion(montoInicial, administrador)
+    CAJ->>CAJ: validarPuedeAbrirse()
+    create participant NSE as nueva:SesionDeCaja
+    CAJ->>NSE: «create»(montoInicial, administrador)
+    opt El monto inicial difiere del saldo de la caja
+        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema diferencia de caja
+    end
+    CAJ-->>-SRV: sesionDeCaja
+    SRV-->>-ADM: sesionDeCaja

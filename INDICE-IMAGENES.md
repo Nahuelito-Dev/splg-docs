@@ -35,6 +35,9 @@ una en `svg/`, que conviene si hay que ampliarla.
 | `CU_SS-16_Administracion-De-Cuentas-Y-Roles.png` |
 | `CU_SS-17_Notificaciones-Y-Mensajeria.png` |
 | `CU_SS-18_Observabilidad-Y-Operacion.png` |
+| `CU_SS-19_Personal-Y-Legajos.png` |
+| `CU_SS-20_Compras.png` |
+| `CU_SS-21_Caja-Rendiciones-Y-Cuentas-Corrientes.png` |
 | `CU_Sistema_Actores.png` |
 | `CU_Sistema_Diagrama-Completo.png` |
 | `CU_Sistema_Diagrama-De-Contexto.png` |
@@ -185,7 +188,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-139 | Consultar los Vencimientos de la Flota | `DSS_CU-139_Consultar-los-Vencimientos-de-la-Flota.png` | `DSD_CU-139_Consultar-los-Vencimientos-de-la-Flota.png` |
 | CU-140 | Programar un Mantenimiento de Vehículo | `DSS_CU-140_Programar-un-Mantenimiento-de-Vehiculo.png` | `DSD_CU-140_Programar-un-Mantenimiento-de-Vehiculo.png` |
 | CU-141 | Registrar un Mantenimiento Realizado | `DSS_CU-141_Registrar-un-Mantenimiento-Realizado.png` | `DSD_CU-141_Registrar-un-Mantenimiento-Realizado.png` |
-| CU-142 | Avisar los Vencimientos Próximos de la Flota | `DSS_CU-142_Avisar-los-Vencimientos-Proximos-de-la-Flota.png` | `DSD_CU-142_Avisar-los-Vencimientos-Proximos-de-la-Flota.png` |
+| CU-142 | Avisar los Vencimientos Próximos de la Flota | `DSS_CU-142_Avisar-los-Vencimientos-Proximos-de-la-Flota.png` | `DSD_CU-142_CU-188_avisarVencimientosPendientes.png` |
 | CU-143 | Declarar el Consumo Promedio al Registrarse | `DSS_CU-143_Declarar-el-Consumo-Promedio-al-Registrarse.png` | `DSD_CU-143_Declarar-el-Consumo-Promedio-al-Registrarse.png` |
 | CU-144 | Actualizar el Consumo Promedio Declarado | `DSS_CU-144_Actualizar-el-Consumo-Promedio-Declarado.png` | `DSD_CU-144_Actualizar-el-Consumo-Promedio-Declarado.png` |
 | CU-145 | Configurar los Días de Aviso Previo a la Recompra | `DSS_CU-145_Configurar-los-Dias-de-Aviso-Previo-a-la-Recompra.png` | `DSD_CU-145_Configurar-los-Dias-de-Aviso-Previo-a-la-Recompra.png` |
@@ -219,3 +222,157 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-173 | Configurar la Frecuencia de las Tareas Programadas | `DSS_CU-173_Configurar-la-Frecuencia-de-las-Tareas-Programadas.png` | `DSD_CU-173_Configurar-la-Frecuencia-de-las-Tareas-Programadas.png` |
 | CU-174 | Adjuntar la Fotografía de un Reclamo | `DSS_CU-174_Adjuntar-la-Fotografia-de-un-Reclamo.png` | `DSD_CU-174_Adjuntar-la-Fotografia-de-un-Reclamo.png` |
 | CU-175 | Consultar la Fotografía de un Reclamo | `DSS_CU-175_Consultar-la-Fotografia-de-un-Reclamo.png` | `DSD_CU-175_Consultar-la-Fotografia-de-un-Reclamo.png` |
+| CU-176 | Gestionar los Puestos de Trabajo | `DSS_CU-176_Gestionar-los-Puestos-de-Trabajo.png` | `DSD_CU-176_consultarPuestosDeTrabajo.png`, `DSD_CU-176_crearPuestoDeTrabajo.png`, `DSD_CU-176_modificarPuestoDeTrabajo.png`, `DSD_CU-176_eliminarPuestoDeTrabajo.png` |
+| CU-177 | Registrar el Legajo de un Empleado | `DSS_CU-177_Registrar-el-Legajo-de-un-Empleado.png` | `DSD_CU-177_registrarEmpleado.png` |
+| CU-178 | Modificar el Legajo de un Empleado | `DSS_CU-178_Modificar-el-Legajo-de-un-Empleado.png` | `DSD_CU-178_modificarEmpleado.png`, `DSD_CU-178_eliminarEmpleado.png` |
+| CU-179 | Consultar el Legajo de un Empleado | `DSS_CU-179_Consultar-el-Legajo-de-un-Empleado.png` | `DSD_CU-179_consultarEmpleado.png` |
+| CU-180 | Consultar el Listado de Empleados | `DSS_CU-180_Consultar-el-Listado-de-Empleados.png` | `DSD_CU-180_consultarEmpleados.png` |
+| CU-181 | Registrar el Egreso de un Empleado | `DSS_CU-181_Registrar-el-Egreso-de-un-Empleado.png` | `DSD_CU-181_registrarEgresoDelEmpleado.png`, `DSD_CU-181_reingresarEmpleado.png` |
+| CU-182 | Otorgar una Cuenta de Acceso a un Empleado | `DSS_CU-182_Otorgar-una-Cuenta-de-Acceso-a-un-Empleado.png` | `DSD_CU-182_otorgarCuentaDeAcceso.png` |
+| CU-183 | Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | `DSS_CU-183_Registrar-el-Curso-de-Transporte-de-Mercancias-Peligrosas-del-Empleado.png` | `DSD_CU-183_CU-184_CU-185_crearTareaDelEmpleado.png` |
+| CU-184 | Registrar el Examen Psicofísico del Empleado | `DSS_CU-184_Registrar-el-Examen-Psicofisico-del-Empleado.png` | `DSD_CU-183_CU-184_CU-185_crearTareaDelEmpleado.png` |
+| CU-185 | Registrar el Alta en la ART del Empleado | `DSS_CU-185_Registrar-el-Alta-en-la-ART-del-Empleado.png` | `DSD_CU-183_CU-184_CU-185_crearTareaDelEmpleado.png` |
+| CU-186 | Adjuntar un Archivo al Legajo | `DSS_CU-186_Adjuntar-un-Archivo-al-Legajo.png` | `DSD_CU-186_adjuntarArchivoAlLegajo.png` |
+| CU-187 | Consultar los Vencimientos del Personal | `DSS_CU-187_Consultar-los-Vencimientos-del-Personal.png` | `DSD_CU-187_consultarVencimientosDelPersonal.png`, `DSD_CU-187_consultarDocumentacionDelEmpleado.png` |
+| CU-188 | Avisar los Vencimientos Próximos del Personal | `DSS_CU-188_Avisar-los-Vencimientos-Proximos-del-Personal.png` | `DSD_CU-142_CU-188_avisarVencimientosPendientes.png` |
+| CU-189 | Registrar la Asistencia de un Empleado | `DSS_CU-189_Registrar-la-Asistencia-de-un-Empleado.png` | `DSD_CU-189_registrarAsistencia.png`, `DSD_CU-189_corregirAsistencia.png`, `DSD_CU-189_consultarAsistencias.png` |
+| CU-190 | Registrar el Inicio y el Fin de la Jornada | `DSS_CU-190_Registrar-el-Inicio-y-el-Fin-de-la-Jornada.png` | `DSD_CU-190_registrarInicioDeJornada.png`, `DSD_CU-190_registrarFinDeJornada.png` |
+| CU-191 | Registrar una Licencia o Ausencia | `DSS_CU-191_Registrar-una-Licencia-o-Ausencia.png` | `DSD_CU-191_registrarLicencia.png`, `DSD_CU-191_modificarLicencia.png`, `DSD_CU-191_cancelarLicencia.png` |
+| CU-192 | Resolver una Solicitud de Licencia | `DSS_CU-192_Resolver-una-Solicitud-de-Licencia.png` | `DSD_CU-192_consultarLicencias.png`, `DSD_CU-192_aprobarLicencia.png`, `DSD_CU-192_rechazarLicencia.png` |
+| CU-193 | Consultar el Saldo de Vacaciones de un Empleado | `DSS_CU-193_Consultar-el-Saldo-de-Vacaciones-de-un-Empleado.png` | `DSD_CU-193_consultarSaldoDeVacaciones.png` |
+| CU-194 | Consultar el Tablero de Personal | `DSS_CU-194_Consultar-el-Tablero-de-Personal.png` | `DSD_CU-194_consultarTableroDePersonal.png` |
+| CU-195 | Registrar una Carga de Combustible | `DSS_CU-195_Registrar-una-Carga-de-Combustible.png` | `DSD_CU-195_registrarCargaDeCombustible.png`, `DSD_CU-195_modificarCargaDeCombustible.png`, `DSD_CU-195_anularCargaDeCombustible.png`, `DSD_CU-195_consultarCargasDeCombustible.png` |
+| CU-196 | Consultar el Consumo de Combustible de un Vehículo | `DSS_CU-196_Consultar-el-Consumo-de-Combustible-de-un-Vehiculo.png` | `DSD_CU-196_consultarConsumoDeCombustible.png` |
+| CU-197 | Registrar la Habilitación para Transportar Mercancías Peligrosas | `DSS_CU-197_Registrar-la-Habilitacion-para-Transportar-Mercancias-Peligrosas.png` |  |
+| CU-198 | Registrar una Multa de Tránsito | `DSS_CU-198_Registrar-una-Multa-de-Transito.png` | `DSD_CU-198_registrarMultaDeTransito.png`, `DSD_CU-198_modificarMultaDeTransito.png`, `DSD_CU-198_anularMultaDeTransito.png`, `DSD_CU-198_consultarMultasDeTransito.png`, `DSD_CU-198_avisarMultasPorVencer.png` |
+| CU-199 | Registrar el Pago de una Multa | `DSS_CU-199_Registrar-el-Pago-de-una-Multa.png` | `DSD_CU-199_registrarPagoDeMulta.png` |
+| CU-200 | Imputar una Multa al Chofer | `DSS_CU-200_Imputar-una-Multa-al-Chofer.png` | `DSD_CU-200_imputarMultaAlChofer.png` |
+| CU-201 | Registrar un Siniestro | `DSS_CU-201_Registrar-un-Siniestro.png` | `DSD_CU-201_registrarSiniestro.png`, `DSD_CU-201_modificarSiniestro.png`, `DSD_CU-201_consultarSiniestros.png` |
+| CU-202 | Cerrar un Siniestro | `DSS_CU-202_Cerrar-un-Siniestro.png` | `DSD_CU-202_cerrarSiniestro.png` |
+| CU-203 | Consultar el Costo Total de un Vehículo | `DSS_CU-203_Consultar-el-Costo-Total-de-un-Vehiculo.png` | `DSD_CU-203_consultarCostoDeUnVehiculo.png` |
+| CU-204 | Consultar el Tablero de Costos de la Flota | `DSS_CU-204_Consultar-el-Tablero-de-Costos-de-la-Flota.png` | `DSD_CU-204_consultarTableroDeCostosDeLaFlota.png` |
+| CU-205 | Registrar un Neumático | `DSS_CU-205_Registrar-un-Neumatico.png` | `DSD_CU-205_registrarNeumatico.png` |
+| CU-206 | Registrar un Movimiento de Neumático | `DSS_CU-206_Registrar-un-Movimiento-de-Neumatico.png` | `DSD_CU-206_registrarMovimientoDeNeumatico.png` |
+| CU-207 | Gestionar los Depósitos | `DSS_CU-207_Gestionar-los-Depositos.png` | `DSD_CU-207_registrarDeposito.png` · `DSD_CU-207_actualizarDeposito.png` · `DSD_CU-207_darDeBajaDeposito.png` · `DSD_CU-207_consultarDepositos.png` |
+| CU-208 | Consultar el Stock por Ubicación | `DSS_CU-208_Consultar-el-Stock-por-Ubicacion.png` | `DSD_CU-208_consultarStockPorUbicacion.png` · `DSD_CU-208_consultarResumenDeStock.png` |
+| CU-209 | Consultar los Movimientos de Stock | `DSS_CU-209_Consultar-los-Movimientos-de-Stock.png` | `DSD_CU-209_consultarMovimientosDeStock.png` |
+| CU-210 | Configurar el Stock Mínimo | `DSS_CU-210_Configurar-el-Stock-Minimo.png` | `DSD_CU-210_configurarStockMinimo.png` |
+| CU-211 | Avisar el Stock Bajo | `DSS_CU-211_Avisar-el-Stock-Bajo.png` | `DSD_CU-211_avisarStockBajo.png` |
+| CU-212 | Transferir Stock entre Depósitos | `DSS_CU-212_Transferir-Stock-entre-Depositos.png` | `DSD_CU-212_transferirStock.png` |
+| CU-213 | Registrar un Ajuste o una Merma de Stock | `DSS_CU-213_Registrar-un-Ajuste-o-una-Merma-de-Stock.png` | `DSD_CU-213_registrarAjusteDeStock.png` · `DSD_CU-213_consultarAjustesDeStock.png` |
+| CU-214 | Gestionar los Proveedores | `DSS_CU-214_Gestionar-los-Proveedores.png` | `DSD_CU-214_registrarProveedor.png` · `DSD_CU-214_actualizarProveedor.png` · `DSD_CU-214_darDeBajaProveedor.png` · `DSD_CU-214_consultarProveedores.png` |
+| CU-215 | Emitir una Orden de Compra | `DSS_CU-215_Emitir-una-Orden-de-Compra.png` | `DSD_CU-215_emitirOrdenDeCompra.png` · `DSD_CU-215_enviarOrdenDeCompra.png` · `DSD_CU-215_consultarOrdenesDeCompra.png` |
+| CU-216 | Cancelar una Orden de Compra | `DSS_CU-216_Cancelar-una-Orden-de-Compra.png` | `DSD_CU-216_cancelarOrdenDeCompra.png` |
+| CU-217 | Registrar la Recepción de una Compra | `DSS_CU-217_Registrar-la-Recepcion-de-una-Compra.png` | `DSD_CU-217_registrarRecepcionDeCompra.png` · `DSD_CU-217_anularRecepcionDeCompra.png` · `DSD_CU-217_consultarRecepcionesDeCompra.png` |
+| CU-218 | Registrar la Carga del Camión | `DSS_CU-218_Registrar-la-Carga-del-Camion.png` | `DSD_CU-218_registrarCargaDelCamion.png` · `DSD_CU-218_reponerCargaDelCamion.png` · `DSD_CU-218_cancelarCargaDelCamion.png` · `DSD_CU-218_consultarCargasDelCamion.png` |
+| CU-219 | Registrar la Salida del Camión | `DSS_CU-219_Registrar-la-Salida-del-Camion.png` | `DSD_CU-219_registrarSalidaDelCamion.png` |
+| CU-220 | Descontar del Camión lo Entregado | `DSS_CU-220_Descontar-del-Camion-lo-Entregado.png` | `DSD_CU-220_descontarStockDeLaEntrega.png` |
+| CU-221 | Registrar el Regreso del Camión | `DSS_CU-221_Registrar-el-Regreso-del-Camion.png` | `DSD_CU-221_registrarRegresoDelCamion.png` |
+| CU-222 | Cerrar la Rendición de Stock del Camión | `DSS_CU-222_Cerrar-la-Rendicion-de-Stock-del-Camion.png` | `DSD_CU-222_cerrarRendicionDeStock.png` |
+| CU-223 | Consultar la Carga Actual del Camión | `DSS_CU-223_Consultar-la-Carga-Actual-del-Camion.png` | `DSD_CU-223_consultarCargaActual.png` |
+| CU-224 | Conciliar el Stock Vendible con el Físico | `DSS_CU-224_Conciliar-el-Stock-Vendible-con-el-Fisico.png` | `DSD_CU-224_conciliarStock.png` · `DSD_CU-224_consultarConciliacionDeStock.png` |
+| CU-225 | Gestionar las Cajas | `DSS_CU-225_Gestionar-las-Cajas.png` | `DSD_CU-225_Gestionar-las-Cajas.png` |
+| CU-226 | Abrir la Caja | `DSS_CU-226_Abrir-la-Caja.png` | `DSD_CU-226_Abrir-la-Caja.png` |
+| CU-227 | Cerrar la Caja con Arqueo | `DSS_CU-227_Cerrar-la-Caja-con-Arqueo.png` | `DSD_CU-227_Cerrar-la-Caja-con-Arqueo.png` |
+| CU-228 | Registrar un Ingreso o Egreso de Caja | `DSS_CU-228_Registrar-un-Ingreso-o-Egreso-de-Caja.png` | `DSD_CU-228_Registrar-un-Ingreso-o-Egreso-de-Caja.png` |
+| CU-229 | Anular un Movimiento de Caja | `DSS_CU-229_Anular-un-Movimiento-de-Caja.png` | `DSD_CU-229_Anular-un-Movimiento-de-Caja.png` |
+| CU-230 | Gestionar las Categorías de Ingresos y Gastos | `DSS_CU-230_Gestionar-las-Categorias-de-Ingresos-y-Gastos.png` | `DSD_CU-230_Gestionar-las-Categorias-de-Ingresos-y-Gastos.png` |
+| CU-231 | Generar la Rendición Diaria del Chofer | `DSS_CU-231_Generar-la-Rendicion-Diaria-del-Chofer.png` | `DSD_CU-231_Generar-la-Rendicion-Diaria-del-Chofer.png` |
+| CU-232 | Declarar el Efectivo Rendido | `DSS_CU-232_Declarar-el-Efectivo-Rendido.png` | `DSD_CU-232_Declarar-el-Efectivo-Rendido.png` |
+| CU-233 | Aprobar la Rendición del Chofer | `DSS_CU-233_Aprobar-la-Rendicion-del-Chofer.png` | `DSD_CU-233_Aprobar-la-Rendicion-del-Chofer.png` |
+| CU-234 | Avisar las Rendiciones sin Cerrar | `DSS_CU-234_Avisar-las-Rendiciones-sin-Cerrar.png` | `DSD_CU-234_Avisar-las-Rendiciones-sin-Cerrar.png` |
+| CU-235 | Habilitar la Cuenta Corriente de un Cliente | `DSS_CU-235_Habilitar-la-Cuenta-Corriente-de-un-Cliente.png` | `DSD_CU-235_Habilitar-la-Cuenta-Corriente-de-un-Cliente.png` |
+| CU-236 | Vender a Cuenta Corriente | `DSS_CU-236_Vender-a-Cuenta-Corriente.png` | `DSD_CU-236_Vender-a-Cuenta-Corriente.png` |
+| CU-237 | Registrar un Pago de Cuenta Corriente | `DSS_CU-237_Registrar-un-Pago-de-Cuenta-Corriente.png` | `DSD_CU-237_Registrar-un-Pago-de-Cuenta-Corriente.png` |
+| CU-238 | Consultar el Estado de Cuenta de un Cliente | `DSS_CU-238_Consultar-el-Estado-de-Cuenta-de-un-Cliente.png` | `DSD_CU-238_Consultar-el-Estado-de-Cuenta-de-un-Cliente.png` |
+| CU-239 | Consultar la Antigüedad de la Deuda | `DSS_CU-239_Consultar-la-Antiguedad-de-la-Deuda.png` | `DSD_CU-239_Consultar-la-Antiguedad-de-la-Deuda.png` |
+| CU-240 | Configurar las Comisiones por Entrega | `DSS_CU-240_Configurar-las-Comisiones-por-Entrega.png` | `DSD_CU-240_Configurar-las-Comisiones-por-Entrega.png` |
+| CU-241 | Registrar la Comisión de una Entrega | `DSS_CU-241_Registrar-la-Comision-de-una-Entrega.png` | `DSD_CU-241_Registrar-la-Comision-de-una-Entrega.png` |
+| CU-242 | Liquidar las Comisiones de un Chofer | `DSS_CU-242_Liquidar-las-Comisiones-de-un-Chofer.png` | `DSD_CU-242_Liquidar-las-Comisiones-de-un-Chofer.png` |
+| CU-243 | Registrar el Pago de una Liquidación | `DSS_CU-243_Registrar-el-Pago-de-una-Liquidacion.png` | `DSD_CU-243_Registrar-el-Pago-de-una-Liquidacion.png` |
+| CU-244 | Consultar Mis Comisiones | `DSS_CU-244_Consultar-Mis-Comisiones.png` | `DSD_CU-244_Consultar-Mis-Comisiones.png` |
+| CU-245 | Consultar el Tablero Financiero | `DSS_CU-245_Consultar-el-Tablero-Financiero.png` | `DSD_CU-245_Consultar-el-Tablero-Financiero.png` |
+| CU-246 | Verificar la Habilitación Laboral del Chofer | — (caso incluido, sin diagrama propio) | `DSD_CU-246_verificarHabilitacionLaboral.png` |
+| CU-247 | Reactivar un Vehículo | `DSS_CU-247_Reactivar-un-Vehiculo.png` | `DSD_CU-247_reactivarVehiculo.png` |
+| CU-248 | Verificar la Carga de Camión Abierta del Chofer | `DSS_CU-248_Verificar-la-Carga-de-Camion-Abierta-del-Chofer.png` | `DSD_CU-248_verificarCargaDeCamionAbierta.png` |
+| CU-249 | Configurar el Control de Carga de Camión Abierta | `DSS_CU-249_Configurar-el-Control-de-Carga-de-Camion-Abierta.png` | `DSD_CU-249_configurarControlDeCargaAbierta.png` |
+| CU-250 | Aplicar un Movimiento de Stock | `DSS_CU-250_Aplicar-un-Movimiento-de-Stock.png` | `DSD_CU-250_aplicarMovimientoDeStock.png` |
+
+## Módulos de gestión planificados: modelos y estados
+
+Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras, caja y rendición): modelo conceptual, modelo físico, entidad-relación conceptual, clases de dominio y de diseño, y diagramas de estados. Las tablas planificadas se dibujan con el estereotipo «propuesto».
+
+### Personal y legajos (iteración I-11)
+
+| Imagen | Qué es |
+|---|---|
+| `diagramas/modelo-conceptual/MC_Personal.png` | Modelo conceptual: personal |
+| `diagramas/base-de-datos/fisico/SPLG-fisico-09-personal.png` | Modelo físico — Personal |
+| `diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png` | Modelo entidad-relación conceptual — Personal |
+| `diagramas/clases-diseno/DC_Personal.png` | Clases de dominio: personal |
+| `diagramas/clases-diseno/DC_Mod_Personal.png` | Clases de diseño: módulo personal |
+| `diagramas/uml/UML_Estados_Empleado.png` | Diagrama de estados — Empleado (planificado, I-11) |
+| `diagramas/uml/UML_Estados_Licencia.png` | Diagrama de estados — Licencia laboral (planificado, I-11) |
+| `diagramas/uml/UML_Estados_Jornada.png` | Diagrama de estados — Jornada de trabajo (planificado, I-11) |
+
+### Flota ampliada (iteración I-12)
+
+| Imagen | Qué es |
+|---|---|
+| `diagramas/modelo-conceptual/MC_Gastos-de-flota.png` | Modelo conceptual: gastos de flota |
+| `diagramas/base-de-datos/fisico/SPLG-fisico-10-gastos-de-la-flota.png` | Modelo físico — Gastos de la flota |
+| `diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png` | Modelo entidad-relación conceptual — Gastos de la flota |
+| `diagramas/clases-diseno/DC_Gastos-de-flota.png` | Clases de dominio: gastos de flota |
+| `diagramas/clases-diseno/DC_Mod_Flota-gastos.png` | Clases de diseño: módulo flota gastos |
+| `diagramas/uml/UML_Estados_CargaCombustible.png` | Diagrama de estados — Carga de combustible (planificado, I-12) |
+| `diagramas/uml/UML_Estados_MultaTransito.png` | Diagrama de estados — Multa de tránsito (planificado, I-12) |
+| `diagramas/uml/UML_Estados_Siniestro.png` | Diagrama de estados — Siniestro (planificado, I-12) |
+| `diagramas/uml/UML_Estados_Neumatico.png` | Diagrama de estados — Neumático (planificado, I-12, opcional) |
+| `diagramas/uml/UML_Estados_PolizaDelVehiculo.png` | Diagrama de estados — Vigencia de la póliza y de la habilitación (planificado, I-12) |
+
+### Stock y compras (iteración I-13)
+
+| Imagen | Qué es |
+|---|---|
+| `diagramas/modelo-conceptual/MC_Stock.png` | Modelo conceptual: stock |
+| `diagramas/modelo-conceptual/MC_Carga-del-camion.png` | Modelo conceptual: carga del camion |
+| `diagramas/modelo-conceptual/MC_Compras.png` | Modelo conceptual: compras |
+| `diagramas/base-de-datos/fisico/SPLG-fisico-11-stock-fisico-y-carga-del-camion.png` | Modelo físico — Stock físico y carga del camión |
+| `diagramas/base-de-datos/fisico/SPLG-fisico-12-compras.png` | Modelo físico — Compras |
+| `diagramas/base-de-datos/conceptual/SPLG-der-09-stock-fisico.png` | Modelo entidad-relación conceptual — Stock físico |
+| `diagramas/base-de-datos/conceptual/SPLG-der-10-carga-del-camion.png` | Modelo entidad-relación conceptual — Carga del camión |
+| `diagramas/base-de-datos/conceptual/SPLG-der-11-compras.png` | Modelo entidad-relación conceptual — Compras |
+| `diagramas/clases-diseno/DC_Stock-fisico.png` | Clases de dominio: stock fisico |
+| `diagramas/clases-diseno/DC_Carga-del-camion.png` | Clases de dominio: carga del camion |
+| `diagramas/clases-diseno/DC_Compras.png` | Clases de dominio: compras |
+| `diagramas/clases-diseno/DC_Mod_Stock.png` | Clases de diseño: módulo stock |
+| `diagramas/clases-diseno/DC_Mod_Compras.png` | Clases de diseño: módulo compras |
+| `diagramas/clases-diseno/DC_Mod_Carga-del-camion.png` | Clases de diseño: módulo carga del camion |
+| `diagramas/uml/UML_Estados_OrdenDeCompra.png` | Diagrama de estados — Orden de compra |
+| `diagramas/uml/UML_Estados_RecepcionDeCompra.png` | Diagrama de estados — Recepción de compra |
+| `diagramas/uml/UML_Estados_CargaDeCamion.png` | Diagrama de estados — Carga de camión |
+
+### Caja y rendición (iteración I-14)
+
+| Imagen | Qué es |
+|---|---|
+| `diagramas/modelo-conceptual/MC_Caja.png` | Modelo conceptual: caja |
+| `diagramas/modelo-conceptual/MC_Rendiciones.png` | Modelo conceptual: rendiciones |
+| `diagramas/modelo-conceptual/MC_Cuentas-corrientes.png` | Modelo conceptual: cuentas corrientes |
+| `diagramas/modelo-conceptual/MC_Comisiones.png` | Modelo conceptual: comisiones |
+| `diagramas/base-de-datos/fisico/SPLG-fisico-14-caja-y-finanzas.png` | Modelo físico — Caja y finanzas |
+| `diagramas/base-de-datos/conceptual/SPLG-der-12-caja-y-movimientos.png` | Modelo entidad-relación conceptual — Caja y movimientos |
+| `diagramas/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png` | Modelo entidad-relación conceptual — Rendiciones de choferes |
+| `diagramas/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png` | Modelo entidad-relación conceptual — Cuentas corrientes |
+| `diagramas/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png` | Modelo entidad-relación conceptual — Comisiones y liquidaciones |
+| `diagramas/clases-diseno/DC_Caja.png` | Clases de dominio: caja |
+| `diagramas/clases-diseno/DC_Cuentas-corrientes.png` | Clases de dominio: cuentas corrientes |
+| `diagramas/clases-diseno/DC_Comisiones.png` | Clases de dominio: comisiones |
+| `diagramas/clases-diseno/DC_Mod_Caja.png` | Clases de diseño: módulo caja |
+| `diagramas/clases-diseno/DC_Mod_Rendicion.png` | Clases de diseño: módulo rendicion |
+| `diagramas/clases-diseno/DC_Mod_Cuentas-corrientes.png` | Clases de diseño: módulo cuentas corrientes |
+| `diagramas/clases-diseno/DC_Mod_Comisiones.png` | Clases de diseño: módulo comisiones |
+| `diagramas/uml/UML_Estados_SesionDeCaja.png` | Diagrama de estados — Sesión de caja |
+| `diagramas/uml/UML_Estados_RendicionChofer.png` | Diagrama de estados — Rendición del chofer |
+| `diagramas/uml/UML_Estados_LiquidacionComisiones.png` | Diagrama de estados — Liquidación de comisiones |
+| `diagramas/uml/UML_Estados_CuentaCorriente.png` | Diagrama de estados — Cuenta corriente |

@@ -91,9 +91,9 @@ class RatingService <<fachada>> {
 class Reclamo <<referencia>>
 class Incidencia <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
+class StoragePort <<referencia>>
 class Usuario <<referencia>>
 class Pedido <<referencia>>
-class StoragePort <<referencia>>
 class Cliente <<referencia>>
 class Chofer <<referencia>>
 
@@ -101,13 +101,13 @@ Map_String_Reclamo "1" o--> "0..*" Reclamo
 Map_String_Incidencia "1" o--> "0..*" Incidencia
 ClaimsService --> "1" Map_String_Pedido
 ClaimsService --> "1" Map_String_Reclamo
+ClaimsService --> "1" StoragePort
 IncidentService --> "1" Map_String_Incidencia
 IncidentService --> "1" Map_String_Pedido
 RatingService --> "1" Map_String_Pedido
 ClaimsService ..> Cliente
 ClaimsService ..> Pedido
 ClaimsService ..> Reclamo
-ClaimsService ..> StoragePort
 IncidentService ..> Incidencia
 IncidentService ..> Pedido
 RatingService ..> Chofer

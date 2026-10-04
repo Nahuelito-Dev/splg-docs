@@ -1,0 +1,101 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam classAttributeIconSize 0
+skinparam roundCorner 0
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 14
+  AttributeFontSize 12
+  HeaderBackgroundColor #E8EEF3
+}
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #2C4257
+}
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #8A97A3
+  FontSize 13
+  FontColor #55616C
+}
+hide circle
+hide methods
+hide empty members
+
+class Proveedor {
+  razón social
+  CUIT
+  tipo
+  contacto
+  teléfono
+  correo
+  dirección
+  plazo de pago
+  activo
+}
+class OrdenDeCompra {
+  número
+  estado
+  emitida el
+  fecha esperada
+  total
+  motivo de cancelación
+  notas
+}
+class ItemOrdenDeCompra {
+  cantidad
+  costo unitario
+  vacíos a canjear
+  cantidad recibida
+}
+class RecepcionDeCompra {
+  número
+  tipo de comprobante
+  número de comprobante
+  recibida el
+  total
+  estado de pago
+  estado
+  motivo de anulación
+}
+class ItemRecepcion {
+  llenas recibidas
+  vacías entregadas
+  costo unitario
+}
+class Deposito <<referencia>>
+class Producto <<referencia>>
+class Usuario <<referencia>>
+class Distribuidora <<referencia>>
+
+
+Distribuidora "1" -- "0..*" Proveedor : compra a >
+Proveedor "1" -- "0..*" OrdenDeCompra : recibe >
+OrdenDeCompra "0..*" -- "1" Deposito : se destina a >
+OrdenDeCompra "1" *-- "1..*" ItemOrdenDeCompra : contiene >
+ItemOrdenDeCompra "0..*" -- "1" Producto : corresponde a >
+Usuario "1" -- "0..*" OrdenDeCompra : emite >
+Proveedor "1" -- "0..*" RecepcionDeCompra : entrega >
+OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra : se cumple con >
+RecepcionDeCompra "0..*" -- "1" Deposito : ingresa en >
+RecepcionDeCompra "1" *-- "1..*" ItemRecepcion : contiene >
+ItemRecepcion "0..*" -- "1" Producto : corresponde a >
+Usuario "1" -- "0..*" RecepcionDeCompra : registra >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+endlegend
+@enduml

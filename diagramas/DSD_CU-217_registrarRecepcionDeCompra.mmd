@@ -1,0 +1,47 @@
+sequenceDiagram
+    title DSD — CU-217 Registrar la Recepción de una Compra · registrarRecepcionDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseReceiptService
+    participant COLD as :Map#lt;String, Deposito#gt;
+    participant DEP as deposito:Deposito
+    participant ORD as orden:OrdenDeCompra
+    participant LED as :StockLedgerService
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
+    SRV->>+COLD: get(depositoId)
+    COLD-->>-SRV: deposito
+    SRV->>+DEP: registrarRecepcion(ordenId, tipoDeComprobante, numeroDeComprobante, items, autor)
+    create participant REC as nueva:RecepcionDeCompra
+    DEP->>REC: «create»(tipoDeComprobante, numeroDeComprobante, autor)
+    loop Por cada tipo de garrafa recibido
+        create participant IRE as nuevo:ItemRecepcion
+        REC->>IRE: «create»(producto, llenasRecibidas, vaciasEntregadas, costoUnitario)
+    end
+    alt La recepción cumple una orden de compra
+        DEP->>DEP: getOrden(ordenId)
+        DEP->>+ORD: acumularRecibido(items)
+        alt La orden admite recepciones
+            ORD-->>-DEP: acumulado
+        else La orden está cancelada o ya recibida por completo
+            ORD-->>DEP: ordenNoAdmiteRecepciones
+        end
+    else La compra no tiene orden de compra
+        DEP->>DEP: validarCompraSinOrden(proveedorId)
+    end
+    DEP-->>-SRV: recepcion
+    loop Por cada tipo de garrafa recibido
+        SRV->>+IRE: getProducto()
+        IRE-->>-SRV: producto
+        Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta. ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo del depósito
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        alt El depósito tiene los vacíos que se lleva la planta
+            LED-->>-SRV: aplicado
+            SRV->>PRO: sumarStock(llenasRecibidas)
+            SRV->>PRO: recalcularCostoPromedio(llenasRecibidas, costoUnitario)
+        else El depósito no tiene los vacíos que se lleva la planta
+            LED-->>SRV: saldoInsuficiente
+        end
+    end
+    SRV-->>-ADM: recepcion

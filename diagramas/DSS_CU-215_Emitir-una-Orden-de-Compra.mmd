@@ -1,0 +1,36 @@
+sequenceDiagram
+    title DSS — CU-215 Emitir una Orden de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt preparación de la orden
+        ADM->>SIS: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
+        activate SIS
+        alt los datos son válidos
+            SIS-->>ADM: orden en borrador, con su número
+        else un renglón es inválido
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
+        else el proveedor o el depósito no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt envío de la orden
+        ADM->>SIS: enviarOrdenDeCompra(ordenId)
+        activate SIS
+        alt la orden está en borrador
+            SIS-->>ADM: orden enviada
+        else la orden ya no está en borrador
+            SIS-->>ADM: conflicto
+        end
+        deactivate SIS
+    end
+
+    opt consulta de las órdenes
+        ADM->>SIS: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+        activate SIS
+        SIS-->>ADM: órdenes de compra
+        deactivate SIS
+    end

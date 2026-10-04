@@ -63,18 +63,26 @@ class Producto {
   - precio: Moneda
   - stock: Entero
   - activo: Booleano
+  - costoPromedio: Moneda
   + «create» Producto(distribuidora: Distribuidora,\n      tipo: Cadena, peso: Decimal, precio: Moneda,\n      stockInicial: Entero, descripcion: Cadena)
   + actualizarPrecio(precio: Moneda)
   + agregarPromocion(cantidad: Entero, descuento: Decimal)
   + ajustarStock(variacion: Entero)
+  + ajustarStock(diferencia: Moneda): Booleano
+  + calcularDiferencia(llenasFisicas: Entero,\n      reservado: Entero)
   + desactivar()
   + estaDisponibleEn(distribuidoraId: Identificador): Booleano
   + getPrecio(): Moneda
+  + getStock(): Entero
   + precioPara(cantidad: Entero): Moneda
   + reactivar()
+  + recalcularCostoPromedio(llenasRecibidas: Entero,\n      costoUnitario: Moneda)
   + reemplazarPromociones(promociones: Promocion[*])
   + reservar(cantidad: Entero)
+  + restarStock(llenasRecibidas: Entero)
+  + restarStock(faltante: Entero): Booleano
   + restituir(cantidad: Entero)
+  + sumarStock(llenasRecibidas: Entero)
   + validarSinRepetir(promociones: Promocion[*])
   + validarStockResultante(variacion: Entero)
 }
@@ -97,7 +105,7 @@ class Envase {
   + entregarAlCliente(pedido: Pedido)
   + estaVigente(hoy: Fecha): Booleano
   + fueDevuelto(): Booleano
-  + getMovimientos(): MovimientoEnvase[*]
+  + getMovimientos(): MovimientoDeCaja[*]
   + getResumen()
   + getVigencia(out dias: Entero): Fecha
   + marcarParaRetiro(pedido: Pedido)

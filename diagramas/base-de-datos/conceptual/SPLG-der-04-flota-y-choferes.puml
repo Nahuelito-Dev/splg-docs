@@ -20,6 +20,10 @@ skinparam class<<propuesto>> {
   BorderColor #1F5E8C
   BackgroundColor #E4EDF4
 }
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
 skinparam legendBackgroundColor #FFFFFF
 skinparam legendBorderColor #2C4257
 
@@ -44,6 +48,8 @@ entity Vehiculo {
   {field} carga máxima
   {field} kilometraje
   {field} estado en la flota
+  {field} tipo de combustible
+  {field} capacidad del tanque
 }
 entity AsignacionVehiculo {
   * identificador
@@ -60,6 +66,8 @@ entity PlanMantenimiento {
   {field} intervalo
   {field} anticipación
   {field} criticidad
+  {field} documento que controla
+  {field} aplica a
 }
 entity TareaMantenimiento {
   * identificador
@@ -70,6 +78,8 @@ entity TareaMantenimiento {
   {field} prestador
   {field} número
   {field} costo
+  {field} vigente desde
+  {field} detalle
 }
 entity AdjuntoTarea {
   * identificador

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Rehace la sección de Operaciones del documento de Diseño (§4.21).
+"""Rehace el catálogo de operaciones del Documento 2 (§2.2) y la sección de Operaciones del
+documento de Diseño (§4.21).
 
     python3 generar-operaciones.py
 
@@ -46,6 +47,23 @@ texto = "\n".join(s)
 
 d = open(D + "3-Diseño.md", encoding="utf-8").read()
 ini = d.index("### 4.21 Operaciones del sistema")
-fin = d.index("\n## 5. Diagrama de Clases de Diseño")
+fin = min(x for x in (d.find("\n### ", ini + 5), d.find("\n## ", ini + 5)) if x != -1)
 open(D + "3-Diseño.md", "w", encoding="utf-8").write(d[:ini] + texto + d[fin:])
 print(f"§4.21: {len(filas)} operaciones | {c_dsd} con diagrama | {c_con} con contrato")
+
+# Documento 2 §2.2: el catálogo, con el recuento de operaciones y de contratos
+c_con2 = sum(1 for o in ops if o["cambiaEstado"])
+a2 = open(D + "2-Analisis.md", encoding="utf-8").read()
+ini2 = a2.index("#### Catálogo de operaciones del sistema")
+frase = re.compile(r"Son \*\*\d+ operaciones\*\*\. \*\*\d+\*\* modifican el modelo conceptual y tienen contrato; las \*\*\d+\*\* restantes")
+m = frase.search(a2, ini2)
+tabla_ini = a2.index("| Operación | Casos de uso | Actor iniciador | Cambia estado |", ini2)
+tabla_fin = a2.index("\n\n", tabla_ini)
+filas2 = ["| Operación | Casos de uso | Actor iniciador | Cambia estado |", "|---|---|---|---|"]
+filas2 += [f"| `{o['firmaConTipos']}` | {', '.join(o['casosDeUso'])} | {quien(o)} | "
+           f"{'Sí' if o['cambiaEstado'] else 'No'} |" for o, _ in filas]
+nueva = (f"Son **{len(ops)} operaciones**. **{c_con2}** modifican el modelo conceptual y tienen contrato; "
+         f"las **{len(ops) - c_con2}** restantes")
+a2 = a2[:m.start()] + nueva + a2[m.end():tabla_ini] + "\n".join(filas2) + a2[tabla_fin:]
+open(D + "2-Analisis.md", "w", encoding="utf-8").write(a2)
+print(f"Doc 2 §2.2: {len(ops)} operaciones | {c_con2} con contrato")

@@ -1,0 +1,94 @@
+classDiagram
+    direction LR
+
+    %% Caja: cajas, sesiones y libro. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class CashBoxService {
+        <<fachada>>
+        + abrirCaja(cajaId: Identificador, montoInicial: Moneda): SesionDeCaja
+        + cerrarCajaConArqueo(sesionId: Identificador, montoContado: Moneda): SesionDeCaja
+        + crearCaja(nombre: Cadena, tipo: TipoDeCaja, requiereSesion: Booleano): Caja
+        + modificarCaja(cajaId: Identificador, datos: Registro): Caja
+    }
+
+    class CashLedgerService {
+        <<fachada>>
+        + anularMovimientoDeCaja(movimientoId: Identificador, motivo: Cadena): MovimientoDeCaja
+        + registrarMovimientoDeCaja(cajaId: Identificador, sentido: SentidoDeCaja, importe: Moneda, categoriaId: Identificador, medio: MedioDeCaja, descripcion: Cadena): MovimientoDeCaja
+        + transferirEntreCajas(cajaOrigenId: Identificador, cajaDestinoId: Identificador, importe: Moneda): MovimientoDeCaja[*]
+    }
+
+    class CashCategoryService {
+        <<fachada>>
+        + crearCategoriaDeCaja(nombre: Cadena, sentido: SentidoDeCaja): CategoriaDeCaja
+        + modificarCategoriaDeCaja(categoriaId: Identificador, datos: Registro): CategoriaDeCaja
+    }
+
+    class FinanceDashboardService {
+        <<fachada>>
+        + consultarTableroFinanciero(fecha: Fecha): Registro
+    }
+
+    class Map_String_Caja["Map<String, Caja>"] {
+        <<colección>>
+        + get(clave: Cadena): Caja
+    }
+
+    class Map_String_SesionDeCaja["Map<String, SesionDeCaja>"] {
+        <<colección>>
+        + get(clave: Cadena): SesionDeCaja
+    }
+
+    class Map_String_CategoriaDeCaja["Map<String, CategoriaDeCaja>"] {
+        <<colección>>
+        + get(clave: Cadena): CategoriaDeCaja
+    }
+
+    class Map_String_MovimientoDeCaja["Map<String, MovimientoDeCaja>"] {
+        <<colección>>
+        + get(clave: Cadena): MovimientoDeCaja
+    }
+
+    class List_Caja["List<Caja>"] {
+        <<colección>>
+        + getActivas(): Caja[*]
+    }
+
+    class Caja
+    class SesionDeCaja
+    class CategoriaDeCaja
+    class MovimientoDeCaja
+    class List_AsientoComision["List<AsientoComision>"] {
+        <<colección>>
+    }
+    class List_CuentaCorriente["List<CuentaCorriente>"] {
+        <<colección>>
+    }
+    class List_RendicionChofer["List<RendicionChofer>"] {
+        <<colección>>
+    }
+    class Distribuidora
+
+    Map_String_Caja "1" o-- "0..*" Caja : elementos
+    Map_String_SesionDeCaja "1" o-- "0..*" SesionDeCaja : elementos
+    Map_String_CategoriaDeCaja "1" o-- "0..*" CategoriaDeCaja : elementos
+    Map_String_MovimientoDeCaja "1" o-- "0..*" MovimientoDeCaja : elementos
+    List_Caja "1" o-- "0..*" Caja : elementos
+    CashBoxService --> "1" Map_String_Caja : map<String, Caja>
+    CashBoxService --> "1" Map_String_SesionDeCaja : map<String, SesionDeCaja>
+    CashCategoryService --> "1" Map_String_CategoriaDeCaja : map<String, CategoriaDeCaja>
+    CashLedgerService --> "1" Map_String_Caja : map<String, Caja>
+    CashLedgerService --> "1" Map_String_CategoriaDeCaja : map<String, CategoriaDeCaja>
+    CashLedgerService --> "1" Map_String_MovimientoDeCaja : map<String, MovimientoDeCaja>
+    FinanceDashboardService --> "1" List_AsientoComision : list<AsientoComision>
+    FinanceDashboardService --> "1" List_Caja : list<Caja>
+    FinanceDashboardService --> "1" List_CuentaCorriente : list<CuentaCorriente>
+    FinanceDashboardService --> "1" List_RendicionChofer : list<RendicionChofer>
+    CashBoxService ..> Caja
+    CashBoxService ..> Distribuidora
+    CashBoxService ..> SesionDeCaja
+    CashCategoryService ..> CategoriaDeCaja
+    CashCategoryService ..> Distribuidora
+    CashLedgerService ..> Caja
+    CashLedgerService ..> MovimientoDeCaja

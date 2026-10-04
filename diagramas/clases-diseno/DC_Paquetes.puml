@@ -117,7 +117,15 @@ package "Flota y despacho" as area_Flota_y_despacho #EEF5EF {
   }
   package "fleet" as fleet {
   }
+  package "fleet-expense" as fleet_expense {
+  }
   package "gateways" as gateways {
+  }
+}
+package "Personal" as area_Personal #F5EEF3 {
+  package "employee" as employee {
+  }
+  package "attachment" as attachment {
   }
 }
 package "Soporte" as area_Soporte #F2F2F2 {
@@ -132,38 +140,94 @@ package "Soporte" as area_Soporte #F2F2F2 {
   package "health" as health {
   }
 }
+package "Stock y compras" as area_Stock_y_compras #F4EEF7 {
+  package "stock" as stock {
+  }
+  package "purchase" as purchase {
+  }
+  package "truck-load" as truck_load {
+  }
+}
+attachment ..> employee
+attachment ..> storage
 auth ..> firebase
 auth ..> users
 car ..> delivery
 car ..> fleet
+car ..> fleet_expense
+car ..> stock
+car ..> truck_load
 cart ..> customer
 cart ..> gascylinder
+cash ..> commission
+cash ..> customer_account
+cash ..> distributor
+cash ..> driver_settlement
 claims ..> customer
 claims ..> order
 claims ..> storage
+commission ..> cash
+commission ..> delivery
+commission ..> distributor
+commission ..> employee
+commission ..> gascylinder
+commission ..> order
 coverage_zone ..> distributor
 customer ..> cart
 customer ..> claims
 customer ..> user_address
+customer_account ..> customer
+customer_account ..> delivery
+customer_account ..> distributor
+customer_account ..> driver_settlement
+customer_account ..> order
 cylinder ..> distributor
 cylinder ..> notifications
 cylinder ..> order
 delivery ..> car
+delivery ..> customer_account
 delivery ..> distributor
+delivery ..> driver_settlement
+delivery ..> order
 delivery ..> users
+distributor ..> cash
+distributor ..> commission
 distributor ..> coverage_zone
+distributor ..> customer_account
 distributor ..> cylinder
 distributor ..> delivery
+distributor ..> employee
+distributor ..> fleet_expense
+distributor ..> purchase
 distributor ..> redis
+distributor ..> stock
 distributor ..> time_slot
+driver_settlement ..> cash
+driver_settlement ..> customer_account
+driver_settlement ..> delivery
+driver_settlement ..> distributor
+driver_settlement ..> email
+driver_settlement ..> employee
 email ..> firebase
 email ..> users
+employee ..> attachment
+employee ..> commission
+employee ..> delivery
+employee ..> distributor
+employee ..> fleet
+employee ..> registro
+employee ..> users
 fleet ..> car
 fleet ..> delivery
 fleet ..> distributor
 fleet ..> email
+fleet ..> employee
 fleet ..> notifications
 fleet ..> storage
+fleet_expense ..> car
+fleet_expense ..> distributor
+fleet_expense ..> email
+fleet_expense ..> employee
 gascylinder ..> distributor
 gateways ..> customer
 gateways ..> delivery
@@ -174,6 +238,7 @@ notifications ..> delivery
 notifications ..> firebase
 order ..> coverage_zone
 order ..> customer
+order ..> customer_account
 order ..> cylinder
 order ..> delivery
 order ..> fleet
@@ -182,7 +247,11 @@ order ..> incident
 order ..> notifications
 order ..> payments
 order ..> time_slot
+order ..> truck_load
 payments ..> order
+purchase ..> distributor
+purchase ..> gascylinder
+purchase ..> stock
 rating ..> delivery
 rating ..> order
 rating ..> users
@@ -191,11 +260,23 @@ registro ..> customer
 registro ..> delivery
 registro ..> firebase
 registro ..> users
+reports ..> car
 reports ..> order
 repurchase ..> customer
 repurchase ..> notifications
 repurchase ..> order
+stock ..> car
+stock ..> distributor
+stock ..> email
+stock ..> gascylinder
+stock ..> order
+stock ..> purchase
 time_slot ..> distributor
+truck_load ..> car
+truck_load ..> delivery
+truck_load ..> distributor
+truck_load ..> gascylinder
+truck_load ..> stock
 user_address ..> customer
 users ..> delivery
 users ..> firebase

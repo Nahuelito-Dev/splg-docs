@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-193 Consultar el Saldo de Vacaciones de un Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarSaldoDeVacaciones(empleadoId, anio)
+    activate SIS
+    alt el empleado existe en la distribuidora
+        SIS-->>ADM: días que corresponden, días tomados y saldo
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

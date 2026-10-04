@@ -72,6 +72,7 @@ class Cliente {
   + desmarcarPredeterminadas()
   + editarDatos(cambios: Registro)
   + getCarrito(distribuidoraId: Identificador): Carrito
+  + getCuentaCorriente(distribuidoraId: Identificador): CuentaCorriente
   + getDireccion(direccionId: Identificador): DireccionEntrega
   + getDirecciones(): DireccionEntrega[*]
   + getDireccionPredeterminada(): DireccionEntrega
@@ -85,6 +86,7 @@ class Cliente {
   + unirseASala()
   + validarRango(cantidadPorMes: Decimal)
   + validarRango(dias: Entero)
+  + validarSinCuentaCorriente(distribuidoraId: Identificador)
 }
 class DireccionEntrega {
   - calleYAltura: Cadena
@@ -102,7 +104,7 @@ class DireccionEntrega {
 class InvitacionRecompra {
   - agotamientoEstimado: FechaHora
   + «create» InvitacionRecompra(cliente: Cliente,\n      fechaEstimada: Fecha, vigencia: FechaHora)
-  + aceptar(): ItemPedido[*]
+  + aceptar(): Registro
   + validarVigencia()
 }
 class ItemSugerido {
