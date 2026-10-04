@@ -13,7 +13,13 @@ sequenceDiagram
     SRV->>+REC: esDelCliente(cliente)
     REC-->>-SRV: propio
     SRV->>+REC: getFoto()
-    REC-->>-SRV: clave
-    SRV->>+STO: getDownloadUrl(clave)
-    STO-->>-SRV: direccion
+    REC-->>-SRV: clave, direccionExterna
+    alt la fotografía está guardada en el almacenamiento
+        SRV->>+STO: getDownloadUrl(clave)
+        STO-->>-SRV: direccion
+    else sólo tiene una dirección externa http(s)
+        Note over SRV: direccion = direccionExterna
+    else no tiene fotografía
+        Note over SRV: direccion = nula
+    end
     SRV-->>-CLI: fotografia

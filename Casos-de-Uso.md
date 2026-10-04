@@ -24395,9 +24395,15 @@ sequenceDiagram
     SRV->>+REC: esDelCliente(cliente)
     REC-->>-SRV: propio
     SRV->>+REC: getFoto()
-    REC-->>-SRV: clave
-    SRV->>+STO: getDownloadUrl(clave)
-    STO-->>-SRV: direccion
+    REC-->>-SRV: clave, direccionExterna
+    alt la fotografía está guardada en el almacenamiento
+        SRV->>+STO: getDownloadUrl(clave)
+        STO-->>-SRV: direccion
+    else sólo tiene una dirección externa http(s)
+        Note over SRV: direccion = direccionExterna
+    else no tiene fotografía
+        Note over SRV: direccion = nula
+    end
     SRV-->>-CLI: fotografia
 ```
 
@@ -24409,10 +24415,10 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `ClaimsService.consultarFotoDelReclamo(...)` | `ClaimsService.getPhotoSignedDownload` (el enlace) y `ClaimsService.getPhotoFile` (el archivo) |
+| `ClaimsService.consultarFotoDelReclamo(...)` | `ClaimsService.getPhotoLink` (el enlace) y `ClaimsService.getPhotoFile` (el archivo) |
 | `Map<String, Reclamo>.get(...)` | `ClaimsService.findOne` (y `ClaimsService.findForPhoto` para el cliente): lee el reclamo por su identificador |
 | `Reclamo.esDelCliente(...)` | `ClaimsService.findForPhoto`: el cliente sólo accede a sus propios reclamos; lo demás es 404 |
-| `Reclamo.getFoto()` | `ClaimsService.photoKeyOrThrow`: la clave de la fotografía guardada en el reclamo |
+| `Reclamo.getFoto()` | `ClaimsService.getPhotoLink`: lee la clave de la fotografía guardada (`photoKey`) o, si no hay, la dirección externa http(s) (`photoUrl`); sin ninguna, el enlace es nulo |
 | `StoragePort.getDownloadUrl(...)` | `StoragePort.getSignedDownload` (por `StoragePort.getDownloadUrl`): la URL firmada de corta vigencia, o nada con el disco local |
 
 **Observaciones de diseño**

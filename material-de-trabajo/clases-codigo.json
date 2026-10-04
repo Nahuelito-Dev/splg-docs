@@ -4215,9 +4215,9 @@
     "abstracto": false
    },
    {
-    "nombre": "getPhotoSignedDownload",
+    "nombre": "getPhotoLink",
     "parametros": "id: string, distributorId: string | null, actor: ClaimActor",
-    "retorno": "Promise<SignedDownload | null>",
+    "retorno": "Promise<ClaimPhotoLink>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -4235,14 +4235,6 @@
     "parametros": "claim: Claim",
     "retorno": "Promise<string | null>",
     "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "photoKeyOrThrow",
-    "parametros": "id: string, distributorId: string | null, actor: ClaimActor",
-    "retorno": "Promise<string>",
-    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
