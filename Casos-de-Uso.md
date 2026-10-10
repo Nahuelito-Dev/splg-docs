@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **249 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **271 casos de uso**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -71,21 +71,48 @@ registrado.
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-El sistema comprende 249 casos de uso agrupados en 21 subsistemas. Se presentan tres vistas
+El sistema comprende 271 casos de uso agrupados en 21 subsistemas. Se presentan tres vistas
 complementarias, todas en notación UML: el **mapa del sistema**, de una página, que muestra
 los 21 paquetes con su cantidad de casos y qué actor participa en cuál; el **diagrama de
-contexto**, que delimita el sistema; y el **diagrama completo**, que abre los 249 casos uno
+contexto**, que delimita el sistema; y el **diagrama completo**, que abre los 271 casos uno
 por uno dentro de su paquete.
 
-**Figura — Mapa del sistema: paquetes y actores**
+**Figura — Mapa de navegación del sistema (no es un diagrama UML)**
 
-![Mapa del sistema](diagramas/uml/CU_Sistema_Mapa.png)
+![Mapa de navegación del sistema](diagramas/uml/CU_Sistema_Mapa.png)
 
 **Figura — Diagrama de contexto: actores contra subsistemas**
 
 ![Diagrama de contexto del sistema](diagramas/uml/CU_Sistema_Diagrama-De-Contexto.png)
 
-**Figura — Diagrama completo: los 249 casos de uso**
+> El diagrama completo se presenta en 6 láminas legibles, con la misma notación UML: el límite del sistema, los subsistemas como paquetes, los actores fuera del límite (asociación sin punta) y las relaciones `«include»` y `«extend»`. Juntas son el diagrama completo; un caso de uso de otra lámina que se incluye o se extiende aparece en gris, como referencia, con el número de su lámina. Después de las láminas va la vista de conjunto, con todos los casos en una sola lámina.
+
+**Figura — Diagrama de casos de uso, lámina 1 de 6: Usuarios y pedidos**
+
+![Diagrama de casos de uso, lámina 1 de 6: Usuarios y pedidos](diagramas/uml/CU_Sistema_Completo-Lamina-1.png)
+
+**Figura — Diagrama de casos de uso, lámina 2 de 6: Despacho, entrega y posventa**
+
+![Diagrama de casos de uso, lámina 2 de 6: Despacho, entrega y posventa](diagramas/uml/CU_Sistema_Completo-Lamina-2.png)
+
+**Figura — Diagrama de casos de uso, lámina 3 de 6: Choferes y flota**
+
+![Diagrama de casos de uso, lámina 3 de 6: Choferes y flota](diagramas/uml/CU_Sistema_Completo-Lamina-3.png)
+
+**Figura — Diagrama de casos de uso, lámina 4 de 6: Productos, envases y compras**
+
+![Diagrama de casos de uso, lámina 4 de 6: Productos, envases y compras](diagramas/uml/CU_Sistema_Completo-Lamina-4.png)
+
+**Figura — Diagrama de casos de uso, lámina 5 de 6: Personal y caja**
+
+![Diagrama de casos de uso, lámina 5 de 6: Personal y caja](diagramas/uml/CU_Sistema_Completo-Lamina-5.png)
+
+**Figura — Diagrama de casos de uso, lámina 6 de 6: Administración y plataforma**
+
+![Diagrama de casos de uso, lámina 6 de 6: Administración y plataforma](diagramas/uml/CU_Sistema_Completo-Lamina-6.png)
+
+
+**Figura — Diagrama completo: los 271 casos de uso**
 
 ![Diagrama completo de casos de uso](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
@@ -111,7 +138,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-001 Iniciar Sesión | SS-01 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-002 Registrarse como Cliente | SS-01 | ACT-01 | Crítico | Implementado |
 | CU-003 Registrar Chofer | SS-01 | ACT-03 | Crítico | Implementado |
-| CU-004 Gestionar Perfil de Usuario | SS-01 | ACT-01, ACT-02 | Importante | Implementado |
+| CU-004 Consultar el Perfil de Usuario | SS-01 | ACT-01, ACT-02 | Importante | Implementado |
 | CU-005 Crear Pedido | SS-02 | ACT-01 | Crítico | Implementado |
 | CU-006 Consultar Detalle de Pedido | SS-02 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-007 Consultar Historial de Pedidos | SS-02 | ACT-01 | Importante | Implementado |
@@ -129,7 +156,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-019 Avisar Llegada al Cliente | SS-04 | ACT-02 | Importante | Implementado |
 | CU-020 Confirmar Entrega | SS-04 | ACT-02 | Crítico | Implementado, con funcionalidad planificada (I-13) |
 | CU-021 Recibir Notificaciones en Tiempo Real | SS-04 | ACT-01 | Crítico | Implementado |
-| CU-022 Activar / Desactivar Disponibilidad | SS-04 | ACT-02 | Crítico | Implementado |
+| CU-022 Activar la Disponibilidad | SS-04 | ACT-02 | Crítico | Implementado |
 | CU-023 Registrar Reclamo | SS-05 | ACT-01 | Importante | Implementado |
 | CU-024 Listar Reclamos | SS-05 | ACT-03 | Importante | Implementado |
 | CU-025 Resolver Reclamo | SS-05 | ACT-03 | Importante | Implementado |
@@ -139,15 +166,15 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-029 Ver Reporte por Método de Pago | SS-06 | ACT-03 | Secundario | Implementado |
 | CU-030 Ver Gráfico de Ventas (últimos 7 días) | SS-06 | ACT-03 | Secundario | Implementado |
 | CU-031 Registrar Chofer | SS-07 | ACT-03 | Crítico | Implementado |
-| CU-032 Validar / Invalidar Chofer | SS-07 | ACT-03 | Crítico | Implementado |
-| CU-033 Activar / Desactivar Chofer (Admin) | SS-07 | ACT-03 | Importante | Implementado |
+| CU-032 Validar un Chofer | SS-07 | ACT-03 | Crítico | Implementado |
+| CU-033 Activar un Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-034 Registrar Vehículo del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-035 Consultar Listado de Choferes | SS-07 | ACT-03 | Importante | Implementado |
 | CU-036 Crear Producto (Garrafa) | SS-08 | ACT-03 | Crítico | Implementado |
 | CU-037 Actualizar Precio de Producto | SS-08 | ACT-03 | Crítico | Implementado |
 | CU-038 Actualizar Stock de Producto | SS-08 | ACT-03 | Crítico | Implementado, con funcionalidad planificada (I-13) |
 | CU-039 Configurar Promociones por Cantidad | SS-08 | ACT-03 | Importante | Implementado |
-| CU-040 Activar / Desactivar Producto | SS-08 | ACT-03 | Importante | Implementado, con funcionalidad planificada (I-1) |
+| CU-040 Desactivar un Producto | SS-08 | ACT-03 | Importante | Implementado |
 | CU-041 Consultar Catálogo de Productos | SS-08 | ACT-01, ACT-03 | Crítico | Implementado |
 | CU-042 Crear Franja Horaria | SS-09 | ACT-03 | Importante | Implementado |
 | CU-043 Modificar Capacidad de Franja Horaria | SS-09 | ACT-03 | Importante | Planificado (I-1) |
@@ -157,7 +184,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-047 Recuperar Contraseña | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
 | CU-048 Procesar Pago con MercadoPago | SS-14 | ACT-04 | Crítico | Implementado |
 | CU-049 Consultar Balance / Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante | Implementado |
-| CU-050 Bloquear / Desbloquear Usuario | SS-01 | ACT-03 | Secundario | Implementado |
+| CU-050 Bloquear un Usuario | SS-01 | ACT-03 | Secundario | Implementado |
 | CU-051 Consultar Listado de Vehículos | SS-07 | ACT-03 | Importante | Implementado |
 | CU-052 Registrar Distribuidora | SS-10 | ACT-05 | Crítico | Implementado |
 | CU-053 Consultar Distribuidoras | SS-10 | ACT-05 | Crítico | Implementado |
@@ -190,13 +217,13 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-080 Consultar el Pool de Pedidos Disponibles | SS-02 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-081 Consultar los Pedidos Asignados al Chofer | SS-02 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-082 Crear Usuario Base | SS-01 | ACT-01, ACT-02, ACT-03, ACT-04 | Importante | Implementado |
-| CU-083 Buscar / Listar Usuarios | SS-01 | ACT-03 | Importante | Implementado |
+| CU-083 Listar los Usuarios | SS-01 | ACT-03 | Importante | Implementado |
 | CU-084 Verificar Existencia de Usuario (pre-registro) | SS-01 | ACT-01, ACT-02, ACT-03, ACT-04 | Importante | Implementado |
 | CU-085 Eliminar Usuario (baja lógica) | SS-01 | ACT-03 | Importante | Implementado |
 | CU-086 Registrar Administrador | SS-16 | ACT-03 | Importante | Implementado |
 | CU-087 Crear el Primer Super Administrador (bootstrap) | SS-16 | ACT-01, ACT-02, ACT-03, ACT-04 | Importante | Implementado |
 | CU-088 Consultar Administradores | SS-16 | ACT-03 | Secundario | Implementado |
-| CU-089 Gestionar Roles del Sistema | SS-16 | ACT-05 | Importante | Implementado |
+| CU-089 Consultar los Roles | SS-16 | ACT-05 | Importante | Implementado |
 | CU-090 Sembrar los Roles Iniciales | SS-16 | ACT-05 | Importante | Implementado |
 | CU-091 Validar Vigencia del Token de Sesión | SS-01 | ACT-01, ACT-02, ACT-03, ACT-05 | Secundario | Implementado |
 | CU-092 Consultar Listado de Clientes | SS-16 | ACT-03 | Importante | Implementado |
@@ -282,17 +309,17 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-173 Configurar la Frecuencia de las Tareas Programadas | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
 | CU-174 Adjuntar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Importante | Implementado |
 | CU-175 Consultar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Secundario | Implementado |
-| CU-176 Gestionar los Puestos de Trabajo | SS-19 | ACT-03 | Importante | Planificado (I-11) |
-| CU-177 Registrar el Legajo de un Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
-| CU-178 Modificar el Legajo de un Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
-| CU-179 Consultar el Legajo de un Empleado | SS-19 | ACT-03, ACT-05 | Importante | Planificado (I-11) |
-| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Planificado (I-11) |
-| CU-181 Registrar el Egreso de un Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
-| CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
+| CU-176 Consultar los Puestos de Trabajo | SS-19 | ACT-03 | Importante | Implementado |
+| CU-177 Registrar el Legajo de un Empleado | SS-19 | ACT-03 | Crítico | Implementado |
+| CU-178 Modificar el Legajo de un Empleado | SS-19 | ACT-03 | Importante | Implementado, con funcionalidad planificada (I-11) |
+| CU-179 Consultar el Legajo de un Empleado | SS-19 | ACT-03, ACT-05 | Importante | Implementado |
+| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Implementado, con funcionalidad planificada (I-11) |
+| CU-181 Registrar el Egreso de un Empleado | SS-19 | ACT-03 | Crítico | Implementado, con funcionalidad planificada (I-13) |
+| CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | ACT-03 | Importante | Implementado |
 | CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
 | CU-184 Registrar el Examen Psicofísico del Empleado | SS-19 | ACT-03 | Crítico | Planificado (I-11) |
 | CU-185 Registrar el Alta en la ART del Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
-| CU-186 Adjuntar un Archivo al Legajo | SS-19 | ACT-03 | Secundario | Planificado (I-11) |
+| CU-186 Adjuntar un Archivo al Legajo | SS-19 | ACT-03 | Secundario | Implementado |
 | CU-187 Consultar los Vencimientos del Personal | SS-19 | ACT-03 | Importante | Planificado (I-11) |
 | CU-188 Avisar los Vencimientos Próximos del Personal | SS-19 | ACT-04 | Importante | Planificado (I-11) |
 | CU-189 Registrar la Asistencia de un Empleado | SS-19 | ACT-03 | Importante | Planificado (I-11) |
@@ -313,14 +340,14 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-204 Consultar el Tablero de Costos de la Flota | SS-07 | ACT-03 | Importante | Planificado (I-12) |
 | CU-205 Registrar un Neumático | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
 | CU-206 Registrar un Movimiento de Neumático | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
-| CU-207 Gestionar los Depósitos | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-207 Consultar los Depósitos | SS-08 | ACT-03 | Importante | Planificado (I-13) |
 | CU-208 Consultar el Stock por Ubicación | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
 | CU-209 Consultar los Movimientos de Stock | SS-08 | ACT-03 | Importante | Planificado (I-13) |
 | CU-210 Configurar el Stock Mínimo | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
 | CU-211 Avisar el Stock Bajo | SS-08 | ACT-04 | Importante | Planificado (I-13) |
 | CU-212 Transferir Stock entre Depósitos | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
 | CU-213 Registrar un Ajuste o una Merma de Stock | SS-08 | ACT-03 | Importante | Planificado (I-13) |
-| CU-214 Gestionar los Proveedores | SS-20 | ACT-03 | Importante | Planificado (I-13) |
+| CU-214 Consultar los Proveedores | SS-20 | ACT-03 | Importante | Planificado (I-13) |
 | CU-215 Emitir una Orden de Compra | SS-20 | ACT-03 | Importante | Planificado (I-13) |
 | CU-216 Cancelar una Orden de Compra | SS-20 | ACT-03 | Secundario | Planificado (I-13) |
 | CU-217 Registrar la Recepción de una Compra | SS-20 | ACT-03 | Crítico | Planificado (I-13) |
@@ -331,12 +358,12 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-222 Cerrar la Rendición de Stock del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
 | CU-223 Consultar la Carga Actual del Camión | SS-08 | ACT-02 | Secundario | Planificado (I-13) |
 | CU-224 Conciliar el Stock Vendible con el Físico | SS-08 | ACT-03, ACT-04 | Importante | Planificado (I-13) |
-| CU-225 Gestionar las Cajas | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-225 Crear una Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
 | CU-226 Abrir la Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
 | CU-227 Cerrar la Caja con Arqueo | SS-21 | ACT-03 | Crítico | Planificado (I-14) |
 | CU-228 Registrar un Ingreso o Egreso de Caja | SS-21 | ACT-03 | Crítico | Planificado (I-14) |
 | CU-229 Anular un Movimiento de Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
-| CU-230 Gestionar las Categorías de Ingresos y Gastos | SS-21 | ACT-03 | Secundario | Planificado (I-14) |
+| CU-230 Crear una Categoría de Ingresos y Gastos | SS-21 | ACT-03 | Secundario | Planificado (I-14) |
 | CU-231 Generar la Rendición Diaria del Chofer | SS-21 | ACT-04 | Importante | Planificado (I-14) |
 | CU-232 Declarar el Efectivo Rendido | SS-21 | ACT-02, ACT-03 | Crítico | Planificado (I-14) |
 | CU-233 Aprobar la Rendición del Chofer | SS-21 | ACT-03 | Crítico | Planificado (I-14) |
@@ -357,21 +384,43 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-248 Verificar la Carga de Camión Abierta del Chofer | SS-08 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (I-13) |
 | CU-249 Configurar el Control de Carga de Camión Abierta | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
 | CU-250 Aplicar un Movimiento de Stock | SS-08 | ACT-03, ACT-04 | Crítico | Planificado (I-13) |
+| CU-251 Modificar el Perfil de Usuario | SS-01 | ACT-01, ACT-02 | Importante | Implementado |
+| CU-252 Crear un Rol | SS-16 | ACT-05 | Importante | Implementado |
+| CU-253 Modificar un Rol | SS-16 | ACT-05 | Importante | Implementado |
+| CU-254 Eliminar un Rol | SS-16 | ACT-05 | Importante | Implementado |
+| CU-255 Crear un Puesto de Trabajo | SS-19 | ACT-03 | Importante | Implementado |
+| CU-256 Modificar un Puesto de Trabajo | SS-19 | ACT-03 | Importante | Implementado |
+| CU-257 Eliminar un Puesto de Trabajo | SS-19 | ACT-03 | Importante | Implementado |
+| CU-258 Registrar un Depósito | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-259 Modificar un Depósito | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-260 Dar de Baja un Depósito | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-261 Registrar un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
+| CU-262 Modificar un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
+| CU-263 Dar de Baja un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
+| CU-264 Modificar una Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
+| CU-265 Modificar una Categoría de Ingresos y Gastos | SS-21 | ACT-03 | Secundario | Planificado (I-14) |
+| CU-266 Desactivar la Disponibilidad | SS-04 | ACT-02 | Crítico | Implementado |
+| CU-267 Desactivar un Chofer | SS-07 | ACT-03 | Importante | Implementado |
+| CU-268 Reactivar un Producto | SS-08 | ACT-03 | Importante | Planificado (I-1) |
+| CU-269 Consultar los Productos Inactivos | SS-08 | ACT-03 | Importante | Planificado (I-1) |
+| CU-270 Desbloquear un Usuario | SS-01 | ACT-03 | Secundario | Implementado |
+| CU-271 Invalidar un Chofer | SS-07 | ACT-03 | Crítico | Implementado |
+| CU-272 Buscar un Usuario | SS-01 | ACT-03 | Importante | Implementado |
 
 ### Resumen
 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
-| **Crítico** | 49 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153, CU-171, CU-177, CU-181, CU-183, CU-184 |
-| **Importante** | 113 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-246 |
-| **Secundario** | 30 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194 |
+| **Crítico** | 64 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153, CU-171, CU-177, CU-181, CU-183, CU-184, CU-197, CU-208, CU-217, CU-218, CU-220, CU-222, CU-227, CU-228, CU-232, CU-233, CU-236, CU-237, CU-250, CU-266, CU-271 |
+| **Importante** | 160 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272 |
+| **Secundario** | 45 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-244, CU-249, CU-265, CU-270 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **194** | CU-001 a CU-194 y CU-246, sin CU-093 |
+| **Total** | **271** | CU-001 a CU-272, sin CU-093 |
 
 > **CU-093 (Validar o Invalidar Cliente) se dio de baja el 26/09/2026.** Los clientes se registran y compran sin aprobación previa: la marca no condicionaba ningún pedido y sólo sumaba trabajo al administrador. El número queda reservado para no renumerar los demás casos. Los choferes siguen validándose (CU-032).
 
-Los recuentos salen del catálogo de arriba y se verifican contra él: los 194
-códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU-093, dado de baja.
+Los recuentos salen del catálogo de arriba y se verifican contra él: los 271
+códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de baja.
 
 ---
 
@@ -408,11 +457,20 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ---
 
 
-**Código:** CU-004 | **Caso de Uso:** Gestionar Perfil de Usuario  
+**Código:** CU-004 | **Caso de Uso:** Consultar el Perfil de Usuario  
 **Actor/es:** Cliente (ACT-01), Chofer (ACT-02)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Importante  
-**Descripción:** El usuario actualiza su información personal desde la app: nombre completo y número de teléfono. Los cambios se persisten en la base de datos y se reflejan inmediatamente en las apps y en el panel del administrador.
+**Descripción:** El usuario consulta su información personal desde la app: nombre completo, correo, número de teléfono, foto y rol y, si es cliente, su ficha con las direcciones de entrega. Un usuario sólo ve su propio perfil.
+
+---
+
+
+**Código:** CU-251 | **Caso de Uso:** Modificar el Perfil de Usuario  
+**Actor/es:** Cliente (ACT-01), Chofer (ACT-02)  
+**Subsistema:** SS-01 Autenticación y Usuarios  
+**Calificación:** Importante  
+**Descripción:** El usuario actualiza su información personal desde la app: nombre completo, número de teléfono y foto. Los cambios se persisten en la base de datos y se reflejan inmediatamente en las apps y en el panel del administrador.
 
 ---
 
@@ -430,11 +488,20 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 
 
 
-**Código:** CU-050 | **Caso de Uso:** Bloquear / Desbloquear Usuario  
+**Código:** CU-050 | **Caso de Uso:** Bloquear un Usuario  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Secundario  
-**Descripción:** El administrador marca o desmarca a un usuario —cliente o chofer— como bloqueado desde el panel web, por motivos de moderación o seguridad. Un usuario bloqueado no puede iniciar sesión ni operar: la guardia de autenticación rechaza toda solicitud de su cuenta mientras la marca esté puesta.
+**Descripción:** El administrador marca a un usuario —cliente o chofer— como bloqueado desde el panel web, por motivos de moderación o seguridad. Un usuario bloqueado no puede iniciar sesión ni operar: la guardia de autenticación rechaza toda solicitud de su cuenta mientras la marca esté puesta.
+
+---
+
+
+**Código:** CU-270 | **Caso de Uso:** Desbloquear un Usuario  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-01 Autenticación y Usuarios  
+**Calificación:** Secundario  
+**Descripción:** El administrador desmarca a un usuario —cliente o chofer— como bloqueado desde el panel web. El usuario vuelve a poder iniciar sesión y operar.
 
 ---
 
@@ -450,11 +517,20 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ---
 
 
-**Código:** CU-083 | **Caso de Uso:** Buscar / Listar Usuarios  
+**Código:** CU-083 | **Caso de Uso:** Listar los Usuarios  
 **Actor/es:** ACT-03 Administrador  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Importante  
-**Descripción:** El sistema busca usuarios globales aplicando filtros públicos como email o celular.
+**Descripción:** El sistema lista los usuarios globales con paginación y búsqueda por texto libre sobre correo, nombre y teléfono.
+
+---
+
+
+**Código:** CU-272 | **Caso de Uso:** Buscar un Usuario  
+**Actor/es:** ACT-03 Administrador  
+**Subsistema:** SS-01 Autenticación y Usuarios  
+**Calificación:** Importante  
+**Descripción:** El sistema busca un usuario puntual por su correo o por su teléfono.
 
 ---
 
@@ -887,11 +963,20 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ---
 
 
-**Código:** CU-022 | **Caso de Uso:** Activar / Desactivar Disponibilidad (Chofer)  
+**Código:** CU-022 | **Caso de Uso:** Activar la Disponibilidad  
 **Actor/es:** Chofer (ACT-02)  
 **Subsistema:** SS-04 Seguimiento en Tiempo Real  
 **Calificación:** Crítico  
-**Descripción:** El chofer activa o desactiva su disponibilidad para recibir pedidos mediante un interruptor en la app. Al desactivarse, el sistema lo retira del radar geográfico que usa el despacho para elegir candidatos. Al activarse, en cambio, no se lo reinserta de inmediato: recién vuelve a aparecer en el radar cuando su app emite una nueva posición.
+**Descripción:** El chofer activa su disponibilidad para recibir pedidos mediante un interruptor en la app. Al activarse no se lo reinserta de inmediato en el radar geográfico que usa el despacho para elegir candidatos: recién vuelve a aparecer cuando su app emite una nueva posición.
+
+---
+
+
+**Código:** CU-266 | **Caso de Uso:** Desactivar la Disponibilidad  
+**Actor/es:** Chofer (ACT-02)  
+**Subsistema:** SS-04 Seguimiento en Tiempo Real  
+**Calificación:** Crítico  
+**Descripción:** El chofer desactiva su disponibilidad para recibir pedidos mediante un interruptor en la app. Al desactivarse, el sistema lo retira del radar geográfico que usa el despacho para elegir candidatos.
 
 ---
 
@@ -966,7 +1051,7 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 **Actor/es:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-05 Reclamos  
 **Calificación:** Importante  
-**Descripción:** El cliente adjunta una fotografía como evidencia de su reclamo, al registrarlo o después, mientras el reclamo no esté resuelto ni rechazado. La imagen (JPG, PNG o WEBP, de hasta 10 MB, validada por su contenido) se guarda en el almacenamiento de archivos del sistema y el reclamo conserva su referencia. Endpoint: `POST /claims/:id/photo`, con la imagen en un formulario multipart.
+**Descripción:** El cliente adjunta una fotografía como evidencia de su reclamo, al registrarlo o después, mientras el reclamo no esté resuelto ni rechazado. La imagen (JPG, PNG o WEBP, de hasta 10 MB, validada por su contenido) se guarda en Amazon S3, en un bucket privado, y el reclamo conserva su referencia. Endpoint: `POST /claims/:id/photo`, con la imagen en un formulario multipart.
 
 ---
 
@@ -974,7 +1059,7 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 **Actor/es:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-05 Reclamos  
 **Calificación:** Secundario  
-**Descripción:** El cliente y el administrador ven la fotografía que respalda un reclamo, aunque el reclamo esté cerrado. El sistema la entrega por una URL firmada del proveedor de almacenamiento o, con el disco local, sirviendo el archivo; con `?modo=url` devuelve el enlace en JSON. Endpoint: `GET /claims/:id/photo`.
+**Descripción:** El cliente y el administrador ven la fotografía que respalda un reclamo, aunque el reclamo esté cerrado. El sistema la entrega por una URL firmada de S3, de corta vigencia, a la que redirige; con `?modo=url` devuelve el enlace en JSON. Endpoint: `GET /claims/:id/photo`.
 
 ---
 
@@ -1038,20 +1123,38 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ---
 
 
-**Código:** CU-032 | **Caso de Uso:** Validar / Invalidar Chofer  
+**Código:** CU-032 | **Caso de Uso:** Validar un Chofer  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Crítico  
-**Descripción:** El administrador marca a un chofer como validado o le retira esa marca desde el panel web. Es un dato declarativo que queda registrado y alimenta el conteo de choferes habilitados del panel de control, pero no condiciona la operación real del chofer: invalidar a un chofer no le impide seguir apareciendo en el radar de asignación ni seguir aceptando pedidos. El único control que sí tiene efecto sobre si un chofer puede operar es su estado de actividad (CU-033).
+**Descripción:** El administrador marca a un chofer como validado desde el panel web. Es un dato declarativo que queda registrado y alimenta el conteo de choferes habilitados del panel de control, pero no condiciona la operación real del chofer. El único control que sí tiene efecto sobre si un chofer puede operar es su estado de actividad (CU-033).
 
 ---
 
 
-**Código:** CU-033 | **Caso de Uso:** Activar / Desactivar Chofer (Admin)  
+**Código:** CU-271 | **Caso de Uso:** Invalidar un Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Crítico  
+**Descripción:** El administrador retira a un chofer la marca de validado desde el panel web. Es un dato declarativo: invalidar a un chofer no le impide seguir apareciendo en el radar de asignación ni seguir aceptando pedidos. El único control que sí tiene efecto sobre si un chofer puede operar es su estado de actividad (CU-267).
+
+---
+
+
+**Código:** CU-033 | **Caso de Uso:** Activar un Chofer  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** El administrador puede activar o desactivar un chofer desde el panel web independientemente de la disponibilidad que el chofer declare desde su app. Útil para suspender temporalmente a un chofer sin revocar su validación.
+**Descripción:** El administrador puede activar un chofer desde el panel web independientemente de la disponibilidad que el chofer declare desde su app. Es el modo de volver a habilitar a un chofer que se suspendió temporalmente (CU-267) sin tocar su validación.
+
+---
+
+
+**Código:** CU-267 | **Caso de Uso:** Desactivar un Chofer  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-07 Gestión de Choferes y Vehículos  
+**Calificación:** Importante  
+**Descripción:** El administrador puede desactivar un chofer desde el panel web independientemente de la disponibilidad que el chofer declare desde su app. Útil para suspender temporalmente a un chofer sin revocar su validación.
 
 ---
 
@@ -1268,7 +1371,7 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 **Actor/es:** — (caso incluido)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Importante  
-**Descripción:** Guarda el contenido de un archivo en el almacenamiento activo —disco local o Amazon S3, según la configuración— detrás de un puerto único. Lo incluye CU-155.
+**Descripción:** Guarda el contenido de un archivo en Amazon S3, el único proveedor de archivos del sistema, en un bucket privado. Lo incluyen CU-155 y CU-174.
 
 ---
 
@@ -1277,7 +1380,7 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 **Actor/es:** — (caso incluido)  
 **Subsistema:** SS-07 Gestión de Choferes y Vehículos  
 **Calificación:** Secundario  
-**Descripción:** Resuelve cómo servir el contenido de un archivo ya guardado: una URL firmada si el almacenamiento la ofrece (S3), o un flujo de lectura servido por este backend si no (disco local). Lo incluye CU-157.
+**Descripción:** Resuelve cómo entregar el contenido de un archivo ya guardado: una URL firmada de S3, de corta vigencia, con la que el archivo se baja directo del bucket privado. Lo incluyen CU-157 y CU-175.
 
 ---
 
@@ -1476,11 +1579,29 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ---
 
 
-**Código:** CU-040 | **Caso de Uso:** Activar / Desactivar Producto  
+**Código:** CU-040 | **Caso de Uso:** Desactivar un Producto  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El administrador puede dar de baja un producto del catálogo. El producto deja de aparecer en la App Cliente y no puede seleccionarse en nuevos pedidos, aunque el stock y el resto de sus datos se conservan intactos. La operación no tiene reversa: la reactivación de un producto dado de baja y la vista para localizarlo desde el panel están planificadas (I-1).
+**Descripción:** El administrador puede dar de baja un producto del catálogo. El producto deja de aparecer en la App Cliente y no puede seleccionarse en nuevos pedidos, aunque el stock y el resto de sus datos se conservan intactos. La reactivación de un producto dado de baja (CU-268) y la vista para localizarlo desde el panel (CU-269) están planificadas (I-1).
+
+---
+
+
+**Código:** CU-268 | **Caso de Uso:** Reactivar un Producto  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador reactiva un producto dado de baja del catálogo de su distribuidora. El producto vuelve a aparecer en la App Cliente y a poder seleccionarse en nuevos pedidos, con su stock y sus promociones intactos. Endpoint: `PATCH /gascylinder/:id/activate`.
+
+---
+
+
+**Código:** CU-269 | **Caso de Uso:** Consultar los Productos Inactivos  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta los productos de su distribuidora que fueron dados de baja, para ubicar el que quiere reactivar. Endpoint: `GET /gascylinder/inactive`.
 
 ---
 
@@ -1913,11 +2034,38 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ---
 
 
-**Código:** CU-089 | **Caso de Uso:** Gestionar Roles del Sistema  
+**Código:** CU-089 | **Caso de Uso:** Consultar los Roles  
 **Actor/es:** ACT-05 Administrador General  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El sistema crea, edita, muestra o da de baja roles nativos de la plataforma mediante el ABM.
+**Descripción:** El Administrador General consulta el catálogo de roles nativos de la plataforma: los lista o consulta uno puntual.
+
+---
+
+
+**Código:** CU-252 | **Caso de Uso:** Crear un Rol  
+**Actor/es:** ACT-05 Administrador General  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El Administrador General da de alta un rol en el catálogo de roles de la plataforma.
+
+---
+
+
+**Código:** CU-253 | **Caso de Uso:** Modificar un Rol  
+**Actor/es:** ACT-05 Administrador General  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El Administrador General modifica un rol del catálogo de roles de la plataforma. Los cuatro roles del sistema no se pueden modificar.
+
+---
+
+
+**Código:** CU-254 | **Caso de Uso:** Eliminar un Rol  
+**Actor/es:** ACT-05 Administrador General  
+**Subsistema:** SS-16 Administración de Cuentas y Roles  
+**Calificación:** Importante  
+**Descripción:** El Administrador General da de baja un rol del catálogo de roles de la plataforma, siempre que no sea uno de los del sistema ni tenga usuarios asignados.
 
 ---
 
@@ -2048,7 +2196,7 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 **Actor/es:** ACT-03 Administrador, ACT-05 Administrador General  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Importante  
-**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo, desde qué aplicación y con qué resultado. Puede filtrar por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa?". El administrador de una distribuidora ve sólo los asientos de ella; el Administrador General, los de todas o los de la distribuidora que elija.
+**Descripción:** El administrador consulta qué se hizo en el sistema: quién realizó cada operación que modificó datos, sobre qué, cuándo, desde qué aplicación y con qué resultado. Puede filtrar por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Además consulta la auditoría de datos: qué registro de qué entidad se dio de alta, se modificó, se dio de baja o se reactivó, quién lo hizo y, campo por campo, con qué valor anterior y qué valor nuevo (el modelo de la cátedra: Auditoria, DetalleAuditoria y TipoAccionAuditoria). Es la respuesta a "¿quién canceló este pedido?" o "¿quién le cambió el precio a esta garrafa y cuánto valía antes?". El administrador de una distribuidora ve sólo lo de ella; el Administrador General, lo de todas o lo de la distribuidora que elija.
 
 ---
 
@@ -2057,7 +2205,7 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 **Actor/es:** Sistema (ACT-04)  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Crítico  
-**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos —alta, modificación o baja—, exitosa o rechazada: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, y la propia base de datos lo impide, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña.
+**Descripción:** El sistema deja constancia, por iniciativa propia y sin que nadie lo pida, de cada operación que modifica datos —alta, modificación o baja—, exitosa o rechazada: quién la hizo, sobre qué recurso, desde qué aplicación y con qué resultado. El registro no se puede modificar ni borrar, y la propia base de datos lo impide, porque un registro editable no prueba nada. Las credenciales nunca se guardan: de una operación de acceso queda que ocurrió y si fue exitosa, nunca la contraseña. Además deja, por cada registro de una entidad de negocio que se da de alta, se modifica, se da de baja o se reactiva, una auditoría con el detalle de los campos que cambiaron, dentro de la misma transacción del cambio.
 
 ---
 
@@ -2081,11 +2229,38 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ### SS-19 — Personal y Legajos
 
 
-**Código:** CU-176 | **Caso de Uso:** Gestionar los Puestos de Trabajo  
+**Código:** CU-176 | **Caso de Uso:** Consultar los Puestos de Trabajo  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-19 Personal y Legajos  
 **Calificación:** Importante  
-**Descripción:** El administrador mantiene el catálogo de puestos de trabajo de su distribuidora (chofer, ayudante, depósito, administración, vendedor y los que agregue), cada uno con una categoría que gobierna las reglas que se le aplican al personal que lo ocupa; el nombre del puesto es libre. Puede consultarlos, crearlos, modificarlos y darlos de baja mientras no tengan empleados activos.
+**Descripción:** El administrador consulta el catálogo de puestos de trabajo de su distribuidora (chofer, ayudante, depósito, administración, vendedor y los que agregue), cada uno con una categoría que gobierna las reglas que se le aplican al personal que lo ocupa y con la cantidad de empleados activos que lo ocupan.
+
+---
+
+
+**Código:** CU-255 | **Caso de Uso:** Crear un Puesto de Trabajo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador crea un puesto de trabajo en su distribuidora, con un nombre libre y una categoría que gobierna las reglas que se le aplican al personal que lo ocupa.
+
+---
+
+
+**Código:** CU-256 | **Caso de Uso:** Modificar un Puesto de Trabajo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador modifica el nombre, la categoría o la marca de activo de un puesto de trabajo de su distribuidora.
+
+---
+
+
+**Código:** CU-257 | **Caso de Uso:** Eliminar un Puesto de Trabajo  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-19 Personal y Legajos  
+**Calificación:** Importante  
+**Descripción:** El administrador da de baja un puesto de trabajo de su distribuidora, mientras no tenga empleados activos.
 
 ---
 
@@ -2243,11 +2418,38 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 
 ### SS-08 — Gestión de Productos e Inventario (ampliación: stock físico y carga del camión, I-13)
 
-**Código:** CU-207 | **Caso de Uso:** Gestionar los Depósitos  
+**Código:** CU-207 | **Caso de Uso:** Consultar los Depósitos  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El administrador da de alta, edita, consulta y da de baja los depósitos y sucursales de su distribuidora, que son los lugares donde se guarda el stock físico. El primer depósito que se crea queda como predeterminado. Endpoints: `GET /warehouses`, `POST /warehouses`, `PATCH /warehouses/:id` y `DELETE /warehouses/:id`.
+**Descripción:** El administrador consulta los depósitos y sucursales de su distribuidora, que son los lugares donde se guarda el stock físico. Endpoint: `GET /warehouses`.
+
+---
+
+
+**Código:** CU-258 | **Caso de Uso:** Registrar un Depósito  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador da de alta un depósito o sucursal de su distribuidora. El primer depósito que se crea queda como predeterminado. Endpoint: `POST /warehouses`.
+
+---
+
+
+**Código:** CU-259 | **Caso de Uso:** Modificar un Depósito  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador modifica los datos de un depósito o sucursal de su distribuidora. Endpoint: `PATCH /warehouses/:id`.
+
+---
+
+
+**Código:** CU-260 | **Caso de Uso:** Dar de Baja un Depósito  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador da de baja un depósito o sucursal de su distribuidora; la baja es lógica y sólo se admite cuando el depósito no tiene saldo. Endpoint: `DELETE /warehouses/:id`.
 
 ---
 
@@ -2381,11 +2583,38 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 
 ### SS-20 — Compras (I-13)
 
-**Código:** CU-214 | **Caso de Uso:** Gestionar los Proveedores  
+**Código:** CU-214 | **Caso de Uso:** Consultar los Proveedores  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-20 Compras  
 **Calificación:** Importante  
-**Descripción:** El administrador da de alta, edita, consulta y da de baja a los proveedores de la distribuidora, principalmente las plantas de llenado a las que se compra gas. Endpoints: `GET /suppliers`, `POST /suppliers`, `PATCH /suppliers/:id` y `DELETE /suppliers/:id`.
+**Descripción:** El administrador consulta los proveedores de la distribuidora, principalmente las plantas de llenado a las que se compra gas, con o sin un término de búsqueda. Endpoint: `GET /suppliers`.
+
+---
+
+
+**Código:** CU-261 | **Caso de Uso:** Registrar un Proveedor  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador da de alta a un proveedor de la distribuidora, principalmente una planta de llenado a la que se compra gas. Endpoint: `POST /suppliers`.
+
+---
+
+
+**Código:** CU-262 | **Caso de Uso:** Modificar un Proveedor  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador modifica los datos de un proveedor de la distribuidora. Endpoint: `PATCH /suppliers/:id`.
+
+---
+
+
+**Código:** CU-263 | **Caso de Uso:** Dar de Baja un Proveedor  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador da de baja a un proveedor de la distribuidora; la baja es lógica y conserva el historial de compras. Endpoint: `DELETE /suppliers/:id`.
 
 ---
 
@@ -2416,11 +2645,20 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ### SS-21 — Caja, Rendiciones y Cuentas Corrientes
 
 
-**Código:** CU-225 | **Caso de Uso:** Gestionar las Cajas  
+**Código:** CU-225 | **Caso de Uso:** Crear una Caja  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
 **Calificación:** Importante  
-**Descripción:** El administrador da de alta, edita y desactiva desde el panel las cajas de su distribuidora —efectivo, banco o billetera—. Cada caja lleva su saldo, que sólo cambia por movimientos del libro. Cada distribuidora tiene sembrada una «Caja central». Endpoints: `GET /cash-boxes`, `POST /cash-boxes` y `PATCH /cash-boxes/:id`.
+**Descripción:** El administrador da de alta desde el panel una caja de su distribuidora —efectivo, banco o billetera—. Cada caja lleva su saldo, que sólo cambia por movimientos del libro. Cada distribuidora tiene sembrada una «Caja central». Endpoint: `POST /cash-boxes`.
+
+---
+
+
+**Código:** CU-264 | **Caso de Uso:** Modificar una Caja  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Importante  
+**Descripción:** El administrador edita desde el panel una caja de su distribuidora —su nombre o su exigencia de sesión— o la desactiva. Endpoint: `PATCH /cash-boxes/:id`.
 
 ---
 
@@ -2456,11 +2694,20 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 
 ---
 
-**Código:** CU-230 | **Caso de Uso:** Gestionar las Categorías de Ingresos y Gastos  
+**Código:** CU-230 | **Caso de Uso:** Crear una Categoría de Ingresos y Gastos  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
 **Calificación:** Secundario  
-**Descripción:** El administrador mantiene las categorías con que se clasifican los movimientos de caja: las da de alta, las renombra y las desactiva. Las categorías de sistema no se pueden modificar. Endpoints: `GET /cash-categories`, `POST /cash-categories`, `PATCH /cash-categories/:id` y `DELETE /cash-categories/:id`.
+**Descripción:** El administrador da de alta una categoría con que se clasifican los movimientos de caja. Las categorías de sistema vienen sembradas y no se pueden modificar. Endpoint: `POST /cash-categories`.
+
+---
+
+
+**Código:** CU-265 | **Caso de Uso:** Modificar una Categoría de Ingresos y Gastos  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-21 Caja, Rendiciones y Cuentas Corrientes  
+**Calificación:** Secundario  
+**Descripción:** El administrador renombra o desactiva una categoría con que se clasifican los movimientos de caja. Las categorías de sistema no se pueden modificar. Endpoints: `PATCH /cash-categories/:id` y `DELETE /cash-categories/:id`.
 
 ---
 
@@ -2687,7 +2934,7 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 | Campo | Detalle |
 |-------|---------|
 | **Estabilidad** | Alta |
-| **Comentarios** | Este caso de uso no se expande acá. El alta de un chofer la realiza siempre el Administrador y pertenece al subsistema SS-07, por lo que su especificación expandida es canónica en CU-031. El código CU-003 se conserva porque las referencias cruzadas de SS-01 y la matriz de rastreabilidad lo citan. **Planificado (I-11):** el alta de un chofer **incluye CU-177 Registrar el Legajo de un Empleado**: crea el legajo en la misma transacción, o vincula el existente. |
+| **Comentarios** | Este caso de uso no se expande acá. El alta de un chofer la realiza siempre el Administrador y pertenece al subsistema SS-07, por lo que su especificación expandida es canónica en CU-031. El código CU-003 se conserva porque las referencias cruzadas de SS-01 y la matriz de rastreabilidad lo citan. El alta de un chofer **incluye CU-177 Registrar el Legajo de un Empleado**: crea el legajo en la misma transacción, o vincula el existente si el pedido trae `employeeId`. |
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-01, IRQ-03 |
 | **Especificación expandida** | Idéntica a **CU-031**, que **incluye CU-082 Crear Usuario Base** en su paso 6. |
@@ -2696,13 +2943,13 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 ---
 
 
-#### Importante CU-004 — Gestionar Perfil de Usuario
+#### Importante CU-004 — Consultar el Perfil de Usuario
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El usuario actualiza datos de su perfil —nombre completo, número de teléfono y foto— desde la sección "Mi Perfil" de su app. El sistema comprueba que solo se modifique a sí mismo y descarta cualquier campo fuera de esos tres. Los cambios se persisten de inmediato. |
+| **Descripción** | El usuario consulta los datos de su perfil —nombre completo, correo, número de teléfono, foto, rol y, si es cliente, su ficha de cliente con sus direcciones— desde la sección "Mi Perfil" de su app. Quien no es administrador sólo accede a lo suyo; un administrador accede a los usuarios de su distribuidora. Endpoints: `GET /users/:id` y `GET /customers/user/:userId`. |
 | **Precondición** | El usuario está autenticado en la app que le corresponde. |
 | **Estado** | Implementado |
 
@@ -2711,6 +2958,48 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario accede a "Mi Perfil" desde el menú principal de su app. |
+| 2 | La app envía `GET /users/:id` con el identificador del propio usuario. |
+| 3 | El sistema comprueba que el identificador indicado sea el del usuario autenticado. Un administrador puede consultar a los usuarios de su distribuidora; el resto, solo a sí mismo. |
+| 4 | El sistema busca al usuario con su rol, su perfil de cliente o de chofer, sus vehículos y sus direcciones, y devuelve sus datos. |
+| 5 | Si el usuario es cliente, la app envía además `GET /customers/user/:userId` y el sistema devuelve la ficha del cliente con su usuario y sus direcciones. |
+| 6 | La app muestra el perfil. |
+
+**Postcondición:** La app muestra los datos vigentes del usuario. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador indicado no es el del usuario autenticado y este no es administrador, el sistema deniega la consulta con "No podés ver a otro usuario" (error 403). |
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si el usuario no existe, o es de otra distribuidora que la del administrador, el sistema retorna error 404. |
+| 5 | Si la cuenta no tiene ficha de cliente, el sistema retorna error 404 "Customer for user ID: … not found"; si la ficha es de otro cliente, error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | La consulta del perfil se completa en menos de 1 segundo. |
+| **Frecuencia** | Media: cada vez que el usuario abre "Mi Perfil". |
+| **Estabilidad** | Alta |
+| **Comentarios** | El perfil está partido en dos agregados: los datos de identidad viven en `User` y los datos de cliente en `Customer`, y los dos lados aplican la misma política anti-IDOR. Es la consulta de la que parte la modificación del perfil (CU-251). |
+
+---
+
+
+#### Importante CU-251 — Modificar el Perfil de Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-01, OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El usuario actualiza datos de su perfil —nombre completo, número de teléfono y foto— desde la sección "Mi Perfil" de su app. El sistema comprueba que solo se modifique a sí mismo y descarta cualquier campo fuera de esos tres. Los cambios se persisten de inmediato. Endpoint: `PATCH /users/:id`. |
+| **Precondición** | El usuario está autenticado en la app que le corresponde. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El usuario accede a "Mi Perfil" desde el menú principal de su app: **incluye CU-004 Consultar el Perfil de Usuario**, la consulta de la que parte la edición. |
 | 2 | Edita su nombre completo, su número de teléfono o su foto de perfil. |
 | 3 | Presiona "Guardar cambios". |
 | 4 | La app envía la modificación indicando el identificador del propio usuario junto con los campos editados. |
@@ -2794,13 +3083,13 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 
 
 
-#### Secundario CU-050 — Bloquear / Desbloquear Usuario
+#### Secundario CU-050 — Bloquear un Usuario
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador marca o desmarca a un usuario —cliente o chofer— como bloqueado desde el Panel Web, por motivos de moderación o seguridad. La operación es un interruptor bidireccional: la misma llamada bloquea o desbloquea según el valor enviado. |
+| **Descripción** | El administrador marca a un usuario —cliente o chofer— como bloqueado desde el Panel Web, por motivos de moderación o seguridad. La llamada es la misma que la de desbloquearlo (CU-270): bloquea o desbloquea según el valor enviado, que acá es verdadero. |
 | **Precondición** | El administrador está autenticado con rol ADMIN o SUPER_ADMIN. El usuario destino existe. |
 | **Estado** | Implementado |
 
@@ -2808,15 +3097,15 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el listado de usuarios en el Panel Web y selecciona un cliente o un chofer: **incluye CU-083 Buscar y Listar Usuarios**, la búsqueda de la que sale el usuario objetivo. |
-| 2 | Elige la acción "Bloquear" o "Desbloquear". |
-| 3 | El panel envía la solicitud sobre el usuario indicado con el valor booleano correspondiente. |
+| 1 | El administrador abre el listado de usuarios en el Panel Web y selecciona un cliente o un chofer: **incluye CU-083 Listar los Usuarios**, el listado del que sale el usuario objetivo. |
+| 2 | Elige la acción "Bloquear". |
+| 3 | El panel envía la solicitud sobre el usuario indicado con el valor booleano verdadero. |
 | 4 | El sistema verifica el rol del solicitante y busca el usuario por su identificador. |
 | 5 | El sistema escribe el campo de bloqueo con el valor recibido y persiste el usuario. |
 | 6 | El sistema devuelve el identificador, el email, el estado de bloqueo resultante y un mensaje de confirmación. |
 | 7 | El panel refresca el listado mostrando el nuevo estado. |
 
-**Postcondición:** El campo de bloqueo del usuario quedó con el valor indicado por el administrador. La operación es reversible enviando el valor contrario.
+**Postcondición:** El campo de bloqueo del usuario quedó en verdadero. La operación es reversible con CU-270.
 
 **Excepciones**
 
@@ -2831,7 +3120,49 @@ códigos son únicos y salvo CU-246, entre CU-001 y CU-194 el único hueco es CU
 | **Rendimiento** | Es una lectura y una escritura por clave primaria; se resuelve en menos de 1 segundo. |
 | **Frecuencia** | Excepcional. Solo ante un episodio de moderación o una sospecha de seguridad. |
 | **Estabilidad** | Media |
-| **Comentarios** | El bloqueo tiene efecto real sobre el acceso. La guardia de autenticación (`AuthGuard`), por la que pasan el panel y las dos aplicaciones en cada solicitud, rechaza con 401 «La cuenta está bloqueada. Comuníquese con la distribuidora.» a toda cuenta marcada, y también la rechazan el inicio de sesión (`POST /auth`) y la conexión por WebSocket. El bloqueo no deshabilita la cuenta en Firebase Authentication: el usuario puede seguir obteniendo tokens de Firebase, pero ninguno le sirve para operar con el sistema. El campo no guarda quién ejecutó el bloqueo ni por qué motivo; la operación queda en el registro de auditoría (CU-153), que registra quién la hizo y cuándo. |
+| **Comentarios** | El bloqueo tiene efecto real sobre el acceso. La guardia de autenticación (`AuthGuard`), por la que pasan el panel y las dos aplicaciones en cada solicitud, rechaza con 401 «La cuenta está bloqueada. Comuníquese con la distribuidora.» a toda cuenta marcada, y también la rechazan el inicio de sesión (`POST /auth`) y la conexión por WebSocket. El bloqueo no deshabilita la cuenta en Firebase Authentication: el usuario puede seguir obteniendo tokens de Firebase, pero ninguno le sirve para operar con el sistema. El campo no guarda quién ejecutó el bloqueo ni por qué motivo; la operación queda en el registro de auditoría (CU-153), que registra quién la hizo y cuándo. Es la alternativa reversible a CU-085. |
+
+---
+
+
+#### Secundario CU-270 — Desbloquear un Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El administrador levanta el bloqueo de un usuario —cliente o chofer— desde el Panel Web. La llamada es la misma que la de bloquearlo (CU-050): bloquea o desbloquea según el valor enviado, que acá es falso. |
+| **Precondición** | El administrador está autenticado con rol ADMIN o SUPER_ADMIN. El usuario destino existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el listado de usuarios en el Panel Web y selecciona un cliente o un chofer bloqueado: **incluye CU-083 Listar los Usuarios**, el listado del que sale el usuario objetivo. |
+| 2 | Elige la acción "Desbloquear". |
+| 3 | El panel envía la solicitud sobre el usuario indicado con el valor booleano falso. |
+| 4 | El sistema verifica el rol del solicitante y busca el usuario por su identificador. |
+| 5 | El sistema escribe el campo de bloqueo con el valor recibido y persiste el usuario. |
+| 6 | El sistema devuelve el identificador, el email, el estado de bloqueo resultante y un mensaje de confirmación. |
+| 7 | El panel refresca el listado mostrando el nuevo estado. |
+
+**Postcondición:** El campo de bloqueo del usuario quedó en falso: la guardia de autenticación deja de rechazar sus solicitudes. La operación es reversible con CU-050.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador del usuario no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si el solicitante no tiene rol ADMIN ni SUPER_ADMIN, el sistema retorna error 403. |
+| 4 | Si el usuario no existe, el sistema retorna error 404 con el mensaje "Usuario no encontrado". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Es una lectura y una escritura por clave primaria; se resuelve en menos de 1 segundo. |
+| **Frecuencia** | Excepcional. Solo cuando se levanta una medida de moderación o de seguridad. |
+| **Estabilidad** | Media |
+| **Comentarios** | El bloqueo no deshabilita la cuenta en Firebase Authentication, de modo que al desbloquear no hay nada que reactivar allí: el usuario vuelve a operar con los tokens que ya obtiene. La operación queda en el registro de auditoría (CU-153), que registra quién la hizo y cuándo. |
 
 ---
 
@@ -2894,14 +3225,14 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 ---
 
 
-#### Importante CU-083 — Buscar y Listar Usuarios
+#### Importante CU-083 — Listar los Usuarios
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) lista los usuarios del sistema con paginación y búsqueda por texto libre, y consulta un usuario puntual por correo o por teléfono. Es la base de las pantallas de gestión de cuentas del panel. Endpoints: `GET /users`, `GET /users/email/:email` (`:55`) y `GET /users/phone/:phoneNumber` (`:139`). |
-| **Precondición** | Para el listado, el solicitante está autenticado con rol ADMIN o SUPER_ADMIN. La búsqueda por correo es pública y la búsqueda por teléfono exige sesión. |
+| **Descripción** | El administrador (ACT-03) lista los usuarios del sistema con paginación y búsqueda por texto libre. Es la base de las pantallas de gestión de cuentas del panel. Endpoint: `GET /users`. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -2913,24 +3244,62 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | El sistema arma la consulta con las relaciones de rol, perfil de cliente y perfil de chofer. |
 | 4 | Si hay término de búsqueda, el sistema filtra por coincidencia parcial e insensible a mayúsculas sobre correo, nombre completo y teléfono. |
 | 5 | El sistema devuelve los usuarios de la página junto con el total bajo la clave `maxUsers`. |
-| 6 | Para una búsqueda puntual, el panel envía `GET /users/email/:email` o `GET /users/phone/:phoneNumber` y el sistema devuelve el usuario con rol, perfiles, vehículos y direcciones. |
 
-**Postcondición:** El administrador obtiene el listado o el usuario buscado. No hay cambios de estado.
+**Postcondición:** El administrador obtiene el listado. No hay cambios de estado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza el listado con error 403. |
-| 6 | Si la búsqueda por correo no encuentra nada, el sistema retorna error 404 "User with email: … not found". |
-| 6 | Si la búsqueda por teléfono no encuentra nada, el sistema devuelve `null` con estado 200: la asimetría con la búsqueda por correo es real y está en el código. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | El listado usa un constructor de consultas con paginación y tres relaciones; la búsqueda por texto aplica tres `ILIKE` con comodín inicial, que no aprovechan índice. |
 | **Frecuencia** | Media: cada vez que el administrador abre o filtra la pantalla de usuarios. |
 | **Estabilidad** | Alta |
-| **Comentarios** | `GET /users/email/:email` exige token: un usuario sólo consulta su propia cuenta y el personal administrativo consulta las de su distribuidora; un administrador de empresa no ve las de otra. Para saber si un correo ya está en uso existe `POST /users/check-exists`, que contesta sólo booleanos. |
+| **Comentarios** | Es el listado del que parten el bloqueo (CU-050), el desbloqueo (CU-270) y la baja de un usuario (CU-085). Un administrador de empresa ve sólo a su personal y a los clientes que le compraron. |
+
+---
+
+
+#### Importante CU-272 — Buscar un Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El administrador (ACT-03) consulta un usuario puntual por correo o por teléfono. Es la base de las pantallas de gestión de cuentas del panel. Endpoints: `GET /users/email/:email` (`:55`) y `GET /users/phone/:phoneNumber` (`:139`). |
+| **Precondición** | El solicitante está autenticado. La búsqueda por correo exige sesión: quien no es administrador sólo consulta su propia cuenta; la búsqueda por teléfono exige rol ADMIN o SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador escribe el correo o el teléfono del usuario que busca. |
+| 2 | El panel envía `GET /users/email/:email` o `GET /users/phone/:phoneNumber`. |
+| 3 | El sistema busca al usuario por correo, sin distinguir mayúsculas, o por teléfono, y comprueba que sea de la distribuidora del administrador. |
+| 4 | El sistema devuelve el usuario con rol, perfiles, vehículos y direcciones. |
+
+**Postcondición:** El administrador obtiene el usuario buscado. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si quien busca por correo no es administrador y el correo no es el suyo, el sistema responde 403 "No podés ver a otro usuario". |
+| 3 | Si la búsqueda por correo no encuentra nada, el sistema retorna error 404 "User with email: … not found". |
+| 2 | Si el teléfono no está en formato E.164 (por ejemplo `+5493764…`), el sistema responde 400 "phoneNumber tiene que estar en formato E.164". |
+| 3 | Si la búsqueda por teléfono no encuentra nada, el sistema devuelve `null` con estado 200: la asimetría con la búsqueda por correo es real y está en el código. |
+| 3 | Si el usuario es de otra distribuidora que la del administrador, el sistema responde 404, como si no existiera. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por clave de búsqueda; se resuelve en menos de 1 segundo. |
+| **Frecuencia** | Media: cada vez que el administrador ubica a un usuario puntual. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La asimetría es deliberada del código: `findOneByEmail` lanza 404 si no encuentra (lo usa el `AuthGuard`, que necesita el fallo), mientras que `findOneByPhone` devuelve `null`. Para saber si un correo ya está en uso existe `POST /users/check-exists`, que contesta sólo booleanos. |
 
 ---
 
@@ -2988,7 +3357,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador elige eliminar un usuario desde el panel: **incluye CU-083 Buscar y Listar Usuarios**, la búsqueda de la que sale el usuario objetivo. |
+| 1 | El administrador elige eliminar un usuario desde el panel: **incluye CU-083 Listar los Usuarios**, la búsqueda de la que sale el usuario objetivo. |
 | 2 | El panel envía `DELETE /users/:id`. |
 | 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el usuario sea de ella; si quien da de baja es un administrador de empresa, comprueba además que la cuenta no sea la de un cliente. |
 | 4 | El sistema recupera el usuario con su perfil de cliente o de chofer y sus direcciones. |
@@ -4517,7 +4886,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Rendimiento** | La búsqueda del candidato se completa en menos de 500 ms. |
 | **Frecuencia** | Una vez por cada pedido creado, y nuevamente por cada rechazo o vencimiento. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La elegibilidad del chofer (`choferesElegibles`) exige que esté presente en el radar de posiciones, que pertenezca a la distribuidora dueña del pedido, que esté habilitado por el administrador (`isEnabled`) y validado (`validated`), y que pase la regla de flota: sin vehículo en uso (CU-161), o con la licencia o la documentación del vehículo vencida, no se recibe ninguna oferta. La habilitación que otorga el administrador en CU-032 y CU-033 tiene así efecto sobre el despacho. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. Estar presente en el radar significa tener la aplicación abierta y reportando posición, no estar libre. Un chofer "por terminar" es el que ya avisó su llegada al domicilio y sólo le falta la confirmación; considerarlo elegible es deliberado, porque esperar a que confirme deja al pedido siguiente esperando sin motivo. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: un chofer con el legajo egresado, con una licencia aprobada que cubre hoy o con documentación bloqueante vencida no recibe la oferta. 3):** antes de ofrecerle el pedido al chofer, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que tenga una carga de camión abierta si la distribuidora lo exige; el control viene apagado y se prende con CU-249. |
+| **Comentarios** | La elegibilidad del chofer (`choferesElegibles`) exige que esté presente en el radar de posiciones, que pertenezca a la distribuidora dueña del pedido, que esté habilitado por el administrador (`isEnabled`) y validado (`validated`), y que pase la regla de flota: sin vehículo en uso (CU-161), o con la licencia o la documentación del vehículo vencida, no se recibe ninguna oferta. La habilitación que otorga el administrador en CU-032 y CU-033 (y que retira en CU-271 y CU-267) tiene así efecto sobre el despacho. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. Estar presente en el radar significa tener la aplicación abierta y reportando posición, no estar libre. Un chofer "por terminar" es el que ya avisó su llegada al domicilio y sólo le falta la confirmación; considerarlo elegible es deliberado, porque esperar a que confirme deja al pedido siguiente esperando sin motivo. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: un chofer con el legajo egresado, con una licencia aprobada que cubre hoy o con documentación bloqueante vencida no recibe la oferta. 3):** antes de ofrecerle el pedido al chofer, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que tenga una carga de camión abierta si la distribuidora lo exige; el control viene apagado y se prende con CU-249. |
 
 ---
 
@@ -4997,13 +5366,13 @@ respaldado por la lectura del código en poder del cliente.
 ---
 
 
-#### Crítico CU-022 — Activar / Desactivar Disponibilidad (Chofer)
+#### Crítico CU-022 — Activar la Disponibilidad
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El chofer indica si está disponible para recibir pedidos. El sistema asigna el valor recibido a su indicador de actividad y, al ponerse no disponible, lo retira del radar geográfico para que el despacho deje de considerarlo. |
+| **Descripción** | El chofer indica que está disponible para recibir pedidos. El sistema asigna el valor recibido a su indicador de actividad, tras comprobar que esté habilitado y validado. Es la misma operación que desactivarla (CU-266), con el valor de disponibilidad en verdadero. |
 | **Precondición** | El usuario está autenticado con rol de chofer o de administrador y el chofer indicado tiene perfil de repartidor. Un chofer sólo cambia su propia disponibilidad; un administrador, la de los choferes de su distribuidora. Para ponerse disponible, el chofer tiene que estar habilitado por el administrador (CU-033) y validado (CU-032). |
 | **Estado** | Implementado |
 
@@ -5011,15 +5380,14 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El chofer enciende o apaga su disponibilidad desde la pantalla principal de su app. |
-| 2 | La app envía el valor deseado —disponible o no disponible— junto con el identificador del usuario chofer. No se pide alternar el valor actual: se envía el valor que debe quedar. |
+| 1 | El chofer enciende su disponibilidad desde la pantalla principal de su app. |
+| 2 | La app envía el valor deseado —disponible— junto con el identificador del usuario chofer. No se pide alternar el valor actual: se envía el valor que debe quedar. |
 | 3 | El sistema busca el perfil de repartidor de ese usuario. |
-| 4 | Si el valor recibido es disponible, comprueba que el chofer esté habilitado y validado. Asigna a su indicador de actividad el valor recibido y lo guarda. |
-| 5 | Si el chofer pasó a no disponible, lo elimina del radar geográfico por su identificador de usuario, con lo que deja de aparecer en la búsqueda de candidatos del despacho. |
-| 6 | Si pasó a disponible, no hace nada sobre el radar: el chofer reingresa recién cuando su app emite la siguiente posición (CU-017). |
-| 7 | Devuelve el nuevo estado de disponibilidad para que la app lo refleje. |
+| 4 | El sistema comprueba que el chofer esté habilitado y validado, asigna a su indicador de actividad el valor recibido y lo guarda. |
+| 5 | El sistema no hace nada sobre el radar geográfico: el chofer reingresa recién cuando su app emite la siguiente posición (CU-017). |
+| 6 | Devuelve el nuevo estado de disponibilidad para que la app lo refleje. |
 
-**Postcondición:** El indicador de actividad del chofer quedó con el valor enviado. Si quedó no disponible, ya no recibe ofertas de pedidos.
+**Postcondición:** El indicador de actividad del chofer quedó en disponible. Empieza a recibir ofertas de pedidos recién cuando su app emite su primera posición.
 
 **Excepciones**
 
@@ -5027,14 +5395,54 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 2 | Si quien pide es otro chofer, el sistema responde 403 "No podés cambiar la disponibilidad de otro chofer"; si es un cliente, el guard de roles responde 403. |
 | 3 | Si el usuario indicado no tiene perfil de repartidor, o es de otra distribuidora que la del administrador, el sistema informa "Perfil de repartidor no encontrado para este usuario". |
-| 4 | Si el chofer quiere ponerse disponible y está deshabilitado o sin validar, el sistema responde 403 y no cambia nada. Desconectarse se permite siempre. |
+| 4 | Si el chofer está deshabilitado o sin validar, el sistema responde 403 y no cambia nada. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | El cambio de disponibilidad se completa en menos de 1 segundo. |
-| **Frecuencia** | Alta por chofer: varias veces por jornada, al empezar y terminar turno o al hacer una pausa. |
+| **Frecuencia** | Alta por chofer: al empezar el turno o al volver de una pausa. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La operación es del propio chofer, o del administrador sobre los choferes de su distribuidora: el controlador compara el usuario autenticado con el chofer indicado, de modo que un chofer no puede sacar a otro del radar. Ponerse en línea exige habilitación y validación, y desconectarse siempre se permite. Poner el indicador en disponible no reinserta al chofer en el radar: reingresa con la siguiente posición que emita su app (CU-017), y hasta entonces no recibe ofertas. |
+| **Comentarios** | La operación es del propio chofer, o del administrador sobre los choferes de su distribuidora: el controlador compara el usuario autenticado con el chofer indicado, de modo que un chofer no puede cambiar la disponibilidad de otro. Ponerse en línea exige habilitación y validación. Poner el indicador en disponible no reinserta al chofer en el radar: reingresa con la siguiente posición que emita su app (CU-017), y hasta entonces no recibe ofertas. |
+
+---
+
+
+#### Crítico CU-266 — Desactivar la Disponibilidad
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El chofer indica que no está disponible para recibir pedidos. El sistema asigna el valor recibido a su indicador de actividad y lo retira del radar geográfico para que el despacho deje de considerarlo. Es la misma operación que activarla (CU-022), con el valor de disponibilidad en falso. |
+| **Precondición** | El usuario está autenticado con rol de chofer o de administrador y el chofer indicado tiene perfil de repartidor. Un chofer sólo cambia su propia disponibilidad; un administrador, la de los choferes de su distribuidora. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El chofer apaga su disponibilidad desde la pantalla principal de su app. |
+| 2 | La app envía el valor deseado —no disponible— junto con el identificador del usuario chofer. No se pide alternar el valor actual: se envía el valor que debe quedar. |
+| 3 | El sistema busca el perfil de repartidor de ese usuario. |
+| 4 | El sistema asigna a su indicador de actividad el valor recibido y lo guarda; desconectarse se permite siempre, esté habilitado o no. |
+| 5 | El sistema elimina al chofer del radar geográfico por su identificador de usuario, con lo que deja de aparecer en la búsqueda de candidatos del despacho. |
+| 6 | Devuelve el nuevo estado de disponibilidad para que la app lo refleje. |
+
+**Postcondición:** El indicador de actividad del chofer quedó en no disponible y ya no recibe ofertas de pedidos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si quien pide es otro chofer, el sistema responde 403 "No podés cambiar la disponibilidad de otro chofer"; si es un cliente, el guard de roles responde 403. |
+| 3 | Si el usuario indicado no tiene perfil de repartidor, o es de otra distribuidora que la del administrador, el sistema informa "Perfil de repartidor no encontrado para este usuario". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | El cambio de disponibilidad se completa en menos de 1 segundo. |
+| **Frecuencia** | Alta por chofer: al terminar el turno o al hacer una pausa. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La operación es del propio chofer, o del administrador sobre los choferes de su distribuidora: el controlador compara el usuario autenticado con el chofer indicado, de modo que un chofer no puede sacar a otro del radar. Ponerse fuera de línea tiene dos efectos que se mantienen sincronizados: el indicador en la base y la salida del radar geográfico; si sólo se hiciera lo primero, el chofer desconectado seguiría recibiendo ofertas del despacho. |
 
 ---
 
@@ -5351,7 +5759,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-06 |
-| **Descripción** | El cliente sube una imagen JPG, PNG o WEBP de hasta 10 MB que respalda su reclamo; el tipo se valida por el contenido del archivo y no por lo que declara el cliente. El sistema la guarda por el mismo puerto de almacenamiento que los adjuntos de flota y deja la referencia en el reclamo. El reclamo tiene una única fotografía: subir otra reemplaza la anterior, y sólo se puede subir o reemplazar mientras el reclamo no esté resuelto ni rechazado. El personal puede adjuntarla en nombre del cliente, para soporte. |
+| **Descripción** | El cliente sube una imagen JPG, PNG o WEBP de hasta 10 MB que respalda su reclamo; el tipo se valida por el contenido del archivo y no por lo que declara el cliente. El sistema la guarda en Amazon S3, en un bucket privado, igual que los adjuntos de flota, y deja la referencia en el reclamo. El reclamo tiene una única fotografía: subir otra reemplaza la anterior, y sólo se puede subir o reemplazar mientras el reclamo no esté resuelto ni rechazado. El personal puede adjuntarla en nombre del cliente, para soporte. |
 | **Precondición** | El solicitante está autenticado como cliente, Administrador o Administrador General. El reclamo existe; si lo adjunta un cliente, es suyo; si lo adjunta personal, pertenece a su distribuidora, y el Administrador General la indica con el encabezado `X-Distributor`. |
 | **Estado** | Implementado |
 
@@ -5363,11 +5771,11 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | La App Cliente envía `POST /claims/:id/photo` con el archivo en un formulario multipart. |
 | 3 | El sistema comprueba que el reclamo exista y que el solicitante pueda modificarlo. |
 | 4 | El sistema comprueba que venga un archivo, que sea una imagen JPG, PNG o WEBP —según su contenido— y que no supere 10 MB, y que el reclamo no esté resuelto ni rechazado. |
-| 5 | El sistema reserva la clave de la imagen y la guarda en el almacenamiento —**incluye CU-159 Almacenar Archivo**— bajo una clave que incluye la distribuidora y el reclamo, no el nombre original. |
-| 6 | El sistema guarda la clave en el reclamo y, si ya tenía una fotografía, borra la anterior del almacenamiento. |
+| 5 | El sistema reserva la clave de la imagen y la sube a S3 —**incluye CU-159 Almacenar Archivo**— bajo una clave que incluye la distribuidora y el reclamo, no el nombre original. |
+| 6 | El sistema guarda la clave en el reclamo y, si ya tenía una fotografía, anota la anterior para borrarla de S3 en segundo plano. |
 | 7 | El sistema devuelve el reclamo actualizado. |
 
-**Postcondición:** El reclamo tiene una única fotografía, cuya referencia es la clave guardada. La fotografía anterior, si la había, ya no está en el almacenamiento.
+**Postcondición:** El reclamo tiene una única fotografía, cuya referencia es la clave guardada. La fotografía anterior, si la había, queda anotada para borrarse de S3.
 
 **Excepciones**
 
@@ -5378,14 +5786,14 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | Si el tipo del archivo no es JPG, PNG ni WEBP, o su contenido no coincide con el tipo declarado, el sistema responde 415. |
 | 4 | Si el archivo supera 10 MB, el sistema responde 413. |
 | 4 | Si el reclamo está resuelto o rechazado, el sistema responde 409: hay que reabrirlo antes. |
-| 6 | Si falla guardar la referencia en la base, el sistema borra la imagen recién subida: no queda un archivo sin reclamo. |
+| 6 | Si falla guardar la referencia en la base, el sistema borra de S3 la imagen recién subida: no queda un archivo sin reclamo. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura, una escritura al almacenamiento y una a la base. Depende del tamaño de la imagen. |
+| **Rendimiento** | Una lectura, una escritura a S3 y una a la base. Depende del tamaño de la imagen. |
 | **Frecuencia** | Media: acompaña la frecuencia de los reclamos que llevan evidencia. |
 | **Estabilidad** | Media |
-| **Comentarios** | El alta del reclamo (CU-023) recibe la fotografía como una dirección de texto (`photoUrl`); este caso es el camino para subir la imagen. Al subirla, el reclamo guarda la clave del almacenamiento (`photo_key`) y deja `photoUrl` vacío; la consulta (CU-175) la resuelve. Si el reclamo ya tenía fotografía, la anterior se anota en la cola de archivos pendientes de borrar (`storage_orphan`) en la misma transacción y se borra en segundo plano; una subida abandonada la limpia una tarea horaria. El reclamo admite una sola fotografía, como el modelo. El límite de 10 MB y los tres formatos son los del sistema; el adjunto de flota (CU-155) admite también PDF. |
+| **Comentarios** | El alta del reclamo (CU-023) recibe la fotografía como una dirección de texto (`photoUrl`); este caso es el camino para subir la imagen. Al subirla, el reclamo guarda la clave del objeto en S3 (`photo_key`) y deja `photoUrl` vacío; la consulta (CU-175) la resuelve. Si el reclamo ya tenía fotografía, la anterior se anota en la cola de archivos pendientes de borrar (`storage_orphan`) en la misma transacción y se borra en segundo plano; una subida abandonada la limpia una tarea horaria. El reclamo admite una sola fotografía, como el modelo. El límite de 10 MB y los tres formatos son los del sistema; el adjunto de flota (CU-155) admite también PDF. |
 
 ---
 
@@ -5395,7 +5803,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-06 |
-| **Descripción** | El usuario abre la fotografía de un reclamo desde su detalle. El sistema comprueba que pueda verlo, la recupera del almacenamiento —redirige a una URL firmada de corta duración o sirve el archivo, según el adaptador activo— y la devuelve con su tipo original. |
+| **Descripción** | El usuario abre la fotografía de un reclamo desde su detalle. El sistema comprueba que pueda verlo, la recupera de S3: redirige a una URL firmada de corta duración, con la que el archivo se baja directo del bucket privado, con su tipo original. |
 | **Precondición** | El solicitante está autenticado como cliente (sólo sus reclamos), Administrador o Administrador General (los de su distribuidora). El reclamo existe; puede estar abierto o cerrado. |
 | **Estado** | Implementado |
 
@@ -5406,9 +5814,9 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El usuario abre el detalle del reclamo —el administrador desde **CU-024 Listar Reclamos**— y elige ver la fotografía. |
 | 2 | La aplicación envía `GET /claims/:id/photo`. |
 | 3 | El sistema comprueba que el reclamo exista y que el solicitante pueda verlo. |
-| 4 | El sistema determina de dónde sale la fotografía: la que el reclamo tiene guardada en el almacenamiento o, si sólo tiene la dirección externa del alta, esa dirección. |
-| 5 | El sistema recupera la imagen del almacenamiento —**incluye CU-160 Recuperar Archivo**—. |
-| 6 | Por omisión, con S3 el sistema redirige (302) a una URL firmada de corta duración y, con el disco local, devuelve el archivo con su tipo original. Con `?modo=url` responde 200 con `{ url, expiresAt, requiresAuth }`: la URL firmada si el reclamo tiene fotografía propia, la dirección externa si sólo tiene esa, o `url: null` si no tiene ninguna. |
+| 4 | El sistema determina de dónde sale la fotografía: la que el reclamo tiene guardada en S3 o, si sólo tiene la dirección externa del alta, esa dirección. |
+| 5 | El sistema obtiene la URL firmada de la imagen —**incluye CU-160 Recuperar Archivo**—. |
+| 6 | Por omisión, el sistema redirige (302) a la URL firmada de corta duración; si el reclamo sólo tiene la dirección externa del alta, redirige a esa dirección. Con `?modo=url` responde 200 con `{ url, expiresAt, requiresAuth }`: la URL firmada si el reclamo tiene fotografía propia, la dirección externa si sólo tiene esa, o `url: null` si no tiene ninguna. |
 
 **Postcondición:** Ninguna: es una consulta de sólo lectura. El solicitante ve la fotografía.
 
@@ -5417,15 +5825,15 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el reclamo no existe, es de otro cliente o es de otra distribuidora, el sistema responde 404 "Reclamo no encontrado", sin distinguir los casos. |
-| 4 | Con `?modo=url`, si el reclamo no tiene fotografía el sistema responde 200 con `url: null`; sólo responde 404 si el reclamo no existe. |
-| 5 | Si la fotografía es una dirección externa registrada con el alta (CU-023), el sistema la entrega tal cual, sin pasar por el almacenamiento. |
+| 4 | Con `?modo=url`, si el reclamo no tiene fotografía el sistema responde 200 con `url: null`; sólo responde 404 si el reclamo no existe. Sin `?modo=url`, si el reclamo no tiene ninguna fotografía, responde 404. |
+| 5 | Si la fotografía es una dirección externa registrada con el alta (CU-023), el sistema la entrega tal cual, sin pasar por S3. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura del reclamo y una del almacenamiento. Con S3 el archivo no pasa por el servidor. |
+| **Rendimiento** | Una lectura del reclamo y la firma de la URL, que no consulta a S3. El archivo no pasa por el servidor: lo baja el cliente directo de S3. |
 | **Frecuencia** | Media: cada vez que se revisa un reclamo con evidencia. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es la contracara de CU-174 y sigue el mismo diseño que la descarga de adjuntos de flota (CU-157): la referencia guardada en el reclamo es una clave, no una dirección, de modo que la dirección que ve el usuario es temporal y no se puede compartir indefinidamente. Los reclamos registrados con una dirección de imagen en texto, desde el alta, devuelven esa dirección tal cual. El detalle del reclamo trae además `photoUrl` con la URL firmada vigente cuando la fotografía está guardada en el almacenamiento. |
+| **Comentarios** | Es la contracara de CU-174 y sigue el mismo diseño que la descarga de adjuntos de flota (CU-157): la referencia guardada en el reclamo es una clave, no una dirección, de modo que la dirección que ve el usuario es temporal y no se puede compartir indefinidamente. Los reclamos registrados con una dirección de imagen en texto, desde el alta, devuelven esa dirección tal cual. El detalle del reclamo trae además `photoUrl` con la URL firmada vigente cuando la fotografía está guardada en S3. |
 
 ---
 
@@ -5681,18 +6089,18 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El alta se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en el proveedor de identidad. |
 | **Frecuencia** | Baja: al incorporar un chofer a la flota. |
 | **Estabilidad** | Alta |
-| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. CU-003 describe el mismo caso visto desde la gestión de usuarios. Planificado (I-11): el alta de un chofer crea también su legajo (CU-177), en la misma transacción. |
+| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. CU-003 describe el mismo caso visto desde la gestión de usuarios. El alta de un chofer crea también su legajo (CU-177), en la misma transacción, o vincula el existente si el pedido trae `employeeId`. |
 
 ---
 
 
-#### Crítico CU-032 — Validar / Invalidar Chofer
+#### Crítico CU-032 — Validar un Chofer
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador marca a un chofer como validado o le retira esa marca desde dos operaciones dedicadas del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
+| **Descripción** | El administrador marca a un chofer como validado desde una operación dedicada del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
 | **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
@@ -5700,13 +6108,13 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a habilitar o deshabilitar: **incluye CU-110 Buscar Chofer por Usuario**. |
-| 2 | Presiona "Validar" o "Invalidar", según corresponda. |
+| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a habilitar: **incluye CU-110 Buscar Chofer por Usuario**. |
+| 2 | Presiona "Validar". |
 | 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el chofer sea de ella. Después busca el perfil de reparto por su identificador y trae al usuario y su rol. |
-| 4 | El sistema fija la marca de validación en verdadero si se validó, o en falso si se invalidó. No la invierte: asigna el valor de la operación elegida. |
+| 4 | El sistema fija la marca de validación en verdadero. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
-**Postcondición:** La marca de validación del chofer quedó actualizada. El chofer validado suma al contador de choferes habilitados del panel de control; el invalidado deja de sumar. **En ningún caso cambia lo que el chofer puede hacer:** si estaba en línea sigue en el radar de asignación, sigue recibiendo ofertas y sigue pudiendo aceptar pedidos.
+**Postcondición:** La marca de validación del chofer quedó en verdadero y suma al contador de choferes habilitados del panel de control. **No cambia lo que el chofer puede hacer:** la validación se exige cuando quiere ponerse en línea (CU-022) y al elegir candidatos en el despacho.
 
 **Excepciones**
 
@@ -5719,20 +6127,60 @@ respaldado por la lectura del código en poder del cliente.
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
-| **Frecuencia** | Baja. Se ejecuta al incorporar un chofer y de manera excepcional al suspenderlo. |
+| **Frecuencia** | Baja. Se ejecuta al incorporar un chofer. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Limitaciones registradas: (a) la marca de validación se exige cuando el chofer quiere ponerse en línea (CU-022) y al elegir candidatos en el despacho, pero no al aceptar un pedido, así que invalidar a un chofer que ya está en línea no interrumpe lo que ya tiene en curso; (b) al invalidar, el sistema no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de estas dos operaciones dedicadas, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación. |
+| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Además de la operación dedicada, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación. |
 
 ---
 
 
-#### Importante CU-033 — Activar / Desactivar Chofer (Admin)
+#### Crítico CU-271 — Invalidar un Chofer
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022). |
+| **Descripción** | El administrador retira a un chofer la marca de validado desde una operación dedicada del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a deshabilitar: **incluye CU-110 Buscar Chofer por Usuario**. |
+| 2 | Presiona "Invalidar". |
+| 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el chofer sea de ella. Después busca el perfil de reparto por su identificador y trae al usuario y su rol. |
+| 4 | El sistema fija la marca de validación en falso. |
+| 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
+
+**Postcondición:** La marca de validación del chofer quedó en falso y deja de sumar al contador de choferes habilitados del panel de control. **En ningún caso cambia lo que el chofer puede hacer:** si estaba en línea sigue en el radar de asignación, sigue recibiendo ofertas y sigue pudiendo aceptar pedidos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un identificador único válido, el sistema responde 400 antes de llegar al servicio. |
+| 3 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 3 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
+| **Frecuencia** | Baja. Se ejecuta de manera excepcional, al suspender a un chofer. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-267 (desactivación administrativa). Limitaciones registradas: (a) la marca de validación se exige cuando el chofer quiere ponerse en línea (CU-022) y al elegir candidatos en el despacho, pero no al aceptar un pedido, así que invalidar a un chofer que ya está en línea no interrumpe lo que ya tiene en curso; (b) al invalidar, el sistema no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de la operación dedicada, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación. |
+
+---
+
+
+#### Importante CU-033 — Activar un Chofer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02, OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer en verdadero. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022) y es la misma que desactivarlo (CU-267), con el valor en verdadero. |
 | **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
@@ -5741,12 +6189,53 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer: **incluye CU-110 Buscar Chofer por Usuario**. |
-| 2 | Elige activarlo o desactivarlo. |
-| 3 | El panel envía el valor deseado del estado de actividad, verdadero o falso. El cuerpo se valida con `ToggleDeliveryStatusDto`, que exige un valor sí/no. |
-| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. Si el valor es falso, también lo deja fuera de línea y lo saca del radar de despacho. |
+| 2 | Elige activarlo. |
+| 3 | El panel envía el valor verdadero del estado de actividad. El cuerpo se valida con `ToggleDeliveryStatusDto`, que exige un valor sí/no. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
-**Postcondición:** La habilitación del chofer quedó en el valor indicado. Deshabilitado, el chofer ya no puede aceptar pedidos: la aceptación se rechaza con "El repartidor está deshabilitado". Además queda fuera de línea y sale del radar de asignación, de modo que el despacho deja de ofrecerle pedidos.
+**Postcondición:** La habilitación del chofer quedó en verdadero: puede aceptar pedidos y ponerse en línea desde su app (CU-022). Su disponibilidad no cambia: reingresa al radar de asignación recién cuando él mismo se ponga en línea.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador del chofer no es un identificador único válido, el sistema responde 400. |
+| 3 | Si el estado de actividad falta o no es verdadero o falso, el sistema responde 400 "isEnabled tiene que ser true o false"; si se envía una propiedad no declarada, también responde 400. En los dos casos el perfil no se toca. |
+| 4 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 4 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
+| **Frecuencia** | Baja. Suspensiones operativas puntuales y su levantamiento. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Este estado se cambia únicamente por esta operación y por su inversa (CU-267): la actualización general del perfil de chofer (CU-096) sólo admite la marca de validación. |
+
+---
+
+
+#### Importante CU-267 — Desactivar un Chofer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02, OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer en falso. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022) y es la misma que activarlo (CU-033), con el valor en falso. |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer: **incluye CU-110 Buscar Chofer por Usuario**. |
+| 2 | Elige desactivarlo. |
+| 3 | El panel envía el valor falso del estado de actividad. El cuerpo se valida con `ToggleDeliveryStatusDto`, que exige un valor sí/no. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. Como el valor es falso, también lo deja fuera de línea y lo saca del radar de despacho. |
+| 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
+
+**Postcondición:** La habilitación del chofer quedó en falso. Deshabilitado, el chofer ya no puede aceptar pedidos: la aceptación se rechaza con "El repartidor está deshabilitado". Además queda fuera de línea y sale del radar de asignación, de modo que el despacho deja de ofrecerle pedidos.
 
 **Excepciones**
 
@@ -5762,7 +6251,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Suspensiones operativas puntuales. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Al desactivar, el sistema deja al chofer fuera de línea y lo saca del radar de despacho, de modo que deja de recibir ofertas. Limitación registrada: el sistema no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar. Este estado se cambia únicamente por esta operación: la actualización general del perfil de chofer (CU-096) sólo admite la marca de validación. |
+| **Comentarios** | Al desactivar, el sistema deja al chofer fuera de línea y lo saca del radar de despacho, de modo que deja de recibir ofertas; no puede volver a ponerse en línea desde su app hasta que un administrador lo active (CU-033). Limitación registrada: el sistema no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar. |
 
 ---
 
@@ -5993,7 +6482,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una precarga, una escritura y una lectura de relectura con relaciones. |
 | **Frecuencia** | Baja: corrección puntual de datos del repartidor. |
 | **Estabilidad** | Media |
-| **Comentarios** | La operación cambia el mismo dato que CU-032 cambia por su operación dedicada, con las mismas reglas de rol y de distribuidora. El estado de actividad se cambia únicamente por CU-033, que además saca al chofer del radar al deshabilitarlo: por eso este caso no lo acepta. Un campo distinto de la validación se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. |
+| **Comentarios** | La operación cambia el mismo dato que CU-032 cambia por su operación dedicada, con las mismas reglas de rol y de distribuidora. El estado de actividad se cambia únicamente por CU-033 y CU-267, que además saca al chofer del radar al deshabilitarlo: por eso este caso no lo acepta. Un campo distinto de la validación se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. |
 
 ---
 
@@ -6606,7 +7095,7 @@ respaldado por la lectura del código en poder del cliente.
 | 6 | El sistema guarda la referencia del adjunto: la clave, el nombre original, el tipo, el tamaño y quién lo subió. |
 | 7 | El sistema devuelve el adjunto creado. |
 
-**Postcondición:** La tarea tiene un adjunto más, con su contenido guardado en el almacenamiento activo y su referencia en la base.
+**Postcondición:** La tarea tiene un adjunto más, con su contenido guardado en S3 y su referencia en la base.
 
 **Excepciones**
 
@@ -6616,11 +7105,11 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | Si no se envía ningún archivo, el sistema responde 400 "Falta el archivo". |
 | 4 | Si el tipo de archivo no es uno de los permitidos, el sistema responde 415, con el tipo recibido en el mensaje. |
 | 4 | Si el archivo supera los diez megabytes, el sistema responde 413. |
-| 6 | Si guardar la referencia en la base falla después de subir el archivo, el sistema borra el archivo ya subido, para no dejarlo huérfano en el almacenamiento. |
+| 6 | Si guardar la referencia en la base falla después de subir el archivo, el sistema borra de S3 el archivo ya subido, en segundo plano y con reintentos, para no dejarlo huérfano. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de verificación, una escritura al almacenamiento y una escritura en la base; depende del tamaño del archivo y de la latencia del almacenamiento activo. |
+| **Rendimiento** | Una lectura de verificación, una escritura a S3 y una escritura en la base; depende del tamaño del archivo y de la latencia de red hacia S3. |
 | **Frecuencia** | Baja: acompaña la carga de cada habilitación o mantenimiento. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El adjunto se sube, se lista, se descarga y se da de baja; un archivo `image/gif` se rechaza con 415. El límite de Multer es el doble del límite de negocio (veinte megabytes): es un techo técnico contra abuso, y el que rechaza con 413 es el control de tamaño de esta operación. |
@@ -6670,7 +7159,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador descarga el contenido de un adjunto de una tarea de mantenimiento. Endpoint: `GET /fleet/tasks/:id/attachments/:attachmentId/download`. |
+| **Descripción** | El administrador descarga el contenido de un adjunto de una tarea de mantenimiento. El archivo no pasa por el backend: el sistema entrega una URL firmada de S3, de corta vigencia. Endpoint: `GET /fleet/tasks/:id/attachments/:attachmentId/download`. |
 | **Precondición** | El administrador está autenticado. La tarea y el adjunto existen y son de su distribuidora. |
 | **Estado** | Implementado |
 
@@ -6682,9 +7171,9 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | El panel envía `GET /fleet/tasks/:id/attachments/:attachmentId/download`. |
 | 3 | El sistema comprueba que la tarea y el adjunto existan y sean de la distribuidora. |
 | 4 | El sistema resuelve cómo servir el archivo: **incluye CU-160 Recuperar Archivo**. |
-| 5 | Si el almacenamiento ofrece una URL directa, el sistema redirige a ella (302). Si no, el sistema transmite el archivo con su tipo de contenido y su nombre original. |
+| 5 | El sistema redirige (302) a la URL firmada de S3, que sirve el archivo con su tipo de contenido y su nombre original. Con `?modo=url` responde 200 con `{ url, expiresAt, requiresAuth }` en lugar de redirigir: es lo que usa el panel, porque una redirección entre orígenes pierde el token. |
 
-**Postcondición:** El administrador recibe el archivo, sea por redirección o por transmisión directa.
+**Postcondición:** El administrador recibe la URL firmada, por redirección o en el JSON, y con ella baja el archivo directo de S3.
 
 **Excepciones**
 
@@ -6694,10 +7183,10 @@ respaldado por la lectura del código en poder del cliente.
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de verificación y, según el almacenamiento activo, la generación de una URL firmada o la apertura de un flujo de lectura. |
+| **Rendimiento** | Una lectura de verificación y la firma de la URL, que se calcula sin consultar a S3. |
 | **Frecuencia** | Baja: sólo cuando alguien necesita ver o reenviar el documento. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Con `STORAGE_DRIVER` en `local` la descarga responde 200 con el archivo completo, su `Content-Type` y su `Content-Disposition` de adjunto. Con `STORAGE_DRIVER` en `s3` el sistema responde 302 a una URL firmada de corta duración en lugar de transmitir el archivo; ese camino está probado con el cliente de S3 simulado. |
+| **Comentarios** | El bucket es privado: la descarga se hace con una URL firmada que vence a los cinco minutos por omisión (`AWS_S3_SIGNED_URL_TTL_SECONDS`) y que lleva el `Content-Type` original y un `Content-Disposition` de adjunto con el nombre original. En la base se guarda la clave del objeto, nunca una URL. Si el archivo ya no está en S3, la URL firmada responde 404 de parte de S3 (el permiso `s3:ListBucket` del usuario IAM hace que sea 404 y no 403). Probado contra MinIO en las pruebas de integración (`s3.e2e-spec.ts`); falta probarlo contra el bucket real de AWS. |
 
 ---
 
@@ -6718,11 +7207,11 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El administrador elige borrar un adjunto: **incluye CU-156 Consultar Adjuntos de una Tarea de Flota**, el listado del que sale. |
 | 2 | El panel envía `DELETE /fleet/tasks/:id/attachments/:attachmentId`. |
 | 3 | El sistema comprueba que la tarea y el adjunto existan y sean de la distribuidora. |
-| 4 | El sistema borra la referencia del adjunto en la base. |
-| 5 | El sistema borra el contenido en el almacenamiento activo. |
+| 4 | El sistema da de baja lógica el adjunto: le registra la fecha de baja y deja de listarlo y de permitir su descarga. |
+| 5 | El archivo se conserva en S3 como respaldo; no se borra del bucket. |
 | 6 | El sistema responde sin contenido (204). |
 
-**Postcondición:** El adjunto deja de existir, tanto su referencia como su contenido.
+**Postcondición:** El adjunto queda dado de baja: no aparece en el listado ni se puede descargar (404), y su archivo sigue en S3 como respaldo.
 
 **Excepciones**
 
@@ -6732,10 +7221,10 @@ respaldado por la lectura del código en poder del cliente.
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de verificación, una escritura en la base y una escritura en el almacenamiento. |
+| **Rendimiento** | Una lectura de verificación y una escritura en la base; no hay llamada a S3. |
 | **Frecuencia** | Baja: corrección puntual de un adjunto cargado por error. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La baja responde 204 y el adjunto deja de listarse. La baja es física, no lógica: ni la referencia ni el contenido se conservan; a diferencia de otras bajas del sistema (clientes, choferes, vehículos), acá no hay historial que preservar porque el documento sigue vigente en otro lado (la aseguradora, el municipio). El borrado de la base ocurre antes que el del almacenamiento: si el segundo falla, queda un archivo huérfano en el almacenamiento sin que nada lo referencie; el sistema no revierte el primero ni reintenta el segundo. |
+| **Comentarios** | La baja responde 204 y el adjunto deja de listarse. La baja es lógica, como en el resto del sistema: el adjunto queda con fecha de baja, deja de listarse y su descarga responde 404, y el archivo se conserva en S3 como respaldo. La baja queda registrada en la auditoría de datos. |
 
 ---
 
@@ -6745,35 +7234,32 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-155 y, planificado en I-5, por CU-174. Guarda el contenido de un archivo en el almacenamiento activo de la distribuidora, detrás de un puerto único (`StoragePort`) con dos implementaciones intercambiables: disco local (por omisión) o Amazon S3 (por configuración). Quien lo incluye no sabe cuál de las dos está activa. |
+| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-155 y CU-174, y por la subida de adjuntos del personal (CU-186, planificado). Guarda el contenido de un archivo en Amazon S3, el único proveedor de archivos del sistema, a través de `S3Service`: bucket privado y objetos cifrados en reposo (SSE-S3). No hay disco local ni un segundo proveedor. |
 | **Precondición** | El archivo ya pasó los controles de tipo y tamaño de quien lo incluye. |
-| **Estado** | Implementado, con el adaptador de disco local activo por omisión (`STORAGE_DRIVER`). El adaptador de S3 está implementado y probado contra MinIO en el entorno de desarrollo, con los objetos cifrados en reposo (SSE-S3) y el depósito privado; el depósito real de AWS está pendiente. |
+| **Estado** | Implementado. Ver `docs/S3.md` del backend: Amazon S3 es el único proveedor; el entorno de la tesis usa el bucket `splg-tesis` (sa-east-1) y las pruebas de integración, MinIO, que habla la misma API. |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | Quien incluye este caso arma una clave única para el archivo, con la distribuidora, la tarea y un identificador aleatorio, y la extensión que corresponde al tipo de archivo. |
-| 2 | El sistema resuelve, por configuración, cuál adaptador de almacenamiento está activo. |
-| 3 | **Si el adaptador activo es el de disco local:** el sistema crea la carpeta necesaria dentro de la raíz de almacenamiento configurada, escribe el archivo en esa clave y, junto a él, un archivo auxiliar con su tipo de contenido original. |
-| 4 | **Si el adaptador activo es el de S3:** el sistema sube el archivo al depósito configurado, con esa misma clave, su tipo de contenido y el cifrado en reposo (SSE-S3). |
-| 5 | El sistema devuelve el éxito de la operación a quien la incluyó, que recién ahí guarda la referencia (la clave) en la base. |
+| 2 | El sistema sube el archivo al bucket configurado (`AWS_S3_BUCKET`), con esa misma clave, su tipo de contenido y el cifrado en reposo (SSE-S3). |
+| 3 | El sistema devuelve el éxito de la operación a quien la incluyó, que recién ahí guarda la referencia (la clave) en la base. |
 
-**Postcondición:** El contenido del archivo existe en el almacenamiento activo, bajo la clave generada. Nada fuera de este caso conoce si el almacenamiento es un disco o un depósito de S3.
+**Postcondición:** El contenido del archivo existe en el bucket, bajo la clave generada. El bucket sigue siendo privado: sólo se llega al objeto con una URL firmada (CU-160).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | En el disco local, la clave se normaliza y se exige que el resultado siga dentro de la raíz configurada: una clave con `..` no puede escribir fuera del almacenamiento. Como la clave siempre la genera el propio sistema, no la escribe nadie de afuera, esta comprobación es una defensa en profundidad, no una validación de un dato de usuario. |
-| 4 | Si S3 rechaza la subida —credenciales inválidas, depósito inexistente—, la excepción sube sin traducir a quien incluyó el caso. |
+| 2 | Si S3 rechaza la subida —credenciales inválidas, bucket inexistente—, la excepción sube sin traducir a quien incluyó el caso. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura, de duración variable según el tamaño del archivo y, en S3, la latencia de red. |
-| **Frecuencia** | Igual que CU-155 y CU-174 (este último planificado, I-5), que son los casos que lo incluyen. |
+| **Rendimiento** | Una escritura, de duración variable según el tamaño del archivo y la latencia de red hacia S3. |
+| **Frecuencia** | Igual que CU-155 y CU-174, que son los casos que lo incluyen. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Antes de subir, quien incluye el caso reserva la clave en una cola de reintento (la tabla `storage_orphan`, una tabla técnica del almacenamiento) y la confirma en la misma transacción que guarda la referencia: si el proceso cae entre la subida y la confirmación, una tarea horaria borra el objeto sin dueño pasada la hora de gracia. Lo mismo vale para el borrado y el reemplazo de un archivo, que se reintentan con espera creciente. El disco local no tiene URL pública: por eso `Recuperar Archivo` (CU-160) necesita una segunda operación para servir el contenido a través de este backend. El módulo de almacenamiento está escrito para que cualquier otro servicio del sistema pueda guardar archivos por el mismo puerto; `fleet` es el único servicio construido que lo usa; el de reclamos lo usará con CU-174 y CU-175 (I-5). |
+| **Comentarios** | Antes de subir, quien incluye el caso reserva la clave en una cola de reintento (la tabla `storage_orphan`, una tabla técnica del almacenamiento) y la confirma en la misma transacción que guarda la referencia: si el proceso cae entre la subida y la confirmación, una tarea horaria borra el objeto sin dueño pasada la hora de gracia. Lo mismo vale para el borrado y el reemplazo de un archivo, que se reintentan con espera creciente. El módulo `src/s3` (`S3Service`) lo usan los adjuntos de flota, los adjuntos genéricos de la distribuidora y la fotografía del reclamo. Sin `AWS_S3_BUCKET` y sin `AWS_REGION` la aplicación no arranca y avisa cuál falta. |
 
 ---
 
@@ -6783,35 +7269,32 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-157 y, planificado en I-5, por CU-175. Resuelve cómo servir el contenido de un archivo ya guardado, según el adaptador de almacenamiento activo. |
-| **Precondición** | El archivo existe en el almacenamiento, bajo la clave que guarda el adjunto. |
-| **Estado** | Implementado, con el adaptador de disco local activo por omisión (`STORAGE_DRIVER`). Con S3 el sistema entrega una URL firmada de corta vigencia y el archivo no pasa por el backend; el camino de S3 está probado contra MinIO en el entorno de desarrollo y el depósito real de AWS está pendiente. |
+| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-157 y CU-175. Resuelve cómo entregar el contenido de un archivo ya guardado: una URL firmada de S3, de corta vigencia, para que el archivo se baje directo del bucket privado. |
+| **Precondición** | El archivo existe en S3, bajo la clave que guarda el adjunto. |
+| **Estado** | Implementado. Ver `docs/S3.md` del backend: el archivo no pasa por el backend, se entrega con una URL firmada de S3 (bucket `splg-tesis`, sa-east-1); las pruebas de integración usan MinIO. |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | Quien incluye este caso pide recuperar el archivo de una clave. |
-| 2 | El sistema le pide al adaptador activo una URL de descarga directa. |
-| 3 | **Si el adaptador es el de S3**, devuelve una URL firmada, con una vigencia corta (cinco minutos por omisión, o menos si vencen antes las credenciales temporales) y con el nombre de descarga si se pidió, para que quien la reciba descargue el archivo directo del depósito, sin pasar por este backend. |
-| 4 | **Si el adaptador es el de disco local**, no hay URL directa: devuelve nada en su lugar. |
-| 5 | Si no hubo URL, el sistema le pide al adaptador un flujo de lectura del archivo, con su tipo de contenido y su tamaño si el adaptador los conoce. |
-| 6 | El sistema le devuelve a quien incluyó el caso, o bien la URL para redirigir, o bien el flujo para transmitir él mismo. |
+| 2 | El sistema firma una URL de descarga del objeto, con una vigencia corta —cinco minutos por omisión, o menos si vencen antes las credenciales temporales— y con el nombre de descarga si se pidió, para que quien la reciba descargue el archivo directo del bucket, sin pasar por este backend. |
+| 3 | El sistema le devuelve a quien incluyó el caso la URL y su vencimiento, para que redirija o la entregue en el JSON del enlace de descarga. |
 
-**Postcondición:** Quien incluyó el caso tiene lo que necesita para que el solicitante reciba el archivo, por redirección o por transmisión.
+**Postcondición:** Quien incluyó el caso tiene la URL firmada y su vencimiento; el solicitante baja el archivo directo de S3.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 5 | Si la clave no corresponde a ningún archivo existente, la excepción del adaptador sube sin traducir a quien incluyó el caso. |
+| 2 | Si la clave no corresponde a ningún archivo, la URL se firma igual —firmar no consulta a S3— y al abrirla S3 responde 404. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Inmediato para la URL firmada; para el flujo de lectura, depende del tamaño del archivo. |
-| **Frecuencia** | Igual que CU-157 y CU-175 (este último planificado, I-5), que son los casos que lo incluyen. |
+| **Rendimiento** | Inmediato: firmar la URL no llama a S3. |
+| **Frecuencia** | Igual que CU-157 y CU-175, que son los casos que lo incluyen. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La firma de la URL de S3 se probó contra MinIO en el entorno de desarrollo; falta probarla contra el depósito de AWS. El enlace que recibe el cliente trae la URL y su vencimiento; con el disco local trae la ruta del propio backend y exige el token de siempre. |
+| **Comentarios** | La firma de la URL se probó contra MinIO en las pruebas de integración; falta probarla contra el bucket de AWS. El enlace que recibe el cliente trae la URL, su vencimiento y `requiresAuth` en falso: la URL firmada se abre sin token. La clave de la base nunca se muestra. |
 
 ---
 
@@ -7632,7 +8115,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura de unicidad y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Muy baja. El catálogo de tipos de garrafa es estable en el tiempo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El control de tipo duplicado no distingue producto activo de producto dado de baja; como CU-040 tampoco ofrece reactivación, dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. |
+| **Comentarios** | El control de tipo duplicado no distingue producto activo de producto dado de baja; como CU-040 no ofrece reactivación (CU-268, planificada en I-1), dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. |
 
 ---
 
@@ -7765,15 +8248,15 @@ respaldado por la lectura del código en poder del cliente.
 ---
 
 
-#### Importante CU-040 — Activar / Desactivar Producto
+#### Importante CU-040 — Desactivar un Producto
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-04 |
-| **Descripción** | El administrador retira un producto del catálogo de su distribuidora mediante una baja lógica. El producto deja de figurar en el listado de catálogo y en el de productos disponibles, y por lo tanto no puede seleccionarse en nuevos pedidos. El stock y el resto de los datos se conservan intactos. |
+| **Descripción** | El administrador retira un producto del catálogo de su distribuidora mediante una baja lógica. El producto deja de figurar en el listado de catálogo y en el de productos disponibles, y por lo tanto no puede seleccionarse en nuevos pedidos. El stock y el resto de los datos se conservan intactos. Endpoint: `DELETE /gascylinder/:id`. |
 | **Precondición** | El administrador está autenticado, tiene una distribuidora en contexto y el producto pertenece a esa distribuidora. |
-| **Estado** | Implementado, con funcionalidad planificada (I-1): la reactivación de un producto dado de baja y el listado de productos inactivos. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -7785,13 +8268,8 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | El sistema **asigna** el estado inactivo al producto. No invierte el estado anterior: siempre lo deja inactivo. |
 | 5 | El sistema persiste el cambio y devuelve la confirmación de la desactivación con el identificador del producto. |
 | 6 | El catálogo de la App Cliente deja de incluir el producto en su siguiente consulta. |
-| 7 | **(Planificado, I-1)** Para reactivar un producto, el administrador activa en el listado del catálogo el filtro de productos dados de baja (`GET /gascylinder/inactive`) y selecciona el producto: **incluye CU-041 Consultar Catálogo de Productos**. |
-| 8 | **(Planificado, I-1)** Confirma la reactivación (`PATCH /gascylinder/:id/activate`). |
-| 9 | **(Planificado, I-1)** El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador. |
-| 10 | **(Planificado, I-1)** El sistema **asigna** el estado activo al producto: no invierte el estado anterior, siempre lo deja activo. |
-| 11 | **(Planificado, I-1)** El catálogo de la App Cliente vuelve a incluir el producto en su siguiente consulta. |
 
-**Postcondición:** El producto quedó inactivo y no es visible en el catálogo del cliente ni seleccionable en nuevos pedidos. El stock y el historial se conservan. Los pedidos ya creados con ese producto no se ven afectados. **(Planificado, I-1)** Tras la reactivación, el producto vuelve a ser visible y seleccionable, con su stock y sus promociones intactos.
+**Postcondición:** El producto quedó inactivo y no es visible en el catálogo del cliente ni seleccionable en nuevos pedidos. El stock y el historial se conservan. Los pedidos ya creados con ese producto no se ven afectados.
 
 **Excepciones**
 
@@ -7799,14 +8277,88 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 3 | Si el producto no existe, o pertenece a otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos. |
-| 9 | **(Planificado, I-1)** Si el producto no existe o es de otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos; si ya estaba activo, responde igual con el producto sin cambios. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una verificación de pertenencia y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema ofrece la desactivación; la reactivación y el listado de productos dados de baja están planificados (I-1). El atributo `isActive` no forma parte de los datos que aceptan el alta ni la modificación y la validación global rechaza toda propiedad no declarada, de modo que un producto desactivado no vuelve al catálogo sin intervención directa sobre la base. El listado administrativo filtra siempre por producto activo (CU-041), así que el administrador no puede ni ubicarlo, y como el control de tipo duplicado (CU-036) no distingue activo de inactivo, el nombre de tipo del producto dado de baja queda bloqueado para esa distribuidora hasta que se lo reactive. La reactivación se ofrece como operación propia y no como campo de la modificación, para que dar de baja y reactivar sean dos intenciones distintas y explícitas. Reactivar y listar los inactivos son dos piezas de la misma funcionalidad. |
+| **Comentarios** | El atributo `isActive` no forma parte de los datos que aceptan el alta ni la modificación y la validación global rechaza toda propiedad no declarada, de modo que un producto desactivado no vuelve al catálogo sin la reactivación (CU-268), que está planificada (I-1). El listado administrativo filtra siempre por producto activo (CU-041), así que mientras no exista el listado de inactivos (CU-269) el administrador no puede ni ubicarlo, y como el control de tipo duplicado (CU-036) no distingue activo de inactivo, el nombre de tipo del producto dado de baja queda bloqueado para esa distribuidora hasta que se lo reactive. |
+
+---
+
+
+#### Importante CU-268 — Reactivar un Producto
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-04 |
+| **Descripción** | El administrador devuelve al catálogo de su distribuidora un producto que había dado de baja (CU-040). La reactivación es una operación propia y no un campo de la modificación, para que dar de baja y reactivar sean dos intenciones distintas y explícitas. Endpoint: `PATCH /gascylinder/:id/activate`. |
+| **Precondición** | El administrador está autenticado, tiene una distribuidora en contexto y el producto dado de baja pertenece a esa distribuidora. |
+| **Estado** | Planificado (I-1). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Productos" en el Panel Web, activa el filtro de productos dados de baja y selecciona el producto: **incluye CU-269 Consultar los Productos Inactivos**, el listado del que sale. |
+| 2 | Confirma la reactivación (`PATCH /gascylinder/:id/activate`). |
+| 3 | El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador. |
+| 4 | El sistema **asigna** el estado activo al producto: no invierte el estado anterior, siempre lo deja activo. |
+| 5 | El catálogo de la App Cliente vuelve a incluir el producto en su siguiente consulta. |
+
+**Postcondición:** El producto vuelve a ser visible y seleccionable, con su stock y sus promociones intactos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
+| 3 | Si el producto no existe o es de otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos; si ya estaba activo, responde igual con el producto sin cambios. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una verificación de pertenencia y una escritura; se resuelve en menos de un segundo. |
+| **Frecuencia** | Muy baja. |
+| **Estabilidad** | Alta |
+| **Comentarios** | `isActive` no está expuesto en el alta ni en la modificación del producto y el `ValidationPipe` global corre con `whitelist` y `forbidNonWhitelisted`, de modo que mandar `isActive` en el `PATCH` de modificación devuelve 400: por eso la reactivación es una operación propia. La búsqueda por identificador no filtra por activo, de modo que la reactivación encuentra el producto dado de baja. |
+
+---
+
+
+#### Importante CU-269 — Consultar los Productos Inactivos
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-04 |
+| **Descripción** | El administrador lista los productos de su distribuidora que fueron dados de baja (CU-040), que el listado del catálogo (CU-041) no muestra porque filtra siempre por producto activo. Endpoint: `GET /gascylinder/inactive`. |
+| **Precondición** | El administrador está autenticado y tiene una distribuidora en contexto. |
+| **Estado** | Planificado (I-1). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Productos" en el Panel Web y activa el filtro de productos dados de baja. |
+| 2 | El panel envía `GET /gascylinder/inactive`. |
+| 3 | El sistema devuelve los productos inactivos de la distribuidora del administrador. |
+
+**Postcondición:** El administrador ve los productos dados de baja de su distribuidora. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura filtrada por distribuidora y por producto inactivo; se resuelve en menos de un segundo. |
+| **Frecuencia** | Muy baja. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parte la reactivación (CU-268): sin él el administrador no tiene cómo conocer el identificador de un producto dado de baja. |
 
 ---
 
@@ -9722,13 +10274,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 ---
 
 
-#### Importante CU-089 — Gestionar Roles del Sistema
+#### Importante CU-089 — Consultar los Roles
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El Administrador General (ACT-05) administra el catálogo de roles que gobierna toda la autorización del sistema: los crea, los lista, los consulta, los modifica y los elimina. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoints: `POST /role` (`:23`), `GET /role` (`:28`), `GET /role/:id` (`:33`), `PATCH /role/:id` (`:39`) y `DELETE /role/:id` (`:47`). |
+| **Descripción** | El Administrador General (ACT-05) consulta el catálogo de roles que gobierna toda la autorización del sistema: los lista y consulta uno puntual. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoints: `GET /role` (`:28`) y `GET /role/:id` (`:33`). |
 | **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
 | **Estado** | Implementado |
 
@@ -9738,30 +10290,140 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El Administrador General abre la pantalla de roles. |
 | 2 | El panel envía `GET /role` y el sistema devuelve el catálogo completo. |
-| 3 | Para dar de alta un rol, el panel envía `POST /role` con el tipo y el sistema lo persiste. |
-| 4 | Para consultar uno puntual, el panel envía `GET /role/:id` con el identificador validado como UUID. |
-| 5 | Para modificarlo, el panel envía `PATCH /role/:id`; el sistema precarga la entidad con los cambios y la guarda. |
-| 6 | Para eliminarlo, el panel envía `DELETE /role/:id`; el sistema recupera el rol y lo borra físicamente. |
-| 7 | El sistema devuelve el rol resultante o el mensaje "Role deleted successfully". |
+| 3 | Para consultar uno puntual, el panel envía `GET /role/:id` con el identificador validado como UUID. |
+| 4 | El sistema devuelve el rol o la lista de roles. |
 
-**Postcondición:** El catálogo de roles refleja la operación realizada. Como el rol determina los permisos de cada cuenta, el cambio impacta de inmediato en la autorización de los usuarios que lo tienen asignado.
+**Postcondición:** El Administrador General ve los roles vigentes del catálogo; los dados de baja no se listan. No hay cambios de estado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
-| 4 | Si el rol no existe, el sistema retorna error 404 "Role with ID: … not found". |
-| 5 | Si el rol a modificar no existe, el sistema retorna error 404 "Role with ID: … not found". |
-| 6 | Si el rol tiene usuarios asignados, la clave foránea impide el borrado y el sistema responde 409 con el motivo. |
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si el rol no existe, el sistema retorna error 404 "Role with ID: … not found". |
 | 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Operaciones puntuales sobre una tabla de cardinalidad mínima. |
+| **Rendimiento** | Lectura puntual sobre una tabla de cardinalidad mínima. |
 | **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El borrado de un rol con usuarios asignados no está protegido con un mensaje propio: la restricción de integridad de la base lo impide, pero el error sube sin traducir a un conflicto legible, lo que conviene corregir para que el Administrador General reciba un mensaje claro en lugar de un error interno. |
+| **Comentarios** | Es el listado del que parten la modificación (CU-253) y la baja (CU-254) de un rol. Los cuatro roles del sistema (cliente, chofer, administrador y administrador general) se siembran con CU-090. |
+
+---
+
+
+#### Importante CU-252 — Crear un Rol
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El Administrador General (ACT-05) da de alta un rol en el catálogo que gobierna toda la autorización del sistema. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoint: `POST /role` (`:23`). |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General abre la pantalla de roles y elige dar de alta un rol. |
+| 2 | El panel envía `POST /role` con el tipo del rol y el sistema lo persiste. |
+| 3 | El sistema devuelve el rol creado. |
+
+**Postcondición:** El catálogo de roles contiene el rol nuevo. Como el rol determina los permisos de cada cuenta, recién incide en la autorización de las cuentas a las que se lo asigne.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el tipo falta o no es una cadena, el sistema retorna error 400. |
+| 2 | Si ya existe un rol con ese tipo, la restricción de unicidad lo rechaza y el sistema responde 409 "Ya existe un registro con esos datos (roles)". |
+| 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una escritura sobre una tabla de cardinalidad mínima. |
+| **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El tipo del rol es único en el catálogo. Los cuatro roles que el código busca por su nombre se siembran con CU-090. |
+
+---
+
+
+#### Importante CU-253 — Modificar un Rol
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El Administrador General (ACT-05) modifica un rol del catálogo que gobierna toda la autorización del sistema. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoint: `PATCH /role/:id` (`:39`). |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General abre la pantalla de roles y selecciona el rol: **incluye CU-089 Consultar los Roles**, el listado del que sale. |
+| 2 | El panel envía `PATCH /role/:id` con los cambios; el sistema recupera el rol y comprueba que no sea uno de los del sistema. |
+| 3 | El sistema precarga la entidad con los cambios y la guarda. |
+| 4 | El sistema devuelve el rol modificado. |
+
+**Postcondición:** El rol quedó con los datos nuevos. Como el rol determina los permisos de cada cuenta, el cambio impacta de inmediato en la autorización de los usuarios que lo tienen asignado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el rol a modificar no existe, el sistema retorna error 404 "Role with ID: … not found". |
+| 2 | Si el rol es uno de los del sistema (cliente, chofer, administrador, administrador general), el sistema responde 409 con el motivo y no lo modifica. |
+| 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura sobre una tabla de cardinalidad mínima. |
+| **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Los cuatro roles del sistema no se pueden modificar: el código los busca por su nombre y renombrarlos dejaría sin funcionar el registro de usuarios. |
+
+---
+
+
+#### Importante CU-254 — Eliminar un Rol
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El Administrador General (ACT-05) elimina un rol del catálogo con una baja lógica: deja de listarse y de consultarse, pero la fila se conserva. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoint: `DELETE /role/:id` (`:47`). |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General abre la pantalla de roles y selecciona el rol: **incluye CU-089 Consultar los Roles**, el listado del que sale. |
+| 2 | El panel envía `DELETE /role/:id`; el sistema recupera el rol, comprueba que no sea un rol del sistema ni tenga usuarios (aun dados de baja) y lo da de baja lógica. |
+| 3 | El sistema devuelve el mensaje "Role deleted successfully". |
+
+**Postcondición:** El rol dejó de listarse y de consultarse; la fila se conserva. Ningún usuario quedó sin rol.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el rol no existe, el sistema retorna error 404 "Role with ID: … not found". |
+| 2 | Si el rol es uno de los del sistema (cliente, chofer, administrador, administrador general), o tiene usuarios asignados, el sistema responde 409 con el motivo y no lo da de baja. |
+| 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura, un conteo y una escritura sobre tablas de cardinalidad mínima. |
+| **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja es lógica porque la clave foránea ya no frena el borrado de un rol con usuarios: el conteo de usuarios, que incluye a los dados de baja, se comprueba a mano antes de darlo de baja. |
 
 ---
 
@@ -10320,7 +10982,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
 | **Requisitos asociados** | IRQ-16, NFR-09 |
-| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Cada asiento trae, además, el cuerpo de la operación con las credenciales depuradas. Endpoint: `GET /audit`. |
+| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Cada asiento trae, además, el cuerpo de la operación con las credenciales depuradas. Endpoint: `GET /audit`. Además, el administrador consulta la **auditoría de datos**: qué registro de qué entidad cambió, con qué acción y, por cada campo, el valor anterior y el nuevo. Endpoints: `GET /audit/entries`, `GET /audit/entries/:id` y `GET /audit/action-types`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN (Administrador) o SUPER_ADMIN (Administrador General). |
 | **Estado** | Implementado |
 
@@ -10333,6 +10995,11 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | El sistema valida los filtros. Si hay una distribuidora en contexto —la del administrador de empresa, o la que eligió el Administrador General con "ver como"—, restringe la consulta a los asientos de esa distribuidora. El Administrador General sin distribuidora elegida ve los de todas. |
 | 4 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, junto con la cantidad total de coincidencias (`items` y `total`). |
 | 5 | Por cada asiento informa quién lo originó y con qué rol, a qué distribuidora corresponde, qué operación fue (método y ruta), sobre qué recurso e identificador, cuándo, desde qué aplicación y desde qué dirección de red, con qué resultado y código de respuesta, el motivo si fue rechazada y el cuerpo depurado de la operación. |
+| 6 | **Auditoría de datos.** El administrador indica, si quiere, los filtros: la entidad afectada (`entity`, por ejemplo `Order`), el registro (`recordId`), quién hizo el cambio (`userId`), el tipo de acción (`actionType`: 1 Alta, 2 Modificación, 3 Baja lógica, 4 Reactivación, 5 Baja física) y desde y hasta qué fecha (`from`, `to`). |
+| 7 | Se envía `GET /audit/entries` con los filtros y la página: `page`, desde 1, y `limit`, entre 1 y 200, 50 por defecto. |
+| 8 | El sistema aplica la misma restricción por distribuidora que en la bitácora. Los registros que no pertenecen a ninguna distribuidora —los de la persona o globales, como las cuentas de usuario, los clientes y los roles— sólo los ve el Administrador General. |
+| 9 | El sistema devuelve las auditorías que coinciden, de la más reciente a la más antigua, junto con el total (`data` y `total`). Cada una trae el tipo de acción, el usuario (nombre y correo, aunque después se lo haya dado de baja; vacío si el cambio lo hizo el sistema), la distribuidora, la entidad afectada, el identificador del registro, la dirección de red, la fecha y hora y sus detalles: por cada campo que cambió, el campo, el valor anterior y el valor nuevo. |
+| 10 | Con `GET /audit/entries/:id` el administrador ve una sola auditoría con todos sus detalles y con `GET /audit/action-types`, el catálogo de acciones. |
 
 **Postcondición:** Ninguna: la consulta no modifica nada. La propia consulta **no** genera un asiento, porque leer no es una operación de escritura.
 
@@ -10344,14 +11011,17 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | Si un filtro no tiene el formato esperado —un autor que no es UUID, un resultado distinto de `success` o `failure`, una fecha inválida, un `limit` fuera del rango de 1 a 200 o un parámetro no declarado—, el sistema responde error 400. |
 | 3 | Si la fecha `desde` es posterior a `hasta`, el sistema no lo rechaza: ningún asiento cae en ese período y la respuesta es una lista vacía. |
 | 4 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía con total 0. No es un error. |
-| — | El sistema no expone ninguna operación de modificación ni de borrado sobre el registro, para ningún rol. Ver CU-153. |
+| 7 | Si un filtro de la auditoría de datos no tiene el formato esperado —un `userId` que no es UUID, un `actionType` fuera de 1 a 5, una fecha inválida, un `limit` fuera del rango de 1 a 200 o un parámetro no declarado—, el sistema responde error 400. |
+| 7 | Si el solicitante es un cliente o un chofer, el guard de roles rechaza la petición con error 403, también en `/audit/entries`. |
+| 10 | Si la auditoría pedida con `GET /audit/entries/:id` no existe o es de otra distribuidora, el sistema responde 404 "Auditoría no encontrada", sin distinguir los casos. |
+| — | El sistema no expone ninguna operación de modificación ni de borrado sobre la bitácora ni sobre la auditoría de datos, para ningún rol. Ver CU-153. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una sola lectura paginada con su conteo, apoyada en los índices por fecha, por autor y por distribuidora de la tabla `audit_log`: sin ellos, la tabla crece hasta volver inusable la consulta. La meta es responder en menos de 3 segundos. |
+| **Rendimiento** | Una sola lectura paginada con su conteo, apoyada en los índices por fecha, por autor y por distribuidora de la tabla `audit_log`: sin ellos, la tabla crece hasta volver inusable la consulta. La auditoría de datos se apoya en los índices de `audit` por entidad y registro, por usuario y por distribuidora con fecha, y trae los detalles de la página con una sola lectura más. La meta es responder en menos de 3 segundos. |
 | **Frecuencia** | Baja: se consulta ante una disputa o una sospecha, no a diario. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. El Panel de Administración ofrece la pantalla de consulta, en la sección de auditoría, sobre la misma API. La depuración por antigüedad no está construida; si llega a hacer falta, será una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
+| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. El Panel de Administración ofrece la pantalla de consulta, en la sección de auditoría, sobre la misma API. La depuración por antigüedad no está construida; si llega a hacer falta, será una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. La bitácora y la auditoría de datos son dos registros distintos: la primera guarda cada petición de escritura, exitosa o rechazada, con el cuerpo depurado; la segunda guarda el dato, qué registro y qué campos cambiaron, y sólo existe si el cambio se confirmó. La auditoría de datos arranca con su migración: no hay historia previa. No se auditan el carrito y sus renglones, los tres historiales que ya sólo se agregan (estados del pedido, movimientos de envases y uso de vehículos), las ofertas de despacho, la secuencia de documentos, la cola de archivos pendientes, la posición del chofer ni la marca interna de avisos de mantenimiento. Los campos secretos (contraseñas, claves, tokens, el código de entrega) se registran como `[oculto]`; el DNI, el CUIL y el CBU sí se auditan. |
 
 ---
 
@@ -10376,8 +11046,11 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 4 | Arma el asiento: distribuidora, autor y rol, método, recurso (el primer segmento de la ruta después de `/api`, por ejemplo `orders`), identificador del recurso (el parámetro `:id` de la ruta o, si no lo tiene, el primero de sus parámetros), la ruta como patrón (`/api/users/email/:email`, de modo que un correo o un teléfono no quedan escritos en la ruta), la aplicación de origen (encabezado `X-Client-Source`), la dirección de red, el resultado (`success` o `failure`) y el código HTTP. |
 | 5 | **Depura el cuerpo antes de guardarlo**: los valores de las claves `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code`, `deliveryCode` y `secret` se reemplazan por `"[depurado]"`, en cualquier nivel del cuerpo y sin distinguir mayúsculas de minúsculas; los textos de más de 500 caracteres se recortan y lo anidado a más de cuatro niveles queda como `"[recortado]"`. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
 | 6 | Guarda el asiento en la tabla `audit_log` sin demorar la respuesta al usuario. |
+| 7 | **Auditoría de datos.** Mientras la operación escribe, la capa de datos anuncia cada alta, modificación, baja lógica y reactivación de un registro de una entidad de negocio. Por cada uno el sistema crea una Auditoria —tipo de acción, usuario, distribuidora, entidad afectada, identificador del registro y dirección de red— y un DetalleAuditoria por cada campo que cambió, con su valor anterior y el nuevo. |
+| 8 | El usuario, la dirección de red y la distribuidora salen del contexto de la petición —los resuelve la autenticación, nunca el cuerpo—. Fuera de una petición (tareas programadas, siembras, notificaciones sin usuario) el usuario queda vacío. |
+| 9 | Escribe la auditoría con la misma transacción del cambio: si el cambio se deshace, la auditoría también. |
 
-**Postcondición:** Queda un asiento por cada operación de escritura que pasó la autenticación y la autorización, exitosa o rechazada. Las operaciones de sólo lectura no generan asiento. El asiento no puede modificarse ni borrarse: la base de datos rechaza todo `UPDATE` y `DELETE` sobre `audit_log` con el trigger `audit_log_inmutable`. La única modificación que admite es la que hace la propia base cuando se borra el usuario autor o la distribuidora (`ON DELETE SET NULL`): vacía esa referencia sin tocar el resto del asiento.
+**Postcondición:** Queda un asiento por cada operación de escritura que pasó la autenticación y la autorización, exitosa o rechazada, y una auditoría con sus detalles por cada registro de negocio que el cambio dio de alta, modificó, dio de baja o reactivó. Las operaciones de sólo lectura no generan asiento. El asiento no puede modificarse ni borrarse: la base de datos rechaza todo `UPDATE` y `DELETE` sobre `audit_log` con el trigger `audit_log_inmutable`. La única modificación que admite es la que hace la propia base cuando se borra el usuario autor o la distribuidora (`ON DELETE SET NULL`): vacía esa referencia sin tocar el resto del asiento. Las dos tablas de la auditoría de datos (`audit` y `audit_detail`) son de sólo escritura de la misma manera: un disparador rechaza todo `UPDATE` y todo `DELETE`, salvo ese vaciado.
 
 **Excepciones**
 
@@ -10386,11 +11059,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | Si un guard rechaza la petición (401, 403 o 429), no se registra: no llegó a ser una operación. |
 | 3 | Si la operación es rechazada —por la validación de los datos, por una regla del negocio o por un error—, **igual se registra**, con resultado `failure`, el código HTTP con el que responde el sistema y el motivo del rechazo; el error llega al usuario sin cambios. Un intento fallido de modificar algo ajeno es justamente lo que interesa ver. |
 | 6 | Si la base no acepta el asiento, la operación del usuario **no se interrumpe** ni se deshace: el asiento completo queda en el registro de eventos del sistema, con los datos necesarios para reconstruirlo. Que la auditoría falle no puede impedir que se trabaje. |
+| 7 | Si el guardado no cambió ningún campo, no se escribe ninguna auditoría. Si un insert llega sin identificador de registro, no se escribe una auditoría vacía: se deja un aviso en el registro de eventos. |
+| 9 | Si la transacción se deshace, no queda auditoría de datos: sólo la bitácora, con el rechazo. A diferencia del asiento, la auditoría de datos es parte de la transacción del cambio. |
 | — | Las operaciones públicas —el ingreso, el registro de una cuenta, las notificaciones del proveedor de pagos— también se registran; si la petición no trae credencial, el asiento queda sin autor. Las verificaciones de estado del sistema son de sólo lectura y no generan asiento. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | La respuesta al usuario no espera la escritura del asiento: la operación sólo suma armarlo y depurar el cuerpo, en memoria. La tabla lleva índices por fecha, por autor y por distribuidora para la consulta de CU-152. |
+| **Rendimiento** | La respuesta al usuario no espera la escritura del asiento: la operación sólo suma armarlo y depurar el cuerpo, en memoria. La tabla lleva índices por fecha, por autor y por distribuidora para la consulta de CU-152. La auditoría de datos escribe la cabecera y todos los detalles de un registro con una sola sentencia, dentro de la transacción del cambio. |
 | **Frecuencia** | Automático, una vez por cada operación de escritura del sistema. |
 | **Estabilidad** | Alta |
 | **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y el plazo de conservación no está definido. La depuración por antigüedad no está construida; cuando exista será un proceso del sistema, nunca una operación disponible para un usuario, y tendrá que contemplar el trigger que impide borrar asientos. |
@@ -10481,43 +11156,158 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 ### SS-19 — Personal y Legajos
 
-#### Importante CU-176 — Gestionar los Puestos de Trabajo
+#### Importante CU-176 — Consultar los Puestos de Trabajo
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador consulta, crea, modifica y da de baja los puestos de su distribuidora. Cada puesto tiene un nombre y una categoría (`driver`, `helper`, `warehouse`, `administration`, `sales`, `management` u `other`): la categoría, y no el nombre, decide qué documentación con vencimiento se le exige al empleado y a qué rol de acceso puede aspirar. Cada distribuidora nace con cinco puestos sembrados (Chofer, Ayudante, Depósito, Administración y Vendedor). Endpoints: `GET`, `POST`, `PATCH` y `DELETE` sobre `/job-positions`. |
+| **Descripción** | El administrador consulta los puestos de su distribuidora. Cada puesto tiene un nombre y una categoría (`driver`, `helper`, `warehouse`, `administration`, `sales`, `management` u `other`): la categoría, y no el nombre, decide a qué rol de acceso puede aspirar quien lo ocupa. Cada distribuidora nace con cinco puestos sembrados (Chofer, Ayudante, Depósito, Administración y Vendedor). La lista incluye los puestos inactivos, con su marca de activo. Endpoint: `GET /job-positions`. |
 | **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Empresa · Personal · Puestos» y el panel envía `GET /job-positions`; el sistema devuelve los puestos de su distribuidora con su categoría y la cantidad de empleados activos que tiene cada uno. |
-| 2 | Para crear un puesto, el administrador indica el nombre y la categoría y el panel envía `POST /job-positions`. |
-| 3 | El sistema comprueba que la distribuidora no tenga otro puesto vigente con el mismo nombre, sin distinguir mayúsculas de minúsculas. |
-| 4 | El sistema crea el puesto, activo, y lo devuelve. |
-| 5 | Para modificar un puesto, el panel envía `PATCH /job-positions/:id` con el nombre, la categoría o la marca de activo; el sistema repite el control de nombre y devuelve el puesto actualizado. |
-| 6 | Para eliminar un puesto, el panel envía `DELETE /job-positions/:id`; el sistema comprueba que no tenga empleados activos y lo da de baja. |
+| 1 | El administrador abre «Empresa · Personal · Puestos» y el panel envía `GET /job-positions`. |
+| 2 | El sistema devuelve los puestos de su distribuidora, ordenados por nombre, con su categoría, su marca de activo y la cantidad de empleados activos que tiene cada uno. |
 
-**Postcondición:** El catálogo de puestos de la distribuidora refleja el alta, el cambio o la baja pedidos, y ningún empleado activo quedó sin puesto.
+**Postcondición:** El administrador ve los puestos vigentes de su distribuidora. No hay cambios de estado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si ya existe un puesto vigente con ese nombre en la distribuidora, el sistema responde 409. |
-| 5 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
-| 6 | Si el puesto tiene empleados activos, el sistema responde 409 con la cantidad de empleados que lo ocupan; hay que reasignarlos antes. |
+| 1 | Si la petición no trae un token válido, el sistema responde 401. |
+| 1 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una consulta con conteo de empleados por puesto y una escritura por operación. |
+| **Rendimiento** | Dos consultas: los puestos de la distribuidora y el conteo de empleados activos agrupado por puesto. |
+| **Frecuencia** | Baja: cuando el administrador abre la pantalla de puestos. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la modificación (CU-256) y la baja (CU-257) de un puesto. La cantidad de empleados activos de cada puesto es lo primero que decide si se lo puede dar de baja (CU-257). Los cinco puestos iniciales se siembran al crear la distribuidora, con un escuchador del evento de alta, y para las distribuidoras que ya existían con la migración `SembrarPuestosDeTrabajo`. |
+
+---
+
+
+#### Importante CU-255 — Crear un Puesto de Trabajo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-17 |
+| **Descripción** | El administrador crea un puesto de trabajo en su distribuidora, con un nombre y una categoría (`driver`, `helper`, `warehouse`, `administration`, `sales`, `management` u `other`): la categoría, y no el nombre, decide a qué rol de acceso puede aspirar quien lo ocupa. El puesto nace activo, salvo que se indique lo contrario. Endpoint: `POST /job-positions`. |
+| **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Empresa · Personal · Puestos» y elige crear un puesto. |
+| 2 | Indica el nombre y la categoría y el panel envía `POST /job-positions`. |
+| 3 | El sistema comprueba que la distribuidora no tenga otro puesto vigente con el mismo nombre, sin distinguir mayúsculas de minúsculas. |
+| 4 | El sistema crea el puesto, activo salvo que se indique lo contrario, y lo devuelve con cero empleados activos. |
+
+**Postcondición:** El catálogo de puestos de la distribuidora cuenta con el puesto nuevo, activo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si falta el nombre, tiene menos de 2 o más de 80 caracteres, o la categoría no es una de las admitidas, el sistema responde 400 con el detalle del campo. |
+| 3 | Si ya existe un puesto vigente con ese nombre en la distribuidora, el sistema responde 409. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de control y una escritura. |
 | **Frecuencia** | Baja: los cinco puestos iniciales se siembran al crear la distribuidora y casi no se tocan. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Los cinco puestos iniciales se siembran con el mismo mecanismo que los planes base de la flota (un escuchador del alta de la distribuidora) y, para las distribuidoras que ya existen, por migración. La baja es lógica: el puesto deja de ofrecerse pero los legajos que lo ocuparon lo conservan. El nombre es único por distribuidora entre los puestos vigentes. |
+| **Comentarios** | Los cinco puestos iniciales se siembran con el mismo mecanismo que los planes base de la flota (un escuchador del alta de la distribuidora) y, para las distribuidoras que ya existen, por migración. El nombre es único por distribuidora entre los puestos vigentes, sin distinguir mayúsculas, y la base lo refuerza con un índice único funcional. |
+
+---
+
+
+#### Importante CU-256 — Modificar un Puesto de Trabajo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-17 |
+| **Descripción** | El administrador modifica un puesto de trabajo de su distribuidora: su nombre, su categoría o la marca de activo. Endpoint: `PATCH /job-positions/:id`. |
+| **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Empresa · Personal · Puestos» y selecciona el puesto: **incluye CU-176 Consultar los Puestos de Trabajo**, el listado del que sale. |
+| 2 | Cambia el nombre, la categoría o la marca de activo y el panel envía `PATCH /job-positions/:id`. |
+| 3 | El sistema repite el control de nombre: que la distribuidora no tenga otro puesto vigente con el mismo nombre, sin distinguir mayúsculas de minúsculas. |
+| 4 | Si cambió la categoría, el sistema comprueba que los empleados con cuenta que ocupan el puesto sigan teniendo un rol de acceso que corresponda a la categoría nueva. |
+| 5 | Si el puesto es de categoría `driver` o `administration` y se lo desactiva o se le cambia la categoría, el sistema comprueba que quede otro puesto activo de esa categoría. |
+| 6 | El sistema guarda los cambios y devuelve el puesto actualizado, con su cantidad de empleados activos. |
+
+**Postcondición:** El puesto quedó con los datos nuevos. Los legajos de quienes lo ocupan lo siguen teniendo asignado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si ya existe otro puesto vigente con ese nombre en la distribuidora, el sistema responde 409. |
+| 2 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404; si el identificador no es un UUID, responde 400. |
+| 4 | Si algún empleado con cuenta del puesto tiene un rol que no corresponde a la categoría nueva, el sistema responde 409 con la cantidad de empleados afectados. |
+| 5 | Si el puesto es el último activo de su categoría `driver` o `administration`, el sistema responde 409: hay que crear otro antes de desactivarlo o recategorizarlo. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de control y una escritura. |
+| **Frecuencia** | Baja: los cinco puestos iniciales se siembran al crear la distribuidora y casi no se tocan. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Sólo cambian los campos enviados. La categoría, y no el nombre, es lo que decide las reglas que se le aplican al personal que ocupa el puesto. Un puesto inactivo deja de ofrecerse para los legajos nuevos (asignarlo responde 409), pero quienes lo ocupan lo conservan. Las dos reglas de los pasos 4 y 5 protegen el alta de personal con cuenta: un chofer o un administrativo siempre tiene dónde ubicarse. |
+
+---
+
+
+#### Importante CU-257 — Eliminar un Puesto de Trabajo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-17 |
+| **Descripción** | El administrador da de baja un puesto de trabajo de su distribuidora. La baja es lógica y sólo se admite cuando ningún legajo lo ocupa, ni activo ni egresado: un puesto que ya se usó se desactiva con CU-256 en vez de eliminarse. Endpoint: `DELETE /job-positions/:id`. |
+| **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Empresa · Personal · Puestos» y selecciona el puesto: **incluye CU-176 Consultar los Puestos de Trabajo**, el listado del que sale. |
+| 2 | El panel envía `DELETE /job-positions/:id`. |
+| 3 | El sistema comprueba que el puesto no tenga empleados activos ni figure en ningún legajo, y que no sea el último puesto activo de su categoría `driver` o `administration`. |
+| 4 | El sistema da de baja el puesto y devuelve la confirmación. |
+
+**Postcondición:** El puesto dejó de ofrecerse y de listarse, y ningún legajo quedó sin puesto.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
+| 3 | Si el puesto tiene empleados activos, el sistema responde 409 con la cantidad de empleados que lo ocupan; hay que reasignarlos antes. |
+| 3 | Si el puesto figura en legajos de empleados egresados, el sistema responde 409 con la cantidad de legajos y sugiere desactivarlo en vez de eliminarlo. |
+| 3 | Si es el último puesto activo de su categoría `driver` o `administration`, el sistema responde 409. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos conteos de legajos del puesto, el de puestos activos de la categoría y una escritura, en una transacción que bloquea los puestos de la distribuidora de esas categorías. |
+| **Frecuencia** | Baja: los cinco puestos iniciales se siembran al crear la distribuidora y casi no se tocan. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja es lógica: el registro del puesto se conserva con su fecha de baja, y el nombre queda libre para un puesto nuevo. Como no se admite mientras algún legajo lo ocupe, ningún legajo, ni siquiera un egresado, queda sin puesto. |
 
 ---
 
@@ -10527,9 +11317,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-09 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador registra el legajo de un empleado con su número de legajo, sus datos personales (nombre, apellido, documento, CUIL, fecha de nacimiento, domicilio, teléfono y contacto de emergencia), su puesto, su fecha de ingreso y su modalidad de contratación (`permanent`, `fixed_term`, `part_time` o `contractor`). El legajo no implica una cuenta de acceso: ayudantes, personal de depósito y vendedores son legajos sin cuenta, y el acceso se otorga después con CU-182. Endpoint: `POST /employees`. |
+| **Descripción** | El administrador registra el legajo de un empleado con su número de legajo (si no lo indica, el siguiente correlativo de la distribuidora), sus datos personales (nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, correo personal, contacto de emergencia y CBU), su puesto, su fecha de ingreso y su modalidad de contratación (`permanent`, `fixed_term`, `part_time` o `contractor`). El legajo no implica una cuenta de acceso: ayudantes, personal de depósito y vendedores son legajos sin cuenta, y el acceso se otorga después con CU-182. Endpoint: `POST /employees`. |
 | **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. El puesto elegido existe y está activo en su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -10537,10 +11327,10 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El administrador abre «Empresa · Personal» y elige dar de alta un empleado. |
 | 2 | Completa nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, contacto de emergencia, puesto, fecha de ingreso y modalidad de contratación, y el panel envía `POST /employees`. |
-| 3 | El sistema valida el formato de lo recibido y comprueba el dígito verificador del CUIL. |
-| 4 | El sistema comprueba que el puesto exista y sea de la distribuidora. |
-| 5 | El sistema comprueba que el documento y el CUIL no pertenezcan a otro empleado vigente de la distribuidora. |
-| 6 | El sistema asigna el siguiente número de legajo de la distribuidora, crea el empleado en estado `active` y lo devuelve. |
+| 3 | El sistema valida el formato de lo recibido y, si trae CUIL, comprueba su dígito verificador. |
+| 4 | El sistema comprueba que el puesto exista, sea de la distribuidora y esté activo. |
+| 5 | El sistema comprueba que el documento, el CUIL y el número de legajo (si vino en el pedido) no pertenezcan a otro empleado vigente de la distribuidora. |
+| 6 | Si el pedido no trae número de legajo, el sistema asigna el siguiente de la distribuidora, de cuatro dígitos; crea el empleado en estado `active` y lo devuelve. |
 
 **Postcondición:** Existe un empleado activo en la distribuidora, con su puesto y su número de legajo, sin cuenta de acceso.
 
@@ -10550,14 +11340,15 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 3 | Si falta un dato obligatorio, el formato es inválido o el CUIL no tiene un dígito verificador correcto, el sistema responde 400 indicando el campo. |
 | 4 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
-| 5 | Si el documento o el CUIL ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
+| 4 | Si el puesto está inactivo, el sistema responde 409. |
+| 5 | Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Tres lecturas de verificación y una escritura; el número de legajo se toma con bloqueo para no repetirlo. |
+| **Rendimiento** | Una transacción con la lectura del puesto (con bloqueo compartido), las verificaciones de unicidad y una escritura; el número de legajo se toma con bloqueo de la secuencia para no repetirlo, y la transacción se reintenta ante un conflicto de serialización. |
 | **Frecuencia** | Baja: al incorporar a cada persona. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El alta de un chofer por `POST /users` (CU-031, CU-003) crea el legajo en la misma transacción por este mismo camino, o vincula el legajo existente si el pedido trae su identificador: un chofer es un empleado con cuenta y perfil de reparto. Los datos personales (documento, CUIL, domicilio y contacto de emergencia) sólo salen en la ficha (CU-179) y no en el listado (CU-180), por la Ley 25.326. El legajo que la migración genera para los choferes y administradores ya existentes lleva el documento marcado como pendiente y una observación para que el administrador lo complete. |
+| **Comentarios** | El alta de un chofer por `POST /users` (CU-031, CU-003) crea el legajo en la misma transacción (`EmployeeService.crearParaUsuario`), o vincula el legajo existente si el pedido trae su identificador `employeeId`: un chofer es un empleado con cuenta y perfil de reparto. Sin datos de legajo, queda con el puesto activo más antiguo de categoría chofer, ingreso hoy y documento `PENDIENTE-<legajo>`. Los datos personales (documento, CUIL, domicilio y contacto de emergencia) sólo salen en la ficha (CU-179) y no en el listado (CU-180), por la Ley 25.326. El legajo que la migración genera para los choferes y administradores ya existentes, y el que genera el alta de un chofer sin datos de legajo, lleva el documento marcado como pendiente y una observación para que el administrador lo complete. |
 
 ---
 
@@ -10567,9 +11358,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador abre la ficha de un empleado y modifica sus datos, o elimina el legajo cuando fue un alta errónea, antes de que tenga jornadas o documentación cargadas. Endpoints: `PATCH /employees/:id` y `DELETE /employees/:id`. |
+| **Descripción** | El administrador abre la ficha de un empleado y modifica sus datos, o elimina el legajo cuando fue un alta errónea: mientras no tenga cuenta de acceso y, cuando existan, jornadas o documentación cargadas. Endpoints: `PATCH /employees/:id` y `DELETE /employees/:id`. |
 | **Precondición** | El administrador está autenticado. El empleado existe y es de su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado, con funcionalidad planificada (I-11): impedir la baja de un legajo que ya tiene jornadas o documentación cargadas, que se construye con esos módulos. |
 
 **Secuencia Normal**
 
@@ -10578,9 +11369,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador abre la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
 | 2 | Para modificar, edita los datos y el panel envía `PATCH /employees/:id` con los campos cambiados. |
 | 3 | El sistema valida el formato de lo recibido y, si cambió el CUIL, su dígito verificador. |
-| 4 | Si cambió el puesto, el sistema comprueba que exista y sea de la distribuidora. |
-| 5 | El sistema comprueba que el documento y el CUIL nuevos no pertenezcan a otro empleado vigente y guarda los cambios. |
-| 6 | Para eliminar, el panel envía `DELETE /employees/:id`; el sistema comprueba que el legajo no tenga jornadas ni tareas de documentación y lo da de baja. |
+| 4 | Si cambió el puesto, el sistema comprueba que exista, sea de la distribuidora y esté activo, y que, si el empleado tiene cuenta, el rol de su usuario corresponda a la categoría del puesto nuevo. |
+| 5 | El sistema comprueba que la fecha de ingreso no sea posterior a la de egreso y que el documento, el CUIL y el número de legajo nuevos no pertenezcan a otro empleado vigente, y guarda los cambios. |
+| 6 | Para eliminar, el panel envía `DELETE /employees/:id`; el sistema comprueba que el legajo no tenga cuenta de acceso y lo da de baja. Planificado (I-11): comprueba además que no tenga jornadas ni tareas de documentación. |
 
 **Postcondición:** El legajo tiene los datos corregidos, o quedó dado de baja si era un alta errónea.
 
@@ -10588,17 +11379,19 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el formato es inválido o el CUIL no tiene un dígito verificador correcto, el sistema responde 400 indicando el campo. |
-| 4 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
-| 5 | Si el documento o el CUIL ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
-| 6 | Si el legajo tiene jornadas o tareas de documentación, el sistema responde 409: ya no es un alta errónea y corresponde registrar el egreso (CU-181). |
+| 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404, tanto al modificar como al eliminar. |
+| 3 | Si el formato es inválido, el CUIL no tiene un dígito verificador correcto, se envía en blanco un dato obligatorio o se intenta cambiar el estado, el sistema responde 400 indicando el campo. |
+| 4 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404; si está inactivo o su categoría no corresponde al rol de la cuenta del empleado, responde 409. |
+| 5 | Si la fecha de ingreso es posterior a la de egreso, el sistema responde 400. |
+| 5 | Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
+| 6 | Si el legajo tiene una cuenta de acceso, el sistema responde 409: ya no es un alta errónea y corresponde registrar el egreso (CU-181). Planificado (I-11): lo mismo si tiene jornadas o tareas de documentación. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura del legajo, las verificaciones de unicidad y una escritura. |
+| **Rendimiento** | Una transacción con el bloqueo de la fila del legajo, las verificaciones de unicidad y una escritura. |
 | **Frecuencia** | Baja: una modificación cada tanto por empleado. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El estado del empleado, su fecha y su motivo de egreso no se editan por esta vía: sólo cambian con el egreso y el reingreso (CU-181). La baja lógica queda reservada a las altas erróneas; el historial de lo que se modificó queda en el registro de auditoría (CU-153), que sólo ven los administradores. |
+| **Comentarios** | El estado del empleado, su fecha y su motivo de egreso no se editan por esta vía: sólo cambian con el egreso y el reingreso (CU-181): enviarlos responde 400. La baja lógica queda reservada a las altas erróneas, aunque hoy el sistema sólo exige que el legajo no tenga cuenta (un legajo egresado sin cuenta también puede eliminarse); el historial de lo que se modificó queda en el registro de auditoría (CU-153), que sólo ven los administradores. |
 
 ---
 
@@ -10610,7 +11403,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Requisitos asociados** | IRQ-17 |
 | **Descripción** | El administrador consulta el legajo completo de un empleado, con sus datos personales, su puesto, su estado, el identificador de su cuenta de acceso si la tiene y el del perfil de reparto si es chofer. Es la pantalla de la que parten las demás operaciones sobre un empleado. Endpoint: `GET /employees/:id`. |
 | **Precondición** | El administrador está autenticado. El empleado existe y es de su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -10628,6 +11421,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
+| 1 | Si el identificador no es un UUID, el sistema responde 400. |
 | 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404. |
 
 | Campo | Detalle |
@@ -10645,9 +11439,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador lista los empleados de su distribuidora, paginados, y los filtra por texto (nombre o legajo), puesto, categoría de puesto, estado (`active` o `terminated`), si tienen cuenta de acceso y estado de su documentación. Cada fila trae el nombre, el legajo, el puesto, el estado y el peor vencimiento de la documentación del empleado. Endpoint: `GET /employees`. |
+| **Descripción** | El administrador lista los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (`active` o `terminated`) y si tienen cuenta de acceso. Cada fila trae el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta. Planificado (I-11): el filtro por el estado de la documentación y, en cada fila, el peor vencimiento de la documentación del empleado. Endpoint: `GET /employees`. |
 | **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado, con funcionalidad planificada (I-11): el estado de la documentación del empleado, su peor vencimiento en cada fila y el filtro por ese estado, que dependen de los documentos del personal. |
 
 **Secuencia Normal**
 
@@ -10656,8 +11450,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador abre «Empresa · Personal» y, si quiere, elige filtros. |
 | 2 | El panel envía `GET /employees` con los filtros, la página y el límite. |
 | 3 | El sistema busca los empleados de la distribuidora que cumplen los filtros, ordenados por apellido y nombre. |
-| 4 | Para cada empleado de la página, calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
-| 5 | El sistema devuelve la página y el total, sin los datos personales sensibles. |
+| 4 | El sistema devuelve la página y el total, sin los datos personales sensibles. |
+| 5 | Planificado (I-11): para cada empleado de la página, calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
 
 **Postcondición:** El administrador ve la página de empleados que pidió. No cambió ningún dato.
 
@@ -10665,15 +11459,15 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si un filtro tiene un valor inválido, el sistema responde 400 indicando el filtro. |
+| 2 | Si un filtro tiene un valor inválido, o la página o el límite están fuera de rango, el sistema responde 400 indicando el filtro. |
 | 3 | Si ningún empleado cumple los filtros, el sistema devuelve la página vacía. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una consulta paginada con el puesto; el estado de la documentación se resuelve para los empleados de la página, no para todos. |
+| **Rendimiento** | Una consulta paginada con el puesto y el total. Planificado (I-11): el estado de la documentación se resolverá para los empleados de la página, no para todos. |
 | **Frecuencia** | Alta: diaria. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). El filtro por estado de la documentación reutiliza el mismo cálculo de vencimientos que la flota (CU-139). |
+| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). Planificado (I-11): el filtro por estado de la documentación reutilizará el mismo cálculo de vencimientos que la flota (CU-139); hasta entonces el parámetro `documentStatus` se acepta y se ignora. |
 
 ---
 
@@ -10683,9 +11477,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador registra el egreso de un empleado: el legajo pasa a `terminated` con su fecha y su motivo (`resignation`, `dismissal`, `end_of_contract`, `retirement` u `other`). En la misma transacción, si el empleado tiene cuenta de acceso se la bloquea y, si es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino con que se libera un vehículo cuando se da de baja a un chofer. El administrador puede reingresar al empleado, lo que limpia el egreso y fija una fecha de ingreso nueva. Endpoints: `POST /employees/:id/termination` y `POST /employees/:id/reinstatement`. |
+| **Descripción** | El administrador registra el egreso de un empleado: el legajo pasa a `terminated` con su fecha y su motivo (`resignation`, `dismissal`, `end_of_contract`, `retirement` u `other`). En la misma transacción, si el empleado tiene cuenta de acceso se la bloquea y, si es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino con que se libera un vehículo cuando se da de baja a un chofer. El administrador puede reingresar al empleado, lo que limpia el egreso y fija una fecha de ingreso nueva (hoy, si no indica otra). Endpoints: `POST /employees/:id/termination` y `POST /employees/:id/reinstatement`. |
 | **Precondición** | El administrador está autenticado. El empleado existe, es de su distribuidora y, para el egreso, está activo; para el reingreso, está egresado. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado, con funcionalidad planificada (I-13): impedir el egreso del chofer que tiene una carga de camión abierta o una rendición pendiente, que se construyen con esos módulos. |
 
 **Secuencia Normal**
 
@@ -10694,10 +11488,11 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador abre la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
 | 2 | Elige «Registrar egreso» e indica la fecha de egreso y el motivo; el panel envía `POST /employees/:id/termination`. |
 | 3 | El sistema comprueba que el empleado esté activo y que la fecha no sea anterior a la de ingreso. |
-| 4 | El sistema pasa el legajo a `terminated` con la fecha y el motivo. |
-| 5 | Si el empleado tiene cuenta de acceso, el sistema bloquea al usuario. |
-| 6 | Si la cuenta tiene perfil de reparto, el sistema deshabilita al chofer y libera el vehículo que tenía en uso. |
-| 7 | Para reingresar a un empleado egresado, el panel envía `POST /employees/:id/reinstatement` con la fecha de ingreso nueva; el sistema pasa el legajo a `active` y limpia la fecha y el motivo de egreso. |
+| 4 | Si la cuenta tiene perfil de reparto, el sistema comprueba que el chofer no tenga pedidos en curso (aceptados o en camino). Planificado (I-13): comprueba además que no tenga una carga de camión abierta ni una rendición pendiente. |
+| 5 | El sistema pasa el legajo a `terminated` con la fecha y el motivo. |
+| 6 | Si el empleado tiene cuenta de acceso, el sistema bloquea al usuario. |
+| 7 | Si la cuenta tiene perfil de reparto, el sistema deshabilita al chofer y libera el vehículo que tenía en uso; con el egreso confirmado, lo saca del radar de despacho. |
+| 8 | Para reingresar a un empleado egresado, el panel envía `POST /employees/:id/reinstatement` con la fecha de ingreso nueva; el sistema pasa el legajo a `active` y limpia la fecha y el motivo de egreso. |
 
 **Postcondición:** El legajo quedó egresado con su fecha y su motivo, la cuenta de acceso bloqueada y, si era chofer, deshabilitado y sin vehículo en uso. En el reingreso, el legajo quedó activo con la fecha de ingreso nueva.
 
@@ -10705,16 +11500,18 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
+| 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404, tanto en el egreso como en el reingreso; si el motivo no es uno de los admitidos o la fecha no es una fecha real, responde 400. |
 | 3 | Si el empleado ya está egresado, el sistema responde 409; si la fecha de egreso es anterior a la de ingreso, responde 400. |
-| 3 | Cuando existan la carga de camión y la rendición de cuentas del chofer, si tiene una carga abierta o una rendición pendiente, el sistema responde 409 con el detalle. |
-| 7 | Si el empleado no está egresado, el sistema responde 409. |
+| 4 | Si el chofer tiene pedidos en curso, el sistema responde 409 con la cantidad: hay que cancelarlos o reasignarlos antes. |
+| 4 | Planificado (I-13): si el chofer tiene una carga de camión abierta o una rendición pendiente, el sistema responderá 409 con el detalle. |
+| 8 | Si el empleado no está egresado, el sistema responde 409; si la fecha de ingreso nueva es anterior a la de egreso, responde 400. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una transacción con el legajo, el usuario, el chofer y su asignación de vehículo. |
+| **Rendimiento** | Una transacción con el legajo, el usuario, el chofer y su asignación de vehículo; toma los bloqueos en el mismo orden que la baja de un usuario (primero el usuario y el chofer, después el legajo) para no generar interbloqueos. |
 | **Frecuencia** | Baja: al terminar la relación laboral de cada persona. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El reingreso no desbloquea la cuenta de acceso: la reactivación de la cuenta es una decisión aparte del administrador (CU-050). Un chofer egresado sale del despacho (CU-013) porque su legajo no está activo, además de por tener la cuenta bloqueada. Los datos del empleado egresado se conservan: es una baja del vínculo laboral, no del legajo. Cambia el comportamiento de la baja de un chofer existente (CU-097): al construirse, el egreso del empleado es el camino que la origina. |
+| **Comentarios** | El reingreso no desbloquea la cuenta de acceso: la reactivación de la cuenta es una decisión aparte del administrador (CU-270). Un chofer egresado sale del despacho (CU-013) porque su legajo no está activo, además de por tener la cuenta bloqueada. Los datos del empleado egresado se conservan: es una baja del vínculo laboral, no del legajo. La baja de un usuario con legajo (chofer o administrador, `DELETE /users/:id`, CU-097) egresa su legajo en la misma transacción con motivo `other`, deja constancia en las notas y suelta la cuenta (`userId` queda vacío); si el egreso tuviera un impedimento, la baja falla con 409 y se revierte todo. |
 
 ---
 
@@ -10724,20 +11521,21 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador otorga una cuenta de acceso a un empleado que no la tiene. El sistema delega el alta de la cuenta en el servicio de registro (el mismo camino de CU-082) con el rol que corresponde a la categoría del puesto —`driver` da el rol chofer; `administration` y `management`, el rol administrador— y vincula el usuario creado al legajo. Las demás categorías no admiten cuenta, porque el sistema no define roles para ellas. Endpoint: `POST /employees/:id/account`. |
+| **Descripción** | El administrador otorga una cuenta de acceso a un empleado que no la tiene. El sistema delega el alta de la cuenta en el servicio de registro (el mismo camino de CU-082) con el rol que corresponde a la categoría del puesto y vincula el usuario creado al legajo. Hoy sólo el puesto de categoría `driver` admite cuenta, con el rol chofer y su perfil de reparto: los administrativos (`administration` y `management`) reciben su cuenta de administrador con el alta del usuario (CU-082), que crea o vincula el legajo, y las demás categorías no admiten cuenta, porque el sistema no define roles para ellas. Endpoint: `POST /employees/:id/account`. |
 | **Precondición** | El administrador está autenticado. El empleado existe, es de su distribuidora, está activo y no tiene cuenta de acceso. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador abre la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
-| 2 | Elige «Otorgar acceso» e indica el correo de la cuenta; el panel envía `POST /employees/:id/account`. |
+| 2 | Elige «Otorgar acceso» e indica el correo y la contraseña inicial de la cuenta, y el teléfono si el legajo no lo tiene; el panel envía `POST /employees/:id/account`. |
 | 3 | El sistema comprueba que el empleado esté activo y que no tenga ya una cuenta. |
-| 4 | El sistema resuelve el rol de acceso a partir de la categoría del puesto del empleado. |
-| 5 | El sistema crea la cuenta con ese rol, en la distribuidora del empleado, por el mismo camino de CU-082. |
-| 6 | El sistema vincula el usuario creado al legajo y devuelve el empleado. |
+| 4 | El sistema resuelve el rol de acceso a partir de la categoría del puesto del empleado y comprueba que la admita. |
+| 5 | El sistema comprueba que haya un teléfono en formato internacional (E.164), el del pedido o el del legajo. |
+| 6 | El sistema crea la cuenta con ese rol, en la distribuidora del empleado y con el nombre del legajo, por el mismo camino de CU-082, que también vincula el usuario creado al legajo. |
+| 7 | El sistema devuelve el empleado con su cuenta y, si es chofer, con su perfil de reparto. |
 
 **Postcondición:** El empleado tiene una cuenta de acceso con el rol que corresponde a su puesto, vinculada a su legajo; si es un chofer, tiene además su perfil de reparto.
 
@@ -10745,16 +11543,18 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
+| 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404; si el correo no es válido o la contraseña tiene menos de seis caracteres, responde 400. |
 | 3 | Si el empleado ya tiene cuenta o está egresado, el sistema responde 409. |
-| 4 | Si la categoría del puesto no admite cuenta de acceso, el sistema responde 400 con la lista de categorías que la admiten. |
-| 5 | Si el correo ya está en uso, el sistema responde 409. Las demás fallas del alta se tratan como en CU-082. |
+| 4 | Si la categoría del puesto no admite cuenta de acceso, el sistema responde 400 y nombra el puesto y su categoría. |
+| 5 | Si falta un teléfono en formato E.164, el sistema responde 400. |
+| 6 | Si el correo o el teléfono ya están en uso, el sistema responde 409 «Email o teléfono ya en uso». Las demás fallas del alta se tratan como en CU-082. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura del legajo y el alta de la cuenta, dominada por el proveedor de identidad. |
+| **Rendimiento** | Una lectura del legajo y el alta de la cuenta con el vínculo al legajo en una transacción, dominada por el proveedor de identidad. |
 | **Frecuencia** | Baja: al dar acceso a cada persona que lo necesita. |
 | **Estabilidad** | Media |
-| **Comentarios** | El sistema mantiene sus cuatro roles: no hay roles de depósito, de caja ni de ventas. El personal administrativo que entra al panel es un administrador, y ayudantes, personal de depósito y vendedores son legajos sin cuenta. Si más adelante la distribuidora necesita permisos más finos, es una evolución que implica una matriz de autorización nueva en el sistema entero y queda fuera de este módulo. |
+| **Comentarios** | El sistema mantiene sus cuatro roles: no hay roles de depósito, de caja ni de ventas. El personal administrativo que entra al panel es un administrador (su cuenta nace con el alta del usuario, que crea o vincula el legajo, CU-003 y CU-031), y ayudantes, personal de depósito y vendedores son legajos sin cuenta. Si más adelante la distribuidora necesita permisos más finos, es una evolución que implica una matriz de autorización nueva en el sistema entero y queda fuera de este módulo. |
 
 ---
 
@@ -10884,9 +11684,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador sube un archivo (imagen o PDF, de hasta 10 MB) al legajo de un empleado y le pone una etiqueta («DNI frente», «Contrato 2026»). El archivo se guarda en el almacenamiento activo de la distribuidora y su referencia queda asociada al legajo. Endpoint: `POST /attachments/employee/:employeeId`. |
+| **Descripción** | El administrador sube un archivo (PDF, JPG, PNG o WEBP, de hasta 10 MB) al legajo de un empleado y le pone una etiqueta («DNI frente», «Contrato 2026»). El archivo se guarda en S3, en el bucket privado del sistema, y su referencia queda asociada al legajo. Endpoint: `POST /attachments/employee/:employeeId`. |
 | **Precondición** | El administrador está autenticado. El empleado existe y es de su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -10894,25 +11694,27 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El administrador abre la pestaña «Archivos» de la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
 | 2 | Elige el archivo, escribe la etiqueta y el panel envía `POST /attachments/employee/:employeeId` con el contenido. |
-| 3 | El sistema comprueba que el empleado exista y sea de la distribuidora, y que el tipo y el tamaño del archivo estén permitidos. |
-| 4 | El sistema guarda el contenido en el almacenamiento con una clave que incluye la distribuidora, el tipo de dueño y el empleado. |
+| 3 | El sistema comprueba que el empleado exista y sea de la distribuidora, y que el archivo no esté vacío, que su tipo y su tamaño estén permitidos y que su contenido coincida con el tipo declarado. |
+| 4 | El sistema reserva una clave que incluye la distribuidora, el tipo de dueño y el empleado, y guarda el contenido en S3. |
 | 5 | El sistema registra el adjunto en el legajo con su nombre original, su tipo, su etiqueta y su fecha de carga, y lo devuelve. |
 
-**Postcondición:** El legajo tiene un adjunto más, cuyo contenido está guardado en el almacenamiento.
+**Postcondición:** El legajo tiene un adjunto más, cuyo contenido está guardado en S3.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404. |
-| 3 | Si el tipo del archivo no es una imagen ni un PDF, o supera los 10 MB, el sistema responde 400. |
+| 3 | Si falta el archivo o está vacío, el sistema responde 400. |
+| 3 | Si el tipo del archivo no es PDF, JPG, PNG ni WEBP, o su contenido no coincide con el tipo declarado, el sistema responde 415. |
+| 3 | Si el archivo supera los 10 MB, el sistema responde 413. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura del legajo, la escritura del archivo y una escritura de la referencia. |
 | **Frecuencia** | Baja: unos pocos archivos por empleado. |
 | **Estabilidad** | Media |
-| **Comentarios** | Los adjuntos del personal usan una tabla genérica de adjuntos con dueño (`owner_type`, `owner_id`) que otros módulos reutilizan; el dueño se valida por un puerto que registra cada módulo, y la referencia guardada es una clave de almacenamiento, no una dirección, igual que en CU-155. Guarda el contenido por el mismo puerto de almacenamiento que el caso incluido CU-159, pero no lo incluye formalmente: el alta del adjunto del legajo la hace un servicio propio del módulo de adjuntos. |
+| **Comentarios** | Los adjuntos del personal usan una tabla genérica de adjuntos con dueño (`owner_type`, `owner_id`) que otros módulos reutilizan; el dueño se valida por un puerto que registra cada módulo, y la referencia guardada es una clave de almacenamiento, no una dirección, igual que en CU-155. Guarda el contenido por el mismo puerto de almacenamiento que el caso incluido CU-159, pero no lo incluye formalmente: el alta del adjunto del legajo la hace un servicio propio del módulo de adjuntos. Si falla el guardado de la referencia, el archivo se borra de S3 en segundo plano. El listado (`GET /attachments/employee/:employeeId`), la descarga con enlace firmado (`GET /attachments/:attachmentId/download?modo=url`) y la baja lógica del adjunto (`DELETE /attachments/:attachmentId`, que deja el archivo en S3 como respaldo) usan los mismos endpoints genéricos y no figuran como casos de uso propios. |
 
 ---
 
@@ -11273,13 +12075,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 ### SS-08 — Gestión de Productos e Inventario (ampliación: stock físico y carga del camión, I-13)
 
-#### Importante CU-207 — Gestionar los Depósitos
+#### Importante CU-207 — Consultar los Depósitos
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador mantiene los depósitos y sucursales de su distribuidora: nombre, código, tipo (depósito o sucursal), dirección y estado. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. La baja es lógica y sólo se admite cuando el depósito no tiene saldo. Endpoints: `GET /warehouses`, `POST /warehouses`, `PATCH /warehouses/:id` y `DELETE /warehouses/:id`. |
+| **Descripción** | El administrador consulta los depósitos y sucursales de su distribuidora: nombre, código, tipo (depósito o sucursal), dirección y estado. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. Endpoint: `GET /warehouses`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
 | **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -11287,30 +12089,140 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Stock → Depósitos»; el panel consulta `GET /warehouses` y muestra los depósitos vigentes con su código, tipo y estado. |
-| 2 | Para agregar uno, ingresa nombre, código, tipo y dirección y confirma; el panel envía `POST /warehouses`. |
-| 3 | El sistema comprueba que el código no esté en uso entre los depósitos vigentes de la distribuidora, crea el depósito y su ubicación de stock y, si la distribuidora no tenía un depósito predeterminado, lo deja como tal. |
-| 4 | Para modificarlo, el panel envía `PATCH /warehouses/:id` con los campos que cambian; el sistema aplica el cambio con la misma comprobación de código. |
-| 5 | Para darlo de baja, el panel envía `DELETE /warehouses/:id`; el sistema comprueba que la ubicación de stock del depósito no tenga saldo distinto de cero y lo marca como dado de baja. |
-| 6 | El sistema devuelve el depósito resultante o, en la baja, la confirmación. |
+| 1 | El administrador abre «Stock → Depósitos»; el panel consulta `GET /warehouses`. |
+| 2 | El sistema devuelve los depósitos vigentes de la distribuidora y el panel los muestra con su código, tipo y estado. |
 
-**Postcondición:** La distribuidora tiene el depósito dado de alta, modificado o dado de baja, según la operación. Un depósito nuevo tiene su ubicación de stock, sin saldo.
+**Postcondición:** El administrador ve los depósitos vigentes de su distribuidora. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por listado. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir o cerrar un depósito. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la modificación (CU-259) y la baja (CU-260) de un depósito. El detalle de un depósito con sus saldos es la consulta de CU-208 sobre su ubicación. |
+
+---
+
+
+#### Importante CU-258 — Registrar un Depósito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de alta un depósito o sucursal de su distribuidora, con nombre, código, tipo (depósito o sucursal) y dirección. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. Endpoint: `POST /warehouses`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» y elige agregar uno; ingresa nombre, código, tipo y dirección y confirma. |
+| 2 | El panel envía `POST /warehouses`. |
+| 3 | El sistema comprueba que el código no esté en uso entre los depósitos vigentes de la distribuidora, crea el depósito y su ubicación de stock y, si la distribuidora no tenía un depósito predeterminado, lo deja como tal. |
+| 4 | El sistema devuelve el depósito creado. |
+
+**Postcondición:** La distribuidora tiene el depósito dado de alta, con su ubicación de stock sin saldo.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el código ya lo usa otro depósito vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
-| 5 | Si la ubicación del depósito tiene algún saldo distinto de cero, el sistema responde 409: el stock se transfiere o se ajusta antes de la baja. |
-| 5 | Si el depósito es el predeterminado y hay otros vigentes, el sistema responde 409 hasta que otro pase a ser el predeterminado. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura por listado y una escritura por alta, cambio o baja. Responde en menos de 1 segundo. |
+| **Rendimiento** | Una escritura por alta. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir un depósito. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Cada distribuidora nueva recibe un «Depósito central» predeterminado cuando se da de alta (listener de `distribuidora.creada`), de modo que el stock siempre tiene un lugar donde existir. El depósito es el lugar donde llegan las compras (CU-217) y de donde sale la carga de los camiones (CU-218). |
+
+---
+
+
+#### Importante CU-259 — Modificar un Depósito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador modifica un depósito o sucursal de su distribuidora: nombre, código, tipo, dirección o estado. Endpoint: `PATCH /warehouses/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» y selecciona el depósito: **incluye CU-207 Consultar los Depósitos**, el listado del que sale. |
+| 2 | Cambia los campos que correspondan y el panel envía `PATCH /warehouses/:id` con los campos que cambian. |
+| 3 | El sistema aplica el cambio con la misma comprobación de código que el alta. |
+| 4 | El sistema devuelve el depósito actualizado. |
+
+**Postcondición:** El depósito quedó con los datos nuevos. Sus saldos de stock no cambian.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el código ya lo usa otro depósito vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
+| 3 | Si el depósito no existe, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura por cambio. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir o cerrar un depósito. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Cada distribuidora nueva recibe un «Depósito central» predeterminado cuando se da de alta (listener de `distribuidora.creada`), de modo que el stock siempre tiene un lugar donde existir. El depósito es el lugar donde llegan las compras (CU-217) y de donde sale la carga de los camiones (CU-218). La regla sobre la baja del depósito predeterminado es una propuesta de diseño: el diseño funcional no la prevé. |
+| **Comentarios** | Sólo cambian los campos enviados: el cuerpo es parcial, igual que en la edición del vehículo. |
+
+---
+
+
+#### Importante CU-260 — Dar de Baja un Depósito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de baja un depósito o sucursal de su distribuidora. La baja es lógica y sólo se admite cuando el depósito no tiene saldo. Endpoint: `DELETE /warehouses/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» y selecciona el depósito: **incluye CU-207 Consultar los Depósitos**, el listado del que sale. |
+| 2 | El panel envía `DELETE /warehouses/:id`. |
+| 3 | El sistema comprueba que la ubicación de stock del depósito no tenga saldo distinto de cero y lo marca como dado de baja. |
+| 4 | El sistema devuelve la confirmación de la baja. |
+
+**Postcondición:** El depósito quedó dado de baja y dejó de listarse; su ubicación de stock y sus movimientos se conservan.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la ubicación del depósito tiene algún saldo distinto de cero, el sistema responde 409: el stock se transfiere o se ajusta antes de la baja. |
+| 3 | Si el depósito es el predeterminado y hay otros vigentes, el sistema responde 409 hasta que otro pase a ser el predeterminado. |
+| 3 | Si el depósito no existe, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura del saldo y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al cerrar un depósito. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja es lógica: el depósito y su ubicación siguen existiendo para explicar los movimientos que ya tuvieron. Un saldo distinto de cero se resuelve antes con una transferencia (CU-212) o un ajuste (CU-213). La regla sobre la baja del depósito predeterminado es una propuesta de diseño: el diseño funcional no la prevé. |
 
 ---
 
@@ -11935,13 +12847,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 ### SS-20 — Compras (I-13)
 
-#### Importante CU-214 — Gestionar los Proveedores
+#### Importante CU-214 — Consultar los Proveedores
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador mantiene el padrón de proveedores de la distribuidora: razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. La baja es lógica. El CUIT es único entre los proveedores vigentes. Endpoints: `GET /suppliers`, `POST /suppliers`, `PATCH /suppliers/:id` y `DELETE /suppliers/:id`. |
+| **Descripción** | El administrador consulta el padrón de proveedores de la distribuidora: razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. Endpoint: `GET /suppliers`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
 | **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -11949,29 +12861,135 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Compras → Proveedores»; el panel envía `GET /suppliers`, con o sin un término de búsqueda, y muestra los proveedores vigentes. |
-| 2 | Para agregar uno, ingresa razón social, CUIT, tipo, contacto y plazo de pago; el panel envía `POST /suppliers`. |
-| 3 | El sistema comprueba que el CUIT no pertenezca a otro proveedor vigente de la distribuidora y crea el proveedor. |
-| 4 | Para modificarlo, el panel envía `PATCH /suppliers/:id` con los campos que cambian. |
-| 5 | Para darlo de baja, el panel envía `DELETE /suppliers/:id` y el sistema lo marca como dado de baja. |
-| 6 | El sistema devuelve el proveedor resultante. |
+| 1 | El administrador abre «Compras → Proveedores»; el panel envía `GET /suppliers`, con o sin un término de búsqueda. |
+| 2 | El sistema devuelve los proveedores vigentes de la distribuidora y el panel los muestra. |
 
-**Postcondición:** La distribuidora tiene el proveedor dado de alta, modificado o dado de baja. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+**Postcondición:** El administrador ve los proveedores vigentes de su distribuidora. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por listado. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la modificación (CU-262) y la baja (CU-263) de un proveedor. La búsqueda por término mira la razón social y el CUIT, igual que las demás búsquedas de listados del panel. |
+
+---
+
+
+#### Importante CU-261 — Registrar un Proveedor
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de alta a un proveedor de la distribuidora, con su razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. El CUIT es único entre los proveedores vigentes. Endpoint: `POST /suppliers`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Proveedores» y elige agregar uno; ingresa razón social, CUIT, tipo, contacto y plazo de pago. |
+| 2 | El panel envía `POST /suppliers`. |
+| 3 | El sistema comprueba que el CUIT no pertenezca a otro proveedor vigente de la distribuidora y crea el proveedor. |
+| 4 | El sistema devuelve el proveedor creado. |
+
+**Postcondición:** La distribuidora tiene el proveedor dado de alta.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el CUIT ya pertenece a otro proveedor vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
-| 4 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura por listado y una escritura por alta, cambio o baja. Responde en menos de 1 segundo. |
+| **Rendimiento** | Una escritura por alta. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La baja lógica conserva el historial de compras: una recepción de hace un año sigue mostrando a qué proveedor se le compró. El CUIT se valida con el dígito verificador y no se guarda con guiones. |
+| **Comentarios** | El CUIT se valida con el dígito verificador y no se guarda con guiones; es único entre los proveedores vigentes de la distribuidora, con un índice único parcial. |
+
+---
+
+
+#### Importante CU-262 — Modificar un Proveedor
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador modifica un proveedor de la distribuidora: razón social, CUIT, tipo, datos de contacto o plazo de pago. Endpoint: `PATCH /suppliers/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Proveedores» y selecciona el proveedor: **incluye CU-214 Consultar los Proveedores**, el listado del que sale. |
+| 2 | Cambia los campos que correspondan y el panel envía `PATCH /suppliers/:id` con los campos que cambian. |
+| 3 | El sistema aplica el cambio y devuelve el proveedor actualizado. |
+
+**Postcondición:** El proveedor quedó con los datos nuevos. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura por cambio. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Sólo cambian los campos enviados. |
+
+---
+
+
+#### Importante CU-263 — Dar de Baja un Proveedor
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de baja a un proveedor de la distribuidora. La baja es lógica. Endpoint: `DELETE /suppliers/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Proveedores» y selecciona el proveedor: **incluye CU-214 Consultar los Proveedores**, el listado del que sale. |
+| 2 | El panel envía `DELETE /suppliers/:id` y el sistema lo marca como dado de baja. |
+| 3 | El sistema devuelve la confirmación de la baja. |
+
+**Postcondición:** El proveedor quedó dado de baja y dejó de listarse. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una escritura por baja. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al dejar de comprar a un proveedor. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja lógica conserva el historial de compras: una recepción de hace un año sigue mostrando a qué proveedor se le compró. |
 
 ---
 
@@ -12103,13 +13121,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 ### SS-21 — Caja, Rendiciones y Cuentas Corrientes
 
-#### Importante CU-225 — Gestionar las Cajas
+#### Importante CU-225 — Crear una Caja
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-07 |
 | **Requisitos asociados** | IRQ-19, IRQ-08 |
-| **Descripción** | El administrador mantiene el catálogo de cajas de la distribuidora: las crea, cambia su nombre o su exigencia de sesión y las desactiva. Una caja es una cuenta de fondos con un saldo; no se borra, se desactiva. |
+| **Descripción** | El administrador crea una caja de la distribuidora: indica el nombre, el tipo —efectivo, banco o billetera— y si exige sesión. Una caja es una cuenta de fondos con un saldo; no se borra, se desactiva. Endpoint: `POST /cash-boxes`. |
 | **Precondición** | El solicitante está autenticado como Administrador o Administrador General. El Administrador General indica la distribuidora con `X-Distributor`. |
 | **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -12122,9 +13140,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | El panel envía `POST /cash-boxes`. |
 | 4 | El sistema valida que ninguna otra caja vigente de la distribuidora use el nombre. |
 | 5 | El sistema crea la caja con saldo cero y activa, y la devuelve. |
-| 6 | Para cambiar una caja, el administrador la edita y el panel envía `PATCH /cash-boxes/:id`; el sistema valida el cambio y devuelve la caja actualizada. |
 
-**Postcondición:** La distribuidora cuenta con una caja nueva, de saldo cero, o con una caja existente actualizada. El saldo de ninguna caja cambia.
+**Postcondición:** La distribuidora cuenta con una caja nueva, de saldo cero. El saldo de ninguna caja existente cambia.
 
 **Excepciones**
 
@@ -12132,15 +13149,51 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 4 | Si ya existe una caja vigente con ese nombre, el sistema responde 409. |
 | 4 | Si el tipo no es efectivo, banco ni billetera, el sistema responde 400. |
-| 6 | Si la caja no existe o es de otra distribuidora, el sistema responde 404. |
-| 6 | Si se desactiva una caja con una sesión abierta, el sistema responde 409. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al poner en marcha la distribuidora y cuando se suma una cuenta de fondos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Cada distribuidora tiene sembrada una «Caja central». Una caja no se borra: tiene movimientos en el libro, y borrarla borraría la historia. Una caja de banco o de billetera no exige sesión por omisión, porque no tiene arqueo físico. Una restricción de la base impide que una caja de efectivo tenga saldo negativo. La asociación opcional de la caja con un depósito del módulo de stock se resuelve al integrar los dos módulos. |
+| **Comentarios** | Cada distribuidora tiene sembrada una «Caja central». Una caja de banco o de billetera no exige sesión por omisión, porque no tiene arqueo físico. Una restricción de la base impide que una caja de efectivo tenga saldo negativo. La asociación opcional de la caja con un depósito del módulo de stock se resuelve al integrar los dos módulos. |
+
+---
+
+
+#### Importante CU-264 — Modificar una Caja
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-07 |
+| **Requisitos asociados** | IRQ-19, IRQ-08 |
+| **Descripción** | El administrador cambia el nombre de una caja de la distribuidora o su exigencia de sesión, o la desactiva. Una caja no se borra, se desactiva; su tipo no se puede cambiar. Endpoint: `PATCH /cash-boxes/:id`. |
+| **Precondición** | El solicitante está autenticado como Administrador o Administrador General. El Administrador General indica la distribuidora con `X-Distributor`. |
+| **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Finanzas · Cajas» en el panel y ve las cajas de la distribuidora con su saldo: `GET /cash-boxes`. |
+| 2 | Elige una caja y cambia su nombre, su exigencia de sesión o la desactiva. |
+| 3 | El panel envía `PATCH /cash-boxes/:id`. |
+| 4 | El sistema valida el cambio y devuelve la caja actualizada. |
+
+**Postcondición:** La caja quedó con los datos nuevos. El saldo de ninguna caja cambia.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la caja no existe o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si se desactiva una caja con una sesión abierta, el sistema responde 409. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al poner en marcha la distribuidora y cuando se suma una cuenta de fondos. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Una caja no se borra: tiene movimientos en el libro, y borrarla borraría la historia. La desactivación de una caja con sesión abierta se rechaza porque dejar una sesión sin caja activa volvería imposible el arqueo. El tipo no se puede cambiar: convertir una caja de efectivo en una de banco rompería el sentido de los arqueos ya cerrados. |
 
 ---
 
@@ -12312,13 +13365,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 ---
 
-#### Secundario CU-230 — Gestionar las Categorías de Ingresos y Gastos
+#### Secundario CU-230 — Crear una Categoría de Ingresos y Gastos
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-07 |
 | **Requisitos asociados** | IRQ-19 |
-| **Descripción** | El administrador define las categorías de ingreso y de gasto de su distribuidora —alquiler, sueldos, insumos— para clasificar los movimientos y poder analizarlos. Las categorías que el sistema usa por su cuenta (rendiciones, cobros, combustible, multas, comisiones, diferencias y transferencias) vienen sembradas y no se tocan. |
+| **Descripción** | El administrador define una categoría de ingreso o de gasto de su distribuidora —alquiler, sueldos, insumos— para clasificar los movimientos y poder analizarlos. Las categorías que el sistema usa por su cuenta (rendiciones, cobros, combustible, multas, comisiones, diferencias y transferencias) vienen sembradas y no se tocan. Endpoint: `POST /cash-categories`. |
 | **Precondición** | El solicitante está autenticado como Administrador o Administrador General. |
 | **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -12330,25 +13383,58 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 2 | Elige crear una e indica el nombre y el sentido, ingreso o egreso. |
 | 3 | El panel envía `POST /cash-categories`. |
 | 4 | El sistema valida que no exista otra con el mismo nombre y sentido, y crea la categoría activa, sin código de sistema. |
-| 5 | Para renombrarla o desactivarla, el administrador la edita y el panel envía `PATCH /cash-categories/:id` o `DELETE /cash-categories/:id`. |
-| 6 | El sistema valida que no sea de sistema y devuelve la categoría actualizada. |
 
-**Postcondición:** La distribuidora cuenta con una categoría nueva, o con una existente renombrada o desactivada. Los movimientos ya asentados conservan su categoría.
+**Postcondición:** La distribuidora cuenta con una categoría nueva, activa. Los movimientos ya asentados conservan su categoría.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 4 | Si ya existe una categoría con ese nombre y sentido, el sistema responde 409. |
-| 6 | Si la categoría es de sistema, el sistema responde 409. |
-| 6 | Si la categoría no existe o es de otra distribuidora, el sistema responde 404. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al poner en marcha la distribuidora. |
 | **Estabilidad** | Media |
-| **Comentarios** | Desactivar no borra: la categoría deja de ofrecerse para movimientos nuevos y los anteriores siguen explicándose con ella. Las categorías de sistema las busca el código por su código y no por su nombre, y por eso no se renombran ni se desactivan. La baja que ofrece el panel con `DELETE` es una desactivación, la misma operación que `PATCH` con la categoría inactiva. |
+| **Comentarios** | Las categorías de sistema las busca el código por su código y no por su nombre, y por eso no se renombran ni se desactivan. |
+
+---
+
+
+#### Secundario CU-265 — Modificar una Categoría de Ingresos y Gastos
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-07 |
+| **Requisitos asociados** | IRQ-19 |
+| **Descripción** | El administrador renombra o desactiva una categoría de ingreso o de gasto de su distribuidora. Las categorías de sistema (rendiciones, cobros, combustible, multas, comisiones, diferencias y transferencias) no se pueden modificar. Endpoints: `PATCH /cash-categories/:id` y `DELETE /cash-categories/:id`. |
+| **Precondición** | El solicitante está autenticado como Administrador o Administrador General. |
+| **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Finanzas · Categorías» y ve las categorías, con las de sistema marcadas. |
+| 2 | Para renombrar o desactivar una categoría, la edita y el panel envía `PATCH /cash-categories/:id` o `DELETE /cash-categories/:id`. |
+| 3 | El sistema valida que no sea de sistema y devuelve la categoría actualizada. |
+
+**Postcondición:** La categoría quedó renombrada o desactivada. Los movimientos ya asentados conservan su categoría.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la categoría es de sistema, el sistema responde 409. |
+| 3 | Si la categoría no existe o es de otra distribuidora, el sistema responde 404. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al poner en marcha la distribuidora. |
+| **Estabilidad** | Media |
+| **Comentarios** | Desactivar no borra: la categoría deja de ofrecerse para movimientos nuevos y los anteriores siguen explicándose con ella. La baja que ofrece el panel con `DELETE` es una desactivación, la misma operación que `PATCH` con la categoría inactiva. |
 
 ---
 
@@ -12965,7 +14051,7 @@ lifeline `:Sistema`. No aparecen controladores, servicios ni base de datos, porq
 pertenece al diseño y no al análisis. Los mensajes son las **operaciones del sistema**, con
 sus parámetros.
 
-Se incluyen 243 diagramas, uno por caso de uso con un actor que lo inicia. Los tres casos
+Se incluyen 265 diagramas, uno por caso de uso con un actor que lo inicia. Los tres casos
 incluidos (CU-082, CU-159 y CU-160) no tienen diagrama propio: su operación forma parte
 del diagrama de cada caso base.
 
@@ -13059,14 +14145,14 @@ sequenceDiagram
 ---
 
 
-#### DSS — CU-004: Gestionar Perfil de Usuario
+#### DSS — CU-004: Consultar el Perfil de Usuario
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02)
-**Operaciones del sistema:** `consultarPerfil(usuarioId)`, `consultarPerfilCliente(usuarioId)`, `actualizarPerfil(usuarioId, datos)`
+**Operaciones del sistema:** `consultarPerfil(usuarioId)`, `consultarPerfilCliente(usuarioId)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-004 Gestionar Perfil de Usuario
+    title DSS — CU-004 Consultar el Perfil de Usuario
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SIS as :Sistema
@@ -13082,6 +14168,23 @@ sequenceDiagram
         SIS-->>CLI: datos del cliente (documento, ubicación, validación)
         deactivate SIS
     end
+    Note over CLI,SIS: También lo inicia el Chofer (ACT-02)
+```
+
+---
+
+
+#### DSS — CU-251: Modificar el Perfil de Usuario
+
+**Actor:** Cliente (ACT-01), Chofer (ACT-02)
+**Operaciones del sistema:** `actualizarPerfil(usuarioId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-251 Modificar el Perfil de Usuario
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: actualizarPerfil(usuarioId, datos)
     activate SIS
@@ -13616,12 +14719,11 @@ sequenceDiagram
     activate SIS
     loop Por cada oferta cuya vigencia expiró
         Note over SIS: Marca la oferta como<br/>vencida
-        alt El pedido sigue pendiente y sin chofer
+        opt El pedido sigue pendiente y sin chofer
             SIS-)CHO: notificarOferta(pedido)
             Note over SIS: Reutiliza la búsqueda de<br/>CU-013 con el siguiente<br/>chofer
-        else El pedido ya fue aceptado o cancelado
-            Note over SIS: No se vuelve a ofrecer
         end
+        Note over SIS: Si el pedido ya fue aceptado<br/>o cancelado, no se vuelve<br/>a ofrecer
     end
     SIS-->>SAU: ofertas procesadas
     deactivate SIS
@@ -13744,14 +14846,13 @@ sequenceDiagram
     loop Mientras el chofer está conectado
         CHO->>SIS: actualizarUbicacion(usuarioId, latitud, longitud)
         activate SIS
-        alt Los datos de posición son válidos
+        opt Los datos de posición son válidos
             opt El chofer tiene un pedido en curso
                 SIS-)CLI: notificarUbicacionDelChofer(pedido, latitud, longitud)
                 SIS-)ADM: notificarUbicacionDelChofer(pedido, latitud, longitud)
             end
-        else Faltan el usuario o las coordenadas
-            Note over SIS: Se descarta el envío y<br/>no se registra la<br/>posición
         end
+        Note over SIS: Si faltan el usuario o las<br/>coordenadas, se descarta el<br/>envío y no se registra la<br/>posición
         deactivate SIS
     end
 ```
@@ -13885,31 +14986,52 @@ sequenceDiagram
 ---
 
 
-#### DSS — CU-022: Activar / Desactivar Disponibilidad
+#### DSS — CU-022: Activar la Disponibilidad
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `cambiarDisponibilidad(usuarioId, disponible)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-022 Activar / Desactivar Disponibilidad
+    title DSS — CU-022 Activar la Disponibilidad
     autonumber
     actor CHO as Chofer (ACT-02)
     participant SIS as :Sistema
 
     CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
     activate SIS
-    alt se pone disponible y está habilitado y validado
+    alt está habilitado y validado
         SIS-->>CHO: disponible (empieza a recibir ofertas de pedidos)
-    else se pone disponible sin estar habilitado o validado
+    else no está habilitado o validado
         SIS-->>CHO: acceso denegado
-    else se pone no disponible
-        SIS-->>CHO: no disponible (deja de recibir ofertas)
     end
     deactivate SIS
+    Note over CHO,SIS: disponible = verdadero. La misma operación, con disponible = falso, es CU-266
 ```
 
 > **Observación de análisis:** el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que "fuera de turno" y "dado de baja" son indistinguibles.
+
+---
+
+
+#### DSS — CU-266: Desactivar la Disponibilidad
+
+**Actor:** Chofer (ACT-02)
+**Operaciones del sistema:** `cambiarDisponibilidad(usuarioId, disponible)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-266 Desactivar la Disponibilidad
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
+    activate SIS
+    SIS-->>CHO: no disponible (deja de recibir ofertas)
+    deactivate SIS
+    Note over CHO,SIS: disponible = falso. Desconectarse se permite siempre.<br/>La misma operación, con disponible = verdadero, es CU-022
+```
 
 ---
 
@@ -14271,42 +15393,56 @@ sequenceDiagram
 ---
 
 
-#### DSS — CU-032: Validar / Invalidar Chofer
+#### DSS — CU-032: Validar un Chofer
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `validarChofer(choferId)`, `invalidarChofer(choferId)`
+**Operaciones del sistema:** `validarChofer(choferId)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-032 Validar / Invalidar Chofer
+    title DSS — CU-032 Validar un Chofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt aprobación de la documentación
-        ADM->>SIS: validarChofer(choferId)
-        activate SIS
-        SIS-->>ADM: chofer validado (habilitado para recibir pedidos)
-        deactivate SIS
-    else rechazo o revocación
-        ADM->>SIS: invalidarChofer(choferId)
-        activate SIS
-        SIS-->>ADM: chofer invalidado (deja de recibir ofertas)
-        deactivate SIS
-    end
+    ADM->>SIS: validarChofer(choferId)
+    activate SIS
+    SIS-->>ADM: chofer validado (habilitado para recibir pedidos)
+    deactivate SIS
 ```
 
 ---
 
 
-#### DSS — CU-033: Activar / Desactivar Chofer (Admin)
+#### DSS — CU-271: Invalidar un Chofer
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `invalidarChofer(choferId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-271 Invalidar un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: invalidarChofer(choferId)
+    activate SIS
+    SIS-->>ADM: chofer invalidado (deja de sumar entre los habilitados)
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-033: Activar un Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cambiarEstadoDelChofer(choferId, activo)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-033 Activar / Desactivar Chofer (Admin)
+    title DSS — CU-033 Activar un Chofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -14314,11 +15450,38 @@ sequenceDiagram
     ADM->>SIS: cambiarEstadoDelChofer(choferId, activo)
     activate SIS
     alt el chofer existe
-        SIS-->>ADM: estado del chofer actualizado
+        SIS-->>ADM: chofer activado
     else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
+    Note over ADM,SIS: activo = verdadero. La misma operación, con activo = falso, es CU-267
+```
+
+---
+
+
+#### DSS — CU-267: Desactivar un Chofer
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `cambiarEstadoDelChofer(choferId, activo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-267 Desactivar un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cambiarEstadoDelChofer(choferId, activo)
+    activate SIS
+    alt el chofer existe
+        SIS-->>ADM: chofer desactivado (fuera de línea y fuera del radar)
+    else el chofer no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: activo = falso. La misma operación, con activo = verdadero, es CU-033
 ```
 
 ---
@@ -14499,44 +15662,77 @@ sequenceDiagram
 ---
 
 
-#### DSS — CU-040: Activar / Desactivar Producto
+#### DSS — CU-040: Desactivar un Producto
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `desactivarProducto(productoId)`, `consultarProductosInactivos()`, `reactivarProducto(productoId)`
+**Operaciones del sistema:** `desactivarProducto(productoId)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-040 Activar / Desactivar Producto
+    title DSS — CU-040 Desactivar un Producto
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt El administrador da de baja el producto
-        ADM->>SIS: desactivarProducto(productoId)
-        activate SIS
-        alt el producto existe en la distribuidora
-            SIS-->>ADM: producto desactivado (deja de aparecer en el catálogo)
-        else el producto no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    else El administrador reactiva un producto (planificado, I-1)
-        ADM->>SIS: consultarProductosInactivos()
-        activate SIS
-        SIS-->>ADM: productos dados de baja de la distribuidora
-        deactivate SIS
-        ADM->>SIS: reactivarProducto(productoId)
-        activate SIS
-        alt el producto existe en la distribuidora
-            SIS-->>ADM: producto reactivado (vuelve a aparecer en el catálogo)
-        else el producto no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
+    ADM->>SIS: desactivarProducto(productoId)
+    activate SIS
+    alt el producto existe en la distribuidora
+        SIS-->>ADM: producto desactivado (deja de aparecer en el catálogo)
+    else el producto no existe
+        SIS-->>ADM: recurso no encontrado
     end
+    deactivate SIS
 ```
 
-> **Realización parcial:** el sistema realiza la desactivación; la operación inversa `reactivarProducto(productoId)` y el listado de productos inactivos están planificados (I-1).
+---
+
+
+#### DSS — CU-268: Reactivar un Producto
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `reactivarProducto(productoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-268 Reactivar un Producto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reactivarProducto(productoId)
+    activate SIS
+    alt el producto existe en la distribuidora
+        SIS-->>ADM: producto reactivado (vuelve a aparecer en el catálogo)
+    else el producto no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+> **Planificado (I-1):** el sistema todavía no realiza la reactivación; el diagrama es la colaboración propuesta.
+
+---
+
+
+#### DSS — CU-269: Consultar los Productos Inactivos
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarProductosInactivos()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-269 Consultar los Productos Inactivos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarProductosInactivos()
+    activate SIS
+    SIS-->>ADM: productos dados de baja de la distribuidora
+    deactivate SIS
+```
+
+> **Planificado (I-1):** el listado de productos inactivos todavía no existe; el diagrama es la colaboración propuesta.
 
 ---
 
@@ -15132,12 +16328,12 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-048 Procesar Pago con MercadoPago
     autonumber
-    participant SIS as :Sistema
     actor MP as MercadoPago (ACT-06)
+    participant SIS as :Sistema
     actor CLI as Cliente (ACT-01)
     actor CHO as Chofer (ACT-02)
 
-    Note over SIS,MP: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
+    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
 
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
@@ -15241,14 +16437,14 @@ sequenceDiagram
 ### SS-01 — Autenticación y Usuarios
 
 
-#### DSS — CU-050: Bloquear / Desbloquear Usuario
+#### DSS — CU-050: Bloquear un Usuario
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `bloquearUsuario(usuarioId, bloquear)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-050 Bloquear / Desbloquear Usuario
+    title DSS — CU-050 Bloquear un Usuario
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -15256,14 +16452,39 @@ sequenceDiagram
     ADM->>SIS: bloquearUsuario(usuarioId, bloquear)
     activate SIS
     alt el usuario existe
-        SIS-->>ADM: usuario actualizado (estado de bloqueo vigente)
+        SIS-->>ADM: usuario bloqueado
     else el usuario no existe
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
+    Note over ADM,SIS: bloquear = verdadero. La misma operación, con bloquear = falso, es CU-270
 ```
 
-> Es un interruptor bidireccional: el mismo mensaje bloquea y desbloquea según el parámetro `bloquear`.
+---
+
+
+#### DSS — CU-270: Desbloquear un Usuario
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `bloquearUsuario(usuarioId, bloquear)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-270 Desbloquear un Usuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: bloquearUsuario(usuarioId, bloquear)
+    activate SIS
+    alt el usuario existe
+        SIS-->>ADM: usuario desbloqueado
+    else el usuario no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: bloquear = falso. La misma operación, con bloquear = verdadero, es CU-050
+```
 
 ---
 
@@ -16347,14 +17568,14 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-002, CU-003,
 ---
 
 
-#### DSS — CU-083: Buscar / Listar Usuarios
+#### DSS — CU-083: Listar los Usuarios
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `listarUsuarios(pagina, limite, textoDeBusqueda)`, `buscarUsuarioPorCorreo(correo)`, `buscarUsuarioPorTelefono(telefono)`
+**Operaciones del sistema:** `listarUsuarios(pagina, limite, textoDeBusqueda)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-083 Buscar / Listar Usuarios
+    title DSS — CU-083 Listar los Usuarios
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -16363,8 +17584,24 @@ sequenceDiagram
     activate SIS
     SIS-->>ADM: página de usuarios (total, cantidad, listado)
     deactivate SIS
+```
 
-    opt búsqueda puntual
+---
+
+
+#### DSS — CU-272: Buscar un Usuario
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `buscarUsuarioPorCorreo(correo)`, `buscarUsuarioPorTelefono(telefono)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-272 Buscar un Usuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt búsqueda por correo
         ADM->>SIS: buscarUsuarioPorCorreo(correo)
         activate SIS
         alt existe
@@ -16373,9 +17610,7 @@ sequenceDiagram
             SIS-->>ADM: recurso no encontrado
         end
         deactivate SIS
-    end
-
-    opt búsqueda por teléfono
+    else búsqueda por teléfono
         ADM->>SIS: buscarUsuarioPorTelefono(telefono)
         activate SIS
         SIS-->>ADM: usuario encontrado
@@ -16532,14 +17767,14 @@ sequenceDiagram
 ---
 
 
-#### DSS — CU-089: Gestionar Roles del Sistema
+#### DSS — CU-089: Consultar los Roles
 
 **Actor:** Administrador General (ACT-05)
-**Operaciones del sistema:** `listarRoles()`, `crearRol(tipo)`, `actualizarRol(rolId, datos)`, `eliminarRol(rolId)`
+**Operaciones del sistema:** `listarRoles()`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-089 Gestionar Roles del Sistema
+    title DSS — CU-089 Consultar los Roles
     autonumber
     actor SUP as Administrador General (ACT-05)
     participant SIS as :Sistema
@@ -16548,31 +17783,81 @@ sequenceDiagram
     activate SIS
     SIS-->>SUP: roles definidos en el sistema
     deactivate SIS
+```
 
-    opt alta de un rol
-        SUP->>SIS: crearRol(tipo)
-        activate SIS
-        SIS-->>SUP: rol creado (rolId)
-        deactivate SIS
+---
+
+
+#### DSS — CU-252: Crear un Rol
+
+**Actor:** Administrador General (ACT-05)
+**Operaciones del sistema:** `crearRol(tipo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-252 Crear un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: crearRol(tipo)
+    activate SIS
+    SIS-->>SUP: rol creado (rolId)
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-253: Modificar un Rol
+
+**Actor:** Administrador General (ACT-05)
+**Operaciones del sistema:** `actualizarRol(rolId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-253 Modificar un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: actualizarRol(rolId, datos)
+    activate SIS
+    alt el rol existe y no es del sistema
+        SIS-->>SUP: rol actualizado
+    else el rol no existe
+        SIS-->>SUP: recurso no encontrado
+    else el rol es uno de los del sistema
+        SIS-->>SUP: conflicto
     end
+    deactivate SIS
+```
 
-    opt modificación
-        SUP->>SIS: actualizarRol(rolId, datos)
-        activate SIS
-        alt el rol existe
-            SIS-->>SUP: rol actualizado
-        else el rol no existe
-            SIS-->>SUP: recurso no encontrado
-        end
-        deactivate SIS
-    end
+---
 
-    opt baja
-        SUP->>SIS: eliminarRol(rolId)
-        activate SIS
+
+#### DSS — CU-254: Eliminar un Rol
+
+**Actor:** Administrador General (ACT-05)
+**Operaciones del sistema:** `eliminarRol(rolId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-254 Eliminar un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: eliminarRol(rolId)
+    activate SIS
+    alt el rol existe, no es del sistema y no tiene usuarios
         SIS-->>SUP: rol eliminado
-        deactivate SIS
+    else el rol no existe
+        SIS-->>SUP: recurso no encontrado
+    else el rol es del sistema o tiene usuarios asignados
+        SIS-->>SUP: conflicto
     end
+    deactivate SIS
 ```
 
 ---
@@ -17261,7 +18546,7 @@ sequenceDiagram
     ADM->>SIS: descargarAdjunto(tareaId, adjuntoId)
     activate SIS
     alt el adjunto existe
-        SIS-->>ADM: contenido del archivo
+        SIS-->>ADM: dirección de descarga firmada, de corta vigencia, con la que se baja el archivo
     else el adjunto no existe
         SIS-->>ADM: recurso no encontrado
     end
@@ -18157,7 +19442,7 @@ sequenceDiagram
 #### DSS — CU-152: Consultar el Registro de Auditoría
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
-**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)`
+**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)`, `consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)`
 
 ```mermaid
 sequenceDiagram
@@ -18177,6 +19462,18 @@ sequenceDiagram
         SIS-->>ADM: asientos del más reciente al más antiguo (autor, rol, operación, recurso, fecha, origen, resultado, cuerpo depurado) y total, o lista vacía si ninguno coincide
     end
     deactivate SIS
+
+    ADM->>SIS: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+    activate SIS
+    alt el solicitante no es administrador
+        SIS-->>ADM: acceso denegado
+    else algún filtro no tiene el formato esperado
+        SIS-->>ADM: error de validación
+    else filtros válidos
+        Note over ADM,SIS: con una distribuidora en contexto, sólo las<br/>auditorías de ella
+        SIS-->>ADM: auditorías de la más reciente a la más antigua (acción, usuario, entidad, registro, fecha y hora, dirección IP, detalle de cada campo con su valor anterior y nuevo) y total, o lista vacía si ninguna coincide
+    end
+    deactivate SIS
 ```
 
 ---
@@ -18185,7 +19482,7 @@ sequenceDiagram
 #### DSS — CU-153: Registrar Toda Operación de Escritura
 
 **Actor:** Sistema Automático (ACT-04)
-**Operaciones del sistema:** `registrarOperacion(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)`
+**Operaciones del sistema:** `registrarOperacion(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)`, `registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)`
 
 ```mermaid
 sequenceDiagram
@@ -18202,6 +19499,17 @@ sequenceDiagram
         SIS-->>SAU: operación registrada
     else La base no acepta el asiento
         SIS-->>SAU: asiento volcado al registro de eventos,<br/>la operación original no se interrumpe
+    end
+    deactivate SIS
+
+    Note over SAU: Se dispara cuando un registro<br/>de negocio se da de alta, se modifica,<br/>se da de baja o se reactiva
+    SAU->>SIS: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
+    activate SIS
+    Note over SAU,SIS: Escribe en la transacción del cambio, con un<br/>detalle por campo que cambió
+    alt Cambió al menos un campo
+        SIS-->>SAU: auditoría registrada
+    else El guardado no cambió ningún campo
+        SIS-->>SAU: nada que registrar
     end
     deactivate SIS
 ```
@@ -18270,7 +19578,7 @@ Tres casos de uso no tienen diagrama de secuencia propio porque son casos inclui
 
 **Observaciones sobre casos de uso modelados con salvedades:**
 
-1. **CU-040 (Activar / Desactivar Producto)** modela la desactivación, que el sistema realiza, y la reactivación, planificada (I-1) y marcada como tal en el diagrama.
+1. **CU-268 (Reactivar un Producto) y CU-269 (Consultar los Productos Inactivos)** modelan la reactivación de un producto dado de baja, que el sistema todavía no realiza: están planificados (I-1) y marcados como tales en sus diagramas. CU-040 modela la desactivación, que sí está construida.
 2. **CU-049 (Consultar Balance del Chofer)** no tiene una operación de consulta propia: se modela tal como ocurre, como una lectura del perfil del chofer.
 3. **Conciliación de pagos:** el registro contable de pagos existe en el sistema pero no tiene una operación del sistema que lo exponga a ningún actor, de modo que no admite un diagrama de secuencia.
 
@@ -18302,24 +19610,22 @@ sequenceDiagram
     loop Por cada tarea dentro de la ventana de anticipación
         loop Por cada ventana alternativa, de mejor a peor
             SIS-)CHO: notificarPropuestaDeVentana(propuesta)
-            alt El chofer acepta
+            opt El chofer acepta
                 CHO->>SIS: aceptarVentanaDeMantenimiento(propuestaId)
                 SIS-->>CHO: ventana aceptada, pendiente de la confirmación del administrador
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la propuesta y<br/>se pasa a la siguiente<br/>ventana
             end
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la<br/>propuesta y se pasa a la<br/>siguiente ventana
         end
 
-        alt Se agotaron las ventanas sin acuerdo
+        opt Se agotaron las ventanas sin acuerdo
             SIS-)ADM: notificarOpcionesEvaluadas(tarea, opciones)
             ADM->>SIS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
             SIS-->>ADM: tarea programada
-        else La ventana quedó acordada con el chofer
-            Note over SIS: Se registra la tarea<br/>como programada
         end
+        Note over SIS: Si la ventana quedó acordada<br/>con el chofer, se registra la<br/>tarea como programada
     end
 
-    alt Hay una habilitación bloqueante vencida
+    opt Hay una habilitación bloqueante vencida
         Note over SIS: Deja el vehículo fuera<br/>de servicio
         SIS-)ADM: notificarVehiculoInhabilitado(vehiculo)
     end
@@ -18352,17 +19658,15 @@ sequenceDiagram
     Note over SIS: Estima el ritmo de<br/>consumo de cada cliente<br/>ponderado por kilaje y<br/>corregido por<br/>estacionalidad, y<br/>proyecta la fecha de<br/>agotamiento
 
     loop Por cada cliente dentro de la ventana de anticipación
-        alt El cliente no tiene pedido activo ni invitación reciente
+        opt El cliente no tiene pedido activo ni invitación reciente
             SIS-)CLI: notificarInvitacionDeRecompra(invitacion)
-            alt El cliente acepta dentro de la vigencia
+            opt El cliente acepta dentro de la vigencia
                 CLI->>SIS: aceptarInvitacionDeRecompra(invitacionId)
                 SIS-->>CLI: pedido creado y en búsqueda de chofer
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la invitación<br/>y se registra la fecha<br/>del intervalo mínimo
             end
-        else El cliente está excluido
-            Note over SIS: No se emite invitación
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la<br/>invitación y se registra la<br/>fecha del intervalo mínimo
         end
+        Note over SIS: Si el cliente está excluido,<br/>no se emite invitación
     end
     SIS-->>SAU: invitaciones emitidas y caducadas procesadas
     deactivate SIS
@@ -18395,18 +19699,17 @@ sequenceDiagram
     loop Por cada lote armado
         loop Por cada chofer candidato no contactado
             SIS-)CHO: notificarOfertaDeRecorrido(recorrido)
-            alt El chofer acepta dentro de la vigencia
+            opt El chofer acepta dentro de la vigencia
                 CHO->>SIS: aceptarRecorrido(recorridoId)
                 SIS-->>CHO: pedidos asignados en el orden establecido
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la oferta y se<br/>pasa al candidato<br/>siguiente
             end
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la oferta<br/>y se pasa al candidato<br/>siguiente
         end
 
         alt Ningún chofer tomó el lote
-            Note over SIS: Se deshace el lote y los<br/>pedidos vuelven al<br/>circuito individual
+            SIS-->>SAU: lote deshecho, pedidos al circuito individual
         else El lote quedó asignado
-            Note over SIS: Se registra el recorrido<br/>asignado
+            SIS-->>SAU: recorrido asignado
         end
     end
     SIS-->>SAU: lotes procesados
@@ -18440,32 +19743,26 @@ sequenceDiagram
 
     loop Por cada envase retenido
         loop Por cada escalón de la secuencia
-            alt El envase ya volvió
-                Note over SIS: Se cierra el caso y se<br/>libera el depósito
-            else El envase sigue retenido
+            Note over SAU,SIS: Si el envase ya volvió, se cierra<br/>el caso y se libera el depósito
+            opt El envase sigue retenido
                 SIS-)CLI: notificarEscalonDeRecupero(caso, escalon)
-                alt Hay una entrega programada al mismo cliente
+                opt Hay una entrega programada al mismo cliente
                     SIS-)CLI: notificarOfertaDeRetiro(oferta)
-                    alt El cliente acepta el retiro
+                    opt El cliente acepta el retiro antes de la vigencia
                         CLI->>SIS: aceptarRetiroEnLaEntrega(ofertaId)
                         SIS-->>CLI: retiro acordado para esa entrega
-                    else No responde antes de la vigencia
-                        Note over SIS: Vence la oferta de<br/>retiro
                     end
-                else No hay entrega programada
-                    Note over SIS: Se saltea la oferta de<br/>retiro
                 end
             end
         end
 
-        alt Se agotaron los escalones y el importe supera el umbral
+        opt Se agotaron los escalones y el importe supera el umbral
             SIS-)ADM: notificarLegajoDeRecupero(caso)
             ADM->>SIS: resolverCasoDeRecupero(casoId, decision)
             Note over SAU,ADM: decision: cobrar el depósito, dar de baja el<br/>envase o cerrar el caso sin cargo
             SIS-->>ADM: resolución registrada
-        else El envase volvió o el importe no llega al umbral
-            Note over SIS: Se cierra el caso según<br/>corresponda
         end
+        Note over SAU,SIS: Si el envase volvió o el importe<br/>no llega al umbral, se cierra<br/>el caso según corresponda
     end
     SIS-->>SAU: casos de recupero procesados
     deactivate SIS
@@ -18476,14 +19773,14 @@ sequenceDiagram
 
 ### SS-19 — Personal y Legajos
 
-#### DSS — CU-176: Gestionar los Puestos de Trabajo
+#### DSS — CU-176: Consultar los Puestos de Trabajo
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `consultarPuestosDeTrabajo()`, `crearPuestoDeTrabajo(nombre, categoria)`, `modificarPuestoDeTrabajo(puestoId, datos)`, `eliminarPuestoDeTrabajo(puestoId)`
+**Operaciones del sistema:** `consultarPuestosDeTrabajo()`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-176 Gestionar los Puestos de Trabajo
+    title DSS — CU-176 Consultar los Puestos de Trabajo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -18492,6 +19789,24 @@ sequenceDiagram
     activate SIS
     SIS-->>ADM: puestos de la distribuidora con su categoría y su cantidad de empleados activos
     deactivate SIS
+```
+
+> La categoría del puesto, y no su nombre, gobierna las reglas que se le aplican al personal.
+
+---
+
+
+#### DSS — CU-255: Crear un Puesto de Trabajo
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `crearPuestoDeTrabajo(nombre, categoria)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-255 Crear un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: crearPuestoDeTrabajo(nombre, categoria)
     activate SIS
@@ -18499,8 +19814,26 @@ sequenceDiagram
         SIS-->>ADM: puesto creado
     else ya existe un puesto vigente con ese nombre
         SIS-->>ADM: conflicto
+    else el nombre o la categoría no son válidos
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-256: Modificar un Puesto de Trabajo
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `modificarPuestoDeTrabajo(puestoId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-256 Modificar un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: modificarPuestoDeTrabajo(puestoId, datos)
     activate SIS
@@ -18508,24 +19841,38 @@ sequenceDiagram
         SIS-->>ADM: puesto modificado
     else el puesto no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else ya existe otro puesto vigente con ese nombre
-        SIS-->>ADM: conflicto
-    end
-    deactivate SIS
-
-    ADM->>SIS: eliminarPuestoDeTrabajo(puestoId)
-    activate SIS
-    alt el puesto existe y no tiene empleados activos
-        SIS-->>ADM: puesto dado de baja
-    else el puesto no existe en la distribuidora
-        SIS-->>ADM: recurso no encontrado
-    else el puesto tiene empleados activos
+    else ya existe otro puesto vigente con ese nombre, la categoría nueva no corresponde a las cuentas de sus ocupantes, o es el último puesto activo de su categoría
         SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
 
-> La categoría del puesto, y no su nombre, gobierna las reglas que se le aplican al personal.
+---
+
+
+#### DSS — CU-257: Eliminar un Puesto de Trabajo
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `eliminarPuestoDeTrabajo(puestoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-257 Eliminar un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: eliminarPuestoDeTrabajo(puestoId)
+    activate SIS
+    alt el puesto existe y ningún legajo lo ocupa
+        SIS-->>ADM: puesto dado de baja
+    else el puesto no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el puesto lo ocupa algún legajo, activo o egresado, o es el último activo de su categoría
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
 
 ---
 
@@ -18543,11 +19890,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarEmpleado(datos)
     activate SIS
-    alt los datos son válidos y el puesto existe
+    alt los datos son válidos y el puesto existe y está activo
         SIS-->>ADM: legajo creado, activo y sin cuenta de acceso
     else el puesto no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el documento o el CUIL ya pertenecen a otro empleado vigente
+    else el puesto está inactivo, o el documento, el CUIL o el legajo ya pertenecen a otro empleado vigente
         SIS-->>ADM: conflicto
     else falta un dato o el CUIL no es válido
         SIS-->>ADM: datos inválidos
@@ -18575,20 +19922,20 @@ sequenceDiagram
         SIS-->>ADM: legajo modificado
     else el empleado o el puesto no existen en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el documento o el CUIL ya pertenecen a otro empleado vigente
+    else el puesto está inactivo o no corresponde a la cuenta del empleado, o el documento, el CUIL o el legajo ya pertenecen a otro empleado vigente
         SIS-->>ADM: conflicto
-    else el formato o el CUIL no son válidos
+    else el formato o el CUIL no son válidos, o la fecha de ingreso es posterior a la de egreso
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 
     ADM->>SIS: eliminarEmpleado(empleadoId)
     activate SIS
-    alt el legajo no tiene jornadas ni documentación
+    alt el legajo es una alta errónea: no tiene cuenta de acceso ni, cuando existan, jornadas o documentación
         SIS-->>ADM: legajo dado de baja (alta errónea)
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el legajo ya tiene jornadas o documentación
+    else el legajo tiene cuenta de acceso o, cuando existan, jornadas o documentación
         SIS-->>ADM: conflicto: corresponde registrar el egreso
     end
     deactivate SIS
@@ -18635,9 +19982,11 @@ sequenceDiagram
     ADM->>SIS: consultarEmpleados(filtros)
     activate SIS
     alt hay empleados que cumplen los filtros
-        SIS-->>ADM: página de empleados con su peor vencimiento, sin datos sensibles
+        SIS-->>ADM: página de empleados con su puesto y su estado, sin datos sensibles
     else ninguno cumple los filtros
         SIS-->>ADM: página vacía
+    else un filtro tiene un valor inválido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
@@ -18658,11 +20007,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
     activate SIS
-    alt el empleado está activo y la fecha es válida
+    alt el empleado está activo, la fecha es válida y el chofer no tiene pedidos en curso
         SIS-->>ADM: legajo egresado, cuenta bloqueada y vehículo liberado si era chofer
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el empleado ya está egresado
+    else el empleado ya está egresado o el chofer tiene pedidos en curso
         SIS-->>ADM: conflicto
     else la fecha es anterior a la de ingreso
         SIS-->>ADM: datos inválidos
@@ -18677,6 +20026,8 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el empleado no está egresado
         SIS-->>ADM: conflicto
+    else la fecha de ingreso es anterior a la de egreso
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
@@ -18688,7 +20039,7 @@ sequenceDiagram
 #### DSS — CU-182: Otorgar una Cuenta de Acceso a un Empleado
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `otorgarCuentaDeAcceso(empleadoId, correo)`
+**Operaciones del sistema:** `otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)`
 
 ```mermaid
 sequenceDiagram
@@ -18697,15 +20048,15 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: otorgarCuentaDeAcceso(empleadoId, correo)
+    ADM->>SIS: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
     activate SIS
     alt el empleado está activo, sin cuenta, y su puesto admite acceso
         SIS-->>ADM: cuenta creada con el rol del puesto y vinculada al legajo
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el empleado ya tiene cuenta o está egresado
+    else el empleado ya tiene cuenta, está egresado, o el correo o el teléfono ya están en uso
         SIS-->>ADM: conflicto
-    else la categoría del puesto no admite cuenta
+    else la categoría del puesto no admite cuenta, o faltan o son inválidos el teléfono o los datos de acceso
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
@@ -18827,7 +20178,7 @@ sequenceDiagram
         SIS-->>ADM: adjunto registrado en el legajo
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el tipo o el tamaño del archivo no están permitidos
+    else el archivo falta, está vacío, es de un tipo no admitido o supera el tamaño máximo
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
@@ -19130,57 +20481,97 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-012, CU-013 
 
 ### SS-08 — Gestión de Productos e Inventario (ampliación: stock físico y carga del camión, I-13)
 
-#### DSS — CU-207: Gestionar los Depósitos
+#### DSS — CU-207: Consultar los Depósitos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarDeposito(nombre, codigo, tipo, direccion)`, `actualizarDeposito(depositoId, datos)`, `darDeBajaDeposito(depositoId)`, `consultarDepositos()`
+**Operaciones del sistema:** `consultarDepositos()`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-207 Gestionar los Depósitos
+    title DSS — CU-207 Consultar los Depósitos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt alta de un depósito
-        ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
-        activate SIS
-        alt el código está libre
-            SIS-->>ADM: depósito creado
-        else el código ya lo usa otro depósito vigente
-            SIS-->>ADM: conflicto, con el detalle del campo
-        end
-        deactivate SIS
-    end
+    ADM->>SIS: consultarDepositos()
+    activate SIS
+    SIS-->>ADM: depósitos de la distribuidora
+    deactivate SIS
+```
 
-    opt modificación de un depósito
-        ADM->>SIS: actualizarDeposito(depositoId, datos)
-        activate SIS
-        alt el depósito existe
-            SIS-->>ADM: depósito actualizado
-        else el depósito no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
+---
 
-    opt baja de un depósito
-        ADM->>SIS: darDeBajaDeposito(depositoId)
-        activate SIS
-        alt el depósito no tiene saldo
-            SIS-->>ADM: baja confirmada
-        else el depósito tiene saldo
-            SIS-->>ADM: conflicto, con el saldo pendiente
-        end
-        deactivate SIS
-    end
 
-    opt listado de depósitos
-        ADM->>SIS: consultarDepositos()
-        activate SIS
-        SIS-->>ADM: depósitos de la distribuidora
-        deactivate SIS
+#### DSS — CU-258: Registrar un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarDeposito(nombre, codigo, tipo, direccion)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-258 Registrar un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
+    activate SIS
+    alt el código está libre
+        SIS-->>ADM: depósito creado
+    else el código ya lo usa otro depósito vigente
+        SIS-->>ADM: conflicto, con el detalle del campo
     end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-259: Modificar un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `actualizarDeposito(depositoId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-259 Modificar un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: actualizarDeposito(depositoId, datos)
+    activate SIS
+    alt el depósito existe
+        SIS-->>ADM: depósito actualizado
+    else el depósito no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-260: Dar de Baja un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `darDeBajaDeposito(depositoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-260 Dar de Baja un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: darDeBajaDeposito(depositoId)
+    activate SIS
+    alt el depósito no tiene saldo
+        SIS-->>ADM: baja confirmada
+    else el depósito tiene saldo
+        SIS-->>ADM: conflicto, con el saldo pendiente
+    end
+    deactivate SIS
 ```
 
 ---
@@ -19371,47 +20762,39 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt apertura de la carga
-        ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
-        activate SIS
-        alt el camión está en uso y el depósito tiene las unidades
-            SIS-->>ADM: hoja de carga abierta
-        else el vehículo o el chofer ya tienen una carga abierta
-            SIS-->>ADM: conflicto
-        else el depósito no tiene las unidades
-            SIS-->>ADM: solicitud inválida, con el saldo disponible
-        end
-        deactivate SIS
+    ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+    activate SIS
+    alt el camión está en uso y el depósito tiene las unidades
+        SIS-->>ADM: hoja de carga abierta
+    else el vehículo o el chofer ya tienen una carga abierta
+        SIS-->>ADM: conflicto
+    else el depósito no tiene las unidades
+        SIS-->>ADM: solicitud inválida, con el saldo disponible
     end
+    deactivate SIS
 
-    opt reposición en ruta
-        ADM->>SIS: reponerCargaDelCamion(cargaId, items)
-        activate SIS
-        alt la carga está abierta
-            SIS-->>ADM: hoja de carga actualizada
-        else la carga ya regresó o está cerrada
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
+    ADM->>SIS: reponerCargaDelCamion(cargaId, items)
+    activate SIS
+    alt la carga está abierta
+        SIS-->>ADM: hoja de carga actualizada
+    else la carga ya regresó o está cerrada
+        SIS-->>ADM: conflicto
     end
+    deactivate SIS
 
-    opt cancelación de la carga
-        ADM->>SIS: cancelarCargaDelCamion(cargaId)
-        activate SIS
-        alt la carga todavía no salió
-            SIS-->>ADM: carga cancelada y stock devuelto
-        else la carga ya salió
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
+    ADM->>SIS: cancelarCargaDelCamion(cargaId)
+    activate SIS
+    alt la carga todavía no salió
+        SIS-->>ADM: carga cancelada y stock devuelto
+    else la carga ya salió
+        SIS-->>ADM: conflicto
     end
+    deactivate SIS
 
-    opt consulta de las cargas
-        ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
-        activate SIS
-        SIS-->>ADM: cargas del camión
-        deactivate SIS
-    end
+    ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
+    activate SIS
+    SIS-->>ADM: cargas del camión
+    deactivate SIS
 ```
 
 ---
@@ -19630,53 +21013,93 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213,
 
 ### SS-20 — Compras (I-13)
 
-#### DSS — CU-214: Gestionar los Proveedores
+#### DSS — CU-214: Consultar los Proveedores
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)`, `actualizarProveedor(proveedorId, datos)`, `darDeBajaProveedor(proveedorId)`, `consultarProveedores(termino)`
+**Operaciones del sistema:** `consultarProveedores(termino)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-214 Gestionar los Proveedores
+    title DSS — CU-214 Consultar los Proveedores
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt alta de un proveedor
-        ADM->>SIS: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-        activate SIS
-        alt el CUIT está libre
-            SIS-->>ADM: proveedor creado
-        else el CUIT ya pertenece a un proveedor vigente
-            SIS-->>ADM: conflicto, con el detalle del campo
-        end
-        deactivate SIS
-    end
+    ADM->>SIS: consultarProveedores(termino)
+    activate SIS
+    SIS-->>ADM: proveedores vigentes
+    deactivate SIS
+```
 
-    opt modificación de un proveedor
-        ADM->>SIS: actualizarProveedor(proveedorId, datos)
-        activate SIS
-        alt el proveedor existe
-            SIS-->>ADM: proveedor actualizado
-        else el proveedor no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
+---
 
-    opt baja de un proveedor
-        ADM->>SIS: darDeBajaProveedor(proveedorId)
-        activate SIS
-        SIS-->>ADM: baja confirmada
-        deactivate SIS
-    end
 
-    opt listado de proveedores
-        ADM->>SIS: consultarProveedores(termino)
-        activate SIS
-        SIS-->>ADM: proveedores vigentes
-        deactivate SIS
+#### DSS — CU-261: Registrar un Proveedor
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-261 Registrar un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    activate SIS
+    alt el CUIT está libre
+        SIS-->>ADM: proveedor creado
+    else el CUIT ya pertenece a un proveedor vigente
+        SIS-->>ADM: conflicto, con el detalle del campo
     end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-262: Modificar un Proveedor
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `actualizarProveedor(proveedorId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-262 Modificar un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: actualizarProveedor(proveedorId, datos)
+    activate SIS
+    alt el proveedor existe
+        SIS-->>ADM: proveedor actualizado
+    else el proveedor no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-263: Dar de Baja un Proveedor
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `darDeBajaProveedor(proveedorId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-263 Dar de Baja un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: darDeBajaProveedor(proveedorId)
+    activate SIS
+    SIS-->>ADM: baja confirmada
+    deactivate SIS
 ```
 
 ---
@@ -19806,37 +21229,51 @@ sequenceDiagram
 
 ### SS-21 — Caja, Rendiciones y Cuentas Corrientes
 
-#### DSS — CU-225: Gestionar las Cajas
+#### DSS — CU-225: Crear una Caja
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `crearCaja(nombre, tipo, requiereSesion)`, `modificarCaja(cajaId, datos)`
+**Operaciones del sistema:** `crearCaja(nombre, tipo, requiereSesion)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-225 Gestionar las Cajas
+    title DSS — CU-225 Crear una Caja
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Alta de la caja
-        ADM->>SIS: crearCaja(nombre, tipo, requiereSesion)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: caja creada con saldo cero
-        else ya existe una caja con ese nombre
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Modificación de la caja
-        ADM->>SIS: modificarCaja(cajaId, datos)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: caja con los datos nuevos
-        else la caja tiene una sesión abierta y se pretende desactivarla
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: crearCaja(nombre, tipo, requiereSesion)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: caja creada con saldo cero
+    else ya existe una caja con ese nombre
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-264: Modificar una Caja
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `modificarCaja(cajaId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-264 Modificar una Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarCaja(cajaId, datos)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: caja con los datos nuevos
+    else la caja tiene una sesión abierta y se pretende desactivarla
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
 ```
 
 ---
@@ -19952,37 +21389,51 @@ sequenceDiagram
 
 ---
 
-#### DSS — CU-230: Gestionar las Categorías de Ingresos y Gastos
+#### DSS — CU-230: Crear una Categoría de Ingresos y Gastos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `crearCategoriaDeCaja(nombre, sentido)`, `modificarCategoriaDeCaja(categoriaId, datos)`
+**Operaciones del sistema:** `crearCategoriaDeCaja(nombre, sentido)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-230 Gestionar las Categorías de Ingresos y Gastos
+    title DSS — CU-230 Crear una Categoría de Ingresos y Gastos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Alta de la categoría
-        ADM->>SIS: crearCategoriaDeCaja(nombre, sentido)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: categoría creada
-        else ya existe una categoría con ese nombre y sentido
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Modificación o baja de la categoría
-        ADM->>SIS: modificarCategoriaDeCaja(categoriaId, datos)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: categoría con los datos nuevos
-        else la categoría es de sistema
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: crearCategoriaDeCaja(nombre, sentido)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: categoría creada
+    else ya existe una categoría con ese nombre y sentido
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS
+```
+
+---
+
+
+#### DSS — CU-265: Modificar una Categoría de Ingresos y Gastos
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `modificarCategoriaDeCaja(categoriaId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-265 Modificar una Categoría de Ingresos y Gastos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarCategoriaDeCaja(categoriaId, datos)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: categoría con los datos nuevos
+    else la categoría es de sistema
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
 ```
 
 ---
@@ -20005,7 +21456,7 @@ sequenceDiagram
     alt Otra instancia ya está ejecutando el proceso
         SIS-->>SAU: ejecución salteada
     else Hay choferes con efectivo sin rendir
-        Note over SAU,SIS: Abre una rendición por chofer con sus pedidos y sus cobros
+        Note over SAU,SIS: Abre una rendición por chofer<br/>con sus pedidos y sus cobros
         SIS-->>SAU: rendiciones abiertas (cantidad)
     else El chofer ya tiene una rendición abierta
         SIS-->>SAU: rendición completada con lo nuevo
@@ -20361,34 +21812,32 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Liquidación del chofer
-        ADM->>SIS: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación en borrador con el bruto, las deducciones y el neto
-        else no hay asientos para liquidar
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Operación aprobarLiquidacion
-        ADM->>SIS: aprobarLiquidacion(liquidacionId)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
-        else la liquidación no está en borrador
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Anulación de la liquidación
-        ADM->>SIS: anularLiquidacion(liquidacionId)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación anulada y asientos liberados
-        else la liquidación ya está pagada
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación en borrador con el bruto, las deducciones y el neto
+    else no hay asientos para liquidar
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS
+
+    ADM->>SIS: aprobarLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
+    else la liquidación no está en borrador
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+
+    ADM->>SIS: anularLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación anulada y asientos liberados
+    else la liquidación ya está pagada
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
 ```
 
 ---
@@ -20489,13 +21938,24 @@ sequenceDiagram
     CLE-->>-CRT: direccion
     CRT->>+ZON: cubre(direccion)
     ZON-->>-CRT: cubierta
+    opt La dirección está fuera de la zona de cobertura
+        CRT-->>CLI: rechazo por domicilio fuera de la zona
+    end
     opt Hay fechaAgendada y franjaId
-        CRT->>FRA: tieneCupo(fechaAgendada)
+        CRT->>+FRA: tieneCupo(fechaAgendada)
+        FRA-->>-CRT: hayCupo
+        opt La franja no tiene cupo para esa fecha
+            CRT-->>CLI: rechazo por franja sin cupo
+        end
     end
     create participant PED as :Pedido
     CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago)
     loop Por cada item de items
-        CRT->>PRO: reservar(cantidad)
+        CRT->>+PRO: reservar(cantidad)
+        PRO-->>-CRT: reservado
+        opt El producto no tiene stock suficiente
+            CRT-->>CLI: rechazo por stock insuficiente
+        end
         CRT->>+PED: agregarItem(producto, cantidad)
         PED->>+PRO: precioPara(cantidad)
         PRO-->>-PED: precioUnitario, subtotal
@@ -20510,11 +21970,7 @@ sequenceDiagram
     PED->>ZON: calcularRecargo(subtotalItems)
     PED->>PED: aplicarRecargoDePago()
     PED-->>-CRT: total
-    alt metodoDePago es MERCADOPAGO
-        Note over CRT,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). No se despacha hasta confirmarlo
-    else efectivo o transferencia
-        Note over CRT,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-    end
+    Note over CRT,PED: Si metodoDePago es MERCADOPAGO: Pago, ver DSD de crearCheckoutDePago (CU-048),<br/>devuelve enlaceDePago y no se despacha hasta confirmarlo.<br/>Si es efectivo o transferencia: Despacho, ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
     CRT-)NOT: sendOrderConfirmation(cliente, pedido)
     CRT-->>-CLI: pedido, enlaceDePago
 ```
@@ -20524,6 +21980,8 @@ sequenceDiagram
 **GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. La navegación se resuelve por las asociaciones del modelo conceptual: el `Cliente` entrega su dirección, la `ZonaCobertura` dice si la cubre, la `FranjaHoraria` si tiene cupo y el `Producto` reserva su stock. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa; el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido` y el recargo a la `ZonaCobertura`; `Producto` sabe su precio y su promoción por volumen.
 
 **Referencias.** El pago con MercadoPago es la operación `crearCheckoutDePago` (CU-048) y el ofrecimiento al chofer más cercano, que crea la `OfertaDespacho`, es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
+
+**Rechazos.** Los tres rechazos que el DSS muestra y que cambian el recorrido salen como retorno de error del controlador: `domicilioNoCubierto` (la zona no cubre la dirección), `franjaSinCupo` y `stockInsuficiente`; el producto inexistente se rechaza al buscarlo y no se dibuja.
 
 **No se dibuja:** la transacción y el bloqueo de stock (`QueryRunner`), la persistencia, los servicios que el código usa para buscar al cliente, la dirección, la zona y la franja, el aviso en vivo al panel (`notifyAdmins`) y la lectura final del pedido. La reserva con seña es otra operación (`crearReserva`, CU-072).
 
@@ -20623,7 +22081,7 @@ sequenceDiagram
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
-    participant CHO as chofer:Chofer
+    participant CHO as candidato:Chofer
     participant NOT as :NotificationsService
 
     SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
@@ -20636,15 +22094,19 @@ sequenceDiagram
     loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nunca contactado
         SRV->>+RT: findNearbyDrivers(destino, radioKm)
         RT-->>-SRV: cercanos
-        SRV->>+CHO: puedeRecibirOferta(distribuidora)
-        CHO-->>-SRV: elegible
+        loop Por cada chofer de cercanos
+            SRV->>+CHO: puedeRecibirOferta(distribuidora)
+            CHO-->>-SRV: elegible
+        end
     end
     opt No hay un chofer nuevo y alguno dejó vencer su oferta hace más que el enfriamiento
         loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer con la oferta vencida
             SRV->>+RT: findNearbyDrivers(destino, radioKm)
             RT-->>-SRV: cercanos
-            SRV->>+CHO: puedeRecibirOferta(distribuidora)
-            CHO-->>-SRV: elegible
+            loop Por cada chofer de cercanos
+                SRV->>+CHO: puedeRecibirOferta(distribuidora)
+                CHO-->>-SRV: elegible
+            end
         end
     end
     alt Hay un chofer elegible
@@ -20713,7 +22175,8 @@ sequenceDiagram
         ORQ->>+PED: esReofertable()
         PED-->>-ORQ: reofertable
         opt El pedido sigue pendiente y sin chofer
-            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+            ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
+            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
         end
     end
     deactivate ORQ
@@ -20724,7 +22187,8 @@ sequenceDiagram
         ORQ->>+PED: tieneOfertaVigente()
         PED-->>-ORQ: vigente
         opt El pedido no tiene oferta vigente
-            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+            ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
+            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
         end
         deactivate ORQ
     end
@@ -20746,6 +22210,7 @@ sequenceDiagram
 | `OfertaDespacho.getPedido()` | `DispatchOffer.order`, que `DispatchOrchestratorService.handleExpiredOffers` lee con `OrderRepositoryPort.findByIdFull` |
 | `Pedido.esReofertable()` | `DispatchOrchestratorService.isReofferable`: `Order.status` pendiente y sin `Order.deliveryId` |
 | `Pedido.tieneOfertaVigente()` | `DispatchOfferRepositoryPort.hasActiveOffer` |
+| `DispatchOrchestratorService.ofrecerAlSiguienteChofer(...)` | `DispatchOrchestratorService.offerToNextDriver`: la llaman `DispatchOrchestratorService.handleExpiredOffers` y `DispatchOrchestratorService.ensureOffered` |
 
 **Observaciones de diseño**
 
@@ -20816,6 +22281,7 @@ sequenceDiagram
     participant SRV as :OrderService
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
+    participant ORQ as :DispatchOrchestratorService
     participant OFE as oferta:OfertaDespacho
 
     CHF->>+SRV: rechazarOferta(pedidoId)
@@ -20827,7 +22293,8 @@ sequenceDiagram
     SRV->>+PED: esReofertable()
     PED-->>-SRV: reofertable
     opt El pedido sigue pendiente y sin chofer
-        Note over SRV,PED: Re-oferta inmediata: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        SRV->>ORQ: ofrecerAlSiguienteChofer(pedido)
+        Note over SRV,ORQ: Re-oferta inmediata: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
     end
     SRV-->>-CHF: rechazada
 ```
@@ -20847,6 +22314,7 @@ sequenceDiagram
 | `Pedido.getOfertaVigente(...)` | `DispatchOfferRepositoryPort.hasActiveOffer`, con el chofer, y `DispatchOrchestratorService.onDriverRejected`, que cierra la oferta de ese chofer |
 | `OfertaDespacho.rechazar()` | `DispatchOrchestratorService.onDriverRejected`: llama a `DispatchOfferRepositoryPort.closeActiveOffer` con el estado `REJECTED` |
 | `Pedido.esReofertable()` | `DispatchOrchestratorService.isReofferable`: `Order.status` pendiente y sin `Order.deliveryId` |
+| `DispatchOrchestratorService.ofrecerAlSiguienteChofer(...)` | `DispatchOrchestratorService.offerToNextDriver`: la llama `DispatchOrchestratorService.onDriverRejected` al cerrar la oferta rechazada |
 
 **Observaciones de diseño**
 
@@ -20870,6 +22338,7 @@ sequenceDiagram
     participant ZON as zona:ZonaCobertura
     participant FRA as franja:FranjaHoraria
     participant PRO as producto:Producto
+    participant PAG as :PaymentsService
 
     CLI->>+CRT: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
     CRT->>+CLE: getDireccion(direccionId)
@@ -20896,7 +22365,9 @@ sequenceDiagram
     PED->>PED: aplicarRecargoDePago()
     PED-->>-CRT: total
     opt metodoDePago es MERCADOPAGO y montoDeLaSenia es mayor que cero
-        Note over CRT,PED: Pago de la seña: ver DSD de crearCheckoutDePago (CU-048). Crea el Pago
+        CRT->>+PAG: crearCheckoutDePago(pedido, metodoDePago)
+        PAG-->>-CRT: enlaceDePago
+        Note over CRT,PAG: Pago de la seña: ver DSD de crearCheckoutDePago (CU-048).<br/>Crea el Pago
     end
     Note over CRT,PED: Avisos: ver DSD de crearPedido (CU-005). No se ofrece a ningún chofer
     CRT-->>-CLI: reserva, enlaceDePago
@@ -20925,6 +22396,7 @@ sequenceDiagram
 | `Pedido.calcularTotal()` | `CreateOrderUseCase.execute`: suma los subtotales con `Decimal` y aplica los dos recargos; el resultado queda en `Order.totalAmount` |
 | `ZonaCobertura.calcularRecargo(...)` | `CoverageZonePricingService.zoneSurcharge` |
 | `Pedido.aplicarRecargoDePago()` | `OrderPricingService.applyPaymentSurcharge` |
+| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`: la llama `CreateOrderUseCase.createDepositCheckout` con la seña como importe |
 
 **Observaciones de diseño**
 
@@ -21187,7 +22659,7 @@ sequenceDiagram
     CHF->>+SRV: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
     SRV->>+PEDS: get(pedidoId)
     PEDS-->>-SRV: pedido
-    Note over SRV,ENV: Vigencia: ver DSD de verificarVigenciaAlAsignar (CU-135). Rechaza la asignación completa si alguna revisión venció
+    Note over SRV,ENV: Vigencia: ver DSD de verificarVigenciaAlAsignar (CU-135).<br/>Rechaza la asignación completa si alguna revisión venció
     loop Por cada numeroDeSerie de numerosDeSerie
         SRV->>+ENVS: get(numeroDeSerie)
         ENVS-->>-SRV: envase
@@ -21402,8 +22874,10 @@ sequenceDiagram
     participant ZON as zona:ZonaCobertura
 
     CLI->>+SRV: validarCobertura(latitud, longitud)
+    SRV->>+DIS: tieneZonasActivas()
+    DIS-->>-SRV: tieneZonas
     alt La distribuidora no tiene zonas activas
-        Note over SRV,DIS: Toda dirección se considera cubierta, sin recargo
+        SRV-->>CLI: cubierta, sin recargo
     else La distribuidora tiene zonas activas
         SRV->>+DIS: getZonaQueCubre(latitud, longitud)
         loop Por cada zona activa y vigente, de mayor prioridad
@@ -21414,8 +22888,9 @@ sequenceDiagram
             SRV->>+ZON: getRecargo()
             ZON-->>-SRV: recargo
         end
+        SRV-->>CLI: cubierta, recargo, zona
     end
-    SRV-->>-CLI: cubierta, recargo, zona
+    deactivate SRV
 ```
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y los objetos de dominio `Distribuidora` y `ZonaCobertura`. La operación la usa también la creación del pedido (`crearPedido`, CU-005), que le pregunta por la dirección elegida.
@@ -21430,6 +22905,7 @@ sequenceDiagram
 | `Distribuidora.getZonaQueCubre(...)` | `CoverageZoneService.checkCoverage`: una consulta PostGIS (`ST_Covers`) sobre las zonas activas, vigentes y no dadas de baja de la distribuidora, que devuelve la primera por `CoverageZone.priority` y menor área |
 | `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage`: es la condición `ST_Covers` de la misma consulta sobre `CoverageZone.area`; un punto sobre el borde cuenta como cubierto |
 | `ZonaCobertura.getRecargo()` | `CoverageZoneService.checkCoverage`: devuelve `CoverageZone.surchargeValue` y su tipo |
+| `Distribuidora.tieneZonasActivas()` | `CoverageZoneService.checkCoverage`: cuenta las `CoverageZone` activas de la distribuidora; si no hay ninguna, todo punto se considera cubierto y sin recargo |
 
 **Observaciones de diseño**
 
@@ -21706,48 +23182,16 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-004: Gestionar Perfil de Usuario
+#### DSD — CU-004: Consultar el Perfil de Usuario
 
 
-El perfil está partido en dos agregados: los datos de identidad viven en `User` y los
-datos de cliente en `Customer`. Los dos lados aplican la misma política anti-IDOR: un
-no-admin solo lee y escribe lo suyo, y además solo un subconjunto de campos.
-
-##### Operación: actualizarPerfil(usuarioId, datos)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-004 Gestionar Perfil de Usuario · actualizarPerfil
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :UsersService
-    participant COL as :Map#lt;String, Usuario#gt;
-    participant USR as usuario:Usuario
-
-    CLI->>+SRV: actualizarPerfil(usuarioId, datos)
-    SRV->>+COL: get(usuarioId)
-    COL-->>-SRV: usuario
-    SRV->>USR: actualizarPerfil(datos)
-    SRV-->>-CLI: usuario
-```
-
-**Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`. Lo inicia también el Chofer.
-
-**GRASP.** *Controlador*: `UsersService`. *Experto*: el `Usuario` es quien toma el nombre completo, el teléfono y la foto; el controlador no le asigna atributos. Cualquier otro dato que llegue se descarta antes de la operación.
-
-**No se dibuja:** la comprobación de propiedad (un usuario que no es Administrador sólo modifica el suyo, y sólo esos tres campos, que filtra `UsersController.pickSelfEditableFields`) y la transacción con que se guarda.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UsersService.actualizarPerfil(...)` | `UsersController.update` → `UsersService.update` |
-| `Map<String, Usuario>.get(...)` | `UsersService.update`: `preload` carga el `User` por su identificador; responde 404 si no existe |
-| `Usuario.actualizarPerfil(...)` | `UsersService.update`: asigna `User.fullName`, `User.phoneNumber` y `User.selfie`, y guarda dentro de una transacción |
+El perfil está partido en dos agregados: los datos de identidad viven en `User` y los datos de cliente en `Customer`. Los dos lados aplican la misma política anti-IDOR: un no-admin solo lee lo suyo.
 
 ##### Operación: consultarPerfil(usuarioId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-004 Gestionar Perfil de Usuario · consultarPerfil
+    title DSD — CU-004 Consultar el Perfil de Usuario · consultarPerfil
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :UsersService
@@ -21774,7 +23218,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-004 Gestionar Perfil de Usuario · consultarPerfilCliente
+    title DSD — CU-004 Consultar el Perfil de Usuario · consultarPerfilCliente
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :CustomersService
@@ -21799,11 +23243,48 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `pickSelfEditableFields` es la whitelist de auto-edición: `full_name`, `phone_number` y
-  `selfie`. Los campos sensibles (`blocked`, `role_id`, `email`, flags de verificación,
-  `firebase_uid`) quedan reservados a admin aunque vengan en el body.
-- El `acotar()` del `CustomersController` devuelve `undefined` para admin (salta el check) y
-  el `user_id` propio para el resto: la misma función se reusa en `UserAddresController`.
+- El `acotar()` del `CustomersController` devuelve `undefined` para admin (salta el check) y el `user_id` propio para el resto: la misma función se reusa en `UserAddresController`.
+
+---
+
+#### DSD — CU-251: Modificar el Perfil de Usuario
+
+
+El perfil está partido en dos agregados: los datos de identidad viven en `User` y los datos de cliente en `Customer`. Los dos lados aplican la misma política anti-IDOR: un no-admin solo escribe lo suyo, y además solo un subconjunto de campos.
+
+##### Operación: actualizarPerfil(usuarioId, datos)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-251 Modificar el Perfil de Usuario · actualizarPerfil
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UsersService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
+
+    CLI->>+SRV: actualizarPerfil(usuarioId, datos)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: usuario
+    SRV->>USR: actualizarPerfil(datos)
+    SRV-->>-CLI: usuario
+```
+
+**Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`. Lo inicia también el Chofer.
+
+**GRASP.** *Controlador*: `UsersService`. *Experto*: el `Usuario` es quien toma el nombre completo, el teléfono y la foto; el controlador no le asigna atributos. Cualquier otro dato que llegue se descarta antes de la operación.
+
+**No se dibuja:** la comprobación de propiedad (un usuario que no es Administrador sólo modifica el suyo, y sólo esos tres campos, que filtra `UsersController.pickSelfEditableFields`) y la transacción con que se guarda.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UsersService.actualizarPerfil(...)` | `UsersController.update` → `UsersService.update` |
+| `Map<String, Usuario>.get(...)` | `UsersService.update`: `preload` carga el `User` por su identificador; responde 404 si no existe |
+| `Usuario.actualizarPerfil(...)` | `UsersService.update`: asigna `User.fullName`, `User.phoneNumber` y `User.selfie`, y guarda dentro de una transacción |
+
+**Observaciones de diseño**
+
+- `pickSelfEditableFields` es la whitelist de auto-edición: `full_name`, `phone_number` y `selfie`. Los campos sensibles (`blocked`, `role_id`, `email`, flags de verificación, `firebase_uid`) quedan reservados a admin aunque vengan en el body.
 
 ---
 
@@ -21866,13 +23347,12 @@ sequenceDiagram
     CLI->>+SRV: solicitarRecuperacionDeClave(correo)
     SRV->>+COL: get(correo)
     COL-->>-SRV: usuario
-    alt La cuenta existe
+    opt La cuenta existe
         SRV->>+FBA: generatePasswordResetLink(correo, ajustes)
         FBA-->>-SRV: enlace
         SRV-)SND: send(correoDeRecuperacion)
-    else No hay una cuenta con ese correo
-        Note over SRV,COL: No se envía nada y la respuesta es la misma
     end
+    Note over SRV,SND: Si no hay una cuenta con ese correo,<br/>no se envía nada y la respuesta es la misma
     SRV-->>-CLI: mensaje
 ```
 
@@ -21899,16 +23379,16 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-050: Bloquear / Desbloquear Usuario
+#### DSD — CU-050: Bloquear un Usuario
 
 
-Toggle bidireccional real: el mismo endpoint bloquea y desbloquea según el booleano del body.
+Toggle bidireccional real: el mismo endpoint bloquea y desbloquea según el booleano del body. Bloquear (CU-050) y desbloquear (CU-270) son la misma operación, con el valor en verdadero o en falso.
 
 ##### Operación: bloquearUsuario(usuarioId, bloquear)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-050 Bloquear / Desbloquear Usuario · bloquearUsuario
+    title DSD — CU-050 / CU-270 · bloquearUsuario
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :UsersService
@@ -21939,6 +23419,17 @@ sequenceDiagram
 - Bloquear es la alternativa **reversible** a CU-085: la baja lógica deja al usuario fuera
   de las consultas y deshabilita su cuenta de acceso, mientras que el bloqueo lo conserva
   visible y se levanta con la misma operación.
+
+---
+
+#### DSD — CU-270: Desbloquear un Usuario
+
+
+Es la misma operación que CU-050 con el valor de bloqueo en falso: el usuario recupera el acceso.
+
+##### Operación: bloquearUsuario(usuarioId, bloquear)
+
+Operación bloquearUsuario: ver el DSD de CU-050.
 
 ---
 
@@ -22006,17 +23497,54 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-083: Buscar / Listar Usuarios
+#### DSD — CU-083: Listar los Usuarios
 
 
-Tres consultas distintas conviven bajo el mismo caso de uso: listado paginado con búsqueda
-libre (solo admin), y las dos búsquedas puntuales por email y por teléfono.
+Listado paginado con búsqueda libre (solo admin).
+
+##### Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-083 Listar los Usuarios · listarUsuarios
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UsersService
+    participant COL as :List#lt;Usuario#gt;
+
+    ADM->>+SRV: listarUsuarios(pagina, limite, textoDeBusqueda)
+    SRV->>+COL: buscar(textoDeBusqueda, pagina, limite)
+    COL-->>-SRV: usuarios, total
+    SRV-->>-ADM: usuarios, total
+```
+
+**Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `List<Usuario>`.
+
+**GRASP.** *Controlador*: `UsersService`. El listado no cambia estado: la colección de usuarios responde la página pedida y el total.
+
+**No se dibuja:** el alcance por distribuidora (un Administrador de empresa ve sólo a su personal y a los clientes que le compraron) y la carga del rol y de los perfiles.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UsersService.listarUsuarios(...)` | `UsersController.findAll` → `UsersService.findAll` |
+| `List<Usuario>.buscar(...)` | `UsersService.findAll`: `ILIKE` sobre `User.email`, `User.fullName` y `User.phoneNumber`, acotado a la distribuidora en contexto y paginado |
+
+**Observaciones de diseño**
+
+- El listado exige rol de Administrador.
+
+---
+
+#### DSD — CU-272: Buscar un Usuario
+
+
+Dos búsquedas puntuales: por email y por teléfono.
 
 ##### Operación: buscarUsuarioPorCorreo(correo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-083 Buscar / Listar Usuarios · buscarUsuarioPorCorreo
+    title DSD — CU-272 Buscar un Usuario · buscarUsuarioPorCorreo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :UsersService
@@ -22043,7 +23571,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-083 Buscar / Listar Usuarios · buscarUsuarioPorTelefono
+    title DSD — CU-272 Buscar un Usuario · buscarUsuarioPorTelefono
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :UsersService
@@ -22066,38 +23594,10 @@ sequenceDiagram
 | `UsersService.buscarUsuarioPorTelefono(...)` | `UsersController.findOneByPhone` → `UsersService.findOneByPhone` |
 | `Map<String, Usuario>.get(...)` | `UsersService.findOneByPhone`: busca el `User` por `User.phoneNumber`; devuelve nulo si no existe, a diferencia de la búsqueda por correo |
 
-##### Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-083 Buscar / Listar Usuarios · listarUsuarios
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :UsersService
-    participant COL as :List#lt;Usuario#gt;
-
-    ADM->>+SRV: listarUsuarios(pagina, limite, textoDeBusqueda)
-    SRV->>+COL: buscar(textoDeBusqueda, pagina, limite)
-    COL-->>-SRV: usuarios, total
-    SRV-->>-ADM: usuarios, total
-```
-
-**Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `List<Usuario>`.
-
-**GRASP.** *Controlador*: `UsersService`. El listado no cambia estado: la colección de usuarios responde la página pedida y el total.
-
-**No se dibuja:** el alcance por distribuidora (un Administrador de empresa ve sólo a su personal y a los clientes que le compraron) y la carga del rol y de los perfiles.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UsersService.listarUsuarios(...)` | `UsersController.findAll` → `UsersService.findAll` |
-| `List<Usuario>.buscar(...)` | `UsersService.findAll`: `ILIKE` sobre `User.email`, `User.fullName` y `User.phoneNumber`, acotado a la distribuidora en contexto y paginado |
-
 **Observaciones de diseño**
 
-- Asimetría deliberada del código: `findOneByEmail` lanza 404 si no encuentra (lo usa el
-  `AuthGuard`, que necesita el fallo), mientras que `findOneByPhone` devuelve `null`.
-- `GET /users/email/:email` exige sesión: quien no es Administrador sólo consulta su propia cuenta. El listado exige rol de Administrador.
+- Asimetría deliberada del código: `findOneByEmail` lanza 404 si no encuentra (lo usa el `AuthGuard`, que necesita el fallo), mientras que `findOneByPhone` devuelve `null`.
+- `GET /users/email/:email` exige sesión: quien no es Administrador sólo consulta su propia cuenta.
 
 ---
 
@@ -22604,6 +24104,7 @@ sequenceDiagram
     participant SRV as :OrderService
     participant CLE as cliente:Cliente
     participant PRO as producto:Producto
+    participant PAG as :PaymentsService
 
     CLI->>+SRV: realizarCompraExpress(tipoGarrafa, medioDePago)
     SRV->>+CLE: getDireccionPredeterminada()
@@ -22622,7 +24123,9 @@ sequenceDiagram
     PED->>PED: aplicarRecargoExpress()
     PED-->>-SRV: total
     alt medioDePago es MERCADOPAGO
-        Note over SRV,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). Crea el Pago
+        SRV->>+PAG: crearCheckoutDePago(pedido, medioDePago)
+        PAG-->>-SRV: enlaceDePago
+        Note over SRV,PAG: Pago: ver DSD de crearCheckoutDePago (CU-048).<br/>Crea el Pago
     end
     Note over SRV,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Chofer en moto
     SRV-->>-CLI: pedido
@@ -23786,6 +25289,7 @@ sequenceDiagram
     participant RT as :RealtimeDispatchPort
     participant CHO as chofer:Chofer
     participant NOT as :NotificationsService
+    participant REF as :RefundPaymentUseCase
 
     SIS->>+SRV: despacharPedidoExpress(pedidoId)
     SRV->>+PEDS: get(pedidoId)
@@ -23797,13 +25301,15 @@ sequenceDiagram
     alt Un chofer en moto elegible acepta
         SRV->>PED: ofrecerA(chofer, venceEn)
         SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
-        Note over SRV,PED: Oferta y aceptación: ver DSD de ofrecerAlSiguienteChofer (CU-013) y de aceptarPedido (CU-015). Crea la OfertaDespacho
+        Note over SRV,PED: Oferta y aceptación: ver DSD de ofrecerAlSiguienteChofer (CU-013)<br/>y de aceptarPedido (CU-015). Crea la OfertaDespacho
     else Ningún chofer en moto acepta
         SRV->>+PED: pasarARepartoComun()
         PED->>PED: descontarRecargoExpress()
-        deactivate PED
+        PED-->>-SRV: recargoExpress
         opt El cliente ya pagó en línea
-            Note over SRV,PED: Reintegro: ver DSD de reintegrarPagoDelPedido (CU-168)
+            SRV->>+REF: reintegrarPagoDelPedido(pedidoId, recargoExpress)
+            REF-->>-SRV: reintegrado
+            Note over SRV,REF: Reintegro: ver DSD de reintegrarPagoDelPedido (CU-168)
         end
     end
     SRV-)NOT: sendOrderConfirmation(cliente, pedido)
@@ -24004,18 +25510,18 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-022: Activar / Desactivar Disponibilidad
+#### DSD — CU-022: Activar la Disponibilidad
 
 
 Ponerse offline tiene dos efectos que hay que mantener sincronizados: el bit en la base y
 la salida del **radar GEO de Redis**. Si solo se hiciera lo primero, el chofer desconectado
-seguiría recibiendo ofertas del despacho.
+seguiría recibiendo ofertas del despacho. Activar y desactivar la disponibilidad (CU-022 y CU-266) son la misma operación, con el valor en verdadero o en falso.
 
 ##### Operación: cambiarDisponibilidad(usuarioId, disponible)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-022 Activar / Desactivar Disponibilidad · cambiarDisponibilidad
+    title DSD — CU-022 / CU-266 · cambiarDisponibilidad
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :DeliveryService
@@ -24062,6 +25568,21 @@ sequenceDiagram
 - **Colisión de semántica conocida:** `isActive` es el mismo campo que usa CU-033
   (alta/baja por el admin). Un chofer offline y un chofer dado de baja son indistinguibles
   en la base, y `assignDelivery` (CU-012) rechaza a los dos por igual.
+
+---
+
+#### DSD — CU-266: Desactivar la Disponibilidad
+
+
+Es la misma operación que CU-022 con la disponibilidad en falso: el chofer queda fuera de línea y sale del radar de despacho.
+
+##### Operación: cambiarDisponibilidad(usuarioId, disponible)
+
+Operación cambiarDisponibilidad: ver el DSD de CU-022.
+
+**Observaciones de diseño**
+
+- Desconectarse siempre se permite, esté habilitado o no.
 
 ---
 
@@ -24335,40 +25856,39 @@ sequenceDiagram
     participant SRV as :ClaimsService
     participant COL as :Map#lt;String, Reclamo#gt;
     participant REC as reclamo:Reclamo
-    participant STO as :StoragePort
+    participant S3 as :S3Service
+    participant LIM as :S3CleanupService
 
     CLI->>+SRV: adjuntarFotoAlReclamo(reclamoId, imagen)
     SRV->>+COL: get(reclamoId)
     COL-->>-SRV: reclamo
     SRV->>+REC: esDelCliente(cliente)
     REC-->>-SRV: propio
-    SRV->>STO: put(clave, imagen)
+    SRV->>S3: put(clave, imagen)
     SRV->>+REC: adjuntarFoto(clave)
     REC-->>-SRV: claveAnterior
     opt El reclamo ya tenía una fotografía
-        SRV->>STO: remove(claveAnterior)
+        SRV-)LIM: removeInBackground(claveAnterior)
     end
     SRV-->>-CLI: reclamo
 ```
 
-**Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo` y `StoragePort` (fabricación pura: el almacenamiento de archivos). `StoragePort` es el mismo puerto que usan los adjuntos de flota.
+**Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo`, `S3Service` (fabricación pura: el cliente de Amazon S3) y `S3CleanupService` (fabricación pura: la cola de borrados). Son las mismas que usan los adjuntos de flota.
 
-**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` sabe si es del cliente que lo modifica y es quien guarda la referencia a la fotografía y devuelve la anterior. *Bajo Acoplamiento*: el almacenamiento queda detrás de `StoragePort`, sin saber si el adaptador activo es el disco local o S3. La imagen anterior se borra recién después de guardar la referencia nueva.
+**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` sabe si es del cliente que lo modifica y es quien guarda la referencia a la fotografía y devuelve la anterior. *Bajo Acoplamiento*: el reclamo no conoce a S3: sólo `S3Service` lo conoce. La imagen anterior se borra recién después de guardar la referencia nueva.
 
-**No se dibuja:** la validación del archivo (presente, JPG, PNG o WEBP según su contenido, de hasta 10 MB), la comprobación de que el reclamo no esté cerrado (409), la reserva de la clave antes de subir y su confirmación en la transacción que guarda la referencia (`StorageCleanupService`), la clave de almacenamiento, que incluye la distribuidora y el reclamo y no el nombre original, y el borrado de la imagen recién subida si falla guardar la referencia.
+**No se dibuja:** la validación del archivo (presente, JPG, PNG o WEBP según su contenido, de hasta 10 MB), la comprobación de que el reclamo no esté cerrado (409), la reserva de la clave antes de subir y su confirmación en la transacción que guarda la referencia (`S3CleanupService.reserveUpload` y `S3CleanupService.confirmUpload`), la clave del objeto, que incluye la distribuidora y el reclamo y no el nombre original, la anotación de la imagen anterior en la misma transacción (`S3CleanupService.scheduleRemoval`) y el borrado de la imagen recién subida si falla guardar la referencia.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `ClaimsService.adjuntarFotoAlReclamo(...)` | `ClaimsService.uploadPhoto`: valida el archivo, reserva la clave, la sube y actualiza el reclamo bajo bloqueo |
 | `Map<String, Reclamo>.get(...)` | `ClaimsService.findOne` (y `ClaimsService.findForPhoto` para el cliente, que sólo accede a sus reclamos): lee el reclamo por su identificador |
 | `Reclamo.esDelCliente(...)` | `ClaimsService.findForPhoto`: el cliente sólo accede a sus propios reclamos; lo demás es 404 |
-| `StoragePort.put(...)` | `StoragePort.put` |
 | `Reclamo.adjuntarFoto(...)` | `ClaimsService.uploadPhoto`: guarda `photoKey`, vacía `photoUrl` y devuelve la clave anterior; falla con 409 si el reclamo está resuelto o rechazado (`ClaimsService.assertAbierto`) |
-| `StoragePort.remove(...)` | `StorageCleanupService.removeInBackground`: la clave anterior se anota para borrar en la misma transacción (`StorageCleanupService.scheduleRemoval`) y se borra en segundo plano con reintentos |
 
 **Observaciones de diseño**
 
-- `ClaimsService` habla con el almacenamiento sólo a través de `StoragePort`, sin saber si el adaptador activo es el disco local o S3; es el mismo puerto que usa `FleetAttachmentService`.
+- `ClaimsService` habla con S3 sólo a través de `S3Service`, el mismo que usa `FleetAttachmentService`; la imagen anterior se borra en segundo plano con `S3CleanupService`, con reintentos.
 - La clave incluye la distribuidora y el reclamo, no el nombre original del archivo: dos fotografías con el mismo nombre no colisionan.
 - Si el reclamo ya tenía una fotografía, se borra la anterior sólo después de guardar la referencia nueva: un fallo en el medio deja la fotografía anterior intacta.
 - El cliente ve un 404 y no un 403 sobre un reclamo ajeno, igual que en el resto de los reclamos.
@@ -24387,7 +25907,7 @@ sequenceDiagram
     participant SRV as :ClaimsService
     participant COL as :Map#lt;String, Reclamo#gt;
     participant REC as reclamo:Reclamo
-    participant STO as :StoragePort
+    participant S3 as :S3Service
 
     CLI->>+SRV: consultarFotoDelReclamo(reclamoId)
     SRV->>+COL: get(reclamoId)
@@ -24396,22 +25916,23 @@ sequenceDiagram
     REC-->>-SRV: propio
     SRV->>+REC: getFoto()
     REC-->>-SRV: clave, direccionExterna
-    alt la fotografía está guardada en el almacenamiento
-        SRV->>+STO: getDownloadUrl(clave)
-        STO-->>-SRV: direccion
+    alt la fotografía está guardada en S3
+        SRV->>+S3: getSignedDownload(clave)
+        S3-->>-SRV: direccion
+        SRV-->>CLI: direccion
     else sólo tiene una dirección externa http(s)
-        Note over SRV: direccion = direccionExterna
+        SRV-->>CLI: direccionExterna
     else no tiene fotografía
-        Note over SRV: direccion = nula
+        SRV-->>CLI: sinFotografia
     end
-    SRV-->>-CLI: fotografia
+    deactivate SRV
 ```
 
-**Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo` y `StoragePort` (fabricación pura: el almacenamiento de archivos). La operación es `ClaimsService.getPhotoSignedDownload` (enlace) y `ClaimsService.getPhotoFile` (archivo); `StoragePort` es el puerto de almacenamiento.
+**Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo` y `S3Service` (fabricación pura: el cliente de Amazon S3). La operación es `ClaimsService.getPhotoLink` (el enlace en JSON) y `ClaimsService.getPhotoFile` (la dirección a la que se redirige).
 
-**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` conoce la referencia a su fotografía y sabe si el cliente que consulta es el suyo; el administrador y el Administrador General ven los reclamos de su alcance. Es una consulta: no cambia el estado del reclamo. Cuando el adaptador no entrega una URL firmada (el disco local), el servicio obtiene el archivo con `StoragePort.getStream` y el controlador lo copia a la respuesta.
+**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` conoce la referencia a su fotografía y sabe si el cliente que consulta es el suyo; el administrador y el Administrador General ven los reclamos de su alcance. Es una consulta: no cambia el estado del reclamo.
 
-**No se dibuja:** la distribución de la respuesta (redirección, archivo con su tipo original o, con `?modo=url`, el enlace `{ url, expiresAt, requiresAuth }`), el caso de un reclamo sin fotografía propia (la dirección externa del alta, o `url: null`) y la expiración corta de la URL firmada.
+**No se dibuja:** la distribución de la respuesta (la redirección o, con `?modo=url`, el enlace `{ url, expiresAt, requiresAuth }`), la respuesta 404 de la redirección cuando el reclamo no tiene ninguna fotografía y la expiración corta de la URL firmada.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -24419,12 +25940,11 @@ sequenceDiagram
 | `Map<String, Reclamo>.get(...)` | `ClaimsService.findOne` (y `ClaimsService.findForPhoto` para el cliente): lee el reclamo por su identificador |
 | `Reclamo.esDelCliente(...)` | `ClaimsService.findForPhoto`: el cliente sólo accede a sus propios reclamos; lo demás es 404 |
 | `Reclamo.getFoto()` | `ClaimsService.getPhotoLink`: lee la clave de la fotografía guardada (`photoKey`) o, si no hay, la dirección externa http(s) (`photoUrl`); sin ninguna, el enlace es nulo |
-| `StoragePort.getDownloadUrl(...)` | `StoragePort.getSignedDownload` (por `StoragePort.getDownloadUrl`): la URL firmada de corta vigencia, o nada con el disco local |
 
 **Observaciones de diseño**
 
-- El controlador decide cómo responder: redirige con 302 si el servicio devuelve una URL, o copia el stream a la respuesta si devuelve el archivo; el servicio no conoce `Response`.
-- La URL firmada de S3 tiene expiración corta; el disco local no la admite y por eso el servidor sirve el archivo.
+- El controlador decide cómo responder: redirige con 302 a la URL —la firmada o la externa del alta— o, con `?modo=url`, responde el enlace en JSON; el servicio no conoce `Response`.
+- La URL firmada de S3 tiene expiración corta (cinco minutos por omisión): la dirección que ve el usuario es temporal y no se puede compartir indefinidamente.
 - Un cliente que pide la fotografía de un reclamo ajeno recibe 404, igual que en CU-174.
 
 ---
@@ -24723,13 +26243,14 @@ Operación registrarChofer: ver el DSD de CU-003.
 
 ---
 
-#### DSD — CU-032: Validar / Invalidar Chofer
+#### DSD — CU-032: Validar un Chofer
+
 
 ##### Operación: validarChofer(choferId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-032 Validar / Invalidar Chofer · validarChofer
+    title DSD — CU-032 Validar un Chofer · validarChofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :DeliveryService
@@ -24755,11 +26276,21 @@ sequenceDiagram
 | `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` con su `User` y su `Role`; responde 404 si no existe |
 | `Chofer.validar()` | `DeliveryService.validateDelivery`: asigna `Delivery.validated` en verdadero |
 
+**Observaciones de diseño**
+
+- `validated` es **independiente** de `isEnabled`: un chofer puede estar validado y deshabilitado, o habilitado y sin validar. El panel y el despacho sólo cuentan como disponible al que cumple las tres condiciones: habilitado, validado y en línea.
+- Un administrador de empresa sólo opera sobre los choferes de su distribuidora: el controlador lo verifica antes de escribir y uno ajeno responde 404 (CU-096, CU-097 y CU-033 usan la misma verificación).
+
+---
+
+#### DSD — CU-271: Invalidar un Chofer
+
+
 ##### Operación: invalidarChofer(choferId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-032 Validar / Invalidar Chofer · invalidarChofer
+    title DSD — CU-271 Invalidar un Chofer · invalidarChofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :DeliveryService
@@ -24792,13 +26323,16 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-033: Activar / Desactivar Chofer (Admin)
+#### DSD — CU-033: Activar un Chofer
+
+
+Activar y desactivar a un chofer (CU-033 y CU-267) son la misma operación, con el estado de actividad en verdadero o en falso.
 
 ##### Operación: cambiarEstadoDelChofer(choferId, activo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-033 Activar / Desactivar Chofer (Admin) · cambiarEstadoDelChofer
+    title DSD — CU-033 / CU-267 · cambiarEstadoDelChofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :DeliveryService
@@ -24838,6 +26372,17 @@ sequenceDiagram
 
 - `isEnabled` es la habilitación **administrativa** y `isAvailable` la presencia en línea que pone el propio chofer (CU-022): son columnas separadas. Al deshabilitar, el chofer también queda fuera de línea y sale del radar de despacho, y no puede volver a ponerse en línea desde su app hasta que un administrador lo habilite.
 - `isActive` en la respuesta es un alias deprecado de `isEnabled`, que se conserva por compatibilidad con los clientes anteriores.
+
+---
+
+#### DSD — CU-267: Desactivar un Chofer
+
+
+Es la misma operación que CU-033 con el estado de actividad en falso: el chofer queda deshabilitado, fuera de línea y fuera del radar de despacho.
+
+##### Operación: cambiarEstadoDelChofer(choferId, activo)
+
+Operación cambiarEstadoDelChofer: ver el DSD de CU-033.
 
 ---
 
@@ -25239,7 +26784,7 @@ sequenceDiagram
 
 - El `save` se hace sobre el resultado del `preload`, que es una **fusión parcial**: los campos ausentes del DTO conservan su valor en base. Es el mismo patrón que `GasCylinderService.update` y `CarService.update`.
 - El `findOne(id)` posterior no es redundante: recarga las relaciones `user` y `user.role` que el `preload` no trae, para devolverle al panel el perfil completo.
-- El endpoint es sólo de `ADMIN` y `SUPER_ADMIN`, y el `UpdateDeliveryDto` acepta únicamente `validated`: cualquier otra propiedad se rechaza con 400. La habilitación se cambia por CU-033.
+- El endpoint es sólo de `ADMIN` y `SUPER_ADMIN`, y el `UpdateDeliveryDto` acepta únicamente `validated`: cualquier otra propiedad se rechaza con 400. La habilitación se cambia por CU-033 y CU-267.
 
 ---
 
@@ -25727,14 +27272,14 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SRV as :FleetAttachmentService
     participant COL as :Map#lt;String, TareaMantenimiento#gt;
-    participant STO as :StoragePort
+    participant S3 as :S3Service
     participant TAR as tarea:TareaMantenimiento
 
     ADM->>+SRV: adjuntarArchivoALaTarea(tareaId, archivo)
     SRV->>+COL: get(tareaId)
     COL-->>-SRV: tarea
     SRV->>SRV: validarArchivo(archivo)
-    SRV->>STO: put(clave, archivo)
+    SRV->>S3: put(clave, archivo)
     SRV->>+TAR: adjuntar(clave, archivo, usuario)
     create participant ADJ as :AdjuntoTarea
     TAR->>ADJ: «create»(clave, nombre, tipo, tamano, usuario)
@@ -25742,11 +27287,11 @@ sequenceDiagram
     SRV-->>-ADM: adjunto
 ```
 
-**Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto) y los objetos de dominio `TareaMantenimiento` y `AdjuntoTarea`.
+**Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos) y los objetos de dominio `TareaMantenimiento` y `AdjuntoTarea`.
 
-**GRASP.** *Controlador*: `FleetAttachmentService`. *Creador*: `TareaMantenimiento` crea sus `AdjuntoTarea`, porque los contiene (composición del modelo conceptual). *Bajo Acoplamiento*: el servicio habla con un puerto de almacenamiento y no sabe si el archivo va a disco o a S3.
+**GRASP.** *Controlador*: `FleetAttachmentService`. *Creador*: `TareaMantenimiento` crea sus `AdjuntoTarea`, porque los contiene (composición del modelo conceptual). *Bajo Acoplamiento*: el servicio no toca el SDK de AWS: habla con `S3Service`, que es el único que lo conoce.
 
-**No se dibuja:** el guardado de la referencia y, si falla después de subir el archivo, el borrado del archivo del almacenamiento para que no quede huérfano.
+**No se dibuja:** la reserva de la clave antes de subir (`S3CleanupService.reserveUpload`), que se confirma en la transacción que guarda la referencia (`S3CleanupService.confirmUpload`), y, si el guardado de la referencia falla después de subir el archivo, el borrado del objeto de S3 en segundo plano para que no quede huérfano.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -25758,8 +27303,8 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `FleetAttachmentService` nunca habla con `fs` ni con el SDK de S3 directo: siempre a través de `StoragePort`, sin importarle cuál de los dos adaptadores está activo.
-- Si guardar la referencia en la base falla después de subir el archivo, el sistema lo borra del almacenamiento: no queda un archivo huérfano sin registro que lo referencie.
+- `FleetAttachmentService` nunca habla con el SDK de S3 directo: siempre a través de `S3Service`, el único proveedor de archivos del sistema. No hay disco local ni un segundo proveedor.
+- Si guardar la referencia en la base falla después de subir el archivo, el sistema lo borra de S3 en segundo plano (`S3CleanupService.removeInBackground`): no queda un archivo huérfano sin registro que lo referencie.
 - La clave incluye la distribuidora y la tarea, no el nombre original del archivo: dos adjuntos con el mismo nombre no colisionan.
 
 ---
@@ -25815,38 +27360,35 @@ sequenceDiagram
     participant SRV as :FleetAttachmentService
     participant COL as :Map#lt;String, TareaMantenimiento#gt;
     participant TAR as tarea:TareaMantenimiento
-    participant STO as :StoragePort
+    participant S3 as :S3Service
 
     ADM->>+SRV: descargarAdjunto(tareaId, adjuntoId)
     SRV->>+COL: get(tareaId)
     COL-->>-SRV: tarea
     SRV->>+TAR: getAdjunto(adjuntoId)
     TAR-->>-SRV: adjunto
-    SRV->>+STO: getDownloadUrl(adjunto)
-    STO-->>-SRV: url
-    opt El almacenamiento no entrega una URL
-        SRV->>+STO: getStream(adjunto)
-        STO-->>-SRV: contenido
-    end
-    SRV-->>-ADM: url o contenido
+    SRV->>+S3: getSignedDownload(adjunto)
+    S3-->>-SRV: enlace
+    SRV-->>-ADM: enlace
 ```
 
-**Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto).
+**Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos).
 
-**GRASP.** *Controlador*: `FleetAttachmentService`. *Experto*: `TareaMantenimiento` contiene a sus adjuntos y es quien entrega el pedido. *Bajo Acoplamiento*: con S3 el puerto devuelve una URL firmada y el archivo no pasa por el sistema; con el disco local se lee el contenido y se sirve.
+**GRASP.** *Controlador*: `FleetAttachmentService`. *Experto*: `TareaMantenimiento` contiene a sus adjuntos y es quien entrega el pedido. *Bajo Acoplamiento*: `S3Service` devuelve una URL firmada y el archivo no pasa por el sistema.
 
-**No se dibuja:** las cabeceras de la respuesta (tipo y nombre original del archivo) y la redirección o la transmisión del contenido.
+**No se dibuja:** la redirección (302) a la URL firmada y, con `?modo=url`, la respuesta JSON `{ url, expiresAt, requiresAuth }`; el tipo y el nombre original del archivo los fija la propia URL firmada (`Content-Type` y `Content-Disposition`).
 
 | Operación de diseño | Implementación |
 |---|---|
-| `FleetAttachmentService.descargarAdjunto(...)` | `FleetTaskController.downloadAttachment` → `FleetAttachmentService.getDownload` |
+| `FleetAttachmentService.descargarAdjunto(...)` | `FleetTaskController.downloadAttachment` → `FleetAttachmentService.getDownload` (redirige) o `FleetAttachmentService.getSignedDownload` (con `?modo=url`) |
 | `Map<String, TareaMantenimiento>.get(...)` | `FleetTaskService.findOne`, desde `FleetAttachmentService.findOneOrThrow`: responde 404 si la tarea no existe o es de otra distribuidora |
 | `TareaMantenimiento.getAdjunto(...)` | `FleetAttachmentService.findOneOrThrow`: el `MaintenanceTaskAttachment` con `MaintenanceTaskAttachment.attachmentId` y `MaintenanceTaskAttachment.taskId`; responde 404 si no existe |
 
 **Observaciones de diseño**
 
-- Con el disco local activo, la descarga pasa por este backend y por la autenticación del panel; con S3 activo, pasaría directo por una URL firmada de corta duración, sin pasar por acá.
-- Con el disco local activo, la respuesta trae el `Content-Type` original del archivo y un `Content-Disposition` de adjunto con el nombre original.
+- El bucket es privado y la descarga no pasa por este backend: `S3Service.getSignedDownload` devuelve una URL firmada de cinco minutos por omisión, acotada al vencimiento de las credenciales temporales si las hay, y el archivo se baja directo de S3. La firma es la credencial: la URL se abre sin token.
+- La URL lleva el `Content-Type` original y un `Content-Disposition` de adjunto con el nombre original (`ResponseContentDisposition`). En la base está la clave del objeto, nunca la URL.
+- Con `?modo=url` el controlador responde el JSON en lugar de redirigir, porque una redirección entre orígenes pierde el encabezado `Authorization`: es el modo que usa el panel.
 
 ---
 
@@ -25862,32 +27404,31 @@ sequenceDiagram
     participant SRV as :FleetAttachmentService
     participant COL as :Map#lt;String, TareaMantenimiento#gt;
     participant TAR as tarea:TareaMantenimiento
-    participant STO as :StoragePort
 
     ADM->>+SRV: eliminarAdjunto(tareaId, adjuntoId)
     SRV->>+COL: get(tareaId)
     COL-->>-SRV: tarea
     SRV->>+TAR: quitarAdjunto(adjuntoId)
-    TAR-->>-SRV: adjunto
-    SRV->>STO: remove(adjunto)
-    SRV-->>-ADM: confirmacion
+    Note over TAR: baja lógica<br/>(el archivo queda en S3)
+    deactivate TAR
+    deactivate SRV
 ```
 
-**Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto).
+**Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>` y el objeto de dominio `TareaMantenimiento`. No participa S3: la baja es lógica y el archivo se conserva.
 
-**GRASP.** *Controlador*: `FleetAttachmentService`. *Experto*: `TareaMantenimiento` contiene a sus adjuntos y es quien quita el que se le pide; después el contenido se borra del almacenamiento.
+**GRASP.** *Controlador*: `FleetAttachmentService`. *Experto*: `TareaMantenimiento` contiene a sus adjuntos y es quien da de baja el que se le pide. La baja es lógica: no interviene S3 y el archivo se conserva como respaldo.
 
-**No se dibuja:** la lectura del adjunto con la distribuidora del contexto y el guardado de la baja. La baja es física en los dos lados: ni el registro ni el archivo se conservan.
+**No se dibuja:** la lectura del adjunto con la distribuidora del contexto. La baja es lógica: el registro queda con fecha de baja y el archivo se conserva en S3.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `FleetAttachmentService.eliminarAdjunto(...)` | `FleetTaskController.removeAttachment` → `FleetAttachmentService.remove` |
 | `Map<String, TareaMantenimiento>.get(...)` | `FleetTaskService.findOne`, desde `FleetAttachmentService.findOneOrThrow`: responde 404 si la tarea no existe o es de otra distribuidora |
-| `TareaMantenimiento.quitarAdjunto(...)` | `FleetAttachmentService.remove`: `attachments.remove` del `MaintenanceTaskAttachment` con `MaintenanceTaskAttachment.attachmentId`; responde 404 si no existe |
+| `TareaMantenimiento.quitarAdjunto(...)` | `FleetAttachmentService.remove`: `attachments.softRemove` del `MaintenanceTaskAttachment` con `MaintenanceTaskAttachment.attachmentId` (baja lógica); responde 404 si no existe |
 
 **Observaciones de diseño**
 
-- La baja es física en los dos lados: ni la fila ni el archivo se conservan. `remove` de `StoragePort` es idempotente (no falla si la clave ya no existe), pero si la llamada al almacenamiento fallara por otro motivo después de borrar la fila, quedaría un archivo huérfano sin registro que lo referencie: el sistema no lo revierte ni lo reintenta.
+- La baja es lógica (`Repository.softRemove`): la fila queda con fecha de baja y el archivo se conserva en S3 como respaldo; no se anota nada en `storage_orphan`. La cola de borrados con reintentos (1, 5 y 30 segundos y después una tarea horaria) se usa sólo para los archivos que quedan sin referencia: una subida cuyo registro falla o la foto reemplazada de un reclamo.
 
 ---
 
@@ -25903,33 +27444,29 @@ sequenceDiagram
     title DSD — CU-159 Almacenar Archivo · almacenarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
-    participant STO as :StoragePort
+    participant S3 as :S3Service
 
-    Note over SRV,STO: Caso incluido desde CU-155 y CU-174<br/>(la implementación activa la decide STORAGE_DRIVER)
-    SRV->>+STO: put(clave, contenido, tipo)
-    alt STORAGE_DRIVER es local (por omisión)
-        Note over SRV,STO: LocalDiskStorageAdapter:<br/>escribe el archivo en disco
-    else STORAGE_DRIVER es s3
-        Note over SRV,STO: S3StorageAdapter:<br/>sube el archivo al depósito
-    end
-    deactivate STO
+    Note over SRV,S3: Caso incluido desde CU-155 y CU-174
+    SRV->>+S3: put(clave, contenido, tipo)
+    Note over SRV,S3: Sube el objeto al bucket privado<br/>con cifrado en reposo (SSE-S3)
+    deactivate S3
 ```
 
-**Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-155; en CU-174 lo sería `ClaimsService`), `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto). La interfaz no delega en los adaptadores: la implementación activa, `LocalDiskStorageAdapter` o `S3StorageAdapter`, la elige una sola vez el módulo al armarse, según `STORAGE_DRIVER`, y se indica en las notas del diagrama. No hay objeto de dominio: el archivo todavía no tiene registro, y el `AdjuntoTarea` que lo describe lo crea el caso base después de guardarlo.
+**Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-155; en CU-174 lo sería `ClaimsService`), `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos). No hay objeto de dominio: el archivo todavía no tiene registro, y el `AdjuntoTarea` que lo describe lo crea el caso base después de guardarlo.
 
-**GRASP.** *Controlador*: el del caso base. *Polimorfismo*: `StoragePort` es una abstracción con dos implementaciones y quien lo usa no sabe cuál está activa. *Bajo Acoplamiento*: el servicio nunca habla con `fs` ni con el SDK de S3.
+**GRASP.** *Controlador*: el del caso base. *Bajo Acoplamiento*: el servicio nunca habla con el SDK de S3: lo hace `S3Service`, que concentra el bucket, la región, las credenciales y el cifrado. *Fabricación pura*: `S3Service` no es un concepto del dominio; existe para que ninguna otra clase conozca a AWS.
 
-**No se dibuja:** la elección del adaptador, que se hace una sola vez al armar el módulo según `STORAGE_DRIVER` (por omisión `local`), y la escritura del sidecar con el content type.
+**No se dibuja:** la lectura de la configuración (`AWS_S3_BUCKET`, `AWS_REGION`, y las credenciales o el endpoint de MinIO en desarrollo), que se hace una sola vez al arrancar.
 
 | Operación de diseño | Implementación |
 |---|---|
-| `StoragePort.put(...)` | `StoragePort.put`: clase abstracta; `StorageModule` arma la implementación una sola vez, según `STORAGE_DRIVER`. `LocalDiskStorageAdapter.put` crea la carpeta si falta, escribe el archivo y un sidecar con el content type, y exige que la ruta resuelta siga dentro de la raíz configurada; `S3StorageAdapter.put` hace un `PutObjectCommand` contra el bucket configurado, con cifrado en reposo (`AES256`) |
+| `S3Service.put(...)` | `S3Service.put`: un `PutObjectCommand` contra el bucket configurado, con su `Content-Type` y cifrado en reposo (`ServerSideEncryption: 'AES256'`, SSE-S3) |
 
 **Observaciones de diseño**
 
-- El driver se elige una sola vez, al armar el módulo (`StorageModule`, con `ConfigService.get('STORAGE_DRIVER', 'local')`): no cambia en caliente durante la ejecución.
-- **Estado del almacenamiento:** `STORAGE_DRIVER` vale `local` por omisión (los archivos quedan en el disco configurado por `STORAGE_LOCAL_PATH`) y `s3` activa el adaptador de S3. En desarrollo el adaptador de S3 se probó contra MinIO (`STORAGE_S3_ENDPOINT` con `STORAGE_S3_FORCE_PATH_STYLE=true`); el depósito real de AWS está pendiente. El adaptador de S3 exige por constructor `STORAGE_S3_BUCKET` y `STORAGE_S3_REGION`; las credenciales, si no vienen explícitas, las resuelve la cadena por defecto de AWS.
-- **Archivos sin dueño:** `StorageCleanupService` reserva la clave antes de subir (`reserveUpload`) y la confirma en la transacción que guarda la referencia (`confirmUpload`); lo que queda pendiente lo reintenta una tarea horaria con espera creciente, a partir de la tabla técnica `storage_orphan`.
+- **Un solo proveedor:** el módulo `src/s3` (`S3Module`) lo importan los adjuntos de flota, los adjuntos genéricos de la distribuidora y la fotografía del reclamo. No hay disco local, ni un segundo proveedor, ni variable que elija entre ellos.
+- **Estado del almacenamiento:** el bucket es privado y los objetos se guardan cifrados en reposo (SSE-S3). La aplicación exige `AWS_S3_BUCKET` y `AWS_REGION` al arrancar —sin ellas no inicia—; las credenciales, si no vienen explícitas (`AWS_ACCESS_KEY_ID` y `AWS_SECRET_ACCESS_KEY`), las resuelve la cadena por defecto de AWS (por ejemplo, un rol IAM). El entorno de la tesis usa el bucket `splg-tesis` en AWS (sa-east-1); las pruebas de integración usan MinIO como emulador, con `AWS_S3_ENDPOINT` y `AWS_S3_FORCE_PATH_STYLE=true`.
+- **Archivos sin dueño:** `S3CleanupService` reserva la clave antes de subir (`reserveUpload`) y la confirma en la transacción que guarda la referencia (`confirmUpload`); lo que queda pendiente lo reintenta una tarea horaria con espera creciente, a partir de la tabla técnica `storage_orphan`.
 
 ---
 
@@ -25937,7 +27474,7 @@ sequenceDiagram
 
 Caso incluido desde CU-157 y CU-175: no tiene operación del sistema propia, el diagrama es el fragmento que realiza el caso incluido y su primer mensaje sale del controlador del caso base.
 
-##### Caso incluido: getDownloadUrl(clave)
+##### Caso incluido: getSignedDownload(clave, nombreDeDescarga)
 
 ```mermaid
 %%{init: {"sequence": {"actorMargin": 190}}}%%
@@ -25945,38 +27482,28 @@ sequenceDiagram
     title DSD — CU-160 Recuperar Archivo · recuperarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
-    participant STO as :StoragePort
+    participant S3 as :S3Service
 
-    Note over SRV,STO: Caso incluido desde CU-157 y CU-175<br/>(la implementación activa la decide STORAGE_DRIVER)
-    SRV->>+STO: getDownloadUrl(clave)
-    alt STORAGE_DRIVER es s3
-        Note over SRV,STO: S3StorageAdapter:<br/>devuelve una URL firmada
-    else STORAGE_DRIVER es local (por omisión)
-        Note over SRV,STO: LocalDiskStorageAdapter:<br/>devuelve nulo, no hay URL
-    end
-    STO-->>-SRV: url
-    opt No hubo URL
-        SRV->>+STO: getStream(clave)
-        Note over SRV,STO: Lee el archivo<br/>(disco local o S3)
-        STO-->>-SRV: contenido
-    end
+    Note over SRV,S3: Caso incluido desde CU-157 y CU-175
+    SRV->>+S3: getSignedDownload(clave, nombreDeDescarga)
+    Note over SRV,S3: Firma la URL del objeto, con vigencia corta,<br/>sin consultar a S3
+    S3-->>-SRV: enlace
 ```
 
-**Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-157; en CU-175 lo sería `ClaimsService`), `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto). La interfaz no delega en los adaptadores: la implementación activa, `LocalDiskStorageAdapter` o `S3StorageAdapter`, la elige una sola vez el módulo al armarse, según `STORAGE_DRIVER`, y se indica en las notas del diagrama. No hay objeto de dominio: el caso base le pasa la clave que ya leyó del `AdjuntoTarea`.
+**Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-157; en CU-175 lo sería `ClaimsService`), `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos). No hay objeto de dominio: el caso base le pasa la clave que ya leyó del `AdjuntoTarea`.
 
-**GRASP.** *Controlador*: el del caso base. *Polimorfismo*: con S3 el puerto devuelve una URL firmada y el archivo no pasa por el sistema; con el disco local no hay URL y el caso base pide el contenido. *Bajo Acoplamiento*: el servicio no sabe cuál de los dos adaptadores está activo.
+**GRASP.** *Controlador*: el del caso base. *Bajo Acoplamiento*: el servicio le pide a `S3Service` la URL firmada y nunca toca el SDK de S3; el archivo no pasa por el sistema.
 
-**No se dibuja:** la elección del adaptador, que se hace una sola vez al armar el módulo según `STORAGE_DRIVER`, y la lectura del sidecar con el content type.
+**No se dibuja:** el cálculo del vencimiento de la URL, que es el menor entre la vigencia configurada y el de las credenciales temporales.
 
 | Operación de diseño | Implementación |
 |---|---|
-| `StoragePort.getDownloadUrl(...)` | `StoragePort.getDownloadUrl`: método del puerto que devuelve sólo la URL de `StoragePort.getSignedDownload`; `StorageModule` arma la implementación una sola vez, según `STORAGE_DRIVER`. `S3StorageAdapter.getSignedDownload` firma un `GetObjectCommand` con `getSignedUrl`, con vigencia configurable que se acota al vencimiento de las credenciales temporales, y devuelve la URL con su `expiresAt`; `LocalDiskStorageAdapter.getSignedDownload` devuelve `null`, porque el disco local no tiene URL pública |
-| `StoragePort.getStream(...)` | `StoragePort.getStream`: el caso base lo pide sólo si no hubo URL. `S3StorageAdapter.getStream` hace un `GetObjectCommand` contra el bucket configurado; `LocalDiskStorageAdapter.getStream` lee el sidecar de content type y abre un flujo de lectura del archivo |
+| `S3Service.getSignedDownload(...)` | `S3Service.getSignedDownload`: firma un `GetObjectCommand` con `getSignedUrl`, con el nombre de descarga como `ResponseContentDisposition` si se pidió, y devuelve la URL con su `expiresAt`. Firmar no llama a S3 |
 
 **Observaciones de diseño**
 
-- La vigencia de la URL firmada de S3 es de cinco minutos por omisión (`STORAGE_S3_SIGNED_URL_TTL_SECONDS`), configurable. El depósito es privado y la descarga no pasa por el backend: la respuesta al cliente lleva la URL y su vencimiento (`aEnlaceDeDescarga`); con el disco local lleva la ruta del backend y exige el token.
-- El disco local nunca entrega una URL: siempre resuelve por el flujo de lectura, que el controlador transmite con `stream.pipe(res)`.
+- La vigencia de la URL firmada es de cinco minutos por omisión (`AWS_S3_SIGNED_URL_TTL_SECONDS`), configurable. El bucket es privado y la descarga no pasa por el backend: la respuesta al cliente lleva la URL, su vencimiento y `requiresAuth` en falso (`aEnlaceDeDescarga`).
+- Si la clave no corresponde a ningún objeto, la URL se firma igual y es S3 quien responde 404 al abrirla; el permiso `s3:ListBucket` del usuario IAM es el que hace que sea 404 y no 403.
 
 ---
 
@@ -27212,16 +28739,16 @@ Operación actualizarProducto: ver el DSD de CU-037.
 
 ---
 
-#### DSD — CU-040: Activar / Desactivar Producto
+#### DSD — CU-040: Desactivar un Producto
 
 
-> **Realización parcial.** La desactivación, vía `DELETE /gascylinder/:id`, está construida. La reactivación (`PATCH /gascylinder/:id/activate`) y el listado de productos inactivos (`GET /gascylinder/inactive`) están planificados (I-1) y sus diagramas son colaboración propuesta. `isActive` no está expuesto en `UpdateGasCylinderDto` y el `ValidationPipe` global corre con `whitelist` y `forbidNonWhitelisted`, de modo que mandar `isActive` en el `PATCH` devuelve 400: por eso la reactivación es una operación propia.
+La desactivación, vía `DELETE /gascylinder/:id`, está construida. La reactivación (CU-268) y el listado de productos inactivos (CU-269) están planificados (I-1).
 
 ##### Operación: desactivarProducto(productoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-040 Activar / Desactivar Producto · desactivarProducto
+    title DSD — CU-040 Desactivar un Producto · desactivarProducto
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :GasCylinderService
@@ -27247,11 +28774,23 @@ sequenceDiagram
 | `Map<String, Producto>.get(...)` | `GasCylinderService.findOne`, con la distribuidora del contexto; no filtra por `GasCylinder.isActive` |
 | `Producto.desactivar()` | `GasCylinderService.remove`: asigna `GasCylinder.isActive` en falso y guarda |
 
+**Observaciones de diseño**
+
+- Es **baja lógica**, no física: la fila sobrevive y los `OrderItem` históricos siguen resolviendo su relación con la garrafa. Coherente con CU-097 (chofer) y con CU-112 (vehículo), que también son bajas lógicas.
+- El efecto visible es sobre el catálogo: `findAll`, `findByType` y `getAvailableCylinders` filtran por `isActive: true` (CU-041), así que el producto desaparece de la app cliente inmediatamente. `findOne` por id **no** filtra, para que los pedidos históricos sigan siendo consultables.
+
+---
+
+#### DSD — CU-268: Reactivar un Producto
+
+
+> **Planificado (I-1).** La reactivación (`PATCH /gascylinder/:id/activate`) está planificada y su diagrama es colaboración propuesta. `isActive` no está expuesto en `UpdateGasCylinderDto` y el `ValidationPipe` global corre con `whitelist` y `forbidNonWhitelisted`, de modo que mandar `isActive` en el `PATCH` devuelve 400: por eso la reactivación es una operación propia.
+
 ##### Operación: reactivarProducto(productoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-040 Activar / Desactivar Producto · reactivarProducto
+    title DSD — CU-268 Reactivar un Producto · reactivarProducto
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :GasCylinderService
@@ -27277,11 +28816,22 @@ sequenceDiagram
 | `Map<String, Producto>.get(...)` | `GasCylinderService.findOne`, con la distribuidora del contexto; no filtra por `GasCylinder.isActive`, de modo que encuentra un producto dado de baja |
 | `Producto.reactivar()` | Colaboración propuesta (I-1): `GasCylinderService.remove` es lo único que escribe `GasCylinder.isActive`, y la modificación del producto no lo admite |
 
+**Observaciones de diseño**
+
+- La reactivación es una operación propia y no el campo `isActive` del `PATCH` de modificación: así activar y desactivar son dos intenciones explícitas y el DTO de actualización no cambia. `findOne` no filtra por activo, de modo que `reactivate` encuentra el producto dado de baja.
+
+---
+
+#### DSD — CU-269: Consultar los Productos Inactivos
+
+
+> **Planificado (I-1).** El listado de productos inactivos (`GET /gascylinder/inactive`) está planificado y su diagrama es colaboración propuesta.
+
 ##### Operación: consultarProductosInactivos()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-040 Activar / Desactivar Producto · consultarProductosInactivos
+    title DSD — CU-269 Consultar los Productos Inactivos · consultarProductosInactivos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :GasCylinderService
@@ -27306,9 +28856,6 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es **baja lógica**, no física: la fila sobrevive y los `OrderItem` históricos siguen resolviendo su relación con la garrafa. Coherente con CU-097 (chofer) y con CU-112 (vehículo), que también son bajas lógicas.
-- El efecto visible es sobre el catálogo: `findAll`, `findByType` y `getAvailableCylinders` filtran por `isActive: true` (CU-041), así que el producto desaparece de la app cliente inmediatamente. `findOne` por id **no** filtra, para que los pedidos históricos sigan siendo consultables.
-- La reactivación es una operación propia y no el campo `isActive` del `PATCH` de modificación: así activar y desactivar son dos intenciones explícitas y el DTO de actualización no cambia. `findOne` no filtra por activo, de modo que `reactivate` encuentra el producto dado de baja.
 - El listado de inactivos es la pieza que permite ubicar el producto: sin él el administrador no tiene cómo conocer su identificador.
 
 ---
@@ -27648,7 +29195,7 @@ Ninguno. CU-043, que el sistema no realiza, se modeló como caso planificado (I-
 
 | CU | Nombre | Qué falta en el código |
 |---|---|---|
-| **CU-040** | Activar / Desactivar Producto | Se modeló **sólo la desactivación** (`DELETE /gascylinder/:id` → `isActive = false`), que es lo único que existe. **No hay reactivación:** `isActive` no está declarado en `UpdateGasCylinderDto` ni en `CreateGasCylinderDto`, del que hereda, y el `ValidationPipe` global (`whitelist: true`, `forbidNonWhitelisted: true`) rechaza con 400 cualquier propiedad no declarada. El toggle bidireccional que pide el CU no es alcanzable por la API. |
+| **CU-268**, **CU-269** | Reactivar un Producto · Consultar los Productos Inactivos | Se modelaron como casos planificados (I-1); del producto dado de baja (CU-040) **sólo existe la desactivación** (`DELETE /gascylinder/:id` → `isActive = false`). **No hay reactivación:** `isActive` no está declarado en `UpdateGasCylinderDto` ni en `CreateGasCylinderDto`, del que hereda, y el `ValidationPipe` global (`whitelist: true`, `forbidNonWhitelisted: true`) rechaza con 400 cualquier propiedad no declarada. El toggle bidireccional que pedía el CU original no es alcanzable por la API. |
 
 #### Notas de verificación
 
@@ -28757,14 +30304,50 @@ sequenceDiagram
 
 ---
 
-#### C.21 DSD — CU-089: Gestionar Roles del Sistema
+#### C.21 DSD — CU-089: Consultar los Roles
+
+
+##### Operación: listarRoles()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-089 Consultar los Roles · listarRoles
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :RoleService
+    participant LST as :List#lt;Rol#gt;
+
+    AGN->>+SRV: listarRoles()
+    SRV->>+LST: listar()
+    LST-->>-SRV: roles
+    SRV-->>-AGN: roles
+```
+
+**Clases participantes:** `RoleService` (controlador de fachada del módulo de roles) y la colección `List<Rol>`.
+
+**GRASP.** *Controlador*: `RoleService`. El listado no cambia estado.
+
+**No se dibuja:** la comprobación del rol de quien opera.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RoleService.listarRoles()` | `RoleController.findAll` → `RoleService.findAll` |
+| `List<Rol>.listar()` | `RoleService.findAll`: `find` sin filtro sobre `Role` |
+
+**Observaciones de diseño**
+
+- Es un CRUD **exclusivo de plataforma**: `@Roles(RoleType.SUPER_ADMIN)` está declarado a nivel de clase, así que ningún admin de empresa puede tocar el catálogo de roles. Es coherente con que el `role_id` sea el insumo de la comprobación anti-escalada de CU-086.
+
+---
+
+#### DSD — CU-252: Crear un Rol
 
 
 ##### Operación: crearRol(tipo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-089 Gestionar Roles del Sistema · crearRol
+    title DSD — CU-252 Crear un Rol · crearRol
     autonumber
     actor AGN as Administrador General (ACT-05)
     participant SRV as :RoleService
@@ -28786,11 +30369,16 @@ sequenceDiagram
 | `RoleService.crearRol(...)` | `RoleController.create` → `RoleService.create` |
 | `Rol.«create»` | `RoleService.create`: guarda un `Role` con `Role.type`, único en el catálogo |
 
+---
+
+#### DSD — CU-253: Modificar un Rol
+
+
 ##### Operación: actualizarRol(rolId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-089 Gestionar Roles del Sistema · actualizarRol
+    title DSD — CU-253 Modificar un Rol · actualizarRol
     autonumber
     actor AGN as Administrador General (ACT-05)
     participant SRV as :RoleService
@@ -28819,11 +30407,21 @@ sequenceDiagram
 | `Rol.actualizar(...)` | `RoleService.update`: `preload` fusiona los datos recibidos con el `Role` y guarda |
 | `Rol.validarModificable()` | `RoleService.assertNoEsDelSistema`: responde 409 si `Role.type` es uno de los roles del sistema |
 
+**Observaciones de diseño**
+
+- `update` usa `preload` en lugar de `findOne` más `Object.assign`: TypeORM fusiona el DTO parcial con la fila existente y devuelve `undefined` si no existe, lo que colapsa búsqueda y fusión en una sola operación.
+- Los cuatro roles del sistema no se pueden modificar (409): el código los busca por su nombre.
+
+---
+
+#### DSD — CU-254: Eliminar un Rol
+
+
 ##### Operación: eliminarRol(rolId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-089 Gestionar Roles del Sistema · eliminarRol
+    title DSD — CU-254 Eliminar un Rol · eliminarRol
     autonumber
     actor AGN as Administrador General (ACT-05)
     participant SRV as :RoleService
@@ -28833,57 +30431,41 @@ sequenceDiagram
     AGN->>+SRV: eliminarRol(rolId)
     SRV->>+COL: get(rolId)
     COL-->>-SRV: rol
-    SRV->>ROL: validarEliminable()
-    SRV->>COL: remove(rol)
-    SRV-->>-AGN: mensaje
+    SRV->>+ROL: validarEliminable()
+    ROL-->>-SRV: eliminable
+    alt El rol es uno de los del sistema
+        SRV-->>AGN: error 409 por rol del sistema
+    else El rol no es del sistema
+        SRV->>+COL: remove(rolId)
+        Note over COL: baja lógica
+        alt El rol tiene usuarios asignados
+            COL-->>SRV: tiene usuarios
+            SRV-->>AGN: error 409 por rol con usuarios
+        else El rol no tiene usuarios asignados
+            COL-->>-SRV: eliminado
+            SRV-->>AGN: mensaje
+        end
+    end
+    deactivate SRV
 ```
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles), la colección `Map<String, Rol>` y el objeto de dominio `Rol`.
 
-**GRASP.** *Controlador*: `RoleService`. *Experto*: el `Rol` sabe si puede eliminarse: no si es uno de los del sistema. Que tenga usuarios asignados lo impide la colección, porque la base rechaza el borrado de un rol en uso.
+**GRASP.** *Controlador*: `RoleService`. *Experto*: el `Rol` sabe si puede eliminarse: no si es uno de los del sistema. Que tenga usuarios asignados lo comprueba la colección antes de darlo de baja; la baja es lógica.
 
-**No se dibuja:** la comprobación del rol de quien opera y la traducción de la violación de la clave foránea a un conflicto.
+**No se dibuja:** la comprobación del rol de quien opera. Los dos rechazos son un 409 (`conflicto`): el del rol del sistema, que sale de `validarEliminable()`, y el del rol con usuarios asignados (incluidos los dados de baja), que sale de la colección al contarlos.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `RoleService.eliminarRol(...)` | `RoleController.remove` → `RoleService.remove` |
 | `Map<String, Rol>.get(...)` | `RoleService.remove`: lee el `Role` con `RoleService.findOne`; responde 404 si no existe |
 | `Rol.validarEliminable()` | `RoleService.assertNoEsDelSistema`: responde 409 si `Role.type` es uno de los roles del sistema |
-| `Map<String, Rol>.remove(...)` | `RoleService.remove`: `Repository.remove` borra la fila; si hay usuarios con ese rol la restricción de la base falla y se responde 409 |
-
-##### Operación: listarRoles()
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-089 Gestionar Roles del Sistema · listarRoles
-    autonumber
-    actor AGN as Administrador General (ACT-05)
-    participant SRV as :RoleService
-    participant LST as :List#lt;Rol#gt;
-
-    AGN->>+SRV: listarRoles()
-    SRV->>+LST: listar()
-    LST-->>-SRV: roles
-    SRV-->>-AGN: roles
-```
-
-**Clases participantes:** `RoleService` (controlador de fachada del módulo de roles) y la colección `List<Rol>`.
-
-**GRASP.** *Controlador*: `RoleService`. El listado no cambia estado.
-
-**No se dibuja:** la comprobación del rol de quien opera.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `RoleService.listarRoles()` | `RoleController.findAll` → `RoleService.findAll` |
-| `List<Rol>.listar()` | `RoleService.findAll`: `find` sin filtro sobre `Role` |
+| `Map<String, Rol>.remove(...)` | `RoleService.remove`: cuenta los usuarios del rol (con los dados de baja) y responde 409 si hay alguno; si no, `Repository.softRemove` le pone la fecha de baja (baja lógica) |
 
 **Observaciones de diseño**
 
-- Es un CRUD **exclusivo de plataforma**: `@Roles(RoleType.SUPER_ADMIN)` está declarado a nivel de clase, así que ningún admin de empresa puede tocar el catálogo de roles. Es coherente con que el `role_id` sea el insumo de la comprobación anti-escalada de CU-086.
-- `update` usa `preload` en lugar de `findOne` más `Object.assign`: TypeORM fusiona el DTO parcial con la fila existente y devuelve `undefined` si no existe, lo que colapsa búsqueda y fusión en una sola operación.
-- Los cuatro roles del sistema no se pueden modificar ni borrar (409): el código los busca por su nombre.
-- El borrado es **físico**. Borrar un rol en uso rompería la FK de `Admin` y `User`, que es en la práctica lo que protege al catálogo de un borrado accidental.
+- Los cuatro roles del sistema no se pueden borrar (409): el código los busca por su nombre.
+- El borrado es **lógico**: la fila se conserva con su fecha de baja. Como la clave foránea ya no frena el borrado de un rol en uso, el conteo de usuarios (incluidos los dados de baja) se comprueba a mano antes de darlo de baja.
 
 ---
 
@@ -29616,6 +31198,48 @@ sequenceDiagram
 - La respuesta sale por `AuditMapper` como `RegistroDeAuditoriaDto`: `items` con los asientos y `total` con la cantidad de coincidencias, para paginar.
 - La consulta **no** genera asiento propio: es un `GET`, y el interceptor de CU-153 sólo registra escrituras.
 
+##### Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-152 Consultar el Registro de Auditoría · consultarAuditoriaDeDatos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DataAuditService
+    participant LST as :List#lt;Auditoria#gt;
+    participant AUD as auditoria:Auditoria
+
+    ADM->>+SRV: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+    SRV->>+LST: filtrar(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+    LST-->>-SRV: auditorias
+    loop Por cada auditoria de auditorias
+        SRV->>+AUD: getDetalles()
+        AUD-->>-SRV: detalles
+    end
+    SRV-->>-ADM: auditorias, total
+```
+
+**Clases participantes:** `DataAuditService` (controlador de fachada de la consulta de la auditoría de datos), la colección `List<Auditoria>` y el objeto de dominio `Auditoria`, que conoce sus `DetalleAuditoria`.
+
+**GRASP.** *Controlador*: `DataAuditService`. *Experto*: la colección de auditorías es quien sabe filtrarlas y ordenarlas, de la más reciente a la más antigua; cada `Auditoria` conoce sus detalles —campo, valor anterior y valor nuevo— porque los contiene (composición del modelo conceptual). La operación no modifica nada.
+
+**No se dibuja:** la restricción por distribuidora, que se aplica en la condición de la consulta, el usuario de cada auditoría —también el dado de baja, con una marca—, el tipo de acción con su nombre y el armado de la respuesta con el total para paginar.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DataAuditService.consultarAuditoriaDeDatos(...)` | `DataAuditController.findAll` → `DataAuditService.findAll` |
+| `List<Auditoria>.filtrar(...)` | `DataAuditService.findAll`: `findAndCount` sobre `Audit.entity`, `Audit.recordId`, `Audit.userId`, `Audit.actionTypeId` y `Audit.createdAt`, por `Audit.createdAt` descendente, con `take` y `skip` calculado desde `page` y `limit` |
+| `Auditoria.getDetalles()` | `DataAuditService.detailsOf`: lee de una sola vez los `AuditDetail` de todas las auditorías de la página, por `AuditDetail.field`, y `DataAuditMapper.toDto` los asocia a su `Audit` |
+
+**Observaciones de diseño**
+
+- `DataAuditController` expone **sólo lectura**: tres `@Get` —`entries`, `entries/:id` y `action-types`— para el Administrador y el Administrador General, y ninguna escritura. Además la base lo impide: un trigger rechaza todo `UPDATE` y `DELETE` sobre `audit` y `audit_detail`.
+- La restricción por distribuidora se aplica **en el `where` de la consulta** (`Audit.distributorId`), con la misma regla que la bitácora: la distribuidora del perfil para el administrador de empresa, la del encabezado `X-Distributor` para el Administrador General con "ver como" y todas para el Administrador General sin ese encabezado. Los registros de la persona o globales (usuarios, clientes, direcciones, roles) se guardan sin distribuidora y por eso sólo los ve el Administrador General sin "ver como".
+- `GET /audit/entries/:id` devuelve 404 "Auditoría no encontrada" si no existe o es de otra distribuidora: no distingue los casos.
+- Los filtros los valida `QueryAuditEntriesDto`: `actionType` entre 1 y 5, `limit` entre 1 y 200 y `page` desde 1. Es paginación por página, a diferencia de la bitácora, que usa `limit` y `offset`.
+- La consulta trae al usuario aunque ya se lo haya dado de baja (`withDeleted`), con la marca `deleted`: la auditoría tiene que poder decir quién fue.
+- La consulta **no** genera auditoría propia: es un `GET`, y las tablas de auditoría no se auditan a sí mismas.
+
 ---
 
 
@@ -29660,6 +31284,51 @@ sequenceDiagram
 - La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. `depurarCambios` reemplaza por `"[depurado]"` los valores de `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code` (el código de entrega), `deliveryCode` y `secret`, en cualquier nivel y sin distinguir mayúsculas; recorta los textos de más de 500 caracteres y lo anidado a más de cuatro niveles.
 - La inmutabilidad no depende sólo de que la API no tenga rutas de edición: el trigger `audit_log_inmutable` (`BEFORE UPDATE OR DELETE`) rechaza cualquier modificación o borrado de un asiento. Sólo deja pasar el `UPDATE` que la propia base hace por `ON DELETE SET NULL` al borrarse el usuario autor o la distribuidora, que vacía esa referencia y nada más.
 - Las notificaciones del proveedor de pagos y las demás operaciones públicas también se registran, sin autor cuando la petición no trae credencial. Las verificaciones de estado son `GET` y no generan asiento.
+
+##### Operación: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-153 Registrar Toda Operación de Escritura · registrarAuditoriaDeDato
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SUB as :DataAuditSubscriber
+
+    SIS->>+SUB: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
+    create participant AUD as :Auditoria
+    SUB->>AUD: «create»(tipoDeAccion, autor, ip, distribuidoraId, entidad, registro)
+    loop Por cada campo de detalles
+        SUB->>+AUD: agregarDetalle(campo, valorAnterior, valorNuevo)
+        create participant DET as :DetalleAuditoria
+        AUD->>DET: «create»(campo, valorAnterior, valorNuevo)
+        deactivate AUD
+    end
+    deactivate SUB
+```
+
+**Clases participantes:** `DataAuditSubscriber` (controlador: recibe el aviso de la capa de datos con cada alta, modificación, baja lógica, reactivación o baja física y coordina el registro) y los objetos de dominio `Auditoria` y `DetalleAuditoria`. Lo dispara el sistema, ningún usuario lo pide.
+
+**GRASP.** *Controlador*: `DataAuditSubscriber`. *Creador*: crea la `Auditoria`, que es un registro que no cuelga de otro objeto, con los datos del cambio; la `Auditoria` crea sus `DetalleAuditoria`, porque los contiene (composición del modelo conceptual). *Bajo Acoplamiento*: ningún servicio de negocio sabe que existe la auditoría: se captura en la capa de datos y no en cada servicio, de modo que alcanza a toda entidad, también a las que se agreguen mañana.
+
+**No se dibuja:** la elección de los campos que cambiaron (sin `createdAt` ni `updatedAt`), la conversión de los valores a texto, el reemplazo de los secretos por `[oculto]`, el contexto de la petición —usuario, dirección de red y distribuidora, que llegan por `AsyncLocalStorage` desde `AuditContextInterceptor`—, la exclusión de las entidades que no se auditan y el guardado, que se hace con la transacción del cambio.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DataAuditSubscriber.registrarAuditoriaDeDato(...)` | `DataAuditSubscriber.afterInsert`, `DataAuditSubscriber.afterUpdate`, `DataAuditSubscriber.afterSoftRemove`, `DataAuditSubscriber.afterRecover` o `DataAuditSubscriber.afterRemove` → `DataAuditSubscriber.registrar`: según el aviso fija el tipo de acción y arma los campos que cambiaron |
+| `Auditoria.«create»` | `AuditoriaDeDatos.registrar`: un `INSERT` en `audit` con `Audit.actionTypeId`, `Audit.userId`, `Audit.distributorId`, `Audit.entity`, `Audit.recordId` y `Audit.ip`, con el `manager` del propio cambio |
+| `Auditoria.agregarDetalle(...)` | `AuditoriaDeDatos.registrar`: por cada campo, una fila de `audit_detail` (`AuditDetail.field`, `AuditDetail.oldValue` y `AuditDetail.newValue`), en la misma sentencia que la cabecera |
+| `DetalleAuditoria.«create»` | `AuditoriaDeDatos.registrar`: la fila de `audit_detail` del campo |
+
+**Observaciones de diseño**
+
+- Es un **subscriber global de TypeORM** (`afterInsert`, `afterUpdate`, `afterSoftRemove`, `afterRecover` y `afterRemove`) y no un interceptor ni código en cada servicio: así alcanza a toda escritura, incluidas las de los procesos programados y las siembras, que no pasan por una petición. Lo que TypeORM no anuncia (`update()`, `softDelete()`, `delete()` y los query builders) se audita llamando a `AuditoriaDeDatos.registrar` con el mismo `manager`.
+- Escribe con el `manager` del evento, o sea **dentro de la transacción del cambio**: si ésta se deshace, la auditoría también. A diferencia de la bitácora (`audit_log`), que se escribe aparte y registra también los rechazos, la auditoría de datos sólo existe si el cambio se confirmó.
+- El usuario, la dirección de red y la distribuidora salen del contexto que abre `AuditContextInterceptor`, un interceptor global que corre **después de los guards**; nunca del cuerpo. Fuera de una petición —tareas programadas, siembras, notificaciones sin usuario— el usuario queda vacío.
+- **Alta:** un detalle por campo con valor, con el anterior vacío. **Modificación:** un detalle por columna realmente cambiada; si nada cambió, no se escribe nada. **Baja lógica y reactivación:** el detalle del campo `deletedAt`. **Baja física** (`afterRemove`): una auditoría de tipo 5 con los valores que tenía (anterior igual al valor, nuevo vacío); la regla sigue siendo que nada se borra físicamente, y esto es la red de seguridad.
+- Los valores se guardan como texto: fechas ISO, números y decimales como cadena, booleanos `true` y `false`, jsonb y puntos como JSON, relaciones por su identificador. Los campos secretos —contraseñas, hashes, tokens, claves y el código de entrega— quedan como `[oculto]`; el DNI, el CUIL y el CBU sí se auditan.
+- La distribuidora de la auditoría es la columna propia del registro; las entidades de una distribuidora que no tienen columna (renglón de pedido, promoción) toman la de la petición; las de la persona o globales quedan sin distribuidora.
+- Una sola lista, con el porqué de cada línea, dice qué **no** se audita (`audit-exclusions.ts`): las propias tablas de auditoría y `audit_log`, la secuencia de documentos, la cola de archivos pendientes, las ofertas de despacho, los tres historiales que sólo se agregan, el carrito y sus renglones, la posición del chofer y la marca de aviso de mantenimiento.
+- Un insert por query builder que llega sin identificador no escribe una auditoría vacía: se deja un aviso en el registro de eventos y se omite.
 
 ---
 
@@ -30027,10 +31696,11 @@ sequenceDiagram
             PLN-)NOT: sendBatchOffer(chofer, recorrido)
         end
         alt Un chofer acepta el recorrido
+            PLN->>PLN: aceptarRecorrido(recorrido)
             Note over PLN,LOT: Aceptación: ver DSD de aceptarRecorrido (CU-107)
         else Ningún chofer acepta
             PLN->>LOT: deshacer()
-            Note over PLN,LOT: Los pedidos vuelven al circuito individual: ver DSD de ofrecerAlSiguienteChofer (CU-013)
+            Note over PLN,LOT: Los pedidos vuelven al circuito individual:<br/>ver DSD de ofrecerAlSiguienteChofer (CU-013)
         end
     end
     deactivate PLN
@@ -30204,13 +31874,14 @@ sequenceDiagram
 
 ### SS-19 — Personal y Legajos
 
-#### DSD — CU-176: Gestionar los Puestos de Trabajo
+#### DSD — CU-176: Consultar los Puestos de Trabajo
+
 
 ##### Operación: consultarPuestosDeTrabajo()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-176 Gestionar los Puestos de Trabajo · consultarPuestosDeTrabajo
+    title DSD — CU-176 Consultar los Puestos de Trabajo · consultarPuestosDeTrabajo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :JobPositionService
@@ -30226,23 +31897,36 @@ sequenceDiagram
     SRV-->>-ADM: puestos con su categoría y su cantidad de empleados activos
 ```
 
-**Clases participantes:** `JobPositionService` (controlador de fachada, colaboración propuesta) y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
+**Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal) y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
 
 **GRASP.** *Controlador*: `JobPositionService`. *Experto*: `Distribuidora` conoce sus puestos y cada `PuestoDeTrabajo` cuenta a los empleados que lo ocupan.
 
-**No se dibuja:** el filtro por distribuidora y el orden alfabético de la respuesta.
+**No se dibuja:** el filtro por distribuidora y el orden alfabético de la respuesta, que resuelve la misma consulta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `JobPositionService.consultarPuestosDeTrabajo(...)` | `JobPositionController.findAll` → `JobPositionService.findAll` |
+| `Distribuidora.getPuestos(...)` | `JobPositionService.findAll`: lee los `JobPosition` de la distribuidora, ordenados por nombre |
+| `PuestoDeTrabajo.contarEmpleadosActivos(...)` | `JobPositionService.contarActivosPorPuesto`: una sola consulta agrupada cuenta los `Employee` activos de cada puesto de la distribuidora |
 
 **Observaciones de diseño**
 
 - Es la consulta que alimenta el selector de puesto del alta de un empleado (CU-177) y del filtro del listado (CU-180).
+- El conteo no se hace puesto por puesto: una consulta agrupada cuenta a los empleados activos de toda la distribuidora y el servicio reparte los totales entre los puestos.
+- La lista incluye los puestos inactivos, con su marca de activo.
 
 ---
+
+---
+
+#### DSD — CU-255: Crear un Puesto de Trabajo
+
 
 ##### Operación: crearPuestoDeTrabajo(nombre, categoria)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-176 Gestionar los Puestos de Trabajo · crearPuestoDeTrabajo
+    title DSD — CU-255 Crear un Puesto de Trabajo · crearPuestoDeTrabajo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :JobPositionService
@@ -30257,24 +31941,36 @@ sequenceDiagram
     SRV-->>-ADM: puesto
 ```
 
-**Clases participantes:** `JobPositionService` (controlador de fachada del módulo de puestos, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
+**Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal) y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
 
-**GRASP.** *Controlador*: `JobPositionService`. *Creador*: `Distribuidora` crea los `PuestoDeTrabajo` que define (composición «define» del modelo conceptual) y, por ser quien conoce todos sus puestos, es también el experto que sabe si un nombre ya está tomado.
+**GRASP.** *Controlador*: `JobPositionService`. *Creador*: `Distribuidora` crea los `PuestoDeTrabajo` que define (asociación «define» del modelo conceptual), y es el experto que sabe si un nombre ya está tomado entre sus puestos.
 
-**No se dibuja:** la comprobación de que el administrador pertenezca a la distribuidora, el guardado y el índice único del nombre entre los puestos vigentes, que respalda la comprobación del servicio ante pedidos simultáneos.
+**No se dibuja:** el guardado y la traducción de un error de la base a un conflicto.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `JobPositionService.crearPuestoDeTrabajo(...)` | `JobPositionController.create` → `JobPositionService.create` |
+| `Distribuidora.crearPuesto(...)` | `JobPositionService.create`: arma el `JobPosition` de la distribuidora, activo salvo que el pedido diga otra cosa, y lo guarda con `JobPositionService.guardar` |
+| `Distribuidora.assertNombreDePuestoDisponible(...)` | `JobPositionService.assertNombreDisponible`: compara el nombre, sin distinguir mayúsculas, con los puestos vigentes de la distribuidora |
+| `PuestoDeTrabajo.«create»` | `JobPositionService.create`: `JobPosition` creado con el nombre, la categoría y la marca de activo |
 
 **Observaciones de diseño**
 
-- El nombre es único por distribuidora entre los puestos vigentes, sin distinguir mayúsculas: lo garantiza un índice funcional de la base, además de la comprobación del objeto de dominio.
-- Los cinco puestos iniciales (Chofer, Ayudante, Depósito, Administración y Vendedor) no pasan por esta operación: los siembra un escuchador del alta de la distribuidora y una migración para las existentes.
+- El control del nombre se hace antes de guardar, y la base lo refuerza con un índice único funcional sobre el nombre en minúsculas entre los puestos vigentes: si dos altas simultáneas coinciden, la base rechaza la segunda.
+- Los cinco puestos iniciales no pasan por esta operación: se siembran con el alta de la distribuidora.
 
 ---
+
+---
+
+#### DSD — CU-256: Modificar un Puesto de Trabajo
+
 
 ##### Operación: modificarPuestoDeTrabajo(puestoId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-176 Gestionar los Puestos de Trabajo · modificarPuestoDeTrabajo
+    title DSD — CU-256 Modificar un Puesto de Trabajo · modificarPuestoDeTrabajo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :JobPositionService
@@ -30292,23 +31988,36 @@ sequenceDiagram
     SRV-->>-ADM: puesto
 ```
 
-**Clases participantes:** `JobPositionService` (controlador de fachada, colaboración propuesta), la colección `Map<String, PuestoDeTrabajo>` y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
+**Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal), la colección `Map<String, PuestoDeTrabajo>` y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
 
-**GRASP.** *Controlador*: `JobPositionService`. *Experto*: `PuestoDeTrabajo` toma sus valores nuevos; `Distribuidora`, que conoce todos sus puestos, es quien comprueba que el nombre nuevo no lo tenga otro.
+**GRASP.** *Controlador*: `JobPositionService`. *Experto*: `PuestoDeTrabajo` toma sus valores nuevos; `Distribuidora` comprueba que el nombre no lo tenga otro puesto suyo.
 
-**No se dibuja:** la comprobación de que el puesto sea de la distribuidora del administrador (la colección responde recurso no encontrado si no lo es) y el guardado.
+**No se dibuja:** las reglas que protegen el alta de personal con cuenta (que los ocupantes con cuenta conserven un rol que corresponda a la categoría y que quede otro puesto activo de categoría chofer o administración), el bloqueo de los puestos y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `JobPositionService.modificarPuestoDeTrabajo(...)` | `JobPositionController.update` → `JobPositionService.update` |
+| `Map<String, PuestoDeTrabajo>.get(...)` | `JobPositionService.vigente`: lee el `JobPosition` de la distribuidora; 404 si no existe |
+| `Distribuidora.assertNombreDePuestoDisponible(...)` | `JobPositionService.assertNombreDisponible`, que excluye al propio puesto |
+| `PuestoDeTrabajo.modificar(...)` | `JobPositionService.update`: asigna el nombre, la categoría y la marca de activo recibidos y guarda; antes, `JobPositionService.assertCategoriaCompatibleConLasCuentas` y `JobPositionService.assertNoEsElUltimoActivo` |
 
 **Observaciones de diseño**
 
-- Cambiar la categoría de un puesto no modifica a los empleados que lo ocupan, pero sí las reglas que se les aplican desde ese momento (qué documentación se les exige y qué rol puede tener su cuenta).
+- Todo ocurre en una transacción que bloquea, en orden, los puestos de la distribuidora de categoría chofer o administración (`JobPositionService.bloquearPuestos`): dos cambios simultáneos no pueden dejar a la distribuidora sin su último puesto activo de esa categoría.
+- Desactivar un puesto no toca a quienes lo ocupan: sólo impide asignarlo a legajos nuevos.
 
 ---
+
+---
+
+#### DSD — CU-257: Eliminar un Puesto de Trabajo
+
 
 ##### Operación: eliminarPuestoDeTrabajo(puestoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-176 Gestionar los Puestos de Trabajo · eliminarPuestoDeTrabajo
+    title DSD — CU-257 Eliminar un Puesto de Trabajo · eliminarPuestoDeTrabajo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :JobPositionService
@@ -30320,19 +32029,31 @@ sequenceDiagram
     COL-->>-SRV: puesto
     SRV->>+PUE: darDeBaja()
     PUE->>PUE: assertSinEmpleadosActivos()
+    PUE->>PUE: assertSinLegajos()
+    PUE->>PUE: assertNoEsElUltimoActivo()
     deactivate PUE
     SRV-->>-ADM: confirmación
 ```
 
-**Clases participantes:** `JobPositionService` (controlador de fachada, colaboración propuesta), la colección `Map<String, PuestoDeTrabajo>` y el objeto de dominio `PuestoDeTrabajo`.
+**Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal), la colección `Map<String, PuestoDeTrabajo>` y el objeto de dominio `PuestoDeTrabajo`.
 
-**GRASP.** *Controlador*: `JobPositionService`. *Experto*: `PuestoDeTrabajo` conoce los empleados que lo ocupan, de modo que es él quien se niega a darse de baja si alguno sigue activo.
+**GRASP.** *Controlador*: `JobPositionService`. *Experto*: `PuestoDeTrabajo` sabe si todavía lo ocupa algún legajo y si es el último activo de su categoría, y por eso es quien decide si puede darse de baja.
 
-**No se dibuja:** el guardado de la baja lógica y el conteo de empleados activos, que es una consulta sobre los legajos del puesto.
+**No se dibuja:** el bloqueo de los puestos de la distribuidora y el guardado de la baja lógica.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `JobPositionService.eliminarPuestoDeTrabajo(...)` | `JobPositionController.remove` → `JobPositionService.remove` |
+| `Map<String, PuestoDeTrabajo>.get(...)` | `JobPositionService.vigente`: lee el `JobPosition` de la distribuidora; 404 si no existe |
+| `PuestoDeTrabajo.darDeBaja(...)` | `JobPositionService.remove`: baja lógica del `JobPosition` |
+| `PuestoDeTrabajo.assertSinEmpleadosActivos(...)` | `JobPositionService.remove`: cuenta los `Employee` activos del puesto y responde 409 con la cantidad |
+| `PuestoDeTrabajo.assertSinLegajos(...)` | `JobPositionService.remove`: cuenta todos los legajos del puesto, también los egresados, y responde 409 |
+| `PuestoDeTrabajo.assertNoEsElUltimoActivo(...)` | `JobPositionService.assertNoEsElUltimoActivo`: si el puesto es de categoría chofer o administración, tiene que quedar otro activo de la misma |
 
 **Observaciones de diseño**
 
-- La baja es lógica: el puesto sigue siendo visible en el legajo de quienes lo ocuparon. Para darlo de baja hay que reasignar antes a los empleados activos.
+- La baja es lógica: el puesto se conserva con su fecha de baja y deja de ofrecerse, y su nombre queda libre para un puesto nuevo.
+- Un puesto que ya se usó no se elimina sino que se desactiva (CU-256): así ningún legajo, ni siquiera el de un empleado egresado, queda sin puesto.
 
 ---
 
@@ -30348,7 +32069,6 @@ sequenceDiagram
     participant SRV as :EmployeeService
     participant COP as :Map#lt;String, PuestoDeTrabajo#gt;
     participant DIS as distribuidora:Distribuidora
-    participant CUI as :CuilValidator
 
     ADM->>+SRV: registrarEmpleado(datos)
     SRV->>+COP: get(puestoId)
@@ -30357,21 +32077,31 @@ sequenceDiagram
     DIS->>DIS: assertDocumentoYCuilDisponibles(datos)
     create participant EMP as nuevo:Empleado
     DIS->>EMP: «create»(datos, puesto)
-    EMP->>CUI: esValido(cuil)
+    EMP->>EMP: assertCuilValido()
     DIS-->>-SRV: empleado
     SRV-->>-ADM: empleado
 ```
 
-**Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal, **colaboración propuesta**: no existe en el código), la colección `Map<String, PuestoDeTrabajo>`, los objetos de dominio `Distribuidora` y `Empleado`, y `CuilValidator` (fabricación pura propuesta: la función del dígito verificador del CUIL).
+**Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, PuestoDeTrabajo>` y los objetos de dominio `Distribuidora` y `Empleado`.
 
-**GRASP.** *Controlador*: `EmployeeService`. *Creador*: `Distribuidora` crea a los `Empleado` que emplea, porque los registra y los conoce a todos (asociación «emplea» del modelo conceptual); por esa misma razón es el experto que sabe si un documento o un CUIL ya están tomados. *Bajo Acoplamiento*: el dígito verificador es una función pura, sin base ni red, y se prueba aislada.
+**GRASP.** *Controlador*: `EmployeeService`. *Creador*: `Distribuidora` crea a los `Empleado` que emplea, porque los registra y los conoce a todos (asociación «emplea» del modelo conceptual); por esa misma razón es el experto que sabe si un documento o un CUIL ya están tomados. *Experto*: `Empleado` sabe si su propio CUIL tiene un dígito verificador correcto.
 
-**No se dibuja:** el número de legajo (la distribuidora toma el siguiente con bloqueo, dentro de la transacción del alta), el guardado y los índices únicos del documento y del CUIL entre los legajos vigentes.
+**No se dibuja:** el número de legajo (si el pedido no lo trae, se toma el siguiente de la distribuidora con bloqueo, dentro de la transacción del alta), la transacción con reintento, el guardado y los índices únicos parciales del documento, del CUIL y del legajo entre los vigentes.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `EmployeeService.registrarEmpleado(...)` | `EmployeeController.create` → `EmployeeService.create` |
+| `Map<String, PuestoDeTrabajo>.get(...)` | `JobPositionService.findAsignable`: lee el `JobPosition` de la distribuidora con bloqueo compartido; 404 si no existe y 409 si está inactivo |
+| `Distribuidora.registrarEmpleado(...)` | `EmployeeService.create`: en una transacción arma y guarda el `Employee` de la distribuidora en estado `active`, con el número de legajo del pedido o el siguiente (`EmployeeService.siguienteLegajo`) |
+| `Distribuidora.assertDocumentoYCuilDisponibles(...)` | `EmployeeService.assertUnicos`: el documento, el CUIL y el número de legajo no pueden ser de otro `Employee` vigente |
+| `Empleado.«create»` | `EmployeeService.create`: `Employee` creado con los datos recibidos y sus columnas opcionales en vacío |
+| `Empleado.assertCuilValido(...)` | `esCuilValido()`: el decorador `@Cuil()` de `CreateEmployeeDto` la ejecuta antes de llegar al servicio y un CUIL inválido responde 400 |
 
 **Observaciones de diseño**
 
-- El legajo no tiene cuenta de acceso: el vínculo con un usuario se establece después (CU-182), o en la misma transacción cuando el alta viene de un chofer (CU-031), que llama a este mismo servicio.
-- El documento y el CUIL se controlan a la vez en la distribuidora y en la base; si dos altas simultáneas coinciden, la segunda falla con el mismo error de conflicto.
+- El legajo no tiene cuenta de acceso: el vínculo con un usuario se establece después (CU-182), o en la misma transacción cuando el legajo nace con el alta de un usuario (CU-031, CU-003), que no pasa por esta operación sino por `EmployeeService.crearParaUsuario` y `EmployeeService.vincularUsuario`.
+- El documento, el CUIL y el legajo se controlan en el servicio y en la base (índices únicos parciales sobre los legajos vigentes); si dos altas simultáneas coinciden, la segunda falla con el mismo error de conflicto.
+- El dígito verificador del CUIL (módulo 11, prefijos 20, 23, 24 y 27) es una función pura: se prueba aislada, sin base ni red.
 
 ---
 
@@ -30388,7 +32118,6 @@ sequenceDiagram
     participant COE as :Map#lt;String, Empleado#gt;
     participant DIS as distribuidora:Distribuidora
     participant EMP as empleado:Empleado
-    participant CUI as :CuilValidator
 
     ADM->>+SRV: modificarEmpleado(empleadoId, datos)
     SRV->>+COE: get(empleadoId)
@@ -30396,21 +32125,30 @@ sequenceDiagram
     SRV->>+DIS: assertDocumentoYCuilDisponibles(datos, empleado)
     deactivate DIS
     SRV->>+EMP: modificar(datos)
-    EMP->>CUI: esValido(cuil)
+    EMP->>EMP: assertCuilValido()
     deactivate EMP
     SRV-->>-ADM: empleado
 ```
 
-**Clases participantes:** `EmployeeService` (controlador de fachada, colaboración propuesta), la colección `Map<String, Empleado>`, los objetos de dominio `Distribuidora` y `Empleado`, y `CuilValidator` (fabricación pura propuesta).
+**Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y los objetos de dominio `Distribuidora` y `Empleado`.
 
 **GRASP.** *Controlador*: `EmployeeService`. *Experto*: `Empleado` toma sus valores nuevos y valida su propio CUIL; `Distribuidora` comprueba que el documento y el CUIL nuevos no pertenezcan a otro empleado.
 
-**No se dibuja:** el cambio de puesto (que se resuelve contra `Map<String, PuestoDeTrabajo>` como en el alta), el guardado y los campos que esta operación no puede tocar: el estado y las fechas de egreso.
+**No se dibuja:** el cambio de puesto (que se resuelve contra `Map<String, PuestoDeTrabajo>` como en el alta, exige que el puesto esté activo y que, si el empleado tiene cuenta, corresponda al rol de su usuario), la comprobación de que la fecha de ingreso no pase la de egreso, el guardado y los campos que esta operación no puede tocar: el estado y las fechas de egreso.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `EmployeeService.modificarEmpleado(...)` | `EmployeeController.update` → `EmployeeService.update` |
+| `Map<String, Empleado>.get(...)` | `EmployeeService.bloquear`: lee el `Employee` de la distribuidora con bloqueo pesimista de la fila; 404 si no existe |
+| `Distribuidora.assertDocumentoYCuilDisponibles(...)` | `EmployeeService.assertUnicos`, que excluye al propio legajo |
+| `Empleado.modificar(...)` | `EmployeeService.update`: asigna los campos recibidos y guarda; si cambia el puesto, antes `EmployeeService.assertPuestoCompatibleConLaCuenta` |
+| `Empleado.assertCuilValido(...)` | `esCuilValido()`: `UpdateEmployeeDto` hereda de `CreateEmployeeDto` el decorador `@Cuil()` que la ejecuta antes de llegar al servicio |
 
 **Observaciones de diseño**
 
 - Si el pedido cambia el puesto, el servicio lo busca como en CU-177 y se lo entrega al empleado; ese tramo no se dibuja para no repetir el diagrama del alta.
 - Un legajo egresado puede corregirse (por ejemplo un domicilio mal cargado) sin reingresarlo.
+- El estado no se modifica por esta vía: el `UpdateEmployeeDto` no lo admite y enviarlo responde 400.
 
 ---
 
@@ -30434,15 +32172,24 @@ sequenceDiagram
     SRV-->>-ADM: confirmación
 ```
 
-**Clases participantes:** `EmployeeService` (controlador de fachada, colaboración propuesta), la colección `Map<String, Empleado>` y el objeto de dominio `Empleado`.
+**Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y el objeto de dominio `Empleado`.
 
-**GRASP.** *Controlador*: `EmployeeService`. *Experto*: `Empleado` sabe si tiene jornadas o documentación, y por eso es quien decide si el legajo todavía puede darse de baja como alta errónea.
+**GRASP.** *Controlador*: `EmployeeService`. *Experto*: `Empleado` sabe si tiene cuenta de acceso y, cuando existan, jornadas o documentación, y por eso es quien decide si el legajo todavía puede darse de baja como alta errónea. Las reglas de los demás módulos se suman a través de `EmployeeRulesRegistry`, sin que `employee` dependa de ellos.
 
-**No se dibuja:** el guardado de la baja lógica y la consulta de si existen jornadas o tareas del empleado.
+**No se dibuja:** el guardado de la baja lógica y la transacción con el bloqueo de la fila.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `EmployeeService.eliminarEmpleado(...)` | `EmployeeController.remove` → `EmployeeService.remove` |
+| `Map<String, Empleado>.get(...)` | `EmployeeService.bloquear`: lee el `Employee` de la distribuidora con bloqueo pesimista de la fila; 404 si no existe |
+| `Empleado.darDeBaja(...)` | `EmployeeService.remove`: baja lógica del `Employee` |
+| `Empleado.assertEsAltaErronea(...)` | `EmployeeService.remove`: responde 409 si el legajo tiene cuenta de acceso o si alguna regla de `EmployeeRulesRegistry.motivosQueImpidenLaBaja` da motivos; hoy ningún módulo registró la suya |
 
 **Observaciones de diseño**
 
 - Es la única baja lógica del legajo y sólo sirve para una alta equivocada: una persona que trabajó se da de baja con el egreso (CU-181), que conserva el legajo.
+- Planificado (I-11): las jornadas y la documentación del personal registrarán su regla en `EmployeeRulesRegistry` y entonces también impedirán la baja.
+- Hoy un legajo egresado y sin cuenta puede eliminarse; el sistema no exige que nunca haya trabajado.
 
 ---
 
@@ -30475,11 +32222,20 @@ sequenceDiagram
     SRV-->>-ADM: legajo con su puesto, su cuenta y su ficha de chofer
 ```
 
-**Clases participantes:** `EmployeeService` (controlador de fachada, colaboración propuesta), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado`, `PuestoDeTrabajo` y `Usuario`.
+**Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado`, `PuestoDeTrabajo` y `Usuario`.
 
 **GRASP.** *Controlador*: `EmployeeService`. *Experto*: `Empleado` conoce sus datos, su puesto y su cuenta, y se los pide a `PuestoDeTrabajo` y a `Usuario`; `Usuario` sabe si su perfil es el de chofer.
 
 **No se dibuja:** el armado de la respuesta con el puesto, el filtro por distribuidora y la ausencia del documento y los datos de contacto en las demás consultas: sólo la ficha los entrega.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `EmployeeService.consultarEmpleado(...)` | `EmployeeController.findOne` → `EmployeeService.findOneDetallado` |
+| `Map<String, Empleado>.get(...)` | `EmployeeService.findOne`: lee el `Employee` de la distribuidora con su puesto; 404 si no existe |
+| `Empleado.getLegajo(...)` | `EmployeeMapper.toDto`: arma la ficha con los datos personales, el estado y las fechas |
+| `PuestoDeTrabajo.getNombre(...)` | `Employee.position`: el puesto viene cargado con el legajo y el mapper lo incluye en la ficha |
+| `Empleado.getCuenta(...)` | `EmployeeService.deliveryIdDe`: sólo si el legajo tiene `Employee.userId` |
+| `Usuario.getPerfilDeChofer(...)` | `DeliveryService.findDeliveryIdsByUserIds`: el identificador del perfil de reparto de ese usuario, si lo tiene |
 
 **Observaciones de diseño**
 
@@ -30499,27 +32255,30 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SRV as :EmployeeService
     participant LST as :List#lt;Empleado#gt;
-    participant EMP as empleado:Empleado
 
     ADM->>+SRV: consultarEmpleados(filtros)
     SRV->>+LST: filtrar(filtros)
     LST-->>-SRV: empleados
-    loop Por cada empleado de la página
-        SRV->>EMP: getPeorVencimiento()
-    end
+    Note over SRV,LST: Planificado (I-11): el peor vencimiento de la documentación de cada empleado
     SRV-->>-ADM: página de empleados, sin datos personales sensibles
 ```
 
-**Clases participantes:** `EmployeeService` (controlador de fachada, colaboración propuesta), la colección `List<Empleado>` y el objeto de dominio `Empleado`.
+**Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal) y la colección `List<Empleado>`.
 
-**GRASP.** *Controlador*: `EmployeeService`. *Experto*: cada `Empleado` conoce su documentación y calcula el peor estado de vencimiento entre sus tareas y los planes que le faltan.
+**GRASP.** *Controlador*: `EmployeeService`. *Experto*: la colección conoce a los empleados de la distribuidora y es quien los filtra. Planificado (I-11): cada `Empleado` conocerá su documentación y calculará el peor estado de vencimiento entre sus tareas y los planes que le faltan.
 
-**No se dibuja:** la paginación, el orden por apellido y nombre, y el filtro por distribuidora.
+**No se dibuja:** la paginación, el orden por apellido y nombre y el filtro por distribuidora.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `EmployeeService.consultarEmpleados(...)` | `EmployeeController.findAll` → `EmployeeService.findAll` |
+| `List<Empleado>.filtrar(...)` | `EmployeeService.findAll`: consulta paginada sobre los `Employee` de la distribuidora con su puesto, filtrada por texto, puesto, categoría, estado y cuenta, y ordenada por apellido y nombre |
 
 **Observaciones de diseño**
 
-- El estado de la documentación se calcula sólo para los empleados de la página, no para todos los de la distribuidora.
-- Filtrar por «documentación vencida» exige el mismo cálculo sobre el total: se resuelve con una consulta sobre las tareas abiertas, no empleado por empleado.
+- El listado no trae el documento, el CUIL, el domicilio ni el contacto de emergencia: cada fila tiene el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta.
+- La página tiene diez empleados por omisión y hasta cien; un límite o una página fuera de rango responden 400.
+- Planificado (I-11): el estado de la documentación se calculará sólo para los empleados de la página, y filtrar por «documentación vencida» exigirá el mismo cálculo sobre el total, resuelto con una consulta sobre las tareas abiertas y no empleado por empleado. Hasta entonces el parámetro `documentStatus` se acepta y se ignora.
 
 ---
 
@@ -30559,17 +32318,31 @@ sequenceDiagram
     UC-->>-ADM: empleado
 ```
 
-**Clases participantes:** `TerminateEmployeeUseCase` (controlador de caso de uso, **colaboración propuesta**), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado`, `Usuario`, `Chofer` y `AsignacionVehiculo`.
+**Clases participantes:** `TerminateEmployeeUseCase` (controlador de caso de uso), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado`, `Usuario`, `Chofer` y `AsignacionVehiculo`.
 
 **GRASP.** *Controlador*: `TerminateEmployeeUseCase`, que coordina cuatro objetos en una sola transacción. *Experto*: `Empleado` valida que esté activo y pasa a «egresado»; `Usuario` se bloquea a sí mismo; `Chofer` se deshabilita y le pide a su `AsignacionVehiculo` vigente que se libere.
 
-**No se dibuja:** la transacción (el egreso y el corte de acceso se confirman o se deshacen juntos), la baja de la cuenta en el proveedor de identidad y el control, cuando existan la carga de camión y la rendición del chofer, de que no haya ninguna abierta ni pendiente.
+**No se dibuja:** la transacción (el egreso y el corte de acceso se confirman o se deshacen juntos), el control de que el chofer no tenga pedidos en curso, la baja del chofer del radar de despacho una vez confirmado el egreso y, planificado (I-13), el control de que no tenga una carga de camión abierta ni una rendición pendiente.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TerminateEmployeeUseCase.registrarEgresoDelEmpleado(...)` | `EmployeeController.terminateEmployee` → `TerminateEmployeeUseCase.execute` |
+| `Map<String, Empleado>.get(...)` | `EmployeeService.bloquear`: lee el `Employee` de la distribuidora con bloqueo pesimista, después de haber bloqueado al chofer; 404 si no existe |
+| `Empleado.egresar(...)` | `TerminateEmployeeUseCase.execute`: pasa `Employee.status` a `terminated` y asigna `Employee.terminationDate` y `Employee.terminationReason` |
+| `Empleado.assertActivo(...)` | `validarEgreso()`: devuelve `YA_EGRESADO` y el caso de uso responde 409 |
+| `Empleado.assertFechaNoAnteriorAlIngreso(...)` | `validarEgreso()`: devuelve `FECHA_ANTERIOR_AL_INGRESO` y el caso de uso responde 400 |
+| `Usuario.bloquear(...)` | `UsersService.bloquearEnTransaccion` |
+| `Usuario.getPerfilDeChofer(...)` | `DeliveryService.findByUserIdEnTransaccion` |
+| `Chofer.deshabilitar(...)` | `DeliveryService.deshabilitarEnTransaccion` |
+| `AsignacionVehiculo.liberar(...)` | `VehicleAssignmentService.liberarSiTieneUno` |
 
 **Observaciones de diseño**
 
 - El legajo se conserva: el egreso no es una baja del registro sino el cierre del vínculo laboral, con su fecha y su motivo.
 - Liberar el vehículo reutiliza el mismo servicio que la baja de un chofer (`VehicleAssignmentService`, el mismo camino del escuchador del evento `chofer.dado-de-baja`); no hay una segunda implementación.
 - Un chofer egresado queda fuera del despacho por dos razones independientes: su cuenta está bloqueada y su legajo no está activo.
+- Los bloqueos se toman en el mismo orden que la baja de un usuario (primero el usuario y el chofer, después el legajo): invertirlo provocaba interbloqueos entre el egreso y la baja del usuario.
+- El chofer con pedidos aceptados o en camino no puede egresar: el caso de uso responde 409 con la cantidad.
 
 ---
 
@@ -30593,22 +32366,29 @@ sequenceDiagram
     SRV-->>-ADM: empleado
 ```
 
-**Clases participantes:** `EmployeeService` (controlador de fachada, colaboración propuesta), la colección `Map<String, Empleado>` y el objeto de dominio `Empleado`.
+**Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y el objeto de dominio `Empleado`.
 
 **GRASP.** *Controlador*: `EmployeeService`. *Experto*: `Empleado` sabe que está egresado, vuelve a «activo» y borra su fecha y su motivo de egreso.
 
-**No se dibuja:** el guardado y el hecho de que la cuenta de acceso y el perfil de reparto no se tocan.
+**No se dibuja:** el guardado, la transacción con el bloqueo de la fila, que la fecha de ingreso nueva no sea anterior a la del egreso y el hecho de que la cuenta de acceso y el perfil de reparto no se tocan.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `EmployeeService.reingresarEmpleado(...)` | `EmployeeController.reinstate` → `EmployeeService.reinstate` |
+| `Map<String, Empleado>.get(...)` | `EmployeeService.bloquear`: lee el `Employee` de la distribuidora con bloqueo pesimista de la fila; 404 si no existe |
+| `Empleado.reingresar(...)` | `EmployeeService.reinstate`: pasa `Employee.status` a `active`, fija `Employee.hireDate` con la fecha recibida (hoy si falta) y deja vacíos `Employee.terminationDate` y `Employee.terminationReason` |
+| `Empleado.assertEgresado(...)` | `validarReingreso()`: devuelve `NO_EGRESADO` y el servicio responde 409, o `FECHA_ANTERIOR_AL_EGRESO` y responde 400 |
 
 **Observaciones de diseño**
 
-- El reingreso no desbloquea la cuenta ni habilita al chofer: son decisiones aparte del administrador (CU-050, CU-033), porque volver a la distribuidora no implica volver a repartir.
+- El reingreso no desbloquea la cuenta ni habilita al chofer: son decisiones aparte del administrador (CU-270, CU-033), porque volver a la distribuidora no implica volver a repartir.
 - La fecha de ingreso anterior se conserva en el registro de auditoría; el legajo guarda la vigente.
 
 ---
 
 #### DSD — CU-182: Otorgar una Cuenta de Acceso a un Empleado
 
-##### Operación: otorgarCuentaDeAcceso(empleadoId, correo)
+##### Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
 
 ```mermaid
 sequenceDiagram
@@ -30621,7 +32401,7 @@ sequenceDiagram
     participant PUE as puesto:PuestoDeTrabajo
     participant REG as :RegistroService
 
-    ADM->>+UC: otorgarCuentaDeAcceso(empleadoId, correo)
+    ADM->>+UC: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
     UC->>+COE: get(empleadoId)
     COE-->>-UC: empleado
     UC->>+EMP: getPuesto()
@@ -30630,21 +32410,30 @@ sequenceDiagram
     PUE-->>-UC: rol
     UC->>+REG: registrar(datosPersonales, rol, distribuidoraId)
     Note over UC,REG: Se crea el Usuario: ver DSD de crearUsuarioBase (CU-082)
+    REG->>EMP: vincularCuenta(usuario)
     REG-->>-UC: usuario
-    UC->>EMP: vincularCuenta(usuario)
     UC-->>-ADM: empleado
 ```
 
-**Clases participantes:** `GrantEmployeeAccountUseCase` (controlador de caso de uso, **colaboración propuesta**), la colección `Map<String, Empleado>`, los objetos de dominio `Empleado` y `PuestoDeTrabajo`, y `RegistroService` (el servicio de registro de usuarios, que existe en el código).
+**Clases participantes:** `GrantEmployeeAccountUseCase` (controlador de caso de uso), la colección `Map<String, Empleado>`, los objetos de dominio `Empleado` y `PuestoDeTrabajo`, y `RegistroService` (el servicio de registro de usuarios).
 
 **GRASP.** *Controlador*: `GrantEmployeeAccountUseCase`. *Experto*: `PuestoDeTrabajo` conoce su categoría y, por lo tanto, qué rol de acceso le corresponde, o se niega si la categoría no admite cuenta; `Empleado` es quien vincula la cuenta creada. *Bajo Acoplamiento*: el módulo de personal no crea usuarios: delega en `RegistroService`, igual que cualquier otra alta de cuenta.
 
-**No se dibuja:** la alta de la identidad en el proveedor de identidad y de la fila de usuario con su perfil, que es el subproceso `crearUsuarioBase` (CU-082) con su propio diagrama, y el guardado del vínculo.
+**No se dibuja:** la alta de la identidad en el proveedor de identidad y de la fila de usuario con su perfil, que es el subproceso `crearUsuarioBase` (CU-082) con su propio diagrama, el control del teléfono en formato internacional y el guardado del vínculo, que `RegistroService` hace en la misma transacción que el alta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `GrantEmployeeAccountUseCase.otorgarCuentaDeAcceso(...)` | `EmployeeAccountController.grantAccount` → `GrantEmployeeAccountUseCase.execute` |
+| `Map<String, Empleado>.get(...)` | `EmployeeService.findOne`: lee el `Employee` de la distribuidora con su puesto; 404 si no existe |
+| `Empleado.getPuesto(...)` | `Employee.position`: el puesto viene cargado con el legajo |
+| `PuestoDeTrabajo.getRolDeAcceso(...)` | `rolDeAcceso()` y `puedeOtorgarseCuenta()`: hoy sólo la categoría `driver` admite cuenta, con el rol chofer; otra categoría responde 400 |
+| `Empleado.vincularCuenta(...)` | `EmployeeService.vincularUsuario`: bloquea el legajo y le asigna `Employee.userId`; lo invoca `RegistroService` dentro de la transacción del alta |
 
 **Observaciones de diseño**
 
-- Es la regla D1 del diseño del módulo: no hay roles nuevos. Sólo `driver`, `administration` y `management` admiten cuenta; ayudantes, depósito y vendedores son legajos sin acceso.
-- El módulo de personal depende de `RegistroService` (exportado) y no al revés: el alta de un chofer llama a `EmployeeService`, y esta operación llama a `RegistroService`, sin ciclo.
+- Es la regla D1 del diseño del módulo: no hay roles nuevos. Hoy sólo el puesto de categoría `driver` admite cuenta por esta operación; los administrativos reciben su cuenta de administrador con el alta del usuario (CU-082), que crea o vincula su legajo, y ayudantes, depósito y vendedores son legajos sin acceso.
+- El módulo de personal no depende de `RegistroService` sino al revés: el caso de uso vive en el módulo de registro, que importa `EmployeeModule`; el alta de un chofer llama a `EmployeeService`, y esta operación llama a `RegistroService`, sin ciclo.
+- Los datos de acceso son el correo, la contraseña inicial y el teléfono, que si falta se toma del legajo.
 
 ---
 
@@ -30725,15 +32514,15 @@ sequenceDiagram
     title DSD — CU-186 Adjuntar un Archivo al Legajo · adjuntarArchivoAlLegajo
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :AttachmentsService
+    participant SRV as :AttachmentService
     participant COE as :Map#lt;String, Empleado#gt;
-    participant STO as :StoragePort
+    participant S3 as :S3Service
     participant EMP as empleado:Empleado
 
     ADM->>+SRV: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)
     SRV->>+COE: get(empleadoId)
     COE-->>-SRV: empleado
-    SRV->>STO: put(clave, archivo, tipo)
+    SRV->>S3: put(clave, archivo, tipo)
     SRV->>+EMP: adjuntar(clave, archivo, etiqueta)
     create participant ADJ as nuevo:Adjunto
     EMP->>ADJ: «create»(clave, archivo, etiqueta)
@@ -30741,16 +32530,24 @@ sequenceDiagram
     SRV-->>-ADM: adjuntoNuevo
 ```
 
-**Clases participantes:** `AttachmentsService` (controlador de fachada del módulo de adjuntos, **colaboración propuesta**), la colección `Map<String, Empleado>`, `StoragePort` (fabricación pura: el almacenamiento de archivos, detrás de un puerto) y los objetos de dominio `Empleado` y `Adjunto`.
+**Clases participantes:** `AttachmentService` (controlador de fachada del módulo de adjuntos), la colección `Map<String, Empleado>`, `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos) y los objetos de dominio `Empleado` y `Adjunto`.
 
-**GRASP.** *Controlador*: `AttachmentsService`. *Creador*: `Empleado` crea los `Adjunto` que conserva (composición «conserva» del modelo conceptual). *Bajo Acoplamiento*: el contenido sale por `StoragePort`, la misma abstracción que usan los adjuntos de flota y la fotografía del reclamo, de modo que cambiar el disco local por un almacenamiento en la nube no toca este diagrama.
+**GRASP.** *Controlador*: `AttachmentService`. *Creador*: `Empleado` crea los `Adjunto` que conserva (composición «conserva» del modelo conceptual). *Bajo Acoplamiento*: el contenido sale por `S3Service`, el mismo que usan los adjuntos de flota y la fotografía del reclamo; el servicio no conoce el SDK de AWS.
 
-**No se dibuja:** la validación del tipo y del tamaño del archivo, la clave de almacenamiento (distribuidora, tipo de dueño, empleado e identificador), el borrado del archivo si falla el guardado de la referencia y el guardado.
+**No se dibuja:** la validación del tipo, del contenido y del tamaño del archivo, la clave de almacenamiento (distribuidora, tipo de dueño, empleado e identificador), el borrado del archivo si falla el guardado de la referencia y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `AttachmentService.adjuntarArchivoAlLegajo(...)` | `AttachmentController.upload` → `AttachmentService.upload`, con el tipo de dueño `employee` |
+| `Map<String, Empleado>.get(...)` | `EmployeeAttachmentOwnerResolver.assertOwner`: comprueba que el `Employee` exista en la distribuidora, sin cargarlo; `AttachmentService.assertAcceso` lo invoca |
+| `Empleado.adjuntar(...)` | `AttachmentService.upload`: arma el adjunto del legajo con la clave, el nombre original, el tipo, el tamaño y la etiqueta |
+| `Adjunto.«create»` | `AttachmentService.upload`: `Attachment` creado con `ownerType` `employee` y `ownerId` del empleado, y guardado en una transacción con la confirmación de la clave reservada |
 
 **Observaciones de diseño**
 
-- Los adjuntos del personal usan la tabla genérica de adjuntos con dueño (`owner_type`, `owner_id`), que reutilizan otros módulos: el dueño se valida por un puerto que registra cada módulo, y esa referencia no es una clave foránea a propósito, porque es polimórfica.
-- El archivo se guarda antes que la referencia: si el guardado de la referencia falla, el servicio borra el archivo para no dejarlo huérfano.
+- Los adjuntos del personal usan la tabla genérica de adjuntos con dueño (`owner_type`, `owner_id`), que reutilizan otros módulos: el dueño se valida por un puerto que registra cada módulo (`AttachmentOwnerRegistry`), y esa referencia no es una clave foránea a propósito, porque es polimórfica.
+- La clave se reserva antes de subir y se confirma junto con la referencia; si el guardado de la referencia falla, el servicio borra el archivo de S3 en segundo plano para no dejarlo huérfano.
+- La baja del adjunto es lógica: el archivo queda en S3 como respaldo.
 
 ---
 
@@ -31355,13 +33152,49 @@ sequenceDiagram
 
 ### SS-08 — Gestión de Productos e Inventario (ampliación: stock físico y carga del camión, I-13)
 
-#### DSD — CU-207: Gestionar los Depósitos
+#### DSD — CU-207: Consultar los Depósitos
+
+
+##### Operación: consultarDepositos()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-207 Consultar los Depósitos · consultarDepositos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :WarehouseService
+    participant DIS as distribuidora:Distribuidora
+    participant DEP as deposito:Deposito
+
+    ADM->>+SRV: consultarDepositos()
+    SRV->>+DIS: getDepositos()
+    loop Por cada depósito vigente
+        DIS->>DEP: estaActivo()
+    end
+    DIS-->>-SRV: depositos
+    SRV-->>-ADM: depositos
+```
+
+**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `Deposito`.
+
+**GRASP.** *Controlador*: `WarehouseService`. *Experto*: la `Distribuidora` conoce sus depósitos y reúne los vigentes; cada `Deposito` sabe si está activo.
+
+**No se dibuja:** el orden del listado y el armado de la respuesta.
+
+**Observaciones de diseño**
+
+- El detalle de un depósito con sus saldos es la consulta de CU-208 sobre su ubicación.
+
+---
+
+#### DSD — CU-258: Registrar un Depósito
+
 
 ##### Operación: registrarDeposito(nombre, codigo, tipo, direccion)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-207 Gestionar los Depósitos · registrarDeposito
+    title DSD — CU-258 Registrar un Depósito · registrarDeposito
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :WarehouseService
@@ -31387,11 +33220,21 @@ sequenceDiagram
 
 **No se dibuja:** la persistencia del depósito y de su ubicación, el contexto de la distribuidora que sale de la sesión del administrador y el rechazo por código repetido.
 
+**Observaciones de diseño**
+
+- El código es único sólo entre los depósitos vigentes de la distribuidora: lo respalda un índice único parcial, como el de la patente del vehículo.
+- Sólo puede haber un depósito predeterminado por distribuidora, también con un índice único parcial.
+
+---
+
+#### DSD — CU-259: Modificar un Depósito
+
+
 ##### Operación: actualizarDeposito(depositoId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-207 Gestionar los Depósitos · actualizarDeposito
+    title DSD — CU-259 Modificar un Depósito · actualizarDeposito
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :WarehouseService
@@ -31413,11 +33256,20 @@ sequenceDiagram
 
 **No se dibuja:** el rechazo de un depósito de otra distribuidora, que responde como si no existiera, y el guardado.
 
+**Observaciones de diseño**
+
+- Sólo cambian los campos enviados: el cuerpo es parcial, igual que en la edición del vehículo.
+
+---
+
+#### DSD — CU-260: Dar de Baja un Depósito
+
+
 ##### Operación: darDeBajaDeposito(depositoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-207 Gestionar los Depósitos · darDeBajaDeposito
+    title DSD — CU-260 Dar de Baja un Depósito · darDeBajaDeposito
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :WarehouseService
@@ -31442,40 +33294,10 @@ sequenceDiagram
 
 **No se dibuja:** la regla del depósito predeterminado, que no se da de baja mientras haya otros vigentes, y el guardado de la baja lógica.
 
-##### Operación: consultarDepositos()
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-207 Gestionar los Depósitos · consultarDepositos
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :WarehouseService
-    participant DIS as distribuidora:Distribuidora
-    participant DEP as deposito:Deposito
-
-    ADM->>+SRV: consultarDepositos()
-    SRV->>+DIS: getDepositos()
-    loop Por cada depósito vigente
-        DIS->>DEP: estaActivo()
-    end
-    DIS-->>-SRV: depositos
-    SRV-->>-ADM: depositos
-```
-
-**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `Deposito`.
-
-**GRASP.** *Controlador*: `WarehouseService`. *Experto*: la `Distribuidora` conoce sus depósitos y reúne los vigentes; cada `Deposito` sabe si está activo.
-
-**No se dibuja:** el orden del listado y el armado de la respuesta.
-
 **Observaciones de diseño**
 
-- El código es único sólo entre los depósitos vigentes de la distribuidora: lo respalda un índice único parcial, como el de la patente del vehículo.
-- Sólo puede haber un depósito predeterminado por distribuidora, también con un índice único parcial.
-- Sólo cambian los campos enviados: el cuerpo es parcial, igual que en la edición del vehículo.
 - La baja es lógica: el depósito y su ubicación siguen existiendo para explicar los movimientos que ya tuvieron.
 - Un saldo distinto de cero se resuelve antes con una transferencia (CU-212) o un ajuste (CU-213).
-- El detalle de un depósito con sus saldos es la consulta de CU-208 sobre su ubicación.
 
 ---
 
@@ -31706,8 +33528,8 @@ sequenceDiagram
     alt Origen y destino son la misma ubicación
         SRV-->>ADM: solicitudInvalida
     else Origen y destino son ubicaciones distintas
-        Note over SRV,LED: Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicion, condicion, cantidad, traslado)
         alt El origen tiene la cantidad
             LED-->>SRV: aplicado
             SRV-->>ADM: aplicado
@@ -31751,9 +33573,9 @@ sequenceDiagram
     ADM->>+SRV: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
     SRV->>+COL: get(ubicacionId)
     COL-->>-SRV: ubicacionDeStock
-    SRV->>+UBI: ajustar(motivoDeAjuste, nota, items, autor)
+    SRV->>+UBI: ajustar(motivoDeAjuste, nota, items, administrador)
     create participant AJU as nuevo:AjusteDeStock
-    UBI->>AJU: «create»(motivoDeAjuste, nota, autor)
+    UBI->>AJU: «create»(motivoDeAjuste, nota, administrador)
     loop Por cada renglón del ajuste
         create participant ITM as nuevo:ItemAjusteDeStock
         AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
@@ -31762,8 +33584,8 @@ sequenceDiagram
     loop Por cada renglón del ajuste
         SRV->>+ITM: getProducto()
         ITM-->>-SRV: producto
-        Note over SRV,LED: Una diferencia positiva entra en la ubicación y una negativa sale de ella. Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Una diferencia positiva entra en la ubicación y una negativa sale de ella<br/>(el otro extremo es nula). Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, condicionDeStock, condicionDeStock, diferencia, ajusteManual)
         alt El saldo de la ubicación no queda negativo
             LED-->>-SRV: aplicado
             opt El renglón es de unidades llenas
@@ -31853,17 +33675,21 @@ sequenceDiagram
             VEH->>UBC: «create»(vehiculo)
         end
         create participant CAR as nueva:CargaDeCamion
-        VEH->>CAR: «create»(chofer, deposito, ayudanteId, autor)
+        VEH->>CAR: «create»(chofer, deposito, ayudanteId, administrador)
         loop Por cada tipo de garrafa cargado
             create participant ICA as nuevo:ItemCarga
             CAR->>ICA: «create»(producto, llenasCargadas, vaciasCargadas)
         end
         VEH-->>-SRV: carga
+        SRV->>+CAR: getUbicacionDelDeposito()
+        CAR-->>-SRV: ubicacionOrigen
+        SRV->>+CAR: getUbicacionDelCamion()
+        CAR-->>-SRV: ubicacionDestino
         loop Por cada tipo de garrafa cargado
             SRV->>+ICA: getProducto()
             ICA-->>-SRV: producto
-            Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-            SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+            Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
+            SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasCargadas, cargaDelCamion)
             alt El depósito tiene las unidades
                 LED-->>-SRV: aplicado
             else El depósito no tiene las unidades
@@ -31878,9 +33704,9 @@ sequenceDiagram
 
 **Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), las colecciones `Map<String, Vehiculo>` y `Map<String, Deposito>` y los objetos de dominio `Vehiculo`, `UbicacionDeStock`, `CargaDeCamion` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Creador*: el `Vehiculo` crea su `UbicacionDeStock` (la primera vez que se carga) y las `CargaDeCamion` que transporta; la carga crea sus `ItemCarga` (composición). *Experto*: el `Vehiculo` sabe qué chofer lo tiene en uso, por la asignación de vehículo, y si ya tiene una carga abierta. *Fabricación pura*: `StockLedgerService` (CU-250).
+**GRASP.** *Controlador*: `TruckLoadService`. *Creador*: el `Vehiculo` crea su `UbicacionDeStock` (la primera vez que se carga) y las `CargaDeCamion` que transporta; la carga crea sus `ItemCarga` (composición). *Experto*: el `Vehiculo` sabe qué chofer lo tiene en uso, por la asignación de vehículo, y si ya tiene una carga abierta; la `CargaDeCamion` conoce el depósito y el camión, por eso entrega las dos `UbicacionDeStock` del movimiento. *Fabricación pura*: `StockLedgerService` (CU-250).
 
-**No se dibuja:** el número correlativo, los dos índices únicos parciales que respaldan que el vehículo y el chofer tengan una sola carga abierta, el bloqueo de los saldos en el orden global y la reversión de toda la carga si falta stock.
+**No se dibuja:** el administrador que opera, que es el autor del registro y no se dibuja como objeto, el número correlativo, los dos índices únicos parciales que respaldan que el vehículo y el chofer tengan una sola carga abierta, el bloqueo de los saldos en el orden global y la reversión de toda la carga si falta stock.
 
 ##### Operación: reponerCargaDelCamion(cargaId, items)
 
@@ -31904,11 +33730,15 @@ sequenceDiagram
         CAR->>ICA: sumarRepuesto(llenasRepuestas)
     end
     CAR-->>-SRV: carga
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionOrigen
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionDestino
     loop Por cada tipo de garrafa repuesto
         SRV->>+ICA: getProducto()
         ICA-->>-SRV: producto
-        Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasRepuestas, reposicion)
         alt El depósito tiene las unidades
             LED-->>-SRV: aplicado
         else El depósito no tiene las unidades
@@ -31921,7 +33751,7 @@ sequenceDiagram
 
 **Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` sabe si está abierta y cada `ItemCarga` suma lo repuesto a su renglón. *Fabricación pura*: `StockLedgerService` (CU-250).
+**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` sabe si está abierta y conoce el depósito y el camión, por eso entrega las dos `UbicacionDeStock` del movimiento; cada `ItemCarga` suma lo repuesto a su renglón. *Fabricación pura*: `StockLedgerService` (CU-250).
 
 **No se dibuja:** el bloqueo de los saldos en el orden global y el guardado.
 
@@ -31944,18 +33774,24 @@ sequenceDiagram
     SRV->>+CAR: cancelar()
     CAR->>CAR: validarQueEstaCargando()
     CAR-->>-SRV: carga
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionOrigen
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionDestino
     loop Por cada tipo de garrafa de la carga
         SRV->>+ICA: getProducto()
         ICA-->>-SRV: producto
-        Note over SRV,LED: Del camión al depósito: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        SRV->>+ICA: getLlenasCargadas()
+        ICA-->>-SRV: llenasCargadas
+        Note over SRV,LED: Del camión al depósito: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
+        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasCargadas, cancelacionDeCarga)
     end
     SRV-->>-ADM: carga
 ```
 
 **Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` sabe si todavía está cargando y cambia su propio estado a cancelada. *Fabricación pura*: `StockLedgerService` (CU-250) devuelve todo al depósito.
+**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` sabe si todavía está cargando, cambia su propio estado a cancelada y conoce el camión y el depósito, por eso entrega las dos `UbicacionDeStock` del movimiento. *Fabricación pura*: `StockLedgerService` (CU-250) devuelve todo al depósito.
 
 **No se dibuja:** el bloqueo de los saldos en el orden global y el guardado.
 
@@ -32069,10 +33905,12 @@ sequenceDiagram
         end
         LST->>PED: getItems()
         loop Por cada ítem del pedido
+            LST->>+ITP: getProducto()
+            ITP-->>-LST: producto
             LST->>+ITP: getCantidad()
             ITP-->>-LST: cantidad
-            Note over LST,LED: Llenas que salen hacia el cliente y vacías que se reciben, una a una: ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo de la ubicación de origen
-            LST->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+            Note over LST,LED: Llenas que salen hacia el cliente (destino nula) y vacías que se reciben, una a una:<br/>ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo de la ubicación de origen
+            LST->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, llenas, llenas, cantidad, entrega)
             alt La ubicación de origen tiene las llenas
                 LED-->>-LST: aplicado
             else El camión con carga abierta no alcanza lo entregado
@@ -32159,7 +33997,7 @@ sequenceDiagram
     ADM->>+SRV: cerrarRendicionDeStock(cargaId, nota)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: cerrar(nota, autor)
+    SRV->>+CAR: cerrar(nota, administrador)
     CAR->>CAR: validarQueRegreso()
     loop Por cada tipo de garrafa de la carga
         CAR->>ICA: calcularDiferencia()
@@ -32168,11 +34006,17 @@ sequenceDiagram
         CAR->>CAR: validarNotaDeDiferencia(nota)
     end
     CAR-->>-SRV: carga
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionOrigen
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionDestino
     loop Por cada tipo de garrafa de la carga
         SRV->>+ICA: getProducto()
         ICA-->>-SRV: producto
-        Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo del camión
-        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        SRV->>+ICA: getLlenasDeclaradas()
+        ICA-->>-SRV: llenasDeclaradas
+        Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma<br/>y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del camión
+        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasDeclaradas, cierreDeRendicion)
         opt Faltaron garrafas llenas
             SRV->>PRO: restarStock(faltante)
             alt El stock vendible alcanza para el faltante
@@ -32428,14 +34272,15 @@ sequenceDiagram
     participant LED as :StockLedgerService
     participant UBO as origen:UbicacionDeStock
     participant UBD as destino:UbicacionDeStock
-    participant SAL as saldo:SaldoDeStock
+    participant SAO as saldoOrigen:SaldoDeStock
+    participant SAD as saldoDestino:SaldoDeStock
 
     Note over CTL,LED: Caso incluido desde CU-212, CU-213, CU-217, CU-218, CU-220 y CU-222
     CTL->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
     opt El movimiento sale de una ubicación
         LED->>+UBO: descontar(producto, condicionOrigen, cantidad)
-        UBO->>+SAL: restar(cantidad)
-        SAL-->>-UBO: descontado
+        UBO->>+SAO: restar(cantidad)
+        SAO-->>-UBO: descontado
         UBO-->>-LED: descontado
     end
     alt El origen tenía la cantidad, o el movimiento entra desde afuera
@@ -32445,7 +34290,7 @@ sequenceDiagram
                 create participant NSA as nuevo:SaldoDeStock
                 UBD->>NSA: «create»(producto, condicionDestino, cantidad)
             else La ubicación ya tiene saldo de ese tipo y condición
-                UBD->>SAL: sumar(cantidad)
+                UBD->>SAD: sumar(cantidad)
             end
             deactivate UBD
         end
@@ -32460,7 +34305,7 @@ sequenceDiagram
 
 **Clases participantes:** `StockService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código; el mismo papel lo cumplen los demás controladores que lo invocan), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código) y los objetos de dominio `UbicacionDeStock`, `SaldoDeStock` y `MovimientoDeStock`.
 
-**GRASP.** *Controlador*: el del caso base. *Fabricación pura*: `StockLedgerService` concentra la regla común a todo movimiento (el saldo no queda negativo, el movimiento se asienta) para que ninguna otra clase escriba saldos. *Experto*: cada `UbicacionDeStock` descuenta y acredita sus propios saldos. *Creador*: la `UbicacionDeStock` crea el `SaldoDeStock` que acumula (composición) y el libro registra el `MovimientoDeStock`.
+**GRASP.** *Controlador*: el del caso base. *Fabricación pura*: `StockLedgerService` concentra la regla común a todo movimiento (el saldo no queda negativo, el movimiento se asienta) para que ninguna otra clase escriba saldos. *Experto*: cada `UbicacionDeStock` descuenta y acredita sus propios saldos; el saldo que se resta (`saldoOrigen`) y el que se suma (`saldoDestino`) son dos instancias de `SaldoDeStock`, una de cada ubicación. *Creador*: la `UbicacionDeStock` crea el `SaldoDeStock` que acumula (composición) y el libro registra el `MovimientoDeStock`.
 
 **No se dibuja:** el bloqueo de los saldos en el orden global, la clave única parcial que vuelve idempotente el descuento de una entrega y el cambio de lo vendible, que decide cada caso base.
 
@@ -32473,87 +34318,14 @@ sequenceDiagram
 
 ### SS-20 — Compras (I-13)
 
-#### DSD — CU-214: Gestionar los Proveedores
+#### DSD — CU-214: Consultar los Proveedores
 
-##### Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-214 Gestionar los Proveedores · registrarProveedor
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :SupplierService
-    participant DIS as distribuidora:Distribuidora
-
-    ADM->>+SRV: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-    SRV->>+DIS: crearProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-    DIS->>DIS: validarCuitSinUsar(cuit)
-    create participant PRV as nuevo:Proveedor
-    DIS->>PRV: «create»(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-    DIS-->>-SRV: proveedor
-    SRV-->>-ADM: proveedor
-```
-
-**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `Proveedor`.
-
-**GRASP.** *Controlador*: `SupplierService`. *Creador*: la `Distribuidora` crea los `Proveedor` a los que compra. *Experto*: la `Distribuidora` conoce a sus proveedores, así que ella valida que el CUIT no pertenezca a otro vigente.
-
-**No se dibuja:** la validación del dígito verificador del CUIT, el guardado del proveedor y el contexto de la distribuidora.
-
-##### Operación: actualizarProveedor(proveedorId, datos)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-214 Gestionar los Proveedores · actualizarProveedor
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :SupplierService
-    participant COL as :Map#lt;String, Proveedor#gt;
-    participant PRV as proveedor:Proveedor
-
-    ADM->>+SRV: actualizarProveedor(proveedorId, datos)
-    SRV->>+COL: get(proveedorId)
-    COL-->>-SRV: proveedor
-    SRV->>+PRV: actualizar(datos)
-    PRV-->>-SRV: proveedor
-    SRV-->>-ADM: proveedor
-```
-
-**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
-
-**GRASP.** *Controlador*: `SupplierService`. *Experto*: el `Proveedor` conoce sus datos y es quien los actualiza.
-
-**No se dibuja:** la comprobación de que el CUIT nuevo no pertenezca a otro proveedor vigente, el rechazo de un proveedor de otra distribuidora y el guardado.
-
-##### Operación: darDeBajaProveedor(proveedorId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-214 Gestionar los Proveedores · darDeBajaProveedor
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :SupplierService
-    participant COL as :Map#lt;String, Proveedor#gt;
-    participant PRV as proveedor:Proveedor
-
-    ADM->>+SRV: darDeBajaProveedor(proveedorId)
-    SRV->>+COL: get(proveedorId)
-    COL-->>-SRV: proveedor
-    SRV->>PRV: darDeBaja()
-    SRV-->>-ADM: confirmacion
-```
-
-**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
-
-**GRASP.** *Controlador*: `SupplierService`. *Experto*: el `Proveedor` es quien cambia su propio estado a dado de baja.
-
-**No se dibuja:** el guardado de la baja lógica.
 
 ##### Operación: consultarProveedores(termino)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-214 Gestionar los Proveedores · consultarProveedores
+    title DSD — CU-214 Consultar los Proveedores · consultarProveedores
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :SupplierService
@@ -32577,10 +34349,108 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El CUIT es único entre los proveedores vigentes de la distribuidora, con un índice único parcial.
-- Sólo cambian los campos enviados.
-- La baja es lógica: las órdenes y las recepciones ya registradas siguen apuntando al proveedor para explicar el historial de compras.
 - La búsqueda por término mira la razón social y el CUIT, igual que las demás búsquedas de listados del panel.
+
+---
+
+#### DSD — CU-261: Registrar un Proveedor
+
+
+##### Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-261 Registrar un Proveedor · registrarProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    SRV->>+DIS: crearProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    DIS->>DIS: validarCuitSinUsar(cuit)
+    create participant PRV as nuevo:Proveedor
+    DIS->>PRV: «create»(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    DIS-->>-SRV: proveedor
+    SRV-->>-ADM: proveedor
+```
+
+**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `Proveedor`.
+
+**GRASP.** *Controlador*: `SupplierService`. *Creador*: la `Distribuidora` crea los `Proveedor` a los que compra. *Experto*: la `Distribuidora` conoce a sus proveedores, así que ella valida que el CUIT no pertenezca a otro vigente.
+
+**No se dibuja:** la validación del dígito verificador del CUIT, el guardado del proveedor y el contexto de la distribuidora.
+
+**Observaciones de diseño**
+
+- El CUIT es único entre los proveedores vigentes de la distribuidora, con un índice único parcial.
+
+---
+
+#### DSD — CU-262: Modificar un Proveedor
+
+
+##### Operación: actualizarProveedor(proveedorId, datos)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-262 Modificar un Proveedor · actualizarProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant COL as :Map#lt;String, Proveedor#gt;
+    participant PRV as proveedor:Proveedor
+
+    ADM->>+SRV: actualizarProveedor(proveedorId, datos)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV->>+PRV: actualizar(datos)
+    PRV-->>-SRV: proveedor
+    SRV-->>-ADM: proveedor
+```
+
+**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
+
+**GRASP.** *Controlador*: `SupplierService`. *Experto*: el `Proveedor` conoce sus datos y es quien los actualiza.
+
+**No se dibuja:** la comprobación de que el CUIT nuevo no pertenezca a otro proveedor vigente, el rechazo de un proveedor de otra distribuidora y el guardado.
+
+**Observaciones de diseño**
+
+- Sólo cambian los campos enviados.
+
+---
+
+#### DSD — CU-263: Dar de Baja un Proveedor
+
+
+##### Operación: darDeBajaProveedor(proveedorId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-263 Dar de Baja un Proveedor · darDeBajaProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant COL as :Map#lt;String, Proveedor#gt;
+    participant PRV as proveedor:Proveedor
+
+    ADM->>+SRV: darDeBajaProveedor(proveedorId)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV->>PRV: darDeBaja()
+    SRV-->>-ADM: confirmacion
+```
+
+**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
+
+**GRASP.** *Controlador*: `SupplierService`. *Experto*: el `Proveedor` es quien cambia su propio estado a dado de baja.
+
+**No se dibuja:** el guardado de la baja lógica.
+
+**Observaciones de diseño**
+
+- La baja es lógica: las órdenes y las recepciones ya registradas siguen apuntando al proveedor para explicar el historial de compras.
 
 ---
 
@@ -32734,9 +34604,9 @@ sequenceDiagram
     ADM->>+SRV: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
     SRV->>+COLD: get(depositoId)
     COLD-->>-SRV: deposito
-    SRV->>+DEP: registrarRecepcion(ordenId, tipoDeComprobante, numeroDeComprobante, items, autor)
+    SRV->>+DEP: registrarRecepcion(ordenId, tipoDeComprobante, numeroDeComprobante, items, administrador)
     create participant REC as nueva:RecepcionDeCompra
-    DEP->>REC: «create»(tipoDeComprobante, numeroDeComprobante, autor)
+    DEP->>REC: «create»(tipoDeComprobante, numeroDeComprobante, administrador)
     loop Por cada tipo de garrafa recibido
         create participant IRE as nuevo:ItemRecepcion
         REC->>IRE: «create»(producto, llenasRecibidas, vaciasEntregadas, costoUnitario)
@@ -32753,11 +34623,13 @@ sequenceDiagram
         DEP->>DEP: validarCompraSinOrden(proveedorId)
     end
     DEP-->>-SRV: recepcion
+    SRV->>+DEP: getUbicacionDeStock()
+    DEP-->>-SRV: ubicacionDeStock
     loop Por cada tipo de garrafa recibido
         SRV->>+IRE: getProducto()
         IRE-->>-SRV: producto
-        Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta. ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo del depósito
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta.<br/>Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del depósito
+        SRV->>+LED: aplicarMovimientoDeStock(nula, ubicacionDeStock, producto, llenas, llenas, llenasRecibidas, compra)
         alt El depósito tiene los vacíos que se lleva la planta
             LED-->>-SRV: aplicado
             SRV->>PRO: sumarStock(llenasRecibidas)
@@ -32794,11 +34666,13 @@ sequenceDiagram
     COL-->>-SRV: recepcion
     SRV->>+REC: getItems()
     REC-->>-SRV: items
+    SRV->>+REC: getUbicacionDelDeposito()
+    REC-->>-SRV: ubicacionDeStock
     loop Por cada renglón de la recepción
         SRV->>+IRE: getProducto()
         IRE-->>-SRV: producto
-        Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock inverso y mueve el saldo del depósito
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock inverso y mueve el saldo del depósito
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, llenas, llenas, llenasRecibidas, anulacionDeCompra)
         alt El depósito todavía tiene las llenas ingresadas
             LED-->>-SRV: aplicado
             SRV->>PRO: restarStock(llenasRecibidas)
@@ -32858,13 +34732,14 @@ sequenceDiagram
 
 ### SS-21 — Caja, Rendiciones y Cuentas Corrientes
 
-#### DSD — CU-225: Gestionar las Cajas
+#### DSD — CU-225: Crear una Caja
+
 
 ##### Operación: crearCaja(nombre, tipo, requiereSesion)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-225 Gestionar las Cajas · crearCaja
+    title DSD — CU-225 Crear una Caja · crearCaja
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CashBoxService
@@ -32891,11 +34766,16 @@ sequenceDiagram
 - Las cajas de banco y de billetera no exigen sesión por omisión: no tienen arqueo físico. La marca `requiere_sesion` se puede forzar en una caja de efectivo para que no se opere sin una sesión abierta.
 - La unicidad del nombre es por distribuidora y sólo entre las cajas vigentes: una caja dada de baja libera su nombre.
 
+---
+
+#### DSD — CU-264: Modificar una Caja
+
+
 ##### Operación: modificarCaja(cajaId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-225 Gestionar las Cajas · modificarCaja
+    title DSD — CU-264 Modificar una Caja · modificarCaja
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CashBoxService
@@ -32936,6 +34816,7 @@ sequenceDiagram
     participant SRV as :CashBoxService
     participant CAJS as :Map#lt;String, Caja#gt;
     participant CAJ as caja:Caja
+    participant LDG as :CashLedgerService
 
     ADM->>+SRV: abrirCaja(cajaId, montoInicial)
     SRV->>+CAJS: get(cajaId)
@@ -32944,10 +34825,12 @@ sequenceDiagram
     CAJ->>CAJ: validarPuedeAbrirse()
     create participant NSE as nueva:SesionDeCaja
     CAJ->>NSE: «create»(montoInicial, administrador)
+    CAJ-->>-SRV: sesionDeCaja, diferencia
     opt El monto inicial difiere del saldo de la caja
-        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema diferencia de caja
+        SRV->>+LDG: registrarMovimientoDeCaja(cajaId, sentido, diferencia, diferenciaDeCaja, enEfectivo)
+        LDG-->>-SRV: movimiento
+        Note over SRV,LDG: El sentido sale del signo de la diferencia. Ajuste: ver DSD de<br/>registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja<br/>con la categoría de sistema diferencia de caja
     end
-    CAJ-->>-SRV: sesionDeCaja
     SRV-->>-ADM: sesionDeCaja
 ```
 
@@ -32986,7 +34869,9 @@ sequenceDiagram
     SRV->>+CAJ: calcularDiferencia(montoContado)
     CAJ-->>-SRV: diferencia
     opt La diferencia no es cero
-        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema diferencia de caja
+        SRV->>+CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
+        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>El importe es la diferencia. Crea el MovimientoDeCaja con<br/>la categoría de sistema diferencia de caja
+        deactivate CAJ
     end
     SRV->>+SES: cerrar(montoContado, diferencia, administrador)
     SES->>SES: validarAbierta()
@@ -33140,13 +35025,14 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-230: Gestionar las Categorías de Ingresos y Gastos
+#### DSD — CU-230: Crear una Categoría de Ingresos y Gastos
+
 
 ##### Operación: crearCategoriaDeCaja(nombre, sentido)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-230 Gestionar las Categorías de Ingresos y Gastos · crearCategoriaDeCaja
+    title DSD — CU-230 Crear una Categoría de Ingresos y Gastos · crearCategoriaDeCaja
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CashCategoryService
@@ -33172,11 +35058,16 @@ sequenceDiagram
 - Una categoría tiene un sentido —ingreso o egreso— y un movimiento sólo puede usar una categoría de su mismo sentido: sin eso, un reporte de gastos por categoría mezclaría entradas.
 - Las categorías de sistema (`system_code` no nulo) las busca el código por su código, no por su nombre: por eso no se pueden crear, renombrar ni desactivar desde el panel.
 
+---
+
+#### DSD — CU-265: Modificar una Categoría de Ingresos y Gastos
+
+
 ##### Operación: modificarCategoriaDeCaja(categoriaId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-230 Gestionar las Categorías de Ingresos y Gastos · modificarCategoriaDeCaja
+    title DSD — CU-265 Modificar una Categoría de Ingresos y Gastos · modificarCategoriaDeCaja
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CashCategoryService
@@ -33327,6 +35218,7 @@ sequenceDiagram
     participant REN as rendicion:RendicionChofer
     participant CHF as chofer:Chofer
     participant EMP as empleado:Empleado
+    participant CAJ as caja:Caja
 
     ADM->>+SRV: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
     SRV->>+RENS: get(rendicionId)
@@ -33335,7 +35227,8 @@ sequenceDiagram
     CAJS-->>-SRV: caja
     SRV->>+REN: aprobar(caja, resolucionDeDiferencia)
     REN->>REN: validarPresentada()
-    Note over SRV,REN: Ingreso: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema rendición de chofer
+    REN->>CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
+    Note over REN,CAJ: Ingreso: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>El importe es el efectivo declarado. Crea el MovimientoDeCaja<br/>con la categoría de sistema rendición de chofer
     alt La diferencia es un faltante a cargo del chofer
         REN->>+CHF: getEmpleado()
         CHF-->>-REN: empleado
@@ -33350,7 +35243,7 @@ sequenceDiagram
     SRV-->>-ADM: rendicion
 ```
 
-**Clases participantes:** `DriverSettlementService` (controlador de fachada), las colecciones `Map<String, RendicionChofer>` y `Map<String, Caja>` y los objetos de dominio `RendicionChofer`, `Chofer`, `Empleado` y `AsientoComision`. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
+**Clases participantes:** `DriverSettlementService` (controlador de fachada), las colecciones `Map<String, RendicionChofer>` y `Map<String, Caja>` y los objetos de dominio `RendicionChofer`, `Chofer`, `Empleado`, `Caja` y `AsientoComision`. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
 
 **GRASP.** *Controlador*: `DriverSettlementService`. *Experto*: la `RendicionChofer` conoce su estado y su diferencia, y es quien se aprueba y decide qué hacer con ella; el `Chofer` conoce a su empleado. *Creador*: el `Empleado` crea el `AsientoComision` de su libro de comisiones (composición del modelo conceptual).
 
@@ -33526,7 +35419,7 @@ sequenceDiagram
     participant CUE as cuentaCorriente:CuentaCorriente
 
     ADM->>+UCS: venderACuentaCorriente(clienteId, direccionId, items)
-    Note over UCS,PED: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con el método de pago cuenta corriente
+    Note over UCS,PED: Pedido: ver DSD de crearPedido (CU-005).<br/>Crea el Pedido con el método de pago cuenta corriente
     UCS->>+CLI: getCuentaCorriente(distribuidoraId)
     CLI-->>-UCS: cuentaCorriente
     UCS->>+PED: getTotal()
@@ -33606,20 +35499,21 @@ sequenceDiagram
     participant SRV as :CustomerAccountService
     participant CUES as :Map#lt;String, CuentaCorriente#gt;
     participant CUE as cuenta:CuentaCorriente
-    participant CHFS as :Map#lt;String, Chofer#gt;
-    participant CHF as chofer:Chofer
+    participant RENS as :Map#lt;String, RendicionChofer#gt;
     participant REN as rendicion:RendicionChofer
+    participant LDG as :CashLedgerService
 
     ADM->>+SRV: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
     SRV->>+CUES: get(cuentaId)
     CUES-->>-SRV: cuenta
     alt El cobro entra a una caja
-        Note over SRV,CUE: Caja: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja
+        SRV->>+LDG: registrarMovimientoDeCaja(cajaId, ingreso, importe, cobroDeCuentaCorriente, medio)
+        LDG-->>-SRV: movimiento
+        Note over SRV,LDG: Caja: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>Crea el MovimientoDeCaja
     else El cobro lo registra un chofer en la calle
-        SRV->>+CHFS: get(usuarioId)
-        CHFS-->>-SRV: chofer
-        SRV->>+CHF: getRendicionAbierta()
-        CHF-->>-SRV: rendicion
+        SRV->>+RENS: get(usuarioId)
+        RENS-->>-SRV: rendicion
+        Note over RENS: la rendición abierta del chofer
     end
     SRV->>+CUE: registrarPago(importe, medio, movimiento)
     create participant NAS as nuevo:AsientoCuentaCorriente
@@ -33638,7 +35532,7 @@ sequenceDiagram
     SRV-->>-ADM: asiento
 ```
 
-**Clases participantes:** `CustomerAccountService` (controlador de fachada), las colecciones `Map<String, CuentaCorriente>` y `Map<String, Chofer>` y los objetos de dominio `CuentaCorriente`, `AsientoCuentaCorriente`, `ImputacionCuentaCorriente`, `Chofer` y `RendicionChofer`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite.
+**Clases participantes:** `CustomerAccountService` (controlador de fachada), las colecciones `Map<String, CuentaCorriente>` y `Map<String, RendicionChofer>` (la rendición abierta de cada chofer) y los objetos de dominio `CuentaCorriente`, `AsientoCuentaCorriente`, `ImputacionCuentaCorriente`, `Chofer` y `RendicionChofer`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite.
 
 **GRASP.** *Controlador*: `CustomerAccountService`. *Creador*: `CuentaCorriente` crea los `AsientoCuentaCorriente` de su libro y las `ImputacionCuentaCorriente` que aplican un pago a sus cargos. *Experto*: la cuenta conoce sus cargos impagos y su antigüedad, y por eso reparte el pago entre ellos y actualiza su saldo; el `Chofer` conoce su rendición abierta, que suma el cobro a lo que debe entregar.
 
@@ -34031,6 +35925,7 @@ sequenceDiagram
     participant LIQS as :Map#lt;String, LiquidacionComisiones#gt;
     participant CAJS as :Map#lt;String, Caja#gt;
     participant LIQ as liquidacion:LiquidacionComisiones
+    participant LDG as :CashLedgerService
 
     ADM->>+SRV: pagarLiquidacion(liquidacionId, cajaId)
     SRV->>+LIQS: get(liquidacionId)
@@ -34039,8 +35934,10 @@ sequenceDiagram
     CAJS-->>-SRV: caja
     SRV->>+LIQ: pagar(caja)
     LIQ->>LIQ: validarAprobada()
-    Note over SRV,LIQ: Egreso: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema pago de comisiones
-    deactivate LIQ
+    LIQ-->>-SRV: total
+    SRV->>+LDG: registrarMovimientoDeCaja(cajaId, egreso, total, pagoDeComisiones, enEfectivo)
+    LDG-->>-SRV: movimiento
+    Note over SRV,LDG: Egreso: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>Crea el MovimientoDeCaja con la categoría de sistema<br/>pago de comisiones
     SRV-->>-ADM: liquidacion
 ```
 
@@ -34207,6 +36104,7 @@ sequenceDiagram
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant PAG as pago:Pago
+    participant CHO as chofer:Chofer
     participant UBI as ubicacion:UbicacionGPS
     participant ENV as envase:Envase
     participant NOT as :NotificationPort
@@ -34216,21 +36114,31 @@ sequenceDiagram
     PEDS-->>-UCS: pedido
     UCS->>+PED: entregar()
     PED->>PED: transicionar(entregado)
-    opt El método de pago es efectivo
-        PED->>PAG: marcarPagado()
-    end
     deactivate PED
+    opt El método de pago es efectivo
+        UCS->>+PED: getPago()
+        PED-->>-UCS: pago
+        UCS->>PAG: marcarPagado()
+    end
+    UCS->>+PED: getChofer()
+    PED-->>-UCS: chofer
+    UCS->>+CHO: getUbicacion()
+    CHO-->>-UCS: ubicacion
     UCS->>UBI: cerrarSeguimiento()
+    UCS->>+PED: getEnvases()
+    PED-->>-UCS: envases
     loop Por cada envase despachado en el pedido
         UCS->>ENV: entregarAlCliente(pedido)
     end
+    UCS->>+PED: getCliente()
+    PED-->>-UCS: cliente
     UCS-)NOT: sendOrderConfirmation(cliente, pedido)
     UCS-->>-CHF: pedido
 ```
 
-**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Pago`, `UbicacionGPS` y `Envase`, y `NotificationPort` (fabricación pura: el aviso al cliente).
+**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Pago`, `Chofer`, `UbicacionGPS` y `Envase`, y `NotificationPort` (fabricación pura: el aviso al cliente).
 
-**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación. *Experto*: `Pedido` es quien pasa a «entregado», registra el momento de la entrega y le indica a su `Pago` que quedó saldado; cada `Envase` despachado en el pedido es quien pasa a estar en poder del cliente y registra su `MovimientoEnvase`. El cierre del seguimiento lo hace la `UbicacionGPS`. La confirmación con código del cliente es otra operación, `confirmarEntregaConCodigo` (CU-079).
+**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación. *Experto*: `Pedido` es quien pasa a «entregado», registra el momento de la entrega y entrega su `Pago`, su `Chofer`, sus `Envase` y su `Cliente` (el controlador no los busca por su cuenta); el controlador le indica al `Pago` que quedó saldado; cada `Envase` despachado en el pedido es quien pasa a estar en poder del cliente y registra su `MovimientoEnvase`. El cierre del seguimiento lo hace la `UbicacionGPS` del `Chofer` que entregó. La confirmación con código del cliente es otra operación, `confirmarEntregaConCodigo` (CU-079).
 
 **No se dibuja:** la transacción con el bloqueo del pedido, el guardado, la verificación de que el pedido sea del chofer que lo cierra, los eventos en vivo al cliente y al panel, y que la entrega de los envases es un efecto best-effort: si falla, la entrega igual se confirma.
 
@@ -34240,8 +36148,13 @@ sequenceDiagram
 | `Map<String, Pedido>.get(...)` | `UpdateOrderStatusUseCase.execute`: lee el `Order` con bloqueo pesimista dentro de una transacción |
 | `Pedido.entregar()` | `UpdateOrderStatusUseCase.applyStatusEffects`: registra `Order.deliveredAt` |
 | `Pedido.transicionar(...)` | `transitionOrder()` |
+| `Pedido.getPago()` | `Order.paymentStatus`: el estado del pago vive en el pedido |
 | `Pago.marcarPagado()` | `UpdateOrderStatusUseCase.applyStatusEffects`: asigna `Order.paymentStatus` pagado cuando `Order.paymentMethod` es efectivo |
+| `Pedido.getChofer()` | `Order.deliveryId`, resuelto con `DeliveryService.buscarPorIdOUsuario` |
+| `Chofer.getUbicacion()` | `RealtimeDispatchPort.stopTracking`: el seguimiento se identifica por el usuario del chofer |
 | `UbicacionGPS.cerrarSeguimiento()` | `RealtimeDispatchPort.stopTracking` |
+| `Pedido.getEnvases()` | `CylinderLifecyclePort.onOrderDelivered`: busca por `Order.orderId` los envases despachados en el pedido |
+| `Pedido.getCliente()` | `Order.customerId` |
 | `Envase.entregarAlCliente(...)` | `CylinderLifecyclePort.onOrderDelivered`: pasa los envases del pedido a «en poder del cliente» |
 
 ---

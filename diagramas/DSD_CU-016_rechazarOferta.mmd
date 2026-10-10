@@ -5,6 +5,7 @@ sequenceDiagram
     participant SRV as :OrderService
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
+    participant ORQ as :DispatchOrchestratorService
     participant OFE as oferta:OfertaDespacho
 
     CHF->>+SRV: rechazarOferta(pedidoId)
@@ -16,6 +17,7 @@ sequenceDiagram
     SRV->>+PED: esReofertable()
     PED-->>-SRV: reofertable
     opt El pedido sigue pendiente y sin chofer
-        Note over SRV,PED: Re-oferta inmediata: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+        SRV->>ORQ: ofrecerAlSiguienteChofer(pedido)
+        Note over SRV,ORQ: Re-oferta inmediata: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
     end
     SRV-->>-CHF: rechazada

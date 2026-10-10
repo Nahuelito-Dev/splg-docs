@@ -48,7 +48,7 @@ A05 -[#B4432B]- U052
 A05 -[#B4432B]- U053
 A05 -[#B4432B]- U054
 A05 -[#B4432B]- U055
-A05 --|> A03
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U054 ..> U053 : <<include>>

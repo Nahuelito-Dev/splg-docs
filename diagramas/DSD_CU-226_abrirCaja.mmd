@@ -5,6 +5,7 @@ sequenceDiagram
     participant SRV as :CashBoxService
     participant CAJS as :Map#lt;String, Caja#gt;
     participant CAJ as caja:Caja
+    participant LDG as :CashLedgerService
 
     ADM->>+SRV: abrirCaja(cajaId, montoInicial)
     SRV->>+CAJS: get(cajaId)
@@ -13,8 +14,10 @@ sequenceDiagram
     CAJ->>CAJ: validarPuedeAbrirse()
     create participant NSE as nueva:SesionDeCaja
     CAJ->>NSE: «create»(montoInicial, administrador)
+    CAJ-->>-SRV: sesionDeCaja, diferencia
     opt El monto inicial difiere del saldo de la caja
-        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema diferencia de caja
+        SRV->>+LDG: registrarMovimientoDeCaja(cajaId, sentido, diferencia, diferenciaDeCaja, enEfectivo)
+        LDG-->>-SRV: movimiento
+        Note over SRV,LDG: El sentido sale del signo de la diferencia. Ajuste: ver DSD de<br/>registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja<br/>con la categoría de sistema diferencia de caja
     end
-    CAJ-->>-SRV: sesionDeCaja
     SRV-->>-ADM: sesionDeCaja

@@ -40,12 +40,12 @@ classDiagram
     class StockLedgerService {
         <<fachada>>
     }
-    class Distribuidora
-    class ConfiguracionModulo
-    class Vehiculo
     class Chofer
-    class Producto
+    class ConfiguracionModulo
+    class Distribuidora
     class ItemCarga
+    class Producto
+    class Vehiculo
 
     Map_String_CargaDeCamion "1" o-- "0..*" CargaDeCamion : elementos
     List_CargaDeCamion "1" o-- "0..*" CargaDeCamion : elementos

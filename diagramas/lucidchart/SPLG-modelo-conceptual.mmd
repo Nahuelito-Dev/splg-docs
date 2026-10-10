@@ -36,6 +36,18 @@ classDiagram
             cambios
             fecha
         }
+        class Auditoria {
+            entidad afectada
+            fecha y hora
+        }
+        class DetalleAuditoria {
+            campo
+            valor anterior
+            valor nuevo
+        }
+        class TipoAccionAuditoria {
+            nombre
+        }
     }
 
     namespace Clientes {
@@ -74,7 +86,7 @@ classDiagram
         class Envase {
             número de serie
             estado
-            depósito
+            monto del depósito
             /vencimiento
         }
         class MovimientoEnvase {
@@ -244,7 +256,6 @@ classDiagram
             estado
             resolución
             fotografía
-            clave de la fotografía
         }
         class Incidencia {
             tipo
@@ -515,8 +526,8 @@ classDiagram
             estado
             efectivo esperado
             efectivo declarado
-            gastos del chofer
-            diferencia
+            /gastos del chofer
+            /diferencia
             resolución de la diferencia
             presentada el
             aprobada el
@@ -598,6 +609,10 @@ classDiagram
     Distribuidora "1" *-- "0..*" FranjaHoraria : define ▸
     Distribuidora "1" *-- "0..*" ConfiguracionModulo : parametriza ▸
     Usuario "0..1" -- "0..*" AsientoAuditoria : origina ▸
+    Usuario "0..1" -- "0..*" Auditoria : realiza ▸
+    Distribuidora "0..1" -- "0..*" Auditoria : delimita ▸
+    Auditoria "1" *-- "0..*" DetalleAuditoria : detalla con ▸
+    TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica ▸
     Cliente "1" *-- "0..*" DireccionEntrega : registra ▸
     Cliente "1" -- "0..*" Pedido : realiza ▸
     Cliente "1" *-- "0..*" Carrito : arma ▸

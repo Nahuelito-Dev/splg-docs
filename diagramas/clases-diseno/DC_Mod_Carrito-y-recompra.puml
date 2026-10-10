@@ -73,7 +73,6 @@ class RepurchaseForecastService <<fachada>> {
 }
 class ConsumptionEstimatorService <<fabricación pura>> {
   + estimarProximaRecompra(cliente: Cliente): Fecha
-  + estimarProximaRecompra(fechaDeRegistro: Fecha,\n      cantidadPorMes: Decimal): Fecha
   + estimarProximaRecompra(ultimaCompra: Fecha,\n      cantidadPorMes: Decimal): Fecha
 }
 class ConsumptionService <<fachada>> {
@@ -90,10 +89,10 @@ class "List<Cliente>" as List_Cliente <<referencia>>
 class "List<InvitacionRecompra>" as List_InvitacionRecompra <<referencia>>
 class "Map<String, InvitacionRecompra>" as Map_String_InvitacionRecompra <<referencia>>
 class NotificationsService <<referencia>>
-class Producto <<referencia>>
-class InvitacionRecompra <<referencia>>
 class Carrito <<referencia>>
 class Cliente <<referencia>>
+class Producto <<referencia>>
+class InvitacionRecompra <<referencia>>
 
 CartService --> "1" Map_String_Producto
 ConsumptionService --> "1" ConsumptionEstimatorService
@@ -111,7 +110,7 @@ CartService ..> Cliente
 CartService ..> Producto
 ConsumptionService ..> Cliente
 RepurchaseEstimatesService ..> Cliente
-RepurchaseForecastService ..> InvitacionRecompra : <<create>>
+RepurchaseForecastService ..> "<<create>>" InvitacionRecompra
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

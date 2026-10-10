@@ -38,6 +38,7 @@ actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "Firebase\n(ACT-07)" as A07 <<sistema externo>>
 
 rectangle "SS-03 Despacho y Asignación" {
   usecase "CU-012\nAsignar Chofer Manualmente" as U012 #back:FFFFFF;line:7B4B8A
@@ -51,8 +52,10 @@ rectangle "SS-03 Despacho y Asignación" {
   usecase "Notificar Cliente" as F_AVISO <<factorizado>> #back:FFFFFF;line:7B4B8A
 }
 
-usecase "CU-246\nVerificar la Habilitación\nLaboral del Chofer\n(SS-19)" as U246 <<planificado>> #back:FFFFFF;line:6B7683
-usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer\n(SS-08)" as U248 <<planificado>> #back:FFFFFF;line:6B7683
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-246\nVerificar la Habilitación\nLaboral del Chofer\n(SS-19)" as U246 <<planificado>> #back:FFFFFF;line:6B7683
+  usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer\n(SS-08)" as U248 <<planificado>> #back:FFFFFF;line:6B7683
+}
 
 A02 -[#2E7D46]- U015
 A02 -[#2E7D46]- U016
@@ -63,7 +66,11 @@ A04 -[#8A6D1F]- U013
 A04 -[#8A6D1F]- U014
 A04 -[#8A6D1F]- U107
 A04 -[#8A6D1F]- U149
-A05 --|> A03
+U013 -[#6B7683]- A07
+U014 -[#6B7683]- A07
+U015 -[#6B7683]- A07
+U016 -[#6B7683]- A07
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U149 ..> U015 : <<include>>
@@ -76,9 +83,6 @@ U013 ..> U248 : <<include>>
 U015 ..> U248 : <<include>>
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
-U014 ..> U013 : <<extend>>
-note on link
-  Punto de extensión: no hay choferes disponibles en el radio
-end note
+U014 ..> U013 : <<extend>>\n(punto de extensión:\nno hay choferes disponibles en el\nradio)
 
 @enduml

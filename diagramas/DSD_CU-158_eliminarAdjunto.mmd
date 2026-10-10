@@ -5,12 +5,11 @@ sequenceDiagram
     participant SRV as :FleetAttachmentService
     participant COL as :Map#lt;String, TareaMantenimiento#gt;
     participant TAR as tarea:TareaMantenimiento
-    participant STO as :StoragePort
 
     ADM->>+SRV: eliminarAdjunto(tareaId, adjuntoId)
     SRV->>+COL: get(tareaId)
     COL-->>-SRV: tarea
     SRV->>+TAR: quitarAdjunto(adjuntoId)
-    TAR-->>-SRV: adjunto
-    SRV->>STO: remove(adjunto)
-    SRV-->>-ADM: confirmacion
+    Note over TAR: baja lógica<br/>(el archivo queda en S3)
+    deactivate TAR
+    deactivate SRV

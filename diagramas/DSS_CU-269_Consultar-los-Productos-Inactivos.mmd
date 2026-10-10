@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-269 Consultar los Productos Inactivos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarProductosInactivos()
+    activate SIS
+    SIS-->>ADM: productos dados de baja de la distribuidora
+    deactivate SIS

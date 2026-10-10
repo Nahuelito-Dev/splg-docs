@@ -50,7 +50,7 @@ class Promocion {
 class Envase {
   número de serie
   estado
-  depósito
+  monto del depósito
   /vencimiento
 }
 class MovimientoEnvase {

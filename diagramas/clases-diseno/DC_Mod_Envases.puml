@@ -64,11 +64,11 @@ class CylinderService <<fachada>> {
   + asignarEnvasesAPedido(pedidoId: Identificador,\n      numerosDeSerie: Lista): Envase[*]
   + consultarEnvase(envaseId: Identificador): Envase
   + consultarEnvasesProximosAVencer(dias: Entero): Envase[*]
-  + consultarHistorialDelEnvase(envaseId: Identificador): MovimientoDeCaja[*]
+  + consultarHistorialDelEnvase(envaseId: Identificador): MovimientoEnvase[*]
   + consultarVigenciaDelEnvase(envaseId: Identificador): FechaHora
-  + darDeAltaEnvase(numeroDeSerie: Cadena,\n      tipoDeProducto: Cadena, deposito: Cadena): Envase
+  + darDeAltaEnvase(numeroDeSerie: Cadena,\n      tipoDeProducto: Cadena, deposito: Moneda): Envase
   + listarEnvases(estado: Cadena): Envase[*]
-  + registrarMovimientoDeEnvase(envaseId: Identificador,\n      estadoDestino: Cadena, pedidoId: Identificador,\n      observacion: Cadena): Envase
+  + registrarMovimientoDeEnvase(envaseId: Identificador,\n      estadoDestino: EstadoDelEnvase,\n      pedidoId: Identificador,\n      observacion: Cadena): Envase
   + registrarRevisionDeEnvase(envaseId: Identificador,\n      fecha: Fecha, resultado: Cadena,\n      vencimiento: Fecha): Envase
   + verificarVigenciaAlAsignar(pedidoId: Identificador,\n      series: Lista): Envase[*]
 }
@@ -78,8 +78,8 @@ class "Map<String, Envase>" as Map_String_Envase <<colección>> {
 }
 class Envase <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
-class Pedido <<referencia>>
 class Distribuidora <<referencia>>
+class Pedido <<referencia>>
 
 Map_String_Envase "1" o--> "0..*" Envase
 CylinderService --> "1" Map_String_Envase

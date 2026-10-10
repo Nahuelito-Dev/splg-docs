@@ -7,7 +7,7 @@ sequenceDiagram
     ADM->>SIS: descargarAdjunto(tareaId, adjuntoId)
     activate SIS
     alt el adjunto existe
-        SIS-->>ADM: contenido del archivo
+        SIS-->>ADM: dirección de descarga firmada, de corta vigencia, con la que se baja el archivo
     else el adjunto no existe
         SIS-->>ADM: recurso no encontrado
     end

@@ -14,11 +14,13 @@ sequenceDiagram
     COL-->>-SRV: recepcion
     SRV->>+REC: getItems()
     REC-->>-SRV: items
+    SRV->>+REC: getUbicacionDelDeposito()
+    REC-->>-SRV: ubicacionDeStock
     loop Por cada renglón de la recepción
         SRV->>+IRE: getProducto()
         IRE-->>-SRV: producto
-        Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock inverso y mueve el saldo del depósito
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock inverso y mueve el saldo del depósito
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, llenas, llenas, llenasRecibidas, anulacionDeCompra)
         alt El depósito todavía tiene las llenas ingresadas
             LED-->>-SRV: aplicado
             SRV->>PRO: restarStock(llenasRecibidas)

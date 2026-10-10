@@ -61,49 +61,46 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class JobPositionService <<fachada>> {
-  + consultarPuestosDeTrabajo()
-  + crearPuestoDeTrabajo(nombre: Cadena,\n      categoria: Cadena): PuestoDeTrabajo
+  + consultarPuestosDeTrabajo(): PuestoDeTrabajo[*]
+  + crearPuestoDeTrabajo(nombre: Cadena,\n      categoria: CategoriaDePuesto): PuestoDeTrabajo
   + eliminarPuestoDeTrabajo(puestoId: Identificador): Cadena
   + modificarPuestoDeTrabajo(puestoId: Identificador,\n      datos: Registro): PuestoDeTrabajo
 }
-class "Map<String, PuestoDeTrabajo>" as Map_String_PuestoDeTrabajo <<colección>> {
-  + get(clave: Cadena): PuestoDeTrabajo
-}
 class EmployeeService <<fachada>> {
   + consultarDocumentacionDelEmpleado(empleadoId: Identificador): TareaMantenimiento[*]
-  + consultarEmpleado(empleadoId: Identificador)
-  + consultarEmpleados(filtros: Registro)
+  + consultarEmpleado(empleadoId: Identificador): Empleado
+  + consultarEmpleados(filtros: Registro): Empleado[*]
   + consultarSaldoDeVacaciones(empleadoId: Identificador,\n      anio: Entero): Entero
   + eliminarEmpleado(empleadoId: Identificador): Cadena
   + modificarEmpleado(empleadoId: Identificador,\n      datos: Registro): Empleado
   + registrarEmpleado(datos: Registro): Empleado
   + reingresarEmpleado(empleadoId: Identificador,\n      fechaDeIngreso: Fecha): Empleado
 }
-class CuilValidator <<fabricación pura>> {
-  + esValido(cuil: Cadena)
+class "Map<String, PuestoDeTrabajo>" as Map_String_PuestoDeTrabajo <<colección>> {
+  + get(clave: Cadena): PuestoDeTrabajo
 }
 class "Map<String, Empleado>" as Map_String_Empleado <<colección>> {
   + get(clave: Cadena): Empleado
 }
 class "List<Empleado>" as List_Empleado <<colección>> {
   + filtrar(filtros: Registro): Empleado[*]
-  + getActivosPorPuesto()
+  + getActivosPorPuesto(): Empleado[*]
 }
 class TerminateEmployeeUseCase <<controlador>> {
   + registrarEgresoDelEmpleado(empleadoId: Identificador,\n      fechaDeEgreso: Fecha, motivo: Cadena): Empleado
 }
 class GrantEmployeeAccountUseCase <<controlador>> {
-  + otorgarCuentaDeAcceso(empleadoId: Identificador,\n      correo: Cadena): Empleado
+  + otorgarCuentaDeAcceso(empleadoId: Identificador,\n      datosDeAcceso: Registro): Empleado
 }
 class AttendanceService <<fachada>> {
-  + consultarAsistencias(desde: Fecha, hasta: Fecha)
+  + consultarAsistencias(desde: Fecha,\n      hasta: Fecha): JornadaDeTrabajo[*]
   + corregirAsistencia(asistenciaId: Identificador,\n      datos: Registro, nota: Cadena): JornadaDeTrabajo
   + registrarAsistencia(empleadoId: Identificador,\n      ingreso: FechaHora,\n      egreso: FechaHora): JornadaDeTrabajo
   + registrarFinDeJornada()
   + registrarInicioDeJornada()
 }
 class "List<JornadaDeTrabajo>" as List_JornadaDeTrabajo <<colección>> {
-  + getAbiertasDeHoy()
+  + getAbiertasDeHoy(): JornadaDeTrabajo[*]
   + getEntre(desde: FechaHora,\n      hasta: FechaHora): JornadaDeTrabajo[*]
 }
 class "Map<String, JornadaDeTrabajo>" as Map_String_JornadaDeTrabajo <<colección>> {
@@ -112,7 +109,7 @@ class "Map<String, JornadaDeTrabajo>" as Map_String_JornadaDeTrabajo <<colecció
 class LeaveService <<fachada>> {
   + aprobarLicencia(licenciaId: Identificador): LicenciaLaboral
   + cancelarLicencia(licenciaId: Identificador): LicenciaLaboral
-  + consultarLicencias(estado: Cadena, desde: Fecha,\n      hasta: Fecha)
+  + consultarLicencias(estado: Cadena, desde: Fecha,\n      hasta: Fecha): LicenciaLaboral[*]
   + modificarLicencia(licenciaId: Identificador,\n      datos: Registro): LicenciaLaboral
   + rechazarLicencia(licenciaId: Identificador,\n      motivo: Cadena): LicenciaLaboral
   + registrarLicencia(empleadoId: Identificador,\n      tipo: Cadena, desde: Fecha, hasta: Fecha,\n      motivo: Cadena): LicenciaLaboral
@@ -122,13 +119,13 @@ class "Map<String, LicenciaLaboral>" as Map_String_LicenciaLaboral <<colección>
 }
 class "List<LicenciaLaboral>" as List_LicenciaLaboral <<colección>> {
   + filtrar(estado: Cadena, desde: FechaHora,\n      hasta: FechaHora): LicenciaLaboral[*]
-  + getAprobadasQueCubren(hoy: Fecha)
+  + getAprobadasQueCubren(hoy: Fecha): LicenciaLaboral[*]
 }
 class VacationPolicy <<fabricación pura>> {
   + diasCorrespondientes(fechaDeIngreso: Fecha,\n      anio: Entero): Entero
 }
 class PersonnelDashboardService <<fachada>> {
-  + consultarTableroDePersonal(): Entero
+  + consultarTableroDePersonal(): Registro
 }
 class PuestoDeTrabajo <<referencia>>
 class Empleado <<referencia>>
@@ -136,10 +133,10 @@ class JornadaDeTrabajo <<referencia>>
 class LicenciaLaboral <<referencia>>
 class RegistroService <<referencia>>
 class "List<TareaMantenimiento>" as List_TareaMantenimiento <<referencia>>
-class Distribuidora <<referencia>>
-class Chofer <<referencia>>
 class Usuario <<referencia>>
+class Distribuidora <<referencia>>
 class TareaMantenimiento <<referencia>>
+class Chofer <<referencia>>
 
 Map_String_PuestoDeTrabajo "1" o--> "0..*" PuestoDeTrabajo
 Map_String_Empleado "1" o--> "0..*" Empleado

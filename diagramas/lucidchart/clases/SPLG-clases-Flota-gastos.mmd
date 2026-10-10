@@ -7,7 +7,7 @@ classDiagram
     class FuelLoadService {
         <<fachada>>
         + anularCargaDeCombustible(cargaId: Identificador): CargaCombustible
-        + consultarCargasDeCombustible(filtros: Registro): CargaDeCamion[*]
+        + consultarCargasDeCombustible(filtros: Registro): CargaCombustible[*]
         + consultarConsumoDeCombustible(vehiculoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + modificarCargaDeCombustible(cargaId: Identificador, datos: Registro): CargaCombustible
         + registrarCargaDeCombustible(vehiculoId: Identificador, datos: Registro): CargaCombustible
@@ -20,12 +20,12 @@ classDiagram
 
     class List_CargaCombustible["List<CargaCombustible>"] {
         <<colección>>
-        + getVigentes(filtros: Registro): CargaDeCamion[*]
+        + getVigentes(filtros: Registro): CargaCombustible[*]
     }
 
     class FuelConsumptionCalculator {
         <<fabricación pura>>
-        + calcularConsumo(cargas: CargaDeCamion[*]): Registro
+        + calcularConsumo(cargas: CargaCombustible[*]): Registro
         + calcularDesvio(cargaCombustible: CargaCombustible, vehiculo: Vehiculo): Decimal
     }
 
@@ -95,7 +95,7 @@ classDiagram
         <<fachada>>
         + consultarCostoDeUnVehiculo(vehiculoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha, fechaHasta: Fecha): Registro
-        + ordenarPorCostoPorKilometro(costos: Registro)
+        + ordenarPorCostoPorKilometro(costos: Registro): Registro
     }
 
     class List_Vehiculo["List<Vehiculo>"] {

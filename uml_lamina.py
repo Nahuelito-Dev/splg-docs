@@ -59,7 +59,7 @@ def _actor(x, y, cod, nombre, color, esc=1.0, fs=15, ext=False):
              f'H{x + 17 * esc:.1f} M{x:.1f} {y + r + 28 * esc:.1f} L{x - 15 * esc:.1f} {y + r + 52 * esc:.1f} '
              f'M{x:.1f} {y + r + 28 * esc:.1f} L{x + 15 * esc:.1f} {y + r + 52 * esc:.1f}" '
              f'stroke="{TINTA}" stroke-width="1.6" fill="none"/>')
-    ls = ([f"«externo»"] if ext else []) + [nombre, f"(ACT-{cod})"]
+    ls = ([f"«sistema externo»"] if ext else []) + [nombre, f"(ACT-{cod})"]
     g.append(_texto(x, y + r + 52 * esc + 18 * esc + (len(ls) - 1) * fs * 0.6, ls, fs, False))
     g.append(f'<rect x="{x - 3:.1f}" y="{y - 3:.1f}" width="6" height="6" fill="{color}" stroke="none"/>')
     g.append("</g>")
@@ -90,15 +90,25 @@ def _rect_toca_elipse(x0, y0, x1, y1, cx, cy, rx, ry, margen=3):
 
 
 def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
-             secundario, factorizado, inc, ext, esp, gen, limite_txt, tintes_ss):
+             secundario, factorizado, inc, ext, esp, gen, limite_txt, tintes_ss,
+             titulo=None, columnas=4, ref_ss=None, compacto=False):
     import random
     # la celda deja entre ovalos un canal de 56x22: ahi entran las etiquetas de las relaciones
     CW, CH, RX, RY = 350, 114, 140, 42
     PAD, CAB = 22, 64
     FS = 12.5
-    META = 4
-    GAP = 56
-    ZONA = 300
+    # Las láminas del completo se miran a pantalla completa: letra más grande y menos aire.
+    SALTO_ACT = 330
+    ANCHO_TXT, FS_REL, FS_PAQ, FS_ACT = 27, 10, 15, 17
+    if compacto:
+        CW, CH, RX, RY = 330, 112, 152, 50
+        PAD, CAB = 18, 58
+        FS = 16
+        SALTO_ACT = 235
+        ANCHO_TXT, FS_REL, FS_PAQ, FS_ACT = 26, 13, 19, 20
+    META = columnas
+    GAP = 40 if compacto else 56
+    ZONA = 240 if compacto else 300
     MARCO = 50
     SEP = 28                                    # entre paquetes de una columna
 
@@ -108,7 +118,7 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
         cs = sorted(c for c in casos if casos[c]["ss"] == s)
         # las bases a la izquierda y los casos incluidos a la derecha
         cs = [c for c in cs if c not in ids_inc] + [c for c in cs if c in ids_inc]
-        paq.append({"id": s, "titulo": f"{s} — {SS[s]}", "casos": cs, "ss": s})
+        paq.append({"id": s, "titulo": SS[s] if s == ref_ss else f"{s} — {SS[s]}", "casos": cs, "ss": s})
     if factorizado:
         paq.append({"id": "FACT", "titulo": "Casos de uso factorizados", "casos": list(factorizado), "ss": None})
     for p in paq:
@@ -160,10 +170,10 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
         for grupo, orden in ((IZQ, IZQ), (DER, sorted(DER, key=lambda k: ideal[k]))):
             y = None
             for k in orden:
-                v = ideal[k] if y is None else max(ideal[k], y + 330)
+                v = ideal[k] if y is None else max(ideal[k], y + SALTO_ACT)
                 res[k] = v; y = v
         # 05 va debajo de 03 (la flecha de la generalizacion)
-        res[esp] = max(res[esp], res[gen] + 330)
+        res[esp] = max(res[esp], res[gen] + SALTO_ACT)
         return res
 
     def costo(cols):
@@ -222,8 +232,8 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
     off_y = Y_lim
     pos = {c: (x + X_lim, y + off_y) for c, (x, y) in pos_rel.items()}
     cajas = {k: (p, x + X_lim, y + off_y) for k, (p, x, y) in cajas_d.items()}
-    ax_i = X_lim - 150
-    ax_d = X_lim + W_lim + 150
+    ax_i = X_lim - ZONA / 2
+    ax_d = X_lim + W_lim + ZONA / 2
     apos = {k: ((ax_i if k in IZQ else ax_d), ay_rel[k] + off_y) for k in ACT}
     lo = min(y for _, y in apos.values()) - 40
     hi = max(y for _, y in apos.values()) + 220
@@ -231,7 +241,7 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
     LEY = 300
     H = Y_lim + H_lim + LEY
 
-    o = [_cabecera(W, H, f"Diagrama Completo de Casos de Uso — SPLG ({len(casos)} casos de uso)", 30)]
+    o = [_cabecera(W, H, titulo or f"Diagrama Completo de Casos de Uso — SPLG ({len(casos)} casos de uso)", 30)]
     o.append(f'<rect class="limite" data-x="{X_lim:.0f}" data-y="{Y_lim:.0f}" data-w="{W_lim:.0f}" data-h="{H_lim:.0f}" '
              f'x="{X_lim}" y="{Y_lim}" width="{W_lim:.0f}" height="{H_lim:.0f}" fill="#FFFFFF" stroke="#6B7683" stroke-width="2.4"/>')
     o.append(_texto(X_lim + W_lim / 2, Y_lim + 28, [limite_txt], 20, True))
@@ -271,7 +281,8 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
         if p["ss"]:
             i = subs.index(p["ss"])
             fondo, borde = TINTE[i % len(TINTE)], BORDE[i % len(BORDE)]
-            sub = f'({len(p["casos"])} casos de uso)'
+            sub = (f'({len(p["casos"])} casos de uso)' if p["ss"] != ref_ss else
+                   "(sólo como referencia)")
         else:
             fondo, borde = "#F2F4F6", "#6B7683"
             sub = "(comportamiento común, sin código propio)"
@@ -280,7 +291,7 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
                  f'fill="{fondo}" fill-opacity=".45" stroke="{borde}" stroke-width="2"/>'
                  f'<path d="M{x} {y + 26} H{x + p["w"]}" stroke="{borde}" stroke-width="1" opacity=".5"/></g>')
         titulos.append(f'<rect x="{x + 2}" y="{y + 2}" width="{min(p["w"] * 0.55, 480) - 4:.0f}" height="24" fill="{fondo}"/>'
-                       + _texto(x + 12, y + 13, [p["titulo"]], 15, True, "start", borde)
+                       + _texto(x + 12, y + 13, [p["titulo"]], FS_PAQ, True, "start", borde)
                        + _texto(x + 14, y + 44, [sub], 12, False, "start", borde))
     o += titulos
 
@@ -297,7 +308,9 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
                         u**3 * p0[1] + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t**3 * p3[1]))
         return pts
 
-    def ruta(a, b):
+    zonas_titulo = [(x, y, x + min(p["w"] * 0.55, 480), y + 54) for (p, x, y) in cajas.values()]
+
+    def ruta(a, b, tipo="include"):
         """Curva de a hacia b que no pasa por debajo de ningun otro ovalo: se prueban
         desvios cada vez mas grandes hacia un lado y hacia el otro y se toma el primero
         que no toca ninguna elipse ajena."""
@@ -307,7 +320,15 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
         nx, ny = -dy / L, dx / L
         ajenos = [p_ for k_, p_ in pos.items() if k_ not in (a, b)]
         mejor = None
-        for off in (0, 70, -70, 140, -140, 220, -220, 320, -320, 440, -440, 600, -600):
+        # entre dos ovalos pegados la flecha de un <<extend>> quedaria tan corta que no se
+        # ve la punta: se la obliga a describir un arco
+        p_a = _borde_elipse(xa, ya, RX, RY, xb, yb)
+        p_b = _borde_elipse(xb, yb, RX, RY, xa, ya)
+        corta = tipo == "extend" and math.hypot(p_a[0] - p_b[0], p_a[1] - p_b[1]) < 100
+        offsets = (0, 70, -70, 140, -140, 220, -220, 320, -320, 440, -440, 600, -600)
+        if corta:
+            offsets = (150, -150, 220, -220, 320, -320, 440, -440, 600, -600)
+        for off in offsets:
             c1 = (xa + dx / 3 + nx * off, ya + dy / 3 + ny * off)
             c2 = (xa + 2 * dx / 3 + nx * off, ya + 2 * dy / 3 + ny * off)
             p1 = _borde_elipse(xa, ya, RX, RY, c1[0], c1[1])
@@ -319,6 +340,9 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
             choques += 50 * sum(1 for (px, py) in pts
                                 if py < Y_lim + 60 or py > Y_lim + H_lim - 20
                                 or px < X_lim + 10 or px > X_lim + W_lim - 10)
+            # y que no pase por encima del titulo de ningun paquete
+            choques += 50 * sum(1 for (px, py) in pts for (zx0, zy0, zx1, zy1) in zonas_titulo
+                                if zx0 - 4 <= px <= zx1 + 4 and zy0 - 4 <= py <= zy1 + 4)
             if mejor is None or choques < mejor[0]:
                 mejor = (choques, p1, c1, c2, p2, pts)
             if choques == 0: break
@@ -326,7 +350,7 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
 
     rutas = {}
     for a, b, tipo, n in rel:
-        p1, c1, c2, p2, pts = ruta(a, b)
+        p1, c1, c2, p2, pts = ruta(a, b, tipo)
         rutas[(a, b, tipo)] = pts
         o.append(f'<path class="rel" data-tipo="{tipo}" data-desde="{a}" data-hasta="{b}" '
                  f'd="M{p1[0]:.1f} {p1[1]:.1f} C{c1[0]:.1f} {c1[1]:.1f} {c2[0]:.1f} {c2[1]:.1f} {p2[0]:.1f} {p2[1]:.1f}" '
@@ -334,22 +358,34 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
 
     # 4. ovalos y, encima de todo, las etiquetas de las relaciones
     elipses = list(pos.values())
+    pe_de = {}
+    for i, (a, b, punto) in enumerate(ext, 1):
+        pe_de.setdefault(b, []).append(f"PE-{i}")
     for cu, (cx, cy) in pos.items():
         if cu.startswith("F-"):
             borde, nombre, cod = "#6B7683", factorizado[cu], ""
         else:
             borde = BORDE[subs.index(casos[cu]["ss"]) % len(BORDE)]
             nombre, cod = casos[cu]["nombre"], cu
-        ls = ([cod] if cod else []) + _lineas(nombre, 27)
+        ls = ([cod] if cod else []) + _lineas(nombre, ANCHO_TXT)
+        # compartimento "extension points" del caso base de un <<extend>>
+        pes = pe_de.get(cu)
+        extra = ""
+        dy = 0
+        if pes:
+            # el compartimento va debajo del nombre: con letra grande se corre más
+            dy, yl, yt, fe = (-14, 18, 32, 12) if compacto else (-9, 12, 23, 10)
+            extra = (f'<line x1="{cx - 118:.1f}" y1="{cy + yl:.1f}" x2="{cx + 118:.1f}" y2="{cy + yl:.1f}" stroke="{borde}" stroke-width="1"/>'
+                     + _texto(cx, cy + yt, ["extension points: " + ", ".join(pes)], fe, False, "middle", TINTA))
         o.append(f'<g class="cu" data-cu="{cu}" data-x="{cx:.0f}" data-y="{cy:.0f}">'
                  f'<ellipse cx="{cx:.1f}" cy="{cy:.1f}" rx="{RX}" ry="{RY}" fill="#FFFFFF" stroke="{borde}" stroke-width="1.8"/>'
-                 + _texto(cx, cy, ls, FS, bool(cod)) + "</g>")
+                 + _texto(cx, cy + dy, ls, FS, bool(cod)) + extra + "</g>")
     puestas = []
     sin_lugar = 0
     for a, b, tipo, n in sorted(rel, key=lambda r: -math.hypot(pos[r[0]][0] - pos[r[1]][0], pos[r[0]][1] - pos[r[1]][1])):
         pts = rutas[(a, b, tipo)]
         txt = f"«{tipo}»" + (f" PE-{n}" if n else "")
-        wl, hl_ = len(txt) * 5.8 + 6, 13
+        wl, hl_ = len(txt) * FS_REL * 0.58 + 6, FS_REL + 3
         elegido, mejor_c = None, None
         orden_t = sorted(range(2, len(pts) - 2), key=lambda i: abs(i - len(pts) / 2))
         for i in orden_t:
@@ -365,13 +401,13 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
         puestas.append(r)
         o.append(f'<g class="etiqueta" data-tipo="{tipo}" data-desde="{a}" data-hasta="{b}">'
                  f'<rect x="{r[0]:.1f}" y="{r[1]:.1f}" width="{wl:.1f}" height="{hl_}" fill="#FFFFFF"/>'
-                 + _texto(mx, my, [txt], 10, False, "middle", TINTA) + "</g>")
+                 + _texto(mx, my, [txt], FS_REL, False, "middle", TINTA) + "</g>")
     completo.etiquetas_sin_lugar = sin_lugar
 
     # actores
     for k in ACT:
         x, y = apos[k]
-        o.append(_actor(x, y, k, NOMBRE_ACT[k], COLOR_ACT[k], 1.45, 17, ext=k in ("06", "07", "08", "09")))
+        o.append(_actor(x, y, k, NOMBRE_ACT[k], COLOR_ACT[k], 1.45, FS_ACT, ext=k in ("06", "07", "08", "09")))
     xe, ye = apos[esp]
     xg, yg = apos[gen]
     o.append(f'<path class="gen" data-esp="{esp}" data-gen="{gen}" d="M{xe:.1f} {ye - 24:.1f} V{yg + 168:.1f}" '
@@ -394,10 +430,14 @@ def completo(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, dir
              "ACT-06, ACT-07 y ACT-08 son actores secundarios: el sistema los invoca. ACT-09 es un sistema externo que inicia CU-104.",
              "Las líneas de cada actor se juntan en un haz hasta el borde del paquete y de ahí se abren a cada caso.",
              "Las flechas punteadas son relaciones entre casos de uso: «include» va del caso base al incluido; «extend» va de la extensión al caso base."]
+    if compacto:
+        notas = ["Actores fuera del límite del sistema · asociación actor–caso sin punta · «include»: del caso base al incluido · "
+                 "«extend»: de la extensión al caso base · en gris, casos de uso de otra lámina."]
     for tx_ in notas:
-        o.append(_texto(X_lim, ly, [tx_], 13, False, "start")); ly += 22
+        o.append(_texto(X_lim, ly, [tx_], 15 if compacto else 13, False, "start")); ly += 26 if compacto else 22
     ly += 10
-    o.append(_texto(X_lim, ly, ["Puntos de extensión (PE) de las relaciones «extend»"], 14, True, "start")); ly += 24
+    if ext:
+        o.append(_texto(X_lim, ly, ["Puntos de extensión (PE) de las relaciones «extend»"], 14, True, "start")); ly += 24
     mitad = (len(ext) + 1) // 2
     for i, (a, b, punto) in enumerate(ext, 1):
         na = factorizado.get(a) or a
@@ -434,7 +474,7 @@ def mapa(casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directo
     apos = {k: (xi, yi[k]) for k in IZQ}
     apos.update({k: (xd, yd[k]) for k in DER})
 
-    o = [_cabecera(W, H, f"Mapa del sistema — SPLG ({n} paquetes · {len(casos)} casos de uso)", 28)]
+    o = [_cabecera(W, H, f"Mapa de navegación (no es un diagrama UML) — SPLG ({n} paquetes · {len(casos)} casos de uso)", 28)]
     lx = px - 60
     o.append(f'<rect class="limite" data-x="{lx:.0f}" data-y="{yl}" data-w="{PW + 120}" data-h="{hl}" '
              f'x="{lx}" y="{yl}" width="{PW + 120}" height="{hl}" fill="#FFFFFF" stroke="#6B7683" stroke-width="2.4"/>')

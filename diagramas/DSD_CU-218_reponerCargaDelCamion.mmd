@@ -17,11 +17,15 @@ sequenceDiagram
         CAR->>ICA: sumarRepuesto(llenasRepuestas)
     end
     CAR-->>-SRV: carga
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionOrigen
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionDestino
     loop Por cada tipo de garrafa repuesto
         SRV->>+ICA: getProducto()
         ICA-->>-SRV: producto
-        Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasRepuestas, reposicion)
         alt El depósito tiene las unidades
             LED-->>-SRV: aplicado
         else El depósito no tiene las unidades

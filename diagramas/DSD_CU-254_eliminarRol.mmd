@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-254 Eliminar un Rol · eliminarRol
+    autonumber
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :RoleService
+    participant COL as :Map#lt;String, Rol#gt;
+    participant ROL as rol:Rol
+
+    AGN->>+SRV: eliminarRol(rolId)
+    SRV->>+COL: get(rolId)
+    COL-->>-SRV: rol
+    SRV->>+ROL: validarEliminable()
+    ROL-->>-SRV: eliminable
+    alt El rol es uno de los del sistema
+        SRV-->>AGN: error 409 por rol del sistema
+    else El rol no es del sistema
+        SRV->>+COL: remove(rolId)
+        Note over COL: baja lógica
+        alt El rol tiene usuarios asignados
+            COL-->>SRV: tiene usuarios
+            SRV-->>AGN: error 409 por rol con usuarios
+        else El rol no tiene usuarios asignados
+            COL-->>-SRV: eliminado
+            SRV-->>AGN: mensaje
+        end
+    end
+    deactivate SRV

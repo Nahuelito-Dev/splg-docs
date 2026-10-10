@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-260 Dar de Baja un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: darDeBajaDeposito(depositoId)
+    activate SIS
+    alt el depósito no tiene saldo
+        SIS-->>ADM: baja confirmada
+    else el depósito tiene saldo
+        SIS-->>ADM: conflicto, con el saldo pendiente
+    end
+    deactivate SIS

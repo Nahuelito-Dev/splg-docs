@@ -6,6 +6,7 @@ sequenceDiagram
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant PAG as pago:Pago
+    participant CHO as chofer:Chofer
     participant UBI as ubicacion:UbicacionGPS
     participant ENV as envase:Envase
     participant NOT as :NotificationPort
@@ -15,13 +16,23 @@ sequenceDiagram
     PEDS-->>-UCS: pedido
     UCS->>+PED: entregar()
     PED->>PED: transicionar(entregado)
-    opt El método de pago es efectivo
-        PED->>PAG: marcarPagado()
-    end
     deactivate PED
+    opt El método de pago es efectivo
+        UCS->>+PED: getPago()
+        PED-->>-UCS: pago
+        UCS->>PAG: marcarPagado()
+    end
+    UCS->>+PED: getChofer()
+    PED-->>-UCS: chofer
+    UCS->>+CHO: getUbicacion()
+    CHO-->>-UCS: ubicacion
     UCS->>UBI: cerrarSeguimiento()
+    UCS->>+PED: getEnvases()
+    PED-->>-UCS: envases
     loop Por cada envase despachado en el pedido
         UCS->>ENV: entregarAlCliente(pedido)
     end
+    UCS->>+PED: getCliente()
+    PED-->>-UCS: cliente
     UCS-)NOT: sendOrderConfirmation(cliente, pedido)
     UCS-->>-CHF: pedido

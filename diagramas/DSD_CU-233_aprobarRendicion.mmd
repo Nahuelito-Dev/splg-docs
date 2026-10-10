@@ -8,6 +8,7 @@ sequenceDiagram
     participant REN as rendicion:RendicionChofer
     participant CHF as chofer:Chofer
     participant EMP as empleado:Empleado
+    participant CAJ as caja:Caja
 
     ADM->>+SRV: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
     SRV->>+RENS: get(rendicionId)
@@ -16,7 +17,8 @@ sequenceDiagram
     CAJS-->>-SRV: caja
     SRV->>+REN: aprobar(caja, resolucionDeDiferencia)
     REN->>REN: validarPresentada()
-    Note over SRV,REN: Ingreso: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema rendición de chofer
+    REN->>CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
+    Note over REN,CAJ: Ingreso: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>El importe es el efectivo declarado. Crea el MovimientoDeCaja<br/>con la categoría de sistema rendición de chofer
     alt La diferencia es un faltante a cargo del chofer
         REN->>+CHF: getEmpleado()
         CHF-->>-REN: empleado

@@ -78,14 +78,11 @@ class EmailService <<fachada>> {
   + probarServicioDeCorreo(destinatario: Cadena): Cadena
   + solicitarRecuperacionDeClave(correo: Cadena): Cadena
 }
-interface EmailSenderPort <<interface>> <<puerto>> {
+interface EmailSenderPort <<puerto>> {
   + send(verificacionDeCorreo: Registro)
-  + send(correoDeRecuperacion: Cadena)
-  + send(correoDePrueba: Cadena)
-  + send(administrador: Administrador, vencimientos: Registro)
+  + send(destinatario: Cadena)
+  + send(administrador: Administrador, detalle: Registro)
   + send(administradores: Administrador[*], detalle: Registro)
-  + send(administrador: Administrador, stockBajo: Registro)
-  + send(administrador: Administrador, diferencias: Registro)
   + send(administrador: Administrador,\n      rendiciones: RendicionChofer[*])
 }
 class FirebaseAuthPort <<referencia>>
@@ -93,9 +90,9 @@ class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class FcmPort <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class "Map<String, Cliente>" as Map_String_Cliente <<referencia>>
-class Cliente <<referencia>>
-class Chofer <<referencia>>
 class Usuario <<referencia>>
+class Chofer <<referencia>>
+class Cliente <<referencia>>
 
 EmailService --> "1" EmailSenderPort
 EmailService --> "1" FirebaseAuthPort

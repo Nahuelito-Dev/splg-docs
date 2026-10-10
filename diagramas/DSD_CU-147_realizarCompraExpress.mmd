@@ -5,6 +5,7 @@ sequenceDiagram
     participant SRV as :OrderService
     participant CLE as cliente:Cliente
     participant PRO as producto:Producto
+    participant PAG as :PaymentsService
 
     CLI->>+SRV: realizarCompraExpress(tipoGarrafa, medioDePago)
     SRV->>+CLE: getDireccionPredeterminada()
@@ -23,7 +24,9 @@ sequenceDiagram
     PED->>PED: aplicarRecargoExpress()
     PED-->>-SRV: total
     alt medioDePago es MERCADOPAGO
-        Note over SRV,PED: Pago: ver DSD de crearCheckoutDePago (CU-048). Crea el Pago
+        SRV->>+PAG: crearCheckoutDePago(pedido, medioDePago)
+        PAG-->>-SRV: enlaceDePago
+        Note over SRV,PAG: Pago: ver DSD de crearCheckoutDePago (CU-048).<br/>Crea el Pago
     end
     Note over SRV,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Chofer en moto
     SRV-->>-CLI: pedido

@@ -7,7 +7,7 @@ classDiagram
     class ClaimsService {
         <<fachada>>
         + adjuntarFotoAlReclamo(reclamoId: Identificador, imagen: Archivo): Reclamo
-        + consultarFotoDelReclamo(reclamoId: Identificador): Cadena
+        + consultarFotoDelReclamo(reclamoId: Identificador): DireccionEntrega
         + listarReclamos(): Reclamo[*]
         + reabrirReclamo(reclamoId: Identificador, motivo: Cadena): Reclamo
         + registrarReclamo(pedidoId: Identificador, motivo: Cadena, evidencia: Archivo): Reclamo
@@ -47,13 +47,16 @@ classDiagram
     class Map_String_Pedido["Map<String, Pedido>"] {
         <<colección>>
     }
-    class StoragePort {
-        <<interface>>
+    class S3CleanupService {
+        <<fabricación pura>>
     }
-    class Usuario
-    class Pedido
+    class S3Service {
+        <<fabricación pura>>
+    }
     class Cliente
+    class Pedido
     class Chofer
+    class Usuario
 
     Usuario <|-- Cliente
     Usuario <|-- Chofer
@@ -61,7 +64,8 @@ classDiagram
     Map_String_Incidencia "1" o-- "0..*" Incidencia : elementos
     ClaimsService --> "1" Map_String_Pedido : map<String, Pedido>
     ClaimsService --> "1" Map_String_Reclamo : map<String, Reclamo>
-    ClaimsService --> "1" StoragePort : storagePort
+    ClaimsService --> "1" S3CleanupService : s3CleanupService
+    ClaimsService --> "1" S3Service : s3Service
     IncidentService --> "1" Map_String_Incidencia : map<String, Incidencia>
     IncidentService --> "1" Map_String_Pedido : map<String, Pedido>
     RatingService --> "1" Map_String_Pedido : map<String, Pedido>

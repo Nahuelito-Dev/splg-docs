@@ -73,25 +73,26 @@ class RegistroService <<fachada>> {
   + registrarChofer(datosPersonales: Registro,\n      datosDelChofer: Registro,\n      distribuidoraId: Identificador): Usuario
   + registrarse(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, contrasena: Cadena,\n      datosDelCliente: Registro): Usuario
 }
-interface FirebaseAuthPort <<interface>> <<puerto>> {
+interface FirebaseAuthPort <<puerto>> {
   + createUserSafe(correo: Cadena, contrasena: Cadena,\n      nombreCompleto: Cadena, telefono: Cadena): Registro
   + deleteUserSafe(cuenta: Registro)
   + generatePasswordResetLink(correo: Cadena,\n      ajustes: Registro): Cadena
-  + generatePasswordResetLink(destinatario: Cadena,\n      ajustes: Registro): Cadena
   + updateUser(cuenta: Registro, correoNuevo: Cadena)
   + updateUser(cuenta: Registro, deshabilitada: Booleano)
   + verifyIdToken(token: Cadena): Registro
 }
-interface FcmPort <<interface>> <<puerto>> {
+interface FcmPort <<puerto>> {
   + sendToToken(token: Cadena, notificacion: Registro)
   + sendToToken(token: Cadena, confirmacion: Cadena)
 }
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class "List<Administrador>" as List_Administrador <<referencia>>
 class Usuario <<referencia>>
-class Cliente <<referencia>>
-class Chofer <<referencia>>
 class Administrador <<referencia>>
+class Chofer <<referencia>>
+class Cliente <<referencia>>
+class Empleado <<referencia>>
+class NotificationsService <<referencia>>
 
 AuthService --> "1" FirebaseAuthPort
 AuthService --> "1" Map_String_Usuario
@@ -99,10 +100,12 @@ RegistroService --> "1" FirebaseAuthPort
 RegistroService --> "1" List_Administrador
 RegistroService --> "1" Map_String_Usuario
 AuthService ..> Usuario
-RegistroService ..> Administrador : <<create>>
-RegistroService ..> Chofer : <<create>>
-RegistroService ..> Cliente : <<create>>
-RegistroService ..> Usuario : <<create>>
+RegistroService ..> "<<create>>" Administrador
+RegistroService ..> "<<create>>" Chofer
+RegistroService ..> "<<create>>" Cliente
+RegistroService ..> Empleado
+RegistroService ..> "<<create>>" Usuario
+NotificationsService --> "1" FcmPort
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

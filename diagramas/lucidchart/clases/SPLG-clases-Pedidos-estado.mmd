@@ -8,9 +8,9 @@ classDiagram
         <<fachada>>
         + asignarChoferAPedido(pedidoId: Identificador, choferId: Identificador): Pedido
         + avisarLlegada(pedidoId: Identificador)
-        + calcularValorPromedio(ventasDelDia: Registro, entregadosDelDia: Entero)
+        + calcularValorPromedio(ventasDelDia: Registro, entregadosDelDia: Entero): Moneda
         + cambiarDireccionDeEntrega(pedidoId: Identificador, direccionId: Identificador, motivo: Cadena): Pedido
-        + completarDiasSinVentas(ventasPorDia: Registro)
+        + completarDiasSinVentas(ventasPorDia: Registro): Registro
         + consultarGraficoDeVentas(): Cadena
         + consultarHistorialDePedidos(cliente: Cliente, pagina: Entero, limite: Entero, out total: Entero): Pedido[*]
         + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
@@ -25,7 +25,7 @@ classDiagram
         + obtenerCodigoDeEntrega(pedidoId: Identificador): Cadena
         + realizarCompraExpress(tipoGarrafa: Cadena, metodoDePago: MetodoDePago): Pedido
         + rechazarOferta(pedidoId: Identificador): Booleano
-        + verificarCoberturaExpress(direccion: DireccionEntrega)
+        + verificarCoberturaExpress(direccion: DireccionEntrega): Booleano
     }
 
     class UpdateOrderStatusUseCase {
@@ -55,12 +55,12 @@ classDiagram
         + buscarReservasConSeniaPagaHasta(hoy: Fecha): Pedido[*]
         + buscarReservasSinSeniaAnterioresA(plazo: Entero): Pedido[*]
         + contarEntregadosDelDia(distribuidoraId: Identificador): Entero
-        + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Booleano
-        + contarPorEstado(distribuidoraId: Identificador, out aceptados: Chofer[*], out enCamino: Booleano): Pedido[*]
+        + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Registro
+        + contarPorEstado(distribuidoraId: Identificador): Registro
         + entregadosEntre(fechaDesde: Fecha, fechaHasta: Fecha): Pedido[*]
         + getEnEfectivoSinRendir(chofer: Chofer, hoy: Fecha): Pedido[*]
         + getEntregadosSinMovimiento(): Pedido[*]
-        + getReservado(producto: Producto)
+        + getReservado(producto: Producto): Entero
         + getUltimoEntregado(cliente: Cliente, distribuidoraId: Identificador): Fecha
         + totalEntregado(periodo: Cadena): Registro
         + totalEntregadoPorDia(distribuidoraId: Identificador, desde: FechaHora, hasta: FechaHora): Registro
@@ -68,6 +68,9 @@ classDiagram
 
     class Pedido
     class DeliveryService {
+        <<fachada>>
+    }
+    class DispatchOrchestratorService {
         <<fachada>>
     }
     class FleetDispatchLockService {
@@ -85,21 +88,30 @@ classDiagram
     class RealtimeDispatchPort {
         <<interface>>
     }
-    class UbicacionGPS
-    class OfertaDespacho
-    class Producto
-    class Envase
+    class RefundPaymentUseCase {
+        <<controlador>>
+    }
     class Chofer
+    class Cliente
     class NotificationsService {
         <<fachada>>
     }
+    class OfertaDespacho
+    class PaymentsService {
+        <<fachada>>
+    }
+    class Producto
     class ZonaCobertura
-    class Cliente
+    class Envase
+    class Pago
+    class UbicacionGPS
 
     Map_String_Pedido "1" o-- "0..*" Pedido : elementos
     List_Pedido "1" o-- "0..*" Pedido : elementos
     ConfirmDeliveryUseCase --> "1" Map_String_Pedido : map<String, Pedido>
+    DispatchOrchestratorService --> "1" Map_String_Pedido : map<String, Pedido>
     OrderService --> "1" DeliveryService : deliveryService
+    OrderService --> "1" DispatchOrchestratorService : dispatchOrchestratorService
     OrderService --> "1" FleetDispatchLockService : fleetDispatchLockService
     OrderService --> "1" List_Chofer : list<Chofer>
     OrderService --> "1" List_Pedido : list<Pedido>
@@ -107,6 +119,9 @@ classDiagram
     OrderService --> "1" Map_String_Pedido : map<String, Pedido>
     OrderService --> "1" NotificationPort : notificationPort
     OrderService --> "1" RealtimeDispatchPort : realtimeDispatchPort
+    OrderService --> "1" RefundPaymentUseCase : refundPaymentUseCase
+    PaymentsService --> "1" Map_String_Pedido : map<String, Pedido>
+    RefundPaymentUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     UpdateOrderStatusUseCase --> "1" FleetDispatchLockService : fleetDispatchLockService
     UpdateOrderStatusUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     UpdateOrderStatusUseCase --> "1" NotificationPort : notificationPort
@@ -119,10 +134,12 @@ classDiagram
     OrderService ..> Cliente
     OrderService ..> NotificationsService
     OrderService ..> OfertaDespacho
+    OrderService ..> PaymentsService
     OrderService ..> Pedido : create
     OrderService ..> Producto
     OrderService ..> ZonaCobertura
     UpdateOrderStatusUseCase ..> Chofer
     UpdateOrderStatusUseCase ..> Envase
+    UpdateOrderStatusUseCase ..> Pago
     UpdateOrderStatusUseCase ..> Pedido
     UpdateOrderStatusUseCase ..> UbicacionGPS

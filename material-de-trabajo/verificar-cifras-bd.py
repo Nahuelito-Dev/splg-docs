@@ -18,6 +18,7 @@ for l in open(BACK + ".env", encoding="utf-8"):
     m = re.match(r'\s*([A-Z_]+)\s*=\s*(.*)', l)
     if m: env[m.group(1)] = m.group(2).strip().strip('"').strip("'")
 USR, BD = env.get("DB_USERNAME", "postgres"), env.get("DB_NAME", "postgres")
+BD = os.environ.get("SPLG_BD_NOMBRE", BD)
 
 def psql(sql):
     r = subprocess.run(["docker", "exec", CONTENEDOR, "psql", "-U", USR, "-d", BD,

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-258 Registrar un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
+    activate SIS
+    alt el código está libre
+        SIS-->>ADM: depósito creado
+    else el código ya lo usa otro depósito vigente
+        SIS-->>ADM: conflicto, con el detalle del campo
+    end
+    deactivate SIS

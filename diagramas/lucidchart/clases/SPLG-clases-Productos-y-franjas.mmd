@@ -51,8 +51,8 @@ classDiagram
     class Distribuidora
 
     Map_String_Producto "1" o-- "0..*" Producto : elementos
-    List_Producto "1" o-- "0..*" Producto : elementos
     Map_String_FranjaHoraria "1" o-- "0..*" FranjaHoraria : elementos
+    List_Producto "1" o-- "0..*" Producto : elementos
     GasCylinderService --> "1" List_Producto : list<Producto>
     GasCylinderService --> "1" Map_String_Distribuidora : map<String, Distribuidora>
     GasCylinderService --> "1" Map_String_Producto : map<String, Producto>

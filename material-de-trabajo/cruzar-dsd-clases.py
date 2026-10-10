@@ -159,7 +159,7 @@ EXCEPCIONES_OP = {
                 "indicarQuienRecibe", "modalidadesDisponibles", "verificarCobertura",
                 "verificarCoberturaExpress"),
   **_propuestas("TimeSlotService", "CU-043: modificar la capacidad de una franja", "update"),
-  **_propuestas("GasCylinderService", "CU-040: reactivar un producto y listar los dados de baja", "findInactive", "reactivate"),
+  **_propuestas("GasCylinderService", "CU-268, CU-269: reactivar un producto y listar los dados de baja", "findInactive", "reactivate"),
   **_propuestas("ClaimsService", "CU-174, CU-175: la fotografía del reclamo", "assertEsDelCliente", "attachPhoto", "getPhoto"),
   **_propuestas("PaymentsService", "CU-168: reintegro de un pago aprobado", "findApprovedByOrder", "markRefunded"),
   **_propuestas("PaymentGatewayPort", "CU-168: devolución por la pasarela; MercadoPago la implementa y otra pasarela agrega un adaptador", "refundPayment"),

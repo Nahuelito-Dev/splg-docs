@@ -6,10 +6,10 @@ classDiagram
 
     class ReportsService {
         <<fachada>>
-        + agruparPorChofer(pedidos: Pedido[*])
-        + agruparPorMetodoDePago(pedidos: Pedido[*])
-        + agruparPorPeriodo(pedidos: Pedido[*], granularidad: Cadena)
-        + agruparPorProducto(items: Registro)
+        + agruparPorChofer(pedidos: Pedido[*]): Registro
+        + agruparPorMetodoDePago(pedidos: Pedido[*]): Registro
+        + agruparPorPeriodo(pedidos: Pedido[*], granularidad: Cadena): Registro
+        + agruparPorProducto(items: Registro): Registro
         + consultarEvolucionDeVentas(fechaDesde: Fecha, fechaHasta: Fecha, granularidad: Cadena): Registro
         + consultarVentasPorChofer(fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + consultarVentasPorMetodoDePago(fechaDesde: Fecha, fechaHasta: Fecha): Registro
@@ -20,19 +20,19 @@ classDiagram
         <<fachada>>
         + consultarCostoDeUnVehiculo(vehiculoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha, fechaHasta: Fecha): Registro
-        + ordenarPorCostoPorKilometro(costos: Registro)
+        + ordenarPorCostoPorKilometro(costos: Registro): Registro
     }
 
     class HealthCheckService {
         <<fachada>>
-        + verificarDisponibilidad()
-        + verificarSalud()
-        + verificarVida()
+        + verificarDisponibilidad(): Registro
+        + verificarSalud(): Registro
+        + verificarVida(): Registro
     }
 
     class RedisHealthIndicator {
         <<fabricación pura>>
-        + isHealthy(redis: Registro)
+        + isHealthy(redis: Registro): Booleano
     }
 
     class RedisService {
@@ -41,17 +41,16 @@ classDiagram
         + ping(): Booleano
     }
 
-    class StoragePort {
-        <<interface>>
-        + getDownloadUrl(adjunto: AdjuntoTarea): Cadena
-        + getDownloadUrl(clave: Cadena): Cadena
-        + getStream(adjunto: AdjuntoTarea): Archivo
-        + getStream(clave: Cadena): Archivo
-        + put(clave: Cadena, imagen: Archivo)
-        + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
+    class S3Service {
+        <<fabricación pura>>
+        + getSignedDownload(adjunto: AdjuntoTarea): Cadena
+        + getSignedDownload(clave: Cadena, nombreDeDescarga: Cadena): Cadena
         + put(clave: Cadena, archivo: Archivo, tipo: Cadena)
-        + remove(adjunto: AdjuntoTarea)
-        + remove(claveAnterior: Cadena)
+    }
+
+    class S3CleanupService {
+        <<fabricación pura>>
+        + removeInBackground(claveAnterior: Cadena)
     }
 
     class List_Vehiculo["List<Vehiculo>"] {
@@ -63,10 +62,23 @@ classDiagram
     class List_Pedido["List<Pedido>"] {
         <<colección>>
     }
-    class Pedido
     class Vehiculo
     class ItemPedido
+    class Pedido
+    class AttachmentService {
+        <<fachada>>
+    }
+    class ClaimsService {
+        <<fachada>>
+    }
+    class FleetAttachmentService {
+        <<fachada>>
+    }
 
+    AttachmentService --> "1" S3Service : s3Service
+    ClaimsService --> "1" S3CleanupService : s3CleanupService
+    ClaimsService --> "1" S3Service : s3Service
+    FleetAttachmentService --> "1" S3Service : s3Service
     FleetCostReportService --> "1" List_Vehiculo : list<Vehiculo>
     FleetCostReportService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
     HealthCheckService --> "1" RedisHealthIndicator : redisHealthIndicator

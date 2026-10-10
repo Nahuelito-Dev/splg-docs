@@ -15,3 +15,15 @@ sequenceDiagram
         SIS-->>ADM: asientos del más reciente al más antiguo (autor, rol, operación, recurso, fecha, origen, resultado, cuerpo depurado) y total, o lista vacía si ninguno coincide
     end
     deactivate SIS
+
+    ADM->>SIS: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+    activate SIS
+    alt el solicitante no es administrador
+        SIS-->>ADM: acceso denegado
+    else algún filtro no tiene el formato esperado
+        SIS-->>ADM: error de validación
+    else filtros válidos
+        Note over ADM,SIS: con una distribuidora en contexto, sólo las<br/>auditorías de ella
+        SIS-->>ADM: auditorías de la más reciente a la más antigua (acción, usuario, entidad, registro, fecha y hora, dirección IP, detalle de cada campo con su valor anterior y nuevo) y total, o lista vacía si ninguna coincide
+    end
+    deactivate SIS

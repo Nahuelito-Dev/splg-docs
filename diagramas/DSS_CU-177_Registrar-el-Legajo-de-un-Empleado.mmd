@@ -6,11 +6,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarEmpleado(datos)
     activate SIS
-    alt los datos son válidos y el puesto existe
+    alt los datos son válidos y el puesto existe y está activo
         SIS-->>ADM: legajo creado, activo y sin cuenta de acceso
     else el puesto no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el documento o el CUIL ya pertenecen a otro empleado vigente
+    else el puesto está inactivo, o el documento, el CUIL o el legajo ya pertenecen a otro empleado vigente
         SIS-->>ADM: conflicto
     else falta un dato o el CUIL no es válido
         SIS-->>ADM: datos inválidos

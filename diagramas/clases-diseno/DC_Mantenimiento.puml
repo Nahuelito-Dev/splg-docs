@@ -85,18 +85,18 @@ class TareaMantenimiento {
   + adjuntar(clave: Cadena, archivo: Archivo,\n      usuario: Usuario): AdjuntoTarea
   + assertAbierta()
   + cerrar(fecha: Fecha, kilometraje: Entero, costo: Moneda,\n      observacion: Cadena)
-  + estaVencida()
+  + estaVencida(): Booleano
   + getAdjunto(adjuntoId: Identificador): AdjuntoTarea
   + getAdjuntos(): AdjuntoTarea[*]
   + getCosto(): Moneda
-  + getEstadoDeVencimiento()
+  + getEstadoDeVencimiento(): Cadena
   + getPrimaProrrateada(fechaDesde: Fecha,\n      fechaHasta: Fecha): Moneda
   + marcarAvisada(ahora: FechaHora)
   + programar(ventanaElegida: PropuestaVentanaTaller,\n      gastoEstimado: Moneda)
   + proponerVentana(chofer: Chofer,\n      ventana: PropuestaVentanaTaller): PropuestaVentanaTaller
-  + proyectarVencimiento(kilometrajeDiario: Entero)
+  + proyectarVencimiento(kilometrajeDiario: Entero): Fecha
   + quedarPendienteDeConfirmacion(ventana: PropuestaVentanaTaller)
-  + quitarAdjunto(adjuntoId: Identificador): AdjuntoTarea
+  + quitarAdjunto(adjuntoId: Identificador)
 }
 class AdjuntoTarea {
   - nombreOriginal: Cadena

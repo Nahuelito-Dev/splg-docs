@@ -6,7 +6,6 @@ sequenceDiagram
     participant COE as :Map#lt;String, Empleado#gt;
     participant DIS as distribuidora:Distribuidora
     participant EMP as empleado:Empleado
-    participant CUI as :CuilValidator
 
     ADM->>+SRV: modificarEmpleado(empleadoId, datos)
     SRV->>+COE: get(empleadoId)
@@ -14,6 +13,6 @@ sequenceDiagram
     SRV->>+DIS: assertDocumentoYCuilDisponibles(datos, empleado)
     deactivate DIS
     SRV->>+EMP: modificar(datos)
-    EMP->>CUI: esValido(cuil)
+    EMP->>EMP: assertCuilValido()
     deactivate EMP
     SRV-->>-ADM: empleado

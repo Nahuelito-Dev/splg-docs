@@ -67,24 +67,18 @@ class Distribuidora {
   + assertNombreDePuestoDisponible(nombre: Cadena,\n      puesto: PuestoDeTrabajo)
   + crearCaja(nombre: Cadena, tipoDeCaja: TipoDeCaja,\n      requiereSesion: Booleano): Caja
   + crearCategoriaDeCaja(nombre: Cadena,\n      sentido: SentidoDeCaja): CategoriaDeCaja
-  + crearConfiguracion(controlDeStock: ProcesoConfigurable,\n      exigirCargaDeCamionAbierta: Booleano): ConfiguracionModulo
-  + crearConfiguracion(despacho: ProcesoConfigurable,\n      radiosKm: Decimal,\n      ventanaDeAceptacion: Entero): ConfiguracionModulo
   + crearConfiguracion(proceso: ProcesoConfigurable,\n      parametros: Registro,\n      administrador: Administrador): ConfiguracionModulo
-  + crearConfiguracion(tareasProgramadas: ProcesoConfigurable,\n      intervalos: Registro,\n      administrador: Administrador): ConfiguracionModulo
   + crearDeposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena): Deposito
   + crearFranja(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero): FranjaHoraria
   + crearProveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero): Proveedor
-  + crearPuesto(nombre: Cadena,\n      categoria: CategoriaDeCaja): PuestoDeTrabajo
+  + crearPuesto(nombre: Cadena,\n      categoria: CategoriaDePuesto): PuestoDeTrabajo
   + crearReglaDeComision(empleado: Empleado,\n      producto: Producto, base: BaseDeComision,\n      valor: Decimal, vigenteDesde: Fecha): ReglaComision
   + darDeBaja()
   + definirZona(nombre: Cadena, poligono: Poligono,\n      recargo: Moneda, activa: Booleano): ZonaCobertura
   + getAdministradores(): Administrador[*]
   + getChoferes(pagina: Entero, limite: Entero): Chofer[*]
   + getChoferesActivos(pagina: Entero,\n      limite: Entero): Chofer[*]
-  + getConfiguracion(despacho: ProcesoConfigurable): ConfiguracionModulo
   + getConfiguracion(proceso: ProcesoConfigurable): ConfiguracionModulo
-  + getConfiguracion(tareasProgramadas: ProcesoConfigurable): ConfiguracionModulo
-  + getConfiguracion(controlDeStock: ProcesoConfigurable): ConfiguracionModulo
   + getDeposito(depositoId: Identificador): Deposito
   + getDepositoPredeterminado(): UbicacionDeStock
   + getDepositos(): Deposito[*]
@@ -102,6 +96,7 @@ class Distribuidora {
   + registrarEmpleado(datos: Registro,\n      puesto: PuestoDeTrabajo): Empleado
   + registrarNeumatico(datos: Registro): Neumatico
   + tieneProducto(tipo: Cadena): Booleano
+  + tieneZonasActivas(): Booleano
   + validarCategoriaNueva(nombre: Cadena,\n      sentido: SentidoDeCaja)
   + validarCodigoSinUsar(codigo: Cadena)
   + validarCuitSinUsar(cuit: Cadena)
@@ -112,14 +107,8 @@ class ConfiguracionModulo {
   - modulo: ProcesoConfigurable
   - parametros: Registro
   - exigirCargaDeCamionAbierta: Booleano
-  + «create» ConfiguracionModulo(controlDeStock: ProcesoConfigurable,\n      exigirCargaDeCamionAbierta: Booleano)
-  + «create» ConfiguracionModulo(despacho: ProcesoConfigurable,\n      radiosKm: Decimal, ventanaDeAceptacion: Entero)
   + «create» ConfiguracionModulo(proceso: ProcesoConfigurable,\n      parametros: Registro, administrador: Administrador)
-  + «create» ConfiguracionModulo(tareasProgramadas: ProcesoConfigurable,\n      intervalos: Registro, administrador: Administrador)
   + actualizar(parametros: Registro,\n      administrador: Administrador)
-  + actualizar(intervalos: Registro,\n      administrador: Administrador)
-  + actualizar(exigirCargaDeCamionAbierta: Booleano,\n      administrador: Administrador)
-  + actualizar(radiosKm: Decimal,\n      ventanaDeAceptacion: Entero,\n      administrador: Administrador)
   + getExigirCargaDeCamionAbierta(): Booleano
 }
 class Usuario {
@@ -129,12 +118,11 @@ class Usuario {
   - bloqueado: Booleano
   + «create» Usuario(datosPersonales: Registro,\n      rolChofer: TipoDeRol, cuenta: Registro)
   + «create» Usuario(datosPersonales: Registro, rol: Rol,\n      cuenta: Registro)
-  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, rolCliente: TipoDeRol,\n      cuenta: Registro)
+  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, tipoDeRol: TipoDeRol,\n      cuenta: Registro)
   + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, rol: Rol, cuenta: Registro)
-  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena,\n      rolAdministradorGeneral: TipoDeRol,\n      cuenta: Registro)
   + actualizarPerfil(datos: Registro)
   + bloquear()
-  + calcularPromedio()
+  + calcularPromedio(): Decimal
   + calificar(pedido: Pedido, calificado: Usuario,\n      estrellas: Entero, comentario: Cadena): Calificacion
   + cambiarBloqueo(bloquear: Booleano)
   + cambiarCorreo(correoNuevo: Cadena)
@@ -151,7 +139,7 @@ class Rol {
   - tipo: Cadena
   + «create» Rol(tipo: Cadena)
   + actualizar(datos: Registro)
-  + validarEliminable()
+  + validarEliminable(): Booleano
   + validarModificable()
 }
 class Administrador {
@@ -167,6 +155,22 @@ class AsientoAuditoria {
   + «create» AsientoAuditoria(autor: Usuario, rol: Rol,\n      distribuidoraId: Identificador, operacion: Cadena,\n      recurso: Cadena, origen: Cadena, resultado: Cadena,\n      codigo: Entero, motivo: Cadena)
   + depurarCredenciales()
 }
+class Auditoria {
+  - entidadAfectada: Cadena
+  - fechaYHora: FechaHora
+  + «create» Auditoria(tipoDeAccion: Entero, autor: Usuario,\n      ip: Cadena, distribuidoraId: Identificador,\n      entidad: Cadena, registro: Cadena)
+  + agregarDetalle(campo: Cadena, valorAnterior: Cadena,\n      valorNuevo: Cadena)
+  + getDetalles(): DetalleAuditoria[*]
+}
+class DetalleAuditoria {
+  - campo: Cadena
+  - valorAnterior: Cadena
+  - valorNuevo: Cadena
+  + «create» DetalleAuditoria(campo: Cadena,\n      valorAnterior: Cadena, valorNuevo: Cadena)
+}
+class TipoAccionAuditoria {
+  - nombre: Cadena
+}
 class Cliente <<referencia>>
 class Chofer <<referencia>>
 class Pedido <<referencia>>
@@ -180,6 +184,10 @@ Distribuidora "0..1" -- "0..*" Administrador : emplea
 Distribuidora "1" -- "0..*" Pedido : gestiona
 Distribuidora "1" *--> "0..*" ConfiguracionModulo : parametriza
 Usuario "0..1" -- "0..*" AsientoAuditoria : origina
+Usuario "0..1" -- "0..*" Auditoria : realiza
+Distribuidora "0..1" -- "0..*" Auditoria : delimita
+Auditoria "1" *--> "0..*" DetalleAuditoria : detalla con
+TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.

@@ -29,12 +29,9 @@ classDiagram
     class EmailSenderPort {
         <<interface>>
         + send(verificacionDeCorreo: Registro)
-        + send(correoDeRecuperacion: Cadena)
-        + send(correoDePrueba: Cadena)
-        + send(administrador: Administrador, vencimientos: Registro)
+        + send(destinatario: Cadena)
+        + send(administrador: Administrador, detalle: Registro)
         + send(administradores: Administrador[*], detalle: Registro)
-        + send(administrador: Administrador, stockBajo: Registro)
-        + send(administrador: Administrador, diferencias: Registro)
         + send(administrador: Administrador, rendiciones: RendicionChofer[*])
     }
 
@@ -53,9 +50,9 @@ classDiagram
     class Map_String_Cliente["Map<String, Cliente>"] {
         <<colección>>
     }
-    class Cliente
-    class Chofer
     class Usuario
+    class Chofer
+    class Cliente
 
     Usuario <|-- Cliente
     Usuario <|-- Chofer

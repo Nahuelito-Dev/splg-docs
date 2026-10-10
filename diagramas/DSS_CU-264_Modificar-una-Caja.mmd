@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-264 Modificar una Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarCaja(cajaId, datos)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: caja con los datos nuevos
+    else la caja tiene una sesión abierta y se pretende desactivarla
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

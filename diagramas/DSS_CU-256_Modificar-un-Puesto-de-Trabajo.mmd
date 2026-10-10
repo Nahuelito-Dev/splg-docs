@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-256 Modificar un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarPuestoDeTrabajo(puestoId, datos)
+    activate SIS
+    alt el puesto existe y el nombre está disponible
+        SIS-->>ADM: puesto modificado
+    else el puesto no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else ya existe otro puesto vigente con ese nombre, la categoría nueva no corresponde a las cuentas de sus ocupantes, o es el último puesto activo de su categoría
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

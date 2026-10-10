@@ -175,7 +175,7 @@ _n = str(len(TODOS))
 # Se buscan los totales que el catalogo dejo atras, no cualquier numero: hay frases
 # legitimas que cuentan una parte ("25 casos de uso reales", "45 casos" del relevamiento
 # inicial), y marcarlas seria ruido.
-SUPERADOS = {"104", "108", "115", "131", "159", "166", "174"}
+SUPERADOS = {"104", "108", "115", "131", "159", "166", "174", "249"}
 _viejos = set()
 for _f in ("README.md", "Casos-de-Uso.md", "0-Plan_Del_Proyecto.md", "1-Requisitos.md",
            "2-Analisis.md", "3-Diseño.md", "GUIA-actualizar-drive.md", "INDICE-IMAGENES.md"):
@@ -507,7 +507,7 @@ def verificar_operaciones():
     return errores
 
 def verificar_tabla_operaciones_doc3():
-    """La tabla de operaciones del Documento 3 (§4.21) la genera generar-operaciones.py: sus cifras son las del catálogo."""
+    """La tabla de operaciones del Documento 3 (§4.24) la genera generar-operaciones.py: sus cifras son las del catálogo."""
     cat = json.load(open(D + "material-de-trabajo/operaciones-sistema.json", encoding="utf-8"))["operaciones"]
     d3 = "\n".join(leer("3-Diseño.md"))
     m = re.search(r'Son \*\*(\d+) operaciones\*\*\. \*\*(\d+)\*\* tienen su diagrama de interacción y\s+\*\*(\d+)\*\* tienen contrato', d3)

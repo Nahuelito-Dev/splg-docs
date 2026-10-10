@@ -39,6 +39,8 @@ actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "MercadoPago\n(ACT-06)" as A06 <<sistema externo>>
+actor "Firebase\n(ACT-07)" as A07 <<sistema externo>>
 
 rectangle "SS-02 Gestión de Pedidos" {
   usecase "CU-005\nCrear Pedido" as U005 #back:FFFFFF;line:3F7A50
@@ -79,7 +81,9 @@ rectangle "SS-02 Gestión de Pedidos" {
   usecase "Reservar Stock" as F_STOCK <<factorizado>> #back:FFFFFF;line:3F7A50
 }
 
-usecase "CU-236\nVender a Cuenta Corriente\n(SS-21)" as U236 <<planificado>> #back:FFFFFF;line:6B7683
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-236\nVender a Cuenta Corriente\n(SS-21)" as U236 <<planificado>> #back:FFFFFF;line:6B7683
+}
 
 A01 -[#1F6F8B]- U005
 A01 -[#1F6F8B]- U006
@@ -119,7 +123,11 @@ A03 -[#8C4A9E]- U146
 A03 -[#8C4A9E]- U170
 A04 -[#8A6D1F]- U106
 A04 -[#8A6D1F]- U169
-A05 --|> A03
+U005 -[#6B7683]- A06
+U147 -[#6B7683]- A06
+U005 -[#6B7683]- A07
+U147 -[#6B7683]- A07
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U147 ..> U121 : <<include>>
@@ -139,19 +147,26 @@ U127 ..> U006 : <<include>>
 U128 ..> U006 : <<include>>
 U005 ..> F_STOCK : <<include>>
 U236 ..> U005 : <<include>>
+U005 -[hidden]-> U236
+U006 -[hidden]-> U008
+U006 -[hidden]-> U009
+U006 -[hidden]-> U010
+U006 -[hidden]-> U127
+U006 -[hidden]-> U128
+U006 -[hidden]-> U170
+U046 -[hidden]-> U127
+U117 -[hidden]-> U118
+U117 -[hidden]-> U119
+U117 -[hidden]-> U120
+U121 -[hidden]-> U147
+U125 -[hidden]-> U123
+U125 -[hidden]-> U124
+U125 -[hidden]-> U126
+U146 -[hidden]-> U144
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
-F_PROMO ..> U005 : <<extend>>
-note on link
-  Punto de extensión: la cantidad de un ítem alcanza el umbral de promoción por volumen
-end note
-F_RECAR ..> U005 : <<extend>>
-note on link
-  Punto de extensión: el medio de pago elegido es MercadoPago o Transferencia
-end note
-F_FILTRO ..> U011 : <<extend>>
-note on link
-  Punto de extensión: se indica status, from/to o term sobre el listado
-end note
+F_PROMO ..> U005 : <<extend>>\n(punto de extensión:\nla cantidad de un ítem alcanza el\numbral de promoción por volumen)
+F_RECAR ..> U005 : <<extend>>\n(punto de extensión:\nel medio de pago elegido es\nMercadoPago o Transferencia)
+F_FILTRO ..> U011 : <<extend>>\n(punto de extensión:\nse indica status, from/to o term\nsobre el listado)
 
 @enduml

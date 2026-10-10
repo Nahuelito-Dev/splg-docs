@@ -76,7 +76,9 @@ from paleta import TINTE, BORDE, COLOR_ACT
 INCLUYE = {
   # Toda alta de usuario crea la identidad por el mismo camino (CU-082).
   "SS-01": [("CU-002","CU-082"), ("CU-003","CU-082"),
-            ("CU-050","CU-083"), ("CU-085","CU-083")],
+            ("CU-050","CU-083"), ("CU-085","CU-083"),
+            # ABM de usuarios y de perfil: cada operación parte de su consulta
+            ("CU-270","CU-083"), ("CU-251","CU-004")],
   "SS-02": [("CU-147","CU-121"), ("CU-144","CU-146"), ("CU-170","CU-006"),
             ("CU-008","CU-006"), ("CU-009","CU-006"), ("CU-010","CU-006"),
             ("CU-118","CU-117"), ("CU-119","CU-117"), ("CU-120","CU-117"),
@@ -87,6 +89,7 @@ INCLUYE = {
             ("CU-138","CU-110"), ("CU-105","CU-139"), ("CU-142","CU-139"),
             ("CU-096","CU-110"), ("CU-097","CU-110"), ("CU-109","CU-110"),
             ("CU-032","CU-110"), ("CU-033","CU-110"), ("CU-034","CU-110"),
+            ("CU-267","CU-110"), ("CU-271","CU-110"),
             ("CU-111","CU-113"), ("CU-112","CU-113"), ("CU-105","CU-051"),
             ("CU-155","CU-159"), ("CU-157","CU-156"), ("CU-157","CU-160"),
             ("CU-158","CU-156"),
@@ -97,7 +100,9 @@ INCLUYE = {
             ("CU-039","CU-041"), ("CU-040","CU-041"),
             ("CU-210","CU-208"), ("CU-212","CU-208"), ("CU-213","CU-208"),
             ("CU-212","CU-250"), ("CU-213","CU-250"), ("CU-218","CU-250"), ("CU-220","CU-250"),
-            ("CU-222","CU-250")],
+            ("CU-222","CU-250"),
+            # depósitos: modificar o dar de baja parte del listado; reactivar parte de los productos inactivos
+            ("CU-259","CU-207"), ("CU-260","CU-207"), ("CU-268","CU-269")],
   "SS-09": [("CU-044","CU-045"), ("CU-043","CU-154"), ("CU-103","CU-154")],
   "SS-10": [("CU-054","CU-053"), ("CU-055","CU-053")],
   "SS-11": [("CU-059","CU-057")],
@@ -105,12 +110,18 @@ INCLUYE = {
   "SS-13": [("CU-135","CU-133"), ("CU-068","CU-135"), ("CU-134","CU-133"),
             ("CU-108","CU-071")],
   "SS-16": [("CU-094","CU-129"), ("CU-095","CU-129"),
-            ("CU-131","CU-129"), ("CU-129","CU-130")],
+            ("CU-131","CU-129"), ("CU-129","CU-130"),
+            # roles: modificar o eliminar un rol parte del listado
+            ("CU-253","CU-089"), ("CU-254","CU-089")],
   "SS-03": [("CU-149","CU-015")],
   "SS-19": [("CU-178","CU-179"), ("CU-181","CU-179"), ("CU-182","CU-179"), ("CU-183","CU-179"),
             ("CU-184","CU-179"), ("CU-185","CU-179"), ("CU-186","CU-179"), ("CU-191","CU-179"),
-            ("CU-193","CU-179"), ("CU-187","CU-179"), ("CU-188","CU-187")],
+            ("CU-193","CU-179"), ("CU-187","CU-179"), ("CU-188","CU-187"),
+            # puestos de trabajo: modificar o eliminar un puesto parte del listado
+            ("CU-256","CU-176"), ("CU-257","CU-176")],
   "SS-21": [("CU-227","CU-228"), ("CU-233","CU-228"), ("CU-237","CU-228"), ("CU-243","CU-228")],
+  # proveedores: modificar o dar de baja parte del listado
+  "SS-20": [("CU-262","CU-214"), ("CU-263","CU-214")],
 }
 
 # Casos de uso factorizados: comportamiento comun que otros casos reutilizan
@@ -220,6 +231,24 @@ def escribir(nombre, texto):
     return p
 
 SUBSISTEMAS = []
+# hasta cuantas bases puede tener un caso incluido para separarlo de su actor (ver seccion 6)
+BASES_MAX_SEPARAR = 8
+BASES_MAX_POR_SS = {"SS-07": 16}
+# Un subsistema con ~50 casos y ~45 asociaciones de un mismo actor no se lee en una sola
+# lamina: se parte en varios diagramas, cada uno con su limite, sus actores y sus
+# <<include>> completos. La ultima parte (None) toma todo el resto; un caso incluido por
+# casos de dos partes se dibuja en cada una, para que la flecha nunca quede sin destino.
+PARTES = {
+  "SS-07": [("Choferes", "Choferes",
+             {"CU-031", "CU-032", "CU-033", "CU-034", "CU-035", "CU-049", "CU-096", "CU-097",
+              "CU-109", "CU-110", "CU-115", "CU-138", "CU-267", "CU-271"}),
+            ("Vehiculos", "Vehículos y vencimientos",
+             {"CU-051", "CU-105", "CU-111", "CU-112", "CU-113", "CU-114", "CU-136", "CU-137",
+              "CU-139", "CU-140", "CU-141", "CU-142", "CU-161", "CU-162", "CU-163", "CU-164",
+              "CU-165", "CU-247"}),
+            ("Costos-Siniestros-Y-Adjuntos", "Costos, siniestros y adjuntos de flota", None)],
+}
+SEPARAR_ACTOR_DE_INCLUIDO = {"SS-02", "SS-07", "SS-19", "SS-21"}
 
 def eid(c): return c.replace("-", "_") if c.startswith("F-") else "U" + c.replace("CU-", "")
 def parte(txt, ancho=26):
@@ -244,12 +273,13 @@ REPRESENTATIVOS = {
 }
 EXT_REPRESENTATIVO = {"06": "CU-048", "07": "CU-001", "08": "CU-047"}
 PRIMARIO_EXT = {"09": "CU-104"}
+PRIMARIO_EXT_ACT = set(PRIMARIO_EXT)
 act = ["@startuml", "title Actores del Sistema — SPLG", "left to right direction", CABECERA]
 for k in ["01", "02", "03", "05", "04"]:
     act.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
 for k in sorted(ACTOR_EXT):
-    act.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<secundario>>')
-act.append(f'actor "{ACTOR["09"]}\\n(ACT-09)" as A09 <<externo>>')
+    act.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<sistema externo>>')
+act.append(f'actor "{ACTOR["09"]}\\n(ACT-09)" as A09 <<sistema externo>>')
 act += ["", f'rectangle "{ "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" }" ' + "{"]
 usados = sorted({c for v in REPRESENTATIVOS.values() for c in v} | set(EXT_REPRESENTATIVO.values()) | set(PRIMARIO_EXT.values()))
 for c in usados:
@@ -262,7 +292,7 @@ for k, c in EXT_REPRESENTATIVO.items():
     act.append(f'{eid(c)} -[#6B7683]- A{k}')
 for k, c in PRIMARIO_EXT.items():
     act.append(f'A{k} -[{COLOR_ACT[k]}]- {eid(c)}')
-act += ["", f"A{ESP} --|> A{GEN}", "", "@enduml"]
+act += ["", f"A{ESP} -right-|> A{GEN}", "", "@enduml"]
 escribir("CU_Sistema_Actores", "\n".join(act))
 
 # ---------- 2. contexto ----------
@@ -277,8 +307,8 @@ ctx = ["@startuml", "title Diagrama de Contexto del Sistema — SPLG",
 for k in ["01", "02", "03", "05", "04"]:
     ctx.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
 for k in sorted(ACTOR_EXT):
-    ctx.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<externo>>')
-ctx.append(f'actor "{ACTOR["09"]}\\n(ACT-09)" as A09 <<externo>>')
+    ctx.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<sistema externo>>')
+ctx.append(f'actor "{ACTOR["09"]}\\n(ACT-09)" as A09 <<sistema externo>>')
 lineas = "\\n".join(f'{s_}  {SS[s_]}  ({cnt[s_]})' for s_ in subs)
 ctx += ["", f'rectangle "**Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)**\\n\\n{lineas}\\n\\n(entre paréntesis, los casos de uso de cada subsistema)" as LIMITE #back:F4F7FA;line:2C4257', ""]
 # En un diagrama de contexto el sistema es una sola caja: lo que se dibuja es con
@@ -294,7 +324,7 @@ ctx += ["",
         f'LIMITE -[#6B7683]down- A07 : identidad y avisos push',
         f'LIMITE -[#6B7683]down- A08 : correos de bienvenida, recuperación y vencimientos',
         f'LIMITE -[{COLOR_ACT["09"]}]down- A09 : sondea la salud del sistema',
-        "", f"A{ESP} -right-|> A{GEN}", "", "@enduml"]
+        "", f"A{ESP} -down-|> A{GEN}", "", "@enduml"]
 escribir("CU_Sistema_Diagrama-De-Contexto", "\n".join(ctx))
 
 # ---------- 3. completo ----------
@@ -335,6 +365,55 @@ LAMINAS = {}
 LAMINAS["CU_Sistema_Diagrama-Completo"] = uml_lamina.completo(
     casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
     SECUNDARIO, {}, inc, ext, ESP, GEN, LIMITE_TXT, None)
+# El completo en una sola lámina tiene 271 casos y entero no se lee: se parte en seis
+# láminas con la misma notación (límite del sistema, subsistemas como paquetes, actores
+# afuera, «include»/«extend»). Juntas son el diagrama completo. Si un caso incluye o
+# extiende a uno de otra lámina, ese otro se dibuja en un paquete gris de referencia
+# que dice en qué lámina está, para que cada lámina se entienda sola.
+PARTES_COMPLETO = [
+    ("Usuarios y pedidos", ["SS-01", "SS-02"]),
+    ("Despacho, entrega y posventa", ["SS-03", "SS-04", "SS-05", "SS-09", "SS-12", "SS-14", "SS-15"]),
+    ("Choferes y flota", ["SS-07"]),
+    ("Productos, envases y compras", ["SS-08", "SS-13", "SS-20"]),
+    ("Personal y caja", ["SS-19", "SS-21"]),
+    ("Administración y plataforma", ["SS-06", "SS-10", "SS-11", "SS-16", "SS-17", "SS-18"]),
+]
+_en_parte = {s: k for k, (_, ss_) in enumerate(PARTES_COMPLETO, 1) for s in ss_}
+assert set(_en_parte) == set(subs), f"subsistemas sin lámina: {set(subs) - set(_en_parte)}"
+REF = "REF"
+LAMINAS_COMPLETO = []
+for _k, (_tit, _ss) in enumerate(PARTES_COMPLETO, 1):
+    _propios = {c for c in casos if casos[c]["ss"] in _ss}
+    _ajenos = set()
+    for a, b in inc:
+        if (a in _propios) != (b in _propios): _ajenos.add(b if a in _propios else a)
+    for a, b, _p in ext:
+        if (a in _propios) != (b in _propios): _ajenos.add(b if a in _propios else a)
+    _casos = {c: casos[c] for c in _propios}
+    for c in _ajenos:
+        _casos[c] = {**casos[c], "ss": REF,
+                     "nombre": f'{casos[c]["nombre"]} (lámina {_en_parte[casos[c]["ss"]]})'}
+    _subs = [s for s in subs if s in _ss] + ([REF] if _ajenos else [])
+    _SS = {**{s: SS[s] for s in _ss}, REF: "De otras láminas"}
+    _tinte = [TINTE[subs.index(s) % len(TINTE)] for s in _subs if s != REF] + ["#EEF0F2"]
+    _borde = [BORDE[subs.index(s) % len(BORDE)] for s in _subs if s != REF] + ["#8A97A3"]
+    _dir = (lambda prop: (lambda c: directos(c) if c in prop else []))(_propios)
+    _sec = {k: [c for c in v if c in _propios] for k, v in SECUNDARIO.items()}
+    _sec = {k: v for k, v in _sec.items() if v}
+    _act = {k for c in _propios for k in directos(c)} | set(_sec)
+    if ESP in _act or GEN in _act: _act |= {ESP, GEN}
+    _inc = [(a, b) for a, b in inc if a in _casos and b in _casos and (a in _propios or b in _propios)]
+    _ext = [(a, b, p) for a, b, p in ext if a in _casos and b in _casos and (a in _propios or b in _propios)]
+    _n = f"CU_Sistema_Completo-Lamina-{_k}"
+    LAMINAS[_n] = uml_lamina.completo(
+        _casos, _subs, _SS, _tinte, _borde, COLOR_ACT, NOMBRE_ACT,
+        [k for k in IZQ if k in _act], [k for k in DER if k in _act], _dir,
+        _sec, {}, _inc, _ext, ESP, GEN, LIMITE_TXT, None,
+        titulo=f"Diagrama Completo de Casos de Uso — lámina {_k} de {len(PARTES_COMPLETO)}: "
+               f"{_tit} ({len(_propios)} casos de uso)",
+        columnas=min(2, len(_subs)), ref_ss=REF, compacto=True)
+    LAMINAS_COMPLETO.append(_n)
+
 LAMINAS["CU_Sistema_Mapa"] = uml_lamina.mapa(
     casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
     SECUNDARIO, ESP, GEN, LIMITE_TXT)
@@ -398,10 +477,19 @@ SUBSISTEMAS.append("CU_Sistema_Subsistemas")
 # ---------- 6. un diagrama por subsistema ----------
 # Estaban escritos a mano y se quedaron cortos: SS-02 mostraba once casos cuando ya
 # eran veinticuatro. Se generan del catalogo para que ninguno quede incompleto.
+unidades = []
 for i, s in enumerate(subs):
-    g = glob.glob(UML + f"CU_{s}_*.puml")
-    if not g: continue
-    cs = sorted(c for c in casos if casos[c]["ss"] == s)
+    todos = sorted(c for c in casos if casos[c]["ss"] == s)
+    if s in PARTES:
+        asignados = set().union(*[m for _, _, m in PARTES[s] if m])
+        for suf, tit, m in PARTES[s]:
+            miembros = set(m) if m else {c for c in todos if c not in asignados}
+            miembros |= {b for a, b in INCLUYE.get(s, []) if a in miembros and b in casos and casos[b]["ss"] == s}
+            unidades.append((i, s, f"CU_{s}_{suf}", tit, sorted(miembros)))
+    else:
+        g = glob.glob(UML + f"CU_{s}_*.puml")
+        if g: unidades.append((i, s, os.path.basename(g[0])[:-5], None, todos))
+for i, s, nombre, tit, cs in unidades:
     quienes = {k for c in cs for k in casos[c]["actores"]}
     # el Administrador General especializa al Administrador: si participa uno de los
     # dos, se dibujan ambos y la generalizacion, para que se lea por que ACT-05 no
@@ -410,43 +498,56 @@ for i, s in enumerate(subs):
         quienes |= {ESP, GEN}
     quienes = sorted(quienes)
     borde = BORDE[i % len(BORDE)][1:]
-    d = ["@startuml", f"title {s} — {SS[s]} ({len(cs)} casos de uso)",
+    d = ["@startuml", f"title {s} — {SS[s]}{': ' + tit if tit else ''} ({len(cs)} casos de uso)",
          "left to right direction", CABECERA, "skinparam nodesep 18", "skinparam ranksep 70",
          "skinparam usecase {", "  BorderColor<<planificado>> #9C4436",
          "  BackgroundColor<<planificado>> #F6E4E1",
          "  BorderColor<<factorizado>> #6B7683",
          "  BackgroundColor<<factorizado>> #F2F4F6", "}", ""]
     for k in quienes:
-        d.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}')
+        est_ac = " <<sistema externo>>" if k in PRIMARIO_EXT_ACT else ""
+        d.append(f'actor "{ACTOR[k]}\\n(ACT-{k})" as A{k}{est_ac}')
+    # actores secundarios: el sistema los invoca durante el caso (los mismos del
+    # diagrama de actores y del completo)
+    sec = {k: [c for c in SECUNDARIO[k] if c in cs] for k in sorted(SECUNDARIO)}
+    sec = {k: v for k, v in sec.items() if v}
+    for k in sec:
+        d.append(f'actor "{ACTOR_EXT[k]}\\n(ACT-{k})" as A{k} <<sistema externo>>')
     d.append("")
-    d.append(f'rectangle "{s} {SS[s]}" ' + "{")
+    d.append(f'rectangle "{s} {SS[s]}{chr(92) + "n" + tit if tit else ""}" ' + "{")
     for c in cs:
         est = " <<planificado>>" if casos[c].get("planificado") else ""
         # el estereotipo va antes del color; al reves plantuml no lo toma
         d.append(f'  usecase "{c}\\n{parte(casos[c]["nombre"], 30)}" as {eid(c)}{est}'
                  f' #back:FFFFFF;line:{borde}')
     # los factorizados que participen de alguna relacion de este subsistema
-    usados = sorted({x for a, b in INCLUYE_FACTOR.get(s, []) for x in (a, b)
-                     if x.startswith("F-")}
-                  | {a for a, b, _ in EXTIENDE.get(s, []) if a.startswith("F-")})
+    ext_s = [(a, b, p_) for a, b, p_ in EXTIENDE.get(s, []) if b in cs or b not in casos or casos[b]["ss"] != s]
+    inc_f = [(a, b) for a, b in INCLUYE_FACTOR.get(s, []) if b in cs or b not in casos]
+    usados = sorted({x for a, b in inc_f for x in (a, b) if x.startswith("F-")}
+                  | {a for a, b, _ in ext_s if a.startswith("F-")})
     for fc in usados:
         d.append(f'  usecase "{parte(FACTORIZADO[fc], 30)}" as {eid(fc)} <<factorizado>>'
                  f' #back:FFFFFF;line:{borde}')
     d += ["}", ""]
     # casos de otro subsistema que alguno de este incluye: fuera del rectangulo
     externos = [(a, b) for a, b in INCLUYE_EXTERNO
-                if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] != s]
+                if a in cs and b in casos and casos[b]["ss"] != s]
     # la base de un <<extend>> que vive en otro subsistema se dibuja igual, fuera del limite
-    bases_ext = [b for a, b, _ in EXTIENDE.get(s, []) if b in casos and casos[b]["ss"] != s]
+    bases_ext = [b for a, b, _ in ext_s if b in casos and casos[b]["ss"] != s]
     # los casos de otro subsistema que incluyen a uno de éste: se muestran como referencia externa,
     # con su flecha «include», para que el caso incluido no quede suelto
     entrantes = [(a, b) for a, b in INCLUYE_EXTERNO
-                 if a in casos and b in casos and casos[b]["ss"] == s and casos[a]["ss"] != s]
-    for b in sorted({b for _, b in externos} | set(bases_ext) | {a for a, _ in entrantes}):
+                 if a in casos and b in cs and casos[a]["ss"] != s]
+    ajenos = sorted({b for _, b in externos} | set(bases_ext) | {a for a, _ in entrantes})
+    if ajenos:
+        # los casos de otros subsistemas van juntos en su propio limite, no sueltos
+        d.append('rectangle "Casos de uso de otros subsistemas\\n(sólo como referencia)" as OTROS '
+                 '#back:FFFFFF;line:6B7683;line.dashed {')
+    for b in ajenos:
         est = " <<planificado>>" if casos[b].get("planificado") else ""
-        d.append(f'usecase "{b}\\n{parte(casos[b]["nombre"], 30)}\\n({casos[b]["ss"]})" as {eid(b)}{est}'
+        d.append(f'  usecase "{b}\\n{parte(casos[b]["nombre"], 30)}\\n({casos[b]["ss"]})" as {eid(b)}{est}'
                  f' #back:FFFFFF;line:6B7683')
-    if externos or bases_ext or entrantes: d.append("")
+    if ajenos: d += ["}", ""]
     # La asociacion actor-caso de uso es una asociacion, no una dependencia:
     # en UML va sin punta de flecha. La flecha significaria navegabilidad, que
     # es una decision de diseno y no corresponde a un diagrama de requisitos.
@@ -454,28 +555,38 @@ for i, s in enumerate(subs):
         for c in cs:
             if k in directos(c):
                 d.append(f'A{k} -[{COLOR_ACT[k]}]- {eid(c)}')
+    for k, v in sec.items():
+        for c in v:
+            d.append(f'{eid(c)} -[#6B7683]- A{k}')
     if ESP in quienes:
-        d.append(f'A{ESP} --|> A{GEN}')
-    rel = [(a, b) for a, b in INCLUYE.get(s, [])
-           if a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] == s]
-    rel += [(a, b) for a, b in INCLUYE_FACTOR.get(s, [])]
+        # la punta del triangulo va sobre la cabeza del Administrador, no sobre su rotulo
+        d.append(f'A{ESP} -right-|> A{GEN}')
+    rel = [(a, b) for a, b in INCLUYE.get(s, []) if a in cs and b in cs]
+    rel += inc_f
     rel += externos + entrantes
     if rel:
         d.append("")
         d.append("' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>")
         for a, b in rel:
             d.append(f'{eid(a)} ..> {eid(b)} : <<include>>')
-    ext = EXTIENDE.get(s, [])
+        # Un caso incluido que ademas tiene actor propio recibe dos lineas por el mismo
+        # lado: la asociacion (solida) y la flecha de <<include>>, y la primera se lee
+        # como si terminara en la punta. Se lo ubica antes que sus bases: la flecha le
+        # llega por la derecha y la asociacion por la izquierda.
+        for b in sorted({b for _, b in rel}):
+            bases = sorted({a for a, bb in rel if bb == b})
+            if (s in SEPARAR_ACTOR_DE_INCLUIDO and b in casos and casos[b]["ss"] == s and any(k in quienes for k in directos(b))
+                    and len(bases) <= BASES_MAX_POR_SS.get(s, BASES_MAX_SEPARAR)):
+                for a in bases:
+                    d.append(f'{eid(b)} -[hidden]-> {eid(a)}')
+    ext = ext_s
     if ext:
         d.append("")
         d.append("' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.")
         for a, b, punto in ext:
-            d.append(f'{eid(a)} ..> {eid(b)} : <<extend>>')
-            d.append("note on link")
-            d.append(f'  Punto de extensión: {punto}')
-            d.append("end note")
+            # el punto de extension va en el rotulo de la propia relacion
+            d.append(f'{eid(a)} ..> {eid(b)} : <<extend>>\\n(punto de extensión:\\n{parte(punto, 34)})')
     d += ["", "@enduml"]
-    nombre = os.path.basename(g[0])[:-5]
     escribir(nombre, "\n".join(d))
     SUBSISTEMAS.append(nombre)
 

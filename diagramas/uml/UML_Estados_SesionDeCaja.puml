@@ -20,8 +20,8 @@ hide empty description
 state "Abierta\n(open)" as ABI
 state "Cerrada\n(closed)" as CER
 
-[*] --> ABI : abrirCaja(montoInicial) [la caja exige sesión y no tiene otra abierta;\nsi el monto inicial difiere del saldo, se asienta un ajuste]
-ABI --> CER : cerrarCajaConArqueo(montoContado)\n[el ajuste por la diferencia ya está asentado]
+[*] --> ABI : abrirCaja(montoInicial) [la caja exige sesión y no tiene otra abierta]\n/ asentarAjusteSiElMontoDifiereDelSaldo()
+ABI --> CER : cerrarCajaConArqueo(montoContado)\n[el ajuste por la diferencia ya está asentado]\n/ fijarSaldoIgualAlContado()
 CER --> [*]
 
 note bottom of CER

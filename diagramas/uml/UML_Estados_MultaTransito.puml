@@ -28,10 +28,10 @@ PENDING --> PAID : registrarPagoDeMulta(multa, fecha, importe)
 APPEALED --> PAID : registrarPagoDeMulta(multa, fecha, importe)
 PENDING --> VOIDED : anularMultaDeTransito(multa, motivo)
 APPEALED --> VOIDED : anularMultaDeTransito(multa, motivo)
-PENDING --> PENDING : when(vence en siete días o menos y sin aviso) / marcarAvisada(ahora)
-PENDING --> PENDING : imputarMultaAlChofer(empleado)
-APPEALED --> APPEALED : imputarMultaAlChofer(empleado)
-PAID --> PAID : imputarMultaAlChofer(empleado)
+PENDING : when(vence en siete días o menos y sin aviso)\n/ marcarAvisada(ahora)
+PENDING : imputarMultaAlChofer(empleado)
+APPEALED : imputarMultaAlChofer(empleado)
+PAID : imputarMultaAlChofer(empleado)
 PAID --> [*]
 VOIDED --> [*]
 

@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-214 Consultar los Proveedores
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarProveedores(termino)
+    activate SIS
+    SIS-->>ADM: proveedores vigentes
+    deactivate SIS

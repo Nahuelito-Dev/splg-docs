@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Rehace el catálogo de operaciones del Documento 2 (§2.2) y la sección de Operaciones del
-documento de Diseño (§4.21).
+documento de Diseño (§4.24).
 
     python3 generar-operaciones.py
 
@@ -29,13 +29,13 @@ for o in sorted(ops, key=lambda o: o["nombre"].lower()):
 c_con = sum(1 for o, _ in filas if o["cambiaEstado"])
 c_dsd = sum(1 for _, d in filas if d == "sí")
 
-s = ["### 4.21 Operaciones del sistema", "",
+s = ["### 4.24 Operaciones del sistema", "",
  "Cada operación del sistema con su firma. Una operación del sistema es un mensaje que",
  "un actor le manda al sistema y que aparece como tal en el diagrama de secuencia del",
  "Documento 2. El catálogo, con una sola firma por operación, y el contrato de las que",
  "modifican el modelo conceptual, con precondiciones y postcondiciones, están en el",
  "Documento 2 · §2.2; el diagrama de interacción que muestra cómo se resuelve por dentro",
- "está en las secciones 4.1 a 4.19 de este documento.", "",
+ "está en las secciones 4.1 a 4.23 de este documento.", "",
  f"Son **{len(filas)} operaciones**. **{c_dsd}** tienen su diagrama de interacción y",
  f"**{c_con}** tienen contrato: son las que cambian el estado del sistema.", "",
  "| Operación | Caso de uso | Actor que la invoca | Diagrama de interacción | Contrato |",
@@ -46,10 +46,11 @@ s.append("")
 texto = "\n".join(s)
 
 d = open(D + "3-Diseño.md", encoding="utf-8").read()
-ini = d.index("### 4.21 Operaciones del sistema")
-fin = min(x for x in (d.find("\n### ", ini + 5), d.find("\n## ", ini + 5)) if x != -1)
+ini = d.index("### 4.24 Operaciones del sistema")
+# también corta en un marcador: después de esta sección viene el del §5 (<!-- dc:inicio -->)
+fin = min(x for x in (d.find("\n### ", ini + 5), d.find("\n## ", ini + 5), d.find("\n<!-- ", ini + 5)) if x != -1)
 open(D + "3-Diseño.md", "w", encoding="utf-8").write(d[:ini] + texto + d[fin:])
-print(f"§4.21: {len(filas)} operaciones | {c_dsd} con diagrama | {c_con} con contrato")
+print(f"§4.24: {len(filas)} operaciones | {c_dsd} con diagrama | {c_con} con contrato")
 
 # Documento 2 §2.2: el catálogo, con el recuento de operaciones y de contratos
 c_con2 = sum(1 for o in ops if o["cambiaEstado"])

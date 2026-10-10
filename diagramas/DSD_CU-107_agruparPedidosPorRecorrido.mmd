@@ -28,10 +28,11 @@ sequenceDiagram
             PLN-)NOT: sendBatchOffer(chofer, recorrido)
         end
         alt Un chofer acepta el recorrido
+            PLN->>PLN: aceptarRecorrido(recorrido)
             Note over PLN,LOT: Aceptación: ver DSD de aceptarRecorrido (CU-107)
         else Ningún chofer acepta
             PLN->>LOT: deshacer()
-            Note over PLN,LOT: Los pedidos vuelven al circuito individual: ver DSD de ofrecerAlSiguienteChofer (CU-013)
+            Note over PLN,LOT: Los pedidos vuelven al circuito individual:<br/>ver DSD de ofrecerAlSiguienteChofer (CU-013)
         end
     end
     deactivate PLN

@@ -104,6 +104,8 @@ entity Pago {
   {field} es seña
   {field} fecha
 }
+entity Cliente #F1F1F1 {
+}
 entity Chofer #F1F1F1 {
 }
 entity Producto #F1F1F1 {
@@ -114,27 +116,60 @@ entity Usuario #F1F1F1 {
 }
 entity Distribuidora #F1F1F1 {
 }
+entity Reclamo #F1F1F1 {
+}
+entity Envase #F1F1F1 {
+}
+entity Incidencia #F1F1F1 {
+}
+entity OfertaDespacho #F1F1F1 {
+}
+entity Calificacion #F1F1F1 {
+}
+entity InvitacionRecompra #F1F1F1 {
+}
+entity ParadaLote #F1F1F1 {
+}
+entity AsientoComision #F1F1F1 {
+}
+entity AsientoCuentaCorriente #F1F1F1 {
+}
+entity MovimientoEnvase #F1F1F1 {
+}
+entity PedidoRendido #F1F1F1 {
+}
 
 Distribuidora ||--o{ ZonaCobertura : define >
 Distribuidora ||--o{ FranjaHoraria : define >
-Usuario ||--o{ Carrito : arma >
+Cliente ||--o{ Carrito : arma >
 Carrito ||--o{ ItemCarrito : contiene >
 ItemCarrito }o--|| Producto : corresponde a >
 Pedido }o--|| DireccionEntrega : se entrega en >
 Pedido }o--o| ZonaCobertura : aplica el recargo de >
-Usuario ||--o{ Pedido : realiza >
+Cliente ||--o{ Pedido : realiza >
 Chofer |o--o{ Pedido : entrega >
 Distribuidora ||--o{ Pedido : gestiona >
 Pedido }o--o| FranjaHoraria : se programa en >
+Pedido ||--o{ Reclamo : origina >
+Pedido |o--o{ Envase : despacha >
+Pedido ||--o{ Incidencia : origina >
 Usuario ||--o{ CambioDireccion : realiza >
 CambioDireccion }o--|| DireccionEntrega : cambia desde >
 Pedido ||--o{ CambioDireccion : registra >
 CambioDireccion }o--|| DireccionEntrega : cambia hacia >
+Pedido ||--o{ OfertaDespacho : genera >
 ItemPedido }o--|| Producto : corresponde a >
-Pedido ||--o{ ItemPedido : contiene >
+Pedido ||--|{ ItemPedido : contiene >
 Usuario |o--o{ CambioEstadoPedido : efectúa >
 Pedido ||--o{ CambioEstadoPedido : registra >
 Pedido ||--o{ Pago : se salda con >
+Pedido ||--o{ Calificacion : recibe [0..2] >
+InvitacionRecompra |o--o| Pedido : se convierte en >
+ParadaLote }o--|| Pedido : atiende >
+AsientoComision }o--o| Pedido : corresponde a >
+Pedido |o--o{ AsientoCuentaCorriente : origina >
+Pedido |o--o{ MovimientoEnvase : origina >
+PedidoRendido |o--|| Pedido : corresponde a >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

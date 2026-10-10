@@ -25,8 +25,9 @@ skinparam database {
   BorderColor #2C4257
   BackgroundColor #E8EDF2
 }
-skinparam nodesep 35
-skinparam ranksep 50
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
 
 component "App Cliente\n(Flutter)" as AC
 component "App Chofer\n(Flutter)" as AD
@@ -42,6 +43,14 @@ package "Backend (NestJS)" as BE {
   component "Catálogo, reclamos\ny reportes" as CAT
   component "Notificaciones\ny correo" as NOT
   component "Geoposición\ny exclusión mutua" as GEO
+  () "IAutenticación" as IAUT
+  () "IPedidos" as IPED
+  () "IPago" as IPAG
+  () "IFlota" as IFLO
+  () "ICatálogo" as ICAT
+  () "INotificar" as INOT
+  () "IGeo" as IGEO
+  () "ITiempoReal" as IRT
 }
 
 database "PostgreSQL + PostGIS" as PG
@@ -52,14 +61,6 @@ component "Servicio de correo" as ML <<externo>>
 
 () "API REST\n(HTTPS)" as IREST
 () "Socket.IO\n(WSS)" as IWS
-() "IAutenticación" as IAUT
-() "IPedidos" as IPED
-() "IPago" as IPAG
-() "IFlota" as IFLO
-() "ICatálogo" as ICAT
-() "INotificar" as INOT
-() "IGeo" as IGEO
-() "ITiempoReal" as IRT
 
 
 AC -down-( IREST

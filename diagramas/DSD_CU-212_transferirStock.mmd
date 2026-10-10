@@ -20,8 +20,8 @@ sequenceDiagram
     alt Origen y destino son la misma ubicación
         SRV-->>ADM: solicitudInvalida
     else Origen y destino son ubicaciones distintas
-        Note over SRV,LED: Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicion, condicion, cantidad, traslado)
         alt El origen tiene la cantidad
             LED-->>SRV: aplicado
             SRV-->>ADM: aplicado

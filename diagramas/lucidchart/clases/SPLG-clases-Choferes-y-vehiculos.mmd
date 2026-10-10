@@ -29,8 +29,8 @@ classDiagram
     class List_Chofer["List<Chofer>"] {
         <<colección>>
         + buscarEnMotoDisponibles(direccion: DireccionEntrega): Chofer[*]
-        + contarEnLinea(distribuidoraId: Identificador): Chofer[*]
-        + contarHabilitados(distribuidoraId: Identificador): Chofer[*]
+        + contarEnLinea(distribuidoraId: Identificador): Entero
+        + contarHabilitados(distribuidoraId: Identificador): Entero
         + getConEfectivoOCobrosSinRendir(hoy: Fecha): Chofer[*]
     }
 
@@ -83,9 +83,9 @@ classDiagram
     class FleetTaskService {
         <<fachada>>
     }
-    class Usuario
     class Distribuidora
     class UbicacionGPS
+    class Usuario
 
     Usuario <|-- Chofer
     Map_String_Chofer "1" o-- "0..*" Chofer : elementos

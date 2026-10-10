@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-259 Modificar un Depósito · actualizarDeposito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :WarehouseService
+    participant COL as :Map#lt;String, Deposito#gt;
+    participant DEP as deposito:Deposito
+
+    ADM->>+SRV: actualizarDeposito(depositoId, datos)
+    SRV->>+COL: get(depositoId)
+    COL-->>-SRV: depositoDeStock
+    SRV->>+DEP: actualizar(datos)
+    DEP->>DEP: validarCodigoSinUsar(codigo)
+    DEP-->>-SRV: depositoDeStock
+    SRV-->>-ADM: depositoDeStock

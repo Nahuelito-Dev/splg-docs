@@ -5,8 +5,8 @@ estereotipo <<propuesto>>, hasta que la migración las cree. Cada agregado dice 
 responde, qué columnas nuevas lleva una tabla existente y qué tablas nuevas aparecen.
 
 Las referencias al empleado (`employee_id`) apuntan a la tabla `employee` del módulo de personal
-(iteración I-11), que describe `propuesto_personal.py`; la vigencia y el detalle de las tareas de
-mantenimiento (`valid_from`, `details`) también los define ese módulo.
+(iteración I-11), que ya está en la base; la vigencia y el detalle de las tareas de
+mantenimiento (`valid_from`, `details`) los define `propuesto_personal.py`.
 """
 
 

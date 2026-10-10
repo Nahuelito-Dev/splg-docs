@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-265 Modificar una Categoría de Ingresos y Gastos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarCategoriaDeCaja(categoriaId, datos)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: categoría con los datos nuevos
+    else la categoría es de sistema
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

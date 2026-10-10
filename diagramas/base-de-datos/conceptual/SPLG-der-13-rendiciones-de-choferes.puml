@@ -40,8 +40,8 @@ entity RendicionChofer <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} estado
   {field} efectivo esperado
   {field} efectivo declarado
-  {field} gastos del chofer
-  {field} diferencia
+  {field} /gastos del chofer
+  {field} /diferencia
   {field} resolución de la diferencia
   {field} presentada el
   {field} aprobada el
@@ -77,7 +77,7 @@ entity AsientoComision #F1F1F1 {
 
 Chofer ||--o{ RendicionChofer : presenta >
 RendicionChofer }o--o| Caja : ingresa en >
-RendicionChofer }o--o| MovimientoDeCaja : genera >
+RendicionChofer |o--o| MovimientoDeCaja : genera >
 RendicionChofer |o--o{ AsientoComision : origina >
 RendicionChofer |o--o{ AsientoCuentaCorriente : incluye >
 RendicionChofer ||--o{ GastoDeRendicion : declara >

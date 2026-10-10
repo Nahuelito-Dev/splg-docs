@@ -155,7 +155,7 @@ def clasificar(ruta):
     if '.controller.ts' in ruta: return 'controller'
     if '.guard.ts' in ruta: return 'guard'
     if '.interceptor.ts' in ruta: return 'interceptor'
-    if '.listener.ts' in ruta: return 'listener'
+    if '.listener.ts' in ruta or '.subscriber.ts' in ruta: return 'listener'
     if '.mapper.ts' in ruta: return 'mapper'
     if '.provider.ts' in ruta: return 'service'
     if '.health.ts' in ruta: return 'service'

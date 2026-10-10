@@ -37,33 +37,28 @@ skinparam usecase {
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "MercadoPago\n(ACT-06)" as A06 <<sistema externo>>
 
 rectangle "SS-14 Pagos y Conciliación" {
   usecase "CU-048\nProcesar Pago con MercadoPago" as U048 #back:FFFFFF;line:4E6B4A
   usecase "CU-168\nReintegrar el Pago de un\nPedido" as U168 <<planificado>> #back:FFFFFF;line:4E6B4A
 }
 
-usecase "CU-008\nCancelar Pedido (Cliente)\n(SS-02)" as U008 #back:FFFFFF;line:6B7683
-usecase "CU-010\nCancelar Pedido\n(Administrador)\n(SS-02)" as U010 #back:FFFFFF;line:6B7683
-usecase "CU-149\nDespachar un Pedido Express a\nun Chofer en Moto\n(SS-03)" as U149 <<planificado>> #back:FFFFFF;line:6B7683
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-008\nCancelar Pedido (Cliente)\n(SS-02)" as U008 #back:FFFFFF;line:6B7683
+  usecase "CU-010\nCancelar Pedido\n(Administrador)\n(SS-02)" as U010 #back:FFFFFF;line:6B7683
+  usecase "CU-149\nDespachar un Pedido Express a\nun Chofer en Moto\n(SS-03)" as U149 <<planificado>> #back:FFFFFF;line:6B7683
+}
 
 A03 -[#8C4A9E]- U168
 A04 -[#8A6D1F]- U048
 A04 -[#8A6D1F]- U168
-A05 --|> A03
+U048 -[#6B7683]- A06
+A05 -right-|> A03
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
-U168 ..> U008 : <<extend>>
-note on link
-  Punto de extensión: el pedido cancelado tiene un pago aprobado por una pasarela
-end note
-U168 ..> U010 : <<extend>>
-note on link
-  Punto de extensión: el pedido cancelado tiene un pago aprobado por una pasarela
-end note
-U168 ..> U149 : <<extend>>
-note on link
-  Punto de extensión: el pedido express pasa a reparto común y ya estaba pagado en linea
-end note
+U168 ..> U008 : <<extend>>\n(punto de extensión:\nel pedido cancelado tiene un pago\naprobado por una pasarela)
+U168 ..> U010 : <<extend>>\n(punto de extensión:\nel pedido cancelado tiene un pago\naprobado por una pasarela)
+U168 ..> U149 : <<extend>>\n(punto de extensión:\nel pedido express pasa a reparto\ncomún y ya estaba pagado en linea)
 
 @enduml

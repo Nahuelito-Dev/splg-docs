@@ -1,5 +1,5 @@
 @startuml
-title SS-19 — Personal y Legajos (20 casos de uso)
+title SS-19 — Personal y Legajos (23 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -38,19 +38,20 @@ actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "Servicio de correo\n(ACT-08)" as A08 <<sistema externo>>
 
 rectangle "SS-19 Personal y Legajos" {
-  usecase "CU-176\nGestionar los Puestos de\nTrabajo" as U176 <<planificado>> #back:FFFFFF;line:3D6B7A
-  usecase "CU-177\nRegistrar el Legajo de un\nEmpleado" as U177 <<planificado>> #back:FFFFFF;line:3D6B7A
-  usecase "CU-178\nModificar el Legajo de un\nEmpleado" as U178 <<planificado>> #back:FFFFFF;line:3D6B7A
-  usecase "CU-179\nConsultar el Legajo de un\nEmpleado" as U179 <<planificado>> #back:FFFFFF;line:3D6B7A
-  usecase "CU-180\nConsultar el Listado de\nEmpleados" as U180 <<planificado>> #back:FFFFFF;line:3D6B7A
-  usecase "CU-181\nRegistrar el Egreso de un\nEmpleado" as U181 <<planificado>> #back:FFFFFF;line:3D6B7A
-  usecase "CU-182\nOtorgar una Cuenta de Acceso a\nun Empleado" as U182 <<planificado>> #back:FFFFFF;line:3D6B7A
+  usecase "CU-176\nConsultar los Puestos de\nTrabajo" as U176 #back:FFFFFF;line:3D6B7A
+  usecase "CU-177\nRegistrar el Legajo de un\nEmpleado" as U177 #back:FFFFFF;line:3D6B7A
+  usecase "CU-178\nModificar el Legajo de un\nEmpleado" as U178 #back:FFFFFF;line:3D6B7A
+  usecase "CU-179\nConsultar el Legajo de un\nEmpleado" as U179 #back:FFFFFF;line:3D6B7A
+  usecase "CU-180\nConsultar el Listado de\nEmpleados" as U180 #back:FFFFFF;line:3D6B7A
+  usecase "CU-181\nRegistrar el Egreso de un\nEmpleado" as U181 #back:FFFFFF;line:3D6B7A
+  usecase "CU-182\nOtorgar una Cuenta de Acceso a\nun Empleado" as U182 #back:FFFFFF;line:3D6B7A
   usecase "CU-183\nRegistrar el Curso de\nTransporte de Mercancías\nPeligrosas del Empleado" as U183 <<planificado>> #back:FFFFFF;line:3D6B7A
   usecase "CU-184\nRegistrar el Examen\nPsicofísico del Empleado" as U184 <<planificado>> #back:FFFFFF;line:3D6B7A
   usecase "CU-185\nRegistrar el Alta en la ART\ndel Empleado" as U185 <<planificado>> #back:FFFFFF;line:3D6B7A
-  usecase "CU-186\nAdjuntar un Archivo al Legajo" as U186 <<planificado>> #back:FFFFFF;line:3D6B7A
+  usecase "CU-186\nAdjuntar un Archivo al Legajo" as U186 #back:FFFFFF;line:3D6B7A
   usecase "CU-187\nConsultar los Vencimientos del\nPersonal" as U187 <<planificado>> #back:FFFFFF;line:3D6B7A
   usecase "CU-188\nAvisar los Vencimientos\nPróximos del Personal" as U188 <<planificado>> #back:FFFFFF;line:3D6B7A
   usecase "CU-189\nRegistrar la Asistencia de un\nEmpleado" as U189 <<planificado>> #back:FFFFFF;line:3D6B7A
@@ -60,12 +61,17 @@ rectangle "SS-19 Personal y Legajos" {
   usecase "CU-193\nConsultar el Saldo de\nVacaciones de un Empleado" as U193 <<planificado>> #back:FFFFFF;line:3D6B7A
   usecase "CU-194\nConsultar el Tablero de\nPersonal" as U194 <<planificado>> #back:FFFFFF;line:3D6B7A
   usecase "CU-246\nVerificar la Habilitación\nLaboral del Chofer" as U246 <<planificado>> #back:FFFFFF;line:3D6B7A
+  usecase "CU-255\nCrear un Puesto de Trabajo" as U255 #back:FFFFFF;line:3D6B7A
+  usecase "CU-256\nModificar un Puesto de Trabajo" as U256 #back:FFFFFF;line:3D6B7A
+  usecase "CU-257\nEliminar un Puesto de Trabajo" as U257 #back:FFFFFF;line:3D6B7A
 }
 
-usecase "CU-003\nRegistrar Chofer\n(SS-01)" as U003 #back:FFFFFF;line:6B7683
-usecase "CU-012\nAsignar Chofer Manualmente\n(SS-03)" as U012 #back:FFFFFF;line:6B7683
-usecase "CU-013\nAsignar Pedido Automáticamente\npor Proximidad\n(SS-03)" as U013 #back:FFFFFF;line:6B7683
-usecase "CU-015\nAceptar Pedido\n(SS-03)" as U015 #back:FFFFFF;line:6B7683
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-003\nRegistrar Chofer\n(SS-01)" as U003 #back:FFFFFF;line:6B7683
+  usecase "CU-012\nAsignar Chofer Manualmente\n(SS-03)" as U012 #back:FFFFFF;line:6B7683
+  usecase "CU-013\nAsignar Pedido Automáticamente\npor Proximidad\n(SS-03)" as U013 #back:FFFFFF;line:6B7683
+  usecase "CU-015\nAceptar Pedido\n(SS-03)" as U015 #back:FFFFFF;line:6B7683
+}
 
 A02 -[#2E7D46]- U190
 A03 -[#8C4A9E]- U176
@@ -85,8 +91,12 @@ A03 -[#8C4A9E]- U191
 A03 -[#8C4A9E]- U192
 A03 -[#8C4A9E]- U193
 A03 -[#8C4A9E]- U194
+A03 -[#8C4A9E]- U255
+A03 -[#8C4A9E]- U256
+A03 -[#8C4A9E]- U257
 A04 -[#8A6D1F]- U188
-A05 --|> A03
+U188 -[#6B7683]- A08
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U178 ..> U179 : <<include>>
@@ -100,9 +110,15 @@ U191 ..> U179 : <<include>>
 U193 ..> U179 : <<include>>
 U187 ..> U179 : <<include>>
 U188 ..> U187 : <<include>>
+U256 ..> U176 : <<include>>
+U257 ..> U176 : <<include>>
 U003 ..> U177 : <<include>>
 U012 ..> U246 : <<include>>
 U013 ..> U246 : <<include>>
 U015 ..> U246 : <<include>>
+U176 -[hidden]-> U256
+U176 -[hidden]-> U257
+U177 -[hidden]-> U003
+U187 -[hidden]-> U188
 
 @enduml

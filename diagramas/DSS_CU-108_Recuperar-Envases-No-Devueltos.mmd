@@ -13,32 +13,26 @@ sequenceDiagram
 
     loop Por cada envase retenido
         loop Por cada escalón de la secuencia
-            alt El envase ya volvió
-                Note over SIS: Se cierra el caso y se<br/>libera el depósito
-            else El envase sigue retenido
+            Note over SAU,SIS: Si el envase ya volvió, se cierra<br/>el caso y se libera el depósito
+            opt El envase sigue retenido
                 SIS-)CLI: notificarEscalonDeRecupero(caso, escalon)
-                alt Hay una entrega programada al mismo cliente
+                opt Hay una entrega programada al mismo cliente
                     SIS-)CLI: notificarOfertaDeRetiro(oferta)
-                    alt El cliente acepta el retiro
+                    opt El cliente acepta el retiro antes de la vigencia
                         CLI->>SIS: aceptarRetiroEnLaEntrega(ofertaId)
                         SIS-->>CLI: retiro acordado para esa entrega
-                    else No responde antes de la vigencia
-                        Note over SIS: Vence la oferta de<br/>retiro
                     end
-                else No hay entrega programada
-                    Note over SIS: Se saltea la oferta de<br/>retiro
                 end
             end
         end
 
-        alt Se agotaron los escalones y el importe supera el umbral
+        opt Se agotaron los escalones y el importe supera el umbral
             SIS-)ADM: notificarLegajoDeRecupero(caso)
             ADM->>SIS: resolverCasoDeRecupero(casoId, decision)
             Note over SAU,ADM: decision: cobrar el depósito, dar de baja el<br/>envase o cerrar el caso sin cargo
             SIS-->>ADM: resolución registrada
-        else El envase volvió o el importe no llega al umbral
-            Note over SIS: Se cierra el caso según<br/>corresponda
         end
+        Note over SAU,SIS: Si el envase volvió o el importe<br/>no llega al umbral, se cierra<br/>el caso según corresponda
     end
     SIS-->>SAU: casos de recupero procesados
     deactivate SIS

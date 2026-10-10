@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-272 Buscar un Usuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt búsqueda por correo
+        ADM->>SIS: buscarUsuarioPorCorreo(correo)
+        activate SIS
+        alt existe
+            SIS-->>ADM: usuario encontrado
+        else no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    else búsqueda por teléfono
+        ADM->>SIS: buscarUsuarioPorTelefono(telefono)
+        activate SIS
+        SIS-->>ADM: usuario encontrado
+        deactivate SIS
+    end

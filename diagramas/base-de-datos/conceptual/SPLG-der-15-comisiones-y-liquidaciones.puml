@@ -32,7 +32,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity Empleado <<propuesto>> #E4EDF4;line:1F5E8C {
+entity Empleado {
   * identificador
   --
   {field} legajo
@@ -92,19 +92,46 @@ entity Distribuidora #F1F1F1 {
 }
 entity RendicionChofer #F1F1F1 {
 }
+entity PuestoDeTrabajo #F1F1F1 {
+}
+entity Usuario #F1F1F1 {
+}
+entity JornadaDeTrabajo #F1F1F1 {
+}
+entity LicenciaLaboral #F1F1F1 {
+}
+entity CargaCombustible #F1F1F1 {
+}
+entity TareaMantenimiento #F1F1F1 {
+}
+entity MultaTransito #F1F1F1 {
+}
+entity Siniestro #F1F1F1 {
+}
+entity Adjunto #F1F1F1 {
+}
 
 Distribuidora ||--o{ Empleado : emplea >
+Empleado }o--|| PuestoDeTrabajo : ocupa >
+Empleado |o--o| Usuario : accede con >
 Distribuidora ||--o{ ReglaComision : define >
 ReglaComision }o--o| Empleado : se aplica a >
 ReglaComision }o--o| Producto : se aplica a >
+Empleado ||--o{ JornadaDeTrabajo : registra >
+Empleado ||--o{ LicenciaLaboral : solicita >
+Empleado |o--o{ CargaCombustible : carga >
+TareaMantenimiento }o--o| Empleado : habilita >
+Empleado |o--o{ MultaTransito : responde por >
+Empleado |o--o{ Siniestro : interviene en >
 Empleado ||--o{ LiquidacionComisiones : percibe >
-LiquidacionComisiones }o--o| MovimientoDeCaja : se paga con >
+LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
 Empleado ||--o{ AsientoComision : devenga >
 AsientoComision }o--o| Pedido : corresponde a >
 ReglaComision |o--o{ AsientoComision : determina >
 RendicionChofer |o--o{ AsientoComision : origina >
 LiquidacionComisiones |o--o{ AsientoComision : incluye >
-Empleado ||--o{ Chofer : actúa como >
+Empleado ||--o{ Adjunto : conserva >
+Empleado |o--o| Chofer : actúa como >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

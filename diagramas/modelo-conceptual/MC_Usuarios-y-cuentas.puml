@@ -64,6 +64,18 @@ class AsientoAuditoria {
   cambios
   fecha
 }
+class Auditoria {
+  entidad afectada
+  fecha y hora
+}
+class DetalleAuditoria {
+  campo
+  valor anterior
+  valor nuevo
+}
+class TipoAccionAuditoria {
+  nombre
+}
 class Cliente {
   consumo mensual declarado
   días de aviso
@@ -96,6 +108,10 @@ Distribuidora "1" -- "0..*" Producto : comercializa >
 Distribuidora "1" -- "0..*" Pedido : gestiona >
 Distribuidora "1" *-- "0..*" ConfiguracionModulo : parametriza >
 Usuario "0..1" -- "0..*" AsientoAuditoria : origina >
+Usuario "0..1" -- "0..*" Auditoria : realiza >
+Distribuidora "0..1" -- "0..*" Auditoria : delimita >
+Auditoria "1" *-- "0..*" DetalleAuditoria : detalla con >
+TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica >
 Cliente "1" *-- "0..*" DireccionEntrega : registra >
 Cliente "1" -- "0..*" Pedido : realiza >
 Cliente "1" -- "0..*" InvitacionRecompra : recibe >

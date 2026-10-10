@@ -38,6 +38,9 @@ entity Rol
 entity Administrador
 entity ConfiguracionModulo
 entity AsientoAuditoria
+entity Auditoria
+entity DetalleAuditoria
+entity TipoAccionAuditoria
 entity Cliente
 entity DireccionEntrega
 entity InvitacionRecompra
@@ -69,8 +72,8 @@ entity TareaMantenimiento
 entity AdjuntoTarea
 entity PropuestaVentanaTaller
 entity RegistroUsoVehiculo
-entity PuestoDeTrabajo <<propuesto>>
-entity Empleado <<propuesto>>
+entity PuestoDeTrabajo
+entity Empleado
 entity JornadaDeTrabajo <<propuesto>>
 entity LicenciaLaboral <<propuesto>>
 entity Adjunto
@@ -110,153 +113,156 @@ entity ReglaComision <<propuesto>>
 entity AsientoComision <<propuesto>>
 entity LiquidacionComisiones <<propuesto>>
 
-Distribuidora ||--o{ Caja
-Distribuidora ||--o{ CategoriaDeCaja
-Distribuidora ||--o{ ZonaCobertura
-Distribuidora ||--o{ Producto
-Distribuidora ||--o{ PuestoDeTrabajo
-Distribuidora ||--o{ Proveedor
-Distribuidora ||--o{ FranjaHoraria
-Usuario }o--o| Rol
-Distribuidora ||--o{ Deposito
-Distribuidora |o--o{ Administrador
-Administrador |o--|| Usuario
-Usuario |o--o{ AsientoAuditoria
-Chofer ||--o{ Vehiculo
-Cliente ||--o{ Carrito
-Caja ||--o{ SesionDeCaja
-Cliente }o--o| Producto
-Cliente |o--|| Usuario
-Distribuidora ||--o{ CuentaCorriente
-Cliente ||--o{ CuentaCorriente
-Distribuidora ||--o{ Chofer
-Chofer |o--|| Usuario
-Distribuidora ||--o{ Empleado
-Empleado }o--|| PuestoDeTrabajo
-Producto ||--o{ Promocion
-Distribuidora ||--o{ ConfiguracionModulo
-Proveedor ||--o{ OrdenDeCompra
-OrdenDeCompra }o--|| Deposito
-Deposito ||--o{ UmbralDeStock
-UmbralDeStock }o--|| Producto
-Cliente ||--o{ DireccionEntrega
-Carrito ||--o{ ItemCarrito
-ItemCarrito }o--|| Producto
-Caja ||--o{ MovimientoDeCaja
-SesionDeCaja |o--o{ MovimientoDeCaja
-CategoriaDeCaja ||--o{ MovimientoDeCaja
-MovimientoDeCaja |o--o| MovimientoDeCaja
-Distribuidora ||--o{ ReglaComision
-ReglaComision }o--o| Empleado
-ReglaComision }o--o| Producto
-Empleado ||--o{ JornadaDeTrabajo
-Empleado ||--o{ LicenciaLaboral
-Vehiculo ||--o{ CargaCombustible
-Empleado |o--o{ CargaCombustible
-TareaMantenimiento }o--o| Vehiculo
-TareaMantenimiento }o--o| Chofer
-PlanMantenimiento ||--o{ TareaMantenimiento
-TareaMantenimiento }o--o| Empleado
-Pedido }o--|| DireccionEntrega
-Pedido }o--o| ZonaCobertura
-Cliente ||--o{ Pedido
-Chofer |o--o{ Pedido
-Distribuidora ||--o{ Pedido
-Pedido }o--o| FranjaHoraria
-OrdenDeCompra ||--o{ ItemOrdenDeCompra
-ItemOrdenDeCompra }o--|| Producto
-Proveedor ||--o{ RecepcionDeCompra
-OrdenDeCompra |o--o{ RecepcionDeCompra
-RecepcionDeCompra }o--|| Deposito
-Chofer |o--o{ LoteRecorrido
-Deposito |o--o| UbicacionDeStock
-Vehiculo |o--o| UbicacionDeStock
-Distribuidora ||--o{ Neumatico
-Vehiculo |o--o{ Neumatico
-Vehiculo ||--o{ MultaTransito
-Empleado |o--o{ MultaTransito
-Vehiculo ||--o{ Siniestro
-Empleado |o--o{ Siniestro
-Vehiculo ||--o{ AsignacionVehiculo
-Chofer ||--o{ AsignacionVehiculo
-Vehiculo ||--o{ RegistroUsoVehiculo
-Cliente ||--o{ Reclamo
-Pedido ||--o{ Reclamo
-Cliente |o--o{ Envase
-Pedido |o--o{ Envase
-Distribuidora ||--o{ Envase
-Producto |o--o{ Envase
-Empleado ||--o{ LiquidacionComisiones
-LiquidacionComisiones }o--o| MovimientoDeCaja
-Chofer ||--o{ RendicionChofer
-RendicionChofer }o--o| Caja
-RendicionChofer }o--o| MovimientoDeCaja
-Pedido ||--o{ Incidencia
-TareaMantenimiento ||--o{ AdjuntoTarea
-PropuestaVentanaTaller }o--|| Chofer
-TareaMantenimiento ||--o{ PropuestaVentanaTaller
-CambioDireccion }o--|| DireccionEntrega
-Pedido ||--o{ CambioDireccion
-CambioDireccion }o--|| DireccionEntrega
-OfertaDespacho }o--|| Chofer
-Pedido ||--o{ OfertaDespacho
-ItemPedido }o--|| Producto
-Pedido ||--o{ ItemPedido
-Pedido ||--o{ CambioEstadoPedido
-Pedido ||--o{ Pago
-RecepcionDeCompra ||--o{ ItemRecepcion
-ItemRecepcion }o--|| Producto
-Pedido ||--o{ Calificacion
-InvitacionRecompra }o--o| DireccionEntrega
-InvitacionRecompra }o--o| Pedido
-Cliente ||--o{ InvitacionRecompra
-LoteRecorrido ||--o{ OfertaLote
-OfertaLote }o--|| Chofer
-LoteRecorrido ||--o{ ParadaLote
-ParadaLote }o--|| Pedido
-UbicacionDeStock ||--o{ AjusteDeStock
-UbicacionDeStock ||--o{ SaldoDeStock
-SaldoDeStock }o--|| Producto
-MovimientoDeStock }o--|| Producto
-MovimientoDeStock }o--o| UbicacionDeStock
-MovimientoDeStock }o--o| UbicacionDeStock
-Neumatico ||--o{ MovimientoNeumatico
-MovimientoNeumatico }o--o| Vehiculo
-Vehiculo ||--o{ CargaDeCamion
-Chofer ||--o{ CargaDeCamion
-CargaDeCamion }o--|| UbicacionDeStock
-Empleado ||--o{ AsientoComision
-AsientoComision }o--o| Pedido
-ReglaComision |o--o{ AsientoComision
-RendicionChofer |o--o{ AsientoComision
-LiquidacionComisiones |o--o{ AsientoComision
-CuentaCorriente ||--o{ AsientoCuentaCorriente
-Pedido |o--o{ AsientoCuentaCorriente
-AsientoCuentaCorriente }o--o| MovimientoDeCaja
-Chofer |o--o{ AsientoCuentaCorriente
-RendicionChofer |o--o{ AsientoCuentaCorriente
-AsientoCuentaCorriente |o--o| AsientoCuentaCorriente
-Envase ||--o{ RevisionEnvase
-Envase ||--o{ MovimientoEnvase
-Pedido |o--o{ MovimientoEnvase
-Envase ||--o{ CasoRecupero
-CasoRecupero }o--|| Cliente
-RendicionChofer ||--o{ GastoDeRendicion
-GastoDeRendicion }o--|| CategoriaDeCaja
-RendicionChofer ||--o{ PedidoRendido
-PedidoRendido |o--|| Pedido
-AjusteDeStock ||--o{ ItemAjusteDeStock
-ItemAjusteDeStock }o--|| Producto
-CargaDeCamion ||--o{ ItemCarga
-ItemCarga }o--|| Producto
-ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente
-ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente
-CasoRecupero ||--o{ AvisoRecupero
-Empleado ||--o{ Adjunto
-Empleado ||--o{ Chofer
+Distribuidora ||--o{ Caja : define >
+Distribuidora ||--o{ CategoriaDeCaja : define >
+Distribuidora ||--o{ ZonaCobertura : define >
+Distribuidora ||--o{ Producto : comercializa >
+Distribuidora ||--o{ PuestoDeTrabajo : define >
+Distribuidora ||--o{ Proveedor : compra a >
+Distribuidora ||--o{ FranjaHoraria : define >
+Usuario }o--o| Rol : tiene asignado >
+Distribuidora ||--o{ Deposito : dispone de >
+Distribuidora |o--o{ Administrador : emplea >
+Administrador |o--|| Usuario : es un >
+TipoAccionAuditoria ||--o{ Auditoria : clasifica >
+Distribuidora |o--o{ Auditoria : delimita >
+Usuario |o--o{ AsientoAuditoria : origina >
+Chofer ||--o{ Vehiculo : tiene registrado >
+Cliente ||--o{ Carrito : arma >
+Caja ||--o{ SesionDeCaja : registra >
+Cliente }o--o| Producto : usa habitualmente >
+Cliente |o--|| Usuario : es un >
+Distribuidora ||--o{ CuentaCorriente : lleva >
+Cliente ||--o{ CuentaCorriente : tiene habilitada >
+Distribuidora ||--o{ Chofer : emplea >
+Chofer |o--|| Usuario : es un >
+Distribuidora ||--o{ Empleado : emplea >
+Empleado }o--|| PuestoDeTrabajo : ocupa >
+Producto ||--o{ Promocion : ofrece >
+Distribuidora ||--o{ ConfiguracionModulo : parametriza >
+Proveedor ||--o{ OrdenDeCompra : recibe >
+OrdenDeCompra }o--|| Deposito : se destina a >
+Deposito ||--o{ UmbralDeStock : fija >
+UmbralDeStock }o--|| Producto : controla >
+Cliente ||--o{ DireccionEntrega : registra >
+Auditoria ||--o{ DetalleAuditoria : detalla con >
+Carrito ||--o{ ItemCarrito : contiene >
+ItemCarrito }o--|| Producto : corresponde a >
+Caja ||--o{ MovimientoDeCaja : asienta >
+SesionDeCaja |o--o{ MovimientoDeCaja : agrupa >
+CategoriaDeCaja ||--o{ MovimientoDeCaja : clasifica >
+MovimientoDeCaja |o--o| MovimientoDeCaja : anula a >
+Distribuidora ||--o{ ReglaComision : define >
+ReglaComision }o--o| Empleado : se aplica a >
+ReglaComision }o--o| Producto : se aplica a >
+Empleado ||--o{ JornadaDeTrabajo : registra >
+Empleado ||--o{ LicenciaLaboral : solicita >
+Vehiculo ||--o{ CargaCombustible : registra >
+Empleado |o--o{ CargaCombustible : carga >
+TareaMantenimiento }o--o| Vehiculo : habilita >
+TareaMantenimiento }o--o| Chofer : habilita >
+PlanMantenimiento ||--o{ TareaMantenimiento : genera >
+TareaMantenimiento }o--o| Empleado : habilita >
+Pedido }o--|| DireccionEntrega : se entrega en >
+Pedido }o--o| ZonaCobertura : aplica el recargo de >
+Cliente ||--o{ Pedido : realiza >
+Chofer |o--o{ Pedido : entrega >
+Distribuidora ||--o{ Pedido : gestiona >
+Pedido }o--o| FranjaHoraria : se programa en >
+OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
+ItemOrdenDeCompra }o--|| Producto : corresponde a >
+Proveedor ||--o{ RecepcionDeCompra : entrega >
+OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
+RecepcionDeCompra }o--|| Deposito : ingresa en >
+Chofer |o--o{ LoteRecorrido : acepta >
+Deposito ||--o| UbicacionDeStock : se registra como {xor} >
+Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
+Distribuidora ||--o{ Neumatico : posee >
+Vehiculo |o--o{ Neumatico : monta >
+Vehiculo ||--o{ MultaTransito : acumula >
+Empleado |o--o{ MultaTransito : responde por >
+Vehiculo ||--o{ Siniestro : sufre >
+Empleado |o--o{ Siniestro : interviene en >
+Vehiculo ||--o{ AsignacionVehiculo : figura en >
+Chofer ||--o{ AsignacionVehiculo : figura en >
+Vehiculo ||--o{ RegistroUsoVehiculo : acumula >
+Cliente ||--o{ Reclamo : presenta >
+Pedido ||--o{ Reclamo : origina >
+Cliente |o--o{ Envase : tiene en su poder >
+Pedido |o--o{ Envase : despacha >
+Distribuidora ||--o{ Envase : posee >
+Producto |o--o{ Envase : describe >
+Empleado ||--o{ LiquidacionComisiones : percibe >
+LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
+Chofer ||--o{ RendicionChofer : presenta >
+RendicionChofer }o--o| Caja : ingresa en >
+RendicionChofer |o--o| MovimientoDeCaja : genera >
+Pedido ||--o{ Incidencia : origina >
+TareaMantenimiento ||--o{ AdjuntoTarea : adjunta >
+PropuestaVentanaTaller }o--|| Chofer : se dirige a >
+TareaMantenimiento ||--o{ PropuestaVentanaTaller : origina >
+CambioDireccion }o--|| DireccionEntrega : cambia desde >
+Pedido ||--o{ CambioDireccion : registra >
+CambioDireccion }o--|| DireccionEntrega : cambia hacia >
+OfertaDespacho }o--|| Chofer : se dirige a >
+Pedido ||--o{ OfertaDespacho : genera >
+ItemPedido }o--|| Producto : corresponde a >
+Pedido ||--|{ ItemPedido : contiene >
+Pedido ||--o{ CambioEstadoPedido : registra >
+Pedido ||--o{ Pago : se salda con >
+RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
+ItemRecepcion }o--|| Producto : corresponde a >
+Pedido ||--o{ Calificacion : recibe [0..2] >
+InvitacionRecompra }o--o| DireccionEntrega : sugiere entregar en >
+InvitacionRecompra |o--o| Pedido : se convierte en >
+Cliente ||--o{ InvitacionRecompra : recibe >
+LoteRecorrido ||--o{ OfertaLote : genera >
+OfertaLote }o--|| Chofer : se dirige a >
+LoteRecorrido ||--|{ ParadaLote : se compone de >
+ParadaLote }o--|| Pedido : atiende >
+UbicacionDeStock ||--o{ AjusteDeStock : se corrige con >
+UbicacionDeStock ||--o{ SaldoDeStock : acumula >
+SaldoDeStock }o--|| Producto : corresponde a >
+MovimientoDeStock }o--|| Producto : corresponde a >
+MovimientoDeStock }o--o| UbicacionDeStock : sale de >
+MovimientoDeStock }o--o| UbicacionDeStock : entra en >
+Neumatico ||--o{ MovimientoNeumatico : registra >
+MovimientoNeumatico }o--o| Vehiculo : ocurre en >
+Vehiculo ||--o{ CargaDeCamion : transporta >
+Chofer ||--o{ CargaDeCamion : reparte con >
+CargaDeCamion }o--|| UbicacionDeStock : parte de >
+Empleado ||--o{ AsientoComision : devenga >
+AsientoComision }o--o| Pedido : corresponde a >
+ReglaComision |o--o{ AsientoComision : determina >
+RendicionChofer |o--o{ AsientoComision : origina >
+LiquidacionComisiones |o--o{ AsientoComision : incluye >
+CuentaCorriente ||--o{ AsientoCuentaCorriente : registra >
+Pedido |o--o{ AsientoCuentaCorriente : origina >
+AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
+Chofer |o--o{ AsientoCuentaCorriente : cobra >
+RendicionChofer |o--o{ AsientoCuentaCorriente : incluye >
+AsientoCuentaCorriente |o--o| AsientoCuentaCorriente : anula a >
+Envase ||--o{ RevisionEnvase : se somete a >
+Envase ||--o{ MovimientoEnvase : registra >
+Pedido |o--o{ MovimientoEnvase : origina >
+Envase ||--o{ CasoRecupero : motiva >
+CasoRecupero }o--|| Cliente : se abre contra >
+RendicionChofer ||--o{ GastoDeRendicion : declara >
+GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
+RendicionChofer ||--o{ PedidoRendido : rinde >
+PedidoRendido |o--|| Pedido : corresponde a >
+AjusteDeStock ||--|{ ItemAjusteDeStock : contiene >
+ItemAjusteDeStock }o--|| Producto : corresponde a >
+CargaDeCamion ||--|{ ItemCarga : contiene >
+ItemCarga }o--|| Producto : corresponde a >
+ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : salda >
+ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : se aplica con >
+CasoRecupero ||--o{ AvisoRecupero : emite >
+Empleado ||--o{ Adjunto : conserva >
+Empleado |o--o| Chofer : actúa como >
 
 legend bottom right
-  Vista de conjunto: sin atributos ni nombres de relación. Las relaciones de Usuario
+  Vista de conjunto: sin atributos (están en la vista de cada área). Las relaciones de Usuario
   con los registros que sólo dejan constancia de su autoría figuran en la vista de su área.
 endlegend
 @enduml

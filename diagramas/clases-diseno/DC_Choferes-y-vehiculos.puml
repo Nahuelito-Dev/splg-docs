@@ -75,8 +75,8 @@ class Chofer {
   + darDeBaja()
   + desconectar()
   + deshabilitar()
-  + estaActivo()
-  + estaInhabilitado(tareas: TareaMantenimiento[*])
+  + estaActivo(): Booleano
+  + estaInhabilitado(tareas: TareaMantenimiento[*]): Booleano
   + getAsignacionAbierta(): AsignacionVehiculo
   + getCapacidadDeCarga(): Entero
   + getDistribuidora(): Distribuidora
@@ -84,7 +84,7 @@ class Chofer {
   + getHistorialDeVehiculos(pagina: Entero): AsignacionVehiculo[*]
   + getPedidoEnCurso(): Pedido
   + getPedidos(pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
-  + getRendicionAbierta(): RendicionChofer
+  + getRendicionAbierta()
   + getSaldo(): Moneda
   + getUbicacion(): UbicacionGPS
   + getUsuario(): Usuario
@@ -110,7 +110,7 @@ class Vehiculo {
   - tipoDeCombustible: TipoDeCombustible
   - capacidadDelTanque: Decimal
   + «create» Vehiculo(tipo: Cadena, capacidad: Entero,\n      patente: Cadena, marca: Cadena, modelo: Cadena,\n      anio: Entero, color: Cadena)
-  + abrirCarga(chofer: Chofer, deposito: Moneda,\n      ayudanteId: Identificador,\n      items: Registro): CargaDeCamion
+  + abrirCarga(chofer: Chofer, deposito: Deposito,\n      ayudanteId: Identificador,\n      items: Registro): CargaDeCamion
   + actualizarKilometraje(kilometraje: Entero)
   + assertFueraDeServicio()
   + assertKilometrajeCreciente(kilometraje: Entero)
@@ -119,10 +119,10 @@ class Vehiculo {
   + assertPatenteUnica(patente: Cadena)
   + darDeBaja()
   + editar(datos: Registro)
-  + estaInhabilitado(tareas: TareaMantenimiento[*])
-  + estimarKilometrajeDiario()
+  + estaInhabilitado(tareas: TareaMantenimiento[*]): Booleano
+  + estimarKilometrajeDiario(): Entero
   + getCargaAbierta(): CargaDeCamion
-  + getCargas(fechaDesde: Fecha,\n      fechaHasta: Fecha): CargaDeCamion[*]
+  + getCargas(fechaDesde: Fecha,\n      fechaHasta: Fecha): CargaCombustible[*]
   + getChofer(): Chofer
   + getChoferEnUso(): Chofer
   + getCostoTotal(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
@@ -130,7 +130,7 @@ class Vehiculo {
   + getKilometrosRecorridos(fechaDesde: Fecha,\n      fechaHasta: Fecha): Entero
   + getUbicacionDeStock(): UbicacionDeStock
   + ponerFueraDeServicio()
-  + proyectarVencimientos()
+  + proyectarVencimientos(): TareaMantenimiento[*]
   + reactivar()
   + recalcularKilometraje()
   + registrarCarga(datos: Registro): CargaCombustible
@@ -171,7 +171,7 @@ Chofer "1" --> "0..*" Vehiculo : tiene registrado
 Chofer "0..*" --> "0..*" Vehiculo : usa
 Chofer "1" --> "0..1" UbicacionGPS : se ubica en
 Vehiculo "1" *-- "0..*" RegistroUsoVehiculo : acumula
-Chofer ..> AsignacionVehiculo : <<create>>
+Chofer ..> "<<create>>" AsignacionVehiculo
 Vehiculo ..> AsignacionVehiculo
 (Chofer, Vehiculo) .. AsignacionVehiculo
 

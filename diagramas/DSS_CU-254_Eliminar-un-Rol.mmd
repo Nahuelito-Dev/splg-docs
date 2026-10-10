@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-254 Eliminar un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: eliminarRol(rolId)
+    activate SIS
+    alt el rol existe, no es del sistema y no tiene usuarios
+        SIS-->>SUP: rol eliminado
+    else el rol no existe
+        SIS-->>SUP: recurso no encontrado
+    else el rol es del sistema o tiene usuarios asignados
+        SIS-->>SUP: conflicto
+    end
+    deactivate SIS

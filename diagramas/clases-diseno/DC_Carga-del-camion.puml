@@ -66,11 +66,13 @@ class CargaDeCamion {
   - regresoEl: FechaHora
   - cerradaEl: FechaHora
   - notaDeDiferencia: Cadena
-  + «create» CargaDeCamion(chofer: Chofer, deposito: Moneda,\n      ayudanteId: Identificador, autor: Usuario)
+  + «create» CargaDeCamion(chofer: Chofer,\n      deposito: Deposito, ayudanteId: Identificador,\n      administrador: Administrador)
   + cancelar(): CargaDeCamion
-  + cerrar(nota: Cadena, autor: Usuario): CargaDeCamion
+  + cerrar(nota: Cadena,\n      administrador: Administrador): CargaDeCamion
   + getEstado(): EstadoDeLaCarga
-  + getItems()
+  + getItems(): ItemCarga[*]
+  + getUbicacionDelCamion(): UbicacionDeStock
+  + getUbicacionDelDeposito(): UbicacionDeStock
   + registrarRegreso(devueltos: Registro,\n      ahora: FechaHora): CargaDeCamion
   + reponer(items: Registro): CargaDeCamion
   + salir(ahora: FechaHora): CargaDeCamion
@@ -93,10 +95,12 @@ class ItemCarga {
   - diferenciaDeLlenas: Entero
   - diferenciaDeVacias: Entero
   + «create» ItemCarga(producto: Producto,\n      llenasCargadas: Entero, vaciasCargadas: Entero)
-  + calcularDiferencia()
-  + calcularEsperado()
+  + calcularDiferencia(): Entero
+  + calcularEsperado(): Entero
   + declararRegreso(llenasDevueltas: Entero,\n      vaciasDevueltas: Entero)
-  + getEsperado()
+  + getEsperado(): Entero
+  + getLlenasCargadas(): Entero
+  + getLlenasDeclaradas(): Entero
   + getProducto(): Producto
   + sumarRepuesto(llenasRepuestas: Entero)
 }
@@ -105,7 +109,6 @@ class Chofer <<referencia>>
 class UbicacionDeStock <<referencia>>
 class Producto <<referencia>>
 class Usuario <<referencia>>
-class Pedido <<referencia>>
 
 Usuario <|-- Chofer : {overlapping, incomplete}
 Vehiculo "1" --> "0..*" CargaDeCamion : transporta

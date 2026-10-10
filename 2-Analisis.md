@@ -15,7 +15,7 @@
 - Figura 1.3 — Modelo conceptual: despacho y propuestas con vigencia
 - Figura 1.4 — Modelo conceptual: flota y choferes
 - Figura 1.5 — Modelo conceptual: envases y catálogo
-- Figura 1.6 — Modelo conceptual: personal (planificado, I-11)
+- Figura 1.6 — Modelo conceptual: personal (puestos y legajos construidos; jornadas y licencias planificadas, I-11)
 - Figura 1.7 — Modelo conceptual: posventa
 - Figura 1.8 — Modelo conceptual: gastos de la flota (planificado, I-12)
 - Figura 1.9 — Modelo conceptual: stock físico (planificado, I-13)
@@ -36,238 +36,260 @@
 - Figura 10 — DSS CU-023: Registrar Reclamo
 - Figura 11 — DSS CU-002: Registrarse como Cliente
 - Figura 12 — DSS CU-003: Registrar Chofer
-- Figura 13 — DSS CU-004: Gestionar Perfil de Usuario
-- Figura 14 — DSS CU-047: Recuperar Contraseña
-- Figura 15 — DSS CU-050: Bloquear / Desbloquear Usuario
-- Figura 16 — DSS CU-083: Buscar / Listar Usuarios
-- Figura 17 — DSS CU-084: Verificar Existencia de Usuario (pre-registro)
-- Figura 18 — DSS CU-085: Eliminar Usuario (baja lógica)
-- Figura 19 — DSS CU-091: Validar Vigencia del Token de Sesión
-- Figura 20 — DSS CU-006: Consultar Detalle de Pedido
-- Figura 21 — DSS CU-007: Consultar Historial de Pedidos
-- Figura 22 — DSS CU-169: Registrar el Cambio de Estado de un Pedido
-- Figura 23 — DSS CU-170: Consultar el Historial de Estados de un Pedido
-- Figura 24 — DSS CU-143: Declarar el Consumo Promedio al Registrarse
-- Figura 25 — DSS CU-144: Actualizar el Consumo Promedio Declarado
-- Figura 26 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra
-- Figura 27 — DSS CU-146: Consultar la Fecha Estimada de Recompra
-- Figura 28 — DSS CU-147: Realizar una Compra Express
-- Figura 29 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido
-- Figura 30 — DSS CU-008: Cancelar Pedido (Cliente)
-- Figura 31 — DSS CU-009: Cancelar Pedido (Chofer)
-- Figura 32 — DSS CU-010: Cancelar Pedido (Administrador)
-- Figura 33 — DSS CU-011: Listar Todos los Pedidos
-- Figura 34 — DSS CU-012: Asignar Chofer Manualmente
-- Figura 35 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto
-- Figura 36 — DSS CU-046: Consultar Direcciones de Entrega del Cliente
-- Figura 37 — DSS CU-116: Registrar Dirección de Entrega
-- Figura 38 — DSS CU-117: Consultar Detalle de una Dirección de Entrega
-- Figura 39 — DSS CU-118: Editar Dirección de Entrega
-- Figura 40 — DSS CU-119: Eliminar Dirección de Entrega
-- Figura 41 — DSS CU-120: Marcar una Dirección como Predeterminada
-- Figura 42 — DSS CU-121: Consultar la Dirección Predeterminada
-- Figura 43 — DSS CU-122: Agregar Ítem al Carrito
-- Figura 44 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito
-- Figura 45 — DSS CU-124: Quitar Ítem del Carrito
-- Figura 46 — DSS CU-125: Consultar el Carrito
-- Figura 47 — DSS CU-126: Vaciar el Carrito
-- Figura 48 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido
-- Figura 49 — DSS CU-128: Indicar Quién Recibe el Pedido
-- Figura 50 — DSS CU-080: Consultar el Pool de Pedidos Disponibles
-- Figura 51 — DSS CU-081: Consultar los Pedidos Asignados al Chofer
-- Figura 52 — DSS CU-016: Rechazar / Ignorar Pedido
-- Figura 53 — DSS CU-018: Marcar Pedido "En Camino"
-- Figura 54 — DSS CU-019: Avisar Llegada al Cliente
-- Figura 55 — DSS CU-021: Recibir Notificaciones en Tiempo Real
-- Figura 56 — DSS CU-022: Activar / Desactivar Disponibilidad
-- Figura 57 — DSS CU-078: Obtener el Código de Entrega (QR del chofer)
-- Figura 58 — DSS CU-079: Confirmar Entrega Escaneando el QR (cliente)
-- Figura 59 — DSS CU-024: Listar Reclamos
-- Figura 60 — DSS CU-025: Resolver Reclamo
-- Figura 61 — DSS CU-166: Tomar un Reclamo Pendiente
-- Figura 62 — DSS CU-167: Reabrir un Reclamo
-- Figura 63 — DSS CU-174: Adjuntar la Fotografía de un Reclamo
-- Figura 64 — DSS CU-175: Consultar la Fotografía de un Reclamo
-- Figura 65 — DSS CU-026: Ver Dashboard General
-- Figura 66 — DSS CU-027: Ver Reporte de Ventas por Chofer
-- Figura 67 — DSS CU-028: Ver Reporte de Ventas por Producto
-- Figura 68 — DSS CU-029: Ver Reporte por Método de Pago
-- Figura 69 — DSS CU-030: Ver Gráfico de Ventas (últimos 7 días)
-- Figura 70 — DSS CU-031: Registrar Chofer
-- Figura 71 — DSS CU-032: Validar / Invalidar Chofer
-- Figura 72 — DSS CU-033: Activar / Desactivar Chofer (Admin)
-- Figura 73 — DSS CU-034: Registrar Vehículo del Chofer
-- Figura 74 — DSS CU-035: Consultar Listado de Choferes
-- Figura 75 — DSS CU-049: Consultar Balance / Ganancias del Chofer
-- Figura 76 — DSS CU-051: Consultar Listado de Vehículos
-- Figura 77 — DSS CU-096: Actualizar Perfil del Chofer
-- Figura 78 — DSS CU-097: Eliminar Chofer (baja lógica)
-- Figura 79 — DSS CU-109: Consultar Detalle del Chofer
-- Figura 80 — DSS CU-110: Buscar Chofer por Usuario
-- Figura 81 — DSS CU-111: Editar Vehículo
-- Figura 82 — DSS CU-112: Eliminar Vehículo
-- Figura 83 — DSS CU-113: Consultar Detalle del Vehículo
-- Figura 84 — DSS CU-114: Buscar Vehículo por Patente
-- Figura 85 — DSS CU-115: Consultar Vehículos de un Chofer
-- Figura 86 — DSS CU-136: Registrar el Seguro del Vehículo
-- Figura 87 — DSS CU-137: Registrar la Verificación Técnica Vehicular
-- Figura 88 — DSS CU-138: Registrar la Licencia de Conducir del Chofer
-- Figura 89 — DSS CU-139: Consultar los Vencimientos de la Flota
-- Figura 90 — DSS CU-140: Programar un Mantenimiento de Vehículo
-- Figura 91 — DSS CU-141: Registrar un Mantenimiento Realizado
-- Figura 92 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota
-- Figura 93 — DSS CU-155: Adjuntar Archivo a una Tarea de Flota
-- Figura 94 — DSS CU-156: Consultar Adjuntos de una Tarea de Flota
-- Figura 95 — DSS CU-157: Descargar un Adjunto de Flota
-- Figura 96 — DSS CU-158: Eliminar un Adjunto de Flota
-- Figura 97 — DSS CU-161: Poner un Vehículo en Uso para un Chofer
-- Figura 98 — DSS CU-162: Liberar el Vehículo en Uso de un Chofer
-- Figura 99 — DSS CU-163: Consultar el Vehículo en Uso de un Chofer
-- Figura 100 — DSS CU-164: Consultar el Historial de Vehículos de un Chofer
-- Figura 101 — DSS CU-165: Consultar el Historial de Choferes de un Vehículo
-- Figura 102 — DSS CU-195: Registrar una Carga de Combustible
-- Figura 103 — DSS CU-196: Consultar el Consumo de Combustible de un Vehículo
-- Figura 104 — DSS CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas
-- Figura 105 — DSS CU-198: Registrar una Multa de Tránsito
-- Figura 106 — DSS CU-199: Registrar el Pago de una Multa
-- Figura 107 — DSS CU-200: Imputar una Multa al Chofer
-- Figura 108 — DSS CU-201: Registrar un Siniestro
-- Figura 109 — DSS CU-202: Cerrar un Siniestro
-- Figura 110 — DSS CU-203: Consultar el Costo Total de un Vehículo
-- Figura 111 — DSS CU-204: Consultar el Tablero de Costos de la Flota
-- Figura 112 — DSS CU-205: Registrar un Neumático
-- Figura 113 — DSS CU-206: Registrar un Movimiento de Neumático
-- Figura 114 — DSS CU-247: Reactivar un Vehículo
-- Figura 115 — DSS CU-036: Crear Producto (Garrafa)
-- Figura 116 — DSS CU-037: Actualizar Precio de Producto
-- Figura 117 — DSS CU-038: Actualizar Stock de Producto
-- Figura 118 — DSS CU-039: Configurar Promociones por Cantidad
-- Figura 119 — DSS CU-040: Activar / Desactivar Producto
-- Figura 120 — DSS CU-041: Consultar Catálogo de Productos
-- Figura 121 — DSS CU-042: Crear Franja Horaria
-- Figura 122 — DSS CU-044: Seleccionar Franja Horaria al Crear Pedido
-- Figura 123 — DSS CU-045: Consultar Franjas Horarias Disponibles
-- Figura 124 — DSS CU-103: Eliminar Franja Horaria
-- Figura 125 — DSS CU-154: Consultar Listado de Franjas Horarias
-- Figura 126 — DSS CU-052: Registrar Distribuidora
-- Figura 127 — DSS CU-053: Consultar Distribuidoras
-- Figura 128 — DSS CU-054: Modificar Datos de la Distribuidora
-- Figura 129 — DSS CU-055: Dar de Baja una Distribuidora
-- Figura 130 — DSS CU-056: Definir Zona de Cobertura
-- Figura 131 — DSS CU-057: Consultar Zonas de Cobertura
-- Figura 132 — DSS CU-058: Validar Cobertura de una Dirección
-- Figura 133 — DSS CU-059: Eliminar Zona de Cobertura
-- Figura 134 — DSS CU-150: Programar la Vigencia de una Zona de Cobertura
-- Figura 135 — DSS CU-151: Desactivar las Zonas de Cobertura Vencidas
-- Figura 136 — DSS CU-060: Registrar Incidencia de Entrega
-- Figura 137 — DSS CU-061: Listar Incidencias
-- Figura 138 — DSS CU-062: Consultar Incidencias de un Pedido
-- Figura 139 — DSS CU-063: Resolver Incidencia
-- Figura 140 — DSS CU-064: Calificar Pedido (cliente↔chofer)
-- Figura 141 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario
-- Figura 142 — DSS CU-066: Consultar Historial de Calificaciones Recibidas
-- Figura 143 — DSS CU-067: Dar de Alta un Envase Físico
-- Figura 144 — DSS CU-068: Asignar Envases a un Pedido
-- Figura 145 — DSS CU-069: Consultar el Parque de Envases
-- Figura 146 — DSS CU-070: Registrar Movimiento de Envase (cambio de estado)
-- Figura 147 — DSS CU-071: Consultar Historial de Movimientos de un Envase
-- Figura 148 — DSS CU-132: Registrar la Revisión Periódica de un Envase
-- Figura 149 — DSS CU-133: Consultar la Vigencia de un Envase
-- Figura 150 — DSS CU-134: Consultar los Envases Próximos a Vencer
-- Figura 151 — DSS CU-135: Bloquear el Despacho de un Envase Vencido
-- Figura 152 — DSS CU-048: Procesar Pago con MercadoPago
-- Figura 153 — DSS CU-168: Reintegrar el Pago de un Pedido
-- Figura 154 — DSS CU-072: Crear Reserva Programada con Seña
-- Figura 155 — DSS CU-073: Listar Reservas y Estado de la Seña
-- Figura 156 — DSS CU-074: Confirmar Seña Cobrada en Efectivo
-- Figura 157 — DSS CU-075: Activar Reservas Vencidas Automaticamente (Cron)
-- Figura 158 — DSS CU-076: Expirar Reservas sin Seña Pagada (Cron)
-- Figura 159 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron)
-- Figura 160 — DSS CU-086: Registrar Administrador
-- Figura 161 — DSS CU-087: Crear el Primer Super Administrador (bootstrap)
-- Figura 162 — DSS CU-088: Consultar Administradores
-- Figura 163 — DSS CU-089: Gestionar Roles del Sistema
-- Figura 164 — DSS CU-090: Sembrar los Roles Iniciales
-- Figura 165 — DSS CU-092: Consultar Listado de Clientes
-- Figura 166 — DSS CU-094: Actualizar Ubicación del Cliente
-- Figura 167 — DSS CU-095: Eliminar Cliente (baja lógica)
-- Figura 168 — DSS CU-129: Consultar Detalle del Cliente
-- Figura 169 — DSS CU-130: Buscar Cliente por Usuario
-- Figura 170 — DSS CU-131: Editar Datos del Cliente
-- Figura 171 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo
-- Figura 172 — DSS CU-099: Consultar los Tokens de un Usuario
-- Figura 173 — DSS CU-100: Enviar Notificación de Prueba
-- Figura 174 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido
-- Figura 175 — DSS CU-102: Probar el Servicio de Correo
-- Figura 176 — DSS CU-104: Verificar la Salud del Sistema (liveness / readiness)
-- Figura 177 — DSS CU-152: Consultar el Registro de Auditoría
-- Figura 178 — DSS CU-153: Registrar Toda Operación de Escritura
-- Figura 179 — DSS CU-172: Configurar los Parámetros de un Proceso Automático
-- Figura 180 — DSS CU-173: Configurar la Frecuencia de las Tareas Programadas
-- Figura 180.1 — DSS CU-176: Gestionar los Puestos de Trabajo
-- Figura 180.2 — DSS CU-177: Registrar el Legajo de un Empleado
-- Figura 180.3 — DSS CU-178: Modificar el Legajo de un Empleado
-- Figura 180.4 — DSS CU-179: Consultar el Legajo de un Empleado
-- Figura 180.5 — DSS CU-180: Consultar el Listado de Empleados
-- Figura 180.6 — DSS CU-181: Registrar el Egreso de un Empleado
-- Figura 180.7 — DSS CU-182: Otorgar una Cuenta de Acceso a un Empleado
-- Figura 180.8 — DSS CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado
-- Figura 180.9 — DSS CU-184: Registrar el Examen Psicofísico del Empleado
-- Figura 180.10 — DSS CU-185: Registrar el Alta en la ART del Empleado
-- Figura 180.11 — DSS CU-186: Adjuntar un Archivo al Legajo
-- Figura 180.12 — DSS CU-187: Consultar los Vencimientos del Personal
-- Figura 180.13 — DSS CU-188: Avisar los Vencimientos Próximos del Personal
-- Figura 180.14 — DSS CU-189: Registrar la Asistencia de un Empleado
-- Figura 180.15 — DSS CU-190: Registrar el Inicio y el Fin de la Jornada
-- Figura 180.16 — DSS CU-191: Registrar una Licencia o Ausencia
-- Figura 180.17 — DSS CU-192: Resolver una Solicitud de Licencia
-- Figura 180.18 — DSS CU-193: Consultar el Saldo de Vacaciones de un Empleado
-- Figura 180.19 — DSS CU-194: Consultar el Tablero de Personal
-- Figura 181 — DSS CU-207: Gestionar los Depósitos
-- Figura 182 — DSS CU-208: Consultar el Stock por Ubicación
-- Figura 183 — DSS CU-209: Consultar los Movimientos de Stock
-- Figura 184 — DSS CU-210: Configurar el Stock Mínimo
-- Figura 185 — DSS CU-211: Avisar el Stock Bajo
-- Figura 186 — DSS CU-212: Transferir Stock entre Depósitos
-- Figura 187 — DSS CU-213: Registrar un Ajuste o una Merma de Stock
-- Figura 188 — DSS CU-218: Registrar la Carga del Camión
-- Figura 189 — DSS CU-219: Registrar la Salida del Camión
-- Figura 190 — DSS CU-220: Descontar del Camión lo Entregado
-- Figura 191 — DSS CU-221: Registrar el Regreso del Camión
-- Figura 192 — DSS CU-222: Cerrar la Rendición de Stock del Camión
-- Figura 193 — DSS CU-223: Consultar la Carga Actual del Camión
-- Figura 194 — DSS CU-224: Conciliar el Stock Vendible con el Físico
-- Figura 195 — DSS CU-249: Configurar el Control de Carga de Camión Abierta
-- Figura 196 — DSS CU-214: Gestionar los Proveedores
-- Figura 197 — DSS CU-215: Emitir una Orden de Compra
-- Figura 198 — DSS CU-216: Cancelar una Orden de Compra
-- Figura 199 — DSS CU-217: Registrar la Recepción de una Compra
-- Figura 200 — DSS CU-225: Gestionar las Cajas
-- Figura 201 — DSS CU-226: Abrir la Caja
-- Figura 202 — DSS CU-227: Cerrar la Caja con Arqueo
-- Figura 203 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
-- Figura 204 — DSS CU-229: Anular un Movimiento de Caja
-- Figura 205 — DSS CU-230: Gestionar las Categorías de Ingresos y Gastos
-- Figura 206 — DSS CU-231: Generar la Rendición Diaria del Chofer
-- Figura 207 — DSS CU-232: Declarar el Efectivo Rendido
-- Figura 208 — DSS CU-233: Aprobar la Rendición del Chofer
-- Figura 209 — DSS CU-234: Avisar las Rendiciones sin Cerrar
-- Figura 210 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
-- Figura 211 — DSS CU-236: Vender a Cuenta Corriente
-- Figura 212 — DSS CU-237: Registrar un Pago de Cuenta Corriente
-- Figura 213 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
-- Figura 214 — DSS CU-239: Consultar la Antigüedad de la Deuda
-- Figura 215 — DSS CU-240: Configurar las Comisiones por Entrega
-- Figura 216 — DSS CU-241: Registrar la Comisión de una Entrega
-- Figura 217 — DSS CU-242: Liquidar las Comisiones de un Chofer
-- Figura 218 — DSS CU-243: Registrar el Pago de una Liquidación
-- Figura 219 — DSS CU-244: Consultar Mis Comisiones
-- Figura 220 — DSS CU-245: Consultar el Tablero Financiero
-- Figura 221 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 222 — DSS CU-106: Anticipar la recompra por consumo estimado
-- Figura 223 — DSS CU-107: Agrupar pedidos por recorrido
-- Figura 224 — DSS CU-108: Recuperar envases no devueltos
-- Figura 225 — DSS CU-043: Modificar Capacidad de Franja Horaria
+- Figura 13 — DSS CU-004: Consultar el Perfil de Usuario
+- Figura 14 — DSS CU-251: Modificar el Perfil de Usuario
+- Figura 15 — DSS CU-047: Recuperar Contraseña
+- Figura 16 — DSS CU-050: Bloquear un Usuario
+- Figura 17 — DSS CU-270: Desbloquear un Usuario
+- Figura 18 — DSS CU-083: Listar los Usuarios
+- Figura 19 — DSS CU-272: Buscar un Usuario
+- Figura 20 — DSS CU-084: Verificar Existencia de Usuario (pre-registro)
+- Figura 21 — DSS CU-085: Eliminar Usuario (baja lógica)
+- Figura 22 — DSS CU-091: Validar Vigencia del Token de Sesión
+- Figura 23 — DSS CU-006: Consultar Detalle de Pedido
+- Figura 24 — DSS CU-007: Consultar Historial de Pedidos
+- Figura 25 — DSS CU-169: Registrar el Cambio de Estado de un Pedido
+- Figura 26 — DSS CU-170: Consultar el Historial de Estados de un Pedido
+- Figura 27 — DSS CU-143: Declarar el Consumo Promedio al Registrarse
+- Figura 28 — DSS CU-144: Actualizar el Consumo Promedio Declarado
+- Figura 29 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra
+- Figura 30 — DSS CU-146: Consultar la Fecha Estimada de Recompra
+- Figura 31 — DSS CU-147: Realizar una Compra Express
+- Figura 32 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido
+- Figura 33 — DSS CU-008: Cancelar Pedido (Cliente)
+- Figura 34 — DSS CU-009: Cancelar Pedido (Chofer)
+- Figura 35 — DSS CU-010: Cancelar Pedido (Administrador)
+- Figura 36 — DSS CU-011: Listar Todos los Pedidos
+- Figura 37 — DSS CU-012: Asignar Chofer Manualmente
+- Figura 38 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto
+- Figura 39 — DSS CU-046: Consultar Direcciones de Entrega del Cliente
+- Figura 40 — DSS CU-116: Registrar Dirección de Entrega
+- Figura 41 — DSS CU-117: Consultar Detalle de una Dirección de Entrega
+- Figura 42 — DSS CU-118: Editar Dirección de Entrega
+- Figura 43 — DSS CU-119: Eliminar Dirección de Entrega
+- Figura 44 — DSS CU-120: Marcar una Dirección como Predeterminada
+- Figura 45 — DSS CU-121: Consultar la Dirección Predeterminada
+- Figura 46 — DSS CU-122: Agregar Ítem al Carrito
+- Figura 47 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito
+- Figura 48 — DSS CU-124: Quitar Ítem del Carrito
+- Figura 49 — DSS CU-125: Consultar el Carrito
+- Figura 50 — DSS CU-126: Vaciar el Carrito
+- Figura 51 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido
+- Figura 52 — DSS CU-128: Indicar Quién Recibe el Pedido
+- Figura 53 — DSS CU-080: Consultar el Pool de Pedidos Disponibles
+- Figura 54 — DSS CU-081: Consultar los Pedidos Asignados al Chofer
+- Figura 55 — DSS CU-016: Rechazar / Ignorar Pedido
+- Figura 56 — DSS CU-018: Marcar Pedido "En Camino"
+- Figura 57 — DSS CU-019: Avisar Llegada al Cliente
+- Figura 58 — DSS CU-021: Recibir Notificaciones en Tiempo Real
+- Figura 59 — DSS CU-022: Activar la Disponibilidad
+- Figura 60 — DSS CU-266: Desactivar la Disponibilidad
+- Figura 61 — DSS CU-078: Obtener el Código de Entrega (QR del chofer)
+- Figura 62 — DSS CU-079: Confirmar Entrega Escaneando el QR (cliente)
+- Figura 63 — DSS CU-024: Listar Reclamos
+- Figura 64 — DSS CU-025: Resolver Reclamo
+- Figura 65 — DSS CU-166: Tomar un Reclamo Pendiente
+- Figura 66 — DSS CU-167: Reabrir un Reclamo
+- Figura 67 — DSS CU-174: Adjuntar la Fotografía de un Reclamo
+- Figura 68 — DSS CU-175: Consultar la Fotografía de un Reclamo
+- Figura 69 — DSS CU-026: Ver Dashboard General
+- Figura 70 — DSS CU-027: Ver Reporte de Ventas por Chofer
+- Figura 71 — DSS CU-028: Ver Reporte de Ventas por Producto
+- Figura 72 — DSS CU-029: Ver Reporte por Método de Pago
+- Figura 73 — DSS CU-030: Ver Gráfico de Ventas (últimos 7 días)
+- Figura 74 — DSS CU-031: Registrar Chofer
+- Figura 75 — DSS CU-032: Validar un Chofer
+- Figura 76 — DSS CU-271: Invalidar un Chofer
+- Figura 77 — DSS CU-033: Activar un Chofer
+- Figura 78 — DSS CU-267: Desactivar un Chofer
+- Figura 79 — DSS CU-034: Registrar Vehículo del Chofer
+- Figura 80 — DSS CU-035: Consultar Listado de Choferes
+- Figura 81 — DSS CU-049: Consultar Balance / Ganancias del Chofer
+- Figura 82 — DSS CU-051: Consultar Listado de Vehículos
+- Figura 83 — DSS CU-096: Actualizar Perfil del Chofer
+- Figura 84 — DSS CU-097: Eliminar Chofer (baja lógica)
+- Figura 85 — DSS CU-109: Consultar Detalle del Chofer
+- Figura 86 — DSS CU-110: Buscar Chofer por Usuario
+- Figura 87 — DSS CU-111: Editar Vehículo
+- Figura 88 — DSS CU-112: Eliminar Vehículo
+- Figura 89 — DSS CU-113: Consultar Detalle del Vehículo
+- Figura 90 — DSS CU-114: Buscar Vehículo por Patente
+- Figura 91 — DSS CU-115: Consultar Vehículos de un Chofer
+- Figura 92 — DSS CU-136: Registrar el Seguro del Vehículo
+- Figura 93 — DSS CU-137: Registrar la Verificación Técnica Vehicular
+- Figura 94 — DSS CU-138: Registrar la Licencia de Conducir del Chofer
+- Figura 95 — DSS CU-139: Consultar los Vencimientos de la Flota
+- Figura 96 — DSS CU-140: Programar un Mantenimiento de Vehículo
+- Figura 97 — DSS CU-141: Registrar un Mantenimiento Realizado
+- Figura 98 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota
+- Figura 99 — DSS CU-155: Adjuntar Archivo a una Tarea de Flota
+- Figura 100 — DSS CU-156: Consultar Adjuntos de una Tarea de Flota
+- Figura 101 — DSS CU-157: Descargar un Adjunto de Flota
+- Figura 102 — DSS CU-158: Eliminar un Adjunto de Flota
+- Figura 103 — DSS CU-161: Poner un Vehículo en Uso para un Chofer
+- Figura 104 — DSS CU-162: Liberar el Vehículo en Uso de un Chofer
+- Figura 105 — DSS CU-163: Consultar el Vehículo en Uso de un Chofer
+- Figura 106 — DSS CU-164: Consultar el Historial de Vehículos de un Chofer
+- Figura 107 — DSS CU-165: Consultar el Historial de Choferes de un Vehículo
+- Figura 108 — DSS CU-195: Registrar una Carga de Combustible
+- Figura 109 — DSS CU-196: Consultar el Consumo de Combustible de un Vehículo
+- Figura 110 — DSS CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas
+- Figura 111 — DSS CU-198: Registrar una Multa de Tránsito
+- Figura 112 — DSS CU-199: Registrar el Pago de una Multa
+- Figura 113 — DSS CU-200: Imputar una Multa al Chofer
+- Figura 114 — DSS CU-201: Registrar un Siniestro
+- Figura 115 — DSS CU-202: Cerrar un Siniestro
+- Figura 116 — DSS CU-203: Consultar el Costo Total de un Vehículo
+- Figura 117 — DSS CU-204: Consultar el Tablero de Costos de la Flota
+- Figura 118 — DSS CU-205: Registrar un Neumático
+- Figura 119 — DSS CU-206: Registrar un Movimiento de Neumático
+- Figura 120 — DSS CU-247: Reactivar un Vehículo
+- Figura 121 — DSS CU-036: Crear Producto (Garrafa)
+- Figura 122 — DSS CU-037: Actualizar Precio de Producto
+- Figura 123 — DSS CU-038: Actualizar Stock de Producto
+- Figura 124 — DSS CU-039: Configurar Promociones por Cantidad
+- Figura 125 — DSS CU-040: Desactivar un Producto
+- Figura 126 — DSS CU-268: Reactivar un Producto
+- Figura 127 — DSS CU-269: Consultar los Productos Inactivos
+- Figura 128 — DSS CU-041: Consultar Catálogo de Productos
+- Figura 129 — DSS CU-042: Crear Franja Horaria
+- Figura 130 — DSS CU-044: Seleccionar Franja Horaria al Crear Pedido
+- Figura 131 — DSS CU-045: Consultar Franjas Horarias Disponibles
+- Figura 132 — DSS CU-103: Eliminar Franja Horaria
+- Figura 133 — DSS CU-154: Consultar Listado de Franjas Horarias
+- Figura 134 — DSS CU-052: Registrar Distribuidora
+- Figura 135 — DSS CU-053: Consultar Distribuidoras
+- Figura 136 — DSS CU-054: Modificar Datos de la Distribuidora
+- Figura 137 — DSS CU-055: Dar de Baja una Distribuidora
+- Figura 138 — DSS CU-056: Definir Zona de Cobertura
+- Figura 139 — DSS CU-057: Consultar Zonas de Cobertura
+- Figura 140 — DSS CU-058: Validar Cobertura de una Dirección
+- Figura 141 — DSS CU-059: Eliminar Zona de Cobertura
+- Figura 142 — DSS CU-150: Programar la Vigencia de una Zona de Cobertura
+- Figura 143 — DSS CU-151: Desactivar las Zonas de Cobertura Vencidas
+- Figura 144 — DSS CU-060: Registrar Incidencia de Entrega
+- Figura 145 — DSS CU-061: Listar Incidencias
+- Figura 146 — DSS CU-062: Consultar Incidencias de un Pedido
+- Figura 147 — DSS CU-063: Resolver Incidencia
+- Figura 148 — DSS CU-064: Calificar Pedido (cliente↔chofer)
+- Figura 149 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario
+- Figura 150 — DSS CU-066: Consultar Historial de Calificaciones Recibidas
+- Figura 151 — DSS CU-067: Dar de Alta un Envase Físico
+- Figura 152 — DSS CU-068: Asignar Envases a un Pedido
+- Figura 153 — DSS CU-069: Consultar el Parque de Envases
+- Figura 154 — DSS CU-070: Registrar Movimiento de Envase (cambio de estado)
+- Figura 155 — DSS CU-071: Consultar Historial de Movimientos de un Envase
+- Figura 156 — DSS CU-132: Registrar la Revisión Periódica de un Envase
+- Figura 157 — DSS CU-133: Consultar la Vigencia de un Envase
+- Figura 158 — DSS CU-134: Consultar los Envases Próximos a Vencer
+- Figura 159 — DSS CU-135: Bloquear el Despacho de un Envase Vencido
+- Figura 160 — DSS CU-048: Procesar Pago con MercadoPago
+- Figura 161 — DSS CU-168: Reintegrar el Pago de un Pedido
+- Figura 162 — DSS CU-072: Crear Reserva Programada con Seña
+- Figura 163 — DSS CU-073: Listar Reservas y Estado de la Seña
+- Figura 164 — DSS CU-074: Confirmar Seña Cobrada en Efectivo
+- Figura 165 — DSS CU-075: Activar Reservas Vencidas Automaticamente (Cron)
+- Figura 166 — DSS CU-076: Expirar Reservas sin Seña Pagada (Cron)
+- Figura 167 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron)
+- Figura 168 — DSS CU-086: Registrar Administrador
+- Figura 169 — DSS CU-087: Crear el Primer Super Administrador (bootstrap)
+- Figura 170 — DSS CU-088: Consultar Administradores
+- Figura 171 — DSS CU-089: Consultar los Roles
+- Figura 172 — DSS CU-252: Crear un Rol
+- Figura 173 — DSS CU-253: Modificar un Rol
+- Figura 174 — DSS CU-254: Eliminar un Rol
+- Figura 175 — DSS CU-090: Sembrar los Roles Iniciales
+- Figura 176 — DSS CU-092: Consultar Listado de Clientes
+- Figura 177 — DSS CU-094: Actualizar Ubicación del Cliente
+- Figura 178 — DSS CU-095: Eliminar Cliente (baja lógica)
+- Figura 179 — DSS CU-129: Consultar Detalle del Cliente
+- Figura 180 — DSS CU-130: Buscar Cliente por Usuario
+- Figura 181 — DSS CU-131: Editar Datos del Cliente
+- Figura 182 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 183 — DSS CU-099: Consultar los Tokens de un Usuario
+- Figura 184 — DSS CU-100: Enviar Notificación de Prueba
+- Figura 185 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 186 — DSS CU-102: Probar el Servicio de Correo
+- Figura 187 — DSS CU-104: Verificar la Salud del Sistema (liveness / readiness)
+- Figura 188 — DSS CU-152: Consultar el Registro de Auditoría
+- Figura 189 — DSS CU-153: Registrar Toda Operación de Escritura
+- Figura 190 — DSS CU-172: Configurar los Parámetros de un Proceso Automático
+- Figura 191 — DSS CU-173: Configurar la Frecuencia de las Tareas Programadas
+- Figura 192 — DSS CU-176: Consultar los Puestos de Trabajo
+- Figura 193 — DSS CU-255: Crear un Puesto de Trabajo
+- Figura 194 — DSS CU-256: Modificar un Puesto de Trabajo
+- Figura 195 — DSS CU-257: Eliminar un Puesto de Trabajo
+- Figura 195.1 — DSS CU-177: Registrar el Legajo de un Empleado
+- Figura 195.2 — DSS CU-178: Modificar el Legajo de un Empleado
+- Figura 195.3 — DSS CU-179: Consultar el Legajo de un Empleado
+- Figura 195.4 — DSS CU-180: Consultar el Listado de Empleados
+- Figura 195.5 — DSS CU-181: Registrar el Egreso de un Empleado
+- Figura 195.6 — DSS CU-182: Otorgar una Cuenta de Acceso a un Empleado
+- Figura 195.7 — DSS CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado
+- Figura 195.8 — DSS CU-184: Registrar el Examen Psicofísico del Empleado
+- Figura 195.9 — DSS CU-185: Registrar el Alta en la ART del Empleado
+- Figura 195.10 — DSS CU-186: Adjuntar un Archivo al Legajo
+- Figura 195.11 — DSS CU-187: Consultar los Vencimientos del Personal
+- Figura 195.12 — DSS CU-188: Avisar los Vencimientos Próximos del Personal
+- Figura 195.13 — DSS CU-189: Registrar la Asistencia de un Empleado
+- Figura 195.14 — DSS CU-190: Registrar el Inicio y el Fin de la Jornada
+- Figura 195.15 — DSS CU-191: Registrar una Licencia o Ausencia
+- Figura 195.16 — DSS CU-192: Resolver una Solicitud de Licencia
+- Figura 195.17 — DSS CU-193: Consultar el Saldo de Vacaciones de un Empleado
+- Figura 195.18 — DSS CU-194: Consultar el Tablero de Personal
+- Figura 196 — DSS CU-207: Consultar los Depósitos
+- Figura 197 — DSS CU-258: Registrar un Depósito
+- Figura 198 — DSS CU-259: Modificar un Depósito
+- Figura 199 — DSS CU-260: Dar de Baja un Depósito
+- Figura 200 — DSS CU-208: Consultar el Stock por Ubicación
+- Figura 201 — DSS CU-209: Consultar los Movimientos de Stock
+- Figura 202 — DSS CU-210: Configurar el Stock Mínimo
+- Figura 203 — DSS CU-211: Avisar el Stock Bajo
+- Figura 204 — DSS CU-212: Transferir Stock entre Depósitos
+- Figura 205 — DSS CU-213: Registrar un Ajuste o una Merma de Stock
+- Figura 206 — DSS CU-218: Registrar la Carga del Camión
+- Figura 207 — DSS CU-219: Registrar la Salida del Camión
+- Figura 208 — DSS CU-220: Descontar del Camión lo Entregado
+- Figura 209 — DSS CU-221: Registrar el Regreso del Camión
+- Figura 210 — DSS CU-222: Cerrar la Rendición de Stock del Camión
+- Figura 211 — DSS CU-223: Consultar la Carga Actual del Camión
+- Figura 212 — DSS CU-224: Conciliar el Stock Vendible con el Físico
+- Figura 213 — DSS CU-249: Configurar el Control de Carga de Camión Abierta
+- Figura 214 — DSS CU-214: Consultar los Proveedores
+- Figura 215 — DSS CU-261: Registrar un Proveedor
+- Figura 216 — DSS CU-262: Modificar un Proveedor
+- Figura 217 — DSS CU-263: Dar de Baja un Proveedor
+- Figura 218 — DSS CU-215: Emitir una Orden de Compra
+- Figura 219 — DSS CU-216: Cancelar una Orden de Compra
+- Figura 220 — DSS CU-217: Registrar la Recepción de una Compra
+- Figura 221 — DSS CU-225: Crear una Caja
+- Figura 222 — DSS CU-264: Modificar una Caja
+- Figura 223 — DSS CU-226: Abrir la Caja
+- Figura 224 — DSS CU-227: Cerrar la Caja con Arqueo
+- Figura 225 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
+- Figura 226 — DSS CU-229: Anular un Movimiento de Caja
+- Figura 227 — DSS CU-230: Crear una Categoría de Ingresos y Gastos
+- Figura 228 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos
+- Figura 229 — DSS CU-231: Generar la Rendición Diaria del Chofer
+- Figura 230 — DSS CU-232: Declarar el Efectivo Rendido
+- Figura 231 — DSS CU-233: Aprobar la Rendición del Chofer
+- Figura 232 — DSS CU-234: Avisar las Rendiciones sin Cerrar
+- Figura 233 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
+- Figura 234 — DSS CU-236: Vender a Cuenta Corriente
+- Figura 235 — DSS CU-237: Registrar un Pago de Cuenta Corriente
+- Figura 236 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
+- Figura 237 — DSS CU-239: Consultar la Antigüedad de la Deuda
+- Figura 238 — DSS CU-240: Configurar las Comisiones por Entrega
+- Figura 239 — DSS CU-241: Registrar la Comisión de una Entrega
+- Figura 240 — DSS CU-242: Liquidar las Comisiones de un Chofer
+- Figura 241 — DSS CU-243: Registrar el Pago de una Liquidación
+- Figura 242 — DSS CU-244: Consultar Mis Comisiones
+- Figura 243 — DSS CU-245: Consultar el Tablero Financiero
+- Figura 244 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 245 — DSS CU-106: Anticipar la recompra por consumo estimado
+- Figura 246 — DSS CU-107: Agrupar pedidos por recorrido
+- Figura 247 — DSS CU-108: Recuperar envases no devueltos
+- Figura 248 — DSS CU-043: Modificar Capacidad de Franja Horaria
 
 ---
 
@@ -289,6 +311,9 @@
 | 11 | 2026-10-03 | Módulo de flota ampliada (CU-195 a CU-206 y CU-247): cinco conceptos nuevos en el modelo conceptual, diagramas de secuencia del sistema y 21 operaciones nuevas en el catálogo. | Nahuel Wagner |
 | 12 | 2026-10-03 | Módulo de stock y compras (CU-207 a CU-224 y CU-249; los casos incluidos CU-248 y CU-250, con su nota): catorce conceptos nuevos en el modelo conceptual, diagramas de secuencia del sistema, 35 operaciones nuevas en el catálogo y 24 contratos. | Nahuel Wagner |
 | 13 | 2026-10-03 | Módulo de caja y rendición (CU-225 a CU-245): trece conceptos nuevos en el modelo conceptual, diagramas de secuencia del sistema y 27 contratos nuevos. El adjunto pasa a ser un concepto implementado (tabla `attachment`) y el catálogo queda en 310 operaciones y 196 contratos. | Nahuel Wagner |
+| 14 | 2026-10-06 | Auditoría de datos (CU-152 y CU-153): tres conceptos nuevos en el modelo conceptual —Auditoria, DetalleAuditoria y TipoAccionAuditoria—, dos operaciones nuevas en el catálogo y un contrato nuevo; el catálogo queda en 312 operaciones y 197 contratos. | Nahuel Wagner |
+| 15 | 2026-10-07 | Los casos de uso que agrupaban varias operaciones de un ABM se parten en uno por operación (CU-251 a CU-272): un diagrama de secuencia del sistema por caso, con su propia operación, y los contratos de las operaciones referidos al caso que corresponde. | Nahuel Wagner |
+| 16 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
 
 ---
 
@@ -322,11 +347,11 @@ lista es la fuente de esa otra, no un conjunto aparte de ejemplos sueltos.
 | Organizaciones | Distribuidora |
 | Personas | Usuario |
 | Roles de las personas | Cliente, Chofer, Administrador, Empleado § |
-| Descripciones o catálogos de especificación | Producto, Rol, PlanMantenimiento, Proveedor §, PuestoDeTrabajo §, CategoriaDeCaja §, CuentaCorriente § |
+| Descripciones o catálogos de especificación | Producto, Rol, TipoAccionAuditoria ¶, PlanMantenimiento, Proveedor §, PuestoDeTrabajo §, CategoriaDeCaja §, CuentaCorriente § |
 | Objetos físicos o tangibles | Envase, Vehiculo, UbicacionGPS, Neumatico §, Deposito §, Caja § |
 | Transacciones | Pedido, Carrito, Pago, OrdenDeCompra §, RecepcionDeCompra §, AjusteDeStock §, CargaDeCamion §, RendicionChofer §, LiquidacionComisiones § |
-| Líneas de transacción | ItemPedido, ItemCarrito, ItemSugerido, ParadaLote, ItemOrdenDeCompra §, ItemRecepcion §, ItemAjusteDeStock §, ItemCarga §, PedidoRendido §, GastoDeRendicion §, ImputacionCuentaCorriente § |
-| Registros de transacciones o eventos | MovimientoEnvase, CambioEstadoPedido, CambioDireccion, AsientoAuditoria, RevisionEnvase, RegistroUsoVehiculo, AdjuntoTarea, CargaCombustible §, MovimientoNeumatico §, MovimientoDeStock §, JornadaDeTrabajo §, Adjunto, MovimientoDeCaja §, AsientoCuentaCorriente §, AsientoComision §, SaldoDeStock § |
+| Líneas de transacción | ItemPedido, ItemCarrito, ItemSugerido, ParadaLote, DetalleAuditoria ¶, ItemOrdenDeCompra §, ItemRecepcion §, ItemAjusteDeStock §, ItemCarga §, PedidoRendido §, GastoDeRendicion §, ImputacionCuentaCorriente § |
+| Registros de transacciones o eventos | MovimientoEnvase, CambioEstadoPedido, CambioDireccion, AsientoAuditoria, Auditoria ¶, RevisionEnvase, RegistroUsoVehiculo, AdjuntoTarea, CargaCombustible §, MovimientoNeumatico §, MovimientoDeStock §, JornadaDeTrabajo §, Adjunto, MovimientoDeCaja §, AsientoCuentaCorriente §, AsientoComision §, SaldoDeStock § |
 | Lugares | DireccionEntrega, ZonaCobertura, UbicacionDeStock § |
 | Reglas y políticas | Promocion, ConfiguracionModulo, FranjaHoraria, UmbralDeStock §, ReglaComision § |
 | Eventos | Incidencia, Reclamo, Calificacion, MultaTransito §, Siniestro §, LicenciaLaboral §, SesionDeCaja § |
@@ -354,11 +379,12 @@ mayoría de los demás conceptos.
 
 Los conceptos se organizan en **trece contextos**, que son las áreas del negocio que los
 definen y los modifican. Los marcados con † se incorporaron el 24/09/2026 para que el
-modelo contenga los 249 casos de uso, incluidos los planificados.
+modelo contenga los 271 casos de uso, incluidos los planificados.
 Los marcados con ‡ se agregaron el 30/09/2026, al contrastar el modelo con la base de
-datos. Los marcados con § se incorporaron el 03/10/2026 con los módulos de gestión de la distribuidora
+datos. Los marcados con ¶ se incorporaron el 06/10/2026 con la auditoría de datos del modelo de la cátedra (Auditoria, DetalleAuditoria y TipoAccionAuditoria), ya implementada.
+Los marcados con § se incorporaron el 03/10/2026 con los módulos de gestión de la distribuidora
 —personal (I-11), flota ampliada (I-12), stock y compras (I-13) y caja y rendición (I-14)—: sus tablas todavía no
-están en la base. El Símbolo repite siempre el nombre del Concepto, salvo que se indique lo contrario.
+están en la base, salvo las de puestos y legajos del personal, que ya están construidas. El Símbolo repite siempre el nombre del Concepto, salvo que se indique lo contrario.
 
 | # | Descripción del Concepto | Símbolo | Intención | Extensión | Contexto |
 |---|----------|---------|-----------|-----------|----------|
@@ -368,80 +394,83 @@ están en la base. El Símbolo repite siempre el nombre del Concepto, salvo que 
 | 4 | **Administrador** | Administrador | Perfil extendido de un Usuario que gestiona la operación. | Operadores internos con acceso al Panel Web. | Organización y acceso |
 | 5 | **ConfiguracionModulo** † | ConfiguracionModulo | Parámetros con que una distribuidora ajusta un proceso automático. | Una por módulo inteligente y distribuidora. | Organización y acceso |
 | 6 | **AsientoAuditoria** † | AsientoAuditoria | Constancia inmutable de una operación que modificó datos: quién, qué, cuándo, desde dónde y con qué resultado. | Cada alta, modificación o baja, exitosa o fallida. | Organización y acceso |
-| 7 | **Cliente** | Cliente | Perfil extendido de un Usuario que realiza pedidos. | Toda persona que se registra en la App Cliente. | Clientes |
-| 8 | **DireccionEntrega** | DireccionEntrega | Domicilio del cliente guardado para futuras entregas, resuelto contra el mapa. | Cada dirección registrada por un cliente. | Clientes |
-| 9 | **InvitacionRecompra** † | InvitacionRecompra | Oferta de reposición que el sistema le hace a un cliente antes de que se le acabe el gas, con el pedido armado. | Cada invitación emitida por el módulo de recompra. | Clientes |
-| 10 | **ItemSugerido** ‡ | ItemSugerido | Producto y cantidad que el módulo de recompra sugiere dentro de una invitación. | Cada línea del pedido sugerido por una invitación. | Clientes |
-| 11 | **Producto** | Producto | Tipo de garrafa comercializado, con precio, stock y promociones. | Los formatos ofrecidos: 10 kg, 15 kg, 45 kg. | Catálogo e inventario |
-| 12 | **Promocion** | Promocion | Descuento por volumen aplicable a un producto al superar una cantidad mínima. | Cada regla de descuento configurada. | Catálogo e inventario |
-| 13 | **Envase** | Envase | Garrafa **física** individual, identificable y rastreable por su número de serie. | Cada botellón que la distribuidora posee o tiene en poder de un cliente. | Catálogo e inventario |
-| 14 | **MovimientoEnvase** | MovimientoEnvase | Registro inmutable de cada cambio de estado de un envase físico. | La traza completa del ciclo de vida de cada envase. | Catálogo e inventario |
-| 15 | **RevisionEnvase** † | RevisionEnvase | Prueba técnica periódica que renueva la vigencia de un envase. | Cada revisión asentada. | Catálogo e inventario |
-| 16 | **CasoRecupero** † | CasoRecupero | Gestión escalonada de un envase que un cliente retiene por encima del plazo. | Cada envase retenido en gestión. | Catálogo e inventario |
-| 17 | **AvisoRecupero** † | AvisoRecupero | Recordatorio, oferta de retiro o aviso de depósito enviado dentro de un caso de recupero. | Cada aviso emitido. | Catálogo e inventario |
-| 18 | **Carrito** † | Carrito | Pedido en armado que el cliente deja guardado antes de confirmarlo. | Uno por cliente y distribuidora. | Venta y pedidos |
-| 19 | **ItemCarrito** † | ItemCarrito | Producto cargado en el carrito, con su cantidad. | Cada línea del carrito. | Venta y pedidos |
-| 20 | **Pedido** | Pedido | Solicitud formal de compra realizada por un cliente. Tiene un ciclo de vida de estados. | Cada transacción de compra registrada. | Venta y pedidos |
-| 21 | **ItemPedido** | ItemPedido | Línea individual dentro de un pedido: un producto y su cantidad. | Cada garrafa solicitada dentro de un pedido. | Venta y pedidos |
-| 22 | **CambioEstadoPedido** † | CambioEstadoPedido | Transición del pedido de un estado a otro, con su autor y su motivo. | Cada cambio de estado de cada pedido. | Venta y pedidos |
-| 23 | **CambioDireccion** † | CambioDireccion | Cambio de la dirección de entrega de un pedido ya hecho, con su autor y las direcciones de origen y destino. | Cada cambio registrado. | Venta y pedidos |
-| 24 | **ZonaCobertura** | ZonaCobertura | Área geográfica dentro de la cual una distribuidora acepta pedidos, con su recargo y su vigencia. | Los polígonos de cobertura definidos por cada distribuidora. | Venta y pedidos |
-| 25 | **FranjaHoraria** | FranjaHoraria | Rango de horas del día habilitado para entregas, con capacidad máxima. | Franjas configuradas por cada distribuidora. | Venta y pedidos |
-| 26 | **Pago** | Pago | Transacción económica asociada a un pedido, ejecutada por una pasarela. | Cada cobro intentado o concretado. | Pagos |
-| 27 | **PropuestaConVigencia** † | PropuestaConVigencia | Algo que el sistema le propone a alguien por un tiempo acotado y que puede ser aceptado, rechazado o vencer. Concepto abstracto. | Se realiza en las cinco propuestas concretas. | Despacho y logística |
-| 28 | **OfertaDespacho** | OfertaDespacho | Propuesta de un pedido a un chofer determinado, con vigencia limitada. | Cada intento de asignación del proceso de despacho. | Despacho y logística |
-| 29 | **LoteRecorrido** † | LoteRecorrido | Grupo de pedidos que se entregan en un mismo viaje. | Cada lote armado por el módulo de agrupación. | Despacho y logística |
-| 30 | **ParadaLote** † | ParadaLote | Pedido dentro de un lote, en su orden de entrega. | Cada parada de cada lote. | Despacho y logística |
-| 31 | **OfertaLote** † | OfertaLote | Propuesta de un lote completo a un chofer. | Cada intento de asignación de un lote. | Despacho y logística |
-| 32 | **Chofer** | Chofer | Perfil extendido de un Usuario que ejecuta las entregas. | Repartidores habilitados por una distribuidora. | Flota y choferes |
-| 33 | **Vehiculo** | Vehiculo | Medio de transporte de la flota de una distribuidora. | Cada unidad de la flota de una distribuidora. | Flota y choferes |
-| 34 | **AsignacionVehiculo** ‡ | AsignacionVehiculo | Clase de asociación entre Chofer y Vehiculo: qué chofer tiene en uso un vehículo de la flota en un momento dado, con historial. | Cada período de uso de un vehículo por un chofer. | Flota y choferes |
-| 35 | **PlanMantenimiento** † | PlanMantenimiento | Regla que dice qué se controla de un vehículo o chofer, cada cuánto y si inhabilita al vencer. | Seguro, verificación técnica, licencia, services. | Flota y choferes |
-| 36 | **TareaMantenimiento** † | TareaMantenimiento | Vencimiento concreto que genera un plan: una póliza, una verificación, un service. | Cada vencimiento proyectado, programado o cumplido. | Flota y choferes |
-| 37 | **AdjuntoTarea** ‡ | AdjuntoTarea | Comprobante —foto o documento— que respalda una tarea de mantenimiento: la póliza, la oblea de la VTV, la licencia escaneada. | Cada archivo adjuntado a una tarea de mantenimiento. | Flota y choferes |
-| 38 | **PropuestaVentanaTaller** † | PropuestaVentanaTaller | Ventana de taller ofrecida al chofer para cumplir una tarea. | Cada ventana ofrecida. | Flota y choferes |
-| 39 | **UbicacionGPS** | UbicacionGPS | Posición geográfica del chofer mientras está conectado; es efímera y deja de existir en cuanto se desconecta. | La posición actual de cada chofer conectado. | Flota y choferes |
-| 40 | **RegistroUsoVehiculo** † | RegistroUsoVehiculo | Uso diario de un vehículo: kilómetros, pedidos y horas en ruta. | Un registro por vehículo y día. | Flota y choferes |
-| 41 | **PuestoDeTrabajo** § | PuestoDeTrabajo | Puesto que ocupa el personal de una distribuidora, con una categoría que gobierna las reglas que se le aplican; el nombre es libre. | Cada puesto definido por una distribuidora: chofer, ayudante, depósito, administración, vendedor y los que agregue. | Personal |
-| 42 | **Empleado** § | Empleado | Persona que trabaja en una distribuidora, con su legajo, su puesto y su vínculo laboral; tenga o no cuenta de acceso. Un chofer es un empleado cuya cuenta tiene el perfil de reparto. | Cada persona con legajo, activa o egresada. | Personal |
-| 43 | **JornadaDeTrabajo** § | JornadaDeTrabajo | Período de presencia de un empleado, con su ingreso y su egreso, cargado por el panel o marcado por el chofer. | Cada jornada abierta o cerrada de cada empleado. | Personal |
-| 44 | **LicenciaLaboral** § | LicenciaLaboral | Ausencia justificada o no de un empleado durante un período —vacaciones, enfermedad, estudio, suspensión— que se solicita y un administrador aprueba o rechaza. | Cada licencia o ausencia solicitada, aprobada, rechazada o cancelada. | Personal |
-| 45 | **Adjunto** | Adjunto | Archivo adjunto a un dueño, hoy el legajo de un empleado, con una etiqueta que dice qué es. Es genérico: otros módulos lo reutilizan. | Cada archivo adjuntado a un legajo. | Personal |
-| 46 | **CargaCombustible** § | CargaCombustible | Carga de combustible de un vehículo, con su kilometraje y su importe; es la base del consumo y del costo por kilómetro. | Cada carga que registra el administrador o el chofer. | Gastos de la flota |
-| 47 | **MultaTransito** § | MultaTransito | Multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada y, opcionalmente, imputada a un empleado. | Cada acta de infracción recibida por la distribuidora. | Gastos de la flota |
-| 48 | **Siniestro** § | Siniestro | Hecho que daña a un vehículo o a terceros, con su ciclo de denunciado a cerrado y sus costos. No es una incidencia, que es un contratiempo de un pedido. | Cada accidente de un vehículo de la flota. | Gastos de la flota |
-| 49 | **Neumatico** § | Neumatico | Neumático de la distribuidora, que está en depósito, montado en un vehículo o dado de baja. Funcionalidad opcional. | Cada neumático comprado por la distribuidora. | Gastos de la flota |
-| 50 | **MovimientoNeumatico** § | MovimientoNeumatico | Asiento que no se modifica de un cambio de un neumático: montaje, desmontaje, rotación, recapado o baja. Funcionalidad opcional. | Cada movimiento de cada neumático. | Gastos de la flota |
-| 51 | **Reclamo** | Reclamo | Queja formal del cliente sobre un pedido entregado, con evidencia opcional. | Cada reclamo registrado. | Posventa |
-| 52 | **Incidencia** | Incidencia | Evento que interrumpe o altera el curso normal de una entrega. | Cada contratiempo reportado durante el reparto. | Posventa |
-| 53 | **Calificacion** | Calificacion | Valoración que un cliente o un chofer asigna a la otra parte al cierre de un pedido. | Hasta dos por pedido: una del cliente al chofer y otra del chofer al cliente. | Posventa |
-| 54 | **Deposito** § | Deposito | Lugar de la distribuidora —depósito o sucursal— donde se guarda el stock físico. | Cada depósito o sucursal dado de alta. | Stock físico y carga del camión |
-| 55 | **UbicacionDeStock** § | UbicacionDeStock | Lugar donde puede haber stock: un depósito o un camión. Concentra los saldos y los movimientos de ambos. | Una por depósito y una por vehículo que se carga. | Stock físico y carga del camión |
-| 56 | **SaldoDeStock** § | SaldoDeStock | Cantidad de un tipo de garrafa, en una condición (llena, vacía o defectuosa), dentro de una ubicación. | Un saldo por ubicación, tipo de garrafa y condición. | Stock físico y carga del camión |
-| 57 | **MovimientoDeStock** § | MovimientoDeStock | Registro inmutable de un cambio de stock entre ubicaciones o con el exterior, con su motivo y el documento que lo originó. | Cada entrada, salida o traslado de garrafas. | Stock físico y carga del camión |
-| 58 | **UmbralDeStock** § | UmbralDeStock | Mínimo de garrafas llenas de un tipo que debe tener un depósito, para avisar cuando baja. | Un umbral por depósito y tipo de garrafa controlado. | Stock físico y carga del camión |
-| 59 | **AjusteDeStock** § | AjusteDeStock | Corrección del stock de una ubicación, con su motivo y una nota obligatoria. | Cada recuento corregido, merma, pérdida o hallazgo. | Stock físico y carga del camión |
-| 60 | **ItemAjusteDeStock** § | ItemAjusteDeStock | Diferencia de un tipo de garrafa y condición dentro de un ajuste. | Cada renglón de cada ajuste. | Stock físico y carga del camión |
-| 61 | **CargaDeCamion** § | CargaDeCamion | Hoja de carga: el turno de un camión, desde que sale cargado del depósito hasta que se rinde. | Una por camión y jornada. | Stock físico y carga del camión |
-| 62 | **ItemCarga** § | ItemCarga | Por tipo de garrafa, lo que se cargó, repuso, entregó, declaró al regreso y la diferencia. | Cada renglón de cada hoja de carga. | Stock físico y carga del camión |
-| 63 | **Proveedor** § | Proveedor | Empresa a la que la distribuidora le compra, principalmente una planta de llenado. | Cada proveedor dado de alta. | Compras |
-| 64 | **OrdenDeCompra** § | OrdenDeCompra | Pedido de garrafas a un proveedor para un depósito destino, con su ciclo de estados. | Cada orden emitida. | Compras |
-| 65 | **ItemOrdenDeCompra** § | ItemOrdenDeCompra | Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje. | Cada renglón de cada orden. | Compras |
-| 66 | **RecepcionDeCompra** § | RecepcionDeCompra | Remito de ingreso de una compra, con o sin orden, que hace entrar garrafas llenas al stock. | Cada recepción registrada. | Compras |
-| 67 | **ItemRecepcion** § | ItemRecepcion | Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta y el costo real. | Cada renglón de cada recepción. | Compras |
-| 68 | **Caja** § | Caja | Cuenta de fondos de la distribuidora —efectivo, banco o billetera— con su saldo. | Cada caja que la distribuidora lleva, empezando por la «Caja central». | Caja y finanzas |
-| 69 | **SesionDeCaja** § | SesionDeCaja | Período de trabajo de una caja entre una apertura y un cierre con arqueo. | Cada apertura y cierre de una caja de efectivo. | Caja y finanzas |
-| 70 | **CategoriaDeCaja** § | CategoriaDeCaja | Clasificación de los ingresos y de los gastos de caja, propia o de sistema. | Las categorías de sistema sembradas y las que define cada distribuidora. | Caja y finanzas |
-| 71 | **MovimientoDeCaja** § | MovimientoDeCaja | Asiento inmutable del libro de una caja: una entrada o una salida de dinero. | Cada ingreso, egreso, transferencia o anulación asentado en una caja. | Caja y finanzas |
-| 72 | **RendicionChofer** § | RendicionChofer | Rendición diaria del efectivo que cobró un chofer, con lo esperado, lo declarado y la diferencia. | Una por chofer y por día con efectivo para rendir. | Caja y finanzas |
-| 73 | **PedidoRendido** § | PedidoRendido | Pedido cobrado en efectivo que integra una rendición; un pedido se rinde una sola vez. | Cada pedido incluido en una rendición. | Caja y finanzas |
-| 74 | **GastoDeRendicion** § | GastoDeRendicion | Gasto que el chofer pagó con la cobranza y declara al rendir. | Cada gasto declarado en una rendición. | Caja y finanzas |
-| 75 | **CuentaCorriente** § | CuentaCorriente | Cuenta de un cliente en una distribuidora, con su límite de crédito, su plazo de pago y su saldo. | Una por cliente y distribuidora con crédito habilitado. | Caja y finanzas |
-| 76 | **AsientoCuentaCorriente** § | AsientoCuentaCorriente | Asiento inmutable del libro de una cuenta corriente: cargo, pago, nota de crédito o de débito. | Cada cargo por venta, cobro y ajuste de cada cuenta. | Caja y finanzas |
-| 77 | **ImputacionCuentaCorriente** § | ImputacionCuentaCorriente | Aplicación de un pago o una nota de crédito a un cargo, por orden de antigüedad. | Cada porción de un pago aplicada a un cargo. | Caja y finanzas |
-| 78 | **ReglaComision** § | ReglaComision | Regla que dice cuánto gana un chofer por entrega, con su alcance y su vigencia. | Cada regla definida por la distribuidora. | Caja y finanzas |
-| 79 | **AsientoComision** § | AsientoComision | Asiento inmutable del libro de comisiones de un chofer: una comisión o una deducción. | Cada comisión devengada y cada descuento de cada chofer. | Caja y finanzas |
-| 80 | **LiquidacionComisiones** § | LiquidacionComisiones | Liquidación de las comisiones y las deducciones de un chofer en un período, con su neto a pagar. | Cada liquidación de cada chofer. | Caja y finanzas |
+| 7 | **Auditoria** ¶ | Auditoria | Constancia inmutable de que un registro de una entidad de negocio se dio de alta, se modificó, se dio de baja o se reactivó: sobre qué registro, quién, cuándo y desde dónde. | Cada registro de negocio afectado por una escritura confirmada. | Organización y acceso |
+| 8 | **DetalleAuditoria** ¶ | DetalleAuditoria | Un campo que cambió dentro de una Auditoria, con su valor anterior y el nuevo. | Cada campo modificado en cada auditoría; en un alta, cada campo con valor. | Organización y acceso |
+| 9 | **TipoAccionAuditoria** ¶ | TipoAccionAuditoria | Catálogo fijo de las acciones que se auditan: alta, modificación, baja lógica, reactivación y baja física. | Las cinco acciones. | Organización y acceso |
+| 10 | **Cliente** | Cliente | Perfil extendido de un Usuario que realiza pedidos. | Toda persona que se registra en la App Cliente. | Clientes |
+| 11 | **DireccionEntrega** | DireccionEntrega | Domicilio del cliente guardado para futuras entregas, resuelto contra el mapa. | Cada dirección registrada por un cliente. | Clientes |
+| 12 | **InvitacionRecompra** † | InvitacionRecompra | Oferta de reposición que el sistema le hace a un cliente antes de que se le acabe el gas, con el pedido armado. | Cada invitación emitida por el módulo de recompra. | Clientes |
+| 13 | **ItemSugerido** ‡ | ItemSugerido | Producto y cantidad que el módulo de recompra sugiere dentro de una invitación. | Cada línea del pedido sugerido por una invitación. | Clientes |
+| 14 | **Producto** | Producto | Tipo de garrafa comercializado, con precio, stock y promociones. | Los formatos ofrecidos: 10 kg, 15 kg, 45 kg. | Catálogo e inventario |
+| 15 | **Promocion** | Promocion | Descuento por volumen aplicable a un producto al superar una cantidad mínima. | Cada regla de descuento configurada. | Catálogo e inventario |
+| 16 | **Envase** | Envase | Garrafa **física** individual, identificable y rastreable por su número de serie. | Cada botellón que la distribuidora posee o tiene en poder de un cliente. | Catálogo e inventario |
+| 17 | **MovimientoEnvase** | MovimientoEnvase | Registro inmutable de cada cambio de estado de un envase físico. | La traza completa del ciclo de vida de cada envase. | Catálogo e inventario |
+| 18 | **RevisionEnvase** † | RevisionEnvase | Prueba técnica periódica que renueva la vigencia de un envase. | Cada revisión asentada. | Catálogo e inventario |
+| 19 | **CasoRecupero** † | CasoRecupero | Gestión escalonada de un envase que un cliente retiene por encima del plazo. | Cada envase retenido en gestión. | Catálogo e inventario |
+| 20 | **AvisoRecupero** † | AvisoRecupero | Recordatorio, oferta de retiro o aviso de depósito enviado dentro de un caso de recupero. | Cada aviso emitido. | Catálogo e inventario |
+| 21 | **Carrito** † | Carrito | Pedido en armado que el cliente deja guardado antes de confirmarlo. | Uno por cliente y distribuidora. | Venta y pedidos |
+| 22 | **ItemCarrito** † | ItemCarrito | Producto cargado en el carrito, con su cantidad. | Cada línea del carrito. | Venta y pedidos |
+| 23 | **Pedido** | Pedido | Solicitud formal de compra realizada por un cliente. Tiene un ciclo de vida de estados. | Cada transacción de compra registrada. | Venta y pedidos |
+| 24 | **ItemPedido** | ItemPedido | Línea individual dentro de un pedido: un producto y su cantidad. | Cada garrafa solicitada dentro de un pedido. | Venta y pedidos |
+| 25 | **CambioEstadoPedido** † | CambioEstadoPedido | Transición del pedido de un estado a otro, con su autor y su motivo. | Cada cambio de estado de cada pedido. | Venta y pedidos |
+| 26 | **CambioDireccion** † | CambioDireccion | Cambio de la dirección de entrega de un pedido ya hecho, con su autor y las direcciones de origen y destino. | Cada cambio registrado. | Venta y pedidos |
+| 27 | **ZonaCobertura** | ZonaCobertura | Área geográfica dentro de la cual una distribuidora acepta pedidos, con su recargo y su vigencia. | Los polígonos de cobertura definidos por cada distribuidora. | Venta y pedidos |
+| 28 | **FranjaHoraria** | FranjaHoraria | Rango de horas del día habilitado para entregas, con capacidad máxima. | Franjas configuradas por cada distribuidora. | Venta y pedidos |
+| 29 | **Pago** | Pago | Transacción económica asociada a un pedido, ejecutada por una pasarela. | Cada cobro intentado o concretado. | Pagos |
+| 30 | **PropuestaConVigencia** † | PropuestaConVigencia | Algo que el sistema le propone a alguien por un tiempo acotado y que puede ser aceptado, rechazado o vencer. Concepto abstracto. | Se realiza en las cinco propuestas concretas. | Despacho y logística |
+| 31 | **OfertaDespacho** | OfertaDespacho | Propuesta de un pedido a un chofer determinado, con vigencia limitada. | Cada intento de asignación del proceso de despacho. | Despacho y logística |
+| 32 | **LoteRecorrido** † | LoteRecorrido | Grupo de pedidos que se entregan en un mismo viaje. | Cada lote armado por el módulo de agrupación. | Despacho y logística |
+| 33 | **ParadaLote** † | ParadaLote | Pedido dentro de un lote, en su orden de entrega. | Cada parada de cada lote. | Despacho y logística |
+| 34 | **OfertaLote** † | OfertaLote | Propuesta de un lote completo a un chofer. | Cada intento de asignación de un lote. | Despacho y logística |
+| 35 | **Chofer** | Chofer | Perfil extendido de un Usuario que ejecuta las entregas. | Repartidores habilitados por una distribuidora. | Flota y choferes |
+| 36 | **Vehiculo** | Vehiculo | Medio de transporte de la flota de una distribuidora. | Cada unidad de la flota de una distribuidora. | Flota y choferes |
+| 37 | **AsignacionVehiculo** ‡ | AsignacionVehiculo | Clase de asociación entre Chofer y Vehiculo: qué chofer tiene en uso un vehículo de la flota en un momento dado, con historial. | Cada período de uso de un vehículo por un chofer. | Flota y choferes |
+| 38 | **PlanMantenimiento** † | PlanMantenimiento | Regla que dice qué se controla de un vehículo o chofer, cada cuánto y si inhabilita al vencer. | Seguro, verificación técnica, licencia, services. | Flota y choferes |
+| 39 | **TareaMantenimiento** † | TareaMantenimiento | Vencimiento concreto que genera un plan: una póliza, una verificación, un service. | Cada vencimiento proyectado, programado o cumplido. | Flota y choferes |
+| 40 | **AdjuntoTarea** ‡ | AdjuntoTarea | Comprobante —foto o documento— que respalda una tarea de mantenimiento: la póliza, la oblea de la VTV, la licencia escaneada. | Cada archivo adjuntado a una tarea de mantenimiento. | Flota y choferes |
+| 41 | **PropuestaVentanaTaller** † | PropuestaVentanaTaller | Ventana de taller ofrecida al chofer para cumplir una tarea. | Cada ventana ofrecida. | Flota y choferes |
+| 42 | **UbicacionGPS** | UbicacionGPS | Posición geográfica del chofer mientras está conectado; es efímera y deja de existir en cuanto se desconecta. | La posición actual de cada chofer conectado. | Flota y choferes |
+| 43 | **RegistroUsoVehiculo** † | RegistroUsoVehiculo | Uso diario de un vehículo: kilómetros, pedidos y horas en ruta. | Un registro por vehículo y día. | Flota y choferes |
+| 44 | **PuestoDeTrabajo** § | PuestoDeTrabajo | Puesto que ocupa el personal de una distribuidora, con una categoría que gobierna las reglas que se le aplican; el nombre es libre. | Cada puesto definido por una distribuidora: chofer, ayudante, depósito, administración, vendedor y los que agregue. | Personal |
+| 45 | **Empleado** § | Empleado | Persona que trabaja en una distribuidora, con su legajo, su puesto y su vínculo laboral; tenga o no cuenta de acceso. Un chofer es un empleado cuya cuenta tiene el perfil de reparto. | Cada persona con legajo, activa o egresada. | Personal |
+| 46 | **JornadaDeTrabajo** § | JornadaDeTrabajo | Período de presencia de un empleado, con su ingreso y su egreso, cargado por el panel o marcado por el chofer. | Cada jornada abierta o cerrada de cada empleado. | Personal |
+| 47 | **LicenciaLaboral** § | LicenciaLaboral | Ausencia justificada o no de un empleado durante un período —vacaciones, enfermedad, estudio, suspensión— que se solicita y un administrador aprueba o rechaza. | Cada licencia o ausencia solicitada, aprobada, rechazada o cancelada. | Personal |
+| 48 | **Adjunto** | Adjunto | Archivo adjunto a un dueño, hoy el legajo de un empleado, con una etiqueta que dice qué es. Es genérico: otros módulos lo reutilizan. | Cada archivo adjuntado a un legajo. | Personal |
+| 49 | **CargaCombustible** § | CargaCombustible | Carga de combustible de un vehículo, con su kilometraje y su importe; es la base del consumo y del costo por kilómetro. | Cada carga que registra el administrador o el chofer. | Gastos de la flota |
+| 50 | **MultaTransito** § | MultaTransito | Multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada y, opcionalmente, imputada a un empleado. | Cada acta de infracción recibida por la distribuidora. | Gastos de la flota |
+| 51 | **Siniestro** § | Siniestro | Hecho que daña a un vehículo o a terceros, con su ciclo de denunciado a cerrado y sus costos. No es una incidencia, que es un contratiempo de un pedido. | Cada accidente de un vehículo de la flota. | Gastos de la flota |
+| 52 | **Neumatico** § | Neumatico | Neumático de la distribuidora, que está en depósito, montado en un vehículo o dado de baja. Funcionalidad opcional. | Cada neumático comprado por la distribuidora. | Gastos de la flota |
+| 53 | **MovimientoNeumatico** § | MovimientoNeumatico | Asiento que no se modifica de un cambio de un neumático: montaje, desmontaje, rotación, recapado o baja. Funcionalidad opcional. | Cada movimiento de cada neumático. | Gastos de la flota |
+| 54 | **Reclamo** | Reclamo | Queja formal del cliente sobre un pedido entregado, con evidencia opcional. | Cada reclamo registrado. | Posventa |
+| 55 | **Incidencia** | Incidencia | Evento que interrumpe o altera el curso normal de una entrega. | Cada contratiempo reportado durante el reparto. | Posventa |
+| 56 | **Calificacion** | Calificacion | Valoración que un cliente o un chofer asigna a la otra parte al cierre de un pedido. | Hasta dos por pedido: una del cliente al chofer y otra del chofer al cliente. | Posventa |
+| 57 | **Deposito** § | Deposito | Lugar de la distribuidora —depósito o sucursal— donde se guarda el stock físico. | Cada depósito o sucursal dado de alta. | Stock físico y carga del camión |
+| 58 | **UbicacionDeStock** § | UbicacionDeStock | Lugar donde puede haber stock: un depósito o un camión. Concentra los saldos y los movimientos de ambos. | Una por depósito y una por vehículo que se carga. | Stock físico y carga del camión |
+| 59 | **SaldoDeStock** § | SaldoDeStock | Cantidad de un tipo de garrafa, en una condición (llena, vacía o defectuosa), dentro de una ubicación. | Un saldo por ubicación, tipo de garrafa y condición. | Stock físico y carga del camión |
+| 60 | **MovimientoDeStock** § | MovimientoDeStock | Registro inmutable de un cambio de stock entre ubicaciones o con el exterior, con su motivo y el documento que lo originó. | Cada entrada, salida o traslado de garrafas. | Stock físico y carga del camión |
+| 61 | **UmbralDeStock** § | UmbralDeStock | Mínimo de garrafas llenas de un tipo que debe tener un depósito, para avisar cuando baja. | Un umbral por depósito y tipo de garrafa controlado. | Stock físico y carga del camión |
+| 62 | **AjusteDeStock** § | AjusteDeStock | Corrección del stock de una ubicación, con su motivo y una nota obligatoria. | Cada recuento corregido, merma, pérdida o hallazgo. | Stock físico y carga del camión |
+| 63 | **ItemAjusteDeStock** § | ItemAjusteDeStock | Diferencia de un tipo de garrafa y condición dentro de un ajuste. | Cada renglón de cada ajuste. | Stock físico y carga del camión |
+| 64 | **CargaDeCamion** § | CargaDeCamion | Hoja de carga: el turno de un camión, desde que sale cargado del depósito hasta que se rinde. | Una por camión y jornada. | Stock físico y carga del camión |
+| 65 | **ItemCarga** § | ItemCarga | Por tipo de garrafa, lo que se cargó, repuso, entregó, declaró al regreso y la diferencia. | Cada renglón de cada hoja de carga. | Stock físico y carga del camión |
+| 66 | **Proveedor** § | Proveedor | Empresa a la que la distribuidora le compra, principalmente una planta de llenado. | Cada proveedor dado de alta. | Compras |
+| 67 | **OrdenDeCompra** § | OrdenDeCompra | Pedido de garrafas a un proveedor para un depósito destino, con su ciclo de estados. | Cada orden emitida. | Compras |
+| 68 | **ItemOrdenDeCompra** § | ItemOrdenDeCompra | Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje. | Cada renglón de cada orden. | Compras |
+| 69 | **RecepcionDeCompra** § | RecepcionDeCompra | Remito de ingreso de una compra, con o sin orden, que hace entrar garrafas llenas al stock. | Cada recepción registrada. | Compras |
+| 70 | **ItemRecepcion** § | ItemRecepcion | Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta y el costo real. | Cada renglón de cada recepción. | Compras |
+| 71 | **Caja** § | Caja | Cuenta de fondos de la distribuidora —efectivo, banco o billetera— con su saldo. | Cada caja que la distribuidora lleva, empezando por la «Caja central». | Caja y finanzas |
+| 72 | **SesionDeCaja** § | SesionDeCaja | Período de trabajo de una caja entre una apertura y un cierre con arqueo. | Cada apertura y cierre de una caja de efectivo. | Caja y finanzas |
+| 73 | **CategoriaDeCaja** § | CategoriaDeCaja | Clasificación de los ingresos y de los gastos de caja, propia o de sistema. | Las categorías de sistema sembradas y las que define cada distribuidora. | Caja y finanzas |
+| 74 | **MovimientoDeCaja** § | MovimientoDeCaja | Asiento inmutable del libro de una caja: una entrada o una salida de dinero. | Cada ingreso, egreso, transferencia o anulación asentado en una caja. | Caja y finanzas |
+| 75 | **RendicionChofer** § | RendicionChofer | Rendición diaria del efectivo que cobró un chofer, con lo esperado, lo declarado y la diferencia. | Una por chofer y por día con efectivo para rendir. | Caja y finanzas |
+| 76 | **PedidoRendido** § | PedidoRendido | Pedido cobrado en efectivo que integra una rendición; un pedido se rinde una sola vez. | Cada pedido incluido en una rendición. | Caja y finanzas |
+| 77 | **GastoDeRendicion** § | GastoDeRendicion | Gasto que el chofer pagó con la cobranza y declara al rendir. | Cada gasto declarado en una rendición. | Caja y finanzas |
+| 78 | **CuentaCorriente** § | CuentaCorriente | Cuenta de un cliente en una distribuidora, con su límite de crédito, su plazo de pago y su saldo. | Una por cliente y distribuidora con crédito habilitado. | Caja y finanzas |
+| 79 | **AsientoCuentaCorriente** § | AsientoCuentaCorriente | Asiento inmutable del libro de una cuenta corriente: cargo, pago, nota de crédito o de débito. | Cada cargo por venta, cobro y ajuste de cada cuenta. | Caja y finanzas |
+| 80 | **ImputacionCuentaCorriente** § | ImputacionCuentaCorriente | Aplicación de un pago o una nota de crédito a un cargo, por orden de antigüedad. | Cada porción de un pago aplicada a un cargo. | Caja y finanzas |
+| 81 | **ReglaComision** § | ReglaComision | Regla que dice cuánto gana un chofer por entrega, con su alcance y su vigencia. | Cada regla definida por la distribuidora. | Caja y finanzas |
+| 82 | **AsientoComision** § | AsientoComision | Asiento inmutable del libro de comisiones de un chofer: una comisión o una deducción. | Cada comisión devengada y cada descuento de cada chofer. | Caja y finanzas |
+| 83 | **LiquidacionComisiones** § | LiquidacionComisiones | Liquidación de las comisiones y las deducciones de un chofer en un período, con su neto a pagar. | Cada liquidación de cada chofer. | Caja y finanzas |
 
 **La propuesta con vigencia.** Cinco conceptos comparten un mismo comportamiento: el
 sistema le propone algo a alguien por un tiempo acotado —un pedido, un lote, una ventana
@@ -507,6 +536,10 @@ vehículo está abierto para un chofer.
 | Define | Distribuidora | FranjaHoraria | Composición | 1 a 0..* | Parte lógica de |
 | Parametriza | Distribuidora | ConfiguracionModulo | Composición | 1 a 0..* | Descripción para |
 | Origina | Usuario | AsientoAuditoria | Asociación | 0..1 a 0..* | Es un registro de |
+| Realiza | Usuario | Auditoria | Asociación | 0..1 a 0..* | Es un registro de |
+| Delimita | Distribuidora | Auditoria | Asociación | 0..1 a 0..* | Es un registro de |
+| Detalla con | Auditoria | DetalleAuditoria | Composición | 1 a 0..* | Es una línea de transacción de |
+| Clasifica | TipoAccionAuditoria | Auditoria | Asociación | 1 a 0..* | Descripción para |
 | Registra | Cliente | DireccionEntrega | Composición | 1 a 0..* | Parte lógica de |
 | Realiza | Cliente | Pedido | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Arma | Cliente | Carrito | Composición | 1 a 0..* | Está relacionado con una transacción |
@@ -705,6 +738,12 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **AsientoAuditoria** | resultado: Si la operación fue exitosa o fallida. |
 | **AsientoAuditoria** | cambios: Qué cambió, con las credenciales depuradas. |
 | **AsientoAuditoria** | fecha: Cuándo ocurrió. |
+| **Auditoria** | entidad afectada: Nombre de la entidad de dominio cuyo registro cambió, por ejemplo Pedido. |
+| **Auditoria** | fecha y hora: Cuándo se confirmó el cambio. |
+| **DetalleAuditoria** | campo: Propiedad de la entidad que cambió. |
+| **DetalleAuditoria** | valor anterior: Valor antes del cambio; vacío en un alta. |
+| **DetalleAuditoria** | valor nuevo: Valor después del cambio; vacío en una baja. |
+| **TipoAccionAuditoria** | nombre: Alta, Modificación, Baja lógica, Reactivación o Baja física. |
 | **Cliente** | consumo mensual declarado: Kilos de gas por mes que el cliente declara consumir. |
 | **Cliente** | días de aviso: Con cuántos días de anticipación quiere que se le avise la recompra. |
 | **DireccionEntrega** | calle y altura: Domicilio de entrega. |
@@ -723,7 +762,7 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **Promocion** | descuento: Porcentaje que se descuenta al alcanzar esa cantidad. |
 | **Envase** | número de serie: Número grabado en el botellón. Lo identifica unívocamente. |
 | **Envase** | estado: Situación actual: en depósito, lleno, despachado, en poder del cliente o devuelto vacío. |
-| **Envase** | depósito: Importe en garantía que representa el envase. |
+| **Envase** | monto del depósito: Importe en garantía que representa el envase. |
 | **Envase** | /vencimiento: Fecha hasta la que el envase puede despacharse. Se deriva de la fecha de su última revisión aprobada. |
 | **MovimientoEnvase** | desde / hacia: Situación anterior y posterior del envase. |
 | **MovimientoEnvase** | fecha: Momento en que se produjo el movimiento. |
@@ -902,7 +941,6 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **Reclamo** | estado: Pendiente, en proceso, resuelto o rechazado. |
 | **Reclamo** | resolución: Nota del administrador al resolverlo. |
 | **Reclamo** | fotografía: Imagen que el cliente adjunta como evidencia del reclamo (opcional). |
-| **Reclamo** | clave de la fotografía: Clave con que la imagen quedó guardada en el almacenamiento, que la entrega al cliente mediante un enlace firmado de corta vigencia. |
 | **Incidencia** | tipo: Naturaleza del contratiempo. |
 | **Incidencia** | momento: Si ocurrió antes, durante o después de la entrega. |
 | **Incidencia** | descripción: Relato del contratiempo. |
@@ -1013,8 +1051,8 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **RendicionChofer** | estado: Abierta, presentada o aprobada. |
 | **RendicionChofer** | efectivo esperado: Efectivo que el chofer debería entregar. |
 | **RendicionChofer** | efectivo declarado: Efectivo que el chofer declara entregar. |
-| **RendicionChofer** | gastos del chofer: Gastos pagados con la cobranza. |
-| **RendicionChofer** | diferencia: Declarado más gastos menos esperado; negativa es faltante. |
+| **RendicionChofer** | /gastos del chofer: Gastos pagados con la cobranza. |
+| **RendicionChofer** | /diferencia: Declarado más gastos menos esperado; negativa es faltante. |
 | **RendicionChofer** | resolución de la diferencia: Sin diferencia, a cargo del chofer o absorbida. |
 | **RendicionChofer** | presentada el: Momento en que se presentó. |
 | **RendicionChofer** | aprobada el: Momento en que se aprobó. |
@@ -1079,7 +1117,7 @@ especializaciones llevan a la vista su restricción de conjunto de generalizaci�
 AsignacionVehiculo se dibuja como clase de asociación: la línea punteada la une con la
 asociación «usa» entre Chofer y Vehiculo.
 
-El modelo tiene 80 conceptos, demasiados para una sola lámina legible. Se presenta como una
+El modelo tiene 83 conceptos, demasiados para una sola lámina legible. Se presenta como una
 **vista general**, sin atributos y sin nombres de asociación, y quince **vistas por área** con
 atributos, nombres y multiplicidades. En cada vista por área, los conceptos en gris
 pertenecen a otra vista y se muestran sólo como referencia. Toda entidad pertenece a una
@@ -1119,7 +1157,7 @@ cinco tipos y el concepto abstracto no se instancia.
 
 ![Modelo conceptual: personal](diagramas/modelo-conceptual/MC_Personal.png)
 
-**Figura 1.6 — Modelo conceptual: personal (planificado, I-11)**
+**Figura 1.6 — Modelo conceptual: personal (puestos y legajos construidos; jornadas y licencias planificadas, I-11)**
 
 ![Modelo conceptual: posventa](diagramas/modelo-conceptual/MC_Posventa.png)
 
@@ -1278,12 +1316,11 @@ sequenceDiagram
     activate SIS
     loop Por cada oferta cuya vigencia expiró
         Note over SIS: Marca la oferta como<br/>vencida
-        alt El pedido sigue pendiente y sin chofer
+        opt El pedido sigue pendiente y sin chofer
             SIS-)CHO: notificarOferta(pedido)
             Note over SIS: Reutiliza la búsqueda de<br/>CU-013 con el siguiente<br/>chofer
-        else El pedido ya fue aceptado o cancelado
-            Note over SIS: No se vuelve a ofrecer
         end
+        Note over SIS: Si el pedido ya fue aceptado<br/>o cancelado, no se vuelve<br/>a ofrecer
     end
     SIS-->>SAU: ofertas procesadas
     deactivate SIS
@@ -1370,14 +1407,13 @@ sequenceDiagram
     loop Mientras el chofer está conectado
         CHO->>SIS: actualizarUbicacion(usuarioId, latitud, longitud)
         activate SIS
-        alt Los datos de posición son válidos
+        opt Los datos de posición son válidos
             opt El chofer tiene un pedido en curso
                 SIS-)CLI: notificarUbicacionDelChofer(pedido, latitud, longitud)
                 SIS-)ADM: notificarUbicacionDelChofer(pedido, latitud, longitud)
             end
-        else Faltan el usuario o las coordenadas
-            Note over SIS: Se descarta el envío y<br/>no se registra la<br/>posición
         end
+        Note over SIS: Si faltan el usuario o las<br/>coordenadas, se descarta el<br/>envío y no se registra la<br/>posición
         deactivate SIS
     end
 ```
@@ -1519,14 +1555,14 @@ sequenceDiagram
 
 ---
 
-#### DSS — CU-004: Gestionar Perfil de Usuario
+#### DSS — CU-004: Consultar el Perfil de Usuario
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02)
-**Operaciones del sistema:** `consultarPerfil(usuarioId)`, `consultarPerfilCliente(usuarioId)`, `actualizarPerfil(usuarioId, datos)`
+**Operaciones del sistema:** `consultarPerfil(usuarioId)`, `consultarPerfilCliente(usuarioId)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-004 Gestionar Perfil de Usuario
+    title DSS — CU-004 Consultar el Perfil de Usuario
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SIS as :Sistema
@@ -1542,6 +1578,25 @@ sequenceDiagram
         SIS-->>CLI: datos del cliente (documento, ubicación, validación)
         deactivate SIS
     end
+    Note over CLI,SIS: También lo inicia el Chofer (ACT-02)
+```
+
+**Figura 13 — DSS CU-004: Consultar el Perfil de Usuario**
+
+---
+
+
+#### DSS — CU-251: Modificar el Perfil de Usuario
+
+**Actor:** Cliente (ACT-01), Chofer (ACT-02)
+**Operaciones del sistema:** `actualizarPerfil(usuarioId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-251 Modificar el Perfil de Usuario
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
 
     CLI->>SIS: actualizarPerfil(usuarioId, datos)
     activate SIS
@@ -1554,7 +1609,7 @@ sequenceDiagram
     Note over CLI,SIS: También lo inicia el Chofer (ACT-02)
 ```
 
-**Figura 13 — DSS CU-004: Gestionar Perfil de Usuario**
+**Figura 14 — DSS CU-251: Modificar el Perfil de Usuario**
 
 ---
 
@@ -1588,18 +1643,18 @@ sequenceDiagram
     Note over CLI,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)
 ```
 
-**Figura 14 — DSS CU-047: Recuperar Contraseña**
+**Figura 15 — DSS CU-047: Recuperar Contraseña**
 
 ---
 
-#### DSS — CU-050: Bloquear / Desbloquear Usuario
+#### DSS — CU-050: Bloquear un Usuario
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `bloquearUsuario(usuarioId, bloquear)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-050 Bloquear / Desbloquear Usuario
+    title DSS — CU-050 Bloquear un Usuario
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -1607,16 +1662,43 @@ sequenceDiagram
     ADM->>SIS: bloquearUsuario(usuarioId, bloquear)
     activate SIS
     alt el usuario existe
-        SIS-->>ADM: usuario actualizado (estado de bloqueo vigente)
+        SIS-->>ADM: usuario bloqueado
     else el usuario no existe
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
+    Note over ADM,SIS: bloquear = verdadero. La misma operación, con bloquear = falso, es CU-270
 ```
 
-**Figura 15 — DSS CU-050: Bloquear / Desbloquear Usuario**
+**Figura 16 — DSS CU-050: Bloquear un Usuario**
 
-> Es un interruptor bidireccional: el mismo mensaje bloquea y desbloquea según el parámetro `bloquear`.
+---
+
+
+#### DSS — CU-270: Desbloquear un Usuario
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `bloquearUsuario(usuarioId, bloquear)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-270 Desbloquear un Usuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: bloquearUsuario(usuarioId, bloquear)
+    activate SIS
+    alt el usuario existe
+        SIS-->>ADM: usuario desbloqueado
+    else el usuario no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: bloquear = falso. La misma operación, con bloquear = verdadero, es CU-050
+```
+
+**Figura 17 — DSS CU-270: Desbloquear un Usuario**
 
 ---
 
@@ -1628,14 +1710,14 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-002, CU-003,
 
 ---
 
-#### DSS — CU-083: Buscar / Listar Usuarios
+#### DSS — CU-083: Listar los Usuarios
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `listarUsuarios(pagina, limite, textoDeBusqueda)`, `buscarUsuarioPorCorreo(correo)`, `buscarUsuarioPorTelefono(telefono)`
+**Operaciones del sistema:** `listarUsuarios(pagina, limite, textoDeBusqueda)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-083 Buscar / Listar Usuarios
+    title DSS — CU-083 Listar los Usuarios
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -1644,8 +1726,26 @@ sequenceDiagram
     activate SIS
     SIS-->>ADM: página de usuarios (total, cantidad, listado)
     deactivate SIS
+```
 
-    opt búsqueda puntual
+**Figura 18 — DSS CU-083: Listar los Usuarios**
+
+---
+
+
+#### DSS — CU-272: Buscar un Usuario
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `buscarUsuarioPorCorreo(correo)`, `buscarUsuarioPorTelefono(telefono)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-272 Buscar un Usuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    alt búsqueda por correo
         ADM->>SIS: buscarUsuarioPorCorreo(correo)
         activate SIS
         alt existe
@@ -1654,9 +1754,7 @@ sequenceDiagram
             SIS-->>ADM: recurso no encontrado
         end
         deactivate SIS
-    end
-
-    opt búsqueda por teléfono
+    else búsqueda por teléfono
         ADM->>SIS: buscarUsuarioPorTelefono(telefono)
         activate SIS
         SIS-->>ADM: usuario encontrado
@@ -1664,7 +1762,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 16 — DSS CU-083: Buscar / Listar Usuarios**
+**Figura 19 — DSS CU-272: Buscar un Usuario**
 
 ---
 
@@ -1686,7 +1784,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 17 — DSS CU-084: Verificar Existencia de Usuario (pre-registro)**
+**Figura 20 — DSS CU-084: Verificar Existencia de Usuario (pre-registro)**
 
 > Se invoca **antes** de CU-002 para que la aplicación avise el conflicto sin llegar a intentar el alta.
 
@@ -1718,7 +1816,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 18 — DSS CU-085: Eliminar Usuario (baja lógica)**
+**Figura 21 — DSS CU-085: Eliminar Usuario (baja lógica)**
 
 ---
 
@@ -1745,7 +1843,7 @@ sequenceDiagram
     Note over CLI,SIS: También lo inician el Chofer (ACT-02), el<br/>Administrador (ACT-03) y el Administrador<br/>General (ACT-05)
 ```
 
-**Figura 19 — DSS CU-091: Validar Vigencia del Token de Sesión**
+**Figura 22 — DSS CU-091: Validar Vigencia del Token de Sesión**
 
 ---
 
@@ -1775,7 +1873,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 20 — DSS CU-006: Consultar Detalle de Pedido**
+**Figura 23 — DSS CU-006: Consultar Detalle de Pedido**
 
 ---
 
@@ -1801,7 +1899,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 21 — DSS CU-007: Consultar Historial de Pedidos**
+**Figura 24 — DSS CU-007: Consultar Historial de Pedidos**
 
 > El cliente ve **todo** su historial aunque haya comprado a varias distribuidoras; el personal solo ve los pedidos de la suya.
 
@@ -1830,7 +1928,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 22 — DSS CU-169: Registrar el Cambio de Estado de un Pedido**
+**Figura 25 — DSS CU-169: Registrar el Cambio de Estado de un Pedido**
 
 ---
 
@@ -1857,7 +1955,7 @@ sequenceDiagram
     Note over USR,SIS: También lo inician el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)
 ```
 
-**Figura 23 — DSS CU-170: Consultar el Historial de Estados de un Pedido**
+**Figura 26 — DSS CU-170: Consultar el Historial de Estados de un Pedido**
 
 ---
 
@@ -1885,7 +1983,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 24 — DSS CU-143: Declarar el Consumo Promedio al Registrarse**
+**Figura 27 — DSS CU-143: Declarar el Consumo Promedio al Registrarse**
 
 ---
 
@@ -1911,7 +2009,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 25 — DSS CU-144: Actualizar el Consumo Promedio Declarado**
+**Figura 28 — DSS CU-144: Actualizar el Consumo Promedio Declarado**
 
 ---
 
@@ -1937,7 +2035,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 26 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra**
+**Figura 29 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra**
 
 ---
 
@@ -1963,7 +2061,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 27 — DSS CU-146: Consultar la Fecha Estimada de Recompra**
+**Figura 30 — DSS CU-146: Consultar la Fecha Estimada de Recompra**
 
 ---
 
@@ -1991,7 +2089,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 28 — DSS CU-147: Realizar una Compra Express**
+**Figura 31 — DSS CU-147: Realizar una Compra Express**
 
 ---
 
@@ -2017,7 +2115,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 29 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido**
+**Figura 32 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido**
 
 ---
 
@@ -2054,7 +2152,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 30 — DSS CU-008: Cancelar Pedido (Cliente)**
+**Figura 33 — DSS CU-008: Cancelar Pedido (Cliente)**
 
 > La identidad y el rol del cancelador salen **siempre** de la sesión, nunca del cuerpo del mensaje.
 
@@ -2088,7 +2186,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 31 — DSS CU-009: Cancelar Pedido (Chofer)**
+**Figura 34 — DSS CU-009: Cancelar Pedido (Chofer)**
 
 ---
 
@@ -2118,7 +2216,7 @@ sequenceDiagram
     Note over ADM,SIS: Si el pedido tenía un pago aprobado por una<br/>pasarela (planificado, I-7), se reintegra con<br/>CU-168
 ```
 
-**Figura 32 — DSS CU-010: Cancelar Pedido (Administrador)**
+**Figura 35 — DSS CU-010: Cancelar Pedido (Administrador)**
 
 > El sistema ofrece **dos** vías para el administrador. La documentación previa describía una sola.
 
@@ -2146,7 +2244,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 33 — DSS CU-011: Listar Todos los Pedidos**
+**Figura 36 — DSS CU-011: Listar Todos los Pedidos**
 
 ---
 
@@ -2176,7 +2274,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 34 — DSS CU-012: Asignar Chofer Manualmente**
+**Figura 37 — DSS CU-012: Asignar Chofer Manualmente**
 
 ---
 
@@ -2205,7 +2303,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 35 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto**
+**Figura 38 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto**
 
 ---
 
@@ -2257,7 +2355,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 36 — DSS CU-046: Consultar Direcciones de Entrega del Cliente**
+**Figura 39 — DSS CU-046: Consultar Direcciones de Entrega del Cliente**
 
 ---
 
@@ -2283,7 +2381,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 37 — DSS CU-116: Registrar Dirección de Entrega**
+**Figura 40 — DSS CU-116: Registrar Dirección de Entrega**
 
 ---
 
@@ -2311,7 +2409,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 38 — DSS CU-117: Consultar Detalle de una Dirección de Entrega**
+**Figura 41 — DSS CU-117: Consultar Detalle de una Dirección de Entrega**
 
 ---
 
@@ -2337,7 +2435,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 39 — DSS CU-118: Editar Dirección de Entrega**
+**Figura 42 — DSS CU-118: Editar Dirección de Entrega**
 
 ---
 
@@ -2363,7 +2461,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 40 — DSS CU-119: Eliminar Dirección de Entrega**
+**Figura 43 — DSS CU-119: Eliminar Dirección de Entrega**
 
 ---
 
@@ -2389,7 +2487,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 41 — DSS CU-120: Marcar una Dirección como Predeterminada**
+**Figura 44 — DSS CU-120: Marcar una Dirección como Predeterminada**
 
 ---
 
@@ -2415,7 +2513,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 42 — DSS CU-121: Consultar la Dirección Predeterminada**
+**Figura 45 — DSS CU-121: Consultar la Dirección Predeterminada**
 
 ---
 
@@ -2441,7 +2539,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 43 — DSS CU-122: Agregar Ítem al Carrito**
+**Figura 46 — DSS CU-122: Agregar Ítem al Carrito**
 
 ---
 
@@ -2467,7 +2565,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 44 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito**
+**Figura 47 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito**
 
 ---
 
@@ -2493,7 +2591,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 45 — DSS CU-124: Quitar Ítem del Carrito**
+**Figura 48 — DSS CU-124: Quitar Ítem del Carrito**
 
 ---
 
@@ -2519,7 +2617,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 46 — DSS CU-125: Consultar el Carrito**
+**Figura 49 — DSS CU-125: Consultar el Carrito**
 
 ---
 
@@ -2545,7 +2643,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 47 — DSS CU-126: Vaciar el Carrito**
+**Figura 50 — DSS CU-126: Vaciar el Carrito**
 
 ---
 
@@ -2575,7 +2673,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 48 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido**
+**Figura 51 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido**
 
 ---
 
@@ -2601,7 +2699,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 49 — DSS CU-128: Indicar Quién Recibe el Pedido**
+**Figura 52 — DSS CU-128: Indicar Quién Recibe el Pedido**
 
 ---
 
@@ -2623,7 +2721,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 50 — DSS CU-080: Consultar el Pool de Pedidos Disponibles**
+**Figura 53 — DSS CU-080: Consultar el Pool de Pedidos Disponibles**
 
 > Es la vista de respaldo del despacho automático (CU-013): si la oferta por proximidad no llega, el chofer puede consultar el pool.
 
@@ -2647,7 +2745,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 51 — DSS CU-081: Consultar los Pedidos Asignados al Chofer**
+**Figura 54 — DSS CU-081: Consultar los Pedidos Asignados al Chofer**
 
 ---
 
@@ -2681,7 +2779,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 52 — DSS CU-016: Rechazar / Ignorar Pedido**
+**Figura 55 — DSS CU-016: Rechazar / Ignorar Pedido**
 
 > El rechazo **no** espera el vencimiento de la ventana de 30 segundos: re-ofrece de inmediato al siguiente chofer más cercano.
 
@@ -2717,7 +2815,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 53 — DSS CU-018: Marcar Pedido "En Camino"**
+**Figura 56 — DSS CU-018: Marcar Pedido "En Camino"**
 
 ---
 
@@ -2750,7 +2848,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 54 — DSS CU-019: Avisar Llegada al Cliente**
+**Figura 57 — DSS CU-019: Avisar Llegada al Cliente**
 
 > Este caso de uso **no** cambia el estado del pedido: solo notifica.
 
@@ -2780,39 +2878,62 @@ sequenceDiagram
     Note over CLI,SIS: Estados notificados: aceptado, en camino,<br/>entregado y cancelado
 ```
 
-**Figura 55 — DSS CU-021: Recibir Notificaciones en Tiempo Real**
+**Figura 58 — DSS CU-021: Recibir Notificaciones en Tiempo Real**
 
 > El canal se cierra cuando el cliente cierra la aplicación o el pedido alcanza un estado terminal.
 
 ---
 
-#### DSS — CU-022: Activar / Desactivar Disponibilidad
+#### DSS — CU-022: Activar la Disponibilidad
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `cambiarDisponibilidad(usuarioId, disponible)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-022 Activar / Desactivar Disponibilidad
+    title DSS — CU-022 Activar la Disponibilidad
     autonumber
     actor CHO as Chofer (ACT-02)
     participant SIS as :Sistema
 
     CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
     activate SIS
-    alt se pone disponible y está habilitado y validado
+    alt está habilitado y validado
         SIS-->>CHO: disponible (empieza a recibir ofertas de pedidos)
-    else se pone disponible sin estar habilitado o validado
+    else no está habilitado o validado
         SIS-->>CHO: acceso denegado
-    else se pone no disponible
-        SIS-->>CHO: no disponible (deja de recibir ofertas)
     end
     deactivate SIS
+    Note over CHO,SIS: disponible = verdadero. La misma operación, con disponible = falso, es CU-266
 ```
 
-**Figura 56 — DSS CU-022: Activar / Desactivar Disponibilidad**
+**Figura 59 — DSS CU-022: Activar la Disponibilidad**
 
 > **Observación de análisis:** el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que "fuera de turno" y "dado de baja" son indistinguibles.
+
+---
+
+
+#### DSS — CU-266: Desactivar la Disponibilidad
+
+**Actor:** Chofer (ACT-02)
+**Operaciones del sistema:** `cambiarDisponibilidad(usuarioId, disponible)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-266 Desactivar la Disponibilidad
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
+    activate SIS
+    SIS-->>CHO: no disponible (deja de recibir ofertas)
+    deactivate SIS
+    Note over CHO,SIS: disponible = falso. Desconectarse se permite siempre.<br/>La misma operación, con disponible = verdadero, es CU-022
+```
+
+**Figura 60 — DSS CU-266: Desactivar la Disponibilidad**
 
 ---
 
@@ -2842,7 +2963,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 57 — DSS CU-078: Obtener el Código de Entrega (QR del chofer)**
+**Figura 61 — DSS CU-078: Obtener el Código de Entrega (QR del chofer)**
 
 ---
 
@@ -2872,7 +2993,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 58 — DSS CU-079: Confirmar Entrega Escaneando el QR (cliente)**
+**Figura 62 — DSS CU-079: Confirmar Entrega Escaneando el QR (cliente)**
 
 > Es el camino **anti-fraude** que invierte el actor de CU-020: confirma quien recibe, no quien entrega. Es idempotente frente a reintentos de red.
 
@@ -2898,7 +3019,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 59 — DSS CU-024: Listar Reclamos**
+**Figura 63 — DSS CU-024: Listar Reclamos**
 
 ---
 
@@ -2926,7 +3047,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 60 — DSS CU-025: Resolver Reclamo**
+**Figura 64 — DSS CU-025: Resolver Reclamo**
 
 ---
 
@@ -2954,7 +3075,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 61 — DSS CU-166: Tomar un Reclamo Pendiente**
+**Figura 65 — DSS CU-166: Tomar un Reclamo Pendiente**
 
 ---
 
@@ -2982,7 +3103,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 62 — DSS CU-167: Reabrir un Reclamo**
+**Figura 66 — DSS CU-167: Reabrir un Reclamo**
 
 ---
 
@@ -3014,7 +3135,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 63 — DSS CU-174: Adjuntar la Fotografía de un Reclamo**
+**Figura 67 — DSS CU-174: Adjuntar la Fotografía de un Reclamo**
 
 ---
 
@@ -3043,7 +3164,7 @@ sequenceDiagram
     Note over USR,SIS: También lo inician el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)
 ```
 
-**Figura 64 — DSS CU-175: Consultar la Fotografía de un Reclamo**
+**Figura 68 — DSS CU-175: Consultar la Fotografía de un Reclamo**
 
 ---
 
@@ -3072,7 +3193,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 65 — DSS CU-026: Ver Dashboard General**
+**Figura 69 — DSS CU-026: Ver Dashboard General**
 
 ---
 
@@ -3094,7 +3215,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 66 — DSS CU-027: Ver Reporte de Ventas por Chofer**
+**Figura 70 — DSS CU-027: Ver Reporte de Ventas por Chofer**
 
 ---
 
@@ -3116,7 +3237,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 67 — DSS CU-028: Ver Reporte de Ventas por Producto**
+**Figura 71 — DSS CU-028: Ver Reporte de Ventas por Producto**
 
 ---
 
@@ -3138,7 +3259,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 68 — DSS CU-029: Ver Reporte por Método de Pago**
+**Figura 72 — DSS CU-029: Ver Reporte por Método de Pago**
 
 ---
 
@@ -3164,7 +3285,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 69 — DSS CU-030: Ver Gráfico de Ventas (últimos 7 días)**
+**Figura 73 — DSS CU-030: Ver Gráfico de Ventas (últimos 7 días)**
 
 ---
 
@@ -3196,49 +3317,65 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 70 — DSS CU-031: Registrar Chofer**
+**Figura 74 — DSS CU-031: Registrar Chofer**
 
 > Realiza la misma operación del sistema que CU-003, vista desde el subsistema de gestión de flota.
 
 ---
 
-#### DSS — CU-032: Validar / Invalidar Chofer
+#### DSS — CU-032: Validar un Chofer
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `validarChofer(choferId)`, `invalidarChofer(choferId)`
+**Operaciones del sistema:** `validarChofer(choferId)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-032 Validar / Invalidar Chofer
+    title DSS — CU-032 Validar un Chofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt aprobación de la documentación
-        ADM->>SIS: validarChofer(choferId)
-        activate SIS
-        SIS-->>ADM: chofer validado (habilitado para recibir pedidos)
-        deactivate SIS
-    else rechazo o revocación
-        ADM->>SIS: invalidarChofer(choferId)
-        activate SIS
-        SIS-->>ADM: chofer invalidado (deja de recibir ofertas)
-        deactivate SIS
-    end
+    ADM->>SIS: validarChofer(choferId)
+    activate SIS
+    SIS-->>ADM: chofer validado (habilitado para recibir pedidos)
+    deactivate SIS
 ```
 
-**Figura 71 — DSS CU-032: Validar / Invalidar Chofer**
+**Figura 75 — DSS CU-032: Validar un Chofer**
 
 ---
 
-#### DSS — CU-033: Activar / Desactivar Chofer (Admin)
+
+#### DSS — CU-271: Invalidar un Chofer
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `invalidarChofer(choferId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-271 Invalidar un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: invalidarChofer(choferId)
+    activate SIS
+    SIS-->>ADM: chofer invalidado (deja de sumar entre los habilitados)
+    deactivate SIS
+```
+
+**Figura 76 — DSS CU-271: Invalidar un Chofer**
+
+---
+
+#### DSS — CU-033: Activar un Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cambiarEstadoDelChofer(choferId, activo)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-033 Activar / Desactivar Chofer (Admin)
+    title DSS — CU-033 Activar un Chofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -3246,14 +3383,43 @@ sequenceDiagram
     ADM->>SIS: cambiarEstadoDelChofer(choferId, activo)
     activate SIS
     alt el chofer existe
-        SIS-->>ADM: estado del chofer actualizado
+        SIS-->>ADM: chofer activado
     else el chofer no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
+    Note over ADM,SIS: activo = verdadero. La misma operación, con activo = falso, es CU-267
 ```
 
-**Figura 72 — DSS CU-033: Activar / Desactivar Chofer (Admin)**
+**Figura 77 — DSS CU-033: Activar un Chofer**
+
+---
+
+
+#### DSS — CU-267: Desactivar un Chofer
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `cambiarEstadoDelChofer(choferId, activo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-267 Desactivar un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cambiarEstadoDelChofer(choferId, activo)
+    activate SIS
+    alt el chofer existe
+        SIS-->>ADM: chofer desactivado (fuera de línea y fuera del radar)
+    else el chofer no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: activo = falso. La misma operación, con activo = verdadero, es CU-033
+```
+
+**Figura 78 — DSS CU-267: Desactivar un Chofer**
 
 ---
 
@@ -3279,7 +3445,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 73 — DSS CU-034: Registrar Vehículo del Chofer**
+**Figura 79 — DSS CU-034: Registrar Vehículo del Chofer**
 
 ---
 
@@ -3319,7 +3485,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 74 — DSS CU-035: Consultar Listado de Choferes**
+**Figura 80 — DSS CU-035: Consultar Listado de Choferes**
 
 ---
 
@@ -3349,7 +3515,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 75 — DSS CU-049: Consultar Balance / Ganancias del Chofer**
+**Figura 81 — DSS CU-049: Consultar Balance / Ganancias del Chofer**
 
 > **Observación de análisis:** no existe una operación dedicada de consulta de saldo; el chofer lo lee dentro de su propio perfil.
 
@@ -3398,7 +3564,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 76 — DSS CU-051: Consultar Listado de Vehículos**
+**Figura 82 — DSS CU-051: Consultar Listado de Vehículos**
 
 ---
 
@@ -3426,7 +3592,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 77 — DSS CU-096: Actualizar Perfil del Chofer**
+**Figura 83 — DSS CU-096: Actualizar Perfil del Chofer**
 
 ---
 
@@ -3454,7 +3620,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 78 — DSS CU-097: Eliminar Chofer (baja lógica)**
+**Figura 84 — DSS CU-097: Eliminar Chofer (baja lógica)**
 
 ---
 
@@ -3480,7 +3646,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 79 — DSS CU-109: Consultar Detalle del Chofer**
+**Figura 85 — DSS CU-109: Consultar Detalle del Chofer**
 
 ---
 
@@ -3506,7 +3672,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 80 — DSS CU-110: Buscar Chofer por Usuario**
+**Figura 86 — DSS CU-110: Buscar Chofer por Usuario**
 
 ---
 
@@ -3536,7 +3702,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 81 — DSS CU-111: Editar Vehículo**
+**Figura 87 — DSS CU-111: Editar Vehículo**
 
 ---
 
@@ -3564,7 +3730,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 82 — DSS CU-112: Eliminar Vehículo**
+**Figura 88 — DSS CU-112: Eliminar Vehículo**
 
 ---
 
@@ -3590,7 +3756,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 83 — DSS CU-113: Consultar Detalle del Vehículo**
+**Figura 89 — DSS CU-113: Consultar Detalle del Vehículo**
 
 ---
 
@@ -3616,7 +3782,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 84 — DSS CU-114: Buscar Vehículo por Patente**
+**Figura 90 — DSS CU-114: Buscar Vehículo por Patente**
 
 ---
 
@@ -3642,7 +3808,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 85 — DSS CU-115: Consultar Vehículos de un Chofer**
+**Figura 91 — DSS CU-115: Consultar Vehículos de un Chofer**
 
 ---
 
@@ -3670,7 +3836,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 86 — DSS CU-136: Registrar el Seguro del Vehículo**
+**Figura 92 — DSS CU-136: Registrar el Seguro del Vehículo**
 
 ---
 
@@ -3698,7 +3864,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 87 — DSS CU-137: Registrar la Verificación Técnica Vehicular**
+**Figura 93 — DSS CU-137: Registrar la Verificación Técnica Vehicular**
 
 ---
 
@@ -3724,7 +3890,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 88 — DSS CU-138: Registrar la Licencia de Conducir del Chofer**
+**Figura 94 — DSS CU-138: Registrar la Licencia de Conducir del Chofer**
 
 ---
 
@@ -3750,7 +3916,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 89 — DSS CU-139: Consultar los Vencimientos de la Flota**
+**Figura 95 — DSS CU-139: Consultar los Vencimientos de la Flota**
 
 ---
 
@@ -3776,7 +3942,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 90 — DSS CU-140: Programar un Mantenimiento de Vehículo**
+**Figura 96 — DSS CU-140: Programar un Mantenimiento de Vehículo**
 
 ---
 
@@ -3802,7 +3968,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 91 — DSS CU-141: Registrar un Mantenimiento Realizado**
+**Figura 97 — DSS CU-141: Registrar un Mantenimiento Realizado**
 
 ---
 
@@ -3832,7 +3998,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 92 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota**
+**Figura 98 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota**
 
 ---
 
@@ -3862,7 +4028,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 93 — DSS CU-155: Adjuntar Archivo a una Tarea de Flota**
+**Figura 99 — DSS CU-155: Adjuntar Archivo a una Tarea de Flota**
 
 ---
 
@@ -3888,7 +4054,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 94 — DSS CU-156: Consultar Adjuntos de una Tarea de Flota**
+**Figura 100 — DSS CU-156: Consultar Adjuntos de una Tarea de Flota**
 
 ---
 
@@ -3907,14 +4073,14 @@ sequenceDiagram
     ADM->>SIS: descargarAdjunto(tareaId, adjuntoId)
     activate SIS
     alt el adjunto existe
-        SIS-->>ADM: contenido del archivo
+        SIS-->>ADM: dirección de descarga firmada, de corta vigencia, con la que se baja el archivo
     else el adjunto no existe
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
 ```
 
-**Figura 95 — DSS CU-157: Descargar un Adjunto de Flota**
+**Figura 101 — DSS CU-157: Descargar un Adjunto de Flota**
 
 ---
 
@@ -3940,7 +4106,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 96 — DSS CU-158: Eliminar un Adjunto de Flota**
+**Figura 102 — DSS CU-158: Eliminar un Adjunto de Flota**
 
 ---
 
@@ -3986,7 +4152,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 97 — DSS CU-161: Poner un Vehículo en Uso para un Chofer**
+**Figura 103 — DSS CU-161: Poner un Vehículo en Uso para un Chofer**
 
 ---
 
@@ -4014,7 +4180,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 98 — DSS CU-162: Liberar el Vehículo en Uso de un Chofer**
+**Figura 104 — DSS CU-162: Liberar el Vehículo en Uso de un Chofer**
 
 ---
 
@@ -4051,7 +4217,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 99 — DSS CU-163: Consultar el Vehículo en Uso de un Chofer**
+**Figura 105 — DSS CU-163: Consultar el Vehículo en Uso de un Chofer**
 
 ---
 
@@ -4077,7 +4243,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 100 — DSS CU-164: Consultar el Historial de Vehículos de un Chofer**
+**Figura 106 — DSS CU-164: Consultar el Historial de Vehículos de un Chofer**
 
 ---
 
@@ -4103,7 +4269,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 101 — DSS CU-165: Consultar el Historial de Choferes de un Vehículo**
+**Figura 107 — DSS CU-165: Consultar el Historial de Choferes de un Vehículo**
 
 ---
 
@@ -4172,7 +4338,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 102 — DSS CU-195: Registrar una Carga de Combustible**
+**Figura 108 — DSS CU-195: Registrar una Carga de Combustible**
 
 ---
 
@@ -4200,7 +4366,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 103 — DSS CU-196: Consultar el Consumo de Combustible de un Vehículo**
+**Figura 109 — DSS CU-196: Consultar el Consumo de Combustible de un Vehículo**
 
 ---
 
@@ -4228,7 +4394,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 104 — DSS CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas**
+**Figura 110 — DSS CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas**
 
 ---
 
@@ -4299,7 +4465,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 105 — DSS CU-198: Registrar una Multa de Tránsito**
+**Figura 111 — DSS CU-198: Registrar una Multa de Tránsito**
 
 ---
 
@@ -4327,7 +4493,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 106 — DSS CU-199: Registrar el Pago de una Multa**
+**Figura 112 — DSS CU-199: Registrar el Pago de una Multa**
 
 ---
 
@@ -4355,7 +4521,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 107 — DSS CU-200: Imputar una Multa al Chofer**
+**Figura 113 — DSS CU-200: Imputar una Multa al Chofer**
 
 ---
 
@@ -4415,7 +4581,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 108 — DSS CU-201: Registrar un Siniestro**
+**Figura 114 — DSS CU-201: Registrar un Siniestro**
 
 ---
 
@@ -4443,7 +4609,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 109 — DSS CU-202: Cerrar un Siniestro**
+**Figura 115 — DSS CU-202: Cerrar un Siniestro**
 
 ---
 
@@ -4471,7 +4637,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 110 — DSS CU-203: Consultar el Costo Total de un Vehículo**
+**Figura 116 — DSS CU-203: Consultar el Costo Total de un Vehículo**
 
 ---
 
@@ -4497,7 +4663,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 111 — DSS CU-204: Consultar el Tablero de Costos de la Flota**
+**Figura 117 — DSS CU-204: Consultar el Tablero de Costos de la Flota**
 
 ---
 
@@ -4525,7 +4691,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 112 — DSS CU-205: Registrar un Neumático**
+**Figura 118 — DSS CU-205: Registrar un Neumático**
 
 ---
 
@@ -4553,7 +4719,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 113 — DSS CU-206: Registrar un Movimiento de Neumático**
+**Figura 119 — DSS CU-206: Registrar un Movimiento de Neumático**
 
 ---
 
@@ -4583,7 +4749,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 114 — DSS CU-247: Reactivar un Vehículo**
+**Figura 120 — DSS CU-247: Reactivar un Vehículo**
 
 ---
 
@@ -4611,7 +4777,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 115 — DSS CU-036: Crear Producto (Garrafa)**
+**Figura 121 — DSS CU-036: Crear Producto (Garrafa)**
 
 ---
 
@@ -4637,7 +4803,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 116 — DSS CU-037: Actualizar Precio de Producto**
+**Figura 122 — DSS CU-037: Actualizar Precio de Producto**
 
 > **Observación de análisis:** no existe una operación exclusiva de precio; el precio se modifica con la actualización general del producto.
 
@@ -4667,7 +4833,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 117 — DSS CU-038: Actualizar Stock de Producto**
+**Figura 123 — DSS CU-038: Actualizar Stock de Producto**
 
 > El parámetro es una **variación** (positiva o negativa), no un valor absoluto: ingresa mercadería con signo más y la ajusta con signo menos.
 
@@ -4695,52 +4861,89 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 118 — DSS CU-039: Configurar Promociones por Cantidad**
+**Figura 124 — DSS CU-039: Configurar Promociones por Cantidad**
 
 > Al armar un pedido, cuando varias promociones aplican a la misma cantidad, el sistema toma **la más conveniente para el cliente**.
 
 ---
 
-#### DSS — CU-040: Activar / Desactivar Producto
+#### DSS — CU-040: Desactivar un Producto
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `desactivarProducto(productoId)`, `consultarProductosInactivos()`, `reactivarProducto(productoId)`
+**Operaciones del sistema:** `desactivarProducto(productoId)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-040 Activar / Desactivar Producto
+    title DSS — CU-040 Desactivar un Producto
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt El administrador da de baja el producto
-        ADM->>SIS: desactivarProducto(productoId)
-        activate SIS
-        alt el producto existe en la distribuidora
-            SIS-->>ADM: producto desactivado (deja de aparecer en el catálogo)
-        else el producto no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    else El administrador reactiva un producto (planificado, I-1)
-        ADM->>SIS: consultarProductosInactivos()
-        activate SIS
-        SIS-->>ADM: productos dados de baja de la distribuidora
-        deactivate SIS
-        ADM->>SIS: reactivarProducto(productoId)
-        activate SIS
-        alt el producto existe en la distribuidora
-            SIS-->>ADM: producto reactivado (vuelve a aparecer en el catálogo)
-        else el producto no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
+    ADM->>SIS: desactivarProducto(productoId)
+    activate SIS
+    alt el producto existe en la distribuidora
+        SIS-->>ADM: producto desactivado (deja de aparecer en el catálogo)
+    else el producto no existe
+        SIS-->>ADM: recurso no encontrado
     end
+    deactivate SIS
 ```
 
-**Figura 119 — DSS CU-040: Activar / Desactivar Producto**
+**Figura 125 — DSS CU-040: Desactivar un Producto**
 
-> **Realización parcial:** el sistema realiza la desactivación; la operación inversa `reactivarProducto(productoId)` y el listado de productos inactivos están planificados (I-1).
+---
+
+
+#### DSS — CU-268: Reactivar un Producto
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `reactivarProducto(productoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-268 Reactivar un Producto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reactivarProducto(productoId)
+    activate SIS
+    alt el producto existe en la distribuidora
+        SIS-->>ADM: producto reactivado (vuelve a aparecer en el catálogo)
+    else el producto no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+**Figura 126 — DSS CU-268: Reactivar un Producto**
+
+> **Planificado (I-1):** el sistema todavía no realiza la reactivación; el diagrama es la colaboración propuesta.
+
+---
+
+
+#### DSS — CU-269: Consultar los Productos Inactivos
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarProductosInactivos()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-269 Consultar los Productos Inactivos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarProductosInactivos()
+    activate SIS
+    SIS-->>ADM: productos dados de baja de la distribuidora
+    deactivate SIS
+```
+
+**Figura 127 — DSS CU-269: Consultar los Productos Inactivos**
+
+> **Planificado (I-1):** el listado de productos inactivos todavía no existe; el diagrama es la colaboración propuesta.
 
 ---
 
@@ -4780,7 +4983,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 120 — DSS CU-041: Consultar Catálogo de Productos**
+**Figura 128 — DSS CU-041: Consultar Catálogo de Productos**
 
 ---
 
@@ -4808,7 +5011,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 121 — DSS CU-042: Crear Franja Horaria**
+**Figura 129 — DSS CU-042: Crear Franja Horaria**
 
 ---
 
@@ -4843,7 +5046,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 122 — DSS CU-044: Seleccionar Franja Horaria al Crear Pedido**
+**Figura 130 — DSS CU-044: Seleccionar Franja Horaria al Crear Pedido**
 
 > El cupo se toma dentro de la misma transacción que crea el pedido, de modo que dos clientes que eligen la última plaza de la misma franja no la obtienen los dos.
 
@@ -4878,7 +5081,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 123 — DSS CU-045: Consultar Franjas Horarias Disponibles**
+**Figura 131 — DSS CU-045: Consultar Franjas Horarias Disponibles**
 
 ---
 
@@ -4904,7 +5107,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 124 — DSS CU-103: Eliminar Franja Horaria**
+**Figura 132 — DSS CU-103: Eliminar Franja Horaria**
 
 > **Asimetría:** el sistema permite dar de baja una franja pero **no** modificar su capacidad (CU-043, no implementado). Para cambiar la capacidad hay que eliminar y volver a crear.
 
@@ -4928,7 +5131,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 125 — DSS CU-154: Consultar Listado de Franjas Horarias**
+**Figura 133 — DSS CU-154: Consultar Listado de Franjas Horarias**
 
 ---
 
@@ -4958,7 +5161,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 126 — DSS CU-052: Registrar Distribuidora**
+**Figura 134 — DSS CU-052: Registrar Distribuidora**
 
 > Solo el Super Administrador opera este caso de uso: es una acción de **plataforma**, no de una empresa.
 
@@ -4993,7 +5196,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 127 — DSS CU-053: Consultar Distribuidoras**
+**Figura 135 — DSS CU-053: Consultar Distribuidoras**
 
 ---
 
@@ -5019,7 +5222,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 128 — DSS CU-054: Modificar Datos de la Distribuidora**
+**Figura 136 — DSS CU-054: Modificar Datos de la Distribuidora**
 
 ---
 
@@ -5045,7 +5248,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 129 — DSS CU-055: Dar de Baja una Distribuidora**
+**Figura 137 — DSS CU-055: Dar de Baja una Distribuidora**
 
 ---
 
@@ -5073,7 +5276,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 130 — DSS CU-056: Definir Zona de Cobertura**
+**Figura 138 — DSS CU-056: Definir Zona de Cobertura**
 
 ---
 
@@ -5095,7 +5298,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 131 — DSS CU-057: Consultar Zonas de Cobertura**
+**Figura 139 — DSS CU-057: Consultar Zonas de Cobertura**
 
 ---
 
@@ -5123,7 +5326,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 132 — DSS CU-058: Validar Cobertura de una Dirección**
+**Figura 140 — DSS CU-058: Validar Cobertura de una Dirección**
 
 > Es la **precondición** de CU-005: la aplicación la invoca antes de dejar confirmar el pedido, y de acá sale el recargo por zona que se suma al total.
 
@@ -5151,7 +5354,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 133 — DSS CU-059: Eliminar Zona de Cobertura**
+**Figura 141 — DSS CU-059: Eliminar Zona de Cobertura**
 
 ---
 
@@ -5181,7 +5384,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 134 — DSS CU-150: Programar la Vigencia de una Zona de Cobertura**
+**Figura 142 — DSS CU-150: Programar la Vigencia de una Zona de Cobertura**
 
 ---
 
@@ -5211,7 +5414,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 135 — DSS CU-151: Desactivar las Zonas de Cobertura Vencidas**
+**Figura 143 — DSS CU-151: Desactivar las Zonas de Cobertura Vencidas**
 
 ---
 
@@ -5242,7 +5445,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 136 — DSS CU-060: Registrar Incidencia de Entrega**
+**Figura 144 — DSS CU-060: Registrar Incidencia de Entrega**
 
 > Circuito **distinto** al de reclamos (SS-05): el reclamo lo abre el cliente después de la entrega, la incidencia la abre el chofer durante el reparto.
 
@@ -5266,7 +5469,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 137 — DSS CU-061: Listar Incidencias**
+**Figura 145 — DSS CU-061: Listar Incidencias**
 
 ---
 
@@ -5292,7 +5495,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 138 — DSS CU-062: Consultar Incidencias de un Pedido**
+**Figura 146 — DSS CU-062: Consultar Incidencias de un Pedido**
 
 ---
 
@@ -5318,7 +5521,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 139 — DSS CU-063: Resolver Incidencia**
+**Figura 147 — DSS CU-063: Resolver Incidencia**
 
 ---
 
@@ -5348,7 +5551,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 140 — DSS CU-064: Calificar Pedido (cliente↔chofer)**
+**Figura 148 — DSS CU-064: Calificar Pedido (cliente↔chofer)**
 
 > La calificación es **bidireccional**: el mismo mensaje lo emite el cliente hacia el chofer o el chofer hacia el cliente. El emisor sale de la sesión y el calificado se deriva del pedido, de modo que hay a lo sumo una calificación por pedido y por lado.
 
@@ -5372,7 +5575,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 141 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario**
+**Figura 149 — DSS CU-065: Consultar Promedio de Calificaciones de un Usuario**
 
 ---
 
@@ -5394,7 +5597,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 142 — DSS CU-066: Consultar Historial de Calificaciones Recibidas**
+**Figura 150 — DSS CU-066: Consultar Historial de Calificaciones Recibidas**
 
 ---
 
@@ -5422,7 +5625,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 143 — DSS CU-067: Dar de Alta un Envase Físico**
+**Figura 151 — DSS CU-067: Dar de Alta un Envase Físico**
 
 > El número de serie es único **por distribuidora**, no globalmente: dos empresas pueden tener garrafas con la misma numeración de fábrica.
 
@@ -5455,7 +5658,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 144 — DSS CU-068: Asignar Envases a un Pedido**
+**Figura 152 — DSS CU-068: Asignar Envases a un Pedido**
 
 ---
 
@@ -5488,7 +5691,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 145 — DSS CU-069: Consultar el Parque de Envases**
+**Figura 153 — DSS CU-069: Consultar el Parque de Envases**
 
 ---
 
@@ -5516,7 +5719,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 146 — DSS CU-070: Registrar Movimiento de Envase (cambio de estado)**
+**Figura 154 — DSS CU-070: Registrar Movimiento de Envase (cambio de estado)**
 
 > Ciclo de vida del envase: EN_DEPOSITO → LLENO → DESPACHADO → CON_EL_CLIENTE → VACIO_DEVUELTO. Al confirmarse la entrega del pedido (CU-020 / CU-079) el sistema avanza solo los envases despachados a CON_EL_CLIENTE.
 
@@ -5540,7 +5743,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 147 — DSS CU-071: Consultar Historial de Movimientos de un Envase**
+**Figura 155 — DSS CU-071: Consultar Historial de Movimientos de un Envase**
 
 > El historial es de **solo agregado**: los movimientos no se corrigen ni se borran, y por eso sirve como evidencia de trazabilidad.
 
@@ -5570,7 +5773,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 148 — DSS CU-132: Registrar la Revisión Periódica de un Envase**
+**Figura 156 — DSS CU-132: Registrar la Revisión Periódica de un Envase**
 
 ---
 
@@ -5598,7 +5801,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 149 — DSS CU-133: Consultar la Vigencia de un Envase**
+**Figura 157 — DSS CU-133: Consultar la Vigencia de un Envase**
 
 ---
 
@@ -5624,7 +5827,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 150 — DSS CU-134: Consultar los Envases Próximos a Vencer**
+**Figura 158 — DSS CU-134: Consultar los Envases Próximos a Vencer**
 
 ---
 
@@ -5654,7 +5857,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 151 — DSS CU-135: Bloquear el Despacho de un Envase Vencido**
+**Figura 159 — DSS CU-135: Bloquear el Despacho de un Envase Vencido**
 
 ---
 
@@ -5669,12 +5872,12 @@ sequenceDiagram
 sequenceDiagram
     title DSS — CU-048 Procesar Pago con MercadoPago
     autonumber
-    participant SIS as :Sistema
     actor MP as MercadoPago (ACT-06)
+    participant SIS as :Sistema
     actor CLI as Cliente (ACT-01)
     actor CHO as Chofer (ACT-02)
 
-    Note over SIS,MP: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
+    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
 
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
@@ -5695,7 +5898,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 152 — DSS CU-048: Procesar Pago con MercadoPago**
+**Figura 160 — DSS CU-048: Procesar Pago con MercadoPago**
 
 > El sistema responde **siempre** con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido. El aviso al Cliente (evento `order:payment-approved` y notificación push) sale sólo en la primera confirmación del pago aprobado, no en los reintentos de la pasarela. El enlace de pago no lo pide el Cliente en un mensaje aparte: lo genera la propia creación del pedido (`crearPedido`, CU-005) o de la reserva (`crearReserva`, CU-072) y viaja en su respuesta. Esa colaboración interna se diagrama en el Documento 3, con el nombre `crearCheckoutDePago`.
 
@@ -5736,7 +5939,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 153 — DSS CU-168: Reintegrar el Pago de un Pedido**
+**Figura 161 — DSS CU-168: Reintegrar el Pago de un Pedido**
 
 ---
 
@@ -5769,7 +5972,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 154 — DSS CU-072: Crear Reserva Programada con Seña**
+**Figura 162 — DSS CU-072: Crear Reserva Programada con Seña**
 
 > La reserva nace en estado **RESERVADO**: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075).
 
@@ -5793,7 +5996,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 155 — DSS CU-073: Listar Reservas y Estado de la Seña**
+**Figura 163 — DSS CU-073: Listar Reservas y Estado de la Seña**
 
 ---
 
@@ -5821,7 +6024,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 156 — DSS CU-074: Confirmar Seña Cobrada en Efectivo**
+**Figura 164 — DSS CU-074: Confirmar Seña Cobrada en Efectivo**
 
 > Es la **única acción humana** del ciclo de reservas: la seña pagada por la pasarela se confirma sola (CU-048).
 
@@ -5854,7 +6057,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 157 — DSS CU-075: Activar Reservas Vencidas Automaticamente (Cron)**
+**Figura 165 — DSS CU-075: Activar Reservas Vencidas Automaticamente (Cron)**
 
 > Solo se activan las reservas con la seña **efectivamente paga**. Una reserva cuya activación falla se registra y se reintenta en la corrida siguiente.
 
@@ -5885,7 +6088,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 158 — DSS CU-076: Expirar Reservas sin Seña Pagada (Cron)**
+**Figura 166 — DSS CU-076: Expirar Reservas sin Seña Pagada (Cron)**
 
 > El plazo de espera de la seña es un parámetro de configuración (valor por omisión, 48 horas). Cada expiración es atómica: si falla, la reserva queda intacta para la corrida siguiente.
 
@@ -5920,7 +6123,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 159 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron)**
+**Figura 167 — DSS CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron)**
 
 > Sin este proceso, el stock que se reserva al crear el pedido —antes de que el cliente pague— quedaría bloqueado para siempre si abandona el pago. El plazo por omisión es de 60 minutos.
 
@@ -5954,7 +6157,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 160 — DSS CU-086: Registrar Administrador**
+**Figura 168 — DSS CU-086: Registrar Administrador**
 
 > Regla de negocio multi-empresa: un administrador de empresa **nunca** puede crear administradores de otra distribuidora ni escalar a super administrador.
 
@@ -5983,7 +6186,7 @@ sequenceDiagram
     Note over GEN,SIS: Se ejecuta desde el servidor, no desde el<br/>panel ni las apps
 ```
 
-**Figura 161 — DSS CU-087: Crear el Primer Super Administrador (bootstrap)**
+**Figura 169 — DSS CU-087: Crear el Primer Super Administrador (bootstrap)**
 
 > Es una operación de **una sola vez**: se autodeshabilita apenas existe el primer administrador.
 
@@ -6018,18 +6221,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 162 — DSS CU-088: Consultar Administradores**
+**Figura 170 — DSS CU-088: Consultar Administradores**
 
 ---
 
-#### DSS — CU-089: Gestionar Roles del Sistema
+#### DSS — CU-089: Consultar los Roles
 
 **Actor:** Administrador General (ACT-05)
-**Operaciones del sistema:** `listarRoles()`, `crearRol(tipo)`, `actualizarRol(rolId, datos)`, `eliminarRol(rolId)`
+**Operaciones del sistema:** `listarRoles()`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-089 Gestionar Roles del Sistema
+    title DSS — CU-089 Consultar los Roles
     autonumber
     actor SUP as Administrador General (ACT-05)
     participant SIS as :Sistema
@@ -6038,34 +6241,90 @@ sequenceDiagram
     activate SIS
     SIS-->>SUP: roles definidos en el sistema
     deactivate SIS
-
-    opt alta de un rol
-        SUP->>SIS: crearRol(tipo)
-        activate SIS
-        SIS-->>SUP: rol creado (rolId)
-        deactivate SIS
-    end
-
-    opt modificación
-        SUP->>SIS: actualizarRol(rolId, datos)
-        activate SIS
-        alt el rol existe
-            SIS-->>SUP: rol actualizado
-        else el rol no existe
-            SIS-->>SUP: recurso no encontrado
-        end
-        deactivate SIS
-    end
-
-    opt baja
-        SUP->>SIS: eliminarRol(rolId)
-        activate SIS
-        SIS-->>SUP: rol eliminado
-        deactivate SIS
-    end
 ```
 
-**Figura 163 — DSS CU-089: Gestionar Roles del Sistema**
+**Figura 171 — DSS CU-089: Consultar los Roles**
+
+---
+
+
+#### DSS — CU-252: Crear un Rol
+
+**Actor:** Administrador General (ACT-05)
+**Operaciones del sistema:** `crearRol(tipo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-252 Crear un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: crearRol(tipo)
+    activate SIS
+    SIS-->>SUP: rol creado (rolId)
+    deactivate SIS
+```
+
+**Figura 172 — DSS CU-252: Crear un Rol**
+
+---
+
+
+#### DSS — CU-253: Modificar un Rol
+
+**Actor:** Administrador General (ACT-05)
+**Operaciones del sistema:** `actualizarRol(rolId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-253 Modificar un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: actualizarRol(rolId, datos)
+    activate SIS
+    alt el rol existe y no es del sistema
+        SIS-->>SUP: rol actualizado
+    else el rol no existe
+        SIS-->>SUP: recurso no encontrado
+    else el rol es uno de los del sistema
+        SIS-->>SUP: conflicto
+    end
+    deactivate SIS
+```
+
+**Figura 173 — DSS CU-253: Modificar un Rol**
+
+---
+
+
+#### DSS — CU-254: Eliminar un Rol
+
+**Actor:** Administrador General (ACT-05)
+**Operaciones del sistema:** `eliminarRol(rolId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-254 Eliminar un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: eliminarRol(rolId)
+    activate SIS
+    alt el rol existe, no es del sistema y no tiene usuarios
+        SIS-->>SUP: rol eliminado
+    else el rol no existe
+        SIS-->>SUP: recurso no encontrado
+    else el rol es del sistema o tiene usuarios asignados
+        SIS-->>SUP: conflicto
+    end
+    deactivate SIS
+```
+
+**Figura 174 — DSS CU-254: Eliminar un Rol**
 
 ---
 
@@ -6087,7 +6346,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 164 — DSS CU-090: Sembrar los Roles Iniciales**
+**Figura 175 — DSS CU-090: Sembrar los Roles Iniciales**
 
 > Operación de puesta en marcha, idempotente: volver a ejecutarla no duplica los roles ya existentes.
 
@@ -6111,7 +6370,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 165 — DSS CU-092: Consultar Listado de Clientes**
+**Figura 176 — DSS CU-092: Consultar Listado de Clientes**
 
 ---
 
@@ -6139,7 +6398,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 166 — DSS CU-094: Actualizar Ubicación del Cliente**
+**Figura 177 — DSS CU-094: Actualizar Ubicación del Cliente**
 
 ---
 
@@ -6167,7 +6426,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 167 — DSS CU-095: Eliminar Cliente (baja lógica)**
+**Figura 178 — DSS CU-095: Eliminar Cliente (baja lógica)**
 
 ---
 
@@ -6193,7 +6452,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 168 — DSS CU-129: Consultar Detalle del Cliente**
+**Figura 179 — DSS CU-129: Consultar Detalle del Cliente**
 
 ---
 
@@ -6219,7 +6478,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 169 — DSS CU-130: Buscar Cliente por Usuario**
+**Figura 180 — DSS CU-130: Buscar Cliente por Usuario**
 
 ---
 
@@ -6245,7 +6504,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 170 — DSS CU-131: Editar Datos del Cliente**
+**Figura 181 — DSS CU-131: Editar Datos del Cliente**
 
 ---
 
@@ -6273,7 +6532,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 171 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo**
+**Figura 182 — DSS CU-098: Registrar el Token de Notificaciones del Dispositivo**
 
 > Es la **precondición técnica de CU-021**: sin token registrado no hay avisos al dispositivo.
 
@@ -6302,7 +6561,7 @@ sequenceDiagram
     Note over CLI,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03), sobre su propio<br/>usuario, y el Administrador General (ACT-05),<br/>sobre cualquiera
 ```
 
-**Figura 172 — DSS CU-099: Consultar los Tokens de un Usuario**
+**Figura 183 — DSS CU-099: Consultar los Tokens de un Usuario**
 
 ---
 
@@ -6333,7 +6592,7 @@ sequenceDiagram
     Note over ADM,CLI: El dispositivo identificado por el token puede ser<br/>el de un Cliente (ACT-01) o el de un Chofer (ACT-02)
 ```
 
-**Figura 173 — DSS CU-100: Enviar Notificación de Prueba**
+**Figura 184 — DSS CU-100: Enviar Notificación de Prueba**
 
 ---
 
@@ -6363,7 +6622,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 174 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido**
+**Figura 185 — DSS CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 > Se usa como acción de soporte cuando el cliente dice no haber recibido el aviso original.
 
@@ -6393,7 +6652,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 175 — DSS CU-102: Probar el Servicio de Correo**
+**Figura 186 — DSS CU-102: Probar el Servicio de Correo**
 
 > Es una herramienta de diagnóstico: exige sesión y es exclusiva del Administrador General, porque manda un correo real a la dirección que se le indica.
 
@@ -6437,7 +6696,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 176 — DSS CU-104: Verificar la Salud del Sistema (liveness / readiness)**
+**Figura 187 — DSS CU-104: Verificar la Salud del Sistema (liveness / readiness)**
 
 > Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, sin ningún caso de uso asociado en la matriz de rastreabilidad.
 
@@ -6446,7 +6705,7 @@ sequenceDiagram
 #### DSS — CU-152: Consultar el Registro de Auditoría
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
-**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)`
+**Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)`, `consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)`
 
 ```mermaid
 sequenceDiagram
@@ -6466,16 +6725,28 @@ sequenceDiagram
         SIS-->>ADM: asientos del más reciente al más antiguo (autor, rol, operación, recurso, fecha, origen, resultado, cuerpo depurado) y total, o lista vacía si ninguno coincide
     end
     deactivate SIS
+
+    ADM->>SIS: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+    activate SIS
+    alt el solicitante no es administrador
+        SIS-->>ADM: acceso denegado
+    else algún filtro no tiene el formato esperado
+        SIS-->>ADM: error de validación
+    else filtros válidos
+        Note over ADM,SIS: con una distribuidora en contexto, sólo las<br/>auditorías de ella
+        SIS-->>ADM: auditorías de la más reciente a la más antigua (acción, usuario, entidad, registro, fecha y hora, dirección IP, detalle de cada campo con su valor anterior y nuevo) y total, o lista vacía si ninguna coincide
+    end
+    deactivate SIS
 ```
 
-**Figura 177 — DSS CU-152: Consultar el Registro de Auditoría**
+**Figura 188 — DSS CU-152: Consultar el Registro de Auditoría**
 
 ---
 
 #### DSS — CU-153: Registrar Toda Operación de Escritura
 
 **Actor:** Sistema Automático (ACT-04)
-**Operaciones del sistema:** `registrarOperacion(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)`
+**Operaciones del sistema:** `registrarOperacion(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)`, `registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)`
 
 ```mermaid
 sequenceDiagram
@@ -6494,9 +6765,20 @@ sequenceDiagram
         SIS-->>SAU: asiento volcado al registro de eventos,<br/>la operación original no se interrumpe
     end
     deactivate SIS
+
+    Note over SAU: Se dispara cuando un registro<br/>de negocio se da de alta, se modifica,<br/>se da de baja o se reactiva
+    SAU->>SIS: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
+    activate SIS
+    Note over SAU,SIS: Escribe en la transacción del cambio, con un<br/>detalle por campo que cambió
+    alt Cambió al menos un campo
+        SIS-->>SAU: auditoría registrada
+    else El guardado no cambió ningún campo
+        SIS-->>SAU: nada que registrar
+    end
+    deactivate SIS
 ```
 
-**Figura 178 — DSS CU-153: Registrar Toda Operación de Escritura**
+**Figura 189 — DSS CU-153: Registrar Toda Operación de Escritura**
 
 ---
 
@@ -6525,7 +6807,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 179 — DSS CU-172: Configurar los Parámetros de un Proceso Automático**
+**Figura 190 — DSS CU-172: Configurar los Parámetros de un Proceso Automático**
 
 ---
 
@@ -6551,20 +6833,20 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180 — DSS CU-173: Configurar la Frecuencia de las Tareas Programadas**
+**Figura 191 — DSS CU-173: Configurar la Frecuencia de las Tareas Programadas**
 
 ---
 
 ### SS-19 — Personal y Legajos
 
-#### DSS — CU-176: Gestionar los Puestos de Trabajo
+#### DSS — CU-176: Consultar los Puestos de Trabajo
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `consultarPuestosDeTrabajo()`, `crearPuestoDeTrabajo(nombre, categoria)`, `modificarPuestoDeTrabajo(puestoId, datos)`, `eliminarPuestoDeTrabajo(puestoId)`
+**Operaciones del sistema:** `consultarPuestosDeTrabajo()`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-176 Gestionar los Puestos de Trabajo
+    title DSS — CU-176 Consultar los Puestos de Trabajo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
@@ -6573,6 +6855,26 @@ sequenceDiagram
     activate SIS
     SIS-->>ADM: puestos de la distribuidora con su categoría y su cantidad de empleados activos
     deactivate SIS
+```
+
+**Figura 192 — DSS CU-176: Consultar los Puestos de Trabajo**
+
+> La categoría del puesto, y no su nombre, gobierna las reglas que se le aplican al personal.
+
+---
+
+
+#### DSS — CU-255: Crear un Puesto de Trabajo
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `crearPuestoDeTrabajo(nombre, categoria)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-255 Crear un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: crearPuestoDeTrabajo(nombre, categoria)
     activate SIS
@@ -6580,8 +6882,28 @@ sequenceDiagram
         SIS-->>ADM: puesto creado
     else ya existe un puesto vigente con ese nombre
         SIS-->>ADM: conflicto
+    else el nombre o la categoría no son válidos
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
+```
+
+**Figura 193 — DSS CU-255: Crear un Puesto de Trabajo**
+
+---
+
+
+#### DSS — CU-256: Modificar un Puesto de Trabajo
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `modificarPuestoDeTrabajo(puestoId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-256 Modificar un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
 
     ADM->>SIS: modificarPuestoDeTrabajo(puestoId, datos)
     activate SIS
@@ -6589,26 +6911,42 @@ sequenceDiagram
         SIS-->>ADM: puesto modificado
     else el puesto no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else ya existe otro puesto vigente con ese nombre
-        SIS-->>ADM: conflicto
-    end
-    deactivate SIS
-
-    ADM->>SIS: eliminarPuestoDeTrabajo(puestoId)
-    activate SIS
-    alt el puesto existe y no tiene empleados activos
-        SIS-->>ADM: puesto dado de baja
-    else el puesto no existe en la distribuidora
-        SIS-->>ADM: recurso no encontrado
-    else el puesto tiene empleados activos
+    else ya existe otro puesto vigente con ese nombre, la categoría nueva no corresponde a las cuentas de sus ocupantes, o es el último puesto activo de su categoría
         SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
 
-**Figura 180.1 — DSS CU-176: Gestionar los Puestos de Trabajo**
+**Figura 194 — DSS CU-256: Modificar un Puesto de Trabajo**
 
-> La categoría del puesto, y no su nombre, gobierna las reglas que se le aplican al personal.
+---
+
+
+#### DSS — CU-257: Eliminar un Puesto de Trabajo
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `eliminarPuestoDeTrabajo(puestoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-257 Eliminar un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: eliminarPuestoDeTrabajo(puestoId)
+    activate SIS
+    alt el puesto existe y ningún legajo lo ocupa
+        SIS-->>ADM: puesto dado de baja
+    else el puesto no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el puesto lo ocupa algún legajo, activo o egresado, o es el último activo de su categoría
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+**Figura 195 — DSS CU-257: Eliminar un Puesto de Trabajo**
 
 ---
 
@@ -6626,11 +6964,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarEmpleado(datos)
     activate SIS
-    alt los datos son válidos y el puesto existe
+    alt los datos son válidos y el puesto existe y está activo
         SIS-->>ADM: legajo creado, activo y sin cuenta de acceso
     else el puesto no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el documento o el CUIL ya pertenecen a otro empleado vigente
+    else el puesto está inactivo, o el documento, el CUIL o el legajo ya pertenecen a otro empleado vigente
         SIS-->>ADM: conflicto
     else falta un dato o el CUIL no es válido
         SIS-->>ADM: datos inválidos
@@ -6638,7 +6976,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.2 — DSS CU-177: Registrar el Legajo de un Empleado**
+**Figura 195.1 — DSS CU-177: Registrar el Legajo de un Empleado**
 
 ---
 
@@ -6660,26 +6998,26 @@ sequenceDiagram
         SIS-->>ADM: legajo modificado
     else el empleado o el puesto no existen en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el documento o el CUIL ya pertenecen a otro empleado vigente
+    else el puesto está inactivo o no corresponde a la cuenta del empleado, o el documento, el CUIL o el legajo ya pertenecen a otro empleado vigente
         SIS-->>ADM: conflicto
-    else el formato o el CUIL no son válidos
+    else el formato o el CUIL no son válidos, o la fecha de ingreso es posterior a la de egreso
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 
     ADM->>SIS: eliminarEmpleado(empleadoId)
     activate SIS
-    alt el legajo no tiene jornadas ni documentación
+    alt el legajo es una alta errónea: no tiene cuenta de acceso ni, cuando existan, jornadas o documentación
         SIS-->>ADM: legajo dado de baja (alta errónea)
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el legajo ya tiene jornadas o documentación
+    else el legajo tiene cuenta de acceso o, cuando existan, jornadas o documentación
         SIS-->>ADM: conflicto: corresponde registrar el egreso
     end
     deactivate SIS
 ```
 
-**Figura 180.3 — DSS CU-178: Modificar el Legajo de un Empleado**
+**Figura 195.2 — DSS CU-178: Modificar el Legajo de un Empleado**
 
 ---
 
@@ -6705,7 +7043,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.4 — DSS CU-179: Consultar el Legajo de un Empleado**
+**Figura 195.3 — DSS CU-179: Consultar el Legajo de un Empleado**
 
 ---
 
@@ -6724,14 +7062,16 @@ sequenceDiagram
     ADM->>SIS: consultarEmpleados(filtros)
     activate SIS
     alt hay empleados que cumplen los filtros
-        SIS-->>ADM: página de empleados con su peor vencimiento, sin datos sensibles
+        SIS-->>ADM: página de empleados con su puesto y su estado, sin datos sensibles
     else ninguno cumple los filtros
         SIS-->>ADM: página vacía
+    else un filtro tiene un valor inválido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
 
-**Figura 180.5 — DSS CU-180: Consultar el Listado de Empleados**
+**Figura 195.4 — DSS CU-180: Consultar el Listado de Empleados**
 
 ---
 
@@ -6749,11 +7089,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
     activate SIS
-    alt el empleado está activo y la fecha es válida
+    alt el empleado está activo, la fecha es válida y el chofer no tiene pedidos en curso
         SIS-->>ADM: legajo egresado, cuenta bloqueada y vehículo liberado si era chofer
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el empleado ya está egresado
+    else el empleado ya está egresado o el chofer tiene pedidos en curso
         SIS-->>ADM: conflicto
     else la fecha es anterior a la de ingreso
         SIS-->>ADM: datos inválidos
@@ -6768,11 +7108,13 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el empleado no está egresado
         SIS-->>ADM: conflicto
+    else la fecha de ingreso es anterior a la de egreso
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
 
-**Figura 180.6 — DSS CU-181: Registrar el Egreso de un Empleado**
+**Figura 195.5 — DSS CU-181: Registrar el Egreso de un Empleado**
 
 > Registrar el egreso y reingresar son dos operaciones del mismo caso de uso: el reingreso no desbloquea la cuenta de acceso.
 
@@ -6781,7 +7123,7 @@ sequenceDiagram
 #### DSS — CU-182: Otorgar una Cuenta de Acceso a un Empleado
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `otorgarCuentaDeAcceso(empleadoId, correo)`
+**Operaciones del sistema:** `otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)`
 
 ```mermaid
 sequenceDiagram
@@ -6790,21 +7132,21 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: otorgarCuentaDeAcceso(empleadoId, correo)
+    ADM->>SIS: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
     activate SIS
     alt el empleado está activo, sin cuenta, y su puesto admite acceso
         SIS-->>ADM: cuenta creada con el rol del puesto y vinculada al legajo
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el empleado ya tiene cuenta o está egresado
+    else el empleado ya tiene cuenta, está egresado, o el correo o el teléfono ya están en uso
         SIS-->>ADM: conflicto
-    else la categoría del puesto no admite cuenta
+    else la categoría del puesto no admite cuenta, o faltan o son inválidos el teléfono o los datos de acceso
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
 
-**Figura 180.7 — DSS CU-182: Otorgar una Cuenta de Acceso a un Empleado**
+**Figura 195.6 — DSS CU-182: Otorgar una Cuenta de Acceso a un Empleado**
 
 ---
 
@@ -6836,7 +7178,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.8 — DSS CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado**
+**Figura 195.7 — DSS CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado**
 
 > Las tres tareas de documentación del personal (CU-183, CU-184 y CU-185) son la misma operación del sistema apuntada a un plan distinto.
 
@@ -6870,7 +7212,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.9 — DSS CU-184: Registrar el Examen Psicofísico del Empleado**
+**Figura 195.8 — DSS CU-184: Registrar el Examen Psicofísico del Empleado**
 
 > Misma operación que CU-183 y CU-185, con el plan «Examen psicofísico».
 
@@ -6904,7 +7246,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.10 — DSS CU-185: Registrar el Alta en la ART del Empleado**
+**Figura 195.9 — DSS CU-185: Registrar el Alta en la ART del Empleado**
 
 > Misma operación que CU-183 y CU-184, con el plan «Alta en ART», que no bloquea el despacho.
 
@@ -6928,13 +7270,13 @@ sequenceDiagram
         SIS-->>ADM: adjunto registrado en el legajo
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el tipo o el tamaño del archivo no están permitidos
+    else el archivo falta, está vacío, es de un tipo no admitido o supera el tamaño máximo
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
 
-**Figura 180.11 — DSS CU-186: Adjuntar un Archivo al Legajo**
+**Figura 195.10 — DSS CU-186: Adjuntar un Archivo al Legajo**
 
 ---
 
@@ -6969,7 +7311,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.12 — DSS CU-187: Consultar los Vencimientos del Personal**
+**Figura 195.11 — DSS CU-187: Consultar los Vencimientos del Personal**
 
 ---
 
@@ -6999,7 +7341,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.13 — DSS CU-188: Avisar los Vencimientos Próximos del Personal**
+**Figura 195.12 — DSS CU-188: Avisar los Vencimientos Próximos del Personal**
 
 ---
 
@@ -7049,7 +7391,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.14 — DSS CU-189: Registrar la Asistencia de un Empleado**
+**Figura 195.13 — DSS CU-189: Registrar la Asistencia de un Empleado**
 
 ---
 
@@ -7084,7 +7426,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.15 — DSS CU-190: Registrar el Inicio y el Fin de la Jornada**
+**Figura 195.14 — DSS CU-190: Registrar el Inicio y el Fin de la Jornada**
 
 ---
 
@@ -7136,7 +7478,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.16 — DSS CU-191: Registrar una Licencia o Ausencia**
+**Figura 195.15 — DSS CU-191: Registrar una Licencia o Ausencia**
 
 ---
 
@@ -7186,7 +7528,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.17 — DSS CU-192: Resolver una Solicitud de Licencia**
+**Figura 195.16 — DSS CU-192: Resolver una Solicitud de Licencia**
 
 ---
 
@@ -7212,7 +7554,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.18 — DSS CU-193: Consultar el Saldo de Vacaciones de un Empleado**
+**Figura 195.17 — DSS CU-193: Consultar el Saldo de Vacaciones de un Empleado**
 
 ---
 
@@ -7234,7 +7576,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180.19 — DSS CU-194: Consultar el Tablero de Personal**
+**Figura 195.18 — DSS CU-194: Consultar el Tablero de Personal**
 
 ---
 
@@ -7248,60 +7590,106 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-012, CU-013 
 
 ### SS-08 — Gestión de Productos e Inventario (ampliación: stock físico y carga del camión, I-13)
 
-#### DSS — CU-207: Gestionar los Depósitos
+#### DSS — CU-207: Consultar los Depósitos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarDeposito(nombre, codigo, tipo, direccion)`, `actualizarDeposito(depositoId, datos)`, `darDeBajaDeposito(depositoId)`, `consultarDepositos()`
+**Operaciones del sistema:** `consultarDepositos()`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-207 Gestionar los Depósitos
+    title DSS — CU-207 Consultar los Depósitos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt alta de un depósito
-        ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
-        activate SIS
-        alt el código está libre
-            SIS-->>ADM: depósito creado
-        else el código ya lo usa otro depósito vigente
-            SIS-->>ADM: conflicto, con el detalle del campo
-        end
-        deactivate SIS
-    end
-
-    opt modificación de un depósito
-        ADM->>SIS: actualizarDeposito(depositoId, datos)
-        activate SIS
-        alt el depósito existe
-            SIS-->>ADM: depósito actualizado
-        else el depósito no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
-
-    opt baja de un depósito
-        ADM->>SIS: darDeBajaDeposito(depositoId)
-        activate SIS
-        alt el depósito no tiene saldo
-            SIS-->>ADM: baja confirmada
-        else el depósito tiene saldo
-            SIS-->>ADM: conflicto, con el saldo pendiente
-        end
-        deactivate SIS
-    end
-
-    opt listado de depósitos
-        ADM->>SIS: consultarDepositos()
-        activate SIS
-        SIS-->>ADM: depósitos de la distribuidora
-        deactivate SIS
-    end
+    ADM->>SIS: consultarDepositos()
+    activate SIS
+    SIS-->>ADM: depósitos de la distribuidora
+    deactivate SIS
 ```
 
-**Figura 181 — DSS CU-207: Gestionar los Depósitos**
+**Figura 196 — DSS CU-207: Consultar los Depósitos**
+
+---
+
+
+#### DSS — CU-258: Registrar un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarDeposito(nombre, codigo, tipo, direccion)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-258 Registrar un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
+    activate SIS
+    alt el código está libre
+        SIS-->>ADM: depósito creado
+    else el código ya lo usa otro depósito vigente
+        SIS-->>ADM: conflicto, con el detalle del campo
+    end
+    deactivate SIS
+```
+
+**Figura 197 — DSS CU-258: Registrar un Depósito**
+
+---
+
+
+#### DSS — CU-259: Modificar un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `actualizarDeposito(depositoId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-259 Modificar un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: actualizarDeposito(depositoId, datos)
+    activate SIS
+    alt el depósito existe
+        SIS-->>ADM: depósito actualizado
+    else el depósito no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+**Figura 198 — DSS CU-259: Modificar un Depósito**
+
+---
+
+
+#### DSS — CU-260: Dar de Baja un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `darDeBajaDeposito(depositoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-260 Dar de Baja un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: darDeBajaDeposito(depositoId)
+    activate SIS
+    alt el depósito no tiene saldo
+        SIS-->>ADM: baja confirmada
+    else el depósito tiene saldo
+        SIS-->>ADM: conflicto, con el saldo pendiente
+    end
+    deactivate SIS
+```
+
+**Figura 199 — DSS CU-260: Dar de Baja un Depósito**
 
 ---
 
@@ -7336,7 +7724,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 182 — DSS CU-208: Consultar el Stock por Ubicación**
+**Figura 200 — DSS CU-208: Consultar el Stock por Ubicación**
 
 ---
 
@@ -7362,7 +7750,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 183 — DSS CU-209: Consultar los Movimientos de Stock**
+**Figura 201 — DSS CU-209: Consultar los Movimientos de Stock**
 
 ---
 
@@ -7390,7 +7778,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 184 — DSS CU-210: Configurar el Stock Mínimo**
+**Figura 202 — DSS CU-210: Configurar el Stock Mínimo**
 
 ---
 
@@ -7420,7 +7808,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 185 — DSS CU-211: Avisar el Stock Bajo**
+**Figura 203 — DSS CU-211: Avisar el Stock Bajo**
 
 ---
 
@@ -7450,7 +7838,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 186 — DSS CU-212: Transferir Stock entre Depósitos**
+**Figura 204 — DSS CU-212: Transferir Stock entre Depósitos**
 
 ---
 
@@ -7487,7 +7875,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 187 — DSS CU-213: Registrar un Ajuste o una Merma de Stock**
+**Figura 205 — DSS CU-213: Registrar un Ajuste o una Merma de Stock**
 
 ---
 
@@ -7503,50 +7891,42 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt apertura de la carga
-        ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
-        activate SIS
-        alt el camión está en uso y el depósito tiene las unidades
-            SIS-->>ADM: hoja de carga abierta
-        else el vehículo o el chofer ya tienen una carga abierta
-            SIS-->>ADM: conflicto
-        else el depósito no tiene las unidades
-            SIS-->>ADM: solicitud inválida, con el saldo disponible
-        end
-        deactivate SIS
+    ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+    activate SIS
+    alt el camión está en uso y el depósito tiene las unidades
+        SIS-->>ADM: hoja de carga abierta
+    else el vehículo o el chofer ya tienen una carga abierta
+        SIS-->>ADM: conflicto
+    else el depósito no tiene las unidades
+        SIS-->>ADM: solicitud inválida, con el saldo disponible
     end
+    deactivate SIS
 
-    opt reposición en ruta
-        ADM->>SIS: reponerCargaDelCamion(cargaId, items)
-        activate SIS
-        alt la carga está abierta
-            SIS-->>ADM: hoja de carga actualizada
-        else la carga ya regresó o está cerrada
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
+    ADM->>SIS: reponerCargaDelCamion(cargaId, items)
+    activate SIS
+    alt la carga está abierta
+        SIS-->>ADM: hoja de carga actualizada
+    else la carga ya regresó o está cerrada
+        SIS-->>ADM: conflicto
     end
+    deactivate SIS
 
-    opt cancelación de la carga
-        ADM->>SIS: cancelarCargaDelCamion(cargaId)
-        activate SIS
-        alt la carga todavía no salió
-            SIS-->>ADM: carga cancelada y stock devuelto
-        else la carga ya salió
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
+    ADM->>SIS: cancelarCargaDelCamion(cargaId)
+    activate SIS
+    alt la carga todavía no salió
+        SIS-->>ADM: carga cancelada y stock devuelto
+    else la carga ya salió
+        SIS-->>ADM: conflicto
     end
+    deactivate SIS
 
-    opt consulta de las cargas
-        ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
-        activate SIS
-        SIS-->>ADM: cargas del camión
-        deactivate SIS
-    end
+    ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
+    activate SIS
+    SIS-->>ADM: cargas del camión
+    deactivate SIS
 ```
 
-**Figura 188 — DSS CU-218: Registrar la Carga del Camión**
+**Figura 206 — DSS CU-218: Registrar la Carga del Camión**
 
 ---
 
@@ -7575,7 +7955,7 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 189 — DSS CU-219: Registrar la Salida del Camión**
+**Figura 207 — DSS CU-219: Registrar la Salida del Camión**
 
 ---
 
@@ -7604,7 +7984,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 190 — DSS CU-220: Descontar del Camión lo Entregado**
+**Figura 208 — DSS CU-220: Descontar del Camión lo Entregado**
 
 ---
 
@@ -7633,7 +8013,7 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 191 — DSS CU-221: Registrar el Regreso del Camión**
+**Figura 209 — DSS CU-221: Registrar el Regreso del Camión**
 
 ---
 
@@ -7665,7 +8045,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 192 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
+**Figura 210 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
 
 ---
 
@@ -7691,7 +8071,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 193 — DSS CU-223: Consultar la Carga Actual del Camión**
+**Figura 211 — DSS CU-223: Consultar la Carga Actual del Camión**
 
 ---
 
@@ -7730,7 +8110,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 194 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
+**Figura 212 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
 
 ---
 
@@ -7764,7 +8144,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 195 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
+**Figura 213 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
 
 ---
 
@@ -7778,56 +8158,102 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213,
 
 ### SS-20 — Compras (I-13)
 
-#### DSS — CU-214: Gestionar los Proveedores
+#### DSS — CU-214: Consultar los Proveedores
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)`, `actualizarProveedor(proveedorId, datos)`, `darDeBajaProveedor(proveedorId)`, `consultarProveedores(termino)`
+**Operaciones del sistema:** `consultarProveedores(termino)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-214 Gestionar los Proveedores
+    title DSS — CU-214 Consultar los Proveedores
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt alta de un proveedor
-        ADM->>SIS: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-        activate SIS
-        alt el CUIT está libre
-            SIS-->>ADM: proveedor creado
-        else el CUIT ya pertenece a un proveedor vigente
-            SIS-->>ADM: conflicto, con el detalle del campo
-        end
-        deactivate SIS
-    end
-
-    opt modificación de un proveedor
-        ADM->>SIS: actualizarProveedor(proveedorId, datos)
-        activate SIS
-        alt el proveedor existe
-            SIS-->>ADM: proveedor actualizado
-        else el proveedor no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
-
-    opt baja de un proveedor
-        ADM->>SIS: darDeBajaProveedor(proveedorId)
-        activate SIS
-        SIS-->>ADM: baja confirmada
-        deactivate SIS
-    end
-
-    opt listado de proveedores
-        ADM->>SIS: consultarProveedores(termino)
-        activate SIS
-        SIS-->>ADM: proveedores vigentes
-        deactivate SIS
-    end
+    ADM->>SIS: consultarProveedores(termino)
+    activate SIS
+    SIS-->>ADM: proveedores vigentes
+    deactivate SIS
 ```
 
-**Figura 196 — DSS CU-214: Gestionar los Proveedores**
+**Figura 214 — DSS CU-214: Consultar los Proveedores**
+
+---
+
+
+#### DSS — CU-261: Registrar un Proveedor
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-261 Registrar un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    activate SIS
+    alt el CUIT está libre
+        SIS-->>ADM: proveedor creado
+    else el CUIT ya pertenece a un proveedor vigente
+        SIS-->>ADM: conflicto, con el detalle del campo
+    end
+    deactivate SIS
+```
+
+**Figura 215 — DSS CU-261: Registrar un Proveedor**
+
+---
+
+
+#### DSS — CU-262: Modificar un Proveedor
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `actualizarProveedor(proveedorId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-262 Modificar un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: actualizarProveedor(proveedorId, datos)
+    activate SIS
+    alt el proveedor existe
+        SIS-->>ADM: proveedor actualizado
+    else el proveedor no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+**Figura 216 — DSS CU-262: Modificar un Proveedor**
+
+---
+
+
+#### DSS — CU-263: Dar de Baja un Proveedor
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `darDeBajaProveedor(proveedorId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-263 Dar de Baja un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: darDeBajaProveedor(proveedorId)
+    activate SIS
+    SIS-->>ADM: baja confirmada
+    deactivate SIS
+```
+
+**Figura 217 — DSS CU-263: Dar de Baja un Proveedor**
 
 ---
 
@@ -7875,7 +8301,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 197 — DSS CU-215: Emitir una Orden de Compra**
+**Figura 218 — DSS CU-215: Emitir una Orden de Compra**
 
 ---
 
@@ -7903,7 +8329,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 198 — DSS CU-216: Cancelar una Orden de Compra**
+**Figura 219 — DSS CU-216: Cancelar una Orden de Compra**
 
 ---
 
@@ -7955,46 +8381,62 @@ sequenceDiagram
     end
 ```
 
-**Figura 199 — DSS CU-217: Registrar la Recepción de una Compra**
+**Figura 220 — DSS CU-217: Registrar la Recepción de una Compra**
 
 ---
 
 ### SS-21 — Caja, Rendiciones y Cuentas Corrientes
 
-#### DSS — CU-225: Gestionar las Cajas
+#### DSS — CU-225: Crear una Caja
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `crearCaja(nombre, tipo, requiereSesion)`, `modificarCaja(cajaId, datos)`
+**Operaciones del sistema:** `crearCaja(nombre, tipo, requiereSesion)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-225 Gestionar las Cajas
+    title DSS — CU-225 Crear una Caja
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Alta de la caja
-        ADM->>SIS: crearCaja(nombre, tipo, requiereSesion)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: caja creada con saldo cero
-        else ya existe una caja con ese nombre
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Modificación de la caja
-        ADM->>SIS: modificarCaja(cajaId, datos)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: caja con los datos nuevos
-        else la caja tiene una sesión abierta y se pretende desactivarla
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: crearCaja(nombre, tipo, requiereSesion)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: caja creada con saldo cero
+    else ya existe una caja con ese nombre
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS
 ```
 
-**Figura 200 — DSS CU-225: Gestionar las Cajas**
+**Figura 221 — DSS CU-225: Crear una Caja**
+
+---
+
+
+#### DSS — CU-264: Modificar una Caja
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `modificarCaja(cajaId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-264 Modificar una Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarCaja(cajaId, datos)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: caja con los datos nuevos
+    else la caja tiene una sesión abierta y se pretende desactivarla
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+```
+
+**Figura 222 — DSS CU-264: Modificar una Caja**
 
 ---
 
@@ -8022,7 +8464,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 201 — DSS CU-226: Abrir la Caja**
+**Figura 223 — DSS CU-226: Abrir la Caja**
 
 ---
 
@@ -8050,7 +8492,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 202 — DSS CU-227: Cerrar la Caja con Arqueo**
+**Figura 224 — DSS CU-227: Cerrar la Caja con Arqueo**
 
 ---
 
@@ -8087,7 +8529,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 203 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
+**Figura 225 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
 
 ---
 
@@ -8113,44 +8555,60 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 204 — DSS CU-229: Anular un Movimiento de Caja**
+**Figura 226 — DSS CU-229: Anular un Movimiento de Caja**
 
 ---
 
-#### DSS — CU-230: Gestionar las Categorías de Ingresos y Gastos
+#### DSS — CU-230: Crear una Categoría de Ingresos y Gastos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `crearCategoriaDeCaja(nombre, sentido)`, `modificarCategoriaDeCaja(categoriaId, datos)`
+**Operaciones del sistema:** `crearCategoriaDeCaja(nombre, sentido)`
 
 ```mermaid
 sequenceDiagram
-    title DSS — CU-230 Gestionar las Categorías de Ingresos y Gastos
+    title DSS — CU-230 Crear una Categoría de Ingresos y Gastos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Alta de la categoría
-        ADM->>SIS: crearCategoriaDeCaja(nombre, sentido)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: categoría creada
-        else ya existe una categoría con ese nombre y sentido
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Modificación o baja de la categoría
-        ADM->>SIS: modificarCategoriaDeCaja(categoriaId, datos)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: categoría con los datos nuevos
-        else la categoría es de sistema
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: crearCategoriaDeCaja(nombre, sentido)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: categoría creada
+    else ya existe una categoría con ese nombre y sentido
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS
 ```
 
-**Figura 205 — DSS CU-230: Gestionar las Categorías de Ingresos y Gastos**
+**Figura 227 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
+
+---
+
+
+#### DSS — CU-265: Modificar una Categoría de Ingresos y Gastos
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `modificarCategoriaDeCaja(categoriaId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-265 Modificar una Categoría de Ingresos y Gastos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarCategoriaDeCaja(categoriaId, datos)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: categoría con los datos nuevos
+    else la categoría es de sistema
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+```
+
+**Figura 228 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
 
 ---
 
@@ -8172,7 +8630,7 @@ sequenceDiagram
     alt Otra instancia ya está ejecutando el proceso
         SIS-->>SAU: ejecución salteada
     else Hay choferes con efectivo sin rendir
-        Note over SAU,SIS: Abre una rendición por chofer con sus pedidos y sus cobros
+        Note over SAU,SIS: Abre una rendición por chofer<br/>con sus pedidos y sus cobros
         SIS-->>SAU: rendiciones abiertas (cantidad)
     else El chofer ya tiene una rendición abierta
         SIS-->>SAU: rendición completada con lo nuevo
@@ -8182,7 +8640,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 206 — DSS CU-231: Generar la Rendición Diaria del Chofer**
+**Figura 229 — DSS CU-231: Generar la Rendición Diaria del Chofer**
 
 ---
 
@@ -8224,7 +8682,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 207 — DSS CU-232: Declarar el Efectivo Rendido**
+**Figura 230 — DSS CU-232: Declarar el Efectivo Rendido**
 
 ---
 
@@ -8265,7 +8723,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 208 — DSS CU-233: Aprobar la Rendición del Chofer**
+**Figura 231 — DSS CU-233: Aprobar la Rendición del Chofer**
 
 ---
 
@@ -8297,7 +8755,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 209 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
+**Figura 232 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
 
 ---
 
@@ -8334,7 +8792,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 210 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
+**Figura 233 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
 
 ---
 
@@ -8374,7 +8832,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 211 — DSS CU-236: Vender a Cuenta Corriente**
+**Figura 234 — DSS CU-236: Vender a Cuenta Corriente**
 
 ---
 
@@ -8421,7 +8879,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 212 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
+**Figura 235 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
 
 ---
 
@@ -8447,7 +8905,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 213 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
+**Figura 236 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
 
 ---
 
@@ -8469,7 +8927,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 214 — DSS CU-239: Consultar la Antigüedad de la Deuda**
+**Figura 237 — DSS CU-239: Consultar la Antigüedad de la Deuda**
 
 ---
 
@@ -8506,7 +8964,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 215 — DSS CU-240: Configurar las Comisiones por Entrega**
+**Figura 238 — DSS CU-240: Configurar las Comisiones por Entrega**
 
 ---
 
@@ -8534,7 +8992,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 216 — DSS CU-241: Registrar la Comisión de una Entrega**
+**Figura 239 — DSS CU-241: Registrar la Comisión de una Entrega**
 
 ---
 
@@ -8550,37 +9008,35 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Liquidación del chofer
-        ADM->>SIS: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación en borrador con el bruto, las deducciones y el neto
-        else no hay asientos para liquidar
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Operación aprobarLiquidacion
-        ADM->>SIS: aprobarLiquidacion(liquidacionId)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
-        else la liquidación no está en borrador
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Anulación de la liquidación
-        ADM->>SIS: anularLiquidacion(liquidacionId)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación anulada y asientos liberados
-        else la liquidación ya está pagada
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación en borrador con el bruto, las deducciones y el neto
+    else no hay asientos para liquidar
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS
+
+    ADM->>SIS: aprobarLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
+    else la liquidación no está en borrador
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+
+    ADM->>SIS: anularLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación anulada y asientos liberados
+    else la liquidación ya está pagada
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
 ```
 
-**Figura 217 — DSS CU-242: Liquidar las Comisiones de un Chofer**
+**Figura 240 — DSS CU-242: Liquidar las Comisiones de un Chofer**
 
 ---
 
@@ -8608,7 +9064,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 218 — DSS CU-243: Registrar el Pago de una Liquidación**
+**Figura 241 — DSS CU-243: Registrar el Pago de una Liquidación**
 
 ---
 
@@ -8630,7 +9086,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 219 — DSS CU-244: Consultar Mis Comisiones**
+**Figura 242 — DSS CU-244: Consultar Mis Comisiones**
 
 ---
 
@@ -8652,7 +9108,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 220 — DSS CU-245: Consultar el Tablero Financiero**
+**Figura 243 — DSS CU-245: Consultar el Tablero Financiero**
 
 ---
 
@@ -8668,7 +9124,7 @@ Tres casos de uso no tienen diagrama de secuencia propio porque son casos inclui
 
 **Observaciones sobre casos de uso modelados con salvedades:**
 
-1. **CU-040 (Activar / Desactivar Producto)** modela la desactivación, que el sistema realiza, y la reactivación, planificada (I-1) y marcada como tal en el diagrama.
+1. **CU-268 (Reactivar un Producto) y CU-269 (Consultar los Productos Inactivos)** modelan la reactivación de un producto dado de baja, que el sistema todavía no realiza: están planificados (I-1) y marcados como tales en sus diagramas. CU-040 modela la desactivación, que sí está construida.
 2. **CU-049 (Consultar Balance del Chofer)** no tiene una operación de consulta propia: se modela tal como ocurre, como una lectura del perfil del chofer.
 3. **Conciliación de pagos:** el registro contable de pagos existe en el sistema pero no tiene una operación del sistema que lo exponga a ningún actor, de modo que no admite un diagrama de secuencia.
 
@@ -8701,24 +9157,22 @@ sequenceDiagram
     loop Por cada tarea dentro de la ventana de anticipación
         loop Por cada ventana alternativa, de mejor a peor
             SIS-)CHO: notificarPropuestaDeVentana(propuesta)
-            alt El chofer acepta
+            opt El chofer acepta
                 CHO->>SIS: aceptarVentanaDeMantenimiento(propuestaId)
                 SIS-->>CHO: ventana aceptada, pendiente de la confirmación del administrador
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la propuesta y<br/>se pasa a la siguiente<br/>ventana
             end
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la<br/>propuesta y se pasa a la<br/>siguiente ventana
         end
 
-        alt Se agotaron las ventanas sin acuerdo
+        opt Se agotaron las ventanas sin acuerdo
             SIS-)ADM: notificarOpcionesEvaluadas(tarea, opciones)
             ADM->>SIS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
             SIS-->>ADM: tarea programada
-        else La ventana quedó acordada con el chofer
-            Note over SIS: Se registra la tarea<br/>como programada
         end
+        Note over SIS: Si la ventana quedó acordada<br/>con el chofer, se registra la<br/>tarea como programada
     end
 
-    alt Hay una habilitación bloqueante vencida
+    opt Hay una habilitación bloqueante vencida
         Note over SIS: Deja el vehículo fuera<br/>de servicio
         SIS-)ADM: notificarVehiculoInhabilitado(vehiculo)
     end
@@ -8726,7 +9180,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 221 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 244 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 ---
 
@@ -8749,23 +9203,21 @@ sequenceDiagram
     Note over SIS: Estima el ritmo de<br/>consumo de cada cliente<br/>ponderado por kilaje y<br/>corregido por<br/>estacionalidad, y<br/>proyecta la fecha de<br/>agotamiento
 
     loop Por cada cliente dentro de la ventana de anticipación
-        alt El cliente no tiene pedido activo ni invitación reciente
+        opt El cliente no tiene pedido activo ni invitación reciente
             SIS-)CLI: notificarInvitacionDeRecompra(invitacion)
-            alt El cliente acepta dentro de la vigencia
+            opt El cliente acepta dentro de la vigencia
                 CLI->>SIS: aceptarInvitacionDeRecompra(invitacionId)
                 SIS-->>CLI: pedido creado y en búsqueda de chofer
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la invitación<br/>y se registra la fecha<br/>del intervalo mínimo
             end
-        else El cliente está excluido
-            Note over SIS: No se emite invitación
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la<br/>invitación y se registra la<br/>fecha del intervalo mínimo
         end
+        Note over SIS: Si el cliente está excluido,<br/>no se emite invitación
     end
     SIS-->>SAU: invitaciones emitidas y caducadas procesadas
     deactivate SIS
 ```
 
-**Figura 222 — DSS CU-106: Anticipar la recompra por consumo estimado**
+**Figura 245 — DSS CU-106: Anticipar la recompra por consumo estimado**
 
 ---
 
@@ -8790,25 +9242,24 @@ sequenceDiagram
     loop Por cada lote armado
         loop Por cada chofer candidato no contactado
             SIS-)CHO: notificarOfertaDeRecorrido(recorrido)
-            alt El chofer acepta dentro de la vigencia
+            opt El chofer acepta dentro de la vigencia
                 CHO->>SIS: aceptarRecorrido(recorridoId)
                 SIS-->>CHO: pedidos asignados en el orden establecido
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la oferta y se<br/>pasa al candidato<br/>siguiente
             end
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la oferta<br/>y se pasa al candidato<br/>siguiente
         end
 
         alt Ningún chofer tomó el lote
-            Note over SIS: Se deshace el lote y los<br/>pedidos vuelven al<br/>circuito individual
+            SIS-->>SAU: lote deshecho, pedidos al circuito individual
         else El lote quedó asignado
-            Note over SIS: Se registra el recorrido<br/>asignado
+            SIS-->>SAU: recorrido asignado
         end
     end
     SIS-->>SAU: lotes procesados
     deactivate SIS
 ```
 
-**Figura 223 — DSS CU-107: Agrupar pedidos por recorrido**
+**Figura 246 — DSS CU-107: Agrupar pedidos por recorrido**
 
 ---
 
@@ -8833,38 +9284,32 @@ sequenceDiagram
 
     loop Por cada envase retenido
         loop Por cada escalón de la secuencia
-            alt El envase ya volvió
-                Note over SIS: Se cierra el caso y se<br/>libera el depósito
-            else El envase sigue retenido
+            Note over SAU,SIS: Si el envase ya volvió, se cierra<br/>el caso y se libera el depósito
+            opt El envase sigue retenido
                 SIS-)CLI: notificarEscalonDeRecupero(caso, escalon)
-                alt Hay una entrega programada al mismo cliente
+                opt Hay una entrega programada al mismo cliente
                     SIS-)CLI: notificarOfertaDeRetiro(oferta)
-                    alt El cliente acepta el retiro
+                    opt El cliente acepta el retiro antes de la vigencia
                         CLI->>SIS: aceptarRetiroEnLaEntrega(ofertaId)
                         SIS-->>CLI: retiro acordado para esa entrega
-                    else No responde antes de la vigencia
-                        Note over SIS: Vence la oferta de<br/>retiro
                     end
-                else No hay entrega programada
-                    Note over SIS: Se saltea la oferta de<br/>retiro
                 end
             end
         end
 
-        alt Se agotaron los escalones y el importe supera el umbral
+        opt Se agotaron los escalones y el importe supera el umbral
             SIS-)ADM: notificarLegajoDeRecupero(caso)
             ADM->>SIS: resolverCasoDeRecupero(casoId, decision)
             Note over SAU,ADM: decision: cobrar el depósito, dar de baja el<br/>envase o cerrar el caso sin cargo
             SIS-->>ADM: resolución registrada
-        else El envase volvió o el importe no llega al umbral
-            Note over SIS: Se cierra el caso según<br/>corresponda
         end
+        Note over SAU,SIS: Si el envase volvió o el importe<br/>no llega al umbral, se cierra<br/>el caso según corresponda
     end
     SIS-->>SAU: casos de recupero procesados
     deactivate SIS
 ```
 
-**Figura 224 — DSS CU-108: Recuperar envases no devueltos**
+**Figura 247 — DSS CU-108: Recuperar envases no devueltos**
 
 ---
 
@@ -8897,7 +9342,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 225 — DSS CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 248 — DSS CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -8909,7 +9354,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 
 Una operación del sistema es un mensaje que un actor le manda al sistema y que aparece como tal en un diagrama de secuencia de §2.1. El catálogo reúne **todas** las operaciones, cada una con una única firma: la que usan los diagramas de secuencia de §2.1, los contratos de esta sección y los diagramas de interacción del Documento 3. Los parámetros llevan su tipo; los diagramas de secuencia usan la misma firma sin los tipos, para no recargar el dibujo.
 
-Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrato; las **114** restantes no modifican nada y por eso no llevan contrato.
+Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrato; las **115** restantes no modifican nada y por eso no llevan contrato.
 
 | Operación | Casos de uso | Actor iniciador | Cambia estado |
 |---|---|---|---|
@@ -8921,12 +9366,12 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `aceptarVentanaDeMantenimiento(propuestaId identificador)` | CU-105 | Chofer (ACT-02) | Sí |
 | `activarReservasDelDia()` | CU-075 | Sistema Automático (ACT-04) | Sí |
 | `actualizarConsumoPromedio(cantidadPorMes decimal)` | CU-144 | Cliente (ACT-01) | Sí |
-| `actualizarDeposito(depositoId identificador, datos registro)` | CU-207 | Administrador (ACT-03) | Sí |
-| `actualizarPerfil(usuarioId identificador, datos registro)` | CU-004 | Cliente (ACT-01), Chofer (ACT-02) | Sí |
+| `actualizarDeposito(depositoId identificador, datos registro)` | CU-259 | Administrador (ACT-03) | Sí |
+| `actualizarPerfil(usuarioId identificador, datos registro)` | CU-251 | Cliente (ACT-01), Chofer (ACT-02) | Sí |
 | `actualizarPerfilDelChofer(choferId identificador, datos registro)` | CU-096 | Administrador (ACT-03) | Sí |
 | `actualizarProducto(productoId identificador, datos registro)` | CU-037, CU-039 | Administrador (ACT-03) | Sí |
-| `actualizarProveedor(proveedorId identificador, datos registro)` | CU-214 | Administrador (ACT-03) | Sí |
-| `actualizarRol(rolId identificador, datos registro)` | CU-089 | Administrador General (ACT-05) | Sí |
+| `actualizarProveedor(proveedorId identificador, datos registro)` | CU-262 | Administrador (ACT-03) | Sí |
+| `actualizarRol(rolId identificador, datos registro)` | CU-253 | Administrador General (ACT-05) | Sí |
 | `actualizarStock(productoId identificador, variacion entero)` | CU-038 | Administrador (ACT-03) | Sí |
 | `actualizarUbicacion(usuarioId identificador, latitud decimal, longitud decimal)` | CU-017 | Chofer (ACT-02) | Sí |
 | `actualizarUbicacionDelCliente(clienteId identificador, coordenadas coordenada)` | CU-094 | Cliente (ACT-01) | Sí |
@@ -8952,18 +9397,18 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `avisarRendicionesSinCerrar()` | CU-234 | Sistema Automático (ACT-04) | Sí |
 | `avisarStockBajo()` | CU-211 | Sistema Automático (ACT-04) | Sí |
 | `avisarVencimientosPendientes()` | CU-142, CU-188 | Sistema Automático (ACT-04) | Sí |
-| `bloquearUsuario(usuarioId identificador, bloquear booleano)` | CU-050 | Administrador (ACT-03) | Sí |
+| `bloquearUsuario(usuarioId identificador, bloquear booleano)` | CU-050, CU-270 | Administrador (ACT-03) | Sí |
 | `buscarAdministrador(termino cadena)` | CU-088 | Administrador (ACT-03) | No |
 | `buscarChoferPorUsuario(usuarioId identificador)` | CU-110 | Administrador (ACT-03) | No |
 | `buscarClientePorUsuario(usuarioId identificador)` | CU-130 | Administrador (ACT-03) | No |
-| `buscarUsuarioPorCorreo(correo cadena)` | CU-083 | Administrador (ACT-03) | No |
-| `buscarUsuarioPorTelefono(telefono cadena)` | CU-083 | Administrador (ACT-03) | No |
+| `buscarUsuarioPorCorreo(correo cadena)` | CU-272 | Administrador (ACT-03) | No |
+| `buscarUsuarioPorTelefono(telefono cadena)` | CU-272 | Administrador (ACT-03) | No |
 | `buscarVehiculoPorPatente(patente cadena)` | CU-051, CU-114 | Administrador (ACT-03) | No |
 | `calificarPedido(pedidoId identificador, estrellas entero, comentario cadena)` | CU-064 | Cliente (ACT-01) | Sí |
 | `cambiarCorreo(correoActual cadena, correoNuevo cadena)` | CU-047 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | Sí |
 | `cambiarDireccionDeEntrega(pedidoId identificador, direccionId identificador, motivo cadena)` | CU-127 | Cliente (ACT-01) | Sí |
-| `cambiarDisponibilidad(usuarioId identificador, disponible booleano)` | CU-022 | Chofer (ACT-02) | Sí |
-| `cambiarEstadoDelChofer(choferId identificador, activo booleano)` | CU-033 | Administrador (ACT-03) | Sí |
+| `cambiarDisponibilidad(usuarioId identificador, disponible booleano)` | CU-022, CU-266 | Chofer (ACT-02) | Sí |
+| `cambiarEstadoDelChofer(choferId identificador, activo booleano)` | CU-033, CU-267 | Administrador (ACT-03) | Sí |
 | `cancelarCargaDelCamion(cargaId identificador)` | CU-218 | Administrador (ACT-03) | Sí |
 | `cancelarLicencia(licenciaId identificador)` | CU-191 | Administrador (ACT-03) | Sí |
 | `cancelarOrdenDeCompra(ordenId identificador, motivo cadena)` | CU-216 | Administrador (ACT-03) | Sí |
@@ -8989,6 +9434,7 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `consultarAntiguedadDeDeuda()` | CU-239 | Administrador (ACT-03) | No |
 | `consultarAsistencias(desde fecha, hasta fecha)` | CU-189 | Administrador (ACT-03) | No |
 | `consultarAuditoria(autor identificador, tipoDeRecurso cadena, recurso cadena, desde fechaHora, hasta fechaHora, resultado cadena, limite entero, desplazamiento entero)` | CU-152 | Administrador (ACT-03) | No |
+| `consultarAuditoriaDeDatos(entidad cadena, registro cadena, autor identificador, tipoDeAccion entero, desde fechaHora, hasta fechaHora, pagina entero, limite entero)` | CU-152 | Administrador (ACT-03), Administrador General (ACT-05) | No |
 | `consultarCargaActual()` | CU-223 | Chofer (ACT-02) | No |
 | `consultarCargasDeCombustible(filtros registro)` | CU-195 | Administrador (ACT-03) | No |
 | `consultarCargasDelCamion(estado cadena, fecha fecha, vehiculoId identificador, choferId identificador)` | CU-218 | Administrador (ACT-03) | No |
@@ -9038,7 +9484,7 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `consultarPerfilDelChofer(usuarioId identificador)` | CU-049 | Chofer (ACT-02) | No |
 | `consultarProducto(productoId identificador)` | CU-041 | Cliente (ACT-01) | No |
 | `consultarProductosDisponibles(distribuidora cadena)` | CU-041 | Cliente (ACT-01) | No |
-| `consultarProductosInactivos()` | CU-040 | Administrador (ACT-03) | No |
+| `consultarProductosInactivos()` | CU-269 | Administrador (ACT-03) | No |
 | `consultarProveedores(termino cadena)` | CU-214 | Administrador (ACT-03) | No |
 | `consultarPuestosDeTrabajo()` | CU-176 | Administrador (ACT-03) | No |
 | `consultarRecepcionesDeCompra(proveedorId identificador, desde fechaHora, hasta fechaHora, estadoDePago cadena)` | CU-217 | Administrador (ACT-03) | No |
@@ -9068,16 +9514,16 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | CU-005, CU-044 | Cliente (ACT-01) | Sí |
 | `crearPrimerSuperAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena)` | CU-087 | Administrador General (ACT-05) | Sí |
 | `crearProducto(tipo cadena, peso decimal, precio moneda, stockInicial entero, descripcion cadena, promociones lista)` | CU-036 | Administrador (ACT-03) | Sí |
-| `crearPuestoDeTrabajo(nombre cadena, categoria cadena)` | CU-176 | Administrador (ACT-03) | Sí |
+| `crearPuestoDeTrabajo(nombre cadena, categoria cadena)` | CU-255 | Administrador (ACT-03) | Sí |
 | `crearReglaDeComision(empleadoId identificador, productoId identificador, base cadena, valor decimal, vigenteDesde fecha)` | CU-240 | Administrador (ACT-03) | Sí |
 | `crearReserva(items lista, direccionId identificador, fechaAgendada fecha, franjaId identificador, metodoDePago cadena, montoDeLaSenia moneda)` | CU-072 | Cliente (ACT-01) | Sí |
-| `crearRol(tipo cadena)` | CU-089 | Administrador General (ACT-05) | Sí |
+| `crearRol(tipo cadena)` | CU-252 | Administrador General (ACT-05) | Sí |
 | `crearTareaDeFlota(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)` | CU-136, CU-137, CU-138, CU-140, CU-197 | Administrador (ACT-03) | Sí |
 | `crearTareaDelEmpleado(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)` | CU-183, CU-184, CU-185 | Administrador (ACT-03) | Sí |
 | `darDeAltaEnvase(numeroDeSerie cadena, tipoDeProducto cadena, deposito cadena)` | CU-067 | Administrador (ACT-03) | Sí |
-| `darDeBajaDeposito(depositoId identificador)` | CU-207 | Administrador (ACT-03) | Sí |
+| `darDeBajaDeposito(depositoId identificador)` | CU-260 | Administrador (ACT-03) | Sí |
 | `darDeBajaDistribuidora(distribuidoraId identificador)` | CU-055 | Administrador General (ACT-05) | Sí |
-| `darDeBajaProveedor(proveedorId identificador)` | CU-214 | Administrador (ACT-03) | Sí |
+| `darDeBajaProveedor(proveedorId identificador)` | CU-263 | Administrador (ACT-03) | Sí |
 | `declararConsumoPromedio(tipoGarrafa cadena, cantidadPorMes decimal)` | CU-143 | Cliente (ACT-01) | Sí |
 | `declararEfectivoRendido(rendicionId identificador, efectivoDeclarado moneda, gastos lista)` | CU-232 | Chofer (ACT-02), Administrador (ACT-03) | Sí |
 | `definirZonaDeCobertura(nombre cadena, poligono poligono, recargo moneda, activa booleano)` | CU-056 | Administrador (ACT-03) | Sí |
@@ -9095,8 +9541,8 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `eliminarDireccionDeEntrega(direccionId identificador)` | CU-046, CU-119 | Cliente (ACT-01) | Sí |
 | `eliminarEmpleado(empleadoId identificador)` | CU-178 | Administrador (ACT-03) | Sí |
 | `eliminarFranjaHoraria(franjaId identificador)` | CU-103 | Administrador (ACT-03) | Sí |
-| `eliminarPuestoDeTrabajo(puestoId identificador)` | CU-176 | Administrador (ACT-03) | Sí |
-| `eliminarRol(rolId identificador)` | CU-089 | Administrador General (ACT-05) | Sí |
+| `eliminarPuestoDeTrabajo(puestoId identificador)` | CU-257 | Administrador (ACT-03) | Sí |
+| `eliminarRol(rolId identificador)` | CU-254 | Administrador General (ACT-05) | Sí |
 | `eliminarUsuario(usuarioId identificador)` | CU-085 | Administrador (ACT-03) | Sí |
 | `eliminarVehiculo(vehiculoId identificador)` | CU-051, CU-112 | Administrador (ACT-03) | Sí |
 | `eliminarZonaDeCobertura(zonaId identificador)` | CU-059 | Administrador (ACT-03) | Sí |
@@ -9111,7 +9557,7 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `imputarMultaAlChofer(multaId identificador, empleadoId identificador)` | CU-200 | Administrador (ACT-03) | Sí |
 | `indicarQuienRecibe(pedidoId identificador, nombre cadena, documento cadena, relacion cadena)` | CU-128 | Cliente (ACT-01) | Sí |
 | `iniciarSesion(correo cadena, contrasena cadena)` | CU-001 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | No |
-| `invalidarChofer(choferId identificador)` | CU-032 | Administrador (ACT-03) | Sí |
+| `invalidarChofer(choferId identificador)` | CU-271 | Administrador (ACT-03) | Sí |
 | `liberarPedido(pedidoId identificador, motivo cadena)` | CU-009 | Chofer (ACT-02) | Sí |
 | `liberarVehiculoEnUso(choferId identificador)` | CU-162 | Administrador (ACT-03) | Sí |
 | `liquidarComisionesDelChofer(empleadoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-242 | Administrador (ACT-03) | Sí |
@@ -9132,23 +9578,23 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `listarZonasDeCobertura()` | CU-057 | Administrador (ACT-03) | No |
 | `marcarDireccionPredeterminada(direccionId identificador)` | CU-046, CU-120 | Cliente (ACT-01) | Sí |
 | `marcarPedidoEnCamino(pedidoId identificador)` | CU-018 | Chofer (ACT-02) | Sí |
-| `modificarCaja(cajaId identificador, datos registro)` | CU-225 | Administrador (ACT-03) | Sí |
+| `modificarCaja(cajaId identificador, datos registro)` | CU-264 | Administrador (ACT-03) | Sí |
 | `modificarCantidadDelItem(itemId identificador, cantidad entero)` | CU-123 | Cliente (ACT-01) | Sí |
 | `modificarCargaDeCombustible(cargaId identificador, datos registro)` | CU-195 | Administrador (ACT-03) | Sí |
-| `modificarCategoriaDeCaja(categoriaId identificador, datos registro)` | CU-230 | Administrador (ACT-03) | Sí |
+| `modificarCategoriaDeCaja(categoriaId identificador, datos registro)` | CU-265 | Administrador (ACT-03) | Sí |
 | `modificarCuentaCorriente(cuentaId identificador, datos registro)` | CU-235 | Administrador (ACT-03) | Sí |
 | `modificarDistribuidora(distribuidoraId identificador, datos registro)` | CU-054 | Administrador General (ACT-05) | Sí |
 | `modificarEmpleado(empleadoId identificador, datos registro)` | CU-178 | Administrador (ACT-03) | Sí |
 | `modificarFranjaHoraria(franjaId identificador, nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-043 | Administrador (ACT-03) | Sí |
 | `modificarLicencia(licenciaId identificador, datos registro)` | CU-191 | Administrador (ACT-03) | Sí |
 | `modificarMultaDeTransito(multaId identificador, datos registro)` | CU-198 | Administrador (ACT-03) | Sí |
-| `modificarPuestoDeTrabajo(puestoId identificador, datos registro)` | CU-176 | Administrador (ACT-03) | Sí |
+| `modificarPuestoDeTrabajo(puestoId identificador, datos registro)` | CU-256 | Administrador (ACT-03) | Sí |
 | `modificarReglaDeComision(reglaId identificador, datos registro)` | CU-240 | Administrador (ACT-03) | Sí |
 | `modificarSiniestro(siniestroId identificador, datos registro)` | CU-201 | Administrador (ACT-03) | Sí |
 | `notificarResultadoDePago(tipoDeNotificacion cadena, identificadorDelPago cadena, firma cadena)` | CU-048 | MercadoPago (ACT-06) | Sí |
 | `obtenerCodigoDeEntrega(pedidoId identificador)` | CU-078 | Chofer (ACT-02) | No |
 | `ofrecerAlSiguienteChofer(pedidoId identificador)` | CU-013 | Sistema Automático (ACT-04) | Sí |
-| `otorgarCuentaDeAcceso(empleadoId identificador, correo cadena)` | CU-182 | Administrador (ACT-03) | Sí |
+| `otorgarCuentaDeAcceso(empleadoId identificador, datosDeAcceso registro)` | CU-182 | Administrador (ACT-03) | Sí |
 | `pagarLiquidacion(liquidacionId identificador, cajaId identificador)` | CU-243 | Administrador (ACT-03) | Sí |
 | `planificarMantenimientoDeFlota()` | CU-105 | Sistema Automático (ACT-04) | Sí |
 | `ponerVehiculoEnUso(choferId identificador, vehiculoId identificador, nota cadena)` | CU-161 | Administrador (ACT-03) | Sí |
@@ -9157,7 +9603,7 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `quitarItemDelCarrito(itemId identificador)` | CU-124 | Cliente (ACT-01) | Sí |
 | `reabrirReclamo(reclamoId identificador, motivo cadena)` | CU-167 | Administrador (ACT-03) | Sí |
 | `reabrirRendicion(rendicionId identificador)` | CU-233 | Administrador (ACT-03) | Sí |
-| `reactivarProducto(productoId identificador)` | CU-040 | Administrador (ACT-03) | Sí |
+| `reactivarProducto(productoId identificador)` | CU-268 | Administrador (ACT-03) | Sí |
 | `reactivarVehiculo(vehiculoId identificador)` | CU-247 | Administrador (ACT-03) | Sí |
 | `realizarCompraExpress(tipoGarrafa cadena, medioDePago cadena)` | CU-147 | Cliente (ACT-01) | Sí |
 | `rechazarLicencia(licenciaId identificador, motivo cadena)` | CU-192 | Administrador (ACT-03) | Sí |
@@ -9167,13 +9613,14 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `registrarAjusteDeCuentaCorriente(cuentaId identificador, tipo cadena, importe moneda, motivo cadena)` | CU-237 | Administrador (ACT-03) | Sí |
 | `registrarAjusteDeStock(ubicacionId identificador, motivo cadena, nota cadena, items lista)` | CU-213 | Administrador (ACT-03) | Sí |
 | `registrarAsistencia(empleadoId identificador, ingreso fechaHora, egreso fechaHora)` | CU-189 | Administrador (ACT-03) | Sí |
+| `registrarAuditoriaDeDato(autor identificador, ip cadena, distribuidoraId identificador, entidad cadena, registro cadena, tipoDeAccion entero, detalles lista)` | CU-153 | Sistema Automático (ACT-04) | Sí |
 | `registrarCambioDeEstado(pedidoId identificador, estadoAnterior cadena, estadoNuevo cadena, autor identificador, motivo cadena)` | CU-169 | Sistema Automático (ACT-04) | Sí |
 | `registrarCargaDeCombustible(vehiculoId identificador, datos registro)` | CU-195 | Chofer (ACT-02), Administrador (ACT-03) | Sí |
 | `registrarCargaDelCamion(vehiculoId identificador, depositoId identificador, ayudanteId identificador, items lista)` | CU-218 | Administrador (ACT-03) | Sí |
 | `registrarCargoDeCuentaCorriente(pedidoId identificador)` | CU-236 | Sistema Automático (ACT-04) | Sí |
 | `registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)` | CU-003, CU-031 | Administrador (ACT-03) | Sí |
 | `registrarComisionDeEntrega(pedidoId identificador)` | CU-241 | Sistema Automático (ACT-04) | Sí |
-| `registrarDeposito(nombre cadena, codigo cadena, tipo cadena, direccion cadena)` | CU-207 | Administrador (ACT-03) | Sí |
+| `registrarDeposito(nombre cadena, codigo cadena, tipo cadena, direccion cadena)` | CU-258 | Administrador (ACT-03) | Sí |
 | `registrarDireccionDeEntrega(datos registro)` | CU-046, CU-116 | Cliente (ACT-01) | Sí |
 | `registrarDistribuidora(nombre cadena, identificadorCorto cadena, razonSocial cadena, cuit cadena, correo cadena, telefono cadena, logo archivo, plan cadena)` | CU-052 | Administrador General (ACT-05) | Sí |
 | `registrarEgresoDelEmpleado(empleadoId identificador, fechaDeEgreso fecha, motivo cadena)` | CU-181 | Administrador (ACT-03) | Sí |
@@ -9190,7 +9637,7 @@ Son **310 operaciones**. **196** modifican el modelo conceptual y tienen contrat
 | `registrarOperacion(autor identificador, rol cadena, distribuidoraId identificador, operacion cadena, recurso cadena, origen cadena, resultado cadena, codigo cadena, motivo cadena)` | CU-153 | Sistema Automático (ACT-04) | Sí |
 | `registrarPagoDeCuentaCorriente(cuentaId identificador, importe moneda, medio cadena, cajaId identificador)` | CU-237 | Chofer (ACT-02), Administrador (ACT-03) | Sí |
 | `registrarPagoDeMulta(multaId identificador, fechaDePago fechaHora, importePagado moneda)` | CU-199 | Administrador (ACT-03) | Sí |
-| `registrarProveedor(razonSocial cadena, cuit cadena, tipo cadena, datosDeContacto registro, plazoDePago entero)` | CU-214 | Administrador (ACT-03) | Sí |
+| `registrarProveedor(razonSocial cadena, cuit cadena, tipo cadena, datosDeContacto registro, plazoDePago entero)` | CU-261 | Administrador (ACT-03) | Sí |
 | `registrarRecepcionDeCompra(ordenId identificador, proveedorId identificador, depositoId identificador, tipoDeComprobante cadena, numeroDeComprobante cadena, items lista)` | CU-217 | Administrador (ACT-03) | Sí |
 | `registrarReclamo(pedidoId identificador, motivo cadena, evidencia archivo)` | CU-023 | Cliente (ACT-01) | Sí |
 | `registrarRegresoDelCamion(cargaId identificador, devueltos lista)` | CU-221 | Chofer (ACT-02), Administrador (ACT-03) | Sí |
@@ -9267,7 +9714,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `actualizarPerfil(usuarioId identificador, datos registro)` |
 | **Responsabilidades** | Modificar los datos de contacto del perfil de un usuario: nombre completo, teléfono y foto. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-004. Funciones: IRQ-01, OBJ-01, OBJ-02. |
+| **Referencias cruzadas** | Casos de uso: CU-251. Funciones: IRQ-01, OBJ-01, OBJ-02. |
 | **Notas** | Cada usuario modifica sólo su propio perfil; el Administrador puede modificar el de cualquier usuario. Cualquier otro dato enviado se descarta. |
 | **Excepciones** | Si el usuario indicado no es quien opera y quien opera no es Administrador → acceso denegado. Si el usuario no existe → recurso no encontrado. |
 | **Salida** | El perfil actualizado. |
@@ -9475,7 +9922,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `cambiarDisponibilidad(usuarioId identificador, disponible booleano)` |
 | **Responsabilidades** | Indicar si el chofer está disponible para recibir pedidos y, al ponerse no disponible, retirarlo del radar del despacho. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-022. Funciones: IRQ-03, OBJ-02. |
+| **Referencias cruzadas** | Casos de uso: CU-022, CU-266. Funciones: IRQ-03, OBJ-02. |
 | **Notas** | Es el interruptor que maneja el propio chofer desde su app, o el administrador sobre los choferes de su distribuidora; ponerse disponible exige que el chofer esté habilitado y validado, y desconectarse siempre se permite. Es independiente de la activación administrativa (cambiarEstadoDelChofer) y de la validación (validarChofer). |
 | **Excepciones** | Si el usuario indicado no tiene perfil de chofer, o es de otra distribuidora → recurso no encontrado. Si un chofer opera sobre otro, o intenta ponerse disponible estando deshabilitado o sin validar → acceso denegado y no se modifica nada. |
 | **Salida** | El estado de disponibilidad resultante. |
@@ -9523,7 +9970,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `invalidarChofer(choferId identificador)` |
 | **Responsabilidades** | Retirar a un chofer la marca de validación administrativa. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-032. Funciones: IRQ-03, OBJ-02, OBJ-05. |
+| **Referencias cruzadas** | Casos de uso: CU-271. Funciones: IRQ-03, OBJ-02, OBJ-05. |
 | **Notas** | Es la operación inversa de validarChofer. La marca no cambia por sí sola lo que el chofer puede hacer en el sistema. |
 | **Excepciones** | Si el identificador no es válido → error de solicitud. Si el chofer no existe o es de otra distribuidora → recurso no encontrado. |
 | **Salida** | El chofer con la marca de validación actualizada. |
@@ -9555,7 +10002,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `cambiarEstadoDelChofer(choferId identificador, activo booleano)` |
 | **Responsabilidades** | Activar o desactivar a un chofer desde el panel: un chofer inactivo no puede aceptar pedidos. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-033. Funciones: IRQ-03, OBJ-02, OBJ-05. |
+| **Referencias cruzadas** | Casos de uso: CU-033, CU-267. Funciones: IRQ-03, OBJ-02, OBJ-05. |
 | **Notas** | Es la única marca del chofer que el sistema consulta al aceptar un pedido. Es independiente de la disponibilidad que el chofer maneja desde su app. |
 | **Excepciones** | Si el identificador no es válido o el estado de actividad no es verdadero o falso → error de solicitud. Si el chofer no existe o es de otra distribuidora → recurso no encontrado. |
 | **Salida** | El chofer con su estado de actividad actualizado. |
@@ -9651,7 +10098,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `reactivarProducto(productoId identificador)` |
 | **Responsabilidades** | Volver a publicar en el catálogo un producto dado de baja. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-040. Funciones: IRQ-04, OBJ-05, OBJ-06. |
+| **Referencias cruzadas** | Casos de uso: CU-268. Funciones: IRQ-04, OBJ-05, OBJ-06. |
 | **Notas** | El producto vuelve con su stock y sus promociones intactos. |
 | **Excepciones** | Si el producto no existe o es de otra distribuidora → recurso no encontrado. Si el producto ya estaba activo → no se modifica nada. |
 | **Salida** | El producto reactivado. |
@@ -9811,7 +10258,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `bloquearUsuario(usuarioId identificador, bloquear booleano)` |
 | **Responsabilidades** | Marcar o desmarcar a un usuario, cliente o chofer, como bloqueado por motivos de moderación o seguridad. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-050. Funciones: IRQ-01, OBJ-05. |
+| **Referencias cruzadas** | Casos de uso: CU-050, CU-270. Funciones: IRQ-01, OBJ-05. |
 | **Notas** | Es un interruptor bidireccional: la misma operación bloquea o desbloquea según el valor enviado. |
 | **Excepciones** | Si el identificador no es válido → error de solicitud. Si quien opera no es Administrador ni Administrador General → acceso denegado. Si el usuario no existe → recurso no encontrado. |
 | **Salida** | El usuario con la marca de bloqueo actualizada. |
@@ -10179,7 +10626,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `actualizarRol(rolId identificador, datos registro)` |
 | **Responsabilidades** | Modificar los datos de un rol del catálogo. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-089. Funciones: IRQ-01, OBJ-05. |
+| **Referencias cruzadas** | Casos de uso: CU-253. Funciones: IRQ-01, OBJ-05. |
 | **Notas** | El cambio impacta de inmediato en la autorización de los usuarios que tienen el rol asignado. |
 | **Excepciones** | Si el identificador no es válido → error de solicitud. Si el rol no existe → recurso no encontrado. Si quien opera no es Administrador General → acceso denegado. |
 | **Salida** | El rol actualizado. |
@@ -10195,7 +10642,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `crearRol(tipo cadena)` |
 | **Responsabilidades** | Crear un rol en el catálogo que gobierna la autorización del sistema. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-089. Funciones: IRQ-01, OBJ-05. |
+| **Referencias cruzadas** | Casos de uso: CU-252. Funciones: IRQ-01, OBJ-05. |
 | **Notas** | El rol determina los permisos de las cuentas que lo tienen asignado. Es exclusivo del Administrador General. |
 | **Excepciones** | Si los datos no cumplen el formato → error de solicitud. Si quien opera no es Administrador General → acceso denegado. |
 | **Salida** | El rol creado. |
@@ -10211,12 +10658,12 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `eliminarRol(rolId identificador)` |
 | **Responsabilidades** | Eliminar un rol del catálogo. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-089. Funciones: IRQ-01, OBJ-05. |
-| **Notas** | Un rol que tiene usuarios asignados no se puede eliminar. |
-| **Excepciones** | Si el identificador no es válido → error de solicitud. Si el rol no existe → recurso no encontrado. Si el rol tiene usuarios asignados → error de conflicto y no se elimina. Si quien opera no es Administrador General → acceso denegado. |
+| **Referencias cruzadas** | Casos de uso: CU-254. Funciones: IRQ-01, OBJ-05. |
+| **Notas** | Un rol del sistema o con usuarios asignados no se puede eliminar. La baja es lógica, como en todo el sistema. |
+| **Excepciones** | Si el identificador no es válido → error de solicitud. Si el rol no existe → recurso no encontrado. Si el rol es del sistema o tiene usuarios asignados → error de conflicto y no se elimina. Si quien opera no es Administrador General → acceso denegado. |
 | **Salida** | Ninguna. |
 | **Precondiciones** | El solicitante es Administrador General autenticado. El Rol existe y ningún Usuario lo tiene asignado. |
-| **Postcondiciones** | Se eliminó la instancia de Rol. |
+| **Postcondiciones** | La instancia de Rol quedó dada de baja lógica (se le asignó la fecha de baja); no se borra físicamente. |
 
 ---
 
@@ -10796,6 +11243,22 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 
 ---
 
+#### Crítico · automático Contrato: `registrarAuditoriaDeDato()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `registrarAuditoriaDeDato(autor identificador, ip cadena, distribuidoraId identificador, entidad cadena, registro cadena, tipoDeAccion entero, detalles lista)` |
+| **Responsabilidades** | Dejar constancia, por cada registro de una entidad de negocio que se da de alta, se modifica, se da de baja o se reactiva, de qué campos cambiaron y con qué valor anterior y nuevo, sin que ningún usuario lo solicite. |
+| **Tipo** | Sistema (proceso automático) |
+| **Referencias cruzadas** | Casos de uso: CU-153. Funciones: IRQ-16, OBJ-04, OBJ-05. |
+| **Notas** | Se dispara con cada alta, modificación, baja lógica y reactivación que pasa por la capa de datos, también la que hace un proceso programado o una siembra. El usuario, la dirección de red y la distribuidora salen del contexto de la petición, no del cuerpo; fuera de una petición el usuario queda vacío. En una modificación sólo se registran los campos que realmente cambiaron; en una baja lógica o una reactivación, la fecha de baja. Los campos secretos se guardan como `[oculto]`. Se escribe con la transacción del cambio: si ésta se deshace, la auditoría también. Quedan afuera el carrito, los historiales que ya sólo se agregan, las ofertas de despacho y la posición del chofer. |
+| **Excepciones** | Si el guardado no cambió ningún campo → no se registra nada. Si el registro llega sin identificador → no se registra una auditoría vacía y se deja un aviso. Si la transacción se deshace → no queda auditoría. |
+| **Salida** | Ninguna: es un proceso interno. |
+| **Precondiciones** | Un registro de una entidad de negocio se dio de alta, se modificó, se dio de baja o se reactivó. |
+| **Postcondiciones** | Se creó una instancia de Auditoria con el tipo de acción, el usuario, la distribuidora, la entidad afectada, el identificador del registro y la dirección de red. Se creó una instancia de DetalleAuditoria, asociada a la Auditoria, por cada campo que cambió, con su valor anterior y el nuevo. Se asoció la Auditoria al Usuario y a la Distribuidora cuando los hay. |
+
+---
+
 #### Importante Contrato: `adjuntarArchivoALaTarea()`
 
 | Campo | Detalle |
@@ -10804,11 +11267,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Guardar un archivo —foto o PDF de una póliza, una verificación, una licencia o un comprobante— como adjunto de una tarea de mantenimiento de la flota. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-155. Funciones: IRQ-03, OBJ-05. |
-| **Notas** | Se aceptan PDF, JPG, PNG y WEBP de hasta diez megabytes. El archivo se guarda en el almacenamiento activo bajo una clave que incluye la distribuidora y la tarea, no el nombre original (caso incluido CU-159). Si falla el registro del adjunto después de guardar el archivo, el archivo se borra para no dejarlo huérfano. |
+| **Notas** | Se aceptan PDF, JPG, PNG y WEBP de hasta diez megabytes. El archivo se guarda en S3 bajo una clave que incluye la distribuidora y la tarea, no el nombre original (caso incluido CU-159). Si falla el registro del adjunto después de guardar el archivo, el archivo se borra para no dejarlo huérfano. |
 | **Excepciones** | Si la tarea no existe o es de otra distribuidora → recurso no encontrado. Si no se envía el archivo → error de solicitud. Si el tipo de archivo no es uno de los permitidos → tipo no admitido. Si el archivo supera los diez megabytes → archivo demasiado grande. |
 | **Salida** | El adjunto creado, con el nombre original, el tipo y el tamaño. |
 | **Precondiciones** | El Administrador está autenticado. La TareaMantenimiento existe y es de su Distribuidora. El archivo es de un tipo permitido y no supera el tamaño máximo. |
-| **Postcondiciones** | El contenido del archivo quedó guardado en el almacenamiento. Se creó una instancia de AdjuntoTarea asociada a la TareaMantenimiento, con su clave de almacenamiento, el nombre original, el tipo, el tamaño y el Usuario que la subió. |
+| **Postcondiciones** | El contenido del archivo quedó guardado en S3. Se creó una instancia de AdjuntoTarea asociada a la TareaMantenimiento, con su clave de almacenamiento, el nombre original, el tipo, el tamaño y el Usuario que la subió. |
 
 ---
 
@@ -10820,11 +11283,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Borrar un adjunto de una tarea de mantenimiento, por ejemplo si se subió equivocado. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-158. Funciones: IRQ-03, OBJ-05. |
-| **Notas** | La baja es física: ni la referencia ni el contenido se conservan, porque no hay historial que preservar de un documento subido por error. |
+| **Notas** | La baja es lógica, como en todo el sistema: nada se borra físicamente. El archivo queda en S3 como respaldo y la baja queda en la auditoría de datos. |
 | **Excepciones** | Si la tarea o el adjunto no existen, o son de otra distribuidora → recurso no encontrado. |
 | **Salida** | Ninguna. |
 | **Precondiciones** | El Administrador está autenticado. La TareaMantenimiento y el AdjuntoTarea existen y son de su Distribuidora. |
-| **Postcondiciones** | Se eliminó la instancia de AdjuntoTarea y su contenido se borró del almacenamiento. |
+| **Postcondiciones** | La instancia de AdjuntoTarea quedó dada de baja (se le asignó la fecha de baja); su contenido se conserva en S3. |
 
 ---
 
@@ -11220,11 +11683,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Responsabilidades** | Guardar la fotografía de un reclamo y dejar su referencia en el reclamo, reemplazando la anterior. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-174. Funciones: IRQ-06, OBJ-04. |
-| **Notas** | Un cliente sólo modifica sus propios reclamos. La clave de almacenamiento no incluye el nombre original (caso incluido CU-159). La clave se reserva antes de subir y se confirma con la referencia; la imagen anterior se anota para borrar en la misma transacción y se borra en segundo plano; si falla guardar la referencia, la imagen recién subida se borra. |
+| **Notas** | Un cliente sólo modifica sus propios reclamos. La clave de almacenamiento no incluye el nombre original (caso incluido CU-159). La clave se reserva antes de subir y se confirma con la referencia; la imagen anterior se anota para borrar en la misma transacción y se borra de S3 en segundo plano; si falla guardar la referencia, la imagen recién subida se borra. |
 | **Excepciones** | Si el reclamo no existe, es de otra distribuidora o no es del cliente → recurso no encontrado. Si falta el archivo → error de solicitud. Si el tipo no es JPG, PNG ni WEBP, o el contenido no coincide con el tipo declarado → tipo no admitido. Si supera 10 MB → archivo demasiado grande. Si el reclamo está resuelto o rechazado → conflicto. |
 | **Salida** | El reclamo con la referencia a la fotografía. |
 | **Precondiciones** | El solicitante está autenticado y puede modificar el Reclamo. La imagen es de un tipo permitido y no supera el tamaño máximo. El reclamo no está resuelto ni rechazado. |
-| **Postcondiciones** | El atributo fotografía de la instancia de Reclamo tomó la referencia a la imagen subida. La fotografía anterior, si la había, se borró del almacenamiento. |
+| **Postcondiciones** | El atributo fotografía de la instancia de Reclamo tomó la referencia a la imagen subida. La fotografía anterior, si la había, quedó anotada para borrarse de S3. |
 
 ---
 
@@ -11235,13 +11698,13 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `crearPuestoDeTrabajo(nombre cadena, categoria cadena)` |
 | **Responsabilidades** | Crear un puesto de trabajo en la distribuidora, con su nombre y su categoría. |
-| **Tipo** | Sistema (planificado, I-11) |
-| **Referencias cruzadas** | Casos de uso: CU-176. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | El nombre es único entre los puestos vigentes de la distribuidora, sin distinguir mayúsculas. La categoría —chofer, ayudante, depósito, administración, ventas, dirección u otra— gobierna las reglas que se aplican al personal que lo ocupe; el nombre es libre. El puesto nace activo. |
-| **Excepciones** | Si ya existe un puesto vigente con ese nombre → error de conflicto. Si la categoría no es una de las admitidas o falta el nombre → error de solicitud. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-255. Funciones: IRQ-17, OBJ-05. |
+| **Notas** | El nombre es único entre los puestos vigentes de la distribuidora, sin distinguir mayúsculas. La categoría —chofer, ayudante, depósito, administración, ventas, dirección u otra— gobierna las reglas que se aplican al personal que lo ocupe; el nombre es libre. El puesto nace activo, salvo que el pedido indique lo contrario. |
+| **Excepciones** | Si ya existe un puesto vigente con ese nombre → error de conflicto. Si la categoría no es una de las admitidas, o el nombre falta o no tiene entre 2 y 80 caracteres → error de solicitud. |
 | **Salida** | El puesto creado. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. La Distribuidora existe y está activa. |
-| **Postcondiciones** | Se creó una instancia de PuestoDeTrabajo con su atributo nombre, su categoría y su marca de activo en verdadero. Se formó la asociación Distribuidora define PuestoDeTrabajo. |
+| **Postcondiciones** | Se creó una instancia de PuestoDeTrabajo con su atributo nombre, su categoría y su marca de activo (verdadera, salvo que se indique lo contrario). Se formó la asociación Distribuidora define PuestoDeTrabajo. |
 
 ---
 
@@ -11251,10 +11714,10 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `modificarPuestoDeTrabajo(puestoId identificador, datos registro)` |
 | **Responsabilidades** | Cambiar el nombre, la categoría o la marca de activo de un puesto. |
-| **Tipo** | Sistema (planificado, I-11) |
-| **Referencias cruzadas** | Casos de uso: CU-176. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | Se repite el control de unicidad del nombre. Los empleados que ocupan el puesto no se modifican. |
-| **Excepciones** | Si el puesto no existe o es de otra distribuidora → recurso no encontrado. Si el nombre nuevo ya lo tiene otro puesto vigente → error de conflicto. Si un dato no es válido → error de solicitud. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-256. Funciones: IRQ-17, OBJ-05. |
+| **Notas** | Se repite el control de unicidad del nombre. Los empleados que ocupan el puesto no se modifican. Si cambia la categoría, los ocupantes con cuenta tienen que conservar un rol de acceso que corresponda a la categoría nueva; y el último puesto activo de categoría chofer o administración no se puede desactivar ni recategorizar, para que el alta de personal con cuenta siempre tenga dónde ubicarse. |
+| **Excepciones** | Si el puesto no existe o es de otra distribuidora → recurso no encontrado. Si el nombre nuevo ya lo tiene otro puesto vigente, si la categoría nueva no corresponde al rol de la cuenta de algún ocupante o si es el último puesto activo de su categoría → error de conflicto. Si un dato no es válido → error de solicitud. |
 | **Salida** | El puesto modificado. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. El PuestoDeTrabajo existe y es de su Distribuidora. |
 | **Postcondiciones** | El atributo nombre, categoría o activo de la instancia de PuestoDeTrabajo tomó los valores recibidos. |
@@ -11267,13 +11730,13 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `eliminarPuestoDeTrabajo(puestoId identificador)` |
 | **Responsabilidades** | Dar de baja un puesto que ya no se usa. |
-| **Tipo** | Sistema (planificado, I-11) |
-| **Referencias cruzadas** | Casos de uso: CU-176. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | La baja es lógica: el puesto deja de ofrecerse, pero los legajos que lo ocuparon lo conservan. |
-| **Excepciones** | Si el puesto no existe o es de otra distribuidora → recurso no encontrado. Si el puesto tiene empleados activos → error de conflicto, con la cantidad. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-257. Funciones: IRQ-17, OBJ-05. |
+| **Notas** | La baja es lógica: el puesto se conserva con su fecha de baja y deja de ofrecerse. No procede mientras algún legajo, activo o egresado, lo ocupe: un puesto que ya se usó se desactiva en vez de eliminarse. |
+| **Excepciones** | Si el puesto no existe o es de otra distribuidora → recurso no encontrado. Si el puesto tiene empleados activos → error de conflicto, con la cantidad. Si figura en legajos de empleados egresados o es el último puesto activo de su categoría chofer o administración → error de conflicto. |
 | **Salida** | Mensaje de confirmación. |
-| **Precondiciones** | El solicitante es Administrador o Administrador General. El PuestoDeTrabajo existe, es de su Distribuidora y ningún Empleado activo lo ocupa. |
-| **Postcondiciones** | La instancia de PuestoDeTrabajo quedó dada de baja: su atributo activo pasó a falso y dejó de ofrecerse. |
+| **Precondiciones** | El solicitante es Administrador o Administrador General. El PuestoDeTrabajo existe, es de su Distribuidora y ningún Empleado, activo o egresado, lo ocupa. |
+| **Postcondiciones** | La instancia de PuestoDeTrabajo quedó dada de baja (baja lógica): dejó de ofrecerse y de listarse. |
 
 ---
 
@@ -11283,10 +11746,10 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `registrarEmpleado(datos registro)` |
 | **Responsabilidades** | Registrar el legajo de una persona que trabaja en la distribuidora, con su puesto y sus datos personales. |
-| **Tipo** | Sistema (planificado, I-11) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-177. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | El número de legajo es el siguiente de la distribuidora y se asigna con bloqueo, para no repetirlo. El CUIL se valida con su dígito verificador. El legajo no implica una cuenta de acceso: se otorga después (otorgarCuentaDeAcceso). El alta de un chofer por el registro de usuarios crea el legajo por este mismo camino, en la misma transacción. |
-| **Excepciones** | Si falta un dato, el formato es inválido o el CUIL no es válido → error de solicitud. Si el puesto no existe o es de otra distribuidora → recurso no encontrado. Si el documento o el CUIL ya pertenecen a otro empleado vigente de la distribuidora → error de conflicto. |
+| **Notas** | El número de legajo es el que trae el pedido o, si falta, el siguiente de la distribuidora, que se asigna con bloqueo para no repetirlo. El CUIL se valida con su dígito verificador. El legajo no implica una cuenta de acceso: se otorga después (otorgarCuentaDeAcceso). El alta de un chofer por el registro de usuarios crea el legajo por este mismo camino, en la misma transacción. |
+| **Excepciones** | Si falta un dato, el formato es inválido o el CUIL no es válido → error de solicitud. Si el puesto no existe o es de otra distribuidora → recurso no encontrado. Si el puesto está inactivo, o el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora → error de conflicto. |
 | **Salida** | El legajo creado, activo y sin cuenta de acceso. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. El PuestoDeTrabajo indicado existe, está activo y es de su Distribuidora. |
 | **Postcondiciones** | Se creó una instancia de Empleado con su legajo, su estado «activo» y los datos personales recibidos, sin cuenta de acceso. Se formó la asociación Empleado ocupa PuestoDeTrabajo con el puesto indicado y la asociación Distribuidora emplea Empleado. |
@@ -11299,10 +11762,10 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `modificarEmpleado(empleadoId identificador, datos registro)` |
 | **Responsabilidades** | Corregir los datos de un legajo, incluido su puesto. |
-| **Tipo** | Sistema (planificado, I-11) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-178. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | No cambia el estado del empleado ni sus fechas de egreso: eso lo hacen el egreso y el reingreso. Si cambia el CUIL se valida su dígito verificador; si cambia el documento o el CUIL se repite el control de unicidad. |
-| **Excepciones** | Si el empleado o el puesto no existen o son de otra distribuidora → recurso no encontrado. Si el documento o el CUIL ya pertenecen a otro empleado vigente → error de conflicto. Si el formato o el CUIL no son válidos → error de solicitud. |
+| **Notas** | No cambia el estado del empleado ni sus fechas de egreso: eso lo hacen el egreso y el reingreso. Si cambia el CUIL se valida su dígito verificador; si cambia el documento o el CUIL se repite el control de unicidad. Si cambia el puesto, tiene que estar activo y, si el empleado tiene cuenta, corresponder al rol de ese usuario. La fecha de ingreso no puede ser posterior a la de egreso. |
+| **Excepciones** | Si el empleado o el puesto no existen o son de otra distribuidora → recurso no encontrado. Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente, o el puesto está inactivo o no corresponde a la cuenta del empleado → error de conflicto. Si el formato o el CUIL no son válidos, se envía en blanco un dato obligatorio o la fecha de ingreso es posterior a la de egreso → error de solicitud. |
 | **Salida** | El legajo modificado. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. El Empleado existe y es de su Distribuidora. |
 | **Postcondiciones** | Los atributos domicilio, teléfono, contacto de emergencia, modalidad de contratación y los demás datos recibidos de la instancia de Empleado tomaron los valores nuevos. Si cambió el puesto, la asociación Empleado ocupa PuestoDeTrabajo apunta al puesto nuevo. |
@@ -11315,12 +11778,12 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `eliminarEmpleado(empleadoId identificador)` |
 | **Responsabilidades** | Dar de baja un legajo cargado por error. |
-| **Tipo** | Sistema (planificado, I-11) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-178. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | Sólo procede mientras el legajo no tenga jornadas ni tareas de documentación. La salida normal de una persona es el egreso (registrarEgresoDelEmpleado), que conserva el legajo. |
-| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si el legajo ya tiene jornadas o tareas de documentación → error de conflicto. |
+| **Notas** | Sólo procede mientras el legajo no tenga cuenta de acceso; cuando existan las jornadas y la documentación del personal (I-11), también mientras no tenga ninguna. La salida normal de una persona es el egreso (registrarEgresoDelEmpleado), que conserva el legajo. |
+| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si el legajo tiene cuenta de acceso (o, cuando existan, jornadas o tareas de documentación) → error de conflicto. |
 | **Salida** | Mensaje de confirmación. |
-| **Precondiciones** | El solicitante es Administrador o Administrador General. El Empleado existe, es de su Distribuidora y no tiene jornadas ni tareas de documentación. |
+| **Precondiciones** | El solicitante es Administrador o Administrador General. El Empleado existe, es de su Distribuidora y no tiene cuenta de acceso ni, cuando existan, jornadas o tareas de documentación. |
 | **Postcondiciones** | La instancia de Empleado quedó dada de baja como alta errónea y dejó de aparecer en los listados. |
 
 ---
@@ -11331,10 +11794,10 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `registrarEgresoDelEmpleado(empleadoId identificador, fechaDeEgreso fecha, motivo cadena)` |
 | **Responsabilidades** | Dar de baja a un empleado de la distribuidora con su fecha y su motivo, y cortar su acceso. |
-| **Tipo** | Sistema (planificado, I-11) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-181. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | Ocurre en una única transacción. Si el empleado tiene cuenta de acceso, se la bloquea; si además es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino que la baja de un chofer. Cuando existan la carga de camión y la rendición de cuentas del chofer, el egreso exige no tener ninguna abierta ni pendiente. El motivo es uno de renuncia, despido, fin de contrato, jubilación u otro. |
-| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si ya está egresado → error de conflicto. Si la fecha de egreso es anterior a la de ingreso o el motivo no es válido → error de solicitud. Si tiene una carga de camión abierta o una rendición pendiente → error de conflicto con el detalle. |
+| **Notas** | Ocurre en una única transacción, que toma los bloqueos en el mismo orden que la baja de un usuario. Si el empleado tiene cuenta de acceso, se la bloquea; si además es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino que la baja de un chofer, y con el egreso confirmado sale del radar de despacho. Un chofer con pedidos en curso no puede egresar. Cuando existan la carga de camión y la rendición de cuentas del chofer, el egreso exige no tener ninguna abierta ni pendiente. El motivo es uno de renuncia, despido, fin de contrato, jubilación u otro. |
+| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si ya está egresado → error de conflicto. Si la fecha de egreso es anterior a la de ingreso o el motivo no es válido → error de solicitud. Si el chofer tiene pedidos en curso → error de conflicto con la cantidad. Planificado (I-13): si tiene una carga de camión abierta o una rendición pendiente → error de conflicto con el detalle. |
 | **Salida** | El legajo egresado. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. El Empleado existe, es de su Distribuidora y su estado es «activo». |
 | **Postcondiciones** | El atributo estado de la instancia de Empleado pasó a «egresado» y sus atributos fecha de egreso y motivo de egreso tomaron los valores recibidos. Si el empleado tiene cuenta de acceso, el atributo bloqueado de la instancia de Usuario asociada pasó a verdadero. Si esa cuenta tiene perfil de reparto, el atributo habilitado de la instancia de Chofer pasó a falso y su asignación de vehículo vigente quedó liberada. |
@@ -11347,10 +11810,10 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `reingresarEmpleado(empleadoId identificador, fechaDeIngreso fecha)` |
 | **Responsabilidades** | Reincorporar a un empleado egresado, con una fecha de ingreso nueva. |
-| **Tipo** | Sistema (planificado, I-11) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-181. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | No desbloquea la cuenta de acceso ni vuelve a habilitar al chofer: la reactivación de la cuenta es una decisión aparte del administrador. |
-| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si no está egresado → error de conflicto. |
+| **Notas** | No desbloquea la cuenta de acceso ni vuelve a habilitar al chofer: la reactivación de la cuenta es una decisión aparte del administrador. Si no se indica fecha de ingreso, es hoy. |
+| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si no está egresado → error de conflicto. Si la fecha de ingreso es anterior a la de egreso → error de solicitud. |
 | **Salida** | El legajo activo. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. El Empleado existe, es de su Distribuidora y su estado es «egresado». |
 | **Postcondiciones** | El atributo estado de la instancia de Empleado volvió a «activo», sus atributos fecha de egreso y motivo de egreso quedaron vacíos y su atributo fecha de ingreso tomó la fecha recibida. |
@@ -11361,12 +11824,12 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `otorgarCuentaDeAcceso(empleadoId identificador, correo cadena)` |
+| **Nombre** | `otorgarCuentaDeAcceso(empleadoId identificador, datosDeAcceso registro)` |
 | **Responsabilidades** | Darle acceso al sistema a un empleado que tiene legajo y no tiene cuenta. |
-| **Tipo** | Sistema (planificado, I-11) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-182. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | El rol lo decide la categoría de su puesto: chofer para `driver`; administrador para `administration` y `management`. Las demás categorías no admiten cuenta porque el sistema no define roles para ellas. La cuenta se crea por el mismo camino que el alta de cualquier usuario (crearUsuarioBase, CU-082). Si el rol es chofer, se crea además su perfil de reparto. |
-| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si ya tiene cuenta o está egresado → error de conflicto. Si la categoría del puesto no admite cuenta → error de solicitud. Si el correo ya está en uso → error de conflicto. |
+| **Notas** | El rol lo decide la categoría de su puesto, y hoy sólo `driver` admite cuenta (rol chofer): los administrativos reciben su cuenta de administrador con el alta del usuario, y las demás categorías no admiten cuenta porque el sistema no define roles para ellas. Los datos de acceso son el correo, la contraseña inicial y, si el legajo no tiene teléfono, uno en formato E.164. La cuenta se crea por el mismo camino que el alta de cualquier usuario (crearUsuarioBase, CU-082). Si el rol es chofer, se crea además su perfil de reparto. |
+| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si ya tiene cuenta o está egresado → error de conflicto. Si la categoría del puesto no admite cuenta, falta un teléfono en formato E.164 o los datos de acceso no son válidos → error de solicitud. Si el correo o el teléfono ya están en uso → error de conflicto. |
 | **Salida** | El legajo con su cuenta vinculada. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. El Empleado existe, es de su Distribuidora, está activo y no tiene cuenta de acceso. La categoría de su puesto admite una cuenta. |
 | **Postcondiciones** | Se creó una instancia de Usuario, con el rol que corresponde a la categoría del puesto, en la distribuidora del empleado. Se formó la asociación Empleado accede con Usuario. |
@@ -11395,10 +11858,10 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `adjuntarArchivoAlLegajo(empleadoId identificador, archivo archivo, etiqueta cadena)` |
 | **Responsabilidades** | Guardar un archivo en el legajo de un empleado, con una etiqueta que dice qué es. |
-| **Tipo** | Sistema (planificado, I-11) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-186. Funciones: IRQ-17, OBJ-05. |
-| **Notas** | Sólo se admiten imágenes y PDF de hasta 10 MB. El contenido se guarda en el almacenamiento activo con una clave que incluye la distribuidora, el tipo de dueño y el empleado; en la base queda la clave y no una dirección. El dueño se valida por un puerto que registra el módulo de personal. |
-| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si el tipo o el tamaño del archivo no están permitidos → error de solicitud. |
+| **Notas** | Sólo se admiten PDF, JPG, PNG y WEBP de hasta 10 MB, y el contenido tiene que coincidir con el tipo declarado. El contenido se guarda en S3 con una clave que incluye la distribuidora, el tipo de dueño y el empleado; en la base queda la clave y no una dirección. El dueño se valida por un puerto que registra el módulo de personal. |
+| **Excepciones** | Si el empleado no existe o es de otra distribuidora → recurso no encontrado. Si falta el archivo o está vacío → error de solicitud. Si el tipo no está permitido o el contenido no coincide con el tipo declarado → tipo no admitido. Si supera los 10 MB → archivo demasiado grande. |
 | **Salida** | El adjunto registrado. |
 | **Precondiciones** | El solicitante es Administrador o Administrador General. El Empleado existe y es de su Distribuidora. |
 | **Postcondiciones** | Se creó una instancia de Adjunto con su nombre original, su tipo de archivo, su etiqueta y su fecha de carga. Se formó la asociación Empleado conserva Adjunto. |
@@ -11553,7 +12016,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `registrarDeposito(nombre cadena, codigo cadena, tipo cadena, direccion cadena)` |
 | **Responsabilidades** | Dar de alta un depósito o sucursal de la distribuidora, con su ubicación de stock. |
 | **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-207. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Referencias cruzadas** | Casos de uso: CU-258. Funciones: IRQ-18, OBJ-05, OBJ-06. |
 | **Notas** | El código es único entre los depósitos vigentes de la distribuidora. El primer depósito de la distribuidora queda como predeterminado. La ubicación de stock se crea con el depósito y empieza sin saldo. |
 | **Excepciones** | Si falta la distribuidora → error de solicitud. Si el código ya lo usa otro depósito vigente → conflicto. |
 | **Salida** | El depósito creado. |
@@ -11569,7 +12032,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `actualizarDeposito(depositoId identificador, datos registro)` |
 | **Responsabilidades** | Modificar los datos de un depósito vigente. |
 | **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-207. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Referencias cruzadas** | Casos de uso: CU-259. Funciones: IRQ-18, OBJ-05, OBJ-06. |
 | **Notas** | Sólo cambian los campos enviados. El código sigue siendo único entre los vigentes. |
 | **Excepciones** | Si el depósito no existe o es de otra distribuidora → recurso no encontrado. Si el código ya lo usa otro → conflicto. |
 | **Salida** | El depósito modificado. |
@@ -11585,7 +12048,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `darDeBajaDeposito(depositoId identificador)` |
 | **Responsabilidades** | Dar de baja un depósito sin saldo. |
 | **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-207. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Referencias cruzadas** | Casos de uso: CU-260. Funciones: IRQ-18, OBJ-05, OBJ-06. |
 | **Notas** | La baja es lógica: el depósito conserva su historial de movimientos. El depósito predeterminado no se da de baja mientras haya otros vigentes. |
 | **Excepciones** | Si el depósito no existe o es de otra distribuidora → recurso no encontrado. Si su ubicación tiene algún saldo distinto de cero, o si es el predeterminado → conflicto. |
 | **Salida** | La confirmación de la baja. |
@@ -11665,7 +12128,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `registrarProveedor(razonSocial cadena, cuit cadena, tipo cadena, datosDeContacto registro, plazoDePago entero)` |
 | **Responsabilidades** | Dar de alta un proveedor de la distribuidora. |
 | **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-214. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Referencias cruzadas** | Casos de uso: CU-261. Funciones: IRQ-18, OBJ-05, OBJ-06. |
 | **Notas** | El CUIT es único entre los proveedores vigentes de la distribuidora y se valida con su dígito verificador. |
 | **Excepciones** | Si falta la distribuidora → error de solicitud. Si el CUIT es inválido → error de solicitud con el detalle del campo. Si el CUIT ya pertenece a un proveedor vigente → conflicto. |
 | **Salida** | El proveedor creado. |
@@ -11681,7 +12144,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `actualizarProveedor(proveedorId identificador, datos registro)` |
 | **Responsabilidades** | Modificar los datos de un proveedor vigente. |
 | **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-214. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Referencias cruzadas** | Casos de uso: CU-262. Funciones: IRQ-18, OBJ-05, OBJ-06. |
 | **Notas** | Sólo cambian los campos enviados. El CUIT sigue siendo único entre los vigentes. |
 | **Excepciones** | Si el proveedor no existe o es de otra distribuidora → recurso no encontrado. Si el CUIT ya pertenece a otro → conflicto. |
 | **Salida** | El proveedor modificado. |
@@ -11697,7 +12160,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `darDeBajaProveedor(proveedorId identificador)` |
 | **Responsabilidades** | Dar de baja un proveedor, conservando su historial de compras. |
 | **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-214. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Referencias cruzadas** | Casos de uso: CU-263. Funciones: IRQ-18, OBJ-05, OBJ-06. |
 | **Notas** | La baja es lógica: las órdenes y las recepciones ya registradas siguen apuntando al proveedor. |
 | **Excepciones** | Si el proveedor no existe o es de otra distribuidora → recurso no encontrado. |
 | **Salida** | La confirmación de la baja. |
@@ -11950,7 +12413,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `modificarCaja(cajaId identificador, datos registro)` |
 | **Responsabilidades** | Cambiar el nombre, la marca de sesión o el estado activo de una caja. |
 | **Tipo** | Sistema (planificado, I-14) |
-| **Referencias cruzadas** | Casos de uso: CU-225. Funciones: IRQ-19, OBJ-05. |
+| **Referencias cruzadas** | Casos de uso: CU-264. Funciones: IRQ-19, OBJ-05. |
 | **Notas** | El tipo y el saldo no se editan: el saldo sólo lo modifica el libro. Una caja con sesión abierta no se puede desactivar. |
 | **Excepciones** | Si la caja no existe o es de otra distribuidora → recurso no encontrado. Si se la desactiva con una sesión abierta → conflicto. Si el nombre ya lo usa otra caja → conflicto. |
 | **Salida** | La caja con los datos nuevos. |
@@ -12062,7 +12525,7 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `modificarCategoriaDeCaja(categoriaId identificador, datos registro)` |
 | **Responsabilidades** | Cambiar el nombre de una categoría o desactivarla, sin perder los movimientos que ya la usan. |
 | **Tipo** | Sistema (planificado, I-14) |
-| **Referencias cruzadas** | Casos de uso: CU-230. Funciones: IRQ-19, OBJ-05. |
+| **Referencias cruzadas** | Casos de uso: CU-265. Funciones: IRQ-19, OBJ-05. |
 | **Notas** | Desactivar no borra: los movimientos anteriores conservan su categoría. Las categorías de sistema no se modifican ni se desactivan, porque los procesos automáticos las buscan por su código. La baja que ofrece el panel es una desactivación. |
 | **Excepciones** | Si la categoría no existe o es de otra distribuidora → recurso no encontrado. Si es una categoría de sistema → conflicto. Si el nombre y el sentido ya los tiene otra categoría → conflicto. |
 | **Salida** | La categoría con los datos nuevos. |

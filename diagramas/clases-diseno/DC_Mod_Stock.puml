@@ -66,9 +66,6 @@ class WarehouseService <<fachada>> {
   + darDeBajaDeposito(depositoId: Identificador)
   + registrarDeposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena): Deposito
 }
-class "Map<String, Deposito>" as Map_String_Deposito <<colección>> {
-  + get(clave: Cadena): Deposito
-}
 class StockService <<fachada>> {
   + configurarStockMinimo(depositoId: Identificador,\n      minimos: Lista): UmbralDeStock[*]
   + consultarMovimientosDeStock(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out total: Entero): MovimientoDeStock[*]
@@ -77,12 +74,12 @@ class StockService <<fachada>> {
   + transferirStock(origenId: Identificador,\n      destinoId: Identificador,\n      productoId: Identificador, condicion: Cadena,\n      cantidad: Entero): Booleano
 }
 class "List<UbicacionDeStock>" as List_UbicacionDeStock <<colección>> {
-  + getCantidadPorCondicion(producto: Producto)
-  + getLlenas(producto: Producto)
+  + getCantidadPorCondicion(producto: Producto): Entero
+  + getLlenas(producto: Producto): Entero
 }
 class "List<UmbralDeStock>" as List_UmbralDeStock <<colección>> {
   + getConMinimo(): UmbralDeStock[*]
-  + getMinimoDeLlenas(producto: Producto)
+  + getMinimoDeLlenas(producto: Producto): Entero
 }
 class "Map<String, UbicacionDeStock>" as Map_String_UbicacionDeStock <<colección>> {
   + get(clave: Cadena): UbicacionDeStock
@@ -90,10 +87,15 @@ class "Map<String, UbicacionDeStock>" as Map_String_UbicacionDeStock <<colecció
 class "List<MovimientoDeStock>" as List_MovimientoDeStock <<colección>> {
   + buscar(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out total: Entero): MovimientoDeStock[*]
 }
+class "Map<String, Deposito>" as Map_String_Deposito <<colección>> {
+  + get(clave: Cadena): Deposito
+}
 class StockLowCron <<fachada>> {
   + avisarStockBajo()
 }
 class StockLedgerService <<fachada>> {
+  + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto, condicion: Cadena,\n      cantidad: Entero,\n      traslado: MotivoDeMovimiento): Booleano
+  + aplicarMovimientoDeStock(ubicacionDeStock: UbicacionDeStock,\n      ubicacionDeStock: UbicacionDeStock,\n      producto: Producto,\n      condicionDeStock: CondicionDeStock,\n      cantidad: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento): Booleano
   + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento): Booleano
   + existeMovimiento(pedido: Pedido): Booleano
 }
@@ -113,28 +115,28 @@ class StockReconciliationCron <<fachada>> {
 class StockReconciliationService <<fachada>> {
   + consultarConciliacionDeStock(): Registro
 }
-class Deposito <<referencia>>
 class UbicacionDeStock <<referencia>>
 class UmbralDeStock <<referencia>>
 class MovimientoDeStock <<referencia>>
+class Deposito <<referencia>>
 class AjusteDeStock <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class EmailSenderPort <<referencia>>
 class "List<Pedido>" as List_Pedido <<referencia>>
 class "List<Producto>" as List_Producto <<referencia>>
 class "Map<String, Producto>" as Map_String_Producto <<referencia>>
+class ItemAjusteDeStock <<referencia>>
 class Producto <<referencia>>
 class Distribuidora <<referencia>>
 class ItemPedido <<referencia>>
-class ItemAjusteDeStock <<referencia>>
-class Vehiculo <<referencia>>
 class Pedido <<referencia>>
+class Vehiculo <<referencia>>
 
-Map_String_Deposito "1" o--> "0..*" Deposito
 List_UbicacionDeStock "1" o--> "0..*" UbicacionDeStock
 List_UmbralDeStock "1" o--> "0..*" UmbralDeStock
 Map_String_UbicacionDeStock "1" o--> "0..*" UbicacionDeStock
 List_MovimientoDeStock "1" o--> "0..*" MovimientoDeStock
+Map_String_Deposito "1" o--> "0..*" Deposito
 List_AjusteDeStock "1" o--> "0..*" AjusteDeStock
 StockAdjustmentService --> "1" List_AjusteDeStock
 StockAdjustmentService --> "1" Map_String_UbicacionDeStock
@@ -168,7 +170,7 @@ StockDeliveryListener ..> Distribuidora
 StockDeliveryListener ..> ItemPedido
 StockDeliveryListener ..> Pedido
 StockDeliveryListener ..> Vehiculo
-StockLedgerService ..> MovimientoDeStock : <<create>>
+StockLedgerService ..> "<<create>>" MovimientoDeStock
 StockLedgerService ..> UbicacionDeStock
 StockLowCron ..> Deposito
 StockLowCron ..> Distribuidora

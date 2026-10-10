@@ -53,7 +53,7 @@ A03 -[#8C4A9E]- U042
 A03 -[#8C4A9E]- U043
 A03 -[#8C4A9E]- U103
 A03 -[#8C4A9E]- U154
-A05 --|> A03
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U044 ..> U045 : <<include>>

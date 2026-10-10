@@ -7,8 +7,10 @@ sequenceDiagram
     ADM->>SIS: consultarEmpleados(filtros)
     activate SIS
     alt hay empleados que cumplen los filtros
-        SIS-->>ADM: página de empleados con su peor vencimiento, sin datos sensibles
+        SIS-->>ADM: página de empleados con su puesto y su estado, sin datos sensibles
     else ninguno cumple los filtros
         SIS-->>ADM: página vacía
+    else un filtro tiene un valor inválido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS

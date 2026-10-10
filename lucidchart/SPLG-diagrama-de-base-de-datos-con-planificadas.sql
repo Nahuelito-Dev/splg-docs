@@ -1,9 +1,16 @@
 -- Modelo completo de SPLG: lo implementado más lo planificado
--- 79 tablas y 215 relaciones.
--- Hoy en la base hay 43 tablas y 96 claves foráneas declaradas;
--- este archivo suma 36 tablas planificadas y 12 columnas nuevas en tablas que ya existen.
+-- 82 tablas y 220 relaciones.
+-- Hoy en la base hay 48 tablas y 105 claves foráneas declaradas;
+-- este archivo suma 34 tablas planificadas y 12 columnas nuevas en tablas que ya existen.
 -- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin defaults ni índices.
 -- Las tablas van en orden de dependencia. Generado por generar-modelo-datos.py.
+
+CREATE TABLE "audit_action_type" (
+  "action_type_id" smallint NOT NULL,
+  "name" varchar(40) NOT NULL,
+  PRIMARY KEY ("action_type_id"),
+  UNIQUE ("name")
+);
 
 CREATE TABLE "distributor" (
   "distributor_id" uuid NOT NULL,
@@ -28,8 +35,8 @@ CREATE TABLE "role" (
   "type" text NOT NULL,
   "createdAt" timestamptz,
   "updatedAt" timestamptz,
-  PRIMARY KEY ("role_id"),
-  UNIQUE ("type")
+  "deletedAt" timestamptz,
+  PRIMARY KEY ("role_id")
 );
 
 CREATE TABLE "storage_orphan" (
@@ -122,7 +129,6 @@ CREATE TABLE "gas_cylinder" (
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id")
 );
 
--- tabla propuesta
 CREATE TABLE "job_position" (
   "position_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -249,9 +255,25 @@ CREATE TABLE "attachment" (
   "size_bytes" integer NOT NULL,
   "uploaded_by_user_id" uuid NOT NULL,
   "uploaded_at" timestamptz NOT NULL,
+  "deleted_at" timestamptz,
   PRIMARY KEY ("attachment_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("uploaded_by_user_id") REFERENCES "user" ("user_id")
+);
+
+CREATE TABLE "audit" (
+  "audit_id" uuid NOT NULL,
+  "action_type_id" smallint NOT NULL,
+  "user_id" uuid,
+  "distributor_id" uuid,
+  "entity" varchar(60) NOT NULL,
+  "record_id" varchar(64) NOT NULL,
+  "ip" varchar(45),
+  "created_at" timestamptz NOT NULL,
+  PRIMARY KEY ("audit_id"),
+  FOREIGN KEY ("action_type_id") REFERENCES "audit_action_type" ("action_type_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE SET NULL,
+  FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
 );
 
 CREATE TABLE "audit_log" (
@@ -394,7 +416,6 @@ CREATE TABLE "delivery" (
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );
 
--- tabla propuesta
 CREATE TABLE "employee" (
   "employee_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -427,12 +448,9 @@ CREATE TABLE "employee" (
   "updatedAt" timestamptz NOT NULL,
   "deletedAt" timestamptz,
   PRIMARY KEY ("employee_id"),
-  UNIQUE ("user_id"),
-  UNIQUE ("distributor_id", "file_number"),
-  UNIQUE ("distributor_id", "document_number"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
-  FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL,
-  FOREIGN KEY ("position_id") REFERENCES "job_position" ("position_id")
+  FOREIGN KEY ("position_id") REFERENCES "job_position" ("position_id"),
+  FOREIGN KEY ("user_id") REFERENCES "user" ("user_id")
 );
 
 CREATE TABLE "gas_cylinder_promotion" (
@@ -440,8 +458,8 @@ CREATE TABLE "gas_cylinder_promotion" (
   "gas_cylinder_id" uuid NOT NULL,
   "quantity" integer NOT NULL,
   "discount_percentage" numeric(5,2) NOT NULL,
+  "deletedAt" timestamptz,
   PRIMARY KEY ("promotion_id"),
-  UNIQUE ("gas_cylinder_id", "quantity"),
   FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id") ON DELETE CASCADE
 );
 
@@ -516,6 +534,16 @@ CREATE TABLE "user_address" (
   "geocode_precision" varchar(32) NOT NULL,
   PRIMARY KEY ("address_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "audit_detail" (
+  "audit_detail_id" uuid NOT NULL,
+  "audit_id" uuid NOT NULL,
+  "field" varchar(80) NOT NULL,
+  "old_value" text,
+  "new_value" text,
+  PRIMARY KEY ("audit_detail_id"),
+  FOREIGN KEY ("audit_id") REFERENCES "audit" ("audit_id")
 );
 
 CREATE TABLE "cart_item" (
@@ -1035,6 +1063,7 @@ CREATE TABLE "maintenance_task_attachment" (
   "size_bytes" integer NOT NULL,
   "uploaded_by_user_id" uuid NOT NULL,
   "uploaded_at" timestamptz NOT NULL,
+  "deleted_at" timestamptz,
   PRIMARY KEY ("attachment_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("task_id") REFERENCES "maintenance_task" ("task_id") ON DELETE CASCADE,
@@ -1155,10 +1184,15 @@ CREATE TABLE "rating" (
   "stars" integer NOT NULL,
   "comment" text,
   "createdAt" timestamptz NOT NULL,
+  "hidden" boolean NOT NULL,
+  "hidden_reason" text,
+  "hidden_at" timestamptz,
+  "hidden_by_user_id" uuid,
   PRIMARY KEY ("rating_id"),
   UNIQUE ("order_id", "from_role"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("from_user_id") REFERENCES "user" ("user_id"),
+  FOREIGN KEY ("hidden_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL,
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE,
   FOREIGN KEY ("to_user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
 );

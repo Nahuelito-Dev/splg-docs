@@ -61,10 +61,10 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class ReportsService <<fachada>> {
-  + agruparPorChofer(pedidos: Pedido[*])
-  + agruparPorMetodoDePago(pedidos: Pedido[*])
-  + agruparPorPeriodo(pedidos: Pedido[*],\n      granularidad: Cadena)
-  + agruparPorProducto(items: Registro)
+  + agruparPorChofer(pedidos: Pedido[*]): Registro
+  + agruparPorMetodoDePago(pedidos: Pedido[*]): Registro
+  + agruparPorPeriodo(pedidos: Pedido[*],\n      granularidad: Cadena): Registro
+  + agruparPorProducto(items: Registro): Registro
   + consultarEvolucionDeVentas(fechaDesde: Fecha,\n      fechaHasta: Fecha, granularidad: Cadena): Registro
   + consultarVentasPorChofer(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
   + consultarVentasPorMetodoDePago(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
@@ -73,37 +73,37 @@ class ReportsService <<fachada>> {
 class FleetCostReportService <<fachada>> {
   + consultarCostoDeUnVehiculo(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
   + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
-  + ordenarPorCostoPorKilometro(costos: Registro)
+  + ordenarPorCostoPorKilometro(costos: Registro): Registro
 }
 class HealthCheckService <<fachada>> {
-  + verificarDisponibilidad()
-  + verificarSalud()
-  + verificarVida()
+  + verificarDisponibilidad(): Registro
+  + verificarSalud(): Registro
+  + verificarVida(): Registro
 }
 class RedisHealthIndicator <<fabricación pura>> {
-  + isHealthy(redis: Registro)
+  + isHealthy(redis: Registro): Booleano
 }
 class RedisService <<fabricación pura>> {
   + del(marcasDeUltimaEjecucion: Registro)
   + ping(): Booleano
 }
-interface StoragePort <<interface>> <<puerto>> {
-  + getDownloadUrl(adjunto: AdjuntoTarea): Cadena
-  + getDownloadUrl(clave: Cadena): Cadena
-  + getStream(adjunto: AdjuntoTarea): Archivo
-  + getStream(clave: Cadena): Archivo
-  + put(clave: Cadena, imagen: Archivo)
-  + put(clave: Cadena, contenido: Archivo, tipo: Cadena)
+class S3Service <<fabricación pura>> {
+  + getSignedDownload(adjunto: AdjuntoTarea): Cadena
+  + getSignedDownload(clave: Cadena,\n      nombreDeDescarga: Cadena): Cadena
   + put(clave: Cadena, archivo: Archivo, tipo: Cadena)
-  + remove(adjunto: AdjuntoTarea)
-  + remove(claveAnterior: Cadena)
+}
+class S3CleanupService <<fabricación pura>> {
+  + removeInBackground(claveAnterior: Cadena)
 }
 class "List<Vehiculo>" as List_Vehiculo <<referencia>>
 class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
 class "List<Pedido>" as List_Pedido <<referencia>>
-class Pedido <<referencia>>
 class Vehiculo <<referencia>>
 class ItemPedido <<referencia>>
+class Pedido <<referencia>>
+class AttachmentService <<referencia>>
+class ClaimsService <<referencia>>
+class FleetAttachmentService <<referencia>>
 
 FleetCostReportService --> "1" List_Vehiculo
 FleetCostReportService --> "1" Map_String_Vehiculo
@@ -113,6 +113,10 @@ ReportsService --> "1" List_Pedido
 FleetCostReportService ..> Vehiculo
 ReportsService ..> ItemPedido
 ReportsService ..> Pedido
+AttachmentService --> "1" S3Service
+ClaimsService --> "1" S3Service
+FleetAttachmentService --> "1" S3Service
+ClaimsService --> "1" S3CleanupService
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

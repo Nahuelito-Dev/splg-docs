@@ -67,9 +67,8 @@ class Producto {
   + «create» Producto(distribuidora: Distribuidora,\n      tipo: Cadena, peso: Decimal, precio: Moneda,\n      stockInicial: Entero, descripcion: Cadena)
   + actualizarPrecio(precio: Moneda)
   + agregarPromocion(cantidad: Entero, descuento: Decimal)
-  + ajustarStock(variacion: Entero)
-  + ajustarStock(diferencia: Moneda): Booleano
-  + calcularDiferencia(llenasFisicas: Entero,\n      reservado: Entero)
+  + ajustarStock(variacion: Entero): Booleano
+  + calcularDiferencia(llenasFisicas: Entero,\n      reservado: Entero): Entero
   + desactivar()
   + estaDisponibleEn(distribuidoraId: Identificador): Booleano
   + getPrecio(): Moneda
@@ -78,9 +77,8 @@ class Producto {
   + reactivar()
   + recalcularCostoPromedio(llenasRecibidas: Entero,\n      costoUnitario: Moneda)
   + reemplazarPromociones(promociones: Promocion[*])
-  + reservar(cantidad: Entero)
-  + restarStock(llenasRecibidas: Entero)
-  + restarStock(faltante: Entero): Booleano
+  + reservar(cantidad: Entero): Entero
+  + restarStock(cantidad: Entero): Booleano
   + restituir(cantidad: Entero)
   + sumarStock(llenasRecibidas: Entero)
   + validarSinRepetir(promociones: Promocion[*])
@@ -94,19 +92,19 @@ class Promocion {
 class Envase {
   - numeroDeSerie: Cadena
   - estado: EstadoDelEnvase
-  - deposito: Moneda
+  - montoDelDeposito: Moneda
   - /vencimiento: Fecha
   + «create» Envase(numeroDeSerie: Cadena,\n      tipoDeProducto: Cadena, deposito: Moneda)
   + abrirCaso()
   + actualizarVigencia(fecha: Fecha, vencimiento: Fecha)
   + darDeBaja()
   + despachar(pedido: Pedido, usuario: Usuario)
-  + diasHastaElVencimiento()
+  + diasHastaElVencimiento(): Entero
   + entregarAlCliente(pedido: Pedido)
   + estaVigente(hoy: Fecha): Booleano
   + fueDevuelto(): Booleano
-  + getMovimientos(): MovimientoDeCaja[*]
-  + getResumen()
+  + getMovimientos(): MovimientoEnvase[*]
+  + getResumen(): Registro
   + getVigencia(out dias: Entero): Fecha
   + marcarParaRetiro(pedido: Pedido)
   + pasarA(estadoDestino: EstadoDelEnvase, pedido: Pedido,\n      cliente: Cliente, observacion: Cadena)

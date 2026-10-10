@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-033 Activar un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cambiarEstadoDelChofer(choferId, activo)
+    activate SIS
+    alt el chofer existe
+        SIS-->>ADM: chofer activado
+    else el chofer no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: activo = verdadero. La misma operación, con activo = falso, es CU-267

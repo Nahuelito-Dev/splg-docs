@@ -69,7 +69,7 @@ class Proveedor {
   - activo: Booleano
   + «create» Proveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero)
   + actualizar(datos: Registro): Proveedor
-  + coincideCon(termino: Cadena)
+  + coincideCon(termino: Cadena): Booleano
   + darDeBaja()
   + emitirOrden(depositoDeStock: Deposito,\n      fechaEsperada: Fecha,\n      items: Registro): OrdenDeCompra
 }
@@ -83,7 +83,7 @@ class OrdenDeCompra {
   - notas: Cadena
   + «create» OrdenDeCompra(depositoDeStock: Deposito,\n      fechaEsperada: Fecha, autor: Usuario)
   + acumularRecibido(items: Registro): Booleano
-  + calcularTotal()
+  + calcularTotal(): Moneda
   + cancelar(motivo: Cadena): OrdenDeCompra
   + enviar(ahora: FechaHora): OrdenDeCompra
   + getTotal(): Moneda
@@ -106,10 +106,11 @@ class RecepcionDeCompra {
   - estadoDePago: EstadoDePagoDeCompra
   - estado: EstadoDeLaRecepcion
   - motivoDeAnulacion: Cadena
-  + «create» RecepcionDeCompra(tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, autor: Usuario)
+  + «create» RecepcionDeCompra(tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena,\n      administrador: Administrador)
   + anular(motivo: Cadena): RecepcionDeCompra
   + getItems(): Registro
   + getTotal(): Moneda
+  + getUbicacionDelDeposito(): UbicacionDeStock
   + validarQueEstaConfirmada()
 }
 class ItemRecepcion {

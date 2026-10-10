@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-022 / CU-266 · cambiarDisponibilidad
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :DeliveryService
+    participant CHOS as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+
+    CHF->>+SRV: cambiarDisponibilidad(usuarioId, disponible)
+    SRV->>+CHOS: get(usuarioId)
+    CHOS-->>-SRV: chofer
+    SRV->>+CHO: cambiarDisponibilidad(disponible)
+    CHO->>CHO: validarHabilitacion()
+    deactivate CHO
+    opt El chofer quedó no disponible
+        SRV->>+CHO: getUbicacion()
+        CHO-->>-SRV: ubicacion
+        SRV->>UBI: eliminar()
+    end
+    SRV-->>-CHF: disponibilidad

@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-022 Activar la Disponibilidad
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
+    activate SIS
+    alt está habilitado y validado
+        SIS-->>CHO: disponible (empieza a recibir ofertas de pedidos)
+    else no está habilitado o validado
+        SIS-->>CHO: acceso denegado
+    end
+    deactivate SIS
+    Note over CHO,SIS: disponible = verdadero. La misma operación, con disponible = falso, es CU-266

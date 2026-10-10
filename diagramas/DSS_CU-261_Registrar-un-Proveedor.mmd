@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-261 Registrar un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+    activate SIS
+    alt el CUIT está libre
+        SIS-->>ADM: proveedor creado
+    else el CUIT ya pertenece a un proveedor vigente
+        SIS-->>ADM: conflicto, con el detalle del campo
+    end
+    deactivate SIS

@@ -107,9 +107,9 @@ PROPUESTAS_CLASE = {
   # Historial de estados del pedido (I-4)
   "OrderStatusHistoryService": "CU-169, CU-170: escribe y lee order_status_history, que existe sin servicio",
   # Caja, rendición, cuentas corrientes y comisiones (I-14)
-  "CashBoxService": "CU-225 a CU-227: cajas y sesiones de caja con arqueo, módulo cash",
+  "CashBoxService": "CU-225 a CU-227, CU-264: cajas y sesiones de caja con arqueo, módulo cash",
   "CashLedgerService": "CU-228, CU-229: punto único de escritura del libro de caja y de los saldos",
-  "CashCategoryService": "CU-230: categorías de ingresos y gastos de caja",
+  "CashCategoryService": "CU-230, CU-265: categorías de ingresos y gastos de caja",
   "DriverSettlementService": "CU-232, CU-233: presentación, aprobación y reapertura de la rendición del chofer",
   "DriverSettlementCron": "CU-231: proceso diario que abre las rendiciones",
   "SettlementOverdueCron": "CU-234: proceso diario que avisa las rendiciones sin cerrar",
@@ -119,16 +119,10 @@ PROPUESTAS_CLASE = {
   # Reintegro de pagos (I-7)
   "ReintegroListener": "CU-168: escucha el evento de pedido cancelado",
   "RefundPaymentUseCase": "CU-168: devuelve el pago por la pasarela, fuera de la transacción de la cancelación",
-  # Personal y legajos (I-11): módulo employee
-  "JobPositionService": "CU-176: puestos de trabajo de la distribuidora",
-  "EmployeeService": "CU-177 a CU-180, CU-187, CU-193: legajo del empleado, listado, documentación y saldo de vacaciones",
-  "TerminateEmployeeUseCase": "CU-181: egreso del empleado en una transacción, con el corte de la cuenta y la liberación del vehículo",
-  "GrantEmployeeAccountUseCase": "CU-182: alta de la cuenta de acceso de un empleado, delegada en el registro de usuarios",
+  # Personal y legajos (I-11): módulo employee. Puestos, legajos, egreso y cuenta ya están construidos.
   "AttendanceService": "CU-189, CU-190: jornadas de trabajo, cargadas por el panel o marcadas por el chofer",
   "LeaveService": "CU-191, CU-192: licencias y ausencias, su solicitud y su resolución",
   "PersonnelDashboardService": "CU-194: cifras del tablero de personal",
-  "AttachmentsService": "CU-186: adjuntos genéricos con dueño, módulo attachment",
-  "CuilValidator": "CU-177, CU-178: función pura del dígito verificador del CUIL (domain/cuil.ts)",
   "VacationPolicy": "CU-193: función pura de los días de vacaciones por antigüedad, LCT art. 150 (domain/vacaciones.ts)",
   # Flota ampliada (I-12): módulo fleet-expense
   "FuelLoadService": "CU-195, CU-196: cargas de combustible y consumo de un vehículo, en el módulo fleet-expense",
@@ -139,7 +133,7 @@ PROPUESTAS_CLASE = {
   "FleetCostReportService": "CU-203, CU-204: modelo de lectura del costo por vehículo y de la flota, en el módulo reports",
   "TireService": "CU-205, CU-206: neumáticos y sus movimientos (funcionalidad opcional)",
   # Stock y compras (I-13): módulos stock, purchase y truck-load
-  "WarehouseService": "CU-207: ABM de depósitos y su ubicación de stock",
+  "WarehouseService": "CU-207, CU-258 a CU-260: ABM de depósitos y su ubicación de stock",
   "StockService": "CU-208, CU-209, CU-210, CU-212: consultas de stock, umbrales y transferencias",
   "StockLedgerService": "CU-212, CU-213, CU-217, CU-218, CU-220, CU-222: único punto de escritura de saldos y movimientos de stock",
   "StockAdjustmentService": "CU-213: ajustes y mermas de stock",
@@ -147,7 +141,7 @@ PROPUESTAS_CLASE = {
   "StockDeliveryListener": "CU-220: escucha el evento de pedido entregado y descuenta el stock",
   "StockReconciliationCron": "CU-224: proceso nocturno que aplica entregas sin movimiento y concilia el vendible con el físico",
   "StockReconciliationService": "CU-224: consulta de la conciliación de stock",
-  "SupplierService": "CU-214: ABM de proveedores",
+  "SupplierService": "CU-214, CU-261 a CU-263: ABM de proveedores",
   "PurchaseOrderService": "CU-215, CU-216: órdenes de compra",
   "PurchaseReceiptService": "CU-217: recepciones de compra",
   "TruckLoadService": "CU-218, CU-219, CU-221, CU-222, CU-223: hoja de carga y rendición del camión",
@@ -179,7 +173,7 @@ INCLUIDOS = {
                          "firma": "put(clave, contenido, tipo)"},
     "recuperarArchivo": {"casos": ["CU-160"], "bases": ["CU-157", "CU-175"],
                          "controladores": {"FleetAttachmentService", "ClaimsService"},
-                         "firma": "getDownloadUrl(clave)"},
+                         "firma": "getSignedDownload(clave, nombreDeDescarga)"},
     # No es un caso incluido sino una operación interna: ningún actor la invoca y no es del
     # catálogo; la ejecuta CreateOrderUseCase dentro de crearPedido, crearReserva y
     # realizarCompraExpress. Se la trata igual (primer mensaje desde el controlador del caso base).

@@ -67,24 +67,25 @@ class Deposito {
   + «create» Deposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena)
   + actualizar(datos: Registro): Deposito
   + darDeBaja()
-  + estaActivo()
+  + estaActivo(): Booleano
   + fijarMinimo(producto: Producto, minimoDeLlenas: Entero)
   + getDistribuidora(): Distribuidora
   + getLlenas(producto: Producto): Entero
-  + getOrden(ordenId: Identificador)
-  + getUmbral(producto: Producto)
+  + getOrden(ordenId: Identificador): OrdenDeCompra
+  + getUbicacionDeStock(): UbicacionDeStock
+  + getUmbral(producto: Producto): UmbralDeStock
   + marcarPredeterminado()
-  + registrarRecepcion(ordenId: Identificador,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, items: Registro,\n      autor: Usuario): RecepcionDeCompra
+  + registrarRecepcion(ordenId: Identificador,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, items: Registro,\n      administrador: Administrador): RecepcionDeCompra
   + validarCodigoSinUsar(codigo: Cadena)
   + validarCompraSinOrden(proveedorId: Identificador)
   + validarSinSaldo(conSaldo: Booleano)
 }
 class UbicacionDeStock {
   - tipo: TipoDeUbicacion
-  + «create» UbicacionDeStock(depositoDeStock: Deposito)
   + «create» UbicacionDeStock(vehiculo: Vehiculo)
+  + «create» UbicacionDeStock(depositoDeStock: Deposito)
   + acreditar(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
-  + ajustar(motivoDeAjuste: MotivoDeAjuste, nota: Cadena,\n      items: Registro, autor: Usuario): AjusteDeStock
+  + ajustar(motivoDeAjuste: MotivoDeAjuste, nota: Cadena,\n      items: Registro,\n      administrador: Administrador): AjusteDeStock
   + descontar(producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      cantidad: Entero): Booleano
   + esLaMismaQue(ubicacionDestino: UbicacionDeStock): Booleano
   + getSaldos(productoId: Identificador): SaldoDeStock[*]
@@ -122,13 +123,13 @@ class AjusteDeStock {
   - motivo: MotivoDeAjuste
   - nota: Cadena
   - fecha: FechaHora
-  + «create» AjusteDeStock(motivoDeAjuste: MotivoDeAjuste,\n      nota: Cadena, autor: Usuario)
+  + «create» AjusteDeStock(motivoDeAjuste: MotivoDeAjuste,\n      nota: Cadena, administrador: Administrador)
   + getMotivo(): MotivoDeAjuste
 }
 class ItemAjusteDeStock {
   - condicion: CondicionDeStock
   - diferencia: Entero
-  + «create» ItemAjusteDeStock(producto: Producto,\n      condicionDeStock: CondicionDeStock,\n      diferencia: Moneda)
+  + «create» ItemAjusteDeStock(producto: Producto,\n      condicionDeStock: CondicionDeStock,\n      diferencia: Entero)
   + getProducto(): Producto
 }
 class Producto <<referencia>>

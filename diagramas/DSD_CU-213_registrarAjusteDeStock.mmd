@@ -11,9 +11,9 @@ sequenceDiagram
     ADM->>+SRV: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
     SRV->>+COL: get(ubicacionId)
     COL-->>-SRV: ubicacionDeStock
-    SRV->>+UBI: ajustar(motivoDeAjuste, nota, items, autor)
+    SRV->>+UBI: ajustar(motivoDeAjuste, nota, items, administrador)
     create participant AJU as nuevo:AjusteDeStock
-    UBI->>AJU: «create»(motivoDeAjuste, nota, autor)
+    UBI->>AJU: «create»(motivoDeAjuste, nota, administrador)
     loop Por cada renglón del ajuste
         create participant ITM as nuevo:ItemAjusteDeStock
         AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
@@ -22,8 +22,8 @@ sequenceDiagram
     loop Por cada renglón del ajuste
         SRV->>+ITM: getProducto()
         ITM-->>-SRV: producto
-        Note over SRV,LED: Una diferencia positiva entra en la ubicación y una negativa sale de ella. Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Una diferencia positiva entra en la ubicación y una negativa sale de ella<br/>(el otro extremo es nula). Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
+        SRV->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, condicionDeStock, condicionDeStock, diferencia, ajusteManual)
         alt El saldo de la ubicación no queda negativo
             LED-->>-SRV: aplicado
             opt El renglón es de unidades llenas

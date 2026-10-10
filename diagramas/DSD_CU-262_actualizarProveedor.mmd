@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-262 Modificar un Proveedor · actualizarProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant COL as :Map#lt;String, Proveedor#gt;
+    participant PRV as proveedor:Proveedor
+
+    ADM->>+SRV: actualizarProveedor(proveedorId, datos)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV->>+PRV: actualizar(datos)
+    PRV-->>-SRV: proveedor
+    SRV-->>-ADM: proveedor

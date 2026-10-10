@@ -4,7 +4,7 @@ classDiagram
     %% Adjuntos. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
     %% no se edita a mano.
 
-    class AttachmentsService {
+    class AttachmentService {
         <<fachada>>
         + adjuntarArchivoAlLegajo(empleadoId: Identificador, archivo: Archivo, etiqueta: Cadena): Adjunto
     }
@@ -12,11 +12,11 @@ classDiagram
     class Map_String_Empleado["Map<String, Empleado>"] {
         <<colección>>
     }
-    class StoragePort {
-        <<interface>>
+    class S3Service {
+        <<fabricación pura>>
     }
     class Empleado
 
-    AttachmentsService --> "1" Map_String_Empleado : map<String, Empleado>
-    AttachmentsService --> "1" StoragePort : storagePort
-    AttachmentsService ..> Empleado
+    AttachmentService --> "1" Map_String_Empleado : map<String, Empleado>
+    AttachmentService --> "1" S3Service : s3Service
+    AttachmentService ..> Empleado

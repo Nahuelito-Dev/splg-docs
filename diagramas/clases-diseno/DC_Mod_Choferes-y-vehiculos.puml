@@ -80,8 +80,8 @@ class "Map<String, Chofer>" as Map_String_Chofer <<colección>> {
 }
 class "List<Chofer>" as List_Chofer <<colección>> {
   + buscarEnMotoDisponibles(direccion: DireccionEntrega): Chofer[*]
-  + contarEnLinea(distribuidoraId: Identificador): Chofer[*]
-  + contarHabilitados(distribuidoraId: Identificador): Chofer[*]
+  + contarEnLinea(distribuidoraId: Identificador): Entero
+  + contarHabilitados(distribuidoraId: Identificador): Entero
   + getConEfectivoOCobrosSinRendir(hoy: Fecha): Chofer[*]
 }
 class CarService <<fachada>> {
@@ -119,9 +119,9 @@ class Vehiculo <<referencia>>
 class AsignacionVehiculo <<referencia>>
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class FleetTaskService <<referencia>>
-class Usuario <<referencia>>
 class Distribuidora <<referencia>>
 class UbicacionGPS <<referencia>>
+class Usuario <<referencia>>
 
 Map_String_Chofer "1" o--> "0..*" Chofer
 List_Chofer "1" o--> "0..*" Chofer

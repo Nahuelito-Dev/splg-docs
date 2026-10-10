@@ -1,0 +1,358 @@
+@startuml
+title Modelo físico de la base de datos — vista general (tablas implementadas)
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam dpi 150
+skinparam class {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  ArrowColor #2C4257
+  FontSize 12
+}
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #E4EDF4
+}
+skinparam legendBackgroundColor #FFFFFF
+skinparam legendBorderColor #2C4257
+
+hide circle
+left to right direction
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 60
+skinparam packageStyle rectangle
+
+package "Organización y acceso" {
+  entity "audit_action_type" as e_audit_action_type {
+    {field} **action_type_id** : smallint * <<PK>>
+  }
+  entity "distributor" as e_distributor {
+    {field} **distributor_id** : uuid * <<PK>>
+  }
+  entity "role" as e_role {
+    {field} **role_id** : uuid * <<PK>>
+  }
+  entity "user" as e_user {
+    {field} **user_id** : uuid * <<PK>>
+    {field} //role_id// : uuid <<FK>>
+  }
+  entity "admin" as e_admin {
+    {field} **admin_id** : uuid * <<PK>>
+    {field} //user_id// : uuid * <<FK>>
+  }
+  entity "audit" as e_audit {
+    {field} **audit_id** : uuid * <<PK>>
+    {field} //action_type_id// : smallint * <<FK>>
+    {field} //user_id// : uuid <<FK>>
+  }
+  entity "audit_log" as e_audit_log {
+    {field} **audit_id** : uuid * <<PK>>
+    {field} //actor_user_id// : uuid <<FK>>
+  }
+  entity "module_config" as e_module_config {
+    {field} **config_id** : uuid * <<PK>>
+    {field} //updated_by_user_id// : uuid <<FK>>
+  }
+  entity "audit_detail" as e_audit_detail {
+    {field} **audit_detail_id** : uuid * <<PK>>
+    {field} //audit_id// : uuid * <<FK>>
+  }
+}
+package "Clientes" {
+  entity "customer" as e_customer {
+    {field} **customer_id** : uuid * <<PK>>
+    {field} //user_id// : uuid * <<FK>>
+    {field} //declared_cylinder_type_id// : uuid <<FK>>
+  }
+  entity "user_address" as e_user_address {
+    {field} **address_id** : uuid * <<PK>>
+    {field} //user_id// : uuid * <<FK>>
+  }
+  entity "repurchase_invitation" as e_repurchase_invitation {
+    {field} **invitation_id** : uuid * <<PK>>
+    {field} //user_id// : uuid * <<FK>>
+    {field} //address_id// : uuid <<FK>>
+    {field} //order_id// : uuid <<FK>>
+  }
+}
+package "Catálogo e inventario de envases" {
+  entity "gas_cylinder" as e_gas_cylinder {
+    {field} **gas_cylinder_id** : uuid * <<PK>>
+  }
+  entity "gas_cylinder_promotion" as e_gas_cylinder_promotion {
+    {field} **promotion_id** : uuid * <<PK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+  entity "cylinder" as e_cylinder {
+    {field} **cylinder_id** : uuid * <<PK>>
+    {field} //gas_cylinder_id// : uuid <<FK>>
+    {field} //current_customer_id// : uuid <<FK>>
+    {field} //current_order_id// : uuid <<FK>>
+  }
+  entity "cylinder_inspection" as e_cylinder_inspection {
+    {field} **inspection_id** : uuid * <<PK>>
+    {field} //cylinder_id// : uuid * <<FK>>
+  }
+  entity "cylinder_movement" as e_cylinder_movement {
+    {field} **movement_id** : uuid * <<PK>>
+    {field} //cylinder_id// : uuid * <<FK>>
+    {field} //order_id// : uuid <<FK>>
+    {field} //actor_user_id// : uuid <<FK>>
+  }
+  entity "cylinder_recovery_case" as e_cylinder_recovery_case {
+    {field} **case_id** : uuid * <<PK>>
+    {field} //cylinder_id// : uuid * <<FK>>
+    {field} //user_id// : uuid * <<FK>>
+    {field} //resolved_by_user_id// : uuid <<FK>>
+  }
+  entity "cylinder_recovery_notice" as e_cylinder_recovery_notice {
+    {field} **notice_id** : uuid * <<PK>>
+    {field} //case_id// : uuid * <<FK>>
+  }
+}
+package "Venta y pedidos" {
+  entity "coverage_zone" as e_coverage_zone {
+    {field} **coverage_zone_id** : uuid * <<PK>>
+  }
+  entity "time_slot" as e_time_slot {
+    {field} **time_slot_id** : uuid * <<PK>>
+  }
+  entity "cart" as e_cart {
+    {field} **cart_id** : uuid * <<PK>>
+    {field} //user_id// : uuid * <<FK>>
+  }
+  entity "cart_item" as e_cart_item {
+    {field} **cart_item_id** : uuid * <<PK>>
+    {field} //cart_id// : uuid * <<FK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+  entity "order" as e_order {
+    {field} **order_id** : uuid * <<PK>>
+    {field} //customer_id// : uuid * <<FK>>
+    {field} //time_slot_id// : uuid <<FK>>
+    {field} //delivery_id// : uuid <<FK>>
+    {field} //address_id// : uuid * <<FK>>
+    {field} //coverage_zone_id// : uuid <<FK>>
+  }
+  entity "order_address_change" as e_order_address_change {
+    {field} **change_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+    {field} //from_address_id// : uuid * <<FK>>
+    {field} //to_address_id// : uuid * <<FK>>
+    {field} //changed_by_user_id// : uuid * <<FK>>
+  }
+  entity "order_item" as e_order_item {
+    {field} **order_item_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+  entity "order_status_history" as e_order_status_history {
+    {field} **history_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+    {field} //changed_by_user_id// : uuid <<FK>>
+  }
+}
+package "Pagos" {
+  entity "payment" as e_payment {
+    {field} **payment_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+  }
+}
+package "Despacho y logística" {
+  entity "route_batch" as e_route_batch {
+    {field} **batch_id** : uuid * <<PK>>
+    {field} //delivery_id// : uuid <<FK>>
+  }
+  entity "order_dispatch_offer" as e_order_dispatch_offer {
+    {field} **offer_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+    {field} //driver_id// : uuid * <<FK>>
+  }
+  entity "route_batch_offer" as e_route_batch_offer {
+    {field} **offer_id** : uuid * <<PK>>
+    {field} //batch_id// : uuid * <<FK>>
+    {field} //delivery_id// : uuid * <<FK>>
+  }
+  entity "route_batch_stop" as e_route_batch_stop {
+    {field} **stop_id** : uuid * <<PK>>
+    {field} //batch_id// : uuid * <<FK>>
+    {field} //order_id// : uuid * <<FK>>
+  }
+}
+package "Flota y choferes" {
+  entity "maintenance_plan" as e_maintenance_plan {
+    {field} **plan_id** : uuid * <<PK>>
+  }
+  entity "car" as e_car {
+    {field} **car_id** : uuid * <<PK>>
+    {field} //user_id// : uuid * <<FK>>
+  }
+  entity "delivery" as e_delivery {
+    {field} **delivery_id** : uuid * <<PK>>
+    {field} //user_id// : uuid * <<FK>>
+  }
+  entity "maintenance_task" as e_maintenance_task {
+    {field} **task_id** : uuid * <<PK>>
+    {field} //plan_id// : uuid * <<FK>>
+    {field} //car_id// : uuid <<FK>>
+    {field} //delivery_id// : uuid <<FK>>
+  }
+  entity "vehicle_assignment" as e_vehicle_assignment {
+    {field} **assignment_id** : uuid * <<PK>>
+    {field} //car_id// : uuid * <<FK>>
+    {field} //delivery_id// : uuid * <<FK>>
+    {field} //assigned_by_user_id// : uuid <<FK>>
+    {field} //released_by_user_id// : uuid <<FK>>
+  }
+  entity "vehicle_usage_log" as e_vehicle_usage_log {
+    {field} **log_id** : uuid * <<PK>>
+    {field} //car_id// : uuid * <<FK>>
+  }
+  entity "maintenance_task_attachment" as e_maintenance_task_attachment {
+    {field} **attachment_id** : uuid * <<PK>>
+    {field} //task_id// : uuid * <<FK>>
+    {field} //uploaded_by_user_id// : uuid * <<FK>>
+  }
+  entity "maintenance_window_proposal" as e_maintenance_window_proposal {
+    {field} **proposal_id** : uuid * <<PK>>
+    {field} //task_id// : uuid * <<FK>>
+    {field} //delivery_id// : uuid * <<FK>>
+  }
+}
+package "Posventa" {
+  entity "claims" as e_claims {
+    {field} **claim_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+    {field} //customer_id// : uuid * <<FK>>
+  }
+  entity "incident" as e_incident {
+    {field} **incident_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+    {field} //reported_by// : uuid * <<FK>>
+  }
+  entity "rating" as e_rating {
+    {field} **rating_id** : uuid * <<PK>>
+    {field} //order_id// : uuid * <<FK>>
+    {field} //from_user_id// : uuid * <<FK>>
+    {field} //to_user_id// : uuid * <<FK>>
+    {field} //hidden_by_user_id// : uuid <<FK>>
+  }
+}
+package "Personal" {
+  entity "job_position" as e_job_position {
+    {field} **position_id** : uuid * <<PK>>
+  }
+  entity "attachment" as e_attachment {
+    {field} **attachment_id** : uuid * <<PK>>
+    {field} //uploaded_by_user_id// : uuid * <<FK>>
+  }
+  entity "employee" as e_employee {
+    {field} **employee_id** : uuid * <<PK>>
+    {field} //user_id// : uuid <<FK>>
+    {field} //position_id// : uuid * <<FK>>
+  }
+}
+package "Tablas técnicas" {
+  entity "storage_orphan" as e_storage_orphan {
+    {field} **orphan_id** : uuid * <<PK>>
+  }
+  entity "document_sequence" as e_document_sequence {
+    {field} **distributor_id** : uuid * <<PK>>
+    {field} **doc_type** : varchar(40) * <<PK>>
+  }
+}
+
+e_role |o--o{ e_user
+e_user ||--o| e_admin
+e_user ||--o{ e_attachment
+e_audit_action_type ||--o{ e_audit
+e_user |o--o{ e_audit
+e_user |o--o{ e_audit_log
+e_user ||--o{ e_car
+e_user ||--o{ e_cart
+e_gas_cylinder |o--o{ e_customer
+e_user ||--o| e_customer
+e_user ||--o| e_delivery
+e_job_position ||--o{ e_employee
+e_user |o--o{ e_employee
+e_gas_cylinder ||--o{ e_gas_cylinder_promotion
+e_user |o--o{ e_module_config
+e_user ||--o{ e_user_address
+e_audit ||--o{ e_audit_detail
+e_cart ||--o{ e_cart_item
+e_gas_cylinder ||--o{ e_cart_item
+e_car |o--o{ e_maintenance_task
+e_delivery |o--o{ e_maintenance_task
+e_maintenance_plan ||--o{ e_maintenance_task
+e_user_address ||--o{ e_order
+e_coverage_zone |o--o{ e_order
+e_user ||--o{ e_order
+e_delivery |o--o{ e_order
+e_time_slot |o--o{ e_order
+e_delivery |o--o{ e_route_batch
+e_user |o--o{ e_vehicle_assignment
+e_car ||--o{ e_vehicle_assignment
+e_delivery ||--o{ e_vehicle_assignment
+e_user |o--o{ e_vehicle_assignment
+e_car ||--o{ e_vehicle_usage_log
+e_user ||--o{ e_claims
+e_order ||--o{ e_claims
+e_user |o--o{ e_cylinder
+e_order |o--o{ e_cylinder
+e_gas_cylinder |o--o{ e_cylinder
+e_order ||--o{ e_incident
+e_user ||--o{ e_incident
+e_maintenance_task ||--o{ e_maintenance_task_attachment
+e_user ||--o{ e_maintenance_task_attachment
+e_delivery ||--o{ e_maintenance_window_proposal
+e_maintenance_task ||--o{ e_maintenance_window_proposal
+e_user ||--o{ e_order_address_change
+e_user_address ||--o{ e_order_address_change
+e_order ||--o{ e_order_address_change
+e_user_address ||--o{ e_order_address_change
+e_user ||--o{ e_order_dispatch_offer
+e_order ||--o{ e_order_dispatch_offer
+e_gas_cylinder ||--o{ e_order_item
+e_order ||--o{ e_order_item
+e_user |o--o{ e_order_status_history
+e_order ||--o{ e_order_status_history
+e_order ||--o{ e_payment
+e_user ||--o{ e_rating
+e_user |o--o{ e_rating
+e_order ||--o{ e_rating
+e_user ||--o{ e_rating
+e_user_address |o--o{ e_repurchase_invitation
+e_order |o--o{ e_repurchase_invitation
+e_user ||--o{ e_repurchase_invitation
+e_route_batch ||--o{ e_route_batch_offer
+e_delivery ||--o{ e_route_batch_offer
+e_route_batch ||--o{ e_route_batch_stop
+e_order ||--o{ e_route_batch_stop
+e_cylinder ||--o{ e_cylinder_inspection
+e_user |o--o{ e_cylinder_movement
+e_cylinder ||--o{ e_cylinder_movement
+e_order |o--o{ e_cylinder_movement
+e_cylinder ||--o{ e_cylinder_recovery_case
+e_user |o--o{ e_cylinder_recovery_case
+e_user ||--o{ e_cylinder_recovery_case
+e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice
+
+legend bottom right
+  48 tablas implementadas y 74 relaciones dibujadas.
+  Además, 31 tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.
+  Cada tabla muestra sólo su PK y sus FK; las columnas completas están en la lámina de su contexto
+  y en el diccionario de datos. * = obligatoria.
+endlegend
+@enduml

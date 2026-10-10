@@ -20,7 +20,8 @@ sequenceDiagram
         ORQ->>+PED: esReofertable()
         PED-->>-ORQ: reofertable
         opt El pedido sigue pendiente y sin chofer
-            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+            ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
+            Note over ORQ,PED: Re-oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
         end
     end
     deactivate ORQ
@@ -31,7 +32,8 @@ sequenceDiagram
         ORQ->>+PED: tieneOfertaVigente()
         PED-->>-ORQ: vigente
         opt El pedido no tiene oferta vigente
-            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+            ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
+            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
         end
         deactivate ORQ
     end

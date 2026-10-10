@@ -32,14 +32,14 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity PuestoDeTrabajo <<propuesto>> #E4EDF4;line:1F5E8C {
+entity PuestoDeTrabajo {
   * identificador
   --
   {field} nombre
   {field} categoría
   {field} activo
 }
-entity Empleado <<propuesto>> #E4EDF4;line:1F5E8C {
+entity Empleado {
   * identificador
   --
   {field} legajo
@@ -92,16 +92,37 @@ entity Usuario #F1F1F1 {
 }
 entity TareaMantenimiento #F1F1F1 {
 }
+entity ReglaComision #F1F1F1 {
+}
+entity CargaCombustible #F1F1F1 {
+}
+entity MultaTransito #F1F1F1 {
+}
+entity Siniestro #F1F1F1 {
+}
+entity LiquidacionComisiones #F1F1F1 {
+}
+entity AsientoComision #F1F1F1 {
+}
+entity Chofer #F1F1F1 {
+}
 
 Distribuidora ||--o{ PuestoDeTrabajo : define >
 Distribuidora ||--o{ Empleado : emplea >
-Empleado |o--o| Usuario : accede con >
 Empleado }o--|| PuestoDeTrabajo : ocupa >
+Empleado |o--o| Usuario : accede con >
+ReglaComision }o--o| Empleado : se aplica a >
 Empleado ||--o{ JornadaDeTrabajo : registra >
 Empleado ||--o{ LicenciaLaboral : solicita >
 Usuario |o--o{ LicenciaLaboral : resuelve >
+Empleado |o--o{ CargaCombustible : carga >
 TareaMantenimiento }o--o| Empleado : habilita >
+Empleado |o--o{ MultaTransito : responde por >
+Empleado |o--o{ Siniestro : interviene en >
+Empleado ||--o{ LiquidacionComisiones : percibe >
+Empleado ||--o{ AsientoComision : devenga >
 Empleado ||--o{ Adjunto : conserva >
+Empleado |o--o| Chofer : actúa como >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

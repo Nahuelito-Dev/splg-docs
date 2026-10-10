@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-253 Modificar un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: actualizarRol(rolId, datos)
+    activate SIS
+    alt el rol existe y no es del sistema
+        SIS-->>SUP: rol actualizado
+    else el rol no existe
+        SIS-->>SUP: recurso no encontrado
+    else el rol es uno de los del sistema
+        SIS-->>SUP: conflicto
+    end
+    deactivate SIS

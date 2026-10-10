@@ -4,44 +4,36 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt apertura de la carga
-        ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
-        activate SIS
-        alt el camión está en uso y el depósito tiene las unidades
-            SIS-->>ADM: hoja de carga abierta
-        else el vehículo o el chofer ya tienen una carga abierta
-            SIS-->>ADM: conflicto
-        else el depósito no tiene las unidades
-            SIS-->>ADM: solicitud inválida, con el saldo disponible
-        end
-        deactivate SIS
+    ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+    activate SIS
+    alt el camión está en uso y el depósito tiene las unidades
+        SIS-->>ADM: hoja de carga abierta
+    else el vehículo o el chofer ya tienen una carga abierta
+        SIS-->>ADM: conflicto
+    else el depósito no tiene las unidades
+        SIS-->>ADM: solicitud inválida, con el saldo disponible
     end
+    deactivate SIS
 
-    opt reposición en ruta
-        ADM->>SIS: reponerCargaDelCamion(cargaId, items)
-        activate SIS
-        alt la carga está abierta
-            SIS-->>ADM: hoja de carga actualizada
-        else la carga ya regresó o está cerrada
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
+    ADM->>SIS: reponerCargaDelCamion(cargaId, items)
+    activate SIS
+    alt la carga está abierta
+        SIS-->>ADM: hoja de carga actualizada
+    else la carga ya regresó o está cerrada
+        SIS-->>ADM: conflicto
     end
+    deactivate SIS
 
-    opt cancelación de la carga
-        ADM->>SIS: cancelarCargaDelCamion(cargaId)
-        activate SIS
-        alt la carga todavía no salió
-            SIS-->>ADM: carga cancelada y stock devuelto
-        else la carga ya salió
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
+    ADM->>SIS: cancelarCargaDelCamion(cargaId)
+    activate SIS
+    alt la carga todavía no salió
+        SIS-->>ADM: carga cancelada y stock devuelto
+    else la carga ya salió
+        SIS-->>ADM: conflicto
     end
+    deactivate SIS
 
-    opt consulta de las cargas
-        ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
-        activate SIS
-        SIS-->>ADM: cargas del camión
-        deactivate SIS
-    end
+    ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
+    activate SIS
+    SIS-->>ADM: cargas del camión
+    deactivate SIS

@@ -5,7 +5,7 @@
     python3 material-de-trabajo/renderizar-dsd.py --sitio diagramas/DSD_CU-025_resolverReclamo.mmd
 
 Salida: `diagramas/svg/<nombre>.svg` y `diagramas/png/<nombre>.png` (mermaid-cli, tema
-neutral, fondo transparente, escala 2). El PNG se dibuja al tamaño natural del diagrama:
+neutral, fondo blanco, escala 2). El PNG se dibuja al tamaño natural del diagrama:
 mermaid-cli lo comprime a 800 px de ancho si no se le dice otra cosa, y un diagrama de
 interacción con muchas líneas de vida queda ilegible.
 
@@ -51,7 +51,7 @@ def renderizar(mmd, mmdc, cfg):
     png = D + f"diagramas/png/{base}.png"
     os.makedirs(os.path.dirname(svg), exist_ok=True)
     os.makedirs(os.path.dirname(png), exist_ok=True)
-    base_cmd = [mmdc, "-p", cfg, "-i", mmd, "-t", "neutral", "-b", "transparent", "-q"]
+    base_cmd = [mmdc, "-p", cfg, "-i", mmd, "-t", "neutral", "-b", "white", "-q"]
     subprocess.run(base_cmd + ["-o", svg], check=True)
     vb = re.search(r'viewBox="[-\d.]+ [-\d.]+ ([\d.]+) ([\d.]+)"', open(svg, encoding="utf-8").read())
     lado = int(max(float(vb.group(1)), float(vb.group(2)))) + 1

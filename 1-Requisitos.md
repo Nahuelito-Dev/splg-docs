@@ -12,32 +12,40 @@
 
 ## Índice de Figuras
 
-- Figura 1 — Mapa del sistema: paquetes y actores
+- Figura 1 — Mapa de navegación del sistema (no es un diagrama UML)
 - Figura 2 — Diagrama de contexto del sistema
-- Figura 3 — Diagrama de Casos de Uso del Sistema
-- Figura 4 — Diagrama de Subsistemas
-- Figura 5 — SS-01 Autenticación y Usuarios: casos de uso
-- Figura 6 — SS-02 Gestión de Pedidos: casos de uso
-- Figura 7 — SS-03 Despacho y Asignación: casos de uso
-- Figura 8 — SS-04 Seguimiento en Tiempo Real: casos de uso
-- Figura 9 — SS-05 Reclamos: casos de uso
-- Figura 10 — SS-06 Reportes y Dashboard: casos de uso
-- Figura 11 — SS-07 Gestión de Choferes y Vehículos: casos de uso
-- Figura 12 — SS-08 Gestión de Productos e Inventario: casos de uso
-- Figura 13 — SS-09 Franjas Horarias: casos de uso
-- Figura 14 — SS-10 Multi-Distribuidora: casos de uso
-- Figura 15 — SS-11 Cobertura Geográfica: casos de uso
-- Figura 16 — SS-12 Incidencias y Calidad de Servicio: casos de uso
-- Figura 17 — SS-13 Trazabilidad de Envases: casos de uso
-- Figura 18 — SS-14 Pagos y Conciliación: casos de uso
-- Figura 19 — SS-15 Reservas Programadas: casos de uso
-- Figura 20 — SS-16 Administración de Cuentas y Roles: casos de uso
-- Figura 21 — SS-17 Notificaciones y Mensajería: casos de uso
-- Figura 22 — SS-18 Observabilidad y Operación: casos de uso
-- Figura 23 — SS-19 Personal y Legajos: casos de uso
-- Figura 24 — SS-20 Compras: casos de uso
-- Figura 25 — SS-21 Caja, Rendiciones y Cuentas Corrientes: casos de uso
-- Figura 26 — Actores del sistema y el canal por el que operan
+- Figura 3 — Diagrama de casos de uso, lámina 1 de 6: Usuarios y pedidos
+- Figura 4 — Diagrama de casos de uso, lámina 2 de 6: Despacho, entrega y posventa
+- Figura 5 — Diagrama de casos de uso, lámina 3 de 6: Choferes y flota
+- Figura 6 — Diagrama de casos de uso, lámina 4 de 6: Productos, envases y compras
+- Figura 7 — Diagrama de casos de uso, lámina 5 de 6: Personal y caja
+- Figura 8 — Diagrama de casos de uso, lámina 6 de 6: Administración y plataforma
+- Figura 9 — Diagrama de Casos de Uso del Sistema
+- Figura 10 — Diagrama de Subsistemas
+- Figura 11 — SS-01 Autenticación y Usuarios: casos de uso
+- Figura 12 — SS-02 Gestión de Pedidos: casos de uso
+- Figura 13 — SS-03 Despacho y Asignación: casos de uso
+- Figura 14 — SS-04 Seguimiento en Tiempo Real: casos de uso
+- Figura 15 — SS-05 Reclamos: casos de uso
+- Figura 16 — SS-06 Reportes y Dashboard: casos de uso
+- Figura 17 — SS-07 Gestión de Choferes y Vehículos: casos de uso, choferes (lámina 1 de 3)
+- Figura 18 — SS-07 Gestión de Choferes y Vehículos: casos de uso, vehículos y vencimientos (lámina 2 de 3)
+- Figura 19 — SS-07 Gestión de Choferes y Vehículos: casos de uso, costos, siniestros y adjuntos de flota (lámina 3 de 3)
+- Figura 20 — SS-08 Gestión de Productos e Inventario: casos de uso
+- Figura 21 — SS-09 Franjas Horarias: casos de uso
+- Figura 22 — SS-10 Multi-Distribuidora: casos de uso
+- Figura 23 — SS-11 Cobertura Geográfica: casos de uso
+- Figura 24 — SS-12 Incidencias y Calidad de Servicio: casos de uso
+- Figura 25 — SS-13 Trazabilidad de Envases: casos de uso
+- Figura 26 — SS-14 Pagos y Conciliación: casos de uso
+- Figura 27 — SS-15 Reservas Programadas: casos de uso
+- Figura 28 — SS-16 Administración de Cuentas y Roles: casos de uso
+- Figura 29 — SS-17 Notificaciones y Mensajería: casos de uso
+- Figura 30 — SS-18 Observabilidad y Operación: casos de uso
+- Figura 31 — SS-19 Personal y Legajos: casos de uso
+- Figura 32 — SS-20 Compras: casos de uso
+- Figura 33 — SS-21 Caja, Rendiciones y Cuentas Corrientes: casos de uso
+- Figura 34 — Actores del sistema y el canal por el que operan
 
 ---
 
@@ -70,7 +78,10 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 9 | 2026-10-03 | Casos de uso expandidos CU-176 a CU-194 y CU-246 (módulo de Personal, subsistema SS-19, iteración I-11), requisito de información IRQ-17, relaciones de la ficha del empleado en la tabla maestra y diagrama de casos de uso de SS-19. | Nahuel Wagner |
 | 10 | 2026-10-03 | Casos de uso expandidos CU-195 a CU-206 y CU-247 con estado «Planificado (I-12)», relaciones «include» con CU-113, matriz de rastreabilidad y datos del vehículo, la carga, la multa, el siniestro y el neumático en IRQ-03. La póliza con su detalle y su vigencia se anota en CU-136. | Nahuel Wagner |
 | 11 | 2026-10-03 | Casos de uso expandidos CU-207 a CU-224 y CU-248 a CU-250 (stock, compras y carga del camión, iteración I-13), subsistema SS-20 Compras, requisito de información IRQ-18 y sus filas en la matriz de rastreabilidad y en las relaciones entre casos de uso. | Nahuel Wagner |
-| 12 | 2026-10-03 | Casos de uso expandidos CU-225 a CU-245 (módulo de caja y rendición, SS-21, iteración I-14), requisito de información IRQ-19 y 249 casos de uso. CU-159 y CU-160 pasan a implementados con S3 probado contra MinIO. | Nahuel Wagner |
+| 12 | 2026-10-03 | Casos de uso expandidos CU-225 a CU-245 (módulo de caja y rendición, SS-21, iteración I-14), requisito de información IRQ-19 y los casos de uso hasta CU-250. CU-159 y CU-160 pasan a implementados con S3 probado contra MinIO. | Nahuel Wagner |
+| 13 | 2026-10-06 | Amazon S3 como único proveedor de archivos (bucket privado y URL firmada; sin disco local ni elección de proveedor) en CU-155 a CU-160, CU-174, CU-175 y CU-186. Auditoría de datos —Auditoria, DetalleAuditoria y TipoAccionAuditoria— en CU-152 y CU-153. | Nahuel Wagner |
+| 14 | 2026-10-07 | Casos de uso expandidos CU-251 a CU-272: cada operación de un ABM pasa a ser su propio caso de uso (perfil, roles, puestos, depósitos, proveedores, cajas, categorías, disponibilidad, estado y validación del chofer, productos inactivos, bloqueo y búsqueda de usuarios); los 13 casos que las agrupaban conservan su número y nombran la primera operación. Relaciones «include» de la modificación y de la baja con la consulta de la que parten, en la tabla maestra y en la matriz de rastreabilidad; 271 casos de uso. | Nahuel Wagner |
+| 15 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
 
 ---
 
@@ -115,15 +126,15 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 
 ## 3. Diagrama de Casos de Uso del Sistema
 
-Con 249 casos de uso, un único diagrama con todos ellos no se puede leer en una página. La
+Con 271 casos de uso, un único diagrama con todos ellos no se puede leer en una página. La
 vista principal es por eso el **mapa del sistema** (Figura 1), seguido del **diagrama de
 contexto** (Figura 2, en la sección 3.1). El diagrama con los casos de uso uno por uno
 (Figura 3) se presenta como lámina anexa, y el detalle de cada subsistema está en la
 sección 4.3.
 
-**Figura 1 — Mapa del sistema: paquetes y actores**
+**Figura 1 — Mapa de navegación del sistema (no es un diagrama UML)**
 
-![Mapa del sistema: paquetes y actores](diagramas/uml/CU_Sistema_Mapa.png)
+![Mapa de navegación del sistema (no es un diagrama UML)](diagramas/uml/CU_Sistema_Mapa.png)
 
 > Resumen de una página del sistema: los 21 paquetes con su cantidad de casos de uso y una
 > línea por actor hacia cada paquete en el que participa. Los actores se dibujan fuera del
@@ -168,11 +179,38 @@ acción sobre el mundo físico queda del lado de las personas.
 
 ### 3.2 Diagrama completo de casos de uso (lámina anexa)
 
-**Figura 3 — Diagrama de Casos de Uso del Sistema**
+> El diagrama completo se presenta en 6 láminas legibles, con la misma notación UML: el límite del sistema, los subsistemas como paquetes, los actores fuera del límite (asociación sin punta) y las relaciones `«include»` y `«extend»`. Juntas son el diagrama completo; un caso de uso de otra lámina que se incluye o se extiende aparece en gris, como referencia, con el número de su lámina. Después de las láminas va la vista de conjunto, con todos los casos en una sola lámina.
+
+**Figura 3 — Diagrama de casos de uso, lámina 1 de 6: Usuarios y pedidos**
+
+![Diagrama de casos de uso, lámina 1 de 6: Usuarios y pedidos](diagramas/uml/CU_Sistema_Completo-Lamina-1.png)
+
+**Figura 4 — Diagrama de casos de uso, lámina 2 de 6: Despacho, entrega y posventa**
+
+![Diagrama de casos de uso, lámina 2 de 6: Despacho, entrega y posventa](diagramas/uml/CU_Sistema_Completo-Lamina-2.png)
+
+**Figura 5 — Diagrama de casos de uso, lámina 3 de 6: Choferes y flota**
+
+![Diagrama de casos de uso, lámina 3 de 6: Choferes y flota](diagramas/uml/CU_Sistema_Completo-Lamina-3.png)
+
+**Figura 6 — Diagrama de casos de uso, lámina 4 de 6: Productos, envases y compras**
+
+![Diagrama de casos de uso, lámina 4 de 6: Productos, envases y compras](diagramas/uml/CU_Sistema_Completo-Lamina-4.png)
+
+**Figura 7 — Diagrama de casos de uso, lámina 5 de 6: Personal y caja**
+
+![Diagrama de casos de uso, lámina 5 de 6: Personal y caja](diagramas/uml/CU_Sistema_Completo-Lamina-5.png)
+
+**Figura 8 — Diagrama de casos de uso, lámina 6 de 6: Administración y plataforma**
+
+![Diagrama de casos de uso, lámina 6 de 6: Administración y plataforma](diagramas/uml/CU_Sistema_Completo-Lamina-6.png)
+
+
+**Figura 9 — Diagrama de Casos de Uso del Sistema**
 
 ![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y los 249 casos
+> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y los 271 casos
 > de uso dentro, agrupados en paquetes, con las relaciones `«include»` y `«extend»` entre
 > casos de la lista. El Administrador General especializa al Administrador. Por su tamaño se
 > entrega también en formato vectorial, que permite ampliarla sin pérdida de legibilidad.
@@ -205,7 +243,7 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 | **SS-13** | **Trazabilidad de Envases** | Seguimiento del botellón físico individual por su número de serie a lo largo de todo su ciclo: depósito, carga, despacho, poder del cliente y devolución. |
 | **SS-14** | **Pagos y Conciliación** | Cobro a través de pasarela, registro de cada transacción y procesamiento de los avisos que la pasarela devuelve. |
 | **SS-15** | **Reservas Programadas** | Pedidos concertados para una fecha futura con una seña en garantía, con su activación y su expiración automáticas. |
-| SS-19 | Personal y Legajos | Legajo de cada persona que trabaja en la distribuidora, con o sin cuenta de acceso; puestos; documentación con vencimiento; asistencia y licencias. Planificado (I-11). |
+| SS-19 | Personal y Legajos | Legajo de cada persona que trabaja en la distribuidora, con o sin cuenta de acceso; puestos; documentación con vencimiento; asistencia y licencias. Puestos, legajos, egreso y cuenta de acceso construidos; documentación con vencimiento, asistencia y licencias planificadas (I-11). |
 | **SS-20** | **Compras** | Proveedores, órdenes de compra a las plantas de llenado y recepción de lo comprado, que es lo que hace entrar garrafas llenas al stock. |
 | **SS-21** | **Caja, Rendiciones y Cuentas Corrientes** | Cajas con sesión y arqueo, libro de movimientos, rendición diaria del chofer, cuentas corrientes de clientes y comisiones por entrega con su liquidación. Planificado (I-14). |
 
@@ -225,7 +263,7 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 > El cliente compra un producto pero recibe un envase, y es ese envase concreto el que
 > hay que rastrear.
 
-**Figura 4 — Diagrama de Subsistemas**
+**Figura 10 — Diagrama de Subsistemas**
 
 ![Subsistemas del proyecto](diagramas/uml/CU_Sistema_Subsistemas.png)
 
@@ -238,85 +276,93 @@ Cada subsistema tiene su diagrama de casos de uso, en notación UML: los actores
 
 ![SS-01 Autenticación y Usuarios](diagramas/uml/CU_SS-01_Autenticacion-Y-Usuarios.png)
 
-**Figura 5 — SS-01 Autenticación y Usuarios: casos de uso**
+**Figura 11 — SS-01 Autenticación y Usuarios: casos de uso**
 
 ![SS-02 Gestión de Pedidos](diagramas/uml/CU_SS-02_Gestion-De-Pedidos.png)
 
-**Figura 6 — SS-02 Gestión de Pedidos: casos de uso**
+**Figura 12 — SS-02 Gestión de Pedidos: casos de uso**
 
 ![SS-03 Despacho y Asignación](diagramas/uml/CU_SS-03_Despacho-Y-Asignacion.png)
 
-**Figura 7 — SS-03 Despacho y Asignación: casos de uso**
+**Figura 13 — SS-03 Despacho y Asignación: casos de uso**
 
 ![SS-04 Seguimiento en Tiempo Real](diagramas/uml/CU_SS-04_Seguimiento-En-Tiempo-Real.png)
 
-**Figura 8 — SS-04 Seguimiento en Tiempo Real: casos de uso**
+**Figura 14 — SS-04 Seguimiento en Tiempo Real: casos de uso**
 
 ![SS-05 Reclamos](diagramas/uml/CU_SS-05_Reclamos.png)
 
-**Figura 9 — SS-05 Reclamos: casos de uso**
+**Figura 15 — SS-05 Reclamos: casos de uso**
 
 ![SS-06 Reportes y Dashboard](diagramas/uml/CU_SS-06_Reportes-Y-Dashboard.png)
 
-**Figura 10 — SS-06 Reportes y Dashboard: casos de uso**
+**Figura 16 — SS-06 Reportes y Dashboard: casos de uso**
 
-![SS-07 Gestión de Choferes y Vehículos](diagramas/uml/CU_SS-07_Gestion-De-Choferes-Y-Vehiculos.png)
+![SS-07 Choferes](diagramas/uml/CU_SS-07_Choferes.png)
 
-**Figura 11 — SS-07 Gestión de Choferes y Vehículos: casos de uso**
+**Figura 17 — SS-07 Gestión de Choferes y Vehículos: casos de uso, choferes (lámina 1 de 3)**
+
+![SS-07 Vehículos y vencimientos](diagramas/uml/CU_SS-07_Vehiculos.png)
+
+**Figura 18 — SS-07 Gestión de Choferes y Vehículos: casos de uso, vehículos y vencimientos (lámina 2 de 3)**
+
+![SS-07 Costos, siniestros y adjuntos de flota](diagramas/uml/CU_SS-07_Costos-Siniestros-Y-Adjuntos.png)
+
+**Figura 19 — SS-07 Gestión de Choferes y Vehículos: casos de uso, costos, siniestros y adjuntos de flota (lámina 3 de 3)**
 
 ![SS-08 Gestión de Productos e Inventario](diagramas/uml/CU_SS-08_Gestion-De-Productos.png)
 
-**Figura 12 — SS-08 Gestión de Productos e Inventario: casos de uso**
+**Figura 20 — SS-08 Gestión de Productos e Inventario: casos de uso**
 
 ![SS-09 Franjas Horarias](diagramas/uml/CU_SS-09_Franjas-Horarias.png)
 
-**Figura 13 — SS-09 Franjas Horarias: casos de uso**
+**Figura 21 — SS-09 Franjas Horarias: casos de uso**
 
 ![SS-10 Multi-Distribuidora](diagramas/uml/CU_SS-10_Multi-Distribuidora.png)
 
-**Figura 14 — SS-10 Multi-Distribuidora: casos de uso**
+**Figura 22 — SS-10 Multi-Distribuidora: casos de uso**
 
 ![SS-11 Cobertura Geográfica](diagramas/uml/CU_SS-11_Cobertura-Geografica.png)
 
-**Figura 15 — SS-11 Cobertura Geográfica: casos de uso**
+**Figura 23 — SS-11 Cobertura Geográfica: casos de uso**
 
 ![SS-12 Incidencias y Calidad de Servicio](diagramas/uml/CU_SS-12_Incidencias-Y-Calidad-De-Servicio.png)
 
-**Figura 16 — SS-12 Incidencias y Calidad de Servicio: casos de uso**
+**Figura 24 — SS-12 Incidencias y Calidad de Servicio: casos de uso**
 
 ![SS-13 Trazabilidad de Envases](diagramas/uml/CU_SS-13_Trazabilidad-De-Envases.png)
 
-**Figura 17 — SS-13 Trazabilidad de Envases: casos de uso**
+**Figura 25 — SS-13 Trazabilidad de Envases: casos de uso**
 
 ![SS-14 Pagos y Conciliación](diagramas/uml/CU_SS-14_Pagos-Y-Conciliacion.png)
 
-**Figura 18 — SS-14 Pagos y Conciliación: casos de uso**
+**Figura 26 — SS-14 Pagos y Conciliación: casos de uso**
 
 ![SS-15 Reservas Programadas](diagramas/uml/CU_SS-15_Reservas-Programadas.png)
 
-**Figura 19 — SS-15 Reservas Programadas: casos de uso**
+**Figura 27 — SS-15 Reservas Programadas: casos de uso**
 
 ![SS-16 Administración de Cuentas y Roles](diagramas/uml/CU_SS-16_Administracion-De-Cuentas-Y-Roles.png)
 
-**Figura 20 — SS-16 Administración de Cuentas y Roles: casos de uso**
+**Figura 28 — SS-16 Administración de Cuentas y Roles: casos de uso**
 
 ![SS-17 Notificaciones y Mensajería](diagramas/uml/CU_SS-17_Notificaciones-Y-Mensajeria.png)
 
-**Figura 21 — SS-17 Notificaciones y Mensajería: casos de uso**
+**Figura 29 — SS-17 Notificaciones y Mensajería: casos de uso**
 
 ![SS-18 Observabilidad y Operación](diagramas/uml/CU_SS-18_Observabilidad-Y-Operacion.png)
 
-**Figura 22 — SS-18 Observabilidad y Operación: casos de uso**
+**Figura 30 — SS-18 Observabilidad y Operación: casos de uso**
 
 ![SS-19 Personal y Legajos](diagramas/uml/CU_SS-19_Personal-Y-Legajos.png)
 
-**Figura 23 — SS-19 Personal y Legajos: casos de uso**
+**Figura 31 — SS-19 Personal y Legajos: casos de uso**
 ![SS-20 Compras](diagramas/uml/CU_SS-20_Compras.png)
 
-**Figura 24 — SS-20 Compras: casos de uso**
+**Figura 32 — SS-20 Compras: casos de uso**
 ![SS-21 Caja, Rendiciones y Cuentas Corrientes](diagramas/uml/CU_SS-21_Caja-Rendiciones-Y-Cuentas-Corrientes.png)
 
-**Figura 25 — SS-21 Caja, Rendiciones y Cuentas Corrientes: casos de uso**
+**Figura 33 — SS-21 Caja, Rendiciones y Cuentas Corrientes: casos de uso**
 
 El mapa de una página, el diagrama de contexto y el diagrama completo están en la sección 3; los actores, en la sección 7.1.
 
@@ -344,7 +390,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-05 |
-| **Requisitos asociados** | CU-001, CU-002, CU-003, CU-004 |
+| **Requisitos asociados** | CU-001, CU-002, CU-003, CU-004, CU-251 |
 | **Descripción** | El sistema debe almacenar y gestionar la información de los tres tipos de usuario del sistema. |
 | **Datos específicos** | Nombre completo, email (único), número de teléfono, rol (CLIENTE / CHOFER / ADMIN), fecha de registro, estado activo/inactivo, token de notificación FCM (para clientes), estado de validación (para choferes: `validated`). |
 | **Estabilidad** | Alta |
@@ -364,7 +410,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
-| **Requisitos asociados** | CU-031, CU-032, CU-033, CU-034, CU-035, CU-161, CU-162, CU-163, CU-164, CU-165, CU-195, CU-196, CU-197, CU-198, CU-199, CU-200, CU-201, CU-202, CU-203, CU-204, CU-205, CU-206, CU-247 |
+| **Requisitos asociados** | CU-031, CU-032, CU-033, CU-267, CU-271, CU-034, CU-035, CU-161, CU-162, CU-163, CU-164, CU-165, CU-195, CU-196, CU-197, CU-198, CU-199, CU-200, CU-201, CU-202, CU-203, CU-204, CU-205, CU-206, CU-247 |
 | **Descripción** | El sistema debe registrar los datos del repartidor, su estado operativo, el vehículo asociado y el vehículo que usa en cada momento, con el historial de quién usó cada vehículo. |
 | **Datos específicos** | Datos del usuario (ver IRQ-01). Del perfil Delivery: calificación promedio, balance acumulado, estado de validación (`validated`), estado activo (`isActive`), ubicación GPS actual (almacenada en Redis, no en BD relacional). Del vehículo: tipo (auto / moto / camioneta), patente, marca, modelo, año, color, capacidad de carga. De cada asignación de vehículo: chofer, vehículo, fecha de asignación, fecha de liberación (vacía mientras está en uso), administrador que la hizo, administrador que la cerró y nota. **(Planificado, I-12)** Del vehículo, además: tipo de combustible y capacidad del tanque. De cada carga de combustible: fecha y hora, tipo de combustible, litros, precio por litro, importe, kilometraje, si se llenó el tanque, estación, medio de pago, comprobante y si es anómala. De cada multa de tránsito: fecha de la infracción, jurisdicción, número de acta, infracción, importe, importe con pago voluntario, vencimiento, estado, fecha e importe de pago y si se imputó al chofer. De cada siniestro: fecha, lugar, descripción, heridos, terceros, derrame de gas, denuncia policial, reclamo al seguro, estado, costos y cierre. De cada neumático: serie, marca, medida, costo, estado, posición y movimientos. |
 | **Estabilidad** | Alta |
@@ -374,7 +420,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-06, OBJ-07 |
-| **Requisitos asociados** | CU-036, CU-037, CU-038, CU-039, CU-040, CU-041 |
+| **Requisitos asociados** | CU-036, CU-037, CU-038, CU-039, CU-040, CU-268, CU-269, CU-041 |
 | **Descripción** | El sistema debe almacenar el catálogo de garrafas disponibles con su precio vigente y stock actual. |
 | **Datos específicos** | Tipo de garrafa (ej: "10kg", "15kg", "45kg"), peso, precio de venta vigente, stock disponible, descripción opcional, estado activo/inactivo, promociones por volumen (almacenadas como JSONB: array de `{ quantity: number, discountPercentage: number }`). |
 | **Estabilidad** | Alta |
@@ -512,18 +558,18 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-09 |
-| **Requisitos asociados** | CU-176, CU-177, CU-178, CU-179, CU-180, CU-181, CU-182, CU-183, CU-184, CU-185, CU-186, CU-187, CU-188, CU-189, CU-190, CU-191, CU-192, CU-193, CU-194, CU-246 |
+| **Requisitos asociados** | CU-176, CU-177, CU-178, CU-179, CU-180, CU-181, CU-182, CU-183, CU-184, CU-185, CU-186, CU-187, CU-188, CU-189, CU-190, CU-191, CU-192, CU-193, CU-194, CU-246, CU-255, CU-256, CU-257 |
 | **Descripción** | El sistema debe llevar el legajo de cada persona que trabaja en la distribuidora, tenga o no cuenta de acceso, y su asistencia, sus licencias y la documentación con vencimiento que se le exige según su puesto, para que la distribuidora sepa quién trabaja, quién está presente y quién no está en regla. |
 | **Datos específicos** | Puesto (nombre y categoría); legajo (número, nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, correo personal, contacto de emergencia, fecha de ingreso, modalidad de contratación, estado, fecha y motivo de egreso); cuenta de acceso, si la tiene; jornada (día, ingreso, egreso, origen, nota); licencia (tipo, período, días, estado, motivo, quién y cuándo la resolvió); documentación con vencimiento, como tarea de un plan con dueño empleado; archivos adjuntos con su etiqueta. |
 | **Estabilidad** | Media |
-| **Comentarios** | Planificado (I-11). El documento, el CUIL, el domicilio y el contacto de emergencia son datos personales (Ley 25.326): sólo salen en la ficha y no en los listados. La baja del empleado es el egreso, que conserva el legajo. Una persona que no es chofer ni administrador no tiene cuenta: el sistema no define roles para ella. |
+| **Comentarios** | Puestos y legajos construidos; documentación con vencimiento, asistencia y licencias planificadas (I-11). El documento, el CUIL, el domicilio y el contacto de emergencia son datos personales (Ley 25.326): sólo salen en la ficha y no en los listados. La baja del empleado es el egreso, que conserva el legajo. Una persona que no es chofer ni administrador no tiene cuenta: el sistema no define roles para ella. |
 
 ### IRQ-18 — Información sobre Stock, Compras y Carga del Camión
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
-| **Requisitos asociados** | CU-207, CU-208, CU-209, CU-210, CU-211, CU-212, CU-213, CU-214, CU-215, CU-216, CU-217, CU-218, CU-219, CU-220, CU-221, CU-222, CU-223, CU-224, CU-248, CU-249, CU-250, CU-038, CU-020 |
+| **Requisitos asociados** | CU-207, CU-208, CU-209, CU-210, CU-211, CU-212, CU-213, CU-214, CU-215, CU-216, CU-217, CU-218, CU-219, CU-220, CU-221, CU-222, CU-223, CU-224, CU-248, CU-249, CU-250, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-038, CU-020 |
 | **Descripción** | El sistema debe llevar el stock físico de garrafas por ubicación (depósitos y camiones) y por condición, con el libro de cada movimiento, y reconciliarlo con el stock vendible del catálogo; registrar a los proveedores, las órdenes de compra y las recepciones de lo comprado; y registrar la hoja de carga de cada camión, desde que se carga hasta que se rinde. |
 | **Datos específicos** | De cada depósito: nombre, código (único entre los vigentes de la distribuidora), tipo (depósito o sucursal), dirección, si es el predeterminado y su estado. De cada ubicación de stock: si es un depósito o un vehículo. De cada saldo: tipo de garrafa, condición (llena, vacía o defectuosa) y cantidad, nunca negativa. De cada movimiento, de sólo agregado: tipo de garrafa, cantidad, ubicación y condición de origen y de destino, motivo, documento que lo originó, autor y momento. De cada umbral: depósito, tipo de garrafa, mínimo de llenas y momento del último aviso. De cada ajuste: número correlativo, ubicación, motivo, nota obligatoria y renglones con la diferencia por tipo de garrafa y condición. De cada proveedor: razón social, CUIT (único entre los vigentes), tipo, contacto y plazo de pago. De cada orden de compra: número, proveedor, depósito destino, estado, total y renglones con cantidad, costo unitario, vacíos a canjear y cantidad recibida. De cada recepción: número interno, comprobante del proveedor (único por proveedor), depósito, renglones con las llenas recibidas, los vacíos entregados y el costo, estado de pago y estado. De cada carga de camión: número, vehículo, chofer, ayudante, depósito de salida, día, estado, instantes de apertura, salida, regreso y cierre, renglones con lo cargado, repuesto, declarado, entregado, esperado y la diferencia, y la nota de la diferencia. Del tipo de garrafa: el costo promedio ponderado. |
 | **Estabilidad** | Media |
@@ -534,7 +580,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-07 |
-| **Requisitos asociados** | CU-225 a CU-245 |
+| **Requisitos asociados** | CU-225 a CU-245, CU-264, CU-265 |
 | **Descripción** | El sistema debe llevar el dinero de la distribuidora: las cajas con su saldo y su libro de movimientos, la rendición diaria de lo que cobra cada chofer, las cuentas corrientes de los clientes con crédito y las comisiones que ganan los choferes por entrega, con su liquidación. |
 | **Datos específicos** | Caja — nombre, tipo (efectivo, banco o billetera), saldo y si exige sesión; sesión de caja — apertura, cierre, monto inicial, esperado, contado y diferencia; movimiento de caja — sentido, importe, categoría, medio y origen, de sólo agregar; categoría de caja — ingreso o egreso, de sistema o propia; rendición del chofer — día, pedidos en efectivo, cobros en la calle, gastos, efectivo esperado y declarado, diferencia y su resolución; cuenta corriente — razón social, CUIT, condición fiscal, límite de crédito, plazo de pago, estado y saldo; asiento de cuenta corriente — cargo, pago, nota de crédito o de débito, con su vencimiento; imputación — qué pago cubre qué cargo; regla de comisión — base, valor, alcance y vigencia; asiento de comisión — comisión o deducción, con una copia de la regla; liquidación — período, bruto, deducciones, neto y estado. |
 | **Estabilidad** | Alta |
@@ -545,7 +591,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 ## 7. Requisitos Funcionales — Casos de Uso
 
 Los casos de uso se documentan en dos niveles de detalle. La **descripción de alto
-nivel** de los 249 casos está en el Documento 0 · §7; acá van los **casos de uso
+nivel** de los 271 casos está en el Documento 0 · §7; acá van los **casos de uso
 expandidos**, con la secuencia normal, las excepciones y el resto de los campos. El
 diagrama de secuencia del sistema de cada caso está en el Documento 2 y su diagrama de
 interacción de diseño, en el Documento 3.
@@ -567,7 +613,7 @@ interacción de diseño, en el Documento 3.
 
 ![Actores del sistema y el canal por el que operan](diagramas/uml/CU_Sistema_Actores.png)
 
-**Figura 26 — Actores del sistema y el canal por el que operan**
+**Figura 34 — Actores del sistema y el canal por el que operan**
 
 > Los cuatro actores humanos (Cliente, Chofer, Administrador y Administrador General) operan
 > siempre a través de una aplicación; ninguno accede directamente al backend. El Sistema
@@ -682,7 +728,7 @@ interacción de diseño, en el Documento 3.
 | Campo | Detalle |
 |-------|---------|
 | **Estabilidad** | Alta |
-| **Comentarios** | Este caso de uso no se expande acá. El alta de un chofer la realiza siempre el Administrador y pertenece al subsistema SS-07, por lo que su especificación expandida es canónica en CU-031. El código CU-003 se conserva porque las referencias cruzadas de SS-01 y la matriz de rastreabilidad lo citan. **Planificado (I-11):** el alta de un chofer **incluye CU-177 Registrar el Legajo de un Empleado**: crea el legajo en la misma transacción, o vincula el existente. |
+| **Comentarios** | Este caso de uso no se expande acá. El alta de un chofer la realiza siempre el Administrador y pertenece al subsistema SS-07, por lo que su especificación expandida es canónica en CU-031. El código CU-003 se conserva porque las referencias cruzadas de SS-01 y la matriz de rastreabilidad lo citan. El alta de un chofer **incluye CU-177 Registrar el Legajo de un Empleado**: crea el legajo en la misma transacción, o vincula el existente si el pedido trae `employeeId`. |
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-01, IRQ-03 |
 | **Especificación expandida** | Idéntica a **CU-031**, que **incluye CU-082 Crear Usuario Base** en su paso 6. |
@@ -822,7 +868,7 @@ interacción de diseño, en el Documento 3.
 | **Rendimiento** | La búsqueda del candidato se completa en menos de 500 ms. |
 | **Frecuencia** | Una vez por cada pedido creado, y nuevamente por cada rechazo o vencimiento. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La elegibilidad del chofer (`choferesElegibles`) exige que esté presente en el radar de posiciones, que pertenezca a la distribuidora dueña del pedido, que esté habilitado por el administrador (`isEnabled`) y validado (`validated`), y que pase la regla de flota: sin vehículo en uso (CU-161), o con la licencia o la documentación del vehículo vencida, no se recibe ninguna oferta. La habilitación que otorga el administrador en CU-032 y CU-033 tiene así efecto sobre el despacho. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. Estar presente en el radar significa tener la aplicación abierta y reportando posición, no estar libre. Un chofer "por terminar" es el que ya avisó su llegada al domicilio y sólo le falta la confirmación; considerarlo elegible es deliberado, porque esperar a que confirme deja al pedido siguiente esperando sin motivo. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: un chofer con el legajo egresado, con una licencia aprobada que cubre hoy o con documentación bloqueante vencida no recibe la oferta. 3):** antes de ofrecerle el pedido al chofer, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que tenga una carga de camión abierta si la distribuidora lo exige; el control viene apagado y se prende con CU-249. |
+| **Comentarios** | La elegibilidad del chofer (`choferesElegibles`) exige que esté presente en el radar de posiciones, que pertenezca a la distribuidora dueña del pedido, que esté habilitado por el administrador (`isEnabled`) y validado (`validated`), y que pase la regla de flota: sin vehículo en uso (CU-161), o con la licencia o la documentación del vehículo vencida, no se recibe ninguna oferta. La habilitación que otorga el administrador en CU-032 y CU-033 (y que retira en CU-271 y CU-267) tiene así efecto sobre el despacho. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. Estar presente en el radar significa tener la aplicación abierta y reportando posición, no estar libre. Un chofer "por terminar" es el que ya avisó su llegada al domicilio y sólo le falta la confirmación; considerarlo elegible es deliberado, porque esperar a que confirme deja al pedido siguiente esperando sin motivo. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: un chofer con el legajo egresado, con una licencia aprobada que cubre hoy o con documentación bloqueante vencida no recibe la oferta. 3):** antes de ofrecerle el pedido al chofer, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que tenga una carga de camión abierta si la distribuidora lo exige; el control viene apagado y se prende con CU-249. |
 
 ---
 
@@ -1118,13 +1164,13 @@ respaldado por la lectura del código en poder del cliente.
 ---
 
 
-#### Crítico CU-022 — Activar / Desactivar Disponibilidad (Chofer)
+#### Crítico CU-022 — Activar la Disponibilidad
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El chofer indica si está disponible para recibir pedidos. El sistema asigna el valor recibido a su indicador de actividad y, al ponerse no disponible, lo retira del radar geográfico para que el despacho deje de considerarlo. |
+| **Descripción** | El chofer indica que está disponible para recibir pedidos. El sistema asigna el valor recibido a su indicador de actividad, tras comprobar que esté habilitado y validado. Es la misma operación que desactivarla (CU-266), con el valor de disponibilidad en verdadero. |
 | **Precondición** | El usuario está autenticado con rol de chofer o de administrador y el chofer indicado tiene perfil de repartidor. Un chofer sólo cambia su propia disponibilidad; un administrador, la de los choferes de su distribuidora. Para ponerse disponible, el chofer tiene que estar habilitado por el administrador (CU-033) y validado (CU-032). |
 | **Estado** | Implementado |
 
@@ -1132,15 +1178,14 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El chofer enciende o apaga su disponibilidad desde la pantalla principal de su app. |
-| 2 | La app envía el valor deseado —disponible o no disponible— junto con el identificador del usuario chofer. No se pide alternar el valor actual: se envía el valor que debe quedar. |
+| 1 | El chofer enciende su disponibilidad desde la pantalla principal de su app. |
+| 2 | La app envía el valor deseado —disponible— junto con el identificador del usuario chofer. No se pide alternar el valor actual: se envía el valor que debe quedar. |
 | 3 | El sistema busca el perfil de repartidor de ese usuario. |
-| 4 | Si el valor recibido es disponible, comprueba que el chofer esté habilitado y validado. Asigna a su indicador de actividad el valor recibido y lo guarda. |
-| 5 | Si el chofer pasó a no disponible, lo elimina del radar geográfico por su identificador de usuario, con lo que deja de aparecer en la búsqueda de candidatos del despacho. |
-| 6 | Si pasó a disponible, no hace nada sobre el radar: el chofer reingresa recién cuando su app emite la siguiente posición (CU-017). |
-| 7 | Devuelve el nuevo estado de disponibilidad para que la app lo refleje. |
+| 4 | El sistema comprueba que el chofer esté habilitado y validado, asigna a su indicador de actividad el valor recibido y lo guarda. |
+| 5 | El sistema no hace nada sobre el radar geográfico: el chofer reingresa recién cuando su app emite la siguiente posición (CU-017). |
+| 6 | Devuelve el nuevo estado de disponibilidad para que la app lo refleje. |
 
-**Postcondición:** El indicador de actividad del chofer quedó con el valor enviado. Si quedó no disponible, ya no recibe ofertas de pedidos.
+**Postcondición:** El indicador de actividad del chofer quedó en disponible. Empieza a recibir ofertas de pedidos recién cuando su app emite su primera posición.
 
 **Excepciones**
 
@@ -1148,14 +1193,54 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 2 | Si quien pide es otro chofer, el sistema responde 403 "No podés cambiar la disponibilidad de otro chofer"; si es un cliente, el guard de roles responde 403. |
 | 3 | Si el usuario indicado no tiene perfil de repartidor, o es de otra distribuidora que la del administrador, el sistema informa "Perfil de repartidor no encontrado para este usuario". |
-| 4 | Si el chofer quiere ponerse disponible y está deshabilitado o sin validar, el sistema responde 403 y no cambia nada. Desconectarse se permite siempre. |
+| 4 | Si el chofer está deshabilitado o sin validar, el sistema responde 403 y no cambia nada. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | El cambio de disponibilidad se completa en menos de 1 segundo. |
-| **Frecuencia** | Alta por chofer: varias veces por jornada, al empezar y terminar turno o al hacer una pausa. |
+| **Frecuencia** | Alta por chofer: al empezar el turno o al volver de una pausa. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La operación es del propio chofer, o del administrador sobre los choferes de su distribuidora: el controlador compara el usuario autenticado con el chofer indicado, de modo que un chofer no puede sacar a otro del radar. Ponerse en línea exige habilitación y validación, y desconectarse siempre se permite. Poner el indicador en disponible no reinserta al chofer en el radar: reingresa con la siguiente posición que emita su app (CU-017), y hasta entonces no recibe ofertas. |
+| **Comentarios** | La operación es del propio chofer, o del administrador sobre los choferes de su distribuidora: el controlador compara el usuario autenticado con el chofer indicado, de modo que un chofer no puede cambiar la disponibilidad de otro. Ponerse en línea exige habilitación y validación. Poner el indicador en disponible no reinserta al chofer en el radar: reingresa con la siguiente posición que emita su app (CU-017), y hasta entonces no recibe ofertas. |
+
+---
+
+
+#### Crítico CU-266 — Desactivar la Disponibilidad
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El chofer indica que no está disponible para recibir pedidos. El sistema asigna el valor recibido a su indicador de actividad y lo retira del radar geográfico para que el despacho deje de considerarlo. Es la misma operación que activarla (CU-022), con el valor de disponibilidad en falso. |
+| **Precondición** | El usuario está autenticado con rol de chofer o de administrador y el chofer indicado tiene perfil de repartidor. Un chofer sólo cambia su propia disponibilidad; un administrador, la de los choferes de su distribuidora. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El chofer apaga su disponibilidad desde la pantalla principal de su app. |
+| 2 | La app envía el valor deseado —no disponible— junto con el identificador del usuario chofer. No se pide alternar el valor actual: se envía el valor que debe quedar. |
+| 3 | El sistema busca el perfil de repartidor de ese usuario. |
+| 4 | El sistema asigna a su indicador de actividad el valor recibido y lo guarda; desconectarse se permite siempre, esté habilitado o no. |
+| 5 | El sistema elimina al chofer del radar geográfico por su identificador de usuario, con lo que deja de aparecer en la búsqueda de candidatos del despacho. |
+| 6 | Devuelve el nuevo estado de disponibilidad para que la app lo refleje. |
+
+**Postcondición:** El indicador de actividad del chofer quedó en no disponible y ya no recibe ofertas de pedidos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si quien pide es otro chofer, el sistema responde 403 "No podés cambiar la disponibilidad de otro chofer"; si es un cliente, el guard de roles responde 403. |
+| 3 | Si el usuario indicado no tiene perfil de repartidor, o es de otra distribuidora que la del administrador, el sistema informa "Perfil de repartidor no encontrado para este usuario". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | El cambio de disponibilidad se completa en menos de 1 segundo. |
+| **Frecuencia** | Alta por chofer: al terminar el turno o al hacer una pausa. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La operación es del propio chofer, o del administrador sobre los choferes de su distribuidora: el controlador compara el usuario autenticado con el chofer indicado, de modo que un chofer no puede sacar a otro del radar. Ponerse fuera de línea tiene dos efectos que se mantienen sincronizados: el indicador en la base y la salida del radar geográfico; si sólo se hiciera lo primero, el chofer desconectado seguiría recibiendo ofertas del despacho. |
 
 ---
 #### Crítico CU-021 — Recibir Notificaciones en Tiempo Real
@@ -1239,16 +1324,16 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | El alta se completa en menos de 5 segundos, tiempo dominado por la creación de la cuenta en el proveedor de identidad. |
 | **Frecuencia** | Baja: al incorporar un chofer a la flota. |
 | **Estabilidad** | Alta |
-| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. CU-003 describe el mismo caso visto desde la gestión de usuarios. Planificado (I-11): el alta de un chofer crea también su legajo (CU-177), en la misma transacción. |
+| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. CU-003 describe el mismo caso visto desde la gestión de usuarios. El alta de un chofer crea también su legajo (CU-177), en la misma transacción, o vincula el existente si el pedido trae `employeeId`. |
 
 ---
-#### Crítico CU-032 — Validar / Invalidar Chofer
+#### Crítico CU-032 — Validar un Chofer
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador marca a un chofer como validado o le retira esa marca desde dos operaciones dedicadas del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
+| **Descripción** | El administrador marca a un chofer como validado desde una operación dedicada del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
 | **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
@@ -1256,13 +1341,13 @@ respaldado por la lectura del código en poder del cliente.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a habilitar o deshabilitar: **incluye CU-110 Buscar Chofer por Usuario**. |
-| 2 | Presiona "Validar" o "Invalidar", según corresponda. |
+| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a habilitar: **incluye CU-110 Buscar Chofer por Usuario**. |
+| 2 | Presiona "Validar". |
 | 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el chofer sea de ella. Después busca el perfil de reparto por su identificador y trae al usuario y su rol. |
-| 4 | El sistema fija la marca de validación en verdadero si se validó, o en falso si se invalidó. No la invierte: asigna el valor de la operación elegida. |
+| 4 | El sistema fija la marca de validación en verdadero. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
-**Postcondición:** La marca de validación del chofer quedó actualizada. El chofer validado suma al contador de choferes habilitados del panel de control; el invalidado deja de sumar. **En ningún caso cambia lo que el chofer puede hacer:** si estaba en línea sigue en el radar de asignación, sigue recibiendo ofertas y sigue pudiendo aceptar pedidos.
+**Postcondición:** La marca de validación del chofer quedó en verdadero y suma al contador de choferes habilitados del panel de control. **No cambia lo que el chofer puede hacer:** la validación se exige cuando quiere ponerse en línea (CU-022) y al elegir candidatos en el despacho.
 
 **Excepciones**
 
@@ -1275,9 +1360,49 @@ respaldado por la lectura del código en poder del cliente.
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
-| **Frecuencia** | Baja. Se ejecuta al incorporar un chofer y de manera excepcional al suspenderlo. |
+| **Frecuencia** | Baja. Se ejecuta al incorporar un chofer. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Limitaciones registradas: (a) la marca de validación se exige cuando el chofer quiere ponerse en línea (CU-022) y al elegir candidatos en el despacho, pero no al aceptar un pedido, así que invalidar a un chofer que ya está en línea no interrumpe lo que ya tiene en curso; (b) al invalidar, el sistema no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de estas dos operaciones dedicadas, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación. |
+| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-033 (activación administrativa). Además de la operación dedicada, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación. |
+
+---
+
+
+#### Crítico CU-271 — Invalidar un Chofer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02, OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador retira a un chofer la marca de validado desde una operación dedicada del Panel Web. La marca deja registrada la habilitación administrativa del chofer y alimenta el contador de choferes habilitados del panel de control. **Es un dato declarativo: no condiciona la operación del chofer.** |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer a deshabilitar: **incluye CU-110 Buscar Chofer por Usuario**. |
+| 2 | Presiona "Invalidar". |
+| 3 | Si hay una distribuidora en contexto, el sistema comprueba primero que el chofer sea de ella. Después busca el perfil de reparto por su identificador y trae al usuario y su rol. |
+| 4 | El sistema fija la marca de validación en falso. |
+| 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
+
+**Postcondición:** La marca de validación del chofer quedó en falso y deja de sumar al contador de choferes habilitados del panel de control. **En ningún caso cambia lo que el chofer puede hacer:** si estaba en línea sigue en el radar de asignación, sigue recibiendo ofertas y sigue pudiendo aceptar pedidos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador no es un identificador único válido, el sistema responde 400 antes de llegar al servicio. |
+| 3 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 3 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
+| **Frecuencia** | Baja. Se ejecuta de manera excepcional, al suspender a un chofer. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Operación distinta de CU-022 (disponibilidad que el propio chofer controla desde su app) y de CU-267 (desactivación administrativa). Limitaciones registradas: (a) la marca de validación se exige cuando el chofer quiere ponerse en línea (CU-022) y al elegir candidatos en el despacho, pero no al aceptar un pedido, así que invalidar a un chofer que ya está en línea no interrumpe lo que ya tiene en curso; (b) al invalidar, el sistema no lo saca del conjunto geoespacial que alimenta el radar, de modo que el chofer invalidado permanece ahí hasta que él mismo se ponga fuera de línea; (c) el sistema no verifica si el chofer tiene una entrega en curso antes de invalidarlo; (d) además de la operación dedicada, la actualización general del perfil de chofer (`PATCH /delivery/:id`, CU-096) también cambia la marca de validación, con las mismas reglas: exige rol administrador, el de empresa sólo llega a los choferes de su distribuidora, y el cuerpo no admite otros campos que la validación. |
 
 ---
 
@@ -1320,7 +1445,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura de unicidad y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Muy baja. El catálogo de tipos de garrafa es estable en el tiempo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El control de tipo duplicado no distingue producto activo de producto dado de baja; como CU-040 tampoco ofrece reactivación, dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. |
+| **Comentarios** | El control de tipo duplicado no distingue producto activo de producto dado de baja; como CU-040 no ofrece reactivación (CU-268, planificada en I-1), dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. |
 
 ---
 
@@ -2067,13 +2192,13 @@ respaldado por la lectura del código en poder del cliente.
 ---
 
 
-#### Importante CU-004 — Gestionar Perfil de Usuario
+#### Importante CU-004 — Consultar el Perfil de Usuario
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El usuario actualiza datos de su perfil —nombre completo, número de teléfono y foto— desde la sección "Mi Perfil" de su app. El sistema comprueba que solo se modifique a sí mismo y descarta cualquier campo fuera de esos tres. Los cambios se persisten de inmediato. |
+| **Descripción** | El usuario consulta los datos de su perfil —nombre completo, correo, número de teléfono, foto, rol y, si es cliente, su ficha de cliente con sus direcciones— desde la sección "Mi Perfil" de su app. Quien no es administrador sólo accede a lo suyo; un administrador accede a los usuarios de su distribuidora. Endpoints: `GET /users/:id` y `GET /customers/user/:userId`. |
 | **Precondición** | El usuario está autenticado en la app que le corresponde. |
 | **Estado** | Implementado |
 
@@ -2082,6 +2207,48 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario accede a "Mi Perfil" desde el menú principal de su app. |
+| 2 | La app envía `GET /users/:id` con el identificador del propio usuario. |
+| 3 | El sistema comprueba que el identificador indicado sea el del usuario autenticado. Un administrador puede consultar a los usuarios de su distribuidora; el resto, solo a sí mismo. |
+| 4 | El sistema busca al usuario con su rol, su perfil de cliente o de chofer, sus vehículos y sus direcciones, y devuelve sus datos. |
+| 5 | Si el usuario es cliente, la app envía además `GET /customers/user/:userId` y el sistema devuelve la ficha del cliente con su usuario y sus direcciones. |
+| 6 | La app muestra el perfil. |
+
+**Postcondición:** La app muestra los datos vigentes del usuario. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador indicado no es el del usuario autenticado y este no es administrador, el sistema deniega la consulta con "No podés ver a otro usuario" (error 403). |
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si el usuario no existe, o es de otra distribuidora que la del administrador, el sistema retorna error 404. |
+| 5 | Si la cuenta no tiene ficha de cliente, el sistema retorna error 404 "Customer for user ID: … not found"; si la ficha es de otro cliente, error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | La consulta del perfil se completa en menos de 1 segundo. |
+| **Frecuencia** | Media: cada vez que el usuario abre "Mi Perfil". |
+| **Estabilidad** | Alta |
+| **Comentarios** | El perfil está partido en dos agregados: los datos de identidad viven en `User` y los datos de cliente en `Customer`, y los dos lados aplican la misma política anti-IDOR. Es la consulta de la que parte la modificación del perfil (CU-251). |
+
+---
+
+
+#### Importante CU-251 — Modificar el Perfil de Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-01, OBJ-02 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El usuario actualiza datos de su perfil —nombre completo, número de teléfono y foto— desde la sección "Mi Perfil" de su app. El sistema comprueba que solo se modifique a sí mismo y descarta cualquier campo fuera de esos tres. Los cambios se persisten de inmediato. Endpoint: `PATCH /users/:id`. |
+| **Precondición** | El usuario está autenticado en la app que le corresponde. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El usuario accede a "Mi Perfil" desde el menú principal de su app: **incluye CU-004 Consultar el Perfil de Usuario**, la consulta de la que parte la edición. |
 | 2 | Edita su nombre completo, su número de teléfono o su foto de perfil. |
 | 3 | Presiona "Guardar cambios". |
 | 4 | La app envía la modificación indicando el identificador del propio usuario junto con los campos editados. |
@@ -2395,7 +2562,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-06 |
-| **Descripción** | El cliente sube una imagen JPG, PNG o WEBP de hasta 10 MB que respalda su reclamo; el tipo se valida por el contenido del archivo y no por lo que declara el cliente. El sistema la guarda por el mismo puerto de almacenamiento que los adjuntos de flota y deja la referencia en el reclamo. El reclamo tiene una única fotografía: subir otra reemplaza la anterior, y sólo se puede subir o reemplazar mientras el reclamo no esté resuelto ni rechazado. El personal puede adjuntarla en nombre del cliente, para soporte. |
+| **Descripción** | El cliente sube una imagen JPG, PNG o WEBP de hasta 10 MB que respalda su reclamo; el tipo se valida por el contenido del archivo y no por lo que declara el cliente. El sistema la guarda en Amazon S3, en un bucket privado, igual que los adjuntos de flota, y deja la referencia en el reclamo. El reclamo tiene una única fotografía: subir otra reemplaza la anterior, y sólo se puede subir o reemplazar mientras el reclamo no esté resuelto ni rechazado. El personal puede adjuntarla en nombre del cliente, para soporte. |
 | **Precondición** | El solicitante está autenticado como cliente, Administrador o Administrador General. El reclamo existe; si lo adjunta un cliente, es suyo; si lo adjunta personal, pertenece a su distribuidora, y el Administrador General la indica con el encabezado `X-Distributor`. |
 | **Estado** | Implementado |
 
@@ -2407,11 +2574,11 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | La App Cliente envía `POST /claims/:id/photo` con el archivo en un formulario multipart. |
 | 3 | El sistema comprueba que el reclamo exista y que el solicitante pueda modificarlo. |
 | 4 | El sistema comprueba que venga un archivo, que sea una imagen JPG, PNG o WEBP —según su contenido— y que no supere 10 MB, y que el reclamo no esté resuelto ni rechazado. |
-| 5 | El sistema reserva la clave de la imagen y la guarda en el almacenamiento —**incluye CU-159 Almacenar Archivo**— bajo una clave que incluye la distribuidora y el reclamo, no el nombre original. |
-| 6 | El sistema guarda la clave en el reclamo y, si ya tenía una fotografía, borra la anterior del almacenamiento. |
+| 5 | El sistema reserva la clave de la imagen y la sube a S3 —**incluye CU-159 Almacenar Archivo**— bajo una clave que incluye la distribuidora y el reclamo, no el nombre original. |
+| 6 | El sistema guarda la clave en el reclamo y, si ya tenía una fotografía, anota la anterior para borrarla de S3 en segundo plano. |
 | 7 | El sistema devuelve el reclamo actualizado. |
 
-**Postcondición:** El reclamo tiene una única fotografía, cuya referencia es la clave guardada. La fotografía anterior, si la había, ya no está en el almacenamiento.
+**Postcondición:** El reclamo tiene una única fotografía, cuya referencia es la clave guardada. La fotografía anterior, si la había, queda anotada para borrarse de S3.
 
 **Excepciones**
 
@@ -2422,14 +2589,14 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | Si el tipo del archivo no es JPG, PNG ni WEBP, o su contenido no coincide con el tipo declarado, el sistema responde 415. |
 | 4 | Si el archivo supera 10 MB, el sistema responde 413. |
 | 4 | Si el reclamo está resuelto o rechazado, el sistema responde 409: hay que reabrirlo antes. |
-| 6 | Si falla guardar la referencia en la base, el sistema borra la imagen recién subida: no queda un archivo sin reclamo. |
+| 6 | Si falla guardar la referencia en la base, el sistema borra de S3 la imagen recién subida: no queda un archivo sin reclamo. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura, una escritura al almacenamiento y una a la base. Depende del tamaño de la imagen. |
+| **Rendimiento** | Una lectura, una escritura a S3 y una a la base. Depende del tamaño de la imagen. |
 | **Frecuencia** | Media: acompaña la frecuencia de los reclamos que llevan evidencia. |
 | **Estabilidad** | Media |
-| **Comentarios** | El alta del reclamo (CU-023) recibe la fotografía como una dirección de texto (`photoUrl`); este caso es el camino para subir la imagen. Al subirla, el reclamo guarda la clave del almacenamiento (`photo_key`) y deja `photoUrl` vacío; la consulta (CU-175) la resuelve. Si el reclamo ya tenía fotografía, la anterior se anota en la cola de archivos pendientes de borrar (`storage_orphan`) en la misma transacción y se borra en segundo plano; una subida abandonada la limpia una tarea horaria. El reclamo admite una sola fotografía, como el modelo. El límite de 10 MB y los tres formatos son los del sistema; el adjunto de flota (CU-155) admite también PDF. |
+| **Comentarios** | El alta del reclamo (CU-023) recibe la fotografía como una dirección de texto (`photoUrl`); este caso es el camino para subir la imagen. Al subirla, el reclamo guarda la clave del objeto en S3 (`photo_key`) y deja `photoUrl` vacío; la consulta (CU-175) la resuelve. Si el reclamo ya tenía fotografía, la anterior se anota en la cola de archivos pendientes de borrar (`storage_orphan`) en la misma transacción y se borra en segundo plano; una subida abandonada la limpia una tarea horaria. El reclamo admite una sola fotografía, como el modelo. El límite de 10 MB y los tres formatos son los del sistema; el adjunto de flota (CU-155) admite también PDF. |
 
 ---
 
@@ -2439,7 +2606,7 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-06 |
-| **Descripción** | El usuario abre la fotografía de un reclamo desde su detalle. El sistema comprueba que pueda verlo, la recupera del almacenamiento —redirige a una URL firmada de corta duración o sirve el archivo, según el adaptador activo— y la devuelve con su tipo original. |
+| **Descripción** | El usuario abre la fotografía de un reclamo desde su detalle. El sistema comprueba que pueda verlo, la recupera de S3: redirige a una URL firmada de corta duración, con la que el archivo se baja directo del bucket privado, con su tipo original. |
 | **Precondición** | El solicitante está autenticado como cliente (sólo sus reclamos), Administrador o Administrador General (los de su distribuidora). El reclamo existe; puede estar abierto o cerrado. |
 | **Estado** | Implementado |
 
@@ -2450,9 +2617,9 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El usuario abre el detalle del reclamo —el administrador desde **CU-024 Listar Reclamos**— y elige ver la fotografía. |
 | 2 | La aplicación envía `GET /claims/:id/photo`. |
 | 3 | El sistema comprueba que el reclamo exista y que el solicitante pueda verlo. |
-| 4 | El sistema determina de dónde sale la fotografía: la que el reclamo tiene guardada en el almacenamiento o, si sólo tiene la dirección externa del alta, esa dirección. |
-| 5 | El sistema recupera la imagen del almacenamiento —**incluye CU-160 Recuperar Archivo**—. |
-| 6 | Por omisión, con S3 el sistema redirige (302) a una URL firmada de corta duración y, con el disco local, devuelve el archivo con su tipo original. Con `?modo=url` responde 200 con `{ url, expiresAt, requiresAuth }`: la URL firmada si el reclamo tiene fotografía propia, la dirección externa si sólo tiene esa, o `url: null` si no tiene ninguna. |
+| 4 | El sistema determina de dónde sale la fotografía: la que el reclamo tiene guardada en S3 o, si sólo tiene la dirección externa del alta, esa dirección. |
+| 5 | El sistema obtiene la URL firmada de la imagen —**incluye CU-160 Recuperar Archivo**—. |
+| 6 | Por omisión, el sistema redirige (302) a la URL firmada de corta duración; si el reclamo sólo tiene la dirección externa del alta, redirige a esa dirección. Con `?modo=url` responde 200 con `{ url, expiresAt, requiresAuth }`: la URL firmada si el reclamo tiene fotografía propia, la dirección externa si sólo tiene esa, o `url: null` si no tiene ninguna. |
 
 **Postcondición:** Ninguna: es una consulta de sólo lectura. El solicitante ve la fotografía.
 
@@ -2461,15 +2628,15 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el reclamo no existe, es de otro cliente o es de otra distribuidora, el sistema responde 404 "Reclamo no encontrado", sin distinguir los casos. |
-| 4 | Con `?modo=url`, si el reclamo no tiene fotografía el sistema responde 200 con `url: null`; sólo responde 404 si el reclamo no existe. |
-| 5 | Si la fotografía es una dirección externa registrada con el alta (CU-023), el sistema la entrega tal cual, sin pasar por el almacenamiento. |
+| 4 | Con `?modo=url`, si el reclamo no tiene fotografía el sistema responde 200 con `url: null`; sólo responde 404 si el reclamo no existe. Sin `?modo=url`, si el reclamo no tiene ninguna fotografía, responde 404. |
+| 5 | Si la fotografía es una dirección externa registrada con el alta (CU-023), el sistema la entrega tal cual, sin pasar por S3. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura del reclamo y una del almacenamiento. Con S3 el archivo no pasa por el servidor. |
+| **Rendimiento** | Una lectura del reclamo y la firma de la URL, que no consulta a S3. El archivo no pasa por el servidor: lo baja el cliente directo de S3. |
 | **Frecuencia** | Media: cada vez que se revisa un reclamo con evidencia. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es la contracara de CU-174 y sigue el mismo diseño que la descarga de adjuntos de flota (CU-157): la referencia guardada en el reclamo es una clave, no una dirección, de modo que la dirección que ve el usuario es temporal y no se puede compartir indefinidamente. Los reclamos registrados con una dirección de imagen en texto, desde el alta, devuelven esa dirección tal cual. El detalle del reclamo trae además `photoUrl` con la URL firmada vigente cuando la fotografía está guardada en el almacenamiento. |
+| **Comentarios** | Es la contracara de CU-174 y sigue el mismo diseño que la descarga de adjuntos de flota (CU-157): la referencia guardada en el reclamo es una clave, no una dirección, de modo que la dirección que ve el usuario es temporal y no se puede compartir indefinidamente. Los reclamos registrados con una dirección de imagen en texto, desde el alta, devuelven esa dirección tal cual. El detalle del reclamo trae además `photoUrl` con la URL firmada vigente cuando la fotografía está guardada en S3. |
 
 ---
 
@@ -2670,13 +2837,13 @@ respaldado por la lectura del código en poder del cliente.
 | **Comentarios** | El sistema no informa la cantidad de pedidos por día: la serie trae únicamente el importe vendido, con lo que no se puede distinguir un día de pocas ventas grandes de uno de muchas ventas chicas. El sistema no permite elegir la cantidad de días de la ventana. El corte de los días se hace en hora argentina (America/Argentina/Buenos_Aires) tanto en el agrupamiento que resuelve la base sobre la fecha de entrega como en el relleno de los días sin ventas, de modo que los bordes de cada día coinciden sin importar la zona horaria del servidor. |
 
 ---
-#### Importante CU-033 — Activar / Desactivar Chofer (Admin)
+#### Importante CU-033 — Activar un Chofer
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022). |
+| **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer en verdadero. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022) y es la misma que desactivarlo (CU-267), con el valor en verdadero. |
 | **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
 | **Estado** | Implementado |
 
@@ -2685,12 +2852,53 @@ respaldado por la lectura del código en poder del cliente.
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer: **incluye CU-110 Buscar Chofer por Usuario**. |
-| 2 | Elige activarlo o desactivarlo. |
-| 3 | El panel envía el valor deseado del estado de actividad, verdadero o falso. El cuerpo se valida con `ToggleDeliveryStatusDto`, que exige un valor sí/no. |
-| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. Si el valor es falso, también lo deja fuera de línea y lo saca del radar de despacho. |
+| 2 | Elige activarlo. |
+| 3 | El panel envía el valor verdadero del estado de actividad. El cuerpo se valida con `ToggleDeliveryStatusDto`, que exige un valor sí/no. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. |
 | 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
 
-**Postcondición:** La habilitación del chofer quedó en el valor indicado. Deshabilitado, el chofer ya no puede aceptar pedidos: la aceptación se rechaza con "El repartidor está deshabilitado". Además queda fuera de línea y sale del radar de asignación, de modo que el despacho deja de ofrecerle pedidos.
+**Postcondición:** La habilitación del chofer quedó en verdadero: puede aceptar pedidos y ponerse en línea desde su app (CU-022). Su disponibilidad no cambia: reingresa al radar de asignación recién cuando él mismo se ponga en línea.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador del chofer no es un identificador único válido, el sistema responde 400. |
+| 3 | Si el estado de actividad falta o no es verdadero o falso, el sistema responde 400 "isEnabled tiene que ser true o false"; si se envía una propiedad no declarada, también responde 400. En los dos casos el perfil no se toca. |
+| 4 | Si no existe un chofer con ese identificador, el sistema responde 404. |
+| 4 | Si el chofer pertenece a otra distribuidora que la del administrador, el sistema responde 404, sin revelar que existe. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
+| **Frecuencia** | Baja. Suspensiones operativas puntuales y su levantamiento. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Este estado se cambia únicamente por esta operación y por su inversa (CU-267): la actualización general del perfil de chofer (CU-096) sólo admite la marca de validación. |
+
+---
+
+
+#### Importante CU-267 — Desactivar un Chofer
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-02, OBJ-05 |
+| **Requisitos asociados** | IRQ-03 |
+| **Descripción** | El administrador fija desde el Panel Web el estado de actividad de un chofer en falso. Es la única marca del chofer que el sistema consulta efectivamente: un chofer inactivo no puede aceptar un pedido. La operación es independiente del interruptor de disponibilidad que el propio chofer maneja desde su app (CU-022) y es la misma que activarlo (CU-033), con el valor en falso. |
+| **Precondición** | El administrador está autenticado. El chofer existe en el sistema y, si hay una distribuidora en contexto, pertenece a ella. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Choferes" en el Panel Web y selecciona el chofer: **incluye CU-110 Buscar Chofer por Usuario**. |
+| 2 | Elige desactivarlo. |
+| 3 | El panel envía el valor falso del estado de actividad. El cuerpo se valida con `ToggleDeliveryStatusDto`, que exige un valor sí/no. |
+| 4 | Si hay una distribuidora en contexto, el sistema comprueba que el chofer sea de ella. Después busca el perfil de reparto y le **asigna** el valor recibido. No invierte el estado anterior. Como el valor es falso, también lo deja fuera de línea y lo saca del radar de despacho. |
+| 5 | El sistema persiste el cambio y devuelve el perfil actualizado. |
+
+**Postcondición:** La habilitación del chofer quedó en falso. Deshabilitado, el chofer ya no puede aceptar pedidos: la aceptación se rechaza con "El repartidor está deshabilitado". Además queda fuera de línea y sale del radar de asignación, de modo que el despacho deja de ofrecerle pedidos.
 
 **Excepciones**
 
@@ -2706,7 +2914,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura y una escritura sobre la tabla de choferes; se resuelve en menos de un segundo. |
 | **Frecuencia** | Baja. Suspensiones operativas puntuales. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Al desactivar, el sistema deja al chofer fuera de línea y lo saca del radar de despacho, de modo que deja de recibir ofertas. Limitación registrada: el sistema no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar. Este estado se cambia únicamente por esta operación: la actualización general del perfil de chofer (CU-096) sólo admite la marca de validación. |
+| **Comentarios** | Al desactivar, el sistema deja al chofer fuera de línea y lo saca del radar de despacho, de modo que deja de recibir ofertas; no puede volver a ponerse en línea desde su app hasta que un administrador lo active (CU-033). Limitación registrada: el sistema no verifica si el chofer tiene una entrega en curso antes de desactivarlo, de modo que un pedido aceptado puede quedar en manos de un chofer que ya no puede operar. |
 
 ---
 
@@ -2833,15 +3041,15 @@ respaldado por la lectura del código en poder del cliente.
 ---
 
 
-#### Importante CU-040 — Activar / Desactivar Producto
+#### Importante CU-040 — Desactivar un Producto
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-04 |
-| **Descripción** | El administrador retira un producto del catálogo de su distribuidora mediante una baja lógica. El producto deja de figurar en el listado de catálogo y en el de productos disponibles, y por lo tanto no puede seleccionarse en nuevos pedidos. El stock y el resto de los datos se conservan intactos. |
+| **Descripción** | El administrador retira un producto del catálogo de su distribuidora mediante una baja lógica. El producto deja de figurar en el listado de catálogo y en el de productos disponibles, y por lo tanto no puede seleccionarse en nuevos pedidos. El stock y el resto de los datos se conservan intactos. Endpoint: `DELETE /gascylinder/:id`. |
 | **Precondición** | El administrador está autenticado, tiene una distribuidora en contexto y el producto pertenece a esa distribuidora. |
-| **Estado** | Implementado, con funcionalidad planificada (I-1): la reactivación de un producto dado de baja y el listado de productos inactivos. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -2853,13 +3061,8 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | El sistema **asigna** el estado inactivo al producto. No invierte el estado anterior: siempre lo deja inactivo. |
 | 5 | El sistema persiste el cambio y devuelve la confirmación de la desactivación con el identificador del producto. |
 | 6 | El catálogo de la App Cliente deja de incluir el producto en su siguiente consulta. |
-| 7 | **(Planificado, I-1)** Para reactivar un producto, el administrador activa en el listado del catálogo el filtro de productos dados de baja (`GET /gascylinder/inactive`) y selecciona el producto: **incluye CU-041 Consultar Catálogo de Productos**. |
-| 8 | **(Planificado, I-1)** Confirma la reactivación (`PATCH /gascylinder/:id/activate`). |
-| 9 | **(Planificado, I-1)** El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador. |
-| 10 | **(Planificado, I-1)** El sistema **asigna** el estado activo al producto: no invierte el estado anterior, siempre lo deja activo. |
-| 11 | **(Planificado, I-1)** El catálogo de la App Cliente vuelve a incluir el producto en su siguiente consulta. |
 
-**Postcondición:** El producto quedó inactivo y no es visible en el catálogo del cliente ni seleccionable en nuevos pedidos. El stock y el historial se conservan. Los pedidos ya creados con ese producto no se ven afectados. **(Planificado, I-1)** Tras la reactivación, el producto vuelve a ser visible y seleccionable, con su stock y sus promociones intactos.
+**Postcondición:** El producto quedó inactivo y no es visible en el catálogo del cliente ni seleccionable en nuevos pedidos. El stock y el historial se conservan. Los pedidos ya creados con ese producto no se ven afectados.
 
 **Excepciones**
 
@@ -2867,14 +3070,88 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 3 | Si el producto no existe, o pertenece a otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos. |
-| 9 | **(Planificado, I-1)** Si el producto no existe o es de otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos; si ya estaba activo, responde igual con el producto sin cambios. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una verificación de pertenencia y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema ofrece la desactivación; la reactivación y el listado de productos dados de baja están planificados (I-1). El atributo `isActive` no forma parte de los datos que aceptan el alta ni la modificación y la validación global rechaza toda propiedad no declarada, de modo que un producto desactivado no vuelve al catálogo sin intervención directa sobre la base. El listado administrativo filtra siempre por producto activo (CU-041), así que el administrador no puede ni ubicarlo, y como el control de tipo duplicado (CU-036) no distingue activo de inactivo, el nombre de tipo del producto dado de baja queda bloqueado para esa distribuidora hasta que se lo reactive. La reactivación se ofrece como operación propia y no como campo de la modificación, para que dar de baja y reactivar sean dos intenciones distintas y explícitas. Reactivar y listar los inactivos son dos piezas de la misma funcionalidad. |
+| **Comentarios** | El atributo `isActive` no forma parte de los datos que aceptan el alta ni la modificación y la validación global rechaza toda propiedad no declarada, de modo que un producto desactivado no vuelve al catálogo sin la reactivación (CU-268), que está planificada (I-1). El listado administrativo filtra siempre por producto activo (CU-041), así que mientras no exista el listado de inactivos (CU-269) el administrador no puede ni ubicarlo, y como el control de tipo duplicado (CU-036) no distingue activo de inactivo, el nombre de tipo del producto dado de baja queda bloqueado para esa distribuidora hasta que se lo reactive. |
+
+---
+
+
+#### Importante CU-268 — Reactivar un Producto
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-04 |
+| **Descripción** | El administrador devuelve al catálogo de su distribuidora un producto que había dado de baja (CU-040). La reactivación es una operación propia y no un campo de la modificación, para que dar de baja y reactivar sean dos intenciones distintas y explícitas. Endpoint: `PATCH /gascylinder/:id/activate`. |
+| **Precondición** | El administrador está autenticado, tiene una distribuidora en contexto y el producto dado de baja pertenece a esa distribuidora. |
+| **Estado** | Planificado (I-1). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Productos" en el Panel Web, activa el filtro de productos dados de baja y selecciona el producto: **incluye CU-269 Consultar los Productos Inactivos**, el listado del que sale. |
+| 2 | Confirma la reactivación (`PATCH /gascylinder/:id/activate`). |
+| 3 | El sistema verifica que el producto exista y pertenezca a la distribuidora del administrador. |
+| 4 | El sistema **asigna** el estado activo al producto: no invierte el estado anterior, siempre lo deja activo. |
+| 5 | El catálogo de la App Cliente vuelve a incluir el producto en su siguiente consulta. |
+
+**Postcondición:** El producto vuelve a ser visible y seleccionable, con su stock y sus promociones intactos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
+| 3 | Si el producto no existe o es de otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos; si ya estaba activo, responde igual con el producto sin cambios. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una verificación de pertenencia y una escritura; se resuelve en menos de un segundo. |
+| **Frecuencia** | Muy baja. |
+| **Estabilidad** | Alta |
+| **Comentarios** | `isActive` no está expuesto en el alta ni en la modificación del producto y el `ValidationPipe` global corre con `whitelist` y `forbidNonWhitelisted`, de modo que mandar `isActive` en el `PATCH` de modificación devuelve 400: por eso la reactivación es una operación propia. La búsqueda por identificador no filtra por activo, de modo que la reactivación encuentra el producto dado de baja. |
+
+---
+
+
+#### Importante CU-269 — Consultar los Productos Inactivos
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-04 |
+| **Descripción** | El administrador lista los productos de su distribuidora que fueron dados de baja (CU-040), que el listado del catálogo (CU-041) no muestra porque filtra siempre por producto activo. Endpoint: `GET /gascylinder/inactive`. |
+| **Precondición** | El administrador está autenticado y tiene una distribuidora en contexto. |
+| **Estado** | Planificado (I-1). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador accede a "Productos" en el Panel Web y activa el filtro de productos dados de baja. |
+| 2 | El panel envía `GET /gascylinder/inactive`. |
+| 3 | El sistema devuelve los productos inactivos de la distribuidora del administrador. |
+
+**Postcondición:** El administrador ve los productos dados de baja de su distribuidora. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura filtrada por distribuidora y por producto inactivo; se resuelve en menos de un segundo. |
+| **Frecuencia** | Muy baja. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parte la reactivación (CU-268): sin él el administrador no tiene cómo conocer el identificador de un producto dado de baja. |
 
 ---
 #### Importante CU-042 — Crear Franja Horaria
@@ -3801,13 +4078,13 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 ---
 
 
-#### Secundario CU-050 — Bloquear / Desbloquear Usuario
+#### Secundario CU-050 — Bloquear un Usuario
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador marca o desmarca a un usuario —cliente o chofer— como bloqueado desde el Panel Web, por motivos de moderación o seguridad. La operación es un interruptor bidireccional: la misma llamada bloquea o desbloquea según el valor enviado. |
+| **Descripción** | El administrador marca a un usuario —cliente o chofer— como bloqueado desde el Panel Web, por motivos de moderación o seguridad. La llamada es la misma que la de desbloquearlo (CU-270): bloquea o desbloquea según el valor enviado, que acá es verdadero. |
 | **Precondición** | El administrador está autenticado con rol ADMIN o SUPER_ADMIN. El usuario destino existe. |
 | **Estado** | Implementado |
 
@@ -3815,15 +4092,15 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el listado de usuarios en el Panel Web y selecciona un cliente o un chofer: **incluye CU-083 Buscar y Listar Usuarios**, la búsqueda de la que sale el usuario objetivo. |
-| 2 | Elige la acción "Bloquear" o "Desbloquear". |
-| 3 | El panel envía la solicitud sobre el usuario indicado con el valor booleano correspondiente. |
+| 1 | El administrador abre el listado de usuarios en el Panel Web y selecciona un cliente o un chofer: **incluye CU-083 Listar los Usuarios**, el listado del que sale el usuario objetivo. |
+| 2 | Elige la acción "Bloquear". |
+| 3 | El panel envía la solicitud sobre el usuario indicado con el valor booleano verdadero. |
 | 4 | El sistema verifica el rol del solicitante y busca el usuario por su identificador. |
 | 5 | El sistema escribe el campo de bloqueo con el valor recibido y persiste el usuario. |
 | 6 | El sistema devuelve el identificador, el email, el estado de bloqueo resultante y un mensaje de confirmación. |
 | 7 | El panel refresca el listado mostrando el nuevo estado. |
 
-**Postcondición:** El campo de bloqueo del usuario quedó con el valor indicado por el administrador. La operación es reversible enviando el valor contrario.
+**Postcondición:** El campo de bloqueo del usuario quedó en verdadero. La operación es reversible con CU-270.
 
 **Excepciones**
 
@@ -3838,7 +4115,49 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | **Rendimiento** | Es una lectura y una escritura por clave primaria; se resuelve en menos de 1 segundo. |
 | **Frecuencia** | Excepcional. Solo ante un episodio de moderación o una sospecha de seguridad. |
 | **Estabilidad** | Media |
-| **Comentarios** | El bloqueo tiene efecto real sobre el acceso. La guardia de autenticación (`AuthGuard`), por la que pasan el panel y las dos aplicaciones en cada solicitud, rechaza con 401 «La cuenta está bloqueada. Comuníquese con la distribuidora.» a toda cuenta marcada, y también la rechazan el inicio de sesión (`POST /auth`) y la conexión por WebSocket. El bloqueo no deshabilita la cuenta en Firebase Authentication: el usuario puede seguir obteniendo tokens de Firebase, pero ninguno le sirve para operar con el sistema. El campo no guarda quién ejecutó el bloqueo ni por qué motivo; la operación queda en el registro de auditoría (CU-153), que registra quién la hizo y cuándo. |
+| **Comentarios** | El bloqueo tiene efecto real sobre el acceso. La guardia de autenticación (`AuthGuard`), por la que pasan el panel y las dos aplicaciones en cada solicitud, rechaza con 401 «La cuenta está bloqueada. Comuníquese con la distribuidora.» a toda cuenta marcada, y también la rechazan el inicio de sesión (`POST /auth`) y la conexión por WebSocket. El bloqueo no deshabilita la cuenta en Firebase Authentication: el usuario puede seguir obteniendo tokens de Firebase, pero ninguno le sirve para operar con el sistema. El campo no guarda quién ejecutó el bloqueo ni por qué motivo; la operación queda en el registro de auditoría (CU-153), que registra quién la hizo y cuándo. Es la alternativa reversible a CU-085. |
+
+---
+
+
+#### Secundario CU-270 — Desbloquear un Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El administrador levanta el bloqueo de un usuario —cliente o chofer— desde el Panel Web. La llamada es la misma que la de bloquearlo (CU-050): bloquea o desbloquea según el valor enviado, que acá es falso. |
+| **Precondición** | El administrador está autenticado con rol ADMIN o SUPER_ADMIN. El usuario destino existe. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el listado de usuarios en el Panel Web y selecciona un cliente o un chofer bloqueado: **incluye CU-083 Listar los Usuarios**, el listado del que sale el usuario objetivo. |
+| 2 | Elige la acción "Desbloquear". |
+| 3 | El panel envía la solicitud sobre el usuario indicado con el valor booleano falso. |
+| 4 | El sistema verifica el rol del solicitante y busca el usuario por su identificador. |
+| 5 | El sistema escribe el campo de bloqueo con el valor recibido y persiste el usuario. |
+| 6 | El sistema devuelve el identificador, el email, el estado de bloqueo resultante y un mensaje de confirmación. |
+| 7 | El panel refresca el listado mostrando el nuevo estado. |
+
+**Postcondición:** El campo de bloqueo del usuario quedó en falso: la guardia de autenticación deja de rechazar sus solicitudes. La operación es reversible con CU-050.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador del usuario no es un UUID válido, el sistema retorna error 400. |
+| 4 | Si el solicitante no tiene rol ADMIN ni SUPER_ADMIN, el sistema retorna error 403. |
+| 4 | Si el usuario no existe, el sistema retorna error 404 con el mensaje "Usuario no encontrado". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Es una lectura y una escritura por clave primaria; se resuelve en menos de 1 segundo. |
+| **Frecuencia** | Excepcional. Solo cuando se levanta una medida de moderación o de seguridad. |
+| **Estabilidad** | Media |
+| **Comentarios** | El bloqueo no deshabilita la cuenta en Firebase Authentication, de modo que al desbloquear no hay nada que reactivar allí: el usuario vuelve a operar con los tokens que ya obtiene. La operación queda en el registro de auditoría (CU-153), que registra quién la hizo y cuándo. |
 
 ---
 
@@ -5379,14 +5698,14 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 ---
 
-#### Importante CU-083 — Buscar y Listar Usuarios
+#### Importante CU-083 — Listar los Usuarios
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador (ACT-03) lista los usuarios del sistema con paginación y búsqueda por texto libre, y consulta un usuario puntual por correo o por teléfono. Es la base de las pantallas de gestión de cuentas del panel. Endpoints: `GET /users`, `GET /users/email/:email` (`:55`) y `GET /users/phone/:phoneNumber` (`:139`). |
-| **Precondición** | Para el listado, el solicitante está autenticado con rol ADMIN o SUPER_ADMIN. La búsqueda por correo es pública y la búsqueda por teléfono exige sesión. |
+| **Descripción** | El administrador (ACT-03) lista los usuarios del sistema con paginación y búsqueda por texto libre. Es la base de las pantallas de gestión de cuentas del panel. Endpoint: `GET /users`. |
+| **Precondición** | El solicitante está autenticado con rol ADMIN o SUPER_ADMIN. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5398,24 +5717,62 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | El sistema arma la consulta con las relaciones de rol, perfil de cliente y perfil de chofer. |
 | 4 | Si hay término de búsqueda, el sistema filtra por coincidencia parcial e insensible a mayúsculas sobre correo, nombre completo y teléfono. |
 | 5 | El sistema devuelve los usuarios de la página junto con el total bajo la clave `maxUsers`. |
-| 6 | Para una búsqueda puntual, el panel envía `GET /users/email/:email` o `GET /users/phone/:phoneNumber` y el sistema devuelve el usuario con rol, perfiles, vehículos y direcciones. |
 
-**Postcondición:** El administrador obtiene el listado o el usuario buscado. No hay cambios de estado.
+**Postcondición:** El administrador obtiene el listado. No hay cambios de estado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza el listado con error 403. |
-| 6 | Si la búsqueda por correo no encuentra nada, el sistema retorna error 404 "User with email: … not found". |
-| 6 | Si la búsqueda por teléfono no encuentra nada, el sistema devuelve `null` con estado 200: la asimetría con la búsqueda por correo es real y está en el código. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | El listado usa un constructor de consultas con paginación y tres relaciones; la búsqueda por texto aplica tres `ILIKE` con comodín inicial, que no aprovechan índice. |
 | **Frecuencia** | Media: cada vez que el administrador abre o filtra la pantalla de usuarios. |
 | **Estabilidad** | Alta |
-| **Comentarios** | `GET /users/email/:email` exige token: un usuario sólo consulta su propia cuenta y el personal administrativo consulta las de su distribuidora; un administrador de empresa no ve las de otra. Para saber si un correo ya está en uso existe `POST /users/check-exists`, que contesta sólo booleanos. |
+| **Comentarios** | Es el listado del que parten el bloqueo (CU-050), el desbloqueo (CU-270) y la baja de un usuario (CU-085). Un administrador de empresa ve sólo a su personal y a los clientes que le compraron. |
+
+---
+
+
+#### Importante CU-272 — Buscar un Usuario
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El administrador (ACT-03) consulta un usuario puntual por correo o por teléfono. Es la base de las pantallas de gestión de cuentas del panel. Endpoints: `GET /users/email/:email` (`:55`) y `GET /users/phone/:phoneNumber` (`:139`). |
+| **Precondición** | El solicitante está autenticado. La búsqueda por correo exige sesión: quien no es administrador sólo consulta su propia cuenta; la búsqueda por teléfono exige rol ADMIN o SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador escribe el correo o el teléfono del usuario que busca. |
+| 2 | El panel envía `GET /users/email/:email` o `GET /users/phone/:phoneNumber`. |
+| 3 | El sistema busca al usuario por correo, sin distinguir mayúsculas, o por teléfono, y comprueba que sea de la distribuidora del administrador. |
+| 4 | El sistema devuelve el usuario con rol, perfiles, vehículos y direcciones. |
+
+**Postcondición:** El administrador obtiene el usuario buscado. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si quien busca por correo no es administrador y el correo no es el suyo, el sistema responde 403 "No podés ver a otro usuario". |
+| 3 | Si la búsqueda por correo no encuentra nada, el sistema retorna error 404 "User with email: … not found". |
+| 2 | Si el teléfono no está en formato E.164 (por ejemplo `+5493764…`), el sistema responde 400 "phoneNumber tiene que estar en formato E.164". |
+| 3 | Si la búsqueda por teléfono no encuentra nada, el sistema devuelve `null` con estado 200: la asimetría con la búsqueda por correo es real y está en el código. |
+| 3 | Si el usuario es de otra distribuidora que la del administrador, el sistema responde 404, como si no existiera. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por clave de búsqueda; se resuelve en menos de 1 segundo. |
+| **Frecuencia** | Media: cada vez que el administrador ubica a un usuario puntual. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La asimetría es deliberada del código: `findOneByEmail` lanza 404 si no encuentra (lo usa el `AuthGuard`, que necesita el fallo), mientras que `findOneByPhone` devuelve `null`. Para saber si un correo ya está en uso existe `POST /users/check-exists`, que contesta sólo booleanos. |
 
 ---
 
@@ -5472,7 +5829,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador elige eliminar un usuario desde el panel: **incluye CU-083 Buscar y Listar Usuarios**, la búsqueda de la que sale el usuario objetivo. |
+| 1 | El administrador elige eliminar un usuario desde el panel: **incluye CU-083 Listar los Usuarios**, la búsqueda de la que sale el usuario objetivo. |
 | 2 | El panel envía `DELETE /users/:id`. |
 | 3 | El sistema valida el formato UUID. Si hay una distribuidora en contexto, comprueba que el usuario sea de ella; si quien da de baja es un administrador de empresa, comprueba además que la cuenta no sea la de un cliente. |
 | 4 | El sistema recupera el usuario con su perfil de cliente o de chofer y sus direcciones. |
@@ -5690,13 +6047,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 ---
 
 
-#### Importante CU-089 — Gestionar Roles del Sistema
+#### Importante CU-089 — Consultar los Roles
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El Administrador General (ACT-05) administra el catálogo de roles que gobierna toda la autorización del sistema: los crea, los lista, los consulta, los modifica y los elimina. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoints: `POST /role` (`:23`), `GET /role` (`:28`), `GET /role/:id` (`:33`), `PATCH /role/:id` (`:39`) y `DELETE /role/:id` (`:47`). |
+| **Descripción** | El Administrador General (ACT-05) consulta el catálogo de roles que gobierna toda la autorización del sistema: los lista y consulta uno puntual. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoints: `GET /role` (`:28`) y `GET /role/:id` (`:33`). |
 | **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
 | **Estado** | Implementado |
 
@@ -5706,30 +6063,140 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El Administrador General abre la pantalla de roles. |
 | 2 | El panel envía `GET /role` y el sistema devuelve el catálogo completo. |
-| 3 | Para dar de alta un rol, el panel envía `POST /role` con el tipo y el sistema lo persiste. |
-| 4 | Para consultar uno puntual, el panel envía `GET /role/:id` con el identificador validado como UUID. |
-| 5 | Para modificarlo, el panel envía `PATCH /role/:id`; el sistema precarga la entidad con los cambios y la guarda. |
-| 6 | Para eliminarlo, el panel envía `DELETE /role/:id`; el sistema recupera el rol y lo borra físicamente. |
-| 7 | El sistema devuelve el rol resultante o el mensaje "Role deleted successfully". |
+| 3 | Para consultar uno puntual, el panel envía `GET /role/:id` con el identificador validado como UUID. |
+| 4 | El sistema devuelve el rol o la lista de roles. |
 
-**Postcondición:** El catálogo de roles refleja la operación realizada. Como el rol determina los permisos de cada cuenta, el cambio impacta de inmediato en la autorización de los usuarios que lo tienen asignado.
+**Postcondición:** El Administrador General ve los roles vigentes del catálogo; los dados de baja no se listan. No hay cambios de estado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
-| 4 | Si el rol no existe, el sistema retorna error 404 "Role with ID: … not found". |
-| 5 | Si el rol a modificar no existe, el sistema retorna error 404 "Role with ID: … not found". |
-| 6 | Si el rol tiene usuarios asignados, la clave foránea impide el borrado y el sistema responde 409 con el motivo. |
+| 3 | Si el identificador no es un UUID válido, el sistema retorna error 400 por el `ParseUUIDPipe`. |
+| 3 | Si el rol no existe, el sistema retorna error 404 "Role with ID: … not found". |
 | 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Operaciones puntuales sobre una tabla de cardinalidad mínima. |
+| **Rendimiento** | Lectura puntual sobre una tabla de cardinalidad mínima. |
 | **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El borrado de un rol con usuarios asignados no está protegido con un mensaje propio: la restricción de integridad de la base lo impide, pero el error sube sin traducir a un conflicto legible, lo que conviene corregir para que el Administrador General reciba un mensaje claro en lugar de un error interno. |
+| **Comentarios** | Es el listado del que parten la modificación (CU-253) y la baja (CU-254) de un rol. Los cuatro roles del sistema (cliente, chofer, administrador y administrador general) se siembran con CU-090. |
+
+---
+
+
+#### Importante CU-252 — Crear un Rol
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El Administrador General (ACT-05) da de alta un rol en el catálogo que gobierna toda la autorización del sistema. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoint: `POST /role` (`:23`). |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General abre la pantalla de roles y elige dar de alta un rol. |
+| 2 | El panel envía `POST /role` con el tipo del rol y el sistema lo persiste. |
+| 3 | El sistema devuelve el rol creado. |
+
+**Postcondición:** El catálogo de roles contiene el rol nuevo. Como el rol determina los permisos de cada cuenta, recién incide en la autorización de las cuentas a las que se lo asigne.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el tipo falta o no es una cadena, el sistema retorna error 400. |
+| 2 | Si ya existe un rol con ese tipo, la restricción de unicidad lo rechaza y el sistema responde 409 "Ya existe un registro con esos datos (roles)". |
+| 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una escritura sobre una tabla de cardinalidad mínima. |
+| **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El tipo del rol es único en el catálogo. Los cuatro roles que el código busca por su nombre se siembran con CU-090. |
+
+---
+
+
+#### Importante CU-253 — Modificar un Rol
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El Administrador General (ACT-05) modifica un rol del catálogo que gobierna toda la autorización del sistema. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoint: `PATCH /role/:id` (`:39`). |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General abre la pantalla de roles y selecciona el rol: **incluye CU-089 Consultar los Roles**, el listado del que sale. |
+| 2 | El panel envía `PATCH /role/:id` con los cambios; el sistema recupera el rol y comprueba que no sea uno de los del sistema. |
+| 3 | El sistema precarga la entidad con los cambios y la guarda. |
+| 4 | El sistema devuelve el rol modificado. |
+
+**Postcondición:** El rol quedó con los datos nuevos. Como el rol determina los permisos de cada cuenta, el cambio impacta de inmediato en la autorización de los usuarios que lo tienen asignado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el rol a modificar no existe, el sistema retorna error 404 "Role with ID: … not found". |
+| 2 | Si el rol es uno de los del sistema (cliente, chofer, administrador, administrador general), el sistema responde 409 con el motivo y no lo modifica. |
+| 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura sobre una tabla de cardinalidad mínima. |
+| **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Los cuatro roles del sistema no se pueden modificar: el código los busca por su nombre y renombrarlos dejaría sin funcionar el registro de usuarios. |
+
+---
+
+
+#### Importante CU-254 — Eliminar un Rol
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-01 |
+| **Descripción** | El Administrador General (ACT-05) elimina un rol del catálogo con una baja lógica: deja de listarse y de consultarse, pero la fila se conserva. Todo el controlador es exclusivo de SUPER_ADMIN. Endpoint: `DELETE /role/:id` (`:47`). |
+| **Precondición** | El solicitante está autenticado con rol SUPER_ADMIN. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El Administrador General abre la pantalla de roles y selecciona el rol: **incluye CU-089 Consultar los Roles**, el listado del que sale. |
+| 2 | El panel envía `DELETE /role/:id`; el sistema recupera el rol, comprueba que no sea un rol del sistema ni tenga usuarios (aun dados de baja) y lo da de baja lógica. |
+| 3 | El sistema devuelve el mensaje "Role deleted successfully". |
+
+**Postcondición:** El rol dejó de listarse y de consultarse; la fila se conserva. Ningún usuario quedó sin rol.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el rol no existe, el sistema retorna error 404 "Role with ID: … not found". |
+| 2 | Si el rol es uno de los del sistema (cliente, chofer, administrador, administrador general), o tiene usuarios asignados, el sistema responde 409 con el motivo y no lo da de baja. |
+| 2 | Si el solicitante no es Administrador General, el guard de roles rechaza la petición con error 403. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura, un conteo y una escritura sobre tablas de cardinalidad mínima. |
+| **Frecuencia** | Muy baja: los cuatro roles se definen al instalar y prácticamente no cambian. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja es lógica porque la clave foránea ya no frena el borrado de un rol con usuarios: el conteo de usuarios, que incluye a los dados de baja, se comprueba a mano antes de darlo de baja. |
 
 ---
 
@@ -6056,7 +6523,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una precarga, una escritura y una lectura de relectura con relaciones. |
 | **Frecuencia** | Baja: corrección puntual de datos del repartidor. |
 | **Estabilidad** | Media |
-| **Comentarios** | La operación cambia el mismo dato que CU-032 cambia por su operación dedicada, con las mismas reglas de rol y de distribuidora. El estado de actividad se cambia únicamente por CU-033, que además saca al chofer del radar al deshabilitarlo: por eso este caso no lo acepta. Un campo distinto de la validación se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. |
+| **Comentarios** | La operación cambia el mismo dato que CU-032 cambia por su operación dedicada, con las mismas reglas de rol y de distribuidora. El estado de actividad se cambia únicamente por CU-033 y CU-267, que además saca al chofer del radar al deshabilitarlo: por eso este caso no lo acepta. Un campo distinto de la validación se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. |
 
 ---
 
@@ -6669,7 +7136,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 6 | El sistema guarda la referencia del adjunto: la clave, el nombre original, el tipo, el tamaño y quién lo subió. |
 | 7 | El sistema devuelve el adjunto creado. |
 
-**Postcondición:** La tarea tiene un adjunto más, con su contenido guardado en el almacenamiento activo y su referencia en la base.
+**Postcondición:** La tarea tiene un adjunto más, con su contenido guardado en S3 y su referencia en la base.
 
 **Excepciones**
 
@@ -6679,11 +7146,11 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 4 | Si no se envía ningún archivo, el sistema responde 400 "Falta el archivo". |
 | 4 | Si el tipo de archivo no es uno de los permitidos, el sistema responde 415, con el tipo recibido en el mensaje. |
 | 4 | Si el archivo supera los diez megabytes, el sistema responde 413. |
-| 6 | Si guardar la referencia en la base falla después de subir el archivo, el sistema borra el archivo ya subido, para no dejarlo huérfano en el almacenamiento. |
+| 6 | Si guardar la referencia en la base falla después de subir el archivo, el sistema borra de S3 el archivo ya subido, en segundo plano y con reintentos, para no dejarlo huérfano. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de verificación, una escritura al almacenamiento y una escritura en la base; depende del tamaño del archivo y de la latencia del almacenamiento activo. |
+| **Rendimiento** | Una lectura de verificación, una escritura a S3 y una escritura en la base; depende del tamaño del archivo y de la latencia de red hacia S3. |
 | **Frecuencia** | Baja: acompaña la carga de cada habilitación o mantenimiento. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El adjunto se sube, se lista, se descarga y se da de baja; un archivo `image/gif` se rechaza con 415. El límite de Multer es el doble del límite de negocio (veinte megabytes): es un techo técnico contra abuso, y el que rechaza con 413 es el control de tamaño de esta operación. |
@@ -6733,7 +7200,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador descarga el contenido de un adjunto de una tarea de mantenimiento. Endpoint: `GET /fleet/tasks/:id/attachments/:attachmentId/download`. |
+| **Descripción** | El administrador descarga el contenido de un adjunto de una tarea de mantenimiento. El archivo no pasa por el backend: el sistema entrega una URL firmada de S3, de corta vigencia. Endpoint: `GET /fleet/tasks/:id/attachments/:attachmentId/download`. |
 | **Precondición** | El administrador está autenticado. La tarea y el adjunto existen y son de su distribuidora. |
 | **Estado** | Implementado |
 
@@ -6745,9 +7212,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 2 | El panel envía `GET /fleet/tasks/:id/attachments/:attachmentId/download`. |
 | 3 | El sistema comprueba que la tarea y el adjunto existan y sean de la distribuidora. |
 | 4 | El sistema resuelve cómo servir el archivo: **incluye CU-160 Recuperar Archivo**. |
-| 5 | Si el almacenamiento ofrece una URL directa, el sistema redirige a ella (302). Si no, el sistema transmite el archivo con su tipo de contenido y su nombre original. |
+| 5 | El sistema redirige (302) a la URL firmada de S3, que sirve el archivo con su tipo de contenido y su nombre original. Con `?modo=url` responde 200 con `{ url, expiresAt, requiresAuth }` en lugar de redirigir: es lo que usa el panel, porque una redirección entre orígenes pierde el token. |
 
-**Postcondición:** El administrador recibe el archivo, sea por redirección o por transmisión directa.
+**Postcondición:** El administrador recibe la URL firmada, por redirección o en el JSON, y con ella baja el archivo directo de S3.
 
 **Excepciones**
 
@@ -6757,10 +7224,10 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de verificación y, según el almacenamiento activo, la generación de una URL firmada o la apertura de un flujo de lectura. |
+| **Rendimiento** | Una lectura de verificación y la firma de la URL, que se calcula sin consultar a S3. |
 | **Frecuencia** | Baja: sólo cuando alguien necesita ver o reenviar el documento. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Con `STORAGE_DRIVER` en `local` la descarga responde 200 con el archivo completo, su `Content-Type` y su `Content-Disposition` de adjunto. Con `STORAGE_DRIVER` en `s3` el sistema responde 302 a una URL firmada de corta duración en lugar de transmitir el archivo; ese camino está probado con el cliente de S3 simulado. |
+| **Comentarios** | El bucket es privado: la descarga se hace con una URL firmada que vence a los cinco minutos por omisión (`AWS_S3_SIGNED_URL_TTL_SECONDS`) y que lleva el `Content-Type` original y un `Content-Disposition` de adjunto con el nombre original. En la base se guarda la clave del objeto, nunca una URL. Si el archivo ya no está en S3, la URL firmada responde 404 de parte de S3 (el permiso `s3:ListBucket` del usuario IAM hace que sea 404 y no 403). Probado contra MinIO en las pruebas de integración (`s3.e2e-spec.ts`); falta probarlo contra el bucket real de AWS. |
 
 ---
 
@@ -6781,11 +7248,11 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | El administrador elige borrar un adjunto: **incluye CU-156 Consultar Adjuntos de una Tarea de Flota**, el listado del que sale. |
 | 2 | El panel envía `DELETE /fleet/tasks/:id/attachments/:attachmentId`. |
 | 3 | El sistema comprueba que la tarea y el adjunto existan y sean de la distribuidora. |
-| 4 | El sistema borra la referencia del adjunto en la base. |
-| 5 | El sistema borra el contenido en el almacenamiento activo. |
+| 4 | El sistema da de baja lógica el adjunto: le registra la fecha de baja y deja de listarlo y de permitir su descarga. |
+| 5 | El archivo se conserva en S3 como respaldo; no se borra del bucket. |
 | 6 | El sistema responde sin contenido (204). |
 
-**Postcondición:** El adjunto deja de existir, tanto su referencia como su contenido.
+**Postcondición:** El adjunto queda dado de baja: no aparece en el listado ni se puede descargar (404), y su archivo sigue en S3 como respaldo.
 
 **Excepciones**
 
@@ -6795,10 +7262,10 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de verificación, una escritura en la base y una escritura en el almacenamiento. |
+| **Rendimiento** | Una lectura de verificación y una escritura en la base; no hay llamada a S3. |
 | **Frecuencia** | Baja: corrección puntual de un adjunto cargado por error. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La baja responde 204 y el adjunto deja de listarse. La baja es física, no lógica: ni la referencia ni el contenido se conservan; a diferencia de otras bajas del sistema (clientes, choferes, vehículos), acá no hay historial que preservar porque el documento sigue vigente en otro lado (la aseguradora, el municipio). El borrado de la base ocurre antes que el del almacenamiento: si el segundo falla, queda un archivo huérfano en el almacenamiento sin que nada lo referencie; el sistema no revierte el primero ni reintenta el segundo. |
+| **Comentarios** | La baja responde 204 y el adjunto deja de listarse. La baja es lógica, como en el resto del sistema: el adjunto queda con fecha de baja, deja de listarse y su descarga responde 404, y el archivo se conserva en S3 como respaldo. La baja queda registrada en la auditoría de datos. |
 
 ---
 
@@ -6808,35 +7275,32 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-155 y, planificado en I-5, por CU-174. Guarda el contenido de un archivo en el almacenamiento activo de la distribuidora, detrás de un puerto único (`StoragePort`) con dos implementaciones intercambiables: disco local (por omisión) o Amazon S3 (por configuración). Quien lo incluye no sabe cuál de las dos está activa. |
+| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-155 y CU-174, y por la subida de adjuntos del personal (CU-186, planificado). Guarda el contenido de un archivo en Amazon S3, el único proveedor de archivos del sistema, a través de `S3Service`: bucket privado y objetos cifrados en reposo (SSE-S3). No hay disco local ni un segundo proveedor. |
 | **Precondición** | El archivo ya pasó los controles de tipo y tamaño de quien lo incluye. |
-| **Estado** | Implementado, con el adaptador de disco local activo por omisión (`STORAGE_DRIVER`). El adaptador de S3 está implementado y probado contra MinIO en el entorno de desarrollo, con los objetos cifrados en reposo (SSE-S3) y el depósito privado; el depósito real de AWS está pendiente. |
+| **Estado** | Implementado. Ver `docs/S3.md` del backend: Amazon S3 es el único proveedor; el entorno de la tesis usa el bucket `splg-tesis` (sa-east-1) y las pruebas de integración, MinIO, que habla la misma API. |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | Quien incluye este caso arma una clave única para el archivo, con la distribuidora, la tarea y un identificador aleatorio, y la extensión que corresponde al tipo de archivo. |
-| 2 | El sistema resuelve, por configuración, cuál adaptador de almacenamiento está activo. |
-| 3 | **Si el adaptador activo es el de disco local:** el sistema crea la carpeta necesaria dentro de la raíz de almacenamiento configurada, escribe el archivo en esa clave y, junto a él, un archivo auxiliar con su tipo de contenido original. |
-| 4 | **Si el adaptador activo es el de S3:** el sistema sube el archivo al depósito configurado, con esa misma clave, su tipo de contenido y el cifrado en reposo (SSE-S3). |
-| 5 | El sistema devuelve el éxito de la operación a quien la incluyó, que recién ahí guarda la referencia (la clave) en la base. |
+| 2 | El sistema sube el archivo al bucket configurado (`AWS_S3_BUCKET`), con esa misma clave, su tipo de contenido y el cifrado en reposo (SSE-S3). |
+| 3 | El sistema devuelve el éxito de la operación a quien la incluyó, que recién ahí guarda la referencia (la clave) en la base. |
 
-**Postcondición:** El contenido del archivo existe en el almacenamiento activo, bajo la clave generada. Nada fuera de este caso conoce si el almacenamiento es un disco o un depósito de S3.
+**Postcondición:** El contenido del archivo existe en el bucket, bajo la clave generada. El bucket sigue siendo privado: sólo se llega al objeto con una URL firmada (CU-160).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | En el disco local, la clave se normaliza y se exige que el resultado siga dentro de la raíz configurada: una clave con `..` no puede escribir fuera del almacenamiento. Como la clave siempre la genera el propio sistema, no la escribe nadie de afuera, esta comprobación es una defensa en profundidad, no una validación de un dato de usuario. |
-| 4 | Si S3 rechaza la subida —credenciales inválidas, depósito inexistente—, la excepción sube sin traducir a quien incluyó el caso. |
+| 2 | Si S3 rechaza la subida —credenciales inválidas, bucket inexistente—, la excepción sube sin traducir a quien incluyó el caso. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura, de duración variable según el tamaño del archivo y, en S3, la latencia de red. |
-| **Frecuencia** | Igual que CU-155 y CU-174 (este último planificado, I-5), que son los casos que lo incluyen. |
+| **Rendimiento** | Una escritura, de duración variable según el tamaño del archivo y la latencia de red hacia S3. |
+| **Frecuencia** | Igual que CU-155 y CU-174, que son los casos que lo incluyen. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Antes de subir, quien incluye el caso reserva la clave en una cola de reintento (la tabla `storage_orphan`, una tabla técnica del almacenamiento) y la confirma en la misma transacción que guarda la referencia: si el proceso cae entre la subida y la confirmación, una tarea horaria borra el objeto sin dueño pasada la hora de gracia. Lo mismo vale para el borrado y el reemplazo de un archivo, que se reintentan con espera creciente. El disco local no tiene URL pública: por eso `Recuperar Archivo` (CU-160) necesita una segunda operación para servir el contenido a través de este backend. El módulo de almacenamiento está escrito para que cualquier otro servicio del sistema pueda guardar archivos por el mismo puerto; `fleet` es el único servicio construido que lo usa; el de reclamos lo usará con CU-174 y CU-175 (I-5). |
+| **Comentarios** | Antes de subir, quien incluye el caso reserva la clave en una cola de reintento (la tabla `storage_orphan`, una tabla técnica del almacenamiento) y la confirma en la misma transacción que guarda la referencia: si el proceso cae entre la subida y la confirmación, una tarea horaria borra el objeto sin dueño pasada la hora de gracia. Lo mismo vale para el borrado y el reemplazo de un archivo, que se reintentan con espera creciente. El módulo `src/s3` (`S3Service`) lo usan los adjuntos de flota, los adjuntos genéricos de la distribuidora y la fotografía del reclamo. Sin `AWS_S3_BUCKET` y sin `AWS_REGION` la aplicación no arranca y avisa cuál falta. |
 
 ---
 
@@ -6846,35 +7310,32 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-157 y, planificado en I-5, por CU-175. Resuelve cómo servir el contenido de un archivo ya guardado, según el adaptador de almacenamiento activo. |
-| **Precondición** | El archivo existe en el almacenamiento, bajo la clave que guarda el adjunto. |
-| **Estado** | Implementado, con el adaptador de disco local activo por omisión (`STORAGE_DRIVER`). Con S3 el sistema entrega una URL firmada de corta vigencia y el archivo no pasa por el backend; el camino de S3 está probado contra MinIO en el entorno de desarrollo y el depósito real de AWS está pendiente. |
+| **Descripción** | **Caso de uso incluido** (`«include»`) por CU-157 y CU-175. Resuelve cómo entregar el contenido de un archivo ya guardado: una URL firmada de S3, de corta vigencia, para que el archivo se baje directo del bucket privado. |
+| **Precondición** | El archivo existe en S3, bajo la clave que guarda el adjunto. |
+| **Estado** | Implementado. Ver `docs/S3.md` del backend: el archivo no pasa por el backend, se entrega con una URL firmada de S3 (bucket `splg-tesis`, sa-east-1); las pruebas de integración usan MinIO. |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | Quien incluye este caso pide recuperar el archivo de una clave. |
-| 2 | El sistema le pide al adaptador activo una URL de descarga directa. |
-| 3 | **Si el adaptador es el de S3**, devuelve una URL firmada, con una vigencia corta (cinco minutos por omisión, o menos si vencen antes las credenciales temporales) y con el nombre de descarga si se pidió, para que quien la reciba descargue el archivo directo del depósito, sin pasar por este backend. |
-| 4 | **Si el adaptador es el de disco local**, no hay URL directa: devuelve nada en su lugar. |
-| 5 | Si no hubo URL, el sistema le pide al adaptador un flujo de lectura del archivo, con su tipo de contenido y su tamaño si el adaptador los conoce. |
-| 6 | El sistema le devuelve a quien incluyó el caso, o bien la URL para redirigir, o bien el flujo para transmitir él mismo. |
+| 2 | El sistema firma una URL de descarga del objeto, con una vigencia corta —cinco minutos por omisión, o menos si vencen antes las credenciales temporales— y con el nombre de descarga si se pidió, para que quien la reciba descargue el archivo directo del bucket, sin pasar por este backend. |
+| 3 | El sistema le devuelve a quien incluyó el caso la URL y su vencimiento, para que redirija o la entregue en el JSON del enlace de descarga. |
 
-**Postcondición:** Quien incluyó el caso tiene lo que necesita para que el solicitante reciba el archivo, por redirección o por transmisión.
+**Postcondición:** Quien incluyó el caso tiene la URL firmada y su vencimiento; el solicitante baja el archivo directo de S3.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 5 | Si la clave no corresponde a ningún archivo existente, la excepción del adaptador sube sin traducir a quien incluyó el caso. |
+| 2 | Si la clave no corresponde a ningún archivo, la URL se firma igual —firmar no consulta a S3— y al abrirla S3 responde 404. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Inmediato para la URL firmada; para el flujo de lectura, depende del tamaño del archivo. |
-| **Frecuencia** | Igual que CU-157 y CU-175 (este último planificado, I-5), que son los casos que lo incluyen. |
+| **Rendimiento** | Inmediato: firmar la URL no llama a S3. |
+| **Frecuencia** | Igual que CU-157 y CU-175, que son los casos que lo incluyen. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La firma de la URL de S3 se probó contra MinIO en el entorno de desarrollo; falta probarla contra el depósito de AWS. El enlace que recibe el cliente trae la URL y su vencimiento; con el disco local trae la ruta del propio backend y exige el token de siempre. |
+| **Comentarios** | La firma de la URL se probó contra MinIO en las pruebas de integración; falta probarla contra el bucket de AWS. El enlace que recibe el cliente trae la URL, su vencimiento y `requiresAuth` en falso: la URL firmada se abre sin token. La clave de la base nunca se muestra. |
 
 ---
 
@@ -7937,7 +8398,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-04, OBJ-05 |
 | **Requisitos asociados** | IRQ-16, NFR-09 |
-| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Cada asiento trae, además, el cuerpo de la operación con las credenciales depuradas. Endpoint: `GET /audit`. |
+| **Descripción** | El administrador consulta qué se hizo en el sistema y quién lo hizo. Puede acotar la búsqueda por persona, por tipo de recurso, por un recurso puntual, por período y por resultado. Cada asiento trae, además, el cuerpo de la operación con las credenciales depuradas. Endpoint: `GET /audit`. Además, el administrador consulta la **auditoría de datos**: qué registro de qué entidad cambió, con qué acción y, por cada campo, el valor anterior y el nuevo. Endpoints: `GET /audit/entries`, `GET /audit/entries/:id` y `GET /audit/action-types`. |
 | **Precondición** | El solicitante está autenticado con rol ADMIN (Administrador) o SUPER_ADMIN (Administrador General). |
 | **Estado** | Implementado |
 
@@ -7950,6 +8411,11 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | El sistema valida los filtros. Si hay una distribuidora en contexto —la del administrador de empresa, o la que eligió el Administrador General con "ver como"—, restringe la consulta a los asientos de esa distribuidora. El Administrador General sin distribuidora elegida ve los de todas. |
 | 4 | El sistema devuelve los asientos que coinciden, del más reciente al más antiguo, junto con la cantidad total de coincidencias (`items` y `total`). |
 | 5 | Por cada asiento informa quién lo originó y con qué rol, a qué distribuidora corresponde, qué operación fue (método y ruta), sobre qué recurso e identificador, cuándo, desde qué aplicación y desde qué dirección de red, con qué resultado y código de respuesta, el motivo si fue rechazada y el cuerpo depurado de la operación. |
+| 6 | **Auditoría de datos.** El administrador indica, si quiere, los filtros: la entidad afectada (`entity`, por ejemplo `Order`), el registro (`recordId`), quién hizo el cambio (`userId`), el tipo de acción (`actionType`: 1 Alta, 2 Modificación, 3 Baja lógica, 4 Reactivación, 5 Baja física) y desde y hasta qué fecha (`from`, `to`). |
+| 7 | Se envía `GET /audit/entries` con los filtros y la página: `page`, desde 1, y `limit`, entre 1 y 200, 50 por defecto. |
+| 8 | El sistema aplica la misma restricción por distribuidora que en la bitácora. Los registros que no pertenecen a ninguna distribuidora —los de la persona o globales, como las cuentas de usuario, los clientes y los roles— sólo los ve el Administrador General. |
+| 9 | El sistema devuelve las auditorías que coinciden, de la más reciente a la más antigua, junto con el total (`data` y `total`). Cada una trae el tipo de acción, el usuario (nombre y correo, aunque después se lo haya dado de baja; vacío si el cambio lo hizo el sistema), la distribuidora, la entidad afectada, el identificador del registro, la dirección de red, la fecha y hora y sus detalles: por cada campo que cambió, el campo, el valor anterior y el valor nuevo. |
+| 10 | Con `GET /audit/entries/:id` el administrador ve una sola auditoría con todos sus detalles y con `GET /audit/action-types`, el catálogo de acciones. |
 
 **Postcondición:** Ninguna: la consulta no modifica nada. La propia consulta **no** genera un asiento, porque leer no es una operación de escritura.
 
@@ -7961,14 +8427,17 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 3 | Si un filtro no tiene el formato esperado —un autor que no es UUID, un resultado distinto de `success` o `failure`, una fecha inválida, un `limit` fuera del rango de 1 a 200 o un parámetro no declarado—, el sistema responde error 400. |
 | 3 | Si la fecha `desde` es posterior a `hasta`, el sistema no lo rechaza: ningún asiento cae en ese período y la respuesta es una lista vacía. |
 | 4 | Si ningún asiento coincide con los filtros, el sistema devuelve una lista vacía con total 0. No es un error. |
-| — | El sistema no expone ninguna operación de modificación ni de borrado sobre el registro, para ningún rol. Ver CU-153. |
+| 7 | Si un filtro de la auditoría de datos no tiene el formato esperado —un `userId` que no es UUID, un `actionType` fuera de 1 a 5, una fecha inválida, un `limit` fuera del rango de 1 a 200 o un parámetro no declarado—, el sistema responde error 400. |
+| 7 | Si el solicitante es un cliente o un chofer, el guard de roles rechaza la petición con error 403, también en `/audit/entries`. |
+| 10 | Si la auditoría pedida con `GET /audit/entries/:id` no existe o es de otra distribuidora, el sistema responde 404 "Auditoría no encontrada", sin distinguir los casos. |
+| — | El sistema no expone ninguna operación de modificación ni de borrado sobre la bitácora ni sobre la auditoría de datos, para ningún rol. Ver CU-153. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una sola lectura paginada con su conteo, apoyada en los índices por fecha, por autor y por distribuidora de la tabla `audit_log`: sin ellos, la tabla crece hasta volver inusable la consulta. La meta es responder en menos de 3 segundos. |
+| **Rendimiento** | Una sola lectura paginada con su conteo, apoyada en los índices por fecha, por autor y por distribuidora de la tabla `audit_log`: sin ellos, la tabla crece hasta volver inusable la consulta. La auditoría de datos se apoya en los índices de `audit` por entidad y registro, por usuario y por distribuidora con fecha, y trae los detalles de la página con una sola lectura más. La meta es responder en menos de 3 segundos. |
 | **Frecuencia** | Baja: se consulta ante una disputa o una sospecha, no a diario. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. El Panel de Administración ofrece la pantalla de consulta, en la sección de auditoría, sobre la misma API. La depuración por antigüedad no está construida; si llega a hacer falta, será una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. |
+| **Comentarios** | El registro se consulta pero no se administra: no hay alta, modificación ni baja. El Panel de Administración ofrece la pantalla de consulta, en la sección de auditoría, sobre la misma API. La depuración por antigüedad no está construida; si llega a hacer falta, será una tarea programada del sistema y no una operación del administrador, justamente para que nadie pueda borrar el asiento que lo incrimina. La bitácora y la auditoría de datos son dos registros distintos: la primera guarda cada petición de escritura, exitosa o rechazada, con el cuerpo depurado; la segunda guarda el dato, qué registro y qué campos cambiaron, y sólo existe si el cambio se confirmó. La auditoría de datos arranca con su migración: no hay historia previa. No se auditan el carrito y sus renglones, los tres historiales que ya sólo se agregan (estados del pedido, movimientos de envases y uso de vehículos), las ofertas de despacho, la secuencia de documentos, la cola de archivos pendientes, la posición del chofer ni la marca interna de avisos de mantenimiento. Los campos secretos (contraseñas, claves, tokens, el código de entrega) se registran como `[oculto]`; el DNI, el CUIL y el CBU sí se auditan. |
 
 ---
 
@@ -7993,8 +8462,11 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 4 | Arma el asiento: distribuidora, autor y rol, método, recurso (el primer segmento de la ruta después de `/api`, por ejemplo `orders`), identificador del recurso (el parámetro `:id` de la ruta o, si no lo tiene, el primero de sus parámetros), la ruta como patrón (`/api/users/email/:email`, de modo que un correo o un teléfono no quedan escritos en la ruta), la aplicación de origen (encabezado `X-Client-Source`), la dirección de red, el resultado (`success` o `failure`) y el código HTTP. |
 | 5 | **Depura el cuerpo antes de guardarlo**: los valores de las claves `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code`, `deliveryCode` y `secret` se reemplazan por `"[depurado]"`, en cualquier nivel del cuerpo y sin distinguir mayúsculas de minúsculas; los textos de más de 500 caracteres se recortan y lo anidado a más de cuatro niveles queda como `"[recortado]"`. De una operación de acceso queda que ocurrió y si fue exitosa, nunca la clave. |
 | 6 | Guarda el asiento en la tabla `audit_log` sin demorar la respuesta al usuario. |
+| 7 | **Auditoría de datos.** Mientras la operación escribe, la capa de datos anuncia cada alta, modificación, baja lógica y reactivación de un registro de una entidad de negocio. Por cada uno el sistema crea una Auditoria —tipo de acción, usuario, distribuidora, entidad afectada, identificador del registro y dirección de red— y un DetalleAuditoria por cada campo que cambió, con su valor anterior y el nuevo. |
+| 8 | El usuario, la dirección de red y la distribuidora salen del contexto de la petición —los resuelve la autenticación, nunca el cuerpo—. Fuera de una petición (tareas programadas, siembras, notificaciones sin usuario) el usuario queda vacío. |
+| 9 | Escribe la auditoría con la misma transacción del cambio: si el cambio se deshace, la auditoría también. |
 
-**Postcondición:** Queda un asiento por cada operación de escritura que pasó la autenticación y la autorización, exitosa o rechazada. Las operaciones de sólo lectura no generan asiento. El asiento no puede modificarse ni borrarse: la base de datos rechaza todo `UPDATE` y `DELETE` sobre `audit_log` con el trigger `audit_log_inmutable`. La única modificación que admite es la que hace la propia base cuando se borra el usuario autor o la distribuidora (`ON DELETE SET NULL`): vacía esa referencia sin tocar el resto del asiento.
+**Postcondición:** Queda un asiento por cada operación de escritura que pasó la autenticación y la autorización, exitosa o rechazada, y una auditoría con sus detalles por cada registro de negocio que el cambio dio de alta, modificó, dio de baja o reactivó. Las operaciones de sólo lectura no generan asiento. El asiento no puede modificarse ni borrarse: la base de datos rechaza todo `UPDATE` y `DELETE` sobre `audit_log` con el trigger `audit_log_inmutable`. La única modificación que admite es la que hace la propia base cuando se borra el usuario autor o la distribuidora (`ON DELETE SET NULL`): vacía esa referencia sin tocar el resto del asiento. Las dos tablas de la auditoría de datos (`audit` y `audit_detail`) son de sólo escritura de la misma manera: un disparador rechaza todo `UPDATE` y todo `DELETE`, salvo ese vaciado.
 
 **Excepciones**
 
@@ -8003,11 +8475,13 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | 1 | Si un guard rechaza la petición (401, 403 o 429), no se registra: no llegó a ser una operación. |
 | 3 | Si la operación es rechazada —por la validación de los datos, por una regla del negocio o por un error—, **igual se registra**, con resultado `failure`, el código HTTP con el que responde el sistema y el motivo del rechazo; el error llega al usuario sin cambios. Un intento fallido de modificar algo ajeno es justamente lo que interesa ver. |
 | 6 | Si la base no acepta el asiento, la operación del usuario **no se interrumpe** ni se deshace: el asiento completo queda en el registro de eventos del sistema, con los datos necesarios para reconstruirlo. Que la auditoría falle no puede impedir que se trabaje. |
+| 7 | Si el guardado no cambió ningún campo, no se escribe ninguna auditoría. Si un insert llega sin identificador de registro, no se escribe una auditoría vacía: se deja un aviso en el registro de eventos. |
+| 9 | Si la transacción se deshace, no queda auditoría de datos: sólo la bitácora, con el rechazo. A diferencia del asiento, la auditoría de datos es parte de la transacción del cambio. |
 | — | Las operaciones públicas —el ingreso, el registro de una cuenta, las notificaciones del proveedor de pagos— también se registran; si la petición no trae credencial, el asiento queda sin autor. Las verificaciones de estado del sistema son de sólo lectura y no generan asiento. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | La respuesta al usuario no espera la escritura del asiento: la operación sólo suma armarlo y depurar el cuerpo, en memoria. La tabla lleva índices por fecha, por autor y por distribuidora para la consulta de CU-152. |
+| **Rendimiento** | La respuesta al usuario no espera la escritura del asiento: la operación sólo suma armarlo y depurar el cuerpo, en memoria. La tabla lleva índices por fecha, por autor y por distribuidora para la consulta de CU-152. La auditoría de datos escribe la cabecera y todos los detalles de un registro con una sola sentencia, dentro de la transacción del cambio. |
 | **Frecuencia** | Automático, una vez por cada operación de escritura del sistema. |
 | **Estabilidad** | Alta |
 | **Comentarios** | Alcanza a **toda** escritura y no a una lista de operaciones elegidas: una lista se desactualiza apenas alguien agrega una funcionalidad y se olvida de incluirla, y el agujero no se nota hasta que hace falta el registro. Por eso se resuelve en el camino común de las peticiones y no en cada funcionalidad. La contracara es el volumen: la tabla crece con el uso y el plazo de conservación no está definido. La depuración por antigüedad no está construida; cuando exista será un proceso del sistema, nunca una operación disponible para un usuario, y tendrá que contemplar el trigger que impide borrar asientos. |
@@ -8296,15 +8770,15 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 ---
 
-### 7.6.1 Casos de Uso Expandidos — Stock, compras y carga del camión (CU-207 a CU-224, I-13)
+### 7.6.1 Casos de Uso Expandidos — Stock, compras y carga del camión (CU-207 a CU-224 y CU-258 a CU-263, I-13)
 
-#### Importante CU-207 — Gestionar los Depósitos
+#### Importante CU-207 — Consultar los Depósitos
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador mantiene los depósitos y sucursales de su distribuidora: nombre, código, tipo (depósito o sucursal), dirección y estado. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. La baja es lógica y sólo se admite cuando el depósito no tiene saldo. Endpoints: `GET /warehouses`, `POST /warehouses`, `PATCH /warehouses/:id` y `DELETE /warehouses/:id`. |
+| **Descripción** | El administrador consulta los depósitos y sucursales de su distribuidora: nombre, código, tipo (depósito o sucursal), dirección y estado. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. Endpoint: `GET /warehouses`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
 | **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -8312,30 +8786,140 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Stock → Depósitos»; el panel consulta `GET /warehouses` y muestra los depósitos vigentes con su código, tipo y estado. |
-| 2 | Para agregar uno, ingresa nombre, código, tipo y dirección y confirma; el panel envía `POST /warehouses`. |
-| 3 | El sistema comprueba que el código no esté en uso entre los depósitos vigentes de la distribuidora, crea el depósito y su ubicación de stock y, si la distribuidora no tenía un depósito predeterminado, lo deja como tal. |
-| 4 | Para modificarlo, el panel envía `PATCH /warehouses/:id` con los campos que cambian; el sistema aplica el cambio con la misma comprobación de código. |
-| 5 | Para darlo de baja, el panel envía `DELETE /warehouses/:id`; el sistema comprueba que la ubicación de stock del depósito no tenga saldo distinto de cero y lo marca como dado de baja. |
-| 6 | El sistema devuelve el depósito resultante o, en la baja, la confirmación. |
+| 1 | El administrador abre «Stock → Depósitos»; el panel consulta `GET /warehouses`. |
+| 2 | El sistema devuelve los depósitos vigentes de la distribuidora y el panel los muestra con su código, tipo y estado. |
 
-**Postcondición:** La distribuidora tiene el depósito dado de alta, modificado o dado de baja, según la operación. Un depósito nuevo tiene su ubicación de stock, sin saldo.
+**Postcondición:** El administrador ve los depósitos vigentes de su distribuidora. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por listado. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir o cerrar un depósito. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la modificación (CU-259) y la baja (CU-260) de un depósito. El detalle de un depósito con sus saldos es la consulta de CU-208 sobre su ubicación. |
+
+---
+
+
+#### Importante CU-258 — Registrar un Depósito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de alta un depósito o sucursal de su distribuidora, con nombre, código, tipo (depósito o sucursal) y dirección. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. Endpoint: `POST /warehouses`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» y elige agregar uno; ingresa nombre, código, tipo y dirección y confirma. |
+| 2 | El panel envía `POST /warehouses`. |
+| 3 | El sistema comprueba que el código no esté en uso entre los depósitos vigentes de la distribuidora, crea el depósito y su ubicación de stock y, si la distribuidora no tenía un depósito predeterminado, lo deja como tal. |
+| 4 | El sistema devuelve el depósito creado. |
+
+**Postcondición:** La distribuidora tiene el depósito dado de alta, con su ubicación de stock sin saldo.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el código ya lo usa otro depósito vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
-| 5 | Si la ubicación del depósito tiene algún saldo distinto de cero, el sistema responde 409: el stock se transfiere o se ajusta antes de la baja. |
-| 5 | Si el depósito es el predeterminado y hay otros vigentes, el sistema responde 409 hasta que otro pase a ser el predeterminado. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura por listado y una escritura por alta, cambio o baja. Responde en menos de 1 segundo. |
+| **Rendimiento** | Una escritura por alta. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir un depósito. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Cada distribuidora nueva recibe un «Depósito central» predeterminado cuando se da de alta (listener de `distribuidora.creada`), de modo que el stock siempre tiene un lugar donde existir. El depósito es el lugar donde llegan las compras (CU-217) y de donde sale la carga de los camiones (CU-218). |
+
+---
+
+
+#### Importante CU-259 — Modificar un Depósito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador modifica un depósito o sucursal de su distribuidora: nombre, código, tipo, dirección o estado. Endpoint: `PATCH /warehouses/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» y selecciona el depósito: **incluye CU-207 Consultar los Depósitos**, el listado del que sale. |
+| 2 | Cambia los campos que correspondan y el panel envía `PATCH /warehouses/:id` con los campos que cambian. |
+| 3 | El sistema aplica el cambio con la misma comprobación de código que el alta. |
+| 4 | El sistema devuelve el depósito actualizado. |
+
+**Postcondición:** El depósito quedó con los datos nuevos. Sus saldos de stock no cambian.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el código ya lo usa otro depósito vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
+| 3 | Si el depósito no existe, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura por cambio. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir o cerrar un depósito. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Cada distribuidora nueva recibe un «Depósito central» predeterminado cuando se da de alta (listener de `distribuidora.creada`), de modo que el stock siempre tiene un lugar donde existir. El depósito es el lugar donde llegan las compras (CU-217) y de donde sale la carga de los camiones (CU-218). La regla sobre la baja del depósito predeterminado es una propuesta de diseño: el diseño funcional no la prevé. |
+| **Comentarios** | Sólo cambian los campos enviados: el cuerpo es parcial, igual que en la edición del vehículo. |
+
+---
+
+
+#### Importante CU-260 — Dar de Baja un Depósito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de baja un depósito o sucursal de su distribuidora. La baja es lógica y sólo se admite cuando el depósito no tiene saldo. Endpoint: `DELETE /warehouses/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» y selecciona el depósito: **incluye CU-207 Consultar los Depósitos**, el listado del que sale. |
+| 2 | El panel envía `DELETE /warehouses/:id`. |
+| 3 | El sistema comprueba que la ubicación de stock del depósito no tenga saldo distinto de cero y lo marca como dado de baja. |
+| 4 | El sistema devuelve la confirmación de la baja. |
+
+**Postcondición:** El depósito quedó dado de baja y dejó de listarse; su ubicación de stock y sus movimientos se conservan.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la ubicación del depósito tiene algún saldo distinto de cero, el sistema responde 409: el stock se transfiere o se ajusta antes de la baja. |
+| 3 | Si el depósito es el predeterminado y hay otros vigentes, el sistema responde 409 hasta que otro pase a ser el predeterminado. |
+| 3 | Si el depósito no existe, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura del saldo y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al cerrar un depósito. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja es lógica: el depósito y su ubicación siguen existiendo para explicar los movimientos que ya tuvieron. Un saldo distinto de cero se resuelve antes con una transferencia (CU-212) o un ajuste (CU-213). La regla sobre la baja del depósito predeterminado es una propuesta de diseño: el diseño funcional no la prevé. |
 
 ---
 
@@ -8958,13 +9542,13 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 ---
 
-#### Importante CU-214 — Gestionar los Proveedores
+#### Importante CU-214 — Consultar los Proveedores
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador mantiene el padrón de proveedores de la distribuidora: razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. La baja es lógica. El CUIT es único entre los proveedores vigentes. Endpoints: `GET /suppliers`, `POST /suppliers`, `PATCH /suppliers/:id` y `DELETE /suppliers/:id`. |
+| **Descripción** | El administrador consulta el padrón de proveedores de la distribuidora: razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. Endpoint: `GET /suppliers`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
 | **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -8972,29 +9556,135 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Compras → Proveedores»; el panel envía `GET /suppliers`, con o sin un término de búsqueda, y muestra los proveedores vigentes. |
-| 2 | Para agregar uno, ingresa razón social, CUIT, tipo, contacto y plazo de pago; el panel envía `POST /suppliers`. |
-| 3 | El sistema comprueba que el CUIT no pertenezca a otro proveedor vigente de la distribuidora y crea el proveedor. |
-| 4 | Para modificarlo, el panel envía `PATCH /suppliers/:id` con los campos que cambian. |
-| 5 | Para darlo de baja, el panel envía `DELETE /suppliers/:id` y el sistema lo marca como dado de baja. |
-| 6 | El sistema devuelve el proveedor resultante. |
+| 1 | El administrador abre «Compras → Proveedores»; el panel envía `GET /suppliers`, con o sin un término de búsqueda. |
+| 2 | El sistema devuelve los proveedores vigentes de la distribuidora y el panel los muestra. |
 
-**Postcondición:** La distribuidora tiene el proveedor dado de alta, modificado o dado de baja. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+**Postcondición:** El administrador ve los proveedores vigentes de su distribuidora. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura por listado. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la modificación (CU-262) y la baja (CU-263) de un proveedor. La búsqueda por término mira la razón social y el CUIT, igual que las demás búsquedas de listados del panel. |
+
+---
+
+
+#### Importante CU-261 — Registrar un Proveedor
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de alta a un proveedor de la distribuidora, con su razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. El CUIT es único entre los proveedores vigentes. Endpoint: `POST /suppliers`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Proveedores» y elige agregar uno; ingresa razón social, CUIT, tipo, contacto y plazo de pago. |
+| 2 | El panel envía `POST /suppliers`. |
+| 3 | El sistema comprueba que el CUIT no pertenezca a otro proveedor vigente de la distribuidora y crea el proveedor. |
+| 4 | El sistema devuelve el proveedor creado. |
+
+**Postcondición:** La distribuidora tiene el proveedor dado de alta.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el CUIT ya pertenece a otro proveedor vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
-| 4 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura por listado y una escritura por alta, cambio o baja. Responde en menos de 1 segundo. |
+| **Rendimiento** | Una escritura por alta. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La baja lógica conserva el historial de compras: una recepción de hace un año sigue mostrando a qué proveedor se le compró. El CUIT se valida con el dígito verificador y no se guarda con guiones. |
+| **Comentarios** | El CUIT se valida con el dígito verificador y no se guarda con guiones; es único entre los proveedores vigentes de la distribuidora, con un índice único parcial. |
+
+---
+
+
+#### Importante CU-262 — Modificar un Proveedor
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador modifica un proveedor de la distribuidora: razón social, CUIT, tipo, datos de contacto o plazo de pago. Endpoint: `PATCH /suppliers/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Proveedores» y selecciona el proveedor: **incluye CU-214 Consultar los Proveedores**, el listado del que sale. |
+| 2 | Cambia los campos que correspondan y el panel envía `PATCH /suppliers/:id` con los campos que cambian. |
+| 3 | El sistema aplica el cambio y devuelve el proveedor actualizado. |
+
+**Postcondición:** El proveedor quedó con los datos nuevos. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura por cambio. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Sólo cambian los campos enviados. |
+
+---
+
+
+#### Importante CU-263 — Dar de Baja un Proveedor
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador da de baja a un proveedor de la distribuidora. La baja es lógica. Endpoint: `DELETE /suppliers/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Proveedores» y selecciona el proveedor: **incluye CU-214 Consultar los Proveedores**, el listado del que sale. |
+| 2 | El panel envía `DELETE /suppliers/:id` y el sistema lo marca como dado de baja. |
+| 3 | El sistema devuelve la confirmación de la baja. |
+
+**Postcondición:** El proveedor quedó dado de baja y dejó de listarse. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una escritura por baja. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al dejar de comprar a un proveedor. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja lógica conserva el historial de compras: una recepción de hace un año sigue mostrando a qué proveedor se le compró. |
 
 ---
 
@@ -9143,8 +9833,10 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-031 Registrar Chofer | → | CU-082 Crear Usuario Base | Ídem, desde la gestión de la flota (SS-07). |
 | CU-086 Registrar Administrador | → | CU-082 Crear Usuario Base | Ídem: el perfil que se crea es el de administrador. |
 | CU-087 Crear el Primer Administrador General | → | CU-082 Crear Usuario Base | Ídem, invocado desde el comando de arranque en el servidor. |
-| CU-050 Bloquear / Desbloquear Usuario | → | CU-083 Buscar y Listar Usuarios | Toda operación sobre un usuario existente resuelve antes cuál es, desde el listado o la búsqueda. |
-| CU-085 Eliminar Usuario | → | CU-083 Buscar y Listar Usuarios | Ídem: la baja parte de localizar la cuenta. |
+| CU-050 Bloquear un Usuario | → | CU-083 Listar los Usuarios | Toda operación sobre un usuario existente resuelve antes cuál es, desde el listado o la búsqueda. |
+| CU-085 Eliminar Usuario | → | CU-083 Listar los Usuarios | Ídem: la baja parte de localizar la cuenta. |
+| CU-270 Desbloquear un Usuario | → | CU-083 Listar los Usuarios | Ídem: el desbloqueo parte de ubicar la cuenta en el listado. |
+| CU-251 Modificar el Perfil de Usuario | → | CU-004 Consultar el Perfil de Usuario | La edición parte de la pantalla «Mi Perfil», que ya trajo los datos del usuario. |
 | CU-094 Actualizar Ubicación del Cliente | → | CU-129 Consultar Detalle del Cliente | La corrección de ubicación parte de la ficha del cliente. |
 | CU-095 Eliminar Cliente | → | CU-129 Consultar Detalle del Cliente | La baja parte de la ficha del cliente. |
 | CU-131 Editar Datos del Cliente | → | CU-129 Consultar Detalle del Cliente | La edición parte de la ficha del cliente. |
@@ -9152,15 +9844,26 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-096 Actualizar Perfil del Chofer | → | CU-110 Buscar Chofer por Usuario | Toda operación del ABM de choferes resuelve antes el perfil a partir de la cuenta de usuario. |
 | CU-097 Eliminar Chofer | → | CU-110 Buscar Chofer por Usuario | Ídem: la baja parte de resolver el perfil. |
 | CU-109 Consultar Detalle del Chofer | → | CU-110 Buscar Chofer por Usuario | La ficha también se alcanza resolviendo el perfil por cuenta de usuario. |
-| CU-032 Validar / Invalidar Chofer | → | CU-110 Buscar Chofer por Usuario | La validación resuelve antes de qué chofer se trata. |
-| CU-033 Activar / Desactivar Chofer (Admin) | → | CU-110 Buscar Chofer por Usuario | Ídem. |
+| CU-032 Validar un Chofer | → | CU-110 Buscar Chofer por Usuario | La validación resuelve antes de qué chofer se trata. |
+| CU-033 Activar un Chofer | → | CU-110 Buscar Chofer por Usuario | Ídem. |
+| CU-267 Desactivar un Chofer | → | CU-110 Buscar Chofer por Usuario | Ídem. |
+| CU-271 Invalidar un Chofer | → | CU-110 Buscar Chofer por Usuario | Ídem, para retirar la validación. |
 | CU-034 Registrar Vehículo del Chofer | → | CU-110 Buscar Chofer por Usuario | El alta del vehículo resuelve primero a qué chofer pertenece. |
 | CU-111 Editar Vehículo | → | CU-113 Consultar Detalle del Vehículo | La edición parte de la ficha del vehículo, que ya lo trajo por identificador. |
 | CU-112 Eliminar Vehículo | → | CU-113 Consultar Detalle del Vehículo | La baja parte de la misma ficha. |
 | CU-037 Actualizar Precio de Producto | → | CU-041 Consultar Catálogo de Productos | El administrador selecciona el producto desde el listado del catálogo antes de editarlo. |
 | CU-038 Actualizar Stock de Producto | → | CU-041 Consultar Catálogo de Productos | Ídem. |
 | CU-039 Configurar Promociones por Cantidad | → | CU-041 Consultar Catálogo de Productos | Ídem. |
-| CU-040 Activar / Desactivar Producto | → | CU-041 Consultar Catálogo de Productos | Ídem. |
+| CU-040 Desactivar un Producto | → | CU-041 Consultar Catálogo de Productos | Ídem. |
+| CU-268 Reactivar un Producto | → | CU-269 Consultar los Productos Inactivos | La reactivación parte de ubicar el producto entre los dados de baja. |
+| CU-253 Modificar un Rol | → | CU-089 Consultar los Roles | La modificación selecciona el rol desde el listado de roles. |
+| CU-254 Eliminar un Rol | → | CU-089 Consultar los Roles | La baja parte del mismo listado. |
+| CU-256 Modificar un Puesto de Trabajo | → | CU-176 Consultar los Puestos de Trabajo | La modificación selecciona el puesto desde el listado de puestos. |
+| CU-257 Eliminar un Puesto de Trabajo | → | CU-176 Consultar los Puestos de Trabajo | La baja parte del mismo listado. |
+| CU-259 Modificar un Depósito | → | CU-207 Consultar los Depósitos | La modificación selecciona el depósito desde el listado. |
+| CU-260 Dar de Baja un Depósito | → | CU-207 Consultar los Depósitos | La baja parte del mismo listado. |
+| CU-262 Modificar un Proveedor | → | CU-214 Consultar los Proveedores | La modificación selecciona el proveedor desde el listado. |
+| CU-263 Dar de Baja un Proveedor | → | CU-214 Consultar los Proveedores | La baja parte del mismo listado. |
 | CU-059 Eliminar Zona de Cobertura | → | CU-057 Consultar Zonas de Cobertura | La baja parte de seleccionar la zona en el listado. |
 | CU-025 Resolver Reclamo | → | CU-024 Listar Reclamos | La resolución parte de abrir el detalle desde el listado. |
 | CU-063 Resolver Incidencia | → | CU-061 Listar Incidencias | Ídem, desde la grilla de incidencias. |
@@ -9179,9 +9882,9 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-203 Consultar el Costo Total de un Vehículo | → | CU-113 Consultar Detalle del Vehículo | El costo se consulta desde la ficha del vehículo. |
 | CU-247 Reactivar un Vehículo | → | CU-113 Consultar Detalle del Vehículo | La reactivación parte de la ficha del vehículo. |
 | CU-138 Registrar la Licencia de Conducir del Chofer | → | CU-110 Buscar Chofer por Usuario | La tarea se crea resolviendo antes el perfil del chofer. |
-| CU-155 Adjuntar Archivo a una Tarea de Flota | → | CU-159 Almacenar Archivo | Toda subida guarda el contenido por el mismo puerto de almacenamiento. |
+| CU-155 Adjuntar Archivo a una Tarea de Flota | → | CU-159 Almacenar Archivo | Toda subida guarda el contenido en S3 por el mismo servicio. |
 | CU-157 Descargar un Adjunto de Flota | → | CU-156 Consultar Adjuntos de una Tarea de Flota | La descarga parte del listado de adjuntos. |
-| CU-157 Descargar un Adjunto de Flota | → | CU-160 Recuperar Archivo | Toda descarga resuelve el contenido por el mismo puerto de almacenamiento. |
+| CU-157 Descargar un Adjunto de Flota | → | CU-160 Recuperar Archivo | Toda descarga entrega el contenido con una URL firmada de S3. |
 | CU-158 Eliminar un Adjunto de Flota | → | CU-156 Consultar Adjuntos de una Tarea de Flota | La baja parte del mismo listado. |
 | CU-008 Cancelar Pedido (Cliente) | → | CU-006 Consultar Detalle de Pedido | La cancelación parte de abrir el detalle del pedido. |
 | CU-009 Cancelar Pedido (Chofer) | → | CU-006 Consultar Detalle de Pedido | Ídem, desde la vista del chofer. |
@@ -9206,8 +9909,8 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-147 Realizar una Compra Express | → | CU-121 Consultar la Dirección Predeterminada | La compra express recupera primero la dirección predeterminada del cliente. |
 | CU-149 Despachar un Pedido Express a un Chofer en Moto | → | CU-015 Aceptar Pedido | La aceptación del chofer en moto reutiliza la misma operación que el despacho normal. |
 | CU-170 Consultar el Historial de Estados de un Pedido | → | CU-006 Consultar Detalle de Pedido | El historial se abre desde el detalle del pedido. |
-| CU-174 Adjuntar la Fotografía de un Reclamo | → | CU-159 Almacenar Archivo | Toda imagen se guarda por el mismo puerto de almacenamiento que los adjuntos de flota. |
-| CU-175 Consultar la Fotografía de un Reclamo | → | CU-160 Recuperar Archivo | Toda descarga resuelve el contenido por el mismo puerto de almacenamiento. |
+| CU-174 Adjuntar la Fotografía de un Reclamo | → | CU-159 Almacenar Archivo | Toda imagen se guarda en S3 por el mismo servicio que los adjuntos de flota. |
+| CU-175 Consultar la Fotografía de un Reclamo | → | CU-160 Recuperar Archivo | Toda descarga entrega el contenido con una URL firmada de S3. |
 | CU-178 Modificar el Legajo de un Empleado | → | CU-179 Consultar el Legajo de un Empleado | La modificación parte de la ficha del empleado. |
 | CU-181 Registrar el Egreso de un Empleado | → | CU-179 Consultar el Legajo de un Empleado | El egreso parte de la ficha del empleado. |
 | CU-182 Otorgar una Cuenta de Acceso a un Empleado | → | CU-179 Consultar el Legajo de un Empleado | Otorgar el acceso parte de la ficha del empleado. |
@@ -9219,7 +9922,7 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-193 Consultar el Saldo de Vacaciones de un Empleado | → | CU-179 Consultar el Legajo de un Empleado | El saldo se consulta desde la pestaña de licencias de la ficha. |
 | CU-187 Consultar los Vencimientos del Personal | → | CU-179 Consultar el Legajo de un Empleado | La documentación de una persona se consulta desde su ficha. |
 | CU-188 Avisar los Vencimientos Próximos del Personal | → | CU-187 Consultar los Vencimientos del Personal | El aviso diario calcula los estados de vencimiento con la misma consulta. |
-| CU-003 Registrar Chofer | → | CU-177 Registrar el Legajo de un Empleado | Planificado (I-11): el alta de un chofer crea su legajo en la misma transacción. |
+| CU-003 Registrar Chofer | → | CU-177 Registrar el Legajo de un Empleado | El alta de un chofer crea su legajo en la misma transacción, o vincula el existente. |
 | CU-012 Asignar Chofer Manualmente | → | CU-246 Verificar la Habilitación Laboral del Chofer | Planificado (I-11): la asignación comprueba la situación laboral del chofer. |
 | CU-013 Asignar Pedido Automáticamente por Proximidad | → | CU-246 Verificar la Habilitación Laboral del Chofer | Planificado (I-11): la oferta sólo llega a un chofer habilitado laboralmente. |
 | CU-015 Aceptar Pedido | → | CU-246 Verificar la Habilitación Laboral del Chofer | Planificado (I-11): la aceptación repite la comprobación. |
@@ -9266,47 +9969,162 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 
 ---
 
-### 7.8 Casos de Uso Expandidos — Personal y Legajos (CU-176 a CU-194)
+### 7.8 Casos de Uso Expandidos — Personal y Legajos (CU-176 a CU-194 y CU-255 a CU-257)
 
-Módulo planificado en la iteración I-11: puestos, legajos, documentación con vencimiento del personal, asistencia y licencias. Los casos se documentan completos para que la construcción posterior tenga contra qué hacerse.
+Módulo de la iteración I-11, construido en parte: los puestos, los legajos, el egreso y la cuenta de acceso están implementados (CU-176 a CU-182, CU-186 y CU-255 a CU-257); la documentación con vencimiento del personal, la asistencia y las licencias siguen planificadas y se documentan completas para que la construcción posterior tenga contra qué hacerse.
 
-#### Importante CU-176 — Gestionar los Puestos de Trabajo
+#### Importante CU-176 — Consultar los Puestos de Trabajo
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador consulta, crea, modifica y da de baja los puestos de su distribuidora. Cada puesto tiene un nombre y una categoría (`driver`, `helper`, `warehouse`, `administration`, `sales`, `management` u `other`): la categoría, y no el nombre, decide qué documentación con vencimiento se le exige al empleado y a qué rol de acceso puede aspirar. Cada distribuidora nace con cinco puestos sembrados (Chofer, Ayudante, Depósito, Administración y Vendedor). Endpoints: `GET`, `POST`, `PATCH` y `DELETE` sobre `/job-positions`. |
+| **Descripción** | El administrador consulta los puestos de su distribuidora. Cada puesto tiene un nombre y una categoría (`driver`, `helper`, `warehouse`, `administration`, `sales`, `management` u `other`): la categoría, y no el nombre, decide a qué rol de acceso puede aspirar quien lo ocupa. Cada distribuidora nace con cinco puestos sembrados (Chofer, Ayudante, Depósito, Administración y Vendedor). La lista incluye los puestos inactivos, con su marca de activo. Endpoint: `GET /job-positions`. |
 | **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Empresa · Personal · Puestos» y el panel envía `GET /job-positions`; el sistema devuelve los puestos de su distribuidora con su categoría y la cantidad de empleados activos que tiene cada uno. |
-| 2 | Para crear un puesto, el administrador indica el nombre y la categoría y el panel envía `POST /job-positions`. |
-| 3 | El sistema comprueba que la distribuidora no tenga otro puesto vigente con el mismo nombre, sin distinguir mayúsculas de minúsculas. |
-| 4 | El sistema crea el puesto, activo, y lo devuelve. |
-| 5 | Para modificar un puesto, el panel envía `PATCH /job-positions/:id` con el nombre, la categoría o la marca de activo; el sistema repite el control de nombre y devuelve el puesto actualizado. |
-| 6 | Para eliminar un puesto, el panel envía `DELETE /job-positions/:id`; el sistema comprueba que no tenga empleados activos y lo da de baja. |
+| 1 | El administrador abre «Empresa · Personal · Puestos» y el panel envía `GET /job-positions`. |
+| 2 | El sistema devuelve los puestos de su distribuidora, ordenados por nombre, con su categoría, su marca de activo y la cantidad de empleados activos que tiene cada uno. |
 
-**Postcondición:** El catálogo de puestos de la distribuidora refleja el alta, el cambio o la baja pedidos, y ningún empleado activo quedó sin puesto.
+**Postcondición:** El administrador ve los puestos vigentes de su distribuidora. No hay cambios de estado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si ya existe un puesto vigente con ese nombre en la distribuidora, el sistema responde 409. |
-| 5 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
-| 6 | Si el puesto tiene empleados activos, el sistema responde 409 con la cantidad de empleados que lo ocupan; hay que reasignarlos antes. |
+| 1 | Si la petición no trae un token válido, el sistema responde 401. |
+| 1 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una consulta con conteo de empleados por puesto y una escritura por operación. |
+| **Rendimiento** | Dos consultas: los puestos de la distribuidora y el conteo de empleados activos agrupado por puesto. |
+| **Frecuencia** | Baja: cuando el administrador abre la pantalla de puestos. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la modificación (CU-256) y la baja (CU-257) de un puesto. La cantidad de empleados activos de cada puesto es lo primero que decide si se lo puede dar de baja (CU-257). Los cinco puestos iniciales se siembran al crear la distribuidora, con un escuchador del evento de alta, y para las distribuidoras que ya existían con la migración `SembrarPuestosDeTrabajo`. |
+
+---
+
+
+#### Importante CU-255 — Crear un Puesto de Trabajo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-17 |
+| **Descripción** | El administrador crea un puesto de trabajo en su distribuidora, con un nombre y una categoría (`driver`, `helper`, `warehouse`, `administration`, `sales`, `management` u `other`): la categoría, y no el nombre, decide a qué rol de acceso puede aspirar quien lo ocupa. El puesto nace activo, salvo que se indique lo contrario. Endpoint: `POST /job-positions`. |
+| **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Empresa · Personal · Puestos» y elige crear un puesto. |
+| 2 | Indica el nombre y la categoría y el panel envía `POST /job-positions`. |
+| 3 | El sistema comprueba que la distribuidora no tenga otro puesto vigente con el mismo nombre, sin distinguir mayúsculas de minúsculas. |
+| 4 | El sistema crea el puesto, activo salvo que se indique lo contrario, y lo devuelve con cero empleados activos. |
+
+**Postcondición:** El catálogo de puestos de la distribuidora cuenta con el puesto nuevo, activo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si falta el nombre, tiene menos de 2 o más de 80 caracteres, o la categoría no es una de las admitidas, el sistema responde 400 con el detalle del campo. |
+| 3 | Si ya existe un puesto vigente con ese nombre en la distribuidora, el sistema responde 409. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de control y una escritura. |
 | **Frecuencia** | Baja: los cinco puestos iniciales se siembran al crear la distribuidora y casi no se tocan. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Los cinco puestos iniciales se siembran con el mismo mecanismo que los planes base de la flota (un escuchador del alta de la distribuidora) y, para las distribuidoras que ya existen, por migración. La baja es lógica: el puesto deja de ofrecerse pero los legajos que lo ocuparon lo conservan. El nombre es único por distribuidora entre los puestos vigentes. |
+| **Comentarios** | Los cinco puestos iniciales se siembran con el mismo mecanismo que los planes base de la flota (un escuchador del alta de la distribuidora) y, para las distribuidoras que ya existen, por migración. El nombre es único por distribuidora entre los puestos vigentes, sin distinguir mayúsculas, y la base lo refuerza con un índice único funcional. |
+
+---
+
+
+#### Importante CU-256 — Modificar un Puesto de Trabajo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-17 |
+| **Descripción** | El administrador modifica un puesto de trabajo de su distribuidora: su nombre, su categoría o la marca de activo. Endpoint: `PATCH /job-positions/:id`. |
+| **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Empresa · Personal · Puestos» y selecciona el puesto: **incluye CU-176 Consultar los Puestos de Trabajo**, el listado del que sale. |
+| 2 | Cambia el nombre, la categoría o la marca de activo y el panel envía `PATCH /job-positions/:id`. |
+| 3 | El sistema repite el control de nombre: que la distribuidora no tenga otro puesto vigente con el mismo nombre, sin distinguir mayúsculas de minúsculas. |
+| 4 | Si cambió la categoría, el sistema comprueba que los empleados con cuenta que ocupan el puesto sigan teniendo un rol de acceso que corresponda a la categoría nueva. |
+| 5 | Si el puesto es de categoría `driver` o `administration` y se lo desactiva o se le cambia la categoría, el sistema comprueba que quede otro puesto activo de esa categoría. |
+| 6 | El sistema guarda los cambios y devuelve el puesto actualizado, con su cantidad de empleados activos. |
+
+**Postcondición:** El puesto quedó con los datos nuevos. Los legajos de quienes lo ocupan lo siguen teniendo asignado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si ya existe otro puesto vigente con ese nombre en la distribuidora, el sistema responde 409. |
+| 2 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404; si el identificador no es un UUID, responde 400. |
+| 4 | Si algún empleado con cuenta del puesto tiene un rol que no corresponde a la categoría nueva, el sistema responde 409 con la cantidad de empleados afectados. |
+| 5 | Si el puesto es el último activo de su categoría `driver` o `administration`, el sistema responde 409: hay que crear otro antes de desactivarlo o recategorizarlo. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de control y una escritura. |
+| **Frecuencia** | Baja: los cinco puestos iniciales se siembran al crear la distribuidora y casi no se tocan. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Sólo cambian los campos enviados. La categoría, y no el nombre, es lo que decide las reglas que se le aplican al personal que ocupa el puesto. Un puesto inactivo deja de ofrecerse para los legajos nuevos (asignarlo responde 409), pero quienes lo ocupan lo conservan. Las dos reglas de los pasos 4 y 5 protegen el alta de personal con cuenta: un chofer o un administrativo siempre tiene dónde ubicarse. |
+
+---
+
+
+#### Importante CU-257 — Eliminar un Puesto de Trabajo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05 |
+| **Requisitos asociados** | IRQ-17 |
+| **Descripción** | El administrador da de baja un puesto de trabajo de su distribuidora. La baja es lógica y sólo se admite cuando ningún legajo lo ocupa, ni activo ni egresado: un puesto que ya se usó se desactiva con CU-256 en vez de eliminarse. Endpoint: `DELETE /job-positions/:id`. |
+| **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Empresa · Personal · Puestos» y selecciona el puesto: **incluye CU-176 Consultar los Puestos de Trabajo**, el listado del que sale. |
+| 2 | El panel envía `DELETE /job-positions/:id`. |
+| 3 | El sistema comprueba que el puesto no tenga empleados activos ni figure en ningún legajo, y que no sea el último puesto activo de su categoría `driver` o `administration`. |
+| 4 | El sistema da de baja el puesto y devuelve la confirmación. |
+
+**Postcondición:** El puesto dejó de ofrecerse y de listarse, y ningún legajo quedó sin puesto.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
+| 3 | Si el puesto tiene empleados activos, el sistema responde 409 con la cantidad de empleados que lo ocupan; hay que reasignarlos antes. |
+| 3 | Si el puesto figura en legajos de empleados egresados, el sistema responde 409 con la cantidad de legajos y sugiere desactivarlo en vez de eliminarlo. |
+| 3 | Si es el último puesto activo de su categoría `driver` o `administration`, el sistema responde 409. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos conteos de legajos del puesto, el de puestos activos de la categoría y una escritura, en una transacción que bloquea los puestos de la distribuidora de esas categorías. |
+| **Frecuencia** | Baja: los cinco puestos iniciales se siembran al crear la distribuidora y casi no se tocan. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La baja es lógica: el registro del puesto se conserva con su fecha de baja, y el nombre queda libre para un puesto nuevo. Como no se admite mientras algún legajo lo ocupe, ningún legajo, ni siquiera un egresado, queda sin puesto. |
 
 ---
 
@@ -9316,9 +10134,9 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-09 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador registra el legajo de un empleado con su número de legajo, sus datos personales (nombre, apellido, documento, CUIL, fecha de nacimiento, domicilio, teléfono y contacto de emergencia), su puesto, su fecha de ingreso y su modalidad de contratación (`permanent`, `fixed_term`, `part_time` o `contractor`). El legajo no implica una cuenta de acceso: ayudantes, personal de depósito y vendedores son legajos sin cuenta, y el acceso se otorga después con CU-182. Endpoint: `POST /employees`. |
+| **Descripción** | El administrador registra el legajo de un empleado con su número de legajo (si no lo indica, el siguiente correlativo de la distribuidora), sus datos personales (nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, correo personal, contacto de emergencia y CBU), su puesto, su fecha de ingreso y su modalidad de contratación (`permanent`, `fixed_term`, `part_time` o `contractor`). El legajo no implica una cuenta de acceso: ayudantes, personal de depósito y vendedores son legajos sin cuenta, y el acceso se otorga después con CU-182. Endpoint: `POST /employees`. |
 | **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. El puesto elegido existe y está activo en su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -9326,10 +10144,10 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |------|--------|
 | 1 | El administrador abre «Empresa · Personal» y elige dar de alta un empleado. |
 | 2 | Completa nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, contacto de emergencia, puesto, fecha de ingreso y modalidad de contratación, y el panel envía `POST /employees`. |
-| 3 | El sistema valida el formato de lo recibido y comprueba el dígito verificador del CUIL. |
-| 4 | El sistema comprueba que el puesto exista y sea de la distribuidora. |
-| 5 | El sistema comprueba que el documento y el CUIL no pertenezcan a otro empleado vigente de la distribuidora. |
-| 6 | El sistema asigna el siguiente número de legajo de la distribuidora, crea el empleado en estado `active` y lo devuelve. |
+| 3 | El sistema valida el formato de lo recibido y, si trae CUIL, comprueba su dígito verificador. |
+| 4 | El sistema comprueba que el puesto exista, sea de la distribuidora y esté activo. |
+| 5 | El sistema comprueba que el documento, el CUIL y el número de legajo (si vino en el pedido) no pertenezcan a otro empleado vigente de la distribuidora. |
+| 6 | Si el pedido no trae número de legajo, el sistema asigna el siguiente de la distribuidora, de cuatro dígitos; crea el empleado en estado `active` y lo devuelve. |
 
 **Postcondición:** Existe un empleado activo en la distribuidora, con su puesto y su número de legajo, sin cuenta de acceso.
 
@@ -9339,14 +10157,15 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |------|--------|
 | 3 | Si falta un dato obligatorio, el formato es inválido o el CUIL no tiene un dígito verificador correcto, el sistema responde 400 indicando el campo. |
 | 4 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
-| 5 | Si el documento o el CUIL ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
+| 4 | Si el puesto está inactivo, el sistema responde 409. |
+| 5 | Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Tres lecturas de verificación y una escritura; el número de legajo se toma con bloqueo para no repetirlo. |
+| **Rendimiento** | Una transacción con la lectura del puesto (con bloqueo compartido), las verificaciones de unicidad y una escritura; el número de legajo se toma con bloqueo de la secuencia para no repetirlo, y la transacción se reintenta ante un conflicto de serialización. |
 | **Frecuencia** | Baja: al incorporar a cada persona. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El alta de un chofer por `POST /users` (CU-031, CU-003) crea el legajo en la misma transacción por este mismo camino, o vincula el legajo existente si el pedido trae su identificador: un chofer es un empleado con cuenta y perfil de reparto. Los datos personales (documento, CUIL, domicilio y contacto de emergencia) sólo salen en la ficha (CU-179) y no en el listado (CU-180), por la Ley 25.326. El legajo que la migración genera para los choferes y administradores ya existentes lleva el documento marcado como pendiente y una observación para que el administrador lo complete. |
+| **Comentarios** | El alta de un chofer por `POST /users` (CU-031, CU-003) crea el legajo en la misma transacción (`EmployeeService.crearParaUsuario`), o vincula el legajo existente si el pedido trae su identificador `employeeId`: un chofer es un empleado con cuenta y perfil de reparto. Sin datos de legajo, queda con el puesto activo más antiguo de categoría chofer, ingreso hoy y documento `PENDIENTE-<legajo>`. Los datos personales (documento, CUIL, domicilio y contacto de emergencia) sólo salen en la ficha (CU-179) y no en el listado (CU-180), por la Ley 25.326. El legajo que la migración genera para los choferes y administradores ya existentes, y el que genera el alta de un chofer sin datos de legajo, lleva el documento marcado como pendiente y una observación para que el administrador lo complete. |
 
 ---
 
@@ -9356,9 +10175,9 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador abre la ficha de un empleado y modifica sus datos, o elimina el legajo cuando fue un alta errónea, antes de que tenga jornadas o documentación cargadas. Endpoints: `PATCH /employees/:id` y `DELETE /employees/:id`. |
+| **Descripción** | El administrador abre la ficha de un empleado y modifica sus datos, o elimina el legajo cuando fue un alta errónea: mientras no tenga cuenta de acceso y, cuando existan, jornadas o documentación cargadas. Endpoints: `PATCH /employees/:id` y `DELETE /employees/:id`. |
 | **Precondición** | El administrador está autenticado. El empleado existe y es de su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado, con funcionalidad planificada (I-11): impedir la baja de un legajo que ya tiene jornadas o documentación cargadas, que se construye con esos módulos. |
 
 **Secuencia Normal**
 
@@ -9367,9 +10186,9 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 | 1 | El administrador abre la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
 | 2 | Para modificar, edita los datos y el panel envía `PATCH /employees/:id` con los campos cambiados. |
 | 3 | El sistema valida el formato de lo recibido y, si cambió el CUIL, su dígito verificador. |
-| 4 | Si cambió el puesto, el sistema comprueba que exista y sea de la distribuidora. |
-| 5 | El sistema comprueba que el documento y el CUIL nuevos no pertenezcan a otro empleado vigente y guarda los cambios. |
-| 6 | Para eliminar, el panel envía `DELETE /employees/:id`; el sistema comprueba que el legajo no tenga jornadas ni tareas de documentación y lo da de baja. |
+| 4 | Si cambió el puesto, el sistema comprueba que exista, sea de la distribuidora y esté activo, y que, si el empleado tiene cuenta, el rol de su usuario corresponda a la categoría del puesto nuevo. |
+| 5 | El sistema comprueba que la fecha de ingreso no sea posterior a la de egreso y que el documento, el CUIL y el número de legajo nuevos no pertenezcan a otro empleado vigente, y guarda los cambios. |
+| 6 | Para eliminar, el panel envía `DELETE /employees/:id`; el sistema comprueba que el legajo no tenga cuenta de acceso y lo da de baja. Planificado (I-11): comprueba además que no tenga jornadas ni tareas de documentación. |
 
 **Postcondición:** El legajo tiene los datos corregidos, o quedó dado de baja si era un alta errónea.
 
@@ -9377,17 +10196,19 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el formato es inválido o el CUIL no tiene un dígito verificador correcto, el sistema responde 400 indicando el campo. |
-| 4 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404. |
-| 5 | Si el documento o el CUIL ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
-| 6 | Si el legajo tiene jornadas o tareas de documentación, el sistema responde 409: ya no es un alta errónea y corresponde registrar el egreso (CU-181). |
+| 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404, tanto al modificar como al eliminar. |
+| 3 | Si el formato es inválido, el CUIL no tiene un dígito verificador correcto, se envía en blanco un dato obligatorio o se intenta cambiar el estado, el sistema responde 400 indicando el campo. |
+| 4 | Si el puesto no existe o es de otra distribuidora, el sistema responde 404; si está inactivo o su categoría no corresponde al rol de la cuenta del empleado, responde 409. |
+| 5 | Si la fecha de ingreso es posterior a la de egreso, el sistema responde 400. |
+| 5 | Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409. |
+| 6 | Si el legajo tiene una cuenta de acceso, el sistema responde 409: ya no es un alta errónea y corresponde registrar el egreso (CU-181). Planificado (I-11): lo mismo si tiene jornadas o tareas de documentación. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura del legajo, las verificaciones de unicidad y una escritura. |
+| **Rendimiento** | Una transacción con el bloqueo de la fila del legajo, las verificaciones de unicidad y una escritura. |
 | **Frecuencia** | Baja: una modificación cada tanto por empleado. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El estado del empleado, su fecha y su motivo de egreso no se editan por esta vía: sólo cambian con el egreso y el reingreso (CU-181). La baja lógica queda reservada a las altas erróneas; el historial de lo que se modificó queda en el registro de auditoría (CU-153), que sólo ven los administradores. |
+| **Comentarios** | El estado del empleado, su fecha y su motivo de egreso no se editan por esta vía: sólo cambian con el egreso y el reingreso (CU-181): enviarlos responde 400. La baja lógica queda reservada a las altas erróneas, aunque hoy el sistema sólo exige que el legajo no tenga cuenta (un legajo egresado sin cuenta también puede eliminarse); el historial de lo que se modificó queda en el registro de auditoría (CU-153), que sólo ven los administradores. |
 
 ---
 
@@ -9399,7 +10220,7 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 | **Requisitos asociados** | IRQ-17 |
 | **Descripción** | El administrador consulta el legajo completo de un empleado, con sus datos personales, su puesto, su estado, el identificador de su cuenta de acceso si la tiene y el del perfil de reparto si es chofer. Es la pantalla de la que parten las demás operaciones sobre un empleado. Endpoint: `GET /employees/:id`. |
 | **Precondición** | El administrador está autenticado. El empleado existe y es de su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -9417,6 +10238,7 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 
 | Paso | Acción |
 |------|--------|
+| 1 | Si el identificador no es un UUID, el sistema responde 400. |
 | 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404. |
 
 | Campo | Detalle |
@@ -9434,9 +10256,9 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador lista los empleados de su distribuidora, paginados, y los filtra por texto (nombre o legajo), puesto, categoría de puesto, estado (`active` o `terminated`), si tienen cuenta de acceso y estado de su documentación. Cada fila trae el nombre, el legajo, el puesto, el estado y el peor vencimiento de la documentación del empleado. Endpoint: `GET /employees`. |
+| **Descripción** | El administrador lista los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (`active` o `terminated`) y si tienen cuenta de acceso. Cada fila trae el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta. Planificado (I-11): el filtro por el estado de la documentación y, en cada fila, el peor vencimiento de la documentación del empleado. Endpoint: `GET /employees`. |
 | **Precondición** | El administrador está autenticado y su usuario tiene una distribuidora asociada. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado, con funcionalidad planificada (I-11): el estado de la documentación del empleado, su peor vencimiento en cada fila y el filtro por ese estado, que dependen de los documentos del personal. |
 
 **Secuencia Normal**
 
@@ -9445,8 +10267,8 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 | 1 | El administrador abre «Empresa · Personal» y, si quiere, elige filtros. |
 | 2 | El panel envía `GET /employees` con los filtros, la página y el límite. |
 | 3 | El sistema busca los empleados de la distribuidora que cumplen los filtros, ordenados por apellido y nombre. |
-| 4 | Para cada empleado de la página, calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
-| 5 | El sistema devuelve la página y el total, sin los datos personales sensibles. |
+| 4 | El sistema devuelve la página y el total, sin los datos personales sensibles. |
+| 5 | Planificado (I-11): para cada empleado de la página, calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
 
 **Postcondición:** El administrador ve la página de empleados que pidió. No cambió ningún dato.
 
@@ -9454,15 +10276,15 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si un filtro tiene un valor inválido, el sistema responde 400 indicando el filtro. |
+| 2 | Si un filtro tiene un valor inválido, o la página o el límite están fuera de rango, el sistema responde 400 indicando el filtro. |
 | 3 | Si ningún empleado cumple los filtros, el sistema devuelve la página vacía. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una consulta paginada con el puesto; el estado de la documentación se resuelve para los empleados de la página, no para todos. |
+| **Rendimiento** | Una consulta paginada con el puesto y el total. Planificado (I-11): el estado de la documentación se resolverá para los empleados de la página, no para todos. |
 | **Frecuencia** | Alta: diaria. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). El filtro por estado de la documentación reutiliza el mismo cálculo de vencimientos que la flota (CU-139). |
+| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). Planificado (I-11): el filtro por estado de la documentación reutilizará el mismo cálculo de vencimientos que la flota (CU-139); hasta entonces el parámetro `documentStatus` se acepta y se ignora. |
 
 ---
 
@@ -9472,9 +10294,9 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador registra el egreso de un empleado: el legajo pasa a `terminated` con su fecha y su motivo (`resignation`, `dismissal`, `end_of_contract`, `retirement` u `other`). En la misma transacción, si el empleado tiene cuenta de acceso se la bloquea y, si es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino con que se libera un vehículo cuando se da de baja a un chofer. El administrador puede reingresar al empleado, lo que limpia el egreso y fija una fecha de ingreso nueva. Endpoints: `POST /employees/:id/termination` y `POST /employees/:id/reinstatement`. |
+| **Descripción** | El administrador registra el egreso de un empleado: el legajo pasa a `terminated` con su fecha y su motivo (`resignation`, `dismissal`, `end_of_contract`, `retirement` u `other`). En la misma transacción, si el empleado tiene cuenta de acceso se la bloquea y, si es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino con que se libera un vehículo cuando se da de baja a un chofer. El administrador puede reingresar al empleado, lo que limpia el egreso y fija una fecha de ingreso nueva (hoy, si no indica otra). Endpoints: `POST /employees/:id/termination` y `POST /employees/:id/reinstatement`. |
 | **Precondición** | El administrador está autenticado. El empleado existe, es de su distribuidora y, para el egreso, está activo; para el reingreso, está egresado. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado, con funcionalidad planificada (I-13): impedir el egreso del chofer que tiene una carga de camión abierta o una rendición pendiente, que se construyen con esos módulos. |
 
 **Secuencia Normal**
 
@@ -9483,10 +10305,11 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 | 1 | El administrador abre la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
 | 2 | Elige «Registrar egreso» e indica la fecha de egreso y el motivo; el panel envía `POST /employees/:id/termination`. |
 | 3 | El sistema comprueba que el empleado esté activo y que la fecha no sea anterior a la de ingreso. |
-| 4 | El sistema pasa el legajo a `terminated` con la fecha y el motivo. |
-| 5 | Si el empleado tiene cuenta de acceso, el sistema bloquea al usuario. |
-| 6 | Si la cuenta tiene perfil de reparto, el sistema deshabilita al chofer y libera el vehículo que tenía en uso. |
-| 7 | Para reingresar a un empleado egresado, el panel envía `POST /employees/:id/reinstatement` con la fecha de ingreso nueva; el sistema pasa el legajo a `active` y limpia la fecha y el motivo de egreso. |
+| 4 | Si la cuenta tiene perfil de reparto, el sistema comprueba que el chofer no tenga pedidos en curso (aceptados o en camino). Planificado (I-13): comprueba además que no tenga una carga de camión abierta ni una rendición pendiente. |
+| 5 | El sistema pasa el legajo a `terminated` con la fecha y el motivo. |
+| 6 | Si el empleado tiene cuenta de acceso, el sistema bloquea al usuario. |
+| 7 | Si la cuenta tiene perfil de reparto, el sistema deshabilita al chofer y libera el vehículo que tenía en uso; con el egreso confirmado, lo saca del radar de despacho. |
+| 8 | Para reingresar a un empleado egresado, el panel envía `POST /employees/:id/reinstatement` con la fecha de ingreso nueva; el sistema pasa el legajo a `active` y limpia la fecha y el motivo de egreso. |
 
 **Postcondición:** El legajo quedó egresado con su fecha y su motivo, la cuenta de acceso bloqueada y, si era chofer, deshabilitado y sin vehículo en uso. En el reingreso, el legajo quedó activo con la fecha de ingreso nueva.
 
@@ -9494,16 +10317,18 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 
 | Paso | Acción |
 |------|--------|
+| 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404, tanto en el egreso como en el reingreso; si el motivo no es uno de los admitidos o la fecha no es una fecha real, responde 400. |
 | 3 | Si el empleado ya está egresado, el sistema responde 409; si la fecha de egreso es anterior a la de ingreso, responde 400. |
-| 3 | Cuando existan la carga de camión y la rendición de cuentas del chofer, si tiene una carga abierta o una rendición pendiente, el sistema responde 409 con el detalle. |
-| 7 | Si el empleado no está egresado, el sistema responde 409. |
+| 4 | Si el chofer tiene pedidos en curso, el sistema responde 409 con la cantidad: hay que cancelarlos o reasignarlos antes. |
+| 4 | Planificado (I-13): si el chofer tiene una carga de camión abierta o una rendición pendiente, el sistema responderá 409 con el detalle. |
+| 8 | Si el empleado no está egresado, el sistema responde 409; si la fecha de ingreso nueva es anterior a la de egreso, responde 400. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una transacción con el legajo, el usuario, el chofer y su asignación de vehículo. |
+| **Rendimiento** | Una transacción con el legajo, el usuario, el chofer y su asignación de vehículo; toma los bloqueos en el mismo orden que la baja de un usuario (primero el usuario y el chofer, después el legajo) para no generar interbloqueos. |
 | **Frecuencia** | Baja: al terminar la relación laboral de cada persona. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El reingreso no desbloquea la cuenta de acceso: la reactivación de la cuenta es una decisión aparte del administrador (CU-050). Un chofer egresado sale del despacho (CU-013) porque su legajo no está activo, además de por tener la cuenta bloqueada. Los datos del empleado egresado se conservan: es una baja del vínculo laboral, no del legajo. Cambia el comportamiento de la baja de un chofer existente (CU-097): al construirse, el egreso del empleado es el camino que la origina. |
+| **Comentarios** | El reingreso no desbloquea la cuenta de acceso: la reactivación de la cuenta es una decisión aparte del administrador (CU-270). Un chofer egresado sale del despacho (CU-013) porque su legajo no está activo, además de por tener la cuenta bloqueada. Los datos del empleado egresado se conservan: es una baja del vínculo laboral, no del legajo. La baja de un usuario con legajo (chofer o administrador, `DELETE /users/:id`, CU-097) egresa su legajo en la misma transacción con motivo `other`, deja constancia en las notas y suelta la cuenta (`userId` queda vacío); si el egreso tuviera un impedimento, la baja falla con 409 y se revierte todo. |
 
 ---
 
@@ -9513,20 +10338,21 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador otorga una cuenta de acceso a un empleado que no la tiene. El sistema delega el alta de la cuenta en el servicio de registro (el mismo camino de CU-082) con el rol que corresponde a la categoría del puesto —`driver` da el rol chofer; `administration` y `management`, el rol administrador— y vincula el usuario creado al legajo. Las demás categorías no admiten cuenta, porque el sistema no define roles para ellas. Endpoint: `POST /employees/:id/account`. |
+| **Descripción** | El administrador otorga una cuenta de acceso a un empleado que no la tiene. El sistema delega el alta de la cuenta en el servicio de registro (el mismo camino de CU-082) con el rol que corresponde a la categoría del puesto y vincula el usuario creado al legajo. Hoy sólo el puesto de categoría `driver` admite cuenta, con el rol chofer y su perfil de reparto: los administrativos (`administration` y `management`) reciben su cuenta de administrador con el alta del usuario (CU-082), que crea o vincula el legajo, y las demás categorías no admiten cuenta, porque el sistema no define roles para ellas. Endpoint: `POST /employees/:id/account`. |
 | **Precondición** | El administrador está autenticado. El empleado existe, es de su distribuidora, está activo y no tiene cuenta de acceso. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador abre la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
-| 2 | Elige «Otorgar acceso» e indica el correo de la cuenta; el panel envía `POST /employees/:id/account`. |
+| 2 | Elige «Otorgar acceso» e indica el correo y la contraseña inicial de la cuenta, y el teléfono si el legajo no lo tiene; el panel envía `POST /employees/:id/account`. |
 | 3 | El sistema comprueba que el empleado esté activo y que no tenga ya una cuenta. |
-| 4 | El sistema resuelve el rol de acceso a partir de la categoría del puesto del empleado. |
-| 5 | El sistema crea la cuenta con ese rol, en la distribuidora del empleado, por el mismo camino de CU-082. |
-| 6 | El sistema vincula el usuario creado al legajo y devuelve el empleado. |
+| 4 | El sistema resuelve el rol de acceso a partir de la categoría del puesto del empleado y comprueba que la admita. |
+| 5 | El sistema comprueba que haya un teléfono en formato internacional (E.164), el del pedido o el del legajo. |
+| 6 | El sistema crea la cuenta con ese rol, en la distribuidora del empleado y con el nombre del legajo, por el mismo camino de CU-082, que también vincula el usuario creado al legajo. |
+| 7 | El sistema devuelve el empleado con su cuenta y, si es chofer, con su perfil de reparto. |
 
 **Postcondición:** El empleado tiene una cuenta de acceso con el rol que corresponde a su puesto, vinculada a su legajo; si es un chofer, tiene además su perfil de reparto.
 
@@ -9534,16 +10360,18 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 
 | Paso | Acción |
 |------|--------|
+| 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404; si el correo no es válido o la contraseña tiene menos de seis caracteres, responde 400. |
 | 3 | Si el empleado ya tiene cuenta o está egresado, el sistema responde 409. |
-| 4 | Si la categoría del puesto no admite cuenta de acceso, el sistema responde 400 con la lista de categorías que la admiten. |
-| 5 | Si el correo ya está en uso, el sistema responde 409. Las demás fallas del alta se tratan como en CU-082. |
+| 4 | Si la categoría del puesto no admite cuenta de acceso, el sistema responde 400 y nombra el puesto y su categoría. |
+| 5 | Si falta un teléfono en formato E.164, el sistema responde 400. |
+| 6 | Si el correo o el teléfono ya están en uso, el sistema responde 409 «Email o teléfono ya en uso». Las demás fallas del alta se tratan como en CU-082. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura del legajo y el alta de la cuenta, dominada por el proveedor de identidad. |
+| **Rendimiento** | Una lectura del legajo y el alta de la cuenta con el vínculo al legajo en una transacción, dominada por el proveedor de identidad. |
 | **Frecuencia** | Baja: al dar acceso a cada persona que lo necesita. |
 | **Estabilidad** | Media |
-| **Comentarios** | El sistema mantiene sus cuatro roles: no hay roles de depósito, de caja ni de ventas. El personal administrativo que entra al panel es un administrador, y ayudantes, personal de depósito y vendedores son legajos sin cuenta. Si más adelante la distribuidora necesita permisos más finos, es una evolución que implica una matriz de autorización nueva en el sistema entero y queda fuera de este módulo. |
+| **Comentarios** | El sistema mantiene sus cuatro roles: no hay roles de depósito, de caja ni de ventas. El personal administrativo que entra al panel es un administrador (su cuenta nace con el alta del usuario, que crea o vincula el legajo, CU-003 y CU-031), y ayudantes, personal de depósito y vendedores son legajos sin cuenta. Si más adelante la distribuidora necesita permisos más finos, es una evolución que implica una matriz de autorización nueva en el sistema entero y queda fuera de este módulo. |
 
 ---
 
@@ -9673,9 +10501,9 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador sube un archivo (imagen o PDF, de hasta 10 MB) al legajo de un empleado y le pone una etiqueta («DNI frente», «Contrato 2026»). El archivo se guarda en el almacenamiento activo de la distribuidora y su referencia queda asociada al legajo. Endpoint: `POST /attachments/employee/:employeeId`. |
+| **Descripción** | El administrador sube un archivo (PDF, JPG, PNG o WEBP, de hasta 10 MB) al legajo de un empleado y le pone una etiqueta («DNI frente», «Contrato 2026»). El archivo se guarda en S3, en el bucket privado del sistema, y su referencia queda asociada al legajo. Endpoint: `POST /attachments/employee/:employeeId`. |
 | **Precondición** | El administrador está autenticado. El empleado existe y es de su distribuidora. |
-| **Estado** | Planificado (I-11). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -9683,25 +10511,27 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 |------|--------|
 | 1 | El administrador abre la pestaña «Archivos» de la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
 | 2 | Elige el archivo, escribe la etiqueta y el panel envía `POST /attachments/employee/:employeeId` con el contenido. |
-| 3 | El sistema comprueba que el empleado exista y sea de la distribuidora, y que el tipo y el tamaño del archivo estén permitidos. |
-| 4 | El sistema guarda el contenido en el almacenamiento con una clave que incluye la distribuidora, el tipo de dueño y el empleado. |
+| 3 | El sistema comprueba que el empleado exista y sea de la distribuidora, y que el archivo no esté vacío, que su tipo y su tamaño estén permitidos y que su contenido coincida con el tipo declarado. |
+| 4 | El sistema reserva una clave que incluye la distribuidora, el tipo de dueño y el empleado, y guarda el contenido en S3. |
 | 5 | El sistema registra el adjunto en el legajo con su nombre original, su tipo, su etiqueta y su fecha de carga, y lo devuelve. |
 
-**Postcondición:** El legajo tiene un adjunto más, cuyo contenido está guardado en el almacenamiento.
+**Postcondición:** El legajo tiene un adjunto más, cuyo contenido está guardado en S3.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404. |
-| 3 | Si el tipo del archivo no es una imagen ni un PDF, o supera los 10 MB, el sistema responde 400. |
+| 3 | Si falta el archivo o está vacío, el sistema responde 400. |
+| 3 | Si el tipo del archivo no es PDF, JPG, PNG ni WEBP, o su contenido no coincide con el tipo declarado, el sistema responde 415. |
+| 3 | Si el archivo supera los 10 MB, el sistema responde 413. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura del legajo, la escritura del archivo y una escritura de la referencia. |
 | **Frecuencia** | Baja: unos pocos archivos por empleado. |
 | **Estabilidad** | Media |
-| **Comentarios** | Los adjuntos del personal usan una tabla genérica de adjuntos con dueño (`owner_type`, `owner_id`) que otros módulos reutilizan; el dueño se valida por un puerto que registra cada módulo, y la referencia guardada es una clave de almacenamiento, no una dirección, igual que en CU-155. Guarda el contenido por el mismo puerto de almacenamiento que el caso incluido CU-159, pero no lo incluye formalmente: el alta del adjunto del legajo la hace un servicio propio del módulo de adjuntos. |
+| **Comentarios** | Los adjuntos del personal usan una tabla genérica de adjuntos con dueño (`owner_type`, `owner_id`) que otros módulos reutilizan; el dueño se valida por un puerto que registra cada módulo, y la referencia guardada es una clave de almacenamiento, no una dirección, igual que en CU-155. Guarda el contenido por el mismo puerto de almacenamiento que el caso incluido CU-159, pero no lo incluye formalmente: el alta del adjunto del legajo la hace un servicio propio del módulo de adjuntos. Si falla el guardado de la referencia, el archivo se borra de S3 en segundo plano. El listado (`GET /attachments/employee/:employeeId`), la descarga con enlace firmado (`GET /attachments/:attachmentId/download?modo=url`) y la baja lógica del adjunto (`DELETE /attachments/:attachmentId`, que deja el archivo en S3 como respaldo) usan los mismos endpoints genéricos y no figuran como casos de uso propios. |
 
 ---
 
@@ -10060,17 +10890,17 @@ Módulo planificado en la iteración I-11: puestos, legajos, documentación con 
 
 ---
 
-### 7.9 Casos de Uso Expandidos — Caja, Rendiciones y Cuentas Corrientes (CU-225 a CU-245)
+### 7.9 Casos de Uso Expandidos — Caja, Rendiciones y Cuentas Corrientes (CU-225 a CU-245, CU-264 y CU-265)
 
 Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módulo de caja y rendición; sus diagramas de secuencia están en el Documento 2 y sus diagramas de interacción en el Documento 3.
 
-#### Importante CU-225 — Gestionar las Cajas
+#### Importante CU-225 — Crear una Caja
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-07 |
 | **Requisitos asociados** | IRQ-19, IRQ-08 |
-| **Descripción** | El administrador mantiene el catálogo de cajas de la distribuidora: las crea, cambia su nombre o su exigencia de sesión y las desactiva. Una caja es una cuenta de fondos con un saldo; no se borra, se desactiva. |
+| **Descripción** | El administrador crea una caja de la distribuidora: indica el nombre, el tipo —efectivo, banco o billetera— y si exige sesión. Una caja es una cuenta de fondos con un saldo; no se borra, se desactiva. Endpoint: `POST /cash-boxes`. |
 | **Precondición** | El solicitante está autenticado como Administrador o Administrador General. El Administrador General indica la distribuidora con `X-Distributor`. |
 | **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -10083,9 +10913,8 @@ Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módu
 | 3 | El panel envía `POST /cash-boxes`. |
 | 4 | El sistema valida que ninguna otra caja vigente de la distribuidora use el nombre. |
 | 5 | El sistema crea la caja con saldo cero y activa, y la devuelve. |
-| 6 | Para cambiar una caja, el administrador la edita y el panel envía `PATCH /cash-boxes/:id`; el sistema valida el cambio y devuelve la caja actualizada. |
 
-**Postcondición:** La distribuidora cuenta con una caja nueva, de saldo cero, o con una caja existente actualizada. El saldo de ninguna caja cambia.
+**Postcondición:** La distribuidora cuenta con una caja nueva, de saldo cero. El saldo de ninguna caja existente cambia.
 
 **Excepciones**
 
@@ -10093,15 +10922,51 @@ Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módu
 |------|--------|
 | 4 | Si ya existe una caja vigente con ese nombre, el sistema responde 409. |
 | 4 | Si el tipo no es efectivo, banco ni billetera, el sistema responde 400. |
-| 6 | Si la caja no existe o es de otra distribuidora, el sistema responde 404. |
-| 6 | Si se desactiva una caja con una sesión abierta, el sistema responde 409. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al poner en marcha la distribuidora y cuando se suma una cuenta de fondos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Cada distribuidora tiene sembrada una «Caja central». Una caja no se borra: tiene movimientos en el libro, y borrarla borraría la historia. Una caja de banco o de billetera no exige sesión por omisión, porque no tiene arqueo físico. Una restricción de la base impide que una caja de efectivo tenga saldo negativo. La asociación opcional de la caja con un depósito del módulo de stock se resuelve al integrar los dos módulos. |
+| **Comentarios** | Cada distribuidora tiene sembrada una «Caja central». Una caja de banco o de billetera no exige sesión por omisión, porque no tiene arqueo físico. Una restricción de la base impide que una caja de efectivo tenga saldo negativo. La asociación opcional de la caja con un depósito del módulo de stock se resuelve al integrar los dos módulos. |
+
+---
+
+
+#### Importante CU-264 — Modificar una Caja
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-07 |
+| **Requisitos asociados** | IRQ-19, IRQ-08 |
+| **Descripción** | El administrador cambia el nombre de una caja de la distribuidora o su exigencia de sesión, o la desactiva. Una caja no se borra, se desactiva; su tipo no se puede cambiar. Endpoint: `PATCH /cash-boxes/:id`. |
+| **Precondición** | El solicitante está autenticado como Administrador o Administrador General. El Administrador General indica la distribuidora con `X-Distributor`. |
+| **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Finanzas · Cajas» en el panel y ve las cajas de la distribuidora con su saldo: `GET /cash-boxes`. |
+| 2 | Elige una caja y cambia su nombre, su exigencia de sesión o la desactiva. |
+| 3 | El panel envía `PATCH /cash-boxes/:id`. |
+| 4 | El sistema valida el cambio y devuelve la caja actualizada. |
+
+**Postcondición:** La caja quedó con los datos nuevos. El saldo de ninguna caja cambia.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la caja no existe o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si se desactiva una caja con una sesión abierta, el sistema responde 409. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al poner en marcha la distribuidora y cuando se suma una cuenta de fondos. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Una caja no se borra: tiene movimientos en el libro, y borrarla borraría la historia. La desactivación de una caja con sesión abierta se rechaza porque dejar una sesión sin caja activa volvería imposible el arqueo. El tipo no se puede cambiar: convertir una caja de efectivo en una de banco rompería el sentido de los arqueos ya cerrados. |
 
 ---
 
@@ -10273,13 +11138,13 @@ Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módu
 
 ---
 
-#### Secundario CU-230 — Gestionar las Categorías de Ingresos y Gastos
+#### Secundario CU-230 — Crear una Categoría de Ingresos y Gastos
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-07 |
 | **Requisitos asociados** | IRQ-19 |
-| **Descripción** | El administrador define las categorías de ingreso y de gasto de su distribuidora —alquiler, sueldos, insumos— para clasificar los movimientos y poder analizarlos. Las categorías que el sistema usa por su cuenta (rendiciones, cobros, combustible, multas, comisiones, diferencias y transferencias) vienen sembradas y no se tocan. |
+| **Descripción** | El administrador define una categoría de ingreso o de gasto de su distribuidora —alquiler, sueldos, insumos— para clasificar los movimientos y poder analizarlos. Las categorías que el sistema usa por su cuenta (rendiciones, cobros, combustible, multas, comisiones, diferencias y transferencias) vienen sembradas y no se tocan. Endpoint: `POST /cash-categories`. |
 | **Precondición** | El solicitante está autenticado como Administrador o Administrador General. |
 | **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
 
@@ -10291,25 +11156,58 @@ Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módu
 | 2 | Elige crear una e indica el nombre y el sentido, ingreso o egreso. |
 | 3 | El panel envía `POST /cash-categories`. |
 | 4 | El sistema valida que no exista otra con el mismo nombre y sentido, y crea la categoría activa, sin código de sistema. |
-| 5 | Para renombrarla o desactivarla, el administrador la edita y el panel envía `PATCH /cash-categories/:id` o `DELETE /cash-categories/:id`. |
-| 6 | El sistema valida que no sea de sistema y devuelve la categoría actualizada. |
 
-**Postcondición:** La distribuidora cuenta con una categoría nueva, o con una existente renombrada o desactivada. Los movimientos ya asentados conservan su categoría.
+**Postcondición:** La distribuidora cuenta con una categoría nueva, activa. Los movimientos ya asentados conservan su categoría.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 4 | Si ya existe una categoría con ese nombre y sentido, el sistema responde 409. |
-| 6 | Si la categoría es de sistema, el sistema responde 409. |
-| 6 | Si la categoría no existe o es de otra distribuidora, el sistema responde 404. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al poner en marcha la distribuidora. |
 | **Estabilidad** | Media |
-| **Comentarios** | Desactivar no borra: la categoría deja de ofrecerse para movimientos nuevos y los anteriores siguen explicándose con ella. Las categorías de sistema las busca el código por su código y no por su nombre, y por eso no se renombran ni se desactivan. La baja que ofrece el panel con `DELETE` es una desactivación, la misma operación que `PATCH` con la categoría inactiva. |
+| **Comentarios** | Las categorías de sistema las busca el código por su código y no por su nombre, y por eso no se renombran ni se desactivan. |
+
+---
+
+
+#### Secundario CU-265 — Modificar una Categoría de Ingresos y Gastos
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-07 |
+| **Requisitos asociados** | IRQ-19 |
+| **Descripción** | El administrador renombra o desactiva una categoría de ingreso o de gasto de su distribuidora. Las categorías de sistema (rendiciones, cobros, combustible, multas, comisiones, diferencias y transferencias) no se pueden modificar. Endpoints: `PATCH /cash-categories/:id` y `DELETE /cash-categories/:id`. |
+| **Precondición** | El solicitante está autenticado como Administrador o Administrador General. |
+| **Estado** | Planificado (I-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Finanzas · Categorías» y ve las categorías, con las de sistema marcadas. |
+| 2 | Para renombrar o desactivar una categoría, la edita y el panel envía `PATCH /cash-categories/:id` o `DELETE /cash-categories/:id`. |
+| 3 | El sistema valida que no sea de sistema y devuelve la categoría actualizada. |
+
+**Postcondición:** La categoría quedó renombrada o desactivada. Los movimientos ya asentados conservan su categoría.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la categoría es de sistema, el sistema responde 409. |
+| 3 | Si la categoría no existe o es de otra distribuidora, el sistema responde 404. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al poner en marcha la distribuidora. |
+| **Estabilidad** | Media |
+| **Comentarios** | Desactivar no borra: la categoría deja de ofrecerse para movimientos nuevos y los anteriores siguen explicándose con ella. La baja que ofrece el panel con `DELETE` es una desactivación, la misma operación que `PATCH` con la categoría inactiva. |
 
 ---
 
@@ -11027,7 +11925,7 @@ La matriz relaciona cada requisito de información y cada caso de uso con los ob
 sistema que contribuye a alcanzar. Las marcas de los casos de uso se derivan del campo
 **Objetivos asociados** que cada uno declara en la sección 7.
 
-Comprende los 19 requisitos de información, los 9 requisitos no funcionales y los 249 casos de uso
+Comprende los 19 requisitos de información, los 9 requisitos no funcionales y los 271 casos de uso
 que declaran al menos un objetivo: todos lo hacen. 
 
 |  | OBJ-01 | OBJ-02 | OBJ-03 | OBJ-04 | OBJ-05 | OBJ-06 | OBJ-07 | OBJ-08 | OBJ-09 | OBJ-10 | OBJ-11 | OBJ-12 | OBJ-13 | OBJ-14 | OBJ-15 |
@@ -11309,6 +12207,28 @@ que declaran al menos un objetivo: todos lo hacen.
 | **CU-248** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
 | **CU-249** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
 | **CU-250** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-251** | ● | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-252** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-253** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-254** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-255** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-256** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-257** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-258** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-259** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-260** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-261** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-262** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-263** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-264** |  |  |  |  | ● |  | ● |  |  |  |  |  |  |  |  |
+| **CU-265** |  |  |  |  | ● |  | ● |  |  |  |  |  |  |  |  |
+| **CU-266** |  | ● |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-267** |  | ● |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-268** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-269** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-270** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-271** |  | ● |  |  | ● |  |  |  |  |  |  |  |  |  |  |
+| **CU-272** |  |  |  |  | ● |  |  |  |  |  |  |  |  |  |  |
 
 El símbolo ● indica que el requisito o el caso de uso contribuye al objetivo de esa columna.
 

@@ -39,6 +39,9 @@ for l in open(BACK + ".env", encoding="utf-8"):
     m = re.match(r'\s*([A-Z_]+)\s*=\s*(.*)', l)
     if m: env[m.group(1)] = m.group(2).strip().strip('"').strip("'")
 USR, BD = env.get("DB_USERNAME", "postgres"), env.get("DB_NAME", "postgres")
+# Otra base del mismo contenedor, por ejemplo una copia con un módulo que la doc
+# todavía trata como planificado.
+BD = os.environ.get("SPLG_BD_NOMBRE", BD)
 
 def psql(sql):
     r = subprocess.run(["docker", "exec", CONTENEDOR, "psql", "-U", USR, "-d", BD,
@@ -694,7 +697,7 @@ PROPUESTO_IMPLEMENTADO = [
          {"nombre": "delivered_at", "tipo": "timestamptz", "nulo": False,
           "concepto": "entregado el", "desc": "Cuándo se le entregó el envase."},
          {"nombre": "deposit_amount", "tipo": "numeric(10,2)", "nulo": False,
-          "concepto": "depósito", "desc": "Importe comprometido."},
+          "concepto": "monto del depósito", "desc": "Importe comprometido."},
          {"nombre": "step", "tipo": "integer", "nulo": False, "default": "1",
           "concepto": "escalón", "desc": "Escalón en curso."},
          {"nombre": "status", "tipo": "recovery_case_status_enum", "nulo": False,
@@ -794,6 +797,55 @@ PROPUESTO_IMPLEMENTADO = [
           "concepto": "fecha", "desc": "Cuándo."},
        ],
        "pk": ["audit_id"], "unicos": []},
+      {"nombre": "audit_action_type", "concepto": "Tipo de acción de auditoría",
+       "desc": "Catálogo fijo de las acciones que se auditan: 1 Alta, 2 Modificación, 3 Baja lógica, "
+               "4 Reactivación, 5 Baja física. Lo siembra la migración; la API sólo lo lee.",
+       "columnas": [
+         {"nombre": "action_type_id", "tipo": "smallint", "nulo": False,
+          "desc": "Identificador fijo de la acción."},
+         {"nombre": "name", "tipo": "varchar(40)", "nulo": False, "concepto": "nombre",
+          "desc": "Nombre de la acción, único."},
+       ],
+       "pk": ["action_type_id"], "unicos": [["name"]]},
+      {"nombre": "audit", "concepto": "Auditoría",
+       "desc": "Una fila por registro de una entidad de negocio que se dio de alta, se modificó, "
+               "se dio de baja o se reactivó. De sólo escritura: un disparador rechaza todo UPDATE y "
+               "DELETE, salvo el que la base hace al vaciar el usuario o la distribuidora.",
+       "columnas": [
+         _id("audit_id"),
+         {"nombre": "action_type_id", "tipo": "smallint", "nulo": False,
+          "desc": "Qué se hizo con el registro.",
+          "ref": ("audit_action_type", "action_type_id", "RESTRICT")},
+         _ref("user_id", "user", "user_id", "SET NULL",
+              "Quién lo hizo; vacío si fue el sistema (tarea programada, siembra, notificación sin usuario).",
+              nulo=True),
+         _ref("distributor_id", "distributor", "distributor_id", "SET NULL",
+              "Distribuidora del registro, para acotar la consulta; vacía en lo que es de la persona o global "
+              "(usuario, cliente, rol), que sólo ve el Administrador General.", nulo=True),
+         {"nombre": "entity", "tipo": "varchar(60)", "nulo": False, "concepto": "entidad afectada",
+          "desc": "Nombre de la entidad de dominio (Order, Car...), no la ruta."},
+         {"nombre": "record_id", "tipo": "varchar(64)", "nulo": False, "concepto": "",
+          "desc": "Identificador del registro afectado; en una clave compuesta, las partes separadas por «:»."},
+         {"nombre": "ip", "tipo": "varchar(45)", "nulo": True, "concepto": "",
+          "desc": "Dirección de red de la petición que originó el cambio."},
+         {"nombre": "created_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
+          "concepto": "fecha y hora", "desc": "Cuándo."},
+       ],
+       "pk": ["audit_id"], "unicos": []},
+      {"nombre": "audit_detail", "concepto": "Detalle de auditoría",
+       "desc": "Un campo que cambió en una auditoría, con su valor anterior y el nuevo, en texto. "
+               "Los campos sensibles se guardan como [oculto].",
+       "columnas": [
+         _id("audit_detail_id"),
+         _ref("audit_id", "audit", "audit_id", "RESTRICT", "Auditoría a la que pertenece."),
+         {"nombre": "field", "tipo": "varchar(80)", "nulo": False, "concepto": "campo",
+          "desc": "Nombre de la propiedad de la entidad que cambió."},
+         {"nombre": "old_value", "tipo": "text", "nulo": True, "concepto": "valor anterior",
+          "desc": "Valor antes del cambio; vacío en una alta."},
+         {"nombre": "new_value", "tipo": "text", "nulo": True, "concepto": "valor nuevo",
+          "desc": "Valor después del cambio; vacío en una baja física."},
+       ],
+       "pk": ["audit_detail_id"], "unicos": []},
     ],
   },
 ]
@@ -819,7 +871,7 @@ def _gas(desc="Tipo de garrafa."):
 STOCK_Y_COMPRAS = {
     "clave": "stock-y-compras",
     "casos": "CU-207 a CU-224 (I-13)",
-    "nota": "El saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo del módulo de personal, que se documenta aparte (iteración I-11): se declara sin clave foránea hasta que esa tabla exista en este modelo. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.",
+    "nota": "El saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.",
     "titulo": "Stock físico, compras y carga del camión",
     "pedido": "Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué se le compra a cada proveedor y qué sale y vuelve en cada reparto.",
     "enums": {
@@ -1107,7 +1159,7 @@ PROPUESTO = [
   {
     "clave": "caja-rendicion-cuentas-corrientes",
     "casos": "CU-225 a CU-245 (I-14)",
-    "nota": "Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE \"deletedAt\" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, I-11), de modo que un chofer cobra comisión como empleado; `employee` figura acá sólo con las columnas mínimas que necesita este módulo y el módulo de personal la completa.",
+    "nota": "Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE \"deletedAt\" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.",
     "titulo": "Caja, rendición del chofer, cuentas corrientes y comisiones",
     "pedido": "Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.",
     "enums": {
@@ -1401,7 +1453,7 @@ CONCEPTO = {
   "gas_cylinder_promotion": ("Promoción", [("desde cantidad", "quantity"),
                                            ("descuento", "discount_percentage")]),
   "cylinder": ("Envase", [("número de serie", "serial"), ("estado", "state"),
-                          ("depósito", "deposit")]),
+                          ("monto del depósito", "deposit")]),
   "cylinder_movement": ("Movimiento de envase", [("desde", "from_state"), ("hacia", "to_state"),
                                                  ("fecha", "createdAt")]),
   "order": ("Pedido", [("estado", "status"), ("total", "totalAmount"),
@@ -1421,6 +1473,15 @@ CONCEPTO = {
      ("tamaño", "size_bytes"), ("subido el", "uploaded_at")]),
   "attachment": ("Adjunto", [("nombre original", "original_name"), ("tipo de archivo", "mime_type"),
                              ("etiqueta", "label"), ("fecha de carga", "uploaded_at")]),
+  "job_position": ("Puesto de trabajo", [("nombre", "name"), ("categoría", "category"),
+                                         ("activo", "is_active")]),
+  "employee": ("Empleado", [("legajo", "file_number"), ("nombre", "first_name"), ("apellido", "last_name"),
+                            ("documento", "document_number"), ("CUIL", "cuil"),
+                            ("fecha de nacimiento", "birth_date"), ("domicilio", "address_line"),
+                            ("teléfono", "phone"), ("contacto de emergencia", "emergency_contact_name"),
+                            ("fecha de ingreso", "hire_date"), ("fecha de egreso", "termination_date"),
+                            ("motivo de egreso", "termination_reason"),
+                            ("modalidad de contratación", "employment_type"), ("estado", "status")]),
   "document_sequence": ("Secuencia de documentos", [("tipo de documento", "doc_type"),
                                                     ("último número", "last_number")]),
   "storage_orphan": ("Archivo pendiente de borrado", [("clave", "storage_key"), ("intentos", "attempts"),
@@ -1736,7 +1797,8 @@ def marca(c, d):
 # Si aparece una tabla sin contexto, el script corta: el modelo tiene que decir
 # dónde vive cada cosa.
 CONTEXTOS = [
-  ("Organización y acceso", ["distributor", "role", "user", "admin", "module_config", "audit_log"]),
+  ("Organización y acceso", ["distributor", "role", "user", "admin", "module_config", "audit_log",
+                           "audit", "audit_detail", "audit_action_type"]),
   ("Clientes", ["customer", "user_address", "repurchase_invitation"]),
   ("Catálogo e inventario de envases", ["gas_cylinder", "gas_cylinder_promotion", "cylinder", "cylinder_movement",
                                         "cylinder_inspection", "cylinder_recovery_case",
@@ -1774,8 +1836,17 @@ if _sin or _sobra:
 # Una clave foránea es «muchos a uno»; si la columna es única es «uno a cero-o-uno»
 # (user -> admin, customer, delivery). El lado del padre es obligatorio si la columna no
 # admite nulos. Las columnas únicas incluyen los índices únicos (ver más arriba).
-IZQ = {"uno": "||", "cero_uno": "|o", "muchos": "}o"}
-DER = {"uno": "||", "cero_uno": "o|", "muchos": "o{"}
+IZQ = {"uno": "||", "cero_uno": "|o", "muchos": "}o",
+       # multiplicidades del modelo conceptual, para el DER conceptual
+       "1": "||", "0..1": "|o", "0..*": "}o", "*": "}o", "1..*": "}|"}
+DER = {"uno": "||", "cero_uno": "o|", "muchos": "o{",
+       "1": "||", "0..1": "o|", "0..*": "o{", "*": "o{", "1..*": "|{"}
+
+def _aprox(m):
+    """La multiplicidad que pata de gallo sí puede dibujar."""
+    if m in IZQ: return m
+    lo = m.split("..")[0]
+    return "1..*" if lo not in ("0", "") else "0..*"
 
 def card_hijo(t, f):
     prop = {g[0] for g in completo[t]["unicos"] if len(g) == 1} if t in completo else set()
@@ -1806,6 +1877,48 @@ def slug(txt):
 
 fisicos = []
 _orden_global = orden_dependencias(completo)
+
+# Vista general: la base que existe hoy, entera, en una sola lámina. Para que se lea con
+# 48 tablas, cada una muestra sólo su clave primaria y sus claves foráneas (las columnas
+# completas están en la lámina de su contexto y en el diccionario de datos), agrupadas
+# por contexto de negocio. La FK a distributor no se dibuja: la tienen casi todas.
+def _fisico_general():
+    lin = ["@startuml", "title Modelo físico de la base de datos — vista general (tablas implementadas)",
+           CAB, "hide circle", "left to right direction", "skinparam linetype ortho", "skinparam nodesep 40",
+           "skinparam ranksep 60", "skinparam packageStyle rectangle", ""]
+    implementadas = [t for t in _orden_global if t in actual]
+    for ctx, ts in CONTEXTOS:
+        propias = [t for t in implementadas if t in ts]
+        if not propias: continue
+        lin.append(f'package "{ctx}" {{')
+        for t in propias:
+            d = actual[t]
+            lin.append(f'  entity "{t}" as e_{t} {{')
+            for c in d["columnas"]:
+                mk, nom = marca(c, d)
+                if not mk or (mk != "<<PK>>" and c["nombre"] == "distributor_id"): continue
+                lin.append(f'    {{field}} {nom} : {c["tipo"]}{"" if c["nulo"] else " *"} {mk}'.rstrip())
+            lin.append("  }")
+        lin.append("}")
+    lin.append("")
+    vistos = set()
+    for t in implementadas:
+        for f in actual[t]["fks"]:
+            if f["destino"] == "distributor" and t != "distributor" or f["destino"] not in actual: continue
+            if (t, f["col"]) in vistos: continue
+            vistos.add((t, f["col"]))
+            lin.append(f'e_{f["destino"]} {IZQ[card_padre(t, f)]}--{DER[card_hijo(t, f)]} e_{t}')
+    n_dist = sum(1 for t in implementadas if any(f["destino"] == "distributor" for f in actual[t]["fks"]))
+    lin += ["", "legend bottom right",
+            f"  {len(implementadas)} tablas implementadas y {len(vistos)} relaciones dibujadas.",
+            f"  Además, {n_dist} tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.",
+            "  Cada tabla muestra sólo su PK y sus FK; las columnas completas están en la lámina de su contexto",
+            "  y en el diccionario de datos. * = obligatoria.",
+            "endlegend", "@enduml"]
+    return "\n".join(lin)
+
+open(FIS + "SPLG-fisico-00-general.puml", "w", encoding="utf-8").write(_fisico_general())
+fisicos.append("SPLG-fisico-00-general")
 for k, (ctx, ts) in enumerate(CONTEXTOS, 1):
     propias = [t for t in _orden_global if t in ts]
     ajenas = []
@@ -1904,13 +2017,13 @@ def relaciones_conceptuales():
                 # en el DER la clase de asociación es una entidad más
                 izq, der, nom, ci, cdr, mi, md_ = cd, ct, "figura en", padre, hijo, cd, ct
             else:
+                # El DER conceptual habla el idioma del modelo conceptual: los extremos son
+                # los conceptos de la asociación (Cliente, Chofer; no la tabla `user` a la
+                # que apunta la clave) y las cardinalidades son sus multiplicidades. Con las
+                # de la base no se podía decir 1..*: una clave foránea no exige hijos.
                 nom = a[5]
-                if ct in MC._anc(a[0]) and cd in MC._anc(a[4]):
-                    izq, der, ci, cdr = ct, cd, hijo, padre
-                    mi, md_ = a[0], a[4]
-                else:
-                    izq, der, ci, cdr = cd, ct, padre, hijo
-                    mi, md_ = a[0], a[4]
+                izq, der, ci, cdr = a[0], a[4], a[1], a[3]
+                mi, md_ = a[0], a[4]
             clave = (izq, der, nom)
             if clave in vistos: continue
             vistos.add(clave)
@@ -1918,7 +2031,7 @@ def relaciones_conceptuales():
     # asociaciones con dueño polimórfico: no tienen clave foránea, pero el modelo las nombra
     for a, ma, t_, mb, b, n, _cat in MC.ASOCIACIONES:
         if (a, b, n) in MC.POLIMORFICAS:
-            sal.append((a, "uno", "muchos", b, n, a, b))
+            sal.append((a, ma, mb, b, n, a, b))
     return sal
 
 REL_CONCEPTUALES = relaciones_conceptuales()
@@ -1933,6 +2046,13 @@ def entidad_conceptual(c, con_atributos):
 def der_conceptual(titulo, foco, ref, general=False):
     foco = [c for c in foco if MC.TABLA.get(c)]
     ref = [c for c in ref if MC.TABLA.get(c) and c not in foco]
+    if not general:
+        # el otro extremo de una relación del área, aunque sea de otra vista, va como
+        # referencia: si no, la relación no se dibujaba (pasaba con Cliente y Chofer)
+        for izq, _ci, _cd, der, _n, _mi, _md in REL_CONCEPTUALES:
+            for x, y in ((izq, der), (der, izq)):
+                if x in foco and y not in foco and y not in ref and MC.TABLA.get(y):
+                    ref.append(y)
     if ref and not general:
         # una entidad de referencia sin ninguna relación en la vista no aporta nada: se quita
         con_relacion = {x for izq, _ci, _cd, der, _n, _mi, _md in REL_CONCEPTUALES
@@ -1959,11 +2079,15 @@ def der_conceptual(titulo, foco, ref, general=False):
             if (izq, der, nom) in vistas_g: continue
             vistas_g.add((izq, der, nom))
         if izq in ents and der in ents and (izq in foco or der in foco):
-            txt = "" if general else f" : {nom} >"
-            lin.append(f'{izq} {IZQ[ci]}--{DER[cdr]} {der}{txt}')
+            # una multiplicidad acotada (0..2) no tiene símbolo propio en pata de
+            # gallo: se dibuja como "muchos" y el número exacto va en el nombre
+            exactas = [m for m in (ci, cdr) if m not in IZQ]
+            ci_, cdr_ = (_aprox(ci), _aprox(cdr))
+            txt = f" : {nom}{' [' + ' / '.join(exactas) + ']' if exactas else ''} >"
+            lin.append(f'{izq} {IZQ[ci_]}--{DER[cdr_]} {der}{txt}')
     if general:
         lin += ["", "legend bottom right",
-                "  Vista de conjunto: sin atributos ni nombres de relación. Las relaciones de Usuario",
+                "  Vista de conjunto: sin atributos (están en la vista de cada área). Las relaciones de Usuario",
                 "  con los registros que sólo dejan constancia de su autoría figuran en la vista de su área.",
                 "endlegend"]
     if not general:
@@ -2274,7 +2398,10 @@ for ctx, ts in CONTEXTOS:
     # un contexto sin ninguna tabla en la base (módulo planificado) se dibuja desde el modelo completo
     planificado = any(x not in actual for x in ts)
     modelo = completo if planificado else actual
-    der += [f"### {ctx}" + (" (planificado)" if planificado else ""), "", "```mermaid", "erDiagram"]
+    # Personal está a medias: legajos y puestos construidos, jornadas y licencias no
+    marca_ctx = "" if not planificado else (" (planificado)" if not any(x in actual for x in ts)
+                                            else " (en parte planificado)")
+    der += [f"### {ctx}" + marca_ctx, "", "```mermaid", "erDiagram"]
     for t in [x for x in orden_dependencias(modelo) if x in ts]:
         for f in modelo[t]["fks"]:
             if _tabla_a_ctx.get(f["destino"]) == ctx:

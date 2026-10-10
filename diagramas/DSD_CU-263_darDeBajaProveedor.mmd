@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-263 Dar de Baja un Proveedor · darDeBajaProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant COL as :Map#lt;String, Proveedor#gt;
+    participant PRV as proveedor:Proveedor
+
+    ADM->>+SRV: darDeBajaProveedor(proveedorId)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV->>PRV: darDeBaja()
+    SRV-->>-ADM: confirmacion

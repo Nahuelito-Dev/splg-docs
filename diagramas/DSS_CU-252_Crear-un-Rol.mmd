@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-252 Crear un Rol
+    autonumber
+    actor SUP as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    SUP->>SIS: crearRol(tipo)
+    activate SIS
+    SIS-->>SUP: rol creado (rolId)
+    deactivate SIS

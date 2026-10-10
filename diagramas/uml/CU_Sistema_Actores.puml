@@ -30,10 +30,10 @@ actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Administrador General\n(ACT-05)" as A05
 actor "Sistema Automático\n(ACT-04)" as A04
-actor "MercadoPago\n(ACT-06)" as A06 <<secundario>>
-actor "Firebase\n(ACT-07)" as A07 <<secundario>>
-actor "Servicio de correo\n(ACT-08)" as A08 <<secundario>>
-actor "Plataforma de despliegue\n(ACT-09)" as A09 <<externo>>
+actor "MercadoPago\n(ACT-06)" as A06 <<sistema externo>>
+actor "Firebase\n(ACT-07)" as A07 <<sistema externo>>
+actor "Servicio de correo\n(ACT-08)" as A08 <<sistema externo>>
+actor "Plataforma de despliegue\n(ACT-09)" as A09 <<sistema externo>>
 
 rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
   usecase "CU-001\nIniciar Sesión" as U001 #back:FFFFFF;line:2C4257
@@ -73,6 +73,6 @@ U001 -[#6B7683]- A07
 U047 -[#6B7683]- A08
 A09 -[#4F6D3A]- U104
 
-A05 --|> A03
+A05 -right-|> A03
 
 @enduml

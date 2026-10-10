@@ -138,6 +138,7 @@ entity "maintenance_task_attachment" as e_maintenance_task_attachment {
   {field} size_bytes : integer *
   {field} //uploaded_by_user_id// : uuid * <<FK>>
   {field} uploaded_at : timestamptz *
+  {field} deleted_at : timestamptz
 }
 entity "maintenance_window_proposal" as e_maintenance_window_proposal {
   {field} **proposal_id** : uuid * <<PK>>

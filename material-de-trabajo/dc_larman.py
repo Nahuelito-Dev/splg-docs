@@ -185,8 +185,8 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
     ("RendicionChofer", "estado"): "EstadoDeLaRendicion",
     ("RendicionChofer", "efectivo esperado"): "Moneda",
     ("RendicionChofer", "efectivo declarado"): "Moneda",
-    ("RendicionChofer", "gastos del chofer"): "Moneda",
-    ("RendicionChofer", "diferencia"): "Moneda",
+    ("RendicionChofer", "/gastos del chofer"): "Moneda",
+    ("RendicionChofer", "/diferencia"): "Moneda",
     ("RendicionChofer", "resolución de la diferencia"): "ResolucionDeDiferencia",
     ("RendicionChofer", "presentada el"): "FechaHora",
     ("RendicionChofer", "aprobada el"): "FechaHora",
@@ -231,7 +231,7 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
 }
 # Los atributos de los conceptos planificados no tienen todavía una columna en el código.
 TIPO_ATRIBUTO_SIN_COLUMNA.update(getattr(M, "TIPOS_PLANIFICADOS", {}))
-MONEDA = {"precio", "importe", "seña", "recargo", "costo", "depósito", "depósito comprometido",
+MONEDA = {"precio", "importe", "seña", "recargo", "costo", "depósito", "monto del depósito", "depósito comprometido",
           "precio unitario", "descuento_", "/subtotal"}
 
 # =============================================================================== utilidades
@@ -456,6 +456,7 @@ ALIAS_CLASE = {
     "recorrido": "LoteRecorrido", "invitacion": "InvitacionRecompra", "recompras": "InvitacionRecompra",
     "caso": "CasoRecupero", "asignacion": "AsignacionVehiculo",
     "asignaciones": "AsignacionVehiculo", "asientos": "AsientoAuditoria", "calificacion": "Calificacion",
+    "auditorias": "Auditoria", "detalles": "DetalleAuditoria",
     "calificaciones": "Calificacion", "configuracion": "ConfiguracionModulo", "ubicacion": "UbicacionGPS",
     "posicion": "UbicacionGPS", "carrito": "Carrito", "reserva": "Pedido", "reservas": "Pedido",
     "administrador": "Administrador", "administradores": "Administrador", "movimientos": "MovimientoEnvase",
@@ -487,7 +488,7 @@ ALIAS_CLASE = {
 }
 _PLURALES = {"cargas", "multas", "siniestros", "neumaticos", "cercanos", "contactados", "aceptados", "libres", "activos", "habilitados", "vencidas",
              "recompras", "direcciones", "franjas", "zonas", "cambios", "adjuntos", "tareas", "ventanas",
-             "ofertas", "asignaciones", "asientos", "cobros", "empleados", "asientosDeLaCuenta", "asientosDeComision", "cajas", "rendiciones", "cuentas", "comisiones", "calificaciones", "movimientos", "envases", "usuarios",
+             "ofertas", "asignaciones", "asientos", "auditorias", "detalles", "cobros", "empleados", "asientosDeLaCuenta", "asientosDeComision", "cajas", "rendiciones", "cuentas", "comisiones", "calificaciones", "movimientos", "envases", "usuarios",
              "distribuidoras", "choferes", "clientes", "reclamos", "incidencias", "productos", "vehiculos",
              "pedidos", "pagos", "roles", "administradores", "reservas", "items", "promociones",
              "puestos", "licencias", "jornadas", "empleados", "planes"}
@@ -495,7 +496,8 @@ _PLURALES = {"cargas", "multas", "siniestros", "neumaticos", "cercanos", "contac
 # nombre -> tipo, para lo que no es una clase ni un atributo del modelo.
 GLOSARIO = {
     # parámetros
-    "clave": "Cadena", "claveAnterior": "Cadena", "contrasena": "Cadena", "correoActual": "Cadena",
+    "clave": "Cadena", "claveAnterior": "Cadena", "direccionExterna": "Cadena", "nombreDeDescarga": "Cadena",
+    "entidad": "Cadena", "registro": "Cadena", "ip": "Cadena", "tipoDeAccion": "Entero", "contrasena": "Cadena", "correoActual": "Cadena",
     "correoNuevo": "Cadena", "correoDePrueba": "Cadena", "correoDeRecuperacion": "Cadena",
     "verificacionDeCorreo": "Registro", "destinatario": "Cadena", "ajustes": "Registro",
     "firma": "Cadena", "tipoDeNotificacion": "Cadena", "identificadorDelPago": "Identificador",
@@ -583,7 +585,7 @@ GLOSARIO = {
     "codigoDeSistema": "CodigoDeSistema", "montoInicial": "Moneda", "montoContado": "Moneda",
     "efectivoDeclarado": "Moneda", "gastos": "GastoDeRendicion[*]", "resolucionDeDiferencia": "ResolucionDeDiferencia",
     "condicionFiscal": "CondicionFiscal", "limiteDeCredito": "Moneda", "plazoEnDias": "Entero",
-    "razonSocial": "Cadena", "diferencia": "Moneda", "base": "BaseDeComision", "valor": "Decimal",
+    "razonSocial": "Cadena", "base": "BaseDeComision", "valor": "Decimal",
     "vigenteDesde": "Fecha", "saldoInicial": "Moneda", "antiguedad": "Registro", "tablero": "Registro",
     "vencimiento": "Fecha", "pagoDeCuenta": "AsientoCuentaCorriente", "importe_": "Moneda",
     "cajaOrigenId": "Identificador", "cajaDestinoId": "Identificador", "tipo": "Cadena",
@@ -692,6 +694,15 @@ GLOSARIO.update({
     "solicitudInvalida": "Booleano", "conflicto": "Booleano", "nadaQueHacer": "Booleano",
     "acumulado": "Booleano", "ordenNoAdmiteRecepciones": "Booleano", "ajustado": "Booleano",
     "esLaMisma": "Booleano", "restado": "Booleano", "sumado": "Booleano", "habilitado": "Booleano",
+    "hayCupo": "Booleano", "eliminable": "Booleano", "traslado": "MotivoDeMovimiento",
+    "anulacionDeCompra": "MotivoDeMovimiento", "cancelacionDeCarga": "MotivoDeMovimiento",
+    "compra": "MotivoDeMovimiento", "entrega": "MotivoDeMovimiento", "reposicion": "MotivoDeMovimiento",
+    "cargaDelCamion": "MotivoDeMovimiento", "cierreDeRendicion": "MotivoDeMovimiento",
+    "ajusteManual": "MotivoDeMovimiento", "llenas": "CondicionDeStock", "nula": "UbicacionDeStock",
+    "llenasDeclaradas": "Entero", "recargoExpress": "Moneda", "tieneZonas": "Booleano",
+    "cobroDeCuentaCorriente": "CategoriaDeCaja", "diferenciaDeCaja": "CategoriaDeCaja",
+    "pagoDeComisiones": "CategoriaDeCaja", "enEfectivo": "MedioDeCaja",
+    "ingreso": "SentidoDeCaja", "egreso": "SentidoDeCaja",
     "llenasCargadas": "Entero", "vaciasCargadas": "Entero", "llenasRepuestas": "Entero",
     "llenasDevueltas": "Entero", "vaciasDevueltas": "Entero", "llenasRecibidas": "Entero",
     "vaciasEntregadas": "Entero", "llenasFisicas": "Entero", "vaciasACanjear": "Entero",
@@ -699,6 +710,35 @@ GLOSARIO.update({
 })
 ALIAS_PARAMETRO.update({("Distribuidora", "direccion"): ("direccion", "Cadena"),
                         ("Deposito", "direccion"): ("direccion", "Cadena")})
+
+# El mismo nombre de argumento significa cosas distintas según la clase que lo recibe: el glosario
+# da el sentido más común y esta tabla da el de cada clase.
+#  - `deposito` es el Deposito físico donde se carga el camión; en el envase y en el caso de
+#    recupero es el importe de la garantía (columna `deposit`, numérica), o sea Moneda.
+#  - `categoria` de un puesto de trabajo es la CategoriaDePuesto, no la categoría de la caja.
+#  - `diferencia` es en unidades (Entero) salvo en la sesión de caja, donde es un importe.
+#  - `cargas` de la flota son cargas de combustible, no cargas del camión.
+ALIAS_PARAMETRO.update({
+    ("CargaDeCamion", "deposito"): ("deposito", "Deposito"),
+    ("Vehiculo", "deposito"): ("deposito", "Deposito"),
+    ("CylinderService", "deposito"): ("deposito", "Moneda"),
+    ("CylinderService", "estadoDestino"): ("estadoDestino", "EstadoDelEnvase"),
+    ("Distribuidora", "categoria"): ("categoria", "CategoriaDePuesto"),
+    ("PuestoDeTrabajo", "categoria"): ("categoria", "CategoriaDePuesto"),
+    ("JobPositionService", "categoria"): ("categoria", "CategoriaDePuesto"),
+    ("FleetExpirationsService", "categoria"): ("categoria", "CategoriaDePuesto"),
+    ("List<TareaMantenimiento>", "categoria"): ("categoria", "CategoriaDePuesto"),
+    ("SesionDeCaja", "diferencia"): ("diferencia", "Moneda"),
+    ("FuelConsumptionCalculator", "cargas"): ("cargas", "CargaCombustible[*]"),
+    ("S3Service", "imagen"): ("archivo", "Archivo"),
+    # La configuración de un proceso se crea y se actualiza con el proceso y sus parámetros: cada
+    # DSD nombra los parámetros propios de su proceso, pero es una sola operación.
+    **{(c, n): ("parametros", "Registro") for c in ("Distribuidora", "ConfiguracionModulo")
+       for n in ("radiosKm", "ventanaDeAceptacion", "exigirCargaDeCamionAbierta", "intervalos")},
+    **{(c, n): ("proceso", "ProcesoConfigurable") for c in ("Distribuidora", "ConfiguracionModulo")
+       for n in ("despacho", "controlDeStock", "tareasProgramadas")},
+    ("S3Service", "contenido"): ("archivo", "Archivo"),
+})
 
 
 def _tipo_clase_del_nombre(n):
@@ -783,7 +823,94 @@ RETORNO_ESPECIFICO = {
     ("CylinderService", "verificarVigenciaAlAsignar"): "Envase[*]",
     ("Pedido", "estaSinPagar"): "Booleano",
     ("Siniestro", "getCostoNeto"): "Moneda",
+    # El DSD devuelve varios valores que son partes de un mismo resultado (conteos, cupos,
+    # tablero): el diseño los tipa como un solo Registro, no como un retorno y sus `out`.
+    ("List<Pedido>", "contarPorEstado"): "Registro",
+    ("List<Pedido>", "contarEntregadosDelMesPorMetodo"): "Registro",
+    ("List<Chofer>", "contarEnLinea"): "Entero",
+    ("List<Chofer>", "contarHabilitados"): "Entero",
+    ("FranjaHoraria", "cuposLibres"): "Registro",
+    ("PersonnelDashboardService", "consultarTableroDePersonal"): "Registro",
+    # `carga` y `movimientos` nombran dos cosas en el sistema: el contexto decide
+    ("Vehiculo", "getCargas"): "CargaCombustible[*]",
+    ("List<CargaCombustible>", "getVigentes"): "CargaCombustible[*]",
+    ("FuelLoadService", "consultarCargasDeCombustible"): "CargaCombustible[*]",
+    ("Caja", "calcularDiferencia"): "Moneda",
+    ("Envase", "getMovimientos"): "MovimientoEnvase[*]",
+    ("CylinderService", "consultarHistorialDelEnvase"): "MovimientoEnvase[*]",
 }
+
+# Consultas y cálculos que el DSD llama sin mostrar qué devuelven (o que devuelven una prosa que
+# no es un nombre): el retorno sale del propio nombre y del código. (clase, operación) -> tipo.
+# Sólo se aplica si el DSD no dio un retorno.
+RETORNO_DE_CONSULTA = {
+    ("Usuario", "calcularPromedio"): "Decimal",
+    ("Cliente", "getFechaEstimadaDeRecompra"): "Fecha",
+    ("Envase", "getResumen"): "Registro",
+    ("Envase", "diasHastaElVencimiento"): "Entero",
+    ("Carrito", "getItem"): "ItemCarrito",
+    ("ItemCarrito", "getDiferenciaDePrecio"): "Moneda",
+    ("Pedido", "getFechaDeEntrega"): "Fecha",
+    ("Pedido", "getItems"): "ItemPedido[*]",
+    ("Pedido", "generarCodigoDeEntrega"): "Cadena",
+    ("ItemPedido", "getProducto"): "Producto",
+    ("ZonaCobertura", "calcularRecargo"): "Moneda",
+    ("Vehiculo", "proyectarVencimientos"): "TareaMantenimiento[*]",
+    ("Vehiculo", "estimarKilometrajeDiario"): "Entero",
+    ("TareaMantenimiento", "getEstadoDeVencimiento"): "Cadena",
+    ("TareaMantenimiento", "proyectarVencimiento"): "Fecha",
+    ("PuestoDeTrabajo", "contarEmpleadosActivos"): "Entero",
+    ("Empleado", "getPeorVencimiento"): "Cadena",
+    ("JornadaDeTrabajo", "getDuracion"): "Decimal",
+    ("Reclamo", "getResumen"): "Registro",
+    ("Incidencia", "getResumen"): "Registro",
+    ("Calificacion", "getEstrellas"): "Entero",
+    ("Deposito", "getUmbral"): "UmbralDeStock",
+    ("Deposito", "getOrden"): "OrdenDeCompra",
+    ("CargaDeCamion", "getItems"): "ItemCarga[*]",
+    ("ItemCarga", "calcularEsperado"): "Entero",
+    ("ItemCarga", "calcularDiferencia"): "Entero",
+    ("ItemCarga", "getEsperado"): "Entero",
+    ("OrdenDeCompra", "calcularTotal"): "Moneda",
+    ("RendicionChofer", "calcularEfectivoEsperado"): "Moneda",
+    ("RendicionChofer", "calcularDiferencia"): "Moneda",
+    ("RendicionChofer", "recalcularEfectivoEsperado"): "Moneda",
+    ("CuentaCorriente", "calcularDisponible"): "Moneda",
+    ("CuentaCorriente", "calcularAntiguedad"): "Registro",
+    ("Producto", "calcularDiferencia"): "Entero",
+    ("OrderService", "completarDiasSinVentas"): "Registro",
+    ("OrderService", "calcularValorPromedio"): "Moneda",
+    ("List<Pedido>", "getReservado"): "Entero",
+    ("ReportsService", "agruparPorChofer"): "Registro",
+    ("ReportsService", "agruparPorProducto"): "Registro",
+    ("ReportsService", "agruparPorMetodoDePago"): "Registro",
+    ("ReportsService", "agruparPorPeriodo"): "Registro",
+    ("RouteBatchPlannerService", "agruparPorProximidad"): "LoteRecorrido[*]",
+    ("HealthCheckService", "verificarSalud"): "Registro",
+    ("HealthCheckService", "verificarDisponibilidad"): "Registro",
+    ("HealthCheckService", "verificarVida"): "Registro",
+    ("DemandForecastService", "demandaProyectada"): "Registro",
+    ("FleetCoverageService", "ventanasFactibles"): "PropuestaVentanaTaller[*]",
+    ("FleetExpirationsService", "consultarVencimientosDeLaFlota"): "Registro",
+    ("FleetExpirationsService", "consultarVencimientosDelPersonal"): "Registro",
+    ("List<TareaMantenimiento>", "getAbiertasDeEmpleadosPorEstado"): "TareaMantenimiento[*]",
+    ("JobPositionService", "consultarPuestosDeTrabajo"): "PuestoDeTrabajo[*]",
+    ("EmployeeService", "consultarEmpleado"): "Empleado",
+    ("EmployeeService", "consultarEmpleados"): "Empleado[*]",
+    ("List<Empleado>", "getActivosPorPuesto"): "Empleado[*]",
+    ("AttendanceService", "consultarAsistencias"): "JornadaDeTrabajo[*]",
+    ("List<JornadaDeTrabajo>", "getAbiertasDeHoy"): "JornadaDeTrabajo[*]",
+    ("LeaveService", "consultarLicencias"): "LicenciaLaboral[*]",
+    ("List<LicenciaLaboral>", "getAprobadasQueCubren"): "LicenciaLaboral[*]",
+    ("FleetCostReportService", "ordenarPorCostoPorKilometro"): "Registro",
+    ("List<UbicacionDeStock>", "getCantidadPorCondicion"): "Entero",
+    ("List<UbicacionDeStock>", "getLlenas"): "Entero",
+    ("List<UmbralDeStock>", "getMinimoDeLlenas"): "Entero",
+    ("Map<String, Usuario>", "verificarDisponibilidad"): "Booleano",
+    ("OrderService", "verificarCoberturaExpress"): "Booleano",
+}
+# Los predicados se reconocen por el nombre: `estaActivo`, `tieneCupo`, `esValido`, `cubre`...
+PREDICADO = re.compile(r'^(es[A-Z]|esta[A-Z]|tiene[A-Z]|is[A-Z]|existe|cubre$|coincideCon$)')
 
 
 def _tipo_de_retorno(texto, clase=None, op=None):
@@ -791,7 +918,8 @@ def _tipo_de_retorno(texto, clase=None, op=None):
     de la operación y los demás son parámetros de salida (`out`); una operación nunca tiene
     dos retornos. Retorno None si el DSD no lo precisa (códigos de error, prosa, acuses)."""
     if (clase, op) in RETORNO_ESPECIFICO:
-        return RETORNO_ESPECIFICO[(clase, op)], []
+        r = RETORNO_ESPECIFICO[(clase, op)]
+        return (r, []) if r is None or isinstance(r, str) else r
     tipos = []
     nombres = []
     tokens = [x.strip() for x in re.split(r',\s*|\s+y\s+', texto.strip())]
@@ -978,7 +1106,9 @@ def construir():
             continue
         _asignar_modulo_y_papel(dc, cl, primeros)
     _fusionar_sobrecargas(dc)
+    _deduplicar_firmas(dc)
     _tipar_getters(dc)
+    _tipar_consultas(dc)
     _relaciones(dc, mensajes, creaciones)
     _realizaciones(dc)
     return dc
@@ -994,6 +1124,11 @@ def _modulo_de_dominio(concepto):
     return {"ItemSugerido": "customer", "PropuestaConVigencia": "order", "UbicacionGPS": "delivery"}[concepto]
 
 
+# Clientes de un servicio externo: reciben el primer mensaje de los casos incluidos (CU-159 y CU-160),
+# pero no son el controlador de nada: son fabricación pura.
+INFRAESTRUCTURA = {"S3Service"}
+
+
 def _asignar_modulo_y_papel(dc, cl, primeros):
     if cl.tipo == "coleccion":
         m = re.fullmatch(r'(?:Map|List)<(?:String,\s*)?(\w+)>', cl.nombre)
@@ -1006,7 +1141,7 @@ def _asignar_modulo_y_papel(dc, cl, primeros):
         cl.estereotipo = "puerto"
     elif cl.tipo == "adaptador":
         cl.estereotipo = "adaptador"
-    elif cl.nombre in primeros:
+    elif cl.nombre in primeros and cl.nombre not in INFRAESTRUCTURA:
         cl.estereotipo = "controlador" if cl.nombre.endswith("UseCase") else "fachada"
     else:
         cl.estereotipo = "fabricación pura"
@@ -1034,6 +1169,72 @@ def _fusionar_sobrecargas(dc):
                             cl.ops[k].retorno = cl.ops[j].retorno
                             cl.ops[k].salidas = cl.ops[j].salidas
                         del cl.ops[j]
+
+
+# Nombre del argumento cuando varios DSD pasan lo mismo con nombres distintos y la operación es una
+# sola: (operación, tipos de los argumentos) -> nombres.
+NOMBRE_UNIFICADO = {
+    ("send", ("Cadena",)): ["destinatario"],
+    ("send", ("Administrador", "Registro")): ["administrador", "detalle"],
+    ("restarStock", ("Entero",)): ["cantidad"],
+}
+GENERICOS = {"proceso", "parametros", "cantidad", "correo", "archivo", "destinatario", "detalle"}
+
+
+def _elegir_nombre(candidatos, tipo):
+    """El nombre que representa a varios argumentos del mismo tipo: el del tipo (`tipoDeRol`
+    para un TipoDeRol), uno genérico del glosario, o el más corto."""
+    if len(candidatos) == 1:
+        return candidatos[0]
+    por_tipo = minuscula(tipo.rstrip("[*]"))
+    if por_tipo in candidatos:
+        return por_tipo
+    gen = sorted(c for c in candidatos if c in GENERICOS)
+    if gen:
+        return gen[0]
+    if tipo in PRIMITIVOS or tipo.rstrip("[*]") in PRIMITIVOS or tipo in CAT_A_PRIM.values():
+        return sorted(candidatos, key=lambda c: (len(c), c))[0]
+    if tipo in ENUMERACIONES.values() or tipo.rstrip("[*]") not in M.CLASES:
+        return por_tipo
+    return sorted(candidatos, key=lambda c: (len(c), c))[0]
+
+
+def _deduplicar_firmas(dc):
+    """Dos operaciones de una clase con el mismo nombre y los mismos tipos de argumento son la misma
+    operación: los DSD sólo le ponen nombres distintos al argumento (`getConfiguracion(despacho)`,
+    `getConfiguracion(controlDeStock)`). Queda una, con un nombre que sirve a todas."""
+    for cl in dc.clases.values():
+        grupos = collections.OrderedDict()
+        for k, op in cl.ops.items():
+            clave = (op.crea, op.nombre, tuple(t for _, t in op.params), tuple(t for _, t in op.salidas))
+            grupos.setdefault(clave, []).append(op)
+        if all(len(v) == 1 for v in grupos.values()):
+            continue
+        nuevas = collections.OrderedDict()
+        for (crea, nombre, tipos, tsal), ops in grupos.items():
+            op = ops[0]
+            if len(ops) > 1:
+                fijo = NOMBRE_UNIFICADO.get((nombre, tipos))
+                nombres = fijo or [_elegir_nombre(sorted({o.params[i][0] for o in ops}), tipos[i])
+                                   for i in range(len(tipos))]
+                op = Op(nombre, list(zip(nombres, tipos)), next((o.retorno for o in ops if o.retorno), None),
+                        crea=crea, salidas=op.salidas)
+            nuevas[op.clave()] = op
+        cl.ops = nuevas
+
+
+def _tipar_consultas(dc):
+    """Una consulta o un cálculo que el DSD no muestra devolviendo nada: su retorno sale de
+    `RETORNO_DE_CONSULTA` o, si es un predicado (`estaActivo`, `tieneCupo`), es Booleano."""
+    for nombre, cl in dc.clases.items():
+        for op in cl.ops.values():
+            if op.crea or op.retorno:
+                continue
+            t = RETORNO_DE_CONSULTA.get((nombre, op.nombre))
+            if t is None and PREDICADO.match(op.nombre):
+                t = "Booleano"
+            if t:
+                op.retorno = t
 
 
 def _tipar_getters(dc):

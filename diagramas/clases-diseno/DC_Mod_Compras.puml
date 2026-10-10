@@ -66,9 +66,6 @@ class SupplierService <<fachada>> {
   + darDeBajaProveedor(proveedorId: Identificador)
   + registrarProveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero): Proveedor
 }
-class "Map<String, Proveedor>" as Map_String_Proveedor <<colección>> {
-  + get(clave: Cadena): Proveedor
-}
 class PurchaseOrderService <<fachada>> {
   + cancelarOrdenDeCompra(ordenId: Identificador,\n      motivo: Cadena): OrdenDeCompra
   + consultarOrdenesDeCompra(estado: Cadena,\n      proveedorId: Identificador, desde: FechaHora,\n      hasta: FechaHora): OrdenDeCompra[*]
@@ -92,21 +89,24 @@ class "Map<String, RecepcionDeCompra>" as Map_String_RecepcionDeCompra <<colecci
 class "List<RecepcionDeCompra>" as List_RecepcionDeCompra <<colección>> {
   + buscar(proveedorId: Identificador, desde: FechaHora,\n      hasta: FechaHora,\n      estadoDePago: Cadena): RecepcionDeCompra[*]
 }
-class Proveedor <<referencia>>
+class "Map<String, Proveedor>" as Map_String_Proveedor <<colección>> {
+  + get(clave: Cadena): Proveedor
+}
 class OrdenDeCompra <<referencia>>
 class RecepcionDeCompra <<referencia>>
+class Proveedor <<referencia>>
 class "Map<String, Deposito>" as Map_String_Deposito <<referencia>>
 class StockLedgerService <<referencia>>
 class Distribuidora <<referencia>>
 class Deposito <<referencia>>
-class Producto <<referencia>>
 class ItemRecepcion <<referencia>>
+class Producto <<referencia>>
 
-Map_String_Proveedor "1" o--> "0..*" Proveedor
 List_OrdenDeCompra "1" o--> "0..*" OrdenDeCompra
 Map_String_OrdenDeCompra "1" o--> "0..*" OrdenDeCompra
 Map_String_RecepcionDeCompra "1" o--> "0..*" RecepcionDeCompra
 List_RecepcionDeCompra "1" o--> "0..*" RecepcionDeCompra
+Map_String_Proveedor "1" o--> "0..*" Proveedor
 PurchaseOrderService --> "1" List_OrdenDeCompra
 PurchaseOrderService --> "1" Map_String_OrdenDeCompra
 PurchaseReceiptService --> "1" List_RecepcionDeCompra

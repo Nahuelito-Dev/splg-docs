@@ -26,7 +26,8 @@ skinparam NoteBorderColor #7A7340
 start
 :Pedido en estado Pendiente sin chofer asignado;
 while (¿el pedido sigue pendiente y sin chofer?) is (sí)
-  if (¿tiene punto de entrega?) then (no)
+  if (¿tiene punto de entrega?) then (sí)
+  else (no)
     :Sin oferta;
     stop
   endif
@@ -37,24 +38,25 @@ while (¿el pedido sigue pendiente y sin chofer?) is (sí)
     :Descartar los ya contactados para este pedido;
     backward :radio := radio + 5 km;
   repeat while (¿sin candidato y radio <= 20 km?) is (sí) not (no)
-  if (¿hay candidato?) then (no)
+  if (¿hay candidato?) then (sí)
+  else (no)
     :Sin oferta;\nel ciclo de 15 s lo reintenta;
     stop
   endif
   :Crear la oferta (ofrecida, vigencia de 30 s);
   :Notificar al chofer por WebSocket\ny por notificación push;
-  |Chofer|
   switch (¿respuesta del chofer?)
-  case (acepta)
+  case ([acepta])
+    |Chofer|
     :aceptarPedido();
     |Sistema|
     :Oferta aceptada;\npedido aceptado;
-  case (rechaza)
+  case ([rechaza])
+    |Chofer|
     :rechazarOferta();
     |Sistema|
     :Oferta rechazada;
-  case (no responde en 30 s)
-    |Sistema|
+  case ([no responde en 30 s])
     :Oferta vencida\n(proceso de vencimiento cada 15 s);
   endswitch
 endwhile (no)

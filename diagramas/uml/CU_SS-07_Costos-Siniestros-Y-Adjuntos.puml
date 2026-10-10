@@ -1,0 +1,113 @@
+@startuml
+title SS-07 — Gestión de Choferes y Vehículos: Costos, siniestros y adjuntos de flota (19 casos de uso)
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
+}
+
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+
+rectangle "SS-07 Gestión de Choferes y Vehículos\nCostos, siniestros y adjuntos de flota" {
+  usecase "CU-113\nConsultar Detalle del Vehículo" as U113 #back:FFFFFF;line:5A5896
+  usecase "CU-155\nAdjuntar Archivo a una Tarea\nde Flota" as U155 #back:FFFFFF;line:5A5896
+  usecase "CU-156\nConsultar Adjuntos de una\nTarea de Flota" as U156 #back:FFFFFF;line:5A5896
+  usecase "CU-157\nDescargar un Adjunto de Flota" as U157 #back:FFFFFF;line:5A5896
+  usecase "CU-158\nEliminar un Adjunto de Flota" as U158 #back:FFFFFF;line:5A5896
+  usecase "CU-159\nAlmacenar Archivo" as U159 #back:FFFFFF;line:5A5896
+  usecase "CU-160\nRecuperar Archivo" as U160 #back:FFFFFF;line:5A5896
+  usecase "CU-195\nRegistrar una Carga de\nCombustible" as U195 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-196\nConsultar el Consumo de\nCombustible de un Vehículo" as U196 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-197\nRegistrar la Habilitación para\nTransportar Mercancías\nPeligrosas" as U197 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-198\nRegistrar una Multa de\nTránsito" as U198 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-199\nRegistrar el Pago de una Multa" as U199 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-200\nImputar una Multa al Chofer" as U200 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-201\nRegistrar un Siniestro" as U201 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-202\nCerrar un Siniestro" as U202 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-203\nConsultar el Costo Total de un\nVehículo" as U203 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-204\nConsultar el Tablero de Costos\nde la Flota" as U204 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-205\nRegistrar un Neumático" as U205 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-206\nRegistrar un Movimiento de\nNeumático" as U206 <<planificado>> #back:FFFFFF;line:5A5896
+}
+
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-174\nAdjuntar la Fotografía de un\nReclamo\n(SS-05)" as U174 #back:FFFFFF;line:6B7683
+  usecase "CU-175\nConsultar la Fotografía de un\nReclamo\n(SS-05)" as U175 #back:FFFFFF;line:6B7683
+}
+
+A02 -[#2E7D46]- U195
+A02 -[#2E7D46]- U201
+A03 -[#8C4A9E]- U113
+A03 -[#8C4A9E]- U155
+A03 -[#8C4A9E]- U156
+A03 -[#8C4A9E]- U157
+A03 -[#8C4A9E]- U158
+A03 -[#8C4A9E]- U195
+A03 -[#8C4A9E]- U196
+A03 -[#8C4A9E]- U197
+A03 -[#8C4A9E]- U198
+A03 -[#8C4A9E]- U199
+A03 -[#8C4A9E]- U200
+A03 -[#8C4A9E]- U201
+A03 -[#8C4A9E]- U202
+A03 -[#8C4A9E]- U203
+A03 -[#8C4A9E]- U204
+A03 -[#8C4A9E]- U205
+A03 -[#8C4A9E]- U206
+A04 -[#8A6D1F]- U198
+A05 -right-|> A03
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U155 ..> U159 : <<include>>
+U157 ..> U156 : <<include>>
+U157 ..> U160 : <<include>>
+U158 ..> U156 : <<include>>
+U195 ..> U113 : <<include>>
+U196 ..> U113 : <<include>>
+U197 ..> U113 : <<include>>
+U198 ..> U113 : <<include>>
+U201 ..> U113 : <<include>>
+U203 ..> U113 : <<include>>
+U174 ..> U159 : <<include>>
+U175 ..> U160 : <<include>>
+U113 -[hidden]-> U195
+U113 -[hidden]-> U196
+U113 -[hidden]-> U197
+U113 -[hidden]-> U198
+U113 -[hidden]-> U201
+U113 -[hidden]-> U203
+U156 -[hidden]-> U157
+U156 -[hidden]-> U158
+
+@enduml

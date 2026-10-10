@@ -75,7 +75,7 @@ Chofer ||--o{ CargaDeCamion : reparte con >
 CargaDeCamion }o--|| UbicacionDeStock : parte de >
 Usuario ||--o{ CargaDeCamion : abre >
 Usuario |o--o{ CargaDeCamion : cierra >
-CargaDeCamion ||--o{ ItemCarga : contiene >
+CargaDeCamion ||--|{ ItemCarga : contiene >
 ItemCarga }o--|| Producto : corresponde a >
 
 legend bottom right

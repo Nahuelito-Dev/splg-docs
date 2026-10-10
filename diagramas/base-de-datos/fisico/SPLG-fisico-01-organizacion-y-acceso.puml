@@ -30,6 +30,10 @@ skinparam legendBorderColor #2C4257
 hide circle
 skinparam linetype polyline
 
+entity "audit_action_type" as e_audit_action_type {
+  {field} **action_type_id** : smallint * <<PK>>
+  {field} name : varchar(40) *
+}
 entity "distributor" as e_distributor {
   {field} **distributor_id** : uuid * <<PK>>
   {field} name : varchar(120) *
@@ -50,6 +54,7 @@ entity "role" as e_role {
   {field} type : text *
   {field} createdAt : timestamptz
   {field} updatedAt : timestamptz
+  {field} deletedAt : timestamptz
 }
 entity "user" as e_user {
   {field} **user_id** : uuid * <<PK>>
@@ -70,6 +75,16 @@ entity "admin" as e_admin {
   {field} //distributor_id// : uuid <<FK>>
   {field} //user_id// : uuid * <<FK>>
   {field} createdAt : timestamptz *
+}
+entity "audit" as e_audit {
+  {field} **audit_id** : uuid * <<PK>>
+  {field} //action_type_id// : smallint * <<FK>>
+  {field} //user_id// : uuid <<FK>>
+  {field} //distributor_id// : uuid <<FK>>
+  {field} entity : varchar(60) *
+  {field} record_id : varchar(64) *
+  {field} ip : varchar(45)
+  {field} created_at : timestamptz *
 }
 entity "audit_log" as e_audit_log {
   {field} **audit_id** : uuid * <<PK>>
@@ -96,14 +111,25 @@ entity "module_config" as e_module_config {
   {field} updated_at : timestamptz *
   {field} //updated_by_user_id// : uuid <<FK>>
 }
+entity "audit_detail" as e_audit_detail {
+  {field} **audit_detail_id** : uuid * <<PK>>
+  {field} //audit_id// : uuid * <<FK>>
+  {field} field : varchar(80) *
+  {field} old_value : text
+  {field} new_value : text
+}
 
 e_role |o--o{ e_user : role_id
 e_distributor |o--o{ e_admin : distributor_id
 e_user ||--o| e_admin : user_id
+e_audit_action_type ||--o{ e_audit : action_type_id
+e_distributor |o--o{ e_audit : distributor_id
+e_user |o--o{ e_audit : user_id
 e_user |o--o{ e_audit_log : actor_user_id
 e_distributor |o--o{ e_audit_log : distributor_id
 e_distributor ||--o{ e_module_config : distributor_id
 e_user |o--o{ e_module_config : updated_by_user_id
+e_audit ||--o{ e_audit_detail : audit_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |

@@ -14,24 +14,22 @@ sequenceDiagram
     loop Por cada tarea dentro de la ventana de anticipación
         loop Por cada ventana alternativa, de mejor a peor
             SIS-)CHO: notificarPropuestaDeVentana(propuesta)
-            alt El chofer acepta
+            opt El chofer acepta
                 CHO->>SIS: aceptarVentanaDeMantenimiento(propuestaId)
                 SIS-->>CHO: ventana aceptada, pendiente de la confirmación del administrador
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la propuesta y<br/>se pasa a la siguiente<br/>ventana
             end
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la<br/>propuesta y se pasa a la<br/>siguiente ventana
         end
 
-        alt Se agotaron las ventanas sin acuerdo
+        opt Se agotaron las ventanas sin acuerdo
             SIS-)ADM: notificarOpcionesEvaluadas(tarea, opciones)
             ADM->>SIS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
             SIS-->>ADM: tarea programada
-        else La ventana quedó acordada con el chofer
-            Note over SIS: Se registra la tarea<br/>como programada
         end
+        Note over SIS: Si la ventana quedó acordada<br/>con el chofer, se registra la<br/>tarea como programada
     end
 
-    alt Hay una habilitación bloqueante vencida
+    opt Hay una habilitación bloqueante vencida
         Note over SIS: Deja el vehículo fuera<br/>de servicio
         SIS-)ADM: notificarVehiculoInhabilitado(vehiculo)
     end

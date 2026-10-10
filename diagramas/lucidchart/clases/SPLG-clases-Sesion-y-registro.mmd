@@ -26,7 +26,6 @@ classDiagram
         + createUserSafe(correo: Cadena, contrasena: Cadena, nombreCompleto: Cadena, telefono: Cadena): Registro
         + deleteUserSafe(cuenta: Registro)
         + generatePasswordResetLink(correo: Cadena, ajustes: Registro): Cadena
-        + generatePasswordResetLink(destinatario: Cadena, ajustes: Registro): Cadena
         + updateUser(cuenta: Registro, correoNuevo: Cadena)
         + updateUser(cuenta: Registro, deshabilitada: Booleano)
         + verifyIdToken(token: Cadena): Registro
@@ -45,15 +44,20 @@ classDiagram
         <<colección>>
     }
     class Usuario
-    class Cliente
-    class Chofer
     class Administrador
+    class Chofer
+    class Cliente
+    class Empleado
+    class NotificationsService {
+        <<fachada>>
+    }
 
     Usuario <|-- Cliente
     Usuario <|-- Chofer
     Usuario <|-- Administrador
     AuthService --> "1" FirebaseAuthPort : firebaseAuthPort
     AuthService --> "1" Map_String_Usuario : map<String, Usuario>
+    NotificationsService --> "1" FcmPort : fcmPort
     RegistroService --> "1" FirebaseAuthPort : firebaseAuthPort
     RegistroService --> "1" List_Administrador : list<Administrador>
     RegistroService --> "1" Map_String_Usuario : map<String, Usuario>
@@ -61,4 +65,5 @@ classDiagram
     RegistroService ..> Administrador : create
     RegistroService ..> Chofer : create
     RegistroService ..> Cliente : create
+    RegistroService ..> Empleado
     RegistroService ..> Usuario : create

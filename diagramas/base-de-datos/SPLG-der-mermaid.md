@@ -1,6 +1,6 @@
 # DER de SPLG, en Mermaid — generado
 
-Generado por `generar-modelo-datos.py` desde la base en ejecución: 43 tablas, 96 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
+Generado por `generar-modelo-datos.py` desde la base en ejecución: 48 tablas, 105 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
 
 ### Organización y acceso
 
@@ -9,11 +9,19 @@ erDiagram
     USER }o--o| ROLE : "role_id"
     ADMIN }o--o| DISTRIBUTOR : "distributor_id"
     ADMIN |o--|| USER : "user_id"
+    AUDIT }o--|| AUDIT_ACTION_TYPE : "action_type_id"
+    AUDIT }o--o| DISTRIBUTOR : "distributor_id"
+    AUDIT }o--o| USER : "user_id"
     AUDIT_LOG }o--o| USER : "actor_user_id"
     AUDIT_LOG }o--o| DISTRIBUTOR : "distributor_id"
     MODULE_CONFIG }o--|| DISTRIBUTOR : "distributor_id"
     MODULE_CONFIG }o--o| USER : "updated_by_user_id"
+    AUDIT_DETAIL }o--|| AUDIT : "audit_id"
 
+    AUDIT_ACTION_TYPE {
+        smallint action_type_id PK
+        varchar name UK
+    }
     DISTRIBUTOR {
         uuid distributor_id PK
         varchar name
@@ -31,9 +39,10 @@ erDiagram
     }
     ROLE {
         uuid role_id PK
-        text type UK
+        text type
         timestamptz createdAt "nullable"
         timestamptz updatedAt "nullable"
+        timestamptz deletedAt "nullable"
     }
     USER {
         uuid user_id PK
@@ -54,6 +63,16 @@ erDiagram
         uuid distributor_id FK "nullable"
         uuid user_id FK, UK
         timestamptz createdAt
+    }
+    AUDIT {
+        uuid audit_id PK
+        smallint action_type_id FK
+        uuid user_id FK "nullable"
+        uuid distributor_id FK "nullable"
+        varchar entity
+        varchar record_id
+        varchar ip "nullable"
+        timestamptz created_at
     }
     AUDIT_LOG {
         uuid audit_id PK
@@ -79,6 +98,13 @@ erDiagram
         jsonb params
         timestamptz updated_at
         uuid updated_by_user_id FK "nullable"
+    }
+    AUDIT_DETAIL {
+        uuid audit_detail_id PK
+        uuid audit_id FK
+        varchar field
+        text old_value "nullable"
+        text new_value "nullable"
     }
 ```
 
@@ -161,6 +187,7 @@ erDiagram
         uuid gas_cylinder_id FK
         int quantity
         decimal discount_percentage
+        timestamptz deletedAt "nullable"
     }
     CYLINDER {
         uuid cylinder_id PK
@@ -522,6 +549,7 @@ erDiagram
         int size_bytes
         uuid uploaded_by_user_id FK
         timestamptz uploaded_at
+        timestamptz deleted_at "nullable"
     }
     MAINTENANCE_WINDOW_PROPOSAL {
         uuid proposal_id PK
@@ -578,10 +606,14 @@ erDiagram
         int stars
         text comment "nullable"
         timestamptz createdAt
+        boolean hidden
+        text hidden_reason "nullable"
+        timestamptz hidden_at "nullable"
+        uuid hidden_by_user_id FK "nullable"
     }
 ```
 
-### Personal (planificado)
+### Personal (en parte planificado)
 
 ```mermaid
 erDiagram
@@ -593,7 +625,7 @@ erDiagram
         uuid position_id PK
         uuid distributor_id FK
         varchar name
-        job_position_category_enum category
+        enum category
         boolean is_active
         timestamptz createdAt
         timestamptz updatedAt
@@ -611,6 +643,7 @@ erDiagram
         int size_bytes
         uuid uploaded_by_user_id FK
         timestamptz uploaded_at
+        timestamptz deleted_at "nullable"
     }
     EMPLOYEE {
         uuid employee_id PK
@@ -620,7 +653,7 @@ erDiagram
         varchar file_number
         varchar first_name
         varchar last_name
-        employee_document_type_enum document_type
+        enum document_type
         varchar document_number
         varchar cuil "nullable"
         date birth_date "nullable"
@@ -635,9 +668,9 @@ erDiagram
         varchar emergency_contact_relationship "nullable"
         date hire_date
         date termination_date "nullable"
-        employee_termination_reason_enum termination_reason "nullable"
-        employment_type_enum employment_type
-        employee_status_enum status
+        enum termination_reason "nullable"
+        enum employment_type
+        enum status
         varchar bank_cbu "nullable"
         text notes "nullable"
         timestamptz createdAt
@@ -1219,7 +1252,7 @@ erDiagram
     CUSTOMER |o--|| USER : "user_id"
     CUSTOMER_ACCOUNT }o--|| USER : "customer_user_id"
     DELIVERY |o--|| USER : "user_id"
-    EMPLOYEE |o--o| USER : "user_id"
+    EMPLOYEE }o--o| USER : "user_id"
     PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
     PURCHASE_ORDER }o--|| USER : "created_by_user_id"
     STOCK_THRESHOLD }o--|| GAS_CYLINDER : "gas_cylinder_id"
@@ -1272,6 +1305,7 @@ erDiagram
     PAYMENT }o--|| ORDER : "order_id"
     PURCHASE_RECEIPT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     RATING }o--|| USER : "from_user_id"
+    RATING }o--o| USER : "hidden_by_user_id"
     RATING }o--|| ORDER : "order_id"
     RATING }o--|| USER : "to_user_id"
     REPURCHASE_INVITATION }o--o| ORDER : "order_id"

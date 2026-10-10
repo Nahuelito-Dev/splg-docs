@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-272 Buscar un Usuario · buscarUsuarioPorTelefono
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UsersService
+    participant COL as :Map#lt;String, Usuario#gt;
+
+    ADM->>+SRV: buscarUsuarioPorTelefono(telefono)
+    SRV->>+COL: get(telefono)
+    COL-->>-SRV: usuario
+    SRV-->>-ADM: usuario

@@ -66,12 +66,12 @@ class FleetMaintenancePlannerService <<fachada>> {
   + planificarMantenimientoDeFlota()
 }
 class DemandForecastService <<fabricación pura>> {
-  + demandaProyectada(ventanas: PropuestaVentanaTaller[*])
+  + demandaProyectada(ventanas: PropuestaVentanaTaller[*]): Registro
 }
 class FleetCoverageService <<fabricación pura>> {
-  + ventanasFactibles(vehiculo: Vehiculo,\n      ventanas: PropuestaVentanaTaller[*])
+  + ventanasFactibles(vehiculo: Vehiculo,\n      ventanas: PropuestaVentanaTaller[*]): PropuestaVentanaTaller[*]
 }
-interface FleetAvailabilityPort <<interface>> <<puerto>> {
+interface FleetAvailabilityPort <<puerto>> {
   + blockVehicleWindow(tarea: TareaMantenimiento,\n      ventanaElegida: PropuestaVentanaTaller)
 }
 class "Map<String, PropuestaVentanaTaller>" as Map_String_PropuestaVentanaTaller <<colección>> {

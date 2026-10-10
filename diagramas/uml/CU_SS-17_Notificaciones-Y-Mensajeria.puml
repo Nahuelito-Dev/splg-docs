@@ -38,6 +38,8 @@ actor "Cliente\n(ACT-01)" as A01
 actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Administrador General\n(ACT-05)" as A05
+actor "Firebase\n(ACT-07)" as A07 <<sistema externo>>
+actor "Servicio de correo\n(ACT-08)" as A08 <<sistema externo>>
 
 rectangle "SS-17 Notificaciones y Mensajería" {
   usecase "CU-098\nRegistrar el Token de\nNotificaciones del Dispositivo" as U098 #back:FFFFFF;line:7C6B4C
@@ -56,6 +58,9 @@ A03 -[#8C4A9E]- U099
 A05 -[#B4432B]- U100
 A05 -[#B4432B]- U101
 A05 -[#B4432B]- U102
-A05 --|> A03
+U100 -[#6B7683]- A07
+U101 -[#6B7683]- A07
+U102 -[#6B7683]- A08
+A05 -right-|> A03
 
 @enduml

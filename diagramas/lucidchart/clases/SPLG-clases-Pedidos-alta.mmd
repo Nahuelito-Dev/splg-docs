@@ -6,7 +6,7 @@ classDiagram
 
     class CreateOrderUseCase {
         <<controlador>>
-        + crearPedido(items: Lista, direccionId: Identificador, franjaId: Identificador, fechaAgendada: Fecha, metodoDePago: Cadena, out enlaceDePago: Cadena): Pedido
+        + crearPedido(items: Lista, direccionId: Identificador, franjaId: Identificador, fechaAgendada: Fecha, metodoDePago: Cadena)
         + crearReserva(items: Lista, direccionId: Identificador, fechaAgendada: Fecha, franjaId: Identificador, metodoDePago: Cadena, montoDeLaSenia: Moneda, out enlaceDePago: Cadena): Pedido
         + venderACuentaCorriente(cliente: Cliente, direccionId: Identificador, items: Lista): Pedido
     }
@@ -46,11 +46,11 @@ classDiagram
     }
     class Pedido
     class Cliente
-    class Producto
-    class FranjaHoraria
-    class OfertaDespacho
     class CuentaCorriente
+    class FranjaHoraria
+    class Producto
     class ZonaCobertura
+    class OfertaDespacho
 
     CancelOrderUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     CancelOrderUseCase --> "1" RealtimeDispatchPort : realtimeDispatchPort

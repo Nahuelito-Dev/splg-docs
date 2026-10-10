@@ -82,12 +82,12 @@ class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class "Map<String, Deposito>" as Map_String_Deposito <<referencia>>
 class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
 class StockLedgerService <<referencia>>
-class Distribuidora <<referencia>>
-class ConfiguracionModulo <<referencia>>
-class Vehiculo <<referencia>>
 class Chofer <<referencia>>
-class Producto <<referencia>>
+class ConfiguracionModulo <<referencia>>
+class Distribuidora <<referencia>>
 class ItemCarga <<referencia>>
+class Producto <<referencia>>
+class Vehiculo <<referencia>>
 
 Map_String_CargaDeCamion "1" o--> "0..*" CargaDeCamion
 List_CargaDeCamion "1" o--> "0..*" CargaDeCamion

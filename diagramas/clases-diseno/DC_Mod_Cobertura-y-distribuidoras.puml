@@ -65,7 +65,7 @@ class CoverageZoneService <<fachada>> {
   + eliminarZonaDeCobertura(zonaId: Identificador)
   + listarZonasDeCobertura(): ZonaCobertura[*]
   + programarVigenciaDeZona(zonaId: Identificador,\n      vigenteHasta: FechaHora): ZonaCobertura
-  + validarCobertura(latitud: Decimal, longitud: Decimal,\n      out recargo: Moneda,\n      out zona: ZonaCobertura): Booleano
+  + validarCobertura(latitud: Decimal,\n      longitud: Decimal): Booleano
 }
 class "Map<String, ZonaCobertura>" as Map_String_ZonaCobertura <<colección>> {
   + get(clave: Cadena): ZonaCobertura
@@ -124,7 +124,7 @@ ScheduledTaskGate --> "1" RedisService
 CoverageZoneCronService ..> ZonaCobertura
 CoverageZoneService ..> Distribuidora
 CoverageZoneService ..> ZonaCobertura
-DistributorService ..> Distribuidora : <<create>>
+DistributorService ..> "<<create>>" Distribuidora
 ModuleConfigService ..> ConfiguracionModulo
 ModuleConfigService ..> Distribuidora
 

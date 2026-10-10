@@ -79,6 +79,8 @@ entity AsientoCuentaCorriente #F1F1F1 {
 }
 entity LiquidacionComisiones #F1F1F1 {
 }
+entity GastoDeRendicion #F1F1F1 {
+}
 
 Distribuidora ||--o{ Caja : define >
 Distribuidora ||--o{ CategoriaDeCaja : define >
@@ -87,10 +89,11 @@ Caja ||--o{ MovimientoDeCaja : asienta >
 SesionDeCaja |o--o{ MovimientoDeCaja : agrupa >
 CategoriaDeCaja ||--o{ MovimientoDeCaja : clasifica >
 MovimientoDeCaja |o--o| MovimientoDeCaja : anula a >
-LiquidacionComisiones }o--o| MovimientoDeCaja : se paga con >
+LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
 RendicionChofer }o--o| Caja : ingresa en >
-RendicionChofer }o--o| MovimientoDeCaja : genera >
-AsientoCuentaCorriente }o--o| MovimientoDeCaja : se asienta en >
+RendicionChofer |o--o| MovimientoDeCaja : genera >
+AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
+GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

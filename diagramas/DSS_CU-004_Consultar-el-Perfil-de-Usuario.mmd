@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-004 Consultar el Perfil de Usuario
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: consultarPerfil(usuarioId)
+    activate SIS
+    SIS-->>CLI: datos de la cuenta (nombre, correo, teléfono, rol)
+    deactivate SIS
+
+    opt el perfil tiene datos de cliente
+        CLI->>SIS: consultarPerfilCliente(usuarioId)
+        activate SIS
+        SIS-->>CLI: datos del cliente (documento, ubicación, validación)
+        deactivate SIS
+    end
+    Note over CLI,SIS: También lo inicia el Chofer (ACT-02)

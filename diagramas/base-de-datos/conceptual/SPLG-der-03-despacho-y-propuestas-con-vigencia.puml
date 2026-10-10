@@ -61,10 +61,11 @@ entity Chofer #F1F1F1 {
 }
 
 Chofer |o--o{ LoteRecorrido : acepta >
+OfertaDespacho }o--|| Chofer : se dirige a >
 Pedido ||--o{ OfertaDespacho : genera >
 LoteRecorrido ||--o{ OfertaLote : genera >
 OfertaLote }o--|| Chofer : se dirige a >
-LoteRecorrido ||--o{ ParadaLote : se compone de >
+LoteRecorrido ||--|{ ParadaLote : se compone de >
 ParadaLote }o--|| Pedido : atiende >
 
 legend bottom right

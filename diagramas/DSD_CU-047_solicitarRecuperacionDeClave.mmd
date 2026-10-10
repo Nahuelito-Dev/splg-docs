@@ -10,11 +10,10 @@ sequenceDiagram
     CLI->>+SRV: solicitarRecuperacionDeClave(correo)
     SRV->>+COL: get(correo)
     COL-->>-SRV: usuario
-    alt La cuenta existe
+    opt La cuenta existe
         SRV->>+FBA: generatePasswordResetLink(correo, ajustes)
         FBA-->>-SRV: enlace
         SRV-)SND: send(correoDeRecuperacion)
-    else No hay una cuenta con ese correo
-        Note over SRV,COL: No se envía nada y la respuesta es la misma
     end
+    Note over SRV,SND: Si no hay una cuenta con ese correo,<br/>no se envía nada y la respuesta es la misma
     SRV-->>-CLI: mensaje

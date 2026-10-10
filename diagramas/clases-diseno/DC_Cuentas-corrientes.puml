@@ -67,8 +67,8 @@ class CuentaCorriente {
   - saldo: Moneda
   + «create» CuentaCorriente(cliente: Cliente,\n      razonSocial: Cadena, cuit: Cadena,\n      condicionFiscal: CondicionFiscal,\n      limiteDeCredito: Moneda, plazoEnDias: Entero)
   + actualizarSaldo(importe: Moneda)
-  + calcularAntiguedad(hoy: Fecha)
-  + calcularDisponible()
+  + calcularAntiguedad(hoy: Fecha): Registro
+  + calcularDisponible(): Moneda
   + calcularSaldoAl(fechaDesde: Fecha): Moneda
   + cargarVenta(pedido: Pedido)
   + modificar(datos: Registro)
@@ -113,7 +113,7 @@ RendicionChofer "0..1" --> "0..*" AsientoCuentaCorriente : incluye
 AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente : anula a
 ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda
 ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con
-CuentaCorriente ..> ImputacionCuentaCorriente : <<create>>
+CuentaCorriente ..> "<<create>>" ImputacionCuentaCorriente
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.

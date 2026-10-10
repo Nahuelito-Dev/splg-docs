@@ -7,6 +7,7 @@ classDiagram
     class PaymentsService {
         <<fachada>>
         + crearCheckoutDePago(pedidoId: Identificador, metodoDePago: MetodoDePago): Cadena
+        + crearCheckoutDePago(pedido: Pedido, metodoDePago: MetodoDePago): Cadena
     }
 
     class PaymentGatewayPort {
@@ -48,8 +49,8 @@ classDiagram
     class List_Pedido["List<Pedido>"] {
         <<colección>>
     }
-    class Pedido
     class Pago
+    class Pedido
 
     ConfirmPaymentUseCase --> "1" Map_String_Pedido : map<String, Pedido>
     ConfirmPaymentUseCase --> "1" NotificationPort : notificationPort

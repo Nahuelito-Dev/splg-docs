@@ -2,15 +2,15 @@ sequenceDiagram
     title DSD — CU-186 Adjuntar un Archivo al Legajo · adjuntarArchivoAlLegajo
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :AttachmentsService
+    participant SRV as :AttachmentService
     participant COE as :Map#lt;String, Empleado#gt;
-    participant STO as :StoragePort
+    participant S3 as :S3Service
     participant EMP as empleado:Empleado
 
     ADM->>+SRV: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)
     SRV->>+COE: get(empleadoId)
     COE-->>-SRV: empleado
-    SRV->>STO: put(clave, archivo, tipo)
+    SRV->>S3: put(clave, archivo, tipo)
     SRV->>+EMP: adjuntar(clave, archivo, etiqueta)
     create participant ADJ as nuevo:Adjunto
     EMP->>ADJ: «create»(clave, archivo, etiqueta)

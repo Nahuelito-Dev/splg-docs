@@ -65,6 +65,9 @@ class Rol
 class Administrador
 class ConfiguracionModulo
 class AsientoAuditoria
+class Auditoria
+class DetalleAuditoria
+class TipoAccionAuditoria
 class Cliente
 class DireccionEntrega
 class InvitacionRecompra
@@ -148,158 +151,161 @@ PropuestaConVigencia <|-- OfertaLote
 PropuestaConVigencia <|-- PropuestaVentanaTaller
 PropuestaConVigencia <|-- InvitacionRecompra
 PropuestaConVigencia <|-- AvisoRecupero
-Usuario -- Rol
-Distribuidora --> Chofer
-Distribuidora -- Administrador
-Distribuidora --> Empleado
-Distribuidora *--> PuestoDeTrabajo
-Distribuidora -- Producto
-Distribuidora --> Envase
-Distribuidora -- Pedido
-Distribuidora *--> ZonaCobertura
-Distribuidora *--> FranjaHoraria
-Distribuidora *--> ConfiguracionModulo
-Usuario -- AsientoAuditoria
-Cliente *-- DireccionEntrega
-Cliente -- Pedido
-Cliente *--> Carrito
-Cliente -- InvitacionRecompra
-Cliente -- Producto
-InvitacionRecompra -- Pedido
-InvitacionRecompra *--> ItemSugerido
-InvitacionRecompra -- DireccionEntrega
-ItemSugerido -- Producto
-Carrito *--> ItemCarrito
-ItemCarrito --> Producto
-Pedido *--> ItemPedido
-ItemPedido --> Producto
-Pedido -- DireccionEntrega
-Pedido -- FranjaHoraria
-Pedido --> ZonaCobertura
-Pedido *--> CambioEstadoPedido
-Pedido *--> CambioDireccion
-CambioDireccion -- DireccionEntrega
-CambioDireccion -- DireccionEntrega
-Chofer -- Pedido
-Pedido --> Pago
-Pedido *--> OfertaDespacho
-OfertaDespacho -- Chofer
-LoteRecorrido *--> ParadaLote
-ParadaLote -- Pedido
-LoteRecorrido *--> OfertaLote
-OfertaLote -- Chofer
-Chofer -- LoteRecorrido
-Chofer --> Vehiculo
-Chofer --> Vehiculo
-Chofer --> UbicacionGPS
-PlanMantenimiento --> TareaMantenimiento
-TareaMantenimiento <-- Vehiculo
-TareaMantenimiento -- Chofer
-TareaMantenimiento *-- PropuestaVentanaTaller
-TareaMantenimiento *--> AdjuntoTarea
-PropuestaVentanaTaller -- Chofer
-Vehiculo *-- RegistroUsoVehiculo
-Producto *--> Promocion
-Producto -- Envase
-Envase *--> MovimientoEnvase
-Envase *--> RevisionEnvase
-Pedido -- MovimientoEnvase
-Cliente -- Envase
-Pedido -- Envase
-Envase <--> CasoRecupero
-CasoRecupero -- Cliente
-CasoRecupero *--> AvisoRecupero
-Empleado --> PuestoDeTrabajo
-Empleado --> Usuario
-Empleado *--> JornadaDeTrabajo
-Empleado *--> LicenciaLaboral
-Empleado *--> Adjunto
-TareaMantenimiento <--> Empleado
-Vehiculo *-- CargaCombustible
-Vehiculo *--> MultaTransito
-Vehiculo *-- Siniestro
-Vehiculo -- Neumatico
-Distribuidora *--> Neumatico
-Neumatico *--> MovimientoNeumatico
-MovimientoNeumatico -- Vehiculo
-Empleado -- CargaCombustible
-Empleado -- MultaTransito
-Empleado -- Siniestro
-Pedido -- Reclamo
-Cliente --> Reclamo
-Pedido --> Incidencia
-Pedido -- Calificacion
-Distribuidora --> Deposito
-Distribuidora --> Proveedor
-Deposito --> UbicacionDeStock
-Vehiculo --> UbicacionDeStock
-UbicacionDeStock *--> SaldoDeStock
-SaldoDeStock -- Producto
-MovimientoDeStock -- Producto
-MovimientoDeStock -- UbicacionDeStock
-MovimientoDeStock -- UbicacionDeStock
-Deposito *--> UmbralDeStock
-UmbralDeStock -- Producto
-UbicacionDeStock --> AjusteDeStock
-AjusteDeStock *--> ItemAjusteDeStock
-ItemAjusteDeStock -- Producto
-Usuario -- AjusteDeStock
-Proveedor --> OrdenDeCompra
-OrdenDeCompra <-- Deposito
-OrdenDeCompra *--> ItemOrdenDeCompra
-ItemOrdenDeCompra -- Producto
-Proveedor -- RecepcionDeCompra
-OrdenDeCompra -- RecepcionDeCompra
-RecepcionDeCompra <-- Deposito
-RecepcionDeCompra *--> ItemRecepcion
-ItemRecepcion -- Producto
-Usuario -- RecepcionDeCompra
-Vehiculo --> CargaDeCamion
-Chofer -- CargaDeCamion
-CargaDeCamion -- UbicacionDeStock
-CargaDeCamion *--> ItemCarga
-ItemCarga -- Producto
-Usuario -- CargaDeCamion
-Usuario -- CargaDeCamion
-Distribuidora *--> Caja
-Distribuidora *--> CategoriaDeCaja
-Distribuidora *--> CuentaCorriente
-Distribuidora *--> ReglaComision
-Caja *--> SesionDeCaja
-Caja *--> MovimientoDeCaja
-SesionDeCaja -- MovimientoDeCaja
-CategoriaDeCaja -- MovimientoDeCaja
-MovimientoDeCaja -- MovimientoDeCaja
-Chofer *-- RendicionChofer
-RendicionChofer -- Caja
-RendicionChofer -- MovimientoDeCaja
-RendicionChofer *--> PedidoRendido
-PedidoRendido -- Pedido
-RendicionChofer *--> GastoDeRendicion
-GastoDeRendicion -- CategoriaDeCaja
-Cliente -- CuentaCorriente
-CuentaCorriente *--> AsientoCuentaCorriente
-Pedido -- AsientoCuentaCorriente
-AsientoCuentaCorriente -- MovimientoDeCaja
-Chofer -- AsientoCuentaCorriente
-RendicionChofer --> AsientoCuentaCorriente
-AsientoCuentaCorriente -- AsientoCuentaCorriente
-ImputacionCuentaCorriente -- AsientoCuentaCorriente
-ImputacionCuentaCorriente -- AsientoCuentaCorriente
-ReglaComision <-- Empleado
-ReglaComision -- Producto
-Empleado *--> AsientoComision
-Empleado *-- LiquidacionComisiones
-Empleado -- Chofer
-AsientoComision -- Pedido
-ReglaComision -- AsientoComision
-LiquidacionComisiones --> AsientoComision
-RendicionChofer -- AsientoComision
-LiquidacionComisiones -- MovimientoDeCaja
+Usuario "0..*" -- "0..1" Rol
+Distribuidora "1" --> "0..*" Chofer
+Distribuidora "0..1" -- "0..*" Administrador
+Distribuidora "1" --> "0..*" Empleado
+Distribuidora "1" *--> "0..*" PuestoDeTrabajo
+Distribuidora "1" -- "0..*" Producto
+Distribuidora "1" --> "0..*" Envase
+Distribuidora "1" -- "0..*" Pedido
+Distribuidora "1" *--> "0..*" ZonaCobertura
+Distribuidora "1" *--> "0..*" FranjaHoraria
+Distribuidora "1" *--> "0..*" ConfiguracionModulo
+Usuario "0..1" -- "0..*" AsientoAuditoria
+Distribuidora "0..1" -- "0..*" Auditoria
+Auditoria "1" *--> "0..*" DetalleAuditoria
+TipoAccionAuditoria "1" -- "0..*" Auditoria
+Cliente "1" *-- "0..*" DireccionEntrega
+Cliente "1" -- "0..*" Pedido
+Cliente "1" *--> "0..*" Carrito
+Cliente "1" -- "0..*" InvitacionRecompra
+Cliente "0..*" -- "0..1" Producto
+InvitacionRecompra "0..1" -- "0..1" Pedido
+InvitacionRecompra "1" *--> "1..*" ItemSugerido
+InvitacionRecompra "0..*" -- "0..1" DireccionEntrega
+ItemSugerido "0..*" -- "1" Producto
+Carrito "1" *--> "0..*" ItemCarrito
+ItemCarrito "0..*" --> "1" Producto
+Pedido "1" *--> "1..*" ItemPedido
+ItemPedido "0..*" --> "1" Producto
+Pedido "0..*" -- "1" DireccionEntrega
+Pedido "0..*" -- "0..1" FranjaHoraria
+Pedido "0..*" --> "0..1" ZonaCobertura
+Pedido "1" *--> "0..*" CambioEstadoPedido
+Pedido "1" *--> "0..*" CambioDireccion
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
+Chofer "0..1" -- "0..*" Pedido
+Pedido "1" --> "0..*" Pago
+Pedido "1" *--> "0..*" OfertaDespacho
+OfertaDespacho "0..*" -- "1" Chofer
+LoteRecorrido "1" *--> "1..*" ParadaLote
+ParadaLote "0..*" -- "1" Pedido
+LoteRecorrido "1" *--> "0..*" OfertaLote
+OfertaLote "0..*" -- "1" Chofer
+Chofer "0..1" -- "0..*" LoteRecorrido
+Chofer "1" --> "0..*" Vehiculo : tiene registrado
+Chofer "0..*" --> "0..*" Vehiculo : usa
+Chofer "1" --> "0..1" UbicacionGPS
+PlanMantenimiento "1" --> "0..*" TareaMantenimiento
+TareaMantenimiento "0..*" <-- "0..1" Vehiculo
+TareaMantenimiento "0..*" -- "0..1" Chofer
+TareaMantenimiento "1" *-- "0..*" PropuestaVentanaTaller
+TareaMantenimiento "1" *--> "0..*" AdjuntoTarea
+PropuestaVentanaTaller "0..*" -- "1" Chofer
+Vehiculo "1" *-- "0..*" RegistroUsoVehiculo
+Producto "1" *--> "0..*" Promocion
+Producto "0..1" -- "0..*" Envase
+Envase "1" *--> "0..*" MovimientoEnvase
+Envase "1" *--> "0..*" RevisionEnvase
+Pedido "0..1" -- "0..*" MovimientoEnvase
+Cliente "0..1" -- "0..*" Envase
+Pedido "0..1" -- "0..*" Envase
+Envase "1" <--> "0..*" CasoRecupero
+CasoRecupero "0..*" -- "1" Cliente
+CasoRecupero "1" *--> "0..*" AvisoRecupero
+Empleado "0..*" --> "1" PuestoDeTrabajo
+Empleado "0..1" --> "0..1" Usuario
+Empleado "1" *--> "0..*" JornadaDeTrabajo
+Empleado "1" *--> "0..*" LicenciaLaboral
+Empleado "1" *--> "0..*" Adjunto
+TareaMantenimiento "0..*" <--> "0..1" Empleado
+Vehiculo "1" *-- "0..*" CargaCombustible
+Vehiculo "1" *--> "0..*" MultaTransito
+Vehiculo "1" *-- "0..*" Siniestro
+Vehiculo "0..1" -- "0..*" Neumatico
+Distribuidora "1" *--> "0..*" Neumatico
+Neumatico "1" *--> "0..*" MovimientoNeumatico
+MovimientoNeumatico "0..*" -- "0..1" Vehiculo
+Empleado "0..1" -- "0..*" CargaCombustible
+Empleado "0..1" -- "0..*" MultaTransito
+Empleado "0..1" -- "0..*" Siniestro
+Pedido "1" -- "0..*" Reclamo
+Cliente "1" --> "0..*" Reclamo
+Pedido "1" --> "0..*" Incidencia
+Pedido "1" -- "0..2" Calificacion
+Distribuidora "1" --> "0..*" Deposito
+Distribuidora "1" --> "0..*" Proveedor
+Deposito "1" --> "0..1" UbicacionDeStock
+Vehiculo "1" --> "0..1" UbicacionDeStock
+UbicacionDeStock "1" *--> "0..*" SaldoDeStock
+SaldoDeStock "0..*" -- "1" Producto
+MovimientoDeStock "0..*" -- "1" Producto
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en
+Deposito "1" *--> "0..*" UmbralDeStock
+UmbralDeStock "0..*" -- "1" Producto
+UbicacionDeStock "1" --> "0..*" AjusteDeStock
+AjusteDeStock "1" *--> "1..*" ItemAjusteDeStock
+ItemAjusteDeStock "0..*" -- "1" Producto
+Usuario "1" -- "0..*" AjusteDeStock
+Proveedor "1" --> "0..*" OrdenDeCompra
+OrdenDeCompra "0..*" <-- "1" Deposito
+OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra
+ItemOrdenDeCompra "0..*" -- "1" Producto
+Proveedor "1" -- "0..*" RecepcionDeCompra
+OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra
+RecepcionDeCompra "0..*" <-- "1" Deposito
+RecepcionDeCompra "1" *--> "1..*" ItemRecepcion
+ItemRecepcion "0..*" -- "1" Producto
+Usuario "1" -- "0..*" RecepcionDeCompra
+Vehiculo "1" --> "0..*" CargaDeCamion
+Chofer "1" -- "0..*" CargaDeCamion
+CargaDeCamion "0..*" -- "1" UbicacionDeStock
+CargaDeCamion "1" *--> "1..*" ItemCarga
+ItemCarga "0..*" -- "1" Producto
+Usuario "1" -- "0..*" CargaDeCamion : abre
+Usuario "0..1" -- "0..*" CargaDeCamion : cierra
+Distribuidora "1" *--> "0..*" Caja
+Distribuidora "1" *--> "0..*" CategoriaDeCaja
+Distribuidora "1" *--> "0..*" CuentaCorriente
+Distribuidora "1" *--> "0..*" ReglaComision
+Caja "1" *--> "0..*" SesionDeCaja
+Caja "1" *--> "0..*" MovimientoDeCaja
+SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja
+CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja
+MovimientoDeCaja "0..1" -- "0..1" MovimientoDeCaja
+Chofer "1" *-- "0..*" RendicionChofer
+RendicionChofer "0..*" --> "0..1" Caja
+RendicionChofer "0..1" -- "0..1" MovimientoDeCaja
+RendicionChofer "1" *--> "0..*" PedidoRendido
+PedidoRendido "0..1" -- "1" Pedido
+RendicionChofer "1" *--> "0..*" GastoDeRendicion
+GastoDeRendicion "0..*" -- "1" CategoriaDeCaja
+Cliente "1" -- "0..*" CuentaCorriente
+CuentaCorriente "1" *--> "0..*" AsientoCuentaCorriente
+Pedido "0..1" -- "0..*" AsientoCuentaCorriente
+AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja
+Chofer "0..1" -- "0..*" AsientoCuentaCorriente
+RendicionChofer "0..1" --> "0..*" AsientoCuentaCorriente
+AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con
+ReglaComision "0..*" <-- "0..1" Empleado
+ReglaComision "0..*" -- "0..1" Producto
+Empleado "1" *--> "0..*" AsientoComision
+Empleado "1" *-- "0..*" LiquidacionComisiones
+Empleado "0..1" -- "0..1" Chofer
+AsientoComision "0..*" -- "0..1" Pedido
+ReglaComision "0..1" -- "0..*" AsientoComision
+LiquidacionComisiones "0..1" --> "0..*" AsientoComision
+RendicionChofer "0..1" -- "0..*" AsientoComision
+LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja
 (Chofer, Vehiculo) .. AsignacionVehiculo
 
 legend bottom right
-  Vista de conjunto: sin miembros ni nombres de asociación. La flecha abierta marca
+  Vista de conjunto: sin miembros; sólo llevan nombre las asociaciones que comparten par. La flecha abierta marca
   la navegabilidad que piden los diagramas de interacción; se omiten las asociaciones
   de Usuario que sólo registran la autoría de un hecho, que figuran en su área.
 endlegend

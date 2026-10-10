@@ -96,13 +96,12 @@ class LiquidacionComisiones {
   + cerrarSinPago()
   + incluir(asientoDeComision: AsientoComision)
   + marcarAprobada()
-  + pagar(caja: Caja)
+  + pagar(caja: Caja): Moneda
   + validarAprobada()
   + validarBorrador()
   + validarNoPagada()
 }
 class Empleado <<referencia>>
-class Chofer <<referencia>>
 class Producto <<referencia>>
 class Pedido <<referencia>>
 class MovimientoDeCaja <<referencia>>

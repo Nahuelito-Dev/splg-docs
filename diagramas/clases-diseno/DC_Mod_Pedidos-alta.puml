@@ -61,7 +61,7 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class CreateOrderUseCase <<controlador>> {
-  + crearPedido(items: Lista, direccionId: Identificador,\n      franjaId: Identificador, fechaAgendada: Fecha,\n      metodoDePago: Cadena,\n      out enlaceDePago: Cadena): Pedido
+  + crearPedido(items: Lista, direccionId: Identificador,\n      franjaId: Identificador, fechaAgendada: Fecha,\n      metodoDePago: Cadena)
   + crearReserva(items: Lista, direccionId: Identificador,\n      fechaAgendada: Fecha, franjaId: Identificador,\n      metodoDePago: Cadena, montoDeLaSenia: Moneda,\n      out enlaceDePago: Cadena): Pedido
   + venderACuentaCorriente(cliente: Cliente,\n      direccionId: Identificador, items: Lista): Pedido
 }
@@ -72,7 +72,7 @@ class CancelOrderUseCase <<controlador>> {
 class ReleaseOrderUseCase <<controlador>> {
   + liberarPedido(pedidoId: Identificador,\n      motivo: Cadena): Pedido
 }
-interface NotificationPort <<interface>> <<puerto>> {
+interface NotificationPort <<puerto>> {
   + sendArrivalPushToCustomer(cliente: Cliente,\n      pedido: Pedido, nombreDelChofer: Cadena)
   + sendOrderConfirmation(cliente: Cliente, pedido: Pedido)
   + sendPaymentApprovedPush(cliente: Cliente, pedido: Pedido,\n      esSena: Booleano)
@@ -86,11 +86,11 @@ class RealtimeDispatchPort <<referencia>>
 class PaymentsService <<referencia>>
 class Pedido <<referencia>>
 class Cliente <<referencia>>
-class Producto <<referencia>>
-class FranjaHoraria <<referencia>>
-class OfertaDespacho <<referencia>>
 class CuentaCorriente <<referencia>>
+class FranjaHoraria <<referencia>>
+class Producto <<referencia>>
 class ZonaCobertura <<referencia>>
+class OfertaDespacho <<referencia>>
 
 CancelOrderUseCase --> "1" Map_String_Pedido
 CancelOrderUseCase --> "1" RealtimeDispatchPort
@@ -103,7 +103,7 @@ CancelOrderUseCase ..> Pedido
 CreateOrderUseCase ..> Cliente
 CreateOrderUseCase ..> CuentaCorriente
 CreateOrderUseCase ..> FranjaHoraria
-CreateOrderUseCase ..> Pedido : <<create>>
+CreateOrderUseCase ..> "<<create>>" Pedido
 CreateOrderUseCase ..> Producto
 CreateOrderUseCase ..> ZonaCobertura
 OrderStatusHistoryService ..> Pedido

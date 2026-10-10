@@ -62,7 +62,7 @@ skinparam nodesep 25
 skinparam ranksep 90
 class FuelLoadService <<fachada>> {
   + anularCargaDeCombustible(cargaId: Identificador): CargaCombustible
-  + consultarCargasDeCombustible(filtros: Registro): CargaDeCamion[*]
+  + consultarCargasDeCombustible(filtros: Registro): CargaCombustible[*]
   + consultarConsumoDeCombustible(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
   + modificarCargaDeCombustible(cargaId: Identificador,\n      datos: Registro): CargaCombustible
   + registrarCargaDeCombustible(vehiculoId: Identificador,\n      datos: Registro): CargaCombustible
@@ -71,10 +71,10 @@ class "Map<String, CargaCombustible>" as Map_String_CargaCombustible <<colecció
   + get(clave: Cadena): CargaCombustible
 }
 class "List<CargaCombustible>" as List_CargaCombustible <<colección>> {
-  + getVigentes(filtros: Registro): CargaDeCamion[*]
+  + getVigentes(filtros: Registro): CargaCombustible[*]
 }
 class FuelConsumptionCalculator <<fabricación pura>> {
-  + calcularConsumo(cargas: CargaDeCamion[*]): Registro
+  + calcularConsumo(cargas: CargaCombustible[*]): Registro
   + calcularDesvio(cargaCombustible: CargaCombustible,\n      vehiculo: Vehiculo): Decimal
 }
 class TrafficFineService <<fachada>> {
@@ -122,7 +122,7 @@ class "Map<String, Empleado>" as Map_String_Empleado <<colección>> {
 class FleetCostReportService <<fachada>> {
   + consultarCostoDeUnVehiculo(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
   + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
-  + ordenarPorCostoPorKilometro(costos: Registro)
+  + ordenarPorCostoPorKilometro(costos: Registro): Registro
 }
 class "List<Vehiculo>" as List_Vehiculo <<colección>> {
   + getActivos(): Vehiculo[*]

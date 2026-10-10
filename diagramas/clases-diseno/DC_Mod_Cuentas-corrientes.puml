@@ -81,25 +81,25 @@ class "List<AsientoCuentaCorriente>" as List_AsientoCuentaCorriente <<colección
 }
 class AsientoCuentaCorriente <<referencia>>
 class CuentaCorriente <<referencia>>
-class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
+class CashLedgerService <<referencia>>
 class "Map<String, Cliente>" as Map_String_Cliente <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
-class Chofer <<referencia>>
+class "Map<String, RendicionChofer>" as Map_String_RendicionChofer <<referencia>>
 class Cliente <<referencia>>
-class Pedido <<referencia>>
 class Distribuidora <<referencia>>
+class Pedido <<referencia>>
 class RendicionChofer <<referencia>>
 
 List_AsientoCuentaCorriente "1" o--> "0..*" AsientoCuentaCorriente
 Map_String_CuentaCorriente "1" o--> "0..*" CuentaCorriente
 List_CuentaCorriente "1" o--> "0..*" CuentaCorriente
+CustomerAccountService --> "1" CashLedgerService
 CustomerAccountService --> "1" List_AsientoCuentaCorriente
 CustomerAccountService --> "1" List_CuentaCorriente
-CustomerAccountService --> "1" Map_String_Chofer
 CustomerAccountService --> "1" Map_String_Cliente
 CustomerAccountService --> "1" Map_String_CuentaCorriente
 CustomerAccountService --> "1" Map_String_Pedido
-CustomerAccountService ..> Chofer
+CustomerAccountService --> "1" Map_String_RendicionChofer
 CustomerAccountService ..> Cliente
 CustomerAccountService ..> CuentaCorriente
 CustomerAccountService ..> Distribuidora

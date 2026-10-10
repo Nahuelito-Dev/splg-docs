@@ -19,7 +19,7 @@ splg-docs/
 ├── 1-Requisitos.md                 ← entrega
 ├── 2-Analisis.md                   ← entrega
 ├── 3-Diseño.md                     ← entrega
-├── Casos-de-Uso.md                 ← LOS 249 CASOS, COMPLETOS
+├── Casos-de-Uso.md                 ← LOS 271 CASOS, COMPLETOS
 │
 ├── diagramas/                      imágenes y fuentes de los diagramas
 ├── design/                         wireframes y capturas de pantalla
@@ -31,20 +31,20 @@ splg-docs/
 
 ## El documento único: `Casos-de-Uso.md`
 
-Es el que se abre cuando hay que mostrar un caso puntual. Tiene **los 249 casos, del
-CU-001 al CU-250**, cada uno con sus cuatro artefactos:
+Es el que se abre cuando hay que mostrar un caso puntual. Tiene **los 271 casos, del
+CU-001 al CU-272**, cada uno con sus cuatro artefactos:
 
 | Sección | Contenido | Cobertura |
 |---------|-----------|-----------|
 | §1 | Actores del sistema | — |
 | §2 | Diagrama de casos de uso del sistema | — |
-| §3 | Catálogo y calificación | 249 |
-| §4 | **CUA** — Casos de uso de alto nivel | 249 |
-| §5 | **CUE** — Casos de uso expandidos | 249 |
-| §6 | **DSS** — Diagramas de secuencia del sistema | 249 |
-| §7 | **DSD** — Diagramas de interacción de diseño | 249 |
+| §3 | Catálogo y calificación | 271 |
+| §4 | **CUA** — Casos de uso de alto nivel | 271 |
+| §5 | **CUE** — Casos de uso expandidos | 271 |
+| §6 | **DSS** — Diagramas de secuencia del sistema | 271 |
+| §7 | **DSD** — Diagramas de interacción de diseño | 271 |
 
-1856 KB, 560 diagramas.
+1872 KB, 584 diagramas.
 
 ### Por qué los casos también aparecen en los otros documentos
 
@@ -60,13 +60,13 @@ para poder consultarlos sin saltar entre cuatro archivos.
 
 | # | Documento | Contiene |
 |---|-----------|----------|
-| 0 | `0-Plan_Del_Proyecto.md` | Fases e iteraciones, hitos, cronograma, actores, los 249 casos de uso de alto nivel y su calificación. |
+| 0 | `0-Plan_Del_Proyecto.md` | Fases e iteraciones, hitos, cronograma, actores, los 271 casos de uso de alto nivel y su calificación. |
 | 0.1 | `0.1-Planificacion_Iteraciones.md` | Metas, artefactos y problemas a resolver de cada iteración. |
-| 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 249 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
-| 2 | `2-Analisis.md` | Modelo conceptual, los 243 diagramas de secuencia del sistema, el catálogo de las 310 operaciones del sistema, los 196 contratos de operación y los módulos inteligentes. |
+| 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 271 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
+| 2 | `2-Analisis.md` | Modelo conceptual, los 265 diagramas de secuencia del sistema, el catálogo de las 312 operaciones del sistema, los 197 contratos de operación y los módulos inteligentes. |
 | 3 | `3-Diseño.md` | Arquitectura, casos de uso reales, diagramas de interacción, diagrama de clases, especificación de los módulos inteligentes, wireframes y diagrama entidad-relación. |
 
-`Casos-de-Uso.md` reúne los cuatro artefactos de los 249 casos en un solo archivo. Es el
+`Casos-de-Uso.md` reúne los cuatro artefactos de los 271 casos en un solo archivo. Es el
 documento de consulta; su contenido se corresponde con el de los documentos 0, 1 y 2, que
 lo conservan porque las plantillas exigen que cada artefacto figure donde le toca.
 
@@ -81,7 +81,7 @@ Las plantillas originales de la cátedra están en `.catedra-ref/`.
 | DSS | Diagrama de secuencia del sistema | 2 — Análisis §2.1 |
 | DSD | Diagrama de interacción de diseño | 3 — Diseño §4 |
 
-Los 249 casos tienen los cuatro.
+Los 271 casos tienen los cuatro.
 
 ## Herramientas
 

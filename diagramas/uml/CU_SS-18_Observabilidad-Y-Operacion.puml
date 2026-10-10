@@ -37,7 +37,7 @@ skinparam usecase {
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
-actor "Plataforma de despliegue\n(ACT-09)" as A09
+actor "Plataforma de despliegue\n(ACT-09)" as A09 <<sistema externo>>
 
 rectangle "SS-18 Observabilidad y Operación" {
   usecase "CU-104\nVerificar la Salud del Sistema\n(liveness / readiness)" as U104 #back:FFFFFF;line:5B5F87
@@ -52,6 +52,6 @@ A03 -[#8C4A9E]- U172
 A03 -[#8C4A9E]- U173
 A04 -[#8A6D1F]- U153
 A09 -[#4F6D3A]- U104
-A05 --|> A03
+A05 -right-|> A03
 
 @enduml

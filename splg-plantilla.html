@@ -739,7 +739,9 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         <a href="#sis-contexto" data-nav-hash="sis-contexto">Diagrama de contexto</a>
       </div>
     </details>
+    <a class="menu-link" href="#diagramas" data-nav-hash="diagramas">Diagramas</a>
     <a class="menu-link" href="#modelos" data-nav-hash="modelos">Modelos</a>
+    <a class="menu-link" href="#datos" data-nav-hash="datos">Datos</a>
     <a class="menu-link" href="#arquitectura" data-nav-hash="arquitectura">Arquitectura</a>
     <details class="menu-nav" id="menuProceso">
       <summary>Proceso
@@ -785,6 +787,8 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       </div>
       <div class="grupo-menu">
         <p class="rotulo-grupo">Modelos</p>
+        <button type="button" class="seccion" data-pag="diagramas"><span class="nombre">Catálogo de diagramas UML</span></button>
+        <button type="button" class="seccion" data-pag="datos"><span class="nombre">Modelo de datos</span></button>
         <button type="button" class="seccion" data-pag="modelos"><span class="nombre">Modelos para Lucidchart</span></button>
       </div>
       <div class="grupo-menu">
@@ -1028,7 +1032,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         '<div class="grp">Diagramas del sistema · notación UML</div>' +
         '<button class="item" data-uml="actores"><span class="cod">ACT</span><span class="nm">Actores del sistema</span></button>' +
         '<button class="item" data-uml="contexto"><span class="cod">SIS</span><span class="nm">Diagrama de contexto</span></button>' +
-        '<button class="item" data-uml="mapa"><span class="cod">A4</span><span class="nm">Mapa del sistema (una página)</span></button>' +
+        '<button class="item" data-uml="mapa"><span class="cod">A4</span><span class="nm">Mapa de navegación, no UML (una página)</span></button>' +
         '<button class="item" data-uml="completo"><span class="cod">ALL</span><span class="nm">Diagrama completo de los __N_CASOS__ casos</span></button>' +
         '<button class="item" data-uml="subsistemas"><span class="cod">MAP</span><span class="nm">Mapa de subsistemas</span></button>' +
         '<button class="item" data-uml="despliegue"><span class="cod">DEP</span><span class="nm">Despliegue y entornos</span></button>' +
@@ -1258,7 +1262,12 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       '<span class="chip">NOTACIÓN UML</span></div><h2>'+esc(nom)+"</h2>" +
       (sub ? '<div class="meta"><span>'+esc(sub)+"</span></div>" : "") + "</div>" +
       card("k-doc","UML","Diagrama de casos de uso","Doc 1 · §3 y §4.3",
-        img ? '<div class="figura"><img class="umlimg" alt="'+esc(nom)+'" src="'+img+'">' +
+        /* el completo va en láminas: cada una es una figura, y en el visor se pasa de
+           una a otra con las flechas */
+        (g && g.laminas) ? g.laminas.map(function(l){
+            return '<div class="dtitle">'+esc(l.nombre)+'</div><div class="figura"><img class="umlimg" alt="'+esc(l.nombre)+'" src="'+l.img+'">' +
+              '<span class="ampliar">CLIC PARA AMPLIAR</span></div>'; }).join("")
+        : img ? '<div class="figura"><img class="umlimg" alt="'+esc(nom)+'" src="'+img+'">' +
           '<span class="ampliar">CLIC PARA AMPLIAR</span></div>'
             : '<p class="note">Diagrama no disponible.</p>') +
       (g ? "" : (function(){
@@ -1340,6 +1349,10 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   function tarjetasInicio(){
     return tarjeta("", "abre", "todos", "casos", "Casos de uso",
         codigos.length + " casos agrupados en " + Object.keys(SS).length + " subsistemas.") +
+      '<a class="tarjeta" href="#diagramas">' +
+        iconoTarjeta("modelos") + "<b>Diagramas UML</b><p>Todos los diagramas por tipo: casos de uso, secuencia, clases, estados, actividad, Gantt y base de datos.</p></a>" +
+      '<a class="tarjeta" href="#datos">' +
+        iconoTarjeta("arquitectura") + "<b>Modelo de datos</b><p>DER físico y conceptual, tipos enumerados y diccionario de datos de cada tabla.</p></a>" +
       '<a class="tarjeta" href="#modelos">' +
         iconoTarjeta("modelos") + "<b>Modelos</b><p>Diagramas de dominio y de servicios, preparados para Lucidchart.</p></a>" +
       '<a class="tarjeta" href="#arquitectura">' +
@@ -1537,7 +1550,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     var gen = [["actores","ACT","Actores del sistema"],["contexto","DIA","Diagrama de casos de uso del sistema"],
                ["subsistemas","SUB","Subsistemas del proyecto"],["catalogo","CAT","Catálogo de los __N_CASOS__ casos"]];
     var uml = [["actores","ACT","Actores del sistema"],["contexto","SIS","Diagrama de contexto"],
-               ["mapa","A4","Mapa del sistema (una página)"],
+               ["mapa","A4","Mapa de navegación, no UML (una página)"],
                ["completo","ALL","Diagrama completo de los __N_CASOS__ casos"],
                ["subsistemas","MAP","Mapa de subsistemas"],["despliegue","DEP","Despliegue y entornos"]];
     document.getElementById("listaSistemaUml").innerHTML =

@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-257 Eliminar un Puesto de Trabajo · eliminarPuestoDeTrabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :JobPositionService
+    participant COL as :Map#lt;String, PuestoDeTrabajo#gt;
+    participant PUE as puesto:PuestoDeTrabajo
+
+    ADM->>+SRV: eliminarPuestoDeTrabajo(puestoId)
+    SRV->>+COL: get(puestoId)
+    COL-->>-SRV: puesto
+    SRV->>+PUE: darDeBaja()
+    PUE->>PUE: assertSinEmpleadosActivos()
+    PUE->>PUE: assertSinLegajos()
+    PUE->>PUE: assertNoEsElUltimoActivo()
+    deactivate PUE
+    SRV-->>-ADM: confirmación

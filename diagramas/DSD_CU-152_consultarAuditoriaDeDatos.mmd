@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-152 Consultar el Registro de Auditoría · consultarAuditoriaDeDatos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DataAuditService
+    participant LST as :List#lt;Auditoria#gt;
+    participant AUD as auditoria:Auditoria
+
+    ADM->>+SRV: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+    SRV->>+LST: filtrar(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+    LST-->>-SRV: auditorias
+    loop Por cada auditoria de auditorias
+        SRV->>+AUD: getDetalles()
+        AUD-->>-SRV: detalles
+    end
+    SRV-->>-ADM: auditorias, total

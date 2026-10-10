@@ -1,5 +1,5 @@
 @startuml
-title SS-01 — Autenticación y Usuarios (11 casos de uso)
+title SS-01 — Autenticación y Usuarios (14 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -39,25 +39,32 @@ actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "Firebase\n(ACT-07)" as A07 <<sistema externo>>
+actor "Servicio de correo\n(ACT-08)" as A08 <<sistema externo>>
 
 rectangle "SS-01 Autenticación y Usuarios" {
   usecase "CU-001\nIniciar Sesión" as U001 #back:FFFFFF;line:3C6E8F
   usecase "CU-002\nRegistrarse como Cliente" as U002 #back:FFFFFF;line:3C6E8F
   usecase "CU-003\nRegistrar Chofer" as U003 #back:FFFFFF;line:3C6E8F
-  usecase "CU-004\nGestionar Perfil de Usuario" as U004 #back:FFFFFF;line:3C6E8F
+  usecase "CU-004\nConsultar el Perfil de Usuario" as U004 #back:FFFFFF;line:3C6E8F
   usecase "CU-047\nRecuperar Contraseña" as U047 #back:FFFFFF;line:3C6E8F
-  usecase "CU-050\nBloquear / Desbloquear Usuario" as U050 #back:FFFFFF;line:3C6E8F
+  usecase "CU-050\nBloquear un Usuario" as U050 #back:FFFFFF;line:3C6E8F
   usecase "CU-082\nCrear Usuario Base" as U082 #back:FFFFFF;line:3C6E8F
-  usecase "CU-083\nBuscar / Listar Usuarios" as U083 #back:FFFFFF;line:3C6E8F
+  usecase "CU-083\nListar los Usuarios" as U083 #back:FFFFFF;line:3C6E8F
   usecase "CU-084\nVerificar Existencia de\nUsuario (pre-registro)" as U084 #back:FFFFFF;line:3C6E8F
   usecase "CU-085\nEliminar Usuario (baja lógica)" as U085 #back:FFFFFF;line:3C6E8F
   usecase "CU-091\nValidar Vigencia del Token de\nSesión" as U091 #back:FFFFFF;line:3C6E8F
+  usecase "CU-251\nModificar el Perfil de Usuario" as U251 #back:FFFFFF;line:3C6E8F
+  usecase "CU-270\nDesbloquear un Usuario" as U270 #back:FFFFFF;line:3C6E8F
+  usecase "CU-272\nBuscar un Usuario" as U272 #back:FFFFFF;line:3C6E8F
 }
 
-usecase "CU-031\nRegistrar Chofer\n(SS-07)" as U031 #back:FFFFFF;line:6B7683
-usecase "CU-086\nRegistrar Administrador\n(SS-16)" as U086 #back:FFFFFF;line:6B7683
-usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)\n(SS-16)" as U087 #back:FFFFFF;line:6B7683
-usecase "CU-177\nRegistrar el Legajo de un\nEmpleado\n(SS-19)" as U177 <<planificado>> #back:FFFFFF;line:6B7683
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-031\nRegistrar Chofer\n(SS-07)" as U031 #back:FFFFFF;line:6B7683
+  usecase "CU-086\nRegistrar Administrador\n(SS-16)" as U086 #back:FFFFFF;line:6B7683
+  usecase "CU-087\nCrear el Primer Super\nAdministrador (bootstrap)\n(SS-16)" as U087 #back:FFFFFF;line:6B7683
+  usecase "CU-177\nRegistrar el Legajo de un\nEmpleado\n(SS-19)" as U177 #back:FFFFFF;line:6B7683
+}
 
 A01 -[#1F6F8B]- U001
 A01 -[#1F6F8B]- U002
@@ -65,11 +72,13 @@ A01 -[#1F6F8B]- U004
 A01 -[#1F6F8B]- U047
 A01 -[#1F6F8B]- U084
 A01 -[#1F6F8B]- U091
+A01 -[#1F6F8B]- U251
 A02 -[#2E7D46]- U001
 A02 -[#2E7D46]- U004
 A02 -[#2E7D46]- U047
 A02 -[#2E7D46]- U084
 A02 -[#2E7D46]- U091
+A02 -[#2E7D46]- U251
 A03 -[#8C4A9E]- U001
 A03 -[#8C4A9E]- U003
 A03 -[#8C4A9E]- U047
@@ -78,14 +87,26 @@ A03 -[#8C4A9E]- U083
 A03 -[#8C4A9E]- U084
 A03 -[#8C4A9E]- U085
 A03 -[#8C4A9E]- U091
+A03 -[#8C4A9E]- U270
+A03 -[#8C4A9E]- U272
 A04 -[#8A6D1F]- U084
-A05 --|> A03
+U001 -[#6B7683]- A07
+U004 -[#6B7683]- A07
+U047 -[#6B7683]- A07
+U082 -[#6B7683]- A07
+U085 -[#6B7683]- A07
+U091 -[#6B7683]- A07
+U002 -[#6B7683]- A08
+U047 -[#6B7683]- A08
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U002 ..> U082 : <<include>>
 U003 ..> U082 : <<include>>
 U050 ..> U083 : <<include>>
 U085 ..> U083 : <<include>>
+U270 ..> U083 : <<include>>
+U251 ..> U004 : <<include>>
 U003 ..> U177 : <<include>>
 U031 ..> U082 : <<include>>
 U086 ..> U082 : <<include>>

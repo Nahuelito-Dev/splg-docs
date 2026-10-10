@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-260 Dar de Baja un Depósito · darDeBajaDeposito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :WarehouseService
+    participant COL as :Map#lt;String, Deposito#gt;
+    participant DEP as deposito:Deposito
+    participant UBI as ubicacion:UbicacionDeStock
+
+    ADM->>+SRV: darDeBajaDeposito(depositoId)
+    SRV->>+COL: get(depositoId)
+    COL-->>-SRV: depositoDeStock
+    SRV->>+DEP: darDeBaja()
+    DEP->>+UBI: tieneSaldo()
+    UBI-->>-DEP: conSaldo
+    DEP->>DEP: validarSinSaldo(conSaldo)
+    DEP-->>-SRV: confirmacion
+    SRV-->>-ADM: confirmacion

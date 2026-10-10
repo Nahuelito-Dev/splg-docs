@@ -1,4 +1,7 @@
-"""Modelo de datos planificado del módulo Personal (iteración I-11).
+"""Modelo de datos planificado del módulo Personal (iteración I-11): lo que todavía no está construido.
+
+Las tablas `job_position` y `employee` y sus enumerados ya están en la base (puestos y legajos, CU-176 a CU-182 y
+CU-255 a CU-257) y salen de ella; acá quedan las jornadas, las licencias y las columnas de la documentación del personal.
 
 Lo lee generar-modelo-datos.py, que lo suma a la constante PROPUESTO y lo dibuja con el
 estereotipo <<propuesto>>, y material-de-trabajo/verificar-mc-der.py, que contrasta el modelo
@@ -38,16 +41,11 @@ def _marcas():
 AGREGADOS = [
     {
         "clave": "personal-y-legajos",
-        "casos": "CU-176 a CU-194 (I-11)",
-        "nota": "Todo empleado existe como legajo, tenga o no cuenta de acceso: un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no sólo el servicio.",
+        "casos": "CU-183 a CU-194 y CU-246 (I-11)",
+        "nota": "Los puestos (`job_position`) y los legajos (`employee`) ya están construidos y salen de la base: todo empleado existe como legajo, tenga o no cuenta de acceso, un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). Falta construir lo que cuelga del legajo. La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no sólo el servicio.",
         "titulo": "Personal y legajos",
-        "pedido": "Llevar el legajo de cada persona que trabaja en la distribuidora, su asistencia, sus licencias y la documentación con vencimiento, y que ese control inhabilite para el despacho a quien no esté en regla.",
+        "pedido": "Llevar la asistencia, las licencias y la documentación con vencimiento de cada persona que trabaja en la distribuidora, y que ese control inhabilite para el despacho a quien no esté en regla.",
         "enums": {
-            "job_position_category_enum": ["driver", "helper", "warehouse", "administration", "sales", "management", "other"],
-            "employee_document_type_enum": ["dni", "passport", "other"],
-            "employee_termination_reason_enum": ["resignation", "dismissal", "end_of_contract", "retirement", "other"],
-            "employment_type_enum": ["permanent", "fixed_term", "part_time", "contractor"],
-            "employee_status_enum": ["active", "terminated"],
             "attendance_source_enum": ["panel", "driver_app"],
             "employee_leave_type_enum": ["vacation", "sick", "work_accident", "study", "marriage", "birth",
                                          "bereavement", "unpaid", "suspension", "unjustified_absence", "other"],
@@ -77,52 +75,6 @@ AGREGADOS = [
             ],
         },
         "tablas": [
-            {"nombre": "job_position", "concepto": "Puesto de trabajo",
-             "desc": "Puesto que ocupa el personal de una distribuidora; su categoría gobierna las reglas.",
-             "columnas": [
-                 _id("position_id"), _dist(),
-                 _c("name", "varchar(80)", False, "Nombre del puesto, único entre los vigentes de la distribuidora sin distinguir mayúsculas."),
-                 _c("category", "job_position_category_enum", False, "Categoría que manda las reglas: el nombre es libre."),
-                 _c("is_active", "boolean", False, "Si el puesto se ofrece.", "true"),
-                 *_marcas(),
-                 _c("deletedAt", "timestamptz", True, "Baja lógica."),
-             ],
-             "pk": ["position_id"], "unicos": []},
-            {"nombre": "employee", "concepto": "Empleado",
-             "desc": "Legajo de una persona que trabaja en la distribuidora, con o sin cuenta de acceso.",
-             "columnas": [
-                 _id("employee_id"), _dist(),
-                 _ref("user_id", "user", "user_id", "SET NULL",
-                      "Cuenta de acceso del empleado, si la tiene; única entre los legajos vigentes.", nulo=True),
-                 _ref("position_id", "job_position", "position_id", "RESTRICT", "Puesto que ocupa."),
-                 _c("file_number", "varchar(20)", False, "Número de legajo, único por distribuidora."),
-                 _c("first_name", "varchar(80)", False, "Nombre."),
-                 _c("last_name", "varchar(80)", False, "Apellido."),
-                 _c("document_type", "employee_document_type_enum", False, "Tipo de documento."),
-                 _c("document_number", "varchar(20)", False, "Número de documento, único por distribuidora."),
-                 _c("cuil", "varchar(11)", True, "CUIL de once dígitos, con dígito verificador válido."),
-                 _c("birth_date", "date", True, "Fecha de nacimiento."),
-                 _c("address_line", "varchar(200)", True, "Domicilio."),
-                 _c("city", "varchar(80)", True, "Localidad."),
-                 _c("province", "varchar(80)", True, "Provincia."),
-                 _c("postal_code", "varchar(10)", True, "Código postal."),
-                 _c("phone", "varchar(30)", True, "Teléfono."),
-                 _c("personal_email", "varchar(120)", True, "Correo personal."),
-                 _c("emergency_contact_name", "varchar(120)", True, "Contacto de emergencia."),
-                 _c("emergency_contact_phone", "varchar(30)", True, "Teléfono del contacto de emergencia."),
-                 _c("emergency_contact_relationship", "varchar(40)", True, "Vínculo con el contacto de emergencia."),
-                 _c("hire_date", "date", False, "Fecha de ingreso."),
-                 _c("termination_date", "date", True, "Fecha de egreso; vacía mientras está activo."),
-                 _c("termination_reason", "employee_termination_reason_enum", True, "Motivo del egreso."),
-                 _c("employment_type", "employment_type_enum", False, "Modalidad de contratación."),
-                 _c("status", "employee_status_enum", False, "Activo o egresado; está egresado si y sólo si tiene fecha de egreso.", "'active'"),
-                 _c("bank_cbu", "varchar(22)", True, "CBU, para pagar liquidaciones."),
-                 _c("notes", "text", True, "Observaciones."),
-                 *_marcas(),
-                 _c("deletedAt", "timestamptz", True, "Baja lógica, sólo para altas erróneas."),
-             ],
-             "pk": ["employee_id"],
-             "unicos": [["user_id"], ["distributor_id", "file_number"], ["distributor_id", "document_number"]]},
             {"nombre": "employee_attendance", "concepto": "Jornada de trabajo",
              "desc": "Una jornada de un empleado: su ingreso y su egreso.",
              "columnas": [

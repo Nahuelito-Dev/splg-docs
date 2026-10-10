@@ -8,7 +8,7 @@ sequenceDiagram
     participant PUE as puesto:PuestoDeTrabajo
     participant REG as :RegistroService
 
-    ADM->>+UC: otorgarCuentaDeAcceso(empleadoId, correo)
+    ADM->>+UC: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
     UC->>+COE: get(empleadoId)
     COE-->>-UC: empleado
     UC->>+EMP: getPuesto()
@@ -17,6 +17,6 @@ sequenceDiagram
     PUE-->>-UC: rol
     UC->>+REG: registrar(datosPersonales, rol, distribuidoraId)
     Note over UC,REG: Se crea el Usuario: ver DSD de crearUsuarioBase (CU-082)
+    REG->>EMP: vincularCuenta(usuario)
     REG-->>-UC: usuario
-    UC->>EMP: vincularCuenta(usuario)
     UC-->>-ADM: empleado

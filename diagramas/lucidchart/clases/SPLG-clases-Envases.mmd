@@ -9,11 +9,11 @@ classDiagram
         + asignarEnvasesAPedido(pedidoId: Identificador, numerosDeSerie: Lista): Envase[*]
         + consultarEnvase(envaseId: Identificador): Envase
         + consultarEnvasesProximosAVencer(dias: Entero): Envase[*]
-        + consultarHistorialDelEnvase(envaseId: Identificador): MovimientoDeCaja[*]
+        + consultarHistorialDelEnvase(envaseId: Identificador): MovimientoEnvase[*]
         + consultarVigenciaDelEnvase(envaseId: Identificador): FechaHora
-        + darDeAltaEnvase(numeroDeSerie: Cadena, tipoDeProducto: Cadena, deposito: Cadena): Envase
+        + darDeAltaEnvase(numeroDeSerie: Cadena, tipoDeProducto: Cadena, deposito: Moneda): Envase
         + listarEnvases(estado: Cadena): Envase[*]
-        + registrarMovimientoDeEnvase(envaseId: Identificador, estadoDestino: Cadena, pedidoId: Identificador, observacion: Cadena): Envase
+        + registrarMovimientoDeEnvase(envaseId: Identificador, estadoDestino: EstadoDelEnvase, pedidoId: Identificador, observacion: Cadena): Envase
         + registrarRevisionDeEnvase(envaseId: Identificador, fecha: Fecha, resultado: Cadena, vencimiento: Fecha): Envase
         + verificarVigenciaAlAsignar(pedidoId: Identificador, series: Lista): Envase[*]
     }
@@ -28,8 +28,8 @@ classDiagram
     class Map_String_Pedido["Map<String, Pedido>"] {
         <<colección>>
     }
-    class Pedido
     class Distribuidora
+    class Pedido
 
     Map_String_Envase "1" o-- "0..*" Envase : elementos
     CylinderService --> "1" Map_String_Envase : map<String, Envase>

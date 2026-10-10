@@ -48,6 +48,7 @@ entity "gas_cylinder_promotion" as e_gas_cylinder_promotion {
   {field} //gas_cylinder_id// : uuid * <<FK>>
   {field} quantity : integer *
   {field} discount_percentage : numeric(5,2) *
+  {field} deletedAt : timestamptz
 }
 entity "cylinder" as e_cylinder {
   {field} **cylinder_id** : uuid * <<PK>>

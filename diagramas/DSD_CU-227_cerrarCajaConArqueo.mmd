@@ -15,7 +15,9 @@ sequenceDiagram
     SRV->>+CAJ: calcularDiferencia(montoContado)
     CAJ-->>-SRV: diferencia
     opt La diferencia no es cero
-        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema diferencia de caja
+        SRV->>+CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
+        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>El importe es la diferencia. Crea el MovimientoDeCaja con<br/>la categoría de sistema diferencia de caja
+        deactivate CAJ
     end
     SRV->>+SES: cerrar(montoContado, diferencia, administrador)
     SES->>SES: validarAbierta()

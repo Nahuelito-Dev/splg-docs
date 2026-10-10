@@ -186,5 +186,5 @@ documentos y la tabla de implementación. Además informa las operaciones del ca
 el gate (`verificar-conformidad.py`) no falla por ellas hasta correr con `DSD_ESTRICTO=1`, que
 es lo que se activa al cerrar la reescritura.
 
-`renderizar-dsd.py` genera el SVG y el PNG (tema neutral, fondo transparente, escala 2, tamaño
+`renderizar-dsd.py` genera el SVG y el PNG (tema neutral, fondo blanco, escala 2, tamaño
 natural) y, con `--sitio`, comprueba que el diagrama dibuja con el Mermaid del sitio.

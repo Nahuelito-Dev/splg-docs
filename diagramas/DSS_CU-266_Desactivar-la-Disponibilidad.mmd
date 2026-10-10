@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSS — CU-266 Desactivar la Disponibilidad
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
+    activate SIS
+    SIS-->>CHO: no disponible (deja de recibir ofertas)
+    deactivate SIS
+    Note over CHO,SIS: disponible = falso. Desconectarse se permite siempre.<br/>La misma operación, con disponible = verdadero, es CU-022

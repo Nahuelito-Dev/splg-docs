@@ -59,11 +59,13 @@ hide empty members
 
 class PuestoDeTrabajo {
   - nombre: Cadena
-  - categoria: CategoriaDePuesto
+  - categoria: Registro
   - activo: Booleano
-  + «create» PuestoDeTrabajo(nombre: Cadena,\n      categoria: CategoriaDeCaja)
+  + «create» PuestoDeTrabajo(nombre: Cadena,\n      categoria: CategoriaDePuesto)
+  + assertNoEsElUltimoActivo()
   + assertSinEmpleadosActivos()
-  + contarEmpleadosActivos()
+  + assertSinLegajos()
+  + contarEmpleadosActivos(): Entero
   + darDeBaja()
   + getNombre(): Cadena
   + getRolDeAcceso(): Rol
@@ -81,13 +83,14 @@ class Empleado {
   - contactoDeEmergencia: Cadena
   - fechaDeIngreso: Fecha
   - fechaDeEgreso: Fecha
-  - motivoDeEgreso: MotivoDeEgreso
-  - modalidadDeContratacion: ModalidadDeContratacion
-  - estado: EstadoDelEmpleado
+  - motivoDeEgreso: Registro
+  - modalidadDeContratacion: Registro
+  - estado: Registro
   + «create» Empleado(datos: Registro,\n      puesto: PuestoDeTrabajo)
   + abrirJornada(origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
   + adjuntar(clave: Cadena, archivo: Archivo,\n      etiqueta: Cadena): Adjunto
   + assertActivo()
+  + assertCuilValido()
   + assertEgresado()
   + assertEsAltaErronea()
   + assertFechaNoAnteriorAlIngreso(fechaDeEgreso: Fecha)
@@ -106,7 +109,6 @@ class Empleado {
   + getLegajo(): Cadena
   + getLicenciasAprobadas(): LicenciaLaboral[*]
   + getNombre(): Cadena
-  + getPeorVencimiento()
   + getPlanesFaltantes(): PlanMantenimiento[*]
   + getPuesto(): PuestoDeTrabajo
   + getTareas(): TareaMantenimiento[*]
@@ -116,7 +118,7 @@ class Empleado {
   + registrarArrastre(liquidacion: LiquidacionComisiones,\n      saldoDeudor: Moneda)
   + registrarComision(pedido: Pedido, regla: ReglaComision)
   + registrarFaltante(rendicion: RendicionChofer,\n      importe: Moneda)
-  + registrarJornada(ingreso: FechaHora, egreso: FechaHora,\n      origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
+  + registrarJornada(ingreso: SentidoDeCaja,\n      egreso: SentidoDeCaja,\n      origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
   + reingresar(fechaDeIngreso: Fecha)
   + solicitarLicencia(tipoDeLicencia: TipoDeLicencia,\n      fechaDesde: Fecha, fechaHasta: Fecha,\n      motivo: Cadena): LicenciaLaboral
   + validarSinComisionPrevia(pedido: Pedido)
@@ -129,11 +131,11 @@ class JornadaDeTrabajo {
   - origen: OrigenDeLaJornada
   - observacion: Cadena
   + «create» JornadaDeTrabajo(ahora: FechaHora,\n      origenDeJornada: OrigenDeLaJornada)
-  + «create» JornadaDeTrabajo(ingreso: FechaHora,\n      egreso: FechaHora,\n      origenDeJornada: OrigenDeLaJornada)
+  + «create» JornadaDeTrabajo(ingreso: SentidoDeCaja,\n      egreso: SentidoDeCaja,\n      origenDeJornada: OrigenDeLaJornada)
   + assertNotaObligatoria(nota: Cadena)
   + cerrar(ahora: FechaHora)
   + corregir(datos: Registro, nota: Cadena)
-  + getDuracion()
+  + getDuracion(): Decimal
 }
 class LicenciaLaboral {
   - tipo: TipoDeLicencia
@@ -150,7 +152,7 @@ class LicenciaLaboral {
   + assertNoTerminada()
   + assertSolicitada()
   + cancelar()
-  + cubre(hoy: Fecha)
+  + cubre(hoy: Fecha): Booleano
   + getDias(): Entero
   + getEmpleado(): Empleado
   + modificar(datos: Registro)

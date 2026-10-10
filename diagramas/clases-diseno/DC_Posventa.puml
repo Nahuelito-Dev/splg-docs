@@ -61,7 +61,7 @@ class Calificacion {
   - puntaje: Entero
   - comentario: Cadena
   + «create» Calificacion(pedido: Pedido,\n      calificado: Usuario, estrellas: Entero,\n      comentario: Cadena)
-  + getEstrellas()
+  + getEstrellas(): Entero
 }
 class Incidencia {
   - tipo: TipoDeIncidencia
@@ -71,7 +71,7 @@ class Incidencia {
   - resolucion: Cadena
   - fotografia: Cadena
   + «create» Incidencia(usuario: Usuario, tipo: Cadena,\n      descripcion: Cadena, foto: Archivo)
-  + getResumen()
+  + getResumen(): Registro
   + resolver(notaDeResolucion: Cadena)
 }
 class Reclamo {
@@ -80,12 +80,11 @@ class Reclamo {
   - estado: EstadoDelReclamo
   - resolucion: Cadena
   - fotografia: Cadena
-  - claveDeLaFotografia: Cadena
   + «create» Reclamo(pedido: Pedido, motivo: Cadena,\n      evidencia: Archivo)
   + adjuntarFoto(clave: Cadena): Cadena
   + esDelCliente(cliente: Cliente): Booleano
   + getFoto(): Cadena
-  + getResumen()
+  + getResumen(): Registro
   + reabrir(motivo: Cadena)
   + resolver(resolucion: Cadena,\n      estadoDestino: EstadoDelReclamo)
   + tomar()

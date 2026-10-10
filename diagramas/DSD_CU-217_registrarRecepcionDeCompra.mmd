@@ -12,9 +12,9 @@ sequenceDiagram
     ADM->>+SRV: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
     SRV->>+COLD: get(depositoId)
     COLD-->>-SRV: deposito
-    SRV->>+DEP: registrarRecepcion(ordenId, tipoDeComprobante, numeroDeComprobante, items, autor)
+    SRV->>+DEP: registrarRecepcion(ordenId, tipoDeComprobante, numeroDeComprobante, items, administrador)
     create participant REC as nueva:RecepcionDeCompra
-    DEP->>REC: «create»(tipoDeComprobante, numeroDeComprobante, autor)
+    DEP->>REC: «create»(tipoDeComprobante, numeroDeComprobante, administrador)
     loop Por cada tipo de garrafa recibido
         create participant IRE as nuevo:ItemRecepcion
         REC->>IRE: «create»(producto, llenasRecibidas, vaciasEntregadas, costoUnitario)
@@ -31,11 +31,13 @@ sequenceDiagram
         DEP->>DEP: validarCompraSinOrden(proveedorId)
     end
     DEP-->>-SRV: recepcion
+    SRV->>+DEP: getUbicacionDeStock()
+    DEP-->>-SRV: ubicacionDeStock
     loop Por cada tipo de garrafa recibido
         SRV->>+IRE: getProducto()
         IRE-->>-SRV: producto
-        Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta. ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo del depósito
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta.<br/>Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del depósito
+        SRV->>+LED: aplicarMovimientoDeStock(nula, ubicacionDeStock, producto, llenas, llenas, llenasRecibidas, compra)
         alt El depósito tiene los vacíos que se lleva la planta
             LED-->>-SRV: aplicado
             SRV->>PRO: sumarStock(llenasRecibidas)

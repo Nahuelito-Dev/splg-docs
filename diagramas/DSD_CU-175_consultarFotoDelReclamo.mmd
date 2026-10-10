@@ -5,7 +5,7 @@ sequenceDiagram
     participant SRV as :ClaimsService
     participant COL as :Map#lt;String, Reclamo#gt;
     participant REC as reclamo:Reclamo
-    participant STO as :StoragePort
+    participant S3 as :S3Service
 
     CLI->>+SRV: consultarFotoDelReclamo(reclamoId)
     SRV->>+COL: get(reclamoId)
@@ -14,12 +14,13 @@ sequenceDiagram
     REC-->>-SRV: propio
     SRV->>+REC: getFoto()
     REC-->>-SRV: clave, direccionExterna
-    alt la fotografía está guardada en el almacenamiento
-        SRV->>+STO: getDownloadUrl(clave)
-        STO-->>-SRV: direccion
+    alt la fotografía está guardada en S3
+        SRV->>+S3: getSignedDownload(clave)
+        S3-->>-SRV: direccion
+        SRV-->>CLI: direccion
     else sólo tiene una dirección externa http(s)
-        Note over SRV: direccion = direccionExterna
+        SRV-->>CLI: direccionExterna
     else no tiene fotografía
-        Note over SRV: direccion = nula
+        SRV-->>CLI: sinFotografia
     end
-    SRV-->>-CLI: fotografia
+    deactivate SRV

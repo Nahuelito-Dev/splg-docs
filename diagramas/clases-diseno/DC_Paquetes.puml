@@ -135,7 +135,7 @@ package "Soporte" as area_Soporte #F2F2F2 {
   }
   package "redis" as redis {
   }
-  package "storage" as storage {
+  package "s3" as s3 {
   }
   package "health" as health {
   }
@@ -149,7 +149,7 @@ package "Stock y compras" as area_Stock_y_compras #F4EEF7 {
   }
 }
 attachment ..> employee
-attachment ..> storage
+attachment ..> s3
 auth ..> firebase
 auth ..> users
 car ..> delivery
@@ -165,7 +165,7 @@ cash ..> distributor
 cash ..> driver_settlement
 claims ..> customer
 claims ..> order
-claims ..> storage
+claims ..> s3
 commission ..> cash
 commission ..> delivery
 commission ..> distributor
@@ -176,8 +176,8 @@ coverage_zone ..> distributor
 customer ..> cart
 customer ..> claims
 customer ..> user_address
+customer_account ..> cash
 customer_account ..> customer
-customer_account ..> delivery
 customer_account ..> distributor
 customer_account ..> driver_settlement
 customer_account ..> order
@@ -223,7 +223,7 @@ fleet ..> distributor
 fleet ..> email
 fleet ..> employee
 fleet ..> notifications
-fleet ..> storage
+fleet ..> s3
 fleet_expense ..> car
 fleet_expense ..> distributor
 fleet_expense ..> email
@@ -258,6 +258,7 @@ rating ..> users
 registro ..> admin
 registro ..> customer
 registro ..> delivery
+registro ..> employee
 registro ..> firebase
 registro ..> users
 reports ..> car

@@ -39,6 +39,8 @@ actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "MercadoPago\n(ACT-06)" as A06 <<sistema externo>>
+actor "Firebase\n(ACT-07)" as A07 <<sistema externo>>
 
 rectangle "SS-15 Reservas Programadas" {
   usecase "CU-072\nCrear Reserva Programada con\nSeña" as U072 #back:FFFFFF;line:8A5674
@@ -57,6 +59,8 @@ A03 -[#8C4A9E]- U074
 A04 -[#8A6D1F]- U075
 A04 -[#8A6D1F]- U076
 A04 -[#8A6D1F]- U077
-A05 --|> A03
+U072 -[#6B7683]- A06
+U072 -[#6B7683]- A07
+A05 -right-|> A03
 
 @enduml

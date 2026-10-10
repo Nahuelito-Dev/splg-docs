@@ -12,11 +12,6 @@ classDiagram
         + registrarProveedor(razonSocial: Cadena, cuit: Cadena, tipo: Cadena, datosDeContacto: Registro, plazoDePago: Entero): Proveedor
     }
 
-    class Map_String_Proveedor["Map<String, Proveedor>"] {
-        <<colección>>
-        + get(clave: Cadena): Proveedor
-    }
-
     class PurchaseOrderService {
         <<fachada>>
         + cancelarOrdenDeCompra(ordenId: Identificador, motivo: Cadena): OrdenDeCompra
@@ -52,9 +47,14 @@ classDiagram
         + buscar(proveedorId: Identificador, desde: FechaHora, hasta: FechaHora, estadoDePago: Cadena): RecepcionDeCompra[*]
     }
 
-    class Proveedor
+    class Map_String_Proveedor["Map<String, Proveedor>"] {
+        <<colección>>
+        + get(clave: Cadena): Proveedor
+    }
+
     class OrdenDeCompra
     class RecepcionDeCompra
+    class Proveedor
     class Map_String_Deposito["Map<String, Deposito>"] {
         <<colección>>
     }
@@ -63,14 +63,14 @@ classDiagram
     }
     class Distribuidora
     class Deposito
-    class Producto
     class ItemRecepcion
+    class Producto
 
-    Map_String_Proveedor "1" o-- "0..*" Proveedor : elementos
     List_OrdenDeCompra "1" o-- "0..*" OrdenDeCompra : elementos
     Map_String_OrdenDeCompra "1" o-- "0..*" OrdenDeCompra : elementos
     Map_String_RecepcionDeCompra "1" o-- "0..*" RecepcionDeCompra : elementos
     List_RecepcionDeCompra "1" o-- "0..*" RecepcionDeCompra : elementos
+    Map_String_Proveedor "1" o-- "0..*" Proveedor : elementos
     PurchaseOrderService --> "1" List_OrdenDeCompra : list<OrdenDeCompra>
     PurchaseOrderService --> "1" Map_String_OrdenDeCompra : map<String, OrdenDeCompra>
     PurchaseReceiptService --> "1" List_RecepcionDeCompra : list<RecepcionDeCompra>

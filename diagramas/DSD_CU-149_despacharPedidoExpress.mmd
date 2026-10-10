@@ -8,6 +8,7 @@ sequenceDiagram
     participant RT as :RealtimeDispatchPort
     participant CHO as chofer:Chofer
     participant NOT as :NotificationsService
+    participant REF as :RefundPaymentUseCase
 
     SIS->>+SRV: despacharPedidoExpress(pedidoId)
     SRV->>+PEDS: get(pedidoId)
@@ -19,13 +20,15 @@ sequenceDiagram
     alt Un chofer en moto elegible acepta
         SRV->>PED: ofrecerA(chofer, venceEn)
         SRV-)NOT: sendOfferPushToDriver(chofer, pedido)
-        Note over SRV,PED: Oferta y aceptación: ver DSD de ofrecerAlSiguienteChofer (CU-013) y de aceptarPedido (CU-015). Crea la OfertaDespacho
+        Note over SRV,PED: Oferta y aceptación: ver DSD de ofrecerAlSiguienteChofer (CU-013)<br/>y de aceptarPedido (CU-015). Crea la OfertaDespacho
     else Ningún chofer en moto acepta
         SRV->>+PED: pasarARepartoComun()
         PED->>PED: descontarRecargoExpress()
-        deactivate PED
+        PED-->>-SRV: recargoExpress
         opt El cliente ya pagó en línea
-            Note over SRV,PED: Reintegro: ver DSD de reintegrarPagoDelPedido (CU-168)
+            SRV->>+REF: reintegrarPagoDelPedido(pedidoId, recargoExpress)
+            REF-->>-SRV: reintegrado
+            Note over SRV,REF: Reintegro: ver DSD de reintegrarPagoDelPedido (CU-168)
         end
     end
     SRV-)NOT: sendOrderConfirmation(cliente, pedido)

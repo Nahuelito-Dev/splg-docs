@@ -99,6 +99,11 @@
     "nombre": "uploadedAt",
     "tipo": "Date",
     "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
    }
   ],
   "relaciones": [
@@ -111,6 +116,64 @@
    {
     "campo": "uploadedBy",
     "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "AuditActionType": {
+  "kind": "entity",
+  "file": "audit/entities/audit-action-type.entity.ts",
+  "tabla": "audit_action_type",
+  "atributos": [
+   {
+    "nombre": "actionTypeId",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "name",
+    "tipo": "string",
+    "nulo": false
+   }
+  ],
+  "relaciones": []
+ },
+ "AuditDetail": {
+  "kind": "entity",
+  "file": "audit/entities/audit-detail.entity.ts",
+  "tabla": "audit_detail",
+  "atributos": [
+   {
+    "nombre": "auditDetailId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "auditId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "field",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "oldValue",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "newValue",
+    "tipo": "string",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "audit",
+    "destino": "Audit",
     "tipo": "ManyToOne",
     "nulo": false
    }
@@ -209,6 +272,79 @@
     "destino": "User",
     "tipo": "ManyToOne",
     "nulo": true
+   }
+  ]
+ },
+ "Audit": {
+  "kind": "entity",
+  "file": "audit/entities/audit.entity.ts",
+  "tabla": "audit",
+  "atributos": [
+   {
+    "nombre": "auditId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "actionTypeId",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "userId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "entity",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "recordId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "ip",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "actionType",
+    "destino": "AuditActionType",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "user",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "details",
+    "destino": "AuditDetail",
+    "tipo": "OneToMany",
+    "nulo": false
    }
   ]
  },
@@ -1455,6 +1591,238 @@
    }
   ]
  },
+ "Employee": {
+  "kind": "entity",
+  "file": "employee/entities/employee.entity.ts",
+  "tabla": "employee",
+  "atributos": [
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "userId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "positionId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "fileNumber",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "firstName",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "lastName",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "documentType",
+    "tipo": "EmployeeDocumentType",
+    "nulo": false
+   },
+   {
+    "nombre": "documentNumber",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "cuil",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "birthDate",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "addressLine",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "city",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "province",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "postalCode",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "phone",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "personalEmail",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "emergencyContactName",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "emergencyContactPhone",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "emergencyContactRelationship",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "hireDate",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "terminationDate",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "terminationReason",
+    "tipo": "EmployeeTerminationReason",
+    "nulo": true
+   },
+   {
+    "nombre": "employmentType",
+    "tipo": "EmploymentType",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "EmployeeStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "bankCbu",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "user",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "position",
+    "destino": "JobPosition",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "JobPosition": {
+  "kind": "entity",
+  "file": "employee/entities/job-position.entity.ts",
+  "tabla": "job_position",
+  "atributos": [
+   {
+    "nombre": "positionId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "name",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "category",
+    "tipo": "JobPositionCategory",
+    "nulo": false
+   },
+   {
+    "nombre": "isActive",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
  "MaintenancePlan": {
   "kind": "entity",
   "file": "fleet/entities/maintenance-plan.entity.ts",
@@ -1574,6 +1942,11 @@
     "nombre": "uploadedAt",
     "tipo": "Date",
     "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
    }
   ],
   "relaciones": [
@@ -1872,6 +2245,11 @@
     "nombre": "discountPercentage",
     "tipo": "number",
     "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
    }
   ],
   "relaciones": [
@@ -2817,6 +3195,26 @@
     "nombre": "createdAt",
     "tipo": "Date",
     "nulo": false
+   },
+   {
+    "nombre": "hidden",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "hiddenReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "hiddenAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "hiddenByUserId",
+    "tipo": "string",
+    "nulo": true
    }
   ],
   "relaciones": [
@@ -2843,6 +3241,12 @@
     "destino": "User",
     "tipo": "ManyToOne",
     "nulo": false
+   },
+   {
+    "campo": "hiddenByUser",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
    }
   ]
  },
@@ -2870,6 +3274,11 @@
     "nombre": "updatedAt",
     "tipo": "Date",
     "nulo": true
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
    }
   ],
   "relaciones": [
@@ -2883,7 +3292,7 @@
  },
  "StorageOrphan": {
   "kind": "entity",
-  "file": "storage/entities/storage-orphan.entity.ts",
+  "file": "s3/entities/storage-orphan.entity.ts",
   "tabla": "storage_orphan",
   "atributos": [
    {
@@ -3247,6 +3656,14 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<AdminResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -3323,6 +3740,14 @@
     "abstracto": false
    },
    {
+    "nombre": "findDetail",
+    "parametros": "id: string, distributorId: string | null = null",
+    "retorno": "Promise<Admin>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findOneByEmail",
     "parametros": "email: string",
     "retorno": "Promise<Admin>",
@@ -3360,7 +3785,7 @@
    },
    {
     "nombre": "download",
-    "parametros": "@Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser, @Req() req: Request, @Res() res: Response",
+    "parametros": "@Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser, @Res() res: Response",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -3427,7 +3852,7 @@
    {
     "nombre": "getDownload",
     "parametros": "attachmentId: string, distributorId: string, actor: AttachmentActor",
-    "retorno": "Promise<AttachmentDownload>",
+    "retorno": "Promise<string>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -3435,7 +3860,7 @@
    {
     "nombre": "getSignedDownload",
     "parametros": "attachmentId: string, distributorId: string, actor: AttachmentActor",
-    "retorno": "Promise<SignedDownload | null>",
+    "retorno": "Promise<SignedDownload>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -3476,8 +3901,8 @@
   "dependencias": [
    "Repository",
    "AttachmentOwnerRegistry",
-   "StoragePort",
-   "StorageCleanupService"
+   "S3Service",
+   "S3CleanupService"
   ],
   "estereotipo": null
  },
@@ -3582,6 +4007,190 @@
    "Repository"
   ],
   "estereotipo": null
+ },
+ "AuditContextInterceptor": {
+  "kind": "interceptor",
+  "file": "audit/data/audit-context.interceptor.ts",
+  "metodos": [
+   {
+    "nombre": "intercept",
+    "parametros": "context: ExecutionContext, next: CallHandler",
+    "retorno": "Observable<unknown>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "interceptor"
+ },
+ "DataAuditController": {
+  "kind": "controller",
+  "file": "audit/data/data-audit.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() filtros: QueryAuditEntriesDto, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<AuditEntriesPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<AuditEntryDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findActionTypes",
+    "parametros": "",
+    "retorno": "Promise<AuditActionTypeDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataAuditService"
+  ],
+  "estereotipo": "controller"
+ },
+ "DataAuditMapper": {
+  "kind": "mapper",
+  "file": "audit/data/data-audit.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "actionTypeToDto",
+    "parametros": "t: AuditActionType",
+    "retorno": "AuditActionTypeDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "detailToDto",
+    "parametros": "d: AuditDetail",
+    "retorno": "AuditDetailDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "toDto",
+    "parametros": "a: Audit, details: AuditDetail[]",
+    "retorno": "AuditEntryDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "DataAuditService": {
+  "kind": "service",
+  "file": "audit/data/data-audit.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "filtros: QueryAuditEntriesDto, distributorId: string | null",
+    "retorno": "Promise<AuditEntriesPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "auditId: string, distributorId: string | null",
+    "retorno": "Promise<AuditEntryDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findActionTypes",
+    "parametros": "",
+    "retorno": "Promise<AuditActionTypeDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "detailsOf",
+    "parametros": "auditIds: string[]",
+    "retorno": "Promise<Map<string, AuditDetail[]>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository",
+   "Repository"
+  ],
+  "estereotipo": null
+ },
+ "DataAuditSubscriber": {
+  "kind": "listener",
+  "file": "audit/data/data-audit.subscriber.ts",
+  "metodos": [
+   {
+    "nombre": "afterInsert",
+    "parametros": "event: InsertEvent<ObjectLiteral>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "afterUpdate",
+    "parametros": "event: UpdateEvent<ObjectLiteral>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "afterSoftRemove",
+    "parametros": "event: SoftRemoveEvent<ObjectLiteral>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "afterRecover",
+    "parametros": "event: RecoverEvent<ObjectLiteral>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "afterRemove",
+    "parametros": "event: RemoveEvent<ObjectLiteral>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrar",
+    "parametros": "manager: EntityManager, metadata: EntityMetadata, entidad: ObjectLiteral, actionTypeId: AuditActionTypeId, details: CambioDeCampo[], recordIdAlternativo?: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": "listener"
  },
  "AuthController": {
   "kind": "controller",
@@ -3967,7 +4576,7 @@
    },
    {
     "nombre": "liberarSiTieneUno",
-    "parametros": "deliveryId: string, manager: EntityManager",
+    "parametros": "deliveryId: string, manager: EntityManager, opciones: { motivo?: string; actorUserId?: string } = {}",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -4077,6 +4686,22 @@
     "abstracto": false
    },
    {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<ClaimResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() body: UpdateClaimDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<ClaimResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "resolve",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() body: ResolveClaimDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<ClaimResponseDto>",
@@ -4167,6 +4792,22 @@
     "abstracto": false
    },
    {
+    "nombre": "findDetail",
+    "parametros": "id: string, distributorId?: string | null",
+    "retorno": "Promise<Claim>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateClaimDto, distributorId?: string | null",
+    "retorno": "Promise<Claim>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "modificar",
     "parametros": "id: string, distributorId: string | null | undefined, aplicar: (claim: Claim, manager: EntityManager) => void | Promise<void>",
     "retorno": "Promise<Claim>",
@@ -4225,7 +4866,7 @@
    {
     "nombre": "getPhotoFile",
     "parametros": "id: string, distributorId: string | null, actor: ClaimActor",
-    "retorno": "Promise<ClaimPhotoFile>",
+    "retorno": "Promise<string>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -4250,8 +4891,8 @@
   "dependencias": [
    "Repository",
    "OrderService",
-   "StoragePort",
-   "StorageCleanupService"
+   "S3Service",
+   "S3CleanupService"
   ],
   "estereotipo": null
  },
@@ -4810,6 +5451,22 @@
     "abstracto": false
    },
    {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCylinderDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CylinderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "retire",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: RetireCylinderDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<CylinderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "transition",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: TransitionCylinderDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser",
     "retorno": "Promise<CylinderResponseDto>",
@@ -4892,6 +5549,30 @@
     "abstracto": false
    },
    {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<Cylinder>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateCylinderDto, distributorId: string",
+    "retorno": "Promise<Cylinder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "retire",
+    "parametros": "id: string, reason: string, distributorId: string, actorUserId?: string",
+    "retorno": "Promise<Cylinder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "assignToOrder",
     "parametros": "orderId: string, serials: string[], distributorId: string, actorUserId?: string",
     "retorno": "Promise<Cylinder[]>",
@@ -4909,7 +5590,7 @@
    },
    {
     "nombre": "recordTransition",
-    "parametros": "cylinder: Cylinder, toState: CylinderState, ctx: { orderId?: string | null; actorUserId?: string | null; note?: string | null; customerId?: string | null; }",
+    "parametros": "cylinder: Cylinder, toState: CylinderState, ctx: { orderId?: string | null; actorUserId?: string | null; note?: string | null; customerId?: string | null; }, manager?: EntityManager",
     "retorno": "Promise<Cylinder>",
     "visibilidad": "-",
     "estatico": false,
@@ -4927,7 +5608,8 @@
   "dependencias": [
    "Repository",
    "Repository",
-   "OrderLookupService"
+   "OrderLookupService",
+   "GasCylinderService"
   ],
   "estereotipo": null
  },
@@ -5285,6 +5967,30 @@
     "nombre": "toggleActiveStatus",
     "parametros": "id: string, isEnabled: boolean",
     "retorno": "Promise<Delivery>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findByUserIdEnTransaccion",
+    "parametros": "manager: EntityManager, userId: string",
+    "retorno": "Promise<Delivery | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "deshabilitarEnTransaccion",
+    "parametros": "manager: EntityManager, deliveryId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitarDelRadar",
+    "parametros": "userId: string",
+    "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -5686,6 +6392,516 @@
   "dependencias": [],
   "estereotipo": "interface"
  },
+ "TerminateEmployeeUseCase": {
+  "kind": "usecase",
+  "file": "employee/application/terminate-employee.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, dto: TerminateEmployeeDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "EmployeeService",
+   "UsersService",
+   "DeliveryService",
+   "VehicleAssignmentService",
+   "OrderLookupService",
+   "EmployeeRulesRegistry"
+  ],
+  "estereotipo": "usecase"
+ },
+ "EmployeeUserRemovedListener": {
+  "kind": "listener",
+  "file": "employee/employee-user-removed.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: UsuarioDadoDeBajaEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "EmployeeService"
+  ],
+  "estereotipo": "listener"
+ },
+ "EmployeeController": {
+  "kind": "controller",
+  "file": "employee/employee.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateEmployeeDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryEmployeeDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeePageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateEmployeeDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "terminateEmployee",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: TerminateEmployeeDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reinstate",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReinstateEmployeeDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "EmployeeService",
+   "TerminateEmployeeUseCase"
+  ],
+  "estereotipo": "controller"
+ },
+ "JobPositionMapper": {
+  "kind": "mapper",
+  "file": "employee/employee.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "puesto: JobPosition, activeEmployees: number",
+    "retorno": "JobPositionResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "EmployeeMapper": {
+  "kind": "mapper",
+  "file": "employee/employee.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toListItem",
+    "parametros": "empleado: EmployeeConPuesto",
+    "retorno": "EmployeeListItemDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "toDto",
+    "parametros": "empleado: EmployeeConPuesto, deliveryId: string | null",
+    "retorno": "EmployeeResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "llenarFila",
+    "parametros": "dto: T, empleado: EmployeeConPuesto",
+    "retorno": "T",
+    "visibilidad": "-",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "EmployeeService": {
+  "kind": "service",
+  "file": "employee/employee.service.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "dto: CreateEmployeeDto, distributorId: string",
+    "retorno": "Promise<EmployeeConPuesto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "crearParaUsuario",
+    "parametros": "manager: EntityManager, datos: EmpleadoParaUsuarioNuevo",
+    "retorno": "Promise<Employee>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vincularUsuario",
+    "parametros": "manager: EntityManager, datos: { employeeId: string; userId: string; distributorId: string; rol: RoleType; }",
+    "retorno": "Promise<Employee>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "query: QueryEmployeeDto, distributorId: string",
+    "retorno": "Promise<Pagina<EmployeeConPuesto>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOneDetallado",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateEmployeeDto, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reinstate",
+    "parametros": "id: string, dto: ReinstateEmployeeDto, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "egresarPorBajaDeUsuario",
+    "parametros": "manager: EntityManager, userId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<EmployeeConPuesto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<Employee>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "deliveryIdDe",
+    "parametros": "empleado: Employee",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "siguienteLegajo",
+    "parametros": "manager: EntityManager, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertUnicos",
+    "parametros": "manager: EntityManager, distributorId: string, datos: { documentNumber?: string; cuil?: string | null; fileNumber?: string; }, excluirId?: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertPuestoCompatibleConLaCuenta",
+    "parametros": "manager: EntityManager, empleado: Employee, positionId: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "valoresVacios",
+    "parametros": "",
+    "retorno": "Partial<Employee>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource",
+   "JobPositionService",
+   "DocumentSequenceService",
+   "DeliveryService",
+   "UsersService",
+   "EmployeeRulesRegistry"
+  ],
+  "estereotipo": null
+ },
+ "JobPositionSeedListener": {
+  "kind": "listener",
+  "file": "employee/job-position-seed.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: DistribuidoraCreadaEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "JobPositionService"
+  ],
+  "estereotipo": "listener"
+ },
+ "JobPositionController": {
+  "kind": "controller",
+  "file": "employee/job-position.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<JobPositionResponseDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateJobPositionDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<JobPositionResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateJobPositionDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<JobPositionResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "JobPositionService"
+  ],
+  "estereotipo": "controller"
+ },
+ "JobPositionService": {
+  "kind": "service",
+  "file": "employee/job-position.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<PuestoConConteo[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "dto: CreateJobPositionDto, distributorId: string",
+    "retorno": "Promise<PuestoConConteo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateJobPositionDto, distributorId: string",
+    "retorno": "Promise<PuestoConConteo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearPuestos",
+    "parametros": "manager: EntityManager, distributorId: string, id: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enTransaccion",
+    "parametros": "fn: (manager: EntityManager) => Promise<T>",
+    "retorno": "Promise<T>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vigente",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<JobPosition>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<JobPosition>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAsignable",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<JobPosition>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "puestoPorDefecto",
+    "parametros": "manager: EntityManager, distributorId: string, categorias: JobPositionCategory[]",
+    "retorno": "Promise<JobPosition>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "sembrarBase",
+    "parametros": "distributorId: string, manager?: EntityManager",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "puesto: JobPosition",
+    "retorno": "Promise<JobPosition>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertNoEsElUltimoActivo",
+    "parametros": "manager: EntityManager, puesto: JobPosition",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertCategoriaCompatibleConLasCuentas",
+    "parametros": "manager: EntityManager, puesto: JobPosition, categoria: JobPositionCategory",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertNombreDisponible",
+    "parametros": "distributorId: string, nombre: string, excluirId?: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contarActivos",
+    "parametros": "positionId: string",
+    "retorno": "Promise<number>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contarActivosPorPuesto",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<Map<string, number>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository",
+   "UsersService",
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
  "FcmAdapter": {
   "kind": "service",
   "file": "firebase/infrastructure/fcm.adapter.ts",
@@ -6001,7 +7217,7 @@
    {
     "nombre": "getDownload",
     "parametros": "taskId: string, attachmentId: string, distributorId: string",
-    "retorno": "Promise<FleetAttachmentDownload>",
+    "retorno": "Promise<string>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -6009,7 +7225,7 @@
    {
     "nombre": "getSignedDownload",
     "parametros": "taskId: string, attachmentId: string, distributorId: string",
-    "retorno": "Promise<SignedDownload | null>",
+    "retorno": "Promise<SignedDownload>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -6034,8 +7250,8 @@
   "dependencias": [
    "Repository",
    "FleetTaskService",
-   "StoragePort",
-   "StorageCleanupService"
+   "S3Service",
+   "S3CleanupService"
   ],
   "estereotipo": null
  },
@@ -6371,7 +7587,7 @@
    },
    {
     "nombre": "downloadAttachment",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @Req() req: Request, @Res() res: Response",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @Res() res: Response",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -6741,6 +7957,14 @@
     "abstracto": false
    },
    {
+    "nombre": "bloquearEnOrden",
+    "parametros": "manager: EntityManager, gasCylinderIds: string[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "bloquear",
     "parametros": "manager: EntityManager, gasCylinderId: string",
     "retorno": "Promise<GasCylinder | null>",
@@ -7029,6 +8253,22 @@
     "abstracto": false
    },
    {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<IncidentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateIncidentDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<IncidentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "resolve",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ResolveIncidentDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<IncidentResponseDto>",
@@ -7089,6 +8329,22 @@
    {
     "nombre": "findOne",
     "parametros": "id: string, distributorId?: string | null",
+    "retorno": "Promise<Incident>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findDetail",
+    "parametros": "id: string, distributorId?: string | null",
+    "retorno": "Promise<Incident>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateIncidentDto, distributorId?: string | null",
     "retorno": "Promise<Incident>",
     "visibilidad": "+",
     "estatico": false,
@@ -7323,6 +8579,30 @@
     "nombre": "execute",
     "parametros": "createOrderDto: CreateOrderDto, distributorId?: string | null",
     "retorno": "Promise<CreateOrderResult>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolverZona",
+    "parametros": "distributorId: string | null | undefined, address: { location?: Point | null }",
+    "retorno": "Promise<CoverageZoneResumenDto | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reservarRenglones",
+    "parametros": "manager: EntityManager, items: Array<{ gasCylinderId: string; quantity: number }>, distributorId: string | null | undefined",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "calcularTotales",
+    "parametros": "subtotalItems: Decimal.Value, coverageZone: ZonaParaRecargo | null, paymentMethod: PaymentMethod",
+    "retorno": "",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -7684,6 +8964,47 @@
   ],
   "estereotipo": "usecase"
  },
+ "UpdateOrderUseCase": {
+  "kind": "usecase",
+  "file": "order/application/update-order.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "orderId: string, dto: UpdateOrderDto, actorUserId: string, distributorId: string | null",
+    "retorno": "Promise<Order>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertEditable",
+    "parametros": "order: Order, dto: UpdateOrderDto",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "zonaGuardada",
+    "parametros": "order: Order",
+    "retorno": "ZonaParaRecargo | null",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "CreateOrderUseCase",
+   "UserAddressService",
+   "TimeSlotService",
+   "GasCylinderService",
+   "OrderRepositoryPort",
+   "RealtimeDispatchPort",
+   "DispatchOrchestratorService"
+  ],
+  "estereotipo": "usecase"
+ },
  "DispatchService": {
   "kind": "service",
   "file": "order/dispatch.service.ts",
@@ -7774,7 +9095,7 @@
    },
    {
     "nombre": "findDriverOfferState",
-    "parametros": "orderId: string, now: Date, cooldownMs: number",
+    "parametros": "orderId: string, now: Date, cooldownMs: number, maxReofertas: number",
     "retorno": "Promise<DriverOfferState>",
     "visibilidad": "+",
     "estatico": false,
@@ -8032,7 +9353,7 @@
    },
    {
     "nombre": "findDriverOfferState",
-    "parametros": "orderId: string, now: Date, cooldownMs: number",
+    "parametros": "orderId: string, now: Date, cooldownMs: number, maxReofertas: number",
     "retorno": "Promise<DriverOfferState>",
     "visibilidad": "+",
     "estatico": false,
@@ -8298,6 +9619,14 @@
     "abstracto": false
    },
    {
+    "nombre": "maxBookedFrom",
+    "parametros": "timeSlotId: string, desdeFecha: string, manager: EntityManager",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "countActiveByDelivery",
     "parametros": "deliveryId: string, manager?: EntityManager",
     "retorno": "Promise<number>",
@@ -8444,6 +9773,14 @@
     "abstracto": false
    },
    {
+    "nombre": "update",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateOrderDto, @CurrentDistributor() distributorId: string | null",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "cancelOrder",
     "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
     "retorno": null,
@@ -8486,7 +9823,8 @@
   ],
   "dependencias": [
    "OrderService",
-   "ReservationService"
+   "ReservationService",
+   "UpdateOrderUseCase"
   ],
   "estereotipo": "controller"
  },
@@ -8892,6 +10230,30 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<RatingResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "hide",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ModerateRatingDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<RatingResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "unhide",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ModerateRatingDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<RatingResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -8932,6 +10294,38 @@
     "parametros": "toUserId: string, distributorId?: string | null",
     "retorno": "Promise<RatingSummaryDto>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId?: string | null",
+    "retorno": "Promise<Rating>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "hide",
+    "parametros": "id: string, reason: string, actorUserId: string, distributorId: string",
+    "retorno": "Promise<Rating>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "unhide",
+    "parametros": "id: string, reason: string, distributorId: string",
+    "retorno": "Promise<Rating>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardarModerada",
+    "parametros": "rating: Rating",
+    "retorno": "Promise<Rating>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -9105,6 +10499,43 @@
   ],
   "estereotipo": null
  },
+ "EmployeeAccountController": {
+  "kind": "controller",
+  "file": "registro/employee-account.controller.ts",
+  "metodos": [
+   {
+    "nombre": "grantAccount",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: GrantEmployeeAccountDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() usuario: AuthenticatedUser",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "GrantEmployeeAccountUseCase"
+  ],
+  "estereotipo": "controller"
+ },
+ "GrantEmployeeAccountUseCase": {
+  "kind": "usecase",
+  "file": "registro/grant-employee-account.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "employeeId: string, dto: GrantEmployeeAccountDto, distributorId: string, solicitante: Solicitante",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "EmployeeService",
+   "RegistroService"
+  ],
+  "estereotipo": "usecase"
+ },
  "RegistroController": {
   "kind": "controller",
   "file": "registro/registro.controller.ts",
@@ -9160,6 +10591,14 @@
     "abstracto": false
    },
    {
+    "nombre": "legajoDelUsuario",
+    "parametros": "manager: EntityManager, userId: string, distributorId: string, alta: AltaAutorizada, datos: RegistrarUsuarioDto",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "distribuidoraDe",
     "parametros": "alta: AltaAutorizada",
     "retorno": "string",
@@ -9177,6 +10616,7 @@
    "DeliveryService",
    "AdminService",
    "DistributorService",
+   "EmployeeService",
    "EventEmitter2"
   ],
   "estereotipo": null
@@ -9438,173 +10878,9 @@
   ],
   "estereotipo": null
  },
- "LocalDiskStorageAdapter": {
+ "S3CleanupService": {
   "kind": "service",
-  "file": "storage/infrastructure/local-disk-storage.adapter.ts",
-  "metodos": [
-   {
-    "nombre": "put",
-    "parametros": "{ key, body, contentType }: StorageObjectInput",
-    "retorno": "Promise<void>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "remove",
-    "parametros": "key: string",
-    "retorno": "Promise<void>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "getSignedDownload",
-    "parametros": "_key: string",
-    "retorno": "Promise<SignedDownload | null>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "getStream",
-    "parametros": "key: string",
-    "retorno": "Promise<StorageObjectStream>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "readContentType",
-    "parametros": "filePath: string",
-    "retorno": "Promise<string | null>",
-    "visibilidad": "-",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "metaPath",
-    "parametros": "filePath: string",
-    "retorno": "string",
-    "visibilidad": "-",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "resolveKey",
-    "parametros": "key: string",
-    "retorno": "string",
-    "visibilidad": "-",
-    "estatico": false,
-    "abstracto": false
-   }
-  ],
-  "dependencias": [
-   "ConfigService"
-  ],
-  "estereotipo": null
- },
- "S3StorageAdapter": {
-  "kind": "service",
-  "file": "storage/infrastructure/s3-storage.adapter.ts",
-  "metodos": [
-   {
-    "nombre": "put",
-    "parametros": "{ key, body, contentType }: StorageObjectInput",
-    "retorno": "Promise<void>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "remove",
-    "parametros": "key: string",
-    "retorno": "Promise<void>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "getSignedDownload",
-    "parametros": "key: string, options?: { fileName?: string }",
-    "retorno": "Promise<SignedDownload | null>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "getStream",
-    "parametros": "key: string",
-    "retorno": "Promise<StorageObjectStream>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "esLegible",
-    "parametros": "body: unknown",
-    "retorno": "body is Readable",
-    "visibilidad": "-",
-    "estatico": false,
-    "abstracto": false
-   }
-  ],
-  "dependencias": [
-   "ConfigService"
-  ],
-  "estereotipo": null
- },
- "StoragePort": {
-  "kind": "port",
-  "file": "storage/ports/storage.port.ts",
-  "metodos": [
-   {
-    "nombre": "put",
-    "parametros": "input: StorageObjectInput",
-    "retorno": "Promise<void>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": true
-   },
-   {
-    "nombre": "remove",
-    "parametros": "key: string",
-    "retorno": "Promise<void>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": true
-   },
-   {
-    "nombre": "getSignedDownload",
-    "parametros": "key: string, options?: { fileName?: string }",
-    "retorno": "Promise<SignedDownload | null>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": true
-   },
-   {
-    "nombre": "getDownloadUrl",
-    "parametros": "key: string, options?: { fileName?: string }",
-    "retorno": "Promise<string | null>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": false
-   },
-   {
-    "nombre": "getStream",
-    "parametros": "key: string",
-    "retorno": "Promise<StorageObjectStream>",
-    "visibilidad": "+",
-    "estatico": false,
-    "abstracto": true
-   }
-  ],
-  "dependencias": [],
-  "estereotipo": "interface"
- },
- "StorageCleanupService": {
-  "kind": "service",
-  "file": "storage/storage-cleanup.service.ts",
+  "file": "s3/s3-cleanup.service.ts",
   "metodos": [
    {
     "nombre": "reserveUpload",
@@ -9688,8 +10964,42 @@
    }
   ],
   "dependencias": [
-   "StoragePort",
+   "S3Service",
    "Repository"
+  ],
+  "estereotipo": null
+ },
+ "S3Service": {
+  "kind": "service",
+  "file": "s3/s3.service.ts",
+  "metodos": [
+   {
+    "nombre": "put",
+    "parametros": "{ key, body, contentType }: S3ObjectInput",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "key: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getSignedDownload",
+    "parametros": "key: string, options?: { fileName?: string }",
+    "retorno": "Promise<SignedDownload>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ConfigService"
   ],
   "estereotipo": null
  },
@@ -9724,6 +11034,14 @@
    {
     "nombre": "findOne",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<TimeSlotResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateTimeSlotDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<TimeSlotResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -9796,6 +11114,14 @@
     "abstracto": false
    },
    {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateTimeSlotDto, distributorId: string",
+    "retorno": "Promise<TimeSlot>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "remove",
     "parametros": "id: string, distributorId: string",
     "retorno": "Promise<TimeSlot>",
@@ -9822,6 +11148,14 @@
    {
     "nombre": "assertSlotAvailable",
     "parametros": "timeSlotId: string, date: string, distributorId?: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertSlotUsableTx",
+    "parametros": "manager: EntityManager, timeSlotId: string, distributorId?: string | null",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -10338,6 +11672,22 @@
     "nombre": "findOneByFirebaseUid",
     "parametros": "firebaseUid: string",
     "retorno": "Promise<User>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findRoleTypes",
+    "parametros": "userIds: string[]",
+    "retorno": "Promise<Map<string, string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearEnTransaccion",
+    "parametros": "manager: EntityManager, userId: string",
+    "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false

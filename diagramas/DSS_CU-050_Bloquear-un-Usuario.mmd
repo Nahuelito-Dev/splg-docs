@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-050 Bloquear un Usuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: bloquearUsuario(usuarioId, bloquear)
+    activate SIS
+    alt el usuario existe
+        SIS-->>ADM: usuario bloqueado
+    else el usuario no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: bloquear = verdadero. La misma operación, con bloquear = falso, es CU-270

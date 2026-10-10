@@ -63,8 +63,8 @@ skinparam ranksep 90
 class "Map<String, Usuario>" as Map_String_Usuario <<colección>> {
   + contiene(clave: Cadena): Booleano
   + get(clave: Cadena): Usuario
-  + verificarDisponibilidad(correoNuevo: Cadena)
-  + verificarDisponibilidad(correo: Cadena, telefono: Cadena)
+  + verificarDisponibilidad(correoNuevo: Cadena): Booleano
+  + verificarDisponibilidad(correo: Cadena,\n      telefono: Cadena): Booleano
 }
 class UsersService <<fachada>> {
   + actualizarPerfil(usuario: Usuario,\n      datos: Registro): Usuario
@@ -82,17 +82,17 @@ class "List<Usuario>" as List_Usuario <<colección>> {
 class RoleService <<fachada>> {
   + actualizarRol(rolId: Identificador, datos: Registro): Rol
   + crearRol(tipo: Cadena): Rol
-  + eliminarRol(rolId: Identificador): Cadena
+  + eliminarRol(rolId: Identificador)
   + listarRoles(): Rol[*]
   + sembrarRolesIniciales(): Cadena
+}
+class "List<Rol>" as List_Rol <<colección>> {
+  + listar(): Rol[*]
 }
 class "Map<String, Rol>" as Map_String_Rol <<colección>> {
   + contiene(clave: Cadena): Booleano
   + get(clave: Cadena): Rol
   + remove(clave: Cadena)
-}
-class "List<Rol>" as List_Rol <<colección>> {
-  + listar(): Rol[*]
 }
 class "List<Administrador>" as List_Administrador <<colección>> {
   + existeAdministradorGeneral(): Booleano
@@ -112,31 +112,45 @@ class AuditService <<fachada>> {
 class "List<AsientoAuditoria>" as List_AsientoAuditoria <<colección>> {
   + filtrar(autor: Usuario, tipoDeRecurso: Cadena,\n      recurso: Cadena, desde: FechaHora,\n      hasta: FechaHora, resultado: Cadena,\n      limite: Entero,\n      desplazamiento: Entero): AsientoAuditoria[*]
 }
+class DataAuditService <<fachada>> {
+  + consultarAuditoriaDeDatos(entidad: Cadena,\n      registro: Cadena, autor: Identificador,\n      tipoDeAccion: Entero, desde: FechaHora,\n      hasta: FechaHora, pagina: Entero, limite: Entero,\n      out total: Entero): Auditoria[*]
+}
+class "List<Auditoria>" as List_Auditoria <<colección>> {
+  + filtrar(entidad: Cadena, registro: Cadena,\n      autor: Usuario, tipoDeAccion: Entero,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      limite: Entero): Auditoria[*]
+}
+class DataAuditSubscriber <<fachada>> {
+  + registrarAuditoriaDeDato(autor: Identificador,\n      ip: Cadena, distribuidoraId: Identificador,\n      entidad: Cadena, registro: Cadena,\n      tipoDeAccion: Entero, detalles: Lista)
+}
 class Usuario <<referencia>>
 class Administrador <<referencia>>
 class Rol <<referencia>>
 class AsientoAuditoria <<referencia>>
+class Auditoria <<referencia>>
 class FirebaseAuthPort <<referencia>>
-class UbicacionGPS <<referencia>>
 class Chofer <<referencia>>
+class UbicacionGPS <<referencia>>
 
 Map_String_Usuario "1" o--> "0..*" Usuario
 List_Usuario "1" o--> "0..*" Usuario
 List_Administrador "1" o--> "0..*" Administrador
 Map_String_Administrador "1" o--> "0..*" Administrador
-Map_String_Rol "1" o--> "0..*" Rol
 List_Rol "1" o--> "0..*" Rol
+Map_String_Rol "1" o--> "0..*" Rol
 List_AsientoAuditoria "1" o--> "0..*" AsientoAuditoria
+List_Auditoria "1" o--> "0..*" Auditoria
 AdminService --> "1" List_Administrador
 AdminService --> "1" Map_String_Administrador
 AuditService --> "1" List_AsientoAuditoria
+DataAuditService --> "1" List_Auditoria
 RoleService --> "1" List_Rol
 RoleService --> "1" Map_String_Rol
 UsersService --> "1" FirebaseAuthPort
 UsersService --> "1" List_Usuario
 UsersService --> "1" Map_String_Usuario
-AuditService ..> AsientoAuditoria : <<create>>
-RoleService ..> Rol : <<create>>
+AuditService ..> "<<create>>" AsientoAuditoria
+DataAuditService ..> Auditoria
+DataAuditSubscriber ..> "<<create>>" Auditoria
+RoleService ..> "<<create>>" Rol
 UsersService ..> Chofer
 UsersService ..> UbicacionGPS
 UsersService ..> Usuario

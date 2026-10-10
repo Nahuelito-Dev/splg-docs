@@ -31,11 +31,6 @@ CREATE TYPE "customer_entry_type_enum" AS ENUM ('sale_charge', 'payment', 'credi
 CREATE TYPE "commission_basis_enum" AS ENUM ('per_unit', 'per_order', 'percent_of_total');
 CREATE TYPE "commission_entry_type_enum" AS ENUM ('delivery_commission', 'settlement_shortage', 'traffic_fine', 'adjustment', 'legacy_balance', 'carry_forward');
 CREATE TYPE "driver_liquidation_status_enum" AS ENUM ('draft', 'approved', 'paid', 'closed', 'voided');
-CREATE TYPE "job_position_category_enum" AS ENUM ('driver', 'helper', 'warehouse', 'administration', 'sales', 'management', 'other');
-CREATE TYPE "employee_document_type_enum" AS ENUM ('dni', 'passport', 'other');
-CREATE TYPE "employee_termination_reason_enum" AS ENUM ('resignation', 'dismissal', 'end_of_contract', 'retirement', 'other');
-CREATE TYPE "employment_type_enum" AS ENUM ('permanent', 'fixed_term', 'part_time', 'contractor');
-CREATE TYPE "employee_status_enum" AS ENUM ('active', 'terminated');
 CREATE TYPE "attendance_source_enum" AS ENUM ('panel', 'driver_app');
 CREATE TYPE "employee_leave_type_enum" AS ENUM ('vacation', 'sick', 'work_accident', 'study', 'marriage', 'birth', 'bereavement', 'unpaid', 'suspension', 'unjustified_absence', 'other');
 CREATE TYPE "employee_leave_status_enum" AS ENUM ('requested', 'approved', 'rejected', 'cancelled');
@@ -465,53 +460,6 @@ ALTER TABLE "maintenance_plan" ADD COLUMN IF NOT EXISTS "applies_to_categories" 
 ALTER TABLE "maintenance_task" ADD COLUMN IF NOT EXISTS "employee_id" uuid;
 ALTER TABLE "maintenance_task" ADD COLUMN IF NOT EXISTS "valid_from" timestamptz;
 ALTER TABLE "maintenance_task" ADD COLUMN IF NOT EXISTS "details" jsonb;
-CREATE TABLE IF NOT EXISTS "job_position" (
-  "position_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "distributor_id" uuid NOT NULL,
-  "name" varchar(80) NOT NULL,
-  "category" job_position_category_enum NOT NULL,
-  "is_active" boolean NOT NULL DEFAULT true,
-  "createdAt" timestamptz NOT NULL DEFAULT now(),
-  "updatedAt" timestamptz NOT NULL DEFAULT now(),
-  "deletedAt" timestamptz,
-  CONSTRAINT "PK_job_position" PRIMARY KEY ("position_id")
-);
-CREATE TABLE IF NOT EXISTS "employee" (
-  "employee_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "distributor_id" uuid NOT NULL,
-  "user_id" uuid,
-  "position_id" uuid NOT NULL,
-  "file_number" varchar(20) NOT NULL,
-  "first_name" varchar(80) NOT NULL,
-  "last_name" varchar(80) NOT NULL,
-  "document_type" employee_document_type_enum NOT NULL,
-  "document_number" varchar(20) NOT NULL,
-  "cuil" varchar(11),
-  "birth_date" date,
-  "address_line" varchar(200),
-  "city" varchar(80),
-  "province" varchar(80),
-  "postal_code" varchar(10),
-  "phone" varchar(30),
-  "personal_email" varchar(120),
-  "emergency_contact_name" varchar(120),
-  "emergency_contact_phone" varchar(30),
-  "emergency_contact_relationship" varchar(40),
-  "hire_date" date NOT NULL,
-  "termination_date" date,
-  "termination_reason" employee_termination_reason_enum,
-  "employment_type" employment_type_enum NOT NULL,
-  "status" employee_status_enum NOT NULL DEFAULT 'active',
-  "bank_cbu" varchar(22),
-  "notes" text,
-  "createdAt" timestamptz NOT NULL DEFAULT now(),
-  "updatedAt" timestamptz NOT NULL DEFAULT now(),
-  "deletedAt" timestamptz,
-  CONSTRAINT "PK_employee" PRIMARY KEY ("employee_id"),
-  CONSTRAINT "UQ_employee_user_id" UNIQUE ("user_id"),
-  CONSTRAINT "UQ_employee_distributor_id_file_number" UNIQUE ("distributor_id", "file_number"),
-  CONSTRAINT "UQ_employee_distributor_id_document_number" UNIQUE ("distributor_id", "document_number")
-);
 CREATE TABLE IF NOT EXISTS "employee_attendance" (
   "attendance_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
   "distributor_id" uuid NOT NULL,
@@ -654,7 +602,6 @@ CREATE TABLE IF NOT EXISTS "tire_event" (
 -- ---------- claves foráneas de lo propuesto ----------
 ALTER TABLE "cash_box" ADD CONSTRAINT "FK_cash_box_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "cash_category" ADD CONSTRAINT "FK_cash_category_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
-ALTER TABLE "job_position" ADD CONSTRAINT "FK_job_position_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "supplier" ADD CONSTRAINT "FK_supplier_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "warehouse" ADD CONSTRAINT "FK_warehouse_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "cash_session" ADD CONSTRAINT "FK_cash_session_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
@@ -663,9 +610,6 @@ ALTER TABLE "cash_session" ADD CONSTRAINT "FK_cash_session_opened_by_user_id" FO
 ALTER TABLE "cash_session" ADD CONSTRAINT "FK_cash_session_closed_by_user_id" FOREIGN KEY ("closed_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
 ALTER TABLE "customer_account" ADD CONSTRAINT "FK_customer_account_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "customer_account" ADD CONSTRAINT "FK_customer_account_customer_user_id" FOREIGN KEY ("customer_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
-ALTER TABLE "employee" ADD CONSTRAINT "FK_employee_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
-ALTER TABLE "employee" ADD CONSTRAINT "FK_employee_user_id" FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL;
-ALTER TABLE "employee" ADD CONSTRAINT "FK_employee_position_id" FOREIGN KEY ("position_id") REFERENCES "job_position" ("position_id") ON DELETE RESTRICT;
 ALTER TABLE "purchase_order" ADD CONSTRAINT "FK_purchase_order_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "purchase_order" ADD CONSTRAINT "FK_purchase_order_supplier_id" FOREIGN KEY ("supplier_id") REFERENCES "supplier" ("supplier_id") ON DELETE RESTRICT;
 ALTER TABLE "purchase_order" ADD CONSTRAINT "FK_purchase_order_destination_warehouse_id" FOREIGN KEY ("destination_warehouse_id") REFERENCES "warehouse" ("warehouse_id") ON DELETE RESTRICT;

@@ -43,6 +43,9 @@ class Rol
 class Administrador
 class ConfiguracionModulo
 class AsientoAuditoria
+class Auditoria
+class DetalleAuditoria
+class TipoAccionAuditoria
 class Cliente
 class DireccionEntrega
 class InvitacionRecompra
@@ -127,158 +130,161 @@ PropuestaConVigencia <|-- PropuestaVentanaTaller
 PropuestaConVigencia <|-- InvitacionRecompra
 PropuestaConVigencia <|-- AvisoRecupero
 
-Usuario -- Rol
-Distribuidora -- Chofer
-Distribuidora -- Administrador
-Distribuidora -- Empleado
-Distribuidora *-- PuestoDeTrabajo
-Distribuidora -- Producto
-Distribuidora -- Envase
-Distribuidora -- Pedido
-Distribuidora *-- ZonaCobertura
-Distribuidora *-- FranjaHoraria
-Distribuidora *-- ConfiguracionModulo
-Usuario -- AsientoAuditoria
-Cliente *-- DireccionEntrega
-Cliente -- Pedido
-Cliente *-- Carrito
-Cliente -- InvitacionRecompra
-Cliente -- Producto
-InvitacionRecompra -- Pedido
-InvitacionRecompra *-- ItemSugerido
-InvitacionRecompra -- DireccionEntrega
-ItemSugerido -- Producto
-Carrito *-- ItemCarrito
-ItemCarrito -- Producto
-Pedido *-- ItemPedido
-ItemPedido -- Producto
-Pedido -- DireccionEntrega
-Pedido -- FranjaHoraria
-Pedido -- ZonaCobertura
-Pedido *-- CambioEstadoPedido
-Pedido *-- CambioDireccion
-CambioDireccion -- DireccionEntrega
-CambioDireccion -- DireccionEntrega
-Chofer -- Pedido
-Pedido -- Pago
-Pedido *-- OfertaDespacho
-OfertaDespacho -- Chofer
-LoteRecorrido *-- ParadaLote
-ParadaLote -- Pedido
-LoteRecorrido *-- OfertaLote
-OfertaLote -- Chofer
-Chofer -- LoteRecorrido
-Chofer -- Vehiculo
-Chofer -- Vehiculo
-Chofer -- UbicacionGPS
-PlanMantenimiento -- TareaMantenimiento
-TareaMantenimiento -- Vehiculo
-TareaMantenimiento -- Chofer
-TareaMantenimiento *-- PropuestaVentanaTaller
-TareaMantenimiento *-- AdjuntoTarea
-PropuestaVentanaTaller -- Chofer
-Vehiculo *-- RegistroUsoVehiculo
-Producto *-- Promocion
-Producto -- Envase
-Envase *-- MovimientoEnvase
-Envase *-- RevisionEnvase
-Pedido -- MovimientoEnvase
-Cliente -- Envase
-Pedido -- Envase
-Envase -- CasoRecupero
-CasoRecupero -- Cliente
-CasoRecupero *-- AvisoRecupero
-Empleado -- PuestoDeTrabajo
-Empleado -- Usuario
-Empleado *-- JornadaDeTrabajo
-Empleado *-- LicenciaLaboral
-Empleado *-- Adjunto
-TareaMantenimiento -- Empleado
-Vehiculo *-- CargaCombustible
-Vehiculo *-- MultaTransito
-Vehiculo *-- Siniestro
-Vehiculo -- Neumatico
-Distribuidora *-- Neumatico
-Neumatico *-- MovimientoNeumatico
-MovimientoNeumatico -- Vehiculo
-Empleado -- CargaCombustible
-Empleado -- MultaTransito
-Empleado -- Siniestro
-Pedido -- Reclamo
-Cliente -- Reclamo
-Pedido -- Incidencia
-Pedido -- Calificacion
-Distribuidora -- Deposito
-Distribuidora -- Proveedor
-Deposito -- UbicacionDeStock
-Vehiculo -- UbicacionDeStock
-UbicacionDeStock *-- SaldoDeStock
-SaldoDeStock -- Producto
-MovimientoDeStock -- Producto
-MovimientoDeStock -- UbicacionDeStock
-MovimientoDeStock -- UbicacionDeStock
-Deposito *-- UmbralDeStock
-UmbralDeStock -- Producto
-UbicacionDeStock -- AjusteDeStock
-AjusteDeStock *-- ItemAjusteDeStock
-ItemAjusteDeStock -- Producto
-Usuario -- AjusteDeStock
-Proveedor -- OrdenDeCompra
-OrdenDeCompra -- Deposito
-OrdenDeCompra *-- ItemOrdenDeCompra
-ItemOrdenDeCompra -- Producto
-Proveedor -- RecepcionDeCompra
-OrdenDeCompra -- RecepcionDeCompra
-RecepcionDeCompra -- Deposito
-RecepcionDeCompra *-- ItemRecepcion
-ItemRecepcion -- Producto
-Usuario -- RecepcionDeCompra
-Vehiculo -- CargaDeCamion
-Chofer -- CargaDeCamion
-CargaDeCamion -- UbicacionDeStock
-CargaDeCamion *-- ItemCarga
-ItemCarga -- Producto
-Usuario -- CargaDeCamion
-Usuario -- CargaDeCamion
-Distribuidora *-- Caja
-Distribuidora *-- CategoriaDeCaja
-Distribuidora *-- CuentaCorriente
-Distribuidora *-- ReglaComision
-Caja *-- SesionDeCaja
-Caja *-- MovimientoDeCaja
-SesionDeCaja -- MovimientoDeCaja
-CategoriaDeCaja -- MovimientoDeCaja
-MovimientoDeCaja -- MovimientoDeCaja
-Chofer *-- RendicionChofer
-RendicionChofer -- Caja
-RendicionChofer -- MovimientoDeCaja
-RendicionChofer *-- PedidoRendido
-PedidoRendido -- Pedido
-RendicionChofer *-- GastoDeRendicion
-GastoDeRendicion -- CategoriaDeCaja
-Cliente -- CuentaCorriente
-CuentaCorriente *-- AsientoCuentaCorriente
-Pedido -- AsientoCuentaCorriente
-AsientoCuentaCorriente -- MovimientoDeCaja
-Chofer -- AsientoCuentaCorriente
-RendicionChofer -- AsientoCuentaCorriente
-AsientoCuentaCorriente -- AsientoCuentaCorriente
-ImputacionCuentaCorriente -- AsientoCuentaCorriente
-ImputacionCuentaCorriente -- AsientoCuentaCorriente
-ReglaComision -- Empleado
-ReglaComision -- Producto
-Empleado *-- AsientoComision
-Empleado *-- LiquidacionComisiones
-Empleado -- Chofer
-AsientoComision -- Pedido
-ReglaComision -- AsientoComision
-LiquidacionComisiones -- AsientoComision
-RendicionChofer -- AsientoComision
-LiquidacionComisiones -- MovimientoDeCaja
+Usuario "0..*" -- "0..1" Rol : tiene asignado >
+Distribuidora "1" -- "0..*" Chofer : emplea >
+Distribuidora "0..1" -- "0..*" Administrador : emplea >
+Distribuidora "1" -- "0..*" Empleado : emplea >
+Distribuidora "1" *-- "0..*" PuestoDeTrabajo : define >
+Distribuidora "1" -- "0..*" Producto : comercializa >
+Distribuidora "1" -- "0..*" Envase : posee >
+Distribuidora "1" -- "0..*" Pedido : gestiona >
+Distribuidora "1" *-- "0..*" ZonaCobertura : define >
+Distribuidora "1" *-- "0..*" FranjaHoraria : define >
+Distribuidora "1" *-- "0..*" ConfiguracionModulo : parametriza >
+Usuario "0..1" -- "0..*" AsientoAuditoria : origina >
+Distribuidora "0..1" -- "0..*" Auditoria : delimita >
+Auditoria "1" *-- "0..*" DetalleAuditoria : detalla con >
+TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica >
+Cliente "1" *-- "0..*" DireccionEntrega : registra >
+Cliente "1" -- "0..*" Pedido : realiza >
+Cliente "1" *-- "0..*" Carrito : arma >
+Cliente "1" -- "0..*" InvitacionRecompra : recibe >
+Cliente "0..*" -- "0..1" Producto : usa habitualmente >
+InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en >
+InvitacionRecompra "1" *-- "1..*" ItemSugerido : sugiere >
+InvitacionRecompra "0..*" -- "0..1" DireccionEntrega : sugiere entregar en >
+ItemSugerido "0..*" -- "1" Producto : corresponde a >
+Carrito "1" *-- "0..*" ItemCarrito : contiene >
+ItemCarrito "0..*" -- "1" Producto : corresponde a >
+Pedido "1" *-- "1..*" ItemPedido : contiene >
+ItemPedido "0..*" -- "1" Producto : corresponde a >
+Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
+Pedido "0..*" -- "0..1" FranjaHoraria : se programa en >
+Pedido "0..*" -- "0..1" ZonaCobertura : aplica el recargo de >
+Pedido "1" *-- "0..*" CambioEstadoPedido : registra >
+Pedido "1" *-- "0..*" CambioDireccion : registra >
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde >
+CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia >
+Chofer "0..1" -- "0..*" Pedido : entrega >
+Pedido "1" -- "0..*" Pago : se salda con >
+Pedido "1" *-- "0..*" OfertaDespacho : genera >
+OfertaDespacho "0..*" -- "1" Chofer : se dirige a >
+LoteRecorrido "1" *-- "1..*" ParadaLote : se compone de >
+ParadaLote "0..*" -- "1" Pedido : atiende >
+LoteRecorrido "1" *-- "0..*" OfertaLote : genera >
+OfertaLote "0..*" -- "1" Chofer : se dirige a >
+Chofer "0..1" -- "0..*" LoteRecorrido : acepta >
+Chofer "1" -- "0..*" Vehiculo : tiene registrado >
+Chofer "0..*" -- "0..*" Vehiculo : usa >
+Chofer "1" -- "0..1" UbicacionGPS : se ubica en >
+PlanMantenimiento "1" -- "0..*" TareaMantenimiento : genera >
+TareaMantenimiento "0..*" -- "0..1" Vehiculo : habilita >
+TareaMantenimiento "0..*" -- "0..1" Chofer : habilita >
+TareaMantenimiento "1" *-- "0..*" PropuestaVentanaTaller : origina >
+TareaMantenimiento "1" *-- "0..*" AdjuntoTarea : adjunta >
+PropuestaVentanaTaller "0..*" -- "1" Chofer : se dirige a >
+Vehiculo "1" *-- "0..*" RegistroUsoVehiculo : acumula >
+Producto "1" *-- "0..*" Promocion : ofrece >
+Producto "0..1" -- "0..*" Envase : describe >
+Envase "1" *-- "0..*" MovimientoEnvase : registra >
+Envase "1" *-- "0..*" RevisionEnvase : se somete a >
+Pedido "0..1" -- "0..*" MovimientoEnvase : origina >
+Cliente "0..1" -- "0..*" Envase : tiene en su poder >
+Pedido "0..1" -- "0..*" Envase : despacha >
+Envase "1" -- "0..*" CasoRecupero : motiva >
+CasoRecupero "0..*" -- "1" Cliente : se abre contra >
+CasoRecupero "1" *-- "0..*" AvisoRecupero : emite >
+Empleado "0..*" -- "1" PuestoDeTrabajo : ocupa >
+Empleado "0..1" -- "0..1" Usuario : accede con >
+Empleado "1" *-- "0..*" JornadaDeTrabajo : registra >
+Empleado "1" *-- "0..*" LicenciaLaboral : solicita >
+Empleado "1" *-- "0..*" Adjunto : conserva >
+TareaMantenimiento "0..*" -- "0..1" Empleado : habilita >
+Vehiculo "1" *-- "0..*" CargaCombustible : registra >
+Vehiculo "1" *-- "0..*" MultaTransito : acumula >
+Vehiculo "1" *-- "0..*" Siniestro : sufre >
+Vehiculo "0..1" -- "0..*" Neumatico : monta >
+Distribuidora "1" *-- "0..*" Neumatico : posee >
+Neumatico "1" *-- "0..*" MovimientoNeumatico : registra >
+MovimientoNeumatico "0..*" -- "0..1" Vehiculo : ocurre en >
+Empleado "0..1" -- "0..*" CargaCombustible : carga >
+Empleado "0..1" -- "0..*" MultaTransito : responde por >
+Empleado "0..1" -- "0..*" Siniestro : interviene en >
+Pedido "1" -- "0..*" Reclamo : origina >
+Cliente "1" -- "0..*" Reclamo : presenta >
+Pedido "1" -- "0..*" Incidencia : origina >
+Pedido "1" -- "0..2" Calificacion : recibe >
+Distribuidora "1" -- "0..*" Deposito : dispone de >
+Distribuidora "1" -- "0..*" Proveedor : compra a >
+Deposito "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+Vehiculo "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+UbicacionDeStock "1" *-- "0..*" SaldoDeStock : acumula >
+SaldoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en >
+Deposito "1" *-- "0..*" UmbralDeStock : fija >
+UmbralDeStock "0..*" -- "1" Producto : controla >
+UbicacionDeStock "1" -- "0..*" AjusteDeStock : se corrige con >
+AjusteDeStock "1" *-- "1..*" ItemAjusteDeStock : contiene >
+ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a >
+Usuario "1" -- "0..*" AjusteDeStock : registra >
+Proveedor "1" -- "0..*" OrdenDeCompra : recibe >
+OrdenDeCompra "0..*" -- "1" Deposito : se destina a >
+OrdenDeCompra "1" *-- "1..*" ItemOrdenDeCompra : contiene >
+ItemOrdenDeCompra "0..*" -- "1" Producto : corresponde a >
+Proveedor "1" -- "0..*" RecepcionDeCompra : entrega >
+OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra : se cumple con >
+RecepcionDeCompra "0..*" -- "1" Deposito : ingresa en >
+RecepcionDeCompra "1" *-- "1..*" ItemRecepcion : contiene >
+ItemRecepcion "0..*" -- "1" Producto : corresponde a >
+Usuario "1" -- "0..*" RecepcionDeCompra : registra >
+Vehiculo "1" -- "0..*" CargaDeCamion : transporta >
+Chofer "1" -- "0..*" CargaDeCamion : reparte con >
+CargaDeCamion "0..*" -- "1" UbicacionDeStock : parte de >
+CargaDeCamion "1" *-- "1..*" ItemCarga : contiene >
+ItemCarga "0..*" -- "1" Producto : corresponde a >
+Usuario "1" -- "0..*" CargaDeCamion : abre >
+Usuario "0..1" -- "0..*" CargaDeCamion : cierra >
+Distribuidora "1" *-- "0..*" Caja : define >
+Distribuidora "1" *-- "0..*" CategoriaDeCaja : define >
+Distribuidora "1" *-- "0..*" CuentaCorriente : lleva >
+Distribuidora "1" *-- "0..*" ReglaComision : define >
+Caja "1" *-- "0..*" SesionDeCaja : registra >
+Caja "1" *-- "0..*" MovimientoDeCaja : asienta >
+SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja : agrupa >
+CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja : clasifica >
+MovimientoDeCaja "0..1" -- "0..1" MovimientoDeCaja : anula a >
+Chofer "1" *-- "0..*" RendicionChofer : presenta >
+RendicionChofer "0..*" -- "0..1" Caja : ingresa en >
+RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera >
+RendicionChofer "1" *-- "0..*" PedidoRendido : rinde >
+PedidoRendido "0..1" -- "1" Pedido : corresponde a >
+RendicionChofer "1" *-- "0..*" GastoDeRendicion : declara >
+GastoDeRendicion "0..*" -- "1" CategoriaDeCaja : se clasifica en >
+Cliente "1" -- "0..*" CuentaCorriente : tiene habilitada >
+CuentaCorriente "1" *-- "0..*" AsientoCuentaCorriente : registra >
+Pedido "0..1" -- "0..*" AsientoCuentaCorriente : origina >
+AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en >
+Chofer "0..1" -- "0..*" AsientoCuentaCorriente : cobra >
+RendicionChofer "0..1" -- "0..*" AsientoCuentaCorriente : incluye >
+AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente : anula a >
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda >
+ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con >
+ReglaComision "0..*" -- "0..1" Empleado : se aplica a >
+ReglaComision "0..*" -- "0..1" Producto : se aplica a >
+Empleado "1" *-- "0..*" AsientoComision : devenga >
+Empleado "1" *-- "0..*" LiquidacionComisiones : percibe >
+Empleado "0..1" -- "0..1" Chofer : actúa como >
+AsientoComision "0..*" -- "0..1" Pedido : corresponde a >
+ReglaComision "0..1" -- "0..*" AsientoComision : determina >
+LiquidacionComisiones "0..1" -- "0..*" AsientoComision : incluye >
+RendicionChofer "0..1" -- "0..*" AsientoComision : origina >
+LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja : se paga con >
 (Chofer, Vehiculo) .. AsignacionVehiculo
 
 legend bottom right
-  Vista de conjunto: sin atributos ni nombres de asociación. Se omiten las
+  Vista de conjunto: sin atributos (están en la vista de cada área). Se omiten las
   asociaciones de Usuario que sólo registran la autoría de un hecho;
   figuran en la vista de su área.
 endlegend

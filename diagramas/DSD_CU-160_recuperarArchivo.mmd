@@ -3,18 +3,9 @@ sequenceDiagram
     title DSD — CU-160 Recuperar Archivo · recuperarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
-    participant STO as :StoragePort
+    participant S3 as :S3Service
 
-    Note over SRV,STO: Caso incluido desde CU-157 y CU-175<br/>(la implementación activa la decide STORAGE_DRIVER)
-    SRV->>+STO: getDownloadUrl(clave)
-    alt STORAGE_DRIVER es s3
-        Note over SRV,STO: S3StorageAdapter:<br/>devuelve una URL firmada
-    else STORAGE_DRIVER es local (por omisión)
-        Note over SRV,STO: LocalDiskStorageAdapter:<br/>devuelve nulo, no hay URL
-    end
-    STO-->>-SRV: url
-    opt No hubo URL
-        SRV->>+STO: getStream(clave)
-        Note over SRV,STO: Lee el archivo<br/>(disco local o S3)
-        STO-->>-SRV: contenido
-    end
+    Note over SRV,S3: Caso incluido desde CU-157 y CU-175
+    SRV->>+S3: getSignedDownload(clave, nombreDeDescarga)
+    Note over SRV,S3: Firma la URL del objeto, con vigencia corta,<br/>sin consultar a S3
+    S3-->>-SRV: enlace

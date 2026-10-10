@@ -1,0 +1,105 @@
+@startuml
+title SS-07 — Gestión de Choferes y Vehículos: Vehículos y vencimientos (18 casos de uso)
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ArrowColor #2C4257
+skinparam ArrowThickness 1.1
+skinparam actor {
+  BorderColor #2C4257
+  BackgroundColor #E8EDF2
+  FontSize 13
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2C4257
+  BackgroundColor #FFFFFF
+  FontSize 12
+}
+skinparam rectangle {
+  BorderColor #6B7683
+  FontSize 14
+  FontStyle bold
+}
+
+skinparam nodesep 18
+skinparam ranksep 70
+skinparam usecase {
+  BorderColor<<planificado>> #9C4436
+  BackgroundColor<<planificado>> #F6E4E1
+  BorderColor<<factorizado>> #6B7683
+  BackgroundColor<<factorizado>> #F2F4F6
+}
+
+actor "Chofer\n(ACT-02)" as A02
+actor "Administrador\n(ACT-03)" as A03
+actor "Sistema Automático\n(ACT-04)" as A04
+actor "Administrador General\n(ACT-05)" as A05
+actor "Servicio de correo\n(ACT-08)" as A08 <<sistema externo>>
+
+rectangle "SS-07 Gestión de Choferes y Vehículos\nVehículos y vencimientos" {
+  usecase "CU-051\nConsultar Listado de Vehículos" as U051 #back:FFFFFF;line:5A5896
+  usecase "CU-105\nPlanificar el mantenimiento y\nlas habilitaciones de la flota" as U105 <<planificado>> #back:FFFFFF;line:5A5896
+  usecase "CU-111\nEditar Vehículo" as U111 #back:FFFFFF;line:5A5896
+  usecase "CU-112\nEliminar Vehículo" as U112 #back:FFFFFF;line:5A5896
+  usecase "CU-113\nConsultar Detalle del Vehículo" as U113 #back:FFFFFF;line:5A5896
+  usecase "CU-114\nBuscar Vehículo por Patente" as U114 #back:FFFFFF;line:5A5896
+  usecase "CU-136\nRegistrar el Seguro del\nVehículo" as U136 #back:FFFFFF;line:5A5896
+  usecase "CU-137\nRegistrar la Verificación\nTécnica Vehicular" as U137 #back:FFFFFF;line:5A5896
+  usecase "CU-139\nConsultar los Vencimientos de\nla Flota" as U139 #back:FFFFFF;line:5A5896
+  usecase "CU-140\nProgramar un Mantenimiento de\nVehículo" as U140 #back:FFFFFF;line:5A5896
+  usecase "CU-141\nRegistrar un Mantenimiento\nRealizado" as U141 #back:FFFFFF;line:5A5896
+  usecase "CU-142\nAvisar los Vencimientos\nPróximos de la Flota" as U142 #back:FFFFFF;line:5A5896
+  usecase "CU-161\nPoner un Vehículo en Uso para\nun Chofer" as U161 #back:FFFFFF;line:5A5896
+  usecase "CU-162\nLiberar el Vehículo en Uso de\nun Chofer" as U162 #back:FFFFFF;line:5A5896
+  usecase "CU-163\nConsultar el Vehículo en Uso\nde un Chofer" as U163 #back:FFFFFF;line:5A5896
+  usecase "CU-164\nConsultar el Historial de\nVehículos de un Chofer" as U164 #back:FFFFFF;line:5A5896
+  usecase "CU-165\nConsultar el Historial de\nChoferes de un Vehículo" as U165 #back:FFFFFF;line:5A5896
+  usecase "CU-247\nReactivar un Vehículo" as U247 <<planificado>> #back:FFFFFF;line:5A5896
+}
+
+A02 -[#2E7D46]- U163
+A03 -[#8C4A9E]- U051
+A03 -[#8C4A9E]- U105
+A03 -[#8C4A9E]- U111
+A03 -[#8C4A9E]- U112
+A03 -[#8C4A9E]- U113
+A03 -[#8C4A9E]- U114
+A03 -[#8C4A9E]- U136
+A03 -[#8C4A9E]- U137
+A03 -[#8C4A9E]- U139
+A03 -[#8C4A9E]- U140
+A03 -[#8C4A9E]- U141
+A03 -[#8C4A9E]- U161
+A03 -[#8C4A9E]- U162
+A03 -[#8C4A9E]- U163
+A03 -[#8C4A9E]- U164
+A03 -[#8C4A9E]- U165
+A03 -[#8C4A9E]- U247
+A04 -[#8A6D1F]- U105
+A04 -[#8A6D1F]- U142
+U142 -[#6B7683]- A08
+A05 -right-|> A03
+
+' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
+U136 ..> U113 : <<include>>
+U137 ..> U113 : <<include>>
+U140 ..> U113 : <<include>>
+U105 ..> U139 : <<include>>
+U142 ..> U139 : <<include>>
+U111 ..> U113 : <<include>>
+U112 ..> U113 : <<include>>
+U105 ..> U051 : <<include>>
+U051 -[hidden]-> U105
+U113 -[hidden]-> U111
+U113 -[hidden]-> U112
+U113 -[hidden]-> U136
+U113 -[hidden]-> U137
+U113 -[hidden]-> U140
+U139 -[hidden]-> U105
+U139 -[hidden]-> U142
+
+@enduml

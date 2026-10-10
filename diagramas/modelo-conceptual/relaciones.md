@@ -20,6 +20,10 @@
 | Define | Distribuidora | FranjaHoraria | Composición | 1 a 0..* | Parte lógica de |
 | Parametriza | Distribuidora | ConfiguracionModulo | Composición | 1 a 0..* | Descripción para |
 | Origina | Usuario | AsientoAuditoria | Asociación | 0..1 a 0..* | Es un registro de |
+| Realiza | Usuario | Auditoria | Asociación | 0..1 a 0..* | Es un registro de |
+| Delimita | Distribuidora | Auditoria | Asociación | 0..1 a 0..* | Es un registro de |
+| Detalla con | Auditoria | DetalleAuditoria | Composición | 1 a 0..* | Es una línea de transacción de |
+| Clasifica | TipoAccionAuditoria | Auditoria | Asociación | 1 a 0..* | Descripción para |
 | Registra | Cliente | DireccionEntrega | Composición | 1 a 0..* | Parte lógica de |
 | Realiza | Cliente | Pedido | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Arma | Cliente | Carrito | Composición | 1 a 0..* | Está relacionado con una transacción |

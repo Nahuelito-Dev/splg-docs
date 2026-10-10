@@ -14,10 +14,16 @@ sequenceDiagram
     SRV->>+CAR: cancelar()
     CAR->>CAR: validarQueEstaCargando()
     CAR-->>-SRV: carga
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionOrigen
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionDestino
     loop Por cada tipo de garrafa de la carga
         SRV->>+ICA: getProducto()
         ICA-->>-SRV: producto
-        Note over SRV,LED: Del camión al depósito: ver DSD de aplicarMovimientoDeStock (CU-250). Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        SRV->>+ICA: getLlenasCargadas()
+        ICA-->>-SRV: llenasCargadas
+        Note over SRV,LED: Del camión al depósito: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
+        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasCargadas, cancelacionDeCarga)
     end
     SRV-->>-ADM: carga

@@ -8,7 +8,7 @@ sequenceDiagram
     participant CUE as cuentaCorriente:CuentaCorriente
 
     ADM->>+UCS: venderACuentaCorriente(clienteId, direccionId, items)
-    Note over UCS,PED: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con el método de pago cuenta corriente
+    Note over UCS,PED: Pedido: ver DSD de crearPedido (CU-005).<br/>Crea el Pedido con el método de pago cuenta corriente
     UCS->>+CLI: getCuentaCorriente(distribuidoraId)
     CLI-->>-UCS: cuentaCorriente
     UCS->>+PED: getTotal()

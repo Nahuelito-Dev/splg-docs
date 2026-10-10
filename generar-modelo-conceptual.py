@@ -97,7 +97,9 @@ def asociaciones(nombres, foco, general=False):
         if general and (a in OMITIDAS_EN_GENERAL or (a == "Usuario" and n in AUTORIA and b != "AsientoAuditoria")):
             continue
         if a in nombres and b in nombres and (a in foco or b in foco):
-            sal.append((a, b, relacion(a, ma, t, mb, b, n, not general)))
+            # también en la vista general: en Larman una asociación sin nombre ni
+            # multiplicidades es un error de notación, aunque el diagrama quede denso
+            sal.append((a, b, relacion(a, ma, t, mb, b, n, True)))
     return sal
 
 def clase_de_asociacion(nombres):
@@ -132,7 +134,7 @@ def vista(titulo, foco, ref, detalle=True, paquetes=False):
     lin += clase_de_asociacion(nombres)
     if paquetes:
         lin += ["", "legend bottom right",
-                "  Vista de conjunto: sin atributos ni nombres de asociación. Se omiten las",
+                "  Vista de conjunto: sin atributos (están en la vista de cada área). Se omiten las",
                 "  asociaciones de Usuario que sólo registran la autoría de un hecho;",
                 "  figuran en la vista de su área.",
                 "endlegend"]

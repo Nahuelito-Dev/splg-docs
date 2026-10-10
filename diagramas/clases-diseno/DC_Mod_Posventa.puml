@@ -62,7 +62,7 @@ skinparam nodesep 25
 skinparam ranksep 90
 class ClaimsService <<fachada>> {
   + adjuntarFotoAlReclamo(reclamoId: Identificador,\n      imagen: Archivo): Reclamo
-  + consultarFotoDelReclamo(reclamoId: Identificador): Cadena
+  + consultarFotoDelReclamo(reclamoId: Identificador): DireccionEntrega
   + listarReclamos(): Reclamo[*]
   + reabrirReclamo(reclamoId: Identificador,\n      motivo: Cadena): Reclamo
   + registrarReclamo(pedidoId: Identificador, motivo: Cadena,\n      evidencia: Archivo): Reclamo
@@ -91,17 +91,19 @@ class RatingService <<fachada>> {
 class Reclamo <<referencia>>
 class Incidencia <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
-class StoragePort <<referencia>>
-class Usuario <<referencia>>
-class Pedido <<referencia>>
+class S3CleanupService <<referencia>>
+class S3Service <<referencia>>
 class Cliente <<referencia>>
+class Pedido <<referencia>>
 class Chofer <<referencia>>
+class Usuario <<referencia>>
 
 Map_String_Reclamo "1" o--> "0..*" Reclamo
 Map_String_Incidencia "1" o--> "0..*" Incidencia
 ClaimsService --> "1" Map_String_Pedido
 ClaimsService --> "1" Map_String_Reclamo
-ClaimsService --> "1" StoragePort
+ClaimsService --> "1" S3CleanupService
+ClaimsService --> "1" S3Service
 IncidentService --> "1" Map_String_Incidencia
 IncidentService --> "1" Map_String_Pedido
 RatingService --> "1" Map_String_Pedido

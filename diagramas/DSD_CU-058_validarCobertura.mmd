@@ -7,8 +7,10 @@ sequenceDiagram
     participant ZON as zona:ZonaCobertura
 
     CLI->>+SRV: validarCobertura(latitud, longitud)
+    SRV->>+DIS: tieneZonasActivas()
+    DIS-->>-SRV: tieneZonas
     alt La distribuidora no tiene zonas activas
-        Note over SRV,DIS: Toda dirección se considera cubierta, sin recargo
+        SRV-->>CLI: cubierta, sin recargo
     else La distribuidora tiene zonas activas
         SRV->>+DIS: getZonaQueCubre(latitud, longitud)
         loop Por cada zona activa y vigente, de mayor prioridad
@@ -19,5 +21,6 @@ sequenceDiagram
             SRV->>+ZON: getRecargo()
             ZON-->>-SRV: recargo
         end
+        SRV-->>CLI: cubierta, recargo, zona
     end
-    SRV-->>-CLI: cubierta, recargo, zona
+    deactivate SRV

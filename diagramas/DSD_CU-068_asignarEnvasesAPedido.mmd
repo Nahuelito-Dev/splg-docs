@@ -10,7 +10,7 @@ sequenceDiagram
     CHF->>+SRV: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
     SRV->>+PEDS: get(pedidoId)
     PEDS-->>-SRV: pedido
-    Note over SRV,ENV: Vigencia: ver DSD de verificarVigenciaAlAsignar (CU-135). Rechaza la asignación completa si alguna revisión venció
+    Note over SRV,ENV: Vigencia: ver DSD de verificarVigenciaAlAsignar (CU-135).<br/>Rechaza la asignación completa si alguna revisión venció
     loop Por cada numeroDeSerie de numerosDeSerie
         SRV->>+ENVS: get(numeroDeSerie)
         ENVS-->>-SRV: envase

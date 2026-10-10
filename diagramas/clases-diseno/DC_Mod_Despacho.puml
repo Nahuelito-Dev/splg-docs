@@ -64,16 +64,16 @@ class DispatchOrchestratorService <<fachada>> {
   + ensureOffered(pedido: Pedido)
   + handleExpiredOffers()
   + ofrecerAlSiguienteChofer(pedidoId: Identificador): Chofer
+  + ofrecerAlSiguienteChofer(pedido: Pedido)
 }
 class DispatchService <<fachada>> {
   + vencerOfertasExpiradas()
 }
-interface DispatchOfferRepositoryPort <<interface>> <<puerto>> {
+interface DispatchOfferRepositoryPort <<puerto>> {
   + findExpired(ahora: FechaHora): OfertaDespacho[*]
 }
-interface RealtimeDispatchPort <<interface>> <<puerto>> {
+interface RealtimeDispatchPort <<puerto>> {
   + findNearbyDrivers(destino: Coordenada,\n      radioKm: Decimal): Chofer[*]
-  + findNearbyDrivers(destino: Coordenada,\n      radioExpressKm: Decimal): Chofer[*]
   + notifyAdmins(pedido: Pedido)
   + notifyAdmins(evento: Registro, aviso: AvisoRecupero)
   + notifyCustomer(cliente: Cliente, llegada: FechaHora)
@@ -85,16 +85,17 @@ interface RealtimeDispatchPort <<interface>> <<puerto>> {
 }
 class RouteBatchPlannerService <<fachada>> {
   + aceptarRecorrido(recorridoId: Identificador): Pedido[*]
+  + aceptarRecorrido(recorrido: LoteRecorrido)
   + agruparPedidosPorRecorrido()
-  + agruparPorProximidad(pedidos: Pedido[*])
+  + agruparPorProximidad(pedidos: Pedido[*]): LoteRecorrido[*]
 }
 class "Map<String, LoteRecorrido>" as Map_String_LoteRecorrido <<colección>> {
   + get(clave: Cadena): LoteRecorrido
 }
-interface CylinderLifecyclePort <<interface>> <<puerto>> {
+interface CylinderLifecyclePort <<puerto>> {
   + findHeldByCustomer(plazoDeTolerancia: Entero): Envase[*]
 }
-interface OrderRepositoryPort <<interface>> <<puerto>> {
+interface OrderRepositoryPort <<puerto>> {
   + findScheduled(distribuidora: Distribuidora): Pedido[*]
 }
 class LoteRecorrido <<referencia>>
@@ -104,9 +105,10 @@ class NotificationsService <<referencia>>
 class TruckLoadService <<referencia>>
 class OrderService <<referencia>>
 class Chofer <<referencia>>
-class Pedido <<referencia>>
 class OfertaDespacho <<referencia>>
+class Pedido <<referencia>>
 class OfertaLote <<referencia>>
+class CylinderRecoveryService <<referencia>>
 
 Map_String_LoteRecorrido "1" o--> "0..*" LoteRecorrido
 DispatchOrchestratorService --> "1" DispatchOfferRepositoryPort
@@ -124,8 +126,9 @@ DispatchOrchestratorService ..> Chofer
 DispatchOrchestratorService ..> OfertaDespacho
 DispatchOrchestratorService ..> Pedido
 RouteBatchPlannerService ..> Chofer
-RouteBatchPlannerService ..> LoteRecorrido : <<create>>
+RouteBatchPlannerService ..> "<<create>>" LoteRecorrido
 RouteBatchPlannerService ..> OfertaLote
+CylinderRecoveryService --> "1" CylinderLifecyclePort
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

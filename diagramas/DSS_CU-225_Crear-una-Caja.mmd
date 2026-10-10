@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-225 Crear una Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: crearCaja(nombre, tipo, requiereSesion)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: caja creada con saldo cero
+    else ya existe una caja con ese nombre
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

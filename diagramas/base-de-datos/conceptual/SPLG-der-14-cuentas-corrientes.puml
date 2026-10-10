@@ -58,6 +58,8 @@ entity ImputacionCuentaCorriente <<propuesto>> #E4EDF4;line:1F5E8C {
   --
   {field} importe
 }
+entity Cliente #F1F1F1 {
+}
 entity Distribuidora #F1F1F1 {
 }
 entity Pedido #F1F1F1 {
@@ -70,9 +72,10 @@ entity RendicionChofer #F1F1F1 {
 }
 
 Distribuidora ||--o{ CuentaCorriente : lleva >
+Cliente ||--o{ CuentaCorriente : tiene habilitada >
 CuentaCorriente ||--o{ AsientoCuentaCorriente : registra >
 Pedido |o--o{ AsientoCuentaCorriente : origina >
-AsientoCuentaCorriente }o--o| MovimientoDeCaja : se asienta en >
+AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
 Chofer |o--o{ AsientoCuentaCorriente : cobra >
 RendicionChofer |o--o{ AsientoCuentaCorriente : incluye >
 AsientoCuentaCorriente |o--o| AsientoCuentaCorriente : anula a >

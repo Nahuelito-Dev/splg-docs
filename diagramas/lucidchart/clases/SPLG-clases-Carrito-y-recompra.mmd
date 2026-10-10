@@ -22,7 +22,6 @@ classDiagram
     class ConsumptionEstimatorService {
         <<fabricación pura>>
         + estimarProximaRecompra(cliente: Cliente): Fecha
-        + estimarProximaRecompra(fechaDeRegistro: Fecha, cantidadPorMes: Decimal): Fecha
         + estimarProximaRecompra(ultimaCompra: Fecha, cantidadPorMes: Decimal): Fecha
     }
 
@@ -58,10 +57,10 @@ classDiagram
     class NotificationsService {
         <<fachada>>
     }
-    class Producto
-    class InvitacionRecompra
     class Carrito
     class Cliente
+    class Producto
+    class InvitacionRecompra
 
     CartService --> "1" Map_String_Producto : map<String, Producto>
     ConsumptionService --> "1" ConsumptionEstimatorService : consumptionEstimatorService

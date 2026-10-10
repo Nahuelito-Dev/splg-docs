@@ -27,7 +27,7 @@ state "Devuelto vacío\n(EMPTY_RETURNED)" as EMPTY_RETURNED
 IN_DEPOT --> FILLED : cargar()
 FILLED --> DISPATCHED : asignarAPedido(serie)
 FILLED --> IN_DEPOT : revertirLlenado()
-DISPATCHED --> WITH_CUSTOMER : entregarPedido() [automático al confirmar\nla entrega del pedido]
+DISPATCHED --> WITH_CUSTOMER : confirmarEntregaDelPedido()\n/ entregarPedido()
 DISPATCHED --> IN_DEPOT : reingresar() [volvió sin entregar]
 WITH_CUSTOMER --> EMPTY_RETURNED : devolverVacío()
 EMPTY_RETURNED --> IN_DEPOT : reingresar()

@@ -3,13 +3,9 @@ sequenceDiagram
     title DSD — CU-159 Almacenar Archivo · almacenarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
-    participant STO as :StoragePort
+    participant S3 as :S3Service
 
-    Note over SRV,STO: Caso incluido desde CU-155 y CU-174<br/>(la implementación activa la decide STORAGE_DRIVER)
-    SRV->>+STO: put(clave, contenido, tipo)
-    alt STORAGE_DRIVER es local (por omisión)
-        Note over SRV,STO: LocalDiskStorageAdapter:<br/>escribe el archivo en disco
-    else STORAGE_DRIVER es s3
-        Note over SRV,STO: S3StorageAdapter:<br/>sube el archivo al depósito
-    end
-    deactivate STO
+    Note over SRV,S3: Caso incluido desde CU-155 y CU-174
+    SRV->>+S3: put(clave, contenido, tipo)
+    Note over SRV,S3: Sube el objeto al bucket privado<br/>con cifrado en reposo (SSE-S3)
+    deactivate S3

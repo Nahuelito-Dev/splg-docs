@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-258 Registrar un Depósito · registrarDeposito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :WarehouseService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: registrarDeposito(nombre, codigo, tipo, direccion)
+    SRV->>+DIS: crearDeposito(nombre, codigo, tipo, direccion)
+    DIS->>DIS: validarCodigoSinUsar(codigo)
+    create participant DEP as nuevo:Deposito
+    DIS->>DEP: «create»(nombre, codigo, tipo, direccion)
+    create participant UBI as nueva:UbicacionDeStock
+    DEP->>UBI: «create»(depositoDeStock)
+    opt La distribuidora todavía no tiene un depósito predeterminado
+        DIS->>DEP: marcarPredeterminado()
+    end
+    DIS-->>-SRV: depositoDeStock
+    SRV-->>-ADM: depositoDeStock

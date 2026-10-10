@@ -27,20 +27,21 @@ state "Cancelada\n(cancelled)" as cancelled
 draft --> sent : enviarOrdenDeCompra()
 draft --> cancelled : cancelarOrdenDeCompra(motivo)
 sent --> cancelled : cancelarOrdenDeCompra(motivo)
-sent --> partial : registrarRecepcionDeCompra() [lo recibido no alcanza lo pedido]
-sent --> received : registrarRecepcionDeCompra() [lo recibido alcanza lo pedido]
-partial --> partial : registrarRecepcionDeCompra() [todavía falta recibir]
-partial --> partial : anularRecepcionDeCompra() [quedan otras recepciones]
-partial --> received : registrarRecepcionDeCompra() [lo recibido alcanza lo pedido]
-received --> partial : anularRecepcionDeCompra() [quedan otras recepciones]
-received --> sent : anularRecepcionDeCompra() [era la única recepción]
-partial --> sent : anularRecepcionDeCompra() [era la única recepción]
+sent --> partial : registrarRecepcionDeCompra()\n[lo recibido no alcanza lo pedido]
+sent --> received : registrarRecepcionDeCompra()\n[lo recibido alcanza lo pedido]
+partial : registrarRecepcionDeCompra() [todavía falta recibir]
+partial : anularRecepcionDeCompra() [quedan otras recepciones]
+partial --> received : registrarRecepcionDeCompra()\n[lo recibido alcanza lo pedido]
+received --> partial : anularRecepcionDeCompra()\n[quedan otras recepciones]
+received --> sent : anularRecepcionDeCompra()\n[era la única recepción]
+partial --> sent : anularRecepcionDeCompra()\n[era la única recepción]
 cancelled --> [*]
 
 note bottom of cancelled
-  Una orden con recepciones no se cancela: primero se
-  anula lo recibido. La compra sin orden no pasa por
-  este diagrama. Una orden enviada cuya fecha esperada
-  venció sigue enviada; sólo figura en el correo diario.
+  Una orden con recepciones no se cancela: primero se anula lo recibido.
+  «Recibida» no es final: anular una recepción la devuelve a
+  «Parcialmente recibida» o «Enviada». La compra sin orden no pasa por
+  este diagrama. Una orden enviada cuya fecha esperada venció sigue
+  enviada; sólo figura en el correo diario.
 end note
 @enduml

@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-251 Modificar el Perfil de Usuario
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: actualizarPerfil(usuarioId, datos)
+    activate SIS
+    alt es su propio perfil o es administrador
+        SIS-->>CLI: perfil actualizado
+    else intenta modificar el perfil de otro usuario
+        SIS-->>CLI: acceso denegado
+    end
+    deactivate SIS
+    Note over CLI,SIS: También lo inicia el Chofer (ACT-02)

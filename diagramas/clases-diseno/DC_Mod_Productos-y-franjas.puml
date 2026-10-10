@@ -95,15 +95,15 @@ class "Map<String, Distribuidora>" as Map_String_Distribuidora <<referencia>>
 class Distribuidora <<referencia>>
 
 Map_String_Producto "1" o--> "0..*" Producto
-List_Producto "1" o--> "0..*" Producto
 Map_String_FranjaHoraria "1" o--> "0..*" FranjaHoraria
+List_Producto "1" o--> "0..*" Producto
 GasCylinderService --> "1" List_Producto
 GasCylinderService --> "1" Map_String_Distribuidora
 GasCylinderService --> "1" Map_String_Producto
 TimeSlotService --> "1" Map_String_Distribuidora
 TimeSlotService --> "1" Map_String_FranjaHoraria
 GasCylinderService ..> Distribuidora
-GasCylinderService ..> Producto : <<create>>
+GasCylinderService ..> "<<create>>" Producto
 TimeSlotService ..> Distribuidora
 TimeSlotService ..> FranjaHoraria
 

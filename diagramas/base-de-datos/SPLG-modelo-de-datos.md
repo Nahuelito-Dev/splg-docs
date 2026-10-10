@@ -1,6 +1,6 @@
 # Modelo de Datos — SPLG
 
-43 tablas y 96 claves foráneas, leídas de la base en ejecución.
+48 tablas y 105 claves foráneas, leídas de la base en ejecución.
 
 | Sección | Qué contiene |
 |---|---|
@@ -33,15 +33,57 @@
 | `owner_type` | attachment_owner_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `owner_id` | uuid | sí |  |  |  | Sin FK (ver la nota de la clase). |
 | `label` | varchar(80) | no |  |  |  | Texto libre para distinguir adjuntos del mismo dueño: "DNI frente", "Póliza 2026". |
-| `storage_key` | varchar(255) | sí |  |  |  | Clave dentro del `StoragePort` activo (disco local o S3). |
+| `storage_key` | varchar(255) | sí |  |  |  | Clave del objeto dentro del bucket de S3. |
 | `original_name` | varchar(255) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `mime_type` | varchar(100) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `size_bytes` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `uploaded_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `uploaded_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deleted_at` | timestamptz | no |  |  |  | Baja lógica: el registro queda para histórico y el archivo NO se borra del storage (queda de respaldo). Los listados y descargas no lo muestran. |
 
 Índices (además de la clave primaria):
 - `IDX_70d35b9e83fa8fca69e685f548`: `CREATE INDEX "IDX_70d35b9e83fa8fca69e685f548" ON public.attachment USING btree (distributor_id, owner_type, owner_id)`
+
+### `audit` — Auditoria
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `audit_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `action_type_id` | smallint | sí | FK | `audit_action_type.action_type_id` |  | _(sin descripción documentada en el código)_ |
+| `user_id` | uuid | no | FK | `user.user_id` |  | Quién lo hizo; null si fue el sistema (cron, seed, webhook sin usuario). |
+| `distributor_id` | uuid | no | FK | `distributor.distributor_id` |  | Distribuidora (tenant) del registro, para acotar la consulta. |
+| `entity` | varchar(60) | sí |  |  |  | Nombre de la entidad de dominio (`Order`, `Employee`...), no la URL. |
+| `record_id` | varchar(64) | sí |  |  |  | Id del registro afectado; en una clave compuesta, las partes con ':'. |
+| `ip` | varchar(45) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `created_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_audit_distributor_created_at`: `CREATE INDEX "IDX_audit_distributor_created_at" ON public.audit USING btree (distributor_id, created_at)`
+- `IDX_audit_entity_record`: `CREATE INDEX "IDX_audit_entity_record" ON public.audit USING btree (entity, record_id)`
+- `IDX_audit_user`: `CREATE INDEX "IDX_audit_user" ON public.audit USING btree (user_id)`
+
+### `audit_action_type` — TipoAccionAuditoria
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `action_type_id` | smallint | sí | PK |  |  | _(sin descripción documentada en el código)_ |
+| `name` | varchar(40) | sí | U |  |  | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `UQ_920dea5fea6e965ccf619575f55`: `CREATE UNIQUE INDEX "UQ_920dea5fea6e965ccf619575f55" ON public.audit_action_type USING btree (name)`
+
+### `audit_detail` — DetalleAuditoria
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `audit_detail_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `audit_id` | uuid | sí | FK | `audit.audit_id` |  | _(sin descripción documentada en el código)_ |
+| `field` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `old_value` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `new_value` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_audit_detail_audit`: `CREATE INDEX "IDX_audit_detail_audit" ON public.audit_detail USING btree (audit_id)`
 
 ### `audit_log` — AsientoAuditoria
 
@@ -134,11 +176,11 @@ Claves únicas compuestas: (`cart_id`, `gas_cylinder_id`).
 | `customer_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `reason` | varchar | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `description` | text | sí |  |  |  | _(sin descripción documentada en el código)_ |
-| `photoUrl` | varchar | no |  |  |  | URL externa que mandaban las apps antes de que la foto se subiera al storage. |
+| `photoUrl` | varchar | no |  |  |  | URL externa que mandaban las apps antes de que la foto se subiera a S3. |
 | `status` | claims_status_enum | sí |  |  | `'pending'::claims_status_enum` | _(sin descripción documentada en el código)_ |
 | `resolutionNote` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
-| `photo_key` | varchar(512) | no |  |  |  | Key de la foto en el storage (`claims/{distribuidora}/{reclamo}/{uuid}.{ext}`). |
+| `photo_key` | varchar(512) | no |  |  |  | Key de la foto en el bucket (`claims/{distribuidora}/{reclamo}/{uuid}.{ext}`). |
 
 Índices (además de la clave primaria):
 - `IDX_870bf1e0dc6005837ff0643b5f`: `CREATE INDEX "IDX_870bf1e0dc6005837ff0643b5f" ON public.claims USING btree (distributor_id)`
@@ -343,6 +385,54 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `doc_type` | varchar(40) | sí | PK |  |  | _(sin descripción documentada en el código)_ |
 | `last_number` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
 
+### `employee` — Empleado
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `employee_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `position_id` | uuid | sí | FK | `job_position.position_id` |  | _(sin descripción documentada en el código)_ |
+| `file_number` | varchar(20) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `first_name` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `last_name` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `document_type` | employee_document_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `document_number` | varchar(20) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `cuil` | varchar(11) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `birth_date` | date | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `address_line` | varchar(200) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `city` | varchar(80) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `province` | varchar(80) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `postal_code` | varchar(10) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `phone` | varchar(30) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `personal_email` | varchar(120) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `emergency_contact_name` | varchar(120) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `emergency_contact_phone` | varchar(30) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `emergency_contact_relationship` | varchar(40) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `hire_date` | date | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `termination_date` | date | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `termination_reason` | employee_termination_reason_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `employment_type` | employment_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `status` | employee_status_enum | sí |  |  | `'active'::employee_status_enum` | _(sin descripción documentada en el código)_ |
+| `bank_cbu` | varchar(22) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | Sólo para altas erróneas; la salida normal es el egreso. |
+
+Restricciones `CHECK`:
+- `CHK_employee_status_termination`: `CHECK (((status = 'terminated'::employee_status_enum) = (termination_date IS NOT NULL)))`
+- `CHK_employee_termination_date`: `CHECK (((termination_date IS NULL) OR (termination_date >= hire_date)))`
+
+Índices (además de la clave primaria):
+- `IDX_employee_name`: `CREATE INDEX "IDX_employee_name" ON public.employee USING btree (distributor_id, last_name, first_name)`
+- `IDX_employee_position`: `CREATE INDEX "IDX_employee_position" ON public.employee USING btree (position_id)`
+- `IDX_employee_status`: `CREATE INDEX "IDX_employee_status" ON public.employee USING btree (distributor_id, status)`
+- `UQ_employee_cuil_vigente`: `CREATE UNIQUE INDEX "UQ_employee_cuil_vigente" ON public.employee USING btree (distributor_id, cuil) WHERE ((cuil IS NOT NULL) AND ("deletedAt" IS NULL))`
+- `UQ_employee_document_vigente`: `CREATE UNIQUE INDEX "UQ_employee_document_vigente" ON public.employee USING btree (distributor_id, document_number) WHERE ("deletedAt" IS NULL)`
+- `UQ_employee_file_number_vigente`: `CREATE UNIQUE INDEX "UQ_employee_file_number_vigente" ON public.employee USING btree (distributor_id, file_number) WHERE ("deletedAt" IS NULL)`
+- `UQ_employee_user_vigente`: `CREATE UNIQUE INDEX "UQ_employee_user_vigente" ON public.employee USING btree (user_id) WHERE ((user_id IS NOT NULL) AND ("deletedAt" IS NULL))`
+
 ### `gas_cylinder` — Producto
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -372,15 +462,14 @@ Claves únicas compuestas: (`distributor_id`, `type`).
 | `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
 | `quantity` | integer | sí |  |  |  | Unidades desde las que aplica. |
 | `discount_percentage` | numeric(5,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
-
-Claves únicas compuestas: (`gas_cylinder_id`, `quantity`).
+| `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 
 Restricciones `CHECK`:
 - `CHK_promocion_cantidad`: `CHECK ((quantity >= 2))`
 - `CHK_promocion_descuento`: `CHECK (((discount_percentage > (0)::numeric) AND (discount_percentage <= (100)::numeric)))`
 
 Índices (además de la clave primaria):
-- `UQ_promocion_producto_cantidad`: `CREATE UNIQUE INDEX "UQ_promocion_producto_cantidad" ON public.gas_cylinder_promotion USING btree (gas_cylinder_id, quantity)`
+- `UQ_promocion_producto_cantidad`: `CREATE UNIQUE INDEX "UQ_promocion_producto_cantidad" ON public.gas_cylinder_promotion USING btree (gas_cylinder_id, quantity) WHERE ("deletedAt" IS NULL)`
 
 ### `incident` — Incidencia
 
@@ -402,6 +491,23 @@ Restricciones `CHECK`:
 Índices (además de la clave primaria):
 - `IDX_8a89ba6c226022354d0d8b4ada`: `CREATE INDEX "IDX_8a89ba6c226022354d0d8b4ada" ON public.incident USING btree (order_id)`
 - `IDX_a2223c18baa97faf54118f95bd`: `CREATE INDEX "IDX_a2223c18baa97faf54118f95bd" ON public.incident USING btree (distributor_id)`
+
+### `job_position` — PuestoDeTrabajo
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `position_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `name` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `category` | job_position_category_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `is_active` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_f63c2b78c253c8c92398d88fd5`: `CREATE INDEX "IDX_f63c2b78c253c8c92398d88fd5" ON public.job_position USING btree (distributor_id)`
+- `UQ_job_position_name_vigente`: `CREATE UNIQUE INDEX "UQ_job_position_name_vigente" ON public.job_position USING btree (distributor_id, lower((name)::text)) WHERE ("deletedAt" IS NULL)`
 
 ### `maintenance_plan` — PlanMantenimiento
 
@@ -455,12 +561,13 @@ Restricciones `CHECK`:
 | `attachment_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
 | `task_id` | uuid | sí | FK | `maintenance_task.task_id` |  | _(sin descripción documentada en el código)_ |
 | `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
-| `storage_key` | varchar(255) | sí |  |  |  | Clave dentro del `StoragePort` activo (disco local o S3). |
+| `storage_key` | varchar(255) | sí |  |  |  | Clave del objeto dentro del bucket de S3. |
 | `original_name` | varchar(255) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `mime_type` | varchar(100) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `size_bytes` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `uploaded_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `uploaded_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deleted_at` | timestamptz | no |  |  |  | Baja lógica: el registro queda para histórico y el archivo NO se borra del storage (queda de respaldo). Los listados y descargas no lo muestran. |
 
 Índices (además de la clave primaria):
 - `IDX_07f53564ec7d34fc7e69b96cab`: `CREATE INDEX "IDX_07f53564ec7d34fc7e69b96cab" ON public.maintenance_task_attachment USING btree (distributor_id)`
@@ -644,6 +751,10 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `stars` | integer | sí |  |  |  | 1 a 5 estrellas. |
 | `comment` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `hidden` | boolean | sí |  |  | `false` | Moderación: una calificación oculta no cuenta en promedios ni resúmenes ni se muestra a clientes; el admin la ve marcada. Nunca se borra. |
+| `hidden_reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `hidden_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `hidden_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 
 Claves únicas compuestas: (`order_id`, `from_role`).
 
@@ -651,6 +762,7 @@ Claves únicas compuestas: (`order_id`, `from_role`).
 - `IDX_6f590ebbc097c4ed21d5d3e11e`: `CREATE INDEX "IDX_6f590ebbc097c4ed21d5d3e11e" ON public.rating USING btree (to_user_id)`
 - `IDX_b46b63fc1ddf2135e1ed37069a`: `CREATE INDEX "IDX_b46b63fc1ddf2135e1ed37069a" ON public.rating USING btree (distributor_id)`
 - `IDX_beb6f44b22a7f1ed7cad984a2e`: `CREATE INDEX "IDX_beb6f44b22a7f1ed7cad984a2e" ON public.rating USING btree (order_id)`
+- `IDX_f5df1954571306276a5db7930f`: `CREATE INDEX "IDX_f5df1954571306276a5db7930f" ON public.rating USING btree (hidden)`
 - `UQ_rating_order_role`: `CREATE UNIQUE INDEX "UQ_rating_order_role" ON public.rating USING btree (order_id, from_role)`
 
 ### `repurchase_invitation` — InvitacionRecompra
@@ -678,12 +790,13 @@ Claves únicas compuestas: (`order_id`, `from_role`).
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
 |---|---|:-:|:-:|---|---|---|
 | `role_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
-| `type` | text | sí | U |  |  | El código busca los roles por este texto: tiene que ser único. |
+| `type` | text | sí |  |  |  | El código busca los roles por este texto: tiene que ser único. |
 | `createdAt` | timestamptz | no |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | no |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | Baja lógica: el rol queda para histórico y deja de aparecer. |
 
 Índices (además de la clave primaria):
-- `UQ_9a0c91c218a16e604951ff1c099`: `CREATE UNIQUE INDEX "UQ_9a0c91c218a16e604951ff1c099" ON public.role USING btree (type)`
+- `UQ_role_type_vigente`: `CREATE UNIQUE INDEX "UQ_role_type_vigente" ON public.role USING btree (type) WHERE ("deletedAt" IS NULL)`
 
 ### `route_batch` — LoteRecorrido
 
@@ -842,11 +955,11 @@ Claves únicas compuestas: (`car_id`, `day`).
 - `IDX_8d4be9c7008fc808b4900a83a5`: `CREATE INDEX "IDX_8d4be9c7008fc808b4900a83a5" ON public.vehicle_usage_log USING btree (distributor_id)`
 - `UQ_vehicle_usage_log_car_day`: `CREATE UNIQUE INDEX "UQ_vehicle_usage_log_car_day" ON public.vehicle_usage_log USING btree (car_id, day)`
 
-> **Cobertura de las descripciones.** 71 de 435 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 80 de 496 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
-No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 96 relaciones del dominio están todas declaradas.
+No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 105 relaciones del dominio están todas declaradas.
 
 ### 1. Recargo express y tipo de vehículo
 
@@ -1070,7 +1183,7 @@ Tipo enumerado `truck_load_status_enum`: `loading`, `on_route`, `returned`, `clo
 
 Valores nuevos del tipo enumerado `configurable_process_enum`: `stock_control`.
 
-> **Decisión de modelado.** El saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo del módulo de personal, que se documenta aparte (iteración I-11): se declara sin clave foránea hasta que esa tabla exista en este modelo. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
+> **Decisión de modelado.** El saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
 
 ### 5. Caja, rendición del chofer, cuentas corrientes y comisiones
 
@@ -1260,11 +1373,11 @@ Tipo enumerado `driver_liquidation_status_enum`: `draft`, `approved`, `paid`, `c
 Valores nuevos del tipo enumerado `order_paymentmethod_enum`: `account`.
 Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
 
-> **Decisión de modelado.** Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE "deletedAt" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, I-11), de modo que un chofer cobra comisión como empleado; `employee` figura acá sólo con las columnas mínimas que necesita este módulo y el módulo de personal la completa.
+> **Decisión de modelado.** Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE "deletedAt" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.
 
 ### 6. Personal y legajos
 
-**Casos de uso:** CU-176 a CU-194 (I-11). **Qué resuelve:** Llevar el legajo de cada persona que trabaja en la distribuidora, su asistencia, sus licencias y la documentación con vencimiento, y que ese control inhabilite para el despacho a quien no esté en regla.
+**Casos de uso:** CU-183 a CU-194 y CU-246 (I-11). **Qué resuelve:** Llevar la asistencia, las licencias y la documentación con vencimiento de cada persona que trabaja en la distribuidora, y que ese control inhabilite para el despacho a quien no esté en regla.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1273,44 +1386,6 @@ Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
 | `maintenance_task` | `employee_id` | uuid | no | Empleado dueño de la tarea; obligatorio si el plan es de sujeto empleado. |
 | `maintenance_task` | `valid_from` | timestamptz | no | Inicio de la vigencia del documento (póliza, habilitación o documentación del personal); lo usa el prorrateo de la prima. |
 | `maintenance_task` | `details` | jsonb | no | Datos propios del tipo de documento (número de certificado, aseguradora, póliza, cobertura, franquicia, cuotas), con la forma que fija cada plan. |
-| `job_position` **(tabla nueva)** | `position_id` | uuid | sí | Identificador. |
-| `job_position` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `job_position` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre del puesto, único entre los vigentes de la distribuidora sin distinguir mayúsculas. |
-| `job_position` **(tabla nueva)** | `category` | job_position_category_enum | sí | Categoría que manda las reglas: el nombre es libre. |
-| `job_position` **(tabla nueva)** | `is_active` | boolean | sí | Si el puesto se ofrece. |
-| `job_position` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
-| `job_position` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
-| `job_position` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
-| `employee` **(tabla nueva)** | `employee_id` | uuid | sí | Identificador. |
-| `employee` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `employee` **(tabla nueva)** | `user_id` | uuid | no | Cuenta de acceso del empleado, si la tiene; única entre los legajos vigentes. |
-| `employee` **(tabla nueva)** | `position_id` | uuid | sí | Puesto que ocupa. |
-| `employee` **(tabla nueva)** | `file_number` | varchar(20) | sí | Número de legajo, único por distribuidora. |
-| `employee` **(tabla nueva)** | `first_name` | varchar(80) | sí | Nombre. |
-| `employee` **(tabla nueva)** | `last_name` | varchar(80) | sí | Apellido. |
-| `employee` **(tabla nueva)** | `document_type` | employee_document_type_enum | sí | Tipo de documento. |
-| `employee` **(tabla nueva)** | `document_number` | varchar(20) | sí | Número de documento, único por distribuidora. |
-| `employee` **(tabla nueva)** | `cuil` | varchar(11) | no | CUIL de once dígitos, con dígito verificador válido. |
-| `employee` **(tabla nueva)** | `birth_date` | date | no | Fecha de nacimiento. |
-| `employee` **(tabla nueva)** | `address_line` | varchar(200) | no | Domicilio. |
-| `employee` **(tabla nueva)** | `city` | varchar(80) | no | Localidad. |
-| `employee` **(tabla nueva)** | `province` | varchar(80) | no | Provincia. |
-| `employee` **(tabla nueva)** | `postal_code` | varchar(10) | no | Código postal. |
-| `employee` **(tabla nueva)** | `phone` | varchar(30) | no | Teléfono. |
-| `employee` **(tabla nueva)** | `personal_email` | varchar(120) | no | Correo personal. |
-| `employee` **(tabla nueva)** | `emergency_contact_name` | varchar(120) | no | Contacto de emergencia. |
-| `employee` **(tabla nueva)** | `emergency_contact_phone` | varchar(30) | no | Teléfono del contacto de emergencia. |
-| `employee` **(tabla nueva)** | `emergency_contact_relationship` | varchar(40) | no | Vínculo con el contacto de emergencia. |
-| `employee` **(tabla nueva)** | `hire_date` | date | sí | Fecha de ingreso. |
-| `employee` **(tabla nueva)** | `termination_date` | date | no | Fecha de egreso; vacía mientras está activo. |
-| `employee` **(tabla nueva)** | `termination_reason` | employee_termination_reason_enum | no | Motivo del egreso. |
-| `employee` **(tabla nueva)** | `employment_type` | employment_type_enum | sí | Modalidad de contratación. |
-| `employee` **(tabla nueva)** | `status` | employee_status_enum | sí | Activo o egresado; está egresado si y sólo si tiene fecha de egreso. |
-| `employee` **(tabla nueva)** | `bank_cbu` | varchar(22) | no | CBU, para pagar liquidaciones. |
-| `employee` **(tabla nueva)** | `notes` | text | no | Observaciones. |
-| `employee` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
-| `employee` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
-| `employee` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica, sólo para altas erróneas. |
 | `employee_attendance` **(tabla nueva)** | `attendance_id` | uuid | sí | Identificador. |
 | `employee_attendance` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
 | `employee_attendance` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado de la jornada. |
@@ -1338,16 +1413,9 @@ Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
 | `employee_leave` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
 | `employee_leave` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
 
-`job_position` — Puesto que ocupa el personal de una distribuidora; su categoría gobierna las reglas. Clave primaria `position_id`. Referencias: `distributor_id` → `distributor`.
-`employee` — Legajo de una persona que trabaja en la distribuidora, con o sin cuenta de acceso. Clave primaria `employee_id`. Referencias: `distributor_id` → `distributor`, `user_id` → `user`, `position_id` → `job_position`. Única: (`user_id`), (`distributor_id`, `file_number`), (`distributor_id`, `document_number`).
 `employee_attendance` — Una jornada de un empleado: su ingreso y su egreso. Clave primaria `attendance_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `recorded_by_user_id` → `user`.
 `employee_leave` — Licencia o ausencia de un empleado, con su período y su estado. Clave primaria `leave_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `requested_by_user_id` → `user`, `decided_by_user_id` → `user`.
 
-Tipo enumerado `job_position_category_enum`: `driver`, `helper`, `warehouse`, `administration`, `sales`, `management`, `other`.
-Tipo enumerado `employee_document_type_enum`: `dni`, `passport`, `other`.
-Tipo enumerado `employee_termination_reason_enum`: `resignation`, `dismissal`, `end_of_contract`, `retirement`, `other`.
-Tipo enumerado `employment_type_enum`: `permanent`, `fixed_term`, `part_time`, `contractor`.
-Tipo enumerado `employee_status_enum`: `active`, `terminated`.
 Tipo enumerado `attendance_source_enum`: `panel`, `driver_app`.
 Tipo enumerado `employee_leave_type_enum`: `vacation`, `sick`, `work_accident`, `study`, `marriage`, `birth`, `bereavement`, `unpaid`, `suspension`, `unjustified_absence`, `other`.
 Tipo enumerado `employee_leave_status_enum`: `requested`, `approved`, `rejected`, `cancelled`.
@@ -1355,7 +1423,7 @@ Tipo enumerado `maintenance_document_kind_enum`: `insurance`, `vtv`, `hazmat_veh
 
 Valores nuevos del tipo enumerado `maintenance_subject_enum`: `employee`.
 
-> **Decisión de modelado.** Todo empleado existe como legajo, tenga o no cuenta de acceso: un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no sólo el servicio.
+> **Decisión de modelado.** Los puestos (`job_position`) y los legajos (`employee`) ya están construidos y salen de la base: todo empleado existe como legajo, tenga o no cuenta de acceso, un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). Falta construir lo que cuelga del legajo. La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no sólo el servicio.
 
 ### 7. Flota ampliada: combustible, multas y siniestros
 
@@ -1486,20 +1554,25 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `configurable_process_enum` | `fleet_planner`, `repurchase`, `route_batching`, `cylinder_recovery`, `express_dispatch` | implementado |
 | `coverage_zone_surcharge_type_enum` | `fixed`, `percentage` | implementado |
 | `cylinder_inspection_result_enum` | `approved`, `conditional`, `rejected` | implementado |
-| `cylinder_movement_from_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned` | implementado |
-| `cylinder_movement_to_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned` | implementado |
-| `cylinder_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned` | implementado |
+| `cylinder_movement_from_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |
+| `cylinder_movement_to_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |
+| `cylinder_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |
 | `distributor_status_enum` | `active`, `suspended` | implementado |
+| `employee_document_type_enum` | `dni`, `passport`, `other` | implementado |
+| `employee_status_enum` | `active`, `terminated` | implementado |
+| `employee_termination_reason_enum` | `resignation`, `dismissal`, `end_of_contract`, `retirement`, `other` | implementado |
+| `employment_type_enum` | `permanent`, `fixed_term`, `part_time`, `contractor` | implementado |
 | `fleet_status_enum` | `active`, `in_service`, `grounded` | implementado |
 | `incident_moment_enum` | `pre_delivery`, `in_delivery`, `post_delivery` | implementado |
-| `incident_status_enum` | `open`, `resolved` | implementado |
+| `incident_status_enum` | `open`, `resolved`, `discarded` | implementado |
 | `incident_type_enum` | `damaged`, `out_of_stock`, `no_show`, `other` | implementado |
+| `job_position_category_enum` | `driver`, `helper`, `warehouse`, `administration`, `sales`, `management`, `other` | implementado |
 | `maintenance_criticality_enum` | `blocking`, `non_blocking` | implementado |
 | `maintenance_subject_enum` | `vehicle`, `driver` | implementado |
 | `maintenance_task_status_enum` | `forecast`, `scheduled`, `in_progress`, `done`, `overdue`, `cancelled` | implementado |
 | `maintenance_trigger_enum` | `by_km`, `by_time`, `by_fixed_date` | implementado |
 | `order_delivery_mode_enum` | `standard`, `express` | implementado |
-| `order_dispatch_offer_status_enum` | `offered`, `accepted`, `rejected`, `expired` | implementado |
+| `order_dispatch_offer_status_enum` | `offered`, `accepted`, `rejected`, `expired`, `superseded` | implementado |
 | `order_paymentmethod_enum` | `cash`, `mercadopago`, `transfer` | implementado |
 | `order_paymentstatus_enum` | `pending`, `paid`, `failed` | implementado |
 | `order_paymenttype_enum` | `cash`, `online` | implementado |
@@ -1527,15 +1600,10 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `customer_entry_type_enum` | `sale_charge`, `payment`, `credit_note`, `debit_note`, `reversal` | propuesto |
 | `driver_liquidation_status_enum` | `draft`, `approved`, `paid`, `closed`, `voided` | propuesto |
 | `driver_settlement_status_enum` | `open`, `submitted`, `approved` | propuesto |
-| `employee_document_type_enum` | `dni`, `passport`, `other` | propuesto |
 | `employee_leave_status_enum` | `requested`, `approved`, `rejected`, `cancelled` | propuesto |
 | `employee_leave_type_enum` | `vacation`, `sick`, `work_accident`, `study`, `marriage`, `birth`, `bereavement`, `unpaid`, `suspension`, `unjustified_absence`, `other` | propuesto |
-| `employee_status_enum` | `active`, `terminated` | propuesto |
-| `employee_termination_reason_enum` | `resignation`, `dismissal`, `end_of_contract`, `retirement`, `other` | propuesto |
-| `employment_type_enum` | `permanent`, `fixed_term`, `part_time`, `contractor` | propuesto |
 | `fuel_payment_method_enum` | `cash_box`, `driver_cash`, `card`, `fuel_account` | propuesto |
 | `fuel_type_enum` | `diesel`, `gasoline`, `cng`, `lpg` | propuesto |
-| `job_position_category_enum` | `driver`, `helper`, `warehouse`, `administration`, `sales`, `management`, `other` | propuesto |
 | `maintenance_document_kind_enum` | `insurance`, `vtv`, `hazmat_vehicle_permit`, `driver_license`, `hazmat_driver_course`, `psychophysical`, `art_coverage`, `service`, `generic` | propuesto |
 | `purchase_document_type_enum` | `delivery_note`, `invoice` | propuesto |
 | `purchase_order_status_enum` | `draft`, `sent`, `partially_received`, `received`, `cancelled` | propuesto |

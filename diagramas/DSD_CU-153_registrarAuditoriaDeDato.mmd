@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-153 Registrar Toda Operación de Escritura · registrarAuditoriaDeDato
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant SUB as :DataAuditSubscriber
+
+    SIS->>+SUB: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
+    create participant AUD as :Auditoria
+    SUB->>AUD: «create»(tipoDeAccion, autor, ip, distribuidoraId, entidad, registro)
+    loop Por cada campo de detalles
+        SUB->>+AUD: agregarDetalle(campo, valorAnterior, valorNuevo)
+        create participant DET as :DetalleAuditoria
+        AUD->>DET: «create»(campo, valorAnterior, valorNuevo)
+        deactivate AUD
+    end
+    deactivate SUB

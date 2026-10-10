@@ -1,5 +1,5 @@
 @startuml
-title SS-04 — Seguimiento en Tiempo Real (8 casos de uso)
+title SS-04 — Seguimiento en Tiempo Real (9 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -38,6 +38,7 @@ actor "Cliente\n(ACT-01)" as A01
 actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Administrador General\n(ACT-05)" as A05
+actor "Firebase\n(ACT-07)" as A07 <<sistema externo>>
 
 rectangle "SS-04 Seguimiento en Tiempo Real" {
   usecase "CU-017\nActualizar Ubicación GPS del\nChofer" as U017 #back:FFFFFF;line:8A7326
@@ -45,9 +46,10 @@ rectangle "SS-04 Seguimiento en Tiempo Real" {
   usecase "CU-019\nAvisar Llegada al Cliente" as U019 #back:FFFFFF;line:8A7326
   usecase "CU-020\nConfirmar Entrega" as U020 #back:FFFFFF;line:8A7326
   usecase "CU-021\nRecibir Notificaciones en\nTiempo Real" as U021 #back:FFFFFF;line:8A7326
-  usecase "CU-022\nActivar / Desactivar\nDisponibilidad (Chofer)" as U022 #back:FFFFFF;line:8A7326
+  usecase "CU-022\nActivar la Disponibilidad" as U022 #back:FFFFFF;line:8A7326
   usecase "CU-078\nObtener el Código de Entrega\n(QR del chofer)" as U078 #back:FFFFFF;line:8A7326
   usecase "CU-079\nConfirmar Entrega Escaneando\nel QR (cliente)" as U079 #back:FFFFFF;line:8A7326
+  usecase "CU-266\nDesactivar la Disponibilidad" as U266 #back:FFFFFF;line:8A7326
   usecase "Notificar Cliente" as F_AVISO <<factorizado>> #back:FFFFFF;line:8A7326
 }
 
@@ -59,18 +61,21 @@ A02 -[#2E7D46]- U019
 A02 -[#2E7D46]- U020
 A02 -[#2E7D46]- U022
 A02 -[#2E7D46]- U078
+A02 -[#2E7D46]- U266
 A03 -[#8C4A9E]- U078
 A03 -[#8C4A9E]- U079
-A05 --|> A03
+U019 -[#6B7683]- A07
+U018 -[#6B7683]- A07
+U020 -[#6B7683]- A07
+U021 -[#6B7683]- A07
+U079 -[#6B7683]- A07
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U018 ..> F_AVISO : <<include>>
 U020 ..> F_AVISO : <<include>>
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
-U019 ..> U018 : <<extend>>
-note on link
-  Punto de extensión: el chofer se encuentra cerca del destino
-end note
+U019 ..> U018 : <<extend>>\n(punto de extensión:\nel chofer se encuentra cerca del\ndestino)
 
 @enduml

@@ -10,20 +10,20 @@ sequenceDiagram
         SIS-->>ADM: legajo modificado
     else el empleado o el puesto no existen en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el documento o el CUIL ya pertenecen a otro empleado vigente
+    else el puesto está inactivo o no corresponde a la cuenta del empleado, o el documento, el CUIL o el legajo ya pertenecen a otro empleado vigente
         SIS-->>ADM: conflicto
-    else el formato o el CUIL no son válidos
+    else el formato o el CUIL no son válidos, o la fecha de ingreso es posterior a la de egreso
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 
     ADM->>SIS: eliminarEmpleado(empleadoId)
     activate SIS
-    alt el legajo no tiene jornadas ni documentación
+    alt el legajo es una alta errónea: no tiene cuenta de acceso ni, cuando existan, jornadas o documentación
         SIS-->>ADM: legajo dado de baja (alta errónea)
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el legajo ya tiene jornadas o documentación
+    else el legajo tiene cuenta de acceso o, cuando existan, jornadas o documentación
         SIS-->>ADM: conflicto: corresponde registrar el egreso
     end
     deactivate SIS

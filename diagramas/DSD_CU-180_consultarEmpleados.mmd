@@ -4,12 +4,9 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SRV as :EmployeeService
     participant LST as :List#lt;Empleado#gt;
-    participant EMP as empleado:Empleado
 
     ADM->>+SRV: consultarEmpleados(filtros)
     SRV->>+LST: filtrar(filtros)
     LST-->>-SRV: empleados
-    loop Por cada empleado de la página
-        SRV->>EMP: getPeorVencimiento()
-    end
+    Note over SRV,LST: Planificado (I-11): el peor vencimiento de la documentación de cada empleado
     SRV-->>-ADM: página de empleados, sin datos personales sensibles

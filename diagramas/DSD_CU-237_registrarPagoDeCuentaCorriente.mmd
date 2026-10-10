@@ -5,20 +5,21 @@ sequenceDiagram
     participant SRV as :CustomerAccountService
     participant CUES as :Map#lt;String, CuentaCorriente#gt;
     participant CUE as cuenta:CuentaCorriente
-    participant CHFS as :Map#lt;String, Chofer#gt;
-    participant CHF as chofer:Chofer
+    participant RENS as :Map#lt;String, RendicionChofer#gt;
     participant REN as rendicion:RendicionChofer
+    participant LDG as :CashLedgerService
 
     ADM->>+SRV: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
     SRV->>+CUES: get(cuentaId)
     CUES-->>-SRV: cuenta
     alt El cobro entra a una caja
-        Note over SRV,CUE: Caja: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja
+        SRV->>+LDG: registrarMovimientoDeCaja(cajaId, ingreso, importe, cobroDeCuentaCorriente, medio)
+        LDG-->>-SRV: movimiento
+        Note over SRV,LDG: Caja: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>Crea el MovimientoDeCaja
     else El cobro lo registra un chofer en la calle
-        SRV->>+CHFS: get(usuarioId)
-        CHFS-->>-SRV: chofer
-        SRV->>+CHF: getRendicionAbierta()
-        CHF-->>-SRV: rendicion
+        SRV->>+RENS: get(usuarioId)
+        RENS-->>-SRV: rendicion
+        Note over RENS: la rendición abierta del chofer
     end
     SRV->>+CUE: registrarPago(importe, medio, movimiento)
     create participant NAS as nuevo:AsientoCuentaCorriente

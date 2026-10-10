@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-269 Consultar los Productos Inactivos · consultarProductosInactivos
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :GasCylinderService
+    participant LST as :List#lt;Producto#gt;
+
+    ADM->>+SRV: consultarProductosInactivos()
+    SRV->>+LST: buscarInactivos()
+    LST-->>-SRV: productos
+    SRV-->>-ADM: productos

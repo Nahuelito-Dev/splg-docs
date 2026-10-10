@@ -10,7 +10,7 @@ sequenceDiagram
         SIS-->>ADM: adjunto registrado en el legajo
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el tipo o el tamaño del archivo no están permitidos
+    else el archivo falta, está vacío, es de un tipo no admitido o supera el tamaño máximo
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS

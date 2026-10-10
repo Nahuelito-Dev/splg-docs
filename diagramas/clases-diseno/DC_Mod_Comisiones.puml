@@ -90,18 +90,20 @@ class Empleado <<referencia>>
 class ReglaComision <<referencia>>
 class LiquidacionComisiones <<referencia>>
 class AsientoComision <<referencia>>
+class CashLedgerService <<referencia>>
 class "Map<String, Caja>" as Map_String_Caja <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class "Map<String, Producto>" as Map_String_Producto <<referencia>>
 class Chofer <<referencia>>
-class Pedido <<referencia>>
 class Distribuidora <<referencia>>
+class Pedido <<referencia>>
 
 Map_String_Empleado "1" o--> "0..*" Empleado
 Map_String_ReglaComision "1" o--> "0..*" ReglaComision
 List_ReglaComision "1" o--> "0..*" ReglaComision
 Map_String_LiquidacionComisiones "1" o--> "0..*" LiquidacionComisiones
 List_AsientoComision "1" o--> "0..*" AsientoComision
+CommissionService --> "1" CashLedgerService
 CommissionService --> "1" List_AsientoComision
 CommissionService --> "1" List_ReglaComision
 CommissionService --> "1" Map_String_Caja

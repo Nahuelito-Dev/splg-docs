@@ -67,11 +67,6 @@ endif
 :Pedido en camino;\nactivar el seguimiento;
 fork
   |Chofer|
-  :Informar la posición GPS\nmientras dure el camino;
-  |Cliente|
-  :Seguir al chofer en el mapa;
-fork again
-  |Chofer|
   :Avisar la llegada;
   :Mostrar el código de entrega (QR);
   |Cliente|
@@ -81,8 +76,13 @@ fork again
     :Pedido entregado;\ndetener el seguimiento;
   else (no)
     :Rechazar la confirmación;
-    detach
+    end
   endif
+fork again
+  |Chofer|
+  :Informar la posición GPS\nmientras dure el camino;
+  |Cliente|
+  :Seguir al chofer en el mapa;
 end fork
 |Sistema|
 if (¿pago en efectivo?) then (sí)

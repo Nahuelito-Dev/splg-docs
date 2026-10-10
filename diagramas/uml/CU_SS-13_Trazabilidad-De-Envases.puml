@@ -65,7 +65,7 @@ A03 -[#8C4A9E]- U133
 A03 -[#8C4A9E]- U134
 A04 -[#8A6D1F]- U108
 A04 -[#8A6D1F]- U135
-A05 --|> A03
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U135 ..> U133 : <<include>>

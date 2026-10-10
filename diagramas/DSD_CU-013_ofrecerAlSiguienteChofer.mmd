@@ -6,7 +6,7 @@ sequenceDiagram
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
-    participant CHO as chofer:Chofer
+    participant CHO as candidato:Chofer
     participant NOT as :NotificationsService
 
     SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
@@ -19,15 +19,19 @@ sequenceDiagram
     loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nunca contactado
         SRV->>+RT: findNearbyDrivers(destino, radioKm)
         RT-->>-SRV: cercanos
-        SRV->>+CHO: puedeRecibirOferta(distribuidora)
-        CHO-->>-SRV: elegible
+        loop Por cada chofer de cercanos
+            SRV->>+CHO: puedeRecibirOferta(distribuidora)
+            CHO-->>-SRV: elegible
+        end
     end
     opt No hay un chofer nuevo y alguno dejó vencer su oferta hace más que el enfriamiento
         loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer con la oferta vencida
             SRV->>+RT: findNearbyDrivers(destino, radioKm)
             RT-->>-SRV: cercanos
-            SRV->>+CHO: puedeRecibirOferta(distribuidora)
-            CHO-->>-SRV: elegible
+            loop Por cada chofer de cercanos
+                SRV->>+CHO: puedeRecibirOferta(distribuidora)
+                CHO-->>-SRV: elegible
+            end
         end
     end
     alt Hay un chofer elegible

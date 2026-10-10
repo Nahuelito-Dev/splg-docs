@@ -53,7 +53,7 @@ entity Envase {
   --
   {field} número de serie
   {field} estado
-  {field} depósito
+  {field} monto del depósito
   {field} /vencimiento
 }
 entity MovimientoEnvase {
@@ -94,21 +94,51 @@ entity Usuario #F1F1F1 {
 }
 entity Distribuidora #F1F1F1 {
 }
+entity UmbralDeStock #F1F1F1 {
+}
+entity ItemCarrito #F1F1F1 {
+}
+entity ReglaComision #F1F1F1 {
+}
+entity ItemOrdenDeCompra #F1F1F1 {
+}
+entity ItemPedido #F1F1F1 {
+}
+entity ItemRecepcion #F1F1F1 {
+}
+entity SaldoDeStock #F1F1F1 {
+}
+entity MovimientoDeStock #F1F1F1 {
+}
+entity ItemAjusteDeStock #F1F1F1 {
+}
+entity ItemCarga #F1F1F1 {
+}
 
 Distribuidora ||--o{ Producto : comercializa >
 Cliente }o--o| Producto : usa habitualmente >
 Producto ||--o{ Promocion : ofrece >
-Usuario |o--o{ Envase : tiene en su poder >
+UmbralDeStock }o--|| Producto : controla >
+ItemCarrito }o--|| Producto : corresponde a >
+ReglaComision }o--o| Producto : se aplica a >
+ItemOrdenDeCompra }o--|| Producto : corresponde a >
+Cliente |o--o{ Envase : tiene en su poder >
 Pedido |o--o{ Envase : despacha >
 Distribuidora ||--o{ Envase : posee >
 Producto |o--o{ Envase : describe >
+ItemPedido }o--|| Producto : corresponde a >
+ItemRecepcion }o--|| Producto : corresponde a >
+SaldoDeStock }o--|| Producto : corresponde a >
+MovimientoDeStock }o--|| Producto : corresponde a >
 Envase ||--o{ RevisionEnvase : se somete a >
 Usuario |o--o{ MovimientoEnvase : ejecuta >
 Envase ||--o{ MovimientoEnvase : registra >
 Pedido |o--o{ MovimientoEnvase : origina >
 Envase ||--o{ CasoRecupero : motiva >
 Usuario |o--o{ CasoRecupero : resuelve >
-CasoRecupero }o--|| Usuario : se abre contra >
+CasoRecupero }o--|| Cliente : se abre contra >
+ItemAjusteDeStock }o--|| Producto : corresponde a >
+ItemCarga }o--|| Producto : corresponde a >
 CasoRecupero ||--o{ AvisoRecupero : emite >
 
 legend bottom right

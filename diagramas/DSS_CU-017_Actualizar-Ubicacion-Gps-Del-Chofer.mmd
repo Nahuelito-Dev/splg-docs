@@ -9,13 +9,12 @@ sequenceDiagram
     loop Mientras el chofer está conectado
         CHO->>SIS: actualizarUbicacion(usuarioId, latitud, longitud)
         activate SIS
-        alt Los datos de posición son válidos
+        opt Los datos de posición son válidos
             opt El chofer tiene un pedido en curso
                 SIS-)CLI: notificarUbicacionDelChofer(pedido, latitud, longitud)
                 SIS-)ADM: notificarUbicacionDelChofer(pedido, latitud, longitud)
             end
-        else Faltan el usuario o las coordenadas
-            Note over SIS: Se descarta el envío y<br/>no se registra la<br/>posición
         end
+        Note over SIS: Si faltan el usuario o las<br/>coordenadas, se descarta el<br/>envío y no se registra la<br/>posición
         deactivate SIS
     end

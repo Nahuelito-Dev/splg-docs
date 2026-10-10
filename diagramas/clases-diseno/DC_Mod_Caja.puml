@@ -68,6 +68,8 @@ class CashBoxService <<fachada>> {
 }
 class CashLedgerService <<fachada>> {
   + anularMovimientoDeCaja(movimientoId: Identificador,\n      motivo: Cadena): MovimientoDeCaja
+  + registrarMovimientoDeCaja(cajaId: Identificador,\n      sentido: SentidoDeCaja, diferencia: Entero,\n      diferenciaDeCaja: CategoriaDeCaja,\n      enEfectivo: MedioDeCaja): MovimientoDeCaja
+  + registrarMovimientoDeCaja(cajaId: Identificador,\n      sentidoDeCaja: SentidoDeCaja, total: Moneda,\n      pagoDeComisiones: CategoriaDeCaja,\n      medioDeCaja: MedioDeCaja): MovimientoDeCaja
   + registrarMovimientoDeCaja(cajaId: Identificador,\n      sentido: SentidoDeCaja, importe: Moneda,\n      categoriaId: Identificador, medio: MedioDeCaja,\n      descripcion: Cadena): MovimientoDeCaja
   + transferirEntreCajas(cajaOrigenId: Identificador,\n      cajaDestinoId: Identificador,\n      importe: Moneda): MovimientoDeCaja[*]
 }
@@ -107,6 +109,7 @@ Map_String_SesionDeCaja "1" o--> "0..*" SesionDeCaja
 Map_String_CategoriaDeCaja "1" o--> "0..*" CategoriaDeCaja
 Map_String_MovimientoDeCaja "1" o--> "0..*" MovimientoDeCaja
 List_Caja "1" o--> "0..*" Caja
+CashBoxService --> "1" CashLedgerService
 CashBoxService --> "1" Map_String_Caja
 CashBoxService --> "1" Map_String_SesionDeCaja
 CashCategoryService --> "1" Map_String_CategoriaDeCaja

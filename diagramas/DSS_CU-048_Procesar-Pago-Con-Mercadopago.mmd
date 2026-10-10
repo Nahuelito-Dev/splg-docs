@@ -1,12 +1,12 @@
 sequenceDiagram
     title DSS — CU-048 Procesar Pago con MercadoPago
     autonumber
-    participant SIS as :Sistema
     actor MP as MercadoPago (ACT-06)
+    participant SIS as :Sistema
     actor CLI as Cliente (ACT-01)
     actor CHO as Chofer (ACT-02)
 
-    Note over SIS,MP: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
+    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
 
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS

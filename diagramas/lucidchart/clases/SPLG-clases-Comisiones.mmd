@@ -46,6 +46,9 @@ classDiagram
     class ReglaComision
     class LiquidacionComisiones
     class AsientoComision
+    class CashLedgerService {
+        <<fachada>>
+    }
     class Map_String_Caja["Map<String, Caja>"] {
         <<colección>>
     }
@@ -56,14 +59,15 @@ classDiagram
         <<colección>>
     }
     class Chofer
-    class Pedido
     class Distribuidora
+    class Pedido
 
     Map_String_Empleado "1" o-- "0..*" Empleado : elementos
     Map_String_ReglaComision "1" o-- "0..*" ReglaComision : elementos
     List_ReglaComision "1" o-- "0..*" ReglaComision : elementos
     Map_String_LiquidacionComisiones "1" o-- "0..*" LiquidacionComisiones : elementos
     List_AsientoComision "1" o-- "0..*" AsientoComision : elementos
+    CommissionService --> "1" CashLedgerService : cashLedgerService
     CommissionService --> "1" List_AsientoComision : list<AsientoComision>
     CommissionService --> "1" List_ReglaComision : list<ReglaComision>
     CommissionService --> "1" Map_String_Caja : map<String, Caja>

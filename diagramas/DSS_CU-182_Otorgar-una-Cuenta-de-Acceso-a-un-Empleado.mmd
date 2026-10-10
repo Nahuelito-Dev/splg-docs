@@ -4,15 +4,15 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: otorgarCuentaDeAcceso(empleadoId, correo)
+    ADM->>SIS: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
     activate SIS
     alt el empleado está activo, sin cuenta, y su puesto admite acceso
         SIS-->>ADM: cuenta creada con el rol del puesto y vinculada al legajo
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el empleado ya tiene cuenta o está egresado
+    else el empleado ya tiene cuenta, está egresado, o el correo o el teléfono ya están en uso
         SIS-->>ADM: conflicto
-    else la categoría del puesto no admite cuenta
+    else la categoría del puesto no admite cuenta, o faltan o son inválidos el teléfono o los datos de acceso
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS

@@ -6,22 +6,17 @@ classDiagram
 
     class JobPositionService {
         <<fachada>>
-        + consultarPuestosDeTrabajo()
-        + crearPuestoDeTrabajo(nombre: Cadena, categoria: Cadena): PuestoDeTrabajo
+        + consultarPuestosDeTrabajo(): PuestoDeTrabajo[*]
+        + crearPuestoDeTrabajo(nombre: Cadena, categoria: CategoriaDePuesto): PuestoDeTrabajo
         + eliminarPuestoDeTrabajo(puestoId: Identificador): Cadena
         + modificarPuestoDeTrabajo(puestoId: Identificador, datos: Registro): PuestoDeTrabajo
-    }
-
-    class Map_String_PuestoDeTrabajo["Map<String, PuestoDeTrabajo>"] {
-        <<colección>>
-        + get(clave: Cadena): PuestoDeTrabajo
     }
 
     class EmployeeService {
         <<fachada>>
         + consultarDocumentacionDelEmpleado(empleadoId: Identificador): TareaMantenimiento[*]
-        + consultarEmpleado(empleadoId: Identificador)
-        + consultarEmpleados(filtros: Registro)
+        + consultarEmpleado(empleadoId: Identificador): Empleado
+        + consultarEmpleados(filtros: Registro): Empleado[*]
         + consultarSaldoDeVacaciones(empleadoId: Identificador, anio: Entero): Entero
         + eliminarEmpleado(empleadoId: Identificador): Cadena
         + modificarEmpleado(empleadoId: Identificador, datos: Registro): Empleado
@@ -29,9 +24,9 @@ classDiagram
         + reingresarEmpleado(empleadoId: Identificador, fechaDeIngreso: Fecha): Empleado
     }
 
-    class CuilValidator {
-        <<fabricación pura>>
-        + esValido(cuil: Cadena)
+    class Map_String_PuestoDeTrabajo["Map<String, PuestoDeTrabajo>"] {
+        <<colección>>
+        + get(clave: Cadena): PuestoDeTrabajo
     }
 
     class Map_String_Empleado["Map<String, Empleado>"] {
@@ -42,7 +37,7 @@ classDiagram
     class List_Empleado["List<Empleado>"] {
         <<colección>>
         + filtrar(filtros: Registro): Empleado[*]
-        + getActivosPorPuesto()
+        + getActivosPorPuesto(): Empleado[*]
     }
 
     class TerminateEmployeeUseCase {
@@ -52,12 +47,12 @@ classDiagram
 
     class GrantEmployeeAccountUseCase {
         <<controlador>>
-        + otorgarCuentaDeAcceso(empleadoId: Identificador, correo: Cadena): Empleado
+        + otorgarCuentaDeAcceso(empleadoId: Identificador, datosDeAcceso: Registro): Empleado
     }
 
     class AttendanceService {
         <<fachada>>
-        + consultarAsistencias(desde: Fecha, hasta: Fecha)
+        + consultarAsistencias(desde: Fecha, hasta: Fecha): JornadaDeTrabajo[*]
         + corregirAsistencia(asistenciaId: Identificador, datos: Registro, nota: Cadena): JornadaDeTrabajo
         + registrarAsistencia(empleadoId: Identificador, ingreso: FechaHora, egreso: FechaHora): JornadaDeTrabajo
         + registrarFinDeJornada()
@@ -66,7 +61,7 @@ classDiagram
 
     class List_JornadaDeTrabajo["List<JornadaDeTrabajo>"] {
         <<colección>>
-        + getAbiertasDeHoy()
+        + getAbiertasDeHoy(): JornadaDeTrabajo[*]
         + getEntre(desde: FechaHora, hasta: FechaHora): JornadaDeTrabajo[*]
     }
 
@@ -79,7 +74,7 @@ classDiagram
         <<fachada>>
         + aprobarLicencia(licenciaId: Identificador): LicenciaLaboral
         + cancelarLicencia(licenciaId: Identificador): LicenciaLaboral
-        + consultarLicencias(estado: Cadena, desde: Fecha, hasta: Fecha)
+        + consultarLicencias(estado: Cadena, desde: Fecha, hasta: Fecha): LicenciaLaboral[*]
         + modificarLicencia(licenciaId: Identificador, datos: Registro): LicenciaLaboral
         + rechazarLicencia(licenciaId: Identificador, motivo: Cadena): LicenciaLaboral
         + registrarLicencia(empleadoId: Identificador, tipo: Cadena, desde: Fecha, hasta: Fecha, motivo: Cadena): LicenciaLaboral
@@ -93,7 +88,7 @@ classDiagram
     class List_LicenciaLaboral["List<LicenciaLaboral>"] {
         <<colección>>
         + filtrar(estado: Cadena, desde: FechaHora, hasta: FechaHora): LicenciaLaboral[*]
-        + getAprobadasQueCubren(hoy: Fecha)
+        + getAprobadasQueCubren(hoy: Fecha): LicenciaLaboral[*]
     }
 
     class VacationPolicy {
@@ -103,7 +98,7 @@ classDiagram
 
     class PersonnelDashboardService {
         <<fachada>>
-        + consultarTableroDePersonal(): Entero
+        + consultarTableroDePersonal(): Registro
     }
 
     class PuestoDeTrabajo
@@ -116,10 +111,10 @@ classDiagram
     class List_TareaMantenimiento["List<TareaMantenimiento>"] {
         <<colección>>
     }
-    class Distribuidora
-    class Chofer
     class Usuario
+    class Distribuidora
     class TareaMantenimiento
+    class Chofer
 
     Usuario <|-- Chofer
     Map_String_PuestoDeTrabajo "1" o-- "0..*" PuestoDeTrabajo : elementos
@@ -150,7 +145,6 @@ classDiagram
     AttendanceService ..> Empleado
     AttendanceService ..> JornadaDeTrabajo
     AttendanceService ..> Usuario
-    Empleado ..> CuilValidator
     EmployeeService ..> Distribuidora
     EmployeeService ..> Empleado
     EmployeeService ..> TareaMantenimiento

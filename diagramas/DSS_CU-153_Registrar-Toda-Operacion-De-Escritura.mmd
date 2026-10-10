@@ -14,3 +14,14 @@ sequenceDiagram
         SIS-->>SAU: asiento volcado al registro de eventos,<br/>la operación original no se interrumpe
     end
     deactivate SIS
+
+    Note over SAU: Se dispara cuando un registro<br/>de negocio se da de alta, se modifica,<br/>se da de baja o se reactiva
+    SAU->>SIS: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
+    activate SIS
+    Note over SAU,SIS: Escribe en la transacción del cambio, con un<br/>detalle por campo que cambió
+    alt Cambió al menos un campo
+        SIS-->>SAU: auditoría registrada
+    else El guardado no cambió ningún campo
+        SIS-->>SAU: nada que registrar
+    end
+    deactivate SIS

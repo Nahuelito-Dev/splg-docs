@@ -63,8 +63,8 @@ class RendicionChofer {
   - estado: EstadoDeLaRendicion
   - efectivoEsperado: Moneda
   - efectivoDeclarado: Moneda
-  - gastosDelChofer: Moneda
-  - diferencia: Moneda
+  - /gastosDelChofer: Moneda
+  - /diferencia: Moneda
   - resolucionDeLaDiferencia: ResolucionDeDiferencia
   - presentadaEl: FechaHora
   - aprobadaEl: FechaHora
@@ -73,15 +73,14 @@ class RendicionChofer {
   + «create» RendicionChofer(hoy: Fecha)
   + absorberDiferencia()
   + agregarCobro(cobro: AsientoCuentaCorriente)
-  + agregarCobro(asiento: AsientoCuentaCorriente)
   + agregarPedido(pedido: Pedido)
   + aprobar(caja: Caja,\n      resolucionDeDiferencia: ResolucionDeDiferencia)
-  + calcularDiferencia()
-  + calcularEfectivoEsperado()
+  + calcularDiferencia(): Moneda
+  + calcularEfectivoEsperado(): Moneda
   + marcarAvisada(ahora: FechaHora)
   + presentar(efectivoDeclarado: Moneda,\n      gastos: GastoDeRendicion[*])
   + reabrir()
-  + recalcularEfectivoEsperado()
+  + recalcularEfectivoEsperado(): Moneda
   + validarAbierta()
   + validarPresentada()
 }
@@ -104,7 +103,7 @@ class CategoriaDeCaja <<referencia>>
 class AsientoComision <<referencia>>
 
 Chofer "1" *-- "0..*" RendicionChofer : presenta
-RendicionChofer "0..*" -- "0..1" Caja : ingresa en
+RendicionChofer "0..*" --> "0..1" Caja : ingresa en
 RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera
 RendicionChofer "1" *--> "0..*" PedidoRendido : rinde
 PedidoRendido "0..1" -- "1" Pedido : corresponde a

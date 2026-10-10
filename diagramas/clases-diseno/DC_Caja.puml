@@ -64,7 +64,7 @@ class Caja {
   - requiereSesion: Booleano
   - activa: Booleano
   + «create» Caja(nombre: Cadena, tipoDeCaja: TipoDeCaja,\n      requiereSesion: Booleano)
-  + abrirSesion(montoInicial: Moneda,\n      administrador: Administrador): SesionDeCaja
+  + abrirSesion(montoInicial: Moneda,\n      administrador: Administrador,\n      out diferencia: Entero): SesionDeCaja
   + actualizarSaldo(sentido: SentidoDeCaja, importe: Moneda)
   + calcularDiferencia(montoContado: Moneda): Moneda
   + contraasentar(movimiento: MovimientoDeCaja,\n      motivo: Cadena): MovimientoDeCaja
@@ -122,7 +122,7 @@ Caja "1" *--> "0..*" MovimientoDeCaja : asienta
 SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja : agrupa
 CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja : clasifica
 MovimientoDeCaja "0..1" -- "0..1" MovimientoDeCaja : anula a
-RendicionChofer "0..*" -- "0..1" Caja : ingresa en
+RendicionChofer "0..*" --> "0..1" Caja : ingresa en
 RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera
 AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en
 LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja : se paga con

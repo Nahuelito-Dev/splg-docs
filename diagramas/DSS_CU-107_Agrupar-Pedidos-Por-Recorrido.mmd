@@ -13,18 +13,17 @@ sequenceDiagram
     loop Por cada lote armado
         loop Por cada chofer candidato no contactado
             SIS-)CHO: notificarOfertaDeRecorrido(recorrido)
-            alt El chofer acepta dentro de la vigencia
+            opt El chofer acepta dentro de la vigencia
                 CHO->>SIS: aceptarRecorrido(recorridoId)
                 SIS-->>CHO: pedidos asignados en el orden establecido
-            else Rechaza o vence la vigencia
-                Note over SIS: Se cierra la oferta y se<br/>pasa al candidato<br/>siguiente
             end
+            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la oferta<br/>y se pasa al candidato<br/>siguiente
         end
 
         alt Ningún chofer tomó el lote
-            Note over SIS: Se deshace el lote y los<br/>pedidos vuelven al<br/>circuito individual
+            SIS-->>SAU: lote deshecho, pedidos al circuito individual
         else El lote quedó asignado
-            Note over SIS: Se registra el recorrido<br/>asignado
+            SIS-->>SAU: recorrido asignado
         end
     end
     SIS-->>SAU: lotes procesados

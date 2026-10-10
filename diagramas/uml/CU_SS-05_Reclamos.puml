@@ -48,8 +48,10 @@ rectangle "SS-05 Reclamos" {
   usecase "CU-175\nConsultar la Fotografía de un\nReclamo" as U175 #back:FFFFFF;line:9C5A46
 }
 
-usecase "CU-159\nAlmacenar Archivo\n(SS-07)" as U159 #back:FFFFFF;line:6B7683
-usecase "CU-160\nRecuperar Archivo\n(SS-07)" as U160 #back:FFFFFF;line:6B7683
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-159\nAlmacenar Archivo\n(SS-07)" as U159 #back:FFFFFF;line:6B7683
+  usecase "CU-160\nRecuperar Archivo\n(SS-07)" as U160 #back:FFFFFF;line:6B7683
+}
 
 A01 -[#1F6F8B]- U023
 A01 -[#1F6F8B]- U174
@@ -60,7 +62,7 @@ A03 -[#8C4A9E]- U166
 A03 -[#8C4A9E]- U167
 A03 -[#8C4A9E]- U174
 A03 -[#8C4A9E]- U175
-A05 --|> A03
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U025 ..> U024 : <<include>>
@@ -68,9 +70,6 @@ U174 ..> U159 : <<include>>
 U175 ..> U160 : <<include>>
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
-U174 ..> U023 : <<extend>>
-note on link
-  Punto de extensión: el cliente adjunta evidencia fotográfica
-end note
+U174 ..> U023 : <<extend>>\n(punto de extensión:\nel cliente adjunta evidencia\nfotográfica)
 
 @enduml

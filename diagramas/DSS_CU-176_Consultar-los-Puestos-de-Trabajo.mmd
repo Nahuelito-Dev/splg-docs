@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-176 Consultar los Puestos de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarPuestosDeTrabajo()
+    activate SIS
+    SIS-->>ADM: puestos de la distribuidora con su categoría y su cantidad de empleados activos
+    deactivate SIS

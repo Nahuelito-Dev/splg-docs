@@ -12,11 +12,6 @@ classDiagram
         + registrarDeposito(nombre: Cadena, codigo: Cadena, tipo: Cadena, direccion: Cadena): Deposito
     }
 
-    class Map_String_Deposito["Map<String, Deposito>"] {
-        <<colección>>
-        + get(clave: Cadena): Deposito
-    }
-
     class StockService {
         <<fachada>>
         + configurarStockMinimo(depositoId: Identificador, minimos: Lista): UmbralDeStock[*]
@@ -28,14 +23,14 @@ classDiagram
 
     class List_UbicacionDeStock["List<UbicacionDeStock>"] {
         <<colección>>
-        + getCantidadPorCondicion(producto: Producto)
-        + getLlenas(producto: Producto)
+        + getCantidadPorCondicion(producto: Producto): Entero
+        + getLlenas(producto: Producto): Entero
     }
 
     class List_UmbralDeStock["List<UmbralDeStock>"] {
         <<colección>>
         + getConMinimo(): UmbralDeStock[*]
-        + getMinimoDeLlenas(producto: Producto)
+        + getMinimoDeLlenas(producto: Producto): Entero
     }
 
     class Map_String_UbicacionDeStock["Map<String, UbicacionDeStock>"] {
@@ -48,6 +43,11 @@ classDiagram
         + buscar(productoId: Identificador, ubicacionId: Identificador, motivo: Cadena, desde: FechaHora, hasta: FechaHora, pagina: Entero, out total: Entero): MovimientoDeStock[*]
     }
 
+    class Map_String_Deposito["Map<String, Deposito>"] {
+        <<colección>>
+        + get(clave: Cadena): Deposito
+    }
+
     class StockLowCron {
         <<fachada>>
         + avisarStockBajo()
@@ -55,6 +55,8 @@ classDiagram
 
     class StockLedgerService {
         <<fachada>>
+        + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, condicion: Cadena, cantidad: Entero, traslado: MotivoDeMovimiento): Booleano
+        + aplicarMovimientoDeStock(ubicacionDeStock: UbicacionDeStock, ubicacionDeStock: UbicacionDeStock, producto: Producto, condicionDeStock: CondicionDeStock, cantidad: Entero, motivoDeMovimiento: MotivoDeMovimiento): Booleano
         + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, condicionOrigen: CondicionDeStock, condicionDestino: CondicionDeStock, cantidad: Entero, motivoDeMovimiento: MotivoDeMovimiento): Booleano
         + existeMovimiento(pedido: Pedido): Booleano
     }
@@ -85,10 +87,10 @@ classDiagram
         + consultarConciliacionDeStock(): Registro
     }
 
-    class Deposito
     class UbicacionDeStock
     class UmbralDeStock
     class MovimientoDeStock
+    class Deposito
     class AjusteDeStock
     class Map_String_Pedido["Map<String, Pedido>"] {
         <<colección>>
@@ -105,18 +107,18 @@ classDiagram
     class Map_String_Producto["Map<String, Producto>"] {
         <<colección>>
     }
+    class ItemAjusteDeStock
     class Producto
     class Distribuidora
     class ItemPedido
-    class ItemAjusteDeStock
-    class Vehiculo
     class Pedido
+    class Vehiculo
 
-    Map_String_Deposito "1" o-- "0..*" Deposito : elementos
     List_UbicacionDeStock "1" o-- "0..*" UbicacionDeStock : elementos
     List_UmbralDeStock "1" o-- "0..*" UmbralDeStock : elementos
     Map_String_UbicacionDeStock "1" o-- "0..*" UbicacionDeStock : elementos
     List_MovimientoDeStock "1" o-- "0..*" MovimientoDeStock : elementos
+    Map_String_Deposito "1" o-- "0..*" Deposito : elementos
     List_AjusteDeStock "1" o-- "0..*" AjusteDeStock : elementos
     StockAdjustmentService --> "1" List_AjusteDeStock : list<AjusteDeStock>
     StockAdjustmentService --> "1" Map_String_UbicacionDeStock : map<String, UbicacionDeStock>

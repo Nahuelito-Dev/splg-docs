@@ -12,7 +12,7 @@ sequenceDiagram
     ADM->>+SRV: cerrarRendicionDeStock(cargaId, nota)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: cerrar(nota, autor)
+    SRV->>+CAR: cerrar(nota, administrador)
     CAR->>CAR: validarQueRegreso()
     loop Por cada tipo de garrafa de la carga
         CAR->>ICA: calcularDiferencia()
@@ -21,11 +21,17 @@ sequenceDiagram
         CAR->>CAR: validarNotaDeDiferencia(nota)
     end
     CAR-->>-SRV: carga
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionOrigen
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionDestino
     loop Por cada tipo de garrafa de la carga
         SRV->>+ICA: getProducto()
         ICA-->>-SRV: producto
-        Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo del camión
-        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+        SRV->>+ICA: getLlenasDeclaradas()
+        ICA-->>-SRV: llenasDeclaradas
+        Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma<br/>y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del camión
+        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasDeclaradas, cierreDeRendicion)
         opt Faltaron garrafas llenas
             SRV->>PRO: restarStock(faltante)
             alt El stock vendible alcanza para el faltante

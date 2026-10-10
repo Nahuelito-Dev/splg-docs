@@ -58,6 +58,10 @@ _c("ConfiguracionModulo", "OrganizacionYAcceso",
    ["módulo", "parámetros", "exigir carga de camión abierta"])
 _c("AsientoAuditoria", "OrganizacionYAcceso",
    ["operación", "recurso", "aplicación", "resultado", "cambios", "fecha"])
+_c("Auditoria", "OrganizacionYAcceso",
+   ["entidad afectada", "fecha y hora"])
+_c("DetalleAuditoria", "OrganizacionYAcceso", ["campo", "valor anterior", "valor nuevo"])
+_c("TipoAccionAuditoria", "OrganizacionYAcceso", ["nombre"])
 
 _c("Cliente", "Clientes", ["consumo mensual declarado", "días de aviso"])
 _c("DireccionEntrega", "Clientes",
@@ -68,7 +72,7 @@ _c("ItemSugerido", "Clientes", ["cantidad"])
 _c("Producto", "CatalogoEInventario",
    ["tipo", "peso en kilos", "precio", "stock", "activo", "costo promedio"])
 _c("Promocion", "CatalogoEInventario", ["cantidad", "descuento"])
-_c("Envase", "CatalogoEInventario", ["número de serie", "estado", "depósito", "/vencimiento"])
+_c("Envase", "CatalogoEInventario", ["número de serie", "estado", "monto del depósito", "/vencimiento"])
 _c("MovimientoEnvase", "CatalogoEInventario", ["desde", "hacia", "fecha"])
 _c("RevisionEnvase", "CatalogoEInventario", ["fecha", "resultado", "próxima revisión"])
 _c("CasoRecupero", "CatalogoEInventario",
@@ -134,7 +138,7 @@ _c("Neumatico", "GastosDeFlota",
    ["número de serie", "marca", "medida", "costo", "estado", "posición", "kilometraje de montaje"])
 _c("MovimientoNeumatico", "GastosDeFlota", ["tipo", "kilometraje", "fecha"])
 
-_c("Reclamo", "Posventa", ["motivo", "descripción", "estado", "resolución", "fotografía", "clave de la fotografía"])
+_c("Reclamo", "Posventa", ["motivo", "descripción", "estado", "resolución", "fotografía"])
 _c("Incidencia", "Posventa",
    ["tipo", "momento", "descripción", "estado", "resolución", "fotografía"])
 _c("Calificacion", "Posventa", ["puntaje", "comentario"])
@@ -176,7 +180,7 @@ _c("MovimientoDeCaja", "CajaYFinanzas",
    ["sentido", "importe", "medio", "fecha", "descripción", "origen"])
 _c("RendicionChofer", "CajaYFinanzas",
    ["número", "fecha de negocio", "estado", "efectivo esperado", "efectivo declarado",
-    "gastos del chofer", "diferencia", "resolución de la diferencia", "presentada el",
+    "/gastos del chofer", "/diferencia", "resolución de la diferencia", "presentada el",
     "aprobada el", "observaciones", "aviso enviado el"])
 _c("PedidoRendido", "CajaYFinanzas", ["importe", "medio de pago"])
 _c("GastoDeRendicion", "CajaYFinanzas", ["importe", "descripción"])
@@ -219,6 +223,10 @@ ASOCIACIONES = [
     ("Distribuidora", "1", "*", "0..*", "FranjaHoraria", "define", PL),
     ("Distribuidora", "1", "*", "0..*", "ConfiguracionModulo", "parametriza", DE),
     ("Usuario", "0..1", "-", "0..*", "AsientoAuditoria", "origina", RG),
+    ("Usuario", "0..1", "-", "0..*", "Auditoria", "realiza", RG),
+    ("Distribuidora", "0..1", "-", "0..*", "Auditoria", "delimita", RG),
+    ("Auditoria", "1", "*", "0..*", "DetalleAuditoria", "detalla con", LT),
+    ("TipoAccionAuditoria", "1", "-", "0..*", "Auditoria", "clasifica", DE),
 
     ("Cliente", "1", "*", "0..*", "DireccionEntrega", "registra", PL),
     ("Cliente", "1", "-", "0..*", "Pedido", "realiza", TR),
@@ -387,7 +395,8 @@ CLASE_ASOCIACION = ("AsignacionVehiculo", "Chofer", "Vehiculo")
 VISTAS = [
     ("Usuarios y cuentas", "MC_Usuarios-y-cuentas",
      ["Distribuidora", "Usuario", "Rol", "Administrador", "ConfiguracionModulo",
-      "AsientoAuditoria", "Cliente", "DireccionEntrega", "InvitacionRecompra", "ItemSugerido"],
+      "AsientoAuditoria", "Auditoria", "DetalleAuditoria", "TipoAccionAuditoria",
+      "Cliente", "DireccionEntrega", "InvitacionRecompra", "ItemSugerido"],
      ["Chofer", "Producto", "Pedido"]),
     ("Pedidos y pagos", "MC_Pedidos",
      ["Pedido", "ItemPedido", "Carrito", "ItemCarrito", "CambioEstadoPedido",
@@ -444,7 +453,8 @@ VISTAS = [
 TABLA = {
     "Distribuidora": "distributor", "Usuario": "user", "Rol": "role",
     "Administrador": "admin", "ConfiguracionModulo": "module_config",
-    "AsientoAuditoria": "audit_log", "Cliente": "customer",
+    "AsientoAuditoria": "audit_log", "Auditoria": "audit", "DetalleAuditoria": "audit_detail",
+    "TipoAccionAuditoria": "audit_action_type", "Cliente": "customer",
     "DireccionEntrega": "user_address", "InvitacionRecompra": "repurchase_invitation",
     "ItemSugerido": None, "Producto": "gas_cylinder", "Promocion": "gas_cylinder_promotion",
     "Envase": "cylinder", "MovimientoEnvase": "cylinder_movement",
@@ -485,10 +495,11 @@ TABLA = {
 
 
 # Conceptos de los módulos de gestión de la distribuidora que todavía no tienen tabla en la base
-# (concepto -> iteración en que se construyen): el personal (I-11), la flota ampliada (I-12), el stock y
+# (concepto -> iteración en que se construyen): las jornadas y licencias del personal (I-11; los puestos y los
+# legajos ya están construidos), la flota ampliada (I-12), el stock y
 # las compras (I-13) y la caja y rendición (I-14). Sus tablas están en `propuesto_personal.py`, `propuesto_flota.py` y la constante
 # PROPUESTO de `generar-modelo-datos.py`. Todo lo que contrasta el modelo con la base los trata aparte.
-PLANIFICADOS = {c: "I-11" for c in ("PuestoDeTrabajo", "Empleado", "JornadaDeTrabajo", "LicenciaLaboral")}
+PLANIFICADOS = {c: "I-11" for c in ("JornadaDeTrabajo", "LicenciaLaboral")}
 PLANIFICADOS.update({c: "I-12" for c in ("CargaCombustible", "MultaTransito", "Siniestro", "Neumatico",
                                          "MovimientoNeumatico")})
 PLANIFICADOS.update({c: "I-13" for c in (
@@ -507,8 +518,7 @@ ATRIBUTOS_PLANIFICADOS = {("PlanMantenimiento", "documento que controla"): "I-11
                           ("Producto", "costo promedio"): "I-13",
                           ("ConfiguracionModulo", "exigir carga de camión abierta"): "I-13"}
 # Módulo del backend de cada concepto planificado (y del Adjunto, que ya está implementado).
-MODULO_PLANIFICADO = {"PuestoDeTrabajo": "employee", "Empleado": "employee", "JornadaDeTrabajo": "employee",
-                      "LicenciaLaboral": "employee", "Adjunto": "attachment",
+MODULO_PLANIFICADO = {"JornadaDeTrabajo": "employee", "LicenciaLaboral": "employee", "Adjunto": "attachment",
                       "CargaCombustible": "fleet-expense", "MultaTransito": "fleet-expense",
                       "Siniestro": "fleet-expense", "Neumatico": "fleet-expense",
                       "MovimientoNeumatico": "fleet-expense",
@@ -605,6 +615,9 @@ ATRIBUTOS = {
     "AsientoAuditoria": {"operación": "http_method", "recurso": "resource",
                          "aplicación": "client_source", "resultado": "result",
                          "cambios": "changes", "fecha": "created_at"},
+    "Auditoria": {"entidad afectada": "entity", "fecha y hora": "created_at"},
+    "DetalleAuditoria": {"campo": "field", "valor anterior": "old_value", "valor nuevo": "new_value"},
+    "TipoAccionAuditoria": {"nombre": "name"},
     "Cliente": {"consumo mensual declarado": "avg_monthly_consumption_kg",
                 "días de aviso": "repurchase_notice_days"},
     "DireccionEntrega": {"calle y altura": "street", "piso y departamento": "floor",
@@ -614,7 +627,7 @@ ATRIBUTOS = {
     "Producto": {"tipo": "type", "peso en kilos": "weight", "precio": "price",
                  "stock": "stock", "activo": "isActive", "costo promedio": "average_unit_cost"},
     "Promocion": {"cantidad": "quantity", "descuento": "discount_percentage"},
-    "Envase": {"número de serie": "serial", "estado": "state", "depósito": "deposit",
+    "Envase": {"número de serie": "serial", "estado": "state", "monto del depósito": "deposit",
                "/vencimiento": "expires_at"},
     "MovimientoEnvase": {"desde": "from_state", "hacia": "to_state", "fecha": "createdAt"},
     "RevisionEnvase": {"fecha": "inspected_at", "resultado": "result",
@@ -662,8 +675,7 @@ ATRIBUTOS = {
                                "desde": "window_start", "hasta": "window_end"},
     "RegistroUsoVehiculo": {"día": "day", "kilómetros": "km", "pedidos": "orders"},
     "Reclamo": {"motivo": "reason", "descripción": "description", "estado": "status",
-                "resolución": "resolutionNote", "fotografía": "photoUrl",
-                "clave de la fotografía": "photo_key"},
+                "resolución": "resolutionNote", "fotografía": "photoUrl"},
     "Incidencia": {"tipo": "type", "momento": "moment", "descripción": "description",
                    "estado": "status", "resolución": "resolution_note",
                    "fotografía": "photo_url"},
@@ -759,7 +771,7 @@ ATRIBUTOS = {
                          "origen": "reference_type"},
     "RendicionChofer": {"número": "number", "fecha de negocio": "business_date", "estado": "status",
                         "efectivo esperado": "expected_cash", "efectivo declarado": "declared_cash",
-                        "gastos del chofer": "driver_expenses", "diferencia": "difference",
+                        "/gastos del chofer": "driver_expenses", "/diferencia": "difference",
                         "resolución de la diferencia": "difference_resolution",
                         "presentada el": "submitted_at", "aprobada el": "approved_at",
                         "observaciones": "notes", "aviso enviado el": "alerted_at"},

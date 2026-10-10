@@ -1,5 +1,5 @@
 @startuml
-title SS-08 — Gestión de Productos e Inventario (23 casos de uso)
+title SS-08 — Gestión de Productos e Inventario (28 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -39,15 +39,16 @@ actor "Chofer\n(ACT-02)" as A02
 actor "Administrador\n(ACT-03)" as A03
 actor "Sistema Automático\n(ACT-04)" as A04
 actor "Administrador General\n(ACT-05)" as A05
+actor "Servicio de correo\n(ACT-08)" as A08 <<sistema externo>>
 
 rectangle "SS-08 Gestión de Productos e Inventario" {
   usecase "CU-036\nCrear Producto (Garrafa)" as U036 #back:FFFFFF;line:5E7A3A
   usecase "CU-037\nActualizar Precio de Producto" as U037 #back:FFFFFF;line:5E7A3A
   usecase "CU-038\nActualizar Stock de Producto" as U038 #back:FFFFFF;line:5E7A3A
   usecase "CU-039\nConfigurar Promociones por\nCantidad" as U039 #back:FFFFFF;line:5E7A3A
-  usecase "CU-040\nActivar / Desactivar Producto" as U040 #back:FFFFFF;line:5E7A3A
+  usecase "CU-040\nDesactivar un Producto" as U040 #back:FFFFFF;line:5E7A3A
   usecase "CU-041\nConsultar Catálogo de\nProductos" as U041 #back:FFFFFF;line:5E7A3A
-  usecase "CU-207\nGestionar los Depósitos" as U207 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-207\nConsultar los Depósitos" as U207 <<planificado>> #back:FFFFFF;line:5E7A3A
   usecase "CU-208\nConsultar el Stock por\nUbicación" as U208 <<planificado>> #back:FFFFFF;line:5E7A3A
   usecase "CU-209\nConsultar los Movimientos de\nStock" as U209 <<planificado>> #back:FFFFFF;line:5E7A3A
   usecase "CU-210\nConfigurar el Stock Mínimo" as U210 <<planificado>> #back:FFFFFF;line:5E7A3A
@@ -64,13 +65,20 @@ rectangle "SS-08 Gestión de Productos e Inventario" {
   usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer" as U248 <<planificado>> #back:FFFFFF;line:5E7A3A
   usecase "CU-249\nConfigurar el Control de Carga\nde Camión Abierta" as U249 <<planificado>> #back:FFFFFF;line:5E7A3A
   usecase "CU-250\nAplicar un Movimiento de Stock" as U250 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-258\nRegistrar un Depósito" as U258 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-259\nModificar un Depósito" as U259 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-260\nDar de Baja un Depósito" as U260 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-268\nReactivar un Producto" as U268 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-269\nConsultar los Productos\nInactivos" as U269 <<planificado>> #back:FFFFFF;line:5E7A3A
   usecase "Filtrar por Término" as F_TERM <<factorizado>> #back:FFFFFF;line:5E7A3A
 }
 
-usecase "CU-012\nAsignar Chofer Manualmente\n(SS-03)" as U012 #back:FFFFFF;line:6B7683
-usecase "CU-013\nAsignar Pedido Automáticamente\npor Proximidad\n(SS-03)" as U013 #back:FFFFFF;line:6B7683
-usecase "CU-015\nAceptar Pedido\n(SS-03)" as U015 #back:FFFFFF;line:6B7683
-usecase "CU-217\nRegistrar la Recepción de una\nCompra\n(SS-20)" as U217 <<planificado>> #back:FFFFFF;line:6B7683
+rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
+  usecase "CU-012\nAsignar Chofer Manualmente\n(SS-03)" as U012 #back:FFFFFF;line:6B7683
+  usecase "CU-013\nAsignar Pedido Automáticamente\npor Proximidad\n(SS-03)" as U013 #back:FFFFFF;line:6B7683
+  usecase "CU-015\nAceptar Pedido\n(SS-03)" as U015 #back:FFFFFF;line:6B7683
+  usecase "CU-217\nRegistrar la Recepción de una\nCompra\n(SS-20)" as U217 <<planificado>> #back:FFFFFF;line:6B7683
+}
 
 A01 -[#1F6F8B]- U041
 A02 -[#2E7D46]- U219
@@ -94,10 +102,17 @@ A03 -[#8C4A9E]- U221
 A03 -[#8C4A9E]- U222
 A03 -[#8C4A9E]- U224
 A03 -[#8C4A9E]- U249
+A03 -[#8C4A9E]- U258
+A03 -[#8C4A9E]- U259
+A03 -[#8C4A9E]- U260
+A03 -[#8C4A9E]- U268
+A03 -[#8C4A9E]- U269
 A04 -[#8A6D1F]- U211
 A04 -[#8A6D1F]- U220
 A04 -[#8A6D1F]- U224
-A05 --|> A03
+U211 -[#6B7683]- A08
+U224 -[#6B7683]- A08
+A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U037 ..> U041 : <<include>>
@@ -112,15 +127,15 @@ U213 ..> U250 : <<include>>
 U218 ..> U250 : <<include>>
 U220 ..> U250 : <<include>>
 U222 ..> U250 : <<include>>
+U259 ..> U207 : <<include>>
+U260 ..> U207 : <<include>>
+U268 ..> U269 : <<include>>
 U217 ..> U250 : <<include>>
 U012 ..> U248 : <<include>>
 U013 ..> U248 : <<include>>
 U015 ..> U248 : <<include>>
 
 ' <<extend>>: comportamiento opcional. La flecha va de la extension al caso base.
-F_TERM ..> U041 : <<extend>>
-note on link
-  Punto de extensión: se indica el parámetro term sobre el listado
-end note
+F_TERM ..> U041 : <<extend>>\n(punto de extensión:\nse indica el parámetro term sobre\nel listado)
 
 @enduml

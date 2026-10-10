@@ -42,6 +42,9 @@ de las tablas: la entidad se llama como el concepto y lleva sus atributos. La re
 | Administrador | Administrador | `admin` |
 | ConfiguracionModulo | ConfiguracionModulo | `module_config` |
 | AsientoAuditoria | AsientoAuditoria | `audit_log` |
+| Auditoria | Auditoria | `audit` |
+| DetalleAuditoria | DetalleAuditoria | `audit_detail` |
+| TipoAccionAuditoria | TipoAccionAuditoria | `audit_action_type` |
 | Cliente | Cliente | `customer` |
 | DireccionEntrega | DireccionEntrega | `user_address` |
 | InvitacionRecompra | InvitacionRecompra | `repurchase_invitation` |
@@ -158,8 +161,8 @@ pedidos, cada uno con el motivo por el que está.
 
 Si además se quiere que revise el DDL, sumar
 **`SPLG-base-de-datos-completa-lucidchart.sql`**, que es el modelo entero en
-menos de 53 KB.
-No conviene pegar `SPLG-base-de-datos.sql`: son 84 KB
+menos de 54 KB.
+No conviene pegar `SPLG-base-de-datos.sql`: son 96 KB
 en su mayoría de índices y funciones de PostGIS que no aportan al análisis del
 modelo.
 

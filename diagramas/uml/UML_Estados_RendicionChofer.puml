@@ -21,13 +21,13 @@ state "Abierta\n(open)" as ABI
 state "Presentada\n(submitted)" as PRE
 state "Aprobada\n(approved)" as APR
 
-[*] --> ABI : when(23:30 de cada día) generarRendicionesDelDia()\n[el chofer no tiene una rendición abierta y tiene\nefectivo o cobros de cuenta corriente sin rendir]
-ABI --> ABI : when(23:30 de cada día) generarRendicionesDelDia()\n[el chofer ya tiene una rendición abierta: se completa]
+[*] --> ABI : when(23:30 de cada día)\n[el chofer no tiene una rendición abierta y tiene\nefectivo o cobros de cuenta corriente sin rendir]\n/ generarRendicionesDelDia()
+ABI : when(23:30 de cada día) [el chofer ya tiene\nuna rendición abierta] / generarRendicionesDelDia()
 ABI --> PRE : declararEfectivoRendido(efectivoDeclarado, gastos)\n[la presenta el chofer o el administrador]
 PRE --> ABI : reabrirRendicion()
 PRE --> APR : aprobarRendicion(cajaDestinoId, resolucionDeDiferencia)\n[la diferencia está resuelta]
-ABI --> ABI : when(08:00 de un día posterior)\navisarRendicionesSinCerrar()
-PRE --> PRE : when(08:00 de un día posterior)\navisarRendicionesSinCerrar()
+ABI : when(08:00 de un día posterior)\n/ avisarRendicionesSinCerrar()
+PRE : when(08:00 de un día posterior)\n/ avisarRendicionesSinCerrar()
 APR --> [*]
 
 note bottom of APR

@@ -85,7 +85,7 @@ VISTAS_MODULOS = [
      ["fleet-expense", "=Map<String, Empleado>", "=FleetCostReportService", "=List<Vehiculo>"]),
     ("Reclamos, incidencias y calificaciones", "Posventa", ["claims", "incident", "rating"]),
     ("Notificaciones y correo", "Notificaciones", ["notifications", "email"]),
-    ("Reportes, salud y almacenamiento", "Soporte", ["reports", "health", "redis", "storage"]),
+    ("Reportes, salud y almacenamiento", "Soporte", ["reports", "health", "redis", "s3"]),
     ("Stock", "Stock", ["stock"]),
     ("Compras", "Compras", ["purchase"]),
     ("Carga del camión", "Carga-del-camion", ["truck-load"]),
@@ -107,7 +107,8 @@ VISTAS_MODULOS = [
 # Vistas de dominio: el foco lleva atributos y operaciones; la referencia, sólo el nombre.
 VISTAS_DOMINIO = [
     ("Organización y acceso", "Organizacion-y-acceso",
-     ["Distribuidora", "ConfiguracionModulo", "Usuario", "Rol", "Administrador", "AsientoAuditoria"],
+     ["Distribuidora", "ConfiguracionModulo", "Usuario", "Rol", "Administrador", "AsientoAuditoria",
+      "Auditoria", "DetalleAuditoria", "TipoAccionAuditoria"],
      ["Cliente", "Chofer", "Pedido"]),
     ("Clientes", "Clientes",
      ["Cliente", "DireccionEntrega", "InvitacionRecompra", "ItemSugerido"],
@@ -174,7 +175,7 @@ AREAS_PAQUETES = [
                  "cylinder", "distributor"]),
     ("Flota y despacho", ["delivery", "car", "fleet", "fleet-expense", "gateways"]),
     ("Personal", ["employee", "attachment"]),
-    ("Soporte", ["notifications", "email", "redis", "storage", "health"]),
+    ("Soporte", ["notifications", "email", "redis", "s3", "health"]),
     ("Stock y compras", ["stock", "purchase", "truck-load"]),
 ]
 
@@ -258,7 +259,7 @@ def decl_clase(nombre, miembros=True, referencia=False):
         est = "referencia"
     marca = f" <<{est}>>" if est else ""
     if cl.tipo == "puerto" and not referencia:
-        marca = " <<interface>> <<puerto>>"
+        marca = " <<puerto>>"
     visible = f'"{nombre}" as {id_}' if id_ != nombre else nombre
     if cl.tipo == "puerto" and not referencia:
         tipo = "interface"
@@ -312,6 +313,14 @@ def flecha_asoc(a):
     return f"{ia}{ma} {sig}{mb} {ib}{nombre}"
 
 
+def flecha_dep(o, d):
+    """Dependencia `..>`; la creación lleva «create» pegado al extremo de la clase creada, para que
+    la etiqueta no flote en el medio de una línea larga."""
+    if (o, d) in dc.creaciones:
+        return f'{ident(o)} ..> "<<create>>" {ident(d)}'
+    return f"{ident(o)} ..> {ident(d)}"
+
+
 def lineas_relaciones(en_vista, con_nombre=True, ambos_extremos=True, incluir_dep=True):
     """Relaciones entre las clases `en_vista`. `ambos_extremos`: sólo las que tienen ambos
     extremos dentro de la vista; si no, alcanza con uno (las de referencia se dibujan igual)."""
@@ -322,8 +331,7 @@ def lineas_relaciones(en_vista, con_nombre=True, ambos_extremos=True, incluir_de
     if incluir_dep:
         for o, d in sorted(dc.dependencias):
             if o in en_vista and d in en_vista:
-                et = " : <<create>>" if (o, d) in dc.creaciones else ""
-                r.append(f"{ident(o)} ..> {ident(d)}{et}")
+                r.append(flecha_dep(o, d))
     for ad, pu in dc.realizaciones:
         if ad in en_vista and pu in en_vista:
             r.append(f"{ident(ad)} ..|> {ident(pu)}")
@@ -345,7 +353,20 @@ def generalizaciones(en_vista):
 
 # ======================================================================== vistas de dominio
 def vista_dominio(titulo, foco, ref):
-    en_vista = set(foco) | set(ref)
+    foco_s = set(foco)
+    # una referencia que no se relaciona con ninguna clase del foco no aporta nada a la vista
+    usadas = set()
+    for a in dc.asociaciones:
+        if a["a"] in foco_s: usadas.add(a["b"])
+        if a["b"] in foco_s: usadas.add(a["a"])
+    for o, d in dc.dependencias:
+        if o in foco_s: usadas.add(d)
+        if d in foco_s: usadas.add(o)
+    for p, h in dc.generalizaciones:
+        if p in foco_s: usadas.add(h)
+        if h in foco_s: usadas.add(p)
+    ref = [n for n in ref if n in usadas or n in foco_s]
+    en_vista = foco_s | set(ref)
     lin = ["@startuml", CAB]
     for n in foco:
         lin += decl_clase(n)
@@ -361,8 +382,7 @@ def vista_dominio(titulo, foco, ref):
             lin.append(flecha_asoc(a))
     for o, d in sorted(dc.dependencias):
         if o in en_vista and d in en_vista and (o in foco_s or d in foco_s):
-            et = " : <<create>>" if (o, d) in dc.creaciones else ""
-            lin.append(f"{ident(o)} ..> {ident(d)}{et}")
+            lin.append(flecha_dep(o, d))
     c, a_, b_ = M.CLASE_ASOCIACION
     if {c, a_, b_} <= en_vista:
         lin.append(f"({a_}, {b_}) .. {c}")
@@ -387,15 +407,17 @@ def vista_general():
     lin.append("")
     todas = set(M.CLASES)
     lin += generalizaciones(todas)
-    for a in dc.asociaciones:
-        if a["a"] in M.CLASES and a["b"] in M.CLASES:
-            if a["a"] == "Usuario" and a["nombre"] in AUTORIA and a["b"] != "AsientoAuditoria":
-                continue
-            lin.append(flecha_asoc(dict(a, nombre="", ma="", mb="")))
+    vistas = [a for a in dc.asociaciones if a["a"] in M.CLASES and a["b"] in M.CLASES
+              and not (a["a"] == "Usuario" and a["nombre"] in AUTORIA and a["b"] != "AsientoAuditoria")]
+    # entre un mismo par de clases hay a veces dos asociaciones: sólo ésas llevan el nombre, para distinguirlas
+    por_par = collections.Counter(frozenset((a["a"], a["b"])) for a in vistas)
+    for a in vistas:
+        repetida = por_par[frozenset((a["a"], a["b"]))] > 1
+        lin.append(flecha_asoc(a if repetida else dict(a, nombre="")))
     c, a_, b_ = M.CLASE_ASOCIACION
     lin.append(f"({a_}, {b_}) .. {c}")
     lin += ["", "legend bottom right",
-            "  Vista de conjunto: sin miembros ni nombres de asociación. La flecha abierta marca",
+            "  Vista de conjunto: sin miembros; sólo llevan nombre las asociaciones que comparten par. La flecha abierta marca",
             "  la navegabilidad que piden los diagramas de interacción; se omiten las asociaciones",
             "  de Usuario que sólo registran la autoría de un hecho, que figuran en su área.",
             "endlegend", "@enduml"]
@@ -422,13 +444,37 @@ def vista_modulo(titulo, propias):
     for a in dc.asociaciones:
         if a["a"] in propias_s and a["b"] not in propias_s and not a["mc"]:
             refs.append(a["b"])
-    for o, d in dc.dependencias:
+    for o, d in sorted(dc.dependencias):
         if o in propias_s and d not in propias_s:
             refs.append(d)
     for ad, pu in dc.realizaciones:
         if pu in propias_s and ad not in propias_s:
             refs.append(ad)
-    refs = list(collections.OrderedDict.fromkeys(refs))
+
+    # una clase propia que sólo recibe mensajes de clases de otra vista (un puerto, un validador)
+    # quedaría suelta: se dibuja con quien la usa, en gris
+    def tocadas(extra):
+        t = set()
+        for a in dc.asociaciones:
+            if not a["mc"] and a["a"] in propias_s and (a["b"] in propias_s or a["b"] in extra):
+                t |= {a["a"], a["b"]}
+        for o, d in dc.dependencias:
+            if o in propias_s and (d in propias_s or d in extra):
+                t |= {o, d}
+        for ad, pu in dc.realizaciones:
+            if pu in propias_s:
+                t |= {ad, pu}
+        return t
+    sueltas = [n for n in propias if n not in tocadas(set(refs))]
+    entrantes = []
+    for n in sueltas:
+        for a in dc.asociaciones:
+            if a["b"] == n and not a["mc"] and a["a"] not in propias_s:
+                entrantes.append((a["a"], n, "asoc", a))
+        for o, d in sorted(dc.dependencias):
+            if d == n and o not in propias_s:
+                entrantes.append((o, n, "dep", None))
+    refs = list(collections.OrderedDict.fromkeys(refs + [o for o, _, _, _ in entrantes]))
     en_vista = propias_s | set(refs)
     lin = ["@startuml", CAB, "left to right direction", "skinparam nodesep 25", "skinparam ranksep 90"]
     for n in propias:
@@ -443,8 +489,9 @@ def vista_modulo(titulo, propias):
             lin.append(flecha_asoc(dict(a, nombre="")))
     for o, d in sorted(dc.dependencias):
         if o in propias_s and d in en_vista:
-            et = " : <<create>>" if (o, d) in dc.creaciones else ""
-            lin.append(f"{ident(o)} ..> {ident(d)}{et}")
+            lin.append(flecha_dep(o, d))
+    for o, d, tipo, a in entrantes:
+        lin.append(flecha_asoc(dict(a, nombre="")) if tipo == "asoc" else flecha_dep(o, d))
     for ad, pu in dc.realizaciones:
         if ad in en_vista and pu in en_vista:
             lin.append(f"{ident(ad)} ..|> {ident(pu)}")

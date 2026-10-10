@@ -41,8 +41,8 @@ class RendicionChofer {
   estado
   efectivo esperado
   efectivo declarado
-  gastos del chofer
-  diferencia
+  /gastos del chofer
+  /diferencia
   resolución de la diferencia
   presentada el
   aprobada el

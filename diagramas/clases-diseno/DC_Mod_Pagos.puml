@@ -62,8 +62,9 @@ skinparam nodesep 25
 skinparam ranksep 90
 class PaymentsService <<fachada>> {
   + crearCheckoutDePago(pedidoId: Identificador,\n      metodoDePago: MetodoDePago): Cadena
+  + crearCheckoutDePago(pedido: Pedido,\n      metodoDePago: MetodoDePago): Cadena
 }
-interface PaymentGatewayPort <<interface>> <<puerto>> {
+interface PaymentGatewayPort <<puerto>> {
   + createCheckout(pedido: Pedido, items: Registro,\n      pagador: Cadena): Cadena
   + getPayment(identificadorDelPago: Identificador): Cadena
   + refundPayment(pago: Pago, importe: Moneda): Cadena
@@ -86,8 +87,8 @@ class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class NotificationPort <<referencia>>
 class RealtimeDispatchPort <<referencia>>
 class "List<Pedido>" as List_Pedido <<referencia>>
-class Pedido <<referencia>>
 class Pago <<referencia>>
+class Pedido <<referencia>>
 
 ConfirmPaymentUseCase --> "1" Map_String_Pedido
 ConfirmPaymentUseCase --> "1" NotificationPort
@@ -102,7 +103,7 @@ ReservationService --> "1" Map_String_Pedido
 ConfirmPaymentUseCase ..> Pago
 ConfirmPaymentUseCase ..> PaymentGatewayPort
 ConfirmPaymentUseCase ..> Pedido
-PaymentsService ..> Pago : <<create>>
+PaymentsService ..> "<<create>>" Pago
 PaymentsService ..> Pedido
 RefundPaymentUseCase ..> Pago
 RefundPaymentUseCase ..> Pedido

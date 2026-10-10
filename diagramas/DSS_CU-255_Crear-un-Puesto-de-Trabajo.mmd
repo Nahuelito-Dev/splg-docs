@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-255 Crear un Puesto de Trabajo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: crearPuestoDeTrabajo(nombre, categoria)
+    activate SIS
+    alt el nombre está disponible en la distribuidora
+        SIS-->>ADM: puesto creado
+    else ya existe un puesto vigente con ese nombre
+        SIS-->>ADM: conflicto
+    else el nombre o la categoría no son válidos
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS

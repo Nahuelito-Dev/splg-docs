@@ -76,7 +76,7 @@ class Cliente {
   + getDireccion(direccionId: Identificador): DireccionEntrega
   + getDirecciones(): DireccionEntrega[*]
   + getDireccionPredeterminada(): DireccionEntrega
-  + getFechaEstimadaDeRecompra()
+  + getFechaEstimadaDeRecompra(): Fecha
   + getToken(): Cadena
   + presentarReclamo(pedido: Pedido, motivo: Cadena,\n      evidencia: Archivo): Reclamo
   + promoverOtraPredeterminada()
@@ -97,7 +97,7 @@ class DireccionEntrega {
   + «create» DireccionEntrega(datos: Registro,\n      punto: Coordenada,\n      precision: PrecisionDeGeocodificacion,\n      predeterminada: Booleano)
   + darDeBaja()
   + editar(cambios: Registro)
-  + esDelUsuario(usuario: Usuario)
+  + esDelUsuario(usuario: Usuario): Booleano
   + marcarPredeterminada()
   + validarCoordenadas(cambios: Registro)
 }

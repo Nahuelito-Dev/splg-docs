@@ -6,11 +6,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
     activate SIS
-    alt el empleado está activo y la fecha es válida
+    alt el empleado está activo, la fecha es válida y el chofer no tiene pedidos en curso
         SIS-->>ADM: legajo egresado, cuenta bloqueada y vehículo liberado si era chofer
     else el empleado no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el empleado ya está egresado
+    else el empleado ya está egresado o el chofer tiene pedidos en curso
         SIS-->>ADM: conflicto
     else la fecha es anterior a la de ingreso
         SIS-->>ADM: datos inválidos
@@ -25,5 +25,7 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el empleado no está egresado
         SIS-->>ADM: conflicto
+    else la fecha de ingreso es anterior a la de egreso
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS

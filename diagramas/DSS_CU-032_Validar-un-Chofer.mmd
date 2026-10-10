@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-032 Validar un Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: validarChofer(choferId)
+    activate SIS
+    SIS-->>ADM: chofer validado (habilitado para recibir pedidos)
+    deactivate SIS

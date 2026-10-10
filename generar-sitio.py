@@ -123,9 +123,26 @@ def imagen(p):
     if os.path.exists(s):
         return "data:image/svg+xml;base64," + base64.b64encode(open(s,"rb").read()).decode()
     return b64(p)
+def imagen_apilada(pngs, sep=40):
+    """Apila verticalmente varias laminas (sus .svg) en un unico svg."""
+    items, y, ancho = [], 0, 0
+    for p in pngs:
+        s = re.sub(r'\.png$', '.svg', p)
+        cab = re.search(r'<svg[^>]*\swidth="([\d.]+)px"\s+height="([\d.]+)px"', open(s, encoding="utf-8").read())
+        w, h = float(cab.group(1)), float(cab.group(2))
+        uri = "data:image/svg+xml;base64," + base64.b64encode(open(s, "rb").read()).decode()
+        items.append(f'<image x="0" y="{y}" width="{w}" height="{h}" href="{uri}"/>')
+        y += h + sep; ancho = max(ancho, w)
+    alto = y - sep
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{ancho}" height="{alto}" viewBox="0 0 {ancho} {alto}">'
+           f'<rect width="100%" height="100%" fill="#FFFFFF"/>' + "".join(items) + '</svg>')
+    return "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
 for c,v in ss.items():
-    g = glob.glob(D+f"diagramas/uml/CU_{c}_*.png")
-    if g: v["uml"] = imagen(g[0])
+    g = sorted(glob.glob(D+f"diagramas/uml/CU_{c}_*.png"))
+    if len(g) > 1:
+        # un subsistema partido en varias laminas se muestra como una sola figura, una lamina debajo de la otra
+        v["uml"] = imagen_apilada(g)
+    elif g: v["uml"] = imagen(g[0])
 
 # diagramas de nivel sistema. Antes esto era un glob de CU_Sistema_*.png del que se
 # tomaba el primero; al sumar el de actores y el completo, cual salia dependia del
@@ -138,8 +155,8 @@ UMLSIS = {
                "Diagrama completo de casos de uso",
                "Los %d casos de uso, uno por uno, dentro de su paquete, con los actores afuera del límite"),
   "mapa": ("CU_Sistema_Mapa",
-               "Mapa del sistema",
-               "Una página: los 21 paquetes con su cantidad de casos y qué actor participa en cada uno"),
+               "Mapa de navegación (no es un diagrama UML)",
+               "Una página de orientación: los 21 subsistemas con su cantidad de casos y qué actor participa en cada uno. El diagrama UML de paquetes es «Subsistemas del proyecto»"),
   "subsistemas": ("CU_Sistema_Subsistemas",
                "Subsistemas del proyecto",
                "Los 21 subsistemas, su agrupamiento y de quién depende cada uno"),
@@ -155,6 +172,19 @@ for _k,(_f,_n,_d) in UMLSIS.items():
     _p = D+"diagramas/uml/"+_f+(".svg" if os.path.exists(D+"diagramas/uml/"+_f+".svg")
                                 and not os.path.exists(D+"diagramas/uml/"+_f+".png") else ".png")
     if os.path.exists(_p): umlsis[_k] = {"img":imagen(_p), "nombre":_n, "descripcion":_d}
+# El completo entero (271 casos en una lámina) no se lee: se muestra en seis láminas,
+# que juntas son el diagrama completo, y la vista de conjunto queda al final.
+_lams = sorted(glob.glob(D + "diagramas/uml/CU_Sistema_Completo-Lamina-*.svg"),
+               key=lambda r: int(re.search(r'Lamina-(\d+)', r).group(1)))
+if _lams and "completo" in umlsis:
+    def _titulo_lamina(r):
+        m = re.search(r'lámina (\d+ de \d+: [^<(]+)', open(r, encoding="utf-8").read())
+        return "Lámina " + m.group(1).strip() if m else os.path.basename(r)
+    umlsis["completo"]["laminas"] = ([{"img": imagen(r), "nombre": _titulo_lamina(r)} for r in _lams]
+        + [{"img": umlsis["completo"]["img"], "nombre": "Vista de conjunto: todos los casos de uso en una sola lámina"}])
+    umlsis["completo"]["descripcion"] = (f"Los %d casos de uso en {len(_lams)} láminas con la misma notación "
+        "(límite del sistema, subsistemas como paquetes, actores afuera, «include» y «extend»); juntas son el "
+        "diagrama completo. Al final, la vista de conjunto en una sola lámina.")
 contexto = umlsis.get("contexto",{}).get("img","")
 
 # ---------- markdown -> html, para los bloques que se muestran tal cual ----------
@@ -162,7 +192,7 @@ import html as _html
 
 # Los codigos que aparecen en el texto se marcan con su color: el subsistema con
 # el mismo tinte que su caja en los diagramas, el caso de uso y el actor con su
-# propia marca. Con 249 casos y 21 subsistemas, encontrar uno en una tabla de
+# propia marca. Con 271 casos y 21 subsistemas, encontrar uno en una tabla de
 # texto plano era leer renglon por renglon.
 def marcar(s):
     s = re.sub(r'\b(SS-\d\d)\b', r'<span class="marca-ss" data-ss="\1">\1</span>', s)
@@ -489,7 +519,95 @@ def _lucid():
              'la base, con lo implementado y con lo planificado. Se generan con <code>generar-lucidchart.py</code>.</p></div>')
     return {"titulo": "Modelos para Lucidchart", "html": intro + "".join(secc), "mermaid": mer}
 
+# ---------- catálogo de todos los diagramas ----------
+# La cátedra recorre todos los diagramas en su notación. Los de estados, actividad,
+# el Gantt, el de paquetes y el DER conceptual vivían sólo en los documentos: el sitio
+# no los mostraba. Esta página se arma leyendo las carpetas, así que un diagrama nuevo
+# entra solo. Los que ya se ven en otra sección se cuentan y se indica dónde están;
+# los demás se dibujan acá.
+def _nombre_legible(base, prefijo):
+    t = base[len(prefijo):] if base.startswith(prefijo) else base
+    t = re.sub(r'([a-záéíóúñ])([A-ZÁÉÍÓÚÑ])', r'\1 \2', t.replace("_", " ").replace("-", " "))
+    return t.strip()
+
+def _figuras(rutas, prefijo, tipo):
+    html = ""
+    for r in rutas:
+        base = os.path.basename(r)[:-4]
+        nom = _nombre_legible(base, prefijo)
+        html += (f'<div class="figura"><img class="umlimg" alt="{tipo} — {nom}" '
+                 f'src="{imagen(r)}"><p class="bajar">{nom} · <code>{base}</code></p></div>')
+    return html
+
+def _svgs(patron):
+    return sorted(glob.glob(D + patron))
+
+def _diagramas():
+    n_dss = len(glob.glob(D + "diagramas/DSS_*.mmd"))
+    n_dsd = len(glob.glob(D + "diagramas/DSD_*.mmd"))
+    cu_sis = _svgs("diagramas/uml/CU_Sistema_*.svg")
+    cu_ss = _svgs("diagramas/uml/CU_SS-*.svg")
+    act = _svgs("diagramas/uml/UML_Actividad_*.svg")
+    est = _svgs("diagramas/uml/UML_Estados_*.svg")
+    gantt = _svgs("diagramas/uml/UML_Gantt.svg")
+    comp = _svgs("diagramas/uml/UML_Componentes.svg") + _svgs("diagramas/uml/UML_Despliegue.svg")
+    mc = _svgs("diagramas/modelo-conceptual/MC_*.svg")
+    dc = _svgs("diagramas/clases-diseno/DC_*.svg")
+    paq = _svgs("diagramas/clases-diseno/DC_Paquetes.svg")
+    derc = _svgs("diagramas/base-de-datos/conceptual/SPLG-der-*.svg")
+    fis = _svgs("diagramas/base-de-datos/fisico/SPLG-fisico-*.svg")
+    filas = [
+      ("Casos de uso — nivel sistema (actores, contexto, mapa, subsistemas, completo)", len(cu_sis), "Casos de uso › Vista de sistema"),
+      ("Casos de uso por subsistema, con «include» y «extend»", len(cu_ss), "Casos de uso › cada subsistema"),
+      ("Diagramas de secuencia del sistema (DSS)", n_dss, "Ficha de cada caso de uso"),
+      ("Diagramas de secuencia de diseño (DSD, Larman)", n_dsd, "Ficha de cada caso de uso"),
+      ("Modelo conceptual (general y por vista)", len(mc), "Modelos"),
+      ("Diagramas de clases de diseño (general, por contexto y por módulo)", len(dc), "Modelos · el de paquetes, acá abajo"),
+      ("Diagramas de actividad", len(act), "Acá abajo"),
+      ("Diagramas de máquina de estados", len(est), "Acá abajo"),
+      ("Diagramas de componentes y de despliegue", len(comp), "Arquitectura"),
+      ("Diagrama de Gantt del plan de iteraciones", len(gantt), "Acá abajo"),
+      ("Diagrama entidad-relación conceptual", len(derc), "Acá abajo"),
+      ("Modelo físico de la base de datos", len(fis), "Modelos"),
+    ]
+    total = sum(f[1] for f in filas)
+    tabla = ('<table><thead><tr><th>Tipo de diagrama</th><th>Cantidad</th><th>Dónde se ve</th></tr></thead><tbody>'
+             + "".join(f'<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>' for a, b, c in filas)
+             + f'<tr><td><b>Total</b></td><td><b>{total}</b></td><td></td></tr></tbody></table>')
+    html = ('<div class="intro"><h1>Catálogo de diagramas UML</h1>'
+            f'<p>Los {total} diagramas de la documentación, por tipo. Se arma leyendo las carpetas '
+            'de diagramas, así que ninguno queda afuera. Los que ya se ven en otra sección se cuentan '
+            'acá; los demás se dibujan en esta página.</p></div>' + tabla
+            + '<h2>Diagramas de actividad</h2>' + _figuras(act, "UML_Actividad_", "Diagrama de actividad")
+            + '<h2>Diagramas de máquina de estados</h2>' + _figuras(est, "UML_Estados_", "Diagrama de estados")
+            + '<h2>Diagrama de Gantt del plan de iteraciones</h2>' + _figuras(gantt, "UML_", "Plan de iteraciones")
+            + '<h2>Diagrama de paquetes</h2>' + _figuras(paq, "DC_", "Diagrama de paquetes")
+            + '<h2>Diagrama entidad-relación conceptual</h2>' + _figuras(derc, "SPLG-der-", "DER conceptual"))
+    return {"titulo": "Catálogo de diagramas UML", "html": html}
+
+# ---------- modelo de datos ----------
+# El modelo de datos (documento 3, §7.4: inventario, DER por contexto, enumerados,
+# multi-tenant y DER conceptual) y el diccionario de datos completo, que vive aparte
+# en diagramas/base-de-datos/SPLG-modelo-de-datos.md. El sitio no los mostraba.
+def _modelo_de_datos():
+    sec = _seccion("3-Diseño.md", r'^### 7\.4 ', r'^## 8\. ')
+    dic = open(D + "diagramas/base-de-datos/SPLG-modelo-de-datos.md", encoding="utf-8").read()
+    dic = dic[dic.index("## Diccionario de datos"):]
+    a = md2html(sec)
+    b = md2html(dic)
+    # los índices de los diagramas de la segunda parte siguen a los de la primera
+    n = len(a["mermaid"])
+    html_b = re.sub(r'data-mer="(\d+)"', lambda m: 'data-mer="%d"' % (int(m.group(1)) + n), b["html"])
+    intro = ('<div class="intro"><h1>Modelo de datos</h1>'
+             '<p>El modelo entidad-relación de la base (físico, por contexto de negocio, y conceptual, con '
+             'el vocabulario del modelo conceptual) y el diccionario de datos de cada tabla. '
+             'Documento 3 · §7.4.</p></div>')
+    return {"titulo": "Modelo de datos", "html": intro + a["html"] + '<h2 class="sec">Diccionario de datos</h2>' + html_b,
+            "mermaid": a["mermaid"] + b["mermaid"]}
+
 datos["paginas"] = {
+    "datos": _modelo_de_datos(),
+    "diagramas": _diagramas(),
     "modelos": _lucid(),
     "arquitectura": {"titulo": "Arquitectura y despliegue",
                      "html": '<div class="intro"><h1>Arquitectura y despliegue</h1>'

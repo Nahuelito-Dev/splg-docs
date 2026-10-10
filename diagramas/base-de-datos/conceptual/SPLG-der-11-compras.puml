@@ -96,13 +96,13 @@ Distribuidora ||--o{ Proveedor : compra a >
 Proveedor ||--o{ OrdenDeCompra : recibe >
 OrdenDeCompra }o--|| Deposito : se destina a >
 Usuario ||--o{ OrdenDeCompra : emite >
-OrdenDeCompra ||--o{ ItemOrdenDeCompra : contiene >
+OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
 ItemOrdenDeCompra }o--|| Producto : corresponde a >
 Proveedor ||--o{ RecepcionDeCompra : entrega >
 OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
 RecepcionDeCompra }o--|| Deposito : ingresa en >
 Usuario ||--o{ RecepcionDeCompra : registra >
-RecepcionDeCompra ||--o{ ItemRecepcion : contiene >
+RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
 ItemRecepcion }o--|| Producto : corresponde a >
 
 legend bottom right

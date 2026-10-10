@@ -123,7 +123,8 @@ CREATE TYPE public.cylinder_movement_from_state_enum AS ENUM (
     'filled',
     'dispatched',
     'with_customer',
-    'empty_returned'
+    'empty_returned',
+    'retired'
 );
 
 
@@ -136,7 +137,8 @@ CREATE TYPE public.cylinder_movement_to_state_enum AS ENUM (
     'filled',
     'dispatched',
     'with_customer',
-    'empty_returned'
+    'empty_returned',
+    'retired'
 );
 
 
@@ -149,7 +151,8 @@ CREATE TYPE public.cylinder_state_enum AS ENUM (
     'filled',
     'dispatched',
     'with_customer',
-    'empty_returned'
+    'empty_returned',
+    'retired'
 );
 
 
@@ -160,6 +163,52 @@ CREATE TYPE public.cylinder_state_enum AS ENUM (
 CREATE TYPE public.distributor_status_enum AS ENUM (
     'active',
     'suspended'
+);
+
+
+--
+-- Name: employee_document_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.employee_document_type_enum AS ENUM (
+    'dni',
+    'passport',
+    'other'
+);
+
+
+--
+-- Name: employee_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.employee_status_enum AS ENUM (
+    'active',
+    'terminated'
+);
+
+
+--
+-- Name: employee_termination_reason_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.employee_termination_reason_enum AS ENUM (
+    'resignation',
+    'dismissal',
+    'end_of_contract',
+    'retirement',
+    'other'
+);
+
+
+--
+-- Name: employment_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.employment_type_enum AS ENUM (
+    'permanent',
+    'fixed_term',
+    'part_time',
+    'contractor'
 );
 
 
@@ -191,7 +240,8 @@ CREATE TYPE public.incident_moment_enum AS ENUM (
 
 CREATE TYPE public.incident_status_enum AS ENUM (
     'open',
-    'resolved'
+    'resolved',
+    'discarded'
 );
 
 
@@ -203,6 +253,21 @@ CREATE TYPE public.incident_type_enum AS ENUM (
     'damaged',
     'out_of_stock',
     'no_show',
+    'other'
+);
+
+
+--
+-- Name: job_position_category_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.job_position_category_enum AS ENUM (
+    'driver',
+    'helper',
+    'warehouse',
+    'administration',
+    'sales',
+    'management',
     'other'
 );
 
@@ -270,7 +335,8 @@ CREATE TYPE public.order_dispatch_offer_status_enum AS ENUM (
     'offered',
     'accepted',
     'rejected',
-    'expired'
+    'expired',
+    'superseded'
 );
 
 
@@ -436,6 +502,27 @@ CREATE TYPE public.route_batch_status_enum AS ENUM (
 
 
 --
+-- Name: audit_datos_inmutable(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.audit_datos_inmutable() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+            BEGIN
+              IF TG_TABLE_NAME = 'audit' AND TG_OP = 'UPDATE' AND pg_trigger_depth() > 1 THEN
+                IF (NEW.user_id IS NULL OR NEW.user_id = OLD.user_id)
+                   AND (NEW.distributor_id IS NULL OR NEW.distributor_id = OLD.distributor_id)
+                   AND (to_jsonb(NEW) - 'user_id' - 'distributor_id')
+                     = (to_jsonb(OLD) - 'user_id' - 'distributor_id') THEN
+                  RETURN NEW;
+                END IF;
+              END IF;
+              RAISE EXCEPTION '% es de sólo escritura: no se modifican ni se borran auditorías', TG_TABLE_NAME;
+            END;
+            $$;
+
+
+--
 -- Name: audit_log_inmutable(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -486,7 +573,47 @@ CREATE TABLE public.attachment (
     mime_type character varying(100) NOT NULL,
     size_bytes integer NOT NULL,
     uploaded_by_user_id uuid NOT NULL,
-    uploaded_at timestamp with time zone DEFAULT now() NOT NULL
+    uploaded_at timestamp with time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp with time zone
+);
+
+
+--
+-- Name: audit; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.audit (
+    audit_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    action_type_id smallint NOT NULL,
+    user_id uuid,
+    distributor_id uuid,
+    entity character varying(60) NOT NULL,
+    record_id character varying(64) NOT NULL,
+    ip character varying(45),
+    created_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: audit_action_type; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.audit_action_type (
+    action_type_id smallint NOT NULL,
+    name character varying(40) NOT NULL
+);
+
+
+--
+-- Name: audit_detail; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.audit_detail (
+    audit_detail_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    audit_id uuid NOT NULL,
+    field character varying(80) NOT NULL,
+    old_value text,
+    new_value text
 );
 
 
@@ -769,6 +896,46 @@ CREATE TABLE public.document_sequence (
 
 
 --
+-- Name: employee; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.employee (
+    employee_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    user_id uuid,
+    position_id uuid NOT NULL,
+    file_number character varying(20) NOT NULL,
+    first_name character varying(80) NOT NULL,
+    last_name character varying(80) NOT NULL,
+    document_type public.employee_document_type_enum NOT NULL,
+    document_number character varying(20) NOT NULL,
+    cuil character varying(11),
+    birth_date date,
+    address_line character varying(200),
+    city character varying(80),
+    province character varying(80),
+    postal_code character varying(10),
+    phone character varying(30),
+    personal_email character varying(120),
+    emergency_contact_name character varying(120),
+    emergency_contact_phone character varying(30),
+    emergency_contact_relationship character varying(40),
+    hire_date date NOT NULL,
+    termination_date date,
+    termination_reason public.employee_termination_reason_enum,
+    employment_type public.employment_type_enum NOT NULL,
+    status public.employee_status_enum DEFAULT 'active'::public.employee_status_enum NOT NULL,
+    bank_cbu character varying(22),
+    notes text,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "deletedAt" timestamp with time zone,
+    CONSTRAINT "CHK_employee_status_termination" CHECK (((status = 'terminated'::public.employee_status_enum) = (termination_date IS NOT NULL))),
+    CONSTRAINT "CHK_employee_termination_date" CHECK (((termination_date IS NULL) OR (termination_date >= hire_date)))
+);
+
+
+--
 -- Name: gas_cylinder; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -795,6 +962,7 @@ CREATE TABLE public.gas_cylinder_promotion (
     gas_cylinder_id uuid NOT NULL,
     quantity integer NOT NULL,
     discount_percentage numeric(5,2) NOT NULL,
+    "deletedAt" timestamp with time zone,
     CONSTRAINT "CHK_promocion_cantidad" CHECK ((quantity >= 2)),
     CONSTRAINT "CHK_promocion_descuento" CHECK (((discount_percentage > (0)::numeric) AND (discount_percentage <= (100)::numeric)))
 );
@@ -817,6 +985,22 @@ CREATE TABLE public.incident (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "resolvedAt" timestamp with time zone,
     moment public.incident_moment_enum
+);
+
+
+--
+-- Name: job_position; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.job_position (
+    position_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    name character varying(80) NOT NULL,
+    category public.job_position_category_enum NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "deletedAt" timestamp with time zone
 );
 
 
@@ -878,7 +1062,8 @@ CREATE TABLE public.maintenance_task_attachment (
     mime_type character varying(100) NOT NULL,
     size_bytes integer NOT NULL,
     uploaded_by_user_id uuid NOT NULL,
-    uploaded_at timestamp with time zone DEFAULT now() NOT NULL
+    uploaded_at timestamp with time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp with time zone
 );
 
 
@@ -1069,7 +1254,11 @@ CREATE TABLE public.rating (
     from_role public.rating_from_role_enum NOT NULL,
     stars integer NOT NULL,
     comment text,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    hidden boolean DEFAULT false NOT NULL,
+    hidden_reason text,
+    hidden_at timestamp with time zone,
+    hidden_by_user_id uuid
 );
 
 
@@ -1100,7 +1289,8 @@ CREATE TABLE public.role (
     role_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     type text NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now(),
-    "updatedAt" timestamp with time zone DEFAULT now()
+    "updatedAt" timestamp with time zone DEFAULT now(),
+    "deletedAt" timestamp with time zone
 );
 
 
@@ -1375,6 +1565,14 @@ ALTER TABLE ONLY public."order"
 
 
 --
+-- Name: audit_action_type PK_66dcf5c5aab6bba8e40c9b16e86; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audit_action_type
+    ADD CONSTRAINT "PK_66dcf5c5aab6bba8e40c9b16e86" PRIMARY KEY (action_type_id);
+
+
+--
 -- Name: gas_cylinder PK_6768507f2214b15ab4653ef28c9; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1388,6 +1586,14 @@ ALTER TABLE ONLY public.gas_cylinder
 
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT "PK_758b8ce7c18b9d347461b30228d" PRIMARY KEY (user_id);
+
+
+--
+-- Name: audit PK_75ad7632b08b4cfadec337a7c8d; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audit
+    ADD CONSTRAINT "PK_75ad7632b08b4cfadec337a7c8d" PRIMARY KEY (audit_id);
 
 
 --
@@ -1495,6 +1701,14 @@ ALTER TABLE ONLY public.user_address
 
 
 --
+-- Name: job_position PK_b76336b3450074bc7b4aa846b1e; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_position
+    ADD CONSTRAINT "PK_b76336b3450074bc7b4aa846b1e" PRIMARY KEY (position_id);
+
+
+--
 -- Name: route_batch_offer PK_b7ec066a1beaa3fceff509de72d; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1543,6 +1757,14 @@ ALTER TABLE ONLY public.gas_cylinder_promotion
 
 
 --
+-- Name: audit_detail PK_d7889dea20a563a7248592b9860; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audit_detail
+    ADD CONSTRAINT "PK_d7889dea20a563a7248592b9860" PRIMARY KEY (audit_detail_id);
+
+
+--
 -- Name: route_batch_stop PK_d9ba16fd7aeaeb044ce2a375886; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1588,6 +1810,14 @@ ALTER TABLE ONLY public.claims
 
 ALTER TABLE ONLY public.order_item
     ADD CONSTRAINT "PK_f91441b7e69922a51a0d2917107" PRIMARY KEY (order_item_id);
+
+
+--
+-- Name: employee PK_f9d306b968b54923539b3936b03; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT "PK_f9d306b968b54923539b3936b03" PRIMARY KEY (employee_id);
 
 
 --
@@ -1647,11 +1877,11 @@ ALTER TABLE ONLY public.storage_orphan
 
 
 --
--- Name: role UQ_9a0c91c218a16e604951ff1c099; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: audit_action_type UQ_920dea5fea6e965ccf619575f55; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.role
-    ADD CONSTRAINT "UQ_9a0c91c218a16e604951ff1c099" UNIQUE (type);
+ALTER TABLE ONLY public.audit_action_type
+    ADD CONSTRAINT "UQ_920dea5fea6e965ccf619575f55" UNIQUE (name);
 
 
 --
@@ -1700,14 +1930,6 @@ ALTER TABLE ONLY public.gas_cylinder
 
 ALTER TABLE ONLY public.module_config
     ADD CONSTRAINT "UQ_module_config_distributor_module" UNIQUE (distributor_id, module);
-
-
---
--- Name: gas_cylinder_promotion UQ_promocion_producto_cantidad; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.gas_cylinder_promotion
-    ADD CONSTRAINT "UQ_promocion_producto_cantidad" UNIQUE (gas_cylinder_id, quantity);
 
 
 --
@@ -2001,6 +2223,27 @@ CREATE INDEX "IDX_a3b8af1ce2f6e143d416d83080" ON public.delivery USING btree (us
 
 
 --
+-- Name: IDX_audit_detail_audit; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_audit_detail_audit" ON public.audit_detail USING btree (audit_id);
+
+
+--
+-- Name: IDX_audit_distributor_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_audit_distributor_created_at" ON public.audit USING btree (distributor_id, created_at);
+
+
+--
+-- Name: IDX_audit_entity_record; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_audit_entity_record" ON public.audit USING btree (entity, record_id);
+
+
+--
 -- Name: IDX_audit_log_actor; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2019,6 +2262,13 @@ CREATE INDEX "IDX_audit_log_created_at" ON public.audit_log USING btree (created
 --
 
 CREATE INDEX "IDX_audit_log_distributor" ON public.audit_log USING btree (distributor_id);
+
+
+--
+-- Name: IDX_audit_user; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_audit_user" ON public.audit USING btree (user_id);
 
 
 --
@@ -2113,6 +2363,27 @@ CREATE INDEX "IDX_ef8ba785cbfbb81849828b38e7" ON public.user_address USING gist 
 
 
 --
+-- Name: IDX_employee_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_employee_name" ON public.employee USING btree (distributor_id, last_name, first_name);
+
+
+--
+-- Name: IDX_employee_position; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_employee_position" ON public.employee USING btree (position_id);
+
+
+--
+-- Name: IDX_employee_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_employee_status" ON public.employee USING btree (distributor_id, status);
+
+
+--
 -- Name: IDX_f437a76442f23c89ad7652b2a4; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2124,6 +2395,20 @@ CREATE INDEX "IDX_f437a76442f23c89ad7652b2a4" ON public."order" USING btree ("de
 --
 
 CREATE INDEX "IDX_f5221735ace059250daac9d980" ON public.payment USING btree (order_id);
+
+
+--
+-- Name: IDX_f5df1954571306276a5db7930f; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_f5df1954571306276a5db7930f" ON public.rating USING btree (hidden);
+
+
+--
+-- Name: IDX_f63c2b78c253c8c92398d88fd5; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_f63c2b78c253c8c92398d88fd5" ON public.job_position USING btree (distributor_id);
 
 
 --
@@ -2145,6 +2430,55 @@ CREATE UNIQUE INDEX "UQ_admin_user" ON public.admin USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX "UQ_car_patente_vigente" ON public.car USING btree (car_patent) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_employee_cuil_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_employee_cuil_vigente" ON public.employee USING btree (distributor_id, cuil) WHERE ((cuil IS NOT NULL) AND ("deletedAt" IS NULL));
+
+
+--
+-- Name: UQ_employee_document_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_employee_document_vigente" ON public.employee USING btree (distributor_id, document_number) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_employee_file_number_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_employee_file_number_vigente" ON public.employee USING btree (distributor_id, file_number) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_employee_user_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_employee_user_vigente" ON public.employee USING btree (user_id) WHERE ((user_id IS NOT NULL) AND ("deletedAt" IS NULL));
+
+
+--
+-- Name: UQ_job_position_name_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_job_position_name_vigente" ON public.job_position USING btree (distributor_id, lower((name)::text)) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_promocion_producto_cantidad; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_promocion_producto_cantidad" ON public.gas_cylinder_promotion USING btree (gas_cylinder_id, quantity) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_role_type_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_role_type_vigente" ON public.role USING btree (type) WHERE ("deletedAt" IS NULL);
 
 
 --
@@ -2187,6 +2521,20 @@ CREATE INDEX idx_order_dist_status_delivered ON public."order" USING btree (dist
 --
 
 CREATE INDEX idx_order_status_delivery ON public."order" USING btree (status, delivery_id);
+
+
+--
+-- Name: audit_detail audit_detail_inmutable; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_detail_inmutable BEFORE DELETE OR UPDATE ON public.audit_detail FOR EACH ROW EXECUTE FUNCTION public.audit_datos_inmutable();
+
+
+--
+-- Name: audit audit_inmutable; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_inmutable BEFORE DELETE OR UPDATE ON public.audit FOR EACH ROW EXECUTE FUNCTION public.audit_datos_inmutable();
 
 
 --
@@ -2290,6 +2638,14 @@ ALTER TABLE ONLY public.order_dispatch_offer
 
 ALTER TABLE ONLY public.repurchase_invitation
     ADD CONSTRAINT "FK_17f0b53699f596f5eb43c0374f4" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+
+
+--
+-- Name: audit_detail FK_1836695bfd4e04a29b66022fff1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audit_detail
+    ADD CONSTRAINT "FK_1836695bfd4e04a29b66022fff1" FOREIGN KEY (audit_id) REFERENCES public.audit(audit_id) ON DELETE RESTRICT;
 
 
 --
@@ -2437,11 +2793,27 @@ ALTER TABLE ONLY public.route_batch
 
 
 --
+-- Name: rating FK_3e5a121d120740dfd4ffa01164b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rating
+    ADD CONSTRAINT "FK_3e5a121d120740dfd4ffa01164b" FOREIGN KEY (hidden_by_user_id) REFERENCES public."user"(user_id) ON DELETE SET NULL;
+
+
+--
 -- Name: route_batch_offer FK_473c8590cc59607b872737c10e7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.route_batch_offer
     ADD CONSTRAINT "FK_473c8590cc59607b872737c10e7" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE CASCADE;
+
+
+--
+-- Name: employee FK_498ca175e44d448913f05298825; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT "FK_498ca175e44d448913f05298825" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2522,6 +2894,14 @@ ALTER TABLE ONLY public.audit_log
 
 ALTER TABLE ONLY public.cylinder
     ADD CONSTRAINT "FK_623bf3b34c3d9586cf2ae461573" FOREIGN KEY (current_customer_id) REFERENCES public."user"(user_id) ON DELETE SET NULL;
+
+
+--
+-- Name: employee FK_6ab3ec557a640017d53ac0e0ab7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT "FK_6ab3ec557a640017d53ac0e0ab7" FOREIGN KEY (position_id) REFERENCES public.job_position(position_id) ON DELETE RESTRICT;
 
 
 --
@@ -2677,6 +3057,14 @@ ALTER TABLE ONLY public.cylinder
 
 
 --
+-- Name: audit FK_9ffdecf0e48efaf0ae09b844d43; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audit
+    ADD CONSTRAINT "FK_9ffdecf0e48efaf0ae09b844d43" FOREIGN KEY (action_type_id) REFERENCES public.audit_action_type(action_type_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: maintenance_task_attachment FK_a13e7424735660fa5a1865781c6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2789,6 +3177,14 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: audit FK_c0cfc23f3e46b9aaf5a40254330; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audit
+    ADD CONSTRAINT "FK_c0cfc23f3e46b9aaf5a40254330" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE SET NULL;
+
+
+--
 -- Name: car FK_c8d34198d86de9e96aae03b8990; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2802,6 +3198,14 @@ ALTER TABLE ONLY public.car
 
 ALTER TABLE ONLY public."order"
     ADD CONSTRAINT "FK_cd7812c96209c5bdd48a6b858b0" FOREIGN KEY (customer_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: audit FK_d214d146099cc53049201a1efd5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.audit
+    ADD CONSTRAINT "FK_d214d146099cc53049201a1efd5" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE SET NULL;
 
 
 --
@@ -2946,6 +3350,22 @@ ALTER TABLE ONLY public.payment
 
 ALTER TABLE ONLY public.cylinder
     ADD CONSTRAINT "FK_f5b98a008ff9f846381bb5494d5" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE SET NULL;
+
+
+--
+-- Name: employee FK_f61258e58ed35475ce1dba03797; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT "FK_f61258e58ed35475ce1dba03797" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: job_position FK_f63c2b78c253c8c92398d88fd59; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.job_position
+    ADD CONSTRAINT "FK_f63c2b78c253c8c92398d88fd59" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --

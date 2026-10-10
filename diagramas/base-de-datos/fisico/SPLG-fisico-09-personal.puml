@@ -30,15 +30,15 @@ skinparam legendBorderColor #2C4257
 hide circle
 skinparam linetype polyline
 
-entity "job_position" as e_job_position <<propuesto>> {
-  {field} <color:#1F5E8C>**position_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>name : varchar(80) * <<propuesto>></color>
-  {field} <color:#1F5E8C>category : job_position_category_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+entity "job_position" as e_job_position {
+  {field} **position_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(80) *
+  {field} category : job_position_category_enum *
+  {field} is_active : boolean *
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} deletedAt : timestamptz
 }
 entity "attachment" as e_attachment {
   {field} **attachment_id** : uuid * <<PK>>
@@ -52,38 +52,39 @@ entity "attachment" as e_attachment {
   {field} size_bytes : integer *
   {field} //uploaded_by_user_id// : uuid * <<FK>>
   {field} uploaded_at : timestamptz *
+  {field} deleted_at : timestamptz
 }
-entity "employee" as e_employee <<propuesto>> {
-  {field} <color:#1F5E8C>**employee_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//user_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//position_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>file_number : varchar(20) * <<propuesto>></color>
-  {field} <color:#1F5E8C>first_name : varchar(80) * <<propuesto>></color>
-  {field} <color:#1F5E8C>last_name : varchar(80) * <<propuesto>></color>
-  {field} <color:#1F5E8C>document_type : employee_document_type_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>document_number : varchar(20) * <<propuesto>></color>
-  {field} <color:#1F5E8C>cuil : varchar(11) <<propuesto>></color>
-  {field} <color:#1F5E8C>birth_date : date <<propuesto>></color>
-  {field} <color:#1F5E8C>address_line : varchar(200) <<propuesto>></color>
-  {field} <color:#1F5E8C>city : varchar(80) <<propuesto>></color>
-  {field} <color:#1F5E8C>province : varchar(80) <<propuesto>></color>
-  {field} <color:#1F5E8C>postal_code : varchar(10) <<propuesto>></color>
-  {field} <color:#1F5E8C>phone : varchar(30) <<propuesto>></color>
-  {field} <color:#1F5E8C>personal_email : varchar(120) <<propuesto>></color>
-  {field} <color:#1F5E8C>emergency_contact_name : varchar(120) <<propuesto>></color>
-  {field} <color:#1F5E8C>emergency_contact_phone : varchar(30) <<propuesto>></color>
-  {field} <color:#1F5E8C>emergency_contact_relationship : varchar(40) <<propuesto>></color>
-  {field} <color:#1F5E8C>hire_date : date * <<propuesto>></color>
-  {field} <color:#1F5E8C>termination_date : date <<propuesto>></color>
-  {field} <color:#1F5E8C>termination_reason : employee_termination_reason_enum <<propuesto>></color>
-  {field} <color:#1F5E8C>employment_type : employment_type_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>status : employee_status_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>bank_cbu : varchar(22) <<propuesto>></color>
-  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+entity "employee" as e_employee {
+  {field} **employee_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //user_id// : uuid <<FK>>
+  {field} //position_id// : uuid * <<FK>>
+  {field} file_number : varchar(20) *
+  {field} first_name : varchar(80) *
+  {field} last_name : varchar(80) *
+  {field} document_type : employee_document_type_enum *
+  {field} document_number : varchar(20) *
+  {field} cuil : varchar(11)
+  {field} birth_date : date
+  {field} address_line : varchar(200)
+  {field} city : varchar(80)
+  {field} province : varchar(80)
+  {field} postal_code : varchar(10)
+  {field} phone : varchar(30)
+  {field} personal_email : varchar(120)
+  {field} emergency_contact_name : varchar(120)
+  {field} emergency_contact_phone : varchar(30)
+  {field} emergency_contact_relationship : varchar(40)
+  {field} hire_date : date *
+  {field} termination_date : date
+  {field} termination_reason : employee_termination_reason_enum
+  {field} employment_type : employment_type_enum *
+  {field} status : employee_status_enum *
+  {field} bank_cbu : varchar(22)
+  {field} notes : text
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} deletedAt : timestamptz
 }
 entity "employee_attendance" as e_employee_attendance <<propuesto>> {
   {field} <color:#1F5E8C>**attendance_id** : uuid * <<PK>> <<propuesto>></color>
@@ -119,8 +120,8 @@ entity "user" as e_user #F1F1F1 {
 }
 
 e_user ||--o{ e_attachment : uploaded_by_user_id
-e_user |o--o| e_employee #line:1F5E8C;text:1F5E8C : user_id
-e_job_position ||--o{ e_employee #line:1F5E8C;text:1F5E8C : position_id
+e_job_position ||--o{ e_employee : position_id
+e_user |o--o{ e_employee : user_id
 e_employee ||--o{ e_employee_attendance #line:1F5E8C;text:1F5E8C : employee_id
 e_user |o--o{ e_employee_attendance #line:1F5E8C;text:1F5E8C : recorded_by_user_id
 e_employee ||--o{ e_employee_leave #line:1F5E8C;text:1F5E8C : employee_id

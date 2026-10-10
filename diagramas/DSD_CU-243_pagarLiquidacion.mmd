@@ -6,6 +6,7 @@ sequenceDiagram
     participant LIQS as :Map#lt;String, LiquidacionComisiones#gt;
     participant CAJS as :Map#lt;String, Caja#gt;
     participant LIQ as liquidacion:LiquidacionComisiones
+    participant LDG as :CashLedgerService
 
     ADM->>+SRV: pagarLiquidacion(liquidacionId, cajaId)
     SRV->>+LIQS: get(liquidacionId)
@@ -14,6 +15,8 @@ sequenceDiagram
     CAJS-->>-SRV: caja
     SRV->>+LIQ: pagar(caja)
     LIQ->>LIQ: validarAprobada()
-    Note over SRV,LIQ: Egreso: ver DSD de registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja con la categoría de sistema pago de comisiones
-    deactivate LIQ
+    LIQ-->>-SRV: total
+    SRV->>+LDG: registrarMovimientoDeCaja(cajaId, egreso, total, pagoDeComisiones, enEfectivo)
+    LDG-->>-SRV: movimiento
+    Note over SRV,LDG: Egreso: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>Crea el MovimientoDeCaja con la categoría de sistema<br/>pago de comisiones
     SRV-->>-ADM: liquidacion

@@ -84,23 +84,24 @@ class Pedido {
   + confirmarSenia()
   + descontarRecargoExpress()
   + entregar()
-  + esDeLaDistribuidora(distribuidoraId: Identificador)
+  + esDeLaDistribuidora(distribuidoraId: Identificador): Booleano
   + esDelChofer(chofer: Chofer): Booleano
   + esDelCliente(cliente: Cliente): Booleano
   + esReofertable(): Booleano
-  + estaDisponible()
+  + estaDisponible(): Booleano
   + estaEnCamino(): Booleano
   + estaSinPagar(): Booleano
-  + generarCodigoDeEntrega()
+  + generarCodigoDeEntrega(): Cadena
   + getCambiosDeEstado(): CambioEstadoPedido[*]
   + getChofer(): Chofer
   + getCliente(): Cliente
   + getCodigoDeEntrega(): Cadena
+  + getEnvases(): Envase[*]
   + getEstadoDeLasOfertas(ahora: FechaHora,\n      enfriamiento: Entero): Cadena
-  + getFechaDeEntrega()
+  + getFechaDeEntrega(): Fecha
   + getImporteACobrar(esSenia: Booleano): Moneda
   + getIncidencias(): Incidencia[*]
-  + getItems()
+  + getItems(): ItemPedido[*]
   + getMetodoDePago(): MetodoDePago
   + getOfertaVigente(chofer: Chofer): OfertaDespacho
   + getPago(identificadorDelPago: Identificador): Pago
@@ -115,7 +116,7 @@ class Pedido {
   + marcarEnCamino()
   + marcarPagado(identificadorDelPago: Identificador)
   + ofrecerA(chofer: Chofer, venceEn: Entero)
-  + pasarARepartoComun()
+  + pasarARepartoComun(): Moneda
   + puedeCalificar(usuario: Usuario): Booleano
   + quitarChofer()
   + registrarCambio(estadoAnterior: Cadena,\n      estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
@@ -135,7 +136,7 @@ class ItemPedido {
   - /subtotal: Moneda
   + «create» ItemPedido(producto: Producto, cantidad: Entero,\n      precioUnitario: Moneda, subtotal: Moneda)
   + getCantidad(): Entero
-  + getProducto()
+  + getProducto(): Producto
   + getSubtotal(): Moneda
   + restituirStock()
 }

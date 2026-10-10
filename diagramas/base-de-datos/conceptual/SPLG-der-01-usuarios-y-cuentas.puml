@@ -74,6 +74,24 @@ entity AsientoAuditoria {
   {field} cambios
   {field} fecha
 }
+entity Auditoria {
+  * identificador
+  --
+  {field} entidad afectada
+  {field} fecha y hora
+}
+entity DetalleAuditoria {
+  * identificador
+  --
+  {field} campo
+  {field} valor anterior
+  {field} valor nuevo
+}
+entity TipoAccionAuditoria {
+  * identificador
+  --
+  {field} nombre
+}
 entity Cliente {
   * identificador
   --
@@ -102,24 +120,114 @@ entity Producto #F1F1F1 {
 }
 entity Pedido #F1F1F1 {
 }
+entity Caja #F1F1F1 {
+}
+entity CategoriaDeCaja #F1F1F1 {
+}
+entity ZonaCobertura #F1F1F1 {
+}
+entity PuestoDeTrabajo #F1F1F1 {
+}
+entity Proveedor #F1F1F1 {
+}
+entity FranjaHoraria #F1F1F1 {
+}
+entity Deposito #F1F1F1 {
+}
+entity Carrito #F1F1F1 {
+}
+entity CuentaCorriente #F1F1F1 {
+}
+entity Empleado #F1F1F1 {
+}
+entity OrdenDeCompra #F1F1F1 {
+}
+entity ReglaComision #F1F1F1 {
+}
+entity LicenciaLaboral #F1F1F1 {
+}
+entity RecepcionDeCompra #F1F1F1 {
+}
+entity Neumatico #F1F1F1 {
+}
+entity Reclamo #F1F1F1 {
+}
+entity Envase #F1F1F1 {
+}
+entity Incidencia #F1F1F1 {
+}
+entity CambioDireccion #F1F1F1 {
+}
+entity CambioEstadoPedido #F1F1F1 {
+}
+entity Calificacion #F1F1F1 {
+}
+entity AjusteDeStock #F1F1F1 {
+}
+entity MovimientoDeStock #F1F1F1 {
+}
+entity CargaDeCamion #F1F1F1 {
+}
+entity MovimientoEnvase #F1F1F1 {
+}
+entity CasoRecupero #F1F1F1 {
+}
 
+Distribuidora ||--o{ Caja : define >
+Distribuidora ||--o{ CategoriaDeCaja : define >
+Distribuidora ||--o{ ZonaCobertura : define >
 Distribuidora ||--o{ Producto : comercializa >
+Distribuidora ||--o{ PuestoDeTrabajo : define >
+Distribuidora ||--o{ Proveedor : compra a >
+Distribuidora ||--o{ FranjaHoraria : define >
 Usuario }o--o| Rol : tiene asignado >
+Distribuidora ||--o{ Deposito : dispone de >
 Distribuidora |o--o{ Administrador : emplea >
 Administrador |o--|| Usuario : es un >
+TipoAccionAuditoria ||--o{ Auditoria : clasifica >
+Distribuidora |o--o{ Auditoria : delimita >
+Usuario |o--o{ Auditoria : realiza >
 Usuario |o--o{ AsientoAuditoria : origina >
+Cliente ||--o{ Carrito : arma >
 Cliente }o--o| Producto : usa habitualmente >
 Cliente |o--|| Usuario : es un >
+Distribuidora ||--o{ CuentaCorriente : lleva >
+Cliente ||--o{ CuentaCorriente : tiene habilitada >
 Distribuidora ||--o{ Chofer : emplea >
 Chofer |o--|| Usuario : es un >
+Distribuidora ||--o{ Empleado : emplea >
+Empleado |o--o| Usuario : accede con >
 Distribuidora ||--o{ ConfiguracionModulo : parametriza >
-Usuario ||--o{ DireccionEntrega : registra >
+Usuario ||--o{ OrdenDeCompra : emite >
+Cliente ||--o{ DireccionEntrega : registra >
+Auditoria ||--o{ DetalleAuditoria : detalla con >
+Distribuidora ||--o{ ReglaComision : define >
+Usuario |o--o{ LicenciaLaboral : resuelve >
 Pedido }o--|| DireccionEntrega : se entrega en >
-Usuario ||--o{ Pedido : realiza >
+Cliente ||--o{ Pedido : realiza >
 Distribuidora ||--o{ Pedido : gestiona >
+Usuario ||--o{ RecepcionDeCompra : registra >
+Distribuidora ||--o{ Neumatico : posee >
+Cliente ||--o{ Reclamo : presenta >
+Cliente |o--o{ Envase : tiene en su poder >
+Distribuidora ||--o{ Envase : posee >
+Usuario ||--o{ Incidencia : reporta >
+Usuario ||--o{ CambioDireccion : realiza >
+CambioDireccion }o--|| DireccionEntrega : cambia desde >
+CambioDireccion }o--|| DireccionEntrega : cambia hacia >
+Usuario |o--o{ CambioEstadoPedido : efectúa >
+Usuario ||--o{ Calificacion : emite >
+Usuario ||--o{ Calificacion : recibe >
 InvitacionRecompra }o--o| DireccionEntrega : sugiere entregar en >
-InvitacionRecompra }o--o| Pedido : se convierte en >
-Usuario ||--o{ InvitacionRecompra : recibe >
+InvitacionRecompra |o--o| Pedido : se convierte en >
+Cliente ||--o{ InvitacionRecompra : recibe >
+Usuario ||--o{ AjusteDeStock : registra >
+Usuario |o--o{ MovimientoDeStock : ejecuta >
+Usuario ||--o{ CargaDeCamion : abre >
+Usuario |o--o{ CargaDeCamion : cierra >
+Usuario |o--o{ MovimientoEnvase : ejecuta >
+Usuario |o--o{ CasoRecupero : resuelve >
+CasoRecupero }o--|| Cliente : se abre contra >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

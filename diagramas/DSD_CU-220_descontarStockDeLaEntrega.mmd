@@ -31,10 +31,12 @@ sequenceDiagram
         end
         LST->>PED: getItems()
         loop Por cada ítem del pedido
+            LST->>+ITP: getProducto()
+            ITP-->>-LST: producto
             LST->>+ITP: getCantidad()
             ITP-->>-LST: cantidad
-            Note over LST,LED: Llenas que salen hacia el cliente y vacías que se reciben, una a una: ver DSD de aplicarMovimientoDeStock (CU-250). Crea los MovimientoDeStock y mueve el saldo de la ubicación de origen
-            LST->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+            Note over LST,LED: Llenas que salen hacia el cliente (destino nula) y vacías que se reciben, una a una:<br/>ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo de la ubicación de origen
+            LST->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, llenas, llenas, cantidad, entrega)
             alt La ubicación de origen tiene las llenas
                 LED-->>-LST: aplicado
             else El camión con carga abierta no alcanza lo entregado

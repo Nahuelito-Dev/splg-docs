@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-259 Modificar un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: actualizarDeposito(depositoId, datos)
+    activate SIS
+    alt el depósito existe
+        SIS-->>ADM: depósito actualizado
+    else el depósito no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

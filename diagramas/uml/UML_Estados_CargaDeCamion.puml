@@ -25,12 +25,12 @@ state "Cerrada con diferencia\n(closed_with_difference)" as diff
 state "Cancelada\n(cancelled)" as cancelled
 
 [*] --> loading : registrarCargaDelCamion()
-loading --> loading : reponerCargaDelCamion()
+loading : reponerCargaDelCamion()
 loading --> cancelled : cancelarCargaDelCamion()
 loading --> route : registrarSalidaDelCamion()
-route --> route : reponerCargaDelCamion()
-route --> route : pedido entregado / descontarStockDeLaEntrega()
-returned --> returned : pedido entregado / descontarStockDeLaEntrega() y recalcular lo esperado
+route : reponerCargaDelCamion()
+route : pedido entregado / descontarStockDeLaEntrega()
+returned : pedido entregado\n/ descontarStockDeLaEntrega() y recalcular lo esperado
 route --> returned : registrarRegresoDelCamion()
 returned --> closed : cerrarRendicionDeStock() [lo declarado es lo esperado]
 returned --> diff : cerrarRendicionDeStock(nota) [hay diferencia]

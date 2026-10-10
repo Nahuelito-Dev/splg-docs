@@ -62,7 +62,7 @@ class Carrito {
   + «create» Carrito(distribuidora: Distribuidora)
   + agregarItem(producto: Producto, cantidad: Entero)
   + calcularTotal(): Moneda
-  + getItem(itemId: Identificador)
+  + getItem(itemId: Identificador): ItemCarrito
   + modificarCantidad(itemId: Identificador, cantidad: Entero)
   + quitarItem(itemId: Identificador)
   + vaciar()
@@ -72,7 +72,7 @@ class ItemCarrito {
   - precioUnitario: Moneda
   + «create» ItemCarrito(producto: Producto,\n      cantidad: Entero, precioUnitario: Moneda)
   + cambiarCantidad(cantidad: Entero)
-  + getDiferenciaDePrecio()
+  + getDiferenciaDePrecio(): Moneda
   + getSubtotal(): Moneda
   + sumarCantidad(cantidad: Entero)
 }
@@ -82,10 +82,10 @@ class FranjaHoraria {
   - cupo: Entero
   - activa: Booleano
   + «create» FranjaHoraria(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero)
-  + cuposLibres(fecha: Fecha, out reservados: Pedido[*],\n      out libres: Chofer[*]): Entero
+  + cuposLibres(fecha: Fecha): Registro
   + desactivar()
   + modificar(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero)
-  + tieneCupo(fechaAgendada: Fecha)
+  + tieneCupo(fechaAgendada: Fecha): Booleano
   + validarCapacidad(capacidad: Entero)
 }
 class ZonaCobertura {
@@ -95,9 +95,9 @@ class ZonaCobertura {
   - tipoDeRecargo: TipoDeRecargo
   - vigenteHasta: FechaHora
   + «create» ZonaCobertura(nombre: Cadena,\n      poligono: Poligono, recargo: Moneda,\n      activa: Booleano)
-  + calcularRecargo(subtotalItems: Moneda)
+  + calcularRecargo(subtotalItems: Moneda): Moneda
   + cubre(direccion: DireccionEntrega): Booleano
-  + cubre(latitud: Decimal, longitud: Decimal)
+  + cubre(latitud: Decimal, longitud: Decimal): Booleano
   + darDeBaja()
   + desactivar()
   + getRecargo(): Moneda

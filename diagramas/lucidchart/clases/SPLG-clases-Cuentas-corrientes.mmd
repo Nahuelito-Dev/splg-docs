@@ -33,8 +33,8 @@ classDiagram
 
     class AsientoCuentaCorriente
     class CuentaCorriente
-    class Map_String_Chofer["Map<String, Chofer>"] {
-        <<colección>>
+    class CashLedgerService {
+        <<fachada>>
     }
     class Map_String_Cliente["Map<String, Cliente>"] {
         <<colección>>
@@ -42,23 +42,24 @@ classDiagram
     class Map_String_Pedido["Map<String, Pedido>"] {
         <<colección>>
     }
-    class Chofer
+    class Map_String_RendicionChofer["Map<String, RendicionChofer>"] {
+        <<colección>>
+    }
     class Cliente
-    class Pedido
     class Distribuidora
+    class Pedido
     class RendicionChofer
 
     List_AsientoCuentaCorriente "1" o-- "0..*" AsientoCuentaCorriente : elementos
     Map_String_CuentaCorriente "1" o-- "0..*" CuentaCorriente : elementos
     List_CuentaCorriente "1" o-- "0..*" CuentaCorriente : elementos
+    CustomerAccountService --> "1" CashLedgerService : cashLedgerService
     CustomerAccountService --> "1" List_AsientoCuentaCorriente : list<AsientoCuentaCorriente>
     CustomerAccountService --> "1" List_CuentaCorriente : list<CuentaCorriente>
-    CustomerAccountService --> "1" Map_String_Chofer : map<String, Chofer>
     CustomerAccountService --> "1" Map_String_Cliente : map<String, Cliente>
     CustomerAccountService --> "1" Map_String_CuentaCorriente : map<String, CuentaCorriente>
     CustomerAccountService --> "1" Map_String_Pedido : map<String, Pedido>
-    Chofer ..> List_AsientoCuentaCorriente
-    CustomerAccountService ..> Chofer
+    CustomerAccountService --> "1" Map_String_RendicionChofer : map<String, RendicionChofer>
     CustomerAccountService ..> Cliente
     CustomerAccountService ..> CuentaCorriente
     CustomerAccountService ..> Distribuidora

@@ -63,9 +63,9 @@ skinparam ranksep 90
 class OrderService <<fachada>> {
   + asignarChoferAPedido(pedidoId: Identificador,\n      choferId: Identificador): Pedido
   + avisarLlegada(pedidoId: Identificador)
-  + calcularValorPromedio(ventasDelDia: Registro,\n      entregadosDelDia: Entero)
+  + calcularValorPromedio(ventasDelDia: Registro,\n      entregadosDelDia: Entero): Moneda
   + cambiarDireccionDeEntrega(pedidoId: Identificador,\n      direccionId: Identificador, motivo: Cadena): Pedido
-  + completarDiasSinVentas(ventasPorDia: Registro)
+  + completarDiasSinVentas(ventasPorDia: Registro): Registro
   + consultarGraficoDeVentas(): Cadena
   + consultarHistorialDePedidos(cliente: Cliente,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
   + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
@@ -80,7 +80,7 @@ class OrderService <<fachada>> {
   + obtenerCodigoDeEntrega(pedidoId: Identificador): Cadena
   + realizarCompraExpress(tipoGarrafa: Cadena,\n      metodoDePago: MetodoDePago): Pedido
   + rechazarOferta(pedidoId: Identificador): Booleano
-  + verificarCoberturaExpress(direccion: DireccionEntrega)
+  + verificarCoberturaExpress(direccion: DireccionEntrega): Booleano
 }
 class UpdateOrderStatusUseCase <<controlador>> {
   + aceptarPedido(pedidoId: Identificador): Pedido
@@ -102,36 +102,41 @@ class "List<Pedido>" as List_Pedido <<colección>> {
   + buscarReservasConSeniaPagaHasta(hoy: Fecha): Pedido[*]
   + buscarReservasSinSeniaAnterioresA(plazo: Entero): Pedido[*]
   + contarEntregadosDelDia(distribuidoraId: Identificador): Entero
-  + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Booleano
-  + contarPorEstado(distribuidoraId: Identificador,\n      out aceptados: Chofer[*],\n      out enCamino: Booleano): Pedido[*]
+  + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Registro
+  + contarPorEstado(distribuidoraId: Identificador): Registro
   + entregadosEntre(fechaDesde: Fecha,\n      fechaHasta: Fecha): Pedido[*]
   + getEnEfectivoSinRendir(chofer: Chofer,\n      hoy: Fecha): Pedido[*]
   + getEntregadosSinMovimiento(): Pedido[*]
-  + getReservado(producto: Producto)
+  + getReservado(producto: Producto): Entero
   + getUltimoEntregado(cliente: Cliente,\n      distribuidoraId: Identificador): Fecha
   + totalEntregado(periodo: Cadena): Registro
   + totalEntregadoPorDia(distribuidoraId: Identificador,\n      desde: FechaHora, hasta: FechaHora): Registro
 }
 class Pedido <<referencia>>
 class DeliveryService <<referencia>>
+class DispatchOrchestratorService <<referencia>>
 class FleetDispatchLockService <<referencia>>
 class "List<Chofer>" as List_Chofer <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class NotificationPort <<referencia>>
 class RealtimeDispatchPort <<referencia>>
-class UbicacionGPS <<referencia>>
-class OfertaDespacho <<referencia>>
-class Producto <<referencia>>
-class Envase <<referencia>>
+class RefundPaymentUseCase <<referencia>>
 class Chofer <<referencia>>
-class NotificationsService <<referencia>>
-class ZonaCobertura <<referencia>>
 class Cliente <<referencia>>
+class NotificationsService <<referencia>>
+class OfertaDespacho <<referencia>>
+class PaymentsService <<referencia>>
+class Producto <<referencia>>
+class ZonaCobertura <<referencia>>
+class Envase <<referencia>>
+class Pago <<referencia>>
+class UbicacionGPS <<referencia>>
 
 Map_String_Pedido "1" o--> "0..*" Pedido
 List_Pedido "1" o--> "0..*" Pedido
 ConfirmDeliveryUseCase --> "1" Map_String_Pedido
 OrderService --> "1" DeliveryService
+OrderService --> "1" DispatchOrchestratorService
 OrderService --> "1" FleetDispatchLockService
 OrderService --> "1" List_Chofer
 OrderService --> "1" List_Pedido
@@ -139,6 +144,7 @@ OrderService --> "1" Map_String_Chofer
 OrderService --> "1" Map_String_Pedido
 OrderService --> "1" NotificationPort
 OrderService --> "1" RealtimeDispatchPort
+OrderService --> "1" RefundPaymentUseCase
 UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
 UpdateOrderStatusUseCase --> "1" Map_String_Pedido
 UpdateOrderStatusUseCase --> "1" NotificationPort
@@ -150,11 +156,13 @@ OrderService ..> Chofer
 OrderService ..> Cliente
 OrderService ..> NotificationsService
 OrderService ..> OfertaDespacho
-OrderService ..> Pedido : <<create>>
+OrderService ..> PaymentsService
+OrderService ..> "<<create>>" Pedido
 OrderService ..> Producto
 OrderService ..> ZonaCobertura
 UpdateOrderStatusUseCase ..> Chofer
 UpdateOrderStatusUseCase ..> Envase
+UpdateOrderStatusUseCase ..> Pago
 UpdateOrderStatusUseCase ..> Pedido
 UpdateOrderStatusUseCase ..> UbicacionGPS
 

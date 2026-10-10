@@ -23,8 +23,9 @@ skinparam node<<externo>> {
   BorderColor #8E5566
   BackgroundColor #F7ECEF
 }
+left to right direction
 skinparam nodesep 40
-skinparam ranksep 70
+skinparam ranksep 110
 
 node "Teléfono del cliente\n<<device>>\nAndroid o iOS" as DC {
   artifact "splg-app-cliente\n(Flutter)" as AC
@@ -55,22 +56,23 @@ node "Servidor virtual (VPS)\n<<device>>" as VPS {
   }
 }
 
-node "Firebase\n<<execution environment>>\n<<externo>>\nAuth y FCM" as FB
-node "MercadoPago\n<<execution environment>>\n<<externo>>\nCheckout Pro" as MP
 node "Servicio de correo\n<<execution environment>>\n<<externo>>" as ML
+node "MercadoPago\n<<execution environment>>\n<<externo>>\nCheckout Pro" as MP
+node "Firebase\n<<execution environment>>\n<<externo>>\nAuth y FCM" as FB
 
-AC -down-> BACK : HTTPS / REST\nWSS / Socket.IO
-AD -down-> BACK : HTTPS / REST\nWSS / Socket.IO
-PANEL -down-> BACK : HTTPS / REST\nWSS / Socket.IO
-NAV .down.> PANELDIST : HTTPS\n(descarga de la aplicación)
+AC -down- BACK : <<HTTPS, WSS>>\nREST y Socket.IO
+AD -down- BACK : <<HTTPS, WSS>>\nREST y Socket.IO
+PANEL -down- BACK : <<HTTPS, WSS>>\nREST y Socket.IO
+NAV -down- PANELDIST : <<HTTPS>>\n(descarga de la aplicación)
 
-BACK -down-> PG : TCP 5432
-BACK -down-> RD : TCP 6379
+BACK -down- PG : <<TCP 5432>>
+BACK -down- RD : <<TCP 6379>>
 
-BACK -right-> FB : HTTPS\n(verificación de identidad)
-BACK -right-> MP : HTTPS (creación del cobro)
-MP -down-> BACK : HTTPS (webhook de pago)
-BACK -right-> ML : HTTPS\n(bienvenida, recuperación de clave,\naviso de vencimientos)
-FB .up.> AC : FCM
-FB .up.> AD : FCM
+BACK -down- ML : <<HTTPS>>\nbienvenida, recuperación de clave,\naviso de vencimientos
+BACK -down- MP : <<HTTPS>>\ncreación del cobro y\nwebhook de pago
+BACK -down- FB : <<HTTPS>>\nverificación de identidad
+FB -up- AC : <<FCM>>
+FB -up- AD : <<FCM>>
+ML -[hidden]right- MP
+MP -[hidden]right- FB
 @enduml

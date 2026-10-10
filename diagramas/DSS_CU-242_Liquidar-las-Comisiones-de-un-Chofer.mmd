@@ -4,31 +4,29 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Liquidación del chofer
-        ADM->>SIS: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación en borrador con el bruto, las deducciones y el neto
-        else no hay asientos para liquidar
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Operación aprobarLiquidacion
-        ADM->>SIS: aprobarLiquidacion(liquidacionId)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
-        else la liquidación no está en borrador
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Anulación de la liquidación
-        ADM->>SIS: anularLiquidacion(liquidacionId)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: liquidación anulada y asientos liberados
-        else la liquidación ya está pagada
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación en borrador con el bruto, las deducciones y el neto
+    else no hay asientos para liquidar
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS
+
+    ADM->>SIS: aprobarLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
+    else la liquidación no está en borrador
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
+
+    ADM->>SIS: anularLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación anulada y asientos liberados
+    else la liquidación ya está pagada
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
