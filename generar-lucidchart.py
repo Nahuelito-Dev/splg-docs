@@ -291,3 +291,12 @@ for _src, _dst in (("diagramas/lucidchart/SPLG-modelo-conceptual.mmd", "texto/SP
 for _f in glob.glob(D + "diagramas/lucidchart/clases/SPLG-clases-*.mmd"):
     shutil.copy(_f, D + "lucidchart/texto/clases/" + os.path.basename(_f)[:-4] + "-mermaid.txt")
 print("  ✓ texto/: fuentes Mermaid y PlantUML del MC y de las clases")
+
+# La base como código Mermaid (erDiagram), una relación por clave foránea: se pega en
+# Lucidchart ("Diagram as code") y entra dibujada y conectada, sin arrastrar tabla por tabla.
+_sp.run([sys.executable, D + "material-de-trabajo/der-mermaid-unico.py", "splg_db", "SPLG-base-de-datos-mermaid.txt"])
+_psql("postgres", "-c", "drop database if exists splg_lucid_tmp")
+_psql("postgres", "-c", "create database splg_lucid_tmp")
+_psql("splg_lucid_tmp", entrada=open(D + "lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql", encoding="utf-8").read())
+_sp.run([sys.executable, D + "material-de-trabajo/der-mermaid-unico.py", "splg_lucid_tmp", "SPLG-base-de-datos-con-planificadas-mermaid.txt"])
+_psql("postgres", "-c", "drop database splg_lucid_tmp")

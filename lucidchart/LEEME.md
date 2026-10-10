@@ -1,5 +1,9 @@
 # Archivos para Lucidchart
 
+## Base de datos YA CONECTADA (recomendado)
+
+`texto/SPLG-base-de-datos-mermaid.txt` (48 tablas, 105 relaciones) y `texto/SPLG-base-de-datos-con-planificadas-mermaid.txt` (82 tablas, 220 relaciones): el diagrama entidad-relación completo en código Mermaid, con cada columna (tipo, PK, FK, UK, nullable) y una línea por cada clave foránea con su cardinalidad. En Lucidchart: **Diagrama como código → Mermaid** y pegar el contenido. Entra dibujado y conectado.
+
 ## Base de datos (CSV / TSV)
 
 | Archivo | Contenido |
@@ -7,7 +11,7 @@
 | `SPLG-base-de-datos-lucidchart.csv` / `.tsv` | La base real: 48 tablas, con PK y FK |
 | `SPLG-base-de-datos-con-planificadas-lucidchart.csv` / `.tsv` | La base con los módulos planificados: 82 tablas |
 
-En Lucidchart: **Archivo → Importar datos → Entity Relationship (ERD) → Importar desde: SQL Database → PostgreSQL**. Saltear el paso de correr la consulta (ya está corrida: es `material-de-trabajo/lucidchart-erd-postgresql.sql`) y **subir el CSV** (o pegar el contenido del TSV). Las tablas aparecen en el panel lateral y se arrastran al lienzo con sus relaciones.
+En Lucidchart: **Archivo → Importar datos → Entity Relationship (ERD) → Importar desde: SQL Database → PostgreSQL**. Saltear el paso de correr la consulta (ya está corrida: es `material-de-trabajo/lucidchart-erd-postgresql.sql`) y **subir el CSV** (o pegar el contenido del TSV). Ojo: las tablas quedan en el panel lateral y Lucidchart dibuja cada relación recién cuando las dos tablas están en el lienzo; hay que arrastrarlas todas (se pueden seleccionar varias con Shift). Para tener el diagrama ya conectado, usar el Mermaid de arriba.
 
 ## Modelo conceptual y clases (texto)
 
