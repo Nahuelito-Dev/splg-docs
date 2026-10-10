@@ -254,3 +254,40 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ------------------------------------------------- formatos que Lucidchart acepta
+# Lucidchart importa la base desde un CSV/TSV: el resultado de su propia consulta de
+# PostgreSQL ("Import Data → Entity Relationship → PostgreSQL") corrida contra la base.
+# Se corre contra splg_db (lo implementado) y contra una base temporal armada con el SQL
+# que incluye lo planificado. Para el MC y las clases, que no son un ERD, quedan las
+# fuentes en texto (Mermaid y PlantUML) para "Diagram as code".
+import shutil, subprocess as _sp
+_CONT = os.environ.get("SPLG_BD_CONTENEDOR", "splg-bd")
+_Q = " ".join(open(D + "material-de-trabajo/lucidchart-erd-postgresql.sql", encoding="utf-8").read().split())
+def _psql(base, *args, entrada=None):
+    return _sp.run(["docker", "exec", "-i", _CONT, "psql", "-U", "postgres", "-d", base, "-q", *args],
+                   input=entrada, capture_output=True, text=True)
+def _exportar(base, nombre):
+    for ext, delim in (("csv", ","), ("tsv", "\t")):
+        r = _psql(base, "-c", f"\\copy ({_Q}) to stdout with (format csv, delimiter E'{delim}')")
+        if r.returncode:
+            print(f"  ✗ {nombre}.{ext}: {r.stderr.strip()[:200]}"); return
+        open(D + f"lucidchart/{nombre}.{ext}", "w", encoding="utf-8").write(r.stdout)
+    filas = r.stdout.splitlines()
+    print(f"  ✓ {nombre}.csv/.tsv  ({len({f.split(chr(9))[3] for f in filas})} tablas)")
+_exportar("splg_db", "SPLG-base-de-datos-lucidchart")
+_psql("postgres", "-c", "drop database if exists splg_lucid_tmp")
+_psql("postgres", "-c", "create database splg_lucid_tmp")
+_psql("splg_lucid_tmp", entrada=open(D + "lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql", encoding="utf-8").read())
+_exportar("splg_lucid_tmp", "SPLG-base-de-datos-con-planificadas-lucidchart")
+_psql("postgres", "-c", "drop database splg_lucid_tmp")
+os.makedirs(D + "lucidchart/texto/clases", exist_ok=True)
+for _src, _dst in (("diagramas/lucidchart/SPLG-modelo-conceptual.mmd", "texto/SPLG-modelo-conceptual-mermaid.txt"),
+                   ("diagramas/lucidchart/SPLG-clases-diseno-dominio.mmd", "texto/SPLG-clases-diseno-dominio-mermaid.txt"),
+                   ("diagramas/modelo-conceptual/MC_General.puml", "texto/SPLG-modelo-conceptual-plantuml.txt"),
+                   ("diagramas/clases-diseno/DC_General.puml", "texto/SPLG-clases-diseno-general-plantuml.txt")):
+    shutil.copy(D + _src, D + "lucidchart/" + _dst)
+for _f in glob.glob(D + "diagramas/lucidchart/clases/SPLG-clases-*.mmd"):
+    shutil.copy(_f, D + "lucidchart/texto/clases/" + os.path.basename(_f)[:-4] + "-mermaid.txt")
+print("  ✓ texto/: fuentes Mermaid y PlantUML del MC y de las clases")

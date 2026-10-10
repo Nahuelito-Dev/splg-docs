@@ -1,0 +1,167 @@
+classDiagram
+    direction LR
+
+    %% Stock. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class WarehouseService {
+        <<fachada>>
+        + actualizarDeposito(depositoId: Identificador, datos: Registro): Deposito
+        + consultarDepositos(): Deposito[*]
+        + darDeBajaDeposito(depositoId: Identificador)
+        + registrarDeposito(nombre: Cadena, codigo: Cadena, tipo: Cadena, direccion: Cadena): Deposito
+    }
+
+    class StockService {
+        <<fachada>>
+        + configurarStockMinimo(depositoId: Identificador, minimos: Lista): UmbralDeStock[*]
+        + consultarMovimientosDeStock(productoId: Identificador, ubicacionId: Identificador, motivo: Cadena, desde: FechaHora, hasta: FechaHora, pagina: Entero, out total: Entero): MovimientoDeStock[*]
+        + consultarResumenDeStock(): Registro
+        + consultarStockPorUbicacion(ubicacionId: Identificador, productoId: Identificador): SaldoDeStock[*]
+        + transferirStock(origenId: Identificador, destinoId: Identificador, productoId: Identificador, condicion: Cadena, cantidad: Entero): Booleano
+    }
+
+    class List_UbicacionDeStock["List<UbicacionDeStock>"] {
+        <<colección>>
+        + getCantidadPorCondicion(producto: Producto): Entero
+        + getLlenas(producto: Producto): Entero
+    }
+
+    class List_UmbralDeStock["List<UmbralDeStock>"] {
+        <<colección>>
+        + getConMinimo(): UmbralDeStock[*]
+        + getMinimoDeLlenas(producto: Producto): Entero
+    }
+
+    class Map_String_UbicacionDeStock["Map<String, UbicacionDeStock>"] {
+        <<colección>>
+        + get(clave: Cadena): UbicacionDeStock
+    }
+
+    class List_MovimientoDeStock["List<MovimientoDeStock>"] {
+        <<colección>>
+        + buscar(productoId: Identificador, ubicacionId: Identificador, motivo: Cadena, desde: FechaHora, hasta: FechaHora, pagina: Entero, out total: Entero): MovimientoDeStock[*]
+    }
+
+    class Map_String_Deposito["Map<String, Deposito>"] {
+        <<colección>>
+        + get(clave: Cadena): Deposito
+    }
+
+    class StockLowCron {
+        <<fachada>>
+        + avisarStockBajo()
+    }
+
+    class StockLedgerService {
+        <<fachada>>
+        + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, condicion: Cadena, cantidad: Entero, traslado: MotivoDeMovimiento): Booleano
+        + aplicarMovimientoDeStock(ubicacionDeStock: UbicacionDeStock, ubicacionDeStock: UbicacionDeStock, producto: Producto, condicionDeStock: CondicionDeStock, cantidad: Entero, motivoDeMovimiento: MotivoDeMovimiento): Booleano
+        + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, condicionOrigen: CondicionDeStock, condicionDestino: CondicionDeStock, cantidad: Entero, motivoDeMovimiento: MotivoDeMovimiento): Booleano
+        + existeMovimiento(pedido: Pedido): Booleano
+    }
+
+    class StockAdjustmentService {
+        <<fachada>>
+        + consultarAjustesDeStock(desde: FechaHora, hasta: FechaHora, motivo: Cadena): Registro
+        + registrarAjusteDeStock(ubicacionId: Identificador, motivo: Cadena, nota: Cadena, items: Lista): AjusteDeStock
+    }
+
+    class List_AjusteDeStock["List<AjusteDeStock>"] {
+        <<colección>>
+        + buscar(desde: FechaHora, hasta: FechaHora, motivo: Cadena): Registro
+    }
+
+    class StockDeliveryListener {
+        <<fachada>>
+        + descontarStockDeLaEntrega(pedidoId: Identificador): Booleano
+    }
+
+    class StockReconciliationCron {
+        <<fachada>>
+        + conciliarStock()
+    }
+
+    class StockReconciliationService {
+        <<fachada>>
+        + consultarConciliacionDeStock(): Registro
+    }
+
+    class UbicacionDeStock
+    class UmbralDeStock
+    class MovimientoDeStock
+    class Deposito
+    class AjusteDeStock
+    class Map_String_Pedido["Map<String, Pedido>"] {
+        <<colección>>
+    }
+    class EmailSenderPort {
+        <<interface>>
+    }
+    class List_Pedido["List<Pedido>"] {
+        <<colección>>
+    }
+    class List_Producto["List<Producto>"] {
+        <<colección>>
+    }
+    class Map_String_Producto["Map<String, Producto>"] {
+        <<colección>>
+    }
+    class ItemAjusteDeStock
+    class Producto
+    class Distribuidora
+    class ItemPedido
+    class Pedido
+    class Vehiculo
+
+    List_UbicacionDeStock "1" o-- "0..*" UbicacionDeStock : elementos
+    List_UmbralDeStock "1" o-- "0..*" UmbralDeStock : elementos
+    Map_String_UbicacionDeStock "1" o-- "0..*" UbicacionDeStock : elementos
+    List_MovimientoDeStock "1" o-- "0..*" MovimientoDeStock : elementos
+    Map_String_Deposito "1" o-- "0..*" Deposito : elementos
+    List_AjusteDeStock "1" o-- "0..*" AjusteDeStock : elementos
+    StockAdjustmentService --> "1" List_AjusteDeStock : list<AjusteDeStock>
+    StockAdjustmentService --> "1" Map_String_UbicacionDeStock : map<String, UbicacionDeStock>
+    StockAdjustmentService --> "1" StockLedgerService : stockLedgerService
+    StockDeliveryListener --> "1" Map_String_Pedido : map<String, Pedido>
+    StockDeliveryListener --> "1" StockLedgerService : stockLedgerService
+    StockLowCron --> "1" EmailSenderPort : emailSenderPort
+    StockLowCron --> "1" List_UmbralDeStock : list<UmbralDeStock>
+    StockReconciliationCron --> "1" EmailSenderPort : emailSenderPort
+    StockReconciliationCron --> "1" List_Pedido : list<Pedido>
+    StockReconciliationCron --> "1" List_Producto : list<Producto>
+    StockReconciliationCron --> "1" List_UbicacionDeStock : list<UbicacionDeStock>
+    StockReconciliationService --> "1" List_Pedido : list<Pedido>
+    StockReconciliationService --> "1" List_Producto : list<Producto>
+    StockReconciliationService --> "1" List_UbicacionDeStock : list<UbicacionDeStock>
+    StockService --> "1" List_MovimientoDeStock : list<MovimientoDeStock>
+    StockService --> "1" List_Producto : list<Producto>
+    StockService --> "1" List_UbicacionDeStock : list<UbicacionDeStock>
+    StockService --> "1" List_UmbralDeStock : list<UmbralDeStock>
+    StockService --> "1" Map_String_Deposito : map<String, Deposito>
+    StockService --> "1" Map_String_Producto : map<String, Producto>
+    StockService --> "1" Map_String_UbicacionDeStock : map<String, UbicacionDeStock>
+    StockService --> "1" StockLedgerService : stockLedgerService
+    WarehouseService --> "1" Map_String_Deposito : map<String, Deposito>
+    List_AjusteDeStock ..> AjusteDeStock
+    List_MovimientoDeStock ..> MovimientoDeStock
+    StockAdjustmentService ..> ItemAjusteDeStock
+    StockAdjustmentService ..> Producto
+    StockAdjustmentService ..> UbicacionDeStock
+    StockDeliveryListener ..> Distribuidora
+    StockDeliveryListener ..> ItemPedido
+    StockDeliveryListener ..> Pedido
+    StockDeliveryListener ..> Vehiculo
+    StockLedgerService ..> MovimientoDeStock : create
+    StockLedgerService ..> UbicacionDeStock
+    StockLowCron ..> Deposito
+    StockLowCron ..> Distribuidora
+    StockLowCron ..> UmbralDeStock
+    StockReconciliationCron ..> Distribuidora
+    StockReconciliationCron ..> Producto
+    StockReconciliationService ..> Producto
+    StockService ..> Deposito
+    StockService ..> Producto
+    StockService ..> UbicacionDeStock
+    WarehouseService ..> Deposito
+    WarehouseService ..> Distribuidora

@@ -1,0 +1,163 @@
+classDiagram
+    direction LR
+
+    %% Flota: gastos, multas y siniestros. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class FuelLoadService {
+        <<fachada>>
+        + anularCargaDeCombustible(cargaId: Identificador): CargaCombustible
+        + consultarCargasDeCombustible(filtros: Registro): CargaCombustible[*]
+        + consultarConsumoDeCombustible(vehiculoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + modificarCargaDeCombustible(cargaId: Identificador, datos: Registro): CargaCombustible
+        + registrarCargaDeCombustible(vehiculoId: Identificador, datos: Registro): CargaCombustible
+    }
+
+    class Map_String_CargaCombustible["Map<String, CargaCombustible>"] {
+        <<colección>>
+        + get(clave: Cadena): CargaCombustible
+    }
+
+    class List_CargaCombustible["List<CargaCombustible>"] {
+        <<colección>>
+        + getVigentes(filtros: Registro): CargaCombustible[*]
+    }
+
+    class FuelConsumptionCalculator {
+        <<fabricación pura>>
+        + calcularConsumo(cargas: CargaCombustible[*]): Registro
+        + calcularDesvio(cargaCombustible: CargaCombustible, vehiculo: Vehiculo): Decimal
+    }
+
+    class TrafficFineService {
+        <<fachada>>
+        + anularMultaDeTransito(multaId: Identificador, motivo: Cadena): MultaTransito
+        + consultarMultasDeTransito(filtros: Registro): MultaTransito[*]
+        + imputarMultaAlChofer(multaId: Identificador, empleadoId: Identificador): MultaTransito
+        + modificarMultaDeTransito(multaId: Identificador, datos: Registro): MultaTransito
+        + registrarMultaDeTransito(vehiculoId: Identificador, datos: Registro): MultaTransito
+        + registrarPagoDeMulta(multaId: Identificador, fechaDePago: FechaHora, importePagado: Moneda): MultaTransito
+    }
+
+    class Map_String_MultaTransito["Map<String, MultaTransito>"] {
+        <<colección>>
+        + containsKey(clave: Cadena): Booleano
+        + get(clave: Cadena): MultaTransito
+    }
+
+    class FleetExpenseAlertsCron {
+        <<fachada>>
+        + avisarMultasPorVencer()
+    }
+
+    class List_MultaTransito["List<MultaTransito>"] {
+        <<colección>>
+        + filtrar(filtros: Registro): MultaTransito[*]
+        + getPendientesPorVencer(dias: Entero): MultaTransito[*]
+    }
+
+    class VehicleAccidentService {
+        <<fachada>>
+        + cerrarSiniestro(siniestroId: Identificador, costoDeReparacion: Moneda, reintegroDelSeguro: Moneda, franquicia: Moneda): Siniestro
+        + consultarSiniestros(filtros: Registro): Siniestro[*]
+        + modificarSiniestro(siniestroId: Identificador, datos: Registro): Siniestro
+        + registrarSiniestro(vehiculoId: Identificador, datos: Registro): Siniestro
+    }
+
+    class List_Siniestro["List<Siniestro>"] {
+        <<colección>>
+        + filtrar(filtros: Registro): Siniestro[*]
+    }
+
+    class Map_String_Siniestro["Map<String, Siniestro>"] {
+        <<colección>>
+        + get(clave: Cadena): Siniestro
+    }
+
+    class TireService {
+        <<fachada>>
+        + registrarMovimientoDeNeumatico(neumaticoId: Identificador, datos: Registro): MovimientoNeumatico
+        + registrarNeumatico(datos: Registro): Neumatico
+    }
+
+    class Map_String_Neumatico["Map<String, Neumatico>"] {
+        <<colección>>
+        + containsKey(clave: Cadena): Booleano
+        + get(clave: Cadena): Neumatico
+    }
+
+    class Map_String_Empleado["Map<String, Empleado>"] {
+        <<colección>>
+        + get(clave: Cadena): Empleado
+    }
+
+    class FleetCostReportService {
+        <<fachada>>
+        + consultarCostoDeUnVehiculo(vehiculoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + ordenarPorCostoPorKilometro(costos: Registro): Registro
+    }
+
+    class List_Vehiculo["List<Vehiculo>"] {
+        <<colección>>
+        + getActivos(): Vehiculo[*]
+        + getVehiculosDe(distribuidora: Distribuidora): Vehiculo[*]
+    }
+
+    class Vehiculo
+    class Empleado
+    class CargaCombustible
+    class MultaTransito
+    class Siniestro
+    class Neumatico
+    class Map_String_Vehiculo["Map<String, Vehiculo>"] {
+        <<colección>>
+    }
+    class EmailSenderPort {
+        <<interface>>
+    }
+    class VehicleAssignmentService {
+        <<fachada>>
+    }
+    class Distribuidora
+
+    List_Vehiculo "1" o-- "0..*" Vehiculo : elementos
+    Map_String_Empleado "1" o-- "0..*" Empleado : elementos
+    Map_String_CargaCombustible "1" o-- "0..*" CargaCombustible : elementos
+    List_CargaCombustible "1" o-- "0..*" CargaCombustible : elementos
+    Map_String_MultaTransito "1" o-- "0..*" MultaTransito : elementos
+    List_MultaTransito "1" o-- "0..*" MultaTransito : elementos
+    List_Siniestro "1" o-- "0..*" Siniestro : elementos
+    Map_String_Siniestro "1" o-- "0..*" Siniestro : elementos
+    Map_String_Neumatico "1" o-- "0..*" Neumatico : elementos
+    FleetCostReportService --> "1" List_Vehiculo : list<Vehiculo>
+    FleetCostReportService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
+    FleetExpenseAlertsCron --> "1" EmailSenderPort : emailSenderPort
+    FleetExpenseAlertsCron --> "1" List_MultaTransito : list<MultaTransito>
+    FuelLoadService --> "1" EmailSenderPort : emailSenderPort
+    FuelLoadService --> "1" FuelConsumptionCalculator : fuelConsumptionCalculator
+    FuelLoadService --> "1" List_CargaCombustible : list<CargaCombustible>
+    FuelLoadService --> "1" Map_String_CargaCombustible : map<String, CargaCombustible>
+    FuelLoadService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
+    TireService --> "1" Map_String_Neumatico : map<String, Neumatico>
+    TireService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
+    TrafficFineService --> "1" List_MultaTransito : list<MultaTransito>
+    TrafficFineService --> "1" Map_String_Empleado : map<String, Empleado>
+    TrafficFineService --> "1" Map_String_MultaTransito : map<String, MultaTransito>
+    TrafficFineService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
+    TrafficFineService --> "1" VehicleAssignmentService : vehicleAssignmentService
+    VehicleAccidentService --> "1" EmailSenderPort : emailSenderPort
+    VehicleAccidentService --> "1" List_Siniestro : list<Siniestro>
+    VehicleAccidentService --> "1" Map_String_Siniestro : map<String, Siniestro>
+    VehicleAccidentService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
+    FleetCostReportService ..> Vehiculo
+    FleetExpenseAlertsCron ..> Distribuidora
+    FleetExpenseAlertsCron ..> MultaTransito
+    FuelLoadService ..> CargaCombustible
+    FuelLoadService ..> Vehiculo
+    TireService ..> Distribuidora
+    TireService ..> Neumatico
+    TrafficFineService ..> MultaTransito
+    TrafficFineService ..> Vehiculo
+    VehicleAccidentService ..> Siniestro
+    VehicleAccidentService ..> Vehiculo

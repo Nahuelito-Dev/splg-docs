@@ -1,0 +1,95 @@
+classDiagram
+    direction LR
+
+    %% Cobertura y distribuidoras. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class CoverageZoneService {
+        <<fachada>>
+        + definirZonaDeCobertura(nombre: Cadena, poligono: Poligono, recargo: Moneda, activa: Booleano): ZonaCobertura
+        + eliminarZonaDeCobertura(zonaId: Identificador)
+        + listarZonasDeCobertura(): ZonaCobertura[*]
+        + programarVigenciaDeZona(zonaId: Identificador, vigenteHasta: FechaHora): ZonaCobertura
+        + validarCobertura(latitud: Decimal, longitud: Decimal): Booleano
+    }
+
+    class Map_String_ZonaCobertura["Map<String, ZonaCobertura>"] {
+        <<colección>>
+        + get(clave: Cadena): ZonaCobertura
+    }
+
+    class CoverageZoneCronService {
+        <<fachada>>
+        + desactivarZonasVencidas()
+    }
+
+    class List_ZonaCobertura["List<ZonaCobertura>"] {
+        <<colección>>
+        + getVencidas(): ZonaCobertura[*]
+    }
+
+    class Map_String_Distribuidora["Map<String, Distribuidora>"] {
+        <<colección>>
+        + containsKey(clave: Cadena): Booleano
+        + get(clave: Cadena): Distribuidora
+    }
+
+    class DistributorService {
+        <<fachada>>
+        + consultarDistribuidora(distribuidoraId: Identificador): Distribuidora
+        + darDeBajaDistribuidora(distribuidoraId: Identificador)
+        + listarDistribuidoras(): Distribuidora[*]
+        + modificarDistribuidora(distribuidoraId: Identificador, datos: Registro): Distribuidora
+        + registrarDistribuidora(nombre: Cadena, identificadorCorto: Cadena, razonSocial: Cadena, cuit: Cadena, correo: Cadena, telefono: Cadena, logo: Archivo, plan: Cadena): Distribuidora
+    }
+
+    class List_Distribuidora["List<Distribuidora>"] {
+        <<colección>>
+        + getTodas(): Distribuidora[*]
+    }
+
+    class ModuleConfigService {
+        <<fachada>>
+        + configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta: Booleano): ConfiguracionModulo
+        + configurarFrecuenciaDeTareas(intervalos: Registro): ConfiguracionModulo
+        + configurarParametrosDeDespacho(radiosKm: Lista, ventanaDeAceptacion: Entero): ConfiguracionModulo
+        + configurarParametrosDeProceso(proceso: Cadena, parametros: Registro): ConfiguracionModulo
+        + validarIntervalos(intervalos: Registro)
+        + validarParametros(radiosKm: Decimal, ventanaDeAceptacion: Entero)
+        + validarParametros(proceso: ProcesoConfigurable, parametros: Registro)
+    }
+
+    class DispatchConfigService {
+        <<fabricación pura>>
+        + invalidar(distribuidora: Distribuidora)
+    }
+
+    class ScheduledTaskGate {
+        <<fabricación pura>>
+        + reprogramar(distribuidora: Distribuidora)
+    }
+
+    class Distribuidora
+    class ZonaCobertura
+    class RedisService {
+        <<fabricación pura>>
+    }
+    class ConfiguracionModulo
+
+    Map_String_Distribuidora "1" o-- "0..*" Distribuidora : elementos
+    List_Distribuidora "1" o-- "0..*" Distribuidora : elementos
+    Map_String_ZonaCobertura "1" o-- "0..*" ZonaCobertura : elementos
+    List_ZonaCobertura "1" o-- "0..*" ZonaCobertura : elementos
+    CoverageZoneCronService --> "1" List_ZonaCobertura : list<ZonaCobertura>
+    CoverageZoneService --> "1" Map_String_ZonaCobertura : map<String, ZonaCobertura>
+    DistributorService --> "1" List_Distribuidora : list<Distribuidora>
+    DistributorService --> "1" Map_String_Distribuidora : map<String, Distribuidora>
+    ModuleConfigService --> "1" DispatchConfigService : dispatchConfigService
+    ModuleConfigService --> "1" ScheduledTaskGate : scheduledTaskGate
+    ScheduledTaskGate --> "1" RedisService : redisService
+    CoverageZoneCronService ..> ZonaCobertura
+    CoverageZoneService ..> Distribuidora
+    CoverageZoneService ..> ZonaCobertura
+    DistributorService ..> Distribuidora : create
+    ModuleConfigService ..> ConfiguracionModulo
+    ModuleConfigService ..> Distribuidora

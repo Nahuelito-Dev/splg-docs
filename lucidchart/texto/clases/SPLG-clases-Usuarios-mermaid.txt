@@ -1,0 +1,132 @@
+classDiagram
+    direction LR
+
+    %% Usuarios, roles, administradores y auditoría. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class Map_String_Usuario["Map<String, Usuario>"] {
+        <<colección>>
+        + contiene(clave: Cadena): Booleano
+        + get(clave: Cadena): Usuario
+        + verificarDisponibilidad(correoNuevo: Cadena): Booleano
+        + verificarDisponibilidad(correo: Cadena, telefono: Cadena): Booleano
+    }
+
+    class UsersService {
+        <<fachada>>
+        + actualizarPerfil(usuario: Usuario, datos: Registro): Usuario
+        + bloquearUsuario(usuario: Usuario, bloquear: Booleano): Usuario
+        + buscarUsuarioPorCorreo(correo: Cadena): Usuario
+        + buscarUsuarioPorTelefono(telefono: Cadena): Usuario
+        + consultarPerfil(usuario: Usuario): Usuario
+        + eliminarUsuario(usuario: Usuario): Cadena
+        + listarUsuarios(pagina: Entero, limite: Entero, textoDeBusqueda: Cadena, out total: Entero): Usuario[*]
+        + verificarExistenciaDeUsuario(correo: Cadena, telefono: Cadena): Booleano
+    }
+
+    class List_Usuario["List<Usuario>"] {
+        <<colección>>
+        + buscar(textoDeBusqueda: Cadena, pagina: Entero, limite: Entero, out total: Entero): Usuario[*]
+    }
+
+    class RoleService {
+        <<fachada>>
+        + actualizarRol(rolId: Identificador, datos: Registro): Rol
+        + crearRol(tipo: Cadena): Rol
+        + eliminarRol(rolId: Identificador)
+        + listarRoles(): Rol[*]
+        + sembrarRolesIniciales(): Cadena
+    }
+
+    class List_Rol["List<Rol>"] {
+        <<colección>>
+        + listar(): Rol[*]
+    }
+
+    class Map_String_Rol["Map<String, Rol>"] {
+        <<colección>>
+        + contiene(clave: Cadena): Booleano
+        + get(clave: Cadena): Rol
+        + remove(clave: Cadena)
+    }
+
+    class List_Administrador["List<Administrador>"] {
+        <<colección>>
+        + existeAdministradorGeneral(): Booleano
+        + listar(): Administrador[*]
+    }
+
+    class AdminService {
+        <<fachada>>
+        + buscarAdministrador(termino: Cadena): Administrador
+        + listarAdministradores(): Administrador[*]
+    }
+
+    class Map_String_Administrador["Map<String, Administrador>"] {
+        <<colección>>
+        + get(clave: Cadena): Administrador
+    }
+
+    class AuditService {
+        <<fachada>>
+        + consultarAuditoria(autor: Identificador, tipoDeRecurso: Cadena, recurso: Cadena, desde: FechaHora, hasta: FechaHora, resultado: Cadena, limite: Entero, desplazamiento: Entero, out total: Entero): AsientoAuditoria[*]
+        + registrarOperacion(autor: Identificador, rol: Cadena, distribuidoraId: Identificador, operacion: Cadena, recurso: Cadena, origen: Cadena, resultado: Cadena, codigo: Cadena, motivo: Cadena)
+    }
+
+    class List_AsientoAuditoria["List<AsientoAuditoria>"] {
+        <<colección>>
+        + filtrar(autor: Usuario, tipoDeRecurso: Cadena, recurso: Cadena, desde: FechaHora, hasta: FechaHora, resultado: Cadena, limite: Entero, desplazamiento: Entero): AsientoAuditoria[*]
+    }
+
+    class DataAuditService {
+        <<fachada>>
+        + consultarAuditoriaDeDatos(entidad: Cadena, registro: Cadena, autor: Identificador, tipoDeAccion: Entero, desde: FechaHora, hasta: FechaHora, pagina: Entero, limite: Entero, out total: Entero): Auditoria[*]
+    }
+
+    class List_Auditoria["List<Auditoria>"] {
+        <<colección>>
+        + filtrar(entidad: Cadena, registro: Cadena, autor: Usuario, tipoDeAccion: Entero, desde: FechaHora, hasta: FechaHora, pagina: Entero, limite: Entero): Auditoria[*]
+    }
+
+    class DataAuditSubscriber {
+        <<fachada>>
+        + registrarAuditoriaDeDato(autor: Identificador, ip: Cadena, distribuidoraId: Identificador, entidad: Cadena, registro: Cadena, tipoDeAccion: Entero, detalles: Lista)
+    }
+
+    class Usuario
+    class Administrador
+    class Rol
+    class AsientoAuditoria
+    class Auditoria
+    class FirebaseAuthPort {
+        <<interface>>
+    }
+    class Chofer
+    class UbicacionGPS
+
+    Usuario <|-- Chofer
+    Usuario <|-- Administrador
+    Map_String_Usuario "1" o-- "0..*" Usuario : elementos
+    List_Usuario "1" o-- "0..*" Usuario : elementos
+    List_Administrador "1" o-- "0..*" Administrador : elementos
+    Map_String_Administrador "1" o-- "0..*" Administrador : elementos
+    List_Rol "1" o-- "0..*" Rol : elementos
+    Map_String_Rol "1" o-- "0..*" Rol : elementos
+    List_AsientoAuditoria "1" o-- "0..*" AsientoAuditoria : elementos
+    List_Auditoria "1" o-- "0..*" Auditoria : elementos
+    AdminService --> "1" List_Administrador : list<Administrador>
+    AdminService --> "1" Map_String_Administrador : map<String, Administrador>
+    AuditService --> "1" List_AsientoAuditoria : list<AsientoAuditoria>
+    DataAuditService --> "1" List_Auditoria : list<Auditoria>
+    RoleService --> "1" List_Rol : list<Rol>
+    RoleService --> "1" Map_String_Rol : map<String, Rol>
+    UsersService --> "1" FirebaseAuthPort : firebaseAuthPort
+    UsersService --> "1" List_Usuario : list<Usuario>
+    UsersService --> "1" Map_String_Usuario : map<String, Usuario>
+    AuditService ..> AsientoAuditoria : create
+    DataAuditService ..> Auditoria
+    DataAuditSubscriber ..> Auditoria : create
+    RoleService ..> Rol : create
+    UsersService ..> Chofer
+    UsersService ..> UbicacionGPS
+    UsersService ..> Usuario

@@ -1,3 +1,22 @@
+# Archivos para Lucidchart
+
+## Base de datos (CSV / TSV)
+
+| Archivo | Contenido |
+|---|---|
+| `SPLG-base-de-datos-lucidchart.csv` / `.tsv` | La base real: 48 tablas, con PK y FK |
+| `SPLG-base-de-datos-con-planificadas-lucidchart.csv` / `.tsv` | La base con los módulos planificados: 82 tablas |
+
+En Lucidchart: **Archivo → Importar datos → Entity Relationship (ERD) → Importar desde: SQL Database → PostgreSQL**. Saltear el paso de correr la consulta (ya está corrida: es `material-de-trabajo/lucidchart-erd-postgresql.sql`) y **subir el CSV** (o pegar el contenido del TSV). Las tablas aparecen en el panel lateral y se arrastran al lienzo con sus relaciones.
+
+## Modelo conceptual y clases (texto)
+
+En `texto/` están las fuentes en **Mermaid** (`*-mermaid.txt`) y **PlantUML** (`*-plantuml.txt`). En Lucidchart: **Insertar → Diagrama como código** (Mermaid o PlantUML) y pegar el contenido. También quedan los `.xml` de draw.io (Archivo → Importar → Draw.io) para quien tenga esa opción.
+
+Todo se regenera con `python3 generar-lucidchart.py` (necesita la base corriendo en Docker).
+
+---
+
 # Lucidchart — los archivos para importar
 
 El modelo conceptual y el diagrama de clases de diseño los genera `generar-lucidchart.py`.

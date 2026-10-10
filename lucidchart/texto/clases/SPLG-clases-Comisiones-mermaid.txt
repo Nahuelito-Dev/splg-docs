@@ -1,0 +1,85 @@
+classDiagram
+    direction LR
+
+    %% Comisiones y liquidaciones. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class CommissionService {
+        <<fachada>>
+        + anularLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
+        + aprobarLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
+        + consultarMisComisiones(fechaDesde: Fecha, fechaHasta: Fecha, out saldo: Moneda): AsientoComision[*]
+        + crearReglaDeComision(empleadoId: Identificador, productoId: Identificador, base: BaseDeComision, valor: Decimal, vigenteDesde: Fecha): ReglaComision
+        + liquidarComisionesDelChofer(empleadoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): LiquidacionComisiones
+        + modificarReglaDeComision(reglaId: Identificador, datos: Registro): ReglaComision
+        + pagarLiquidacion(liquidacionId: Identificador, cajaId: Identificador): LiquidacionComisiones
+        + registrarComisionDeEntrega(pedidoId: Identificador)
+    }
+
+    class Map_String_ReglaComision["Map<String, ReglaComision>"] {
+        <<colección>>
+        + get(clave: Cadena): ReglaComision
+    }
+
+    class Map_String_LiquidacionComisiones["Map<String, LiquidacionComisiones>"] {
+        <<colección>>
+        + get(clave: Cadena): LiquidacionComisiones
+    }
+
+    class Map_String_Empleado["Map<String, Empleado>"] {
+        <<colección>>
+        + get(clave: Cadena): Empleado
+    }
+
+    class List_ReglaComision["List<ReglaComision>"] {
+        <<colección>>
+        + getAplicable(pedido: Pedido, empleado: Empleado): ReglaComision
+    }
+
+    class List_AsientoComision["List<AsientoComision>"] {
+        <<colección>>
+        + filtrar(empleado: Empleado, fechaDesde: Fecha, fechaHasta: Fecha): AsientoComision[*]
+        + getSinLiquidar(empleado: Empleado, fechaDesde: Fecha, fechaHasta: Fecha): AsientoComision[*]
+    }
+
+    class Empleado
+    class ReglaComision
+    class LiquidacionComisiones
+    class AsientoComision
+    class CashLedgerService {
+        <<fachada>>
+    }
+    class Map_String_Caja["Map<String, Caja>"] {
+        <<colección>>
+    }
+    class Map_String_Pedido["Map<String, Pedido>"] {
+        <<colección>>
+    }
+    class Map_String_Producto["Map<String, Producto>"] {
+        <<colección>>
+    }
+    class Chofer
+    class Distribuidora
+    class Pedido
+
+    Map_String_Empleado "1" o-- "0..*" Empleado : elementos
+    Map_String_ReglaComision "1" o-- "0..*" ReglaComision : elementos
+    List_ReglaComision "1" o-- "0..*" ReglaComision : elementos
+    Map_String_LiquidacionComisiones "1" o-- "0..*" LiquidacionComisiones : elementos
+    List_AsientoComision "1" o-- "0..*" AsientoComision : elementos
+    CommissionService --> "1" CashLedgerService : cashLedgerService
+    CommissionService --> "1" List_AsientoComision : list<AsientoComision>
+    CommissionService --> "1" List_ReglaComision : list<ReglaComision>
+    CommissionService --> "1" Map_String_Caja : map<String, Caja>
+    CommissionService --> "1" Map_String_Empleado : map<String, Empleado>
+    CommissionService --> "1" Map_String_LiquidacionComisiones : map<String, LiquidacionComisiones>
+    CommissionService --> "1" Map_String_Pedido : map<String, Pedido>
+    CommissionService --> "1" Map_String_Producto : map<String, Producto>
+    CommissionService --> "1" Map_String_ReglaComision : map<String, ReglaComision>
+    CommissionService ..> Chofer
+    CommissionService ..> Distribuidora
+    CommissionService ..> Empleado
+    CommissionService ..> LiquidacionComisiones
+    CommissionService ..> Pedido
+    CommissionService ..> ReglaComision
+    Empleado ..> List_AsientoComision

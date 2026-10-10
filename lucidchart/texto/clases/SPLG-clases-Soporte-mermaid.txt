@@ -1,0 +1,89 @@
+classDiagram
+    direction LR
+
+    %% Reportes, salud y almacenamiento. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class ReportsService {
+        <<fachada>>
+        + agruparPorChofer(pedidos: Pedido[*]): Registro
+        + agruparPorMetodoDePago(pedidos: Pedido[*]): Registro
+        + agruparPorPeriodo(pedidos: Pedido[*], granularidad: Cadena): Registro
+        + agruparPorProducto(items: Registro): Registro
+        + consultarEvolucionDeVentas(fechaDesde: Fecha, fechaHasta: Fecha, granularidad: Cadena): Registro
+        + consultarVentasPorChofer(fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + consultarVentasPorMetodoDePago(fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + consultarVentasPorProducto(fechaDesde: Fecha, fechaHasta: Fecha): Registro
+    }
+
+    class FleetCostReportService {
+        <<fachada>>
+        + consultarCostoDeUnVehiculo(vehiculoId: Identificador, fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha, fechaHasta: Fecha): Registro
+        + ordenarPorCostoPorKilometro(costos: Registro): Registro
+    }
+
+    class HealthCheckService {
+        <<fachada>>
+        + verificarDisponibilidad(): Registro
+        + verificarSalud(): Registro
+        + verificarVida(): Registro
+    }
+
+    class RedisHealthIndicator {
+        <<fabricación pura>>
+        + isHealthy(redis: Registro): Booleano
+    }
+
+    class RedisService {
+        <<fabricación pura>>
+        + del(marcasDeUltimaEjecucion: Registro)
+        + ping(): Booleano
+    }
+
+    class S3Service {
+        <<fabricación pura>>
+        + getSignedDownload(adjunto: AdjuntoTarea): Cadena
+        + getSignedDownload(clave: Cadena, nombreDeDescarga: Cadena): Cadena
+        + put(clave: Cadena, archivo: Archivo, tipo: Cadena)
+    }
+
+    class S3CleanupService {
+        <<fabricación pura>>
+        + removeInBackground(claveAnterior: Cadena)
+    }
+
+    class List_Vehiculo["List<Vehiculo>"] {
+        <<colección>>
+    }
+    class Map_String_Vehiculo["Map<String, Vehiculo>"] {
+        <<colección>>
+    }
+    class List_Pedido["List<Pedido>"] {
+        <<colección>>
+    }
+    class Vehiculo
+    class ItemPedido
+    class Pedido
+    class AttachmentService {
+        <<fachada>>
+    }
+    class ClaimsService {
+        <<fachada>>
+    }
+    class FleetAttachmentService {
+        <<fachada>>
+    }
+
+    AttachmentService --> "1" S3Service : s3Service
+    ClaimsService --> "1" S3CleanupService : s3CleanupService
+    ClaimsService --> "1" S3Service : s3Service
+    FleetAttachmentService --> "1" S3Service : s3Service
+    FleetCostReportService --> "1" List_Vehiculo : list<Vehiculo>
+    FleetCostReportService --> "1" Map_String_Vehiculo : map<String, Vehiculo>
+    HealthCheckService --> "1" RedisHealthIndicator : redisHealthIndicator
+    RedisHealthIndicator --> "1" RedisService : redisService
+    ReportsService --> "1" List_Pedido : list<Pedido>
+    FleetCostReportService ..> Vehiculo
+    ReportsService ..> ItemPedido
+    ReportsService ..> Pedido

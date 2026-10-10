@@ -1,0 +1,79 @@
+classDiagram
+    direction LR
+
+    %% Reclamos, incidencias y calificaciones. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class ClaimsService {
+        <<fachada>>
+        + adjuntarFotoAlReclamo(reclamoId: Identificador, imagen: Archivo): Reclamo
+        + consultarFotoDelReclamo(reclamoId: Identificador): DireccionEntrega
+        + listarReclamos(): Reclamo[*]
+        + reabrirReclamo(reclamoId: Identificador, motivo: Cadena): Reclamo
+        + registrarReclamo(pedidoId: Identificador, motivo: Cadena, evidencia: Archivo): Reclamo
+        + resolverReclamo(reclamoId: Identificador, resolucion: Cadena, estadoFinal: Cadena): Reclamo
+        + tomarReclamo(reclamoId: Identificador): Reclamo
+    }
+
+    class Map_String_Reclamo["Map<String, Reclamo>"] {
+        <<colección>>
+        + get(clave: Cadena): Reclamo
+        + values(distribuidora: Distribuidora): Reclamo[*]
+    }
+
+    class IncidentService {
+        <<fachada>>
+        + consultarIncidenciasDelPedido(pedidoId: Identificador): Incidencia[*]
+        + listarIncidencias(): Incidencia[*]
+        + registrarIncidencia(pedidoId: Identificador, tipo: Cadena, descripcion: Cadena, foto: Archivo): Incidencia
+        + resolverIncidencia(incidenciaId: Identificador, notaDeResolucion: Cadena): Incidencia
+    }
+
+    class Map_String_Incidencia["Map<String, Incidencia>"] {
+        <<colección>>
+        + get(clave: Cadena): Incidencia
+        + values(distribuidora: Distribuidora): Incidencia[*]
+    }
+
+    class RatingService {
+        <<fachada>>
+        + calificarPedido(pedidoId: Identificador, estrellas: Entero, comentario: Cadena): Calificacion
+        + consultarHistorialDeCalificaciones(usuario: Usuario): Calificacion[*]
+        + consultarResumenDeCalificaciones(usuario: Usuario): Registro
+    }
+
+    class Reclamo
+    class Incidencia
+    class Map_String_Pedido["Map<String, Pedido>"] {
+        <<colección>>
+    }
+    class S3CleanupService {
+        <<fabricación pura>>
+    }
+    class S3Service {
+        <<fabricación pura>>
+    }
+    class Cliente
+    class Pedido
+    class Chofer
+    class Usuario
+
+    Usuario <|-- Cliente
+    Usuario <|-- Chofer
+    Map_String_Reclamo "1" o-- "0..*" Reclamo : elementos
+    Map_String_Incidencia "1" o-- "0..*" Incidencia : elementos
+    ClaimsService --> "1" Map_String_Pedido : map<String, Pedido>
+    ClaimsService --> "1" Map_String_Reclamo : map<String, Reclamo>
+    ClaimsService --> "1" S3CleanupService : s3CleanupService
+    ClaimsService --> "1" S3Service : s3Service
+    IncidentService --> "1" Map_String_Incidencia : map<String, Incidencia>
+    IncidentService --> "1" Map_String_Pedido : map<String, Pedido>
+    RatingService --> "1" Map_String_Pedido : map<String, Pedido>
+    ClaimsService ..> Cliente
+    ClaimsService ..> Pedido
+    ClaimsService ..> Reclamo
+    IncidentService ..> Incidencia
+    IncidentService ..> Pedido
+    RatingService ..> Chofer
+    RatingService ..> Pedido
+    RatingService ..> Usuario

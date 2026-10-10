@@ -1,0 +1,35 @@
+classDiagram
+    direction LR
+
+    %% Seguimiento en tiempo real. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:
+    %% no se edita a mano.
+
+    class DriversGateway {
+        <<fachada>>
+        + actualizarUbicacion(usuario: Usuario, latitud: Decimal, longitud: Decimal)
+    }
+
+    class CustomersGateway {
+        <<fachada>>
+        + notifyCustomer(cliente: Cliente, evento: Registro, posicion: UbicacionGPS)
+        + suscribirseAlSeguimiento(cliente: Cliente)
+    }
+
+    class AdminGateway {
+        <<fabricación pura>>
+        + notifyAdmins(evento: Registro, posicion: UbicacionGPS)
+    }
+
+    class SocketIdentityService {
+        <<fabricación pura>>
+        + obtener(conexion: Registro): Registro
+    }
+
+    class Cliente
+    class Chofer
+
+    CustomersGateway --> "1" SocketIdentityService : socketIdentityService
+    DriversGateway --> "1" AdminGateway : adminGateway
+    DriversGateway --> "1" CustomersGateway : customersGateway
+    CustomersGateway ..> Cliente
+    DriversGateway ..> Chofer
