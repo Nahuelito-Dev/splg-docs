@@ -2,10 +2,10 @@
 -- SPLG — Sistema de Pedidos y Logística de Garrafas de Gas
 -- Esquema completo de Base de Datos — PostgreSQL 14+
 -- ------------------------------------------------------------
--- Listo para importar en Lucidchart:
+-- Listo para importar en draw.io:
 --   File → Import Data → Database (Custom)
 --   Seleccionar PostgreSQL como motor → pegar este archivo
---   Lucidchart genera el ER automáticamente con cardinalidades
+--   draw.io genera el ER automáticamente con cardinalidades
 -- ------------------------------------------------------------
 -- Incluye:
 --   • 12 tablas core del sistema (User, Customer, Delivery, Order, etc.)
@@ -841,7 +841,7 @@ CREATE INDEX idx_ticket_msg_ticket ON support_ticket_message(ticket_id);
 COMMENT ON TABLE support_ticket_message IS 'Conversación dentro de un ticket de soporte (cliente ↔ agente)';
 
 -- ============================================================
--- VISTAS AGREGADAS (opcional - útil para Lucidchart)
+-- VISTAS AGREGADAS (opcional - útil para draw.io)
 -- ============================================================
 
 -- Vista resumen de pedidos para reportes

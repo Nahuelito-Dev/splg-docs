@@ -113,6 +113,8 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
     ("CargaDeCamion", "regresó el"): "FechaHora",
     ("CargaDeCamion", "cerrada el"): "FechaHora",
     ("CargaDeCamion", "nota de diferencia"): "Cadena",
+    ("CargaDeCamion", "motivo de cancelación"): "Cadena",
+    ("CargaDeCamion", "notas"): "Cadena",
     ("ItemCarga", "llenas cargadas"): "Entero",
     ("ItemCarga", "llenas repuestas"): "Entero",
     ("ItemCarga", "vacías cargadas"): "Entero",
@@ -607,6 +609,11 @@ GLOSARIO.update({
 # que lo recibe en el diseño (nombre, tipo). Se busca por (clase, nombre) y después por nombre.
 ALIAS_PARAMETRO = {
     "1": ("cantidad", "Entero"),
+    # Carga del camión
+    ("TruckLoadGateService", "elegibles"): ("choferes", "Chofer[*]"),
+    ("StockLedgerService", "renglones"): ("renglones", "MovimientoDeStock[*]"),
+    ("ItemCarga", "vaciasDeclaradas"): ("vaciasDeclaradas", "Entero"),
+    ("CargaDeCamion", "vehiculoEnUso"): ("vehiculoEnUso", "Vehiculo"),
     ("Pedido", "pendiente"): ("estadoDestino", "EstadoPedido"),
     ("Pedido", "cancelado"): ("estadoDestino", "EstadoPedido"),
     ("Pedido", "aceptado"): ("estadoDestino", "EstadoPedido"),
@@ -737,7 +744,9 @@ GLOSARIO.update({
 })
 ALIAS_PARAMETRO.update({("Distribuidora", "direccion"): ("direccion", "Cadena"),
                         ("Deposito", "direccion"): ("direccion", "Cadena"),
-                        ("OrdenDeCompra", "cancelada"): ("estadoDestino", "Cadena")})
+                        ("OrdenDeCompra", "cancelada"): ("estadoDestino", "EstadoDeLaOrden"),
+                        ("OrdenDeCompra", "enviada"): ("estadoDestino", "EstadoDeLaOrden"),
+                        ("OrdenDeCompra", "cerradaConFaltante"): ("estadoDestino", "EstadoDeLaOrden")})
 
 # El mismo nombre de argumento significa cosas distintas según la clase que lo recibe: el glosario
 # da el sentido más común y esta tabla da el de cada clase.
@@ -866,6 +875,21 @@ RETORNO_ESPECIFICO = {
     ("Caja", "calcularDiferencia"): "Moneda",
     ("Envase", "getMovimientos"): "MovimientoEnvase[*]",
     ("CylinderService", "consultarHistorialDelEnvase"): "MovimientoEnvase[*]",
+    # Carga del camión: las validaciones no devuelven un valor, y los conteos y las preguntas sí
+    ("Vehiculo", "validarEnUsoPor"): None,
+    ("Vehiculo", "validarSinCargaAbierta"): None,
+    ("Chofer", "validarSinCargaAbierta"): None,
+    ("UbicacionDeStock", "validarVacia"): None,
+    ("CargaDeCamion", "validarQuePuedeSalir"): None,
+    ("CargaDeCamion", "validarQueEstaEnRuta"): None,
+    ("CargaDeCamion", "validarQueEstaDevuelta"): None,
+    ("CargaDeCamion", "validarQuePuedeDeclararElRegreso"): None,
+    ("CargaDeCamion", "validarNotaDeDiferencia"): None,
+    ("CargaDeCamion", "getEntregasPosterioresALaDeclaracion"): "Entero",
+    ("CargaDeCamion", "estaEnRutaCon"): "Booleano",
+    ("Chofer", "getPedidosEnCurso"): "Entero",
+    # lo pendiente de recibir: por renglón es una cantidad, y de toda la orden, el detalle de cada renglón
+    ("OrdenDeCompra", "getPendiente"): "Registro",
 }
 
 # Consultas y cálculos que el DSD llama sin mostrar qué devuelven (o que devuelven una prosa que
@@ -901,6 +925,7 @@ RETORNO_DE_CONSULTA = {
     ("ItemCarga", "calcularDiferencia"): "Entero",
     ("ItemCarga", "getEsperado"): "Entero",
     ("OrdenDeCompra", "calcularTotal"): "Moneda",
+    ("ItemOrdenDeCompra", "getPendiente"): "Entero",
     ("RendicionChofer", "calcularEfectivoEsperado"): "Moneda",
     ("RendicionChofer", "calcularDiferencia"): "Moneda",
     ("RendicionChofer", "recalcularEfectivoEsperado"): "Moneda",

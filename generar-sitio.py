@@ -5,7 +5,7 @@ y seccion donde cada uno esta respaldado.
 
 Uso:  python3 generar-sitio.py     ->  splg-documentacion.html
 """
-import re, json, os, glob, base64, hashlib, sys, datetime
+import re, json, os, glob, base64, hashlib, sys, datetime, subprocess
 from paleta import css_subsistemas
 
 # Los casos de uso que intervienen en cada modulo sin pertenecerle. Salen de las
@@ -172,7 +172,7 @@ for _k,(_f,_n,_d) in UMLSIS.items():
     _p = D+"diagramas/uml/"+_f+(".svg" if os.path.exists(D+"diagramas/uml/"+_f+".svg")
                                 and not os.path.exists(D+"diagramas/uml/"+_f+".png") else ".png")
     if os.path.exists(_p): umlsis[_k] = {"img":imagen(_p), "nombre":_n, "descripcion":_d}
-# El completo entero (287 casos en una lámina) no se lee: se muestra en seis láminas,
+# El completo entero (290 casos en una lámina) no se lee: se muestra en seis láminas,
 # que juntas son el diagrama completo, y la vista de conjunto queda al final.
 _lams = sorted(glob.glob(D + "diagramas/uml/CU_Sistema_Completo-Lamina-*.svg"),
                key=lambda r: int(re.search(r'Lamina-(\d+)', r).group(1)))
@@ -192,7 +192,7 @@ import html as _html
 
 # Los codigos que aparecen en el texto se marcan con su color: el subsistema con
 # el mismo tinte que su caja en los diagramas, el caso de uso y el actor con su
-# propia marca. Con 287 casos y 21 subsistemas, encontrar uno en una tabla de
+# propia marca. Con 290 casos y 21 subsistemas, encontrar uno en una tabla de
 # texto plano era leer renglon por renglon.
 def marcar(s):
     s = re.sub(r'\b(SS-\d\d)\b', r'<span class="marca-ss" data-ss="\1">\1</span>', s)
@@ -405,119 +405,56 @@ def cuerpo_de(archivo):
 _arq = _seccion("3-Diseño.md", r'^## 2\. Arquitectura', r'^## 3\. ')
 _arq_html = md2html(_arq)["html"]
 
-# ---------- los archivos para Lucidchart ----------
-# El modelo conceptual, los dos diagramas de clases y el modelo de datos se
-# trabajan en Lucidchart. Los archivos viven en lucidchart/ y se generan con
-# generar-lucidchart.py; acá se muestran dibujados y se dejan para descargar,
-# para no tener que ir al repositorio a buscarlos.
+# ---------- los modelos en draw.io ----------
+# El modelo conceptual, el DER, la base de datos físico y las clases de diseño se trabajan en draw.io. Los
+# archivos viven en drawio/ y los genera, a mano, generar-drawio.py (el diagrama de clases tarda unos minutos):
+# el sitio no los regenera. Acá se dejan para descargar, y si algún modelo cambió desde la última vez se avisa.
 sys.path.insert(0, D)
-from modelo_conceptual import VISTAS as _vistas_mc
 
-def _lucid():
-    fuentes = [
-      ("Modelo conceptual", "SPLG-modelo-conceptual.xml",
-       "diagramas/lucidchart/SPLG-modelo-conceptual.mmd",
-       "Los conceptos del dominio con sus asociaciones y multiplicidades. "
-       "Es el modelo de análisis: sin métodos, sin claves foráneas y sin navegabilidad."),
-      ("Diagrama de clases de diseño — dominio", "SPLG-diagrama-de-clases-dominio.xml",
-       "diagramas/lucidchart/SPLG-clases-diseno-dominio.mmd",
-       "Las clases del modelo conceptual con sus atributos tipados y las operaciones que reciben "
-       "en los diagramas de interacción, con la navegabilidad que esos mensajes piden. Se deriva "
-       "de los DSD: no se escribe a mano."),
+FUENTES_DRAWIO = ["modelo_conceptual.py", "generar-drawio.py", "diagramas/base-de-datos/SPLG-modelo.json",
+                  "material-de-trabajo/dc_larman.py", "material-de-trabajo/clases-codigo.json"]
+
+def _drawio_al_dia():
+    salida = [D + "drawio/SPLG-" + n + ".drawio" for n in ("MC", "DER", "DBD", "DC")]
+    if not all(os.path.exists(s) for s in salida):
+        return False
+    viejo = min(os.path.getmtime(s) for s in salida)
+    fuentes = [D + f for f in FUENTES_DRAWIO] + glob.glob(D + "diagramas/DSD_*.mmd")
+    return all(os.path.getmtime(f) <= viejo for f in fuentes if os.path.exists(f))
+
+def _drawio():
+    if not _drawio_al_dia():
+        print("  ! drawio/ está desactualizado respecto de los modelos: corré `python3 generar-drawio.py` y `python3 verificar-drawio.py`")
+    archivos = [
+      ("Modelo conceptual", "SPLG-MC.drawio",
+       "Los conceptos del dominio con sus atributos, las asociaciones con su nombre y las multiplicidades en los "
+       "dos extremos, la composición, la generalización y la clase de asociación. Es el modelo de análisis: sin "
+       "métodos, sin claves foráneas y sin navegabilidad."),
+      ("DER conceptual", "SPLG-DER.drawio",
+       "Una entidad por concepto que tiene tabla, con el vocabulario del modelo conceptual, y cada relación en "
+       "pata de gallo con su cardinalidad."),
+      ("Diagrama de base de datos", "SPLG-DBD.drawio",
+       "Las tablas reales de la base con sus columnas, tipos, claves, únicos e índices, y cada clave foránea como "
+       "una arista de la columna FK a la clave primaria de la tabla destino."),
+      ("Diagrama de clases de diseño", "SPLG-DC.drawio",
+       "Las clases de diseño derivadas de los diagramas de interacción, con atributos tipados, operaciones, "
+       "asociaciones con navegabilidad y multiplicidades, composición, agregación, generalización y dependencias."),
     ]
-    # Las clases de servicios, casos de uso, puertos y controladores no entran en un
-    # solo diagrama (126 clases): generar-clases-diseno.py las parte por módulo del
-    # backend. Se agregan todas acá, en orden alfabético del módulo.
-    for ruta_mmd in sorted(glob.glob(D + "diagramas/lucidchart/clases/SPLG-clases-*.mmd")):
-        modulo = re.match(r'SPLG-clases-(.+)\.mmd$', os.path.basename(ruta_mmd)).group(1)
-        fuentes.append((
-          f"Diagrama de clases — servicios · módulo {modulo}",
-          f"SPLG-diagrama-de-clases-{modulo}.xml",
-          f"diagramas/lucidchart/clases/SPLG-clases-{modulo}.mmd",
-          f"Vista `{modulo}` del diagrama de clases de diseño: controladores, fabricaciones "
-          f"puras, puertos y colecciones con las operaciones que reciben en los DSD."))
-    mer, secc = [], []
-    for titulo, xml, fuente, desc in fuentes:
-        ruta = D + fuente
-        if not os.path.exists(ruta): continue
-        mer.append(open(ruta, encoding="utf-8").read().strip())
-        xml_ruta = (D + "lucidchart/clases/" + xml if "/clases/" in fuente
-                   else D + "lucidchart/" + xml)
-        if not os.path.exists(xml_ruta): continue
-        b64 = base64.b64encode(open(xml_ruta, "rb").read()).decode()
-        cuerpo = f'<div class="diagram" data-mer="{len(mer)-1}"></div>'
-        if "clases-diseno-dominio" in fuente or re.search(r'lucidchart/clases/SPLG-clases-', fuente):
-            # el diagrama de clases de diseño se dibuja con PlantUML (estereotipos, interfaces,
-            # navegabilidad, realización): se muestran sus imágenes y no el Mermaid, que sólo es
-            # la fuente del draw.io
-            mer.pop()
-            cuerpo = ""
-            if "clases-diseno-dominio" in fuente:
-                nombres_img = ["DC_General"] + sorted(
-                    os.path.basename(f)[:-5] for f in glob.glob(D + "diagramas/clases-diseno/DC_*.puml")
-                    if not os.path.basename(f).startswith(("DC_Mod_", "DC_General", "DC_Paquetes")))
-            else:
-                nombres_img = ["DC_Mod_" + re.search(r'SPLG-clases-(.+)\.mmd$', fuente).group(1)]
-            for img in nombres_img:
-                for ext in (".svg", ".png"):
-                    ruta_img = D + "diagramas/clases-diseno/" + img + ext
-                    if os.path.exists(ruta_img):
-                        cuerpo += ('<div class="figura"><img class="umlimg" alt="Diagrama de clases de diseño: '
-                                   f'{img}" src="{imagen(ruta_img)}"></div>')
-                        break
-        if xml == "SPLG-modelo-conceptual.xml":
-            # el modelo conceptual se dibuja con PlantUML (dirección de lectura, clase de
-            # asociación y restricciones de generalización): se muestran sus imágenes y no
-            # el Mermaid, que es sólo la fuente del draw.io
-            mer.pop()
-            cuerpo = ""
-            for img in ["MC_General"] + [v[1] for v in _vistas_mc]:
-                for ext in (".svg", ".png"):
-                    ruta_img = D + "diagramas/modelo-conceptual/" + img + ext
-                    if os.path.exists(ruta_img):
-                        cuerpo += ('<div class="figura"><img class="umlimg" alt="Modelo conceptual: '
-                                   f'{img}" src="{imagen(ruta_img)}"></div>')
-                        break
+    secc = []
+    for titulo, arch, desc in archivos:
+        ruta = D + "drawio/" + arch
+        if not os.path.exists(ruta):
+            continue
+        b64 = base64.b64encode(open(ruta, "rb").read()).decode()
         secc.append(
           f'<h2>{titulo}</h2><p>{desc}</p>'
-          f'{cuerpo}'
-          f'<p class="bajar"><a download="{xml}" href="data:application/xml;base64,{b64}">'
-          f'DESCARGAR {xml}</a> <span class="comollega">Lucidchart · Archivo · Importar · Draw.io</span></p>')
-
-    _fisicos = sorted(glob.glob(D + "diagramas/base-de-datos/fisico/SPLG-fisico-*.svg"))
-    for archivo, titulo_sql, desc_sql, con_imagen in (
-            ("SPLG-diagrama-de-base-de-datos.sql", "Diagrama de base de datos",
-             "Las {n} tablas que la base tiene hoy, con sus columnas y sus claves foráneas.", True),
-            ("SPLG-diagrama-de-base-de-datos-con-planificadas.sql", "Diagrama de base de datos con las tablas planificadas",
-             "Las {n} tablas: las {real} implementadas y las {plan} de los módulos planificados (personal, flota "
-             "ampliada, stock y compras, caja y rendición), que todavía no están en la base.", False)):
-        sql = D + "lucidchart/" + archivo
-        if not os.path.exists(sql):
-            continue
-        crudo = open(sql, encoding="utf-8").read()
-        b64 = base64.b64encode(crudo.encode()).decode()
-        n = crudo.count("CREATE TABLE")
-        n_real = open(D + "lucidchart/SPLG-diagrama-de-base-de-datos.sql", encoding="utf-8").read().count("CREATE TABLE")
-        img = ""
-        if con_imagen:
-            for ruta_img in _fisicos:
-                img += (f'<div class="figura"><img class="umlimg" alt="Modelo físico: '
-                        f'{os.path.basename(ruta_img)[12:-4]}" src="{imagen(ruta_img)}"></div>')
-        secc.append(
-          f'<h2>{titulo_sql}</h2>'
-          f'<p>{desc_sql.format(n=n, real=n_real, plan=n - n_real)} '
-          f'Entra por otra puerta que los anteriores: no es un diagrama sino el esquema, '
-          f'y Lucidchart lo arma solo a partir del SQL.</p>{img}'
-          f'<p class="bajar"><a download="{archivo}" '
-          f'href="data:text/plain;base64,{b64}">DESCARGAR {archivo}</a> '
-          f'<span class="comollega">Lucidchart · Importar datos · ERD · PostgreSQL</span></p>')
-
-    intro = ('<div class="intro"><h1>Modelos para Lucidchart</h1>'
-             '<p>Los diagramas que se trabajan en Lucidchart, dibujados acá y '
-             'listos para bajar. Los tres primeros son archivos de draw.io, que es uno de '
-             'los formatos que Lucidchart importa de fábrica; los dos últimos son el esquema de '
-             'la base, con lo implementado y con lo planificado. Se generan con <code>generar-lucidchart.py</code>.</p></div>')
-    return {"titulo": "Modelos para Lucidchart", "html": intro + "".join(secc), "mermaid": mer}
+          f'<p class="bajar"><a download="{arch}" href="data:application/xml;base64,{b64}">'
+          f'DESCARGAR {arch}</a> <span class="comollega">draw.io · Archivo · Abrir</span></p>')
+    intro = ('<div class="intro"><h1>Modelos en draw.io</h1>'
+             '<p>Los cuatro modelos como archivos de draw.io, cada uno en una sola página y con cada relación '
+             'dibujada como una arista conectada a sus dos elementos. Se abren con draw.io de escritorio o en '
+             'app.diagrams.net. Se generan con <code>generar-drawio.py</code>.</p></div>')
+    return {"titulo": "Modelos en draw.io", "html": intro + "".join(secc), "mermaid": []}
 
 # ---------- catálogo de todos los diagramas ----------
 # La cátedra recorre todos los diagramas en su notación. Los de estados, actividad,
@@ -608,7 +545,7 @@ def _modelo_de_datos():
 datos["paginas"] = {
     "datos": _modelo_de_datos(),
     "diagramas": _diagramas(),
-    "modelos": _lucid(),
+    "modelos": _drawio(),
     "arquitectura": {"titulo": "Arquitectura y despliegue",
                      "html": '<div class="intro"><h1>Arquitectura y despliegue</h1>'
                              '<p>Cómo está armado el sistema, dónde corre cada pieza y con qué '

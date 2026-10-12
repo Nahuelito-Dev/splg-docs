@@ -2,22 +2,25 @@ sequenceDiagram
     title DSD — CU-223 Consultar la Carga Actual del Camión · consultarCargaActual
     autonumber
     actor CHO as Chofer (ACT-02)
-    participant SRV as :TruckLoadService
+    participant SRV as :TruckLoadQueryService
     participant COLC as :Map#lt;String, Chofer#gt;
     participant CHF as chofer:Chofer
-    participant VEH as vehiculo:Vehiculo
+    participant DIS as distribuidora:Distribuidora
     participant CAR as carga:CargaDeCamion
     participant ICA as item:ItemCarga
 
     CHO->>+SRV: consultarCargaActual()
     SRV->>+COLC: get(choferId)
     COLC-->>-SRV: chofer
-    SRV->>+CHF: getVehiculoEnUso()
-    CHF-->>-SRV: vehiculo
-    SRV->>+VEH: getCargaAbierta()
-    VEH-->>-SRV: carga
-    SRV->>CAR: getItems()
-    loop Por cada tipo de garrafa de la carga
-        SRV->>ICA: getEsperado()
+    SRV->>+CHF: getCargaAbierta()
+    CHF-->>-SRV: carga
+    SRV->>+DIS: getExigirCargaDeCamionAbierta()
+    DIS-->>-SRV: exigida
+    opt El chofer tiene una carga abierta
+        SRV->>+CAR: getItems()
+        loop Por cada tipo de garrafa de la carga
+            CAR->>ICA: getEsperado()
+        end
+        CAR-->>-SRV: items
     end
-    SRV-->>-CHO: carga
+    SRV-->>-CHO: carga, exigida

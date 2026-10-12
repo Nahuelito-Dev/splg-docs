@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-289 Cancelar una Carga del Camión · cancelarCargaDelCamion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CancelTruckLoadUseCase
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+
+    ADM->>+SRV: cancelarCargaDelCamion(cargaId, motivo)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: cancelar(motivo)
+    CAR->>CAR: validarQueEstaEnCarga()
+    CAR-->>-SRV: carga
+    SRV-->>-ADM: carga

@@ -108,6 +108,8 @@ entity MultaTransito #F1F1F1 {
 }
 entity Siniestro #F1F1F1 {
 }
+entity CargaDeCamion #F1F1F1 {
+}
 entity Adjunto #F1F1F1 {
 }
 
@@ -125,6 +127,7 @@ Empleado |o--o{ MultaTransito : responde por >
 Empleado |o--o{ Siniestro : interviene en >
 Empleado ||--o{ LiquidacionComisiones : percibe >
 LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
+Empleado |o--o{ CargaDeCamion : ayuda en >
 Empleado ||--o{ AsientoComision : devenga >
 AsientoComision }o--o| Pedido : corresponde a >
 ReglaComision |o--o{ AsientoComision : determina >

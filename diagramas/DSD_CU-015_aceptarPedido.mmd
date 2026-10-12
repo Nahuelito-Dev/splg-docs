@@ -9,12 +9,14 @@ sequenceDiagram
     participant PED as pedido:Pedido
     participant OFE as oferta:OfertaDespacho
     participant NOT as :NotificationPort
+    participant TLG as :TruckLoadGateService
 
     CHF->>+UCS: aceptarPedido(pedidoId)
     UCS->>+PEDS: get(pedidoId)
     PEDS-->>-UCS: pedido
     UCS->>CHO: assertElegibleParaAsignacion()
     UCS->>FLK: assertChoferHabilitado(chofer)
+    UCS->>TLG: assertPuedeAceptar(chofer)
     UCS->>+FLK: vehiculoEnUsoDelChofer(chofer)
     FLK-->>-UCS: vehiculo
     UCS->>+PED: aceptar(chofer, vehiculo)

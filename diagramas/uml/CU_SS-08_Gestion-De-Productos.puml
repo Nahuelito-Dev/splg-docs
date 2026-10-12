@@ -1,5 +1,5 @@
 @startuml
-title SS-08 — Gestión de Productos e Inventario (35 casos de uso)
+title SS-08 — Gestión de Productos e Inventario (38 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -55,15 +55,15 @@ rectangle "SS-08 Gestión de Productos e Inventario" {
   usecase "CU-211\nAvisar el Stock Bajo" as U211 #back:FFFFFF;line:5E7A3A
   usecase "CU-212\nTransferir Stock entre\nDepósitos" as U212 #back:FFFFFF;line:5E7A3A
   usecase "CU-213\nRegistrar un Ajuste o una\nMerma de Stock" as U213 #back:FFFFFF;line:5E7A3A
-  usecase "CU-218\nRegistrar la Carga del Camión" as U218 <<planificado>> #back:FFFFFF;line:5E7A3A
-  usecase "CU-219\nRegistrar la Salida del Camión" as U219 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-218\nRegistrar la Carga del Camión" as U218 #back:FFFFFF;line:5E7A3A
+  usecase "CU-219\nRegistrar la Salida del Camión" as U219 #back:FFFFFF;line:5E7A3A
   usecase "CU-220\nDescontar del Stock Físico lo\nEntregado" as U220 #back:FFFFFF;line:5E7A3A
-  usecase "CU-221\nRegistrar el Regreso del\nCamión" as U221 <<planificado>> #back:FFFFFF;line:5E7A3A
-  usecase "CU-222\nCerrar la Rendición de Stock\ndel Camión" as U222 <<planificado>> #back:FFFFFF;line:5E7A3A
-  usecase "CU-223\nConsultar la Carga Actual del\nCamión" as U223 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-221\nRegistrar el Regreso del\nCamión" as U221 #back:FFFFFF;line:5E7A3A
+  usecase "CU-222\nCerrar la Rendición de Stock\ndel Camión" as U222 #back:FFFFFF;line:5E7A3A
+  usecase "CU-223\nConsultar la Carga Actual del\nCamión" as U223 #back:FFFFFF;line:5E7A3A
   usecase "CU-224\nConciliar el Stock Vendible\ncon el Físico" as U224 #back:FFFFFF;line:5E7A3A
-  usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer" as U248 <<planificado>> #back:FFFFFF;line:5E7A3A
-  usecase "CU-249\nConfigurar el Control de Carga\nde Camión Abierta" as U249 <<planificado>> #back:FFFFFF;line:5E7A3A
+  usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer" as U248 #back:FFFFFF;line:5E7A3A
+  usecase "CU-249\nConfigurar el Control de Carga\nde Camión Abierta" as U249 #back:FFFFFF;line:5E7A3A
   usecase "CU-250\nAplicar un Movimiento de Stock" as U250 #back:FFFFFF;line:5E7A3A
   usecase "CU-258\nRegistrar un Depósito" as U258 #back:FFFFFF;line:5E7A3A
   usecase "CU-259\nModificar un Depósito" as U259 #back:FFFFFF;line:5E7A3A
@@ -77,6 +77,9 @@ rectangle "SS-08 Gestión de Productos e Inventario" {
   usecase "CU-277\nRegistrar un Ajuste de\nConciliación del Vendible" as U277 #back:FFFFFF;line:5E7A3A
   usecase "CU-278\nReaplicar las Entregas sin\nMovimiento de Stock" as U278 #back:FFFFFF;line:5E7A3A
   usecase "CU-279\nConsultar el Resumen de Stock" as U279 #back:FFFFFF;line:5E7A3A
+  usecase "CU-289\nCancelar una Carga del Camión" as U289 #back:FFFFFF;line:5E7A3A
+  usecase "CU-290\nConsultar las Cargas del\nCamión" as U290 #back:FFFFFF;line:5E7A3A
+  usecase "CU-291\nConsultar una Carga del Camión" as U291 #back:FFFFFF;line:5E7A3A
   usecase "Filtrar por Término" as F_TERM <<factorizado>> #back:FFFFFF;line:5E7A3A
 }
 
@@ -86,6 +89,7 @@ rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS 
   usecase "CU-015\nAceptar Pedido\n(SS-03)" as U015 #back:FFFFFF;line:6B7683
   usecase "CU-020\nConfirmar Entrega\n(SS-04)" as U020 #back:FFFFFF;line:6B7683
   usecase "CU-079\nConfirmar Entrega Escaneando\nel QR (cliente)\n(SS-04)" as U079 #back:FFFFFF;line:6B7683
+  usecase "CU-080\nConsultar el Pool de Pedidos\nDisponibles\n(SS-02)" as U080 #back:FFFFFF;line:6B7683
   usecase "CU-217\nRegistrar la Recepción de una\nCompra\n(SS-20)" as U217 #back:FFFFFF;line:6B7683
   usecase "CU-280\nAnular una Recepción de Compra\n(SS-20)" as U280 #back:FFFFFF;line:6B7683
 }
@@ -94,6 +98,7 @@ A01 -[#1F6F8B]- U041
 A02 -[#2E7D46]- U219
 A02 -[#2E7D46]- U221
 A02 -[#2E7D46]- U223
+A02 -[#2E7D46]- U291
 A03 -[#8C4A9E]- U036
 A03 -[#8C4A9E]- U037
 A03 -[#8C4A9E]- U038
@@ -124,6 +129,9 @@ A03 -[#8C4A9E]- U276
 A03 -[#8C4A9E]- U277
 A03 -[#8C4A9E]- U278
 A03 -[#8C4A9E]- U279
+A03 -[#8C4A9E]- U289
+A03 -[#8C4A9E]- U290
+A03 -[#8C4A9E]- U291
 A04 -[#8A6D1F]- U211
 A04 -[#8A6D1F]- U224
 U211 -[#6B7683]- A08
@@ -144,6 +152,9 @@ U213 ..> U250 : <<include>>
 U218 ..> U250 : <<include>>
 U220 ..> U250 : <<include>>
 U222 ..> U250 : <<include>>
+U219 ..> U250 : <<include>>
+U222 ..> U291 : <<include>>
+U289 ..> U290 : <<include>>
 U258 ..> U207 : <<include>>
 U259 ..> U207 : <<include>>
 U260 ..> U207 : <<include>>
@@ -161,6 +172,7 @@ U280 ..> U250 : <<include>>
 U012 ..> U248 : <<include>>
 U013 ..> U248 : <<include>>
 U015 ..> U248 : <<include>>
+U080 ..> U248 : <<include>>
 U020 ..> U220 : <<include>>
 U079 ..> U220 : <<include>>
 

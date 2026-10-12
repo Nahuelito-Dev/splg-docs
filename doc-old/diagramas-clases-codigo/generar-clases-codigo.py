@@ -6,8 +6,8 @@
     python3 material-de-trabajo/generar-clases-diseno.py
 
 Sale:
-  diagramas/lucidchart/SPLG-clases-dominio.mmd      las 39 entidades, por contexto
-  diagramas/lucidchart/clases/SPLG-clases-<modulo>.mmd   un archivo por módulo del backend
+  diagramas/drawio/SPLG-clases-dominio.mmd      las 39 entidades, por contexto
+  diagramas/drawio/clases/SPLG-clases-<modulo>.mmd   un archivo por módulo del backend
   material-de-trabajo/indice-clases-servicios.md    el índice con el recuento de cada uno,
                                                      para pegar en 3-Diseño.md §5.2
 
@@ -96,7 +96,7 @@ def relaciones_entidad(clase):
             out.append(f'    {clase} "0..*" --> "{multB}" {destino} : {r["campo"]}')
     return out
 
-SAL_LUCID = D + "diagramas/lucidchart/"
+SAL_DRAWIO = D + "diagramas/drawio/"
 dom = ["classDiagram", "    direction TB", "",
        "    %% Generado por material-de-trabajo/generar-clases-diseno.py desde el código",
        "    %% real del backend (40 entidades de TypeORM). No se edita a mano.", ""]
@@ -111,7 +111,7 @@ for ctx, clases in CONTEXTOS:
     for c in clases:
         todas_rel += relaciones_entidad(c)
 dom += todas_rel
-open(SAL_LUCID + "SPLG-clases-dominio.mmd", "w", encoding="utf-8").write("\n".join(dom) + "\n")
+open(SAL_DRAWIO + "SPLG-clases-dominio.mmd", "w", encoding="utf-8").write("\n".join(dom) + "\n")
 print(f"  ✓ SPLG-clases-dominio.mmd  ({len(_ents)} entidades, {len(todas_rel)} relaciones)")
 
 # ------------------------------------------------------ 2. clases de servicios
@@ -149,7 +149,7 @@ for c, v in m.items():
     modulo = v["file"].split("/")[0]
     por_modulo[modulo].append(c)
 
-os.makedirs(SAL_LUCID + "clases/", exist_ok=True)
+os.makedirs(SAL_DRAWIO + "clases/", exist_ok=True)
 indice = ["| Módulo | Clases | Archivo |", "|---|---:|---|"]
 for modulo in sorted(por_modulo):
     clases = sorted(por_modulo[modulo])
@@ -175,8 +175,8 @@ for modulo in sorted(por_modulo):
         for c, dep, mod2 in sorted(set(deps_cross)):
             cuerpo.append(f"    %% {c} usa {dep} (módulo `{mod2}`)")
     archivo = f"SPLG-clases-{modulo}.mmd"
-    open(SAL_LUCID + "clases/" + archivo, "w", encoding="utf-8").write("\n".join(cuerpo) + "\n")
-    indice.append(f"| `{modulo}` | {len(clases)} | `diagramas/lucidchart/clases/{archivo}` |")
+    open(SAL_DRAWIO + "clases/" + archivo, "w", encoding="utf-8").write("\n".join(cuerpo) + "\n")
+    indice.append(f"| `{modulo}` | {len(clases)} | `diagramas/drawio/clases/{archivo}` |")
 
 open(D + "material-de-trabajo/indice-clases-servicios.md", "w", encoding="utf-8").write("\n".join(indice) + "\n")
-print(f"  ✓ {len(por_modulo)} archivos en diagramas/lucidchart/clases/ ({sum(len(v) for v in por_modulo.values())} clases)")
+print(f"  ✓ {len(por_modulo)} archivos en diagramas/drawio/clases/ ({sum(len(v) for v in por_modulo.values())} clases)")

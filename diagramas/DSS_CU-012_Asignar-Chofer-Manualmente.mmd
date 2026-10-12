@@ -12,6 +12,8 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el chofer está deshabilitado, no está validado o tiene la flota inhabilitada
         SIS-->>ADM: asignación rechazada
+    else el chofer no puede recibir pedidos por su carga de camión
+        SIS-->>ADM: asignación rechazada, con el motivo
     else el pedido no admite pasar a aceptado
         SIS-->>ADM: asignación rechazada por transición no permitida
     end

@@ -92,8 +92,8 @@ entity MovimientoDeStock
 entity UmbralDeStock
 entity AjusteDeStock
 entity ItemAjusteDeStock
-entity CargaDeCamion <<propuesto>>
-entity ItemCarga <<propuesto>>
+entity CargaDeCamion
+entity ItemCarga
 entity Proveedor
 entity OrdenDeCompra
 entity ItemOrdenDeCompra
@@ -231,6 +231,7 @@ Neumatico ||--o{ MovimientoNeumatico : registra >
 MovimientoNeumatico }o--o| Vehiculo : ocurre en >
 Vehiculo ||--o{ CargaDeCamion : transporta >
 Chofer ||--o{ CargaDeCamion : reparte con >
+Empleado |o--o{ CargaDeCamion : ayuda en >
 CargaDeCamion }o--|| UbicacionDeStock : parte de >
 Empleado ||--o{ AsientoComision : devenga >
 AsientoComision }o--o| Pedido : corresponde a >
@@ -254,8 +255,8 @@ RendicionChofer ||--o{ PedidoRendido : rinde >
 PedidoRendido |o--|| Pedido : corresponde a >
 AjusteDeStock ||--|{ ItemAjusteDeStock : contiene >
 ItemAjusteDeStock }o--|| Producto : corresponde a >
-CargaDeCamion ||--|{ ItemCarga : contiene >
 ItemCarga }o--|| Producto : corresponde a >
+CargaDeCamion ||--|{ ItemCarga : contiene >
 ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : salda >
 ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : se aplica con >
 CasoRecupero ||--o{ AvisoRecupero : emite >

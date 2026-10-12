@@ -34,6 +34,21 @@ def _imagen_de(codigos, tipo):
             if f.startswith(tipo+"_") and c in f: return f
     return None
 
+def _imagen_del_diagrama(buf, cods, tipo):
+    """La imagen de un diagrama mermaid según su propio título: un caso con varias operaciones tiene un
+    DSD por operación (`title DSD — CU-218 … · reponerCargaDelCamion`), y cada uno es su archivo."""
+    for l in buf:
+        m = re.match(r'^\s*title\s+(DSS|DSD)\s+—\s+(.*?)(?:\s+·\s+(\w+))?\s*$', l)
+        if not m:
+            continue
+        codigos = re.findall(r'CU-\d+', m.group(2))
+        if m.group(1) == "DSD" and m.group(3) and codigos:
+            for f in _PNG:
+                if f.startswith("DSD_") and f.endswith("_" + m.group(3) + ".png") and all(c in f for c in codigos):
+                    return f
+        break
+    return _imagen_de(cods, tipo)
+
 def inline(t):
     t = html.escape(t)
     t = re.sub(r'`([^`]+)`', r'<code>\1</code>', t)
@@ -58,7 +73,7 @@ def convertir(md):
             i += 1
             if leng == "mermaid":
                 cods, tipo = ctx["cods"], ctx["tipo"]
-                img = _imagen_de(cods, tipo) if (cods and tipo) else None
+                img = _imagen_del_diagrama(buf, cods, tipo) if (cods and tipo) else None
                 out.append('<p style="background:#fff3cd;border:1px solid #e0a800;padding:8px 12px">'
                            '<strong>[ INSERTAR IMAGEN: %s ]</strong></p>'
                            % (img or "ver diagramas/png/"))

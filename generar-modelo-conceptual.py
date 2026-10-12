@@ -7,7 +7,6 @@ Sale:
 
   diagramas/modelo-conceptual/MC_General.puml/.png/.svg      todos los conceptos, sin atributos
   diagramas/modelo-conceptual/MC_<área>.puml/.png/.svg       una vista por área, con atributos
-  diagramas/lucidchart/SPLG-modelo-conceptual.mmd            fuente de generar-lucidchart.py
   diagramas/modelo-conceptual/relaciones.md                  la tabla de relaciones (Doc 2, §1.3)
 
 Va en PlantUML y no en Mermaid porque Mermaid no dibuja la dirección de lectura de una
@@ -153,41 +152,6 @@ todas = list(CLASES)
 escribir("MC_General", vista("Modelo conceptual", todas, [], detalle=False, paquetes=True))
 for titulo, archivo, foco, ref in VISTAS:
     escribir(archivo, vista(titulo, foco, ref))
-
-# ---------------------------------------------------------------- el .mmd
-# Lo lee generar-lucidchart.py para armar el draw.io XML. Es Mermaid válido, pero la
-# imagen del documento sale de PlantUML.
-def mmd():
-    out = ["classDiagram", "    direction TB", "",
-           "    %% Modelo conceptual de SPLG. Lo genera generar-modelo-conceptual.py desde",
-           "    %% modelo_conceptual.py: no se edita a mano.",
-           "    %% El nombre de cada asociación se lee de izquierda a derecha y lleva ▸.",
-           f"    %% asociacion-clase {CLASE_ASOCIACION[0]} {CLASE_ASOCIACION[1]} {CLASE_ASOCIACION[2]}",
-           ""]
-    for clave, ttl in CONTEXTOS:
-        out.append(f"    namespace {clave} {{")
-        for n, (c, atrs, abstracta) in CLASES.items():
-            if c != clave: continue
-            if not atrs and not abstracta:
-                out.append(f"        class {n}")
-                continue
-            out.append(f"        class {n} {{")
-            if abstracta: out.append("            <<abstract>>")
-            out += [f"            {a}" for a in atrs]
-            out.append("        }")
-        out.append("    }")
-        out.append("")
-    for padre, hijos, restr in GENERALIZACIONES:
-        for k, h in enumerate(hijos):
-            out.append(f"    {padre} <|-- {h}" + (f" : {restr}" if k == 0 else ""))
-    out.append("")
-    for a, ma, t, mb, b, n, _ in ASOCIACIONES:
-        flecha = "*--" if t == "*" else "--"
-        out.append(f'    {a} "{ma}" {flecha} "{mb}" {b} : {n} ▸')
-    return "\n".join(out) + "\n"
-
-os.makedirs(D + "diagramas/lucidchart/", exist_ok=True)
-open(D + "diagramas/lucidchart/SPLG-modelo-conceptual.mmd", "w", encoding="utf-8").write(mmd())
 
 # ----------------------------------------------------- tabla de relaciones (Doc 2)
 def tabla():

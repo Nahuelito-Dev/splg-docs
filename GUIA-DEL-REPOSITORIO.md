@@ -19,7 +19,7 @@ splg-docs/
 ├── 1-Requisitos.md                 ← entrega
 ├── 2-Analisis.md                   ← entrega
 ├── 3-Diseño.md                     ← entrega
-├── Casos-de-Uso.md                 ← LOS 287 CASOS, COMPLETOS
+├── Casos-de-Uso.md                 ← LOS 290 CASOS, COMPLETOS
 │
 ├── diagramas/                      imágenes y fuentes de los diagramas
 ├── design/                         wireframes y capturas de pantalla
@@ -31,20 +31,20 @@ splg-docs/
 
 ## El documento único: `Casos-de-Uso.md`
 
-Es el que se abre cuando hay que mostrar un caso puntual. Tiene **los 287 casos, del
-CU-001 al CU-288**, cada uno con sus cuatro artefactos:
+Es el que se abre cuando hay que mostrar un caso puntual. Tiene **los 290 casos, del
+CU-001 al CU-291**, cada uno con sus cuatro artefactos:
 
 | Sección | Contenido | Cobertura |
 |---------|-----------|-----------|
 | §1 | Actores del sistema | — |
 | §2 | Diagrama de casos de uso del sistema | — |
-| §3 | Catálogo y calificación | 287 |
-| §4 | **CUA** — Casos de uso de alto nivel | 287 |
-| §5 | **CUE** — Casos de uso expandidos | 287 |
-| §6 | **DSS** — Diagramas de secuencia del sistema | 287 |
-| §7 | **DSD** — Diagramas de interacción de diseño | 287 |
+| §3 | Catálogo y calificación | 290 |
+| §4 | **CUA** — Casos de uso de alto nivel | 290 |
+| §5 | **CUE** — Casos de uso expandidos | 290 |
+| §6 | **DSS** — Diagramas de secuencia del sistema | 290 |
+| §7 | **DSD** — Diagramas de interacción de diseño | 290 |
 
-2101 KB, 618 diagramas.
+2101 KB, 623 diagramas.
 
 ### Por qué los casos también aparecen en los otros documentos
 
@@ -60,13 +60,13 @@ para poder consultarlos sin saltar entre cuatro archivos.
 
 | # | Documento | Contiene |
 |---|-----------|----------|
-| 0 | `0-Plan_Del_Proyecto.md` | Fases e iteraciones, hitos, cronograma, actores, los 287 casos de uso de alto nivel y su calificación. |
+| 0 | `0-Plan_Del_Proyecto.md` | Fases e iteraciones, hitos, cronograma, actores, los 290 casos de uso de alto nivel y su calificación. |
 | 0.1 | `0.1-Planificacion_Iteraciones.md` | Metas, artefactos y problemas a resolver de cada iteración. |
-| 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 287 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
-| 2 | `2-Analisis.md` | Modelo conceptual, los 281 diagramas de secuencia del sistema, el catálogo de las 329 operaciones del sistema, los 203 contratos de operación y los módulos inteligentes. |
+| 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 290 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
+| 2 | `2-Analisis.md` | Modelo conceptual, los 283 diagramas de secuencia del sistema, el catálogo de las 332 operaciones del sistema, los 204 contratos de operación y los módulos inteligentes. |
 | 3 | `3-Diseño.md` | Arquitectura, casos de uso reales, diagramas de interacción, diagrama de clases, especificación de los módulos inteligentes, wireframes y diagrama entidad-relación. |
 
-`Casos-de-Uso.md` reúne los cuatro artefactos de los 287 casos en un solo archivo. Es el
+`Casos-de-Uso.md` reúne los cuatro artefactos de los 290 casos en un solo archivo. Es el
 documento de consulta; su contenido se corresponde con el de los documentos 0, 1 y 2, que
 lo conservan porque las plantillas exigen que cada artefacto figure donde le toca.
 
@@ -81,7 +81,7 @@ Las plantillas originales de la cátedra están en `.catedra-ref/`.
 | DSS | Diagrama de secuencia del sistema | 2 — Análisis §2.1 |
 | DSD | Diagrama de interacción de diseño | 3 — Diseño §4 |
 
-Los 287 casos tienen los cuatro.
+Los 290 casos tienen los cuatro.
 
 ## Herramientas
 
@@ -89,12 +89,16 @@ Los 287 casos tienen los cuatro.
 |--------|----------|
 | `verificar-conformidad.py` | Chequea los artefactos contra las plantillas de la cátedra. Devuelve error si algo no cumple. |
 | `generar-html-drive.py` | Regenera los seis documentos en HTML, listos para abrir con Documentos de Google. Salida en `drive/`. |
-| `generar-sitio.py` | Genera el Atlas: una página con los cuatro artefactos de cada caso y su respaldo documental. |
+| `generar-sitio.py` | Genera el Atlas: una página con los cuatro artefactos de cada caso y su respaldo documental. No regenera `drawio/`: avisa si está desactualizado. |
+| `generar-drawio.py` | Genera en `drawio/` los modelos para draw.io: modelo conceptual, DER, base de datos físico y clases de diseño, cada uno en una página y con las relaciones como aristas conectadas. |
+| `verificar-drawio.py` | Cuenta las aristas sueltas y compara las relaciones de cada `.drawio` contra la base, el modelo conceptual y el diagrama de clases. |
 
 ```bash
 python3 verificar-conformidad.py     # 18 chequeos
 python3 generar-html-drive.py        # -> drive/*.html
 python3 generar-sitio.py             # -> splg-documentacion.html
+python3 generar-drawio.py            # -> drawio/*.drawio
+python3 verificar-drawio.py          # 0 relaciones faltantes y 0 aristas sueltas
 ```
 
 ## Diagramas

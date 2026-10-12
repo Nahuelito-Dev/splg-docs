@@ -578,7 +578,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 .pagina code{font-family:"IBM Plex Mono",monospace;font-size:.87em; background:var(--tint);padding:.12em .38em;border-radius:4px}
 .pagina a{color:var(--primary)}
 /* La página de Modelos es, sobre todo, cuatro archivos para bajar: el enlace
-   tiene peso de botón y al lado dice por qué puerta entra en Lucidchart. */
+   tiene peso de botón y al lado dice cómo se abre en draw.io. */
 .pagina p.bajar{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;max-width:none}
 .pagina p.bajar a{display:inline-block;padding:.6rem 1rem;border:1px solid var(--outline);
   border-radius:8px;text-decoration:none;background:var(--surface);
@@ -789,7 +789,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         <p class="rotulo-grupo">Modelos</p>
         <button type="button" class="seccion" data-pag="diagramas"><span class="nombre">Catálogo de diagramas UML</span></button>
         <button type="button" class="seccion" data-pag="datos"><span class="nombre">Modelo de datos</span></button>
-        <button type="button" class="seccion" data-pag="modelos"><span class="nombre">Modelos para Lucidchart</span></button>
+        <button type="button" class="seccion" data-pag="modelos"><span class="nombre">Modelos en draw.io</span></button>
       </div>
       <div class="grupo-menu">
         <p class="rotulo-grupo">Arquitectura</p>
@@ -1354,7 +1354,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       '<a class="tarjeta" href="#datos">' +
         iconoTarjeta("arquitectura") + "<b>Modelo de datos</b><p>DER físico y conceptual, tipos enumerados y diccionario de datos de cada tabla.</p></a>" +
       '<a class="tarjeta" href="#modelos">' +
-        iconoTarjeta("modelos") + "<b>Modelos</b><p>Diagramas de dominio y de servicios, preparados para Lucidchart.</p></a>" +
+        iconoTarjeta("modelos") + "<b>Modelos</b><p>El modelo conceptual, el DER, la base de datos y las clases de diseño, para abrir en draw.io.</p></a>" +
       '<a class="tarjeta" href="#arquitectura">' +
         iconoTarjeta("arquitectura") + "<b>Arquitectura</b><p>Organización del sistema, entornos de despliegue y criterios de diseño de la API.</p></a>" +
       tarjeta("", "abre", "mod", "modulos", "Módulos inteligentes",

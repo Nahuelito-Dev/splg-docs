@@ -108,7 +108,7 @@ cuatro mejoras que se dejaron para después a propósito. Se hicieron el 26/09 e
 | Normalización | 1FN a 5FN documentado | `NORMALIZACION.md`; H-88 |
 | Modelo propuesto | 17 tablas y 26 columnas implementadas | comparado columna por columna: 0 diferencias |
 | Auditoría | CU-152 y CU-153 implementados | |
-| Documentación | modelos regenerados (MC, DBM, Lucidchart); CU/CUE/DSS/DSD en curso | ver 5 |
+| Documentación | modelos regenerados (MC, DBM, draw.io); CU/CUE/DSS/DSD en curso | ver 5 |
 | Tutu | analizado | `REUTILIZABLE-TUTU.md`, H-86 y H-87 |
 
 Todo el código se probó contra la API corriendo antes de commitear: la colección
@@ -118,7 +118,7 @@ de Postman completa, la batería de aislamiento y casos puntuales.
 
 | Artefacto | Estado |
 |---|---|
-| Modelo conceptual (MC) y de base de datos (DBM) | regenerados con todo lo del 25/09, incluidas las claves únicas de H-88; sin elementos «propuesto». Export para Lucidchart en `lucidchart/` (draw.io y `.sql` para Importar datos · ERD) |
+| Modelo conceptual (MC) y de base de datos (DBM) | regenerados con todo lo del 25/09, incluidas las claves únicas de H-88; sin elementos «propuesto». Export para draw.io en `drawio/` (draw.io y `.sql` para Importar datos · ERD) |
 | Normalización | `NORMALIZACION.md` (FNBC salvo seis redundancias justificadas) |
 | CU / CUA / CUE / DSS / DSD | los 153 CU con sus cinco artefactos. Aislamiento, bajas lógicas, stock, normalización y auditoría (CU-152/153) reflejados y verificados contra la API. Copias sincronizadas: 0 diferencias entre los `.mmd` y los documentos, CUE iguales en `1-Requisitos.md` y `Casos-de-Uso.md` |
 | Diagramas de casos de uso, contexto e iteraciones | al día; `diagramas/INDICE.md` suma 153 |
@@ -130,7 +130,7 @@ de Postman completa, la batería de aislamiento y casos puntuales.
 1. Este archivo.
 2. `CAMBIOS-25-09.md`: qué cambió y en qué CU.
 3. `MODELO-DE-DOMINIO.md` y `NORMALIZACION.md`.
-4. El MC y el DBM (`diagramas/base-de-datos/` o `lucidchart/`).
+4. El MC y el DBM (`diagramas/base-de-datos/` o `drawio/`).
 5. Los CU por subsistema en `Casos-de-Uso.md`. Para empezar, conviene mirar los que más cambiaron: CU-005, 008 al 019, 085, 093 al 096 y 152/153.
 
 Después sigue la etapa 2 (revisión del código del back y merge a develop), después Postman y por último el panel.

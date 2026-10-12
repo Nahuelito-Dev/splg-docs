@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-291 Consultar una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCargaDelCamion(cargaId)
+    activate SIS
+    alt la carga existe y es del alcance de quien consulta
+        SIS-->>ADM: detalle de la carga
+    else la carga no existe o no es suya
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+
+    Note over ADM,SIS: También lo inicia el Chofer (ACT-02), sólo de su carga

@@ -17,9 +17,9 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 ## Reglas
 
 - `README.md` explica qué archivo es qué. Los cinco documentos numerados son los que se
-  entregan; `Casos-de-Uso.md` reúne los 287 CU con sus cuatro artefactos.
+  entregan; `Casos-de-Uso.md` reúne los 290 CU con sus cuatro artefactos.
 - Los `.md` son la fuente; los HTML se generan. No se editan HTML a mano.
 - Toda afirmación sobre el sistema (endpoint, regla, estado) se comprueba contra la API
   corriendo antes de escribirla. Leer el código no alcanza.
-- Diagramas: Mermaid embebido en los `.md`; para Lucidchart sólo draw.io XML (MC, clases, BD).
+- Diagramas: Mermaid embebido en los `.md`; MC, DER, DBD y DC también en `drawio/` (draw.io, uno por archivo).
 - El sitio es el artefacto; la entrega formal de la cátedra la arma nahue en Drive.

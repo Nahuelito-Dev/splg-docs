@@ -102,11 +102,11 @@ class LoteRecorrido <<referencia>>
 class FleetDispatchLockService <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class NotificationsService <<referencia>>
-class TruckLoadService <<referencia>>
 class OrderService <<referencia>>
 class Chofer <<referencia>>
 class OfertaDespacho <<referencia>>
 class Pedido <<referencia>>
+class TruckLoadGateService <<referencia>>
 class OfertaLote <<referencia>>
 class CylinderRecoveryService <<referencia>>
 
@@ -116,7 +116,6 @@ DispatchOrchestratorService --> "1" FleetDispatchLockService
 DispatchOrchestratorService --> "1" Map_String_Pedido
 DispatchOrchestratorService --> "1" NotificationsService
 DispatchOrchestratorService --> "1" RealtimeDispatchPort
-DispatchOrchestratorService --> "1" TruckLoadService
 DispatchService --> "1" DispatchOrchestratorService
 DispatchService --> "1" OrderService
 RouteBatchPlannerService --> "1" Map_String_LoteRecorrido
@@ -125,6 +124,7 @@ RouteBatchPlannerService --> "1" OrderRepositoryPort
 DispatchOrchestratorService ..> Chofer
 DispatchOrchestratorService ..> OfertaDespacho
 DispatchOrchestratorService ..> Pedido
+DispatchOrchestratorService ..> TruckLoadGateService
 RouteBatchPlannerService ..> Chofer
 RouteBatchPlannerService ..> "<<create>>" LoteRecorrido
 RouteBatchPlannerService ..> OfertaLote

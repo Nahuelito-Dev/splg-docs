@@ -2,7 +2,7 @@ sequenceDiagram
     title DSD — CU-218 Registrar la Carga del Camión · reponerCargaDelCamion
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :TruckLoadService
+    participant SRV as :ReloadTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
     participant ICA as item:ItemCarga
@@ -11,26 +11,22 @@ sequenceDiagram
     ADM->>+SRV: reponerCargaDelCamion(cargaId, items)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: reponer(items)
-    CAR->>CAR: validarQueEstaAbierta()
-    loop Por cada tipo de garrafa repuesto
-        CAR->>ICA: sumarRepuesto(llenasRepuestas)
-    end
-    CAR-->>-SRV: carga
+    SRV->>+CAR: validarQueEstaEnRuta()
+    CAR-->>-SRV: enRuta
     SRV->>+CAR: getUbicacionDelDeposito()
     CAR-->>-SRV: ubicacionOrigen
     SRV->>+CAR: getUbicacionDelCamion()
     CAR-->>-SRV: ubicacionDestino
+    Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock de las llenas repuestas y mueve el saldo de las dos ubicaciones
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, items)
+    alt El depósito tiene las llenas
+        LED-->>SRV: lote
+    else El depósito no tiene las llenas
+        LED-->>SRV: saldoInsuficiente
+        SRV-->>ADM: solicitudInvalida
+    end
+    deactivate LED
     loop Por cada tipo de garrafa repuesto
-        SRV->>+ICA: getProducto()
-        ICA-->>-SRV: producto
-        Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasRepuestas, reposicion)
-        alt El depósito tiene las unidades
-            LED-->>-SRV: aplicado
-        else El depósito no tiene las unidades
-            LED-->>SRV: saldoInsuficiente
-            SRV-->>ADM: solicitudInvalida
-        end
+        SRV->>ICA: sumarRepuesto(llenasRepuestas)
     end
     SRV-->>-ADM: carga

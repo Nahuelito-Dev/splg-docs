@@ -12,5 +12,7 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el chofer tiene un pedido en curso
         SIS-->>ADM: conflicto: pedido en curso
+    else el chofer tiene una carga de camión abierta
+        SIS-->>ADM: conflicto: carga de camión abierta
     end
     deactivate SIS

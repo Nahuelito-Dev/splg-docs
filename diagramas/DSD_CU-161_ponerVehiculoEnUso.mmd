@@ -20,6 +20,7 @@ sequenceDiagram
         CHO-->>SRV: asignacion abierta
     else Otro vehículo o ninguno
         CHO->>CHO: assertSinPedidoEnCurso()
+        CHO->>CHO: assertSinCargaAbierta()
         CHO->>LST: cerrarAbiertas(chofer, vehiculo, administrador)
         create participant ASG as :AsignacionVehiculo
         CHO->>ASG: «create»(chofer, vehiculo, administrador, nota)

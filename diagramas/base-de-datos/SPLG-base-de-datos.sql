@@ -89,7 +89,8 @@ CREATE TYPE public.configurable_process_enum AS ENUM (
     'repurchase',
     'route_batching',
     'cylinder_recovery',
-    'express_dispatch'
+    'express_dispatch',
+    'stock_control'
 );
 
 
@@ -626,6 +627,20 @@ CREATE TYPE public.supplier_document_type_enum AS ENUM (
 CREATE TYPE public.supplier_kind_enum AS ENUM (
     'filling_plant',
     'other'
+);
+
+
+--
+-- Name: truck_load_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.truck_load_status_enum AS ENUM (
+    'loading',
+    'on_route',
+    'returned',
+    'closed',
+    'closed_with_difference',
+    'cancelled'
 );
 
 
@@ -1763,6 +1778,58 @@ CREATE TABLE public.time_slot (
 
 
 --
+-- Name: truck_load; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.truck_load (
+    load_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    number integer NOT NULL,
+    car_id uuid NOT NULL,
+    delivery_id uuid NOT NULL,
+    helper_employee_id uuid,
+    origin_location_id uuid NOT NULL,
+    business_date date NOT NULL,
+    status public.truck_load_status_enum DEFAULT 'loading'::public.truck_load_status_enum NOT NULL,
+    opened_at timestamp with time zone DEFAULT now() NOT NULL,
+    departed_at timestamp with time zone,
+    returned_at timestamp with time zone,
+    closed_at timestamp with time zone,
+    opened_by_user_id uuid NOT NULL,
+    closed_by_user_id uuid,
+    difference_note text,
+    cancel_reason text,
+    notes text,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: truck_load_item; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.truck_load_item (
+    item_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    load_id uuid NOT NULL,
+    gas_cylinder_id uuid NOT NULL,
+    loaded_full integer DEFAULT 0 NOT NULL,
+    reloaded_full integer DEFAULT 0 NOT NULL,
+    loaded_empty integer DEFAULT 0 NOT NULL,
+    declared_return_full integer,
+    declared_return_empty integer,
+    delivered_full integer,
+    collected_empty integer,
+    expected_full integer,
+    expected_empty integer,
+    difference_full integer,
+    difference_empty integer,
+    CONSTRAINT "CHK_truck_load_item_cargado" CHECK (((loaded_full >= 0) AND (reloaded_full >= 0) AND (loaded_empty >= 0))),
+    CONSTRAINT "CHK_truck_load_item_declarado" CHECK ((((declared_return_full IS NULL) OR (declared_return_full >= 0)) AND ((declared_return_empty IS NULL) OR (declared_return_empty >= 0))))
+);
+
+
+--
 -- Name: user; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1960,6 +2027,14 @@ ALTER TABLE ONLY public.maintenance_task_attachment
 
 ALTER TABLE ONLY public.cylinder
     ADD CONSTRAINT "PK_3b2102a9e7f6077898af87911f9" PRIMARY KEY (cylinder_id);
+
+
+--
+-- Name: truck_load PK_3dbdc80ba4676ee68d818791f34; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "PK_3dbdc80ba4676ee68d818791f34" PRIMARY KEY (load_id);
 
 
 --
@@ -2184,6 +2259,14 @@ ALTER TABLE ONLY public.job_position
 
 ALTER TABLE ONLY public.route_batch_offer
     ADD CONSTRAINT "PK_b7ec066a1beaa3fceff509de72d" PRIMARY KEY (offer_id);
+
+
+--
+-- Name: truck_load_item PK_bad04888d48307d2e2cefb5e4ab; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load_item
+    ADD CONSTRAINT "PK_bad04888d48307d2e2cefb5e4ab" PRIMARY KEY (item_id);
 
 
 --
@@ -3084,6 +3167,41 @@ CREATE INDEX "IDX_supplier_distributor" ON public.supplier USING btree (distribu
 
 
 --
+-- Name: IDX_truck_load_camion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_truck_load_camion" ON public.truck_load USING btree (car_id);
+
+
+--
+-- Name: IDX_truck_load_chofer; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_truck_load_chofer" ON public.truck_load USING btree (delivery_id);
+
+
+--
+-- Name: IDX_truck_load_estado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_truck_load_estado" ON public.truck_load USING btree (distributor_id, status);
+
+
+--
+-- Name: IDX_truck_load_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_truck_load_fecha" ON public.truck_load USING btree (distributor_id, business_date);
+
+
+--
+-- Name: IDX_truck_load_item_garrafa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_truck_load_item_garrafa" ON public.truck_load_item USING btree (gas_cylinder_id);
+
+
+--
 -- Name: IDX_user_email_lower; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3263,6 +3381,34 @@ CREATE UNIQUE INDEX "UQ_stock_threshold_deposito_garrafa" ON public.stock_thresh
 --
 
 CREATE UNIQUE INDEX "UQ_supplier_cuit_vigente" ON public.supplier USING btree (distributor_id, cuit) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_truck_load_camion_abierta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_truck_load_camion_abierta" ON public.truck_load USING btree (car_id) WHERE (status = ANY (ARRAY['loading'::public.truck_load_status_enum, 'on_route'::public.truck_load_status_enum, 'returned'::public.truck_load_status_enum]));
+
+
+--
+-- Name: UQ_truck_load_chofer_abierta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_truck_load_chofer_abierta" ON public.truck_load USING btree (delivery_id) WHERE (status = ANY (ARRAY['loading'::public.truck_load_status_enum, 'on_route'::public.truck_load_status_enum, 'returned'::public.truck_load_status_enum]));
+
+
+--
+-- Name: UQ_truck_load_item_garrafa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_truck_load_item_garrafa" ON public.truck_load_item USING btree (load_id, gas_cylinder_id);
+
+
+--
+-- Name: UQ_truck_load_numero; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_truck_load_numero" ON public.truck_load USING btree (distributor_id, number);
 
 
 --
@@ -3622,6 +3768,14 @@ ALTER TABLE ONLY public.stock_adjustment_item
 
 
 --
+-- Name: truck_load FK_30e302bc956545af9282a1c43c4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_30e302bc956545af9282a1c43c4" FOREIGN KEY (helper_employee_id) REFERENCES public.employee(employee_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: cylinder_recovery_case FK_32fe6a642ad74004e88561b07aa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3651,6 +3805,14 @@ ALTER TABLE ONLY public.cart_item
 
 ALTER TABLE ONLY public.route_batch
     ADD CONSTRAINT "FK_39b785b153c83c123bd9d19998b" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: truck_load FK_3b6b13c2d3f23575097fca51f2b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_3b6b13c2d3f23575097fca51f2b" FOREIGN KEY (opened_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3686,6 +3848,14 @@ ALTER TABLE ONLY public.stock_balance
 
 
 --
+-- Name: truck_load_item FK_440db97a6d338b1392d613087c6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load_item
+    ADD CONSTRAINT "FK_440db97a6d338b1392d613087c6" FOREIGN KEY (load_id) REFERENCES public.truck_load(load_id) ON DELETE CASCADE;
+
+
+--
 -- Name: route_batch_offer FK_473c8590cc59607b872737c10e7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3715,6 +3885,14 @@ ALTER TABLE ONLY public.stock_location
 
 ALTER TABLE ONLY public.order_address_change
     ADD CONSTRAINT "FK_4c82c1fe16612f55a925ec87741" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+
+
+--
+-- Name: truck_load FK_4d54b2fe75eceaccd133cd852c8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_4d54b2fe75eceaccd133cd852c8" FOREIGN KEY (closed_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3787,6 +3965,14 @@ ALTER TABLE ONLY public.vehicle_assignment
 
 ALTER TABLE ONLY public.incident
     ADD CONSTRAINT "FK_583453357cb3e8da99d4bc5a28c" FOREIGN KEY (reported_by) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+
+
+--
+-- Name: truck_load FK_587a7d9c99ceae48a3642c8d4bb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_587a7d9c99ceae48a3642c8d4bb" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE RESTRICT;
 
 
 --
@@ -4126,6 +4312,14 @@ ALTER TABLE ONLY public.order_address_change
 
 
 --
+-- Name: truck_load_item FK_aab2bf3823dbe43254226112845; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load_item
+    ADD CONSTRAINT "FK_aab2bf3823dbe43254226112845" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: claims FK_af79ab775a51930eb21951a3c95; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4134,11 +4328,27 @@ ALTER TABLE ONLY public.claims
 
 
 --
+-- Name: truck_load FK_b075736a27f0d8accf03d6412a9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_b075736a27f0d8accf03d6412a9" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: purchase_receipt_item FK_b391d5552738cae006c0b9bf801; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.purchase_receipt_item
     ADD CONSTRAINT "FK_b391d5552738cae006c0b9bf801" FOREIGN KEY (receipt_id) REFERENCES public.purchase_receipt(receipt_id) ON DELETE CASCADE;
+
+
+--
+-- Name: truck_load FK_b446f9041a2b069fabf41a1ee5e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_b446f9041a2b069fabf41a1ee5e" FOREIGN KEY (origin_location_id) REFERENCES public.stock_location(location_id) ON DELETE RESTRICT;
 
 
 --
@@ -4187,6 +4397,14 @@ ALTER TABLE ONLY public.rating
 
 ALTER TABLE ONLY public.purchase_order
     ADD CONSTRAINT "FK_c00afbc3e2836ac46be7c45ca78" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: truck_load FK_c023820beebd76607bbe400ba17; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_c023820beebd76607bbe400ba17" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --

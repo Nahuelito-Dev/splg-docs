@@ -80,7 +80,6 @@ class Producto {
   + recalcularCostoPromedio(llenasRecibidas: Entero,\n      costoUnitario: Moneda): Moneda
   + reemplazarPromociones(promociones: Promocion[*])
   + reservar(cantidad: Entero): Entero
-  + restarStock(faltante: Entero): Booleano
   + restaurarCostoPromedio(costoPrevio: Moneda,\n      llenasRecibidas: Entero): Moneda
   + restituir(cantidad: Entero)
   + validarHayDiferencia()

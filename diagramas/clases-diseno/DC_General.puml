@@ -238,7 +238,7 @@ Pedido "1" -- "0..2" Calificacion
 Distribuidora "1" --> "0..*" Deposito
 Distribuidora "1" --> "0..*" Proveedor
 Deposito "1" --> "0..1" UbicacionDeStock
-Vehiculo "1" --> "0..1" UbicacionDeStock
+Vehiculo "1" -- "0..1" UbicacionDeStock
 UbicacionDeStock "1" *--> "0..*" SaldoDeStock
 SaldoDeStock "0..*" -- "1" Producto
 MovimientoDeStock "0..*" -- "1" Producto
@@ -261,13 +261,14 @@ RecepcionDeCompra "0..*" -- "1" Deposito
 RecepcionDeCompra "1" *--> "1..*" ItemRecepcion
 ItemRecepcion "0..*" -- "1" Producto
 Usuario "1" -- "0..*" RecepcionDeCompra
-Vehiculo "1" --> "0..*" CargaDeCamion
+Vehiculo "1" -- "0..*" CargaDeCamion
 Chofer "1" -- "0..*" CargaDeCamion
 CargaDeCamion "0..*" -- "1" UbicacionDeStock
 CargaDeCamion "1" *--> "1..*" ItemCarga
 ItemCarga "0..*" -- "1" Producto
 Usuario "1" -- "0..*" CargaDeCamion : abre
 Usuario "0..1" -- "0..*" CargaDeCamion : cierra
+Empleado "0..1" -- "0..*" CargaDeCamion
 Distribuidora "1" *--> "0..*" Caja
 Distribuidora "1" *--> "0..*" CategoriaDeCaja
 Distribuidora "1" *--> "0..*" CuentaCorriente

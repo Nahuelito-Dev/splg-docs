@@ -5,11 +5,19 @@ sequenceDiagram
     participant SRV as :OrderService
     participant COL as :List#lt;Pedido#gt;
     participant PED as pedido:Pedido
+    participant TLG as :TruckLoadGateService
 
     CHF->>+SRV: consultarPedidosDisponibles(pagina, limite)
-    SRV->>+COL: buscarDisponibles(distribuidoraId, pagina, limite)
-    loop Por cada pedido de la distribuidora
-        COL->>PED: estaDisponible()
+    SRV->>+TLG: motivoParaNoRecibir(chofer)
+    TLG-->>-SRV: motivo
+    alt El chofer no puede recibir pedidos por su carga
+        SRV-->>CHF: pedidos vacíos, motivo
+    else El chofer puede recibir pedidos
+        SRV->>+COL: buscarDisponibles(distribuidoraId, pagina, limite)
+        loop Por cada pedido de la distribuidora
+            COL->>PED: estaDisponible()
+        end
+        COL-->>-SRV: pedidos, total
+        SRV-->>CHF: pedidos, total
     end
-    COL-->>-SRV: pedidos, total
-    SRV-->>-CHF: pedidos, total
+    deactivate SRV

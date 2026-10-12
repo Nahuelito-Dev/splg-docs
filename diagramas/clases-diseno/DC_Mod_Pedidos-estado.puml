@@ -71,7 +71,7 @@ class OrderService <<fachada>> {
   + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
   + consultarPedido(pedidoId: Identificador): Pedido
   + consultarPedidosAsignados(choferId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
-  + consultarPedidosDisponibles(pagina: Entero,\n      limite: Entero, out total: Entero): Pedido[*]
+  + consultarPedidosDisponibles(pagina: Entero,\n      limite: Entero): Cadena
   + consultarResumenDePedidos(): Registro
   + despacharPedidoExpress(pedidoId: Identificador): Booleano
   + findAvailableOrders(): Pedido[*]
@@ -128,6 +128,7 @@ class NotificationsService <<referencia>>
 class OfertaDespacho <<referencia>>
 class PaymentsService <<referencia>>
 class Producto <<referencia>>
+class TruckLoadGateService <<referencia>>
 class ZonaCobertura <<referencia>>
 class Envase <<referencia>>
 class Pago <<referencia>>
@@ -161,12 +162,14 @@ OrderService ..> OfertaDespacho
 OrderService ..> PaymentsService
 OrderService ..> "<<create>>" Pedido
 OrderService ..> Producto
+OrderService ..> TruckLoadGateService
 OrderService ..> ZonaCobertura
 UpdateOrderStatusUseCase ..> Chofer
 UpdateOrderStatusUseCase ..> Envase
 UpdateOrderStatusUseCase ..> Pago
 UpdateOrderStatusUseCase ..> Pedido
 UpdateOrderStatusUseCase ..> StockDeliveryService
+UpdateOrderStatusUseCase ..> TruckLoadGateService
 UpdateOrderStatusUseCase ..> UbicacionGPS
 
 legend bottom right

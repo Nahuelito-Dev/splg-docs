@@ -14,5 +14,7 @@ sequenceDiagram
         SIS-->>ADM: asignación rechazada, con el motivo del vencimiento
     else el chofer, o el que usa el vehículo, tiene un pedido en curso
         SIS-->>ADM: conflicto: pedido en curso
+    else el chofer, el que usa el vehículo o el vehículo tienen una carga de camión abierta
+        SIS-->>ADM: conflicto: carga de camión abierta
     end
     deactivate SIS

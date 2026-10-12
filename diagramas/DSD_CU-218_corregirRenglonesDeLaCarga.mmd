@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-218 Registrar la Carga del Camión · corregirRenglonesDeLaCarga
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UpdateTruckLoadItemsUseCase
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+
+    ADM->>+SRV: corregirRenglonesDeLaCarga(cargaId, items)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: reemplazarRenglones(items)
+    CAR->>CAR: validarQueEstaEnCarga()
+    loop Por cada tipo de garrafa de la lista nueva
+        create participant ICA as nuevo:ItemCarga
+        CAR->>ICA: «create»(producto, llenasCargadas, vaciasCargadas)
+    end
+    CAR-->>-SRV: carga
+    SRV-->>-ADM: carga

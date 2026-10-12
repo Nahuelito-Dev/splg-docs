@@ -54,7 +54,7 @@ rectangle "SS-03 Despacho y Asignación" {
 
 rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
   usecase "CU-246\nVerificar la Habilitación\nLaboral del Chofer\n(SS-19)" as U246 <<planificado>> #back:FFFFFF;line:6B7683
-  usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer\n(SS-08)" as U248 <<planificado>> #back:FFFFFF;line:6B7683
+  usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer\n(SS-08)" as U248 #back:FFFFFF;line:6B7683
 }
 
 A02 -[#2E7D46]- U015

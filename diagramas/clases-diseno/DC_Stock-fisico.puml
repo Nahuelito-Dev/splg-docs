@@ -80,12 +80,12 @@ class Deposito {
   + validarCodigoSinUsar(codigo: Cadena)
   + validarNoEsElPredeterminado()
   + validarPuedeDesactivarse(activo: Booleano)
+  + validarQueEstaActivo(): Booleano
   + validarSinConteoInicial(): Booleano
   + validarSinSaldo(conSaldo: Booleano)
 }
 class UbicacionDeStock {
   - tipo: TipoDeUbicacion
-  + «create» UbicacionDeStock(vehiculo: Vehiculo)
   + «create» UbicacionDeStock(depositoDeStock: Deposito)
   + acreditar(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
   + ajustar(motivoConciliacion: MotivoDeAjuste, nota: Cadena,\n      correccionDeVendible: Entero,\n      administrador: Administrador): AjusteDeStock
@@ -96,6 +96,7 @@ class UbicacionDeStock {
   + getSaldos(productoId: Identificador): SaldoDeStock[*]
   + tieneSaldo(): Booleano
   + validarTransferenciaA(ubicacionDestino: UbicacionDeStock): Booleano
+  + validarVacia()
 }
 class SaldoDeStock {
   - condicion: CondicionDeStock
@@ -150,7 +151,7 @@ class Distribuidora <<referencia>>
 
 Distribuidora "1" --> "0..*" Deposito : dispone de
 Deposito "1" --> "0..1" UbicacionDeStock : se registra como {xor}
-Vehiculo "1" --> "0..1" UbicacionDeStock : se registra como {xor}
+Vehiculo "1" -- "0..1" UbicacionDeStock : se registra como {xor}
 UbicacionDeStock "1" *--> "0..*" SaldoDeStock : acumula
 SaldoDeStock "0..*" -- "1" Producto : corresponde a
 MovimientoDeStock "0..*" -- "1" Producto : corresponde a

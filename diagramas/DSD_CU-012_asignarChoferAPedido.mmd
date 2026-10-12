@@ -7,6 +7,7 @@ sequenceDiagram
     participant DEL as :DeliveryService
     participant CHO as chofer:Chofer
     participant FLK as :FleetDispatchLockService
+    participant TLG as :TruckLoadGateService
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
 
@@ -19,6 +20,7 @@ sequenceDiagram
     SRV->>FLK: assertChoferHabilitado(chofer)
     SRV->>+FLK: vehiculoEnUsoDelChofer(chofer)
     FLK-->>-SRV: vehiculo
+    SRV->>TLG: assertPuedeAsignar(chofer)
     SRV->>+PED: getChofer()
     PED-->>-SRV: choferAnterior
     SRV->>+PED: asignarChofer(chofer, vehiculo)

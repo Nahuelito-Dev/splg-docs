@@ -83,6 +83,7 @@ rectangle "SS-02 Gestión de Pedidos" {
 
 rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
   usecase "CU-236\nVender a Cuenta Corriente\n(SS-21)" as U236 <<planificado>> #back:FFFFFF;line:6B7683
+  usecase "CU-248\nVerificar la Carga de Camión\nAbierta del Chofer\n(SS-08)" as U248 #back:FFFFFF;line:6B7683
 }
 
 A01 -[#1F6F8B]- U005
@@ -146,6 +147,7 @@ U127 ..> U046 : <<include>>
 U127 ..> U006 : <<include>>
 U128 ..> U006 : <<include>>
 U005 ..> F_STOCK : <<include>>
+U080 ..> U248 : <<include>>
 U236 ..> U005 : <<include>>
 U005 -[hidden]-> U236
 U006 -[hidden]-> U008

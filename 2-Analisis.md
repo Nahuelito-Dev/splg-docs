@@ -253,58 +253,61 @@
 - Figura 209 — DSS CU-213: Registrar un Ajuste o una Merma de Stock
 - Figura 210 — DSS CU-275: Consultar los Ajustes de Stock
 - Figura 211 — DSS CU-218: Registrar la Carga del Camión
-- Figura 212 — DSS CU-219: Registrar la Salida del Camión
-- Figura 213 — DSS CU-221: Registrar el Regreso del Camión
-- Figura 214 — DSS CU-222: Cerrar la Rendición de Stock del Camión
-- Figura 215 — DSS CU-223: Consultar la Carga Actual del Camión
-- Figura 216 — DSS CU-224: Conciliar el Stock Vendible con el Físico
-- Figura 217 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible
-- Figura 218 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock
-- Figura 219 — DSS CU-249: Configurar el Control de Carga de Camión Abierta
-- Figura 220 — DSS CU-214: Consultar los Proveedores
-- Figura 221 — DSS CU-261: Registrar un Proveedor
-- Figura 222 — DSS CU-262: Modificar un Proveedor
-- Figura 223 — DSS CU-263: Dar de Baja un Proveedor
-- Figura 224 — DSS CU-286: Consultar el Historial de Compras de un Proveedor
-- Figura 225 — DSS CU-215: Emitir una Orden de Compra
-- Figura 226 — DSS CU-287: Modificar una Orden de Compra
-- Figura 227 — DSS CU-288: Enviar una Orden de Compra
-- Figura 228 — DSS CU-216: Cancelar una Orden de Compra
-- Figura 229 — DSS CU-282: Cerrar una Orden de Compra con Faltante
-- Figura 230 — DSS CU-283: Consultar las Órdenes de Compra
-- Figura 231 — DSS CU-217: Registrar la Recepción de una Compra
-- Figura 232 — DSS CU-280: Anular una Recepción de Compra
-- Figura 233 — DSS CU-281: Marcar el Pago de una Recepción
-- Figura 234 — DSS CU-284: Consultar las Recepciones de Compra
-- Figura 235 — DSS CU-285: Consultar el Costo Promedio de las Garrafas
-- Figura 236 — DSS CU-225: Crear una Caja
-- Figura 237 — DSS CU-264: Modificar una Caja
-- Figura 238 — DSS CU-226: Abrir la Caja
-- Figura 239 — DSS CU-227: Cerrar la Caja con Arqueo
-- Figura 240 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
-- Figura 241 — DSS CU-229: Anular un Movimiento de Caja
-- Figura 242 — DSS CU-230: Crear una Categoría de Ingresos y Gastos
-- Figura 243 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos
-- Figura 244 — DSS CU-231: Generar la Rendición Diaria del Chofer
-- Figura 245 — DSS CU-232: Declarar el Efectivo Rendido
-- Figura 246 — DSS CU-233: Aprobar la Rendición del Chofer
-- Figura 247 — DSS CU-234: Avisar las Rendiciones sin Cerrar
-- Figura 248 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
-- Figura 249 — DSS CU-236: Vender a Cuenta Corriente
-- Figura 250 — DSS CU-237: Registrar un Pago de Cuenta Corriente
-- Figura 251 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
-- Figura 252 — DSS CU-239: Consultar la Antigüedad de la Deuda
-- Figura 253 — DSS CU-240: Configurar las Comisiones por Entrega
-- Figura 254 — DSS CU-241: Registrar la Comisión de una Entrega
-- Figura 255 — DSS CU-242: Liquidar las Comisiones de un Chofer
-- Figura 256 — DSS CU-243: Registrar el Pago de una Liquidación
-- Figura 257 — DSS CU-244: Consultar Mis Comisiones
-- Figura 258 — DSS CU-245: Consultar el Tablero Financiero
-- Figura 259 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 260 — DSS CU-106: Anticipar la recompra por consumo estimado
-- Figura 261 — DSS CU-107: Agrupar pedidos por recorrido
-- Figura 262 — DSS CU-108: Recuperar envases no devueltos
-- Figura 263 — DSS CU-043: Modificar Capacidad de Franja Horaria
+- Figura 212 — DSS CU-289: Cancelar una Carga del Camión
+- Figura 213 — DSS CU-219: Registrar la Salida del Camión
+- Figura 214 — DSS CU-221: Registrar el Regreso del Camión
+- Figura 215 — DSS CU-222: Cerrar la Rendición de Stock del Camión
+- Figura 216 — DSS CU-223: Consultar la Carga Actual del Camión
+- Figura 217 — DSS CU-290: Consultar las Cargas del Camión
+- Figura 218 — DSS CU-291: Consultar una Carga del Camión
+- Figura 219 — DSS CU-224: Conciliar el Stock Vendible con el Físico
+- Figura 220 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible
+- Figura 221 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock
+- Figura 222 — DSS CU-249: Configurar el Control de Carga de Camión Abierta
+- Figura 223 — DSS CU-214: Consultar los Proveedores
+- Figura 224 — DSS CU-261: Registrar un Proveedor
+- Figura 225 — DSS CU-262: Modificar un Proveedor
+- Figura 226 — DSS CU-263: Dar de Baja un Proveedor
+- Figura 227 — DSS CU-286: Consultar el Historial de Compras de un Proveedor
+- Figura 228 — DSS CU-215: Emitir una Orden de Compra
+- Figura 229 — DSS CU-287: Modificar una Orden de Compra
+- Figura 230 — DSS CU-288: Enviar una Orden de Compra
+- Figura 231 — DSS CU-216: Cancelar una Orden de Compra
+- Figura 232 — DSS CU-282: Cerrar una Orden de Compra con Faltante
+- Figura 233 — DSS CU-283: Consultar las Órdenes de Compra
+- Figura 234 — DSS CU-217: Registrar la Recepción de una Compra
+- Figura 235 — DSS CU-280: Anular una Recepción de Compra
+- Figura 236 — DSS CU-281: Marcar el Pago de una Recepción
+- Figura 237 — DSS CU-284: Consultar las Recepciones de Compra
+- Figura 238 — DSS CU-285: Consultar el Costo Promedio de las Garrafas
+- Figura 239 — DSS CU-225: Crear una Caja
+- Figura 240 — DSS CU-264: Modificar una Caja
+- Figura 241 — DSS CU-226: Abrir la Caja
+- Figura 242 — DSS CU-227: Cerrar la Caja con Arqueo
+- Figura 243 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
+- Figura 244 — DSS CU-229: Anular un Movimiento de Caja
+- Figura 245 — DSS CU-230: Crear una Categoría de Ingresos y Gastos
+- Figura 246 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos
+- Figura 247 — DSS CU-231: Generar la Rendición Diaria del Chofer
+- Figura 248 — DSS CU-232: Declarar el Efectivo Rendido
+- Figura 249 — DSS CU-233: Aprobar la Rendición del Chofer
+- Figura 250 — DSS CU-234: Avisar las Rendiciones sin Cerrar
+- Figura 251 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
+- Figura 252 — DSS CU-236: Vender a Cuenta Corriente
+- Figura 253 — DSS CU-237: Registrar un Pago de Cuenta Corriente
+- Figura 254 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
+- Figura 255 — DSS CU-239: Consultar la Antigüedad de la Deuda
+- Figura 256 — DSS CU-240: Configurar las Comisiones por Entrega
+- Figura 257 — DSS CU-241: Registrar la Comisión de una Entrega
+- Figura 258 — DSS CU-242: Liquidar las Comisiones de un Chofer
+- Figura 259 — DSS CU-243: Registrar el Pago de una Liquidación
+- Figura 260 — DSS CU-244: Consultar Mis Comisiones
+- Figura 261 — DSS CU-245: Consultar el Tablero Financiero
+- Figura 262 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 263 — DSS CU-106: Anticipar la recompra por consumo estimado
+- Figura 264 — DSS CU-107: Agrupar pedidos por recorrido
+- Figura 265 — DSS CU-108: Recuperar envases no devueltos
+- Figura 266 — DSS CU-043: Modificar Capacidad de Franja Horaria
 
 ---
 
@@ -331,6 +334,7 @@
 | 16 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
 | 17 | 2026-10-11 | Stock físico construido en el backend: un concepto nuevo en el modelo conceptual (AlertaDeConciliacion) y los siete del stock físico sin la marca de planificados; diagramas de secuencia del sistema de CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279; 9 operaciones nuevas en el catálogo y 5 contratos nuevos. | Nahuel Wagner |
 | 18 | 2026-10-11 | Compras construidas en el backend: diagramas de secuencia del sistema de CU-214 a CU-217, CU-261 a CU-263 y CU-280 a CU-288, catálogo de 329 operaciones y contratos de las compras al día (tres nuevos: modificar una orden, cerrarla con faltante y marcar el pago de una recepción); los cinco conceptos de compras salen de planificados y el costo promedio queda como atributo del Producto. | Nahuel Wagner |
+| 19 | 2026-10-12 | Carga y rendición del camión construidas: diagramas de secuencia del sistema de CU-218, CU-219, CU-221 a CU-223, CU-249 y CU-289 a CU-291, catálogo de 332 operaciones y 204 contratos; el modelo conceptual deja de marcar la carga del camión como planificada. | Nahuel Wagner |
 
 ---
 
@@ -396,7 +400,7 @@ mayoría de los demás conceptos.
 
 Los conceptos se organizan en **trece contextos**, que son las áreas del negocio que los
 definen y los modifican. Los marcados con † se incorporaron el 24/09/2026 para que el
-modelo contenga los 287 casos de uso, incluidos los planificados.
+modelo contenga los 290 casos de uso, incluidos los planificados.
 Los marcados con ‡ se agregaron el 30/09/2026, al contrastar el modelo con la base de
 datos. Los marcados con ¶ se incorporaron el 06/10/2026 con la auditoría de datos del modelo de la cátedra (Auditoria, DetalleAuditoria y TipoAccionAuditoria), ya implementada.
 Los marcados con § se incorporaron el 03/10/2026 con los módulos de gestión de la distribuidora
@@ -1046,7 +1050,7 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **ItemRecepcion** | costo unitario: Costo real por unidad. |
 | **ItemRecepcion** | costo promedio previo: Costo promedio de la garrafa justo antes de la recepción, que la anulación restituye. |
 | **ItemRecepcion** | existencia previa: Llenas que había en depósitos y camiones justo antes de la recepción. |
-| **ConfiguracionModulo** | exigir carga de camión abierta: Si la distribuidora exige que un chofer tenga una carga de camión abierta para recibir pedidos; viene apagado (planificado, I-13). |
+| **ConfiguracionModulo** | exigir carga de camión abierta: Si la distribuidora exige que un chofer tenga una carga de camión abierta para recibir pedidos; viene apagado. |
 | **Producto** | costo promedio: Costo promedio ponderado de la garrafa, que se recalcula con cada recepción de compra y vuelve a su valor anterior si se anula la última. |
 | **Caja** | nombre: Nombre de la caja. |
 | **Caja** | tipo: Efectivo, banco o billetera. |
@@ -1405,6 +1409,8 @@ sequenceDiagram
         SIS-->>CHO: acceso denegado (el pedido no está asignado a este chofer)
     else El pedido ya está entregado o cancelado
         SIS-->>CHO: error de solicitud (transición no permitida)
+    else El chofer no puede recibir pedidos por su carga de camión
+        SIS-->>CHO: error de solicitud, con el motivo
     else El chofer no existe o está dado de baja
         SIS-->>CHO: error de solicitud (repartidor no encontrado o inactivo)
     end
@@ -2293,6 +2299,8 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el chofer está deshabilitado, no está validado o tiene la flota inhabilitada
         SIS-->>ADM: asignación rechazada
+    else el chofer no puede recibir pedidos por su carga de camión
+        SIS-->>ADM: asignación rechazada, con el motivo
     else el pedido no admite pasar a aceptado
         SIS-->>ADM: asignación rechazada por transición no permitida
     end
@@ -2742,7 +2750,11 @@ sequenceDiagram
 
     CHO->>SIS: consultarPedidosDisponibles(pagina, limite)
     activate SIS
-    SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    alt el chofer puede recibir pedidos por su carga de camión
+        SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    else el chofer no puede recibir pedidos por su carga de camión
+        SIS-->>CHO: pedidos vacíos y el motivo
+    end
     deactivate SIS
 ```
 
@@ -4173,6 +4185,8 @@ sequenceDiagram
         SIS-->>ADM: asignación rechazada, con el motivo del vencimiento
     else el chofer, o el que usa el vehículo, tiene un pedido en curso
         SIS-->>ADM: conflicto: pedido en curso
+    else el chofer, el que usa el vehículo o el vehículo tienen una carga de camión abierta
+        SIS-->>ADM: conflicto: carga de camión abierta
     end
     deactivate SIS
 ```
@@ -4201,6 +4215,8 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el chofer tiene un pedido en curso
         SIS-->>ADM: conflicto: pedido en curso
+    else el chofer tiene una carga de camión abierta
+        SIS-->>ADM: conflicto: carga de camión abierta
     end
     deactivate SIS
 ```
@@ -8053,7 +8069,7 @@ sequenceDiagram
 #### DSS — CU-218: Registrar la Carga del Camión
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)`, `reponerCargaDelCamion(cargaId, items)`, `cancelarCargaDelCamion(cargaId)`, `consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)`
+**Operaciones del sistema:** `registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)`, `corregirRenglonesDeLaCarga(cargaId, items)`, `reponerCargaDelCamion(cargaId, items)`
 
 ```mermaid
 sequenceDiagram
@@ -8062,43 +8078,71 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+    ADM->>SIS: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
     activate SIS
-    alt el camión está en uso y el depósito tiene las unidades
-        SIS-->>ADM: hoja de carga abierta
+    alt la carga no repite garrafas, el chofer usa el vehículo y ninguno tiene otra carga abierta
+        SIS-->>ADM: hoja de carga abierta, en carga
+    else un renglón es inválido o el vehículo no está en uso por el chofer
+        SIS-->>ADM: solicitud inválida
     else el vehículo o el chofer ya tienen una carga abierta
         SIS-->>ADM: conflicto
-    else el depósito no tiene las unidades
-        SIS-->>ADM: solicitud inválida, con el saldo disponible
+    else el vehículo, el chofer, el depósito o una garrafa no existen
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+
+    ADM->>SIS: corregirRenglonesDeLaCarga(cargaId, items)
+    activate SIS
+    alt la carga está en carga
+        SIS-->>ADM: hoja de carga con los renglones nuevos
+    else la carga ya salió
+        SIS-->>ADM: solicitud inválida
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
 
     ADM->>SIS: reponerCargaDelCamion(cargaId, items)
     activate SIS
-    alt la carga está abierta
-        SIS-->>ADM: hoja de carga actualizada
-    else la carga ya regresó o está cerrada
-        SIS-->>ADM: conflicto
+    alt la carga está en ruta y el depósito tiene las llenas
+        SIS-->>ADM: hoja de carga con lo repuesto
+    else la carga no está en ruta o el depósito no tiene las llenas
+        SIS-->>ADM: solicitud inválida, con el saldo disponible
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
     end
-    deactivate SIS
-
-    ADM->>SIS: cancelarCargaDelCamion(cargaId)
-    activate SIS
-    alt la carga todavía no salió
-        SIS-->>ADM: carga cancelada y stock devuelto
-    else la carga ya salió
-        SIS-->>ADM: conflicto
-    end
-    deactivate SIS
-
-    ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
-    activate SIS
-    SIS-->>ADM: cargas del camión
     deactivate SIS
 ```
 
 **Figura 211 — DSS CU-218: Registrar la Carga del Camión**
 
+---
+
+#### DSS — CU-289: Cancelar una Carga del Camión
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `cancelarCargaDelCamion(cargaId, motivo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-289 Cancelar una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cancelarCargaDelCamion(cargaId, motivo)
+    activate SIS
+    alt la carga está en carga
+        SIS-->>ADM: carga cancelada
+    else la carga ya salió o falta el motivo
+        SIS-->>ADM: solicitud inválida
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+**Figura 212 — DSS CU-289: Cancelar una Carga del Camión**
 ---
 
 #### DSS — CU-219: Registrar la Salida del Camión
@@ -8115,19 +8159,19 @@ sequenceDiagram
 
     CHO->>SIS: registrarSalidaDelCamion(cargaId)
     activate SIS
-    alt la carga está cargando
+    alt la carga está en carga y el depósito tiene las unidades
         SIS-->>CHO: carga en ruta
-    else la carga no está cargando
-        SIS-->>CHO: conflicto
+    else la carga no está en carga, no lleva garrafas, el camión no está vacío o el depósito no tiene las unidades
+        SIS-->>CHO: solicitud inválida
     else la carga no existe o no es suya
         SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS
+
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 212 — DSS CU-219: Registrar la Salida del Camión**
-
+**Figura 213 — DSS CU-219: Registrar la Salida del Camión**
 ---
 
 #### DSS — CU-220: Descontar del Stock Físico lo Entregado
@@ -8152,19 +8196,21 @@ sequenceDiagram
 
     CHO->>SIS: registrarRegresoDelCamion(cargaId, devueltos)
     activate SIS
-    alt la carga está en ruta
+    alt la carga está en ruta o devuelta y el chofer no tiene pedidos en curso
         SIS-->>CHO: lo declarado, lo esperado y la diferencia
-    else la carga no está en ruta
+    else la carga no está en ruta ni devuelta, o la declaración es inválida
+        SIS-->>CHO: solicitud inválida
+    else el chofer tiene pedidos en curso
         SIS-->>CHO: conflicto
-    else una cantidad es negativa
-        SIS-->>CHO: solicitud inválida, con el detalle del campo
+    else la carga no existe o no es suya
+        SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS
+
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 213 — DSS CU-221: Registrar el Regreso del Camión**
-
+**Figura 214 — DSS CU-221: Registrar el Regreso del Camión**
 ---
 
 #### DSS — CU-222: Cerrar la Rendición de Stock del Camión
@@ -8181,22 +8227,21 @@ sequenceDiagram
 
     ADM->>SIS: cerrarRendicionDeStock(cargaId, nota)
     activate SIS
-    alt la carga regresó y la rendición cierra sin diferencia
+    alt la carga volvió y la rendición cierra sin diferencia
         SIS-->>ADM: carga cerrada
-    else la carga regresó y hay diferencia con su nota
+    else la carga volvió y hay diferencia con su nota
         SIS-->>ADM: carga cerrada con diferencia
-    else hay diferencia y falta la nota
+    else hay diferencia y falta la nota, o la carga no volvió
         SIS-->>ADM: solicitud inválida
-    else el faltante dejaría negativo el stock vendible
-        SIS-->>ADM: solicitud inválida
-    else la carga no regresó
+    else el camión entregó después de la declaración
         SIS-->>ADM: conflicto
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
 ```
 
-**Figura 214 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
-
+**Figura 215 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
 ---
 
 #### DSS — CU-223: Consultar la Carga Actual del Camión
@@ -8214,15 +8259,68 @@ sequenceDiagram
     CHO->>SIS: consultarCargaActual()
     activate SIS
     alt el chofer tiene una carga abierta
-        SIS-->>CHO: carga con lo cargado, lo entregado y lo esperado
+        SIS-->>CHO: carga con lo cargado, lo entregado y lo esperado, y la exigencia de la distribuidora
     else no tiene carga abierta
-        SIS-->>CHO: ninguna carga
+        SIS-->>CHO: carga vacía y la exigencia de la distribuidora
     end
     deactivate SIS
 ```
 
-**Figura 215 — DSS CU-223: Consultar la Carga Actual del Camión**
+**Figura 216 — DSS CU-223: Consultar la Carga Actual del Camión**
 
+---
+
+#### DSS — CU-290: Consultar las Cargas del Camión
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-290 Consultar las Cargas del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+    activate SIS
+    alt los filtros son válidos
+        SIS-->>ADM: cargas del camión, con el total
+    else una fecha es inválida o el desde es posterior al hasta
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+```
+
+**Figura 217 — DSS CU-290: Consultar las Cargas del Camión**
+
+---
+
+#### DSS — CU-291: Consultar una Carga del Camión
+
+**Actor:** Administrador (ACT-03), Chofer (ACT-02)
+**Operaciones del sistema:** `consultarCargaDelCamion(cargaId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-291 Consultar una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCargaDelCamion(cargaId)
+    activate SIS
+    alt la carga existe y es del alcance de quien consulta
+        SIS-->>ADM: detalle de la carga
+    else la carga no existe o no es suya
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+
+    Note over ADM,SIS: También lo inicia el Chofer (ACT-02), sólo de su carga
+```
+
+**Figura 218 — DSS CU-291: Consultar una Carga del Camión**
 ---
 
 #### DSS — CU-224: Conciliar el Stock Vendible con el Físico
@@ -8260,7 +8358,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 216 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
+**Figura 219 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
 
 ---
 
@@ -8288,7 +8386,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 217 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible**
+**Figura 220 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible**
 
 ---
 
@@ -8314,7 +8412,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 218 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock**
+**Figura 221 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock**
 
 ---
 
@@ -8329,7 +8427,7 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-012, CU-013 
 #### DSS — CU-249: Configurar el Control de Carga de Camión Abierta
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)`
+**Operaciones del sistema:** `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)`, `consultarControlDeCargaAbierta()`
 
 ```mermaid
 sequenceDiagram
@@ -8346,17 +8444,21 @@ sequenceDiagram
         SIS-->>ADM: solicitud inválida, con el detalle del campo
     end
     deactivate SIS
+
+    ADM->>SIS: consultarControlDeCargaAbierta()
+    activate SIS
+    SIS-->>ADM: configuración del control
+    deactivate SIS
 ```
 
-**Figura 219 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
-
+**Figura 222 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
 ---
 
 #### DSS — CU-250: Aplicar un Movimiento de Stock
 
 **Actor:** ninguno directo (caso incluido)
 
-Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274, CU-276 y CU-280, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
+Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-219, CU-220, CU-222, CU-274, CU-276 y CU-280, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
 
 ---
 
@@ -8397,7 +8499,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 220 — DSS CU-214: Consultar los Proveedores**
+**Figura 223 — DSS CU-214: Consultar los Proveedores**
 
 ---
 
@@ -8425,7 +8527,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 221 — DSS CU-261: Registrar un Proveedor**
+**Figura 224 — DSS CU-261: Registrar un Proveedor**
 
 ---
 
@@ -8455,7 +8557,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 222 — DSS CU-262: Modificar un Proveedor**
+**Figura 225 — DSS CU-262: Modificar un Proveedor**
 
 ---
 
@@ -8483,7 +8585,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 223 — DSS CU-263: Dar de Baja un Proveedor**
+**Figura 226 — DSS CU-263: Dar de Baja un Proveedor**
 
 ---
 
@@ -8511,7 +8613,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 224 — DSS CU-286: Consultar el Historial de Compras de un Proveedor**
+**Figura 227 — DSS CU-286: Consultar el Historial de Compras de un Proveedor**
 
 ---
 
@@ -8539,7 +8641,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 225 — DSS CU-215: Emitir una Orden de Compra**
+**Figura 228 — DSS CU-215: Emitir una Orden de Compra**
 
 ---
 
@@ -8567,7 +8669,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 226 — DSS CU-287: Modificar una Orden de Compra**
+**Figura 229 — DSS CU-287: Modificar una Orden de Compra**
 
 ---
 
@@ -8595,7 +8697,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 227 — DSS CU-288: Enviar una Orden de Compra**
+**Figura 230 — DSS CU-288: Enviar una Orden de Compra**
 
 ---
 
@@ -8625,7 +8727,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 228 — DSS CU-216: Cancelar una Orden de Compra**
+**Figura 231 — DSS CU-216: Cancelar una Orden de Compra**
 
 ---
 
@@ -8653,7 +8755,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 229 — DSS CU-282: Cerrar una Orden de Compra con Faltante**
+**Figura 232 — DSS CU-282: Cerrar una Orden de Compra con Faltante**
 
 ---
 
@@ -8703,7 +8805,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 230 — DSS CU-283: Consultar las Órdenes de Compra**
+**Figura 233 — DSS CU-283: Consultar las Órdenes de Compra**
 
 ---
 
@@ -8733,7 +8835,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 231 — DSS CU-217: Registrar la Recepción de una Compra**
+**Figura 234 — DSS CU-217: Registrar la Recepción de una Compra**
 
 ---
 
@@ -8763,7 +8865,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 232 — DSS CU-280: Anular una Recepción de Compra**
+**Figura 235 — DSS CU-280: Anular una Recepción de Compra**
 
 ---
 
@@ -8791,7 +8893,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 233 — DSS CU-281: Marcar el Pago de una Recepción**
+**Figura 236 — DSS CU-281: Marcar el Pago de una Recepción**
 
 ---
 
@@ -8830,7 +8932,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 234 — DSS CU-284: Consultar las Recepciones de Compra**
+**Figura 237 — DSS CU-284: Consultar las Recepciones de Compra**
 
 ---
 
@@ -8852,7 +8954,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 235 — DSS CU-285: Consultar el Costo Promedio de las Garrafas**
+**Figura 238 — DSS CU-285: Consultar el Costo Promedio de las Garrafas**
 
 ---
 
@@ -8880,7 +8982,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 236 — DSS CU-225: Crear una Caja**
+**Figura 239 — DSS CU-225: Crear una Caja**
 
 ---
 
@@ -8907,7 +9009,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 237 — DSS CU-264: Modificar una Caja**
+**Figura 240 — DSS CU-264: Modificar una Caja**
 
 ---
 
@@ -8935,7 +9037,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 238 — DSS CU-226: Abrir la Caja**
+**Figura 241 — DSS CU-226: Abrir la Caja**
 
 ---
 
@@ -8963,7 +9065,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 239 — DSS CU-227: Cerrar la Caja con Arqueo**
+**Figura 242 — DSS CU-227: Cerrar la Caja con Arqueo**
 
 ---
 
@@ -9000,7 +9102,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 240 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
+**Figura 243 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
 
 ---
 
@@ -9026,7 +9128,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 241 — DSS CU-229: Anular un Movimiento de Caja**
+**Figura 244 — DSS CU-229: Anular un Movimiento de Caja**
 
 ---
 
@@ -9052,7 +9154,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 242 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
+**Figura 245 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
 
 ---
 
@@ -9079,7 +9181,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 243 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
+**Figura 246 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
 
 ---
 
@@ -9111,7 +9213,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 244 — DSS CU-231: Generar la Rendición Diaria del Chofer**
+**Figura 247 — DSS CU-231: Generar la Rendición Diaria del Chofer**
 
 ---
 
@@ -9153,7 +9255,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 245 — DSS CU-232: Declarar el Efectivo Rendido**
+**Figura 248 — DSS CU-232: Declarar el Efectivo Rendido**
 
 ---
 
@@ -9194,7 +9296,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 246 — DSS CU-233: Aprobar la Rendición del Chofer**
+**Figura 249 — DSS CU-233: Aprobar la Rendición del Chofer**
 
 ---
 
@@ -9226,7 +9328,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 247 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
+**Figura 250 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
 
 ---
 
@@ -9263,7 +9365,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 248 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
+**Figura 251 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
 
 ---
 
@@ -9303,7 +9405,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 249 — DSS CU-236: Vender a Cuenta Corriente**
+**Figura 252 — DSS CU-236: Vender a Cuenta Corriente**
 
 ---
 
@@ -9350,7 +9452,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 250 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
+**Figura 253 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
 
 ---
 
@@ -9376,7 +9478,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 251 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
+**Figura 254 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
 
 ---
 
@@ -9398,7 +9500,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 252 — DSS CU-239: Consultar la Antigüedad de la Deuda**
+**Figura 255 — DSS CU-239: Consultar la Antigüedad de la Deuda**
 
 ---
 
@@ -9435,7 +9537,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 253 — DSS CU-240: Configurar las Comisiones por Entrega**
+**Figura 256 — DSS CU-240: Configurar las Comisiones por Entrega**
 
 ---
 
@@ -9463,7 +9565,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 254 — DSS CU-241: Registrar la Comisión de una Entrega**
+**Figura 257 — DSS CU-241: Registrar la Comisión de una Entrega**
 
 ---
 
@@ -9507,7 +9609,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 255 — DSS CU-242: Liquidar las Comisiones de un Chofer**
+**Figura 258 — DSS CU-242: Liquidar las Comisiones de un Chofer**
 
 ---
 
@@ -9535,7 +9637,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 256 — DSS CU-243: Registrar el Pago de una Liquidación**
+**Figura 259 — DSS CU-243: Registrar el Pago de una Liquidación**
 
 ---
 
@@ -9557,7 +9659,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 257 — DSS CU-244: Consultar Mis Comisiones**
+**Figura 260 — DSS CU-244: Consultar Mis Comisiones**
 
 ---
 
@@ -9579,7 +9681,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 258 — DSS CU-245: Consultar el Tablero Financiero**
+**Figura 261 — DSS CU-245: Consultar el Tablero Financiero**
 
 ---
 
@@ -9651,7 +9753,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 259 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 262 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 ---
 
@@ -9688,7 +9790,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 260 — DSS CU-106: Anticipar la recompra por consumo estimado**
+**Figura 263 — DSS CU-106: Anticipar la recompra por consumo estimado**
 
 ---
 
@@ -9730,7 +9832,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 261 — DSS CU-107: Agrupar pedidos por recorrido**
+**Figura 264 — DSS CU-107: Agrupar pedidos por recorrido**
 
 ---
 
@@ -9780,7 +9882,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 262 — DSS CU-108: Recuperar envases no devueltos**
+**Figura 265 — DSS CU-108: Recuperar envases no devueltos**
 
 ---
 
@@ -9813,7 +9915,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 263 — DSS CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 266 — DSS CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -9825,7 +9927,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 
 Una operación del sistema es un mensaje que un actor le manda al sistema y que aparece como tal en un diagrama de secuencia de §2.1. El catálogo reúne **todas** las operaciones, cada una con una única firma: la que usan los diagramas de secuencia de §2.1, los contratos de esta sección y los diagramas de interacción del Documento 3. Los parámetros llevan su tipo; los diagramas de secuencia usan la misma firma sin los tipos, para no recargar el dibujo.
 
-Son **329 operaciones**. **203** modifican el modelo conceptual y tienen contrato; las **126** restantes no modifican nada y por eso no llevan contrato.
+Son **332 operaciones**. **204** modifican el modelo conceptual y tienen contrato; las **128** restantes no modifican nada y por eso no llevan contrato.
 
 | Operación | Casos de uso | Actor iniciador | Cambia estado |
 |---|---|---|---|
@@ -9881,7 +9983,7 @@ Son **329 operaciones**. **203** modifican el modelo conceptual y tienen contrat
 | `cambiarDireccionDeEntrega(pedidoId identificador, direccionId identificador, motivo cadena)` | CU-127 | Cliente (ACT-01) | Sí |
 | `cambiarDisponibilidad(usuarioId identificador, disponible booleano)` | CU-022, CU-266 | Chofer (ACT-02) | Sí |
 | `cambiarEstadoDelChofer(choferId identificador, activo booleano)` | CU-033, CU-267 | Administrador (ACT-03) | Sí |
-| `cancelarCargaDelCamion(cargaId identificador)` | CU-218 | Administrador (ACT-03) | Sí |
+| `cancelarCargaDelCamion(cargaId identificador, motivo cadena)` | CU-289 | Administrador (ACT-03) | Sí |
 | `cancelarLicencia(licenciaId identificador)` | CU-191 | Administrador (ACT-03) | Sí |
 | `cancelarOrdenDeCompra(ordenId identificador, motivo cadena)` | CU-216 | Administrador (ACT-03) | Sí |
 | `cancelarPedido(pedidoId identificador, motivo cadena)` | CU-008, CU-010 | Cliente (ACT-01), Administrador (ACT-03) | Sí |
@@ -9910,12 +10012,14 @@ Son **329 operaciones**. **203** modifican el modelo conceptual y tienen contrat
 | `consultarAuditoria(autor identificador, tipoDeRecurso cadena, recurso cadena, desde fechaHora, hasta fechaHora, resultado cadena, limite entero, desplazamiento entero)` | CU-152 | Administrador (ACT-03) | No |
 | `consultarAuditoriaDeDatos(entidad cadena, registro cadena, autor identificador, tipoDeAccion entero, desde fechaHora, hasta fechaHora, pagina entero, limite entero)` | CU-152 | Administrador (ACT-03), Administrador General (ACT-05) | No |
 | `consultarCargaActual()` | CU-223 | Chofer (ACT-02) | No |
+| `consultarCargaDelCamion(cargaId identificador)` | CU-291 | Administrador (ACT-03), Chofer (ACT-02) | No |
 | `consultarCargasDeCombustible(filtros registro)` | CU-195 | Administrador (ACT-03) | No |
-| `consultarCargasDelCamion(estado cadena, fecha fecha, vehiculoId identificador, choferId identificador)` | CU-218 | Administrador (ACT-03) | No |
+| `consultarCargasDelCamion(estado cadena, desde fecha, hasta fecha, vehiculoId identificador, choferId identificador)` | CU-290 | Administrador (ACT-03) | No |
 | `consultarCarrito()` | CU-125 | Cliente (ACT-01) | No |
 | `consultarCatalogo(pagina entero, limite entero, distribuidora cadena)` | CU-041 | Cliente (ACT-01) | No |
 | `consultarConciliacionDeStock()` | CU-224 | Administrador (ACT-03) | No |
 | `consultarConsumoDeCombustible(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-196 | Administrador (ACT-03) | No |
+| `consultarControlDeCargaAbierta()` | CU-249 | Administrador (ACT-03) | No |
 | `consultarCostoDeUnVehiculo(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-203 | Administrador (ACT-03) | No |
 | `consultarCostoPromedio()` | CU-285 | Administrador (ACT-03) | No |
 | `consultarDeposito(depositoId identificador)` | CU-207 | Administrador (ACT-03) | No |
@@ -9991,6 +10095,7 @@ Son **329 operaciones**. **203** modifican el modelo conceptual y tienen contrat
 | `consultarVentasPorProducto(fechaDesde fecha, fechaHasta fecha)` | CU-028 | Administrador (ACT-03) | No |
 | `consultarVigenciaDelEnvase(envaseId identificador)` | CU-133 | Administrador (ACT-03) | No |
 | `corregirAsistencia(asistenciaId identificador, datos registro, nota cadena)` | CU-189 | Administrador (ACT-03) | Sí |
+| `corregirRenglonesDeLaCarga(cargaId identificador, items lista)` | CU-218 | Administrador (ACT-03) | Sí |
 | `crearCaja(nombre cadena, tipo cadena, requiereSesion booleano)` | CU-225 | Administrador (ACT-03) | Sí |
 | `crearCategoriaDeCaja(nombre cadena, sentido cadena)` | CU-230 | Administrador (ACT-03) | Sí |
 | `crearFranjaHoraria(nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-042 | Administrador (ACT-03) | Sí |
@@ -10103,7 +10208,7 @@ Son **329 operaciones**. **203** modifican el modelo conceptual y tienen contrat
 | `registrarAuditoriaDeDato(autor identificador, ip cadena, distribuidoraId identificador, entidad cadena, registro cadena, tipoDeAccion entero, detalles lista)` | CU-153 | Sistema Automático (ACT-04) | Sí |
 | `registrarCambioDeEstado(pedidoId identificador, estadoAnterior cadena, estadoNuevo cadena, autor identificador, motivo cadena)` | CU-169 | Sistema Automático (ACT-04) | Sí |
 | `registrarCargaDeCombustible(vehiculoId identificador, datos registro)` | CU-195 | Chofer (ACT-02), Administrador (ACT-03) | Sí |
-| `registrarCargaDelCamion(vehiculoId identificador, depositoId identificador, ayudanteId identificador, items lista)` | CU-218 | Administrador (ACT-03) | Sí |
+| `registrarCargaDelCamion(vehiculoId identificador, choferId identificador, depositoId identificador, ayudanteId identificador, items lista)` | CU-218 | Administrador (ACT-03) | Sí |
 | `registrarCargoDeCuentaCorriente(pedidoId identificador)` | CU-236 | Sistema Automático (ACT-04) | Sí |
 | `registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)` | CU-003, CU-031 | Administrador (ACT-03) | Sí |
 | `registrarComisionDeEntrega(pedidoId identificador)` | CU-241 | Sistema Automático (ACT-04) | Sí |
@@ -10284,9 +10389,9 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-012. Funciones: IRQ-02, IRQ-03, OBJ-02, OBJ-05. |
 | **Notas** | Es la salida del administrador cuando el despacho automático no encuentra candidatos. Tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, cierra las ofertas abiertas y guarda la copia del vehículo. En una reasignación, el código nuevo deja sin efecto el anterior. El Cliente no recibe aviso de la asignación manual. Se notifica al Chofer nuevo, al Chofer anterior (si lo hubo) y al panel. |
-| **Excepciones** | Si el pedido o el chofer no existen o son de otra distribuidora → recurso no encontrado. Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida → error de solicitud (no se puede asignar). Si el pedido no admite pasar a «aceptado» (cancelado, en camino o entregado) → error de solicitud (transición no permitida). |
+| **Excepciones** | Si el pedido o el chofer no existen o son de otra distribuidora → recurso no encontrado. Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida, o no puede recibir pedidos por su carga de camión → error de solicitud (no se puede asignar). Si el pedido no admite pasar a «aceptado» (cancelado, en camino o entregado) → error de solicitud (transición no permitida). |
 | **Salida** | El pedido con estado aceptado, el chofer vinculado y el código de entrega nuevo. |
-| **Precondiciones** | El Administrador está autenticado. El Pedido es de su distribuidora y su estado es «pendiente», o «aceptado» por otro Chofer. El Chofer es de la misma distribuidora, está habilitado y validado, tiene un Vehículo en uso y ni su licencia ni ese Vehículo tienen documentación vencida. |
+| **Precondiciones** | El Administrador está autenticado. El Pedido es de su distribuidora y su estado es «pendiente», o «aceptado» por otro Chofer. El Chofer es de la misma distribuidora, está habilitado y validado, tiene un Vehículo en uso y ni su licencia ni ese Vehículo tienen documentación vencida. Si tiene una CargaDeCamion abierta, está en ruta con ese Vehículo; si no la tiene, la Distribuidora no exige tenerla. |
 | **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer indicado; si el Pedido tenía otro Chofer, esa asociación se rompió. El atributo estado del Pedido pasó a «aceptado» y quedaron registrados el momento de la aceptación y un código de entrega nuevo. El Pedido guardó la patente, la marca y el modelo del Vehículo en uso del Chofer. Las OfertaDespacho vigentes del Pedido quedaron cerradas. |
 
 ---
@@ -10332,9 +10437,9 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-015. Funciones: IRQ-02, IRQ-03, OBJ-02, OBJ-03. |
 | **Notas** | Si el pedido ya tiene otro chofer asignado, un segundo chofer no lo desplaza ni regenera el código de entrega. Si acepta el mismo chofer, la operación es idempotente: conserva el código y el momento de aceptación. Un chofer sin vehículo en uso no puede aceptar pedidos. La copia de patente, marca y modelo se borra si el pedido vuelve a pendiente. Se notifica al Cliente. |
-| **Excepciones** | Si el pedido es de otra distribuidora o no existe → recurso no encontrado. Si el pedido ya tiene asignado a otro chofer → acceso denegado. Si el pedido ya está entregado o cancelado → error de solicitud (transición no permitida). Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida → error de solicitud. |
+| **Excepciones** | Si el pedido es de otra distribuidora o no existe → recurso no encontrado. Si el pedido ya tiene asignado a otro chofer → acceso denegado. Si el pedido ya está entregado o cancelado → error de solicitud (transición no permitida). Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida, o no puede recibir pedidos por su carga de camión → error de solicitud. |
 | **Salida** | El pedido con estado aceptado, los datos de entrega y el código de entrega. |
-| **Precondiciones** | El Pedido tiene estado «pendiente». El Chofer está habilitado y validado, tiene un Vehículo en uso y ni su licencia ni ese Vehículo tienen documentación vencida. |
+| **Precondiciones** | El Pedido tiene estado «pendiente». El Chofer está habilitado y validado, tiene un Vehículo en uso y ni su licencia ni ese Vehículo tienen documentación vencida. Si tiene una CargaDeCamion abierta, está en ruta con ese Vehículo; si no la tiene, la Distribuidora no exige tenerla. |
 | **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer que lo aceptó. El atributo estado del Pedido pasó a «aceptado», con la fecha de aceptación y un código de entrega. La OfertaDespacho vigente del Chofer pasó a «aceptada». El Pedido guardó la patente, la marca y el modelo del Vehículo en uso del Chofer. |
 
 ---
@@ -11788,9 +11893,9 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-161. Funciones: IRQ-03, OBJ-02, OBJ-05. |
 | **Notas** | Nunca quedan dos asignaciones abiertas para el mismo chofer ni para el mismo vehículo. La operación corre en una única transacción que bloquea el vehículo y los choferes involucrados. Es idempotente: si el chofer ya usa ese vehículo, no cierra ni abre nada. |
-| **Excepciones** | Si el chofer o el vehículo no existen o son de otra distribuidora → recurso no encontrado. Si el chofer, o quien usa el vehículo en ese momento, tiene un pedido aceptado o en camino → error de conflicto. Si la documentación del vehículo está vencida → error de solicitud (no se puede asignar). Si hay un conflicto de concurrencia que no se resuelve → error de conflicto. |
+| **Excepciones** | Si el chofer o el vehículo no existen o son de otra distribuidora → recurso no encontrado. Si el chofer, o quien usa el vehículo en ese momento, tiene un pedido aceptado o en camino, o el chofer, quien usa el vehículo o el vehículo tienen una carga de camión abierta → error de conflicto. Si la documentación del vehículo está vencida → error de solicitud (no se puede asignar). Si hay un conflicto de concurrencia que no se resuelve → error de conflicto. |
 | **Salida** | La asignación creada, con el vehículo. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Chofer y el Vehiculo son de esa Distribuidora. El Vehiculo está habilitado. Ni el Chofer ni el usuario actual del Vehiculo tienen un Pedido «aceptado» o «en camino». |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Chofer y el Vehiculo son de esa Distribuidora. El Vehiculo está habilitado. Ni el Chofer ni el usuario actual del Vehiculo tienen un Pedido «aceptado» o «en camino», ni ellos ni el Vehiculo tienen una CargaDeCamion abierta. |
 | **Postcondiciones** | Se creó una instancia de AsignacionVehiculo con la fecha de asignación, el Administrador que la hizo y la nota, asociada al Chofer y al Vehiculo. Las instancias de AsignacionVehiculo abiertas del Chofer y del Vehiculo se cerraron con su fecha de liberación y el Administrador que las cerró. Si el Chofer ya usaba ese Vehiculo, no se modificó nada. |
 
 ---
@@ -11804,9 +11909,9 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-162. Funciones: IRQ-03, OBJ-02, OBJ-05. |
 | **Notas** | La baja del chofer (eliminarChofer) usa otro camino: no falla si el chofer no tenía vehículo y no registra administrador responsable. |
-| **Excepciones** | Si el chofer no existe o es de otra distribuidora → recurso no encontrado. Si tiene un pedido aceptado o en camino → error de conflicto. Si no tiene vehículo en uso → recurso no encontrado. |
+| **Excepciones** | Si el chofer no existe o es de otra distribuidora → recurso no encontrado. Si tiene un pedido aceptado o en camino, o una carga de camión abierta → error de conflicto. Si no tiene vehículo en uso → recurso no encontrado. |
 | **Salida** | Ninguna. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Chofer es de esa Distribuidora, no tiene un Pedido «aceptado» o «en camino» y tiene una AsignacionVehiculo abierta. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Chofer es de esa Distribuidora, no tiene un Pedido «aceptado» o «en camino» ni una CargaDeCamion abierta y tiene una AsignacionVehiculo abierta. |
 | **Postcondiciones** | La instancia de AsignacionVehiculo abierta del Chofer se cerró con su fecha de liberación y el Administrador que la liberó. El Chofer no tiene Vehiculo en uso. |
 
 ---
@@ -12554,9 +12659,9 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-273. Funciones: IRQ-18, OBJ-05, OBJ-06. |
 | **Notas** | La distribuidora tiene siempre uno solo. Los dos depósitos que cambian de marca se bloquean juntos y ordenados por identificador, de modo que dos cambios simultáneos no se cruzan. El predeterminado es el que usan la entrega de un pedido sin camión con saldo y el ajuste del catálogo. |
-| **Excepciones** | Si el depósito no existe, está dado de baja o es de otra distribuidora → recurso no encontrado. Si hay otro cambio simultáneo, o se intenta sacarle la marca al predeterminado → conflicto. |
+| **Excepciones** | Si el depósito no existe, está dado de baja o es de otra distribuidora → recurso no encontrado. Si el depósito está inactivo → error de solicitud. Si hay otro cambio simultáneo, o se intenta sacarle la marca al predeterminado → conflicto. |
 | **Salida** | El depósito elegido, ya predeterminado. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Deposito existe y es de la distribuidora. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Deposito existe, está activo y es de la distribuidora. |
 | **Postcondiciones** | El atributo predeterminado de la instancia de Deposito elegido pasó a verdadero y el de la instancia de Deposito que lo era hasta ahora pasó a falso. |
 
 ---
@@ -12614,11 +12719,11 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `transferirStock(origenId identificador, destinoId identificador, items lista, nota cadena)` |
-| **Responsabilidades** | Trasladar tipos de garrafa de un depósito a otro de la distribuidora, o entre un depósito y un camión. |
+| **Responsabilidades** | Trasladar tipos de garrafa de un depósito a otro de la distribuidora, o devuelve a un depósito lo que un camión tiene suelto. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-212. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Un movimiento por renglón, todos con el mismo lote, con la ubicación de origen y la de destino. No cambia el stock vendible. Los bloqueos siguen el orden del libro de stock. Con la misma clave de idempotencia no se repite. La ubicación de un camión se crea la primera vez que se la nombra. |
-| **Excepciones** | Si una ubicación o una garrafa no existe o es de otra distribuidora → recurso no encontrado. Si el origen no tiene la cantidad de algún renglón, origen y destino son la misma ubicación o dos camiones, el destino no recibe stock o hay un renglón repetido → error de solicitud. |
+| **Notas** | Un movimiento por renglón, todos con el mismo lote, con la ubicación de origen y la de destino. No cambia el stock vendible. Los bloqueos siguen el orden del libro de stock. Con la misma clave de idempotencia no se repite. Un camión no puede ser el destino: se carga con su hoja de carga. Un camión con carga abierta no puede ser el origen. |
+| **Excepciones** | Si una ubicación o una garrafa no existe o es de otra distribuidora → recurso no encontrado. Si el origen no tiene la cantidad de algún renglón, origen y destino son la misma ubicación, el destino es un camión, el destino no recibe stock o hay un renglón repetido → error de solicitud. |
 | **Salida** | El lote de la transferencia y sus movimientos. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. Las dos UbicacionDeStock existen y son distintas, y el origen tiene la cantidad de cada renglón. |
 | **Postcondiciones** | Se creó una instancia de MovimientoDeStock por cada renglón, con la ubicación de origen, la de destino y un mismo lote. Los saldos de las dos ubicaciones cambiaron en la cantidad de cada renglón: el del origen disminuyó y el del destino aumentó. El stock vendible no cambia. |
@@ -12869,16 +12974,15 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `registrarCargaDelCamion(vehiculoId identificador, depositoId identificador, ayudanteId identificador, items lista)` |
-| **Responsabilidades** | Abrir la hoja de carga de un camión y trasladar las garrafas del depósito al vehículo. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Nombre** | `registrarCargaDelCamion(vehiculoId identificador, choferId identificador, depositoId identificador, ayudanteId identificador, items lista)` |
+| **Responsabilidades** | Abrir la hoja de carga del día de un camión y de su chofer, con las garrafas que va a llevar. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-218. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | El vehículo tiene que estar en uso por un chofer. Un vehículo y un chofer tienen una sola carga abierta a la vez. El número es correlativo por distribuidora. Con la misma clave de idempotencia no se repite. |
-| **Excepciones** | Si el vehículo no está en uso, o el vehículo o el chofer ya tienen una carga abierta → conflicto. Si el depósito no tiene las unidades → error de solicitud con el saldo disponible. Si el vehículo o el depósito no existen → recurso no encontrado. |
+| **Notas** | El vehículo tiene que estar en uso por el chofer. Un vehículo y un chofer tienen una sola carga abierta a la vez. El número es correlativo por distribuidora. Abrir la carga no mueve stock: las garrafas salen del depósito al registrar la salida (CU-219). |
+| **Excepciones** | Si el vehículo no está en uso por el chofer, o un renglón repite la garrafa o trae una cantidad inválida → error de solicitud. Si el vehículo o el chofer ya tienen una carga abierta → conflicto. Si el vehículo, el chofer, el ayudante, el depósito o una garrafa no existen → recurso no encontrado. |
 | **Salida** | La hoja de carga abierta. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El vehículo está en uso por un chofer y sin otra carga abierta. El depósito tiene las unidades. |
-| **Postcondiciones** | Se creó una instancia de CargaDeCamion del Vehiculo, en estado cargando, con una instancia de ItemCarga por cada tipo de garrafa. Se creó una instancia de MovimientoDeStock por renglón, del depósito al camión. El saldo del depósito disminuyó y el del camión aumentó. |
-
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El vehículo está en uso por el chofer y ninguno de los dos tiene otra carga abierta. |
+| **Postcondiciones** | Se creó una instancia de CargaDeCamion del Vehiculo y del Chofer, en estado en carga, con una instancia de ItemCarga por cada tipo de garrafa. Los saldos del depósito y del camión no cambiaron. |
 ---
 
 #### Crítico Contrato: `reponerCargaDelCamion()`
@@ -12886,31 +12990,44 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `reponerCargaDelCamion(cargaId identificador, items lista)` |
-| **Responsabilidades** | Cargar más mercadería en un camión que tiene la carga abierta. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Cargar más llenas en un camión que está en ruta. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-218. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Aplica mientras la carga está cargando o en ruta. Las unidades se suman al renglón de reposición del tipo de garrafa. |
-| **Excepciones** | Si la carga no existe o es de otra distribuidora → recurso no encontrado. Si la carga ya regresó o está cerrada → conflicto. Si el depósito no tiene las unidades → error de solicitud. |
-| **Salida** | La hoja de carga actualizada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga está cargando o en ruta y el depósito tiene las unidades. |
-| **Postcondiciones** | El atributo llenas repuestas de cada instancia de ItemCarga aumentó en lo repuesto. Se creó una instancia de MovimientoDeStock del depósito al camión por cada reposición. El saldo del depósito disminuyó y el del camión aumentó. |
-
+| **Notas** | Sólo aplica con la carga en ruta y sólo para llenas, desde el depósito de origen de la carga. Las unidades se suman al renglón de reposición del tipo de garrafa. Exige clave de idempotencia: repetirla sumaría otra vez. |
+| **Excepciones** | Si la carga no existe o es de otra distribuidora → recurso no encontrado. Si la carga no está en ruta, o falta la clave de idempotencia → error de solicitud. Si el depósito no tiene las llenas → error de solicitud con el saldo disponible. |
+| **Salida** | Sin contenido; el detalle se consulta con CU-291. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga está en ruta y el depósito tiene las llenas. |
+| **Postcondiciones** | El atributo llenas repuestas de cada instancia de ItemCarga aumentó en lo repuesto. Se creó una instancia de MovimientoDeStock del depósito al camión por cada tipo de garrafa repuesto. El saldo del depósito disminuyó y el del camión aumentó. |
 ---
 
-#### Crítico Contrato: `cancelarCargaDelCamion()`
+#### Crítico Contrato: `corregirRenglonesDeLaCarga()`
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `cancelarCargaDelCamion(cargaId identificador)` |
-| **Responsabilidades** | Cancelar una carga que todavía no salió y devolver todo al depósito. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Nombre** | `corregirRenglonesDeLaCarga(cargaId identificador, items lista)` |
+| **Responsabilidades** | Reemplazar los renglones de una carga que todavía no salió. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-218. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Sólo se cancela una carga en estado cargando. |
-| **Excepciones** | Si la carga no existe o es de otra distribuidora → recurso no encontrado. Si la carga ya salió → conflicto. |
-| **Salida** | La hoja de carga cancelada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga existe y está cargando. |
-| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a cancelada. Se creó una instancia de MovimientoDeStock del camión al depósito por cada renglón. El saldo del camión quedó en cero. |
+| **Notas** | Los renglones nuevos reemplazan a todos los anteriores. No mueve stock. |
+| **Excepciones** | Si la carga ya salió, o un renglón repite la garrafa o trae una cantidad inválida → error de solicitud. Si la carga o una garrafa no existen → recurso no encontrado. |
+| **Salida** | Sin contenido; el detalle se consulta con CU-291. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga está en carga. |
+| **Postcondiciones** | Se eliminaron las instancias de ItemCarga anteriores de la CargaDeCamion y se creó una instancia de ItemCarga por cada tipo de garrafa de la lista nueva. |
+---
 
+#### Importante Contrato: `cancelarCargaDelCamion()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `cancelarCargaDelCamion(cargaId identificador, motivo cadena)` |
+| **Responsabilidades** | Cancelar una carga que todavía no salió. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-289. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Sólo se cancela una carga en carga. No mueve stock, porque todavía no salió nada del depósito. El motivo es obligatorio. |
+| **Excepciones** | Si la carga no existe o es de otra distribuidora → recurso no encontrado. Si la carga ya salió, o falta el motivo → error de solicitud. |
+| **Salida** | La hoja de carga cancelada. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga está en carga. |
+| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a cancelada, con su motivo. Los saldos del depósito y del camión no cambiaron. |
 ---
 
 #### Importante Contrato: `registrarSalidaDelCamion()`
@@ -12918,15 +13035,14 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `registrarSalidaDelCamion(cargaId identificador)` |
-| **Responsabilidades** | Declarar que el camión salió a repartir. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Confirmar la salida del camión y trasladar lo cargado del depósito al vehículo. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-219. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Lo inicia el chofer, sólo sobre su propia carga, o el administrador. No mueve stock. |
-| **Excepciones** | Si la carga no existe, es de otro chofer o de otra distribuidora → recurso no encontrado. Si la carga no está cargando → conflicto. |
+| **Notas** | Lo inicia el chofer, sólo de su carga, o el administrador. El camión tiene que estar vacío. Si el depósito no alcanza para algún renglón, no sale nada. |
+| **Excepciones** | Si la carga no existe, es de otra distribuidora o, para un chofer, es de otro chofer → recurso no encontrado. Si la carga no está en carga, no lleva garrafas o el camión no está vacío → error de solicitud. Si el depósito no tiene las unidades → error de solicitud con el saldo disponible. |
 | **Salida** | La hoja de carga en ruta. |
-| **Precondiciones** | El solicitante es el chofer de la carga o un Administrador de la distribuidora. La carga está cargando. |
-| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a en ruta y su atributo salió el tiene el instante de la salida. |
-
+| **Precondiciones** | El solicitante está autenticado como Chofer de la carga o como Administrador de la distribuidora. La carga está en carga. |
+| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a en ruta, con el instante de salida. Se creó una instancia de MovimientoDeStock del depósito al camión por cada renglón y condición. El saldo del depósito disminuyó y el del camión aumentó. |
 ---
 
 #### Importante Contrato: `registrarRegresoDelCamion()`
@@ -12934,15 +13050,14 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `registrarRegresoDelCamion(cargaId identificador, devueltos lista)` |
-| **Responsabilidades** | Declarar lo que el camión trae de vuelta, por tipo de garrafa. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Declarar lo que el camión trae de vuelta. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-221. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Sólo declara: no mueve stock hasta el cierre de la rendición. Lo esperado es lo cargado y repuesto menos lo entregado, y los vacíos cargados más los recolectados. |
-| **Excepciones** | Si la carga no existe, es de otro chofer o de otra distribuidora → recurso no encontrado. Si la carga no está en ruta → conflicto. Si una cantidad es negativa → error de solicitud. |
-| **Salida** | La hoja de carga con lo declarado, lo esperado y la diferencia por renglón. |
-| **Precondiciones** | El solicitante es el chofer de la carga o un Administrador de la distribuidora. La carga está en ruta. |
-| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a regresó y su atributo regresó el tiene el instante del regreso. Los atributos llenos y vacíos declarados al regreso de cada ItemCarga tienen lo declarado. |
-
+| **Notas** | Lo inicia el chofer, sólo de su carga, o el administrador. Sólo declara: no mueve stock. Se puede volver a declarar mientras la rendición no se cerró. La declaración cubre todos los renglones de la carga. |
+| **Excepciones** | Si la carga no existe o no es suya → recurso no encontrado. Si la carga no está en ruta ni devuelta, o la declaración es inválida → error de solicitud. Si el chofer tiene pedidos en curso → conflicto. |
+| **Salida** | La hoja de carga devuelta, con lo declarado, lo esperado y la diferencia. |
+| **Precondiciones** | El solicitante está autenticado como Chofer de la carga o como Administrador de la distribuidora. La carga está en ruta o devuelta y el chofer no tiene pedidos en curso. |
+| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a devuelta, con el instante del regreso. El atributo llenas y vacías declaradas de cada instancia de ItemCarga tiene lo declarado. |
 ---
 
 #### Crítico Contrato: `cerrarRendicionDeStock()`
@@ -12950,15 +13065,14 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `cerrarRendicionDeStock(cargaId identificador, nota cadena)` |
-| **Responsabilidades** | Cerrar la carga: devolver lo declarado al depósito y asentar la diferencia. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Cerrar la rendición de stock de un camión que volvió, devolviendo su stock al depósito. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-222. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Al cerrar, el saldo del camión queda en cero. El faltante se asienta como merma y el sobrante como ajuste, con la carga como documento de origen. Si faltaron llenas, se descuentan del stock vendible. Con diferencia, la nota es obligatoria. |
-| **Excepciones** | Si la carga no existe o es de otra distribuidora → recurso no encontrado. Si la carga no regresó → conflicto. Si hay diferencia y la nota está vacía → error de solicitud. Si el faltante dejaría negativo el vendible → error de solicitud. |
-| **Salida** | La hoja de carga cerrada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga regresó. |
-| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a cerrada, o a cerrada con diferencia, y su atributo cerrada el tiene el instante del cierre. Se creó una instancia de MovimientoDeStock por lo declarado que vuelve al depósito y por cada diferencia. El saldo del camión quedó en cero. El atributo stock de la instancia de Producto disminuyó en el faltante de llenas. |
-
+| **Notas** | Lo esperado de llenas es lo cargado más lo repuesto menos lo entregado, y de vacías lo cargado más lo recolectado; lo entregado y lo recolectado se leen del libro. El faltante se asienta como merma y el sobrante como ajuste, y mueven el stock vendible. La invariante es que el saldo del camión queda en cero en todas las condiciones. |
+| **Excepciones** | Si la carga no existe → recurso no encontrado. Si la carga no está devuelta, o hay diferencia y falta la nota → error de solicitud. Si el camión entregó después de la declaración → conflicto. |
+| **Salida** | La hoja de carga cerrada o cerrada con diferencia. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga está devuelta. |
+| **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a cerrada o a cerrada con diferencia, con su nota. Se creó una instancia de MovimientoDeStock por cada devolución, merma y ajuste. El saldo del camión quedó en cero. |
 ---
 
 #### Secundario Contrato: `configurarControlDeCargaAbierta()`
@@ -12967,9 +13081,9 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta booleano)` |
 | **Responsabilidades** | Prender o apagar, para la distribuidora, la exigencia de una carga de camión abierta para recibir pedidos. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-249. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Hay una sola configuración por distribuidora y proceso. Viene apagada. Los pedidos ya asignados no se revisan. |
+| **Notas** | Hay una sola configuración por distribuidora y proceso. Viene apagada. Los pedidos ya asignados no se revisan. Con una carga abierta, el chofer sólo recibe en ruta, esté o no prendido el control. |
 | **Excepciones** | Si falta la distribuidora → error de solicitud. Si el valor no es booleano → error de solicitud con el detalle del campo. |
 | **Salida** | La configuración guardada. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. |

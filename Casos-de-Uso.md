@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **287 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **290 casos de uso**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -71,10 +71,10 @@ registrado.
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-El sistema comprende 287 casos de uso agrupados en 21 subsistemas. Se presentan tres vistas
+El sistema comprende 290 casos de uso agrupados en 21 subsistemas. Se presentan tres vistas
 complementarias, todas en notación UML: el **mapa del sistema**, de una página, que muestra
 los 21 paquetes con su cantidad de casos y qué actor participa en cuál; el **diagrama de
-contexto**, que delimita el sistema; y el **diagrama completo**, que abre los 287 casos uno por uno dentro de su paquete.
+contexto**, que delimita el sistema; y el **diagrama completo**, que abre los 290 casos uno por uno dentro de su paquete.
 
 **Figura — Mapa de navegación del sistema (no es un diagrama UML)**
 
@@ -111,7 +111,7 @@ contexto**, que delimita el sistema; y el **diagrama completo**, que abre los 28
 ![Diagrama de casos de uso, lámina 6 de 6: Administración y plataforma](diagramas/uml/CU_Sistema_Completo-Lamina-6.png)
 
 
-**Figura — Diagrama completo: los 287 casos de uso**
+**Figura — Diagrama completo: los 290 casos de uso**
 
 ![Diagrama completo de casos de uso](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
@@ -145,10 +145,10 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-009 Cancelar Pedido (Chofer) | SS-02 | ACT-02 | Importante | Implementado |
 | CU-010 Cancelar Pedido (Administrador) | SS-02 | ACT-03 | Importante | Implementado, con funcionalidad planificada (I-7) |
 | CU-011 Listar Todos los Pedidos | SS-02 | ACT-03 | Importante | Implementado |
-| CU-012 Asignar Chofer Manualmente | SS-03 | ACT-03 | Secundario | Implementado, con funcionalidad planificada (I-11, I-13) |
-| CU-013 Asignar Pedido Automáticamente por Proximidad | SS-03 | ACT-04 | Crítico | Implementado, con funcionalidad planificada (I-11, I-13) |
+| CU-012 Asignar Chofer Manualmente | SS-03 | ACT-03 | Secundario | Implementado, con funcionalidad planificada (I-11) |
+| CU-013 Asignar Pedido Automáticamente por Proximidad | SS-03 | ACT-04 | Crítico | Implementado, con funcionalidad planificada (I-11) |
 | CU-014 Reintentar Asignación con Radio Expandido (Cron) | SS-03 | ACT-04 | Crítico | Implementado |
-| CU-015 Aceptar Pedido | SS-03 | ACT-02 | Crítico | Implementado, con funcionalidad planificada (I-11, I-13) |
+| CU-015 Aceptar Pedido | SS-03 | ACT-02 | Crítico | Implementado, con funcionalidad planificada (I-11) |
 | CU-016 Rechazar / Ignorar Pedido | SS-03 | ACT-02 | Importante | Implementado |
 | CU-017 Actualizar Ubicación GPS del Chofer | SS-04 | ACT-02 | Crítico | Implementado, con funcionalidad planificada |
 | CU-018 Marcar Pedido "En Camino" | SS-04 | ACT-02 | Crítico | Implementado |
@@ -350,12 +350,12 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-215 Emitir una Orden de Compra | SS-20 | ACT-03 | Importante | Implementado |
 | CU-216 Cancelar una Orden de Compra | SS-20 | ACT-03 | Secundario | Implementado |
 | CU-217 Registrar la Recepción de una Compra | SS-20 | ACT-03 | Crítico | Implementado |
-| CU-218 Registrar la Carga del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
-| CU-219 Registrar la Salida del Camión | SS-08 | ACT-02, ACT-03 | Importante | Planificado (I-13) |
+| CU-218 Registrar la Carga del Camión | SS-08 | ACT-03 | Crítico | Implementado |
+| CU-219 Registrar la Salida del Camión | SS-08 | ACT-02, ACT-03 | Importante | Implementado |
 | CU-220 Descontar del Stock Físico lo Entregado | SS-08 | — | Crítico | Implementado |
-| CU-221 Registrar el Regreso del Camión | SS-08 | ACT-02, ACT-03 | Importante | Planificado (I-13) |
-| CU-222 Cerrar la Rendición de Stock del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
-| CU-223 Consultar la Carga Actual del Camión | SS-08 | ACT-02 | Secundario | Planificado (I-13) |
+| CU-221 Registrar el Regreso del Camión | SS-08 | ACT-02, ACT-03 | Importante | Implementado |
+| CU-222 Cerrar la Rendición de Stock del Camión | SS-08 | ACT-03 | Crítico | Implementado |
+| CU-223 Consultar la Carga Actual del Camión | SS-08 | ACT-02 | Secundario | Implementado |
 | CU-224 Conciliar el Stock Vendible con el Físico | SS-08 | ACT-03, ACT-04 | Importante | Implementado |
 | CU-225 Crear una Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
 | CU-226 Abrir la Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
@@ -380,9 +380,9 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-245 Consultar el Tablero Financiero | SS-21 | ACT-03 | Importante | Planificado (I-14) |
 | CU-246 Verificar la Habilitación Laboral del Chofer | SS-19 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (I-11) |
 | CU-247 Reactivar un Vehículo | SS-07 | ACT-03 | Importante | Planificado (I-12) |
-| CU-248 Verificar la Carga de Camión Abierta del Chofer | SS-08 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (I-13) |
-| CU-249 Configurar el Control de Carga de Camión Abierta | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
-| CU-250 Aplicar un Movimiento de Stock | SS-08 | ACT-03, ACT-04 | Crítico | Implementado |
+| CU-248 Verificar la Carga de Camión Abierta del Chofer | SS-08 | — | Importante | Implementado |
+| CU-249 Configurar el Control de Carga de Camión Abierta | SS-08 | ACT-03 | Secundario | Implementado |
+| CU-250 Aplicar un Movimiento de Stock | SS-08 | — | Crítico | Implementado |
 | CU-251 Modificar el Perfil de Usuario | SS-01 | ACT-01, ACT-02 | Importante | Implementado |
 | CU-252 Crear un Rol | SS-16 | ACT-05 | Importante | Implementado |
 | CU-253 Modificar un Rol | SS-16 | ACT-05 | Importante | Implementado |
@@ -421,20 +421,23 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-286 Consultar el Historial de Compras de un Proveedor | SS-20 | ACT-03 | Importante | Implementado |
 | CU-287 Modificar una Orden de Compra | SS-20 | ACT-03 | Secundario | Implementado |
 | CU-288 Enviar una Orden de Compra | SS-20 | ACT-03 | Importante | Implementado |
+| CU-289 Cancelar una Carga del Camión | SS-08 | ACT-03 | Importante | Implementado |
+| CU-290 Consultar las Cargas del Camión | SS-08 | ACT-03 | Importante | Implementado |
+| CU-291 Consultar una Carga del Camión | SS-08 | ACT-02, ACT-03 | Importante | Implementado |
 
 ### Resumen
 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
 | **Crítico** | 64 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153, CU-171, CU-177, CU-181, CU-183, CU-184, CU-197, CU-208, CU-217, CU-218, CU-220, CU-222, CU-227, CU-228, CU-232, CU-233, CU-236, CU-237, CU-250, CU-266, CU-271 |
-| **Importante** | 173 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272, CU-273, CU-274, CU-275, CU-277, CU-278, CU-279, CU-280, CU-282, CU-283, CU-284, CU-285, CU-286, CU-288 |
+| **Importante** | 176 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272, CU-273, CU-274, CU-275, CU-277, CU-278, CU-279, CU-280, CU-282, CU-283, CU-284, CU-285, CU-286, CU-288, CU-289, CU-290, CU-291 |
 | **Secundario** | 48 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-244, CU-249, CU-265, CU-270, CU-276, CU-281, CU-287 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **287** | CU-001 a CU-288, sin CU-093 |
+| **Total** | **290** | CU-001 a CU-291, sin CU-093 |
 
 > **CU-093 (Validar o Invalidar Cliente) se dio de baja el 26/09/2026.** Los clientes se registran y compran sin aprobación previa: la marca no condicionaba ningún pedido y sólo sumaba trabajo al administrador. El número queda reservado para no renumerar los demás casos. Los choferes siguen validándose (CU-032).
 
-Los recuentos salen del catálogo de arriba y se verifican contra él: los 287 códigos son únicos y entre CU-001 y CU-288 el único hueco es CU-093, dado de baja.
+Los recuentos salen del catálogo de arriba y se verifican contra él: los 290 códigos son únicos y entre CU-001 y CU-291 el único hueco es CU-093, dado de baja.
 
 ---
 
@@ -2527,7 +2530,7 @@ Los recuentos salen del catálogo de arriba y se verifican contra él: los 287 c
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Secundario  
-**Descripción:** El administrador traslada unidades de uno o más tipos de garrafa de un depósito a otro, o entre un depósito y un camión. Endpoint: `POST /stock/transfers`.
+**Descripción:** El administrador traslada unidades de uno o más tipos de garrafa de un depósito a otro, o devuelve a un depósito lo que un camión tiene suelto. Endpoint: `POST /stock/transfers`.
 
 ---
 
@@ -2559,16 +2562,22 @@ Los recuentos salen del catálogo de arriba y se verifican contra él: los 287 c
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Crítico  
-**Descripción:** El administrador abre la hoja de carga de un camión con las garrafas llenas (y los vacíos para canje) que salen del depósito, repone en ruta, cancela una carga que no salió y consulta las cargas. Endpoints: `POST /truck-loads`, `PATCH /truck-loads/:id/reload`, `PATCH /truck-loads/:id/cancel` y `GET /truck-loads`.
+**Descripción:** El administrador abre la hoja de carga del día de un camión con las garrafas llenas (y los vacíos para canje) que va a llevar, corrige sus renglones mientras no salió y repone llenas en ruta. Endpoints: `POST /truck-loads`, `PUT /truck-loads/:id/items` y `PATCH /truck-loads/:id/reload`.
 
+---
+
+**Código:** CU-289 | **Caso de Uso:** Cancelar una Carga del Camión  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador cancela, con un motivo, una carga que todavía no salió. Endpoint: `PATCH /truck-loads/:id/cancel`.
 ---
 
 **Código:** CU-219 | **Caso de Uso:** Registrar la Salida del Camión  
 **Actor/es:** Chofer (ACT-02), Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El chofer, desde su aplicación, o el administrador marcan que el camión salió a repartir. Endpoint: `PATCH /truck-loads/:id/depart`.
-
+**Descripción:** El chofer, desde su aplicación, o el administrador confirman que el camión salió a repartir: las garrafas de la hoja pasan del depósito al camión. Endpoint: `PATCH /truck-loads/:id/depart`.
 ---
 
 **Código:** CU-220 | **Caso de Uso:** Descontar del Stock Físico lo Entregado  
@@ -2583,8 +2592,7 @@ Los recuentos salen del catálogo de arriba y se verifican contra él: los 287 c
 **Actor/es:** Chofer (ACT-02), Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El chofer, desde su aplicación, o el administrador declaran lo que el camión devuelve al regresar: garrafas llenas, vacías y defectuosas por tipo. Endpoint: `PATCH /truck-loads/:id/return`.
-
+**Descripción:** El chofer, desde su aplicación, o el administrador declaran lo que el camión trae de vuelta: llenas y vacías por tipo de garrafa. Endpoint: `PATCH /truck-loads/:id/return`.
 ---
 
 **Código:** CU-222 | **Caso de Uso:** Cerrar la Rendición de Stock del Camión  
@@ -2592,15 +2600,29 @@ Los recuentos salen del catálogo de arriba y se verifican contra él: los 287 c
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Crítico  
 **Descripción:** El administrador revisa lo declarado frente a lo esperado, devuelve el stock del camión al depósito y cierra la carga, con una nota si hay diferencia. Endpoint: `PATCH /truck-loads/:id/close`.
-
 ---
 
 **Código:** CU-223 | **Caso de Uso:** Consultar la Carga Actual del Camión  
 **Actor/es:** Chofer (ACT-02)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Secundario  
-**Descripción:** El chofer consulta desde su aplicación la hoja de carga abierta del vehículo que tiene en uso, con lo cargado, lo entregado y lo esperado. Endpoint: `GET /truck-loads/mine`.
+**Descripción:** El chofer consulta desde su aplicación su carga abierta, con lo cargado, lo entregado y lo esperado, y si su distribuidora le exige tenerla abierta para recibir pedidos. Endpoint: `GET /truck-loads/mine`.
 
+---
+
+**Código:** CU-290 | **Caso de Uso:** Consultar las Cargas del Camión  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador lista las cargas de camión con filtros por estado, día, rango de días, vehículo y chofer. Endpoint: `GET /truck-loads`.
+
+---
+
+**Código:** CU-291 | **Caso de Uso:** Consultar una Carga del Camión  
+**Actor/es:** Chofer (ACT-02), Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador, o el chofer de la carga, consulta el detalle de una carga: renglones, esperado, diferencias, pedidos entregados, efectivo de la jornada y movimientos. Endpoint: `GET /truck-loads/:id`.
 ---
 
 **Código:** CU-224 | **Caso de Uso:** Conciliar el Stock Vendible con el Físico  
@@ -2628,23 +2650,21 @@ Los recuentos salen del catálogo de arriba y se verifican contra él: los 287 c
 ---
 
 **Código:** CU-248 | **Caso de Uso:** Verificar la Carga de Camión Abierta del Chofer  
-**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-012, CU-013 y CU-015  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-012, CU-013, CU-015 y CU-080  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** Antes de asignarle o aceptarle un pedido a un chofer, el sistema comprueba, si la distribuidora lo exige, que tenga una carga de camión abierta.
-
+**Descripción:** Antes de ofrecerle, dejarle aceptar o asignarle un pedido a un chofer, y al mostrarle los pedidos disponibles, el sistema controla su carga de camión: con una carga abierta sólo recibe en ruta y con el camión de la carga; sin carga, recibe salvo que la distribuidora exija tenerla.
 ---
 
 **Código:** CU-249 | **Caso de Uso:** Configurar el Control de Carga de Camión Abierta  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Secundario  
-**Descripción:** El administrador prende o apaga, para su distribuidora, la exigencia de que un chofer tenga una carga de camión abierta para recibir pedidos. Endpoint: `PUT /module-config/stock_control`.
-
+**Descripción:** El administrador consulta y define si su distribuidora exige una carga de camión abierta para recibir pedidos. Endpoints: `GET /truck-loads/settings` y `PUT /truck-loads/settings`.
 ---
 
 **Código:** CU-250 | **Caso de Uso:** Aplicar un Movimiento de Stock  
-**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274, CU-276 y CU-280  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-212, CU-213, CU-217, CU-218, CU-219, CU-220, CU-222, CU-274, CU-276 y CU-280  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Crítico  
 **Descripción:** Cada vez que el stock físico cambia, el sistema asienta los movimientos con su origen y su destino y mueve los saldos de las ubicaciones, sin dejar ninguno negativo y con un orden de bloqueos fijo.
@@ -4764,7 +4784,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-01 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El chofer (ACT-02) consulta la bolsa de pedidos pendientes que todavía no tienen repartidor asignado dentro de su distribuidora, para tomar trabajo por su cuenta cuando el despacho automático no lo alcanzó. La misma consulta alimenta el arranque del cron de despacho, que recorre este pool para ofrecer los pedidos sin oferta activa. Endpoint: `GET /orders/available`. |
+| **Descripción** | El chofer (ACT-02) consulta la bolsa de pedidos pendientes que todavía no tienen repartidor asignado dentro de su distribuidora, para tomar trabajo por su cuenta cuando el despacho automático no lo alcanzó. La misma consulta alimenta el arranque del cron de despacho, que recorre este pool para ofrecer los pedidos sin oferta activa. Si el chofer no puede recibir pedidos por su carga de camión (CU-248), la lista viene vacía con el aviso. Endpoint: `GET /orders/available`. |
 | **Precondición** | El solicitante está autenticado con rol DELIVERY, ADMIN o SUPER_ADMIN. |
 | **Estado** | Implementado |
 
@@ -4775,9 +4795,9 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 1 | El chofer abre la pantalla de pedidos disponibles en su app. |
 | 2 | La app envía `GET /orders/available` con los parámetros de paginación `limit` y `offset`. |
 | 3 | El sistema resuelve la distribuidora efectiva del solicitante a partir de su perfil autenticado. |
-| 4 | El sistema busca los pedidos con estado PENDING y `delivery_id` nulo, acotados a esa distribuidora. |
+| 4 | Si el solicitante es un chofer, el sistema verifica su carga de camión —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**—; si no puede recibir pedidos, devuelve la lista vacía con `openLoadRequired` en verdadero y el motivo, y termina. Si puede, busca los pedidos con estado PENDING y `delivery_id` nulo, acotados a esa distribuidora. |
 | 5 | El sistema ordena el resultado por fecha de creación ascendente, de modo que el pedido más antiguo aparece primero. |
-| 6 | El sistema devuelve los pedidos con cliente, ítems, producto, dirección y franja horaria, junto con el total, el límite y el desplazamiento. |
+| 6 | El sistema devuelve los pedidos con cliente, ítems, producto, dirección y franja horaria, junto con el total, el límite y el desplazamiento, y `openLoadRequired` en falso. |
 
 **Postcondición:** El chofer ve la lista paginada de pedidos sin asignar de su distribuidora, ordenada del más viejo al más nuevo. No hay cambios de estado.
 
@@ -4787,6 +4807,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 2 | Si el solicitante tiene rol CUSTOMER, el guard de roles rechaza la petición con error 403. |
 | 2 | Si `limit` u `offset` no son números válidos, la validación del DTO de paginación retorna error 400. |
+| 4 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema responde 200 con la lista vacía, `openLoadRequired` en verdadero y el motivo (por ejemplo "Abrí tu carga para recibir pedidos"): no es un error. |
 | 3 | Si el chofer no tiene distribuidora resuelta en el contexto de la petición, el pool no se acota por empresa: ve los pedidos de todas. El aislamiento multi-empresa depende de que el perfil tenga distribuidora asociada. |
 
 | Campo | Detalle |
@@ -4909,7 +4930,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | El administrador asigna a mano un chofer habilitado y validado a un pedido pendiente, o reasigna a otro chofer un pedido que ya había aceptado uno. Es la salida cuando el despacho automático no encontró candidatos o cuando la logística exige una asignación específica. |
 | **Precondición** | El administrador está autenticado. El pedido existe y está pendiente, o aceptado por otro chofer. El chofer está habilitado por el administrador y validado, tiene un vehículo en uso (CU-161) y ni su licencia ni ese vehículo tienen documentación vencida (CU-136 a CU-138). |
-| **Estado** | Implementado, con funcionalidad planificada (I-11, I-13): antes de asignar el pedido, el sistema verifica la situación laboral del chofer (CU-246) y que tenga una carga de camión abierta si la distribuidora lo exige (CU-248). |
+| **Estado** | Implementado, con funcionalidad planificada (I-11): antes de asignar el pedido, el sistema verificará la situación laboral del chofer (CU-246). La verificación de la carga de camión (CU-248) está implementada. |
 
 **Secuencia Normal**
 
@@ -4919,7 +4940,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 2 | Elige asignar un chofer manualmente. |
 | 3 | El panel muestra el listado de choferes de la distribuidora (CU-035). |
 | 4 | El administrador selecciona uno y confirma. El chofer se identifica por su perfil de repartidor. |
-| 5 | Dentro de una transacción con bloqueo del pedido, el sistema verifica que el repartidor exista, que sea de la misma distribuidora que el pedido, que esté habilitado y validado y que tenga un vehículo en uso habilitado (CU-161). |
+| 5 | Dentro de una transacción con bloqueo del pedido, el sistema verifica que el repartidor exista, que sea de la misma distribuidora que el pedido, que esté habilitado y validado y que tenga un vehículo en uso habilitado (CU-161), y —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que su carga de camión lo habilite a recibir pedidos: con una carga abierta, que esté en ruta con ese vehículo; sin carga, que la distribuidora no exija tenerla (CU-249). Es el mismo control que en la aceptación y corre siempre, también al reasignar. |
 | 6 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera un código de entrega nuevo, que deja sin efecto el anterior cuando se trata de una reasignación. |
 | 7 | Cierra las ofertas de despacho que hubiera en curso sobre el pedido. |
 | 8 | Avisa al chofer nuevo, que recibe el pedido con el mismo evento que una oferta; al chofer anterior, si lo hubo, que el pedido se reasignó y se le corta el seguimiento; y al panel de administración. |
@@ -4934,6 +4955,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 5 | Si el repartidor indicado no existe o es de otra distribuidora que la del pedido, el sistema informa "Repartidor no encontrado". |
 | 5 | Si el repartidor fue deshabilitado entre la consulta del listado y la confirmación, el sistema responde 400 "El repartidor está deshabilitado"; si no está validado, 400 "El repartidor no está validado". |
 | 5 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado"). |
+| 5 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la asignación con 400 y el motivo, por ejemplo "El chofer no tiene la carga del día abierta" o "La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos". |
 | 6 | Si el pedido cambió de estado —por ejemplo, si ya fue cancelado, está en camino o fue entregado— y ya no admite la transición a aceptado, el sistema rechaza la asignación por transición no permitida (400). Un pedido aceptado por otro chofer no es un error: se reasigna. |
 
 | Campo | Detalle |
@@ -4941,7 +4963,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Rendimiento** | La asignación manual se completa en menos de 1 segundo. |
 | **Frecuencia** | Baja: es la vía de excepción cuando el despacho automático no encontró candidatos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, cierra las ofertas de despacho abiertas, guarda la copia del vehículo y avisa. Un pedido aceptado se puede reasignar a otro chofer: el código nuevo deja sin efecto el del anterior y el anterior se entera por la conexión en tiempo real. El chofer nuevo recibe el pedido con el mismo evento de una oferta y puede "aceptarla", sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Al asignar, el sistema aplica la misma regla de flota que al aceptar (CU-015): un chofer sin vehículo en uso no recibe pedidos, ni siquiera por asignación manual. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer. 3):** antes de asignarle el pedido al chofer, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que tenga una carga de camión abierta si la distribuidora lo exige; el control viene apagado y se prende con CU-249. |
+| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, cierra las ofertas de despacho abiertas, guarda la copia del vehículo y avisa. Un pedido aceptado se puede reasignar a otro chofer: el código nuevo deja sin efecto el del anterior y el anterior se entera por la conexión en tiempo real. El chofer nuevo recibe el pedido con el mismo evento de una oferta y puede "aceptarla", sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Al asignar, el sistema aplica la misma regla de flota que al aceptar (CU-015): un chofer sin vehículo en uso no recibe pedidos, ni siquiera por asignación manual. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer. **Carga del camión (I-13, implementado):** antes de asignarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta sólo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). |
 
 ---
 
@@ -4995,7 +5017,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | Al crearse un pedido, el sistema abre un proceso de negociación con los choferes disponibles en lugar de avisarles a todos a la vez. Ofrece el pedido **a un solo chofer**, el más cercano al domicilio de entrega que todavía no haya sido contactado, y le otorga una ventana de aceptación acotada. La oferta se registra de forma durable, de modo que sobrevive a un reinicio del servidor y queda auditable. |
 | **Precondición** | Existe un pedido en estado PENDING sin chofer asignado, con sus coordenadas de entrega cargadas. Al menos un chofer de la misma distribuidora tiene su posición registrada en el radar. |
-| **Estado** | Implementado, con funcionalidad planificada (I-11, I-13): admitir como candidatos a los choferes que están por terminar su entrega (paso 3.a), verificar la situación laboral del chofer (CU-246) y que tenga una carga de camión abierta si la distribuidora lo exige (CU-248). |
+| **Estado** | Implementado, con funcionalidad planificada (I-11): admitir como candidatos a los choferes que están por terminar su entrega (paso 3.a) y verificar la situación laboral del chofer (CU-246). La verificación de la carga de camión (CU-248) está implementada. |
 
 **Secuencia Normal**
 
@@ -5003,7 +5025,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |------|--------|
 | 1 | El sistema recibe el aviso de que se creó un pedido, una vez confirmada la transacción del alta. |
 | 2 | Recupera el conjunto de choferes a los que ya se le ofreció este pedido, para no volver a contactarlos. |
-| 3 | Busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —5, 10, 15 y 20 km—: en cada paso obtiene los choferes presentes en el radar ordenados por cercanía, los restringe a los de la distribuidora dueña del pedido y descarta los ya contactados y a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-161, CU-136 a CU-138). Se queda con el primero que aparece y corta la búsqueda. |
+| 3 | Busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —5, 10, 15 y 20 km—: en cada paso obtiene los choferes presentes en el radar ordenados por cercanía, los restringe a los de la distribuidora dueña del pedido y descarta los ya contactados y a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-161, CU-136 a CU-138), y —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— a los que no pueden recibir pedidos según su carga de camión. Se queda con el primero que aparece y corta la búsqueda. |
 | 3.a | *(Planificado, todavía sin iteración asignada en el plan de construcción.)* Entre los candidatos admite tanto a los choferes libres como a los que están por terminar su entrega en curso, pero descarta a los que tienen una entrega en pleno recorrido. Así un chofer que está entregando la última garrafa puede recibir el pedido siguiente sin que quede un hueco muerto entre uno y otro. |
 | 4 | Registra la oferta a nombre de ese chofer, con su momento de vencimiento fijado en la ventana de aceptación, que es de 30 segundos. |
 | 5 | Le avisa al chofer por la conexión en tiempo real, con el detalle del pedido y la hora en que la oferta pierde vigencia. |
@@ -5018,6 +5040,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | Si ningún paso de radio arroja un candidato nuevo, el sistema no emite oferta alguna y el pedido queda a la espera. El proceso temporal de CU-014 lo reintentará cuando aparezcan choferes disponibles. |
 | 3 | Si los únicos choferes cercanos pertenecen a otra distribuidora, quedan descartados: un chofer nunca recibe ofertas de una empresa que no es la suya. |
 | 3 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, queda descartado como candidato y la oferta pasa al siguiente. |
+| 3 | Si el chofer tiene una carga de camión que no está en ruta, o su vehículo en uso no es el de la carga, o no tiene carga y la distribuidora exige tenerla (CU-249), queda descartado como candidato y la oferta pasa al siguiente. |
 | 6 | Si el envío de la notificación al dispositivo falla, el proceso continúa: la oferta ya fue registrada y el aviso en tiempo real ya se emitió. |
 
 | Campo | Detalle |
@@ -5025,7 +5048,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Rendimiento** | La búsqueda del candidato se completa en menos de 500 ms. |
 | **Frecuencia** | Una vez por cada pedido creado, y nuevamente por cada rechazo o vencimiento. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La elegibilidad del chofer (`choferesElegibles`) exige que esté presente en el radar de posiciones, que pertenezca a la distribuidora dueña del pedido, que esté habilitado por el administrador (`isEnabled`) y validado (`validated`), y que pase la regla de flota: sin vehículo en uso (CU-161), o con la licencia o la documentación del vehículo vencida, no se recibe ninguna oferta. La habilitación que otorga el administrador en CU-032 y CU-033 (y que retira en CU-271 y CU-267) tiene así efecto sobre el despacho. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. Estar presente en el radar significa tener la aplicación abierta y reportando posición, no estar libre. Un chofer "por terminar" es el que ya avisó su llegada al domicilio y sólo le falta la confirmación; considerarlo elegible es deliberado, porque esperar a que confirme deja al pedido siguiente esperando sin motivo. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: un chofer con el legajo egresado, con una licencia aprobada que cubre hoy o con documentación bloqueante vencida no recibe la oferta. 3):** antes de ofrecerle el pedido al chofer, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que tenga una carga de camión abierta si la distribuidora lo exige; el control viene apagado y se prende con CU-249. |
+| **Comentarios** | La elegibilidad del chofer (`choferesElegibles`) exige que esté presente en el radar de posiciones, que pertenezca a la distribuidora dueña del pedido, que esté habilitado por el administrador (`isEnabled`) y validado (`validated`), y que pase la regla de flota: sin vehículo en uso (CU-161), o con la licencia o la documentación del vehículo vencida, no se recibe ninguna oferta. La habilitación que otorga el administrador en CU-032 y CU-033 (y que retira en CU-271 y CU-267) tiene así efecto sobre el despacho. Un chofer entra al radar al emitir su posición y sale al apagar su disponibilidad o al desconectarse. La oferta a un único chofer por vez —en lugar de la difusión a todos— es el núcleo del módulo inteligente M1 y lo que permite que el pedido recorra la lista de candidatos de forma ordenada. Estar presente en el radar significa tener la aplicación abierta y reportando posición, no estar libre. Un chofer "por terminar" es el que ya avisó su llegada al domicilio y sólo le falta la confirmación; considerarlo elegible es deliberado, porque esperar a que confirme deja al pedido siguiente esperando sin motivo. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: un chofer con el legajo egresado, con una licencia aprobada que cubre hoy o con documentación bloqueante vencida no recibe la oferta. **Carga del camión (I-13, implementado):** antes de ofrecerle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta sólo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). El chofer que no puede se saltea y la oferta pasa al siguiente candidato. |
 
 ---
 
@@ -5119,7 +5142,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | El chofer recibe la oferta de un pedido y la acepta. El sistema se lo asigna, genera el código secreto de entrega, cierra la oferta y avisa al cliente. |
 | **Precondición** | El chofer está autenticado y conectado. El pedido está en estado PENDING. El chofer está habilitado por el administrador y validado, tiene un vehículo en uso (CU-161), y ni su licencia ni ese vehículo tienen documentación vencida (CU-136 a CU-138). |
-| **Estado** | Implementado, con funcionalidad planificada (I-11, I-13): antes de aceptar el pedido, el sistema verifica la situación laboral del chofer (CU-246) y que tenga una carga de camión abierta si la distribuidora lo exige (CU-248). |
+| **Estado** | Implementado, con funcionalidad planificada (I-11): antes de aceptar el pedido, el sistema verificará la situación laboral del chofer (CU-246). La verificación de la carga de camión (CU-248) está implementada. |
 
 **Secuencia Normal**
 
@@ -5128,7 +5151,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 1 | El chofer recibe en su app la oferta del pedido y presiona "Aceptar". |
 | 2 | La app pide el paso del pedido a estado ACCEPTED. La identidad del chofer sale de su token: cualquier identificador de repartidor que venga en el cuerpo de la solicitud se ignora. Un administrador sí puede indicar a qué chofer asignarlo. |
 | 3 | Si quien acepta es un chofer y el pedido ya tiene un chofer asignado, el sistema comprueba que sea él mismo. Luego comprueba que la transición desde el estado actual sea legal, es decir que el pedido siga pendiente. |
-| 4 | Busca el perfil de repartidor de quien acepta y comprueba que exista, que sea de la misma distribuidora que el pedido, que esté habilitado y validado y que tenga un vehículo en uso habilitado (CU-161). |
+| 4 | Busca el perfil de repartidor de quien acepta y comprueba que exista, que sea de la misma distribuidora que el pedido, que esté habilitado y validado y que tenga un vehículo en uso habilitado (CU-161). Comprueba además —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que la carga de camión del chofer que queda con el pedido lo habilite a recibir pedidos; es el que acepta o, si acepta un administrador, el que indica con `deliveryId`. Sólo se saltea cuando el mismo chofer repite una aceptación que ya era suya. |
 | 5 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera el código secreto de entrega que se usará en la confirmación por código QR (CU-020). |
 | 6 | Cierra como aceptada la oferta de despacho que ese chofer tenía abierta sobre el pedido. |
 | 7 | Avisa al cliente en tiempo real de la aceptación, con el nombre y el teléfono del chofer, y avisa también al panel de administración. |
@@ -5148,13 +5171,14 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 4 | Si quien acepta no tiene perfil de repartidor, o el repartidor es de otra distribuidora que la del pedido, el sistema informa que no encontró al repartidor. |
 | 4 | Si el repartidor está deshabilitado, el sistema responde 400 "El repartidor está deshabilitado"; si no está validado, 400 "El repartidor no está validado". |
 | 4 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la aceptación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado"). Un chofer sin vehículo en uso tampoco recibe la oferta (CU-013). |
+| 4 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la aceptación con 400 y el motivo, por ejemplo "Tu distribuidora exige una carga de camión abierta para trabajar: pedile al administrador que abra tu carga del día" o "La carga N° n ya volvió: no se reciben pedidos hasta cerrar su rendición". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La aceptación se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta por chofer: se repite cada vez que le llega una oferta, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La copia del vehículo (patente, marca y modelo) queda en el pedido aunque el vehículo se reasigne después, de modo que el historial no cambia; si el pedido vuelve a pendiente —el chofer lo libera o un administrador lo destraba—, la copia se borra junto con el chofer asignado. La aceptación de un pedido que ya tiene chofer se rechaza cuando la intenta otro chofer, de modo que un segundo chofer no puede quedarse con un pedido ajeno. El sistema no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la aceptación repite la comprobación de la situación laboral del chofer. 3):** antes de aceptarle el pedido al chofer, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que tenga una carga de camión abierta si la distribuidora lo exige; el control viene apagado y se prende con CU-249. |
+| **Comentarios** | La copia del vehículo (patente, marca y modelo) queda en el pedido aunque el vehículo se reasigne después, de modo que el historial no cambia; si el pedido vuelve a pendiente —el chofer lo libera o un administrador lo destraba—, la copia se borra junto con el chofer asignado. La aceptación de un pedido que ya tiene chofer se rechaza cuando la intenta otro chofer, de modo que un segundo chofer no puede quedarse con un pedido ajeno. El sistema no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la aceptación repite la comprobación de la situación laboral del chofer. **Carga del camión (I-13, implementado):** antes de aceptarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta sólo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). Repetir una aceptación que ya era del mismo chofer no se vuelve a controlar. |
 
 ---
 
@@ -7461,7 +7485,7 @@ respaldado por la lectura del código en poder del cliente.
 | 3 | El sistema comprueba que el chofer exista y sea de la distribuidora del administrador. |
 | 4 | El sistema comprueba que el vehículo exista, sea de la distribuidora y no esté inhabilitado por documentación vencida (seguro o verificación técnica). |
 | 5 | Si el chofer ya tiene en uso ese mismo vehículo, el sistema no cierra ni abre nada: devuelve la asignación abierta y el historial no cambia. |
-| 6 | El sistema comprueba que el chofer no tenga un pedido aceptado o en camino y que, si otro chofer usa ese vehículo en ese momento, tampoco lo tenga. |
+| 6 | El sistema comprueba que el chofer no tenga un pedido aceptado o en camino y que, si otro chofer usa ese vehículo en ese momento, tampoco lo tenga. Comprueba además que ni esos choferes ni el vehículo tengan una carga de camión abierta. |
 | 7 | En una sola transacción, el sistema cierra la asignación abierta del chofer y la del vehículo, con la fecha y el administrador que la cerró, y abre la nueva con el administrador que la hizo y la nota. |
 | 8 | El sistema devuelve el vehículo en uso del chofer: patente, marca, modelo, tipo, si está inhabilitado, desde cuándo lo usa y la nota. |
 
@@ -7476,6 +7500,7 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | Si el vehículo está inhabilitado por documentación vencida, el controlador responde 400 "No se puede asignar: …", con el motivo de cada vencimiento (la comprobación la hace `FleetTaskService`, no el servicio de asignaciones). |
 | 4 | Si el identificador del vehículo no tiene formato de UUID o falta, el sistema responde 400 por dato inválido. |
 | 6 | Si el chofer, o el que usa el vehículo en ese momento, tiene un pedido aceptado o en camino, el sistema responde 409 "No se puede modificar el vehículo de un chofer con un pedido en curso (aceptado o en camino)". |
+| 6 | Si alguno de los choferes, o el vehículo, tiene una carga de camión abierta (en carga, en ruta o devuelta), el sistema responde 409 "No se puede cambiar el vehículo mientras haya una carga de camión abierta (carga N° n): cerrala o cancelala antes". |
 | 7 | Si dos pedidos simultáneos chocan por el mismo vehículo o el mismo chofer y la base rechaza la inserción por unicidad (23505), el sistema responde 409 de inmediato: dos índices únicos parciales garantizan que no queden dos asignaciones abiertas. Si el choque es un deadlock, reintenta la transacción (dos reintentos, tres intentos en total) y, si persiste, responde 409 "Dos operaciones chocaron al mismo tiempo". |
 
 | Campo | Detalle |
@@ -7483,7 +7508,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una transacción corta: una actualización y una inserción. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: al incorporar un chofer a la flota o cuando cambia de vehículo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | **Reglas que introduce el vehículo en uso:** (1) un chofer sin vehículo en uso, con la licencia vencida o con el vehículo en uso inhabilitado no recibe ofertas ni puede aceptar pedidos (CU-013, CU-015, CU-138); el sistema le informa "no tiene un vehículo asignado" como motivo. (2) Al aceptar un pedido, el sistema guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso, de modo que el historial del pedido no cambia si el vehículo se reasigna después. (3) Al dar de baja a un chofer el sistema libera su vehículo en uso (CU-162). (4) Un vehículo en uso no puede darse de baja: primero hay que liberarlo. El respaldo inicial es la migración `BackfillVehiculoEnUsoInicial`, que abrió una asignación inicial para cada chofer vigente que tenía exactamente un vehículo a su nombre; los demás quedan sin vehículo en uso hasta que un administrador lo defina. |
+| **Comentarios** | **Reglas que introduce el vehículo en uso:** (1) un chofer sin vehículo en uso, con la licencia vencida o con el vehículo en uso inhabilitado no recibe ofertas ni puede aceptar pedidos (CU-013, CU-015, CU-138); el sistema le informa "no tiene un vehículo asignado" como motivo. (2) Al aceptar un pedido, el sistema guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso, de modo que el historial del pedido no cambia si el vehículo se reasigna después. (3) Al dar de baja a un chofer el sistema libera su vehículo en uso (CU-162). (4) Un vehículo en uso no puede darse de baja: primero hay que liberarlo. El respaldo inicial es la migración `BackfillVehiculoEnUsoInicial`, que abrió una asignación inicial para cada chofer vigente que tenía exactamente un vehículo a su nombre; los demás quedan sin vehículo en uso hasta que un administrador lo defina. (5) Mientras haya una carga de camión abierta no se cambia el vehículo del chofer ni se pone en uso el camión de esa carga para otro: el stock cargado quedaría en un camión que el chofer ya no usa (CU-218). |
 
 ---
 
@@ -7504,7 +7529,7 @@ respaldado por la lectura del código en poder del cliente.
 | 1 | El administrador abre la ficha del chofer y elige liberar su vehículo en uso. |
 | 2 | El panel envía `DELETE /delivery/:id/vehicle`. |
 | 3 | El sistema comprueba que el chofer exista y sea de la distribuidora del administrador. |
-| 4 | El sistema comprueba que el chofer no tenga un pedido aceptado o en camino. |
+| 4 | El sistema comprueba que el chofer no tenga un pedido aceptado o en camino ni una carga de camión abierta. |
 | 5 | El sistema busca la asignación abierta del chofer. |
 | 6 | El sistema la cierra, registrando la fecha y el administrador que la liberó. |
 | 7 | El sistema responde "Vehículo liberado". |
@@ -7517,6 +7542,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 3 | Si el chofer no existe o es de otra distribuidora, el sistema responde 404 con el mismo mensaje en castellano ("Chofer … no encontrado"). |
 | 4 | Si el chofer tiene un pedido aceptado o en camino, el sistema responde 409 "No se puede modificar el vehículo de un chofer con un pedido en curso (aceptado o en camino)". |
+| 4 | Si el chofer tiene una carga de camión abierta (en carga, en ruta o devuelta), el sistema responde 409 "No se puede cambiar el vehículo mientras haya una carga de camión abierta (carga N° n): cerrala o cancelala antes". |
 | 5 | Si el chofer no tiene un vehículo en uso, el sistema responde 404 "El chofer no tiene un vehículo en uso". |
 
 | Campo | Detalle |
@@ -7524,7 +7550,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: cuando un chofer deja de usar un vehículo sin que otro lo reemplace. |
 | **Estabilidad** | Alta |
-| **Comentarios** | **Liberación automática:** cuando se da de baja a un chofer, el sistema emite un evento y libera su vehículo en uso sin intervención del administrador; en ese caso la asignación cierra con la nota "Liberado automáticamente: el chofer fue dado de baja" y sin administrador responsable, porque nadie la liberó a mano. Por la misma regla, un vehículo en uso no puede darse de baja: el sistema responde 409 "El vehículo está en uso: liberalo primero". Poner en uso otro vehículo (CU-161) libera el anterior sin pasar por este caso. |
+| **Comentarios** | **Liberación automática:** cuando se da de baja a un chofer, el sistema emite un evento y libera su vehículo en uso sin intervención del administrador; en ese caso la asignación cierra con la nota "Liberado automáticamente: el chofer fue dado de baja" y sin administrador responsable, porque nadie la liberó a mano. Por la misma regla, un vehículo en uso no puede darse de baja: el sistema responde 409 "El vehículo está en uso: liberalo primero". Poner en uso otro vehículo (CU-161) libera el anterior sin pasar por este caso. La regla aplica a la liberación manual del administrador: con una carga de camión abierta primero se la cierra o se la cancela (CU-221, CU-222, CU-289). La liberación automática por la baja del chofer o el egreso del empleado (`liberarSiTieneUno`) no consulta las cargas de camión. |
 
 ---
 
@@ -12410,6 +12436,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 3 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema responde 404. |
 | 4 | Si otro cambio del predeterminado se hace al mismo tiempo, el sistema responde 409 "Otro cambio del depósito predeterminado se hizo al mismo tiempo: probá de nuevo"; queda uno solo. |
+| 3 | Si el depósito está inactivo, o se lo marca como predeterminado junto con `isActive: false`, el sistema responde 400 "El depósito predeterminado no puede estar inactivo: activalo o elegí otro como predeterminado". |
 | 2 | Si se envía `isDefault: false` sobre el predeterminado, el sistema responde 409 "Es el depósito predeterminado: elegí otro como predeterminado en lugar de sacarle la marca a este". |
 | 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
@@ -12418,7 +12445,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Dos filas bloqueadas y dos actualizadas. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al reorganizar los depósitos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El bloqueo ordenado de las dos filas evita que dos cambios simultáneos en sentidos opuestos se crucen, y un índice único parcial en la base impide dos predeterminados vigentes aunque fallara el bloqueo. El predeterminado no puede darse de baja ni desactivarse mientras lo sea (CU-260, CU-259): primero se elige otro. |
+| **Comentarios** | El bloqueo ordenado de las dos filas evita que dos cambios simultáneos en sentidos opuestos se crucen, y un índice único parcial en la base impide dos predeterminados vigentes aunque fallara el bloqueo. El predeterminado no puede darse de baja ni desactivarse mientras lo sea (CU-260, CU-259): primero se elige otro. Y un depósito inactivo no puede ser el predeterminado: la entrega acredita ahí la vacía de canje y un depósito inactivo no recibe stock, con lo cual omitiría todo el pedido. |
 
 ---
 
@@ -12666,7 +12693,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador traslada unidades de uno o más tipos de garrafa, en una condición (llena, vacía o defectuosa), de un depósito a otro de su distribuidora, o entre un depósito y un camión, en cualquiera de los dos sentidos. La transferencia no cambia lo vendible: las unidades siguen siendo de la distribuidora. Endpoint: `POST /stock/transfers`, con `Idempotency-Key`. |
+| **Descripción** | El administrador traslada unidades de uno o más tipos de garrafa, en una condición (llena, vacía o defectuosa), de un depósito a otro de su distribuidora, o devuelve a un depósito lo que un camión tiene suelto. Un camión no recibe stock por una transferencia: se carga con su hoja de carga (CU-218, CU-219). La transferencia no cambia lo vendible: las unidades siguen siendo de la distribuidora. Endpoint: `POST /stock/transfers`, con `Idempotency-Key`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
 | **Estado** | Implementado |
 
@@ -12674,8 +12701,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el tablero «Stock» —**incluye CU-208 Consultar el Stock por Ubicación**— y elige «Transferir» desde un depósito o un camión. |
-| 2 | Elige el destino —otro depósito o un camión—, los tipos de garrafa, la condición (llena por omisión), la cantidad de cada uno y, si quiere, una nota. |
+| 1 | El administrador abre el tablero «Stock» —**incluye CU-208 Consultar el Stock por Ubicación**— y elige «Transferir» desde un depósito o desde un camión sin carga abierta. |
+| 2 | Elige el destino —otro depósito—, los tipos de garrafa, la condición (llena por omisión), la cantidad de cada uno y, si quiere, una nota. |
 | 3 | El panel envía `POST /stock/transfers` con el origen, el destino y los renglones. |
 | 4 | El sistema resuelve las dos ubicaciones dentro de la distribuidora —la de un camión se crea la primera vez que se la nombra— y comprueba que sean distintas y que no sean dos camiones. |
 | 5 | El sistema asienta un movimiento de motivo «traslado» por renglón, todos con el mismo lote, y mueve los saldos de origen y destino —**incluye CU-250 Aplicar un Movimiento de Stock**— en la misma transacción. |
@@ -12688,7 +12715,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Paso | Acción |
 |------|--------|
 | 4 | Si el origen y el destino son la misma ubicación, el sistema responde 400 "El origen y el destino son la misma ubicación". |
-| 4 | Si ambos son camiones, el sistema responde 400 "No se transfiere de un vehículo a otro: pasá por un depósito". |
+| 4 | Si el destino es un camión, el sistema responde 400 "El camión se carga y se rinde desde la carga del día". |
+| 4 | Si el origen es un camión con una carga abierta, el sistema responde 409; si no la tiene, la transferencia regulariza lo que el camión tiene suelto y la nota es obligatoria. |
 | 5 | Si el origen no tiene la cantidad de algún renglón, el sistema responde 400 "Stock insuficiente: Garrafa 10kg llenas en Galpón Norte (hay 50, se necesitan 99999)" y no registra ningún renglón. |
 | 5 | Si el destino es un depósito inactivo o un camión dado de baja, el sistema responde 400: no recibe stock. |
 | 4 | Si una ubicación o una garrafa no existe o es de otra distribuidora, el sistema responde 404. |
@@ -12699,9 +12727,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Los saldos de las filas involucradas bloqueados y un movimiento insertado por renglón, en una transacción. Responde en menos de 1 segundo. |
-| **Frecuencia** | Baja: al reordenar el stock entre sucursales o al cargar un camión. |
+| **Frecuencia** | Baja: al reordenar el stock entre sucursales o al regularizar lo que un camión tiene suelto. |
 | **Estabilidad** | Media |
-| **Comentarios** | La transferencia no tiene tabla propia: es un grupo de movimientos con el mismo `batchId`, motivo `transfer` y origen y destino. Los bloqueos siguen un orden fijo, el mismo de todas las operaciones de stock —garrafas, depósitos y saldos ordenados—, de modo que dos transferencias cruzadas (A hacia B y B hacia A) no se traban. Si el administrador se equivoca, la corrige con CU-276 Anular una Transferencia de Stock. La carga formal del camión con su hoja (motivo `truck_load`) es otro caso de uso planificado (CU-218). |
+| **Comentarios** | La transferencia no tiene tabla propia: es un grupo de movimientos con el mismo `batchId`, motivo `transfer` y origen y destino. Los bloqueos siguen un orden fijo, el mismo de todas las operaciones de stock —garrafas, depósitos y saldos ordenados—, de modo que dos transferencias cruzadas (A hacia B y B hacia A) no se traban. Si el administrador se equivoca, la corrige con CU-276 Anular una Transferencia de Stock. La carga del camión con su hoja (motivo `truck_load`) es otro caso de uso (CU-218, CU-219). |
 
 ---
 
@@ -12838,40 +12866,84 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador abre la hoja de carga de un vehículo: elige el camión, que tiene que estar en uso por un chofer, el depósito de salida, el ayudante y las garrafas que se cargan por tipo. Las garrafas pasan del depósito al camión. Mientras el camión está cargándose o en ruta puede reponerse más mercadería, y una carga que todavía no salió puede cancelarse. Un vehículo y un chofer tienen una sola carga abierta a la vez. Endpoints: `POST /truck-loads`, `PATCH /truck-loads/:id/reload`, `PATCH /truck-loads/:id/cancel` y `GET /truck-loads`. |
-| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. El vehículo está en uso por un chofer. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | El administrador abre la hoja de carga del día de un camión: elige el vehículo, el chofer que lo tiene en uso, el depósito de salida (el predeterminado si no indica otro), el ayudante, si lo hay, y por tipo de garrafa las llenas y los vacíos para canje que se cargan. Abrir la carga no mueve stock: la hoja queda «en carga» y las garrafas pasan del depósito al camión recién al confirmar la salida (CU-219). Mientras está en carga, el administrador puede corregir los renglones; con el camión en ruta puede reponer más llenas del depósito. Un vehículo y un chofer tienen una sola carga abierta a la vez. Endpoints: `POST /truck-loads`, `PUT /truck-loads/:id/items` y `PATCH /truck-loads/:id/reload`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. El vehículo está en uso por el chofer indicado (CU-161). |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador abre «Reparto → Cargas de camión» y elige «Nueva carga». |
-| 2 | Elige el camión —el chofer se completa solo con el que lo tiene en uso—, el depósito de salida, el ayudante, si lo hay, y las garrafas llenas y los vacíos que se cargan por tipo. |
+| 2 | Elige el chofer —el camión es el que tiene en uso—, el depósito de salida, el ayudante, si lo hay, y las garrafas llenas y los vacíos que se cargan por tipo. |
 | 3 | El panel envía `POST /truck-loads`. |
-| 4 | El sistema comprueba que el vehículo esté en uso por un chofer y que ni el vehículo ni el chofer tengan otra carga abierta. |
-| 5 | El sistema toma el número correlativo, crea la hoja de carga en estado «cargando» con sus renglones y traslada las garrafas del depósito al camión con sus movimientos —**incluye CU-250 Aplicar un Movimiento de Stock**. |
-| 6 | El sistema devuelve la carga. Para reponer, el panel envía `PATCH /truck-loads/:id/reload` con las unidades adicionales; para cancelar una carga que no salió, `PATCH /truck-loads/:id/cancel`, que devuelve todo al depósito; para listar, `GET /truck-loads`. |
+| 4 | El sistema comprueba que no haya renglones repetidos ni cantidades negativas, que el vehículo, el chofer, el ayudante, el depósito y las garrafas existan en la distribuidora y que el chofer tenga ese vehículo en uso. |
+| 5 | El sistema comprueba que ni el vehículo ni el chofer tengan otra carga abierta (en carga, en ruta o devuelta). |
+| 6 | El sistema toma el número correlativo de la distribuidora y guarda la hoja de carga en estado «en carga», con el día de negocio y sus renglones. No mueve stock. |
+| 7 | El sistema devuelve la carga. Mientras no haya salido, el panel puede reemplazar los renglones con `PUT /truck-loads/:id/items`. |
+| 8 | Con el camión en ruta, para sumar mercadería el panel envía `PATCH /truck-loads/:id/reload` con las llenas adicionales y una clave de idempotencia; el sistema comprueba que la carga esté en ruta, traslada esas llenas del depósito de origen al camión —**incluye CU-250 Aplicar un Movimiento de Stock**— y las suma al renglón de reposición del tipo de garrafa, que crea si la garrafa no estaba en la carga. |
 
-**Postcondición:** La hoja de carga está abierta y el camión tiene en su ubicación las garrafas cargadas, que el depósito dejó de tener. Si se canceló, el camión no tiene nada y el depósito recuperó todo.
+**Postcondición:** La hoja de carga está abierta en estado «en carga», con su número y sus renglones, y todavía no se movió ninguna garrafa. Si se repuso, el camión tiene en su ubicación las llenas repuestas, que el depósito dejó de tener, y el renglón registra la reposición.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el vehículo no está en uso por ningún chofer, el sistema responde 409. |
-| 4 | Si el vehículo o el chofer ya tienen una carga abierta, el sistema responde 409. |
-| 5 | Si el depósito no tiene las unidades pedidas, el sistema responde 400 con el saldo disponible y no registra nada. |
-| 6 | Si la carga ya salió, la cancelación responde 409: se rinde con el regreso (CU-221). |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si un renglón repite la garrafa o trae una cantidad negativa o no entera, el sistema responde 400. |
+| 4 | Si el vehículo, el chofer, el ayudante, el depósito o una garrafa no existen o son de otra distribuidora, el sistema responde 404. |
+| 4 | Si el vehículo no está en uso por ese chofer, el sistema responde 400 "El vehículo … no está en uso por ese chofer: asignáselo antes de abrir la carga". |
+| 5 | Si el vehículo o el chofer ya tienen una carga abierta, el sistema responde 409 e indica el número de esa carga. Si dos aperturas compiten a la vez, la que pierde la carrera responde 409 sin número ("El camión ya tiene una carga abierta" o "El chofer ya tiene una carga abierta"). |
+| 7 | Si la carga ya salió, el reemplazo de renglones responde 400: sólo se corrigen mientras está en carga. |
+| 8 | Si la carga no está en ruta, la reposición responde 400; si falta la clave de idempotencia, responde 400, porque repetirla sumaría otra vez. |
+| 8 | Si el depósito de origen no tiene las llenas pedidas, el sistema responde 400 con el detalle del saldo y no mueve nada. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Bloqueos de las filas de saldo en el orden global y una transacción con la carga, los renglones y los movimientos. Responde en menos de 2 segundos. |
+| **Rendimiento** | Una transacción con el número, la hoja y los renglones; la reposición agrega bloqueos de las filas de saldo en el orden global del libro. Responde en menos de 2 segundos. |
 | **Frecuencia** | Alta: una vez por camión y por jornada, más las reposiciones. |
 | **Estabilidad** | Media |
-| **Comentarios** | La carga es el turno del camión: abarca desde que se carga hasta que se rinde. Dos índices únicos parciales, uno por vehículo y otro por chofer, impiden dos cargas abiertas, con el mismo patrón que la asignación de vehículo. El bloqueo de despacho a un chofer sin carga abierta es una regla que cada distribuidora prende o apaga con CU-249 (parámetro `exigirCargaDeCamionAbierta` del proceso `stock_control` de `module_config`) y que aplican CU-012, CU-013 y CU-015 por medio de CU-248; viene apagada. El ayudante es un legajo del módulo de personal, sin cuenta de usuario. |
+| **Comentarios** | La carga es el turno del camión: abarca desde que se abre hasta que se rinde (CU-222). Dos índices únicos parciales, uno por vehículo y otro por chofer (`UQ_truck_load_camion_abierta` y `UQ_truck_load_chofer_abierta`), impiden dos cargas abiertas aun ante dos pedidos simultáneos. El stock del camión sólo entra y sale por la carga: transferir stock a un vehículo con `POST /stock/transfers` responde 400. El ayudante es un legajo del módulo de personal, sin cuenta de usuario. El control que exige la carga abierta para recibir pedidos lo aplica CU-248 y lo configura CU-249; viene apagado. |
 
+---
+
+#### Importante CU-289 — Cancelar una Carga del Camión
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador cancela una carga que todavía está «en carga» e indica el motivo. Como nada salió del depósito, la cancelación no mueve stock: sólo libera al camión y al chofer para abrir otra carga. Endpoint: `PATCH /truck-loads/:id/cancel`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. La carga está «en carga». |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador elige la carga en el listado de «Reparto → Cargas de camión» —**incluye CU-290 Consultar las Cargas del Camión**— y elige «Cancelar». |
+| 2 | Escribe el motivo y confirma. |
+| 3 | El panel envía `PATCH /truck-loads/:id/cancel` con el motivo. |
+| 4 | El sistema bloquea la carga y comprueba que esté «en carga». |
+| 5 | El sistema pasa la carga a «cancelada», guarda el motivo, el instante y el usuario, y la devuelve. |
+
+**Postcondición:** La carga está cancelada. No se movió ninguna garrafa, y el vehículo y el chofer pueden abrir otra carga.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si falta el motivo o supera los 300 caracteres, el sistema responde 400 con el detalle del campo. |
+| 4 | Si la carga no existe o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si la carga ya salió o está cerrada o cancelada, el sistema responde 400: sólo se cancela una carga que todavía no salió. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura con bloqueo y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja. |
+| **Estabilidad** | Media |
+| **Comentarios** | Una carga que ya salió no se cancela: se cierra con el regreso (CU-221) y la rendición (CU-222), que devuelven al depósito lo que el camión lleva. Cancelar no pasa por el libro de stock porque en estado «en carga» todavía no se movió nada. |
 ---
 
 #### Importante CU-219 — Registrar la Salida del Camión
@@ -12880,9 +12952,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El chofer o el administrador declaran la salida del camión con la carga que tiene: la hoja pasa de «cargando» a «en ruta» y queda registrado el instante de la salida. Desde ese momento los pedidos que se entreguen descuentan del camión. Endpoint: `PATCH /truck-loads/:id/depart`. |
-| **Precondición** | El solicitante está autenticado como Chofer (ACT-02), sólo de su propia carga, o como Administrador (ACT-03) de la distribuidora. La carga está en estado «cargando». |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | El chofer o el administrador confirman la salida del camión: el sistema traslada del depósito de origen al camión las llenas y los vacíos de cada renglón de la hoja —**incluye CU-250 Aplicar un Movimiento de Stock**—, pasa la carga de «en carga» a «en ruta» y registra el instante. El camión sale vacío: desde la salida, lo que se entrega descuenta del camión. Endpoint: `PATCH /truck-loads/:id/depart`. |
+| **Precondición** | El solicitante está autenticado como Chofer (ACT-02), sólo de su propia carga, o como Administrador (ACT-03) o Administrador General (ACT-05) de la distribuidora; el Administrador General la indica con el encabezado `X-Distributor`. La carga está «en carga», lleva al menos una garrafa y el depósito de origen tiene las unidades. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -12890,26 +12962,30 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El chofer abre su carga en la aplicación (CU-223) y elige «Salgo». |
 | 2 | La aplicación envía `PATCH /truck-loads/:id/depart`. |
-| 3 | El sistema comprueba que la carga sea del chofer, o de la distribuidora si la inicia el administrador, y que esté en estado «cargando». |
-| 4 | El sistema pasa la carga a «en ruta» y guarda el instante de la salida. |
-| 5 | El sistema devuelve la carga. |
+| 3 | El sistema bloquea la carga y comprueba que sea del chofer, o de la distribuidora si la inicia el administrador, y que esté «en carga». |
+| 4 | El sistema comprueba que la carga lleve al menos una garrafa y que el camión no tenga garrafas en su stock. |
+| 5 | El sistema traslada del depósito de origen al camión las llenas y los vacíos de cada renglón, en una sola operación del libro —**incluye CU-250 Aplicar un Movimiento de Stock**. |
+| 6 | El sistema pasa la carga a «en ruta», guarda el instante de la salida y la devuelve. |
 
-**Postcondición:** La hoja de carga está en ruta y tiene el instante de salida.
+**Postcondición:** La hoja de carga está en ruta y tiene el instante de salida. El camión tiene en su ubicación lo cargado, que el depósito dejó de tener.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la carga no está en estado «cargando», el sistema responde 409. |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si la carga no está «en carga», el sistema responde 400 con su estado actual; repetir la salida no mueve el stock otra vez. |
 | 3 | Si la carga es de otro chofer o de otra distribuidora, el sistema responde 404 sin distinguir los casos. |
+| 4 | Si la carga no lleva ninguna garrafa, el sistema responde 400. |
+| 4 | Si el camión todavía tiene garrafas en el stock, el sistema responde 400: hay que devolverlas al depósito con una transferencia de vehículo a depósito antes de confirmar la salida. |
+| 5 | Si el depósito no tiene las unidades, el sistema responde 400 con el detalle del saldo y no sale nada. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
+| **Rendimiento** | Una transacción con el bloqueo de la carga y los saldos en el orden global del libro. Responde en menos de 2 segundos. |
 | **Frecuencia** | Alta: una vez por camión y por jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es el mismo endpoint para las dos aplicaciones, con guardas distintas por rol. No mueve stock: la mercadería ya está en el camión desde CU-218. |
-
+| **Comentarios** | Es el mismo endpoint para las dos aplicaciones, con guardas distintas por rol. Es el momento en que el stock se mueve: abrir la carga (CU-218) sólo reserva el renglón. Si el depósito no alcanza, no sale nada, ni siquiera lo que sí alcanzaba. Mientras la carga no esté en ruta el chofer no recibe ni acepta pedidos (CU-248). |
 ---
 
 #### Crítico CU-220 — Descontar del Stock Físico lo Entregado
@@ -12928,7 +13004,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El caso que lo incluye entrega el pedido entregado, con la garrafa y la cantidad de cada ítem y el vehículo con el que se aceptó. |
 | 2 | Dentro de la misma transacción de la entrega y en un punto de control propio, el sistema busca qué garrafas del pedido ya tienen su movimiento de entrega. |
-| 3 | Por cada garrafa pendiente, ordenadas por identificador, el sistema elige el origen: el camión del pedido si tiene llenas suficientes y, si no, el depósito predeterminado; la garrafa que no tiene origen en ninguno de los dos se descarta y las demás siguen. |
+| 3 | Por cada garrafa pendiente, ordenadas por identificador, el sistema elige el origen: el camión del pedido —el de la carga abierta del chofer, porque con una carga abierta no cambia de vehículo (CU-161)— si tiene llenas suficientes y, si no, el depósito predeterminado; la garrafa que no tiene origen en ninguno de los dos se descarta y las demás siguen. |
 | 4 | El sistema asienta, por cada garrafa, una salida de llenas hacia el cliente y una entrada de vacías al mismo lugar —**incluye CU-250 Aplicar un Movimiento de Stock**— sin tocar el stock vendible, que ya se descontó al reservar. |
 
 **Postcondición:** Por cada garrafa entregada, las llenas del origen bajaron y sus vacías subieron en la cantidad entregada, con el pedido como documento de origen. El stock vendible no cambió.
@@ -12939,14 +13015,14 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 3 | Si ni el camión ni el depósito tienen llenas suficientes de una garrafa, el sistema no registra esa garrafa, deja el aviso en el registro y la entrega sigue: queda para CU-224 y se resuelve con CU-278. |
 | 2 | Si el pedido ya tiene el movimiento de entrega de una garrafa, el sistema no la repite. |
-| 4 | Si el descuento falla por un bloqueo cruzado (`40P01`), el sistema lo intenta 3 veces en total, o sea 2 reintentos; si sigue fallando, la entrega igual queda confirmada y el pedido pendiente para la conciliación. |
+| 4 | Si el descuento falla por un bloqueo cruzado (`40P01`) o porque otra operación vació un saldo entre la lectura y el libro, el sistema lo reintenta, 3 intentos en total, y en cada reintento relee los saldos: descuenta las garrafas que alcanzan y omite sólo la que no. Si el tercer intento también falla, la entrega igual queda confirmada y ninguna garrafa del pedido se descuenta: queda para la conciliación (CU-224). |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura de saldos y, si descuenta, un movimiento por renglón, todo dentro de la transacción de la entrega. No agrega esperas visibles al chofer. |
 | **Frecuencia** | Alta: una vez por pedido entregado. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El descuento corre por el mismo gestor de la transacción del pedido, en un punto de control propio: si falla, no aborta la entrega. Es idempotente por pedido y garrafa (revisión previa e índice único del libro). La vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno, y se corrige al rendir el camión. Un depósito inactivo o un camión dado de baja pueden entregar el stock que les queda, no recibirlo. Cualquier cambio de estado de un pedido a entregado dispara el caso, también el que hace un administrador. El diseño inicial lo hacía escuchando un evento después de la transacción; se resolvió dentro de ella para que no se pierda si el proceso cae. |
+| **Comentarios** | El descuento corre por el mismo gestor de la transacción del pedido, en un punto de control propio: si falla, no aborta la entrega. Es idempotente por pedido y garrafa (revisión previa e índice único del libro). La vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno, y se corrige al rendir el camión. Un depósito inactivo o un camión dado de baja pueden entregar el stock que les queda, no recibirlo. Cualquier cambio de estado de un pedido a entregado dispara el caso, también el que hace un administrador. El diseño inicial lo hacía escuchando un evento después de la transacción; se resolvió dentro de ella para que no se pierda si el proceso cae. Las lecturas de saldo son sin bloqueo a propósito; la validación firme la hace el libro. Mientras haya una carga de camión abierta el chofer no cambia de vehículo (CU-161), así que lo que sale del camión del pedido es lo que la rendición espera encontrar (CU-222). |
 
 ---
 
@@ -12956,37 +13032,40 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El chofer o el administrador declaran, por tipo de garrafa, cuántas llenas y cuántos vacíos trae el camión de vuelta. La hoja pasa de «en ruta» a «regresó» y el sistema muestra lo declarado frente a lo esperado, que es lo cargado y repuesto menos lo entregado, y lo vacío cargado más lo recolectado. Endpoint: `PATCH /truck-loads/:id/return`. |
-| **Precondición** | El solicitante está autenticado como Chofer (ACT-02), sólo de su propia carga, o como Administrador (ACT-03) de la distribuidora. La carga está en estado «en ruta». |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | El chofer o el administrador declaran, por tipo de garrafa, cuántas llenas y cuántas vacías trae el camión de vuelta. La carga pasa de «en ruta» a «devuelta» y el sistema muestra lo declarado frente a lo esperado: las llenas cargadas y repuestas menos las entregadas, y las vacías cargadas más las recolectadas. No mueve stock: eso ocurre al cerrar la rendición (CU-222). Se puede volver a declarar mientras la rendición no se cerró. Endpoint: `PATCH /truck-loads/:id/return`. |
+| **Precondición** | El solicitante está autenticado como Chofer (ACT-02), sólo de su propia carga, o como Administrador (ACT-03) o Administrador General (ACT-05) de la distribuidora; el Administrador General la indica con el encabezado `X-Distributor`. La carga está «en ruta» o «devuelta» y el chofer no tiene pedidos en curso. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | El chofer abre su carga en la aplicación (CU-223) y elige «Regresé». |
-| 2 | Declara, por tipo de garrafa, las llenas y los vacíos que trae; la aplicación envía `PATCH /truck-loads/:id/return`. |
-| 3 | El sistema comprueba que la carga sea del chofer, o de la distribuidora si la inicia el administrador, y que esté «en ruta». |
-| 4 | El sistema guarda lo declarado en cada renglón, calcula lo esperado y la diferencia y pasa la carga a «regresó» con el instante del regreso. |
-| 5 | El sistema devuelve la carga con lo declarado, lo esperado y la diferencia por renglón. |
+| 2 | Declara, por tipo de garrafa de la carga, las llenas y las vacías que trae; la aplicación envía `PATCH /truck-loads/:id/return`. |
+| 3 | El sistema bloquea la carga y comprueba que sea del chofer, o de la distribuidora si la inicia el administrador, y que esté «en ruta» o «devuelta». |
+| 4 | El sistema comprueba que el chofer no tenga pedidos aceptados o en camino. |
+| 5 | El sistema comprueba que la declaración cubra todos los renglones de la carga, sin repetidos ni garrafas ajenas, y que las cantidades sean enteras de cero o más. |
+| 6 | El sistema guarda lo declarado en cada renglón y pasa la carga a «devuelta» con el instante del regreso, tomado del reloj de la base. |
+| 7 | El sistema devuelve la carga con lo declarado, lo esperado y la diferencia por renglón. |
 
-**Postcondición:** La hoja de carga está en estado «regresó», con lo declarado, lo esperado y la diferencia de cada tipo de garrafa. Todavía no se movió ningún stock.
+**Postcondición:** La carga está «devuelta», con lo declarado en cada renglón y su instante de regreso. Todavía no se movió ningún stock.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la carga no está «en ruta», el sistema responde 409. |
-| 4 | Si una cantidad declarada es negativa, el sistema responde 400 con el detalle del campo. |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si la carga no está «en ruta» ni «devuelta», el sistema responde 400 con su estado actual. |
 | 3 | Si la carga es de otro chofer o de otra distribuidora, el sistema responde 404 sin distinguir los casos. |
+| 4 | Si el chofer tiene pedidos en curso, el sistema responde 409 "Tenés N pedidos en curso: entregalos o liberalos antes de volver". |
+| 5 | Si una garrafa declarada no es de la carga, falta un renglón, hay una garrafa repetida o una cantidad es negativa, el sistema responde 400 con el detalle. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura de la carga y sus renglones. Responde en menos de 1 segundo. |
 | **Frecuencia** | Alta: una vez por camión y por jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | El regreso sólo declara: lo que vuelve al depósito se mueve al cerrar la rendición (CU-222), cuando el administrador revisa la diferencia. Así el chofer no puede inflar ni vaciar el stock desde la aplicación. Una entrega confirmada después del regreso se imputa a la misma carga y recalcula lo esperado hasta el cierre de la rendición; después del cierre la diferencia se corrige con un ajuste (CU-213). |
-
+| **Comentarios** | El regreso sólo declara: lo que vuelve al depósito se mueve al cerrar la rendición (CU-222). Así el chofer no puede inflar ni vaciar el stock desde la aplicación. Si después de declarar se asienta una entrega del camión, el cierre responde 409 y el chofer vuelve a declarar lo que trae; no se recalcula en silencio contra un conteo que el chofer no hizo. Con la carga «devuelta» el chofer ya no recibe pedidos (CU-248). |
 ---
 
 #### Crítico CU-222 — Cerrar la Rendición de Stock del Camión
@@ -12995,21 +13074,23 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador cierra la rendición de stock de un camión que regresó: lo declarado vuelve del camión al depósito, el faltante se asienta como merma y el sobrante como ajuste, ambos con la carga como documento de origen, y la carga queda cerrada, con diferencia o sin ella. Al cerrar, el saldo del camión queda en cero. Endpoint: `PATCH /truck-loads/:id/close`. |
-| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. La carga está en estado «regresó». |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | El administrador cierra la rendición de un camión que volvió: lo declarado regresa del camión al depósito de origen, el faltante se asienta como merma y el sobrante como ajuste, ambos con la carga como documento de origen, y las defectuosas que hubiera vuelven tal cual. La carga queda cerrada, con diferencia o sin ella, y el saldo del camión queda en cero en todas las condiciones. Endpoint: `PATCH /truck-loads/:id/close`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. La carga está «devuelta». |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la carga desde «Reparto → Cargas de camión» y ve la pantalla de rendición: lo declarado frente a lo esperado, con la diferencia resaltada. |
+| 1 | El administrador abre la carga desde «Reparto → Cargas de camión» —**incluye CU-291 Consultar una Carga del Camión**— y ve la pantalla de rendición: lo declarado frente a lo esperado, con la diferencia resaltada. |
 | 2 | Si hay diferencia, escribe la nota que la explica; confirma el cierre. |
 | 3 | El panel envía `PATCH /truck-loads/:id/close` con la nota. |
-| 4 | El sistema comprueba que la carga esté en estado «regresó» y, si hay diferencia, que la nota no esté vacía. |
-| 5 | El sistema traslada lo declarado del camión al depósito de origen y asienta el faltante como merma y el sobrante como ajuste —**incluye CU-250 Aplicar un Movimiento de Stock**. |
-| 6 | Si faltaron garrafas llenas, el sistema descuenta el faltante del stock vendible del tipo de garrafa. |
-| 7 | El sistema pasa la carga a cerrada, o a cerrada con diferencia, guarda el instante y la nota y la devuelve. |
+| 4 | El sistema bloquea la carga y comprueba que esté «devuelta». |
+| 5 | El sistema bloquea las garrafas, el depósito y los saldos en el orden del libro, lee del libro lo que el camión entregó y recolectó desde que se abrió la carga y comprueba que no haya entregas posteriores a la declaración del chofer. |
+| 6 | El sistema calcula por tipo de garrafa lo esperado —llenas: cargadas más repuestas menos entregadas; vacías: cargadas más recolectadas— y la diferencia contra lo declarado. Lo que el camión tenga y la carga no liste se rinde con un renglón propio declarado en cero. |
+| 7 | Si hay diferencia, el sistema comprueba que la nota no esté vacía. |
+| 8 | El sistema devuelve lo declarado del camión al depósito, asienta el faltante como merma y el sobrante como ajuste, y devuelve las defectuosas tal cual, todo en una operación del libro —**incluye CU-250 Aplicar un Movimiento de Stock**. El stock vendible baja con la merma y sube con el sobrante. |
+| 9 | El sistema congela en cada renglón lo entregado, lo recolectado, lo esperado y la diferencia, pasa la carga a «cerrada» o a «cerrada con diferencia», guarda el instante, el usuario y la nota, y la devuelve. |
 
 **Postcondición:** La carga está cerrada, el saldo del camión es cero, lo declarado volvió al depósito y la diferencia, si la hubo, quedó asentada con su nota.
 
@@ -13017,18 +13098,18 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si la carga no está en estado «regresó», el sistema responde 409. |
-| 4 | Si hay diferencia y la nota está vacía, el sistema responde 400: toda diferencia tiene que poder explicarse. |
-| 6 | Si descontar el faltante del vendible lo dejaría negativo, el sistema responde 400 y no cierra la carga. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si la carga no está «devuelta», el sistema responde 400 con su estado actual: el chofer tiene que declarar la vuelta primero. |
+| 5 | Si el camión entregó garrafas después de que el chofer declaró la vuelta, el sistema responde 409: el chofer tiene que volver a declarar lo que trae antes de cerrar. |
+| 7 | Si hay diferencia y la nota está vacía, el sistema responde 400, antes de tocar el libro: toda diferencia tiene que poder explicarse. |
+| 8 | Si el libro no puede asentar el movimiento, por ejemplo porque dejaría un saldo negativo, el sistema responde 400 y la carga sigue «devuelta». |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Bloqueos de las filas de tipo de garrafa y de saldo en el orden global y una transacción con la carga, los renglones y los movimientos. Responde en menos de 2 segundos. |
 | **Frecuencia** | Alta: una vez por camión y por jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | Una diferencia en la rendición puede generar un cargo al chofer en el módulo de caja (iteración I-14); este caso sólo la asienta. A las 22:00 un proceso aparte, `TruckLoadOpenCron`, avisa por correo los camiones con carga abierta sin rendir. La invariante que cierra el caso (saldo del camión en cero) es la que permite confiar en el stock por ubicación. |
-
+| **Comentarios** | Los ajustes se calculan contra el saldo real del camión bajo bloqueo, que coincide con lo esperado salvo que alguien lo haya movido a mano, y cualquier ajuste del libro cuenta como diferencia. La invariante que cierra el caso (saldo del camión en cero) es la que permite confiar en el stock por ubicación. El detalle de la carga trae además el efectivo de la jornada —cobrado, impago y pendiente de confirmar de los pedidos que el chofer entregó con ese camión—, solo informativo: la caja todavía no existe y una diferencia no genera ningún cargo al chofer. |
 ---
 
 #### Secundario CU-223 — Consultar la Carga Actual del Camión
@@ -13037,9 +13118,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El chofer ve la carga abierta del camión que tiene en uso: el estado, lo cargado por tipo de garrafa, lo repuesto, lo entregado hasta ahora y lo que debería quedarle. Si no tiene ninguna carga abierta, no ve ninguna. Endpoint: `GET /truck-loads/mine`. |
-| **Precondición** | El solicitante está autenticado como Chofer (ACT-02) y tiene un vehículo en uso. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | El chofer ve su carga abierta («Mi carga»): el estado, lo cargado por tipo de garrafa, lo repuesto, lo entregado hasta ahora y lo que debería quedarle, y si su distribuidora exige tener la carga abierta para recibir pedidos. Si no tiene ninguna carga abierta (en carga, en ruta o devuelta), la carga viene vacía. Endpoint: `GET /truck-loads/mine`. |
+| **Precondición** | El solicitante está autenticado como Chofer (ACT-02). |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -13047,8 +13128,8 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El chofer abre la pantalla «Mi carga» de la aplicación. |
 | 2 | La aplicación envía `GET /truck-loads/mine`. |
-| 3 | El sistema resuelve el vehículo que el chofer tiene en uso y busca su carga abierta. |
-| 4 | El sistema devuelve la carga con sus renglones y lo esperado en vivo, o ningún dato si no hay carga abierta. |
+| 3 | El sistema busca la carga abierta del chofer y lee si su distribuidora exige tenerla. |
+| 4 | El sistema devuelve la carga con sus renglones y lo esperado en vivo, junto con la exigencia de la distribuidora; si no hay carga abierta, la carga viene vacía. |
 
 **Postcondición:** Ninguna: es una consulta de sólo lectura.
 
@@ -13056,15 +13137,90 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el chofer no tiene un vehículo en uso, el sistema responde que no hay carga: no es un error. |
+| 3 | Si el chofer no tiene una carga abierta, el sistema responde con la carga vacía: no es un error. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Dos lecturas por índice. Responde en menos de 1 segundo. |
 | **Frecuencia** | Alta: varias veces durante la jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es la única consulta de stock a la que accede el chofer: no ve saldos de depósito ni de otros camiones. Es el punto de partida de CU-219 y CU-221 en la aplicación. |
+| **Comentarios** | Es la única consulta de stock a la que accede el chofer: no ve saldos de depósito ni de otros camiones. Es el punto de partida de CU-219 y CU-221 en la aplicación, y la forma en que la app sabe por qué no recibe pedidos (CU-248). |
 
+---
+
+#### Importante CU-290 — Consultar las Cargas del Camión
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta las cargas de camión de su distribuidora, con filtros por estado, día de negocio, rango de días, vehículo y chofer, de la más reciente a la más antigua. Cada fila trae el número, el estado, el vehículo, el chofer, el ayudante, el depósito de origen y los instantes de apertura, salida, regreso y cierre. Endpoint: `GET /truck-loads`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Reparto → Cargas de camión». |
+| 2 | Elige los filtros que necesita. |
+| 3 | El panel envía `GET /truck-loads` con los filtros y la página. |
+| 4 | El sistema comprueba que las fechas tengan el formato AAAA-MM-DD y que el desde no sea posterior al hasta. Con sólo `from` o sólo `to` trae ese único día; con los dos, el rango. |
+| 5 | El sistema devuelve la página, ordenada por día de negocio y número de carga descendentes, con el total. |
+
+**Postcondición:** Ninguna: es una consulta de sólo lectura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si una fecha no tiene el formato AAAA-MM-DD, o el desde es posterior al hasta, el sistema responde 400. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un conteo y una página por índice. Responde en menos de 1 segundo. |
+| **Frecuencia** | Alta. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El chofer no usa este listado (recibe 403): ve la suya con CU-223 y, por su identificador, con CU-291. Es el punto de partida de la apertura de una carga (CU-218), de su cancelación (CU-289) y de su rendición (CU-222). Los filtros por día son `date` (un día) y `from`/`to` (rango); si se manda sólo uno de los dos extremos, el rango es ese único día. |
+
+---
+
+#### Importante CU-291 — Consultar una Carga del Camión
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador, o el chofer sólo de su propia carga, consulta el detalle de una carga: por tipo de garrafa lo cargado, repuesto, entregado, recolectado, esperado, declarado y la diferencia, más lo que hay hoy en el camión; los pedidos que el chofer entregó con ese camión durante la carga, el efectivo de la jornada —cobrado, impago y pendiente de confirmar, solo informativo— y los movimientos de stock de la carga. Mientras la carga está abierta, lo esperado se calcula en vivo contra el libro; al cerrar quedan las cifras congeladas. Endpoint: `GET /truck-loads/:id`. |
+| **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05), que indica la distribuidora con `X-Distributor`, o como Chofer (ACT-02). |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre una carga del listado de cargas (CU-290); el chofer abre la suya desde la aplicación (CU-223). |
+| 2 | El cliente envía `GET /truck-loads/:id`. |
+| 3 | El sistema resuelve el alcance: el administrador ve las cargas de su distribuidora; el chofer, sólo las suyas. |
+| 4 | El sistema lee la carga con sus renglones y calcula lo entregado, lo recolectado y lo esperado contra el libro de stock. |
+| 5 | El sistema lee los pedidos entregados con ese camión durante la carga, el efectivo de la jornada y los movimientos de stock de la carga. |
+| 6 | El sistema devuelve el detalle. |
+
+**Postcondición:** Ninguna: es una consulta de sólo lectura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si la carga no existe, es de otra distribuidora o, para un chofer, es de otro chofer, el sistema responde 404 sin distinguir los casos. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Lecturas por índice de la carga, el libro y los pedidos. Responde en menos de 2 segundos. |
+| **Frecuencia** | Alta. |
+| **Estabilidad** | Media |
+| **Comentarios** | Es la pantalla de rendición de CU-222: la diferencia que ve el administrador es la que el cierre congela. La misma pantalla muestra el stock actual de un camión, que se consulta con `GET /truck-loads/cars/:carId/stock`: llenas, vacías y defectuosas por tipo de garrafa. Un pedido entregado con otro vehículo no cuenta en el stock ni en el efectivo de la carga. |
 ---
 
 #### Importante CU-224 — Conciliar el Stock Vendible con el Físico
@@ -13197,19 +13353,20 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | Antes de asignarle un pedido a un chofer —al ofrecérselo, al aceptarlo él o al asignarlo el administrador a mano— el sistema lee el parámetro `exigirCargaDeCamionAbierta` de la distribuidora. Si está prendido, comprueba que el vehículo que el chofer tiene en uso tenga una hoja de carga abierta (cargando, en ruta o regresó); si no la tiene, rechaza el despacho. Si está apagado, que es el valor por omisión, el chofer queda habilitado. |
-| **Precondición** | El despacho del pedido está en curso y el chofer tiene un vehículo en uso. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | Antes de ofrecerle un pedido a un chofer, dejarle aceptarlo, asignárselo a mano o mostrarle el pool de pedidos disponibles, el sistema evalúa su carga de camión. Con una carga abierta sólo recibe pedidos si la carga está en ruta —«en carga» todavía no salió el stock y «devuelta» ya declaró la vuelta, así que lo que entregara después sería stock fantasma en la rendición— y si su vehículo en uso es el camión de la carga; esto rige con o sin el control de la distribuidora. Sin carga abierta recibe como siempre, salvo que la distribuidora haya prendido el control (CU-249) y exija tenerla. |
+| **Precondición** | El despacho del pedido está en curso, o el chofer consulta el pool, y el chofer pertenece a la distribuidora. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El caso base (CU-012, CU-013 o CU-015) le pide al sistema que verifique al chofer. |
-| 2 | El sistema lee la configuración del proceso de control de stock de la distribuidora. |
-| 3 | Si el parámetro está apagado, el chofer queda habilitado. |
-| 4 | Si está prendido, el sistema busca el vehículo que el chofer tiene en uso y su carga abierta. |
-| 5 | Si hay carga abierta, el chofer queda habilitado; si no, el sistema lo rechaza. |
+| 1 | El caso base (CU-012, CU-013, CU-015 o CU-080) le pide al sistema que verifique al chofer. |
+| 2 | El sistema lee el parámetro del control de carga de la distribuidora. |
+| 3 | El sistema busca la carga abierta del chofer (en carga, en ruta o devuelta) y el vehículo que tiene en uso. |
+| 4 | Si hay carga abierta y no está en ruta, o el vehículo en uso no es el camión de la carga, el chofer queda rechazado. |
+| 5 | Si hay carga abierta, está en ruta y el vehículo es el de la carga, el chofer queda habilitado. |
+| 6 | Si no hay carga abierta, el chofer queda habilitado salvo que el parámetro esté prendido, en cuyo caso queda rechazado. |
 
 **Postcondición:** El chofer queda habilitado para recibir el pedido o rechazado, y el caso base sigue o se detiene según corresponda.
 
@@ -13217,16 +13374,17 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el chofer no tiene un vehículo en uso, el sistema lo trata como un chofer sin carga abierta. |
-| 5 | Si el chofer no tiene carga abierta y el parámetro está prendido, el despacho automático lo saltea y pasa al siguiente candidato; la asignación manual responde 409. |
+| 4 | Si el despacho automático rechaza al chofer, lo saltea y pasa al siguiente candidato. |
+| 4 | Si el chofer rechazado intenta aceptar, el sistema responde 400 con el motivo, por ejemplo "Tu distribuidora exige una carga de camión abierta para trabajar: pedile al administrador que abra tu carga del día" o "La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos". |
+| 4 | Si el administrador intenta asignarle el pedido a mano, el sistema responde 400 con el motivo, por ejemplo "El chofer no tiene la carga del día abierta". |
+| 4 | Si el chofer consulta el pool, recibe la lista vacía con `openLoadRequired` en verdadero y el motivo, por ejemplo "Abrí tu carga para recibir pedidos". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de la configuración, con copia en memoria de un minuto, y una consulta por índice. |
-| **Frecuencia** | Cada vez que se asigna o se acepta un pedido. |
+| **Rendimiento** | Una consulta por índice que une la carga y la asignación de vehículo, y una lectura del parámetro. No agrega esperas visibles. |
+| **Frecuencia** | Cada vez que se ofrece, se acepta o se asigna un pedido, y cada vez que un chofer consulta el pool. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es un caso incluido: ningún actor lo inicia. Comparte el punto de enganche con la verificación de la habilitación laboral del chofer. El control es opcional y viene apagado para no romper el despacho de las distribuidoras que todavía no usan la carga del camión (CU-218); se prende con CU-249. |
-
+| **Comentarios** | Es un caso incluido: ningún actor lo inicia. Comparte el punto de enganche con la verificación de la habilitación laboral del chofer. Repetir una aceptación que ya era del mismo chofer no se vuelve a controlar. El parámetro viene apagado para no romper el despacho de las distribuidoras que todavía no usan la carga del camión (CU-218); se prende con CU-249. |
 ---
 
 #### Secundario CU-249 — Configurar el Control de Carga de Camión Abierta
@@ -13235,18 +13393,18 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador define si su distribuidora exige que un chofer tenga una hoja de carga abierta para recibir o aceptar un pedido (parámetro `exigirCargaDeCamionAbierta`). Viene apagado. El valor se guarda en la configuración del proceso `stock_control`, un valor nuevo de `configurable_process_enum`. Endpoints: `GET /module-config/stock_control` y `PUT /module-config/stock_control`. |
+| **Descripción** | El administrador consulta y define si su distribuidora exige que un chofer tenga una carga de camión abierta para recibir, aceptar o que se le asigne un pedido (parámetro `requireOpenTruckLoad`, que el análisis nombra `exigirCargaDeCamionAbierta`). Viene apagado. El valor se guarda en la configuración del proceso `stock_control` de la distribuidora. Endpoints: `GET /truck-loads/settings` y `PUT /truck-loads/settings`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la sección de control de stock de la configuración de procesos; el panel consulta `GET /module-config/stock_control`. |
+| 1 | El administrador abre la sección de control de carga de la configuración; el panel consulta `GET /truck-loads/settings`. |
 | 2 | Prende o apaga la exigencia de carga abierta y confirma. |
-| 3 | El panel envía `PUT /module-config/stock_control` con `exigirCargaDeCamionAbierta`. |
-| 4 | El sistema guarda el valor para la distribuidora, con el usuario que lo modificó, y descarta la copia en memoria. |
+| 3 | El panel envía `PUT /truck-loads/settings` con `requireOpenTruckLoad`. |
+| 4 | El sistema guarda el valor para la distribuidora, con el usuario que lo modificó. |
 | 5 | El sistema devuelve la configuración guardada. |
 
 **Postcondición:** La distribuidora tiene configurado el control. Desde ese momento, CU-248 lo aplica al despachar.
@@ -13255,16 +13413,15 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el valor no es booleano, el sistema responde 400 con el detalle del campo. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si el valor no es booleano, el sistema responde 400 con el detalle del campo. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es un caso de la familia de CU-171 a CU-173: usa la misma tabla de configuración por distribuidora. Los pedidos ya asignados no se revisan al prender el control. |
-
+| **Comentarios** | Es un caso de la familia de CU-171 a CU-173: usa la misma tabla de configuración por distribuidora. Sin configuración rige el valor apagado. Los pedidos ya asignados no se revisan al prender el control. La regla de que con una carga abierta sólo se recibe en ruta no depende de este parámetro. |
 ---
 
 #### Crítico CU-250 — Aplicar un Movimiento de Stock
@@ -13305,7 +13462,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Bloqueos ordenados y dos escrituras en lote (saldos y movimientos). Responde en menos de 1 segundo. |
 | **Frecuencia** | Alta: lo ejecuta todo cambio de stock físico. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es el único punto de escritura del stock físico (`StockLedgerPort`): nadie más toca los saldos ni el libro. El libro toma sus bloqueos en este orden, que es lo que evita los deadlocks entre ajustes, transferencias y entregas: 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido (frena la baja de un depósito en uso); 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, si el caso numera un documento (el conteo inicial toma los depósitos en modo exclusivo y no compartido, para que nadie los mueva mientras se cuenta). `FOR KEY SHARE` alcanza para las entregas y las transferencias porque no cambian el vendible: sólo espera a quien tenga `FOR UPDATE`. Cuatro garantías sostiene además la base: el saldo no es negativo (restricción), el libro no se modifica (disparador), un movimiento se contraasienta una sola vez (índice único parcial) y el descuento de una entrega es idempotente (índice único parcial). La recepción de una compra (CU-217) y su anulación (CU-280) lo usan; la carga y la rendición del camión (CU-218, CU-222) lo usarán cuando se construyan. |
+| **Comentarios** | Es el único punto de escritura del stock físico (`StockLedgerPort`): nadie más toca los saldos ni el libro. El libro toma sus bloqueos en este orden, que es lo que evita los deadlocks entre ajustes, transferencias y entregas: 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido (frena la baja de un depósito en uso); 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, si el caso numera un documento (el conteo inicial toma los depósitos en modo exclusivo y no compartido, para que nadie los mueva mientras se cuenta). `FOR KEY SHARE` alcanza para las entregas y las transferencias porque no cambian el vendible: sólo espera a quien tenga `FOR UPDATE`. Cuatro garantías sostiene además la base: el saldo no es negativo (restricción), el libro no se modifica (disparador), un movimiento se contraasienta una sola vez (índice único parcial) y el descuento de una entrega es idempotente (índice único parcial). La recepción de una compra (CU-217) y su anulación (CU-280) lo usan; la carga, la salida y la rendición del camión (CU-218, CU-219, CU-222) lo usan. |
 
 ---
 
@@ -15482,6 +15639,8 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el chofer está deshabilitado, no está validado o tiene la flota inhabilitada
         SIS-->>ADM: asignación rechazada
+    else el chofer no puede recibir pedidos por su carga de camión
+        SIS-->>ADM: asignación rechazada, con el motivo
     else el pedido no admite pasar a aceptado
         SIS-->>ADM: asignación rechazada por transición no permitida
     end
@@ -15626,6 +15785,8 @@ sequenceDiagram
         SIS-->>CHO: acceso denegado (el pedido no está asignado a este chofer)
     else El pedido ya está entregado o cancelado
         SIS-->>CHO: error de solicitud (transición no permitida)
+    else El chofer no puede recibir pedidos por su carga de camión
+        SIS-->>CHO: error de solicitud, con el motivo
     else El chofer no existe o está dado de baja
         SIS-->>CHO: error de solicitud (repartidor no encontrado o inactivo)
     end
@@ -18368,7 +18529,11 @@ sequenceDiagram
 
     CHO->>SIS: consultarPedidosDisponibles(pagina, limite)
     activate SIS
-    SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    alt el chofer puede recibir pedidos por su carga de camión
+        SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    else el chofer no puede recibir pedidos por su carga de camión
+        SIS-->>CHO: pedidos vacíos y el motivo
+    end
     deactivate SIS
 ```
 
@@ -19463,6 +19628,8 @@ sequenceDiagram
         SIS-->>ADM: asignación rechazada, con el motivo del vencimiento
     else el chofer, o el que usa el vehículo, tiene un pedido en curso
         SIS-->>ADM: conflicto: pedido en curso
+    else el chofer, el que usa el vehículo o el vehículo tienen una carga de camión abierta
+        SIS-->>ADM: conflicto: carga de camión abierta
     end
     deactivate SIS
 ```
@@ -19489,6 +19656,8 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     else el chofer tiene un pedido en curso
         SIS-->>ADM: conflicto: pedido en curso
+    else el chofer tiene una carga de camión abierta
+        SIS-->>ADM: conflicto: carga de camión abierta
     end
     deactivate SIS
 ```
@@ -21735,7 +21904,7 @@ sequenceDiagram
 #### DSS — CU-218: Registrar la Carga del Camión
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)`, `reponerCargaDelCamion(cargaId, items)`, `cancelarCargaDelCamion(cargaId)`, `consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)`
+**Operaciones del sistema:** `registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)`, `corregirRenglonesDeLaCarga(cargaId, items)`, `reponerCargaDelCamion(cargaId, items)`
 
 ```mermaid
 sequenceDiagram
@@ -21744,41 +21913,67 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+    ADM->>SIS: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
     activate SIS
-    alt el camión está en uso y el depósito tiene las unidades
-        SIS-->>ADM: hoja de carga abierta
+    alt la carga no repite garrafas, el chofer usa el vehículo y ninguno tiene otra carga abierta
+        SIS-->>ADM: hoja de carga abierta, en carga
+    else un renglón es inválido o el vehículo no está en uso por el chofer
+        SIS-->>ADM: solicitud inválida
     else el vehículo o el chofer ya tienen una carga abierta
         SIS-->>ADM: conflicto
-    else el depósito no tiene las unidades
-        SIS-->>ADM: solicitud inválida, con el saldo disponible
+    else el vehículo, el chofer, el depósito o una garrafa no existen
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+
+    ADM->>SIS: corregirRenglonesDeLaCarga(cargaId, items)
+    activate SIS
+    alt la carga está en carga
+        SIS-->>ADM: hoja de carga con los renglones nuevos
+    else la carga ya salió
+        SIS-->>ADM: solicitud inválida
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
 
     ADM->>SIS: reponerCargaDelCamion(cargaId, items)
     activate SIS
-    alt la carga está abierta
-        SIS-->>ADM: hoja de carga actualizada
-    else la carga ya regresó o está cerrada
-        SIS-->>ADM: conflicto
+    alt la carga está en ruta y el depósito tiene las llenas
+        SIS-->>ADM: hoja de carga con lo repuesto
+    else la carga no está en ruta o el depósito no tiene las llenas
+        SIS-->>ADM: solicitud inválida, con el saldo disponible
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
     end
-    deactivate SIS
-
-    ADM->>SIS: cancelarCargaDelCamion(cargaId)
-    activate SIS
-    alt la carga todavía no salió
-        SIS-->>ADM: carga cancelada y stock devuelto
-    else la carga ya salió
-        SIS-->>ADM: conflicto
-    end
-    deactivate SIS
-
-    ADM->>SIS: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
-    activate SIS
-    SIS-->>ADM: cargas del camión
     deactivate SIS
 ```
 
+---
+
+#### DSS — CU-289: Cancelar una Carga del Camión
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `cancelarCargaDelCamion(cargaId, motivo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-289 Cancelar una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cancelarCargaDelCamion(cargaId, motivo)
+    activate SIS
+    alt la carga está en carga
+        SIS-->>ADM: carga cancelada
+    else la carga ya salió o falta el motivo
+        SIS-->>ADM: solicitud inválida
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
 ---
 
 #### DSS — CU-219: Registrar la Salida del Camión
@@ -21795,17 +21990,17 @@ sequenceDiagram
 
     CHO->>SIS: registrarSalidaDelCamion(cargaId)
     activate SIS
-    alt la carga está cargando
+    alt la carga está en carga y el depósito tiene las unidades
         SIS-->>CHO: carga en ruta
-    else la carga no está cargando
-        SIS-->>CHO: conflicto
+    else la carga no está en carga, no lleva garrafas, el camión no está vacío o el depósito no tiene las unidades
+        SIS-->>CHO: solicitud inválida
     else la carga no existe o no es suya
         SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS
+
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
-
 ---
 
 #### DSS — CU-220: Descontar del Stock Físico lo Entregado
@@ -21830,17 +22025,19 @@ sequenceDiagram
 
     CHO->>SIS: registrarRegresoDelCamion(cargaId, devueltos)
     activate SIS
-    alt la carga está en ruta
+    alt la carga está en ruta o devuelta y el chofer no tiene pedidos en curso
         SIS-->>CHO: lo declarado, lo esperado y la diferencia
-    else la carga no está en ruta
+    else la carga no está en ruta ni devuelta, o la declaración es inválida
+        SIS-->>CHO: solicitud inválida
+    else el chofer tiene pedidos en curso
         SIS-->>CHO: conflicto
-    else una cantidad es negativa
-        SIS-->>CHO: solicitud inválida, con el detalle del campo
+    else la carga no existe o no es suya
+        SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS
+
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
-
 ---
 
 #### DSS — CU-222: Cerrar la Rendición de Stock del Camión
@@ -21857,20 +22054,19 @@ sequenceDiagram
 
     ADM->>SIS: cerrarRendicionDeStock(cargaId, nota)
     activate SIS
-    alt la carga regresó y la rendición cierra sin diferencia
+    alt la carga volvió y la rendición cierra sin diferencia
         SIS-->>ADM: carga cerrada
-    else la carga regresó y hay diferencia con su nota
+    else la carga volvió y hay diferencia con su nota
         SIS-->>ADM: carga cerrada con diferencia
-    else hay diferencia y falta la nota
+    else hay diferencia y falta la nota, o la carga no volvió
         SIS-->>ADM: solicitud inválida
-    else el faltante dejaría negativo el stock vendible
-        SIS-->>ADM: solicitud inválida
-    else la carga no regresó
+    else el camión entregó después de la declaración
         SIS-->>ADM: conflicto
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
 ```
-
 ---
 
 #### DSS — CU-223: Consultar la Carga Actual del Camión
@@ -21888,13 +22084,62 @@ sequenceDiagram
     CHO->>SIS: consultarCargaActual()
     activate SIS
     alt el chofer tiene una carga abierta
-        SIS-->>CHO: carga con lo cargado, lo entregado y lo esperado
+        SIS-->>CHO: carga con lo cargado, lo entregado y lo esperado, y la exigencia de la distribuidora
     else no tiene carga abierta
-        SIS-->>CHO: ninguna carga
+        SIS-->>CHO: carga vacía y la exigencia de la distribuidora
     end
     deactivate SIS
 ```
 
+---
+
+#### DSS — CU-290: Consultar las Cargas del Camión
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-290 Consultar las Cargas del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+    activate SIS
+    alt los filtros son válidos
+        SIS-->>ADM: cargas del camión, con el total
+    else una fecha es inválida o el desde es posterior al hasta
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-291: Consultar una Carga del Camión
+
+**Actor:** Administrador (ACT-03), Chofer (ACT-02)
+**Operaciones del sistema:** `consultarCargaDelCamion(cargaId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-291 Consultar una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCargaDelCamion(cargaId)
+    activate SIS
+    alt la carga existe y es del alcance de quien consulta
+        SIS-->>ADM: detalle de la carga
+    else la carga no existe o no es suya
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+
+    Note over ADM,SIS: También lo inicia el Chofer (ACT-02), sólo de su carga
+```
 ---
 
 #### DSS — CU-224: Conciliar el Stock Vendible con el Físico
@@ -21995,7 +22240,7 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-012, CU-013 
 #### DSS — CU-249: Configurar el Control de Carga de Camión Abierta
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)`
+**Operaciones del sistema:** `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)`, `consultarControlDeCargaAbierta()`
 
 ```mermaid
 sequenceDiagram
@@ -22012,15 +22257,19 @@ sequenceDiagram
         SIS-->>ADM: solicitud inválida, con el detalle del campo
     end
     deactivate SIS
-```
 
+    ADM->>SIS: consultarControlDeCargaAbierta()
+    activate SIS
+    SIS-->>ADM: configuración del control
+    deactivate SIS
+```
 ---
 
 #### DSS — CU-250: Aplicar un Movimiento de Stock
 
 **Actor:** ninguno directo (caso incluido)
 
-Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274, CU-276 y CU-280, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
+Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-219, CU-220, CU-222, CU-274, CU-276 y CU-280, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
 
 ---
 
@@ -23344,6 +23593,7 @@ sequenceDiagram
     participant RT as :RealtimeDispatchPort
     participant CHO as candidato:Chofer
     participant NOT as :NotificationsService
+    participant TLG as :TruckLoadGateService
 
     SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
     SRV->>+PEDS: get(pedidoId)
@@ -23370,6 +23620,7 @@ sequenceDiagram
             end
         end
     end
+    SRV->>TLG: choferesQuePuedenRecibir(elegibles)
     alt Hay un chofer elegible
         SRV->>+PED: ofrecerA(chofer, venceEn)
         create participant OFE as :OfertaDespacho
@@ -23399,6 +23650,7 @@ sequenceDiagram
 | `Pedido.ofrecerA(...)` | `DispatchOrchestratorService.offerToNextDriver`: calcula `DispatchOffer.expiresAt` y llama a `DispatchOfferRepositoryPort.create` |
 | `OfertaDespacho.«create»` | `DispatchOfferRepositoryPort.create`: inserta la `DispatchOffer` en estado `OFFERED` |
 | `RealtimeDispatchPort.notifyAdmins(...)` | `RealtimeDispatchPort.notifyAdmins`: el aviso `order:no-drivers` al panel, con el motivo (sin choferes en el radio, todos agotados o pedido sin punto de entrega); una sola vez por agotamiento, con una marca en Redis que se borra al conseguir una oferta |
+| `TruckLoadGateService.choferesQuePuedenRecibir(...)` | `DispatchOrchestratorService.conCargaSiSeExige` llama a `TruckLoadGatePort.choferesQuePuedenRecibir`, que implementa `TruckLoadGateService.choferesQuePuedenRecibir` (CU-248): deja sólo a los candidatos que pueden recibir pedidos según su carga de camión |
 
 **Observaciones de diseño**
 
@@ -23497,12 +23749,14 @@ sequenceDiagram
     participant PED as pedido:Pedido
     participant OFE as oferta:OfertaDespacho
     participant NOT as :NotificationPort
+    participant TLG as :TruckLoadGateService
 
     CHF->>+UCS: aceptarPedido(pedidoId)
     UCS->>+PEDS: get(pedidoId)
     PEDS-->>-UCS: pedido
     UCS->>CHO: assertElegibleParaAsignacion()
     UCS->>FLK: assertChoferHabilitado(chofer)
+    UCS->>TLG: assertPuedeAceptar(chofer)
     UCS->>+FLK: vehiculoEnUsoDelChofer(chofer)
     FLK-->>-UCS: vehiculo
     UCS->>+PED: aceptar(chofer, vehiculo)
@@ -23531,6 +23785,7 @@ sequenceDiagram
 | `Pedido.transicionar(...)` | `transitionOrder()` |
 | `Pedido.generarCodigoDeEntrega()` | `generateDeliveryCode()`, que queda en `Order.deliveryCode` |
 | `OfertaDespacho.aceptar()` | `DispatchOrchestratorService.onDriverAccepted`: llama a `DispatchOfferRepositoryPort.closeActiveOffer` con el estado `ACCEPTED` |
+| `TruckLoadGateService.assertPuedeAceptar(...)` | `UpdateOrderStatusUseCase.execute` llama a `TruckLoadGatePort.assertPuedeAceptar`, que implementa `TruckLoadGateService.assertPuedeAceptar` (CU-248): responde 400 con el motivo si el chofer no puede recibir pedidos según su carga; no se vuelve a controlar si el chofer ya tenía aceptado el pedido |
 
 ##### Operación: rechazarOferta(pedidoId)
 
@@ -24282,7 +24537,7 @@ sequenceDiagram
 Los 84 diagramas que siguen completan la cobertura: cada caso de uso implementado
 tiene su diagrama de interacción. Se agrupan por subsistema. Los nombres de clase y de
 método son los del código; los alias de participante se escriben sin acentos ni símbolos
-para que los bloques sean importables en draw.io, Lucidchart y Mermaid Live.
+para que los bloques sean importables en draw.io y Mermaid Live.
 
 ### SS-01 — Autenticación y Usuarios
 
@@ -26345,14 +26600,22 @@ sequenceDiagram
     participant SRV as :OrderService
     participant COL as :List#lt;Pedido#gt;
     participant PED as pedido:Pedido
+    participant TLG as :TruckLoadGateService
 
     CHF->>+SRV: consultarPedidosDisponibles(pagina, limite)
-    SRV->>+COL: buscarDisponibles(distribuidoraId, pagina, limite)
-    loop Por cada pedido de la distribuidora
-        COL->>PED: estaDisponible()
+    SRV->>+TLG: motivoParaNoRecibir(chofer)
+    TLG-->>-SRV: motivo
+    alt El chofer no puede recibir pedidos por su carga
+        SRV-->>CHF: pedidos vacíos, motivo
+    else El chofer puede recibir pedidos
+        SRV->>+COL: buscarDisponibles(distribuidoraId, pagina, limite)
+        loop Por cada pedido de la distribuidora
+            COL->>PED: estaDisponible()
+        end
+        COL-->>-SRV: pedidos, total
+        SRV-->>CHF: pedidos, total
     end
-    COL-->>-SRV: pedidos, total
-    SRV-->>-CHF: pedidos, total
+    deactivate SRV
 ```
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
@@ -26366,6 +26629,7 @@ sequenceDiagram
 | `OrderService.consultarPedidosDisponibles(...)` | `OrderController.findAvailableOrders` → `OrderService.findAvailableOrders` |
 | `List<Pedido>.buscarDisponibles(...)` | `OrderService.findAvailableOrders`: `OrderRepositoryPort.findAvailable` pagina con `limit` y `offset` y ordena por `Order.createdAt` ascendente |
 | `Pedido.estaDisponible()` | `OrderRepositoryPort.findAvailable`: la condición `Order.status` pendiente y `Order.deliveryId` nulo va en la consulta |
+| `TruckLoadGateService.motivoParaNoRecibir(...)` | `OrderController.findAvailableOrders` llama a `TruckLoadGatePort.motivoParaNoRecibir`, que implementa `TruckLoadGateService.motivoParaNoRecibir` (CU-248): sólo para un chofer; si hay motivo responde la lista vacía con `openLoadRequired` y el aviso |
 
 **Observaciones de diseño**
 
@@ -26440,6 +26704,7 @@ sequenceDiagram
     participant DEL as :DeliveryService
     participant CHO as chofer:Chofer
     participant FLK as :FleetDispatchLockService
+    participant TLG as :TruckLoadGateService
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
 
@@ -26452,6 +26717,7 @@ sequenceDiagram
     SRV->>FLK: assertChoferHabilitado(chofer)
     SRV->>+FLK: vehiculoEnUsoDelChofer(chofer)
     FLK-->>-SRV: vehiculo
+    SRV->>TLG: assertPuedeAsignar(chofer)
     SRV->>+PED: getChofer()
     PED-->>-SRV: choferAnterior
     SRV->>+PED: asignarChofer(chofer, vehiculo)
@@ -26484,6 +26750,7 @@ sequenceDiagram
 | `Pedido.transicionar(...)` | `transitionOrder()` |
 | `Pedido.generarCodigoDeEntrega()` | `generateDeliveryCode()`, que queda en `Order.deliveryCode` |
 | `Pedido.cerrarOfertas()` | `DispatchOfferRepositoryPort.closeAllActiveOffers`, que cierra las ofertas de `Order.orderId` como vencidas |
+| `TruckLoadGateService.assertPuedeAsignar(...)` | `OrderService.assignDelivery` llama a `TruckLoadGatePort.assertPuedeAsignar`, que implementa `TruckLoadGateService.assertPuedeAsignar` (CU-248): responde 400 con el motivo si el chofer no puede recibir pedidos según su carga de camión |
 
 **Observaciones de diseño**
 
@@ -28795,6 +29062,7 @@ sequenceDiagram
         CHO-->>SRV: asignacion abierta
     else Otro vehículo o ninguno
         CHO->>CHO: assertSinPedidoEnCurso()
+        CHO->>CHO: assertSinCargaAbierta()
         CHO->>LST: cerrarAbiertas(chofer, vehiculo, administrador)
         create participant ASG as :AsignacionVehiculo
         CHO->>ASG: «create»(chofer, vehiculo, administrador, nota)
@@ -28820,6 +29088,7 @@ sequenceDiagram
 | `Chofer.assertSinPedidoEnCurso()` | `VehicleAssignmentService.assertSinViajeEnCurso`: responde 409 si hay una `Order` aceptada o en camino del chofer |
 | `List<AsignacionVehiculo>.cerrarAbiertas(...)` | `VehicleAssignmentService.ponerEnUso`: una sola sentencia que asigna `VehicleAssignment.releasedAt` y `VehicleAssignment.releasedByUserId` en las abiertas del chofer y del vehículo |
 | `AsignacionVehiculo.«create»` | `VehicleAssignmentService.ponerEnUso`: `repo.create` con `VehicleAssignment.assignedAt`, `VehicleAssignment.assignedByUserId` y `VehicleAssignment.note` |
+| `Chofer.assertSinCargaAbierta()` | `VehicleAssignmentService.assertSinCargaAbierta`: responde 409 si el chofer, el que usa el vehículo o el vehículo tienen una carga de camión en carga, en ruta o devuelta |
 
 **Observaciones de diseño**
 
@@ -28851,6 +29120,7 @@ sequenceDiagram
     SRV->>+COL: get(choferId)
     COL-->>-SRV: chofer
     SRV->>CHO: assertSinPedidoEnCurso()
+    SRV->>CHO: assertSinCargaAbierta()
     SRV->>+CHO: getAsignacionAbierta()
     CHO-->>-SRV: asignacion
     SRV->>ASG: liberar(administrador)
@@ -28870,6 +29140,7 @@ sequenceDiagram
 | `Chofer.assertSinPedidoEnCurso()` | `VehicleAssignmentService.assertSinViajeEnCurso`: responde 409 si hay una `Order` aceptada o en camino del chofer |
 | `Chofer.getAsignacionAbierta()` | `VehicleAssignmentService.liberar`: busca la `VehicleAssignment` del chofer con `VehicleAssignment.releasedAt` nulo; responde 404 si no tiene un vehículo en uso |
 | `AsignacionVehiculo.liberar(...)` | `VehicleAssignmentService.liberar`: asigna `VehicleAssignment.releasedAt` y `VehicleAssignment.releasedByUserId` |
+| `Chofer.assertSinCargaAbierta()` | `VehicleAssignmentService.assertSinCargaAbierta`: responde 409 si el chofer tiene una carga de camión en carga, en ruta o devuelta |
 
 **Observaciones de diseño**
 
@@ -34655,6 +34926,8 @@ sequenceDiagram
     ADM->>+SRV: marcarDepositoPredeterminado(depositoId)
     SRV->>+COL: get(depositoId)
     COL-->>-SRV: depositoDeStock
+    SRV->>+DEP: validarQueEstaActivo()
+    DEP-->>-SRV: activo
     SRV->>+DIS: cambiarPredeterminado(depositoElegido)
     DIS->>+ANT: quitarPredeterminado()
     ANT-->>-DIS: predeterminadoQuitado
@@ -34676,6 +34949,7 @@ sequenceDiagram
 | `Distribuidora.cambiarPredeterminado(...)` | `WarehouseService.update`: bloquea el actual y el elegido con `WarehouseService.bloquearPredeterminados` |
 | `Deposito.quitarPredeterminado(...)` | `WarehouseService.sacarPredeterminado`: baja la marca `Warehouse.isDefault` del depósito vigente |
 | `Deposito.marcarPredeterminado(...)` | `WarehouseService.update`: asigna `Warehouse.isDefault` y guarda |
+| `Deposito.validarQueEstaActivo(...)` | `WarehouseService.update`: responde 400 si el depósito elegido, o el que quedaría tras el mismo `PATCH`, está inactivo |
 
 **Observaciones de diseño**
 
@@ -35303,68 +35577,106 @@ sequenceDiagram
 
 #### DSD — CU-218: Registrar la Carga del Camión
 
-##### Operación: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+##### Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-218 Registrar la Carga del Camión · registrarCargaDelCamion
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :TruckLoadService
+    participant SRV as :OpenTruckLoadUseCase
     participant COLV as :Map#lt;String, Vehiculo#gt;
+    participant COLC as :Map#lt;String, Chofer#gt;
     participant COLD as :Map#lt;String, Deposito#gt;
     participant VEH as vehiculo:Vehiculo
-    participant LED as :StockLedgerService
+    participant CHO as chofer:Chofer
 
-    ADM->>+SRV: registrarCargaDelCamion(vehiculoId, depositoId, ayudanteId, items)
+    ADM->>+SRV: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
     SRV->>+COLV: get(vehiculoId)
     COLV-->>-SRV: vehiculo
+    SRV->>+COLC: get(choferId)
+    COLC-->>-SRV: chofer
     SRV->>+COLD: get(depositoId)
     COLD-->>-SRV: deposito
-    SRV->>+VEH: getChoferEnUso()
-    VEH-->>-SRV: chofer
-    alt El vehículo no está en uso por un chofer
-        SRV-->>ADM: conflicto
-    else El vehículo está en uso por un chofer
-        SRV->>+VEH: abrirCarga(chofer, deposito, ayudanteId, items)
-        VEH->>VEH: validarSinCargaAbierta()
-        opt El vehículo todavía no tiene ubicación de stock
-            create participant UBC as nueva:UbicacionDeStock
-            VEH->>UBC: «create»(vehiculo)
-        end
-        create participant CAR as nueva:CargaDeCamion
-        VEH->>CAR: «create»(chofer, deposito, ayudanteId, administrador)
-        loop Por cada tipo de garrafa cargado
-            create participant ICA as nuevo:ItemCarga
-            CAR->>ICA: «create»(producto, llenasCargadas, vaciasCargadas)
-        end
-        VEH-->>-SRV: carga
-        SRV->>+CAR: getUbicacionDelDeposito()
-        CAR-->>-SRV: ubicacionOrigen
-        SRV->>+CAR: getUbicacionDelCamion()
-        CAR-->>-SRV: ubicacionDestino
-        loop Por cada tipo de garrafa cargado
-            SRV->>+ICA: getProducto()
-            ICA-->>-SRV: producto
-            Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-            SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasCargadas, cargaDelCamion)
-            alt El depósito tiene las unidades
-                LED-->>-SRV: aplicado
-            else El depósito no tiene las unidades
-                LED-->>SRV: saldoInsuficiente
-                SRV-->>ADM: solicitudInvalida
-            end
-        end
-        SRV-->>ADM: carga
+    SRV->>+VEH: validarEnUsoPor(chofer)
+    VEH-->>-SRV: enUso
+    SRV->>+VEH: validarSinCargaAbierta()
+    VEH-->>-SRV: sinCargaAbierta
+    SRV->>+CHO: validarSinCargaAbierta()
+    CHO-->>-SRV: sinCargaAbierta
+    create participant CAR as nueva:CargaDeCamion
+    SRV->>CAR: «create»(vehiculo, chofer, deposito, ayudanteId, administrador)
+    loop Por cada tipo de garrafa cargado
+        create participant ICA as nuevo:ItemCarga
+        CAR->>ICA: «create»(producto, llenasCargadas, vaciasCargadas)
     end
-    deactivate SRV
+    SRV-->>-ADM: carga
 ```
 
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), las colecciones `Map<String, Vehiculo>` y `Map<String, Deposito>` y los objetos de dominio `Vehiculo`, `UbicacionDeStock`, `CargaDeCamion` e `ItemCarga`.
+**Clases participantes:** `OpenTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), las colecciones `Map<String, Vehiculo>`, `Map<String, Chofer>` y `Map<String, Deposito>` y los objetos de dominio `Vehiculo`, `Chofer`, `CargaDeCamion` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Creador*: el `Vehiculo` crea su `UbicacionDeStock` (la primera vez que se carga) y las `CargaDeCamion` que transporta; la carga crea sus `ItemCarga` (composición). *Experto*: el `Vehiculo` sabe qué chofer lo tiene en uso, por la asignación de vehículo, y si ya tiene una carga abierta; la `CargaDeCamion` conoce el depósito y el camión, por eso entrega las dos `UbicacionDeStock` del movimiento. *Fabricación pura*: `StockLedgerService` (CU-250).
+**GRASP.** *Controlador*: `OpenTruckLoadUseCase`. *Creador*: el caso de uso crea la `CargaDeCamion`, que inicializa con los datos de la operación, y ésta crea sus `ItemCarga` (composición). *Experto*: el `Vehiculo` sabe qué chofer lo tiene en uso, por la asignación de vehículo, y si ya tiene una carga abierta; el `Chofer` sabe si ya tiene una.
 
-**No se dibuja:** el administrador que opera, que es el autor del registro y no se dibuja como objeto, el número correlativo, los dos índices únicos parciales que respaldan que el vehículo y el chofer tengan una sola carga abierta, el bloqueo de los saldos en el orden global y la reversión de toda la carga si falta stock.
+**No se dibuja:** el administrador que opera, que es el autor del registro y no se dibuja como objeto, el ayudante, que es un legajo que sólo se comprueba que exista, el número correlativo, el día de negocio, los dos índices únicos parciales que respaldan que el vehículo y el chofer tengan una sola carga abierta, el bloqueo del vehículo, del chofer y de las garrafas y la transacción con reintento. Esta operación no mueve stock..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `OpenTruckLoadUseCase.registrarCargaDelCamion(...)` | `TruckLoadController.create` → `OpenTruckLoadUseCase.execute` |
+| `Map<String, Vehiculo>.get(...)` | `OpenTruckLoadUseCase.abrir`: lee el `Car` de la distribuidora con `FOR SHARE`, que frena a `VehicleAssignmentService.ponerEnUso`; responde 404 si no existe |
+| `Map<String, Chofer>.get(...)` | `OpenTruckLoadUseCase.abrir`: lee el `Delivery` con `DeliveryService.findById` y lo bloquea con `bloquearChoferVigente`; responde 404 si no es de la distribuidora |
+| `Map<String, Deposito>.get(...)` | `OpenTruckLoadUseCase.abrir`: la ubicación del depósito indicado con `StockLocationService.ubicacionDeDeposito` o, sin indicar, la del predeterminado con `WarehouseService.asegurarPredeterminado` |
+| `Vehiculo.validarEnUsoPor(...)` | `OpenTruckLoadUseCase.abrir`: compara `VehicleAssignmentService.vehiculoEnUso` del chofer con el vehículo; responde 400 si no coincide |
+| `Vehiculo.validarSinCargaAbierta(...)` | `OpenTruckLoadUseCase.asegurarSinCargaAbierta`: busca en `truck_load` una carga del vehículo en estado en carga, en ruta o devuelta; responde 409 |
+| `Chofer.validarSinCargaAbierta(...)` | `OpenTruckLoadUseCase.asegurarSinCargaAbierta`: la misma consulta, por el chofer; responde 409 |
+| `CargaDeCamion.«create»(...)` | `OpenTruckLoadUseCase.abrir`: guarda el `TruckLoad` en estado `loading`, con el número de `DocumentSequenceService.siguienteNumero` y el instante de apertura del reloj de la base |
+| `ItemCarga.«create»(...)` | `OpenTruckLoadUseCase.abrir`: guarda un `TruckLoadItem` por renglón con sus llenas y vacías cargadas |
+
+**Observaciones de diseño**
+
+- La carga nace «en carga» y no toca el libro de stock: lo cargado sale del depósito al confirmar la salida (CU-219). Por eso abrir una carga con más de lo que hay en el depósito no falla; falla la salida.
+- Dos aperturas simultáneas del mismo vehículo o chofer se resuelven en la base: una gana y la otra recibe 409 por el índice único parcial.
+
+##### Operación: corregirRenglonesDeLaCarga(cargaId, items)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-218 Registrar la Carga del Camión · corregirRenglonesDeLaCarga
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UpdateTruckLoadItemsUseCase
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+
+    ADM->>+SRV: corregirRenglonesDeLaCarga(cargaId, items)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: reemplazarRenglones(items)
+    CAR->>CAR: validarQueEstaEnCarga()
+    loop Por cada tipo de garrafa de la lista nueva
+        create participant ICA as nuevo:ItemCarga
+        CAR->>ICA: «create»(producto, llenasCargadas, vaciasCargadas)
+    end
+    CAR-->>-SRV: carga
+    SRV-->>-ADM: carga
+```
+
+**Clases participantes:** `UpdateTruckLoadItemsUseCase` (controlador: el caso de uso del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
+
+**GRASP.** *Controlador*: `UpdateTruckLoadItemsUseCase`. *Experto*: la `CargaDeCamion` sabe si todavía está en carga y es quien reemplaza sus renglones. *Creador*: la carga crea sus `ItemCarga` (composición).
+
+**No se dibuja:** el borrado de los renglones anteriores, el bloqueo de las garrafas y la transacción con reintento..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UpdateTruckLoadItemsUseCase.corregirRenglonesDeLaCarga(...)` | `TruckLoadController.items` → `UpdateTruckLoadItemsUseCase.execute` |
+| `Map<String, CargaDeCamion>.get(...)` | `bloquearCarga`: lee el `TruckLoad` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `CargaDeCamion.reemplazarRenglones(...)` | `UpdateTruckLoadItemsUseCase.execute`: borra los `TruckLoadItem` de la carga y guarda los nuevos |
+| `CargaDeCamion.validarQueEstaEnCarga(...)` | `puedeHacer('editar', ...)`: responde 400 si la carga ya salió |
+| `ItemCarga.«create»(...)` | `UpdateTruckLoadItemsUseCase.execute`: guarda un `TruckLoadItem` por renglón |
+
+**Observaciones de diseño**
+
+- Los renglones se reemplazan enteros: la lista nueva reemplaza a la anterior y no se suma a ella. No mueve stock.
 
 ##### Operación: reponerCargaDelCamion(cargaId, items)
 
@@ -35373,7 +35685,7 @@ sequenceDiagram
     title DSD — CU-218 Registrar la Carga del Camión · reponerCargaDelCamion
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :TruckLoadService
+    participant SRV as :ReloadTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
     participant ICA as item:ItemCarga
@@ -35382,110 +35694,87 @@ sequenceDiagram
     ADM->>+SRV: reponerCargaDelCamion(cargaId, items)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: reponer(items)
-    CAR->>CAR: validarQueEstaAbierta()
-    loop Por cada tipo de garrafa repuesto
-        CAR->>ICA: sumarRepuesto(llenasRepuestas)
-    end
-    CAR-->>-SRV: carga
+    SRV->>+CAR: validarQueEstaEnRuta()
+    CAR-->>-SRV: enRuta
     SRV->>+CAR: getUbicacionDelDeposito()
     CAR-->>-SRV: ubicacionOrigen
     SRV->>+CAR: getUbicacionDelCamion()
     CAR-->>-SRV: ubicacionDestino
+    Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock de las llenas repuestas y mueve el saldo de las dos ubicaciones
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, items)
+    alt El depósito tiene las llenas
+        LED-->>SRV: lote
+    else El depósito no tiene las llenas
+        LED-->>SRV: saldoInsuficiente
+        SRV-->>ADM: solicitudInvalida
+    end
+    deactivate LED
     loop Por cada tipo de garrafa repuesto
-        SRV->>+ICA: getProducto()
-        ICA-->>-SRV: producto
-        Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasRepuestas, reposicion)
-        alt El depósito tiene las unidades
-            LED-->>-SRV: aplicado
-        else El depósito no tiene las unidades
-            LED-->>SRV: saldoInsuficiente
-            SRV-->>ADM: solicitudInvalida
-        end
+        SRV->>ICA: sumarRepuesto(llenasRepuestas)
     end
     SRV-->>-ADM: carga
 ```
 
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
+**Clases participantes:** `ReloadTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` sabe si está abierta y conoce el depósito y el camión, por eso entrega las dos `UbicacionDeStock` del movimiento; cada `ItemCarga` suma lo repuesto a su renglón. *Fabricación pura*: `StockLedgerService` (CU-250).
+**GRASP.** *Controlador*: `ReloadTruckLoadUseCase`. *Experto*: la `CargaDeCamion` sabe si está en ruta y conoce el depósito de origen y el camión, por eso entrega las dos `UbicacionDeStock` del movimiento; cada `ItemCarga` suma lo repuesto a su renglón. *Fabricación pura*: `StockLedgerService` (CU-250).
 
-**No se dibuja:** el bloqueo de los saldos en el orden global y el guardado.
+**No se dibuja:** la clave de idempotencia, el renglón que se crea si la garrafa no estaba en la carga, el bloqueo de la carga y de los saldos en el orden global y la transacción con reintento..
 
-##### Operación: cancelarCargaDelCamion(cargaId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-218 Registrar la Carga del Camión · cancelarCargaDelCamion
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :TruckLoadService
-    participant COL as :Map#lt;String, CargaDeCamion#gt;
-    participant CAR as carga:CargaDeCamion
-    participant ICA as item:ItemCarga
-    participant LED as :StockLedgerService
-
-    ADM->>+SRV: cancelarCargaDelCamion(cargaId)
-    SRV->>+COL: get(cargaId)
-    COL-->>-SRV: carga
-    SRV->>+CAR: cancelar()
-    CAR->>CAR: validarQueEstaCargando()
-    CAR-->>-SRV: carga
-    SRV->>+CAR: getUbicacionDelCamion()
-    CAR-->>-SRV: ubicacionOrigen
-    SRV->>+CAR: getUbicacionDelDeposito()
-    CAR-->>-SRV: ubicacionDestino
-    loop Por cada tipo de garrafa de la carga
-        SRV->>+ICA: getProducto()
-        ICA-->>-SRV: producto
-        SRV->>+ICA: getLlenasCargadas()
-        ICA-->>-SRV: llenasCargadas
-        Note over SRV,LED: Del camión al depósito: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de las dos ubicaciones
-        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasCargadas, cancelacionDeCarga)
-    end
-    SRV-->>-ADM: carga
-```
-
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
-
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` sabe si todavía está cargando, cambia su propio estado a cancelada y conoce el camión y el depósito, por eso entrega las dos `UbicacionDeStock` del movimiento. *Fabricación pura*: `StockLedgerService` (CU-250) devuelve todo al depósito.
-
-**No se dibuja:** el bloqueo de los saldos en el orden global y el guardado.
-
-##### Operación: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-218 Registrar la Carga del Camión · consultarCargasDelCamion
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :TruckLoadService
-    participant CARS as :List#lt;CargaDeCamion#gt;
-    participant CAR as carga:CargaDeCamion
-
-    ADM->>+SRV: consultarCargasDelCamion(estado, fecha, vehiculoId, choferId)
-    SRV->>+CARS: buscar(estado, fecha, vehiculoId, choferId)
-    loop Por cada carga del filtro
-        CARS->>CAR: getEstado()
-    end
-    CARS-->>-SRV: cargas
-    SRV-->>-ADM: cargas
-```
-
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), la colección `List<CargaDeCamion>` y el objeto de dominio `CargaDeCamion`.
-
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la colección aplica los filtros y la `CargaDeCamion` conoce su estado.
-
-**No se dibuja:** la paginación, el total y lo esperado en vivo de cada renglón.
+| Operación de diseño | Implementación |
+|---|---|
+| `ReloadTruckLoadUseCase.reponerCargaDelCamion(...)` | `TruckLoadController.reloadAction` → `ReloadTruckLoadUseCase.execute` |
+| `Map<String, CargaDeCamion>.get(...)` | `bloquearCarga`: lee el `TruckLoad` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `CargaDeCamion.validarQueEstaEnRuta(...)` | `puedeHacer('reponer', ...)`: responde 400 si la carga no está en ruta |
+| `CargaDeCamion.getUbicacionDelDeposito(...)` | `ReloadTruckLoadUseCase.execute`: la ubicación de origen guardada en `TruckLoad.originLocationId` |
+| `CargaDeCamion.getUbicacionDelCamion(...)` | `ReloadTruckLoadUseCase.execute`: la ubicación del vehículo con `StockLocationService.ubicacionDeVehiculo` |
+| `StockLedgerService.aplicar(...)` | `StockLedgerService.aplicar`: un movimiento `truck_load` de llenas por garrafa, del depósito al camión; responde 400 con el saldo disponible si no alcanza |
+| `ItemCarga.sumarRepuesto(...)` | `ReloadTruckLoadUseCase.execute`: suma a `TruckLoadItem.reloadedFull`; crea el renglón si la garrafa no estaba |
 
 **Observaciones de diseño**
 
-- La carga abierta es la que está cargando, en ruta o regresó, hasta que se cierra la rendición.
-- El control de despacho a un chofer sin carga abierta es opcional por distribuidora (CU-248 y CU-249) y viene apagado.
-- La reposición aplica mientras la carga está cargando o en ruta: son más movimientos del depósito al camión sobre la misma hoja.
-- Sólo se cancela una carga que no salió: una carga en ruta se cierra con el regreso y la rendición.
-- El tablero del día muestra, por camión, el estado, lo cargado, lo entregado y lo esperado.
+- Sólo se repone con la carga en ruta, sólo llenas y desde el depósito de origen de la carga. Repetir la reposición suma otra vez, por eso la clave de idempotencia es obligatoria.
+
+---
+
+#### DSD — CU-289: Cancelar una Carga del Camión
+
+##### Operación: cancelarCargaDelCamion(cargaId, motivo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-289 Cancelar una Carga del Camión · cancelarCargaDelCamion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CancelTruckLoadUseCase
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+
+    ADM->>+SRV: cancelarCargaDelCamion(cargaId, motivo)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: cancelar(motivo)
+    CAR->>CAR: validarQueEstaEnCarga()
+    CAR-->>-SRV: carga
+    SRV-->>-ADM: carga
+```
+
+**Clases participantes:** `CancelTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y el objeto de dominio `CargaDeCamion`.
+
+**GRASP.** *Controlador*: `CancelTruckLoadUseCase`. *Experto*: la `CargaDeCamion` sabe si todavía está en carga y cambia su propio estado a «cancelada».
+
+**No se dibuja:** el instante y el usuario de la cancelación, el bloqueo de la carga y la transacción con reintento. No hay movimiento de stock: en estado «en carga» todavía no salió nada del depósito..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CancelTruckLoadUseCase.cancelarCargaDelCamion(...)` | `TruckLoadController.cancelAction` → `CancelTruckLoadUseCase.execute` |
+| `Map<String, CargaDeCamion>.get(...)` | `bloquearCarga`: lee el `TruckLoad` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `CargaDeCamion.cancelar(...)` | `CancelTruckLoadUseCase.execute`: fija `TruckLoad.status` en `cancelled`, `TruckLoad.cancelReason`, `TruckLoad.closedAt` y `TruckLoad.closedByUserId` |
+| `CargaDeCamion.validarQueEstaEnCarga(...)` | `puedeHacer('cancelar', ...)`: responde 400 si la carga ya salió |
+
+**Observaciones de diseño**
+
+- Cancelar libera al vehículo y al chofer porque deja de contar como carga abierta (los índices únicos parciales sólo alcanzan a las cargas en carga, en ruta o devueltas).
 
 ---
 
@@ -35498,30 +35787,57 @@ sequenceDiagram
     title DSD — CU-219 Registrar la Salida del Camión · registrarSalidaDelCamion
     autonumber
     actor CHO as Chofer (ACT-02)
-    participant SRV as :TruckLoadService
+    participant SRV as :DepartTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
+    participant UBC as camion:UbicacionDeStock
+    participant LED as :StockLedgerService
 
     CHO->>+SRV: registrarSalidaDelCamion(cargaId)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: salir(ahora)
-    CAR->>CAR: validarQueEstaCargando()
-    CAR-->>-SRV: carga
+    SRV->>+CAR: validarQuePuedeSalir()
+    CAR-->>-SRV: puedeSalir
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionDestino
+    SRV->>+UBC: validarVacia()
+    UBC-->>-SRV: vacia
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionOrigen
+    Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock de las llenas y de los vacíos de cada renglón y mueve el saldo de las dos ubicaciones
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, renglones)
+    alt El depósito tiene las unidades
+        LED-->>SRV: lote
+    else El depósito no tiene las unidades
+        LED-->>SRV: saldoInsuficiente
+        SRV-->>CHO: solicitudInvalida
+    end
+    deactivate LED
+    SRV->>CAR: marcarEnRuta()
     SRV-->>-CHO: carga
     Note over CHO,SRV: También lo inicia el Administrador (ACT-03)
 ```
 
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), la colección `Map<String, CargaDeCamion>` y el objeto de dominio `CargaDeCamion`.
+**Clases participantes:** `DepartTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` y `UbicacionDeStock`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` conoce su estado, valida que pueda salir y registra el instante de salida; el estado no se asigna desde afuera.
+**GRASP.** *Controlador*: `DepartTruckLoadUseCase`. *Experto*: la `CargaDeCamion` sabe si está en carga y si lleva algo, conoce el depósito y el camión, y cambia su propio estado a «en ruta»; la `UbicacionDeStock` del camión sabe si tiene garrafas. *Fabricación pura*: `StockLedgerService` (CU-250).
 
-**No se dibuja:** la verificación de que la carga sea del chofer que la pide, o de la distribuidora si la pide el administrador, y el guardado.
+**No se dibuja:** el alcance del chofer sobre la carga, la lectura de los renglones, el instante de la salida, el bloqueo de la carga y de los saldos en el orden global y la transacción con reintento: si el libro rechaza el movimiento, la carga sigue en carga..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DepartTruckLoadUseCase.registrarSalidaDelCamion(...)` | `TruckLoadController.departAction` → `DepartTruckLoadUseCase.execute` |
+| `Map<String, CargaDeCamion>.get(...)` | `bloquearCarga` y `asegurarAlcance`: lee el `TruckLoad` con `FOR UPDATE`; responde 404 si no existe o, para un chofer, es de otro chofer |
+| `CargaDeCamion.validarQuePuedeSalir(...)` | `puedeHacer('salir', ...)` responde 400 si la carga no está en carga, y `validarQueLlevaAlgo` responde 400 si ningún renglón lleva garrafas |
+| `CargaDeCamion.getUbicacionDelCamion(...)` | `DepartTruckLoadUseCase.execute`: la ubicación del vehículo con `StockLocationService.ubicacionDeVehiculo` |
+| `UbicacionDeStock.validarVacia(...)` | `DepartTruckLoadUseCase.execute`: `StockOnHandService.tiposConSaldo` del camión; responde 400 si tiene garrafas |
+| `CargaDeCamion.getUbicacionDelDeposito(...)` | `DepartTruckLoadUseCase.execute`: la ubicación de origen guardada en `TruckLoad.originLocationId` |
+| `StockLedgerService.aplicar(...)` | `StockLedgerService.aplicar`: un movimiento `truck_load` por renglón y condición (llenas y vacías), en una sola operación; responde 400 con el saldo disponible si no alcanza |
+| `CargaDeCamion.marcarEnRuta(...)` | `DepartTruckLoadUseCase.execute`: fija `TruckLoad.status` en `on_route` y `TruckLoad.departedAt` |
 
 **Observaciones de diseño**
 
-- No mueve stock: la mercadería ya está en el camión desde que se abrió la carga.
-- El mismo endpoint sirve a las dos aplicaciones, con guardas distintas por rol.
+- El camión sale vacío: lo que ya tuviera suelto se devolvería como sobrante al rendir, por eso hay que devolverlo antes. Si el depósito no alcanza para algún renglón, no sale ninguno.
 
 ---
 
@@ -35578,7 +35894,7 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: el del caso base. *Experto*: el `Pedido` conoce sus ítems y sabe qué garrafas ya tienen su movimiento de entrega; el `Vehiculo` y el `Deposito` saben si tienen llenas suficientes en su ubicación; la `Distribuidora` conoce su depósito predeterminado. *Fabricación pura*: `StockLedgerService` descuenta las llenas, acredita las vacías y no toca el stock vendible.
 
-**No se dibuja:** el punto de control propio dentro de la transacción del pedido, que se intenta 3 veces en total ante un bloqueo cruzado, la lectura de las llenas sin bloqueo (la validación firme la hace el libro) y la idempotencia, que sostienen la revisión previa y un índice único parcial por pedido, garrafa y motivo.
+**No se dibuja:** el punto de control propio dentro de la transacción del pedido, que se intenta 3 veces en total ante un bloqueo cruzado o un saldo que otra operación vació entre la lectura y el libro, releyendo los saldos en cada intento (se descuentan las garrafas que alcanzan y se omite sólo la que no), la lectura de las llenas sin bloqueo (la validación firme la hace el libro) y la idempotencia, que sostienen la revisión previa y un índice único parcial por pedido, garrafa y motivo.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -35590,7 +35906,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El camión del pedido va primero y el depósito predeterminado después (`StockDeliveryService.elegirOrigen`); la vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno.
+- El camión del pedido va primero y el depósito predeterminado después (`StockDeliveryService.elegirOrigen`); la vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno. Con una carga de camión abierta, el camión del pedido es el de la carga: el chofer no puede cambiar de vehículo mientras tanto (CU-161 y CU-162).
 - Nunca bloquea la entrega: lo que no pudo descontar queda para la conciliación (CU-224) y se resuelve con CU-278.
 
 ---
@@ -35604,36 +35920,53 @@ sequenceDiagram
     title DSD — CU-221 Registrar el Regreso del Camión · registrarRegresoDelCamion
     autonumber
     actor CHO as Chofer (ACT-02)
-    participant SRV as :TruckLoadService
+    participant SRV as :ReturnTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
+    participant CHF as chofer:Chofer
     participant ICA as item:ItemCarga
 
     CHO->>+SRV: registrarRegresoDelCamion(cargaId, devueltos)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: registrarRegreso(devueltos, ahora)
-    CAR->>CAR: validarQueEstaEnRuta()
-    loop Por cada tipo de garrafa de la carga
-        CAR->>+ICA: declararRegreso(llenasDevueltas, vaciasDevueltas)
-        ICA->>ICA: calcularEsperado()
-        deactivate ICA
+    SRV->>+CAR: validarQuePuedeDeclararElRegreso()
+    CAR-->>-SRV: puedeDeclarar
+    SRV->>+CAR: getChofer()
+    CAR-->>-SRV: chofer
+    SRV->>+CHF: getPedidosEnCurso()
+    CHF-->>-SRV: pedidosEnCurso
+    alt El chofer tiene pedidos en curso
+        SRV-->>CHO: conflicto
+    else El chofer no tiene pedidos en curso
+        SRV->>+CAR: declararRegreso(devueltos)
+        loop Por cada tipo de garrafa de la carga
+            CAR->>ICA: declarar(llenasDeclaradas, vaciasDeclaradas)
+        end
+        CAR-->>-SRV: carga
     end
-    CAR-->>-SRV: carga
     SRV-->>-CHO: carga
     Note over CHO,SRV: También lo inicia el Administrador (ACT-03)
 ```
 
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
+**Clases participantes:** `ReturnTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion`, `Chofer` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Creador*: no crea nada. *Experto*: cada `ItemCarga` conoce lo cargado, lo repuesto, lo entregado y lo recolectado, así que es quien calcula lo esperado; la `CargaDeCamion` conoce su estado y su instante de regreso.
+**GRASP.** *Controlador*: `ReturnTruckLoadUseCase`. *Experto*: la `CargaDeCamion` sabe si admite la declaración, conoce a su chofer, pasa a «devuelta» y reparte lo declarado entre sus renglones; el `Chofer` conoce sus pedidos en curso; cada `ItemCarga` guarda lo que se declaró de su garrafa.
 
-**No se dibuja:** la verificación de que la carga sea del chofer o de la distribuidora, la lectura de lo entregado y lo recolectado, que se acumulan al confirmar cada entrega, y el guardado.
+**No se dibuja:** el alcance del chofer sobre la carga, la validación de que la declaración cubra todos los renglones sin repetidos ni garrafas ajenas, el instante del regreso, el cálculo de lo esperado, que se hace al consultar y al cerrar, y la transacción con reintento..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReturnTruckLoadUseCase.registrarRegresoDelCamion(...)` | `TruckLoadController.returnAction` → `ReturnTruckLoadUseCase.execute` |
+| `Map<String, CargaDeCamion>.get(...)` | `bloquearCarga` y `asegurarAlcance`: lee el `TruckLoad` con `FOR UPDATE`; responde 404 si no existe o, para un chofer, es de otro chofer |
+| `CargaDeCamion.validarQuePuedeDeclararElRegreso(...)` | `puedeHacer('declarar', ...)`: responde 400 si la carga no está en ruta ni devuelta |
+| `CargaDeCamion.getChofer(...)` | `TruckLoad.deliveryId` |
+| `Chofer.getPedidosEnCurso(...)` | `ReturnTruckLoadUseCase.execute`: `OrderLookupService.countEnCurso` cuenta los pedidos aceptados o en camino del chofer; responde 409 si hay alguno |
+| `CargaDeCamion.declararRegreso(...)` | `ReturnTruckLoadUseCase.execute`: valida con `validarDeclaracion` y fija `TruckLoad.status` en `returned` y `TruckLoad.returnedAt` |
+| `ItemCarga.declarar(...)` | `ReturnTruckLoadUseCase.execute`: fija `TruckLoadItem.declaredReturnFull` y `TruckLoadItem.declaredReturnEmpty` |
 
 **Observaciones de diseño**
 
-- Lo esperado es lo cargado más lo repuesto menos lo entregado, y lo vacío cargado más lo recolectado. La diferencia con lo declarado se resuelve al cerrar la rendición (CU-222).
-- Sólo declara: no mueve stock, para que el chofer no pueda inflar ni vaciar el stock desde su aplicación.
+- Se puede volver a declarar mientras la rendición no se cerró; cada declaración reemplaza a la anterior.
 
 ---
 
@@ -35646,60 +35979,67 @@ sequenceDiagram
     title DSD — CU-222 Cerrar la Rendición de Stock del Camión · cerrarRendicionDeStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :TruckLoadService
+    participant SRV as :CloseTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
     participant ICA as item:ItemCarga
     participant LED as :StockLedgerService
-    participant PRO as producto:Producto
 
     ADM->>+SRV: cerrarRendicionDeStock(cargaId, nota)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: cerrar(nota, administrador)
-    CAR->>CAR: validarQueRegreso()
+    SRV->>+CAR: validarQueEstaDevuelta()
+    CAR-->>-SRV: devuelta
+    opt El camión entregó después de que el chofer declaró
+        SRV->>+CAR: getEntregasPosterioresALaDeclaracion()
+        CAR-->>-SRV: entregasTardias
+        SRV-->>ADM: conflicto
+    end
     loop Por cada tipo de garrafa de la carga
-        CAR->>ICA: calcularDiferencia()
+        SRV->>+ICA: calcularEsperado()
+        ICA-->>-SRV: esperado
+        SRV->>ICA: calcularDiferencia()
     end
     opt Hay diferencia entre lo declarado y lo esperado
-        CAR->>CAR: validarNotaDeDiferencia(nota)
+        SRV->>+CAR: validarNotaDeDiferencia(nota)
+        CAR-->>-SRV: notaValida
     end
-    CAR-->>-SRV: carga
     SRV->>+CAR: getUbicacionDelCamion()
     CAR-->>-SRV: ubicacionOrigen
     SRV->>+CAR: getUbicacionDelDeposito()
     CAR-->>-SRV: ubicacionDestino
-    loop Por cada tipo de garrafa de la carga
-        SRV->>+ICA: getProducto()
-        ICA-->>-SRV: producto
-        SRV->>+ICA: getLlenasDeclaradas()
-        ICA-->>-SRV: llenasDeclaradas
-        Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma<br/>y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del camión
-        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasDeclaradas, cierreDeRendicion)
-        opt Faltaron garrafas llenas
-            SRV->>PRO: restarStock(faltante)
-            alt El stock vendible alcanza para el faltante
-                PRO-->>SRV: restado
-            else El stock vendible quedaría negativo
-                PRO-->>SRV: vendibleInsuficiente
-                SRV-->>ADM: solicitudInvalida
-            end
-        end
-    end
+    Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma<br/>y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y deja en cero el saldo del camión
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, plan)
+    LED-->>-SRV: lote
+    SRV->>+CAR: cerrar(nota)
+    CAR-->>-SRV: carga
     SRV-->>-ADM: carga
 ```
 
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion`, `ItemCarga` y `Producto`.
+**Clases participantes:** `CloseTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `CargaDeCamion` valida que haya regresado, calcula su diferencia a partir de sus `ItemCarga`, exige la nota cuando la hay y cambia su propio estado a cerrada o cerrada con diferencia; el `Producto` descuenta de su stock vendible lo que faltó. *Fabricación pura*: `StockLedgerService` (CU-250).
+**GRASP.** *Controlador*: `CloseTruckLoadUseCase`. *Experto*: cada `ItemCarga` calcula lo que se esperaba de su garrafa y la diferencia contra lo declarado; la `CargaDeCamion` sabe si está devuelta, si se entregó después de la declaración, si la nota explica la diferencia, y cambia su propio estado a «cerrada» o «cerrada con diferencia». *Fabricación pura*: `StockLedgerService` (CU-250) devuelve lo declarado al depósito, asienta el faltante y el sobrante y ajusta el stock vendible.
 
-**No se dibuja:** el bloqueo de los saldos en el orden global, la elección entre cerrada y cerrada con diferencia y la reversión de todo el cierre si el vendible quedaría negativo.
+**No se dibuja:** el bloqueo de las garrafas, el depósito y los saldos en el orden del libro antes de leer lo entregado, el renglón propio de lo que el camión tiene y la carga no lista, las defectuosas que vuelven tal cual, el congelamiento de las cifras en los renglones, el usuario y el instante del cierre, y la transacción con reintento..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CloseTruckLoadUseCase.cerrarRendicionDeStock(...)` | `TruckLoadController.closeAction` → `CloseTruckLoadUseCase.execute` |
+| `Map<String, CargaDeCamion>.get(...)` | `bloquearCarga`: lee el `TruckLoad` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `CargaDeCamion.validarQueEstaDevuelta(...)` | `puedeHacer('cerrar', ...)`: responde 400 si la carga no está devuelta |
+| `CargaDeCamion.getEntregasPosterioresALaDeclaracion(...)` | `CloseTruckLoadUseCase.execute`: `StockOnHandService.movimientosDelCamion` desde `TruckLoad.returnedAt`; responde 409 si hubo entregas |
+| `ItemCarga.calcularEsperado(...)` | `esperadoDe`: llenas cargadas más repuestas menos entregadas, y vacías cargadas más recolectadas, con lo entregado leído del libro |
+| `ItemCarga.calcularDiferencia(...)` | `planDeCierre`: declarado menos esperado de cada renglón |
+| `CargaDeCamion.validarNotaDeDiferencia(...)` | `CloseTruckLoadUseCase.execute`: responde 400 si `planDeCierre` encuentra diferencia y la nota está vacía |
+| `CargaDeCamion.getUbicacionDelCamion(...)` | `CloseTruckLoadUseCase.execute`: la ubicación del vehículo con `StockLocationService.ubicacionDeVehiculo` |
+| `CargaDeCamion.getUbicacionDelDeposito(...)` | `CloseTruckLoadUseCase.execute`: la ubicación de origen guardada en `TruckLoad.originLocationId` |
+| `StockLedgerService.aplicar(...)` | `StockLedgerService.aplicar`: movimientos `truck_return` de lo declarado, `shrinkage` del faltante y `adjustment` del sobrante, en una sola operación |
+| `CargaDeCamion.cerrar(...)` | `CloseTruckLoadUseCase.execute`: congela las cifras en los `TruckLoadItem` y fija `TruckLoad.status` con `estadoDeCierre`, más `TruckLoad.closedAt` y `TruckLoad.differenceNote` |
 
 **Observaciones de diseño**
 
-- Invariante: al cerrar, el saldo del camión queda en cero.
-- El faltante de llenas descuenta también del stock vendible; un sobrante entra como ajuste con la carga como documento de origen.
-- Una diferencia puede generar un cargo al chofer en el módulo de caja (I-14); este caso sólo la asienta.
+- El faltante de llenas baja el stock vendible y el sobrante lo sube, dentro de la misma operación del libro; si el libro rechaza el movimiento, la carga sigue devuelta.
+- Una entrega que se asienta entre la declaración y el cierre no se pierde: el cierre responde 409 y el chofer declara de nuevo.
 
 ---
 
@@ -35712,36 +36052,139 @@ sequenceDiagram
     title DSD — CU-223 Consultar la Carga Actual del Camión · consultarCargaActual
     autonumber
     actor CHO as Chofer (ACT-02)
-    participant SRV as :TruckLoadService
+    participant SRV as :TruckLoadQueryService
     participant COLC as :Map#lt;String, Chofer#gt;
     participant CHF as chofer:Chofer
-    participant VEH as vehiculo:Vehiculo
+    participant DIS as distribuidora:Distribuidora
     participant CAR as carga:CargaDeCamion
     participant ICA as item:ItemCarga
 
     CHO->>+SRV: consultarCargaActual()
     SRV->>+COLC: get(choferId)
     COLC-->>-SRV: chofer
-    SRV->>+CHF: getVehiculoEnUso()
-    CHF-->>-SRV: vehiculo
-    SRV->>+VEH: getCargaAbierta()
-    VEH-->>-SRV: carga
-    SRV->>CAR: getItems()
-    loop Por cada tipo de garrafa de la carga
-        SRV->>ICA: getEsperado()
+    SRV->>+CHF: getCargaAbierta()
+    CHF-->>-SRV: carga
+    SRV->>+DIS: getExigirCargaDeCamionAbierta()
+    DIS-->>-SRV: exigida
+    opt El chofer tiene una carga abierta
+        SRV->>+CAR: getItems()
+        loop Por cada tipo de garrafa de la carga
+            CAR->>ICA: getEsperado()
+        end
+        CAR-->>-SRV: items
     end
-    SRV-->>-CHO: carga
+    SRV-->>-CHO: carga, exigida
 ```
 
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer`, `Vehiculo`, `CargaDeCamion` e `ItemCarga`.
+**Clases participantes:** `TruckLoadQueryService` (controlador de las lecturas del módulo de carga de camiones), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer`, `Distribuidora`, `CargaDeCamion` e `ItemCarga`.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: el `Chofer` conoce su vehículo en uso, el `Vehiculo` su carga abierta y cada `ItemCarga` lo que debería quedar en el camión.
+**GRASP.** *Controlador*: `TruckLoadQueryService`. *Experto*: el `Chofer` conoce su carga abierta, la `Distribuidora` sabe si exige tenerla, y la `CargaDeCamion` y cada `ItemCarga` conocen sus renglones y lo esperado.
 
-**No se dibuja:** la resolución del chofer desde la sesión y el armado de la respuesta.
+**No se dibuja:** el cálculo de lo entregado contra el libro de stock y la conversión a la respuesta..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TruckLoadQueryService.consultarCargaActual(...)` | `TruckLoadController.mine` → `TruckLoadQueryService.miCarga` |
+| `Map<String, Chofer>.get(...)` | `TruckLoadQueryService.miCarga`: `DeliveryService.findOneByUserId` del usuario autenticado |
+| `Chofer.getCargaAbierta(...)` | `TruckLoadQueryService.miCarga`: busca en `truck_load` la carga del chofer en estado en carga, en ruta o devuelta; vacía si no hay |
+| `Distribuidora.getExigirCargaDeCamionAbierta(...)` | `StockControlSettingsService.obtener`: devuelve el parámetro `requireOpenTruckLoad` |
+| `CargaDeCamion.getItems(...)` | `TruckLoadQueryService.detalle`: los `TruckLoadItem` de la carga |
+| `ItemCarga.getEsperado(...)` | `TruckLoadQueryService.detalle`: lo esperado de cada renglón, calculado en vivo contra el libro |
 
 **Observaciones de diseño**
 
-- Si el chofer no tiene un vehículo en uso o una carga abierta, la respuesta es vacía y no un error.
+- La respuesta lleva siempre la exigencia de la distribuidora, haya o no carga abierta, para que la aplicación explique por qué no recibe pedidos.
+
+---
+
+#### DSD — CU-290: Consultar las Cargas del Camión
+
+##### Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-290 Consultar las Cargas del Camión · consultarCargasDelCamion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TruckLoadQueryService
+    participant CARS as :List#lt;CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+
+    ADM->>+SRV: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+    SRV->>+CARS: buscar(estado, desde, hasta, vehiculoId, choferId)
+    loop Por cada carga del filtro
+        CARS->>CAR: getEstado()
+    end
+    CARS-->>-SRV: cargas
+    SRV-->>-ADM: cargas
+```
+
+**Clases participantes:** `TruckLoadQueryService` (controlador de las lecturas del módulo de carga de camiones), la colección `List<CargaDeCamion>` y el objeto de dominio `CargaDeCamion`.
+
+**GRASP.** *Controlador*: `TruckLoadQueryService`. *Experto*: la colección aplica los filtros y la `CargaDeCamion` conoce su estado.
+
+**No se dibuja:** la paginación, el total y el orden por día de negocio y número descendentes..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TruckLoadQueryService.consultarCargasDelCamion(...)` | `TruckLoadController.list` → `TruckLoadQueryService.listar` |
+| `List<CargaDeCamion>.buscar(...)` | `TruckLoadQueryService.listar`: filtra `truck_load` por distribuidora, estado, día o rango de días, vehículo y chofer; responde 400 si una fecha es inválida o el desde es posterior al hasta |
+| `CargaDeCamion.getEstado(...)` | `TruckLoadQueryService.listar`: devuelve `TruckLoad.status` de cada fila |
+
+**Observaciones de diseño**
+
+- El filtro por día usa el día de negocio de la carga, en hora argentina, y no el instante de apertura.
+
+---
+
+#### DSD — CU-291: Consultar una Carga del Camión
+
+##### Operación: consultarCargaDelCamion(cargaId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-291 Consultar una Carga del Camión · consultarCargaDelCamion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TruckLoadQueryService
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+    participant ICA as item:ItemCarga
+
+    ADM->>+SRV: consultarCargaDelCamion(cargaId)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: getItems()
+    loop Por cada tipo de garrafa de la carga
+        CAR->>ICA: getEsperado()
+    end
+    CAR-->>-SRV: items
+    SRV->>+CAR: getPedidosEntregados()
+    CAR-->>-SRV: pedidos
+    SRV->>+CAR: getMovimientos()
+    CAR-->>-SRV: movimientos
+    SRV-->>-ADM: carga
+    Note over ADM,SRV: También lo inicia el Chofer (ACT-02), sólo de su carga
+```
+
+**Clases participantes:** `TruckLoadQueryService` (controlador de las lecturas del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
+
+**GRASP.** *Controlador*: `TruckLoadQueryService`. *Experto*: la `CargaDeCamion` conoce sus renglones, los pedidos que se entregaron con su camión y sus movimientos de stock; cada `ItemCarga` conoce lo que se esperaba de su garrafa.
+
+**No se dibuja:** el alcance del chofer sobre la carga, el cálculo del efectivo de la jornada y la conversión a la respuesta..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TruckLoadQueryService.consultarCargaDelCamion(...)` | `TruckLoadController.detail` → `TruckLoadQueryService.detalle` |
+| `Map<String, CargaDeCamion>.get(...)` | `TruckLoadQueryService.detalle`: lee la carga de la distribuidora, y del chofer si lo pide un chofer; responde 404 si no existe o es ajena |
+| `CargaDeCamion.getItems(...)` | `TruckLoadQueryService.detalle`: los `TruckLoadItem` de la carga |
+| `ItemCarga.getEsperado(...)` | `TruckLoadQueryService.detalle`: en vivo contra el libro mientras la carga está abierta; cifras congeladas al cerrar |
+| `CargaDeCamion.getPedidosEntregados(...)` | `TruckLoadQueryService.detalle`: `OrderLookupService` lista los pedidos que el chofer entregó con ese camión durante la carga, y arma el efectivo de la jornada |
+| `CargaDeCamion.getMovimientos(...)` | `TruckLoadQueryService.detalle`: los movimientos de `stock_movement` que tienen la carga como documento |
+
+**Observaciones de diseño**
+
+- El efectivo de la jornada es informativo: no mueve dinero ni genera cargo al chofer.
 
 ---
 
@@ -35952,53 +36395,58 @@ sequenceDiagram
 
 #### DSD — CU-248: Verificar la Carga de Camión Abierta del Chofer
 
-##### Caso incluido: verificarCargaDeCamionAbierta(chofer)
+##### Operación: verificarCargaDeCamionAbierta(chofer)
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-248 Verificar la Carga de Camión Abierta del Chofer · verificarCargaDeCamionAbierta
     autonumber
     participant SRV as :DispatchOrchestratorService
-    participant TLS as :TruckLoadService
-    participant CHO as chofer:Chofer
+    participant TLG as :TruckLoadGateService
     participant DIS as distribuidora:Distribuidora
-    participant CFG as configuracion:ConfiguracionModulo
-    participant VEH as vehiculo:Vehiculo
+    participant CHO as chofer:Chofer
+    participant CAR as carga:CargaDeCamion
 
-    Note over SRV,TLS: Caso incluido desde CU-012, CU-013 y CU-015
-    SRV->>+TLS: verificarCargaDeCamionAbierta(chofer)
-    TLS->>+CHO: getDistribuidora()
-    CHO-->>-TLS: distribuidora
-    TLS->>+DIS: getConfiguracion(controlDeStock)
-    DIS-->>-TLS: configuracion
-    TLS->>+CFG: getExigirCargaDeCamionAbierta()
-    CFG-->>-TLS: exigida
-    alt La distribuidora exige una carga de camión abierta
-        TLS->>+CHO: getVehiculoEnUso()
-        CHO-->>-TLS: vehiculo
-        TLS->>+VEH: getCargaAbierta()
-        VEH-->>-TLS: carga
-        alt El chofer no tiene una carga abierta
-            TLS-->>SRV: rechazado
-        else El chofer tiene una carga abierta
-            TLS-->>SRV: habilitado
+    Note over SRV,TLG: Caso incluido desde CU-012, CU-013, CU-015 y CU-080
+    SRV->>+TLG: verificarCargaDeCamionAbierta(chofer)
+    TLG->>+DIS: getExigirCargaDeCamionAbierta()
+    DIS-->>-TLG: exigida
+    TLG->>+CHO: getCargaAbierta()
+    CHO-->>-TLG: carga
+    alt El chofer tiene una carga abierta
+        TLG->>+CAR: estaEnRutaCon(vehiculoEnUso)
+        CAR-->>-TLG: puedeRecibir
+        alt La carga está en ruta con el vehículo en uso
+            TLG-->>SRV: habilitado
+        else La carga no salió, ya volvió o el vehículo en uso es otro
+            TLG-->>SRV: rechazado
         end
-    else La distribuidora no lo exige
-        TLS-->>SRV: habilitado
+    else El chofer no tiene carga abierta
+        alt La distribuidora exige una carga abierta
+            TLG-->>SRV: rechazado
+        else La distribuidora no la exige
+            TLG-->>SRV: habilitado
+        end
     end
-    deactivate TLS
+    deactivate TLG
 ```
 
-**Clases participantes:** `TruckLoadService` (controlador de fachada del módulo de carga de camiones, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Chofer`, `Distribuidora`, `ConfiguracionModulo` y `Vehiculo`.
+**Clases participantes:** `TruckLoadGateService` (controlador: la regla de quién recibe pedidos según su carga) y los objetos de dominio `Distribuidora`, `Chofer` y `CargaDeCamion`. El que lo incluye es `DispatchOrchestratorService`, `OrderService` o `UpdateOrderStatusUseCase`, según el caso base.
 
-**GRASP.** *Controlador*: `TruckLoadService`. *Experto*: la `ConfiguracionModulo` conoce el parámetro, el `Chofer` conoce su vehículo en uso y el `Vehiculo` su carga abierta.
+**GRASP.** *Controlador*: `TruckLoadGateService`. *Experto*: la `Distribuidora` sabe si exige la carga, el `Chofer` conoce su carga abierta y la `CargaDeCamion` sabe si está en ruta con el vehículo que el chofer usa. Bajo acoplamiento: el despacho depende de un puerto (`TruckLoadGatePort`) y no del módulo de carga.
 
-**No se dibuja:** la lectura de la configuración con una copia en memoria y el aviso al administrador cuando se rechaza el despacho.
+**No se dibuja:** la lectura única que une la carga y la asignación de vehículo, los textos de cada motivo, que cambian según lo pide el despacho, la aceptación, la asignación o el pool, y la rama de la oferta que simplemente saltea al chofer..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TruckLoadGateService.verificarCargaDeCamionAbierta(...)` | `DispatchOrchestratorService.conCargaSiSeExige` → `TruckLoadGateService.choferesQuePuedenRecibir` para las ofertas; `UpdateOrderStatusUseCase` → `TruckLoadGateService.assertPuedeAceptar` para la aceptación; `OrderService.assignDelivery` → `TruckLoadGateService.assertPuedeAsignar` para la asignación manual; `OrderController.findAvailableOrders` → `TruckLoadGateService.motivoParaNoRecibir` para el pool |
+| `Distribuidora.getExigirCargaDeCamionAbierta(...)` | `StockControlSettingsService.obtener`: devuelve el parámetro `requireOpenTruckLoad` |
+| `Chofer.getCargaAbierta(...)` | `TruckLoadGateService.leer`: une `truck_load` abierta (en carga, en ruta o devuelta) con la `vehicle_assignment` sin liberar del chofer |
+| `CargaDeCamion.estaEnRutaCon(...)` | `motivoSinPedidos`: rechaza si la carga no está en ruta, o si el vehículo en uso no es el de la carga; sin carga, rechaza sólo si la distribuidora exige tenerla |
 
 **Observaciones de diseño**
 
-- El control viene apagado: sin la configuración, o con el parámetro en falso, el chofer queda habilitado. Se prende por distribuidora desde CU-249.
-- Si está prendido y el chofer no tiene carga abierta, el despacho automático lo saltea y la asignación manual responde 409.
+- Con una carga abierta el chofer sólo recibe en ruta, con o sin el control de la distribuidora: en carga todavía no salió el stock y devuelta ya declaró la vuelta.
 
 ---
 
@@ -36011,7 +36459,7 @@ sequenceDiagram
     title DSD — CU-249 Configurar el Control de Carga de Camión Abierta · configurarControlDeCargaAbierta
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :ModuleConfigService
+    participant SRV as :StockControlSettingsService
     participant DIS as distribuidora:Distribuidora
     participant CFG as configuracion:ConfiguracionModulo
 
@@ -36029,15 +36477,54 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Clases participantes:** `ModuleConfigService` (controlador de fachada, **colaboración propuesta**: no existe en el código: es el de CU-171 a CU-173) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
+**Clases participantes:** `StockControlSettingsService` (controlador: los parámetros del control de stock), `ModuleConfigService` (fabricación pura: guarda los parámetros por distribuidora y proceso), los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
 
-**GRASP.** *Controlador*: `ModuleConfigService`. *Creador*: la `Distribuidora` crea su `ConfiguracionModulo` (composición). *Experto*: la `ConfiguracionModulo` toma el valor nuevo, con el administrador que lo modifica.
+**GRASP.** *Controlador*: `StockControlSettingsService`. *Creador*: la `Distribuidora` crea su `ConfiguracionModulo` la primera vez. *Experto*: la `ConfiguracionModulo` guarda el valor y quién lo modificó.
 
-**No se dibuja:** la persistencia, el contexto de la distribuidora y la renovación de la copia en memoria del parámetro.
+**No se dibuja:** la validación de que el valor sea booleano, que hace la validación de la solicitud antes del caso de uso, y la lectura final de lo guardado..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockControlSettingsService.configurarControlDeCargaAbierta(...)` | `TruckLoadController.settingsPut` → `StockControlSettingsService.guardar` |
+| `Distribuidora.getConfiguracion(...)` | `ModuleConfigService.parametros`: lee la fila de `module_config` del proceso `stock_control`, o nada |
+| `Distribuidora.crearConfiguracion(...)` | `ModuleConfigService.guardar`: inserta la fila con `ON CONFLICT`, así que crear y actualizar son la misma instrucción |
+| `ConfiguracionModulo.«create»(...)` | `ModuleConfigService.guardar`: inserta `ModuleConfig` con el usuario que lo modificó |
+| `ConfiguracionModulo.actualizar(...)` | `ModuleConfigService.guardar`: reemplaza `ModuleConfig.params` y fija `ModuleConfig.updatedByUserId` |
 
 **Observaciones de diseño**
 
-- El parámetro vive en `module_config`, en la fila de la distribuidora para el proceso `stock_control`, un valor nuevo de `configurable_process_enum`. Viene apagado.
+- Sin configuración rige el valor apagado: el despacho no exige carga abierta.
+
+##### Operación: consultarControlDeCargaAbierta()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-249 Configurar el Control de Carga de Camión Abierta · consultarControlDeCargaAbierta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockControlSettingsService
+    participant DIS as distribuidora:Distribuidora
+    participant CFG as configuracion:ConfiguracionModulo
+
+    ADM->>+SRV: consultarControlDeCargaAbierta()
+    SRV->>+DIS: getConfiguracion(controlDeStock)
+    DIS-->>-SRV: configuracion
+    SRV->>+CFG: getExigirCargaDeCamionAbierta()
+    CFG-->>-SRV: exigida
+    SRV-->>-ADM: exigida
+```
+
+**Clases participantes:** `StockControlSettingsService` (controlador: los parámetros del control de stock), los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
+
+**GRASP.** *Controlador*: `StockControlSettingsService`. *Experto*: la `Distribuidora` conoce su configuración y la `ConfiguracionModulo` su valor.
+
+**No se dibuja:** el valor apagado que rige cuando la distribuidora no configuró nada..
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockControlSettingsService.consultarControlDeCargaAbierta(...)` | `TruckLoadController.settingsGet` → `StockControlSettingsService.obtener` |
+| `Distribuidora.getConfiguracion(...)` | `ModuleConfigService.parametros`: lee la fila de `module_config` del proceso `stock_control`, o nada |
+| `ConfiguracionModulo.getExigirCargaDeCamionAbierta(...)` | `StockControlSettingsService.obtener`: devuelve `requireOpenTruckLoad`, falso si no hay configuración |
 
 ---
 
@@ -36057,7 +36544,7 @@ sequenceDiagram
     participant UBD as destino:UbicacionDeStock
     participant SAL as saldo:SaldoDeStock
 
-    Note over CTL,SAL: Caso incluido desde CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274, CU-276 y CU-280
+    Note over CTL,SAL: Caso incluido desde CU-212, CU-213, CU-217, CU-218, CU-219, CU-220, CU-222, CU-274, CU-276 y CU-280
     CTL->>+LED: aplicar(operacion)
     LED->>LED: validarMovimiento(movimiento)
     loop Por cada garrafa de la operación, por identificador

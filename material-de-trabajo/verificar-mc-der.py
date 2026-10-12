@@ -60,7 +60,7 @@ fks = [(t, c, d) for t, c, d in psql(
 
 # Lo planificado (conceptos de MC.PLANIFICADOS): sus tablas todavía no están en la base. Se las
 # lee de la propuesta que genera generar-modelo-datos.py (SQL portable del modelo completo).
-sql = leer("diagramas/base-de-datos/SPLG-base-de-datos-completa-lucidchart.sql")
+sql = leer("diagramas/base-de-datos/SPLG-base-de-datos-completa-portable.sql")
 plan_cols, plan_fks = {}, []
 for m in re.finditer(r'-- tabla propuesta\nCREATE TABLE "(\w+)" \((.*?)\n\);', sql, re.S):
     tabla = m.group(1)
@@ -100,10 +100,6 @@ check("Conceptos: Documento 2 §1.2 = modelo conceptual (%d)" % len(MC.CLASES),
       en_doc == set(MC.CLASES),
       [f"sólo en el documento: {sorted(en_doc - set(MC.CLASES))}",
        f"sólo en el modelo: {sorted(set(MC.CLASES) - en_doc)}"])
-
-mmd = set(re.findall(r'^\s*class (\w+)', leer("diagramas/lucidchart/SPLG-modelo-conceptual.mmd"), re.M))
-check("Conceptos: el .mmd para Lucidchart tiene los mismos", mmd == set(MC.CLASES),
-      sorted(mmd ^ set(MC.CLASES)))
 
 con_tabla = {c for c, t in MC.TABLA.items() if t}
 con_tabla_todos = con_tabla

@@ -11,7 +11,7 @@ módulos inteligentes.
 
 | Artefacto | Archivo | Cómo se actualiza |
 |---|---|---|
-| Modelo de dominio (UML, Larman) — es el mismo artefacto que el modelo conceptual del Documento 2: vista general y seis vistas por área | `diagramas/modelo-conceptual/MC_*.png/.svg` (fuente en `modelo_conceptual.py`); `diagramas/lucidchart/SPLG-modelo-conceptual.mmd` y su `.xml` para Lucidchart | `python3 generar-modelo-conceptual.py`, y `python3 generar-lucidchart.py` para el `.xml` |
+| Modelo de dominio (UML, Larman) — es el mismo artefacto que el modelo conceptual del Documento 2: vista general y seis vistas por área | `diagramas/modelo-conceptual/MC_*.png/.svg` (fuente en `modelo_conceptual.py`); `drawio/SPLG-MC.drawio` | `python3 generar-modelo-conceptual.py`, y `python3 generar-drawio.py` para el `.drawio` |
 | Modelo entidad-relación conceptual — no confundir con el anterior: éste es del diseño de la base y usa la misma nomenclatura que el modelo conceptual | `diagramas/base-de-datos/conceptual/SPLG-der-*.png/.svg` | `python3 generar-modelo-datos.py` |
 | Modelo físico, una lámina por contexto | `diagramas/base-de-datos/fisico/SPLG-fisico-*.png/.svg` | ídem |
 | SQL de lo propuesto | `diagramas/base-de-datos/SPLG-base-de-datos-propuesta.sql` | ídem |

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-290 Consultar las Cargas del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+    activate SIS
+    alt los filtros son válidos
+        SIS-->>ADM: cargas del camión, con el total
+    else una fecha es inválida o el desde es posterior al hasta
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS

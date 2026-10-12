@@ -6,5 +6,9 @@ sequenceDiagram
 
     CHO->>SIS: consultarPedidosDisponibles(pagina, limite)
     activate SIS
-    SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    alt el chofer puede recibir pedidos por su carga de camión
+        SIS-->>CHO: pedidos pendientes sin chofer de su distribuidora (dirección, ítems, total)
+    else el chofer no puede recibir pedidos por su carga de camión
+        SIS-->>CHO: pedidos vacíos y el motivo
+    end
     deactivate SIS

@@ -92,14 +92,14 @@ class OrdenDeCompra {
   + devolverRecibido(items: Registro): OrdenDeCompra
   + enviar(ahora: FechaHora): OrdenDeCompra
   + getItems(): Registro
-  + getPendiente(): EstadoPedido
+  + getPendiente(): Registro
   + getRecepciones(): RecepcionDeCompra[*]
   + modificar(datos: Registro): OrdenDeCompra
   + validarContraLoPendiente(items: Registro): Booleano
   + validarEnBorrador()
   + validarRecibible(): Booleano
   + validarSinRecepciones()
-  + validarTransicion(enviada: Cadena)
+  + validarTransicion(estadoDestino: EstadoDeLaOrden)
 }
 class ItemOrdenDeCompra {
   - cantidad: Entero
@@ -107,7 +107,7 @@ class ItemOrdenDeCompra {
   - vaciosACanjear: Entero
   - cantidadRecibida: Entero
   + «create» ItemOrdenDeCompra(producto: Producto,\n      cantidad: Entero, costoUnitario: Moneda,\n      vaciasACanjear: Entero)
-  + getPendiente()
+  + getPendiente(): Entero
 }
 class RecepcionDeCompra {
   - numero: Entero

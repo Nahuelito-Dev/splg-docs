@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-291 Consultar una Carga del Camión · consultarCargaDelCamion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TruckLoadQueryService
+    participant COL as :Map#lt;String, CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+    participant ICA as item:ItemCarga
+
+    ADM->>+SRV: consultarCargaDelCamion(cargaId)
+    SRV->>+COL: get(cargaId)
+    COL-->>-SRV: carga
+    SRV->>+CAR: getItems()
+    loop Por cada tipo de garrafa de la carga
+        CAR->>ICA: getEsperado()
+    end
+    CAR-->>-SRV: items
+    SRV->>+CAR: getPedidosEntregados()
+    CAR-->>-SRV: pedidos
+    SRV->>+CAR: getMovimientos()
+    CAR-->>-SRV: movimientos
+    SRV-->>-ADM: carga
+    Note over ADM,SRV: También lo inicia el Chofer (ACT-02), sólo de su carga

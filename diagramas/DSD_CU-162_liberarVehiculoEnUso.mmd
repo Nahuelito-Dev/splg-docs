@@ -11,6 +11,7 @@ sequenceDiagram
     SRV->>+COL: get(choferId)
     COL-->>-SRV: chofer
     SRV->>CHO: assertSinPedidoEnCurso()
+    SRV->>CHO: assertSinCargaAbierta()
     SRV->>+CHO: getAsignacionAbierta()
     CHO-->>-SRV: asignacion
     SRV->>ASG: liberar(administrador)

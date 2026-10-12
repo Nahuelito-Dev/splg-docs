@@ -2,21 +2,29 @@ sequenceDiagram
     title DSD — CU-221 Registrar el Regreso del Camión · registrarRegresoDelCamion
     autonumber
     actor CHO as Chofer (ACT-02)
-    participant SRV as :TruckLoadService
+    participant SRV as :ReturnTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
+    participant CHF as chofer:Chofer
     participant ICA as item:ItemCarga
 
     CHO->>+SRV: registrarRegresoDelCamion(cargaId, devueltos)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: registrarRegreso(devueltos, ahora)
-    CAR->>CAR: validarQueEstaEnRuta()
-    loop Por cada tipo de garrafa de la carga
-        CAR->>+ICA: declararRegreso(llenasDevueltas, vaciasDevueltas)
-        ICA->>ICA: calcularEsperado()
-        deactivate ICA
+    SRV->>+CAR: validarQuePuedeDeclararElRegreso()
+    CAR-->>-SRV: puedeDeclarar
+    SRV->>+CAR: getChofer()
+    CAR-->>-SRV: chofer
+    SRV->>+CHF: getPedidosEnCurso()
+    CHF-->>-SRV: pedidosEnCurso
+    alt El chofer tiene pedidos en curso
+        SRV-->>CHO: conflicto
+    else El chofer no tiene pedidos en curso
+        SRV->>+CAR: declararRegreso(devueltos)
+        loop Por cada tipo de garrafa de la carga
+            CAR->>ICA: declarar(llenasDeclaradas, vaciasDeclaradas)
+        end
+        CAR-->>-SRV: carga
     end
-    CAR-->>-SRV: carga
     SRV-->>-CHO: carga
     Note over CHO,SRV: También lo inicia el Administrador (ACT-03)

@@ -22,8 +22,6 @@ Sale, todo en PlantUML como el modelo conceptual (Mermaid no dibuja la notación
   diagramas/clases-diseno/DC_<área>.*                   dominio con atributos y operaciones, por área
   diagramas/clases-diseno/DC_Mod_<vista>.*              una vista por módulo o grupo de módulos
   diagramas/clases-diseno/DC_Paquetes.*                 dependencias entre módulos
-  diagramas/lucidchart/SPLG-clases-diseno-dominio.mmd   fuente de generar-lucidchart.py (dominio)
-  diagramas/lucidchart/clases/SPLG-clases-<vista>.mmd   fuente de generar-lucidchart.py (módulos)
   material-de-trabajo/indice-clases-diseno.md           cifras y vistas, para pegar en 3-Diseño.md §5
 
 No se edita ningún archivo generado: si cambia un DSD, se corre de nuevo.
@@ -37,7 +35,6 @@ import modelo_conceptual as M
 
 D = X.D
 SAL = D + "diagramas/clases-diseno/"
-SAL_LUCID = D + "diagramas/lucidchart/"
 TINTA = "#2C4257"
 ANCHO_LINEA = 58    # un miembro más largo se parte en la coma, para que el diagrama no se ensanche
 
@@ -147,7 +144,7 @@ VISTAS_DOMINIO = [
       "AjusteDeStock", "ItemAjusteDeStock"],
      ["Producto", "Vehiculo", "Usuario", "Distribuidora"]),
     ("Carga del camión", "Carga-del-camion", ["CargaDeCamion", "ItemCarga"],
-     ["Vehiculo", "Chofer", "UbicacionDeStock", "Producto", "Usuario", "Pedido"]),
+     ["Vehiculo", "Chofer", "UbicacionDeStock", "Producto", "Usuario", "Pedido", "Empleado"]),
     ("Compras", "Compras",
      ["Proveedor", "OrdenDeCompra", "ItemOrdenDeCompra", "RecepcionDeCompra", "ItemRecepcion"],
      ["Deposito", "Producto", "Usuario", "Distribuidora"]),
@@ -543,75 +540,6 @@ def vista_paquetes():
     return "\n".join(lin), deps
 
 
-# ======================================================================== Mermaid para Lucidchart
-def miembros_mmd(nombre):
-    cl = dc.clases[nombre]
-    out = []
-    for vis, n, t in cl.atributos:
-        out.append(f"        {vis} {n}: {t}")
-    for op in ordenar_ops(cl):
-        out.append("        + " + op.firma(nombre))
-    return out
-
-
-def mmd_clase(nombre, miembros=True):
-    cl = dc.clases[nombre]
-    id_ = ident(nombre)
-    etiqueta = f'["{nombre}"]' if id_ != nombre else ""
-    cuerpo = []
-    if cl.tipo == "puerto":
-        cuerpo.append("        <<interface>>")
-    elif cl.estereotipo and cl.tipo != "dominio":
-        cuerpo.append(f"        <<{cl.estereotipo}>>")
-    elif cl.abstracta:
-        cuerpo.append("        <<abstract>>")
-    if miembros:
-        cuerpo += miembros_mmd(nombre)
-    if not cuerpo:
-        return [f"    class {id_}{etiqueta}"]
-    return [f"    class {id_}{etiqueta} {{"] + cuerpo + ["    }"]
-
-
-def mmd_flecha(a):
-    sig = {"comp": "*--", "agreg": "o--"}.get(a["tipo"])
-    if sig is None:
-        sig = "<-->" if (a["nav_ab"] and a["nav_ba"]) else "-->" if a["nav_ab"] else "<--" if a["nav_ba"] else "--"
-    elif a["tipo"] == "comp" and a["nav_ab"] and not a["nav_ba"]:
-        sig = "*-->"
-    ma = f' "{a["ma"]}"' if a["ma"] else ""
-    mb = f' "{a["mb"]}"' if a["mb"] else ""
-    nombre = f" : {a['nombre']}" if a["nombre"] else ""
-    return f"    {ident(a['a'])}{ma} {sig}{mb} {ident(a['b'])}{nombre}"
-
-
-def mmd(titulo, propias, refs, solo_dominio=False):
-    out = ["classDiagram", "    direction LR", "",
-           f"    %% {titulo}. Lo genera material-de-trabajo/generar-clases-diseno.py desde los DSD:",
-           "    %% no se edita a mano.", ""]
-    en = set(propias) | set(refs)
-    for n in propias:
-        out += mmd_clase(n)
-        out.append("")
-    for n in refs:
-        out += mmd_clase(n, miembros=False)
-    out.append("")
-    for p, h in dc.generalizaciones:
-        if p in en and h in en:
-            out.append(f"    {p} <|-- {h}")
-    for a in dc.asociaciones:
-        if a["a"] in en and a["b"] in en and (a["a"] in propias or a["b"] in propias):
-            if a["mc"] and not solo_dominio:
-                continue
-            out.append(mmd_flecha(a))
-    for o, d in sorted(dc.dependencias):
-        if o in en and d in en and (o in propias or d in propias):
-            out.append(f"    {ident(o)} ..> {ident(d)}" + (" : create" if (o, d) in dc.creaciones else ""))
-    for ad, pu in dc.realizaciones:
-        if ad in en and pu in en:
-            out.append(f"    {ident(ad)} ..|> {ident(pu)}")
-    return "\n".join(out) + "\n"
-
-
 # ======================================================================== escritura y render
 def escribir(ruta, texto):
     os.makedirs(os.path.dirname(ruta), exist_ok=True)
@@ -656,23 +584,11 @@ def main(render=True):
     escribir(SAL + "DC_Paquetes.puml", texto)
     nombres.append("DC_Paquetes")
 
-    # fuentes para Lucidchart
-    todas_dom = list(M.CLASES)
-    escribir(SAL_LUCID + "SPLG-clases-diseno-dominio.mmd", mmd("Clases de diseño — dominio", todas_dom, [], True))
-    for titulo, archivo, propias, refs in vistas_mod:
-        escribir(SAL_LUCID + f"clases/SPLG-clases-{archivo}.mmd", mmd(titulo, propias, refs))
-
     # se borra sólo lo que ya no tiene fuente: nunca una imagen que se vaya a quedar sin regenerar
     vigentes = set(nombres)
     for viejo in os.listdir(SAL):
         if os.path.splitext(viejo)[0] not in vigentes:
             os.remove(SAL + viejo)
-    vigentes_l = {f"SPLG-clases-{a_}.mmd" for _, a_, _, _ in vistas_mod}
-    if os.path.isdir(SAL_LUCID + "clases/"):
-        for viejo in os.listdir(SAL_LUCID + "clases/"):
-            if viejo not in vigentes_l:
-                os.remove(SAL_LUCID + "clases/" + viejo)
-
     cifras(indice, deps)
     if "--documento" in sys.argv:
         aplicar_documento(documento(indice, vistas_mod, deps))

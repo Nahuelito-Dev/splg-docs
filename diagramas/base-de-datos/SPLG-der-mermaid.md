@@ -1,6 +1,6 @@
 # DER de SPLG, en Mermaid — generado
 
-Generado por `generar-modelo-datos.py` desde la base en ejecución: 61 tablas, 141 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
+Generado por `generar-modelo-datos.py` desde la base en ejecución: 63 tablas, 150 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
 
 ### Organización y acceso
 
@@ -822,7 +822,7 @@ erDiagram
     }
 ```
 
-### Stock físico y carga del camión (en parte planificado)
+### Stock físico y carga del camión
 
 ```mermaid
 erDiagram
@@ -913,10 +913,10 @@ erDiagram
         int number
         uuid car_id FK
         uuid delivery_id FK
-        uuid helper_employee_id "nullable"
+        uuid helper_employee_id FK "nullable"
         uuid origin_location_id FK
         date business_date
-        truck_load_status_enum status
+        enum status
         timestamptz opened_at
         timestamptz departed_at "nullable"
         timestamptz returned_at "nullable"
@@ -924,6 +924,10 @@ erDiagram
         uuid opened_by_user_id FK
         uuid closed_by_user_id FK "nullable"
         text difference_note "nullable"
+        text cancel_reason "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
     }
     STOCK_ADJUSTMENT_ITEM {
         uuid item_id PK
@@ -1350,9 +1354,10 @@ erDiagram
     TIRE_EVENT }o--o| CAR : "car_id"
     TIRE_EVENT }o--o| USER : "created_by_user_id"
     TRUCK_LOAD }o--|| CAR : "car_id"
-    TRUCK_LOAD }o--|| DELIVERY : "delivery_id"
-    TRUCK_LOAD }o--|| USER : "opened_by_user_id"
     TRUCK_LOAD }o--o| USER : "closed_by_user_id"
+    TRUCK_LOAD }o--|| DELIVERY : "delivery_id"
+    TRUCK_LOAD }o--o| EMPLOYEE : "helper_employee_id"
+    TRUCK_LOAD }o--|| USER : "opened_by_user_id"
     COMMISSION_ENTRY }o--|| EMPLOYEE : "employee_id"
     COMMISSION_ENTRY }o--o| ORDER : "order_id"
     COMMISSION_ENTRY }o--o| USER : "created_by_user_id"

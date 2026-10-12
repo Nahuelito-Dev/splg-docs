@@ -32,7 +32,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity CargaDeCamion <<propuesto>> #E4EDF4;line:1F5E8C {
+entity CargaDeCamion {
   * identificador
   --
   {field} número
@@ -43,8 +43,10 @@ entity CargaDeCamion <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} regresó el
   {field} cerrada el
   {field} nota de diferencia
+  {field} motivo de cancelación
+  {field} notas
 }
-entity ItemCarga <<propuesto>> #E4EDF4;line:1F5E8C {
+entity ItemCarga {
   * identificador
   --
   {field} llenas cargadas
@@ -69,14 +71,17 @@ entity Producto #F1F1F1 {
 }
 entity Usuario #F1F1F1 {
 }
+entity Empleado #F1F1F1 {
+}
 
 Vehiculo ||--o{ CargaDeCamion : transporta >
-Chofer ||--o{ CargaDeCamion : reparte con >
-CargaDeCamion }o--|| UbicacionDeStock : parte de >
-Usuario ||--o{ CargaDeCamion : abre >
 Usuario |o--o{ CargaDeCamion : cierra >
-CargaDeCamion ||--|{ ItemCarga : contiene >
+Chofer ||--o{ CargaDeCamion : reparte con >
+Empleado |o--o{ CargaDeCamion : ayuda en >
+Usuario ||--o{ CargaDeCamion : abre >
+CargaDeCamion }o--|| UbicacionDeStock : parte de >
 ItemCarga }o--|| Producto : corresponde a >
+CargaDeCamion ||--|{ ItemCarga : contiene >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

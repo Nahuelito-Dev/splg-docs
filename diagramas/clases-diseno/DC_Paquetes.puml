@@ -155,8 +155,6 @@ auth ..> users
 car ..> delivery
 car ..> fleet
 car ..> fleet_expense
-car ..> stock
-car ..> truck_load
 cart ..> customer
 cart ..> gascylinder
 cash ..> commission
@@ -275,7 +273,6 @@ time_slot ..> distributor
 truck_load ..> car
 truck_load ..> delivery
 truck_load ..> distributor
-truck_load ..> gascylinder
 truck_load ..> stock
 user_address ..> customer
 users ..> delivery

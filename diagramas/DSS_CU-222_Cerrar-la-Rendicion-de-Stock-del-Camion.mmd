@@ -6,15 +6,15 @@ sequenceDiagram
 
     ADM->>SIS: cerrarRendicionDeStock(cargaId, nota)
     activate SIS
-    alt la carga regresó y la rendición cierra sin diferencia
+    alt la carga volvió y la rendición cierra sin diferencia
         SIS-->>ADM: carga cerrada
-    else la carga regresó y hay diferencia con su nota
+    else la carga volvió y hay diferencia con su nota
         SIS-->>ADM: carga cerrada con diferencia
-    else hay diferencia y falta la nota
+    else hay diferencia y falta la nota, o la carga no volvió
         SIS-->>ADM: solicitud inválida
-    else el faltante dejaría negativo el stock vendible
-        SIS-->>ADM: solicitud inválida
-    else la carga no regresó
+    else el camión entregó después de la declaración
         SIS-->>ADM: conflicto
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS

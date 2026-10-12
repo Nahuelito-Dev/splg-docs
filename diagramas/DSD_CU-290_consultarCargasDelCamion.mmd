@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-290 Consultar las Cargas del Camión · consultarCargasDelCamion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TruckLoadQueryService
+    participant CARS as :List#lt;CargaDeCamion#gt;
+    participant CAR as carga:CargaDeCamion
+
+    ADM->>+SRV: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+    SRV->>+CARS: buscar(estado, desde, hasta, vehiculoId, choferId)
+    loop Por cada carga del filtro
+        CARS->>CAR: getEstado()
+    end
+    CARS-->>-SRV: cargas
+    SRV-->>-ADM: cargas

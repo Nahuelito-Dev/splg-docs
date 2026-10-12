@@ -2,44 +2,38 @@ sequenceDiagram
     title DSD — CU-222 Cerrar la Rendición de Stock del Camión · cerrarRendicionDeStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :TruckLoadService
+    participant SRV as :CloseTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
     participant ICA as item:ItemCarga
     participant LED as :StockLedgerService
-    participant PRO as producto:Producto
 
     ADM->>+SRV: cerrarRendicionDeStock(cargaId, nota)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: cerrar(nota, administrador)
-    CAR->>CAR: validarQueRegreso()
+    SRV->>+CAR: validarQueEstaDevuelta()
+    CAR-->>-SRV: devuelta
+    opt El camión entregó después de que el chofer declaró
+        SRV->>+CAR: getEntregasPosterioresALaDeclaracion()
+        CAR-->>-SRV: entregasTardias
+        SRV-->>ADM: conflicto
+    end
     loop Por cada tipo de garrafa de la carga
-        CAR->>ICA: calcularDiferencia()
+        SRV->>+ICA: calcularEsperado()
+        ICA-->>-SRV: esperado
+        SRV->>ICA: calcularDiferencia()
     end
     opt Hay diferencia entre lo declarado y lo esperado
-        CAR->>CAR: validarNotaDeDiferencia(nota)
+        SRV->>+CAR: validarNotaDeDiferencia(nota)
+        CAR-->>-SRV: notaValida
     end
-    CAR-->>-SRV: carga
     SRV->>+CAR: getUbicacionDelCamion()
     CAR-->>-SRV: ubicacionOrigen
     SRV->>+CAR: getUbicacionDelDeposito()
     CAR-->>-SRV: ubicacionDestino
-    loop Por cada tipo de garrafa de la carga
-        SRV->>+ICA: getProducto()
-        ICA-->>-SRV: producto
-        SRV->>+ICA: getLlenasDeclaradas()
-        ICA-->>-SRV: llenasDeclaradas
-        Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma<br/>y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del camión
-        SRV->>LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, llenas, llenas, llenasDeclaradas, cierreDeRendicion)
-        opt Faltaron garrafas llenas
-            SRV->>PRO: restarStock(faltante)
-            alt El stock vendible alcanza para el faltante
-                PRO-->>SRV: restado
-            else El stock vendible quedaría negativo
-                PRO-->>SRV: vendibleInsuficiente
-                SRV-->>ADM: solicitudInvalida
-            end
-        end
-    end
+    Note over SRV,LED: Lo declarado vuelve al depósito, el faltante sale como merma<br/>y el sobrante entra como ajuste: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y deja en cero el saldo del camión
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, plan)
+    LED-->>-SRV: lote
+    SRV->>+CAR: cerrar(nota)
+    CAR-->>-SRV: carga
     SRV-->>-ADM: carga

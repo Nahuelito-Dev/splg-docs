@@ -2,15 +2,32 @@ sequenceDiagram
     title DSD — CU-219 Registrar la Salida del Camión · registrarSalidaDelCamion
     autonumber
     actor CHO as Chofer (ACT-02)
-    participant SRV as :TruckLoadService
+    participant SRV as :DepartTruckLoadUseCase
     participant COL as :Map#lt;String, CargaDeCamion#gt;
     participant CAR as carga:CargaDeCamion
+    participant UBC as camion:UbicacionDeStock
+    participant LED as :StockLedgerService
 
     CHO->>+SRV: registrarSalidaDelCamion(cargaId)
     SRV->>+COL: get(cargaId)
     COL-->>-SRV: carga
-    SRV->>+CAR: salir(ahora)
-    CAR->>CAR: validarQueEstaCargando()
-    CAR-->>-SRV: carga
+    SRV->>+CAR: validarQuePuedeSalir()
+    CAR-->>-SRV: puedeSalir
+    SRV->>+CAR: getUbicacionDelCamion()
+    CAR-->>-SRV: ubicacionDestino
+    SRV->>+UBC: validarVacia()
+    UBC-->>-SRV: vacia
+    SRV->>+CAR: getUbicacionDelDeposito()
+    CAR-->>-SRV: ubicacionOrigen
+    Note over SRV,LED: Del depósito al camión: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock de las llenas y de los vacíos de cada renglón y mueve el saldo de las dos ubicaciones
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, renglones)
+    alt El depósito tiene las unidades
+        LED-->>SRV: lote
+    else El depósito no tiene las unidades
+        LED-->>SRV: saldoInsuficiente
+        SRV-->>CHO: solicitudInvalida
+    end
+    deactivate LED
+    SRV->>CAR: marcarEnRuta()
     SRV-->>-CHO: carga
     Note over CHO,SRV: También lo inicia el Administrador (ACT-03)

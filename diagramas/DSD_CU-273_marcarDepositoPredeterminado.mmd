@@ -11,6 +11,8 @@ sequenceDiagram
     ADM->>+SRV: marcarDepositoPredeterminado(depositoId)
     SRV->>+COL: get(depositoId)
     COL-->>-SRV: depositoDeStock
+    SRV->>+DEP: validarQueEstaActivo()
+    DEP-->>-SRV: activo
     SRV->>+DIS: cambiarPredeterminado(depositoElegido)
     DIS->>+ANT: quitarPredeterminado()
     ANT-->>-DIS: predeterminadoQuitado

@@ -41,8 +41,10 @@ n_enum = int(psql("select count(distinct t.typname) from pg_type t "
 def contar(ruta, patron):
     return len(re.findall(patron, open(D + ruta, encoding="utf-8").read(), re.MULTILINE))
 
-n_conceptos_conceptual = contar("diagramas/lucidchart/SPLG-modelo-conceptual.mmd", r'^\s*class \w+')
-n_entidades_diseno = contar("diagramas/lucidchart/SPLG-clases-diseno-dominio.mmd", r'^\s*class \w+')
+sys.path.insert(0, D)
+import modelo_conceptual as _mc
+n_conceptos_conceptual = len(_mc.CLASES)
+n_entidades_diseno = len(_mc.CLASES)
 
 fallas = []
 def check(nombre, esperado, real):

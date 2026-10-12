@@ -1,6 +1,6 @@
 # Modelo de Datos — SPLG
 
-61 tablas y 141 claves foráneas, leídas de la base en ejecución.
+63 tablas y 150 claves foráneas, leídas de la base en ejecución.
 
 | Sección | Qué contiene |
 |---|---|
@@ -1167,6 +1167,71 @@ Restricciones `CHECK`:
 Índices (además de la clave primaria):
 - `IDX_e87ae54beaee42b885813deb8e`: `CREATE INDEX "IDX_e87ae54beaee42b885813deb8e" ON public.time_slot USING btree (distributor_id)`
 
+### `truck_load` — CargaDeCamion
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `load_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `number` | integer | sí |  |  |  | Número correlativo por distribuidora (`document_sequence`). |
+| `car_id` | uuid | sí | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
+| `delivery_id` | uuid | sí | FK | `delivery.delivery_id` |  | _(sin descripción documentada en el código)_ |
+| `helper_employee_id` | uuid | no | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `origin_location_id` | uuid | sí | FK | `stock_location.location_id` |  | _(sin descripción documentada en el código)_ |
+| `business_date` | date | sí |  |  |  | Día de negocio en hora argentina (YYYY-MM-DD). |
+| `status` | truck_load_status_enum | sí |  |  | `'loading'::truck_load_status_enum` | _(sin descripción documentada en el código)_ |
+| `opened_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `departed_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `returned_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `closed_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `opened_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `closed_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `difference_note` | text | no |  |  |  | Obligatoria si la rendición cierra con diferencia. |
+| `cancel_reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`distributor_id`, `number`).
+
+Índices (además de la clave primaria):
+- `IDX_truck_load_camion`: `CREATE INDEX "IDX_truck_load_camion" ON public.truck_load USING btree (car_id)`
+- `IDX_truck_load_chofer`: `CREATE INDEX "IDX_truck_load_chofer" ON public.truck_load USING btree (delivery_id)`
+- `IDX_truck_load_estado`: `CREATE INDEX "IDX_truck_load_estado" ON public.truck_load USING btree (distributor_id, status)`
+- `IDX_truck_load_fecha`: `CREATE INDEX "IDX_truck_load_fecha" ON public.truck_load USING btree (distributor_id, business_date)`
+- `UQ_truck_load_camion_abierta`: `CREATE UNIQUE INDEX "UQ_truck_load_camion_abierta" ON public.truck_load USING btree (car_id) WHERE (status = ANY (ARRAY['loading'::truck_load_status_enum, 'on_route'::truck_load_status_enum, 'returned'::truck_load_status_enum]))`
+- `UQ_truck_load_chofer_abierta`: `CREATE UNIQUE INDEX "UQ_truck_load_chofer_abierta" ON public.truck_load USING btree (delivery_id) WHERE (status = ANY (ARRAY['loading'::truck_load_status_enum, 'on_route'::truck_load_status_enum, 'returned'::truck_load_status_enum]))`
+- `UQ_truck_load_numero`: `CREATE UNIQUE INDEX "UQ_truck_load_numero" ON public.truck_load USING btree (distributor_id, number)`
+
+### `truck_load_item` — ItemCarga
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `item_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `load_id` | uuid | sí | FK | `truck_load.load_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `loaded_full` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+| `reloaded_full` | integer | sí |  |  | `0` | Llenas repuestas en ruta (suma de las reposiciones). |
+| `loaded_empty` | integer | sí |  |  | `0` | Vacías con las que sale para canjear. |
+| `declared_return_full` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `declared_return_empty` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `delivered_full` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `collected_empty` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `expected_full` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `expected_empty` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `difference_full` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `difference_empty` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`load_id`, `gas_cylinder_id`).
+
+Restricciones `CHECK`:
+- `CHK_truck_load_item_cargado`: `CHECK (((loaded_full >= 0) AND (reloaded_full >= 0) AND (loaded_empty >= 0)))`
+- `CHK_truck_load_item_declarado`: `CHECK ((((declared_return_full IS NULL) OR (declared_return_full >= 0)) AND ((declared_return_empty IS NULL) OR (declared_return_empty >= 0))))`
+
+Índices (además de la clave primaria):
+- `IDX_truck_load_item_garrafa`: `CREATE INDEX "IDX_truck_load_item_garrafa" ON public.truck_load_item USING btree (gas_cylinder_id)`
+- `UQ_truck_load_item_garrafa`: `CREATE UNIQUE INDEX "UQ_truck_load_item_garrafa" ON public.truck_load_item USING btree (load_id, gas_cylinder_id)`
+
 ### `user` — Usuario
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -1273,11 +1338,11 @@ Claves únicas compuestas: (`car_id`, `day`).
 - `UQ_warehouse_code_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_code_vigente" ON public.warehouse USING btree (distributor_id, code) WHERE ("deletedAt" IS NULL)`
 - `UQ_warehouse_default_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL))`
 
-> **Cobertura de las descripciones.** 104 de 640 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 109 de 674 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
-No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 141 relaciones del dominio están todas declaradas.
+No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 150 relaciones del dominio están todas declaradas.
 
 ### 1. Recargo express y tipo de vehículo
 
@@ -1317,53 +1382,7 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 
 > **Decisión de modelado.** Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: sólo hace falta ampliar el tipo enumerado de procesos configurables.
 
-### 4. Carga del camión
-
-**Casos de uso:** CU-218, CU-219, CU-221 a CU-223 (I-13, parte 3). **Qué resuelve:** Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué sale y vuelve en cada reparto.
-
-| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
-|---|---|---|:-:|---|
-| `truck_load` **(tabla nueva)** | `load_id` | uuid | sí | Identificador. |
-| `truck_load` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `truck_load` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
-| `truck_load` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo. |
-| `truck_load` **(tabla nueva)** | `delivery_id` | uuid | sí | Chofer. |
-| `truck_load` **(tabla nueva)** | `helper_employee_id` | uuid | no | Ayudante: legajo del módulo de personal, sin cuenta de usuario. |
-| `truck_load` **(tabla nueva)** | `origin_location_id` | uuid | sí | Depósito de salida. |
-| `truck_load` **(tabla nueva)** | `business_date` | date | sí | Día de negocio. |
-| `truck_load` **(tabla nueva)** | `status` | truck_load_status_enum | sí | Cargando, en ruta, regresó, cerrada, cerrada con diferencia o cancelada. |
-| `truck_load` **(tabla nueva)** | `opened_at` | timestamptz | sí | Apertura. |
-| `truck_load` **(tabla nueva)** | `departed_at` | timestamptz | no | Salida. |
-| `truck_load` **(tabla nueva)** | `returned_at` | timestamptz | no | Regreso. |
-| `truck_load` **(tabla nueva)** | `closed_at` | timestamptz | no | Cierre. |
-| `truck_load` **(tabla nueva)** | `opened_by_user_id` | uuid | sí | Usuario que abrió la carga. |
-| `truck_load` **(tabla nueva)** | `closed_by_user_id` | uuid | no | Usuario que la cerró. |
-| `truck_load` **(tabla nueva)** | `difference_note` | text | no | Nota de la diferencia; obligatoria si cierra con diferencia. |
-| `truck_load_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
-| `truck_load_item` **(tabla nueva)** | `load_id` | uuid | sí | Carga. |
-| `truck_load_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
-| `truck_load_item` **(tabla nueva)** | `loaded_full` | integer | sí | Llenas cargadas. |
-| `truck_load_item` **(tabla nueva)** | `reloaded_full` | integer | sí | Llenas repuestas en ruta. |
-| `truck_load_item` **(tabla nueva)** | `loaded_empty` | integer | sí | Vacías cargadas para canje. |
-| `truck_load_item` **(tabla nueva)** | `declared_return_full` | integer | no | Llenas declaradas al regreso. |
-| `truck_load_item` **(tabla nueva)** | `declared_return_empty` | integer | no | Vacías declaradas al regreso. |
-| `truck_load_item` **(tabla nueva)** | `delivered_full` | integer | no | Llenas entregadas, al cierre. |
-| `truck_load_item` **(tabla nueva)** | `collected_empty` | integer | no | Vacías recolectadas, al cierre. |
-| `truck_load_item` **(tabla nueva)** | `expected_full` | integer | no | Llenas esperadas, al cierre. |
-| `truck_load_item` **(tabla nueva)** | `expected_empty` | integer | no | Vacías esperadas, al cierre. |
-| `truck_load_item` **(tabla nueva)** | `difference_full` | integer | no | Diferencia de llenas, al cierre. |
-| `truck_load_item` **(tabla nueva)** | `difference_empty` | integer | no | Diferencia de vacías, al cierre. |
-
-`truck_load` — Hoja de carga: el turno de un camión, desde que se carga hasta que se rinde. Clave primaria `load_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `delivery_id` → `delivery`, `origin_location_id` → `stock_location`, `opened_by_user_id` → `user`, `closed_by_user_id` → `user`. Única: (`distributor_id`, `number`).
-`truck_load_item` — Por tipo de garrafa: lo cargado, lo repuesto, lo entregado, lo declarado al regreso y la diferencia. Clave primaria `item_id`. Referencias: `load_id` → `truck_load`, `gas_cylinder_id` → `gas_cylinder`. Única: (`load_id`, `gas_cylinder_id`).
-
-Tipo enumerado `truck_load_status_enum`: `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled`.
-
-Valores nuevos del tipo enumerado `configurable_process_enum`: `stock_control`.
-
-> **Decisión de modelado.** El stock físico (depósitos, ubicaciones, saldos, libro, ajustes y umbrales) y las compras (proveedores, órdenes y recepciones) ya están en la base; este agregado trae lo que falta: la carga del camión, que escribe sobre ese libro. Referencia de lo ya construido: el saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)` y `(distributor_id) WHERE is_default` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
-
-### 5. Caja, rendición del chofer, cuentas corrientes y comisiones
+### 4. Caja, rendición del chofer, cuentas corrientes y comisiones
 
 **Casos de uso:** CU-225 a CU-245 (I-14). **Qué resuelve:** Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.
 
@@ -1553,7 +1572,7 @@ Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
 
 > **Decisión de modelado.** Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE "deletedAt" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.
 
-### 6. Personal y legajos
+### 5. Personal y legajos
 
 **Casos de uso:** CU-183 a CU-194 y CU-246 (I-11). **Qué resuelve:** Llevar la asistencia, las licencias y la documentación con vencimiento de cada persona que trabaja en la distribuidora, y que ese control inhabilite para el despacho a quien no esté en regla.
 
@@ -1603,7 +1622,7 @@ Valores nuevos del tipo enumerado `maintenance_subject_enum`: `employee`.
 
 > **Decisión de modelado.** Los puestos (`job_position`) y los legajos (`employee`) ya están construidos y salen de la base: todo empleado existe como legajo, tenga o no cuenta de acceso, un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). Falta construir lo que cuelga del legajo. La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no sólo el servicio.
 
-### 7. Flota ampliada: combustible, multas y siniestros
+### 6. Flota ampliada: combustible, multas y siniestros
 
 **Casos de uso:** CU-195 a CU-202 (I-12). **Qué resuelve:** Llevar las cargas de combustible, las multas de tránsito y los siniestros de cada vehículo, para conocer su consumo y su costo.
 
@@ -1685,7 +1704,7 @@ Tipo enumerado `vehicle_accident_status_enum`: `reported`, `under_review`, `repa
 
 > **Decisión de modelado.** La carga de combustible, la multa y el siniestro son registros propios del vehículo y no columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo. El siniestro no se mezcla con `incident`, que es el contratiempo de calidad de un pedido. El empleado se referencia por `employee_id` y no por `delivery`, porque el responsable de una multa o el que carga combustible puede ser un empleado sin cuenta de acceso. `cash_movement_id` queda sin clave foránea hasta que exista el módulo de caja (I-14).
 
-### 8. Flota ampliada: neumáticos
+### 7. Flota ampliada: neumáticos
 
 **Casos de uso:** CU-205 y CU-206 (I-12, opcional). **Qué resuelve:** Llevar cada neumático y sus movimientos —montaje, desmontaje, rotación, recapado y baja— para saber cuántos kilómetros recorrió.
 
@@ -1729,7 +1748,7 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `attachment_owner_type_enum` | `employee`, `fuel_load`, `traffic_fine`, `vehicle_accident`, `purchase_receipt`, `stock_adjustment`, `driver_settlement`, `cash_movement`, `customer_account_entry` | implementado |
 | `audit_result_enum` | `success`, `failure` | implementado |
 | `claims_status_enum` | `pending`, `in_process`, `resolved`, `rejected` | implementado |
-| `configurable_process_enum` | `fleet_planner`, `repurchase`, `route_batching`, `cylinder_recovery`, `express_dispatch` | implementado |
+| `configurable_process_enum` | `fleet_planner`, `repurchase`, `route_batching`, `cylinder_recovery`, `express_dispatch`, `stock_control` | implementado |
 | `coverage_zone_surcharge_type_enum` | `fixed`, `percentage` | implementado |
 | `cylinder_inspection_result_enum` | `approved`, `conditional`, `rejected` | implementado |
 | `cylinder_movement_from_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |
@@ -1775,6 +1794,7 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `stock_movement_reference_type_enum` | `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial` | implementado |
 | `supplier_document_type_enum` | `delivery_note`, `invoice` | implementado |
 | `supplier_kind_enum` | `filling_plant`, `other` | implementado |
+| `truck_load_status_enum` | `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled` | implementado |
 | `warehouse_kind_enum` | `depot`, `branch` | implementado |
 | `attendance_source_enum` | `panel`, `driver_app` | propuesto |
 | `cash_box_kind_enum` | `cash`, `bank`, `wallet` | propuesto |
@@ -1799,6 +1819,5 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `tire_event_type_enum` | `mount`, `unmount`, `rotate`, `retread`, `retire` | propuesto |
 | `tire_status_enum` | `in_stock`, `mounted`, `retired` | propuesto |
 | `traffic_fine_status_enum` | `pending`, `appealed`, `paid`, `voided` | propuesto |
-| `truck_load_status_enum` | `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled` | propuesto |
 | `vehicle_accident_status_enum` | `reported`, `under_review`, `repairing`, `closed` | propuesto |
 | `vehicle_type_enum` | `motorcycle`, `car`, `van` | propuesto |

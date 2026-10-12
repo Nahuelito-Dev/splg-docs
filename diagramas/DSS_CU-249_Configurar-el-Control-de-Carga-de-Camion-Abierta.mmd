@@ -12,3 +12,8 @@ sequenceDiagram
         SIS-->>ADM: solicitud inválida, con el detalle del campo
     end
     deactivate SIS
+
+    ADM->>SIS: consultarControlDeCargaAbierta()
+    activate SIS
+    SIS-->>ADM: configuración del control
+    deactivate SIS

@@ -223,8 +223,8 @@ InvitacionRecompra |o--o| Pedido : se convierte en >
 Cliente ||--o{ InvitacionRecompra : recibe >
 Usuario ||--o{ AjusteDeStock : registra >
 Usuario |o--o{ MovimientoDeStock : ejecuta >
-Usuario ||--o{ CargaDeCamion : abre >
 Usuario |o--o{ CargaDeCamion : cierra >
+Usuario ||--o{ CargaDeCamion : abre >
 Usuario |o--o{ MovimientoEnvase : ejecuta >
 Usuario |o--o{ CasoRecupero : resuelve >
 CasoRecupero }o--|| Cliente : se abre contra >

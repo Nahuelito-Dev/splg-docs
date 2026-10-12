@@ -5,7 +5,6 @@
 
 -- ---------- tipos enumerados nuevos ----------
 CREATE TYPE "vehicle_type_enum" AS ENUM ('motorcycle', 'car', 'van');
-CREATE TYPE "truck_load_status_enum" AS ENUM ('loading', 'on_route', 'returned', 'closed', 'closed_with_difference', 'cancelled');
 CREATE TYPE "cash_box_kind_enum" AS ENUM ('cash', 'bank', 'wallet');
 CREATE TYPE "cash_session_status_enum" AS ENUM ('open', 'closed');
 CREATE TYPE "cash_direction_enum" AS ENUM ('income', 'expense');
@@ -34,7 +33,6 @@ CREATE TYPE "tire_event_type_enum" AS ENUM ('mount', 'unmount', 'rotate', 'retre
 -- ---------- valores nuevos de tipos enumerados existentes ----------
 ALTER TYPE "configurable_process_enum" ADD VALUE IF NOT EXISTS 'dispatch';
 ALTER TYPE "configurable_process_enum" ADD VALUE IF NOT EXISTS 'scheduled_tasks';
-ALTER TYPE "configurable_process_enum" ADD VALUE IF NOT EXISTS 'stock_control';
 ALTER TYPE "order_paymentmethod_enum" ADD VALUE IF NOT EXISTS 'account';
 ALTER TYPE "order_paymenttype_enum" ADD VALUE IF NOT EXISTS 'account';
 ALTER TYPE "maintenance_subject_enum" ADD VALUE IF NOT EXISTS 'employee';
@@ -46,46 +44,6 @@ ALTER TABLE "car" ADD COLUMN IF NOT EXISTS "vehicle_type" vehicle_type_enum;
 -- ---------- Baja del envase y oferta de retiro ----------
 ALTER TABLE "cylinder" ADD COLUMN IF NOT EXISTS "decommissioned_at" timestamptz;
 ALTER TABLE "cylinder_recovery_notice" ADD COLUMN IF NOT EXISTS "order_id" uuid;
-
--- ---------- Carga del camión ----------
-CREATE TABLE IF NOT EXISTS "truck_load" (
-  "load_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "distributor_id" uuid NOT NULL,
-  "number" integer NOT NULL,
-  "car_id" uuid NOT NULL,
-  "delivery_id" uuid NOT NULL,
-  "helper_employee_id" uuid,
-  "origin_location_id" uuid NOT NULL,
-  "business_date" date NOT NULL,
-  "status" truck_load_status_enum NOT NULL DEFAULT 'loading',
-  "opened_at" timestamptz NOT NULL,
-  "departed_at" timestamptz,
-  "returned_at" timestamptz,
-  "closed_at" timestamptz,
-  "opened_by_user_id" uuid NOT NULL,
-  "closed_by_user_id" uuid,
-  "difference_note" text,
-  CONSTRAINT "PK_truck_load" PRIMARY KEY ("load_id"),
-  CONSTRAINT "UQ_truck_load_distributor_id_number" UNIQUE ("distributor_id", "number")
-);
-CREATE TABLE IF NOT EXISTS "truck_load_item" (
-  "item_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "load_id" uuid NOT NULL,
-  "gas_cylinder_id" uuid NOT NULL,
-  "loaded_full" integer NOT NULL DEFAULT 0,
-  "reloaded_full" integer NOT NULL DEFAULT 0,
-  "loaded_empty" integer NOT NULL DEFAULT 0,
-  "declared_return_full" integer,
-  "declared_return_empty" integer,
-  "delivered_full" integer,
-  "collected_empty" integer,
-  "expected_full" integer,
-  "expected_empty" integer,
-  "difference_full" integer,
-  "difference_empty" integer,
-  CONSTRAINT "PK_truck_load_item" PRIMARY KEY ("item_id"),
-  CONSTRAINT "UQ_truck_load_item_load_id_gas_cylinder_id" UNIQUE ("load_id", "gas_cylinder_id")
-);
 
 -- ---------- Caja, rendición del chofer, cuentas corrientes y comisiones ----------
 CREATE TABLE IF NOT EXISTS "cash_box" (
@@ -478,12 +436,6 @@ ALTER TABLE "tire_event" ADD CONSTRAINT "FK_tire_event_distributor_id" FOREIGN K
 ALTER TABLE "tire_event" ADD CONSTRAINT "FK_tire_event_tire_id" FOREIGN KEY ("tire_id") REFERENCES "tire" ("tire_id") ON DELETE CASCADE;
 ALTER TABLE "tire_event" ADD CONSTRAINT "FK_tire_event_car_id" FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE SET NULL;
 ALTER TABLE "tire_event" ADD CONSTRAINT "FK_tire_event_created_by_user_id" FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL;
-ALTER TABLE "truck_load" ADD CONSTRAINT "FK_truck_load_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
-ALTER TABLE "truck_load" ADD CONSTRAINT "FK_truck_load_car_id" FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE RESTRICT;
-ALTER TABLE "truck_load" ADD CONSTRAINT "FK_truck_load_delivery_id" FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE RESTRICT;
-ALTER TABLE "truck_load" ADD CONSTRAINT "FK_truck_load_origin_location_id" FOREIGN KEY ("origin_location_id") REFERENCES "stock_location" ("location_id") ON DELETE RESTRICT;
-ALTER TABLE "truck_load" ADD CONSTRAINT "FK_truck_load_opened_by_user_id" FOREIGN KEY ("opened_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
-ALTER TABLE "truck_load" ADD CONSTRAINT "FK_truck_load_closed_by_user_id" FOREIGN KEY ("closed_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
 ALTER TABLE "commission_entry" ADD CONSTRAINT "FK_commission_entry_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "commission_entry" ADD CONSTRAINT "FK_commission_entry_employee_id" FOREIGN KEY ("employee_id") REFERENCES "employee" ("employee_id") ON DELETE RESTRICT;
 ALTER TABLE "commission_entry" ADD CONSTRAINT "FK_commission_entry_order_id" FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE SET NULL;
@@ -503,8 +455,6 @@ ALTER TABLE "driver_settlement_expense" ADD CONSTRAINT "FK_driver_settlement_exp
 ALTER TABLE "driver_settlement_expense" ADD CONSTRAINT "FK_driver_settlement_expense_category_id" FOREIGN KEY ("category_id") REFERENCES "cash_category" ("category_id") ON DELETE RESTRICT;
 ALTER TABLE "driver_settlement_order" ADD CONSTRAINT "FK_driver_settlement_order_settlement_id" FOREIGN KEY ("settlement_id") REFERENCES "driver_settlement" ("settlement_id") ON DELETE CASCADE;
 ALTER TABLE "driver_settlement_order" ADD CONSTRAINT "FK_driver_settlement_order_order_id" FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE RESTRICT;
-ALTER TABLE "truck_load_item" ADD CONSTRAINT "FK_truck_load_item_load_id" FOREIGN KEY ("load_id") REFERENCES "truck_load" ("load_id") ON DELETE CASCADE;
-ALTER TABLE "truck_load_item" ADD CONSTRAINT "FK_truck_load_item_gas_cylinder_id" FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id") ON DELETE RESTRICT;
 ALTER TABLE "customer_account_allocation" ADD CONSTRAINT "FK_customer_account_allocation_debit_entry_id" FOREIGN KEY ("debit_entry_id") REFERENCES "customer_account_entry" ("entry_id") ON DELETE CASCADE;
 ALTER TABLE "customer_account_allocation" ADD CONSTRAINT "FK_customer_account_allocation_credit_entry_id" FOREIGN KEY ("credit_entry_id") REFERENCES "customer_account_entry" ("entry_id") ON DELETE CASCADE;
 ALTER TABLE "cylinder_recovery_notice" ADD CONSTRAINT "FK_cylinder_recovery_notice_order_id" FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE SET NULL;

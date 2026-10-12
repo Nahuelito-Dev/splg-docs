@@ -8,6 +8,7 @@ sequenceDiagram
     participant RT as :RealtimeDispatchPort
     participant CHO as candidato:Chofer
     participant NOT as :NotificationsService
+    participant TLG as :TruckLoadGateService
 
     SIS->>+SRV: ofrecerAlSiguienteChofer(pedidoId)
     SRV->>+PEDS: get(pedidoId)
@@ -34,6 +35,7 @@ sequenceDiagram
             end
         end
     end
+    SRV->>TLG: choferesQuePuedenRecibir(elegibles)
     alt Hay un chofer elegible
         SRV->>+PED: ofrecerA(chofer, venceEn)
         create participant OFE as :OfertaDespacho

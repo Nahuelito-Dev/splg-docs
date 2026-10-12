@@ -1,7 +1,7 @@
 """Modelo conceptual de SPLG, en una sola pieza.
 
-Lo leen generar-modelo-conceptual.py (las vistas, el .mmd para Lucidchart y la tabla
-de relaciones del Documento 2), generar-modelo-datos.py (el DER conceptual) y
+Lo leen generar-modelo-conceptual.py (las vistas y la tabla de relaciones del
+Documento 2), generar-drawio.py (el modelo conceptual en draw.io), generar-modelo-datos.py (el DER conceptual) y
 material-de-trabajo/verificar-mc-der.py (la consistencia entre los dos).
 
 Convenciones (Larman, «UML y patrones», cap. 9):
@@ -143,7 +143,7 @@ _c("Incidencia", "Posventa",
    ["tipo", "momento", "descripción", "estado", "resolución", "fotografía"])
 _c("Calificacion", "Posventa", ["puntaje", "comentario"])
 
-# Stock físico y compras (implementados) y carga del camión (planificada, iteración I-13).
+# Stock físico, compras y carga del camión (implementados).
 _c("Deposito", "StockFisico", ["nombre", "código", "tipo", "dirección", "predeterminado", "activo"])
 _c("UbicacionDeStock", "StockFisico", ["tipo"])
 _c("SaldoDeStock", "StockFisico", ["condición", "cantidad"])
@@ -155,7 +155,7 @@ _c("AjusteDeStock", "StockFisico", ["número", "motivo", "nota", "fecha"])
 _c("ItemAjusteDeStock", "StockFisico", ["condición", "diferencia"])
 _c("CargaDeCamion", "StockFisico",
    ["número", "día", "estado", "abierta el", "salió el", "regresó el", "cerrada el",
-    "nota de diferencia"])
+    "nota de diferencia", "motivo de cancelación", "notas"])
 _c("ItemCarga", "StockFisico",
    ["llenas cargadas", "llenas repuestas", "vacías cargadas", "llenas declaradas al regreso",
     "vacías declaradas al regreso", "llenas entregadas", "vacías recolectadas",
@@ -316,7 +316,7 @@ ASOCIACIONES = [
     ("Usuario", "1", "-", "0..*", "Calificacion", "emite", TR),
     ("Usuario", "1", "-", "0..*", "Calificacion", "recibe", TR),
 
-    # Stock físico y compras (implementados) y carga del camión (planificada, I-13)
+    # Stock físico, compras y carga del camión (implementados)
     ("Distribuidora", "1", "-", "0..*", "Deposito", "dispone de", PR),
     ("Distribuidora", "1", "-", "0..*", "Proveedor", "compra a", UG),
     ("Deposito", "1", "-", "0..1", "UbicacionDeStock", "se registra como {xor}", DE),
@@ -352,6 +352,7 @@ ASOCIACIONES = [
     ("ItemCarga", "0..*", "-", "1", "Producto", "corresponde a", DE),
     ("Usuario", "1", "-", "0..*", "CargaDeCamion", "abre", TR),
     ("Usuario", "0..1", "-", "0..*", "CargaDeCamion", "cierra", TR),
+    ("Empleado", "0..1", "-", "0..*", "CargaDeCamion", "ayuda en", TR),
     # Caja y finanzas (módulo planificado, iteración I-14)
     ("Distribuidora", "1", "*", "0..*", "Caja", "define", PL),
     ("Distribuidora", "1", "*", "0..*", "CategoriaDeCaja", "define", PL),
@@ -480,7 +481,7 @@ TABLA = {
     "LicenciaLaboral": "employee_leave", "Adjunto": "attachment",
     "CargaCombustible": "fuel_load", "MultaTransito": "traffic_fine",
     "Siniestro": "vehicle_accident", "Neumatico": "tire", "MovimientoNeumatico": "tire_event",
-    # Stock físico (implementado) y compras y carga del camión (planificados, I-13)
+    # Stock físico, compras y carga del camión (implementados)
     "Deposito": "warehouse", "UbicacionDeStock": "stock_location",
     "SaldoDeStock": "stock_balance", "MovimientoDeStock": "stock_movement",
     "UmbralDeStock": "stock_threshold", "AjusteDeStock": "stock_adjustment",
@@ -508,8 +509,6 @@ TABLA = {
 PLANIFICADOS = {c: "I-11" for c in ("JornadaDeTrabajo", "LicenciaLaboral")}
 PLANIFICADOS.update({c: "I-12" for c in ("CargaCombustible", "MultaTransito", "Siniestro", "Neumatico",
                                          "MovimientoNeumatico")})
-PLANIFICADOS.update({c: "I-13" for c in (
-    "CargaDeCamion", "ItemCarga")})
 PLANIFICADOS.update({c: "I-14" for c in (
     "Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja", "RendicionChofer",
     "PedidoRendido", "GastoDeRendicion", "CuentaCorriente", "AsientoCuentaCorriente",
@@ -518,8 +517,7 @@ PLANIFICADOS.update({c: "I-14" for c in (
 ATRIBUTOS_PLANIFICADOS = {("PlanMantenimiento", "documento que controla"): "I-11",
                           ("PlanMantenimiento", "aplica a"): "I-11",
                           ("TareaMantenimiento", "vigente desde"): "I-11", ("TareaMantenimiento", "detalle"): "I-11",
-                          ("Vehiculo", "tipo de combustible"): "I-12", ("Vehiculo", "capacidad del tanque"): "I-12",
-                          ("ConfiguracionModulo", "exigir carga de camión abierta"): "I-13"}
+                          ("Vehiculo", "tipo de combustible"): "I-12", ("Vehiculo", "capacidad del tanque"): "I-12"}
 # Módulo del backend de cada concepto planificado (y del Adjunto, que ya está implementado).
 MODULO_PLANIFICADO = {"JornadaDeTrabajo": "employee", "LicenciaLaboral": "employee", "Adjunto": "attachment",
                       "CargaCombustible": "fleet-expense", "MultaTransito": "fleet-expense",
@@ -723,7 +721,7 @@ ATRIBUTOS = {
                   "estado": "status", "posición": "position",
                   "kilometraje de montaje": "mounted_odometer_km"},
     "MovimientoNeumatico": {"tipo": "event_type", "kilometraje": "odometer_km", "fecha": "occurred_at"},
-    # Stock físico y compras (implementados) y carga del camión (planificada, I-13)
+    # Stock físico, compras y carga del camión (implementados)
     "Deposito": {"nombre": "name", "código": "code", "tipo": "kind", "dirección": "address",
                  "predeterminado": "is_default", "activo": "is_active"},
     "UbicacionDeStock": {"tipo": "kind"},
@@ -738,7 +736,8 @@ ATRIBUTOS = {
     "CargaDeCamion": {"número": "number", "día": "business_date", "estado": "status",
                       "abierta el": "opened_at", "salió el": "departed_at",
                       "regresó el": "returned_at", "cerrada el": "closed_at",
-                      "nota de diferencia": "difference_note"},
+                      "nota de diferencia": "difference_note",
+                      "motivo de cancelación": "cancel_reason", "notas": "notes"},
     "ItemCarga": {"llenas cargadas": "loaded_full", "llenas repuestas": "reloaded_full",
                   "vacías cargadas": "loaded_empty",
                   "llenas declaradas al regreso": "declared_return_full",
@@ -843,6 +842,7 @@ NOMBRE_POR_COLUMNA = {
     ("stock_movement", "reversed_movement_id"): "corrige a",
     ("truck_load", "opened_by_user_id"): "abre",
     ("truck_load", "closed_by_user_id"): "cierra",
+    ("truck_load", "helper_employee_id"): "ayuda en",
     ("customer_account_allocation", "debit_entry_id"): "salda",
     ("customer_account_allocation", "credit_entry_id"): "se aplica con",
     ("cash_movement", "reverses_movement_id"): "anula a",

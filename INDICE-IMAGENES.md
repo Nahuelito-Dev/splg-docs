@@ -272,7 +272,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-215 | Emitir una Orden de Compra | `DSS_CU-215_Emitir-una-Orden-de-Compra.png` | `DSD_CU-215_emitirOrdenDeCompra.png` |
 | CU-216 | Cancelar una Orden de Compra | `DSS_CU-216_Cancelar-una-Orden-de-Compra.png` | `DSD_CU-216_cancelarOrdenDeCompra.png` |
 | CU-217 | Registrar la Recepción de una Compra | `DSS_CU-217_Registrar-la-Recepcion-de-una-Compra.png` | `DSD_CU-217_registrarRecepcionDeCompra.png` |
-| CU-218 | Registrar la Carga del Camión | `DSS_CU-218_Registrar-la-Carga-del-Camion.png` | `DSD_CU-218_registrarCargaDelCamion.png` · `DSD_CU-218_reponerCargaDelCamion.png` · `DSD_CU-218_cancelarCargaDelCamion.png` · `DSD_CU-218_consultarCargasDelCamion.png` |
+| CU-218 | Registrar la Carga del Camión | `DSS_CU-218_Registrar-la-Carga-del-Camion.png` | `DSD_CU-218_registrarCargaDelCamion.png` · `DSD_CU-218_corregirRenglonesDeLaCarga.png` · `DSD_CU-218_reponerCargaDelCamion.png` |
 | CU-219 | Registrar la Salida del Camión | `DSS_CU-219_Registrar-la-Salida-del-Camion.png` | `DSD_CU-219_registrarSalidaDelCamion.png` |
 | CU-220 | Descontar del Stock Físico lo Entregado | `DSS_CU-220_Descontar-del-Stock-Fisico-lo-Entregado.png` | `DSD_CU-220_descontarStockDeLaEntrega.png` |
 | CU-221 | Registrar el Regreso del Camión | `DSS_CU-221_Registrar-el-Regreso-del-Camion.png` | `DSD_CU-221_registrarRegresoDelCamion.png` |
@@ -303,7 +303,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-246 | Verificar la Habilitación Laboral del Chofer | — (caso incluido, sin diagrama propio) | `DSD_CU-246_verificarHabilitacionLaboral.png` |
 | CU-247 | Reactivar un Vehículo | `DSS_CU-247_Reactivar-un-Vehiculo.png` | `DSD_CU-247_reactivarVehiculo.png` |
 | CU-248 | Verificar la Carga de Camión Abierta del Chofer | `DSS_CU-248_Verificar-la-Carga-de-Camion-Abierta-del-Chofer.png` | `DSD_CU-248_verificarCargaDeCamionAbierta.png` |
-| CU-249 | Configurar el Control de Carga de Camión Abierta | `DSS_CU-249_Configurar-el-Control-de-Carga-de-Camion-Abierta.png` | `DSD_CU-249_configurarControlDeCargaAbierta.png` |
+| CU-249 | Configurar el Control de Carga de Camión Abierta | `DSS_CU-249_Configurar-el-Control-de-Carga-de-Camion-Abierta.png` | `DSD_CU-249_configurarControlDeCargaAbierta.png` · `DSD_CU-249_consultarControlDeCargaAbierta.png` |
 | CU-250 | Aplicar un Movimiento de Stock | `DSS_CU-250_Aplicar-un-Movimiento-de-Stock.png` | `DSD_CU-250_aplicarMovimientoDeStock.png` |
 | CU-251 | Modificar el Perfil de Usuario | `DSS_CU-251_Modificar-el-Perfil-de-Usuario.png` | `DSD_CU-251_actualizarPerfil.png` |
 | CU-252 | Crear un Rol | `DSS_CU-252_Crear-un-Rol.png` | `DSD_CU-252_crearRol.png` |
@@ -343,6 +343,9 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-286 | Consultar el Historial de Compras de un Proveedor | `DSS_CU-286_Consultar-el-Historial-de-Compras-de-un-Proveedor.png` | `DSD_CU-286_consultarHistorialDeCompras.png` |
 | CU-287 | Modificar una Orden de Compra | `DSS_CU-287_Modificar-una-Orden-de-Compra.png` | `DSD_CU-287_modificarOrdenDeCompra.png` |
 | CU-288 | Enviar una Orden de Compra | `DSS_CU-288_Enviar-una-Orden-de-Compra.png` | `DSD_CU-288_enviarOrdenDeCompra.png` |
+| CU-289 | Cancelar una Carga del Camión | `DSS_CU-289_Cancelar-una-Carga-del-Camion.png` | `DSD_CU-289_cancelarCargaDelCamion.png` |
+| CU-290 | Consultar las Cargas del Camión | `DSS_CU-290_Consultar-las-Cargas-del-Camion.png` | `DSD_CU-290_consultarCargasDelCamion.png` |
+| CU-291 | Consultar una Carga del Camión | `DSS_CU-291_Consultar-una-Carga-del-Camion.png` | `DSD_CU-291_consultarCargaDelCamion.png` |
 
 ## Módulos de gestión planificados: modelos y estados
 

@@ -121,8 +121,9 @@ class StockLedgerService <<fachada>> {
   + aplicar(ubicacionDeStock: UbicacionDeStock,\n      itemsRecibidos: ItemRecepcion[*]): Identificador
   + aplicar(ubicacionDeStock: UbicacionDeStock,\n      renglonesDeAjuste: ItemAjusteDeStock[*]): Identificador
   + aplicar(ubicacionDeStock: UbicacionDeStock,\n      motivo: Cadena, items: Registro): Identificador
+  + aplicar(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      renglones: MovimientoDeStock[*]): Identificador
+  + aplicar(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      plan: PlanMantenimiento): Identificador
   + aplicar(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      items: Registro,\n      traslado: MotivoDeMovimiento): Identificador
-  + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto, llenas: CondicionDeStock,\n      llenasCargadas: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento): Booleano
   + contraasentar(loteDeLaRecepcion: Identificador): Identificador
   + contraasentar(loteId: Identificador, nota: Cadena)
   + validarMovimiento(movimiento: MovimientoDeCaja)

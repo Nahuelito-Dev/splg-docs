@@ -6,12 +6,15 @@ sequenceDiagram
 
     CHO->>SIS: registrarRegresoDelCamion(cargaId, devueltos)
     activate SIS
-    alt la carga está en ruta
+    alt la carga está en ruta o devuelta y el chofer no tiene pedidos en curso
         SIS-->>CHO: lo declarado, lo esperado y la diferencia
-    else la carga no está en ruta
+    else la carga no está en ruta ni devuelta, o la declaración es inválida
+        SIS-->>CHO: solicitud inválida
+    else el chofer tiene pedidos en curso
         SIS-->>CHO: conflicto
-    else una cantidad es negativa
-        SIS-->>CHO: solicitud inválida, con el detalle del campo
+    else la carga no existe o no es suya
+        SIS-->>CHO: recurso no encontrado
     end
     deactivate SIS
+
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)

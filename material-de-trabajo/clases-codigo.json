@@ -2792,6 +2792,16 @@
     "nulo": true
    },
    {
+    "nombre": "paymentResolvedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "paymentResolvedBy",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
     "nombre": "paymentResolutionNote",
     "tipo": "string",
     "nulo": true
@@ -4484,6 +4494,254 @@
    }
   ]
  },
+ "TruckLoadItem": {
+  "kind": "entity",
+  "file": "truck-load/entities/truck-load-item.entity.ts",
+  "tabla": "truck_load_item",
+  "atributos": [
+   {
+    "nombre": "itemId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "loadId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "loadedFull",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "reloadedFull",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "loadedEmpty",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "declaredReturnFull",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "declaredReturnEmpty",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "deliveredFull",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "collectedEmpty",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "expectedFull",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "expectedEmpty",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "differenceFull",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "differenceEmpty",
+    "tipo": "number",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "load",
+    "destino": "TruckLoad",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "TruckLoad": {
+  "kind": "entity",
+  "file": "truck-load/entities/truck-load.entity.ts",
+  "tabla": "truck_load",
+  "atributos": [
+   {
+    "nombre": "loadId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "number",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "carId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "deliveryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "helperEmployeeId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "originLocationId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "businessDate",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "TruckLoadStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "openedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "departedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "returnedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "closedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "openedByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "closedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "differenceNote",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "cancelReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "car",
+    "destino": "Car",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "delivery",
+    "destino": "Delivery",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "helper",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "originLocation",
+    "destino": "StockLocation",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "openedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "closedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "items",
+    "destino": "TruckLoadItem",
+    "tipo": "OneToMany",
+    "nulo": false
+   }
+  ]
+ },
  "UserAddress": {
   "kind": "entity",
   "file": "user-address/entities/user-address.entity.ts",
@@ -4916,7 +5174,7 @@
    },
    {
     "nombre": "download",
-    "parametros": "@Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser, @Res() res: Response",
+    "parametros": "@Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadAttachmentQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser, @Res() res: Response",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -4982,7 +5240,7 @@
    },
    {
     "nombre": "getDownload",
-    "parametros": "attachmentId: string, distributorId: string, actor: AttachmentActor",
+    "parametros": "attachmentId: string, distributorId: string, actor: AttachmentActor, disposition?: Disposicion",
     "retorno": "Promise<string>",
     "visibilidad": "+",
     "estatico": false,
@@ -4990,7 +5248,7 @@
    },
    {
     "nombre": "getSignedDownload",
-    "parametros": "attachmentId: string, distributorId: string, actor: AttachmentActor",
+    "parametros": "attachmentId: string, distributorId: string, actor: AttachmentActor, disposition?: Disposicion",
     "retorno": "Promise<SignedDownload>",
     "visibilidad": "+",
     "estatico": false,
@@ -5806,6 +6064,14 @@
     "abstracto": false
    },
    {
+    "nombre": "assertSinCargaAbierta",
+    "parametros": "manager: EntityManager, deliveryIds: string[], carId: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "liberarSiTieneUno",
     "parametros": "deliveryId: string, manager: EntityManager, opciones: { motivo?: string; actorUserId?: string } = {}",
     "retorno": "Promise<void>",
@@ -5973,6 +6239,14 @@
     "abstracto": false
    },
    {
+    "nombre": "removePhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<ClaimResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "getPhoto",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null, @Req() req: Request, @Res() res: Response",
     "retorno": "Promise<void>",
@@ -6097,6 +6371,14 @@
    {
     "nombre": "uploadPhoto",
     "parametros": "id: string, file: Express.Multer.File | undefined, distributorId: string | null, actor: ClaimActor",
+    "retorno": "Promise<Claim>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removePhoto",
+    "parametros": "id: string, distributorId: string | null, actor: ClaimActor",
     "retorno": "Promise<Claim>",
     "visibilidad": "+",
     "estatico": false,
@@ -7550,6 +7832,32 @@
   ],
   "estereotipo": null
  },
+ "ModuleConfigService": {
+  "kind": "service",
+  "file": "distributor/module-config.service.ts",
+  "metodos": [
+   {
+    "nombre": "parametros",
+    "parametros": "distributorId: string, module: ConfigurableProcess",
+    "retorno": "Promise<ModuleConfigParams | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "distributorId: string, module: ConfigurableProcess, params: ModuleConfigParams, updatedByUserId: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository"
+  ],
+  "estereotipo": null
+ },
  "DocumentSequenceService": {
   "kind": "service",
   "file": "document-sequence/document-sequence.service.ts",
@@ -8691,7 +8999,7 @@
    },
    {
     "nombre": "getDownload",
-    "parametros": "taskId: string, attachmentId: string, distributorId: string",
+    "parametros": "taskId: string, attachmentId: string, distributorId: string, disposition?: Disposicion",
     "retorno": "Promise<string>",
     "visibilidad": "+",
     "estatico": false,
@@ -8699,7 +9007,7 @@
    },
    {
     "nombre": "getSignedDownload",
-    "parametros": "taskId: string, attachmentId: string, distributorId: string",
+    "parametros": "taskId: string, attachmentId: string, distributorId: string, disposition?: Disposicion",
     "retorno": "Promise<SignedDownload>",
     "visibilidad": "+",
     "estatico": false,
@@ -9062,7 +9370,7 @@
    },
    {
     "nombre": "downloadAttachment",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @Res() res: Response",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Param('attachmentId', ParseUUIDPipe) attachmentId: string, @Query() query: DownloadAttachmentQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @Res() res: Response",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -10556,6 +10864,14 @@
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "conCargaSiSeExige",
+    "parametros": "driverIds: string[], distributorId: string | null | undefined",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -10565,7 +10881,28 @@
    "DeliveryService",
    "NotificationsService",
    "FleetDispatchLockService",
-   "RedisService"
+   "RedisService",
+   "TruckLoadGatePort"
+  ],
+  "estereotipo": null
+ },
+ "OrderDriverPhotoService": {
+  "kind": "service",
+  "file": "order/application/order-driver-photo.service.ts",
+  "metodos": [
+   {
+    "nombre": "enlace",
+    "parametros": "orderId: string, user: AuthenticatedUser, distributorId: string | null",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "OrderRepositoryPort",
+   "DeliveryService",
+   "EntityPhotoService"
   ],
   "estereotipo": null
  },
@@ -10731,9 +11068,17 @@
     "abstracto": false
    },
    {
+    "nombre": "firmarConTimeout",
+    "parametros": "key: string | null",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "emitStatusEvent",
     "parametros": "order: Order, status: OrderStatus, deliveryUser: User | null",
-    "retorno": "void",
+    "retorno": "Promise<void>",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
@@ -10758,7 +11103,9 @@
    "CancelOrderUseCase",
    "ReleaseOrderUseCase",
    "FleetDispatchLockService",
-   "StockDeliveryPort"
+   "StockDeliveryPort",
+   "EntityPhotoService",
+   "TruckLoadGatePort"
   ],
   "estereotipo": "usecase"
  },
@@ -11135,6 +11482,46 @@
   "dependencias": [],
   "estereotipo": "interface"
  },
+ "TruckLoadGatePort": {
+  "kind": "port",
+  "file": "order/domain/ports/truck-load-gate.port.ts",
+  "metodos": [
+   {
+    "nombre": "choferesQuePuedenRecibir",
+    "parametros": "distributorId: string, userIds: string[]",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
+    "nombre": "motivoParaNoRecibir",
+    "parametros": "distributorId: string, userId: string",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
+    "nombre": "assertPuedeAceptar",
+    "parametros": "distributorId: string, deliveryId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
+    "nombre": "assertPuedeAsignar",
+    "parametros": "distributorId: string, deliveryId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "interface"
+ },
  "CylinderLifecycleAdapter": {
   "kind": "service",
   "file": "order/infrastructure/cylinder-lifecycle.adapter.ts",
@@ -11471,6 +11858,22 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "entregadosPorVehiculo",
+    "parametros": "args: { distributorId: string; deliveryId: string; carId: string; desde: Date; hasta?: Date | null; }",
+    "retorno": "Promise<\n    Array<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "countEnCurso",
+    "parametros": "deliveryId: string, manager?: EntityManager",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -11532,8 +11935,8 @@
    },
    {
     "nombre": "findAvailableOrders",
-    "parametros": "@Query() paginationDto: PaginationDto, @CurrentDistributor() distributorId: string | null",
-    "retorno": null,
+    "parametros": "@Query() paginationDto: PaginationDto, @CurrentDistributor() distributorId: string | null, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<AvailableOrdersResponseDto>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -11542,6 +11945,14 @@
     "nombre": "findReservations",
     "parametros": "@CurrentDistributor() distributorId: string | null",
     "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getDriverPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null, @Res() res: Response",
+    "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -11679,7 +12090,9 @@
    "OrderService",
    "ReservationService",
    "UpdateOrderUseCase",
-   "CashCollectionUseCase"
+   "CashCollectionUseCase",
+   "OrderDriverPhotoService",
+   "TruckLoadGatePort"
   ],
   "estereotipo": "controller"
  },
@@ -11909,7 +12322,8 @@
    "DispatchOfferRepositoryPort",
    "NotificationPort",
    "DataSource",
-   "FleetDispatchLockService"
+   "FleetDispatchLockService",
+   "TruckLoadGatePort"
   ],
   "estereotipo": null
  },
@@ -13500,7 +13914,7 @@
    },
    {
     "nombre": "enlace",
-    "parametros": "key: string | null | undefined, externa?: string | null",
+    "parametros": "key: string | null | undefined",
     "retorno": "Promise<EnlaceDeFoto>",
     "visibilidad": "+",
     "estatico": false,
@@ -13627,7 +14041,7 @@
    },
    {
     "nombre": "getSignedDownload",
-    "parametros": "key: string, options?: { fileName?: string }",
+    "parametros": "key: string, options?: { fileName?: string; /** `inline` sólo se respeta si `contentType` es de los que se muestran sin riesgo. */ disposition?: Disposicion; /** Tipo guardado del archivo; con `inline` seguro se fuerza en la respuesta. */ contentType?: string; }",
     "retorno": "Promise<SignedDownload>",
     "visibilidad": "+",
     "estatico": false,
@@ -14013,6 +14427,30 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "tiposConSaldo",
+    "parametros": "manager: EntityManager, locationId: string",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "movimientosDelCamion",
+    "parametros": "manager: EntityManager, truckLocationId: string, desde: Date",
+    "retorno": "Promise<MovimientoDeCamion[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearParaRendicion",
+    "parametros": "manager: EntityManager, args: { distributorId: string; gasCylinderIds: string[]; depositLocationId: string; truckLocationId: string; }",
+    "retorno": "Promise<Map<string, number>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [],
@@ -14150,6 +14588,14 @@
   "kind": "usecase",
   "file": "stock/application/stock-transfer.use-case.ts",
   "metodos": [
+   {
+    "nombre": "validarRegularizacion",
+    "parametros": "manager: EntityManager, carId: string | null, notes: string | undefined",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
    {
     "nombre": "execute",
     "parametros": "dto: CreateTransferDto, distributorId: string, actorUserId: string",
@@ -14721,6 +15167,460 @@
    "DistributorService"
   ],
   "estereotipo": null
+ },
+ "CancelTruckLoadUseCase": {
+  "kind": "usecase",
+  "file": "truck-load/application/cancel-truck-load.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, reason: string, distributorId: string, actorUserId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": "usecase"
+ },
+ "CloseTruckLoadUseCase": {
+  "kind": "usecase",
+  "file": "truck-load/application/close-truck-load.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, dto: CloseTruckLoadDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "StockLocationService",
+   "StockOnHandService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "DepartTruckLoadUseCase": {
+  "kind": "usecase",
+  "file": "truck-load/application/depart-truck-load.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, distributorId: string, actorUserId: string, alcance: string | undefined",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "StockLocationService",
+   "StockOnHandService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "OpenTruckLoadUseCase": {
+  "kind": "usecase",
+  "file": "truck-load/application/open-truck-load.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "dto: CreateTruckLoadDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "abrir",
+    "parametros": "manager: EntityManager, dto: CreateTruckLoadDto, renglones: Array<{ gasCylinderId: string; loadedFull: number; loadedEmpty: number; }>, businessDate: string, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarSinCargaAbierta",
+    "parametros": "manager: EntityManager, carId: string, deliveryId: string, patente: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "DeliveryService",
+   "VehicleAssignmentService",
+   "EmployeeService",
+   "WarehouseService",
+   "StockLocationService",
+   "DocumentSequenceService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "ReloadTruckLoadUseCase": {
+  "kind": "usecase",
+  "file": "truck-load/application/reload-truck-load.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, dto: ReloadTruckLoadDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "StockLocationService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "ReturnTruckLoadUseCase": {
+  "kind": "usecase",
+  "file": "truck-load/application/return-truck-load.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, dto: ReturnTruckLoadDto, distributorId: string, alcance: string | undefined",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "OrderLookupService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "StockControlSettingsService": {
+  "kind": "service",
+  "file": "truck-load/application/stock-control-settings.service.ts",
+  "metodos": [
+   {
+    "nombre": "obtener",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<StockControlSettings>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "distributorId: string, settings: StockControlSettings, actorUserId: string",
+    "retorno": "Promise<StockControlSettings>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ModuleConfigService"
+  ],
+  "estereotipo": null
+ },
+ "TruckLoadAccessService": {
+  "kind": "service",
+  "file": "truck-load/application/truck-load-access.service.ts",
+  "metodos": [
+   {
+    "nombre": "alcanceDe",
+    "parametros": "user: AuthenticatedUser",
+    "retorno": "Promise<string | undefined>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DeliveryService"
+  ],
+  "estereotipo": null
+ },
+ "TruckLoadGateService": {
+  "kind": "service",
+  "file": "truck-load/application/truck-load-gate.service.ts",
+  "metodos": [
+   {
+    "nombre": "choferesQuePuedenRecibir",
+    "parametros": "distributorId: string, userIds: string[]",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "motivoParaNoRecibir",
+    "parametros": "distributorId: string, userId: string",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertPuedeAceptar",
+    "parametros": "distributorId: string, deliveryId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertPuedeAsignar",
+    "parametros": "distributorId: string, deliveryId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "exigir",
+    "parametros": "distributorId: string, deliveryId: string, mensajeSinCarga: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "motivoDe",
+    "parametros": "exige: boolean, f: FilaDeChofer",
+    "retorno": "MotivoSinPedidos | null",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "textoParaLaApp",
+    "parametros": "m: MotivoSinPedidos",
+    "retorno": "string",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "leer",
+    "parametros": "distributorId: string, columna: string, valores: string[]",
+    "retorno": "Promise<FilaDeChofer[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "StockControlSettingsService",
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "TruckLoadQueryService": {
+  "kind": "service",
+  "file": "truck-load/application/truck-load-query.service.ts",
+  "metodos": [
+   {
+    "nombre": "listar",
+    "parametros": "distributorId: string, query: QueryTruckLoadDto, alcance?: string",
+    "retorno": "Promise<TruckLoadPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "detalle",
+    "parametros": "id: string, distributorId: string, alcance?: string",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "efectivoDe",
+    "parametros": "pedidos: Array<{ totalAmount: number; paymentMethod: PaymentMethod; paymentStatus: PaymentStatus; }>",
+    "retorno": "TruckLoadCashDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "miCarga",
+    "parametros": "distributorId: string, userId: string",
+    "retorno": "Promise<MyTruckLoadDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "stockDeCamion",
+    "parametros": "distributorId: string, carId: string",
+    "retorno": "Promise<TruckStockDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "OrderLookupService",
+   "StockQueryService",
+   "StockOnHandService",
+   "DeliveryService",
+   "StockControlSettingsService"
+  ],
+  "estereotipo": null
+ },
+ "UpdateTruckLoadItemsUseCase": {
+  "kind": "usecase",
+  "file": "truck-load/application/update-truck-load-items.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, dto: UpdateTruckLoadItemsDto, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": "usecase"
+ },
+ "TruckLoadController": {
+  "kind": "controller",
+  "file": "truck-load/presentation/truck-load.controller.ts",
+  "metodos": [
+   {
+    "nombre": "mine",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<MyTruckLoadDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "settingsGet",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockControlSettingsDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "settingsPut",
+    "parametros": "@Body() dto: StockControlSettingsDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<StockControlSettingsDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "stock",
+    "parametros": "@Param('carId', ParseUUIDPipe) carId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TruckStockDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateTruckLoadDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "list",
+    "parametros": "@Query() query: QueryTruckLoadDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TruckLoadPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "detail",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "items",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateTruckLoadItemsDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "departAction",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reloadAction",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReloadTruckLoadDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "returnAction",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReturnTruckLoadDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "closeAction",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CloseTruckLoadDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cancelAction",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CancelTruckLoadDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<TruckLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "OpenTruckLoadUseCase",
+   "UpdateTruckLoadItemsUseCase",
+   "DepartTruckLoadUseCase",
+   "ReloadTruckLoadUseCase",
+   "ReturnTruckLoadUseCase",
+   "CloseTruckLoadUseCase",
+   "CancelTruckLoadUseCase",
+   "TruckLoadQueryService",
+   "StockControlSettingsService",
+   "TruckLoadAccessService"
+  ],
+  "estereotipo": "controller"
  },
  "UserAddressController": {
   "kind": "controller",

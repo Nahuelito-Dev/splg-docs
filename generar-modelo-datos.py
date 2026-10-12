@@ -6,9 +6,9 @@
 Sale, en diagramas/base-de-datos/:
 
   SPLG-base-de-datos.sql                  el esquema tal cual lo devuelve pg_dump
-  SPLG-base-de-datos-lucidchart.sql       el esquema actual en SQL portable
+  SPLG-base-de-datos-portable.sql       el esquema actual en SQL portable
   SPLG-base-de-datos-propuesta.sql        solo los agregados pedidos por la catedra
-  SPLG-base-de-datos-completa-lucidchart.sql  actual + propuesta, portable, para importar
+  SPLG-base-de-datos-completa-portable.sql  actual + propuesta, portable, para importar
   fisico/SPLG-fisico-NN-<contexto>.puml/.png/.svg    entidad-relación con tablas y columnas,
                                           una lámina por contexto de negocio
   conceptual/SPLG-der-NN-<área>.puml/...  entidad-relación conceptual con el vocabulario del
@@ -868,58 +868,6 @@ def _usr(nombre, desc, nulo=False):
 def _gas(desc="Tipo de garrafa."):
     return _ref("gas_cylinder_id", "gas_cylinder", "gas_cylinder_id", "RESTRICT", desc)
 
-STOCK_Y_COMPRAS = {
-    "clave": "stock-y-compras",
-    "casos": "CU-218, CU-219, CU-221 a CU-223 (I-13, parte 3)",
-    "nota": "El stock físico (depósitos, ubicaciones, saldos, libro, ajustes y umbrales) y las compras (proveedores, órdenes y recepciones) ya están en la base; este agregado trae lo que falta: la carga del camión, que escribe sobre ese libro. Referencia de lo ya construido: el saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)` y `(distributor_id) WHERE is_default` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.",
-    "titulo": "Carga del camión",
-    "pedido": "Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué sale y vuelve en cada reparto.",
-    "enums": {
-      "truck_load_status_enum": ["loading", "on_route", "returned", "closed", "closed_with_difference",
-                                 "cancelled"],
-    },
-    "enum_valores": {"configurable_process_enum": ["stock_control"]},
-    "columnas": {},
-    "tablas": [
-      {"nombre": "truck_load", "concepto": "Carga de camión",
-       "desc": "Hoja de carga: el turno de un camión, desde que se carga hasta que se rinde.",
-       "columnas": [
-         _id("load_id"), _dist(),
-         _col("number", "integer", "Número correlativo por distribuidora."),
-         _ref("car_id", "car", "car_id", "RESTRICT", "Vehículo."),
-         _ref("delivery_id", "delivery", "delivery_id", "RESTRICT", "Chofer."),
-         _col("helper_employee_id", "uuid", "Ayudante: legajo del módulo de personal, sin cuenta de usuario.", nulo=True),
-         _ref("origin_location_id", "stock_location", "location_id", "RESTRICT", "Depósito de salida."),
-         _col("business_date", "date", "Día de negocio."),
-         _col("status", "truck_load_status_enum", "Cargando, en ruta, regresó, cerrada, cerrada con diferencia o cancelada.", default="'loading'"),
-         _ts("opened_at", "Apertura.", nulo=False), _ts("departed_at", "Salida."),
-         _ts("returned_at", "Regreso."), _ts("closed_at", "Cierre."),
-         _usr("opened_by_user_id", "Usuario que abrió la carga."),
-         _usr("closed_by_user_id", "Usuario que la cerró.", nulo=True),
-         _col("difference_note", "text", "Nota de la diferencia; obligatoria si cierra con diferencia.", nulo=True),
-       ],
-       "pk": ["load_id"], "unicos": [["distributor_id", "number"]]},
-      {"nombre": "truck_load_item", "concepto": "Renglón de carga de camión",
-       "desc": "Por tipo de garrafa: lo cargado, lo repuesto, lo entregado, lo declarado al regreso y la diferencia.",
-       "columnas": [
-         _id("item_id"),
-         _ref("load_id", "truck_load", "load_id", "CASCADE", "Carga."),
-         _gas(),
-         _cant("loaded_full", "Llenas cargadas."), _cant("reloaded_full", "Llenas repuestas en ruta."),
-         _cant("loaded_empty", "Vacías cargadas para canje."),
-         _col("declared_return_full", "integer", "Llenas declaradas al regreso.", nulo=True),
-         _col("declared_return_empty", "integer", "Vacías declaradas al regreso.", nulo=True),
-         _col("delivered_full", "integer", "Llenas entregadas, al cierre.", nulo=True),
-         _col("collected_empty", "integer", "Vacías recolectadas, al cierre.", nulo=True),
-         _col("expected_full", "integer", "Llenas esperadas, al cierre.", nulo=True),
-         _col("expected_empty", "integer", "Vacías esperadas, al cierre.", nulo=True),
-         _col("difference_full", "integer", "Diferencia de llenas, al cierre.", nulo=True),
-         _col("difference_empty", "integer", "Diferencia de vacías, al cierre.", nulo=True),
-       ],
-       "pk": ["item_id"], "unicos": [["load_id", "gas_cylinder_id"]]},
-    ],
-}
-
 # Lo que todavía no está en la base: los cambios de modelo que necesitan los casos de uso
 # planificados (Documento 0, plan de construcción). Cada agregado se aplica en la
 # iteración que lo necesita, con su propia migración; mientras tanto se dibuja aparte.
@@ -974,7 +922,6 @@ PROPUESTO = [
     "columnas": {},
     "tablas": [],
   },
-  STOCK_Y_COMPRAS,
   {
     "clave": "caja-rendicion-cuentas-corrientes",
     "casos": "CU-225 a CU-245 (I-14)",
@@ -1323,6 +1270,22 @@ CONCEPTO = {
                                            ("nota", "notes"), ("fecha", "createdAt")]),
   "stock_adjustment_item": ("Renglón de ajuste de stock", [("condición", "condition"),
                                                             ("diferencia", "quantity_delta")]),
+  "truck_load": ("Carga del camión", [("número", "number"), ("día", "business_date"), ("estado", "status"),
+                                      ("abierta el", "opened_at"), ("salió el", "departed_at"),
+                                      ("regresó el", "returned_at"), ("cerrada el", "closed_at"),
+                                      ("nota de diferencia", "difference_note"),
+                                      ("motivo de cancelación", "cancel_reason"), ("notas", "notes")]),
+  "truck_load_item": ("Renglón de carga", [("llenas cargadas", "loaded_full"),
+                                           ("llenas repuestas", "reloaded_full"),
+                                           ("vacías cargadas", "loaded_empty"),
+                                           ("llenas declaradas al regreso", "declared_return_full"),
+                                           ("vacías declaradas al regreso", "declared_return_empty"),
+                                           ("llenas entregadas", "delivered_full"),
+                                           ("vacías recolectadas", "collected_empty"),
+                                           ("/llenas esperadas", "expected_full"),
+                                           ("/vacías esperadas", "expected_empty"),
+                                           ("diferencia de llenas", "difference_full"),
+                                           ("diferencia de vacías", "difference_empty")]),
   "supplier": ("Proveedor", [("razón social", "business_name"), ("CUIT", "cuit"), ("tipo", "kind"),
                              ("contacto", "contact_name"), ("teléfono", "phone"), ("correo", "email"),
                              ("dirección", "address"), ("plazo de pago", "payment_terms_days"),
@@ -1536,7 +1499,7 @@ sql = ["-- Esquema de SPLG — Sistema de Pedidos y Logística de Garrafas de Ga
        "-- Las tablas van en orden de dependencia: se puede ejecutar de corrido.", ""]
 for t in orden_dependencias(actual):
     sql.append(crear_tabla(t, actual[t]))
-open(SAL + "SPLG-base-de-datos-lucidchart.sql", "w", encoding="utf-8").write("\n".join(sql))
+open(SAL + "SPLG-base-de-datos-portable.sql", "w", encoding="utf-8").write("\n".join(sql))
 
 # ------------------------------------------------------ 3. solo lo propuesto
 prop = ["-- Modelo propuesto — SPLG",
@@ -1607,7 +1570,7 @@ comp += ["-- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin default
 for t in orden_dependencias(completo):
     d = completo[t]
     comp.append(("-- tabla propuesta\n" if d["prop"] else "") + crear_tabla(t, d))
-open(SAL + "SPLG-base-de-datos-completa-lucidchart.sql", "w", encoding="utf-8").write("\n".join(comp))
+open(SAL + "SPLG-base-de-datos-completa-portable.sql", "w", encoding="utf-8").write("\n".join(comp))
 
 # ------------------------------------------------------------ estilo comun
 AZUL, TINTA = "#1F5E8C", "#2C4257"
@@ -2129,9 +2092,9 @@ python3 generar-modelo-datos.py
 | Archivo | Qué es | Para qué sirve |
 |---|---|---|
 | `SPLG-base-de-datos.sql` | Volcado de `pg_dump`, esquema completo | Recrear la base tal cual está |
-| `SPLG-base-de-datos-lucidchart.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual; `generar-lucidchart.py` lo copia a `lucidchart/SPLG-diagrama-de-base-de-datos.sql` |
+| `SPLG-base-de-datos-portable.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual |
 | `SPLG-base-de-datos-propuesta.sql` | Sólo lo planificado (los módulos de gestión) | Boceto de las migraciones que faltan |
-| `SPLG-base-de-datos-completa-lucidchart.sql` | Actual + planificado, en SQL portable | **El que se importa en Lucidchart** para ver todo; `generar-lucidchart.py` lo copia a `lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql` |
+| `SPLG-base-de-datos-completa-portable.sql` | Actual + planificado, en SQL portable | Ver todo el modelo en un solo SQL |
 | `fisico/SPLG-fisico-NN-<contexto>.png` / `.svg` | Entidad-relación con tablas y columnas, una lámina por contexto de negocio | Las láminas técnicas |
 | `conceptual/SPLG-der-NN-<área>.png` / `.svg` | Entidad-relación conceptual: una entidad por concepto del modelo conceptual, con sus atributos y las relaciones con su nombre | Las láminas para la defensa |
 | `SPLG-der-mermaid.md` | El físico en Mermaid, por contexto | Lo que se pega en el Documento 3 §7.4.2 |
@@ -2161,30 +2124,10 @@ Los conceptos sin tabla son PropuestaConVigencia (abstracto), UbicacionGPS (la c
 `SPLG-base-de-datos-propuesta.sql` es PostgreSQL válido: agrega tipos, columnas
 y tablas sobre el esquema que ya está, sin tocar los datos existentes.
 
-## Importar en Lucidchart
+## Diagramas en draw.io
 
-1. Entrar a Lucidchart y abrir un documento en blanco.
-2. En el panel izquierdo, **Import Data** (o *Archivo · Importar datos*).
-3. Elegir **Entity Relationship (ERD)**.
-4. Elegir el origen **PostgreSQL**.
-5. Pegar el contenido de `SPLG-base-de-datos-completa-lucidchart.sql`
-   (o subir el archivo, según lo que ofrezca la versión).
-6. **Import**. Lucidchart arma una tabla por cada `CREATE TABLE` y una línea por
-   cada `FOREIGN KEY`.
-
-Notas para que la importación salga limpia:
-
-- Usar el archivo `-lucidchart.sql`, no `SPLG-base-de-datos.sql`: el volcado de
-  `pg_dump` trae `CREATE TYPE`, `CREATE EXTENSION postgis`, índices y funciones
-  que el importador no entiende.
-- En los archivos portables los tipos enumerados se escriben `varchar(32)` y las
-  columnas geográficas de PostGIS `varchar(255)`. La lista de valores de cada
-  enumerado está en `SPLG-modelo-de-datos.md`.
-- Lucidchart dibuja todas las relaciones iguales: la distinción entre
-  implementado, propuesto y «sin FK» sólo se ve en los diagramas de esta carpeta
-  y está escrita en el `.md`.
-- Si se quiere el estado actual sin los agregados, importar
-  `SPLG-base-de-datos-lucidchart.sql`.
+Los cuatro modelos (conceptual, DER, base de datos físico y clases de diseño) están en `drawio/`, generados por
+`generar-drawio.py` a partir de `SPLG-modelo.json`, que escribe este script leyendo la base. Ver `drawio/LEEME.md`.
 
 ## Qué pegarle a Gemini
 
@@ -2194,8 +2137,8 @@ diccionario de datos, las relaciones que faltan declarar y los agregados
 pedidos, cada uno con el motivo por el que está.
 
 Si además se quiere que revise el DDL, sumar
-**`SPLG-base-de-datos-completa-lucidchart.sql`**, que es el modelo entero en
-menos de {os.path.getsize(SAL + 'SPLG-base-de-datos-completa-lucidchart.sql') // 1024 + 1} KB.
+**`SPLG-base-de-datos-completa-portable.sql`**, que es el modelo entero en
+menos de {os.path.getsize(SAL + 'SPLG-base-de-datos-completa-portable.sql') // 1024 + 1} KB.
 No conviene pegar `SPLG-base-de-datos.sql`: son {os.path.getsize(SAL + 'SPLG-base-de-datos.sql') // 1024} KB
 en su mayoría de índices y funciones de PostGIS que no aportan al análisis del
 modelo.
@@ -2290,6 +2233,39 @@ for t in orden_dependencias(completo):
 der += ["```", ""]
 open(SAL + "SPLG-der-mermaid.md", "w", encoding="utf-8").write("\n".join(der))
 print(f"  ✓ SPLG-der-mermaid.md  ({len(CONTEXTOS)} láminas por contexto + 1 de cruces)")
+
+# ------------------------------------------------- fuente de los diagramas de draw.io
+# generar-drawio.py no vuelve a leer la base: toma de acá el modelo físico (las tablas reales, con
+# columnas, claves e índices) y el DER conceptual (conceptos, atributos y relaciones con su
+# cardinalidad), el mismo que dibujan las láminas de PlantUML.
+import json as _json
+_modelo = {"dbd": {"contextos": [[c, [t for t in ts if t in actual]] for c, ts in CONTEXTOS
+                                   if any(t in actual for t in ts)],
+                   "tablas": {}},
+           "der": {"entidades": {}, "relaciones": [], "vistas": []}}
+for _t in tablas:
+    _d = actual[_t]
+    _cols = []
+    for _c in _d["columnas"]:
+        _f = next((f for f in _d["fks"] if f["col"] == _c["nombre"]), None)
+        _cols.append({"nombre": _c["nombre"], "tipo": _c["tipo"], "nulo": _c["nulo"],
+                      "pk": _c["nombre"] in _d["pk"],
+                      "unico": any(g == [_c["nombre"]] for g in _d["unicos"]),
+                      "fk": ({"destino": _f["destino"], "destcol": _f["destcol"], "borrado": _f["borrado"],
+                              "card_padre": card_padre(_t, _f), "card_hijo": card_hijo(_t, _f)} if _f else None)})
+    _modelo["dbd"]["tablas"][_t] = {
+        "columnas": _cols, "pk": _d["pk"], "unicos": _d["unicos"],
+        "indices": [[n, dfn] for n, dfn in indices.get(_t, [])]}
+for _c in MC.CLASES:
+    if MC.TABLA.get(_c):
+        _modelo["der"]["entidades"][_c] = {"atributos": atributos_de(_c), "planificado": _c in MC.PLANIFICADOS,
+                                           "contexto": MC.CLASES[_c][0]}
+_modelo["der"]["relaciones"] = [{"izq": a, "card_izq": ci, "card_der": cd, "der": b, "nombre": n,
+                                 "extremo_izq": mi, "extremo_der": md_}
+                                for a, ci, cd, b, n, mi, md_ in REL_CONCEPTUALES]
+_modelo["der"]["vistas"] = [[ttl, foco] for ttl, _arch, foco, _ref in MC.VISTAS]
+open(SAL + "SPLG-modelo.json", "w", encoding="utf-8").write(_json.dumps(_modelo, ensure_ascii=False, indent=1))
+print(f"  ✓ SPLG-modelo.json  ({len(_modelo['dbd']['tablas'])} tablas, {len(_modelo['der']['relaciones'])} relaciones conceptuales)")
 
 # ------------------------------------------------------------------ render
 entorno = dict(os.environ, PLANTUML_LIMIT_SIZE="32768")

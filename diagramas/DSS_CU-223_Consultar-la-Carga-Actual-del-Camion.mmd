@@ -7,8 +7,8 @@ sequenceDiagram
     CHO->>SIS: consultarCargaActual()
     activate SIS
     alt el chofer tiene una carga abierta
-        SIS-->>CHO: carga con lo cargado, lo entregado y lo esperado
+        SIS-->>CHO: carga con lo cargado, lo entregado y lo esperado, y la exigencia de la distribuidora
     else no tiene carga abierta
-        SIS-->>CHO: ninguna carga
+        SIS-->>CHO: carga vacía y la exigencia de la distribuidora
     end
     deactivate SIS

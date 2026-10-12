@@ -66,21 +66,29 @@ class CargaDeCamion {
   - regresoEl: FechaHora
   - cerradaEl: FechaHora
   - notaDeDiferencia: Cadena
-  + «create» CargaDeCamion(chofer: Chofer,\n      deposito: Deposito, ayudanteId: Identificador,\n      administrador: Administrador)
-  + cancelar(): CargaDeCamion
-  + cerrar(nota: Cadena,\n      administrador: Administrador): CargaDeCamion
+  - motivoDeCancelacion: Cadena
+  - notas: Cadena
+  + «create» CargaDeCamion(vehiculo: Vehiculo,\n      chofer: Chofer, deposito: Deposito,\n      ayudanteId: Identificador,\n      administrador: Administrador)
+  + cancelar(motivo: Cadena): CargaDeCamion
+  + cerrar(nota: Cadena): CargaDeCamion
+  + declararRegreso(devueltos: Registro): CargaDeCamion
+  + estaEnRutaCon(vehiculoEnUso: Vehiculo): Booleano
+  + getChofer(): Chofer
+  + getEntregasPosterioresALaDeclaracion(): Entero
   + getEstado(): EstadoDeLaCarga
-  + getItems(): ItemCarga[*]
+  + getItems(): Registro
+  + getMovimientos(): MovimientoDeCaja[*]
+  + getPedidosEntregados(): Pedido[*]
   + getUbicacionDelCamion(): UbicacionDeStock
   + getUbicacionDelDeposito(): UbicacionDeStock
-  + registrarRegreso(devueltos: Registro,\n      ahora: FechaHora): CargaDeCamion
-  + reponer(items: Registro): CargaDeCamion
-  + salir(ahora: FechaHora): CargaDeCamion
+  + marcarEnRuta()
+  + reemplazarRenglones(items: Registro): CargaDeCamion
   + validarNotaDeDiferencia(nota: Cadena)
-  + validarQueEstaAbierta()
-  + validarQueEstaCargando()
+  + validarQueEstaDevuelta()
+  + validarQueEstaEnCarga()
   + validarQueEstaEnRuta()
-  + validarQueRegreso()
+  + validarQuePuedeDeclararElRegreso()
+  + validarQuePuedeSalir()
 }
 class ItemCarga {
   - llenasCargadas: Entero
@@ -97,11 +105,8 @@ class ItemCarga {
   + «create» ItemCarga(producto: Producto,\n      llenasCargadas: Entero, vaciasCargadas: Entero)
   + calcularDiferencia(): Entero
   + calcularEsperado(): Entero
-  + declararRegreso(llenasDevueltas: Entero,\n      vaciasDevueltas: Entero)
+  + declarar(llenasDeclaradas: Entero,\n      vaciasDeclaradas: Entero)
   + getEsperado(): Entero
-  + getLlenasCargadas(): Entero
-  + getLlenasDeclaradas(): Entero
-  + getProducto(): Producto
   + sumarRepuesto(llenasRepuestas: Entero)
 }
 class Vehiculo <<referencia>>
@@ -109,15 +114,17 @@ class Chofer <<referencia>>
 class UbicacionDeStock <<referencia>>
 class Producto <<referencia>>
 class Usuario <<referencia>>
+class Empleado <<referencia>>
 
 Usuario <|-- Chofer : {overlapping, incomplete}
-Vehiculo "1" --> "0..*" CargaDeCamion : transporta
+Vehiculo "1" -- "0..*" CargaDeCamion : transporta
 Chofer "1" -- "0..*" CargaDeCamion : reparte con
 CargaDeCamion "0..*" -- "1" UbicacionDeStock : parte de
 CargaDeCamion "1" *--> "1..*" ItemCarga : contiene
 ItemCarga "0..*" -- "1" Producto : corresponde a
 Usuario "1" -- "0..*" CargaDeCamion : abre
 Usuario "0..1" -- "0..*" CargaDeCamion : cierra
+Empleado "0..1" -- "0..*" CargaDeCamion : ayuda en
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.

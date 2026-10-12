@@ -83,6 +83,7 @@ class Distribuidora {
   + getDeposito(depositoId: Identificador): Deposito
   + getDepositoPredeterminado(): Deposito
   + getDepositos(incluirInactivos: Booleano): Deposito[*]
+  + getExigirCargaDeCamionAbierta(): Booleano
   + getFranjasActivas(): FranjaHoraria[*]
   + getProductosActivos(pagina: Entero, limite: Entero,\n      out total: Entero): Producto[*]
   + getProductosDisponibles(): Producto[*]

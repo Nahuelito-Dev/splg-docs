@@ -132,8 +132,6 @@ PROPUESTAS_CLASE = {
   "VehicleAccidentService": "CU-201, CU-202: siniestros de los vehículos, su avance y su cierre",
   "FleetCostReportService": "CU-203, CU-204: modelo de lectura del costo por vehículo y de la flota, en el módulo reports",
   "TireService": "CU-205, CU-206: neumáticos y sus movimientos (funcionalidad opcional)",
-  # Compras y carga del camión (I-13): módulos purchase y truck-load. El stock físico (módulo stock) ya está construido.
-  "TruckLoadService": "CU-218, CU-219, CU-221, CU-222, CU-223: hoja de carga y rendición del camión",
 }
 
 
@@ -171,16 +169,17 @@ INCLUIDOS = {
                                      "controladores": {"OrderService", "DispatchOrchestratorService",
                                                        "UpdateOrderStatusUseCase"},
                                      "firma": "verificarHabilitacionLaboral(chofer)"},
-    "verificarCargaDeCamionAbierta": {"casos": ["CU-248"], "bases": ["CU-012", "CU-013", "CU-015"],
+    "verificarCargaDeCamionAbierta": {"casos": ["CU-248"], "bases": ["CU-012", "CU-013", "CU-015", "CU-080"],
                                       "controladores": {"OrderService", "DispatchOrchestratorService",
                                                         "UpdateOrderStatusUseCase"},
                                       "firma": "verificarCargaDeCamionAbierta(chofer)"},
     "aplicarMovimientoDeStock": {"casos": ["CU-250"],
-                                 "bases": ["CU-212", "CU-213", "CU-217", "CU-218", "CU-220", "CU-222", "CU-274", "CU-276", "CU-280"],
+                                 "bases": ["CU-212", "CU-213", "CU-217", "CU-218", "CU-219", "CU-220", "CU-222", "CU-274", "CU-276", "CU-280"],
                                  "controladores": {"StockTransferUseCase", "StockAdjustmentUseCase", "InitialCountUseCase",
                                                    "ReverseBatchUseCase", "StockDeliveryService",
                                                    "ReceivePurchaseUseCase", "VoidPurchaseReceiptUseCase",
-                                                   "TruckLoadService"},
+                                                   "ReloadTruckLoadUseCase", "DepartTruckLoadUseCase",
+                                                   "CloseTruckLoadUseCase"},
                                  "firma": "aplicar(operacion)"},
     "descontarStockDeLaEntrega": {"casos": ["CU-220"], "bases": ["CU-020", "CU-079", "CU-278"],
                                   "controladores": {"UpdateOrderStatusUseCase", "ReapplyDeliveriesUseCase"},

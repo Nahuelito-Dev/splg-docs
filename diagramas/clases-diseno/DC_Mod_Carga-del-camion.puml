@@ -60,51 +60,100 @@ hide empty members
 left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
-class TruckLoadService <<fachada>> {
-  + cancelarCargaDelCamion(cargaId: Identificador): CargaDeCamion
-  + cerrarRendicionDeStock(cargaId: Identificador,\n      nota: Cadena): Booleano
-  + consultarCargaActual(): CargaDeCamion
-  + consultarCargasDelCamion(estado: Cadena, fecha: Fecha,\n      vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
-  + registrarCargaDelCamion(vehiculoId: Identificador,\n      depositoId: Identificador,\n      ayudanteId: Identificador, items: Lista): Booleano
-  + registrarRegresoDelCamion(cargaId: Identificador,\n      devueltos: Lista): CargaDeCamion
-  + registrarSalidaDelCamion(cargaId: Identificador): CargaDeCamion
-  + reponerCargaDelCamion(cargaId: Identificador,\n      items: Lista): Booleano
+class TruckLoadGateService <<fachada>> {
+  + assertPuedeAceptar(chofer: Chofer)
+  + assertPuedeAsignar(chofer: Chofer)
+  + choferesQuePuedenRecibir(choferes: Chofer[*])
+  + motivoParaNoRecibir(chofer: Chofer): Cadena
   + verificarCargaDeCamionAbierta(chofer: Chofer): Booleano
+}
+class UpdateTruckLoadItemsUseCase <<controlador>> {
+  + corregirRenglonesDeLaCarga(cargaId: Identificador,\n      items: Lista): CargaDeCamion
 }
 class "Map<String, CargaDeCamion>" as Map_String_CargaDeCamion <<colección>> {
   + get(clave: Cadena): CargaDeCamion
 }
+class OpenTruckLoadUseCase <<controlador>> {
+  + registrarCargaDelCamion(vehiculoId: Identificador,\n      choferId: Identificador, depositoId: Identificador,\n      ayudanteId: Identificador,\n      items: Lista): CargaDeCamion
+}
+class ReloadTruckLoadUseCase <<controlador>> {
+  + reponerCargaDelCamion(cargaId: Identificador,\n      items: Lista): Booleano
+}
+class DepartTruckLoadUseCase <<controlador>> {
+  + registrarSalidaDelCamion(cargaId: Identificador): Booleano
+}
+class ReturnTruckLoadUseCase <<controlador>> {
+  + registrarRegresoDelCamion(cargaId: Identificador,\n      devueltos: Lista): Booleano
+}
+class CloseTruckLoadUseCase <<controlador>> {
+  + cerrarRendicionDeStock(cargaId: Identificador,\n      nota: Cadena): Booleano
+}
+class TruckLoadQueryService <<fachada>> {
+  + consultarCargaActual(out exigida: Booleano): CargaDeCamion
+  + consultarCargaDelCamion(cargaId: Identificador): CargaDeCamion
+  + consultarCargasDelCamion(estado: Cadena, desde: Fecha,\n      hasta: Fecha, vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
+}
+class StockControlSettingsService <<fachada>> {
+  + configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta: Booleano): ConfiguracionModulo
+  + consultarControlDeCargaAbierta(): Booleano
+}
+class CancelTruckLoadUseCase <<controlador>> {
+  + cancelarCargaDelCamion(cargaId: Identificador,\n      motivo: Cadena): CargaDeCamion
+}
 class "List<CargaDeCamion>" as List_CargaDeCamion <<colección>> {
-  + buscar(estado: Cadena, fecha: Fecha,\n      vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
+  + buscar(estado: Cadena, desde: FechaHora,\n      hasta: FechaHora, vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
 }
 class CargaDeCamion <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class "Map<String, Deposito>" as Map_String_Deposito <<referencia>>
 class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
+class ItemCarga <<referencia>>
 class StockLedgerService <<referencia>>
+class UbicacionDeStock <<referencia>>
 class Chofer <<referencia>>
+class Vehiculo <<referencia>>
 class ConfiguracionModulo <<referencia>>
 class Distribuidora <<referencia>>
-class ItemCarga <<referencia>>
-class Producto <<referencia>>
-class Vehiculo <<referencia>>
 
 Map_String_CargaDeCamion "1" o--> "0..*" CargaDeCamion
 List_CargaDeCamion "1" o--> "0..*" CargaDeCamion
-TruckLoadService --> "1" List_CargaDeCamion
-TruckLoadService --> "1" Map_String_CargaDeCamion
-TruckLoadService --> "1" Map_String_Chofer
-TruckLoadService --> "1" Map_String_Deposito
-TruckLoadService --> "1" Map_String_Vehiculo
-TruckLoadService --> "1" StockLedgerService
+CancelTruckLoadUseCase --> "1" Map_String_CargaDeCamion
+CloseTruckLoadUseCase --> "1" Map_String_CargaDeCamion
+DepartTruckLoadUseCase --> "1" Map_String_CargaDeCamion
+OpenTruckLoadUseCase --> "1" Map_String_Chofer
+OpenTruckLoadUseCase --> "1" Map_String_Deposito
+OpenTruckLoadUseCase --> "1" Map_String_Vehiculo
+ReloadTruckLoadUseCase --> "1" Map_String_CargaDeCamion
+ReturnTruckLoadUseCase --> "1" Map_String_CargaDeCamion
+TruckLoadQueryService --> "1" List_CargaDeCamion
+TruckLoadQueryService --> "1" Map_String_CargaDeCamion
+TruckLoadQueryService --> "1" Map_String_Chofer
+UpdateTruckLoadItemsUseCase --> "1" Map_String_CargaDeCamion
+CancelTruckLoadUseCase ..> CargaDeCamion
+CloseTruckLoadUseCase ..> CargaDeCamion
+CloseTruckLoadUseCase ..> ItemCarga
+CloseTruckLoadUseCase ..> StockLedgerService
+DepartTruckLoadUseCase ..> CargaDeCamion
+DepartTruckLoadUseCase ..> StockLedgerService
+DepartTruckLoadUseCase ..> UbicacionDeStock
 List_CargaDeCamion ..> CargaDeCamion
-TruckLoadService ..> CargaDeCamion
-TruckLoadService ..> Chofer
-TruckLoadService ..> ConfiguracionModulo
-TruckLoadService ..> Distribuidora
-TruckLoadService ..> ItemCarga
-TruckLoadService ..> Producto
-TruckLoadService ..> Vehiculo
+OpenTruckLoadUseCase ..> "<<create>>" CargaDeCamion
+OpenTruckLoadUseCase ..> Chofer
+OpenTruckLoadUseCase ..> Vehiculo
+ReloadTruckLoadUseCase ..> CargaDeCamion
+ReloadTruckLoadUseCase ..> ItemCarga
+ReloadTruckLoadUseCase ..> StockLedgerService
+ReturnTruckLoadUseCase ..> CargaDeCamion
+ReturnTruckLoadUseCase ..> Chofer
+StockControlSettingsService ..> ConfiguracionModulo
+StockControlSettingsService ..> Distribuidora
+TruckLoadGateService ..> CargaDeCamion
+TruckLoadGateService ..> Chofer
+TruckLoadGateService ..> Distribuidora
+TruckLoadQueryService ..> CargaDeCamion
+TruckLoadQueryService ..> Chofer
+TruckLoadQueryService ..> Distribuidora
+UpdateTruckLoadItemsUseCase ..> CargaDeCamion
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

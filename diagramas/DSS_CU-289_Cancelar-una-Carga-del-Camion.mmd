@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-289 Cancelar una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cancelarCargaDelCamion(cargaId, motivo)
+    activate SIS
+    alt la carga está en carga
+        SIS-->>ADM: carga cancelada
+    else la carga ya salió o falta el motivo
+        SIS-->>ADM: solicitud inválida
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
