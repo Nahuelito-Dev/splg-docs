@@ -6,9 +6,13 @@ sequenceDiagram
 
     ADM->>SIS: actualizarDeposito(depositoId, datos)
     activate SIS
-    alt el depósito existe
-        SIS-->>ADM: depósito actualizado
-    else el depósito no existe
+    alt el depósito existe y los datos son válidos
+        SIS-->>ADM: depósito modificado
+    else el depósito no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    else el código ya lo usa otro depósito vigente, o se desactiva el predeterminado
+        SIS-->>ADM: conflicto
+    else el formato de un dato no es válido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS

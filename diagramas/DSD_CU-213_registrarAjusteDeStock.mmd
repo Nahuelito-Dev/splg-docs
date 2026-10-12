@@ -2,40 +2,28 @@ sequenceDiagram
     title DSD — CU-213 Registrar un Ajuste o una Merma de Stock · registrarAjusteDeStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockAdjustmentService
+    participant SRV as :StockAdjustmentUseCase
     participant COL as :Map#lt;String, UbicacionDeStock#gt;
     participant UBI as ubicacion:UbicacionDeStock
     participant LED as :StockLedgerService
-    participant PRO as producto:Producto
 
     ADM->>+SRV: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
+    SRV->>SRV: validarItemsDeAjuste(motivo, items)
     SRV->>+COL: get(ubicacionId)
     COL-->>-SRV: ubicacionDeStock
-    SRV->>+UBI: ajustar(motivoDeAjuste, nota, items, administrador)
-    create participant AJU as nuevo:AjusteDeStock
-    UBI->>AJU: «create»(motivoDeAjuste, nota, administrador)
-    loop Por cada renglón del ajuste
-        create participant ITM as nuevo:ItemAjusteDeStock
-        AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
-    end
-    UBI-->>-SRV: ajuste
-    loop Por cada renglón del ajuste
-        SRV->>+ITM: getProducto()
-        ITM-->>-SRV: producto
-        Note over SRV,LED: Una diferencia positiva entra en la ubicación y una negativa sale de ella<br/>(el otro extremo es nula). Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, condicionDeStock, condicionDeStock, diferencia, ajusteManual)
-        alt El saldo de la ubicación no queda negativo
-            LED-->>-SRV: aplicado
-            opt El renglón es de unidades llenas
-                SRV->>PRO: ajustarStock(diferencia)
-                alt El stock vendible no queda negativo
-                    PRO-->>SRV: ajustado
-                else El stock vendible quedaría negativo
-                    PRO-->>SRV: vendibleInsuficiente
-                end
-            end
-        else El saldo de la ubicación quedaría negativo
-            LED-->>SRV: saldoInsuficiente
+    Note over SRV,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de cada renglón y mueve el saldo de la ubicación<br/>y, en las llenas, el stock vendible del Producto
+    SRV->>+LED: aplicar(ubicacionDeStock, motivo, items)
+    alt Ningún saldo ni el stock vendible quedan negativos
+        LED-->>-SRV: lote
+        SRV->>+UBI: ajustar(motivo, nota, items, lote, administrador)
+        create participant AJU as nuevo:AjusteDeStock
+        UBI->>AJU: «create»(motivo, nota, lote, administrador)
+        loop Por cada renglón del ajuste
+            create participant ITM as nuevo:ItemAjusteDeStock
+            AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
         end
+        UBI-->>-SRV: ajuste
+    else Un saldo o el stock vendible quedarían negativos
+        LED-->>SRV: stockInsuficiente
     end
     SRV-->>-ADM: ajuste

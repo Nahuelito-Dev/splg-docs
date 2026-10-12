@@ -11,8 +11,10 @@ sequenceDiagram
     SRV->>+COL: get(depositoId)
     COL-->>-SRV: depositoDeStock
     SRV->>+DEP: darDeBaja()
+    DEP->>DEP: validarNoEsElPredeterminado()
     DEP->>+UBI: tieneSaldo()
     UBI-->>-DEP: conSaldo
     DEP->>DEP: validarSinSaldo(conSaldo)
+    DEP->>DEP: quitarUmbrales()
     DEP-->>-SRV: confirmacion
     SRV-->>-ADM: confirmacion

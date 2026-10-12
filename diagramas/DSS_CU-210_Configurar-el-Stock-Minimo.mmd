@@ -4,13 +4,18 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: configurarStockMinimo(depositoId, minimos)
+    ADM->>SIS: consultarStockMinimo()
     activate SIS
-    alt los mínimos son válidos
-        SIS-->>ADM: umbrales vigentes del depósito
-    else un mínimo es negativo
-        SIS-->>ADM: solicitud inválida, con el detalle del campo
-    else el depósito o un tipo de garrafa no existe
+    SIS-->>ADM: mínimos con las llenas actuales y el aviso emitido
+    deactivate SIS
+
+    ADM->>SIS: configurarStockMinimo(minimos)
+    activate SIS
+    alt los depósitos y las garrafas existen y los mínimos son válidos
+        SIS-->>ADM: mínimos vigentes
+    else un depósito o una garrafa no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    else un mínimo es negativo o no es entero
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS

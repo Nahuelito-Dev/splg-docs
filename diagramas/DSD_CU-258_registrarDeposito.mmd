@@ -12,8 +12,8 @@ sequenceDiagram
     DIS->>DEP: «create»(nombre, codigo, tipo, direccion)
     create participant UBI as nueva:UbicacionDeStock
     DEP->>UBI: «create»(depositoDeStock)
-    opt La distribuidora todavía no tiene un depósito predeterminado
+    opt La distribuidora todavía no tiene un depósito predeterminado, o el pedido lo indica
         DIS->>DEP: marcarPredeterminado()
     end
-    DIS-->>-SRV: depositoDeStock
-    SRV-->>-ADM: depositoDeStock
+    DIS-->>-SRV: depositoCreado
+    SRV-->>-ADM: depositoCreado

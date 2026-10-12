@@ -3,28 +3,30 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant CRN as :StockReconciliationCron
-    participant PEDS as :List#lt;Pedido#gt;
-    participant PRD as :List#lt;Producto#gt;
+    participant SRV as :StockReconciliationService
+    participant PRS as :List#lt;Producto#gt;
     participant PRO as producto:Producto
-    participant UBS as :List#lt;UbicacionDeStock#gt;
-    participant DIS as distribuidora:Distribuidora
-    participant MAI as :EmailSenderPort
+    participant PEDS as :List#lt;Pedido#gt;
+    participant MAI as :StockAdminNotifier
 
     SIS->>+CRN: conciliarStock()
-    CRN->>+PEDS: getEntregadosSinMovimiento()
-    PEDS-->>-CRN: pedidos
-    Note over CRN,PEDS: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220). Crea los MovimientoDeStock
-    CRN->>+PRD: getActivos()
-    PRD-->>-CRN: productos
+    CRN->>+SRV: conciliar(distribuidora)
+    SRV->>+PRS: getTodos()
+    PRS-->>-SRV: productos
     loop Por cada tipo de garrafa
-        CRN->>PRO: getStock()
-        CRN->>UBS: getLlenas(producto)
-        CRN->>PEDS: getReservado(producto)
-        CRN->>PRO: calcularDiferencia(llenasFisicas, reservado)
+        SRV->>+PRO: calcularDiferencia(llenasFisicas, reservado)
+        PRO-->>-SRV: diferencia
     end
-    opt Algún tipo de garrafa tiene diferencia
-        CRN->>+DIS: getAdministradores()
-        DIS-->>-CRN: administradores
-        CRN->>MAI: send(administrador, diferencias)
+    SRV->>+PEDS: getEntregadosSinMovimiento()
+    PEDS-->>-SRV: pedidos
+    SRV-->>-CRN: motivoConciliacion
+    alt Todo cierra
+        CRN->>CRN: borrarAviso(distribuidora)
+    else Hay diferencias
+        CRN->>CRN: coincideConElUltimoAviso(firma)
+        opt La diferencia es nueva
+            CRN->>MAI: avisar(distribuidora, diferencias)
+            CRN->>CRN: guardarAviso(firma)
+        end
     end
     deactivate CRN

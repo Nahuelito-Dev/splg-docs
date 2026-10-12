@@ -1,510 +1,586 @@
-postgresql	splg_db	public	admin	admin_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	admin	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	admin	user_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	admin	createdAt	5	timestamp with time zone					
-postgresql	splg_db	public	attachment	attachment_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	attachment	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	attachment	owner_type	3	USER-DEFINED					
-postgresql	splg_db	public	attachment	owner_id	4	uuid					
-postgresql	splg_db	public	attachment	label	5	character varying	80				
-postgresql	splg_db	public	attachment	storage_key	6	character varying	255				
-postgresql	splg_db	public	attachment	original_name	7	character varying	255				
-postgresql	splg_db	public	attachment	mime_type	8	character varying	100				
-postgresql	splg_db	public	attachment	size_bytes	9	integer					
-postgresql	splg_db	public	attachment	uploaded_by_user_id	10	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	attachment	uploaded_at	11	timestamp with time zone					
-postgresql	splg_db	public	attachment	deleted_at	12	timestamp with time zone					
-postgresql	splg_db	public	audit	audit_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	audit	action_type_id	2	smallint		FOREIGN KEY	public	audit_action_type	action_type_id
-postgresql	splg_db	public	audit	user_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	audit	distributor_id	4	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	audit	entity	5	character varying	60				
-postgresql	splg_db	public	audit	record_id	6	character varying	64				
-postgresql	splg_db	public	audit	ip	7	character varying	45				
-postgresql	splg_db	public	audit	created_at	8	timestamp with time zone					
-postgresql	splg_db	public	audit_action_type	action_type_id	1	smallint		PRIMARY KEY			
-postgresql	splg_db	public	audit_action_type	name	2	character varying	40	UNIQUE			
-postgresql	splg_db	public	audit_detail	audit_detail_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	audit_detail	audit_id	2	uuid		FOREIGN KEY	public	audit	audit_id
-postgresql	splg_db	public	audit_detail	field	3	character varying	80				
-postgresql	splg_db	public	audit_detail	old_value	4	text					
-postgresql	splg_db	public	audit_detail	new_value	5	text					
-postgresql	splg_db	public	audit_log	audit_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	audit_log	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	audit_log	actor_user_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	audit_log	actor_role	4	character varying	30				
-postgresql	splg_db	public	audit_log	http_method	5	character varying	10				
-postgresql	splg_db	public	audit_log	resource	6	character varying	60				
-postgresql	splg_db	public	audit_log	resource_id	7	character varying	64				
-postgresql	splg_db	public	audit_log	path	8	character varying	255				
-postgresql	splg_db	public	audit_log	client_source	9	character varying	30				
-postgresql	splg_db	public	audit_log	ip	10	character varying	45				
-postgresql	splg_db	public	audit_log	result	11	USER-DEFINED					
-postgresql	splg_db	public	audit_log	status_code	12	integer					
-postgresql	splg_db	public	audit_log	changes	13	jsonb					
-postgresql	splg_db	public	audit_log	error_message	14	text					
-postgresql	splg_db	public	audit_log	created_at	15	timestamp with time zone					
-postgresql	splg_db	public	car	car_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	car	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	car	user_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	car	type_car	4	character varying	50				
-postgresql	splg_db	public	car	car_capacity	5	integer					
-postgresql	splg_db	public	car	car_patent	6	character varying	20				
-postgresql	splg_db	public	car	car_brand	7	character varying	50				
-postgresql	splg_db	public	car	car_model	8	character varying	50				
-postgresql	splg_db	public	car	car_year	9	integer					
-postgresql	splg_db	public	car	car_color	10	character varying	50				
-postgresql	splg_db	public	car	createdAt	11	timestamp with time zone					
-postgresql	splg_db	public	car	updatedAt	12	timestamp with time zone					
-postgresql	splg_db	public	car	deletedAt	14	timestamp with time zone					
-postgresql	splg_db	public	car	tare_weight_kg	20	numeric					
-postgresql	splg_db	public	car	max_load_kg	21	numeric					
-postgresql	splg_db	public	car	odometer_km	22	integer					
-postgresql	splg_db	public	car	fleet_status	23	USER-DEFINED					
-postgresql	splg_db	public	car	in_service_since	24	timestamp with time zone					
-postgresql	splg_db	public	cart	cart_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	cart	user_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	cart	user_id	2	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	cart	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	cart	distributor_id	3	uuid		UNIQUE			
-postgresql	splg_db	public	cart	updated_at	4	timestamp with time zone					
-postgresql	splg_db	public	cart_item	cart_item_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	cart_item	cart_id	2	uuid		FOREIGN KEY	public	cart	cart_id
-postgresql	splg_db	public	cart_item	cart_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	cart_item	gas_cylinder_id	3	uuid		UNIQUE			
-postgresql	splg_db	public	cart_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
-postgresql	splg_db	public	cart_item	quantity	4	integer					
-postgresql	splg_db	public	cart_item	unit_price	5	numeric					
-postgresql	splg_db	public	claims	claim_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	claims	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	claims	order_id	3	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	claims	customer_id	4	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	claims	reason	5	character varying					
-postgresql	splg_db	public	claims	description	6	text					
-postgresql	splg_db	public	claims	photoUrl	7	character varying					
-postgresql	splg_db	public	claims	status	8	USER-DEFINED					
-postgresql	splg_db	public	claims	resolutionNote	9	text					
-postgresql	splg_db	public	claims	createdAt	10	timestamp with time zone					
-postgresql	splg_db	public	claims	photo_key	11	character varying	512				
-postgresql	splg_db	public	coverage_zone	coverage_zone_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	coverage_zone	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	coverage_zone	name	3	character varying	120				
-postgresql	splg_db	public	coverage_zone	area	4	USER-DEFINED					
-postgresql	splg_db	public	coverage_zone	surcharge_value	5	numeric					
-postgresql	splg_db	public	coverage_zone	isActive	6	boolean					
-postgresql	splg_db	public	coverage_zone	createdAt	7	timestamp with time zone					
-postgresql	splg_db	public	coverage_zone	updatedAt	8	timestamp with time zone					
-postgresql	splg_db	public	coverage_zone	deletedAt	10	timestamp with time zone					
-postgresql	splg_db	public	coverage_zone	surcharge_type	15	USER-DEFINED					
-postgresql	splg_db	public	coverage_zone	label	16	character varying	40				
-postgresql	splg_db	public	coverage_zone	color	17	character varying	7				
-postgresql	splg_db	public	coverage_zone	valid_until	18	timestamp with time zone					
-postgresql	splg_db	public	coverage_zone	priority	19	integer					
-postgresql	splg_db	public	coverage_zone	valid_from	20	timestamp with time zone					
-postgresql	splg_db	public	customer	customer_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	customer	user_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	customer	user_id	2	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	customer	notification_token	3	text					
-postgresql	splg_db	public	customer	createdAt	6	timestamp with time zone					
-postgresql	splg_db	public	customer	deletedAt	7	timestamp with time zone					
-postgresql	splg_db	public	customer	location	10	USER-DEFINED					
-postgresql	splg_db	public	customer	avg_monthly_consumption_kg	15	numeric					
-postgresql	splg_db	public	customer	declared_cylinder_type_id	16	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
-postgresql	splg_db	public	customer	repurchase_notice_days	17	integer					
-postgresql	splg_db	public	customer	next_repurchase_estimate_at	18	timestamp with time zone					
-postgresql	splg_db	public	cylinder	cylinder_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	cylinder	distributor_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	cylinder	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	cylinder	serial	3	character varying		UNIQUE			
-postgresql	splg_db	public	cylinder	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
-postgresql	splg_db	public	cylinder	state	5	USER-DEFINED					
-postgresql	splg_db	public	cylinder	current_customer_id	6	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	cylinder	current_order_id	7	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	cylinder	deposit	8	numeric					
-postgresql	splg_db	public	cylinder	createdAt	9	timestamp with time zone					
-postgresql	splg_db	public	cylinder	updatedAt	10	timestamp with time zone					
-postgresql	splg_db	public	cylinder	manufactured_at	14	timestamp with time zone					
-postgresql	splg_db	public	cylinder	last_inspection_at	15	timestamp with time zone					
-postgresql	splg_db	public	cylinder	expires_at	16	timestamp with time zone					
-postgresql	splg_db	public	cylinder_inspection	inspection_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	cylinder_inspection	cylinder_id	2	uuid		FOREIGN KEY	public	cylinder	cylinder_id
-postgresql	splg_db	public	cylinder_inspection	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	cylinder_inspection	inspected_at	4	timestamp with time zone					
-postgresql	splg_db	public	cylinder_inspection	result	5	USER-DEFINED					
-postgresql	splg_db	public	cylinder_inspection	next_due_at	6	timestamp with time zone					
-postgresql	splg_db	public	cylinder_inspection	notes	7	text					
-postgresql	splg_db	public	cylinder_movement	movement_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	cylinder_movement	cylinder_id	2	uuid		FOREIGN KEY	public	cylinder	cylinder_id
-postgresql	splg_db	public	cylinder_movement	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	cylinder_movement	from_state	4	USER-DEFINED					
-postgresql	splg_db	public	cylinder_movement	to_state	5	USER-DEFINED					
-postgresql	splg_db	public	cylinder_movement	order_id	6	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	cylinder_movement	actor_user_id	7	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	cylinder_movement	note	8	text					
-postgresql	splg_db	public	cylinder_movement	createdAt	9	timestamp with time zone					
-postgresql	splg_db	public	cylinder_recovery_case	case_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	cylinder_recovery_case	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	cylinder_recovery_case	cylinder_id	3	uuid		FOREIGN KEY	public	cylinder	cylinder_id
-postgresql	splg_db	public	cylinder_recovery_case	user_id	4	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	cylinder_recovery_case	delivered_at	5	timestamp with time zone					
-postgresql	splg_db	public	cylinder_recovery_case	deposit_amount	6	numeric					
-postgresql	splg_db	public	cylinder_recovery_case	step	7	integer					
-postgresql	splg_db	public	cylinder_recovery_case	status	8	USER-DEFINED					
-postgresql	splg_db	public	cylinder_recovery_case	opened_at	9	timestamp with time zone					
-postgresql	splg_db	public	cylinder_recovery_case	closed_at	10	timestamp with time zone					
-postgresql	splg_db	public	cylinder_recovery_case	resolved_by_user_id	11	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	cylinder_recovery_case	resolution_note	12	text					
-postgresql	splg_db	public	cylinder_recovery_notice	notice_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	cylinder_recovery_notice	case_id	2	uuid		FOREIGN KEY	public	cylinder_recovery_case	case_id
-postgresql	splg_db	public	cylinder_recovery_notice	step	3	integer					
-postgresql	splg_db	public	cylinder_recovery_notice	kind	4	USER-DEFINED					
-postgresql	splg_db	public	cylinder_recovery_notice	status	5	USER-DEFINED					
-postgresql	splg_db	public	cylinder_recovery_notice	sent_at	6	timestamp with time zone					
-postgresql	splg_db	public	cylinder_recovery_notice	expires_at	7	timestamp with time zone					
-postgresql	splg_db	public	delivery	delivery_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	delivery	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	delivery	user_id	3	uuid		UNIQUE			
-postgresql	splg_db	public	delivery	user_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	delivery	calification	4	double precision					
-postgresql	splg_db	public	delivery	actual_location	6	text					
-postgresql	splg_db	public	delivery	cancelledCharge	7	real					
-postgresql	splg_db	public	delivery	validated	8	boolean					
-postgresql	splg_db	public	delivery	isActive	9	boolean					
-postgresql	splg_db	public	delivery	notification_token	10	text					
-postgresql	splg_db	public	delivery	balance	12	double precision					
-postgresql	splg_db	public	delivery	createdAt	13	timestamp with time zone					
-postgresql	splg_db	public	delivery	deletedAt	14	timestamp with time zone					
-postgresql	splg_db	public	delivery	location	18	USER-DEFINED					
-postgresql	splg_db	public	delivery	isEnabled	21	boolean					
-postgresql	splg_db	public	delivery	isAvailable	22	boolean					
-postgresql	splg_db	public	distributor	distributor_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	distributor	name	2	character varying	120				
-postgresql	splg_db	public	distributor	slug	3	character varying	60	UNIQUE			
-postgresql	splg_db	public	distributor	legal_name	4	character varying	160				
-postgresql	splg_db	public	distributor	tax_id	5	character varying	20				
-postgresql	splg_db	public	distributor	email	6	character varying					
-postgresql	splg_db	public	distributor	phone	7	character varying					
-postgresql	splg_db	public	distributor	logo_url	8	character varying					
-postgresql	splg_db	public	distributor	status	9	USER-DEFINED					
-postgresql	splg_db	public	distributor	plan	10	character varying					
-postgresql	splg_db	public	distributor	createdAt	11	timestamp with time zone					
-postgresql	splg_db	public	distributor	updatedAt	12	timestamp with time zone					
-postgresql	splg_db	public	distributor	deletedAt	13	timestamp with time zone					
-postgresql	splg_db	public	document_sequence	distributor_id	1	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	document_sequence	distributor_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	document_sequence	doc_type	2	character varying	40	PRIMARY KEY			
-postgresql	splg_db	public	document_sequence	last_number	3	integer					
-postgresql	splg_db	public	employee	employee_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	employee	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	employee	user_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	employee	position_id	4	uuid		FOREIGN KEY	public	job_position	position_id
-postgresql	splg_db	public	employee	file_number	5	character varying	20				
-postgresql	splg_db	public	employee	first_name	6	character varying	80				
-postgresql	splg_db	public	employee	last_name	7	character varying	80				
-postgresql	splg_db	public	employee	document_type	8	USER-DEFINED					
-postgresql	splg_db	public	employee	document_number	9	character varying	20				
-postgresql	splg_db	public	employee	cuil	10	character varying	11				
-postgresql	splg_db	public	employee	birth_date	11	date					
-postgresql	splg_db	public	employee	address_line	12	character varying	200				
-postgresql	splg_db	public	employee	city	13	character varying	80				
-postgresql	splg_db	public	employee	province	14	character varying	80				
-postgresql	splg_db	public	employee	postal_code	15	character varying	10				
-postgresql	splg_db	public	employee	phone	16	character varying	30				
-postgresql	splg_db	public	employee	personal_email	17	character varying	120				
-postgresql	splg_db	public	employee	emergency_contact_name	18	character varying	120				
-postgresql	splg_db	public	employee	emergency_contact_phone	19	character varying	30				
-postgresql	splg_db	public	employee	emergency_contact_relationship	20	character varying	40				
-postgresql	splg_db	public	employee	hire_date	21	date					
-postgresql	splg_db	public	employee	termination_date	22	date					
-postgresql	splg_db	public	employee	termination_reason	23	USER-DEFINED					
-postgresql	splg_db	public	employee	employment_type	24	USER-DEFINED					
-postgresql	splg_db	public	employee	status	25	USER-DEFINED					
-postgresql	splg_db	public	employee	bank_cbu	26	character varying	22				
-postgresql	splg_db	public	employee	notes	27	text					
-postgresql	splg_db	public	employee	createdAt	28	timestamp with time zone					
-postgresql	splg_db	public	employee	updatedAt	29	timestamp with time zone					
-postgresql	splg_db	public	employee	deletedAt	30	timestamp with time zone					
-postgresql	splg_db	public	gas_cylinder	gas_cylinder_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	gas_cylinder	distributor_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	gas_cylinder	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	gas_cylinder	type	3	character varying	50	UNIQUE			
-postgresql	splg_db	public	gas_cylinder	weight	4	numeric					
-postgresql	splg_db	public	gas_cylinder	price	5	numeric					
-postgresql	splg_db	public	gas_cylinder	stock	6	integer					
-postgresql	splg_db	public	gas_cylinder	description	7	text					
-postgresql	splg_db	public	gas_cylinder	isActive	8	boolean					
-postgresql	splg_db	public	gas_cylinder	createdAt	10	timestamp with time zone					
-postgresql	splg_db	public	gas_cylinder	updatedAt	11	timestamp with time zone					
-postgresql	splg_db	public	gas_cylinder_promotion	promotion_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	gas_cylinder_promotion	gas_cylinder_id	2	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
-postgresql	splg_db	public	gas_cylinder_promotion	quantity	3	integer					
-postgresql	splg_db	public	gas_cylinder_promotion	discount_percentage	4	numeric					
-postgresql	splg_db	public	gas_cylinder_promotion	deletedAt	5	timestamp with time zone					
-postgresql	splg_db	public	incident	incident_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	incident	order_id	2	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	incident	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	incident	reported_by	4	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	incident	type	5	USER-DEFINED					
-postgresql	splg_db	public	incident	description	6	text					
-postgresql	splg_db	public	incident	photo_url	7	character varying					
-postgresql	splg_db	public	incident	status	8	USER-DEFINED					
-postgresql	splg_db	public	incident	resolution_note	9	text					
-postgresql	splg_db	public	incident	createdAt	10	timestamp with time zone					
-postgresql	splg_db	public	incident	resolvedAt	11	timestamp with time zone					
-postgresql	splg_db	public	incident	moment	13	USER-DEFINED					
-postgresql	splg_db	public	job_position	position_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	job_position	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	job_position	name	3	character varying	80				
-postgresql	splg_db	public	job_position	category	4	USER-DEFINED					
-postgresql	splg_db	public	job_position	is_active	5	boolean					
-postgresql	splg_db	public	job_position	createdAt	6	timestamp with time zone					
-postgresql	splg_db	public	job_position	updatedAt	7	timestamp with time zone					
-postgresql	splg_db	public	job_position	deletedAt	8	timestamp with time zone					
-postgresql	splg_db	public	maintenance_plan	plan_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	maintenance_plan	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	maintenance_plan	name	3	character varying	120				
-postgresql	splg_db	public	maintenance_plan	subject	4	USER-DEFINED					
-postgresql	splg_db	public	maintenance_plan	trigger	5	USER-DEFINED					
-postgresql	splg_db	public	maintenance_plan	interval_km	6	integer					
-postgresql	splg_db	public	maintenance_plan	interval_months	7	integer					
-postgresql	splg_db	public	maintenance_plan	lead_time_days	8	integer					
-postgresql	splg_db	public	maintenance_plan	criticality	9	USER-DEFINED					
-postgresql	splg_db	public	maintenance_plan	car_type	10	character varying					
-postgresql	splg_db	public	maintenance_plan	is_active	11	boolean					
-postgresql	splg_db	public	maintenance_task	task_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	maintenance_task	plan_id	2	uuid		FOREIGN KEY	public	maintenance_plan	plan_id
-postgresql	splg_db	public	maintenance_task	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	maintenance_task	car_id	4	uuid		FOREIGN KEY	public	car	car_id
-postgresql	splg_db	public	maintenance_task	delivery_id	5	uuid		FOREIGN KEY	public	delivery	delivery_id
-postgresql	splg_db	public	maintenance_task	status	6	USER-DEFINED					
-postgresql	splg_db	public	maintenance_task	due_at	7	timestamp with time zone					
-postgresql	splg_db	public	maintenance_task	due_km	8	integer					
-postgresql	splg_db	public	maintenance_task	predicted_due_at	9	timestamp with time zone					
-postgresql	splg_db	public	maintenance_task	scheduled_at	10	timestamp with time zone					
-postgresql	splg_db	public	maintenance_task	performed_at	11	timestamp with time zone					
-postgresql	splg_db	public	maintenance_task	odometer_km	12	integer					
-postgresql	splg_db	public	maintenance_task	cost	13	numeric					
-postgresql	splg_db	public	maintenance_task	provider	14	character varying	120				
-postgresql	splg_db	public	maintenance_task	reference_number	15	character varying	60				
-postgresql	splg_db	public	maintenance_task	category	16	character varying	10				
-postgresql	splg_db	public	maintenance_task	alerted_at	17	timestamp with time zone					
-postgresql	splg_db	public	maintenance_task	notes	18	text					
-postgresql	splg_db	public	maintenance_task_attachment	attachment_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	maintenance_task_attachment	task_id	2	uuid		FOREIGN KEY	public	maintenance_task	task_id
-postgresql	splg_db	public	maintenance_task_attachment	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	maintenance_task_attachment	storage_key	4	character varying	255				
-postgresql	splg_db	public	maintenance_task_attachment	original_name	5	character varying	255				
-postgresql	splg_db	public	maintenance_task_attachment	mime_type	6	character varying	100				
-postgresql	splg_db	public	maintenance_task_attachment	size_bytes	7	integer					
-postgresql	splg_db	public	maintenance_task_attachment	uploaded_by_user_id	8	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	maintenance_task_attachment	uploaded_at	9	timestamp with time zone					
-postgresql	splg_db	public	maintenance_task_attachment	deleted_at	10	timestamp with time zone					
-postgresql	splg_db	public	maintenance_window_proposal	proposal_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	maintenance_window_proposal	task_id	2	uuid		FOREIGN KEY	public	maintenance_task	task_id
-postgresql	splg_db	public	maintenance_window_proposal	delivery_id	3	uuid		FOREIGN KEY	public	delivery	delivery_id
-postgresql	splg_db	public	maintenance_window_proposal	window_start	4	timestamp with time zone					
-postgresql	splg_db	public	maintenance_window_proposal	window_end	5	timestamp with time zone					
-postgresql	splg_db	public	maintenance_window_proposal	rank	6	integer					
-postgresql	splg_db	public	maintenance_window_proposal	status	7	USER-DEFINED					
-postgresql	splg_db	public	maintenance_window_proposal	expires_at	8	timestamp with time zone					
-postgresql	splg_db	public	maintenance_window_proposal	responded_at	9	timestamp with time zone					
-postgresql	splg_db	public	module_config	config_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	module_config	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	module_config	distributor_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	module_config	module	3	USER-DEFINED		UNIQUE			
-postgresql	splg_db	public	module_config	params	4	jsonb					
-postgresql	splg_db	public	module_config	updated_at	5	timestamp with time zone					
-postgresql	splg_db	public	module_config	updated_by_user_id	6	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	order	order_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	order	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	order	customer_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	order	time_slot_id	4	uuid		FOREIGN KEY	public	time_slot	time_slot_id
-postgresql	splg_db	public	order	scheduled_date	5	date					
-postgresql	splg_db	public	order	deposit_amount	6	numeric					
-postgresql	splg_db	public	order	deposit_paid	7	boolean					
-postgresql	splg_db	public	order	delivery_id	8	uuid		FOREIGN KEY	public	delivery	delivery_id
-postgresql	splg_db	public	order	address_id	9	uuid		FOREIGN KEY	public	user_address	address_id
-postgresql	splg_db	public	order	status	10	USER-DEFINED					
-postgresql	splg_db	public	order	paymentMethod	11	USER-DEFINED					
-postgresql	splg_db	public	order	paymentType	12	USER-DEFINED					
-postgresql	splg_db	public	order	paymentStatus	13	USER-DEFINED					
-postgresql	splg_db	public	order	totalAmount	14	numeric					
-postgresql	splg_db	public	order	notes	15	text					
-postgresql	splg_db	public	order	deliveryInstructions	16	text					
-postgresql	splg_db	public	order	acceptedAt	19	timestamp with time zone					
-postgresql	splg_db	public	order	onTheWayAt	20	timestamp with time zone					
-postgresql	splg_db	public	order	deliveredAt	21	timestamp with time zone					
-postgresql	splg_db	public	order	createdAt	22	timestamp with time zone					
-postgresql	splg_db	public	order	updatedAt	23	timestamp with time zone					
-postgresql	splg_db	public	order	cancellationReason	24	text					
-postgresql	splg_db	public	order	gatewayPaymentId	25	character varying	100				
-postgresql	splg_db	public	order	deliveryCode	26	character varying	12				
-postgresql	splg_db	public	order	receiver_name	31	character varying	120				
-postgresql	splg_db	public	order	receiver_document	32	character varying	20				
-postgresql	splg_db	public	order	receiver_relationship	33	character varying	40				
-postgresql	splg_db	public	order	delivery_mode	34	USER-DEFINED					
-postgresql	splg_db	public	order	deliveryPoint	38	USER-DEFINED					
-postgresql	splg_db	public	order	coverage_zone_id	39	uuid		FOREIGN KEY	public	coverage_zone	coverage_zone_id
-postgresql	splg_db	public	order	zone_name	40	character varying	120				
-postgresql	splg_db	public	order	zone_surcharge_type	41	USER-DEFINED					
-postgresql	splg_db	public	order	zone_surcharge_value	42	numeric					
-postgresql	splg_db	public	order	zone_surcharge_amount	43	numeric					
-postgresql	splg_db	public	order	subtotal_items	44	numeric					
-postgresql	splg_db	public	order	vehicle_car_id	49	uuid					
-postgresql	splg_db	public	order	vehicle_patent	50	character varying	20				
-postgresql	splg_db	public	order	vehicle_brand	51	character varying	50				
-postgresql	splg_db	public	order	vehicle_model	52	character varying	50				
-postgresql	splg_db	public	order_address_change	change_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	order_address_change	order_id	2	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	order_address_change	from_address_id	3	uuid		FOREIGN KEY	public	user_address	address_id
-postgresql	splg_db	public	order_address_change	to_address_id	4	uuid		FOREIGN KEY	public	user_address	address_id
-postgresql	splg_db	public	order_address_change	changed_by_user_id	5	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	order_address_change	changed_at	6	timestamp with time zone					
-postgresql	splg_db	public	order_address_change	reason	7	text					
-postgresql	splg_db	public	order_dispatch_offer	offer_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	order_dispatch_offer	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	order_dispatch_offer	order_id	3	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	order_dispatch_offer	driver_id	4	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	order_dispatch_offer	status	5	USER-DEFINED					
-postgresql	splg_db	public	order_dispatch_offer	expiresAt	6	timestamp with time zone					
-postgresql	splg_db	public	order_dispatch_offer	offeredAt	7	timestamp with time zone					
-postgresql	splg_db	public	order_item	order_item_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	order_item	order_id	2	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	order_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
-postgresql	splg_db	public	order_item	quantity	4	integer					
-postgresql	splg_db	public	order_item	unitPrice	5	numeric					
-postgresql	splg_db	public	order_item	subtotal	6	numeric					
-postgresql	splg_db	public	order_status_history	history_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	order_status_history	order_id	2	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	order_status_history	from_status	3	USER-DEFINED					
-postgresql	splg_db	public	order_status_history	to_status	4	USER-DEFINED					
-postgresql	splg_db	public	order_status_history	changed_by_user_id	5	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	order_status_history	reason	6	text					
-postgresql	splg_db	public	order_status_history	changed_at	7	timestamp with time zone					
-postgresql	splg_db	public	payment	payment_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	payment	order_id	2	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	payment	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	payment	gateway	4	USER-DEFINED					
-postgresql	splg_db	public	payment	integration	5	USER-DEFINED					
-postgresql	splg_db	public	payment	method	6	character varying	50				
-postgresql	splg_db	public	payment	gateway_payment_id	7	character varying	100				
-postgresql	splg_db	public	payment	external_reference	8	character varying					
-postgresql	splg_db	public	payment	amount	9	numeric					
-postgresql	splg_db	public	payment	currency	10	character varying	10				
-postgresql	splg_db	public	payment	status	11	USER-DEFINED					
-postgresql	splg_db	public	payment	payment_url	12	text					
-postgresql	splg_db	public	payment	is_deposit	13	boolean					
-postgresql	splg_db	public	payment	metadata	14	jsonb					
-postgresql	splg_db	public	payment	createdAt	15	timestamp with time zone					
-postgresql	splg_db	public	payment	updatedAt	16	timestamp with time zone					
-postgresql	splg_db	public	rating	rating_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	rating	order_id	2	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	rating	order_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	rating	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	rating	from_user_id	4	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	rating	to_user_id	5	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	rating	from_role	6	USER-DEFINED		UNIQUE			
-postgresql	splg_db	public	rating	stars	7	integer					
-postgresql	splg_db	public	rating	comment	8	text					
-postgresql	splg_db	public	rating	createdAt	9	timestamp with time zone					
-postgresql	splg_db	public	rating	hidden	10	boolean					
-postgresql	splg_db	public	rating	hidden_reason	11	text					
-postgresql	splg_db	public	rating	hidden_at	12	timestamp with time zone					
-postgresql	splg_db	public	rating	hidden_by_user_id	13	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	repurchase_invitation	invitation_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	repurchase_invitation	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	repurchase_invitation	user_id	3	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	repurchase_invitation	address_id	4	uuid		FOREIGN KEY	public	user_address	address_id
-postgresql	splg_db	public	repurchase_invitation	projected_depletion_at	5	timestamp with time zone					
-postgresql	splg_db	public	repurchase_invitation	suggested_items	6	jsonb					
-postgresql	splg_db	public	repurchase_invitation	status	7	USER-DEFINED					
-postgresql	splg_db	public	repurchase_invitation	expires_at	8	timestamp with time zone					
-postgresql	splg_db	public	repurchase_invitation	responded_at	9	timestamp with time zone					
-postgresql	splg_db	public	repurchase_invitation	order_id	10	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	repurchase_invitation	created_at	11	timestamp with time zone					
-postgresql	splg_db	public	role	role_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	role	type	2	text					
-postgresql	splg_db	public	role	createdAt	3	timestamp with time zone					
-postgresql	splg_db	public	role	updatedAt	4	timestamp with time zone					
-postgresql	splg_db	public	role	deletedAt	5	timestamp with time zone					
-postgresql	splg_db	public	route_batch	batch_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	route_batch	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	route_batch	status	3	USER-DEFINED					
-postgresql	splg_db	public	route_batch	total_weight_kg	4	numeric					
-postgresql	splg_db	public	route_batch	delivery_id	5	uuid		FOREIGN KEY	public	delivery	delivery_id
-postgresql	splg_db	public	route_batch	created_at	6	timestamp with time zone					
-postgresql	splg_db	public	route_batch_offer	offer_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	route_batch_offer	batch_id	2	uuid		FOREIGN KEY	public	route_batch	batch_id
-postgresql	splg_db	public	route_batch_offer	delivery_id	3	uuid		FOREIGN KEY	public	delivery	delivery_id
-postgresql	splg_db	public	route_batch_offer	status	4	USER-DEFINED					
-postgresql	splg_db	public	route_batch_offer	expires_at	5	timestamp with time zone					
-postgresql	splg_db	public	route_batch_offer	responded_at	6	timestamp with time zone					
-postgresql	splg_db	public	route_batch_stop	stop_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	route_batch_stop	batch_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	route_batch_stop	batch_id	2	uuid		FOREIGN KEY	public	route_batch	batch_id
-postgresql	splg_db	public	route_batch_stop	order_id	3	uuid		UNIQUE			
-postgresql	splg_db	public	route_batch_stop	order_id	3	uuid		FOREIGN KEY	public	order	order_id
-postgresql	splg_db	public	route_batch_stop	sequence	4	integer					
-postgresql	splg_db	public	storage_orphan	orphan_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	storage_orphan	storage_key	2	character varying	512	UNIQUE			
-postgresql	splg_db	public	storage_orphan	attempts	3	integer					
-postgresql	splg_db	public	storage_orphan	last_error	4	text					
-postgresql	splg_db	public	storage_orphan	created_at	5	timestamp with time zone					
-postgresql	splg_db	public	storage_orphan	updated_at	6	timestamp with time zone					
-postgresql	splg_db	public	storage_orphan	kind	7	character varying	10				
-postgresql	splg_db	public	storage_orphan	status	8	character varying	10				
-postgresql	splg_db	public	storage_orphan	next_attempt_at	9	timestamp with time zone					
-postgresql	splg_db	public	time_slot	time_slot_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	time_slot	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	time_slot	name	3	character varying	50				
-postgresql	splg_db	public	time_slot	startTime	4	time without time zone					
-postgresql	splg_db	public	time_slot	endTime	5	time without time zone					
-postgresql	splg_db	public	time_slot	capacity	6	integer					
-postgresql	splg_db	public	time_slot	isActive	7	boolean					
-postgresql	splg_db	public	time_slot	createdAt	8	timestamp with time zone					
-postgresql	splg_db	public	time_slot	updatedAt	9	timestamp with time zone					
-postgresql	splg_db	public	user	user_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	user	role_id	2	uuid		FOREIGN KEY	public	role	role_id
-postgresql	splg_db	public	user	firebase_uid	3	character varying		UNIQUE			
-postgresql	splg_db	public	user	full_name	4	character varying					
-postgresql	splg_db	public	user	selfie	5	character varying					
-postgresql	splg_db	public	user	email	6	character varying		UNIQUE			
-postgresql	splg_db	public	user	phone_number	7	character varying		UNIQUE			
-postgresql	splg_db	public	user	phone_verified	8	boolean					
-postgresql	splg_db	public	user	email_verified	9	boolean					
-postgresql	splg_db	public	user	blocked	10	boolean					
-postgresql	splg_db	public	user	createdAt	11	timestamp with time zone					
-postgresql	splg_db	public	user	deletedAt	12	timestamp with time zone					
-postgresql	splg_db	public	user_address	address_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	user_address	user_id	2	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	user_address	street	3	character varying	255				
-postgresql	splg_db	public	user_address	city	4	character varying	100				
-postgresql	splg_db	public	user_address	postalCode	5	character varying	20				
-postgresql	splg_db	public	user_address	formattedAddress	8	text					
-postgresql	splg_db	public	user_address	isDefault	9	boolean					
-postgresql	splg_db	public	user_address	additionalInstructions	10	text					
-postgresql	splg_db	public	user_address	createdAt	11	timestamp with time zone					
-postgresql	splg_db	public	user_address	updatedAt	12	timestamp with time zone					
-postgresql	splg_db	public	user_address	deletedAt	14	timestamp with time zone					
-postgresql	splg_db	public	user_address	floor	22	character varying	10				
-postgresql	splg_db	public	user_address	apartment	23	character varying	10				
-postgresql	splg_db	public	user_address	location	24	USER-DEFINED					
-postgresql	splg_db	public	user_address	place_id	25	character varying	255				
-postgresql	splg_db	public	user_address	geocode_precision	26	USER-DEFINED					
-postgresql	splg_db	public	vehicle_assignment	assignment_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	vehicle_assignment	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	vehicle_assignment	car_id	3	uuid		FOREIGN KEY	public	car	car_id
-postgresql	splg_db	public	vehicle_assignment	delivery_id	4	uuid		FOREIGN KEY	public	delivery	delivery_id
-postgresql	splg_db	public	vehicle_assignment	assigned_at	5	timestamp with time zone					
-postgresql	splg_db	public	vehicle_assignment	released_at	6	timestamp with time zone					
-postgresql	splg_db	public	vehicle_assignment	assigned_by_user_id	7	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	vehicle_assignment	released_by_user_id	8	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_db	public	vehicle_assignment	note	9	text					
-postgresql	splg_db	public	vehicle_usage_log	log_id	1	uuid		PRIMARY KEY			
-postgresql	splg_db	public	vehicle_usage_log	car_id	2	uuid		FOREIGN KEY	public	car	car_id
-postgresql	splg_db	public	vehicle_usage_log	car_id	2	uuid		UNIQUE			
-postgresql	splg_db	public	vehicle_usage_log	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_db	public	vehicle_usage_log	day	4	date		UNIQUE			
-postgresql	splg_db	public	vehicle_usage_log	km	5	numeric					
-postgresql	splg_db	public	vehicle_usage_log	orders	6	integer					
-postgresql	splg_db	public	vehicle_usage_log	route_hours	7	numeric					
+postgresql	splg_doc_tmp	public	admin	admin_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	admin	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	admin	user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	admin	createdAt	4	timestamp with time zone					
+postgresql	splg_doc_tmp	public	attachment	attachment_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	attachment	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	attachment	owner_type	3	USER-DEFINED					
+postgresql	splg_doc_tmp	public	attachment	owner_id	4	uuid					
+postgresql	splg_doc_tmp	public	attachment	label	5	character varying	80				
+postgresql	splg_doc_tmp	public	attachment	storage_key	6	character varying	255				
+postgresql	splg_doc_tmp	public	attachment	original_name	7	character varying	255				
+postgresql	splg_doc_tmp	public	attachment	mime_type	8	character varying	100				
+postgresql	splg_doc_tmp	public	attachment	size_bytes	9	integer					
+postgresql	splg_doc_tmp	public	attachment	uploaded_by_user_id	10	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	attachment	uploaded_at	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	attachment	deleted_at	12	timestamp with time zone					
+postgresql	splg_doc_tmp	public	audit	audit_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	audit	action_type_id	2	smallint		FOREIGN KEY	public	audit_action_type	action_type_id
+postgresql	splg_doc_tmp	public	audit	user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	audit	distributor_id	4	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	audit	entity	5	character varying	60				
+postgresql	splg_doc_tmp	public	audit	record_id	6	character varying	64				
+postgresql	splg_doc_tmp	public	audit	ip	7	character varying	45				
+postgresql	splg_doc_tmp	public	audit	created_at	8	timestamp with time zone					
+postgresql	splg_doc_tmp	public	audit_action_type	action_type_id	1	smallint		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	audit_action_type	name	2	character varying	40	UNIQUE			
+postgresql	splg_doc_tmp	public	audit_detail	audit_detail_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	audit_detail	audit_id	2	uuid		FOREIGN KEY	public	audit	audit_id
+postgresql	splg_doc_tmp	public	audit_detail	field	3	character varying	80				
+postgresql	splg_doc_tmp	public	audit_detail	old_value	4	text					
+postgresql	splg_doc_tmp	public	audit_detail	new_value	5	text					
+postgresql	splg_doc_tmp	public	audit_log	audit_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	audit_log	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	audit_log	actor_user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	audit_log	actor_role	4	character varying	30				
+postgresql	splg_doc_tmp	public	audit_log	http_method	5	character varying	10				
+postgresql	splg_doc_tmp	public	audit_log	resource	6	character varying	60				
+postgresql	splg_doc_tmp	public	audit_log	resource_id	7	character varying	64				
+postgresql	splg_doc_tmp	public	audit_log	path	8	character varying	255				
+postgresql	splg_doc_tmp	public	audit_log	client_source	9	character varying	30				
+postgresql	splg_doc_tmp	public	audit_log	ip	10	character varying	45				
+postgresql	splg_doc_tmp	public	audit_log	result	11	USER-DEFINED					
+postgresql	splg_doc_tmp	public	audit_log	status_code	12	integer					
+postgresql	splg_doc_tmp	public	audit_log	changes	13	jsonb					
+postgresql	splg_doc_tmp	public	audit_log	error_message	14	text					
+postgresql	splg_doc_tmp	public	audit_log	created_at	15	timestamp with time zone					
+postgresql	splg_doc_tmp	public	car	car_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	car	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	car	user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	car	type_car	4	character varying	50				
+postgresql	splg_doc_tmp	public	car	car_capacity	5	integer					
+postgresql	splg_doc_tmp	public	car	car_patent	6	character varying	20				
+postgresql	splg_doc_tmp	public	car	car_brand	7	character varying	50				
+postgresql	splg_doc_tmp	public	car	car_model	8	character varying	50				
+postgresql	splg_doc_tmp	public	car	car_year	9	integer					
+postgresql	splg_doc_tmp	public	car	car_color	10	character varying	50				
+postgresql	splg_doc_tmp	public	car	createdAt	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	car	updatedAt	12	timestamp with time zone					
+postgresql	splg_doc_tmp	public	car	deletedAt	13	timestamp with time zone					
+postgresql	splg_doc_tmp	public	car	tare_weight_kg	14	numeric					
+postgresql	splg_doc_tmp	public	car	max_load_kg	15	numeric					
+postgresql	splg_doc_tmp	public	car	odometer_km	16	integer					
+postgresql	splg_doc_tmp	public	car	fleet_status	17	USER-DEFINED					
+postgresql	splg_doc_tmp	public	car	in_service_since	18	timestamp with time zone					
+postgresql	splg_doc_tmp	public	car	photo_key	19	character varying	512				
+postgresql	splg_doc_tmp	public	cart	cart_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	cart	user_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	cart	user_id	2	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	cart	distributor_id	3	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	cart	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	cart	updated_at	4	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cart_item	cart_item_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	cart_item	cart_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	cart_item	cart_id	2	uuid		FOREIGN KEY	public	cart	cart_id
+postgresql	splg_doc_tmp	public	cart_item	gas_cylinder_id	3	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	cart_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	cart_item	quantity	4	integer					
+postgresql	splg_doc_tmp	public	cart_item	unit_price	5	numeric					
+postgresql	splg_doc_tmp	public	claims	claim_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	claims	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	claims	order_id	3	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	claims	customer_id	4	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	claims	reason	5	character varying					
+postgresql	splg_doc_tmp	public	claims	description	6	text					
+postgresql	splg_doc_tmp	public	claims	photoUrl	7	character varying					
+postgresql	splg_doc_tmp	public	claims	status	8	USER-DEFINED					
+postgresql	splg_doc_tmp	public	claims	resolutionNote	9	text					
+postgresql	splg_doc_tmp	public	claims	createdAt	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	claims	photo_key	11	character varying	512				
+postgresql	splg_doc_tmp	public	coverage_zone	coverage_zone_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	coverage_zone	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	coverage_zone	name	3	character varying	120				
+postgresql	splg_doc_tmp	public	coverage_zone	area	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	coverage_zone	surcharge_value	5	numeric					
+postgresql	splg_doc_tmp	public	coverage_zone	isActive	6	boolean					
+postgresql	splg_doc_tmp	public	coverage_zone	createdAt	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	coverage_zone	updatedAt	8	timestamp with time zone					
+postgresql	splg_doc_tmp	public	coverage_zone	deletedAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	coverage_zone	surcharge_type	10	USER-DEFINED					
+postgresql	splg_doc_tmp	public	coverage_zone	label	11	character varying	40				
+postgresql	splg_doc_tmp	public	coverage_zone	color	12	character varying	7				
+postgresql	splg_doc_tmp	public	coverage_zone	valid_until	13	timestamp with time zone					
+postgresql	splg_doc_tmp	public	coverage_zone	priority	14	integer					
+postgresql	splg_doc_tmp	public	coverage_zone	valid_from	15	timestamp with time zone					
+postgresql	splg_doc_tmp	public	customer	customer_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	customer	user_id	2	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	customer	user_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	customer	notification_token	3	text					
+postgresql	splg_doc_tmp	public	customer	createdAt	4	timestamp with time zone					
+postgresql	splg_doc_tmp	public	customer	deletedAt	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	customer	location	6	USER-DEFINED					
+postgresql	splg_doc_tmp	public	customer	avg_monthly_consumption_kg	7	numeric					
+postgresql	splg_doc_tmp	public	customer	declared_cylinder_type_id	8	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	customer	repurchase_notice_days	9	integer					
+postgresql	splg_doc_tmp	public	customer	next_repurchase_estimate_at	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder	cylinder_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	cylinder	distributor_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	cylinder	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	cylinder	serial	3	character varying		UNIQUE			
+postgresql	splg_doc_tmp	public	cylinder	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	cylinder	state	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	cylinder	current_customer_id	6	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	cylinder	current_order_id	7	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	cylinder	deposit	8	numeric					
+postgresql	splg_doc_tmp	public	cylinder	createdAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder	updatedAt	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder	manufactured_at	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder	last_inspection_at	12	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder	expires_at	13	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_inspection	inspection_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	cylinder_inspection	cylinder_id	2	uuid		FOREIGN KEY	public	cylinder	cylinder_id
+postgresql	splg_doc_tmp	public	cylinder_inspection	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	cylinder_inspection	inspected_at	4	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_inspection	result	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	cylinder_inspection	next_due_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_inspection	notes	7	text					
+postgresql	splg_doc_tmp	public	cylinder_movement	movement_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	cylinder_movement	cylinder_id	2	uuid		FOREIGN KEY	public	cylinder	cylinder_id
+postgresql	splg_doc_tmp	public	cylinder_movement	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	cylinder_movement	from_state	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	cylinder_movement	to_state	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	cylinder_movement	order_id	6	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	cylinder_movement	actor_user_id	7	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	cylinder_movement	note	8	text					
+postgresql	splg_doc_tmp	public	cylinder_movement	createdAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	case_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	cylinder_id	3	uuid		FOREIGN KEY	public	cylinder	cylinder_id
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	user_id	4	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	delivered_at	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	deposit_amount	6	numeric					
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	step	7	integer					
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	status	8	USER-DEFINED					
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	opened_at	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	closed_at	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	resolved_by_user_id	11	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	cylinder_recovery_case	resolution_note	12	text					
+postgresql	splg_doc_tmp	public	cylinder_recovery_notice	notice_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	cylinder_recovery_notice	case_id	2	uuid		FOREIGN KEY	public	cylinder_recovery_case	case_id
+postgresql	splg_doc_tmp	public	cylinder_recovery_notice	step	3	integer					
+postgresql	splg_doc_tmp	public	cylinder_recovery_notice	kind	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	cylinder_recovery_notice	status	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	cylinder_recovery_notice	sent_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	cylinder_recovery_notice	expires_at	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	delivery	delivery_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	delivery	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	delivery	user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	delivery	user_id	3	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	delivery	calification	4	double precision					
+postgresql	splg_doc_tmp	public	delivery	actual_location	5	text					
+postgresql	splg_doc_tmp	public	delivery	cancelledCharge	6	real					
+postgresql	splg_doc_tmp	public	delivery	validated	7	boolean					
+postgresql	splg_doc_tmp	public	delivery	isActive	8	boolean					
+postgresql	splg_doc_tmp	public	delivery	notification_token	9	text					
+postgresql	splg_doc_tmp	public	delivery	balance	10	double precision					
+postgresql	splg_doc_tmp	public	delivery	createdAt	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	delivery	deletedAt	12	timestamp with time zone					
+postgresql	splg_doc_tmp	public	delivery	location	13	USER-DEFINED					
+postgresql	splg_doc_tmp	public	delivery	isEnabled	14	boolean					
+postgresql	splg_doc_tmp	public	delivery	isAvailable	15	boolean					
+postgresql	splg_doc_tmp	public	distributor	distributor_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	distributor	name	2	character varying	120				
+postgresql	splg_doc_tmp	public	distributor	slug	3	character varying	60	UNIQUE			
+postgresql	splg_doc_tmp	public	distributor	legal_name	4	character varying	160				
+postgresql	splg_doc_tmp	public	distributor	tax_id	5	character varying	20				
+postgresql	splg_doc_tmp	public	distributor	email	6	character varying					
+postgresql	splg_doc_tmp	public	distributor	phone	7	character varying					
+postgresql	splg_doc_tmp	public	distributor	logo_url	8	character varying					
+postgresql	splg_doc_tmp	public	distributor	status	9	USER-DEFINED					
+postgresql	splg_doc_tmp	public	distributor	plan	10	character varying					
+postgresql	splg_doc_tmp	public	distributor	createdAt	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	distributor	updatedAt	12	timestamp with time zone					
+postgresql	splg_doc_tmp	public	distributor	deletedAt	13	timestamp with time zone					
+postgresql	splg_doc_tmp	public	distributor	logo_key	14	character varying	512				
+postgresql	splg_doc_tmp	public	document_sequence	distributor_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	document_sequence	distributor_id	1	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	document_sequence	doc_type	2	character varying	40	PRIMARY KEY			
+postgresql	splg_doc_tmp	public	document_sequence	last_number	3	integer					
+postgresql	splg_doc_tmp	public	employee	employee_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	employee	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	employee	user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	employee	position_id	4	uuid		FOREIGN KEY	public	job_position	position_id
+postgresql	splg_doc_tmp	public	employee	file_number	5	character varying	20				
+postgresql	splg_doc_tmp	public	employee	first_name	6	character varying	80				
+postgresql	splg_doc_tmp	public	employee	last_name	7	character varying	80				
+postgresql	splg_doc_tmp	public	employee	document_type	8	USER-DEFINED					
+postgresql	splg_doc_tmp	public	employee	document_number	9	character varying	20				
+postgresql	splg_doc_tmp	public	employee	cuil	10	character varying	11				
+postgresql	splg_doc_tmp	public	employee	birth_date	11	date					
+postgresql	splg_doc_tmp	public	employee	address_line	12	character varying	200				
+postgresql	splg_doc_tmp	public	employee	city	13	character varying	80				
+postgresql	splg_doc_tmp	public	employee	province	14	character varying	80				
+postgresql	splg_doc_tmp	public	employee	postal_code	15	character varying	10				
+postgresql	splg_doc_tmp	public	employee	phone	16	character varying	30				
+postgresql	splg_doc_tmp	public	employee	personal_email	17	character varying	120				
+postgresql	splg_doc_tmp	public	employee	emergency_contact_name	18	character varying	120				
+postgresql	splg_doc_tmp	public	employee	emergency_contact_phone	19	character varying	30				
+postgresql	splg_doc_tmp	public	employee	emergency_contact_relationship	20	character varying	40				
+postgresql	splg_doc_tmp	public	employee	hire_date	21	date					
+postgresql	splg_doc_tmp	public	employee	termination_date	22	date					
+postgresql	splg_doc_tmp	public	employee	termination_reason	23	USER-DEFINED					
+postgresql	splg_doc_tmp	public	employee	employment_type	24	USER-DEFINED					
+postgresql	splg_doc_tmp	public	employee	status	25	USER-DEFINED					
+postgresql	splg_doc_tmp	public	employee	bank_cbu	26	character varying	22				
+postgresql	splg_doc_tmp	public	employee	notes	27	text					
+postgresql	splg_doc_tmp	public	employee	createdAt	28	timestamp with time zone					
+postgresql	splg_doc_tmp	public	employee	updatedAt	29	timestamp with time zone					
+postgresql	splg_doc_tmp	public	employee	deletedAt	30	timestamp with time zone					
+postgresql	splg_doc_tmp	public	employee	photo_key	31	character varying	512				
+postgresql	splg_doc_tmp	public	gas_cylinder	gas_cylinder_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	gas_cylinder	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	gas_cylinder	distributor_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	gas_cylinder	type	3	character varying	50	UNIQUE			
+postgresql	splg_doc_tmp	public	gas_cylinder	weight	4	numeric					
+postgresql	splg_doc_tmp	public	gas_cylinder	price	5	numeric					
+postgresql	splg_doc_tmp	public	gas_cylinder	stock	6	integer					
+postgresql	splg_doc_tmp	public	gas_cylinder	description	7	text					
+postgresql	splg_doc_tmp	public	gas_cylinder	isActive	8	boolean					
+postgresql	splg_doc_tmp	public	gas_cylinder	createdAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	gas_cylinder	updatedAt	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	gas_cylinder	photo_key	11	character varying	512				
+postgresql	splg_doc_tmp	public	gas_cylinder_promotion	promotion_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	gas_cylinder_promotion	gas_cylinder_id	2	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	gas_cylinder_promotion	quantity	3	integer					
+postgresql	splg_doc_tmp	public	gas_cylinder_promotion	discount_percentage	4	numeric					
+postgresql	splg_doc_tmp	public	gas_cylinder_promotion	deletedAt	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	incident	incident_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	incident	order_id	2	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	incident	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	incident	reported_by	4	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	incident	type	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	incident	description	6	text					
+postgresql	splg_doc_tmp	public	incident	photo_url	7	character varying					
+postgresql	splg_doc_tmp	public	incident	status	8	USER-DEFINED					
+postgresql	splg_doc_tmp	public	incident	resolution_note	9	text					
+postgresql	splg_doc_tmp	public	incident	createdAt	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	incident	resolvedAt	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	incident	moment	12	USER-DEFINED					
+postgresql	splg_doc_tmp	public	incident	photo_key	13	character varying	512				
+postgresql	splg_doc_tmp	public	job_position	position_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	job_position	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	job_position	name	3	character varying	80				
+postgresql	splg_doc_tmp	public	job_position	category	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	job_position	is_active	5	boolean					
+postgresql	splg_doc_tmp	public	job_position	createdAt	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	job_position	updatedAt	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	job_position	deletedAt	8	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_plan	plan_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	maintenance_plan	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	maintenance_plan	name	3	character varying	120				
+postgresql	splg_doc_tmp	public	maintenance_plan	subject	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	maintenance_plan	trigger	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	maintenance_plan	interval_km	6	integer					
+postgresql	splg_doc_tmp	public	maintenance_plan	interval_months	7	integer					
+postgresql	splg_doc_tmp	public	maintenance_plan	lead_time_days	8	integer					
+postgresql	splg_doc_tmp	public	maintenance_plan	criticality	9	USER-DEFINED					
+postgresql	splg_doc_tmp	public	maintenance_plan	car_type	10	character varying					
+postgresql	splg_doc_tmp	public	maintenance_plan	is_active	11	boolean					
+postgresql	splg_doc_tmp	public	maintenance_task	task_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	maintenance_task	plan_id	2	uuid		FOREIGN KEY	public	maintenance_plan	plan_id
+postgresql	splg_doc_tmp	public	maintenance_task	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	maintenance_task	car_id	4	uuid		FOREIGN KEY	public	car	car_id
+postgresql	splg_doc_tmp	public	maintenance_task	delivery_id	5	uuid		FOREIGN KEY	public	delivery	delivery_id
+postgresql	splg_doc_tmp	public	maintenance_task	status	6	USER-DEFINED					
+postgresql	splg_doc_tmp	public	maintenance_task	due_at	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_task	due_km	8	integer					
+postgresql	splg_doc_tmp	public	maintenance_task	predicted_due_at	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_task	scheduled_at	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_task	performed_at	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_task	odometer_km	12	integer					
+postgresql	splg_doc_tmp	public	maintenance_task	cost	13	numeric					
+postgresql	splg_doc_tmp	public	maintenance_task	provider	14	character varying	120				
+postgresql	splg_doc_tmp	public	maintenance_task	reference_number	15	character varying	60				
+postgresql	splg_doc_tmp	public	maintenance_task	category	16	character varying	10				
+postgresql	splg_doc_tmp	public	maintenance_task	alerted_at	17	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_task	notes	18	text					
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	attachment_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	task_id	2	uuid		FOREIGN KEY	public	maintenance_task	task_id
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	storage_key	4	character varying	255				
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	original_name	5	character varying	255				
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	mime_type	6	character varying	100				
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	size_bytes	7	integer					
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	uploaded_by_user_id	8	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	uploaded_at	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_task_attachment	deleted_at	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	proposal_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	task_id	2	uuid		FOREIGN KEY	public	maintenance_task	task_id
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	delivery_id	3	uuid		FOREIGN KEY	public	delivery	delivery_id
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	window_start	4	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	window_end	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	rank	6	integer					
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	status	7	USER-DEFINED					
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	expires_at	8	timestamp with time zone					
+postgresql	splg_doc_tmp	public	maintenance_window_proposal	responded_at	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	module_config	config_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	module_config	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	module_config	distributor_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	module_config	module	3	USER-DEFINED		UNIQUE			
+postgresql	splg_doc_tmp	public	module_config	params	4	jsonb					
+postgresql	splg_doc_tmp	public	module_config	updated_at	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	module_config	updated_by_user_id	6	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	order	order_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	order	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	order	customer_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	order	time_slot_id	4	uuid		FOREIGN KEY	public	time_slot	time_slot_id
+postgresql	splg_doc_tmp	public	order	scheduled_date	5	date					
+postgresql	splg_doc_tmp	public	order	deposit_amount	6	numeric					
+postgresql	splg_doc_tmp	public	order	deposit_paid	7	boolean					
+postgresql	splg_doc_tmp	public	order	delivery_id	8	uuid		FOREIGN KEY	public	delivery	delivery_id
+postgresql	splg_doc_tmp	public	order	address_id	9	uuid		FOREIGN KEY	public	user_address	address_id
+postgresql	splg_doc_tmp	public	order	status	10	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order	paymentMethod	11	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order	paymentType	12	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order	paymentStatus	13	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order	totalAmount	14	numeric					
+postgresql	splg_doc_tmp	public	order	notes	15	text					
+postgresql	splg_doc_tmp	public	order	deliveryInstructions	16	text					
+postgresql	splg_doc_tmp	public	order	acceptedAt	17	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order	onTheWayAt	18	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order	deliveredAt	19	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order	createdAt	20	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order	updatedAt	21	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order	cancellationReason	22	text					
+postgresql	splg_doc_tmp	public	order	gatewayPaymentId	23	character varying	100				
+postgresql	splg_doc_tmp	public	order	deliveryCode	24	character varying	12				
+postgresql	splg_doc_tmp	public	order	receiver_name	25	character varying	120				
+postgresql	splg_doc_tmp	public	order	receiver_document	26	character varying	20				
+postgresql	splg_doc_tmp	public	order	receiver_relationship	27	character varying	40				
+postgresql	splg_doc_tmp	public	order	delivery_mode	28	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order	deliveryPoint	29	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order	coverage_zone_id	30	uuid		FOREIGN KEY	public	coverage_zone	coverage_zone_id
+postgresql	splg_doc_tmp	public	order	zone_name	31	character varying	120				
+postgresql	splg_doc_tmp	public	order	zone_surcharge_type	32	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order	zone_surcharge_value	33	numeric					
+postgresql	splg_doc_tmp	public	order	zone_surcharge_amount	34	numeric					
+postgresql	splg_doc_tmp	public	order	subtotal_items	35	numeric					
+postgresql	splg_doc_tmp	public	order	vehicle_car_id	36	uuid					
+postgresql	splg_doc_tmp	public	order	vehicle_patent	37	character varying	20				
+postgresql	splg_doc_tmp	public	order	vehicle_brand	38	character varying	50				
+postgresql	splg_doc_tmp	public	order	vehicle_model	39	character varying	50				
+postgresql	splg_doc_tmp	public	order	payment_confirmed_at	40	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order	payment_confirmed_by	41	uuid					
+postgresql	splg_doc_tmp	public	order	payment_resolution_note	42	text					
+postgresql	splg_doc_tmp	public	order_address_change	change_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	order_address_change	order_id	2	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	order_address_change	from_address_id	3	uuid		FOREIGN KEY	public	user_address	address_id
+postgresql	splg_doc_tmp	public	order_address_change	to_address_id	4	uuid		FOREIGN KEY	public	user_address	address_id
+postgresql	splg_doc_tmp	public	order_address_change	changed_by_user_id	5	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	order_address_change	changed_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order_address_change	reason	7	text					
+postgresql	splg_doc_tmp	public	order_dispatch_offer	offer_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	order_dispatch_offer	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	order_dispatch_offer	order_id	3	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	order_dispatch_offer	driver_id	4	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	order_dispatch_offer	status	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order_dispatch_offer	expiresAt	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order_dispatch_offer	offeredAt	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	order_item	order_item_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	order_item	order_id	2	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	order_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	order_item	quantity	4	integer					
+postgresql	splg_doc_tmp	public	order_item	unitPrice	5	numeric					
+postgresql	splg_doc_tmp	public	order_item	subtotal	6	numeric					
+postgresql	splg_doc_tmp	public	order_status_history	history_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	order_status_history	order_id	2	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	order_status_history	from_status	3	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order_status_history	to_status	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	order_status_history	changed_by_user_id	5	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	order_status_history	reason	6	text					
+postgresql	splg_doc_tmp	public	order_status_history	changed_at	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	payment	payment_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	payment	order_id	2	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	payment	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	payment	gateway	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	payment	integration	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	payment	method	6	character varying	50				
+postgresql	splg_doc_tmp	public	payment	gateway_payment_id	7	character varying	100				
+postgresql	splg_doc_tmp	public	payment	external_reference	8	character varying					
+postgresql	splg_doc_tmp	public	payment	amount	9	numeric					
+postgresql	splg_doc_tmp	public	payment	currency	10	character varying	10				
+postgresql	splg_doc_tmp	public	payment	status	11	USER-DEFINED					
+postgresql	splg_doc_tmp	public	payment	payment_url	12	text					
+postgresql	splg_doc_tmp	public	payment	is_deposit	13	boolean					
+postgresql	splg_doc_tmp	public	payment	metadata	14	jsonb					
+postgresql	splg_doc_tmp	public	payment	createdAt	15	timestamp with time zone					
+postgresql	splg_doc_tmp	public	payment	updatedAt	16	timestamp with time zone					
+postgresql	splg_doc_tmp	public	rating	rating_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	rating	order_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	rating	order_id	2	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	rating	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	rating	from_user_id	4	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	rating	to_user_id	5	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	rating	from_role	6	USER-DEFINED		UNIQUE			
+postgresql	splg_doc_tmp	public	rating	stars	7	integer					
+postgresql	splg_doc_tmp	public	rating	comment	8	text					
+postgresql	splg_doc_tmp	public	rating	createdAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	rating	hidden	10	boolean					
+postgresql	splg_doc_tmp	public	rating	hidden_reason	11	text					
+postgresql	splg_doc_tmp	public	rating	hidden_at	12	timestamp with time zone					
+postgresql	splg_doc_tmp	public	rating	hidden_by_user_id	13	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	repurchase_invitation	invitation_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	repurchase_invitation	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	repurchase_invitation	user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	repurchase_invitation	address_id	4	uuid		FOREIGN KEY	public	user_address	address_id
+postgresql	splg_doc_tmp	public	repurchase_invitation	projected_depletion_at	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	repurchase_invitation	suggested_items	6	jsonb					
+postgresql	splg_doc_tmp	public	repurchase_invitation	status	7	USER-DEFINED					
+postgresql	splg_doc_tmp	public	repurchase_invitation	expires_at	8	timestamp with time zone					
+postgresql	splg_doc_tmp	public	repurchase_invitation	responded_at	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	repurchase_invitation	order_id	10	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	repurchase_invitation	created_at	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	role	role_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	role	type	2	text					
+postgresql	splg_doc_tmp	public	role	createdAt	3	timestamp with time zone					
+postgresql	splg_doc_tmp	public	role	updatedAt	4	timestamp with time zone					
+postgresql	splg_doc_tmp	public	role	deletedAt	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	route_batch	batch_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	route_batch	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	route_batch	status	3	USER-DEFINED					
+postgresql	splg_doc_tmp	public	route_batch	total_weight_kg	4	numeric					
+postgresql	splg_doc_tmp	public	route_batch	delivery_id	5	uuid		FOREIGN KEY	public	delivery	delivery_id
+postgresql	splg_doc_tmp	public	route_batch	created_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	route_batch_offer	offer_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	route_batch_offer	batch_id	2	uuid		FOREIGN KEY	public	route_batch	batch_id
+postgresql	splg_doc_tmp	public	route_batch_offer	delivery_id	3	uuid		FOREIGN KEY	public	delivery	delivery_id
+postgresql	splg_doc_tmp	public	route_batch_offer	status	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	route_batch_offer	expires_at	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	route_batch_offer	responded_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	route_batch_stop	stop_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	route_batch_stop	batch_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	route_batch_stop	batch_id	2	uuid		FOREIGN KEY	public	route_batch	batch_id
+postgresql	splg_doc_tmp	public	route_batch_stop	order_id	3	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	route_batch_stop	order_id	3	uuid		FOREIGN KEY	public	order	order_id
+postgresql	splg_doc_tmp	public	route_batch_stop	sequence	4	integer					
+postgresql	splg_doc_tmp	public	stock_adjustment	adjustment_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	stock_adjustment	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	stock_adjustment	number	3	integer					
+postgresql	splg_doc_tmp	public	stock_adjustment	location_id	4	uuid		FOREIGN KEY	public	stock_location	location_id
+postgresql	splg_doc_tmp	public	stock_adjustment	reason	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_adjustment	notes	6	text					
+postgresql	splg_doc_tmp	public	stock_adjustment	batch_id	7	uuid					
+postgresql	splg_doc_tmp	public	stock_adjustment	created_by_user_id	8	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	stock_adjustment	createdAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_adjustment_item	item_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	stock_adjustment_item	adjustment_id	2	uuid		FOREIGN KEY	public	stock_adjustment	adjustment_id
+postgresql	splg_doc_tmp	public	stock_adjustment_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	stock_adjustment_item	condition	4	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_adjustment_item	quantity_delta	5	integer					
+postgresql	splg_doc_tmp	public	stock_balance	balance_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	stock_balance	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	stock_balance	location_id	3	uuid		FOREIGN KEY	public	stock_location	location_id
+postgresql	splg_doc_tmp	public	stock_balance	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	stock_balance	condition	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_balance	quantity	6	integer					
+postgresql	splg_doc_tmp	public	stock_balance	updatedAt	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_location	location_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	stock_location	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	stock_location	kind	3	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_location	warehouse_id	4	uuid		FOREIGN KEY	public	warehouse	warehouse_id
+postgresql	splg_doc_tmp	public	stock_location	car_id	5	uuid		FOREIGN KEY	public	car	car_id
+postgresql	splg_doc_tmp	public	stock_location	createdAt	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_movement	movement_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	stock_movement	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	stock_movement	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	stock_movement	batch_id	4	uuid					
+postgresql	splg_doc_tmp	public	stock_movement	quantity	5	integer					
+postgresql	splg_doc_tmp	public	stock_movement	from_location_id	6	uuid		FOREIGN KEY	public	stock_location	location_id
+postgresql	splg_doc_tmp	public	stock_movement	from_condition	7	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_movement	to_location_id	8	uuid		FOREIGN KEY	public	stock_location	location_id
+postgresql	splg_doc_tmp	public	stock_movement	to_condition	9	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_movement	reason	10	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_movement	reference_type	11	USER-DEFINED					
+postgresql	splg_doc_tmp	public	stock_movement	reference_id	12	uuid					
+postgresql	splg_doc_tmp	public	stock_movement	reversed_movement_id	13	uuid		FOREIGN KEY	public	stock_movement	movement_id
+postgresql	splg_doc_tmp	public	stock_movement	notes	14	character varying	300				
+postgresql	splg_doc_tmp	public	stock_movement	actor_user_id	15	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	stock_movement	occurred_at	16	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_movement	createdAt	17	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_reconciliation_alert	distributor_id	1	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	stock_reconciliation_alert	distributor_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	stock_reconciliation_alert	signature	2	character varying	64				
+postgresql	splg_doc_tmp	public	stock_reconciliation_alert	alerted_at	3	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_threshold	threshold_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	stock_threshold	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	stock_threshold	warehouse_id	3	uuid		FOREIGN KEY	public	warehouse	warehouse_id
+postgresql	splg_doc_tmp	public	stock_threshold	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_doc_tmp	public	stock_threshold	min_full	5	integer					
+postgresql	splg_doc_tmp	public	stock_threshold	alerted_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_threshold	createdAt	7	timestamp with time zone					
+postgresql	splg_doc_tmp	public	stock_threshold	updatedAt	8	timestamp with time zone					
+postgresql	splg_doc_tmp	public	storage_orphan	orphan_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	storage_orphan	storage_key	2	character varying	512	UNIQUE			
+postgresql	splg_doc_tmp	public	storage_orphan	attempts	3	integer					
+postgresql	splg_doc_tmp	public	storage_orphan	last_error	4	text					
+postgresql	splg_doc_tmp	public	storage_orphan	created_at	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	storage_orphan	updated_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	storage_orphan	kind	7	character varying	10				
+postgresql	splg_doc_tmp	public	storage_orphan	status	8	character varying	10				
+postgresql	splg_doc_tmp	public	storage_orphan	next_attempt_at	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	time_slot	time_slot_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	time_slot	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	time_slot	name	3	character varying	50				
+postgresql	splg_doc_tmp	public	time_slot	startTime	4	time without time zone					
+postgresql	splg_doc_tmp	public	time_slot	endTime	5	time without time zone					
+postgresql	splg_doc_tmp	public	time_slot	capacity	6	integer					
+postgresql	splg_doc_tmp	public	time_slot	isActive	7	boolean					
+postgresql	splg_doc_tmp	public	time_slot	createdAt	8	timestamp with time zone					
+postgresql	splg_doc_tmp	public	time_slot	updatedAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	user	user_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	user	role_id	2	uuid		FOREIGN KEY	public	role	role_id
+postgresql	splg_doc_tmp	public	user	firebase_uid	3	character varying		UNIQUE			
+postgresql	splg_doc_tmp	public	user	full_name	4	character varying					
+postgresql	splg_doc_tmp	public	user	selfie	5	character varying					
+postgresql	splg_doc_tmp	public	user	email	6	character varying		UNIQUE			
+postgresql	splg_doc_tmp	public	user	phone_number	7	character varying		UNIQUE			
+postgresql	splg_doc_tmp	public	user	phone_verified	8	boolean					
+postgresql	splg_doc_tmp	public	user	email_verified	9	boolean					
+postgresql	splg_doc_tmp	public	user	blocked	10	boolean					
+postgresql	splg_doc_tmp	public	user	createdAt	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	user	deletedAt	12	timestamp with time zone					
+postgresql	splg_doc_tmp	public	user	photo_key	13	character varying	512				
+postgresql	splg_doc_tmp	public	user_address	address_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	user_address	user_id	2	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	user_address	street	3	character varying	255				
+postgresql	splg_doc_tmp	public	user_address	city	4	character varying	100				
+postgresql	splg_doc_tmp	public	user_address	postalCode	5	character varying	20				
+postgresql	splg_doc_tmp	public	user_address	formattedAddress	6	text					
+postgresql	splg_doc_tmp	public	user_address	isDefault	7	boolean					
+postgresql	splg_doc_tmp	public	user_address	additionalInstructions	8	text					
+postgresql	splg_doc_tmp	public	user_address	createdAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	user_address	updatedAt	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	user_address	deletedAt	11	timestamp with time zone					
+postgresql	splg_doc_tmp	public	user_address	floor	12	character varying	10				
+postgresql	splg_doc_tmp	public	user_address	apartment	13	character varying	10				
+postgresql	splg_doc_tmp	public	user_address	location	14	USER-DEFINED					
+postgresql	splg_doc_tmp	public	user_address	place_id	15	character varying	255				
+postgresql	splg_doc_tmp	public	user_address	geocode_precision	16	USER-DEFINED					
+postgresql	splg_doc_tmp	public	vehicle_assignment	assignment_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	vehicle_assignment	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	vehicle_assignment	car_id	3	uuid		FOREIGN KEY	public	car	car_id
+postgresql	splg_doc_tmp	public	vehicle_assignment	delivery_id	4	uuid		FOREIGN KEY	public	delivery	delivery_id
+postgresql	splg_doc_tmp	public	vehicle_assignment	assigned_at	5	timestamp with time zone					
+postgresql	splg_doc_tmp	public	vehicle_assignment	released_at	6	timestamp with time zone					
+postgresql	splg_doc_tmp	public	vehicle_assignment	assigned_by_user_id	7	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	vehicle_assignment	released_by_user_id	8	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_doc_tmp	public	vehicle_assignment	note	9	text					
+postgresql	splg_doc_tmp	public	vehicle_usage_log	log_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	vehicle_usage_log	car_id	2	uuid		FOREIGN KEY	public	car	car_id
+postgresql	splg_doc_tmp	public	vehicle_usage_log	car_id	2	uuid		UNIQUE			
+postgresql	splg_doc_tmp	public	vehicle_usage_log	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	vehicle_usage_log	day	4	date		UNIQUE			
+postgresql	splg_doc_tmp	public	vehicle_usage_log	km	5	numeric					
+postgresql	splg_doc_tmp	public	vehicle_usage_log	orders	6	integer					
+postgresql	splg_doc_tmp	public	vehicle_usage_log	route_hours	7	numeric					
+postgresql	splg_doc_tmp	public	warehouse	warehouse_id	1	uuid		PRIMARY KEY			
+postgresql	splg_doc_tmp	public	warehouse	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_doc_tmp	public	warehouse	name	3	character varying	80				
+postgresql	splg_doc_tmp	public	warehouse	code	4	character varying	12				
+postgresql	splg_doc_tmp	public	warehouse	kind	5	USER-DEFINED					
+postgresql	splg_doc_tmp	public	warehouse	address	6	text					
+postgresql	splg_doc_tmp	public	warehouse	is_default	7	boolean					
+postgresql	splg_doc_tmp	public	warehouse	is_active	8	boolean					
+postgresql	splg_doc_tmp	public	warehouse	createdAt	9	timestamp with time zone					
+postgresql	splg_doc_tmp	public	warehouse	updatedAt	10	timestamp with time zone					
+postgresql	splg_doc_tmp	public	warehouse	deletedAt	11	timestamp with time zone					

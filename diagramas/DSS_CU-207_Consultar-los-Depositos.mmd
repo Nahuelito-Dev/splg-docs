@@ -4,7 +4,16 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: consultarDepositos()
+    ADM->>SIS: consultarDepositos(incluirInactivos)
     activate SIS
-    SIS-->>ADM: depósitos de la distribuidora
+    SIS-->>ADM: depósitos con su ubicación de stock
+    deactivate SIS
+
+    ADM->>SIS: consultarDeposito(depositoId)
+    activate SIS
+    alt el depósito existe en la distribuidora
+        SIS-->>ADM: depósito con sus saldos
+    else el depósito no existe, está dado de baja o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
     deactivate SIS

@@ -101,7 +101,8 @@ class Pedido {
   + getFechaDeEntrega(): Fecha
   + getImporteACobrar(esSenia: Booleano): Moneda
   + getIncidencias(): Incidencia[*]
-  + getItems(): ItemPedido[*]
+  + getItems(): Registro
+  + getItemsSinDescuento(): ItemPedido[*]
   + getMetodoDePago(): MetodoDePago
   + getOfertaVigente(chofer: Chofer): OfertaDespacho
   + getPago(identificadorDelPago: Identificador): Pago
@@ -109,7 +110,6 @@ class Pedido {
   + getPuntoDeEntrega(): Coordenada
   + getReceptorDeCalificacion(usuario: Usuario): Usuario
   + getTotal(): Moneda
-  + getVehiculo(): Vehiculo
   + incluirRetiro(envase: Envase)
   + indicarQuienRecibe(nombre: Cadena, documento: Cadena,\n      relacion: Cadena)
   + liberar()

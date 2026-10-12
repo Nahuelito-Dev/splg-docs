@@ -99,10 +99,16 @@ INCLUYE = {
   "SS-08": [("CU-037","CU-041"), ("CU-038","CU-041"),
             ("CU-039","CU-041"), ("CU-040","CU-041"),
             ("CU-210","CU-208"), ("CU-212","CU-208"), ("CU-213","CU-208"),
+            ("CU-038","CU-213"),
             ("CU-212","CU-250"), ("CU-213","CU-250"), ("CU-218","CU-250"), ("CU-220","CU-250"),
             ("CU-222","CU-250"),
-            # depósitos: modificar o dar de baja parte del listado; reactivar parte de los productos inactivos
-            ("CU-259","CU-207"), ("CU-260","CU-207"), ("CU-268","CU-269")],
+            # depósitos: alta, modificación, baja, predeterminado y conteo parten del listado; reactivar parte de los productos inactivos
+            ("CU-258","CU-207"), ("CU-259","CU-207"), ("CU-260","CU-207"), ("CU-273","CU-207"),
+            ("CU-274","CU-207"), ("CU-268","CU-269"),
+            # el conteo inicial y el contraasiento también asientan por el libro; la anulación parte del libro
+            ("CU-274","CU-250"), ("CU-276","CU-250"), ("CU-276","CU-209"),
+            # conciliación: el ajuste y la reaplicación parten de ver la diferencia; la reaplicación repite el descuento
+            ("CU-277","CU-224"), ("CU-278","CU-224"), ("CU-278","CU-220")],
   "SS-09": [("CU-044","CU-045"), ("CU-043","CU-154"), ("CU-103","CU-154")],
   "SS-10": [("CU-054","CU-053"), ("CU-055","CU-053")],
   "SS-11": [("CU-059","CU-057")],
@@ -144,7 +150,7 @@ INCLUYE_EXTERNO = [("CU-031","CU-082"), ("CU-086","CU-082"), ("CU-087","CU-082")
                    ("CU-174","CU-159"), ("CU-175","CU-160"),
                    ("CU-003","CU-177"), ("CU-012","CU-246"), ("CU-013","CU-246"), ("CU-015","CU-246"),
                    ("CU-217","CU-250"), ("CU-012","CU-248"), ("CU-013","CU-248"), ("CU-015","CU-248"),
-                   ("CU-236","CU-005")]
+                   ("CU-236","CU-005"), ("CU-020","CU-220"), ("CU-079","CU-220")]
 
 # base -> incluido factorizado
 INCLUYE_FACTOR = {
@@ -365,7 +371,7 @@ LAMINAS = {}
 LAMINAS["CU_Sistema_Diagrama-Completo"] = uml_lamina.completo(
     casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
     SECUNDARIO, {}, inc, ext, ESP, GEN, LIMITE_TXT, None)
-# El completo en una sola lámina tiene 271 casos y entero no se lee: se parte en seis
+# El completo en una sola lámina tiene 278 casos y entero no se lee: se parte en seis
 # láminas con la misma notación (límite del sistema, subsistemas como paquetes, actores
 # afuera, «include»/«extend»). Juntas son el diagrama completo. Si un caso incluye o
 # extiende a uno de otra lámina, ese otro se dibuja en un paquete gris de referencia

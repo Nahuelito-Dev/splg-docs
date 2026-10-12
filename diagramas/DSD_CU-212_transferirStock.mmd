@@ -2,33 +2,26 @@ sequenceDiagram
     title DSD — CU-212 Transferir Stock entre Depósitos · transferirStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockService
+    participant SRV as :StockTransferUseCase
     participant COL as :Map#lt;String, UbicacionDeStock#gt;
-    participant PRS as :Map#lt;String, Producto#gt;
     participant ORI as ubicacionOrigen:UbicacionDeStock
     participant LED as :StockLedgerService
 
-    ADM->>+SRV: transferirStock(origenId, destinoId, productoId, condicion, cantidad)
+    ADM->>+SRV: transferirStock(origenId, destinoId, items, nota)
     SRV->>+COL: get(origenId)
     COL-->>-SRV: ubicacionOrigen
     SRV->>+COL: get(destinoId)
     COL-->>-SRV: ubicacionDestino
-    SRV->>+PRS: get(productoId)
-    PRS-->>-SRV: producto
-    SRV->>+ORI: esLaMismaQue(ubicacionDestino)
-    ORI-->>-SRV: esLaMisma
-    alt Origen y destino son la misma ubicación
-        SRV-->>ADM: solicitudInvalida
-    else Origen y destino son ubicaciones distintas
-        Note over SRV,LED: Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicion, condicion, cantidad, traslado)
-        alt El origen tiene la cantidad
-            LED-->>SRV: aplicado
-            SRV-->>ADM: aplicado
-        else El origen no tiene la cantidad
-            LED-->>SRV: saldoInsuficiente
-            SRV-->>ADM: saldoInsuficiente
-        end
-        deactivate LED
+    SRV->>+ORI: validarTransferenciaA(ubicacionDestino)
+    ORI-->>-SRV: transferenciaValida
+    Note over SRV,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de cada renglón, todos con el mismo lote,<br/>y mueve el saldo de cada ubicación
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, items, traslado)
+    alt El origen tiene la cantidad de cada renglón
+        LED-->>SRV: lote
+        SRV-->>ADM: lote
+    else El origen no tiene la cantidad de algún renglón
+        LED-->>SRV: saldoInsuficiente
+        SRV-->>ADM: saldoInsuficiente
     end
+    deactivate LED
     deactivate SRV

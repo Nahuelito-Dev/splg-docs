@@ -46,6 +46,11 @@ entity "document_sequence" as e_document_sequence {
   {field} **doc_type** : varchar(40) * <<PK>>
   {field} last_number : integer *
 }
+entity "stock_reconciliation_alert" as e_stock_reconciliation_alert {
+  {field} **distributor_id** : uuid * <<PK>>
+  {field} signature : varchar(64) *
+  {field} alerted_at : timestamptz *
+}
 
 
 legend bottom

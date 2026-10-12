@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-278 Reaplicar las Entregas sin Movimiento de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reaplicarEntregasDeStock()
+    activate SIS
+    alt hay entregas sin movimiento
+        SIS-->>ADM: pedidos revisados, reaplicados y pendientes
+    else no hay entregas sin movimiento
+        SIS-->>ADM: cero revisados
+    end
+    deactivate SIS

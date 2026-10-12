@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-279 Consultar el Resumen de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarResumenDeStock()
+    activate SIS
+    SIS-->>ADM: resumen por tipo de garrafa: depósitos, camiones, reservado, vendible y mínimo
+    deactivate SIS

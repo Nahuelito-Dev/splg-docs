@@ -1,48 +1,42 @@
 sequenceDiagram
-    title DSD — CU-220 Descontar del Camión lo Entregado · descontarStockDeLaEntrega
+    title DSD — CU-220 Descontar del Stock Físico lo Entregado · descontarStockDeLaEntrega
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant LST as :StockDeliveryListener
-    participant COL as :Map#lt;String, Pedido#gt;
+    participant CTL as :UpdateOrderStatusUseCase
+    participant ENT as :StockDeliveryService
     participant PED as pedido:Pedido
-    participant ITP as item:ItemPedido
     participant VEH as vehiculo:Vehiculo
     participant DIS as distribuidora:Distribuidora
+    participant DEP as deposito:Deposito
     participant LED as :StockLedgerService
 
-    SIS->>+LST: descontarStockDeLaEntrega(pedidoId)
-    LST->>+COL: get(pedidoId)
-    COL-->>-LST: pedido
-    LST->>+LED: existeMovimiento(pedido)
-    LED-->>-LST: existe
-    alt El pedido ya tiene movimientos de stock
-        LST-->>SIS: nadaQueHacer
-    else El pedido todavía no tiene movimientos de stock
-        LST->>+PED: getVehiculo()
-        PED-->>-LST: vehiculo
-        LST->>+VEH: getCargaAbierta()
-        VEH-->>-LST: carga
-        alt El vehículo tiene una carga abierta
-            LST->>+VEH: getUbicacionDeStock()
-            VEH-->>-LST: ubicacionDeStock
-        else El vehículo no tiene una carga abierta
-            LST->>+DIS: getDepositoPredeterminado()
-            DIS-->>-LST: ubicacionDeStock
-        end
-        LST->>PED: getItems()
-        loop Por cada ítem del pedido
-            LST->>+ITP: getProducto()
-            ITP-->>-LST: producto
-            LST->>+ITP: getCantidad()
-            ITP-->>-LST: cantidad
-            Note over LST,LED: Llenas que salen hacia el cliente (destino nula) y vacías que se reciben, una a una:<br/>ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo de la ubicación de origen
-            LST->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, llenas, llenas, cantidad, entrega)
-            alt La ubicación de origen tiene las llenas
-                LED-->>-LST: aplicado
-            else El camión con carga abierta no alcanza lo entregado
-                LED-->>LST: saldoInsuficiente
-                LST-->>SIS: saldoInsuficiente
+    Note over CTL,ENT: Caso incluido desde CU-020, CU-079 y CU-278
+    CTL->>+ENT: registrarEntrega(entrega)
+    ENT->>+PED: getItemsSinDescuento()
+    PED-->>-ENT: itemsSinDescuento
+    alt Todos los ítems ya tienen su movimiento de entrega
+        ENT-->>CTL: nadaQueDescontar
+    else Hay ítems pendientes
+        ENT->>+DIS: getDepositoPredeterminado()
+        DIS-->>-ENT: depositoPredeterminado
+        loop Por cada ítem pendiente, por identificador de garrafa
+            ENT->>+VEH: tieneLlenas(producto, cantidad)
+            VEH-->>-ENT: alcanzaElSaldo
+            alt El camión del pedido tiene las llenas
+                ENT->>ENT: elegirOrigen(ubicacionDelCamion)
+            else El camión no las tiene
+                ENT->>+DEP: tieneLlenas(producto, cantidad)
+                DEP-->>-ENT: alcanzaElSaldo
+                alt El depósito predeterminado las tiene
+                    ENT->>ENT: elegirOrigen(ubicacionDelDeposito)
+                else Ninguno de los dos las tiene
+                    ENT->>ENT: descartarGarrafa(producto)
+                end
             end
         end
+        opt Quedó algún ítem con origen
+            Note over ENT,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de la salida de llenas y el de la entrada de vacías<br/>de cada ítem con origen, sin cambiar el stock vendible
+            ENT->>+LED: aplicar(movimientos)
+            LED-->>-ENT: lote
+        end
     end
-    deactivate LST
+    deactivate ENT

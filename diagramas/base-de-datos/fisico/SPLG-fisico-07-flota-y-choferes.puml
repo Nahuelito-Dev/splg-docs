@@ -64,6 +64,7 @@ entity "car" as e_car {
   {field} odometer_km : integer
   {field} fleet_status : fleet_status_enum *
   {field} in_service_since : timestamptz
+  {field} photo_key : varchar(512)
   {field} <color:#1F5E8C>vehicle_type : vehicle_type_enum <<propuesto>></color>
   {field} <color:#1F5E8C>fuel_type : fuel_type_enum <<propuesto>></color>
   {field} <color:#1F5E8C>tank_capacity_liters : numeric(6,2) <<propuesto>></color>

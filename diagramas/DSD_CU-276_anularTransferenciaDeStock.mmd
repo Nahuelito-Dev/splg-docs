@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSD — CU-276 Anular una Transferencia de Stock · anularTransferenciaDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReverseBatchUseCase
+    participant LIB as :List#lt;MovimientoDeStock#gt;
+    participant MOV as movimiento:MovimientoDeStock
+    participant LED as :StockLedgerService
+
+    ADM->>+SRV: anularTransferenciaDeStock(loteId, nota)
+    SRV->>+LIB: getLote(loteId)
+    LIB-->>-SRV: movimiento
+    SRV->>+MOV: validarEsDeTransferencia()
+    MOV-->>-SRV: esUnaTransferencia
+    Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock inverso de cada original, con la referencia al que corrige
+    SRV->>+LED: contraasentar(loteId, nota)
+    alt El lote no se contraasentó y las garrafas siguen en el destino
+        LED-->>SRV: lote del contraasiento
+        SRV-->>ADM: lote del contraasiento
+    else El lote ya se contraasentó, o las garrafas ya no están donde estaban
+        LED-->>SRV: conflicto
+        SRV-->>ADM: conflicto
+    end
+    deactivate LED
+    deactivate SRV

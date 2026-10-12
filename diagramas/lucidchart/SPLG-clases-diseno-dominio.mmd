@@ -12,6 +12,7 @@ classDiagram
         + «create» Distribuidora(nombre: Cadena, identificadorCorto: Cadena, razonSocial: Cadena, cuit: Cadena, correo: Cadena, telefono: Cadena, logo: Archivo, plan: Cadena)
         + assertDocumentoYCuilDisponibles(datos: Registro, empleado: Empleado)
         + assertNombreDePuestoDisponible(nombre: Cadena, puesto: PuestoDeTrabajo)
+        + cambiarPredeterminado(depositoElegido: Deposito): Deposito
         + crearCaja(nombre: Cadena, tipoDeCaja: TipoDeCaja, requiereSesion: Booleano): Caja
         + crearCategoriaDeCaja(nombre: Cadena, sentido: SentidoDeCaja): CategoriaDeCaja
         + crearConfiguracion(proceso: ProcesoConfigurable, parametros: Registro, administrador: Administrador): ConfiguracionModulo
@@ -27,14 +28,16 @@ classDiagram
         + getChoferesActivos(pagina: Entero, limite: Entero): Chofer[*]
         + getConfiguracion(proceso: ProcesoConfigurable): ConfiguracionModulo
         + getDeposito(depositoId: Identificador): Deposito
-        + getDepositoPredeterminado(): UbicacionDeStock
-        + getDepositos(): Deposito[*]
+        + getDepositoPredeterminado(): Deposito
+        + getDepositos(incluirInactivos: Booleano): Deposito[*]
         + getFranjasActivas(): FranjaHoraria[*]
         + getProductosActivos(pagina: Entero, limite: Entero, out total: Entero): Producto[*]
         + getProductosDisponibles(): Producto[*]
         + getProveedor(proveedorId: Identificador): Proveedor
         + getProveedores(): Proveedor[*]
         + getPuestos(): PuestoDeTrabajo[*]
+        + getUbicacionesDeStock(): UbicacionDeStock[*]
+        + getUbicacionPredeterminada(): UbicacionDeStock
         + getZonaQueCubre(latitud: Decimal, longitud: Decimal): ZonaCobertura
         + getZonas(): ZonaCobertura[*]
         + habilitarCuentaCorriente(cliente: Cliente, razonSocial: Cadena, cuit: Cadena, condicionFiscal: CondicionFiscal, limiteDeCredito: Moneda, plazoEnDias: Entero): CuentaCorriente
@@ -195,12 +198,13 @@ classDiagram
         + «create» Producto(distribuidora: Distribuidora, tipo: Cadena, peso: Decimal, precio: Moneda, stockInicial: Entero, descripcion: Cadena)
         + actualizarPrecio(precio: Moneda)
         + agregarPromocion(cantidad: Entero, descuento: Decimal)
-        + ajustarStock(variacion: Entero): Booleano
+        + ajustarStock(diferenciaDeLlenas: Entero)
+        + bloquearCompartido()
         + calcularDiferencia(llenasFisicas: Entero, reservado: Entero): Entero
+        + conciliarVendible(diferenciaEsperada: Entero): Entero
         + desactivar()
         + estaDisponibleEn(distribuidoraId: Identificador): Booleano
         + getPrecio(): Moneda
-        + getStock(): Entero
         + precioPara(cantidad: Entero): Moneda
         + reactivar()
         + recalcularCostoPromedio(llenasRecibidas: Entero, costoUnitario: Moneda)
@@ -209,8 +213,8 @@ classDiagram
         + restarStock(cantidad: Entero): Booleano
         + restituir(cantidad: Entero)
         + sumarStock(llenasRecibidas: Entero)
+        + validarHayDiferencia()
         + validarSinRepetir(promociones: Promocion[*])
-        + validarStockResultante(variacion: Entero)
     }
 
     class Promocion {
@@ -347,7 +351,8 @@ classDiagram
         + getFechaDeEntrega(): Fecha
         + getImporteACobrar(esSenia: Booleano): Moneda
         + getIncidencias(): Incidencia[*]
-        + getItems(): ItemPedido[*]
+        + getItems(): Registro
+        + getItemsSinDescuento(): ItemPedido[*]
         + getMetodoDePago(): MetodoDePago
         + getOfertaVigente(chofer: Chofer): OfertaDespacho
         + getPago(identificadorDelPago: Identificador): Pago
@@ -355,7 +360,6 @@ classDiagram
         + getPuntoDeEntrega(): Coordenada
         + getReceptorDeCalificacion(usuario: Usuario): Usuario
         + getTotal(): Moneda
-        + getVehiculo(): Vehiculo
         + incluirRetiro(envase: Envase)
         + indicarQuienRecibe(nombre: Cadena, documento: Cadena, relacion: Cadena)
         + liberar()
@@ -555,7 +559,6 @@ classDiagram
         + getCostoTotal(fechaDesde: Fecha, fechaHasta: Fecha): Registro
         + getHistorialDeChoferes(pagina: Entero): AsignacionVehiculo[*]
         + getKilometrosRecorridos(fechaDesde: Fecha, fechaHasta: Fecha): Entero
-        + getUbicacionDeStock(): UbicacionDeStock
         + ponerFueraDeServicio()
         + proyectarVencimientos(): TareaMantenimiento[*]
         + reactivar()
@@ -563,6 +566,7 @@ classDiagram
         + registrarCarga(datos: Registro): CargaCombustible
         + registrarMulta(datos: Registro, empleado: Empleado): MultaTransito
         + registrarSiniestro(datos: Registro): Siniestro
+        + tieneLlenas(producto: Producto, cantidad: Entero): Booleano
         + validarSinCargaAbierta()
     }
 
@@ -901,18 +905,25 @@ classDiagram
         - activo: Booleano
         + «create» Deposito(nombre: Cadena, codigo: Cadena, tipo: Cadena, direccion: Cadena)
         + actualizar(datos: Registro): Deposito
+        + bloquearCompartido()
         + darDeBaja()
         + estaActivo(): Booleano
         + fijarMinimo(producto: Producto, minimoDeLlenas: Entero)
-        + getDistribuidora(): Distribuidora
-        + getLlenas(producto: Producto): Entero
+        + getLlenas(producto: Producto): CondicionDeStock
         + getOrden(ordenId: Identificador): OrdenDeCompra
+        + getUbicacion(): UbicacionDeStock
         + getUbicacionDeStock(): UbicacionDeStock
         + getUmbral(producto: Producto): UmbralDeStock
         + marcarPredeterminado()
+        + quitarPredeterminado(): Booleano
+        + quitarUmbrales()
         + registrarRecepcion(ordenId: Identificador, tipoDeComprobante: TipoDeComprobante, numeroDeComprobante: Cadena, items: Registro, administrador: Administrador): RecepcionDeCompra
+        + tieneLlenas(producto: Producto, cantidad: Entero): Booleano
         + validarCodigoSinUsar(codigo: Cadena)
         + validarCompraSinOrden(proveedorId: Identificador)
+        + validarNoEsElPredeterminado()
+        + validarPuedeDesactivarse(activo: Booleano)
+        + validarSinConteoInicial(): Booleano
         + validarSinSaldo(conSaldo: Booleano)
     }
 
@@ -921,11 +932,14 @@ classDiagram
         + «create» UbicacionDeStock(vehiculo: Vehiculo)
         + «create» UbicacionDeStock(depositoDeStock: Deposito)
         + acreditar(producto: Producto, condicionDestino: CondicionDeStock, cantidad: Entero)
-        + ajustar(motivoDeAjuste: MotivoDeAjuste, nota: Cadena, items: Registro, administrador: Administrador): AjusteDeStock
+        + ajustar(motivoConciliacion: MotivoDeAjuste, nota: Cadena, correccionDeVendible: Entero, administrador: Administrador): AjusteDeStock
+        + ajustar(motivo: Cadena, nota: Cadena, items: Registro, lote: Identificador, administrador: Administrador): AjusteDeStock
+        + ajustar(motivoConteoInicial: MotivoDeAjuste, nota: Cadena, renglonesDeAjuste: ItemAjusteDeStock[*], lote: Identificador, administrador: Administrador): AjusteDeStock
         + descontar(producto: Producto, condicionOrigen: CondicionDeStock, cantidad: Entero): Booleano
-        + esLaMismaQue(ubicacionDestino: UbicacionDeStock): Booleano
+        + diferenciasContra(items: Registro): ItemAjusteDeStock[*]
         + getSaldos(productoId: Identificador): SaldoDeStock[*]
         + tieneSaldo(): Booleano
+        + validarTransferenciaA(ubicacionDestino: UbicacionDeStock): Booleano
     }
 
     class SaldoDeStock {
@@ -933,7 +947,7 @@ classDiagram
         - cantidad: Entero
         + «create» SaldoDeStock(producto: Producto, condicionDestino: CondicionDeStock, cantidad: Entero)
         + getCantidad(): Entero
-        + restar(cantidad: Entero): Booleano
+        + restar(cantidad: Entero)
         + sumar(cantidad: Entero)
     }
 
@@ -942,9 +956,12 @@ classDiagram
         - condicionDeOrigen: CondicionDeStock
         - condicionDeDestino: CondicionDeStock
         - motivo: MotivoDeMovimiento
+        - documentoDeOrigen: Registro
+        - observacion: Cadena
         - fecha: FechaHora
-        + «create» MovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, condicionOrigen: CondicionDeStock, condicionDestino: CondicionDeStock, cantidad: Entero, motivoDeMovimiento: MotivoDeMovimiento)
-        + getMotivo(): MotivoDeMovimiento
+        + «create» MovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, condicionOrigen: CondicionDeStock, condicionDestino: CondicionDeStock, cantidad: Entero, motivo: Cadena)
+        + getDetalle()
+        + validarEsDeTransferencia(): Booleano
     }
 
     class UmbralDeStock {
@@ -952,8 +969,8 @@ classDiagram
         - avisadoEl: FechaHora
         + «create» UmbralDeStock(producto: Producto, minimoDeLlenas: Entero)
         + actualizar(minimoDeLlenas: Entero)
-        + estaPorDebajoDelMinimo(llenos: Entero): Booleano
-        + getDeposito(): Deposito
+        + estaPorDebajoDelMinimo(): Booleano
+        + getLlenasActuales()
         + limpiarAviso()
         + marcarAvisado(ahora: FechaHora)
     }
@@ -963,15 +980,17 @@ classDiagram
         - motivo: MotivoDeAjuste
         - nota: Cadena
         - fecha: FechaHora
-        + «create» AjusteDeStock(motivoDeAjuste: MotivoDeAjuste, nota: Cadena, administrador: Administrador)
-        + getMotivo(): MotivoDeAjuste
+        + «create» AjusteDeStock(motivoConciliacion: MotivoDeAjuste, nota: Cadena, administrador: Administrador)
+        + «create» AjusteDeStock(motivo: Cadena, nota: Cadena, lote: Identificador, administrador: Administrador)
+        + «create» AjusteDeStock(motivoConteoInicial: MotivoDeAjuste, nota: Cadena, lote: Identificador, administrador: Administrador)
+        + getDetalle()
+        + getRenglones(): ItemAjusteDeStock[*]
     }
 
     class ItemAjusteDeStock {
         - condicion: CondicionDeStock
         - diferencia: Entero
         + «create» ItemAjusteDeStock(producto: Producto, condicionDeStock: CondicionDeStock, diferencia: Entero)
-        + getProducto(): Producto
     }
 
     class CargaDeCamion {
@@ -1389,12 +1408,13 @@ classDiagram
     MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de
     MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en
     Usuario "0..1" -- "0..*" MovimientoDeStock : ejecuta
-    Deposito "1" *--> "0..*" UmbralDeStock : fija
+    Deposito "1" *-- "0..*" UmbralDeStock : fija
     UmbralDeStock "0..*" -- "1" Producto : controla
     UbicacionDeStock "1" --> "0..*" AjusteDeStock : se corrige con
     AjusteDeStock "1" *--> "1..*" ItemAjusteDeStock : contiene
     ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a
     Usuario "1" -- "0..*" AjusteDeStock : registra
+    MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock : corrige a
     Proveedor "1" --> "0..*" OrdenDeCompra : recibe
     OrdenDeCompra "0..*" <-- "1" Deposito : se destina a
     OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra : contiene

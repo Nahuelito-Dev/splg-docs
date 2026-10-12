@@ -30,7 +30,7 @@ classDiagram
         <<interface>>
         + send(verificacionDeCorreo: Registro)
         + send(destinatario: Cadena)
-        + send(administrador: Administrador, detalle: Registro)
+        + send(administrador: Administrador, vencimientos: Registro)
         + send(administradores: Administrador[*], detalle: Registro)
         + send(administrador: Administrador, rendiciones: RendicionChofer[*])
     }

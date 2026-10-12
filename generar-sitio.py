@@ -172,7 +172,7 @@ for _k,(_f,_n,_d) in UMLSIS.items():
     _p = D+"diagramas/uml/"+_f+(".svg" if os.path.exists(D+"diagramas/uml/"+_f+".svg")
                                 and not os.path.exists(D+"diagramas/uml/"+_f+".png") else ".png")
     if os.path.exists(_p): umlsis[_k] = {"img":imagen(_p), "nombre":_n, "descripcion":_d}
-# El completo entero (271 casos en una lámina) no se lee: se muestra en seis láminas,
+# El completo entero (278 casos en una lámina) no se lee: se muestra en seis láminas,
 # que juntas son el diagrama completo, y la vista de conjunto queda al final.
 _lams = sorted(glob.glob(D + "diagramas/uml/CU_Sistema_Completo-Lamina-*.svg"),
                key=lambda r: int(re.search(r'Lamina-(\d+)', r).group(1)))
@@ -192,7 +192,7 @@ import html as _html
 
 # Los codigos que aparecen en el texto se marcan con su color: el subsistema con
 # el mismo tinte que su caja en los diagramas, el caso de uso y el actor con su
-# propia marca. Con 271 casos y 21 subsistemas, encontrar uno en una tabla de
+# propia marca. Con 278 casos y 21 subsistemas, encontrar uno en una tabla de
 # texto plano era leer renglon por renglon.
 def marcar(s):
     s = re.sub(r'\b(SS-\d\d)\b', r'<span class="marca-ss" data-ss="\1">\1</span>', s)

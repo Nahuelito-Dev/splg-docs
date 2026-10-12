@@ -631,10 +631,6 @@ def renderizar(nombres):
 
 
 def main(render=True):
-    for viejo in os.listdir(SAL) if os.path.isdir(SAL) else []:
-        os.remove(SAL + viejo)
-    for viejo in (os.listdir(SAL_LUCID + "clases/") if os.path.isdir(SAL_LUCID + "clases/") else []):
-        os.remove(SAL_LUCID + "clases/" + viejo)
     nombres, indice = [], []
 
     escribir(SAL + "DC_General.puml", vista_general())
@@ -665,6 +661,17 @@ def main(render=True):
     escribir(SAL_LUCID + "SPLG-clases-diseno-dominio.mmd", mmd("Clases de diseño — dominio", todas_dom, [], True))
     for titulo, archivo, propias, refs in vistas_mod:
         escribir(SAL_LUCID + f"clases/SPLG-clases-{archivo}.mmd", mmd(titulo, propias, refs))
+
+    # se borra sólo lo que ya no tiene fuente: nunca una imagen que se vaya a quedar sin regenerar
+    vigentes = set(nombres)
+    for viejo in os.listdir(SAL):
+        if os.path.splitext(viejo)[0] not in vigentes:
+            os.remove(SAL + viejo)
+    vigentes_l = {f"SPLG-clases-{a_}.mmd" for _, a_, _, _ in vistas_mod}
+    if os.path.isdir(SAL_LUCID + "clases/"):
+        for viejo in os.listdir(SAL_LUCID + "clases/"):
+            if viejo not in vigentes_l:
+                os.remove(SAL_LUCID + "clases/" + viejo)
 
     cifras(indice, deps)
     if "--documento" in sys.argv:

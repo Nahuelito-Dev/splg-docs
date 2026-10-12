@@ -1,0 +1,31 @@
+sequenceDiagram
+    title DSD — CU-274 Registrar el Conteo Inicial de un Depósito · registrarConteoInicial
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :InitialCountUseCase
+    participant COL as :Map#lt;String, Deposito#gt;
+    participant DEP as deposito:Deposito
+    participant UBI as ubicacion:UbicacionDeStock
+    participant LED as :StockLedgerService
+
+    ADM->>+SRV: registrarConteoInicial(depositoId, items, nota)
+    SRV->>+COL: get(depositoId)
+    COL-->>-SRV: depositoDeStock
+    SRV->>+DEP: validarSinConteoInicial()
+    DEP-->>-SRV: sinConteoInicial
+    SRV->>+DEP: getUbicacion()
+    DEP-->>-SRV: ubicacionDeStock
+    SRV->>+UBI: diferenciasContra(items)
+    UBI-->>-SRV: renglonesDeAjuste
+    Note over SRV,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de cada renglón y mueve el saldo de la ubicación<br/>y, en las llenas, el stock vendible del Producto
+    SRV->>+LED: aplicar(ubicacionDeStock, renglonesDeAjuste)
+    LED-->>-SRV: lote
+    SRV->>+UBI: ajustar(motivoConteoInicial, nota, renglonesDeAjuste, lote, administrador)
+    create participant AJU as nuevo:AjusteDeStock
+    UBI->>AJU: «create»(motivoConteoInicial, nota, lote, administrador)
+    loop Por cada renglón con diferencia
+        create participant ITM as nuevo:ItemAjusteDeStock
+        AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
+    end
+    UBI-->>-SRV: ajuste
+    SRV-->>-ADM: ajuste

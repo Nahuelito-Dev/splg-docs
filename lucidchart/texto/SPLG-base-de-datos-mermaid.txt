@@ -79,6 +79,19 @@ erDiagram
     ORDER_STATUS_HISTORY }o--|| ORDER : "order_id"
     PAYMENT }o--o| DISTRIBUTOR : "distributor_id"
     PAYMENT }o--|| ORDER : "order_id"
+    PURCHASE_ORDER }o--|| USER : "created_by_user_id"
+    PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
+    PURCHASE_ORDER }o--|| DISTRIBUTOR : "distributor_id"
+    PURCHASE_ORDER }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_ORDER_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    PURCHASE_ORDER_ITEM }o--|| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT }o--|| DISTRIBUTOR : "distributor_id"
+    PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT }o--|| USER : "received_by_user_id"
+    PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
+    PURCHASE_RECEIPT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    PURCHASE_RECEIPT_ITEM }o--|| PURCHASE_RECEIPT : "receipt_id"
     RATING }o--|| DISTRIBUTOR : "distributor_id"
     RATING }o--|| USER : "from_user_id"
     RATING }o--o| USER : "hidden_by_user_id"
@@ -94,6 +107,28 @@ erDiagram
     ROUTE_BATCH_OFFER }o--|| DELIVERY : "delivery_id"
     ROUTE_BATCH_STOP }o--|| ROUTE_BATCH : "batch_id"
     ROUTE_BATCH_STOP }o--|| ORDER : "order_id"
+    STOCK_ADJUSTMENT }o--|| USER : "created_by_user_id"
+    STOCK_ADJUSTMENT }o--|| DISTRIBUTOR : "distributor_id"
+    STOCK_ADJUSTMENT }o--|| STOCK_LOCATION : "location_id"
+    STOCK_ADJUSTMENT_ITEM }o--|| STOCK_ADJUSTMENT : "adjustment_id"
+    STOCK_ADJUSTMENT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    STOCK_BALANCE }o--|| DISTRIBUTOR : "distributor_id"
+    STOCK_BALANCE }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    STOCK_BALANCE }o--|| STOCK_LOCATION : "location_id"
+    STOCK_LOCATION |o--o| CAR : "car_id"
+    STOCK_LOCATION }o--|| DISTRIBUTOR : "distributor_id"
+    STOCK_LOCATION |o--o| WAREHOUSE : "warehouse_id"
+    STOCK_MOVEMENT }o--o| USER : "actor_user_id"
+    STOCK_MOVEMENT }o--|| DISTRIBUTOR : "distributor_id"
+    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "from_location_id"
+    STOCK_MOVEMENT }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    STOCK_MOVEMENT }o--o| STOCK_MOVEMENT : "reversed_movement_id"
+    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "to_location_id"
+    STOCK_RECONCILIATION_ALERT |o--|| DISTRIBUTOR : "distributor_id"
+    STOCK_THRESHOLD }o--|| DISTRIBUTOR : "distributor_id"
+    STOCK_THRESHOLD }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    STOCK_THRESHOLD }o--|| WAREHOUSE : "warehouse_id"
+    SUPPLIER }o--|| DISTRIBUTOR : "distributor_id"
     TIME_SLOT }o--|| DISTRIBUTOR : "distributor_id"
     USER }o--o| ROLE : "role_id"
     USER_ADDRESS }o--|| USER : "user_id"
@@ -104,6 +139,7 @@ erDiagram
     VEHICLE_ASSIGNMENT }o--o| USER : "released_by_user_id"
     VEHICLE_USAGE_LOG }o--|| CAR : "car_id"
     VEHICLE_USAGE_LOG }o--|| DISTRIBUTOR : "distributor_id"
+    WAREHOUSE }o--|| DISTRIBUTOR : "distributor_id"
 
     ADMIN {
         uuid admin_id PK
@@ -182,6 +218,7 @@ erDiagram
         int4 odometer_km "nullable"
         fleet_status_enum fleet_status
         timestamptz in_service_since "nullable"
+        varchar photo_key "nullable"
     }
     CART {
         uuid cart_id PK
@@ -327,6 +364,7 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
         timestamptz deletedAt "nullable"
+        varchar logo_key "nullable"
     }
     DOCUMENT_SEQUENCE {
         uuid distributor_id PK,FK
@@ -364,6 +402,7 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
         timestamptz deletedAt "nullable"
+        varchar photo_key "nullable"
     }
     GAS_CYLINDER {
         uuid gas_cylinder_id PK
@@ -376,6 +415,8 @@ erDiagram
         bool isActive
         timestamptz createdAt
         timestamptz updatedAt
+        varchar photo_key "nullable"
+        numeric average_unit_cost "nullable"
     }
     GAS_CYLINDER_PROMOTION {
         uuid promotion_id PK
@@ -397,6 +438,7 @@ erDiagram
         timestamptz createdAt
         timestamptz resolvedAt "nullable"
         incident_moment_enum moment "nullable"
+        varchar photo_key "nullable"
     }
     JOB_POSITION {
         uuid position_id PK
@@ -512,6 +554,9 @@ erDiagram
         varchar vehicle_patent "nullable"
         varchar vehicle_brand "nullable"
         varchar vehicle_model "nullable"
+        timestamptz payment_confirmed_at "nullable"
+        uuid payment_confirmed_by "nullable"
+        text payment_resolution_note "nullable"
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK
@@ -565,6 +610,66 @@ erDiagram
         jsonb metadata "nullable"
         timestamptz createdAt
         timestamptz updatedAt
+    }
+    PURCHASE_ORDER {
+        uuid purchase_order_id PK
+        uuid distributor_id FK
+        int4 number
+        uuid supplier_id FK
+        uuid destination_warehouse_id FK
+        purchase_order_status_enum status
+        timestamptz issued_at "nullable"
+        date expected_date "nullable"
+        numeric total_amount
+        text cancel_reason "nullable"
+        text notes "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+        text close_reason "nullable"
+    }
+    PURCHASE_ORDER_ITEM {
+        uuid item_id PK
+        uuid purchase_order_id FK
+        uuid gas_cylinder_id FK
+        int4 quantity
+        numeric unit_cost
+        int4 empties_to_exchange
+        int4 received_quantity
+    }
+    PURCHASE_RECEIPT {
+        uuid receipt_id PK
+        uuid distributor_id FK
+        int4 number
+        uuid supplier_id FK
+        uuid purchase_order_id FK "nullable"
+        uuid warehouse_id FK
+        supplier_document_type_enum supplier_document_type
+        varchar supplier_document_number
+        timestamptz received_at
+        uuid received_by_user_id FK
+        numeric total_amount
+        purchase_payment_status_enum payment_status
+        uuid cash_movement_id "nullable"
+        purchase_receipt_status_enum status
+        text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        uuid voided_by_user_id "nullable"
+        uuid batch_id
+        uuid void_batch_id "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    PURCHASE_RECEIPT_ITEM {
+        uuid item_id PK
+        uuid receipt_id FK
+        uuid gas_cylinder_id FK
+        int4 quantity_full
+        int4 quantity_empty_out
+        numeric unit_cost
+        numeric previous_average_cost "nullable"
+        int4 previous_on_hand "nullable"
     }
     RATING {
         uuid rating_id PK
@@ -623,6 +728,75 @@ erDiagram
         uuid order_id FK
         int4 sequence
     }
+    STOCK_ADJUSTMENT {
+        uuid adjustment_id PK
+        uuid distributor_id FK
+        int4 number
+        uuid location_id FK
+        stock_adjustment_reason_enum reason
+        text notes
+        uuid batch_id
+        uuid created_by_user_id FK
+        timestamptz createdAt
+    }
+    STOCK_ADJUSTMENT_ITEM {
+        uuid item_id PK
+        uuid adjustment_id FK
+        uuid gas_cylinder_id FK
+        stock_condition_enum condition
+        int4 quantity_delta
+    }
+    STOCK_BALANCE {
+        uuid balance_id PK
+        uuid distributor_id FK
+        uuid location_id FK
+        uuid gas_cylinder_id FK
+        stock_condition_enum condition
+        int4 quantity
+        timestamptz updatedAt
+    }
+    STOCK_LOCATION {
+        uuid location_id PK
+        uuid distributor_id FK
+        stock_location_kind_enum kind
+        uuid warehouse_id FK,UK "nullable"
+        uuid car_id FK,UK "nullable"
+        timestamptz createdAt
+    }
+    STOCK_MOVEMENT {
+        uuid movement_id PK
+        uuid distributor_id FK
+        uuid gas_cylinder_id FK
+        uuid batch_id
+        int4 quantity
+        uuid from_location_id FK "nullable"
+        stock_condition_enum from_condition "nullable"
+        uuid to_location_id FK "nullable"
+        stock_condition_enum to_condition "nullable"
+        stock_movement_reason_enum reason
+        stock_movement_reference_type_enum reference_type
+        uuid reference_id "nullable"
+        uuid reversed_movement_id FK "nullable"
+        varchar notes "nullable"
+        uuid actor_user_id FK "nullable"
+        timestamptz occurred_at
+        timestamptz createdAt
+    }
+    STOCK_RECONCILIATION_ALERT {
+        uuid distributor_id PK,FK
+        varchar signature
+        timestamptz alerted_at
+    }
+    STOCK_THRESHOLD {
+        uuid threshold_id PK
+        uuid distributor_id FK
+        uuid warehouse_id FK
+        uuid gas_cylinder_id FK
+        int4 min_full
+        timestamptz alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
     STORAGE_ORPHAN {
         uuid orphan_id PK
         varchar storage_key UK
@@ -633,6 +807,22 @@ erDiagram
         varchar kind
         varchar status
         timestamptz next_attempt_at
+    }
+    SUPPLIER {
+        uuid supplier_id PK
+        uuid distributor_id FK
+        varchar business_name
+        varchar cuit
+        supplier_kind_enum kind
+        varchar contact_name "nullable"
+        varchar phone "nullable"
+        varchar email "nullable"
+        text address "nullable"
+        int4 payment_terms_days "nullable"
+        bool is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
     }
     TIME_SLOT {
         uuid time_slot_id PK
@@ -658,6 +848,7 @@ erDiagram
         bool blocked
         timestamptz createdAt
         timestamptz deletedAt "nullable"
+        varchar photo_key "nullable"
     }
     USER_ADDRESS {
         uuid address_id PK
@@ -696,4 +887,17 @@ erDiagram
         numeric km
         int4 orders
         numeric route_hours
+    }
+    WAREHOUSE {
+        uuid warehouse_id PK
+        uuid distributor_id FK
+        varchar name
+        varchar code
+        warehouse_kind_enum kind
+        text address "nullable"
+        bool is_default
+        bool is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
     }

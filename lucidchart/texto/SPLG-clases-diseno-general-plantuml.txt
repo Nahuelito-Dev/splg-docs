@@ -244,12 +244,13 @@ SaldoDeStock "0..*" -- "1" Producto
 MovimientoDeStock "0..*" -- "1" Producto
 MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de
 MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en
-Deposito "1" *--> "0..*" UmbralDeStock
+Deposito "1" *-- "0..*" UmbralDeStock
 UmbralDeStock "0..*" -- "1" Producto
 UbicacionDeStock "1" --> "0..*" AjusteDeStock
 AjusteDeStock "1" *--> "1..*" ItemAjusteDeStock
 ItemAjusteDeStock "0..*" -- "1" Producto
 Usuario "1" -- "0..*" AjusteDeStock
+MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock
 Proveedor "1" --> "0..*" OrdenDeCompra
 OrdenDeCompra "0..*" <-- "1" Deposito
 OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra

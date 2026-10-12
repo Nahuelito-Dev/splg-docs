@@ -106,6 +106,7 @@ class "List<Pedido>" as List_Pedido <<colección>> {
   + contarPorEstado(distribuidoraId: Identificador): Registro
   + entregadosEntre(fechaDesde: Fecha,\n      fechaHasta: Fecha): Pedido[*]
   + getEnEfectivoSinRendir(chofer: Chofer,\n      hoy: Fecha): Pedido[*]
+  + getEntregados(): Pedido[*]
   + getEntregadosSinMovimiento(): Pedido[*]
   + getReservado(producto: Producto): Entero
   + getUltimoEntregado(cliente: Cliente,\n      distribuidoraId: Identificador): Fecha
@@ -130,6 +131,7 @@ class Producto <<referencia>>
 class ZonaCobertura <<referencia>>
 class Envase <<referencia>>
 class Pago <<referencia>>
+class StockDeliveryService <<referencia>>
 class UbicacionGPS <<referencia>>
 
 Map_String_Pedido "1" o--> "0..*" Pedido
@@ -164,6 +166,7 @@ UpdateOrderStatusUseCase ..> Chofer
 UpdateOrderStatusUseCase ..> Envase
 UpdateOrderStatusUseCase ..> Pago
 UpdateOrderStatusUseCase ..> Pedido
+UpdateOrderStatusUseCase ..> StockDeliveryService
 UpdateOrderStatusUseCase ..> UbicacionGPS
 
 legend bottom right

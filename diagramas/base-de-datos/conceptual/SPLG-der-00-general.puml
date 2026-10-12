@@ -85,13 +85,13 @@ entity MovimientoNeumatico <<propuesto>>
 entity Reclamo
 entity Incidencia
 entity Calificacion
-entity Deposito <<propuesto>>
-entity UbicacionDeStock <<propuesto>>
-entity SaldoDeStock <<propuesto>>
-entity MovimientoDeStock <<propuesto>>
-entity UmbralDeStock <<propuesto>>
-entity AjusteDeStock <<propuesto>>
-entity ItemAjusteDeStock <<propuesto>>
+entity Deposito
+entity UbicacionDeStock
+entity SaldoDeStock
+entity MovimientoDeStock
+entity UmbralDeStock
+entity AjusteDeStock
+entity ItemAjusteDeStock
 entity CargaDeCamion <<propuesto>>
 entity ItemCarga <<propuesto>>
 entity Proveedor <<propuesto>>
@@ -142,8 +142,8 @@ Producto ||--o{ Promocion : ofrece >
 Distribuidora ||--o{ ConfiguracionModulo : parametriza >
 Proveedor ||--o{ OrdenDeCompra : recibe >
 OrdenDeCompra }o--|| Deposito : se destina a >
-Deposito ||--o{ UmbralDeStock : fija >
 UmbralDeStock }o--|| Producto : controla >
+Deposito ||--o{ UmbralDeStock : fija >
 Cliente ||--o{ DireccionEntrega : registra >
 Auditoria ||--o{ DetalleAuditoria : detalla con >
 Carrito ||--o{ ItemCarrito : contiene >
@@ -175,8 +175,8 @@ Proveedor ||--o{ RecepcionDeCompra : entrega >
 OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
 RecepcionDeCompra }o--|| Deposito : ingresa en >
 Chofer |o--o{ LoteRecorrido : acepta >
-Deposito ||--o| UbicacionDeStock : se registra como {xor} >
 Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
+Deposito ||--o| UbicacionDeStock : se registra como {xor} >
 Distribuidora ||--o{ Neumatico : posee >
 Vehiculo |o--o{ Neumatico : monta >
 Vehiculo ||--o{ MultaTransito : acumula >
@@ -221,10 +221,11 @@ OfertaLote }o--|| Chofer : se dirige a >
 LoteRecorrido ||--|{ ParadaLote : se compone de >
 ParadaLote }o--|| Pedido : atiende >
 UbicacionDeStock ||--o{ AjusteDeStock : se corrige con >
-UbicacionDeStock ||--o{ SaldoDeStock : acumula >
 SaldoDeStock }o--|| Producto : corresponde a >
-MovimientoDeStock }o--|| Producto : corresponde a >
+UbicacionDeStock ||--o{ SaldoDeStock : acumula >
 MovimientoDeStock }o--o| UbicacionDeStock : sale de >
+MovimientoDeStock }o--|| Producto : corresponde a >
+MovimientoDeStock |o--o| MovimientoDeStock : corrige a >
 MovimientoDeStock }o--o| UbicacionDeStock : entra en >
 Neumatico ||--o{ MovimientoNeumatico : registra >
 MovimientoNeumatico }o--o| Vehiculo : ocurre en >

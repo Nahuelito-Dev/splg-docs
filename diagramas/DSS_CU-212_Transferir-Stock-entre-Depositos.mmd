@@ -4,15 +4,15 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: transferirStock(origenId, destinoId, productoId, condicion, cantidad)
+    ADM->>SIS: transferirStock(origenId, destinoId, items, nota)
     activate SIS
-    alt el origen tiene la cantidad
+    alt las dos ubicaciones existen y son distintas, y el origen tiene lo indicado
         SIS-->>ADM: transferencia registrada, con su lote
-    else el origen no tiene la cantidad
+    else el origen no tiene la cantidad de algún renglón
         SIS-->>ADM: solicitud inválida, con el saldo disponible
-    else origen y destino son la misma ubicación
+    else origen y destino son la misma ubicación, dos camiones o un renglón repetido
         SIS-->>ADM: solicitud inválida
-    else una ubicación no existe
+    else una ubicación o una garrafa no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS

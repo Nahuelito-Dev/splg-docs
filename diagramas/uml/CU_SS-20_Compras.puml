@@ -48,7 +48,7 @@ rectangle "SS-20 Compras" {
 }
 
 rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
-  usecase "CU-250\nAplicar un Movimiento de Stock\n(SS-08)" as U250 <<planificado>> #back:FFFFFF;line:6B7683
+  usecase "CU-250\nAplicar un Movimiento de Stock\n(SS-08)" as U250 #back:FFFFFF;line:6B7683
 }
 
 A03 -[#8C4A9E]- U214

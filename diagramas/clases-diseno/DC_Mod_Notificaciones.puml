@@ -81,7 +81,7 @@ class EmailService <<fachada>> {
 interface EmailSenderPort <<puerto>> {
   + send(verificacionDeCorreo: Registro)
   + send(destinatario: Cadena)
-  + send(administrador: Administrador, detalle: Registro)
+  + send(administrador: Administrador, vencimientos: Registro)
   + send(administradores: Administrador[*], detalle: Registro)
   + send(administrador: Administrador,\n      rendiciones: RendicionChofer[*])
 }

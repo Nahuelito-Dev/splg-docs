@@ -442,6 +442,16 @@
     "nombre": "inServiceSince",
     "tipo": "Date",
     "nulo": true
+   },
+   {
+    "nombre": "photoKey",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoSignedUrl",
+    "tipo": "string",
+    "nulo": true
    }
   ],
   "relaciones": [
@@ -1483,6 +1493,16 @@
     "nulo": true
    },
    {
+    "nombre": "logoKey",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoSignedUrl",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
     "nombre": "status",
     "tipo": "DistributorStatus",
     "nulo": false
@@ -1728,6 +1748,16 @@
    },
    {
     "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoKey",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoSignedUrl",
     "tipo": "string",
     "nulo": true
    },
@@ -2307,6 +2337,16 @@
     "nulo": false
    },
    {
+    "nombre": "photoKey",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoSignedUrl",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
     "nombre": "createdAt",
     "tipo": "Date",
     "nulo": false
@@ -2369,6 +2409,16 @@
    },
    {
     "nombre": "photoUrl",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoKey",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoSignedUrl",
     "tipo": "string",
     "nulo": true
    },
@@ -2725,6 +2775,21 @@
     "nombre": "paymentStatus",
     "tipo": "PaymentStatus",
     "nulo": false
+   },
+   {
+    "nombre": "paymentConfirmedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "paymentConfirmedBy",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "paymentResolutionNote",
+    "tipo": "string",
+    "nulo": true
    },
    {
     "nombre": "totalAmount",
@@ -3343,6 +3408,546 @@
   ],
   "relaciones": []
  },
+ "StockAdjustmentItem": {
+  "kind": "entity",
+  "file": "stock/entities/stock-adjustment-item.entity.ts",
+  "tabla": "stock_adjustment_item",
+  "atributos": [
+   {
+    "nombre": "itemId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "adjustmentId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "condition",
+    "tipo": "StockCondition",
+    "nulo": false
+   },
+   {
+    "nombre": "quantityDelta",
+    "tipo": "number",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "adjustment",
+    "destino": "StockAdjustment",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "StockAdjustment": {
+  "kind": "entity",
+  "file": "stock/entities/stock-adjustment.entity.ts",
+  "tabla": "stock_adjustment",
+  "atributos": [
+   {
+    "nombre": "adjustmentId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "number",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "locationId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "reason",
+    "tipo": "StockAdjustmentReason",
+    "nulo": false
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "batchId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "location",
+    "destino": "StockLocation",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "items",
+    "destino": "StockAdjustmentItem",
+    "tipo": "OneToMany",
+    "nulo": false
+   }
+  ]
+ },
+ "StockBalance": {
+  "kind": "entity",
+  "file": "stock/entities/stock-balance.entity.ts",
+  "tabla": "stock_balance",
+  "atributos": [
+   {
+    "nombre": "balanceId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "locationId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "condition",
+    "tipo": "StockCondition",
+    "nulo": false
+   },
+   {
+    "nombre": "quantity",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "location",
+    "destino": "StockLocation",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "StockLocation": {
+  "kind": "entity",
+  "file": "stock/entities/stock-location.entity.ts",
+  "tabla": "stock_location",
+  "atributos": [
+   {
+    "nombre": "locationId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "kind",
+    "tipo": "StockLocationKind",
+    "nulo": false
+   },
+   {
+    "nombre": "warehouseId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "carId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "warehouse",
+    "destino": "Warehouse",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "car",
+    "destino": "Car",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "StockMovement": {
+  "kind": "entity",
+  "file": "stock/entities/stock-movement.entity.ts",
+  "tabla": "stock_movement",
+  "atributos": [
+   {
+    "nombre": "movementId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "batchId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "quantity",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "fromLocationId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "fromCondition",
+    "tipo": "StockCondition",
+    "nulo": true
+   },
+   {
+    "nombre": "toLocationId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "toCondition",
+    "tipo": "StockCondition",
+    "nulo": true
+   },
+   {
+    "nombre": "reason",
+    "tipo": "StockMovementReason",
+    "nulo": false
+   },
+   {
+    "nombre": "referenceType",
+    "tipo": "StockReferenceType",
+    "nulo": false
+   },
+   {
+    "nombre": "referenceId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "reversedMovementId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "actorUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "occurredAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "fromLocation",
+    "destino": "StockLocation",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "toLocation",
+    "destino": "StockLocation",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "reversedMovement",
+    "destino": "StockMovement",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "actor",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "StockReconciliationAlert": {
+  "kind": "entity",
+  "file": "stock/entities/stock-reconciliation-alert.entity.ts",
+  "tabla": "stock_reconciliation_alert",
+  "atributos": [
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "signature",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "alertedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "StockThreshold": {
+  "kind": "entity",
+  "file": "stock/entities/stock-threshold.entity.ts",
+  "tabla": "stock_threshold",
+  "atributos": [
+   {
+    "nombre": "thresholdId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "warehouseId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "minFull",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "alertedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "warehouse",
+    "destino": "Warehouse",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "Warehouse": {
+  "kind": "entity",
+  "file": "stock/entities/warehouse.entity.ts",
+  "tabla": "warehouse",
+  "atributos": [
+   {
+    "nombre": "warehouseId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "name",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "code",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "kind",
+    "tipo": "WarehouseKind",
+    "nulo": false
+   },
+   {
+    "nombre": "address",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "isDefault",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "isActive",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
  "TimeSlot": {
   "kind": "entity",
   "file": "time-slot/entities/time-slot.entity.ts",
@@ -3529,6 +4134,16 @@
     "nulo": false
    },
    {
+    "nombre": "photoKey",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "photoSignedUrl",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
     "nombre": "email",
     "tipo": "string",
     "nulo": false
@@ -3664,6 +4279,30 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateAdminDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<AdminResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertPuedeAdministrar",
+    "parametros": "id: string, user: AuthenticatedUser, distributorId: string | null",
+    "retorno": "Promise<Admin>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -3759,6 +4398,22 @@
     "nombre": "findAdminByTerm",
     "parametros": "term: string, distributorId: string | null = null",
     "retorno": "Promise<Admin>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateAdminDto, distributorId: string | null",
+    "retorno": "Promise<Admin>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "id: string, distributorId: string | null",
+    "retorno": "Promise<MessageResponseDto>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -4103,6 +4758,14 @@
     "abstracto": false
    },
    {
+    "nombre": "delPedido",
+    "parametros": "orderId: string, base: FindOptionsWhere<Audit>, distributorId: string | null, entity?: string",
+    "retorno": "FindOptionsWhere<Audit>[]",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findOne",
     "parametros": "auditId: string, distributorId: string | null",
     "retorno": "Promise<AuditEntryDto>",
@@ -4372,10 +5035,77 @@
   ],
   "estereotipo": "guard"
  },
+ "CarPhotoService": {
+  "kind": "service",
+  "file": "car/car-photo.service.ts",
+  "metodos": [
+   {
+    "nombre": "firmar",
+    "parametros": "cars: Car | readonly Car[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "subir",
+    "parametros": "id: string, distributorId: string | null, file: Express.Multer.File | undefined",
+    "retorno": "Promise<Car>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "id: string, distributorId: string | null",
+    "retorno": "Promise<Car>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enlace",
+    "parametros": "id: string, distributorId: string | null",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recargar",
+    "parametros": "id: string, distributorId: string | null",
+    "retorno": "Promise<Car>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CarService",
+   "EntityPhotoService"
+  ],
+  "estereotipo": null
+ },
  "CarController": {
   "kind": "controller",
   "file": "car/car.controller.ts",
   "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "car: Car",
+    "retorno": "Promise<CarResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "toDtos",
+    "parametros": "cars: Car[]",
+    "retorno": "Promise<CarResponseDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
    {
     "nombre": "create",
     "parametros": "@Body() createCarDto: CreateCarDto, @CurrentDistributor({ required: true }) distributorId: string",
@@ -4417,6 +5147,30 @@
     "abstracto": false
    },
    {
+    "nombre": "uploadPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<CarResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removePhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<CarResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentDistributor() distributorId: string | null, @Res() res: Response",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "update",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() updateCarDto: UpdateCarDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<CarResponseDto>",
@@ -4434,7 +5188,8 @@
    }
   ],
   "dependencias": [
-   "CarService"
+   "CarService",
+   "CarPhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -4686,6 +5441,14 @@
     "abstracto": false
    },
    {
+    "nombre": "findMine",
+    "parametros": "@Query() query: QueryMyClaimsDto, @Res({ passthrough: true }) res: Response, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<MyClaimResponseDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findOne",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
     "retorno": "Promise<ClaimResponseDto>",
@@ -4758,6 +5521,14 @@
     "visibilidad": "+",
     "estatico": true,
     "abstracto": false
+   },
+   {
+    "nombre": "toMyDto",
+    "parametros": "claim: Claim, photoUrl?: string | null",
+    "retorno": "MyClaimResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
    }
   ],
   "dependencias": [],
@@ -4779,6 +5550,14 @@
     "nombre": "findAll",
     "parametros": "distributorId?: string | null",
     "retorno": "Promise<Claim[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findMine",
+    "parametros": "customerId: string, { limit = 10, offset = 0 }: QueryMyClaimsDto, distributorId?: string | null",
+    "retorno": "Promise<[Claim[], number]>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -5207,6 +5986,14 @@
   "file": "customer/customer.controller.ts",
   "metodos": [
    {
+    "nombre": "aDto",
+    "parametros": "customer: Customer",
+    "retorno": "Promise<CustomerResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findAll",
     "parametros": "@Query() paginationDto: QueryCustomersDto, @Res({ passthrough: true }) res: Response, @CurrentDistributor() distributorId?: string | null",
     "retorno": "Promise<CustomerResponseDto[]>",
@@ -5264,7 +6051,8 @@
    }
   ],
   "dependencias": [
-   "CustomersService"
+   "CustomersService",
+   "UserPhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -5582,7 +6370,7 @@
    },
    {
     "nombre": "onOrderDelivered",
-    "parametros": "orderId: string, distributorId?: string | null",
+    "parametros": "orderId: string, distributorId?: string | null, manager?: EntityManager",
     "retorno": "Promise<number>",
     "visibilidad": "+",
     "estatico": false,
@@ -5617,6 +6405,22 @@
   "kind": "controller",
   "file": "delivery/delivery.controller.ts",
   "metodos": [
+   {
+    "nombre": "aDto",
+    "parametros": "delivery: Delivery",
+    "retorno": "Promise<DeliveryResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aDtos",
+    "parametros": "deliveries: Delivery[]",
+    "retorno": "Promise<DeliveryResponseDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
    {
     "nombre": "findAll",
     "parametros": "@Query() query: QueryDeliveryDto, @Res({ passthrough: true }) res: Response, @CurrentDistributor() distributorId?: string | null",
@@ -5723,7 +6527,8 @@
    }
   ],
   "dependencias": [
-   "DeliveryService"
+   "DeliveryService",
+   "UserPhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -6019,10 +6824,85 @@
   ],
   "estereotipo": null
  },
+ "DistributorLogoService": {
+  "kind": "service",
+  "file": "distributor/distributor-logo.service.ts",
+  "metodos": [
+   {
+    "nombre": "firmar",
+    "parametros": "distribuidoras: Distributor | readonly Distributor[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolver",
+    "parametros": "id: string, alcance: string | null",
+    "retorno": "Promise<Distributor>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "subir",
+    "parametros": "id: string, alcance: string | null, file: Express.Multer.File | undefined",
+    "retorno": "Promise<Distributor>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "id: string, alcance: string | null",
+    "retorno": "Promise<Distributor>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enlace",
+    "parametros": "id: string, alcance: string | null",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recargar",
+    "parametros": "id: string",
+    "retorno": "Promise<Distributor>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DistributorService",
+   "EntityPhotoService"
+  ],
+  "estereotipo": null
+ },
  "DistributorController": {
   "kind": "controller",
   "file": "distributor/distributor.controller.ts",
   "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "d: Distributor",
+    "retorno": "Promise<DistributorResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "alcance",
+    "parametros": "user: AuthenticatedUser, distributorId: string | null",
+    "retorno": null,
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
    {
     "nombre": "create",
     "parametros": "@Body() dto: CreateDistributorDto",
@@ -6064,6 +6944,30 @@
     "abstracto": false
    },
    {
+    "nombre": "uploadLogo",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<DistributorResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removeLogo",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<DistributorResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getLogo",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null, @Res() res: Response",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "remove",
     "parametros": "@Param('id', ParseUUIDPipe) id: string",
     "retorno": "Promise<void>",
@@ -6073,7 +6977,8 @@
    }
   ],
   "dependencias": [
-   "DistributorService"
+   "DistributorService",
+   "DistributorLogoService"
   ],
   "estereotipo": "controller"
  },
@@ -6416,6 +7321,58 @@
   ],
   "estereotipo": "usecase"
  },
+ "EmployeePhotoService": {
+  "kind": "service",
+  "file": "employee/employee-photo.service.ts",
+  "metodos": [
+   {
+    "nombre": "firmar",
+    "parametros": "empleados: Employee | readonly Employee[] | null | undefined",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "subir",
+    "parametros": "id: string, distributorId: string, file: Express.Multer.File | undefined",
+    "retorno": "Promise<EmployeeConPuesto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<EmployeeConPuesto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enlace",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recargar",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<EmployeeConPuesto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "EmployeeService",
+   "DataSource",
+   "EntityPhotoService"
+  ],
+  "estereotipo": null
+ },
  "EmployeeUserRemovedListener": {
   "kind": "listener",
   "file": "employee/employee-user-removed.listener.ts",
@@ -6439,6 +7396,14 @@
   "file": "employee/employee.controller.ts",
   "metodos": [
    {
+    "nombre": "toDto",
+    "parametros": "empleado: EmployeeConPuesto, deliveryId: string | null",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "create",
     "parametros": "@Body() dto: CreateEmployeeDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<EmployeeResponseDto>",
@@ -6458,6 +7423,30 @@
     "nombre": "findOne",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "uploadPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removePhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeeResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentDistributor({ required: true }) distributorId: string, @Res() res: Response",
+    "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -6497,7 +7486,8 @@
   ],
   "dependencias": [
    "EmployeeService",
-   "TerminateEmployeeUseCase"
+   "TerminateEmployeeUseCase",
+   "EmployeePhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -6574,6 +7564,14 @@
     "parametros": "manager: EntityManager, datos: { employeeId: string; userId: string; distributorId: string; rol: RoleType; }",
     "retorno": "Promise<Employee>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pasarFotoAlUsuario",
+    "parametros": "manager: EntityManager, empleado: Employee, userId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -6689,7 +7687,8 @@
    "DocumentSequenceService",
    "DeliveryService",
    "UsersService",
-   "EmployeeRulesRegistry"
+   "EmployeeRulesRegistry",
+   "S3CleanupService"
   ],
   "estereotipo": null
  },
@@ -7774,10 +8773,77 @@
   "dependencias": [],
   "estereotipo": "mapper"
  },
+ "GasCylinderPhotoService": {
+  "kind": "service",
+  "file": "gascylinder/gascylinder-photo.service.ts",
+  "metodos": [
+   {
+    "nombre": "firmar",
+    "parametros": "productos: GasCylinder | readonly GasCylinder[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "subir",
+    "parametros": "id: string, distributorId: string, file: Express.Multer.File | undefined",
+    "retorno": "Promise<GasCylinder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<GasCylinder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enlace",
+    "parametros": "id: string, distributorId: string | null, soloActivos = false",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recargar",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<GasCylinder>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "GasCylinderService",
+   "EntityPhotoService"
+  ],
+  "estereotipo": null
+ },
  "GasCylinderController": {
   "kind": "controller",
   "file": "gascylinder/gascylinder.controller.ts",
   "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "g: GasCylinder",
+    "retorno": "Promise<GasCylinderResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "toDtos",
+    "parametros": "gs: GasCylinder[]",
+    "retorno": "Promise<GasCylinderResponseDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
    {
     "nombre": "create",
     "parametros": "@Body() createGasCylinderDto: CreateGasCylinderDto, @CurrentDistributor({ required: true }) distributorId: string",
@@ -7827,9 +8893,25 @@
     "abstracto": false
    },
    {
-    "nombre": "updateStock",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateStockDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "nombre": "uploadPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<GasCylinderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removePhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<GasCylinderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentDistributor() distributorId: string | null, @Req() req: Request, @Res() res: Response",
+    "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -7844,7 +8926,8 @@
    }
   ],
   "dependencias": [
-   "GasCylinderService"
+   "GasCylinderService",
+   "GasCylinderPhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -7957,6 +9040,14 @@
     "abstracto": false
    },
    {
+    "nombre": "ajustarVendible",
+    "parametros": "manager: EntityManager, distributorId: string, cambios: ReadonlyArray<{ gasCylinderId: string; delta: number }>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "bloquearEnOrden",
     "parametros": "manager: EntityManager, gasCylinderIds: string[]",
     "retorno": "Promise<void>",
@@ -7983,7 +9074,8 @@
   ],
   "dependencias": [
    "Repository",
-   "DistributorService"
+   "DistributorService",
+   "EventEmitter2"
   ],
   "estereotipo": null
  },
@@ -8224,10 +9316,93 @@
   ],
   "estereotipo": null
  },
+ "IncidentPhotoService": {
+  "kind": "service",
+  "file": "incident/incident-photo.service.ts",
+  "metodos": [
+   {
+    "nombre": "firmar",
+    "parametros": "incidencias: Incident | readonly Incident[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargar",
+    "parametros": "id: string, user: AuthenticatedUser, distributorId: string | null",
+    "retorno": "Promise<Incident>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "soloAbierta",
+    "parametros": "estado: unknown",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "subir",
+    "parametros": "id: string, user: AuthenticatedUser, distributorId: string | null, file: Express.Multer.File | undefined",
+    "retorno": "Promise<Incident>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "id: string, user: AuthenticatedUser, distributorId: string | null",
+    "retorno": "Promise<Incident>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enlace",
+    "parametros": "id: string, user: AuthenticatedUser, distributorId: string | null",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recargar",
+    "parametros": "id: string, distributorId: string | null",
+    "retorno": "Promise<Incident>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "IncidentService",
+   "EntityPhotoService"
+  ],
+  "estereotipo": null
+ },
  "IncidentController": {
   "kind": "controller",
   "file": "incident/incident.controller.ts",
   "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "i: Incident",
+    "retorno": "Promise<IncidentResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "toDtos",
+    "parametros": "is: Incident[]",
+    "retorno": "Promise<IncidentResponseDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
    {
     "nombre": "create",
     "parametros": "@Body() dto: CreateIncidentDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
@@ -8246,7 +9421,7 @@
    },
    {
     "nombre": "findByOrder",
-    "parametros": "@Param('orderId', ParseUUIDPipe) orderId: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('orderId', ParseUUIDPipe) orderId: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
     "retorno": "Promise<IncidentResponseDto[]>",
     "visibilidad": "+",
     "estatico": false,
@@ -8275,10 +9450,35 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "uploadPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<IncidentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removePhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<IncidentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null, @Res() res: Response",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
-   "IncidentService"
+   "IncidentService",
+   "IncidentPhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -8362,6 +9562,53 @@
   "dependencias": [
    "Repository",
    "OrderService"
+  ],
+  "estereotipo": null
+ },
+ "UnpaidCashController": {
+  "kind": "controller",
+  "file": "incident/unpaid-cash.controller.ts",
+  "metodos": [
+   {
+    "nombre": "report",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReportUnpaidCashDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<UnpaidCashResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "UnpaidCashService",
+   "IncidentPhotoService"
+  ],
+  "estereotipo": "controller"
+ },
+ "UnpaidCashService": {
+  "kind": "service",
+  "file": "incident/unpaid-cash.service.ts",
+  "metodos": [
+   {
+    "nombre": "report",
+    "parametros": "orderId: string, dto: ReportUnpaidCashDto, driverUserId: string, distributorId: string | null",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "avisarAAdmins",
+    "parametros": "incident: Incident",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "OrderService",
+   "CashCollectionUseCase",
+   "AdminGateway"
   ],
   "estereotipo": null
  },
@@ -8510,6 +9757,56 @@
    "RealtimeDispatchPort",
    "ReleaseOrderUseCase",
    "DispatchOrchestratorService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "CashCollectionUseCase": {
+  "kind": "usecase",
+  "file": "order/application/cash-collection.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "confirmReceived",
+    "parametros": "orderId: string, driverUserId: string",
+    "retorno": "Promise<ResultadoDeCobro>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "markUnpaid",
+    "parametros": "orderId: string, driverUserId: string, dentro: (manager: EntityManager, order: Order) => Promise<T>",
+    "retorno": "Promise<ResultadoDeCobro<T>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolveUnpaid",
+    "parametros": "orderId: string, adminUserId: string, resolution: ResolucionDeImpago, note: string",
+    "retorno": "Promise<ResultadoDeCobro>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "lockPedidoDelChofer",
+    "parametros": "manager: EntityManager, orderId: string, driverUserId: string",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "lock",
+    "parametros": "manager: EntityManager, orderId: string",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
   ],
   "estereotipo": "usecase"
  },
@@ -8902,6 +10199,14 @@
     "abstracto": false
    },
    {
+    "nombre": "rollbackSeguro",
+    "parametros": "queryRunner: QueryRunner",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "handlePendingTarget",
     "parametros": "id: string, deliveryId?: string, role?: RoleType",
     "retorno": "Promise<Order>",
@@ -8928,7 +10233,7 @@
    {
     "nombre": "applyStatusEffects",
     "parametros": "order: Order, status: OrderStatus, previousStatus: OrderStatus, manager: EntityManager, deliveryId?: string",
-    "retorno": "Promise<User | null>",
+    "retorno": "Promise<EfectosDelEstado>",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
@@ -8960,7 +10265,8 @@
    "CylinderLifecyclePort",
    "CancelOrderUseCase",
    "ReleaseOrderUseCase",
-   "FleetDispatchLockService"
+   "FleetDispatchLockService",
+   "StockDeliveryPort"
   ],
   "estereotipo": "usecase"
  },
@@ -9071,7 +10377,7 @@
   "metodos": [
    {
     "nombre": "onOrderDelivered",
-    "parametros": "orderId: string, distributorId?: string | null",
+    "parametros": "orderId: string, distributorId?: string | null, manager?: EntityManager",
     "retorno": "Promise<number>",
     "visibilidad": "+",
     "estatico": false,
@@ -9321,13 +10627,29 @@
   "dependencias": [],
   "estereotipo": "interface"
  },
+ "StockDeliveryPort": {
+  "kind": "port",
+  "file": "order/domain/ports/stock-delivery.port.ts",
+  "metodos": [
+   {
+    "nombre": "onOrderDelivered",
+    "parametros": "manager: EntityManager, entrega: EntregaDePedido",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "interface"
+ },
  "CylinderLifecycleAdapter": {
   "kind": "service",
   "file": "order/infrastructure/cylinder-lifecycle.adapter.ts",
   "metodos": [
    {
     "nombre": "onOrderDelivered",
-    "parametros": "orderId: string, distributorId?: string | null",
+    "parametros": "orderId: string, distributorId?: string | null, manager?: EntityManager",
     "retorno": "Promise<number>",
     "visibilidad": "+",
     "estatico": false,
@@ -9633,6 +10955,30 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "countActiveByCustomer",
+    "parametros": "customerId: string, manager?: EntityManager",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reservedByCylinder",
+    "parametros": "distributorId: string, manager?: EntityManager",
+    "retorno": "Promise<Map<string, number>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "deliveredItemsSince",
+    "parametros": "distributorId: string, desde: Date, manager?: EntityManager",
+    "retorno": "Promise<\n    Array<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -9749,6 +11095,22 @@
     "abstracto": false
    },
    {
+    "nombre": "confirmCashReceived",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolveUnpaid",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: ResolveUnpaidDto, @CurrentDistributor() distributorId: string | null",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "assignDelivery",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Param('deliveryId', ParseUUIDPipe) deliveryId: string, @CurrentDistributor() distributorId: string | null",
     "retorno": null,
@@ -9824,7 +11186,8 @@
   "dependencias": [
    "OrderService",
    "ReservationService",
-   "UpdateOrderUseCase"
+   "UpdateOrderUseCase",
+   "CashCollectionUseCase"
   ],
   "estereotipo": "controller"
  },
@@ -10513,7 +11876,8 @@
    }
   ],
   "dependencias": [
-   "GrantEmployeeAccountUseCase"
+   "GrantEmployeeAccountUseCase",
+   "EmployeePhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -10666,6 +12030,14 @@
     "abstracto": false
    },
    {
+    "nombre": "getCollections",
+    "parametros": "@Query() rango: ReportRangeQueryDto, @CurrentDistributor() distributorId?: string | null",
+    "retorno": "Promise<CobrosDeEfectivoDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "aGranularidadSql",
     "parametros": "granularity?: Granularidad",
     "retorno": "'day' | 'week' | 'month'",
@@ -10711,6 +12083,14 @@
     "nombre": "getSalesEvolution",
     "parametros": "startDate: Date, endDate: Date, granularity: 'day' | 'week' | 'month', distributorId?: string | null",
     "retorno": "Promise<EvolucionDeVentasDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getCollections",
+    "parametros": "startDate: Date, endDate: Date, distributorId?: string | null",
+    "retorno": "Promise<CobrosDeEfectivoDto>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -10878,6 +12258,74 @@
   ],
   "estereotipo": null
  },
+ "EntityPhotoService": {
+  "kind": "service",
+  "file": "s3/entity-photo.service.ts",
+  "metodos": [
+   {
+    "nombre": "validar",
+    "parametros": "file: Express.Multer.File | undefined",
+    "retorno": "ImagenValida",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "destino: DestinoDeFoto, id: string, file: Express.Multer.File | undefined, carpeta: string, verificar?: VerificarFila",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "destino: DestinoDeFoto, id: string, verificar?: VerificarFila",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cambiarClave",
+    "parametros": "destino: DestinoDeFoto, id: string, nueva: string | null, verificar?: VerificarFila",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "urlDe",
+    "parametros": "key: string | null | undefined",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "firmar",
+    "parametros": "items: T | readonly T[] | null | undefined, claveDe: (item: T) => string | null | undefined",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enlace",
+    "parametros": "key: string | null | undefined, externa?: string | null",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "S3Service",
+   "S3CleanupService"
+  ],
+  "estereotipo": null
+ },
  "S3CleanupService": {
   "kind": "service",
   "file": "s3/s3-cleanup.service.ts",
@@ -11003,6 +12451,891 @@
   ],
   "estereotipo": null
  },
+ "CatalogStockAdjustmentUseCase": {
+  "kind": "usecase",
+  "file": "stock/application/catalog-stock-adjustment.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "gasCylinderId: string, quantity: number, distributorId: string, actorUserId: string",
+    "retorno": "Promise<GasCylinder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "mensajeConDondeEstan",
+    "parametros": "error: StockInsuficienteError, gasCylinderId: string, distributorId: string",
+    "retorno": "Promise<BadRequestException>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "GasCylinderService",
+   "WarehouseService",
+   "StockAdjustmentUseCase",
+   "DataSource"
+  ],
+  "estereotipo": "usecase"
+ },
+ "GarrafaCreadaListener": {
+  "kind": "listener",
+  "file": "stock/application/garrafa-creada.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: GarrafaCreadaEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "StockLedgerPort",
+   "WarehouseService"
+  ],
+  "estereotipo": "listener"
+ },
+ "InitialCountUseCase": {
+  "kind": "usecase",
+  "file": "stock/application/initial-count.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "dto: CreateInitialCountDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "StockLocationService",
+   "DocumentSequenceService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "ReapplyDeliveriesUseCase": {
+  "kind": "usecase",
+  "file": "stock/application/reapply-deliveries.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<ResultadoDeReaplicacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "OrderLookupService",
+   "StockDeliveryService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "ReconciliationAdjustmentUseCase": {
+  "kind": "usecase",
+  "file": "stock/application/reconciliation-adjustment.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "dto: CreateReconciliationAdjustmentDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "GasCylinderService",
+   "OrderLookupService",
+   "DocumentSequenceService",
+   "WarehouseService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "ReverseBatchUseCase": {
+  "kind": "usecase",
+  "file": "stock/application/reverse-batch.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "batchId: string, notes: string | undefined, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort"
+  ],
+  "estereotipo": "usecase"
+ },
+ "StockAdjustmentUseCase": {
+  "kind": "usecase",
+  "file": "stock/application/stock-adjustment.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "dto: CreateAdjustmentDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "StockLocationService",
+   "DocumentSequenceService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "StockAdminNotifier": {
+  "kind": "service",
+  "file": "stock/application/stock-admin-notifier.service.ts",
+  "metodos": [
+   {
+    "nombre": "avisar",
+    "parametros": "distributorId: string, subject: string, html: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "AdminService",
+   "EmailSenderPort"
+  ],
+  "estereotipo": null
+ },
+ "StockDeliveryService": {
+  "kind": "service",
+  "file": "stock/application/stock-delivery.service.ts",
+  "metodos": [
+   {
+    "nombre": "onOrderDelivered",
+    "parametros": "manager: EntityManager, entrega: EntregaDePedido",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarEntrega",
+    "parametros": "manager: EntityManager, entrega: EntregaDePedido",
+    "retorno": "Promise<ResultadoDeEntrega>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "intentar",
+    "parametros": "manager: EntityManager, entrega: EntregaDePedido",
+    "retorno": "Promise<ResultadoDeEntrega>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "elegirOrigen",
+    "parametros": "llenas: Map<string, number>, camionId: string | undefined, depositoId: string, gasCylinderId: string, cantidad: number",
+    "retorno": "OrigenDeLaEntrega | null",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "yaRegistrados",
+    "parametros": "manager: EntityManager, orderId: string",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "llenasPorUbicacion",
+    "parametros": "manager: EntityManager, locationIds: string[], gasCylinderIds: string[]",
+    "retorno": "Promise<Map<string, number>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "StockLedgerPort",
+   "StockLocationService",
+   "WarehouseService"
+  ],
+  "estereotipo": null
+ },
+ "StockLedgerService": {
+  "kind": "service",
+  "file": "stock/application/stock-ledger.service.ts",
+  "metodos": [
+   {
+    "nombre": "aplicar",
+    "parametros": "manager: EntityManager, op: OperacionDeStock",
+    "retorno": "Promise<ResultadoDeOperacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contraasentar",
+    "parametros": "manager: EntityManager, args: { distributorId: string; batchId: string; actorUserId: string | null; notes?: string | null; }",
+    "retorno": "Promise<ResultadoDeOperacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearGarrafas",
+    "parametros": "manager: EntityManager, op: OperacionDeStock, ids: string[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargarUbicaciones",
+    "parametros": "manager: EntityManager, op: OperacionDeStock",
+    "retorno": "Promise<Map<string, UbicacionConocida>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargarGarrafas",
+    "parametros": "manager: EntityManager, op: OperacionDeStock",
+    "retorno": "Promise<Map<string, string>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aplicarSaldos",
+    "parametros": "manager: EntityManager, distributorId: string, saldos: DeltaDeSaldo[], ubicaciones: Map<string, UbicacionConocida>, garrafas: Map<string, string>",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "insertarMovimientos",
+    "parametros": "manager: EntityManager, op: OperacionDeStock, batchId: string",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "GasCylinderService"
+  ],
+  "estereotipo": null
+ },
+ "StockLocationService": {
+  "kind": "service",
+  "file": "stock/application/stock-location.service.ts",
+  "metodos": [
+   {
+    "nombre": "resolver",
+    "parametros": "manager: EntityManager, distributorId: string, ref: ReferenciaDeUbicacion",
+    "retorno": "Promise<StockLocation>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ubicacionDeDeposito",
+    "parametros": "manager: EntityManager, distributorId: string, warehouseId: string",
+    "retorno": "Promise<StockLocation>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ubicacionDeVehiculo",
+    "parametros": "manager: EntityManager, distributorId: string, carId: string",
+    "retorno": "Promise<StockLocation>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ubicacionExistenteDeVehiculo",
+    "parametros": "manager: EntityManager, distributorId: string, carId: string",
+    "retorno": "Promise<StockLocation | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "locationId: string, distributorId: string",
+    "retorno": "Promise<StockLocation>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "listar",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<\n    Array<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "CarService"
+  ],
+  "estereotipo": null
+ },
+ "StockQueryService": {
+  "kind": "service",
+  "file": "stock/application/stock-query.service.ts",
+  "metodos": [
+   {
+    "nombre": "saldos",
+    "parametros": "distributorId: string, query: QueryStockBalanceDto",
+    "retorno": "Promise<StockBalanceDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumen",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<StockSummaryDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "movimientos",
+    "parametros": "distributorId: string, query: QueryStockMovementDto",
+    "retorno": "Promise<StockMovementPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "movimientosDelLote",
+    "parametros": "distributorId: string, batchId: string",
+    "retorno": "Promise<StockMovementDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "seleccionarMovimientos",
+    "parametros": "where: string, params: unknown[], paginacion: string, orden = 'm.\"occurred_at\" DESC, m.\"movement_id\" DESC'",
+    "retorno": "Promise<StockMovementDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ajustes",
+    "parametros": "distributorId: string, query: QueryStockAdjustmentDto",
+    "retorno": "Promise<StockAdjustmentPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ajuste",
+    "parametros": "adjustmentId: string, distributorId: string",
+    "retorno": "Promise<StockAdjustmentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargarAjustes",
+    "parametros": "ids: string[], distributorId: string",
+    "retorno": "Promise<StockAdjustmentResponseDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "OrderLookupService"
+  ],
+  "estereotipo": null
+ },
+ "StockReconciliationService": {
+  "kind": "service",
+  "file": "stock/application/stock-reconciliation.service.ts",
+  "metodos": [
+   {
+    "nombre": "conciliar",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<StockReconciliationDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "entregasConMovimiento",
+    "parametros": "manager: DataSource['manager'], distributorId: string, orderIds: string[]",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "OrderLookupService"
+  ],
+  "estereotipo": null
+ },
+ "StockThresholdService": {
+  "kind": "service",
+  "file": "stock/application/stock-threshold.service.ts",
+  "metodos": [
+   {
+    "nombre": "listar",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<StockThresholdDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "upsert",
+    "parametros": "dto: UpsertThresholdsDto, distributorId: string",
+    "retorno": "Promise<StockThresholdDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "StockTransferUseCase": {
+  "kind": "usecase",
+  "file": "stock/application/stock-transfer.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "dto: CreateTransferDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "StockLocationService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "WarehouseSeedListener": {
+  "kind": "listener",
+  "file": "stock/application/warehouse-seed.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: DistribuidoraCreadaEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "WarehouseService"
+  ],
+  "estereotipo": "listener"
+ },
+ "WarehouseService": {
+  "kind": "service",
+  "file": "stock/application/warehouse.service.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "dto: CreateWarehouseDto, distributorId: string",
+    "retorno": "Promise<DepositoConUbicacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryWarehouseDto = {}",
+    "retorno": "Promise<DepositoConUbicacion[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "warehouseId: string, distributorId: string",
+    "retorno": "Promise<DepositoConUbicacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "warehouseId: string, dto: UpdateWarehouseDto, distributorId: string",
+    "retorno": "Promise<DepositoConUbicacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "warehouseId: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarPredeterminado",
+    "parametros": "distributorId: string, manager?: EntityManager",
+    "retorno": "Promise<DepositoConUbicacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "leerPredeterminado",
+    "parametros": "manager: EntityManager, distributorId: string",
+    "retorno": "Promise<DepositoConUbicacion | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "insertar",
+    "parametros": "manager: EntityManager, distributorId: string, datos: Pick<Warehouse, 'name' | 'code' | 'kind' | 'address' | 'isDefault'>",
+    "retorno": "Promise<DepositoConUbicacion>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearPredeterminados",
+    "parametros": "manager: EntityManager, distributorId: string, candidato: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "sacarPredeterminado",
+    "parametros": "manager: EntityManager, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "traducir",
+    "parametros": "error: unknown",
+    "retorno": "never",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "Repository"
+  ],
+  "estereotipo": null
+ },
+ "StockLedgerPort": {
+  "kind": "port",
+  "file": "stock/domain/ports/stock-ledger.port.ts",
+  "metodos": [
+   {
+    "nombre": "aplicar",
+    "parametros": "manager: EntityManager, op: OperacionDeStock",
+    "retorno": "Promise<ResultadoDeOperacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
+    "nombre": "contraasentar",
+    "parametros": "manager: EntityManager, args: { distributorId: string; batchId: string; actorUserId: string | null; notes?: string | null; }",
+    "retorno": "Promise<ResultadoDeOperacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "interface"
+ },
+ "CatalogStockController": {
+  "kind": "controller",
+  "file": "stock/presentation/catalog-stock.controller.ts",
+  "metodos": [
+   {
+    "nombre": "updateStock",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateStockDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<GasCylinderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CatalogStockAdjustmentUseCase",
+   "GasCylinderPhotoService"
+  ],
+  "estereotipo": "controller"
+ },
+ "StockController": {
+  "kind": "controller",
+  "file": "stock/presentation/stock.controller.ts",
+  "metodos": [
+   {
+    "nombre": "saldos",
+    "parametros": "@Query() query: QueryStockBalanceDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockBalanceDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumen",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockSummaryDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ubicaciones",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockLocationDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "movimientos",
+    "parametros": "@Query() query: QueryStockMovementDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockMovementPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contraasentar",
+    "parametros": "@Param('batchId', ParseUUIDPipe) batchId: string, @Body() dto: ReverseBatchDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<StockOperationResultDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "transferir",
+    "parametros": "@Body() dto: CreateTransferDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<StockOperationResultDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conteoInicial",
+    "parametros": "@Body() dto: CreateInitialCountDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<StockAdjustmentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ajustar",
+    "parametros": "@Body() dto: CreateAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<StockAdjustmentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ajustes",
+    "parametros": "@Query() query: QueryStockAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockAdjustmentPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ajuste",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockAdjustmentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "umbrales",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockThresholdDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "configurarUmbrales",
+    "parametros": "@Body() dto: UpsertThresholdsDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockThresholdDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conciliar",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<StockReconciliationDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reaplicar",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<ResultadoDeReaplicacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "corregirVendible",
+    "parametros": "@Body() dto: CreateReconciliationAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<StockAdjustmentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resultado",
+    "parametros": "distributorId: string, batchId: string",
+    "retorno": "Promise<StockOperationResultDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "StockQueryService",
+   "StockLocationService",
+   "StockThresholdService",
+   "StockReconciliationService",
+   "ReapplyDeliveriesUseCase",
+   "StockTransferUseCase",
+   "StockAdjustmentUseCase",
+   "InitialCountUseCase",
+   "ReverseBatchUseCase",
+   "ReconciliationAdjustmentUseCase"
+  ],
+  "estereotipo": "controller"
+ },
+ "WarehouseController": {
+  "kind": "controller",
+  "file": "stock/presentation/warehouse.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryWarehouseDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<WarehouseResponseDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateWarehouseDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<WarehouseResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<WarehouseDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateWarehouseDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<WarehouseResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "WarehouseService",
+   "StockQueryService"
+  ],
+  "estereotipo": "controller"
+ },
+ "WarehouseMapper": {
+  "kind": "mapper",
+  "file": "stock/presentation/warehouse.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "{ warehouse, locationId, }: DepositoConUbicacion",
+    "retorno": "WarehouseResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "toDetailDto",
+    "parametros": "deposito: DepositoConUbicacion, balances: StockBalanceDto[]",
+    "retorno": "WarehouseDetailDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
  "TimeSlotController": {
   "kind": "controller",
   "file": "time-slot/time-slot.controller.ts",
@@ -11017,7 +13350,7 @@
    },
    {
     "nombre": "findAll",
-    "parametros": "@CurrentDistributor() distributorId: string | null, @Query() { distributor }: ListarFranjasQueryDto",
+    "parametros": "@CurrentDistributor() distributorId: string | null, @CurrentUser() user: AuthenticatedUser, @Query() { distributor, includeInactive }: ListarFranjasQueryDto",
     "retorno": "Promise<TimeSlotResponseDto[]>",
     "visibilidad": "+",
     "estatico": false,
@@ -11099,7 +13432,7 @@
    },
    {
     "nombre": "findAll",
-    "parametros": "distributorSlug?: string, distributorId?: string | null",
+    "parametros": "distributorSlug?: string, distributorId?: string | null, includeInactive = false",
     "retorno": "Promise<TimeSlot[]>",
     "visibilidad": "+",
     "estatico": false,
@@ -11398,6 +13731,57 @@
   ],
   "estereotipo": null
  },
+ "UserPhotoService": {
+  "kind": "service",
+  "file": "users/user-photo.service.ts",
+  "metodos": [
+   {
+    "nombre": "firmar",
+    "parametros": "usuarios: User | readonly User[] | null | undefined",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "subir",
+    "parametros": "id: string, file: Express.Multer.File | undefined",
+    "retorno": "Promise<User>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "id: string",
+    "retorno": "Promise<User>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enlace",
+    "parametros": "id: string",
+    "retorno": "Promise<EnlaceDeFoto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recargar",
+    "parametros": "id: string",
+    "retorno": "Promise<User>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "UsersService",
+   "EntityPhotoService"
+  ],
+  "estereotipo": null
+ },
  "UserMapper": {
   "kind": "mapper",
   "file": "users/user.mapper.ts",
@@ -11419,6 +13803,14 @@
   "file": "users/users.controller.ts",
   "metodos": [
    {
+    "nombre": "toDto",
+    "parametros": "user: User",
+    "retorno": "Promise<UserResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findOneByEmail",
     "parametros": "@Param() { email }: EmailParamDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
     "retorno": "Promise<UserResponseDto>",
@@ -11430,6 +13822,62 @@
     "nombre": "findAll",
     "parametros": "@Query() paginationDto: QueryUsersDto, @Res({ passthrough: true }) res: Response, @CurrentDistributor() distributorId: string | null",
     "retorno": "Promise<ListadoDeUsuariosDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "uploadMyPhoto",
+    "parametros": "@UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<UserResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removeMyPhoto",
+    "parametros": "@CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<UserResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getMyPhoto",
+    "parametros": "@Query() query: DownloadQueryDto, @CurrentUser() user: AuthenticatedUser, @Res() res: Response",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removeMe",
+    "parametros": "@CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "uploadPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<UserResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removePhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<UserResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getPhoto",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null, @Res() res: Response",
+    "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -11508,7 +13956,8 @@
    }
   ],
   "dependencias": [
-   "UsersService"
+   "UsersService",
+   "UserPhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -11622,7 +14071,23 @@
    },
    {
     "nombre": "remove",
-    "parametros": "id: string",
+    "parametros": "id: string, opciones: { rechazarConPedidosEnCurso?: boolean } = {}",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarQueQuedaAdministrador",
+    "parametros": "manager: EntityManager, user: User",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "removeOwnAccount",
+    "parametros": "userId: string",
     "retorno": "Promise<MessageResponseDto>",
     "visibilidad": "+",
     "estatico": false,

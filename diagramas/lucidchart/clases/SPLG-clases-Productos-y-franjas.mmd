@@ -7,7 +7,6 @@ classDiagram
     class GasCylinderService {
         <<fachada>>
         + actualizarProducto(productoId: Identificador, datos: Registro): Producto
-        + actualizarStock(productoId: Identificador, variacion: Entero): Producto
         + consultarCatalogo(pagina: Entero, limite: Entero, distribuidora: Cadena, out total: Entero): Producto[*]
         + consultarProducto(productoId: Identificador): Producto
         + consultarProductosDisponibles(distribuidora: Cadena, out mediosDePago: MetodoDePago[*]): Producto[*]
@@ -25,7 +24,7 @@ classDiagram
     class List_Producto["List<Producto>"] {
         <<colección>>
         + buscarInactivos(): Producto[*]
-        + getActivos(): Producto[*]
+        + getTodos(): Producto[*]
     }
 
     class TimeSlotService {

@@ -708,6 +708,23 @@ GLOSARIO.update({
     "vaciasEntregadas": "Entero", "llenasFisicas": "Entero", "vaciasACanjear": "Entero",
     "minimoDeLlenas": "Entero",
 })
+# Stock físico (implementado): nombres propios de sus DSD, sin colisión con otros módulos.
+ALIAS_CLASE.update({"renglonesDeAjuste": "ItemAjusteDeStock", "ubicacionesDeStock": "UbicacionDeStock",
+                    "saldosEnDepositosYVehiculos": "SaldoDeStock", "depositoCreado": "Deposito",
+                    "depositoPredeterminado": "Deposito", "depositoElegido": "Deposito",
+                    "ubicacionPredeterminada": "UbicacionDeStock",
+                    "itemsSinDescuento": "ItemPedido", "ubicacionDelCamion": "UbicacionDeStock",
+                    "ubicacionDelDeposito": "UbicacionDeStock"})
+_PLURALES |= {"renglonesDeAjuste", "ubicacionesDeStock", "saldosEnDepositosYVehiculos",
+              "itemsSinDescuento"}
+GLOSARIO.update({
+    "motivoConteoInicial": "MotivoDeAjuste", "motivoRecuento": "MotivoDeAjuste",
+    "motivoConciliacion": "MotivoDeAjuste", "correccionDeVendible": "Entero", "diferenciaEsperada": "Entero",
+    "minimoDeStock": "Entero", "incluirInactivos": "Booleano", "alcanzaElSaldo": "Booleano",
+    "esUnaTransferencia": "Booleano", "sinConteoInicial": "Booleano", "transferenciaValida": "Booleano",
+    "avisoRepetido": "Booleano", "predeterminadoQuitado": "Booleano", "nadaQueDescontar": "Booleano",
+    "resumenDeReaplicacion": "Registro", "cantidadDeAjustes": "Entero", "cantidadDeMovimientos": "Entero",
+})
 ALIAS_PARAMETRO.update({("Distribuidora", "direccion"): ("direccion", "Cadena"),
                         ("Deposito", "direccion"): ("direccion", "Cadena")})
 
@@ -866,6 +883,7 @@ RETORNO_DE_CONSULTA = {
     ("Incidencia", "getResumen"): "Registro",
     ("Calificacion", "getEstrellas"): "Entero",
     ("Deposito", "getUmbral"): "UmbralDeStock",
+
     ("Deposito", "getOrden"): "OrdenDeCompra",
     ("CargaDeCamion", "getItems"): "ItemCarga[*]",
     ("ItemCarga", "calcularEsperado"): "Entero",

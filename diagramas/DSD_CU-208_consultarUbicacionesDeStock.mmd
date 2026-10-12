@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-208 Consultar el Stock por Ubicación · consultarUbicacionesDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockLocationService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: consultarUbicacionesDeStock()
+    SRV->>+DIS: getUbicacionesDeStock()
+    DIS-->>-SRV: ubicacionesDeStock
+    SRV-->>-ADM: ubicacionesDeStock

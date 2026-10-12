@@ -1,7 +1,7 @@
 -- Modelo completo de SPLG: lo implementado más lo planificado
--- 82 tablas y 220 relaciones.
--- Hoy en la base hay 48 tablas y 105 claves foráneas declaradas;
--- este archivo suma 34 tablas planificadas y 12 columnas nuevas en tablas que ya existen.
+-- 83 tablas y 222 relaciones.
+-- Hoy en la base hay 56 tablas y 127 claves foráneas declaradas;
+-- este archivo suma 27 tablas planificadas y 12 columnas nuevas en tablas que ya existen.
 -- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin defaults ni índices.
 -- Las tablas van en orden de dependencia. Generado por generar-modelo-datos.py.
 
@@ -26,6 +26,7 @@ CREATE TABLE "distributor" (
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   "deletedAt" timestamptz,
+  "logo_key" varchar(512),
   PRIMARY KEY ("distributor_id"),
   UNIQUE ("slug")
 );
@@ -123,6 +124,7 @@ CREATE TABLE "gas_cylinder" (
   "isActive" boolean NOT NULL,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
+  "photo_key" varchar(512),
   "average_unit_cost" numeric(12,2),
   PRIMARY KEY ("gas_cylinder_id"),
   UNIQUE ("distributor_id", "type"),
@@ -157,6 +159,14 @@ CREATE TABLE "maintenance_plan" (
   "document_kind" varchar(32),
   "applies_to_categories" varchar(255),
   PRIMARY KEY ("plan_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "stock_reconciliation_alert" (
+  "distributor_id" uuid NOT NULL,
+  "signature" varchar(64) NOT NULL,
+  "alerted_at" timestamptz NOT NULL,
+  PRIMARY KEY ("distributor_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
@@ -207,6 +217,7 @@ CREATE TABLE "user" (
   "blocked" boolean NOT NULL,
   "createdAt" timestamptz NOT NULL,
   "deletedAt" timestamptz,
+  "photo_key" varchar(512),
   PRIMARY KEY ("user_id"),
   UNIQUE ("phone_number"),
   UNIQUE ("firebase_uid"),
@@ -214,7 +225,6 @@ CREATE TABLE "user" (
   FOREIGN KEY ("role_id") REFERENCES "role" ("role_id")
 );
 
--- tabla propuesta
 CREATE TABLE "warehouse" (
   "warehouse_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -222,7 +232,6 @@ CREATE TABLE "warehouse" (
   "code" varchar(12) NOT NULL,
   "kind" varchar(32) NOT NULL,
   "address" text,
-  "location" varchar(255),
   "is_default" boolean NOT NULL,
   "is_active" boolean NOT NULL,
   "createdAt" timestamptz NOT NULL,
@@ -316,6 +325,7 @@ CREATE TABLE "car" (
   "odometer_km" integer,
   "fleet_status" varchar(32) NOT NULL,
   "in_service_since" timestamptz,
+  "photo_key" varchar(512),
   "vehicle_type" varchar(32),
   "fuel_type" varchar(32),
   "tank_capacity_liters" numeric(6,2),
@@ -447,6 +457,7 @@ CREATE TABLE "employee" (
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   "deletedAt" timestamptz,
+  "photo_key" varchar(512),
   PRIMARY KEY ("employee_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("position_id") REFERENCES "job_position" ("position_id"),
@@ -500,7 +511,6 @@ CREATE TABLE "purchase_order" (
   FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id")
 );
 
--- tabla propuesta
 CREATE TABLE "stock_threshold" (
   "threshold_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -508,11 +518,13 @@ CREATE TABLE "stock_threshold" (
   "gas_cylinder_id" uuid NOT NULL,
   "min_full" integer NOT NULL,
   "alerted_at" timestamptz,
+  "createdAt" timestamptz NOT NULL,
+  "updatedAt" timestamptz NOT NULL,
   PRIMARY KEY ("threshold_id"),
   UNIQUE ("warehouse_id", "gas_cylinder_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
-  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id") ON DELETE CASCADE,
-  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id")
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id")
 );
 
 CREATE TABLE "user_address" (
@@ -747,6 +759,9 @@ CREATE TABLE "order" (
   "vehicle_patent" varchar(20),
   "vehicle_brand" varchar(50),
   "vehicle_model" varchar(50),
+  "payment_confirmed_at" timestamptz,
+  "payment_confirmed_by" uuid,
+  "payment_resolution_note" text,
   "express_surcharge_amount" numeric(12,2) NOT NULL,
   PRIMARY KEY ("order_id"),
   FOREIGN KEY ("address_id") REFERENCES "user_address" ("address_id"),
@@ -813,19 +828,19 @@ CREATE TABLE "route_batch" (
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
--- tabla propuesta
 CREATE TABLE "stock_location" (
   "location_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
   "kind" varchar(32) NOT NULL,
   "warehouse_id" uuid,
   "car_id" uuid,
+  "createdAt" timestamptz NOT NULL,
   PRIMARY KEY ("location_id"),
-  UNIQUE ("warehouse_id"),
   UNIQUE ("car_id"),
+  UNIQUE ("warehouse_id"),
+  FOREIGN KEY ("car_id") REFERENCES "car" ("car_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
-  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id") ON DELETE CASCADE,
-  FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE CASCADE
+  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id")
 );
 
 -- tabla propuesta
@@ -1047,6 +1062,7 @@ CREATE TABLE "incident" (
   "createdAt" timestamptz NOT NULL,
   "resolvedAt" timestamptz,
   "moment" varchar(32),
+  "photo_key" varchar(512),
   PRIMARY KEY ("incident_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE,
@@ -1239,7 +1255,6 @@ CREATE TABLE "route_batch_stop" (
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE
 );
 
--- tabla propuesta
 CREATE TABLE "stock_adjustment" (
   "adjustment_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -1247,16 +1262,16 @@ CREATE TABLE "stock_adjustment" (
   "location_id" uuid NOT NULL,
   "reason" varchar(32) NOT NULL,
   "notes" text NOT NULL,
+  "batch_id" uuid NOT NULL,
   "created_by_user_id" uuid NOT NULL,
   "createdAt" timestamptz NOT NULL,
   PRIMARY KEY ("adjustment_id"),
   UNIQUE ("distributor_id", "number"),
+  FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
-  FOREIGN KEY ("location_id") REFERENCES "stock_location" ("location_id"),
-  FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id")
+  FOREIGN KEY ("location_id") REFERENCES "stock_location" ("location_id")
 );
 
--- tabla propuesta
 CREATE TABLE "stock_balance" (
   "balance_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -1268,11 +1283,10 @@ CREATE TABLE "stock_balance" (
   PRIMARY KEY ("balance_id"),
   UNIQUE ("location_id", "gas_cylinder_id", "condition"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
-  FOREIGN KEY ("location_id") REFERENCES "stock_location" ("location_id") ON DELETE CASCADE,
-  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id")
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("location_id") REFERENCES "stock_location" ("location_id")
 );
 
--- tabla propuesta
 CREATE TABLE "stock_movement" (
   "movement_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -1286,15 +1300,18 @@ CREATE TABLE "stock_movement" (
   "reason" varchar(32) NOT NULL,
   "reference_type" varchar(32) NOT NULL,
   "reference_id" uuid,
+  "reversed_movement_id" uuid,
+  "notes" varchar(300),
   "actor_user_id" uuid,
   "occurred_at" timestamptz NOT NULL,
   "createdAt" timestamptz NOT NULL,
   PRIMARY KEY ("movement_id"),
+  FOREIGN KEY ("actor_user_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
-  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
   FOREIGN KEY ("from_location_id") REFERENCES "stock_location" ("location_id"),
-  FOREIGN KEY ("to_location_id") REFERENCES "stock_location" ("location_id"),
-  FOREIGN KEY ("actor_user_id") REFERENCES "user" ("user_id")
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("reversed_movement_id") REFERENCES "stock_movement" ("movement_id"),
+  FOREIGN KEY ("to_location_id") REFERENCES "stock_location" ("location_id")
 );
 
 -- tabla propuesta
@@ -1474,7 +1491,6 @@ CREATE TABLE "driver_settlement_order" (
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id")
 );
 
--- tabla propuesta
 CREATE TABLE "stock_adjustment_item" (
   "item_id" uuid NOT NULL,
   "adjustment_id" uuid NOT NULL,
@@ -1482,6 +1498,7 @@ CREATE TABLE "stock_adjustment_item" (
   "condition" varchar(32) NOT NULL,
   "quantity_delta" integer NOT NULL,
   PRIMARY KEY ("item_id"),
+  UNIQUE ("adjustment_id", "gas_cylinder_id", "condition"),
   FOREIGN KEY ("adjustment_id") REFERENCES "stock_adjustment" ("adjustment_id") ON DELETE CASCADE,
   FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id")
 );

@@ -128,7 +128,6 @@ class Vehiculo {
   + getCostoTotal(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
   + getHistorialDeChoferes(pagina: Entero): AsignacionVehiculo[*]
   + getKilometrosRecorridos(fechaDesde: Fecha,\n      fechaHasta: Fecha): Entero
-  + getUbicacionDeStock(): UbicacionDeStock
   + ponerFueraDeServicio()
   + proyectarVencimientos(): TareaMantenimiento[*]
   + reactivar()
@@ -136,6 +135,7 @@ class Vehiculo {
   + registrarCarga(datos: Registro): CargaCombustible
   + registrarMulta(datos: Registro,\n      empleado: Empleado): MultaTransito
   + registrarSiniestro(datos: Registro): Siniestro
+  + tieneLlenas(producto: Producto,\n      cantidad: Entero): Booleano
   + validarSinCargaAbierta()
 }
 class AsignacionVehiculo {

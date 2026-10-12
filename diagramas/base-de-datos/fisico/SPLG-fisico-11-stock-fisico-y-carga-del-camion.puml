@@ -30,70 +30,75 @@ skinparam legendBorderColor #2C4257
 hide circle
 skinparam linetype polyline
 
-entity "warehouse" as e_warehouse <<propuesto>> {
-  {field} <color:#1F5E8C>**warehouse_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>name : varchar(80) * <<propuesto>></color>
-  {field} <color:#1F5E8C>code : varchar(12) * <<propuesto>></color>
-  {field} <color:#1F5E8C>kind : warehouse_kind_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>address : text <<propuesto>></color>
-  {field} <color:#1F5E8C>location : geometry(Point,4326) <<propuesto>></color>
-  {field} <color:#1F5E8C>is_default : boolean * <<propuesto>></color>
-  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+entity "warehouse" as e_warehouse {
+  {field} **warehouse_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(80) *
+  {field} code : varchar(12) *
+  {field} kind : warehouse_kind_enum *
+  {field} address : text
+  {field} is_default : boolean *
+  {field} is_active : boolean *
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} deletedAt : timestamptz
 }
-entity "stock_threshold" as e_stock_threshold <<propuesto>> {
-  {field} <color:#1F5E8C>**threshold_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//warehouse_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>min_full : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>alerted_at : timestamptz <<propuesto>></color>
+entity "stock_threshold" as e_stock_threshold {
+  {field} **threshold_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //warehouse_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} min_full : integer *
+  {field} alerted_at : timestamptz
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
 }
-entity "stock_location" as e_stock_location <<propuesto>> {
-  {field} <color:#1F5E8C>**location_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>kind : stock_location_kind_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>//warehouse_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//car_id// : uuid <<FK>> <<propuesto>></color>
+entity "stock_location" as e_stock_location {
+  {field} **location_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} kind : stock_location_kind_enum *
+  {field} //warehouse_id// : uuid <<FK>>
+  {field} //car_id// : uuid <<FK>>
+  {field} createdAt : timestamptz *
 }
-entity "stock_adjustment" as e_stock_adjustment <<propuesto>> {
-  {field} <color:#1F5E8C>**adjustment_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>number : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>//location_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>reason : stock_adjustment_reason_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>notes : text * <<propuesto>></color>
-  {field} <color:#1F5E8C>//created_by_user_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+entity "stock_adjustment" as e_stock_adjustment {
+  {field} **adjustment_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} number : integer *
+  {field} //location_id// : uuid * <<FK>>
+  {field} reason : stock_adjustment_reason_enum *
+  {field} notes : text *
+  {field} batch_id : uuid *
+  {field} //created_by_user_id// : uuid * <<FK>>
+  {field} createdAt : timestamptz *
 }
-entity "stock_balance" as e_stock_balance <<propuesto>> {
-  {field} <color:#1F5E8C>**balance_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//location_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>condition : stock_condition_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>quantity : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+entity "stock_balance" as e_stock_balance {
+  {field} **balance_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //location_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} condition : stock_condition_enum *
+  {field} quantity : integer *
+  {field} updatedAt : timestamptz *
 }
-entity "stock_movement" as e_stock_movement <<propuesto>> {
-  {field} <color:#1F5E8C>**movement_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>batch_id : uuid * <<propuesto>></color>
-  {field} <color:#1F5E8C>quantity : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>//from_location_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>from_condition : stock_condition_enum <<propuesto>></color>
-  {field} <color:#1F5E8C>//to_location_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>to_condition : stock_condition_enum <<propuesto>></color>
-  {field} <color:#1F5E8C>reason : stock_movement_reason_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>reference_type : stock_reference_type_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>reference_id : uuid <<propuesto>></color>
-  {field} <color:#1F5E8C>//actor_user_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>occurred_at : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
+entity "stock_movement" as e_stock_movement {
+  {field} **movement_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} batch_id : uuid *
+  {field} quantity : integer *
+  {field} //from_location_id// : uuid <<FK>>
+  {field} from_condition : stock_condition_enum
+  {field} //to_location_id// : uuid <<FK>>
+  {field} to_condition : stock_condition_enum
+  {field} reason : stock_movement_reason_enum *
+  {field} reference_type : stock_movement_reference_type_enum *
+  {field} reference_id : uuid
+  {field} //reversed_movement_id// : uuid <<FK>>
+  {field} notes : varchar(300)
+  {field} //actor_user_id// : uuid <<FK>>
+  {field} occurred_at : timestamptz *
+  {field} createdAt : timestamptz *
 }
 entity "truck_load" as e_truck_load <<propuesto>> {
   {field} <color:#1F5E8C>**load_id** : uuid * <<PK>> <<propuesto>></color>
@@ -113,12 +118,12 @@ entity "truck_load" as e_truck_load <<propuesto>> {
   {field} <color:#1F5E8C>//closed_by_user_id// : uuid <<FK>> <<propuesto>></color>
   {field} <color:#1F5E8C>difference_note : text <<propuesto>></color>
 }
-entity "stock_adjustment_item" as e_stock_adjustment_item <<propuesto>> {
-  {field} <color:#1F5E8C>**item_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//adjustment_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>condition : stock_condition_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>quantity_delta : integer * <<propuesto>></color>
+entity "stock_adjustment_item" as e_stock_adjustment_item {
+  {field} **item_id** : uuid * <<PK>>
+  {field} //adjustment_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} condition : stock_condition_enum *
+  {field} quantity_delta : integer *
 }
 entity "truck_load_item" as e_truck_load_item <<propuesto>> {
   {field} <color:#1F5E8C>**item_id** : uuid * <<PK>> <<propuesto>></color>
@@ -145,25 +150,26 @@ entity "user" as e_user #F1F1F1 {
 entity "delivery" as e_delivery #F1F1F1 {
 }
 
-e_warehouse ||--o{ e_stock_threshold #line:1F5E8C;text:1F5E8C : warehouse_id
-e_gas_cylinder ||--o{ e_stock_threshold #line:1F5E8C;text:1F5E8C : gas_cylinder_id
-e_warehouse |o--o| e_stock_location #line:1F5E8C;text:1F5E8C : warehouse_id
-e_car |o--o| e_stock_location #line:1F5E8C;text:1F5E8C : car_id
-e_stock_location ||--o{ e_stock_adjustment #line:1F5E8C;text:1F5E8C : location_id
-e_user ||--o{ e_stock_adjustment #line:1F5E8C;text:1F5E8C : created_by_user_id
-e_stock_location ||--o{ e_stock_balance #line:1F5E8C;text:1F5E8C : location_id
-e_gas_cylinder ||--o{ e_stock_balance #line:1F5E8C;text:1F5E8C : gas_cylinder_id
-e_gas_cylinder ||--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : gas_cylinder_id
-e_stock_location |o--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : from_location_id
-e_stock_location |o--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : to_location_id
-e_user |o--o{ e_stock_movement #line:1F5E8C;text:1F5E8C : actor_user_id
+e_gas_cylinder ||--o{ e_stock_threshold : gas_cylinder_id
+e_warehouse ||--o{ e_stock_threshold : warehouse_id
+e_car |o--o| e_stock_location : car_id
+e_warehouse |o--o| e_stock_location : warehouse_id
+e_user ||--o{ e_stock_adjustment : created_by_user_id
+e_stock_location ||--o{ e_stock_adjustment : location_id
+e_gas_cylinder ||--o{ e_stock_balance : gas_cylinder_id
+e_stock_location ||--o{ e_stock_balance : location_id
+e_user |o--o{ e_stock_movement : actor_user_id
+e_stock_location |o--o{ e_stock_movement : from_location_id
+e_gas_cylinder ||--o{ e_stock_movement : gas_cylinder_id
+e_stock_movement |o--o{ e_stock_movement : reversed_movement_id
+e_stock_location |o--o{ e_stock_movement : to_location_id
 e_car ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : car_id
 e_delivery ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : delivery_id
 e_stock_location ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : origin_location_id
 e_user ||--o{ e_truck_load #line:1F5E8C;text:1F5E8C : opened_by_user_id
 e_user |o--o{ e_truck_load #line:1F5E8C;text:1F5E8C : closed_by_user_id
-e_stock_adjustment ||--o{ e_stock_adjustment_item #line:1F5E8C;text:1F5E8C : adjustment_id
-e_gas_cylinder ||--o{ e_stock_adjustment_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_stock_adjustment ||--o{ e_stock_adjustment_item : adjustment_id
+e_gas_cylinder ||--o{ e_stock_adjustment_item : gas_cylinder_id
 e_truck_load ||--o{ e_truck_load_item #line:1F5E8C;text:1F5E8C : load_id
 e_gas_cylinder ||--o{ e_truck_load_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
 

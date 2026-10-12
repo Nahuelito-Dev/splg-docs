@@ -70,7 +70,7 @@
         <mxCell id="c2f2" value="+ send(destinatario: Cadena)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
           <mxGeometry y="82" width="460" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="c2f3" value="+ send(administrador: Administrador, detalle: Registro)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
+        <mxCell id="c2f3" value="+ send(administrador: Administrador, vencimientos: Registro)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">
           <mxGeometry y="108" width="460" height="26" as="geometry" />
         </mxCell>
         <mxCell id="c2f4" value="+ send(administradores: Administrador[*], detalle: Registro)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=6;overflow=hidden;rotatable=0;html=1;" vertex="1" parent="c2">

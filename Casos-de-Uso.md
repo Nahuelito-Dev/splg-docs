@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **271 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **278 casos de uso**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -71,10 +71,10 @@ registrado.
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-El sistema comprende 271 casos de uso agrupados en 21 subsistemas. Se presentan tres vistas
+El sistema comprende 278 casos de uso agrupados en 21 subsistemas. Se presentan tres vistas
 complementarias, todas en notación UML: el **mapa del sistema**, de una página, que muestra
 los 21 paquetes con su cantidad de casos y qué actor participa en cuál; el **diagrama de
-contexto**, que delimita el sistema; y el **diagrama completo**, que abre los 271 casos uno
+contexto**, que delimita el sistema; y el **diagrama completo**, que abre los 278 casos uno
 por uno dentro de su paquete.
 
 **Figura — Mapa de navegación del sistema (no es un diagrama UML)**
@@ -112,7 +112,7 @@ por uno dentro de su paquete.
 ![Diagrama de casos de uso, lámina 6 de 6: Administración y plataforma](diagramas/uml/CU_Sistema_Completo-Lamina-6.png)
 
 
-**Figura — Diagrama completo: los 271 casos de uso**
+**Figura — Diagrama completo: los 278 casos de uso**
 
 ![Diagrama completo de casos de uso](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
@@ -154,7 +154,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-017 Actualizar Ubicación GPS del Chofer | SS-04 | ACT-02 | Crítico | Implementado, con funcionalidad planificada |
 | CU-018 Marcar Pedido "En Camino" | SS-04 | ACT-02 | Crítico | Implementado |
 | CU-019 Avisar Llegada al Cliente | SS-04 | ACT-02 | Importante | Implementado |
-| CU-020 Confirmar Entrega | SS-04 | ACT-02 | Crítico | Implementado, con funcionalidad planificada (I-13) |
+| CU-020 Confirmar Entrega | SS-04 | ACT-02 | Crítico | Implementado |
 | CU-021 Recibir Notificaciones en Tiempo Real | SS-04 | ACT-01 | Crítico | Implementado |
 | CU-022 Activar la Disponibilidad | SS-04 | ACT-02 | Crítico | Implementado |
 | CU-023 Registrar Reclamo | SS-05 | ACT-01 | Importante | Implementado |
@@ -172,7 +172,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-035 Consultar Listado de Choferes | SS-07 | ACT-03 | Importante | Implementado |
 | CU-036 Crear Producto (Garrafa) | SS-08 | ACT-03 | Crítico | Implementado |
 | CU-037 Actualizar Precio de Producto | SS-08 | ACT-03 | Crítico | Implementado |
-| CU-038 Actualizar Stock de Producto | SS-08 | ACT-03 | Crítico | Implementado, con funcionalidad planificada (I-13) |
+| CU-038 Actualizar Stock de Producto | SS-08 | ACT-03 | Crítico | Implementado |
 | CU-039 Configurar Promociones por Cantidad | SS-08 | ACT-03 | Importante | Implementado |
 | CU-040 Desactivar un Producto | SS-08 | ACT-03 | Importante | Implementado |
 | CU-041 Consultar Catálogo de Productos | SS-08 | ACT-01, ACT-03 | Crítico | Implementado |
@@ -213,7 +213,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-076 Expirar Reservas sin Seña Pagada (Cron) | SS-15 | ACT-04 | Importante | Implementado |
 | CU-077 Expirar Pedidos de MercadoPago sin Pagar (Cron) | SS-15 | ACT-04 | Importante | Implementado |
 | CU-078 Obtener el Código de Entrega (QR del chofer) | SS-04 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
-| CU-079 Confirmar Entrega Escaneando el QR (cliente) | SS-04 | ACT-01, ACT-03, ACT-05 | Crítico | Implementado, con funcionalidad planificada (I-13) |
+| CU-079 Confirmar Entrega Escaneando el QR (cliente) | SS-04 | ACT-01, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-080 Consultar el Pool de Pedidos Disponibles | SS-02 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-081 Consultar los Pedidos Asignados al Chofer | SS-02 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-082 Crear Usuario Base | SS-01 | ACT-01, ACT-02, ACT-03, ACT-04 | Importante | Implementado |
@@ -340,24 +340,24 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-204 Consultar el Tablero de Costos de la Flota | SS-07 | ACT-03 | Importante | Planificado (I-12) |
 | CU-205 Registrar un Neumático | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
 | CU-206 Registrar un Movimiento de Neumático | SS-07 | ACT-03 | Secundario | Planificado (I-12) |
-| CU-207 Consultar los Depósitos | SS-08 | ACT-03 | Importante | Planificado (I-13) |
-| CU-208 Consultar el Stock por Ubicación | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
-| CU-209 Consultar los Movimientos de Stock | SS-08 | ACT-03 | Importante | Planificado (I-13) |
-| CU-210 Configurar el Stock Mínimo | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
-| CU-211 Avisar el Stock Bajo | SS-08 | ACT-04 | Importante | Planificado (I-13) |
-| CU-212 Transferir Stock entre Depósitos | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
-| CU-213 Registrar un Ajuste o una Merma de Stock | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-207 Consultar los Depósitos | SS-08 | ACT-03 | Importante | Implementado |
+| CU-208 Consultar el Stock por Ubicación | SS-08 | ACT-03 | Crítico | Implementado |
+| CU-209 Consultar los Movimientos de Stock | SS-08 | ACT-03 | Importante | Implementado |
+| CU-210 Configurar el Stock Mínimo | SS-08 | ACT-03 | Secundario | Implementado |
+| CU-211 Avisar el Stock Bajo | SS-08 | ACT-04 | Importante | Implementado |
+| CU-212 Transferir Stock entre Depósitos | SS-08 | ACT-03 | Secundario | Implementado |
+| CU-213 Registrar un Ajuste o una Merma de Stock | SS-08 | ACT-03 | Importante | Implementado |
 | CU-214 Consultar los Proveedores | SS-20 | ACT-03 | Importante | Planificado (I-13) |
 | CU-215 Emitir una Orden de Compra | SS-20 | ACT-03 | Importante | Planificado (I-13) |
 | CU-216 Cancelar una Orden de Compra | SS-20 | ACT-03 | Secundario | Planificado (I-13) |
 | CU-217 Registrar la Recepción de una Compra | SS-20 | ACT-03 | Crítico | Planificado (I-13) |
 | CU-218 Registrar la Carga del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
 | CU-219 Registrar la Salida del Camión | SS-08 | ACT-02, ACT-03 | Importante | Planificado (I-13) |
-| CU-220 Descontar del Camión lo Entregado | SS-08 | ACT-04 | Crítico | Planificado (I-13) |
+| CU-220 Descontar del Stock Físico lo Entregado | SS-08 | — | Crítico | Implementado |
 | CU-221 Registrar el Regreso del Camión | SS-08 | ACT-02, ACT-03 | Importante | Planificado (I-13) |
 | CU-222 Cerrar la Rendición de Stock del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
 | CU-223 Consultar la Carga Actual del Camión | SS-08 | ACT-02 | Secundario | Planificado (I-13) |
-| CU-224 Conciliar el Stock Vendible con el Físico | SS-08 | ACT-03, ACT-04 | Importante | Planificado (I-13) |
+| CU-224 Conciliar el Stock Vendible con el Físico | SS-08 | ACT-03, ACT-04 | Importante | Implementado |
 | CU-225 Crear una Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
 | CU-226 Abrir la Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
 | CU-227 Cerrar la Caja con Arqueo | SS-21 | ACT-03 | Crítico | Planificado (I-14) |
@@ -383,7 +383,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-247 Reactivar un Vehículo | SS-07 | ACT-03 | Importante | Planificado (I-12) |
 | CU-248 Verificar la Carga de Camión Abierta del Chofer | SS-08 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (I-13) |
 | CU-249 Configurar el Control de Carga de Camión Abierta | SS-08 | ACT-03 | Secundario | Planificado (I-13) |
-| CU-250 Aplicar un Movimiento de Stock | SS-08 | ACT-03, ACT-04 | Crítico | Planificado (I-13) |
+| CU-250 Aplicar un Movimiento de Stock | SS-08 | ACT-03, ACT-04 | Crítico | Implementado |
 | CU-251 Modificar el Perfil de Usuario | SS-01 | ACT-01, ACT-02 | Importante | Implementado |
 | CU-252 Crear un Rol | SS-16 | ACT-05 | Importante | Implementado |
 | CU-253 Modificar un Rol | SS-16 | ACT-05 | Importante | Implementado |
@@ -391,9 +391,9 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-255 Crear un Puesto de Trabajo | SS-19 | ACT-03 | Importante | Implementado |
 | CU-256 Modificar un Puesto de Trabajo | SS-19 | ACT-03 | Importante | Implementado |
 | CU-257 Eliminar un Puesto de Trabajo | SS-19 | ACT-03 | Importante | Implementado |
-| CU-258 Registrar un Depósito | SS-08 | ACT-03 | Importante | Planificado (I-13) |
-| CU-259 Modificar un Depósito | SS-08 | ACT-03 | Importante | Planificado (I-13) |
-| CU-260 Dar de Baja un Depósito | SS-08 | ACT-03 | Importante | Planificado (I-13) |
+| CU-258 Registrar un Depósito | SS-08 | ACT-03 | Importante | Implementado |
+| CU-259 Modificar un Depósito | SS-08 | ACT-03 | Importante | Implementado |
+| CU-260 Dar de Baja un Depósito | SS-08 | ACT-03 | Importante | Implementado |
 | CU-261 Registrar un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
 | CU-262 Modificar un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
 | CU-263 Dar de Baja un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
@@ -406,21 +406,28 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-270 Desbloquear un Usuario | SS-01 | ACT-03 | Secundario | Implementado |
 | CU-271 Invalidar un Chofer | SS-07 | ACT-03 | Crítico | Implementado |
 | CU-272 Buscar un Usuario | SS-01 | ACT-03 | Importante | Implementado |
+| CU-273 Marcar el Depósito Predeterminado | SS-08 | ACT-03 | Importante | Implementado |
+| CU-274 Registrar el Conteo Inicial de un Depósito | SS-08 | ACT-03 | Importante | Implementado |
+| CU-275 Consultar los Ajustes de Stock | SS-08 | ACT-03 | Importante | Implementado |
+| CU-276 Anular una Transferencia de Stock | SS-08 | ACT-03 | Secundario | Implementado |
+| CU-277 Registrar un Ajuste de Conciliación del Vendible | SS-08 | ACT-03 | Importante | Implementado |
+| CU-278 Reaplicar las Entregas sin Movimiento de Stock | SS-08 | ACT-03 | Importante | Implementado |
+| CU-279 Consultar el Resumen de Stock | SS-08 | ACT-03 | Importante | Implementado |
 
 ### Resumen
 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
 | **Crítico** | 64 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153, CU-171, CU-177, CU-181, CU-183, CU-184, CU-197, CU-208, CU-217, CU-218, CU-220, CU-222, CU-227, CU-228, CU-232, CU-233, CU-236, CU-237, CU-250, CU-266, CU-271 |
-| **Importante** | 160 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272 |
-| **Secundario** | 45 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-244, CU-249, CU-265, CU-270 |
+| **Importante** | 166 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272, CU-273, CU-274, CU-275, CU-277, CU-278, CU-279 |
+| **Secundario** | 46 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-244, CU-249, CU-265, CU-270, CU-276 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **271** | CU-001 a CU-272, sin CU-093 |
+| **Total** | **278** | CU-001 a CU-279, sin CU-093 |
 
 > **CU-093 (Validar o Invalidar Cliente) se dio de baja el 26/09/2026.** Los clientes se registran y compran sin aprobación previa: la marca no condicionaba ningún pedido y sólo sumaba trabajo al administrador. El número queda reservado para no renumerar los demás casos. Los choferes siguen validándose (CU-032).
 
-Los recuentos salen del catálogo de arriba y se verifican contra él: los 271
-códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de baja.
+Los recuentos salen del catálogo de arriba y se verifican contra él: los 278
+códigos son únicos y entre CU-001 y CU-279 el único hueco es CU-093, dado de baja.
 
 ---
 
@@ -2422,7 +2429,7 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El administrador consulta los depósitos y sucursales de su distribuidora, que son los lugares donde se guarda el stock físico. Endpoint: `GET /warehouses`.
+**Descripción:** El administrador consulta los depósitos y sucursales de su distribuidora, que son los lugares donde se guarda el stock físico: el listado y el detalle de uno con sus saldos. Endpoints: `GET /warehouses` y `GET /warehouses/:id`.
 
 ---
 
@@ -2440,7 +2447,7 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El administrador modifica los datos de un depósito o sucursal de su distribuidora. Endpoint: `PATCH /warehouses/:id`.
+**Descripción:** El administrador modifica los datos de un depósito o sucursal de su distribuidora, o lo desactiva y lo reactiva. Endpoint: `PATCH /warehouses/:id`.
 
 ---
 
@@ -2449,7 +2456,23 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El administrador da de baja un depósito o sucursal de su distribuidora; la baja es lógica y sólo se admite cuando el depósito no tiene saldo. Endpoint: `DELETE /warehouses/:id`.
+**Descripción:** El administrador da de baja un depósito o sucursal de su distribuidora; la baja es lógica y sólo se admite cuando el depósito no tiene saldo y no es el predeterminado. Endpoint: `DELETE /warehouses/:id`.
+
+---
+
+**Código:** CU-273 | **Caso de Uso:** Marcar el Depósito Predeterminado  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador elige cuál de sus depósitos es el predeterminado, el que usan por omisión la entrega de un pedido y el ajuste del catálogo. Endpoint: `PATCH /warehouses/:id` con `isDefault: true`.
+
+---
+
+**Código:** CU-274 | **Caso de Uso:** Registrar el Conteo Inicial de un Depósito  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador carga lo que hay físicamente en un depósito, por tipo de garrafa y condición, una sola vez por depósito. Endpoint: `POST /stock/initial-counts`.
 
 ---
 
@@ -2457,7 +2480,15 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Crítico  
-**Descripción:** El administrador consulta cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, y el resumen por tipo de garrafa con lo reservado, lo vendible y el mínimo. Endpoints: `GET /stock` y `GET /stock/summary`.
+**Descripción:** El administrador consulta cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión. Endpoints: `GET /stock` y `GET /stock/locations`.
+
+---
+
+**Código:** CU-279 | **Caso de Uso:** Consultar el Resumen de Stock  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador compara, por tipo de garrafa, lo que hay en los depósitos con lo que hay en los camiones, y ve lo reservado, lo vendible y el mínimo. Endpoint: `GET /stock/summary`.
 
 ---
 
@@ -2481,7 +2512,7 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Sistema Automático (ACT-04)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El sistema revisa cada hora los depósitos que bajaron de su mínimo de unidades llenas y avisa por correo a los administradores de la distribuidora, una sola vez hasta que el stock se recupere.
+**Descripción:** Cada día a las 08:00 el sistema revisa los depósitos que bajaron de su mínimo de unidades llenas y avisa por correo a los administradores de la distribuidora, una sola vez hasta que el stock se recupere.
 
 ---
 
@@ -2489,7 +2520,15 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Secundario  
-**Descripción:** El administrador traslada unidades de un tipo de garrafa y condición de un depósito a otro de la misma distribuidora. Endpoint: `POST /stock/transfers`.
+**Descripción:** El administrador traslada unidades de uno o más tipos de garrafa de un depósito a otro, o entre un depósito y un camión. Endpoint: `POST /stock/transfers`.
+
+---
+
+**Código:** CU-276 | **Caso de Uso:** Anular una Transferencia de Stock  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Secundario  
+**Descripción:** El administrador corrige una transferencia hecha por error con un contraasiento que la deshace. Endpoint: `POST /stock/movements/batches/:batchId/reverse`.
 
 ---
 
@@ -2497,7 +2536,15 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** El administrador corrige el stock de una ubicación por un recuento, una merma, una pérdida o un hallazgo, con una nota obligatoria, y consulta los ajustes registrados. Endpoints: `POST /stock/adjustments`, `GET /stock/adjustments` y `PATCH /cylinders/stock`.
+**Descripción:** El administrador corrige el stock de un depósito o un camión por un recuento, una merma, una fuga, una rotura, una pérdida o un hallazgo, con una nota obligatoria. Endpoint: `POST /stock/adjustments`.
+
+---
+
+**Código:** CU-275 | **Caso de Uso:** Consultar los Ajustes de Stock  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta los ajustes de stock registrados, con filtros por motivo y fechas, y el detalle de uno. Endpoints: `GET /stock/adjustments` y `GET /stock/adjustments/:id`.
 
 ---
 
@@ -2517,11 +2564,11 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 
 ---
 
-**Código:** CU-220 | **Caso de Uso:** Descontar del Camión lo Entregado  
-**Actor/es:** Sistema Automático (ACT-04)  
+**Código:** CU-220 | **Caso de Uso:** Descontar del Stock Físico lo Entregado  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-020, CU-079 y CU-278  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Crítico  
-**Descripción:** Cuando se confirma la entrega de un pedido, el sistema descuenta del camión las garrafas llenas entregadas y acredita los envases vacíos recolectados, en una relación de uno a uno.
+**Descripción:** Cada vez que se confirma la entrega de un pedido, el sistema descuenta las garrafas llenas entregadas del camión del pedido o, si no tiene saldo, del depósito predeterminado, y acredita los envases vacíos recolectados, en una relación de uno a uno.
 
 ---
 
@@ -2553,7 +2600,23 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 **Actor/es:** Administrador (ACT-03), Sistema Automático (ACT-04)  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Importante  
-**Descripción:** Cada noche el sistema aplica las entregas que quedaron sin movimiento de stock y compara el stock vendible con el físico menos lo reservado, y avisa de la diferencia; el administrador consulta la conciliación. Endpoint: `GET /stock/reconciliation`.
+**Descripción:** Cada noche el sistema compara el stock vendible con el físico menos lo reservado y avisa de la diferencia y de las entregas sin descuento; el administrador consulta la conciliación. Endpoint: `GET /stock/reconciliation`.
+
+---
+
+**Código:** CU-277 | **Caso de Uso:** Registrar un Ajuste de Conciliación del Vendible  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador corrige el stock vendible de un tipo de garrafa hasta que coincida con el físico menos lo reservado, sin tocar el físico. Endpoint: `POST /stock/reconciliation/adjustments`.
+
+---
+
+**Código:** CU-278 | **Caso de Uso:** Reaplicar las Entregas sin Movimiento de Stock  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-08 Gestión de Productos e Inventario  
+**Calificación:** Importante  
+**Descripción:** El administrador vuelve a descontar el stock físico de las entregas que no pudieron hacerlo, una vez corregida la causa. Endpoint: `POST /stock/reconciliation/reapply-deliveries`.
 
 ---
 
@@ -2574,10 +2637,10 @@ códigos son únicos y entre CU-001 y CU-272 el único hueco es CU-093, dado de 
 ---
 
 **Código:** CU-250 | **Caso de Uso:** Aplicar un Movimiento de Stock  
-**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-212, CU-213, CU-217, CU-218, CU-220 y CU-222  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274 y CU-276  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Crítico  
-**Descripción:** Cada vez que el stock físico cambia, el sistema asienta un movimiento con su origen y su destino y mueve los saldos de las ubicaciones, sin dejar ninguno negativo.
+**Descripción:** Cada vez que el stock físico cambia, el sistema asienta los movimientos con su origen y su destino y mueve los saldos de las ubicaciones, sin dejar ninguno negativo y con un orden de bloqueos fijo.
 
 ---
 
@@ -5252,7 +5315,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
 | **Descripción** | El chofer entrega la mercadería y marca el pedido como entregado. El sistema cierra el ciclo del pedido, da por cobrado el pago en efectivo, corta el seguimiento en vivo, avanza los envases al cliente y avisa. Existe además una segunda vía en la que quien confirma es el cliente, leyendo un código. |
 | **Precondición** | El pedido tiene estado ON_THE_WAY. Si lo confirma un chofer, es el asignado al pedido. |
-| **Estado** | Implementado, con funcionalidad planificada (I-13): al confirmarse la entrega el sistema descuenta del camión lo entregado y acredita los vacíos recolectados (CU-220). |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -5264,10 +5327,11 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 4 | Si el método de pago es efectivo, marca el pago como cobrado. |
 | 5 | Corta el seguimiento en vivo del chofer asignado al pedido. |
 | 6 | Avanza los envases despachados en el pedido al estado "con el cliente". Si ese paso falla, se registra la advertencia y la entrega no se revierte. |
-| 7 | Avisa al cliente en tiempo real del cierre del pedido y avisa también al panel de administración. |
-| 8 | Envía al cliente una notificación al dispositivo con el texto genérico de confirmación de pedido. |
+| 7 | El sistema descuenta del stock físico lo entregado y acredita los envases vacíos recolectados —**incluye CU-220 Descontar del Stock Físico lo Entregado**—, dentro de la misma transacción y sin que un fallo la revierta. |
+| 8 | Avisa al cliente en tiempo real del cierre del pedido y avisa también al panel de administración. |
+| 9 | Envía al cliente una notificación al dispositivo con el texto genérico de confirmación de pedido. |
 
-**Postcondición:** El pedido tiene estado DELIVERED con la marca de la entrega. Si el pago era en efectivo, queda cobrado. Los envases del pedido figuran en poder del cliente y el seguimiento en vivo está cerrado.
+**Postcondición:** El pedido tiene estado DELIVERED con la marca de la entrega. Si el pago era en efectivo, queda cobrado. Los envases del pedido figuran en poder del cliente y el seguimiento en vivo está cerrado. Las llenas entregadas salieron del camión del pedido o del depósito predeterminado y los vacíos recolectados entraron en el mismo lugar (CU-220).
 
 **Excepciones**
 
@@ -5279,6 +5343,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 3 | Si el pedido está cancelado, o si está en un estado desde el que no se puede entregar, el sistema rechaza la operación por transición no permitida. |
 | 3 | Reconfirmar un pedido ya entregado no falla: la reaplicación del mismo estado se considera idempotente y vuelve a registrar el momento de la entrega. |
 | 6 | Si la distribuidora no trabaja con envases retornables, el avance de envases no hace nada y la entrega se completa igual. |
+| 7 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
 
 **Secuencia Alternativa — Confirmación verificada por código (anti-fraude)**
 
@@ -5317,7 +5382,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | La confirmación se procesa en menos de 3 segundos. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido entregado, en el pico de cada franja horaria de reparto. |
 | **Estabilidad** | Alta |
-| **Comentarios** | En la secuencia normal, el sistema verifica que el chofer que confirma la entrega sea el asignado al pedido: un chofer no puede cerrar el pedido de otro ni, si el pago es en efectivo, darlo por cobrado. El control no alcanza al administrador. La secuencia alternativa agrega una prueba más fuerte, porque la confirmación la hace el cliente dueño del pedido. El sistema no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no el de entrega. Un pedido asignado manualmente por el administrador no tiene código de entrega (CU-012), de modo que sobre él la secuencia alternativa no es posible. **Planificado (I-13):** después de confirmada la transición a entregado, el sistema emite el evento de pedido entregado y CU-220 descuenta del stock físico lo entregado; no cambia la respuesta al chofer ni la transacción de la entrega. |
+| **Comentarios** | En la secuencia normal, el sistema verifica que el chofer que confirma la entrega sea el asignado al pedido: un chofer no puede cerrar el pedido de otro ni, si el pago es en efectivo, darlo por cobrado. El control no alcanza al administrador. La secuencia alternativa agrega una prueba más fuerte, porque la confirmación la hace el cliente dueño del pedido. El sistema no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no el de entrega. Un pedido asignado manualmente por el administrador no tiene código de entrega (CU-012), de modo que sobre él la secuencia alternativa no es posible. Después de confirmada la transición a entregado, y dentro de la misma transacción, el sistema descuenta del stock físico lo entregado (CU-220, **incluido** en este caso); si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). No cambia la respuesta al chofer. |
 
 ---
 
@@ -5502,7 +5567,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
 | **Descripción** | El **cliente** (ACT-01) escanea con su app el QR que le muestra el chofer y envía el código leído; si coincide con el guardado en el pedido, el sistema da la entrega por realizada. Es un mecanismo anti-fraude que **invierte el actor de CU-020**: allí el chofer se autodeclara entregado, acá la entrega la confirma quien recibe. Como el cliente solo puede conocer el código habiendo visto el QR en la mano del chofer, la confirmación prueba que el chofer estuvo presente. Endpoint: `POST /orders/:id/confirm-delivery`. |
 | **Precondición** | El cliente está autenticado y es el titular del pedido. El pedido está en estado ON_THE_WAY y tiene `deliveryCode` generado desde su aceptación. El chofer está en el domicilio mostrando el QR. |
-| **Estado** | Implementado, con funcionalidad planificada (I-13): al confirmarse la entrega el sistema descuenta del camión lo entregado y acredita los vacíos recolectados (CU-220). |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -5518,9 +5583,10 @@ respaldado por la lectura del código en poder del cliente.
 | 8 | Si el método de pago es efectivo, el sistema marca `paymentStatus = PAID`. |
 | 9 | El sistema corta el seguimiento GPS en vivo del chofer que entregó (`stopTracking`). |
 | 10 | El sistema avanza a WITH_CUSTOMER los envases despachados en ese pedido, en modo best-effort: si falla, la entrega igual se completa. |
-| 11 | El sistema emite el evento de tiempo real del nuevo estado al cliente, avisa a los administradores y dispara la notificación push, todo best-effort. |
+| 11 | El sistema descuenta del stock físico lo entregado y acredita los envases vacíos recolectados —**incluye CU-220 Descontar del Stock Físico lo Entregado**—, dentro de la misma transacción y sin que un fallo la revierta. |
+| 12 | El sistema emite el evento de tiempo real del nuevo estado al cliente, avisa a los administradores y dispara la notificación push, todo best-effort. |
 
-**Postcondición:** El pedido queda en estado DELIVERED con evidencia de que el cliente validó la entrega. Si el pago era en efectivo, queda registrado como pagado. El chofer sale del seguimiento en vivo y los envases del pedido figuran en poder del cliente.
+**Postcondición:** El pedido queda en estado DELIVERED con evidencia de que el cliente validó la entrega. Si el pago era en efectivo, queda registrado como pagado. El chofer sale del seguimiento en vivo y los envases del pedido figuran en poder del cliente. Las llenas entregadas salieron del camión del pedido o del depósito predeterminado y los vacíos recolectados entraron en el mismo lugar (CU-220).
 
 **Excepciones**
 
@@ -5533,13 +5599,14 @@ respaldado por la lectura del código en poder del cliente.
 | 5 | Si el pedido ya está en DELIVERED, el sistema **no** lo trata como error: devuelve el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red. |
 | 5 | Si el pedido está en cualquier otro estado que no sea ON_THE_WAY, el sistema retorna error 400 "El pedido no está en camino, no se puede confirmar la entrega". |
 | 6 | Si el código no coincide, o el pedido no tiene código cargado, o los largos difieren, el sistema retorna error 400 "Código de entrega inválido". |
+| 11 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La validación del código es local y de costo despreciable; el peso está en la transición de estado y en sus efectos, que ya son los de CU-020. Los efectos de tiempo real y notificación son best-effort y no bloquean la respuesta. |
 | **Frecuencia** | Una vez por pedido entregado, en el pico de la franja horaria de entrega. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El espacio del código es de 16^10 combinaciones y solo es válido mientras el pedido está en camino, por lo que adivinarlo a fuerza bruta es inviable. Los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas telefónicamente desde soporte. **Planificado (I-13):** después de confirmada la transición a entregado, el sistema emite el evento de pedido entregado y CU-220 descuenta del stock físico lo entregado; no cambia la respuesta al chofer ni la transacción de la entrega. |
+| **Comentarios** | El espacio del código es de 16^10 combinaciones y solo es válido mientras el pedido está en camino, por lo que adivinarlo a fuerza bruta es inviable. Los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas telefónicamente desde soporte. Después de confirmada la transición a entregado, y dentro de la misma transacción, el sistema descuenta del stock físico lo entregado (CU-220, **incluido** en este caso); si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). No cambia la respuesta al chofer. |
 
 ---
 
@@ -8115,7 +8182,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una lectura de unicidad y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Muy baja. El catálogo de tipos de garrafa es estable en el tiempo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El control de tipo duplicado no distingue producto activo de producto dado de baja; como CU-040 no ofrece reactivación (CU-268, planificada en I-1), dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. |
+| **Comentarios** | El stock inicial se registra como stock físico —llenas del depósito predeterminado, con su ajuste— en la misma transacción del alta (CU-213, CU-274): si ese registro falla, el producto no se crea. El control de tipo duplicado no distingue producto activo de producto dado de baja; como CU-040 no ofrece reactivación (CU-268, planificada en I-1), dar de baja un producto deja ese nombre de tipo bloqueado de forma permanente para la distribuidora. |
 
 ---
 
@@ -8158,7 +8225,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una verificación de pertenencia, una precarga y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Media. El precio del gas envasado se actualiza con regularidad. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La inmutabilidad del precio en pedidos existentes se sostiene porque cada ítem del pedido guarda el precio unitario al momento de la compra, independiente del precio actual del producto. Como la operación es una actualización parcial del producto, esta misma llamada permite modificar también el tipo, el peso, el stock, la descripción y las promociones; el tipo sigue siendo único por distribuidora. |
+| **Comentarios** | La inmutabilidad del precio en pedidos existentes se sostiene porque cada ítem del pedido guarda el precio unitario al momento de la compra, independiente del precio actual del producto. Como la operación es una actualización parcial del producto, esta misma llamada permite modificar también el tipo, el peso, la descripción y las promociones; el tipo sigue siendo único por distribuidora. El stock ya no se cambia por acá: enviar `stock` responde 400 y se cambia con un ajuste (CU-038, CU-213). |
 
 ---
 
@@ -8169,9 +8236,9 @@ respaldado por la lectura del código en poder del cliente.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-04 |
-| **Descripción** | El administrador ajusta el stock de un producto para reflejar una reposición de inventario o una corrección. **El valor que ingresa es un ajuste, no el stock final: el sistema lo suma al stock existente.** Un valor positivo repone y uno negativo descuenta. |
+| **Descripción** | El administrador ajusta el stock de un producto para reflejar una reposición de inventario o una corrección. **El valor que ingresa es una variación, no el stock final.** El sistema la registra como un ajuste de recuento de unidades llenas en el depósito predeterminado, de modo que mueve juntos el stock físico y el vendible. Endpoint: `PATCH /gascylinder/:id/stock`, con `Idempotency-Key`. |
 | **Precondición** | El administrador está autenticado, tiene una distribuidora en contexto y el producto pertenece a esa distribuidora. |
-| **Estado** | Implementado, con funcionalidad planificada (I-13): el ajuste manual pasa a registrarse como un ajuste de stock de corrección en el depósito predeterminado (CU-213), con la misma ruta y el mismo contrato. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -8179,29 +8246,31 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 1 | El administrador accede a "Productos" en el Panel Web y selecciona el producto: **incluye CU-041 Consultar Catálogo de Productos**, el listado del que sale. |
 | 2 | Ingresa la **cantidad a ajustar**: las unidades que se suman al stock actual. Un valor negativo descuenta. **No es el stock total resultante.** |
-| 3 | El sistema valida con `UpdateStockDto` que la cantidad sea un número entero entre -100.000 y 100.000, y verifica que el producto exista y pertenezca a la distribuidora del administrador. |
-| 4 | El sistema **suma** la cantidad recibida al stock actual del producto. |
-| 5 | El sistema comprueba que el stock resultante no quede por debajo de cero. |
-| 6 | El sistema persiste el nuevo stock y devuelve el producto actualizado. |
+| 3 | El sistema valida que la cantidad sea un número entero entre -100.000 y 100.000, sin otras propiedades, y verifica que el producto exista y pertenezca a la distribuidora del administrador. |
+| 4 | El sistema registra un ajuste de recuento de llenas en el depósito predeterminado, con la nota «Ajuste manual de stock desde el catálogo de productos» —**incluye CU-213 Registrar un Ajuste o una Merma de Stock**—, que mueve el stock físico y el vendible. |
+| 5 | El sistema comprueba que ni las llenas del depósito predeterminado ni el stock vendible queden por debajo de cero. |
+| 6 | El sistema devuelve el producto actualizado. |
 | 7 | Si el stock pasó de cero a un valor positivo, el producto vuelve a aparecer en el listado de productos disponibles de la App Cliente. |
 
-**Postcondición:** El stock del producto quedó incrementado, o decrementado, en la cantidad indicada. Si correspondía, el producto volvió a estar disponible en el catálogo.
+**Postcondición:** Las llenas del depósito predeterminado y el stock vendible del producto quedaron incrementados, o decrementados, en la cantidad indicada, y un ajuste numerado lo registra. Si correspondía, el producto volvió a estar disponible en el catálogo.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la cantidad falta, no es un número entero o está fuera de rango, o se envía una propiedad no declarada, el sistema responde 400 sin tocar el stock. |
+| 3 | Si la cantidad falta, no es un número entero o está fuera de rango, o se envía una propiedad no declarada, el sistema responde 400 (por ejemplo "quantity fuera de rango") sin tocar el stock. |
 | 3 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 3 | Si el producto no existe, o pertenece a otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos. |
-| 5 | Si el ajuste dejaría el stock resultante por debajo de cero, el sistema responde 400 con el mensaje `Stock cannot be negative` y no persiste el cambio. |
+| 5 | Si el ajuste dejaría el stock vendible por debajo de cero, el sistema responde 400 "El stock vendible de Garrafa 10kg quedaría negativo: …" y no persiste el cambio. |
+| 5 | Si al restar no alcanzan las llenas del depósito predeterminado, el sistema responde 400 con un mensaje que dice cuántas llenas hay en camiones y en otros depósitos, y cómo ajustarlas ahí. |
+| 2 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir el ajuste. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una verificación de pertenencia y una escritura; se resuelve en menos de un segundo. |
+| **Rendimiento** | Una verificación de pertenencia y un ajuste con sus bloqueos y escrituras, en una transacción; se resuelve en menos de un segundo. |
 | **Frecuencia** | Alta. Cada reposición física de inventario pasa por esta operación. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Este caso de uso cubre únicamente el ajuste manual de inventario. El descuento automático al crear un pedido lo resuelve CU-005 dentro de la transacción del pedido. El sistema no bloquea el producto durante el ajuste manual: dos ajustes simultáneos sobre el mismo producto pueden pisarse. El ajuste es incremental: el valor enviado se suma al stock actual, de modo que una pantalla que lo trate como el nuevo valor absoluto corrompe el inventario. **Planificado (I-13):** `PATCH /cylinders/stock` deja de escribir el número en el catálogo y crea un ajuste de corrección en el depósito predeterminado (CU-213), que mueve el stock vendible y exige una nota; la ruta y el contrato no cambian. Con ello se resuelve la limitación descripta arriba: el ajuste pasa a hacerse bajo bloqueo. |
+| **Comentarios** | Este caso de uso cubre únicamente el ajuste manual desde el catálogo. El descuento automático al crear un pedido lo resuelve CU-005 dentro de la transacción del pedido. El ajuste es incremental: el valor enviado se suma al stock actual, de modo que una pantalla que lo trate como el nuevo valor absoluto corrompe el inventario. La ruta y el contrato no cambian, pero el efecto sí: el valor ya no se escribe en el catálogo, se registra como un ajuste de recuento (CU-213) en el depósito predeterminado, con su rastro en el libro de movimientos, y se hace bajo bloqueo, así que dos ajustes simultáneos no se pisan. Editar un producto ya no admite `stock` (CU-037): responde 400 y el stock se cambia por este caso o por CU-213. |
 
 ---
 
@@ -12081,31 +12150,34 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador consulta los depósitos y sucursales de su distribuidora: nombre, código, tipo (depósito o sucursal), dirección y estado. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. Endpoint: `GET /warehouses`. |
+| **Descripción** | El administrador consulta los depósitos y sucursales de su distribuidora, que son los lugares donde se guarda el stock físico: el listado (con los inactivos si lo pide) y el detalle de uno con lo que hay en él. Endpoints: `GET /warehouses` y `GET /warehouses/:id`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Stock → Depósitos»; el panel consulta `GET /warehouses`. |
-| 2 | El sistema devuelve los depósitos vigentes de la distribuidora y el panel los muestra con su código, tipo y estado. |
+| 1 | El administrador abre «Stock → Depósitos». |
+| 2 | El panel envía `GET /warehouses`, con `includeInactive=true` si el administrador pide ver también los inactivos. |
+| 3 | El sistema busca los depósitos de la distribuidora, con el predeterminado primero y luego por nombre, y los devuelve con su ubicación de stock. |
+| 4 | Si el administrador elige un depósito, el panel envía `GET /warehouses/:id` y el sistema devuelve el depósito con sus saldos por tipo de garrafa y condición. |
 
-**Postcondición:** El administrador ve los depósitos vigentes de su distribuidora. No hay cambios de estado.
+**Postcondición:** El administrador ve los depósitos de su distribuidora y, del que elige, lo que hay en él. No se modifica ningún dato.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema responde 404 "Depósito … no encontrado". |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura por listado. Responde en menos de 1 segundo. |
-| **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir o cerrar un depósito. |
+| **Rendimiento** | Una consulta de depósitos con su ubicación y, en el detalle, una de saldos. Responde en menos de 1 segundo. |
+| **Frecuencia** | Media: cada vez que se abre el tablero de stock. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es el listado del que parten la modificación (CU-259) y la baja (CU-260) de un depósito. El detalle de un depósito con sus saldos es la consulta de CU-208 sobre su ubicación. |
+| **Comentarios** | `includeInactive` muestra los depósitos desactivados (`isActive = false`), no los dados de baja: la baja es lógica y el depósito deja de listarse. Un depósito inactivo no recibe stock nuevo pero puede entregar el que le queda. Cada depósito tiene una sola ubicación de stock (`locationId`), que es la que usan los demás casos para nombrarlo. |
 
 ---
 
@@ -12116,34 +12188,38 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador da de alta un depósito o sucursal de su distribuidora, con nombre, código, tipo (depósito o sucursal) y dirección. Cada depósito tiene su propia ubicación de stock, sobre la que se guardan los saldos. Endpoint: `POST /warehouses`. |
+| **Descripción** | El administrador da de alta un depósito o sucursal de su distribuidora con su nombre, su código, su tipo (depósito o sucursal) y, si quiere, su dirección. El sistema crea junto con él su ubicación de stock, que empieza sin saldo. Si la distribuidora no tenía ningún depósito predeterminado, el nuevo lo es. Endpoint: `POST /warehouses`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Stock → Depósitos» y elige agregar uno; ingresa nombre, código, tipo y dirección y confirma. |
-| 2 | El panel envía `POST /warehouses`. |
-| 3 | El sistema comprueba que el código no esté en uso entre los depósitos vigentes de la distribuidora, crea el depósito y su ubicación de stock y, si la distribuidora no tenía un depósito predeterminado, lo deja como tal. |
-| 4 | El sistema devuelve el depósito creado. |
+| 1 | El administrador abre «Stock → Depósitos» —**incluye CU-207 Consultar los Depósitos**— y elige «Nuevo depósito». |
+| 2 | Completa el nombre, el código (hasta 12 letras, dígitos, guion o guion bajo), el tipo y, si quiere, la dirección y si el depósito es el predeterminado. |
+| 3 | El panel envía `POST /warehouses`. |
+| 4 | El sistema comprueba que el código no lo use otro depósito vigente de la distribuidora y lo guarda en mayúsculas. |
+| 5 | El sistema crea el depósito y su ubicación de stock, sin saldo. Si la distribuidora no tenía depósito predeterminado, o el pedido lo indica, el nuevo pasa a serlo y el anterior deja de serlo. |
+| 6 | El sistema devuelve el depósito con 201. |
 
-**Postcondición:** La distribuidora tiene el depósito dado de alta, con su ubicación de stock sin saldo.
+**Postcondición:** Existe un depósito nuevo, activo, con su ubicación de stock sin saldo. La distribuidora tiene un solo depósito predeterminado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el código ya lo usa otro depósito vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
-| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 2 | Si falta el nombre o el código, o el código tiene caracteres no permitidos o más de 12, el sistema responde 400 con el detalle de cada campo. |
+| 4 | Si otro depósito vigente de la distribuidora ya tiene ese código, el sistema responde 409 "Ya existe un depósito vigente con ese código". |
+| 5 | Si otro alta o cambio del predeterminado se hace al mismo tiempo, el sistema responde 409 pidiendo probar de nuevo, sin dejar dos predeterminados. |
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura por alta. Responde en menos de 1 segundo. |
-| **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir un depósito. |
+| **Rendimiento** | Una transacción con tres escrituras: el depósito, su ubicación y, si cambia, la marca del anterior. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al abrir una sucursal. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Cada distribuidora nueva recibe un «Depósito central» predeterminado cuando se da de alta (listener de `distribuidora.creada`), de modo que el stock siempre tiene un lugar donde existir. El depósito es el lugar donde llegan las compras (CU-217) y de donde sale la carga de los camiones (CU-218). |
+| **Comentarios** | Toda distribuidora nace con un «Depósito central» predeterminado (código `CENTRAL`): el sistema lo crea al dar de alta la distribuidora y la migración lo creó para las que ya existían. El código es único sólo entre los depósitos vigentes: el de uno dado de baja puede reutilizarse. Que el primer depósito sea el predeterminado y que haya uno solo es una regla del sistema que sostiene un índice único parcial en la base. Un depósito nuevo no tiene saldo: su stock inicial se carga con el conteo inicial (CU-274). |
 
 ---
 
@@ -12154,35 +12230,38 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador modifica un depósito o sucursal de su distribuidora: nombre, código, tipo, dirección o estado. Endpoint: `PATCH /warehouses/:id`. |
+| **Descripción** | El administrador modifica el nombre, el código, el tipo o la dirección de un depósito de su distribuidora, o lo desactiva (deja de recibir stock) o lo reactiva. Sólo cambian los campos enviados. Endpoint: `PATCH /warehouses/:id`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador abre «Stock → Depósitos» y selecciona el depósito: **incluye CU-207 Consultar los Depósitos**, el listado del que sale. |
-| 2 | Cambia los campos que correspondan y el panel envía `PATCH /warehouses/:id` con los campos que cambian. |
-| 3 | El sistema aplica el cambio con la misma comprobación de código que el alta. |
-| 4 | El sistema devuelve el depósito actualizado. |
+| 2 | Cambia los datos que necesita, o lo desactiva o lo reactiva. |
+| 3 | El panel envía `PATCH /warehouses/:id` con los campos que cambian. |
+| 4 | El sistema comprueba que el depósito sea de la distribuidora y que el código nuevo no lo use otro depósito vigente. |
+| 5 | El sistema guarda los campos recibidos y devuelve el depósito modificado. |
 
-**Postcondición:** El depósito quedó con los datos nuevos. Sus saldos de stock no cambian.
+**Postcondición:** El depósito tiene los valores nuevos. Los demás campos, su ubicación de stock y sus saldos no cambian.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el código ya lo usa otro depósito vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
-| 3 | Si el depósito no existe, el sistema responde 404. |
-| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si otro depósito vigente ya tiene el código, el sistema responde 409 "Ya existe un depósito vigente con ese código". |
+| 4 | Si se intenta desactivar el depósito predeterminado, el sistema responde 409 "No se puede desactivar el depósito predeterminado: elegí otro primero". |
+| 3 | Si el código tiene caracteres no permitidos o más de 12, el sistema responde 400. |
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura y una escritura por cambio. Responde en menos de 1 segundo. |
-| **Frecuencia** | Muy baja: al incorporar la distribuidora y al abrir o cerrar un depósito. |
+| **Rendimiento** | Una lectura y una escritura de la fila del depósito. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al corregir un dato o cerrar temporalmente un depósito. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Sólo cambian los campos enviados: el cuerpo es parcial, igual que en la edición del vehículo. |
+| **Comentarios** | El mismo `PATCH` sirve para cambiar el depósito predeterminado (`isDefault: true`), pero eso es otro caso de uso por tener reglas y efectos propios (CU-273); acá `isDefault: false` sobre el predeterminado se rechaza con 409. Un depósito inactivo sigue existiendo, conserva su saldo y puede entregarlo, pero ninguna operación de stock le agrega unidades. |
 
 ---
 
@@ -12193,9 +12272,9 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador da de baja un depósito o sucursal de su distribuidora. La baja es lógica y sólo se admite cuando el depósito no tiene saldo. Endpoint: `DELETE /warehouses/:id`. |
+| **Descripción** | El administrador da de baja un depósito o sucursal de su distribuidora. La baja es lógica y sólo se admite cuando el depósito no tiene garrafas, de ninguna condición, y no es el predeterminado. Endpoint: `DELETE /warehouses/:id`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -12203,26 +12282,113 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |------|--------|
 | 1 | El administrador abre «Stock → Depósitos» y selecciona el depósito: **incluye CU-207 Consultar los Depósitos**, el listado del que sale. |
 | 2 | El panel envía `DELETE /warehouses/:id`. |
-| 3 | El sistema comprueba que la ubicación de stock del depósito no tenga saldo distinto de cero y lo marca como dado de baja. |
-| 4 | El sistema devuelve la confirmación de la baja. |
+| 3 | El sistema bloquea el depósito, comprueba que no sea el predeterminado y que la suma de sus saldos sea cero. |
+| 4 | El sistema borra los mínimos configurados del depósito (CU-210) y lo marca como dado de baja. |
+| 5 | El sistema devuelve la confirmación «Depósito dado de baja». |
 
-**Postcondición:** El depósito quedó dado de baja y dejó de listarse; su ubicación de stock y sus movimientos se conservan.
+**Postcondición:** El depósito quedó dado de baja y dejó de listarse; su ubicación de stock y sus movimientos se conservan para explicar su historial. Sus mínimos configurados ya no existen.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la ubicación del depósito tiene algún saldo distinto de cero, el sistema responde 409: el stock se transfiere o se ajusta antes de la baja. |
-| 3 | Si el depósito es el predeterminado y hay otros vigentes, el sistema responde 409 hasta que otro pase a ser el predeterminado. |
-| 3 | Si el depósito no existe, el sistema responde 404. |
-| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si el depósito tiene alguna garrafa, el sistema responde 409 "El depósito todavía tiene N garrafa(s): transferilas o ajustalas antes de darlo de baja". |
+| 3 | Si el depósito es el predeterminado, el sistema responde 409 "No se puede dar de baja el depósito predeterminado: elegí otro primero". |
+| 3 | Si el depósito no existe, ya está dado de baja o es de otra distribuidora, el sistema responde 404. |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura del saldo y una escritura. Responde en menos de 1 segundo. |
+| **Rendimiento** | Un bloqueo de la fila, una suma de saldos y dos escrituras. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al cerrar un depósito. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La baja es lógica: el depósito y su ubicación siguen existiendo para explicar los movimientos que ya tuvieron. Un saldo distinto de cero se resuelve antes con una transferencia (CU-212) o un ajuste (CU-213). La regla sobre la baja del depósito predeterminado es una propuesta de diseño: el diseño funcional no la prevé. |
+| **Comentarios** | El bloqueo exclusivo del depósito frena a cualquier operación de stock que lo esté usando (transferencia, ajuste, entrega): esa operación toma el depósito en modo compartido, así que la baja espera a que termine y, al entrar, ve el saldo final. Un saldo distinto de cero se resuelve antes con una transferencia (CU-212) o un ajuste (CU-213). |
+
+---
+
+#### Importante CU-273 — Marcar el Depósito Predeterminado
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador elige cuál de los depósitos de su distribuidora es el predeterminado: el que usan por omisión la entrega de un pedido sin camión con saldo y el ajuste de stock del catálogo. La distribuidora tiene siempre uno solo. Endpoint: `PATCH /warehouses/:id` con `isDefault: true`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» —**incluye CU-207 Consultar los Depósitos**— y elige «Marcar como predeterminado» en un depósito. |
+| 2 | El panel envía `PATCH /warehouses/:id` con `isDefault: true`. |
+| 3 | El sistema bloquea juntos el depósito predeterminado actual y el elegido, ordenados por identificador. |
+| 4 | El sistema le saca la marca al anterior y se la pone al elegido, en la misma transacción. |
+| 5 | El sistema devuelve el depósito elegido, ya predeterminado. |
+
+**Postcondición:** El depósito elegido es el predeterminado y el anterior dejó de serlo. La distribuidora no queda nunca sin predeterminado ni con dos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si otro cambio del predeterminado se hace al mismo tiempo, el sistema responde 409 "Otro cambio del depósito predeterminado se hizo al mismo tiempo: probá de nuevo"; queda uno solo. |
+| 2 | Si se envía `isDefault: false` sobre el predeterminado, el sistema responde 409 "Es el depósito predeterminado: elegí otro como predeterminado en lugar de sacarle la marca a este". |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos filas bloqueadas y dos actualizadas. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al reorganizar los depósitos. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El bloqueo ordenado de las dos filas evita que dos cambios simultáneos en sentidos opuestos se crucen, y un índice único parcial en la base impide dos predeterminados vigentes aunque fallara el bloqueo. El predeterminado no puede darse de baja ni desactivarse mientras lo sea (CU-260, CU-259): primero se elige otro. |
+
+---
+
+#### Importante CU-274 — Registrar el Conteo Inicial de un Depósito
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador carga lo que hay físicamente en un depósito —llenas, vacías y defectuosas de cada tipo de garrafa—. El sistema registra las diferencias contra el saldo actual como un ajuste numerado de motivo «conteo inicial», que además mueve el stock vendible de las llenas. Sólo se admite una vez por depósito; después se corrige con ajustes (CU-213). Endpoint: `POST /stock/initial-counts`, con `Idempotency-Key`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Depósitos» —**incluye CU-207 Consultar los Depósitos**— y elige «Conteo inicial» en el depósito. |
+| 2 | Carga, por cada tipo de garrafa, las llenas, las vacías y las defectuosas contadas y, si quiere, una nota. |
+| 3 | El panel envía `POST /stock/initial-counts`. |
+| 4 | El sistema bloquea el depósito en modo exclusivo y comprueba que no tenga ya un conteo inicial. |
+| 5 | El sistema compara lo contado con el saldo actual y arma un renglón por cada diferencia. |
+| 6 | El sistema asienta las diferencias en el libro de movimientos y mueve los saldos —**incluye CU-250 Aplicar un Movimiento de Stock**— y el stock vendible de las llenas. |
+| 7 | El sistema numera el ajuste, lo guarda con sus renglones y lo devuelve con 201. |
+
+**Postcondición:** El saldo del depósito es el contado. Existe un ajuste de motivo «conteo inicial» con su número y sus renglones, y el stock vendible de cada tipo cambió en la diferencia de llenas.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el depósito ya tiene su conteo inicial, el sistema responde 409 "Este depósito ya tiene su conteo inicial: corregilo con un ajuste". |
+| 5 | Si lo contado coincide con el saldo actual, el sistema responde 400 "El conteo coincide con el saldo actual: no hay nada que registrar". |
+| 5 | Si dos renglones nombran la misma garrafa, el sistema responde 400. |
+| 6 | Si la corrección de las llenas dejaría el stock vendible negativo (porque hay más reservado por pedidos abiertos que llenas contadas), el sistema responde 400 y no registra nada. |
+| 4 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema responde 404. |
+| 6 | Si el depósito está inactivo y el conteo le agrega unidades, el sistema responde 400 "… está inactivo: no recibe stock". |
+| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir el conteo; si no es un UUID v4, responde 400. |
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un bloqueo del depósito, la lectura de sus saldos, los movimientos y el ajuste con sus renglones, todo en una transacción. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: una vez por depósito. |
+| **Estabilidad** | Media |
+| **Comentarios** | Los depósitos que ya existían cuando se construyó el módulo arrancaron con un saldo inicial que dejó la migración (las llenas son el vendible más los pedidos abiertos; las vacías, cero), pero no tienen un conteo inicial registrado: se les puede hacer uno. El conteo no es una foto aparte: es un ajuste con motivo `initial_count` y por eso aparece también en CU-275. Por ser un ajuste, no se contraasienta: se corrige con otro ajuste. |
 
 ---
 
@@ -12232,34 +12398,69 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador ve el stock físico de la distribuidora por ubicación (depósitos y camiones) y por condición (llenas, vacías y defectuosas), y el resumen por tipo de garrafa con lo que está reservado por pedidos abiertos, lo que se puede vender y el mínimo configurado. Endpoints: `GET /stock?locationId&warehouseId&carId&gasCylinderId` y `GET /stock/summary`. |
+| **Descripción** | El administrador consulta cuántas garrafas llenas, vacías y defectuosas de cada tipo hay en cada depósito y en cada camión, con filtros por ubicación y por tipo de garrafa, y la lista de las ubicaciones con sus nombres. Endpoints: `GET /stock` y `GET /stock/locations`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el tablero «Stock»; el panel consulta `GET /stock/summary`. |
-| 2 | El sistema arma, por cada tipo de garrafa vigente, las cantidades llenas, vacías y defectuosas en depósitos y en camiones, lo reservado por pedidos abiertos, lo vendible y el mínimo configurado, y lo devuelve. |
-| 3 | El administrador elige una ubicación o un tipo de garrafa; el panel consulta `GET /stock` con los filtros que correspondan. |
-| 4 | El sistema devuelve los saldos de la ubicación por tipo de garrafa y condición. |
+| 1 | El administrador abre el tablero «Stock». |
+| 2 | El panel envía `GET /stock/locations` para armar los filtros y `GET /stock`, con `locationId`, `warehouseId`, `carId` o `gasCylinderId` si el administrador filtra, y `includeZero=true` si quiere ver también los saldos en cero. |
+| 3 | El sistema lee los saldos de la distribuidora, sin los depósitos dados de baja, y los devuelve ordenados por ubicación, tipo de garrafa y condición, con el nombre de la ubicación. |
 
-**Postcondición:** Ninguna: es una consulta de sólo lectura. El administrador ve el stock físico y el vendible.
+**Postcondición:** El administrador ve el saldo de cada ubicación por tipo de garrafa y condición. No se modifica ningún dato.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la ubicación indicada no existe o es de otra distribuidora, el sistema responde 404 sin distinguir los casos. |
-| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 2 | Si un identificador de filtro no es un UUID, el sistema responde 400. |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Lecturas por índice sobre los saldos materializados: el saldo es una fila por ubicación, tipo y condición, no una suma de movimientos. Responde en menos de 1 segundo. |
-| **Frecuencia** | Alta: es la pantalla inicial del módulo. |
+| **Rendimiento** | Una consulta sobre los saldos de la distribuidora. Responde en menos de 1 segundo. |
+| **Frecuencia** | Alta: es el tablero de trabajo del stock. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El stock **vendible** es `gas_cylinder.stock`, lo que ya reserva `CreateOrderUseCase`; el **físico** vive en los saldos por ubicación. La relación entre ambos es una invariante (vendible igual a lo lleno en depósitos y camiones menos lo reservado por pedidos abiertos) que CU-224 concilia. Es la base de CU-210, CU-212 y CU-213, que incluyen este caso porque modifican saldos que antes hay que ver. |
+| **Comentarios** | Por omisión no se devuelven los saldos en cero. Un camión aparece cuando recibió stock alguna vez —su ubicación se crea la primera vez que se la nombra— y se nombra «Vehículo» con su patente. Este caso es el origen de las operaciones de stock: ajustar (CU-213), transferir (CU-212) y configurar mínimos (CU-210) parten de ver lo que hay. |
+
+---
+
+#### Importante CU-279 — Consultar el Resumen de Stock
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador compara, por tipo de garrafa, lo que hay en el galpón (los depósitos) con lo que hay en los camiones —llenas, vacías y defectuosas—, y ve lo reservado por pedidos abiertos, lo vendible y la suma de los mínimos configurados. Endpoint: `GET /stock/summary`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el tablero «Stock». |
+| 2 | El panel envía `GET /stock/summary`. |
+| 3 | El sistema suma los saldos por tipo de garrafa y condición, separando depósitos de vehículos, y cuenta lo reservado por los pedidos abiertos. |
+| 4 | El sistema devuelve, por tipo de garrafa, las llenas, vacías y defectuosas en depósitos y en vehículos, las llenas físicas, lo reservado, lo vendible y el mínimo total (vacío si no hay ninguno). |
+
+**Postcondición:** El administrador ve de un vistazo cuánto hay en el galpón y cuánto en la calle de cada tipo de garrafa, y cuánto puede venderse. No se modifica ningún dato.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Cuatro consultas en paralelo (garrafas, saldos, mínimos y reservado). Responde en menos de 1 segundo. |
+| **Frecuencia** | Alta: es la cabecera del tablero de stock. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Lo vendible (`sellable`) es el stock del catálogo; lo reservado, las unidades de los pedidos reservados, pendientes, aceptados o en camino. Entre las tres cifras debe cumplirse que lo vendible es igual a las llenas físicas menos lo reservado: si no, el desvío se ve en CU-224. El resumen cuenta como mínimo la suma de los mínimos mayores que cero de los depósitos vigentes. |
 
 ---
 
@@ -12269,33 +12470,36 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador consulta el libro de movimientos de stock: cada entrada, salida o traslado de garrafas, con el tipo de garrafa, la cantidad, las ubicaciones y condiciones de origen y destino, el motivo, el documento que lo originó y quién lo hizo. Los movimientos no se editan ni se borran. Endpoint: `GET /stock/movements?gasCylinderId&locationId&reason&from&to&page`. |
+| **Descripción** | El administrador consulta el libro de movimientos de stock (kardex), paginado, con filtros por tipo de garrafa, ubicación, motivo, tipo de documento de origen, lote y rango de fechas. Cada movimiento dice de dónde sale y adónde entra, en qué condición, por qué motivo y quién lo hizo. Endpoint: `GET /stock/movements`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Stock → Movimientos» y elige los filtros que necesita. |
-| 2 | El panel envía `GET /stock/movements` con los filtros y la página. |
-| 3 | El sistema devuelve la página de movimientos de la distribuidora, ordenados del más reciente al más antiguo, y el total que cumple el filtro. |
+| 1 | El administrador abre «Stock → Movimientos». |
+| 2 | Elige, si quiere, el tipo de garrafa, la ubicación, el motivo, el tipo de documento, el lote o las fechas. |
+| 3 | El panel envía `GET /stock/movements` con los filtros, `page` y `limit`. |
+| 4 | El sistema valida las fechas como días argentinos (`to` inclusivo), lee la página pedida del libro y cuenta el total. |
+| 5 | El sistema devuelve `{ data, total }` con los movimientos más recientes primero. |
 
-**Postcondición:** Ninguna: es una consulta de sólo lectura.
+**Postcondición:** El administrador ve los movimientos que cumplen el filtro. No se modifica ningún dato.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el rango de fechas está invertido, el sistema responde 400 con el detalle del campo. |
-| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si una fecha no tiene el formato `AAAA-MM-DD`, o `from` es posterior a `to`, el sistema responde 400 ""from" no puede ser posterior a "to"". |
+| 3 | Si un identificador de filtro no es un UUID o el motivo no existe, el sistema responde 400. |
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una consulta paginada sobre índices por distribuidora y fecha, por tipo de garrafa y por ubicación. Responde en menos de 1 segundo. |
-| **Frecuencia** | Media: ante una diferencia de stock o una auditoría. |
+| **Rendimiento** | Una consulta paginada sobre el libro, con un conteo. Responde en menos de 1 segundo. |
+| **Frecuencia** | Media: al auditar un faltante o seguir una operación. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El libro es de sólo agregado y se corrige con contraasientos, como `cylinder_movement` y el registro de auditoría. Es la fuente contra la que se explica cualquier saldo: el saldo de una ubicación es la suma de sus movimientos. |
+| **Comentarios** | El libro es de sólo agregado: un disparador de la base impide modificar o borrar un movimiento, y un error se corrige con un contraasiento (CU-276), que es un movimiento más de motivo `reversal` que apunta al original. Un movimiento sin ubicación de origen es una entrada desde afuera (conteo, hallazgo, vacío recolectado) y sin destino, una salida (entrega, merma). El kardex es el respaldo de cualquier número del resumen (CU-279). |
 
 ---
 
@@ -12305,36 +12509,39 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador fija, por depósito y tipo de garrafa, el mínimo de garrafas llenas que tiene que haber. Cuando el depósito baja de ese mínimo, el proceso de CU-211 avisa a los administradores. La consulta de los umbrales vigentes es parte de CU-208, que este caso incluye. Endpoint: `PUT /stock/thresholds`. |
+| **Descripción** | El administrador define, para cada depósito y tipo de garrafa, el mínimo de unidades llenas por debajo del cual el sistema avisa (CU-211), y consulta los mínimos vigentes junto con las llenas que hay hoy. Endpoints: `GET /stock/thresholds` y `PUT /stock/thresholds`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la ficha de un depósito en «Stock → Depósitos» —**incluye CU-208 Consultar el Stock por Ubicación**— y ve los saldos y los mínimos vigentes. |
-| 2 | Modifica los mínimos de los tipos de garrafa que quiere controlar y confirma. |
-| 3 | El panel envía `PUT /stock/thresholds` con la lista de pares depósito, tipo de garrafa y mínimo. |
-| 4 | El sistema valida cada par y, por cada uno, crea el umbral si el depósito no lo tenía o actualiza su mínimo. |
-| 5 | El sistema devuelve los umbrales vigentes del depósito. |
+| 1 | El administrador abre «Stock → Mínimos» —**incluye CU-208 Consultar el Stock por Ubicación**, de donde parte para ver el stock de cada depósito—. |
+| 2 | El panel envía `GET /stock/thresholds`, que ya trae por depósito y tipo de garrafa el mínimo, las llenas actuales (`currentFull`) y si ya se avisó. |
+| 3 | El administrador escribe los mínimos que quiere cambiar. |
+| 4 | El panel envía `PUT /stock/thresholds` con la lista `{ warehouseId, gasCylinderId, minFull }`. |
+| 5 | El sistema comprueba que los depósitos y las garrafas sean de la distribuidora y guarda cada mínimo: lo crea si no existía y lo actualiza si ya estaba. |
+| 6 | Si el mínimo de un par cambió, el sistema borra su aviso emitido, para evaluarlo de nuevo con el valor nuevo. Devuelve los mínimos vigentes. |
 
-**Postcondición:** El depósito tiene los mínimos indicados.
+**Postcondición:** Cada par depósito–garrafa indicado tiene el mínimo pedido. Hay un solo mínimo por par.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si un mínimo es negativo, el sistema responde 400 con el detalle del campo. |
-| 4 | Si el depósito o el tipo de garrafa no existen o son de otra distribuidora, el sistema responde 404. |
-| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 5 | Si algún depósito no existe, está dado de baja o es de otra distribuidora, o alguna garrafa no es de la distribuidora, el sistema responde 404 y no guarda ninguno. |
+| 4 | Si un mínimo es negativo o no es entero, el sistema responde 400 con el detalle del campo. |
+| 4 | Si la lista está vacía o tiene más de 100 renglones, o un mínimo supera 100.000, el sistema responde 400. |
+| 4 | Si la lista repite un mismo depósito y tipo de garrafa, vale el último renglón. |
+| 4 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura por par, en una sola transacción. Responde en menos de 1 segundo. |
-| **Frecuencia** | Baja: al configurar el depósito y al cambiar la demanda. |
+| **Rendimiento** | Una validación y un `INSERT … ON CONFLICT` por lote, en una transacción. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al ajustar la política de reposición. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es un alta o modificación en lote (upsert): hay un solo umbral por depósito y tipo de garrafa. El mínimo se compara contra las unidades **llenas del depósito** y no contra el stock vendible: el camión en ruta no cuenta. |
+| **Comentarios** | Un mínimo en cero equivale a no controlar ese par: el aviso diario (CU-211) lo ignora. Al borrar un depósito (CU-260) se borran sus mínimos. Los mínimos controlan sólo las llenas: las vacías y las defectuosas no tienen umbral. |
 
 ---
 
@@ -12344,35 +12551,36 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | Cada hora el sistema compara las unidades llenas de cada depósito con el mínimo que el administrador configuró (CU-210). Si un depósito está por debajo y todavía no se avisó, envía un correo a los administradores de la distribuidora y marca el aviso. Cuando el depósito se recupera, el marcador se limpia para poder avisar de nuevo. |
+| **Descripción** | Cada día a las 08:00, hora argentina, el sistema compara las unidades llenas de cada depósito con el mínimo que el administrador configuró (CU-210). Si un depósito está por debajo y todavía no se avisó, envía un correo a los administradores de la distribuidora y marca el aviso. Cuando el depósito se recupera, el sistema limpia la marca, de modo que vuelve a avisar si baja otra vez. |
 | **Precondición** | Ninguna: el proceso corre por iniciativa del sistema. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El proceso temporal se dispara cada hora. |
-| 2 | El sistema busca los umbrales configurados y, por cada uno, cuenta las unidades llenas del depósito. |
-| 3 | Si el depósito está por debajo del mínimo y el umbral no tiene aviso emitido, el sistema busca los administradores con correo cargado de la distribuidora y les envía un único correo con el detalle. |
-| 4 | El sistema marca el umbral con el instante del aviso, para no repetirlo en el ciclo siguiente. |
-| 5 | Si el depósito volvió a estar en el mínimo o por encima, el sistema limpia la marca del umbral. |
+| 1 | El proceso temporal se dispara todos los días a las 08:00, en la zona `America/Argentina/Buenos_Aires`. |
+| 2 | El sistema lee todos los mínimos de depósitos vigentes con las llenas que tiene cada uno. |
+| 3 | Por cada mínimo mayor que cero, el sistema decide si el depósito está bajo (llenas menores que el mínimo) y si ya tiene el aviso emitido. |
+| 4 | Los mínimos cuyo depósito se recuperó y tenían aviso emitido se limpian. |
+| 5 | Por cada distribuidora con mínimos nuevos por debajo, el sistema envía un solo correo a sus administradores con el detalle, por depósito y tipo de garrafa —**el servicio de correo (ACT-08) lo entrega**—. |
+| 6 | El sistema marca cada mínimo avisado con el instante del aviso, para no repetirlo mañana. |
 
-**Postcondición:** Cada administrador con correo cargado recibe, una sola vez, el aviso de cada depósito y tipo de garrafa que bajó de su mínimo.
+**Postcondición:** Cada administrador con correo cargado recibe, una sola vez, el aviso de cada depósito y tipo de garrafa que bajó de su mínimo, y cada mínimo avisado queda marcado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el envío falla, el sistema no marca el umbral y reintenta en el ciclo siguiente. |
-| 3 | Si la distribuidora no tiene ningún administrador con correo cargado, el sistema marca el umbral igual: no hay a quién reintentarle. |
+| 5 | Si el envío falla, el sistema registra el error, no marca los mínimos y reintenta al día siguiente. |
+| 5 | Si la distribuidora no tiene ningún administrador con correo cargado, el sistema marca los mínimos igual: no hay a quién reintentarle. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una consulta de umbrales con sus saldos y, por cada distribuidora con faltantes, una consulta de administradores y el envío. Corre cada hora, con cerrojo para que una sola instancia lo ejecute. |
-| **Frecuencia** | Cada hora. |
+| **Rendimiento** | Una consulta con todos los mínimos y, por cada distribuidora con faltantes, un envío de correo y una actualización. Corre una vez por día. |
+| **Frecuencia** | Diaria, a las 08:00. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es la contraparte de CU-142 para el stock y usa el mismo puerto de correo (`EmailSenderPort`). El cron fija su zona horaria en `America/Argentina/Buenos_Aires`. Las órdenes de compra enviadas con fecha esperada vencida (CU-215) se suman al mismo correo diario, y los camiones sin rendir se avisan a las 22:00 con otro proceso (`TruckLoadOpenCron`, CU-222): ambos comparten el puerto, no este caso. |
+| **Comentarios** | Es la contraparte de CU-142 para el stock y usa el mismo envío de correo. Un depósito dado de baja no se evalúa. El aviso es por mínimo, no por llenas: si el depósito sigue bajo al día siguiente no se repite; si el administrador cambia el mínimo (CU-210), el aviso se limpia y se vuelve a evaluar. El proceso no corrige nada: sólo avisa. El diseño inicial preveía una pasada por hora; el sistema corre una por día. |
 
 ---
 
@@ -12382,39 +12590,86 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador mueve cierta cantidad de un tipo de garrafa, en una condición (llena, vacía o defectuosa), de un depósito a otro de su distribuidora. La transferencia no cambia lo vendible: las unidades siguen en la distribuidora. Endpoint: `POST /stock/transfers`, con `Idempotency-Key`. |
+| **Descripción** | El administrador traslada unidades de uno o más tipos de garrafa, en una condición (llena, vacía o defectuosa), de un depósito a otro de su distribuidora, o entre un depósito y un camión, en cualquiera de los dos sentidos. La transferencia no cambia lo vendible: las unidades siguen siendo de la distribuidora. Endpoint: `POST /stock/transfers`, con `Idempotency-Key`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre el tablero «Stock» —**incluye CU-208 Consultar el Stock por Ubicación**— y elige «Transferir» desde un depósito. |
-| 2 | Elige el depósito de destino, el tipo de garrafa, la condición y la cantidad. |
-| 3 | El panel envía `POST /stock/transfers`. |
-| 4 | El sistema comprueba que las dos ubicaciones existan y sean distintas, bloquea los saldos en un orden fijo y comprueba que el origen tenga la cantidad indicada. |
-| 5 | El sistema registra un movimiento de motivo «traslado» con el origen y el destino —**incluye CU-250 Aplicar un Movimiento de Stock**— y actualiza los dos saldos en la misma transacción. |
-| 6 | El sistema devuelve el resultado de la operación. |
+| 1 | El administrador abre el tablero «Stock» —**incluye CU-208 Consultar el Stock por Ubicación**— y elige «Transferir» desde un depósito o un camión. |
+| 2 | Elige el destino —otro depósito o un camión—, los tipos de garrafa, la condición (llena por omisión), la cantidad de cada uno y, si quiere, una nota. |
+| 3 | El panel envía `POST /stock/transfers` con el origen, el destino y los renglones. |
+| 4 | El sistema resuelve las dos ubicaciones dentro de la distribuidora —la de un camión se crea la primera vez que se la nombra— y comprueba que sean distintas y que no sean dos camiones. |
+| 5 | El sistema asienta un movimiento de motivo «traslado» por renglón, todos con el mismo lote, y mueve los saldos de origen y destino —**incluye CU-250 Aplicar un Movimiento de Stock**— en la misma transacción. |
+| 6 | El sistema devuelve el identificador del lote y los movimientos con 201. |
 
-**Postcondición:** El origen tiene menos unidades y el destino más, en la cantidad indicada, con el movimiento asentado.
+**Postcondición:** El origen tiene menos unidades y el destino más, en lo indicado en cada renglón, con los movimientos asentados bajo un mismo lote. El stock vendible no cambia.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el origen no tiene la cantidad indicada, el sistema responde 400 con el saldo disponible y no registra nada. |
-| 4 | Si el origen y el destino son el mismo depósito, el sistema responde 400. |
-| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir el movimiento. |
-| 4 | Si una de las dos ubicaciones no existe o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si el origen y el destino son la misma ubicación, el sistema responde 400 "El origen y el destino son la misma ubicación". |
+| 4 | Si ambos son camiones, el sistema responde 400 "No se transfiere de un vehículo a otro: pasá por un depósito". |
+| 5 | Si el origen no tiene la cantidad de algún renglón, el sistema responde 400 "Stock insuficiente: Garrafa 10kg llenas en Galpón Norte (hay 50, se necesitan 99999)" y no registra ningún renglón. |
+| 5 | Si el destino es un depósito inactivo o un camión dado de baja, el sistema responde 400: no recibe stock. |
+| 4 | Si una ubicación o una garrafa no existe o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si dos renglones nombran la misma garrafa y condición, el sistema responde 400. |
+| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución con el mismo lote, sin repetir los movimientos; si no es un UUID v4, responde 400. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Dos filas de saldo bloqueadas y dos movimientos insertados en una transacción. Responde en menos de 1 segundo. |
-| **Frecuencia** | Baja: al reordenar el stock entre sucursales. |
+| **Rendimiento** | Los saldos de las filas involucradas bloqueados y un movimiento insertado por renglón, en una transacción. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al reordenar el stock entre sucursales o al cargar un camión. |
 | **Estabilidad** | Media |
-| **Comentarios** | Los saldos se bloquean ordenados por ubicación, tipo de garrafa y condición para que dos transferencias cruzadas no se bloqueen entre sí (orden global de bloqueos del backend). La transferencia no tiene tabla propia: es un movimiento con ubicación de origen y de destino. |
+| **Comentarios** | La transferencia no tiene tabla propia: es un grupo de movimientos con el mismo `batchId`, motivo `transfer` y origen y destino. Los bloqueos siguen un orden fijo, el mismo de todas las operaciones de stock —garrafas, depósitos y saldos ordenados—, de modo que dos transferencias cruzadas (A hacia B y B hacia A) no se traban. Si el administrador se equivoca, la corrige con CU-276 Anular una Transferencia de Stock. La carga formal del camión con su hoja (motivo `truck_load`) es otro caso de uso planificado (CU-218). |
+
+---
+
+#### Secundario CU-276 — Anular una Transferencia de Stock
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador corrige una transferencia hecha por error: el sistema asienta, en el libro de movimientos, los movimientos inversos que la deshacen (un contraasiento) y no modifica los originales. Sólo se anulan transferencias. Endpoint: `POST /stock/movements/batches/:batchId/reverse`, con `Idempotency-Key`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Movimientos» —**incluye CU-209 Consultar los Movimientos de Stock**— y elige la transferencia que quiere deshacer. |
+| 2 | Escribe, si quiere, una nota con el motivo. |
+| 3 | El panel envía `POST /stock/movements/batches/:batchId/reverse`. |
+| 4 | El sistema lee los movimientos del lote dentro de la distribuidora y comprueba que sean de una transferencia y que no se hayan contraasentado antes. |
+| 5 | El sistema asienta un movimiento inverso por cada original, con motivo «contraasiento» y una referencia al movimiento que corrige, y mueve los saldos —**incluye CU-250 Aplicar un Movimiento de Stock**—. |
+| 6 | El sistema devuelve el lote del contraasiento con 201. |
+
+**Postcondición:** El stock volvió a donde estaba antes de la transferencia. Los movimientos originales siguen en el libro, cada uno con su contraasiento, y no pueden anularse otra vez.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el identificador del lote no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 4 | Si el lote no existe o es de otra distribuidora, el sistema responde 404 "Lote de movimientos no encontrado: <id>". |
+| 4 | Si el lote es de otra cosa que una transferencia (por ejemplo un ajuste), el sistema responde 400 "Sólo se contraasientan transferencias; un ajuste se corrige con otro ajuste". |
+| 4 | Si el lote ya fue contraasentado, el sistema responde 409 "Ese lote ya fue contraasentado". |
+| 5 | Si las garrafas ya no están donde estaban (el saldo del destino original quedaría negativo), el sistema responde 409 "No se puede contraasentar: las garrafas ya no están donde estaban" y no registra nada. |
+| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir el contraasiento. |
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Los movimientos del lote, la comprobación de contraasientos previos y un movimiento inverso por renglón, en una transacción. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al corregir una transferencia equivocada. |
+| **Estabilidad** | Media |
+| **Comentarios** | El libro nunca se edita: un disparador de la base lo impide. El contraasiento es un grupo de movimientos con origen y destino invertidos y la referencia `reversedMovementId` al original, que es única: un movimiento se anula una sola vez. Un contraasiento no se vuelve a contraasentar: para repetir la transferencia se hace otra (CU-212). Un ajuste no se anula por acá, se corrige con otro ajuste (CU-213). Las compras y las cargas de camión tendrán su propia anulación cuando se construyan. |
 
 ---
 
@@ -12424,38 +12679,80 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador registra un ajuste de stock sobre un depósito o un camión: corrección de recuento, merma, fuga, daño, pérdida, hallazgo o recuento inicial. Cada ajuste lleva un número correlativo, una nota obligatoria y uno o más renglones con la diferencia por tipo de garrafa y condición. Si toca unidades llenas, el stock vendible se mueve en la misma medida. También consulta los ajustes de un período. Endpoints: `POST /stock/adjustments`, `GET /stock/adjustments` y, con el mismo contrato de siempre, `PATCH /cylinders/stock`, que pasa a crear un ajuste de corrección en el depósito predeterminado. |
+| **Descripción** | El administrador corrige el stock físico de un depósito o de un camión por un recuento, una merma, una fuga, una rotura, una pérdida o un hallazgo, con una nota obligatoria. El ajuste queda como un documento numerado por distribuidora, con un renglón por tipo de garrafa y condición. Endpoint: `POST /stock/adjustments`, con `Idempotency-Key`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Stock → Ajustes y mermas» —**incluye CU-208 Consultar el Stock por Ubicación**— y elige «Nuevo ajuste». |
-| 2 | Elige la ubicación, el motivo y, por cada tipo de garrafa y condición afectados, la diferencia; escribe la nota y, si quiere, adjunta un respaldo. |
+| 1 | El administrador abre el tablero «Stock» —**incluye CU-208 Consultar el Stock por Ubicación**— y elige «Ajustar» en un depósito o un camión. |
+| 2 | Elige el motivo —corrección de recuento, merma, fuga, rotura, pérdida o hallazgo—, escribe la nota obligatoria y carga los renglones: tipo de garrafa, condición y diferencia. |
 | 3 | El panel envía `POST /stock/adjustments`. |
-| 4 | El sistema toma el número correlativo, crea el ajuste con sus renglones y registra un movimiento por cada renglón —**incluye CU-250 Aplicar un Movimiento de Stock**. |
-| 5 | El sistema actualiza los saldos de la ubicación y, por los renglones de unidades llenas, el stock vendible del tipo de garrafa, sin dejar ninguno de los dos en negativo. |
-| 6 | El sistema devuelve el ajuste. Para consultar los ajustes de un período, el panel envía `GET /stock/adjustments` con el motivo y las fechas. |
+| 4 | El sistema comprueba que la diferencia de cada renglón tenga el signo que pide el motivo y que no haya dos renglones iguales. |
+| 5 | El sistema resuelve la ubicación dentro de la distribuidora y asienta un movimiento por renglón, y mueve los saldos —**incluye CU-250 Aplicar un Movimiento de Stock**—; si el renglón es de unidades llenas, el stock vendible cambia lo mismo. |
+| 6 | El sistema toma el número siguiente del ajuste, guarda el ajuste con sus renglones y lo devuelve con 201. |
 
-**Postcondición:** El ajuste está registrado con su número y su nota, los saldos de la ubicación reflejan la diferencia y, si tocó unidades llenas, el stock vendible también.
+**Postcondición:** El saldo de la ubicación cambió en la diferencia de cada renglón y el stock vendible acompañó a las llenas. Existe un ajuste numerado con su motivo, su nota y sus renglones, y un movimiento por renglón.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si la nota está vacía, el sistema responde 400: toda corrección tiene que poder explicarse. |
-| 5 | Si algún saldo o el stock vendible quedarían negativos, el sistema responde 400 con el detalle y no registra nada. |
-| 4 | Si la ubicación es de otra distribuidora o no existe, el sistema responde 404. |
+| 4 | Si la nota está vacía o en blanco, el sistema responde 400 "notes should not be empty". |
+| 4 | Si el signo de la diferencia no corresponde al motivo (una merma, fuga, pérdida o rotura positiva), el sistema responde 400 "Con el motivo shrinkage la variación tiene que ser negativa". |
+| 5 | Si el saldo de la ubicación quedaría negativo, el sistema responde 400 "Stock insuficiente: …" con lo que hay y lo que se necesita, y no registra nada. |
+| 5 | Si el stock vendible quedaría negativo, el sistema responde 400 "El stock vendible de Garrafa 10kg quedaría negativo: hay 281 vendibles y el resto está reservado por pedidos abiertos". |
+| 5 | Si la ubicación o una garrafa no existe o es de otra distribuidora, el sistema responde 404. |
+| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución con el mismo ajuste; si no es un UUID v4, responde 400. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Bloqueos de las filas de tipo de garrafa y de saldo en el orden global y una transacción con el ajuste, los renglones y los movimientos. Responde en menos de 2 segundos. |
-| **Frecuencia** | Baja a media: en cada toma de inventario y ante mermas. |
+| **Rendimiento** | Las garrafas y los saldos involucrados bloqueados, un movimiento por renglón, el número del ajuste y su guardado, en una transacción. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: ante un faltante, una rotura o un hallazgo. |
 | **Estabilidad** | Media |
-| **Comentarios** | Reemplaza a la edición directa del stock del catálogo (CU-039): el número deja de poder escribirse sin explicación. Un daño se registra como el pase de llenas a defectuosas dentro de la misma ubicación y no cambia lo vendible por sí solo. La toma de inventario inicial de cada distribuidora se hace con un ajuste de motivo «recuento inicial». |
+| **Comentarios** | Los motivos son `count_correction` (la diferencia puede ser positiva o negativa), `shrinkage`, `leak`, `lost` (siempre negativa), `found` (siempre positiva) y `damaged`, que pasa llenas a defectuosas dentro de la misma ubicación. El orden de bloqueos es el del libro de stock: garrafas por identificador, depósitos, saldos ordenados y, al final, el contador de numeración, de modo que dos ajustes simultáneos sobre el mismo saldo se serializan y el segundo ve el resultado del primero; los números de documento no tienen huecos. Un ajuste no se anula: se corrige con otro ajuste. Actualizar el stock de un producto del catálogo (CU-038) es un ajuste de recuento sobre el depósito predeterminado. |
+
+---
+
+#### Importante CU-275 — Consultar los Ajustes de Stock
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta los ajustes de stock registrados —incluidos los conteos iniciales y los ajustes de conciliación—, paginados, con filtros por motivo y fechas, y el detalle de uno con sus renglones. Endpoints: `GET /stock/adjustments` y `GET /stock/adjustments/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Ajustes». |
+| 2 | El panel envía `GET /stock/adjustments` con `reason`, `from`, `to`, `page` y `limit` según los filtros. |
+| 3 | El sistema valida las fechas como días argentinos, lee la página pedida con sus renglones y cuenta el total. |
+| 4 | El sistema devuelve `{ data, total }` con los ajustes, el más reciente primero. |
+| 5 | Si el administrador abre un ajuste, el panel envía `GET /stock/adjustments/:id` y el sistema devuelve su detalle con la ubicación, el motivo, la nota, quién lo registró y los renglones. |
+
+**Postcondición:** El administrador ve los ajustes que cumplen el filtro y, del que elige, todo su detalle. No se modifica ningún dato.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si una fecha no tiene el formato `AAAA-MM-DD`, o `from` es posterior a `to`, el sistema responde 400. |
+| 5 | Si el ajuste no existe o es de otra distribuidora, el sistema responde 404 "Ajuste … no encontrado". |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos consultas por página (cabeceras y renglones). Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al auditar una corrección. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Los ajustes numerados son también el rastro de las correcciones del catálogo (CU-038), de los conteos iniciales (CU-274) y de los ajustes de conciliación (CU-277). El ajuste de conciliación no tiene movimientos en el libro: no cambió el físico. |
 
 ---
 
@@ -12539,42 +12836,41 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 
 ---
 
-#### Crítico CU-220 — Descontar del Camión lo Entregado
+#### Crítico CU-220 — Descontar del Stock Físico lo Entregado
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | Al confirmarse la entrega de un pedido (CU-020, CU-079), el sistema reacciona al evento de pedido entregado: por cada ítem del pedido descuenta del stock físico de la ubicación de origen las garrafas llenas entregadas y acredita en ella la misma cantidad de envases vacíos recolectados. La ubicación de origen es el camión del vehículo del pedido si tiene una carga abierta y, si no, el depósito predeterminado. No toca el stock vendible, que ya se descontó al reservar el pedido. |
-| **Precondición** | Se confirmó la entrega de un pedido y se emitió el evento de pedido entregado. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | Cuando un pedido pasa a entregado, el sistema descuenta del stock físico las garrafas llenas entregadas y acredita los envases vacíos recolectados, uno por uno. Las llenas salen del camión del pedido si tiene saldo; si no, del depósito predeterminado. Nunca bloquea la entrega: lo que no puede descontar queda para la conciliación (CU-224). |
+| **Precondición** | Lo invoca otro caso de uso, dentro de su transacción: CU-020 o CU-079 al confirmarse la entrega, o CU-278 al reaplicarla. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El sistema recibe el evento de pedido entregado, emitido después de confirmada la transición del pedido. |
-| 2 | El sistema busca el vehículo del pedido y su carga abierta —cargando, en ruta o regresó—; si no tiene, usa el depósito predeterminado de la distribuidora como origen. |
-| 3 | Por cada ítem del pedido, el sistema registra la salida de las llenas del origen hacia el cliente y la entrada de las vacías recolectadas, por la misma cantidad (canje de uno a uno) —**incluye CU-250 Aplicar un Movimiento de Stock**. |
-| 4 | El sistema actualiza los saldos del origen en la misma transacción. |
+| 1 | El caso que lo incluye entrega el pedido entregado, con la garrafa y la cantidad de cada ítem y el vehículo con el que se aceptó. |
+| 2 | Dentro de la misma transacción de la entrega y en un punto de control propio, el sistema busca qué garrafas del pedido ya tienen su movimiento de entrega. |
+| 3 | Por cada garrafa pendiente, ordenadas por identificador, el sistema elige el origen: el camión del pedido si tiene llenas suficientes y, si no, el depósito predeterminado; la garrafa que no tiene origen en ninguno de los dos se descarta y las demás siguen. |
+| 4 | El sistema asienta, por cada garrafa, una salida de llenas hacia el cliente y una entrada de vacías al mismo lugar —**incluye CU-250 Aplicar un Movimiento de Stock**— sin tocar el stock vendible, que ya se descontó al reservar. |
 
-**Postcondición:** El origen tiene menos garrafas llenas y más vacías, por lo entregado (una entrega confirmada después del regreso del camión se imputa a su carga hasta que se cierra la rendición), y los movimientos quedan asentados con el pedido como documento de origen. Si el evento se repite, no se descuenta dos veces.
+**Postcondición:** Por cada garrafa entregada, las llenas del origen bajaron y sus vacías subieron en la cantidad entregada, con el pedido como documento de origen. El stock vendible no cambió.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el movimiento de ese pedido y tipo de garrafa ya existe, el sistema no hace nada: es idempotente por una clave única parcial. |
-| 2 | Si el vehículo no tiene una carga abierta, el origen es el depósito predeterminado, de modo que el camión nunca queda en negativo; la falta de carga se ve en la conciliación (CU-224). |
-| 3 | Si el camión tiene una carga abierta pero no alcanza lo entregado, el sistema no registra el movimiento y deja el pedido para el barrido de CU-224; se resuelve reponiendo la carga (CU-218). Es una propuesta de diseño: el diseño funcional no define este caso. |
-| 1 | Si el proceso cae entre la confirmación y la escucha del evento, el barrido de CU-224 lo aplica después. |
+| 3 | Si ni el camión ni el depósito tienen llenas suficientes de una garrafa, el sistema no registra esa garrafa, deja el aviso en el registro y la entrega sigue: queda para CU-224 y se resuelve con CU-278. |
+| 2 | Si el pedido ya tiene el movimiento de entrega de una garrafa, el sistema no la repite. |
+| 4 | Si el descuento falla por un bloqueo cruzado (`40P01`), el sistema lo intenta 3 veces en total, o sea 2 reintentos; si sigue fallando, la entrega igual queda confirmada y el pedido pendiente para la conciliación. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una transacción por pedido, con los saldos bloqueados en el orden global. Se ejecuta fuera de la transacción de la entrega y no demora la respuesta al chofer. |
-| **Frecuencia** | Una vez por pedido entregado. |
-| **Estabilidad** | Media |
-| **Comentarios** | El evento de pedido entregado lo emite `UpdateOrderStatusUseCase` después del commit, donde hoy llama al ciclo de vida del envase; lo escuchan también la comisión y la cuenta corriente del módulo de caja. Se eligió el evento en memoria con un barrido diario por sobre una tabla de salida transaccional: el resultado final es el mismo con una fracción del costo, y el barrido ya hace falta para conciliar. El canje de uno a uno es una inferencia: si el cliente entregó más o menos vacíos, la diferencia sale a la luz en la rendición del camión (CU-222). Los casos CU-020 y CU-079, que confirman la entrega, disparan este caso. |
+| **Rendimiento** | Una lectura de saldos y, si descuenta, un movimiento por renglón, todo dentro de la transacción de la entrega. No agrega esperas visibles al chofer. |
+| **Frecuencia** | Alta: una vez por pedido entregado. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El descuento corre por el mismo gestor de la transacción del pedido, en un punto de control propio: si falla, no aborta la entrega. Es idempotente por pedido y garrafa (revisión previa e índice único del libro). La vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno, y se corrige al rendir el camión. Un depósito inactivo o un camión dado de baja pueden entregar el stock que les queda, no recibirlo. Cualquier cambio de estado de un pedido a entregado dispara el caso, también el que hace un administrador. El diseño inicial lo hacía escuchando un evento después de la transacción; se resolvió dentro de ella para que no se pierda si el proceso cae. |
 
 ---
 
@@ -12701,35 +12997,121 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | Cada noche, a las 3:00, el sistema revisa los pedidos entregados que no tienen movimiento de stock y los aplica (idempotente), y compara el stock vendible de cada tipo de garrafa con lo lleno en depósitos y camiones menos lo reservado por pedidos abiertos. Si hay diferencia avisa a los administradores y no la corrige sola. El administrador consulta la misma conciliación a pedido. Endpoint: `GET /stock/reconciliation`. |
-| **Precondición** | Para el proceso: ninguna, corre por iniciativa del sistema. Para la consulta: el solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05). |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | Cada noche, a las 03:00 hora argentina, el sistema compara, por tipo de garrafa, el stock vendible con las llenas físicas menos lo reservado por pedidos abiertos, y busca las entregas que quedaron sin descontar el físico. Si hay una diferencia nueva, avisa por correo a los administradores. El administrador puede consultar la conciliación cuando quiera. El caso no corrige nada: la salida de un desvío es CU-277 y la de una entrega sin descuento, CU-278. Endpoint: `GET /stock/reconciliation`. |
+| **Precondición** | Para consultar la conciliación, el solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. El proceso nocturno corre por iniciativa del sistema. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El proceso temporal se dispara una vez por noche, a las 3:00 hora argentina. |
-| 2 | El sistema busca los pedidos entregados sin movimiento de stock y aplica el descuento de cada uno —**ver CU-220 Descontar del Camión lo Entregado**. |
-| 3 | Por cada tipo de garrafa, el sistema suma lo lleno en depósitos y camiones, resta lo reservado por pedidos abiertos y lo compara con el stock vendible. |
-| 4 | Si hay diferencia, el sistema busca los administradores con correo cargado de la distribuidora y les envía el detalle. |
-| 5 | El administrador puede ver el mismo resultado en «Stock → Conciliación», con `GET /stock/reconciliation`, que no escribe nada. |
+| 1 | El proceso temporal se dispara todos los días a las 03:00, en la zona `America/Argentina/Buenos_Aires`, para cada distribuidora que tenga depósitos y no esté dada de baja. |
+| 2 | El sistema calcula, en una lectura consistente, por tipo de garrafa: el vendible, las llenas físicas, lo reservado, lo esperado (llenas menos reservado) y la diferencia; y las entregas posteriores al arranque del módulo que no tienen movimiento de descuento. |
+| 3 | Si todo cierra, el sistema borra el aviso previo de la distribuidora y termina. |
+| 4 | Si hay diferencias, el sistema calcula la firma de las diferencias y la compara con la del último aviso; si es la misma, no repite el aviso. |
+| 5 | Si es una diferencia nueva, el sistema envía un correo a los administradores con el detalle —**el servicio de correo (ACT-08) lo entrega**— y guarda la firma con el instante del aviso. |
+| 6 | Para consultarla a mano, el administrador abre «Stock → Conciliación» y el panel envía `GET /stock/reconciliation`; el sistema devuelve el mismo cálculo, con la corrección sugerida por tipo de garrafa. |
 
-**Postcondición:** Ningún pedido entregado queda sin su movimiento de stock y los administradores conocen cada diferencia entre el vendible y el físico.
+**Postcondición:** El administrador conoce la diferencia entre el vendible y el físico, y las entregas pendientes de descuento. Una diferencia nueva se avisa una sola vez; si desaparece, el próximo desvío vuelve a avisar.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si la aplicación de una entrega falla, el sistema sigue con las demás y la reintenta la noche siguiente. |
-| 4 | Si el envío del correo falla, la diferencia sigue visible en la pantalla de conciliación. |
+| 5 | Si el envío falla, el sistema registra el error y no guarda la firma: reintenta la noche siguiente. |
+| 2 | Si la conciliación de una distribuidora falla, el sistema registra el error y sigue con las demás. |
+| 6 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una consulta de pedidos entregados sin movimiento y una agregación de saldos por tipo de garrafa, una vez por noche y fuera del horario de mayor uso, con cerrojo para que una sola instancia la ejecute. |
-| **Frecuencia** | Diaria; la consulta del administrador, a demanda. |
+| **Rendimiento** | Una lectura en `REPEATABLE READ` de garrafas, saldos, reservado y entregas, y un `INSERT … ON CONFLICT` de la firma si hay aviso. Responde en menos de 1 segundo. |
+| **Frecuencia** | Diaria, a las 03:00; la consulta, baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | El barrido es lo que permite usar un evento en memoria en lugar de una tabla de salida transaccional: si el proceso cae entre la confirmación de la entrega y la escucha, la entrega se aplica de todos modos. No corrige el vendible por su cuenta: una diferencia puede ser un error de carga y se resuelve con un ajuste (CU-213). El caso lo inicia el Sistema Automático; el administrador sólo consulta. |
+| **Comentarios** | La conciliación sólo cuenta las entregas posteriores al primer movimiento del libro: las anteriores no tenían físico que descontar. `consistent` es verdadero cuando todas las diferencias son cero y no hay entregas sin movimiento. El diseño inicial preveía que el barrido nocturno reaplicara las entregas pendientes; el sistema decidió lo contrario: la reaplicación es una acción explícita del administrador (CU-278), una vez corregida la causa (por ejemplo, transferir llenas al depósito). |
+
+---
+
+#### Importante CU-277 — Registrar un Ajuste de Conciliación del Vendible
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | Cuando la conciliación (CU-224) muestra que el stock vendible de un tipo de garrafa se desvió del físico menos lo reservado, el administrador lo corrige con una nota obligatoria. El sistema ajusta sólo el stock vendible del catálogo y deja un documento numerado de motivo «conciliación» que lo respalda; el físico no cambia, así que no genera movimientos. Endpoint: `POST /stock/reconciliation/adjustments`, con `Idempotency-Key`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Conciliación» —**incluye CU-224 Conciliar el Stock Vendible con el Físico**— y elige «Corregir» en el tipo de garrafa con diferencia. |
+| 2 | Escribe la nota obligatoria. El panel puede enviar la diferencia que vio (`expectedDifference`). |
+| 3 | El panel envía `POST /stock/reconciliation/adjustments` con el tipo de garrafa y la nota. |
+| 4 | El sistema bloquea la garrafa del catálogo y recalcula la diferencia con las llenas físicas y lo reservado. |
+| 5 | El sistema corrige el stock vendible hasta el valor esperado. |
+| 6 | El sistema toma el número siguiente, guarda el ajuste de motivo «conciliación» sobre el depósito predeterminado con un renglón de llenas que dice cuánto se corrigió, y lo devuelve con 201. |
+
+**Postcondición:** El stock vendible del tipo de garrafa es igual a las llenas físicas menos lo reservado. Existe un ajuste numerado de motivo «conciliación» con su nota y su renglón. Ningún saldo físico ni ningún movimiento cambió.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el tipo de garrafa no existe o es de otra distribuidora, el sistema responde 400 "Garrafa no encontrada". |
+| 4 | Si no hay diferencia, el sistema responde 400 "Garrafa 10kg no tiene diferencia: el vendible ya coincide con el físico menos lo reservado". |
+| 4 | Si la diferencia que el panel vio ya cambió, el sistema responde 409 "La diferencia cambió: ahora es N y se esperaba M. Revisá la conciliación de nuevo". |
+| 4 | Si las llenas físicas son menos que lo reservado, el sistema responde 400: primero se corrige el físico con un ajuste o una transferencia. |
+| 2 | Si la nota está vacía, el sistema responde 400. |
+| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución con el mismo ajuste. |
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un bloqueo de la garrafa, tres lecturas, el número y dos escrituras, en una transacción. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: sólo ante un desvío. |
+| **Estabilidad** | Media |
+| **Comentarios** | Se hizo así y no con un ajuste de recuento (CU-213) porque el físico no cambió: corregir con un ajuste de llenas habría movido el físico y duplicado el error. Mientras corre, la garrafa del catálogo está bloqueada con el mismo cerrojo que usa un pedido nuevo al reservar, de modo que los pedidos esperan y la cuenta no se mueve. El renglón guarda la variación aplicada al vendible. No es un movimiento del libro, por lo que no se contraasienta. |
+
+---
+
+#### Importante CU-278 — Reaplicar las Entregas sin Movimiento de Stock
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador vuelve a descontar el stock físico de las entregas que no pudieron hacerlo cuando se confirmaron —por ejemplo, porque el camión y el depósito no tenían llenas— una vez corregida la causa. Es una acción explícita, no la hace sola la conciliación. Endpoint: `POST /stock/reconciliation/reapply-deliveries`, con `Idempotency-Key`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Conciliación» —**incluye CU-224 Conciliar el Stock Vendible con el Físico**—, ve las entregas sin movimiento y corrige la causa (por ejemplo, transfiere llenas al depósito). |
+| 2 | Elige «Reaplicar entregas». El panel envía `POST /stock/reconciliation/reapply-deliveries`. |
+| 3 | El sistema busca los pedidos entregados desde el primer movimiento del libro y agrupa sus renglones por pedido. |
+| 4 | Por cada pedido, el sistema vuelve a ejecutar el descuento de la entrega —**incluye CU-220 Descontar del Stock Físico lo Entregado**— dentro de su propia transacción. |
+| 5 | El sistema devuelve cuántos pedidos revisó, cuántos reaplicó y cuántos siguen pendientes. |
+
+**Postcondición:** Las entregas que ahora tienen saldo quedaron descontadas. Las que siguen sin saldo quedan pendientes y se ven en la conciliación.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si una entrega sigue sin llenas suficientes, el sistema no registra nada de ese pedido y lo cuenta como pendiente; las demás se reaplican igual. |
+| 3 | Si no hay ningún movimiento en el libro, el sistema responde 0 revisados, 0 reaplicados y 0 pendientes. |
+| 2 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución. |
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una consulta de entregas y, por pedido pendiente, una transacción con el descuento. Responde en menos de 1 segundo por cada pedido pendiente. |
+| **Frecuencia** | Muy baja: sólo ante entregas sin descuento. |
+| **Estabilidad** | Media |
+| **Comentarios** | Es idempotente por pedido y garrafa: reaplicar dos veces no descuenta dos veces, porque el libro tiene un índice único por pedido, garrafa y motivo «entrega» y el descuento revisa primero lo ya asentado. Un pedido que no tiene nada para hacer no entra en la cuenta de revisados. |
 
 ---
 
@@ -12815,33 +13197,39 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | Comportamiento común a todo cambio de stock físico: descuenta del saldo de la ubicación de origen, si la hay, acredita en el de la ubicación de destino, si la hay, y asienta el movimiento. Si el origen no tiene la cantidad, no registra nada y avisa de saldo insuficiente. Es lo que ejecutan CU-212, CU-213, CU-217, CU-218, CU-220 y CU-222 por cada renglón. |
-| **Precondición** | El caso base tiene el tipo de garrafa, la condición, la cantidad y la o las ubicaciones. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | Comportamiento común a todo cambio de stock físico: el sistema valida las ubicaciones y las garrafas, bloquea en un orden fijo, comprueba que ningún saldo quede negativo, mueve los saldos de cada ubicación, asienta los movimientos en el libro y, cuando cambian las llenas, acompaña con el stock vendible. También deshace un lote ya asentado con un contraasiento. |
+| **Precondición** | Lo invoca otro caso de uso, dentro de su transacción. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El caso base le pide al sistema aplicar un movimiento con su origen, su destino, el tipo de garrafa, las condiciones, la cantidad y el motivo. |
-| 2 | Si el movimiento sale de una ubicación, el sistema bloquea y descuenta su saldo y comprueba que no quede negativo. |
-| 3 | Si el movimiento entra en una ubicación, el sistema acredita su saldo, que crea si todavía no existía. |
-| 4 | El sistema asienta el movimiento, de sólo agregado, con el motivo, el documento de origen y el autor. |
+| 1 | El caso que lo incluye entrega la operación: la distribuidora, el documento de origen, quién la hizo y los movimientos —cada uno con su garrafa, cantidad, origen, destino y motivo—. |
+| 2 | El sistema comprueba que cada movimiento tenga cantidad positiva y al menos un extremo, y que origen y destino no coincidan. |
+| 3 | El sistema carga las ubicaciones y las garrafas dentro de la distribuidora, y bloquea las garrafas del catálogo por identificador (`FOR UPDATE` si el vendible acompaña al físico, `FOR KEY SHARE` si no) y los depósitos involucrados en modo compartido. |
+| 4 | El sistema asegura las filas de saldo que van a recibir, las bloquea ordenadas por ubicación, garrafa y condición, y comprueba que ningún saldo quede negativo. |
+| 5 | El sistema actualiza los saldos de cada ubicación y asienta los movimientos con un mismo lote. |
+| 6 | Si lo que se pide es deshacer un lote, el sistema genera los movimientos inversos con la referencia al original y los aplica por este mismo camino. |
 
-**Postcondición:** Los saldos reflejan el movimiento y el movimiento queda asentado; si el origen no tenía la cantidad, no cambia nada.
+**Postcondición:** Los saldos reflejan los movimientos, ninguno es negativo y el libro tiene un movimiento por cada renglón, con el lote de la operación.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el origen no tiene la cantidad, el sistema devuelve saldo insuficiente al caso base, que decide cómo responder. |
+| 1 | Si la operación no tiene movimientos, o un movimiento es inválido, el sistema rechaza con 400. |
+| 3 | Si una ubicación o una garrafa no es de la distribuidora, el sistema responde 404. |
+| 3 | Si el destino es un depósito inactivo o un vehículo dado de baja, el sistema responde 400: no recibe stock. |
+| 4 | Si algún saldo quedaría negativo, el sistema responde 400 con el detalle de cada faltante (ubicación, garrafa, condición, lo que hay y lo que se pedía) y no cambia nada. |
+| 6 | Si el lote ya fue contraasentado, o las garrafas ya no están donde estaban, el sistema responde 409. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Dos filas de saldo bloqueadas en un orden fijo y una inserción, dentro de la transacción del caso base. |
-| **Frecuencia** | Una vez por renglón de cada caso base. |
+| **Rendimiento** | Bloqueos ordenados y dos escrituras en lote (saldos y movimientos). Responde en menos de 1 segundo. |
+| **Frecuencia** | Alta: lo ejecuta todo cambio de stock físico. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es el único punto de escritura de saldos y movimientos. Cambiar el stock vendible no es parte de este caso: lo decide cada caso base. Para que dos operaciones cruzadas no se bloqueen entre sí, los saldos se toman ordenados por ubicación, tipo de garrafa y condición. |
+| **Comentarios** | Es el único punto de escritura del stock físico (`StockLedgerPort`): nadie más toca los saldos ni el libro. El libro toma sus bloqueos en este orden, que es lo que evita los deadlocks entre ajustes, transferencias y entregas: 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido (frena la baja de un depósito en uso); 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, si el caso numera un documento (el conteo inicial no sigue hoy este orden: toma antes el depósito en modo exclusivo, y el back se está corrigiendo para alinearlo). `FOR KEY SHARE` alcanza para las entregas y las transferencias porque no cambian el vendible: sólo espera a quien tenga `FOR UPDATE`. Cuatro garantías sostiene además la base: el saldo no es negativo (restricción), el libro no se modifica (disparador), un movimiento se contraasienta una sola vez (índice único parcial) y el descuento de una entrega es idempotente (índice único parcial). Las compras y las cargas de camión (CU-217, CU-218, CU-222) usarán este mismo punto cuando se construyan. |
 
 ---
 
@@ -20484,7 +20872,7 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-012, CU-013 
 #### DSS — CU-207: Consultar los Depósitos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `consultarDepositos()`
+**Operaciones del sistema:** `consultarDepositos(incluirInactivos)`, `consultarDeposito(depositoId)`
 
 ```mermaid
 sequenceDiagram
@@ -20493,9 +20881,18 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: consultarDepositos()
+    ADM->>SIS: consultarDepositos(incluirInactivos)
     activate SIS
-    SIS-->>ADM: depósitos de la distribuidora
+    SIS-->>ADM: depósitos con su ubicación de stock
+    deactivate SIS
+
+    ADM->>SIS: consultarDeposito(depositoId)
+    activate SIS
+    alt el depósito existe en la distribuidora
+        SIS-->>ADM: depósito con sus saldos
+    else el depósito no existe, está dado de baja o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
     deactivate SIS
 ```
 
@@ -20516,10 +20913,12 @@ sequenceDiagram
 
     ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
     activate SIS
-    alt el código está libre
+    alt los datos son válidos y el código está libre
         SIS-->>ADM: depósito creado
-    else el código ya lo usa otro depósito vigente
-        SIS-->>ADM: conflicto, con el detalle del campo
+    else falta un dato o el formato del código no es válido
+        SIS-->>ADM: datos inválidos
+    else otro depósito vigente ya usa el código, o hay un cambio simultáneo del predeterminado
+        SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
@@ -20541,10 +20940,14 @@ sequenceDiagram
 
     ADM->>SIS: actualizarDeposito(depositoId, datos)
     activate SIS
-    alt el depósito existe
-        SIS-->>ADM: depósito actualizado
-    else el depósito no existe
+    alt el depósito existe y los datos son válidos
+        SIS-->>ADM: depósito modificado
+    else el depósito no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    else el código ya lo usa otro depósito vigente, o se desactiva el predeterminado
+        SIS-->>ADM: conflicto
+    else el formato de un dato no es válido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
@@ -20566,10 +20969,66 @@ sequenceDiagram
 
     ADM->>SIS: darDeBajaDeposito(depositoId)
     activate SIS
-    alt el depósito no tiene saldo
-        SIS-->>ADM: baja confirmada
-    else el depósito tiene saldo
-        SIS-->>ADM: conflicto, con el saldo pendiente
+    alt el depósito existe, no es el predeterminado y no tiene saldo
+        SIS-->>ADM: depósito dado de baja
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el depósito es el predeterminado o todavía tiene garrafas
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-273: Marcar el Depósito Predeterminado
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `marcarDepositoPredeterminado(depositoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-273 Marcar el Depósito Predeterminado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: marcarDepositoPredeterminado(depositoId)
+    activate SIS
+    alt el depósito existe y no hay otro cambio simultáneo
+        SIS-->>ADM: depósito predeterminado
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else hay otro cambio simultáneo, o se intenta sacarle la marca al predeterminado
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-274: Registrar el Conteo Inicial de un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarConteoInicial(depositoId, items, nota)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-274 Registrar el Conteo Inicial de un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarConteoInicial(depositoId, items, nota)
+    activate SIS
+    alt el depósito no tiene conteo inicial y hay diferencias que registrar
+        SIS-->>ADM: conteo inicial registrado
+    else el conteo coincide con el saldo, repite una garrafa o dejaría el vendible negativo
+        SIS-->>ADM: datos inválidos
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el depósito ya tiene su conteo inicial
+        SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
@@ -20579,7 +21038,7 @@ sequenceDiagram
 #### DSS — CU-208: Consultar el Stock por Ubicación
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `consultarStockPorUbicacion(ubicacionId, productoId)`, `consultarResumenDeStock()`
+**Operaciones del sistema:** `consultarStockPorUbicacion(ubicacionId, productoId)`, `consultarUbicacionesDeStock()`
 
 ```mermaid
 sequenceDiagram
@@ -20588,23 +21047,35 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt resumen por tipo de garrafa
-        ADM->>SIS: consultarResumenDeStock()
-        activate SIS
-        SIS-->>ADM: llenas, vacías, defectuosas, reservado, vendible y mínimo por tipo
-        deactivate SIS
-    end
+    ADM->>SIS: consultarStockPorUbicacion(ubicacionId, productoId)
+    activate SIS
+    SIS-->>ADM: saldos por ubicación, tipo de garrafa y condición
+    deactivate SIS
 
-    opt detalle de una ubicación
-        ADM->>SIS: consultarStockPorUbicacion(ubicacionId, productoId)
-        activate SIS
-        alt la ubicación existe
-            SIS-->>ADM: saldos por tipo de garrafa y condición
-        else la ubicación no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
+    ADM->>SIS: consultarUbicacionesDeStock()
+    activate SIS
+    SIS-->>ADM: ubicaciones con su nombre
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-279: Consultar el Resumen de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarResumenDeStock()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-279 Consultar el Resumen de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarResumenDeStock()
+    activate SIS
+    SIS-->>ADM: resumen por tipo de garrafa: depósitos, camiones, reservado, vendible y mínimo
+    deactivate SIS
 ```
 
 ---
@@ -20623,10 +21094,10 @@ sequenceDiagram
 
     ADM->>SIS: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
     activate SIS
-    alt el rango de fechas es válido
-        SIS-->>ADM: página de movimientos y total
-    else el rango está invertido
-        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    alt los filtros son válidos
+        SIS-->>ADM: página de movimientos con su total
+    else una fecha es inválida o el rango está invertido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
@@ -20636,7 +21107,7 @@ sequenceDiagram
 #### DSS — CU-210: Configurar el Stock Mínimo
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `configurarStockMinimo(depositoId, minimos)`
+**Operaciones del sistema:** `consultarStockMinimo()`, `configurarStockMinimo(minimos)`
 
 ```mermaid
 sequenceDiagram
@@ -20645,14 +21116,19 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: configurarStockMinimo(depositoId, minimos)
+    ADM->>SIS: consultarStockMinimo()
     activate SIS
-    alt los mínimos son válidos
-        SIS-->>ADM: umbrales vigentes del depósito
-    else un mínimo es negativo
-        SIS-->>ADM: solicitud inválida, con el detalle del campo
-    else el depósito o un tipo de garrafa no existe
+    SIS-->>ADM: mínimos con las llenas actuales y el aviso emitido
+    deactivate SIS
+
+    ADM->>SIS: configurarStockMinimo(minimos)
+    activate SIS
+    alt los depósitos y las garrafas existen y los mínimos son válidos
+        SIS-->>ADM: mínimos vigentes
+    else un depósito o una garrafa no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    else un mínimo es negativo o no es entero
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
@@ -20670,17 +21146,13 @@ sequenceDiagram
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant SIS as :Sistema
-    actor ADM as Administrador (ACT-03)
 
-    Note over SAU: Se ejecuta cada hora
     SAU->>SIS: avisarStockBajo()
     activate SIS
-    alt hay depósitos por debajo del mínimo sin aviso
-        SIS-)ADM: notificarStockBajo(depositos)
-        Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
-        SIS-->>SAU: avisos enviados
-    else no hay ninguno
-        SIS-->>SAU: el ciclo termina sin avisos
+    alt algún mínimo mayor que cero tiene menos llenas que su valor y todavía no se avisó
+        SIS-->>SAU: mínimos nuevos avisados
+    else ningún mínimo está bajo, o los que lo están ya se avisaron
+        SIS-->>SAU: sin avisos nuevos
     end
     deactivate SIS
 ```
@@ -20690,7 +21162,7 @@ sequenceDiagram
 #### DSS — CU-212: Transferir Stock entre Depósitos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `transferirStock(origenId, destinoId, productoId, condicion, cantidad)`
+**Operaciones del sistema:** `transferirStock(origenId, destinoId, items, nota)`
 
 ```mermaid
 sequenceDiagram
@@ -20699,16 +21171,44 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: transferirStock(origenId, destinoId, productoId, condicion, cantidad)
+    ADM->>SIS: transferirStock(origenId, destinoId, items, nota)
     activate SIS
-    alt el origen tiene la cantidad
+    alt las dos ubicaciones existen y son distintas, y el origen tiene lo indicado
         SIS-->>ADM: transferencia registrada, con su lote
-    else el origen no tiene la cantidad
+    else el origen no tiene la cantidad de algún renglón
         SIS-->>ADM: solicitud inválida, con el saldo disponible
-    else origen y destino son la misma ubicación
+    else origen y destino son la misma ubicación, dos camiones o un renglón repetido
         SIS-->>ADM: solicitud inválida
-    else una ubicación no existe
+    else una ubicación o una garrafa no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-276: Anular una Transferencia de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `anularTransferenciaDeStock(loteId, nota)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-276 Anular una Transferencia de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularTransferenciaDeStock(loteId, nota)
+    activate SIS
+    alt el lote es de una transferencia, no se contraasentó y las garrafas siguen en el destino
+        SIS-->>ADM: contraasiento registrado
+    else el lote no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el lote no es de una transferencia
+        SIS-->>ADM: solicitud inválida
+    else el lote ya se contraasentó o las garrafas ya no están donde estaban
+        SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
@@ -20718,7 +21218,7 @@ sequenceDiagram
 #### DSS — CU-213: Registrar un Ajuste o una Merma de Stock
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarAjusteDeStock(ubicacionId, motivo, nota, items)`, `consultarAjustesDeStock(desde, hasta, motivo)`
+**Operaciones del sistema:** `registrarAjusteDeStock(ubicacionId, motivo, nota, items)`
 
 ```mermaid
 sequenceDiagram
@@ -20727,25 +21227,49 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt registro de un ajuste
-        ADM->>SIS: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
-        activate SIS
-        alt el ajuste es válido
-            SIS-->>ADM: ajuste registrado, con su número
-        else la nota está vacía o un saldo quedaría negativo
-            SIS-->>ADM: solicitud inválida, con el detalle
-        else la ubicación no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
+    ADM->>SIS: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
+    activate SIS
+    alt la ubicación existe, la nota está y ningún saldo ni el vendible quedan en negativo
+        SIS-->>ADM: ajuste registrado, con su número
+    else falta la nota, el signo no corresponde al motivo o algún saldo o el vendible quedarían negativos
+        SIS-->>ADM: solicitud inválida
+    else la ubicación o una garrafa no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
     end
+    deactivate SIS
+```
 
-    opt consulta de los ajustes
-        ADM->>SIS: consultarAjustesDeStock(desde, hasta, motivo)
-        activate SIS
-        SIS-->>ADM: ajustes del período
-        deactivate SIS
+---
+
+#### DSS — CU-275: Consultar los Ajustes de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarAjustesDeStock(desde, hasta, motivo)`, `consultarAjusteDeStock(ajusteId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-275 Consultar los Ajustes de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarAjustesDeStock(desde, hasta, motivo)
+    activate SIS
+    alt los filtros son válidos
+        SIS-->>ADM: página de ajustes con su total
+    else una fecha es inválida o el rango está invertido
+        SIS-->>ADM: datos inválidos
     end
+    deactivate SIS
+
+    ADM->>SIS: consultarAjusteDeStock(ajusteId)
+    activate SIS
+    alt el ajuste existe en la distribuidora
+        SIS-->>ADM: ajuste con sus renglones
+    else el ajuste no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
 ```
 
 ---
@@ -20826,30 +21350,11 @@ sequenceDiagram
 
 ---
 
-#### DSS — CU-220: Descontar del Camión lo Entregado
+#### DSS — CU-220: Descontar del Stock Físico lo Entregado
 
-**Actor:** Sistema Automático (ACT-04)
-**Operaciones del sistema:** `descontarStockDeLaEntrega(pedidoId)`
+**Actor:** ninguno directo (caso incluido)
 
-```mermaid
-sequenceDiagram
-    title DSS — CU-220 Descontar del Camión lo Entregado
-    autonumber
-    actor SAU as Sistema Automático (ACT-04)
-    participant SIS as :Sistema
-
-    Note over SAU: Reacciona a la entrega<br/>de cada pedido
-    SAU->>SIS: descontarStockDeLaEntrega(pedidoId)
-    activate SIS
-    alt el pedido no tiene movimientos de stock
-        SIS-->>SAU: stock descontado del origen
-    else el pedido ya tiene movimientos
-        SIS-->>SAU: nada que hacer
-    else el camión con carga abierta no alcanza lo entregado
-        SIS-->>SAU: nada registrado, queda para la conciliación
-    end
-    deactivate SIS
-```
+Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-020, CU-079 y CU-278, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
 
 ---
 
@@ -20936,7 +21441,7 @@ sequenceDiagram
 
 #### DSS — CU-224: Conciliar el Stock Vendible con el Físico
 
-**Actor:** Administrador (ACT-03), Sistema Automático (ACT-04)
+**Actor:** Sistema Automático (ACT-04) y Administrador (ACT-03)
 **Operaciones del sistema:** `conciliarStock()`, `consultarConciliacionDeStock()`
 
 ```mermaid
@@ -20948,15 +21453,15 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
 
     opt proceso nocturno
-        Note over SAU: Se ejecuta una vez por noche
+        Note over SAU: Se ejecuta una vez por noche, a las 03:00
         SAU->>SIS: conciliarStock()
         activate SIS
-        alt hay diferencia entre el vendible y el físico
+        alt hay una diferencia nueva entre el vendible y el físico, o entregas sin descuento
             SIS-)ADM: notificarDiferenciaDeStock(diferencias)
             Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
-            SIS-->>SAU: entregas aplicadas y diferencias avisadas
-        else no hay diferencia
-            SIS-->>SAU: entregas aplicadas
+            SIS-->>SAU: diferencias avisadas
+        else todo cierra, o la diferencia ya se avisó
+            SIS-->>SAU: conciliación sin novedades
         end
         deactivate SIS
     end
@@ -20964,9 +21469,59 @@ sequenceDiagram
     opt consulta de la conciliación
         ADM->>SIS: consultarConciliacionDeStock()
         activate SIS
-        SIS-->>ADM: vendible, físico, reservado y diferencia por tipo de garrafa
+        SIS-->>ADM: vendible, físico, reservado, diferencia y corrección por tipo, y entregas sin descuento
         deactivate SIS
     end
+```
+
+---
+
+#### DSS — CU-277: Registrar un Ajuste de Conciliación del Vendible
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-277 Registrar un Ajuste de Conciliación del Vendible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+    activate SIS
+    alt hay diferencia y el físico alcanza lo reservado
+        SIS-->>ADM: ajuste de conciliación registrado, con su número
+    else no hay diferencia, falta la nota o el físico es menor que lo reservado
+        SIS-->>ADM: solicitud inválida
+    else la diferencia cambió desde que se consultó
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+---
+
+#### DSS — CU-278: Reaplicar las Entregas sin Movimiento de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `reaplicarEntregasDeStock()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-278 Reaplicar las Entregas sin Movimiento de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reaplicarEntregasDeStock()
+    activate SIS
+    alt hay entregas sin movimiento
+        SIS-->>ADM: pedidos revisados, reaplicados y pendientes
+    else no hay entregas sin movimiento
+        SIS-->>ADM: cero revisados
+    end
+    deactivate SIS
 ```
 
 ---
@@ -21007,7 +21562,7 @@ sequenceDiagram
 
 **Actor:** ninguno directo (caso incluido)
 
-Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220 y CU-222, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
+Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274 y CU-276, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
 
 ---
 
@@ -28681,7 +29236,6 @@ sequenceDiagram
 
 #### DSD — CU-038: Actualizar Stock de Producto
 
-
 ##### Operación: actualizarStock(productoId, variacion)
 
 ```mermaid
@@ -28689,37 +29243,39 @@ sequenceDiagram
     title DSD — CU-038 Actualizar Stock de Producto · actualizarStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :GasCylinderService
+    participant SRV as :CatalogStockAdjustmentUseCase
     participant COL as :Map#lt;String, Producto#gt;
-    participant PRO as producto:Producto
+    participant DIS as distribuidora:Distribuidora
+    participant AJU as :StockAdjustmentUseCase
 
     ADM->>+SRV: actualizarStock(productoId, variacion)
     SRV->>+COL: get(productoId)
     COL-->>-SRV: producto
-    SRV->>+PRO: ajustarStock(variacion)
-    PRO->>PRO: validarStockResultante(variacion)
-    deactivate PRO
+    SRV->>+DIS: getUbicacionPredeterminada()
+    DIS-->>-SRV: ubicacionPredeterminada
+    Note over SRV,AJU: Ajuste: ver DSD de registrarAjusteDeStock (CU-213).<br/>Crea el AjusteDeStock de recuento con su ItemAjusteDeStock y el MovimientoDeStock de llenas en el depósito predeterminado
+    SRV->>+AJU: registrarAjusteDeStock(ubicacionDeStock, motivoRecuento, nota, producto, variacion)
+    AJU-->>-SRV: ajuste
     SRV-->>-ADM: producto
 ```
 
-**Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y el objeto de dominio `Producto`.
+**Clases participantes:** `CatalogStockAdjustmentUseCase` (controlador: el caso de uso del catálogo sobre el stock), `StockAdjustmentUseCase` (el caso de uso que registra el ajuste), la colección `Map<String, Producto>` y el objeto de dominio `Distribuidora`.
 
-**GRASP.** *Controlador*: `GasCylinderService`. *Experto*: el `Producto` suma la variación a su stock y es quien rechaza un ajuste que lo dejaría por debajo de cero. El valor ingresado es un ajuste y no el stock final: positivo repone y negativo descuenta. Que el producto vuelva a estar disponible en el catálogo no es una escritura: lo deriva su stock mayor que cero.
+**GRASP.** *Controlador*: `CatalogStockAdjustmentUseCase`. *Experto*: la `Distribuidora` conoce su depósito predeterminado. El ajuste en sí lo hace CU-213, que mueve el físico y el stock vendible por el libro.
 
-**No se dibuja:** el bloqueo de la fila durante el ajuste, que serializa este camino con la reserva de stock de un pedido, la comprobación de que el producto sea de la distribuidora y la lectura final.
+**No se dibuja:** la nota fija del ajuste («Ajuste manual de stock desde el catálogo de productos»), el mensaje de error que dice dónde están las llenas que faltan y la lectura final del producto.
 
 | Operación de diseño | Implementación |
 |---|---|
-| `GasCylinderService.actualizarStock(...)` | `GasCylinderController.updateStock` → `GasCylinderService.updateStock` |
-| `Map<String, Producto>.get(...)` | `GasCylinderService.updateStock`: lee el `GasCylinder` con bloqueo pesimista y de la distribuidora del contexto; responde 404 si no existe |
-| `Producto.ajustarStock(...)` | `GasCylinderService.updateStock`: suma la variación a `GasCylinder.stock` y guarda |
-| `Producto.validarStockResultante(...)` | `GasCylinderService.updateStock`: si `GasCylinder.stock` más la variación es menor que cero responde 400 y no modifica nada |
+| `CatalogStockAdjustmentUseCase.actualizarStock(...)` | `CatalogStockController.updateStock` → `CatalogStockAdjustmentUseCase.execute` |
+| `Map<String, Producto>.get(...)` | `GasCylinderService.findOne`: lee el `GasCylinder` de la distribuidora; responde 404 si no existe |
+| `Distribuidora.getUbicacionPredeterminada(...)` | `WarehouseService.asegurarPredeterminado` |
+| `StockAdjustmentUseCase.registrarAjusteDeStock(...)` | `StockAdjustmentUseCase.execute` con el motivo `count_correction` de llenas |
 
 **Observaciones de diseño**
 
-- `quantity` es un **delta**, no un valor absoluto: `+20` repone, `-5` descuenta. La firma del DTO inline (`{ quantity: number }`) no lo comunica.
-- La validación de negatividad ocurre **en memoria antes del `save`**, sin lock. Es un camino administrativo de baja concurrencia; la reserva de stock del flujo de pedido (`GasCylinderService.reservarStock`) sí usa lock pesimista dentro de la transacción del pedido.
-- Este camino y el de la reserva de pedido escriben la misma columna `stock` por vías distintas: un ajuste manual concurrente con una compra podría perder una actualización.
+- El valor que ingresa el administrador sigue siendo una variación, no el stock final: positivo repone y negativo descuenta.
+- Si al restar no alcanzan las llenas del depósito predeterminado, el mensaje de error dice cuántas hay en camiones y en otros depósitos.
 
 ---
 
@@ -33154,8 +33710,7 @@ sequenceDiagram
 
 #### DSD — CU-207: Consultar los Depósitos
 
-
-##### Operación: consultarDepositos()
+##### Operación: consultarDepositos(incluirInactivos)
 
 ```mermaid
 sequenceDiagram
@@ -33166,29 +33721,75 @@ sequenceDiagram
     participant DIS as distribuidora:Distribuidora
     participant DEP as deposito:Deposito
 
-    ADM->>+SRV: consultarDepositos()
-    SRV->>+DIS: getDepositos()
-    loop Por cada depósito vigente
+    ADM->>+SRV: consultarDepositos(incluirInactivos)
+    SRV->>+DIS: getDepositos(incluirInactivos)
+    loop Por cada depósito de la distribuidora
         DIS->>DEP: estaActivo()
     end
     DIS-->>-SRV: depositos
     SRV-->>-ADM: depositos
 ```
 
-**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `Deposito`.
+**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock) y los objetos de dominio `Distribuidora` y `Deposito`.
 
-**GRASP.** *Controlador*: `WarehouseService`. *Experto*: la `Distribuidora` conoce sus depósitos y reúne los vigentes; cada `Deposito` sabe si está activo.
+**GRASP.** *Controlador*: `WarehouseService`. *Experto*: la `Distribuidora` conoce los depósitos que posee y reúne los que se piden; cada `Deposito` sabe si está activo.
 
-**No se dibuja:** el orden del listado y el armado de la respuesta.
+**No se dibuja:** la ubicación de stock de cada depósito, que viene unida a él, el orden del listado y el filtro por la distribuidora del contexto.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `WarehouseService.consultarDepositos(...)` | `WarehouseController.findAll` → `WarehouseService.findAll` |
+| `Distribuidora.getDepositos(...)` | `WarehouseService.findAll`: busca los `Warehouse` de la distribuidora con su `StockLocation`, el predeterminado primero y luego por nombre |
+| `Deposito.estaActivo(...)` | `WarehouseService.findAll`: filtra por `Warehouse.isActive` salvo que llegue `includeInactive` |
 
 **Observaciones de diseño**
 
-- El detalle de un depósito con sus saldos es la consulta de CU-208 sobre su ubicación.
+- Un depósito dado de baja no se lista: la baja es lógica y el listado ya lo excluye.
+- Cada fila trae la ubicación de stock (`locationId`) del depósito, que es la que usan los demás casos.
+
+---
+
+##### Operación: consultarDeposito(depositoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-207 Consultar los Depósitos · consultarDeposito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :WarehouseService
+    participant COL as :Map#lt;String, Deposito#gt;
+    participant DEP as deposito:Deposito
+    participant QRY as :StockQueryService
+
+    ADM->>+SRV: consultarDeposito(depositoId)
+    SRV->>+COL: get(depositoId)
+    COL-->>-SRV: depositoDeStock
+    SRV->>+DEP: getUbicacion()
+    DEP-->>-SRV: ubicacionDeStock
+    SRV->>+QRY: saldos(ubicacionDeStock)
+    QRY-->>-SRV: saldos
+    SRV-->>-ADM: depositoDeStock, saldos
+```
+
+**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>`, el objeto de dominio `Deposito` y `StockQueryService` (fabricación pura: las lecturas de saldos del módulo).
+
+**GRASP.** *Controlador*: `WarehouseService`. *Experto*: el `Deposito` conoce su ubicación de stock. *Fabricación pura*: `StockQueryService` reúne los saldos por tipo de garrafa y condición.
+
+**No se dibuja:** el filtro por la distribuidora del contexto y el armado de la respuesta con el detalle del depósito.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `WarehouseService.consultarDeposito(...)` | `WarehouseController.findOne` → `WarehouseService.findOne` y `StockQueryService.saldos` |
+| `Map<String, Deposito>.get(...)` | `WarehouseService.findOne`: lee el `Warehouse` de la distribuidora; responde 404 si no existe |
+| `Deposito.getUbicacion(...)` | `WarehouseService.findOne`: devuelve su única `StockLocation` |
+
+**Observaciones de diseño**
+
+- El detalle trae los saldos con cantidad cero sólo si se piden; por omisión, los que hay.
 
 ---
 
 #### DSD — CU-258: Registrar un Depósito
-
 
 ##### Operación: registrarDeposito(nombre, codigo, tipo, direccion)
 
@@ -33207,28 +33808,36 @@ sequenceDiagram
     DIS->>DEP: «create»(nombre, codigo, tipo, direccion)
     create participant UBI as nueva:UbicacionDeStock
     DEP->>UBI: «create»(depositoDeStock)
-    opt La distribuidora todavía no tiene un depósito predeterminado
+    opt La distribuidora todavía no tiene un depósito predeterminado, o el pedido lo indica
         DIS->>DEP: marcarPredeterminado()
     end
-    DIS-->>-SRV: depositoDeStock
-    SRV-->>-ADM: depositoDeStock
+    DIS-->>-SRV: depositoCreado
+    SRV-->>-ADM: depositoCreado
 ```
 
-**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora`, `Deposito` y `UbicacionDeStock`.
+**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock) y los objetos de dominio `Distribuidora`, `Deposito` y `UbicacionDeStock`.
 
-**GRASP.** *Controlador*: `WarehouseService`. *Creador*: la `Distribuidora` crea los `Deposito` que posee y el `Deposito` crea la `UbicacionDeStock` sobre la que se guardan sus saldos. *Experto*: la `Distribuidora` conoce sus depósitos, así que ella valida que el código no se repita y decide si el nuevo es el predeterminado.
+**GRASP.** *Controlador*: `WarehouseService`. *Creador*: la `Distribuidora` crea los `Deposito` que posee y el `Deposito` crea la `UbicacionDeStock` sobre la que se guardan sus saldos. *Experto*: la `Distribuidora` sabe qué códigos usan sus depósitos vigentes y si ya tiene un predeterminado.
 
-**No se dibuja:** la persistencia del depósito y de su ubicación, el contexto de la distribuidora que sale de la sesión del administrador y el rechazo por código repetido.
+**No se dibuja:** la transacción con reintento, el bloqueo de los depósitos que pueden cambiar de marca y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `WarehouseService.registrarDeposito(...)` | `WarehouseController.create` → `WarehouseService.create` |
+| `Distribuidora.crearDeposito(...)` | `WarehouseService.create`: en una transacción bloquea los predeterminados con `WarehouseService.bloquearPredeterminados` y llama a `WarehouseService.insertar` |
+| `Distribuidora.validarCodigoSinUsar(...)` | índice único parcial `UQ_warehouse_code_vigente`: `WarehouseService.traducir` convierte su violación en 409 |
+| `Deposito.«create»(...)` | `WarehouseService.insertar`: inserta el `Warehouse` con el código en mayúsculas |
+| `UbicacionDeStock.«create»(...)` | `WarehouseService.insertar`: inserta su `StockLocation` de tipo depósito, sin saldo, en la misma transacción |
+| `Deposito.marcarPredeterminado(...)` | `WarehouseService.create`: si corresponde, `WarehouseService.sacarPredeterminado` le quita la marca al anterior antes de guardar el nuevo |
 
 **Observaciones de diseño**
 
-- El código es único sólo entre los depósitos vigentes de la distribuidora: lo respalda un índice único parcial, como el de la patente del vehículo.
-- Sólo puede haber un depósito predeterminado por distribuidora, también con un índice único parcial.
+- El primer depósito de la distribuidora es siempre el predeterminado; si el pedido lo indica, el nuevo reemplaza al anterior.
+- El código se guarda en mayúsculas y es único sólo entre los depósitos vigentes.
 
 ---
 
 #### DSD — CU-259: Modificar un Depósito
-
 
 ##### Operación: actualizarDeposito(depositoId, datos)
 
@@ -33246,24 +33855,33 @@ sequenceDiagram
     COL-->>-SRV: depositoDeStock
     SRV->>+DEP: actualizar(datos)
     DEP->>DEP: validarCodigoSinUsar(codigo)
+    DEP->>DEP: validarPuedeDesactivarse(activo)
     DEP-->>-SRV: depositoDeStock
     SRV-->>-ADM: depositoDeStock
 ```
 
-**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), la colección `Map<String, Deposito>` y el objeto de dominio `Deposito`.
+**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>` y el objeto de dominio `Deposito`.
 
-**GRASP.** *Controlador*: `WarehouseService`. *Experto*: el `Deposito` conoce sus propios datos y es quien los actualiza y comprueba que su código nuevo no esté en uso.
+**GRASP.** *Controlador*: `WarehouseService`. *Experto*: el `Deposito` toma sus valores nuevos, comprueba que su código nuevo no lo use otro depósito vigente y que, si es el predeterminado, no se lo desactive.
 
-**No se dibuja:** el rechazo de un depósito de otra distribuidora, que responde como si no existiera, y el guardado.
+**No se dibuja:** el bloqueo de los depósitos que pueden cambiar de marca, el guardado y la lectura final del depósito con su ubicación.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `WarehouseService.actualizarDeposito(...)` | `WarehouseController.update` → `WarehouseService.update` |
+| `Map<String, Deposito>.get(...)` | `WarehouseService.update`: lee el `Warehouse` de la distribuidora; responde 404 si no existe |
+| `Deposito.actualizar(...)` | `WarehouseService.update`: asigna los campos recibidos (`name`, `code`, `kind`, `address`, `isActive`) y guarda |
+| `Deposito.validarCodigoSinUsar(...)` | índice único parcial `UQ_warehouse_code_vigente`: `WarehouseService.traducir` convierte su violación en 409 |
+| `Deposito.validarPuedeDesactivarse(...)` | `WarehouseService.update`: responde 409 si se desactiva el depósito predeterminado |
 
 **Observaciones de diseño**
 
-- Sólo cambian los campos enviados: el cuerpo es parcial, igual que en la edición del vehículo.
+- Sólo cambian los campos que llegan en el pedido.
+- Cambiar el depósito predeterminado es otro caso (CU-273): acá la marca no se toca.
 
 ---
 
 #### DSD — CU-260: Dar de Baja un Depósito
-
 
 ##### Operación: darDeBajaDeposito(depositoId)
 
@@ -33281,23 +33899,144 @@ sequenceDiagram
     SRV->>+COL: get(depositoId)
     COL-->>-SRV: depositoDeStock
     SRV->>+DEP: darDeBaja()
+    DEP->>DEP: validarNoEsElPredeterminado()
     DEP->>+UBI: tieneSaldo()
     UBI-->>-DEP: conSaldo
     DEP->>DEP: validarSinSaldo(conSaldo)
+    DEP->>DEP: quitarUmbrales()
     DEP-->>-SRV: confirmacion
     SRV-->>-ADM: confirmacion
 ```
 
-**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), la colección `Map<String, Deposito>` y los objetos de dominio `Deposito` y `UbicacionDeStock`.
+**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>` y los objetos de dominio `Deposito` y `UbicacionDeStock`.
 
-**GRASP.** *Controlador*: `WarehouseService`. *Experto*: la `UbicacionDeStock` conoce sus saldos y dice si tiene alguno distinto de cero; el `Deposito` decide si puede darse de baja y es quien cambia su propio estado.
+**GRASP.** *Controlador*: `WarehouseService`. *Experto*: la `UbicacionDeStock` conoce sus saldos y dice si tiene alguno distinto de cero; el `Deposito` decide si puede darse de baja y quita sus propios umbrales.
 
-**No se dibuja:** la regla del depósito predeterminado, que no se da de baja mientras haya otros vigentes, y el guardado de la baja lógica.
+**No se dibuja:** el bloqueo exclusivo de la fila del depósito, que espera a las operaciones de stock que lo usan, la transacción y la baja lógica.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `WarehouseService.darDeBajaDeposito(...)` | `WarehouseController.remove` → `WarehouseService.remove` |
+| `Map<String, Deposito>.get(...)` | `WarehouseService.remove`: lee el `Warehouse` de la distribuidora con bloqueo pesimista; responde 404 si no existe |
+| `Deposito.darDeBaja(...)` | `WarehouseService.remove`: baja lógica del `Warehouse` con `softRemove` |
+| `Deposito.validarNoEsElPredeterminado(...)` | `WarehouseService.remove`: responde 409 si `Warehouse.isDefault` |
+| `UbicacionDeStock.tieneSaldo(...)` | `WarehouseService.remove`: suma `StockBalance.quantity` de la ubicación del depósito |
+| `Deposito.validarSinSaldo(...)` | `WarehouseService.remove`: responde 409 si la suma no es cero y dice cuántas garrafas quedan |
+| `Deposito.quitarUmbrales(...)` | `WarehouseService.remove`: borra los `StockThreshold` del depósito |
 
 **Observaciones de diseño**
 
 - La baja es lógica: el depósito y su ubicación siguen existiendo para explicar los movimientos que ya tuvieron.
 - Un saldo distinto de cero se resuelve antes con una transferencia (CU-212) o un ajuste (CU-213).
+
+---
+
+#### DSD — CU-273: Marcar el Depósito Predeterminado
+
+##### Operación: marcarDepositoPredeterminado(depositoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-273 Marcar el Depósito Predeterminado · marcarDepositoPredeterminado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :WarehouseService
+    participant COL as :Map#lt;String, Deposito#gt;
+    participant DIS as distribuidora:Distribuidora
+    participant ANT as anterior:Deposito
+    participant DEP as deposito:Deposito
+
+    ADM->>+SRV: marcarDepositoPredeterminado(depositoId)
+    SRV->>+COL: get(depositoId)
+    COL-->>-SRV: depositoDeStock
+    SRV->>+DIS: cambiarPredeterminado(depositoElegido)
+    DIS->>+ANT: quitarPredeterminado()
+    ANT-->>-DIS: predeterminadoQuitado
+    DIS->>DEP: marcarPredeterminado()
+    DIS-->>-SRV: depositoElegido
+    SRV-->>-ADM: depositoElegido
+```
+
+**Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>` y los objetos de dominio `Distribuidora` y `Deposito` (el anterior y el elegido).
+
+**GRASP.** *Controlador*: `WarehouseService`. *Experto*: la `Distribuidora` sabe cuál es su depósito predeterminado y es quien lo cambia, para que nunca queden dos ni ninguno.
+
+**No se dibuja:** el bloqueo conjunto y ordenado por identificador de los dos depósitos, la transacción con reintento y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `WarehouseService.marcarDepositoPredeterminado(...)` | `WarehouseController.update` → `WarehouseService.update` con `isDefault` |
+| `Map<String, Deposito>.get(...)` | `WarehouseService.update`: lee el `Warehouse` de la distribuidora; responde 404 si no existe |
+| `Distribuidora.cambiarPredeterminado(...)` | `WarehouseService.update`: bloquea el actual y el elegido con `WarehouseService.bloquearPredeterminados` |
+| `Deposito.quitarPredeterminado(...)` | `WarehouseService.sacarPredeterminado`: baja la marca `Warehouse.isDefault` del depósito vigente |
+| `Deposito.marcarPredeterminado(...)` | `WarehouseService.update`: asigna `Warehouse.isDefault` y guarda |
+
+**Observaciones de diseño**
+
+- El predeterminado es el depósito que usan la entrega de un pedido sin camión con saldo y el ajuste del catálogo.
+- Un índice único parcial en la base impide dos predeterminados vigentes aunque fallara el bloqueo.
+
+---
+
+#### DSD — CU-274: Registrar el Conteo Inicial de un Depósito
+
+##### Operación: registrarConteoInicial(depositoId, items, nota)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-274 Registrar el Conteo Inicial de un Depósito · registrarConteoInicial
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :InitialCountUseCase
+    participant COL as :Map#lt;String, Deposito#gt;
+    participant DEP as deposito:Deposito
+    participant UBI as ubicacion:UbicacionDeStock
+    participant LED as :StockLedgerService
+
+    ADM->>+SRV: registrarConteoInicial(depositoId, items, nota)
+    SRV->>+COL: get(depositoId)
+    COL-->>-SRV: depositoDeStock
+    SRV->>+DEP: validarSinConteoInicial()
+    DEP-->>-SRV: sinConteoInicial
+    SRV->>+DEP: getUbicacion()
+    DEP-->>-SRV: ubicacionDeStock
+    SRV->>+UBI: diferenciasContra(items)
+    UBI-->>-SRV: renglonesDeAjuste
+    Note over SRV,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de cada renglón y mueve el saldo de la ubicación<br/>y, en las llenas, el stock vendible del Producto
+    SRV->>+LED: aplicar(ubicacionDeStock, renglonesDeAjuste)
+    LED-->>-SRV: lote
+    SRV->>+UBI: ajustar(motivoConteoInicial, nota, renglonesDeAjuste, lote, administrador)
+    create participant AJU as nuevo:AjusteDeStock
+    UBI->>AJU: «create»(motivoConteoInicial, nota, lote, administrador)
+    loop Por cada renglón con diferencia
+        create participant ITM as nuevo:ItemAjusteDeStock
+        AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
+    end
+    UBI-->>-SRV: ajuste
+    SRV-->>-ADM: ajuste
+```
+
+**Clases participantes:** `InitialCountUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, Deposito>` y los objetos de dominio `Deposito`, `UbicacionDeStock`, `AjusteDeStock` y `ItemAjusteDeStock`.
+
+**GRASP.** *Controlador*: `InitialCountUseCase`. *Experto*: el `Deposito` sabe si ya tuvo su conteo inicial; la `UbicacionDeStock` conoce sus saldos y calcula la diferencia contra lo contado. *Creador*: la `UbicacionDeStock` crea el `AjusteDeStock` que la corrige y éste crea sus `ItemAjusteDeStock` (composición). *Fabricación pura*: `StockLedgerService` mueve los saldos.
+
+**No se dibuja:** el bloqueo exclusivo del depósito mientras se cuenta, la transacción con reintento, la numeración del ajuste, que se toma al final como último bloqueo, y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `InitialCountUseCase.registrarConteoInicial(...)` | `StockController.conteoInicial` → `InitialCountUseCase.execute` |
+| `Map<String, Deposito>.get(...)` | `InitialCountUseCase.execute`: resuelve el depósito con `StockLocationService.ubicacionDeDeposito`; responde 404 si no existe y lo bloquea en modo exclusivo |
+| `Deposito.validarSinConteoInicial(...)` | `InitialCountUseCase.execute`: responde 409 si la ubicación ya tiene un `StockAdjustment` de motivo `initial_count` |
+| `Deposito.getUbicacion(...)` | `InitialCountUseCase.execute`: la `StockLocation` del depósito |
+| `UbicacionDeStock.diferenciasContra(...)` | `InitialCountUseCase.execute`: lee los `StockBalance` de la ubicación y calcula los renglones con `variacionesDeConteo()`; responde 400 si no hay diferencias |
+| `UbicacionDeStock.ajustar(...)` | `InitialCountUseCase.execute`: toma el número con `DocumentSequenceService.siguienteNumero` y guarda |
+| `AjusteDeStock.«create»(...)` | `InitialCountUseCase.execute`: guarda el `StockAdjustment` con motivo `initial_count`, su número, la nota (o «Conteo inicial del depósito») y el lote |
+| `ItemAjusteDeStock.«create»(...)` | `InitialCountUseCase.execute`: inserta un `StockAdjustmentItem` por renglón |
+
+**Observaciones de diseño**
+
+- Se registra una vez por depósito; después, ajustes. Los depósitos creados por la migración tienen un saldo inicial pero ningún conteo registrado.
+- El conteo toma primero el depósito en modo exclusivo, para que nadie lo mueva mientras se cuenta, y después sigue el orden del libro: garrafas del catálogo, depósitos, saldos y, al final, el contador de numeración.
 
 ---
 
@@ -33310,7 +34049,7 @@ sequenceDiagram
     title DSD — CU-208 Consultar el Stock por Ubicación · consultarStockPorUbicacion
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockService
+    participant SRV as :StockQueryService
     participant COL as :Map#lt;String, UbicacionDeStock#gt;
     participant UBI as ubicacion:UbicacionDeStock
     participant SAL as saldo:SaldoDeStock
@@ -33326,46 +34065,104 @@ sequenceDiagram
     SRV-->>-ADM: saldos
 ```
 
-**Clases participantes:** `StockService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), la colección `Map<String, UbicacionDeStock>` y los objetos de dominio `UbicacionDeStock` y `SaldoDeStock`.
+**Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `Map<String, UbicacionDeStock>` y los objetos de dominio `UbicacionDeStock` y `SaldoDeStock`.
 
-**GRASP.** *Controlador*: `StockService`. *Experto*: la `UbicacionDeStock` contiene sus saldos y los entrega, filtrados por tipo de garrafa; cada `SaldoDeStock` conoce su cantidad y su condición.
+**GRASP.** *Controlador*: `StockQueryService`. *Experto*: la `UbicacionDeStock` contiene sus saldos y los entrega, filtrados por tipo de garrafa; cada `SaldoDeStock` conoce su cantidad.
 
-**No se dibuja:** el filtro opcional por tipo de garrafa, el rechazo de una ubicación de otra distribuidora y el armado de la respuesta.
+**No se dibuja:** los demás filtros (depósito, vehículo), que se resuelven en la misma consulta, y el orden por ubicación, tipo de garrafa y condición.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockQueryService.consultarStockPorUbicacion(...)` | `StockController.saldos` → `StockQueryService.saldos` |
+| `Map<String, UbicacionDeStock>.get(...)` | `StockQueryService.saldos`: filtra por `locationId` en la misma consulta de los saldos de la distribuidora |
+| `UbicacionDeStock.getSaldos(...)` | `StockQueryService.saldos`: lee los `StockBalance` de la ubicación, sin los depósitos dados de baja y sin los saldos en cero salvo `includeZero` |
+| `SaldoDeStock.getCantidad(...)` | `StockQueryService.saldos`: devuelve `StockBalance.quantity` |
+
+**Observaciones de diseño**
+
+- Sin `ubicacionId` devuelve los saldos de todas las ubicaciones de la distribuidora.
+
+---
+
+##### Operación: consultarUbicacionesDeStock()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-208 Consultar el Stock por Ubicación · consultarUbicacionesDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockLocationService
+    participant DIS as distribuidora:Distribuidora
+
+    ADM->>+SRV: consultarUbicacionesDeStock()
+    SRV->>+DIS: getUbicacionesDeStock()
+    DIS-->>-SRV: ubicacionesDeStock
+    SRV-->>-ADM: ubicacionesDeStock
+```
+
+**Clases participantes:** `StockLocationService` (controlador de fachada de las ubicaciones del módulo de stock) y el objeto de dominio `Distribuidora`.
+
+**GRASP.** *Controlador*: `StockLocationService`. *Experto*: la `Distribuidora` conoce sus depósitos y sus vehículos y reúne las ubicaciones de stock de ambos.
+
+**No se dibuja:** el nombre que se muestra (el del depósito o «Vehículo» con la patente) y el orden por tipo y nombre.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockLocationService.consultarUbicacionesDeStock(...)` | `StockController.ubicaciones` → `StockLocationService.listar` |
+| `Distribuidora.getUbicacionesDeStock(...)` | `StockLocationService.listar`: une los `StockLocation` de los depósitos vigentes y de los vehículos que ya recibieron stock |
+
+**Observaciones de diseño**
+
+- Es el origen de los filtros del tablero: da los identificadores de ubicación que usan los demás casos.
+
+---
+
+#### DSD — CU-279: Consultar el Resumen de Stock
 
 ##### Operación: consultarResumenDeStock()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-208 Consultar el Stock por Ubicación · consultarResumenDeStock
+    title DSD — CU-279 Consultar el Resumen de Stock · consultarResumenDeStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockService
-    participant PRD as :List#lt;Producto#gt;
-    participant PRO as producto:Producto
+    participant SRV as :StockQueryService
+    participant PRS as :List#lt;Producto#gt;
     participant UBS as :List#lt;UbicacionDeStock#gt;
+    participant PEDS as :List#lt;Pedido#gt;
     participant UMBS as :List#lt;UmbralDeStock#gt;
 
     ADM->>+SRV: consultarResumenDeStock()
-    SRV->>+PRD: getActivos()
-    PRD-->>-SRV: productos
+    SRV->>+PRS: getTodos()
+    PRS-->>-SRV: productos
     loop Por cada tipo de garrafa
-        SRV->>PRO: getStock()
-        SRV->>UBS: getCantidadPorCondicion(producto)
-        SRV->>UMBS: getMinimoDeLlenas(producto)
+        SRV->>+UBS: getSaldos(producto)
+        UBS-->>-SRV: saldosEnDepositosYVehiculos
+        SRV->>+PEDS: getReservado(producto)
+        PEDS-->>-SRV: reservado
+        SRV->>+UMBS: getMinimoDeLlenas(producto)
+        UMBS-->>-SRV: minimoDeStock
     end
     SRV-->>-ADM: resumen
 ```
 
-**Clases participantes:** `StockService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), las colecciones `List<Producto>`, `List<UbicacionDeStock>` y `List<UmbralDeStock>` y el objeto de dominio `Producto`.
+**Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock) y las colecciones `List<Producto>`, `List<UbicacionDeStock>`, `List<Pedido>` y `List<UmbralDeStock>`.
 
-**GRASP.** *Controlador*: `StockService`. *Experto*: el `Producto` conoce su stock vendible, la colección de ubicaciones suma lo que hay en depósitos y camiones por condición y la de umbrales conoce el mínimo.
+**GRASP.** *Controlador*: `StockQueryService`. *Experto*: cada colección responde por lo que reúne: los `Producto` conocen su stock vendible, las `UbicacionDeStock` sus saldos —que separan depósitos de vehículos—, los `Pedido` abiertos lo reservado y los `UmbralDeStock` el mínimo.
 
-**No se dibuja:** lo reservado por pedidos abiertos, que se calcula con una consulta de pedidos, y el armado de la respuesta.
+**No se dibuja:** las cuatro consultas en paralelo y la suma por condición.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockQueryService.consultarResumenDeStock(...)` | `StockController.resumen` → `StockQueryService.resumen` |
+| `List<Producto>.getTodos(...)` | `StockQueryService.resumen`: lee los `GasCylinder` activos o con stock, con su `GasCylinder.stock` (el vendible) |
+| `List<UbicacionDeStock>.getSaldos(...)` | `StockQueryService.resumen`: suma los `StockBalance` por tipo de garrafa y condición, separando los depósitos de los vehículos |
+| `List<Pedido>.getReservado(...)` | `OrderLookupService.reservedByCylinder`: cuenta las unidades de los pedidos reservados, pendientes, aceptados o en camino |
+| `List<UmbralDeStock>.getMinimoDeLlenas(...)` | `StockQueryService.resumen`: suma los `StockThreshold.minFull` mayores que cero de los depósitos vigentes; es nulo si no hay ninguno |
 
 **Observaciones de diseño**
 
-- El saldo es una fila materializada por ubicación, tipo de garrafa y condición: la lectura es directa y no suma movimientos.
-- Lo vendible es `Producto.stock`; lo reservado sale de los pedidos pendientes, aceptados, en camino o reservados. La diferencia entre las tres cifras es lo que concilia CU-224.
+- Se cumple que el vendible es igual a las llenas físicas menos lo reservado; si no, el desvío se ve en la conciliación (CU-224).
 
 ---
 
@@ -33378,50 +34175,94 @@ sequenceDiagram
     title DSD — CU-209 Consultar los Movimientos de Stock · consultarMovimientosDeStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockService
-    participant MOVS as :List#lt;MovimientoDeStock#gt;
+    participant SRV as :StockQueryService
+    participant LIB as :List#lt;MovimientoDeStock#gt;
     participant MOV as movimiento:MovimientoDeStock
 
     ADM->>+SRV: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
-    SRV->>+MOVS: buscar(productoId, ubicacionId, motivo, desde, hasta, pagina)
+    SRV->>+LIB: filtrar(productoId, ubicacionId, motivo, desde, hasta, pagina)
     loop Por cada movimiento de la página
-        MOVS->>MOV: getMotivo()
+        LIB->>MOV: getDetalle()
     end
-    MOVS-->>-SRV: movimientosDeStock, total
-    SRV-->>-ADM: movimientosDeStock, total
+    LIB-->>-SRV: movimientos
+    SRV-->>-ADM: movimientos, cantidadDeMovimientos
 ```
 
-**Clases participantes:** `StockService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), la colección `List<MovimientoDeStock>` y el objeto de dominio `MovimientoDeStock`.
+**Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `List<MovimientoDeStock>` y el objeto de dominio `MovimientoDeStock`.
 
-**GRASP.** *Controlador*: `StockService`. *Experto*: la colección de movimientos aplica los filtros y pagina; cada `MovimientoDeStock` conoce su motivo, sus ubicaciones y su documento de origen.
+**GRASP.** *Controlador*: `StockQueryService`. *Experto*: la colección aplica los filtros y pagina; cada `MovimientoDeStock` conoce su origen, su destino, su motivo, su documento de origen y quién lo hizo.
 
-**No se dibuja:** el orden del más reciente al más antiguo, el armado de cada renglón con los nombres de las ubicaciones y el rechazo de un rango de fechas invertido.
+**No se dibuja:** la conversión de las fechas a días argentinos y el conteo del total.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockQueryService.consultarMovimientosDeStock(...)` | `StockController.movimientos` → `StockQueryService.movimientos` |
+| `List<MovimientoDeStock>.filtrar(...)` | `StockQueryService.movimientos`: valida las fechas (`AAAA-MM-DD`, `from` no posterior a `to`), aplica los filtros y pagina del más reciente al más antiguo |
+| `MovimientoDeStock.getDetalle(...)` | `StockQueryService.movimientos`: devuelve origen, destino, condiciones, `StockMovement.reason`, documento de origen, contraasiento y quién lo hizo |
 
 **Observaciones de diseño**
 
-- Los movimientos no se editan ni se borran: un trigger de base lo impide, como en el registro de auditoría.
+- El libro es de sólo agregado: lo que se corrige se contraasienta (CU-276) y las dos filas quedan a la vista.
 
 ---
 
 #### DSD — CU-210: Configurar el Stock Mínimo
 
-##### Operación: configurarStockMinimo(depositoId, minimos)
+##### Operación: consultarStockMinimo()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-210 Configurar el Stock Mínimo · consultarStockMinimo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockThresholdService
+    participant UMBS as :List#lt;UmbralDeStock#gt;
+    participant UMB as umbral:UmbralDeStock
+
+    ADM->>+SRV: consultarStockMinimo()
+    SRV->>+UMBS: getTodos()
+    loop Por cada umbral
+        UMBS->>UMB: getLlenasActuales()
+    end
+    UMBS-->>-SRV: umbrales
+    SRV-->>-ADM: umbrales
+```
+
+**Clases participantes:** `StockThresholdService` (controlador de fachada de los mínimos del módulo de stock), la colección `List<UmbralDeStock>` y el objeto de dominio `UmbralDeStock`.
+
+**GRASP.** *Controlador*: `StockThresholdService`. *Experto*: cada `UmbralDeStock` conoce su mínimo, las llenas que tiene hoy su depósito y si ya se avisó.
+
+**No se dibuja:** la unión con el depósito vigente y con el saldo de llenas de su ubicación.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockThresholdService.consultarStockMinimo(...)` | `StockController.umbrales` → `StockThresholdService.listar` |
+| `List<UmbralDeStock>.getTodos(...)` | `StockThresholdService.listar`: lee los `StockThreshold` de los depósitos vigentes de la distribuidora |
+| `UmbralDeStock.getLlenasActuales(...)` | `StockThresholdService.listar`: une el saldo de llenas del depósito (`currentFull`) y el instante del aviso (`alertedAt`) |
+
+**Observaciones de diseño**
+
+- Es la pantalla de partida de CU-210: muestra el mínimo, lo que hay y si ya se avisó.
+
+---
+
+##### Operación: configurarStockMinimo(minimos)
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-210 Configurar el Stock Mínimo · configurarStockMinimo
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockService
+    participant SRV as :StockThresholdService
     participant COL as :Map#lt;String, Deposito#gt;
     participant PRS as :Map#lt;String, Producto#gt;
     participant DEP as deposito:Deposito
     participant UMB as umbral:UmbralDeStock
 
-    ADM->>+SRV: configurarStockMinimo(depositoId, minimos)
-    SRV->>+COL: get(depositoId)
-    COL-->>-SRV: depositoDeStock
+    ADM->>+SRV: configurarStockMinimo(minimos)
     loop Por cada mínimo indicado
+        SRV->>+COL: get(depositoId)
+        COL-->>-SRV: depositoDeStock
         SRV->>+PRS: get(productoId)
         PRS-->>-SRV: producto
         SRV->>+DEP: fijarMinimo(producto, minimoDeLlenas)
@@ -33431,21 +34272,36 @@ sequenceDiagram
             DEP->>NUM: «create»(producto, minimoDeLlenas)
         else El depósito ya tiene umbral para el tipo de garrafa
             DEP->>UMB: actualizar(minimoDeLlenas)
+            opt El mínimo cambió
+                UMB->>UMB: limpiarAviso()
+            end
         end
         deactivate DEP
     end
     SRV-->>-ADM: umbrales
 ```
 
-**Clases participantes:** `StockService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), las colecciones `Map<String, Deposito>` y `Map<String, Producto>` y los objetos de dominio `Deposito` y `UmbralDeStock`.
+**Clases participantes:** `StockThresholdService` (controlador de fachada de los mínimos del módulo de stock), las colecciones `Map<String, Deposito>` y `Map<String, Producto>` y los objetos de dominio `Deposito` y `UmbralDeStock`.
 
-**GRASP.** *Controlador*: `StockService`. *Creador*: el `Deposito` crea los `UmbralDeStock` que fija (los contiene, composición del modelo conceptual). *Experto*: el `Deposito` sabe qué umbrales tiene y es quien decide entre crear uno y actualizarlo; el `UmbralDeStock` conoce su mínimo.
+**GRASP.** *Controlador*: `StockThresholdService`. *Creador*: el `Deposito` crea los `UmbralDeStock` que fija (los contiene, composición del modelo conceptual). *Experto*: el `Deposito` sabe si ya tiene un umbral para el tipo de garrafa; el `UmbralDeStock` actualiza su mínimo y borra su propio aviso si el mínimo cambió.
 
-**No se dibuja:** la validación de que el mínimo no sea negativo y el guardado de los umbrales en una sola transacción.
+**No se dibuja:** la validación de todo el lote antes de guardar, la transacción y el `INSERT … ON CONFLICT` por lote.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockThresholdService.configurarStockMinimo(...)` | `StockController.configurarUmbrales` → `StockThresholdService.upsert` |
+| `Map<String, Deposito>.get(...)` | `StockThresholdService.upsert`: comprueba en una sola consulta que los depósitos sean vigentes de la distribuidora; responde 404 si falta alguno |
+| `Map<String, Producto>.get(...)` | `StockThresholdService.upsert`: comprueba en una sola consulta que las garrafas sean de la distribuidora; responde 404 si falta alguna |
+| `Deposito.fijarMinimo(...)` | `StockThresholdService.upsert`: `INSERT … ON CONFLICT (warehouse_id, gas_cylinder_id) DO UPDATE` de todos los mínimos |
+| `Deposito.getUmbral(...)` | `StockThresholdService.upsert`: el conflicto sobre `(warehouse_id, gas_cylinder_id)` decide si ya existía |
+| `UmbralDeStock.«create»(...)` | `StockThresholdService.upsert`: inserta el `StockThreshold` si no existía |
+| `UmbralDeStock.actualizar(...)` | `StockThresholdService.upsert`: actualiza `StockThreshold.minFull` del existente |
+| `UmbralDeStock.limpiarAviso(...)` | `StockThresholdService.upsert`: pone `StockThreshold.alertedAt` en nulo si `minFull` cambió |
 
 **Observaciones de diseño**
 
-- Un solo umbral por depósito y tipo de garrafa, con un índice único sobre ese par: el alta en lote es un alta o una modificación (upsert).
+- Un mínimo en cero equivale a no controlar ese par; los mínimos controlan sólo las llenas.
+- Todo el lote se valida antes de escribir: si un depósito o una garrafa no existe, no se guarda ninguno.
 
 ---
 
@@ -33462,96 +34318,149 @@ sequenceDiagram
     participant UMBS as :List#lt;UmbralDeStock#gt;
     participant UMB as umbral:UmbralDeStock
     participant DEP as deposito:Deposito
-    participant DIS as distribuidora:Distribuidora
-    participant MAI as :EmailSenderPort
+    participant MAI as :StockAdminNotifier
 
     SIS->>+CRN: avisarStockBajo()
     CRN->>+UMBS: getConMinimo()
     UMBS-->>-CRN: umbrales
     loop Por cada umbral
-        CRN->>+UMB: getDeposito()
-        UMB-->>-CRN: depositoDeStock
-        CRN->>+DEP: getLlenas(producto)
-        DEP-->>-CRN: llenos
-        CRN->>+UMB: estaPorDebajoDelMinimo(llenos)
+        CRN->>+UMB: estaPorDebajoDelMinimo()
+        UMB->>+DEP: getLlenas(producto)
+        DEP-->>-UMB: llenas
         UMB-->>-CRN: bajo
         alt El depósito bajó del mínimo y todavía no se avisó
-            CRN->>+DEP: getDistribuidora()
-            DEP-->>-CRN: distribuidora
-            CRN->>+DIS: getAdministradores()
-            DIS-->>-CRN: administradores
-            CRN->>MAI: send(administrador, stockBajo)
+            Note over CRN,MAI: Un solo correo por distribuidora, con todos sus depósitos bajos
+            CRN->>MAI: avisar(distribuidora, stockBajo)
             CRN->>UMB: marcarAvisado(ahora)
-        else El depósito se recuperó
+        else El depósito se recuperó y tenía el aviso emitido
             CRN->>UMB: limpiarAviso()
         end
     end
     deactivate CRN
 ```
 
-**Clases participantes:** `StockLowCron` (proceso temporal, controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), la colección `List<UmbralDeStock>`, los objetos de dominio `UmbralDeStock`, `Deposito` y `Distribuidora`, y `EmailSenderPort` (fabricación pura: el puerto de correo, igual que en el aviso de vencimientos de la flota).
+**Clases participantes:** `StockLowCron` (proceso temporal, controlador de fachada del módulo de stock), `StockAdminNotifier` (fabricación pura: envía el correo a los administradores de la distribuidora), la colección `List<UmbralDeStock>` y los objetos de dominio `UmbralDeStock` y `Deposito`.
 
-**GRASP.** *Controlador*: `StockLowCron`. *Experto*: el `UmbralDeStock` conoce su mínimo y le pregunta al `Deposito` cuántas llenas tiene; la `Distribuidora` conoce a sus administradores. *Bajo acoplamiento*: el envío del correo queda detrás de `EmailSenderPort`.
+**GRASP.** *Controlador*: `StockLowCron`. *Experto*: el `UmbralDeStock` conoce su mínimo y le pregunta al `Deposito` cuántas llenas tiene; él mismo guarda y limpia su aviso. *Fabricación pura*: `StockAdminNotifier` busca los administradores con correo y envía.
 
-**No se dibuja:** el cerrojo que garantiza que una sola instancia corra el ciclo, el agrupamiento de los depósitos faltantes en un único correo por distribuidora y el reintento si el envío falla.
+**No se dibuja:** el disparo diario a las 08:00 en la zona argentina, la agrupación por distribuidora y el manejo del fallo del envío, que deja el aviso sin marcar para reintentar al día siguiente.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `List<UmbralDeStock>.getConMinimo(...)` | `StockLowCron.avisarStockBajo`: lee los `StockThreshold` de los depósitos vigentes con las llenas de cada uno |
+| `UmbralDeStock.estaPorDebajoDelMinimo(...)` | `StockLowCron.avisarStockBajo`: `StockThreshold.minFull` mayor que cero y llenas menores que el mínimo |
+| `Deposito.getLlenas(...)` | `StockLowCron.avisarStockBajo`: el saldo de llenas de la ubicación del depósito (`current_full`) |
+| `UmbralDeStock.marcarAvisado(...)` | `StockLowCron.avisarDistribuidora`: pone `StockThreshold.alertedAt` en el instante del aviso |
+| `UmbralDeStock.limpiarAviso(...)` | `StockLowCron.avisarStockBajo`: pone `StockThreshold.alertedAt` en nulo en los mínimos recuperados |
 
 **Observaciones de diseño**
 
-- Corre cada hora con la zona `America/Argentina/Buenos_Aires`. El marcador de aviso evita repetir el correo hasta que el depósito se recupere.
+- Es la contraparte de CU-142 para el stock.
+- El aviso se emite una sola vez por mínimo; se vuelve a evaluar cuando el depósito se recupera o cuando el administrador cambia el mínimo (CU-210).
 
 ---
 
 #### DSD — CU-212: Transferir Stock entre Depósitos
 
-##### Operación: transferirStock(origenId, destinoId, productoId, condicion, cantidad)
+##### Operación: transferirStock(origenId, destinoId, items, nota)
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-212 Transferir Stock entre Depósitos · transferirStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockService
+    participant SRV as :StockTransferUseCase
     participant COL as :Map#lt;String, UbicacionDeStock#gt;
-    participant PRS as :Map#lt;String, Producto#gt;
     participant ORI as ubicacionOrigen:UbicacionDeStock
     participant LED as :StockLedgerService
 
-    ADM->>+SRV: transferirStock(origenId, destinoId, productoId, condicion, cantidad)
+    ADM->>+SRV: transferirStock(origenId, destinoId, items, nota)
     SRV->>+COL: get(origenId)
     COL-->>-SRV: ubicacionOrigen
     SRV->>+COL: get(destinoId)
     COL-->>-SRV: ubicacionDestino
-    SRV->>+PRS: get(productoId)
-    PRS-->>-SRV: producto
-    SRV->>+ORI: esLaMismaQue(ubicacionDestino)
-    ORI-->>-SRV: esLaMisma
-    alt Origen y destino son la misma ubicación
-        SRV-->>ADM: solicitudInvalida
-    else Origen y destino son ubicaciones distintas
-        Note over SRV,LED: Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicion, condicion, cantidad, traslado)
-        alt El origen tiene la cantidad
-            LED-->>SRV: aplicado
-            SRV-->>ADM: aplicado
-        else El origen no tiene la cantidad
-            LED-->>SRV: saldoInsuficiente
-            SRV-->>ADM: saldoInsuficiente
-        end
-        deactivate LED
+    SRV->>+ORI: validarTransferenciaA(ubicacionDestino)
+    ORI-->>-SRV: transferenciaValida
+    Note over SRV,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de cada renglón, todos con el mismo lote,<br/>y mueve el saldo de cada ubicación
+    SRV->>+LED: aplicar(ubicacionOrigen, ubicacionDestino, items, traslado)
+    alt El origen tiene la cantidad de cada renglón
+        LED-->>SRV: lote
+        SRV-->>ADM: lote
+    else El origen no tiene la cantidad de algún renglón
+        LED-->>SRV: saldoInsuficiente
+        SRV-->>ADM: saldoInsuficiente
     end
+    deactivate LED
     deactivate SRV
 ```
 
-**Clases participantes:** `StockService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), las colecciones `Map<String, UbicacionDeStock>` y `Map<String, Producto>` y el objeto de dominio `UbicacionDeStock`.
+**Clases participantes:** `StockTransferUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, UbicacionDeStock>` y el objeto de dominio `UbicacionDeStock`.
 
-**GRASP.** *Controlador*: `StockService`. *Fabricación pura*: `StockLedgerService`, que registra un solo `MovimientoDeStock` con la ubicación de origen y la de destino y mueve los dos saldos (CU-250).
+**GRASP.** *Controlador*: `StockTransferUseCase`. *Fabricación pura*: `StockLedgerService`, que registra un `MovimientoDeStock` por renglón con la ubicación de origen y la de destino y mueve los dos saldos (CU-250). *Experto*: la `UbicacionDeStock` de origen sabe si la transferencia hacia el destino es válida: no es ella misma ni van de un camión a otro.
 
-**No se dibuja:** el bloqueo de los saldos en el orden global y la clave de idempotencia del traslado.
+**No se dibuja:** el bloqueo de las garrafas, los depósitos y los saldos en el orden del libro, la clave de idempotencia de la transferencia y la creación de la ubicación de un camión la primera vez que se lo nombra.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockTransferUseCase.transferirStock(...)` | `StockController.transferir` → `StockTransferUseCase.execute` |
+| `Map<String, UbicacionDeStock>.get(...)` | `StockLocationService.resolver`: la `StockLocation` del depósito o del vehículo dentro de la distribuidora; responde 404 si no existe y crea la del camión la primera vez |
+| `UbicacionDeStock.validarTransferenciaA(...)` | `StockTransferUseCase.execute`: responde 400 si origen y destino son la misma ubicación o si los dos son vehículos |
 
 **Observaciones de diseño**
 
-- Es un solo movimiento con origen y destino, de motivo «traslado»: no hay una tabla de transferencias.
+- Es un grupo de movimientos de motivo «traslado» con un mismo lote: no hay una tabla de transferencias.
 - No cambia el stock vendible: las unidades siguen siendo de la distribuidora.
+
+---
+
+#### DSD — CU-276: Anular una Transferencia de Stock
+
+##### Operación: anularTransferenciaDeStock(loteId, nota)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-276 Anular una Transferencia de Stock · anularTransferenciaDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReverseBatchUseCase
+    participant LIB as :List#lt;MovimientoDeStock#gt;
+    participant MOV as movimiento:MovimientoDeStock
+    participant LED as :StockLedgerService
+
+    ADM->>+SRV: anularTransferenciaDeStock(loteId, nota)
+    SRV->>+LIB: getLote(loteId)
+    LIB-->>-SRV: movimiento
+    SRV->>+MOV: validarEsDeTransferencia()
+    MOV-->>-SRV: esUnaTransferencia
+    Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock inverso de cada original, con la referencia al que corrige
+    SRV->>+LED: contraasentar(loteId, nota)
+    alt El lote no se contraasentó y las garrafas siguen en el destino
+        LED-->>SRV: lote del contraasiento
+        SRV-->>ADM: lote del contraasiento
+    else El lote ya se contraasentó, o las garrafas ya no están donde estaban
+        LED-->>SRV: conflicto
+        SRV-->>ADM: conflicto
+    end
+    deactivate LED
+    deactivate SRV
+```
+
+**Clases participantes:** `ReverseBatchUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `List<MovimientoDeStock>` y el objeto de dominio `MovimientoDeStock`.
+
+**GRASP.** *Controlador*: `ReverseBatchUseCase`. *Experto*: el `MovimientoDeStock` sabe a qué documento pertenece y por eso decide si es de una transferencia. *Fabricación pura*: `StockLedgerService` arma los movimientos inversos, comprueba que el lote no se contraasentó antes y los aplica por el mismo camino que cualquier movimiento.
+
+**No se dibuja:** la transacción con reintento, el bloqueo en el orden del libro y la unicidad del contraasiento, que sostiene un índice único parcial sobre `reversed_movement_id`.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReverseBatchUseCase.anularTransferenciaDeStock(...)` | `StockController.contraasentar` → `ReverseBatchUseCase.execute` |
+| `List<MovimientoDeStock>.getLote(...)` | `ReverseBatchUseCase.execute`: lee el primer `StockMovement` del lote en la distribuidora; responde 404 si no hay ninguno |
+| `MovimientoDeStock.validarEsDeTransferencia(...)` | `ReverseBatchUseCase.execute`: responde 400 si `StockMovement.referenceType` no es una transferencia |
+
+**Observaciones de diseño**
+
+- Los movimientos originales no se tocan: el contraasiento tiene origen y destino invertidos y apunta al original.
+- Un ajuste no se anula por acá: se corrige con otro ajuste.
 
 ---
 
@@ -33564,82 +34473,125 @@ sequenceDiagram
     title DSD — CU-213 Registrar un Ajuste o una Merma de Stock · registrarAjusteDeStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockAdjustmentService
+    participant SRV as :StockAdjustmentUseCase
     participant COL as :Map#lt;String, UbicacionDeStock#gt;
     participant UBI as ubicacion:UbicacionDeStock
     participant LED as :StockLedgerService
-    participant PRO as producto:Producto
 
     ADM->>+SRV: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
+    SRV->>SRV: validarItemsDeAjuste(motivo, items)
     SRV->>+COL: get(ubicacionId)
     COL-->>-SRV: ubicacionDeStock
-    SRV->>+UBI: ajustar(motivoDeAjuste, nota, items, administrador)
-    create participant AJU as nuevo:AjusteDeStock
-    UBI->>AJU: «create»(motivoDeAjuste, nota, administrador)
-    loop Por cada renglón del ajuste
-        create participant ITM as nuevo:ItemAjusteDeStock
-        AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
-    end
-    UBI-->>-SRV: ajuste
-    loop Por cada renglón del ajuste
-        SRV->>+ITM: getProducto()
-        ITM-->>-SRV: producto
-        Note over SRV,LED: Una diferencia positiva entra en la ubicación y una negativa sale de ella<br/>(el otro extremo es nula). Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock y mueve el saldo de cada ubicación
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, condicionDeStock, condicionDeStock, diferencia, ajusteManual)
-        alt El saldo de la ubicación no queda negativo
-            LED-->>-SRV: aplicado
-            opt El renglón es de unidades llenas
-                SRV->>PRO: ajustarStock(diferencia)
-                alt El stock vendible no queda negativo
-                    PRO-->>SRV: ajustado
-                else El stock vendible quedaría negativo
-                    PRO-->>SRV: vendibleInsuficiente
-                end
-            end
-        else El saldo de la ubicación quedaría negativo
-            LED-->>SRV: saldoInsuficiente
+    Note over SRV,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de cada renglón y mueve el saldo de la ubicación<br/>y, en las llenas, el stock vendible del Producto
+    SRV->>+LED: aplicar(ubicacionDeStock, motivo, items)
+    alt Ningún saldo ni el stock vendible quedan negativos
+        LED-->>-SRV: lote
+        SRV->>+UBI: ajustar(motivo, nota, items, lote, administrador)
+        create participant AJU as nuevo:AjusteDeStock
+        UBI->>AJU: «create»(motivo, nota, lote, administrador)
+        loop Por cada renglón del ajuste
+            create participant ITM as nuevo:ItemAjusteDeStock
+            AJU->>ITM: «create»(producto, condicionDeStock, diferencia)
         end
+        UBI-->>-SRV: ajuste
+    else Un saldo o el stock vendible quedarían negativos
+        LED-->>SRV: stockInsuficiente
     end
     SRV-->>-ADM: ajuste
 ```
 
-**Clases participantes:** `StockAdjustmentService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, UbicacionDeStock>` y los objetos de dominio `UbicacionDeStock`, `AjusteDeStock`, `ItemAjusteDeStock` y `Producto`.
+**Clases participantes:** `StockAdjustmentUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, UbicacionDeStock>` y los objetos de dominio `UbicacionDeStock`, `AjusteDeStock` e `ItemAjusteDeStock`.
 
-**GRASP.** *Controlador*: `StockAdjustmentService`. *Creador*: la `UbicacionDeStock` crea el `AjusteDeStock` que la corrige y éste crea sus `ItemAjusteDeStock` (composición). *Experto*: el `Producto` ajusta su stock vendible. *Fabricación pura*: `StockLedgerService` (CU-250).
+**GRASP.** *Controlador*: `StockAdjustmentUseCase`. *Creador*: la `UbicacionDeStock` crea el `AjusteDeStock` que la corrige y éste crea sus `ItemAjusteDeStock` (composición del modelo conceptual). *Fabricación pura*: `StockLedgerService` registra un `MovimientoDeStock` por renglón, mueve el saldo y, si el renglón es de llenas, también el stock vendible del `Producto`.
 
-**No se dibuja:** el número correlativo del ajuste, el bloqueo de las filas de tipo de garrafa y de saldo en el orden global, el cambio de condición de un daño y la reversión de todo el ajuste cuando algún saldo o el vendible quedarían negativos.
+**No se dibuja:** el signo que pide cada motivo (comprobado antes de tocar nada), el orden de bloqueos —garrafas, depósitos y saldos en el libro y, al final, la numeración—, la transacción con reintento y la clave de idempotencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockAdjustmentUseCase.registrarAjusteDeStock(...)` | `StockController.ajustar` → `StockAdjustmentUseCase.execute` |
+| `StockAdjustmentUseCase.validarItemsDeAjuste(...)` | `validarItemsDeAjuste()`: comprueba el signo de cada diferencia según el motivo y que no haya renglones repetidos; responde 400 |
+| `Map<String, UbicacionDeStock>.get(...)` | `StockLocationService.resolver`: la `StockLocation` del depósito o del vehículo dentro de la distribuidora; responde 404 si no existe |
+| `UbicacionDeStock.ajustar(...)` | `StockAdjustmentUseCase.execute`: toma el número con `DocumentSequenceService.siguienteNumero` —el último bloqueo— y guarda |
+| `AjusteDeStock.«create»(...)` | `StockAdjustmentUseCase.execute`: guarda el `StockAdjustment` con su número, motivo, nota obligatoria y lote |
+| `ItemAjusteDeStock.«create»(...)` | `StockAdjustmentUseCase.execute`: inserta un `StockAdjustmentItem` por renglón |
+
+**Observaciones de diseño**
+
+- Una rotura (`damaged`) pasa llenas a defectuosas dentro de la misma ubicación: el vendible baja porque salen llenas.
+- Un ajuste no se anula: se corrige con otro ajuste.
+
+---
+
+#### DSD — CU-275: Consultar los Ajustes de Stock
 
 ##### Operación: consultarAjustesDeStock(desde, hasta, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-213 Registrar un Ajuste o una Merma de Stock · consultarAjustesDeStock
+    title DSD — CU-275 Consultar los Ajustes de Stock · consultarAjustesDeStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :StockAdjustmentService
-    participant AJUS as :List#lt;AjusteDeStock#gt;
+    participant SRV as :StockQueryService
+    participant LIB as :List#lt;AjusteDeStock#gt;
     participant AJU as ajuste:AjusteDeStock
 
     ADM->>+SRV: consultarAjustesDeStock(desde, hasta, motivo)
-    SRV->>+AJUS: buscar(desde, hasta, motivo)
-    loop Por cada ajuste del período
-        AJUS->>AJU: getMotivo()
+    SRV->>+LIB: filtrar(desde, hasta, motivo)
+    loop Por cada ajuste de la página
+        LIB->>AJU: getDetalle()
     end
-    AJUS-->>-SRV: ajustes
-    SRV-->>-ADM: ajustes
+    LIB-->>-SRV: ajustes
+    SRV-->>-ADM: ajustes, cantidadDeAjustes
 ```
 
-**Clases participantes:** `StockAdjustmentService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), la colección `List<AjusteDeStock>` y el objeto de dominio `AjusteDeStock`.
+**Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `List<AjusteDeStock>` y el objeto de dominio `AjusteDeStock`.
 
-**GRASP.** *Controlador*: `StockAdjustmentService`. *Experto*: la colección aplica el filtro de fechas y de motivo; cada `AjusteDeStock` conoce su motivo, su nota y sus renglones.
+**GRASP.** *Controlador*: `StockQueryService`. *Experto*: la colección aplica el filtro de fechas y de motivo y pagina; cada `AjusteDeStock` conoce su número, su motivo, su nota, quién lo registró y sus renglones.
 
-**No se dibuja:** la paginación y el armado de cada renglón con su ubicación.
+**No se dibuja:** la conversión de las fechas a días argentinos y el conteo del total.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockQueryService.consultarAjustesDeStock(...)` | `StockController.ajustes` → `StockQueryService.ajustes` |
+| `List<AjusteDeStock>.filtrar(...)` | `StockQueryService.ajustes`: valida las fechas, filtra por `reason` y rango y pagina del más reciente al más antiguo |
+| `AjusteDeStock.getDetalle(...)` | `StockQueryService.ajustes`: devuelve el número, el motivo, la nota, la ubicación, quién lo registró y los renglones, que se leen en una segunda consulta por la página |
 
 **Observaciones de diseño**
 
-- Una diferencia de unidades llenas mueve el stock vendible igual: `Producto.ajustarStock` sólo se llama por los renglones de condición llena.
-- `PATCH /cylinders/stock` queda como un ajuste de corrección en el depósito predeterminado, con el mismo contrato.
-- El detalle de un ajuste (`GET /stock/adjustments/:id`) trae sus renglones y el adjunto de respaldo.
+- Aparecen también los conteos iniciales (CU-274) y los ajustes de conciliación (CU-277).
+
+---
+
+##### Operación: consultarAjusteDeStock(ajusteId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-275 Consultar los Ajustes de Stock · consultarAjusteDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockQueryService
+    participant COL as :Map#lt;String, AjusteDeStock#gt;
+    participant AJU as ajuste:AjusteDeStock
+
+    ADM->>+SRV: consultarAjusteDeStock(ajusteId)
+    SRV->>+COL: get(ajusteId)
+    COL-->>-SRV: ajuste
+    SRV->>+AJU: getRenglones()
+    AJU-->>-SRV: renglonesDeAjuste
+    SRV-->>-ADM: ajuste, renglonesDeAjuste
+```
+
+**Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `Map<String, AjusteDeStock>` y el objeto de dominio `AjusteDeStock`.
+
+**GRASP.** *Controlador*: `StockQueryService`. *Experto*: el `AjusteDeStock` conoce sus renglones.
+
+**No se dibuja:** el filtro por la distribuidora del contexto.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockQueryService.consultarAjusteDeStock(...)` | `StockController.ajuste` → `StockQueryService.ajuste` |
+| `Map<String, AjusteDeStock>.get(...)` | `StockQueryService.ajuste`: lee el `StockAdjustment` de la distribuidora; responde 404 si no existe |
+| `AjusteDeStock.getRenglones(...)` | `StockQueryService.ajuste`: lee los `StockAdjustmentItem` con el tipo de garrafa y la condición |
 
 ---
 
@@ -33867,72 +34819,73 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-220: Descontar del Camión lo Entregado
+#### DSD — CU-220: Descontar del Stock Físico lo Entregado
 
-##### Operación: descontarStockDeLaEntrega(pedidoId)
+##### Caso incluido: descontarStockDeLaEntrega(entrega)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-220 Descontar del Camión lo Entregado · descontarStockDeLaEntrega
+    title DSD — CU-220 Descontar del Stock Físico lo Entregado · descontarStockDeLaEntrega
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant LST as :StockDeliveryListener
-    participant COL as :Map#lt;String, Pedido#gt;
+    participant CTL as :UpdateOrderStatusUseCase
+    participant ENT as :StockDeliveryService
     participant PED as pedido:Pedido
-    participant ITP as item:ItemPedido
     participant VEH as vehiculo:Vehiculo
     participant DIS as distribuidora:Distribuidora
+    participant DEP as deposito:Deposito
     participant LED as :StockLedgerService
 
-    SIS->>+LST: descontarStockDeLaEntrega(pedidoId)
-    LST->>+COL: get(pedidoId)
-    COL-->>-LST: pedido
-    LST->>+LED: existeMovimiento(pedido)
-    LED-->>-LST: existe
-    alt El pedido ya tiene movimientos de stock
-        LST-->>SIS: nadaQueHacer
-    else El pedido todavía no tiene movimientos de stock
-        LST->>+PED: getVehiculo()
-        PED-->>-LST: vehiculo
-        LST->>+VEH: getCargaAbierta()
-        VEH-->>-LST: carga
-        alt El vehículo tiene una carga abierta
-            LST->>+VEH: getUbicacionDeStock()
-            VEH-->>-LST: ubicacionDeStock
-        else El vehículo no tiene una carga abierta
-            LST->>+DIS: getDepositoPredeterminado()
-            DIS-->>-LST: ubicacionDeStock
-        end
-        LST->>PED: getItems()
-        loop Por cada ítem del pedido
-            LST->>+ITP: getProducto()
-            ITP-->>-LST: producto
-            LST->>+ITP: getCantidad()
-            ITP-->>-LST: cantidad
-            Note over LST,LED: Llenas que salen hacia el cliente (destino nula) y vacías que se reciben, una a una:<br/>ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo de la ubicación de origen
-            LST->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, llenas, llenas, cantidad, entrega)
-            alt La ubicación de origen tiene las llenas
-                LED-->>-LST: aplicado
-            else El camión con carga abierta no alcanza lo entregado
-                LED-->>LST: saldoInsuficiente
-                LST-->>SIS: saldoInsuficiente
+    Note over CTL,ENT: Caso incluido desde CU-020, CU-079 y CU-278
+    CTL->>+ENT: registrarEntrega(entrega)
+    ENT->>+PED: getItemsSinDescuento()
+    PED-->>-ENT: itemsSinDescuento
+    alt Todos los ítems ya tienen su movimiento de entrega
+        ENT-->>CTL: nadaQueDescontar
+    else Hay ítems pendientes
+        ENT->>+DIS: getDepositoPredeterminado()
+        DIS-->>-ENT: depositoPredeterminado
+        loop Por cada ítem pendiente, por identificador de garrafa
+            ENT->>+VEH: tieneLlenas(producto, cantidad)
+            VEH-->>-ENT: alcanzaElSaldo
+            alt El camión del pedido tiene las llenas
+                ENT->>ENT: elegirOrigen(ubicacionDelCamion)
+            else El camión no las tiene
+                ENT->>+DEP: tieneLlenas(producto, cantidad)
+                DEP-->>-ENT: alcanzaElSaldo
+                alt El depósito predeterminado las tiene
+                    ENT->>ENT: elegirOrigen(ubicacionDelDeposito)
+                else Ninguno de los dos las tiene
+                    ENT->>ENT: descartarGarrafa(producto)
+                end
             end
         end
+        opt Quedó algún ítem con origen
+            Note over ENT,LED: Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock de la salida de llenas y el de la entrada de vacías<br/>de cada ítem con origen, sin cambiar el stock vendible
+            ENT->>+LED: aplicar(movimientos)
+            LED-->>-ENT: lote
+        end
     end
-    deactivate LST
+    deactivate ENT
 ```
 
-**Clases participantes:** `StockDeliveryListener` (escucha del evento de pedido entregado, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `ItemPedido`, `Vehiculo` y `Distribuidora`.
+**Clases participantes:** `UpdateOrderStatusUseCase` (controlador del caso base: el que confirma la entrega), `StockDeliveryService` (el adaptador del stock que el pedido invoca), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos) y los objetos de dominio `Pedido`, `Vehiculo`, `Distribuidora` y `Deposito`.
 
-**GRASP.** *Controlador*: `StockDeliveryListener`, el primer objeto que recibe el evento. *Experto*: el `Pedido` conoce el vehículo con que se entregó y sus ítems, el `Vehiculo` su carga abierta y su ubicación de stock y la `Distribuidora` su depósito predeterminado. *Fabricación pura*: `StockLedgerService` (CU-250): por cada ítem registra la salida de las llenas hacia el cliente y la entrada de las vacías recolectadas, que es el canje de uno a uno.
+**GRASP.** *Controlador*: el del caso base. *Experto*: el `Pedido` conoce sus ítems y sabe qué garrafas ya tienen su movimiento de entrega; el `Vehiculo` y el `Deposito` saben si tienen llenas suficientes en su ubicación; la `Distribuidora` conoce su depósito predeterminado. *Fabricación pura*: `StockLedgerService` descuenta las llenas, acredita las vacías y no toca el stock vendible.
 
-**No se dibuja:** la transacción propia del listener, que se abre después del commit de la entrega, la clave única parcial que impide descontar dos veces el mismo pedido y tipo de garrafa y el bloqueo de los saldos en el orden global.
+**No se dibuja:** el punto de control propio dentro de la transacción del pedido, que se intenta 3 veces en total ante un bloqueo cruzado, la lectura de las llenas sin bloqueo (la validación firme la hace el libro) y la idempotencia, que sostienen la revisión previa y un índice único parcial por pedido, garrafa y motivo.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `Pedido.getItemsSinDescuento(...)` | `StockDeliveryService.yaRegistrados`: las garrafas del pedido que ya tienen un `StockMovement` de motivo `delivery`; las pendientes se ordenan por identificador |
+| `Distribuidora.getDepositoPredeterminado(...)` | `WarehouseService.asegurarPredeterminado` |
+| `Vehiculo.tieneLlenas(...)` | `StockDeliveryService.llenasPorUbicacion`: el saldo de llenas de la ubicación existente del vehículo |
+| `Deposito.tieneLlenas(...)` | `StockDeliveryService.llenasPorUbicacion`: el saldo de llenas de la ubicación del depósito predeterminado |
+| `StockDeliveryService.descartarGarrafa(...)` | `StockDeliveryService.intentar`: la agrega a `omitidas` y avisa en el registro; las demás siguen |
 
 **Observaciones de diseño**
 
-- El evento de pedido entregado se emite después del commit de `UpdateOrderStatusUseCase`. Un evento en memoria se pierde si el proceso cae justo en ese momento: por eso CU-224 revisa cada noche los pedidos entregados sin movimiento y los aplica.
-- La carga abierta incluye la que ya regresó: una entrega confirmada después del regreso se imputa a esa carga y recalcula lo esperado hasta que se cierra la rendición. Después del cierre no hay carga abierta, el origen es el depósito predeterminado y la diferencia del camión se corrige con un ajuste.
-- El canje es de uno a uno: si el cliente devolvió otra cantidad, la diferencia aparece al rendir el camión (CU-222).
+- El camión del pedido va primero y el depósito predeterminado después (`StockDeliveryService.elegirOrigen`); la vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno.
+- Nunca bloquea la entrega: lo que no pudo descontar queda para la conciliación (CU-224) y se resuelve con CU-278.
 
 ---
 
@@ -34096,38 +35049,56 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant CRN as :StockReconciliationCron
-    participant PEDS as :List#lt;Pedido#gt;
-    participant PRD as :List#lt;Producto#gt;
+    participant SRV as :StockReconciliationService
+    participant PRS as :List#lt;Producto#gt;
     participant PRO as producto:Producto
-    participant UBS as :List#lt;UbicacionDeStock#gt;
-    participant DIS as distribuidora:Distribuidora
-    participant MAI as :EmailSenderPort
+    participant PEDS as :List#lt;Pedido#gt;
+    participant MAI as :StockAdminNotifier
 
     SIS->>+CRN: conciliarStock()
-    CRN->>+PEDS: getEntregadosSinMovimiento()
-    PEDS-->>-CRN: pedidos
-    Note over CRN,PEDS: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220). Crea los MovimientoDeStock
-    CRN->>+PRD: getActivos()
-    PRD-->>-CRN: productos
+    CRN->>+SRV: conciliar(distribuidora)
+    SRV->>+PRS: getTodos()
+    PRS-->>-SRV: productos
     loop Por cada tipo de garrafa
-        CRN->>PRO: getStock()
-        CRN->>UBS: getLlenas(producto)
-        CRN->>PEDS: getReservado(producto)
-        CRN->>PRO: calcularDiferencia(llenasFisicas, reservado)
+        SRV->>+PRO: calcularDiferencia(llenasFisicas, reservado)
+        PRO-->>-SRV: diferencia
     end
-    opt Algún tipo de garrafa tiene diferencia
-        CRN->>+DIS: getAdministradores()
-        DIS-->>-CRN: administradores
-        CRN->>MAI: send(administrador, diferencias)
+    SRV->>+PEDS: getEntregadosSinMovimiento()
+    PEDS-->>-SRV: pedidos
+    SRV-->>-CRN: motivoConciliacion
+    alt Todo cierra
+        CRN->>CRN: borrarAviso(distribuidora)
+    else Hay diferencias
+        CRN->>CRN: coincideConElUltimoAviso(firma)
+        opt La diferencia es nueva
+            CRN->>MAI: avisar(distribuidora, diferencias)
+            CRN->>CRN: guardarAviso(firma)
+        end
     end
     deactivate CRN
 ```
 
-**Clases participantes:** `StockReconciliationCron` (proceso temporal, controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), las colecciones `List<Producto>`, `List<Pedido>` y `List<UbicacionDeStock>`, los objetos de dominio `Producto` y `Distribuidora` y `EmailSenderPort` (fabricación pura: el puerto de correo).
+**Clases participantes:** `StockReconciliationCron` (proceso temporal, controlador de fachada del módulo de stock), `StockReconciliationService` (fabricación pura: el cálculo de la conciliación), `StockAdminNotifier` (fabricación pura: envía el correo), las colecciones `List<Producto>` y `List<Pedido>` y el objeto de dominio `Producto`.
 
-**GRASP.** *Controlador*: `StockReconciliationCron`. *Experto*: el `Producto` conoce su stock vendible y calcula su diferencia con lo físico menos lo reservado; la colección de ubicaciones suma lo lleno y la de pedidos lo reservado.
+**GRASP.** *Controlador*: `StockReconciliationCron`. *Experto*: el `Producto` conoce su stock vendible y calcula la diferencia contra las llenas físicas y lo reservado; el cron guarda la firma de la última diferencia avisada (`stock_reconciliation_alert`, una tabla técnica) y decide si una nueva coincide con ella. *Fabricación pura*: `StockReconciliationService` hace el cálculo en una lectura consistente, que comparte con la consulta del administrador (CU-224, `consultarConciliacionDeStock`).
 
-**No se dibuja:** el cerrojo que hace que una sola instancia corra el proceso, el detalle de la aplicación de cada entrega, que es el de CU-220, y el envío agrupado del correo.
+**No se dibuja:** el disparo diario a las 03:00 en la zona argentina, el recorrido de todas las distribuidoras con depósitos, la lectura en `REPEATABLE READ` y el manejo del fallo del envío, que deja el aviso sin guardar para reintentar al día siguiente.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockReconciliationCron.conciliarStock(...)` | `StockReconciliationCron.conciliarTodas` → `StockReconciliationCron.conciliar`, con `@Cron('0 3 * * *')` |
+| `List<Producto>.getTodos(...)` | `StockReconciliationService.conciliar`: lee los `GasCylinder` de la distribuidora con su `GasCylinder.stock` |
+| `Producto.calcularDiferencia(...)` | `conciliarVendible()`: el esperado es las llenas físicas menos lo reservado, y la diferencia es el vendible menos el esperado |
+| `List<Pedido>.getEntregadosSinMovimiento(...)` | `StockReconciliationService.conciliar`: compara `OrderLookupService.deliveredItemsSince` con `StockReconciliationService.entregasConMovimiento` |
+| `StockReconciliationCron.borrarAviso(...)` | `StockReconciliationCron.conciliar`: borra el aviso de la distribuidora cuando todo cierra |
+| `StockReconciliationCron.coincideConElUltimoAviso(...)` | `firmaDe()`: huella `sha256` de las diferencias y de las entregas pendientes, comparada con la del último aviso |
+| `StockReconciliationCron.guardarAviso(...)` | `StockReconciliationCron.conciliar`: `INSERT … ON CONFLICT (distributor_id)` de la firma con el instante del aviso |
+
+**Observaciones de diseño**
+
+- El caso no corrige nada: sólo avisa. La salida de un desvío es CU-277 y la de una entrega sin descuento, CU-278.
+
+---
 
 ##### Operación: consultarConciliacionDeStock()
 
@@ -34137,35 +35108,139 @@ sequenceDiagram
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :StockReconciliationService
-    participant PRD as :List#lt;Producto#gt;
+    participant PRS as :List#lt;Producto#gt;
     participant PRO as producto:Producto
-    participant UBS as :List#lt;UbicacionDeStock#gt;
     participant PEDS as :List#lt;Pedido#gt;
 
     ADM->>+SRV: consultarConciliacionDeStock()
-    SRV->>+PRD: getActivos()
-    PRD-->>-SRV: productos
+    SRV->>+PRS: getTodos()
+    PRS-->>-SRV: productos
     loop Por cada tipo de garrafa
-        SRV->>PRO: getStock()
-        SRV->>UBS: getLlenas(producto)
-        SRV->>PEDS: getReservado(producto)
-        SRV->>PRO: calcularDiferencia(llenasFisicas, reservado)
+        SRV->>+PRO: calcularDiferencia(llenasFisicas, reservado)
+        PRO-->>-SRV: diferencia
     end
-    SRV->>PEDS: getEntregadosSinMovimiento()
-    SRV-->>-ADM: conciliacion
+    SRV->>+PEDS: getEntregadosSinMovimiento()
+    PEDS-->>-SRV: pedidos
+    SRV-->>-ADM: motivoConciliacion
 ```
 
-**Clases participantes:** `StockReconciliationService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código), las colecciones `List<Producto>`, `List<UbicacionDeStock>` y `List<Pedido>` y el objeto de dominio `Producto`.
+**Clases participantes:** `StockReconciliationService` (controlador de fachada de la conciliación del módulo de stock), las colecciones `List<Producto>` y `List<Pedido>` y el objeto de dominio `Producto`.
 
-**GRASP.** *Controlador*: `StockReconciliationService`. *Experto*: el `Producto` calcula su diferencia con lo físico menos lo reservado.
+**GRASP.** *Controlador*: `StockReconciliationService`. *Experto*: el `Producto` conoce su stock vendible y calcula la diferencia contra las llenas físicas y lo reservado; la colección de `Pedido` reúne las entregas que no descontaron el físico.
 
-**No se dibuja:** la lista de tipos de garrafa de la distribuidora y el armado de la respuesta.
+**No se dibuja:** la lectura en `REPEATABLE READ`, que evita una diferencia falsa si entra un pedido mientras se calcula.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockReconciliationService.consultarConciliacionDeStock(...)` | `StockController.conciliar` → `StockReconciliationService.conciliar` |
+| `List<Producto>.getTodos(...)` | `StockReconciliationService.conciliar`: lee los `GasCylinder` de la distribuidora con su `GasCylinder.stock` |
+| `Producto.calcularDiferencia(...)` | `conciliarVendible()`: el esperado es las llenas físicas menos lo reservado; agrega la corrección sugerida, que es la diferencia con el signo cambiado |
+| `List<Pedido>.getEntregadosSinMovimiento(...)` | `StockReconciliationService.conciliar`: compara `OrderLookupService.deliveredItemsSince` con `StockReconciliationService.entregasConMovimiento` |
 
 **Observaciones de diseño**
 
-- No corrige el vendible por su cuenta: una diferencia puede ser un error de carga y se resuelve con un ajuste (CU-213).
-- Corre a las 3:00 con la zona `America/Argentina/Buenos_Aires`.
-- Es la misma cuenta que hace el proceso nocturno, sin escribir nada: la pantalla «Conciliación» muestra la diferencia y los pedidos entregados sin movimiento.
+- `consistent` es verdadero cuando todas las diferencias son cero y no hay entregas sin movimiento.
+
+---
+
+#### DSD — CU-277: Registrar un Ajuste de Conciliación del Vendible
+
+##### Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-277 Registrar un Ajuste de Conciliación del Vendible · registrarAjusteDeConciliacion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReconciliationAdjustmentUseCase
+    participant COL as :Map#lt;String, Producto#gt;
+    participant PRO as producto:Producto
+    participant DIS as distribuidora:Distribuidora
+    participant UBI as ubicacion:UbicacionDeStock
+
+    ADM->>+SRV: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+    SRV->>+COL: get(productoId)
+    COL-->>-SRV: producto
+    SRV->>+PRO: conciliarVendible(diferenciaEsperada)
+    PRO->>PRO: validarHayDiferencia()
+    PRO-->>-SRV: correccionDeVendible
+    SRV->>+DIS: getUbicacionPredeterminada()
+    DIS-->>-SRV: ubicacionPredeterminada
+    SRV->>+UBI: ajustar(motivoConciliacion, nota, correccionDeVendible, administrador)
+    create participant AJU as nuevo:AjusteDeStock
+    UBI->>AJU: «create»(motivoConciliacion, nota, administrador)
+    create participant ITM as nuevo:ItemAjusteDeStock
+    AJU->>ITM: «create»(producto, llenas, correccionDeVendible)
+    UBI-->>-SRV: ajuste
+    SRV-->>-ADM: ajuste
+```
+
+**Clases participantes:** `ReconciliationAdjustmentUseCase` (controlador: el caso de uso del módulo de stock), la colección `Map<String, Producto>` y los objetos de dominio `Producto`, `Distribuidora`, `UbicacionDeStock`, `AjusteDeStock` e `ItemAjusteDeStock`.
+
+**GRASP.** *Controlador*: `ReconciliationAdjustmentUseCase`. *Experto*: el `Producto` conoce su stock vendible y es quien lo lleva al valor esperado, rechazando el pedido si no hay diferencia; la `Distribuidora` conoce su depósito predeterminado. *Creador*: la `UbicacionDeStock` crea el `AjusteDeStock` y éste su `ItemAjusteDeStock` (composición).
+
+**No se dibuja:** el bloqueo de la garrafa del catálogo, que es el mismo que usa un pedido nuevo al reservar, la transacción con reintento, la numeración del ajuste y la clave de idempotencia. No se llama al libro de movimientos: el físico no cambió.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReconciliationAdjustmentUseCase.registrarAjusteDeConciliacion(...)` | `StockController.corregirVendible` → `ReconciliationAdjustmentUseCase.execute` |
+| `Map<String, Producto>.get(...)` | `ReconciliationAdjustmentUseCase.execute`: lee el `GasCylinder` de la distribuidora (400 si no existe) y lo bloquea `FOR UPDATE` |
+| `Producto.conciliarVendible(...)` | `conciliarVendible()` y `GasCylinderService.ajustarVendible`: llevan `GasCylinder.stock` al valor esperado; responde 409 si la diferencia ya no es la esperada y 400 si las llenas físicas son menos que lo reservado |
+| `Producto.validarHayDiferencia(...)` | `ReconciliationAdjustmentUseCase.execute`: responde 400 si la diferencia es cero |
+| `Distribuidora.getUbicacionPredeterminada(...)` | `WarehouseService.asegurarPredeterminado` |
+| `UbicacionDeStock.ajustar(...)` | `ReconciliationAdjustmentUseCase.execute`: toma el número con `DocumentSequenceService.siguienteNumero` y guarda |
+| `AjusteDeStock.«create»(...)` | `ReconciliationAdjustmentUseCase.execute`: guarda el `StockAdjustment` de motivo `reconciliation`, sin movimientos del libro, con un lote que no corresponde a ninguno |
+| `ItemAjusteDeStock.«create»(...)` | `ReconciliationAdjustmentUseCase.execute`: inserta el `StockAdjustmentItem` de llenas con la corrección aplicada |
+
+**Observaciones de diseño**
+
+- La corrección es una variación del vendible, no un movimiento físico: por eso el ajuste no tiene movimientos en el libro y no se contraasienta.
+- Se aplica sobre el depósito predeterminado sólo para dar una ubicación al documento.
+
+---
+
+#### DSD — CU-278: Reaplicar las Entregas sin Movimiento de Stock
+
+##### Operación: reaplicarEntregasDeStock()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-278 Reaplicar las Entregas sin Movimiento de Stock · reaplicarEntregasDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReapplyDeliveriesUseCase
+    participant PEDS as :List#lt;Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ENT as :StockDeliveryService
+
+    ADM->>+SRV: reaplicarEntregasDeStock()
+    SRV->>+PEDS: getEntregados()
+    PEDS-->>-SRV: pedidos
+    loop Por cada pedido entregado
+        SRV->>+PED: getItems()
+        PED-->>-SRV: items
+        Note over SRV,ENT: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220).<br/>Crea los MovimientoDeStock de la entrega que le falten al pedido
+        SRV->>ENT: registrarEntrega(pedido, items)
+    end
+    SRV-->>-ADM: resumenDeReaplicacion
+```
+
+**Clases participantes:** `ReapplyDeliveriesUseCase` (controlador: el caso de uso del módulo de stock), `StockDeliveryService` (fabricación pura: el descuento de la entrega), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
+
+**GRASP.** *Controlador*: `ReapplyDeliveriesUseCase`. *Experto*: la colección de `Pedido` reúne los entregados desde el primer movimiento del libro y cada `Pedido` conoce sus ítems. *Fabricación pura*: `StockDeliveryService` es el mismo procedimiento que descuenta una entrega al confirmarse (CU-220), que ya es idempotente por pedido y garrafa.
+
+**No se dibuja:** la transacción propia de cada pedido, la agrupación de los renglones por pedido y la cuenta de revisados, reaplicados y pendientes.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReapplyDeliveriesUseCase.reaplicarEntregasDeStock(...)` | `StockController.reaplicar` → `ReapplyDeliveriesUseCase.execute` |
+| `List<Pedido>.getEntregados(...)` | `OrderLookupService.deliveredItemsSince`: los renglones de los pedidos entregados desde el primer movimiento del libro |
+| `Pedido.getItems(...)` | `ReapplyDeliveriesUseCase.execute`: agrupa los renglones por pedido y arma la entrega con sus ítems y su vehículo |
+
+**Observaciones de diseño**
+
+- Es una acción explícita del administrador: la conciliación nocturna avisa pero no reaplica.
+- Un pedido que sigue sin llenas queda como pendiente y se ve en la conciliación.
 
 ---
 
@@ -34262,57 +35337,83 @@ sequenceDiagram
 
 #### DSD — CU-250: Aplicar un Movimiento de Stock
 
-##### Caso incluido: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+##### Caso incluido: aplicarMovimientoDeStock(operacion)
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-250 Aplicar un Movimiento de Stock · aplicarMovimientoDeStock
     autonumber
-    participant CTL as :StockService
+    participant CTL as :StockTransferUseCase
     participant LED as :StockLedgerService
+    participant PRO as producto:Producto
+    participant DEP as deposito:Deposito
     participant UBO as origen:UbicacionDeStock
     participant UBD as destino:UbicacionDeStock
-    participant SAO as saldoOrigen:SaldoDeStock
-    participant SAD as saldoDestino:SaldoDeStock
+    participant SAL as saldo:SaldoDeStock
 
-    Note over CTL,LED: Caso incluido desde CU-212, CU-213, CU-217, CU-218, CU-220 y CU-222
-    CTL->>+LED: aplicarMovimientoDeStock(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
+    Note over CTL,SAL: Caso incluido desde CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274 y CU-276
+    CTL->>+LED: aplicar(operacion)
+    LED->>LED: validarMovimiento(movimiento)
+    loop Por cada garrafa de la operación, por identificador
+        alt El vendible acompaña al físico (cambian las llenas)
+            LED->>PRO: ajustarStock(diferenciaDeLlenas)
+        else El vendible no se toca (entrega, traslado)
+            LED->>PRO: bloquearCompartido()
+        end
+    end
+    loop Por cada depósito de la operación, por identificador
+        LED->>DEP: bloquearCompartido()
+    end
     opt El movimiento sale de una ubicación
         LED->>+UBO: descontar(producto, condicionOrigen, cantidad)
-        UBO->>+SAO: restar(cantidad)
-        SAO-->>-UBO: descontado
+        UBO->>SAL: restar(cantidad)
         UBO-->>-LED: descontado
     end
-    alt El origen tenía la cantidad, o el movimiento entra desde afuera
+    alt Ningún saldo queda negativo
         opt El movimiento entra en una ubicación
             LED->>+UBD: acreditar(producto, condicionDestino, cantidad)
             alt La ubicación todavía no tiene saldo de ese tipo y condición
                 create participant NSA as nuevo:SaldoDeStock
                 UBD->>NSA: «create»(producto, condicionDestino, cantidad)
             else La ubicación ya tiene saldo de ese tipo y condición
-                UBD->>SAD: sumar(cantidad)
+                UBD->>SAL: sumar(cantidad)
             end
             deactivate UBD
         end
         create participant MOV as nuevo:MovimientoDeStock
-        LED->>MOV: «create»(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivoDeMovimiento)
-        LED-->>CTL: aplicado
-    else El origen no tenía la cantidad
-        LED-->>CTL: saldoInsuficiente
+        LED->>MOV: «create»(ubicacionOrigen, ubicacionDestino, producto, condicionOrigen, condicionDestino, cantidad, motivo)
+        LED-->>CTL: lote
+    else Algún saldo quedaría negativo
+        LED-->>CTL: stockInsuficiente
     end
     deactivate LED
 ```
 
-**Clases participantes:** `StockService` (controlador de fachada del módulo de stock, **colaboración propuesta**: no existe en el código; el mismo papel lo cumplen los demás controladores que lo invocan), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código) y los objetos de dominio `UbicacionDeStock`, `SaldoDeStock` y `MovimientoDeStock`.
+**Clases participantes:** `StockTransferUseCase` (controlador del caso base; el mismo papel lo cumplen los demás casos de uso y servicios que lo invocan), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos) y los objetos de dominio `Producto`, `Deposito`, `UbicacionDeStock`, `SaldoDeStock` y `MovimientoDeStock`.
 
-**GRASP.** *Controlador*: el del caso base. *Fabricación pura*: `StockLedgerService` concentra la regla común a todo movimiento (el saldo no queda negativo, el movimiento se asienta) para que ninguna otra clase escriba saldos. *Experto*: cada `UbicacionDeStock` descuenta y acredita sus propios saldos; el saldo que se resta (`saldoOrigen`) y el que se suma (`saldoDestino`) son dos instancias de `SaldoDeStock`, una de cada ubicación. *Creador*: la `UbicacionDeStock` crea el `SaldoDeStock` que acumula (composición) y el libro registra el `MovimientoDeStock`.
+**GRASP.** *Controlador*: el del caso base. *Fabricación pura*: `StockLedgerService` concentra la regla común a todo movimiento (el saldo no queda negativo, el movimiento se asienta) para que ninguna otra clase escriba saldos. *Experto*: cada `UbicacionDeStock` descuenta y acredita sus propios saldos; el `Producto` lleva el stock vendible junto con las llenas. *Creador*: la `UbicacionDeStock` crea el `SaldoDeStock` que acumula (composición) y el libro registra el `MovimientoDeStock`.
 
-**No se dibuja:** el bloqueo de los saldos en el orden global, la clave única parcial que vuelve idempotente el descuento de una entrega y el cambio de lo vendible, que decide cada caso base.
+**No se dibuja:** el orden de los bloqueos, que se detalla abajo, la transacción de quien llama, la clave única parcial que vuelve idempotente el descuento de una entrega y la inserción de los movimientos en un solo lote.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `StockLedgerService.validarMovimiento(...)` | `validarMovimiento()`: cantidad positiva, al menos un extremo y origen distinto del destino; responde 400 |
+| `Producto.ajustarStock(...)` | `GasCylinderService.ajustarVendible`: bloquea la garrafa del catálogo `FOR UPDATE`, suma o resta lo mismo al vendible y rechaza el negativo |
+| `Producto.bloquearCompartido(...)` | `StockLedgerService.bloquearGarrafas`: `SELECT … FOR KEY SHARE` de la garrafa, que no choca con otras entregas ni transferencias |
+| `Deposito.bloquearCompartido(...)` | `StockLedgerService.cargarUbicaciones`: `SELECT … FOR SHARE` de los depósitos vigentes, ordenados por identificador, que frena la baja de un depósito en uso |
+| `UbicacionDeStock.descontar(...)` | `StockLedgerService.aplicarSaldos`: bloquea los `StockBalance` ordenados por ubicación, garrafa y condición y rechaza con `StockInsuficienteError` si alguno quedaría negativo |
+| `SaldoDeStock.restar(...)` | `StockLedgerService.aplicarSaldos`: `UPDATE` de `StockBalance.quantity` |
+| `UbicacionDeStock.acreditar(...)` | `StockLedgerService.aplicarSaldos`: asegura la fila del saldo que recibe con `INSERT … ON CONFLICT DO NOTHING` |
+| `SaldoDeStock.«create»(...)` | `StockLedgerService.aplicarSaldos`: inserta el `StockBalance` en cero y lo suma en el mismo `UPDATE` |
+| `SaldoDeStock.sumar(...)` | `StockLedgerService.aplicarSaldos`: `UPDATE` de `StockBalance.quantity` |
+| `MovimientoDeStock.«create»(...)` | `StockLedgerService.insertarMovimientos`: inserta un `StockMovement` por renglón con un mismo lote |
 
 **Observaciones de diseño**
 
+- Orden de bloqueos del libro (el conteo inicial hoy toma antes el depósito en modo exclusivo y el back se está corrigiendo para alinearlo): 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido; 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, cuando el caso base numera un documento.
 - Un movimiento tiene origen, destino o los dos: una entrada desde afuera no tiene origen y una salida al cliente o una merma no tienen destino.
-- Es la única operación que escribe saldos físicos: los casos de compra, ajuste, traslado, carga del camión, entrega y rendición la invocan por cada renglón.
+- Para deshacer un lote, `StockLedgerService.contraasentar` arma los movimientos inversos —destino y origen intercambiados, con la referencia al original— y los aplica con este mismo procedimiento (CU-276).
+- Es la única operación que escribe saldos físicos: los casos de compra, ajuste, traslado, conteo, carga del camión, entrega y rendición la invocan.
 
 ---
 

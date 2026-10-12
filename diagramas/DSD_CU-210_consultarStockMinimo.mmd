@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-210 Configurar el Stock Mínimo · consultarStockMinimo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockThresholdService
+    participant UMBS as :List#lt;UmbralDeStock#gt;
+    participant UMB as umbral:UmbralDeStock
+
+    ADM->>+SRV: consultarStockMinimo()
+    SRV->>+UMBS: getTodos()
+    loop Por cada umbral
+        UMBS->>UMB: getLlenasActuales()
+    end
+    UMBS-->>-SRV: umbrales
+    SRV-->>-ADM: umbrales

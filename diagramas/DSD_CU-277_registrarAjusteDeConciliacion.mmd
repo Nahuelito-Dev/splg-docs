@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSD — CU-277 Registrar un Ajuste de Conciliación del Vendible · registrarAjusteDeConciliacion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReconciliationAdjustmentUseCase
+    participant COL as :Map#lt;String, Producto#gt;
+    participant PRO as producto:Producto
+    participant DIS as distribuidora:Distribuidora
+    participant UBI as ubicacion:UbicacionDeStock
+
+    ADM->>+SRV: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+    SRV->>+COL: get(productoId)
+    COL-->>-SRV: producto
+    SRV->>+PRO: conciliarVendible(diferenciaEsperada)
+    PRO->>PRO: validarHayDiferencia()
+    PRO-->>-SRV: correccionDeVendible
+    SRV->>+DIS: getUbicacionPredeterminada()
+    DIS-->>-SRV: ubicacionPredeterminada
+    SRV->>+UBI: ajustar(motivoConciliacion, nota, correccionDeVendible, administrador)
+    create participant AJU as nuevo:AjusteDeStock
+    UBI->>AJU: «create»(motivoConciliacion, nota, administrador)
+    create participant ITM as nuevo:ItemAjusteDeStock
+    AJU->>ITM: «create»(producto, llenas, correccionDeVendible)
+    UBI-->>-SRV: ajuste
+    SRV-->>-ADM: ajuste

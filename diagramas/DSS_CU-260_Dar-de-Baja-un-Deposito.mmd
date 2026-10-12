@@ -6,9 +6,11 @@ sequenceDiagram
 
     ADM->>SIS: darDeBajaDeposito(depositoId)
     activate SIS
-    alt el depósito no tiene saldo
-        SIS-->>ADM: baja confirmada
-    else el depósito tiene saldo
-        SIS-->>ADM: conflicto, con el saldo pendiente
+    alt el depósito existe, no es el predeterminado y no tiene saldo
+        SIS-->>ADM: depósito dado de baja
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el depósito es el predeterminado o todavía tiene garrafas
+        SIS-->>ADM: conflicto
     end
     deactivate SIS

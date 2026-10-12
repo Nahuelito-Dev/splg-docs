@@ -403,6 +403,8 @@ classDiagram
             condición de origen
             condición de destino
             motivo
+            documento de origen
+            observación
             fecha
         }
         class UmbralDeStock {
@@ -706,6 +708,7 @@ classDiagram
     AjusteDeStock "1" *-- "1..*" ItemAjusteDeStock : contiene ▸
     ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a ▸
     Usuario "1" -- "0..*" AjusteDeStock : registra ▸
+    MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock : corrige a ▸
     Proveedor "1" -- "0..*" OrdenDeCompra : recibe ▸
     OrdenDeCompra "0..*" -- "1" Deposito : se destina a ▸
     OrdenDeCompra "1" *-- "1..*" ItemOrdenDeCompra : contiene ▸

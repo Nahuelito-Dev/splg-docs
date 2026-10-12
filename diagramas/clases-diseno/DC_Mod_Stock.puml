@@ -60,129 +60,190 @@ hide empty members
 left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
+class CatalogStockAdjustmentUseCase <<controlador>> {
+  + actualizarStock(productoId: Identificador,\n      variacion: Entero): Producto
+}
+class StockAdjustmentUseCase <<controlador>> {
+  + registrarAjusteDeStock(ubicacionId: Identificador,\n      motivo: Cadena, nota: Cadena,\n      items: Lista): AjusteDeStock
+  + registrarAjusteDeStock(ubicacionDeStock: UbicacionDeStock,\n      motivoRecuento: MotivoDeAjuste, nota: Cadena,\n      producto: Producto,\n      variacion: Entero): AjusteDeStock
+  + validarItemsDeAjuste(motivo: Cadena, items: Registro)
+}
 class WarehouseService <<fachada>> {
   + actualizarDeposito(depositoId: Identificador,\n      datos: Registro): Deposito
-  + consultarDepositos(): Deposito[*]
+  + consultarDeposito(depositoId: Identificador,\n      out saldos: SaldoDeStock[*]): Deposito
+  + consultarDepositos(incluirInactivos: Booleano): Deposito[*]
   + darDeBajaDeposito(depositoId: Identificador)
+  + marcarDepositoPredeterminado(depositoId: Identificador): Deposito
   + registrarDeposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena): Deposito
-}
-class StockService <<fachada>> {
-  + configurarStockMinimo(depositoId: Identificador,\n      minimos: Lista): UmbralDeStock[*]
-  + consultarMovimientosDeStock(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out total: Entero): MovimientoDeStock[*]
-  + consultarResumenDeStock(): Registro
-  + consultarStockPorUbicacion(ubicacionId: Identificador,\n      productoId: Identificador): SaldoDeStock[*]
-  + transferirStock(origenId: Identificador,\n      destinoId: Identificador,\n      productoId: Identificador, condicion: Cadena,\n      cantidad: Entero): Booleano
-}
-class "List<UbicacionDeStock>" as List_UbicacionDeStock <<colección>> {
-  + getCantidadPorCondicion(producto: Producto): Entero
-  + getLlenas(producto: Producto): Entero
-}
-class "List<UmbralDeStock>" as List_UmbralDeStock <<colección>> {
-  + getConMinimo(): UmbralDeStock[*]
-  + getMinimoDeLlenas(producto: Producto): Entero
-}
-class "Map<String, UbicacionDeStock>" as Map_String_UbicacionDeStock <<colección>> {
-  + get(clave: Cadena): UbicacionDeStock
-}
-class "List<MovimientoDeStock>" as List_MovimientoDeStock <<colección>> {
-  + buscar(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out total: Entero): MovimientoDeStock[*]
 }
 class "Map<String, Deposito>" as Map_String_Deposito <<colección>> {
   + get(clave: Cadena): Deposito
 }
+class StockQueryService <<fachada>> {
+  + consultarAjusteDeStock(ajusteId: Identificador,\n      out renglonesDeAjuste: ItemAjusteDeStock[*]): AjusteDeStock
+  + consultarAjustesDeStock(desde: FechaHora,\n      hasta: FechaHora, motivo: Cadena,\n      out cantidadDeAjustes: Entero): Registro
+  + consultarMovimientosDeStock(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out cantidadDeMovimientos: Entero): MovimientoDeCaja[*]
+  + consultarResumenDeStock(): Registro
+  + consultarStockPorUbicacion(ubicacionId: Identificador,\n      productoId: Identificador): SaldoDeStock[*]
+  + saldos(ubicacionDeStock: UbicacionDeStock): SaldoDeStock[*]
+}
+class "Map<String, UbicacionDeStock>" as Map_String_UbicacionDeStock <<colección>> {
+  + get(clave: Cadena): UbicacionDeStock
+}
+class StockLocationService <<fachada>> {
+  + consultarUbicacionesDeStock(): UbicacionDeStock[*]
+}
+class "List<MovimientoDeStock>" as List_MovimientoDeStock <<colección>> {
+  + filtrar(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora,\n      pagina: Entero): MovimientoDeCaja[*]
+  + getLote(loteId: Identificador): MovimientoDeCaja
+}
+class StockThresholdService <<fachada>> {
+  + configurarStockMinimo(minimos: Lista): UmbralDeStock[*]
+  + consultarStockMinimo(): UmbralDeStock[*]
+}
+class "List<UmbralDeStock>" as List_UmbralDeStock <<colección>> {
+  + getConMinimo(): UmbralDeStock[*]
+  + getMinimoDeLlenas(producto: Producto): Entero
+  + getTodos(): UmbralDeStock[*]
+}
 class StockLowCron <<fachada>> {
   + avisarStockBajo()
 }
+class StockAdminNotifier <<fabricación pura>> {
+  + avisar(distribuidora: Distribuidora, stockBajo: Registro)
+}
+class StockTransferUseCase <<controlador>> {
+  + transferirStock(origenId: Identificador,\n      destinoId: Identificador, items: Lista,\n      nota: Cadena): Identificador
+}
 class StockLedgerService <<fachada>> {
-  + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto, condicion: Cadena,\n      cantidad: Entero,\n      traslado: MotivoDeMovimiento): Booleano
-  + aplicarMovimientoDeStock(ubicacionDeStock: UbicacionDeStock,\n      ubicacionDeStock: UbicacionDeStock,\n      producto: Producto,\n      condicionDeStock: CondicionDeStock,\n      cantidad: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento): Booleano
-  + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento): Booleano
-  + existeMovimiento(pedido: Pedido): Booleano
+  + aplicar(movimientos: MovimientoDeCaja[*]): Identificador
+  + aplicar(operacion: Cadena): Identificador
+  + aplicar(ubicacionDeStock: UbicacionDeStock,\n      renglonesDeAjuste: ItemAjusteDeStock[*]): Identificador
+  + aplicar(ubicacionDeStock: UbicacionDeStock,\n      motivo: Cadena, items: Registro): Identificador
+  + aplicar(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      items: Registro,\n      traslado: MotivoDeMovimiento): Identificador
+  + aplicarMovimientoDeStock(ubicacionDeStock: UbicacionDeStock,\n      ubicacionDeStock: UbicacionDeStock,\n      producto: Producto, llenas: CondicionDeStock,\n      llenasCargadas: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento): Booleano
+  + contraasentar(loteId: Identificador, nota: Cadena)
+  + validarMovimiento(movimiento: MovimientoDeCaja)
 }
-class StockAdjustmentService <<fachada>> {
-  + consultarAjustesDeStock(desde: FechaHora,\n      hasta: FechaHora, motivo: Cadena): Registro
-  + registrarAjusteDeStock(ubicacionId: Identificador,\n      motivo: Cadena, nota: Cadena,\n      items: Lista): AjusteDeStock
-}
-class "List<AjusteDeStock>" as List_AjusteDeStock <<colección>> {
-  + buscar(desde: FechaHora, hasta: FechaHora,\n      motivo: Cadena): Registro
-}
-class StockDeliveryListener <<fachada>> {
-  + descontarStockDeLaEntrega(pedidoId: Identificador): Booleano
+class StockDeliveryService <<fachada>> {
+  + descartarGarrafa(producto: Producto)
+  + elegirOrigen(ubicacionDelCamion: UbicacionDeStock)
+  + registrarEntrega(entrega: MotivoDeMovimiento): Booleano
+  + registrarEntrega(pedido: Pedido, items: Registro)
 }
 class StockReconciliationCron <<fachada>> {
+  + borrarAviso(distribuidora: Distribuidora)
+  + coincideConElUltimoAviso(firma: Cadena)
   + conciliarStock()
+  + guardarAviso(firma: Cadena)
 }
 class StockReconciliationService <<fachada>> {
-  + consultarConciliacionDeStock(): Registro
+  + conciliar(distribuidora: Distribuidora): MotivoDeAjuste
+  + consultarConciliacionDeStock(): MotivoDeAjuste
 }
-class UbicacionDeStock <<referencia>>
-class UmbralDeStock <<referencia>>
-class MovimientoDeStock <<referencia>>
+class InitialCountUseCase <<controlador>> {
+  + registrarConteoInicial(depositoId: Identificador,\n      items: Lista, nota: Cadena): AjusteDeStock
+}
+class "Map<String, AjusteDeStock>" as Map_String_AjusteDeStock <<colección>> {
+  + get(clave: Cadena): AjusteDeStock
+}
+class "List<AjusteDeStock>" as List_AjusteDeStock <<colección>> {
+  + filtrar(desde: FechaHora, hasta: FechaHora,\n      motivo: Cadena): Registro
+}
+class ReverseBatchUseCase <<controlador>> {
+  + anularTransferenciaDeStock(loteId: Identificador,\n      nota: Cadena)
+}
+class ReconciliationAdjustmentUseCase <<controlador>> {
+  + registrarAjusteDeConciliacion(productoId: Identificador,\n      nota: Cadena,\n      diferenciaEsperada: Entero): AjusteDeStock
+}
+class ReapplyDeliveriesUseCase <<controlador>> {
+  + reaplicarEntregasDeStock(): Registro
+}
+class "List<UbicacionDeStock>" as List_UbicacionDeStock <<colección>> {
+  + getSaldos(producto: Producto): SaldoDeStock[*]
+}
 class Deposito <<referencia>>
+class UbicacionDeStock <<referencia>>
+class MovimientoDeStock <<referencia>>
+class UmbralDeStock <<referencia>>
 class AjusteDeStock <<referencia>>
-class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
-class EmailSenderPort <<referencia>>
+class "Map<String, Producto>" as Map_String_Producto <<referencia>>
 class "List<Pedido>" as List_Pedido <<referencia>>
 class "List<Producto>" as List_Producto <<referencia>>
-class "Map<String, Producto>" as Map_String_Producto <<referencia>>
-class ItemAjusteDeStock <<referencia>>
-class Producto <<referencia>>
 class Distribuidora <<referencia>>
-class ItemPedido <<referencia>>
 class Pedido <<referencia>>
+class Producto <<referencia>>
 class Vehiculo <<referencia>>
 
-List_UbicacionDeStock "1" o--> "0..*" UbicacionDeStock
-List_UmbralDeStock "1" o--> "0..*" UmbralDeStock
+Map_String_Deposito "1" o--> "0..*" Deposito
 Map_String_UbicacionDeStock "1" o--> "0..*" UbicacionDeStock
 List_MovimientoDeStock "1" o--> "0..*" MovimientoDeStock
-Map_String_Deposito "1" o--> "0..*" Deposito
+List_UmbralDeStock "1" o--> "0..*" UmbralDeStock
+Map_String_AjusteDeStock "1" o--> "0..*" AjusteDeStock
 List_AjusteDeStock "1" o--> "0..*" AjusteDeStock
-StockAdjustmentService --> "1" List_AjusteDeStock
-StockAdjustmentService --> "1" Map_String_UbicacionDeStock
-StockAdjustmentService --> "1" StockLedgerService
-StockDeliveryListener --> "1" Map_String_Pedido
-StockDeliveryListener --> "1" StockLedgerService
-StockLowCron --> "1" EmailSenderPort
+List_UbicacionDeStock "1" o--> "0..*" UbicacionDeStock
+CatalogStockAdjustmentUseCase --> "1" Map_String_Producto
+CatalogStockAdjustmentUseCase --> "1" StockAdjustmentUseCase
+InitialCountUseCase --> "1" Map_String_Deposito
+ReapplyDeliveriesUseCase --> "1" List_Pedido
+ReapplyDeliveriesUseCase --> "1" StockDeliveryService
+ReconciliationAdjustmentUseCase --> "1" Map_String_Producto
+ReverseBatchUseCase --> "1" List_MovimientoDeStock
+StockAdjustmentUseCase --> "1" Map_String_UbicacionDeStock
 StockLowCron --> "1" List_UmbralDeStock
-StockReconciliationCron --> "1" EmailSenderPort
-StockReconciliationCron --> "1" List_Pedido
-StockReconciliationCron --> "1" List_Producto
-StockReconciliationCron --> "1" List_UbicacionDeStock
+StockLowCron --> "1" StockAdminNotifier
+StockQueryService --> "1" List_AjusteDeStock
+StockQueryService --> "1" List_MovimientoDeStock
+StockQueryService --> "1" List_Pedido
+StockQueryService --> "1" List_Producto
+StockQueryService --> "1" List_UbicacionDeStock
+StockQueryService --> "1" List_UmbralDeStock
+StockQueryService --> "1" Map_String_AjusteDeStock
+StockQueryService --> "1" Map_String_UbicacionDeStock
+StockReconciliationCron --> "1" StockAdminNotifier
+StockReconciliationCron --> "1" StockReconciliationService
 StockReconciliationService --> "1" List_Pedido
 StockReconciliationService --> "1" List_Producto
-StockReconciliationService --> "1" List_UbicacionDeStock
-StockService --> "1" List_MovimientoDeStock
-StockService --> "1" List_Producto
-StockService --> "1" List_UbicacionDeStock
-StockService --> "1" List_UmbralDeStock
-StockService --> "1" Map_String_Deposito
-StockService --> "1" Map_String_Producto
-StockService --> "1" Map_String_UbicacionDeStock
-StockService --> "1" StockLedgerService
+StockThresholdService --> "1" List_UmbralDeStock
+StockThresholdService --> "1" Map_String_Deposito
+StockThresholdService --> "1" Map_String_Producto
+StockTransferUseCase --> "1" Map_String_UbicacionDeStock
 WarehouseService --> "1" Map_String_Deposito
+CatalogStockAdjustmentUseCase ..> Distribuidora
+InitialCountUseCase ..> Deposito
+InitialCountUseCase ..> StockLedgerService
+InitialCountUseCase ..> UbicacionDeStock
 List_AjusteDeStock ..> AjusteDeStock
 List_MovimientoDeStock ..> MovimientoDeStock
-StockAdjustmentService ..> ItemAjusteDeStock
-StockAdjustmentService ..> Producto
-StockAdjustmentService ..> UbicacionDeStock
-StockDeliveryListener ..> Distribuidora
-StockDeliveryListener ..> ItemPedido
-StockDeliveryListener ..> Pedido
-StockDeliveryListener ..> Vehiculo
+List_UmbralDeStock ..> UmbralDeStock
+ReapplyDeliveriesUseCase ..> Pedido
+ReconciliationAdjustmentUseCase ..> Distribuidora
+ReconciliationAdjustmentUseCase ..> Producto
+ReconciliationAdjustmentUseCase ..> UbicacionDeStock
+ReverseBatchUseCase ..> MovimientoDeStock
+ReverseBatchUseCase ..> StockLedgerService
+StockAdjustmentUseCase ..> StockLedgerService
+StockAdjustmentUseCase ..> UbicacionDeStock
+StockDeliveryService ..> Deposito
+StockDeliveryService ..> Distribuidora
+StockDeliveryService ..> Pedido
+StockDeliveryService ..> StockLedgerService
+StockDeliveryService ..> Vehiculo
+StockLedgerService ..> Deposito
 StockLedgerService ..> "<<create>>" MovimientoDeStock
+StockLedgerService ..> Producto
 StockLedgerService ..> UbicacionDeStock
-StockLowCron ..> Deposito
-StockLowCron ..> Distribuidora
+StockLocationService ..> Distribuidora
 StockLowCron ..> UmbralDeStock
-StockReconciliationCron ..> Distribuidora
-StockReconciliationCron ..> Producto
+StockQueryService ..> AjusteDeStock
+StockQueryService ..> UbicacionDeStock
 StockReconciliationService ..> Producto
-StockService ..> Deposito
-StockService ..> Producto
-StockService ..> UbicacionDeStock
+StockThresholdService ..> Deposito
+StockTransferUseCase ..> StockLedgerService
+StockTransferUseCase ..> UbicacionDeStock
 WarehouseService ..> Deposito
 WarehouseService ..> Distribuidora
+WarehouseService ..> StockQueryService
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

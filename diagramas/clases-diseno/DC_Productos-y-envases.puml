@@ -67,12 +67,13 @@ class Producto {
   + «create» Producto(distribuidora: Distribuidora,\n      tipo: Cadena, peso: Decimal, precio: Moneda,\n      stockInicial: Entero, descripcion: Cadena)
   + actualizarPrecio(precio: Moneda)
   + agregarPromocion(cantidad: Entero, descuento: Decimal)
-  + ajustarStock(variacion: Entero): Booleano
+  + ajustarStock(diferenciaDeLlenas: Entero)
+  + bloquearCompartido()
   + calcularDiferencia(llenasFisicas: Entero,\n      reservado: Entero): Entero
+  + conciliarVendible(diferenciaEsperada: Entero): Entero
   + desactivar()
   + estaDisponibleEn(distribuidoraId: Identificador): Booleano
   + getPrecio(): Moneda
-  + getStock(): Entero
   + precioPara(cantidad: Entero): Moneda
   + reactivar()
   + recalcularCostoPromedio(llenasRecibidas: Entero,\n      costoUnitario: Moneda)
@@ -81,8 +82,8 @@ class Producto {
   + restarStock(cantidad: Entero): Booleano
   + restituir(cantidad: Entero)
   + sumarStock(llenasRecibidas: Entero)
+  + validarHayDiferencia()
   + validarSinRepetir(promociones: Promocion[*])
-  + validarStockResultante(variacion: Entero)
 }
 class Promocion {
   - cantidad: Entero

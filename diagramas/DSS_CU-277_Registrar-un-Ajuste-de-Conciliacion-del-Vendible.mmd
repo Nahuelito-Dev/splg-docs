@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-277 Registrar un Ajuste de Conciliación del Vendible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+    activate SIS
+    alt hay diferencia y el físico alcanza lo reservado
+        SIS-->>ADM: ajuste de conciliación registrado, con su número
+    else no hay diferencia, falta la nota o el físico es menor que lo reservado
+        SIS-->>ADM: solicitud inválida
+    else la diferencia cambió desde que se consultó
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

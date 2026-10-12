@@ -6,9 +6,9 @@ sequenceDiagram
     participant DIS as distribuidora:Distribuidora
     participant DEP as deposito:Deposito
 
-    ADM->>+SRV: consultarDepositos()
-    SRV->>+DIS: getDepositos()
-    loop Por cada depósito vigente
+    ADM->>+SRV: consultarDepositos(incluirInactivos)
+    SRV->>+DIS: getDepositos(incluirInactivos)
+    loop Por cada depósito de la distribuidora
         DIS->>DEP: estaActivo()
     end
     DIS-->>-SRV: depositos

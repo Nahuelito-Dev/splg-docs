@@ -2,14 +2,17 @@ sequenceDiagram
     title DSD — CU-038 Actualizar Stock de Producto · actualizarStock
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :GasCylinderService
+    participant SRV as :CatalogStockAdjustmentUseCase
     participant COL as :Map#lt;String, Producto#gt;
-    participant PRO as producto:Producto
+    participant DIS as distribuidora:Distribuidora
+    participant AJU as :StockAdjustmentUseCase
 
     ADM->>+SRV: actualizarStock(productoId, variacion)
     SRV->>+COL: get(productoId)
     COL-->>-SRV: producto
-    SRV->>+PRO: ajustarStock(variacion)
-    PRO->>PRO: validarStockResultante(variacion)
-    deactivate PRO
+    SRV->>+DIS: getUbicacionPredeterminada()
+    DIS-->>-SRV: ubicacionPredeterminada
+    Note over SRV,AJU: Ajuste: ver DSD de registrarAjusteDeStock (CU-213).<br/>Crea el AjusteDeStock de recuento con su ItemAjusteDeStock y el MovimientoDeStock de llenas en el depósito predeterminado
+    SRV->>+AJU: registrarAjusteDeStock(ubicacionDeStock, motivoRecuento, nota, producto, variacion)
+    AJU-->>-SRV: ajuste
     SRV-->>-ADM: producto

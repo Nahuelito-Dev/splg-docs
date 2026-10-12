@@ -48,6 +48,7 @@ entity "distributor" as e_distributor {
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
   {field} deletedAt : timestamptz
+  {field} logo_key : varchar(512)
 }
 entity "role" as e_role {
   {field} **role_id** : uuid * <<PK>>
@@ -69,6 +70,7 @@ entity "user" as e_user {
   {field} blocked : boolean *
   {field} createdAt : timestamptz *
   {field} deletedAt : timestamptz
+  {field} photo_key : varchar(512)
 }
 entity "admin" as e_admin {
   {field} **admin_id** : uuid * <<PK>>

@@ -143,12 +143,13 @@ _c("Incidencia", "Posventa",
    ["tipo", "momento", "descripción", "estado", "resolución", "fotografía"])
 _c("Calificacion", "Posventa", ["puntaje", "comentario"])
 
-# Stock y compras (planificado, iteración I-13): conceptos que todavía no tienen tabla en la base.
+# Stock físico (implementado) y compras y carga del camión (planificados, iteración I-13).
 _c("Deposito", "StockFisico", ["nombre", "código", "tipo", "dirección", "predeterminado", "activo"])
 _c("UbicacionDeStock", "StockFisico", ["tipo"])
 _c("SaldoDeStock", "StockFisico", ["condición", "cantidad"])
 _c("MovimientoDeStock", "StockFisico",
-   ["cantidad", "condición de origen", "condición de destino", "motivo", "fecha"])
+   ["cantidad", "condición de origen", "condición de destino", "motivo", "documento de origen",
+    "observación", "fecha"])
 _c("UmbralDeStock", "StockFisico", ["mínimo de llenas", "avisado el"])
 _c("AjusteDeStock", "StockFisico", ["número", "motivo", "nota", "fecha"])
 _c("ItemAjusteDeStock", "StockFisico", ["condición", "diferencia"])
@@ -329,6 +330,7 @@ ASOCIACIONES = [
     ("AjusteDeStock", "1", "*", "1..*", "ItemAjusteDeStock", "contiene", LT),
     ("ItemAjusteDeStock", "0..*", "-", "1", "Producto", "corresponde a", DE),
     ("Usuario", "1", "-", "0..*", "AjusteDeStock", "registra", TR),
+    ("MovimientoDeStock", "0..1", "-", "0..1", "MovimientoDeStock", "corrige a", TR),
     ("Proveedor", "1", "-", "0..*", "OrdenDeCompra", "recibe", TR),
     ("OrdenDeCompra", "0..*", "-", "1", "Deposito", "se destina a", TR),
     ("OrdenDeCompra", "1", "*", "1..*", "ItemOrdenDeCompra", "contiene", LT),
@@ -475,11 +477,12 @@ TABLA = {
     "LicenciaLaboral": "employee_leave", "Adjunto": "attachment",
     "CargaCombustible": "fuel_load", "MultaTransito": "traffic_fine",
     "Siniestro": "vehicle_accident", "Neumatico": "tire", "MovimientoNeumatico": "tire_event",
-    # Stock y compras (planificado, I-13): tablas que todavía no existen en la base
+    # Stock físico (implementado) y compras y carga del camión (planificados, I-13)
     "Deposito": "warehouse", "UbicacionDeStock": "stock_location",
     "SaldoDeStock": "stock_balance", "MovimientoDeStock": "stock_movement",
     "UmbralDeStock": "stock_threshold", "AjusteDeStock": "stock_adjustment",
-    "ItemAjusteDeStock": "stock_adjustment_item", "CargaDeCamion": "truck_load",
+    "ItemAjusteDeStock": "stock_adjustment_item",
+    "CargaDeCamion": "truck_load",
     "ItemCarga": "truck_load_item", "Proveedor": "supplier", "OrdenDeCompra": "purchase_order",
     "ItemOrdenDeCompra": "purchase_order_item", "RecepcionDeCompra": "purchase_receipt",
     "ItemRecepcion": "purchase_receipt_item",
@@ -503,8 +506,7 @@ PLANIFICADOS = {c: "I-11" for c in ("JornadaDeTrabajo", "LicenciaLaboral")}
 PLANIFICADOS.update({c: "I-12" for c in ("CargaCombustible", "MultaTransito", "Siniestro", "Neumatico",
                                          "MovimientoNeumatico")})
 PLANIFICADOS.update({c: "I-13" for c in (
-    "Deposito", "UbicacionDeStock", "SaldoDeStock", "MovimientoDeStock", "UmbralDeStock",
-    "AjusteDeStock", "ItemAjusteDeStock", "CargaDeCamion", "ItemCarga", "Proveedor",
+    "CargaDeCamion", "ItemCarga", "Proveedor",
     "OrdenDeCompra", "ItemOrdenDeCompra", "RecepcionDeCompra", "ItemRecepcion")})
 PLANIFICADOS.update({c: "I-14" for c in (
     "Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja", "RendicionChofer",
@@ -583,6 +585,10 @@ TABLAS_TECNICAS = {
                           "Último número asignado a cada tipo de documento, por distribuidora: un contador "
                           "para numerar comprobantes correlativos sin repetir ni saltear. Es un mecanismo, "
                           "no algo del negocio con identidad propia."),
+    "stock_reconciliation_alert": ("Aviso de conciliación de stock",
+                                   "Firma de la última diferencia de conciliación que se avisó a cada distribuidora, "
+                                   "para no repetir el correo de la noche siguiente. Es un mecanismo del proceso "
+                                   "nocturno, no algo del negocio con identidad propia."),
     "storage_orphan": ("Archivo pendiente de borrado",
                        "Cola de reintento del almacenamiento: la clave de un archivo que se subió o se "
                        "reemplazó y todavía hay que borrar del almacenamiento externo. Es una tarea de "
@@ -725,6 +731,7 @@ ATRIBUTOS = {
     "SaldoDeStock": {"condición": "condition", "cantidad": "quantity"},
     "MovimientoDeStock": {"cantidad": "quantity", "condición de origen": "from_condition",
                           "condición de destino": "to_condition", "motivo": "reason",
+                          "documento de origen": "reference_type", "observación": "notes",
                           "fecha": "occurred_at"},
     "UmbralDeStock": {"mínimo de llenas": "min_full", "avisado el": "alerted_at"},
     "AjusteDeStock": {"número": "number", "motivo": "reason", "nota": "notes", "fecha": "createdAt"},
@@ -831,6 +838,7 @@ NOMBRE_POR_COLUMNA = {
     ("employee_leave", "decided_by_user_id"): "resuelve",
     ("stock_movement", "from_location_id"): "sale de",
     ("stock_movement", "to_location_id"): "entra en",
+    ("stock_movement", "reversed_movement_id"): "corrige a",
     ("truck_load", "opened_by_user_id"): "abre",
     ("truck_load", "closed_by_user_id"): "cierra",
     ("customer_account_allocation", "debit_entry_id"): "salda",

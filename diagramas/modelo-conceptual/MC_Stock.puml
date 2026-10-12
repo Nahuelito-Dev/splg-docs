@@ -55,6 +55,8 @@ class MovimientoDeStock {
   condición de origen
   condición de destino
   motivo
+  documento de origen
+  observación
   fecha
 }
 class UmbralDeStock {
@@ -92,6 +94,7 @@ UbicacionDeStock "1" -- "0..*" AjusteDeStock : se corrige con >
 AjusteDeStock "1" *-- "1..*" ItemAjusteDeStock : contiene >
 ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a >
 Usuario "1" -- "0..*" AjusteDeStock : registra >
+MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock : corrige a >
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.

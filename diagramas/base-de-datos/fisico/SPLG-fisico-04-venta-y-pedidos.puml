@@ -111,6 +111,9 @@ entity "order" as e_order {
   {field} vehicle_patent : varchar(20)
   {field} vehicle_brand : varchar(50)
   {field} vehicle_model : varchar(50)
+  {field} payment_confirmed_at : timestamptz
+  {field} payment_confirmed_by : uuid
+  {field} payment_resolution_note : text
   {field} <color:#1F5E8C>express_surcharge_amount : numeric(12,2) * <<propuesto>></color>
 }
 entity "order_address_change" as e_order_address_change {

@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSS — CU-275 Consultar los Ajustes de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarAjustesDeStock(desde, hasta, motivo)
+    activate SIS
+    alt los filtros son válidos
+        SIS-->>ADM: página de ajustes con su total
+    else una fecha es inválida o el rango está invertido
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS
+
+    ADM->>SIS: consultarAjusteDeStock(ajusteId)
+    activate SIS
+    alt el ajuste existe en la distribuidora
+        SIS-->>ADM: ajuste con sus renglones
+    else el ajuste no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

@@ -162,7 +162,7 @@ pedidos, cada uno con el motivo por el que está.
 Si además se quiere que revise el DDL, sumar
 **`SPLG-base-de-datos-completa-lucidchart.sql`**, que es el modelo entero en
 menos de 54 KB.
-No conviene pegar `SPLG-base-de-datos.sql`: son 96 KB
+No conviene pegar `SPLG-base-de-datos.sql`: son 117 KB
 en su mayoría de índices y funciones de PostGIS que no aportan al análisis del
 modelo.
 

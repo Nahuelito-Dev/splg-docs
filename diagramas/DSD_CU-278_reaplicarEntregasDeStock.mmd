@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-278 Reaplicar las Entregas sin Movimiento de Stock · reaplicarEntregasDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :ReapplyDeliveriesUseCase
+    participant PEDS as :List#lt;Pedido#gt;
+    participant PED as pedido:Pedido
+    participant ENT as :StockDeliveryService
+
+    ADM->>+SRV: reaplicarEntregasDeStock()
+    SRV->>+PEDS: getEntregados()
+    PEDS-->>-SRV: pedidos
+    loop Por cada pedido entregado
+        SRV->>+PED: getItems()
+        PED-->>-SRV: items
+        Note over SRV,ENT: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220).<br/>Crea los MovimientoDeStock de la entrega que le falten al pedido
+        SRV->>ENT: registrarEntrega(pedido, items)
+    end
+    SRV-->>-ADM: resumenDeReaplicacion

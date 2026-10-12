@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-276 Anular una Transferencia de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularTransferenciaDeStock(loteId, nota)
+    activate SIS
+    alt el lote es de una transferencia, no se contraasentó y las garrafas siguen en el destino
+        SIS-->>ADM: contraasiento registrado
+    else el lote no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el lote no es de una transferencia
+        SIS-->>ADM: solicitud inválida
+    else el lote ya se contraasentó o las garrafas ya no están donde estaban
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

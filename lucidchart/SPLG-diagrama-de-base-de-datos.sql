@@ -1,5 +1,5 @@
 -- Esquema de SPLG — Sistema de Pedidos y Logística de Garrafas de Gas
--- Estado actual de la base: 48 tablas, 105 claves foráneas.
+-- Estado actual de la base: 56 tablas, 127 claves foráneas.
 -- Generado por generar-modelo-datos.py
 -- Los tipos enumerados y los geográficos de PostGIS se escriben como varchar para
 -- que cualquier herramienta de diagramación pueda leer el archivo.
@@ -26,6 +26,7 @@ CREATE TABLE "distributor" (
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   "deletedAt" timestamptz,
+  "logo_key" varchar(512),
   PRIMARY KEY ("distributor_id"),
   UNIQUE ("slug")
 );
@@ -92,6 +93,7 @@ CREATE TABLE "gas_cylinder" (
   "isActive" boolean NOT NULL,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
+  "photo_key" varchar(512),
   PRIMARY KEY ("gas_cylinder_id"),
   UNIQUE ("distributor_id", "type"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id")
@@ -126,6 +128,14 @@ CREATE TABLE "maintenance_plan" (
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
+CREATE TABLE "stock_reconciliation_alert" (
+  "distributor_id" uuid NOT NULL,
+  "signature" varchar(64) NOT NULL,
+  "alerted_at" timestamptz NOT NULL,
+  PRIMARY KEY ("distributor_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
+);
+
 CREATE TABLE "time_slot" (
   "time_slot_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -153,11 +163,28 @@ CREATE TABLE "user" (
   "blocked" boolean NOT NULL,
   "createdAt" timestamptz NOT NULL,
   "deletedAt" timestamptz,
+  "photo_key" varchar(512),
   PRIMARY KEY ("user_id"),
   UNIQUE ("phone_number"),
   UNIQUE ("firebase_uid"),
   UNIQUE ("email"),
   FOREIGN KEY ("role_id") REFERENCES "role" ("role_id")
+);
+
+CREATE TABLE "warehouse" (
+  "warehouse_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "name" varchar(80) NOT NULL,
+  "code" varchar(12) NOT NULL,
+  "kind" varchar(32) NOT NULL,
+  "address" text,
+  "is_default" boolean NOT NULL,
+  "is_active" boolean NOT NULL,
+  "createdAt" timestamptz NOT NULL,
+  "updatedAt" timestamptz NOT NULL,
+  "deletedAt" timestamptz,
+  PRIMARY KEY ("warehouse_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "admin" (
@@ -244,6 +271,7 @@ CREATE TABLE "car" (
   "odometer_km" integer,
   "fleet_status" varchar(32) NOT NULL,
   "in_service_since" timestamptz,
+  "photo_key" varchar(512),
   PRIMARY KEY ("car_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
@@ -330,6 +358,7 @@ CREATE TABLE "employee" (
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   "deletedAt" timestamptz,
+  "photo_key" varchar(512),
   PRIMARY KEY ("employee_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("position_id") REFERENCES "job_position" ("position_id"),
@@ -357,6 +386,22 @@ CREATE TABLE "module_config" (
   UNIQUE ("distributor_id", "module"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("updated_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
+);
+
+CREATE TABLE "stock_threshold" (
+  "threshold_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "warehouse_id" uuid NOT NULL,
+  "gas_cylinder_id" uuid NOT NULL,
+  "min_full" integer NOT NULL,
+  "alerted_at" timestamptz,
+  "createdAt" timestamptz NOT NULL,
+  "updatedAt" timestamptz NOT NULL,
+  PRIMARY KEY ("threshold_id"),
+  UNIQUE ("warehouse_id", "gas_cylinder_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id")
 );
 
 CREATE TABLE "user_address" (
@@ -468,6 +513,9 @@ CREATE TABLE "order" (
   "vehicle_patent" varchar(20),
   "vehicle_brand" varchar(50),
   "vehicle_model" varchar(50),
+  "payment_confirmed_at" timestamptz,
+  "payment_confirmed_by" uuid,
+  "payment_resolution_note" text,
   PRIMARY KEY ("order_id"),
   FOREIGN KEY ("address_id") REFERENCES "user_address" ("address_id"),
   FOREIGN KEY ("coverage_zone_id") REFERENCES "coverage_zone" ("coverage_zone_id") ON DELETE SET NULL,
@@ -487,6 +535,21 @@ CREATE TABLE "route_batch" (
   PRIMARY KEY ("batch_id"),
   FOREIGN KEY ("delivery_id") REFERENCES "delivery" ("delivery_id") ON DELETE SET NULL,
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "stock_location" (
+  "location_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "kind" varchar(32) NOT NULL,
+  "warehouse_id" uuid,
+  "car_id" uuid,
+  "createdAt" timestamptz NOT NULL,
+  PRIMARY KEY ("location_id"),
+  UNIQUE ("car_id"),
+  UNIQUE ("warehouse_id"),
+  FOREIGN KEY ("car_id") REFERENCES "car" ("car_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id")
 );
 
 CREATE TABLE "vehicle_assignment" (
@@ -574,6 +637,7 @@ CREATE TABLE "incident" (
   "createdAt" timestamptz NOT NULL,
   "resolvedAt" timestamptz,
   "moment" varchar(32),
+  "photo_key" varchar(512),
   PRIMARY KEY ("incident_id"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id"),
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE,
@@ -753,6 +817,65 @@ CREATE TABLE "route_batch_stop" (
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id") ON DELETE CASCADE
 );
 
+CREATE TABLE "stock_adjustment" (
+  "adjustment_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "number" integer NOT NULL,
+  "location_id" uuid NOT NULL,
+  "reason" varchar(32) NOT NULL,
+  "notes" text NOT NULL,
+  "batch_id" uuid NOT NULL,
+  "created_by_user_id" uuid NOT NULL,
+  "createdAt" timestamptz NOT NULL,
+  PRIMARY KEY ("adjustment_id"),
+  UNIQUE ("distributor_id", "number"),
+  FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("location_id") REFERENCES "stock_location" ("location_id")
+);
+
+CREATE TABLE "stock_balance" (
+  "balance_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "location_id" uuid NOT NULL,
+  "gas_cylinder_id" uuid NOT NULL,
+  "condition" varchar(32) NOT NULL,
+  "quantity" integer NOT NULL,
+  "updatedAt" timestamptz NOT NULL,
+  PRIMARY KEY ("balance_id"),
+  UNIQUE ("location_id", "gas_cylinder_id", "condition"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("location_id") REFERENCES "stock_location" ("location_id")
+);
+
+CREATE TABLE "stock_movement" (
+  "movement_id" uuid NOT NULL,
+  "distributor_id" uuid NOT NULL,
+  "gas_cylinder_id" uuid NOT NULL,
+  "batch_id" uuid NOT NULL,
+  "quantity" integer NOT NULL,
+  "from_location_id" uuid,
+  "from_condition" varchar(32),
+  "to_location_id" uuid,
+  "to_condition" varchar(32),
+  "reason" varchar(32) NOT NULL,
+  "reference_type" varchar(32) NOT NULL,
+  "reference_id" uuid,
+  "reversed_movement_id" uuid,
+  "notes" varchar(300),
+  "actor_user_id" uuid,
+  "occurred_at" timestamptz NOT NULL,
+  "createdAt" timestamptz NOT NULL,
+  PRIMARY KEY ("movement_id"),
+  FOREIGN KEY ("actor_user_id") REFERENCES "user" ("user_id"),
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("from_location_id") REFERENCES "stock_location" ("location_id"),
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("reversed_movement_id") REFERENCES "stock_movement" ("movement_id"),
+  FOREIGN KEY ("to_location_id") REFERENCES "stock_location" ("location_id")
+);
+
 CREATE TABLE "cylinder_inspection" (
   "inspection_id" uuid NOT NULL,
   "cylinder_id" uuid NOT NULL,
@@ -801,6 +924,18 @@ CREATE TABLE "cylinder_recovery_case" (
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
   FOREIGN KEY ("resolved_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL,
   FOREIGN KEY ("user_id") REFERENCES "user" ("user_id") ON DELETE CASCADE
+);
+
+CREATE TABLE "stock_adjustment_item" (
+  "item_id" uuid NOT NULL,
+  "adjustment_id" uuid NOT NULL,
+  "gas_cylinder_id" uuid NOT NULL,
+  "condition" varchar(32) NOT NULL,
+  "quantity_delta" integer NOT NULL,
+  PRIMARY KEY ("item_id"),
+  UNIQUE ("adjustment_id", "gas_cylinder_id", "condition"),
+  FOREIGN KEY ("adjustment_id") REFERENCES "stock_adjustment" ("adjustment_id") ON DELETE CASCADE,
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id")
 );
 
 CREATE TABLE "cylinder_recovery_notice" (

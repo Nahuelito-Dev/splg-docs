@@ -62,7 +62,6 @@ skinparam nodesep 25
 skinparam ranksep 90
 class GasCylinderService <<fachada>> {
   + actualizarProducto(productoId: Identificador,\n      datos: Registro): Producto
-  + actualizarStock(productoId: Identificador,\n      variacion: Entero): Producto
   + consultarCatalogo(pagina: Entero, limite: Entero,\n      distribuidora: Cadena,\n      out total: Entero): Producto[*]
   + consultarProducto(productoId: Identificador): Producto
   + consultarProductosDisponibles(distribuidora: Cadena,\n      out mediosDePago: MetodoDePago[*]): Producto[*]
@@ -76,7 +75,7 @@ class "Map<String, Producto>" as Map_String_Producto <<colección>> {
 }
 class "List<Producto>" as List_Producto <<colección>> {
   + buscarInactivos(): Producto[*]
-  + getActivos(): Producto[*]
+  + getTodos(): Producto[*]
 }
 class TimeSlotService <<fachada>> {
   + consultarDisponibilidadDeFranjas(fecha: Fecha,\n      distribuidora: Cadena): Registro

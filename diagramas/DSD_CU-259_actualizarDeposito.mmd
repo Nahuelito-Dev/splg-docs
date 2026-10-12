@@ -11,5 +11,6 @@ sequenceDiagram
     COL-->>-SRV: depositoDeStock
     SRV->>+DEP: actualizar(datos)
     DEP->>DEP: validarCodigoSinUsar(codigo)
+    DEP->>DEP: validarPuedeDesactivarse(activo)
     DEP-->>-SRV: depositoDeStock
     SRV-->>-ADM: depositoDeStock

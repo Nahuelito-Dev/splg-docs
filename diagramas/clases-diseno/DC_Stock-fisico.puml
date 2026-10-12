@@ -66,18 +66,25 @@ class Deposito {
   - activo: Booleano
   + «create» Deposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena)
   + actualizar(datos: Registro): Deposito
+  + bloquearCompartido()
   + darDeBaja()
   + estaActivo(): Booleano
   + fijarMinimo(producto: Producto, minimoDeLlenas: Entero)
-  + getDistribuidora(): Distribuidora
-  + getLlenas(producto: Producto): Entero
+  + getLlenas(producto: Producto): CondicionDeStock
   + getOrden(ordenId: Identificador): OrdenDeCompra
+  + getUbicacion(): UbicacionDeStock
   + getUbicacionDeStock(): UbicacionDeStock
   + getUmbral(producto: Producto): UmbralDeStock
   + marcarPredeterminado()
+  + quitarPredeterminado(): Booleano
+  + quitarUmbrales()
   + registrarRecepcion(ordenId: Identificador,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, items: Registro,\n      administrador: Administrador): RecepcionDeCompra
+  + tieneLlenas(producto: Producto,\n      cantidad: Entero): Booleano
   + validarCodigoSinUsar(codigo: Cadena)
   + validarCompraSinOrden(proveedorId: Identificador)
+  + validarNoEsElPredeterminado()
+  + validarPuedeDesactivarse(activo: Booleano)
+  + validarSinConteoInicial(): Booleano
   + validarSinSaldo(conSaldo: Booleano)
 }
 class UbicacionDeStock {
@@ -85,18 +92,21 @@ class UbicacionDeStock {
   + «create» UbicacionDeStock(vehiculo: Vehiculo)
   + «create» UbicacionDeStock(depositoDeStock: Deposito)
   + acreditar(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
-  + ajustar(motivoDeAjuste: MotivoDeAjuste, nota: Cadena,\n      items: Registro,\n      administrador: Administrador): AjusteDeStock
+  + ajustar(motivoConciliacion: MotivoDeAjuste, nota: Cadena,\n      correccionDeVendible: Entero,\n      administrador: Administrador): AjusteDeStock
+  + ajustar(motivo: Cadena, nota: Cadena, items: Registro,\n      lote: Identificador,\n      administrador: Administrador): AjusteDeStock
+  + ajustar(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena,\n      renglonesDeAjuste: ItemAjusteDeStock[*],\n      lote: Identificador,\n      administrador: Administrador): AjusteDeStock
   + descontar(producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      cantidad: Entero): Booleano
-  + esLaMismaQue(ubicacionDestino: UbicacionDeStock): Booleano
+  + diferenciasContra(items: Registro): ItemAjusteDeStock[*]
   + getSaldos(productoId: Identificador): SaldoDeStock[*]
   + tieneSaldo(): Booleano
+  + validarTransferenciaA(ubicacionDestino: UbicacionDeStock): Booleano
 }
 class SaldoDeStock {
   - condicion: CondicionDeStock
   - cantidad: Entero
   + «create» SaldoDeStock(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
   + getCantidad(): Entero
-  + restar(cantidad: Entero): Booleano
+  + restar(cantidad: Entero)
   + sumar(cantidad: Entero)
 }
 class MovimientoDeStock {
@@ -104,17 +114,20 @@ class MovimientoDeStock {
   - condicionDeOrigen: CondicionDeStock
   - condicionDeDestino: CondicionDeStock
   - motivo: MotivoDeMovimiento
+  - documentoDeOrigen: Registro
+  - observacion: Cadena
   - fecha: FechaHora
-  + «create» MovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero,\n      motivoDeMovimiento: MotivoDeMovimiento)
-  + getMotivo(): MotivoDeMovimiento
+  + «create» MovimientoDeStock(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero, motivo: Cadena)
+  + getDetalle()
+  + validarEsDeTransferencia(): Booleano
 }
 class UmbralDeStock {
   - minimoDeLlenas: Entero
   - avisadoEl: FechaHora
   + «create» UmbralDeStock(producto: Producto,\n      minimoDeLlenas: Entero)
   + actualizar(minimoDeLlenas: Entero)
-  + estaPorDebajoDelMinimo(llenos: Entero): Booleano
-  + getDeposito(): Deposito
+  + estaPorDebajoDelMinimo(): Booleano
+  + getLlenasActuales()
   + limpiarAviso()
   + marcarAvisado(ahora: FechaHora)
 }
@@ -123,14 +136,16 @@ class AjusteDeStock {
   - motivo: MotivoDeAjuste
   - nota: Cadena
   - fecha: FechaHora
-  + «create» AjusteDeStock(motivoDeAjuste: MotivoDeAjuste,\n      nota: Cadena, administrador: Administrador)
-  + getMotivo(): MotivoDeAjuste
+  + «create» AjusteDeStock(motivoConciliacion: MotivoDeAjuste,\n      nota: Cadena, administrador: Administrador)
+  + «create» AjusteDeStock(motivo: Cadena, nota: Cadena,\n      lote: Identificador, administrador: Administrador)
+  + «create» AjusteDeStock(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena, lote: Identificador,\n      administrador: Administrador)
+  + getDetalle()
+  + getRenglones(): ItemAjusteDeStock[*]
 }
 class ItemAjusteDeStock {
   - condicion: CondicionDeStock
   - diferencia: Entero
   + «create» ItemAjusteDeStock(producto: Producto,\n      condicionDeStock: CondicionDeStock,\n      diferencia: Entero)
-  + getProducto(): Producto
 }
 class Producto <<referencia>>
 class Vehiculo <<referencia>>
@@ -146,12 +161,13 @@ MovimientoDeStock "0..*" -- "1" Producto : corresponde a
 MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de
 MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en
 Usuario "0..1" -- "0..*" MovimientoDeStock : ejecuta
-Deposito "1" *--> "0..*" UmbralDeStock : fija
+Deposito "1" *-- "0..*" UmbralDeStock : fija
 UmbralDeStock "0..*" -- "1" Producto : controla
 UbicacionDeStock "1" --> "0..*" AjusteDeStock : se corrige con
 AjusteDeStock "1" *--> "1..*" ItemAjusteDeStock : contiene
 ItemAjusteDeStock "0..*" -- "1" Producto : corresponde a
 Usuario "1" -- "0..*" AjusteDeStock : registra
+MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock : corrige a
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.

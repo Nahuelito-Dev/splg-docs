@@ -1,5 +1,5 @@
 @startuml
-title Subsistemas del Proyecto — SPLG (21 subsistemas · 271 casos de uso)
+title Subsistemas del Proyecto — SPLG (21 subsistemas · 278 casos de uso)
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
@@ -48,7 +48,7 @@ package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
   }
   package "SS-07 Gestión de Choferes y Vehículos\n(50 casos de uso)" as MSS07 <<subsystem>> #back:F0EEF9;line:5A5896 {
   }
-  package "SS-08 Gestión de Productos e Inventario\n(28 casos de uso)" as MSS08 <<subsystem>> #back:EFF6E2;line:5E7A3A {
+  package "SS-08 Gestión de Productos e Inventario\n(35 casos de uso)" as MSS08 <<subsystem>> #back:EFF6E2;line:5E7A3A {
   }
   package "SS-09 Franjas Horarias\n(6 casos de uso)" as MSS09 <<subsystem>> #back:FDEFE6;line:A26A45 {
   }

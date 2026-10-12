@@ -246,6 +246,7 @@ order ..> gascylinder
 order ..> incident
 order ..> notifications
 order ..> payments
+order ..> stock
 order ..> time_slot
 order ..> truck_load
 payments ..> order
@@ -268,7 +269,6 @@ repurchase ..> notifications
 repurchase ..> order
 stock ..> car
 stock ..> distributor
-stock ..> email
 stock ..> gascylinder
 stock ..> order
 stock ..> purchase

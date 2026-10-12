@@ -59,6 +59,7 @@ classDiagram
         + contarPorEstado(distribuidoraId: Identificador): Registro
         + entregadosEntre(fechaDesde: Fecha, fechaHasta: Fecha): Pedido[*]
         + getEnEfectivoSinRendir(chofer: Chofer, hoy: Fecha): Pedido[*]
+        + getEntregados(): Pedido[*]
         + getEntregadosSinMovimiento(): Pedido[*]
         + getReservado(producto: Producto): Entero
         + getUltimoEntregado(cliente: Cliente, distribuidoraId: Identificador): Fecha
@@ -104,6 +105,9 @@ classDiagram
     class ZonaCobertura
     class Envase
     class Pago
+    class StockDeliveryService {
+        <<fachada>>
+    }
     class UbicacionGPS
 
     Map_String_Pedido "1" o-- "0..*" Pedido : elementos
@@ -142,4 +146,5 @@ classDiagram
     UpdateOrderStatusUseCase ..> Envase
     UpdateOrderStatusUseCase ..> Pago
     UpdateOrderStatusUseCase ..> Pedido
+    UpdateOrderStatusUseCase ..> StockDeliveryService
     UpdateOrderStatusUseCase ..> UbicacionGPS

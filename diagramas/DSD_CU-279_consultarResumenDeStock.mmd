@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-279 Consultar el Resumen de Stock · consultarResumenDeStock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :StockQueryService
+    participant PRS as :List#lt;Producto#gt;
+    participant UBS as :List#lt;UbicacionDeStock#gt;
+    participant PEDS as :List#lt;Pedido#gt;
+    participant UMBS as :List#lt;UmbralDeStock#gt;
+
+    ADM->>+SRV: consultarResumenDeStock()
+    SRV->>+PRS: getTodos()
+    PRS-->>-SRV: productos
+    loop Por cada tipo de garrafa
+        SRV->>+UBS: getSaldos(producto)
+        UBS-->>-SRV: saldosEnDepositosYVehiculos
+        SRV->>+PEDS: getReservado(producto)
+        PEDS-->>-SRV: reservado
+        SRV->>+UMBS: getMinimoDeLlenas(producto)
+        UMBS-->>-SRV: minimoDeStock
+    end
+    SRV-->>-ADM: resumen

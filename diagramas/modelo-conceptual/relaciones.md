@@ -117,6 +117,7 @@
 | Contiene | AjusteDeStock | ItemAjusteDeStock | Composición | 1 a 1..* | Es una línea de transacción de |
 | Corresponde a | ItemAjusteDeStock | Producto | Asociación | 0..* a 1 | Descripción para |
 | Registra | Usuario | AjusteDeStock | Asociación | 1 a 0..* | Está relacionado con una transacción |
+| Corrige a | MovimientoDeStock | MovimientoDeStock | Asociación | 0..1 a 0..1 | Está relacionado con una transacción |
 | Recibe | Proveedor | OrdenDeCompra | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Se destina a | OrdenDeCompra | Deposito | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Contiene | OrdenDeCompra | ItemOrdenDeCompra | Composición | 1 a 1..* | Es una línea de transacción de |

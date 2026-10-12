@@ -18,7 +18,7 @@
 - Figura 1.6 — Modelo conceptual: personal (puestos y legajos construidos; jornadas y licencias planificadas, I-11)
 - Figura 1.7 — Modelo conceptual: posventa
 - Figura 1.8 — Modelo conceptual: gastos de la flota (planificado, I-12)
-- Figura 1.9 — Modelo conceptual: stock físico (planificado, I-13)
+- Figura 1.9 — Modelo conceptual: stock físico
 - Figura 1.10 — Modelo conceptual: carga del camión (planificado, I-13)
 - Figura 1.11 — Modelo conceptual: compras (planificado, I-13)
 - Figura 1.12 — Modelo conceptual: caja y movimientos (planificado, I-14)
@@ -241,55 +241,61 @@
 - Figura 197 — DSS CU-258: Registrar un Depósito
 - Figura 198 — DSS CU-259: Modificar un Depósito
 - Figura 199 — DSS CU-260: Dar de Baja un Depósito
-- Figura 200 — DSS CU-208: Consultar el Stock por Ubicación
-- Figura 201 — DSS CU-209: Consultar los Movimientos de Stock
-- Figura 202 — DSS CU-210: Configurar el Stock Mínimo
-- Figura 203 — DSS CU-211: Avisar el Stock Bajo
-- Figura 204 — DSS CU-212: Transferir Stock entre Depósitos
-- Figura 205 — DSS CU-213: Registrar un Ajuste o una Merma de Stock
-- Figura 206 — DSS CU-218: Registrar la Carga del Camión
-- Figura 207 — DSS CU-219: Registrar la Salida del Camión
-- Figura 208 — DSS CU-220: Descontar del Camión lo Entregado
-- Figura 209 — DSS CU-221: Registrar el Regreso del Camión
-- Figura 210 — DSS CU-222: Cerrar la Rendición de Stock del Camión
-- Figura 211 — DSS CU-223: Consultar la Carga Actual del Camión
-- Figura 212 — DSS CU-224: Conciliar el Stock Vendible con el Físico
-- Figura 213 — DSS CU-249: Configurar el Control de Carga de Camión Abierta
-- Figura 214 — DSS CU-214: Consultar los Proveedores
-- Figura 215 — DSS CU-261: Registrar un Proveedor
-- Figura 216 — DSS CU-262: Modificar un Proveedor
-- Figura 217 — DSS CU-263: Dar de Baja un Proveedor
-- Figura 218 — DSS CU-215: Emitir una Orden de Compra
-- Figura 219 — DSS CU-216: Cancelar una Orden de Compra
-- Figura 220 — DSS CU-217: Registrar la Recepción de una Compra
-- Figura 221 — DSS CU-225: Crear una Caja
-- Figura 222 — DSS CU-264: Modificar una Caja
-- Figura 223 — DSS CU-226: Abrir la Caja
-- Figura 224 — DSS CU-227: Cerrar la Caja con Arqueo
-- Figura 225 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
-- Figura 226 — DSS CU-229: Anular un Movimiento de Caja
-- Figura 227 — DSS CU-230: Crear una Categoría de Ingresos y Gastos
-- Figura 228 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos
-- Figura 229 — DSS CU-231: Generar la Rendición Diaria del Chofer
-- Figura 230 — DSS CU-232: Declarar el Efectivo Rendido
-- Figura 231 — DSS CU-233: Aprobar la Rendición del Chofer
-- Figura 232 — DSS CU-234: Avisar las Rendiciones sin Cerrar
-- Figura 233 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
-- Figura 234 — DSS CU-236: Vender a Cuenta Corriente
-- Figura 235 — DSS CU-237: Registrar un Pago de Cuenta Corriente
-- Figura 236 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
-- Figura 237 — DSS CU-239: Consultar la Antigüedad de la Deuda
-- Figura 238 — DSS CU-240: Configurar las Comisiones por Entrega
-- Figura 239 — DSS CU-241: Registrar la Comisión de una Entrega
-- Figura 240 — DSS CU-242: Liquidar las Comisiones de un Chofer
-- Figura 241 — DSS CU-243: Registrar el Pago de una Liquidación
-- Figura 242 — DSS CU-244: Consultar Mis Comisiones
-- Figura 243 — DSS CU-245: Consultar el Tablero Financiero
-- Figura 244 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 245 — DSS CU-106: Anticipar la recompra por consumo estimado
-- Figura 246 — DSS CU-107: Agrupar pedidos por recorrido
-- Figura 247 — DSS CU-108: Recuperar envases no devueltos
-- Figura 248 — DSS CU-043: Modificar Capacidad de Franja Horaria
+- Figura 200 — DSS CU-273: Marcar el Depósito Predeterminado
+- Figura 201 — DSS CU-274: Registrar el Conteo Inicial de un Depósito
+- Figura 202 — DSS CU-208: Consultar el Stock por Ubicación
+- Figura 203 — DSS CU-279: Consultar el Resumen de Stock
+- Figura 204 — DSS CU-209: Consultar los Movimientos de Stock
+- Figura 205 — DSS CU-210: Configurar el Stock Mínimo
+- Figura 206 — DSS CU-211: Avisar el Stock Bajo
+- Figura 207 — DSS CU-212: Transferir Stock entre Depósitos
+- Figura 208 — DSS CU-276: Anular una Transferencia de Stock
+- Figura 209 — DSS CU-213: Registrar un Ajuste o una Merma de Stock
+- Figura 210 — DSS CU-275: Consultar los Ajustes de Stock
+- Figura 211 — DSS CU-218: Registrar la Carga del Camión
+- Figura 212 — DSS CU-219: Registrar la Salida del Camión
+- Figura 213 — DSS CU-221: Registrar el Regreso del Camión
+- Figura 214 — DSS CU-222: Cerrar la Rendición de Stock del Camión
+- Figura 215 — DSS CU-223: Consultar la Carga Actual del Camión
+- Figura 216 — DSS CU-224: Conciliar el Stock Vendible con el Físico
+- Figura 217 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible
+- Figura 218 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock
+- Figura 219 — DSS CU-249: Configurar el Control de Carga de Camión Abierta
+- Figura 220 — DSS CU-214: Consultar los Proveedores
+- Figura 221 — DSS CU-261: Registrar un Proveedor
+- Figura 222 — DSS CU-262: Modificar un Proveedor
+- Figura 223 — DSS CU-263: Dar de Baja un Proveedor
+- Figura 224 — DSS CU-215: Emitir una Orden de Compra
+- Figura 225 — DSS CU-216: Cancelar una Orden de Compra
+- Figura 226 — DSS CU-217: Registrar la Recepción de una Compra
+- Figura 227 — DSS CU-225: Crear una Caja
+- Figura 228 — DSS CU-264: Modificar una Caja
+- Figura 229 — DSS CU-226: Abrir la Caja
+- Figura 230 — DSS CU-227: Cerrar la Caja con Arqueo
+- Figura 231 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
+- Figura 232 — DSS CU-229: Anular un Movimiento de Caja
+- Figura 233 — DSS CU-230: Crear una Categoría de Ingresos y Gastos
+- Figura 234 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos
+- Figura 235 — DSS CU-231: Generar la Rendición Diaria del Chofer
+- Figura 236 — DSS CU-232: Declarar el Efectivo Rendido
+- Figura 237 — DSS CU-233: Aprobar la Rendición del Chofer
+- Figura 238 — DSS CU-234: Avisar las Rendiciones sin Cerrar
+- Figura 239 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
+- Figura 240 — DSS CU-236: Vender a Cuenta Corriente
+- Figura 241 — DSS CU-237: Registrar un Pago de Cuenta Corriente
+- Figura 242 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
+- Figura 243 — DSS CU-239: Consultar la Antigüedad de la Deuda
+- Figura 244 — DSS CU-240: Configurar las Comisiones por Entrega
+- Figura 245 — DSS CU-241: Registrar la Comisión de una Entrega
+- Figura 246 — DSS CU-242: Liquidar las Comisiones de un Chofer
+- Figura 247 — DSS CU-243: Registrar el Pago de una Liquidación
+- Figura 248 — DSS CU-244: Consultar Mis Comisiones
+- Figura 249 — DSS CU-245: Consultar el Tablero Financiero
+- Figura 250 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 251 — DSS CU-106: Anticipar la recompra por consumo estimado
+- Figura 252 — DSS CU-107: Agrupar pedidos por recorrido
+- Figura 253 — DSS CU-108: Recuperar envases no devueltos
+- Figura 254 — DSS CU-043: Modificar Capacidad de Franja Horaria
 
 ---
 
@@ -314,6 +320,7 @@
 | 14 | 2026-10-06 | Auditoría de datos (CU-152 y CU-153): tres conceptos nuevos en el modelo conceptual —Auditoria, DetalleAuditoria y TipoAccionAuditoria—, dos operaciones nuevas en el catálogo y un contrato nuevo; el catálogo queda en 312 operaciones y 197 contratos. | Nahuel Wagner |
 | 15 | 2026-10-07 | Los casos de uso que agrupaban varias operaciones de un ABM se parten en uno por operación (CU-251 a CU-272): un diagrama de secuencia del sistema por caso, con su propia operación, y los contratos de las operaciones referidos al caso que corresponde. | Nahuel Wagner |
 | 16 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
+| 17 | 2026-10-11 | Stock físico construido en el backend: un concepto nuevo en el modelo conceptual (AlertaDeConciliacion) y los siete del stock físico sin la marca de planificados; diagramas de secuencia del sistema de CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279; 9 operaciones nuevas en el catálogo y 5 contratos nuevos. | Nahuel Wagner |
 
 ---
 
@@ -348,12 +355,12 @@ lista es la fuente de esa otra, no un conjunto aparte de ejemplos sueltos.
 | Personas | Usuario |
 | Roles de las personas | Cliente, Chofer, Administrador, Empleado § |
 | Descripciones o catálogos de especificación | Producto, Rol, TipoAccionAuditoria ¶, PlanMantenimiento, Proveedor §, PuestoDeTrabajo §, CategoriaDeCaja §, CuentaCorriente § |
-| Objetos físicos o tangibles | Envase, Vehiculo, UbicacionGPS, Neumatico §, Deposito §, Caja § |
-| Transacciones | Pedido, Carrito, Pago, OrdenDeCompra §, RecepcionDeCompra §, AjusteDeStock §, CargaDeCamion §, RendicionChofer §, LiquidacionComisiones § |
-| Líneas de transacción | ItemPedido, ItemCarrito, ItemSugerido, ParadaLote, DetalleAuditoria ¶, ItemOrdenDeCompra §, ItemRecepcion §, ItemAjusteDeStock §, ItemCarga §, PedidoRendido §, GastoDeRendicion §, ImputacionCuentaCorriente § |
-| Registros de transacciones o eventos | MovimientoEnvase, CambioEstadoPedido, CambioDireccion, AsientoAuditoria, Auditoria ¶, RevisionEnvase, RegistroUsoVehiculo, AdjuntoTarea, CargaCombustible §, MovimientoNeumatico §, MovimientoDeStock §, JornadaDeTrabajo §, Adjunto, MovimientoDeCaja §, AsientoCuentaCorriente §, AsientoComision §, SaldoDeStock § |
-| Lugares | DireccionEntrega, ZonaCobertura, UbicacionDeStock § |
-| Reglas y políticas | Promocion, ConfiguracionModulo, FranjaHoraria, UmbralDeStock §, ReglaComision § |
+| Objetos físicos o tangibles | Envase, Vehiculo, UbicacionGPS, Neumatico §, Deposito, Caja § |
+| Transacciones | Pedido, Carrito, Pago, OrdenDeCompra §, RecepcionDeCompra §, AjusteDeStock, CargaDeCamion §, RendicionChofer §, LiquidacionComisiones § |
+| Líneas de transacción | ItemPedido, ItemCarrito, ItemSugerido, ParadaLote, DetalleAuditoria ¶, ItemOrdenDeCompra §, ItemRecepcion §, ItemAjusteDeStock, ItemCarga §, PedidoRendido §, GastoDeRendicion §, ImputacionCuentaCorriente § |
+| Registros de transacciones o eventos | MovimientoEnvase, CambioEstadoPedido, CambioDireccion, AsientoAuditoria, Auditoria ¶, RevisionEnvase, RegistroUsoVehiculo, AdjuntoTarea, CargaCombustible §, MovimientoNeumatico §, MovimientoDeStock, JornadaDeTrabajo §, Adjunto, MovimientoDeCaja §, AsientoCuentaCorriente §, AsientoComision §, SaldoDeStock |
+| Lugares | DireccionEntrega, ZonaCobertura, UbicacionDeStock |
+| Reglas y políticas | Promocion, ConfiguracionModulo, FranjaHoraria, UmbralDeStock, ReglaComision § |
 | Eventos | Incidencia, Reclamo, Calificacion, MultaTransito §, Siniestro §, LicenciaLaboral §, SesionDeCaja § |
 | Procesos que se negocian por propuestas con vigencia | PropuestaConVigencia, OfertaDespacho, OfertaLote, PropuestaVentanaTaller, InvitacionRecompra, AvisoRecupero, CasoRecupero, LoteRecorrido, TareaMantenimiento |
 | Otros sistemas externos al sistema | Pasarela de pago (MercadoPago), Firebase (autenticación) — candidatos, no idóneos: actúan desde afuera y no se modelan como concepto propio. |
@@ -379,12 +386,12 @@ mayoría de los demás conceptos.
 
 Los conceptos se organizan en **trece contextos**, que son las áreas del negocio que los
 definen y los modifican. Los marcados con † se incorporaron el 24/09/2026 para que el
-modelo contenga los 271 casos de uso, incluidos los planificados.
+modelo contenga los 278 casos de uso, incluidos los planificados.
 Los marcados con ‡ se agregaron el 30/09/2026, al contrastar el modelo con la base de
 datos. Los marcados con ¶ se incorporaron el 06/10/2026 con la auditoría de datos del modelo de la cátedra (Auditoria, DetalleAuditoria y TipoAccionAuditoria), ya implementada.
 Los marcados con § se incorporaron el 03/10/2026 con los módulos de gestión de la distribuidora
 —personal (I-11), flota ampliada (I-12), stock y compras (I-13) y caja y rendición (I-14)—: sus tablas todavía no
-están en la base, salvo las de puestos y legajos del personal, que ya están construidas. El Símbolo repite siempre el nombre del Concepto, salvo que se indique lo contrario.
+están en la base, salvo las de puestos y legajos del personal y las del stock físico (depósitos, ubicaciones, saldos, libro de movimientos, ajustes y umbrales), que ya están construidas y por eso sus conceptos ya no llevan la marca. El Símbolo repite siempre el nombre del Concepto, salvo que se indique lo contrario.
 
 | # | Descripción del Concepto | Símbolo | Intención | Extensión | Contexto |
 |---|----------|---------|-----------|-----------|----------|
@@ -444,13 +451,13 @@ están en la base, salvo las de puestos y legajos del personal, que ya están co
 | 54 | **Reclamo** | Reclamo | Queja formal del cliente sobre un pedido entregado, con evidencia opcional. | Cada reclamo registrado. | Posventa |
 | 55 | **Incidencia** | Incidencia | Evento que interrumpe o altera el curso normal de una entrega. | Cada contratiempo reportado durante el reparto. | Posventa |
 | 56 | **Calificacion** | Calificacion | Valoración que un cliente o un chofer asigna a la otra parte al cierre de un pedido. | Hasta dos por pedido: una del cliente al chofer y otra del chofer al cliente. | Posventa |
-| 57 | **Deposito** § | Deposito | Lugar de la distribuidora —depósito o sucursal— donde se guarda el stock físico. | Cada depósito o sucursal dado de alta. | Stock físico y carga del camión |
-| 58 | **UbicacionDeStock** § | UbicacionDeStock | Lugar donde puede haber stock: un depósito o un camión. Concentra los saldos y los movimientos de ambos. | Una por depósito y una por vehículo que se carga. | Stock físico y carga del camión |
-| 59 | **SaldoDeStock** § | SaldoDeStock | Cantidad de un tipo de garrafa, en una condición (llena, vacía o defectuosa), dentro de una ubicación. | Un saldo por ubicación, tipo de garrafa y condición. | Stock físico y carga del camión |
-| 60 | **MovimientoDeStock** § | MovimientoDeStock | Registro inmutable de un cambio de stock entre ubicaciones o con el exterior, con su motivo y el documento que lo originó. | Cada entrada, salida o traslado de garrafas. | Stock físico y carga del camión |
-| 61 | **UmbralDeStock** § | UmbralDeStock | Mínimo de garrafas llenas de un tipo que debe tener un depósito, para avisar cuando baja. | Un umbral por depósito y tipo de garrafa controlado. | Stock físico y carga del camión |
-| 62 | **AjusteDeStock** § | AjusteDeStock | Corrección del stock de una ubicación, con su motivo y una nota obligatoria. | Cada recuento corregido, merma, pérdida o hallazgo. | Stock físico y carga del camión |
-| 63 | **ItemAjusteDeStock** § | ItemAjusteDeStock | Diferencia de un tipo de garrafa y condición dentro de un ajuste. | Cada renglón de cada ajuste. | Stock físico y carga del camión |
+| 57 | **Deposito** | Deposito | Lugar de la distribuidora —depósito o sucursal— donde se guarda el stock físico. | Cada depósito o sucursal dado de alta. | Stock físico y carga del camión |
+| 58 | **UbicacionDeStock** | UbicacionDeStock | Lugar donde puede haber stock: un depósito o un camión. Concentra los saldos y los movimientos de ambos. | Una por depósito y una por vehículo que se carga. | Stock físico y carga del camión |
+| 59 | **SaldoDeStock** | SaldoDeStock | Cantidad de un tipo de garrafa, en una condición (llena, vacía o defectuosa), dentro de una ubicación. | Un saldo por ubicación, tipo de garrafa y condición. | Stock físico y carga del camión |
+| 60 | **MovimientoDeStock** | MovimientoDeStock | Registro inmutable de un cambio de stock entre ubicaciones o con el exterior, con su motivo y el documento que lo originó. | Cada entrada, salida o traslado de garrafas. | Stock físico y carga del camión |
+| 61 | **UmbralDeStock** | UmbralDeStock | Mínimo de garrafas llenas de un tipo que debe tener un depósito, para avisar cuando baja. | Un umbral por depósito y tipo de garrafa controlado. | Stock físico y carga del camión |
+| 62 | **AjusteDeStock** | AjusteDeStock | Corrección del stock de una ubicación, con su motivo y una nota obligatoria. | Cada recuento corregido, merma, pérdida o hallazgo. | Stock físico y carga del camión |
+| 63 | **ItemAjusteDeStock** | ItemAjusteDeStock | Diferencia de un tipo de garrafa y condición dentro de un ajuste. | Cada renglón de cada ajuste. | Stock físico y carga del camión |
 | 64 | **CargaDeCamion** § | CargaDeCamion | Hoja de carga: el turno de un camión, desde que sale cargado del depósito hasta que se rinde. | Una por camión y jornada. | Stock físico y carga del camión |
 | 65 | **ItemCarga** § | ItemCarga | Por tipo de garrafa, lo que se cargó, repuso, entregó, declaró al regreso y la diferencia. | Cada renglón de cada hoja de carga. | Stock físico y carga del camión |
 | 66 | **Proveedor** § | Proveedor | Empresa a la que la distribuidora le compra, principalmente una planta de llenado. | Cada proveedor dado de alta. | Compras |
@@ -633,6 +640,7 @@ vehículo está abierto para un chofer.
 | Contiene | AjusteDeStock | ItemAjusteDeStock | Composición | 1 a 1..* | Es una línea de transacción de |
 | Corresponde a | ItemAjusteDeStock | Producto | Asociación | 0..* a 1 | Descripción para |
 | Registra | Usuario | AjusteDeStock | Asociación | 1 a 0..* | Está relacionado con una transacción |
+| Corrige a | MovimientoDeStock | MovimientoDeStock | Asociación | 0..1 a 0..1 | Está relacionado con una transacción |
 | Recibe | Proveedor | OrdenDeCompra | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Se destina a | OrdenDeCompra | Deposito | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Contiene | OrdenDeCompra | ItemOrdenDeCompra | Composición | 1 a 1..* | Es una línea de transacción de |
@@ -961,12 +969,14 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **MovimientoDeStock** | cantidad: Unidades movidas; siempre positiva. |
 | **MovimientoDeStock** | condición de origen: Condición de las unidades en la ubicación de origen. |
 | **MovimientoDeStock** | condición de destino: Condición de las unidades en la ubicación de destino. |
-| **MovimientoDeStock** | motivo: Recepción, traslado, entrega, vacío recolectado, ajuste, merma, carga o regreso del camión, entre otros. |
+| **MovimientoDeStock** | motivo: Recepción, traslado, entrega, vacío recolectado, ajuste, merma, carga o regreso del camión, conteo inicial o contraasiento, entre otros. |
+| **MovimientoDeStock** | documento de origen: Qué clase de documento lo originó: un pedido, un ajuste, una transferencia, una compra, una carga de camión o el saldo inicial. |
+| **MovimientoDeStock** | observación: Nota libre del movimiento; en un contraasiento, el motivo de la corrección. |
 | **MovimientoDeStock** | fecha: Cuándo ocurrió. |
 | **UmbralDeStock** | mínimo de llenas: Cantidad de llenas por debajo de la cual se avisa. |
 | **UmbralDeStock** | avisado el: Cuándo se emitió el aviso vigente; vacío si no hay ninguno. |
 | **AjusteDeStock** | número: Número correlativo por distribuidora. |
-| **AjusteDeStock** | motivo: Corrección de recuento, merma, fuga, daño, pérdida, hallazgo o recuento inicial. |
+| **AjusteDeStock** | motivo: Corrección de recuento, merma, fuga, daño, pérdida, hallazgo, conteo inicial o conciliación del vendible. |
 | **AjusteDeStock** | nota: Explicación obligatoria del ajuste. |
 | **AjusteDeStock** | fecha: Cuándo se registró. |
 | **ItemAjusteDeStock** | condición: Condición afectada. |
@@ -1169,7 +1179,7 @@ cinco tipos y el concepto abstracto no se instancia.
 
 ![Modelo conceptual: stock físico](diagramas/modelo-conceptual/MC_Stock.png)
 
-**Figura 1.9 — Modelo conceptual: stock físico (planificado, I-13)**
+**Figura 1.9 — Modelo conceptual: stock físico**
 
 ![Modelo conceptual: carga del camión](diagramas/modelo-conceptual/MC_Carga-del-camion.png)
 
@@ -7593,7 +7603,7 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-012, CU-013 
 #### DSS — CU-207: Consultar los Depósitos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `consultarDepositos()`
+**Operaciones del sistema:** `consultarDepositos(incluirInactivos)`, `consultarDeposito(depositoId)`
 
 ```mermaid
 sequenceDiagram
@@ -7602,9 +7612,18 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: consultarDepositos()
+    ADM->>SIS: consultarDepositos(incluirInactivos)
     activate SIS
-    SIS-->>ADM: depósitos de la distribuidora
+    SIS-->>ADM: depósitos con su ubicación de stock
+    deactivate SIS
+
+    ADM->>SIS: consultarDeposito(depositoId)
+    activate SIS
+    alt el depósito existe en la distribuidora
+        SIS-->>ADM: depósito con sus saldos
+    else el depósito no existe, está dado de baja o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
     deactivate SIS
 ```
 
@@ -7627,10 +7646,12 @@ sequenceDiagram
 
     ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
     activate SIS
-    alt el código está libre
+    alt los datos son válidos y el código está libre
         SIS-->>ADM: depósito creado
-    else el código ya lo usa otro depósito vigente
-        SIS-->>ADM: conflicto, con el detalle del campo
+    else falta un dato o el formato del código no es válido
+        SIS-->>ADM: datos inválidos
+    else otro depósito vigente ya usa el código, o hay un cambio simultáneo del predeterminado
+        SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
@@ -7654,10 +7675,14 @@ sequenceDiagram
 
     ADM->>SIS: actualizarDeposito(depositoId, datos)
     activate SIS
-    alt el depósito existe
-        SIS-->>ADM: depósito actualizado
-    else el depósito no existe
+    alt el depósito existe y los datos son válidos
+        SIS-->>ADM: depósito modificado
+    else el depósito no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    else el código ya lo usa otro depósito vigente, o se desactiva el predeterminado
+        SIS-->>ADM: conflicto
+    else el formato de un dato no es válido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
@@ -7681,10 +7706,12 @@ sequenceDiagram
 
     ADM->>SIS: darDeBajaDeposito(depositoId)
     activate SIS
-    alt el depósito no tiene saldo
-        SIS-->>ADM: baja confirmada
-    else el depósito tiene saldo
-        SIS-->>ADM: conflicto, con el saldo pendiente
+    alt el depósito existe, no es el predeterminado y no tiene saldo
+        SIS-->>ADM: depósito dado de baja
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el depósito es el predeterminado o todavía tiene garrafas
+        SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
@@ -7693,10 +7720,68 @@ sequenceDiagram
 
 ---
 
+#### DSS — CU-273: Marcar el Depósito Predeterminado
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `marcarDepositoPredeterminado(depositoId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-273 Marcar el Depósito Predeterminado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: marcarDepositoPredeterminado(depositoId)
+    activate SIS
+    alt el depósito existe y no hay otro cambio simultáneo
+        SIS-->>ADM: depósito predeterminado
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else hay otro cambio simultáneo, o se intenta sacarle la marca al predeterminado
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+**Figura 200 — DSS CU-273: Marcar el Depósito Predeterminado**
+
+---
+
+#### DSS — CU-274: Registrar el Conteo Inicial de un Depósito
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarConteoInicial(depositoId, items, nota)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-274 Registrar el Conteo Inicial de un Depósito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarConteoInicial(depositoId, items, nota)
+    activate SIS
+    alt el depósito no tiene conteo inicial y hay diferencias que registrar
+        SIS-->>ADM: conteo inicial registrado
+    else el conteo coincide con el saldo, repite una garrafa o dejaría el vendible negativo
+        SIS-->>ADM: datos inválidos
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el depósito ya tiene su conteo inicial
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+**Figura 201 — DSS CU-274: Registrar el Conteo Inicial de un Depósito**
+
+---
+
 #### DSS — CU-208: Consultar el Stock por Ubicación
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `consultarStockPorUbicacion(ubicacionId, productoId)`, `consultarResumenDeStock()`
+**Operaciones del sistema:** `consultarStockPorUbicacion(ubicacionId, productoId)`, `consultarUbicacionesDeStock()`
 
 ```mermaid
 sequenceDiagram
@@ -7705,26 +7790,40 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt resumen por tipo de garrafa
-        ADM->>SIS: consultarResumenDeStock()
-        activate SIS
-        SIS-->>ADM: llenas, vacías, defectuosas, reservado, vendible y mínimo por tipo
-        deactivate SIS
-    end
+    ADM->>SIS: consultarStockPorUbicacion(ubicacionId, productoId)
+    activate SIS
+    SIS-->>ADM: saldos por ubicación, tipo de garrafa y condición
+    deactivate SIS
 
-    opt detalle de una ubicación
-        ADM->>SIS: consultarStockPorUbicacion(ubicacionId, productoId)
-        activate SIS
-        alt la ubicación existe
-            SIS-->>ADM: saldos por tipo de garrafa y condición
-        else la ubicación no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
-    end
+    ADM->>SIS: consultarUbicacionesDeStock()
+    activate SIS
+    SIS-->>ADM: ubicaciones con su nombre
+    deactivate SIS
 ```
 
-**Figura 200 — DSS CU-208: Consultar el Stock por Ubicación**
+**Figura 202 — DSS CU-208: Consultar el Stock por Ubicación**
+
+---
+
+#### DSS — CU-279: Consultar el Resumen de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarResumenDeStock()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-279 Consultar el Resumen de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarResumenDeStock()
+    activate SIS
+    SIS-->>ADM: resumen por tipo de garrafa: depósitos, camiones, reservado, vendible y mínimo
+    deactivate SIS
+```
+
+**Figura 203 — DSS CU-279: Consultar el Resumen de Stock**
 
 ---
 
@@ -7742,22 +7841,22 @@ sequenceDiagram
 
     ADM->>SIS: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
     activate SIS
-    alt el rango de fechas es válido
-        SIS-->>ADM: página de movimientos y total
-    else el rango está invertido
-        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    alt los filtros son válidos
+        SIS-->>ADM: página de movimientos con su total
+    else una fecha es inválida o el rango está invertido
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
 
-**Figura 201 — DSS CU-209: Consultar los Movimientos de Stock**
+**Figura 204 — DSS CU-209: Consultar los Movimientos de Stock**
 
 ---
 
 #### DSS — CU-210: Configurar el Stock Mínimo
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `configurarStockMinimo(depositoId, minimos)`
+**Operaciones del sistema:** `consultarStockMinimo()`, `configurarStockMinimo(minimos)`
 
 ```mermaid
 sequenceDiagram
@@ -7766,19 +7865,24 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: configurarStockMinimo(depositoId, minimos)
+    ADM->>SIS: consultarStockMinimo()
     activate SIS
-    alt los mínimos son válidos
-        SIS-->>ADM: umbrales vigentes del depósito
-    else un mínimo es negativo
-        SIS-->>ADM: solicitud inválida, con el detalle del campo
-    else el depósito o un tipo de garrafa no existe
+    SIS-->>ADM: mínimos con las llenas actuales y el aviso emitido
+    deactivate SIS
+
+    ADM->>SIS: configurarStockMinimo(minimos)
+    activate SIS
+    alt los depósitos y las garrafas existen y los mínimos son válidos
+        SIS-->>ADM: mínimos vigentes
+    else un depósito o una garrafa no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
+    else un mínimo es negativo o no es entero
+        SIS-->>ADM: datos inválidos
     end
     deactivate SIS
 ```
 
-**Figura 202 — DSS CU-210: Configurar el Stock Mínimo**
+**Figura 205 — DSS CU-210: Configurar el Stock Mínimo**
 
 ---
 
@@ -7793,29 +7897,25 @@ sequenceDiagram
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant SIS as :Sistema
-    actor ADM as Administrador (ACT-03)
 
-    Note over SAU: Se ejecuta cada hora
     SAU->>SIS: avisarStockBajo()
     activate SIS
-    alt hay depósitos por debajo del mínimo sin aviso
-        SIS-)ADM: notificarStockBajo(depositos)
-        Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
-        SIS-->>SAU: avisos enviados
-    else no hay ninguno
-        SIS-->>SAU: el ciclo termina sin avisos
+    alt algún mínimo mayor que cero tiene menos llenas que su valor y todavía no se avisó
+        SIS-->>SAU: mínimos nuevos avisados
+    else ningún mínimo está bajo, o los que lo están ya se avisaron
+        SIS-->>SAU: sin avisos nuevos
     end
     deactivate SIS
 ```
 
-**Figura 203 — DSS CU-211: Avisar el Stock Bajo**
+**Figura 206 — DSS CU-211: Avisar el Stock Bajo**
 
 ---
 
 #### DSS — CU-212: Transferir Stock entre Depósitos
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `transferirStock(origenId, destinoId, productoId, condicion, cantidad)`
+**Operaciones del sistema:** `transferirStock(origenId, destinoId, items, nota)`
 
 ```mermaid
 sequenceDiagram
@@ -7824,28 +7924,58 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: transferirStock(origenId, destinoId, productoId, condicion, cantidad)
+    ADM->>SIS: transferirStock(origenId, destinoId, items, nota)
     activate SIS
-    alt el origen tiene la cantidad
+    alt las dos ubicaciones existen y son distintas, y el origen tiene lo indicado
         SIS-->>ADM: transferencia registrada, con su lote
-    else el origen no tiene la cantidad
+    else el origen no tiene la cantidad de algún renglón
         SIS-->>ADM: solicitud inválida, con el saldo disponible
-    else origen y destino son la misma ubicación
+    else origen y destino son la misma ubicación, dos camiones o un renglón repetido
         SIS-->>ADM: solicitud inválida
-    else una ubicación no existe
+    else una ubicación o una garrafa no existe en la distribuidora
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
 ```
 
-**Figura 204 — DSS CU-212: Transferir Stock entre Depósitos**
+**Figura 207 — DSS CU-212: Transferir Stock entre Depósitos**
+
+---
+
+#### DSS — CU-276: Anular una Transferencia de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `anularTransferenciaDeStock(loteId, nota)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-276 Anular una Transferencia de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularTransferenciaDeStock(loteId, nota)
+    activate SIS
+    alt el lote es de una transferencia, no se contraasentó y las garrafas siguen en el destino
+        SIS-->>ADM: contraasiento registrado
+    else el lote no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el lote no es de una transferencia
+        SIS-->>ADM: solicitud inválida
+    else el lote ya se contraasentó o las garrafas ya no están donde estaban
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+**Figura 208 — DSS CU-276: Anular una Transferencia de Stock**
 
 ---
 
 #### DSS — CU-213: Registrar un Ajuste o una Merma de Stock
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarAjusteDeStock(ubicacionId, motivo, nota, items)`, `consultarAjustesDeStock(desde, hasta, motivo)`
+**Operaciones del sistema:** `registrarAjusteDeStock(ubicacionId, motivo, nota, items)`
 
 ```mermaid
 sequenceDiagram
@@ -7854,28 +7984,54 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt registro de un ajuste
-        ADM->>SIS: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
-        activate SIS
-        alt el ajuste es válido
-            SIS-->>ADM: ajuste registrado, con su número
-        else la nota está vacía o un saldo quedaría negativo
-            SIS-->>ADM: solicitud inválida, con el detalle
-        else la ubicación no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
+    ADM->>SIS: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
+    activate SIS
+    alt la ubicación existe, la nota está y ningún saldo ni el vendible quedan en negativo
+        SIS-->>ADM: ajuste registrado, con su número
+    else falta la nota, el signo no corresponde al motivo o algún saldo o el vendible quedarían negativos
+        SIS-->>ADM: solicitud inválida
+    else la ubicación o una garrafa no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
     end
-
-    opt consulta de los ajustes
-        ADM->>SIS: consultarAjustesDeStock(desde, hasta, motivo)
-        activate SIS
-        SIS-->>ADM: ajustes del período
-        deactivate SIS
-    end
+    deactivate SIS
 ```
 
-**Figura 205 — DSS CU-213: Registrar un Ajuste o una Merma de Stock**
+**Figura 209 — DSS CU-213: Registrar un Ajuste o una Merma de Stock**
+
+---
+
+#### DSS — CU-275: Consultar los Ajustes de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarAjustesDeStock(desde, hasta, motivo)`, `consultarAjusteDeStock(ajusteId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-275 Consultar los Ajustes de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarAjustesDeStock(desde, hasta, motivo)
+    activate SIS
+    alt los filtros son válidos
+        SIS-->>ADM: página de ajustes con su total
+    else una fecha es inválida o el rango está invertido
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS
+
+    ADM->>SIS: consultarAjusteDeStock(ajusteId)
+    activate SIS
+    alt el ajuste existe en la distribuidora
+        SIS-->>ADM: ajuste con sus renglones
+    else el ajuste no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+```
+
+**Figura 210 — DSS CU-275: Consultar los Ajustes de Stock**
 
 ---
 
@@ -7926,7 +8082,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 206 — DSS CU-218: Registrar la Carga del Camión**
+**Figura 211 — DSS CU-218: Registrar la Carga del Camión**
 
 ---
 
@@ -7955,36 +8111,15 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 207 — DSS CU-219: Registrar la Salida del Camión**
+**Figura 212 — DSS CU-219: Registrar la Salida del Camión**
 
 ---
 
-#### DSS — CU-220: Descontar del Camión lo Entregado
+#### DSS — CU-220: Descontar del Stock Físico lo Entregado
 
-**Actor:** Sistema Automático (ACT-04)
-**Operaciones del sistema:** `descontarStockDeLaEntrega(pedidoId)`
+**Actor:** ninguno directo (caso incluido)
 
-```mermaid
-sequenceDiagram
-    title DSS — CU-220 Descontar del Camión lo Entregado
-    autonumber
-    actor SAU as Sistema Automático (ACT-04)
-    participant SIS as :Sistema
-
-    Note over SAU: Reacciona a la entrega<br/>de cada pedido
-    SAU->>SIS: descontarStockDeLaEntrega(pedidoId)
-    activate SIS
-    alt el pedido no tiene movimientos de stock
-        SIS-->>SAU: stock descontado del origen
-    else el pedido ya tiene movimientos
-        SIS-->>SAU: nada que hacer
-    else el camión con carga abierta no alcanza lo entregado
-        SIS-->>SAU: nada registrado, queda para la conciliación
-    end
-    deactivate SIS
-```
-
-**Figura 208 — DSS CU-220: Descontar del Camión lo Entregado**
+Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-020, CU-079 y CU-278, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
 
 ---
 
@@ -8013,7 +8148,7 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 209 — DSS CU-221: Registrar el Regreso del Camión**
+**Figura 213 — DSS CU-221: Registrar el Regreso del Camión**
 
 ---
 
@@ -8045,7 +8180,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 210 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
+**Figura 214 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
 
 ---
 
@@ -8071,13 +8206,13 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 211 — DSS CU-223: Consultar la Carga Actual del Camión**
+**Figura 215 — DSS CU-223: Consultar la Carga Actual del Camión**
 
 ---
 
 #### DSS — CU-224: Conciliar el Stock Vendible con el Físico
 
-**Actor:** Administrador (ACT-03), Sistema Automático (ACT-04)
+**Actor:** Sistema Automático (ACT-04) y Administrador (ACT-03)
 **Operaciones del sistema:** `conciliarStock()`, `consultarConciliacionDeStock()`
 
 ```mermaid
@@ -8089,15 +8224,15 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
 
     opt proceso nocturno
-        Note over SAU: Se ejecuta una vez por noche
+        Note over SAU: Se ejecuta una vez por noche, a las 03:00
         SAU->>SIS: conciliarStock()
         activate SIS
-        alt hay diferencia entre el vendible y el físico
+        alt hay una diferencia nueva entre el vendible y el físico, o entregas sin descuento
             SIS-)ADM: notificarDiferenciaDeStock(diferencias)
             Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
-            SIS-->>SAU: entregas aplicadas y diferencias avisadas
-        else no hay diferencia
-            SIS-->>SAU: entregas aplicadas
+            SIS-->>SAU: diferencias avisadas
+        else todo cierra, o la diferencia ya se avisó
+            SIS-->>SAU: conciliación sin novedades
         end
         deactivate SIS
     end
@@ -8105,12 +8240,66 @@ sequenceDiagram
     opt consulta de la conciliación
         ADM->>SIS: consultarConciliacionDeStock()
         activate SIS
-        SIS-->>ADM: vendible, físico, reservado y diferencia por tipo de garrafa
+        SIS-->>ADM: vendible, físico, reservado, diferencia y corrección por tipo, y entregas sin descuento
         deactivate SIS
     end
 ```
 
-**Figura 212 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
+**Figura 216 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
+
+---
+
+#### DSS — CU-277: Registrar un Ajuste de Conciliación del Vendible
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-277 Registrar un Ajuste de Conciliación del Vendible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+    activate SIS
+    alt hay diferencia y el físico alcanza lo reservado
+        SIS-->>ADM: ajuste de conciliación registrado, con su número
+    else no hay diferencia, falta la nota o el físico es menor que lo reservado
+        SIS-->>ADM: solicitud inválida
+    else la diferencia cambió desde que se consultó
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+```
+
+**Figura 217 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible**
+
+---
+
+#### DSS — CU-278: Reaplicar las Entregas sin Movimiento de Stock
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `reaplicarEntregasDeStock()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-278 Reaplicar las Entregas sin Movimiento de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reaplicarEntregasDeStock()
+    activate SIS
+    alt hay entregas sin movimiento
+        SIS-->>ADM: pedidos revisados, reaplicados y pendientes
+    else no hay entregas sin movimiento
+        SIS-->>ADM: cero revisados
+    end
+    deactivate SIS
+```
+
+**Figura 218 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock**
 
 ---
 
@@ -8144,7 +8333,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 213 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
+**Figura 219 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
 
 ---
 
@@ -8152,7 +8341,7 @@ sequenceDiagram
 
 **Actor:** ninguno directo (caso incluido)
 
-Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220 y CU-222, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
+Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274 y CU-276, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
 
 ---
 
@@ -8176,7 +8365,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 214 — DSS CU-214: Consultar los Proveedores**
+**Figura 220 — DSS CU-214: Consultar los Proveedores**
 
 ---
 
@@ -8203,7 +8392,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 215 — DSS CU-261: Registrar un Proveedor**
+**Figura 221 — DSS CU-261: Registrar un Proveedor**
 
 ---
 
@@ -8230,7 +8419,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 216 — DSS CU-262: Modificar un Proveedor**
+**Figura 222 — DSS CU-262: Modificar un Proveedor**
 
 ---
 
@@ -8253,7 +8442,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 217 — DSS CU-263: Dar de Baja un Proveedor**
+**Figura 223 — DSS CU-263: Dar de Baja un Proveedor**
 
 ---
 
@@ -8301,7 +8490,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 218 — DSS CU-215: Emitir una Orden de Compra**
+**Figura 224 — DSS CU-215: Emitir una Orden de Compra**
 
 ---
 
@@ -8329,7 +8518,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 219 — DSS CU-216: Cancelar una Orden de Compra**
+**Figura 225 — DSS CU-216: Cancelar una Orden de Compra**
 
 ---
 
@@ -8381,7 +8570,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 220 — DSS CU-217: Registrar la Recepción de una Compra**
+**Figura 226 — DSS CU-217: Registrar la Recepción de una Compra**
 
 ---
 
@@ -8409,7 +8598,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 221 — DSS CU-225: Crear una Caja**
+**Figura 227 — DSS CU-225: Crear una Caja**
 
 ---
 
@@ -8436,7 +8625,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 222 — DSS CU-264: Modificar una Caja**
+**Figura 228 — DSS CU-264: Modificar una Caja**
 
 ---
 
@@ -8464,7 +8653,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 223 — DSS CU-226: Abrir la Caja**
+**Figura 229 — DSS CU-226: Abrir la Caja**
 
 ---
 
@@ -8492,7 +8681,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 224 — DSS CU-227: Cerrar la Caja con Arqueo**
+**Figura 230 — DSS CU-227: Cerrar la Caja con Arqueo**
 
 ---
 
@@ -8529,7 +8718,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 225 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
+**Figura 231 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
 
 ---
 
@@ -8555,7 +8744,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 226 — DSS CU-229: Anular un Movimiento de Caja**
+**Figura 232 — DSS CU-229: Anular un Movimiento de Caja**
 
 ---
 
@@ -8581,7 +8770,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 227 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
+**Figura 233 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
 
 ---
 
@@ -8608,7 +8797,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 228 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
+**Figura 234 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
 
 ---
 
@@ -8640,7 +8829,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 229 — DSS CU-231: Generar la Rendición Diaria del Chofer**
+**Figura 235 — DSS CU-231: Generar la Rendición Diaria del Chofer**
 
 ---
 
@@ -8682,7 +8871,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 230 — DSS CU-232: Declarar el Efectivo Rendido**
+**Figura 236 — DSS CU-232: Declarar el Efectivo Rendido**
 
 ---
 
@@ -8723,7 +8912,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 231 — DSS CU-233: Aprobar la Rendición del Chofer**
+**Figura 237 — DSS CU-233: Aprobar la Rendición del Chofer**
 
 ---
 
@@ -8755,7 +8944,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 232 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
+**Figura 238 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
 
 ---
 
@@ -8792,7 +8981,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 233 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
+**Figura 239 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
 
 ---
 
@@ -8832,7 +9021,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 234 — DSS CU-236: Vender a Cuenta Corriente**
+**Figura 240 — DSS CU-236: Vender a Cuenta Corriente**
 
 ---
 
@@ -8879,7 +9068,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 235 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
+**Figura 241 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
 
 ---
 
@@ -8905,7 +9094,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 236 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
+**Figura 242 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
 
 ---
 
@@ -8927,7 +9116,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 237 — DSS CU-239: Consultar la Antigüedad de la Deuda**
+**Figura 243 — DSS CU-239: Consultar la Antigüedad de la Deuda**
 
 ---
 
@@ -8964,7 +9153,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 238 — DSS CU-240: Configurar las Comisiones por Entrega**
+**Figura 244 — DSS CU-240: Configurar las Comisiones por Entrega**
 
 ---
 
@@ -8992,7 +9181,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 239 — DSS CU-241: Registrar la Comisión de una Entrega**
+**Figura 245 — DSS CU-241: Registrar la Comisión de una Entrega**
 
 ---
 
@@ -9036,7 +9225,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 240 — DSS CU-242: Liquidar las Comisiones de un Chofer**
+**Figura 246 — DSS CU-242: Liquidar las Comisiones de un Chofer**
 
 ---
 
@@ -9064,7 +9253,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 241 — DSS CU-243: Registrar el Pago de una Liquidación**
+**Figura 247 — DSS CU-243: Registrar el Pago de una Liquidación**
 
 ---
 
@@ -9086,7 +9275,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 242 — DSS CU-244: Consultar Mis Comisiones**
+**Figura 248 — DSS CU-244: Consultar Mis Comisiones**
 
 ---
 
@@ -9108,7 +9297,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 243 — DSS CU-245: Consultar el Tablero Financiero**
+**Figura 249 — DSS CU-245: Consultar el Tablero Financiero**
 
 ---
 
@@ -9180,7 +9369,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 244 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 250 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 ---
 
@@ -9217,7 +9406,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 245 — DSS CU-106: Anticipar la recompra por consumo estimado**
+**Figura 251 — DSS CU-106: Anticipar la recompra por consumo estimado**
 
 ---
 
@@ -9259,7 +9448,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 246 — DSS CU-107: Agrupar pedidos por recorrido**
+**Figura 252 — DSS CU-107: Agrupar pedidos por recorrido**
 
 ---
 
@@ -9309,7 +9498,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 247 — DSS CU-108: Recuperar envases no devueltos**
+**Figura 253 — DSS CU-108: Recuperar envases no devueltos**
 
 ---
 
@@ -9342,7 +9531,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 248 — DSS CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 254 — DSS CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -9354,7 +9543,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 
 Una operación del sistema es un mensaje que un actor le manda al sistema y que aparece como tal en un diagrama de secuencia de §2.1. El catálogo reúne **todas** las operaciones, cada una con una única firma: la que usan los diagramas de secuencia de §2.1, los contratos de esta sección y los diagramas de interacción del Documento 3. Los parámetros llevan su tipo; los diagramas de secuencia usan la misma firma sin los tipos, para no recargar el dibujo.
 
-Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrato; las **115** restantes no modifican nada y por eso no llevan contrato.
+Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrato; las **120** restantes no modifican nada y por eso no llevan contrato.
 
 | Operación | Casos de uso | Actor iniciador | Cambia estado |
 |---|---|---|---|
@@ -9387,6 +9576,7 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `anularMovimientoDeCaja(movimientoId identificador, motivo cadena)` | CU-229 | Administrador (ACT-03) | Sí |
 | `anularMultaDeTransito(multaId identificador, motivo cadena)` | CU-198 | Administrador (ACT-03) | Sí |
 | `anularRecepcionDeCompra(recepcionId identificador, motivo cadena)` | CU-217 | Administrador (ACT-03) | Sí |
+| `anularTransferenciaDeStock(loteId identificador, nota cadena)` | CU-276 | Administrador (ACT-03) | Sí |
 | `aprobarLicencia(licenciaId identificador)` | CU-192 | Administrador (ACT-03) | Sí |
 | `aprobarLiquidacion(liquidacionId identificador)` | CU-242 | Administrador (ACT-03) | Sí |
 | `aprobarRendicion(rendicionId identificador, cajaDestinoId identificador, resolucionDeDiferencia cadena)` | CU-233 | Administrador (ACT-03) | Sí |
@@ -9418,19 +9608,20 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `cerrarRendicionDeStock(cargaId identificador, nota cadena)` | CU-222 | Administrador (ACT-03) | Sí |
 | `cerrarSiniestro(siniestroId identificador, costoDeReparacion moneda, reintegroDelSeguro moneda, franquicia moneda)` | CU-202 | Administrador (ACT-03) | Sí |
 | `cerrarTareaDeFlota(tareaId identificador, fecha fecha, kilometraje entero, costo moneda, observacion cadena)` | CU-141 | Administrador (ACT-03) | Sí |
-| `conciliarStock()` | CU-224 | Sistema Automático (ACT-04) | Sí |
+| `conciliarStock()` | CU-224 | Sistema Automático (ACT-04) | No |
 | `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta booleano)` | CU-249 | Administrador (ACT-03) | Sí |
 | `configurarDiasDeAviso(dias entero)` | CU-145 | Cliente (ACT-01) | Sí |
 | `configurarFrecuenciaDeTareas(intervalos registro)` | CU-173 | Administrador (ACT-03) | Sí |
 | `configurarParametrosDeDespacho(radiosKm lista, ventanaDeAceptacion entero)` | CU-171 | Administrador (ACT-03) | Sí |
 | `configurarParametrosDeProceso(proceso cadena, parametros registro)` | CU-172 | Administrador (ACT-03) | Sí |
-| `configurarStockMinimo(depositoId identificador, minimos lista)` | CU-210 | Administrador (ACT-03) | Sí |
+| `configurarStockMinimo(minimos lista)` | CU-210 | Administrador (ACT-03) | Sí |
 | `confirmarEntrega(pedidoId identificador)` | CU-020 | Chofer (ACT-02) | Sí |
 | `confirmarEntregaConCodigo(pedidoId identificador, codigo cadena)` | CU-079 | Cliente (ACT-01) | Sí |
 | `confirmarSenia(pedidoId identificador)` | CU-074 | Administrador (ACT-03) | Sí |
 | `confirmarVentanaDeTaller(tareaId identificador, ventanaElegida registro, gastoEstimado moneda)` | CU-105 | Administrador (ACT-03) | Sí |
 | `consultarAdjuntosDeLaTarea(tareaId identificador)` | CU-156 | Administrador (ACT-03) | No |
-| `consultarAjustesDeStock(desde fechaHora, hasta fechaHora, motivo cadena)` | CU-213 | Administrador (ACT-03) | No |
+| `consultarAjusteDeStock(ajusteId identificador)` | CU-275 | Administrador (ACT-03) | No |
+| `consultarAjustesDeStock(desde fechaHora, hasta fechaHora, motivo cadena)` | CU-275 | Administrador (ACT-03) | No |
 | `consultarAntiguedadDeDeuda()` | CU-239 | Administrador (ACT-03) | No |
 | `consultarAsistencias(desde fecha, hasta fecha)` | CU-189 | Administrador (ACT-03) | No |
 | `consultarAuditoria(autor identificador, tipoDeRecurso cadena, recurso cadena, desde fechaHora, hasta fechaHora, resultado cadena, limite entero, desplazamiento entero)` | CU-152 | Administrador (ACT-03) | No |
@@ -9443,7 +9634,8 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `consultarConciliacionDeStock()` | CU-224 | Administrador (ACT-03) | No |
 | `consultarConsumoDeCombustible(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-196 | Administrador (ACT-03) | No |
 | `consultarCostoDeUnVehiculo(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-203 | Administrador (ACT-03) | No |
-| `consultarDepositos()` | CU-207 | Administrador (ACT-03) | No |
+| `consultarDeposito(depositoId identificador)` | CU-207 | Administrador (ACT-03) | No |
+| `consultarDepositos(incluirInactivos booleano)` | CU-207 | Administrador (ACT-03) | No |
 | `consultarDetalleDelChofer(choferId identificador)` | CU-035, CU-109 | Administrador (ACT-03) | No |
 | `consultarDetalleDelCliente(clienteId identificador)` | CU-129 | Administrador (ACT-03) | No |
 | `consultarDetalleDelVehiculo(vehiculoId identificador)` | CU-113 | Administrador (ACT-03) | No |
@@ -9491,14 +9683,16 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `consultarRecomprasEstimadas(dias entero)` | CU-146 | Administrador (ACT-03) | No |
 | `consultarResumenDeCalificaciones(usuarioId identificador)` | CU-065 | Cliente (ACT-01) | No |
 | `consultarResumenDePedidos()` | CU-026 | Administrador (ACT-03) | No |
-| `consultarResumenDeStock()` | CU-208 | Administrador (ACT-03) | No |
+| `consultarResumenDeStock()` | CU-279 | Administrador (ACT-03) | No |
 | `consultarSaldoDeVacaciones(empleadoId identificador, anio entero)` | CU-193 | Administrador (ACT-03) | No |
 | `consultarSiniestros(filtros registro)` | CU-201 | Administrador (ACT-03) | No |
+| `consultarStockMinimo()` | CU-210 | Administrador (ACT-03) | No |
 | `consultarStockPorUbicacion(ubicacionId identificador, productoId identificador)` | CU-208 | Administrador (ACT-03) | No |
 | `consultarTableroDeCostosDeLaFlota(fechaDesde fecha, fechaHasta fecha)` | CU-204 | Administrador (ACT-03) | No |
 | `consultarTableroDePersonal()` | CU-194 | Administrador (ACT-03) | No |
 | `consultarTableroFinanciero(fecha fecha)` | CU-245 | Administrador (ACT-03) | No |
 | `consultarTokensDelUsuario(usuarioId identificador)` | CU-099 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05) | No |
+| `consultarUbicacionesDeStock()` | CU-208 | Administrador (ACT-03) | No |
 | `consultarVehiculoEnUso(choferId identificador)` | CU-163 | Administrador (ACT-03) | No |
 | `consultarVehiculosDelChofer(usuarioId identificador)` | CU-115 | Administrador (ACT-03) | No |
 | `consultarVencimientosDeLaFlota(dias entero)` | CU-139 | Administrador (ACT-03) | No |
@@ -9530,7 +9724,6 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `desactivarProducto(productoId identificador)` | CU-040 | Administrador (ACT-03) | Sí |
 | `desactivarZonasVencidas()` | CU-151 | Sistema Automático (ACT-04) | Sí |
 | `descargarAdjunto(tareaId identificador, adjuntoId identificador)` | CU-157 | Administrador (ACT-03) | No |
-| `descontarStockDeLaEntrega(pedidoId identificador)` | CU-220 | Sistema Automático (ACT-04) | Sí |
 | `despacharPedidoExpress(pedidoId identificador)` | CU-149 | Sistema Automático (ACT-04) | Sí |
 | `editarDatosDelCliente(clienteId identificador, cambios registro)` | CU-131 | Administrador (ACT-03) | Sí |
 | `editarDireccionDeEntrega(direccionId identificador, cambios registro)` | CU-046, CU-118 | Cliente (ACT-01) | Sí |
@@ -9576,6 +9769,7 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `listarUsuarios(pagina entero, limite entero, textoDeBusqueda cadena)` | CU-083 | Administrador (ACT-03) | No |
 | `listarVehiculos()` | CU-051 | Administrador (ACT-03) | No |
 | `listarZonasDeCobertura()` | CU-057 | Administrador (ACT-03) | No |
+| `marcarDepositoPredeterminado(depositoId identificador)` | CU-273 | Administrador (ACT-03) | Sí |
 | `marcarDireccionPredeterminada(direccionId identificador)` | CU-046, CU-120 | Cliente (ACT-01) | Sí |
 | `marcarPedidoEnCamino(pedidoId identificador)` | CU-018 | Chofer (ACT-02) | Sí |
 | `modificarCaja(cajaId identificador, datos registro)` | CU-264 | Administrador (ACT-03) | Sí |
@@ -9606,10 +9800,12 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `reactivarProducto(productoId identificador)` | CU-268 | Administrador (ACT-03) | Sí |
 | `reactivarVehiculo(vehiculoId identificador)` | CU-247 | Administrador (ACT-03) | Sí |
 | `realizarCompraExpress(tipoGarrafa cadena, medioDePago cadena)` | CU-147 | Cliente (ACT-01) | Sí |
+| `reaplicarEntregasDeStock()` | CU-278 | Administrador (ACT-03) | Sí |
 | `rechazarLicencia(licenciaId identificador, motivo cadena)` | CU-192 | Administrador (ACT-03) | Sí |
 | `rechazarOferta(pedidoId identificador)` | CU-016 | Chofer (ACT-02) | Sí |
 | `reenviarConfirmacionDePedido(usuarioId identificador, pedidoId identificador)` | CU-101 | Administrador General (ACT-05) | No |
 | `registrarAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena, rol cadena, distribuidoraId identificador)` | CU-086 | Administrador (ACT-03) | Sí |
+| `registrarAjusteDeConciliacion(productoId identificador, nota cadena, diferenciaEsperada entero)` | CU-277 | Administrador (ACT-03) | Sí |
 | `registrarAjusteDeCuentaCorriente(cuentaId identificador, tipo cadena, importe moneda, motivo cadena)` | CU-237 | Administrador (ACT-03) | Sí |
 | `registrarAjusteDeStock(ubicacionId identificador, motivo cadena, nota cadena, items lista)` | CU-213 | Administrador (ACT-03) | Sí |
 | `registrarAsistencia(empleadoId identificador, ingreso fechaHora, egreso fechaHora)` | CU-189 | Administrador (ACT-03) | Sí |
@@ -9620,6 +9816,7 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `registrarCargoDeCuentaCorriente(pedidoId identificador)` | CU-236 | Sistema Automático (ACT-04) | Sí |
 | `registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)` | CU-003, CU-031 | Administrador (ACT-03) | Sí |
 | `registrarComisionDeEntrega(pedidoId identificador)` | CU-241 | Sistema Automático (ACT-04) | Sí |
+| `registrarConteoInicial(depositoId identificador, items lista, nota cadena)` | CU-274 | Administrador (ACT-03) | Sí |
 | `registrarDeposito(nombre cadena, codigo cadena, tipo cadena, direccion cadena)` | CU-258 | Administrador (ACT-03) | Sí |
 | `registrarDireccionDeEntrega(datos registro)` | CU-046, CU-116 | Cliente (ACT-01) | Sí |
 | `registrarDistribuidora(nombre cadena, identificadorCorto cadena, razonSocial cadena, cuit cadena, correo cadena, telefono cadena, logo archivo, plan cadena)` | CU-052 | Administrador General (ACT-05) | Sí |
@@ -9658,7 +9855,7 @@ Son **312 operaciones**. **197** modifican el modelo conceptual y tienen contrat
 | `suscribirseAlSeguimiento(clienteId identificador)` | CU-021 | Cliente (ACT-01) | No |
 | `tomarReclamo(reclamoId identificador)` | CU-166 | Administrador (ACT-03) | Sí |
 | `transferirEntreCajas(cajaOrigenId identificador, cajaDestinoId identificador, importe moneda)` | CU-228 | Administrador (ACT-03) | Sí |
-| `transferirStock(origenId identificador, destinoId identificador, productoId identificador, condicion cadena, cantidad entero)` | CU-212 | Administrador (ACT-03) | Sí |
+| `transferirStock(origenId identificador, destinoId identificador, items lista, nota cadena)` | CU-212 | Administrador (ACT-03) | Sí |
 | `vaciarCarrito()` | CU-126 | Cliente (ACT-01) | Sí |
 | `validarChofer(choferId identificador)` | CU-032 | Administrador (ACT-03) | Sí |
 | `validarCobertura(latitud decimal, longitud decimal)` | CU-058 | Cliente (ACT-01) | No |
@@ -10066,12 +10263,12 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Nombre** | `actualizarStock(productoId identificador, variacion entero)` |
 | **Responsabilidades** | Ajustar el stock de un producto para reflejar una reposición o una corrección de inventario. |
 | **Tipo** | Sistema |
-| **Referencias cruzadas** | Casos de uso: CU-038. Funciones: IRQ-04, OBJ-05, OBJ-06. |
-| **Notas** | El valor ingresado es un ajuste, no el stock final: se suma al stock existente. Un valor positivo repone y uno negativo descuenta. Este caso cubre sólo el ajuste manual; el descuento al crear un pedido lo resuelve crearPedido. |
-| **Excepciones** | Si la cantidad falta, no es un entero o está fuera de rango → error de solicitud. Si el producto no existe o es de otra distribuidora → recurso no encontrado. Si el ajuste dejaría el stock por debajo de cero → error de solicitud y no se modifica el stock. |
+| **Referencias cruzadas** | Casos de uso: CU-038. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | El valor ingresado es una variación, no el stock final: positivo repone y negativo descuenta. Es un ajuste de recuento de llenas en el depósito predeterminado, con el mismo procedimiento que registrarAjusteDeStock: mueve el stock físico y el vendible juntos. Este caso cubre sólo el ajuste manual; el descuento al crear un pedido lo resuelve crearPedido. Si no alcanzan las llenas del depósito predeterminado, el mensaje dice cuántas hay en camiones y en otros depósitos. |
+| **Excepciones** | Si la cantidad falta, no es un entero o está fuera de rango → error de solicitud. Si el producto no existe o es de otra distribuidora → recurso no encontrado. Si el ajuste dejaría negativos el stock vendible o las llenas del depósito predeterminado → error de solicitud y no se modifica el stock. |
 | **Salida** | El producto con el stock resultante. |
 | **Precondiciones** | El Administrador está autenticado y tiene una distribuidora en contexto. El Producto pertenece a esa Distribuidora. El stock resultante no es negativo. |
-| **Postcondiciones** | El atributo stock del Producto se modificó en la variación indicada. Si correspondía, el Producto volvió a estar disponible en el catálogo. |
+| **Postcondiciones** | Se creó una instancia de AjusteDeStock de recuento con una instancia de ItemAjusteDeStock de llenas y una instancia de MovimientoDeStock, en el depósito predeterminado. El stock vendible del Producto cambió en la variación indicada. Si correspondía, el Producto volvió a estar disponible en el catálogo. |
 
 ---
 
@@ -12015,13 +12212,13 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `registrarDeposito(nombre cadena, codigo cadena, tipo cadena, direccion cadena)` |
 | **Responsabilidades** | Dar de alta un depósito o sucursal de la distribuidora, con su ubicación de stock. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-258. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | El código es único entre los depósitos vigentes de la distribuidora. El primer depósito de la distribuidora queda como predeterminado. La ubicación de stock se crea con el depósito y empieza sin saldo. |
-| **Excepciones** | Si falta la distribuidora → error de solicitud. Si el código ya lo usa otro depósito vigente → conflicto. |
+| **Notas** | El código es único entre los depósitos vigentes de la distribuidora y se guarda en mayúsculas. El primer depósito de la distribuidora queda como predeterminado; si el pedido lo indica, el nuevo reemplaza al anterior. La ubicación de stock se crea con el depósito y empieza sin saldo. |
+| **Excepciones** | Si falta el nombre o el código, o el código tiene caracteres no permitidos → error de solicitud. Si el código ya lo usa otro depósito vigente, o hay un cambio simultáneo del predeterminado → conflicto. |
 | **Salida** | El depósito creado. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El código no lo usa otro depósito vigente. |
-| **Postcondiciones** | Se creó una instancia de Deposito de la distribuidora, con su nombre, código, tipo y dirección. Se creó una instancia de UbicacionDeStock asociada a él, sin saldo. El atributo predeterminado de la instancia de Deposito pasó a verdadero si la distribuidora no tenía otro predeterminado. |
+| **Postcondiciones** | Se creó una instancia de Deposito de la distribuidora, con su nombre, código, tipo y dirección. Se creó una instancia de UbicacionDeStock asociada a él, sin saldo. El atributo predeterminado de la instancia de Deposito pasó a verdadero si la distribuidora no tenía otro predeterminado o si el pedido lo indicó. |
 
 ---
 
@@ -12030,14 +12227,14 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `actualizarDeposito(depositoId identificador, datos registro)` |
-| **Responsabilidades** | Modificar los datos de un depósito vigente. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Modificar los datos de un depósito vigente, o desactivarlo y reactivarlo. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-259. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Sólo cambian los campos enviados. El código sigue siendo único entre los vigentes. |
-| **Excepciones** | Si el depósito no existe o es de otra distribuidora → recurso no encontrado. Si el código ya lo usa otro → conflicto. |
+| **Notas** | Sólo cambian los campos enviados. El código sigue siendo único entre los depósitos vigentes. El depósito predeterminado no se desactiva. Cambiar el predeterminado es la operación marcarDepositoPredeterminado. |
+| **Excepciones** | Si el depósito no existe, está dado de baja o es de otra distribuidora → recurso no encontrado. Si el código ya lo usa otro depósito vigente, o se desactiva el predeterminado → conflicto. Si el formato de un dato no es válido → error de solicitud. |
 | **Salida** | El depósito modificado. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El depósito existe y es de la distribuidora. |
-| **Postcondiciones** | El atributo nombre, código, tipo o dirección de la instancia de Deposito tiene el valor enviado. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Deposito existe y es de la distribuidora. |
+| **Postcondiciones** | El atributo nombre, código, tipo, dirección o activo de la instancia de Deposito tiene el valor enviado. |
 
 ---
 
@@ -12046,14 +12243,46 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `darDeBajaDeposito(depositoId identificador)` |
-| **Responsabilidades** | Dar de baja un depósito sin saldo. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Dar de baja un depósito sin garrafas que no sea el predeterminado. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-260. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | La baja es lógica: el depósito conserva su historial de movimientos. El depósito predeterminado no se da de baja mientras haya otros vigentes. |
-| **Excepciones** | Si el depósito no existe o es de otra distribuidora → recurso no encontrado. Si su ubicación tiene algún saldo distinto de cero, o si es el predeterminado → conflicto. |
+| **Notas** | La baja es lógica: el depósito y su ubicación conservan su historial de movimientos. Mientras corre, el depósito está bloqueado: una operación de stock que lo use espera, y la baja ve el saldo final. Los mínimos del depósito se borran con él. |
+| **Excepciones** | Si el depósito no existe, ya está dado de baja o es de otra distribuidora → recurso no encontrado. Si es el predeterminado, o su ubicación tiene alguna garrafa de cualquier condición → conflicto. |
 | **Salida** | La confirmación de la baja. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El depósito existe y su ubicación de stock no tiene saldo. |
-| **Postcondiciones** | El atributo activo de la instancia de Deposito pasó a falso y el depósito quedó con la fecha de baja. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Deposito existe, no es el predeterminado y su UbicacionDeStock no tiene saldo. |
+| **Postcondiciones** | La instancia de Deposito quedó dada de baja y dejó de listarse; su UbicacionDeStock y sus movimientos se conservan. Los UmbralDeStock del depósito dejaron de existir. |
+
+---
+
+#### Importante Contrato: `marcarDepositoPredeterminado()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `marcarDepositoPredeterminado(depositoId identificador)` |
+| **Responsabilidades** | Elegir cuál depósito de la distribuidora es el predeterminado. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-273. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | La distribuidora tiene siempre uno solo. Los dos depósitos que cambian de marca se bloquean juntos y ordenados por identificador, de modo que dos cambios simultáneos no se cruzan. El predeterminado es el que usan la entrega de un pedido sin camión con saldo y el ajuste del catálogo. |
+| **Excepciones** | Si el depósito no existe, está dado de baja o es de otra distribuidora → recurso no encontrado. Si hay otro cambio simultáneo, o se intenta sacarle la marca al predeterminado → conflicto. |
+| **Salida** | El depósito elegido, ya predeterminado. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Deposito existe y es de la distribuidora. |
+| **Postcondiciones** | El atributo predeterminado de la instancia de Deposito elegido pasó a verdadero y el de la instancia de Deposito que lo era hasta ahora pasó a falso. |
+
+---
+
+#### Importante Contrato: `registrarConteoInicial()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `registrarConteoInicial(depositoId identificador, items lista, nota cadena)` |
+| **Responsabilidades** | Registrar lo que hay físicamente en un depósito, una sola vez, como ajuste de conteo inicial. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-274. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Se asienta la diferencia contra el saldo actual de cada tipo de garrafa y condición. Es un ajuste numerado de motivo «conteo inicial»; las llenas mueven también el stock vendible. El depósito se bloquea mientras se cuenta. Con la misma clave de idempotencia no se repite. Después del conteo, las correcciones son ajustes. |
+| **Excepciones** | Si el depósito no existe o es de otra distribuidora → recurso no encontrado. Si el depósito ya tiene su conteo inicial → conflicto. Si lo contado coincide con el saldo, repite una garrafa, o el stock vendible quedaría negativo → error de solicitud. |
+| **Salida** | El ajuste de conteo inicial con sus renglones. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Deposito existe, es de la distribuidora y no tiene conteo inicial. |
+| **Postcondiciones** | Se creó una instancia de AjusteDeStock de motivo «conteo inicial», con su número y su nota, y sus instancias de ItemAjusteDeStock, una por cada diferencia. Se creó una instancia de MovimientoDeStock por cada renglón. Los saldos de la UbicacionDeStock del depósito quedaron en lo contado. El stock vendible de cada Producto cambió en la diferencia de llenas. |
 
 ---
 
@@ -12061,15 +12290,15 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `configurarStockMinimo(depositoId identificador, minimos lista)` |
-| **Responsabilidades** | Fijar el mínimo de unidades llenas de un depósito para cada tipo de garrafa indicado. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Nombre** | `configurarStockMinimo(minimos lista)` |
+| **Responsabilidades** | Fijar el mínimo de unidades llenas de cada depósito y tipo de garrafa indicado. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-210. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Hay un solo umbral por depósito y tipo de garrafa: se crea si no existía y se actualiza si ya estaba. Un mínimo en cero equivale a no controlar ese tipo. |
-| **Excepciones** | Si el depósito o un tipo de garrafa no existen o son de otra distribuidora → recurso no encontrado. Si un mínimo es negativo → error de solicitud con el detalle del campo. |
-| **Salida** | Los umbrales vigentes del depósito. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El depósito existe y es de la distribuidora. |
-| **Postcondiciones** | Se creó una instancia de UmbralDeStock del depósito por cada tipo de garrafa que no tenía umbral. El atributo mínimo de llenas de cada instancia de UmbralDeStock tiene el valor indicado. |
+| **Notas** | Hay un solo umbral por depósito y tipo de garrafa: se crea si no existía y se actualiza si ya estaba. Si el mínimo cambia, se borra el aviso emitido para evaluarlo de nuevo. Un mínimo en cero equivale a no controlar ese par. Todo el lote se valida antes de guardar. |
+| **Excepciones** | Si un depósito o una garrafa no existen o son de otra distribuidora → recurso no encontrado y no se guarda ninguno. Si un mínimo es negativo o no es entero → error de solicitud con el detalle del campo. |
+| **Salida** | Los umbrales vigentes. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. Los Deposito y los Producto indicados existen y son de la distribuidora. |
+| **Postcondiciones** | Se creó una instancia de UmbralDeStock del depósito por cada tipo de garrafa que no tenía umbral. El atributo mínimo de llenas de cada instancia de UmbralDeStock tiene el valor indicado, y su atributo avisado el quedó vacío si el mínimo cambió. |
 
 ---
 
@@ -12079,12 +12308,12 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `avisarStockBajo()` |
 | **Responsabilidades** | Avisar a los administradores los depósitos que bajaron de su mínimo de unidades llenas. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Tipo** | Sistema (proceso automático) |
 | **Referencias cruzadas** | Casos de uso: CU-211. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | El aviso se emite una sola vez por umbral hasta que el depósito se recupere. Los administradores sin correo cargado no reciben el aviso. El correo es un efecto del sistema hacia el actor, no una postcondición del modelo. |
-| **Excepciones** | Si el envío falla → el umbral no se marca y se reintenta en el ciclo siguiente. |
+| **Notas** | Corre todos los días a las 08:00, hora argentina. El aviso se emite una sola vez por umbral hasta que el depósito se recupere. Los administradores sin correo cargado no reciben el aviso. El correo es un efecto del sistema hacia el actor, no una postcondición del modelo. |
+| **Excepciones** | Si el envío falla → el umbral no se marca y se reintenta al día siguiente. |
 | **Salida** | Ninguna: es un proceso automático. |
-| **Precondiciones** | Existen umbrales configurados (CU-210). |
+| **Precondiciones** | Existen umbrales con mínimo mayor que cero (CU-210). |
 | **Postcondiciones** | El atributo avisado el de cada instancia de UmbralDeStock que bajó de su mínimo tiene el instante del aviso. El atributo avisado el de cada umbral cuyo depósito se recuperó quedó vacío. |
 
 ---
@@ -12093,15 +12322,31 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 
 | Campo | Detalle |
 |-------|---------|
-| **Nombre** | `transferirStock(origenId identificador, destinoId identificador, productoId identificador, condicion cadena, cantidad entero)` |
-| **Responsabilidades** | Trasladar una cantidad de un tipo de garrafa y condición de un depósito a otro de la distribuidora. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Nombre** | `transferirStock(origenId identificador, destinoId identificador, items lista, nota cadena)` |
+| **Responsabilidades** | Trasladar tipos de garrafa de un depósito a otro de la distribuidora, o entre un depósito y un camión. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-212. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Un movimiento con la ubicación de origen y la de destino. No cambia el stock vendible. Los saldos se bloquean en un orden fijo. Con la misma clave de idempotencia no se repite. |
-| **Excepciones** | Si una ubicación no existe o es de otra distribuidora → recurso no encontrado. Si el origen no tiene la cantidad, o origen y destino son el mismo → error de solicitud. |
-| **Salida** | El resultado de la operación. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. Las dos ubicaciones existen, son distintas y el origen tiene la cantidad. |
-| **Postcondiciones** | Se creó una instancia de MovimientoDeStock con la ubicación de origen y la de destino. El saldo del origen disminuyó y el del destino aumentó en la cantidad indicada. |
+| **Notas** | Un movimiento por renglón, todos con el mismo lote, con la ubicación de origen y la de destino. No cambia el stock vendible. Los bloqueos siguen el orden del libro de stock. Con la misma clave de idempotencia no se repite. La ubicación de un camión se crea la primera vez que se la nombra. |
+| **Excepciones** | Si una ubicación o una garrafa no existe o es de otra distribuidora → recurso no encontrado. Si el origen no tiene la cantidad de algún renglón, origen y destino son la misma ubicación o dos camiones, el destino no recibe stock o hay un renglón repetido → error de solicitud. |
+| **Salida** | El lote de la transferencia y sus movimientos. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. Las dos UbicacionDeStock existen y son distintas, y el origen tiene la cantidad de cada renglón. |
+| **Postcondiciones** | Se creó una instancia de MovimientoDeStock por cada renglón, con la ubicación de origen, la de destino y un mismo lote. Los saldos de las dos ubicaciones cambiaron en la cantidad de cada renglón: el del origen disminuyó y el del destino aumentó. El stock vendible no cambia. |
+
+---
+
+#### Secundario Contrato: `anularTransferenciaDeStock()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `anularTransferenciaDeStock(loteId identificador, nota cadena)` |
+| **Responsabilidades** | Deshacer una transferencia con un contraasiento, sin modificar los movimientos originales. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-276. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Sólo se anulan transferencias; un ajuste se corrige con otro ajuste. Un movimiento se contraasienta una sola vez y un contraasiento no se vuelve a contraasentar. El contraasiento invierte origen y destino y apunta al movimiento que corrige. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si el lote no existe o es de otra distribuidora → recurso no encontrado. Si el lote no es de una transferencia → error de solicitud. Si el lote ya se contraasentó, o las garrafas ya no están donde estaban → conflicto. |
+| **Salida** | El lote del contraasiento. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El lote existe, es de una transferencia, no se contraasentó y el destino original tiene las garrafas. |
+| **Postcondiciones** | Se creó una instancia de MovimientoDeStock de contraasiento por cada movimiento del lote, con origen y destino invertidos y la referencia al movimiento que corrige. Los saldos de las dos ubicaciones volvieron a lo que eran antes de la transferencia. |
 
 ---
 
@@ -12111,13 +12356,45 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `registrarAjusteDeStock(ubicacionId identificador, motivo cadena, nota cadena, items lista)` |
 | **Responsabilidades** | Registrar la corrección del stock de una ubicación, con su motivo y una nota obligatoria. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-213. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Cada ajuste lleva un número correlativo por distribuidora. Los renglones de unidades llenas mueven también el stock vendible. Ningún saldo ni el vendible quedan en negativo. Un daño pasa unidades de llenas a defectuosas dentro de la misma ubicación. |
-| **Excepciones** | Si la nota está vacía o un renglón no tiene diferencia → error de solicitud. Si la ubicación no existe o es de otra distribuidora → recurso no encontrado. Si algún saldo quedaría negativo → error de solicitud con el detalle. |
-| **Salida** | El ajuste registrado. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La ubicación existe y es de la distribuidora. |
-| **Postcondiciones** | Se creó una instancia de AjusteDeStock, con sus instancias de ItemAjusteDeStock. Se creó una instancia de MovimientoDeStock por cada renglón. El atributo stock de la instancia de Producto cambió, por las unidades llenas, en la diferencia del renglón. El saldo de la ubicación cambió en la diferencia de cada renglón. |
+| **Notas** | Cada ajuste lleva un número correlativo por distribuidora, que se toma al final. Los motivos son recuento, merma, fuga, pérdida, hallazgo y rotura; el signo de la diferencia lo fija el motivo. Los renglones de unidades llenas mueven también el stock vendible. Ningún saldo ni el vendible quedan en negativo. Una rotura pasa unidades de llenas a defectuosas dentro de la misma ubicación. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si la nota está vacía, el signo no corresponde al motivo, hay un renglón repetido, o algún saldo o el vendible quedarían negativos → error de solicitud con el detalle. Si la ubicación o una garrafa no existe o es de otra distribuidora → recurso no encontrado. |
+| **Salida** | El ajuste registrado, con su número y sus renglones. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La UbicacionDeStock existe y es de la distribuidora. |
+| **Postcondiciones** | Se creó una instancia de AjusteDeStock, con sus instancias de ItemAjusteDeStock. Se creó una instancia de MovimientoDeStock por cada renglón. El saldo de la UbicacionDeStock cambió en la diferencia de cada renglón. El stock vendible de cada Producto cambió, por las unidades llenas, en la diferencia del renglón. |
+
+---
+
+#### Importante Contrato: `registrarAjusteDeConciliacion()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `registrarAjusteDeConciliacion(productoId identificador, nota cadena, diferenciaEsperada entero)` |
+| **Responsabilidades** | Corregir el stock vendible de un tipo de garrafa hasta que coincida con el físico menos lo reservado. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-277. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | No toca el físico: no genera movimientos en el libro. Deja un documento numerado de motivo «conciliación» sobre el depósito predeterminado, con una nota obligatoria. La garrafa del catálogo se bloquea mientras corre, con el mismo cerrojo que usa un pedido nuevo al reservar. Si la diferencia que el administrador vio ya cambió, se rechaza. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si el tipo de garrafa no existe o es de otra distribuidora, no tiene diferencia, falta la nota o las llenas físicas son menos que lo reservado → error de solicitud. Si la diferencia cambió → conflicto. |
+| **Salida** | El ajuste de conciliación registrado. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El Producto es de la distribuidora y su stock vendible difiere del físico menos lo reservado. |
+| **Postcondiciones** | Se creó una instancia de AjusteDeStock de motivo «conciliación», con su número y su nota, y una instancia de ItemAjusteDeStock de llenas que dice cuánto se corrigió. El atributo stock de la instancia de Producto pasó a ser igual a las llenas físicas menos lo reservado. Ningún saldo físico ni movimiento del libro cambió. |
+
+---
+
+#### Importante Contrato: `reaplicarEntregasDeStock()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `reaplicarEntregasDeStock()` |
+| **Responsabilidades** | Volver a descontar el físico de las entregas que no pudieron hacerlo. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-278. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Es una acción explícita, no la hace la conciliación sola. Es idempotente por pedido y garrafa. Cada pedido corre en su propia transacción: uno que sigue sin saldo no impide los demás. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si un pedido sigue sin llenas suficientes → no registra nada de ese pedido y lo cuenta como pendiente. |
+| **Salida** | Los pedidos revisados, reaplicados y pendientes. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. |
+| **Postcondiciones** | Se creó una instancia de MovimientoDeStock de salida de llenas y otra de entrada de vacías por cada garrafa de cada entrega reaplicada, con el pedido como documento de origen. Las llenas de la UbicacionDeStock de origen disminuyeron y sus vacías aumentaron en lo entregado. |
 
 ---
 
@@ -12313,22 +12590,6 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 
 ---
 
-#### Crítico Contrato: `descontarStockDeLaEntrega()`
-
-| Campo | Detalle |
-|-------|---------|
-| **Nombre** | `descontarStockDeLaEntrega(pedidoId identificador)` |
-| **Responsabilidades** | Descontar del camión, o del depósito predeterminado, lo entregado en un pedido y acreditar los vacíos recolectados. |
-| **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-220. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Reacciona al evento de pedido entregado. Es idempotente por pedido y tipo de garrafa. No toca el stock vendible, que ya se descontó al reservar. El canje es de uno a uno. |
-| **Excepciones** | Si el movimiento del pedido ya existe → no hace nada. Si el camión con carga abierta no tiene lo entregado → no registra nada y deja el pedido para el barrido de conciliación. |
-| **Salida** | Ninguna: es un proceso automático. |
-| **Precondiciones** | El pedido está entregado. |
-| **Postcondiciones** | Se creó una instancia de MovimientoDeStock de entrega y otra de recolección de vacíos por cada ítem del pedido, con el pedido como documento de origen. Las llenas de la ubicación de origen disminuyeron y las vacías aumentaron en lo entregado. |
-
----
-
 #### Importante Contrato: `registrarRegresoDelCamion()`
 
 | Campo | Detalle |
@@ -12358,22 +12619,6 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | **Salida** | La hoja de carga cerrada. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La carga regresó. |
 | **Postcondiciones** | El atributo estado de la instancia de CargaDeCamion pasó a cerrada, o a cerrada con diferencia, y su atributo cerrada el tiene el instante del cierre. Se creó una instancia de MovimientoDeStock por lo declarado que vuelve al depósito y por cada diferencia. El saldo del camión quedó en cero. El atributo stock de la instancia de Producto disminuyó en el faltante de llenas. |
-
----
-
-#### Importante Contrato: `conciliarStock()`
-
-| Campo | Detalle |
-|-------|---------|
-| **Nombre** | `conciliarStock()` |
-| **Responsabilidades** | Aplicar las entregas que quedaron sin movimiento de stock y avisar la diferencia entre el stock vendible y el físico menos lo reservado. |
-| **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-224. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Corre una vez por noche. No corrige el vendible: una diferencia se resuelve con un ajuste. El aviso por correo es un efecto del sistema hacia el actor, no una postcondición del modelo. |
-| **Excepciones** | Si la aplicación de una entrega falla → sigue con las demás y se reintenta la noche siguiente. |
-| **Salida** | Ninguna: es un proceso automático. |
-| **Precondiciones** | Existen pedidos entregados o tipos de garrafa con stock. |
-| **Postcondiciones** | Se creó una instancia de MovimientoDeStock por cada pedido entregado que no tenía movimientos, con el procedimiento de la operación descontarStockDeLaEntrega. El stock vendible de cada Producto no cambia. |
 
 ---
 

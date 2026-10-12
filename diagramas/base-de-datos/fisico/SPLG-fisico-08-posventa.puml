@@ -56,6 +56,7 @@ entity "incident" as e_incident {
   {field} createdAt : timestamptz *
   {field} resolvedAt : timestamptz
   {field} moment : incident_moment_enum
+  {field} photo_key : varchar(512)
 }
 entity "rating" as e_rating {
   {field} **rating_id** : uuid * <<PK>>

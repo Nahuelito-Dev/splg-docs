@@ -63,18 +63,19 @@ postgresql	splg_lucid_tmp	public	car	max_load_kg	15	numeric
 postgresql	splg_lucid_tmp	public	car	odometer_km	16	integer					
 postgresql	splg_lucid_tmp	public	car	fleet_status	17	character varying	32				
 postgresql	splg_lucid_tmp	public	car	in_service_since	18	timestamp with time zone					
-postgresql	splg_lucid_tmp	public	car	vehicle_type	19	character varying	32				
-postgresql	splg_lucid_tmp	public	car	fuel_type	20	character varying	32				
-postgresql	splg_lucid_tmp	public	car	tank_capacity_liters	21	numeric					
+postgresql	splg_lucid_tmp	public	car	photo_key	19	character varying	512				
+postgresql	splg_lucid_tmp	public	car	vehicle_type	20	character varying	32				
+postgresql	splg_lucid_tmp	public	car	fuel_type	21	character varying	32				
+postgresql	splg_lucid_tmp	public	car	tank_capacity_liters	22	numeric					
 postgresql	splg_lucid_tmp	public	cart	cart_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	cart	user_id	2	uuid		FOREIGN KEY	public	user	user_id
 postgresql	splg_lucid_tmp	public	cart	user_id	2	uuid		UNIQUE			
-postgresql	splg_lucid_tmp	public	cart	distributor_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	cart	distributor_id	3	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_lucid_tmp	public	cart	distributor_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	cart	updated_at	4	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	cart_item	cart_item_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	cart_item	cart_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	cart_item	cart_id	2	uuid		FOREIGN KEY	public	cart	cart_id
+postgresql	splg_lucid_tmp	public	cart_item	cart_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	cart_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	cart_item	gas_cylinder_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	cart_item	quantity	4	integer					
@@ -179,8 +180,8 @@ postgresql	splg_lucid_tmp	public	coverage_zone	valid_until	13	timestamp with tim
 postgresql	splg_lucid_tmp	public	coverage_zone	priority	14	integer					
 postgresql	splg_lucid_tmp	public	coverage_zone	valid_from	15	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	customer	customer_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	customer	user_id	2	uuid		FOREIGN KEY	public	user	user_id
 postgresql	splg_lucid_tmp	public	customer	user_id	2	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	customer	user_id	2	uuid		FOREIGN KEY	public	user	user_id
 postgresql	splg_lucid_tmp	public	customer	notification_token	3	text					
 postgresql	splg_lucid_tmp	public	customer	createdAt	4	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	customer	deletedAt	5	timestamp with time zone					
@@ -224,8 +225,8 @@ postgresql	splg_lucid_tmp	public	customer_account_entry	occurred_at	14	timestamp
 postgresql	splg_lucid_tmp	public	customer_account_entry	created_by_user_id	15	uuid		FOREIGN KEY	public	user	user_id
 postgresql	splg_lucid_tmp	public	customer_account_entry	createdAt	16	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	cylinder	cylinder_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	cylinder	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	cylinder	distributor_id	2	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	cylinder	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	cylinder	serial	3	character varying		UNIQUE			
 postgresql	splg_lucid_tmp	public	cylinder	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	cylinder	state	5	character varying	32				
@@ -276,8 +277,8 @@ postgresql	splg_lucid_tmp	public	cylinder_recovery_notice	expires_at	7	timestamp
 postgresql	splg_lucid_tmp	public	cylinder_recovery_notice	order_id	8	uuid		FOREIGN KEY	public	order	order_id
 postgresql	splg_lucid_tmp	public	delivery	delivery_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	delivery	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_lucid_tmp	public	delivery	user_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	delivery	user_id	3	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_lucid_tmp	public	delivery	user_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	delivery	calification	4	double precision					
 postgresql	splg_lucid_tmp	public	delivery	actual_location	5	text					
 postgresql	splg_lucid_tmp	public	delivery	cancelledCharge	6	real					
@@ -303,6 +304,7 @@ postgresql	splg_lucid_tmp	public	distributor	plan	10	character varying
 postgresql	splg_lucid_tmp	public	distributor	createdAt	11	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	distributor	updatedAt	12	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	distributor	deletedAt	13	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	distributor	logo_key	14	character varying	512				
 postgresql	splg_lucid_tmp	public	document_sequence	distributor_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	document_sequence	distributor_id	1	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	document_sequence	doc_type	2	character varying	40	PRIMARY KEY			
@@ -383,6 +385,7 @@ postgresql	splg_lucid_tmp	public	employee	notes	27	text
 postgresql	splg_lucid_tmp	public	employee	createdAt	28	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	employee	updatedAt	29	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	employee	deletedAt	30	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	employee	photo_key	31	character varying	512				
 postgresql	splg_lucid_tmp	public	employee_attendance	attendance_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	employee_attendance	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	employee_attendance	employee_id	3	uuid		FOREIGN KEY	public	employee	employee_id
@@ -441,7 +444,8 @@ postgresql	splg_lucid_tmp	public	gas_cylinder	description	7	text
 postgresql	splg_lucid_tmp	public	gas_cylinder	isActive	8	boolean					
 postgresql	splg_lucid_tmp	public	gas_cylinder	createdAt	9	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	gas_cylinder	updatedAt	10	timestamp with time zone					
-postgresql	splg_lucid_tmp	public	gas_cylinder	average_unit_cost	11	numeric					
+postgresql	splg_lucid_tmp	public	gas_cylinder	photo_key	11	character varying	512				
+postgresql	splg_lucid_tmp	public	gas_cylinder	average_unit_cost	12	numeric					
 postgresql	splg_lucid_tmp	public	gas_cylinder_promotion	promotion_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	gas_cylinder_promotion	gas_cylinder_id	2	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	gas_cylinder_promotion	quantity	3	integer					
@@ -459,6 +463,7 @@ postgresql	splg_lucid_tmp	public	incident	resolution_note	9	text
 postgresql	splg_lucid_tmp	public	incident	createdAt	10	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	incident	resolvedAt	11	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	incident	moment	12	character varying	32				
+postgresql	splg_lucid_tmp	public	incident	photo_key	13	character varying	512				
 postgresql	splg_lucid_tmp	public	job_position	position_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	job_position	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	job_position	name	3	character varying	80				
@@ -521,8 +526,8 @@ postgresql	splg_lucid_tmp	public	maintenance_window_proposal	status	7	character 
 postgresql	splg_lucid_tmp	public	maintenance_window_proposal	expires_at	8	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	maintenance_window_proposal	responded_at	9	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	module_config	config_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	module_config	distributor_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	module_config	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_lucid_tmp	public	module_config	distributor_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	module_config	module	3	character varying	32	UNIQUE			
 postgresql	splg_lucid_tmp	public	module_config	params	4	jsonb					
 postgresql	splg_lucid_tmp	public	module_config	updated_at	5	timestamp with time zone					
@@ -566,7 +571,10 @@ postgresql	splg_lucid_tmp	public	order	vehicle_car_id	36	uuid
 postgresql	splg_lucid_tmp	public	order	vehicle_patent	37	character varying	20				
 postgresql	splg_lucid_tmp	public	order	vehicle_brand	38	character varying	50				
 postgresql	splg_lucid_tmp	public	order	vehicle_model	39	character varying	50				
-postgresql	splg_lucid_tmp	public	order	express_surcharge_amount	40	numeric					
+postgresql	splg_lucid_tmp	public	order	payment_confirmed_at	40	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	order	payment_confirmed_by	41	uuid					
+postgresql	splg_lucid_tmp	public	order	payment_resolution_note	42	text					
+postgresql	splg_lucid_tmp	public	order	express_surcharge_amount	43	numeric					
 postgresql	splg_lucid_tmp	public	order_address_change	change_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	order_address_change	order_id	2	uuid		FOREIGN KEY	public	order	order_id
 postgresql	splg_lucid_tmp	public	order_address_change	from_address_id	3	uuid		FOREIGN KEY	public	user_address	address_id
@@ -626,8 +634,8 @@ postgresql	splg_lucid_tmp	public	purchase_order	created_by_user_id	12	uuid		FORE
 postgresql	splg_lucid_tmp	public	purchase_order	createdAt	13	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	purchase_order	updatedAt	14	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	purchase_order_item	item_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	purchase_order_item	purchase_order_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	purchase_order_item	purchase_order_id	2	uuid		FOREIGN KEY	public	purchase_order	purchase_order_id
+postgresql	splg_lucid_tmp	public	purchase_order_item	purchase_order_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	purchase_order_item	gas_cylinder_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	purchase_order_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	purchase_order_item	quantity	4	integer					
@@ -635,12 +643,12 @@ postgresql	splg_lucid_tmp	public	purchase_order_item	unit_cost	5	numeric
 postgresql	splg_lucid_tmp	public	purchase_order_item	empties_to_exchange	6	integer					
 postgresql	splg_lucid_tmp	public	purchase_order_item	received_quantity	7	integer					
 postgresql	splg_lucid_tmp	public	purchase_receipt	receipt_id	1	uuid		PRIMARY KEY			
+postgresql	splg_lucid_tmp	public	purchase_receipt	distributor_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	purchase_receipt	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	purchase_receipt	distributor_id	2	uuid		UNIQUE			
-postgresql	splg_lucid_tmp	public	purchase_receipt	distributor_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	purchase_receipt	number	3	integer		UNIQUE			
-postgresql	splg_lucid_tmp	public	purchase_receipt	supplier_id	4	uuid		FOREIGN KEY	public	supplier	supplier_id
 postgresql	splg_lucid_tmp	public	purchase_receipt	supplier_id	4	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	purchase_receipt	supplier_id	4	uuid		FOREIGN KEY	public	supplier	supplier_id
 postgresql	splg_lucid_tmp	public	purchase_receipt	purchase_order_id	5	uuid		FOREIGN KEY	public	purchase_order	purchase_order_id
 postgresql	splg_lucid_tmp	public	purchase_receipt	warehouse_id	6	uuid		FOREIGN KEY	public	warehouse	warehouse_id
 postgresql	splg_lucid_tmp	public	purchase_receipt	supplier_document_type	7	character varying	32				
@@ -703,29 +711,32 @@ postgresql	splg_lucid_tmp	public	route_batch_offer	status	4	character varying	32
 postgresql	splg_lucid_tmp	public	route_batch_offer	expires_at	5	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	route_batch_offer	responded_at	6	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	route_batch_stop	stop_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	route_batch_stop	batch_id	2	uuid		FOREIGN KEY	public	route_batch	batch_id
 postgresql	splg_lucid_tmp	public	route_batch_stop	batch_id	2	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	route_batch_stop	batch_id	2	uuid		FOREIGN KEY	public	route_batch	batch_id
 postgresql	splg_lucid_tmp	public	route_batch_stop	order_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	route_batch_stop	order_id	3	uuid		FOREIGN KEY	public	order	order_id
 postgresql	splg_lucid_tmp	public	route_batch_stop	sequence	4	integer					
 postgresql	splg_lucid_tmp	public	stock_adjustment	adjustment_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	stock_adjustment	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	stock_adjustment	distributor_id	2	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	stock_adjustment	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	stock_adjustment	number	3	integer		UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_adjustment	location_id	4	uuid		FOREIGN KEY	public	stock_location	location_id
 postgresql	splg_lucid_tmp	public	stock_adjustment	reason	5	character varying	32				
 postgresql	splg_lucid_tmp	public	stock_adjustment	notes	6	text					
-postgresql	splg_lucid_tmp	public	stock_adjustment	created_by_user_id	7	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_lucid_tmp	public	stock_adjustment	createdAt	8	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	stock_adjustment	batch_id	7	uuid					
+postgresql	splg_lucid_tmp	public	stock_adjustment	created_by_user_id	8	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_lucid_tmp	public	stock_adjustment	createdAt	9	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	stock_adjustment_item	item_id	1	uuid		PRIMARY KEY			
+postgresql	splg_lucid_tmp	public	stock_adjustment_item	adjustment_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_adjustment_item	adjustment_id	2	uuid		FOREIGN KEY	public	stock_adjustment	adjustment_id
+postgresql	splg_lucid_tmp	public	stock_adjustment_item	gas_cylinder_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_adjustment_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
-postgresql	splg_lucid_tmp	public	stock_adjustment_item	condition	4	character varying	32				
+postgresql	splg_lucid_tmp	public	stock_adjustment_item	condition	4	character varying	32	UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_adjustment_item	quantity_delta	5	integer					
 postgresql	splg_lucid_tmp	public	stock_balance	balance_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	stock_balance	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
-postgresql	splg_lucid_tmp	public	stock_balance	location_id	3	uuid		FOREIGN KEY	public	stock_location	location_id
 postgresql	splg_lucid_tmp	public	stock_balance	location_id	3	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	stock_balance	location_id	3	uuid		FOREIGN KEY	public	stock_location	location_id
 postgresql	splg_lucid_tmp	public	stock_balance	gas_cylinder_id	4	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_balance	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	stock_balance	condition	5	character varying	32	UNIQUE			
@@ -736,8 +747,9 @@ postgresql	splg_lucid_tmp	public	stock_location	distributor_id	2	uuid		FOREIGN K
 postgresql	splg_lucid_tmp	public	stock_location	kind	3	character varying	32				
 postgresql	splg_lucid_tmp	public	stock_location	warehouse_id	4	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_location	warehouse_id	4	uuid		FOREIGN KEY	public	warehouse	warehouse_id
-postgresql	splg_lucid_tmp	public	stock_location	car_id	5	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_location	car_id	5	uuid		FOREIGN KEY	public	car	car_id
+postgresql	splg_lucid_tmp	public	stock_location	car_id	5	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	stock_location	createdAt	6	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	stock_movement	movement_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	stock_movement	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	stock_movement	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
@@ -750,17 +762,25 @@ postgresql	splg_lucid_tmp	public	stock_movement	to_condition	9	character varying
 postgresql	splg_lucid_tmp	public	stock_movement	reason	10	character varying	32				
 postgresql	splg_lucid_tmp	public	stock_movement	reference_type	11	character varying	32				
 postgresql	splg_lucid_tmp	public	stock_movement	reference_id	12	uuid					
-postgresql	splg_lucid_tmp	public	stock_movement	actor_user_id	13	uuid		FOREIGN KEY	public	user	user_id
-postgresql	splg_lucid_tmp	public	stock_movement	occurred_at	14	timestamp with time zone					
-postgresql	splg_lucid_tmp	public	stock_movement	createdAt	15	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	stock_movement	reversed_movement_id	13	uuid		FOREIGN KEY	public	stock_movement	movement_id
+postgresql	splg_lucid_tmp	public	stock_movement	notes	14	character varying	300				
+postgresql	splg_lucid_tmp	public	stock_movement	actor_user_id	15	uuid		FOREIGN KEY	public	user	user_id
+postgresql	splg_lucid_tmp	public	stock_movement	occurred_at	16	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	stock_movement	createdAt	17	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	stock_reconciliation_alert	distributor_id	1	uuid		PRIMARY KEY			
+postgresql	splg_lucid_tmp	public	stock_reconciliation_alert	distributor_id	1	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_lucid_tmp	public	stock_reconciliation_alert	signature	2	character varying	64				
+postgresql	splg_lucid_tmp	public	stock_reconciliation_alert	alerted_at	3	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	stock_threshold	threshold_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	stock_threshold	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	stock_threshold	warehouse_id	3	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	stock_threshold	warehouse_id	3	uuid		FOREIGN KEY	public	warehouse	warehouse_id
-postgresql	splg_lucid_tmp	public	stock_threshold	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	stock_threshold	gas_cylinder_id	4	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	stock_threshold	gas_cylinder_id	4	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	stock_threshold	min_full	5	integer					
 postgresql	splg_lucid_tmp	public	stock_threshold	alerted_at	6	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	stock_threshold	createdAt	7	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	stock_threshold	updatedAt	8	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	storage_orphan	orphan_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	storage_orphan	storage_key	2	character varying	512	UNIQUE			
 postgresql	splg_lucid_tmp	public	storage_orphan	attempts	3	integer					
@@ -794,8 +814,8 @@ postgresql	splg_lucid_tmp	public	time_slot	isActive	7	boolean
 postgresql	splg_lucid_tmp	public	time_slot	createdAt	8	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	time_slot	updatedAt	9	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	tire	tire_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	tire	distributor_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	tire	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
+postgresql	splg_lucid_tmp	public	tire	distributor_id	2	uuid		UNIQUE			
 postgresql	splg_lucid_tmp	public	tire	car_id	3	uuid		FOREIGN KEY	public	car	car_id
 postgresql	splg_lucid_tmp	public	tire	serial	4	character varying	40	UNIQUE			
 postgresql	splg_lucid_tmp	public	tire	brand	5	character varying	60				
@@ -837,8 +857,8 @@ postgresql	splg_lucid_tmp	public	traffic_fine	alerted_at	18	timestamp with time 
 postgresql	splg_lucid_tmp	public	traffic_fine	createdAt	19	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	traffic_fine	updatedAt	20	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	truck_load	load_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	truck_load	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	truck_load	distributor_id	2	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	truck_load	distributor_id	2	uuid		FOREIGN KEY	public	distributor	distributor_id
 postgresql	splg_lucid_tmp	public	truck_load	number	3	integer		UNIQUE			
 postgresql	splg_lucid_tmp	public	truck_load	car_id	4	uuid		FOREIGN KEY	public	car	car_id
 postgresql	splg_lucid_tmp	public	truck_load	delivery_id	5	uuid		FOREIGN KEY	public	delivery	delivery_id
@@ -854,10 +874,10 @@ postgresql	splg_lucid_tmp	public	truck_load	opened_by_user_id	14	uuid		FOREIGN K
 postgresql	splg_lucid_tmp	public	truck_load	closed_by_user_id	15	uuid		FOREIGN KEY	public	user	user_id
 postgresql	splg_lucid_tmp	public	truck_load	difference_note	16	text					
 postgresql	splg_lucid_tmp	public	truck_load_item	item_id	1	uuid		PRIMARY KEY			
-postgresql	splg_lucid_tmp	public	truck_load_item	load_id	2	uuid		FOREIGN KEY	public	truck_load	load_id
 postgresql	splg_lucid_tmp	public	truck_load_item	load_id	2	uuid		UNIQUE			
-postgresql	splg_lucid_tmp	public	truck_load_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
+postgresql	splg_lucid_tmp	public	truck_load_item	load_id	2	uuid		FOREIGN KEY	public	truck_load	load_id
 postgresql	splg_lucid_tmp	public	truck_load_item	gas_cylinder_id	3	uuid		UNIQUE			
+postgresql	splg_lucid_tmp	public	truck_load_item	gas_cylinder_id	3	uuid		FOREIGN KEY	public	gas_cylinder	gas_cylinder_id
 postgresql	splg_lucid_tmp	public	truck_load_item	loaded_full	4	integer					
 postgresql	splg_lucid_tmp	public	truck_load_item	reloaded_full	5	integer					
 postgresql	splg_lucid_tmp	public	truck_load_item	loaded_empty	6	integer					
@@ -881,6 +901,7 @@ postgresql	splg_lucid_tmp	public	user	email_verified	9	boolean
 postgresql	splg_lucid_tmp	public	user	blocked	10	boolean					
 postgresql	splg_lucid_tmp	public	user	createdAt	11	timestamp with time zone					
 postgresql	splg_lucid_tmp	public	user	deletedAt	12	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	user	photo_key	13	character varying	512				
 postgresql	splg_lucid_tmp	public	user_address	address_id	1	uuid		PRIMARY KEY			
 postgresql	splg_lucid_tmp	public	user_address	user_id	2	uuid		FOREIGN KEY	public	user	user_id
 postgresql	splg_lucid_tmp	public	user_address	street	3	character varying	255				
@@ -941,9 +962,8 @@ postgresql	splg_lucid_tmp	public	warehouse	name	3	character varying	80
 postgresql	splg_lucid_tmp	public	warehouse	code	4	character varying	12				
 postgresql	splg_lucid_tmp	public	warehouse	kind	5	character varying	32				
 postgresql	splg_lucid_tmp	public	warehouse	address	6	text					
-postgresql	splg_lucid_tmp	public	warehouse	location	7	character varying	255				
-postgresql	splg_lucid_tmp	public	warehouse	is_default	8	boolean					
-postgresql	splg_lucid_tmp	public	warehouse	is_active	9	boolean					
-postgresql	splg_lucid_tmp	public	warehouse	createdAt	10	timestamp with time zone					
-postgresql	splg_lucid_tmp	public	warehouse	updatedAt	11	timestamp with time zone					
-postgresql	splg_lucid_tmp	public	warehouse	deletedAt	12	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	warehouse	is_default	7	boolean					
+postgresql	splg_lucid_tmp	public	warehouse	is_active	8	boolean					
+postgresql	splg_lucid_tmp	public	warehouse	createdAt	9	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	warehouse	updatedAt	10	timestamp with time zone					
+postgresql	splg_lucid_tmp	public	warehouse	deletedAt	11	timestamp with time zone					

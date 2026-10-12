@@ -1,6 +1,6 @@
 # DER de SPLG, en Mermaid — generado
 
-Generado por `generar-modelo-datos.py` desde la base en ejecución: 48 tablas, 105 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
+Generado por `generar-modelo-datos.py` desde la base en ejecución: 56 tablas, 127 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
 
 ### Organización y acceso
 
@@ -36,6 +36,7 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
         timestamptz deletedAt "nullable"
+        varchar logo_key "nullable"
     }
     ROLE {
         uuid role_id PK
@@ -57,6 +58,7 @@ erDiagram
         boolean blocked
         timestamptz createdAt
         timestamptz deletedAt "nullable"
+        varchar photo_key "nullable"
     }
     ADMIN {
         uuid admin_id PK
@@ -181,6 +183,7 @@ erDiagram
         boolean isActive
         timestamptz createdAt
         timestamptz updatedAt
+        varchar photo_key "nullable"
     }
     GAS_CYLINDER_PROMOTION {
         uuid promotion_id PK
@@ -341,6 +344,9 @@ erDiagram
         varchar vehicle_patent "nullable"
         varchar vehicle_brand "nullable"
         varchar vehicle_model "nullable"
+        timestamptz payment_confirmed_at "nullable"
+        uuid payment_confirmed_by "nullable"
+        text payment_resolution_note "nullable"
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK
@@ -481,6 +487,7 @@ erDiagram
         int odometer_km "nullable"
         enum fleet_status
         timestamptz in_service_since "nullable"
+        varchar photo_key "nullable"
     }
     DELIVERY {
         uuid delivery_id PK
@@ -595,6 +602,7 @@ erDiagram
         timestamptz createdAt
         timestamptz resolvedAt "nullable"
         enum moment "nullable"
+        varchar photo_key "nullable"
     }
     RATING {
         uuid rating_id PK
@@ -676,6 +684,7 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
         timestamptz deletedAt "nullable"
+        varchar photo_key "nullable"
     }
     EMPLOYEE_ATTENDANCE {
         uuid attendance_id PK
@@ -810,7 +819,7 @@ erDiagram
     }
 ```
 
-### Stock físico y carga del camión (planificado)
+### Stock físico y carga del camión (en parte planificado)
 
 ```mermaid
 erDiagram
@@ -819,6 +828,7 @@ erDiagram
     STOCK_ADJUSTMENT }o--|| STOCK_LOCATION : "location_id"
     STOCK_BALANCE }o--|| STOCK_LOCATION : "location_id"
     STOCK_MOVEMENT }o--o| STOCK_LOCATION : "from_location_id"
+    STOCK_MOVEMENT }o--o| STOCK_MOVEMENT : "reversed_movement_id"
     STOCK_MOVEMENT }o--o| STOCK_LOCATION : "to_location_id"
     TRUCK_LOAD }o--|| STOCK_LOCATION : "origin_location_id"
     STOCK_ADJUSTMENT_ITEM }o--|| STOCK_ADJUSTMENT : "adjustment_id"
@@ -829,9 +839,8 @@ erDiagram
         uuid distributor_id FK
         varchar name
         varchar code
-        warehouse_kind_enum kind
+        enum kind
         text address "nullable"
-        geometry location "nullable"
         boolean is_default
         boolean is_active
         timestamptz createdAt
@@ -845,21 +854,25 @@ erDiagram
         uuid gas_cylinder_id FK
         int min_full
         timestamptz alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
     }
     STOCK_LOCATION {
         uuid location_id PK
         uuid distributor_id FK
-        stock_location_kind_enum kind
-        uuid warehouse_id FK "nullable"
-        uuid car_id FK "nullable"
+        enum kind
+        uuid warehouse_id FK, UK "nullable"
+        uuid car_id FK, UK "nullable"
+        timestamptz createdAt
     }
     STOCK_ADJUSTMENT {
         uuid adjustment_id PK
         uuid distributor_id FK
         int number
         uuid location_id FK
-        stock_adjustment_reason_enum reason
+        enum reason
         text notes
+        uuid batch_id
         uuid created_by_user_id FK
         timestamptz createdAt
     }
@@ -868,7 +881,7 @@ erDiagram
         uuid distributor_id FK
         uuid location_id FK
         uuid gas_cylinder_id FK
-        stock_condition_enum condition
+        enum condition
         int quantity
         timestamptz updatedAt
     }
@@ -879,12 +892,14 @@ erDiagram
         uuid batch_id
         int quantity
         uuid from_location_id FK "nullable"
-        stock_condition_enum from_condition "nullable"
+        enum from_condition "nullable"
         uuid to_location_id FK "nullable"
-        stock_condition_enum to_condition "nullable"
-        stock_movement_reason_enum reason
-        stock_reference_type_enum reference_type
+        enum to_condition "nullable"
+        enum reason
+        enum reference_type
         uuid reference_id "nullable"
+        uuid reversed_movement_id FK "nullable"
+        varchar notes "nullable"
         uuid actor_user_id FK "nullable"
         timestamptz occurred_at
         timestamptz createdAt
@@ -911,7 +926,7 @@ erDiagram
         uuid item_id PK
         uuid adjustment_id FK
         uuid gas_cylinder_id FK
-        stock_condition_enum condition
+        enum condition
         int quantity_delta
     }
     TRUCK_LOAD_ITEM {
@@ -1032,6 +1047,11 @@ erDiagram
         uuid distributor_id PK
         varchar doc_type PK
         int last_number
+    }
+    STOCK_RECONCILIATION_ALERT {
+        uuid distributor_id PK
+        varchar signature
+        timestamptz alerted_at
     }
 ```
 
@@ -1314,8 +1334,8 @@ erDiagram
     ROUTE_BATCH_STOP }o--|| ORDER : "order_id"
     STOCK_ADJUSTMENT }o--|| USER : "created_by_user_id"
     STOCK_BALANCE }o--|| GAS_CYLINDER : "gas_cylinder_id"
-    STOCK_MOVEMENT }o--|| GAS_CYLINDER : "gas_cylinder_id"
     STOCK_MOVEMENT }o--o| USER : "actor_user_id"
+    STOCK_MOVEMENT }o--|| GAS_CYLINDER : "gas_cylinder_id"
     TIRE_EVENT }o--o| CAR : "car_id"
     TIRE_EVENT }o--o| USER : "created_by_user_id"
     TRUCK_LOAD }o--|| CAR : "car_id"

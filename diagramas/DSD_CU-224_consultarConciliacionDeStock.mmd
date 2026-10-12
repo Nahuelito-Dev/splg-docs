@@ -3,19 +3,17 @@ sequenceDiagram
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :StockReconciliationService
-    participant PRD as :List#lt;Producto#gt;
+    participant PRS as :List#lt;Producto#gt;
     participant PRO as producto:Producto
-    participant UBS as :List#lt;UbicacionDeStock#gt;
     participant PEDS as :List#lt;Pedido#gt;
 
     ADM->>+SRV: consultarConciliacionDeStock()
-    SRV->>+PRD: getActivos()
-    PRD-->>-SRV: productos
+    SRV->>+PRS: getTodos()
+    PRS-->>-SRV: productos
     loop Por cada tipo de garrafa
-        SRV->>PRO: getStock()
-        SRV->>UBS: getLlenas(producto)
-        SRV->>PEDS: getReservado(producto)
-        SRV->>PRO: calcularDiferencia(llenasFisicas, reservado)
+        SRV->>+PRO: calcularDiferencia(llenasFisicas, reservado)
+        PRO-->>-SRV: diferencia
     end
-    SRV->>PEDS: getEntregadosSinMovimiento()
-    SRV-->>-ADM: conciliacion
+    SRV->>+PEDS: getEntregadosSinMovimiento()
+    PEDS-->>-SRV: pedidos
+    SRV-->>-ADM: motivoConciliacion

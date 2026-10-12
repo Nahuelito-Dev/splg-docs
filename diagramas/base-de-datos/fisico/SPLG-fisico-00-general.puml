@@ -264,6 +264,44 @@ package "Personal" {
     {field} //position_id// : uuid * <<FK>>
   }
 }
+package "Stock físico y carga del camión" {
+  entity "warehouse" as e_warehouse {
+    {field} **warehouse_id** : uuid * <<PK>>
+  }
+  entity "stock_threshold" as e_stock_threshold {
+    {field} **threshold_id** : uuid * <<PK>>
+    {field} //warehouse_id// : uuid * <<FK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+  entity "stock_location" as e_stock_location {
+    {field} **location_id** : uuid * <<PK>>
+    {field} //warehouse_id// : uuid <<FK>>
+    {field} //car_id// : uuid <<FK>>
+  }
+  entity "stock_adjustment" as e_stock_adjustment {
+    {field} **adjustment_id** : uuid * <<PK>>
+    {field} //location_id// : uuid * <<FK>>
+    {field} //created_by_user_id// : uuid * <<FK>>
+  }
+  entity "stock_balance" as e_stock_balance {
+    {field} **balance_id** : uuid * <<PK>>
+    {field} //location_id// : uuid * <<FK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+  entity "stock_movement" as e_stock_movement {
+    {field} **movement_id** : uuid * <<PK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+    {field} //from_location_id// : uuid <<FK>>
+    {field} //to_location_id// : uuid <<FK>>
+    {field} //reversed_movement_id// : uuid <<FK>>
+    {field} //actor_user_id// : uuid <<FK>>
+  }
+  entity "stock_adjustment_item" as e_stock_adjustment_item {
+    {field} **item_id** : uuid * <<PK>>
+    {field} //adjustment_id// : uuid * <<FK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+}
 package "Tablas técnicas" {
   entity "storage_orphan" as e_storage_orphan {
     {field} **orphan_id** : uuid * <<PK>>
@@ -271,6 +309,9 @@ package "Tablas técnicas" {
   entity "document_sequence" as e_document_sequence {
     {field} **distributor_id** : uuid * <<PK>>
     {field} **doc_type** : varchar(40) * <<PK>>
+  }
+  entity "stock_reconciliation_alert" as e_stock_reconciliation_alert {
+    {field} **distributor_id** : uuid * <<PK>>
   }
 }
 
@@ -289,6 +330,8 @@ e_job_position ||--o{ e_employee
 e_user |o--o{ e_employee
 e_gas_cylinder ||--o{ e_gas_cylinder_promotion
 e_user |o--o{ e_module_config
+e_gas_cylinder ||--o{ e_stock_threshold
+e_warehouse ||--o{ e_stock_threshold
 e_user ||--o{ e_user_address
 e_audit ||--o{ e_audit_detail
 e_cart ||--o{ e_cart_item
@@ -302,6 +345,8 @@ e_user ||--o{ e_order
 e_delivery |o--o{ e_order
 e_time_slot |o--o{ e_order
 e_delivery |o--o{ e_route_batch
+e_car |o--o| e_stock_location
+e_warehouse |o--o| e_stock_location
 e_user |o--o{ e_vehicle_assignment
 e_car ||--o{ e_vehicle_assignment
 e_delivery ||--o{ e_vehicle_assignment
@@ -340,6 +385,15 @@ e_route_batch ||--o{ e_route_batch_offer
 e_delivery ||--o{ e_route_batch_offer
 e_route_batch ||--o{ e_route_batch_stop
 e_order ||--o{ e_route_batch_stop
+e_user ||--o{ e_stock_adjustment
+e_stock_location ||--o{ e_stock_adjustment
+e_gas_cylinder ||--o{ e_stock_balance
+e_stock_location ||--o{ e_stock_balance
+e_user |o--o{ e_stock_movement
+e_stock_location |o--o{ e_stock_movement
+e_gas_cylinder ||--o{ e_stock_movement
+e_stock_movement |o--o{ e_stock_movement
+e_stock_location |o--o{ e_stock_movement
 e_cylinder ||--o{ e_cylinder_inspection
 e_user |o--o{ e_cylinder_movement
 e_cylinder ||--o{ e_cylinder_movement
@@ -347,11 +401,13 @@ e_order |o--o{ e_cylinder_movement
 e_cylinder ||--o{ e_cylinder_recovery_case
 e_user |o--o{ e_cylinder_recovery_case
 e_user ||--o{ e_cylinder_recovery_case
+e_stock_adjustment ||--o{ e_stock_adjustment_item
+e_gas_cylinder ||--o{ e_stock_adjustment_item
 e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice
 
 legend bottom right
-  48 tablas implementadas y 74 relaciones dibujadas.
-  Además, 31 tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.
+  56 tablas implementadas y 89 relaciones dibujadas.
+  Además, 38 tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.
   Cada tabla muestra sólo su PK y sus FK; las columnas completas están en la lámina de su contexto
   y en el diccionario de datos. * = obligatoria.
 endlegend

@@ -253,6 +253,7 @@ CREATE TYPE public.incident_type_enum AS ENUM (
     'damaged',
     'out_of_stock',
     'no_show',
+    'unpaid_collection',
     'other'
 );
 
@@ -358,7 +359,9 @@ CREATE TYPE public.order_paymentmethod_enum AS ENUM (
 CREATE TYPE public.order_paymentstatus_enum AS ENUM (
     'pending',
     'paid',
-    'failed'
+    'failed',
+    'unpaid',
+    'written_off'
 );
 
 
@@ -502,6 +505,87 @@ CREATE TYPE public.route_batch_status_enum AS ENUM (
 
 
 --
+-- Name: stock_adjustment_reason_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.stock_adjustment_reason_enum AS ENUM (
+    'count_correction',
+    'shrinkage',
+    'leak',
+    'damaged',
+    'lost',
+    'found',
+    'initial_count',
+    'reconciliation'
+);
+
+
+--
+-- Name: stock_condition_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.stock_condition_enum AS ENUM (
+    'full',
+    'empty',
+    'defective'
+);
+
+
+--
+-- Name: stock_location_kind_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.stock_location_kind_enum AS ENUM (
+    'warehouse',
+    'vehicle'
+);
+
+
+--
+-- Name: stock_movement_reason_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.stock_movement_reason_enum AS ENUM (
+    'initial_count',
+    'purchase_receipt',
+    'plant_empty_out',
+    'truck_load',
+    'truck_return',
+    'delivery',
+    'empty_collected',
+    'transfer',
+    'adjustment',
+    'shrinkage',
+    'condition_change',
+    'reversal'
+);
+
+
+--
+-- Name: stock_movement_reference_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.stock_movement_reference_type_enum AS ENUM (
+    'order',
+    'purchase_receipt',
+    'truck_load',
+    'stock_adjustment',
+    'transfer',
+    'initial'
+);
+
+
+--
+-- Name: warehouse_kind_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.warehouse_kind_enum AS ENUM (
+    'depot',
+    'branch'
+);
+
+
+--
 -- Name: audit_datos_inmutable(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -538,6 +622,19 @@ CREATE FUNCTION public.audit_log_inmutable() RETURNS trigger
           RETURN NEW;
         END IF;
         RAISE EXCEPTION 'audit_log es de sólo escritura: no se modifican ni se borran asientos';
+      END;
+      $$;
+
+
+--
+-- Name: stock_movement_inmutable(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.stock_movement_inmutable() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+      BEGIN
+        RAISE EXCEPTION 'stock_movement es de sólo escritura: no se modifican ni se borran movimientos; se corrige con un contraasiento';
       END;
       $$;
 
@@ -662,7 +759,8 @@ CREATE TABLE public.car (
     max_load_kg numeric(10,2),
     odometer_km integer,
     fleet_status public.fleet_status_enum DEFAULT 'active'::public.fleet_status_enum NOT NULL,
-    in_service_since timestamp with time zone
+    in_service_since timestamp with time zone,
+    photo_key character varying(512)
 );
 
 
@@ -880,7 +978,8 @@ CREATE TABLE public.distributor (
     plan character varying,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "deletedAt" timestamp with time zone
+    "deletedAt" timestamp with time zone,
+    logo_key character varying(512)
 );
 
 
@@ -930,6 +1029,7 @@ CREATE TABLE public.employee (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone,
+    photo_key character varying(512),
     CONSTRAINT "CHK_employee_status_termination" CHECK (((status = 'terminated'::public.employee_status_enum) = (termination_date IS NOT NULL))),
     CONSTRAINT "CHK_employee_termination_date" CHECK (((termination_date IS NULL) OR (termination_date >= hire_date)))
 );
@@ -949,7 +1049,8 @@ CREATE TABLE public.gas_cylinder (
     description text,
     "isActive" boolean DEFAULT true NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    photo_key character varying(512)
 );
 
 
@@ -984,7 +1085,8 @@ CREATE TABLE public.incident (
     resolution_note text,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "resolvedAt" timestamp with time zone,
-    moment public.incident_moment_enum
+    moment public.incident_moment_enum,
+    photo_key character varying(512)
 );
 
 
@@ -1154,7 +1256,10 @@ CREATE TABLE public."order" (
     vehicle_car_id uuid,
     vehicle_patent character varying(20),
     vehicle_brand character varying(50),
-    vehicle_model character varying(50)
+    vehicle_model character varying(50),
+    payment_confirmed_at timestamp with time zone,
+    payment_confirmed_by uuid,
+    payment_resolution_note text
 );
 
 
@@ -1335,6 +1440,126 @@ CREATE TABLE public.route_batch_stop (
 
 
 --
+-- Name: stock_adjustment; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stock_adjustment (
+    adjustment_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    number integer NOT NULL,
+    location_id uuid NOT NULL,
+    reason public.stock_adjustment_reason_enum NOT NULL,
+    notes text NOT NULL,
+    batch_id uuid NOT NULL,
+    created_by_user_id uuid NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: stock_adjustment_item; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stock_adjustment_item (
+    item_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    adjustment_id uuid NOT NULL,
+    gas_cylinder_id uuid NOT NULL,
+    condition public.stock_condition_enum NOT NULL,
+    quantity_delta integer NOT NULL,
+    CONSTRAINT "CHK_stock_adjustment_item_variacion" CHECK ((quantity_delta <> 0))
+);
+
+
+--
+-- Name: stock_balance; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stock_balance (
+    balance_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    location_id uuid NOT NULL,
+    gas_cylinder_id uuid NOT NULL,
+    condition public.stock_condition_enum NOT NULL,
+    quantity integer DEFAULT 0 NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_stock_balance_no_negativo" CHECK ((quantity >= 0))
+);
+
+
+--
+-- Name: stock_location; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stock_location (
+    location_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    kind public.stock_location_kind_enum NOT NULL,
+    warehouse_id uuid,
+    car_id uuid,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_stock_location_kind" CHECK (((kind = 'warehouse'::public.stock_location_kind_enum) = (warehouse_id IS NOT NULL))),
+    CONSTRAINT "CHK_stock_location_one_owner" CHECK ((num_nonnulls(warehouse_id, car_id) = 1))
+);
+
+
+--
+-- Name: stock_movement; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stock_movement (
+    movement_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    gas_cylinder_id uuid NOT NULL,
+    batch_id uuid NOT NULL,
+    quantity integer NOT NULL,
+    from_location_id uuid,
+    from_condition public.stock_condition_enum,
+    to_location_id uuid,
+    to_condition public.stock_condition_enum,
+    reason public.stock_movement_reason_enum NOT NULL,
+    reference_type public.stock_movement_reference_type_enum NOT NULL,
+    reference_id uuid,
+    reversed_movement_id uuid,
+    notes character varying(300),
+    actor_user_id uuid,
+    occurred_at timestamp with time zone DEFAULT now() NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_stock_movement_cantidad" CHECK ((quantity > 0)),
+    CONSTRAINT "CHK_stock_movement_destino_coherente" CHECK (((to_location_id IS NULL) = (to_condition IS NULL))),
+    CONSTRAINT "CHK_stock_movement_origen_coherente" CHECK (((from_location_id IS NULL) = (from_condition IS NULL))),
+    CONSTRAINT "CHK_stock_movement_origen_o_destino" CHECK (((from_location_id IS NOT NULL) OR (to_location_id IS NOT NULL)))
+);
+
+
+--
+-- Name: stock_reconciliation_alert; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stock_reconciliation_alert (
+    distributor_id uuid NOT NULL,
+    signature character varying(64) NOT NULL,
+    alerted_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: stock_threshold; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.stock_threshold (
+    threshold_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    warehouse_id uuid NOT NULL,
+    gas_cylinder_id uuid NOT NULL,
+    min_full integer NOT NULL,
+    alerted_at timestamp with time zone,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_stock_threshold_minimo" CHECK ((min_full >= 0))
+);
+
+
+--
 -- Name: storage_orphan; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1384,7 +1609,8 @@ CREATE TABLE public."user" (
     email_verified boolean DEFAULT false NOT NULL,
     blocked boolean DEFAULT false NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "deletedAt" timestamp with time zone
+    "deletedAt" timestamp with time zone,
+    photo_key character varying(512)
 );
 
 
@@ -1445,6 +1671,25 @@ CREATE TABLE public.vehicle_usage_log (
 
 
 --
+-- Name: warehouse; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.warehouse (
+    warehouse_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    name character varying(80) NOT NULL,
+    code character varying(12) NOT NULL,
+    kind public.warehouse_kind_enum DEFAULT 'depot'::public.warehouse_kind_enum NOT NULL,
+    address text,
+    is_default boolean DEFAULT false NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "deletedAt" timestamp with time zone
+);
+
+
+--
 -- Name: vehicle_assignment PK_03cbc11f348efffa59570945343; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1485,6 +1730,14 @@ ALTER TABLE ONLY public.route_batch
 
 
 --
+-- Name: stock_threshold PK_111cca2010115947ad3ed0a00d5; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_threshold
+    ADD CONSTRAINT "PK_111cca2010115947ad3ed0a00d5" PRIMARY KEY (threshold_id);
+
+
+--
 -- Name: car PK_1755d5edaf7738f5780f57a445f; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1498,6 +1751,14 @@ ALTER TABLE ONLY public.car
 
 ALTER TABLE ONLY public.rating
     ADD CONSTRAINT "PK_1ba02007f1315301d9553a6839a" PRIMARY KEY (rating_id);
+
+
+--
+-- Name: stock_movement PK_208ac76bb0d2e300ce89781b22b; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "PK_208ac76bb0d2e300ce89781b22b" PRIMARY KEY (movement_id);
 
 
 --
@@ -1538,6 +1799,14 @@ ALTER TABLE ONLY public.coverage_zone
 
 ALTER TABLE ONLY public.maintenance_task
     ADD CONSTRAINT "PK_470104a71d4cef9fdebb18367bf" PRIMARY KEY (task_id);
+
+
+--
+-- Name: stock_balance PK_47028cd798909484a9f5f9b0bd2; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_balance
+    ADD CONSTRAINT "PK_47028cd798909484a9f5f9b0bd2" PRIMARY KEY (balance_id);
 
 
 --
@@ -1610,6 +1879,14 @@ ALTER TABLE ONLY public.storage_orphan
 
 ALTER TABLE ONLY public.incident
     ADD CONSTRAINT "PK_78e450f2684a57c80de36e5d411" PRIMARY KEY (incident_id);
+
+
+--
+-- Name: warehouse PK_897d6a7341d8b835d3368b91b8c; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.warehouse
+    ADD CONSTRAINT "PK_897d6a7341d8b835d3368b91b8c" PRIMARY KEY (warehouse_id);
 
 
 --
@@ -1773,6 +2050,14 @@ ALTER TABLE ONLY public.route_batch_stop
 
 
 --
+-- Name: stock_location PK_db70b5a5252bd3e2b11d488746c; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_location
+    ADD CONSTRAINT "PK_db70b5a5252bd3e2b11d488746c" PRIMARY KEY (location_id);
+
+
+--
 -- Name: module_config PK_dc79262c913215440d9bf442d65; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1805,6 +2090,22 @@ ALTER TABLE ONLY public.claims
 
 
 --
+-- Name: stock_adjustment PK_e922ad5f08b46b85d6a82156378; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment
+    ADD CONSTRAINT "PK_e922ad5f08b46b85d6a82156378" PRIMARY KEY (adjustment_id);
+
+
+--
+-- Name: stock_adjustment_item PK_ed34c9fcbcbed4fe6d1bcff37c2; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment_item
+    ADD CONSTRAINT "PK_ed34c9fcbcbed4fe6d1bcff37c2" PRIMARY KEY (item_id);
+
+
+--
 -- Name: order_item PK_f91441b7e69922a51a0d2917107; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1826,6 +2127,14 @@ ALTER TABLE ONLY public.employee
 
 ALTER TABLE ONLY public.maintenance_plan
     ADD CONSTRAINT "PK_faeec4a9735696ac9d1c915b380" PRIMARY KEY (plan_id);
+
+
+--
+-- Name: stock_reconciliation_alert PK_stock_reconciliation_alert; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_reconciliation_alert
+    ADD CONSTRAINT "PK_stock_reconciliation_alert" PRIMARY KEY (distributor_id);
 
 
 --
@@ -2230,6 +2539,20 @@ CREATE INDEX "IDX_audit_detail_audit" ON public.audit_detail USING btree (audit_
 
 
 --
+-- Name: IDX_audit_detail_order_anterior; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_audit_detail_order_anterior" ON public.audit_detail USING btree (old_value) WHERE ((field)::text = 'orderId'::text);
+
+
+--
+-- Name: IDX_audit_detail_order_nuevo; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_audit_detail_order_nuevo" ON public.audit_detail USING btree (new_value) WHERE ((field)::text = 'orderId'::text);
+
+
+--
 -- Name: IDX_audit_distributor_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2412,10 +2735,101 @@ CREATE INDEX "IDX_f63c2b78c253c8c92398d88fd5" ON public.job_position USING btree
 
 
 --
+-- Name: IDX_stock_adjustment_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_adjustment_fecha" ON public.stock_adjustment USING btree (distributor_id, "createdAt");
+
+
+--
+-- Name: IDX_stock_adjustment_ubicacion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_adjustment_ubicacion" ON public.stock_adjustment USING btree (location_id);
+
+
+--
+-- Name: IDX_stock_balance_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_balance_distributor" ON public.stock_balance USING btree (distributor_id);
+
+
+--
+-- Name: IDX_stock_balance_gas_cylinder; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_balance_gas_cylinder" ON public.stock_balance USING btree (gas_cylinder_id);
+
+
+--
+-- Name: IDX_stock_location_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_location_distributor" ON public.stock_location USING btree (distributor_id);
+
+
+--
+-- Name: IDX_stock_movement_destino; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_movement_destino" ON public.stock_movement USING btree (to_location_id);
+
+
+--
+-- Name: IDX_stock_movement_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_movement_fecha" ON public.stock_movement USING btree (distributor_id, occurred_at);
+
+
+--
+-- Name: IDX_stock_movement_garrafa_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_movement_garrafa_fecha" ON public.stock_movement USING btree (gas_cylinder_id, occurred_at);
+
+
+--
+-- Name: IDX_stock_movement_lote; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_movement_lote" ON public.stock_movement USING btree (batch_id);
+
+
+--
+-- Name: IDX_stock_movement_origen; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_movement_origen" ON public.stock_movement USING btree (from_location_id);
+
+
+--
+-- Name: IDX_stock_movement_referencia; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_movement_referencia" ON public.stock_movement USING btree (reference_type, reference_id);
+
+
+--
+-- Name: IDX_stock_threshold_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_threshold_distributor" ON public.stock_threshold USING btree (distributor_id);
+
+
+--
 -- Name: IDX_user_email_lower; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "IDX_user_email_lower" ON public."user" USING btree (lower((email)::text));
+
+
+--
+-- Name: IDX_warehouse_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_warehouse_distributor" ON public.warehouse USING btree (distributor_id);
 
 
 --
@@ -2461,6 +2875,13 @@ CREATE UNIQUE INDEX "UQ_employee_user_vigente" ON public.employee USING btree (u
 
 
 --
+-- Name: UQ_incident_cobro_impago; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_incident_cobro_impago" ON public.incident USING btree (order_id) WHERE ((type = 'unpaid_collection'::public.incident_type_enum) AND (status = ANY (ARRAY['open'::public.incident_status_enum, 'resolved'::public.incident_status_enum])));
+
+
+--
 -- Name: UQ_job_position_name_vigente; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2482,6 +2903,62 @@ CREATE UNIQUE INDEX "UQ_role_type_vigente" ON public.role USING btree (type) WHE
 
 
 --
+-- Name: UQ_stock_adjustment_item_garrafa_condicion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_adjustment_item_garrafa_condicion" ON public.stock_adjustment_item USING btree (adjustment_id, gas_cylinder_id, condition);
+
+
+--
+-- Name: UQ_stock_adjustment_numero; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_adjustment_numero" ON public.stock_adjustment USING btree (distributor_id, number);
+
+
+--
+-- Name: UQ_stock_balance_ubicacion_garrafa_condicion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_balance_ubicacion_garrafa_condicion" ON public.stock_balance USING btree (location_id, gas_cylinder_id, condition);
+
+
+--
+-- Name: UQ_stock_location_car; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_location_car" ON public.stock_location USING btree (car_id);
+
+
+--
+-- Name: UQ_stock_location_warehouse; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_location_warehouse" ON public.stock_location USING btree (warehouse_id);
+
+
+--
+-- Name: UQ_stock_movement_contraasiento; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_movement_contraasiento" ON public.stock_movement USING btree (reversed_movement_id) WHERE (reversed_movement_id IS NOT NULL);
+
+
+--
+-- Name: UQ_stock_movement_pedido; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_movement_pedido" ON public.stock_movement USING btree (reference_id, gas_cylinder_id, reason) WHERE ((reference_type = 'order'::public.stock_movement_reference_type_enum) AND (reason <> 'reversal'::public.stock_movement_reason_enum));
+
+
+--
+-- Name: UQ_stock_threshold_deposito_garrafa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_stock_threshold_deposito_garrafa" ON public.stock_threshold USING btree (warehouse_id, gas_cylinder_id);
+
+
+--
 -- Name: UQ_vehicle_assignment_car_abierta; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2493,6 +2970,20 @@ CREATE UNIQUE INDEX "UQ_vehicle_assignment_car_abierta" ON public.vehicle_assign
 --
 
 CREATE UNIQUE INDEX "UQ_vehicle_assignment_delivery_abierta" ON public.vehicle_assignment USING btree (delivery_id) WHERE (released_at IS NULL);
+
+
+--
+-- Name: UQ_warehouse_code_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_warehouse_code_vigente" ON public.warehouse USING btree (distributor_id, code) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_warehouse_default_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL));
 
 
 --
@@ -2545,11 +3036,26 @@ CREATE TRIGGER audit_log_inmutable BEFORE DELETE OR UPDATE ON public.audit_log F
 
 
 --
+-- Name: stock_movement stock_movement_inmutable; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER stock_movement_inmutable BEFORE DELETE OR UPDATE ON public.stock_movement FOR EACH ROW EXECUTE FUNCTION public.stock_movement_inmutable();
+
+
+--
 -- Name: maintenance_task_attachment FK_07f53564ec7d34fc7e69b96cabf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.maintenance_task_attachment
     ADD CONSTRAINT "FK_07f53564ec7d34fc7e69b96cabf" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_location FK_088aef530fb37a7a19c6b9b4a39; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_location
+    ADD CONSTRAINT "FK_088aef530fb37a7a19c6b9b4a39" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2625,11 +3131,27 @@ ALTER TABLE ONLY public.vehicle_assignment
 
 
 --
+-- Name: stock_threshold FK_1156a89b5afe382c53f0a156649; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_threshold
+    ADD CONSTRAINT "FK_1156a89b5afe382c53f0a156649" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
 -- Name: order_dispatch_offer FK_1231f4249963aa2efb93749a8ee; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_dispatch_offer
     ADD CONSTRAINT "FK_1231f4249963aa2efb93749a8ee" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_movement FK_17c6850bf48d727614da1067ed2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_17c6850bf48d727614da1067ed2" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2761,11 +3283,27 @@ ALTER TABLE ONLY public.vehicle_usage_log
 
 
 --
+-- Name: stock_adjustment_item FK_2fa4ce3625472a3239024cc8312; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment_item
+    ADD CONSTRAINT "FK_2fa4ce3625472a3239024cc8312" FOREIGN KEY (adjustment_id) REFERENCES public.stock_adjustment(adjustment_id) ON DELETE CASCADE;
+
+
+--
 -- Name: cylinder_recovery_case FK_32fe6a642ad74004e88561b07aa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cylinder_recovery_case
     ADD CONSTRAINT "FK_32fe6a642ad74004e88561b07aa" FOREIGN KEY (cylinder_id) REFERENCES public.cylinder(cylinder_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_balance FK_32ff768a1b319c39cf48678a0af; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_balance
+    ADD CONSTRAINT "FK_32ff768a1b319c39cf48678a0af" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2801,6 +3339,14 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: stock_balance FK_425c43cce61e9a14028ec1115d1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_balance
+    ADD CONSTRAINT "FK_425c43cce61e9a14028ec1115d1" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: route_batch_offer FK_473c8590cc59607b872737c10e7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2814,6 +3360,14 @@ ALTER TABLE ONLY public.route_batch_offer
 
 ALTER TABLE ONLY public.employee
     ADD CONSTRAINT "FK_498ca175e44d448913f05298825" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_location FK_4b7804c17f9702172ce5c8807d9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_location
+    ADD CONSTRAINT "FK_4b7804c17f9702172ce5c8807d9" FOREIGN KEY (warehouse_id) REFERENCES public.warehouse(warehouse_id) ON DELETE RESTRICT;
 
 
 --
@@ -2841,11 +3395,35 @@ ALTER TABLE ONLY public.coverage_zone
 
 
 --
+-- Name: stock_threshold FK_529ba90fe05ac147b100ec4df62; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_threshold
+    ADD CONSTRAINT "FK_529ba90fe05ac147b100ec4df62" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: cylinder_inspection FK_531df2a7a7ab3fda4f1591e80d6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cylinder_inspection
     ADD CONSTRAINT "FK_531df2a7a7ab3fda4f1591e80d6" FOREIGN KEY (cylinder_id) REFERENCES public.cylinder(cylinder_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_movement FK_55497d12338255dc611b2f4fea1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_55497d12338255dc611b2f4fea1" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: stock_adjustment FK_5579346ced7a6a447d8dee9bc27; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment
+    ADD CONSTRAINT "FK_5579346ced7a6a447d8dee9bc27" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -2945,6 +3523,14 @@ ALTER TABLE ONLY public.order_dispatch_offer
 
 
 --
+-- Name: stock_adjustment FK_86f79cf831d762c7171cd5c5e17; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment
+    ADD CONSTRAINT "FK_86f79cf831d762c7171cd5c5e17" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: claims FK_870bf1e0dc6005837ff0643b5fc; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2958,6 +3544,14 @@ ALTER TABLE ONLY public.claims
 
 ALTER TABLE ONLY public.incident
     ADD CONSTRAINT "FK_8a89ba6c226022354d0d8b4ada0" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+
+
+--
+-- Name: warehouse FK_8ad23df5bd4c6cd8260cfd1e077; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.warehouse
+    ADD CONSTRAINT "FK_8ad23df5bd4c6cd8260cfd1e077" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -3057,6 +3651,14 @@ ALTER TABLE ONLY public.cylinder
 
 
 --
+-- Name: stock_movement FK_9fdaeb1da2e012874563f44702c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_9fdaeb1da2e012874563f44702c" FOREIGN KEY (actor_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: audit FK_9ffdecf0e48efaf0ae09b844d43; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3121,6 +3723,14 @@ ALTER TABLE ONLY public."order"
 
 
 --
+-- Name: stock_movement FK_a659cb2aa061b376744c6cb9029; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_a659cb2aa061b376744c6cb9029" FOREIGN KEY (to_location_id) REFERENCES public.stock_location(location_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: vehicle_assignment FK_a7cb484055004c370b38d80e880; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3150,6 +3760,14 @@ ALTER TABLE ONLY public.claims
 
 ALTER TABLE ONLY public.rating
     ADD CONSTRAINT "FK_b46b63fc1ddf2135e1ed37069a9" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id);
+
+
+--
+-- Name: stock_adjustment_item FK_b5df54839d2bc61c3be8207b4ff; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment_item
+    ADD CONSTRAINT "FK_b5df54839d2bc61c3be8207b4ff" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
 
 
 --
@@ -3185,11 +3803,27 @@ ALTER TABLE ONLY public.audit
 
 
 --
+-- Name: stock_adjustment FK_c5705d3d9d138fdefd333817dd1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment
+    ADD CONSTRAINT "FK_c5705d3d9d138fdefd333817dd1" FOREIGN KEY (location_id) REFERENCES public.stock_location(location_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: car FK_c8d34198d86de9e96aae03b8990; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.car
     ADD CONSTRAINT "FK_c8d34198d86de9e96aae03b8990" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_movement FK_cd07883671bb2828c28130d261b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_cd07883671bb2828c28130d261b" FOREIGN KEY (from_location_id) REFERENCES public.stock_location(location_id) ON DELETE RESTRICT;
 
 
 --
@@ -3233,6 +3867,14 @@ ALTER TABLE ONLY public.cylinder_recovery_case
 
 
 --
+-- Name: stock_location FK_d88f225ec362c0b11c179a4e034; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_location
+    ADD CONSTRAINT "FK_d88f225ec362c0b11c179a4e034" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: order FK_df56039592a4bbbd3fa4a19f141; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3246,6 +3888,14 @@ ALTER TABLE ONLY public."order"
 
 ALTER TABLE ONLY public.document_sequence
     ADD CONSTRAINT "FK_document_sequence_distributor" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_movement FK_e29e01a939f7c0a5ade184a3bf9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_e29e01a939f7c0a5ade184a3bf9" FOREIGN KEY (reversed_movement_id) REFERENCES public.stock_movement(movement_id) ON DELETE RESTRICT;
 
 
 --
@@ -3294,6 +3944,14 @@ ALTER TABLE ONLY public.time_slot
 
 ALTER TABLE ONLY public.order_item
     ADD CONSTRAINT "FK_e9674a6053adbaa1057848cddfa" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_threshold FK_ea56f87659c1c21bc76e2b31cd4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_threshold
+    ADD CONSTRAINT "FK_ea56f87659c1c21bc76e2b31cd4" FOREIGN KEY (warehouse_id) REFERENCES public.warehouse(warehouse_id) ON DELETE RESTRICT;
 
 
 --
@@ -3369,6 +4027,14 @@ ALTER TABLE ONLY public.job_position
 
 
 --
+-- Name: stock_balance FK_f8b2b588f7e7c8868a2756192d4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_balance
+    ADD CONSTRAINT "FK_f8b2b588f7e7c8868a2756192d4" FOREIGN KEY (location_id) REFERENCES public.stock_location(location_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: user FK_fb2e442d14add3cefbdf33c4561; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3382,6 +4048,14 @@ ALTER TABLE ONLY public."user"
 
 ALTER TABLE ONLY public.cart
     ADD CONSTRAINT "FK_fe7495dc822eabf84bf1dc84e0f" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_reconciliation_alert FK_stock_reconciliation_alert_distributor; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_reconciliation_alert
+    ADD CONSTRAINT "FK_stock_reconciliation_alert_distributor" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --

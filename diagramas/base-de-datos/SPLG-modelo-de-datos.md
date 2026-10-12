@@ -1,6 +1,6 @@
 # Modelo de Datos — SPLG
 
-48 tablas y 105 claves foráneas, leídas de la base en ejecución.
+56 tablas y 127 claves foráneas, leídas de la base en ejecución.
 
 | Sección | Qué contiene |
 |---|---|
@@ -84,6 +84,8 @@
 
 Índices (además de la clave primaria):
 - `IDX_audit_detail_audit`: `CREATE INDEX "IDX_audit_detail_audit" ON public.audit_detail USING btree (audit_id)`
+- `IDX_audit_detail_order_anterior`: `CREATE INDEX "IDX_audit_detail_order_anterior" ON public.audit_detail USING btree (old_value) WHERE ((field)::text = 'orderId'::text)`
+- `IDX_audit_detail_order_nuevo`: `CREATE INDEX "IDX_audit_detail_order_nuevo" ON public.audit_detail USING btree (new_value) WHERE ((field)::text = 'orderId'::text)`
 
 ### `audit_log` — AsientoAuditoria
 
@@ -132,6 +134,7 @@
 | `odometer_km` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `fleet_status` | fleet_status_enum | sí |  |  | `'active'::fleet_status_enum` | _(sin descripción documentada en el código)_ |
 | `in_service_since` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `photo_key` | varchar(512) | no |  |  |  | Key de la foto del vehículo en el bucket (`cars/{distribuidora}/{vehículo}/{uuid}.{ext}`). |
 
 Índices (además de la clave primaria):
 - `IDX_e823ac113ba2af8cbe72ddcbe8`: `CREATE INDEX "IDX_e823ac113ba2af8cbe72ddcbe8" ON public.car USING btree (distributor_id)`
@@ -372,6 +375,7 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `logo_key` | varchar(512) | no |  |  |  | Key de el logo en el bucket (`distributors/{distribuidora}/logo/{uuid}.{ext}`). |
 
 Índices (además de la clave primaria):
 - `IDX_02331b27890084627684d99ec5`: `CREATE UNIQUE INDEX "IDX_02331b27890084627684d99ec5" ON public.distributor USING btree (slug)`
@@ -419,6 +423,7 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | Sólo para altas erróneas; la salida normal es el egreso. |
+| `photo_key` | varchar(512) | no |  |  |  | Key de la foto del legajo en el bucket (`employees/{distribuidora}/{legajo}/{uuid}.{ext}`). Sólo la usa un legajo SIN cuenta: con cuenta, la foto es la del usuario. |
 
 Restricciones `CHECK`:
 - `CHK_employee_status_termination`: `CHECK (((status = 'terminated'::employee_status_enum) = (termination_date IS NOT NULL)))`
@@ -447,6 +452,7 @@ Restricciones `CHECK`:
 | `isActive` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `photo_key` | varchar(512) | no |  |  |  | Key de la imagen del producto en el bucket (`gascylinders/{distribuidora}/{producto}/{uuid}.{ext}`). |
 
 Claves únicas compuestas: (`distributor_id`, `type`).
 
@@ -487,10 +493,12 @@ Restricciones `CHECK`:
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `resolvedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `moment` | incident_moment_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `photo_key` | varchar(512) | no |  |  |  | Key de la foto de la incidencia en el bucket (`incidents/{distribuidora}/{incidencia}/{uuid}.{ext}`). |
 
 Índices (además de la clave primaria):
 - `IDX_8a89ba6c226022354d0d8b4ada`: `CREATE INDEX "IDX_8a89ba6c226022354d0d8b4ada" ON public.incident USING btree (order_id)`
 - `IDX_a2223c18baa97faf54118f95bd`: `CREATE INDEX "IDX_a2223c18baa97faf54118f95bd" ON public.incident USING btree (distributor_id)`
+- `UQ_incident_cobro_impago`: `CREATE UNIQUE INDEX "UQ_incident_cobro_impago" ON public.incident USING btree (order_id) WHERE ((type = 'unpaid_collection'::incident_type_enum) AND (status = ANY (ARRAY['open'::incident_status_enum, 'resolved'::incident_status_enum])))`
 
 ### `job_position` — PuestoDeTrabajo
 
@@ -646,6 +654,9 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `vehicle_patent` | varchar(20) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `vehicle_brand` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `vehicle_model` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_confirmed_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_confirmed_by` | uuid | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_resolution_note` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 
 Índices (además de la clave primaria):
 - `IDX_3adf34152c77fdb4e8f7346c5f`: `CREATE UNIQUE INDEX "IDX_3adf34152c77fdb4e8f7346c5f" ON public."order" USING btree ("gatewayPaymentId") WHERE ("gatewayPaymentId" IS NOT NULL)`
@@ -837,6 +848,155 @@ Claves únicas compuestas: (`batch_id`, `order_id`).
 Índices (además de la clave primaria):
 - `UQ_route_batch_stop_batch_order`: `CREATE UNIQUE INDEX "UQ_route_batch_stop_batch_order" ON public.route_batch_stop USING btree (batch_id, order_id)`
 
+### `stock_adjustment` — AjusteDeStock
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `adjustment_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `number` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `location_id` | uuid | sí | FK | `stock_location.location_id` |  | _(sin descripción documentada en el código)_ |
+| `reason` | stock_adjustment_reason_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `notes` | text | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `batch_id` | uuid | sí |  |  |  | El lote del libro de movimientos que generó este ajuste. |
+| `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`distributor_id`, `number`).
+
+Índices (además de la clave primaria):
+- `IDX_stock_adjustment_fecha`: `CREATE INDEX "IDX_stock_adjustment_fecha" ON public.stock_adjustment USING btree (distributor_id, "createdAt")`
+- `IDX_stock_adjustment_ubicacion`: `CREATE INDEX "IDX_stock_adjustment_ubicacion" ON public.stock_adjustment USING btree (location_id)`
+- `UQ_stock_adjustment_numero`: `CREATE UNIQUE INDEX "UQ_stock_adjustment_numero" ON public.stock_adjustment USING btree (distributor_id, number)`
+
+### `stock_adjustment_item` — ItemAjusteDeStock
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `item_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `adjustment_id` | uuid | sí | FK | `stock_adjustment.adjustment_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `condition` | stock_condition_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `quantity_delta` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`adjustment_id`, `gas_cylinder_id`, `condition`).
+
+Restricciones `CHECK`:
+- `CHK_stock_adjustment_item_variacion`: `CHECK ((quantity_delta <> 0))`
+
+Índices (además de la clave primaria):
+- `UQ_stock_adjustment_item_garrafa_condicion`: `CREATE UNIQUE INDEX "UQ_stock_adjustment_item_garrafa_condicion" ON public.stock_adjustment_item USING btree (adjustment_id, gas_cylinder_id, condition)`
+
+### `stock_balance` — SaldoDeStock
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `balance_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `location_id` | uuid | sí | FK | `stock_location.location_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `condition` | stock_condition_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `quantity` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`location_id`, `gas_cylinder_id`, `condition`).
+
+Restricciones `CHECK`:
+- `CHK_stock_balance_no_negativo`: `CHECK ((quantity >= 0))`
+
+Índices (además de la clave primaria):
+- `IDX_stock_balance_distributor`: `CREATE INDEX "IDX_stock_balance_distributor" ON public.stock_balance USING btree (distributor_id)`
+- `IDX_stock_balance_gas_cylinder`: `CREATE INDEX "IDX_stock_balance_gas_cylinder" ON public.stock_balance USING btree (gas_cylinder_id)`
+- `UQ_stock_balance_ubicacion_garrafa_condicion`: `CREATE UNIQUE INDEX "UQ_stock_balance_ubicacion_garrafa_condicion" ON public.stock_balance USING btree (location_id, gas_cylinder_id, condition)`
+
+### `stock_location` — UbicacionDeStock
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `location_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `kind` | stock_location_kind_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `warehouse_id` | uuid | no | FK | `warehouse.warehouse_id` |  | _(sin descripción documentada en el código)_ |
+| `car_id` | uuid | no | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_stock_location_kind`: `CHECK (((kind = 'warehouse'::stock_location_kind_enum) = (warehouse_id IS NOT NULL)))`
+- `CHK_stock_location_one_owner`: `CHECK ((num_nonnulls(warehouse_id, car_id) = 1))`
+
+Índices (además de la clave primaria):
+- `IDX_stock_location_distributor`: `CREATE INDEX "IDX_stock_location_distributor" ON public.stock_location USING btree (distributor_id)`
+- `UQ_stock_location_car`: `CREATE UNIQUE INDEX "UQ_stock_location_car" ON public.stock_location USING btree (car_id)`
+- `UQ_stock_location_warehouse`: `CREATE UNIQUE INDEX "UQ_stock_location_warehouse" ON public.stock_location USING btree (warehouse_id)`
+
+### `stock_movement` — MovimientoDeStock
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `movement_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `batch_id` | uuid | sí |  |  |  | Agrupa los movimientos de una misma operación. |
+| `quantity` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `from_location_id` | uuid | no | FK | `stock_location.location_id` |  | _(sin descripción documentada en el código)_ |
+| `from_condition` | stock_condition_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `to_location_id` | uuid | no | FK | `stock_location.location_id` |  | _(sin descripción documentada en el código)_ |
+| `to_condition` | stock_condition_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `reason` | stock_movement_reason_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `reference_type` | stock_movement_reference_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `reference_id` | uuid | no |  |  |  | Sin clave foránea, a propósito: apunta a tablas distintas según `referenceType`. |
+| `reversed_movement_id` | uuid | no | FK | `stock_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
+| `notes` | varchar(300) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `actor_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `occurred_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_stock_movement_cantidad`: `CHECK ((quantity > 0))`
+- `CHK_stock_movement_destino_coherente`: `CHECK (((to_location_id IS NULL) = (to_condition IS NULL)))`
+- `CHK_stock_movement_origen_coherente`: `CHECK (((from_location_id IS NULL) = (from_condition IS NULL)))`
+- `CHK_stock_movement_origen_o_destino`: `CHECK (((from_location_id IS NOT NULL) OR (to_location_id IS NOT NULL)))`
+
+Índices (además de la clave primaria):
+- `IDX_stock_movement_destino`: `CREATE INDEX "IDX_stock_movement_destino" ON public.stock_movement USING btree (to_location_id)`
+- `IDX_stock_movement_fecha`: `CREATE INDEX "IDX_stock_movement_fecha" ON public.stock_movement USING btree (distributor_id, occurred_at)`
+- `IDX_stock_movement_garrafa_fecha`: `CREATE INDEX "IDX_stock_movement_garrafa_fecha" ON public.stock_movement USING btree (gas_cylinder_id, occurred_at)`
+- `IDX_stock_movement_lote`: `CREATE INDEX "IDX_stock_movement_lote" ON public.stock_movement USING btree (batch_id)`
+- `IDX_stock_movement_origen`: `CREATE INDEX "IDX_stock_movement_origen" ON public.stock_movement USING btree (from_location_id)`
+- `IDX_stock_movement_referencia`: `CREATE INDEX "IDX_stock_movement_referencia" ON public.stock_movement USING btree (reference_type, reference_id)`
+- `UQ_stock_movement_contraasiento`: `CREATE UNIQUE INDEX "UQ_stock_movement_contraasiento" ON public.stock_movement USING btree (reversed_movement_id) WHERE (reversed_movement_id IS NOT NULL)`
+- `UQ_stock_movement_pedido`: `CREATE UNIQUE INDEX "UQ_stock_movement_pedido" ON public.stock_movement USING btree (reference_id, gas_cylinder_id, reason) WHERE ((reference_type = 'order'::stock_movement_reference_type_enum) AND (reason <> 'reversal'::stock_movement_reason_enum))`
+
+### `stock_reconciliation_alert` — Aviso de conciliación de stock
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `distributor_id` | uuid | sí | PK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `signature` | varchar(64) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `alerted_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+### `stock_threshold` — UmbralDeStock
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `threshold_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `warehouse_id` | uuid | sí | FK | `warehouse.warehouse_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `min_full` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `alerted_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`warehouse_id`, `gas_cylinder_id`).
+
+Restricciones `CHECK`:
+- `CHK_stock_threshold_minimo`: `CHECK ((min_full >= 0))`
+
+Índices (además de la clave primaria):
+- `IDX_stock_threshold_distributor`: `CREATE INDEX "IDX_stock_threshold_distributor" ON public.stock_threshold USING btree (distributor_id)`
+- `UQ_stock_threshold_deposito_garrafa`: `CREATE UNIQUE INDEX "UQ_stock_threshold_deposito_garrafa" ON public.stock_threshold USING btree (warehouse_id, gas_cylinder_id)`
+
 ### `storage_orphan` — Archivo pendiente de borrado
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -887,6 +1047,7 @@ Claves únicas compuestas: (`batch_id`, `order_id`).
 | `blocked` | boolean | sí |  |  | `false` | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `photo_key` | varchar(512) | no |  |  |  | Key de la foto de perfil en el bucket (`users/{usuario}/{uuid}.{ext}`). |
 
 Índices (además de la clave primaria):
 - `IDX_user_email_lower`: `CREATE INDEX "IDX_user_email_lower" ON public."user" USING btree (lower((email)::text))`
@@ -955,11 +1116,32 @@ Claves únicas compuestas: (`car_id`, `day`).
 - `IDX_8d4be9c7008fc808b4900a83a5`: `CREATE INDEX "IDX_8d4be9c7008fc808b4900a83a5" ON public.vehicle_usage_log USING btree (distributor_id)`
 - `UQ_vehicle_usage_log_car_day`: `CREATE UNIQUE INDEX "UQ_vehicle_usage_log_car_day" ON public.vehicle_usage_log USING btree (car_id, day)`
 
-> **Cobertura de las descripciones.** 80 de 496 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+### `warehouse` — Deposito
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `warehouse_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `name` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `code` | varchar(12) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `kind` | warehouse_kind_enum | sí |  |  | `'depot'::warehouse_kind_enum` | _(sin descripción documentada en el código)_ |
+| `address` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `is_default` | boolean | sí |  |  | `false` | _(sin descripción documentada en el código)_ |
+| `is_active` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_warehouse_distributor`: `CREATE INDEX "IDX_warehouse_distributor" ON public.warehouse USING btree (distributor_id)`
+- `UQ_warehouse_code_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_code_vigente" ON public.warehouse USING btree (distributor_id, code) WHERE ("deletedAt" IS NULL)`
+- `UQ_warehouse_default_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL))`
+
+> **Cobertura de las descripciones.** 89 de 571 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
-No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 105 relaciones del dominio están todas declaradas.
+No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 127 relaciones del dominio están todas declaradas.
 
 ### 1. Recargo express y tipo de vehículo
 
@@ -999,71 +1181,13 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 
 > **Decisión de modelado.** Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: sólo hace falta ampliar el tipo enumerado de procesos configurables.
 
-### 4. Stock físico, compras y carga del camión
+### 4. Compras y carga del camión
 
-**Casos de uso:** CU-207 a CU-224 (I-13). **Qué resuelve:** Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué se le compra a cada proveedor y qué sale y vuelve en cada reparto.
+**Casos de uso:** CU-214 a CU-223 (I-13, partes 2 y 3). **Qué resuelve:** Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué se le compra a cada proveedor y qué sale y vuelve en cada reparto.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
 | `gas_cylinder` | `average_unit_cost` | numeric(12,2) | no | Costo promedio ponderado de la garrafa, que se recalcula en cada recepción de compra; vacío mientras no se compró. |
-| `warehouse` **(tabla nueva)** | `warehouse_id` | uuid | sí | Identificador. |
-| `warehouse` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `warehouse` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre del depósito. |
-| `warehouse` **(tabla nueva)** | `code` | varchar(12) | sí | Código, único entre los depósitos vigentes de la distribuidora. |
-| `warehouse` **(tabla nueva)** | `kind` | warehouse_kind_enum | sí | Depósito o sucursal. |
-| `warehouse` **(tabla nueva)** | `address` | text | no | Dirección. |
-| `warehouse` **(tabla nueva)** | `location` | geometry(Point,4326) | no | Punto geográfico. |
-| `warehouse` **(tabla nueva)** | `is_default` | boolean | sí | Si es el depósito predeterminado de la distribuidora. |
-| `warehouse` **(tabla nueva)** | `is_active` | boolean | sí | Si está en uso. |
-| `warehouse` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `warehouse` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `warehouse` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
-| `stock_location` **(tabla nueva)** | `location_id` | uuid | sí | Identificador. |
-| `stock_location` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `stock_location` **(tabla nueva)** | `kind` | stock_location_kind_enum | sí | Depósito o vehículo. |
-| `stock_location` **(tabla nueva)** | `warehouse_id` | uuid | no | Depósito, si la ubicación es un depósito. |
-| `stock_location` **(tabla nueva)** | `car_id` | uuid | no | Vehículo, si la ubicación es un camión. |
-| `stock_balance` **(tabla nueva)** | `balance_id` | uuid | sí | Identificador. |
-| `stock_balance` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `stock_balance` **(tabla nueva)** | `location_id` | uuid | sí | Ubicación. |
-| `stock_balance` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
-| `stock_balance` **(tabla nueva)** | `condition` | stock_condition_enum | sí | Llena, vacía o defectuosa. |
-| `stock_balance` **(tabla nueva)** | `quantity` | integer | sí | Unidades; nunca negativa. |
-| `stock_balance` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última actualización. |
-| `stock_movement` **(tabla nueva)** | `movement_id` | uuid | sí | Identificador. |
-| `stock_movement` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `stock_movement` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
-| `stock_movement` **(tabla nueva)** | `batch_id` | uuid | sí | Agrupa los movimientos de una misma operación. |
-| `stock_movement` **(tabla nueva)** | `quantity` | integer | sí | Unidades movidas; siempre positiva. |
-| `stock_movement` **(tabla nueva)** | `from_location_id` | uuid | no | Ubicación de origen; vacía si entra desde afuera. |
-| `stock_movement` **(tabla nueva)** | `from_condition` | stock_condition_enum | no | Condición en el origen. |
-| `stock_movement` **(tabla nueva)** | `to_location_id` | uuid | no | Ubicación de destino; vacía si sale. |
-| `stock_movement` **(tabla nueva)** | `to_condition` | stock_condition_enum | no | Condición en el destino. |
-| `stock_movement` **(tabla nueva)** | `reason` | stock_movement_reason_enum | sí | Motivo del movimiento. |
-| `stock_movement` **(tabla nueva)** | `reference_type` | stock_reference_type_enum | sí | Tipo del documento que lo originó. |
-| `stock_movement` **(tabla nueva)** | `reference_id` | uuid | no | Identificador de ese documento; sin clave foránea a propósito, porque apunta a tablas distintas según el tipo. |
-| `stock_movement` **(tabla nueva)** | `actor_user_id` | uuid | no | Usuario que lo provocó; vacío si fue el sistema. |
-| `stock_movement` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
-| `stock_movement` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se asentó. |
-| `stock_threshold` **(tabla nueva)** | `threshold_id` | uuid | sí | Identificador. |
-| `stock_threshold` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `stock_threshold` **(tabla nueva)** | `warehouse_id` | uuid | sí | Depósito controlado. |
-| `stock_threshold` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
-| `stock_threshold` **(tabla nueva)** | `min_full` | integer | sí | Mínimo de unidades llenas. |
-| `stock_threshold` **(tabla nueva)** | `alerted_at` | timestamptz | no | Cuándo se avisó; vacío si no hay aviso emitido. |
-| `stock_adjustment` **(tabla nueva)** | `adjustment_id` | uuid | sí | Identificador. |
-| `stock_adjustment` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `stock_adjustment` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
-| `stock_adjustment` **(tabla nueva)** | `location_id` | uuid | sí | Ubicación corregida. |
-| `stock_adjustment` **(tabla nueva)** | `reason` | stock_adjustment_reason_enum | sí | Motivo del ajuste. |
-| `stock_adjustment` **(tabla nueva)** | `notes` | text | sí | Nota que explica el ajuste; obligatoria. |
-| `stock_adjustment` **(tabla nueva)** | `created_by_user_id` | uuid | sí | Usuario que lo registró. |
-| `stock_adjustment` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
-| `stock_adjustment_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
-| `stock_adjustment_item` **(tabla nueva)** | `adjustment_id` | uuid | sí | Ajuste. |
-| `stock_adjustment_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
-| `stock_adjustment_item` **(tabla nueva)** | `condition` | stock_condition_enum | sí | Condición afectada. |
-| `stock_adjustment_item` **(tabla nueva)** | `quantity_delta` | integer | sí | Diferencia, positiva o negativa; nunca cero. |
 | `supplier` **(tabla nueva)** | `supplier_id` | uuid | sí | Identificador. |
 | `supplier` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
 | `supplier` **(tabla nueva)** | `business_name` | varchar(120) | sí | Razón social. |
@@ -1153,13 +1277,6 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 | `truck_load_item` **(tabla nueva)** | `difference_full` | integer | no | Diferencia de llenas, al cierre. |
 | `truck_load_item` **(tabla nueva)** | `difference_empty` | integer | no | Diferencia de vacías, al cierre. |
 
-`warehouse` — Depósito o sucursal de la distribuidora donde se guarda el stock físico. Clave primaria `warehouse_id`. Referencias: `distributor_id` → `distributor`.
-`stock_location` — Lugar donde puede haber stock: un depósito o un vehículo. Clave primaria `location_id`. Referencias: `distributor_id` → `distributor`, `warehouse_id` → `warehouse`, `car_id` → `car`. Única: (`warehouse_id`), (`car_id`).
-`stock_balance` — Cantidad de un tipo de garrafa en una condición dentro de una ubicación, mantenida con cada movimiento. Clave primaria `balance_id`. Referencias: `distributor_id` → `distributor`, `location_id` → `stock_location`, `gas_cylinder_id` → `gas_cylinder`. Única: (`location_id`, `gas_cylinder_id`, `condition`).
-`stock_movement` — Libro de sólo agregado: cada cambio de stock entre ubicaciones o con el exterior. Clave primaria `movement_id`. Referencias: `distributor_id` → `distributor`, `gas_cylinder_id` → `gas_cylinder`, `from_location_id` → `stock_location`, `to_location_id` → `stock_location`, `actor_user_id` → `user`.
-`stock_threshold` — Mínimo de unidades llenas de un tipo de garrafa en un depósito, para avisar cuando baja. Clave primaria `threshold_id`. Referencias: `distributor_id` → `distributor`, `warehouse_id` → `warehouse`, `gas_cylinder_id` → `gas_cylinder`. Única: (`warehouse_id`, `gas_cylinder_id`).
-`stock_adjustment` — Corrección del stock de una ubicación, con su motivo y una nota obligatoria. Clave primaria `adjustment_id`. Referencias: `distributor_id` → `distributor`, `location_id` → `stock_location`, `created_by_user_id` → `user`. Única: (`distributor_id`, `number`).
-`stock_adjustment_item` — Diferencia de un tipo de garrafa y condición dentro de un ajuste. Clave primaria `item_id`. Referencias: `adjustment_id` → `stock_adjustment`, `gas_cylinder_id` → `gas_cylinder`.
 `supplier` — Proveedor de la distribuidora, principalmente una planta de llenado. Clave primaria `supplier_id`. Referencias: `distributor_id` → `distributor`.
 `purchase_order` — Pedido de garrafas a un proveedor para un depósito destino. Clave primaria `purchase_order_id`. Referencias: `distributor_id` → `distributor`, `supplier_id` → `supplier`, `destination_warehouse_id` → `warehouse`, `created_by_user_id` → `user`. Única: (`distributor_id`, `number`).
 `purchase_order_item` — Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje. Clave primaria `item_id`. Referencias: `purchase_order_id` → `purchase_order`, `gas_cylinder_id` → `gas_cylinder`. Única: (`purchase_order_id`, `gas_cylinder_id`).
@@ -1168,12 +1285,6 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 `truck_load` — Hoja de carga: el turno de un camión, desde que se carga hasta que se rinde. Clave primaria `load_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `delivery_id` → `delivery`, `origin_location_id` → `stock_location`, `opened_by_user_id` → `user`, `closed_by_user_id` → `user`. Única: (`distributor_id`, `number`).
 `truck_load_item` — Por tipo de garrafa: lo cargado, lo repuesto, lo entregado, lo declarado al regreso y la diferencia. Clave primaria `item_id`. Referencias: `load_id` → `truck_load`, `gas_cylinder_id` → `gas_cylinder`. Única: (`load_id`, `gas_cylinder_id`).
 
-Tipo enumerado `warehouse_kind_enum`: `depot`, `branch`.
-Tipo enumerado `stock_location_kind_enum`: `warehouse`, `vehicle`.
-Tipo enumerado `stock_condition_enum`: `full`, `empty`, `defective`.
-Tipo enumerado `stock_movement_reason_enum`: `initial_count`, `purchase_receipt`, `plant_empty_out`, `truck_load`, `truck_return`, `delivery`, `empty_collected`, `transfer`, `adjustment`, `shrinkage`, `condition_change`, `reversal`.
-Tipo enumerado `stock_reference_type_enum`: `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial`.
-Tipo enumerado `stock_adjustment_reason_enum`: `count_correction`, `shrinkage`, `leak`, `damaged`, `lost`, `found`, `initial_count`.
 Tipo enumerado `supplier_kind_enum`: `filling_plant`, `other`.
 Tipo enumerado `purchase_order_status_enum`: `draft`, `sent`, `partially_received`, `received`, `cancelled`.
 Tipo enumerado `purchase_document_type_enum`: `delivery_note`, `invoice`.
@@ -1183,7 +1294,7 @@ Tipo enumerado `truck_load_status_enum`: `loading`, `on_route`, `returned`, `clo
 
 Valores nuevos del tipo enumerado `configurable_process_enum`: `stock_control`.
 
-> **Decisión de modelado.** El saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
+> **Decisión de modelado.** El stock físico (depósitos, ubicaciones, saldos, libro, ajustes y umbrales) ya está en la base; este agregado trae lo que falta: proveedores, órdenes y recepciones de compra y la carga del camión, que escriben sobre ese libro. Referencia de lo ya construido: el saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
 
 ### 5. Caja, rendición del chofer, cuentas corrientes y comisiones
 
@@ -1565,7 +1676,7 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `fleet_status_enum` | `active`, `in_service`, `grounded` | implementado |
 | `incident_moment_enum` | `pre_delivery`, `in_delivery`, `post_delivery` | implementado |
 | `incident_status_enum` | `open`, `resolved`, `discarded` | implementado |
-| `incident_type_enum` | `damaged`, `out_of_stock`, `no_show`, `other` | implementado |
+| `incident_type_enum` | `damaged`, `out_of_stock`, `no_show`, `unpaid_collection`, `other` | implementado |
 | `job_position_category_enum` | `driver`, `helper`, `warehouse`, `administration`, `sales`, `management`, `other` | implementado |
 | `maintenance_criticality_enum` | `blocking`, `non_blocking` | implementado |
 | `maintenance_subject_enum` | `vehicle`, `driver` | implementado |
@@ -1574,7 +1685,7 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `order_delivery_mode_enum` | `standard`, `express` | implementado |
 | `order_dispatch_offer_status_enum` | `offered`, `accepted`, `rejected`, `expired`, `superseded` | implementado |
 | `order_paymentmethod_enum` | `cash`, `mercadopago`, `transfer` | implementado |
-| `order_paymentstatus_enum` | `pending`, `paid`, `failed` | implementado |
+| `order_paymentstatus_enum` | `pending`, `paid`, `failed`, `unpaid`, `written_off` | implementado |
 | `order_paymenttype_enum` | `cash`, `online` | implementado |
 | `order_status_enum` | `reserved`, `pending`, `accepted`, `on_the_way`, `delivered`, `cancelled` | implementado |
 | `order_zone_surcharge_type_enum` | `fixed`, `percentage` | implementado |
@@ -1587,6 +1698,12 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `recovery_notice_kind_enum` | `reminder`, `pickup_offer`, `deposit_warning` | implementado |
 | `repurchase_invitation_status_enum` | `pending`, `accepted`, `rejected`, `expired` | implementado |
 | `route_batch_status_enum` | `forming`, `offered`, `assigned`, `dissolved`, `completed` | implementado |
+| `stock_adjustment_reason_enum` | `count_correction`, `shrinkage`, `leak`, `damaged`, `lost`, `found`, `initial_count`, `reconciliation` | implementado |
+| `stock_condition_enum` | `full`, `empty`, `defective` | implementado |
+| `stock_location_kind_enum` | `warehouse`, `vehicle` | implementado |
+| `stock_movement_reason_enum` | `initial_count`, `purchase_receipt`, `plant_empty_out`, `truck_load`, `truck_return`, `delivery`, `empty_collected`, `transfer`, `adjustment`, `shrinkage`, `condition_change`, `reversal` | implementado |
+| `stock_movement_reference_type_enum` | `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial` | implementado |
+| `warehouse_kind_enum` | `depot`, `branch` | implementado |
 | `attendance_source_enum` | `panel`, `driver_app` | propuesto |
 | `cash_box_kind_enum` | `cash`, `bank`, `wallet` | propuesto |
 | `cash_direction_enum` | `income`, `expense` | propuesto |
@@ -1610,11 +1727,6 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `purchase_payment_status_enum` | `unpaid`, `paid` | propuesto |
 | `purchase_receipt_status_enum` | `confirmed`, `voided` | propuesto |
 | `settlement_difference_resolution_enum` | `none`, `charged_to_driver`, `absorbed` | propuesto |
-| `stock_adjustment_reason_enum` | `count_correction`, `shrinkage`, `leak`, `damaged`, `lost`, `found`, `initial_count` | propuesto |
-| `stock_condition_enum` | `full`, `empty`, `defective` | propuesto |
-| `stock_location_kind_enum` | `warehouse`, `vehicle` | propuesto |
-| `stock_movement_reason_enum` | `initial_count`, `purchase_receipt`, `plant_empty_out`, `truck_load`, `truck_return`, `delivery`, `empty_collected`, `transfer`, `adjustment`, `shrinkage`, `condition_change`, `reversal` | propuesto |
-| `stock_reference_type_enum` | `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial` | propuesto |
 | `supplier_kind_enum` | `filling_plant`, `other` | propuesto |
 | `tax_condition_enum` | `registered`, `monotax`, `exempt`, `final_consumer` | propuesto |
 | `tire_event_type_enum` | `mount`, `unmount`, `rotate`, `retread`, `retire` | propuesto |
@@ -1623,4 +1735,3 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `truck_load_status_enum` | `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled` | propuesto |
 | `vehicle_accident_status_enum` | `reported`, `under_review`, `repairing`, `closed` | propuesto |
 | `vehicle_type_enum` | `motorcycle`, `car`, `van` | propuesto |
-| `warehouse_kind_enum` | `depot`, `branch` | propuesto |

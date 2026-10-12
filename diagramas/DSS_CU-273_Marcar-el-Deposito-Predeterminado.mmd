@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-273 Marcar el Depósito Predeterminado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: marcarDepositoPredeterminado(depositoId)
+    activate SIS
+    alt el depósito existe y no hay otro cambio simultáneo
+        SIS-->>ADM: depósito predeterminado
+    else el depósito no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else hay otro cambio simultáneo, o se intenta sacarle la marca al predeterminado
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

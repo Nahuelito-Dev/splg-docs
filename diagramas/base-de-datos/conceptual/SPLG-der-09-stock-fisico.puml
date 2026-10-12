@@ -32,7 +32,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity Deposito <<propuesto>> #E4EDF4;line:1F5E8C {
+entity Deposito {
   * identificador
   --
   {field} nombre
@@ -42,33 +42,35 @@ entity Deposito <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} predeterminado
   {field} activo
 }
-entity UbicacionDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+entity UbicacionDeStock {
   * identificador
   --
   {field} tipo
 }
-entity SaldoDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+entity SaldoDeStock {
   * identificador
   --
   {field} condición
   {field} cantidad
 }
-entity MovimientoDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+entity MovimientoDeStock {
   * identificador
   --
   {field} cantidad
   {field} condición de origen
   {field} condición de destino
   {field} motivo
+  {field} documento de origen
+  {field} observación
   {field} fecha
 }
-entity UmbralDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+entity UmbralDeStock {
   * identificador
   --
   {field} mínimo de llenas
   {field} avisado el
 }
-entity AjusteDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+entity AjusteDeStock {
   * identificador
   --
   {field} número
@@ -76,7 +78,7 @@ entity AjusteDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} nota
   {field} fecha
 }
-entity ItemAjusteDeStock <<propuesto>> #E4EDF4;line:1F5E8C {
+entity ItemAjusteDeStock {
   * identificador
   --
   {field} condición
@@ -99,19 +101,20 @@ entity CargaDeCamion #F1F1F1 {
 
 Distribuidora ||--o{ Deposito : dispone de >
 OrdenDeCompra }o--|| Deposito : se destina a >
-Deposito ||--o{ UmbralDeStock : fija >
 UmbralDeStock }o--|| Producto : controla >
+Deposito ||--o{ UmbralDeStock : fija >
 RecepcionDeCompra }o--|| Deposito : ingresa en >
-Deposito ||--o| UbicacionDeStock : se registra como {xor} >
 Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
-UbicacionDeStock ||--o{ AjusteDeStock : se corrige con >
+Deposito ||--o| UbicacionDeStock : se registra como {xor} >
 Usuario ||--o{ AjusteDeStock : registra >
-UbicacionDeStock ||--o{ SaldoDeStock : acumula >
+UbicacionDeStock ||--o{ AjusteDeStock : se corrige con >
 SaldoDeStock }o--|| Producto : corresponde a >
-MovimientoDeStock }o--|| Producto : corresponde a >
-MovimientoDeStock }o--o| UbicacionDeStock : sale de >
-MovimientoDeStock }o--o| UbicacionDeStock : entra en >
+UbicacionDeStock ||--o{ SaldoDeStock : acumula >
 Usuario |o--o{ MovimientoDeStock : ejecuta >
+MovimientoDeStock }o--o| UbicacionDeStock : sale de >
+MovimientoDeStock }o--|| Producto : corresponde a >
+MovimientoDeStock |o--o| MovimientoDeStock : corrige a >
+MovimientoDeStock }o--o| UbicacionDeStock : entra en >
 CargaDeCamion }o--|| UbicacionDeStock : parte de >
 AjusteDeStock ||--|{ ItemAjusteDeStock : contiene >
 ItemAjusteDeStock }o--|| Producto : corresponde a >

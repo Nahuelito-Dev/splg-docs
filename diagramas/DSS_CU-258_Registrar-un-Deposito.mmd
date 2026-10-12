@@ -6,9 +6,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarDeposito(nombre, codigo, tipo, direccion)
     activate SIS
-    alt el código está libre
+    alt los datos son válidos y el código está libre
         SIS-->>ADM: depósito creado
-    else el código ya lo usa otro depósito vigente
-        SIS-->>ADM: conflicto, con el detalle del campo
+    else falta un dato o el formato del código no es válido
+        SIS-->>ADM: datos inválidos
+    else otro depósito vigente ya usa el código, o hay un cambio simultáneo del predeterminado
+        SIS-->>ADM: conflicto
     end
     deactivate SIS

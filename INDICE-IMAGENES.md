@@ -261,20 +261,20 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-204 | Consultar el Tablero de Costos de la Flota | `DSS_CU-204_Consultar-el-Tablero-de-Costos-de-la-Flota.png` | `DSD_CU-204_consultarTableroDeCostosDeLaFlota.png` |
 | CU-205 | Registrar un Neumático | `DSS_CU-205_Registrar-un-Neumatico.png` | `DSD_CU-205_registrarNeumatico.png` |
 | CU-206 | Registrar un Movimiento de Neumático | `DSS_CU-206_Registrar-un-Movimiento-de-Neumatico.png` | `DSD_CU-206_registrarMovimientoDeNeumatico.png` |
-| CU-207 | Consultar los Depósitos | `DSS_CU-207_Consultar-los-Depositos.png` | `DSD_CU-207_consultarDepositos.png` |
-| CU-208 | Consultar el Stock por Ubicación | `DSS_CU-208_Consultar-el-Stock-por-Ubicacion.png` | `DSD_CU-208_consultarStockPorUbicacion.png` · `DSD_CU-208_consultarResumenDeStock.png` |
+| CU-207 | Consultar los Depósitos | `DSS_CU-207_Consultar-los-Depositos.png` | `DSD_CU-207_consultarDepositos.png` · `DSD_CU-207_consultarDeposito.png` |
+| CU-208 | Consultar el Stock por Ubicación | `DSS_CU-208_Consultar-el-Stock-por-Ubicacion.png` | `DSD_CU-208_consultarStockPorUbicacion.png` · `DSD_CU-208_consultarUbicacionesDeStock.png` |
 | CU-209 | Consultar los Movimientos de Stock | `DSS_CU-209_Consultar-los-Movimientos-de-Stock.png` | `DSD_CU-209_consultarMovimientosDeStock.png` |
-| CU-210 | Configurar el Stock Mínimo | `DSS_CU-210_Configurar-el-Stock-Minimo.png` | `DSD_CU-210_configurarStockMinimo.png` |
+| CU-210 | Configurar el Stock Mínimo | `DSS_CU-210_Configurar-el-Stock-Minimo.png` | `DSD_CU-210_consultarStockMinimo.png` · `DSD_CU-210_configurarStockMinimo.png` |
 | CU-211 | Avisar el Stock Bajo | `DSS_CU-211_Avisar-el-Stock-Bajo.png` | `DSD_CU-211_avisarStockBajo.png` |
 | CU-212 | Transferir Stock entre Depósitos | `DSS_CU-212_Transferir-Stock-entre-Depositos.png` | `DSD_CU-212_transferirStock.png` |
-| CU-213 | Registrar un Ajuste o una Merma de Stock | `DSS_CU-213_Registrar-un-Ajuste-o-una-Merma-de-Stock.png` | `DSD_CU-213_registrarAjusteDeStock.png` · `DSD_CU-213_consultarAjustesDeStock.png` |
+| CU-213 | Registrar un Ajuste o una Merma de Stock | `DSS_CU-213_Registrar-un-Ajuste-o-una-Merma-de-Stock.png` | `DSD_CU-213_registrarAjusteDeStock.png` |
 | CU-214 | Consultar los Proveedores | `DSS_CU-214_Consultar-los-Proveedores.png` | `DSD_CU-214_consultarProveedores.png` |
 | CU-215 | Emitir una Orden de Compra | `DSS_CU-215_Emitir-una-Orden-de-Compra.png` | `DSD_CU-215_emitirOrdenDeCompra.png` · `DSD_CU-215_enviarOrdenDeCompra.png` · `DSD_CU-215_consultarOrdenesDeCompra.png` |
 | CU-216 | Cancelar una Orden de Compra | `DSS_CU-216_Cancelar-una-Orden-de-Compra.png` | `DSD_CU-216_cancelarOrdenDeCompra.png` |
 | CU-217 | Registrar la Recepción de una Compra | `DSS_CU-217_Registrar-la-Recepcion-de-una-Compra.png` | `DSD_CU-217_registrarRecepcionDeCompra.png` · `DSD_CU-217_anularRecepcionDeCompra.png` · `DSD_CU-217_consultarRecepcionesDeCompra.png` |
 | CU-218 | Registrar la Carga del Camión | `DSS_CU-218_Registrar-la-Carga-del-Camion.png` | `DSD_CU-218_registrarCargaDelCamion.png` · `DSD_CU-218_reponerCargaDelCamion.png` · `DSD_CU-218_cancelarCargaDelCamion.png` · `DSD_CU-218_consultarCargasDelCamion.png` |
 | CU-219 | Registrar la Salida del Camión | `DSS_CU-219_Registrar-la-Salida-del-Camion.png` | `DSD_CU-219_registrarSalidaDelCamion.png` |
-| CU-220 | Descontar del Camión lo Entregado | `DSS_CU-220_Descontar-del-Camion-lo-Entregado.png` | `DSD_CU-220_descontarStockDeLaEntrega.png` |
+| CU-220 | Descontar del Stock Físico lo Entregado | `DSS_CU-220_Descontar-del-Stock-Fisico-lo-Entregado.png` | `DSD_CU-220_descontarStockDeLaEntrega.png` |
 | CU-221 | Registrar el Regreso del Camión | `DSS_CU-221_Registrar-el-Regreso-del-Camion.png` | `DSD_CU-221_registrarRegresoDelCamion.png` |
 | CU-222 | Cerrar la Rendición de Stock del Camión | `DSS_CU-222_Cerrar-la-Rendicion-de-Stock-del-Camion.png` | `DSD_CU-222_cerrarRendicionDeStock.png` |
 | CU-223 | Consultar la Carga Actual del Camión | `DSS_CU-223_Consultar-la-Carga-Actual-del-Camion.png` | `DSD_CU-223_consultarCargaActual.png` |
@@ -327,6 +327,13 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-270 | Desbloquear un Usuario | `DSS_CU-270_Desbloquear-un-Usuario.png` | `DSD_CU-050_CU-270_bloquearUsuario.png` (el mismo diagrama de CU-050) |
 | CU-271 | Invalidar un Chofer | `DSS_CU-271_Invalidar-un-Chofer.png` | `DSD_CU-271_invalidarChofer.png` |
 | CU-272 | Buscar un Usuario | `DSS_CU-272_Buscar-un-Usuario.png` | `DSD_CU-272_buscarUsuarioPorCorreo.png` · `DSD_CU-272_buscarUsuarioPorTelefono.png` |
+| CU-273 | Marcar el Depósito Predeterminado | `DSS_CU-273_Marcar-el-Deposito-Predeterminado.png` | `DSD_CU-273_marcarDepositoPredeterminado.png` |
+| CU-274 | Registrar el Conteo Inicial de un Depósito | `DSS_CU-274_Registrar-el-Conteo-Inicial-de-un-Deposito.png` | `DSD_CU-274_registrarConteoInicial.png` |
+| CU-275 | Consultar los Ajustes de Stock | `DSS_CU-275_Consultar-los-Ajustes-de-Stock.png` | `DSD_CU-275_consultarAjustesDeStock.png` · `DSD_CU-275_consultarAjusteDeStock.png` |
+| CU-276 | Anular una Transferencia de Stock | `DSS_CU-276_Anular-una-Transferencia-de-Stock.png` | `DSD_CU-276_anularTransferenciaDeStock.png` |
+| CU-277 | Registrar un Ajuste de Conciliación del Vendible | `DSS_CU-277_Registrar-un-Ajuste-de-Conciliacion-del-Vendible.png` | `DSD_CU-277_registrarAjusteDeConciliacion.png` |
+| CU-278 | Reaplicar las Entregas sin Movimiento de Stock | `DSS_CU-278_Reaplicar-las-Entregas-sin-Movimiento-de-Stock.png` | `DSD_CU-278_reaplicarEntregasDeStock.png` |
+| CU-279 | Consultar el Resumen de Stock | `DSS_CU-279_Consultar-el-Resumen-de-Stock.png` | `DSD_CU-279_consultarResumenDeStock.png` |
 
 ## Módulos de gestión planificados: modelos y estados
 

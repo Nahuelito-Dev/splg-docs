@@ -85,6 +85,7 @@ entity "employee" as e_employee {
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
   {field} deletedAt : timestamptz
+  {field} photo_key : varchar(512)
 }
 entity "employee_attendance" as e_employee_attendance <<propuesto>> {
   {field} <color:#1F5E8C>**attendance_id** : uuid * <<PK>> <<propuesto>></color>

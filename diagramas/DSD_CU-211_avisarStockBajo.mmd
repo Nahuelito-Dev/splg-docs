@@ -6,27 +6,21 @@ sequenceDiagram
     participant UMBS as :List#lt;UmbralDeStock#gt;
     participant UMB as umbral:UmbralDeStock
     participant DEP as deposito:Deposito
-    participant DIS as distribuidora:Distribuidora
-    participant MAI as :EmailSenderPort
+    participant MAI as :StockAdminNotifier
 
     SIS->>+CRN: avisarStockBajo()
     CRN->>+UMBS: getConMinimo()
     UMBS-->>-CRN: umbrales
     loop Por cada umbral
-        CRN->>+UMB: getDeposito()
-        UMB-->>-CRN: depositoDeStock
-        CRN->>+DEP: getLlenas(producto)
-        DEP-->>-CRN: llenos
-        CRN->>+UMB: estaPorDebajoDelMinimo(llenos)
+        CRN->>+UMB: estaPorDebajoDelMinimo()
+        UMB->>+DEP: getLlenas(producto)
+        DEP-->>-UMB: llenas
         UMB-->>-CRN: bajo
         alt El depósito bajó del mínimo y todavía no se avisó
-            CRN->>+DEP: getDistribuidora()
-            DEP-->>-CRN: distribuidora
-            CRN->>+DIS: getAdministradores()
-            DIS-->>-CRN: administradores
-            CRN->>MAI: send(administrador, stockBajo)
+            Note over CRN,MAI: Un solo correo por distribuidora, con todos sus depósitos bajos
+            CRN->>MAI: avisar(distribuidora, stockBajo)
             CRN->>UMB: marcarAvisado(ahora)
-        else El depósito se recuperó
+        else El depósito se recuperó y tenía el aviso emitido
             CRN->>UMB: limpiarAviso()
         end
     end
