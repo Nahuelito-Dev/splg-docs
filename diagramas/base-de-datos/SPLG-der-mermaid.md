@@ -1,6 +1,6 @@
 # DER de SPLG, en Mermaid — generado
 
-Generado por `generar-modelo-datos.py` desde la base en ejecución: 56 tablas, 127 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
+Generado por `generar-modelo-datos.py` desde la base en ejecución: 61 tablas, 141 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
 
 ### Organización y acceso
 
@@ -184,6 +184,7 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
         varchar photo_key "nullable"
+        decimal average_unit_cost "nullable"
     }
     GAS_CYLINDER_PROMOTION {
         uuid promotion_id PK
@@ -347,6 +348,8 @@ erDiagram
         timestamptz payment_confirmed_at "nullable"
         uuid payment_confirmed_by "nullable"
         text payment_resolution_note "nullable"
+        timestamptz payment_resolved_at "nullable"
+        uuid payment_resolved_by "nullable"
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK
@@ -947,14 +950,14 @@ erDiagram
     }
 ```
 
-### Compras (planificado)
+### Compras
 
 ```mermaid
 erDiagram
     PURCHASE_ORDER }o--|| SUPPLIER : "supplier_id"
     PURCHASE_ORDER_ITEM }o--|| PURCHASE_ORDER : "purchase_order_id"
-    PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
     PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
     PURCHASE_RECEIPT_ITEM }o--|| PURCHASE_RECEIPT : "receipt_id"
 
     SUPPLIER {
@@ -962,7 +965,7 @@ erDiagram
         uuid distributor_id FK
         varchar business_name
         varchar cuit
-        supplier_kind_enum kind
+        enum kind
         varchar contact_name "nullable"
         varchar phone "nullable"
         varchar email "nullable"
@@ -979,7 +982,7 @@ erDiagram
         int number
         uuid supplier_id FK
         uuid destination_warehouse_id FK
-        purchase_order_status_enum status
+        enum status
         timestamptz issued_at "nullable"
         date expected_date "nullable"
         decimal total_amount
@@ -988,6 +991,7 @@ erDiagram
         uuid created_by_user_id FK
         timestamptz createdAt
         timestamptz updatedAt
+        text close_reason "nullable"
     }
     PURCHASE_ORDER_ITEM {
         uuid item_id PK
@@ -1005,15 +1009,20 @@ erDiagram
         uuid supplier_id FK
         uuid purchase_order_id FK "nullable"
         uuid warehouse_id FK
-        purchase_document_type_enum supplier_document_type
+        enum supplier_document_type
         varchar supplier_document_number
         timestamptz received_at
         uuid received_by_user_id FK
         decimal total_amount
-        purchase_payment_status_enum payment_status
+        enum payment_status
         uuid cash_movement_id "nullable"
-        purchase_receipt_status_enum status
+        enum status
         text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        uuid voided_by_user_id "nullable"
+        uuid batch_id
+        uuid void_batch_id "nullable"
+        text notes "nullable"
         timestamptz createdAt
         timestamptz updatedAt
     }
@@ -1024,6 +1033,8 @@ erDiagram
         int quantity_full
         int quantity_empty_out
         decimal unit_cost
+        decimal previous_average_cost "nullable"
+        int previous_on_hand "nullable"
     }
 ```
 
@@ -1273,8 +1284,8 @@ erDiagram
     CUSTOMER_ACCOUNT }o--|| USER : "customer_user_id"
     DELIVERY |o--|| USER : "user_id"
     EMPLOYEE }o--o| USER : "user_id"
-    PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
     PURCHASE_ORDER }o--|| USER : "created_by_user_id"
+    PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
     STOCK_THRESHOLD }o--|| GAS_CYLINDER : "gas_cylinder_id"
     USER_ADDRESS }o--|| USER : "user_id"
     CART_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
@@ -1292,8 +1303,8 @@ erDiagram
     ORDER }o--|| USER : "customer_id"
     ORDER }o--o| DELIVERY : "delivery_id"
     PURCHASE_ORDER_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
-    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
     PURCHASE_RECEIPT }o--|| USER : "received_by_user_id"
+    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
     ROUTE_BATCH }o--o| DELIVERY : "delivery_id"
     STOCK_LOCATION |o--o| CAR : "car_id"
     TIRE }o--o| CAR : "car_id"

@@ -87,7 +87,7 @@ class Distribuidora {
   + getProductosActivos(pagina: Entero, limite: Entero,\n      out total: Entero): Producto[*]
   + getProductosDisponibles(): Producto[*]
   + getProveedor(proveedorId: Identificador): Proveedor
-  + getProveedores(): Proveedor[*]
+  + getProveedores(termino: Cadena, tipo: Cadena,\n      incluirInactivos: Booleano): Proveedor[*]
   + getPuestos(): PuestoDeTrabajo[*]
   + getUbicacionesDeStock(): UbicacionDeStock[*]
   + getUbicacionPredeterminada(): UbicacionDeStock

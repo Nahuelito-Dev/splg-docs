@@ -1,7 +1,7 @@
 -- Modelo completo de SPLG: lo implementado más lo planificado
 -- 83 tablas y 222 relaciones.
--- Hoy en la base hay 56 tablas y 127 claves foráneas declaradas;
--- este archivo suma 27 tablas planificadas y 12 columnas nuevas en tablas que ya existen.
+-- Hoy en la base hay 61 tablas y 141 claves foráneas declaradas;
+-- este archivo suma 22 tablas planificadas y 11 columnas nuevas en tablas que ya existen.
 -- SQL portable: sin tipos enumerados ni tipos de PostGIS, sin defaults ni índices.
 -- Las tablas van en orden de dependencia. Generado por generar-modelo-datos.py.
 
@@ -170,7 +170,6 @@ CREATE TABLE "stock_reconciliation_alert" (
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE
 );
 
--- tabla propuesta
 CREATE TABLE "supplier" (
   "supplier_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -487,7 +486,6 @@ CREATE TABLE "module_config" (
   FOREIGN KEY ("updated_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL
 );
 
--- tabla propuesta
 CREATE TABLE "purchase_order" (
   "purchase_order_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -503,12 +501,13 @@ CREATE TABLE "purchase_order" (
   "created_by_user_id" uuid NOT NULL,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
+  "close_reason" text,
   PRIMARY KEY ("purchase_order_id"),
   UNIQUE ("distributor_id", "number"),
-  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
-  FOREIGN KEY ("supplier_id") REFERENCES "supplier" ("supplier_id"),
+  FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("destination_warehouse_id") REFERENCES "warehouse" ("warehouse_id"),
-  FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id")
+  FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("supplier_id") REFERENCES "supplier" ("supplier_id")
 );
 
 CREATE TABLE "stock_threshold" (
@@ -762,6 +761,8 @@ CREATE TABLE "order" (
   "payment_confirmed_at" timestamptz,
   "payment_confirmed_by" uuid,
   "payment_resolution_note" text,
+  "payment_resolved_at" timestamptz,
+  "payment_resolved_by" uuid,
   "express_surcharge_amount" numeric(12,2) NOT NULL,
   PRIMARY KEY ("order_id"),
   FOREIGN KEY ("address_id") REFERENCES "user_address" ("address_id"),
@@ -772,7 +773,6 @@ CREATE TABLE "order" (
   FOREIGN KEY ("time_slot_id") REFERENCES "time_slot" ("time_slot_id")
 );
 
--- tabla propuesta
 CREATE TABLE "purchase_order_item" (
   "item_id" uuid NOT NULL,
   "purchase_order_id" uuid NOT NULL,
@@ -783,11 +783,10 @@ CREATE TABLE "purchase_order_item" (
   "received_quantity" integer NOT NULL,
   PRIMARY KEY ("item_id"),
   UNIQUE ("purchase_order_id", "gas_cylinder_id"),
-  FOREIGN KEY ("purchase_order_id") REFERENCES "purchase_order" ("purchase_order_id") ON DELETE CASCADE,
-  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id")
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("purchase_order_id") REFERENCES "purchase_order" ("purchase_order_id") ON DELETE CASCADE
 );
 
--- tabla propuesta
 CREATE TABLE "purchase_receipt" (
   "receipt_id" uuid NOT NULL,
   "distributor_id" uuid NOT NULL,
@@ -804,16 +803,21 @@ CREATE TABLE "purchase_receipt" (
   "cash_movement_id" uuid,
   "status" varchar(32) NOT NULL,
   "void_reason" text,
+  "voided_at" timestamptz,
+  "voided_by_user_id" uuid,
+  "batch_id" uuid NOT NULL,
+  "void_batch_id" uuid,
+  "notes" text,
   "createdAt" timestamptz NOT NULL,
   "updatedAt" timestamptz NOT NULL,
   PRIMARY KEY ("receipt_id"),
   UNIQUE ("distributor_id", "number"),
-  UNIQUE ("distributor_id", "supplier_id", "supplier_document_number"),
+  UNIQUE ("distributor_id", "supplier_id", "supplier_document_type", "supplier_document_number"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE,
+  FOREIGN KEY ("purchase_order_id") REFERENCES "purchase_order" ("purchase_order_id"),
+  FOREIGN KEY ("received_by_user_id") REFERENCES "user" ("user_id"),
   FOREIGN KEY ("supplier_id") REFERENCES "supplier" ("supplier_id"),
-  FOREIGN KEY ("purchase_order_id") REFERENCES "purchase_order" ("purchase_order_id") ON DELETE SET NULL,
-  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id"),
-  FOREIGN KEY ("received_by_user_id") REFERENCES "user" ("user_id")
+  FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id")
 );
 
 CREATE TABLE "route_batch" (
@@ -1177,7 +1181,6 @@ CREATE TABLE "payment" (
   FOREIGN KEY ("order_id") REFERENCES "order" ("order_id")
 );
 
--- tabla propuesta
 CREATE TABLE "purchase_receipt_item" (
   "item_id" uuid NOT NULL,
   "receipt_id" uuid NOT NULL,
@@ -1185,9 +1188,12 @@ CREATE TABLE "purchase_receipt_item" (
   "quantity_full" integer NOT NULL,
   "quantity_empty_out" integer NOT NULL,
   "unit_cost" numeric(12,2) NOT NULL,
+  "previous_average_cost" numeric(12,2),
+  "previous_on_hand" integer,
   PRIMARY KEY ("item_id"),
-  FOREIGN KEY ("receipt_id") REFERENCES "purchase_receipt" ("receipt_id") ON DELETE CASCADE,
-  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id")
+  UNIQUE ("receipt_id", "gas_cylinder_id"),
+  FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),
+  FOREIGN KEY ("receipt_id") REFERENCES "purchase_receipt" ("receipt_id") ON DELETE CASCADE
 );
 
 CREATE TABLE "rating" (

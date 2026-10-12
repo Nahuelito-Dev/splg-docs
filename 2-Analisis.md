@@ -20,7 +20,7 @@
 - Figura 1.8 — Modelo conceptual: gastos de la flota (planificado, I-12)
 - Figura 1.9 — Modelo conceptual: stock físico
 - Figura 1.10 — Modelo conceptual: carga del camión (planificado, I-13)
-- Figura 1.11 — Modelo conceptual: compras (planificado, I-13)
+- Figura 1.11 — Modelo conceptual: compras
 - Figura 1.12 — Modelo conceptual: caja y movimientos (planificado, I-14)
 - Figura 1.13 — Modelo conceptual: rendiciones de choferes (planificado, I-14)
 - Figura 1.14 — Modelo conceptual: cuentas corrientes (planificado, I-14)
@@ -265,37 +265,46 @@
 - Figura 221 — DSS CU-261: Registrar un Proveedor
 - Figura 222 — DSS CU-262: Modificar un Proveedor
 - Figura 223 — DSS CU-263: Dar de Baja un Proveedor
-- Figura 224 — DSS CU-215: Emitir una Orden de Compra
-- Figura 225 — DSS CU-216: Cancelar una Orden de Compra
-- Figura 226 — DSS CU-217: Registrar la Recepción de una Compra
-- Figura 227 — DSS CU-225: Crear una Caja
-- Figura 228 — DSS CU-264: Modificar una Caja
-- Figura 229 — DSS CU-226: Abrir la Caja
-- Figura 230 — DSS CU-227: Cerrar la Caja con Arqueo
-- Figura 231 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
-- Figura 232 — DSS CU-229: Anular un Movimiento de Caja
-- Figura 233 — DSS CU-230: Crear una Categoría de Ingresos y Gastos
-- Figura 234 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos
-- Figura 235 — DSS CU-231: Generar la Rendición Diaria del Chofer
-- Figura 236 — DSS CU-232: Declarar el Efectivo Rendido
-- Figura 237 — DSS CU-233: Aprobar la Rendición del Chofer
-- Figura 238 — DSS CU-234: Avisar las Rendiciones sin Cerrar
-- Figura 239 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
-- Figura 240 — DSS CU-236: Vender a Cuenta Corriente
-- Figura 241 — DSS CU-237: Registrar un Pago de Cuenta Corriente
-- Figura 242 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
-- Figura 243 — DSS CU-239: Consultar la Antigüedad de la Deuda
-- Figura 244 — DSS CU-240: Configurar las Comisiones por Entrega
-- Figura 245 — DSS CU-241: Registrar la Comisión de una Entrega
-- Figura 246 — DSS CU-242: Liquidar las Comisiones de un Chofer
-- Figura 247 — DSS CU-243: Registrar el Pago de una Liquidación
-- Figura 248 — DSS CU-244: Consultar Mis Comisiones
-- Figura 249 — DSS CU-245: Consultar el Tablero Financiero
-- Figura 250 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 251 — DSS CU-106: Anticipar la recompra por consumo estimado
-- Figura 252 — DSS CU-107: Agrupar pedidos por recorrido
-- Figura 253 — DSS CU-108: Recuperar envases no devueltos
-- Figura 254 — DSS CU-043: Modificar Capacidad de Franja Horaria
+- Figura 224 — DSS CU-286: Consultar el Historial de Compras de un Proveedor
+- Figura 225 — DSS CU-215: Emitir una Orden de Compra
+- Figura 226 — DSS CU-287: Modificar una Orden de Compra
+- Figura 227 — DSS CU-288: Enviar una Orden de Compra
+- Figura 228 — DSS CU-216: Cancelar una Orden de Compra
+- Figura 229 — DSS CU-282: Cerrar una Orden de Compra con Faltante
+- Figura 230 — DSS CU-283: Consultar las Órdenes de Compra
+- Figura 231 — DSS CU-217: Registrar la Recepción de una Compra
+- Figura 232 — DSS CU-280: Anular una Recepción de Compra
+- Figura 233 — DSS CU-281: Marcar el Pago de una Recepción
+- Figura 234 — DSS CU-284: Consultar las Recepciones de Compra
+- Figura 235 — DSS CU-285: Consultar el Costo Promedio de las Garrafas
+- Figura 236 — DSS CU-225: Crear una Caja
+- Figura 237 — DSS CU-264: Modificar una Caja
+- Figura 238 — DSS CU-226: Abrir la Caja
+- Figura 239 — DSS CU-227: Cerrar la Caja con Arqueo
+- Figura 240 — DSS CU-228: Registrar un Ingreso o Egreso de Caja
+- Figura 241 — DSS CU-229: Anular un Movimiento de Caja
+- Figura 242 — DSS CU-230: Crear una Categoría de Ingresos y Gastos
+- Figura 243 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos
+- Figura 244 — DSS CU-231: Generar la Rendición Diaria del Chofer
+- Figura 245 — DSS CU-232: Declarar el Efectivo Rendido
+- Figura 246 — DSS CU-233: Aprobar la Rendición del Chofer
+- Figura 247 — DSS CU-234: Avisar las Rendiciones sin Cerrar
+- Figura 248 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente
+- Figura 249 — DSS CU-236: Vender a Cuenta Corriente
+- Figura 250 — DSS CU-237: Registrar un Pago de Cuenta Corriente
+- Figura 251 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente
+- Figura 252 — DSS CU-239: Consultar la Antigüedad de la Deuda
+- Figura 253 — DSS CU-240: Configurar las Comisiones por Entrega
+- Figura 254 — DSS CU-241: Registrar la Comisión de una Entrega
+- Figura 255 — DSS CU-242: Liquidar las Comisiones de un Chofer
+- Figura 256 — DSS CU-243: Registrar el Pago de una Liquidación
+- Figura 257 — DSS CU-244: Consultar Mis Comisiones
+- Figura 258 — DSS CU-245: Consultar el Tablero Financiero
+- Figura 259 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 260 — DSS CU-106: Anticipar la recompra por consumo estimado
+- Figura 261 — DSS CU-107: Agrupar pedidos por recorrido
+- Figura 262 — DSS CU-108: Recuperar envases no devueltos
+- Figura 263 — DSS CU-043: Modificar Capacidad de Franja Horaria
 
 ---
 
@@ -321,6 +330,7 @@
 | 15 | 2026-10-07 | Los casos de uso que agrupaban varias operaciones de un ABM se parten en uno por operación (CU-251 a CU-272): un diagrama de secuencia del sistema por caso, con su propia operación, y los contratos de las operaciones referidos al caso que corresponde. | Nahuel Wagner |
 | 16 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
 | 17 | 2026-10-11 | Stock físico construido en el backend: un concepto nuevo en el modelo conceptual (AlertaDeConciliacion) y los siete del stock físico sin la marca de planificados; diagramas de secuencia del sistema de CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279; 9 operaciones nuevas en el catálogo y 5 contratos nuevos. | Nahuel Wagner |
+| 18 | 2026-10-11 | Compras construidas en el backend: diagramas de secuencia del sistema de CU-214 a CU-217, CU-261 a CU-263 y CU-280 a CU-288, catálogo de 329 operaciones y contratos de las compras al día (tres nuevos: modificar una orden, cerrarla con faltante y marcar el pago de una recepción); los cinco conceptos de compras salen de planificados y el costo promedio queda como atributo del Producto. | Nahuel Wagner |
 
 ---
 
@@ -354,10 +364,10 @@ lista es la fuente de esa otra, no un conjunto aparte de ejemplos sueltos.
 | Organizaciones | Distribuidora |
 | Personas | Usuario |
 | Roles de las personas | Cliente, Chofer, Administrador, Empleado § |
-| Descripciones o catálogos de especificación | Producto, Rol, TipoAccionAuditoria ¶, PlanMantenimiento, Proveedor §, PuestoDeTrabajo §, CategoriaDeCaja §, CuentaCorriente § |
+| Descripciones o catálogos de especificación | Producto, Rol, TipoAccionAuditoria ¶, PlanMantenimiento, Proveedor, PuestoDeTrabajo §, CategoriaDeCaja §, CuentaCorriente § |
 | Objetos físicos o tangibles | Envase, Vehiculo, UbicacionGPS, Neumatico §, Deposito, Caja § |
-| Transacciones | Pedido, Carrito, Pago, OrdenDeCompra §, RecepcionDeCompra §, AjusteDeStock, CargaDeCamion §, RendicionChofer §, LiquidacionComisiones § |
-| Líneas de transacción | ItemPedido, ItemCarrito, ItemSugerido, ParadaLote, DetalleAuditoria ¶, ItemOrdenDeCompra §, ItemRecepcion §, ItemAjusteDeStock, ItemCarga §, PedidoRendido §, GastoDeRendicion §, ImputacionCuentaCorriente § |
+| Transacciones | Pedido, Carrito, Pago, OrdenDeCompra, RecepcionDeCompra, AjusteDeStock, CargaDeCamion §, RendicionChofer §, LiquidacionComisiones § |
+| Líneas de transacción | ItemPedido, ItemCarrito, ItemSugerido, ParadaLote, DetalleAuditoria ¶, ItemOrdenDeCompra, ItemRecepcion, ItemAjusteDeStock, ItemCarga §, PedidoRendido §, GastoDeRendicion §, ImputacionCuentaCorriente § |
 | Registros de transacciones o eventos | MovimientoEnvase, CambioEstadoPedido, CambioDireccion, AsientoAuditoria, Auditoria ¶, RevisionEnvase, RegistroUsoVehiculo, AdjuntoTarea, CargaCombustible §, MovimientoNeumatico §, MovimientoDeStock, JornadaDeTrabajo §, Adjunto, MovimientoDeCaja §, AsientoCuentaCorriente §, AsientoComision §, SaldoDeStock |
 | Lugares | DireccionEntrega, ZonaCobertura, UbicacionDeStock |
 | Reglas y políticas | Promocion, ConfiguracionModulo, FranjaHoraria, UmbralDeStock, ReglaComision § |
@@ -386,12 +396,12 @@ mayoría de los demás conceptos.
 
 Los conceptos se organizan en **trece contextos**, que son las áreas del negocio que los
 definen y los modifican. Los marcados con † se incorporaron el 24/09/2026 para que el
-modelo contenga los 278 casos de uso, incluidos los planificados.
+modelo contenga los 287 casos de uso, incluidos los planificados.
 Los marcados con ‡ se agregaron el 30/09/2026, al contrastar el modelo con la base de
 datos. Los marcados con ¶ se incorporaron el 06/10/2026 con la auditoría de datos del modelo de la cátedra (Auditoria, DetalleAuditoria y TipoAccionAuditoria), ya implementada.
 Los marcados con § se incorporaron el 03/10/2026 con los módulos de gestión de la distribuidora
 —personal (I-11), flota ampliada (I-12), stock y compras (I-13) y caja y rendición (I-14)—: sus tablas todavía no
-están en la base, salvo las de puestos y legajos del personal y las del stock físico (depósitos, ubicaciones, saldos, libro de movimientos, ajustes y umbrales), que ya están construidas y por eso sus conceptos ya no llevan la marca. El Símbolo repite siempre el nombre del Concepto, salvo que se indique lo contrario.
+están en la base, salvo las de puestos y legajos del personal, las del stock físico (depósitos, ubicaciones, saldos, libro de movimientos, ajustes y umbrales) y las de las compras (proveedores, órdenes y recepciones), que ya están construidas y por eso sus conceptos ya no llevan la marca. El Símbolo repite siempre el nombre del Concepto, salvo que se indique lo contrario.
 
 | # | Descripción del Concepto | Símbolo | Intención | Extensión | Contexto |
 |---|----------|---------|-----------|-----------|----------|
@@ -460,11 +470,11 @@ están en la base, salvo las de puestos y legajos del personal y las del stock f
 | 63 | **ItemAjusteDeStock** | ItemAjusteDeStock | Diferencia de un tipo de garrafa y condición dentro de un ajuste. | Cada renglón de cada ajuste. | Stock físico y carga del camión |
 | 64 | **CargaDeCamion** § | CargaDeCamion | Hoja de carga: el turno de un camión, desde que sale cargado del depósito hasta que se rinde. | Una por camión y jornada. | Stock físico y carga del camión |
 | 65 | **ItemCarga** § | ItemCarga | Por tipo de garrafa, lo que se cargó, repuso, entregó, declaró al regreso y la diferencia. | Cada renglón de cada hoja de carga. | Stock físico y carga del camión |
-| 66 | **Proveedor** § | Proveedor | Empresa a la que la distribuidora le compra, principalmente una planta de llenado. | Cada proveedor dado de alta. | Compras |
-| 67 | **OrdenDeCompra** § | OrdenDeCompra | Pedido de garrafas a un proveedor para un depósito destino, con su ciclo de estados. | Cada orden emitida. | Compras |
-| 68 | **ItemOrdenDeCompra** § | ItemOrdenDeCompra | Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje. | Cada renglón de cada orden. | Compras |
-| 69 | **RecepcionDeCompra** § | RecepcionDeCompra | Remito de ingreso de una compra, con o sin orden, que hace entrar garrafas llenas al stock. | Cada recepción registrada. | Compras |
-| 70 | **ItemRecepcion** § | ItemRecepcion | Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta y el costo real. | Cada renglón de cada recepción. | Compras |
+| 66 | **Proveedor** | Proveedor | Empresa a la que la distribuidora le compra, principalmente una planta de llenado. | Cada proveedor dado de alta. | Compras |
+| 67 | **OrdenDeCompra** | OrdenDeCompra | Pedido de garrafas a un proveedor para un depósito destino, con su ciclo de estados. | Cada orden emitida. | Compras |
+| 68 | **ItemOrdenDeCompra** | ItemOrdenDeCompra | Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje. | Cada renglón de cada orden. | Compras |
+| 69 | **RecepcionDeCompra** | RecepcionDeCompra | Remito de ingreso de una compra, con o sin orden, que hace entrar garrafas llenas al stock. | Cada recepción registrada. | Compras |
+| 70 | **ItemRecepcion** | ItemRecepcion | Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta y el costo real. | Cada renglón de cada recepción. | Compras |
 | 71 | **Caja** § | Caja | Cuenta de fondos de la distribuidora —efectivo, banco o billetera— con su saldo. | Cada caja que la distribuidora lleva, empezando por la «Caja central». | Caja y finanzas |
 | 72 | **SesionDeCaja** § | SesionDeCaja | Período de trabajo de una caja entre una apertura y un cierre con arqueo. | Cada apertura y cierre de una caja de efectivo. | Caja y finanzas |
 | 73 | **CategoriaDeCaja** § | CategoriaDeCaja | Clasificación de los ingresos y de los gastos de caja, propia o de sistema. | Las categorías de sistema sembradas y las que define cada distribuidora. | Caja y finanzas |
@@ -1010,11 +1020,12 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **Proveedor** | plazo de pago: Días de plazo que da el proveedor. |
 | **Proveedor** | activo: Si está en uso. |
 | **OrdenDeCompra** | número: Número correlativo por distribuidora. |
-| **OrdenDeCompra** | estado: Borrador, enviada, parcialmente recibida, recibida o cancelada. |
+| **OrdenDeCompra** | estado: Borrador, enviada, parcialmente recibida, recibida, cerrada con faltante o cancelada. |
 | **OrdenDeCompra** | emitida el: Cuándo se envió. |
 | **OrdenDeCompra** | fecha esperada: Cuándo se espera la mercadería. |
 | **OrdenDeCompra** | total: Suma de cantidad por costo de los renglones. |
 | **OrdenDeCompra** | motivo de cancelación: Por qué se canceló. |
+| **OrdenDeCompra** | motivo de cierre: Por qué se cerró con faltante. |
 | **OrdenDeCompra** | notas: Observaciones. |
 | **ItemOrdenDeCompra** | cantidad: Unidades pedidas. |
 | **ItemOrdenDeCompra** | costo unitario: Costo esperado por unidad. |
@@ -1028,11 +1039,15 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **RecepcionDeCompra** | estado de pago: Impago o pagado. |
 | **RecepcionDeCompra** | estado: Confirmada o anulada. |
 | **RecepcionDeCompra** | motivo de anulación: Por qué se anuló. |
+| **RecepcionDeCompra** | anulada el: Cuándo se anuló. |
+| **RecepcionDeCompra** | notas: Observaciones. |
 | **ItemRecepcion** | llenas recibidas: Llenas que llegaron. |
 | **ItemRecepcion** | vacías entregadas: Vacías que se llevó la planta. |
 | **ItemRecepcion** | costo unitario: Costo real por unidad. |
+| **ItemRecepcion** | costo promedio previo: Costo promedio de la garrafa justo antes de la recepción, que la anulación restituye. |
+| **ItemRecepcion** | existencia previa: Llenas que había en depósitos y camiones justo antes de la recepción. |
 | **ConfiguracionModulo** | exigir carga de camión abierta: Si la distribuidora exige que un chofer tenga una carga de camión abierta para recibir pedidos; viene apagado (planificado, I-13). |
-| **Producto** | costo promedio: Costo promedio ponderado de la garrafa, que se recalcula con cada recepción de compra (planificado, I-13). |
+| **Producto** | costo promedio: Costo promedio ponderado de la garrafa, que se recalcula con cada recepción de compra y vuelve a su valor anterior si se anula la última. |
 | **Caja** | nombre: Nombre de la caja. |
 | **Caja** | tipo: Efectivo, banco o billetera. |
 | **Caja** | saldo: Dinero que tiene la caja según su libro. |
@@ -1187,7 +1202,7 @@ cinco tipos y el concepto abstracto no se instancia.
 
 ![Modelo conceptual: compras](diagramas/modelo-conceptual/MC_Compras.png)
 
-**Figura 1.11 — Modelo conceptual: compras (planificado, I-13)**
+**Figura 1.11 — Modelo conceptual: compras**
 
 ![Modelo conceptual: caja y movimientos](diagramas/modelo-conceptual/MC_Caja.png)
 
@@ -8341,7 +8356,7 @@ sequenceDiagram
 
 **Actor:** ninguno directo (caso incluido)
 
-Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274 y CU-276, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
+Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274, CU-276 y CU-280, y su operación forma parte del diagrama de secuencia de cada uno de ellos (caso base).
 
 ---
 
@@ -8350,7 +8365,7 @@ Caso incluido: no tiene diagrama de secuencia propio. Lo inician CU-212, CU-213,
 #### DSS — CU-214: Consultar los Proveedores
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `consultarProveedores(termino)`
+**Operaciones del sistema:** `consultarProveedores(termino, tipo, incluirInactivos)`, `consultarProveedor(proveedorId)`
 
 ```mermaid
 sequenceDiagram
@@ -8359,16 +8374,32 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: consultarProveedores(termino)
-    activate SIS
-    SIS-->>ADM: proveedores vigentes
-    deactivate SIS
+    opt listado de proveedores
+        ADM->>SIS: consultarProveedores(termino, tipo, incluirInactivos)
+        activate SIS
+        alt los filtros son válidos
+            SIS-->>ADM: proveedores de la distribuidora, con el total
+        else un filtro es inválido
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
+        end
+        deactivate SIS
+    end
+
+    opt ficha de un proveedor
+        ADM->>SIS: consultarProveedor(proveedorId)
+        activate SIS
+        alt el proveedor existe en la distribuidora
+            SIS-->>ADM: proveedor
+        else el proveedor no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
 ```
 
 **Figura 220 — DSS CU-214: Consultar los Proveedores**
 
 ---
-
 
 #### DSS — CU-261: Registrar un Proveedor
 
@@ -8384,10 +8415,12 @@ sequenceDiagram
 
     ADM->>SIS: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
     activate SIS
-    alt el CUIT está libre
+    alt los datos son válidos y el CUIT está libre
         SIS-->>ADM: proveedor creado
+    else el CUIT o un dato es inválido
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
     else el CUIT ya pertenece a un proveedor vigente
-        SIS-->>ADM: conflicto, con el detalle del campo
+        SIS-->>ADM: conflicto, con el proveedor que lo tiene
     end
     deactivate SIS
 ```
@@ -8395,7 +8428,6 @@ sequenceDiagram
 **Figura 221 — DSS CU-261: Registrar un Proveedor**
 
 ---
-
 
 #### DSS — CU-262: Modificar un Proveedor
 
@@ -8411,10 +8443,14 @@ sequenceDiagram
 
     ADM->>SIS: actualizarProveedor(proveedorId, datos)
     activate SIS
-    alt el proveedor existe
+    alt el proveedor existe y los datos son válidos
         SIS-->>ADM: proveedor actualizado
     else el proveedor no existe
         SIS-->>ADM: recurso no encontrado
+    else el CUIT nuevo es inválido
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    else el CUIT nuevo ya pertenece a un proveedor vigente
+        SIS-->>ADM: conflicto
     end
     deactivate SIS
 ```
@@ -8422,7 +8458,6 @@ sequenceDiagram
 **Figura 222 — DSS CU-262: Modificar un Proveedor**
 
 ---
-
 
 #### DSS — CU-263: Dar de Baja un Proveedor
 
@@ -8438,7 +8473,13 @@ sequenceDiagram
 
     ADM->>SIS: darDeBajaProveedor(proveedorId)
     activate SIS
-    SIS-->>ADM: baja confirmada
+    alt el proveedor no tiene órdenes abiertas
+        SIS-->>ADM: baja confirmada
+    else el proveedor no existe
+        SIS-->>ADM: recurso no encontrado
+    else el proveedor tiene órdenes abiertas
+        SIS-->>ADM: conflicto, con la cantidad de órdenes
+    end
     deactivate SIS
 ```
 
@@ -8446,10 +8487,38 @@ sequenceDiagram
 
 ---
 
+#### DSS — CU-286: Consultar el Historial de Compras de un Proveedor
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarHistorialDeCompras(proveedorId, desde, hasta)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-286 Consultar el Historial de Compras de un Proveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarHistorialDeCompras(proveedorId, desde, hasta)
+    activate SIS
+    alt el proveedor existe y el rango es válido
+        SIS-->>ADM: totales de compras y recepciones del proveedor
+    else el proveedor no existe
+        SIS-->>ADM: recurso no encontrado
+    else el rango es inválido
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+```
+
+**Figura 224 — DSS CU-286: Consultar el Historial de Compras de un Proveedor**
+
+---
+
 #### DSS — CU-215: Emitir una Orden de Compra
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)`, `enviarOrdenDeCompra(ordenId)`, `consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)`
+**Operaciones del sistema:** `emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)`
 
 ```mermaid
 sequenceDiagram
@@ -8458,39 +8527,75 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt preparación de la orden
-        ADM->>SIS: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
-        activate SIS
-        alt los datos son válidos
-            SIS-->>ADM: orden en borrador, con su número
-        else un renglón es inválido
-            SIS-->>ADM: solicitud inválida, con el detalle del campo
-        else el proveedor o el depósito no existe
-            SIS-->>ADM: recurso no encontrado
-        end
-        deactivate SIS
+    ADM->>SIS: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
+    activate SIS
+    alt los datos son válidos
+        SIS-->>ADM: orden en borrador, con su número y su total
+    else el proveedor, el depósito o una garrafa no existen
+        SIS-->>ADM: recurso no encontrado
+    else un renglón es inválido o el proveedor está inactivo
+        SIS-->>ADM: solicitud inválida, con el detalle
     end
-
-    opt envío de la orden
-        ADM->>SIS: enviarOrdenDeCompra(ordenId)
-        activate SIS
-        alt la orden está en borrador
-            SIS-->>ADM: orden enviada
-        else la orden ya no está en borrador
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
-    end
-
-    opt consulta de las órdenes
-        ADM->>SIS: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
-        activate SIS
-        SIS-->>ADM: órdenes de compra
-        deactivate SIS
-    end
+    deactivate SIS
 ```
 
-**Figura 224 — DSS CU-215: Emitir una Orden de Compra**
+**Figura 225 — DSS CU-215: Emitir una Orden de Compra**
+
+---
+
+#### DSS — CU-287: Modificar una Orden de Compra
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `modificarOrdenDeCompra(ordenId, datos)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-287 Modificar una Orden de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarOrdenDeCompra(ordenId, datos)
+    activate SIS
+    alt la orden existe y está en borrador
+        SIS-->>ADM: orden actualizada
+    else la orden no existe
+        SIS-->>ADM: recurso no encontrado
+    else la orden ya no está en borrador o un dato es inválido
+        SIS-->>ADM: solicitud inválida, con el detalle
+    end
+    deactivate SIS
+```
+
+**Figura 226 — DSS CU-287: Modificar una Orden de Compra**
+
+---
+
+#### DSS — CU-288: Enviar una Orden de Compra
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `enviarOrdenDeCompra(ordenId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-288 Enviar una Orden de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: enviarOrdenDeCompra(ordenId)
+    activate SIS
+    alt la orden está en borrador
+        SIS-->>ADM: orden enviada
+    else la orden no existe
+        SIS-->>ADM: recurso no encontrado
+    else la orden no está en borrador
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+```
+
+**Figura 227 — DSS CU-288: Enviar una Orden de Compra**
 
 ---
 
@@ -8508,24 +8613,104 @@ sequenceDiagram
 
     ADM->>SIS: cancelarOrdenDeCompra(ordenId, motivo)
     activate SIS
-    alt la orden no tiene recepciones
+    alt la orden está en borrador o enviada y no tiene recepciones
         SIS-->>ADM: orden cancelada
-    else la orden tiene recepciones o ya está cerrada
-        SIS-->>ADM: conflicto
     else la orden no existe
         SIS-->>ADM: recurso no encontrado
+    else la orden tiene recepciones confirmadas
+        SIS-->>ADM: conflicto
+    else la orden ya está cerrada o falta el motivo
+        SIS-->>ADM: solicitud inválida
     end
     deactivate SIS
 ```
 
-**Figura 225 — DSS CU-216: Cancelar una Orden de Compra**
+**Figura 228 — DSS CU-216: Cancelar una Orden de Compra**
+
+---
+
+#### DSS — CU-282: Cerrar una Orden de Compra con Faltante
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `cerrarOrdenDeCompraConFaltante(ordenId, motivo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-282 Cerrar una Orden de Compra con Faltante
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
+    activate SIS
+    alt la orden está parcialmente recibida
+        SIS-->>ADM: orden cerrada con faltante
+    else la orden no existe
+        SIS-->>ADM: recurso no encontrado
+    else la orden no está parcialmente recibida o falta el motivo
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+```
+
+**Figura 229 — DSS CU-282: Cerrar una Orden de Compra con Faltante**
+
+---
+
+#### DSS — CU-283: Consultar las Órdenes de Compra
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)`, `consultarOrdenDeCompra(ordenId)`, `consultarPendienteDeRecibir(ordenId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-283 Consultar las Órdenes de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt listado de órdenes
+        ADM->>SIS: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+        activate SIS
+        alt los filtros son válidos
+            SIS-->>ADM: órdenes de compra, con lo pedido, lo recibido y lo pendiente
+        else un filtro es inválido
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
+        end
+        deactivate SIS
+    end
+
+    opt detalle de una orden
+        ADM->>SIS: consultarOrdenDeCompra(ordenId)
+        activate SIS
+        alt la orden existe en la distribuidora
+            SIS-->>ADM: orden con sus renglones y sus recepciones
+        else la orden no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt pendiente de recibir
+        ADM->>SIS: consultarPendienteDeRecibir(ordenId)
+        activate SIS
+        alt la orden existe en la distribuidora
+            SIS-->>ADM: pendiente de cada garrafa y total pendiente
+        else la orden no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+```
+
+**Figura 230 — DSS CU-283: Consultar las Órdenes de Compra**
 
 ---
 
 #### DSS — CU-217: Registrar la Recepción de una Compra
 
 **Actor:** Administrador (ACT-03)
-**Operaciones del sistema:** `registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)`, `anularRecepcionDeCompra(recepcionId, motivo)`, `consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)`
+**Operaciones del sistema:** `registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)`
 
 ```mermaid
 sequenceDiagram
@@ -8534,43 +8719,140 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    opt recepción de una compra
-        ADM->>SIS: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
+    ADM->>SIS: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
+    activate SIS
+    alt la recepción es válida
+        SIS-->>ADM: recepción registrada
+    else la orden, el proveedor, el depósito o una garrafa no existen
+        SIS-->>ADM: recurso no encontrado
+    else el comprobante ya se registró para el proveedor
+        SIS-->>ADM: conflicto
+    else un renglón es inválido, la orden no admite recepciones, la recepción se pasa de lo pendiente o los vacíos superan el saldo
+        SIS-->>ADM: solicitud inválida, con el detalle
+    end
+    deactivate SIS
+```
+
+**Figura 231 — DSS CU-217: Registrar la Recepción de una Compra**
+
+---
+
+#### DSS — CU-280: Anular una Recepción de Compra
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `anularRecepcionDeCompra(recepcionId, motivo)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-280 Anular una Recepción de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularRecepcionDeCompra(recepcionId, motivo)
+    activate SIS
+    alt la recepción está confirmada, no está pagada y las llenas siguen en el depósito
+        SIS-->>ADM: recepción anulada
+    else la recepción no existe
+        SIS-->>ADM: recurso no encontrado
+    else la recepción ya está anulada o las llenas ya no están en el depósito
+        SIS-->>ADM: conflicto, con el detalle
+    else la recepción figura como pagada o falta el motivo
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+```
+
+**Figura 232 — DSS CU-280: Anular una Recepción de Compra**
+
+---
+
+#### DSS — CU-281: Marcar el Pago de una Recepción
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `marcarPagoDeRecepcion(recepcionId, estadoDePago)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-281 Marcar el Pago de una Recepción
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: marcarPagoDeRecepcion(recepcionId, estadoDePago)
+    activate SIS
+    alt la recepción está confirmada
+        SIS-->>ADM: recepción con su estado de pago
+    else la recepción no existe
+        SIS-->>ADM: recurso no encontrado
+    else la recepción está anulada o el estado de pago es inválido
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+```
+
+**Figura 233 — DSS CU-281: Marcar el Pago de una Recepción**
+
+---
+
+#### DSS — CU-284: Consultar las Recepciones de Compra
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)`, `consultarRecepcionDeCompra(recepcionId)`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-284 Consultar las Recepciones de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt listado de recepciones
+        ADM->>SIS: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
         activate SIS
-        alt la recepción es válida
-            SIS-->>ADM: recepción registrada
-        else el comprobante ya se registró para el proveedor
-            SIS-->>ADM: conflicto
-        else los vacíos entregados superan el saldo del depósito
-            SIS-->>ADM: solicitud inválida, con el saldo disponible
-        else la orden no existe
+        alt los filtros son válidos
+            SIS-->>ADM: recepciones de compra, con su total y su estado de pago
+        else un filtro es inválido
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
+        end
+        deactivate SIS
+    end
+
+    opt detalle de una recepción
+        ADM->>SIS: consultarRecepcionDeCompra(recepcionId)
+        activate SIS
+        alt la recepción existe en la distribuidora
+            SIS-->>ADM: recepción con sus renglones
+        else la recepción no existe
             SIS-->>ADM: recurso no encontrado
-        else la orden está cancelada o ya recibida por completo
-            SIS-->>ADM: conflicto
         end
-        deactivate SIS
-    end
-
-    opt anulación de una recepción
-        ADM->>SIS: anularRecepcionDeCompra(recepcionId, motivo)
-        activate SIS
-        alt el depósito todavía tiene lo ingresado
-            SIS-->>ADM: recepción anulada
-        else el depósito ya no tiene lo ingresado
-            SIS-->>ADM: conflicto
-        end
-        deactivate SIS
-    end
-
-    opt consulta de las recepciones
-        ADM->>SIS: consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)
-        activate SIS
-        SIS-->>ADM: recepciones de compra
         deactivate SIS
     end
 ```
 
-**Figura 226 — DSS CU-217: Registrar la Recepción de una Compra**
+**Figura 234 — DSS CU-284: Consultar las Recepciones de Compra**
+
+---
+
+#### DSS — CU-285: Consultar el Costo Promedio de las Garrafas
+
+**Actor:** Administrador (ACT-03)
+**Operaciones del sistema:** `consultarCostoPromedio()`
+
+```mermaid
+sequenceDiagram
+    title DSS — CU-285 Consultar el Costo Promedio de las Garrafas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCostoPromedio()
+    activate SIS
+    SIS-->>ADM: costo promedio, último costo y llenas de cada tipo de garrafa
+    deactivate SIS
+```
+
+**Figura 235 — DSS CU-285: Consultar el Costo Promedio de las Garrafas**
 
 ---
 
@@ -8598,7 +8880,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 227 — DSS CU-225: Crear una Caja**
+**Figura 236 — DSS CU-225: Crear una Caja**
 
 ---
 
@@ -8625,7 +8907,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 228 — DSS CU-264: Modificar una Caja**
+**Figura 237 — DSS CU-264: Modificar una Caja**
 
 ---
 
@@ -8653,7 +8935,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 229 — DSS CU-226: Abrir la Caja**
+**Figura 238 — DSS CU-226: Abrir la Caja**
 
 ---
 
@@ -8681,7 +8963,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 230 — DSS CU-227: Cerrar la Caja con Arqueo**
+**Figura 239 — DSS CU-227: Cerrar la Caja con Arqueo**
 
 ---
 
@@ -8718,7 +9000,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 231 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
+**Figura 240 — DSS CU-228: Registrar un Ingreso o Egreso de Caja**
 
 ---
 
@@ -8744,7 +9026,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 232 — DSS CU-229: Anular un Movimiento de Caja**
+**Figura 241 — DSS CU-229: Anular un Movimiento de Caja**
 
 ---
 
@@ -8770,7 +9052,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 233 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
+**Figura 242 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
 
 ---
 
@@ -8797,7 +9079,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 234 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
+**Figura 243 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
 
 ---
 
@@ -8829,7 +9111,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 235 — DSS CU-231: Generar la Rendición Diaria del Chofer**
+**Figura 244 — DSS CU-231: Generar la Rendición Diaria del Chofer**
 
 ---
 
@@ -8871,7 +9153,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 236 — DSS CU-232: Declarar el Efectivo Rendido**
+**Figura 245 — DSS CU-232: Declarar el Efectivo Rendido**
 
 ---
 
@@ -8912,7 +9194,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 237 — DSS CU-233: Aprobar la Rendición del Chofer**
+**Figura 246 — DSS CU-233: Aprobar la Rendición del Chofer**
 
 ---
 
@@ -8944,7 +9226,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 238 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
+**Figura 247 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
 
 ---
 
@@ -8981,7 +9263,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 239 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
+**Figura 248 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
 
 ---
 
@@ -9021,7 +9303,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 240 — DSS CU-236: Vender a Cuenta Corriente**
+**Figura 249 — DSS CU-236: Vender a Cuenta Corriente**
 
 ---
 
@@ -9068,7 +9350,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 241 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
+**Figura 250 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
 
 ---
 
@@ -9094,7 +9376,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 242 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
+**Figura 251 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
 
 ---
 
@@ -9116,7 +9398,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 243 — DSS CU-239: Consultar la Antigüedad de la Deuda**
+**Figura 252 — DSS CU-239: Consultar la Antigüedad de la Deuda**
 
 ---
 
@@ -9153,7 +9435,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 244 — DSS CU-240: Configurar las Comisiones por Entrega**
+**Figura 253 — DSS CU-240: Configurar las Comisiones por Entrega**
 
 ---
 
@@ -9181,7 +9463,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 245 — DSS CU-241: Registrar la Comisión de una Entrega**
+**Figura 254 — DSS CU-241: Registrar la Comisión de una Entrega**
 
 ---
 
@@ -9225,7 +9507,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 246 — DSS CU-242: Liquidar las Comisiones de un Chofer**
+**Figura 255 — DSS CU-242: Liquidar las Comisiones de un Chofer**
 
 ---
 
@@ -9253,7 +9535,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 247 — DSS CU-243: Registrar el Pago de una Liquidación**
+**Figura 256 — DSS CU-243: Registrar el Pago de una Liquidación**
 
 ---
 
@@ -9275,7 +9557,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 248 — DSS CU-244: Consultar Mis Comisiones**
+**Figura 257 — DSS CU-244: Consultar Mis Comisiones**
 
 ---
 
@@ -9297,7 +9579,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 249 — DSS CU-245: Consultar el Tablero Financiero**
+**Figura 258 — DSS CU-245: Consultar el Tablero Financiero**
 
 ---
 
@@ -9369,7 +9651,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 250 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 259 — DSS CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 ---
 
@@ -9406,7 +9688,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 251 — DSS CU-106: Anticipar la recompra por consumo estimado**
+**Figura 260 — DSS CU-106: Anticipar la recompra por consumo estimado**
 
 ---
 
@@ -9448,7 +9730,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 252 — DSS CU-107: Agrupar pedidos por recorrido**
+**Figura 261 — DSS CU-107: Agrupar pedidos por recorrido**
 
 ---
 
@@ -9498,7 +9780,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 253 — DSS CU-108: Recuperar envases no devueltos**
+**Figura 262 — DSS CU-108: Recuperar envases no devueltos**
 
 ---
 
@@ -9531,7 +9813,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 254 — DSS CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 263 — DSS CU-043: Modificar Capacidad de Franja Horaria**
 
 ---
 
@@ -9543,7 +9825,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 
 Una operación del sistema es un mensaje que un actor le manda al sistema y que aparece como tal en un diagrama de secuencia de §2.1. El catálogo reúne **todas** las operaciones, cada una con una única firma: la que usan los diagramas de secuencia de §2.1, los contratos de esta sección y los diagramas de interacción del Documento 3. Los parámetros llevan su tipo; los diagramas de secuencia usan la misma firma sin los tipos, para no recargar el dibujo.
 
-Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrato; las **120** restantes no modifican nada y por eso no llevan contrato.
+Son **329 operaciones**. **203** modifican el modelo conceptual y tienen contrato; las **126** restantes no modifican nada y por eso no llevan contrato.
 
 | Operación | Casos de uso | Actor iniciador | Cambia estado |
 |---|---|---|---|
@@ -9575,7 +9857,7 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `anularLiquidacion(liquidacionId identificador)` | CU-242 | Administrador (ACT-03) | Sí |
 | `anularMovimientoDeCaja(movimientoId identificador, motivo cadena)` | CU-229 | Administrador (ACT-03) | Sí |
 | `anularMultaDeTransito(multaId identificador, motivo cadena)` | CU-198 | Administrador (ACT-03) | Sí |
-| `anularRecepcionDeCompra(recepcionId identificador, motivo cadena)` | CU-217 | Administrador (ACT-03) | Sí |
+| `anularRecepcionDeCompra(recepcionId identificador, motivo cadena)` | CU-280 | Administrador (ACT-03) | Sí |
 | `anularTransferenciaDeStock(loteId identificador, nota cadena)` | CU-276 | Administrador (ACT-03) | Sí |
 | `aprobarLicencia(licenciaId identificador)` | CU-192 | Administrador (ACT-03) | Sí |
 | `aprobarLiquidacion(liquidacionId identificador)` | CU-242 | Administrador (ACT-03) | Sí |
@@ -9605,6 +9887,7 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `cancelarPedido(pedidoId identificador, motivo cadena)` | CU-008, CU-010 | Cliente (ACT-01), Administrador (ACT-03) | Sí |
 | `cancelarPedidoForzado(pedidoId identificador)` | CU-010 | Administrador (ACT-03) | Sí |
 | `cerrarCajaConArqueo(sesionId identificador, montoContado moneda)` | CU-227 | Administrador (ACT-03) | Sí |
+| `cerrarOrdenDeCompraConFaltante(ordenId identificador, motivo cadena)` | CU-282 | Administrador (ACT-03) | Sí |
 | `cerrarRendicionDeStock(cargaId identificador, nota cadena)` | CU-222 | Administrador (ACT-03) | Sí |
 | `cerrarSiniestro(siniestroId identificador, costoDeReparacion moneda, reintegroDelSeguro moneda, franquicia moneda)` | CU-202 | Administrador (ACT-03) | Sí |
 | `cerrarTareaDeFlota(tareaId identificador, fecha fecha, kilometraje entero, costo moneda, observacion cadena)` | CU-141 | Administrador (ACT-03) | Sí |
@@ -9634,6 +9917,7 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `consultarConciliacionDeStock()` | CU-224 | Administrador (ACT-03) | No |
 | `consultarConsumoDeCombustible(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-196 | Administrador (ACT-03) | No |
 | `consultarCostoDeUnVehiculo(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-203 | Administrador (ACT-03) | No |
+| `consultarCostoPromedio()` | CU-285 | Administrador (ACT-03) | No |
 | `consultarDeposito(depositoId identificador)` | CU-207 | Administrador (ACT-03) | No |
 | `consultarDepositos(incluirInactivos booleano)` | CU-207 | Administrador (ACT-03) | No |
 | `consultarDetalleDelChofer(choferId identificador)` | CU-035, CU-109 | Administrador (ACT-03) | No |
@@ -9656,6 +9940,7 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `consultarGraficoDeVentas()` | CU-026 | Administrador (ACT-03) | No |
 | `consultarHistorialDeCalificaciones(usuarioId identificador)` | CU-066 | Administrador (ACT-03) | No |
 | `consultarHistorialDeChoferesDelVehiculo(vehiculoId identificador, pagina entero)` | CU-165 | Administrador (ACT-03) | No |
+| `consultarHistorialDeCompras(proveedorId identificador, desde fecha, hasta fecha)` | CU-286 | Administrador (ACT-03) | No |
 | `consultarHistorialDeEstados(pedidoId identificador)` | CU-170 | Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05) | No |
 | `consultarHistorialDelEnvase(envaseId identificador)` | CU-071 | Administrador (ACT-03) | No |
 | `consultarHistorialDePedidos(clienteId identificador, pagina entero, limite entero)` | CU-007 | Cliente (ACT-01) | No |
@@ -9667,19 +9952,23 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `consultarModalidadesDeEntrega(direccionId identificador)` | CU-148 | Cliente (ACT-01) | No |
 | `consultarMovimientosDeStock(productoId identificador, ubicacionId identificador, motivo cadena, desde fechaHora, hasta fechaHora, pagina entero)` | CU-209 | Administrador (ACT-03) | No |
 | `consultarMultasDeTransito(filtros registro)` | CU-198 | Administrador (ACT-03) | No |
-| `consultarOrdenesDeCompra(estado cadena, proveedorId identificador, desde fechaHora, hasta fechaHora)` | CU-215 | Administrador (ACT-03) | No |
+| `consultarOrdenDeCompra(ordenId identificador)` | CU-283 | Administrador (ACT-03) | No |
+| `consultarOrdenesDeCompra(estado cadena, proveedorId identificador, desde fecha, hasta fecha)` | CU-283 | Administrador (ACT-03) | No |
 | `consultarPedido(pedidoId identificador)` | CU-006 | Cliente (ACT-01) | No |
 | `consultarPedidosAsignados(choferId identificador, pagina entero, limite entero)` | CU-081 | Chofer (ACT-02) | No |
 | `consultarPedidosDisponibles(pagina entero, limite entero)` | CU-080 | Chofer (ACT-02) | No |
+| `consultarPendienteDeRecibir(ordenId identificador)` | CU-283 | Administrador (ACT-03) | No |
 | `consultarPerfil(usuarioId identificador)` | CU-004 | Cliente (ACT-01) | No |
 | `consultarPerfilCliente(usuarioId identificador)` | CU-004 | Cliente (ACT-01) | No |
 | `consultarPerfilDelChofer(usuarioId identificador)` | CU-049 | Chofer (ACT-02) | No |
 | `consultarProducto(productoId identificador)` | CU-041 | Cliente (ACT-01) | No |
 | `consultarProductosDisponibles(distribuidora cadena)` | CU-041 | Cliente (ACT-01) | No |
 | `consultarProductosInactivos()` | CU-269 | Administrador (ACT-03) | No |
-| `consultarProveedores(termino cadena)` | CU-214 | Administrador (ACT-03) | No |
+| `consultarProveedor(proveedorId identificador)` | CU-214 | Administrador (ACT-03) | No |
+| `consultarProveedores(termino cadena, tipo cadena, incluirInactivos booleano)` | CU-214 | Administrador (ACT-03) | No |
 | `consultarPuestosDeTrabajo()` | CU-176 | Administrador (ACT-03) | No |
-| `consultarRecepcionesDeCompra(proveedorId identificador, desde fechaHora, hasta fechaHora, estadoDePago cadena)` | CU-217 | Administrador (ACT-03) | No |
+| `consultarRecepcionDeCompra(recepcionId identificador)` | CU-284 | Administrador (ACT-03) | No |
+| `consultarRecepcionesDeCompra(proveedorId identificador, ordenId identificador, estadoDePago cadena, estado cadena, desde fecha, hasta fecha)` | CU-284 | Administrador (ACT-03) | No |
 | `consultarRecomprasEstimadas(dias entero)` | CU-146 | Administrador (ACT-03) | No |
 | `consultarResumenDeCalificaciones(usuarioId identificador)` | CU-065 | Cliente (ACT-01) | No |
 | `consultarResumenDePedidos()` | CU-026 | Administrador (ACT-03) | No |
@@ -9741,7 +10030,7 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `eliminarZonaDeCobertura(zonaId identificador)` | CU-059 | Administrador (ACT-03) | Sí |
 | `emitirOrdenDeCompra(proveedorId identificador, depositoId identificador, items lista, fechaEsperada fecha)` | CU-215 | Administrador (ACT-03) | Sí |
 | `enviarNotificacionDePrueba(token cadena, titulo cadena, mensaje cadena)` | CU-100 | Administrador General (ACT-05) | No |
-| `enviarOrdenDeCompra(ordenId identificador)` | CU-215 | Administrador (ACT-03) | Sí |
+| `enviarOrdenDeCompra(ordenId identificador)` | CU-288 | Administrador (ACT-03) | Sí |
 | `expirarPedidosSinPagar()` | CU-077 | Sistema Automático (ACT-04) | Sí |
 | `expirarReservasSinSenia()` | CU-076 | Sistema Automático (ACT-04) | Sí |
 | `generarRendicionesDelDia()` | CU-231 | Sistema Automático (ACT-04) | Sí |
@@ -9771,6 +10060,7 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `listarZonasDeCobertura()` | CU-057 | Administrador (ACT-03) | No |
 | `marcarDepositoPredeterminado(depositoId identificador)` | CU-273 | Administrador (ACT-03) | Sí |
 | `marcarDireccionPredeterminada(direccionId identificador)` | CU-046, CU-120 | Cliente (ACT-01) | Sí |
+| `marcarPagoDeRecepcion(recepcionId identificador, estadoDePago cadena)` | CU-281 | Administrador (ACT-03) | Sí |
 | `marcarPedidoEnCamino(pedidoId identificador)` | CU-018 | Chofer (ACT-02) | Sí |
 | `modificarCaja(cajaId identificador, datos registro)` | CU-264 | Administrador (ACT-03) | Sí |
 | `modificarCantidadDelItem(itemId identificador, cantidad entero)` | CU-123 | Cliente (ACT-01) | Sí |
@@ -9782,6 +10072,7 @@ Son **320 operaciones**. **200** modifican el modelo conceptual y tienen contrat
 | `modificarFranjaHoraria(franjaId identificador, nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-043 | Administrador (ACT-03) | Sí |
 | `modificarLicencia(licenciaId identificador, datos registro)` | CU-191 | Administrador (ACT-03) | Sí |
 | `modificarMultaDeTransito(multaId identificador, datos registro)` | CU-198 | Administrador (ACT-03) | Sí |
+| `modificarOrdenDeCompra(ordenId identificador, datos registro)` | CU-287 | Administrador (ACT-03) | Sí |
 | `modificarPuestoDeTrabajo(puestoId identificador, datos registro)` | CU-256 | Administrador (ACT-03) | Sí |
 | `modificarReglaDeComision(reglaId identificador, datos registro)` | CU-240 | Administrador (ACT-03) | Sí |
 | `modificarSiniestro(siniestroId identificador, datos registro)` | CU-201 | Administrador (ACT-03) | Sí |
@@ -12403,14 +12694,14 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `registrarProveedor(razonSocial cadena, cuit cadena, tipo cadena, datosDeContacto registro, plazoDePago entero)` |
-| **Responsabilidades** | Dar de alta un proveedor de la distribuidora. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Dar de alta a un proveedor de la distribuidora. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-261. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | El CUIT es único entre los proveedores vigentes de la distribuidora y se valida con su dígito verificador. |
-| **Excepciones** | Si falta la distribuidora → error de solicitud. Si el CUIT es inválido → error de solicitud con el detalle del campo. Si el CUIT ya pertenece a un proveedor vigente → conflicto. |
+| **Notas** | El CUIT se valida con su dígito verificador y se guarda sin guiones. Es único entre los proveedores vigentes de la distribuidora. El proveedor nace activo. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si el CUIT o un dato no son válidos → error de solicitud con el detalle del campo. Si el CUIT ya pertenece a un proveedor vigente → conflicto. |
 | **Salida** | El proveedor creado. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El CUIT no pertenece a otro proveedor vigente. |
-| **Postcondiciones** | Se creó una instancia de Proveedor de la Distribuidora, con su razón social, CUIT, tipo, datos de contacto y plazo de pago. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. |
+| **Postcondiciones** | Se creó una instancia de Proveedor de la Distribuidora, activa, con su razón social, su CUIT, su tipo, sus datos de contacto y su plazo de pago. |
 
 ---
 
@@ -12419,14 +12710,14 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `actualizarProveedor(proveedorId identificador, datos registro)` |
-| **Responsabilidades** | Modificar los datos de un proveedor vigente. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Modificar los datos de un proveedor de la distribuidora, o activarlo y desactivarlo. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-262. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Sólo cambian los campos enviados. El CUIT sigue siendo único entre los vigentes. |
-| **Excepciones** | Si el proveedor no existe o es de otra distribuidora → recurso no encontrado. Si el CUIT ya pertenece a otro → conflicto. |
-| **Salida** | El proveedor modificado. |
+| **Notas** | Sólo cambian los campos enviados. Si cambia el CUIT, no puede pertenecer a otro proveedor vigente. Un proveedor inactivo no admite órdenes ni recepciones nuevas. |
+| **Excepciones** | Si el proveedor no existe o es de otra distribuidora → recurso no encontrado. Si el CUIT nuevo no es válido → error de solicitud; si ya pertenece a otro proveedor vigente → conflicto. |
+| **Salida** | El proveedor actualizado. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El proveedor existe y es de la distribuidora. |
-| **Postcondiciones** | El atributo razón social, CUIT, tipo, contacto, teléfono, correo, dirección o plazo de pago de la instancia de Proveedor tiene el valor enviado. |
+| **Postcondiciones** | Los atributos enviados de la instancia de Proveedor tomaron los valores nuevos. |
 
 ---
 
@@ -12435,14 +12726,14 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `darDeBajaProveedor(proveedorId identificador)` |
-| **Responsabilidades** | Dar de baja un proveedor, conservando su historial de compras. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Dar de baja a un proveedor, sin perder su historial. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-263. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | La baja es lógica: las órdenes y las recepciones ya registradas siguen apuntando al proveedor. |
-| **Excepciones** | Si el proveedor no existe o es de otra distribuidora → recurso no encontrado. |
+| **Notas** | La baja es lógica: las órdenes y las recepciones ya registradas siguen apuntando al proveedor. Sólo procede si no tiene órdenes abiertas (en borrador, enviadas o parcialmente recibidas). Libera su CUIT. |
+| **Excepciones** | Si el proveedor no existe o es de otra distribuidora → recurso no encontrado. Si tiene órdenes abiertas → conflicto. |
 | **Salida** | La confirmación de la baja. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El proveedor existe y es de la distribuidora. |
-| **Postcondiciones** | El atributo activo de la instancia de Proveedor pasó a falso y el proveedor quedó con la fecha de baja. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El proveedor existe, es de la distribuidora y no tiene órdenes abiertas. |
+| **Postcondiciones** | La instancia de Proveedor quedó dada de baja, con su fecha de baja, y dejó de listarse. |
 
 ---
 
@@ -12452,13 +12743,29 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `emitirOrdenDeCompra(proveedorId identificador, depositoId identificador, items lista, fechaEsperada fecha)` |
 | **Responsabilidades** | Preparar una orden de compra a un proveedor para un depósito destino, en borrador. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-215. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | El número es correlativo por distribuidora. El total es la suma de cantidad por costo unitario de los renglones. Un tipo de garrafa no se repite dentro de la orden. Con la misma clave de idempotencia no se repite. |
-| **Excepciones** | Si el proveedor o el depósito no existen o son de otra distribuidora → recurso no encontrado. Si un renglón repite un tipo de garrafa o tiene una cantidad no positiva → error de solicitud con el detalle del campo. |
+| **Notas** | El número es correlativo por distribuidora. El total es la suma de cantidad por costo unitario de los renglones. Un tipo de garrafa no se repite dentro de la orden. Sin depósito destino se usa el predeterminado. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si el proveedor, el depósito o una garrafa no existen o son de otra distribuidora → recurso no encontrado. Si el proveedor está inactivo, un renglón se repite o tiene una cantidad no positiva, o se superan los topes de renglones, unidades o costo → error de solicitud con el detalle del campo. |
 | **Salida** | La orden de compra en borrador. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El proveedor y el depósito existen, son de la distribuidora y están vigentes. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El proveedor y el depósito existen, son de la distribuidora y el proveedor está activo. |
 | **Postcondiciones** | Se creó una instancia de OrdenDeCompra del Proveedor, destinada al Deposito indicado, en estado borrador, con su número y su total, y una instancia de ItemOrdenDeCompra por cada tipo de garrafa pedido. |
+
+---
+
+#### Secundario Contrato: `modificarOrdenDeCompra()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `modificarOrdenDeCompra(ordenId identificador, datos registro)` |
+| **Responsabilidades** | Modificar una orden de compra mientras está en borrador. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-287. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Sólo se edita en borrador. Si vienen renglones, reemplazan a todos los anteriores y el total se recalcula. Sólo cambian los campos enviados. |
+| **Excepciones** | Si la orden, el proveedor, el depósito o una garrafa nuevos no existen o son de otra distribuidora → recurso no encontrado. Si la orden no está en borrador, el proveedor nuevo está inactivo o un renglón es inválido → error de solicitud. |
+| **Salida** | La orden modificada. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La orden existe y está en borrador. |
+| **Postcondiciones** | Los atributos enviados de la instancia de OrdenDeCompra tomaron los valores nuevos. Si vinieron renglones, se creó una instancia de ItemOrdenDeCompra por cada renglón nuevo y se eliminaron los anteriores. En ese caso el total de la orden se recalculó. |
 
 ---
 
@@ -12468,10 +12775,10 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `enviarOrdenDeCompra(ordenId identificador)` |
 | **Responsabilidades** | Pasar una orden de compra de borrador a enviada. |
-| **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-215. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Sólo una orden en borrador puede enviarse. Registra el instante de emisión. |
-| **Excepciones** | Si la orden no existe o es de otra distribuidora → recurso no encontrado. Si la orden no está en borrador → conflicto. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-288. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Sólo una orden en borrador puede enviarse. Registra el instante de emisión. No avisa al proveedor por ningún canal. |
+| **Excepciones** | Si la orden no existe o es de otra distribuidora → recurso no encontrado. Si la orden no está en borrador → error de solicitud. |
 | **Salida** | La orden enviada. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La orden existe y está en borrador. |
 | **Postcondiciones** | El atributo estado de la instancia de OrdenDeCompra pasó a enviada y su atributo emitida el tiene el instante del envío. |
@@ -12483,14 +12790,30 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `cancelarOrdenDeCompra(ordenId identificador, motivo cadena)` |
-| **Responsabilidades** | Cancelar una orden de compra que todavía no tiene recepciones. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Responsabilidades** | Cancelar una orden de compra que no recibió mercadería. |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-216. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Sólo se cancela una orden en borrador o enviada y sin recepciones. La cancelación no mueve stock. |
-| **Excepciones** | Si la orden no existe o es de otra distribuidora → recurso no encontrado. Si ya tiene recepciones, o está recibida o cancelada → conflicto. |
+| **Notas** | Sólo se cancela una orden en borrador o enviada y sin recepciones confirmadas, aunque sean sólo de vacíos. La comprobación de las recepciones va antes que la del estado. La cancelación no mueve stock. |
+| **Excepciones** | Si la orden no existe o es de otra distribuidora → recurso no encontrado. Si tiene recepciones confirmadas → conflicto. Si no está en borrador ni enviada, o falta el motivo → error de solicitud. |
 | **Salida** | La orden cancelada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La orden existe, está en borrador o enviada y no tiene recepciones. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La orden existe, está en borrador o enviada y no tiene recepciones confirmadas. |
 | **Postcondiciones** | El atributo estado de la instancia de OrdenDeCompra pasó a cancelada y su atributo motivo de cancelación tiene el motivo indicado. |
+
+---
+
+#### Importante Contrato: `cerrarOrdenDeCompraConFaltante()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `cerrarOrdenDeCompraConFaltante(ordenId identificador, motivo cadena)` |
+| **Responsabilidades** | Cerrar con faltante una orden parcialmente recibida: lo que falta ya no llega. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-282. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Es un estado propio y no cancelada porque la orden sí recibió mercadería. Lo recibido se conserva, lo pendiente pasa a 0 y la orden deja de impedir la baja del proveedor. No mueve stock. |
+| **Excepciones** | Si la orden no existe o es de otra distribuidora → recurso no encontrado. Si la orden no está parcialmente recibida, o falta el motivo → error de solicitud. |
+| **Salida** | La orden cerrada con faltante. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La orden existe y está parcialmente recibida. |
+| **Postcondiciones** | El atributo estado de la instancia de OrdenDeCompra pasó a cerrada con faltante y su atributo motivo de cierre tiene el motivo indicado. |
 
 ---
 
@@ -12500,29 +12823,45 @@ Las operaciones de sólo consulta, que devuelven información sin alterar ningun
 |-------|---------|
 | **Nombre** | `registrarRecepcionDeCompra(ordenId identificador, proveedorId identificador, depositoId identificador, tipoDeComprobante cadena, numeroDeComprobante cadena, items lista)` |
 | **Responsabilidades** | Registrar la recepción de una compra: lo llegado de la planta y los vacíos que ésta se llevó. |
-| **Tipo** | Sistema (planificado, I-13) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-217. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Es el remito de ingreso, con o sin orden de compra. El comprobante del proveedor no se repite para un mismo proveedor. Suma las llenas al stock vendible, recalcula el costo promedio ponderado y, si hay orden, acumula lo recibido. Con la misma clave de idempotencia no se repite. |
-| **Excepciones** | Si el comprobante ya se registró para el proveedor → conflicto. Si la orden no existe → recurso no encontrado; si está cancelada o recibida → conflicto. Si los vacíos entregados dejarían negativo el saldo del depósito → error de solicitud. |
+| **Notas** | Es el remito de ingreso, con o sin orden de compra. El comprobante del proveedor no se repite para un mismo proveedor y tipo de comprobante, aunque la recepción se anule. Suma las llenas al stock vendible, recalcula el costo promedio ponderado y, si hay orden, acumula lo recibido y actualiza su estado. Sin orden, el proveedor y el costo de cada renglón son obligatorios. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si la orden, el proveedor, el depósito o una garrafa no existen → recurso no encontrado. Si el comprobante ya se registró para el proveedor → conflicto. Si la orden no está enviada ni parcialmente recibida, un renglón no es de la orden o se pasa de lo pendiente, los vacíos entregados dejarían negativo el saldo del depósito, o falta un dato → error de solicitud. |
 | **Salida** | La recepción registrada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El depósito existe y es de la distribuidora. Si hay orden, está enviada o parcialmente recibida. |
-| **Postcondiciones** | Se creó una instancia de RecepcionDeCompra del depósito, con sus instancias de ItemRecepcion. Se creó una instancia de MovimientoDeStock por tipo de garrafa recibido, la entrada de las llenas y la salida de los vacíos canjeados. El atributo stock de la instancia de Producto aumentó en las llenas recibidas. El saldo del depósito cambió en esas diferencias y la orden acumuló lo recibido. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El proveedor está activo y el depósito existe y es de la distribuidora. Si hay orden, está enviada o parcialmente recibida. |
+| **Postcondiciones** | Se creó una instancia de RecepcionDeCompra del Proveedor, ingresada en el Deposito, confirmada y sin pagar, con una instancia de ItemRecepcion por cada tipo de garrafa recibido. Se creó una instancia de MovimientoDeStock por cada entrada de llenas y cada salida de vacíos. El atributo stock de la instancia de Producto aumentó en las llenas recibidas y su atributo costo promedio se recalculó. El saldo del depósito cambió en esas diferencias. Si hay orden, la instancia de OrdenDeCompra acumuló lo recibido en sus renglones y su atributo estado pasó a parcialmente recibida o recibida. |
 
 ---
 
-#### Crítico Contrato: `anularRecepcionDeCompra()`
+#### Importante Contrato: `anularRecepcionDeCompra()`
 
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `anularRecepcionDeCompra(recepcionId identificador, motivo cadena)` |
-| **Responsabilidades** | Anular una recepción confirmada, con contraasientos. |
-| **Tipo** | Sistema (planificado, I-13) |
-| **Referencias cruzadas** | Casos de uso: CU-217. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Sólo se anula si el depósito todavía tiene las llenas que la recepción ingresó. La anulación no borra nada: registra los movimientos inversos. |
-| **Excepciones** | Si la recepción no existe o es de otra distribuidora → recurso no encontrado. Si ya está anulada, o el depósito ya no tiene lo ingresado → conflicto. |
+| **Responsabilidades** | Anular una recepción confirmada, con un contraasiento del libro. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-280. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | No borra nada: registra los movimientos inversos con el motivo. Sólo se anula si el depósito tiene hoy las llenas que la recepción ingresó. No se anula una recepción pagada. Recalcula el costo promedio y devuelve lo recibido a la orden; una orden cancelada o cerrada con faltante conserva su estado. El comprobante del proveedor sigue ocupado. Con la misma clave de idempotencia no se repite. |
+| **Excepciones** | Si la recepción no existe o es de otra distribuidora → recurso no encontrado. Si ya está anulada, o el depósito ya no tiene las llenas ingresadas → conflicto. Si figura como pagada, o falta el motivo → error de solicitud. |
 | **Salida** | La recepción anulada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La recepción existe, está confirmada y el depósito tiene aún las llenas ingresadas. |
-| **Postcondiciones** | El atributo estado de la instancia de RecepcionDeCompra pasó a anulada y su atributo motivo de anulación tiene el motivo indicado. Se creó una instancia de MovimientoDeStock inversa por cada movimiento de la recepción. El atributo stock de la instancia de Producto disminuyó en las llenas ingresadas. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La recepción existe, está confirmada, no figura como pagada y el depósito tiene aún las llenas ingresadas. |
+| **Postcondiciones** | El atributo estado de la instancia de RecepcionDeCompra pasó a anulada y sus atributos motivo de anulación y anulada el tienen el motivo y el instante de la anulación. Se creó una instancia de MovimientoDeStock inversa por cada movimiento de la recepción. El atributo stock de la instancia de Producto disminuyó en las llenas ingresadas y su atributo costo promedio se recalculó. Si hay orden, la instancia de OrdenDeCompra recuperó como pendiente lo recibido y su atributo estado se recalculó. |
+
+---
+
+#### Secundario Contrato: `marcarPagoDeRecepcion()`
+
+| Campo | Detalle |
+|-------|---------|
+| **Nombre** | `marcarPagoDeRecepcion(recepcionId identificador, estadoDePago cadena)` |
+| **Responsabilidades** | Marcar una recepción de compra como pagada o impaga. |
+| **Tipo** | Sistema |
+| **Referencias cruzadas** | Casos de uso: CU-281. Funciones: IRQ-18, OBJ-05, OBJ-06. |
+| **Notas** | Es sólo una marca: no genera un egreso de caja ni mueve dinero. Una recepción anulada no cambia de estado de pago. Una recepción pagada no se puede anular. |
+| **Excepciones** | Si la recepción no existe o es de otra distribuidora → recurso no encontrado. Si está anulada, o el estado de pago no es válido → error de solicitud. |
+| **Salida** | La recepción con su estado de pago. |
+| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. La recepción existe y no está anulada. |
+| **Postcondiciones** | El atributo estado de pago de la instancia de RecepcionDeCompra tiene el valor indicado. |
 
 ---
 

@@ -2,48 +2,47 @@ sequenceDiagram
     title DSD — CU-217 Registrar la Recepción de una Compra · registrarRecepcionDeCompra
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :PurchaseReceiptService
-    participant COLD as :Map#lt;String, Deposito#gt;
-    participant DEP as deposito:Deposito
+    participant SRV as :ReceivePurchaseUseCase
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
     participant ORD as orden:OrdenDeCompra
     participant LED as :StockLedgerService
     participant PRO as producto:Producto
 
     ADM->>+SRV: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
-    SRV->>+COLD: get(depositoId)
-    COLD-->>-SRV: deposito
-    SRV->>+DEP: registrarRecepcion(ordenId, tipoDeComprobante, numeroDeComprobante, items, administrador)
+    opt La compra cumple una orden de compra
+        SRV->>+COL: get(ordenId)
+        COL-->>-SRV: ordenDeCompra
+        SRV->>+ORD: validarRecibible()
+        ORD-->>-SRV: recibible
+    end
     create participant REC as nueva:RecepcionDeCompra
-    DEP->>REC: «create»(tipoDeComprobante, numeroDeComprobante, administrador)
+    SRV->>REC: «create»(proveedor, depositoDeStock, tipoDeComprobante, numeroDeComprobante, administrador)
     loop Por cada tipo de garrafa recibido
         create participant IRE as nuevo:ItemRecepcion
         REC->>IRE: «create»(producto, llenasRecibidas, vaciasEntregadas, costoUnitario)
     end
-    alt La recepción cumple una orden de compra
-        DEP->>DEP: getOrden(ordenId)
-        DEP->>+ORD: acumularRecibido(items)
-        alt La orden admite recepciones
-            ORD-->>-DEP: acumulado
-        else La orden está cancelada o ya recibida por completo
-            ORD-->>DEP: ordenNoAdmiteRecepciones
-        end
-    else La compra no tiene orden de compra
-        DEP->>DEP: validarCompraSinOrden(proveedorId)
+    SRV->>+REC: validarComprobanteNoRepetido()
+    REC-->>-SRV: comprobanteLibre
+    opt La compra cumple una orden de compra
+        SRV->>+ORD: validarContraLoPendiente(items)
+        ORD-->>-SRV: dentroDeLoPedido
     end
-    DEP-->>-SRV: recepcion
-    SRV->>+DEP: getUbicacionDeStock()
-    DEP-->>-SRV: ubicacionDeStock
-    loop Por cada tipo de garrafa recibido
-        SRV->>+IRE: getProducto()
-        IRE-->>-SRV: producto
-        Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta.<br/>Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del depósito
-        SRV->>+LED: aplicarMovimientoDeStock(nula, ubicacionDeStock, producto, llenas, llenas, llenasRecibidas, compra)
-        alt El depósito tiene los vacíos que se lleva la planta
-            LED-->>-SRV: aplicado
-            SRV->>PRO: sumarStock(llenasRecibidas)
-            SRV->>PRO: recalcularCostoPromedio(llenasRecibidas, costoUnitario)
-        else El depósito no tiene los vacíos que se lleva la planta
-            LED-->>SRV: saldoInsuficiente
-        end
+    SRV->>+REC: getUbicacionDeStock()
+    REC-->>-SRV: ubicacionDeStock
+    Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta.<br/>Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del depósito
+    SRV->>+LED: aplicar(ubicacionDeStock, itemsRecibidos)
+    alt El depósito tiene los vacíos que se lleva la planta
+        LED-->>SRV: lote
+    else El depósito no tiene los vacíos que se lleva la planta
+        LED-->>SRV: saldoInsuficiente
+    end
+    deactivate LED
+    loop Por cada tipo de garrafa con llenas
+        SRV->>+PRO: recalcularCostoPromedio(llenasRecibidas, costoUnitario)
+        PRO-->>-SRV: costoPromedio
+    end
+    opt La compra cumple una orden de compra
+        SRV->>+ORD: acumularRecibido(items)
+        ORD-->>-SRV: ordenActualizada
     end
     SRV-->>-ADM: recepcion

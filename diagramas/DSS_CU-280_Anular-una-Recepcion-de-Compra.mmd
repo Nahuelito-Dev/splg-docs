@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-280 Anular una Recepción de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularRecepcionDeCompra(recepcionId, motivo)
+    activate SIS
+    alt la recepción está confirmada, no está pagada y las llenas siguen en el depósito
+        SIS-->>ADM: recepción anulada
+    else la recepción no existe
+        SIS-->>ADM: recurso no encontrado
+    else la recepción ya está anulada o las llenas ya no están en el depósito
+        SIS-->>ADM: conflicto, con el detalle
+    else la recepción figura como pagada o falta el motivo
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS

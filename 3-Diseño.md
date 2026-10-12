@@ -310,188 +310,193 @@
 - Figura 270 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Caso incluido: verificarCargaDeCamionAbierta(chofer)
 - Figura 271 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)
 - Figura 272 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)
-- Figura 273 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino)
-- Figura 274 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-- Figura 275 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)
-- Figura 276 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)
-- Figura 277 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
-- Figura 278 — DSD CU-215: Emitir una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)
-- Figura 279 — DSD CU-215: Emitir una Orden de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
-- Figura 280 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)
-- Figura 281 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
-- Figura 282 — DSD CU-217: Registrar la Recepción de una Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)
-- Figura 283 — DSD CU-217: Registrar la Recepción de una Compra — Operación: consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)
-- Figura 284 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)
-- Figura 285 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)
-- Figura 286 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)
-- Figura 287 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)
-- Figura 288 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)
-- Figura 289 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
-- Figura 290 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)
-- Figura 291 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)
-- Figura 292 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)
-- Figura 293 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()
-- Figura 294 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
-- Figura 295 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
-- Figura 296 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)
-- Figura 297 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()
-- Figura 298 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
-- Figura 299 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)
-- Figura 300 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)
-- Figura 301 — DSD CU-236: Vender a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)
-- Figura 302 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
-- Figura 303 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
-- Figura 304 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
-- Figura 305 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()
-- Figura 306 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
-- Figura 307 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: modificarReglaDeComision(reglaId, datos)
-- Figura 308 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)
-- Figura 309 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
-- Figura 310 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: aprobarLiquidacion(liquidacionId)
-- Figura 311 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: anularLiquidacion(liquidacionId)
-- Figura 312 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)
-- Figura 313 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)
-- Figura 314 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)
-- Figura 315 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 316 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
-- Figura 317 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
-- Figura 318 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra
-- Figura 319 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras
-- Figura 320 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()
-- Figura 321 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)
-- Figura 322 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()
-- Figura 323 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
-- Figura 324 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
-- Figura 325 — Diagrama de Clases de Dominio
-- Figura 325.1 — Clases de dominio: organización y acceso
-- Figura 325.2 — Clases de dominio: clientes
-- Figura 325.3 — Clases de dominio: pedido, líneas y pago
-- Figura 325.4 — Clases de dominio: carrito, franjas y cobertura
-- Figura 325.5 — Clases de dominio: despacho y propuestas con vigencia
-- Figura 325.6 — Clases de dominio: choferes y vehículos
-- Figura 325.7 — Clases de dominio: mantenimiento de la flota
-- Figura 325.8 — Clases de dominio: productos y envases
-- Figura 325.9 — Clases de dominio: personal
-- Figura 325.10 — Clases de dominio: recupero de envases
-- Figura 325.11 — Clases de dominio: posventa
-- Figura 325.12 — Clases de dominio: gastos de la flota
-- Figura 325.13 — Clases de dominio: stock físico
-- Figura 325.14 — Clases de dominio: carga del camión
-- Figura 325.15 — Clases de dominio: compras
-- Figura 325.16 — Clases de dominio: caja y movimientos
-- Figura 325.17 — Clases de dominio: rendición del chofer
-- Figura 325.18 — Clases de dominio: cuentas corrientes
-- Figura 325.19 — Clases de dominio: comisiones y liquidaciones
-- Figura 326 — Clases de diseño: sesión, registro e identidad
-- Figura 327 — Clases de diseño: usuarios, roles, administradores y auditoría
-- Figura 328 — Clases de diseño: clientes y direcciones de entrega
-- Figura 329 — Clases de diseño: carrito y recompra
-- Figura 330 — Clases de diseño: productos y franjas horarias
-- Figura 331 — Clases de diseño: cobertura y distribuidoras
-- Figura 332 — Clases de diseño: pedidos: alta y cancelación
-- Figura 333 — Clases de diseño: pedidos: consulta y estado
-- Figura 334 — Clases de diseño: pagos y reservas
-- Figura 335 — Clases de diseño: despacho de pedidos
-- Figura 336 — Clases de diseño: seguimiento en tiempo real
-- Figura 337 — Clases de diseño: choferes y vehículos
-- Figura 338 — Clases de diseño: flota: tareas, adjuntos y vencimientos
-- Figura 339 — Clases de diseño: flota: planificador de mantenimiento
-- Figura 340 — Clases de diseño: personal: puestos, legajos, jornadas y licencias
-- Figura 341 — Clases de diseño: adjuntos
-- Figura 342 — Clases de diseño: envases
-- Figura 343 — Clases de diseño: recupero de envases
-- Figura 344 — Clases de diseño: flota: gastos, multas y siniestros
-- Figura 345 — Clases de diseño: reclamos, incidencias y calificaciones
-- Figura 346 — Clases de diseño: notificaciones y correo
-- Figura 347 — Clases de diseño: reportes, salud y almacenamiento
-- Figura 348 — Clases de diseño: stock
-- Figura 349 — Clases de diseño: compras
-- Figura 350 — Clases de diseño: carga del camión
-- Figura 351 — Clases de diseño: caja: cajas, sesiones y libro
-- Figura 352 — Clases de diseño: rendición del chofer
-- Figura 353 — Clases de diseño: cuentas corrientes
-- Figura 354 — Clases de diseño: comisiones y liquidaciones
-- Figura 355 — Dependencias entre módulos
-- Figura 356 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
-- Figura 357 — D-16 — Catálogo de Productos (App Cliente)
-- Figura 358 — D-17 — Checkout (App Cliente)
-- Figura 359 — D-18 — Seguimiento en Tiempo Real (App Cliente)
-- Figura 360 — D-19 — Login y Registro (App Cliente + Chofer)
-- Figura 361 — D-20 — Home del Chofer (App Chofer)
-- Figura 362 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)
-- Figura 363 — D-22 — En Ruta (App Chofer)
-- Figura 364 — D-23 — Dashboard Administrador (Panel Web)
-- Figura 365 — D-24 — Listado de Pedidos Admin (Panel Web)
-- Figura 366 — Modelo físico de la base de datos: vista general
-- Figura 367 — Organización y acceso
-- Figura 368 — Clientes
-- Figura 369 — Catálogo e inventario de envases
-- Figura 370 — Venta y pedidos
-- Figura 371 — Pagos
-- Figura 372 — Despacho y logística
-- Figura 373 — Flota y choferes
-- Figura 374 — Posventa
-- Figura 375 — Personal (en parte planificado)
-- Figura 376 — Gastos de la flota (planificado)
-- Figura 377 — Stock físico y carga del camión (en parte planificado)
-- Figura 378 — Compras (planificado)
-- Figura 379 — Tablas técnicas
-- Figura 380 — Caja y finanzas (planificado)
-- Figura 381 — Relaciones entre contextos
-- Figura 382 — Modelo entidad-relación conceptual: vista general
-- Figura 383 — Modelo entidad-relación conceptual: usuarios y cuentas
-- Figura 384 — Modelo entidad-relación conceptual: pedidos y pagos
-- Figura 385 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
-- Figura 386 — Modelo entidad-relación conceptual: flota y choferes
-- Figura 387 — Modelo entidad-relación conceptual: envases y catálogo
-- Figura 388 — Modelo entidad-relación conceptual: personal
-- Figura 389 — Modelo entidad-relación conceptual: posventa
-- Figura 390 — Modelo entidad-relación conceptual: gastos de la flota
-- Figura 391 — Modelo entidad-relación conceptual: stock físico
-- Figura 392 — Modelo entidad-relación conceptual: carga del camión
-- Figura 393 — Modelo entidad-relación conceptual: compras
-- Figura 394 — Modelo entidad-relación conceptual: caja y movimientos
-- Figura 395 — Modelo entidad-relación conceptual: rendiciones de choferes
-- Figura 396 — Modelo entidad-relación conceptual: cuentas corrientes
-- Figura 397 — Modelo entidad-relación conceptual: comisiones y liquidaciones
-- Figura 398 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)
-- Figura 399 — Modelo entidad-relación conceptual: personal
-- Figura 400 — Modelo físico: gastos de la flota (planificado)
-- Figura 401 — Modelo entidad-relación conceptual: gastos de la flota
-- Figura 402 — Modelo físico: stock físico y carga del camión (planificado)
-- Figura 403 — Modelo físico: compras (planificado)
-- Figura 404 — Modelo entidad-relación conceptual: stock físico
-- Figura 405 — Modelo entidad-relación conceptual: carga del camión
-- Figura 406 — Modelo entidad-relación conceptual: compras
-- Figura 407 — Modelo físico: caja y finanzas (planificado)
-- Figura 408 — Modelo entidad-relación conceptual: caja y movimientos
-- Figura 409 — Modelo entidad-relación conceptual: rendiciones de choferes
-- Figura 410 — Modelo entidad-relación conceptual: cuentas corrientes
-- Figura 411 — Modelo entidad-relación conceptual: comisiones y liquidaciones
-- Figura 412 — Diagrama de estados del pedido
-- Figura 413 — Diagrama de estados del reclamo
-- Figura 414 — Diagrama de estados del envase
-- Figura 415 — Diagrama de estados de la reserva programada
-- Figura 416 — Diagrama de estados de la tarea de flota
-- Figura 417 — Diagrama de estados de la oferta de despacho
-- Figura 418 — Diagrama de estados de la orden de compra
-- Figura 419 — Diagrama de estados de la recepción de compra
-- Figura 420 — Diagrama de estados de la carga de camión
-- Figura 421 — Diagrama de estados del empleado
-- Figura 422 — Diagrama de estados de la licencia laboral
-- Figura 423 — Diagrama de estados de la jornada de trabajo
-- Figura 424 — Diagrama de estados de la carga de combustible (planificado, I-12)
-- Figura 425 — Diagrama de estados de la multa de tránsito (planificado, I-12)
-- Figura 426 — Diagrama de estados del siniestro (planificado, I-12)
-- Figura 427 — Diagrama de estados del neumático (planificado, I-12, opcional)
-- Figura 428 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)
-- Figura 429 — Diagrama de estados de la oferta de despacho
-- Figura 430 — Diagrama de estados: sesión de caja
-- Figura 431 — Diagrama de estados: rendición del chofer
-- Figura 432 — Diagrama de estados: liquidación de comisiones
-- Figura 433 — Diagrama de estados: cuenta corriente
-- Figura 434 — Diagrama de actividad del despacho por proximidad
-- Figura 435 — Diagrama de actividad del ciclo de vida del pedido
+- Figura 273 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)
+- Figura 274 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)
+- Figura 275 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+- Figura 276 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)
+- Figura 277 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)
+- Figura 278 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)
+- Figura 279 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
+- Figura 280 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)
+- Figura 281 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)
+- Figura 282 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)
+- Figura 283 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
+- Figura 284 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+- Figura 285 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)
+- Figura 286 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)
+- Figura 287 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
+- Figura 288 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)
+- Figura 289 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)
+- Figura 290 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+- Figura 291 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)
+- Figura 292 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()
+- Figura 293 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)
+- Figura 294 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)
+- Figura 295 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)
+- Figura 296 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)
+- Figura 297 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)
+- Figura 298 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
+- Figura 299 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)
+- Figura 300 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)
+- Figura 301 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)
+- Figura 302 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()
+- Figura 303 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
+- Figura 304 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
+- Figura 305 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)
+- Figura 306 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()
+- Figura 307 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
+- Figura 308 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)
+- Figura 309 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)
+- Figura 310 — DSD CU-236: Vender a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)
+- Figura 311 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
+- Figura 312 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
+- Figura 313 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
+- Figura 314 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()
+- Figura 315 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
+- Figura 316 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: modificarReglaDeComision(reglaId, datos)
+- Figura 317 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)
+- Figura 318 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
+- Figura 319 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: aprobarLiquidacion(liquidacionId)
+- Figura 320 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: anularLiquidacion(liquidacionId)
+- Figura 321 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)
+- Figura 322 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)
+- Figura 323 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)
+- Figura 324 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+- Figura 325 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
+- Figura 326 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
+- Figura 327 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra
+- Figura 328 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras
+- Figura 329 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()
+- Figura 330 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)
+- Figura 331 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()
+- Figura 332 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
+- Figura 333 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
+- Figura 334 — Diagrama de Clases de Dominio
+- Figura 334.1 — Clases de dominio: organización y acceso
+- Figura 334.2 — Clases de dominio: clientes
+- Figura 334.3 — Clases de dominio: pedido, líneas y pago
+- Figura 334.4 — Clases de dominio: carrito, franjas y cobertura
+- Figura 334.5 — Clases de dominio: despacho y propuestas con vigencia
+- Figura 334.6 — Clases de dominio: choferes y vehículos
+- Figura 334.7 — Clases de dominio: mantenimiento de la flota
+- Figura 334.8 — Clases de dominio: productos y envases
+- Figura 334.9 — Clases de dominio: personal
+- Figura 334.10 — Clases de dominio: recupero de envases
+- Figura 334.11 — Clases de dominio: posventa
+- Figura 334.12 — Clases de dominio: gastos de la flota
+- Figura 334.13 — Clases de dominio: stock físico
+- Figura 334.14 — Clases de dominio: carga del camión
+- Figura 334.15 — Clases de dominio: compras
+- Figura 334.16 — Clases de dominio: caja y movimientos
+- Figura 334.17 — Clases de dominio: rendición del chofer
+- Figura 334.18 — Clases de dominio: cuentas corrientes
+- Figura 334.19 — Clases de dominio: comisiones y liquidaciones
+- Figura 335 — Clases de diseño: sesión, registro e identidad
+- Figura 336 — Clases de diseño: usuarios, roles, administradores y auditoría
+- Figura 337 — Clases de diseño: clientes y direcciones de entrega
+- Figura 338 — Clases de diseño: carrito y recompra
+- Figura 339 — Clases de diseño: productos y franjas horarias
+- Figura 340 — Clases de diseño: cobertura y distribuidoras
+- Figura 341 — Clases de diseño: pedidos: alta y cancelación
+- Figura 342 — Clases de diseño: pedidos: consulta y estado
+- Figura 343 — Clases de diseño: pagos y reservas
+- Figura 344 — Clases de diseño: despacho de pedidos
+- Figura 345 — Clases de diseño: seguimiento en tiempo real
+- Figura 346 — Clases de diseño: choferes y vehículos
+- Figura 347 — Clases de diseño: flota: tareas, adjuntos y vencimientos
+- Figura 348 — Clases de diseño: flota: planificador de mantenimiento
+- Figura 349 — Clases de diseño: personal: puestos, legajos, jornadas y licencias
+- Figura 350 — Clases de diseño: adjuntos
+- Figura 351 — Clases de diseño: envases
+- Figura 352 — Clases de diseño: recupero de envases
+- Figura 353 — Clases de diseño: flota: gastos, multas y siniestros
+- Figura 354 — Clases de diseño: reclamos, incidencias y calificaciones
+- Figura 355 — Clases de diseño: notificaciones y correo
+- Figura 356 — Clases de diseño: reportes, salud y almacenamiento
+- Figura 357 — Clases de diseño: stock
+- Figura 358 — Clases de diseño: compras
+- Figura 359 — Clases de diseño: carga del camión
+- Figura 360 — Clases de diseño: caja: cajas, sesiones y libro
+- Figura 361 — Clases de diseño: rendición del chofer
+- Figura 362 — Clases de diseño: cuentas corrientes
+- Figura 363 — Clases de diseño: comisiones y liquidaciones
+- Figura 364 — Dependencias entre módulos
+- Figura 365 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
+- Figura 366 — D-16 — Catálogo de Productos (App Cliente)
+- Figura 367 — D-17 — Checkout (App Cliente)
+- Figura 368 — D-18 — Seguimiento en Tiempo Real (App Cliente)
+- Figura 369 — D-19 — Login y Registro (App Cliente + Chofer)
+- Figura 370 — D-20 — Home del Chofer (App Chofer)
+- Figura 371 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)
+- Figura 372 — D-22 — En Ruta (App Chofer)
+- Figura 373 — D-23 — Dashboard Administrador (Panel Web)
+- Figura 374 — D-24 — Listado de Pedidos Admin (Panel Web)
+- Figura 375 — Modelo físico de la base de datos: vista general
+- Figura 376 — Organización y acceso
+- Figura 377 — Clientes
+- Figura 378 — Catálogo e inventario de envases
+- Figura 379 — Venta y pedidos
+- Figura 380 — Pagos
+- Figura 381 — Despacho y logística
+- Figura 382 — Flota y choferes
+- Figura 383 — Posventa
+- Figura 384 — Personal (en parte planificado)
+- Figura 385 — Gastos de la flota (planificado)
+- Figura 386 — Stock físico y carga del camión (en parte planificado)
+- Figura 387 — Compras
+- Figura 388 — Modelo físico: compras
+- Figura 389 — Caja y finanzas (planificado)
+- Figura 390 — Relaciones entre contextos
+- Figura 391 — Modelo entidad-relación conceptual: vista general
+- Figura 392 — Modelo entidad-relación conceptual: usuarios y cuentas
+- Figura 393 — Modelo entidad-relación conceptual: pedidos y pagos
+- Figura 394 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
+- Figura 395 — Modelo entidad-relación conceptual: flota y choferes
+- Figura 396 — Modelo entidad-relación conceptual: envases y catálogo
+- Figura 397 — Modelo entidad-relación conceptual: personal
+- Figura 398 — Modelo entidad-relación conceptual: posventa
+- Figura 399 — Modelo entidad-relación conceptual: gastos de la flota
+- Figura 400 — Modelo entidad-relación conceptual: stock físico
+- Figura 401 — Modelo entidad-relación conceptual: carga del camión
+- Figura 402 — Modelo entidad-relación conceptual: compras
+- Figura 403 — Modelo entidad-relación conceptual: caja y movimientos
+- Figura 404 — Modelo entidad-relación conceptual: rendiciones de choferes
+- Figura 405 — Modelo entidad-relación conceptual: cuentas corrientes
+- Figura 406 — Modelo entidad-relación conceptual: comisiones y liquidaciones
+- Figura 407 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)
+- Figura 408 — Modelo entidad-relación conceptual: personal
+- Figura 409 — Modelo físico: gastos de la flota (planificado)
+- Figura 410 — Modelo entidad-relación conceptual: gastos de la flota
+- Figura 411 — Carga del camión (iteración I-13)
+- Figura 412 — Modelo físico: caja y finanzas (planificado)
+- Figura 413 — Modelo entidad-relación conceptual: caja y movimientos
+- Figura 414 — Modelo entidad-relación conceptual: rendiciones de choferes
+- Figura 415 — Modelo entidad-relación conceptual: cuentas corrientes
+- Figura 416 — Modelo entidad-relación conceptual: comisiones y liquidaciones
+- Figura 417 — Diagrama de estados del pedido
+- Figura 418 — Diagrama de estados del reclamo
+- Figura 419 — Diagrama de estados del envase
+- Figura 420 — Diagrama de estados de la reserva programada
+- Figura 421 — Diagrama de estados de la tarea de flota
+- Figura 422 — Diagrama de estados de la oferta de despacho
+- Figura 423 — Diagrama de estados de la orden de compra
+- Figura 424 — Diagrama de estados de la recepción de compra
+- Figura 425 — Diagrama de estados de la carga de camión
+- Figura 426 — Diagrama de estados del empleado
+- Figura 427 — Diagrama de estados de la licencia laboral
+- Figura 428 — Diagrama de estados de la jornada de trabajo
+- Figura 429 — Diagrama de estados de la carga de combustible (planificado, I-12)
+- Figura 430 — Diagrama de estados de la multa de tránsito (planificado, I-12)
+- Figura 431 — Diagrama de estados del siniestro (planificado, I-12)
+- Figura 432 — Diagrama de estados del neumático (planificado, I-12, opcional)
+- Figura 433 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)
+- Figura 434 — Diagrama de estados de la oferta de despacho
+- Figura 435 — Diagrama de estados: sesión de caja
+- Figura 436 — Diagrama de estados: rendición del chofer
+- Figura 437 — Diagrama de estados: liquidación de comisiones
+- Figura 438 — Diagrama de estados: cuenta corriente
+- Figura 439 — Diagrama de actividad del despacho por proximidad
+- Figura 440 — Diagrama de actividad del ciclo de vida del pedido
 
 ---
 
@@ -513,6 +518,7 @@
 | 11 | 2026-10-07 | Los casos de uso que agrupaban varias operaciones de un ABM se parten en uno por operación (CU-251 a CU-272): los diagramas de interacción pasan a referenciar el caso de uso de su operación; las operaciones que sirven a dos casos (disponibilidad del chofer, estado del chofer y bloqueo de usuarios) llevan un solo diagrama con los dos códigos. | Nahuel Wagner |
 | 12 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
 | 13 | 2026-10-11 | Stock físico construido en el backend: diagramas de interacción de CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279 con la colaboración real y la tabla de implementación; diagrama de clases de diseño, modelo de datos (ocho tablas, 127 claves foráneas) y diccionario al día con la base; las siete tablas del stock físico dejan de ser planificadas. | Nahuel Wagner |
+| 14 | 2026-10-11 | Compras construidas en el backend: diagramas de interacción de CU-214 a CU-217, CU-261 a CU-263 y CU-280 a CU-288 sobre las clases reales del módulo `purchase`, con la tabla que dice con qué código se implementa cada mensaje; modelo de datos de 61 tablas, con las cinco de compras y `gas_cylinder.average_unit_cost`; diagramas de estados de la orden (con el cierre con faltante) y de la recepción; el diagrama de clases de diseño suma las clases de compras. La carga del camión sigue planificada. | Nahuel Wagner |
 
 ---
 
@@ -13266,9 +13272,9 @@ sequenceDiagram
 
 ---
 
-### 4.20 SS-08 y SS-20 — Stock físico, compras y carga del camión (CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-279)
+### 4.20 SS-08 y SS-20 — Stock físico, compras y carga del camión (CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-288)
 
-El **stock físico** está construido: los diagramas muestran la colaboración real, con las clases del módulo `stock` (`WarehouseService`, `StockQueryService`, `StockLocationService`, `StockThresholdService`, `InitialCountUseCase`, `StockTransferUseCase`, `ReverseBatchUseCase`, `StockAdjustmentUseCase`, `ReconciliationAdjustmentUseCase`, `ReapplyDeliveriesUseCase`, `StockDeliveryService`, `StockLedgerService`, `StockLowCron`, `StockReconciliationCron`, `StockReconciliationService` y `StockAdminNotifier`) y la tabla que dice con qué código se implementa cada mensaje. Las **compras y la carga del camión** siguen planificadas: sus diagramas muestran una colaboración propuesta, con clases (`SupplierService`, `PurchaseOrderService`, `PurchaseReceiptService` y `TruckLoadService`) que todavía no existen en el código.
+El **stock físico** está construido: los diagramas muestran la colaboración real, con las clases del módulo `stock` (`WarehouseService`, `StockQueryService`, `StockLocationService`, `StockThresholdService`, `InitialCountUseCase`, `StockTransferUseCase`, `ReverseBatchUseCase`, `StockAdjustmentUseCase`, `ReconciliationAdjustmentUseCase`, `ReapplyDeliveriesUseCase`, `StockDeliveryService`, `StockLedgerService`, `StockLowCron`, `StockReconciliationCron`, `StockReconciliationService` y `StockAdminNotifier`) y la tabla que dice con qué código se implementa cada mensaje. Las **compras** también están construidas: sus diagramas muestran la colaboración real, con las clases del módulo `purchase` (`SupplierService`, `PurchaseOrderService`, `PurchaseReceiptService`, `PurchaseQueryService`, `ReceivePurchaseUseCase` y `VoidPurchaseReceiptUseCase`) y la tabla que dice con qué código se implementa cada mensaje. La **carga del camión** sigue planificada: sus diagramas muestran una colaboración propuesta, con una clase (`TruckLoadService`) que todavía no existe en el código.
 
 #### SS-08 — Stock físico y carga del camión
 
@@ -13614,7 +13620,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Se registra una vez por depósito; después, ajustes. Los depósitos creados por la migración tienen un saldo inicial pero ningún conteo registrado.
-- El conteo toma primero el depósito en modo exclusivo, para que nadie lo mueva mientras se cuenta, y después sigue el orden del libro: garrafas del catálogo, depósitos, saldos y, al final, el contador de numeración.
+- El conteo sigue el orden del libro —garrafas del catálogo, depósitos, saldos y, al final, el contador de numeración—, igual que el ajuste y la transferencia, para no cruzarse con ellos. Toma las garrafas contadas y el depósito en modo exclusivo, para que nadie los mueva mientras se cuenta.
 
 ---
 
@@ -14983,7 +14989,7 @@ sequenceDiagram
     participant UBD as destino:UbicacionDeStock
     participant SAL as saldo:SaldoDeStock
 
-    Note over CTL,SAL: Caso incluido desde CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274 y CU-276
+    Note over CTL,SAL: Caso incluido desde CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274, CU-276 y CU-280
     CTL->>+LED: aplicar(operacion)
     LED->>LED: validarMovimiento(movimiento)
     loop Por cada garrafa de la operación, por identificador
@@ -15044,7 +15050,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Orden de bloqueos del libro (el conteo inicial hoy toma antes el depósito en modo exclusivo y el back se está corrigiendo para alinearlo): 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido; 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, cuando el caso base numera un documento.
+- Orden de bloqueos del libro (el conteo inicial toma el depósito en modo exclusivo y no compartido, para que nadie lo mueva mientras se cuenta): 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido; 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, cuando el caso base numera un documento.
 - Un movimiento tiene origen, destino o los dos: una entrada desde afuera no tiene origen y una salida al cliente o una merma no tienen destino.
 - Para deshacer un lote, `StockLedgerService.contraasentar` arma los movimientos inversos —destino y origen intercambiados, con la referencia al original— y los aplica con este mismo procedimiento (CU-276).
 - Es la única operación que escribe saldos físicos: los casos de compra, ajuste, traslado, conteo, carga del camión, entrega y rendición la invocan.
@@ -15055,8 +15061,7 @@ sequenceDiagram
 
 #### DSD — CU-214: Consultar los Proveedores
 
-
-##### Operación: consultarProveedores(termino)
+##### Operación: consultarProveedores(termino, tipo, incluirInactivos)
 
 ```mermaid
 sequenceDiagram
@@ -15067,31 +15072,65 @@ sequenceDiagram
     participant DIS as distribuidora:Distribuidora
     participant PRV as proveedor:Proveedor
 
-    ADM->>+SRV: consultarProveedores(termino)
-    SRV->>+DIS: getProveedores()
-    loop Por cada proveedor vigente
-        DIS->>PRV: coincideCon(termino)
+    ADM->>+SRV: consultarProveedores(termino, tipo, incluirInactivos)
+    SRV->>+DIS: getProveedores(termino, tipo, incluirInactivos)
+    loop Por cada proveedor de la distribuidora
+        DIS->>PRV: coincideCon(termino, tipo, incluirInactivos)
     end
     DIS-->>-SRV: proveedores
     SRV-->>-ADM: proveedores
 ```
 
-**Figura 273 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino)**
+**Figura 273 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)**
 
-**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `Proveedor`.
+**Clases participantes:** `SupplierService` (controlador: el servicio del módulo de compras que administra los proveedores) y los objetos de dominio `Distribuidora` y `Proveedor`.
 
-**GRASP.** *Controlador*: `SupplierService`. *Experto*: la `Distribuidora` reúne a sus proveedores y cada `Proveedor` sabe si coincide con el término de búsqueda.
+**GRASP.** *Controlador*: `SupplierService`. *Experto*: la `Distribuidora` reúne a sus proveedores y cada `Proveedor` sabe si coincide con el término, con el tipo y con la condición de activo que se pidió.
 
-**No se dibuja:** el orden del listado y la paginación.
+**No se dibuja:** el orden por razón social, la paginación, el total de resultados y la conversión a la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `SupplierService.consultarProveedores(...)` | `SupplierController.findAll` → `SupplierService.findAll` |
+| `Distribuidora.getProveedores(...)` | `SupplierService.findAll`: arma la consulta de los `Supplier` de la distribuidora, ordenada por `Supplier.businessName` |
+| `Proveedor.coincideCon(...)` | `SupplierService.findAll`: filtra por `Supplier.kind`, por `Supplier.isActive` salvo que se pidan los inactivos, y por el término contra `Supplier.businessName` (sin distinguir mayúsculas) o `Supplier.cuit` (sin guiones) |
 
 **Observaciones de diseño**
 
-- La búsqueda por término mira la razón social y el CUIT, igual que las demás búsquedas de listados del panel.
+- Sin filtros devuelve 10 proveedores por página, de la A a la Z por razón social; el tope es 100. Un proveedor dado de baja no se lista.
+
+##### Operación: consultarProveedor(proveedorId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-214 Consultar los Proveedores · consultarProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant COL as :Map#lt;String, Proveedor#gt;
+
+    ADM->>+SRV: consultarProveedor(proveedorId)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV-->>-ADM: proveedor
+```
+
+**Figura 274 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)**
+
+**Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores) y la colección `Map<String, Proveedor>`.
+
+**GRASP.** *Controlador*: `SupplierService`. *Experto*: la colección entrega el proveedor que tiene ese identificador.
+
+**No se dibuja:** la conversión a la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `SupplierService.consultarProveedor(...)` | `SupplierController.findOne` → `SupplierService.findOne` |
+| `Map<String, Proveedor>.get(...)` | `SupplierService.findOne`: lee el `Supplier` de la distribuidora; responde 404 si no existe |
 
 ---
 
 #### DSD — CU-261: Registrar un Proveedor
-
 
 ##### Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
 
@@ -15112,22 +15151,29 @@ sequenceDiagram
     SRV-->>-ADM: proveedor
 ```
 
-**Figura 274 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)**
+**Figura 275 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)**
 
-**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora` y `Proveedor`.
+**Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores) y los objetos de dominio `Distribuidora` y `Proveedor`.
 
 **GRASP.** *Controlador*: `SupplierService`. *Creador*: la `Distribuidora` crea los `Proveedor` a los que compra. *Experto*: la `Distribuidora` conoce a sus proveedores, así que ella valida que el CUIT no pertenezca a otro vigente.
 
-**No se dibuja:** la validación del dígito verificador del CUIT, el guardado del proveedor y el contexto de la distribuidora.
+**No se dibuja:** la validación del dígito verificador del CUIT, que hace la entrada de la solicitud antes de llegar al servicio, el guardado, el contexto de la distribuidora y la clave de idempotencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `SupplierService.registrarProveedor(...)` | `SupplierController.create` → `SupplierService.create` |
+| `Distribuidora.crearProveedor(...)` | `SupplierService.create`: guarda el `Supplier` con la distribuidora del contexto |
+| `Distribuidora.validarCuitSinUsar(...)` | `SupplierService.asegurarCuitLibre`: busca un `Supplier` vigente de la distribuidora con ese CUIT; responde 409 con su razón social |
+| `Proveedor.«create»(...)` | `SupplierService.create`: guarda el `Supplier` activo, con `Supplier.cuit` sin guiones |
 
 **Observaciones de diseño**
 
-- El CUIT es único entre los proveedores vigentes de la distribuidora, con un índice único parcial.
+- El CUIT es único entre los proveedores vigentes de la distribuidora, con un índice único parcial: un proveedor dado de baja libera el suyo.
+- El proveedor nace activo.
 
 ---
 
 #### DSD — CU-262: Modificar un Proveedor
-
 
 ##### Operación: actualizarProveedor(proveedorId, datos)
 
@@ -15148,22 +15194,28 @@ sequenceDiagram
     SRV-->>-ADM: proveedor
 ```
 
-**Figura 275 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)**
+**Figura 276 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)**
 
-**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
+**Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
 
 **GRASP.** *Controlador*: `SupplierService`. *Experto*: el `Proveedor` conoce sus datos y es quien los actualiza.
 
-**No se dibuja:** la comprobación de que el CUIT nuevo no pertenezca a otro proveedor vigente, el rechazo de un proveedor de otra distribuidora y el guardado.
+**No se dibuja:** la comprobación de que el CUIT nuevo no pertenezca a otro proveedor vigente (`SupplierService.asegurarCuitLibre`), el rechazo de un proveedor de otra distribuidora y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `SupplierService.actualizarProveedor(...)` | `SupplierController.update` → `SupplierService.update` |
+| `Map<String, Proveedor>.get(...)` | `SupplierService.findOne`: lee el `Supplier` de la distribuidora; responde 404 si no existe |
+| `Proveedor.actualizar(...)` | `SupplierService.update`: asigna sólo los campos enviados (`Supplier.businessName`, `Supplier.cuit`, `Supplier.kind`, `Supplier.isActive`, el contacto y `Supplier.paymentTermsDays`) y guarda |
 
 **Observaciones de diseño**
 
 - Sólo cambian los campos enviados.
+- Desactivar a un proveedor (`Supplier.isActive` en falso) no es darlo de baja: sigue en el padrón pero no admite órdenes ni recepciones nuevas.
 
 ---
 
 #### DSD — CU-263: Dar de Baja un Proveedor
-
 
 ##### Operación: darDeBajaProveedor(proveedorId)
 
@@ -15179,21 +15231,77 @@ sequenceDiagram
     ADM->>+SRV: darDeBajaProveedor(proveedorId)
     SRV->>+COL: get(proveedorId)
     COL-->>-SRV: proveedor
-    SRV->>PRV: darDeBaja()
+    SRV->>+PRV: darDeBaja()
+    PRV->>PRV: validarSinOrdenesAbiertas()
+    PRV-->>-SRV: proveedorDadoDeBaja
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 276 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)**
+**Figura 277 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)**
 
-**Clases participantes:** `SupplierService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
+**Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
 
-**GRASP.** *Controlador*: `SupplierService`. *Experto*: el `Proveedor` es quien cambia su propio estado a dado de baja.
+**GRASP.** *Controlador*: `SupplierService`. *Experto*: el `Proveedor` conoce sus órdenes de compra, valida que ninguna esté abierta y es quien cambia su propio estado a dado de baja.
 
-**No se dibuja:** el guardado de la baja lógica.
+**No se dibuja:** la transacción y el bloqueo del proveedor, que frenan una orden que se esté armando al mismo tiempo, y el guardado de la baja lógica.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `SupplierService.darDeBajaProveedor(...)` | `SupplierController.remove` → `SupplierService.remove` |
+| `Map<String, Proveedor>.get(...)` | `SupplierService.remove`: bloquea el `Supplier` vigente de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `Proveedor.darDeBaja(...)` | `SupplierService.remove`: baja lógica del `Supplier` con `softRemove` |
+| `Proveedor.validarSinOrdenesAbiertas(...)` | `SupplierService.remove`: cuenta los `PurchaseOrder` en borrador, enviados o parcialmente recibidos; responde 409 si hay alguno |
 
 **Observaciones de diseño**
 
 - La baja es lógica: las órdenes y las recepciones ya registradas siguen apuntando al proveedor para explicar el historial de compras.
+- Una orden recibida, cancelada o cerrada con faltante no impide la baja.
+
+---
+
+#### DSD — CU-286: Consultar el Historial de Compras de un Proveedor
+
+##### Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-286 Consultar el Historial de Compras de un Proveedor · consultarHistorialDeCompras
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant COL as :Map#lt;String, Proveedor#gt;
+    participant PRV as proveedor:Proveedor
+    participant REC as recepcion:RecepcionDeCompra
+
+    ADM->>+SRV: consultarHistorialDeCompras(proveedorId, desde, hasta)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV->>+PRV: getRecepciones(desde, hasta)
+    loop Por cada recepción del proveedor en el rango
+        PRV->>REC: getTotal()
+    end
+    PRV-->>-SRV: recepciones
+    SRV-->>-ADM: historial
+```
+
+**Figura 278 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)**
+
+**Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, Proveedor>` y los objetos de dominio `Proveedor` y `RecepcionDeCompra`.
+
+**GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: el `Proveedor` conoce las recepciones que entregó y cada `RecepcionDeCompra` conoce su total.
+
+**No se dibuja:** la paginación, el orden de la más reciente a la más antigua y la suma de las garrafas llenas, que se hace en la misma consulta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseQueryService.consultarHistorialDeCompras(...)` | `SupplierController.historial` → `PurchaseQueryService.historialDeProveedor` |
+| `Map<String, Proveedor>.get(...)` | `PurchaseQueryService.historialDeProveedor`: lee el `Supplier` de la distribuidora, también si está dado de baja; responde 404 si no existe |
+| `Proveedor.getRecepciones(...)` | `PurchaseQueryService.historialDeProveedor`: cuenta las `PurchaseReceipt` confirmadas del rango y suma sus llenas y sus montos; pagina todas, las anuladas incluidas |
+| `RecepcionDeCompra.getTotal(...)` | `PurchaseQueryService.paginaDeRecepciones`: devuelve `PurchaseReceipt.totalAmount` de cada recepción |
+
+**Observaciones de diseño**
+
+- Los totales cuentan sólo las recepciones confirmadas; el listado trae también las anuladas, con su estado.
 
 ---
 
@@ -15217,7 +15325,7 @@ sequenceDiagram
     DIS-->>-SRV: depositoDeStock
     SRV->>+PRV: emitirOrden(depositoDeStock, fechaEsperada, items)
     create participant ORD as nueva:OrdenDeCompra
-    PRV->>ORD: «create»(depositoDeStock, fechaEsperada, autor)
+    PRV->>ORD: «create»(depositoDeStock, fechaEsperada, administrador)
     loop Por cada renglón de la orden
         create participant ITO as nuevo:ItemOrdenDeCompra
         ORD->>ITO: «create»(producto, cantidad, costoUnitario, vaciasACanjear)
@@ -15227,19 +15335,90 @@ sequenceDiagram
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 277 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)**
+**Figura 279 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)**
 
-**Clases participantes:** `PurchaseOrderService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Distribuidora`, `Proveedor`, `OrdenDeCompra` e `ItemOrdenDeCompra`.
+**Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes) y los objetos de dominio `Distribuidora`, `Proveedor`, `OrdenDeCompra` e `ItemOrdenDeCompra`.
 
 **GRASP.** *Controlador*: `PurchaseOrderService`. *Creador*: el `Proveedor` crea las `OrdenDeCompra` que recibe y la `OrdenDeCompra` crea sus `ItemOrdenDeCompra` (composición). *Experto*: la `Distribuidora` conoce a sus proveedores y depósitos; la `OrdenDeCompra` calcula su propio total.
 
-**No se dibuja:** el número correlativo, que se toma de la secuencia por distribuidora al final del orden de bloqueos, el guardado y la validación de que un tipo de garrafa no se repita en la orden.
+**No se dibuja:** el número correlativo, que se toma de la secuencia por distribuidora al final del orden de bloqueos, el bloqueo de las garrafas, la validación de que un tipo de garrafa no se repita, el guardado y la clave de idempotencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseOrderService.emitirOrdenDeCompra(...)` | `PurchaseOrderController.create` → `PurchaseOrderService.create` |
+| `Distribuidora.getProveedor(...)` | `SupplierService.bloquearUsable`: toma el `Supplier` vigente de la distribuidora con `FOR SHARE`; responde 404 si no existe y 400 si está inactivo |
+| `Distribuidora.getDeposito(...)` | `StockLocationService.ubicacionDeDeposito`: el depósito vigente de la distribuidora; responde 404 si no existe y, si no se indicó ninguno, `WarehouseService.asegurarPredeterminado` da el predeterminado |
+| `Proveedor.emitirOrden(...)` | `PurchaseOrderService.crear`: bloquea las garrafas con `FOR KEY SHARE`, toma el número y guarda la orden con sus renglones |
+| `OrdenDeCompra.«create»(...)` | `PurchaseOrderService.crear`: guarda el `PurchaseOrder` en borrador, con `PurchaseOrder.destinationWarehouseId`, `PurchaseOrder.expectedDate` y el autor |
+| `ItemOrdenDeCompra.«create»(...)` | `PurchaseOrderService.insertarRenglones`: inserta un `PurchaseOrderItem` por renglón |
+| `OrdenDeCompra.calcularTotal(...)` | `totalDe()`: suma cantidad por costo unitario con aritmética decimal, a 2 decimales; responde 400 si el total no entra en la columna |
+
+**Observaciones de diseño**
+
+- La orden nace en borrador; el envío es otro caso de uso (CU-288).
+- El costo unitario de cada renglón es el que se espera pagar: el costo real queda en la recepción.
+
+---
+
+#### DSD — CU-287: Modificar una Orden de Compra
+
+##### Operación: modificarOrdenDeCompra(ordenId, datos)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-287 Modificar una Orden de Compra · modificarOrdenDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseOrderService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+
+    ADM->>+SRV: modificarOrdenDeCompra(ordenId, datos)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: modificar(datos)
+    ORD->>ORD: validarEnBorrador()
+    opt Los datos traen renglones
+        loop Por cada renglón nuevo
+            create participant ITO as nuevo:ItemOrdenDeCompra
+            ORD->>ITO: «create»(producto, cantidad, costoUnitario, vaciasACanjear)
+        end
+        ORD->>ORD: calcularTotal()
+    end
+    ORD-->>-SRV: ordenDeCompra
+    SRV-->>-ADM: ordenDeCompra
+```
+
+**Figura 280 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)**
+
+**Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra` e `ItemOrdenDeCompra`.
+
+**GRASP.** *Controlador*: `PurchaseOrderService`. *Experto*: la `OrdenDeCompra` conoce su estado, valida que siga en borrador y recalcula su total. *Creador*: la `OrdenDeCompra` crea sus `ItemOrdenDeCompra` nuevos (composición).
+
+**No se dibuja:** el bloqueo de la orden, la comprobación de proveedor, depósito y garrafas nuevos, el borrado de los renglones anteriores y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseOrderService.modificarOrdenDeCompra(...)` | `PurchaseOrderController.update` → `PurchaseOrderService.update` |
+| `Map<String, OrdenDeCompra>.get(...)` | `PurchaseOrderService.bloquear`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `OrdenDeCompra.modificar(...)` | `PurchaseOrderService.editar`: asigna el proveedor, el depósito, la fecha esperada y las notas que vienen y guarda |
+| `OrdenDeCompra.validarEnBorrador(...)` | `validarEditable()`: responde 400 si la orden no está en borrador |
+| `ItemOrdenDeCompra.«create»(...)` | `PurchaseOrderService.insertarRenglones`: borra los `PurchaseOrderItem` anteriores e inserta uno por renglón nuevo |
+| `OrdenDeCompra.calcularTotal(...)` | `totalDe()`: suma cantidad por costo unitario de los renglones nuevos |
+
+**Observaciones de diseño**
+
+- Si los datos traen renglones, reemplazan a todos los anteriores; no hay edición de un renglón suelto.
+
+---
+
+#### DSD — CU-288: Enviar una Orden de Compra
 
 ##### Operación: enviarOrdenDeCompra(ordenId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-215 Emitir una Orden de Compra · enviarOrdenDeCompra
+    title DSD — CU-288 Enviar una Orden de Compra · enviarOrdenDeCompra
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :PurchaseOrderService
@@ -15250,53 +15429,29 @@ sequenceDiagram
     SRV->>+COL: get(ordenId)
     COL-->>-SRV: ordenDeCompra
     SRV->>+ORD: enviar(ahora)
-    ORD->>ORD: validarQueEstaEnBorrador()
+    ORD->>ORD: validarTransicion(enviada)
     ORD-->>-SRV: ordenDeCompra
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 278 — DSD CU-215: Emitir una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)**
+**Figura 281 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)**
 
-**Clases participantes:** `PurchaseOrderService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
+**Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
 
-**GRASP.** *Controlador*: `PurchaseOrderService`. *Experto*: la `OrdenDeCompra` conoce su estado, es quien valida que pueda pasar de borrador a enviada y quien cambia su propio estado; nunca se le asigna el estado desde afuera.
+**GRASP.** *Controlador*: `PurchaseOrderService`. *Experto*: la `OrdenDeCompra` conoce su estado, valida que pueda pasar de borrador a enviada y cambia el suyo; nunca se le asigna el estado desde afuera.
 
-**No se dibuja:** el guardado de la orden y el rechazo de una orden de otra distribuidora.
+**No se dibuja:** el bloqueo de la orden y el guardado.
 
-##### Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-215 Emitir una Orden de Compra · consultarOrdenesDeCompra
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :PurchaseOrderService
-    participant ORDS as :List#lt;OrdenDeCompra#gt;
-    participant ORD as orden:OrdenDeCompra
-
-    ADM->>+SRV: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
-    SRV->>+ORDS: buscar(estado, proveedorId, desde, hasta)
-    loop Por cada orden del filtro
-        ORDS->>ORD: getTotal()
-    end
-    ORDS-->>-SRV: ordenes
-    SRV-->>-ADM: ordenes
-```
-
-**Figura 279 — DSD CU-215: Emitir una Orden de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)**
-
-**Clases participantes:** `PurchaseOrderService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `List<OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
-
-**GRASP.** *Controlador*: `PurchaseOrderService`. *Experto*: la colección aplica los filtros y la `OrdenDeCompra` conoce su total.
-
-**No se dibuja:** la paginación, el total de resultados y las recepciones que trae el detalle de cada orden.
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseOrderService.enviarOrdenDeCompra(...)` | `PurchaseOrderController.send` → `PurchaseOrderService.send` |
+| `Map<String, OrdenDeCompra>.get(...)` | `PurchaseOrderService.bloquear`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `OrdenDeCompra.enviar(...)` | `PurchaseOrderService.send`: pasa `PurchaseOrder.status` a enviada y registra `PurchaseOrder.issuedAt` con `PurchaseOrderService.cambiarEstado` |
+| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: sólo se pasa de borrador a enviada; responde 400 desde cualquier otro estado |
 
 **Observaciones de diseño**
 
-- La orden nace en borrador; el envío es una transición aparte.
-- El `unitCost` de cada renglón es el costo que se espera pagar: el costo real queda en la recepción.
-- Enviar no avisa al proveedor por ningún canal: la orden se imprime o se envía por fuera del sistema.
-- Una orden enviada con la fecha esperada vencida figura en el correo diario del administrador (CU-211).
+- Enviar no avisa al proveedor por ningún canal: la orden se imprime o se manda por fuera del sistema.
 
 ---
 
@@ -15318,21 +15473,200 @@ sequenceDiagram
     COL-->>-SRV: ordenDeCompra
     SRV->>+ORD: cancelar(motivo)
     ORD->>ORD: validarSinRecepciones()
+    ORD->>ORD: validarTransicion(cancelada)
     ORD-->>-SRV: ordenDeCompra
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 280 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)**
+**Figura 282 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)**
 
-**Clases participantes:** `PurchaseOrderService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
+**Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
 
-**GRASP.** *Controlador*: `PurchaseOrderService`. *Experto*: la `OrdenDeCompra` conoce su estado y sus recepciones, valida que pueda cancelarse y cambia su propio estado.
+**GRASP.** *Controlador*: `PurchaseOrderService`. *Experto*: la `OrdenDeCompra` conoce su estado y sus recepciones, valida que pueda cancelarse y cambia el suyo.
 
-**No se dibuja:** el guardado y el rechazo de una orden de otra distribuidora.
+**No se dibuja:** el bloqueo de la orden y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseOrderService.cancelarOrdenDeCompra(...)` | `PurchaseOrderController.cancel` → `PurchaseOrderService.cancel` |
+| `Map<String, OrdenDeCompra>.get(...)` | `PurchaseOrderService.bloquear`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `OrdenDeCompra.cancelar(...)` | `PurchaseOrderService.cancel`: pasa `PurchaseOrder.status` a cancelada y guarda `PurchaseOrder.cancelReason` con `PurchaseOrderService.cambiarEstado` |
+| `OrdenDeCompra.validarSinRecepciones(...)` | `PurchaseOrderService.recepcionesConfirmadas`: cuenta las `PurchaseReceipt` confirmadas de la orden, aunque sean sólo de vacíos; responde 409 si hay alguna |
+| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: sólo se cancela desde borrador o enviada; responde 400 desde cualquier otro estado |
 
 **Observaciones de diseño**
 
-- Una orden con recepciones no se cancela: primero se anula lo recibido (CU-217).
+- La comprobación de las recepciones va antes que la del estado.
+- Una orden con recepciones confirmadas no se cancela: primero se anulan (CU-280) o se cierra con faltante (CU-282).
+
+---
+
+#### DSD — CU-282: Cerrar una Orden de Compra con Faltante
+
+##### Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-282 Cerrar una Orden de Compra con Faltante · cerrarOrdenDeCompraConFaltante
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseOrderService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+
+    ADM->>+SRV: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: cerrarConFaltante(motivo)
+    ORD->>ORD: validarTransicion(cerradaConFaltante)
+    ORD-->>-SRV: ordenDeCompra
+    SRV-->>-ADM: ordenDeCompra
+```
+
+**Figura 283 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)**
+
+**Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
+
+**GRASP.** *Controlador*: `PurchaseOrderService`. *Experto*: la `OrdenDeCompra` conoce su estado, valida que pueda cerrarse con faltante y cambia el suyo.
+
+**No se dibuja:** el bloqueo de la orden y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseOrderService.cerrarOrdenDeCompraConFaltante(...)` | `PurchaseOrderController.closeShort` → `PurchaseOrderService.closeShort` |
+| `Map<String, OrdenDeCompra>.get(...)` | `PurchaseOrderService.bloquear`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `OrdenDeCompra.cerrarConFaltante(...)` | `PurchaseOrderService.closeShort`: pasa `PurchaseOrder.status` a cerrada con faltante y guarda `PurchaseOrder.closeReason` con `PurchaseOrderService.cambiarEstado` |
+| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: sólo se cierra con faltante desde parcialmente recibida; responde 400 desde cualquier otro estado |
+
+**Observaciones de diseño**
+
+- Es un estado propio y no «cancelada» porque la orden sí recibió mercadería.
+- Lo recibido se conserva; lo pendiente pasa a 0 y la orden deja de impedir la baja del proveedor.
+
+---
+
+#### DSD — CU-283: Consultar las Órdenes de Compra
+
+##### Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-283 Consultar las Órdenes de Compra · consultarOrdenesDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant ORDS as :List#lt;OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+
+    ADM->>+SRV: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+    SRV->>+ORDS: buscar(estado, proveedorId, desde, hasta)
+    loop Por cada orden del filtro
+        ORDS->>ORD: getPendiente()
+    end
+    ORDS-->>-SRV: ordenes
+    SRV-->>-ADM: ordenes
+```
+
+**Figura 284 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)**
+
+**Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `List<OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
+
+**GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: la colección aplica los filtros y cada `OrdenDeCompra` conoce lo que le falta recibir.
+
+**No se dibuja:** la paginación, el total de resultados y el nombre del proveedor y del depósito de cada fila.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseQueryService.consultarOrdenesDeCompra(...)` | `PurchaseOrderController.ordenes` → `PurchaseQueryService.ordenes` |
+| `List<OrdenDeCompra>.buscar(...)` | `PurchaseQueryService.ordenes`: filtra por `PurchaseOrder.status`, por proveedor y por el día de alta con `PurchaseQueryService.filtroDeFechas`; ordena por número descendente |
+| `OrdenDeCompra.getPendiente(...)` | `PurchaseQueryService.aResumenDeOrden`: lo pedido menos lo recibido, en 0 si la orden está cancelada o cerrada con faltante |
+
+**Observaciones de diseño**
+
+- Las fechas filtran por el día de alta de la orden, en días argentinos; con una sola, el rango es ese día.
+
+##### Operación: consultarOrdenDeCompra(ordenId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-283 Consultar las Órdenes de Compra · consultarOrdenDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+    participant ITO as item:ItemOrdenDeCompra
+
+    ADM->>+SRV: consultarOrdenDeCompra(ordenId)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: getItems()
+    loop Por cada renglón de la orden
+        ORD->>ITO: getPendiente()
+    end
+    ORD-->>-SRV: items
+    SRV->>+ORD: getRecepciones()
+    ORD-->>-SRV: recepciones
+    SRV-->>-ADM: ordenDeCompra
+```
+
+**Figura 285 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)**
+
+**Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra` e `ItemOrdenDeCompra`.
+
+**GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: la `OrdenDeCompra` contiene sus renglones y conoce las recepciones que la cumplen; cada `ItemOrdenDeCompra` conoce lo que le falta recibir.
+
+**No se dibuja:** el subtotal de cada renglón y el nombre del tipo de garrafa.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseQueryService.consultarOrdenDeCompra(...)` | `PurchaseOrderController.orden` → `PurchaseQueryService.orden` |
+| `Map<String, OrdenDeCompra>.get(...)` | `PurchaseQueryService.orden`: lee el `PurchaseOrder` de la distribuidora; responde 404 si no existe |
+| `OrdenDeCompra.getItems(...)` | `PurchaseQueryService.renglonesDeOrden`: los `PurchaseOrderItem` de la orden, ordenados por tipo de garrafa |
+| `ItemOrdenDeCompra.getPendiente(...)` | `PurchaseQueryService.renglonesDeOrden`: lo pedido menos `PurchaseOrderItem.receivedQuantity`, nunca negativo |
+| `OrdenDeCompra.getRecepciones(...)` | `PurchaseQueryService.orden`: las `PurchaseReceipt` de la orden, por número |
+
+##### Operación: consultarPendienteDeRecibir(ordenId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-283 Consultar las Órdenes de Compra · consultarPendienteDeRecibir
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+    participant ITO as item:ItemOrdenDeCompra
+
+    ADM->>+SRV: consultarPendienteDeRecibir(ordenId)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: getPendiente()
+    loop Por cada renglón de la orden
+        ORD->>ITO: getPendiente()
+    end
+    ORD-->>-SRV: pendiente
+    SRV-->>-ADM: pendiente
+```
+
+**Figura 286 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)**
+
+**Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra` e `ItemOrdenDeCompra`.
+
+**GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: la `OrdenDeCompra` junta lo pendiente de sus renglones y cada `ItemOrdenDeCompra` conoce el suyo.
+
+**No se dibuja:** el total pendiente, que se suma al armar la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseQueryService.consultarPendienteDeRecibir(...)` | `PurchaseOrderController.pendiente` → `PurchaseQueryService.pendiente` |
+| `Map<String, OrdenDeCompra>.get(...)` | `PurchaseQueryService.pendiente`: lee el `PurchaseOrder` de la distribuidora; responde 404 si no existe |
+| `OrdenDeCompra.getPendiente(...)` | `PurchaseQueryService.pendiente`: arma, por renglón, lo pedido, lo recibido y lo pendiente, y deja en 0 lo pendiente si la orden está cancelada o cerrada con faltante |
+| `ItemOrdenDeCompra.getPendiente(...)` | `PurchaseQueryService.renglonesDeOrden`: lo pedido menos `PurchaseOrderItem.receivedQuantity`, nunca negativo |
+
+**Observaciones de diseño**
+
+- Una orden cancelada o cerrada con faltante no espera nada: su pendiente es 0.
 
 ---
 
@@ -15345,122 +15679,214 @@ sequenceDiagram
     title DSD — CU-217 Registrar la Recepción de una Compra · registrarRecepcionDeCompra
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :PurchaseReceiptService
-    participant COLD as :Map#lt;String, Deposito#gt;
-    participant DEP as deposito:Deposito
+    participant SRV as :ReceivePurchaseUseCase
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
     participant ORD as orden:OrdenDeCompra
     participant LED as :StockLedgerService
     participant PRO as producto:Producto
 
     ADM->>+SRV: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
-    SRV->>+COLD: get(depositoId)
-    COLD-->>-SRV: deposito
-    SRV->>+DEP: registrarRecepcion(ordenId, tipoDeComprobante, numeroDeComprobante, items, administrador)
+    opt La compra cumple una orden de compra
+        SRV->>+COL: get(ordenId)
+        COL-->>-SRV: ordenDeCompra
+        SRV->>+ORD: validarRecibible()
+        ORD-->>-SRV: recibible
+    end
     create participant REC as nueva:RecepcionDeCompra
-    DEP->>REC: «create»(tipoDeComprobante, numeroDeComprobante, administrador)
+    SRV->>REC: «create»(proveedor, depositoDeStock, tipoDeComprobante, numeroDeComprobante, administrador)
     loop Por cada tipo de garrafa recibido
         create participant IRE as nuevo:ItemRecepcion
         REC->>IRE: «create»(producto, llenasRecibidas, vaciasEntregadas, costoUnitario)
     end
-    alt La recepción cumple una orden de compra
-        DEP->>DEP: getOrden(ordenId)
-        DEP->>+ORD: acumularRecibido(items)
-        alt La orden admite recepciones
-            ORD-->>-DEP: acumulado
-        else La orden está cancelada o ya recibida por completo
-            ORD-->>DEP: ordenNoAdmiteRecepciones
-        end
-    else La compra no tiene orden de compra
-        DEP->>DEP: validarCompraSinOrden(proveedorId)
+    SRV->>+REC: validarComprobanteNoRepetido()
+    REC-->>-SRV: comprobanteLibre
+    opt La compra cumple una orden de compra
+        SRV->>+ORD: validarContraLoPendiente(items)
+        ORD-->>-SRV: dentroDeLoPedido
     end
-    DEP-->>-SRV: recepcion
-    SRV->>+DEP: getUbicacionDeStock()
-    DEP-->>-SRV: ubicacionDeStock
-    loop Por cada tipo de garrafa recibido
-        SRV->>+IRE: getProducto()
-        IRE-->>-SRV: producto
-        Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta.<br/>Movimiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del depósito
-        SRV->>+LED: aplicarMovimientoDeStock(nula, ubicacionDeStock, producto, llenas, llenas, llenasRecibidas, compra)
-        alt El depósito tiene los vacíos que se lleva la planta
-            LED-->>-SRV: aplicado
-            SRV->>PRO: sumarStock(llenasRecibidas)
-            SRV->>PRO: recalcularCostoPromedio(llenasRecibidas, costoUnitario)
-        else El depósito no tiene los vacíos que se lleva la planta
-            LED-->>SRV: saldoInsuficiente
-        end
+    SRV->>+REC: getUbicacionDeStock()
+    REC-->>-SRV: ubicacionDeStock
+    Note over SRV,LED: Las llenas entran desde afuera y los vacíos salen hacia la planta.<br/>Movimientos: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea los MovimientoDeStock y mueve el saldo del depósito
+    SRV->>+LED: aplicar(ubicacionDeStock, itemsRecibidos)
+    alt El depósito tiene los vacíos que se lleva la planta
+        LED-->>SRV: lote
+    else El depósito no tiene los vacíos que se lleva la planta
+        LED-->>SRV: saldoInsuficiente
+    end
+    deactivate LED
+    loop Por cada tipo de garrafa con llenas
+        SRV->>+PRO: recalcularCostoPromedio(llenasRecibidas, costoUnitario)
+        PRO-->>-SRV: costoPromedio
+    end
+    opt La compra cumple una orden de compra
+        SRV->>+ORD: acumularRecibido(items)
+        ORD-->>-SRV: ordenActualizada
     end
     SRV-->>-ADM: recepcion
 ```
 
-**Figura 281 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)**
+**Figura 287 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)**
 
-**Clases participantes:** `PurchaseReceiptService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, Deposito>` y los objetos de dominio `Deposito`, `OrdenDeCompra`, `RecepcionDeCompra`, `ItemRecepcion` y `Producto`.
+**Clases participantes:** `ReceivePurchaseUseCase` (controlador: el caso de uso del módulo de compras), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra`, `RecepcionDeCompra`, `ItemRecepcion` y `Producto`.
 
-**GRASP.** *Controlador*: `PurchaseReceiptService`. *Creador*: el `Deposito` crea las `RecepcionDeCompra` que ingresan en él y la recepción crea sus `ItemRecepcion` (composición). *Experto*: la `OrdenDeCompra` acumula lo recibido y valida que admita recepciones; el `Producto` suma su stock vendible y recalcula su costo promedio ponderado. *Fabricación pura*: `StockLedgerService` (CU-250): acredita las llenas en el depósito y descuenta los vacíos canjeados.
+**GRASP.** *Controlador*: `ReceivePurchaseUseCase`. *Creador*: el caso de uso crea la `RecepcionDeCompra`, que inicializa con los datos de la operación, y ésta crea sus `ItemRecepcion` (composición). *Experto*: la `OrdenDeCompra` valida que admita recepciones, que no se pase de lo pendiente y acumula lo recibido; el `Producto` recalcula su costo promedio ponderado. *Fabricación pura*: `StockLedgerService` (CU-250) acredita las llenas, descuenta los vacíos que se lleva la planta y sube el stock vendible del `Producto`.
 
-**No se dibuja:** la comprobación de que el comprobante no esté repetido para el proveedor, el número interno correlativo, el bloqueo en el orden global, el adjunto del remito y la reversión de toda la recepción si algún saldo quedara negativo.
+**No se dibuja:** el proveedor activo y su bloqueo, la fecha de recepción, el número interno correlativo, que se toma al final del orden de bloqueos, la transacción con reintento, el guardado y la clave de idempotencia. Los bloqueos van en este orden: la orden, el proveedor, las garrafas del catálogo, los depósitos, los saldos y el contador de numeración.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ReceivePurchaseUseCase.registrarRecepcionDeCompra(...)` | `PurchaseReceiptController.create` → `ReceivePurchaseUseCase.execute` |
+| `Map<String, OrdenDeCompra>.get(...)` | `ReceivePurchaseUseCase.cargarOrden`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`, con sus renglones; responde 404 si no existe |
+| `OrdenDeCompra.validarRecibible(...)` | `ReceivePurchaseUseCase.cargarOrden`: responde 400 si la orden no está enviada ni parcialmente recibida |
+| `RecepcionDeCompra.«create»(...)` | `ReceivePurchaseUseCase.recibir`: guarda el `PurchaseReceipt` confirmado e impago, con su número interno, el lote del libro y el total (`totalDe()`) |
+| `ItemRecepcion.«create»(...)` | `ReceivePurchaseUseCase.recibir`: inserta un `PurchaseReceiptItem` por renglón, con el promedio y la existencia previos |
+| `RecepcionDeCompra.validarComprobanteNoRepetido(...)` | `ReceivePurchaseUseCase.asegurarDocumentoLibre`: busca una recepción del proveedor con el mismo tipo y número de comprobante, anulada o no; responde 409 |
+| `OrdenDeCompra.validarContraLoPendiente(...)` | `ReceivePurchaseUseCase.validarContraOrden`: responde 400 si una garrafa no está en la orden o un renglón pasa de lo pendiente (`excesosDeRecepcion()`) |
+| `RecepcionDeCompra.getUbicacionDeStock(...)` | `ReceivePurchaseUseCase.recibir`: la ubicación del depósito destino con `StockLocationService.ubicacionDeDeposito` |
+| `Producto.recalcularCostoPromedio(...)` | `ReceivePurchaseUseCase.actualizarCostos`: calcula `costoPromedioPonderado()` con las llenas de hoy menos las recibidas y lo guarda con `GasCylinderService.fijarCostoPromedio` |
+| `OrdenDeCompra.acumularRecibido(...)` | `ReceivePurchaseUseCase.actualizarOrden`: suma a `PurchaseOrderItem.receivedQuantity` y fija `PurchaseOrder.status` con `estadoSegunRecibido()` |
+
+**Observaciones de diseño**
+
+- Una compra sin orden se registra con el proveedor y el depósito indicados (o el predeterminado) y con el costo de cada renglón; con orden, el proveedor y el depósito son los de la orden.
+- Si los vacíos no alcanzan, la transacción entera se revierte: no queda ni un movimiento ni un cambio de costo.
+- El pago al proveedor es una marca aparte (CU-281): esta operación no mueve dinero.
+
+---
+
+#### DSD — CU-280: Anular una Recepción de Compra
 
 ##### Operación: anularRecepcionDeCompra(recepcionId, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-217 Registrar la Recepción de una Compra · anularRecepcionDeCompra
+    title DSD — CU-280 Anular una Recepción de Compra · anularRecepcionDeCompra
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :PurchaseReceiptService
+    participant SRV as :VoidPurchaseReceiptUseCase
     participant COL as :Map#lt;String, RecepcionDeCompra#gt;
     participant REC as recepcion:RecepcionDeCompra
-    participant IRE as item:ItemRecepcion
+    participant ITR as item:ItemRecepcion
+    participant ORD as orden:OrdenDeCompra
     participant LED as :StockLedgerService
     participant PRO as producto:Producto
 
     ADM->>+SRV: anularRecepcionDeCompra(recepcionId, motivo)
     SRV->>+COL: get(recepcionId)
     COL-->>-SRV: recepcion
-    SRV->>+REC: getItems()
-    REC-->>-SRV: items
-    SRV->>+REC: getUbicacionDelDeposito()
-    REC-->>-SRV: ubicacionDeStock
-    loop Por cada renglón de la recepción
-        SRV->>+IRE: getProducto()
-        IRE-->>-SRV: producto
-        Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock inverso y mueve el saldo del depósito
-        SRV->>+LED: aplicarMovimientoDeStock(ubicacionDeStock, nula, producto, llenas, llenas, llenasRecibidas, anulacionDeCompra)
-        alt El depósito todavía tiene las llenas ingresadas
-            LED-->>-SRV: aplicado
-            SRV->>PRO: restarStock(llenasRecibidas)
-        else El depósito ya no tiene las llenas ingresadas
-            LED-->>SRV: saldoInsuficiente
-            SRV-->>ADM: conflicto
-        end
+    opt La recepción cumplía una orden de compra
+        SRV->>+REC: getOrden()
+        REC-->>-SRV: ordenDeCompra
+    end
+    SRV->>+REC: validarAnulable()
+    REC-->>-SRV: anulable
+    Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock inverso de cada movimiento del lote y mueve los saldos del depósito
+    SRV->>+LED: contraasentar(loteDeLaRecepcion)
+    alt Las llenas siguen en el depósito donde entraron
+        LED-->>SRV: loteDelContraasiento
+    else Las llenas ya no están en el depósito donde entraron
+        LED-->>SRV: conflicto
+    end
+    deactivate LED
+    loop Por cada tipo de garrafa recibido
+        SRV->>+ITR: getProducto()
+        ITR-->>-SRV: producto
+        SRV->>+PRO: restaurarCostoPromedio(costoPrevio, llenasRecibidas)
+        PRO-->>-SRV: costoPromedio
+    end
+    opt La recepción cumplía una orden de compra
+        SRV->>+ORD: devolverRecibido(items)
+        ORD-->>-SRV: ordenActualizada
     end
     SRV->>+REC: anular(motivo)
-    REC->>REC: validarQueEstaConfirmada()
     REC-->>-SRV: recepcion
     SRV-->>-ADM: recepcion
 ```
 
-**Figura 282 — DSD CU-217: Registrar la Recepción de una Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)**
+**Figura 288 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)**
 
-**Clases participantes:** `PurchaseReceiptService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos, **colaboración propuesta**: no existe en el código), la colección `Map<String, RecepcionDeCompra>` y los objetos de dominio `RecepcionDeCompra`, `ItemRecepcion` y `Producto`.
+**Clases participantes:** `VoidPurchaseReceiptUseCase` (controlador: el caso de uso del módulo de compras), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, RecepcionDeCompra>` y los objetos de dominio `RecepcionDeCompra`, `ItemRecepcion`, `OrdenDeCompra` y `Producto`.
 
-**GRASP.** *Controlador*: `PurchaseReceiptService`. *Experto*: la `RecepcionDeCompra` conoce su estado y sus renglones y cambia el suyo; el `Producto` resta su stock vendible. *Fabricación pura*: `StockLedgerService` (CU-250) asienta el movimiento inverso, sólo si el depósito todavía tiene lo ingresado.
+**GRASP.** *Controlador*: `VoidPurchaseReceiptUseCase`. *Experto*: la `RecepcionDeCompra` conoce su estado, su orden y sus renglones, valida que pueda anularse y cambia el suyo; cada `ItemRecepcion` conoce su garrafa; la `OrdenDeCompra` recupera lo que la recepción había recibido y el `Producto` restituye su costo promedio. *Fabricación pura*: `StockLedgerService` (CU-250) asienta el contraasiento, sólo si el depósito todavía tiene lo ingresado.
 
-**No se dibuja:** la devolución a la orden de lo recibido, que vuelve a enviada o a parcialmente recibida, el bloqueo en el orden global y la reversión de toda la anulación cuando una llena ya salió.
+**No se dibuja:** el bloqueo de la orden antes que el de la recepción, el de las garrafas, los depósitos y los saldos que toma el libro, la explicación de dónde están hoy las llenas, que arma el 409, la transacción con reintento y la clave de idempotencia.
 
-##### Operación: consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)
+| Operación de diseño | Implementación |
+|---|---|
+| `VoidPurchaseReceiptUseCase.anularRecepcionDeCompra(...)` | `PurchaseReceiptController.void` → `VoidPurchaseReceiptUseCase.execute` |
+| `Map<String, RecepcionDeCompra>.get(...)` | `VoidPurchaseReceiptUseCase.bloquearRecepcion`: lee el `PurchaseReceipt` de la distribuidora con `FOR UPDATE`, después de bloquear su orden; responde 404 si no existe |
+| `RecepcionDeCompra.getOrden(...)` | `VoidPurchaseReceiptUseCase.execute`: bloquea con `PurchaseOrderService.bloquear` la orden de la recepción, antes que la recepción |
+| `RecepcionDeCompra.validarAnulable(...)` | `VoidPurchaseReceiptUseCase.validarAnulable`: responde 409 si ya está anulada y 400 si figura como pagada |
+| `ItemRecepcion.getProducto(...)` | `VoidPurchaseReceiptUseCase.recalcularCostos`: la garrafa de cada `PurchaseReceiptItem` con llenas |
+| `Producto.restaurarCostoPromedio(...)` | `VoidPurchaseReceiptUseCase.recalcularCostos`: calcula `costoPromedioAlAnular()` con el promedio previo guardado en el renglón y lo guarda con `GasCylinderService.fijarCostoPromedio` |
+| `OrdenDeCompra.devolverRecibido(...)` | `VoidPurchaseReceiptUseCase.execute`: resta de `PurchaseOrderItem.receivedQuantity` lo recibido y recalcula `PurchaseOrder.status` con `estadoSegunRecibido()`, salvo que la orden esté cancelada o cerrada con faltante |
+| `RecepcionDeCompra.anular(...)` | `VoidPurchaseReceiptUseCase.execute`: guarda `PurchaseReceipt.status` anulada, `PurchaseReceipt.voidReason`, `PurchaseReceipt.voidedAt` y `PurchaseReceipt.voidBatchId` |
+
+**Observaciones de diseño**
+
+- Si el contraasiento no se puede asentar, la transacción entera se revierte: la recepción sigue confirmada y el costo promedio no cambia.
+- El comprobante del proveedor de una recepción anulada sigue ocupado: no se reutiliza.
+
+---
+
+#### DSD — CU-281: Marcar el Pago de una Recepción
+
+##### Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-217 Registrar la Recepción de una Compra · consultarRecepcionesDeCompra
+    title DSD — CU-281 Marcar el Pago de una Recepción · marcarPagoDeRecepcion
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :PurchaseReceiptService
+    participant COL as :Map#lt;String, RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+
+    ADM->>+SRV: marcarPagoDeRecepcion(recepcionId, estadoDePago)
+    SRV->>+COL: get(recepcionId)
+    COL-->>-SRV: recepcion
+    SRV->>+REC: marcarPago(estadoDePago)
+    REC->>REC: validarNoAnulada()
+    REC-->>-SRV: recepcion
+    SRV-->>-ADM: recepcion
+```
+
+**Figura 289 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)**
+
+**Clases participantes:** `PurchaseReceiptService` (controlador del módulo de compras para los cambios del remito que no mueven stock), la colección `Map<String, RecepcionDeCompra>` y el objeto de dominio `RecepcionDeCompra`.
+
+**GRASP.** *Controlador*: `PurchaseReceiptService`. *Experto*: la `RecepcionDeCompra` conoce su estado, valida que no esté anulada y cambia su propio estado de pago.
+
+**No se dibuja:** el bloqueo de la recepción y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseReceiptService.marcarPagoDeRecepcion(...)` | `PurchaseReceiptController.paymentStatus` → `PurchaseReceiptService.cambiarEstadoDePago` |
+| `Map<String, RecepcionDeCompra>.get(...)` | `PurchaseReceiptService.cambiarEstadoDePago`: lee el `PurchaseReceipt` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
+| `RecepcionDeCompra.marcarPago(...)` | `PurchaseReceiptService.cambiarEstadoDePago`: guarda `PurchaseReceipt.paymentStatus` |
+| `RecepcionDeCompra.validarNoAnulada(...)` | `PurchaseReceiptService.cambiarEstadoDePago`: responde 400 si `PurchaseReceipt.status` es anulada |
+
+**Observaciones de diseño**
+
+- Es sólo una marca: no genera un egreso de caja. Cuando exista el módulo de caja, completará `PurchaseReceipt.cashMovementId`, que hoy queda vacío.
+
+---
+
+#### DSD — CU-284: Consultar las Recepciones de Compra
+
+##### Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-284 Consultar las Recepciones de Compra · consultarRecepcionesDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
     participant RECS as :List#lt;RecepcionDeCompra#gt;
     participant REC as recepcion:RecepcionDeCompra
 
-    ADM->>+SRV: consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)
-    SRV->>+RECS: buscar(proveedorId, desde, hasta, estadoDePago)
+    ADM->>+SRV: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+    SRV->>+RECS: buscar(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
     loop Por cada recepción del filtro
         RECS->>REC: getTotal()
     end
@@ -15468,21 +15894,104 @@ sequenceDiagram
     SRV-->>-ADM: recepciones
 ```
 
-**Figura 283 — DSD CU-217: Registrar la Recepción de una Compra — Operación: consultarRecepcionesDeCompra(proveedorId, desde, hasta, estadoDePago)**
+**Figura 290 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)**
 
-**Clases participantes:** `PurchaseReceiptService` (controlador de fachada del módulo de compras, **colaboración propuesta**: no existe en el código), la colección `List<RecepcionDeCompra>` y el objeto de dominio `RecepcionDeCompra`.
+**Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `List<RecepcionDeCompra>` y el objeto de dominio `RecepcionDeCompra`.
 
-**GRASP.** *Controlador*: `PurchaseReceiptService`. *Experto*: la colección aplica los filtros y la `RecepcionDeCompra` conoce su total.
+**GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: la colección aplica los filtros y cada `RecepcionDeCompra` conoce su total.
 
-**No se dibuja:** la paginación y el total de resultados.
+**No se dibuja:** la paginación, el total de resultados y el nombre del proveedor, de la orden y del depósito de cada fila.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseQueryService.consultarRecepcionesDeCompra(...)` | `PurchaseReceiptController.recepciones` → `PurchaseQueryService.recepciones` |
+| `List<RecepcionDeCompra>.buscar(...)` | `PurchaseQueryService.recepciones`: filtra por proveedor, orden, `PurchaseReceipt.paymentStatus`, `PurchaseReceipt.status` y por el día de recepción con `PurchaseQueryService.filtroDeFechas`; ordena de la más reciente a la más antigua |
+| `RecepcionDeCompra.getTotal(...)` | `PurchaseQueryService.paginaDeRecepciones`: devuelve `PurchaseReceipt.totalAmount` de cada recepción |
 
 **Observaciones de diseño**
 
-- Es el camino por el que entran al sistema las garrafas llenas compradas. Una compra sin orden de compra se registra con el depósito y el proveedor indicados.
-- El costo promedio ponderado del `Producto` habilita el margen en los reportes.
-- El pago al proveedor se reduce a un indicador de impago o pagado: su egreso de caja corresponde al módulo de caja (I-14).
-- La anulación no borra nada: registra los movimientos inversos con el motivo «contraasiento».
 - El filtro por estado de pago es el que permite ver qué remitos están impagos.
+- Las fechas filtran por el día de recepción, en días argentinos; con una sola, el rango es ese día.
+
+##### Operación: consultarRecepcionDeCompra(recepcionId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-284 Consultar las Recepciones de Compra · consultarRecepcionDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant COL as :Map#lt;String, RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+    participant IRE as item:ItemRecepcion
+
+    ADM->>+SRV: consultarRecepcionDeCompra(recepcionId)
+    SRV->>+COL: get(recepcionId)
+    COL-->>-SRV: recepcion
+    SRV->>+REC: getItems()
+    loop Por cada renglón de la recepción
+        REC->>IRE: getSubtotal()
+    end
+    REC-->>-SRV: items
+    SRV-->>-ADM: recepcion
+```
+
+**Figura 291 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)**
+
+**Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, RecepcionDeCompra>` y los objetos de dominio `RecepcionDeCompra` e `ItemRecepcion`.
+
+**GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: la `RecepcionDeCompra` contiene sus renglones y cada `ItemRecepcion` calcula su subtotal.
+
+**No se dibuja:** el nombre del tipo de garrafa y de cada dato de cabecera.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseQueryService.consultarRecepcionDeCompra(...)` | `PurchaseReceiptController.recepcion` → `PurchaseQueryService.recepcion` |
+| `Map<String, RecepcionDeCompra>.get(...)` | `PurchaseQueryService.recepcion`: lee el `PurchaseReceipt` de la distribuidora; responde 404 si no existe |
+| `RecepcionDeCompra.getItems(...)` | `PurchaseQueryService.recepcion`: los `PurchaseReceiptItem` de la recepción, ordenados por tipo de garrafa |
+| `ItemRecepcion.getSubtotal(...)` | `PurchaseQueryService.recepcion`: costo unitario por llenas recibidas, a 2 decimales |
+
+---
+
+#### DSD — CU-285: Consultar el Costo Promedio de las Garrafas
+
+##### Operación: consultarCostoPromedio()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-285 Consultar el Costo Promedio de las Garrafas · consultarCostoPromedio
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant PRODS as :List#lt;Producto#gt;
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: consultarCostoPromedio()
+    SRV->>+PRODS: getTodos()
+    loop Por cada tipo de garrafa
+        PRODS->>PRO: getCostoPromedio()
+    end
+    PRODS-->>-SRV: costos
+    SRV-->>-ADM: costos
+```
+
+**Figura 292 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()**
+
+**Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `List<Producto>` y el objeto de dominio `Producto`.
+
+**GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: la colección entrega los tipos de garrafa de la distribuidora y cada `Producto` conoce su costo promedio.
+
+**No se dibuja:** la última compra de cada garrafa y las llenas existentes, que se leen en la misma consulta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `PurchaseQueryService.consultarCostoPromedio(...)` | `PurchaseReceiptController.costos` → `PurchaseQueryService.costosPromedio` |
+| `List<Producto>.getTodos(...)` | `PurchaseQueryService.costosPromedio`: lee los `GasCylinder` de la distribuidora, ordenados por tipo, con la última recepción confirmada con llenas y las llenas de los saldos |
+| `Producto.getCostoPromedio(...)` | `PurchaseQueryService.costosPromedio`: devuelve `GasCylinder.averageUnitCost`, vacío si la garrafa nunca se compró |
+
+**Observaciones de diseño**
+
+- Sólo una compra cambia el costo promedio: las ventas, las mermas y los ajustes no.
 
 ---
 
@@ -15512,7 +16021,7 @@ sequenceDiagram
     SRV-->>-ADM: caja
 ```
 
-**Figura 284 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)**
+**Figura 293 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)**
 
 **Clases participantes:** `CashBoxService` (controlador de fachada del módulo `cash`) y los objetos de dominio `Distribuidora` y `Caja`. **Colaboración propuesta:** `CashBoxService` no existe en el código; se construye en la iteración I-14.
 
@@ -15551,7 +16060,7 @@ sequenceDiagram
     SRV-->>-ADM: caja
 ```
 
-**Figura 285 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)**
+**Figura 294 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)**
 
 **Clases participantes:** `CashBoxService` (controlador de fachada), la colección `Map<String, Caja>` y el objeto de dominio `Caja`. **Colaboración propuesta:** `CashBoxService` no existe en el código.
 
@@ -15596,7 +16105,7 @@ sequenceDiagram
     SRV-->>-ADM: sesionDeCaja
 ```
 
-**Figura 286 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)**
+**Figura 295 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)**
 
 **Clases participantes:** `CashBoxService` (controlador de fachada), la colección `Map<String, Caja>` y los objetos de dominio `Caja` y `SesionDeCaja`. **Colaboración propuesta:** `CashBoxService` no existe en el código.
 
@@ -15643,7 +16152,7 @@ sequenceDiagram
     SRV-->>-ADM: sesionDeCaja
 ```
 
-**Figura 287 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)**
+**Figura 296 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)**
 
 **Clases participantes:** `CashBoxService` (controlador de fachada), la colección `Map<String, SesionDeCaja>` y los objetos de dominio `SesionDeCaja` y `Caja`. El movimiento de ajuste lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `CashBoxService` no existe en el código.
 
@@ -15689,7 +16198,7 @@ sequenceDiagram
     SRV-->>-ADM: movimiento
 ```
 
-**Figura 288 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)**
+**Figura 297 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)**
 
 **Clases participantes:** `CashLedgerService` (controlador de fachada del libro), las colecciones `Map<String, Caja>` y `Map<String, CategoriaDeCaja>` y los objetos de dominio `Caja` y `MovimientoDeCaja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código; es el punto único por el que pasa todo movimiento.
 
@@ -15737,7 +16246,7 @@ sequenceDiagram
     SRV-->>-ADM: movimientos
 ```
 
-**Figura 289 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)**
+**Figura 298 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)**
 
 **Clases participantes:** `CashLedgerService` (controlador de fachada del libro), las colecciones `Map<String, Caja>` y `Map<String, CategoriaDeCaja>` y los objetos de dominio `Caja` y `MovimientoDeCaja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código.
 
@@ -15781,7 +16290,7 @@ sequenceDiagram
     SRV-->>-ADM: contraasiento
 ```
 
-**Figura 290 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)**
+**Figura 299 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)**
 
 **Clases participantes:** `CashLedgerService` (controlador de fachada del libro), la colección `Map<String, MovimientoDeCaja>` y los objetos de dominio `MovimientoDeCaja` y `Caja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código.
 
@@ -15819,7 +16328,7 @@ sequenceDiagram
     SRV-->>-ADM: categoria
 ```
 
-**Figura 291 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)**
+**Figura 300 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)**
 
 **Clases participantes:** `CashCategoryService` (controlador de fachada) y los objetos de dominio `Distribuidora` y `CategoriaDeCaja`. **Colaboración propuesta:** `CashCategoryService` no existe en el código.
 
@@ -15857,7 +16366,7 @@ sequenceDiagram
     SRV-->>-ADM: categoria
 ```
 
-**Figura 292 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)**
+**Figura 301 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)**
 
 **Clases participantes:** `CashCategoryService` (controlador de fachada), la colección `Map<String, CategoriaDeCaja>` y el objeto de dominio `CategoriaDeCaja`. **Colaboración propuesta:** `CashCategoryService` no existe en el código.
 
@@ -15921,7 +16430,7 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 293 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()**
+**Figura 302 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()**
 
 **Clases participantes:** `DriverSettlementCron` (controlador del proceso programado), las colecciones `List<Chofer>`, `List<Pedido>` y `List<AsientoCuentaCorriente>` y los objetos de dominio `Chofer`, `RendicionChofer`, `PedidoRendido` y `AsientoCuentaCorriente`. **Colaboración propuesta:** `DriverSettlementCron` no existe en el código; vive en el módulo `driver-settlement`.
 
@@ -15967,7 +16476,7 @@ sequenceDiagram
     SRV-->>-CHF: rendicion
 ```
 
-**Figura 294 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)**
+**Figura 303 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)**
 
 **Clases participantes:** `DriverSettlementService` (controlador de fachada del módulo `driver-settlement`), la colección `Map<String, RendicionChofer>` y los objetos de dominio `RendicionChofer` y `GastoDeRendicion`. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
 
@@ -16023,7 +16532,7 @@ sequenceDiagram
     SRV-->>-ADM: rendicion
 ```
 
-**Figura 295 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)**
+**Figura 304 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)**
 
 **Clases participantes:** `DriverSettlementService` (controlador de fachada), las colecciones `Map<String, RendicionChofer>` y `Map<String, Caja>` y los objetos de dominio `RendicionChofer`, `Chofer`, `Empleado`, `Caja` y `AsientoComision`. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
 
@@ -16058,7 +16567,7 @@ sequenceDiagram
     SRV-->>-ADM: rendicion
 ```
 
-**Figura 296 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)**
+**Figura 305 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)**
 
 **Clases participantes:** `DriverSettlementService` (controlador de fachada), la colección `Map<String, RendicionChofer>` y el objeto de dominio `RendicionChofer`. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
 
@@ -16103,7 +16612,7 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 297 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()**
+**Figura 306 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()**
 
 **Clases participantes:** `SettlementOverdueCron` (controlador del proceso programado), la colección `List<RendicionChofer>`, `EmailSenderPort` (fabricación pura: el envío de correo detrás de un puerto) y los objetos de dominio `RendicionChofer` y `Distribuidora`. **Colaboración propuesta:** `SettlementOverdueCron` no existe en el código; sigue el patrón de `FleetAlertsCron`.
 
@@ -16145,7 +16654,7 @@ sequenceDiagram
     SRV-->>-ADM: cuentaCorriente
 ```
 
-**Figura 298 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)**
+**Figura 307 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada del módulo `customer-account`), la colección `Map<String, Cliente>` y los objetos de dominio `Cliente`, `Distribuidora` y `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -16179,7 +16688,7 @@ sequenceDiagram
     SRV-->>-ADM: cuentaCorriente
 ```
 
-**Figura 299 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)**
+**Figura 308 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), la colección `Map<String, CuentaCorriente>` y el objeto de dominio `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -16221,7 +16730,7 @@ sequenceDiagram
     UCS-->>-ADM: pedido
 ```
 
-**Figura 300 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)**
+**Figura 309 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)**
 
 **Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso, que ya existe en el código) y los objetos de dominio `Cliente`, `Pedido` y `CuentaCorriente`. **Colaboración propuesta:** la verificación del crédito la hace `CuentaCorriente`, a la que `CreateOrderUseCase` llega por un puerto `CustomerAccountPort` que se agrega en `order/domain/ports` y que implementa el módulo `customer-account`, con el mismo patrón que `CylinderLifecyclePort`.
 
@@ -16265,7 +16774,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 301 — DSD CU-236: Vender a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)**
+**Figura 310 — DSD CU-236: Vender a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada, que escucha el evento «pedido entregado»), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Cliente`, `CuentaCorriente` y `AsientoCuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código, y el evento de dominio «pedido entregado» se construye en la tanda de cimientos del plan de construcción.
 
@@ -16326,7 +16835,7 @@ sequenceDiagram
     SRV-->>-ADM: asiento
 ```
 
-**Figura 302 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)**
+**Figura 311 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), las colecciones `Map<String, CuentaCorriente>` y `Map<String, RendicionChofer>` (la rendición abierta de cada chofer) y los objetos de dominio `CuentaCorriente`, `AsientoCuentaCorriente`, `ImputacionCuentaCorriente`, `Chofer` y `RendicionChofer`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite.
 
@@ -16370,7 +16879,7 @@ sequenceDiagram
     SRV-->>-ADM: asiento
 ```
 
-**Figura 303 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)**
+**Figura 312 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), la colección `Map<String, CuentaCorriente>` y los objetos de dominio `CuentaCorriente`, `AsientoCuentaCorriente` e `ImputacionCuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -16409,7 +16918,7 @@ sequenceDiagram
     SRV-->>-ADM: asientosDeLaCuenta, saldoInicial
 ```
 
-**Figura 304 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)**
+**Figura 313 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), las colecciones `Map<String, CuentaCorriente>` y `List<AsientoCuentaCorriente>` y el objeto de dominio `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -16446,7 +16955,7 @@ sequenceDiagram
     SRV-->>-ADM: antiguedad, total
 ```
 
-**Figura 305 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()**
+**Figura 314 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), la colección `List<CuentaCorriente>` y el objeto de dominio `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -16492,7 +17001,7 @@ sequenceDiagram
     SRV-->>-ADM: regla
 ```
 
-**Figura 306 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)**
+**Figura 315 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada del módulo `commission`), las colecciones `Map<String, Empleado>` y `Map<String, Producto>` y los objetos de dominio `Distribuidora` y `ReglaComision`. **Colaboración propuesta:** `CommissionService` no existe en el código. `Empleado` es el legajo del módulo de personal, ya construido.
 
@@ -16526,7 +17035,7 @@ sequenceDiagram
     SRV-->>-ADM: regla
 ```
 
-**Figura 307 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: modificarReglaDeComision(reglaId, datos)**
+**Figura 316 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: modificarReglaDeComision(reglaId, datos)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), la colección `Map<String, ReglaComision>` y el objeto de dominio `ReglaComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -16577,7 +17086,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 308 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)**
+**Figura 317 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada, que escucha el evento «pedido entregado»), las colecciones `Map<String, Pedido>` y `List<ReglaComision>` y los objetos de dominio `Pedido`, `Chofer`, `Empleado`, `ReglaComision` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código, y el evento de dominio «pedido entregado» se construye en la tanda de cimientos del plan de construcción.
 
@@ -16627,7 +17136,7 @@ sequenceDiagram
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 309 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)**
+**Figura 318 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), las colecciones `Map<String, Empleado>` y `List<AsientoComision>` y los objetos de dominio `Empleado`, `LiquidacionComisiones` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -16673,7 +17182,7 @@ sequenceDiagram
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 310 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: aprobarLiquidacion(liquidacionId)**
+**Figura 319 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: aprobarLiquidacion(liquidacionId)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), la colección `Map<String, LiquidacionComisiones>` y los objetos de dominio `LiquidacionComisiones`, `Empleado` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -16711,7 +17220,7 @@ sequenceDiagram
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 311 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: anularLiquidacion(liquidacionId)**
+**Figura 320 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: anularLiquidacion(liquidacionId)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), la colección `Map<String, LiquidacionComisiones>` y los objetos de dominio `LiquidacionComisiones` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -16755,7 +17264,7 @@ sequenceDiagram
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 312 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)**
+**Figura 321 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), las colecciones `Map<String, LiquidacionComisiones>` y `Map<String, Caja>` y el objeto de dominio `LiquidacionComisiones`. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -16794,7 +17303,7 @@ sequenceDiagram
     SRV-->>-CHF: comisiones, saldo
 ```
 
-**Figura 313 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)**
+**Figura 322 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), las colecciones `Map<String, Empleado>` y `List<AsientoComision>` y el objeto de dominio `Empleado`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -16836,7 +17345,7 @@ sequenceDiagram
     SRV-->>-ADM: tablero
 ```
 
-**Figura 314 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)**
+**Figura 323 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)**
 
 **Clases participantes:** `FinanceDashboardService` (controlador de fachada), las colecciones `List<Caja>`, `List<RendicionChofer>`, `List<CuentaCorriente>` y `List<AsientoComision>`. **Colaboración propuesta:** `FinanceDashboardService` no existe en el código; vive en el módulo `cash`.
 
@@ -16897,7 +17406,7 @@ sequenceDiagram
     deactivate PLN
 ```
 
-**Figura 315 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 324 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del proceso temporal), `DemandForecastService` y `FleetCoverageService` (fabricaciones puras: la demanda proyectada por franja y el mínimo de vehículos por zona), `NotificationsService` (existente: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`. Ninguna de las tres clases de servicio existe en el código: se construyen en la iteración I-10.
 
@@ -16927,7 +17436,7 @@ sequenceDiagram
     PLN-->>-CHF: propuesta
 ```
 
-**Figura 316 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
+**Figura 325 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, PropuestaVentanaTaller>` y los objetos de dominio `PropuestaVentanaTaller` y `TareaMantenimiento`.
 
@@ -16955,7 +17464,7 @@ sequenceDiagram
     PLN-->>-ADM: tarea
 ```
 
-**Figura 317 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
+**Figura 326 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `FleetAvailabilityPort` (fabricación pura: el puerto con el que el despacho sabe qué vehículos están aptos).
 
@@ -16989,7 +17498,7 @@ sequenceDiagram
     RFS-->>-CLI: pedido
 ```
 
-**Figura 318 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra**
+**Figura 327 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra**
 
 **Clases participantes:** `RepurchaseForecastService` (controlador del módulo de recompra, **colaboración propuesta**: no existe en el código), la colección `Map<String, InvitacionRecompra>` y el objeto de dominio `InvitacionRecompra`.
 
@@ -17030,7 +17539,7 @@ sequenceDiagram
     deactivate RFS
 ```
 
-**Figura 319 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras**
+**Figura 328 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras**
 
 **Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario, **colaboración propuesta**: no existe en el código), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), `NotificationsService` (fabricación pura: el aviso al cliente), las colecciones `List<InvitacionRecompra>` y `List<Cliente>`, y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
 
@@ -17090,7 +17599,7 @@ sequenceDiagram
     deactivate PLN
 ```
 
-**Figura 320 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()**
+**Figura 329 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()**
 
 **Clases participantes:** `RouteBatchPlannerService` (controlador del proceso temporal; colaboración propuesta), `OrderRepositoryPort` (fabricación pura: la búsqueda de los pedidos programados atraviesa todos los pedidos), `NotificationsService` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido`, `ParadaLote`, `OfertaLote` y `Chofer`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; `OrderRepositoryPort` y `NotificationsService` sí. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
 
@@ -17130,7 +17639,7 @@ sequenceDiagram
     SRV-->>-CHF: pedidos
 ```
 
-**Figura 321 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)**
+**Figura 330 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)**
 
 **Clases participantes:** `RouteBatchPlannerService` (controlador; colaboración propuesta), la colección `Map<String, LoteRecorrido>` y los objetos de dominio `LoteRecorrido`, `OfertaLote`, `ParadaLote` y `Pedido`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recorridos (I-9).
 
@@ -17184,7 +17693,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 322 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()**
+**Figura 331 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal; colaboración propuesta), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código, ni las consultas que el recupero le pide al puerto del ciclo de envase (`findHeldByCustomer`); el puerto sí existe, y es el mismo que registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
 
@@ -17220,7 +17729,7 @@ sequenceDiagram
     SRV-->>-CLI: retiro
 ```
 
-**Figura 323 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
+**Figura 332 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, AvisoRecupero>` y los objetos de dominio `AvisoRecupero`, `Pedido` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recupero de envases (I-8).
 
@@ -17254,7 +17763,7 @@ sequenceDiagram
     SRV-->>-ADM: caso
 ```
 
-**Figura 324 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
+**Figura 333 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, CasoRecupero>`, `DepositLedgerService` (fabricación pura propuesta: registra la decisión y el importe) y los objetos de dominio `CasoRecupero` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` y `DepositLedgerService` no existen en el código.
 
@@ -17300,8 +17809,8 @@ modifican el modelo conceptual, con precondiciones y postcondiciones, están en 
 Documento 2 · §2.2; el diagrama de interacción que muestra cómo se resuelve por dentro
 está en las secciones 4.1 a 4.23 de este documento.
 
-Son **320 operaciones**. **320** tienen su diagrama de interacción y
-**200** tienen contrato: son las que cambian el estado del sistema.
+Son **329 operaciones**. **329** tienen su diagrama de interacción y
+**203** tienen contrato: son las que cambian el estado del sistema.
 
 | Operación | Caso de uso | Actor que la invoca | Diagrama de interacción | Contrato |
 |---|---|---|---|---|
@@ -17333,7 +17842,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `anularLiquidacion(liquidacionId identificador)` | CU-242 | Administrador (ACT-03) | sí | sí |
 | `anularMovimientoDeCaja(movimientoId identificador, motivo cadena)` | CU-229 | Administrador (ACT-03) | sí | sí |
 | `anularMultaDeTransito(multaId identificador, motivo cadena)` | CU-198 | Administrador (ACT-03) | sí | sí |
-| `anularRecepcionDeCompra(recepcionId identificador, motivo cadena)` | CU-217 | Administrador (ACT-03) | sí | sí |
+| `anularRecepcionDeCompra(recepcionId identificador, motivo cadena)` | CU-280 | Administrador (ACT-03) | sí | sí |
 | `anularTransferenciaDeStock(loteId identificador, nota cadena)` | CU-276 | Administrador (ACT-03) | sí | sí |
 | `aprobarLicencia(licenciaId identificador)` | CU-192 | Administrador (ACT-03) | sí | sí |
 | `aprobarLiquidacion(liquidacionId identificador)` | CU-242 | Administrador (ACT-03) | sí | sí |
@@ -17363,6 +17872,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `cancelarPedido(pedidoId identificador, motivo cadena)` | CU-008 / CU-010 | Cliente (ACT-01), Administrador (ACT-03) | sí | sí |
 | `cancelarPedidoForzado(pedidoId identificador)` | CU-010 | Administrador (ACT-03) | sí | sí |
 | `cerrarCajaConArqueo(sesionId identificador, montoContado moneda)` | CU-227 | Administrador (ACT-03) | sí | sí |
+| `cerrarOrdenDeCompraConFaltante(ordenId identificador, motivo cadena)` | CU-282 | Administrador (ACT-03) | sí | sí |
 | `cerrarRendicionDeStock(cargaId identificador, nota cadena)` | CU-222 | Administrador (ACT-03) | sí | sí |
 | `cerrarSiniestro(siniestroId identificador, costoDeReparacion moneda, reintegroDelSeguro moneda, franquicia moneda)` | CU-202 | Administrador (ACT-03) | sí | sí |
 | `cerrarTareaDeFlota(tareaId identificador, fecha fecha, kilometraje entero, costo moneda, observacion cadena)` | CU-141 | Administrador (ACT-03) | sí | sí |
@@ -17392,6 +17902,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `consultarConciliacionDeStock()` | CU-224 | Administrador (ACT-03) | sí | — |
 | `consultarConsumoDeCombustible(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-196 | Administrador (ACT-03) | sí | — |
 | `consultarCostoDeUnVehiculo(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-203 | Administrador (ACT-03) | sí | — |
+| `consultarCostoPromedio()` | CU-285 | Administrador (ACT-03) | sí | — |
 | `consultarDeposito(depositoId identificador)` | CU-207 | Administrador (ACT-03) | sí | — |
 | `consultarDepositos(incluirInactivos booleano)` | CU-207 | Administrador (ACT-03) | sí | — |
 | `consultarDetalleDelChofer(choferId identificador)` | CU-035 / CU-109 | Administrador (ACT-03) | sí | — |
@@ -17414,6 +17925,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `consultarGraficoDeVentas()` | CU-026 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDeCalificaciones(usuarioId identificador)` | CU-066 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDeChoferesDelVehiculo(vehiculoId identificador, pagina entero)` | CU-165 | Administrador (ACT-03) | sí | — |
+| `consultarHistorialDeCompras(proveedorId identificador, desde fecha, hasta fecha)` | CU-286 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDeEstados(pedidoId identificador)` | CU-170 | Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
 | `consultarHistorialDelEnvase(envaseId identificador)` | CU-071 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDePedidos(clienteId identificador, pagina entero, limite entero)` | CU-007 | Cliente (ACT-01) | sí | — |
@@ -17425,19 +17937,23 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `consultarModalidadesDeEntrega(direccionId identificador)` | CU-148 | Cliente (ACT-01) | sí | — |
 | `consultarMovimientosDeStock(productoId identificador, ubicacionId identificador, motivo cadena, desde fechaHora, hasta fechaHora, pagina entero)` | CU-209 | Administrador (ACT-03) | sí | — |
 | `consultarMultasDeTransito(filtros registro)` | CU-198 | Administrador (ACT-03) | sí | — |
-| `consultarOrdenesDeCompra(estado cadena, proveedorId identificador, desde fechaHora, hasta fechaHora)` | CU-215 | Administrador (ACT-03) | sí | — |
+| `consultarOrdenDeCompra(ordenId identificador)` | CU-283 | Administrador (ACT-03) | sí | — |
+| `consultarOrdenesDeCompra(estado cadena, proveedorId identificador, desde fecha, hasta fecha)` | CU-283 | Administrador (ACT-03) | sí | — |
 | `consultarPedido(pedidoId identificador)` | CU-006 | Cliente (ACT-01) | sí | — |
 | `consultarPedidosAsignados(choferId identificador, pagina entero, limite entero)` | CU-081 | Chofer (ACT-02) | sí | — |
 | `consultarPedidosDisponibles(pagina entero, limite entero)` | CU-080 | Chofer (ACT-02) | sí | — |
+| `consultarPendienteDeRecibir(ordenId identificador)` | CU-283 | Administrador (ACT-03) | sí | — |
 | `consultarPerfil(usuarioId identificador)` | CU-004 | Cliente (ACT-01) | sí | — |
 | `consultarPerfilCliente(usuarioId identificador)` | CU-004 | Cliente (ACT-01) | sí | — |
 | `consultarPerfilDelChofer(usuarioId identificador)` | CU-049 | Chofer (ACT-02) | sí | — |
 | `consultarProducto(productoId identificador)` | CU-041 | Cliente (ACT-01) | sí | — |
 | `consultarProductosDisponibles(distribuidora cadena)` | CU-041 | Cliente (ACT-01) | sí | — |
 | `consultarProductosInactivos()` | CU-269 | Administrador (ACT-03) | sí | — |
-| `consultarProveedores(termino cadena)` | CU-214 | Administrador (ACT-03) | sí | — |
+| `consultarProveedor(proveedorId identificador)` | CU-214 | Administrador (ACT-03) | sí | — |
+| `consultarProveedores(termino cadena, tipo cadena, incluirInactivos booleano)` | CU-214 | Administrador (ACT-03) | sí | — |
 | `consultarPuestosDeTrabajo()` | CU-176 | Administrador (ACT-03) | sí | — |
-| `consultarRecepcionesDeCompra(proveedorId identificador, desde fechaHora, hasta fechaHora, estadoDePago cadena)` | CU-217 | Administrador (ACT-03) | sí | — |
+| `consultarRecepcionDeCompra(recepcionId identificador)` | CU-284 | Administrador (ACT-03) | sí | — |
+| `consultarRecepcionesDeCompra(proveedorId identificador, ordenId identificador, estadoDePago cadena, estado cadena, desde fecha, hasta fecha)` | CU-284 | Administrador (ACT-03) | sí | — |
 | `consultarRecomprasEstimadas(dias entero)` | CU-146 | Administrador (ACT-03) | sí | — |
 | `consultarResumenDeCalificaciones(usuarioId identificador)` | CU-065 | Cliente (ACT-01) | sí | — |
 | `consultarResumenDePedidos()` | CU-026 | Administrador (ACT-03) | sí | — |
@@ -17499,7 +18015,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `eliminarZonaDeCobertura(zonaId identificador)` | CU-059 | Administrador (ACT-03) | sí | sí |
 | `emitirOrdenDeCompra(proveedorId identificador, depositoId identificador, items lista, fechaEsperada fecha)` | CU-215 | Administrador (ACT-03) | sí | sí |
 | `enviarNotificacionDePrueba(token cadena, titulo cadena, mensaje cadena)` | CU-100 | Administrador General (ACT-05) | sí | — |
-| `enviarOrdenDeCompra(ordenId identificador)` | CU-215 | Administrador (ACT-03) | sí | sí |
+| `enviarOrdenDeCompra(ordenId identificador)` | CU-288 | Administrador (ACT-03) | sí | sí |
 | `expirarPedidosSinPagar()` | CU-077 | Sistema Automático (ACT-04) | sí | sí |
 | `expirarReservasSinSenia()` | CU-076 | Sistema Automático (ACT-04) | sí | sí |
 | `generarRendicionesDelDia()` | CU-231 | Sistema Automático (ACT-04) | sí | sí |
@@ -17529,6 +18045,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `listarZonasDeCobertura()` | CU-057 | Administrador (ACT-03) | sí | — |
 | `marcarDepositoPredeterminado(depositoId identificador)` | CU-273 | Administrador (ACT-03) | sí | sí |
 | `marcarDireccionPredeterminada(direccionId identificador)` | CU-046 / CU-120 | Cliente (ACT-01) | sí | sí |
+| `marcarPagoDeRecepcion(recepcionId identificador, estadoDePago cadena)` | CU-281 | Administrador (ACT-03) | sí | sí |
 | `marcarPedidoEnCamino(pedidoId identificador)` | CU-018 | Chofer (ACT-02) | sí | sí |
 | `modificarCaja(cajaId identificador, datos registro)` | CU-264 | Administrador (ACT-03) | sí | sí |
 | `modificarCantidadDelItem(itemId identificador, cantidad entero)` | CU-123 | Cliente (ACT-01) | sí | sí |
@@ -17540,6 +18057,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 | `modificarFranjaHoraria(franjaId identificador, nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-043 | Administrador (ACT-03) | sí | sí |
 | `modificarLicencia(licenciaId identificador, datos registro)` | CU-191 | Administrador (ACT-03) | sí | sí |
 | `modificarMultaDeTransito(multaId identificador, datos registro)` | CU-198 | Administrador (ACT-03) | sí | sí |
+| `modificarOrdenDeCompra(ordenId identificador, datos registro)` | CU-287 | Administrador (ACT-03) | sí | sí |
 | `modificarPuestoDeTrabajo(puestoId identificador, datos registro)` | CU-256 | Administrador (ACT-03) | sí | sí |
 | `modificarReglaDeComision(reglaId identificador, datos registro)` | CU-240 | Administrador (ACT-03) | sí | sí |
 | `modificarSiniestro(siniestroId identificador, datos registro)` | CU-201 | Administrador (ACT-03) | sí | sí |
@@ -17629,7 +18147,7 @@ Son **320 operaciones**. **320** tienen su diagrama de interacción y
 <!-- dc:inicio -->
 ## 5. Diagrama de Clases de Diseño
 
-El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del §4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se mandan mensajes decide la relación que los une. Se construye a partir de los 328 diagramas de interacción en la notación de Larman y del modelo conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de ellos.
+El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del §4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se mandan mensajes decide la relación que los une. Se construye a partir de los 337 diagramas de interacción en la notación de Larman y del modelo conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de ellos.
 
 **Cómo se deriva.**
 
@@ -17711,7 +18229,7 @@ El diagrama de clases de diseño **se deriva de los diagramas de interacción** 
 | `TipoDeRol` | `RoleType` |
 | `TipoDeUbicacion` | `StockLocationKind` |
 
-En total el diagrama tiene **284 clases** y **1223 operaciones**: 83 clases de dominio (todas las del modelo conceptual) y 201 de diseño (79 colección, 16 controlador, 15 fabricación pura, 81 fachada, 10 puerto). Las 163 asociaciones del modelo conceptual están todas; 80 resultan navegables según los mensajes de los DSD, y 238 pares de clases quedan unidos por una dependencia.
+En total el diagrama tiene **287 clases** y **1247 operaciones**: 83 clases de dominio (todas las del modelo conceptual) y 204 de diseño (79 colección, 18 controlador, 15 fabricación pura, 82 fachada, 10 puerto). Las 163 asociaciones del modelo conceptual están todas; 79 resultan navegables según los mensajes de los DSD, y 248 pares de clases quedan unidos por una dependencia.
 
 ### 5.1 Clases del Dominio
 
@@ -17719,83 +18237,83 @@ Las clases del modelo conceptual, con sus atributos tipados y las operaciones qu
 
 ![Clases de dominio: vista general](diagramas/clases-diseno/DC_General.png)
 
-**Figura 325 — Diagrama de Clases de Dominio**
+**Figura 334 — Diagrama de Clases de Dominio**
 
 ![Clases de dominio: organización y acceso](diagramas/clases-diseno/DC_Organizacion-y-acceso.png)
 
-**Figura 325.1 — Clases de dominio: organización y acceso**
+**Figura 334.1 — Clases de dominio: organización y acceso**
 
 ![Clases de dominio: clientes](diagramas/clases-diseno/DC_Clientes.png)
 
-**Figura 325.2 — Clases de dominio: clientes**
+**Figura 334.2 — Clases de dominio: clientes**
 
 ![Clases de dominio: pedido, líneas y pago](diagramas/clases-diseno/DC_Pedido.png)
 
-**Figura 325.3 — Clases de dominio: pedido, líneas y pago**
+**Figura 334.3 — Clases de dominio: pedido, líneas y pago**
 
 ![Clases de dominio: carrito, franjas y cobertura](diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png)
 
-**Figura 325.4 — Clases de dominio: carrito, franjas y cobertura**
+**Figura 334.4 — Clases de dominio: carrito, franjas y cobertura**
 
 ![Clases de dominio: despacho y propuestas con vigencia](diagramas/clases-diseno/DC_Despacho.png)
 
-**Figura 325.5 — Clases de dominio: despacho y propuestas con vigencia**
+**Figura 334.5 — Clases de dominio: despacho y propuestas con vigencia**
 
 ![Clases de dominio: choferes y vehículos](diagramas/clases-diseno/DC_Choferes-y-vehiculos.png)
 
-**Figura 325.6 — Clases de dominio: choferes y vehículos**
+**Figura 334.6 — Clases de dominio: choferes y vehículos**
 
 ![Clases de dominio: mantenimiento de la flota](diagramas/clases-diseno/DC_Mantenimiento.png)
 
-**Figura 325.7 — Clases de dominio: mantenimiento de la flota**
+**Figura 334.7 — Clases de dominio: mantenimiento de la flota**
 
 ![Clases de dominio: productos y envases](diagramas/clases-diseno/DC_Productos-y-envases.png)
 
-**Figura 325.8 — Clases de dominio: productos y envases**
+**Figura 334.8 — Clases de dominio: productos y envases**
 
 ![Clases de dominio: personal](diagramas/clases-diseno/DC_Personal.png)
 
-**Figura 325.9 — Clases de dominio: personal**
+**Figura 334.9 — Clases de dominio: personal**
 
 ![Clases de dominio: recupero de envases](diagramas/clases-diseno/DC_Recupero.png)
 
-**Figura 325.10 — Clases de dominio: recupero de envases**
+**Figura 334.10 — Clases de dominio: recupero de envases**
 
 ![Clases de dominio: posventa](diagramas/clases-diseno/DC_Posventa.png)
 
-**Figura 325.11 — Clases de dominio: posventa**
+**Figura 334.11 — Clases de dominio: posventa**
 
 ![Clases de dominio: gastos de la flota](diagramas/clases-diseno/DC_Gastos-de-flota.png)
 
-**Figura 325.12 — Clases de dominio: gastos de la flota**
+**Figura 334.12 — Clases de dominio: gastos de la flota**
 
 ![Clases de dominio: stock físico](diagramas/clases-diseno/DC_Stock-fisico.png)
 
-**Figura 325.13 — Clases de dominio: stock físico**
+**Figura 334.13 — Clases de dominio: stock físico**
 
 ![Clases de dominio: carga del camión](diagramas/clases-diseno/DC_Carga-del-camion.png)
 
-**Figura 325.14 — Clases de dominio: carga del camión**
+**Figura 334.14 — Clases de dominio: carga del camión**
 
 ![Clases de dominio: compras](diagramas/clases-diseno/DC_Compras.png)
 
-**Figura 325.15 — Clases de dominio: compras**
+**Figura 334.15 — Clases de dominio: compras**
 
 ![Clases de dominio: caja y movimientos](diagramas/clases-diseno/DC_Caja.png)
 
-**Figura 325.16 — Clases de dominio: caja y movimientos**
+**Figura 334.16 — Clases de dominio: caja y movimientos**
 
 ![Clases de dominio: rendición del chofer](diagramas/clases-diseno/DC_Rendicion.png)
 
-**Figura 325.17 — Clases de dominio: rendición del chofer**
+**Figura 334.17 — Clases de dominio: rendición del chofer**
 
 ![Clases de dominio: cuentas corrientes](diagramas/clases-diseno/DC_Cuentas-corrientes.png)
 
-**Figura 325.18 — Clases de dominio: cuentas corrientes**
+**Figura 334.18 — Clases de dominio: cuentas corrientes**
 
 ![Clases de dominio: comisiones y liquidaciones](diagramas/clases-diseno/DC_Comisiones.png)
 
-**Figura 325.19 — Clases de dominio: comisiones y liquidaciones**
+**Figura 334.19 — Clases de dominio: comisiones y liquidaciones**
 
 ### 5.2 Clases de Diseño, por módulo
 
@@ -17804,128 +18322,128 @@ Los controladores, las fabricaciones puras, los puertos y las colecciones de los
 | Papel | Clases |
 |---|---|
 | `«colección»` | `List<Administrador>`, `List<AjusteDeStock>`, `List<AsientoAuditoria>`, `List<AsientoComision>`, `List<AsientoCuentaCorriente>`, `List<AsignacionVehiculo>`, `List<Auditoria>`, `List<Caja>`, `List<CargaCombustible>`, `List<CargaDeCamion>`, `List<Chofer>`, `List<Cliente>`, `List<CuentaCorriente>`, `List<Distribuidora>`, `List<Empleado>`, `List<InvitacionRecompra>`, `List<JornadaDeTrabajo>`, `List<LicenciaLaboral>`, `List<MovimientoDeStock>`, `List<MultaTransito>`, `List<OrdenDeCompra>`, `List<Pedido>`, `List<Producto>`, `List<RecepcionDeCompra>`, `List<ReglaComision>`, `List<RendicionChofer>`, `List<Rol>`, `List<Siniestro>`, `List<TareaMantenimiento>`, `List<UbicacionDeStock>`, `List<UmbralDeStock>`, `List<Usuario>`, `List<Vehiculo>`, `List<ZonaCobertura>`, `Map<String, Administrador>`, `Map<String, AjusteDeStock>`, `Map<String, AvisoRecupero>`, `Map<String, Caja>`, `Map<String, CargaCombustible>`, `Map<String, CargaDeCamion>`, `Map<String, CasoRecupero>`, `Map<String, CategoriaDeCaja>`, `Map<String, Chofer>`, `Map<String, Cliente>`, `Map<String, CuentaCorriente>`, `Map<String, Deposito>`, `Map<String, DireccionEntrega>`, `Map<String, Distribuidora>`, `Map<String, Empleado>`, `Map<String, Envase>`, `Map<String, FranjaHoraria>`, `Map<String, Incidencia>`, `Map<String, InvitacionRecompra>`, `Map<String, JornadaDeTrabajo>`, `Map<String, LicenciaLaboral>`, `Map<String, LiquidacionComisiones>`, `Map<String, LoteRecorrido>`, `Map<String, MovimientoDeCaja>`, `Map<String, MultaTransito>`, `Map<String, Neumatico>`, `Map<String, OrdenDeCompra>`, `Map<String, Pedido>`, `Map<String, PlanMantenimiento>`, `Map<String, Producto>`, `Map<String, PropuestaVentanaTaller>`, `Map<String, Proveedor>`, `Map<String, PuestoDeTrabajo>`, `Map<String, RecepcionDeCompra>`, `Map<String, Reclamo>`, `Map<String, ReglaComision>`, `Map<String, RendicionChofer>`, `Map<String, Rol>`, `Map<String, SesionDeCaja>`, `Map<String, Siniestro>`, `Map<String, TareaMantenimiento>`, `Map<String, UbicacionDeStock>`, `Map<String, Usuario>`, `Map<String, Vehiculo>`, `Map<String, ZonaCobertura>` |
-| `«controlador»` | `CancelOrderUseCase`, `CatalogStockAdjustmentUseCase`, `ConfirmDeliveryUseCase`, `ConfirmPaymentUseCase`, `CreateOrderUseCase`, `GrantEmployeeAccountUseCase`, `InitialCountUseCase`, `ReapplyDeliveriesUseCase`, `ReconciliationAdjustmentUseCase`, `RefundPaymentUseCase`, `ReleaseOrderUseCase`, `ReverseBatchUseCase`, `StockAdjustmentUseCase`, `StockTransferUseCase`, `TerminateEmployeeUseCase`, `UpdateOrderStatusUseCase` |
+| `«controlador»` | `CancelOrderUseCase`, `CatalogStockAdjustmentUseCase`, `ConfirmDeliveryUseCase`, `ConfirmPaymentUseCase`, `CreateOrderUseCase`, `GrantEmployeeAccountUseCase`, `InitialCountUseCase`, `ReapplyDeliveriesUseCase`, `ReceivePurchaseUseCase`, `ReconciliationAdjustmentUseCase`, `RefundPaymentUseCase`, `ReleaseOrderUseCase`, `ReverseBatchUseCase`, `StockAdjustmentUseCase`, `StockTransferUseCase`, `TerminateEmployeeUseCase`, `UpdateOrderStatusUseCase`, `VoidPurchaseReceiptUseCase` |
 | `«fabricación pura»` | `AdminGateway`, `ConsumptionEstimatorService`, `DemandForecastService`, `DepositLedgerService`, `DispatchConfigService`, `FleetCoverageService`, `FuelConsumptionCalculator`, `RedisHealthIndicator`, `RedisService`, `S3CleanupService`, `S3Service`, `ScheduledTaskGate`, `SocketIdentityService`, `StockAdminNotifier`, `VacationPolicy` |
-| `«fachada»` | `AdminService`, `AttachmentService`, `AttendanceService`, `AuditService`, `AuthService`, `CarService`, `CartService`, `CashBoxService`, `CashCategoryService`, `CashLedgerService`, `ClaimsService`, `CommissionService`, `ConsumptionService`, `CoverageZoneCronService`, `CoverageZoneService`, `CustomerAccountService`, `CustomersGateway`, `CustomersService`, `CylinderRecoveryService`, `CylinderService`, `DataAuditService`, `DataAuditSubscriber`, `DeliveryService`, `DispatchOrchestratorService`, `DispatchService`, `DistributorService`, `DriverSettlementCron`, `DriverSettlementService`, `DriversGateway`, `EmailService`, `EmployeeService`, `FinanceDashboardService`, `FleetAlertsCron`, `FleetAttachmentService`, `FleetCostReportService`, `FleetDispatchLockService`, `FleetExpenseAlertsCron`, `FleetExpirationsService`, `FleetMaintenancePlannerService`, `FleetTaskService`, `FuelLoadService`, `GasCylinderService`, `HealthCheckService`, `IncidentService`, `JobPositionService`, `LeaveService`, `ModuleConfigService`, `NotificationsService`, `OrderService`, `OrderStatusHistoryService`, `PaymentsService`, `PersonnelDashboardService`, `PurchaseOrderService`, `PurchaseReceiptService`, `RatingService`, `RegistroService`, `ReportsService`, `RepurchaseEstimatesService`, `RepurchaseForecastService`, `ReservationService`, `RoleService`, `RouteBatchPlannerService`, `SettlementOverdueCron`, `StockDeliveryService`, `StockLedgerService`, `StockLocationService`, `StockLowCron`, `StockQueryService`, `StockReconciliationCron`, `StockReconciliationService`, `StockThresholdService`, `SupplierService`, `TimeSlotService`, `TireService`, `TrafficFineService`, `TruckLoadService`, `UserAddressService`, `UsersService`, `VehicleAccidentService`, `VehicleAssignmentService`, `WarehouseService` |
+| `«fachada»` | `AdminService`, `AttachmentService`, `AttendanceService`, `AuditService`, `AuthService`, `CarService`, `CartService`, `CashBoxService`, `CashCategoryService`, `CashLedgerService`, `ClaimsService`, `CommissionService`, `ConsumptionService`, `CoverageZoneCronService`, `CoverageZoneService`, `CustomerAccountService`, `CustomersGateway`, `CustomersService`, `CylinderRecoveryService`, `CylinderService`, `DataAuditService`, `DataAuditSubscriber`, `DeliveryService`, `DispatchOrchestratorService`, `DispatchService`, `DistributorService`, `DriverSettlementCron`, `DriverSettlementService`, `DriversGateway`, `EmailService`, `EmployeeService`, `FinanceDashboardService`, `FleetAlertsCron`, `FleetAttachmentService`, `FleetCostReportService`, `FleetDispatchLockService`, `FleetExpenseAlertsCron`, `FleetExpirationsService`, `FleetMaintenancePlannerService`, `FleetTaskService`, `FuelLoadService`, `GasCylinderService`, `HealthCheckService`, `IncidentService`, `JobPositionService`, `LeaveService`, `ModuleConfigService`, `NotificationsService`, `OrderService`, `OrderStatusHistoryService`, `PaymentsService`, `PersonnelDashboardService`, `PurchaseOrderService`, `PurchaseQueryService`, `PurchaseReceiptService`, `RatingService`, `RegistroService`, `ReportsService`, `RepurchaseEstimatesService`, `RepurchaseForecastService`, `ReservationService`, `RoleService`, `RouteBatchPlannerService`, `SettlementOverdueCron`, `StockDeliveryService`, `StockLedgerService`, `StockLocationService`, `StockLowCron`, `StockQueryService`, `StockReconciliationCron`, `StockReconciliationService`, `StockThresholdService`, `SupplierService`, `TimeSlotService`, `TireService`, `TrafficFineService`, `TruckLoadService`, `UserAddressService`, `UsersService`, `VehicleAccidentService`, `VehicleAssignmentService`, `WarehouseService` |
 | `«puerto»` | `CylinderLifecyclePort`, `DispatchOfferRepositoryPort`, `EmailSenderPort`, `FcmPort`, `FirebaseAuthPort`, `FleetAvailabilityPort`, `NotificationPort`, `OrderRepositoryPort`, `PaymentGatewayPort`, `RealtimeDispatchPort` |
 
 Ningún DSD llega hasta un adaptador (los diagramas terminan en el puerto), así que el diagrama no dibuja realizaciones; cuando un DSD nombre un adaptador, la realización `..|>` se dibuja sola.
 
 ![Clases de diseño: sesión, registro e identidad](diagramas/clases-diseno/DC_Mod_Sesion-y-registro.png)
 
-**Figura 326 — Clases de diseño: sesión, registro e identidad**
+**Figura 335 — Clases de diseño: sesión, registro e identidad**
 
 ![Clases de diseño: usuarios, roles, administradores y auditoría](diagramas/clases-diseno/DC_Mod_Usuarios.png)
 
-**Figura 327 — Clases de diseño: usuarios, roles, administradores y auditoría**
+**Figura 336 — Clases de diseño: usuarios, roles, administradores y auditoría**
 
 ![Clases de diseño: clientes y direcciones de entrega](diagramas/clases-diseno/DC_Mod_Clientes.png)
 
-**Figura 328 — Clases de diseño: clientes y direcciones de entrega**
+**Figura 337 — Clases de diseño: clientes y direcciones de entrega**
 
 ![Clases de diseño: carrito y recompra](diagramas/clases-diseno/DC_Mod_Carrito-y-recompra.png)
 
-**Figura 329 — Clases de diseño: carrito y recompra**
+**Figura 338 — Clases de diseño: carrito y recompra**
 
 ![Clases de diseño: productos y franjas horarias](diagramas/clases-diseno/DC_Mod_Productos-y-franjas.png)
 
-**Figura 330 — Clases de diseño: productos y franjas horarias**
+**Figura 339 — Clases de diseño: productos y franjas horarias**
 
 ![Clases de diseño: cobertura y distribuidoras](diagramas/clases-diseno/DC_Mod_Cobertura-y-distribuidoras.png)
 
-**Figura 331 — Clases de diseño: cobertura y distribuidoras**
+**Figura 340 — Clases de diseño: cobertura y distribuidoras**
 
 ![Clases de diseño: pedidos: alta y cancelación](diagramas/clases-diseno/DC_Mod_Pedidos-alta.png)
 
-**Figura 332 — Clases de diseño: pedidos: alta y cancelación**
+**Figura 341 — Clases de diseño: pedidos: alta y cancelación**
 
 ![Clases de diseño: pedidos: consulta y estado](diagramas/clases-diseno/DC_Mod_Pedidos-estado.png)
 
-**Figura 333 — Clases de diseño: pedidos: consulta y estado**
+**Figura 342 — Clases de diseño: pedidos: consulta y estado**
 
 ![Clases de diseño: pagos y reservas](diagramas/clases-diseno/DC_Mod_Pagos.png)
 
-**Figura 334 — Clases de diseño: pagos y reservas**
+**Figura 343 — Clases de diseño: pagos y reservas**
 
 ![Clases de diseño: despacho de pedidos](diagramas/clases-diseno/DC_Mod_Despacho.png)
 
-**Figura 335 — Clases de diseño: despacho de pedidos**
+**Figura 344 — Clases de diseño: despacho de pedidos**
 
 ![Clases de diseño: seguimiento en tiempo real](diagramas/clases-diseno/DC_Mod_Tiempo-real.png)
 
-**Figura 336 — Clases de diseño: seguimiento en tiempo real**
+**Figura 345 — Clases de diseño: seguimiento en tiempo real**
 
 ![Clases de diseño: choferes y vehículos](diagramas/clases-diseno/DC_Mod_Choferes-y-vehiculos.png)
 
-**Figura 337 — Clases de diseño: choferes y vehículos**
+**Figura 346 — Clases de diseño: choferes y vehículos**
 
 ![Clases de diseño: flota: tareas, adjuntos y vencimientos](diagramas/clases-diseno/DC_Mod_Flota-tareas.png)
 
-**Figura 338 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
+**Figura 347 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
 
 ![Clases de diseño: flota: planificador de mantenimiento](diagramas/clases-diseno/DC_Mod_Flota-planificador.png)
 
-**Figura 339 — Clases de diseño: flota: planificador de mantenimiento**
+**Figura 348 — Clases de diseño: flota: planificador de mantenimiento**
 
 ![Clases de diseño: personal: puestos, legajos, jornadas y licencias](diagramas/clases-diseno/DC_Mod_Personal.png)
 
-**Figura 340 — Clases de diseño: personal: puestos, legajos, jornadas y licencias**
+**Figura 349 — Clases de diseño: personal: puestos, legajos, jornadas y licencias**
 
 ![Clases de diseño: adjuntos](diagramas/clases-diseno/DC_Mod_Adjuntos.png)
 
-**Figura 341 — Clases de diseño: adjuntos**
+**Figura 350 — Clases de diseño: adjuntos**
 
 ![Clases de diseño: envases](diagramas/clases-diseno/DC_Mod_Envases.png)
 
-**Figura 342 — Clases de diseño: envases**
+**Figura 351 — Clases de diseño: envases**
 
 ![Clases de diseño: recupero de envases](diagramas/clases-diseno/DC_Mod_Recupero.png)
 
-**Figura 343 — Clases de diseño: recupero de envases**
+**Figura 352 — Clases de diseño: recupero de envases**
 
 ![Clases de diseño: flota: gastos, multas y siniestros](diagramas/clases-diseno/DC_Mod_Flota-gastos.png)
 
-**Figura 344 — Clases de diseño: flota: gastos, multas y siniestros**
+**Figura 353 — Clases de diseño: flota: gastos, multas y siniestros**
 
 ![Clases de diseño: reclamos, incidencias y calificaciones](diagramas/clases-diseno/DC_Mod_Posventa.png)
 
-**Figura 345 — Clases de diseño: reclamos, incidencias y calificaciones**
+**Figura 354 — Clases de diseño: reclamos, incidencias y calificaciones**
 
 ![Clases de diseño: notificaciones y correo](diagramas/clases-diseno/DC_Mod_Notificaciones.png)
 
-**Figura 346 — Clases de diseño: notificaciones y correo**
+**Figura 355 — Clases de diseño: notificaciones y correo**
 
 ![Clases de diseño: reportes, salud y almacenamiento](diagramas/clases-diseno/DC_Mod_Soporte.png)
 
-**Figura 347 — Clases de diseño: reportes, salud y almacenamiento**
+**Figura 356 — Clases de diseño: reportes, salud y almacenamiento**
 
 ![Clases de diseño: stock](diagramas/clases-diseno/DC_Mod_Stock.png)
 
-**Figura 348 — Clases de diseño: stock**
+**Figura 357 — Clases de diseño: stock**
 
 ![Clases de diseño: compras](diagramas/clases-diseno/DC_Mod_Compras.png)
 
-**Figura 349 — Clases de diseño: compras**
+**Figura 358 — Clases de diseño: compras**
 
 ![Clases de diseño: carga del camión](diagramas/clases-diseno/DC_Mod_Carga-del-camion.png)
 
-**Figura 350 — Clases de diseño: carga del camión**
+**Figura 359 — Clases de diseño: carga del camión**
 
 ![Clases de diseño: caja: cajas, sesiones y libro](diagramas/clases-diseno/DC_Mod_Caja.png)
 
-**Figura 351 — Clases de diseño: caja: cajas, sesiones y libro**
+**Figura 360 — Clases de diseño: caja: cajas, sesiones y libro**
 
 ![Clases de diseño: rendición del chofer](diagramas/clases-diseno/DC_Mod_Rendicion.png)
 
-**Figura 352 — Clases de diseño: rendición del chofer**
+**Figura 361 — Clases de diseño: rendición del chofer**
 
 ![Clases de diseño: cuentas corrientes](diagramas/clases-diseno/DC_Mod_Cuentas-corrientes.png)
 
-**Figura 353 — Clases de diseño: cuentas corrientes**
+**Figura 362 — Clases de diseño: cuentas corrientes**
 
 ![Clases de diseño: comisiones y liquidaciones](diagramas/clases-diseno/DC_Mod_Comisiones.png)
 
-**Figura 354 — Clases de diseño: comisiones y liquidaciones**
+**Figura 363 — Clases de diseño: comisiones y liquidaciones**
 
 ### 5.3 Dependencias entre módulos
 
@@ -17933,7 +18451,7 @@ Un módulo depende de otro cuando alguna de sus clases le manda un mensaje, en a
 
 ![Dependencias entre módulos](diagramas/clases-diseno/DC_Paquetes.png)
 
-**Figura 355 — Dependencias entre módulos**
+**Figura 364 — Dependencias entre módulos**
 
 | Módulo | Depende de |
 |---|---|
@@ -17967,7 +18485,7 @@ Un módulo depende de otro cuando alguna de sus clases le manda un mensaje, en a
 | `registro` | `admin`, `customer`, `delivery`, `employee`, `firebase`, `users` |
 | `reports` | `car`, `order` |
 | `repurchase` | `customer`, `notifications`, `order` |
-| `stock` | `car`, `distributor`, `gascylinder`, `order`, `purchase` |
+| `stock` | `car`, `distributor`, `gascylinder`, `order` |
 | `time-slot` | `distributor` |
 | `truck-load` | `car`, `delivery`, `distributor`, `gascylinder`, `stock` |
 | `user-address` | `customer` |
@@ -18100,11 +18618,11 @@ LocationService (ListenableServiceMixin)
 | ItemAjusteDeStock | `StockAdjustmentItem` | `stock_adjustment_item` | `stock` |
 | CargaDeCamion | `TruckLoad` (planificada, I-13) | `truck_load` (planificada) | `truck-load` |
 | ItemCarga | `TruckLoadItem` (planificada, I-13) | `truck_load_item` (planificada) | `truck-load` |
-| Proveedor | `Supplier` (planificada, I-13) | `supplier` (planificada) | `purchase` |
-| OrdenDeCompra | `PurchaseOrder` (planificada, I-13) | `purchase_order` (planificada) | `purchase` |
-| ItemOrdenDeCompra | `PurchaseOrderItem` (planificada, I-13) | `purchase_order_item` (planificada) | `purchase` |
-| RecepcionDeCompra | `PurchaseReceipt` (planificada, I-13) | `purchase_receipt` (planificada) | `purchase` |
-| ItemRecepcion | `PurchaseReceiptItem` (planificada, I-13) | `purchase_receipt_item` (planificada) | `purchase` |
+| Proveedor | `Supplier` | `supplier` | `purchase` |
+| OrdenDeCompra | `PurchaseOrder` | `purchase_order` | `purchase` |
+| ItemOrdenDeCompra | `PurchaseOrderItem` | `purchase_order_item` | `purchase` |
+| RecepcionDeCompra | `PurchaseReceipt` | `purchase_receipt` | `purchase` |
+| ItemRecepcion | `PurchaseReceiptItem` | `purchase_receipt_item` | `purchase` |
 | Caja | `CashBox` (planificada, I-14) | `cash_box` (planificada) | `cash` |
 | SesionDeCaja | `CashSession` (planificada, I-14) | `cash_session` (planificada) | `cash` |
 | CategoriaDeCaja | `CashCategory` (planificada, I-14) | `cash_category` (planificada) | `cash` |
@@ -18400,7 +18918,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 356 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
+**Figura 365 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
 
 ---
 
@@ -19023,7 +19541,7 @@ UI App Cliente. Lista de garrafas disponibles con precio, stock y selector de ca
 
 ![D-16 Catálogo de Productos (App Cliente)](diagramas/wireframes/D-16.png)
 
-**Figura 357 — D-16 — Catálogo de Productos (App Cliente)**
+**Figura 366 — D-16 — Catálogo de Productos (App Cliente)**
 
 #### D-17 — Checkout (App Cliente)
 
@@ -19031,7 +19549,7 @@ UI App Cliente. Formulario de confirmación del pedido con resumen, dirección, 
 
 ![D-17 Checkout (App Cliente)](diagramas/wireframes/D-17.png)
 
-**Figura 358 — D-17 — Checkout (App Cliente)**
+**Figura 367 — D-17 — Checkout (App Cliente)**
 
 #### D-18 — Seguimiento en Tiempo Real (App Cliente)
 
@@ -19039,7 +19557,7 @@ UI más importante de la app. Mapa con pin del chofer en movimiento + stepper de
 
 ![D-18 Seguimiento en Tiempo Real (App Cliente)](diagramas/wireframes/D-18.png)
 
-**Figura 359 — D-18 — Seguimiento en Tiempo Real (App Cliente)**
+**Figura 368 — D-18 — Seguimiento en Tiempo Real (App Cliente)**
 
 #### D-19 — Login y Registro (App Cliente + Chofer)
 
@@ -19047,7 +19565,7 @@ UI de autenticación compartida por App Cliente y App Chofer.
 
 ![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19a.png)
 
-**Figura 360 — D-19 — Login y Registro (App Cliente + Chofer)**
+**Figura 369 — D-19 — Login y Registro (App Cliente + Chofer)**
 
 ![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19b.png)
 
@@ -19057,7 +19575,7 @@ UI principal del chofer. Mapa con su posición actual + toggle grande de disponi
 
 ![D-20 Home del Chofer (App Chofer)](diagramas/wireframes/D-20.png)
 
-**Figura 361 — D-20 — Home del Chofer (App Chofer)**
+**Figura 370 — D-20 — Home del Chofer (App Chofer)**
 
 #### D-21 — Pedido Entrante Bottom Sheet (App Chofer)
 
@@ -19065,7 +19583,7 @@ UI de pedido entrante. Bottom sheet que sube desde abajo con datos del pedido, d
 
 ![D-21 Pedido Entrante Bottom Sheet (App Chofer)](diagramas/wireframes/D-21.png)
 
-**Figura 362 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)**
+**Figura 371 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)**
 
 #### D-22 — En Ruta (App Chofer)
 
@@ -19073,7 +19591,7 @@ UI del chofer navegando hacia el cliente. Mapa con ruta trazada + botones Avisar
 
 ![D-22 En Ruta (App Chofer)](diagramas/wireframes/D-22.png)
 
-**Figura 363 — D-22 — En Ruta (App Chofer)**
+**Figura 372 — D-22 — En Ruta (App Chofer)**
 
 #### D-23 — Dashboard Administrador (Panel Web)
 
@@ -19081,7 +19599,7 @@ UI Panel Web. Dashboard con KPIs del día, choferes activos y gráfico de ventas
 
 ![D-23 Dashboard Administrador (Panel Web)](diagramas/wireframes/D-23.png)
 
-**Figura 364 — D-23 — Dashboard Administrador (Panel Web)**
+**Figura 373 — D-23 — Dashboard Administrador (Panel Web)**
 
 #### D-24 — Listado de Pedidos Admin (Panel Web)
 
@@ -19089,7 +19607,7 @@ UI Panel Web. Tabla paginada con todos los pedidos, filtros y badges de estado d
 
 ![D-24 Listado de Pedidos Admin (Panel Web)](diagramas/wireframes/D-24.png)
 
-**Figura 365 — D-24 — Listado de Pedidos Admin (Panel Web)**
+**Figura 374 — D-24 — Listado de Pedidos Admin (Panel Web)**
 
 ---
 
@@ -19134,7 +19652,7 @@ Cada tipo de diagrama figura en el documento que le corresponde, según la tabla
 
 ### 7.4 Diagrama Entidad-Relación y Diccionario de Datos
 
-Modelo de datos de las **56 tablas** de la base (571 columnas y **127 claves foráneas, todas declaradas**: no quedan relaciones sin `FOREIGN KEY`), más las **27 tablas** de los módulos planificados (§7.4.8), que todavía no están en la base. A diferencia del modelo conceptual
+Modelo de datos de las **61 tablas** de la base (640 columnas y **141 claves foráneas, todas declaradas**: no quedan relaciones sin `FOREIGN KEY`), más las **22 tablas** de los módulos planificados (§7.4.8), que todavía no están en la base. A diferencia del modelo conceptual
 del Documento 2 —que describe el dominio del problema—, éste es el modelo de la solución:
 incluye claves primarias y foráneas, tipos de dato, restricciones e índices.
 
@@ -19157,9 +19675,9 @@ son las de las primeras tablas, y en snake_case (`scheduled_date`, `delivery_mod
 y el resto en singular. Unificarlas exigiría renombrar columnas en una base en uso, y no se
 hizo; el modelo conceptual no se ve afectado porque nombra los atributos en lenguaje natural.
 
-**Alcance del modelo.** Las tablas y los diagramas de esta sección corresponden a las migraciones de `develop` hasta `StockConciliacion` (56 tablas). Las cinco tablas de compras que ya creó la migración `Compras` en otra rama (`supplier`, `purchase_order`, `purchase_order_item`, `purchase_receipt` y `purchase_receipt_item`) figuran como planificadas (§7.4.8) hasta que esa rama se integre.
+**Alcance del modelo.** Las tablas y los diagramas de esta sección corresponden a las migraciones de `develop` hasta `ComprasAjustes` (61 tablas), que incluyen las cinco de compras (`supplier`, `purchase_order`, `purchase_order_item`, `purchase_receipt` y `purchase_receipt_item`). La carga del camión (`truck_load` y `truck_load_item`) figura como planificada (§7.4.8) hasta que se documente su construcción.
 
-**Modelos planificados.** Los cuatro módulos de gestión de la distribuidora (personal, flota ampliada, stock y compras, caja y rendición) suman 27 tablas que todavía no están en la base y se dibujan aparte, con el estereotipo «propuesto», en `diagramas/base-de-datos/` (`SPLG-base-de-datos-propuesta.sql` y una lámina por módulo); se describen en §7.4.8. Las 56 tablas, las 127 claves foráneas y los 46 tipos enumerados que cuenta esta sección son los de la base actual, que ya incluye las del stock físico (`warehouse`, `stock_location`, `stock_balance`, `stock_movement`, `stock_adjustment`, `stock_adjustment_item`, `stock_threshold` y `stock_reconciliation_alert`), `job_position` y `employee` (puestos y legajos del módulo de personal), `attachment` (adjuntos genéricos), `document_sequence` (numeración de comprobantes), `storage_orphan` (archivos pendientes de borrar), la auditoría de datos (`audit`, `audit_detail` y `audit_action_type`) y la columna `claims.photo_key`.
+**Modelos planificados.** Los módulos de gestión de la distribuidora que faltan construir (personal, flota ampliada, carga del camión, caja y rendición) suman 22 tablas que todavía no están en la base y se dibujan aparte, con el estereotipo «propuesto», en `diagramas/base-de-datos/` (`SPLG-base-de-datos-propuesta.sql` y una lámina por módulo); se describen en §7.4.8. Las 61 tablas, las 141 claves foráneas y los 51 tipos enumerados que cuenta esta sección son los de la base actual, que ya incluye las del stock físico (`warehouse`, `stock_location`, `stock_balance`, `stock_movement`, `stock_adjustment`, `stock_adjustment_item`, `stock_threshold` y `stock_reconciliation_alert`), las de compras (`supplier`, `purchase_order`, `purchase_order_item`, `purchase_receipt` y `purchase_receipt_item`), `job_position` y `employee` (puestos y legajos del módulo de personal), `attachment` (adjuntos genéricos), `document_sequence` (numeración de comprobantes), `storage_orphan` (archivos pendientes de borrar), la auditoría de datos (`audit`, `audit_detail` y `audit_action_type`) y las columnas `claims.photo_key` y `gas_cylinder.average_unit_cost`.
 
 #### 7.4.1 Inventario de Entidades
 
@@ -19177,7 +19695,7 @@ hizo; el modelo conceptual no se ve afectado porque nombra los atributos en leng
 | Clientes | `customer` | 10 | Perfil de cliente y sus datos de recompra declarados. |
 | Clientes | `user_address` | 16 | Dirección de entrega de un usuario. |
 | Clientes | `repurchase_invitation` | 11 | Invitación de recompra con el pedido sugerido. |
-| Catálogo e inventario de envases | `gas_cylinder` | 10 | Producto: el tipo de garrafa que vende una distribuidora. |
+| Catálogo e inventario de envases | `gas_cylinder` | 12 | Producto: el tipo de garrafa que vende una distribuidora. |
 | Catálogo e inventario de envases | `gas_cylinder_promotion` | 4 | Promoción: descuento por cantidad de un producto. |
 | Catálogo e inventario de envases | `cylinder` | 13 | Envase físico único, rastreable por número de serie. |
 | Catálogo e inventario de envases | `cylinder_movement` | 9 | Historial inmutable de cambios de estado de un envase. |
@@ -19216,15 +19734,20 @@ hizo; el modelo conceptual no se ve afectado porque nombra los atributos en leng
 | Stock físico y carga del camión | `stock_threshold` | 8 | Mínimo de llenas de un tipo de garrafa en un depósito, para avisar cuando baja. |
 | Stock físico y carga del camión | `stock_adjustment` | 9 | Ajuste de stock numerado, con su motivo y una nota obligatoria. |
 | Stock físico y carga del camión | `stock_adjustment_item` | 5 | Diferencia de un tipo de garrafa y condición dentro de un ajuste. |
+| Compras | `supplier` | 14 | Proveedor de la distribuidora, principalmente una planta de llenado; baja lógica y CUIT único entre los vigentes. |
+| Compras | `purchase_order` | 15 | Orden de compra numerada a un proveedor para un depósito destino, con su estado: borrador, enviada, parcialmente recibida, recibida, cerrada con faltante o cancelada. |
+| Compras | `purchase_order_item` | 7 | Tipo de garrafa pedido en una orden, con su costo esperado, los vacíos a canjear y lo recibido. |
+| Compras | `purchase_receipt` | 22 | Recepción de compra (remito de ingreso), con o sin orden: comprobante del proveedor, estado de pago y lote del libro de stock. |
+| Compras | `purchase_receipt_item` | 8 | Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta, el costo real y el promedio y la existencia previos. |
 | Tablas técnicas | `stock_reconciliation_alert` | 3 | Última diferencia de conciliación avisada a una distribuidora (su firma), para no repetir el aviso. |
 | Tablas técnicas | `document_sequence` | 3 | Último número asignado a cada tipo de documento, por distribuidora, para numerar comprobantes correlativos. |
 | Tablas técnicas | `storage_orphan` | 9 | Cola de reintento del almacenamiento: archivos que hay que borrar, con intentos y estado. |
 
-La base completa en una sola lámina: las 56 tablas implementadas agrupadas por contexto de negocio, cada una con su clave primaria y sus claves foráneas, y todas sus relaciones con cardinalidad. Las columnas de cada tabla están en la lámina de su contexto (abajo) y en el diccionario de datos (§7.4.3).
+La base completa en una sola lámina: las 61 tablas implementadas agrupadas por contexto de negocio, cada una con su clave primaria y sus claves foráneas, y todas sus relaciones con cardinalidad. Las columnas de cada tabla están en la lámina de su contexto (abajo) y en el diccionario de datos (§7.4.3).
 
 ![Modelo físico de la base de datos: vista general](diagramas/base-de-datos/fisico/SPLG-fisico-00-general.png)
 
-**Figura 366 — Modelo físico de la base de datos: vista general**
+**Figura 375 — Modelo físico de la base de datos: vista general**
 
 #### 7.4.2 Diagrama Entidad-Relación (Mermaid)
 
@@ -19336,7 +19859,7 @@ erDiagram
     }
 ```
 
-**Figura 367 — Organización y acceso**
+**Figura 376 — Organización y acceso**
 
 ##### Clientes
 
@@ -19389,7 +19912,7 @@ erDiagram
     }
 ```
 
-**Figura 368 — Clientes**
+**Figura 377 — Clientes**
 
 ##### Catálogo e inventario de envases
 
@@ -19414,6 +19937,7 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
         varchar photo_key "nullable"
+        decimal average_unit_cost "nullable"
     }
     GAS_CYLINDER_PROMOTION {
         uuid promotion_id PK
@@ -19482,7 +20006,7 @@ erDiagram
     }
 ```
 
-**Figura 369 — Catálogo e inventario de envases**
+**Figura 378 — Catálogo e inventario de envases**
 
 ##### Venta y pedidos
 
@@ -19579,6 +20103,8 @@ erDiagram
         timestamptz payment_confirmed_at "nullable"
         uuid payment_confirmed_by "nullable"
         text payment_resolution_note "nullable"
+        timestamptz payment_resolved_at "nullable"
+        uuid payment_resolved_by "nullable"
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK
@@ -19608,7 +20134,7 @@ erDiagram
     }
 ```
 
-**Figura 370 — Venta y pedidos**
+**Figura 379 — Venta y pedidos**
 
 ##### Pagos
 
@@ -19635,7 +20161,7 @@ erDiagram
     }
 ```
 
-**Figura 371 — Pagos**
+**Figura 380 — Pagos**
 
 ##### Despacho y logística
 
@@ -19677,7 +20203,7 @@ erDiagram
     }
 ```
 
-**Figura 372 — Despacho y logística**
+**Figura 381 — Despacho y logística**
 
 ##### Flota y choferes
 
@@ -19809,7 +20335,7 @@ erDiagram
     }
 ```
 
-**Figura 373 — Flota y choferes**
+**Figura 382 — Flota y choferes**
 
 ##### Posventa
 
@@ -19861,7 +20387,7 @@ erDiagram
     }
 ```
 
-**Figura 374 — Posventa**
+**Figura 383 — Posventa**
 
 ##### Personal (en parte planificado)
 
@@ -19960,7 +20486,7 @@ erDiagram
     }
 ```
 
-**Figura 375 — Personal (en parte planificado)**
+**Figura 384 — Personal (en parte planificado)**
 
 ##### Gastos de la flota (planificado)
 
@@ -20063,7 +20589,7 @@ erDiagram
     }
 ```
 
-**Figura 376 — Gastos de la flota (planificado)**
+**Figura 385 — Gastos de la flota (planificado)**
 
 ##### Stock físico y carga del camión (en parte planificado)
 
@@ -20193,16 +20719,16 @@ erDiagram
     }
 ```
 
-**Figura 377 — Stock físico y carga del camión (en parte planificado)**
+**Figura 386 — Stock físico y carga del camión (en parte planificado)**
 
-##### Compras (planificado)
+##### Compras
 
 ```mermaid
 erDiagram
     PURCHASE_ORDER }o--|| SUPPLIER : "supplier_id"
     PURCHASE_ORDER_ITEM }o--|| PURCHASE_ORDER : "purchase_order_id"
-    PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
     PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
     PURCHASE_RECEIPT_ITEM }o--|| PURCHASE_RECEIPT : "receipt_id"
 
     SUPPLIER {
@@ -20210,7 +20736,7 @@ erDiagram
         uuid distributor_id FK
         varchar business_name
         varchar cuit
-        supplier_kind_enum kind
+        enum kind
         varchar contact_name "nullable"
         varchar phone "nullable"
         varchar email "nullable"
@@ -20227,7 +20753,7 @@ erDiagram
         int number
         uuid supplier_id FK
         uuid destination_warehouse_id FK
-        purchase_order_status_enum status
+        enum status
         timestamptz issued_at "nullable"
         date expected_date "nullable"
         decimal total_amount
@@ -20236,6 +20762,7 @@ erDiagram
         uuid created_by_user_id FK
         timestamptz createdAt
         timestamptz updatedAt
+        text close_reason "nullable"
     }
     PURCHASE_ORDER_ITEM {
         uuid item_id PK
@@ -20253,15 +20780,20 @@ erDiagram
         uuid supplier_id FK
         uuid purchase_order_id FK "nullable"
         uuid warehouse_id FK
-        purchase_document_type_enum supplier_document_type
+        enum supplier_document_type
         varchar supplier_document_number
         timestamptz received_at
         uuid received_by_user_id FK
         decimal total_amount
-        purchase_payment_status_enum payment_status
+        enum payment_status
         uuid cash_movement_id "nullable"
-        purchase_receipt_status_enum status
+        enum status
         text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        uuid voided_by_user_id "nullable"
+        uuid batch_id
+        uuid void_batch_id "nullable"
+        text notes "nullable"
         timestamptz createdAt
         timestamptz updatedAt
     }
@@ -20272,10 +20804,15 @@ erDiagram
         int quantity_full
         int quantity_empty_out
         decimal unit_cost
+        decimal previous_average_cost "nullable"
+        int previous_on_hand "nullable"
     }
 ```
 
-**Figura 378 — Compras (planificado)**
+**Figura 387 — Compras**
+
+
+![Modelo físico: compras](diagramas/base-de-datos/fisico/SPLG-fisico-12-compras.png)
 
 ##### Tablas técnicas
 
@@ -20305,7 +20842,7 @@ erDiagram
     }
 ```
 
-**Figura 379 — Tablas técnicas**
+**Figura 388 — Modelo físico: compras**
 
 ##### Caja y finanzas (planificado)
 
@@ -20509,7 +21046,7 @@ erDiagram
     }
 ```
 
-**Figura 380 — Caja y finanzas (planificado)**
+**Figura 389 — Caja y finanzas (planificado)**
 
 ##### Relaciones entre contextos
 
@@ -20527,8 +21064,8 @@ erDiagram
     CUSTOMER_ACCOUNT }o--|| USER : "customer_user_id"
     DELIVERY |o--|| USER : "user_id"
     EMPLOYEE }o--o| USER : "user_id"
-    PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
     PURCHASE_ORDER }o--|| USER : "created_by_user_id"
+    PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
     STOCK_THRESHOLD }o--|| GAS_CYLINDER : "gas_cylinder_id"
     USER_ADDRESS }o--|| USER : "user_id"
     CART_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
@@ -20546,8 +21083,8 @@ erDiagram
     ORDER }o--|| USER : "customer_id"
     ORDER }o--o| DELIVERY : "delivery_id"
     PURCHASE_ORDER_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
-    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
     PURCHASE_RECEIPT }o--|| USER : "received_by_user_id"
+    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
     ROUTE_BATCH }o--o| DELIVERY : "delivery_id"
     STOCK_LOCATION |o--o| CAR : "car_id"
     TIRE }o--o| CAR : "car_id"
@@ -20612,35 +21149,35 @@ erDiagram
     CYLINDER_RECOVERY_NOTICE }o--o| ORDER : "order_id"
 ```
 
-**Figura 381 — Relaciones entre contextos**
+**Figura 390 — Relaciones entre contextos**
 
 #### 7.4.3 Diccionario de Datos
 
-El diccionario completo de las 56 tablas —columna, tipo, obligatoriedad, clave, referencia,
+El diccionario completo de las 61 tablas —columna, tipo, obligatoriedad, clave, referencia,
 default, descripción, restricciones `CHECK` e índices— acompaña a la documentación como el
 archivo `SPLG-modelo-de-datos.md`. La descripción de cada columna se toma del comentario de la
 entidad de TypeORM que la define; las columnas sin comentario en el código figuran allí como
-«sin descripción documentada en el código» en vez de inventarse una (son 483 de 571).
+«sin descripción documentada en el código» en vez de inventarse una (son 537 de 640).
 
 #### 7.4.4 Tipos enumerados
 
-**46 tipos enumerados**. El detalle de los
+**51 tipos enumerados**. El detalle de los
 valores de cada uno está en la sección «Tipos enumerados» de
 `SPLG-modelo-de-datos.md`; acá sólo la lista, para no duplicar un dato que cambia con cada
 migración:
 
-`address_geocode_precision_enum`, `attachment_owner_type_enum`, `audit_result_enum`, `claims_status_enum`, `configurable_process_enum`, `coverage_zone_surcharge_type_enum`, `cylinder_inspection_result_enum`, `cylinder_movement_from_state_enum`, `cylinder_movement_to_state_enum`, `cylinder_state_enum`, `distributor_status_enum`, `employee_document_type_enum`, `employee_status_enum`, `employee_termination_reason_enum`, `employment_type_enum`, `fleet_status_enum`, `incident_moment_enum`, `incident_status_enum`, `incident_type_enum`, `job_position_category_enum`, `maintenance_criticality_enum`, `maintenance_subject_enum`, `maintenance_task_status_enum`, `maintenance_trigger_enum`, `order_delivery_mode_enum`, `order_dispatch_offer_status_enum`, `order_paymentmethod_enum`, `order_paymentstatus_enum`, `order_paymenttype_enum`, `order_status_enum`, `order_zone_surcharge_type_enum`, `payment_gateway_enum`, `payment_integration_enum`, `payment_status_enum`, `proposal_status_enum`, `rating_from_role_enum`, `recovery_case_status_enum`, `recovery_notice_kind_enum`, `repurchase_invitation_status_enum`, `route_batch_status_enum`, `stock_adjustment_reason_enum`, `stock_condition_enum`, `stock_location_kind_enum`, `stock_movement_reason_enum`, `stock_movement_reference_type_enum`, `warehouse_kind_enum`.
+`address_geocode_precision_enum`, `attachment_owner_type_enum`, `audit_result_enum`, `claims_status_enum`, `configurable_process_enum`, `coverage_zone_surcharge_type_enum`, `cylinder_inspection_result_enum`, `cylinder_movement_from_state_enum`, `cylinder_movement_to_state_enum`, `cylinder_state_enum`, `distributor_status_enum`, `employee_document_type_enum`, `employee_status_enum`, `employee_termination_reason_enum`, `employment_type_enum`, `fleet_status_enum`, `incident_moment_enum`, `incident_status_enum`, `incident_type_enum`, `job_position_category_enum`, `maintenance_criticality_enum`, `maintenance_subject_enum`, `maintenance_task_status_enum`, `maintenance_trigger_enum`, `order_delivery_mode_enum`, `order_dispatch_offer_status_enum`, `order_paymentmethod_enum`, `order_paymentstatus_enum`, `order_paymenttype_enum`, `order_status_enum`, `order_zone_surcharge_type_enum`, `payment_gateway_enum`, `payment_integration_enum`, `payment_status_enum`, `proposal_status_enum`, `purchase_order_status_enum`, `purchase_payment_status_enum`, `purchase_receipt_status_enum`, `rating_from_role_enum`, `recovery_case_status_enum`, `recovery_notice_kind_enum`, `repurchase_invitation_status_enum`, `route_batch_status_enum`, `stock_adjustment_reason_enum`, `stock_condition_enum`, `stock_location_kind_enum`, `stock_movement_reason_enum`, `stock_movement_reference_type_enum`, `supplier_document_type_enum`, `supplier_kind_enum`, `warehouse_kind_enum`.
 
 #### 7.4.5 Multi-tenant
 
-**39 de las 56 tablas tienen `distributor_id` directo:** todo lo que es catálogo, flota,
+**42 de las 61 tablas tienen `distributor_id` directo:** todo lo que es catálogo, flota,
 despacho o transacción de una distribuidora concreta (`order`, `payment`, `cylinder`,
 `gas_cylinder`, `car`, `vehicle_assignment`, `delivery`, `coverage_zone`, `time_slot`,
 `claims`, `incident`, `rating`, `admin`, `module_config`, `audit_log`, `audit`, `attachment`, `document_sequence`, las del stock físico (`warehouse`, `stock_location`,
-`stock_balance`, `stock_movement`, `stock_adjustment`, `stock_threshold` y `stock_reconciliation_alert`) y las de flota y
+`stock_balance`, `stock_movement`, `stock_adjustment`, `stock_threshold` y `stock_reconciliation_alert`), las de compras (`supplier`, `purchase_order` y `purchase_receipt`) y las de flota y
 recupero, entre otras).
 
-**17 tablas no tienen `distributor_id` propio**, por tres motivos distintos:
+**19 tablas no tienen `distributor_id` propio**, por tres motivos distintos:
 
 - **Son globales de verdad** (comparten el mismo registro entre distribuidoras):
   `user`, `customer`, `user_address`, `role` y el catálogo `audit_action_type`. Un cliente puede comprarle a varias
@@ -20653,7 +21190,7 @@ recupero, entre otras).
   `order_address_change` (de `order`), `cart_item` (de `cart`), `gas_cylinder_promotion`
   (de `gas_cylinder`), `route_batch_stop`, `route_batch_offer` (de `route_batch`),
   `maintenance_window_proposal` (de `maintenance_task`), `cylinder_recovery_notice` (de
-  `cylinder_recovery_case`), `audit_detail` (de `audit`) y `stock_adjustment_item` (de `stock_adjustment`). El acceso a estas once tiene que ser siempre por relación
+  `cylinder_recovery_case`), `audit_detail` (de `audit`), `stock_adjustment_item` (de `stock_adjustment`), `purchase_order_item` (de `purchase_order`) y `purchase_receipt_item` (de `purchase_receipt`). El acceso a estas trece tiene que ser siempre por relación
   hacia su padre: consultarlas sueltas, sin ese `JOIN`, es el patrón de bug de aislamiento
   de las consultas sin filtro de distribuidora.
 - **Es técnica y no pertenece a ninguna distribuidora:** `storage_orphan`, la cola de archivos pendientes de borrar del almacenamiento; guarda la clave del archivo y no sabe de quién es.
@@ -20671,7 +21208,7 @@ como deuda, con su corrección concreta:
 - **Faltan `CHECK` de rango.** `rating.stars` dice «de 1 a 5» en la descripción pero nada
   lo impide en la base (correspondería `CHECK (stars BETWEEN 1 AND 5)`); lo mismo
   `order_item.quantity > 0`, montos `>= 0` y `time_slot."endTime" > "startTime"` con
-  `capacity > 0`. Sólo hay `CHECK` en `gas_cylinder_promotion` (2) y `coverage_zone` (1).
+  `capacity > 0`. Sólo hay `CHECK` en `gas_cylinder_promotion` (2), `coverage_zone` (1), `employee` (2), las tablas de stock (`stock_threshold`, `stock_location`, `stock_movement`, `stock_balance` y `stock_adjustment_item`) y los renglones de compra (`purchase_order_item` y `purchase_receipt_item`, de cantidades y costos no negativos).
 - **Faltan `UNIQUE` de negocio.** `distributor.tax_id` (CUIT) no es único: hay 136
   filas con CUIT y sólo 5 valores distintos—, ni `user_address` tiene
   `UNIQUE (user_id) WHERE "isDefault"`, ni `time_slot` tiene
@@ -20707,7 +21244,7 @@ Varias relaciones salen de Usuario y no de Cliente o de Chofer, porque la clave 
 
 Tres conceptos no tienen tabla propia: PropuestaConVigencia es abstracto, UbicacionGPS es la
 columna `actual_location` de `delivery` e ItemSugerido se guarda como JSON dentro de
-`repurchase_invitation`. Los otros 80 conceptos corresponden uno a uno con tablas: 53 con las de la base y 27 con las del modelo propuesto de los módulos planificados (§7.4.8), como muestra la tabla de correspondencia. Tres tablas de la base no tienen concepto, porque no son algo del negocio sino mecanismos del sistema, y se dibujan en el modelo físico dentro del contexto «Tablas técnicas»:
+`repurchase_invitation`. Los otros 80 conceptos corresponden uno a uno con tablas: 58 con las de la base y 22 con las del modelo propuesto de los módulos planificados (§7.4.8), como muestra la tabla de correspondencia. Tres tablas de la base no tienen concepto, porque no son algo del negocio sino mecanismos del sistema, y se dibujan en el modelo físico dentro del contexto «Tablas técnicas»:
 
 - `document_sequence` (Secuencia de documentos): Último número asignado a cada tipo de documento, por distribuidora: un contador para numerar comprobantes correlativos sin repetir ni saltear. Es un mecanismo, no algo del negocio con identidad propia.
 - `stock_reconciliation_alert` (Aviso de conciliación de stock): Firma de la última diferencia de conciliación que se avisó a cada distribuidora, para no repetir el correo de la noche siguiente. Es un mecanismo del proceso nocturno, no algo del negocio con identidad propia.
@@ -20783,11 +21320,11 @@ los atributos también se comprueba contra la base.
 | ItemAjusteDeStock | ItemAjusteDeStock | `stock_adjustment_item` |  |
 | CargaDeCamion | CargaDeCamion | `truck_load` | Planificado (I-13): todavía no está en la base. |
 | ItemCarga | ItemCarga | `truck_load_item` | Planificado (I-13): todavía no está en la base. |
-| Proveedor | Proveedor | `supplier` | Planificado (I-13): todavía no está en la base. |
-| OrdenDeCompra | OrdenDeCompra | `purchase_order` | Planificado (I-13): todavía no está en la base. |
-| ItemOrdenDeCompra | ItemOrdenDeCompra | `purchase_order_item` | Planificado (I-13): todavía no está en la base. |
-| RecepcionDeCompra | RecepcionDeCompra | `purchase_receipt` | Planificado (I-13): todavía no está en la base. |
-| ItemRecepcion | ItemRecepcion | `purchase_receipt_item` | Planificado (I-13): todavía no está en la base. |
+| Proveedor | Proveedor | `supplier` |  |
+| OrdenDeCompra | OrdenDeCompra | `purchase_order` |  |
+| ItemOrdenDeCompra | ItemOrdenDeCompra | `purchase_order_item` |  |
+| RecepcionDeCompra | RecepcionDeCompra | `purchase_receipt` |  |
+| ItemRecepcion | ItemRecepcion | `purchase_receipt_item` |  |
 | Caja | Caja | `cash_box` | Planificado (I-14): todavía no está en la base. |
 | SesionDeCaja | SesionDeCaja | `cash_session` | Planificado (I-14): todavía no está en la base. |
 | CategoriaDeCaja | CategoriaDeCaja | `cash_category` | Planificado (I-14): todavía no está en la base. |
@@ -20804,73 +21341,73 @@ los atributos también se comprueba contra la base.
 
 ![DER conceptual: vista general](diagramas/base-de-datos/conceptual/SPLG-der-00-general.png)
 
-**Figura 382 — Modelo entidad-relación conceptual: vista general**
+**Figura 391 — Modelo entidad-relación conceptual: vista general**
 
 ![DER conceptual: usuarios y cuentas](diagramas/base-de-datos/conceptual/SPLG-der-01-usuarios-y-cuentas.png)
 
-**Figura 383 — Modelo entidad-relación conceptual: usuarios y cuentas**
+**Figura 392 — Modelo entidad-relación conceptual: usuarios y cuentas**
 
 ![DER conceptual: pedidos y pagos](diagramas/base-de-datos/conceptual/SPLG-der-02-pedidos-y-pagos.png)
 
-**Figura 384 — Modelo entidad-relación conceptual: pedidos y pagos**
+**Figura 393 — Modelo entidad-relación conceptual: pedidos y pagos**
 
 ![DER conceptual: despacho y propuestas con vigencia](diagramas/base-de-datos/conceptual/SPLG-der-03-despacho-y-propuestas-con-vigencia.png)
 
-**Figura 385 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
+**Figura 394 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
 
 ![DER conceptual: flota y choferes](diagramas/base-de-datos/conceptual/SPLG-der-04-flota-y-choferes.png)
 
-**Figura 386 — Modelo entidad-relación conceptual: flota y choferes**
+**Figura 395 — Modelo entidad-relación conceptual: flota y choferes**
 
 ![DER conceptual: envases y catálogo](diagramas/base-de-datos/conceptual/SPLG-der-05-envases-y-catalogo.png)
 
-**Figura 387 — Modelo entidad-relación conceptual: envases y catálogo**
+**Figura 396 — Modelo entidad-relación conceptual: envases y catálogo**
 
 ![DER conceptual: personal](diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png)
 
-**Figura 388 — Modelo entidad-relación conceptual: personal**
+**Figura 397 — Modelo entidad-relación conceptual: personal**
 
 ![DER conceptual: posventa](diagramas/base-de-datos/conceptual/SPLG-der-07-posventa.png)
 
-**Figura 389 — Modelo entidad-relación conceptual: posventa**
+**Figura 398 — Modelo entidad-relación conceptual: posventa**
 
 ![DER conceptual: gastos de la flota](diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png)
 
-**Figura 390 — Modelo entidad-relación conceptual: gastos de la flota**
+**Figura 399 — Modelo entidad-relación conceptual: gastos de la flota**
 
 ![DER conceptual: stock físico](diagramas/base-de-datos/conceptual/SPLG-der-09-stock-fisico.png)
 
-**Figura 391 — Modelo entidad-relación conceptual: stock físico**
+**Figura 400 — Modelo entidad-relación conceptual: stock físico**
 
 ![DER conceptual: carga del camión](diagramas/base-de-datos/conceptual/SPLG-der-10-carga-del-camion.png)
 
-**Figura 392 — Modelo entidad-relación conceptual: carga del camión**
+**Figura 401 — Modelo entidad-relación conceptual: carga del camión**
 
 ![DER conceptual: compras](diagramas/base-de-datos/conceptual/SPLG-der-11-compras.png)
 
-**Figura 393 — Modelo entidad-relación conceptual: compras**
+**Figura 402 — Modelo entidad-relación conceptual: compras**
 
 ![DER conceptual: caja y movimientos](diagramas/base-de-datos/conceptual/SPLG-der-12-caja-y-movimientos.png)
 
-**Figura 394 — Modelo entidad-relación conceptual: caja y movimientos**
+**Figura 403 — Modelo entidad-relación conceptual: caja y movimientos**
 
 ![DER conceptual: rendiciones de choferes](diagramas/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png)
 
-**Figura 395 — Modelo entidad-relación conceptual: rendiciones de choferes**
+**Figura 404 — Modelo entidad-relación conceptual: rendiciones de choferes**
 
 ![DER conceptual: cuentas corrientes](diagramas/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png)
 
-**Figura 396 — Modelo entidad-relación conceptual: cuentas corrientes**
+**Figura 405 — Modelo entidad-relación conceptual: cuentas corrientes**
 
 ![DER conceptual: comisiones y liquidaciones](diagramas/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png)
 
-**Figura 397 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
+**Figura 406 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
 
 #### 7.4.8 Tablas planificadas
 
-Las 27 tablas de esta sección no están en la base: son las de los cuatro módulos de gestión de la distribuidora y se crean con la migración de cada iteración (I-11 a I-14). No cuentan en las tablas de las secciones anteriores. Se dibujan aparte, con el estereotipo «propuesto», y están descriptas columna por columna en `diagramas/base-de-datos/SPLG-modelo-de-datos.md` y en `diagramas/base-de-datos/SPLG-base-de-datos-propuesta.sql`; el esquema importable en Lucidchart con lo implementado y lo planificado es `lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql`. Hay una sola tabla de empleados, `employee`, la del módulo de personal; los módulos de flota ampliada y de caja la referencian por `employee_id`.
+Las 22 tablas de esta sección no están en la base: son las de los módulos de gestión de la distribuidora que todavía no se construyeron (personal, flota ampliada, carga del camión, caja y rendición) y se crean con la migración de cada iteración (I-11 a I-14). No cuentan en las tablas de las secciones anteriores. Se dibujan aparte, con el estereotipo «propuesto», y están descriptas columna por columna en `diagramas/base-de-datos/SPLG-modelo-de-datos.md` y en `diagramas/base-de-datos/SPLG-base-de-datos-propuesta.sql`; el esquema importable en Lucidchart con lo implementado y lo planificado es `lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql`. Hay una sola tabla de empleados, `employee`, la del módulo de personal; los módulos de flota ampliada y de caja la referencian por `employee_id`.
 
-Quedan tres referencias entre módulos sin clave foránea declarada, a propósito, hasta que se construyan las dos iteraciones: `fuel_load.cash_movement_id` y `traffic_fine.cash_movement_id` (flota hacia caja), `purchase_receipt.cash_movement_id` y `truck_load.helper_employee_id` (stock hacia caja y personal).
+Quedan tres referencias entre módulos sin clave foránea declarada, a propósito, hasta que se construyan las dos iteraciones: `fuel_load.cash_movement_id` y `traffic_fine.cash_movement_id` (flota hacia caja), `purchase_receipt.cash_movement_id` (compras hacia caja; la columna ya está en la base y queda vacía hasta que exista la caja) y `truck_load.helper_employee_id` (carga del camión hacia personal).
 
 ##### 7.4.8.1 Personal y legajos (iteración I-11)
 
@@ -20885,11 +21422,11 @@ Además agrega a `maintenance_plan` el documento que controla y las categorías 
 
 ![Modelo físico: personal](diagramas/base-de-datos/fisico/SPLG-fisico-09-personal.png)
 
-**Figura 398 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)**
+**Figura 407 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)**
 
 ![DER conceptual: personal](diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png)
 
-**Figura 399 — Modelo entidad-relación conceptual: personal**
+**Figura 408 — Modelo entidad-relación conceptual: personal**
 
 ##### 7.4.8.2 Flota ampliada (iteración I-12)
 
@@ -20919,11 +21456,11 @@ Tipos enumerados nuevos:
 
 ![Modelo físico: gastos de la flota](diagramas/base-de-datos/fisico/SPLG-fisico-10-gastos-de-la-flota.png)
 
-**Figura 400 — Modelo físico: gastos de la flota (planificado)**
+**Figura 409 — Modelo físico: gastos de la flota (planificado)**
 
 ![DER conceptual: gastos de la flota](diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png)
 
-**Figura 401 — Modelo entidad-relación conceptual: gastos de la flota**
+**Figura 410 — Modelo entidad-relación conceptual: gastos de la flota**
 
 **Decisiones de modelado.** (1) La carga, la multa y el siniestro son registros propios del vehículo y no
 columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo.
@@ -20934,39 +21471,22 @@ módulo de caja. (5) Los comprobantes, el acta y las fotos se guardan con el mec
 genéricos y no con tablas propias. (6) El acta de una multa es única por distribuidora y jurisdicción,
 y el número de serie de un neumático es único por distribuidora: ambas restricciones están en la base.
 
-##### 7.4.8.3 Compras y carga del camión (iteración I-13)
+##### 7.4.8.3 Carga del camión (iteración I-13)
 
-Las 7 tablas de esta sección todavía no existen en la base: son las de las compras a proveedores y la carga del camión, que se construyen en la iteración I-13 (CU-214 a CU-219, CU-221 a CU-223 y CU-261 a CU-263). El stock físico en el que escriben (depósitos, ubicaciones, saldos, libro de movimientos, ajustes y umbrales) ya está construido y figura en §7.4.2. Se dibujan con el estereotipo «propuesto». Además, el tipo de garrafa (`gas_cylinder`) suma la columna `average_unit_cost`, el costo promedio ponderado que se recalcula en cada recepción. Las restricciones que los diagramas no dibujan (`CHECK` de cantidades no negativas, claves únicas parciales por vigencia y la clave única parcial que vuelve idempotente el descuento de una entrega) están en el diccionario de datos (`SPLG-modelo-de-datos.md`; las del stock físico, en la sección del diccionario, y las de lo planificado, en «Modelo propuesto»). La columna `truck_load.helper_employee_id` apunta al legajo del módulo de personal; queda sin clave foránea declarada. La numeración correlativa de los comprobantes usa la tabla `document_sequence`, que ya está en la base.
+Las 2 tablas de esta sección todavía no existen en la base: son las de la carga del camión, que se construye en la iteración I-13 (CU-218, CU-219 y CU-221 a CU-223). El stock físico en el que escriben (depósitos, ubicaciones, saldos, libro de movimientos, ajustes y umbrales) y las compras (§7.4.2) ya están construidos. Se dibujan con el estereotipo «propuesto». Las restricciones que los diagramas no dibujan (la clave única parcial `(car_id)` y `(delivery_id)` mientras la carga esté abierta) están en el diccionario de datos (`SPLG-modelo-de-datos.md`, en «Modelo propuesto»). La columna `truck_load.helper_employee_id` apunta al legajo del módulo de personal; queda sin clave foránea declarada. La numeración correlativa de los comprobantes usa la tabla `document_sequence`, que ya está en la base.
 
 | Contexto | Tabla | Qué guarda |
 |---|---|---|
 | Stock físico y carga del camión | `truck_load` | Hoja de carga del camión. |
 | Stock físico y carga del camión | `truck_load_item` | Renglón de la hoja de carga. |
-| Compras | `supplier` | Proveedor. |
-| Compras | `purchase_order` | Orden de compra. |
-| Compras | `purchase_order_item` | Renglón de una orden de compra. |
-| Compras | `purchase_receipt` | Recepción de compra (remito de ingreso). |
-| Compras | `purchase_receipt_item` | Renglón de una recepción. |
 
 ![Modelo físico: stock físico y carga del camión](diagramas/base-de-datos/fisico/SPLG-fisico-11-stock-fisico-y-carga-del-camion.png)
 
-**Figura 402 — Modelo físico: stock físico y carga del camión (planificado)**
+**Figura 411 — Carga del camión (iteración I-13)**
 
-![Modelo físico: compras](diagramas/base-de-datos/fisico/SPLG-fisico-12-compras.png)
-
-**Figura 403 — Modelo físico: compras (planificado)**
-
-![DER conceptual: stock físico](diagramas/base-de-datos/conceptual/SPLG-der-09-stock-fisico.png)
-
-**Figura 404 — Modelo entidad-relación conceptual: stock físico**
 
 ![DER conceptual: carga del camión](diagramas/base-de-datos/conceptual/SPLG-der-10-carga-del-camion.png)
 
-**Figura 405 — Modelo entidad-relación conceptual: carga del camión**
-
-![DER conceptual: compras](diagramas/base-de-datos/conceptual/SPLG-der-11-compras.png)
-
-**Figura 406 — Modelo entidad-relación conceptual: compras**
 
 ##### 7.4.8.4 Caja, rendición, cuentas corrientes y comisiones (iteración I-14)
 
@@ -20990,23 +21510,23 @@ El módulo de caja y rendición agrega **trece tablas** y catorce tipos enumerad
 
 ![Modelo físico: caja y finanzas](diagramas/base-de-datos/fisico/SPLG-fisico-14-caja-y-finanzas.png)
 
-**Figura 407 — Modelo físico: caja y finanzas (planificado)**
+**Figura 412 — Modelo físico: caja y finanzas (planificado)**
 
 ![DER conceptual: caja y movimientos](diagramas/base-de-datos/conceptual/SPLG-der-12-caja-y-movimientos.png)
 
-**Figura 408 — Modelo entidad-relación conceptual: caja y movimientos**
+**Figura 413 — Modelo entidad-relación conceptual: caja y movimientos**
 
 ![DER conceptual: rendiciones de choferes](diagramas/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png)
 
-**Figura 409 — Modelo entidad-relación conceptual: rendiciones de choferes**
+**Figura 414 — Modelo entidad-relación conceptual: rendiciones de choferes**
 
 ![DER conceptual: cuentas corrientes](diagramas/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png)
 
-**Figura 410 — Modelo entidad-relación conceptual: cuentas corrientes**
+**Figura 415 — Modelo entidad-relación conceptual: cuentas corrientes**
 
 ![DER conceptual: comisiones y liquidaciones](diagramas/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png)
 
-**Figura 411 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
+**Figura 416 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
 
 ## 8. Decisiones de Diseño Relevantes
 
@@ -21062,7 +21582,6 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 | Aviso de pago rechazado o cancelado | Cuando la pasarela informa un pago rechazado o cancelado, el sistema lo registra y deja el pedido a la espera, pero no le avisa al Cliente ni libera el stock hasta que vence el plazo de pago. El aviso de pago aprobado sí está construido. | CU-048 | — | Importante |
 | Reintegro del pago de un pedido | Cancelar un pedido pagado por una pasarela restituye el stock, pero no devuelve el dinero. Tampoco se devuelve el recargo de un pedido express que pasa a reparto común. | CU-168 | I-7 | Importante |
 | Personal y legajos | Documentación del personal con vencimiento, asistencia, licencias, saldo de vacaciones, tablero y habilitación laboral del chofer. Los puestos, los legajos, el egreso, la cuenta de acceso y los adjuntos del legajo ya están construidos (CU-176 a CU-182, CU-186 y CU-255 a CU-257); falta lo que cuelga del legajo. | CU-183 a CU-185, CU-187 a CU-194 y CU-246 | I-11 | Importante |
-| Compras a proveedores | No existen proveedores, órdenes de compra ni recepciones: el stock sube con un ajuste manual sin documento, y el costo de la mercadería no se registra. | CU-214 a CU-217 y CU-261 a CU-263 | I-13 | Importante |
 | Carga y rendición del camión | No se registra qué sale en cada camión ni qué vuelve: una diferencia de garrafas o de envases vacíos no se ve hasta que falta en el depósito. | CU-218 a CU-223 | I-13 | Importante |
 
 ### 10.2 Parametrización pendiente
@@ -21106,7 +21625,7 @@ de la API y las pantallas que usen esas tablas.
 | Dirección resuelta contra el mapa | CU-116, CU-118 | — | Piso, departamento, punto en PostGIS, identificador del lugar y precisión en `user_address`. Falta la consulta al servicio de mapas que los complete. |
 | Personal y legajos | CU-176 a CU-194, CU-246 y CU-255 a CU-257 | I-11 | Construidas las tablas `job_position` y `employee`; todavía no están en la base `employee_attendance` y `employee_leave`, ni las columnas de `maintenance_plan` y `maintenance_task`, que figuran en el modelo propuesto. Los adjuntos del legajo usan la tabla `attachment`, que ya está en la base. |
 | Módulos inteligentes | CU-106 (M3), CU-108 (M5), CU-107 (M4), CU-105 (M2) | I-6, I-8, I-9, I-10 | M2: `maintenance_window_proposal` y `vehicle_usage_log`. M3: `repurchase_invitation`. M4: `route_batch`, `route_batch_stop` y `route_batch_offer`. M5: `cylinder_recovery_case` y `cylinder_recovery_notice`. Los parámetros de los cuatro, en `module_config`. M1, el despacho, está construido (CU-013, CU-014). |
-| Compras y carga del camión | CU-214 a CU-219, CU-221 a CU-223, CU-248, CU-249 y CU-261 a CU-263 | I-13 | Planificado: siete tablas nuevas (§7.4.8) y la columna `gas_cylinder.average_unit_cost`; ninguna está en la base. El stock físico ya está construido (CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279). La numeración de los comprobantes usa `document_sequence`, que sí está. |
+| Carga del camión | CU-218, CU-219, CU-221 a CU-223, CU-248 y CU-249 | I-13 | Planificado: dos tablas nuevas (§7.4.8); ninguna está en la base. El stock físico (CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279) y las compras (CU-214 a CU-217, CU-261 a CU-263 y CU-280 a CU-288, con las cinco tablas de compras y la columna `gas_cylinder.average_unit_cost`) ya están construidos. La numeración de los comprobantes usa `document_sequence`, que sí está. |
 | Caja y rendición | CU-225 a CU-245, CU-264 y CU-265 | I-14 | Planificado: trece tablas nuevas (§7.4.8) y el valor `account` en los medios de pago del pedido; ninguna está en la base. |
 
 **Cambios de modelo planificados.** Los casos de uso planificados necesitan, además, estos cambios,
@@ -21147,21 +21666,21 @@ chofer o el administrador lo liberan, y entonces se despacha de nuevo.
 
 ![Diagrama de estados del pedido](diagramas/uml/UML_Estados_Pedido.png)
 
-**Figura 412 — Diagrama de estados del pedido**
+**Figura 417 — Diagrama de estados del pedido**
 
 
 #### Reclamo
 
 ![Diagrama de estados del reclamo](diagramas/uml/UML_Estados_Reclamo.png)
 
-**Figura 413 — Diagrama de estados del reclamo**
+**Figura 418 — Diagrama de estados del reclamo**
 
 
 #### Envase
 
 ![Diagrama de estados del envase](diagramas/uml/UML_Estados_Envase.png)
 
-**Figura 414 — Diagrama de estados del envase**
+**Figura 419 — Diagrama de estados del envase**
 
 
 #### Reserva programada
@@ -21171,42 +21690,46 @@ la seña, y el diagrama muestra cómo llega a `PENDING` o a `CANCELLED`.
 
 ![Diagrama de estados de la reserva programada](diagramas/uml/UML_Estados_Reserva.png)
 
-**Figura 415 — Diagrama de estados de la reserva programada**
+**Figura 420 — Diagrama de estados de la reserva programada**
 
 
 #### Tarea de flota
 
 ![Diagrama de estados de la tarea de flota](diagramas/uml/UML_Estados_TareaFlota.png)
 
-**Figura 416 — Diagrama de estados de la tarea de flota**
+**Figura 421 — Diagrama de estados de la tarea de flota**
 
 
 #### Oferta de despacho
 
 ![Diagrama de estados de la oferta de despacho](diagramas/uml/UML_Estados_OfertaDespacho.png)
 
-**Figura 417 — Diagrama de estados de la oferta de despacho**
+**Figura 422 — Diagrama de estados de la oferta de despacho**
 
 
-#### Orden de compra (planificado, I-13)
+#### Orden de compra
+
+La orden nace en borrador, se envía, se recibe de a partes y termina recibida, cancelada o cerrada con faltante. Sólo se edita en borrador. (Construido.)
 
 ![Diagrama de estados de la orden de compra](diagramas/uml/UML_Estados_OrdenDeCompra.png)
 
-**Figura 418 — Diagrama de estados de la orden de compra**
+**Figura 423 — Diagrama de estados de la orden de compra**
 
 
-#### Recepción de compra (planificado, I-13)
+#### Recepción de compra
+
+La recepción nace confirmada y sólo sale por la anulación; el pago al proveedor es otro atributo. (Construido.)
 
 ![Diagrama de estados de la recepción de compra](diagramas/uml/UML_Estados_RecepcionDeCompra.png)
 
-**Figura 419 — Diagrama de estados de la recepción de compra**
+**Figura 424 — Diagrama de estados de la recepción de compra**
 
 
 #### Carga de camión (planificado, I-13)
 
 ![Diagrama de estados de la carga de camión](diagramas/uml/UML_Estados_CargaDeCamion.png)
 
-**Figura 420 — Diagrama de estados de la carga de camión**
+**Figura 425 — Diagrama de estados de la carga de camión**
 
 
 #### Empleado
@@ -21215,7 +21738,7 @@ El legajo nace activo y sale por el egreso; el reingreso lo reactiva (construido
 
 ![Diagrama de estados del empleado](diagramas/uml/UML_Estados_Empleado.png)
 
-**Figura 421 — Diagrama de estados del empleado**
+**Figura 426 — Diagrama de estados del empleado**
 
 
 #### Licencia laboral
@@ -21224,7 +21747,7 @@ La licencia nace solicitada y un administrador la aprueba o la rechaza; se cance
 
 ![Diagrama de estados de la licencia laboral](diagramas/uml/UML_Estados_Licencia.png)
 
-**Figura 422 — Diagrama de estados de la licencia laboral**
+**Figura 427 — Diagrama de estados de la licencia laboral**
 
 
 #### Jornada de trabajo
@@ -21233,7 +21756,7 @@ Una sola jornada abierta por empleado a la vez; se cierra con la marca del chofe
 
 ![Diagrama de estados de la jornada de trabajo](diagramas/uml/UML_Estados_Jornada.png)
 
-**Figura 423 — Diagrama de estados de la jornada de trabajo**
+**Figura 428 — Diagrama de estados de la jornada de trabajo**
 #### Carga de combustible
 
 La carga nace normal o anómala, según el desvío de su consumo respecto del promedio de las últimas cinco
@@ -21242,7 +21765,7 @@ no cuenta en los cálculos. El estado se deriva de la marca de anomalía y de la
 
 ![Diagrama de estados de la carga de combustible](diagramas/uml/UML_Estados_CargaCombustible.png)
 
-**Figura 424 — Diagrama de estados de la carga de combustible (planificado, I-12)**
+**Figura 429 — Diagrama de estados de la carga de combustible (planificado, I-12)**
 
 
 #### Multa de tránsito
@@ -21252,7 +21775,7 @@ está pendiente y vence en siete días o menos sin aviso, el aviso diario la mar
 
 ![Diagrama de estados de la multa de tránsito](diagramas/uml/UML_Estados_MultaTransito.png)
 
-**Figura 425 — Diagrama de estados de la multa de tránsito (planificado, I-12)**
+**Figura 430 — Diagrama de estados de la multa de tránsito (planificado, I-12)**
 
 
 #### Siniestro
@@ -21262,7 +21785,7 @@ Un siniestro cerrado no admite cambios y no devuelve el vehículo a la flota act
 
 ![Diagrama de estados del siniestro](diagramas/uml/UML_Estados_Siniestro.png)
 
-**Figura 426 — Diagrama de estados del siniestro (planificado, I-12)**
+**Figura 431 — Diagrama de estados del siniestro (planificado, I-12)**
 
 
 #### Neumático
@@ -21271,7 +21794,7 @@ El neumático nace en depósito; se monta, se rota, se desmonta y se recapa, y l
 
 ![Diagrama de estados del neumático](diagramas/uml/UML_Estados_Neumatico.png)
 
-**Figura 427 — Diagrama de estados del neumático (planificado, I-12, opcional)**
+**Figura 432 — Diagrama de estados del neumático (planificado, I-12, opcional)**
 
 
 #### Vigencia de la póliza y de la habilitación
@@ -21282,8 +21805,8 @@ habilitación para transportar mercancías peligrosas.
 
 ![Diagrama de estados de la vigencia de la póliza](diagramas/uml/UML_Estados_PolizaDelVehiculo.png)
 
-**Figura 428 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)**
-**Figura 429 — Diagrama de estados de la oferta de despacho**
+**Figura 433 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)**
+**Figura 434 — Diagrama de estados de la oferta de despacho**
 
 
 #### Sesión de caja
@@ -21292,7 +21815,7 @@ La sesión se abre con un monto inicial y se cierra con un arqueo. Una caja tien
 
 ![Diagrama de estados: sesión de caja](diagramas/uml/UML_Estados_SesionDeCaja.png)
 
-**Figura 430 — Diagrama de estados: sesión de caja**
+**Figura 435 — Diagrama de estados: sesión de caja**
 
 
 #### Rendición del chofer
@@ -21301,7 +21824,7 @@ La rendición nace abierta por el proceso de las 23:30, el chofer la presenta y 
 
 ![Diagrama de estados: rendición del chofer](diagramas/uml/UML_Estados_RendicionChofer.png)
 
-**Figura 431 — Diagrama de estados: rendición del chofer**
+**Figura 436 — Diagrama de estados: rendición del chofer**
 
 
 #### Liquidación de comisiones
@@ -21310,7 +21833,7 @@ La liquidación nace como borrador. Al aprobarla, un neto positivo la deja aprob
 
 ![Diagrama de estados: liquidación de comisiones](diagramas/uml/UML_Estados_LiquidacionComisiones.png)
 
-**Figura 432 — Diagrama de estados: liquidación de comisiones**
+**Figura 437 — Diagrama de estados: liquidación de comisiones**
 
 
 #### Cuenta corriente
@@ -21319,7 +21842,7 @@ La cuenta se habilita activa. El administrador la bloquea y la reactiva, y sólo
 
 ![Diagrama de estados: cuenta corriente](diagramas/uml/UML_Estados_CuentaCorriente.png)
 
-**Figura 433 — Diagrama de estados: cuenta corriente**
+**Figura 438 — Diagrama de estados: cuenta corriente**
 
 
 ### 11.2 Diagramas de Actividad
@@ -21332,7 +21855,7 @@ responde, el pedido pasa al siguiente candidato que no haya sido contactado ante
 
 ![Diagrama de actividad del despacho por proximidad](diagramas/uml/UML_Actividad_Despacho.png)
 
-**Figura 434 — Diagrama de actividad del despacho por proximidad**
+**Figura 439 — Diagrama de actividad del despacho por proximidad**
 
 
 #### Ciclo de vida del pedido
@@ -21342,7 +21865,7 @@ pago. Las dos ramas paralelas del tramo en camino terminan cuando el pedido qued
 
 ![Diagrama de actividad del ciclo de vida del pedido](diagramas/uml/UML_Actividad_CicloPedido.png)
 
-**Figura 435 — Diagrama de actividad del ciclo de vida del pedido**
+**Figura 440 — Diagrama de actividad del ciclo de vida del pedido**
 
 
 ---

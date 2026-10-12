@@ -276,7 +276,9 @@ def _exportar(base, nombre):
         open(D + f"lucidchart/{nombre}.{ext}", "w", encoding="utf-8").write(r.stdout)
     filas = r.stdout.splitlines()
     print(f"  ✓ {nombre}.csv/.tsv  ({len({f.split(chr(9))[3] for f in filas})} tablas)")
-_exportar("splg_db", "SPLG-base-de-datos-lucidchart")
+# otra base del mismo contenedor, por ejemplo una copia con un módulo que la documentación todavía trata como planificado
+_BASE = os.environ.get("SPLG_BD_NOMBRE", "splg_db")
+_exportar(_BASE, "SPLG-base-de-datos-lucidchart")
 _psql("postgres", "-c", "drop database if exists splg_lucid_tmp")
 _psql("postgres", "-c", "create database splg_lucid_tmp")
 _psql("splg_lucid_tmp", entrada=open(D + "lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql", encoding="utf-8").read())
@@ -294,7 +296,7 @@ print("  ✓ texto/: fuentes Mermaid y PlantUML del MC y de las clases")
 
 # La base como código Mermaid (erDiagram), una relación por clave foránea: se pega en
 # Lucidchart ("Diagram as code") y entra dibujada y conectada, sin arrastrar tabla por tabla.
-_sp.run([sys.executable, D + "material-de-trabajo/der-mermaid-unico.py", "splg_db", "SPLG-base-de-datos-mermaid.txt"])
+_sp.run([sys.executable, D + "material-de-trabajo/der-mermaid-unico.py", _BASE, "SPLG-base-de-datos-mermaid.txt"])
 _psql("postgres", "-c", "drop database if exists splg_lucid_tmp")
 _psql("postgres", "-c", "create database splg_lucid_tmp")
 _psql("splg_lucid_tmp", entrada=open(D + "lucidchart/SPLG-diagrama-de-base-de-datos-con-planificadas.sql", encoding="utf-8").read())

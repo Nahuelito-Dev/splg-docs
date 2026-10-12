@@ -2,10 +2,10 @@
 
 Las genera `generar-clases-diseno.py`; no se editan a mano.
 
-- Clases de diseño: **284**; operaciones: **1223**.
-- Por papel: coleccion: 79, controlador: 16, dominio: 83, fabricación pura: 15, fachada: 81, puerto: 10.
-- Asociaciones: 486 (163 del modelo conceptual, 323 de colaboración); dependencias: 238; realizaciones: 0.
-- Dependencias entre módulos: 134.
+- Clases de diseño: **287**; operaciones: **1247**.
+- Por papel: coleccion: 79, controlador: 18, dominio: 83, fabricación pura: 15, fachada: 82, puerto: 10.
+- Asociaciones: 490 (163 del modelo conceptual, 327 de colaboración); dependencias: 248; realizaciones: 0.
+- Dependencias entre módulos: 133.
 
 | Vista | Archivo | Clases | Operaciones |
 |---|---|---:|---:|
@@ -16,14 +16,14 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Despacho y propuestas con vigencia (dominio) | `diagramas/clases-diseno/DC_Despacho.png` | 5 | 15 |
 | Choferes y vehículos (dominio) | `diagramas/clases-diseno/DC_Choferes-y-vehiculos.png` | 5 | 74 |
 | Mantenimiento de la flota (dominio) | `diagramas/clases-diseno/DC_Mantenimiento.png` | 4 | 26 |
-| Productos y envases (dominio) | `diagramas/clases-diseno/DC_Productos-y-envases.png` | 5 | 42 |
+| Productos y envases (dominio) | `diagramas/clases-diseno/DC_Productos-y-envases.png` | 5 | 43 |
 | Personal (dominio) | `diagramas/clases-diseno/DC_Personal.png` | 5 | 65 |
 | Recupero de envases (dominio) | `diagramas/clases-diseno/DC_Recupero.png` | 2 | 10 |
 | Posventa (dominio) | `diagramas/clases-diseno/DC_Posventa.png` | 3 | 14 |
 | Gastos de la flota (dominio) | `diagramas/clases-diseno/DC_Gastos-de-flota.png` | 5 | 27 |
-| Stock físico (dominio) | `diagramas/clases-diseno/DC_Stock-fisico.png` | 7 | 52 |
+| Stock físico (dominio) | `diagramas/clases-diseno/DC_Stock-fisico.png` | 7 | 48 |
 | Carga del camión (dominio) | `diagramas/clases-diseno/DC_Carga-del-camion.png` | 2 | 24 |
-| Compras (dominio) | `diagramas/clases-diseno/DC_Compras.png` | 5 | 22 |
+| Compras (dominio) | `diagramas/clases-diseno/DC_Compras.png` | 5 | 38 |
 | Caja y movimientos (dominio) | `diagramas/clases-diseno/DC_Caja.png` | 4 | 22 |
 | Rendición del chofer (dominio) | `diagramas/clases-diseno/DC_Rendicion.png` | 3 | 15 |
 | Cuentas corrientes (dominio) | `diagramas/clases-diseno/DC_Cuentas-corrientes.png` | 3 | 19 |
@@ -50,8 +50,8 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Reclamos, incidencias y calificaciones (módulo) | `diagramas/clases-diseno/DC_Mod_Posventa.png` | 5 | 18 |
 | Notificaciones y correo (módulo) | `diagramas/clases-diseno/DC_Mod_Notificaciones.png` | 3 | 19 |
 | Reportes, salud y almacenamiento (módulo) | `diagramas/clases-diseno/DC_Mod_Soporte.png` | 7 | 21 |
-| Stock (módulo) | `diagramas/clases-diseno/DC_Mod_Stock.png` | 24 | 54 |
-| Compras (módulo) | `diagramas/clases-diseno/DC_Mod_Compras.png` | 8 | 16 |
+| Stock (módulo) | `diagramas/clases-diseno/DC_Mod_Stock.png` | 24 | 56 |
+| Compras (módulo) | `diagramas/clases-diseno/DC_Mod_Compras.png` | 11 | 25 |
 | Carga del camión (módulo) | `diagramas/clases-diseno/DC_Mod_Carga-del-camion.png` | 3 | 11 |
 | Caja: cajas, sesiones y libro (módulo) | `diagramas/clases-diseno/DC_Mod_Caja.png` | 9 | 17 |
 | Rendición del chofer (módulo) | `diagramas/clases-diseno/DC_Mod_Rendicion.png` | 5 | 8 |

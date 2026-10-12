@@ -6,11 +6,13 @@ sequenceDiagram
 
     ADM->>SIS: cancelarOrdenDeCompra(ordenId, motivo)
     activate SIS
-    alt la orden no tiene recepciones
+    alt la orden está en borrador o enviada y no tiene recepciones
         SIS-->>ADM: orden cancelada
-    else la orden tiene recepciones o ya está cerrada
-        SIS-->>ADM: conflicto
     else la orden no existe
         SIS-->>ADM: recurso no encontrado
+    else la orden tiene recepciones confirmadas
+        SIS-->>ADM: conflicto
+    else la orden ya está cerrada o falta el motivo
+        SIS-->>ADM: solicitud inválida
     end
     deactivate SIS

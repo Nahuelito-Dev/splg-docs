@@ -150,7 +150,7 @@ erDiagram
     ATTACHMENT {
         uuid attachment_id PK
         uuid distributor_id FK
-        attachment_owner_type_enum owner_type
+        varchar owner_type
         uuid owner_id
         varchar label "nullable"
         varchar storage_key
@@ -193,7 +193,7 @@ erDiagram
         varchar path
         varchar client_source "nullable"
         varchar ip "nullable"
-        audit_result_enum result
+        varchar result
         int4 status_code
         jsonb changes "nullable"
         text error_message "nullable"
@@ -216,7 +216,7 @@ erDiagram
         numeric tare_weight_kg "nullable"
         numeric max_load_kg "nullable"
         int4 odometer_km "nullable"
-        fleet_status_enum fleet_status
+        varchar fleet_status
         timestamptz in_service_since "nullable"
         varchar photo_key "nullable"
     }
@@ -241,7 +241,7 @@ erDiagram
         varchar reason
         text description
         varchar photoUrl "nullable"
-        claims_status_enum status
+        varchar status
         text resolutionNote "nullable"
         timestamptz createdAt
         varchar photo_key "nullable"
@@ -250,13 +250,13 @@ erDiagram
         uuid coverage_zone_id PK
         uuid distributor_id FK
         varchar name
-        geometry area
+        varchar area
         numeric surcharge_value
         bool isActive
         timestamptz createdAt
         timestamptz updatedAt
         timestamptz deletedAt "nullable"
-        coverage_zone_surcharge_type_enum surcharge_type
+        varchar surcharge_type
         varchar label "nullable"
         varchar color "nullable"
         timestamptz valid_until "nullable"
@@ -269,7 +269,7 @@ erDiagram
         text notification_token "nullable"
         timestamptz createdAt "nullable"
         timestamptz deletedAt "nullable"
-        geometry location "nullable"
+        varchar location "nullable"
         numeric avg_monthly_consumption_kg "nullable"
         uuid declared_cylinder_type_id FK "nullable"
         int4 repurchase_notice_days "nullable"
@@ -280,7 +280,7 @@ erDiagram
         uuid distributor_id FK
         varchar serial
         uuid gas_cylinder_id FK "nullable"
-        cylinder_state_enum state
+        varchar state
         uuid current_customer_id FK "nullable"
         uuid current_order_id FK "nullable"
         numeric deposit
@@ -295,7 +295,7 @@ erDiagram
         uuid cylinder_id FK
         uuid distributor_id FK
         timestamptz inspected_at
-        cylinder_inspection_result_enum result
+        varchar result
         timestamptz next_due_at "nullable"
         text notes "nullable"
     }
@@ -303,8 +303,8 @@ erDiagram
         uuid movement_id PK
         uuid cylinder_id FK
         uuid distributor_id FK
-        cylinder_movement_from_state_enum from_state "nullable"
-        cylinder_movement_to_state_enum to_state
+        varchar from_state "nullable"
+        varchar to_state
         uuid order_id FK "nullable"
         uuid actor_user_id FK "nullable"
         text note "nullable"
@@ -318,7 +318,7 @@ erDiagram
         timestamptz delivered_at
         numeric deposit_amount
         int4 step
-        recovery_case_status_enum status
+        varchar status
         timestamptz opened_at
         timestamptz closed_at "nullable"
         uuid resolved_by_user_id FK "nullable"
@@ -328,8 +328,8 @@ erDiagram
         uuid notice_id PK
         uuid case_id FK
         int4 step
-        recovery_notice_kind_enum kind
-        proposal_status_enum status "nullable"
+        varchar kind
+        varchar status "nullable"
         timestamptz sent_at
         timestamptz expires_at
     }
@@ -346,7 +346,7 @@ erDiagram
         float8 balance
         timestamptz createdAt "nullable"
         timestamptz deletedAt "nullable"
-        geometry location "nullable"
+        varchar location "nullable"
         bool isEnabled
         bool isAvailable
     }
@@ -359,7 +359,7 @@ erDiagram
         varchar email "nullable"
         varchar phone "nullable"
         varchar logo_url "nullable"
-        distributor_status_enum status
+        varchar status
         varchar plan "nullable"
         timestamptz createdAt
         timestamptz updatedAt
@@ -379,7 +379,7 @@ erDiagram
         varchar file_number
         varchar first_name
         varchar last_name
-        employee_document_type_enum document_type
+        varchar document_type
         varchar document_number
         varchar cuil "nullable"
         date birth_date "nullable"
@@ -394,9 +394,9 @@ erDiagram
         varchar emergency_contact_relationship "nullable"
         date hire_date
         date termination_date "nullable"
-        employee_termination_reason_enum termination_reason "nullable"
-        employment_type_enum employment_type
-        employee_status_enum status
+        varchar termination_reason "nullable"
+        varchar employment_type
+        varchar status
         varchar bank_cbu "nullable"
         text notes "nullable"
         timestamptz createdAt
@@ -430,21 +430,21 @@ erDiagram
         uuid order_id FK
         uuid distributor_id FK
         uuid reported_by FK
-        incident_type_enum type
+        varchar type
         text description
         varchar photo_url "nullable"
-        incident_status_enum status
+        varchar status
         text resolution_note "nullable"
         timestamptz createdAt
         timestamptz resolvedAt "nullable"
-        incident_moment_enum moment "nullable"
+        varchar moment "nullable"
         varchar photo_key "nullable"
     }
     JOB_POSITION {
         uuid position_id PK
         uuid distributor_id FK
         varchar name
-        job_position_category_enum category
+        varchar category
         bool is_active
         timestamptz createdAt
         timestamptz updatedAt
@@ -454,12 +454,12 @@ erDiagram
         uuid plan_id PK
         uuid distributor_id FK
         varchar name
-        maintenance_subject_enum subject
-        maintenance_trigger_enum trigger
+        varchar subject
+        varchar trigger
         int4 interval_km "nullable"
         int4 interval_months "nullable"
         int4 lead_time_days
-        maintenance_criticality_enum criticality
+        varchar criticality
         varchar car_type "nullable"
         bool is_active
     }
@@ -469,7 +469,7 @@ erDiagram
         uuid distributor_id FK
         uuid car_id FK "nullable"
         uuid delivery_id FK "nullable"
-        maintenance_task_status_enum status
+        varchar status
         timestamptz due_at "nullable"
         int4 due_km "nullable"
         timestamptz predicted_due_at "nullable"
@@ -502,14 +502,14 @@ erDiagram
         timestamptz window_start
         timestamptz window_end
         int4 rank
-        proposal_status_enum status
+        varchar status
         timestamptz expires_at
         timestamptz responded_at "nullable"
     }
     MODULE_CONFIG {
         uuid config_id PK
         uuid distributor_id FK
-        configurable_process_enum module
+        varchar module
         jsonb params
         timestamptz updated_at
         uuid updated_by_user_id FK "nullable"
@@ -524,10 +524,10 @@ erDiagram
         bool deposit_paid
         uuid delivery_id FK "nullable"
         uuid address_id FK
-        order_status_enum status
-        order_paymentmethod_enum paymentMethod
-        order_paymenttype_enum paymentType
-        order_paymentstatus_enum paymentStatus
+        varchar status
+        varchar paymentMethod
+        varchar paymentType
+        varchar paymentStatus
         numeric totalAmount
         text notes "nullable"
         text deliveryInstructions "nullable"
@@ -542,11 +542,11 @@ erDiagram
         varchar receiver_name "nullable"
         varchar receiver_document "nullable"
         varchar receiver_relationship "nullable"
-        order_delivery_mode_enum delivery_mode
-        geometry deliveryPoint "nullable"
+        varchar delivery_mode
+        varchar deliveryPoint "nullable"
         uuid coverage_zone_id FK "nullable"
         varchar zone_name "nullable"
-        order_zone_surcharge_type_enum zone_surcharge_type "nullable"
+        varchar zone_surcharge_type "nullable"
         numeric zone_surcharge_value "nullable"
         numeric zone_surcharge_amount
         numeric subtotal_items
@@ -557,6 +557,8 @@ erDiagram
         timestamptz payment_confirmed_at "nullable"
         uuid payment_confirmed_by "nullable"
         text payment_resolution_note "nullable"
+        timestamptz payment_resolved_at "nullable"
+        uuid payment_resolved_by "nullable"
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK
@@ -572,7 +574,7 @@ erDiagram
         uuid distributor_id FK
         uuid order_id FK
         uuid driver_id FK
-        order_dispatch_offer_status_enum status
+        varchar status
         timestamptz expiresAt
         timestamptz offeredAt
     }
@@ -587,8 +589,8 @@ erDiagram
     ORDER_STATUS_HISTORY {
         uuid history_id PK
         uuid order_id FK
-        order_status_enum from_status "nullable"
-        order_status_enum to_status
+        varchar from_status "nullable"
+        varchar to_status
         uuid changed_by_user_id FK "nullable"
         text reason "nullable"
         timestamptz changed_at
@@ -597,14 +599,14 @@ erDiagram
         uuid payment_id PK
         uuid order_id FK
         uuid distributor_id FK "nullable"
-        payment_gateway_enum gateway
-        payment_integration_enum integration
+        varchar gateway
+        varchar integration
         varchar method "nullable"
         varchar gateway_payment_id "nullable"
         varchar external_reference "nullable"
         numeric amount
         varchar currency
-        payment_status_enum status
+        varchar status
         text payment_url "nullable"
         bool is_deposit
         jsonb metadata "nullable"
@@ -617,7 +619,7 @@ erDiagram
         int4 number
         uuid supplier_id FK
         uuid destination_warehouse_id FK
-        purchase_order_status_enum status
+        varchar status
         timestamptz issued_at "nullable"
         date expected_date "nullable"
         numeric total_amount
@@ -644,14 +646,14 @@ erDiagram
         uuid supplier_id FK
         uuid purchase_order_id FK "nullable"
         uuid warehouse_id FK
-        supplier_document_type_enum supplier_document_type
+        varchar supplier_document_type
         varchar supplier_document_number
         timestamptz received_at
         uuid received_by_user_id FK
         numeric total_amount
-        purchase_payment_status_enum payment_status
+        varchar payment_status
         uuid cash_movement_id "nullable"
-        purchase_receipt_status_enum status
+        varchar status
         text void_reason "nullable"
         timestamptz voided_at "nullable"
         uuid voided_by_user_id "nullable"
@@ -677,7 +679,7 @@ erDiagram
         uuid distributor_id FK
         uuid from_user_id FK
         uuid to_user_id FK
-        rating_from_role_enum from_role
+        varchar from_role
         int4 stars
         text comment "nullable"
         timestamptz createdAt
@@ -693,7 +695,7 @@ erDiagram
         uuid address_id FK "nullable"
         timestamptz projected_depletion_at
         jsonb suggested_items
-        repurchase_invitation_status_enum status
+        varchar status
         timestamptz expires_at
         timestamptz responded_at "nullable"
         uuid order_id FK "nullable"
@@ -709,7 +711,7 @@ erDiagram
     ROUTE_BATCH {
         uuid batch_id PK
         uuid distributor_id FK
-        route_batch_status_enum status
+        varchar status
         numeric total_weight_kg
         uuid delivery_id FK "nullable"
         timestamptz created_at
@@ -718,7 +720,7 @@ erDiagram
         uuid offer_id PK
         uuid batch_id FK
         uuid delivery_id FK
-        proposal_status_enum status
+        varchar status
         timestamptz expires_at
         timestamptz responded_at "nullable"
     }
@@ -733,7 +735,7 @@ erDiagram
         uuid distributor_id FK
         int4 number
         uuid location_id FK
-        stock_adjustment_reason_enum reason
+        varchar reason
         text notes
         uuid batch_id
         uuid created_by_user_id FK
@@ -743,7 +745,7 @@ erDiagram
         uuid item_id PK
         uuid adjustment_id FK
         uuid gas_cylinder_id FK
-        stock_condition_enum condition
+        varchar condition
         int4 quantity_delta
     }
     STOCK_BALANCE {
@@ -751,14 +753,14 @@ erDiagram
         uuid distributor_id FK
         uuid location_id FK
         uuid gas_cylinder_id FK
-        stock_condition_enum condition
+        varchar condition
         int4 quantity
         timestamptz updatedAt
     }
     STOCK_LOCATION {
         uuid location_id PK
         uuid distributor_id FK
-        stock_location_kind_enum kind
+        varchar kind
         uuid warehouse_id FK,UK "nullable"
         uuid car_id FK,UK "nullable"
         timestamptz createdAt
@@ -770,11 +772,11 @@ erDiagram
         uuid batch_id
         int4 quantity
         uuid from_location_id FK "nullable"
-        stock_condition_enum from_condition "nullable"
+        varchar from_condition "nullable"
         uuid to_location_id FK "nullable"
-        stock_condition_enum to_condition "nullable"
-        stock_movement_reason_enum reason
-        stock_movement_reference_type_enum reference_type
+        varchar to_condition "nullable"
+        varchar reason
+        varchar reference_type
         uuid reference_id "nullable"
         uuid reversed_movement_id FK "nullable"
         varchar notes "nullable"
@@ -813,7 +815,7 @@ erDiagram
         uuid distributor_id FK
         varchar business_name
         varchar cuit
-        supplier_kind_enum kind
+        varchar kind
         varchar contact_name "nullable"
         varchar phone "nullable"
         varchar email "nullable"
@@ -864,9 +866,9 @@ erDiagram
         timestamptz deletedAt "nullable"
         varchar floor "nullable"
         varchar apartment "nullable"
-        geometry location "nullable"
+        varchar location "nullable"
         varchar place_id "nullable"
-        address_geocode_precision_enum geocode_precision
+        varchar geocode_precision
     }
     VEHICLE_ASSIGNMENT {
         uuid assignment_id PK
@@ -893,7 +895,7 @@ erDiagram
         uuid distributor_id FK
         varchar name
         varchar code
-        warehouse_kind_enum kind
+        varchar kind
         text address "nullable"
         bool is_default
         bool is_active

@@ -69,9 +69,11 @@ class Proveedor {
   - activo: Booleano
   + «create» Proveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero)
   + actualizar(datos: Registro): Proveedor
-  + coincideCon(termino: Cadena): Booleano
-  + darDeBaja()
+  + coincideCon(termino: Cadena, tipo: Cadena,\n      incluirInactivos: Booleano): Booleano
+  + darDeBaja(): Proveedor
   + emitirOrden(depositoDeStock: Deposito,\n      fechaEsperada: Fecha,\n      items: Registro): OrdenDeCompra
+  + getRecepciones(desde: FechaHora,\n      hasta: FechaHora): RecepcionDeCompra[*]
+  + validarSinOrdenesAbiertas()
 }
 class OrdenDeCompra {
   - numero: Entero
@@ -80,15 +82,24 @@ class OrdenDeCompra {
   - fechaEsperada: Fecha
   - total: Moneda
   - motivoDeCancelacion: Cadena
+  - motivoDeCierre: Cadena
   - notas: Cadena
-  + «create» OrdenDeCompra(depositoDeStock: Deposito,\n      fechaEsperada: Fecha, autor: Usuario)
-  + acumularRecibido(items: Registro): Booleano
+  + «create» OrdenDeCompra(depositoDeStock: Deposito,\n      fechaEsperada: Fecha, administrador: Administrador)
+  + acumularRecibido(items: Registro): OrdenDeCompra
   + calcularTotal(): Moneda
   + cancelar(motivo: Cadena): OrdenDeCompra
+  + cerrarConFaltante(motivo: Cadena): OrdenDeCompra
+  + devolverRecibido(items: Registro): OrdenDeCompra
   + enviar(ahora: FechaHora): OrdenDeCompra
-  + getTotal(): Moneda
-  + validarQueEstaEnBorrador()
+  + getItems(): Registro
+  + getPendiente(): EstadoPedido
+  + getRecepciones(): RecepcionDeCompra[*]
+  + modificar(datos: Registro): OrdenDeCompra
+  + validarContraLoPendiente(items: Registro): Booleano
+  + validarEnBorrador()
+  + validarRecibible(): Booleano
   + validarSinRecepciones()
+  + validarTransicion(enviada: Cadena)
 }
 class ItemOrdenDeCompra {
   - cantidad: Entero
@@ -96,6 +107,7 @@ class ItemOrdenDeCompra {
   - vaciosACanjear: Entero
   - cantidadRecibida: Entero
   + «create» ItemOrdenDeCompra(producto: Producto,\n      cantidad: Entero, costoUnitario: Moneda,\n      vaciasACanjear: Entero)
+  + getPendiente()
 }
 class RecepcionDeCompra {
   - numero: Entero
@@ -106,19 +118,28 @@ class RecepcionDeCompra {
   - estadoDePago: EstadoDePagoDeCompra
   - estado: EstadoDeLaRecepcion
   - motivoDeAnulacion: Cadena
-  + «create» RecepcionDeCompra(tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena,\n      administrador: Administrador)
+  - anuladaEl: FechaHora
+  - notas: Cadena
+  + «create» RecepcionDeCompra(proveedor: Proveedor,\n      depositoDeStock: Deposito,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena,\n      administrador: Administrador)
   + anular(motivo: Cadena): RecepcionDeCompra
   + getItems(): Registro
+  + getOrden(): OrdenDeCompra
   + getTotal(): Moneda
-  + getUbicacionDelDeposito(): UbicacionDeStock
-  + validarQueEstaConfirmada()
+  + getUbicacionDeStock(): UbicacionDeStock
+  + marcarPago(estadoDePago: Cadena): RecepcionDeCompra
+  + validarAnulable(): Booleano
+  + validarComprobanteNoRepetido(): Booleano
+  + validarNoAnulada()
 }
 class ItemRecepcion {
   - llenasRecibidas: Entero
   - vaciasEntregadas: Entero
   - costoUnitario: Moneda
+  - costoPromedioPrevio: Moneda
+  - existenciaPrevia: Decimal
   + «create» ItemRecepcion(producto: Producto,\n      llenasRecibidas: Entero, vaciasEntregadas: Entero,\n      costoUnitario: Moneda)
   + getProducto(): Producto
+  + getSubtotal()
 }
 class Deposito <<referencia>>
 class Producto <<referencia>>
@@ -127,13 +148,13 @@ class Distribuidora <<referencia>>
 
 Distribuidora "1" --> "0..*" Proveedor : compra a
 Proveedor "1" --> "0..*" OrdenDeCompra : recibe
-OrdenDeCompra "0..*" <-- "1" Deposito : se destina a
+OrdenDeCompra "0..*" -- "1" Deposito : se destina a
 OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra : contiene
 ItemOrdenDeCompra "0..*" -- "1" Producto : corresponde a
 Usuario "1" -- "0..*" OrdenDeCompra : emite
-Proveedor "1" -- "0..*" RecepcionDeCompra : entrega
+Proveedor "1" --> "0..*" RecepcionDeCompra : entrega
 OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra : se cumple con
-RecepcionDeCompra "0..*" <-- "1" Deposito : ingresa en
+RecepcionDeCompra "0..*" -- "1" Deposito : ingresa en
 RecepcionDeCompra "1" *--> "1..*" ItemRecepcion : contiene
 ItemRecepcion "0..*" -- "1" Producto : corresponde a
 Usuario "1" -- "0..*" RecepcionDeCompra : registra

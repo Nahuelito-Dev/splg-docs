@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSS — CU-284 Consultar las Recepciones de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt listado de recepciones
+        ADM->>SIS: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+        activate SIS
+        alt los filtros son válidos
+            SIS-->>ADM: recepciones de compra, con su total y su estado de pago
+        else un filtro es inválido
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
+        end
+        deactivate SIS
+    end
+
+    opt detalle de una recepción
+        ADM->>SIS: consultarRecepcionDeCompra(recepcionId)
+        activate SIS
+        alt la recepción existe en la distribuidora
+            SIS-->>ADM: recepción con sus renglones
+        else la recepción no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end

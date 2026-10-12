@@ -876,6 +876,8 @@ erDiagram
         timestamptz payment_confirmed_at "nullable"
         uuid payment_confirmed_by "nullable"
         text payment_resolution_note "nullable"
+        timestamptz payment_resolved_at "nullable"
+        uuid payment_resolved_by "nullable"
         numeric express_surcharge_amount
     }
     ORDER_ADDRESS_CHANGE {
@@ -946,6 +948,7 @@ erDiagram
         uuid created_by_user_id FK
         timestamptz createdAt
         timestamptz updatedAt
+        text close_reason "nullable"
     }
     PURCHASE_ORDER_ITEM {
         uuid item_id PK
@@ -972,6 +975,11 @@ erDiagram
         uuid cash_movement_id "nullable"
         varchar status
         text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        uuid voided_by_user_id "nullable"
+        uuid batch_id
+        uuid void_batch_id "nullable"
+        text notes "nullable"
         timestamptz createdAt
         timestamptz updatedAt
     }
@@ -982,6 +990,8 @@ erDiagram
         int4 quantity_full
         int4 quantity_empty_out
         numeric unit_cost
+        numeric previous_average_cost "nullable"
+        int4 previous_on_hand "nullable"
     }
     RATING {
         uuid rating_id PK

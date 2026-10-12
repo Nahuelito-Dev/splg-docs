@@ -1,0 +1,42 @@
+sequenceDiagram
+    title DSD — CU-280 Anular una Recepción de Compra · anularRecepcionDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :VoidPurchaseReceiptUseCase
+    participant COL as :Map#lt;String, RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+    participant ITR as item:ItemRecepcion
+    participant ORD as orden:OrdenDeCompra
+    participant LED as :StockLedgerService
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: anularRecepcionDeCompra(recepcionId, motivo)
+    SRV->>+COL: get(recepcionId)
+    COL-->>-SRV: recepcion
+    opt La recepción cumplía una orden de compra
+        SRV->>+REC: getOrden()
+        REC-->>-SRV: ordenDeCompra
+    end
+    SRV->>+REC: validarAnulable()
+    REC-->>-SRV: anulable
+    Note over SRV,LED: Contraasiento: ver DSD de aplicarMovimientoDeStock (CU-250).<br/>Crea el MovimientoDeStock inverso de cada movimiento del lote y mueve los saldos del depósito
+    SRV->>+LED: contraasentar(loteDeLaRecepcion)
+    alt Las llenas siguen en el depósito donde entraron
+        LED-->>SRV: loteDelContraasiento
+    else Las llenas ya no están en el depósito donde entraron
+        LED-->>SRV: conflicto
+    end
+    deactivate LED
+    loop Por cada tipo de garrafa recibido
+        SRV->>+ITR: getProducto()
+        ITR-->>-SRV: producto
+        SRV->>+PRO: restaurarCostoPromedio(costoPrevio, llenasRecibidas)
+        PRO-->>-SRV: costoPromedio
+    end
+    opt La recepción cumplía una orden de compra
+        SRV->>+ORD: devolverRecibido(items)
+        ORD-->>-SRV: ordenActualizada
+    end
+    SRV->>+REC: anular(motivo)
+    REC-->>-SRV: recepcion
+    SRV-->>-ADM: recepcion

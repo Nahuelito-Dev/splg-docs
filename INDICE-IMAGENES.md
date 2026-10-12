@@ -268,10 +268,10 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-211 | Avisar el Stock Bajo | `DSS_CU-211_Avisar-el-Stock-Bajo.png` | `DSD_CU-211_avisarStockBajo.png` |
 | CU-212 | Transferir Stock entre Depósitos | `DSS_CU-212_Transferir-Stock-entre-Depositos.png` | `DSD_CU-212_transferirStock.png` |
 | CU-213 | Registrar un Ajuste o una Merma de Stock | `DSS_CU-213_Registrar-un-Ajuste-o-una-Merma-de-Stock.png` | `DSD_CU-213_registrarAjusteDeStock.png` |
-| CU-214 | Consultar los Proveedores | `DSS_CU-214_Consultar-los-Proveedores.png` | `DSD_CU-214_consultarProveedores.png` |
-| CU-215 | Emitir una Orden de Compra | `DSS_CU-215_Emitir-una-Orden-de-Compra.png` | `DSD_CU-215_emitirOrdenDeCompra.png` · `DSD_CU-215_enviarOrdenDeCompra.png` · `DSD_CU-215_consultarOrdenesDeCompra.png` |
+| CU-214 | Consultar los Proveedores | `DSS_CU-214_Consultar-los-Proveedores.png` | `DSD_CU-214_consultarProveedores.png` · `DSD_CU-214_consultarProveedor.png` |
+| CU-215 | Emitir una Orden de Compra | `DSS_CU-215_Emitir-una-Orden-de-Compra.png` | `DSD_CU-215_emitirOrdenDeCompra.png` |
 | CU-216 | Cancelar una Orden de Compra | `DSS_CU-216_Cancelar-una-Orden-de-Compra.png` | `DSD_CU-216_cancelarOrdenDeCompra.png` |
-| CU-217 | Registrar la Recepción de una Compra | `DSS_CU-217_Registrar-la-Recepcion-de-una-Compra.png` | `DSD_CU-217_registrarRecepcionDeCompra.png` · `DSD_CU-217_anularRecepcionDeCompra.png` · `DSD_CU-217_consultarRecepcionesDeCompra.png` |
+| CU-217 | Registrar la Recepción de una Compra | `DSS_CU-217_Registrar-la-Recepcion-de-una-Compra.png` | `DSD_CU-217_registrarRecepcionDeCompra.png` |
 | CU-218 | Registrar la Carga del Camión | `DSS_CU-218_Registrar-la-Carga-del-Camion.png` | `DSD_CU-218_registrarCargaDelCamion.png` · `DSD_CU-218_reponerCargaDelCamion.png` · `DSD_CU-218_cancelarCargaDelCamion.png` · `DSD_CU-218_consultarCargasDelCamion.png` |
 | CU-219 | Registrar la Salida del Camión | `DSS_CU-219_Registrar-la-Salida-del-Camion.png` | `DSD_CU-219_registrarSalidaDelCamion.png` |
 | CU-220 | Descontar del Stock Físico lo Entregado | `DSS_CU-220_Descontar-del-Stock-Fisico-lo-Entregado.png` | `DSD_CU-220_descontarStockDeLaEntrega.png` |
@@ -334,6 +334,15 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-277 | Registrar un Ajuste de Conciliación del Vendible | `DSS_CU-277_Registrar-un-Ajuste-de-Conciliacion-del-Vendible.png` | `DSD_CU-277_registrarAjusteDeConciliacion.png` |
 | CU-278 | Reaplicar las Entregas sin Movimiento de Stock | `DSS_CU-278_Reaplicar-las-Entregas-sin-Movimiento-de-Stock.png` | `DSD_CU-278_reaplicarEntregasDeStock.png` |
 | CU-279 | Consultar el Resumen de Stock | `DSS_CU-279_Consultar-el-Resumen-de-Stock.png` | `DSD_CU-279_consultarResumenDeStock.png` |
+| CU-280 | Anular una Recepción de Compra | `DSS_CU-280_Anular-una-Recepcion-de-Compra.png` | `DSD_CU-280_anularRecepcionDeCompra.png` |
+| CU-281 | Marcar el Pago de una Recepción | `DSS_CU-281_Marcar-el-Pago-de-una-Recepcion.png` | `DSD_CU-281_marcarPagoDeRecepcion.png` |
+| CU-282 | Cerrar una Orden de Compra con Faltante | `DSS_CU-282_Cerrar-una-Orden-de-Compra-con-Faltante.png` | `DSD_CU-282_cerrarOrdenDeCompraConFaltante.png` |
+| CU-283 | Consultar las Órdenes de Compra | `DSS_CU-283_Consultar-las-Ordenes-de-Compra.png` | `DSD_CU-283_consultarOrdenesDeCompra.png` · `DSD_CU-283_consultarOrdenDeCompra.png` · `DSD_CU-283_consultarPendienteDeRecibir.png` |
+| CU-284 | Consultar las Recepciones de Compra | `DSS_CU-284_Consultar-las-Recepciones-de-Compra.png` | `DSD_CU-284_consultarRecepcionesDeCompra.png` · `DSD_CU-284_consultarRecepcionDeCompra.png` |
+| CU-285 | Consultar el Costo Promedio de las Garrafas | `DSS_CU-285_Consultar-el-Costo-Promedio-de-las-Garrafas.png` | `DSD_CU-285_consultarCostoPromedio.png` |
+| CU-286 | Consultar el Historial de Compras de un Proveedor | `DSS_CU-286_Consultar-el-Historial-de-Compras-de-un-Proveedor.png` | `DSD_CU-286_consultarHistorialDeCompras.png` |
+| CU-287 | Modificar una Orden de Compra | `DSS_CU-287_Modificar-una-Orden-de-Compra.png` | `DSD_CU-287_modificarOrdenDeCompra.png` |
+| CU-288 | Enviar una Orden de Compra | `DSS_CU-288_Enviar-una-Orden-de-Compra.png` | `DSD_CU-288_enviarOrdenDeCompra.png` |
 
 ## Módulos de gestión planificados: modelos y estados
 

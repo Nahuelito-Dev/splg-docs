@@ -445,6 +445,40 @@ CREATE TYPE public.proposal_status_enum AS ENUM (
 
 
 --
+-- Name: purchase_order_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.purchase_order_status_enum AS ENUM (
+    'draft',
+    'sent',
+    'partially_received',
+    'received',
+    'closed_short',
+    'cancelled'
+);
+
+
+--
+-- Name: purchase_payment_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.purchase_payment_status_enum AS ENUM (
+    'unpaid',
+    'paid'
+);
+
+
+--
+-- Name: purchase_receipt_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.purchase_receipt_status_enum AS ENUM (
+    'confirmed',
+    'voided'
+);
+
+
+--
 -- Name: rating_from_role_enum; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -572,6 +606,26 @@ CREATE TYPE public.stock_movement_reference_type_enum AS ENUM (
     'stock_adjustment',
     'transfer',
     'initial'
+);
+
+
+--
+-- Name: supplier_document_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.supplier_document_type_enum AS ENUM (
+    'delivery_note',
+    'invoice'
+);
+
+
+--
+-- Name: supplier_kind_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.supplier_kind_enum AS ENUM (
+    'filling_plant',
+    'other'
 );
 
 
@@ -1050,7 +1104,8 @@ CREATE TABLE public.gas_cylinder (
     "isActive" boolean DEFAULT true NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-    photo_key character varying(512)
+    photo_key character varying(512),
+    average_unit_cost numeric(12,2)
 );
 
 
@@ -1259,7 +1314,9 @@ CREATE TABLE public."order" (
     vehicle_model character varying(50),
     payment_confirmed_at timestamp with time zone,
     payment_confirmed_by uuid,
-    payment_resolution_note text
+    payment_resolution_note text,
+    payment_resolved_at timestamp with time zone,
+    payment_resolved_by uuid
 );
 
 
@@ -1343,6 +1400,96 @@ CREATE TABLE public.payment (
     metadata jsonb,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: purchase_order; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.purchase_order (
+    purchase_order_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    number integer NOT NULL,
+    supplier_id uuid NOT NULL,
+    destination_warehouse_id uuid NOT NULL,
+    status public.purchase_order_status_enum DEFAULT 'draft'::public.purchase_order_status_enum NOT NULL,
+    issued_at timestamp with time zone,
+    expected_date date,
+    total_amount numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    cancel_reason text,
+    notes text,
+    created_by_user_id uuid NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    close_reason text
+);
+
+
+--
+-- Name: purchase_order_item; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.purchase_order_item (
+    item_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    purchase_order_id uuid NOT NULL,
+    gas_cylinder_id uuid NOT NULL,
+    quantity integer NOT NULL,
+    unit_cost numeric(12,2) NOT NULL,
+    empties_to_exchange integer DEFAULT 0 NOT NULL,
+    received_quantity integer DEFAULT 0 NOT NULL,
+    CONSTRAINT "CHK_purchase_order_item_cantidad" CHECK ((quantity > 0)),
+    CONSTRAINT "CHK_purchase_order_item_costo" CHECK ((unit_cost >= (0)::numeric)),
+    CONSTRAINT "CHK_purchase_order_item_recibido" CHECK (((received_quantity >= 0) AND (received_quantity <= quantity))),
+    CONSTRAINT "CHK_purchase_order_item_vacios" CHECK ((empties_to_exchange >= 0))
+);
+
+
+--
+-- Name: purchase_receipt; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.purchase_receipt (
+    receipt_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    number integer NOT NULL,
+    supplier_id uuid NOT NULL,
+    purchase_order_id uuid,
+    warehouse_id uuid NOT NULL,
+    supplier_document_type public.supplier_document_type_enum NOT NULL,
+    supplier_document_number character varying(30) NOT NULL,
+    received_at timestamp with time zone NOT NULL,
+    received_by_user_id uuid NOT NULL,
+    total_amount numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    payment_status public.purchase_payment_status_enum DEFAULT 'unpaid'::public.purchase_payment_status_enum NOT NULL,
+    cash_movement_id uuid,
+    status public.purchase_receipt_status_enum DEFAULT 'confirmed'::public.purchase_receipt_status_enum NOT NULL,
+    void_reason text,
+    voided_at timestamp with time zone,
+    voided_by_user_id uuid,
+    batch_id uuid NOT NULL,
+    void_batch_id uuid,
+    notes text,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: purchase_receipt_item; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.purchase_receipt_item (
+    item_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    receipt_id uuid NOT NULL,
+    gas_cylinder_id uuid NOT NULL,
+    quantity_full integer NOT NULL,
+    quantity_empty_out integer DEFAULT 0 NOT NULL,
+    unit_cost numeric(12,2) NOT NULL,
+    previous_average_cost numeric(12,2),
+    previous_on_hand integer,
+    CONSTRAINT "CHK_purchase_receipt_item_cantidades" CHECK (((quantity_full >= 0) AND (quantity_empty_out >= 0) AND ((quantity_full + quantity_empty_out) > 0))),
+    CONSTRAINT "CHK_purchase_receipt_item_costo" CHECK ((unit_cost >= (0)::numeric))
 );
 
 
@@ -1577,6 +1724,28 @@ CREATE TABLE public.storage_orphan (
 
 
 --
+-- Name: supplier; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.supplier (
+    supplier_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    business_name character varying(120) NOT NULL,
+    cuit character varying(11) NOT NULL,
+    kind public.supplier_kind_enum DEFAULT 'other'::public.supplier_kind_enum NOT NULL,
+    contact_name character varying(80),
+    phone character varying(30),
+    email character varying(120),
+    address text,
+    payment_terms_days integer,
+    is_active boolean DEFAULT true NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "deletedAt" timestamp with time zone
+);
+
+
+--
 -- Name: time_slot; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1762,6 +1931,14 @@ ALTER TABLE ONLY public.stock_movement
 
 
 --
+-- Name: purchase_order_item PK_279be0517e992507405a8370859; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order_item
+    ADD CONSTRAINT "PK_279be0517e992507405a8370859" PRIMARY KEY (item_id);
+
+
+--
 -- Name: attachment PK_31d5367aee6b3ad16c69cce1cde; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1850,6 +2027,14 @@ ALTER TABLE ONLY public.gas_cylinder
 
 
 --
+-- Name: purchase_receipt_item PK_7337109e82b7ce3f2b240f3cf01; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt_item
+    ADD CONSTRAINT "PK_7337109e82b7ce3f2b240f3cf01" PRIMARY KEY (item_id);
+
+
+--
 -- Name: user PK_758b8ce7c18b9d347461b30228d; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1879,6 +2064,14 @@ ALTER TABLE ONLY public.storage_orphan
 
 ALTER TABLE ONLY public.incident
     ADD CONSTRAINT "PK_78e450f2684a57c80de36e5d411" PRIMARY KEY (incident_id);
+
+
+--
+-- Name: purchase_receipt PK_84843cd0babb399d9c6df92e785; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "PK_84843cd0babb399d9c6df92e785" PRIMARY KEY (receipt_id);
 
 
 --
@@ -2082,6 +2275,14 @@ ALTER TABLE ONLY public.document_sequence
 
 
 --
+-- Name: supplier PK_e0f8ee60663218082b83251cd85; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.supplier
+    ADD CONSTRAINT "PK_e0f8ee60663218082b83251cd85" PRIMARY KEY (supplier_id);
+
+
+--
 -- Name: claims PK_e8c55807de8dde683de34399da3; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2119,6 +2320,14 @@ ALTER TABLE ONLY public.order_item
 
 ALTER TABLE ONLY public.employee
     ADD CONSTRAINT "PK_f9d306b968b54923539b3936b03" PRIMARY KEY (employee_id);
+
+
+--
+-- Name: purchase_order PK_fab0d2c491acac8ad11df9c5c35; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "PK_fab0d2c491acac8ad11df9c5c35" PRIMARY KEY (purchase_order_id);
 
 
 --
@@ -2735,6 +2944,55 @@ CREATE INDEX "IDX_f63c2b78c253c8c92398d88fd5" ON public.job_position USING btree
 
 
 --
+-- Name: IDX_purchase_order_estado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_purchase_order_estado" ON public.purchase_order USING btree (distributor_id, status);
+
+
+--
+-- Name: IDX_purchase_order_item_garrafa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_purchase_order_item_garrafa" ON public.purchase_order_item USING btree (gas_cylinder_id);
+
+
+--
+-- Name: IDX_purchase_order_proveedor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_purchase_order_proveedor" ON public.purchase_order USING btree (supplier_id);
+
+
+--
+-- Name: IDX_purchase_receipt_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_purchase_receipt_fecha" ON public.purchase_receipt USING btree (distributor_id, received_at);
+
+
+--
+-- Name: IDX_purchase_receipt_item_garrafa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_purchase_receipt_item_garrafa" ON public.purchase_receipt_item USING btree (gas_cylinder_id);
+
+
+--
+-- Name: IDX_purchase_receipt_orden; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_purchase_receipt_orden" ON public.purchase_receipt USING btree (purchase_order_id);
+
+
+--
+-- Name: IDX_purchase_receipt_proveedor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_purchase_receipt_proveedor" ON public.purchase_receipt USING btree (supplier_id);
+
+
+--
 -- Name: IDX_stock_adjustment_fecha; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2819,6 +3077,13 @@ CREATE INDEX "IDX_stock_threshold_distributor" ON public.stock_threshold USING b
 
 
 --
+-- Name: IDX_supplier_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_supplier_distributor" ON public.supplier USING btree (distributor_id);
+
+
+--
 -- Name: IDX_user_email_lower; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2896,6 +3161,41 @@ CREATE UNIQUE INDEX "UQ_promocion_producto_cantidad" ON public.gas_cylinder_prom
 
 
 --
+-- Name: UQ_purchase_order_item_garrafa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_purchase_order_item_garrafa" ON public.purchase_order_item USING btree (purchase_order_id, gas_cylinder_id);
+
+
+--
+-- Name: UQ_purchase_order_numero; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_purchase_order_numero" ON public.purchase_order USING btree (distributor_id, number);
+
+
+--
+-- Name: UQ_purchase_receipt_documento_proveedor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_purchase_receipt_documento_proveedor" ON public.purchase_receipt USING btree (distributor_id, supplier_id, supplier_document_type, supplier_document_number);
+
+
+--
+-- Name: UQ_purchase_receipt_item_garrafa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_purchase_receipt_item_garrafa" ON public.purchase_receipt_item USING btree (receipt_id, gas_cylinder_id);
+
+
+--
+-- Name: UQ_purchase_receipt_numero; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_purchase_receipt_numero" ON public.purchase_receipt USING btree (distributor_id, number);
+
+
+--
 -- Name: UQ_role_type_vigente; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2956,6 +3256,13 @@ CREATE UNIQUE INDEX "UQ_stock_movement_pedido" ON public.stock_movement USING bt
 --
 
 CREATE UNIQUE INDEX "UQ_stock_threshold_deposito_garrafa" ON public.stock_threshold USING btree (warehouse_id, gas_cylinder_id);
+
+
+--
+-- Name: UQ_supplier_cuit_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_supplier_cuit_vigente" ON public.supplier USING btree (distributor_id, cuit) WHERE ("deletedAt" IS NULL);
 
 
 --
@@ -3147,6 +3454,14 @@ ALTER TABLE ONLY public.order_dispatch_offer
 
 
 --
+-- Name: purchase_order FK_135e724d2360c7c75d6ea398636; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "FK_135e724d2360c7c75d6ea398636" FOREIGN KEY (destination_warehouse_id) REFERENCES public.warehouse(warehouse_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: stock_movement FK_17c6850bf48d727614da1067ed2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3203,6 +3518,14 @@ ALTER TABLE ONLY public.audit_log
 
 
 --
+-- Name: purchase_order_item FK_1c77f592d2af177be137dac042a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order_item
+    ADD CONSTRAINT "FK_1c77f592d2af177be137dac042a" FOREIGN KEY (purchase_order_id) REFERENCES public.purchase_order(purchase_order_id) ON DELETE CASCADE;
+
+
+--
 -- Name: order_status_history FK_1ca7d5228cf9dc589b60243933c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3240,6 +3563,14 @@ ALTER TABLE ONLY public.vehicle_assignment
 
 ALTER TABLE ONLY public.cylinder_movement
     ADD CONSTRAINT "FK_2130833c25a6c8ef1a1bf119ed0" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE SET NULL;
+
+
+--
+-- Name: purchase_order FK_21c76d5dfdb1773bc03cc6db1f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "FK_21c76d5dfdb1773bc03cc6db1f1" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3328,6 +3659,14 @@ ALTER TABLE ONLY public.route_batch
 
 ALTER TABLE ONLY public.route_batch
     ADD CONSTRAINT "FK_3d79cb7510a1e307205011172e1" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE SET NULL;
+
+
+--
+-- Name: purchase_order FK_3dacab5c4a43cecc0e48f5edb12; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "FK_3dacab5c4a43cecc0e48f5edb12" FOREIGN KEY (supplier_id) REFERENCES public.supplier(supplier_id) ON DELETE RESTRICT;
 
 
 --
@@ -3475,6 +3814,14 @@ ALTER TABLE ONLY public.cylinder
 
 
 --
+-- Name: purchase_receipt FK_655cac7fe6e17056c412e0164d0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_655cac7fe6e17056c412e0164d0" FOREIGN KEY (warehouse_id) REFERENCES public.warehouse(warehouse_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: employee FK_6ab3ec557a640017d53ac0e0ab7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3595,11 +3942,27 @@ ALTER TABLE ONLY public.cylinder_recovery_case
 
 
 --
+-- Name: purchase_receipt_item FK_9309591adbb21562263e935c340; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt_item
+    ADD CONSTRAINT "FK_9309591adbb21562263e935c340" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: maintenance_task FK_953928a930bb8d120a8c3fe0a04; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.maintenance_task
     ADD CONSTRAINT "FK_953928a930bb8d120a8c3fe0a04" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE CASCADE;
+
+
+--
+-- Name: supplier FK_953a1f52f2a158e012b00e2627d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.supplier
+    ADD CONSTRAINT "FK_953a1f52f2a158e012b00e2627d" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -3715,11 +4078,27 @@ ALTER TABLE ONLY public.delivery
 
 
 --
+-- Name: purchase_order_item FK_a4196dc0466b5156def25a8ee12; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order_item
+    ADD CONSTRAINT "FK_a4196dc0466b5156def25a8ee12" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: order FK_a4743951fe3b697adf8ce898cf4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."order"
     ADD CONSTRAINT "FK_a4743951fe3b697adf8ce898cf4" FOREIGN KEY (time_slot_id) REFERENCES public.time_slot(time_slot_id);
+
+
+--
+-- Name: purchase_receipt FK_a5906b092909ffdf5c1a75b308b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_a5906b092909ffdf5c1a75b308b" FOREIGN KEY (supplier_id) REFERENCES public.supplier(supplier_id) ON DELETE RESTRICT;
 
 
 --
@@ -3752,6 +4131,14 @@ ALTER TABLE ONLY public.order_address_change
 
 ALTER TABLE ONLY public.claims
     ADD CONSTRAINT "FK_af79ab775a51930eb21951a3c95" FOREIGN KEY (customer_id) REFERENCES public."user"(user_id);
+
+
+--
+-- Name: purchase_receipt_item FK_b391d5552738cae006c0b9bf801; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt_item
+    ADD CONSTRAINT "FK_b391d5552738cae006c0b9bf801" FOREIGN KEY (receipt_id) REFERENCES public.purchase_receipt(receipt_id) ON DELETE CASCADE;
 
 
 --
@@ -3795,6 +4182,14 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: purchase_order FK_c00afbc3e2836ac46be7c45ca78; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "FK_c00afbc3e2836ac46be7c45ca78" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
 -- Name: audit FK_c0cfc23f3e46b9aaf5a40254330; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3816,6 +4211,14 @@ ALTER TABLE ONLY public.stock_adjustment
 
 ALTER TABLE ONLY public.car
     ADD CONSTRAINT "FK_c8d34198d86de9e96aae03b8990" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+
+
+--
+-- Name: purchase_receipt FK_c92afda2aff490f63e02ea303bb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_c92afda2aff490f63e02ea303bb" FOREIGN KEY (received_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3867,6 +4270,14 @@ ALTER TABLE ONLY public.cylinder_recovery_case
 
 
 --
+-- Name: purchase_receipt FK_d8373964f8a5c4fa998a23fc0d2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_d8373964f8a5c4fa998a23fc0d2" FOREIGN KEY (purchase_order_id) REFERENCES public.purchase_order(purchase_order_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: stock_location FK_d88f225ec362c0b11c179a4e034; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3904,6 +4315,14 @@ ALTER TABLE ONLY public.stock_movement
 
 ALTER TABLE ONLY public.vehicle_assignment
     ADD CONSTRAINT "FK_e553214db24f1d24bf12185dbb6" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE CASCADE;
+
+
+--
+-- Name: purchase_receipt FK_e5c3319a7128d4f1758e0f97d97; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_e5c3319a7128d4f1758e0f97d97" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --

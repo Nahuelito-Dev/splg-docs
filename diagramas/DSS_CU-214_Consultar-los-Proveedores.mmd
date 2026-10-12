@@ -4,7 +4,24 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: consultarProveedores(termino)
-    activate SIS
-    SIS-->>ADM: proveedores vigentes
-    deactivate SIS
+    opt listado de proveedores
+        ADM->>SIS: consultarProveedores(termino, tipo, incluirInactivos)
+        activate SIS
+        alt los filtros son válidos
+            SIS-->>ADM: proveedores de la distribuidora, con el total
+        else un filtro es inválido
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
+        end
+        deactivate SIS
+    end
+
+    opt ficha de un proveedor
+        ADM->>SIS: consultarProveedor(proveedorId)
+        activate SIS
+        alt el proveedor existe en la distribuidora
+            SIS-->>ADM: proveedor
+        else el proveedor no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end

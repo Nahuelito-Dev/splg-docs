@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-282 Cerrar una Orden de Compra con Faltante
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
+    activate SIS
+    alt la orden está parcialmente recibida
+        SIS-->>ADM: orden cerrada con faltante
+    else la orden no existe
+        SIS-->>ADM: recurso no encontrado
+    else la orden no está parcialmente recibida o falta el motivo
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS

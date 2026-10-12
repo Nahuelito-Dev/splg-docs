@@ -73,15 +73,16 @@ class Producto {
   + conciliarVendible(diferenciaEsperada: Entero): Entero
   + desactivar()
   + estaDisponibleEn(distribuidoraId: Identificador): Booleano
+  + getCostoPromedio(): Moneda
   + getPrecio(): Moneda
   + precioPara(cantidad: Entero): Moneda
   + reactivar()
-  + recalcularCostoPromedio(llenasRecibidas: Entero,\n      costoUnitario: Moneda)
+  + recalcularCostoPromedio(llenasRecibidas: Entero,\n      costoUnitario: Moneda): Moneda
   + reemplazarPromociones(promociones: Promocion[*])
   + reservar(cantidad: Entero): Entero
-  + restarStock(cantidad: Entero): Booleano
+  + restarStock(faltante: Entero): Booleano
+  + restaurarCostoPromedio(costoPrevio: Moneda,\n      llenasRecibidas: Entero): Moneda
   + restituir(cantidad: Entero)
-  + sumarStock(llenasRecibidas: Entero)
   + validarHayDiferencia()
   + validarSinRepetir(promociones: Promocion[*])
 }

@@ -1,5 +1,5 @@
 @startuml
-title SS-20 — Compras (7 casos de uso)
+title SS-20 — Compras (16 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -38,13 +38,22 @@ actor "Administrador\n(ACT-03)" as A03
 actor "Administrador General\n(ACT-05)" as A05
 
 rectangle "SS-20 Compras" {
-  usecase "CU-214\nConsultar los Proveedores" as U214 <<planificado>> #back:FFFFFF;line:55657A
-  usecase "CU-215\nEmitir una Orden de Compra" as U215 <<planificado>> #back:FFFFFF;line:55657A
-  usecase "CU-216\nCancelar una Orden de Compra" as U216 <<planificado>> #back:FFFFFF;line:55657A
-  usecase "CU-217\nRegistrar la Recepción de una\nCompra" as U217 <<planificado>> #back:FFFFFF;line:55657A
-  usecase "CU-261\nRegistrar un Proveedor" as U261 <<planificado>> #back:FFFFFF;line:55657A
-  usecase "CU-262\nModificar un Proveedor" as U262 <<planificado>> #back:FFFFFF;line:55657A
-  usecase "CU-263\nDar de Baja un Proveedor" as U263 <<planificado>> #back:FFFFFF;line:55657A
+  usecase "CU-214\nConsultar los Proveedores" as U214 #back:FFFFFF;line:55657A
+  usecase "CU-215\nEmitir una Orden de Compra" as U215 #back:FFFFFF;line:55657A
+  usecase "CU-216\nCancelar una Orden de Compra" as U216 #back:FFFFFF;line:55657A
+  usecase "CU-217\nRegistrar la Recepción de una\nCompra" as U217 #back:FFFFFF;line:55657A
+  usecase "CU-261\nRegistrar un Proveedor" as U261 #back:FFFFFF;line:55657A
+  usecase "CU-262\nModificar un Proveedor" as U262 #back:FFFFFF;line:55657A
+  usecase "CU-263\nDar de Baja un Proveedor" as U263 #back:FFFFFF;line:55657A
+  usecase "CU-280\nAnular una Recepción de Compra" as U280 #back:FFFFFF;line:55657A
+  usecase "CU-281\nMarcar el Pago de una\nRecepción" as U281 #back:FFFFFF;line:55657A
+  usecase "CU-282\nCerrar una Orden de Compra con\nFaltante" as U282 #back:FFFFFF;line:55657A
+  usecase "CU-283\nConsultar las Órdenes de\nCompra" as U283 #back:FFFFFF;line:55657A
+  usecase "CU-284\nConsultar las Recepciones de\nCompra" as U284 #back:FFFFFF;line:55657A
+  usecase "CU-285\nConsultar el Costo Promedio de\nlas Garrafas" as U285 #back:FFFFFF;line:55657A
+  usecase "CU-286\nConsultar el Historial de\nCompras de un Proveedor" as U286 #back:FFFFFF;line:55657A
+  usecase "CU-287\nModificar una Orden de Compra" as U287 #back:FFFFFF;line:55657A
+  usecase "CU-288\nEnviar una Orden de Compra" as U288 #back:FFFFFF;line:55657A
 }
 
 rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS #back:FFFFFF;line:6B7683;line.dashed {
@@ -58,11 +67,29 @@ A03 -[#8C4A9E]- U217
 A03 -[#8C4A9E]- U261
 A03 -[#8C4A9E]- U262
 A03 -[#8C4A9E]- U263
+A03 -[#8C4A9E]- U280
+A03 -[#8C4A9E]- U281
+A03 -[#8C4A9E]- U282
+A03 -[#8C4A9E]- U283
+A03 -[#8C4A9E]- U284
+A03 -[#8C4A9E]- U285
+A03 -[#8C4A9E]- U286
+A03 -[#8C4A9E]- U287
+A03 -[#8C4A9E]- U288
 A05 -right-|> A03
 
 ' escribir sobre algo exige leerlo antes: la busqueda entra por <<include>>
 U262 ..> U214 : <<include>>
 U263 ..> U214 : <<include>>
+U215 ..> U214 : <<include>>
+U286 ..> U214 : <<include>>
+U287 ..> U283 : <<include>>
+U288 ..> U283 : <<include>>
+U216 ..> U283 : <<include>>
+U282 ..> U283 : <<include>>
+U280 ..> U284 : <<include>>
+U281 ..> U284 : <<include>>
 U217 ..> U250 : <<include>>
+U280 ..> U250 : <<include>>
 
 @enduml

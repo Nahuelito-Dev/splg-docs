@@ -2327,6 +2327,11 @@
     "nulo": false
    },
    {
+    "nombre": "averageUnitCost",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
     "nombre": "description",
     "tipo": "string",
     "nulo": true
@@ -3208,6 +3213,477 @@
     "destino": "Distributor",
     "tipo": "ManyToOne",
     "nulo": true
+   }
+  ]
+ },
+ "PurchaseOrderItem": {
+  "kind": "entity",
+  "file": "purchase/entities/purchase-order-item.entity.ts",
+  "tabla": "purchase_order_item",
+  "atributos": [
+   {
+    "nombre": "itemId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "purchaseOrderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "quantity",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "unitCost",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "emptiesToExchange",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "receivedQuantity",
+    "tipo": "number",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "purchaseOrder",
+    "destino": "PurchaseOrder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "PurchaseOrder": {
+  "kind": "entity",
+  "file": "purchase/entities/purchase-order.entity.ts",
+  "tabla": "purchase_order",
+  "atributos": [
+   {
+    "nombre": "purchaseOrderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "number",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "supplierId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "destinationWarehouseId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "PurchaseOrderStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "issuedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "expectedDate",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "totalAmount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "cancelReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "closeReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "supplier",
+    "destino": "Supplier",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "destinationWarehouse",
+    "destino": "Warehouse",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "items",
+    "destino": "PurchaseOrderItem",
+    "tipo": "OneToMany",
+    "nulo": false
+   }
+  ]
+ },
+ "PurchaseReceiptItem": {
+  "kind": "entity",
+  "file": "purchase/entities/purchase-receipt-item.entity.ts",
+  "tabla": "purchase_receipt_item",
+  "atributos": [
+   {
+    "nombre": "itemId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "receiptId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "quantityFull",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "quantityEmptyOut",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "previousAverageCost",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "previousOnHand",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "unitCost",
+    "tipo": "number",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "receipt",
+    "destino": "PurchaseReceipt",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "PurchaseReceipt": {
+  "kind": "entity",
+  "file": "purchase/entities/purchase-receipt.entity.ts",
+  "tabla": "purchase_receipt",
+  "atributos": [
+   {
+    "nombre": "receiptId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "number",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "supplierId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "purchaseOrderId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "warehouseId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "supplierDocumentType",
+    "tipo": "SupplierDocumentType",
+    "nulo": false
+   },
+   {
+    "nombre": "supplierDocumentNumber",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "receivedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "receivedByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "totalAmount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "paymentStatus",
+    "tipo": "PaymentStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "cashMovementId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "status",
+    "tipo": "PurchaseReceiptStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "voidReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "voidedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "voidedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "batchId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "voidBatchId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "supplier",
+    "destino": "Supplier",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "purchaseOrder",
+    "destino": "PurchaseOrder",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "warehouse",
+    "destino": "Warehouse",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "receivedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "items",
+    "destino": "PurchaseReceiptItem",
+    "tipo": "OneToMany",
+    "nulo": false
+   }
+  ]
+ },
+ "Supplier": {
+  "kind": "entity",
+  "file": "purchase/entities/supplier.entity.ts",
+  "tabla": "supplier",
+  "atributos": [
+   {
+    "nombre": "supplierId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "businessName",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "cuit",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "kind",
+    "tipo": "SupplierKind",
+    "nulo": false
+   },
+   {
+    "nombre": "contactName",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "phone",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "email",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "address",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "paymentTermsDays",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "isActive",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
    }
   ]
  },
@@ -9048,6 +9524,22 @@
     "abstracto": false
    },
    {
+    "nombre": "costoPromedio",
+    "parametros": "manager: EntityManager, distributorId: string, gasCylinderId: string",
+    "retorno": "Promise<number | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "fijarCostoPromedio",
+    "parametros": "manager: EntityManager, distributorId: string, gasCylinderId: string, costo: number | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "bloquearEnOrden",
     "parametros": "manager: EntityManager, gasCylinderIds: string[]",
     "retorno": "Promise<void>",
@@ -11566,6 +12058,702 @@
   ],
   "estereotipo": "controller"
  },
+ "PurchaseOrderService": {
+  "kind": "service",
+  "file": "purchase/application/purchase-order.service.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "dto: CreatePurchaseOrderDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "crear",
+    "parametros": "dto: CreatePurchaseOrderDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdatePurchaseOrderDto, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "editar",
+    "parametros": "id: string, dto: UpdatePurchaseOrderDto, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "send",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cancel",
+    "parametros": "id: string, dto: CancelPurchaseOrderDto, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "closeShort",
+    "parametros": "id: string, dto: CloseShortPurchaseOrderDto, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<PurchaseOrder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cambiarEstado",
+    "parametros": "id: string, distributorId: string, hacia: PurchaseOrderStatus, aplicar: (orden: PurchaseOrder) => void, verificar?: (manager: EntityManager, orden: PurchaseOrder) => Promise<void>",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recepcionesConfirmadas",
+    "parametros": "manager: EntityManager, orden: PurchaseOrder",
+    "retorno": "Promise<number>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearGarrafas",
+    "parametros": "manager: EntityManager, distributorId: string, items: PurchaseOrderItemInputDto[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "insertarRenglones",
+    "parametros": "manager: EntityManager, purchaseOrderId: string, items: PurchaseOrderItemInputDto[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "SupplierService",
+   "DocumentSequenceService",
+   "StockLocationService",
+   "WarehouseService"
+  ],
+  "estereotipo": null
+ },
+ "PurchaseQueryService": {
+  "kind": "service",
+  "file": "purchase/application/purchase-query.service.ts",
+  "metodos": [
+   {
+    "nombre": "ordenes",
+    "parametros": "distributorId: string, query: QueryPurchaseOrderDto",
+    "retorno": "Promise<PurchaseOrderPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "orden",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<PurchaseOrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pendiente",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<PurchaseOrderPendingDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recepciones",
+    "parametros": "distributorId: string, query: QueryPurchaseReceiptDto",
+    "retorno": "Promise<PurchaseReceiptPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recepcion",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<PurchaseReceiptResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "historialDeProveedor",
+    "parametros": "supplierId: string, distributorId: string, query: QuerySupplierHistoryDto",
+    "retorno": "Promise<SupplierHistoryDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "costosPromedio",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<AverageCostDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "renglonesDeOrden",
+    "parametros": "orderId: string",
+    "retorno": "Promise<PurchaseOrderItemResponseDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "paginaDeRecepciones",
+    "parametros": "where: string[], params: unknown[], page: number | undefined, limitSolicitado: number | undefined",
+    "retorno": "Promise<PurchaseReceiptPageDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pagina",
+    "parametros": "page = 1, limit = 10",
+    "retorno": "",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "filtroDeFechas",
+    "parametros": "where: string[], params: unknown[], columna: string, from: string | undefined, to: string | undefined",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aResumenDeOrden",
+    "parametros": "f: FilaDeOrden",
+    "retorno": "PurchaseOrderSummaryDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aResumenDeRecepcion",
+    "parametros": "f: FilaDeRecepcion",
+    "retorno": "PurchaseReceiptSummaryDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "PurchaseReceiptService": {
+  "kind": "service",
+  "file": "purchase/application/purchase-receipt.service.ts",
+  "metodos": [
+   {
+    "nombre": "cambiarEstadoDePago",
+    "parametros": "id: string, paymentStatus: PaymentStatus, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "ReceivePurchaseUseCase": {
+  "kind": "usecase",
+  "file": "purchase/application/receive-purchase.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "dto: CreatePurchaseReceiptDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recibir",
+    "parametros": "dto: CreatePurchaseReceiptDto, distributorId: string, actorUserId: string, receivedAt: Date, defaultWarehouseId: string | undefined",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "fechaDeRecepcion",
+    "parametros": "valor: string | undefined",
+    "retorno": "Date",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargarOrden",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "proveedorDe",
+    "parametros": "dto: CreatePurchaseReceiptDto, orden: PurchaseOrder | null",
+    "retorno": "string",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "renglones",
+    "parametros": "dto: CreatePurchaseReceiptDto, itemsDeOrden: PurchaseOrderItem[] | null",
+    "retorno": "Renglon[]",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "validarContraOrden",
+    "parametros": "manager: EntityManager, { orden, items }: { orden: PurchaseOrder; items: PurchaseOrderItem[] }, renglones: Renglon[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tipoDe",
+    "parametros": "manager: EntityManager, gasCylinderId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarDocumentoLibre",
+    "parametros": "manager: EntityManager, distributorId: string, supplierId: string, tipo: SupplierDocumentType, numero: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aplicarAlLedger",
+    "parametros": "manager: EntityManager, distributorId: string, actorUserId: string, receiptId: string, locationId: string, renglones: Renglon[], receivedAt: Date",
+    "retorno": null,
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "actualizarCostos",
+    "parametros": "manager: EntityManager, distributorId: string, renglones: Renglon[]",
+    "retorno": "Promise<Map<string,",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "actualizarOrden",
+    "parametros": "manager: EntityManager, { orden, items }: { orden: PurchaseOrder; items: PurchaseOrderItem[] }, renglones: Renglon[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "PurchaseOrderService",
+   "SupplierService",
+   "StockLocationService",
+   "WarehouseService",
+   "GasCylinderService",
+   "StockOnHandService",
+   "DocumentSequenceService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "SupplierService": {
+  "kind": "service",
+  "file": "purchase/application/supplier.service.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "dto: CreateSupplierDto, distributorId: string",
+    "retorno": "Promise<Supplier>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QuerySupplierDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string, conBajas = false",
+    "retorno": "Promise<Supplier>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateSupplierDto, distributorId: string",
+    "retorno": "Promise<Supplier>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearUsable",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarCuitLibre",
+    "parametros": "cuit: string, distributorId: string, excluirId: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "VoidPurchaseReceiptUseCase": {
+  "kind": "usecase",
+  "file": "purchase/application/void-purchase-receipt.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "id: string, dto: VoidPurchaseReceiptDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearRecepcion",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<PurchaseReceipt>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "validarAnulable",
+    "parametros": "recepcion: PurchaseReceipt",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contraasentar",
+    "parametros": "manager: EntityManager, recepcion: PurchaseReceipt, motivo: string, distributorId: string, actorUserId: string, items: PurchaseReceiptItem[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "explicarFaltante",
+    "parametros": "manager: EntityManager, recepcion: PurchaseReceipt, items: PurchaseReceiptItem[], distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recalcularCostos",
+    "parametros": "manager: EntityManager, distributorId: string, recepcion: PurchaseReceipt, items: PurchaseReceiptItem[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "StockLedgerPort",
+   "PurchaseOrderService",
+   "GasCylinderService",
+   "StockOnHandService"
+  ],
+  "estereotipo": "usecase"
+ },
+ "PurchaseOrderController": {
+  "kind": "controller",
+  "file": "purchase/presentation/purchase-order.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreatePurchaseOrderDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<PurchaseOrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ordenes",
+    "parametros": "@Query() query: QueryPurchaseOrderDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseOrderPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "orden",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseOrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pendiente",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseOrderPendingDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdatePurchaseOrderDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseOrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "send",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseOrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cancel",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CancelPurchaseOrderDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseOrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "closeShort",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CloseShortPurchaseOrderDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseOrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "PurchaseOrderService",
+   "PurchaseQueryService"
+  ],
+  "estereotipo": "controller"
+ },
+ "PurchaseReceiptController": {
+  "kind": "controller",
+  "file": "purchase/presentation/purchase-receipt.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreatePurchaseReceiptDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<PurchaseReceiptResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recepciones",
+    "parametros": "@Query() query: QueryPurchaseReceiptDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseReceiptPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "costos",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<AverageCostDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recepcion",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseReceiptResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "void",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: VoidPurchaseReceiptDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<PurchaseReceiptResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "paymentStatus",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdatePaymentStatusDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PurchaseReceiptResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ReceivePurchaseUseCase",
+   "VoidPurchaseReceiptUseCase",
+   "PurchaseReceiptService",
+   "PurchaseQueryService"
+  ],
+  "estereotipo": "controller"
+ },
+ "SupplierController": {
+  "kind": "controller",
+  "file": "purchase/presentation/supplier.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QuerySupplierDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<SupplierPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateSupplierDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<SupplierResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<SupplierResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "historial",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: QuerySupplierHistoryDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<SupplierHistoryDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateSupplierDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<SupplierResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "SupplierService",
+   "PurchaseQueryService"
+  ],
+  "estereotipo": "controller"
+ },
+ "SupplierMapper": {
+  "kind": "mapper",
+  "file": "purchase/presentation/supplier.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "s: Supplier",
+    "retorno": "SupplierResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
  "RatingController": {
   "kind": "controller",
   "file": "rating/rating.controller.ts",
@@ -12804,6 +13992,30 @@
    "Repository",
    "CarService"
   ],
+  "estereotipo": null
+ },
+ "StockOnHandService": {
+  "kind": "service",
+  "file": "stock/application/stock-on-hand.service.ts",
+  "metodos": [
+   {
+    "nombre": "llenasTotales",
+    "parametros": "manager: EntityManager, distributorId: string, gasCylinderId: string",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "dondeEstanLasLlenas",
+    "parametros": "manager: EntityManager, distributorId: string, gasCylinderId: string",
+    "retorno": "Promise<ExistenciaEnUbicacion[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
   "estereotipo": null
  },
  "StockQueryService": {

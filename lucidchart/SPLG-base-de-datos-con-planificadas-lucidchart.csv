@@ -1,7 +1,7 @@
 postgresql,splg_lucid_tmp,public,admin,admin_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,admin,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
-postgresql,splg_lucid_tmp,public,admin,user_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,admin,user_id,3,uuid,,FOREIGN KEY,public,user,user_id
+postgresql,splg_lucid_tmp,public,admin,user_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,admin,createdAt,4,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,attachment,attachment_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,attachment,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
@@ -74,8 +74,8 @@ postgresql,splg_lucid_tmp,public,cart,distributor_id,3,uuid,,FOREIGN KEY,public,
 postgresql,splg_lucid_tmp,public,cart,distributor_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,cart,updated_at,4,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,cart_item,cart_item_id,1,uuid,,PRIMARY KEY,,,
-postgresql,splg_lucid_tmp,public,cart_item,cart_id,2,uuid,,FOREIGN KEY,public,cart,cart_id
 postgresql,splg_lucid_tmp,public,cart_item,cart_id,2,uuid,,UNIQUE,,,
+postgresql,splg_lucid_tmp,public,cart_item,cart_id,2,uuid,,FOREIGN KEY,public,cart,cart_id
 postgresql,splg_lucid_tmp,public,cart_item,gas_cylinder_id,3,uuid,,FOREIGN KEY,public,gas_cylinder,gas_cylinder_id
 postgresql,splg_lucid_tmp,public,cart_item,gas_cylinder_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,cart_item,quantity,4,integer,,,,,
@@ -111,8 +111,8 @@ postgresql,splg_lucid_tmp,public,cash_movement,occurred_at,9,timestamp with time
 postgresql,splg_lucid_tmp,public,cash_movement,description,10,character varying,255,,,,
 postgresql,splg_lucid_tmp,public,cash_movement,reference_type,11,character varying,32,,,,
 postgresql,splg_lucid_tmp,public,cash_movement,reference_id,12,uuid,,,,,
-postgresql,splg_lucid_tmp,public,cash_movement,reverses_movement_id,13,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,cash_movement,reverses_movement_id,13,uuid,,FOREIGN KEY,public,cash_movement,movement_id
+postgresql,splg_lucid_tmp,public,cash_movement,reverses_movement_id,13,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,cash_movement,created_by_user_id,14,uuid,,FOREIGN KEY,public,user,user_id
 postgresql,splg_lucid_tmp,public,cash_movement,createdAt,15,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,cash_session,session_id,1,uuid,,PRIMARY KEY,,,
@@ -305,8 +305,8 @@ postgresql,splg_lucid_tmp,public,distributor,createdAt,11,timestamp with time zo
 postgresql,splg_lucid_tmp,public,distributor,updatedAt,12,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,distributor,deletedAt,13,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,distributor,logo_key,14,character varying,512,,,,
-postgresql,splg_lucid_tmp,public,document_sequence,distributor_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,document_sequence,distributor_id,1,uuid,,FOREIGN KEY,public,distributor,distributor_id
+postgresql,splg_lucid_tmp,public,document_sequence,distributor_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,document_sequence,doc_type,2,character varying,40,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,document_sequence,last_number,3,integer,,,,,
 postgresql,splg_lucid_tmp,public,driver_liquidation,liquidation_id,1,uuid,,PRIMARY KEY,,,
@@ -434,8 +434,8 @@ postgresql,splg_lucid_tmp,public,fuel_load,createdAt,19,timestamp with time zone
 postgresql,splg_lucid_tmp,public,fuel_load,updatedAt,20,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,fuel_load,deletedAt,21,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,gas_cylinder,gas_cylinder_id,1,uuid,,PRIMARY KEY,,,
-postgresql,splg_lucid_tmp,public,gas_cylinder,distributor_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,gas_cylinder,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
+postgresql,splg_lucid_tmp,public,gas_cylinder,distributor_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,gas_cylinder,type,3,character varying,50,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,gas_cylinder,weight,4,numeric,,,,,
 postgresql,splg_lucid_tmp,public,gas_cylinder,price,5,numeric,,,,,
@@ -574,7 +574,9 @@ postgresql,splg_lucid_tmp,public,order,vehicle_model,39,character varying,50,,,,
 postgresql,splg_lucid_tmp,public,order,payment_confirmed_at,40,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,order,payment_confirmed_by,41,uuid,,,,,
 postgresql,splg_lucid_tmp,public,order,payment_resolution_note,42,text,,,,,
-postgresql,splg_lucid_tmp,public,order,express_surcharge_amount,43,numeric,,,,,
+postgresql,splg_lucid_tmp,public,order,payment_resolved_at,43,timestamp with time zone,,,,,
+postgresql,splg_lucid_tmp,public,order,payment_resolved_by,44,uuid,,,,,
+postgresql,splg_lucid_tmp,public,order,express_surcharge_amount,45,numeric,,,,,
 postgresql,splg_lucid_tmp,public,order_address_change,change_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,order_address_change,order_id,2,uuid,,FOREIGN KEY,public,order,order_id
 postgresql,splg_lucid_tmp,public,order_address_change,from_address_id,3,uuid,,FOREIGN KEY,public,user_address,address_id
@@ -633,11 +635,12 @@ postgresql,splg_lucid_tmp,public,purchase_order,notes,11,text,,,,,
 postgresql,splg_lucid_tmp,public,purchase_order,created_by_user_id,12,uuid,,FOREIGN KEY,public,user,user_id
 postgresql,splg_lucid_tmp,public,purchase_order,createdAt,13,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,purchase_order,updatedAt,14,timestamp with time zone,,,,,
+postgresql,splg_lucid_tmp,public,purchase_order,close_reason,15,text,,,,,
 postgresql,splg_lucid_tmp,public,purchase_order_item,item_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,purchase_order_item,purchase_order_id,2,uuid,,FOREIGN KEY,public,purchase_order,purchase_order_id
 postgresql,splg_lucid_tmp,public,purchase_order_item,purchase_order_id,2,uuid,,UNIQUE,,,
-postgresql,splg_lucid_tmp,public,purchase_order_item,gas_cylinder_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,purchase_order_item,gas_cylinder_id,3,uuid,,FOREIGN KEY,public,gas_cylinder,gas_cylinder_id
+postgresql,splg_lucid_tmp,public,purchase_order_item,gas_cylinder_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,purchase_order_item,quantity,4,integer,,,,,
 postgresql,splg_lucid_tmp,public,purchase_order_item,unit_cost,5,numeric,,,,,
 postgresql,splg_lucid_tmp,public,purchase_order_item,empties_to_exchange,6,integer,,,,,
@@ -651,7 +654,7 @@ postgresql,splg_lucid_tmp,public,purchase_receipt,supplier_id,4,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt,supplier_id,4,uuid,,FOREIGN KEY,public,supplier,supplier_id
 postgresql,splg_lucid_tmp,public,purchase_receipt,purchase_order_id,5,uuid,,FOREIGN KEY,public,purchase_order,purchase_order_id
 postgresql,splg_lucid_tmp,public,purchase_receipt,warehouse_id,6,uuid,,FOREIGN KEY,public,warehouse,warehouse_id
-postgresql,splg_lucid_tmp,public,purchase_receipt,supplier_document_type,7,character varying,32,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,supplier_document_type,7,character varying,32,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt,supplier_document_number,8,character varying,30,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt,received_at,9,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt,received_by_user_id,10,uuid,,FOREIGN KEY,public,user,user_id
@@ -660,14 +663,23 @@ postgresql,splg_lucid_tmp,public,purchase_receipt,payment_status,12,character va
 postgresql,splg_lucid_tmp,public,purchase_receipt,cash_movement_id,13,uuid,,,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt,status,14,character varying,32,,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt,void_reason,15,text,,,,,
-postgresql,splg_lucid_tmp,public,purchase_receipt,createdAt,16,timestamp with time zone,,,,,
-postgresql,splg_lucid_tmp,public,purchase_receipt,updatedAt,17,timestamp with time zone,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,voided_at,16,timestamp with time zone,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,voided_by_user_id,17,uuid,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,batch_id,18,uuid,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,void_batch_id,19,uuid,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,notes,20,text,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,createdAt,21,timestamp with time zone,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt,updatedAt,22,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt_item,item_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt_item,receipt_id,2,uuid,,FOREIGN KEY,public,purchase_receipt,receipt_id
+postgresql,splg_lucid_tmp,public,purchase_receipt_item,receipt_id,2,uuid,,UNIQUE,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt_item,gas_cylinder_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt_item,gas_cylinder_id,3,uuid,,FOREIGN KEY,public,gas_cylinder,gas_cylinder_id
 postgresql,splg_lucid_tmp,public,purchase_receipt_item,quantity_full,4,integer,,,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt_item,quantity_empty_out,5,integer,,,,,
 postgresql,splg_lucid_tmp,public,purchase_receipt_item,unit_cost,6,numeric,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt_item,previous_average_cost,7,numeric,,,,,
+postgresql,splg_lucid_tmp,public,purchase_receipt_item,previous_on_hand,8,integer,,,,,
 postgresql,splg_lucid_tmp,public,rating,rating_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,rating,order_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,rating,order_id,2,uuid,,FOREIGN KEY,public,order,order_id
@@ -713,12 +725,12 @@ postgresql,splg_lucid_tmp,public,route_batch_offer,responded_at,6,timestamp with
 postgresql,splg_lucid_tmp,public,route_batch_stop,stop_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,route_batch_stop,batch_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,route_batch_stop,batch_id,2,uuid,,FOREIGN KEY,public,route_batch,batch_id
-postgresql,splg_lucid_tmp,public,route_batch_stop,order_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,route_batch_stop,order_id,3,uuid,,FOREIGN KEY,public,order,order_id
+postgresql,splg_lucid_tmp,public,route_batch_stop,order_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,route_batch_stop,sequence,4,integer,,,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment,adjustment_id,1,uuid,,PRIMARY KEY,,,
-postgresql,splg_lucid_tmp,public,stock_adjustment,distributor_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
+postgresql,splg_lucid_tmp,public,stock_adjustment,distributor_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment,number,3,integer,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment,location_id,4,uuid,,FOREIGN KEY,public,stock_location,location_id
 postgresql,splg_lucid_tmp,public,stock_adjustment,reason,5,character varying,32,,,,
@@ -727,16 +739,16 @@ postgresql,splg_lucid_tmp,public,stock_adjustment,batch_id,7,uuid,,,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment,created_by_user_id,8,uuid,,FOREIGN KEY,public,user,user_id
 postgresql,splg_lucid_tmp,public,stock_adjustment,createdAt,9,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment_item,item_id,1,uuid,,PRIMARY KEY,,,
-postgresql,splg_lucid_tmp,public,stock_adjustment_item,adjustment_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment_item,adjustment_id,2,uuid,,FOREIGN KEY,public,stock_adjustment,adjustment_id
+postgresql,splg_lucid_tmp,public,stock_adjustment_item,adjustment_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment_item,gas_cylinder_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment_item,gas_cylinder_id,3,uuid,,FOREIGN KEY,public,gas_cylinder,gas_cylinder_id
 postgresql,splg_lucid_tmp,public,stock_adjustment_item,condition,4,character varying,32,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_adjustment_item,quantity_delta,5,integer,,,,,
 postgresql,splg_lucid_tmp,public,stock_balance,balance_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,stock_balance,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
-postgresql,splg_lucid_tmp,public,stock_balance,location_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_balance,location_id,3,uuid,,FOREIGN KEY,public,stock_location,location_id
+postgresql,splg_lucid_tmp,public,stock_balance,location_id,3,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_balance,gas_cylinder_id,4,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_balance,gas_cylinder_id,4,uuid,,FOREIGN KEY,public,gas_cylinder,gas_cylinder_id
 postgresql,splg_lucid_tmp,public,stock_balance,condition,5,character varying,32,UNIQUE,,,
@@ -745,10 +757,10 @@ postgresql,splg_lucid_tmp,public,stock_balance,updatedAt,7,timestamp with time z
 postgresql,splg_lucid_tmp,public,stock_location,location_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,stock_location,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
 postgresql,splg_lucid_tmp,public,stock_location,kind,3,character varying,32,,,,
-postgresql,splg_lucid_tmp,public,stock_location,warehouse_id,4,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_location,warehouse_id,4,uuid,,FOREIGN KEY,public,warehouse,warehouse_id
-postgresql,splg_lucid_tmp,public,stock_location,car_id,5,uuid,,FOREIGN KEY,public,car,car_id
+postgresql,splg_lucid_tmp,public,stock_location,warehouse_id,4,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,stock_location,car_id,5,uuid,,UNIQUE,,,
+postgresql,splg_lucid_tmp,public,stock_location,car_id,5,uuid,,FOREIGN KEY,public,car,car_id
 postgresql,splg_lucid_tmp,public,stock_location,createdAt,6,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,stock_movement,movement_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,stock_movement,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
@@ -767,8 +779,8 @@ postgresql,splg_lucid_tmp,public,stock_movement,notes,14,character varying,300,,
 postgresql,splg_lucid_tmp,public,stock_movement,actor_user_id,15,uuid,,FOREIGN KEY,public,user,user_id
 postgresql,splg_lucid_tmp,public,stock_movement,occurred_at,16,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,stock_movement,createdAt,17,timestamp with time zone,,,,,
-postgresql,splg_lucid_tmp,public,stock_reconciliation_alert,distributor_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,stock_reconciliation_alert,distributor_id,1,uuid,,FOREIGN KEY,public,distributor,distributor_id
+postgresql,splg_lucid_tmp,public,stock_reconciliation_alert,distributor_id,1,uuid,,PRIMARY KEY,,,
 postgresql,splg_lucid_tmp,public,stock_reconciliation_alert,signature,2,character varying,64,,,,
 postgresql,splg_lucid_tmp,public,stock_reconciliation_alert,alerted_at,3,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,stock_threshold,threshold_id,1,uuid,,PRIMARY KEY,,,
@@ -814,8 +826,8 @@ postgresql,splg_lucid_tmp,public,time_slot,isActive,7,boolean,,,,,
 postgresql,splg_lucid_tmp,public,time_slot,createdAt,8,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,time_slot,updatedAt,9,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,tire,tire_id,1,uuid,,PRIMARY KEY,,,
-postgresql,splg_lucid_tmp,public,tire,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
 postgresql,splg_lucid_tmp,public,tire,distributor_id,2,uuid,,UNIQUE,,,
+postgresql,splg_lucid_tmp,public,tire,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
 postgresql,splg_lucid_tmp,public,tire,car_id,3,uuid,,FOREIGN KEY,public,car,car_id
 postgresql,splg_lucid_tmp,public,tire,serial,4,character varying,40,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,tire,brand,5,character varying,60,,,,
@@ -857,8 +869,8 @@ postgresql,splg_lucid_tmp,public,traffic_fine,alerted_at,18,timestamp with time 
 postgresql,splg_lucid_tmp,public,traffic_fine,createdAt,19,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,traffic_fine,updatedAt,20,timestamp with time zone,,,,,
 postgresql,splg_lucid_tmp,public,truck_load,load_id,1,uuid,,PRIMARY KEY,,,
-postgresql,splg_lucid_tmp,public,truck_load,distributor_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,truck_load,distributor_id,2,uuid,,FOREIGN KEY,public,distributor,distributor_id
+postgresql,splg_lucid_tmp,public,truck_load,distributor_id,2,uuid,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,truck_load,number,3,integer,,UNIQUE,,,
 postgresql,splg_lucid_tmp,public,truck_load,car_id,4,uuid,,FOREIGN KEY,public,car,car_id
 postgresql,splg_lucid_tmp,public,truck_load,delivery_id,5,uuid,,FOREIGN KEY,public,delivery,delivery_id

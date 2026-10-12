@@ -45,6 +45,7 @@
 | 13 | 2026-10-07 | Los casos de uso que agrupaban varias operaciones de un ABM se parten en un caso de uso por operación, con su propia asociación del actor y con la consulta como «include» de la modificación y de la baja: CU-251 a CU-272 (22 casos nuevos; CU-004, CU-022, CU-032, CU-033, CU-040, CU-050, CU-083, CU-089, CU-176, CU-207, CU-214, CU-225 y CU-230 pasan a nombrar su primera operación) y catálogo de 278 casos de uso. | Nahuel Wagner |
 | 14 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
 | 15 | 2026-10-11 | Stock físico construido en el backend: depósitos, ubicaciones, saldos, libro de movimientos, conteo inicial, ajustes, transferencias, mínimos y conciliación (CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279) pasan a «Implementado», con sus diagramas, contratos y tablas verificados contra el código y la API; se suman siete casos de uso (CU-273 a CU-279) y CU-020, CU-038 y CU-079 quedan conectados al descuento del stock físico. Las compras y la carga del camión siguen planificadas. | Nahuel Wagner |
+| 16 | 2026-10-11 | Compras construidas en el backend: proveedores, órdenes de compra, recepciones y costo promedio (CU-214 a CU-217 y CU-261 a CU-263) pasan a «Implementado», con sus diagramas, contratos y tablas verificados contra el código y la API; se suman nueve casos de uso (CU-280 a CU-288): anular una recepción, marcar su pago, cerrar una orden con faltante, modificar y enviar una orden, y las consultas de órdenes, recepciones, costo promedio e historial de un proveedor, que salían de CU-215 y CU-217. La carga del camión sigue planificada. | Nahuel Wagner |
 
 ---
 
@@ -142,7 +143,7 @@ sistema que tocan y con sus dependencias.
 | **I-10** Módulo M2: flota | CU-105 | L+ | El planificador propone una ventana de taller al chofer y escala si se agotan las alternativas. |
 | **I-11** Personal y legajos | CU-176 a CU-194, CU-246 y CU-255 a CU-257 | L+ | El administrador lleva el legajo de cada persona de la distribuidora, su asistencia y sus licencias, y un chofer con la documentación vencida o con licencia aprobada queda fuera del despacho. Construido: puestos, legajos, egreso y cuenta de acceso; pendiente: lo demás. |
 | **I-12** Flota ampliada | CU-195 a CU-206 y CU-247 | L | El administrador y el chofer registran las cargas de combustible, las multas y los siniestros de cada vehículo, y el administrador ve el costo y el rendimiento de cada unidad y de toda la flota. |
-| **I-13** Stock y compras | CU-207 a CU-224, CU-248 a CU-250, CU-258 a CU-263 y CU-273 a CU-279; CU-038 (ajuste de stock) y CU-020 (descuento del stock al entregar) | L+ | El administrador ve el stock físico por depósito y por camión, compra a una planta de llenado y recibe el remito, carga el camión, lo rinde al volver y el sistema concilia el stock vendible con el físico. Construido: el stock físico, sus ajustes, transferencias, mínimos y conciliación, y el descuento al entregar; pendiente: las compras y la carga del camión. |
+| **I-13** Stock y compras | CU-207 a CU-224, CU-248 a CU-250, CU-258 a CU-263 y CU-273 a CU-288; CU-038 (ajuste de stock) y CU-020 (descuento del stock al entregar) | L+ | El administrador ve el stock físico por depósito y por camión, compra a una planta de llenado y recibe el remito, carga el camión, lo rinde al volver y el sistema concilia el stock vendible con el físico. Construido: el stock físico, sus ajustes, transferencias, mínimos y conciliación, el descuento al entregar y las compras (proveedores, órdenes, recepciones y costo promedio); pendiente: la carga del camión. |
 | **I-14** Caja y rendición | CU-225 a CU-245, CU-264 y CU-265 | L+ | El administrador abre y cierra la caja con arqueo, el chofer rinde su cobranza del día y el administrador la aprueba; un cliente compra a cuenta corriente y paga después; las entregas devengan comisiones que se liquidan y se pagan desde una caja. |
 
 El tamaño es relativo, para una persona, e incluye el backend, el panel, las aplicaciones y la prueba
@@ -152,7 +153,7 @@ L+ más de siete.
 **Iteración I-11: Personal y legajos.** A diferencia de las diez anteriores, que cierran lo que el sistema ya tenía especificado, la I-11 incorpora un módulo de gestión de la distribuidora: el personal. Son los veintitrés casos de uso CU-176 a CU-194, CU-246 y CU-255 a CU-257 del subsistema SS-19, con sus cinco artefactos. **Está construida en parte:** los once casos de los puestos de trabajo y de los legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257, con las tablas `job_position` y `employee`) pasaron a «Implementado», con tres de ellos (CU-178, CU-180 y CU-181) todavía con un tramo planificado; quedan planificados los doce restantes y su modelo de datos: las tablas `employee_attendance` y `employee_leave`, que usan la tabla de adjuntos genéricos `attachment` (ya implementada), y las columnas nuevas de `maintenance_plan` y `maintenance_task` que hacen que la documentación con vencimiento del personal (licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART) reutilice los planes, las tareas, los adjuntos, el aviso diario y el bloqueo de despacho de la flota. No hay roles nuevos: el personal administrativo que entra al panel es un administrador, y ayudantes, depósito y vendedores son legajos sin cuenta. Se estima en 12 jornadas de una persona (tres de tablas y alta unificada del chofer, de dos a tres de documentación y bloqueo de despacho, dos de asistencia y licencias, de tres a cuatro de panel, más las pruebas contra el sistema en funcionamiento), depende de los adjuntos genéricos y de la numeración del legajo, y queda postergada a una iteración posterior a la defensa, con fechas estimadas del 21/10/2026 al 05/11/2026. Modifica casos existentes sin reescribirlos: el alta de un chofer (CU-003, CU-031) crea además su legajo en la misma transacción (construido); la licencia de conducir (CU-138) pasa a tener como dueño al empleado; el tablero y el aviso de vencimientos de la flota (CU-139, CU-142) suman a las personas; y el bloqueo de despacho (CU-012, CU-013 y CU-015, que incluyen el caso nuevo CU-246) considera también las licencias aprobadas y el estado del legajo.
 **Iteración I-12: Flota ampliada.** Suma los doce casos CU-195 a CU-206 y el caso CU-247 (Reactivar un Vehículo) al subsistema SS-07, con sus cinco artefactos y su modelo de datos planificado: las tablas `fuel_load`, `traffic_fine`, `vehicle_accident`, `tire` y `tire_event`, y las columnas nuevas de `car`. El chofer y el administrador registran las cargas de combustible, las multas y los siniestros de cada vehículo, y el administrador ve el costo y el rendimiento de cada unidad y de toda la flota; la funcionalidad opcional de neumáticos es lo primero que se posterga. Depende del legajo del personal (I-11) y de los adjuntos genéricos, tiene tamaño L y queda postergada a una iteración posterior a la defensa.
 
-**Iteración I-13: Stock y compras.** Incorpora el stock físico por depósito y por camión, las compras a plantas de llenado y la carga y rendición del camión: los treinta y un casos CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-279 (subsistemas SS-08 ampliado y SS-20 Compras) y los tres casos incluidos CU-248 (verificar la carga de camión abierta), CU-249 (configurar ese control) y CU-250 (aplicar un movimiento de stock), con catorce tablas nuevas. **Está construida en parte:** el stock físico —veinte casos de uso (CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279), con las tablas `warehouse`, `stock_location`, `stock_balance`, `stock_movement`, `stock_adjustment`, `stock_adjustment_item`, `stock_threshold` y `stock_reconciliation_alert`— pasó a «Implementado» el 11/10/2026, con CU-020, CU-038 y CU-079 ya conectados a él; quedan planificadas las compras (CU-214 a CU-217 y CU-261 a CU-263), la carga y la rendición del camión (CU-218, CU-219 y CU-221 a CU-223) y el control de carga abierta del despacho (CU-248 y CU-249), con siete tablas nuevas. Modifica casos existentes sin reescribirlos: el ajuste de stock (CU-038) y el descuento del camión al entregar (CU-020), y el despacho (CU-012, CU-013 y CU-015) puede exigir una carga abierta. Depende de la numeración correlativa por distribuidora y del evento de pedido entregado, que ya están implementados; tiene tamaño L+ y queda postergada a una iteración posterior a la defensa.
+**Iteración I-13: Stock y compras.** Incorpora el stock físico por depósito y por camión, las compras a plantas de llenado y la carga y rendición del camión: los cuarenta casos CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-288 (subsistemas SS-08 ampliado y SS-20 Compras) y los tres casos incluidos CU-248 (verificar la carga de camión abierta), CU-249 (configurar ese control) y CU-250 (aplicar un movimiento de stock), con catorce tablas nuevas. **Está construida en parte:** el stock físico —veinte casos de uso (CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279), con las tablas `warehouse`, `stock_location`, `stock_balance`, `stock_movement`, `stock_adjustment`, `stock_adjustment_item`, `stock_threshold` y `stock_reconciliation_alert`— pasó a «Implementado» el 11/10/2026, con CU-020, CU-038 y CU-079 ya conectados a él, y las compras —dieciséis casos de uso (CU-214 a CU-217, CU-261 a CU-263 y CU-280 a CU-288), con las tablas `supplier`, `purchase_order`, `purchase_order_item`, `purchase_receipt` y `purchase_receipt_item`— pasaron a «Implementado» el mismo día; quedan planificadas la carga y la rendición del camión (CU-218, CU-219 y CU-221 a CU-223) y el control de carga abierta del despacho (CU-248 y CU-249), con dos tablas nuevas. Modifica casos existentes sin reescribirlos: el ajuste de stock (CU-038) y el descuento del camión al entregar (CU-020), y el despacho (CU-012, CU-013 y CU-015) puede exigir una carga abierta. Depende de la numeración correlativa por distribuidora y del evento de pedido entregado, que ya están implementados; tiene tamaño L+ y queda postergada a una iteración posterior a la defensa.
 
 **Módulo de caja y rendición (I-14).** A los casos planificados se suman los veintitrés casos del subsistema SS-21 Caja, Rendiciones y Cuentas Corrientes (CU-225 a CU-245, CU-264 y CU-265), que no tienen construcción previa y se agrupan en una única iteración, I-14. Depende de la tanda de cimientos de los módulos de empresa (numeración correlativa por distribuidora, adjuntos genéricos y evento de pedido entregado) y del vehículo en uso del chofer; las comisiones por entrega y los cargos a cuenta se asientan al entregar el pedido. Queda postergada a una iteración posterior a la defensa, con fechas estimadas del 14/12/2026 al 12/01/2027, después de las iteraciones I-11 a I-13 porque las comisiones se anclan en el legajo del personal. Su tamaño es L+ (más de siete jornadas): catorce tablas nuevas, nueve servicios, dos procesos temporales y un tablero en el panel.
 
@@ -304,7 +305,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-> Lámina anexa: los 278 casos de uso uno por uno, agrupados en los paquetes de cada
+> Lámina anexa: los 287 casos de uso uno por uno, agrupados en los paquetes de cada
 > subsistema, con las relaciones `«include»` y `«extend»` entre ellos. Por su tamaño se
 > entrega también en formato vectorial, que permite ampliarla sin pérdida de legibilidad.
 
@@ -2517,7 +2518,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 ---
 
 **Código:** CU-250 | **Caso de Uso:** Aplicar un Movimiento de Stock  
-**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274 y CU-276  
+**Actor/es:** Ninguno directo: es un caso incluido, lo inician CU-212, CU-213, CU-217, CU-218, CU-220, CU-222, CU-274, CU-276 y CU-280  
 **Subsistema:** SS-08 Gestión de Productos e Inventario  
 **Calificación:** Crítico  
 **Descripción:** Cada vez que el stock físico cambia, el sistema asienta los movimientos con su origen y su destino y mueve los saldos de las ubicaciones, sin dejar ninguno negativo y con un orden de bloqueos fijo.
@@ -2530,10 +2531,9 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-20 Compras  
 **Calificación:** Importante  
-**Descripción:** El administrador consulta los proveedores de la distribuidora, principalmente las plantas de llenado a las que se compra gas, con o sin un término de búsqueda. Endpoint: `GET /suppliers`.
+**Descripción:** El administrador consulta los proveedores de la distribuidora, principalmente las plantas de llenado a las que se compra gas, con búsqueda por término y filtro por tipo, o abre la ficha de uno. Endpoints: `GET /suppliers` y `GET /suppliers/:id`.
 
 ---
-
 
 **Código:** CU-261 | **Caso de Uso:** Registrar un Proveedor  
 **Actor/es:** Administrador (ACT-03)  
@@ -2543,21 +2543,27 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 
 ---
 
-
 **Código:** CU-262 | **Caso de Uso:** Modificar un Proveedor  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-20 Compras  
 **Calificación:** Importante  
-**Descripción:** El administrador modifica los datos de un proveedor de la distribuidora. Endpoint: `PATCH /suppliers/:id`.
+**Descripción:** El administrador corrige los datos de un proveedor de la distribuidora o lo activa y desactiva. Endpoint: `PATCH /suppliers/:id`.
 
 ---
-
 
 **Código:** CU-263 | **Caso de Uso:** Dar de Baja un Proveedor  
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-20 Compras  
 **Calificación:** Importante  
-**Descripción:** El administrador da de baja a un proveedor de la distribuidora; la baja es lógica y conserva el historial de compras. Endpoint: `DELETE /suppliers/:id`.
+**Descripción:** El administrador da de baja a un proveedor de la distribuidora, que deja de listarse pero conserva su historial. Endpoint: `DELETE /suppliers/:id`.
+
+---
+
+**Código:** CU-286 | **Caso de Uso:** Consultar el Historial de Compras de un Proveedor  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador ve lo que se le compró a un proveedor: cuántas recepciones, cuántas garrafas llenas y qué monto, con el listado de remitos, en un rango de fechas. Endpoint: `GET /suppliers/:id/purchase-history`.
 
 ---
 
@@ -2565,7 +2571,23 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-20 Compras  
 **Calificación:** Importante  
-**Descripción:** El administrador prepara una orden de compra a un proveedor, con los tipos de garrafa, cantidades, costos y los envases vacíos que se entregan en canje, la envía y consulta las órdenes emitidas. Endpoints: `POST /purchase-orders`, `PATCH /purchase-orders/:id/send` y `GET /purchase-orders`.
+**Descripción:** El administrador emite una orden de compra a un proveedor para un depósito destino, con los tipos de garrafa, las cantidades, el costo esperado y los envases vacíos que entrega en canje. La orden nace en borrador. Endpoint: `POST /purchase-orders`.
+
+---
+
+**Código:** CU-287 | **Caso de Uso:** Modificar una Orden de Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Secundario  
+**Descripción:** El administrador corrige una orden de compra que todavía está en borrador: el proveedor, el depósito, la fecha esperada, las notas o los renglones. Endpoint: `PATCH /purchase-orders/:id`.
+
+---
+
+**Código:** CU-288 | **Caso de Uso:** Enviar una Orden de Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador confirma una orden de compra en borrador y la pasa a enviada, con el instante de emisión. Endpoint: `PATCH /purchase-orders/:id/send`.
 
 ---
 
@@ -2573,7 +2595,23 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-20 Compras  
 **Calificación:** Secundario  
-**Descripción:** El administrador cancela una orden de compra en borrador o enviada que no se va a cumplir, con el motivo. Endpoint: `PATCH /purchase-orders/:id/cancel`.
+**Descripción:** El administrador cancela una orden de compra en borrador o enviada que no va a cumplirse, con el motivo. Endpoint: `PATCH /purchase-orders/:id/cancel`.
+
+---
+
+**Código:** CU-282 | **Caso de Uso:** Cerrar una Orden de Compra con Faltante  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador da por cerrada una orden parcialmente recibida porque lo que falta ya no llega, con el motivo. Endpoint: `PATCH /purchase-orders/:id/close-short`.
+
+---
+
+**Código:** CU-283 | **Caso de Uso:** Consultar las Órdenes de Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta las órdenes de compra por estado, proveedor y fecha, abre una con sus renglones y recepciones, o ve lo que falta recibir. Endpoints: `GET /purchase-orders`, `GET /purchase-orders/:id` y `GET /purchase-orders/:id/pending`.
 
 ---
 
@@ -2581,7 +2619,39 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03)  
 **Subsistema:** SS-20 Compras  
 **Calificación:** Crítico  
-**Descripción:** El administrador registra el remito de ingreso de una compra: lo recibido de la planta, los vacíos que ésta se llevó y el costo, y el stock del depósito sube. También puede anular una recepción y consultarlas. Endpoints: `POST /purchase-receipts`, `PATCH /purchase-receipts/:id/void` y `GET /purchase-receipts`.
+**Descripción:** El administrador registra el remito de ingreso de una compra, con o sin orden: las garrafas llenas recibidas, los vacíos que se llevó la planta y el costo, y el stock del depósito sube. Endpoint: `POST /purchase-receipts`.
+
+---
+
+**Código:** CU-280 | **Caso de Uso:** Anular una Recepción de Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador anula una recepción confirmada, con el motivo: el sistema deshace sus movimientos de stock con un contraasiento, recalcula el costo promedio y devuelve lo recibido a la orden. Endpoint: `PATCH /purchase-receipts/:id/void`.
+
+---
+
+**Código:** CU-281 | **Caso de Uso:** Marcar el Pago de una Recepción  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Secundario  
+**Descripción:** El administrador marca una recepción de compra como pagada o impaga. Es sólo una marca: no mueve dinero. Endpoint: `PATCH /purchase-receipts/:id/payment-status`.
+
+---
+
+**Código:** CU-284 | **Caso de Uso:** Consultar las Recepciones de Compra  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta las recepciones de compra por proveedor, orden, estado de pago, estado y fecha, o abre una con sus renglones. Endpoints: `GET /purchase-receipts` y `GET /purchase-receipts/:id`.
+
+---
+
+**Código:** CU-285 | **Caso de Uso:** Consultar el Costo Promedio de las Garrafas  
+**Actor/es:** Administrador (ACT-03)  
+**Subsistema:** SS-20 Compras  
+**Calificación:** Importante  
+**Descripción:** El administrador consulta el costo promedio ponderado de cada tipo de garrafa, el costo de la última compra y las llenas que hay hoy. Endpoint: `GET /purchase-receipts/average-costs`.
 
 ---
 
@@ -2801,10 +2871,10 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-211 Avisar el Stock Bajo | SS-08 | ACT-04 | Importante | Implementado |
 | CU-212 Transferir Stock entre Depósitos | SS-08 | ACT-03 | Secundario | Implementado |
 | CU-213 Registrar un Ajuste o una Merma de Stock | SS-08 | ACT-03 | Importante | Implementado |
-| CU-214 Consultar los Proveedores | SS-20 | ACT-03 | Importante | Planificado (I-13) |
-| CU-215 Emitir una Orden de Compra | SS-20 | ACT-03 | Importante | Planificado (I-13) |
-| CU-216 Cancelar una Orden de Compra | SS-20 | ACT-03 | Secundario | Planificado (I-13) |
-| CU-217 Registrar la Recepción de una Compra | SS-20 | ACT-03 | Crítico | Planificado (I-13) |
+| CU-214 Consultar los Proveedores | SS-20 | ACT-03 | Importante | Implementado |
+| CU-215 Emitir una Orden de Compra | SS-20 | ACT-03 | Importante | Implementado |
+| CU-216 Cancelar una Orden de Compra | SS-20 | ACT-03 | Secundario | Implementado |
+| CU-217 Registrar la Recepción de una Compra | SS-20 | ACT-03 | Crítico | Implementado |
 | CU-218 Registrar la Carga del Camión | SS-08 | ACT-03 | Crítico | Planificado (I-13) |
 | CU-219 Registrar la Salida del Camión | SS-08 | ACT-02, ACT-03 | Importante | Planificado (I-13) |
 | CU-220 Descontar del Stock Físico lo Entregado | SS-08 | — | Crítico | Implementado |
@@ -2848,9 +2918,9 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-258 Registrar un Depósito | SS-08 | ACT-03 | Importante | Implementado |
 | CU-259 Modificar un Depósito | SS-08 | ACT-03 | Importante | Implementado |
 | CU-260 Dar de Baja un Depósito | SS-08 | ACT-03 | Importante | Implementado |
-| CU-261 Registrar un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
-| CU-262 Modificar un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
-| CU-263 Dar de Baja un Proveedor | SS-20 | ACT-03 | Importante | Planificado (I-13) |
+| CU-261 Registrar un Proveedor | SS-20 | ACT-03 | Importante | Implementado |
+| CU-262 Modificar un Proveedor | SS-20 | ACT-03 | Importante | Implementado |
+| CU-263 Dar de Baja un Proveedor | SS-20 | ACT-03 | Importante | Implementado |
 | CU-264 Modificar una Caja | SS-21 | ACT-03 | Importante | Planificado (I-14) |
 | CU-265 Modificar una Categoría de Ingresos y Gastos | SS-21 | ACT-03 | Secundario | Planificado (I-14) |
 | CU-266 Desactivar la Disponibilidad | SS-04 | ACT-02 | Crítico | Implementado |
@@ -2867,16 +2937,25 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-277 Registrar un Ajuste de Conciliación del Vendible | SS-08 | ACT-03 | Importante | Implementado |
 | CU-278 Reaplicar las Entregas sin Movimiento de Stock | SS-08 | ACT-03 | Importante | Implementado |
 | CU-279 Consultar el Resumen de Stock | SS-08 | ACT-03 | Importante | Implementado |
+| CU-280 Anular una Recepción de Compra | SS-20 | ACT-03 | Importante | Implementado |
+| CU-281 Marcar el Pago de una Recepción | SS-20 | ACT-03 | Secundario | Implementado |
+| CU-282 Cerrar una Orden de Compra con Faltante | SS-20 | ACT-03 | Importante | Implementado |
+| CU-283 Consultar las Órdenes de Compra | SS-20 | ACT-03 | Importante | Implementado |
+| CU-284 Consultar las Recepciones de Compra | SS-20 | ACT-03 | Importante | Implementado |
+| CU-285 Consultar el Costo Promedio de las Garrafas | SS-20 | ACT-03 | Importante | Implementado |
+| CU-286 Consultar el Historial de Compras de un Proveedor | SS-20 | ACT-03 | Importante | Implementado |
+| CU-287 Modificar una Orden de Compra | SS-20 | ACT-03 | Secundario | Implementado |
+| CU-288 Enviar una Orden de Compra | SS-20 | ACT-03 | Importante | Implementado |
 
 ### Resumen de Calificación
 
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
 | **Crítico** | 64 | CU-001, CU-002, CU-003, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-021, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-098, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-153, CU-171, CU-177, CU-181, CU-183, CU-184, CU-197, CU-208, CU-217, CU-218, CU-220, CU-222, CU-227, CU-228, CU-232, CU-233, CU-236, CU-237, CU-250, CU-266, CU-271 |
-| **Importante** | 166 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272, CU-273, CU-274, CU-275, CU-277, CU-278, CU-279 |
-| **Secundario** | 46 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-244, CU-249, CU-265, CU-270, CU-276 |
+| **Importante** | 173 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-084, CU-085, CU-086, CU-087, CU-089, CU-090, CU-092, CU-095, CU-096, CU-097, CU-103, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272, CU-273, CU-274, CU-275, CU-277, CU-278, CU-279, CU-280, CU-282, CU-283, CU-284, CU-285, CU-286, CU-288 |
+| **Secundario** | 48 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-091, CU-094, CU-099, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-244, CU-249, CU-265, CU-270, CU-276, CU-281, CU-287 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **278** | CU-001 a CU-279, sin CU-093 |
+| **Total** | **287** | CU-001 a CU-288, sin CU-093 |
 
 > **CU-093 (Validar o Invalidar Cliente) se dio de baja el 26/09/2026.** Los clientes se registran y compran sin aprobación previa: la marca no condicionaba ningún pedido y sólo sumaba trabajo al administrador. El número queda reservado para no renumerar los demás casos. Los choferes siguen validándose (CU-032).
 

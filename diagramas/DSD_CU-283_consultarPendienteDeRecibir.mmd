@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-283 Consultar las Órdenes de Compra · consultarPendienteDeRecibir
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+    participant ITO as item:ItemOrdenDeCompra
+
+    ADM->>+SRV: consultarPendienteDeRecibir(ordenId)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: getPendiente()
+    loop Por cada renglón de la orden
+        ORD->>ITO: getPendiente()
+    end
+    ORD-->>-SRV: pendiente
+    SRV-->>-ADM: pendiente

@@ -94,11 +94,11 @@ entity AjusteDeStock
 entity ItemAjusteDeStock
 entity CargaDeCamion <<propuesto>>
 entity ItemCarga <<propuesto>>
-entity Proveedor <<propuesto>>
-entity OrdenDeCompra <<propuesto>>
-entity ItemOrdenDeCompra <<propuesto>>
-entity RecepcionDeCompra <<propuesto>>
-entity ItemRecepcion <<propuesto>>
+entity Proveedor
+entity OrdenDeCompra
+entity ItemOrdenDeCompra
+entity RecepcionDeCompra
+entity ItemRecepcion
 entity Caja <<propuesto>>
 entity SesionDeCaja <<propuesto>>
 entity CategoriaDeCaja <<propuesto>>
@@ -140,8 +140,8 @@ Distribuidora ||--o{ Empleado : emplea >
 Empleado }o--|| PuestoDeTrabajo : ocupa >
 Producto ||--o{ Promocion : ofrece >
 Distribuidora ||--o{ ConfiguracionModulo : parametriza >
-Proveedor ||--o{ OrdenDeCompra : recibe >
 OrdenDeCompra }o--|| Deposito : se destina a >
+Proveedor ||--o{ OrdenDeCompra : recibe >
 UmbralDeStock }o--|| Producto : controla >
 Deposito ||--o{ UmbralDeStock : fija >
 Cliente ||--o{ DireccionEntrega : registra >
@@ -169,10 +169,10 @@ Cliente ||--o{ Pedido : realiza >
 Chofer |o--o{ Pedido : entrega >
 Distribuidora ||--o{ Pedido : gestiona >
 Pedido }o--o| FranjaHoraria : se programa en >
-OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
 ItemOrdenDeCompra }o--|| Producto : corresponde a >
-Proveedor ||--o{ RecepcionDeCompra : entrega >
+OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
 OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
+Proveedor ||--o{ RecepcionDeCompra : entrega >
 RecepcionDeCompra }o--|| Deposito : ingresa en >
 Chofer |o--o{ LoteRecorrido : acepta >
 Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
@@ -210,8 +210,8 @@ ItemPedido }o--|| Producto : corresponde a >
 Pedido ||--|{ ItemPedido : contiene >
 Pedido ||--o{ CambioEstadoPedido : registra >
 Pedido ||--o{ Pago : se salda con >
-RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
 ItemRecepcion }o--|| Producto : corresponde a >
+RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
 Pedido ||--o{ Calificacion : recibe [0..2] >
 InvitacionRecompra }o--o| DireccionEntrega : sugiere entregar en >
 InvitacionRecompra |o--o| Pedido : se convierte en >

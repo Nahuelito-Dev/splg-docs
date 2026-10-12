@@ -302,6 +302,34 @@ package "Stock físico y carga del camión" {
     {field} //gas_cylinder_id// : uuid * <<FK>>
   }
 }
+package "Compras" {
+  entity "supplier" as e_supplier {
+    {field} **supplier_id** : uuid * <<PK>>
+  }
+  entity "purchase_order" as e_purchase_order {
+    {field} **purchase_order_id** : uuid * <<PK>>
+    {field} //supplier_id// : uuid * <<FK>>
+    {field} //destination_warehouse_id// : uuid * <<FK>>
+    {field} //created_by_user_id// : uuid * <<FK>>
+  }
+  entity "purchase_order_item" as e_purchase_order_item {
+    {field} **item_id** : uuid * <<PK>>
+    {field} //purchase_order_id// : uuid * <<FK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+  entity "purchase_receipt" as e_purchase_receipt {
+    {field} **receipt_id** : uuid * <<PK>>
+    {field} //supplier_id// : uuid * <<FK>>
+    {field} //purchase_order_id// : uuid <<FK>>
+    {field} //warehouse_id// : uuid * <<FK>>
+    {field} //received_by_user_id// : uuid * <<FK>>
+  }
+  entity "purchase_receipt_item" as e_purchase_receipt_item {
+    {field} **item_id** : uuid * <<PK>>
+    {field} //receipt_id// : uuid * <<FK>>
+    {field} //gas_cylinder_id// : uuid * <<FK>>
+  }
+}
 package "Tablas técnicas" {
   entity "storage_orphan" as e_storage_orphan {
     {field} **orphan_id** : uuid * <<PK>>
@@ -330,6 +358,9 @@ e_job_position ||--o{ e_employee
 e_user |o--o{ e_employee
 e_gas_cylinder ||--o{ e_gas_cylinder_promotion
 e_user |o--o{ e_module_config
+e_user ||--o{ e_purchase_order
+e_warehouse ||--o{ e_purchase_order
+e_supplier ||--o{ e_purchase_order
 e_gas_cylinder ||--o{ e_stock_threshold
 e_warehouse ||--o{ e_stock_threshold
 e_user ||--o{ e_user_address
@@ -344,6 +375,12 @@ e_coverage_zone |o--o{ e_order
 e_user ||--o{ e_order
 e_delivery |o--o{ e_order
 e_time_slot |o--o{ e_order
+e_gas_cylinder ||--o{ e_purchase_order_item
+e_purchase_order ||--o{ e_purchase_order_item
+e_purchase_order |o--o{ e_purchase_receipt
+e_user ||--o{ e_purchase_receipt
+e_supplier ||--o{ e_purchase_receipt
+e_warehouse ||--o{ e_purchase_receipt
 e_delivery |o--o{ e_route_batch
 e_car |o--o| e_stock_location
 e_warehouse |o--o| e_stock_location
@@ -374,6 +411,8 @@ e_order ||--o{ e_order_item
 e_user |o--o{ e_order_status_history
 e_order ||--o{ e_order_status_history
 e_order ||--o{ e_payment
+e_gas_cylinder ||--o{ e_purchase_receipt_item
+e_purchase_receipt ||--o{ e_purchase_receipt_item
 e_user ||--o{ e_rating
 e_user |o--o{ e_rating
 e_order ||--o{ e_rating
@@ -406,8 +445,8 @@ e_gas_cylinder ||--o{ e_stock_adjustment_item
 e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice
 
 legend bottom right
-  56 tablas implementadas y 89 relaciones dibujadas.
-  Además, 38 tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.
+  61 tablas implementadas y 100 relaciones dibujadas.
+  Además, 41 tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.
   Cada tabla muestra sólo su PK y sus FK; las columnas completas están en la lámina de su contexto
   y en el diccionario de datos. * = obligatoria.
 endlegend

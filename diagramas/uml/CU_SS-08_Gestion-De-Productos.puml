@@ -86,7 +86,8 @@ rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS 
   usecase "CU-015\nAceptar Pedido\n(SS-03)" as U015 #back:FFFFFF;line:6B7683
   usecase "CU-020\nConfirmar Entrega\n(SS-04)" as U020 #back:FFFFFF;line:6B7683
   usecase "CU-079\nConfirmar Entrega Escaneando\nel QR (cliente)\n(SS-04)" as U079 #back:FFFFFF;line:6B7683
-  usecase "CU-217\nRegistrar la Recepción de una\nCompra\n(SS-20)" as U217 <<planificado>> #back:FFFFFF;line:6B7683
+  usecase "CU-217\nRegistrar la Recepción de una\nCompra\n(SS-20)" as U217 #back:FFFFFF;line:6B7683
+  usecase "CU-280\nAnular una Recepción de Compra\n(SS-20)" as U280 #back:FFFFFF;line:6B7683
 }
 
 A01 -[#1F6F8B]- U041
@@ -156,6 +157,7 @@ U277 ..> U224 : <<include>>
 U278 ..> U224 : <<include>>
 U278 ..> U220 : <<include>>
 U217 ..> U250 : <<include>>
+U280 ..> U250 : <<include>>
 U012 ..> U248 : <<include>>
 U013 ..> U248 : <<include>>
 U015 ..> U248 : <<include>>

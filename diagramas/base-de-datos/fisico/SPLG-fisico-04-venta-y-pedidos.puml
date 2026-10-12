@@ -114,6 +114,8 @@ entity "order" as e_order {
   {field} payment_confirmed_at : timestamptz
   {field} payment_confirmed_by : uuid
   {field} payment_resolution_note : text
+  {field} payment_resolved_at : timestamptz
+  {field} payment_resolved_by : uuid
   {field} <color:#1F5E8C>express_surcharge_amount : numeric(12,2) * <<propuesto>></color>
 }
 entity "order_address_change" as e_order_address_change {

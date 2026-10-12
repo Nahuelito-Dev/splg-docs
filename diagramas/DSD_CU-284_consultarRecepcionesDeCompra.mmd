@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-284 Consultar las Recepciones de Compra · consultarRecepcionesDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant RECS as :List#lt;RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+
+    ADM->>+SRV: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+    SRV->>+RECS: buscar(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+    loop Por cada recepción del filtro
+        RECS->>REC: getTotal()
+    end
+    RECS-->>-SRV: recepciones
+    SRV-->>-ADM: recepciones

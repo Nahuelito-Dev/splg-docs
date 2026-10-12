@@ -11,5 +11,6 @@ sequenceDiagram
     COL-->>-SRV: ordenDeCompra
     SRV->>+ORD: cancelar(motivo)
     ORD->>ORD: validarSinRecepciones()
+    ORD->>ORD: validarTransicion(cancelada)
     ORD-->>-SRV: ordenDeCompra
     SRV-->>-ADM: ordenDeCompra

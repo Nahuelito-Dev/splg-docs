@@ -252,12 +252,12 @@ ItemAjusteDeStock "0..*" -- "1" Producto
 Usuario "1" -- "0..*" AjusteDeStock
 MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock
 Proveedor "1" --> "0..*" OrdenDeCompra
-OrdenDeCompra "0..*" <-- "1" Deposito
+OrdenDeCompra "0..*" -- "1" Deposito
 OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra
 ItemOrdenDeCompra "0..*" -- "1" Producto
-Proveedor "1" -- "0..*" RecepcionDeCompra
+Proveedor "1" --> "0..*" RecepcionDeCompra
 OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra
-RecepcionDeCompra "0..*" <-- "1" Deposito
+RecepcionDeCompra "0..*" -- "1" Deposito
 RecepcionDeCompra "1" *--> "1..*" ItemRecepcion
 ItemRecepcion "0..*" -- "1" Producto
 Usuario "1" -- "0..*" RecepcionDeCompra

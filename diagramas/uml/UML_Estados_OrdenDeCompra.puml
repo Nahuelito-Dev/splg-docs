@@ -21,9 +21,11 @@ state "Borrador\n(draft)" as draft
 state "Enviada\n(sent)" as sent
 state "Parcialmente recibida\n(partially_received)" as partial
 state "Recibida\n(received)" as received
+state "Cerrada con faltante\n(closed_short)" as closedshort
 state "Cancelada\n(cancelled)" as cancelled
 
 [*] --> draft : emitirOrdenDeCompra()
+draft --> draft : modificarOrdenDeCompra()
 draft --> sent : enviarOrdenDeCompra()
 draft --> cancelled : cancelarOrdenDeCompra(motivo)
 sent --> cancelled : cancelarOrdenDeCompra(motivo)
@@ -32,16 +34,19 @@ sent --> received : registrarRecepcionDeCompra()\n[lo recibido alcanza lo pedido
 partial : registrarRecepcionDeCompra() [todavía falta recibir]
 partial : anularRecepcionDeCompra() [quedan otras recepciones]
 partial --> received : registrarRecepcionDeCompra()\n[lo recibido alcanza lo pedido]
+partial --> closedshort : cerrarOrdenDeCompraConFaltante(motivo)
 received --> partial : anularRecepcionDeCompra()\n[quedan otras recepciones]
 received --> sent : anularRecepcionDeCompra()\n[era la única recepción]
 partial --> sent : anularRecepcionDeCompra()\n[era la única recepción]
 cancelled --> [*]
+closedshort --> [*]
 
 note bottom of cancelled
-  Una orden con recepciones no se cancela: primero se anula lo recibido.
-  «Recibida» no es final: anular una recepción la devuelve a
-  «Parcialmente recibida» o «Enviada». La compra sin orden no pasa por
-  este diagrama. Una orden enviada cuya fecha esperada venció sigue
-  enviada; sólo figura en el correo diario.
+  Una orden con recepciones confirmadas, aunque sean sólo de vacíos, no
+  se cancela: primero se anulan o se cierra con faltante. «Recibida» no es
+  final: anular una recepción la devuelve a «Parcialmente recibida» o
+  «Enviada». Anular una recepción de una orden cancelada o cerrada con
+  faltante no le cambia el estado. La compra sin orden no pasa por este
+  diagrama. Sólo se edita en borrador.
 end note
 @enduml

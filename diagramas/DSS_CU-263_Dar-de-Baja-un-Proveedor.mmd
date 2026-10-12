@@ -6,5 +6,11 @@ sequenceDiagram
 
     ADM->>SIS: darDeBajaProveedor(proveedorId)
     activate SIS
-    SIS-->>ADM: baja confirmada
+    alt el proveedor no tiene órdenes abiertas
+        SIS-->>ADM: baja confirmada
+    else el proveedor no existe
+        SIS-->>ADM: recurso no encontrado
+    else el proveedor tiene órdenes abiertas
+        SIS-->>ADM: conflicto, con la cantidad de órdenes
+    end
     deactivate SIS

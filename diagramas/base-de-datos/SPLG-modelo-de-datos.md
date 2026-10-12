@@ -1,6 +1,6 @@
 # Modelo de Datos — SPLG
 
-56 tablas y 127 claves foráneas, leídas de la base en ejecución.
+61 tablas y 141 claves foráneas, leídas de la base en ejecución.
 
 | Sección | Qué contiene |
 |---|---|
@@ -453,6 +453,7 @@ Restricciones `CHECK`:
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `photo_key` | varchar(512) | no |  |  |  | Key de la imagen del producto en el bucket (`gascylinders/{distribuidora}/{producto}/{uuid}.{ext}`). |
+| `average_unit_cost` | numeric(12,2) | no |  |  |  | Costo promedio ponderado de las llenas compradas; lo mantiene la recepción de compras. |
 
 Claves únicas compuestas: (`distributor_id`, `type`).
 
@@ -654,9 +655,11 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `vehicle_patent` | varchar(20) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `vehicle_brand` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `vehicle_model` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `payment_confirmed_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `payment_confirmed_by` | uuid | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_confirmed_at` | timestamptz | no |  |  |  | Cuándo se confirmó el cobro (pago recibido por el chofer o resolución del admin). |
+| `payment_confirmed_by` | uuid | no |  |  |  | Usuario que confirmó el cobro (el chofer, o el admin que resolvió el impago). |
 | `payment_resolution_note` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_resolved_at` | timestamptz | no |  |  |  | Motivo con el que el admin resolvió un impago. |
+| `payment_resolved_by` | uuid | no |  |  |  | Admin que resolvió el impago. |
 
 Índices (además de la clave primaria):
 - `IDX_3adf34152c77fdb4e8f7346c5f`: `CREATE UNIQUE INDEX "IDX_3adf34152c77fdb4e8f7346c5f" ON public."order" USING btree ("gatewayPaymentId") WHERE ("gatewayPaymentId" IS NOT NULL)`
@@ -748,6 +751,116 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 - `IDX_05b8eaefed5471a643ee578c74`: `CREATE UNIQUE INDEX "IDX_05b8eaefed5471a643ee578c74" ON public.payment USING btree (gateway_payment_id) WHERE (gateway_payment_id IS NOT NULL)`
 - `IDX_0cdad15fa39dd1ebace139096f`: `CREATE INDEX "IDX_0cdad15fa39dd1ebace139096f" ON public.payment USING btree (distributor_id)`
 - `IDX_f5221735ace059250daac9d980`: `CREATE INDEX "IDX_f5221735ace059250daac9d980" ON public.payment USING btree (order_id)`
+
+### `purchase_order` — OrdenDeCompra
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `purchase_order_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `number` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `supplier_id` | uuid | sí | FK | `supplier.supplier_id` |  | _(sin descripción documentada en el código)_ |
+| `destination_warehouse_id` | uuid | sí | FK | `warehouse.warehouse_id` |  | _(sin descripción documentada en el código)_ |
+| `status` | purchase_order_status_enum | sí |  |  | `'draft'::purchase_order_status_enum` | _(sin descripción documentada en el código)_ |
+| `issued_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `expected_date` | date | no |  |  |  | Fecha calendario `YYYY-MM-DD`. |
+| `total_amount` | numeric(12,2) | sí |  |  | `'0'::numeric` | _(sin descripción documentada en el código)_ |
+| `cancel_reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `close_reason` | text | no |  |  |  | Motivo del cierre con faltante (`closed_short`). |
+
+Claves únicas compuestas: (`distributor_id`, `number`).
+
+Índices (además de la clave primaria):
+- `IDX_purchase_order_estado`: `CREATE INDEX "IDX_purchase_order_estado" ON public.purchase_order USING btree (distributor_id, status)`
+- `IDX_purchase_order_proveedor`: `CREATE INDEX "IDX_purchase_order_proveedor" ON public.purchase_order USING btree (supplier_id)`
+- `UQ_purchase_order_numero`: `CREATE UNIQUE INDEX "UQ_purchase_order_numero" ON public.purchase_order USING btree (distributor_id, number)`
+
+### `purchase_order_item` — ItemOrdenDeCompra
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `item_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `purchase_order_id` | uuid | sí | FK | `purchase_order.purchase_order_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `quantity` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `unit_cost` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `empties_to_exchange` | integer | sí |  |  | `0` | Vacíos que se entregan a la planta a cambio de las llenas. |
+| `received_quantity` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`purchase_order_id`, `gas_cylinder_id`).
+
+Restricciones `CHECK`:
+- `CHK_purchase_order_item_cantidad`: `CHECK ((quantity > 0))`
+- `CHK_purchase_order_item_costo`: `CHECK ((unit_cost >= (0)::numeric))`
+- `CHK_purchase_order_item_recibido`: `CHECK (((received_quantity >= 0) AND (received_quantity <= quantity)))`
+- `CHK_purchase_order_item_vacios`: `CHECK ((empties_to_exchange >= 0))`
+
+Índices (además de la clave primaria):
+- `IDX_purchase_order_item_garrafa`: `CREATE INDEX "IDX_purchase_order_item_garrafa" ON public.purchase_order_item USING btree (gas_cylinder_id)`
+- `UQ_purchase_order_item_garrafa`: `CREATE UNIQUE INDEX "UQ_purchase_order_item_garrafa" ON public.purchase_order_item USING btree (purchase_order_id, gas_cylinder_id)`
+
+### `purchase_receipt` — RecepcionDeCompra
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `receipt_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `number` | integer | sí |  |  |  | Número interno correlativo por distribuidora. |
+| `supplier_id` | uuid | sí | FK | `supplier.supplier_id` |  | _(sin descripción documentada en el código)_ |
+| `purchase_order_id` | uuid | no | FK | `purchase_order.purchase_order_id` |  | _(sin descripción documentada en el código)_ |
+| `warehouse_id` | uuid | sí | FK | `warehouse.warehouse_id` |  | _(sin descripción documentada en el código)_ |
+| `supplier_document_type` | supplier_document_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `supplier_document_number` | varchar(30) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `received_at` | timestamptz | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `received_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `total_amount` | numeric(12,2) | sí |  |  | `'0'::numeric` | _(sin descripción documentada en el código)_ |
+| `payment_status` | purchase_payment_status_enum | sí |  |  | `'unpaid'::purchase_payment_status_enum` | _(sin descripción documentada en el código)_ |
+| `cash_movement_id` | uuid | no |  |  |  | Lo completa la caja (M-D); sin clave foránea hasta que exista la tabla. |
+| `status` | purchase_receipt_status_enum | sí |  |  | `'confirmed'::purchase_receipt_status_enum` | _(sin descripción documentada en el código)_ |
+| `void_reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `voided_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `voided_by_user_id` | uuid | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `batch_id` | uuid | sí |  |  |  | Lote del libro de movimientos que generó la recepción. |
+| `void_batch_id` | uuid | no |  |  |  | Lote del contraasiento, si se anuló. |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`distributor_id`, `number`), (`distributor_id`, `supplier_id`, `supplier_document_type`, `supplier_document_number`).
+
+Índices (además de la clave primaria):
+- `IDX_purchase_receipt_fecha`: `CREATE INDEX "IDX_purchase_receipt_fecha" ON public.purchase_receipt USING btree (distributor_id, received_at)`
+- `IDX_purchase_receipt_orden`: `CREATE INDEX "IDX_purchase_receipt_orden" ON public.purchase_receipt USING btree (purchase_order_id)`
+- `IDX_purchase_receipt_proveedor`: `CREATE INDEX "IDX_purchase_receipt_proveedor" ON public.purchase_receipt USING btree (supplier_id)`
+- `UQ_purchase_receipt_documento_proveedor`: `CREATE UNIQUE INDEX "UQ_purchase_receipt_documento_proveedor" ON public.purchase_receipt USING btree (distributor_id, supplier_id, supplier_document_type, supplier_document_number)`
+- `UQ_purchase_receipt_numero`: `CREATE UNIQUE INDEX "UQ_purchase_receipt_numero" ON public.purchase_receipt USING btree (distributor_id, number)`
+
+### `purchase_receipt_item` — ItemRecepcion
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `item_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `receipt_id` | uuid | sí | FK | `purchase_receipt.receipt_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | sí | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `quantity_full` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `quantity_empty_out` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+| `unit_cost` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `previous_average_cost` | numeric(12,2) | no |  |  |  | Costo promedio de la garrafa justo antes de esta recepción (para deshacerlo al anular). |
+| `previous_on_hand` | integer | no |  |  |  | Llenas en depósitos y camiones justo antes de esta recepción. |
+
+Claves únicas compuestas: (`receipt_id`, `gas_cylinder_id`).
+
+Restricciones `CHECK`:
+- `CHK_purchase_receipt_item_cantidades`: `CHECK (((quantity_full >= 0) AND (quantity_empty_out >= 0) AND ((quantity_full + quantity_empty_out) > 0)))`
+- `CHK_purchase_receipt_item_costo`: `CHECK ((unit_cost >= (0)::numeric))`
+
+Índices (además de la clave primaria):
+- `IDX_purchase_receipt_item_garrafa`: `CREATE INDEX "IDX_purchase_receipt_item_garrafa" ON public.purchase_receipt_item USING btree (gas_cylinder_id)`
+- `UQ_purchase_receipt_item_garrafa`: `CREATE UNIQUE INDEX "UQ_purchase_receipt_item_garrafa" ON public.purchase_receipt_item USING btree (receipt_id, gas_cylinder_id)`
 
 ### `rating` — Calificacion
 
@@ -1014,6 +1127,29 @@ Restricciones `CHECK`:
 Índices (además de la clave primaria):
 - `UQ_79763cafe43e9dcf31ea86b6f59`: `CREATE UNIQUE INDEX "UQ_79763cafe43e9dcf31ea86b6f59" ON public.storage_orphan USING btree (storage_key)`
 
+### `supplier` — Proveedor
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `supplier_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `business_name` | varchar(120) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `cuit` | varchar(11) | sí |  |  |  | Once dígitos, sin guiones. |
+| `kind` | supplier_kind_enum | sí |  |  | `'other'::supplier_kind_enum` | _(sin descripción documentada en el código)_ |
+| `contact_name` | varchar(80) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `phone` | varchar(30) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `email` | varchar(120) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `address` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_terms_days` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `is_active` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_supplier_distributor`: `CREATE INDEX "IDX_supplier_distributor" ON public.supplier USING btree (distributor_id)`
+- `UQ_supplier_cuit_vigente`: `CREATE UNIQUE INDEX "UQ_supplier_cuit_vigente" ON public.supplier USING btree (distributor_id, cuit) WHERE ("deletedAt" IS NULL)`
+
 ### `time_slot` — FranjaHoraria
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -1137,11 +1273,11 @@ Claves únicas compuestas: (`car_id`, `day`).
 - `UQ_warehouse_code_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_code_vigente" ON public.warehouse USING btree (distributor_id, code) WHERE ("deletedAt" IS NULL)`
 - `UQ_warehouse_default_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL))`
 
-> **Cobertura de las descripciones.** 89 de 571 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 104 de 640 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
-No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 127 relaciones del dominio están todas declaradas.
+No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 141 relaciones del dominio están todas declaradas.
 
 ### 1. Recargo express y tipo de vehículo
 
@@ -1181,71 +1317,12 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 
 > **Decisión de modelado.** Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: sólo hace falta ampliar el tipo enumerado de procesos configurables.
 
-### 4. Compras y carga del camión
+### 4. Carga del camión
 
-**Casos de uso:** CU-214 a CU-223 (I-13, partes 2 y 3). **Qué resuelve:** Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué se le compra a cada proveedor y qué sale y vuelve en cada reparto.
+**Casos de uso:** CU-218, CU-219, CU-221 a CU-223 (I-13, parte 3). **Qué resuelve:** Saber cuántas garrafas llenas, vacías y defectuosas hay en cada depósito y en cada camión, de dónde salió cada movimiento, qué sale y vuelve en cada reparto.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
-| `gas_cylinder` | `average_unit_cost` | numeric(12,2) | no | Costo promedio ponderado de la garrafa, que se recalcula en cada recepción de compra; vacío mientras no se compró. |
-| `supplier` **(tabla nueva)** | `supplier_id` | uuid | sí | Identificador. |
-| `supplier` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `supplier` **(tabla nueva)** | `business_name` | varchar(120) | sí | Razón social. |
-| `supplier` **(tabla nueva)** | `cuit` | varchar(11) | sí | CUIT, único entre los proveedores vigentes de la distribuidora. |
-| `supplier` **(tabla nueva)** | `kind` | supplier_kind_enum | sí | Planta de llenado u otro. |
-| `supplier` **(tabla nueva)** | `contact_name` | varchar(80) | no | Persona de contacto. |
-| `supplier` **(tabla nueva)** | `phone` | varchar(30) | no | Teléfono. |
-| `supplier` **(tabla nueva)** | `email` | varchar(120) | no | Correo. |
-| `supplier` **(tabla nueva)** | `address` | text | no | Dirección. |
-| `supplier` **(tabla nueva)** | `payment_terms_days` | integer | no | Plazo de pago en días. |
-| `supplier` **(tabla nueva)** | `is_active` | boolean | sí | Si está en uso. |
-| `supplier` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `supplier` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `supplier` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
-| `purchase_order` **(tabla nueva)** | `purchase_order_id` | uuid | sí | Identificador. |
-| `purchase_order` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `purchase_order` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
-| `purchase_order` **(tabla nueva)** | `supplier_id` | uuid | sí | Proveedor. |
-| `purchase_order` **(tabla nueva)** | `destination_warehouse_id` | uuid | sí | Depósito destino. |
-| `purchase_order` **(tabla nueva)** | `status` | purchase_order_status_enum | sí | Borrador, enviada, parcialmente recibida, recibida o cancelada. |
-| `purchase_order` **(tabla nueva)** | `issued_at` | timestamptz | no | Cuándo se envió. |
-| `purchase_order` **(tabla nueva)** | `expected_date` | date | no | Fecha esperada de llegada. |
-| `purchase_order` **(tabla nueva)** | `total_amount` | numeric(12,2) | sí | Total de la orden. |
-| `purchase_order` **(tabla nueva)** | `cancel_reason` | text | no | Motivo de la cancelación. |
-| `purchase_order` **(tabla nueva)** | `notes` | text | no | Observaciones. |
-| `purchase_order` **(tabla nueva)** | `created_by_user_id` | uuid | sí | Usuario que la emitió. |
-| `purchase_order` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `purchase_order` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `purchase_order_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
-| `purchase_order_item` **(tabla nueva)** | `purchase_order_id` | uuid | sí | Orden. |
-| `purchase_order_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
-| `purchase_order_item` **(tabla nueva)** | `quantity` | integer | sí | Unidades pedidas; positiva. |
-| `purchase_order_item` **(tabla nueva)** | `unit_cost` | numeric(12,2) | sí | Costo unitario esperado. |
-| `purchase_order_item` **(tabla nueva)** | `empties_to_exchange` | integer | sí | Vacíos que se entregan a la planta. |
-| `purchase_order_item` **(tabla nueva)** | `received_quantity` | integer | sí | Unidades recibidas hasta ahora. |
-| `purchase_receipt` **(tabla nueva)** | `receipt_id` | uuid | sí | Identificador. |
-| `purchase_receipt` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `purchase_receipt` **(tabla nueva)** | `number` | integer | sí | Número interno correlativo. |
-| `purchase_receipt` **(tabla nueva)** | `supplier_id` | uuid | sí | Proveedor. |
-| `purchase_receipt` **(tabla nueva)** | `purchase_order_id` | uuid | no | Orden que cumple; vacía en una compra sin orden. |
-| `purchase_receipt` **(tabla nueva)** | `warehouse_id` | uuid | sí | Depósito donde ingresa. |
-| `purchase_receipt` **(tabla nueva)** | `supplier_document_type` | purchase_document_type_enum | sí | Remito o factura del proveedor. |
-| `purchase_receipt` **(tabla nueva)** | `supplier_document_number` | varchar(30) | sí | Número del comprobante, único por proveedor. |
-| `purchase_receipt` **(tabla nueva)** | `received_at` | timestamptz | sí | Cuándo se recibió. |
-| `purchase_receipt` **(tabla nueva)** | `received_by_user_id` | uuid | sí | Usuario que la registró. |
-| `purchase_receipt` **(tabla nueva)** | `total_amount` | numeric(12,2) | sí | Total del remito. |
-| `purchase_receipt` **(tabla nueva)** | `payment_status` | purchase_payment_status_enum | sí | Impago o pagado. |
-| `purchase_receipt` **(tabla nueva)** | `cash_movement_id` | uuid | no | Egreso de caja que la pagó, del módulo de caja (I-14). |
-| `purchase_receipt` **(tabla nueva)** | `status` | purchase_receipt_status_enum | sí | Confirmada o anulada. |
-| `purchase_receipt` **(tabla nueva)** | `void_reason` | text | no | Motivo de la anulación. |
-| `purchase_receipt` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `purchase_receipt` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `purchase_receipt_item` **(tabla nueva)** | `item_id` | uuid | sí | Identificador. |
-| `purchase_receipt_item` **(tabla nueva)** | `receipt_id` | uuid | sí | Recepción. |
-| `purchase_receipt_item` **(tabla nueva)** | `gas_cylinder_id` | uuid | sí | Tipo de garrafa. |
-| `purchase_receipt_item` **(tabla nueva)** | `quantity_full` | integer | sí | Unidades llenas recibidas. |
-| `purchase_receipt_item` **(tabla nueva)** | `quantity_empty_out` | integer | sí | Vacíos que se llevó la planta. |
-| `purchase_receipt_item` **(tabla nueva)** | `unit_cost` | numeric(12,2) | sí | Costo unitario real. |
 | `truck_load` **(tabla nueva)** | `load_id` | uuid | sí | Identificador. |
 | `truck_load` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
 | `truck_load` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
@@ -1277,24 +1354,14 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 | `truck_load_item` **(tabla nueva)** | `difference_full` | integer | no | Diferencia de llenas, al cierre. |
 | `truck_load_item` **(tabla nueva)** | `difference_empty` | integer | no | Diferencia de vacías, al cierre. |
 
-`supplier` — Proveedor de la distribuidora, principalmente una planta de llenado. Clave primaria `supplier_id`. Referencias: `distributor_id` → `distributor`.
-`purchase_order` — Pedido de garrafas a un proveedor para un depósito destino. Clave primaria `purchase_order_id`. Referencias: `distributor_id` → `distributor`, `supplier_id` → `supplier`, `destination_warehouse_id` → `warehouse`, `created_by_user_id` → `user`. Única: (`distributor_id`, `number`).
-`purchase_order_item` — Tipo de garrafa pedido en una orden, con su costo y los vacíos que se entregan en canje. Clave primaria `item_id`. Referencias: `purchase_order_id` → `purchase_order`, `gas_cylinder_id` → `gas_cylinder`. Única: (`purchase_order_id`, `gas_cylinder_id`).
-`purchase_receipt` — Remito de ingreso de una compra, con o sin orden. Clave primaria `receipt_id`. Referencias: `distributor_id` → `distributor`, `supplier_id` → `supplier`, `purchase_order_id` → `purchase_order`, `warehouse_id` → `warehouse`, `received_by_user_id` → `user`. Única: (`distributor_id`, `number`), (`distributor_id`, `supplier_id`, `supplier_document_number`).
-`purchase_receipt_item` — Tipo de garrafa recibido en un remito, con los vacíos que se llevó la planta. Clave primaria `item_id`. Referencias: `receipt_id` → `purchase_receipt`, `gas_cylinder_id` → `gas_cylinder`.
 `truck_load` — Hoja de carga: el turno de un camión, desde que se carga hasta que se rinde. Clave primaria `load_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `delivery_id` → `delivery`, `origin_location_id` → `stock_location`, `opened_by_user_id` → `user`, `closed_by_user_id` → `user`. Única: (`distributor_id`, `number`).
 `truck_load_item` — Por tipo de garrafa: lo cargado, lo repuesto, lo entregado, lo declarado al regreso y la diferencia. Clave primaria `item_id`. Referencias: `load_id` → `truck_load`, `gas_cylinder_id` → `gas_cylinder`. Única: (`load_id`, `gas_cylinder_id`).
 
-Tipo enumerado `supplier_kind_enum`: `filling_plant`, `other`.
-Tipo enumerado `purchase_order_status_enum`: `draft`, `sent`, `partially_received`, `received`, `cancelled`.
-Tipo enumerado `purchase_document_type_enum`: `delivery_note`, `invoice`.
-Tipo enumerado `purchase_payment_status_enum`: `unpaid`, `paid`.
-Tipo enumerado `purchase_receipt_status_enum`: `confirmed`, `voided`.
 Tipo enumerado `truck_load_status_enum`: `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled`.
 
 Valores nuevos del tipo enumerado `configurable_process_enum`: `stock_control`.
 
-> **Decisión de modelado.** El stock físico (depósitos, ubicaciones, saldos, libro, ajustes y umbrales) ya está en la base; este agregado trae lo que falta: proveedores, órdenes y recepciones de compra y la carga del camión, que escriben sobre ese libro. Referencia de lo ya construido: el saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)`, `(distributor_id) WHERE is_default` y `(distributor_id, cuit)` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
+> **Decisión de modelado.** El stock físico (depósitos, ubicaciones, saldos, libro, ajustes y umbrales) y las compras (proveedores, órdenes y recepciones) ya están en la base; este agregado trae lo que falta: la carga del camión, que escribe sobre ese libro. Referencia de lo ya construido: el saldo de una ubicación es una fila materializada por tipo de garrafa y condición (`stock_balance`), que se mantiene en la misma transacción que cada movimiento (`stock_movement`, de sólo agregado, con un disparador que impide modificarlo). `stock_location` existe para que saldos y movimientos tengan una sola clave foránea de ubicación, sea un depósito o un camión. Restricciones que el generador no dibuja y la migración declara: `CHECK (quantity >= 0)` en `stock_balance`; `CHECK (num_nonnulls(warehouse_id, car_id) = 1)` en `stock_location`; `CHECK (from_location_id IS NOT NULL OR to_location_id IS NOT NULL)` y la clave única parcial `(reference_id, gas_cylinder_id, reason) WHERE reference_type = 'order'` en `stock_movement`, que vuelve idempotente el descuento de una entrega; únicos parciales `(distributor_id, code)` y `(distributor_id) WHERE is_default` sobre los vigentes, y `(car_id)` y `(delivery_id)` en `truck_load` mientras esté abierta. `helper_employee_id` apunta al legajo (`employee`, del módulo de personal, que ya está construido): se declara sin clave foránea porque el modelo del ayudante en el camión se define con la carga. El modelo es cuantitativo —por cantidad y tipo— y no reemplaza al envase con serie (`cylinder`), que sigue siendo la trazabilidad individual.
 
 ### 5. Caja, rendición del chofer, cuentas corrientes y comisiones
 
@@ -1693,6 +1760,9 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `payment_integration_enum` | `checkout_pro`, `cash` | implementado |
 | `payment_status_enum` | `pending`, `approved`, `rejected`, `cancelled`, `refunded` | implementado |
 | `proposal_status_enum` | `pending`, `accepted`, `rejected`, `expired` | implementado |
+| `purchase_order_status_enum` | `draft`, `sent`, `partially_received`, `received`, `closed_short`, `cancelled` | implementado |
+| `purchase_payment_status_enum` | `unpaid`, `paid` | implementado |
+| `purchase_receipt_status_enum` | `confirmed`, `voided` | implementado |
 | `rating_from_role_enum` | `customer`, `delivery` | implementado |
 | `recovery_case_status_enum` | `open`, `returned`, `escalated`, `deposit_charged`, `written_off`, `closed_no_charge` | implementado |
 | `recovery_notice_kind_enum` | `reminder`, `pickup_offer`, `deposit_warning` | implementado |
@@ -1703,6 +1773,8 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `stock_location_kind_enum` | `warehouse`, `vehicle` | implementado |
 | `stock_movement_reason_enum` | `initial_count`, `purchase_receipt`, `plant_empty_out`, `truck_load`, `truck_return`, `delivery`, `empty_collected`, `transfer`, `adjustment`, `shrinkage`, `condition_change`, `reversal` | implementado |
 | `stock_movement_reference_type_enum` | `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial` | implementado |
+| `supplier_document_type_enum` | `delivery_note`, `invoice` | implementado |
+| `supplier_kind_enum` | `filling_plant`, `other` | implementado |
 | `warehouse_kind_enum` | `depot`, `branch` | implementado |
 | `attendance_source_enum` | `panel`, `driver_app` | propuesto |
 | `cash_box_kind_enum` | `cash`, `bank`, `wallet` | propuesto |
@@ -1722,12 +1794,7 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `fuel_payment_method_enum` | `cash_box`, `driver_cash`, `card`, `fuel_account` | propuesto |
 | `fuel_type_enum` | `diesel`, `gasoline`, `cng`, `lpg` | propuesto |
 | `maintenance_document_kind_enum` | `insurance`, `vtv`, `hazmat_vehicle_permit`, `driver_license`, `hazmat_driver_course`, `psychophysical`, `art_coverage`, `service`, `generic` | propuesto |
-| `purchase_document_type_enum` | `delivery_note`, `invoice` | propuesto |
-| `purchase_order_status_enum` | `draft`, `sent`, `partially_received`, `received`, `cancelled` | propuesto |
-| `purchase_payment_status_enum` | `unpaid`, `paid` | propuesto |
-| `purchase_receipt_status_enum` | `confirmed`, `voided` | propuesto |
 | `settlement_difference_resolution_enum` | `none`, `charged_to_driver`, `absorbed` | propuesto |
-| `supplier_kind_enum` | `filling_plant`, `other` | propuesto |
 | `tax_condition_enum` | `registered`, `monotax`, `exempt`, `final_consumer` | propuesto |
 | `tire_event_type_enum` | `mount`, `unmount`, `rotate`, `retread`, `retire` | propuesto |
 | `tire_status_enum` | `in_stock`, `mounted`, `retired` | propuesto |

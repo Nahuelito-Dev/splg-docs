@@ -103,6 +103,7 @@ TimeSlotService --> "1" Map_String_Distribuidora
 TimeSlotService --> "1" Map_String_FranjaHoraria
 GasCylinderService ..> Distribuidora
 GasCylinderService ..> "<<create>>" Producto
+List_Producto ..> Producto
 TimeSlotService ..> Distribuidora
 TimeSlotService ..> FranjaHoraria
 

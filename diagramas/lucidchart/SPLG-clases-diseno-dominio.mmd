@@ -34,7 +34,7 @@ classDiagram
         + getProductosActivos(pagina: Entero, limite: Entero, out total: Entero): Producto[*]
         + getProductosDisponibles(): Producto[*]
         + getProveedor(proveedorId: Identificador): Proveedor
-        + getProveedores(): Proveedor[*]
+        + getProveedores(termino: Cadena, tipo: Cadena, incluirInactivos: Booleano): Proveedor[*]
         + getPuestos(): PuestoDeTrabajo[*]
         + getUbicacionesDeStock(): UbicacionDeStock[*]
         + getUbicacionPredeterminada(): UbicacionDeStock
@@ -204,15 +204,16 @@ classDiagram
         + conciliarVendible(diferenciaEsperada: Entero): Entero
         + desactivar()
         + estaDisponibleEn(distribuidoraId: Identificador): Booleano
+        + getCostoPromedio(): Moneda
         + getPrecio(): Moneda
         + precioPara(cantidad: Entero): Moneda
         + reactivar()
-        + recalcularCostoPromedio(llenasRecibidas: Entero, costoUnitario: Moneda)
+        + recalcularCostoPromedio(llenasRecibidas: Entero, costoUnitario: Moneda): Moneda
         + reemplazarPromociones(promociones: Promocion[*])
         + reservar(cantidad: Entero): Entero
-        + restarStock(cantidad: Entero): Booleano
+        + restarStock(faltante: Entero): Booleano
+        + restaurarCostoPromedio(costoPrevio: Moneda, llenasRecibidas: Entero): Moneda
         + restituir(cantidad: Entero)
-        + sumarStock(llenasRecibidas: Entero)
         + validarHayDiferencia()
         + validarSinRepetir(promociones: Promocion[*])
     }
@@ -910,17 +911,13 @@ classDiagram
         + estaActivo(): Booleano
         + fijarMinimo(producto: Producto, minimoDeLlenas: Entero)
         + getLlenas(producto: Producto): CondicionDeStock
-        + getOrden(ordenId: Identificador): OrdenDeCompra
         + getUbicacion(): UbicacionDeStock
-        + getUbicacionDeStock(): UbicacionDeStock
         + getUmbral(producto: Producto): UmbralDeStock
         + marcarPredeterminado()
         + quitarPredeterminado(): Booleano
         + quitarUmbrales()
-        + registrarRecepcion(ordenId: Identificador, tipoDeComprobante: TipoDeComprobante, numeroDeComprobante: Cadena, items: Registro, administrador: Administrador): RecepcionDeCompra
         + tieneLlenas(producto: Producto, cantidad: Entero): Booleano
         + validarCodigoSinUsar(codigo: Cadena)
-        + validarCompraSinOrden(proveedorId: Identificador)
         + validarNoEsElPredeterminado()
         + validarPuedeDesactivarse(activo: Booleano)
         + validarSinConteoInicial(): Booleano
@@ -1054,9 +1051,11 @@ classDiagram
         - activo: Booleano
         + «create» Proveedor(razonSocial: Cadena, cuit: Cadena, tipo: Cadena, datosDeContacto: Registro, plazoDePago: Entero)
         + actualizar(datos: Registro): Proveedor
-        + coincideCon(termino: Cadena): Booleano
-        + darDeBaja()
+        + coincideCon(termino: Cadena, tipo: Cadena, incluirInactivos: Booleano): Booleano
+        + darDeBaja(): Proveedor
         + emitirOrden(depositoDeStock: Deposito, fechaEsperada: Fecha, items: Registro): OrdenDeCompra
+        + getRecepciones(desde: FechaHora, hasta: FechaHora): RecepcionDeCompra[*]
+        + validarSinOrdenesAbiertas()
     }
 
     class OrdenDeCompra {
@@ -1066,15 +1065,24 @@ classDiagram
         - fechaEsperada: Fecha
         - total: Moneda
         - motivoDeCancelacion: Cadena
+        - motivoDeCierre: Cadena
         - notas: Cadena
-        + «create» OrdenDeCompra(depositoDeStock: Deposito, fechaEsperada: Fecha, autor: Usuario)
-        + acumularRecibido(items: Registro): Booleano
+        + «create» OrdenDeCompra(depositoDeStock: Deposito, fechaEsperada: Fecha, administrador: Administrador)
+        + acumularRecibido(items: Registro): OrdenDeCompra
         + calcularTotal(): Moneda
         + cancelar(motivo: Cadena): OrdenDeCompra
+        + cerrarConFaltante(motivo: Cadena): OrdenDeCompra
+        + devolverRecibido(items: Registro): OrdenDeCompra
         + enviar(ahora: FechaHora): OrdenDeCompra
-        + getTotal(): Moneda
-        + validarQueEstaEnBorrador()
+        + getItems(): Registro
+        + getPendiente(): EstadoPedido
+        + getRecepciones(): RecepcionDeCompra[*]
+        + modificar(datos: Registro): OrdenDeCompra
+        + validarContraLoPendiente(items: Registro): Booleano
+        + validarEnBorrador()
+        + validarRecibible(): Booleano
         + validarSinRecepciones()
+        + validarTransicion(enviada: Cadena)
     }
 
     class ItemOrdenDeCompra {
@@ -1083,6 +1091,7 @@ classDiagram
         - vaciosACanjear: Entero
         - cantidadRecibida: Entero
         + «create» ItemOrdenDeCompra(producto: Producto, cantidad: Entero, costoUnitario: Moneda, vaciasACanjear: Entero)
+        + getPendiente()
     }
 
     class RecepcionDeCompra {
@@ -1094,20 +1103,29 @@ classDiagram
         - estadoDePago: EstadoDePagoDeCompra
         - estado: EstadoDeLaRecepcion
         - motivoDeAnulacion: Cadena
-        + «create» RecepcionDeCompra(tipoDeComprobante: TipoDeComprobante, numeroDeComprobante: Cadena, administrador: Administrador)
+        - anuladaEl: FechaHora
+        - notas: Cadena
+        + «create» RecepcionDeCompra(proveedor: Proveedor, depositoDeStock: Deposito, tipoDeComprobante: TipoDeComprobante, numeroDeComprobante: Cadena, administrador: Administrador)
         + anular(motivo: Cadena): RecepcionDeCompra
         + getItems(): Registro
+        + getOrden(): OrdenDeCompra
         + getTotal(): Moneda
-        + getUbicacionDelDeposito(): UbicacionDeStock
-        + validarQueEstaConfirmada()
+        + getUbicacionDeStock(): UbicacionDeStock
+        + marcarPago(estadoDePago: Cadena): RecepcionDeCompra
+        + validarAnulable(): Booleano
+        + validarComprobanteNoRepetido(): Booleano
+        + validarNoAnulada()
     }
 
     class ItemRecepcion {
         - llenasRecibidas: Entero
         - vaciasEntregadas: Entero
         - costoUnitario: Moneda
+        - costoPromedioPrevio: Moneda
+        - existenciaPrevia: Decimal
         + «create» ItemRecepcion(producto: Producto, llenasRecibidas: Entero, vaciasEntregadas: Entero, costoUnitario: Moneda)
         + getProducto(): Producto
+        + getSubtotal()
     }
 
     class Caja {
@@ -1416,13 +1434,13 @@ classDiagram
     Usuario "1" -- "0..*" AjusteDeStock : registra
     MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock : corrige a
     Proveedor "1" --> "0..*" OrdenDeCompra : recibe
-    OrdenDeCompra "0..*" <-- "1" Deposito : se destina a
+    OrdenDeCompra "0..*" -- "1" Deposito : se destina a
     OrdenDeCompra "1" *--> "1..*" ItemOrdenDeCompra : contiene
     ItemOrdenDeCompra "0..*" -- "1" Producto : corresponde a
     Usuario "1" -- "0..*" OrdenDeCompra : emite
-    Proveedor "1" -- "0..*" RecepcionDeCompra : entrega
+    Proveedor "1" --> "0..*" RecepcionDeCompra : entrega
     OrdenDeCompra "0..1" -- "0..*" RecepcionDeCompra : se cumple con
-    RecepcionDeCompra "0..*" <-- "1" Deposito : ingresa en
+    RecepcionDeCompra "0..*" -- "1" Deposito : ingresa en
     RecepcionDeCompra "1" *--> "1..*" ItemRecepcion : contiene
     ItemRecepcion "0..*" -- "1" Producto : corresponde a
     Usuario "1" -- "0..*" RecepcionDeCompra : registra

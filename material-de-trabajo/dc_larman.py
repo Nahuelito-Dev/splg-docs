@@ -725,8 +725,19 @@ GLOSARIO.update({
     "avisoRepetido": "Booleano", "predeterminadoQuitado": "Booleano", "nadaQueDescontar": "Booleano",
     "resumenDeReaplicacion": "Registro", "cantidadDeAjustes": "Entero", "cantidadDeMovimientos": "Entero",
 })
+# Compras (implementado): nombres propios de sus DSD, sin colisión con otros módulos.
+ALIAS_CLASE.update({"itemsRecibidos": "ItemRecepcion", "proveedorDadoDeBaja": "Proveedor",
+                    "ordenActualizada": "OrdenDeCompra"})
+_PLURALES |= {"itemsRecibidos"}
+GLOSARIO.update({
+    "enviada": "Cadena", "cerradaConFaltante": "Cadena", "costoPrevio": "Moneda",
+    "loteDeLaRecepcion": "Identificador", "loteDelContraasiento": "Identificador",
+    "anulable": "Booleano", "recibible": "Booleano", "comprobanteLibre": "Booleano",
+    "dentroDeLoPedido": "Booleano", "historial": "Registro",
+})
 ALIAS_PARAMETRO.update({("Distribuidora", "direccion"): ("direccion", "Cadena"),
-                        ("Deposito", "direccion"): ("direccion", "Cadena")})
+                        ("Deposito", "direccion"): ("direccion", "Cadena"),
+                        ("OrdenDeCompra", "cancelada"): ("estadoDestino", "Cadena")})
 
 # El mismo nombre de argumento significa cosas distintas según la clase que lo recibe: el glosario
 # da el sentido más común y esta tabla da el de cada clase.

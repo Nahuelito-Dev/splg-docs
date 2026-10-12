@@ -271,7 +271,6 @@ stock ..> car
 stock ..> distributor
 stock ..> gascylinder
 stock ..> order
-stock ..> purchase
 time_slot ..> distributor
 truck_load ..> car
 truck_load ..> delivery

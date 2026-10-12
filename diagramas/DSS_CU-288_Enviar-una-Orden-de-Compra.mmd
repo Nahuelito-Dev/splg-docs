@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-288 Enviar una Orden de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: enviarOrdenDeCompra(ordenId)
+    activate SIS
+    alt la orden está en borrador
+        SIS-->>ADM: orden enviada
+    else la orden no existe
+        SIS-->>ADM: recurso no encontrado
+    else la orden no está en borrador
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS

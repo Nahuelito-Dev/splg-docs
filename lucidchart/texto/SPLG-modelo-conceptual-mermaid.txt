@@ -465,6 +465,7 @@ classDiagram
             fecha esperada
             total
             motivo de cancelación
+            motivo de cierre
             notas
         }
         class ItemOrdenDeCompra {
@@ -482,11 +483,15 @@ classDiagram
             estado de pago
             estado
             motivo de anulación
+            anulada el
+            notas
         }
         class ItemRecepcion {
             llenas recibidas
             vacías entregadas
             costo unitario
+            costo promedio previo
+            existencia previa
         }
     }
 

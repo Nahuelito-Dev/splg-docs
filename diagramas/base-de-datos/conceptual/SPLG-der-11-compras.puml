@@ -32,7 +32,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity Proveedor <<propuesto>> #E4EDF4;line:1F5E8C {
+entity Proveedor {
   * identificador
   --
   {field} razón social
@@ -45,7 +45,7 @@ entity Proveedor <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} plazo de pago
   {field} activo
 }
-entity OrdenDeCompra <<propuesto>> #E4EDF4;line:1F5E8C {
+entity OrdenDeCompra {
   * identificador
   --
   {field} número
@@ -54,9 +54,10 @@ entity OrdenDeCompra <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} fecha esperada
   {field} total
   {field} motivo de cancelación
+  {field} motivo de cierre
   {field} notas
 }
-entity ItemOrdenDeCompra <<propuesto>> #E4EDF4;line:1F5E8C {
+entity ItemOrdenDeCompra {
   * identificador
   --
   {field} cantidad
@@ -64,7 +65,7 @@ entity ItemOrdenDeCompra <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} vacíos a canjear
   {field} cantidad recibida
 }
-entity RecepcionDeCompra <<propuesto>> #E4EDF4;line:1F5E8C {
+entity RecepcionDeCompra {
   * identificador
   --
   {field} número
@@ -75,13 +76,17 @@ entity RecepcionDeCompra <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} estado de pago
   {field} estado
   {field} motivo de anulación
+  {field} anulada el
+  {field} notas
 }
-entity ItemRecepcion <<propuesto>> #E4EDF4;line:1F5E8C {
+entity ItemRecepcion {
   * identificador
   --
   {field} llenas recibidas
   {field} vacías entregadas
   {field} costo unitario
+  {field} costo promedio previo
+  {field} existencia previa
 }
 entity Deposito #F1F1F1 {
 }
@@ -93,17 +98,17 @@ entity Distribuidora #F1F1F1 {
 }
 
 Distribuidora ||--o{ Proveedor : compra a >
-Proveedor ||--o{ OrdenDeCompra : recibe >
-OrdenDeCompra }o--|| Deposito : se destina a >
 Usuario ||--o{ OrdenDeCompra : emite >
-OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
+OrdenDeCompra }o--|| Deposito : se destina a >
+Proveedor ||--o{ OrdenDeCompra : recibe >
 ItemOrdenDeCompra }o--|| Producto : corresponde a >
-Proveedor ||--o{ RecepcionDeCompra : entrega >
+OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
 OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
-RecepcionDeCompra }o--|| Deposito : ingresa en >
 Usuario ||--o{ RecepcionDeCompra : registra >
-RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
+Proveedor ||--o{ RecepcionDeCompra : entrega >
+RecepcionDeCompra }o--|| Deposito : ingresa en >
 ItemRecepcion }o--|| Producto : corresponde a >
+RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

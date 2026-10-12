@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-285 Consultar el Costo Promedio de las Garrafas · consultarCostoPromedio
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant PRODS as :List#lt;Producto#gt;
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: consultarCostoPromedio()
+    SRV->>+PRODS: getTodos()
+    loop Por cada tipo de garrafa
+        PRODS->>PRO: getCostoPromedio()
+    end
+    PRODS-->>-SRV: costos
+    SRV-->>-ADM: costos

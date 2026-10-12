@@ -21,12 +21,13 @@ state "Confirmada\n(confirmed)" as confirmed
 state "Anulada\n(voided)" as voided
 
 [*] --> confirmed : registrarRecepcionDeCompra()
-confirmed --> voided : anularRecepcionDeCompra(motivo) [el depósito conserva lo ingresado]
+confirmed --> voided : anularRecepcionDeCompra(motivo)\n[el depósito conserva lo ingresado y no figura como pagada]
 voided --> [*]
 
 note bottom of voided
   La anulación registra los movimientos inversos y no
-  borra nada. El pago al proveedor (impago o pagado) es
-  otro atributo y no cambia este estado.
+  borra nada. El pago al proveedor (impago o pagado,
+  marcarPagoDeRecepcion) es otro atributo y no cambia este
+  estado; una recepción anulada ya no cambia de pago.
 end note
 @enduml

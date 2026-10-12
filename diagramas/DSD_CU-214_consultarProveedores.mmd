@@ -6,10 +6,10 @@ sequenceDiagram
     participant DIS as distribuidora:Distribuidora
     participant PRV as proveedor:Proveedor
 
-    ADM->>+SRV: consultarProveedores(termino)
-    SRV->>+DIS: getProveedores()
-    loop Por cada proveedor vigente
-        DIS->>PRV: coincideCon(termino)
+    ADM->>+SRV: consultarProveedores(termino, tipo, incluirInactivos)
+    SRV->>+DIS: getProveedores(termino, tipo, incluirInactivos)
+    loop Por cada proveedor de la distribuidora
+        DIS->>PRV: coincideCon(termino, tipo, incluirInactivos)
     end
     DIS-->>-SRV: proveedores
     SRV-->>-ADM: proveedores

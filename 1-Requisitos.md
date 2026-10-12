@@ -83,6 +83,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 14 | 2026-10-07 | Casos de uso expandidos CU-251 a CU-272: cada operación de un ABM pasa a ser su propio caso de uso (perfil, roles, puestos, depósitos, proveedores, cajas, categorías, disponibilidad, estado y validación del chofer, productos inactivos, bloqueo y búsqueda de usuarios); los 13 casos que las agrupaban conservan su número y nombran la primera operación. Relaciones «include» de la modificación y de la baja con la consulta de la que parten, en la tabla maestra y en la matriz de rastreabilidad; 278 casos de uso. | Nahuel Wagner |
 | 15 | 2026-10-07 | Personal construido en el backend: puestos de trabajo y legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257) pasan a «Implementado» —CU-178, CU-180 y CU-181 con funcionalidad planificada—, con sus diagramas, contratos y tablas verificados contra el código y la API; las jornadas, las licencias y el resto de SS-19 siguen planificados. | Nahuel Wagner |
 | 16 | 2026-10-11 | Stock físico construido en el backend: casos de uso expandidos de CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279 con el estado «Implementado» y su secuencia según la API; siete casos nuevos (CU-273 a CU-279); CU-020, CU-038 y CU-079 incluyen el descuento del stock físico, y el alta de producto (CU-036) y su edición (CU-037) cambian de efecto sobre el stock. | Nahuel Wagner |
+| 17 | 2026-10-11 | Compras construidas en el backend: casos de uso expandidos de CU-214 a CU-217, CU-261 a CU-263 y CU-280 a CU-288 con el estado «Implementado» y su secuencia según la API; nueve casos nuevos (CU-280 a CU-288) que parten de CU-215 y CU-217 el envío, las consultas y la anulación; CU-217 y CU-280 incluyen CU-250; el catálogo llega a 287 casos de uso. | Nahuel Wagner |
 
 ---
 
@@ -127,7 +128,7 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 
 ## 3. Diagrama de Casos de Uso del Sistema
 
-Con 278 casos de uso, un único diagrama con todos ellos no se puede leer en una página. La
+Con 287 casos de uso, un único diagrama con todos ellos no se puede leer en una página. La
 vista principal es por eso el **mapa del sistema** (Figura 1), seguido del **diagrama de
 contexto** (Figura 2, en la sección 3.1). El diagrama con los casos de uso uno por uno
 (Figura 3) se presenta como lámina anexa, y el detalle de cada subsistema está en la
@@ -211,7 +212,7 @@ acción sobre el mundo físico queda del lado de las personas.
 
 ![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y los 278 casos
+> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y los 287 casos
 > de uso dentro, agrupados en paquetes, con las relaciones `«include»` y `«extend»` entre
 > casos de la lista. El Administrador General especializa al Administrador. Por su tamaño se
 > entrega también en formato vectorial, que permite ampliarla sin pérdida de legibilidad.
@@ -570,11 +571,11 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
-| **Requisitos asociados** | CU-207, CU-208, CU-209, CU-210, CU-211, CU-212, CU-213, CU-214, CU-215, CU-216, CU-217, CU-218, CU-219, CU-220, CU-221, CU-222, CU-223, CU-224, CU-248, CU-249, CU-250, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-273, CU-274, CU-275, CU-276, CU-277, CU-278, CU-279, CU-038, CU-020 |
+| **Requisitos asociados** | CU-207, CU-208, CU-209, CU-210, CU-211, CU-212, CU-213, CU-214, CU-215, CU-216, CU-217, CU-218, CU-219, CU-220, CU-221, CU-222, CU-223, CU-224, CU-248, CU-249, CU-250, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-273, CU-274, CU-275, CU-276, CU-277, CU-278, CU-279, CU-280, CU-281, CU-282, CU-283, CU-284, CU-285, CU-286, CU-287, CU-288, CU-038, CU-020 |
 | **Descripción** | El sistema debe llevar el stock físico de garrafas por ubicación (depósitos y camiones) y por condición, con el libro de cada movimiento, y reconciliarlo con el stock vendible del catálogo; registrar a los proveedores, las órdenes de compra y las recepciones de lo comprado; y registrar la hoja de carga de cada camión, desde que se carga hasta que se rinde. |
-| **Datos específicos** | De cada depósito: nombre, código (único entre los vigentes de la distribuidora), tipo (depósito o sucursal), dirección, si es el predeterminado y su estado. De cada ubicación de stock: si es un depósito o un vehículo. De cada saldo: tipo de garrafa, condición (llena, vacía o defectuosa) y cantidad, nunca negativa. De cada movimiento, de sólo agregado: tipo de garrafa, cantidad, ubicación y condición de origen y de destino, motivo, documento que lo originó, autor y momento. De cada umbral: depósito, tipo de garrafa, mínimo de llenas y momento del último aviso. De cada ajuste: número correlativo, ubicación, motivo, nota obligatoria y renglones con la diferencia por tipo de garrafa y condición. De cada proveedor: razón social, CUIT (único entre los vigentes), tipo, contacto y plazo de pago. De cada orden de compra: número, proveedor, depósito destino, estado, total y renglones con cantidad, costo unitario, vacíos a canjear y cantidad recibida. De cada recepción: número interno, comprobante del proveedor (único por proveedor), depósito, renglones con las llenas recibidas, los vacíos entregados y el costo, estado de pago y estado. De cada carga de camión: número, vehículo, chofer, ayudante, depósito de salida, día, estado, instantes de apertura, salida, regreso y cierre, renglones con lo cargado, repuesto, declarado, entregado, esperado y la diferencia, y la nota de la diferencia. Del tipo de garrafa: el costo promedio ponderado. |
+| **Datos específicos** | De cada depósito: nombre, código (único entre los vigentes de la distribuidora), tipo (depósito o sucursal), dirección, si es el predeterminado y su estado. De cada ubicación de stock: si es un depósito o un vehículo. De cada saldo: tipo de garrafa, condición (llena, vacía o defectuosa) y cantidad, nunca negativa. De cada movimiento, de sólo agregado: tipo de garrafa, cantidad, ubicación y condición de origen y de destino, motivo, documento que lo originó, autor y momento. De cada umbral: depósito, tipo de garrafa, mínimo de llenas y momento del último aviso. De cada ajuste: número correlativo, ubicación, motivo, nota obligatoria y renglones con la diferencia por tipo de garrafa y condición. De cada proveedor: razón social, CUIT (único entre los vigentes), tipo, contacto y plazo de pago. De cada orden de compra: número, proveedor, depósito destino, estado (borrador, enviada, parcialmente recibida, recibida, cerrada con faltante o cancelada), fecha de emisión y fecha esperada, total, motivos de cancelación y de cierre, y renglones con cantidad, costo unitario, vacíos a canjear y cantidad recibida. De cada recepción: número interno, tipo y número del comprobante del proveedor (único por proveedor y tipo), depósito, fecha de recepción, renglones con las llenas recibidas, los vacíos entregados, el costo y el promedio y la existencia previos, estado de pago y estado, y motivo y fecha de anulación. De cada carga de camión: número, vehículo, chofer, ayudante, depósito de salida, día, estado, instantes de apertura, salida, regreso y cierre, renglones con lo cargado, repuesto, declarado, entregado, esperado y la diferencia, y la nota de la diferencia. Del tipo de garrafa: el costo promedio ponderado. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es un modelo cuantitativo, por cantidad y tipo, y no reemplaza al envase con número de serie (IRQ-13), que sigue siendo la trazabilidad individual. El stock vendible de IRQ-04 es lo que ya se reserva al crear un pedido; el físico se mantiene aparte y una invariante, que verifica un proceso nocturno, los relaciona: vendible igual a lo lleno en depósitos y camiones menos lo reservado por pedidos abiertos. El saldo de un camión es cero al cerrar su rendición. Planificado (iteración I-13): ninguna de estas tablas existe todavía en la base. |
+| **Comentarios** | Es un modelo cuantitativo, por cantidad y tipo, y no reemplaza al envase con número de serie (IRQ-13), que sigue siendo la trazabilidad individual. El stock vendible de IRQ-04 es lo que ya se reserva al crear un pedido; el físico se mantiene aparte y una invariante, que verifica un proceso nocturno, los relaciona: vendible igual a lo lleno en depósitos y camiones menos lo reservado por pedidos abiertos. El saldo de un camión es cero al cerrar su rendición. Construidos: el stock físico y las compras. Planificada (iteración I-13): la carga del camión, cuyas dos tablas no existen todavía en la base. |
 
 ### IRQ-19 — Información sobre Caja, Rendiciones, Cuentas Corrientes y Comisiones
 
@@ -592,7 +593,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 ## 7. Requisitos Funcionales — Casos de Uso
 
 Los casos de uso se documentan en dos niveles de detalle. La **descripción de alto
-nivel** de los 278 casos está en el Documento 0 · §7; acá van los **casos de uso
+nivel** de los 287 casos está en el Documento 0 · §7; acá van los **casos de uso
 expandidos**, con la secuencia normal, las excepciones y el resto de los campos. El
 diagrama de secuencia del sistema de cada caso está en el Documento 2 y su diagrama de
 interacción de diseño, en el Documento 3.
@@ -8777,7 +8778,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 ---
 
-### 7.6.1 Casos de Uso Expandidos — Stock, compras y carga del camión (CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-279, I-13)
+### 7.6.1 Casos de Uso Expandidos — Stock, compras y carga del camión (CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-288, I-13)
 
 #### Importante CU-207 — Consultar los Depósitos
 
@@ -8998,7 +8999,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 1 | El administrador abre «Stock → Depósitos» —**incluye CU-207 Consultar los Depósitos**— y elige «Conteo inicial» en el depósito. |
 | 2 | Carga, por cada tipo de garrafa, las llenas, las vacías y las defectuosas contadas y, si quiere, una nota. |
 | 3 | El panel envía `POST /stock/initial-counts`. |
-| 4 | El sistema bloquea el depósito en modo exclusivo y comprueba que no tenga ya un conteo inicial. |
+| 4 | El sistema bloquea las garrafas contadas y el depósito en modo exclusivo y comprueba que no tenga ya un conteo inicial. |
 | 5 | El sistema compara lo contado con el saldo actual y arma un renglón por cada diferencia. |
 | 6 | El sistema asienta las diferencias en el libro de movimientos y mueve los saldos —**incluye CU-250 Aplicar un Movimiento de Stock**— y el stock vendible de las llenas. |
 | 7 | El sistema numera el ajuste, lo guarda con sus renglones y lo devuelve con 201. |
@@ -9020,7 +9021,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Un bloqueo del depósito, la lectura de sus saldos, los movimientos y el ajuste con sus renglones, todo en una transacción. Responde en menos de 1 segundo. |
+| **Rendimiento** | Un bloqueo de las garrafas y del depósito, la lectura de sus saldos, los movimientos y el ajuste con sus renglones, todo en una transacción. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: una vez por depósito. |
 | **Estabilidad** | Media |
 | **Comentarios** | Los depósitos que ya existían cuando se construyó el módulo arrancaron con un saldo inicial que dejó la migración (las llenas son el vendible más los pedidos abiertos; las vacías, cero), pero no tienen un conteo inicial registrado: se les puede hacer uno. El conteo no es una foto aparte: es un ajuste con motivo `initial_count` y por eso aparece también en CU-275. Por ser un ajuste, no se contraasienta: se corrige con otro ajuste. |
@@ -9304,7 +9305,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Los movimientos del lote, la comprobación de contraasientos previos y un movimiento inverso por renglón, en una transacción. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al corregir una transferencia equivocada. |
 | **Estabilidad** | Media |
-| **Comentarios** | El libro nunca se edita: un disparador de la base lo impide. El contraasiento es un grupo de movimientos con origen y destino invertidos y la referencia `reversedMovementId` al original, que es única: un movimiento se anula una sola vez. Un contraasiento no se vuelve a contraasentar: para repetir la transferencia se hace otra (CU-212). Un ajuste no se anula por acá, se corrige con otro ajuste (CU-213). Las compras y las cargas de camión tendrán su propia anulación cuando se construyan. |
+| **Comentarios** | El libro nunca se edita: un disparador de la base lo impide. El contraasiento es un grupo de movimientos con origen y destino invertidos y la referencia `reversedMovementId` al original, que es única: un movimiento se anula una sola vez. Un contraasiento no se vuelve a contraasentar: para repetir la transferencia se hace otra (CU-212). Un ajuste no se anula por acá, se corrige con otro ajuste (CU-213). La anulación de una compra es otro caso (CU-280); la de una carga de camión tendrá el suyo cuando se construya. |
 
 ---
 
@@ -9864,7 +9865,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Bloqueos ordenados y dos escrituras en lote (saldos y movimientos). Responde en menos de 1 segundo. |
 | **Frecuencia** | Alta: lo ejecuta todo cambio de stock físico. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es el único punto de escritura del stock físico (`StockLedgerPort`): nadie más toca los saldos ni el libro. El libro toma sus bloqueos en este orden, que es lo que evita los deadlocks entre ajustes, transferencias y entregas: 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido (frena la baja de un depósito en uso); 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, si el caso numera un documento (el conteo inicial no sigue hoy este orden: toma antes el depósito en modo exclusivo, y el back se está corrigiendo para alinearlo). `FOR KEY SHARE` alcanza para las entregas y las transferencias porque no cambian el vendible: sólo espera a quien tenga `FOR UPDATE`. Cuatro garantías sostiene además la base: el saldo no es negativo (restricción), el libro no se modifica (disparador), un movimiento se contraasienta una sola vez (índice único parcial) y el descuento de una entrega es idempotente (índice único parcial). Las compras y las cargas de camión (CU-217, CU-218, CU-222) usarán este mismo punto cuando se construyan. |
+| **Comentarios** | Es el único punto de escritura del stock físico (`StockLedgerPort`): nadie más toca los saldos ni el libro. El libro toma sus bloqueos en este orden, que es lo que evita los deadlocks entre ajustes, transferencias y entregas: 1) las garrafas del catálogo, por identificador; 2) los depósitos, en modo compartido (frena la baja de un depósito en uso); 3) los saldos, ordenados por ubicación, tipo y condición; 4) el contador de numeración, al final, si el caso numera un documento (el conteo inicial toma los depósitos en modo exclusivo y no compartido, para que nadie los mueva mientras se cuenta). `FOR KEY SHARE` alcanza para las entregas y las transferencias porque no cambian el vendible: sólo espera a quien tenga `FOR UPDATE`. Cuatro garantías sostiene además la base: el saldo no es negativo (restricción), el libro no se modifica (disparador), un movimiento se contraasienta una sola vez (índice único parcial) y el descuento de una entrega es idempotente (índice único parcial). La recepción de una compra (CU-217) y su anulación (CU-280) lo usan; la carga y la rendición del camión (CU-218, CU-222) lo usarán cuando se construyan. |
 
 ---
 
@@ -9874,34 +9875,38 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador consulta el padrón de proveedores de la distribuidora: razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. Endpoint: `GET /suppliers`. |
+| **Descripción** | El administrador consulta el padrón de proveedores de la distribuidora —razón social, CUIT, tipo (planta de llenado u otro), contacto y plazo de pago— con búsqueda por término, filtro por tipo y paginación, o abre la ficha de uno. Por omisión sólo ve los proveedores activos; puede pedir también los inactivos. Endpoints: `GET /suppliers` y `GET /suppliers/:id`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Compras → Proveedores»; el panel envía `GET /suppliers`, con o sin un término de búsqueda. |
-| 2 | El sistema devuelve los proveedores vigentes de la distribuidora y el panel los muestra. |
+| 1 | El administrador abre «Compras → Proveedores»; el panel envía `GET /suppliers`, con o sin `term` (razón social o CUIT), `kind`, `includeInactive`, `page` y `limit`. |
+| 2 | El sistema arma la consulta acotada a la distribuidora, la ordena por razón social y devuelve la página con el total. |
+| 3 | Para ver un proveedor, el administrador lo elige y el panel envía `GET /suppliers/:id`. |
+| 4 | El sistema devuelve la ficha del proveedor. |
 
-**Postcondición:** El administrador ve los proveedores vigentes de su distribuidora. No hay cambios de estado.
+**Postcondición:** El administrador ve los proveedores de su distribuidora o la ficha de uno. No hay cambios de estado.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
+| 1 | Si `kind` no es `filling_plant` ni `other`, o `page` o `limit` no son números positivos, o `limit` pasa de 100, el sistema responde 400 con el detalle del campo (por ejemplo "limit must not be greater than 100"). |
+| 3 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 3 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404 "Proveedor no encontrado: <id>". |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura por listado. Responde en menos de 1 segundo. |
-| **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
+| **Rendimiento** | Una consulta con su total por listado y una por ficha. Responde en menos de 1 segundo. |
+| **Frecuencia** | Media: al armar una orden de compra y al administrar el padrón. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es el listado del que parten la modificación (CU-262) y la baja (CU-263) de un proveedor. La búsqueda por término mira la razón social y el CUIT, igual que las demás búsquedas de listados del panel. |
+| **Comentarios** | Es el listado del que parten la emisión de una orden (CU-215), la modificación (CU-262) y la baja (CU-263) de un proveedor y su historial de compras (CU-286). La búsqueda por término mira la razón social, sin distinguir mayúsculas, y el CUIT, con o sin guiones. El listado devuelve 10 proveedores por página si no se indica `limit`. |
 
 ---
-
 
 #### Importante CU-261 — Registrar un Proveedor
 
@@ -9909,9 +9914,9 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador da de alta a un proveedor de la distribuidora, con su razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. El CUIT es único entre los proveedores vigentes. Endpoint: `POST /suppliers`. |
+| **Descripción** | El administrador da de alta a un proveedor de la distribuidora, con su razón social, CUIT, tipo (planta de llenado u otro), datos de contacto y plazo de pago. El CUIT se valida con su dígito verificador y es único entre los proveedores vigentes de la distribuidora. Endpoint: `POST /suppliers`, con `Idempotency-Key`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -9919,27 +9924,29 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |------|--------|
 | 1 | El administrador abre «Compras → Proveedores» y elige agregar uno; ingresa razón social, CUIT, tipo, contacto y plazo de pago. |
 | 2 | El panel envía `POST /suppliers`. |
-| 3 | El sistema comprueba que el CUIT no pertenezca a otro proveedor vigente de la distribuidora y crea el proveedor. |
-| 4 | El sistema devuelve el proveedor creado. |
+| 3 | El sistema valida los datos y comprueba que el CUIT no pertenezca a otro proveedor vigente de la distribuidora. |
+| 4 | El sistema crea el proveedor, activo, y lo devuelve con 201. |
 
-**Postcondición:** La distribuidora tiene el proveedor dado de alta.
+**Postcondición:** La distribuidora tiene el proveedor dado de alta, activo y con su CUIT guardado sin guiones.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el CUIT ya pertenece a otro proveedor vigente de la distribuidora, el sistema responde 409 con el detalle del campo. |
+| 3 | Si el CUIT no tiene 11 dígitos o su dígito verificador no cierra, el sistema responde 400 "cuit: no es un CUIT válido (11 dígitos y dígito verificador)". |
+| 3 | Si falta la razón social o el tipo, o un campo pasa de su largo máximo, el sistema responde 400 con el detalle del campo. |
+| 3 | Si el CUIT ya pertenece a otro proveedor vigente de la distribuidora, el sistema responde 409 "Ya hay un proveedor vigente con el CUIT <cuit>: <razón social>". |
+| 2 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir la operación. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura por alta. Responde en menos de 1 segundo. |
+| **Rendimiento** | Una lectura para comprobar el CUIT y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El CUIT se valida con el dígito verificador y no se guarda con guiones; es único entre los proveedores vigentes de la distribuidora, con un índice único parcial. |
+| **Comentarios** | El CUIT acepta guiones al escribirlo y se guarda sin ellos. La unicidad se sostiene con un índice único parcial sobre `(distribuidora, CUIT)` de los proveedores no dados de baja: un proveedor dado de baja libera su CUIT. El plazo de pago va de 0 a 365 días y sólo informa; el sistema no calcula vencimientos con él. |
 
 ---
-
 
 #### Importante CU-262 — Modificar un Proveedor
 
@@ -9947,9 +9954,9 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador modifica un proveedor de la distribuidora: razón social, CUIT, tipo, datos de contacto o plazo de pago. Endpoint: `PATCH /suppliers/:id`. |
+| **Descripción** | El administrador modifica un proveedor de la distribuidora: razón social, CUIT, tipo, datos de contacto, plazo de pago, o su condición de activo. Un proveedor inactivo sigue en el padrón pero no admite órdenes ni recepciones nuevas. Endpoint: `PATCH /suppliers/:id`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -9957,26 +9964,28 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |------|--------|
 | 1 | El administrador abre «Compras → Proveedores» y selecciona el proveedor: **incluye CU-214 Consultar los Proveedores**, el listado del que sale. |
 | 2 | Cambia los campos que correspondan y el panel envía `PATCH /suppliers/:id` con los campos que cambian. |
-| 3 | El sistema aplica el cambio y devuelve el proveedor actualizado. |
+| 3 | Si el CUIT cambia, el sistema comprueba que no pertenezca a otro proveedor vigente. |
+| 4 | El sistema aplica el cambio y devuelve el proveedor actualizado. |
 
-**Postcondición:** El proveedor quedó con los datos nuevos. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+**Postcondición:** El proveedor quedó con los datos nuevos. Las órdenes de compra y las recepciones ya registradas conservan su vínculo con él.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404 "Proveedor no encontrado: <id>". |
+| 3 | Si el CUIT nuevo no es válido, el sistema responde 400; si ya pertenece a otro proveedor vigente, responde 409 "Ya hay un proveedor vigente con el CUIT <cuit>: <razón social>". |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura por cambio. Responde en menos de 1 segundo. |
-| **Frecuencia** | Baja: al empezar a comprar a un proveedor nuevo. |
+| **Frecuencia** | Baja: al corregir un dato o dejar de comprarle a un proveedor sin darlo de baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Sólo cambian los campos enviados. |
+| **Comentarios** | Sólo cambian los campos enviados. Desactivar a un proveedor (`isActive: false`) no es darlo de baja (CU-263): sigue en el listado de inactivos y el administrador lo vuelve a activar cuando quiera; mientras tanto, emitir una orden o recibir una compra a su nombre responde 400 "El proveedor está inactivo: activalo para comprarle". |
 
 ---
-
 
 #### Importante CU-263 — Dar de Baja un Proveedor
 
@@ -9984,33 +9993,75 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador da de baja a un proveedor de la distribuidora. La baja es lógica. Endpoint: `DELETE /suppliers/:id`. |
+| **Descripción** | El administrador da de baja a un proveedor de la distribuidora. La baja es lógica y sólo procede si el proveedor no tiene órdenes de compra abiertas (en borrador, enviadas o parcialmente recibidas). Endpoint: `DELETE /suppliers/:id`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador abre «Compras → Proveedores» y selecciona el proveedor: **incluye CU-214 Consultar los Proveedores**, el listado del que sale. |
-| 2 | El panel envía `DELETE /suppliers/:id` y el sistema lo marca como dado de baja. |
-| 3 | El sistema devuelve la confirmación de la baja. |
+| 2 | El panel envía `DELETE /suppliers/:id`. |
+| 3 | El sistema bloquea el proveedor y cuenta sus órdenes de compra abiertas. |
+| 4 | Sin órdenes abiertas, el sistema lo marca como dado de baja con la fecha y confirma. |
 
-**Postcondición:** El proveedor quedó dado de baja y dejó de listarse. Las órdenes de compra y recepciones ya registradas conservan su vínculo con él.
+**Postcondición:** El proveedor quedó dado de baja y dejó de listarse; su CUIT queda libre. Las órdenes de compra y las recepciones ya registradas conservan su vínculo con él y su historial se sigue consultando.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404. |
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 3 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404 "Proveedor no encontrado: <id>". |
+| 3 | Si el proveedor tiene órdenes abiertas, el sistema responde 409 "El proveedor tiene <n> orden(es) de compra abierta(s): cancelalas o recibilas antes de darlo de baja". |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una escritura por baja. Responde en menos de 1 segundo. |
-| **Frecuencia** | Baja: al dejar de comprar a un proveedor. |
+| **Rendimiento** | Un bloqueo del proveedor, una cuenta de órdenes y una escritura, en una transacción. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja: al dejar de comprar a un proveedor. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La baja lógica conserva el historial de compras: una recepción de hace un año sigue mostrando a qué proveedor se le compró. |
+| **Comentarios** | Una orden cerrada con faltante (CU-282), cancelada o recibida ya no cuenta como abierta y no impide la baja. La baja lógica conserva el historial de compras: una recepción de hace un año sigue mostrando a qué proveedor se le compró (CU-286). El bloqueo del proveedor espera a la orden que se esté armando en ese momento, así que la cuenta la incluye. |
+
+---
+
+#### Importante CU-286 — Consultar el Historial de Compras de un Proveedor
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta el historial de compras de un proveedor, también si está dado de baja: la cantidad de recepciones confirmadas, las garrafas llenas recibidas y el monto total, y la página de recepciones del proveedor —confirmadas y anuladas— en un rango de fechas. Endpoint: `GET /suppliers/:id/purchase-history`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la ficha del proveedor: **incluye CU-214 Consultar los Proveedores**, el listado del que sale. |
+| 2 | Elige «Historial de compras», con o sin un rango de fechas, y el panel envía `GET /suppliers/:id/purchase-history` con `from`, `to`, `page` y `limit`. |
+| 3 | El sistema suma las recepciones confirmadas del proveedor en el rango: cantidad, garrafas llenas y monto. |
+| 4 | El sistema devuelve los totales y la página de recepciones, de la más reciente a la más antigua. |
+
+**Postcondición:** El administrador ve los totales y los remitos de un proveedor. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 2 | Si el proveedor no existe o es de otra distribuidora, el sistema responde 404 "Proveedor no encontrado: <id>". |
+| 2 | Si `from` es posterior a `to`, el sistema responde 400 '"from" no puede ser posterior a "to"'; si una fecha no tiene el formato AAAA-MM-DD, responde 400. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una cuenta de totales y una página de recepciones. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al negociar con el proveedor o conciliar un resumen de cuenta. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Los totales cuentan sólo las recepciones confirmadas; la página las lista todas, anuladas incluidas, cada una con su estado. Las fechas son días argentinos completos; si se manda sólo `from` o sólo `to`, el rango es ese día. Un proveedor dado de baja se puede consultar: el historial no se pierde. |
 
 ---
 
@@ -10020,40 +10071,121 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador emite una orden de compra a un proveedor para un depósito destino: por cada tipo de garrafa indica la cantidad, el costo unitario y cuántos envases vacíos entrega a la planta en canje. La orden nace en borrador, con número correlativo, y pasa a enviada cuando el administrador la confirma. Consulta las órdenes por estado, proveedor y fechas. Endpoints: `POST /purchase-orders`, `PATCH /purchase-orders/:id/send` y `GET /purchase-orders`. |
+| **Descripción** | El administrador emite una orden de compra a un proveedor para un depósito destino: por cada tipo de garrafa indica la cantidad, el costo unitario esperado y cuántos envases vacíos entrega a la planta en canje. La orden nace en borrador, con un número correlativo por distribuidora y su total calculado; sin depósito destino usa el predeterminado. Endpoint: `POST /purchase-orders`, con `Idempotency-Key`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Compras → Órdenes de compra» y elige «Nueva orden». |
-| 2 | Elige el proveedor y el depósito destino, la fecha esperada y, por cada tipo de garrafa, la cantidad, el costo unitario y los vacíos a canjear. |
+| 1 | El administrador abre «Compras → Órdenes de compra» y elige «Nueva orden»: **incluye CU-214 Consultar los Proveedores**, de donde elige al proveedor. |
+| 2 | Elige el depósito destino y la fecha esperada y, por cada tipo de garrafa, la cantidad, el costo unitario y los vacíos a canjear; puede agregar notas. |
 | 3 | El panel envía `POST /purchase-orders`. |
-| 4 | El sistema toma el número correlativo, crea la orden en borrador con sus renglones y calcula el total. |
-| 5 | El administrador revisa la orden y la envía; el panel envía `PATCH /purchase-orders/:id/send`. |
-| 6 | El sistema valida que la orden esté en borrador, la pasa a enviada con el instante de emisión y la devuelve. |
-| 7 | Para ver las órdenes emitidas, el panel envía `GET /purchase-orders` con los filtros por estado, proveedor y fechas. |
+| 4 | El sistema comprueba que el proveedor esté activo y que el depósito y las garrafas existan en la distribuidora. |
+| 5 | El sistema toma el número correlativo, crea la orden en borrador con sus renglones y calcula el total como la suma de cantidad por costo unitario. |
+| 6 | El sistema devuelve la orden con 201. |
 
-**Postcondición:** La orden de compra está registrada en borrador o enviada, con su número, sus renglones y su total.
+**Postcondición:** La orden de compra está registrada en borrador, con su número, sus renglones y su total. No se movió stock.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el proveedor o el depósito no existen o son de otra distribuidora, el sistema responde 404. |
-| 4 | Si un renglón repite un tipo de garrafa o tiene una cantidad que no es positiva, el sistema responde 400 con el detalle del campo. |
-| 6 | Si la orden ya no está en borrador, el sistema responde 409. |
-| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve la orden creada la primera vez. |
+| 4 | Si el proveedor, el depósito o una garrafa no existen o son de otra distribuidora, el sistema responde 404 ("Proveedor no encontrado: <id>", "Depósito <id> no encontrado", "Garrafa no encontrada: <id>"). |
+| 4 | Si el proveedor está inactivo, el sistema responde 400 "El proveedor está inactivo: activalo para comprarle". |
+| 3 | Si la orden no tiene renglones, si una cantidad es menor que 1, un costo es negativo, o hay más de 20 renglones, más de 5.000 unidades o más de $90.000 por garrafa, el sistema responde 400 con el detalle del campo (por ejemplo "items.0.quantity must not be greater than 5000"). |
+| 4 | Si una garrafa aparece en dos renglones, el sistema responde 400 "Una garrafa aparece dos veces en la orden: juntá las cantidades en un solo renglón". |
+| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir la operación. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una transacción con el número correlativo, la orden y sus renglones. Responde en menos de 1 segundo. |
+| **Rendimiento** | Un bloqueo del proveedor y de las garrafas, el número correlativo, la orden y sus renglones, en una transacción. Responde en menos de 1 segundo. |
 | **Frecuencia** | Media: en cada reposición a la planta de llenado. |
 | **Estabilidad** | Media |
-| **Comentarios** | El número correlativo sale de la secuencia por distribuidora y documento, que se bloquea al final del orden global de bloqueos: no deja huecos salvo que la transacción se revierta. Una orden enviada cuya fecha esperada venció aparece en el correo diario del administrador. |
+| **Comentarios** | El costo unitario de la orden es el que se espera pagar; el real queda en la recepción (CU-217), que lo toma de la orden si no se indica otro. Los topes de renglones, unidades y costo existen para que ningún total desborde la columna `numeric(12,2)`. El número sale de la secuencia por distribuidora y documento, que se bloquea al final del orden de bloqueos: no deja huecos salvo que la transacción se revierta. Enviar la orden al proveedor es otro caso (CU-288); el sistema no avisa al proveedor por ningún canal. |
+
+---
+
+#### Secundario CU-287 — Modificar una Orden de Compra
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador modifica una orden de compra mientras está en borrador: el proveedor, el depósito destino, la fecha esperada, las notas o los renglones. Si trae renglones, reemplazan a todos los anteriores y el total se recalcula. Endpoint: `PATCH /purchase-orders/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la orden desde «Compras → Órdenes de compra» —**incluye CU-283 Consultar las Órdenes de Compra**— y elige «Editar». |
+| 2 | Cambia los campos que correspondan y el panel envía `PATCH /purchase-orders/:id` con los campos que cambian. |
+| 3 | El sistema bloquea la orden y comprueba que siga en borrador. |
+| 4 | El sistema aplica los cambios; si trae renglones, borra los anteriores, inserta los nuevos y recalcula el total. |
+| 5 | El sistema devuelve la orden. |
+
+**Postcondición:** La orden quedó con los datos nuevos, siempre en borrador. Si se cambiaron los renglones, el total es la suma de cantidad por costo unitario de los nuevos.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 3 | Si la orden no existe o es de otra distribuidora, el sistema responde 404 "Orden de compra no encontrada: <id>". |
+| 3 | Si la orden ya no está en borrador, el sistema responde 400 "Sólo se edita una orden en borrador; esta está <estado>". |
+| 4 | Si el proveedor, el depósito o una garrafa nuevos no existen o son de otra distribuidora, responde 404; si el proveedor está inactivo o una garrafa se repite, responde 400. |
+| 2 | Si un renglón o un tope (20 renglones, 5.000 unidades, $90.000 por garrafa) no se cumple, el sistema responde 400 con el detalle del campo. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un bloqueo de la orden, el de las garrafas nuevas, el reemplazo de los renglones y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: al corregir una orden antes de enviarla. |
+| **Estabilidad** | Media |
+| **Comentarios** | Sólo se edita en borrador: una vez enviada, la orden es lo que se le pidió al proveedor y no cambia; si no se va a cumplir se cancela (CU-216) o se cierra con faltante (CU-282). Reemplazar los renglones es todo o nada: no hay edición de un renglón suelto. |
+
+---
+
+#### Importante CU-288 — Enviar una Orden de Compra
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador confirma una orden de compra que estaba en borrador: pasa a enviada, registra el instante de emisión y desde entonces admite recepciones. Endpoint: `PATCH /purchase-orders/:id/send`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la orden desde «Compras → Órdenes de compra» —**incluye CU-283 Consultar las Órdenes de Compra**— y elige «Enviar». |
+| 2 | El panel envía `PATCH /purchase-orders/:id/send`. |
+| 3 | El sistema bloquea la orden y comprueba que esté en borrador. |
+| 4 | El sistema la pasa a enviada con el instante de emisión y la devuelve. |
+
+**Postcondición:** La orden está enviada, con su fecha de emisión, y admite recepciones.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 3 | Si la orden no existe o es de otra distribuidora, el sistema responde 404 "Orden de compra no encontrada: <id>". |
+| 3 | Si la orden no está en borrador, el sistema responde 400 "La orden de compra está <estado>: no puede pasar a enviada". |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un bloqueo de la orden y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Media: en cada reposición a la planta de llenado. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Enviar no avisa al proveedor por ningún canal: la orden se imprime o se manda por fuera del sistema. Una orden enviada no se edita; la recepción (CU-217) sólo acepta órdenes enviadas o parcialmente recibidas. |
 
 ---
 
@@ -10063,36 +10195,121 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador cancela una orden de compra que todavía no tiene recepciones, indicando el motivo. La orden queda en el estado cancelada y no se puede recibir contra ella. |
+| **Descripción** | El administrador cancela una orden de compra en borrador o enviada, con el motivo. Cancelada significa que no se compró nada: una orden con recepciones confirmadas, aunque sean sólo de vacíos, no se cancela. Endpoint: `PATCH /purchase-orders/:id/cancel`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la orden desde «Compras → Órdenes de compra» y elige «Cancelar». |
+| 1 | El administrador abre la orden desde «Compras → Órdenes de compra» —**incluye CU-283 Consultar las Órdenes de Compra**— y elige «Cancelar». |
 | 2 | Escribe el motivo y confirma; el panel envía `PATCH /purchase-orders/:id/cancel`. |
-| 3 | El sistema comprueba que la orden esté en borrador o enviada y que no tenga recepciones asentadas. |
-| 4 | El sistema marca la orden como cancelada con el motivo y la devuelve. |
+| 3 | El sistema bloquea la orden y comprueba que no tenga recepciones confirmadas. |
+| 4 | El sistema comprueba que la orden esté en borrador o enviada. |
+| 5 | El sistema la marca como cancelada con el motivo y la devuelve. |
 
-**Postcondición:** La orden está cancelada, con su motivo, y ya no admite recepciones.
+**Postcondición:** La orden está cancelada, con su motivo, y ya no admite recepciones ni cambios. No se movió stock.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si la orden ya tiene recepciones, el sistema responde 409: lo recibido se anula primero (CU-217). |
-| 3 | Si la orden ya está recibida o cancelada, el sistema responde 409. |
-| 3 | Si la orden no existe o es de otra distribuidora, el sistema responde 404. |
-| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 2 | Si falta el motivo, el sistema responde 400 "reason: el motivo es obligatorio". |
+| 3 | Si la orden no existe o es de otra distribuidora, el sistema responde 404 "Orden de compra no encontrada: <id>". |
+| 3 | Si la orden tiene recepciones confirmadas, el sistema responde 409 "La orden de compra N° <n> tiene <k> recepción(es) confirmada(s): anulalas antes de cancelarla" y, si está parcialmente recibida, agrega ", o cerrala con faltante". Con todas las recepciones anuladas se puede cancelar. |
+| 4 | Si la orden no está en borrador ni enviada, el sistema responde 400 "La orden de compra está <estado>: no puede pasar a cancelada". |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una lectura de la orden y una escritura. Responde en menos de 1 segundo. |
+| **Rendimiento** | Un bloqueo de la orden, una cuenta de recepciones y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | Una orden parcialmente recibida no se cancela: se cierra con lo recibido. La cancelación no mueve stock, porque una orden sin recepciones no movió ninguno. |
+| **Comentarios** | La comprobación de las recepciones va antes que la del estado: una orden cerrada con faltante que tiene recepciones responde 409 y no 400. Una orden parcialmente recibida no se cancela: lo que no llega se cierra con faltante (CU-282). La cancelación no mueve stock, porque una orden sin recepciones confirmadas no movió ninguno. |
+
+---
+
+#### Importante CU-282 — Cerrar una Orden de Compra con Faltante
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador cierra con faltante una orden parcialmente recibida, con el motivo: lo que falta ya no llega. La orden queda en un estado propio, distinto de cancelada porque sí recibió mercadería. Endpoint: `PATCH /purchase-orders/:id/close-short`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la orden parcialmente recibida desde «Compras → Órdenes de compra» —**incluye CU-283 Consultar las Órdenes de Compra**— y elige «Cerrar con faltante». |
+| 2 | Escribe el motivo y confirma; el panel envía `PATCH /purchase-orders/:id/close-short`. |
+| 3 | El sistema bloquea la orden y comprueba que esté parcialmente recibida. |
+| 4 | El sistema la pasa a cerrada con faltante, con el motivo, y la devuelve. |
+
+**Postcondición:** La orden está cerrada con faltante, con su motivo. Conserva lo recibido, ya no espera más mercadería (lo pendiente pasa a 0) y deja de impedir la baja del proveedor.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 2 | Si falta el motivo, el sistema responde 400 "reason: el motivo es obligatorio". |
+| 3 | Si la orden no existe o es de otra distribuidora, el sistema responde 404 "Orden de compra no encontrada: <id>". |
+| 3 | Si la orden no está parcialmente recibida, el sistema responde 400 "La orden de compra está <estado>: no puede pasar a cerrada con faltante". |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un bloqueo de la orden y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: cuando la planta no repone el resto de una compra. |
+| **Estabilidad** | Media |
+| **Comentarios** | Se eligió un estado propio y no «cancelada» porque cancelada significa «no se compró nada»; mezclar los dos casos falsearía los reportes de compras. Las recepciones de una orden cerrada con faltante se siguen pudiendo anular (CU-280) y la orden conserva el estado; ya no se recibe contra ella. El cierre no mueve stock. |
+
+---
+
+#### Importante CU-283 — Consultar las Órdenes de Compra
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta las órdenes de compra de la distribuidora, filtradas por estado, proveedor y fechas; abre una con sus renglones —pedido, recibido y pendiente— y las recepciones que la cumplen; o ve lo que falta recibir de cada garrafa. Endpoints: `GET /purchase-orders`, `GET /purchase-orders/:id` y `GET /purchase-orders/:id/pending`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Órdenes de compra»; el panel envía `GET /purchase-orders`, con o sin `status`, `supplierId`, `from`, `to`, `page` y `limit`. |
+| 2 | El sistema devuelve la página de órdenes, de la más nueva a la más vieja, con lo pedido, lo recibido y lo pendiente de cada una. |
+| 3 | Para ver una orden, el administrador la elige y el panel envía `GET /purchase-orders/:id`. |
+| 4 | El sistema devuelve la orden con sus renglones y las recepciones que la cumplen. |
+| 5 | Para ver lo que falta, el panel envía `GET /purchase-orders/:id/pending`. |
+| 6 | El sistema devuelve, por garrafa, lo pedido, lo recibido, lo pendiente y los vacíos a canjear, y el total pendiente. |
+
+**Postcondición:** El administrador ve las órdenes, una con su detalle o lo que le falta recibir. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si `status` no es un estado válido, `supplierId` no es un UUID, o las fechas no tienen el formato AAAA-MM-DD, el sistema responde 400 con el detalle del campo. |
+| 1 | Si `from` es posterior a `to`, el sistema responde 400 '"from" no puede ser posterior a "to"'. |
+| 3 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 3 | Si la orden no existe o es de otra distribuidora, el sistema responde 404 "Orden de compra no encontrada: <id>". |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una cuenta y una página por listado; una orden con sus renglones y recepciones por detalle. Responde en menos de 1 segundo. |
+| **Frecuencia** | Alta: es la pantalla de trabajo de las compras. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la modificación (CU-287), el envío (CU-288), la cancelación (CU-216) y el cierre con faltante (CU-282) de una orden. Las fechas filtran por el día de alta de la orden, en días argentinos completos; si se manda sólo una, el rango es ese día. Una orden cancelada o cerrada con faltante no espera nada: su pendiente es 0 aunque no haya recibido todo. |
 
 ---
 
@@ -10102,41 +10319,207 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador registra la recepción de una compra, con o sin orden de compra: por cada tipo de garrafa, las unidades llenas recibidas, los vacíos entregados al proveedor y el costo unitario, con el comprobante del proveedor. El stock del depósito destino sube con las llenas, baja con los vacíos canjeados, el stock vendible aumenta y el costo promedio del tipo de garrafa se recalcula. Si la recepción cumple una orden, esta acumula lo recibido y pasa a parcialmente recibida o recibida. Puede anularse y consultarse. Endpoints: `POST /purchase-receipts`, `PATCH /purchase-receipts/:id/void` y `GET /purchase-receipts`. |
+| **Descripción** | El administrador registra la recepción de una compra —el remito de ingreso—, con o sin orden de compra: por cada tipo de garrafa, las unidades llenas recibidas, los vacíos que se lleva la planta y el costo unitario, con el comprobante del proveedor. En una sola transacción las llenas entran al depósito destino y suben el stock vendible, los vacíos canjeados salen del depósito, el costo promedio de cada garrafa se recalcula y, si hay orden, esta acumula lo recibido y pasa a parcialmente recibida o recibida. Endpoint: `POST /purchase-receipts`, con `Idempotency-Key`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
-| **Estado** | Planificado (I-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Compras → Recepciones» y elige «Recibir», desde una orden —que precarga lo pendiente— o sin orden. |
-| 2 | Completa el tipo y el número del comprobante del proveedor y, por cada tipo de garrafa, las llenas recibidas, los vacíos entregados y el costo; adjunta el remito. |
-| 3 | El panel envía `POST /purchase-receipts` con la orden, si la hay, y los renglones. |
-| 4 | El sistema comprueba que el comprobante no esté repetido para ese proveedor y toma el número interno correlativo. |
-| 5 | El sistema crea la recepción con sus renglones y registra la entrada de las llenas y la salida de los vacíos canjeados en el depósito —**incluye CU-250 Aplicar un Movimiento de Stock**. |
-| 6 | El sistema suma las llenas al stock vendible del tipo de garrafa, recalcula su costo promedio ponderado y, si hay orden, acumula lo recibido en ella y actualiza su estado. |
-| 7 | El sistema devuelve la recepción. Para anularla, el panel envía `PATCH /purchase-receipts/:id/void` con el motivo; el sistema registra los contraasientos y deja la recepción anulada. Para listarlas, `GET /purchase-receipts`. |
+| 1 | El administrador abre «Compras → Recepciones» y elige «Recibir», desde una orden enviada o parcialmente recibida —el panel precarga lo pendiente con `GET /purchase-orders/:id/pending`— o sin orden. |
+| 2 | Completa el tipo (remito o factura) y el número del comprobante del proveedor, la fecha de recepción y, por cada tipo de garrafa, las llenas recibidas, los vacíos que se lleva la planta y, si no hay orden, el costo unitario. |
+| 3 | El panel envía `POST /purchase-receipts`. |
+| 4 | Si hay orden, el sistema la bloquea y comprueba que esté enviada o parcialmente recibida, que las garrafas sean las de la orden y que ningún renglón pase de lo pendiente. |
+| 5 | El sistema comprueba que el proveedor esté activo y que su comprobante, por tipo y número, no esté registrado. |
+| 6 | El sistema asienta en el libro de stock, en el depósito destino, la entrada de las llenas y la salida de los vacíos que se lleva la planta —**incluye CU-250 Aplicar un Movimiento de Stock**—; las llenas suben también el stock vendible. |
+| 7 | El sistema recalcula el costo promedio ponderado de cada garrafa con llenas y, si hay orden, acumula lo recibido en sus renglones y actualiza su estado. |
+| 8 | El sistema toma el número interno correlativo, guarda el remito con sus renglones, impago, y lo devuelve con 201. |
 
-**Postcondición:** La recepción está registrada y el depósito tiene las llenas recibidas y menos los vacíos entregados; el stock vendible aumentó en lo recibido, el costo promedio está al día y la orden, si la hay, refleja lo recibido.
+**Postcondición:** La recepción está confirmada e impaga. El depósito tiene las llenas recibidas y menos los vacíos entregados, el stock vendible aumentó en lo recibido, el costo promedio de cada garrafa está al día y la orden, si la hay, refleja lo recibido.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el mismo comprobante ya se registró para ese proveedor, el sistema responde 409. |
-| 5 | Si los vacíos entregados dejarían negativo el saldo de vacíos del depósito, el sistema responde 400 con el saldo disponible y no registra nada. |
-| 5 | Si la orden no existe o es de otra distribuidora, el sistema responde 404; si está cancelada o ya recibida por completo, responde 409. |
-| 5 | Si la compra no tiene orden de compra, el sistema registra la recepción con el depósito y el proveedor indicados y no actualiza ninguna orden. |
-| 7 | Si el depósito ya no tiene las llenas que la recepción ingresó (se vendieron), la anulación responde 409: no se puede deshacer lo que ya salió. |
-| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si falta el comprobante, no hay renglones, un renglón no recibe llenas ni entrega vacíos, una garrafa se repite, o se pasan los topes (20 renglones, 5.000 unidades, $90.000 por garrafa), el sistema responde 400 con el detalle (por ejemplo "Cada renglón tiene que recibir llenas o entregar vacías"). |
+| 3 | Si la fecha de recepción es futura (se toleran 5 minutos de reloj desfasado), el sistema responde 400 "La fecha de recepción no puede ser futura". |
+| 4 | Si la orden no existe o es de otra distribuidora, el sistema responde 404 "Orden de compra no encontrada: <id>". |
+| 4 | Si la orden no está enviada ni parcialmente recibida, el sistema responde 400 "La orden de compra N° <n> está <estado>: sólo se recibe una orden enviada o parcialmente recibida". |
+| 4 | Si una garrafa no está en la orden, el sistema responde 400 "<tipo> no está en la orden de compra N° <n>: recibila como compra directa o agregala a otra orden"; si un renglón pasa de lo pendiente, responde 400 "La recepción se pasa de lo pedido en la orden N° <n>. <tipo>: llegan <x> y sólo quedan <y> por recibir". |
+| 4 | Si el proveedor indicado no es el de la orden, el sistema responde 400; sin orden, si falta el proveedor responde 400 "Una compra sin orden necesita el proveedor (supplierId)" y si falta el costo de un renglón, 400 "Una compra sin orden necesita el costo unitario (unitCost) de cada renglón". |
+| 5 | Si el proveedor, el depósito o una garrafa no existen o son de otra distribuidora, el sistema responde 404; si el proveedor está inactivo, 400. |
+| 5 | Si ya hay una recepción de ese proveedor con el mismo tipo de comprobante y número, anulada o no, el sistema responde 409 "Ya hay una recepción de este proveedor con el mismo tipo de documento y número <n>". |
+| 6 | Si los vacíos que se lleva la planta dejarían negativo el saldo de vacíos del depósito, el sistema responde 400 "No alcanzan las vacías que se lleva la planta: el depósito no puede quedar en negativo. Stock insuficiente: <tipo> vacías en <depósito> (hay <h>, se necesitan <n>)" y no registra nada. |
+| 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir la operación. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Bloqueos de las filas de tipo de garrafa y de saldo en el orden global y una transacción con la recepción, los renglones, los movimientos y la orden. Responde en menos de 2 segundos. |
+| **Rendimiento** | Bloqueos de la orden, del proveedor, de las garrafas, de los depósitos y de los saldos, el libro, los costos, la orden y el remito, en una transacción. Responde en menos de 2 segundos. |
 | **Frecuencia** | Media: en cada llegada de gas. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es el camino por el que entran al sistema las garrafas llenas compradas. El costo promedio ponderado habilita el margen en los reportes. El pago al proveedor se reduce a un indicador de impago o pagado, con su egreso de caja en el módulo de caja (iteración I-14): este caso no mueve plata. La anulación deshace los movimientos con contraasientos y no borra nada. |
+| **Comentarios** | Es el camino por el que entran al sistema las garrafas llenas compradas. Sin orden, el depósito es el indicado o el predeterminado y el costo de cada renglón es obligatorio; con orden, el proveedor y el depósito son los de la orden y el costo es el de la orden si no se indica otro. El costo promedio es (existencia previa × costo previo + llenas × costo nuevo) / (existencia previa + llenas), redondeado a 2 decimales; la existencia son las llenas de depósitos y camiones antes de la recepción y, sin existencia o sin costo previo, el promedio es el costo nuevo. Cada renglón guarda el promedio y la existencia previos, que la anulación (CU-280) necesita. Los bloqueos se toman en un orden fijo: la orden, el proveedor en modo compartido, las garrafas del catálogo —en modo exclusivo si suben las llenas—, los depósitos en modo compartido, los saldos y, al final, el contador de numeración; dos recepciones simultáneas de la misma orden se serializan en el bloqueo de la orden, y la segunda ve lo que recibió la primera. Remito y factura numeran aparte. Este caso no mueve dinero: el pago es una marca (CU-281). Adjuntar el remito escaneado no está construido. |
+
+---
+
+#### Importante CU-280 — Anular una Recepción de Compra
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador anula una recepción confirmada, con el motivo. El sistema deshace los movimientos del libro con un contraasiento —las llenas salen del depósito donde entraron y los vacíos que se llevó la planta vuelven—, recalcula el costo promedio de las garrafas, devuelve lo recibido a la orden y deja la recepción anulada; no borra nada. Endpoint: `PATCH /purchase-receipts/:id/void`, con `Idempotency-Key`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Recepciones» —**incluye CU-284 Consultar las Recepciones de Compra**— y elige la recepción que quiere anular. |
+| 2 | Escribe el motivo y confirma; el panel envía `PATCH /purchase-receipts/:id/void`. |
+| 3 | El sistema bloquea la orden de la recepción, si tiene, y después la recepción, y comprueba que esté confirmada y que no figure como pagada. |
+| 4 | El sistema contraasienta el lote de la recepción en el libro de stock —**incluye CU-250 Aplicar un Movimiento de Stock**—: las llenas salen del depósito y los vacíos vuelven. |
+| 5 | El sistema recalcula el costo promedio de cada garrafa con llenas. |
+| 6 | Si la recepción cumplía una orden, el sistema le devuelve lo recibido y, si la orden estaba enviada, parcialmente recibida o recibida, recalcula su estado. |
+| 7 | El sistema marca la recepción como anulada, con el motivo, la fecha y el usuario, y la devuelve. |
+
+**Postcondición:** La recepción está anulada. El stock volvió a donde estaba antes de recibirla: el depósito tiene menos llenas y más vacíos, el stock vendible bajó en lo recibido, el costo promedio de cada garrafa se recalculó y la orden, si la hay, vuelve a tener pendiente lo anulado. Los movimientos originales siguen en el libro, cada uno con su contraasiento.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 2 | Si falta el motivo, el sistema responde 400 "reason: el motivo es obligatorio". |
+| 3 | Si la recepción no existe o es de otra distribuidora, el sistema responde 404 "Recepción no encontrada: <id>". |
+| 3 | Si la recepción ya está anulada, el sistema responde 409 "La recepción N° <n> ya está anulada". |
+| 3 | Si la recepción figura como pagada, el sistema responde 400 "La recepción N° <n> figura como pagada: marcala como impaga antes de anularla". |
+| 4 | Si el depósito ya no tiene las llenas que la recepción trajo (se vendieron, se cargaron a un camión o se transfirieron) y el contraasiento dejaría negativo su saldo, el sistema responde 409 "No se puede anular la recepción N° <n>: las garrafas que trajo ya no están en el depósito donde entraron…", con el detalle de dónde está hoy cada garrafa y la indicación de devolverlas, y no registra nada. |
+| 2 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir la operación. |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Bloqueos de la orden, la recepción, las garrafas, los depósitos y los saldos, el contraasiento, los costos y la orden, en una transacción. Responde en menos de 2 segundos. |
+| **Frecuencia** | Muy baja: al corregir un remito cargado por error. |
+| **Estabilidad** | Media |
+| **Comentarios** | El libro nunca se edita: la anulación es un contraasiento y las dos filas quedan a la vista. La recepción anulada no se reactiva: se registra otra, y el comprobante del proveedor anulado sigue ocupado, de modo que la nueva lleva otro número o tipo. Anular una recepción de una orden cancelada o cerrada con faltante deja a la orden en su estado. Costo promedio al anular: las ventas, mermas y ajustes no lo cambian, sólo lo cambia una compra, así que si no queda otra recepción confirmada de esa garrafa el costo vuelve a vacío; si la anulada es la última compra, vuelve exactamente al promedio que había antes; y si hubo compras posteriores se resta del promedio de hoy lo que esta compra lo había movido, con piso en cero, que es una aproximación porque las compras posteriores lo diluyeron. Los bloqueos siguen el orden: orden, recepción, garrafas, depósitos y saldos. |
+
+---
+
+#### Secundario CU-281 — Marcar el Pago de una Recepción
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador marca una recepción de compra como pagada o como impaga. Es sólo una marca para saber qué remitos se deben: no mueve dinero ni genera un egreso de caja, que corresponde al módulo de caja (iteración I-14). Endpoint: `PATCH /purchase-receipts/:id/payment-status`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Recepciones» —**incluye CU-284 Consultar las Recepciones de Compra**— y elige la recepción. |
+| 2 | Elige «Marcar como pagada» o «Marcar como impaga»; el panel envía `PATCH /purchase-receipts/:id/payment-status` con `paymentStatus`. |
+| 3 | El sistema bloquea la recepción y comprueba que no esté anulada. |
+| 4 | El sistema guarda la marca y devuelve la recepción. |
+
+**Postcondición:** La recepción quedó marcada como pagada o como impaga. El movimiento de caja asociado sigue vacío.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 2 | Si `paymentStatus` no es `unpaid` ni `paid`, el sistema responde 400 "paymentStatus must be one of the following values: unpaid, paid". |
+| 3 | Si la recepción no existe o es de otra distribuidora, el sistema responde 404 "Recepción no encontrada: <id>". |
+| 3 | Si la recepción está anulada, el sistema responde 400 "La recepción N° <n> está anulada: no se le cambia el estado de pago". |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Un bloqueo de la recepción y una escritura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Media: cuando se paga un remito a la planta. |
+| **Estabilidad** | Media |
+| **Comentarios** | Una recepción pagada no se puede anular (CU-280): hay que marcarla impaga antes. Cuando exista el módulo de caja, marcar el pago generará el egreso y completará el movimiento de caja asociado (`cashMovementId`), que hoy queda en vacío y sin clave foránea. |
+
+---
+
+#### Importante CU-284 — Consultar las Recepciones de Compra
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta las recepciones de compra de la distribuidora, filtradas por proveedor, orden, estado de pago, estado y fechas, o abre una con sus renglones —llenas, vacíos, costo y subtotal—, su motivo de anulación y los lotes del libro de stock. Endpoints: `GET /purchase-receipts` y `GET /purchase-receipts/:id`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Recepciones»; el panel envía `GET /purchase-receipts`, con o sin `supplierId`, `purchaseOrderId`, `paymentStatus`, `status`, `from`, `to`, `page` y `limit`. |
+| 2 | El sistema devuelve la página de recepciones, de la más reciente a la más antigua, con el proveedor, la orden, el depósito, el comprobante, el total, el pago y el estado. |
+| 3 | Para ver una recepción, el administrador la elige y el panel envía `GET /purchase-receipts/:id`. |
+| 4 | El sistema devuelve la recepción con sus renglones, el motivo de anulación si lo tiene, el lote del libro y el del contraasiento, y el movimiento de caja asociado (vacío hasta que exista la caja). |
+
+**Postcondición:** El administrador ve las recepciones o una con su detalle. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si `paymentStatus` o `status` no son valores válidos, `supplierId` o `purchaseOrderId` no son UUID, o las fechas no tienen el formato AAAA-MM-DD, el sistema responde 400 con el detalle del campo. |
+| 1 | Si `from` es posterior a `to`, el sistema responde 400 '"from" no puede ser posterior a "to"'. |
+| 3 | Si el identificador no es un UUID, el sistema responde 400 "Validation failed (uuid is expected)". |
+| 3 | Si la recepción no existe o es de otra distribuidora, el sistema responde 404 "Recepción no encontrada: <id>". |
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una cuenta y una página por listado; una recepción con sus renglones por detalle. Responde en menos de 1 segundo. |
+| **Frecuencia** | Alta: es la pantalla de trabajo del ingreso de mercadería. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es el listado del que parten la anulación (CU-280) y el pago (CU-281). El filtro por estado de pago es el que muestra qué remitos están impagos. Las fechas filtran por el día de recepción, en días argentinos completos; si se manda sólo una, el rango es ese día. |
+
+---
+
+#### Importante CU-285 — Consultar el Costo Promedio de las Garrafas
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta, para cada tipo de garrafa de la distribuidora, el costo promedio ponderado de las llenas compradas, el costo de la última compra, cuándo se recibió y cuántas llenas hay hoy en depósitos y camiones. Endpoint: `GET /purchase-receipts/average-costs`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Compras → Costos»; el panel envía `GET /purchase-receipts/average-costs`. |
+| 2 | El sistema devuelve, por tipo de garrafa, ordenado por tipo: el costo promedio, el costo de la última compra, la fecha de esa recepción y las llenas existentes. |
+
+**Postcondición:** El administrador ve el costo de cada tipo de garrafa. No hay cambios de estado.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una consulta con la última compra y las llenas de cada garrafa. Responde en menos de 1 segundo. |
+| **Frecuencia** | Media: al fijar precios y revisar márgenes. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El costo promedio y el último costo quedan vacíos mientras la garrafa nunca se compró. Sólo una compra cambia el promedio; las ventas, las mermas y los ajustes no. El último costo sale de la última recepción confirmada con llenas, así que anular una recepción lo corre a la anterior. |
 
 ---
 
@@ -10190,6 +10573,14 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-260 Dar de Baja un Depósito | → | CU-207 Consultar los Depósitos | La baja parte del mismo listado. |
 | CU-262 Modificar un Proveedor | → | CU-214 Consultar los Proveedores | La modificación selecciona el proveedor desde el listado. |
 | CU-263 Dar de Baja un Proveedor | → | CU-214 Consultar los Proveedores | La baja parte del mismo listado. |
+| CU-215 Emitir una Orden de Compra | → | CU-214 Consultar los Proveedores | El proveedor de la orden se elige del listado. |
+| CU-286 Consultar el Historial de Compras de un Proveedor | → | CU-214 Consultar los Proveedores | El historial parte de la ficha del proveedor. |
+| CU-287 Modificar una Orden de Compra | → | CU-283 Consultar las Órdenes de Compra | La modificación selecciona la orden desde el listado. |
+| CU-288 Enviar una Orden de Compra | → | CU-283 Consultar las Órdenes de Compra | El envío parte del mismo listado. |
+| CU-216 Cancelar una Orden de Compra | → | CU-283 Consultar las Órdenes de Compra | La cancelación parte del mismo listado. |
+| CU-282 Cerrar una Orden de Compra con Faltante | → | CU-283 Consultar las Órdenes de Compra | El cierre parte del mismo listado. |
+| CU-280 Anular una Recepción de Compra | → | CU-284 Consultar las Recepciones de Compra | La anulación selecciona la recepción desde el listado. |
+| CU-281 Marcar el Pago de una Recepción | → | CU-284 Consultar las Recepciones de Compra | La marca de pago parte del mismo listado. |
 | CU-059 Eliminar Zona de Cobertura | → | CU-057 Consultar Zonas de Cobertura | La baja parte de seleccionar la zona en el listado. |
 | CU-025 Resolver Reclamo | → | CU-024 Listar Reclamos | La resolución parte de abrir el detalle desde el listado. |
 | CU-063 Resolver Incidencia | → | CU-061 Listar Incidencias | Ídem, desde la grilla de incidencias. |
@@ -10270,6 +10661,7 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-274 Registrar el Conteo Inicial de un Depósito | → | CU-250 Aplicar un Movimiento de Stock | Ídem: cada diferencia del conteo es un movimiento. |
 | CU-276 Anular una Transferencia de Stock | → | CU-250 Aplicar un Movimiento de Stock | Ídem: el contraasiento se aplica por el mismo punto de escritura. |
 | CU-217 Registrar la Recepción de una Compra | → | CU-250 Aplicar un Movimiento de Stock | Ídem: las llenas entran y los vacíos canjeados salen del depósito. |
+| CU-280 Anular una Recepción de Compra | → | CU-250 Aplicar un Movimiento de Stock | Ídem: el contraasiento se aplica por el mismo punto de escritura. |
 | CU-218 Registrar la Carga del Camión | → | CU-250 Aplicar un Movimiento de Stock | Ídem: las garrafas pasan del depósito al camión. |
 | CU-220 Descontar del Stock Físico lo Entregado | → | CU-250 Aplicar un Movimiento de Stock | Ídem: la entrega descuenta las llenas y acredita las vacías. |
 | CU-222 Cerrar la Rendición de Stock del Camión | → | CU-250 Aplicar un Movimiento de Stock | Ídem: lo declarado vuelve al depósito y la diferencia se asienta. |
@@ -12263,7 +12655,7 @@ La matriz relaciona cada requisito de información y cada caso de uso con los ob
 sistema que contribuye a alcanzar. Las marcas de los casos de uso se derivan del campo
 **Objetivos asociados** que cada uno declara en la sección 7.
 
-Comprende los 19 requisitos de información, los 9 requisitos no funcionales y los 278 casos de uso
+Comprende los 19 requisitos de información, los 9 requisitos no funcionales y los 287 casos de uso
 que declaran al menos un objetivo: todos lo hacen. 
 
 |  | OBJ-01 | OBJ-02 | OBJ-03 | OBJ-04 | OBJ-05 | OBJ-06 | OBJ-07 | OBJ-08 | OBJ-09 | OBJ-10 | OBJ-11 | OBJ-12 | OBJ-13 | OBJ-14 | OBJ-15 |
@@ -12574,6 +12966,15 @@ que declaran al menos un objetivo: todos lo hacen.
 | **CU-277** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
 | **CU-278** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
 | **CU-279** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-280** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-281** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-282** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-283** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-284** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-285** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-286** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-287** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-288** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
 
 El símbolo ● indica que el requisito o el caso de uso contribuye al objetivo de esa columna.
 

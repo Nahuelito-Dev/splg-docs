@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-281 Marcar el Pago de una Recepción · marcarPagoDeRecepcion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseReceiptService
+    participant COL as :Map#lt;String, RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+
+    ADM->>+SRV: marcarPagoDeRecepcion(recepcionId, estadoDePago)
+    SRV->>+COL: get(recepcionId)
+    COL-->>-SRV: recepcion
+    SRV->>+REC: marcarPago(estadoDePago)
+    REC->>REC: validarNoAnulada()
+    REC-->>-SRV: recepcion
+    SRV-->>-ADM: recepcion

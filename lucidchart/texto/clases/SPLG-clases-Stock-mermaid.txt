@@ -89,10 +89,12 @@ classDiagram
         <<fachada>>
         + aplicar(movimientos: MovimientoDeCaja[*]): Identificador
         + aplicar(operacion: Cadena): Identificador
+        + aplicar(ubicacionDeStock: UbicacionDeStock, itemsRecibidos: ItemRecepcion[*]): Identificador
         + aplicar(ubicacionDeStock: UbicacionDeStock, renglonesDeAjuste: ItemAjusteDeStock[*]): Identificador
         + aplicar(ubicacionDeStock: UbicacionDeStock, motivo: Cadena, items: Registro): Identificador
         + aplicar(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, items: Registro, traslado: MotivoDeMovimiento): Identificador
-        + aplicarMovimientoDeStock(ubicacionDeStock: UbicacionDeStock, ubicacionDeStock: UbicacionDeStock, producto: Producto, llenas: CondicionDeStock, llenasCargadas: Entero, motivoDeMovimiento: MotivoDeMovimiento): Booleano
+        + aplicarMovimientoDeStock(ubicacionOrigen: UbicacionDeStock, ubicacionDestino: UbicacionDeStock, producto: Producto, llenas: CondicionDeStock, llenasCargadas: Entero, motivoDeMovimiento: MotivoDeMovimiento): Booleano
+        + contraasentar(loteDeLaRecepcion: Identificador): Identificador
         + contraasentar(loteId: Identificador, nota: Cadena)
         + validarMovimiento(movimiento: MovimientoDeCaja)
     }

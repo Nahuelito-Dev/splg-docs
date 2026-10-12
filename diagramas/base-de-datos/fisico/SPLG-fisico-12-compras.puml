@@ -30,97 +30,104 @@ skinparam legendBorderColor #2C4257
 hide circle
 skinparam linetype polyline
 
-entity "supplier" as e_supplier <<propuesto>> {
-  {field} <color:#1F5E8C>**supplier_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>business_name : varchar(120) * <<propuesto>></color>
-  {field} <color:#1F5E8C>cuit : varchar(11) * <<propuesto>></color>
-  {field} <color:#1F5E8C>kind : supplier_kind_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>contact_name : varchar(80) <<propuesto>></color>
-  {field} <color:#1F5E8C>phone : varchar(30) <<propuesto>></color>
-  {field} <color:#1F5E8C>email : varchar(120) <<propuesto>></color>
-  {field} <color:#1F5E8C>address : text <<propuesto>></color>
-  {field} <color:#1F5E8C>payment_terms_days : integer <<propuesto>></color>
-  {field} <color:#1F5E8C>is_active : boolean * <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>deletedAt : timestamptz <<propuesto>></color>
+entity "supplier" as e_supplier {
+  {field} **supplier_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} business_name : varchar(120) *
+  {field} cuit : varchar(11) *
+  {field} kind : supplier_kind_enum *
+  {field} contact_name : varchar(80)
+  {field} phone : varchar(30)
+  {field} email : varchar(120)
+  {field} address : text
+  {field} payment_terms_days : integer
+  {field} is_active : boolean *
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} deletedAt : timestamptz
 }
-entity "purchase_order" as e_purchase_order <<propuesto>> {
-  {field} <color:#1F5E8C>**purchase_order_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>number : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>//supplier_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//destination_warehouse_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>status : purchase_order_status_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>issued_at : timestamptz <<propuesto>></color>
-  {field} <color:#1F5E8C>expected_date : date <<propuesto>></color>
-  {field} <color:#1F5E8C>total_amount : numeric(12,2) * <<propuesto>></color>
-  {field} <color:#1F5E8C>cancel_reason : text <<propuesto>></color>
-  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
-  {field} <color:#1F5E8C>//created_by_user_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+entity "purchase_order" as e_purchase_order {
+  {field} **purchase_order_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} number : integer *
+  {field} //supplier_id// : uuid * <<FK>>
+  {field} //destination_warehouse_id// : uuid * <<FK>>
+  {field} status : purchase_order_status_enum *
+  {field} issued_at : timestamptz
+  {field} expected_date : date
+  {field} total_amount : numeric(12,2) *
+  {field} cancel_reason : text
+  {field} notes : text
+  {field} //created_by_user_id// : uuid * <<FK>>
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} close_reason : text
 }
-entity "purchase_order_item" as e_purchase_order_item <<propuesto>> {
-  {field} <color:#1F5E8C>**item_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//purchase_order_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>quantity : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>unit_cost : numeric(12,2) * <<propuesto>></color>
-  {field} <color:#1F5E8C>empties_to_exchange : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>received_quantity : integer * <<propuesto>></color>
+entity "purchase_order_item" as e_purchase_order_item {
+  {field} **item_id** : uuid * <<PK>>
+  {field} //purchase_order_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} quantity : integer *
+  {field} unit_cost : numeric(12,2) *
+  {field} empties_to_exchange : integer *
+  {field} received_quantity : integer *
 }
-entity "purchase_receipt" as e_purchase_receipt <<propuesto>> {
-  {field} <color:#1F5E8C>**receipt_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>number : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>//supplier_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//purchase_order_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//warehouse_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>supplier_document_type : purchase_document_type_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>supplier_document_number : varchar(30) * <<propuesto>></color>
-  {field} <color:#1F5E8C>received_at : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>//received_by_user_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>total_amount : numeric(12,2) * <<propuesto>></color>
-  {field} <color:#1F5E8C>payment_status : purchase_payment_status_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>cash_movement_id : uuid <<propuesto>></color>
-  {field} <color:#1F5E8C>status : purchase_receipt_status_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>void_reason : text <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+entity "purchase_receipt" as e_purchase_receipt {
+  {field} **receipt_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} number : integer *
+  {field} //supplier_id// : uuid * <<FK>>
+  {field} //purchase_order_id// : uuid <<FK>>
+  {field} //warehouse_id// : uuid * <<FK>>
+  {field} supplier_document_type : supplier_document_type_enum *
+  {field} supplier_document_number : varchar(30) *
+  {field} received_at : timestamptz *
+  {field} //received_by_user_id// : uuid * <<FK>>
+  {field} total_amount : numeric(12,2) *
+  {field} payment_status : purchase_payment_status_enum *
+  {field} cash_movement_id : uuid
+  {field} status : purchase_receipt_status_enum *
+  {field} void_reason : text
+  {field} voided_at : timestamptz
+  {field} voided_by_user_id : uuid
+  {field} batch_id : uuid *
+  {field} void_batch_id : uuid
+  {field} notes : text
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
 }
-entity "purchase_receipt_item" as e_purchase_receipt_item <<propuesto>> {
-  {field} <color:#1F5E8C>**item_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//receipt_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//gas_cylinder_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>quantity_full : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>quantity_empty_out : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>unit_cost : numeric(12,2) * <<propuesto>></color>
-}
-entity "warehouse" as e_warehouse #F1F1F1 {
+entity "purchase_receipt_item" as e_purchase_receipt_item {
+  {field} **item_id** : uuid * <<PK>>
+  {field} //receipt_id// : uuid * <<FK>>
+  {field} //gas_cylinder_id// : uuid * <<FK>>
+  {field} quantity_full : integer *
+  {field} quantity_empty_out : integer *
+  {field} unit_cost : numeric(12,2) *
+  {field} previous_average_cost : numeric(12,2)
+  {field} previous_on_hand : integer
 }
 entity "user" as e_user #F1F1F1 {
+}
+entity "warehouse" as e_warehouse #F1F1F1 {
 }
 entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
 }
 
-e_supplier ||--o{ e_purchase_order #line:1F5E8C;text:1F5E8C : supplier_id
-e_warehouse ||--o{ e_purchase_order #line:1F5E8C;text:1F5E8C : destination_warehouse_id
-e_user ||--o{ e_purchase_order #line:1F5E8C;text:1F5E8C : created_by_user_id
-e_purchase_order ||--o{ e_purchase_order_item #line:1F5E8C;text:1F5E8C : purchase_order_id
-e_gas_cylinder ||--o{ e_purchase_order_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
-e_supplier ||--o{ e_purchase_receipt #line:1F5E8C;text:1F5E8C : supplier_id
-e_purchase_order |o--o{ e_purchase_receipt #line:1F5E8C;text:1F5E8C : purchase_order_id
-e_warehouse ||--o{ e_purchase_receipt #line:1F5E8C;text:1F5E8C : warehouse_id
-e_user ||--o{ e_purchase_receipt #line:1F5E8C;text:1F5E8C : received_by_user_id
-e_purchase_receipt ||--o{ e_purchase_receipt_item #line:1F5E8C;text:1F5E8C : receipt_id
-e_gas_cylinder ||--o{ e_purchase_receipt_item #line:1F5E8C;text:1F5E8C : gas_cylinder_id
+e_user ||--o{ e_purchase_order : created_by_user_id
+e_warehouse ||--o{ e_purchase_order : destination_warehouse_id
+e_supplier ||--o{ e_purchase_order : supplier_id
+e_gas_cylinder ||--o{ e_purchase_order_item : gas_cylinder_id
+e_purchase_order ||--o{ e_purchase_order_item : purchase_order_id
+e_purchase_order |o--o{ e_purchase_receipt : purchase_order_id
+e_user ||--o{ e_purchase_receipt : received_by_user_id
+e_supplier ||--o{ e_purchase_receipt : supplier_id
+e_warehouse ||--o{ e_purchase_receipt : warehouse_id
+e_gas_cylinder ||--o{ e_purchase_receipt_item : gas_cylinder_id
+e_purchase_receipt ||--o{ e_purchase_receipt_item : receipt_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
 |<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
-|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
 endlegend
 note as N
   Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case

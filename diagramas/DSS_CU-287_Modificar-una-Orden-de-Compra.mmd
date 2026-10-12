@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-287 Modificar una Orden de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarOrdenDeCompra(ordenId, datos)
+    activate SIS
+    alt la orden existe y está en borrador
+        SIS-->>ADM: orden actualizada
+    else la orden no existe
+        SIS-->>ADM: recurso no encontrado
+    else la orden ya no está en borrador o un dato es inválido
+        SIS-->>ADM: solicitud inválida, con el detalle
+    end
+    deactivate SIS

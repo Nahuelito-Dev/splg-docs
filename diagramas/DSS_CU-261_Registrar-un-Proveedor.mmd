@@ -6,9 +6,11 @@ sequenceDiagram
 
     ADM->>SIS: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
     activate SIS
-    alt el CUIT está libre
+    alt los datos son válidos y el CUIT está libre
         SIS-->>ADM: proveedor creado
+    else el CUIT o un dato es inválido
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
     else el CUIT ya pertenece a un proveedor vigente
-        SIS-->>ADM: conflicto, con el detalle del campo
+        SIS-->>ADM: conflicto, con el proveedor que lo tiene
     end
     deactivate SIS

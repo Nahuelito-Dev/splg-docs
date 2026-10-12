@@ -1,15 +1,15 @@
 sequenceDiagram
-    title DSD — CU-215 Emitir una Orden de Compra · enviarOrdenDeCompra
+    title DSD — CU-282 Cerrar una Orden de Compra con Faltante · cerrarOrdenDeCompraConFaltante
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :PurchaseOrderService
     participant COL as :Map#lt;String, OrdenDeCompra#gt;
     participant ORD as orden:OrdenDeCompra
 
-    ADM->>+SRV: enviarOrdenDeCompra(ordenId)
+    ADM->>+SRV: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
     SRV->>+COL: get(ordenId)
     COL-->>-SRV: ordenDeCompra
-    SRV->>+ORD: enviar(ahora)
-    ORD->>ORD: validarQueEstaEnBorrador()
+    SRV->>+ORD: cerrarConFaltante(motivo)
+    ORD->>ORD: validarTransicion(cerradaConFaltante)
     ORD-->>-SRV: ordenDeCompra
     SRV-->>-ADM: ordenDeCompra

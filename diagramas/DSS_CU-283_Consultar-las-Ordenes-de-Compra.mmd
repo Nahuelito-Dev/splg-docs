@@ -1,0 +1,38 @@
+sequenceDiagram
+    title DSS — CU-283 Consultar las Órdenes de Compra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    opt listado de órdenes
+        ADM->>SIS: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+        activate SIS
+        alt los filtros son válidos
+            SIS-->>ADM: órdenes de compra, con lo pedido, lo recibido y lo pendiente
+        else un filtro es inválido
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
+        end
+        deactivate SIS
+    end
+
+    opt detalle de una orden
+        ADM->>SIS: consultarOrdenDeCompra(ordenId)
+        activate SIS
+        alt la orden existe en la distribuidora
+            SIS-->>ADM: orden con sus renglones y sus recepciones
+        else la orden no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end
+
+    opt pendiente de recibir
+        ADM->>SIS: consultarPendienteDeRecibir(ordenId)
+        activate SIS
+        alt la orden existe en la distribuidora
+            SIS-->>ADM: pendiente de cada garrafa y total pendiente
+        else la orden no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end

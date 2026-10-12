@@ -9,5 +9,7 @@ sequenceDiagram
     ADM->>+SRV: darDeBajaProveedor(proveedorId)
     SRV->>+COL: get(proveedorId)
     COL-->>-SRV: proveedor
-    SRV->>PRV: darDeBaja()
+    SRV->>+PRV: darDeBaja()
+    PRV->>PRV: validarSinOrdenesAbiertas()
+    PRV-->>-SRV: proveedorDadoDeBaja
     SRV-->>-ADM: confirmacion

@@ -5,11 +5,6 @@
 
 -- ---------- tipos enumerados nuevos ----------
 CREATE TYPE "vehicle_type_enum" AS ENUM ('motorcycle', 'car', 'van');
-CREATE TYPE "supplier_kind_enum" AS ENUM ('filling_plant', 'other');
-CREATE TYPE "purchase_order_status_enum" AS ENUM ('draft', 'sent', 'partially_received', 'received', 'cancelled');
-CREATE TYPE "purchase_document_type_enum" AS ENUM ('delivery_note', 'invoice');
-CREATE TYPE "purchase_payment_status_enum" AS ENUM ('unpaid', 'paid');
-CREATE TYPE "purchase_receipt_status_enum" AS ENUM ('confirmed', 'voided');
 CREATE TYPE "truck_load_status_enum" AS ENUM ('loading', 'on_route', 'returned', 'closed', 'closed_with_difference', 'cancelled');
 CREATE TYPE "cash_box_kind_enum" AS ENUM ('cash', 'bank', 'wallet');
 CREATE TYPE "cash_session_status_enum" AS ENUM ('open', 'closed');
@@ -52,85 +47,7 @@ ALTER TABLE "car" ADD COLUMN IF NOT EXISTS "vehicle_type" vehicle_type_enum;
 ALTER TABLE "cylinder" ADD COLUMN IF NOT EXISTS "decommissioned_at" timestamptz;
 ALTER TABLE "cylinder_recovery_notice" ADD COLUMN IF NOT EXISTS "order_id" uuid;
 
--- ---------- Compras y carga del camión ----------
-ALTER TABLE "gas_cylinder" ADD COLUMN IF NOT EXISTS "average_unit_cost" numeric(12,2);
-CREATE TABLE IF NOT EXISTS "supplier" (
-  "supplier_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "distributor_id" uuid NOT NULL,
-  "business_name" varchar(120) NOT NULL,
-  "cuit" varchar(11) NOT NULL,
-  "kind" supplier_kind_enum NOT NULL,
-  "contact_name" varchar(80),
-  "phone" varchar(30),
-  "email" varchar(120),
-  "address" text,
-  "payment_terms_days" integer,
-  "is_active" boolean NOT NULL DEFAULT true,
-  "createdAt" timestamptz NOT NULL,
-  "updatedAt" timestamptz NOT NULL,
-  "deletedAt" timestamptz,
-  CONSTRAINT "PK_supplier" PRIMARY KEY ("supplier_id")
-);
-CREATE TABLE IF NOT EXISTS "purchase_order" (
-  "purchase_order_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "distributor_id" uuid NOT NULL,
-  "number" integer NOT NULL,
-  "supplier_id" uuid NOT NULL,
-  "destination_warehouse_id" uuid NOT NULL,
-  "status" purchase_order_status_enum NOT NULL DEFAULT 'draft',
-  "issued_at" timestamptz,
-  "expected_date" date,
-  "total_amount" numeric(12,2) NOT NULL DEFAULT 0,
-  "cancel_reason" text,
-  "notes" text,
-  "created_by_user_id" uuid NOT NULL,
-  "createdAt" timestamptz NOT NULL,
-  "updatedAt" timestamptz NOT NULL,
-  CONSTRAINT "PK_purchase_order" PRIMARY KEY ("purchase_order_id"),
-  CONSTRAINT "UQ_purchase_order_distributor_id_number" UNIQUE ("distributor_id", "number")
-);
-CREATE TABLE IF NOT EXISTS "purchase_order_item" (
-  "item_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "purchase_order_id" uuid NOT NULL,
-  "gas_cylinder_id" uuid NOT NULL,
-  "quantity" integer NOT NULL,
-  "unit_cost" numeric(12,2) NOT NULL,
-  "empties_to_exchange" integer NOT NULL DEFAULT 0,
-  "received_quantity" integer NOT NULL DEFAULT 0,
-  CONSTRAINT "PK_purchase_order_item" PRIMARY KEY ("item_id"),
-  CONSTRAINT "UQ_purchase_order_item_purchase_order_id_gas_cylinder_id" UNIQUE ("purchase_order_id", "gas_cylinder_id")
-);
-CREATE TABLE IF NOT EXISTS "purchase_receipt" (
-  "receipt_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "distributor_id" uuid NOT NULL,
-  "number" integer NOT NULL,
-  "supplier_id" uuid NOT NULL,
-  "purchase_order_id" uuid,
-  "warehouse_id" uuid NOT NULL,
-  "supplier_document_type" purchase_document_type_enum NOT NULL,
-  "supplier_document_number" varchar(30) NOT NULL,
-  "received_at" timestamptz NOT NULL,
-  "received_by_user_id" uuid NOT NULL,
-  "total_amount" numeric(12,2) NOT NULL DEFAULT 0,
-  "payment_status" purchase_payment_status_enum NOT NULL DEFAULT 'unpaid',
-  "cash_movement_id" uuid,
-  "status" purchase_receipt_status_enum NOT NULL DEFAULT 'confirmed',
-  "void_reason" text,
-  "createdAt" timestamptz NOT NULL,
-  "updatedAt" timestamptz NOT NULL,
-  CONSTRAINT "PK_purchase_receipt" PRIMARY KEY ("receipt_id"),
-  CONSTRAINT "UQ_purchase_receipt_distributor_id_number" UNIQUE ("distributor_id", "number"),
-  CONSTRAINT "UQ_purchase_receipt_distributor_id_supplier_id_supplier_document_number" UNIQUE ("distributor_id", "supplier_id", "supplier_document_number")
-);
-CREATE TABLE IF NOT EXISTS "purchase_receipt_item" (
-  "item_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-  "receipt_id" uuid NOT NULL,
-  "gas_cylinder_id" uuid NOT NULL,
-  "quantity_full" integer NOT NULL DEFAULT 0,
-  "quantity_empty_out" integer NOT NULL DEFAULT 0,
-  "unit_cost" numeric(12,2) NOT NULL,
-  CONSTRAINT "PK_purchase_receipt_item" PRIMARY KEY ("item_id")
-);
+-- ---------- Carga del camión ----------
 CREATE TABLE IF NOT EXISTS "truck_load" (
   "load_id" uuid NOT NULL DEFAULT uuid_generate_v4(),
   "distributor_id" uuid NOT NULL,
@@ -512,17 +429,12 @@ CREATE TABLE IF NOT EXISTS "tire_event" (
 -- ---------- claves foráneas de lo propuesto ----------
 ALTER TABLE "cash_box" ADD CONSTRAINT "FK_cash_box_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "cash_category" ADD CONSTRAINT "FK_cash_category_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
-ALTER TABLE "supplier" ADD CONSTRAINT "FK_supplier_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "cash_session" ADD CONSTRAINT "FK_cash_session_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "cash_session" ADD CONSTRAINT "FK_cash_session_cash_box_id" FOREIGN KEY ("cash_box_id") REFERENCES "cash_box" ("cash_box_id") ON DELETE CASCADE;
 ALTER TABLE "cash_session" ADD CONSTRAINT "FK_cash_session_opened_by_user_id" FOREIGN KEY ("opened_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
 ALTER TABLE "cash_session" ADD CONSTRAINT "FK_cash_session_closed_by_user_id" FOREIGN KEY ("closed_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
 ALTER TABLE "customer_account" ADD CONSTRAINT "FK_customer_account_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "customer_account" ADD CONSTRAINT "FK_customer_account_customer_user_id" FOREIGN KEY ("customer_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
-ALTER TABLE "purchase_order" ADD CONSTRAINT "FK_purchase_order_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
-ALTER TABLE "purchase_order" ADD CONSTRAINT "FK_purchase_order_supplier_id" FOREIGN KEY ("supplier_id") REFERENCES "supplier" ("supplier_id") ON DELETE RESTRICT;
-ALTER TABLE "purchase_order" ADD CONSTRAINT "FK_purchase_order_destination_warehouse_id" FOREIGN KEY ("destination_warehouse_id") REFERENCES "warehouse" ("warehouse_id") ON DELETE RESTRICT;
-ALTER TABLE "purchase_order" ADD CONSTRAINT "FK_purchase_order_created_by_user_id" FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
 ALTER TABLE "cash_movement" ADD CONSTRAINT "FK_cash_movement_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "cash_movement" ADD CONSTRAINT "FK_cash_movement_cash_box_id" FOREIGN KEY ("cash_box_id") REFERENCES "cash_box" ("cash_box_id") ON DELETE CASCADE;
 ALTER TABLE "cash_movement" ADD CONSTRAINT "FK_cash_movement_session_id" FOREIGN KEY ("session_id") REFERENCES "cash_session" ("session_id") ON DELETE SET NULL;
@@ -544,13 +456,6 @@ ALTER TABLE "fuel_load" ADD CONSTRAINT "FK_fuel_load_car_id" FOREIGN KEY ("car_i
 ALTER TABLE "fuel_load" ADD CONSTRAINT "FK_fuel_load_employee_id" FOREIGN KEY ("employee_id") REFERENCES "employee" ("employee_id") ON DELETE SET NULL;
 ALTER TABLE "fuel_load" ADD CONSTRAINT "FK_fuel_load_created_by_user_id" FOREIGN KEY ("created_by_user_id") REFERENCES "user" ("user_id") ON DELETE SET NULL;
 ALTER TABLE "maintenance_task" ADD CONSTRAINT "FK_maintenance_task_employee_id" FOREIGN KEY ("employee_id") REFERENCES "employee" ("employee_id") ON DELETE CASCADE;
-ALTER TABLE "purchase_order_item" ADD CONSTRAINT "FK_purchase_order_item_purchase_order_id" FOREIGN KEY ("purchase_order_id") REFERENCES "purchase_order" ("purchase_order_id") ON DELETE CASCADE;
-ALTER TABLE "purchase_order_item" ADD CONSTRAINT "FK_purchase_order_item_gas_cylinder_id" FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id") ON DELETE RESTRICT;
-ALTER TABLE "purchase_receipt" ADD CONSTRAINT "FK_purchase_receipt_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
-ALTER TABLE "purchase_receipt" ADD CONSTRAINT "FK_purchase_receipt_supplier_id" FOREIGN KEY ("supplier_id") REFERENCES "supplier" ("supplier_id") ON DELETE RESTRICT;
-ALTER TABLE "purchase_receipt" ADD CONSTRAINT "FK_purchase_receipt_purchase_order_id" FOREIGN KEY ("purchase_order_id") REFERENCES "purchase_order" ("purchase_order_id") ON DELETE SET NULL;
-ALTER TABLE "purchase_receipt" ADD CONSTRAINT "FK_purchase_receipt_warehouse_id" FOREIGN KEY ("warehouse_id") REFERENCES "warehouse" ("warehouse_id") ON DELETE RESTRICT;
-ALTER TABLE "purchase_receipt" ADD CONSTRAINT "FK_purchase_receipt_received_by_user_id" FOREIGN KEY ("received_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
 ALTER TABLE "tire" ADD CONSTRAINT "FK_tire_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "tire" ADD CONSTRAINT "FK_tire_car_id" FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE SET NULL;
 ALTER TABLE "traffic_fine" ADD CONSTRAINT "FK_traffic_fine_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
@@ -569,8 +474,6 @@ ALTER TABLE "driver_settlement" ADD CONSTRAINT "FK_driver_settlement_destination
 ALTER TABLE "driver_settlement" ADD CONSTRAINT "FK_driver_settlement_cash_movement_id" FOREIGN KEY ("cash_movement_id") REFERENCES "cash_movement" ("movement_id") ON DELETE SET NULL;
 ALTER TABLE "driver_settlement" ADD CONSTRAINT "FK_driver_settlement_submitted_by_user_id" FOREIGN KEY ("submitted_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
 ALTER TABLE "driver_settlement" ADD CONSTRAINT "FK_driver_settlement_approved_by_user_id" FOREIGN KEY ("approved_by_user_id") REFERENCES "user" ("user_id") ON DELETE RESTRICT;
-ALTER TABLE "purchase_receipt_item" ADD CONSTRAINT "FK_purchase_receipt_item_receipt_id" FOREIGN KEY ("receipt_id") REFERENCES "purchase_receipt" ("receipt_id") ON DELETE CASCADE;
-ALTER TABLE "purchase_receipt_item" ADD CONSTRAINT "FK_purchase_receipt_item_gas_cylinder_id" FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id") ON DELETE RESTRICT;
 ALTER TABLE "tire_event" ADD CONSTRAINT "FK_tire_event_distributor_id" FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id") ON DELETE CASCADE;
 ALTER TABLE "tire_event" ADD CONSTRAINT "FK_tire_event_tire_id" FOREIGN KEY ("tire_id") REFERENCES "tire" ("tire_id") ON DELETE CASCADE;
 ALTER TABLE "tire_event" ADD CONSTRAINT "FK_tire_event_car_id" FOREIGN KEY ("car_id") REFERENCES "car" ("car_id") ON DELETE SET NULL;

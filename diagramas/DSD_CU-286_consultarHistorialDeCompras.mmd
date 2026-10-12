@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-286 Consultar el Historial de Compras de un Proveedor · consultarHistorialDeCompras
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant COL as :Map#lt;String, Proveedor#gt;
+    participant PRV as proveedor:Proveedor
+    participant REC as recepcion:RecepcionDeCompra
+
+    ADM->>+SRV: consultarHistorialDeCompras(proveedorId, desde, hasta)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV->>+PRV: getRecepciones(desde, hasta)
+    loop Por cada recepción del proveedor en el rango
+        PRV->>REC: getTotal()
+    end
+    PRV-->>-SRV: recepciones
+    SRV-->>-ADM: historial

@@ -42,7 +42,7 @@ entity "gas_cylinder" as e_gas_cylinder {
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
   {field} photo_key : varchar(512)
-  {field} <color:#1F5E8C>average_unit_cost : numeric(12,2) <<propuesto>></color>
+  {field} average_unit_cost : numeric(12,2)
 }
 entity "gas_cylinder_promotion" as e_gas_cylinder_promotion {
   {field} **promotion_id** : uuid * <<PK>>

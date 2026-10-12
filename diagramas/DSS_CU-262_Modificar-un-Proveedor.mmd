@@ -6,9 +6,13 @@ sequenceDiagram
 
     ADM->>SIS: actualizarProveedor(proveedorId, datos)
     activate SIS
-    alt el proveedor existe
+    alt el proveedor existe y los datos son válidos
         SIS-->>ADM: proveedor actualizado
     else el proveedor no existe
         SIS-->>ADM: recurso no encontrado
+    else el CUIT nuevo es inválido
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    else el CUIT nuevo ya pertenece a un proveedor vigente
+        SIS-->>ADM: conflicto
     end
     deactivate SIS

@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-285 Consultar el Costo Promedio de las Garrafas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCostoPromedio()
+    activate SIS
+    SIS-->>ADM: costo promedio, último costo y llenas de cada tipo de garrafa
+    deactivate SIS

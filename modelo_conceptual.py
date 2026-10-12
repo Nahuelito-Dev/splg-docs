@@ -143,7 +143,7 @@ _c("Incidencia", "Posventa",
    ["tipo", "momento", "descripción", "estado", "resolución", "fotografía"])
 _c("Calificacion", "Posventa", ["puntaje", "comentario"])
 
-# Stock físico (implementado) y compras y carga del camión (planificados, iteración I-13).
+# Stock físico y compras (implementados) y carga del camión (planificada, iteración I-13).
 _c("Deposito", "StockFisico", ["nombre", "código", "tipo", "dirección", "predeterminado", "activo"])
 _c("UbicacionDeStock", "StockFisico", ["tipo"])
 _c("SaldoDeStock", "StockFisico", ["condición", "cantidad"])
@@ -165,13 +165,16 @@ _c("Proveedor", "Compras",
    ["razón social", "CUIT", "tipo", "contacto", "teléfono", "correo", "dirección",
     "plazo de pago", "activo"])
 _c("OrdenDeCompra", "Compras",
-   ["número", "estado", "emitida el", "fecha esperada", "total", "motivo de cancelación", "notas"])
+   ["número", "estado", "emitida el", "fecha esperada", "total", "motivo de cancelación",
+    "motivo de cierre", "notas"])
 _c("ItemOrdenDeCompra", "Compras",
    ["cantidad", "costo unitario", "vacíos a canjear", "cantidad recibida"])
 _c("RecepcionDeCompra", "Compras",
    ["número", "tipo de comprobante", "número de comprobante", "recibida el", "total",
-    "estado de pago", "estado", "motivo de anulación"])
-_c("ItemRecepcion", "Compras", ["llenas recibidas", "vacías entregadas", "costo unitario"])
+    "estado de pago", "estado", "motivo de anulación", "anulada el", "notas"])
+_c("ItemRecepcion", "Compras",
+   ["llenas recibidas", "vacías entregadas", "costo unitario", "costo promedio previo",
+    "existencia previa"])
 _c("Caja", "CajaYFinanzas", ["nombre", "tipo", "saldo", "requiere sesión", "activa"])
 _c("SesionDeCaja", "CajaYFinanzas",
    ["estado", "abierta el", "monto inicial", "cerrada el", "monto esperado", "monto contado",
@@ -313,7 +316,7 @@ ASOCIACIONES = [
     ("Usuario", "1", "-", "0..*", "Calificacion", "emite", TR),
     ("Usuario", "1", "-", "0..*", "Calificacion", "recibe", TR),
 
-    # Stock y compras (planificado, I-13)
+    # Stock físico y compras (implementados) y carga del camión (planificada, I-13)
     ("Distribuidora", "1", "-", "0..*", "Deposito", "dispone de", PR),
     ("Distribuidora", "1", "-", "0..*", "Proveedor", "compra a", UG),
     ("Deposito", "1", "-", "0..1", "UbicacionDeStock", "se registra como {xor}", DE),
@@ -506,8 +509,7 @@ PLANIFICADOS = {c: "I-11" for c in ("JornadaDeTrabajo", "LicenciaLaboral")}
 PLANIFICADOS.update({c: "I-12" for c in ("CargaCombustible", "MultaTransito", "Siniestro", "Neumatico",
                                          "MovimientoNeumatico")})
 PLANIFICADOS.update({c: "I-13" for c in (
-    "CargaDeCamion", "ItemCarga", "Proveedor",
-    "OrdenDeCompra", "ItemOrdenDeCompra", "RecepcionDeCompra", "ItemRecepcion")})
+    "CargaDeCamion", "ItemCarga")})
 PLANIFICADOS.update({c: "I-14" for c in (
     "Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja", "RendicionChofer",
     "PedidoRendido", "GastoDeRendicion", "CuentaCorriente", "AsientoCuentaCorriente",
@@ -517,7 +519,6 @@ ATRIBUTOS_PLANIFICADOS = {("PlanMantenimiento", "documento que controla"): "I-11
                           ("PlanMantenimiento", "aplica a"): "I-11",
                           ("TareaMantenimiento", "vigente desde"): "I-11", ("TareaMantenimiento", "detalle"): "I-11",
                           ("Vehiculo", "tipo de combustible"): "I-12", ("Vehiculo", "capacidad del tanque"): "I-12",
-                          ("Producto", "costo promedio"): "I-13",
                           ("ConfiguracionModulo", "exigir carga de camión abierta"): "I-13"}
 # Módulo del backend de cada concepto planificado (y del Adjunto, que ya está implementado).
 MODULO_PLANIFICADO = {"JornadaDeTrabajo": "employee", "LicenciaLaboral": "employee", "Adjunto": "attachment",
@@ -527,8 +528,6 @@ MODULO_PLANIFICADO = {"JornadaDeTrabajo": "employee", "LicenciaLaboral": "employ
                       "Deposito": "stock", "UbicacionDeStock": "stock", "SaldoDeStock": "stock",
                       "MovimientoDeStock": "stock", "UmbralDeStock": "stock", "AjusteDeStock": "stock",
                       "ItemAjusteDeStock": "stock", "CargaDeCamion": "truck-load", "ItemCarga": "truck-load",
-                      "Proveedor": "purchase", "OrdenDeCompra": "purchase", "ItemOrdenDeCompra": "purchase",
-                      "RecepcionDeCompra": "purchase", "ItemRecepcion": "purchase",
                       "Caja": "cash", "SesionDeCaja": "cash", "CategoriaDeCaja": "cash", "MovimientoDeCaja": "cash",
                       "RendicionChofer": "driver-settlement", "PedidoRendido": "driver-settlement",
                       "GastoDeRendicion": "driver-settlement", "CuentaCorriente": "customer-account",
@@ -724,7 +723,7 @@ ATRIBUTOS = {
                   "estado": "status", "posición": "position",
                   "kilometraje de montaje": "mounted_odometer_km"},
     "MovimientoNeumatico": {"tipo": "event_type", "kilometraje": "odometer_km", "fecha": "occurred_at"},
-    # Stock y compras (planificado, I-13)
+    # Stock físico y compras (implementados) y carga del camión (planificada, I-13)
     "Deposito": {"nombre": "name", "código": "code", "tipo": "kind", "dirección": "address",
                  "predeterminado": "is_default", "activo": "is_active"},
     "UbicacionDeStock": {"tipo": "kind"},
@@ -754,7 +753,8 @@ ATRIBUTOS = {
                   "activo": "is_active"},
     "OrdenDeCompra": {"número": "number", "estado": "status", "emitida el": "issued_at",
                       "fecha esperada": "expected_date", "total": "total_amount",
-                      "motivo de cancelación": "cancel_reason", "notas": "notes"},
+                      "motivo de cancelación": "cancel_reason", "motivo de cierre": "close_reason",
+                      "notas": "notes"},
     "ItemOrdenDeCompra": {"cantidad": "quantity", "costo unitario": "unit_cost",
                           "vacíos a canjear": "empties_to_exchange",
                           "cantidad recibida": "received_quantity"},
@@ -762,9 +762,11 @@ ATRIBUTOS = {
                           "número de comprobante": "supplier_document_number",
                           "recibida el": "received_at", "total": "total_amount",
                           "estado de pago": "payment_status", "estado": "status",
-                          "motivo de anulación": "void_reason"},
+                          "motivo de anulación": "void_reason", "anulada el": "voided_at",
+                          "notas": "notes"},
     "ItemRecepcion": {"llenas recibidas": "quantity_full", "vacías entregadas": "quantity_empty_out",
-                      "costo unitario": "unit_cost"},
+                      "costo unitario": "unit_cost", "costo promedio previo": "previous_average_cost",
+                      "existencia previa": "previous_on_hand"},
     "Caja": {"nombre": "name", "tipo": "kind", "saldo": "balance",
              "requiere sesión": "requires_session", "activa": "is_active"},
     "SesionDeCaja": {"estado": "status", "abierta el": "opened_at", "monto inicial": "opening_amount",

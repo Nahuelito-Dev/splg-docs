@@ -71,17 +71,13 @@ class Deposito {
   + estaActivo(): Booleano
   + fijarMinimo(producto: Producto, minimoDeLlenas: Entero)
   + getLlenas(producto: Producto): CondicionDeStock
-  + getOrden(ordenId: Identificador): OrdenDeCompra
   + getUbicacion(): UbicacionDeStock
-  + getUbicacionDeStock(): UbicacionDeStock
   + getUmbral(producto: Producto): UmbralDeStock
   + marcarPredeterminado()
   + quitarPredeterminado(): Booleano
   + quitarUmbrales()
-  + registrarRecepcion(ordenId: Identificador,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, items: Registro,\n      administrador: Administrador): RecepcionDeCompra
   + tieneLlenas(producto: Producto,\n      cantidad: Entero): Booleano
   + validarCodigoSinUsar(codigo: Cadena)
-  + validarCompraSinOrden(proveedorId: Identificador)
   + validarNoEsElPredeterminado()
   + validarPuedeDesactivarse(activo: Booleano)
   + validarSinConteoInicial(): Booleano

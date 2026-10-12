@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSD — CU-287 Modificar una Orden de Compra · modificarOrdenDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseOrderService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+
+    ADM->>+SRV: modificarOrdenDeCompra(ordenId, datos)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: modificar(datos)
+    ORD->>ORD: validarEnBorrador()
+    opt Los datos traen renglones
+        loop Por cada renglón nuevo
+            create participant ITO as nuevo:ItemOrdenDeCompra
+            ORD->>ITO: «create»(producto, cantidad, costoUnitario, vaciasACanjear)
+        end
+        ORD->>ORD: calcularTotal()
+    end
+    ORD-->>-SRV: ordenDeCompra
+    SRV-->>-ADM: ordenDeCompra

@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-284 Consultar las Recepciones de Compra · consultarRecepcionDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseQueryService
+    participant COL as :Map#lt;String, RecepcionDeCompra#gt;
+    participant REC as recepcion:RecepcionDeCompra
+    participant IRE as item:ItemRecepcion
+
+    ADM->>+SRV: consultarRecepcionDeCompra(recepcionId)
+    SRV->>+COL: get(recepcionId)
+    COL-->>-SRV: recepcion
+    SRV->>+REC: getItems()
+    loop Por cada renglón de la recepción
+        REC->>IRE: getSubtotal()
+    end
+    REC-->>-SRV: items
+    SRV-->>-ADM: recepcion

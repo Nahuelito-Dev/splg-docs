@@ -13,7 +13,7 @@ sequenceDiagram
     DIS-->>-SRV: depositoDeStock
     SRV->>+PRV: emitirOrden(depositoDeStock, fechaEsperada, items)
     create participant ORD as nueva:OrdenDeCompra
-    PRV->>ORD: «create»(depositoDeStock, fechaEsperada, autor)
+    PRV->>ORD: «create»(depositoDeStock, fechaEsperada, administrador)
     loop Por cada renglón de la orden
         create participant ITO as nuevo:ItemOrdenDeCompra
         ORD->>ITO: «create»(producto, cantidad, costoUnitario, vaciasACanjear)

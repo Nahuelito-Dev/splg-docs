@@ -127,7 +127,10 @@ INCLUYE = {
             ("CU-256","CU-176"), ("CU-257","CU-176")],
   "SS-21": [("CU-227","CU-228"), ("CU-233","CU-228"), ("CU-237","CU-228"), ("CU-243","CU-228")],
   # proveedores: modificar o dar de baja parte del listado
-  "SS-20": [("CU-262","CU-214"), ("CU-263","CU-214")],
+  "SS-20": [("CU-262","CU-214"), ("CU-263","CU-214"), ("CU-215","CU-214"), ("CU-286","CU-214"),
+            # la orden se elige del listado de órdenes; la recepción, del de recepciones
+            ("CU-287","CU-283"), ("CU-288","CU-283"), ("CU-216","CU-283"), ("CU-282","CU-283"),
+            ("CU-280","CU-284"), ("CU-281","CU-284")],
 }
 
 # Casos de uso factorizados: comportamiento comun que otros casos reutilizan
@@ -149,7 +152,7 @@ FACTORIZADO = {
 INCLUYE_EXTERNO = [("CU-031","CU-082"), ("CU-086","CU-082"), ("CU-087","CU-082"),
                    ("CU-174","CU-159"), ("CU-175","CU-160"),
                    ("CU-003","CU-177"), ("CU-012","CU-246"), ("CU-013","CU-246"), ("CU-015","CU-246"),
-                   ("CU-217","CU-250"), ("CU-012","CU-248"), ("CU-013","CU-248"), ("CU-015","CU-248"),
+                   ("CU-217","CU-250"), ("CU-280","CU-250"), ("CU-012","CU-248"), ("CU-013","CU-248"), ("CU-015","CU-248"),
                    ("CU-236","CU-005"), ("CU-020","CU-220"), ("CU-079","CU-220")]
 
 # base -> incluido factorizado
@@ -371,7 +374,7 @@ LAMINAS = {}
 LAMINAS["CU_Sistema_Diagrama-Completo"] = uml_lamina.completo(
     casos, subs, SS, TINTE, BORDE, COLOR_ACT, NOMBRE_ACT, IZQ, DER, directos,
     SECUNDARIO, {}, inc, ext, ESP, GEN, LIMITE_TXT, None)
-# El completo en una sola lámina tiene 278 casos y entero no se lee: se parte en seis
+# El completo en una sola lámina tiene 287 casos y entero no se lee: se parte en seis
 # láminas con la misma notación (límite del sistema, subsistemas como paquetes, actores
 # afuera, «include»/«extend»). Juntas son el diagrama completo. Si un caso incluye o
 # extiende a uno de otra lámina, ese otro se dibuja en un paquete gris de referencia

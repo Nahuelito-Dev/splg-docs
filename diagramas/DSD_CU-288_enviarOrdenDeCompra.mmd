@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-288 Enviar una Orden de Compra · enviarOrdenDeCompra
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :PurchaseOrderService
+    participant COL as :Map#lt;String, OrdenDeCompra#gt;
+    participant ORD as orden:OrdenDeCompra
+
+    ADM->>+SRV: enviarOrdenDeCompra(ordenId)
+    SRV->>+COL: get(ordenId)
+    COL-->>-SRV: ordenDeCompra
+    SRV->>+ORD: enviar(ahora)
+    ORD->>ORD: validarTransicion(enviada)
+    ORD-->>-SRV: ordenDeCompra
+    SRV-->>-ADM: ordenDeCompra

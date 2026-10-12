@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-214 Consultar los Proveedores · consultarProveedor
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :SupplierService
+    participant COL as :Map#lt;String, Proveedor#gt;
+
+    ADM->>+SRV: consultarProveedor(proveedorId)
+    SRV->>+COL: get(proveedorId)
+    COL-->>-SRV: proveedor
+    SRV-->>-ADM: proveedor
