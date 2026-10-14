@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-296 Reponer una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reponerCargaDelCamion(cargaId, items)
+    activate SIS
+    alt la carga está en ruta y el depósito tiene las llenas
+        SIS-->>ADM: hoja de carga con lo repuesto
+    else el depósito no tiene las llenas, o la reposición pasa de 20 tipos
+        SIS-->>ADM: solicitud inválida, con el saldo disponible
+    else la carga no está en ruta
+        SIS-->>ADM: conflicto (transición no permitida)
+    else la carga no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

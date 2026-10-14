@@ -126,6 +126,7 @@ CREATE TABLE "gas_cylinder" (
   "updatedAt" timestamptz NOT NULL,
   "photo_key" varchar(512),
   "average_unit_cost" numeric(12,2),
+  "reservation_deficit" integer NOT NULL,
   PRIMARY KEY ("gas_cylinder_id"),
   UNIQUE ("distributor_id", "type"),
   FOREIGN KEY ("distributor_id") REFERENCES "distributor" ("distributor_id")
@@ -1190,6 +1191,7 @@ CREATE TABLE "purchase_receipt_item" (
   "unit_cost" numeric(12,2) NOT NULL,
   "previous_average_cost" numeric(12,2),
   "previous_on_hand" integer,
+  "previous_on_hand_at" timestamptz,
   PRIMARY KEY ("item_id"),
   UNIQUE ("receipt_id", "gas_cylinder_id"),
   FOREIGN KEY ("gas_cylinder_id") REFERENCES "gas_cylinder" ("gas_cylinder_id"),

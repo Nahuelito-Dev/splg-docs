@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-301 Confirmar una Transferencia · confirmarTransferencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CCU as :CashCollectionUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    ADM->>+CCU: confirmarTransferencia(pedidoId, recibida, motivo)
+    CCU->>+PEDS: get(pedidoId)
+    PEDS-->>-CCU: pedido
+    CCU->>+PED: resolverTransferencia(administrador, recibida, motivo)
+    PED->>PED: validarTransferencia(recibida)
+    opt El cobro cambia
+        create participant CAM as :CambioEstadoPedido
+        PED->>CAM: «create»(motivo)
+    end
+    deactivate PED
+    CCU-->>-ADM: pedido

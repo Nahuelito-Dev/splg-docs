@@ -9,7 +9,7 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 
 | Para | Comando |
 |---|---|
-| Gate: ¿cumple las plantillas de la cátedra? | `python3 verificar-conformidad.py` (18 chequeos) |
+| Gate: ¿cumple las plantillas de la cátedra? | `python3 verificar-conformidad.py` (21 chequeos, con el cruce de los DSD contra el código) |
 | Regenerar el sitio | `python3 generar-sitio.py` → `splg-documentacion.html` |
 | Regenerar los HTML para Drive | `python3 generar-html-drive.py` |
 | Publicar en Netlify | `./publicar.sh` — **sólo con el ok de nahue** |
@@ -17,7 +17,7 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 ## Reglas
 
 - `README.md` explica qué archivo es qué. Los cinco documentos numerados son los que se
-  entregan; `Casos-de-Uso.md` reúne los 290 CU con sus cuatro artefactos.
+  entregan; `Casos-de-Uso.md` reúne los 303 CU con sus cuatro artefactos.
 - Los `.md` son la fuente; los HTML se generan. No se editan HTML a mano.
 - Toda afirmación sobre el sistema (endpoint, regla, estado) se comprueba contra la API
   corriendo antes de escribirla. Leer el código no alcanza.

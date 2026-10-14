@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-299 Registrar el Cobro en Efectivo como Administrador · registrarCobroEnEfectivoPorAdmin
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CCU as :CashCollectionUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    ADM->>+CCU: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
+    CCU->>+PEDS: get(pedidoId)
+    PEDS-->>-CCU: pedido
+    CCU->>+PED: registrarCobro(administrador, motivo)
+    PED->>PED: validarCobroPendiente()
+    opt El cobro estaba pendiente
+        create participant CAM as :CambioEstadoPedido
+        PED->>CAM: «create»(motivo)
+    end
+    deactivate PED
+    CCU-->>-ADM: pedido

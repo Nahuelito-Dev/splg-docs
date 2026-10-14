@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSS — CU-299 Registrar el Cobro en Efectivo como Administrador
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
+    activate SIS
+    alt el pedido está entregado, es en efectivo y su pago está pendiente
+        SIS-->>ADM: cobro registrado (pago saldado)
+    else el pedido es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el motivo falta o es inválido, o el pedido no está entregado o no es en efectivo
+        SIS-->>ADM: error de solicitud
+    else el pago ya se informó como impago
+        SIS-->>ADM: conflicto (se resuelve con resolverCobroImpago)
+    end
+    deactivate SIS
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)

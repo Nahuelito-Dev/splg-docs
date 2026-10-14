@@ -454,6 +454,7 @@ Restricciones `CHECK`:
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `photo_key` | varchar(512) | no |  |  |  | Key de la imagen del producto en el bucket (`gascylinders/{distribuidora}/{producto}/{uuid}.{ext}`). |
 | `average_unit_cost` | numeric(12,2) | no |  |  |  | Costo promedio ponderado de las llenas compradas; lo mantiene la recepción de compras. |
+| `reservation_deficit` | integer | sí |  |  | `0` | Unidades reservadas por pedidos abiertos que el físico no cubre (`max(0, reservadas − llenas)`). Lo escribe el módulo de stock cuando una pérdida física deja el vendible en cero: con esto el vendible vale siempre `llenas − reservadas + deficit` y una cancelación o una entrada de llenas primero cubre el déficit en lugar de inflar el vendible (sobreventa). |
 
 Claves únicas compuestas: (`distributor_id`, `type`).
 
@@ -851,6 +852,7 @@ Claves únicas compuestas: (`distributor_id`, `number`), (`distributor_id`, `sup
 | `unit_cost` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `previous_average_cost` | numeric(12,2) | no |  |  |  | Costo promedio de la garrafa justo antes de esta recepción (para deshacerlo al anular). |
 | `previous_on_hand` | integer | no |  |  |  | Llenas en depósitos y camiones justo antes de esta recepción. |
+| `previous_on_hand_at` | timestamptz | no |  |  |  | Instante (reloj de la base, bajo el lock de la garrafa) en que se leyó `previous_on_hand`. Ordena la recepción contra las anulaciones al recalcular el costo promedio; `createdAt` no sirve: es el inicio de la transacción. |
 
 Claves únicas compuestas: (`receipt_id`, `gas_cylinder_id`).
 
@@ -1071,6 +1073,7 @@ Restricciones `CHECK`:
 - `CHK_stock_movement_origen_o_destino`: `CHECK (((from_location_id IS NOT NULL) OR (to_location_id IS NOT NULL)))`
 
 Índices (además de la clave primaria):
+- `IDX_stock_movement_alta`: `CREATE INDEX "IDX_stock_movement_alta" ON public.stock_movement USING btree (distributor_id, "createdAt")`
 - `IDX_stock_movement_destino`: `CREATE INDEX "IDX_stock_movement_destino" ON public.stock_movement USING btree (to_location_id)`
 - `IDX_stock_movement_fecha`: `CREATE INDEX "IDX_stock_movement_fecha" ON public.stock_movement USING btree (distributor_id, occurred_at)`
 - `IDX_stock_movement_garrafa_fecha`: `CREATE INDEX "IDX_stock_movement_garrafa_fecha" ON public.stock_movement USING btree (gas_cylinder_id, occurred_at)`
@@ -1338,7 +1341,7 @@ Claves únicas compuestas: (`car_id`, `day`).
 - `UQ_warehouse_code_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_code_vigente" ON public.warehouse USING btree (distributor_id, code) WHERE ("deletedAt" IS NULL)`
 - `UQ_warehouse_default_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL))`
 
-> **Cobertura de las descripciones.** 109 de 674 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 111 de 676 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 

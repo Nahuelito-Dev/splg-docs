@@ -121,6 +121,8 @@ InvitacionRecompra "1" *-- "1..*" ItemSugerido : sugiere >
 InvitacionRecompra "0..*" -- "0..1" DireccionEntrega : sugiere entregar en >
 ItemSugerido "0..*" -- "1" Producto : corresponde a >
 Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de >
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de >
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.

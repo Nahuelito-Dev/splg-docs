@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-303 Consultar la Ruta de un Pedido · consultarRutaDelPedido
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SRV as :RoutesService
+    participant PED as pedido:Pedido
+    participant CHF as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+
+    CHO->>+SRV: consultarRutaDelPedido(pedidoId, desde)
+    SRV->>+PED: getDireccionDeEntrega()
+    PED-->>-SRV: destino
+    SRV->>+PED: getChofer()
+    PED-->>-SRV: chofer
+    SRV->>+CHF: getUbicacion()
+    CHF-->>-SRV: ubicacion
+    SRV->>+UBI: getPosicionReciente()
+    UBI-->>-SRV: origen
+    SRV-->>-CHO: ruta
+    Note over CHO,SRV: También lo inicia el Cliente (ACT-01), con el pedido en camino

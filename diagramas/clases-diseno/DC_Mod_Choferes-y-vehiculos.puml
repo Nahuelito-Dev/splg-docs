@@ -111,7 +111,7 @@ class VehicleAssignmentService <<fachada>> {
   + ponerVehiculoEnUso(choferId: Identificador,\n      vehiculoId: Identificador,\n      nota: Cadena): AsignacionVehiculo
 }
 class "List<AsignacionVehiculo>" as List_AsignacionVehiculo <<colección>> {
-  + cerrarAbiertas(chofer: Chofer, vehiculo: Vehiculo,\n      administrador: Administrador)
+  + cerrarAbiertas(chofer: Chofer, vehiculo: Vehiculo,\n      administrador: Usuario)
   + getAbierta(): AsignacionVehiculo
 }
 class Chofer <<referencia>>

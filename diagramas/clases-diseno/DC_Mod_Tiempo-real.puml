@@ -68,19 +68,28 @@ class CustomersGateway <<fachada>> {
   + suscribirseAlSeguimiento(cliente: Cliente)
 }
 class AdminGateway <<fabricación pura>> {
+  + notifyAdmins(incidencia: Incidencia)
   + notifyAdmins(evento: Registro, posicion: UbicacionGPS)
 }
 class SocketIdentityService <<fabricación pura>> {
   + obtener(conexion: Registro): Registro
 }
+class RoutesService <<fachada>> {
+  + consultarRutaDelPedido(pedidoId: Identificador,\n      desde: Cadena): Registro
+}
 class Cliente <<referencia>>
 class Chofer <<referencia>>
+class Pedido <<referencia>>
+class UbicacionGPS <<referencia>>
 
 CustomersGateway --> "1" SocketIdentityService
 DriversGateway --> "1" AdminGateway
 DriversGateway --> "1" CustomersGateway
 CustomersGateway ..> Cliente
 DriversGateway ..> Chofer
+RoutesService ..> Chofer
+RoutesService ..> Pedido
+RoutesService ..> UbicacionGPS
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

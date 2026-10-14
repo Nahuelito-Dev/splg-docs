@@ -1,27 +1,21 @@
 sequenceDiagram
-    title DSD — CU-020 Confirmar Entrega · confirmarEntrega
+    title DSD — CU-020 Confirmar Entrega Manualmente · confirmarEntrega
     autonumber
-    actor CHF as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
     participant UCS as :UpdateOrderStatusUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
-    participant PAG as pago:Pago
     participant CHO as chofer:Chofer
     participant UBI as ubicacion:UbicacionGPS
     participant ENV as envase:Envase
+    participant ENT as :StockDeliveryService
     participant NOT as :NotificationPort
 
-    CHF->>+UCS: confirmarEntrega(pedidoId)
-    UCS->>+PEDS: get(pedidoId)
-    PEDS-->>-UCS: pedido
-    UCS->>+PED: entregar()
+    ADM->>+UCS: confirmarEntrega(pedidoId, motivo)
+    UCS->>+PED: entregar(motivo)
     PED->>PED: transicionar(entregado)
+    create participant CAM as :CambioEstadoPedido
+    PED->>CAM: «create»(entregado, motivo)
     deactivate PED
-    opt El método de pago es efectivo
-        UCS->>+PED: getPago()
-        PED-->>-UCS: pago
-        UCS->>PAG: marcarPagado()
-    end
     UCS->>+PED: getChofer()
     PED-->>-UCS: chofer
     UCS->>+CHO: getUbicacion()
@@ -32,7 +26,10 @@ sequenceDiagram
     loop Por cada envase despachado en el pedido
         UCS->>ENV: entregarAlCliente(pedido)
     end
+    Note over UCS,ENT: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220).<br/>Crea los MovimientoDeStock de la entrega y deja el pago en efectivo pendiente de cobro
+    UCS->>ENT: registrarEntrega(entrega)
     UCS->>+PED: getCliente()
     PED-->>-UCS: cliente
     UCS-)NOT: sendOrderConfirmation(cliente, pedido)
-    UCS-->>-CHF: pedido
+    UCS-->>-ADM: pedido
+    Note over ADM,UCS: Si lo pide un chofer, la operación se rechaza: la entrega<br/>la confirma el cliente con el código (CU-079)

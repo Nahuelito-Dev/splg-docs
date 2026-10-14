@@ -75,7 +75,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-017 | Actualizar Ubicación GPS del Chofer | `DSS_CU-017_Actualizar-Ubicacion-Gps-Del-Chofer.png` | `DSD_CU-017_Actualizar-Ubicacion-Gps-Del-Chofer.png` |
 | CU-018 | Marcar Pedido "En Camino" | `DSS_CU-018_Marcar-Pedido-En-Camino.png` | `DSD_CU-018_Marcar-Pedido-En-Camino.png` |
 | CU-019 | Avisar Llegada al Cliente | `DSS_CU-019_Avisar-Llegada-Al-Cliente.png` | `DSD_CU-019_Avisar-Llegada-Al-Cliente.png` |
-| CU-020 | Confirmar Entrega | `DSS_CU-020_Confirmar-Entrega.png` | `DSD_CU-020_Confirmar-Entrega.png` |
+| CU-020 | Confirmar Entrega Manualmente | `DSS_CU-020_Confirmar-Entrega.png` | `DSD_CU-020_confirmarEntrega.png` |
 | CU-021 | Recibir Notificaciones en Tiempo Real | `DSS_CU-021_Recibir-Notificaciones-En-Tiempo-Real.png` | `DSD_CU-021_Recibir-Notificaciones-En-Tiempo-Real.png` |
 | CU-022 | Activar la Disponibilidad | `DSS_CU-022_Activar-la-Disponibilidad.png` | `DSD_CU-022_CU-266_cambiarDisponibilidad.png` |
 | CU-023 | Registrar Reclamo | `DSS_CU-023_Registrar-Reclamo.png` | `DSD_CU-023_Registrar-Reclamo.png` |
@@ -133,8 +133,8 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-075 | Activar Reservas Vencidas Automaticamente (Cron) | `DSS_CU-075_Activar-Reservas-Vencidas-Automaticamente.png` | `DSD_CU-075_CU-076_CU-077_Activar-Reservas-Vencidas-Automaticamente.png` |
 | CU-076 | Expirar Reservas sin Seña Pagada (Cron) | `DSS_CU-076_Expirar-Reservas-Sin-Sena-Pagada.png` | `DSD_CU-075_CU-076_CU-077_Activar-Reservas-Vencidas-Automaticamente.png` |
 | CU-077 | Expirar Pedidos de MercadoPago sin Pagar (Cron) | `DSS_CU-077_Expirar-Pedidos-De-Mercadopago-Sin-Pagar.png` | `DSD_CU-075_CU-076_CU-077_Activar-Reservas-Vencidas-Automaticamente.png` |
-| CU-078 | Obtener el Código de Entrega (QR del chofer) | `DSS_CU-078_Obtener-El-Codigo-De-Entrega.png` | `DSD_CU-078_CU-079_Obtener-El-Codigo-De-Entrega.png` |
-| CU-079 | Confirmar Entrega Escaneando el QR (cliente) | `DSS_CU-079_Confirmar-Entrega-Escaneando-El-Qr.png` | `DSD_CU-078_CU-079_Obtener-El-Codigo-De-Entrega.png` |
+| CU-078 | Obtener el Código de Entrega (QR del chofer) | `DSS_CU-078_Obtener-El-Codigo-De-Entrega.png` | `DSD_CU-078_obtenerCodigoDeEntrega.png` |
+| CU-079 | Confirmar Entrega Escaneando el QR (cliente) | `DSS_CU-079_Confirmar-Entrega-Escaneando-El-Qr.png` | `DSD_CU-079_confirmarEntregaConCodigo.png` |
 | CU-080 | Consultar el Pool de Pedidos Disponibles | `DSS_CU-080_Consultar-El-Pool-De-Pedidos-Disponibles.png` | `DSD_CU-080_Consultar-El-Pool-De-Pedidos-Disponibles.png` |
 | CU-081 | Consultar los Pedidos Asignados al Chofer | `DSS_CU-081_Consultar-Los-Pedidos-Asignados-Al-Chofer.png` | `DSD_CU-081_Consultar-Los-Pedidos-Asignados-Al-Chofer.png` |
 | CU-082 | Crear Usuario Base | — (caso incluido, sin diagrama propio) | `DSD_CU-082_Crear-Usuario-Base.png` |
@@ -264,7 +264,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-207 | Consultar los Depósitos | `DSS_CU-207_Consultar-los-Depositos.png` | `DSD_CU-207_consultarDepositos.png` · `DSD_CU-207_consultarDeposito.png` |
 | CU-208 | Consultar el Stock por Ubicación | `DSS_CU-208_Consultar-el-Stock-por-Ubicacion.png` | `DSD_CU-208_consultarStockPorUbicacion.png` · `DSD_CU-208_consultarUbicacionesDeStock.png` |
 | CU-209 | Consultar los Movimientos de Stock | `DSS_CU-209_Consultar-los-Movimientos-de-Stock.png` | `DSD_CU-209_consultarMovimientosDeStock.png` |
-| CU-210 | Configurar el Stock Mínimo | `DSS_CU-210_Configurar-el-Stock-Minimo.png` | `DSD_CU-210_consultarStockMinimo.png` · `DSD_CU-210_configurarStockMinimo.png` |
+| CU-210 | Configurar el Stock Mínimo | `DSS_CU-210_Configurar-el-Stock-Minimo.png` | `DSD_CU-210_configurarStockMinimo.png` |
 | CU-211 | Avisar el Stock Bajo | `DSS_CU-211_Avisar-el-Stock-Bajo.png` | `DSD_CU-211_avisarStockBajo.png` |
 | CU-212 | Transferir Stock entre Depósitos | `DSS_CU-212_Transferir-Stock-entre-Depositos.png` | `DSD_CU-212_transferirStock.png` |
 | CU-213 | Registrar un Ajuste o una Merma de Stock | `DSS_CU-213_Registrar-un-Ajuste-o-una-Merma-de-Stock.png` | `DSD_CU-213_registrarAjusteDeStock.png` |
@@ -272,7 +272,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-215 | Emitir una Orden de Compra | `DSS_CU-215_Emitir-una-Orden-de-Compra.png` | `DSD_CU-215_emitirOrdenDeCompra.png` |
 | CU-216 | Cancelar una Orden de Compra | `DSS_CU-216_Cancelar-una-Orden-de-Compra.png` | `DSD_CU-216_cancelarOrdenDeCompra.png` |
 | CU-217 | Registrar la Recepción de una Compra | `DSS_CU-217_Registrar-la-Recepcion-de-una-Compra.png` | `DSD_CU-217_registrarRecepcionDeCompra.png` |
-| CU-218 | Registrar la Carga del Camión | `DSS_CU-218_Registrar-la-Carga-del-Camion.png` | `DSD_CU-218_registrarCargaDelCamion.png` · `DSD_CU-218_corregirRenglonesDeLaCarga.png` · `DSD_CU-218_reponerCargaDelCamion.png` |
+| CU-218 | Registrar la Carga del Camión | `DSS_CU-218_Registrar-la-Carga-del-Camion.png` | `DSD_CU-218_registrarCargaDelCamion.png` |
 | CU-219 | Registrar la Salida del Camión | `DSS_CU-219_Registrar-la-Salida-del-Camion.png` | `DSD_CU-219_registrarSalidaDelCamion.png` |
 | CU-220 | Descontar del Stock Físico lo Entregado | `DSS_CU-220_Descontar-del-Stock-Fisico-lo-Entregado.png` | `DSD_CU-220_descontarStockDeLaEntrega.png` |
 | CU-221 | Registrar el Regreso del Camión | `DSS_CU-221_Registrar-el-Regreso-del-Camion.png` | `DSD_CU-221_registrarRegresoDelCamion.png` |
@@ -303,7 +303,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-246 | Verificar la Habilitación Laboral del Chofer | — (caso incluido, sin diagrama propio) | `DSD_CU-246_verificarHabilitacionLaboral.png` |
 | CU-247 | Reactivar un Vehículo | `DSS_CU-247_Reactivar-un-Vehiculo.png` | `DSD_CU-247_reactivarVehiculo.png` |
 | CU-248 | Verificar la Carga de Camión Abierta del Chofer | `DSS_CU-248_Verificar-la-Carga-de-Camion-Abierta-del-Chofer.png` | `DSD_CU-248_verificarCargaDeCamionAbierta.png` |
-| CU-249 | Configurar el Control de Carga de Camión Abierta | `DSS_CU-249_Configurar-el-Control-de-Carga-de-Camion-Abierta.png` | `DSD_CU-249_configurarControlDeCargaAbierta.png` · `DSD_CU-249_consultarControlDeCargaAbierta.png` |
+| CU-249 | Configurar el Control de Carga de Camión Abierta | `DSS_CU-249_Configurar-el-Control-de-Carga-de-Camion-Abierta.png` | `DSD_CU-249_configurarControlDeCargaAbierta.png` |
 | CU-250 | Aplicar un Movimiento de Stock | `DSS_CU-250_Aplicar-un-Movimiento-de-Stock.png` | `DSD_CU-250_aplicarMovimientoDeStock.png` |
 | CU-251 | Modificar el Perfil de Usuario | `DSS_CU-251_Modificar-el-Perfil-de-Usuario.png` | `DSD_CU-251_actualizarPerfil.png` |
 | CU-252 | Crear un Rol | `DSS_CU-252_Crear-un-Rol.png` | `DSD_CU-252_crearRol.png` |
@@ -346,6 +346,19 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-289 | Cancelar una Carga del Camión | `DSS_CU-289_Cancelar-una-Carga-del-Camion.png` | `DSD_CU-289_cancelarCargaDelCamion.png` |
 | CU-290 | Consultar las Cargas del Camión | `DSS_CU-290_Consultar-las-Cargas-del-Camion.png` | `DSD_CU-290_consultarCargasDelCamion.png` |
 | CU-291 | Consultar una Carga del Camión | `DSS_CU-291_Consultar-una-Carga-del-Camion.png` | `DSD_CU-291_consultarCargaDelCamion.png` |
+| CU-292 | Confirmar el Cobro en Efectivo | `DSS_CU-292_Confirmar-el-Cobro-en-Efectivo.png` | `DSD_CU-292_confirmarCobroEnEfectivo.png` |
+| CU-293 | Informar el Cobro Impago | `DSS_CU-293_Informar-el-Cobro-Impago.png` | `DSD_CU-293_informarCobroImpago.png` |
+| CU-294 | Resolver un Cobro Impago | `DSS_CU-294_Resolver-un-Cobro-Impago.png` | `DSD_CU-294_resolverCobroImpago.png` |
+| CU-295 | Corregir los Renglones de una Carga del Camión | `DSS_CU-295_Corregir-los-Renglones-de-una-Carga-del-Camion.png` | `DSD_CU-295_corregirRenglonesDeLaCarga.png` |
+| CU-296 | Reponer una Carga del Camión | `DSS_CU-296_Reponer-una-Carga-del-Camion.png` | `DSD_CU-296_reponerCargaDelCamion.png` |
+| CU-297 | Consultar el Stock Mínimo | `DSS_CU-297_Consultar-el-Stock-Minimo.png` | `DSD_CU-297_consultarStockMinimo.png` |
+| CU-298 | Consultar el Control de Carga de Camión Abierta | `DSS_CU-298_Consultar-el-Control-de-Carga-de-Camion-Abierta.png` | `DSD_CU-298_consultarControlDeCargaAbierta.png` |
+| CU-299 | Registrar el Cobro en Efectivo como Administrador | `DSS_CU-299_Registrar-el-Cobro-en-Efectivo-como-Administrador.png` | `DSD_CU-299_registrarCobroEnEfectivoPorAdmin.png` |
+| CU-300 | Registrar el Cobro Impago como Administrador | `DSS_CU-300_Registrar-el-Cobro-Impago-como-Administrador.png` | `DSD_CU-300_registrarCobroImpagoPorAdmin.png` |
+| CU-301 | Confirmar una Transferencia | `DSS_CU-301_Confirmar-una-Transferencia.png` | `DSD_CU-301_confirmarTransferencia.png` |
+| CU-303 | Consultar la Ruta de un Pedido | `DSS_CU-303_Consultar-la-Ruta-de-un-Pedido.png` | `DSD_CU-303_consultarRutaDelPedido.png` |
+| CU-302 | Cotizar un Pedido | `DSS_CU-302_Cotizar-un-Pedido.png` | `DSD_CU-302_cotizarPedido.png` |
+| CU-304 | Ver los Cobros Pendientes | `DSS_CU-304_Ver-los-Cobros-Pendientes.png` | `DSD_CU-304_consultarCobrosPendientes.png` |
 
 ## Módulos de gestión planificados: modelos y estados
 

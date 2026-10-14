@@ -46,6 +46,10 @@ class Pedido {
   nombre de quien recibe
   documento de quien recibe
   vínculo con quien recibe
+  estado del cobro
+  cobro confirmado el
+  cobro resuelto el
+  nota de resolución del cobro
 }
 class ItemPedido {
   cantidad
@@ -111,6 +115,8 @@ Pedido "0..*" -- "0..1" FranjaHoraria : se programa en >
 Pedido "0..*" -- "0..1" ZonaCobertura : aplica el recargo de >
 Pedido "1" *-- "0..*" CambioEstadoPedido : registra >
 Usuario "0..1" -- "0..*" CambioEstadoPedido : efectúa >
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de >
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de >
 Pedido "1" *-- "0..*" CambioDireccion : registra >
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde >
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia >

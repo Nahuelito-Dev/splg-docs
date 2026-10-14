@@ -65,6 +65,7 @@ class ReportsService <<fachada>> {
   + agruparPorMetodoDePago(pedidos: Pedido[*]): Registro
   + agruparPorPeriodo(pedidos: Pedido[*],\n      granularidad: Cadena): Registro
   + agruparPorProducto(items: Registro): Registro
+  + consultarCobrosPendientes(desde: Fecha,\n      hasta: Fecha): Registro
   + consultarEvolucionDeVentas(fechaDesde: Fecha,\n      fechaHasta: Fecha, granularidad: Cadena): Registro
   + consultarVentasPorChofer(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
   + consultarVentasPorMetodoDePago(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro

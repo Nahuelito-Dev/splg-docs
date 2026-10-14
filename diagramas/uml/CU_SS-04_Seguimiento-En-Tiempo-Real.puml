@@ -1,5 +1,5 @@
 @startuml
-title SS-04 — Seguimiento en Tiempo Real (9 casos de uso)
+title SS-04 — Seguimiento en Tiempo Real (16 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -44,12 +44,19 @@ rectangle "SS-04 Seguimiento en Tiempo Real" {
   usecase "CU-017\nActualizar Ubicación GPS del\nChofer" as U017 #back:FFFFFF;line:8A7326
   usecase "CU-018\nMarcar Pedido "En Camino"" as U018 #back:FFFFFF;line:8A7326
   usecase "CU-019\nAvisar Llegada al Cliente" as U019 #back:FFFFFF;line:8A7326
-  usecase "CU-020\nConfirmar Entrega" as U020 #back:FFFFFF;line:8A7326
+  usecase "CU-020\nConfirmar Entrega Manualmente" as U020 #back:FFFFFF;line:8A7326
   usecase "CU-021\nRecibir Notificaciones en\nTiempo Real" as U021 #back:FFFFFF;line:8A7326
   usecase "CU-022\nActivar la Disponibilidad" as U022 #back:FFFFFF;line:8A7326
   usecase "CU-078\nObtener el Código de Entrega\n(QR del chofer)" as U078 #back:FFFFFF;line:8A7326
   usecase "CU-079\nConfirmar Entrega Escaneando\nel QR (cliente)" as U079 #back:FFFFFF;line:8A7326
   usecase "CU-266\nDesactivar la Disponibilidad" as U266 #back:FFFFFF;line:8A7326
+  usecase "CU-292\nConfirmar el Cobro en Efectivo" as U292 #back:FFFFFF;line:8A7326
+  usecase "CU-293\nInformar el Cobro Impago" as U293 #back:FFFFFF;line:8A7326
+  usecase "CU-294\nResolver un Cobro Impago" as U294 #back:FFFFFF;line:8A7326
+  usecase "CU-299\nRegistrar el Cobro en Efectivo\ncomo Administrador" as U299 #back:FFFFFF;line:8A7326
+  usecase "CU-300\nRegistrar el Cobro Impago como\nAdministrador" as U300 #back:FFFFFF;line:8A7326
+  usecase "CU-301\nConfirmar una Transferencia" as U301 #back:FFFFFF;line:8A7326
+  usecase "CU-303\nConsultar la Ruta de un Pedido" as U303 #back:FFFFFF;line:8A7326
   usecase "Notificar Cliente" as F_AVISO <<factorizado>> #back:FFFFFF;line:8A7326
 }
 
@@ -59,15 +66,23 @@ rectangle "Casos de uso de otros subsistemas\n(sólo como referencia)" as OTROS 
 
 A01 -[#1F6F8B]- U021
 A01 -[#1F6F8B]- U079
+A01 -[#1F6F8B]- U303
 A02 -[#2E7D46]- U017
 A02 -[#2E7D46]- U018
 A02 -[#2E7D46]- U019
-A02 -[#2E7D46]- U020
 A02 -[#2E7D46]- U022
 A02 -[#2E7D46]- U078
 A02 -[#2E7D46]- U266
+A02 -[#2E7D46]- U292
+A02 -[#2E7D46]- U293
+A02 -[#2E7D46]- U303
+A03 -[#8C4A9E]- U020
 A03 -[#8C4A9E]- U078
 A03 -[#8C4A9E]- U079
+A03 -[#8C4A9E]- U294
+A03 -[#8C4A9E]- U299
+A03 -[#8C4A9E]- U300
+A03 -[#8C4A9E]- U301
 U019 -[#6B7683]- A07
 U018 -[#6B7683]- A07
 U020 -[#6B7683]- A07

@@ -80,6 +80,7 @@ class ItemRecepcion {
   costo unitario
   costo promedio previo
   existencia previa
+  existencia previa leída el
 }
 class Deposito <<referencia>>
 class Producto <<referencia>>

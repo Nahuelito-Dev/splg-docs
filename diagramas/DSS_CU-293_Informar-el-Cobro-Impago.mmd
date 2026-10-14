@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-293 Informar el Cobro Impago
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: informarCobroImpago(pedidoId, nota)
+    activate SIS
+    alt el pedido está entregado, es en efectivo y es del chofer
+        SIS-->>CHO: impago informado (incidencia abierta)
+    else el pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else el pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
+    else el pedido no está entregado o no es en efectivo
+        SIS-->>CHO: error de solicitud
+    else el pago ya no está pendiente
+        SIS-->>CHO: conflicto
+    end
+    deactivate SIS
+    Note over CHO,SIS: El administrador resuelve el impago con CU-294

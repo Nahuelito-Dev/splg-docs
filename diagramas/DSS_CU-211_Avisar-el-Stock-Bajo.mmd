@@ -3,10 +3,13 @@ sequenceDiagram
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
 
     SAU->>SIS: avisarStockBajo()
     activate SIS
     alt algún mínimo mayor que cero tiene menos llenas que su valor y todavía no se avisó
+        SIS-)ADM: notificarStockBajo(depositos)
+        Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
         SIS-->>SAU: mínimos nuevos avisados
     else ningún mínimo está bajo, o los que lo están ya se avisaron
         SIS-->>SAU: sin avisos nuevos

@@ -8,8 +8,10 @@ sequenceDiagram
     activate SIS
     alt la carga está en carga
         SIS-->>ADM: carga cancelada
-    else la carga ya salió o falta el motivo
+    else falta el motivo
         SIS-->>ADM: solicitud inválida
+    else la carga ya salió
+        SIS-->>ADM: conflicto (transición no permitida)
     else la carga no existe
         SIS-->>ADM: recurso no encontrado
     end

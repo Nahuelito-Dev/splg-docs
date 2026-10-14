@@ -1,5 +1,5 @@
 @startuml
-title SS-02 — Gestión de Pedidos (32 casos de uso)
+title SS-02 — Gestión de Pedidos (33 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -73,8 +73,9 @@ rectangle "SS-02 Gestión de Pedidos" {
   usecase "CU-146\nConsultar la Fecha Estimada de\nRecompra" as U146 <<planificado>> #back:FFFFFF;line:3F7A50
   usecase "CU-147\nRealizar una Compra Express" as U147 <<planificado>> #back:FFFFFF;line:3F7A50
   usecase "CU-148\nElegir la Modalidad de Entrega\ndel Pedido" as U148 <<planificado>> #back:FFFFFF;line:3F7A50
-  usecase "CU-169\nRegistrar el Cambio de Estado\nde un Pedido" as U169 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-169\nRegistrar el Cambio de Estado\nde un Pedido" as U169 #back:FFFFFF;line:3F7A50
   usecase "CU-170\nConsultar el Historial de\nEstados de un Pedido" as U170 <<planificado>> #back:FFFFFF;line:3F7A50
+  usecase "CU-302\nCotizar un Pedido" as U302 #back:FFFFFF;line:3F7A50
   usecase "Filtrar Pedidos" as F_FILTRO <<factorizado>> #back:FFFFFF;line:3F7A50
   usecase "Aplicar Promoción" as F_PROMO <<factorizado>> #back:FFFFFF;line:3F7A50
   usecase "Aplicar Recargo por Pago en\nLínea" as F_RECAR <<factorizado>> #back:FFFFFF;line:3F7A50
@@ -111,6 +112,7 @@ A01 -[#1F6F8B]- U145
 A01 -[#1F6F8B]- U147
 A01 -[#1F6F8B]- U148
 A01 -[#1F6F8B]- U170
+A01 -[#1F6F8B]- U302
 A02 -[#2E7D46]- U006
 A02 -[#2E7D46]- U009
 A02 -[#2E7D46]- U080
@@ -122,6 +124,7 @@ A03 -[#8C4A9E]- U080
 A03 -[#8C4A9E]- U081
 A03 -[#8C4A9E]- U146
 A03 -[#8C4A9E]- U170
+A03 -[#8C4A9E]- U302
 A04 -[#8A6D1F]- U106
 A04 -[#8A6D1F]- U169
 U005 -[#6B7683]- A06

@@ -27,7 +27,10 @@ sequenceDiagram
     PED->>PED: transicionar(aceptado)
     PED->>PED: generarCodigoDeEntrega()
     deactivate PED
-    SRV->>PED: cerrarOfertas()
+    SRV->>PED: retirarOtrasOfertas(chofer)
+    loop Por cada chofer con una oferta retirada
+        SRV-)RT: notifyDriverOrderCancelled(choferConOferta, pedido)
+    end
     opt Había otro chofer asignado
         SRV-)RT: stopTracking(choferAnterior)
         SRV-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)

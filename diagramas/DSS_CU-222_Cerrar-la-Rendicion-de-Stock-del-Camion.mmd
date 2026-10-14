@@ -10,9 +10,9 @@ sequenceDiagram
         SIS-->>ADM: carga cerrada
     else la carga volvió y hay diferencia con su nota
         SIS-->>ADM: carga cerrada con diferencia
-    else hay diferencia y falta la nota, o la carga no volvió
+    else hay diferencia y falta la nota
         SIS-->>ADM: solicitud inválida
-    else el camión entregó después de la declaración
+    else la carga no volvió, o el camión entregó después de la declaración
         SIS-->>ADM: conflicto
     else la carga no existe
         SIS-->>ADM: recurso no encontrado

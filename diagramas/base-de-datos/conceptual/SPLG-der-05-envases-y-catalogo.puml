@@ -41,6 +41,7 @@ entity Producto {
   {field} stock
   {field} activo
   {field} costo promedio
+  {field} déficit de reservas
 }
 entity Promocion {
   * identificador

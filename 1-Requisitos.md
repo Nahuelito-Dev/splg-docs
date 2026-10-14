@@ -85,6 +85,8 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 16 | 2026-10-11 | Stock físico construido en el backend: casos de uso expandidos de CU-207 a CU-213, CU-220, CU-224, CU-250, CU-258 a CU-260 y CU-273 a CU-279 con el estado «Implementado» y su secuencia según la API; siete casos nuevos (CU-273 a CU-279); CU-020, CU-038 y CU-079 incluyen el descuento del stock físico, y el alta de producto (CU-036) y su edición (CU-037) cambian de efecto sobre el stock. | Nahuel Wagner |
 | 17 | 2026-10-11 | Compras construidas en el backend: casos de uso expandidos de CU-214 a CU-217, CU-261 a CU-263 y CU-280 a CU-288 con el estado «Implementado» y su secuencia según la API; nueve casos nuevos (CU-280 a CU-288) que parten de CU-215 y CU-217 el envío, las consultas y la anulación; CU-217 y CU-280 incluyen CU-250; el catálogo llega a 287 casos de uso. | Nahuel Wagner |
 | 18 | 2026-10-12 | Carga y rendición del camión construidas: casos de uso expandidos de CU-218, CU-219, CU-221 a CU-223, CU-248 y CU-249 con el estado «Implementado» y su secuencia según el sistema; casos nuevos CU-289 a CU-291; ajustes en CU-012, CU-013, CU-015, CU-080, CU-161 y CU-162 por la carga abierta; correcciones en CU-212, CU-220 y CU-273. | Nahuel Wagner |
+| 19 | 2026-10-14 | Casos de uso expandidos (290 → 297 casos, CU-292 a CU-298): CU-020 y CU-079 (actor real, motivo obligatorio de la entrega manual, el pago no se cobra al entregar), CU-292 a CU-298 nuevos, retiro de ofertas (CU-012 y CU-015), vista previa del cierre de la carga (CU-291 y CU-222), adjuntos de remitos y ajustes (CU-217, CU-213 y CU-275), respuesta 422 de la clave de idempotencia reutilizada con otros datos y matriz de rastreabilidad. | Nahuel Wagner |
+| 20 | 2026-10-14 | Casos de uso expandidos del blindaje (297 → 303 casos, CU-299 a CU-304): CU-299 a CU-304 nuevos, CU-169 implementado, CU-001, CU-006, CU-007, CU-008, CU-010, CU-063, CU-012, CU-015 y CU-020 con las reglas nuevas, y las reglas de stock del 14/10 en CU-213, CU-217, CU-218, CU-219 a CU-224, CU-259, CU-260, CU-274, CU-276 a CU-278, CU-280 y CU-289 a CU-296. | Nahuel Wagner |
 
 ---
 
@@ -129,7 +131,7 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 
 ## 3. Diagrama de Casos de Uso del Sistema
 
-Con 290 casos de uso, un único diagrama con todos ellos no se puede leer en una página. La
+Con 303 casos de uso, un único diagrama con todos ellos no se puede leer en una página. La
 vista principal es por eso el **mapa del sistema** (Figura 1), seguido del **diagrama de
 contexto** (Figura 2, en la sección 3.1). El diagrama con los casos de uso uno por uno
 (Figura 3) se presenta como lámina anexa, y el detalle de cada subsistema está en la
@@ -213,7 +215,7 @@ acción sobre el mundo físico queda del lado de las personas.
 
 ![Diagrama de Casos de Uso del Sistema](diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y los 290 casos
+> Notación UML: actores fuera del límite del sistema (una sola vez cada uno) y los 303 casos
 > de uso dentro, agrupados en paquetes, con las relaciones `«include»` y `«extend»` entre
 > casos de la lista. El Administrador General especializa al Administrador. Por su tamaño se
 > entrega también en formato vectorial, que permite ampliarla sin pérdida de legibilidad.
@@ -572,7 +574,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
-| **Requisitos asociados** | CU-207, CU-208, CU-209, CU-210, CU-211, CU-212, CU-213, CU-214, CU-215, CU-216, CU-217, CU-218, CU-219, CU-220, CU-221, CU-222, CU-223, CU-224, CU-289, CU-290, CU-291, CU-248, CU-249, CU-250, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-273, CU-274, CU-275, CU-276, CU-277, CU-278, CU-279, CU-280, CU-281, CU-282, CU-283, CU-284, CU-285, CU-286, CU-287, CU-288, CU-038, CU-020 |
+| **Requisitos asociados** | CU-207, CU-208, CU-209, CU-210, CU-211, CU-212, CU-213, CU-214, CU-215, CU-216, CU-217, CU-218, CU-295, CU-296, CU-219, CU-220, CU-221, CU-222, CU-223, CU-224, CU-289, CU-290, CU-291, CU-292, CU-293, CU-294, CU-297, CU-298, CU-299, CU-300, CU-301, CU-302, CU-303, CU-304, CU-248, CU-249, CU-250, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-273, CU-274, CU-275, CU-276, CU-277, CU-278, CU-279, CU-280, CU-281, CU-282, CU-283, CU-284, CU-285, CU-286, CU-287, CU-288, CU-038, CU-020 |
 | **Descripción** | El sistema debe llevar el stock físico de garrafas por ubicación (depósitos y camiones) y por condición, con el libro de cada movimiento, y reconciliarlo con el stock vendible del catálogo; registrar a los proveedores, las órdenes de compra y las recepciones de lo comprado; y registrar la hoja de carga de cada camión, desde que se carga hasta que se rinde. |
 | **Datos específicos** | De cada depósito: nombre, código (único entre los vigentes de la distribuidora), tipo (depósito o sucursal), dirección, si es el predeterminado y su estado. De cada ubicación de stock: si es un depósito o un vehículo. De cada saldo: tipo de garrafa, condición (llena, vacía o defectuosa) y cantidad, nunca negativa. De cada movimiento, de sólo agregado: tipo de garrafa, cantidad, ubicación y condición de origen y de destino, motivo, documento que lo originó, autor y momento. De cada umbral: depósito, tipo de garrafa, mínimo de llenas y momento del último aviso. De cada ajuste: número correlativo, ubicación, motivo, nota obligatoria y renglones con la diferencia por tipo de garrafa y condición. De cada proveedor: razón social, CUIT (único entre los vigentes), tipo, contacto y plazo de pago. De cada orden de compra: número, proveedor, depósito destino, estado (borrador, enviada, parcialmente recibida, recibida, cerrada con faltante o cancelada), fecha de emisión y fecha esperada, total, motivos de cancelación y de cierre, y renglones con cantidad, costo unitario, vacíos a canjear y cantidad recibida. De cada recepción: número interno, tipo y número del comprobante del proveedor (único por proveedor y tipo), depósito, fecha de recepción, renglones con las llenas recibidas, los vacíos entregados, el costo y el promedio y la existencia previos, estado de pago y estado, y motivo y fecha de anulación. De cada carga de camión: número, vehículo, chofer, ayudante, depósito de salida, día, estado, instantes de apertura, salida, regreso y cierre, renglones con lo cargado, repuesto, declarado, entregado, esperado y la diferencia, y la nota de la diferencia. Del tipo de garrafa: el costo promedio ponderado. |
 | **Estabilidad** | Media |
@@ -594,7 +596,7 @@ sistema de la sección 2 y acotan qué parte de cada uno se aborda en esta vuelt
 ## 7. Requisitos Funcionales — Casos de Uso
 
 Los casos de uso se documentan en dos niveles de detalle. La **descripción de alto
-nivel** de los 290 casos está en el Documento 0 · §7; acá van los **casos de uso
+nivel** de los 303 casos está en el Documento 0 · §7; acá van los **casos de uso
 expandidos**, con la secuencia normal, las excepciones y el resto de los campos. El
 diagrama de secuencia del sistema de cada caso está en el Documento 2 y su diagrama de
 interacción de diseño, en el Documento 3.
@@ -607,7 +609,7 @@ interacción de diseño, en el Documento 3.
 | ACT-02 | Chofer | Humano | Repartidor que gestiona entregas mediante la App Chofer (Flutter). |
 | ACT-03 | Administrador | Humano | Operador del distribuidor que accede al Panel Web (React/Vite). |
 | ACT-04 | Sistema Automático | Automático | Procesos que el backend ejecuta por iniciativa propia, sin que ningún usuario los solicite y sin interfaz. Es el actor de los cinco procesos automatizados del sistema: la negociación secuencial de asignación de pedidos (M1), la planificación predictiva de mantenimiento y habilitaciones de flota (M2), la anticipación de recompra por consumo estimado (M3), la agrupación inteligente de pedidos por recorrido (M4) y la recuperación de envases no devueltos (M5). Las tareas de mantenimiento del propio sistema —vencer una oferta, activar una reserva que llegó a su fecha, liberar el stock de un pedido caducado— no son procesos automatizados: son la ejecución programada de esos circuitos. Es un actor interno de disparo temporal —el equivalente al actor «Tiempo» de Larman—: representa el reloj y los eventos internos que inician casos de uso sin que los inicie una persona ni un sistema externo. |
-| ACT-05 | Administrador General | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras y designa a sus administradores. Es el único actor cuyo alcance no está limitado a una distribuidora. |
+| ACT-05 | Administrador General | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Da de alta las empresas comercializadoras y designa a sus administradores. Es el único actor cuyo alcance no está limitado a una distribuidora. En las escrituras sobre pedidos, cobros, incidencias, reclamos y adjuntos, y sobre las cuentas del personal de una empresa, debe indicar la distribuidora con `X-Distributor`: sin ella el sistema responde 400 y no escribe nada. |
 | ACT-06 | MercadoPago | Secundario (sistema externo) | Pasarela de cobro. El sistema le crea el checkout de cada pedido o seña que se paga por MercadoPago y recibe de ella el aviso de pago aprobado. No inicia ningún caso de uso. Participa en CU-005, CU-048, CU-072 y CU-147. |
 | ACT-07 | Firebase | Secundario (sistema externo) | Identidad y mensajería. El sistema le pide crear y deshabilitar cuentas, verificar el token de identidad y generar el enlace de recuperación de contraseña, y le entrega las notificaciones push que llegan a los dispositivos. No inicia ningún caso de uso. Participa en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-021, CU-047, CU-072, CU-079, CU-082, CU-085, CU-091, CU-100, CU-101 y CU-147. |
 | ACT-08 | Servicio de correo | Secundario (sistema externo) | Envía los correos transaccionales del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y aviso de vencimientos de la flota. No inicia ningún caso de uso. Participa en CU-002, CU-047, CU-102, CU-142, CU-211 y CU-224. |
@@ -665,7 +667,9 @@ interacción de diseño, en el Documento 3.
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si las credenciales son incorrectas, Firebase rechaza la verificación y el sistema responde con un error de solicitud incorrecta que transporta el mensaje devuelto por Firebase. El caso de uso termina sin efecto. |
+| 2 | Si el email o la contraseña son incorrectos, o el usuario no existe, el sistema responde 401 "El email o la contraseña son incorrectos": es la misma respuesta en los dos casos y nunca lleva el texto de Firebase, para no revelar cuál fue. Una cuenta dada de baja recibe la misma respuesta, porque Firebase la rechaza antes de mirar la clave. El caso de uso termina sin efecto. |
+| 2 | Si la cuenta está bloqueada y la clave es correcta, el sistema responde 401 "La cuenta no está habilitada". |
+| 2 | Si Firebase informa demasiados intentos fallidos, el sistema responde 429; si el acceso falla por cualquier otra causa, responde 503 "No pudimos iniciar sesión en este momento: probá de nuevo en unos minutos". |
 | 2 | El sistema admite como máximo ocho intentos de ingreso por minuto y por origen; superado ese límite, rechaza los siguientes. |
 | 5 | Si el email con el que se ingresa al Panel Web no corresponde a un administrador registrado, el sistema deniega el acceso. |
 | 6 | Si falta el encabezado que identifica la aplicación de origen, o si el rol del usuario no corresponde a esa aplicación —un cliente entrando por la app de choferes, por ejemplo—, el sistema deniega la solicitud. |
@@ -677,7 +681,7 @@ interacción de diseño, en el Documento 3.
 | **Rendimiento** | El inicio de sesión se completa en menos de 3 segundos en condiciones normales de red. |
 | **Frecuencia** | Múltiples veces por día por usuario. Varía según la duración de la sesión. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no emite una credencial propia con el rol adentro: la validación del token y la resolución del rol se hacen contra Firebase y contra la base en cada solicitud, lo que ata la disponibilidad del sistema a la de Firebase. El sistema no impide el ingreso del chofer no habilitado: la marca de validación que otorga el administrador (CU-032) y la habilitación (CU-033) no se consultan en el inicio de sesión sino cuando el chofer quiere ponerse en línea (CU-022) y al elegirlo como candidato en el despacho. |
+| **Comentarios** | El sistema no emite una credencial propia con el rol adentro: la validación del token y la resolución del rol se hacen contra Firebase y contra la base en cada solicitud, lo que ata la disponibilidad del sistema a la de Firebase. El sistema no impide el ingreso del chofer no habilitado: la marca de validación que otorga el administrador (CU-032) y la habilitación (CU-033) no se consultan en el inicio de sesión sino cuando el chofer quiere ponerse en línea (CU-022) y al elegirlo como candidato en el despacho. La verificación de que el email exista (`check-exists`, antes del registro) también tiene un cupo de consultas por origen. Verificado contra la API: un usuario inexistente y una contraseña equivocada responden lo mismo, 401 con ese mensaje. |
 
 ---
 #### Crítico CU-002 — Registrarse como Cliente
@@ -786,6 +790,7 @@ interacción de diseño, en el Documento 3.
 | 8 | Ante cualquier otro error durante la transacción, el sistema revierte por completo e informa "Error al crear el pedido" (500). |
 | 11 | Si no hay ningún chofer elegible en ninguno de los pasos de radio, el pedido queda pendiente sin oferta y lo retoma el proceso temporal de CU-014. |
 | 12 | Si el envío de la notificación falla, el pedido queda creado igual. |
+| 6 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -803,7 +808,7 @@ interacción de diseño, en el Documento 3.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-03, OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
-| **Descripción** | El usuario accede al detalle completo de un pedido. Cada rol ve la misma información con acciones distintas. El acceso está acotado por distribuidora y, para el cliente, además por propiedad del pedido. |
+| **Descripción** | El usuario accede al detalle completo de un pedido. Cada rol ve la misma información con acciones distintas. El acceso está acotado por distribuidora, para el cliente por propiedad del pedido y para el chofer por lo que le corresponde. El cliente dueño y el administrador ven además los datos del chofer mientras el pedido está aceptado o en camino y, si está cancelado, quién lo canceló. |
 | **Precondición** | El usuario está autenticado. El pedido existe. Si es Cliente, el pedido le pertenece. |
 | **Estado** | Implementado |
 
@@ -812,8 +817,8 @@ interacción de diseño, en el Documento 3.
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario selecciona un pedido desde su listado —historial del cliente o listado del panel—. |
-| 2 | El sistema recupera el pedido con todos sus datos: ítems —cada uno con el precio unitario y el subtotal que quedaron guardados en su renglón al crear el pedido—, total, estado, distribuidora a la que pertenece (`distributor_id`), chofer asignado si lo hay, dirección de entrega, franja horaria, método y estado del pago, y las marcas de tiempo de cada transición. |
-| 3 | Si hay una distribuidora en el contexto de la solicitud, el sistema comprueba que el pedido pertenezca a esa distribuidora. Si quien consulta es un cliente, comprueba además que el pedido sea suyo. |
+| 2 | El sistema recupera el pedido con todos sus datos: ítems —cada uno con el precio unitario y el subtotal que quedaron guardados en su renglón al crear el pedido—, total, estado, distribuidora a la que pertenece (`distributor_id`), chofer asignado si lo hay —con su nombre, su teléfono y su calificación, sólo para el cliente dueño y el administrador y sólo mientras el pedido está aceptado o en camino—, quién canceló el pedido si está cancelado (`cancelledBy`), dirección de entrega, franja horaria, método y estado del pago, y las marcas de tiempo de cada transición. |
+| 3 | Si hay una distribuidora en el contexto de la solicitud, el sistema comprueba que el pedido pertenezca a esa distribuidora. Si quien consulta es un cliente, comprueba además que el pedido sea suyo; si es un chofer, que el pedido sea suyo, que tenga una oferta de despacho vigente para él o que esté en el pool de pedidos disponibles que ve. |
 | 4 | El sistema devuelve la vista detallada del pedido. |
 | 5 | La app muestra las acciones disponibles según el rol: el cliente puede cancelar mientras el pedido esté pendiente o aceptado; el administrador puede cancelar o asignar chofer manualmente. |
 
@@ -824,13 +829,60 @@ interacción de diseño, en el Documento 3.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el pedido no existe, si pertenece a otra distribuidora o si es de otro cliente, el sistema responde exactamente lo mismo en los tres casos —que el pedido no existe— para no revelar la existencia del recurso. |
+| 3 | Si quien consulta es un chofer y el pedido no es suyo, ni tiene una oferta vigente para él, ni está en su pool, el sistema responde que el pedido no existe (404). |
+| 3 | Si el chofer tuvo el pedido (lo aceptó o se lo asignaron) y ya no es suyo —lo liberó un administrador, lo reasignaron o el control de carga lo sacó del pool—, el sistema responde 410 "Este pedido ya no está asignado a tu usuario", sin datos del pedido, para que la app salga de la pantalla en vez de quedarse con el estado viejo. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La consulta del detalle se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta: se ejecuta cada vez que el usuario abre un pedido desde su listado, varias veces por pedido activo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La vista de detalle no incorpora las incidencias ni las calificaciones asociadas al pedido: para consultarlas hace falta recurrir por separado a CU-062 y a CU-065/CU-066. El precio unitario y el subtotal de cada ítem son los del momento de pedir, con las promociones por volumen ya aplicadas, y no el precio vigente del catálogo: si el administrador cambia el precio después, el detalle y el remito impreso del pedido siguen mostrando lo que se cobró. La respuesta informa además `distributor_id`, la distribuidora dueña del pedido, que el Administrador General usa para operar sobre el pedido sin elegir una distribuidora con «Ver como» (por ejemplo, CU-012). |
+| **Comentarios** | La vista de detalle no incorpora las incidencias ni las calificaciones asociadas al pedido: para consultarlas hace falta recurrir por separado a CU-062 y a CU-065/CU-066. El precio unitario y el subtotal de cada ítem son los del momento de pedir, con las promociones por volumen ya aplicadas, y no el precio vigente del catálogo: si el administrador cambia el precio después, el detalle y el remito impreso del pedido siguen mostrando lo que se cobró. La respuesta informa además `distributor_id`, la distribuidora dueña del pedido, que el Administrador General usa para operar sobre el pedido sin elegir una distribuidora con «Ver como» (por ejemplo, CU-012). **Datos del chofer.** `driver` trae `userId`, nombre, teléfono, `ratingAverage` y `ratingCount` (las calificaciones ocultas no cuentan), sólo en la lectura individual, para el cliente dueño y el administrador, con el pedido aceptado o en camino y con chofer; con el pedido cerrado, sin chofer o visto por el propio chofer es nulo, de modo que el teléfono no queda expuesto. `driver.location` es la última posición conocida (`lat`, `lng`, `at`) y es más sensible: sólo con el pedido en camino y siendo ése el pedido que el chofer lleva, y sólo si tiene menos de `DRIVER_LOCATION_MAX_AGE_MIN` minutos (10 por omisión); en cualquier otro caso, o si el radar no responde, es nula y el cliente debe tomarla como «sin posición reciente», no como un error. La patente está en `vehicle.patent`. **Quién canceló.** `cancelledBy` es `customer`, `admin` (el administrador general cuenta como administrador), `driver` o `system`, y sale del historial de estados (CU-169): `system` es el vencimiento por falta de pago o de seña, que no emite el evento en vivo; es nulo si el pedido no está cancelado o es anterior al historial. |
+
+---
+
+
+#### Importante CU-302 — Cotizar un Pedido
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-01, OBJ-07 |
+| **Requisitos asociados** | IRQ-02 |
+| **Descripción** | Con el mismo cuerpo que el alta del pedido, devuelve el desglose que cobrará el alta: renglones valorizados con la promoción por volumen, subtotal, recargo de zona (con la dirección), recargo por medio de pago (10 % sobre el subtotal más la zona, en MercadoPago y transferencia), seña (si es reserva), total y saldo. El total es exactamente el del pedido que se crea con ese cuerpo, porque usa las mismas funciones que el alta. No escribe nada ni reserva stock. Endpoint: `POST /orders/quote`. |
+| **Precondición** | El solicitante está autenticado como Cliente (ACT-01), que cotiza para sí, o como Administrador (ACT-03) o Administrador General (ACT-05). |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El cliente arma el carrito y elige la dirección y el medio de pago en el checkout (CU-005). |
+| 2 | La app envía `POST /orders/quote` con los renglones, el medio de pago y, si quiere el recargo de la zona, la dirección. El administrador indica además el cliente. |
+| 3 | El sistema toma la distribuidora del contexto o, para el cliente sin encabezado, la distribuidora por defecto. |
+| 4 | Si es una reserva, comprueba que traiga la fecha agendada; si trae franja horaria, comprueba que sirva. |
+| 5 | Si hay dirección, la busca entre las del cliente y resuelve la zona de cobertura y su recargo. |
+| 6 | Por cada renglón lee el producto, comprueba que sea de la distribuidora, lo valoriza con la promoción por volumen y comprueba que haya stock. |
+| 7 | Calcula el total con el recargo de la zona y el del medio de pago, redondeado a dos decimales como lo guarda el pedido. |
+| 8 | El sistema devuelve el desglose, con la seña y el saldo. |
+
+**Postcondición:** Ninguna: es una consulta de sólo lectura. No se creó ningún pedido ni se reservó stock.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si los datos son inválidos, si una reserva no trae la fecha agendada, o el administrador manda una dirección sin cliente, el sistema responde 400. |
+| 2 | Si un cliente cotiza para otro cliente, el sistema responde 403. |
+| 5 | Si la dirección no existe entre las del cliente, el sistema responde 404; si está fuera de cobertura, 400. |
+| 6 | Si un producto es de otra distribuidora, o no hay stock suficiente, o la misma garrafa está en dos renglones, el sistema responde 400, igual que el alta; la distribuidora se comprueba antes que el stock. |
+| 4 | Si la franja no está disponible, el sistema responde 400. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Lecturas sin bloqueos; responde en menos de 1 segundo. |
+| **Frecuencia** | Alta: cada vez que el cliente cambia el carrito, la dirección o el medio de pago. |
+| **Estabilidad** | Alta |
+| **Comentarios** | La cotización no se puede apartar del alta: reutiliza `valorizarRenglon`, `resolverZona` y `calcularTotales`, de modo que una regla nueva de precios cambia las dos juntas. El precio por renglón lo decide el servidor: el `unitPrice` que manda el cliente no cuenta. |
 
 ---
 #### Crítico · automático CU-013 — Asignar Pedido Automáticamente por Proximidad
@@ -974,12 +1026,13 @@ interacción de diseño, en el Documento 3.
 | 2 | La app pide el paso del pedido a estado ACCEPTED. La identidad del chofer sale de su token: cualquier identificador de repartidor que venga en el cuerpo de la solicitud se ignora. Un administrador sí puede indicar a qué chofer asignarlo. |
 | 3 | Si quien acepta es un chofer y el pedido ya tiene un chofer asignado, el sistema comprueba que sea él mismo. Luego comprueba que la transición desde el estado actual sea legal, es decir que el pedido siga pendiente. |
 | 4 | Busca el perfil de repartidor de quien acepta y comprueba que exista, que sea de la misma distribuidora que el pedido, que esté habilitado y validado y que tenga un vehículo en uso habilitado (CU-161). Comprueba además —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que la carga de camión del chofer que queda con el pedido lo habilite a recibir pedidos; es el que acepta o, si acepta un administrador, el que indica con `deliveryId`. Sólo se saltea cuando el mismo chofer repite una aceptación que ya era suya. |
-| 5 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera el código secreto de entrega que se usará en la confirmación por código QR (CU-020). |
+| 5 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera el código secreto de entrega que se usará en la confirmación por código QR (CU-079). |
 | 6 | Cierra como aceptada la oferta de despacho que ese chofer tenía abierta sobre el pedido. |
-| 7 | Avisa al cliente en tiempo real de la aceptación, con el nombre y el teléfono del chofer, y avisa también al panel de administración. |
-| 8 | Envía al cliente una notificación al dispositivo. El texto es el genérico de confirmación de pedido y no menciona ni la aceptación ni al chofer. |
+| 7 | Retira, en la misma transacción, las ofertas abiertas a los demás choferes: pasan a «reemplazadas» (`superseded`), excluido el chofer que aceptó, y no cuentan como intento. Después de confirmada la transacción, avisa a esos choferes que la oferta ya no está vigente. |
+| 8 | Avisa al cliente en tiempo real de la aceptación, con el nombre y el teléfono del chofer, y avisa también al panel de administración. |
+| 9 | Envía al cliente una notificación al dispositivo. El texto es el genérico de confirmación de pedido y no menciona ni la aceptación ni al chofer. |
 
-**Postcondición:** El pedido tiene estado ACCEPTED con el chofer asignado y con su código de entrega generado.
+**Postcondición:** El pedido tiene estado ACCEPTED con el chofer asignado y con su código de entrega generado. Las ofertas abiertas a otros choferes quedaron retiradas.
 
 **Excepciones**
 
@@ -994,13 +1047,14 @@ interacción de diseño, en el Documento 3.
 | 4 | Si el repartidor está deshabilitado, el sistema responde 400 "El repartidor está deshabilitado"; si no está validado, 400 "El repartidor no está validado". |
 | 4 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la aceptación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado"). Un chofer sin vehículo en uso tampoco recibe la oferta (CU-013). |
 | 4 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la aceptación con 400 y el motivo, por ejemplo "Tu distribuidora exige una carga de camión abierta para trabajar: pedile al administrador que abra tu carga del día" o "La carga N° n ya volvió: no se reciben pedidos hasta cerrar su rendición". |
+| 2 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La aceptación se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta por chofer: se repite cada vez que le llega una oferta, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La copia del vehículo (patente, marca y modelo) queda en el pedido aunque el vehículo se reasigne después, de modo que el historial no cambia; si el pedido vuelve a pendiente —el chofer lo libera o un administrador lo destraba—, la copia se borra junto con el chofer asignado. La aceptación de un pedido que ya tiene chofer se rechaza cuando la intenta otro chofer, de modo que un segundo chofer no puede quedarse con un pedido ajeno. El sistema no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la aceptación repite la comprobación de la situación laboral del chofer. **Carga del camión (I-13, implementado):** antes de aceptarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta sólo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). Repetir una aceptación que ya era del mismo chofer no se vuelve a controlar. |
+| **Comentarios** | La copia del vehículo (patente, marca y modelo) queda en el pedido aunque el vehículo se reasigne después, de modo que el historial no cambia; si el pedido vuelve a pendiente —el chofer lo libera o un administrador lo destraba—, la copia se borra junto con el chofer asignado. La aceptación de un pedido que ya tiene chofer se rechaza cuando la intenta otro chofer, de modo que un segundo chofer no puede quedarse con un pedido ajeno. El sistema no envía un texto de notificación propio de cada estado: el mensaje específico por estado está escrito pero no se usa en ninguna parte, y al cliente le llega siempre el de creación de pedido. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la aceptación repite la comprobación de la situación laboral del chofer. **Carga del camión (I-13, implementado):** antes de aceptarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta sólo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). Repetir una aceptación que ya era del mismo chofer no se vuelve a controlar. El momento de la aceptación, de la salida y de la entrega (`acceptedAt`, `onTheWayAt` y `deliveredAt`) sale del reloj de la base, el mismo que usa la carga del camión, de modo que los dos módulos comparan momentos del mismo reloj; los cobros y las ofertas de despacho siguen con el reloj del proceso. La aceptación y la asignación manual toman la carga abierta del chofer en modo compartido dentro de su transacción, antes de leer su estado, y la vuelta del camión (CU-221) la toma en modo exclusivo: si ocurren a la vez, una espera a la otra y, o la aceptación termina antes —y la vuelta ve el pedido en curso y responde 409— o la vuelta termina antes —y la aceptación ve la carga devuelta y responde 400—. Nunca queda un pedido aceptado sobre una carga devuelta. |
 
 ---
 
@@ -1086,87 +1140,59 @@ interacción de diseño, en el Documento 3.
 | **Rendimiento** | La transición a en camino se completa en menos de 1 segundo. |
 | **Frecuencia** | Alta por chofer: una vez por cada pedido aceptado, varias veces por jornada. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema verifica que el chofer que marca la salida sea el asignado al pedido: un chofer no puede poner en camino el pedido de otro. El control no alcanza al administrador, que puede mover cualquier pedido de su distribuidora. El sistema no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no "tu pedido está en camino". |
+| **Comentarios** | El sistema verifica que el chofer que marca la salida sea el asignado al pedido: un chofer no puede poner en camino el pedido de otro. El control no alcanza al administrador, que puede mover cualquier pedido de su distribuidora. El sistema no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no "tu pedido está en camino". El momento de la salida (`onTheWayAt`) sale del reloj de la base, el mismo que usa la carga del camión. |
 
 ---
 
 
-#### Crítico CU-020 — Confirmar Entrega
+#### Crítico CU-020 — Confirmar Entrega Manualmente
 
 | Campo | Detalle |
 |-------|---------|
 | **Objetivos asociados** | OBJ-03, OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
-| **Descripción** | El chofer entrega la mercadería y marca el pedido como entregado. El sistema cierra el ciclo del pedido, da por cobrado el pago en efectivo, corta el seguimiento en vivo, avanza los envases al cliente y avisa. Existe además una segunda vía en la que quien confirma es el cliente, leyendo un código. |
-| **Precondición** | El pedido tiene estado ON_THE_WAY. Si lo confirma un chofer, es el asignado al pedido. |
+| **Descripción** | El administrador da por entregado un pedido que está en camino sin la prueba del código, porque el cliente no puede escanearlo, y deja asentado el motivo. El sistema cierra el ciclo del pedido, corta el seguimiento en vivo, avanza los envases al cliente, descuenta el stock y avisa. El chofer no puede cerrar la entrega (recibe 403): la confirma el cliente con el código del QR (CU-079). Entregar no es cobrar: un pedido en efectivo queda con el pago pendiente hasta que el chofer confirma el cobro (CU-292) o informa el impago (CU-293). Endpoint: `PATCH /orders/:id/status`. |
+| **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05), que indica la distribuidora con `X-Distributor`. El pedido es de esa distribuidora y tiene estado ON_THE_WAY. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El chofer presiona "Confirmar entrega" en su app. |
-| 2 | La app pide el paso del pedido a estado DELIVERED. La solicitud lleva una clave de idempotencia, de modo que un reintento por corte de red no vuelve a procesar la entrega. |
-| 3 | Si quien confirma es un chofer, el sistema comprueba que el pedido esté asignado a él. Después comprueba que la transición sea legal, pasa el pedido a DELIVERED y registra el momento de la entrega. |
-| 4 | Si el método de pago es efectivo, marca el pago como cobrado. |
-| 5 | Corta el seguimiento en vivo del chofer asignado al pedido. |
-| 6 | Avanza los envases despachados en el pedido al estado "con el cliente". Si ese paso falla, se registra la advertencia y la entrega no se revierte. |
-| 7 | El sistema descuenta del stock físico lo entregado y acredita los envases vacíos recolectados —**incluye CU-220 Descontar del Stock Físico lo Entregado**—, dentro de la misma transacción y sin que un fallo la revierta. |
-| 8 | Avisa al cliente en tiempo real del cierre del pedido y avisa también al panel de administración. |
-| 9 | Envía al cliente una notificación al dispositivo con el texto genérico de confirmación de pedido. |
+| 1 | El administrador abre el pedido en el panel, elige marcarlo como entregado e indica el motivo. |
+| 2 | El panel envía `PATCH /orders/:id/status` con `{ status: "delivered", reason }`. La solicitud puede llevar una clave de idempotencia (`Idempotency-Key`), de modo que un reintento por corte de red no vuelve a procesar la entrega. |
+| 3 | El sistema comprueba que el pedido sea de la distribuidora y que quien lo pide no sea un chofer. Comprueba que el motivo tenga entre 10 y 500 caracteres. |
+| 4 | Relee el pedido con bloqueo, comprueba que la transición sea legal, pasa el pedido a DELIVERED y registra el momento de la entrega. |
+| 5 | Guarda el motivo en el historial de estados del pedido y en la auditoría de datos, en la misma transacción. |
+| 6 | Si el método de pago es efectivo, el pago sigue pendiente: la entrega no lo marca como cobrado. |
+| 7 | Corta el seguimiento en vivo del chofer asignado al pedido. |
+| 8 | Avanza los envases despachados en el pedido al estado "con el cliente". Si ese paso falla, se registra la advertencia y la entrega no se revierte. |
+| 9 | El sistema descuenta del stock físico lo entregado y acredita los envases vacíos recolectados —**incluye CU-220 Descontar del Stock Físico lo Entregado**—, dentro de la misma transacción y sin que un fallo la revierta. |
+| 10 | Avisa al cliente en tiempo real del cierre del pedido y avisa también al panel de administración. |
+| 11 | Envía al cliente una notificación al dispositivo con el texto genérico de confirmación de pedido. |
 
-**Postcondición:** El pedido tiene estado DELIVERED con la marca de la entrega. Si el pago era en efectivo, queda cobrado. Los envases del pedido figuran en poder del cliente y el seguimiento en vivo está cerrado. Las llenas entregadas salieron del camión del pedido o del depósito predeterminado y los vacíos recolectados entraron en el mismo lugar (CU-220).
+**Postcondición:** El pedido tiene estado DELIVERED con la marca de la entrega, y el motivo de la entrega manual figura en su historial de estados y en la auditoría. Si el pago era en efectivo, sigue pendiente de cobro. Los envases del pedido figuran en poder del cliente y el seguimiento en vivo está cerrado. Las llenas entregadas salieron del camión del pedido o del depósito predeterminado y los vacíos recolectados entraron en el mismo lugar (CU-220).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el pedido no existe, el sistema informa que no lo encontró. |
-| 2 | Si el pedido pertenece a otra distribuidora que la de quien lo mueve, el sistema informa que no lo encontró, sin revelar que existe. |
-| 3 | Si quien confirma es un chofer y el pedido está asignado a otro, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición. |
-| 3 | Si el pedido está cancelado, o si está en un estado desde el que no se puede entregar, el sistema rechaza la operación por transición no permitida. |
-| 3 | Reconfirmar un pedido ya entregado no falla: la reaplicación del mismo estado se considera idempotente y vuelve a registrar el momento de la entrega. |
-| 6 | Si la distribuidora no trabaja con envases retornables, el avance de envases no hace nada y la entrega se completa igual. |
-| 7 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
-
-**Secuencia Alternativa — Confirmación verificada por código (anti-fraude)**
-
-El sistema ofrece un segundo camino para cerrar la entrega, en el que **la confirmación
-no la hace el chofer sino el cliente**. Se incorporó para que el cierre del pedido tenga
-una prueba de que el cliente efectivamente recibió la mercadería.
-
-| Paso | Acción |
-|------|--------|
-| 1 | Al aceptarse el pedido, el sistema genera un código secreto de entrega y lo guarda asociado al pedido. |
-| 2 | Al llegar al domicilio, el chofer solicita ese código y su aplicación lo muestra en pantalla como código QR (CU-078). |
-| 3 | El cliente escanea el código con su propia aplicación. |
-| 4 | La aplicación del cliente envía el código leído (CU-079). |
-| 5 | El sistema verifica que el código coincida con el del pedido y que el pedido esté en camino. |
-| 6 | Si coincide, marca el pedido como entregado y sigue el circuito de cierre descripto en la secuencia normal, desde el paso 3. |
-
-**Postcondición de la secuencia alternativa:** El pedido queda entregado, y el cierre está
-respaldado por la lectura del código en poder del cliente.
-
-**Excepciones de la secuencia alternativa**
-
-| Paso | Acción |
-|------|--------|
-| 2 | Si el pedido todavía no fue aceptado, no existe código y el sistema rechaza el pedido de código. |
-| 2 | Si el chofer solicita el código de un pedido que no le fue asignado, el sistema deniega el acceso. |
-| 5 | Si el código no coincide, o el pedido no está en camino, el sistema rechaza la confirmación. |
-| 5 | Si quien confirma no es el cliente dueño del pedido, el sistema deniega la operación. |
-| — | La operación es idempotente: un reintento por corte de red no vuelve a procesar la entrega. |
-
-> **Nota sobre el actor.** Esta variante **invierte el actor** respecto de la secuencia
-> normal: allí el chofer declara la entrega, acá el cliente la constata. Las dos vías
-> conviven en el sistema; la del código es la que aporta la prueba.
+| 3 | Si el pedido no existe, o pertenece a otra distribuidora que la de quien lo mueve, el sistema informa que no lo encontró, sin revelar que existe. |
+| 3 | Si quien lo pide es un chofer, el sistema rechaza la operación con "La entrega se confirma con el QR del cliente" (403). |
+| 3 | Si falta el motivo o tiene menos de 10 caracteres o más de 500, el sistema rechaza la operación (400) y no cambia nada. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
+| 4 | Si el pedido está cancelado, o en un estado desde el que no se puede entregar, el sistema rechaza la operación por transición no permitida (400). |
+| 4 | Reconfirmar un pedido ya entregado no falla: la reaplicación del mismo estado se considera idempotente, vuelve a registrar el momento de la entrega y deja el motivo en la auditoría; el historial de estados no repite la fila porque el estado no cambió. |
+| 8 | Si la distribuidora no trabaja con envases retornables, el avance de envases no hace nada y la entrega se completa igual. |
+| 9 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
+| 3 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La confirmación se procesa en menos de 3 segundos. |
-| **Frecuencia** | Alta por chofer: una vez por cada pedido entregado, en el pico de cada franja horaria de reparto. |
+| **Frecuencia** | Baja: sólo los pedidos en los que el cliente no pudo confirmar con el código. |
 | **Estabilidad** | Alta |
-| **Comentarios** | En la secuencia normal, el sistema verifica que el chofer que confirma la entrega sea el asignado al pedido: un chofer no puede cerrar el pedido de otro ni, si el pago es en efectivo, darlo por cobrado. El control no alcanza al administrador. La secuencia alternativa agrega una prueba más fuerte, porque la confirmación la hace el cliente dueño del pedido. El sistema no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de creación de pedido y no el de entrega. Un pedido asignado manualmente por el administrador no tiene código de entrega (CU-012), de modo que sobre él la secuencia alternativa no es posible. Después de confirmada la transición a entregado, y dentro de la misma transacción, el sistema descuenta del stock físico lo entregado (CU-220, **incluido** en este caso); si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). No cambia la respuesta al chofer. |
+| **Comentarios** | La entrega es la prueba de que el cliente recibió el pedido, y por eso la cierra el cliente con el código (CU-079) o, sin código, el administrador dejando el motivo por escrito. El chofer no puede cerrarla: lo impide el sistema aunque la app se lo permitiera. El mismo motivo se pide cuando el administrador confirma con el código del QR (CU-079). Después de confirmada la transición a entregado, y dentro de la misma transacción, el sistema descuenta del stock físico lo entregado (CU-220, **incluido** en este caso); si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). El cobro del efectivo es un circuito aparte, a cargo del chofer (CU-292 y CU-293) o, cuando el chofer no lo hizo, del administrador (CU-299, CU-300 y CU-294). El sistema no envía un texto de notificación propio de este estado: al cliente le llega el mensaje de confirmación de pedido y no el de entrega. El momento de la entrega (`deliveredAt`) sale del reloj de la base, el mismo que usa la ventana de la carga del camión. |
 
 ---
 
@@ -1495,7 +1521,7 @@ respaldado por la lectura del código en poder del cliente.
 | **Rendimiento** | Una verificación de pertenencia, una precarga y una escritura; se resuelve en menos de un segundo. |
 | **Frecuencia** | Media. El precio del gas envasado se actualiza con regularidad. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La inmutabilidad del precio en pedidos existentes se sostiene porque cada ítem del pedido guarda el precio unitario al momento de la compra, independiente del precio actual del producto. Como la operación es una actualización parcial del producto, esta misma llamada permite modificar también el tipo, el peso, la descripción y las promociones; el tipo sigue siendo único por distribuidora. El stock ya no se cambia por acá: enviar `stock` responde 400 y se cambia con un ajuste (CU-038, CU-213). |
+| **Comentarios** | La inmutabilidad del precio en pedidos existentes se sostiene porque cada ítem del pedido guarda el precio unitario al momento de la compra, independiente del precio actual del producto. Como la operación es una actualización parcial del producto, esta misma llamada permite modificar también el tipo, el peso, la descripción y las promociones; el tipo sigue siendo único por distribuidora. El stock ya no se cambia por acá: enviar `stock` responde 400 y se cambia con un ajuste (CU-038, CU-213). El alta, la modificación y la baja lógica del catálogo nunca escriben el stock vendible ni el déficit de reservas: los mueven los pedidos y el módulo de stock bajo el bloqueo de la fila, y escribirlos desde una lectura vieja pisaría una reserva o un recorte confirmados en el medio. |
 
 ---
 
@@ -1531,9 +1557,10 @@ respaldado por la lectura del código en poder del cliente.
 | 3 | Si la cantidad falta, no es un número entero o está fuera de rango, o se envía una propiedad no declarada, el sistema responde 400 (por ejemplo "quantity fuera de rango") sin tocar el stock. |
 | 3 | Si el administrador no tiene distribuidora en contexto, el sistema responde 400 pidiendo que se indique la distribuidora. |
 | 3 | Si el producto no existe, o pertenece a otra distribuidora, el sistema responde 404 sin distinguir entre ambos casos. |
-| 5 | Si el ajuste dejaría el stock vendible por debajo de cero, el sistema responde 400 "El stock vendible de Garrafa 10kg quedaría negativo: …" y no persiste el cambio. |
+| 5 | Si el ajuste dejaría el stock vendible por debajo de cero, se asienta igual: el vendible queda en cero y lo que faltó queda como déficit de reservas (CU-213, CU-224). |
 | 5 | Si al restar no alcanzan las llenas del depósito predeterminado, el sistema responde 400 con un mensaje que dice cuántas llenas hay en camiones y en otros depósitos, y cómo ajustarlas ahí. |
 | 2 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir el ajuste. |
+| 2 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -1630,6 +1657,7 @@ respaldado por la lectura del código en poder del cliente.
 |------|--------|
 | 2 | Si el cliente todavía no registró ningún pedido, el sistema devuelve una lista vacía sin que se considere un error. |
 | — | Si el token de sesión venció o hay un error de red, la solicitud se rechaza por el mismo circuito de autenticación que gobierna el resto de las operaciones (CU-001), y la app debe pedir un nuevo inicio de sesión o reintentar. |
+| 1 | Si el solicitante es un chofer, el sistema responde 403: el chofer lista lo suyo con `GET /orders/delivery/:deliveryId` (CU-081). |
 
 | Campo | Detalle |
 |-------|---------|
@@ -1648,14 +1676,14 @@ respaldado por la lectura del código en poder del cliente.
 | **Requisitos asociados** | IRQ-02 |
 | **Descripción** | El sistema asienta en el historial de estados del pedido cada transición: la creación, la aceptación, el paso a en camino, la entrega, la cancelación, la liberación por parte del chofer, la activación de una reserva y el vencimiento de un pedido sin pagar. La fila lleva el estado anterior (vacío en la creación), el estado nuevo, el usuario que originó el cambio, el motivo y la marca de tiempo. |
 | **Precondición** | El pedido está cambiando de estado por la creación (CU-005), la aceptación (CU-015), el paso a en camino (CU-018), la entrega (CU-020), la cancelación o liberación (CU-008, CU-009, CU-010), la activación de una reserva (CU-075) o el vencimiento de un pedido sin pagar (CU-077). |
-| **Estado** | Planificado (I-4). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
 | 1 | Una operación del sistema cambia el estado de un pedido aplicando la máquina de estados del pedido. |
-| 2 | Dentro de la misma transacción, el sistema registra en el historial el estado anterior, el estado nuevo, el usuario que originó el cambio y el motivo, si la operación lo trae (por ejemplo, el motivo de una cancelación). |
+| 2 | Al guardar el pedido con un estado distinto del que tenía en la base —o al crearlo—, el sistema registra, dentro de la misma transacción, el estado anterior, el estado nuevo, el usuario del pedido en curso y el motivo: el de la entrega manual (CU-020, CU-079) o, al cancelar, el motivo de la cancelación. |
 | 3 | El sistema confirma la transacción: el pedido con su nuevo estado y la fila del historial se guardan juntos. |
 
 **Postcondición:** El historial del pedido tiene una fila más, con la marca de tiempo del cambio. Las filas ya escritas no se modifican ni se borran.
@@ -1667,13 +1695,14 @@ respaldado por la lectura del código en poder del cliente.
 | 2 | Si el cambio lo origina un proceso programado (CU-075, CU-077), no hay usuario: el sistema registra el cambio sin autor. |
 | 2 | En la creación del pedido el estado anterior queda vacío: es la primera fila del historial. |
 | 3 | Si no se puede escribir la fila del historial, la transacción completa se revierte y el estado del pedido no cambia. |
+| 2 | Si no hay petición en curso —un proceso programado, el webhook de la pasarela—, el cambio queda sin autor. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una inserción dentro de la transacción que ya existe: no agrega una conexión ni un viaje a la base. |
 | **Frecuencia** | Alta: entre tres y seis filas por pedido (creación, aceptación, en camino y entrega, o cancelación). |
 | **Estabilidad** | Alta |
-| **Comentarios** | La tabla `order_status_history` existe en la base, con sus claves foráneas, y ningún servicio la escribe. El resultado esperado es reconstruir el instante de cada cambio de estado que pide OBJ-04: el pedido guarda sólo las marcas de tiempo de tres estados (`acceptedAt`, `onTheWayAt` y `deliveredAt`) y pierde las reasignaciones y las liberaciones, que devuelven el pedido a pendiente. Se escribe desde cada punto que aplica una transición y no desde un disparador de base de datos, para poder registrar el autor y el motivo, que la base no conoce. El registro de auditoría (CU-153) cubre otra cosa: guarda cada petición que escribe, sin el estado anterior, y su consulta es administrativa; el historial de estados es un dato del pedido que ve también el cliente (CU-170). |
+| **Comentarios** | El historial reconstruye el instante de cada cambio de estado que pide OBJ-04: el pedido guarda sólo las marcas de tiempo de tres estados (`acceptedAt`, `onTheWayAt` y `deliveredAt`) y perdería las reasignaciones y las liberaciones, que devuelven el pedido a pendiente. Lo asienta un suscriptor de los guardados del pedido (`OrderStatusHistorySubscriber`) y no un disparador de la base ni cada caso de uso: toda transición pasa por la máquina de estados y se persiste con un guardado, de modo que ningún caso de uso presente o futuro puede olvidarse, y el suscriptor conoce el autor y el motivo, que la base no conoce. **No hay carga retroactiva:** los pedidos anteriores no tienen el historial de sus transiciones pasadas; el historial empieza el día que se despliega. Los cobros manuales del administrador (CU-299, CU-300, CU-301) no cambian el estado, pero dejan su motivo como una fila con el mismo estado de origen y de destino: no es una transición, es una nota, y no la asienta el suscriptor —que sólo reacciona a un cambio de estado— sino `CashCollectionUseCase` (`cash-collection.use-case.ts`), que inserta esa fila por su cuenta en la misma transacción. El registro de auditoría (CU-153) cubre otra cosa: guarda cada petición que escribe, sin el estado anterior, y su consulta es administrativa; el historial de estados es un dato del pedido que ve también el cliente (CU-170). |
 
 ---
 
@@ -1966,7 +1995,7 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | Marca el pedido como CANCELLED con el motivo recibido; si el cliente no indicó ninguno, registra que lo canceló el cliente. |
 | 5 | Dentro de la misma transacción y bloqueando cada garrafa, devuelve al inventario la cantidad de cada ítem del pedido. |
 | 6 | Persiste el pedido cancelado y confirma la transacción: la lectura con bloqueo del pedido, el cambio de estado, la restitución del stock y el guardado se confirman juntos. |
-| 7 | Avisa al cliente en tiempo real de la cancelación, avisa al panel de administración y, si había chofer asignado, le avisa también a él que ya no hace falta ir. |
+| 7 | Avisa al cliente en tiempo real de la cancelación, con el motivo y quién canceló (`cancelledBy`), avisa al panel de administración y, si había chofer asignado, le avisa también a él que ya no hace falta ir. |
 | 8 | **(Planificado, I-7)** Si el pedido tenía un pago aprobado por una pasarela, el sistema lo reintegra: **CU-168 Reintegrar el Pago de un Pedido extiende este caso**. |
 
 **Postcondición:** El pedido tiene estado CANCELLED con su motivo. El stock de todos los ítems fue restituido al inventario con bloqueo sobre cada garrafa. Ambos efectos se confirmaron en una única transacción con bloqueo del pedido: dos cancelaciones simultáneas no devuelven el stock dos veces. **(Planificado, I-7)** Si el pedido estaba pagado por una pasarela, el pago fue reintegrado (CU-168).
@@ -1979,13 +2008,14 @@ respaldado por la lectura del código en poder del cliente.
 | 3 | Si el pedido no pertenece al cliente autenticado, o es de una distribuidora distinta de la que el cliente tiene elegida, el sistema informa que no lo encontró, sin revelar que existe. Este control se hace antes de mirar el estado del pedido. |
 | 3 | Si el pedido ya está entregado o cancelado, el sistema informa "No se puede cancelar un pedido finalizado". |
 | 3 | Si el pedido ya está en camino, el sistema informa "El pedido ya está en camino. Contacte al soporte." |
+| 2 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La cancelación, con su transacción de restitución de stock, se completa en menos de 3 segundos. |
 | **Frecuencia** | Baja: solo cuando el cliente necesita cancelar un pedido excepcionalmente, se estima menos de una vez cada varios pedidos por cliente. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La cancelación del cliente es una de las tres vías de cancelación (CU-008, CU-009 y CU-010) que comparten el mismo caso de uso del servidor; lo que cambia es el actor, que sale siempre del token. El sistema no envía notificación al dispositivo en la cancelación: el aviso viaja sólo por la conexión en tiempo real, con lo que un chofer con la app cerrada puede no enterarse. La App Cliente cancela por una ruta que el servidor no le permite (`/status`, que exige rol de chofer o administrador) y no por `/cancel`, de modo que el cliente ve el error "No se pudo cancelar"; corregirlo es un cambio de la app, no del servidor (I-1). |
+| **Comentarios** | La cancelación del cliente es una de las tres vías de cancelación (CU-008, CU-009 y CU-010) que comparten el mismo caso de uso del servidor; lo que cambia es el actor, que sale siempre del token. El sistema no envía notificación al dispositivo en la cancelación: el aviso viaja sólo por la conexión en tiempo real, con lo que un chofer con la app cerrada puede no enterarse. La App Cliente cancela por una ruta que el servidor no le permite (`/status`, que exige rol de chofer o administrador) y no por `/cancel`, de modo que el cliente ve el error "No se pudo cancelar"; corregirlo es un cambio de la app, no del servidor (I-1). El evento `order:cancelled` lleva `orderId`, `status`, `reason` (el motivo dado o «Cancelado por <rol>») y `cancelledBy`. Los vencimientos automáticos (CU-076, CU-077) no emiten el evento: el cliente se entera al leer el pedido (CU-006), que trae `cancelledBy: system`. Un chofer que «cancela» no cancela: libera el pedido a pendiente (CU-009). |
 
 ---
 
@@ -2054,7 +2084,7 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | Marca el pedido como CANCELLED con el motivo. |
 | 5 | Dentro de la misma transacción y bloqueando cada garrafa, devuelve al inventario la cantidad de cada ítem del pedido. |
 | 6 | Persiste el pedido cancelado y confirma la transacción: la lectura con bloqueo del pedido, el cambio de estado, la restitución del stock y el guardado se confirman juntos. |
-| 7 | Avisa al cliente en tiempo real de la cancelación con el motivo, avisa al panel de administración y, si había chofer asignado, le avisa a él que no es necesario ir. |
+| 7 | Avisa al cliente en tiempo real de la cancelación con el motivo y quién canceló (`cancelledBy`: administrador; el administrador general cuenta como administrador), avisa al panel de administración y, si había chofer asignado, le avisa a él que no es necesario ir. |
 | 8 | **(Planificado, I-7)** Si el pedido tenía un pago aprobado por una pasarela, el sistema lo reintegra: **CU-168 Reintegrar el Pago de un Pedido extiende este caso**. |
 
 **Postcondición:** El pedido tiene estado CANCELLED con su motivo. El stock fue restituido en la misma transacción. **(Planificado, I-7)** Si el pedido estaba pagado por una pasarela, el pago fue reintegrado (CU-168).
@@ -2303,10 +2333,10 @@ respaldado por la lectura del código en poder del cliente.
 | 4 | El administrador selecciona uno y confirma. El chofer se identifica por su perfil de repartidor. |
 | 5 | Dentro de una transacción con bloqueo del pedido, el sistema verifica que el repartidor exista, que sea de la misma distribuidora que el pedido, que esté habilitado y validado y que tenga un vehículo en uso habilitado (CU-161), y —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que su carga de camión lo habilite a recibir pedidos: con una carga abierta, que esté en ruta con ese vehículo; sin carga, que la distribuidora no exija tenerla (CU-249). Es el mismo control que en la aceptación y corre siempre, también al reasignar. |
 | 6 | Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera un código de entrega nuevo, que deja sin efecto el anterior cuando se trata de una reasignación. |
-| 7 | Cierra las ofertas de despacho que hubiera en curso sobre el pedido. |
+| 7 | Retira, en la misma transacción, las ofertas de despacho abiertas a los demás choferes: pasan a «reemplazadas» (`superseded`) y no cuentan como intento. Después de confirmada la transacción, avisa a esos choferes que la oferta ya no está vigente. |
 | 8 | Avisa al chofer nuevo, que recibe el pedido con el mismo evento que una oferta; al chofer anterior, si lo hubo, que el pedido se reasignó y se le corta el seguimiento; y al panel de administración. |
 
-**Postcondición:** El pedido tiene estado ACCEPTED con el chofer seleccionado y con un código de entrega propio. Las ofertas de despacho en curso quedaron cerradas. Si el pedido tenía otro chofer, ese chofer quedó sin seguimiento.
+**Postcondición:** El pedido tiene estado ACCEPTED con el chofer seleccionado y con un código de entrega propio. Las ofertas de despacho abiertas a otros choferes quedaron retiradas («reemplazadas») y esos choferes fueron avisados. Si el pedido tenía otro chofer, ese chofer quedó sin seguimiento.
 
 **Excepciones**
 
@@ -2318,13 +2348,14 @@ respaldado por la lectura del código en poder del cliente.
 | 5 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado"). |
 | 5 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la asignación con 400 y el motivo, por ejemplo "El chofer no tiene la carga del día abierta" o "La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos". |
 | 6 | Si el pedido cambió de estado —por ejemplo, si ya fue cancelado, está en camino o fue entregado— y ya no admite la transición a aceptado, el sistema rechaza la asignación por transición no permitida (400). Un pedido aceptado por otro chofer no es un error: se reasigna. |
+| 2 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La asignación manual se completa en menos de 1 segundo. |
 | **Frecuencia** | Baja: es la vía de excepción cuando el despacho automático no encontró candidatos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, cierra las ofertas de despacho abiertas, guarda la copia del vehículo y avisa. Un pedido aceptado se puede reasignar a otro chofer: el código nuevo deja sin efecto el del anterior y el anterior se entera por la conexión en tiempo real. El chofer nuevo recibe el pedido con el mismo evento de una oferta y puede "aceptarla", sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Al asignar, el sistema aplica la misma regla de flota que al aceptar (CU-015): un chofer sin vehículo en uso no recibe pedidos, ni siquiera por asignación manual. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer. **Carga del camión (I-13, implementado):** antes de asignarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta sólo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). |
+| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas de despacho abiertas a los demás choferes, guarda la copia del vehículo y avisa. Un pedido aceptado se puede reasignar a otro chofer: el código nuevo deja sin efecto el del anterior y el anterior se entera por la conexión en tiempo real. El chofer nuevo recibe el pedido con el mismo evento de una oferta y puede "aceptarla", sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Al asignar, el sistema aplica la misma regla de flota que al aceptar (CU-015): un chofer sin vehículo en uso no recibe pedidos, ni siquiera por asignación manual. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer. **Carga del camión (I-13, implementado):** antes de asignarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta sólo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). La asignación manual toma la carga abierta del chofer igual que la aceptación (CU-015), de modo que no puede quedar un pedido asignado sobre una carga devuelta. Es idempotente por `Idempotency-Key`. |
 
 ---
 
@@ -2845,6 +2876,44 @@ respaldado por la lectura del código en poder del cliente.
 | **Frecuencia** | Alta: se recalcula cada vez que el administrador entra al panel de control, junto con CU-026. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El sistema no informa la cantidad de pedidos por día: la serie trae únicamente el importe vendido, con lo que no se puede distinguir un día de pocas ventas grandes de uno de muchas ventas chicas. El sistema no permite elegir la cantidad de días de la ventana. El corte de los días se hace en hora argentina (America/Argentina/Buenos_Aires) tanto en el agrupamiento que resuelve la base sobre la fecha de entrega como en el relleno de los días sin ventas, de modo que los bordes de cada día coinciden sin importar la zona horaria del servidor. |
+
+---
+
+
+#### Secundario CU-304 — Ver los Cobros Pendientes
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-07 |
+| **Requisitos asociados** | IRQ-02 |
+| **Descripción** | El administrador consulta cifras de cobros que no suman a las ventas, por fecha de entrega y en hora argentina: efectivo entregado pendiente de confirmar por el chofer (`pendingCash`), impagos sin resolver (`unpaid`), pérdidas (`writtenOff`), transferencias entregadas sin confirmar (`pendingTransfer`) o marcadas como no recibidas (`notReceivedTransfer`), y pedidos cobrados y después cancelados (`pendingRefund`, por fecha de la última modificación). Cada cifra trae la cantidad de pedidos y el importe. Endpoint: `GET /reports/collections?from=&to=`. |
+| **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General puede indicar la distribuidora con `X-Distributor`: sin el encabezado, el reporte suma todas las distribuidoras. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre el reporte de cobros pendientes del panel y elige el rango. |
+| 2 | El panel envía `GET /reports/collections` con `from` y `to`. |
+| 3 | El sistema agrupa por medio de pago y estado de pago los pedidos entregados del rango y de la distribuidora. |
+| 4 | Suma aparte los pedidos cancelados cuyo pago está pagado, por fecha de la última modificación. |
+| 5 | El sistema devuelve las seis cifras. |
+
+**Postcondición:** Ninguna: es una consulta de sólo lectura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si una fecha tiene un formato inválido o `from` es posterior a `to`, el sistema responde 400. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una agregación por índice; responde en menos de 2 segundos. |
+| **Frecuencia** | Media: una vez por jornada. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Estas cifras no suman a las ventas: una transferencia entra en ventas recién cuando un administrador la confirma (CU-301), y el efectivo cuando el chofer lo confirma (CU-292) o lo resuelve un administrador (CU-299, CU-294). El sistema no gestiona los reintegros: `pendingRefund` es informativo y la distribuidora los resuelve por fuera. El panel muestra la cifra de reintegros pendientes en una tarjeta «Reintegro pendiente» y, en la ficha de un pedido cobrado y cancelado, un aviso con el mismo texto: el sistema no gestiona el reintegro, sólo lo informa. Las transferencias fallidas figuran como «No recibida». |
 
 ---
 #### Importante CU-033 — Activar un Chofer
@@ -3990,6 +4059,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 14 | Si el despacho falla, el sistema registra el error y el pedido queda pagado a la espera del proceso de reintento de despacho: el pago **no** se revierte. |
 | 12 | Si el pago llega en estado rechazado o cancelado, el sistema únicamente lo registra en el log, no realiza ninguna acción sobre el pedido y no le avisa al Cliente (ver Comentarios). |
 | 12 | Si el pago llega en un estado no definitivo, el sistema lo registra como tal y no actúa. |
+| 9 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -4753,6 +4823,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | Si falta la nota de resolución o no es texto, el sistema responde 400 Bad Request con el detalle de validación. |
 | 2 | Si no hay distribuidora en el contexto —caso típico del Administrador General que no envía la cabecera de distribuidora—, el sistema responde 400 Bad Request con el mensaje «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
 | 3 | Si la incidencia no existe o pertenece a otra distribuidora, el sistema responde 404 Not Found con el mensaje «Incidencia no encontrada». |
+| 3 | Si la incidencia es de cobro impago y el pedido sigue impago, el sistema responde 409 "La incidencia de cobro impago se cierra resolviendo el cobro del pedido": se cierra con CU-294, que la resuelve en la misma transacción. Tampoco se descarta mientras el pedido siga impago. |
+| 3 | Si la incidencia ya está resuelta, o otro la cerró en paralelo, el sistema responde 409 y no pisa la resolución de quien la cerró primero. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -5273,6 +5345,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 7 | Si la dirección queda fuera de toda zona de cobertura, el sistema revierte la transacción y responde 400 Bad Request. |
 | 9 | Si la garrafa pedida pertenece a otra distribuidora, el sistema revierte y responde 400 Bad Request. Si no queda stock suficiente, el dominio levanta un error de stock insuficiente que no lleva código HTTP asociado; el manejador del alta solo repropaga los errores que ya traen 404 o 400, así que ese error termina convertido en 500 Internal Server Error con el mensaje genérico «Error al crear el pedido» y el cliente nunca se entera del motivo real. Lo mismo ocurre cuando la garrafa pedida no existe, caso que debería resolverse como 404. |
 | 12 | Si dos altas concurrentes toman los bloqueos en distinto orden y la base detecta un bloqueo cruzado, el sistema revierte y reintenta la operación completa; agotados los reintentos, la respuesta también termina siendo 500 Internal Server Error. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -5523,8 +5596,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-03, OBJ-04, OBJ-07 |
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
-| **Descripción** | El **cliente** (ACT-01) escanea con su app el QR que le muestra el chofer y envía el código leído; si coincide con el guardado en el pedido, el sistema da la entrega por realizada. Es un mecanismo anti-fraude que **invierte el actor de CU-020**: allí el chofer se autodeclara entregado, acá la entrega la confirma quien recibe. Como el cliente solo puede conocer el código habiendo visto el QR en la mano del chofer, la confirmación prueba que el chofer estuvo presente. Endpoint: `POST /orders/:id/confirm-delivery`. |
-| **Precondición** | El cliente está autenticado y es el titular del pedido. El pedido está en estado ON_THE_WAY y tiene `deliveryCode` generado desde su aceptación. El chofer está en el domicilio mostrando el QR. |
+| **Descripción** | El **cliente** (ACT-01) escanea con su app el QR que le muestra el chofer y envía el código leído; si coincide con el guardado en el pedido, el sistema da la entrega por realizada. Es el camino normal de cierre de la entrega y la prueba anti-fraude: el chofer no puede cerrarla (CU-020 es del administrador), y como el cliente sólo puede conocer el código habiendo visto el QR en la mano del chofer, la confirmación prueba que el chofer estuvo presente. Si el cliente no puede escanear, un administrador (ACT-03 o ACT-05) puede confirmar con el mismo código, que consigue con CU-078, dejando el motivo por escrito. Endpoint: `POST /orders/:id/confirm-delivery`. |
+| **Precondición** | El solicitante está autenticado como el cliente titular del pedido o como Administrador (ACT-03) o Administrador General (ACT-05), que indica la distribuidora con `X-Distributor`. El pedido está en estado ON_THE_WAY y tiene `deliveryCode` generado desde su aceptación (CU-015) o su asignación manual (CU-012). El chofer está en el domicilio mostrando el QR. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -5537,34 +5610,368 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 4 | El sistema recupera el pedido completo y valida la pertenencia: si el rol es CUSTOMER, `order.customer_id` tiene que ser el usuario autenticado. |
 | 5 | El sistema verifica que el pedido esté en estado ON_THE_WAY. |
 | 6 | El sistema compara el código recibido contra `order.deliveryCode` con una comparación de tiempo constante que evita ataques de temporización. |
-| 7 | Con el código válido, el sistema delega en el mismo caso de uso de cambio de estado que usa el chofer, y el pedido pasa a DELIVERED con `deliveredAt = now()`. |
-| 8 | Si el método de pago es efectivo, el sistema marca `paymentStatus = PAID`. |
+| 7 | Con el código válido, el sistema delega en el mismo caso de uso de cambio de estado que usa CU-020, y el pedido pasa a DELIVERED con `deliveredAt = now()`. Si lo confirma un administrador, exige el motivo (de 10 a 500 caracteres) y lo guarda en el historial de estados y en la auditoría; para el cliente no se pide y se ignora. |
+| 8 | Si el método de pago es efectivo, el pago sigue pendiente: la entrega no lo marca como cobrado. |
 | 9 | El sistema corta el seguimiento GPS en vivo del chofer que entregó (`stopTracking`). |
 | 10 | El sistema avanza a WITH_CUSTOMER los envases despachados en ese pedido, en modo best-effort: si falla, la entrega igual se completa. |
 | 11 | El sistema descuenta del stock físico lo entregado y acredita los envases vacíos recolectados —**incluye CU-220 Descontar del Stock Físico lo Entregado**—, dentro de la misma transacción y sin que un fallo la revierta. |
 | 12 | El sistema emite el evento de tiempo real del nuevo estado al cliente, avisa a los administradores y dispara la notificación push, todo best-effort. |
 
-**Postcondición:** El pedido queda en estado DELIVERED con evidencia de que el cliente validó la entrega. Si el pago era en efectivo, queda registrado como pagado. El chofer sale del seguimiento en vivo y los envases del pedido figuran en poder del cliente. Las llenas entregadas salieron del camión del pedido o del depósito predeterminado y los vacíos recolectados entraron en el mismo lugar (CU-220).
+**Postcondición:** El pedido queda en estado DELIVERED con evidencia de que el cliente validó la entrega, o con el motivo del administrador en su historial de estados. Si el pago era en efectivo, sigue pendiente de cobro. El chofer sale del seguimiento en vivo y los envases del pedido figuran en poder del cliente. Las llenas entregadas salieron del camión del pedido o del depósito predeterminado y los vacíos recolectados entraron en el mismo lugar (CU-220).
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 3 | Si el cuerpo no trae `code` o viene vacío, la validación del DTO retorna error 400. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 | 4 | Si el pedido no existe, el sistema retorna error 404 "Order with ID: … not found". |
 | 4 | Si el pedido pertenece a una distribuidora distinta de la que está en contexto —la del administrador que confirma una entrega asistida, o la que eligió el cliente—, el sistema retorna el mismo error 404, sin revelar que existe. |
 | 4 | Si el pedido pertenece a otro cliente, el sistema retorna error 403 "No autorizado a confirmar la entrega de otro cliente". |
 | 5 | Si el pedido ya está en DELIVERED, el sistema **no** lo trata como error: devuelve el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red. |
 | 5 | Si el pedido está en cualquier otro estado que no sea ON_THE_WAY, el sistema retorna error 400 "El pedido no está en camino, no se puede confirmar la entrega". |
 | 6 | Si el código no coincide, o el pedido no tiene código cargado, o los largos difieren, el sistema retorna error 400 "Código de entrega inválido". |
+| 7 | Si lo confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres, el sistema retorna error 400; la comprobación es posterior a la del código. |
 | 11 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
+| 4 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La validación del código es local y de costo despreciable; el peso está en la transición de estado y en sus efectos, que ya son los de CU-020. Los efectos de tiempo real y notificación son best-effort y no bloquean la respuesta. |
 | **Frecuencia** | Una vez por pedido entregado, en el pico de la franja horaria de entrega. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El espacio del código es de 16^10 combinaciones y solo es válido mientras el pedido está en camino, por lo que adivinarlo a fuerza bruta es inviable. Los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas telefónicamente desde soporte. Después de confirmada la transición a entregado, y dentro de la misma transacción, el sistema descuenta del stock físico lo entregado (CU-220, **incluido** en este caso); si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). No cambia la respuesta al chofer. |
+| **Comentarios** | El espacio del código es de 16^10 combinaciones y solo es válido mientras el pedido está en camino, por lo que adivinarlo a fuerza bruta es inviable. Los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte: no tienen la prueba del escaneo, así que dejan el motivo asentado igual que en CU-020. Después de confirmada la transición a entregado, y dentro de la misma transacción, el sistema descuenta del stock físico lo entregado (CU-220, **incluido** en este caso); si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). El cobro del efectivo es un circuito aparte, a cargo del chofer (CU-292 y CU-293). |
+
+---
+
+
+#### Crítico CU-292 — Confirmar el Cobro en Efectivo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-07 |
+| **Requisitos asociados** | IRQ-02, IRQ-08 |
+| **Descripción** | El chofer asignado a un pedido entregado y pagado en efectivo confirma que cobró. Entregar un pedido no lo marca como pagado: el pago queda pendiente hasta que el chofer confirma acá. Pasa a pagado y el sistema registra el momento y al chofer que lo confirmó. Sin cuerpo. Endpoint: `PATCH /orders/:id/payment/cash-received`. |
+| **Precondición** | El solicitante está autenticado como Chofer (ACT-02) y es el asignado al pedido. El pedido tiene estado DELIVERED, se paga en efectivo y su pago está pendiente. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El chofer entrega el pedido (CU-079) y cobra el efectivo al cliente. |
+| 2 | En su app, el chofer elige «Pago recibido». |
+| 3 | La app envía `PATCH /orders/:id/payment/cash-received`, sin cuerpo y con la cabecera `Idempotency-Key`. |
+| 4 | El sistema comprueba que el pedido sea de la distribuidora y relee el pedido con bloqueo. |
+| 5 | Comprueba que el pedido sea del chofer, que esté entregado y que se haya pagado en efectivo. |
+| 6 | Si el pago está pendiente, lo pasa a pagado y registra el momento y el chofer que lo confirmó. |
+| 7 | El sistema devuelve el pedido con el pago pagado. |
+
+**Postcondición:** El pago del pedido está pagado, con el momento de la confirmación y el chofer que la hizo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404). |
+| 5 | Si el pedido está asignado a otro chofer, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403), antes de mirar el estado. |
+| 5 | Si el pedido no está entregado, el sistema rechaza la operación (400). Si no se pagó en efectivo, también (400). |
+| 6 | Si el pago ya estaba pagado, no es un error: el sistema devuelve el pedido tal cual (idempotente). |
+| 6 | Si el pago ya se informó como impago, el sistema responde 409: lo resuelve un administrador (CU-294). |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo. |
+| **Frecuencia** | Una vez por pedido entregado en efectivo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Entregar no es cobrar: la entrega (CU-020 y CU-079) deja el pago en efectivo pendiente, y el cobro lo confirma el chofer apenas recibe la plata. Es el dato que alimenta el efectivo cobrado de la jornada del chofer (CU-291). Si el cliente no pagó, el chofer informa el impago con CU-293. |
+
+---
+
+
+#### Importante CU-293 — Informar el Cobro Impago
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-07 |
+| **Requisitos asociados** | IRQ-02, IRQ-08 |
+| **Descripción** | El chofer asignado a un pedido entregado y pagado en efectivo informa que el cliente no pagó. El pago pasa a impago y el sistema abre una incidencia de tipo cobro impago, cuya descripción es la nota del chofer, y avisa a los administradores por el panel en vivo (evento `incident:created`). La foto es opcional y se sube después, como un paso más de este mismo caso (`PUT /incidents/:incidentId/photo`). Endpoint: `PATCH /orders/:id/payment/unpaid`. |
+| **Precondición** | El solicitante está autenticado como Chofer (ACT-02) y es el asignado al pedido. El pedido tiene estado DELIVERED, se paga en efectivo y su pago está pendiente. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El chofer entrega el pedido (CU-079) y el cliente no paga. |
+| 2 | En su app, el chofer elige informar que no cobró y, si quiere, escribe una nota (hasta 500 caracteres). |
+| 3 | La app envía `PATCH /orders/:id/payment/unpaid` con `{ note }` opcional y la cabecera `Idempotency-Key`. |
+| 4 | El sistema comprueba que el pedido sea de la distribuidora y relee el pedido con bloqueo. |
+| 5 | Comprueba que el pedido sea del chofer, que esté entregado y que se haya pagado en efectivo. |
+| 6 | Si el pago está pendiente, lo pasa a impago. |
+| 7 | Si el pedido no tiene una incidencia de cobro impago viva, crea una, abierta, con la nota como descripción (o un texto por defecto) y el momento «posterior a la entrega», en la misma transacción. |
+| 8 | Después de confirmada la transacción, avisa a los administradores de la distribuidora, una sola vez por incidencia. |
+| 9 | El sistema devuelve el identificador del pedido, su estado de pago y la incidencia. |
+| 10 | Opcional: el chofer sube la foto de la incidencia con `PUT /incidents/:incidentId/photo` (JPG, PNG o WEBP); también puede reemplazarla o sacarla mientras la incidencia siga abierta. |
+
+**Postcondición:** El pago del pedido está impago y existe una única incidencia de cobro impago abierta, reportada por el chofer.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404). |
+| 5 | Si el pedido está asignado a otro chofer, el sistema rechaza la operación (403), antes de mirar el estado. |
+| 5 | Si el pedido no está entregado o no se pagó en efectivo, el sistema rechaza la operación (400). |
+| 3 | Si la nota supera los 500 caracteres, el sistema rechaza la operación (400). |
+| 10 | Si la incidencia la reportó otro chofer, el sistema responde 403; si ya no está abierta (la resolvió un administrador, CU-294), responde 409. |
+| 6 | Si el pago ya estaba impago, no es un error: el sistema devuelve la incidencia que ya existe, sin duplicarla ni volver a avisar. |
+| 6 | Si el pago ya no está pendiente (cobrado o resuelto), el sistema responde 409. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo. |
+| **Frecuencia** | Una vez por pedido entregado en efectivo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Hay una sola incidencia de cobro impago viva por pedido, garantizada por un índice único en la base. La incidencia no se crea ni se cambia a mano por CU-060 ni CU-063: se abre acá y se cierra con CU-294, que también resuelve el pago. El aviso a los administradores es best-effort: la incidencia ya está guardada. La foto usa el mismo endpoint de fotos de las incidencias que CU-060 y no es un caso de uso aparte. |
+
+---
+
+
+#### Importante CU-294 — Resolver un Cobro Impago
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-07 |
+| **Requisitos asociados** | IRQ-02, IRQ-08 |
+| **Descripción** | El administrador resuelve un pedido cuyo pago el chofer informó como impago: `paid` (el cliente pagó después) o `written_off` (se da por perdido). Exige la nota con el motivo. Quedan registrados quién y cuándo (`paymentResolvedBy`, `paymentResolvedAt`, `paymentResolutionNote`); el momento y el usuario de la confirmación del cobro se llenan sólo con `paid`, porque una pérdida no es un cobro. En la misma transacción cierra la incidencia de cobro impago del pedido con la misma nota. Endpoint: `PATCH /orders/:id/payment/resolve-unpaid`. |
+| **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05), que indica la distribuidora con `X-Distributor`. El pedido es de esa distribuidora y su pago está impago. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre un pedido con el pago impago (o su incidencia, CU-061) y elige resolverlo. |
+| 2 | Elige si el cliente pagó o si se da por perdido, y escribe la nota con el motivo. |
+| 3 | El panel envía `PATCH /orders/:id/payment/resolve-unpaid` con `{ resolution, note }` y la cabecera `Idempotency-Key`. |
+| 4 | El sistema comprueba que el pedido sea de la distribuidora y relee el pedido con bloqueo. |
+| 5 | Comprueba que el pago esté impago y pasa el pago a pagado o a perdido, según la resolución. |
+| 6 | Registra quién y cuándo lo resolvió y la nota; si fue `paid`, registra también el momento y el usuario de la confirmación del cobro. |
+| 7 | Cierra la incidencia de cobro impago abierta del pedido, con la misma nota, en la misma transacción. |
+| 8 | El sistema devuelve el pedido con `alreadyResolved: false`. |
+
+**Postcondición:** El pago del pedido está pagado o perdido, con quién, cuándo y por qué se resolvió, y la incidencia de cobro impago está resuelta con la misma nota.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404). |
+| 3 | Si la resolución no es `paid` ni `written_off`, o la nota falta o está vacía, el sistema rechaza la operación (400). |
+| 5 | Si el pago no está informado como impago, el sistema responde 409. |
+| 5 | Repetir la misma resolución, el mismo administrador u otro, no es un error: el sistema responde 200 con `alreadyResolved: true` y no toca la nota ni la incidencia. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
+| 4 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo. |
+| **Frecuencia** | Una vez por pedido entregado en efectivo. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es la única forma de cerrar un impago. Un pago confirmado antes por el chofer (CU-292) no es un impago resuelto y no se puede resolver por acá. La pérdida no llena el momento ni el usuario de la confirmación del cobro. El alta de la incidencia es de CU-293; esta operación sólo la cierra. |
+
+---
+
+
+#### Importante CU-299 — Registrar el Cobro en Efectivo como Administrador
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-07 |
+| **Requisitos asociados** | IRQ-02, IRQ-08 |
+| **Descripción** | El administrador registra el cobro en efectivo de un pedido entregado cuyo chofer no lo confirmó (CU-292). El pago pasa de pendiente a pagado; el sistema registra el momento y al administrador como quien lo confirmó y lo resolvió, el motivo en la nota de resolución, y deja una nota en el historial de estados y en la auditoría. Endpoint: `PATCH /orders/:id/payment/register-cash`. |
+| **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con `X-Distributor`, que es obligatorio. El pedido tiene estado DELIVERED, se paga en efectivo y su pago está pendiente. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre un pedido entregado en efectivo cuyo cobro sigue pendiente y elige registrar el cobro. |
+| 2 | Escribe el motivo por el que lo registra él y no el chofer (de 10 a 500 caracteres). |
+| 3 | El panel envía `PATCH /orders/:id/payment/register-cash` con `{ reason }` y la cabecera `Idempotency-Key`. |
+| 4 | El sistema comprueba que el pedido sea de la distribuidora y lo relee con bloqueo. |
+| 5 | Comprueba que el pedido esté entregado y se haya pagado en efectivo. |
+| 6 | Si el pago está pendiente, lo pasa a pagado y registra el momento y al administrador como quien lo confirmó y lo resolvió, con el motivo en la nota de resolución. |
+| 7 | Deja en el historial de estados una fila con el mismo estado de origen y de destino y el texto «Cobro en efectivo registrado por un administrador: motivo»; la auditoría registra el cambio. |
+| 8 | El sistema devuelve el pedido. |
+
+**Postcondición:** El pago del pedido está pagado, con el administrador como quien lo confirmó y lo resolvió, el momento y el motivo; el historial de estados tiene la nota del cobro.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404). |
+| 4 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación (400). |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422. |
+| 5 | Si el pedido no está entregado o no se pagó en efectivo, el sistema rechaza la operación (400). |
+| 6 | Si el pago ya estaba pagado, no es un error: el sistema devuelve el pedido tal cual. |
+| 6 | Si el pago ya se informó como impago, el sistema responde 409: se resuelve con CU-294. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: sólo el efectivo que el chofer no confirmó. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es la salida del administrador cuando el chofer no confirmó el cobro (CU-292): lo dio de baja la empresa o se perdió el aviso. A diferencia de CU-294, no hay un impago informado de por medio. La nota del historial no es una transición: tiene el mismo estado de origen y de destino, y quien muestre la línea de tiempo tiene que mostrarla como nota. En el panel, si el pedido ya estaba cobrado el back responde 200 sin cambios y el motivo no se registra: el panel avisa «el pedido ya estaba cobrado: no se registró tu motivo». |
+
+---
+
+
+#### Importante CU-300 — Registrar el Cobro Impago como Administrador
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-07 |
+| **Requisitos asociados** | IRQ-02, IRQ-08 |
+| **Descripción** | El administrador informa el impago de un pedido entregado en efectivo cuyo chofer no lo hizo (CU-293). Tiene el mismo efecto: el pago pasa a impago y se abre una incidencia de cobro impago, reportada por el administrador, y se avisa a los administradores por el panel en vivo. Exige el motivo, que queda en el historial de estados. Endpoint: `PATCH /orders/:id/payment/register-unpaid`. |
+| **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con `X-Distributor`, que es obligatorio. El pedido tiene estado DELIVERED, se paga en efectivo y su pago está pendiente. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre un pedido entregado en efectivo cuyo cobro sigue pendiente y elige informar el impago. |
+| 2 | Escribe el motivo (de 10 a 500 caracteres). |
+| 3 | El panel envía `PATCH /orders/:id/payment/register-unpaid` con `{ reason }` y la cabecera `Idempotency-Key`. |
+| 4 | El sistema comprueba que el pedido sea de la distribuidora y lo relee con bloqueo; comprueba que esté entregado y se haya pagado en efectivo. |
+| 5 | Si el pago está pendiente, lo pasa a impago y deja en el historial de estados una fila con el mismo estado de origen y de destino y el texto «Impago de efectivo informado por un administrador: motivo». |
+| 6 | Si el pedido no tiene una incidencia de cobro impago viva, crea una, abierta, reportada por el administrador y posterior a la entrega, en la misma transacción. |
+| 7 | Después de confirmada la transacción, avisa a los administradores de la distribuidora, una sola vez por incidencia. |
+| 8 | El sistema devuelve el identificador del pedido, su estado de pago y la incidencia. |
+
+**Postcondición:** El pago del pedido está impago, existe una única incidencia de cobro impago abierta y el historial tiene la nota del motivo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 4 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404). |
+| 4 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación (400). |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422. |
+| 4 | Si el pedido no está entregado o no se pagó en efectivo, el sistema rechaza la operación (400). |
+| 5 | Si el pago ya estaba impago, no es un error: el sistema devuelve la incidencia que ya existe, sin duplicarla, sin nueva nota y sin volver a avisar. |
+| 5 | Si el pago ya no está pendiente (cobrado o resuelto), el sistema responde 409. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo. |
+| **Frecuencia** | Baja: sólo el efectivo que el chofer no informó. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Es la contraparte de CU-293 para el administrador. La incidencia se cierra sólo resolviendo el impago (CU-294): resolverla o descartarla por CU-063 mientras el pedido sigue impago responde 409. La foto de la incidencia se sube con el mismo endpoint de fotos de las incidencias. En el panel, si el pago ya estaba impago el back responde 200 sin cambios y el motivo no se registra: el panel lo avisa igual que en CU-299. |
+
+---
+
+
+#### Importante CU-301 — Confirmar una Transferencia
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-04, OBJ-07 |
+| **Requisitos asociados** | IRQ-02, IRQ-08 |
+| **Descripción** | El administrador resuelve el cobro de un pedido pagado por transferencia: `received: true` pasa el pago a pagado, desde pendiente o desde fallido (la transferencia llegó después de marcarla no recibida); `received: false` lo deja fallido, sólo desde pendiente y sólo sobre un pedido entregado. Exige el motivo, que queda en la nota de resolución, en el historial de estados y en la auditoría. Una transferencia sin confirmar no suma a las ventas. Endpoint: `PATCH /orders/:id/payment/confirm-transfer`. |
+| **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con `X-Distributor`, que es obligatorio. El pedido se paga por transferencia y no está cancelado. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre un pedido pagado por transferencia y elige confirmar la transferencia o marcarla como no recibida. |
+| 2 | Escribe el motivo (de 10 a 500 caracteres). |
+| 3 | El panel envía `PATCH /orders/:id/payment/confirm-transfer` con `{ received, reason }` y la cabecera `Idempotency-Key`. |
+| 4 | El sistema comprueba que el pedido sea de la distribuidora y lo relee con bloqueo. |
+| 5 | Comprueba que el pedido se pague por transferencia y no esté cancelado. |
+| 6 | Si la decisión ya estaba tomada, devuelve el pedido tal cual. Si no, comprueba que el cambio sea válido: confirmar vale desde pendiente o desde fallido; marcar como no recibida vale sólo desde pendiente y con el pedido entregado. |
+| 7 | Pasa el pago a pagado o a fallido y registra el momento y al administrador como quien lo resolvió, con el motivo; si fue pagado, registra también la confirmación del cobro. |
+| 8 | Deja en el historial de estados una fila con el mismo estado de origen y de destino y el texto «Transferencia confirmada (o marcada como no recibida) por un administrador: motivo»; la auditoría registra el cambio. |
+| 9 | El sistema devuelve el pedido. |
+
+**Postcondición:** El pago del pedido está pagado o fallido según la decisión, con quién, cuándo y por qué; el historial tiene la nota del motivo.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 5 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404). |
+| 5 | Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si `received` no es booleano o el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación (400). |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422. |
+| 5 | Si el pedido no es una transferencia, o está cancelado, el sistema rechaza la operación (400). |
+| 6 | Si el pago ya estaba en lo que se pide, no es un error: el sistema devuelve el pedido tal cual. |
+| 6 | Si la transferencia ya estaba pagada y se la quiere marcar como no recibida, o el pago ya no está pendiente, el sistema responde 409 "La transferencia ya se confirmó: no se cambia". |
+| 6 | Si se quiere marcar como no recibida un pedido que todavía no se entregó, el sistema responde 409: marcarla antes no frenaría nada. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo. |
+| **Frecuencia** | Media: una vez por pedido pagado por transferencia. |
+| **Estabilidad** | Alta |
+| **Comentarios** | Una transferencia sin confirmar no suma a las ventas: `GET /reports/collections` (CU-304) la informa como pendiente de confirmar o como no recibida. Si la transferencia se confirma y el pedido se cancela después, la cancelación no se bloquea, pero el dinero ya está en la distribuidora: el reporte lo informa como reintegro pendiente y el sistema no gestiona el reintegro. La nota del historial no es una transición: tiene el mismo estado de origen y de destino. En el panel, una transferencia en estado fallido se muestra con la etiqueta «No recibida»; si la decisión ya estaba tomada, el back responde 200 sin cambios y el panel avisa que el motivo no se registró. Si el pedido se cancela después de confirmada la transferencia, la ficha del pedido muestra el aviso «Reintegro pendiente». |
+
+---
+
+
+#### Importante CU-303 — Consultar la Ruta de un Pedido
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-03, OBJ-04 |
+| **Requisitos asociados** | IRQ-02 |
+| **Descripción** | El chofer del pedido (aceptado o en camino) o el cliente dueño (en camino) pide la ruta por calles hasta la dirección de entrega. La ruta es siempre de un pedido: el destino es su dirección y el origen la última posición reciente del chofer. El servidor consulta al proveedor de rutas con su propia clave, de modo que las apps no la llevan. Endpoint: `GET /routes/driving?orderId=<uuid>[&from=lat,lng]`. |
+| **Precondición** | El solicitante está autenticado como Chofer (ACT-02) asignado al pedido, o como Cliente (ACT-01) dueño del pedido. El pedido está aceptado o en camino (el cliente, sólo en camino). El chofer tiene una posición reciente. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | La app del chofer o del cliente abre el mapa del pedido. |
+| 2 | La app envía `GET /routes/driving?orderId=` y, si quiere, `from=lat,lng`. |
+| 3 | El sistema comprueba que el pedido sea del solicitante y esté en un estado que admita la ruta. |
+| 4 | El sistema cuenta el pedido contra el cupo por minuto del usuario. |
+| 5 | Resuelve el origen: la última posición reciente del chofer; si el cliente pide la ruta, sólo la ve si éste es el pedido que el chofer lleva. Si viene `from`, lo acepta sólo a menos de 300 metros de esa posición. |
+| 6 | Si ya hay una ruta guardada para ese origen y destino, redondeados a 4 decimales, la devuelve sin contar contra el cupo diario. |
+| 7 | Si no, cuenta la consulta contra el cupo diario del usuario y de la distribuidora, y la pide al proveedor: Google Directions con la clave del servidor o, si falta o falla, OSRM propio. |
+| 8 | El sistema guarda la ruta 60 segundos y devuelve el proveedor que respondió, la distancia, la duración, la polilínea codificada y los puntos. |
+
+**Postcondición:** Ninguna: es una consulta de sólo lectura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el pedido no es del solicitante o no existe, el sistema responde 404. Si el pedido no está en un estado activo para ese solicitante, responde 403. |
+| 2 | Si `orderId` o `from` son inválidos, o `from` está lejos de la posición del chofer, el sistema responde 400. |
+| 5 | Si no hay una posición reciente del chofer (o el cliente la pide con un pedido que el chofer no lleva), el sistema responde 409. |
+| 5 | Si el radar de posiciones no responde, el sistema responde 503 y no acepta un `from` sin poder validarlo. |
+| 4 | Si el usuario supera 30 consultas por minuto, o el cupo diario del usuario (100) o de la distribuidora (3000), el sistema responde 429. |
+| 7 | Si el proveedor de rutas falla (Google y el OSRM propio), el sistema responde 502; si no hay ninguno configurado, 503. |
+| 3 | Si la dirección del pedido no tiene coordenadas, el sistema responde 409, antes de contar contra ningún cupo. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura de caché o una consulta al proveedor; responde en menos de 3 segundos. |
+| **Frecuencia** | Alta mientras hay pedidos en camino. |
+| **Estabilidad** | Alta |
+| **Comentarios** | El administrador no pide rutas (recibe 403 por su rol). El OSRM público sólo se usa en desarrollo y prueba; en producción sin proveedor configurado responde 503. Con el radar caído no hay 500: los cupos se cuentan en memoria de cada proceso y no hay caché. La clave de Google del servidor está restringida por IP y no es la de las apps. |
 
 ---
 
@@ -5863,6 +6270,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | 5 | Si el usuario es un chofer con pedidos aceptados o en camino, el sistema responde 409 "El chofer tiene N pedido(s) en curso: cancelalos o reasignalos antes de darlo de baja" y no da de baja nada. Si liberar el vehículo en uso falla, la baja completa se revierte. |
 | 7 | Si deshabilitar la cuenta en el proveedor de identidad falla, el sistema reintenta unas veces y, si persiste, la baja lógica igual queda hecha: registra en el log qué cuenta hay que deshabilitar a mano y no la revierte. El ingreso de ese usuario ya queda rechazado por el sistema, porque la cuenta dada de baja no aparece. |
 | 2 | Si el solicitante no es administrador, el guard de roles rechaza la petición con error 403. |
+| 5 | Si el usuario es un chofer con una carga de camión abierta, el sistema responde 409 "No se puede dar de baja al chofer mientras haya una carga de camión abierta (carga N° n): cerrala o cancelala antes" y la baja se revierte. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -7438,7 +7846,7 @@ El Administrador General puede crear sólo el perfil de administrador de un usua
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: cuando un chofer deja de usar un vehículo sin que otro lo reemplace. |
 | **Estabilidad** | Alta |
-| **Comentarios** | **Liberación automática:** cuando se da de baja a un chofer, el sistema emite un evento y libera su vehículo en uso sin intervención del administrador; en ese caso la asignación cierra con la nota "Liberado automáticamente: el chofer fue dado de baja" y sin administrador responsable, porque nadie la liberó a mano. Por la misma regla, un vehículo en uso no puede darse de baja: el sistema responde 409 "El vehículo está en uso: liberalo primero". Poner en uso otro vehículo (CU-161) libera el anterior sin pasar por este caso. La regla aplica a la liberación manual del administrador: con una carga de camión abierta primero se la cierra o se la cancela (CU-221, CU-222, CU-289). La liberación automática por la baja del chofer o el egreso del empleado (`liberarSiTieneUno`) no consulta las cargas de camión. |
+| **Comentarios** | **Liberación automática:** cuando se da de baja a un chofer, el sistema emite un evento y libera su vehículo en uso sin intervención del administrador; en ese caso la asignación cierra con la nota "Liberado automáticamente: el chofer fue dado de baja" y sin administrador responsable, porque nadie la liberó a mano. Por la misma regla, un vehículo en uso no puede darse de baja: el sistema responde 409 "El vehículo está en uso: liberalo primero". Poner en uso otro vehículo (CU-161) libera el anterior sin pasar por este caso. La regla aplica a la liberación manual del administrador: con una carga de camión abierta primero se la cierra o se la cancela (CU-221, CU-222, CU-289). La liberación automática por la baja del chofer o el egreso del empleado (`liberarSiTieneUno`) no consulta las cargas de camión. Con la baja del chofer la liberación del vehículo se rechaza si el chofer tiene una carga de camión abierta (409): liberarlo dejaría el stock cargado en un camión que nadie usa. |
 
 ---
 
@@ -8785,7 +9193,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 ---
 
-### 7.6.1 Casos de Uso Expandidos — Stock, compras y carga del camión (CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-291, I-13)
+### 7.6.1 Casos de Uso Expandidos — Stock, compras y carga del camión (CU-207 a CU-224, CU-258 a CU-263 y CU-273 a CU-304, I-13)
 
 #### Importante CU-207 — Consultar los Depósitos
 
@@ -8898,6 +9306,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si se intenta desactivar el depósito predeterminado, el sistema responde 409 "No se puede desactivar el depósito predeterminado: elegí otro primero". |
 | 3 | Si el código tiene caracteres no permitidos o más de 12, el sistema responde 400. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si se intenta desactivar el depósito que es el origen de una carga de camión abierta, el sistema responde 409 con el número de la carga. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -8939,6 +9348,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si el depósito es el predeterminado, el sistema responde 409 "No se puede dar de baja el depósito predeterminado: elegí otro primero". |
 | 3 | Si el depósito no existe, ya está dado de baja o es de otra distribuidora, el sistema responde 404. |
 | 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si el depósito es el origen de una carga de camión abierta (en carga, en ruta o devuelta), el sistema responde 409 con el número de la carga: la rendición le devuelve las garrafas y sin depósito la carga quedaría trabada. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -9021,11 +9431,12 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si el depósito ya tiene su conteo inicial, el sistema responde 409 "Este depósito ya tiene su conteo inicial: corregilo con un ajuste". |
 | 5 | Si lo contado coincide con el saldo actual, el sistema responde 400 "El conteo coincide con el saldo actual: no hay nada que registrar". |
 | 5 | Si dos renglones nombran la misma garrafa, el sistema responde 400. |
-| 6 | Si la corrección de las llenas dejaría el stock vendible negativo (porque hay más reservado por pedidos abiertos que llenas contadas), el sistema responde 400 y no registra nada. |
+| 6 | Si la corrección de las llenas dejaría el stock vendible negativo (porque hay más reservado por pedidos abiertos que llenas contadas), el conteo se asienta igual: el vendible queda en cero y lo que faltó queda como déficit de reservas (CU-224). |
 | 4 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema responde 404. |
 | 6 | Si el depósito está inactivo y el conteo le agrega unidades, el sistema responde 400 "… está inactivo: no recibe stock". |
 | 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir el conteo; si no es un UUID v4, responde 400. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -9153,7 +9564,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador define, para cada depósito y tipo de garrafa, el mínimo de unidades llenas por debajo del cual el sistema avisa (CU-211), y consulta los mínimos vigentes junto con las llenas que hay hoy. Endpoints: `GET /stock/thresholds` y `PUT /stock/thresholds`. |
+| **Descripción** | El administrador define, para cada depósito y tipo de garrafa, el mínimo de unidades llenas por debajo del cual el sistema avisa (CU-211). Parte de la consulta de los mínimos vigentes (CU-297). Endpoint: `PUT /stock/thresholds`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
 | **Estado** | Implementado |
 
@@ -9161,8 +9572,8 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Stock → Mínimos» —**incluye CU-208 Consultar el Stock por Ubicación**, de donde parte para ver el stock de cada depósito—. |
-| 2 | El panel envía `GET /stock/thresholds`, que ya trae por depósito y tipo de garrafa el mínimo, las llenas actuales (`currentFull`) y si ya se avisó. |
+| 1 | El administrador abre «Stock → Mínimos» —**incluye CU-297 Consultar el Stock Mínimo**—, que ya trae por depósito y tipo de garrafa el mínimo, las llenas actuales y si ya se avisó. |
+| 2 | Revisa los mínimos vigentes y elige los que quiere cambiar. |
 | 3 | El administrador escribe los mínimos que quiere cambiar. |
 | 4 | El panel envía `PUT /stock/thresholds` con la lista `{ warehouseId, gasCylinderId, minFull }`. |
 | 5 | El sistema comprueba que los depósitos y las garrafas sean de la distribuidora y guarda cada mínimo: lo crea si no existía y lo actualiza si ya estaba. |
@@ -9186,6 +9597,43 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Frecuencia** | Baja: al ajustar la política de reposición. |
 | **Estabilidad** | Media |
 | **Comentarios** | Un mínimo en cero equivale a no controlar ese par: el aviso diario (CU-211) lo ignora. Al borrar un depósito (CU-260) se borran sus mínimos. Los mínimos controlan sólo las llenas: las vacías y las defectuosas no tienen umbral. |
+
+---
+
+
+#### Secundario CU-297 — Consultar el Stock Mínimo
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta los mínimos vigentes por depósito y tipo de garrafa, junto con las llenas que hay hoy y si ya se avisó. Endpoint: `GET /stock/thresholds`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre «Stock → Mínimos» —**incluye CU-208 Consultar el Stock por Ubicación**, de donde parte para ver el stock de cada depósito—. |
+| 2 | El panel envía `GET /stock/thresholds`. |
+| 3 | El sistema lee los mínimos de los depósitos vigentes de la distribuidora y, por cada uno, une el saldo de llenas de su ubicación (`currentFull`) y el instante del aviso emitido. |
+| 4 | El sistema devuelve la lista. |
+
+**Postcondición:** Ninguna: es una consulta de sólo lectura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Dos lecturas por índice. Responde en menos de 1 segundo. |
+| **Frecuencia** | Media: cada vez que el administrador abre la pantalla de mínimos. |
+| **Estabilidad** | Media |
+| **Comentarios** | Es la pantalla de partida de CU-210: muestra el mínimo, lo que hay y si ya se avisó. Un mínimo en cero equivale a no controlar ese par. |
 
 ---
 
@@ -9264,13 +9712,14 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si dos renglones nombran la misma garrafa y condición, el sistema responde 400. |
 | 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución con el mismo lote, sin repetir los movimientos; si no es un UUID v4, responde 400. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Los saldos de las filas involucradas bloqueados y un movimiento insertado por renglón, en una transacción. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: al reordenar el stock entre sucursales o al regularizar lo que un camión tiene suelto. |
 | **Estabilidad** | Media |
-| **Comentarios** | La transferencia no tiene tabla propia: es un grupo de movimientos con el mismo `batchId`, motivo `transfer` y origen y destino. Los bloqueos siguen un orden fijo, el mismo de todas las operaciones de stock —garrafas, depósitos y saldos ordenados—, de modo que dos transferencias cruzadas (A hacia B y B hacia A) no se traban. Si el administrador se equivoca, la corrige con CU-276 Anular una Transferencia de Stock. La carga del camión con su hoja (motivo `truck_load`) es otro caso de uso (CU-218, CU-219). |
+| **Comentarios** | La transferencia no tiene tabla propia: es un grupo de movimientos con el mismo `batchId`, motivo `transfer` y origen y destino. Los bloqueos siguen un orden fijo, el mismo de todas las operaciones de stock —garrafas, depósitos y saldos ordenados—, de modo que dos transferencias cruzadas (A hacia B y B hacia A) no se traban. Si el administrador se equivoca, la corrige con CU-276 Anular una Transferencia de Stock. La carga del camión con su hoja (motivo `truck_load`) es otro caso de uso (CU-218, CU-219). La transferencia desde un camión con una carga abierta se rechaza (409); la que regulariza lo que un camión tiene suelto exige que no tenga carga abierta y una nota. |
 
 ---
 
@@ -9308,6 +9757,8 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 5 | Si las garrafas ya no están donde estaban (el saldo del destino original quedaría negativo), el sistema responde 409 "No se puede contraasentar: las garrafas ya no están donde estaban" y no registra nada. |
 | 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir el contraasiento. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 5 | Si el contraasiento devolvería garrafas a un camión (o sacaría las de un camión con una carga abierta), el sistema responde 409, con las mismas reglas que la transferencia: se contraasientan las transferencias entre depósitos y, por datos históricos, una de depósito a camión, que vuelve del camión al depósito sólo si el camión no tiene carga abierta; nunca hacia un camión. |
+| 3 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -9348,17 +9799,18 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si la nota está vacía o en blanco, el sistema responde 400 "notes should not be empty". |
 | 4 | Si el signo de la diferencia no corresponde al motivo (una merma, fuga, pérdida o rotura positiva), el sistema responde 400 "Con el motivo shrinkage la variación tiene que ser negativa". |
 | 5 | Si el saldo de la ubicación quedaría negativo, el sistema responde 400 "Stock insuficiente: …" con lo que hay y lo que se necesita, y no registra nada. |
-| 5 | Si el stock vendible quedaría negativo, el sistema responde 400 "El stock vendible de Garrafa 10kg quedaría negativo: hay 281 vendibles y el resto está reservado por pedidos abiertos". |
+| 5 | Si el stock vendible quedaría negativo, el ajuste se asienta igual: el físico manda y una pérdida física se registra siempre. El vendible queda en cero y lo que faltó queda como déficit de reservas, que la conciliación informa (CU-224); el sistema deja un aviso en el registro. |
 | 5 | Si la ubicación o una garrafa no existe o es de otra distribuidora, el sistema responde 404. |
 | 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución con el mismo ajuste; si no es un UUID v4, responde 400. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Las garrafas y los saldos involucrados bloqueados, un movimiento por renglón, el número del ajuste y su guardado, en una transacción. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: ante un faltante, una rotura o un hallazgo. |
 | **Estabilidad** | Media |
-| **Comentarios** | Los motivos son `count_correction` (la diferencia puede ser positiva o negativa), `shrinkage`, `leak`, `lost` (siempre negativa), `found` (siempre positiva) y `damaged`, que pasa llenas a defectuosas dentro de la misma ubicación. El orden de bloqueos es el del libro de stock: garrafas por identificador, depósitos, saldos ordenados y, al final, el contador de numeración, de modo que dos ajustes simultáneos sobre el mismo saldo se serializan y el segundo ve el resultado del primero; los números de documento no tienen huecos. Un ajuste no se anula: se corrige con otro ajuste. Actualizar el stock de un producto del catálogo (CU-038) es un ajuste de recuento sobre el depósito predeterminado. |
+| **Comentarios** | Los motivos son `count_correction` (la diferencia puede ser positiva o negativa), `shrinkage`, `leak`, `lost` (siempre negativa), `found` (siempre positiva) y `damaged`, que pasa llenas a defectuosas dentro de la misma ubicación. El orden de bloqueos es el del libro de stock: garrafas por identificador, depósitos, saldos ordenados y, al final, el contador de numeración, de modo que dos ajustes simultáneos sobre el mismo saldo se serializan y el segundo ve el resultado del primero; los números de documento no tienen huecos. Un ajuste no se anula: se corrige con otro ajuste. Actualizar el stock de un producto del catálogo (CU-038) es un ajuste de recuento sobre el depósito predeterminado. Para respaldar el ajuste, los adjuntos genéricos (`POST /attachments/stock_adjustment/:adjustmentId`, con el identificador del ajuste; PDF, JPG, PNG o WEBP de hasta 10 MB) respaldan el ajuste con fotos o actas; el chofer no accede (403). Son los mismos endpoints del legajo (CU-186) y no figuran como casos de uso propios. El vendible vale `máx(0, llenas − reservado)`, y lo que las reservas de pedidos abiertos pasan del físico no se oculta: queda en el déficit de reservas de la garrafa (`reservation_deficit`). Cualquier suma posterior al vendible —una cancelación o un vencimiento que restituye stock, un hallazgo, una recepción, una anulación— cubre primero ese déficit y sólo el resto sube el vendible, de modo que no hay sobreventa al cancelar después de una merma. Por ejemplo, con 20 llenas y 15 reservadas (vendible 5), una merma de 10 deja el vendible en 0 y un déficit de 5; si se cancelan 5 pedidos el vendible sigue en 0, y si se cancelan 3 más queda en 3. Sólo la reserva de un pedido y la corrección de conciliación siguen siendo estrictas. |
 
 ---
 
@@ -9397,7 +9849,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Dos consultas por página (cabeceras y renglones). Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja: al auditar una corrección. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Los ajustes numerados son también el rastro de las correcciones del catálogo (CU-038), de los conteos iniciales (CU-274) y de los ajustes de conciliación (CU-277). El ajuste de conciliación no tiene movimientos en el libro: no cambió el físico. |
+| **Comentarios** | Los ajustes numerados son también el rastro de las correcciones del catálogo (CU-038), de los conteos iniciales (CU-274) y de los ajustes de conciliación (CU-277). El ajuste de conciliación no tiene movimientos en el libro: no cambió el físico. Cada ajuste puede llevar adjuntos: los adjuntos genéricos (`POST /attachments/stock_adjustment/:adjustmentId`, con el identificador del ajuste; PDF, JPG, PNG o WEBP de hasta 10 MB) respaldan el ajuste con fotos o actas; el chofer no accede (403). Son los mismos endpoints del legajo (CU-186) y no figuran como casos de uso propios. |
 
 ---
 
@@ -9407,7 +9859,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador abre la hoja de carga del día de un camión: elige el vehículo, el chofer que lo tiene en uso, el depósito de salida (el predeterminado si no indica otro), el ayudante, si lo hay, y por tipo de garrafa las llenas y los vacíos para canje que se cargan. Abrir la carga no mueve stock: la hoja queda «en carga» y las garrafas pasan del depósito al camión recién al confirmar la salida (CU-219). Mientras está en carga, el administrador puede corregir los renglones; con el camión en ruta puede reponer más llenas del depósito. Un vehículo y un chofer tienen una sola carga abierta a la vez. Endpoints: `POST /truck-loads`, `PUT /truck-loads/:id/items` y `PATCH /truck-loads/:id/reload`. |
+| **Descripción** | El administrador abre la hoja de carga del día de un camión: elige el vehículo, el chofer que lo tiene en uso, el depósito de salida (el predeterminado si no indica otro), el ayudante, si lo hay, y por tipo de garrafa las llenas y los vacíos para canje que se cargan. Abrir la carga no mueve stock: la hoja queda «en carga» y las garrafas pasan del depósito al camión recién al confirmar la salida (CU-219). Mientras está en carga, el administrador puede corregir los renglones (CU-295); con el camión en ruta puede reponer más llenas del depósito (CU-296). Un vehículo y un chofer tienen una sola carga abierta a la vez. Endpoint: `POST /truck-loads`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. El vehículo está en uso por el chofer indicado (CU-161). |
 | **Estado** | Implementado |
 
@@ -9421,10 +9873,9 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | El sistema comprueba que no haya renglones repetidos ni cantidades negativas, que el vehículo, el chofer, el ayudante, el depósito y las garrafas existan en la distribuidora y que el chofer tenga ese vehículo en uso. |
 | 5 | El sistema comprueba que ni el vehículo ni el chofer tengan otra carga abierta (en carga, en ruta o devuelta). |
 | 6 | El sistema toma el número correlativo de la distribuidora y guarda la hoja de carga en estado «en carga», con el día de negocio y sus renglones. No mueve stock. |
-| 7 | El sistema devuelve la carga. Mientras no haya salido, el panel puede reemplazar los renglones con `PUT /truck-loads/:id/items`. |
-| 8 | Con el camión en ruta, para sumar mercadería el panel envía `PATCH /truck-loads/:id/reload` con las llenas adicionales y una clave de idempotencia; el sistema comprueba que la carga esté en ruta, traslada esas llenas del depósito de origen al camión —**incluye CU-250 Aplicar un Movimiento de Stock**— y las suma al renglón de reposición del tipo de garrafa, que crea si la garrafa no estaba en la carga. |
+| 7 | El sistema devuelve la carga. |
 
-**Postcondición:** La hoja de carga está abierta en estado «en carga», con su número y sus renglones, y todavía no se movió ninguna garrafa. Si se repuso, el camión tiene en su ubicación las llenas repuestas, que el depósito dejó de tener, y el renglón registra la reposición.
+**Postcondición:** La hoja de carga está abierta en estado «en carga», con su número y sus renglones, y todavía no se movió ninguna garrafa.
 
 **Excepciones**
 
@@ -9435,16 +9886,101 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si el vehículo, el chofer, el ayudante, el depósito o una garrafa no existen o son de otra distribuidora, el sistema responde 404. |
 | 4 | Si el vehículo no está en uso por ese chofer, el sistema responde 400 "El vehículo … no está en uso por ese chofer: asignáselo antes de abrir la carga". |
 | 5 | Si el vehículo o el chofer ya tienen una carga abierta, el sistema responde 409 e indica el número de esa carga. Si dos aperturas compiten a la vez, la que pierde la carrera responde 409 sin número ("El camión ya tiene una carga abierta" o "El chofer ya tiene una carga abierta"). |
-| 7 | Si la carga ya salió, el reemplazo de renglones responde 400: sólo se corrigen mientras está en carga. |
-| 8 | Si la carga no está en ruta, la reposición responde 400; si falta la clave de idempotencia, responde 400, porque repetirla sumaría otra vez. |
-| 8 | Si el depósito de origen no tiene las llenas pedidas, el sistema responde 400 con el detalle del saldo y no mueve nada. |
+| 4 | Si el depósito de salida está inactivo, el sistema responde 400: no se abre una carga desde un depósito que no recibe ni entrega. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Una transacción con el número, la hoja y los renglones; la reposición agrega bloqueos de las filas de saldo en el orden global del libro. Responde en menos de 2 segundos. |
-| **Frecuencia** | Alta: una vez por camión y por jornada, más las reposiciones. |
+| **Rendimiento** | Una transacción con el número, la hoja y los renglones. Responde en menos de 2 segundos. |
+| **Frecuencia** | Alta: una vez por camión y por jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | La carga es el turno del camión: abarca desde que se abre hasta que se rinde (CU-222). Dos índices únicos parciales, uno por vehículo y otro por chofer (`UQ_truck_load_camion_abierta` y `UQ_truck_load_chofer_abierta`), impiden dos cargas abiertas aun ante dos pedidos simultáneos. El stock del camión sólo entra y sale por la carga: transferir stock a un vehículo con `POST /stock/transfers` responde 400. El ayudante es un legajo del módulo de personal, sin cuenta de usuario. El control que exige la carga abierta para recibir pedidos lo aplica CU-248 y lo configura CU-249; viene apagado. |
+| **Comentarios** | La carga es el turno del camión: abarca desde que se abre hasta que se rinde (CU-222). Dos índices únicos parciales, uno por vehículo y otro por chofer (`UQ_truck_load_camion_abierta` y `UQ_truck_load_chofer_abierta`), impiden dos cargas abiertas aun ante dos pedidos simultáneos. El stock del camión sólo entra y sale por la carga: transferir stock a un vehículo con `POST /stock/transfers` responde 400. El ayudante es un legajo del módulo de personal, sin cuenta de usuario. El control que exige la carga abierta para recibir pedidos lo aplica CU-248 y lo configura CU-249; viene apagado. La apertura toma el depósito en modo compartido, después de las garrafas, que es el orden global de bloqueos: una baja o una desactivación del depósito que se cruce con ella se ve o espera. |
+
+---
+
+
+#### Importante CU-295 — Corregir los Renglones de una Carga del Camión
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | Mientras la carga está «en carga», el administrador reemplaza sus renglones: por tipo de garrafa, las llenas y los vacíos para canje que se cargan. Corregir no mueve stock: las garrafas pasan al camión recién al confirmar la salida (CU-219). Endpoint: `PUT /truck-loads/:id/items`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. La carga está «en carga». |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la carga desde «Reparto → Cargas de camión» —**incluye CU-291 Consultar una Carga del Camión**— y elige «Corregir renglones». |
+| 2 | Modifica, agrega o quita renglones por tipo de garrafa. |
+| 3 | El panel envía `PUT /truck-loads/:id/items` con los renglones nuevos. |
+| 4 | El sistema bloquea la carga y comprueba que esté «en carga». |
+| 5 | El sistema comprueba que no haya renglones repetidos ni cantidades negativas y que las garrafas existan en la distribuidora. |
+| 6 | El sistema reemplaza los renglones anteriores por los nuevos y devuelve la carga. |
+
+**Postcondición:** La hoja de carga tiene los renglones nuevos y sigue «en carga»; no se movió ninguna garrafa.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si la carga no existe o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si la carga ya salió (o está cerrada o cancelada), el sistema responde 409: sólo se corrigen mientras está en carga. |
+| 5 | Si un renglón repite la garrafa o trae una cantidad negativa o no entera, el sistema responde 400. Si una garrafa no existe o es de otra distribuidora, responde 404. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una transacción con la carga bloqueada y sus renglones. Responde en menos de 2 segundos. |
+| **Frecuencia** | Media: cuando el administrador ajusta la carga antes de la salida. |
+| **Estabilidad** | Media |
+| **Comentarios** | Con la carga ya en ruta no se corrigen renglones: se suma mercadería con la reposición (CU-296). |
+
+---
+
+
+#### Importante CU-296 — Reponer una Carga del Camión
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | Con el camión en ruta, el administrador suma llenas del depósito de origen al camión. El sistema las traslada por el libro de stock y las anota en el renglón de reposición del tipo de garrafa, que crea si la garrafa no estaba en la carga. La solicitud exige una clave de idempotencia, porque repetirla sumaría otra vez. Endpoint: `PATCH /truck-loads/:id/reload`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. La carga está «en ruta». |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la carga desde «Reparto → Cargas de camión» —**incluye CU-291 Consultar una Carga del Camión**— y elige «Reponer». |
+| 2 | Indica las llenas adicionales por tipo de garrafa. |
+| 3 | El panel envía `PATCH /truck-loads/:id/reload` con las llenas adicionales y la cabecera `Idempotency-Key`. |
+| 4 | El sistema comprueba que la solicitud traiga la clave de idempotencia, bloquea la carga y comprueba que esté «en ruta». |
+| 5 | El sistema traslada esas llenas del depósito de origen al camión —**incluye CU-250 Aplicar un Movimiento de Stock**—. |
+| 6 | El sistema las suma al renglón de reposición del tipo de garrafa, que crea si la garrafa no estaba en la carga, y devuelve la carga. |
+
+**Postcondición:** El camión tiene en su ubicación las llenas repuestas, que el depósito de origen dejó de tener, y el renglón de la carga registra la reposición.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 4 | Si falta la clave de idempotencia, el sistema responde 400, porque repetirla sumaría otra vez. |
+| 4 | Si la carga no existe o es de otra distribuidora, el sistema responde 404. |
+| 4 | Si la carga no está en ruta, el sistema responde 409. |
+| 5 | Si el depósito de origen no tiene las llenas pedidas, el sistema responde 400 con el detalle del saldo y no mueve nada. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
+| 5 | Si la reposición haría pasar la carga de 20 tipos de garrafa distintos, el sistema responde 400. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Bloqueos de las filas de saldo en el orden global del libro y una transacción con la carga y los movimientos. Responde en menos de 2 segundos. |
+| **Frecuencia** | Baja: las reposiciones del día, cuando el camión necesita más mercadería. |
+| **Estabilidad** | Media |
+| **Comentarios** | Es el único caso de la carga que mueve stock con el camión en ruta; el movimiento de ida lo hace la salida (CU-219) y el de vuelta, la rendición (CU-222). |
 
 ---
 
@@ -9477,14 +10013,14 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
 | 3 | Si falta el motivo o supera los 300 caracteres, el sistema responde 400 con el detalle del campo. |
 | 4 | Si la carga no existe o es de otra distribuidora, el sistema responde 404. |
-| 4 | Si la carga ya salió o está cerrada o cancelada, el sistema responde 400: sólo se cancela una carga que todavía no salió. |
+| 4 | Si la carga ya salió o está cerrada o cancelada, el sistema responde 409: sólo se cancela una carga que todavía no salió. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura con bloqueo y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | Una carga que ya salió no se cancela: se cierra con el regreso (CU-221) y la rendición (CU-222), que devuelven al depósito lo que el camión lleva. Cancelar no pasa por el libro de stock porque en estado «en carga» todavía no se movió nada. |
+| **Comentarios** | Una carga que ya salió no se cancela: se cierra con el regreso (CU-221) y la rendición (CU-222), que devuelven al depósito lo que el camión lleva. Cancelar no pasa por el libro de stock porque en estado «en carga» todavía no se movió nada. Pedir una acción que el estado de la carga no permite es un conflicto de estado (409), igual que en compras; los 400 quedan para los datos inválidos. |
 ---
 
 #### Importante CU-219 — Registrar la Salida del Camión
@@ -9515,7 +10051,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | Paso | Acción |
 |------|--------|
 | 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
-| 3 | Si la carga no está «en carga», el sistema responde 400 con su estado actual; repetir la salida no mueve el stock otra vez. |
+| 3 | Si la carga no está «en carga», el sistema responde 409 "La carga N° n está <estado>: no se puede registrar la salida"; repetir la salida no mueve el stock otra vez. Un reintento sin clave de idempotencia responde 409 porque el estado ya cambió; con la misma clave devuelve la respuesta guardada. |
 | 3 | Si la carga es de otro chofer o de otra distribuidora, el sistema responde 404 sin distinguir los casos. |
 | 4 | Si la carga no lleva ninguna garrafa, el sistema responde 400. |
 | 4 | Si el camión todavía tiene garrafas en el stock, el sistema responde 400: hay que devolverlas al depósito con una transferencia de vehículo a depósito antes de confirmar la salida. |
@@ -9526,7 +10062,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Una transacción con el bloqueo de la carga y los saldos en el orden global del libro. Responde en menos de 2 segundos. |
 | **Frecuencia** | Alta: una vez por camión y por jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es el mismo endpoint para las dos aplicaciones, con guardas distintas por rol. Es el momento en que el stock se mueve: abrir la carga (CU-218) sólo reserva el renglón. Si el depósito no alcanza, no sale nada, ni siquiera lo que sí alcanzaba. Mientras la carga no esté en ruta el chofer no recibe ni acepta pedidos (CU-248). |
+| **Comentarios** | Es el mismo endpoint para las dos aplicaciones, con guardas distintas por rol. Es el momento en que el stock se mueve: abrir la carga (CU-218) sólo reserva el renglón. Si el depósito no alcanza, no sale nada, ni siquiera lo que sí alcanzaba. Mientras la carga no esté en ruta el chofer no recibe ni acepta pedidos (CU-248). Pedir una acción que el estado de la carga no permite es un conflicto de estado (409), igual que en compras; los 400 quedan para los datos inválidos. |
 ---
 
 #### Crítico CU-220 — Descontar del Stock Físico lo Entregado
@@ -9596,7 +10132,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | Paso | Acción |
 |------|--------|
 | 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
-| 3 | Si la carga no está «en ruta» ni «devuelta», el sistema responde 400 con su estado actual. |
+| 3 | Si la carga no está «en ruta» ni «devuelta», el sistema responde 409 con su estado actual. |
 | 3 | Si la carga es de otro chofer o de otra distribuidora, el sistema responde 404 sin distinguir los casos. |
 | 4 | Si el chofer tiene pedidos en curso, el sistema responde 409 "Tenés N pedidos en curso: entregalos o liberalos antes de volver". |
 | 5 | Si una garrafa declarada no es de la carga, falta un renglón, hay una garrafa repetida o una cantidad es negativa, el sistema responde 400 con el detalle. |
@@ -9606,7 +10142,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Una lectura y una escritura de la carga y sus renglones. Responde en menos de 1 segundo. |
 | **Frecuencia** | Alta: una vez por camión y por jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | El regreso sólo declara: lo que vuelve al depósito se mueve al cerrar la rendición (CU-222). Así el chofer no puede inflar ni vaciar el stock desde la aplicación. Si después de declarar se asienta una entrega del camión, el cierre responde 409 y el chofer vuelve a declarar lo que trae; no se recalcula en silencio contra un conteo que el chofer no hizo. Con la carga «devuelta» el chofer ya no recibe pedidos (CU-248). |
+| **Comentarios** | El regreso sólo declara: lo que vuelve al depósito se mueve al cerrar la rendición (CU-222). Así el chofer no puede inflar ni vaciar el stock desde la aplicación. Si después de declarar se asienta una entrega del camión, el cierre responde 409 y el chofer vuelve a declarar lo que trae; no se recalcula en silencio contra un conteo que el chofer no hizo. Con la carga «devuelta» el chofer ya no recibe pedidos (CU-248). La vuelta toma la carga en modo exclusivo y la aceptación o asignación de un pedido la toma en modo compartido (CU-015, CU-012): si compiten, o la vuelta ve el pedido en curso y responde 409, o el pedido se rechaza contra una carga ya devuelta con 400. Pedir una acción que el estado de la carga no permite es un conflicto de estado (409), igual que en compras; los 400 quedan para los datos inválidos. |
 ---
 
 #### Crítico CU-222 — Cerrar la Rendición de Stock del Camión
@@ -9623,7 +10159,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la carga desde «Reparto → Cargas de camión» —**incluye CU-291 Consultar una Carga del Camión**— y ve la pantalla de rendición: lo declarado frente a lo esperado, con la diferencia resaltada. |
+| 1 | El administrador abre la carga desde «Reparto → Cargas de camión» —**incluye CU-291 Consultar una Carga del Camión**— y ve la pantalla de rendición: lo declarado frente a lo esperado, con la diferencia resaltada y la vista previa del cierre (`hayDiferencia`, que dice si hará falta la nota; si `requiereVolverADeclarar` es verdadero, el cierre se rechazará hasta que el chofer vuelva a declarar). |
 | 2 | Si hay diferencia, escribe la nota que la explica; confirma el cierre. |
 | 3 | El panel envía `PATCH /truck-loads/:id/close` con la nota. |
 | 4 | El sistema bloquea la carga y comprueba que esté «devuelta». |
@@ -9640,7 +10176,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | Paso | Acción |
 |------|--------|
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
-| 4 | Si la carga no está «devuelta», el sistema responde 400 con su estado actual: el chofer tiene que declarar la vuelta primero. |
+| 4 | Si la carga no está «devuelta», el sistema responde 409 con su estado actual: el chofer tiene que declarar la vuelta primero. |
 | 5 | Si el camión entregó garrafas después de que el chofer declaró la vuelta, el sistema responde 409: el chofer tiene que volver a declarar lo que trae antes de cerrar. |
 | 7 | Si hay diferencia y la nota está vacía, el sistema responde 400, antes de tocar el libro: toda diferencia tiene que poder explicarse. |
 | 8 | Si el libro no puede asentar el movimiento, por ejemplo porque dejaría un saldo negativo, el sistema responde 400 y la carga sigue «devuelta». |
@@ -9650,7 +10186,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Bloqueos de las filas de tipo de garrafa y de saldo en el orden global y una transacción con la carga, los renglones y los movimientos. Responde en menos de 2 segundos. |
 | **Frecuencia** | Alta: una vez por camión y por jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | Los ajustes se calculan contra el saldo real del camión bajo bloqueo, que coincide con lo esperado salvo que alguien lo haya movido a mano, y cualquier ajuste del libro cuenta como diferencia. La invariante que cierra el caso (saldo del camión en cero) es la que permite confiar en el stock por ubicación. El detalle de la carga trae además el efectivo de la jornada —cobrado, impago y pendiente de confirmar de los pedidos que el chofer entregó con ese camión—, solo informativo: la caja todavía no existe y una diferencia no genera ningún cargo al chofer. |
+| **Comentarios** | Los ajustes se calculan contra el saldo real del camión bajo bloqueo, que coincide con lo esperado salvo que alguien lo haya movido a mano, y cualquier ajuste del libro cuenta como diferencia. La invariante que cierra el caso (saldo del camión en cero) es la que permite confiar en el stock por ubicación. El detalle de la carga trae además el efectivo de la jornada —cobrado, impago y pendiente de confirmar de los pedidos que el chofer entregó con ese camión—, solo informativo: la caja todavía no existe y una diferencia no genera ningún cargo al chofer. Pedir una acción que el estado de la carga no permite es un conflicto de estado (409), igual que en compras; los 400 quedan para los datos inválidos. El cierre no calcula efectivo: sólo rinde stock. El efectivo de la jornada que ve el administrador (CU-291) cuenta el saldo que el chofer cobra, descontada la seña. |
 ---
 
 #### Secundario CU-223 — Consultar la Carga Actual del Camión
@@ -9685,7 +10221,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Dos lecturas por índice. Responde en menos de 1 segundo. |
 | **Frecuencia** | Alta: varias veces durante la jornada. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es la única consulta de stock a la que accede el chofer: no ve saldos de depósito ni de otros camiones. Es el punto de partida de CU-219 y CU-221 en la aplicación, y la forma en que la app sabe por qué no recibe pedidos (CU-248). |
+| **Comentarios** | Es la consulta de stock del camión con la que arranca la aplicación del chofer: no ve saldos de depósito ni de otros camiones. El chofer consulta además el detalle de su propia carga con CU-291, que suma lo cobrado, lo impago y lo pendiente de su jornada. Es el punto de partida de CU-219 y CU-221 en la aplicación, y la forma en que la app sabe por qué no recibe pedidos (CU-248). |
 
 ---
 
@@ -9733,7 +10269,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador, o el chofer sólo de su propia carga, consulta el detalle de una carga: por tipo de garrafa lo cargado, repuesto, entregado, recolectado, esperado, declarado y la diferencia, más lo que hay hoy en el camión; los pedidos que el chofer entregó con ese camión durante la carga, el efectivo de la jornada —cobrado, impago y pendiente de confirmar, solo informativo— y los movimientos de stock de la carga. Mientras la carga está abierta, lo esperado se calcula en vivo contra el libro; al cerrar quedan las cifras congeladas. Endpoint: `GET /truck-loads/:id`. |
+| **Descripción** | El administrador, o el chofer sólo de su propia carga, consulta el detalle de una carga: por tipo de garrafa lo cargado, repuesto, entregado, recolectado, esperado, declarado y la diferencia, más lo que hay hoy en el camión; los pedidos que el chofer entregó con ese camión durante la carga, el efectivo de la jornada —cobrado, impago y pendiente de confirmar, solo informativo— y los movimientos de stock de la carga. Mientras la carga está abierta, lo esperado se calcula en vivo contra el libro; al cerrar quedan las cifras congeladas. Además trae la vista previa del cierre: `hayDiferencia` (verdadero si la rendición tendría diferencias, ya sea porque lo declarado difiere de lo esperado o porque el camión tiene otra cosa que lo declarado; nulo mientras no se declaró la vuelta de todos los renglones y en las cargas cerradas o canceladas, donde vale el estado) y `requiereVolverADeclarar` (verdadero si el camión entregó garrafas después de que el chofer declaró la vuelta: el cierre respondería 409 y `hayDiferencia` es nulo). Endpoint: `GET /truck-loads/:id`. |
 | **Precondición** | El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05), que indica la distribuidora con `X-Distributor`, o como Chofer (ACT-02). |
 | **Estado** | Implementado |
 
@@ -9746,7 +10282,8 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | El sistema resuelve el alcance: el administrador ve las cargas de su distribuidora; el chofer, sólo las suyas. |
 | 4 | El sistema lee la carga con sus renglones y calcula lo entregado, lo recolectado y lo esperado contra el libro de stock. |
 | 5 | El sistema lee los pedidos entregados con ese camión durante la carga, el efectivo de la jornada y los movimientos de stock de la carga. |
-| 6 | El sistema devuelve el detalle. |
+| 6 | Si la carga está abierta y el chofer ya declaró la vuelta de todos los renglones, el sistema calcula con el mismo plan que usa el cierre (CU-222) si la rendición tendría diferencias (`hayDiferencia`); si el camión entregó después de la declaración, marca `requiereVolverADeclarar` y deja `hayDiferencia` en nulo. |
+| 7 | El sistema devuelve el detalle. |
 
 **Postcondición:** Ninguna: es una consulta de sólo lectura.
 
@@ -9761,7 +10298,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Rendimiento** | Lecturas por índice de la carga, el libro y los pedidos. Responde en menos de 2 segundos. |
 | **Frecuencia** | Alta. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es la pantalla de rendición de CU-222: la diferencia que ve el administrador es la que el cierre congela. La misma pantalla muestra el stock actual de un camión, que se consulta con `GET /truck-loads/cars/:carId/stock`: llenas, vacías y defectuosas por tipo de garrafa. Un pedido entregado con otro vehículo no cuenta en el stock ni en el efectivo de la carga. |
+| **Comentarios** | Es la pantalla de rendición de CU-222: la diferencia que ve el administrador es la que el cierre congela, y `hayDiferencia` anticipa si el cierre pedirá la nota que explica la diferencia. `requiereVolverADeclarar` avisa que el cierre responderá 409 hasta que el chofer vuelva a declarar. La misma pantalla muestra el stock actual de un camión, que se consulta con `GET /truck-loads/cars/:carId/stock`: llenas, vacías y defectuosas por tipo de garrafa. Un pedido entregado con otro vehículo no cuenta en el stock ni en el efectivo de la carga. Los importes en efectivo son el saldo que el chofer cobra al entregar, no el total del pedido: el total menos la seña, que sólo se descuenta si estaba pagada. Una reserva de $20.000 con $5.000 de seña paga suma $15.000 al efectivo cobrado, impago o pendiente de confirmar, según el estado de su pago; cada pedido trae su total y su saldo. |
 ---
 
 #### Importante CU-224 — Conciliar el Stock Vendible con el Físico
@@ -9794,13 +10331,14 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 5 | Si el envío falla, el sistema registra el error y no guarda la firma: reintenta la noche siguiente. |
 | 2 | Si la conciliación de una distribuidora falla, el sistema registra el error y sigue con las demás. |
 | 6 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si las reservas de pedidos abiertos superan las llenas físicas, el sistema lo informa por garrafa como `overReserved` y marca la conciliación como no consistente, aunque la diferencia del vendible sea cero. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura en `REPEATABLE READ` de garrafas, saldos, reservado y entregas, y un `INSERT … ON CONFLICT` de la firma si hay aviso. Responde en menos de 1 segundo. |
 | **Frecuencia** | Diaria, a las 03:00; la consulta, baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | La conciliación sólo cuenta las entregas posteriores al primer movimiento del libro: las anteriores no tenían físico que descontar. `consistent` es verdadero cuando todas las diferencias son cero y no hay entregas sin movimiento. El diseño inicial preveía que el barrido nocturno reaplicara las entregas pendientes; el sistema decidió lo contrario: la reaplicación es una acción explícita del administrador (CU-278), una vez corregida la causa (por ejemplo, transferir llenas al depósito). |
+| **Comentarios** | La conciliación sólo cuenta las entregas posteriores al primer movimiento del libro: las anteriores no tenían físico que descontar. `consistent` es verdadero cuando todas las diferencias son cero y no hay entregas sin movimiento. El diseño inicial preveía que el barrido nocturno reaplicara las entregas pendientes; el sistema decidió lo contrario: la reaplicación es una acción explícita del administrador (CU-278), una vez corregida la causa (por ejemplo, transferir llenas al depósito). Por garrafa trae además `reservationDeficit` (el déficit guardado) y `deficitDifference` (`reservationDeficit − overReserved`): un desfasaje del déficit con diferencia cero también deja la conciliación como no consistente, entra en el correo de las 03:00 y se corrige con CU-277. Las reservas por encima del físico se resuelven cancelando pedidos o reponiendo stock. El barrido nocturno y el aviso de stock bajo corren bajo un bloqueo distribuido por proceso, de modo que con varias instancias sale un solo correo. La conciliación y la reaplicación (CU-278) miran sólo las entregas posteriores al primer movimiento del libro, medido por el momento real del asiento y no por una fecha que el usuario pueda elegir. |
 
 ---
 
@@ -9822,29 +10360,30 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 2 | Escribe la nota obligatoria. El panel puede enviar la diferencia que vio (`expectedDifference`). |
 | 3 | El panel envía `POST /stock/reconciliation/adjustments` con el tipo de garrafa y la nota. |
 | 4 | El sistema bloquea la garrafa del catálogo y recalcula la diferencia con las llenas físicas y lo reservado. |
-| 5 | El sistema corrige el stock vendible hasta el valor esperado. |
+| 5 | El sistema corrige el stock vendible hasta el valor esperado y reescribe el déficit de reservas con lo que hoy las reservas superan al físico (`overReserved`). |
 | 6 | El sistema toma el número siguiente, guarda el ajuste de motivo «conciliación» sobre el depósito predeterminado con un renglón de llenas que dice cuánto se corrigió, y lo devuelve con 201. |
 
-**Postcondición:** El stock vendible del tipo de garrafa es igual a las llenas físicas menos lo reservado. Existe un ajuste numerado de motivo «conciliación» con su nota y su renglón. Ningún saldo físico ni ningún movimiento cambió.
+**Postcondición:** El stock vendible del tipo de garrafa es igual a las llenas físicas menos lo reservado (o cero, si las reservas superan al físico) y su déficit de reservas es lo que las reservas superan al físico. Existe un ajuste numerado de motivo «conciliación» con su nota y, si el vendible se movió, su renglón; si sólo el déficit estaba desfasado, el ajuste queda sin renglón. Ningún saldo físico ni ningún movimiento cambió.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 4 | Si el tipo de garrafa no existe o es de otra distribuidora, el sistema responde 400 "Garrafa no encontrada". |
-| 4 | Si no hay diferencia, el sistema responde 400 "Garrafa 10kg no tiene diferencia: el vendible ya coincide con el físico menos lo reservado". |
+| 4 | Si no hay diferencia del vendible ni del déficit, el sistema responde 400 "Garrafa 10kg no tiene diferencia: el vendible ya coincide con el físico menos lo reservado". |
 | 4 | Si la diferencia que el panel vio ya cambió, el sistema responde 409 "La diferencia cambió: ahora es N y se esperaba M. Revisá la conciliación de nuevo". |
-| 4 | Si las llenas físicas son menos que lo reservado, el sistema responde 400: primero se corrige el físico con un ajuste o una transferencia. |
+| 4 | Si la garrafa tiene entregas que todavía no descontaron el físico, el sistema responde 409 "primero reaplicá las entregas": con el físico de más el esperado sale mal y al reaplicarlas quedaría sobreventa. Se reaplican con CU-278 y se vuelve a conciliar. |
 | 2 | Si la nota está vacía, el sistema responde 400. |
 | 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución con el mismo ajuste. |
 | 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Un bloqueo de la garrafa, tres lecturas, el número y dos escrituras, en una transacción. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: sólo ante un desvío. |
 | **Estabilidad** | Media |
-| **Comentarios** | Se hizo así y no con un ajuste de recuento (CU-213) porque el físico no cambió: corregir con un ajuste de llenas habría movido el físico y duplicado el error. Mientras corre, la garrafa del catálogo está bloqueada con el mismo cerrojo que usa un pedido nuevo al reservar, de modo que los pedidos esperan y la cuenta no se mueve. El renglón guarda la variación aplicada al vendible. No es un movimiento del libro, por lo que no se contraasienta. |
+| **Comentarios** | Se hizo así y no con un ajuste de recuento (CU-213) porque el físico no cambió: corregir con un ajuste de llenas habría movido el físico y duplicado el error. Mientras corre, la garrafa del catálogo está bloqueada con el mismo cerrojo que usa un pedido nuevo al reservar, de modo que los pedidos esperan y la cuenta no se mueve. El renglón guarda la variación aplicada al vendible. No es un movimiento del libro, por lo que no se contraasienta. Si sólo el déficit estaba desfasado, el vendible no se mueve: el documento queda sin renglón porque una variación de cero no es válida, y la nota explica el cambio. |
 
 ---
 
@@ -9864,7 +10403,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |------|--------|
 | 1 | El administrador abre «Stock → Conciliación» —**incluye CU-224 Conciliar el Stock Vendible con el Físico**—, ve las entregas sin movimiento y corrige la causa (por ejemplo, transfiere llenas al depósito). |
 | 2 | Elige «Reaplicar entregas». El panel envía `POST /stock/reconciliation/reapply-deliveries`. |
-| 3 | El sistema busca los pedidos entregados desde el primer movimiento del libro y agrupa sus renglones por pedido. |
+| 3 | El sistema busca los pedidos entregados desde el primer movimiento del libro —medido por el momento real en que se asentó, no por la fecha que el usuario pudo elegir, por ejemplo la de una recepción— y agrupa sus renglones por pedido. |
 | 4 | Por cada pedido, el sistema vuelve a ejecutar el descuento de la entrega —**incluye CU-220 Descontar del Stock Físico lo Entregado**— dentro de su propia transacción. |
 | 5 | El sistema devuelve cuántos pedidos revisó, cuántos reaplicó y cuántos siguen pendientes. |
 
@@ -9934,7 +10473,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-06 |
 | **Requisitos asociados** | IRQ-18 |
-| **Descripción** | El administrador consulta y define si su distribuidora exige que un chofer tenga una carga de camión abierta para recibir, aceptar o que se le asigne un pedido (parámetro `requireOpenTruckLoad`, que el análisis nombra `exigirCargaDeCamionAbierta`). Viene apagado. El valor se guarda en la configuración del proceso `stock_control` de la distribuidora. Endpoints: `GET /truck-loads/settings` y `PUT /truck-loads/settings`. |
+| **Descripción** | El administrador define si su distribuidora exige que un chofer tenga una carga de camión abierta para recibir, aceptar o que se le asigne un pedido (parámetro `requireOpenTruckLoad`, que el análisis nombra `exigirCargaDeCamionAbierta`). Viene apagado. El valor se guarda en la configuración del proceso `stock_control` de la distribuidora. Parte de la consulta del valor vigente (CU-298). Endpoint: `PUT /truck-loads/settings`. |
 | **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
 | **Estado** | Implementado |
 
@@ -9942,7 +10481,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la sección de control de carga de la configuración; el panel consulta `GET /truck-loads/settings`. |
+| 1 | El administrador abre la sección de control de carga de la configuración —**incluye CU-298 Consultar el Control de Carga de Camión Abierta**— y ve el valor vigente. |
 | 2 | Prende o apaga la exigencia de carga abierta y confirma. |
 | 3 | El panel envía `PUT /truck-loads/settings` con `requireOpenTruckLoad`. |
 | 4 | El sistema guarda el valor para la distribuidora, con el usuario que lo modificó. |
@@ -9963,6 +10502,43 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Media |
 | **Comentarios** | Es un caso de la familia de CU-171 a CU-173: usa la misma tabla de configuración por distribuidora. Sin configuración rige el valor apagado. Los pedidos ya asignados no se revisan al prender el control. La regla de que con una carga abierta sólo se recibe en ruta no depende de este parámetro. |
+---
+
+
+#### Secundario CU-298 — Consultar el Control de Carga de Camión Abierta
+
+| Campo | Detalle |
+|-------|---------|
+| **Objetivos asociados** | OBJ-05, OBJ-06 |
+| **Requisitos asociados** | IRQ-18 |
+| **Descripción** | El administrador consulta si su distribuidora exige que un chofer tenga una carga de camión abierta para recibir, aceptar o que se le asigne un pedido (parámetro `requireOpenTruckLoad`). Viene apagado: sin configuración rige el valor apagado. Endpoint: `GET /truck-loads/settings`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor`. |
+| **Estado** | Implementado |
+
+**Secuencia Normal**
+
+| Paso | Acción |
+|------|--------|
+| 1 | El administrador abre la sección de control de carga de la configuración. |
+| 2 | El panel envía `GET /truck-loads/settings`. |
+| 3 | El sistema lee la configuración del proceso `stock_control` de la distribuidora; si no hay ninguna, el valor es apagado. |
+| 4 | El sistema devuelve `requireOpenTruckLoad`. |
+
+**Postcondición:** Ninguna: es una consulta de sólo lectura.
+
+**Excepciones**
+
+| Paso | Acción |
+|------|--------|
+| 2 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Una lectura. Responde en menos de 1 segundo. |
+| **Frecuencia** | Muy baja. |
+| **Estabilidad** | Media |
+| **Comentarios** | Es la pantalla de partida de CU-249. La consulta responde al administrador de la distribuidora; el control lo aplica CU-248. |
+
 ---
 
 #### Crítico CU-250 — Aplicar un Movimiento de Stock
@@ -10491,13 +11067,15 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 6 | Si los vacíos que se lleva la planta dejarían negativo el saldo de vacíos del depósito, el sistema responde 400 "No alcanzan las vacías que se lleva la planta: el depósito no puede quedar en negativo. Stock insuficiente: <tipo> vacías en <depósito> (hay <h>, se necesitan <n>)" y no registra nada. |
 | 3 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir la operación. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 3 | Si la fecha de recepción es anterior al conteo inicial del depósito, el sistema responde 400: esas garrafas ya están en el conteo. Sin conteo inicial no hay piso. |
+| 3 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Bloqueos de la orden, del proveedor, de las garrafas, de los depósitos y de los saldos, el libro, los costos, la orden y el remito, en una transacción. Responde en menos de 2 segundos. |
 | **Frecuencia** | Media: en cada llegada de gas. |
 | **Estabilidad** | Media |
-| **Comentarios** | Es el camino por el que entran al sistema las garrafas llenas compradas. Sin orden, el depósito es el indicado o el predeterminado y el costo de cada renglón es obligatorio; con orden, el proveedor y el depósito son los de la orden y el costo es el de la orden si no se indica otro. El costo promedio es (existencia previa × costo previo + llenas × costo nuevo) / (existencia previa + llenas), redondeado a 2 decimales; la existencia son las llenas de depósitos y camiones antes de la recepción y, sin existencia o sin costo previo, el promedio es el costo nuevo. Cada renglón guarda el promedio y la existencia previos, que la anulación (CU-280) necesita. Los bloqueos se toman en un orden fijo: la orden, el proveedor en modo compartido, las garrafas del catálogo —en modo exclusivo si suben las llenas—, los depósitos en modo compartido, los saldos y, al final, el contador de numeración; dos recepciones simultáneas de la misma orden se serializan en el bloqueo de la orden, y la segunda ve lo que recibió la primera. Remito y factura numeran aparte. Este caso no mueve dinero: el pago es una marca (CU-281). Adjuntar el remito escaneado no está construido. |
+| **Comentarios** | Es el camino por el que entran al sistema las garrafas llenas compradas. Sin orden, el depósito es el indicado o el predeterminado y el costo de cada renglón es obligatorio; con orden, el proveedor y el depósito son los de la orden y el costo es el de la orden si no se indica otro. El costo promedio es (existencia previa × costo previo + llenas × costo nuevo) / (existencia previa + llenas), redondeado a 2 decimales; la existencia son las llenas de depósitos y camiones antes de la recepción y, sin existencia o sin costo previo, el promedio es el costo nuevo. Cada renglón guarda el promedio y la existencia previos, que la anulación (CU-280) necesita. Los bloqueos se toman en un orden fijo: la orden, el proveedor en modo compartido, las garrafas del catálogo —en modo exclusivo si suben las llenas—, los depósitos en modo compartido, los saldos y, al final, el contador de numeración; dos recepciones simultáneas de la misma orden se serializan en el bloqueo de la orden, y la segunda ve lo que recibió la primera. Remito y factura numeran aparte. Este caso no mueve dinero: el pago es una marca (CU-281). La foto o el PDF del remito del proveedor se adjunta aparte, con los adjuntos genéricos (`POST /attachments/purchase_receipt/:receiptId`, con el identificador de la recepción; PDF, JPG, PNG o WEBP de hasta 10 MB), que además se listan y se descargan con enlace firmado; el chofer no accede (403). Son los mismos endpoints del legajo del personal (CU-186) y no figuran como casos de uso propios. |
 
 ---
 
@@ -10519,7 +11097,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 2 | Escribe el motivo y confirma; el panel envía `PATCH /purchase-receipts/:id/void`. |
 | 3 | El sistema bloquea la orden de la recepción, si tiene, y después la recepción, y comprueba que esté confirmada y que no figure como pagada. |
 | 4 | El sistema contraasienta el lote de la recepción en el libro de stock —**incluye CU-250 Aplicar un Movimiento de Stock**—: las llenas salen del depósito y los vacíos vuelven. |
-| 5 | El sistema recalcula el costo promedio de cada garrafa con llenas. |
+| 5 | El sistema recalcula el costo promedio de cada garrafa con llenas, de forma exacta: parte del promedio anterior a la primera recepción de esa garrafa y repite, en orden de número, las recepciones de llenas que siguen confirmadas con la misma fórmula de la recepción, usando la existencia previa que cada una guardó —menos las llenas de las recepciones anteriores que se anularon después de esa lectura—. |
 | 6 | Si la recepción cumplía una orden, el sistema le devuelve lo recibido y, si la orden estaba enviada, parcialmente recibida o recibida, recalcula su estado. |
 | 7 | El sistema marca la recepción como anulada, con el motivo, la fecha y el usuario, y la devuelve. |
 
@@ -10537,13 +11115,14 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si el depósito ya no tiene las llenas que la recepción trajo (se vendieron, se cargaron a un camión o se transfirieron) y el contraasiento dejaría negativo su saldo, el sistema responde 409 "No se puede anular la recepción N° <n>: las garrafas que trajo ya no están en el depósito donde entraron…", con el detalle de dónde está hoy cada garrafa y la indicación de devolverlas, y no registra nada. |
 | 2 | Si el `Idempotency-Key` ya fue usado, el sistema devuelve el resultado de la primera ejecución sin repetir la operación. |
 | 1 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
+| 2 | Si falta la clave de idempotencia (`Idempotency-Key`), el sistema responde 400: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Bloqueos de la orden, la recepción, las garrafas, los depósitos y los saldos, el contraasiento, los costos y la orden, en una transacción. Responde en menos de 2 segundos. |
 | **Frecuencia** | Muy baja: al corregir un remito cargado por error. |
 | **Estabilidad** | Media |
-| **Comentarios** | El libro nunca se edita: la anulación es un contraasiento y las dos filas quedan a la vista. La recepción anulada no se reactiva: se registra otra, y el comprobante del proveedor anulado sigue ocupado, de modo que la nueva lleva otro número o tipo. Anular una recepción de una orden cancelada o cerrada con faltante deja a la orden en su estado. Costo promedio al anular: las ventas, mermas y ajustes no lo cambian, sólo lo cambia una compra, así que si no queda otra recepción confirmada de esa garrafa el costo vuelve a vacío; si la anulada es la última compra, vuelve exactamente al promedio que había antes; y si hubo compras posteriores se resta del promedio de hoy lo que esta compra lo había movido, con piso en cero, que es una aproximación porque las compras posteriores lo diluyeron. Los bloqueos siguen el orden: orden, recepción, garrafas, depósitos y saldos. |
+| **Comentarios** | El libro nunca se edita: la anulación es un contraasiento y las dos filas quedan a la vista. La recepción anulada no se reactiva: se registra otra, y el comprobante del proveedor anulado sigue ocupado, de modo que la nueva lleva otro número o tipo. Anular una recepción de una orden cancelada o cerrada con faltante deja a la orden en su estado. Costo promedio al anular: las ventas, mermas y ajustes no lo cambian, sólo lo cambia una compra, así que si no queda otra recepción confirmada de esa garrafa el costo vuelve a vacío; si la anulada es la última compra, vuelve exactamente al promedio que había antes; y si hubo compras posteriores se resta del promedio de hoy lo que esta compra lo había movido, con piso en cero, que es una aproximación porque las compras posteriores lo diluyeron. Los bloqueos siguen el orden: orden, recepción, garrafas, depósitos y saldos. El costo promedio resultante no depende del orden en que se anulen varias recepciones: R1 a $100, R2 a $300 y R3 a $100, de 10 unidades cada una y con 25 llenas sin costo antes, dejan $136,36; anular R2 deja $100, anular R3 deja $144,44 y anular las dos deja $100. Sin ninguna recepción vigente el promedio vuelve al de partida; si alguna recepción necesaria es anterior a las columnas del costo previo, no se puede reconstruir y el promedio queda como está. El instante de la existencia previa (`previous_on_hand_at`) sale del reloj de la base bajo el bloqueo de la garrafa, igual que la fecha de anulación; el texto del movimiento se corta a 300 caracteres y el motivo completo queda en la recepción. |
 
 ---
 
@@ -10674,7 +11253,7 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-044 Seleccionar Franja Horaria | → | CU-045 Consultar Franjas Disponibles | Para seleccionar una franja, el sistema siempre consulta primero las disponibles con cupo. |
 | CU-015 Aceptar Pedido | → | Notificar Cliente | La aceptación dispara siempre la notificación al cliente (WebSocket + FCM). |
 | CU-018 Marcar En Camino | → | Notificar Cliente | El cambio a "en camino" notifica siempre al cliente. |
-| CU-020 Confirmar Entrega | → | Notificar Cliente | La confirmación de entrega notifica siempre al cliente. |
+| CU-020 Confirmar Entrega Manualmente | → | Notificar Cliente | La confirmación de entrega notifica siempre al cliente. |
 | CU-002 Registrarse como Cliente | → | CU-082 Crear Usuario Base | Toda alta crea la cuenta de acceso, el usuario y su perfil por el mismo camino, con la misma regla de quién puede crear qué. |
 | CU-003 Registrar Chofer | → | CU-082 Crear Usuario Base | Ídem: el perfil que se crea es el de chofer. |
 | CU-031 Registrar Chofer | → | CU-082 Crear Usuario Base | Ídem, desde la gestión de la flota (SS-07). |
@@ -10781,7 +11360,9 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-012 Asignar Chofer Manualmente | → | CU-246 Verificar la Habilitación Laboral del Chofer | Planificado (I-11): la asignación comprueba la situación laboral del chofer. |
 | CU-013 Asignar Pedido Automáticamente por Proximidad | → | CU-246 Verificar la Habilitación Laboral del Chofer | Planificado (I-11): la oferta sólo llega a un chofer habilitado laboralmente. |
 | CU-015 Aceptar Pedido | → | CU-246 Verificar la Habilitación Laboral del Chofer | Planificado (I-11): la aceptación repite la comprobación. |
-| CU-210 Configurar el Stock Mínimo | → | CU-208 Consultar el Stock por Ubicación | La configuración del mínimo parte de ver el stock y los umbrales vigentes del depósito. |
+| CU-210 Configurar el Stock Mínimo | → | CU-297 Consultar el Stock Mínimo | La configuración parte de los mínimos vigentes, que el administrador ve antes de cambiarlos. |
+| CU-297 Consultar el Stock Mínimo | → | CU-208 Consultar el Stock por Ubicación | La consulta de los mínimos parte de ver el stock del depósito. |
+| CU-249 Configurar el Control de Carga de Camión Abierta | → | CU-298 Consultar el Control de Carga de Camión Abierta | La configuración parte del valor vigente, que el administrador ve antes de cambiarlo. |
 | CU-212 Transferir Stock entre Depósitos | → | CU-208 Consultar el Stock por Ubicación | La transferencia parte de ver lo que hay en el origen. |
 | CU-213 Registrar un Ajuste o una Merma de Stock | → | CU-208 Consultar el Stock por Ubicación | El ajuste parte de ver el saldo que se corrige. |
 | CU-258 Registrar un Depósito | → | CU-207 Consultar los Depósitos | El alta parte del listado de depósitos. |
@@ -10791,7 +11372,7 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-277 Registrar un Ajuste de Conciliación del Vendible | → | CU-224 Conciliar el Stock Vendible con el Físico | La corrección parte de la diferencia que muestra la conciliación. |
 | CU-278 Reaplicar las Entregas sin Movimiento de Stock | → | CU-224 Conciliar el Stock Vendible con el Físico | La reaplicación parte de las entregas sin movimiento que muestra la conciliación. |
 | CU-278 Reaplicar las Entregas sin Movimiento de Stock | → | CU-220 Descontar del Stock Físico lo Entregado | Vuelve a ejecutar el mismo descuento de la entrega, pedido por pedido. |
-| CU-020 Confirmar Entrega | → | CU-220 Descontar del Stock Físico lo Entregado | Toda entrega confirmada descuenta el físico en la misma transacción. |
+| CU-020 Confirmar Entrega Manualmente | → | CU-220 Descontar del Stock Físico lo Entregado | Toda entrega confirmada descuenta el físico en la misma transacción. |
 | CU-079 Confirmar Entrega Escaneando el QR (cliente) | → | CU-220 Descontar del Stock Físico lo Entregado | Ídem: la entrega confirmada por el cliente descuenta el físico en la misma transacción. |
 | CU-038 Actualizar Stock de Producto | → | CU-213 Registrar un Ajuste o una Merma de Stock | El ajuste manual del catálogo se registra como un ajuste de recuento en el depósito predeterminado. |
 | CU-212 Transferir Stock entre Depósitos | → | CU-250 Aplicar un Movimiento de Stock | Todo cambio de stock físico pasa por el mismo punto de escritura de saldos y movimientos. |
@@ -10800,7 +11381,9 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-276 Anular una Transferencia de Stock | → | CU-250 Aplicar un Movimiento de Stock | Ídem: el contraasiento se aplica por el mismo punto de escritura. |
 | CU-217 Registrar la Recepción de una Compra | → | CU-250 Aplicar un Movimiento de Stock | Ídem: las llenas entran y los vacíos canjeados salen del depósito. |
 | CU-280 Anular una Recepción de Compra | → | CU-250 Aplicar un Movimiento de Stock | Ídem: el contraasiento se aplica por el mismo punto de escritura. |
-| CU-218 Registrar la Carga del Camión | → | CU-250 Aplicar un Movimiento de Stock | Ídem: la reposición en ruta pasa llenas del depósito al camión. |
+| CU-296 Reponer una Carga del Camión | → | CU-250 Aplicar un Movimiento de Stock | Ídem: la reposición en ruta pasa llenas del depósito al camión. |
+| CU-295 Corregir los Renglones de una Carga del Camión | → | CU-291 Consultar una Carga del Camión | La corrección parte de la carga que se elige en el detalle. |
+| CU-296 Reponer una Carga del Camión | → | CU-291 Consultar una Carga del Camión | La reposición parte de la carga que se elige en el detalle. |
 | CU-219 Registrar la Salida del Camión | → | CU-250 Aplicar un Movimiento de Stock | Ídem: lo cargado pasa del depósito al camión al confirmar la salida. |
 | CU-222 Cerrar la Rendición de Stock del Camión | → | CU-291 Consultar una Carga del Camión | La rendición parte del detalle de la carga: lo declarado frente a lo esperado. |
 | CU-289 Cancelar una Carga del Camión | → | CU-290 Consultar las Cargas del Camión | La cancelación parte de la carga que se elige en el listado. |
@@ -11168,7 +11751,7 @@ Módulo de la iteración I-11, construido en parte: los puestos, los legajos, el
 | **Requisitos asociados** | IRQ-17 |
 | **Descripción** | El administrador registra el egreso de un empleado: el legajo pasa a `terminated` con su fecha y su motivo (`resignation`, `dismissal`, `end_of_contract`, `retirement` u `other`). En la misma transacción, si el empleado tiene cuenta de acceso se la bloquea y, si es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino con que se libera un vehículo cuando se da de baja a un chofer. El administrador puede reingresar al empleado, lo que limpia el egreso y fija una fecha de ingreso nueva (hoy, si no indica otra). Endpoints: `POST /employees/:id/termination` y `POST /employees/:id/reinstatement`. |
 | **Precondición** | El administrador está autenticado. El empleado existe, es de su distribuidora y, para el egreso, está activo; para el reingreso, está egresado. |
-| **Estado** | Implementado, con funcionalidad planificada (I-13): impedir el egreso del chofer que tiene una carga de camión abierta o una rendición pendiente, que se construyen con esos módulos. |
+| **Estado** | Implementado, con funcionalidad planificada (I-13): impedir el egreso del chofer que tiene una rendición pendiente, que depende de la caja (I-14). El egreso del chofer con una carga de camión abierta ya se impide (409). |
 
 **Secuencia Normal**
 
@@ -11177,7 +11760,7 @@ Módulo de la iteración I-11, construido en parte: los puestos, los legajos, el
 | 1 | El administrador abre la ficha del empleado: **incluye CU-179 Consultar el Legajo de un Empleado**. |
 | 2 | Elige «Registrar egreso» e indica la fecha de egreso y el motivo; el panel envía `POST /employees/:id/termination`. |
 | 3 | El sistema comprueba que el empleado esté activo y que la fecha no sea anterior a la de ingreso. |
-| 4 | Si la cuenta tiene perfil de reparto, el sistema comprueba que el chofer no tenga pedidos en curso (aceptados o en camino). Planificado (I-13): comprueba además que no tenga una carga de camión abierta ni una rendición pendiente. |
+| 4 | Si la cuenta tiene perfil de reparto, el sistema comprueba que el chofer no tenga pedidos en curso (aceptados o en camino) y que no tenga una carga de camión abierta: libera su vehículo en uso en la misma transacción y esa liberación se rechaza si hay una carga abierta. Planificado (I-14): comprueba además que no tenga una rendición pendiente. |
 | 5 | El sistema pasa el legajo a `terminated` con la fecha y el motivo. |
 | 6 | Si el empleado tiene cuenta de acceso, el sistema bloquea al usuario. |
 | 7 | Si la cuenta tiene perfil de reparto, el sistema deshabilita al chofer y libera el vehículo que tenía en uso; con el egreso confirmado, lo saca del radar de despacho. |
@@ -11192,7 +11775,7 @@ Módulo de la iteración I-11, construido en parte: los puestos, los legajos, el
 | 2 | Si el empleado no existe o es de otra distribuidora, el sistema responde 404, tanto en el egreso como en el reingreso; si el motivo no es uno de los admitidos o la fecha no es una fecha real, responde 400. |
 | 3 | Si el empleado ya está egresado, el sistema responde 409; si la fecha de egreso es anterior a la de ingreso, responde 400. |
 | 4 | Si el chofer tiene pedidos en curso, el sistema responde 409 con la cantidad: hay que cancelarlos o reasignarlos antes. |
-| 4 | Planificado (I-13): si el chofer tiene una carga de camión abierta o una rendición pendiente, el sistema responderá 409 con el detalle. |
+| 4 | Si el chofer tiene una carga de camión abierta, el sistema responde 409 "No se puede dar de baja al chofer mientras haya una carga de camión abierta (carga N° n): cerrala o cancelala antes" y el egreso se revierte. Planificado (I-14): lo mismo con una rendición pendiente. |
 | 8 | Si el empleado no está egresado, el sistema responde 409; si la fecha de ingreso nueva es anterior a la de egreso, responde 400. |
 
 | Campo | Detalle |
@@ -11959,6 +12542,7 @@ Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módu
 | 3 | Si el importe no es mayor que cero, el sistema responde 400. |
 | 3 | Si la caja o la categoría no existen o son de otra distribuidora, el sistema responde 404. |
 | 7 | Si la caja de origen y la de destino son la misma, el sistema responde 400. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -12000,6 +12584,7 @@ Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módu
 | 5 | Si el contraasiento dejaría una caja de efectivo en saldo negativo, el sistema responde 409. |
 | 2 | Si no se indica el motivo, el sistema responde 400. |
 | 3 | Si el movimiento no existe o es de otra distribuidora, el sistema responde 404. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -12364,6 +12949,7 @@ Subsistema SS-21, planificado en la iteración I-14. Los casos son los del módu
 | 2 | Si el importe no es mayor que cero, el sistema responde 400. |
 | 3 | Si la cuenta no existe o es de otra distribuidora, el sistema responde 404. |
 | 8 | Si el tipo del ajuste no es crédito ni débito, o falta el motivo, el sistema responde 400. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -12797,7 +13383,7 @@ La matriz relaciona cada requisito de información y cada caso de uso con los ob
 sistema que contribuye a alcanzar. Las marcas de los casos de uso se derivan del campo
 **Objetivos asociados** que cada uno declara en la sección 7.
 
-Comprende los 19 requisitos de información, los 9 requisitos no funcionales y los 290 casos de uso
+Comprende los 19 requisitos de información, los 9 requisitos no funcionales y los 303 casos de uso
 que declaran al menos un objetivo: todos lo hacen. 
 
 |  | OBJ-01 | OBJ-02 | OBJ-03 | OBJ-04 | OBJ-05 | OBJ-06 | OBJ-07 | OBJ-08 | OBJ-09 | OBJ-10 | OBJ-11 | OBJ-12 | OBJ-13 | OBJ-14 | OBJ-15 |
@@ -13120,6 +13706,19 @@ que declaran al menos un objetivo: todos lo hacen.
 | **CU-289** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
 | **CU-290** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
 | **CU-291** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-292** |  |  |  | ● |  |  | ● |  |  |  |  |  |  |  |  |
+| **CU-293** |  |  |  | ● |  |  | ● |  |  |  |  |  |  |  |  |
+| **CU-294** |  |  |  | ● |  |  | ● |  |  |  |  |  |  |  |  |
+| **CU-295** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-296** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-297** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-298** |  |  |  |  | ● | ● |  |  |  |  |  |  |  |  |  |
+| **CU-299** |  |  |  | ● |  |  | ● |  |  |  |  |  |  |  |  |
+| **CU-300** |  |  |  | ● |  |  | ● |  |  |  |  |  |  |  |  |
+| **CU-301** |  |  |  | ● |  |  | ● |  |  |  |  |  |  |  |  |
+| **CU-303** |  |  | ● | ● |  |  |  |  |  |  |  |  |  |  |  |
+| **CU-302** | ● |  |  |  |  |  | ● |  |  |  |  |  |  |  |  |
+| **CU-304** |  |  |  |  | ● |  | ● |  |  |  |  |  |  |  |  |
 
 El símbolo ● indica que el requisito o el caso de uso contribuye al objetivo de esa columna.
 

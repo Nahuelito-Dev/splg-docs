@@ -83,6 +83,10 @@ class "Map<String, Incidencia>" as Map_String_Incidencia <<colección>> {
   + get(clave: Cadena): Incidencia
   + values(distribuidora: Distribuidora): Incidencia[*]
 }
+class UnpaidCashService <<fachada>> {
+  + informarCobroImpago(pedidoId: Identificador,\n      nota: Cadena): Incidencia
+  + registrarCobroImpagoPorAdmin(pedidoId: Identificador,\n      motivo: Cadena): Incidencia
+}
 class RatingService <<fachada>> {
   + calificarPedido(pedidoId: Identificador,\n      estrellas: Entero, comentario: Cadena): Calificacion
   + consultarHistorialDeCalificaciones(usuario: Usuario): Calificacion[*]
@@ -93,6 +97,7 @@ class Incidencia <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class S3CleanupService <<referencia>>
 class S3Service <<referencia>>
+class AdminGateway <<referencia>>
 class Cliente <<referencia>>
 class Pedido <<referencia>>
 class Chofer <<referencia>>
@@ -107,6 +112,8 @@ ClaimsService --> "1" S3Service
 IncidentService --> "1" Map_String_Incidencia
 IncidentService --> "1" Map_String_Pedido
 RatingService --> "1" Map_String_Pedido
+UnpaidCashService --> "1" AdminGateway
+UnpaidCashService --> "1" Map_String_Pedido
 ClaimsService ..> Cliente
 ClaimsService ..> Pedido
 ClaimsService ..> Reclamo
@@ -115,6 +122,7 @@ IncidentService ..> Pedido
 RatingService ..> Chofer
 RatingService ..> Pedido
 RatingService ..> Usuario
+UnpaidCashService ..> Pedido
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.

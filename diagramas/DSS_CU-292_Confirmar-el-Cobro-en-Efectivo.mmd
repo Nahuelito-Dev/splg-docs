@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSS — CU-292 Confirmar el Cobro en Efectivo
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: confirmarCobroEnEfectivo(pedidoId)
+    activate SIS
+    alt el pedido está entregado, es en efectivo y es del chofer
+        SIS-->>CHO: cobro confirmado (pago saldado)
+    else el pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else el pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
+    else el pedido no está entregado o no es en efectivo
+        SIS-->>CHO: error de solicitud
+    else el pago ya se informó como impago
+        SIS-->>CHO: conflicto (lo resuelve un administrador)
+    end
+    deactivate SIS

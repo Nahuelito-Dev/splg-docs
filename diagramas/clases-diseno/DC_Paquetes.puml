@@ -230,6 +230,7 @@ gascylinder ..> distributor
 gateways ..> customer
 gateways ..> delivery
 health ..> redis
+incident ..> gateways
 incident ..> order
 notifications ..> customer
 notifications ..> delivery
@@ -265,6 +266,8 @@ reports ..> order
 repurchase ..> customer
 repurchase ..> notifications
 repurchase ..> order
+routes ..> delivery
+routes ..> order
 stock ..> car
 stock ..> distributor
 stock ..> gascylinder

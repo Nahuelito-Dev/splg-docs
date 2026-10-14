@@ -24,6 +24,7 @@ sequenceDiagram
     opt El pedido no estaba aceptado por este chofer
         PED->>PED: generarCodigoDeEntrega()
         PED->>OFE: aceptar()
+        PED->>PED: retirarOtrasOfertas(chofer)
     end
     deactivate PED
     UCS-)NOT: sendOrderConfirmation(cliente, pedido)

@@ -1120,7 +1120,8 @@ CREATE TABLE public.gas_cylinder (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     photo_key character varying(512),
-    average_unit_cost numeric(12,2)
+    average_unit_cost numeric(12,2),
+    reservation_deficit integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1503,6 +1504,7 @@ CREATE TABLE public.purchase_receipt_item (
     unit_cost numeric(12,2) NOT NULL,
     previous_average_cost numeric(12,2),
     previous_on_hand integer,
+    previous_on_hand_at timestamp with time zone,
     CONSTRAINT "CHK_purchase_receipt_item_cantidades" CHECK (((quantity_full >= 0) AND (quantity_empty_out >= 0) AND ((quantity_full + quantity_empty_out) > 0))),
     CONSTRAINT "CHK_purchase_receipt_item_costo" CHECK ((unit_cost >= (0)::numeric))
 );
@@ -3108,6 +3110,13 @@ CREATE INDEX "IDX_stock_balance_gas_cylinder" ON public.stock_balance USING btre
 --
 
 CREATE INDEX "IDX_stock_location_distributor" ON public.stock_location USING btree (distributor_id);
+
+
+--
+-- Name: IDX_stock_movement_alta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_stock_movement_alta" ON public.stock_movement USING btree (distributor_id, "createdAt");
 
 
 --

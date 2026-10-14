@@ -64,7 +64,7 @@ class Caja {
   - requiereSesion: Booleano
   - activa: Booleano
   + «create» Caja(nombre: Cadena, tipoDeCaja: TipoDeCaja,\n      requiereSesion: Booleano)
-  + abrirSesion(montoInicial: Moneda,\n      administrador: Administrador,\n      out diferencia: Entero): SesionDeCaja
+  + abrirSesion(montoInicial: Moneda, administrador: Usuario,\n      out diferencia: Entero): SesionDeCaja
   + actualizarSaldo(sentido: SentidoDeCaja, importe: Moneda)
   + calcularDiferencia(montoContado: Moneda): Moneda
   + contraasentar(movimiento: MovimientoDeCaja,\n      motivo: Cadena): MovimientoDeCaja
@@ -84,8 +84,8 @@ class SesionDeCaja {
   - montoContado: Moneda
   - diferencia: Moneda
   - observaciones: Cadena
-  + «create» SesionDeCaja(montoInicial: Moneda,\n      administrador: Administrador)
-  + cerrar(montoContado: Moneda, diferencia: Moneda,\n      administrador: Administrador)
+  + «create» SesionDeCaja(montoInicial: Moneda,\n      administrador: Usuario)
+  + cerrar(montoContado: Moneda, diferencia: Moneda,\n      administrador: Usuario)
   + getCaja(): Caja
   + validarAbierta()
 }

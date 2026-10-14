@@ -42,6 +42,8 @@
 | Aplica el recargo de | Pedido | ZonaCobertura | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
 | Registra | Pedido | CambioEstadoPedido | Composición | 1 a 0..* | Es un registro de |
 | Efectúa | Usuario | CambioEstadoPedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
+| Confirmó el cobro de | Usuario | Pedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
+| Resolvió el cobro de | Usuario | Pedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Registra | Pedido | CambioDireccion | Composición | 1 a 0..* | Es un registro de |
 | Cambia desde | CambioDireccion | DireccionEntrega | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Cambia hacia | CambioDireccion | DireccionEntrega | Asociación | 0..* a 1 | Está relacionado con una transacción |
@@ -136,6 +138,7 @@
 | Corresponde a | ItemCarga | Producto | Asociación | 0..* a 1 | Descripción para |
 | Abre | Usuario | CargaDeCamion | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Cierra | Usuario | CargaDeCamion | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
+| Ayuda en | Empleado | CargaDeCamion | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Define | Distribuidora | Caja | Composición | 1 a 0..* | Parte lógica de |
 | Define | Distribuidora | CategoriaDeCaja | Composición | 1 a 0..* | Parte lógica de |
 | Lleva | Distribuidora | CuentaCorriente | Composición | 1 a 0..* | Parte lógica de |

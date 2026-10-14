@@ -70,7 +70,7 @@ _c("InvitacionRecompra", "Clientes", ["agotamiento estimado"])
 _c("ItemSugerido", "Clientes", ["cantidad"])
 
 _c("Producto", "CatalogoEInventario",
-   ["tipo", "peso en kilos", "precio", "stock", "activo", "costo promedio"])
+   ["tipo", "peso en kilos", "precio", "stock", "activo", "costo promedio", "déficit de reservas"])
 _c("Promocion", "CatalogoEInventario", ["cantidad", "descuento"])
 _c("Envase", "CatalogoEInventario", ["número de serie", "estado", "monto del depósito", "/vencimiento"])
 _c("MovimientoEnvase", "CatalogoEInventario", ["desde", "hacia", "fecha"])
@@ -84,7 +84,8 @@ _c("ItemCarrito", "VentaYPedidos", ["cantidad", "precio unitario"])
 _c("Pedido", "VentaYPedidos",
    ["estado", "/total", "modalidad de entrega", "fecha agendada", "método de pago", "seña",
     "código de entrega", "nombre de quien recibe", "documento de quien recibe",
-    "vínculo con quien recibe"])
+    "vínculo con quien recibe", "estado del cobro", "cobro confirmado el",
+    "cobro resuelto el", "nota de resolución del cobro"])
 _c("ItemPedido", "VentaYPedidos", ["cantidad", "precio unitario", "/subtotal"])
 _c("CambioEstadoPedido", "VentaYPedidos", ["desde", "hacia", "motivo", "fecha"])
 _c("CambioDireccion", "VentaYPedidos", ["motivo", "fecha"])
@@ -174,7 +175,7 @@ _c("RecepcionDeCompra", "Compras",
     "estado de pago", "estado", "motivo de anulación", "anulada el", "notas"])
 _c("ItemRecepcion", "Compras",
    ["llenas recibidas", "vacías entregadas", "costo unitario", "costo promedio previo",
-    "existencia previa"])
+    "existencia previa", "existencia previa leída el"])
 _c("Caja", "CajaYFinanzas", ["nombre", "tipo", "saldo", "requiere sesión", "activa"])
 _c("SesionDeCaja", "CajaYFinanzas",
    ["estado", "abierta el", "monto inicial", "cerrada el", "monto esperado", "monto contado",
@@ -251,6 +252,8 @@ ASOCIACIONES = [
     ("Pedido", "0..*", "-", "0..1", "ZonaCobertura", "aplica el recargo de", TR),
     ("Pedido", "1", "*", "0..*", "CambioEstadoPedido", "registra", RG),
     ("Usuario", "0..1", "-", "0..*", "CambioEstadoPedido", "efectúa", TR),
+    ("Usuario", "0..1", "-", "0..*", "Pedido", "confirmó el cobro de", TR),
+    ("Usuario", "0..1", "-", "0..*", "Pedido", "resolvió el cobro de", TR),
     ("Pedido", "1", "*", "0..*", "CambioDireccion", "registra", RG),
     ("CambioDireccion", "0..*", "-", "1", "DireccionEntrega", "cambia desde", TR),
     ("CambioDireccion", "0..*", "-", "1", "DireccionEntrega", "cambia hacia", TR),
@@ -572,7 +575,10 @@ TIPOS_PLANIFICADOS = {
 # Asociaciones sin clave foránea propia que las sostenga (A, B, nombre): el dueño del adjunto es
 # polimórfico (D3), y el empleado es un chofer a través del usuario que comparten (`employee.user_id` y
 # `delivery.user_id`), no por una columna.
-POLIMORFICAS = {("Empleado", "Adjunto", "conserva"), ("Empleado", "Chofer", "actúa como")}
+POLIMORFICAS = {("Empleado", "Adjunto", "conserva"), ("Empleado", "Chofer", "actúa como"),
+                # `order.payment_confirmed_by` y `order.payment_resolved_by` guardan el usuario (uuid) sin
+                # clave foránea declarada en la base
+                ("Usuario", "Pedido", "confirmó el cobro de"), ("Usuario", "Pedido", "resolvió el cobro de")}
 
 # Tablas que la base tiene y que no son un concepto del dominio: las usa la infraestructura del sistema.
 # Se dibujan en el modelo físico (contexto «Tablas técnicas») y no entran en el modelo conceptual.
@@ -628,7 +634,8 @@ ATRIBUTOS = {
                          "predeterminada": "isDefault"},
     "InvitacionRecompra": {"agotamiento estimado": "projected_depletion_at"},
     "Producto": {"tipo": "type", "peso en kilos": "weight", "precio": "price",
-                 "stock": "stock", "activo": "isActive", "costo promedio": "average_unit_cost"},
+                 "stock": "stock", "activo": "isActive", "costo promedio": "average_unit_cost",
+                 "déficit de reservas": "reservation_deficit"},
     "Promocion": {"cantidad": "quantity", "descuento": "discount_percentage"},
     "Envase": {"número de serie": "serial", "estado": "state", "monto del depósito": "deposit",
                "/vencimiento": "expires_at"},
@@ -645,7 +652,10 @@ ATRIBUTOS = {
                "método de pago": "paymentMethod", "seña": "deposit_amount",
                "código de entrega": "deliveryCode", "nombre de quien recibe": "receiver_name",
                "documento de quien recibe": "receiver_document",
-               "vínculo con quien recibe": "receiver_relationship"},
+               "vínculo con quien recibe": "receiver_relationship",
+               "estado del cobro": "paymentStatus", "cobro confirmado el": "payment_confirmed_at",
+               "cobro resuelto el": "payment_resolved_at",
+               "nota de resolución del cobro": "payment_resolution_note"},
     "ItemPedido": {"cantidad": "quantity", "precio unitario": "unitPrice", "/subtotal": "subtotal"},
     "CambioEstadoPedido": {"desde": "from_status", "hacia": "to_status", "motivo": "reason",
                            "fecha": "changed_at"},
@@ -765,7 +775,8 @@ ATRIBUTOS = {
                           "notas": "notes"},
     "ItemRecepcion": {"llenas recibidas": "quantity_full", "vacías entregadas": "quantity_empty_out",
                       "costo unitario": "unit_cost", "costo promedio previo": "previous_average_cost",
-                      "existencia previa": "previous_on_hand"},
+                      "existencia previa": "previous_on_hand",
+                     "existencia previa leída el": "previous_on_hand_at"},
     "Caja": {"nombre": "name", "tipo": "kind", "saldo": "balance",
              "requiere sesión": "requires_session", "activa": "is_active"},
     "SesionDeCaja": {"estado": "status", "abierta el": "opened_at", "monto inicial": "opening_amount",

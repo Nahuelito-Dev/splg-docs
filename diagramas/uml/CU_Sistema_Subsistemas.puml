@@ -1,5 +1,5 @@
 @startuml
-title Subsistemas del Proyecto — SPLG (21 subsistemas · 290 casos de uso)
+title Subsistemas del Proyecto — SPLG (21 subsistemas · 303 casos de uso)
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
 skinparam defaultFontName Helvetica
@@ -36,19 +36,19 @@ left to right direction
 package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
   package "SS-01 Autenticación y Usuarios\n(14 casos de uso)" as MSS01 <<subsystem>> #back:E7F0F6;line:3C6E8F {
   }
-  package "SS-02 Gestión de Pedidos\n(32 casos de uso)" as MSS02 <<subsystem>> #back:E9F4EA;line:3F7A50 {
+  package "SS-02 Gestión de Pedidos\n(33 casos de uso)" as MSS02 <<subsystem>> #back:E9F4EA;line:3F7A50 {
   }
   package "SS-03 Despacho y Asignación\n(8 casos de uso)" as MSS03 <<subsystem>> #back:F5ECF7;line:7B4B8A {
   }
-  package "SS-04 Seguimiento en Tiempo Real\n(9 casos de uso)" as MSS04 <<subsystem>> #back:FBF2DE;line:8A7326 {
+  package "SS-04 Seguimiento en Tiempo Real\n(16 casos de uso)" as MSS04 <<subsystem>> #back:FBF2DE;line:8A7326 {
   }
   package "SS-05 Reclamos\n(7 casos de uso)" as MSS05 <<subsystem>> #back:FAE8E3;line:9C5A46 {
   }
-  package "SS-06 Reportes y Dashboard\n(5 casos de uso)" as MSS06 <<subsystem>> #back:E4F2F1;line:3E7C79 {
+  package "SS-06 Reportes y Dashboard\n(6 casos de uso)" as MSS06 <<subsystem>> #back:E4F2F1;line:3E7C79 {
   }
   package "SS-07 Gestión de Choferes y Vehículos\n(50 casos de uso)" as MSS07 <<subsystem>> #back:F0EEF9;line:5A5896 {
   }
-  package "SS-08 Gestión de Productos e Inventario\n(38 casos de uso)" as MSS08 <<subsystem>> #back:EFF6E2;line:5E7A3A {
+  package "SS-08 Gestión de Productos e Inventario\n(42 casos de uso)" as MSS08 <<subsystem>> #back:EFF6E2;line:5E7A3A {
   }
   package "SS-09 Franjas Horarias\n(6 casos de uso)" as MSS09 <<subsystem>> #back:FDEFE6;line:A26A45 {
   }

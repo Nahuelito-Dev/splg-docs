@@ -87,6 +87,7 @@ entity ItemRecepcion {
   {field} costo unitario
   {field} costo promedio previo
   {field} existencia previa
+  {field} existencia previa leída el
 }
 entity Deposito #F1F1F1 {
 }

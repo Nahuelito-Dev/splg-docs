@@ -19,5 +19,7 @@ sequenceDiagram
     CAR-->>-SRV: pedidos
     SRV->>+CAR: getMovimientos()
     CAR-->>-SRV: movimientos
+    SRV->>+CAR: previsualizarCierre()
+    CAR-->>-SRV: hayDiferencia
     SRV-->>-ADM: carga
     Note over ADM,SRV: También lo inicia el Chofer (ACT-02), sólo de su carga

@@ -1,22 +1,22 @@
 sequenceDiagram
-    title DSS — CU-020 Confirmar Entrega
+    title DSS — CU-020 Confirmar Entrega Manualmente
     autonumber
-    actor CHO as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
     actor CLI as Cliente (ACT-01)
 
-    CHO->>SIS: confirmarEntrega(pedidoId)
+    ADM->>SIS: confirmarEntrega(pedidoId, motivo)
     activate SIS
-    alt El pedido está en camino y está asignado al chofer
-        SIS-->>CHO: entrega registrada (estado ENTREGADO)
-        Note over SIS: Si el pago es en<br/>efectivo, queda saldado
+    alt El pedido está en camino y el motivo es válido
+        SIS-->>ADM: entrega registrada (estado ENTREGADO)
+        Note over SIS: Si el pago es en efectivo,<br/>sigue pendiente de cobro
         SIS-)CLI: notificarPedidoEntregado(pedido)
     else El pedido es de otra distribuidora
-        SIS-->>CHO: recurso no encontrado
-    else El pedido está asignado a otro chofer
-        SIS-->>CHO: acceso denegado
+        SIS-->>ADM: recurso no encontrado
+    else El motivo falta o es inválido
+        SIS-->>ADM: error de solicitud (motivo)
     else El pedido no está en camino
-        SIS-->>CHO: error de solicitud (transición no permitida)
+        SIS-->>ADM: error de solicitud (transición no permitida)
     end
     deactivate SIS
-    Note over CHO,CLI: La confirmación con código de entrega se<br/>modela en CU-078 y CU-079
+    Note over ADM,CLI: El chofer no confirma entregas: lo hace el cliente con<br/>el código (CU-078 y CU-079). El cobro del efectivo<br/>es otro circuito (CU-292, CU-293 y CU-294)

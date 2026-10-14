@@ -8,8 +8,10 @@ sequenceDiagram
     activate SIS
     alt la carga está en carga y el depósito tiene las unidades
         SIS-->>CHO: carga en ruta
-    else la carga no está en carga, no lleva garrafas, el camión no está vacío o el depósito no tiene las unidades
+    else la carga no lleva garrafas, el camión no está vacío o el depósito no tiene las unidades
         SIS-->>CHO: solicitud inválida
+    else la carga no está en carga
+        SIS-->>CHO: conflicto (transición no permitida)
     else la carga no existe o no es suya
         SIS-->>CHO: recurso no encontrado
     end

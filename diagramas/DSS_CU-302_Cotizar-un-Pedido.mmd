@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSS — CU-302 Cotizar un Pedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: cotizarPedido(items, medioDePago, direccionId, clienteId)
+    activate SIS
+    alt los renglones son de la distribuidora y hay stock
+        SIS-->>CLI: desglose de la cotización
+    else un renglón es inválido, no hay stock o la dirección está fuera de cobertura
+        SIS-->>CLI: solicitud inválida
+    else un cliente cotiza para otro
+        SIS-->>CLI: acceso denegado
+    else la dirección no existe
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS
+    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05), por un cliente

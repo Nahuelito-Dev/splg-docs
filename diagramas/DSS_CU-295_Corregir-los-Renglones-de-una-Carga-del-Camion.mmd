@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-295 Corregir los Renglones de una Carga del Camión
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: corregirRenglonesDeLaCarga(cargaId, items)
+    activate SIS
+    alt la carga está en carga
+        SIS-->>ADM: hoja de carga con los renglones nuevos
+    else un renglón es inválido
+        SIS-->>ADM: solicitud inválida
+    else la carga ya salió
+        SIS-->>ADM: conflicto (transición no permitida)
+    else la carga o una garrafa no existen
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

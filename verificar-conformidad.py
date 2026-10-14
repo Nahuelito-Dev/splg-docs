@@ -547,6 +547,76 @@ print(f"[{'OK' if not _errs_dc else 'FALLA':5}] Diagrama de clases de diseño: "
       f"{_cif_dc.get('clases', 0)} clases, {_cif_dc.get('operaciones', 0)} mensajes de los DSD con su operación"
       + (f" | {len(_errs_dc)} errores: {_errs_dc[:6]}" if _errs_dc else ""))
 
+# --- Catálogo y calificación: sin CU repetidos y con cuentas que cierran ---
+# Un CU duplicado en el catálogo o en las listas por calificación, o un total que no es la cantidad
+# de casos únicos, hace fallar el gate (en Casos-de-Uso.md §3 y en el Documento 0 §8).
+import re as _re
+_err_cal = []
+for _doc in ("Casos-de-Uso.md", "0-Plan_Del_Proyecto.md"):
+    _t = open(D + _doc, encoding="utf-8").read()
+    _filas = _re.findall(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \|[^|]*\| (\w+) \|', _t, _re.M)
+    _cods = [c for c, _ in _filas]
+    _rep = sorted({c for c in _cods if _cods.count(c) > 1})
+    if _rep: _err_cal.append(f"{_doc}: CU repetidos en el catálogo {_rep}")
+    _tot = 0
+    _en_listas = []
+    for _m in _re.finditer(r'^\| \*\*(Crítico|Importante|Secundario|Menor)\*\* \| (\d+) \| ([^\n]*?) \|$', _t, _re.M):
+        _l = _m.group(3).split(", ")
+        _en_listas += _l
+        _tot += len(_l)
+        if len(set(_l)) != len(_l): _err_cal.append(f"{_doc}: CU repetidos en la lista {_m.group(1)}")
+        if int(_m.group(2)) != len(_l): _err_cal.append(f"{_doc}: {_m.group(1)} dice {_m.group(2)} y lista {len(_l)}")
+        _de_cat = {c for c, k in _filas if k == _m.group(1)}
+        if _de_cat != set(_l): _err_cal.append(f"{_doc}: la lista {_m.group(1)} no es la del catálogo")
+    _mt = _re.search(r'^\| \*\*Total\*\* \| \*\*(\d+)\*\* \| CU-001 a', _t, _re.M)
+    if not _mt or int(_mt.group(1)) != len(set(_cods)) or _tot != len(set(_cods)):
+        _err_cal.append(f"{_doc}: el total ({_mt.group(1) if _mt else '?'}) no es la cantidad de CU únicos ({len(set(_cods))})")
+if _err_cal: FALLAS.append("Catálogo y calificación")
+print(f"[{'OK' if not _err_cal else 'FALLA':5}] Catálogo y calificación: sin CU repetidos y con totales que cierran" + (f" | {_err_cal[:4]}" if _err_cal else ""))
+
+# --- Cifras que los documentos repiten: tienen que ser las reales ---
+# Cantidad de casos de uso, de diagramas de secuencia (DSS) y de interacción (DSD), de operaciones y
+# de contratos: lo que dicen README, GUIA, Casos-de-Uso y los documentos 2 y 3 sale del contenido.
+_err_cif = []
+_casos_t = open(D + "Casos-de-Uso.md", encoding="utf-8").read()
+_n_cu = len({c for c, _ in _re.findall(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \|[^|]*\| (\w+) \|', _casos_t, _re.M)})
+_n_dss = len(_re.findall(r'title DSS — ', _casos_t))
+_n_dsd = len(_re.findall(r'title DSD — ', _casos_t))
+_ana = open(D + "2-Analisis.md", encoding="utf-8").read()
+_n_contr = len(_re.findall(r'^#### [^\n]*Contrato: `', _ana, _re.M))
+_n_ops = len(__import__("json").load(open(D + "material-de-trabajo/operaciones-sistema.json", encoding="utf-8"))["operaciones"])
+_esperado = [
+    ("README.md", r'los (\d+) casos de uso de alto nivel', _n_cu), ("README.md", r'los (\d+) diagramas de secuencia', _n_dss),
+    ("README.md", r'tiene los \*\*(\d+) casos', _n_cu),
+    ("GUIA-DEL-REPOSITORIO.md", r'LOS (\d+) CASOS', _n_cu), ("GUIA-DEL-REPOSITORIO.md", r'los (\d+) diagramas de secuencia', _n_dss),
+    ("GUIA-DEL-REPOSITORIO.md", r'las (\d+) operaciones del sistema', _n_ops), ("GUIA-DEL-REPOSITORIO.md", r'los (\d+) contratos', _n_contr),
+    ("AGENTS.md", r'reúne los (\d+) CU', _n_cu),
+    ("Casos-de-Uso.md", r'Se incluyen (\d+) diagramas, uno por caso', _n_dss),
+    ("Casos-de-Uso.md", r'Este documento reúne, para los \*\*(\d+) casos de uso', _n_cu),
+    ("3-Diseño.md", r'Los (\d+) diagramas de interacción en la notación', _n_dsd),
+    ("3-Diseño.md", r'a partir de los (\d+) diagramas de interacción', _n_dsd),
+]
+for _f, _pat, _val in _esperado:
+    _tx = open(D + _f, encoding="utf-8").read()
+    for _m in _re.finditer(_pat, _tx):
+        if int(_m.group(1)) != _val:
+            _err_cif.append(f"{_f}: dice {_m.group(1)} y son {_val} ({_pat[:40]})")
+if _err_cif: FALLAS.append("Cifras repetidas en los documentos")
+print(f"[{'OK' if not _err_cif else 'FALLA':5}] Cifras repetidas en los documentos: {_n_cu} CU, {_n_dss} DSS, {_n_dsd} DSD, {_n_ops} operaciones, {_n_contr} contratos"
+      + (f" | {_err_cif[:5]}" if _err_cif else ""))
+
+# --- Cruce de los DSD contra el código (tablas de implementación y clases de diseño) ---
+# Una tabla que cita un método o una función que ya no existe en `src/` es una afirmación falsa:
+# `cruzar-dsd-clases.py` sale distinto de 0 si hay una.
+import subprocess
+_cruce = subprocess.run([sys.executable, D + "material-de-trabajo/cruzar-dsd-clases.py"],
+                        capture_output=True, text=True)
+_lineas_cruce = [l.strip() for l in _cruce.stdout.splitlines() if l.strip().startswith("✗")]
+if _cruce.returncode: FALLAS.append("Cruce de los DSD contra el código")
+print(f"[{'OK' if not _cruce.returncode else 'FALLA':5}] Cruce de los DSD contra el código (cruzar-dsd-clases.py)"
+      + (f" | {len(_lineas_cruce)} diferencias: {_lineas_cruce[:4]}" if _cruce.returncode and _lineas_cruce
+         else (f" | {_cruce.stdout.strip()[-200:] or _cruce.stderr.strip()[-200:]}" if _cruce.returncode else "")))
+
 print()
 if FALLAS:
     print(f"INCUMPLIMIENTOS: {len(FALLAS)} -> {FALLAS}"); sys.exit(1)

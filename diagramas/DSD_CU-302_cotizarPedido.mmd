@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-302 Cotizar un Pedido · cotizarPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant QOU as :QuoteOrderUseCase
+    participant CLT as cliente:Cliente
+    participant PRO as producto:Producto
+    participant CRO as :CreateOrderUseCase
+
+    CLI->>+QOU: cotizarPedido(items, medioDePago, direccionId, clienteId)
+    opt La cotización lleva dirección
+        QOU->>+CLT: getDireccion(direccionId)
+        CLT-->>-QOU: direccion
+        QOU->>+CRO: resolverZona(direccion)
+        CRO-->>-QOU: zona
+    end
+    loop Por cada item
+        QOU->>+PRO: tieneStock(cantidad)
+        PRO-->>-QOU: hayStock
+        QOU->>+CRO: valorizarRenglon(producto, item)
+        CRO-->>-QOU: renglon
+    end
+    QOU->>+CRO: calcularTotales(subtotal, zona, medioDePago)
+    CRO-->>-QOU: totales
+    QOU-->>-CLI: cotizacion
+    Note over CLI,QOU: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05)

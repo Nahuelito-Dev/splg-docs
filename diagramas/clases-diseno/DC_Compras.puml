@@ -84,7 +84,7 @@ class OrdenDeCompra {
   - motivoDeCancelacion: Cadena
   - motivoDeCierre: Cadena
   - notas: Cadena
-  + «create» OrdenDeCompra(depositoDeStock: Deposito,\n      fechaEsperada: Fecha, administrador: Administrador)
+  + «create» OrdenDeCompra(depositoDeStock: Deposito,\n      fechaEsperada: Fecha, administrador: Usuario)
   + acumularRecibido(items: Registro): OrdenDeCompra
   + calcularTotal(): Moneda
   + cancelar(motivo: Cadena): OrdenDeCompra
@@ -120,7 +120,7 @@ class RecepcionDeCompra {
   - motivoDeAnulacion: Cadena
   - anuladaEl: FechaHora
   - notas: Cadena
-  + «create» RecepcionDeCompra(proveedor: Proveedor,\n      depositoDeStock: Deposito,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena,\n      administrador: Administrador)
+  + «create» RecepcionDeCompra(proveedor: Proveedor,\n      depositoDeStock: Deposito,\n      tipoDeComprobante: TipoDeComprobante,\n      numeroDeComprobante: Cadena, administrador: Usuario)
   + anular(motivo: Cadena): RecepcionDeCompra
   + getItems(): Registro
   + getOrden(): OrdenDeCompra
@@ -137,6 +137,7 @@ class ItemRecepcion {
   - costoUnitario: Moneda
   - costoPromedioPrevio: Moneda
   - existenciaPrevia: Decimal
+  - existenciaPreviaLeidaEl: FechaHora
   + «create» ItemRecepcion(producto: Producto,\n      llenasRecibidas: Entero, vaciasEntregadas: Entero,\n      costoUnitario: Moneda)
   + getProducto(): Producto
   + getSubtotal()

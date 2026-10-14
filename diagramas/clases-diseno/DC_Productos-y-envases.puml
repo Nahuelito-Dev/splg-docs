@@ -64,6 +64,7 @@ class Producto {
   - stock: Entero
   - activo: Booleano
   - costoPromedio: Moneda
+  - deficitDeReservas: Decimal
   + «create» Producto(distribuidora: Distribuidora,\n      tipo: Cadena, peso: Decimal, precio: Moneda,\n      stockInicial: Entero, descripcion: Cadena)
   + actualizarPrecio(precio: Moneda)
   + agregarPromocion(cantidad: Entero, descuento: Decimal)
@@ -82,6 +83,7 @@ class Producto {
   + reservar(cantidad: Entero): Entero
   + restaurarCostoPromedio(costoPrevio: Moneda,\n      llenasRecibidas: Entero): Moneda
   + restituir(cantidad: Entero)
+  + tieneStock(cantidad: Entero): Booleano
   + validarHayDiferencia()
   + validarSinRepetir(promociones: Promocion[*])
 }

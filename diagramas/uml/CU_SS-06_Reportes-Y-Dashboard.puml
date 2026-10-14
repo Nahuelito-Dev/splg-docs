@@ -1,5 +1,5 @@
 @startuml
-title SS-06 — Reportes y Dashboard (5 casos de uso)
+title SS-06 — Reportes y Dashboard (6 casos de uso)
 left to right direction
 skinparam backgroundColor #FFFFFF
 skinparam shadowing false
@@ -43,6 +43,7 @@ rectangle "SS-06 Reportes y Dashboard" {
   usecase "CU-028\nVer Reporte de Ventas por\nProducto" as U028 #back:FFFFFF;line:3E7C79
   usecase "CU-029\nVer Reporte por Método de Pago" as U029 #back:FFFFFF;line:3E7C79
   usecase "CU-030\nVer Gráfico de Ventas (últimos\n7 días)" as U030 #back:FFFFFF;line:3E7C79
+  usecase "CU-304\nVer los Cobros Pendientes" as U304 #back:FFFFFF;line:3E7C79
 }
 
 A03 -[#8C4A9E]- U026
@@ -50,6 +51,7 @@ A03 -[#8C4A9E]- U027
 A03 -[#8C4A9E]- U028
 A03 -[#8C4A9E]- U029
 A03 -[#8C4A9E]- U030
+A03 -[#8C4A9E]- U304
 A05 -right-|> A03
 
 @enduml

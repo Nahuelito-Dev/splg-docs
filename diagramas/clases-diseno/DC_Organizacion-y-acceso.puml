@@ -68,7 +68,7 @@ class Distribuidora {
   + cambiarPredeterminado(depositoElegido: Deposito): Deposito
   + crearCaja(nombre: Cadena, tipoDeCaja: TipoDeCaja,\n      requiereSesion: Booleano): Caja
   + crearCategoriaDeCaja(nombre: Cadena,\n      sentido: SentidoDeCaja): CategoriaDeCaja
-  + crearConfiguracion(proceso: ProcesoConfigurable,\n      parametros: Registro,\n      administrador: Administrador): ConfiguracionModulo
+  + crearConfiguracion(proceso: ProcesoConfigurable,\n      parametros: Registro,\n      administrador: Usuario): ConfiguracionModulo
   + crearDeposito(nombre: Cadena, codigo: Cadena,\n      tipo: Cadena, direccion: Cadena): Deposito
   + crearFranja(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero): FranjaHoraria
   + crearProveedor(razonSocial: Cadena, cuit: Cadena,\n      tipo: Cadena, datosDeContacto: Registro,\n      plazoDePago: Entero): Proveedor
@@ -111,8 +111,8 @@ class ConfiguracionModulo {
   - modulo: ProcesoConfigurable
   - parametros: Registro
   - exigirCargaDeCamionAbierta: Booleano
-  + «create» ConfiguracionModulo(proceso: ProcesoConfigurable,\n      parametros: Registro, administrador: Administrador)
-  + actualizar(parametros: Registro,\n      administrador: Administrador)
+  + «create» ConfiguracionModulo(proceso: ProcesoConfigurable,\n      parametros: Registro, administrador: Usuario)
+  + actualizar(parametros: Registro, administrador: Usuario)
   + getExigirCargaDeCamionAbierta(): Booleano
 }
 class Usuario {
@@ -192,6 +192,8 @@ Usuario "0..1" -- "0..*" Auditoria : realiza
 Distribuidora "0..1" -- "0..*" Auditoria : delimita
 Auditoria "1" *--> "0..*" DetalleAuditoria : detalla con
 TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.

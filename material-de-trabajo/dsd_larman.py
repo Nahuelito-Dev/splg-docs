@@ -174,7 +174,7 @@ INCLUIDOS = {
                                                         "UpdateOrderStatusUseCase"},
                                       "firma": "verificarCargaDeCamionAbierta(chofer)"},
     "aplicarMovimientoDeStock": {"casos": ["CU-250"],
-                                 "bases": ["CU-212", "CU-213", "CU-217", "CU-218", "CU-219", "CU-220", "CU-222", "CU-274", "CU-276", "CU-280"],
+                                 "bases": ["CU-212", "CU-213", "CU-217", "CU-219", "CU-220", "CU-222", "CU-274", "CU-276", "CU-280", "CU-296"],
                                  "controladores": {"StockTransferUseCase", "StockAdjustmentUseCase", "InitialCountUseCase",
                                                    "ReverseBatchUseCase", "StockDeliveryService",
                                                    "ReceivePurchaseUseCase", "VoidPurchaseReceiptUseCase",

@@ -84,11 +84,23 @@ class OrderService <<fachada>> {
 }
 class UpdateOrderStatusUseCase <<controlador>> {
   + aceptarPedido(pedidoId: Identificador): Pedido
-  + confirmarEntrega(pedidoId: Identificador): Pedido
+  + confirmarEntrega(pedidoId: Identificador,\n      motivo: Cadena): Pedido
   + marcarPedidoEnCamino(pedidoId: Identificador): Pedido
 }
 class ConfirmDeliveryUseCase <<controlador>> {
-  + confirmarEntregaConCodigo(pedidoId: Identificador,\n      codigo: Cadena): Pedido
+  + confirmarEntregaConCodigo(pedidoId: Identificador,\n      codigo: Cadena, motivo: Cadena): Pedido
+}
+class CashCollectionUseCase <<controlador>> {
+  + confirmarCobroEnEfectivo(pedidoId: Identificador): Pedido
+  + confirmarTransferencia(pedidoId: Identificador,\n      recibida: Booleano, motivo: Cadena): Pedido
+  + registrarCobroEnEfectivoPorAdmin(pedidoId: Identificador,\n      motivo: Cadena): Pedido
+  + resolverCobroImpago(pedidoId: Identificador,\n      resolucion: Cadena, nota: Cadena): Pedido
+}
+class QuoteOrderUseCase <<controlador>> {
+  + cotizarPedido(items: Lista, metodoDePago: MetodoDePago,\n      direccionId: Identificador,\n      cliente: Cliente): Registro
+}
+class OrderStatusHistorySubscriber <<fachada>> {
+  + registrarCambioDeEstado(pedidoId: Identificador,\n      estadoAnterior: Cadena, estadoNuevo: Cadena,\n      autor: Identificador,\n      motivo: Cadena): CambioEstadoPedido
 }
 class "Map<String, Pedido>" as Map_String_Pedido <<colección>> {
   + get(clave: Cadena): Pedido
@@ -105,6 +117,8 @@ class "List<Pedido>" as List_Pedido <<colección>> {
   + contarEntregadosDelMesPorMetodo(distribuidoraId: Identificador): Registro
   + contarPorEstado(distribuidoraId: Identificador): Registro
   + entregadosEntre(fechaDesde: Fecha,\n      fechaHasta: Fecha): Pedido[*]
+  + getCanceladosYPagados(desde: FechaHora,\n      hasta: FechaHora): Registro
+  + getConCobroPendiente(desde: FechaHora,\n      hasta: FechaHora): AsientoCuentaCorriente[*]
   + getEnEfectivoSinRendir(chofer: Chofer,\n      hoy: Fecha): Pedido[*]
   + getEntregados(): Pedido[*]
   + getEntregadosSinMovimiento(): Pedido[*]
@@ -122,6 +136,8 @@ class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class NotificationPort <<referencia>>
 class RealtimeDispatchPort <<referencia>>
 class RefundPaymentUseCase <<referencia>>
+class CreateOrderUseCase <<referencia>>
+class Incidencia <<referencia>>
 class Chofer <<referencia>>
 class Cliente <<referencia>>
 class NotificationsService <<referencia>>
@@ -131,12 +147,12 @@ class Producto <<referencia>>
 class TruckLoadGateService <<referencia>>
 class ZonaCobertura <<referencia>>
 class Envase <<referencia>>
-class Pago <<referencia>>
 class StockDeliveryService <<referencia>>
 class UbicacionGPS <<referencia>>
 
 Map_String_Pedido "1" o--> "0..*" Pedido
 List_Pedido "1" o--> "0..*" Pedido
+CashCollectionUseCase --> "1" Map_String_Pedido
 ConfirmDeliveryUseCase --> "1" Map_String_Pedido
 OrderService --> "1" DeliveryService
 OrderService --> "1" DispatchOrchestratorService
@@ -148,9 +164,12 @@ OrderService --> "1" Map_String_Pedido
 OrderService --> "1" NotificationPort
 OrderService --> "1" RealtimeDispatchPort
 OrderService --> "1" RefundPaymentUseCase
+QuoteOrderUseCase --> "1" CreateOrderUseCase
 UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
 UpdateOrderStatusUseCase --> "1" Map_String_Pedido
 UpdateOrderStatusUseCase --> "1" NotificationPort
+CashCollectionUseCase ..> Incidencia
+CashCollectionUseCase ..> Pedido
 ConfirmDeliveryUseCase ..> NotificationPort
 ConfirmDeliveryUseCase ..> Pedido
 ConfirmDeliveryUseCase ..> RealtimeDispatchPort
@@ -164,9 +183,11 @@ OrderService ..> "<<create>>" Pedido
 OrderService ..> Producto
 OrderService ..> TruckLoadGateService
 OrderService ..> ZonaCobertura
+OrderStatusHistorySubscriber ..> Pedido
+QuoteOrderUseCase ..> Cliente
+QuoteOrderUseCase ..> Producto
 UpdateOrderStatusUseCase ..> Chofer
 UpdateOrderStatusUseCase ..> Envase
-UpdateOrderStatusUseCase ..> Pago
 UpdateOrderStatusUseCase ..> Pedido
 UpdateOrderStatusUseCase ..> StockDeliveryService
 UpdateOrderStatusUseCase ..> TruckLoadGateService

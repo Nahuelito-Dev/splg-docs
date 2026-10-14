@@ -2692,6 +2692,14 @@
       "pk": false,
       "unico": false,
       "fk": null
+     },
+     {
+      "nombre": "reservation_deficit",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
      }
     ],
     "pk": [
@@ -5105,6 +5113,14 @@
       "pk": false,
       "unico": false,
       "fk": null
+     },
+     {
+      "nombre": "previous_on_hand_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
      }
     ],
     "pk": [
@@ -6252,6 +6268,10 @@
     ],
     "unicos": [],
     "indices": [
+     [
+      "IDX_stock_movement_alta",
+      "CREATE INDEX \"IDX_stock_movement_alta\" ON public.stock_movement USING btree (distributor_id, \"createdAt\")"
+     ],
      [
       "IDX_stock_movement_destino",
       "CREATE INDEX \"IDX_stock_movement_destino\" ON public.stock_movement USING btree (to_location_id)"
@@ -7881,7 +7901,8 @@
      "precio",
      "stock",
      "activo",
-     "costo promedio"
+     "costo promedio",
+     "déficit de reservas"
     ],
     "planificado": false,
     "contexto": "CatalogoEInventario"
@@ -7968,7 +7989,11 @@
      "código de entrega",
      "nombre de quien recibe",
      "documento de quien recibe",
-     "vínculo con quien recibe"
+     "vínculo con quien recibe",
+     "estado del cobro",
+     "cobro confirmado el",
+     "cobro resuelto el",
+     "nota de resolución del cobro"
     ],
     "planificado": false,
     "contexto": "VentaYPedidos"
@@ -8486,7 +8511,8 @@
      "vacías entregadas",
      "costo unitario",
      "costo promedio previo",
-     "existencia previa"
+     "existencia previa",
+     "existencia previa leída el"
     ],
     "planificado": false,
     "contexto": "Compras"

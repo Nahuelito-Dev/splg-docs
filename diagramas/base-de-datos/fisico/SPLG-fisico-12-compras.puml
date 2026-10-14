@@ -105,6 +105,7 @@ entity "purchase_receipt_item" as e_purchase_receipt_item {
   {field} unit_cost : numeric(12,2) *
   {field} previous_average_cost : numeric(12,2)
   {field} previous_on_hand : integer
+  {field} previous_on_hand_at : timestamptz
 }
 entity "user" as e_user #F1F1F1 {
 }

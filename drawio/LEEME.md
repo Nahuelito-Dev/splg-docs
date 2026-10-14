@@ -8,7 +8,7 @@ elementos (si se mueve una tabla o una clase, la línea la sigue). Los genera `g
 | `SPLG-MC.drawio` | Modelo conceptual: conceptos con atributos, asociaciones con nombre y multiplicidades en los dos extremos, composición, generalización y la clase de asociación | `modelo_conceptual.py` |
 | `SPLG-DER.drawio` | DER conceptual: una entidad por concepto con tabla, con el vocabulario del modelo conceptual y las relaciones en pata de gallo | `diagramas/base-de-datos/SPLG-modelo.json` |
 | `SPLG-DBD.drawio` | Diagrama de base de datos físico: las 63 tablas de la base con columnas, tipos, claves, únicos e índices, y cada una de las 150 claves foráneas como una arista de la columna FK a la clave primaria destino | `diagramas/base-de-datos/SPLG-modelo.json` (leído de la base) |
-| `SPLG-DC.drawio` | Diagrama de clases de diseño: 296 clases con atributos y operaciones, asociaciones con navegabilidad y multiplicidades, composición, agregación, generalización y dependencias | `material-de-trabajo/dc_larman.py` (derivado de los DSD) |
+| `SPLG-DC.drawio` | Diagrama de clases de diseño: 301 clases con atributos y operaciones, asociaciones con navegabilidad y multiplicidades, composición, agregación, generalización y dependencias | `material-de-trabajo/dc_larman.py` (derivado de los DSD) |
 
 Cada archivo tiene **una sola página** con el diagrama completo, sin módulos ni recuadros de agrupación: los
 elementos van sueltos y graphviz los acomoda a partir de sus relaciones, de modo que los relacionados quedan cerca.

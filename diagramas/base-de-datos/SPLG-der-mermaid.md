@@ -185,6 +185,7 @@ erDiagram
         timestamptz updatedAt
         varchar photo_key "nullable"
         decimal average_unit_cost "nullable"
+        int reservation_deficit
     }
     GAS_CYLINDER_PROMOTION {
         uuid promotion_id PK
@@ -1039,6 +1040,7 @@ erDiagram
         decimal unit_cost
         decimal previous_average_cost "nullable"
         int previous_on_hand "nullable"
+        timestamptz previous_on_hand_at "nullable"
     }
 ```
 

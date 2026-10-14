@@ -42,6 +42,7 @@ class Producto {
   stock
   activo
   costo promedio
+  déficit de reservas
 }
 class Promocion {
   cantidad

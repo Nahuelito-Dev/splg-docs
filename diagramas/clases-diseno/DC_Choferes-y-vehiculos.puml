@@ -98,7 +98,7 @@ class Chofer {
   + recalcularPromedio()
   + registrarToken(token: Cadena)
   + registrarVehiculo(tipo: Cadena, capacidad: Entero,\n      patente: Cadena, marca: Cadena, modelo: Cadena,\n      anio: Entero, color: Cadena): Vehiculo
-  + usarVehiculo(vehiculo: Vehiculo, nota: Cadena,\n      administrador: Administrador)
+  + usarVehiculo(vehiculo: Vehiculo, nota: Cadena,\n      administrador: Usuario)
   + validar()
   + validarHabilitacion()
   + validarSinCargaAbierta()
@@ -144,9 +144,9 @@ class AsignacionVehiculo {
   - asignadoEl: FechaHora
   - liberadoEl: FechaHora
   - nota: Cadena
-  + «create» AsignacionVehiculo(chofer: Chofer,\n      vehiculo: Vehiculo, administrador: Administrador,\n      nota: Cadena)
+  + «create» AsignacionVehiculo(chofer: Chofer,\n      vehiculo: Vehiculo, administrador: Usuario,\n      nota: Cadena)
   + cerrar(ahora: FechaHora)
-  + liberar(administrador: Administrador)
+  + liberar(administrador: Usuario)
 }
 class UbicacionGPS {
   - latitud: Decimal
@@ -156,6 +156,7 @@ class UbicacionGPS {
   + actualizar(latitud: Decimal, longitud: Decimal)
   + cerrarSeguimiento()
   + eliminar()
+  + getPosicionReciente(): Coordenada
 }
 class RegistroUsoVehiculo {
   - dia: Fecha

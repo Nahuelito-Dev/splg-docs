@@ -1,0 +1,25 @@
+sequenceDiagram
+    title DSS — CU-303 Consultar la Ruta de un Pedido
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: consultarRutaDelPedido(pedidoId, desde)
+    activate SIS
+    alt el pedido es del solicitante y hay una posición reciente del chofer
+        SIS-->>CHO: ruta (proveedor, distancia, duración, polilínea y puntos)
+    else el pedido no es suyo o no existe
+        SIS-->>CHO: recurso no encontrado
+    else el pedido no está en un estado activo
+        SIS-->>CHO: acceso denegado
+    else el origen es inválido o no hay posición reciente
+        SIS-->>CHO: solicitud inválida o conflicto
+    else se superó un cupo
+        SIS-->>CHO: demasiados pedidos
+    else el proveedor de rutas falla
+        SIS-->>CHO: mala puerta de enlace
+    else no hay proveedor configurado o el radar no responde
+        SIS-->>CHO: servicio no disponible
+    end
+    deactivate SIS
+    Note over CHO,SIS: También lo inicia el Cliente (ACT-01), con el pedido en camino

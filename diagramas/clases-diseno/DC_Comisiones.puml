@@ -91,7 +91,7 @@ class LiquidacionComisiones {
   - pagadaEl: FechaHora
   + «create» LiquidacionComisiones(fechaDesde: Fecha,\n      fechaHasta: Fecha)
   + anular()
-  + aprobar(administrador: Administrador)
+  + aprobar(administrador: Usuario)
   + calcularTotales()
   + cerrarSinPago()
   + incluir(asientoDeComision: AsientoComision)

@@ -44,6 +44,8 @@ class CargaDeCamion {
   regresó el
   cerrada el
   nota de diferencia
+  motivo de cancelación
+  notas
 }
 class ItemCarga {
   llenas cargadas

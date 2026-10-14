@@ -2327,6 +2327,11 @@
     "nulo": false
    },
    {
+    "nombre": "reservationDeficit",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
     "nombre": "averageUnitCost",
     "tipo": "number",
     "nulo": true
@@ -2853,6 +2858,11 @@
    },
    {
     "nombre": "cancellationReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "transitionReason",
     "tipo": "string",
     "nulo": true
    },
@@ -3434,6 +3444,11 @@
    {
     "nombre": "previousOnHand",
     "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "previousOnHandAt",
+    "tipo": "Date",
     "nulo": true
    },
    {
@@ -4984,7 +4999,7 @@
   "metodos": [
    {
     "nombre": "create",
-    "parametros": "@Body() createAdminDto: CreateAdminDto",
+    "parametros": "@Body() createAdminDto: CreateAdminDto, @CurrentDistributor() distributorId: string | null",
     "retorno": "Promise<AdminResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -5090,7 +5105,7 @@
    },
    {
     "nombre": "create",
-    "parametros": "createAdminDto: CreateAdminDto",
+    "parametros": "createAdminDto: CreateAdminDto, distribuidoraElegida: string | null = null",
     "retorno": "Promise<Admin>",
     "visibilidad": "+",
     "estatico": false,
@@ -5882,7 +5897,7 @@
    },
    {
     "nombre": "uploadPhoto",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<CarResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -5890,7 +5905,7 @@
    },
    {
     "nombre": "removePhoto",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<CarResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -6065,7 +6080,7 @@
    },
    {
     "nombre": "assertSinCargaAbierta",
-    "parametros": "manager: EntityManager, deliveryIds: string[], carId: string | null",
+    "parametros": "manager: EntityManager, deliveryIds: string[], carId: string | null, accion = 'No se puede cambiar el vehículo'",
     "retorno": "Promise<void>",
     "visibilidad": "-",
     "estatico": false,
@@ -6168,7 +6183,7 @@
    },
    {
     "nombre": "create",
-    "parametros": "@Body() createClaimDto: CreateClaimDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Body() createClaimDto: CreateClaimDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<ClaimResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -6232,7 +6247,7 @@
    },
    {
     "nombre": "uploadPhoto",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<ClaimResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -6240,7 +6255,7 @@
    },
    {
     "nombre": "removePhoto",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<ClaimResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -6512,9 +6527,9 @@
     "abstracto": false
    },
    {
-    "nombre": "parseCached",
-    "parametros": "raw: string",
-    "retorno": "unknown",
+    "nombre": "leerCache",
+    "parametros": "cacheKey: string, bodyHash: string",
+    "retorno": "Promise<",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
@@ -6524,6 +6539,13 @@
    "RedisService",
    "Reflector"
   ],
+  "estereotipo": "interceptor"
+ },
+ "IdempotencyDespuesDeMulterInterceptor": {
+  "kind": "interceptor",
+  "file": "common/interceptors/idempotency.interceptor.ts",
+  "metodos": [],
+  "dependencias": [],
   "estereotipo": "interceptor"
  },
  "LoggingInterceptor": {
@@ -6777,7 +6799,7 @@
    },
    {
     "nombre": "update",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() updateCustomerDto: UpdateCustomerDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() updateCustomerDto: UpdateCustomerDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<CustomerResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -6785,7 +6807,7 @@
    },
    {
     "nombre": "updateLocation",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCustomerLocationDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCustomerLocationDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<CustomerResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -6793,7 +6815,7 @@
    },
    {
     "nombre": "remove",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<MessageResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7213,7 +7235,7 @@
    },
    {
     "nombre": "update",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() updateDeliveryDto: UpdateDeliveryDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() updateDeliveryDto: UpdateDeliveryDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<DeliveryResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7221,7 +7243,7 @@
    },
    {
     "nombre": "validateDelivery",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<DeliveryResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7229,7 +7251,7 @@
    },
    {
     "nombre": "invalidateDelivery",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<DeliveryResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7237,7 +7259,7 @@
    },
    {
     "nombre": "updateLocation",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDeliveryLocationDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDeliveryLocationDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<DeliveryResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7245,7 +7267,7 @@
    },
    {
     "nombre": "updateBalance",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDeliveryBalanceDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateDeliveryBalanceDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<DeliveryResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7253,7 +7275,7 @@
    },
    {
     "nombre": "toggleStatus",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ToggleDeliveryStatusDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ToggleDeliveryStatusDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<DeliveryResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7261,7 +7283,7 @@
    },
    {
     "nombre": "remove",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<MessageResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -7269,7 +7291,7 @@
    },
    {
     "nombre": "toggleAvailability",
-    "parametros": "@Param('userId', ParseUUIDPipe) userId: string, @Body() dto: ToggleDeliveryAvailabilityDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('userId', ParseUUIDPipe) userId: string, @Body() dto: ToggleDeliveryAvailabilityDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<DisponibilidadDelChoferDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -9792,6 +9814,14 @@
     "abstracto": false
    },
    {
+    "nombre": "sinEscribirElVendible",
+    "parametros": "gasCylinder: GasCylinder",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "remove",
     "parametros": "id: string, distributorId: string",
     "retorno": "Promise<BajaDeProductoDto>",
@@ -9816,6 +9846,30 @@
     "abstracto": false
    },
    {
+    "nombre": "leerBloqueada",
+    "parametros": "manager: EntityManager, gasCylinderId: string",
+    "retorno": "Promise<GasCylinder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "leerParaCotizar",
+    "parametros": "gasCylinderId: string",
+    "retorno": "Promise<GasCylinder>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reajustarReserva",
+    "parametros": "manager: EntityManager, anteriores: ReadonlyArray<MovimientoDeStock>, nuevos: ReadonlyArray<MovimientoDeStock>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "restituirStock",
     "parametros": "manager: EntityManager, items: MovimientoDeStock[]",
     "retorno": "Promise<void>",
@@ -9825,8 +9879,8 @@
    },
    {
     "nombre": "ajustarVendible",
-    "parametros": "manager: EntityManager, distributorId: string, cambios: ReadonlyArray<{ gasCylinderId: string; delta: number }>",
-    "retorno": "Promise<void>",
+    "parametros": "manager: EntityManager, distributorId: string, cambios: ReadonlyArray<{ gasCylinderId: string; delta: number }>, opciones: { recortarEnCero?: boolean } = {}",
+    "retorno": "Promise<Array<",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -10205,7 +10259,7 @@
    },
    {
     "nombre": "create",
-    "parametros": "@Body() dto: CreateIncidentDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Body() dto: CreateIncidentDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<IncidentResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -10253,7 +10307,7 @@
    },
    {
     "nombre": "uploadPhoto",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @UploadedFile() file: Express.Multer.File | undefined, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<IncidentResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -10261,7 +10315,7 @@
    },
    {
     "nombre": "removePhoto",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": "Promise<IncidentResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -10351,6 +10405,14 @@
     "abstracto": false
    },
    {
+    "nombre": "cerrarOEditar",
+    "parametros": "incident: Incident, cambios: Partial<Incident>",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "resolve",
     "parametros": "id: string, dto: ResolveIncidentDto, distributorId?: string | null",
     "retorno": "Promise<Incident>",
@@ -10371,7 +10433,15 @@
   "metodos": [
    {
     "nombre": "report",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReportUnpaidCashDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReportUnpaidCashDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<UnpaidCashResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registerUnpaid",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: MotivoDeCobroDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<UnpaidCashResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -10393,6 +10463,22 @@
     "parametros": "orderId: string, dto: ReportUnpaidCashDto, driverUserId: string, distributorId: string | null",
     "retorno": "Promise<",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reportByAdmin",
+    "parametros": "orderId: string, reason: string, adminUserId: string, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "abrirIncidencia",
+    "parametros": "manager: EntityManager, pedido: Order, reportedBy: string, description: string",
+    "retorno": "Promise<",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -10461,6 +10547,14 @@
    {
     "nombre": "sendTestNotification",
     "parametros": "token: string, title: string, body: string",
+    "retorno": "Promise<ResultadoDeEnvioDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reenviarConfirmacion",
+    "parametros": "customerId: string, orderId: string, token?: string",
     "retorno": "Promise<ResultadoDeEnvioDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -10544,7 +10638,7 @@
    },
    {
     "nombre": "notify",
-    "parametros": "order: Order, previousDriverUserId: string | null",
+    "parametros": "order: Order, previousDriverUserId: string | null, role: CancelActor",
     "retorno": "void",
     "visibilidad": "-",
     "estatico": false,
@@ -10566,7 +10660,7 @@
   "metodos": [
    {
     "nombre": "confirmReceived",
-    "parametros": "orderId: string, driverUserId: string",
+    "parametros": "orderId: string, driverUserId: string, distributorId?: string | null",
     "retorno": "Promise<ResultadoDeCobro>",
     "visibilidad": "+",
     "estatico": false,
@@ -10574,31 +10668,87 @@
    },
    {
     "nombre": "markUnpaid",
-    "parametros": "orderId: string, driverUserId: string, dentro: (manager: EntityManager, order: Order) => Promise<T>",
+    "parametros": "orderId: string, driverUserId: string, dentro: (manager: EntityManager, order: Order) => Promise<T>, distributorId?: string | null",
     "retorno": "Promise<ResultadoDeCobro<T>>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
    },
    {
-    "nombre": "resolveUnpaid",
-    "parametros": "orderId: string, adminUserId: string, resolution: ResolucionDeImpago, note: string",
+    "nombre": "registerCashByAdmin",
+    "parametros": "orderId: string, adminUserId: string, reason: string, distributorId?: string | null",
     "retorno": "Promise<ResultadoDeCobro>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
    },
    {
+    "nombre": "registerUnpaidByAdmin",
+    "parametros": "orderId: string, adminUserId: string, reason: string, dentro: (manager: EntityManager, order: Order) => Promise<T>, distributorId?: string | null",
+    "retorno": "Promise<ResultadoDeCobro<T>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "confirmTransfer",
+    "parametros": "orderId: string, adminUserId: string, received: boolean, reason: string, distributorId?: string | null",
+    "retorno": "Promise<ResultadoDeCobro>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pasarAImpago",
+    "parametros": "manager: EntityManager, order: Order",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asentarEnElHistorial",
+    "parametros": "manager: EntityManager, order: Order, actorUserId: string, motivo: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolveUnpaid",
+    "parametros": "orderId: string, adminUserId: string, resolution: ResolucionDeImpago, note: string, distributorId?: string | null",
+    "retorno": "Promise<ResultadoDeCobro>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "fueUnImpagoResuelto",
+    "parametros": "manager: EntityManager, order: Order, destino: PaymentStatus",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "lockPedidoDelChofer",
-    "parametros": "manager: EntityManager, orderId: string, driverUserId: string",
+    "parametros": "manager: EntityManager, orderId: string, driverUserId: string, distributorId?: string | null",
     "retorno": "Promise<Order>",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
    {
+    "nombre": "exigirEntregadoEnEfectivo",
+    "parametros": "order: Order",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "lock",
-    "parametros": "manager: EntityManager, orderId: string",
+    "parametros": "manager: EntityManager, orderId: string, distributorId?: string | null",
     "retorno": "Promise<Order>",
     "visibilidad": "-",
     "estatico": false,
@@ -10616,7 +10766,7 @@
   "metodos": [
    {
     "nombre": "execute",
-    "parametros": "orderId: string, code: string, userId: string, role: RoleType",
+    "parametros": "orderId: string, code: string, userId: string, role: RoleType, reason?: string",
     "retorno": "Promise<Order>",
     "visibilidad": "+",
     "estatico": false,
@@ -10681,6 +10831,22 @@
     "abstracto": false
    },
    {
+    "nombre": "despuesDelCommit",
+    "parametros": "savedOrder: Order, createOrderDto: CreateOrderDto, isReservation: boolean, depositAmount: number, customer: { email: string | null }, checkoutItems: PaymentCheckoutItem[]",
+    "retorno": "Promise<CreateOrderResult>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "releerOUsar",
+    "parametros": "savedOrder: Order",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "resolverZona",
     "parametros": "distributorId: string | null | undefined, address: { location?: Point | null }",
     "retorno": "Promise<CoverageZoneResumenDto | null>",
@@ -10690,8 +10856,16 @@
    },
    {
     "nombre": "reservarRenglones",
-    "parametros": "manager: EntityManager, items: Array<{ gasCylinderId: string; quantity: number }>, distributorId: string | null | undefined",
+    "parametros": "manager: EntityManager, items: Array<{ gasCylinderId: string; quantity: number }>, distributorId: string | null | undefined, /** La edición de un pedido ya ajustó la reserva (neta): sólo se bloquea y se lee el precio. */ stockYaReservado = false",
     "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "valorizarRenglon",
+    "parametros": "gasCylinder: GasCylinder, itemDto: { gasCylinderId: string; quantity: number }, distributorId: string | null | undefined",
+    "retorno": "",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -10924,6 +11098,29 @@
   ],
   "estereotipo": "listener"
  },
+ "QuoteOrderUseCase": {
+  "kind": "usecase",
+  "file": "order/application/quote-order.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "dto: QuoteOrderDto, distributorId: string | null, actor: { userId: string; role: RoleType }",
+    "retorno": "Promise<QuoteResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CreateOrderUseCase",
+   "GasCylinderService",
+   "UserAddressService",
+   "DistributorService",
+   "TimeSlotService",
+   "DataSource"
+  ],
+  "estereotipo": "usecase"
+ },
  "ReleaseOrderUseCase": {
   "kind": "usecase",
   "file": "order/application/release-order.use-case.ts",
@@ -11021,9 +11218,25 @@
   "metodos": [
    {
     "nombre": "execute",
-    "parametros": "id: string, status: OrderStatus, deliveryId?: string, role?: RoleType, actorUserId?: string",
+    "parametros": "id: string, status: OrderStatus, deliveryId?: string, role?: RoleType, actorUserId?: string, reason?: string",
     "retorno": "Promise<Order>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "motivoDeEntregaManual",
+    "parametros": "status: OrderStatus, role?: RoleType, reason?: string",
+    "retorno": "string | null",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asentarEntregaManual",
+    "parametros": "manager: EntityManager, order: Order, motivo: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -11105,7 +11318,8 @@
    "FleetDispatchLockService",
    "StockDeliveryPort",
    "EntityPhotoService",
-   "TruckLoadGatePort"
+   "TruckLoadGatePort",
+   "DispatchOfferRepositoryPort"
   ],
   "estereotipo": "usecase"
  },
@@ -11255,6 +11469,14 @@
     "abstracto": true
    },
    {
+    "nombre": "hasHeldOrder",
+    "parametros": "orderId: string, driverId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
     "nombre": "recordDriverHeldOrder",
     "parametros": "orderId: string, driverId: string",
     "retorno": "Promise<void>",
@@ -11287,9 +11509,25 @@
     "abstracto": true
    },
    {
-    "nombre": "closeAllActiveOffers",
-    "parametros": "orderId: string, status: DispatchOffer['status']",
-    "retorno": "Promise<number>",
+    "nombre": "withdrawOtherActiveOffers",
+    "parametros": "manager: EntityManager, orderId: string, exceptDriverId: string | null, status: DispatchOffer['status']",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "interface"
+ },
+ "DriverRatingPort": {
+  "kind": "port",
+  "file": "order/domain/ports/driver-rating.port.ts",
+  "metodos": [
+   {
+    "nombre": "resumen",
+    "parametros": "driverUserId: string",
+    "retorno": "Promise<ResumenDeCalificaciones>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": true
@@ -11415,6 +11653,14 @@
     "abstracto": true
    },
    {
+    "nombre": "lastDriverLocation",
+    "parametros": "driverUserId: string, orderId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
     "nombre": "notifyDriverNewOrder",
     "parametros": "driverId: string, payload: unknown",
     "retorno": "void",
@@ -11504,7 +11750,7 @@
    },
    {
     "nombre": "assertPuedeAceptar",
-    "parametros": "distributorId: string, deliveryId: string",
+    "parametros": "distributorId: string, deliveryId: string, manager?: EntityManager",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -11512,7 +11758,7 @@
    },
    {
     "nombre": "assertPuedeAsignar",
-    "parametros": "distributorId: string, deliveryId: string",
+    "parametros": "distributorId: string, deliveryId: string, manager?: EntityManager",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -11569,6 +11815,14 @@
     "abstracto": false
    },
    {
+    "nombre": "hasHeldOrder",
+    "parametros": "orderId: string, driverId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "recordDriverHeldOrder",
     "parametros": "orderId: string, driverId: string",
     "retorno": "Promise<void>",
@@ -11601,9 +11855,9 @@
     "abstracto": false
    },
    {
-    "nombre": "closeAllActiveOffers",
-    "parametros": "orderId: string, status: DispatchOfferStatus",
-    "retorno": "Promise<number>",
+    "nombre": "withdrawOtherActiveOffers",
+    "parametros": "manager: EntityManager, orderId: string, exceptDriverId: string | null, status: DispatchOfferStatus",
+    "retorno": "Promise<string[]>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -11611,6 +11865,24 @@
   ],
   "dependencias": [
    "Repository"
+  ],
+  "estereotipo": null
+ },
+ "DriverRatingTypeormAdapter": {
+  "kind": "service",
+  "file": "order/infrastructure/driver-rating.typeorm.adapter.ts",
+  "metodos": [
+   {
+    "nombre": "resumen",
+    "parametros": "driverUserId: string",
+    "retorno": "Promise<ResumenDeCalificaciones>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
   ],
   "estereotipo": null
  },
@@ -11647,6 +11919,48 @@
    "NotificationsService"
   ],
   "estereotipo": null
+ },
+ "OrderStatusHistorySubscriber": {
+  "kind": "listener",
+  "file": "order/infrastructure/order-status-history.subscriber.ts",
+  "metodos": [
+   {
+    "nombre": "listenTo",
+    "parametros": "",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "afterInsert",
+    "parametros": "event: InsertEvent<Order>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "afterUpdate",
+    "parametros": "event: UpdateEvent<Order>",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asentar",
+    "parametros": "event: InsertEvent<Order> | UpdateEvent<Order>, order: Order, desde: OrderStatus | null, hasta: OrderStatus",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": "listener"
  },
  "OrderTypeormRepository": {
   "kind": "service",
@@ -11730,6 +12044,14 @@
     "nombre": "reportDriverLocation",
     "parametros": "driverUserId: string, lat: number, lng: number",
     "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "lastDriverLocation",
+    "parametros": "driverUserId: string, orderId: string",
+    "retorno": "Promise<",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -11903,8 +12225,16 @@
   "metodos": [
    {
     "nombre": "create",
-    "parametros": "@Body() createOrderDto: CreateOrderDto, @CurrentUser() user: AuthenticatedUser, // Opcional para compatibilidad: si el cliente no manda X-Distributor (apps // previas al multi-tenant), el use-case cae a la distribuidora default. @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Body() createOrderDto: CreateOrderDto, @CurrentUser() user: AuthenticatedUser, // Opcional para compatibilidad: si el cliente no manda X-Distributor (apps // previas al multi-tenant), el use-case cae a la distribuidora default. @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quote",
+    "parametros": "@Body() dto: QuoteOrderDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
+    "retorno": "Promise<QuoteResponseDto>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -11967,7 +12297,7 @@
    },
    {
     "nombre": "updateStatus",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: UpdateOrderStatusDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: UpdateOrderStatusDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -11975,7 +12305,7 @@
    },
    {
     "nombre": "rejectOffer",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -11991,7 +12321,7 @@
    },
    {
     "nombre": "confirmDelivery",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: ConfirmDeliveryDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: ConfirmDeliveryDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -11999,7 +12329,7 @@
    },
    {
     "nombre": "confirmCashReceived",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12007,7 +12337,23 @@
    },
    {
     "nombre": "resolveUnpaid",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: ResolveUnpaidDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: ResolveUnpaidDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registerCash",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: MotivoDeCobroDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "confirmTransfer",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: ConfirmTransferDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12015,7 +12361,7 @@
    },
    {
     "nombre": "assignDelivery",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Param('deliveryId', ParseUUIDPipe) deliveryId: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Param('deliveryId', ParseUUIDPipe) deliveryId: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12023,7 +12369,7 @@
    },
    {
     "nombre": "updateLocation",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: UpdateLocationDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: UpdateLocationDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12039,7 +12385,7 @@
    },
    {
     "nombre": "update",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateOrderDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateOrderDto, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12047,7 +12393,7 @@
    },
    {
     "nombre": "cancelOrder",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12055,7 +12401,7 @@
    },
    {
     "nombre": "cancel",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: CancelOrderDto, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() body: CancelOrderDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12063,7 +12409,7 @@
    },
    {
     "nombre": "notifyArrival",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12071,7 +12417,7 @@
    },
    {
     "nombre": "confirmDeposit",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12084,6 +12430,14 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "pedidoTrasElCobro",
+    "parametros": "id: string, distributorId: string | null, guardado: Order",
+    "retorno": "Promise<OrderResponseDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -12091,6 +12445,7 @@
    "ReservationService",
    "UpdateOrderUseCase",
    "CashCollectionUseCase",
+   "QuoteOrderUseCase",
    "OrderDriverPhotoService",
    "TruckLoadGatePort"
   ],
@@ -12197,6 +12552,14 @@
     "abstracto": false
    },
    {
+    "nombre": "datosParaLaRuta",
+    "parametros": "orderId: string, userId: string, role: RoleType",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findOne",
     "parametros": "id: string",
     "retorno": null,
@@ -12206,9 +12569,33 @@
    },
    {
     "nombre": "getOne",
-    "parametros": "id: string, distributorId?: string | null, customerUserId?: string | null",
+    "parametros": "id: string, distributorId?: string | null, customerUserId?: string | null, choferUserId?: string | null, incluirChofer = false",
     "retorno": "Promise<OrderResponseDto>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quienCancelo",
+    "parametros": "orderId: string",
+    "retorno": "Promise<CancelledBy | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "datosDelChofer",
+    "parametros": "order: Order",
+    "retorno": "Promise<DriverDeOrderDto | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "puedeLeerElChofer",
+    "parametros": "order: Order, userId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -12238,7 +12625,7 @@
    },
    {
     "nombre": "updateStatus",
-    "parametros": "id: string, status: OrderStatus, deliveryId?: string, role?: RoleType, actorUserId?: string",
+    "parametros": "id: string, status: OrderStatus, deliveryId?: string, role?: RoleType, actorUserId?: string, reason?: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12254,7 +12641,7 @@
    },
    {
     "nombre": "confirmDelivery",
-    "parametros": "orderId: string, code: string, userId: string, role: RoleType",
+    "parametros": "orderId: string, code: string, userId: string, role: RoleType, reason?: string",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12262,9 +12649,17 @@
    },
    {
     "nombre": "assignDelivery",
-    "parametros": "orderId: string, deliveryId: string",
+    "parametros": "orderId: string, deliveryId: string, distributorId?: string | null",
     "retorno": null,
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "releerAsignado",
+    "parametros": "order: Order",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -12323,7 +12718,8 @@
    "NotificationPort",
    "DataSource",
    "FleetDispatchLockService",
-   "TruckLoadGatePort"
+   "TruckLoadGatePort",
+   "DriverRatingPort"
   ],
   "estereotipo": null
  },
@@ -12735,6 +13131,14 @@
     "abstracto": false
    },
    {
+    "nombre": "validarNoAnteriorAlConteo",
+    "parametros": "manager: EntityManager, distributorId: string, warehouseId: string, receivedAt: Date",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "fechaDeRecepcion",
     "parametros": "valor: string | undefined",
     "retorno": "Date",
@@ -12801,7 +13205,7 @@
    {
     "nombre": "actualizarCostos",
     "parametros": "manager: EntityManager, distributorId: string, renglones: Renglon[]",
-    "retorno": "Promise<Map<string,",
+    "retorno": "Promise<\n    Map<string,",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
@@ -12941,7 +13345,7 @@
    },
    {
     "nombre": "recalcularCostos",
-    "parametros": "manager: EntityManager, distributorId: string, recepcion: PurchaseReceipt, items: PurchaseReceiptItem[]",
+    "parametros": "manager: EntityManager, distributorId: string, recepcion: PurchaseReceipt, items: PurchaseReceiptItem[], anuladaEn: Date",
     "retorno": "Promise<void>",
     "visibilidad": "-",
     "estatico": false,
@@ -13038,7 +13442,7 @@
   "metodos": [
    {
     "nombre": "create",
-    "parametros": "@Body() dto: CreatePurchaseReceiptDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Body() dto: CreatePurchaseReceiptDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<PurchaseReceiptResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -13070,7 +13474,7 @@
    },
    {
     "nombre": "void",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: VoidPurchaseReceiptDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: VoidPurchaseReceiptDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<PurchaseReceiptResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -13455,6 +13859,22 @@
     "parametros": "driverId: string",
     "retorno": null,
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getDriverLastLocation",
+    "parametros": "driverId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "driverLocationAtKey",
+    "parametros": "driverId: string",
+    "retorno": "string",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    }
@@ -13860,6 +14280,141 @@
   ],
   "estereotipo": null
  },
+ "RoutesController": {
+  "kind": "controller",
+  "file": "routes/routes.controller.ts",
+  "metodos": [
+   {
+    "nombre": "driving",
+    "parametros": "@Query() query: DrivingRouteQueryDto, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<DrivingRouteDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "RoutesService"
+  ],
+  "estereotipo": "controller"
+ },
+ "RoutesService": {
+  "kind": "service",
+  "file": "routes/routes.service.ts",
+  "metodos": [
+   {
+    "nombre": "driving",
+    "parametros": "orderId: string, from: string | undefined, user: { userId: string; role: RoleType }",
+    "retorno": "Promise<DrivingRouteDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolverOrigen",
+    "parametros": "orderId: string, desde: string | undefined, user: { userId: string; role: RoleType }, pedido: { choferUserId: string | null }",
+    "retorno": "Promise<PuntoDeRuta>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "parsear",
+    "parametros": "texto: string",
+    "retorno": "PuntoDeRuta",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "redondear",
+    "parametros": "p: PuntoDeRuta",
+    "retorno": "string",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contar",
+    "parametros": "clave: string, ventanaSeg: number, tope: number, mensaje: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contarEnMemoria",
+    "parametros": "clave: string, ventanaSeg: number",
+    "retorno": "number",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "seguro",
+    "parametros": "operacion: () => Promise<T>, respaldo: T | (() => T)",
+    "retorno": "Promise<T>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "calcular",
+    "parametros": "origen: PuntoDeRuta, destino: PuntoDeRuta",
+    "retorno": "Promise<DrivingRouteDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "urlDeOsrm",
+    "parametros": "",
+    "retorno": "string | null",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pedir",
+    "parametros": "url: string",
+    "retorno": "Promise<T>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conGoogle",
+    "parametros": "o: PuntoDeRuta, d: PuntoDeRuta, clave: string",
+    "retorno": "Promise<DrivingRouteDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conOsrm",
+    "parametros": "o: PuntoDeRuta, d: PuntoDeRuta, base: string",
+    "retorno": "Promise<DrivingRouteDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "armar",
+    "parametros": "proveedor: 'google' | 'osrm', codificada: string, metros: number, segundos: number",
+    "retorno": "DrivingRouteDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ConfigService",
+   "RedisService",
+   "OrderService",
+   "FetchFn"
+  ],
+  "estereotipo": null
+ },
  "EntityPhotoService": {
   "kind": "service",
   "file": "s3/entity-photo.service.ts",
@@ -14138,7 +14693,8 @@
   "dependencias": [
    "DataSource",
    "OrderLookupService",
-   "StockDeliveryService"
+   "StockDeliveryService",
+   "StockOnHandService"
   ],
   "estereotipo": "usecase"
  },
@@ -14160,7 +14716,8 @@
    "GasCylinderService",
    "OrderLookupService",
    "DocumentSequenceService",
-   "WarehouseService"
+   "WarehouseService",
+   "StockReconciliationService"
   ],
   "estereotipo": "usecase"
  },
@@ -14173,6 +14730,14 @@
     "parametros": "batchId: string, notes: string | undefined, distributorId: string, actorUserId: string",
     "retorno": "Promise<string>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "validarDestinoDelContraasiento",
+    "parametros": "manager: EntityManager, batchId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    }
@@ -14370,6 +14935,14 @@
     "abstracto": false
    },
    {
+    "nombre": "ubicacionDeOrigenDeCarga",
+    "parametros": "manager: EntityManager, distributorId: string, warehouseId: string",
+    "retorno": "Promise<StockLocation>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "ubicacionDeVehiculo",
     "parametros": "manager: EntityManager, distributorId: string, carId: string",
     "retorno": "Promise<StockLocation>",
@@ -14412,6 +14985,22 @@
   "kind": "service",
   "file": "stock/application/stock-on-hand.service.ts",
   "metodos": [
+   {
+    "nombre": "inicioDelLibro",
+    "parametros": "manager: EntityManager, distributorId: string",
+    "retorno": "Promise<Date | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "inicioDeStockDelDeposito",
+    "parametros": "manager: EntityManager, distributorId: string, warehouseId: string",
+    "retorno": "Promise<Date | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
    {
     "nombre": "llenasTotales",
     "parametros": "manager: EntityManager, distributorId: string, gasCylinderId: string",
@@ -14544,6 +15133,22 @@
     "abstracto": false
    },
    {
+    "nombre": "entregasSinMovimiento",
+    "parametros": "manager: DataSource['manager'], distributorId: string, desde: Date | null, tipos: Map<string, string>",
+    "retorno": "Promise<PedidoEntregadoSinMovimientoDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "unidadesSinMovimientoDe",
+    "parametros": "manager: DataSource['manager'], distributorId: string, gasCylinderId: string",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "entregasConMovimiento",
     "parametros": "manager: DataSource['manager'], distributorId: string, orderIds: string[]",
     "retorno": "Promise<Set<string>>",
@@ -14554,7 +15159,8 @@
   ],
   "dependencias": [
    "DataSource",
-   "OrderLookupService"
+   "OrderLookupService",
+   "StockOnHandService"
   ],
   "estereotipo": null
  },
@@ -14675,6 +15281,14 @@
     "abstracto": false
    },
    {
+    "nombre": "asegurarSinCargaAbierta",
+    "parametros": "manager: EntityManager, warehouseId: string, accion: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "asegurarPredeterminado",
     "parametros": "distributorId: string, manager?: EntityManager",
     "retorno": "Promise<DepositoConUbicacion>",
@@ -14759,7 +15373,7 @@
   "metodos": [
    {
     "nombre": "updateStock",
-    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateStockDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateStockDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<GasCylinderResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -14810,7 +15424,7 @@
    },
    {
     "nombre": "contraasentar",
-    "parametros": "@Param('batchId', ParseUUIDPipe) batchId: string, @Body() dto: ReverseBatchDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Param('batchId', ParseUUIDPipe) batchId: string, @Body() dto: ReverseBatchDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<StockOperationResultDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -14818,7 +15432,7 @@
    },
    {
     "nombre": "transferir",
-    "parametros": "@Body() dto: CreateTransferDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Body() dto: CreateTransferDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<StockOperationResultDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -14826,7 +15440,7 @@
    },
    {
     "nombre": "conteoInicial",
-    "parametros": "@Body() dto: CreateInitialCountDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Body() dto: CreateInitialCountDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<StockAdjustmentResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -14834,7 +15448,7 @@
    },
    {
     "nombre": "ajustar",
-    "parametros": "@Body() dto: CreateAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Body() dto: CreateAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<StockAdjustmentResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -14890,7 +15504,7 @@
    },
    {
     "nombre": "corregirVendible",
-    "parametros": "@Body() dto: CreateReconciliationAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "parametros": "@Body() dto: CreateReconciliationAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string, @Headers('idempotency-key') idempotencyKey?: string",
     "retorno": "Promise<StockAdjustmentResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -15373,7 +15987,7 @@
    },
    {
     "nombre": "assertPuedeAceptar",
-    "parametros": "distributorId: string, deliveryId: string",
+    "parametros": "distributorId: string, deliveryId: string, manager?: EntityManager",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -15381,7 +15995,7 @@
    },
    {
     "nombre": "assertPuedeAsignar",
-    "parametros": "distributorId: string, deliveryId: string",
+    "parametros": "distributorId: string, deliveryId: string, manager?: EntityManager",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -15389,7 +16003,7 @@
    },
    {
     "nombre": "exigir",
-    "parametros": "distributorId: string, deliveryId: string, mensajeSinCarga: string",
+    "parametros": "distributorId: string, deliveryId: string, mensajeSinCarga: string, manager?: EntityManager",
     "retorno": "Promise<void>",
     "visibilidad": "-",
     "estatico": false,
@@ -15413,7 +16027,7 @@
    },
    {
     "nombre": "leer",
-    "parametros": "distributorId: string, columna: string, valores: string[]",
+    "parametros": "distributorId: string, columna: string, valores: string[], manager?: EntityManager",
     "retorno": "Promise<FilaDeChofer[]>",
     "visibilidad": "-",
     "estatico": false,
@@ -15447,8 +16061,16 @@
     "abstracto": false
    },
    {
+    "nombre": "senasPagas",
+    "parametros": "orderIds: string[]",
+    "retorno": "Promise<Map<string, number>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "efectivoDe",
-    "parametros": "pedidos: Array<{ totalAmount: number; paymentMethod: PaymentMethod; paymentStatus: PaymentStatus; }>",
+    "parametros": "pedidos: Array<{ totalAmount: number; remainingBalance: number; paymentMethod: PaymentMethod; paymentStatus: PaymentStatus; }>",
     "retorno": "TruckLoadCashDto",
     "visibilidad": "-",
     "estatico": false,

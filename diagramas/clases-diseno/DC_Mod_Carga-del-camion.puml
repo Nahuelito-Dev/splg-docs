@@ -67,20 +67,14 @@ class TruckLoadGateService <<fachada>> {
   + motivoParaNoRecibir(chofer: Chofer): Cadena
   + verificarCargaDeCamionAbierta(chofer: Chofer): Booleano
 }
-class UpdateTruckLoadItemsUseCase <<controlador>> {
-  + corregirRenglonesDeLaCarga(cargaId: Identificador,\n      items: Lista): CargaDeCamion
-}
-class "Map<String, CargaDeCamion>" as Map_String_CargaDeCamion <<colección>> {
-  + get(clave: Cadena): CargaDeCamion
-}
 class OpenTruckLoadUseCase <<controlador>> {
   + registrarCargaDelCamion(vehiculoId: Identificador,\n      choferId: Identificador, depositoId: Identificador,\n      ayudanteId: Identificador,\n      items: Lista): CargaDeCamion
 }
-class ReloadTruckLoadUseCase <<controlador>> {
-  + reponerCargaDelCamion(cargaId: Identificador,\n      items: Lista): Booleano
-}
 class DepartTruckLoadUseCase <<controlador>> {
   + registrarSalidaDelCamion(cargaId: Identificador): Booleano
+}
+class "Map<String, CargaDeCamion>" as Map_String_CargaDeCamion <<colección>> {
+  + get(clave: Cadena): CargaDeCamion
 }
 class ReturnTruckLoadUseCase <<controlador>> {
   + registrarRegresoDelCamion(cargaId: Identificador,\n      devueltos: Lista): Booleano
@@ -102,6 +96,12 @@ class CancelTruckLoadUseCase <<controlador>> {
 }
 class "List<CargaDeCamion>" as List_CargaDeCamion <<colección>> {
   + buscar(estado: Cadena, desde: FechaHora,\n      hasta: FechaHora, vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
+}
+class UpdateTruckLoadItemsUseCase <<controlador>> {
+  + corregirRenglonesDeLaCarga(cargaId: Identificador,\n      items: Lista): CargaDeCamion
+}
+class ReloadTruckLoadUseCase <<controlador>> {
+  + reponerCargaDelCamion(cargaId: Identificador,\n      items: Lista): Booleano
 }
 class CargaDeCamion <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>

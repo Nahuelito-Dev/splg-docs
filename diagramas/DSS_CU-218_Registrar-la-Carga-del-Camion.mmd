@@ -16,25 +16,3 @@ sequenceDiagram
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
-
-    ADM->>SIS: corregirRenglonesDeLaCarga(cargaId, items)
-    activate SIS
-    alt la carga está en carga
-        SIS-->>ADM: hoja de carga con los renglones nuevos
-    else la carga ya salió
-        SIS-->>ADM: solicitud inválida
-    else la carga no existe
-        SIS-->>ADM: recurso no encontrado
-    end
-    deactivate SIS
-
-    ADM->>SIS: reponerCargaDelCamion(cargaId, items)
-    activate SIS
-    alt la carga está en ruta y el depósito tiene las llenas
-        SIS-->>ADM: hoja de carga con lo repuesto
-    else la carga no está en ruta o el depósito no tiene las llenas
-        SIS-->>ADM: solicitud inválida, con el saldo disponible
-    else la carga no existe
-        SIS-->>ADM: recurso no encontrado
-    end
-    deactivate SIS

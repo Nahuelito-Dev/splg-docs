@@ -42,7 +42,7 @@ rectangle "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)" {
   usecase "CU-014\nReintentar Asignación con\nRadio Expandido (Cron)" as U014 #back:FFFFFF;line:2C4257
   usecase "CU-015\nAceptar Pedido" as U015 #back:FFFFFF;line:2C4257
   usecase "CU-018\nMarcar Pedido "En Camino"" as U018 #back:FFFFFF;line:2C4257
-  usecase "CU-020\nConfirmar Entrega" as U020 #back:FFFFFF;line:2C4257
+  usecase "CU-020\nConfirmar Entrega\nManualmente" as U020 #back:FFFFFF;line:2C4257
   usecase "CU-023\nRegistrar Reclamo" as U023 #back:FFFFFF;line:2C4257
   usecase "CU-025\nResolver Reclamo" as U025 #back:FFFFFF;line:2C4257
   usecase "CU-026\nVer Dashboard General" as U026 #back:FFFFFF;line:2C4257

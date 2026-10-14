@@ -68,7 +68,7 @@ class CargaDeCamion {
   - notaDeDiferencia: Cadena
   - motivoDeCancelacion: Cadena
   - notas: Cadena
-  + «create» CargaDeCamion(vehiculo: Vehiculo,\n      chofer: Chofer, deposito: Deposito,\n      ayudanteId: Identificador,\n      administrador: Administrador)
+  + «create» CargaDeCamion(vehiculo: Vehiculo,\n      chofer: Chofer, deposito: Deposito,\n      ayudanteId: Identificador, administrador: Usuario)
   + cancelar(motivo: Cadena): CargaDeCamion
   + cerrar(nota: Cadena): CargaDeCamion
   + declararRegreso(devueltos: Registro): CargaDeCamion
@@ -82,6 +82,7 @@ class CargaDeCamion {
   + getUbicacionDelCamion(): UbicacionDeStock
   + getUbicacionDelDeposito(): UbicacionDeStock
   + marcarEnRuta()
+  + previsualizarCierre(): Booleano
   + reemplazarRenglones(items: Registro): CargaDeCamion
   + validarNotaDeDiferencia(nota: Cadena)
   + validarQueEstaDevuelta()

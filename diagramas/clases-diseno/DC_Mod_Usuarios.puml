@@ -99,11 +99,11 @@ class "List<Administrador>" as List_Administrador <<colección>> {
   + listar(): Administrador[*]
 }
 class AdminService <<fachada>> {
-  + buscarAdministrador(termino: Cadena): Administrador
+  + buscarAdministrador(termino: Cadena): Usuario
   + listarAdministradores(): Administrador[*]
 }
 class "Map<String, Administrador>" as Map_String_Administrador <<colección>> {
-  + get(clave: Cadena): Administrador
+  + get(clave: Cadena): Usuario
 }
 class AuditService <<fachada>> {
   + consultarAuditoria(autor: Identificador,\n      tipoDeRecurso: Cadena, recurso: Cadena,\n      desde: FechaHora, hasta: FechaHora,\n      resultado: Cadena, limite: Entero,\n      desplazamiento: Entero,\n      out total: Entero): AsientoAuditoria[*]

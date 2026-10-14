@@ -88,9 +88,9 @@ class UbicacionDeStock {
   - tipo: TipoDeUbicacion
   + «create» UbicacionDeStock(depositoDeStock: Deposito)
   + acreditar(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
-  + ajustar(motivoConciliacion: MotivoDeAjuste, nota: Cadena,\n      correccionDeVendible: Entero,\n      administrador: Administrador): AjusteDeStock
-  + ajustar(motivo: Cadena, nota: Cadena, items: Registro,\n      lote: Identificador,\n      administrador: Administrador): AjusteDeStock
-  + ajustar(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena,\n      renglonesDeAjuste: ItemAjusteDeStock[*],\n      lote: Identificador,\n      administrador: Administrador): AjusteDeStock
+  + ajustar(motivoConciliacion: MotivoDeAjuste, nota: Cadena,\n      correccionDeVendible: Entero,\n      administrador: Usuario): AjusteDeStock
+  + ajustar(motivo: Cadena, nota: Cadena, items: Registro,\n      lote: Identificador,\n      administrador: Usuario): AjusteDeStock
+  + ajustar(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena,\n      renglonesDeAjuste: ItemAjusteDeStock[*],\n      lote: Identificador,\n      administrador: Usuario): AjusteDeStock
   + descontar(producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      cantidad: Entero): Booleano
   + diferenciasContra(items: Registro): ItemAjusteDeStock[*]
   + getSaldos(productoId: Identificador): SaldoDeStock[*]
@@ -133,9 +133,9 @@ class AjusteDeStock {
   - motivo: MotivoDeAjuste
   - nota: Cadena
   - fecha: FechaHora
-  + «create» AjusteDeStock(motivoConciliacion: MotivoDeAjuste,\n      nota: Cadena, administrador: Administrador)
-  + «create» AjusteDeStock(motivo: Cadena, nota: Cadena,\n      lote: Identificador, administrador: Administrador)
-  + «create» AjusteDeStock(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena, lote: Identificador,\n      administrador: Administrador)
+  + «create» AjusteDeStock(motivoConciliacion: MotivoDeAjuste,\n      nota: Cadena, administrador: Usuario)
+  + «create» AjusteDeStock(motivo: Cadena, nota: Cadena,\n      lote: Identificador, administrador: Usuario)
+  + «create» AjusteDeStock(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena, lote: Identificador,\n      administrador: Usuario)
   + getDetalle()
   + getRenglones(): ItemAjusteDeStock[*]
 }

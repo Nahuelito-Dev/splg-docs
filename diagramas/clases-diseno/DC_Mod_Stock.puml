@@ -60,6 +60,12 @@ hide empty members
 left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
+class StockDeliveryService <<fachada>> {
+  + descartarGarrafa(producto: Producto)
+  + elegirOrigen(ubicacionDelCamion: UbicacionDeStock)
+  + registrarEntrega(entrega: MotivoDeMovimiento): Booleano
+  + registrarEntrega(pedido: Pedido, items: Registro)
+}
 class CatalogStockAdjustmentUseCase <<controlador>> {
   + actualizarStock(productoId: Identificador,\n      variacion: Entero): Producto
 }
@@ -101,13 +107,13 @@ class StockThresholdService <<fachada>> {
   + configurarStockMinimo(minimos: Lista): UmbralDeStock[*]
   + consultarStockMinimo(): UmbralDeStock[*]
 }
+class StockLowCron <<fachada>> {
+  + avisarStockBajo()
+}
 class "List<UmbralDeStock>" as List_UmbralDeStock <<colección>> {
   + getConMinimo(): UmbralDeStock[*]
   + getMinimoDeLlenas(producto: Producto): Entero
   + getTodos(): UmbralDeStock[*]
-}
-class StockLowCron <<fachada>> {
-  + avisarStockBajo()
 }
 class StockAdminNotifier <<fabricación pura>> {
   + avisar(distribuidora: Distribuidora, stockBajo: Registro)
@@ -127,12 +133,6 @@ class StockLedgerService <<fachada>> {
   + contraasentar(loteDeLaRecepcion: Identificador): Identificador
   + contraasentar(loteId: Identificador, nota: Cadena)
   + validarMovimiento(movimiento: MovimientoDeCaja)
-}
-class StockDeliveryService <<fachada>> {
-  + descartarGarrafa(producto: Producto)
-  + elegirOrigen(ubicacionDelCamion: UbicacionDeStock)
-  + registrarEntrega(entrega: MotivoDeMovimiento): Booleano
-  + registrarEntrega(pedido: Pedido, items: Registro)
 }
 class StockReconciliationCron <<fachada>> {
   + borrarAviso(distribuidora: Distribuidora)

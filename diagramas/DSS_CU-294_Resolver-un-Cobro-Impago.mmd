@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSS — CU-294 Resolver un Cobro Impago
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: resolverCobroImpago(pedidoId, resolucion, nota)
+    activate SIS
+    alt el pago está impago y la resolución es válida
+        SIS-->>ADM: cobro resuelto (pagado o perdido)
+    else el pedido es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la resolución o la nota son inválidas
+        SIS-->>ADM: error de solicitud
+    else el pago no está informado como impago
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)

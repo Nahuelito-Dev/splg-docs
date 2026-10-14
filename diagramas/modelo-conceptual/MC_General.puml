@@ -162,6 +162,8 @@ Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
 Pedido "0..*" -- "0..1" FranjaHoraria : se programa en >
 Pedido "0..*" -- "0..1" ZonaCobertura : aplica el recargo de >
 Pedido "1" *-- "0..*" CambioEstadoPedido : registra >
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de >
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de >
 Pedido "1" *-- "0..*" CambioDireccion : registra >
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde >
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia >
@@ -247,6 +249,7 @@ CargaDeCamion "1" *-- "1..*" ItemCarga : contiene >
 ItemCarga "0..*" -- "1" Producto : corresponde a >
 Usuario "1" -- "0..*" CargaDeCamion : abre >
 Usuario "0..1" -- "0..*" CargaDeCamion : cierra >
+Empleado "0..1" -- "0..*" CargaDeCamion : ayuda en >
 Distribuidora "1" *-- "0..*" Caja : define >
 Distribuidora "1" *-- "0..*" CategoriaDeCaja : define >
 Distribuidora "1" *-- "0..*" CuentaCorriente : lleva >

@@ -45,6 +45,10 @@ entity Pedido {
   {field} nombre de quien recibe
   {field} documento de quien recibe
   {field} vínculo con quien recibe
+  {field} estado del cobro
+  {field} cobro confirmado el
+  {field} cobro resuelto el
+  {field} nota de resolución del cobro
 }
 entity ItemPedido {
   * identificador

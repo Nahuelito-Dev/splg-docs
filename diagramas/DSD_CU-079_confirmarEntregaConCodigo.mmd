@@ -5,22 +5,20 @@ sequenceDiagram
     participant CDU as :ConfirmDeliveryUseCase
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
-    participant PAG as pago:Pago
     participant RT as :RealtimeDispatchPort
     participant NOT as :NotificationPort
 
-    CLI->>+CDU: confirmarEntregaConCodigo(pedidoId, codigo)
+    CLI->>+CDU: confirmarEntregaConCodigo(pedidoId, codigo, motivo)
     CDU->>+PEDS: get(pedidoId)
     PEDS-->>-CDU: pedido
     CDU->>+PED: validarCodigo(codigo)
     PED-->>-CDU: valido
-    CDU->>+PED: entregar()
+    CDU->>+PED: entregar(motivo)
     PED->>PED: transicionar(entregado)
-    opt El método de pago es efectivo
-        PED->>PAG: marcarPagado()
-    end
+    create participant CAM as :CambioEstadoPedido
+    PED->>CAM: «create»(entregado, motivo)
     deactivate PED
-    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento y entrega los envases
+    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento,<br/>entrega los envases y descuenta el stock (CU-220). El pago en efectivo sigue pendiente
     CDU-)RT: notifyAdmins(pedido)
     CDU-)NOT: sendOrderConfirmation(cliente, pedido)
     CDU-->>-CLI: pedido

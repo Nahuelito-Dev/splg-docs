@@ -70,9 +70,11 @@ class Incidencia {
   - estado: EstadoDeIncidencia
   - resolucion: Cadena
   - fotografia: Cadena
+  + «create» Incidencia(chofer: Chofer, nota: Cadena)
+  + «create» Incidencia(administrador: Usuario,\n      motivo: Cadena)
   + «create» Incidencia(usuario: Usuario, tipo: Cadena,\n      descripcion: Cadena, foto: Archivo)
   + getResumen(): Registro
-  + resolver(notaDeResolucion: Cadena)
+  + resolver(nota: Cadena)
 }
 class Reclamo {
   - motivo: Cadena

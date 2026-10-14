@@ -98,13 +98,13 @@ INCLUYE = {
             ("CU-201","CU-113"), ("CU-203","CU-113")],
   "SS-08": [("CU-037","CU-041"), ("CU-038","CU-041"),
             ("CU-039","CU-041"), ("CU-040","CU-041"),
-            ("CU-210","CU-208"), ("CU-212","CU-208"), ("CU-213","CU-208"),
+            ("CU-210","CU-297"), ("CU-297","CU-208"), ("CU-249","CU-298"), ("CU-212","CU-208"), ("CU-213","CU-208"),
             ("CU-038","CU-213"),
-            ("CU-212","CU-250"), ("CU-213","CU-250"), ("CU-218","CU-250"), ("CU-220","CU-250"),
+            ("CU-212","CU-250"), ("CU-213","CU-250"), ("CU-296","CU-250"), ("CU-220","CU-250"),
             ("CU-222","CU-250"), ("CU-219","CU-250"),
             # carga del camión: la rendición siempre parte del detalle de la carga y la cancelación, del listado
             # (la salida, el regreso y el detalle los inicia también quien no ve «mi carga» o el listado: no hay include)
-            ("CU-222","CU-291"), ("CU-289","CU-290"),
+            ("CU-222","CU-291"), ("CU-295","CU-291"), ("CU-296","CU-291"), ("CU-289","CU-290"),
             # depósitos: alta, modificación, baja, predeterminado y conteo parten del listado; reactivar parte de los productos inactivos
             ("CU-258","CU-207"), ("CU-259","CU-207"), ("CU-260","CU-207"), ("CU-273","CU-207"),
             ("CU-274","CU-207"), ("CU-268","CU-269"),

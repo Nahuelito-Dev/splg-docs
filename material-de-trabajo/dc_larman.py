@@ -470,7 +470,7 @@ ALIAS_CLASE = {
     "pago": "Pago", "pagos": "Pago", "roles": "Rol", "rol": "Rol", "tareas": "TareaMantenimiento",
     "aviso": "AvisoRecupero", "cercanos": "Chofer", "contactados": "Chofer", "aceptados": "Chofer", "libres": "Chofer",
     "activos": "Chofer", "habilitados": "Chofer", "solicitante": "Usuario", "autor": "Usuario",
-    "usuario": "Usuario", "chofer": "Chofer", "choferAnterior": "Chofer", "cliente": "Cliente",
+    "usuario": "Usuario", "chofer": "Chofer", "choferAnterior": "Chofer", "choferConOferta": "Chofer", "administrador": "Usuario", "cliente": "Cliente",
     "vehiculo": "Vehiculo", "producto": "Producto", "pedido": "Pedido", "reclamo": "Reclamo",
     "incidencia": "Incidencia", "distribuidora": "Distribuidora", "item": "ItemPedido", "items": "ItemPedido",
     "itemsDelCarrito": "ItemCarrito", "promociones": "Promocion",
@@ -572,7 +572,7 @@ GLOSARIO = {
     "fechaEsperada": "Fecha", "codigo_": "Cadena", "ubicacionDeOrigen": "UbicacionDeStock",
     "ayudanteId": "Identificador",
     # retornos
-    "cubierta": "Booleano", "firmaValida": "Booleano", "sesionValida": "Booleano", "valido": "Booleano",
+    "cubierta": "Booleano", "firmaValida": "Booleano", "sesionValida": "Booleano", "valido": "Booleano", "hayDiferencia": "Booleano", "recibida": "Booleano", "hayStock": "Booleano",
     "existe": "Booleano", "elegible": "Booleano", "reofertable": "Booleano", "rechazada": "Booleano",
     "recibido": "Booleano", "reintegrado": "Booleano", "efectivo": "Booleano", "booked": "Booleano",
     "correoUsado": "Booleano", "telefonoUsado": "Booleano", "inhabilitado": "Booleano",
@@ -730,7 +730,7 @@ GLOSARIO.update({
     "minimoDeStock": "Entero", "incluirInactivos": "Booleano", "alcanzaElSaldo": "Booleano",
     "esUnaTransferencia": "Booleano", "sinConteoInicial": "Booleano", "transferenciaValida": "Booleano",
     "avisoRepetido": "Booleano", "predeterminadoQuitado": "Booleano", "nadaQueDescontar": "Booleano",
-    "resumenDeReaplicacion": "Registro", "cantidadDeAjustes": "Entero", "cantidadDeMovimientos": "Entero",
+    "resumenDeReaplicacion": "Registro", "cobrosPendientes": "Registro", "cotizacion": "Registro", "totales": "Registro", "renglon": "Registro", "ruta": "Registro", "reintegros": "Registro", "cantidadDeAjustes": "Entero", "cantidadDeMovimientos": "Entero",
 })
 # Compras (implementado): nombres propios de sus DSD, sin colisión con otros módulos.
 ALIAS_CLASE.update({"itemsRecibidos": "ItemRecepcion", "proveedorDadoDeBaja": "Proveedor",

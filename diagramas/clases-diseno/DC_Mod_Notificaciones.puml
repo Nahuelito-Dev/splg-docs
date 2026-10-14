@@ -81,9 +81,9 @@ class EmailService <<fachada>> {
 interface EmailSenderPort <<puerto>> {
   + send(verificacionDeCorreo: Registro)
   + send(destinatario: Cadena)
-  + send(administrador: Administrador, vencimientos: Registro)
+  + send(administrador: Usuario, vencimientos: Registro)
   + send(administradores: Administrador[*], detalle: Registro)
-  + send(administrador: Administrador,\n      rendiciones: RendicionChofer[*])
+  + send(administrador: Usuario,\n      rendiciones: RendicionChofer[*])
 }
 class FirebaseAuthPort <<referencia>>
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
